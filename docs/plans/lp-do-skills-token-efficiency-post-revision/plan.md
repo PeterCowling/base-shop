@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: BOS
 Workstream: Operations
 Created: 2026-02-26

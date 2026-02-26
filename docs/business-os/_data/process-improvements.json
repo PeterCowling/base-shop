@@ -3,22 +3,82 @@
     {
       "type": "idea",
       "business": "BOS",
-      "title": "/assistance Book Direct CTA copy i18n audit",
-      "body": "The \"Book Direct\" button text in AssistanceIndexContent uses a hardcoded string; other locales are untested.",
-      "suggested_action": "create card (P2 i18n, can batch with next locale pass)",
+      "title": "Lp-do-critique is at ~600 lines — multi-mode content-dense utility skill",
+      "body": "justified exception confirmed during fact-find; Offer Lens extraction saved ~85L",
+      "suggested_action": "defer (further module extraction opportunities exist but not urgent)",
       "source": "results-review.user.md",
-      "date": "2026-02-25",
-      "path": "docs/plans/_archive/brikette-deeper-route-funnel-cro/results-review.user.md"
+      "date": "2026-02-26T00:06:40.874Z",
+      "path": "docs/plans/lp-do-skills-token-efficiency-post-revision/results-review.user.md"
     },
     {
       "type": "idea",
       "business": "BOS",
-      "title": "/how-to-get-here server-resolved hero H1 (sub-track C)",
-      "body": "TASK-11 deferred useHowToGetHereContent audit — HowToGetHereIndexContent hook needs investigation before server-resolved props pattern can be applied safely.",
-      "suggested_action": "spike (audit hook dependencies before scoping)",
+      "title": "Lp-do-plan is at 256 lines — still above 200-line threshold",
+      "body": "TASK-03 reached 256L; ≤200 requires removing governing content",
+      "suggested_action": "defer (follow-on initiative only if 256L proves to be a practical problem)",
       "source": "results-review.user.md",
-      "date": "2026-02-25",
-      "path": "docs/plans/_archive/brikette-deeper-route-funnel-cro/results-review.user.md"
+      "date": "2026-02-26T00:06:40.874Z",
+      "path": "docs/plans/lp-do-skills-token-efficiency-post-revision/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add validate:launch-media to CI so media contract failures block merges",
+      "body": "contract validator currently run manually; new SKUs could be merged without images",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:37:02.398Z",
+      "path": "docs/plans/hbag-website-02-image-first-upgrade/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Expand catalog from 3 to target SKU count with production imagery",
+      "body": "launch media contract passes for 3 active SKUs — catalog is minimal for launch",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:37:02.398Z",
+      "path": "docs/plans/hbag-website-02-image-first-upgrade/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Real-device performance spot-check before public launch",
+      "body": "build-record flags this as the only remaining pre-launch gate; a QA matrix is already drafted at artifacts/real-device-qa-matrix.md",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:37:02.398Z",
+      "path": "docs/plans/hbag-website-02-image-first-upgrade/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Automated policy-fact consistency check across templates",
+      "body": "three policy facts manually verified across 125 templates; any future policy change has no automated catch",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:36:44.667Z",
+      "path": "docs/plans/hostel-email-template-expansion/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Post-stay review workflow using T178 as the trigger template",
+      "body": "T178 built and lint-passing but review-link URL still a placeholder; workflow not yet activated",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:36:44.667Z",
+      "path": "docs/plans/hostel-email-template-expansion/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Template selection rate monitoring dashboard or weekly report",
+      "body": "build-record recommends running draft_signal_stats after 4 weeks; no scheduled monitoring exists",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:36:44.667Z",
+      "path": "docs/plans/hostel-email-template-expansion/results-review.user.md"
     },
     {
       "type": "idea",
@@ -27,18 +87,18 @@
       "body": "cycles were manually verified via generate-stage-operator-views.ts; no automated CI gate exists",
       "suggested_action": "create card",
       "source": "results-review.user.md",
-      "date": "2026-02-25",
+      "date": "2026-02-25T22:36:24.076Z",
       "path": "docs/plans/startup-loop-parallel-container-wiring/results-review.user.md"
     },
     {
       "type": "idea",
       "business": "BOS",
-      "title": "Add datePublished to monitoring baseline to track when guide pages first appear with valid structured data in search results",
-      "body": "T+0 baseline has 29 unknown URLs; structured data correctness cannot be validated until pages are indexed",
-      "suggested_action": "defer",
+      "title": "Visual diff test for process-map HTML to catch silent regressions",
+      "body": "swim-lane layout was browser-verified manually; no regression test exists",
+      "suggested_action": "spike",
       "source": "results-review.user.md",
-      "date": "2026-02-25",
-      "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md"
+      "date": "2026-02-25T22:36:24.076Z",
+      "path": "docs/plans/startup-loop-parallel-container-wiring/results-review.user.md"
     },
     {
       "type": "idea",
@@ -47,7 +107,17 @@
       "body": "test:e2e only covers J1 happy path; J2 has no E2E test",
       "suggested_action": "defer until sync scripts exist",
       "source": "results-review.user.md",
-      "date": "2026-02-25",
+      "date": "2026-02-25T22:35:19.828Z",
+      "path": "docs/plans/xa-uploader-usability-hardening/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Restore or port missing XA sync scripts to unblock J2",
+      "body": "scripts/src/xa/validate-xa-inputs.ts and run-xa-pipeline.ts are absent; sync journey is deterministically blocked",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:35:19.828Z",
       "path": "docs/plans/xa-uploader-usability-hardening/results-review.user.md"
     },
     {
@@ -57,7 +127,17 @@
       "body": "rebuild-discovery-index.sh is validated manually; no automated regression guard on its output shape",
       "suggested_action": "create card",
       "source": "results-review.user.md",
-      "date": "2026-02-25",
+      "date": "2026-02-25T22:34:30.738Z",
+      "path": "docs/plans/do-skills-bos-decoupling/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Audit existing in-flight plans for stale BOS frontmatter fields",
+      "body": "Templates cleaned but older active plans may still carry Business-OS-Integration/Card-ID fields",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:34:30.738Z",
       "path": "docs/plans/do-skills-bos-decoupling/results-review.user.md"
     },
     {
@@ -67,28 +147,8 @@
       "body": "Smoke test confirmed /it/prenota redirects to /en — IT-speaking visitors get an English booking page",
       "suggested_action": "spike",
       "source": "results-review.user.md",
-      "date": "2026-02-25",
+      "date": "2026-02-25T22:33:05.975Z",
       "path": "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Add session_id or caller_pid to governed telemetry event schema to enable actor attribution in future zombie incidents.",
-      "body": "TASK-01 could not confirm actor identity with 80% confidence; no session metadata in events.jsonl.",
-      "suggested_action": "create card",
-      "source": "results-review.user.md",
-      "date": "2026-02-25",
-      "path": "docs/plans/_archive/build-subagent-jest-zombie-cleanup/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Add validate:launch-media to CI so media contract failures block merges",
-      "body": "contract validator currently run manually; new SKUs could be merged without images",
-      "suggested_action": "create card",
-      "source": "results-review.user.md",
-      "date": "2026-02-25",
-      "path": "docs/plans/hbag-website-02-image-first-upgrade/results-review.user.md"
     },
     {
       "type": "idea",
@@ -97,98 +157,8 @@
       "body": "Smoke test confirmed view_item_list fires but no assertion captures it — gap in automated verification",
       "suggested_action": "defer",
       "source": "results-review.user.md",
-      "date": "2026-02-25",
+      "date": "2026-02-25T22:33:05.975Z",
       "path": "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Audit existing in-flight plans for stale BOS frontmatter fields",
-      "body": "Templates cleaned but older active plans may still carry Business-OS-Integration/Card-ID fields",
-      "suggested_action": "spike",
-      "source": "results-review.user.md",
-      "date": "2026-02-25",
-      "path": "docs/plans/do-skills-bos-decoupling/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Automated policy-fact consistency check across templates",
-      "body": "three policy facts manually verified across 125 templates; any future policy change has no automated catch",
-      "suggested_action": "spike",
-      "source": "results-review.user.md",
-      "date": "2026-02-25",
-      "path": "docs/plans/hostel-email-template-expansion/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Enable Google Indexing API and test URL submission eligibility",
-      "body": "All 5 test submissions returned HTTP 403 — API not enabled in GCP project 98263641014",
-      "suggested_action": "spike (operator enables API at GCP console, then re-runs 5 test URLs)",
-      "source": "results-review.user.md",
-      "date": "2026-02-25",
-      "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Expand catalog from 3 to target SKU count with production imagery",
-      "body": "launch media contract passes for 3 active SKUs — catalog is minimal for launch",
-      "suggested_action": "create card",
-      "source": "results-review.user.md",
-      "date": "2026-02-25",
-      "path": "docs/plans/hbag-website-02-image-first-upgrade/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Post-stay review workflow using T178 as the trigger template",
-      "body": "T178 built and lint-passing but review-link URL still a placeholder; workflow not yet activated",
-      "suggested_action": "create card",
-      "source": "results-review.user.md",
-      "date": "2026-02-25",
-      "path": "docs/plans/hostel-email-template-expansion/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Real-device performance spot-check before public launch",
-      "body": "build-record flags this as the only remaining pre-launch gate; a QA matrix is already drafted at artifacts/real-device-qa-matrix.md",
-      "suggested_action": "create card",
-      "source": "results-review.user.md",
-      "date": "2026-02-25",
-      "path": "docs/plans/hbag-website-02-image-first-upgrade/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Restore or port missing XA sync scripts to unblock J2",
-      "body": "scripts/src/xa/validate-xa-inputs.ts and run-xa-pipeline.ts are absent; sync journey is deterministically blocked",
-      "suggested_action": "create card",
-      "source": "results-review.user.md",
-      "date": "2026-02-25",
-      "path": "docs/plans/xa-uploader-usability-hardening/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "RSC conversion for RoomsStructuredData + ExperiencesStructuredData",
-      "body": "TASK-10 investigation confirmed both use useCurrentLanguage() (client hooks) but all underlying data is static — full RSC conversion is feasible and would eliminate the client component boundary.",
-      "suggested_action": "create card (P3 SSR, low urgency post-launch)",
-      "source": "results-review.user.md",
-      "date": "2026-02-25",
-      "path": "docs/plans/_archive/brikette-deeper-route-funnel-cro/results-review.user.md"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Template selection rate monitoring dashboard or weekly report",
-      "body": "build-record recommends running draft_signal_stats after 4 weeks; no scheduled monitoring exists",
-      "suggested_action": "create card",
-      "source": "results-review.user.md",
-      "date": "2026-02-25",
-      "path": "docs/plans/hostel-email-template-expansion/results-review.user.md"
     },
     {
       "type": "idea",
@@ -197,18 +167,28 @@
       "body": "Full funnel confirmed firing; no conversion rate baseline exists yet",
       "suggested_action": "defer (check at T+7 days when custom dimensions propagate)",
       "source": "results-review.user.md",
-      "date": "2026-02-25",
+      "date": "2026-02-25T22:33:05.975Z",
       "path": "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md"
     },
     {
       "type": "idea",
       "business": "BOS",
-      "title": "Visual diff test for process-map HTML to catch silent regressions",
-      "body": "swim-lane layout was browser-verified manually; no regression test exists",
-      "suggested_action": "spike",
+      "title": "Add datePublished to monitoring baseline to track when guide pages first appear with valid structured data in search results",
+      "body": "T+0 baseline has 29 unknown URLs; structured data correctness cannot be validated until pages are indexed",
+      "suggested_action": "defer",
       "source": "results-review.user.md",
-      "date": "2026-02-25",
-      "path": "docs/plans/startup-loop-parallel-container-wiring/results-review.user.md"
+      "date": "2026-02-25T22:32:11.291Z",
+      "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Enable Google Indexing API and test URL submission eligibility",
+      "body": "All 5 test submissions returned HTTP 403 — API not enabled in GCP project 98263641014",
+      "suggested_action": "spike (operator enables API at GCP console, then re-runs 5 test URLs)",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:32:11.291Z",
+      "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md"
     },
     {
       "type": "idea",
@@ -217,26 +197,48 @@
       "body": "31 EN transport pages have no lastUpdated in RouteDefinition; datePublished fix was deferred from TASK-03",
       "suggested_action": "defer",
       "source": "results-review.user.md",
-      "date": "2026-02-25",
+      "date": "2026-02-25T22:32:11.291Z",
       "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md"
     },
     {
       "type": "idea",
       "business": "BOS",
-      "title": "Idea candidate",
-      "body": "—",
+      "title": "Add session_id or caller_pid to governed telemetry event schema to enable actor attribution in future zombie incidents.",
+      "body": "TASK-01 could not confirm actor identity with 80% confidence; no session metadata in events.jsonl.",
+      "suggested_action": "create card",
       "source": "results-review.user.md",
-      "date": "<YYYY-MM-DD>",
-      "path": "docs/plans/_templates/results-review.user.md"
+      "date": "2026-02-25T22:24:07.859Z",
+      "path": "docs/plans/_archive/build-subagent-jest-zombie-cleanup/results-review.user.md"
     },
     {
       "type": "idea",
       "business": "BOS",
-      "title": "OR None.",
-      "body": "OR None.",
+      "title": "/assistance Book Direct CTA copy i18n audit",
+      "body": "The \"Book Direct\" button text in AssistanceIndexContent uses a hardcoded string; other locales are untested.",
+      "suggested_action": "create card (P2 i18n, can batch with next locale pass)",
       "source": "results-review.user.md",
-      "date": "<YYYY-MM-DD>",
-      "path": "docs/plans/_templates/results-review.user.md"
+      "date": "2026-02-25T21:15:42.906Z",
+      "path": "docs/plans/_archive/brikette-deeper-route-funnel-cro/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "/how-to-get-here server-resolved hero H1 (sub-track C)",
+      "body": "TASK-11 deferred useHowToGetHereContent audit — HowToGetHereIndexContent hook needs investigation before server-resolved props pattern can be applied safely.",
+      "suggested_action": "spike (audit hook dependencies before scoping)",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T21:15:42.906Z",
+      "path": "docs/plans/_archive/brikette-deeper-route-funnel-cro/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "RSC conversion for RoomsStructuredData + ExperiencesStructuredData",
+      "body": "TASK-10 investigation confirmed both use useCurrentLanguage() (client hooks) but all underlying data is static — full RSC conversion is feasible and would eliminate the client component boundary.",
+      "suggested_action": "create card (P3 SSR, low urgency post-launch)",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T21:15:42.906Z",
+      "path": "docs/plans/_archive/brikette-deeper-route-funnel-cro/results-review.user.md"
     }
   ],
   "riskItems": [],

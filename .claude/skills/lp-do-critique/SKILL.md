@@ -10,28 +10,16 @@ No compliments, no filler, no vibe-based approval.
 
 ## Operating Mode
 
-Default: **CRITIQUE + AUTOFIX**. Use `--no-autofix` to suppress fix application and produce critique output only.
+**CRITIQUE + AUTOFIX** — always. Full critique is produced first (Sections 1–11), then Concrete Fixes are applied to the target document (Autofix Phase), then a post-fix consistency scan runs on every edited section. The issues ledger is read at start and updated at end.
 
-In default (autofix) mode:
-- Full critique is produced first (Sections 1–11 as below)
-- Concrete Fixes are then applied to the target document (Autofix Phase)
-- A post-fix consistency scan is run on every section that received edits
-- The issues ledger is read at start and updated at end
-
-With `--no-autofix`:
-- Critique output produced only (no edits to target document)
-- Issues ledger is still read (if present) and updated at end
-
-Allowed (always):
+Allowed:
 - Read target document and referenced docs/code/tests
 - Search repo for verification
 - Inspect git history for evidence
-
-Allowed (autofix mode only):
 - Edit target document to apply Concrete Fixes
 - Write/update issues ledger (`critique-history.md` adjacent to target doc)
 
-Not allowed (always):
+Not allowed:
 - Code changes to source files
 - Commits
 - Creating new docs other than `critique-history.md`
@@ -51,7 +39,6 @@ Optional:
 - Scope: `full` (default) or `focused`
 - Context: extra constraints to pressure-test
 - Prior critique reference (for delta scoring) — or read automatically from issues ledger if present
-- `--no-autofix`: suppress fix application; produce critique output only
 
 ## Preflight Trust Policy
 
@@ -147,14 +134,14 @@ Guardrails:
 
 Path: `<plan-dir>/critique-history.md` for plan/fact-find targets (adjacent to the target doc); `<parent-dir>/critique-history.md` for other targets. Create on first critique run.
 
-**At start (always — with or without `--no-autofix`):**
+**At start:**
 - Check if `critique-history.md` exists at the path above.
 - If it does: read it and extract:
   - Confirmed-resolved issues → do not re-score as new findings; if they reappear, label as "regression" not "new".
   - Issues open for >1 round → elevate to priority review and note the round count in Top Issues.
 - If it does not: proceed without prior context.
 
-**At end (always — with or without `--no-autofix`):**
+**At end:**
 - Write or append a new round entry (see format below).
 
 **Ledger format:**
@@ -516,7 +503,7 @@ Include:
 
 ## Autofix Phase
 
-Runs after the critique output (Sections 1–11) is fully produced. Skip entirely when `--no-autofix` is specified; proceed directly to the Issues Ledger update.
+Runs after the critique output (Sections 1–11) is fully produced.
 
 ### Step AF-1: Section Rewrite Gate
 
@@ -597,7 +584,7 @@ Recommended next actions:
 - If score moved >0.5 from prior critique, delta justification is included.
 - No praise, no filler, no motivational language.
 
-**Autofix (when not `--no-autofix`):**
+**Autofix:**
 - Section rewrite gate evaluated for every affected named section — rewrite triggered where threshold is met.
 - Step AF-3 consistency scan run on every section that received edits (rewrite or point fix).
 - Duplicate definitions and orphaned terminology removed, not just new content added.

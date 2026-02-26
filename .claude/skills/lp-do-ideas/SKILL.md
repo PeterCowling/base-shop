@@ -140,6 +140,36 @@ No hard keyword lists. The agent must answer these questions:
 
 No `changed_sections` or missing `before_sha` → `logged_no_action` (no dispatch emitted).
 
+## Evidence Fields for Classification
+
+When gathering context in Step 3, listen for signals in the operator's description that
+indicate one or more evidence fields should be captured. These fields are used downstream
+to determine how urgently an idea is acted on and which tier it lands in. They are
+advisory — if the operator doesn't provide them, proceed without asking; the downstream
+classifier will apply automatic demotion to surface the gap.
+
+Capture evidence fields during Step 3 and include any provided values in the dispatch
+packet under `evidence_refs` or as structured fields alongside operator-stated rationale.
+
+| Field | When to ask for it |
+|---|---|
+| `incident_id` | The operator mentions an active outage, failure, or ongoing bug |
+| `deadline_date` | The operator mentions a deadline, launch date, or time constraint |
+| `repro_ref` | The operator references a specific log, test result, or reproduction steps |
+| `leakage_estimate_value` + `leakage_estimate_unit` | The operator mentions an estimated cost of the issue (e.g. "losing ~$50/day") |
+| `first_observed_at` | The operator says the issue is recurring or has been seen before |
+| `risk_vector` | The operator mentions legal, safety, security, privacy, or compliance exposure |
+| `risk_ref` | Required alongside `risk_vector` — ask for a reference such as a CVE, legal document, or audit finding |
+| `failure_metric` + `baseline_value` | A metric is breaking or performing worse than a known baseline |
+| `funnel_step` + `metric_name` + `baseline_value` | The idea has a direct impact on a conversion step (pricing view, checkout, payment, or confirmation) |
+
+**Example**: If the operator says "we have a live payment failure", ask for the incident
+reference and whether there is a deadline for resolution. Those two data points
+(`incident_id`, `deadline_date`) are enough to unlock the highest urgency tier.
+
+If none of these signals are present in the operator's description, omit the evidence
+fields entirely and route based on the description alone.
+
 ## Outputs
 
 Each processed delta produces a `dispatch.v1` packet conforming to

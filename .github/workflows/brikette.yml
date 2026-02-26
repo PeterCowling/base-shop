@@ -99,7 +99,7 @@ jobs:
         shell: bash
         run: |
           cd apps/brikette
-          mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off"
+          [ -d "src/app/[lang]/guides/[...slug]" ] && mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" || true
           build_exit=0
           export OUTPUT_EXPORT=1
           export NEXT_PUBLIC_OUTPUT_EXPORT=1
@@ -110,13 +110,14 @@ jobs:
             # Keep top locales and prune the rest from static export output.
             rm -rf out/{ar,da,fr,hi,hu,ja,ko,no,pl,pt,ru,sv,vi,zh}
           fi
-          mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]"
+          [ -d "src/app/[lang]/guides/_slug-off" ] && mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]" || true
           exit "$build_exit"
 
       - name: Validate static export output
         run: |
           test -f apps/brikette/out/en.html
           test -d apps/brikette/out/_next/static
+          test -f apps/brikette/out/it/book.html
           file_count=$(find apps/brikette/out -type f | wc -l | tr -d ' ')
           echo "Static export files: $file_count"
           test "$file_count" -le 20000
@@ -140,11 +141,11 @@ jobs:
       build-cmd: >
         pnpm exec turbo run build --filter=@apps/brikette^... &&
         cd apps/brikette &&
-        mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" &&
+        ([ -d "src/app/[lang]/guides/[...slug]" ] && mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" || true) &&
         (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_STAGING || vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }} pnpm exec next build --turbopack &&
         OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm --filter @apps/brikette generate:static-redirects &&
         rm -rf out/{ar,da,fr,hi,hu,ja,ko,no,pl,pt,ru,sv,vi,zh}; e=$?;
-        mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]";
+        ([ -d "src/app/[lang]/guides/_slug-off" ] && mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]" || true);
         exit $e)
       artifact-path: "apps/brikette/out"
       # Deploy static HTML to Cloudflare Pages (free tier — no Worker needed)
@@ -160,6 +161,9 @@ jobs:
       environment-name: "staging-pages"
       environment-url: ${{ format('https://staging.{0}.pages.dev', vars.BRIKETTE_PAGES_PROJECT || 'brikette-website') }}
       healthcheck-args: "--staging"
+      # /it/prenota is checked with strict no-redirect mode: a Cloudflare Pages
+      # 200-rewrite returns HTTP 200 (pass), a broken 301 redirect returns 301 (fail).
+      healthcheck-strict-routes: "/it/prenota"
     secrets: inherit
 
   production:
@@ -173,11 +177,11 @@ jobs:
       build-cmd: >
         pnpm exec turbo run build --filter=@apps/brikette^... &&
         cd apps/brikette &&
-        mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" &&
+        ([ -d "src/app/[lang]/guides/[...slug]" ] && mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" || true) &&
         (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_PRODUCTION || vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }} pnpm exec next build --turbopack &&
         OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm --filter @apps/brikette generate:static-redirects &&
         rm -rf out/{ar,da,fr,hi,hu,ja,ko,no,pl,pt,ru,sv,vi,zh}; e=$?;
-        mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]";
+        ([ -d "src/app/[lang]/guides/_slug-off" ] && mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]" || true);
         exit $e)
       artifact-path: "apps/brikette/out"
       deploy_cmd: >

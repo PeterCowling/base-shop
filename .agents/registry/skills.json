@@ -147,6 +147,21 @@
       "path": ".claude/skills/lp-do-assessment-12-promote/SKILL.md"
     },
     {
+      "name": "lp-do-assessment-13-product-naming",
+      "description": "Product naming for new startups (ASSESSMENT-13). Reads brand strategy and product definition, produces a product naming document with 3–5 candidate names, brand-product relationship guidance, TM pre-screen direction, and a naming convention for future SKUs. Upstream of lp-do-assessment-14-logo-brief.",
+      "path": ".claude/skills/lp-do-assessment-13-product-naming/SKILL.md"
+    },
+    {
+      "name": "lp-do-assessment-14-logo-brief",
+      "description": "Logo design brief for new startups (ASSESSMENT-14). Synthesises brand identity dossier, brand profile, and product naming to produce a complete logo design brief ready to hand to a designer. Upstream of lp-do-assessment-15-packaging-brief and /lp-design-spec.",
+      "path": ".claude/skills/lp-do-assessment-14-logo-brief/SKILL.md"
+    },
+    {
+      "name": "lp-do-assessment-15-packaging-brief",
+      "description": "Packaging design brief for new startups (ASSESSMENT-15). Conditional on physical-product profile. Reads brand identity, product naming, logo brief, and distribution plan to produce a complete packaging brief covering structural format, regulatory requirements, surface design, and designer handoff checklist.",
+      "path": ".claude/skills/lp-do-assessment-15-packaging-brief/SKILL.md"
+    },
+    {
       "name": "lp-do-briefing",
       "description": "Produce an understanding-only system briefing — how something works now, traced end-to-end with evidence pointers. No planning artifacts or tasks. Use when you need current-behavior understanding without committing to a plan.",
       "path": ".claude/skills/lp-do-briefing/SKILL.md"

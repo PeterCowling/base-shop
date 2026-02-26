@@ -220,7 +220,7 @@ function DOBSection({
           type="text"
           placeholder="YYYY"
           maxLength={4}
-          className={`w-[70px] border border-info-light rounded px-3 py-2 
+          className={`w-[70px] border border-info-light rounded-lg px-3 py-2 
             focus:outline-none focus:ring-1 focus:ring-primary-main 
             ${bgSuccess ? "bg-success-light/50" : ""} text-foreground`}
           value={yyyy}
@@ -235,7 +235,7 @@ function DOBSection({
           type="text"
           placeholder="MM"
           maxLength={2}
-          className={`w-[50px] border border-info-light rounded px-3 py-2 
+          className={`w-[50px] border border-info-light rounded-lg px-3 py-2 
             focus:outline-none focus:ring-1 focus:ring-primary-main 
             ${bgSuccess ? "bg-success-light/50" : ""} text-foreground`}
           value={mm}
@@ -250,7 +250,7 @@ function DOBSection({
           type="text"
           placeholder="DD"
           maxLength={2}
-          className={`w-[50px] border border-info-light rounded px-3 py-2 
+          className={`w-[50px] border border-info-light rounded-lg px-3 py-2 
             focus:outline-none focus:ring-1 focus:ring-primary-main 
             ${bgSuccess ? "bg-success-light/50" : ""} text-foreground`}
           value={dd}

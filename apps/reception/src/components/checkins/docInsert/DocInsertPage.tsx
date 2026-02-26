@@ -156,7 +156,7 @@ const DocInsertPage: React.FC = () => {
       {/* Snackbar-like feedback */}
       {snackbar.open && (
         <div
-          className={`fixed bottom-4 right-4 p-4 rounded shadow-md
+          className={`fixed bottom-4 right-4 p-4 rounded-lg shadow-md
             flex items-center justify-between w-72
             ${
               snackbar.severity === "success"

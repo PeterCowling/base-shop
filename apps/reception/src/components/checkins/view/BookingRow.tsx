@@ -93,7 +93,7 @@ const BookingRowView: FC<BookingRowViewProps> = ({
             onDoubleClick={onNameDoubleClick}
           />
           {isCancelled && (
-            <span className="px-2 py-0.5 text-xs font-bold text-primary-fg bg-error-main rounded">
+            <span className="px-2 py-0.5 text-xs font-bold text-primary-fg bg-error-main rounded-lg">
               CANCELLED
             </span>
           )}
@@ -103,7 +103,7 @@ const BookingRowView: FC<BookingRowViewProps> = ({
         <div className="flex items-center justify-center">
           <Input compatibilityMode="no-wrapper"
             type="text"
-            className="w-16 px-1 py-0.5 border border-border-2 rounded text-center"
+            className="w-16 px-1 py-0.5 border border-border-2 rounded-lg text-center"
             value={draftValue}
             onChange={(e) => onDraftChange(e.target.value)}
             onBlur={onBlur}

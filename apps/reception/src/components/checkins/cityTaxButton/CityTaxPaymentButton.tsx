@@ -300,7 +300,7 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
         ReactDOM.createPortal(
           <div
             style={portalStyle}
-            className={`z-50 mt-1 w-32 border border-border-2 rounded shadow-lg bg-surface p-3
+            className={`z-50 mt-1 w-32 border border-border-2 rounded-lg shadow-lg bg-surface p-3
               transition-opacity duration-200 transform-gpu
               ${menuOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
             onMouseLeave={handleMenuMouseLeave}

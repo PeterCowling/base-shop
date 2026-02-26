@@ -1,9 +1,11 @@
 import React from "react";
+import { AlertTriangle, Info, UserPlus } from "lucide-react";
 
 import { Input } from "@acme/design-system";
 import { Button, Table, TableBody, TableCell, TableRow } from "@acme/design-system/atoms";
 
 import { type CheckInRow } from "../../../types/component/CheckinRow";
+import ReceptionSkeleton from "../../common/ReceptionSkeleton";
 import BookingRow from "../BookingRow";
 import DateSelector from "../DateSelector";
 import ArchiveConfirmationModal from "../header/ArchiveConfirmationModal";
@@ -76,15 +78,41 @@ const CheckinsTableView: React.FC<Props> = ({
   onToggleCancelled,
   bookingStatuses,
 }) => (
-  <div className="min-h-screen flex flex-col p-5">
-    <CheckinsHeader
-      onNewBookingClick={onNewBookingClick}
-      onEditClick={onEditClick}
-      onDeleteClick={onDeleteClick}
-      onArchiveClick={onArchiveClick}
-      eligibleCount={eligibleCount}
-    />
+  <div className="bg-gradient-to-b from-surface-2 to-surface-3 min-h-screen flex flex-col p-5">
+    <div className="bg-surface/80 rounded-xl px-4 py-3 mb-4">
+      <CheckinsHeader
+        onNewBookingClick={onNewBookingClick}
+        onEditClick={onEditClick}
+        onDeleteClick={onDeleteClick}
+        onArchiveClick={onArchiveClick}
+        eligibleCount={eligibleCount}
+      />
+    </div>
     <div className="flex-grow bg-surface rounded-xl shadow-lg p-6 space-y-4">
+      {isEditMode && (
+        <div className="bg-info-light/20 rounded-lg p-3 flex items-center gap-2">
+          <Info className="text-info-main shrink-0" size={16} />
+          <span className="text-info-main text-sm font-semibold">
+            Click a row to edit the booking
+          </span>
+        </div>
+      )}
+      {isDeleteMode && (
+        <div className="bg-warning-light/20 rounded-lg p-3 flex items-center gap-2">
+          <AlertTriangle className="text-error-main shrink-0" size={16} />
+          <span className="text-error-main text-sm font-semibold">
+            Click a row to delete the booking
+          </span>
+        </div>
+      )}
+      {isAddGuestMode && (
+        <div className="bg-success-light/20 rounded-lg p-3 flex items-center gap-2">
+          <UserPlus className="text-success-main shrink-0" size={16} />
+          <span className="text-success-main text-sm font-semibold">
+            Click a row to add a guest to that booking
+          </span>
+        </div>
+      )}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <DateSelector
@@ -110,7 +138,7 @@ const CheckinsTableView: React.FC<Props> = ({
             <Button
             type="button"
             onClick={() => setRoomsReady(true)}
-            className="px-3 py-2 bg-success-main text-primary-fg rounded"
+            className="px-3 py-2 bg-success-main text-primary-fg rounded-lg"
           >
             Rooms Ready
           </Button>
@@ -122,11 +150,8 @@ const CheckinsTableView: React.FC<Props> = ({
           <TableBody>
             {loading && (
               <TableRow>
-                <TableCell
-                  colSpan={12}
-                  className="p-4 text-center italic text-muted-foreground"
-                >
-                  Loading...
+                <TableCell colSpan={12} className="p-0">
+                  <ReceptionSkeleton rows={5} />
                 </TableCell>
               </TableRow>
             )}

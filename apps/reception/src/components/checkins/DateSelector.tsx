@@ -65,7 +65,7 @@ export default function DateSelector({
         <Button
           key={day}
           className={`
-            px-4 py-2 border rounded text-sm font-medium w-100px text-center
+            px-4 py-2 border rounded-lg text-sm font-medium w-100px text-center
             transition-colors
             ${
               isSelected
@@ -159,7 +159,7 @@ export default function DateSelector({
       <div className="relative">
         <Button
           ref={toggleRef}
-          className="px-3 py-2 border rounded focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main text-sm"
+          className="px-3 py-2 border rounded-lg focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main text-sm"
           onClick={handleToggleCalendar}
         >
           {selectedDate ? formatDateForInput(selectedDate) : "Select a date"}
@@ -183,7 +183,7 @@ export default function DateSelector({
                   }
                 : {})}
               classNames={{
-                root: `${defaultNames.root} bg-surface shadow-lg p-5 rounded`,
+                root: `${defaultNames.root} bg-surface shadow-lg p-5 rounded-lg`,
                 /* eslint-disable ds/no-raw-tailwind-color -- calendar day-picker accent styling (amber-500); no semantic token equivalent [REC-09] */
                 today: "border-amber-500",
                 selected: "bg-amber-500 border-amber-500 text-primary-fg",

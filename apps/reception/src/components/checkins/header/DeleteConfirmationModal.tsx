@@ -53,14 +53,14 @@ const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
         <div className="flex justify-end space-x-3">
           <Button
             onClick={onClose}
-            className="px-4 py-2 rounded bg-surface-3 hover:bg-surface-3 text-foreground"
+            className="px-4 py-2 rounded-lg bg-surface-3 hover:bg-surface-3 text-foreground"
           >
             Cancel
           </Button>
           <Button
             onClick={handleConfirmDelete}
             disabled={loading}
-            className="px-4 py-2 rounded bg-error-main hover:bg-error-dark text-primary-fg"
+            className="px-4 py-2 rounded-lg bg-error-main hover:bg-error-dark text-primary-fg"
           >
             {loading ? "Deleting..." : "Delete"}
           </Button>

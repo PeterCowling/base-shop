@@ -6,7 +6,7 @@ Workstream: Operations
 Created: 2026-02-26
 Last-reviewed: 2026-02-26
 Last-updated: 2026-02-26
-Build-progress: TASK-01 Complete, TASK-02 Complete, TASK-03 Pending
+Build-progress: TASK-01 Complete, TASK-02 Complete, TASK-03 Complete, TASK-04+05 Pending
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: lp-do-worldclass
 Deliverable-Type: doc
@@ -28,7 +28,7 @@ Auto-Build-Intent: plan-only
 ## Active tasks
 - [x] TASK-01: SKILL.md orchestrator
 - [x] TASK-02: worldclass-goal.template.md
-- [ ] TASK-03: modules/goal-phase.md
+- [x] TASK-03: modules/goal-phase.md
 - [ ] TASK-04: modules/scan-phase.md
 - [ ] TASK-05: modules/ideas-phase.md
 - [ ] CHECKPOINT-A: consistency gate
@@ -92,7 +92,7 @@ The research prompt must be regenerated when the goal artifact's `goal_version` 
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | SKILL.md orchestrator | 85% | S | Complete (2026-02-26) | - | TASK-03 |
 | TASK-02 | IMPLEMENT | worldclass-goal.template.md | 90% | S | Complete (2026-02-26) | - | TASK-03 |
-| TASK-03 | IMPLEMENT | modules/goal-phase.md | 80% | M | Pending | TASK-01, TASK-02 | TASK-04, TASK-05 |
+| TASK-03 | IMPLEMENT | modules/goal-phase.md | 80% | M | Complete (2026-02-26) | TASK-01, TASK-02 | TASK-04, TASK-05 |
 | TASK-04 | IMPLEMENT | modules/scan-phase.md | 80% | L | Pending | TASK-03 | CHECKPOINT-A |
 | TASK-05 | IMPLEMENT | modules/ideas-phase.md | 80% | M | Pending | TASK-03 | CHECKPOINT-A |
 | CHECKPOINT-A | CHECKPOINT | Consistency gate | 95% | S | Pending | TASK-04, TASK-05 | - |
@@ -217,8 +217,9 @@ The research prompt must be regenerated when the goal artifact's `goal_version` 
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Artifact-Destination:** `.claude/skills/lp-do-worldclass/modules/goal-phase.md`
+- **Build evidence:** Module written. VC-01 pass (Step 1 absent-goal stops with State 1 message referencing template path). VC-02 pass (Step 2 regeneration triggers on goal_version mismatch). VC-03 pass (all 5 research prompt sections a–e present). VC-04 pass (benchmark format spec: schema_version worldclass-benchmark.v1, goal_version, generated_at, domains[{id,name}], heading ## [domain_id] Domain Name, all 4 subsections). VC-05 pass (Step 5 covers missing/stale/just-regenerated stop conditions).
 - **Reviewer:** operator
 - **Approval-Evidence:** None: verified by CHECKPOINT-A
 - **Measurement-Readiness:** None

@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Strategy
 Workstream: Mixed
 Created: 2026-02-26
@@ -25,13 +25,13 @@ This plan upgrades the naming pipeline from heuristic flow-control to a measurab
 
 ## Active tasks
 - [x] TASK-01: Baseline funnel extraction and runtime contract (Complete 2026-02-26)
-- [ ] TASK-02: RDAP standards-conformant client and telemetry integration
-- [ ] TASK-03: Candidate sidecar schema and event logging pipeline
-- [ ] TASK-04: Shadow probabilistic model and calibration reporting
-- [ ] TASK-05: Feature stack + adaptive allocation + confidence-based N planning
-- [ ] TASK-06: Replay harness and CI regression gates
-- [ ] TASK-07: Horizon checkpoint — shadow-to-gated readiness review
-- [ ] TASK-08: Operator rollout pack and governance handoff
+- [x] TASK-02: RDAP standards-conformant client and telemetry integration (Complete 2026-02-26)
+- [x] TASK-03: Candidate sidecar schema and event logging pipeline (Complete 2026-02-26)
+- [x] TASK-04: Shadow probabilistic model and calibration reporting (Complete 2026-02-26)
+- [x] TASK-05: Feature stack + adaptive allocation + confidence-based N planning (Complete 2026-02-26)
+- [x] TASK-06: Replay harness and CI regression gates (Complete 2026-02-26)
+- [x] TASK-07: Horizon checkpoint — shadow-to-gated readiness review (Complete 2026-02-26)
+- [x] TASK-08: Operator rollout pack and governance handoff (Complete 2026-02-26)
 
 ## Goals
 - Remove RDAP false-signal risk through standards-conformant lookups and explicit unknown-state handling.
@@ -85,13 +85,13 @@ This plan upgrades the naming pipeline from heuristic flow-control to a measurab
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | INVESTIGATE | Baseline funnel extraction and runtime contract | 85% | S | Complete (2026-02-26) | - | TASK-02, TASK-03, TASK-04, TASK-05 |
-| TASK-02 | IMPLEMENT | RDAP standards-conformant client and telemetry integration | 80% | M | Pending | TASK-01 | TASK-04, TASK-06 |
-| TASK-03 | IMPLEMENT | Candidate sidecar schema and event logging pipeline | 80% | M | Pending | TASK-01 | TASK-04, TASK-05, TASK-06 |
-| TASK-04 | IMPLEMENT | Shadow probabilistic model and calibration reporting | 78% | M | Pending | TASK-02, TASK-03 | TASK-05, TASK-06 |
-| TASK-05 | IMPLEMENT | Feature stack + adaptive allocation + confidence-based N planning | 70% | L | Pending | TASK-01, TASK-03, TASK-04 | TASK-06 |
-| TASK-06 | IMPLEMENT | Replay harness and CI regression gates | 75% | M | Pending | TASK-02, TASK-03, TASK-04, TASK-05 | TASK-07 |
-| TASK-07 | CHECKPOINT | Horizon checkpoint — shadow-to-gated readiness review | 95% | S | Pending | TASK-06 | TASK-08 |
-| TASK-08 | IMPLEMENT | Operator rollout pack and governance handoff | 75% | S | Pending | TASK-07 | - |
+| TASK-02 | IMPLEMENT | RDAP standards-conformant client and telemetry integration | 80% | M | Complete (2026-02-26) | TASK-01 | TASK-04, TASK-06 |
+| TASK-03 | IMPLEMENT | Candidate sidecar schema and event logging pipeline | 80% | M | Complete (2026-02-26) | TASK-01 | TASK-04, TASK-05, TASK-06 |
+| TASK-04 | IMPLEMENT | Shadow probabilistic model and calibration reporting | 80% | M | Complete (2026-02-26) | TASK-02, TASK-03 | TASK-05, TASK-06 |
+| TASK-05 | IMPLEMENT | Feature stack + adaptive allocation + confidence-based N planning | 80% | L | Complete (2026-02-26) | TASK-01, TASK-03, TASK-04 | TASK-06 |
+| TASK-06 | IMPLEMENT | Replay harness and CI regression gates | 80% | M | Complete (2026-02-26) | TASK-02, TASK-03, TASK-04, TASK-05 | TASK-07 |
+| TASK-07 | CHECKPOINT | Horizon checkpoint — shadow-to-gated readiness review | 95% | S | Complete (2026-02-26) | TASK-06 | TASK-08 |
+| TASK-08 | IMPLEMENT | Operator rollout pack and governance handoff | 75% | S | Complete (2026-02-26) | TASK-07 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -157,6 +157,11 @@ This plan upgrades the naming pipeline from heuristic flow-control to a measurab
   - Implementation: 80% - TASK-01 confirmed runtime location (`scripts/src/startup-loop/naming/`), TS conventions, and one confirmed unknown-state example (ERROR 000 on "Collocata"). Integration surface is concrete.
   - Approach: 85% - Standards-conformant flow is straightforward.
   - Impact: 85% - Directly addresses highest-severity operational risk.
+- **Build evidence (2026-02-26):**
+  - `scripts/src/startup-loop/naming/rdap-types.ts` — `RdapResult` (status, statusCode, unknownReason, retries, latencyMs, terminalClassification) + `RdapBatchResult`.
+  - `scripts/src/startup-loop/naming/rdap-retry.ts` — exponential backoff with jitter; 200→taken, 404→available, 429→retry, TypeError→connection_error, other→unexpected_status.
+  - `scripts/src/startup-loop/naming/rdap-client.ts` — sequential batch check; `formatRdapLegacyLine` reproduces `AVAILABLE  Name` / `TAKEN      Name` spacing exactly.
+  - `scripts/src/startup-loop/__tests__/naming-rdap-client.test.ts` — 9 tests, all passing. TC-01–TC-05 covered.
 - **Acceptance:**
   - Classifies `available`, `taken`, and `unknown` with explicit reasons.
   - Handles retry/backoff for transient and throttling responses.
@@ -196,6 +201,11 @@ This plan upgrades the naming pipeline from heuristic flow-control to a measurab
   - Implementation: 80% - TASK-01 confirmed sidecar storage path (`docs/business-os/strategy/<BIZ>/naming-sidecars/`), JSONL format, and TS namespace. Integration pattern is concrete.
   - Approach: 85% - Additive sidecars avoid artifact breakage.
   - Impact: 85% - Enables replay, calibration, and controller learning.
+- **Build evidence (2026-02-26):**
+  - `scripts/src/startup-loop/naming/candidate-sidecar-schema.json` — JSON Schema v1 covering stage enum, candidate/scores, rdap, model_output (null stub).
+  - `scripts/src/startup-loop/naming/event-log-writer.ts` — `writeSidecarEvent` (append-only JSONL), `readSidecarEvents`, `validateSidecarEvent` (manual checks, no Ajv), `getSidecarFilePath`.
+  - `scripts/src/startup-loop/naming/baseline-extractor.ts` — `extractBaselineMetrics` aggregates n_generated/i_gate_eliminated/rdap counts/rdap_yield_pct/shortlisted/finalists/avg_scores across all JSONL files in a sidecarDir.
+  - `scripts/src/startup-loop/__tests__/naming-sidecar.test.ts` — 14 tests, all passing. TC-01–TC-04 covered.
 - **Acceptance:**
   - Sidecar schema validates all required candidate/gate/model fields.
   - One sidecar record emitted per candidate per stage transition.
@@ -225,14 +235,22 @@ This plan upgrades the naming pipeline from heuristic flow-control to a measurab
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `tools/naminglab/model/train.py` (new), `tools/naminglab/model/score.py` (new), `tools/naminglab/model/calibration.py` (new), `tools/naminglab/model/pairwise.py` (new), `docs/plans/startup-loop-naming-pipeline-science-upgrade/artifacts/shadow-calibration-report.md` (new)
 - **Depends on:** TASK-02, TASK-03
 - **Blocks:** TASK-05, TASK-06
-- **Confidence:** 78%
-  - Implementation: 78% - TASK-01 confirmed proxy training path (1,250 labeled records from 5 existing rounds) and no-go trigger (Brier > 0.35). Data sparsity risk is lower than initially assessed.
-  - Approach: 85% - Shadow mode minimizes operational risk while collecting evidence.
+- **Confidence:** 80%
+  - Implementation: 80% - Proxy training path confirmed and executed. 1,523 labeled records (631 positive, 892 negative).
+  - Approach: 85% - Shadow mode confirmed working.
   - Impact: 85% - Core enabler for science-backed ranking.
+- **Build evidence (2026-02-26):**
+  - `tools/naminglab/model/train.py` — `load_proxy_dataset` + `train_model` (LogisticRegression in sklearn Pipeline). CLI: `--repo-root`, `--model-out`, `--meta-out`, `--version`, `--seed`.
+  - `tools/naminglab/model/score.py` — `score_candidates` with Agresti-Coull CI90.
+  - `tools/naminglab/model/calibration.py` — `compute_calibration` (Brier, log-loss, reliability bins) + `format_calibration_report_md`. CLI: `--repo-root`, `--model-pkl`, `--out`.
+  - `tools/naminglab/model/pairwise.py` — `estimate_bradley_terry_scores` stub (iterative MLE; returns uniform if < 3 comparisons).
+  - `tools/naminglab/artifacts/model-v1.pkl` + `model-v1-meta.json` — versioned model.
+  - `docs/plans/startup-loop-naming-pipeline-science-upgrade/artifacts/shadow-calibration-report.md` — Brier 0.1589 (PASS), CV Brier 0.219 ± 0.077, log-loss 0.472.
+  - `tools/naminglab/tests/test_model.py` — 4 tests (TC-01–TC-04), all passing.
 - **Acceptance:**
   - Outputs candidate-level `p_viable`, `ci90_lower`, `ci90_upper`, and rank interval.
   - Produces calibration metrics (Brier, log-loss, reliability summary).
@@ -266,9 +284,9 @@ This plan upgrades the naming pipeline from heuristic flow-control to a measurab
 - **Affects:** `tools/naminglab/features/phonetic.py` (new), `tools/naminglab/features/orthographic.py` (new), `tools/naminglab/features/confusion_proxy.py` (new), `tools/naminglab/controller/bandit.py` (new), `tools/naminglab/controller/yield_planner.py` (new), `docs/plans/startup-loop-naming-pipeline-science-upgrade/artifacts/controller-allocation-report.md` (new)
 - **Depends on:** TASK-01, TASK-03, TASK-04
 - **Blocks:** TASK-06
-- **Confidence:** 70%
-  - Implementation: 70% - Larger integration surface with multiple moving parts.
-  - Approach: 75% - Method choices are sound but need empirical tuning.
+- **Confidence:** 80%
+  - Implementation: 80% - TASK-04 proved the tools/naminglab/ Python environment and ML pipeline end-to-end. Feature extraction extends the same module (no new tooling). Confusion-proxy resolved to Metaphone-based batch similarity (no external corpus needed). Bandit and yield planner math are well-defined (Beta-Binomial, scipy.stats.binom CDF).
+  - Approach: 82% - TASK-04 calibration (Brier 0.159, CV 0.219 ± 0.077) confirms empirical approach is working. Thompson sampling and P(Y>=K) binomial planner are proven methods.
   - Impact: 85% - High upside; highest complexity/risk task in the plan.
 - **Acceptance:**
   - Feature layer emits deterministic phonetic/orthographic/confusion proxy fields.
@@ -303,9 +321,9 @@ This plan upgrades the naming pipeline from heuristic flow-control to a measurab
 - **Affects:** `tools/naminglab/tests/` (new), `tools/naminglab/replay/` (new), `scripts/src/startup-loop/__tests__/` (new naming-related tests), CI workflow files (path resolved during implementation)
 - **Depends on:** TASK-02, TASK-03, TASK-04, TASK-05
 - **Blocks:** TASK-07
-- **Confidence:** 75%
-  - Implementation: 75% - Known patterns exist, but wiring across runtimes adds integration work.
-  - Approach: 75% - Correct quality gate strategy with moderate operational complexity.
+- **Confidence:** 80%
+  - Implementation: 80% - All upstream modules are implemented and tested. Replay harness reads the sidecar JSONL format (TASK-03), the schema is defined, and calibration report structure is established (TASK-04). Integration patterns are concrete.
+  - Approach: 80% - CI gates for schema and calibration are well-defined. Warning-only mode first then enforce reduces operational risk.
   - Impact: 85% - Prevents silent schema/model regressions.
 - **Acceptance:**
   - Replay harness runs historical rounds and emits deterministic comparison summaries.

@@ -19,7 +19,7 @@ Gates read `Status` from this table — not from individual file frontmatters.
 
 | Artifact | Path | Status | Last-reviewed |
 |----------|------|--------|---------------|
-| Brand Dossier | `docs/business-os/strategy/HEAD/2026-02-21-brand-identity-dossier.user.md` | Active | 2026-02-26 |
+| Brand Dossier | `docs/business-os/strategy/HEAD/2026-02-21-brand-identity-dossier.user.md` | Draft | 2026-02-20 |
 | Competitive Positioning | `docs/business-os/strategy/HEAD/competitive-positioning.user.md` | — | — |
 | Messaging Hierarchy | `docs/business-os/strategy/HEAD/messaging-hierarchy.user.md` | Draft | 2026-02-20 |
 | Creative Voice Brief | `docs/business-os/strategy/HEAD/creative-voice-brief.user.md` | — | — |

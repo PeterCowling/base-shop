@@ -2,7 +2,20 @@ import * as crypto from 'node:crypto';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
-export type SidecarStage = 'generated' | 'i_gate_eliminated' | 'rdap_checked' | 'shortlisted' | 'finalist';
+export type SidecarStage = 'generated' | 'i_gate_eliminated' | 'rdap_checked' | 'shortlisted' | 'finalist' | 'tm_prescreened';
+
+/**
+ * TM pre-screen direction record for product naming pipeline.
+ * Populated by tm-prescreen-cli.ts. operator_result is null until the operator
+ * manually checks the search URLs and records the result.
+ */
+export interface TmPrescreenRecord {
+  euipo_url: string;                                         // Pre-filled EUIPO eTMview search URL
+  wipo_url: string;                                          // Pre-filled WIPO Global Brand Database URL
+  uibm_url: string;                                          // UIBM (Italian national register) URL
+  classes: number[];                                         // Nice Classification classes searched (e.g., [25, 26])
+  operator_result: 'clear' | 'conflict' | 'pending' | null; // Filled in by operator after manual check
+}
 
 export interface CandidateRecord {
   name: string;
@@ -43,6 +56,7 @@ export interface SidecarEvent {
   candidate: CandidateRecord;
   rdap: RdapRecord | null;
   model_output: ModelOutput | null;
+  tm_prescreen?: TmPrescreenRecord | null; // Populated by tm-prescreen-cli.ts; null/absent for company naming events
   timestamp: string;      // ISO datetime
 }
 
@@ -52,6 +66,7 @@ const VALID_STAGES = new Set<SidecarStage>([
   'rdap_checked',
   'shortlisted',
   'finalist',
+  'tm_prescreened',
 ]);
 
 const VALID_PATTERNS = new Set<string>(['A', 'B', 'C', 'D', 'E']);

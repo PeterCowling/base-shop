@@ -215,6 +215,8 @@ Invalid outputs — do not emit:
 >
 > "Next step: run `/lp-do-assessment-14-logo-brief --business <BIZ>` to produce the logo design brief."
 
+**If the operator wants a more rigorous shortlist** — equivalent to the company naming pipeline with 75 scored candidates, systematic territory generation, and TM pre-screen direction — use the product naming pipeline documented at `docs/plans/facilella-product-naming-pipeline/plan.md`. This skill (ASSESSMENT-13) is the quick 3–5 candidate write-first approach; the pipeline is the deeper-dive alternative when the operator wants a proper shortlist before committing to packaging and logo work.
+
 ---
 
 ## Integration

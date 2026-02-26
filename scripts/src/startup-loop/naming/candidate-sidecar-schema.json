@@ -11,7 +11,7 @@
     "run_date": { "type": "string", "format": "date" },
     "stage": {
       "type": "string",
-      "enum": ["generated", "i_gate_eliminated", "rdap_checked", "shortlisted", "finalist"]
+      "enum": ["generated", "i_gate_eliminated", "rdap_checked", "shortlisted", "finalist", "tm_prescreened"]
     },
     "candidate": {
       "type": "object",
@@ -51,6 +51,25 @@
         "ci90_lower": { "type": "number" },
         "ci90_upper": { "type": "number" },
         "model_version": { "type": "string" }
+      }
+    },
+    "tm_prescreen": {
+      "type": ["object", "null"],
+      "description": "TM pre-screen direction record — populated by tm-prescreen-cli.ts for product naming pipeline; absent or null for company naming events",
+      "properties": {
+        "euipo_url": { "type": "string", "description": "Pre-filled EUIPO eTMview search URL" },
+        "wipo_url": { "type": "string", "description": "Pre-filled WIPO Global Brand Database URL" },
+        "uibm_url": { "type": "string", "description": "UIBM Italian national register URL" },
+        "classes": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 1, "maximum": 99 },
+          "description": "Nice Classification classes to search (e.g., [25, 26])"
+        },
+        "operator_result": {
+          "type": ["string", "null"],
+          "enum": ["clear", "conflict", "pending", null],
+          "description": "Result recorded by operator after manual TM search"
+        }
       }
     },
     "timestamp": { "type": "string", "format": "date-time" }

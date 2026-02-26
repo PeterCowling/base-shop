@@ -2,21 +2,21 @@
 Type: Brand-Language
 Stage: ASSESSMENT-11
 Business-Unit: HEAD
-Business-Name: Solena
-Status: Draft
+Business-Name: Facilella
+Status: Active
 Created: 2026-02-17
-Updated: 2026-02-21
-Last-reviewed: 2026-02-21
+Updated: 2026-02-26
+Last-reviewed: 2026-02-26
 Owner: Pete
-Token-Source: packages/themes/solena/src/tokens.ts (theme package not yet created — see App Coverage)
+Token-Source: packages/themes/facilella/src/tokens.ts (theme package not yet created — see App Coverage)
 Review-trigger: After each completed build cycle touching this document.
 ---
 
-# Solena — Brand Language
+# Facilella — Brand Language
 
-> **Draft status.** Visual identity decisions are complete and ready for theme package creation.
+> **Active status.** Visual identity decisions are complete and ready for theme package creation.
 > Token values are documented below. When the theme package is created at
-> `packages/themes/solena/src/tokens.ts`, that file becomes the single source of truth for token values.
+> `packages/themes/facilella/src/tokens.ts`, that file becomes the single source of truth for token values.
 > This document records the *why* behind every token choice.
 
 ---
@@ -49,7 +49,7 @@ Review-trigger: After each completed build cycle touching this document.
 
 ### Colour Palette
 
-Palette rationale: The name Solena carries warmth ("sol" root — sun, light) and an Italian Mediterranean quality. The palette reflects this: warm clay terracotta as the primary (distinctive from medical blue-white, from BRIK's coral-orange, and from sports-brand neons), grounded by a dusty Mediterranean seafoam accent. Background is warm linen, not stark clinical white. The overall effect reads Italian artisan lifestyle brand — trustworthy, warm, and non-clinical.
+Palette rationale: Facilella is a coined Italian-register name with an effortless, child-managed feel ("facile" root — easy, simple) and a soft diminutive ending. The palette reflects this: warm clay terracotta as the primary (distinctive from medical blue-white, from BRIK's coral-orange, and from sports-brand neons), grounded by a dusty Mediterranean seafoam accent. Background is warm linen, not stark clinical white. The overall effect reads Italian lifestyle accessories brand — trustworthy, warm, and non-clinical.
 
 | Role | Token | HSL (light) | HSL (dark) | Rationale |
 |------|-------|-------------|------------|-----------|
@@ -62,6 +62,9 @@ Palette rationale: The name Solena carries warmth ("sol" root — sun, light) an
 | Accent foreground | `--color-accent-fg` | `0 0% 100%` | `0 0% 100%` | White text on dusty teal |
 | Accent soft | `--color-accent-soft` | `180 25% 94%` | `180 18% 18%` | Very light teal wash |
 | Background | `--color-bg` | `35 20% 97%` | `18 10% 8%` | Warm linen off-white (not clinical stark white); slight warmth reduces medical feel |
+| Foreground | `--color-fg` | `18 8% 12%` | `35 15% 92%` | Near-black on light; warm off-white on dark — avoids cold stark contrast |
+| Foreground muted | `--color-fg-muted` | `18 6% 42%` | `35 10% 58%` | Secondary text; warm grey in both modes |
+| Border | `--color-border` | `35 12% 88%` | `35 8% 20%` | Warm subtle dividers; consistent with linen background register |
 
 **Palette mood:** Warm Italian clay with a grounding Mediterranean seafoam accent — trustworthy, lifestyle-forward, distinctly non-clinical.
 
@@ -118,31 +121,31 @@ Italian is the primary language of the primary market. Italian copy must feel na
 ### Key Phrases
 
 - **"Fits your processor"** — compatibility-first framing; the primary purchase-decision signal; use early, specifically, with named processor families where possible
-- **"Made for everyday wear"** — normalises the use case; positions Solena as a standard part of the daily routine, not a workaround
+- **"Made for everyday wear"** — normalises the use case; positions Facilella as a standard part of the daily routine, not a workaround
 - **"Secure wear for busy days"** — core campaign-level message; pairs the functional benefit with the real-life context (school, play, travel)
 - **"Worn proudly"** — style and inclusion cue; counteracts concealment framing without overstating it
 - **"Your fit, your style"** — used in personalisation and accessory-range contexts
 
 ### Words to Avoid
 
-- **"improve hearing" / "therapy" / "treatment" / "rehabilitation"** — EU MDR regulatory boundary; these risk framing Solena as a medical-purpose claim or device-enabling accessory
+- **"improve hearing" / "therapy" / "treatment" / "rehabilitation"** — EU MDR regulatory boundary; these risk framing Facilella as a medical-purpose claim or device-enabling accessory
 - **"essential for implant function" / "enables your processor to work"** — EU MDR accessory-enabling language; hard stop
-- **"hide" / "invisible" / "discreet" / "conceal"** as a primary promise — conflicts with inclusive positioning; Solena normalises wearing, not concealment
+- **"hide" / "invisible" / "discreet" / "conceal"** as a primary promise — conflicts with inclusive positioning; Facilella normalises wearing, not concealment
 - **"fits all processors"** without a verified compatibility matrix — overpromising; generates returns and erodes trust
 - Medical jargon (e.g., "implant-compatible device interface") — alienating; not how parents talk
-- Stigmatising framing (e.g., "despite having a hearing loss", "even though your child wears a device") — Solena treats CI wear as ordinary, not as something to overcome
+- Stigmatising framing (e.g., "despite having a hearing loss", "even though your child wears a device") — Facilella treats CI wear as ordinary, not as something to overcome
 
 ---
 
 ## Token Overrides
 
-Theme package: `packages/themes/solena/src/tokens.ts` — **not yet created.**
+Theme package: `packages/themes/facilella/src/tokens.ts` — **not yet created.**
 
 The overrides below are the canonical spec for the theme package. When created, these values should be applied verbatim.
 
 Reference: `packages/themes/prime/src/tokens.ts` shows the override pattern to follow (structure and type shape). Base values are in `packages/themes/base/src/tokens.ts`.
 
-| Token | Base Value | Solena Override | Reason |
+| Token | Base Value | Facilella Override | Reason |
 |-------|-----------|-----------------|--------|
 | `--color-primary` | base default | `light: '18 52% 52%'`, `dark: '18 45% 68%'` | Warm terracotta clay primary |
 | `--color-primary-fg` | base default | `light: '0 0% 100%'`, `dark: '18 15% 10%'` | White on clay in light; warm dark in dark mode |
@@ -153,6 +156,9 @@ Reference: `packages/themes/prime/src/tokens.ts` shows the override pattern to f
 | `--color-accent-fg` | base default | `light: '0 0% 100%'`, `dark: '0 0% 100%'` | White on dusty teal |
 | `--color-accent-soft` | base default | `light: '180 25% 94%'`, `dark: '180 18% 18%'` | Light teal wash |
 | `--color-bg` | base default | `light: '35 20% 97%'`, `dark: '18 10% 8%'` | Warm linen background (not clinical white) |
+| `--color-fg` | base default | `light: '18 8% 12%'`, `dark: '35 15% 92%'` | Near-black on light; warm off-white on dark |
+| `--color-fg-muted` | base default | `light: '18 6% 42%'`, `dark: '35 10% 58%'` | Secondary text; warm grey in both modes |
+| `--color-border` | base default | `light: '35 12% 88%'`, `dark: '35 8% 20%'` | Warm subtle dividers |
 | `--font-sans` | `var(--font-geist-sans)` | `var(--font-dm-sans)` | Humanist warmth; DM Sans loaded in layout |
 | `--radius-md` | base default | `light: '0.75rem'` | Softer corners — friendlier, less corporate |
 | `--radius-lg` | base default | `light: '1rem'` | Rounded cards and modals |
@@ -165,7 +171,7 @@ Reference: `packages/themes/prime/src/tokens.ts` shows the override pattern to f
 
 TBD — patterns emerge through `/lp-design-spec` work during DO+.
 
-_First pattern to define:_ **Processor compatibility display component** — shows which CI processor brands/models this headband fits (Cochlear, MED-EL, Advanced Bionics). This is the primary conversion trust element; it must be styled in Solena brand tokens and should appear on every product detail page above the fold.
+_First pattern to define:_ **Processor compatibility display component** — shows which CI processor brands/models this headband fits (Cochlear, MED-EL, Advanced Bionics). This is the primary conversion trust element; it must be styled in Facilella brand tokens and should appear on every product detail page above the fold.
 
 ---
 
@@ -173,14 +179,14 @@ _First pattern to define:_ **Processor compatibility display component** — sho
 
 | App | Theme | Status | Notes |
 |-----|-------|--------|-------|
-| solena (storefront) | `packages/themes/solena/` | Planned — not yet created | Theme package must be created before `/lp-design-spec` can run at DO. Follow `packages/themes/prime/` as the structural template. |
+| facilella (storefront) | `packages/themes/facilella/` | Planned — not yet created | Theme package must be created before `/lp-design-spec` can run at DO. Follow `packages/themes/prime/` as the structural template. |
 
 ---
 
 ## References
 
 - Brand strategy (ASSESSMENT-10): `docs/business-os/strategy/HEAD/2026-02-21-brand-profile.user.md`
-- Naming shortlist r2 (name decision): `docs/business-os/strategy/HEAD/2026-02-21-candidate-names-r2.user.md`
+- Naming decision (R7 — Facilella selected): `docs/business-os/strategy/HEAD/decisions/DEC-HEAD-NAME-01.user.md`
 - Business strategy: `docs/business-os/strategy/HEAD/plan.user.md`
 - Messaging hierarchy: `docs/business-os/strategy/HEAD/messaging-hierarchy.user.md`
 - 90-day forecast (canonical): `docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md`
@@ -193,10 +199,10 @@ _First pattern to define:_ **Processor compatibility display component** — sho
 
 ## Draft → Active Advancement Criteria
 
-- [ ] Theme package `packages/themes/solena/src/tokens.ts` created with overrides above
+- [x] ASSESSMENT-12 completeness gate passed (2026-02-26)
+- [ ] Theme package `packages/themes/facilella/src/tokens.ts` created with overrides above
 - [ ] Token-Source updated to real file path
-- [ ] DM Sans font loaded in `apps/solena` layout and confirmed rendering at mobile sizes
+- [ ] DM Sans font loaded in `apps/facilella` layout and confirmed rendering at mobile sizes
 - [ ] Processor compatibility display component designed (first Signature Pattern)
 - [ ] Colour palette reviewed by Pete — clay primary and seafoam accent confirmed
 - [ ] Typography reviewed by Pete — DM Sans confirmed
-- [ ] Reviewed by Pete before advancing to Active

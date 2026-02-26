@@ -5,7 +5,7 @@ Domain: UI
 Workstream: Engineering
 Created: 2026-02-25
 Last-reviewed: 2026-02-25
-Last-updated: 2026-02-26 (TASK-06 CHECKPOINT complete; Wave 4 eligible)
+Last-updated: 2026-02-26 (Wave 4 complete — TASK-07, TASK-08, TASK-09)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: reception-ui-screen-polish
 Deliverable-Type: code-change
@@ -32,9 +32,9 @@ Extends the visual design language established on the login and bar screens (gra
 - [x] TASK-04: TillReconciliation — mode banners and shift state polish
 - [x] TASK-05: SafeManagement — balance panel, button grouping, denomination polish
 - [x] TASK-06: CHECKPOINT — Phase 1 verification and downstream replan
-- [ ] TASK-07: PrepareDashboard — heading fix and PageShell migration
-- [ ] TASK-08: RealTimeDashboard — heading fix and chart card polish
-- [ ] TASK-09: CheckinsTable — gradient backdrop, toolbar container, skeleton
+- [x] TASK-07: PrepareDashboard — heading fix and PageShell migration
+- [x] TASK-08: RealTimeDashboard — heading fix and chart card polish
+- [x] TASK-09: CheckinsTable — gradient backdrop, toolbar container, skeleton
 - [ ] TASK-10: CHECKPOINT — Phase 2 verification and downstream replan
 - [ ] TASK-11: Checkout — sticky header blur and loading skeleton
 - [ ] TASK-12: EndOfDayPacket — gradient backdrop and surface polish
@@ -106,9 +106,9 @@ Extends the visual design language established on the login and bar screens (gra
 | TASK-04 | IMPLEMENT | TillReconciliation — mode banners and state polish | 85% | S | Complete (2026-02-26) | TASK-00, TASK-03 | TASK-06 |
 | TASK-05 | IMPLEMENT | SafeManagement — balance panel, button grouping | 91% | S | Complete (2026-02-26) | TASK-00 | TASK-06 |
 | TASK-06 | CHECKPOINT | Phase 1 verification and downstream replan | 95% | S | Complete (2026-02-26) | TASK-02, TASK-04, TASK-05 | TASK-07, TASK-08, TASK-09 |
-| TASK-07 | IMPLEMENT | PrepareDashboard — heading fix and PageShell migration | 86% | M | Pending | TASK-06 | TASK-10 |
-| TASK-08 | IMPLEMENT | RealTimeDashboard — heading fix and chart card polish | 88% | S | Pending | TASK-06 | TASK-10 |
-| TASK-09 | IMPLEMENT | CheckinsTable — gradient backdrop, toolbar, skeleton | 90% | M | Pending | TASK-06 | TASK-10 |
+| TASK-07 | IMPLEMENT | PrepareDashboard — heading fix and PageShell migration | 86% | M | Complete (2026-02-26) | TASK-06 | TASK-10 |
+| TASK-08 | IMPLEMENT | RealTimeDashboard — heading fix and chart card polish | 88% | S | Complete (2026-02-26) | TASK-06 | TASK-10 |
+| TASK-09 | IMPLEMENT | CheckinsTable — gradient backdrop, toolbar, skeleton | 90% | M | Complete (2026-02-26) | TASK-06 | TASK-10 |
 | TASK-10 | CHECKPOINT | Phase 2 verification and downstream replan | 95% | S | Pending | TASK-07, TASK-08, TASK-09 | TASK-11, TASK-12 |
 | TASK-11 | IMPLEMENT | Checkout — sticky header blur and loading skeleton | 80% | S | Pending | TASK-10 | - |
 | TASK-12 | IMPLEMENT | EndOfDayPacket — gradient backdrop and surface polish | 70% | S | Pending | TASK-10 | - |
@@ -461,8 +461,16 @@ Extends the visual design language established on the login and bar screens (gra
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `apps/reception/src/components/prepare/PrepareDashboard.tsx`
+- **Status:** Complete (2026-02-26)
+- **Build evidence:**
+  - `PreparePage.tsx` created at `apps/reception/src/components/prepare/PreparePage.tsx` — PageShell wrapper exposing `dateSelector` and `children` slots; all 4 render paths (loading/error/no-data/success) consolidated through this single wrapper
+  - Scout gate confirmed: 155-line file with text-5xl heading at lines ~74, ~93, ~117, ~139 across all 4 paths — extraction was the correct approach
+  - No-data path: `rounded shadow p-8` → `rounded-lg shadow p-8` (bare `rounded` cleared)
+  - TC-07-01: `grep "text-5xl" apps/reception/src/components/prepare/PrepareDashboard.tsx` → CLEAN
+  - TC-07-02: All 4 render paths unified via PreparePage — code confirmed
+  - TC-07-03: Pre-existing failures in PrepareDashboard.test.tsx ("Invalid hook call") confirmed unrelated — reverting original file produces identical failures (jest.resetModules() React instance mismatch, pre-existing)
+  - Typecheck: 55/55 successful; lint: clean
+- **Affects:** `apps/reception/src/components/prepare/PrepareDashboard.tsx`, `apps/reception/src/components/prepare/PreparePage.tsx` (new)
 - **Depends on:** TASK-06
 - **Blocks:** TASK-10
 - **Confidence:** 86%
@@ -500,7 +508,16 @@ Extends the visual design language established on the login and bar screens (gra
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
+- **Build evidence:**
+  - `import { PageShell } from "../common/PageShell"` added; outer wrapper replaced with `<PageShell title="REAL TIME DASHBOARD">`; inner `<div className="space-y-8">` preserves chart spacing
+  - All 3 chart cards upgraded: `rounded shadow p-4` → `rounded shadow-lg p-4`
+  - setInterval at lines 28–34 untouched — auto-refresh behavior unchanged
+  - TC-08-01: `grep "text-5xl" apps/reception/src/components/reports/RealTimeDashboard.tsx` → CLEAN
+  - TC-08-02: `grep "rounded shadow p-4" apps/reception/src/components/reports/RealTimeDashboard.tsx` → CLEAN
+  - TC-08-03: `pnpm typecheck --filter reception` → 55/55 clean
+  - RealTimeDashboard.test.tsx: PASSES (getByText("REAL TIME DASHBOARD") assertion preserved via PageShell title prop)
+  - Lint: simple-import-sort fixed via `eslint --fix`; clean
 - **Affects:** `apps/reception/src/components/reports/RealTimeDashboard.tsx`
 - **Depends on:** TASK-06
 - **Blocks:** TASK-10
@@ -538,8 +555,21 @@ Extends the visual design language established on the login and bar screens (gra
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `apps/reception/src/components/checkins/CheckinsTable.tsx`, `apps/reception/src/components/checkins/view/CheckinsTable.tsx`, `apps/reception/src/components/checkins/header/CheckinsHeader.tsx` (likely), `apps/reception/src/components/common/ReceptionSkeleton.tsx` (new)
+- **Status:** Complete (2026-02-26)
+- **Build evidence:**
+  - `ReceptionSkeleton.tsx` created at `apps/reception/src/components/common/ReceptionSkeleton.tsx` — animated `h-10 animate-pulse rounded-lg bg-surface-3` rows, `rows?: number = 5` prop, `aria-busy="true"`
+  - Gradient backdrop applied to outer div: `bg-gradient-to-b from-surface-2 to-surface-3`
+  - Toolbar container wraps CheckinsHeader: `<div className="bg-surface/80 rounded-xl px-4 py-3 mb-4">`
+  - Mode banners added (matching TillReconciliation TASK-04 pattern): `bg-info-light/20` + Info icon (edit), `bg-warning-light/20` + AlertTriangle icon (delete), `bg-success-light/20` + UserPlus icon (add-guest)
+  - "Loading..." text replaced with `<TableCell colSpan={12} className="p-0"><ReceptionSkeleton rows={5} /></TableCell>`
+  - Rooms Ready button: `rounded` → `rounded-lg`
+  - Toolbar container placed in `view/CheckinsTable.tsx` (not inside CheckinsHeader — keeps CheckinsHeader reusable)
+  - rounded → rounded-lg sweep applied to 24 files in checkins/ via sed
+  - TC-09-01: `grep -r "rounded[^-]" apps/reception/src/components/checkins/` → CLEAN
+  - TC-09-03: checkin-route.parity snapshot updated — gradient `bg-gradient-to-b from-surface-2 to-surface-3` and toolbar container `bg-surface/80 rounded-xl px-4 py-3 mb-4` confirmed visible in snapshot
+  - Pre-existing failures (SplitList source-map, NotesModal, CheckinsTable Maximum call stack, Input act() warning) confirmed unrelated by git history
+  - Typecheck: 55/55 clean; lint: clean
+- **Affects:** `apps/reception/src/components/checkins/view/CheckinsTable.tsx`, `apps/reception/src/components/common/ReceptionSkeleton.tsx` (new), 24 checkins/ files (rounded sweep)
 - **Depends on:** TASK-06
 - **Blocks:** TASK-10
 - **Confidence:** 90%

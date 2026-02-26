@@ -137,6 +137,13 @@
     "CMS-2134": {},
     "CMS-2145": {},
     "CMS-2417": {},
+    "CMS-2418": {
+      "allow": [
+        "apps/cms/src/app/cms/wizard/tokenUtils.ts"
+      ],
+      "expires": "2026-12-31",
+      "notes": "CMS wizard token normalization helpers use temporary lint exceptions pending shared utility extraction."
+    },
     "CMS-2617": {},
     "CMS-2651": {},
     "CMS-2652": {},
@@ -492,6 +499,27 @@
     "XA-0041": {},
     "XA-0100": {},
     "XA-123": {},
+    "XAB-315": {
+      "allow": [
+        "apps/xa-b/src/lib/accountStore.ts"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Account store persistence and migration guards rely on scoped lint exceptions pending store refactor."
+    },
+    "XAB-316": {
+      "allow": [
+        "apps/xa-b/src/lib/rateLimit.ts"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Rate limit storage fallback path uses temporary lint exceptions pending adapter cleanup."
+    },
+    "XAUP-118": {
+      "allow": [
+        "apps/xa-uploader/src/lib/catalogContractClient.ts"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Catalog contract client request/error helpers carry temporary lint exceptions pending API client split."
+    },
     "XAUP-0001": {}
   }
 }

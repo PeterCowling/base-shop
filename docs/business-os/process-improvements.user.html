@@ -160,6 +160,14 @@
     .badge-PLAT    { background: var(--amber-bg);  color: var(--amber);  border: 1px solid var(--amber-border); }
     .badge-generic { background: var(--surface-2); color: var(--text-muted); border: 1px solid var(--border); }
 
+    /* Priority tier badges (P0–P5) */
+    .badge-tier-crit    { background: var(--red-bg);    color: var(--red);        border: 1px solid var(--red-border); }
+    .badge-tier-high    { background: var(--amber-bg);  color: var(--amber);      border: 1px solid var(--amber-border); }
+    .badge-tier-med     { background: var(--amber-bg);  color: var(--amber);      border: 1px solid var(--amber-border); opacity: 0.75; }
+    .badge-tier-measure { background: var(--blue-bg);   color: var(--blue);       border: 1px solid var(--blue-border); }
+    .badge-tier-process { background: var(--surface-2); color: var(--text-muted); border: 1px solid var(--border); }
+    .badge-tier-default { background: var(--surface-2); color: var(--text-dim);   border: 1px solid var(--border); }
+
     .item-body { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
     .item-body strong { color: var(--text); }
 
@@ -250,183 +258,9 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-02-26T10:41:39.030Z";
+  var GEN_TS = "2026-02-26T10:46:59.788Z";
 
   var IDEA_ITEMS = [
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Classifier auto-demotion rate dashboard for Phase 4 readiness",
-      "body": "all dispatches auto-demote to P4/P5 without operator evidence fields; a weekly count would surface this clearly",
-      "suggested_action": "defer (manual inspection sufficient for Phase 1)",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T10:34:44.683Z",
-      "path": "docs/plans/_archive/reflection-prioritization-policy-implementation/results-review.user.md",
-      "idea_key": "c53d8fe7718817a876e18b3b40f8a53467ed3aeb"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Phase 4 enforcement — wire priority rank into dispatch sort and enforce evidence gates",
-      "body": "Phase 4 deferred in classifier with explicit comment; natural next step after advisory calibration period",
-      "suggested_action": "create card after ~2 weeks of trial data",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T10:34:44.683Z",
-      "path": "docs/plans/_archive/reflection-prioritization-policy-implementation/results-review.user.md",
-      "idea_key": "8c68b866f7784e56527f73e12625cc53b0f986d0"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "AI-to-mechanistic: The extractFromJsxAttribute utility correctly handles most cases but returns confident: false for template literals with interpolations. A future improvement could expand confidence for template literals where the bare class token is always in the static portion.",
-      "body": "AI-to-mechanistic: The extractFromJsxAttribute utility correctly handles most cases but returns confident: false for template literals with interpolations. A future improvement could expand confidence for template literals where the bare class token is always in the static portion.",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T09:51:20.911Z",
-      "path": "docs/plans/_archive/reception-rounded-lg-lint-rule/results-review.user.md",
-      "idea_key": "78659c800551efcc152a19e465ce0ed9f94f6ffb"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "AI-to-mechanistic: The extractFromJsxAttribute utility correctly handles most cases but returns confident: false for template literals with interpolations. A future improvement could expand confidence for template literals where the bare class token is always in the static portion.",
-      "body": "AI-to-mechanistic: The extractFromJsxAttribute utility correctly handles most cases but returns confident: false for template literals with interpolations. A future improvement could expand confidence for template literals where the bare class token is always in the static portion.",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T09:51:07.413Z",
-      "path": "docs/plans/reception-rounded-lg-lint-rule/results-review.user.md",
-      "idea_key": "fe02150793889094003f0c4a9cb631967e47e91f"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Backfill older completed ideas into the registry",
-      "body": "many historical results-review files have ideas that have been actioned but are still appearing in the report (51 ideas shown, unknown fraction already done)",
-      "suggested_action": "manual audit pass or INVESTIGATE task to identify and backfill the highest-priority completed entries",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T09:47:46.087Z",
-      "path": "docs/plans/_archive/process-improvements-completion-lifecycle/results-review.user.md",
-      "idea_key": "b94ed760a8c6e70812f1e715d57ff654a038eda5"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Add ASSESSMENT-12 to loop-spec so GATE-ASSESSMENT-01 enforces dossier promotion before ASSESSMENT-13",
-      "body": "TASK-06 acceptance note calls out that ASSESSMENT-12 should run before ASSESSMENT-13 but the gate does not enforce it — documented friction point.",
-      "suggested_action": "create card to add ASSESSMENT-12 to loop-spec and update GATE-ASSESSMENT-01.",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T08:53:10.111Z",
-      "path": "docs/plans/_archive/startup-loop-product-identity-gap/results-review.user.md",
-      "idea_key": "c4bd1e648763f424e2bd509de647df7b3925a428"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Assess whether ASSESSMENT-13/14/15 need prompt template files",
-      "body": "prompt_required: false set for all three new stages — consistent with skill-file execution but may need revisiting if the loop UI requires prompt templates.",
-      "suggested_action": "defer — assess when first real business runs ASSESSMENT-13.",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T08:53:10.111Z",
-      "path": "docs/plans/_archive/startup-loop-product-identity-gap/results-review.user.md",
-      "idea_key": "d60d167a7803b1b4c4e2b9a54192015a1ca9c2ff"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Validate packaging brief with a real physical-product operator",
-      "body": "TASK-04 and TASK-03 confidence capped at 80% — regulatory reference data not yet validated against real production experience.",
-      "suggested_action": "when a physical-product business first runs ASSESSMENT-15, collect feedback and update regulatory-requirements.md.",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T08:53:10.111Z",
-      "path": "docs/plans/_archive/startup-loop-product-identity-gap/results-review.user.md",
-      "idea_key": "45bfc4f2a076416e63c7fa72dc75143a2d0591a9"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Add ASSESSMENT-12 to loop-spec so GATE-ASSESSMENT-01 enforces dossier promotion before ASSESSMENT-13",
-      "body": "TASK-06 acceptance note calls out that ASSESSMENT-12 should run before ASSESSMENT-13 but the gate does not enforce it — documented friction point.",
-      "suggested_action": "create card to add ASSESSMENT-12 to loop-spec and update GATE-ASSESSMENT-01.",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T08:53:01.939Z",
-      "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md",
-      "idea_key": "b2d857f1b9b0b1a353fed9023a281fee1f85a525"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Assess whether ASSESSMENT-13/14/15 need prompt template files",
-      "body": "prompt_required: false set for all three new stages — consistent with skill-file execution but may need revisiting if the loop UI requires prompt templates.",
-      "suggested_action": "defer — assess when first real business runs ASSESSMENT-13.",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T08:53:01.939Z",
-      "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md",
-      "idea_key": "515ff10d4c18b25b9a19da5a477002662c796142"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Validate packaging brief with a real physical-product operator",
-      "body": "TASK-04 and TASK-03 confidence capped at 80% — regulatory reference data not yet validated against real production experience.",
-      "suggested_action": "when a physical-product business first runs ASSESSMENT-15, collect feedback and update regulatory-requirements.md.",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T08:53:01.939Z",
-      "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md",
-      "idea_key": "50250241c361b3e014540cb7f748b06e906f22b5"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Add Jest unit test with fixture JSON mock for gsc-url-inspection-batch.ts extraction logic",
-      "body": "TC-01 through TC-04 validated by code inspection only; fixture-based test would catch regression on return-type refactors",
-      "suggested_action": "defer",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T08:14:25.464Z",
-      "path": "docs/plans/_archive/seo-monitoring-datepublished-baseline/results-review.user.md",
-      "idea_key": "94171ba01389aff8f13c0eb976c89cfdf61747d9"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Confirm richResultsResult field presence on next monitoring run against amalfi-positano-bus (one indexed URL) to validate API response shape empirically",
-      "body": "TASK-01 delivered with optional-chaining fallbacks; no live API response with structured data yet observed for any seed URL",
-      "suggested_action": "defer (happens automatically on next run)",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T08:14:25.464Z",
-      "path": "docs/plans/_archive/seo-monitoring-datepublished-baseline/results-review.user.md",
-      "idea_key": "a7d9276518b19aed313e3f444b6db67349cc1cfb"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Wire lastUpdated through HowToGetHereContent to unlock datePublished on 31 EN transport pages",
-      "body": "transport pages have no datePublished structured data; monitoring will capture HowTo detection instead of Article when they index",
-      "suggested_action": "defer",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T08:14:25.464Z",
-      "path": "docs/plans/_archive/seo-monitoring-datepublished-baseline/results-review.user.md",
-      "idea_key": "5a52fb8afce7adb5c0738ce56dd61c016da11049"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "E2E coverage for J2 error paths (validation failure, pipeline failure, empty-input 409)",
-      "body": "TC-09-03 added only the success path; the plan explicitly deferred error-path coverage as non-goals. Now that the success path is tested, error paths are the natural next expansion.",
-      "suggested_action": "create card",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T08:03:55.075Z",
-      "path": "docs/plans/_archive/xa-e2e-sync-success-path/results-review.user.md",
-      "idea_key": "352a6020732ed972f3a5203e01616eb26ad89742"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "/how-to-get-here server-resolved hero H1 (sub-track C)",
-      "body": "TASK-11 deferred useHowToGetHereContent audit — HowToGetHereIndexContent hook needs investigation before server-resolved props pattern can be applied safely.",
-      "suggested_action": "spike (audit hook dependencies before scoping)",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T08:02:22.786Z",
-      "path": "docs/plans/_archive/brikette-deeper-route-funnel-cro/results-review.user.md",
-      "idea_key": "b550e7d7075385897bfdb286e51d043750f351d7"
-    },
     {
       "type": "idea",
       "business": "BOS",
@@ -436,238 +270,9 @@
       "source": "results-review.user.md",
       "date": "2026-02-26T08:02:22.786Z",
       "path": "docs/plans/_archive/brikette-deeper-route-funnel-cro/results-review.user.md",
-      "idea_key": "be4c24a746a5caf425cb4ee64fd66eea7732854f"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Track GA4 funnel drop-off in Explorations once custom dimensions are visible (48h)",
-      "body": "Full funnel confirmed firing; no conversion rate baseline exists yet",
-      "suggested_action": "defer (check at T+7 days when custom dimensions propagate)",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T08:01:53.208Z",
-      "path": "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md",
-      "idea_key": "bcdd9c80911fe4bd1a09728c3fecc7b6861104a3"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Automate periodic smoke test runs against production (e.g. weekly cron) so GA4 event regressions are caught without manual operator invocation",
-      "body": "smoke test is manual-only; value of the assertion is bounded by run frequency",
-      "suggested_action": "defer",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T07:40:11.468Z",
-      "path": "docs/plans/_archive/brikette-smoke-view-item-list/results-review.user.md",
-      "idea_key": "b3cb39280dd5e64ca2f271505fc3617bb9ce4186"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Add CI drift check step using check-process-improvements to catch SKIP_SIMPLE_GIT_HOOKS bypasses",
-      "body": "SKIP_SIMPLE_GIT_HOOKS=1 is used by bos-export and would bypass the hook",
-      "suggested_action": "defer (bos-export does not touch plan files, so this is low risk in practice)",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T07:36:11.273Z",
-      "path": "docs/plans/_archive/process-improvements-live-update/results-review.user.md",
-      "idea_key": "9dc16843ce70700259c1e422c106cdb28273ecb2"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Add check_url_strict coverage to other localized booking entry points (e.g., /de/buchen, /fr/reserver)",
-      "body": "TASK-04 strict check plumbing is now reusable via healthcheck-strict-routes input in reusable-app.yml",
-      "suggested_action": "defer",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T07:33:03.262Z",
-      "path": "docs/plans/_archive/brikette-it-book-route-static-export/results-review.user.md",
-      "idea_key": "30a0a8985d1c87982902aead225c25cd09a5b0bc"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Extend smoke test to cover representative IT locale routes (rooms, experiences)",
-      "body": "TASK-01 confirmed IT book present, but no other IT-locale routes are smoke-tested",
-      "suggested_action": "create card",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T07:33:03.262Z",
-      "path": "docs/plans/_archive/brikette-it-book-route-static-export/results-review.user.md",
-      "idea_key": "d8e5e55862f2c3c4703d7605ba2e1dc4773b1615"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "The reflection debt emitter currently runs as a TypeScript script triggered by pnpm --filter scripts startup-loop:generate-process-improvements. The five-category scan in the pre-fill step is still LLM reasoning (agent reads build context and scans). A future mechanistic check could diff the New Idea Candidates section of committed results-reviews against the five category labels and flag missing categories as a lint warning.",
-      "body": "this build added a structured five-category checklist to step 2, revealing that compliance checking (are all five categories addressed?) is a deterministic pattern-match, not a reasoning task",
-      "suggested_action": "spike",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T07:27:53.087Z",
-      "path": "docs/plans/_archive/post-build-reflection-prompting/results-review.user.md",
-      "idea_key": "a8bd43e491362bb28adf381f0d335f9b08dccbfe"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "The wave build execution for this plan (three independent S-effort markdown edits) was orchestrated manually. A docs-patch skill that handles batches of bounded markdown edits to SKILL.md files (verify current state, apply edit, verify result, commit) would eliminate the lp-do-build overhead for this class of purely-additive process-doc changes.",
-      "body": "all three tasks were trivial file edits with identical Red/Green/Refactor structure",
-      "suggested_action": "defer (needs more examples to justify)",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T07:27:53.087Z",
-      "path": "docs/plans/_archive/post-build-reflection-prompting/results-review.user.md",
-      "idea_key": "d6de990c408eef01e2ccebf0268908ac8e4110fa"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "ReceptionSkeleton pattern should be documented as the canonical loading state for reception app tables",
-      "body": "Component created and used in 2 screens (CheckinsTable, Checkout); will be needed by Phase 4 screens",
-      "suggested_action": "create card — add to design system notes or code comment in shared component",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T01:32:59.021Z",
-      "path": "docs/plans/_archive/reception-ui-screen-polish/results-review.user.md",
-      "idea_key": "56df98e4006fb2a28f3af4e6e16e10228c829801"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Add validate:launch-media to CI so media contract failures block merges",
-      "body": "contract validator currently run manually; new SKUs could be merged without images",
-      "suggested_action": "create card",
-      "source": "results-review.user.md",
-      "date": "2026-02-25T22:37:02.398Z",
-      "path": "docs/plans/hbag-website-02-image-first-upgrade/results-review.user.md",
-      "idea_key": "ac3d068ddeedab6a631cf1798af0a87688c96116"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Expand catalog from 3 to target SKU count with production imagery",
-      "body": "launch media contract passes for 3 active SKUs — catalog is minimal for launch",
-      "suggested_action": "create card",
-      "source": "results-review.user.md",
-      "date": "2026-02-25T22:37:02.398Z",
-      "path": "docs/plans/hbag-website-02-image-first-upgrade/results-review.user.md",
-      "idea_key": "45c78ffe03dc5912a945f665dc9fb674e05e72e6"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Real-device performance spot-check before public launch",
-      "body": "build-record flags this as the only remaining pre-launch gate; a QA matrix is already drafted at artifacts/real-device-qa-matrix.md",
-      "suggested_action": "create card",
-      "source": "results-review.user.md",
-      "date": "2026-02-25T22:37:02.398Z",
-      "path": "docs/plans/hbag-website-02-image-first-upgrade/results-review.user.md",
-      "idea_key": "c4b0e1bcf4fabf89df721f914bf64e644fdb801b"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Automated policy-fact consistency check across templates",
-      "body": "three policy facts manually verified across 125 templates; any future policy change has no automated catch",
-      "suggested_action": "spike",
-      "source": "results-review.user.md",
-      "date": "2026-02-25T22:36:44.667Z",
-      "path": "docs/plans/hostel-email-template-expansion/results-review.user.md",
-      "idea_key": "d6c0d012a20bfaa110f0a2ea0fdeded4b3e11bc3"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Post-stay review workflow using T178 as the trigger template",
-      "body": "T178 built and lint-passing but review-link URL still a placeholder; workflow not yet activated",
-      "suggested_action": "create card",
-      "source": "results-review.user.md",
-      "date": "2026-02-25T22:36:44.667Z",
-      "path": "docs/plans/hostel-email-template-expansion/results-review.user.md",
-      "idea_key": "0788a8f4a7e332d5daa0073b10366b7d35840f7c"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Template selection rate monitoring dashboard or weekly report",
-      "body": "build-record recommends running draft_signal_stats after 4 weeks; no scheduled monitoring exists",
-      "suggested_action": "create card",
-      "source": "results-review.user.md",
-      "date": "2026-02-25T22:36:44.667Z",
-      "path": "docs/plans/hostel-email-template-expansion/results-review.user.md",
-      "idea_key": "19390ebb667f9ecf94a405949128d0acbeb629e5"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Add automated constraint-graph cycle check to CI",
-      "body": "cycles were manually verified via generate-stage-operator-views.ts; no automated CI gate exists",
-      "suggested_action": "create card",
-      "source": "results-review.user.md",
-      "date": "2026-02-25T22:36:24.076Z",
-      "path": "docs/plans/startup-loop-parallel-container-wiring/results-review.user.md",
-      "idea_key": "d5ebf7bacf8d307645289097e7a30d2d68601692"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Visual diff test for process-map HTML to catch silent regressions",
-      "body": "swim-lane layout was browser-verified manually; no regression test exists",
-      "suggested_action": "spike",
-      "source": "results-review.user.md",
-      "date": "2026-02-25T22:36:24.076Z",
-      "path": "docs/plans/startup-loop-parallel-container-wiring/results-review.user.md",
-      "idea_key": "e6d41217823fc313fd5fe0ae6781723def8af146"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Add filesystem discovery smoke test to CI",
-      "body": "rebuild-discovery-index.sh is validated manually; no automated regression guard on its output shape",
-      "suggested_action": "create card",
-      "source": "results-review.user.md",
-      "date": "2026-02-25T22:34:30.738Z",
-      "path": "docs/plans/do-skills-bos-decoupling/results-review.user.md",
-      "idea_key": "c5a46e9603aeec9f92f8561051fbaed85592406d"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Audit existing in-flight plans for stale BOS frontmatter fields",
-      "body": "Templates cleaned but older active plans may still carry Business-OS-Integration/Card-ID fields",
-      "suggested_action": "spike",
-      "source": "results-review.user.md",
-      "date": "2026-02-25T22:34:30.738Z",
-      "path": "docs/plans/do-skills-bos-decoupling/results-review.user.md",
-      "idea_key": "336cadb8c091f25f65d75cf9beca9c762c25d087"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Add datePublished to monitoring baseline to track when guide pages first appear with valid structured data in search results",
-      "body": "T+0 baseline has 29 unknown URLs; structured data correctness cannot be validated until pages are indexed",
-      "suggested_action": "defer",
-      "source": "results-review.user.md",
-      "date": "2026-02-25T22:32:11.291Z",
-      "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md",
-      "idea_key": "361960b9c7d02a3691633298d03f6b1b32df7506"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Enable Google Indexing API and test URL submission eligibility",
-      "body": "All 5 test submissions returned HTTP 403 — API not enabled in GCP project 98263641014",
-      "suggested_action": "spike (operator enables API at GCP console, then re-runs 5 test URLs)",
-      "source": "results-review.user.md",
-      "date": "2026-02-25T22:32:11.291Z",
-      "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md",
-      "idea_key": "2a9895c0b987426e79f26ab0ad5d09a70a53152e"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Wire lastUpdated prop through HowToGetHereContent to unlock datePublished on transport pages",
-      "body": "31 EN transport pages have no lastUpdated in RouteDefinition; datePublished fix was deferred from TASK-03",
-      "suggested_action": "defer",
-      "source": "results-review.user.md",
-      "date": "2026-02-25T22:32:11.291Z",
-      "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md",
-      "idea_key": "27d5c91eacc1a6e92dfea3cb5bb52da69026e1ad"
+      "idea_key": "be4c24a746a5caf425cb4ee64fd66eea7732854f",
+      "priority_tier": "P1",
+      "own_priority_rank": 5
     },
     {
       "type": "idea",
@@ -678,7 +283,488 @@
       "source": "results-review.user.md",
       "date": "2026-02-25T22:24:07.859Z",
       "path": "docs/plans/_archive/build-subagent-jest-zombie-cleanup/results-review.user.md",
-      "idea_key": "2adca1b79137219ebded92915d3d2b227e9b00db"
+      "idea_key": "2adca1b79137219ebded92915d3d2b227e9b00db",
+      "priority_tier": "P3",
+      "own_priority_rank": 8
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "E2E coverage for J2 error paths (validation failure, pipeline failure, empty-input 409)",
+      "body": "TC-09-03 added only the success path; the plan explicitly deferred error-path coverage as non-goals. Now that the success path is tested, error paths are the natural next expansion.",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:03:55.075Z",
+      "path": "docs/plans/_archive/xa-e2e-sync-success-path/results-review.user.md",
+      "idea_key": "352a6020732ed972f3a5203e01616eb26ad89742",
+      "priority_tier": "P4",
+      "own_priority_rank": 9
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "The reflection debt emitter currently runs as a TypeScript script triggered by pnpm --filter scripts startup-loop:generate-process-improvements. The five-category scan in the pre-fill step is still LLM reasoning (agent reads build context and scans). A future mechanistic check could diff the New Idea Candidates section of committed results-reviews against the five category labels and flag missing categories as a lint warning.",
+      "body": "this build added a structured five-category checklist to step 2, revealing that compliance checking (are all five categories addressed?) is a deterministic pattern-match, not a reasoning task",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T07:27:53.087Z",
+      "path": "docs/plans/_archive/post-build-reflection-prompting/results-review.user.md",
+      "idea_key": "a8bd43e491362bb28adf381f0d335f9b08dccbfe",
+      "priority_tier": "P4",
+      "own_priority_rank": 9
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Visual diff test for process-map HTML to catch silent regressions",
+      "body": "swim-lane layout was browser-verified manually; no regression test exists",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:36:24.076Z",
+      "path": "docs/plans/startup-loop-parallel-container-wiring/results-review.user.md",
+      "idea_key": "e6d41217823fc313fd5fe0ae6781723def8af146",
+      "priority_tier": "P4",
+      "own_priority_rank": 9
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Classifier auto-demotion rate dashboard for Phase 4 readiness",
+      "body": "all dispatches auto-demote to P4/P5 without operator evidence fields; a weekly count would surface this clearly",
+      "suggested_action": "defer (manual inspection sufficient for Phase 1)",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T10:34:44.683Z",
+      "path": "docs/plans/_archive/reflection-prioritization-policy-implementation/results-review.user.md",
+      "idea_key": "c53d8fe7718817a876e18b3b40f8a53467ed3aeb",
+      "priority_tier": "P4",
+      "own_priority_rank": 9
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add CI drift check step using check-process-improvements to catch SKIP_SIMPLE_GIT_HOOKS bypasses",
+      "body": "SKIP_SIMPLE_GIT_HOOKS=1 is used by bos-export and would bypass the hook",
+      "suggested_action": "defer (bos-export does not touch plan files, so this is low risk in practice)",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T07:36:11.273Z",
+      "path": "docs/plans/_archive/process-improvements-live-update/results-review.user.md",
+      "idea_key": "9dc16843ce70700259c1e422c106cdb28273ecb2",
+      "priority_tier": "P4",
+      "own_priority_rank": 9
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "The wave build execution for this plan (three independent S-effort markdown edits) was orchestrated manually. A docs-patch skill that handles batches of bounded markdown edits to SKILL.md files (verify current state, apply edit, verify result, commit) would eliminate the lp-do-build overhead for this class of purely-additive process-doc changes.",
+      "body": "all three tasks were trivial file edits with identical Red/Green/Refactor structure",
+      "suggested_action": "defer (needs more examples to justify)",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T07:27:53.087Z",
+      "path": "docs/plans/_archive/post-build-reflection-prompting/results-review.user.md",
+      "idea_key": "d6de990c408eef01e2ccebf0268908ac8e4110fa",
+      "priority_tier": "P4",
+      "own_priority_rank": 9
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Phase 4 enforcement — wire priority rank into dispatch sort and enforce evidence gates",
+      "body": "Phase 4 deferred in classifier with explicit comment; natural next step after advisory calibration period",
+      "suggested_action": "create card after ~2 weeks of trial data",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T10:34:44.683Z",
+      "path": "docs/plans/_archive/reflection-prioritization-policy-implementation/results-review.user.md",
+      "idea_key": "8c68b866f7784e56527f73e12625cc53b0f986d0",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add ASSESSMENT-12 to loop-spec so GATE-ASSESSMENT-01 enforces dossier promotion before ASSESSMENT-13",
+      "body": "TASK-06 acceptance note calls out that ASSESSMENT-12 should run before ASSESSMENT-13 but the gate does not enforce it — documented friction point.",
+      "suggested_action": "create card to add ASSESSMENT-12 to loop-spec and update GATE-ASSESSMENT-01.",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:53:10.111Z",
+      "path": "docs/plans/_archive/startup-loop-product-identity-gap/results-review.user.md",
+      "idea_key": "c4bd1e648763f424e2bd509de647df7b3925a428",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add ASSESSMENT-12 to loop-spec so GATE-ASSESSMENT-01 enforces dossier promotion before ASSESSMENT-13",
+      "body": "TASK-06 acceptance note calls out that ASSESSMENT-12 should run before ASSESSMENT-13 but the gate does not enforce it — documented friction point.",
+      "suggested_action": "create card to add ASSESSMENT-12 to loop-spec and update GATE-ASSESSMENT-01.",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:53:01.939Z",
+      "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md",
+      "idea_key": "b2d857f1b9b0b1a353fed9023a281fee1f85a525",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Extend smoke test to cover representative IT locale routes (rooms, experiences)",
+      "body": "TASK-01 confirmed IT book present, but no other IT-locale routes are smoke-tested",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T07:33:03.262Z",
+      "path": "docs/plans/_archive/brikette-it-book-route-static-export/results-review.user.md",
+      "idea_key": "d8e5e55862f2c3c4703d7605ba2e1dc4773b1615",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "ReceptionSkeleton pattern should be documented as the canonical loading state for reception app tables",
+      "body": "Component created and used in 2 screens (CheckinsTable, Checkout); will be needed by Phase 4 screens",
+      "suggested_action": "create card — add to design system notes or code comment in shared component",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T01:32:59.021Z",
+      "path": "docs/plans/_archive/reception-ui-screen-polish/results-review.user.md",
+      "idea_key": "56df98e4006fb2a28f3af4e6e16e10228c829801",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add validate:launch-media to CI so media contract failures block merges",
+      "body": "contract validator currently run manually; new SKUs could be merged without images",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:37:02.398Z",
+      "path": "docs/plans/hbag-website-02-image-first-upgrade/results-review.user.md",
+      "idea_key": "ac3d068ddeedab6a631cf1798af0a87688c96116",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Expand catalog from 3 to target SKU count with production imagery",
+      "body": "launch media contract passes for 3 active SKUs — catalog is minimal for launch",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:37:02.398Z",
+      "path": "docs/plans/hbag-website-02-image-first-upgrade/results-review.user.md",
+      "idea_key": "45c78ffe03dc5912a945f665dc9fb674e05e72e6",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Real-device performance spot-check before public launch",
+      "body": "build-record flags this as the only remaining pre-launch gate; a QA matrix is already drafted at artifacts/real-device-qa-matrix.md",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:37:02.398Z",
+      "path": "docs/plans/hbag-website-02-image-first-upgrade/results-review.user.md",
+      "idea_key": "c4b0e1bcf4fabf89df721f914bf64e644fdb801b",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Post-stay review workflow using T178 as the trigger template",
+      "body": "T178 built and lint-passing but review-link URL still a placeholder; workflow not yet activated",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:36:44.667Z",
+      "path": "docs/plans/hostel-email-template-expansion/results-review.user.md",
+      "idea_key": "0788a8f4a7e332d5daa0073b10366b7d35840f7c",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Template selection rate monitoring dashboard or weekly report",
+      "body": "build-record recommends running draft_signal_stats after 4 weeks; no scheduled monitoring exists",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:36:44.667Z",
+      "path": "docs/plans/hostel-email-template-expansion/results-review.user.md",
+      "idea_key": "19390ebb667f9ecf94a405949128d0acbeb629e5",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add automated constraint-graph cycle check to CI",
+      "body": "cycles were manually verified via generate-stage-operator-views.ts; no automated CI gate exists",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:36:24.076Z",
+      "path": "docs/plans/startup-loop-parallel-container-wiring/results-review.user.md",
+      "idea_key": "d5ebf7bacf8d307645289097e7a30d2d68601692",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add filesystem discovery smoke test to CI",
+      "body": "rebuild-discovery-index.sh is validated manually; no automated regression guard on its output shape",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:34:30.738Z",
+      "path": "docs/plans/do-skills-bos-decoupling/results-review.user.md",
+      "idea_key": "c5a46e9603aeec9f92f8561051fbaed85592406d",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Backfill older completed ideas into the registry",
+      "body": "many historical results-review files have ideas that have been actioned but are still appearing in the report (51 ideas shown, unknown fraction already done)",
+      "suggested_action": "manual audit pass or INVESTIGATE task to identify and backfill the highest-priority completed entries",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T09:47:46.087Z",
+      "path": "docs/plans/_archive/process-improvements-completion-lifecycle/results-review.user.md",
+      "idea_key": "b94ed760a8c6e70812f1e715d57ff654a038eda5",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "/how-to-get-here server-resolved hero H1 (sub-track C)",
+      "body": "TASK-11 deferred useHowToGetHereContent audit — HowToGetHereIndexContent hook needs investigation before server-resolved props pattern can be applied safely.",
+      "suggested_action": "spike (audit hook dependencies before scoping)",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:02:22.786Z",
+      "path": "docs/plans/_archive/brikette-deeper-route-funnel-cro/results-review.user.md",
+      "idea_key": "b550e7d7075385897bfdb286e51d043750f351d7",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Automated policy-fact consistency check across templates",
+      "body": "three policy facts manually verified across 125 templates; any future policy change has no automated catch",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:36:44.667Z",
+      "path": "docs/plans/hostel-email-template-expansion/results-review.user.md",
+      "idea_key": "d6c0d012a20bfaa110f0a2ea0fdeded4b3e11bc3",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Audit existing in-flight plans for stale BOS frontmatter fields",
+      "body": "Templates cleaned but older active plans may still carry Business-OS-Integration/Card-ID fields",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:34:30.738Z",
+      "path": "docs/plans/do-skills-bos-decoupling/results-review.user.md",
+      "idea_key": "336cadb8c091f25f65d75cf9beca9c762c25d087",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Enable Google Indexing API and test URL submission eligibility",
+      "body": "All 5 test submissions returned HTTP 403 — API not enabled in GCP project 98263641014",
+      "suggested_action": "spike (operator enables API at GCP console, then re-runs 5 test URLs)",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:32:11.291Z",
+      "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md",
+      "idea_key": "2a9895c0b987426e79f26ab0ad5d09a70a53152e",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "AI-to-mechanistic: The extractFromJsxAttribute utility correctly handles most cases but returns confident: false for template literals with interpolations. A future improvement could expand confidence for template literals where the bare class token is always in the static portion.",
+      "body": "AI-to-mechanistic: The extractFromJsxAttribute utility correctly handles most cases but returns confident: false for template literals with interpolations. A future improvement could expand confidence for template literals where the bare class token is always in the static portion.",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T09:51:20.911Z",
+      "path": "docs/plans/_archive/reception-rounded-lg-lint-rule/results-review.user.md",
+      "idea_key": "78659c800551efcc152a19e465ce0ed9f94f6ffb",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "AI-to-mechanistic: The extractFromJsxAttribute utility correctly handles most cases but returns confident: false for template literals with interpolations. A future improvement could expand confidence for template literals where the bare class token is always in the static portion.",
+      "body": "AI-to-mechanistic: The extractFromJsxAttribute utility correctly handles most cases but returns confident: false for template literals with interpolations. A future improvement could expand confidence for template literals where the bare class token is always in the static portion.",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T09:51:07.413Z",
+      "path": "docs/plans/reception-rounded-lg-lint-rule/results-review.user.md",
+      "idea_key": "fe02150793889094003f0c4a9cb631967e47e91f",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Validate packaging brief with a real physical-product operator",
+      "body": "TASK-04 and TASK-03 confidence capped at 80% — regulatory reference data not yet validated against real production experience.",
+      "suggested_action": "when a physical-product business first runs ASSESSMENT-15, collect feedback and update regulatory-requirements.md.",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:53:10.111Z",
+      "path": "docs/plans/_archive/startup-loop-product-identity-gap/results-review.user.md",
+      "idea_key": "45bfc4f2a076416e63c7fa72dc75143a2d0591a9",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Validate packaging brief with a real physical-product operator",
+      "body": "TASK-04 and TASK-03 confidence capped at 80% — regulatory reference data not yet validated against real production experience.",
+      "suggested_action": "when a physical-product business first runs ASSESSMENT-15, collect feedback and update regulatory-requirements.md.",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:53:01.939Z",
+      "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md",
+      "idea_key": "50250241c361b3e014540cb7f748b06e906f22b5",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Assess whether ASSESSMENT-13/14/15 need prompt template files",
+      "body": "prompt_required: false set for all three new stages — consistent with skill-file execution but may need revisiting if the loop UI requires prompt templates.",
+      "suggested_action": "defer — assess when first real business runs ASSESSMENT-13.",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:53:10.111Z",
+      "path": "docs/plans/_archive/startup-loop-product-identity-gap/results-review.user.md",
+      "idea_key": "d60d167a7803b1b4c4e2b9a54192015a1ca9c2ff",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Assess whether ASSESSMENT-13/14/15 need prompt template files",
+      "body": "prompt_required: false set for all three new stages — consistent with skill-file execution but may need revisiting if the loop UI requires prompt templates.",
+      "suggested_action": "defer — assess when first real business runs ASSESSMENT-13.",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:53:01.939Z",
+      "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md",
+      "idea_key": "515ff10d4c18b25b9a19da5a477002662c796142",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add Jest unit test with fixture JSON mock for gsc-url-inspection-batch.ts extraction logic",
+      "body": "TC-01 through TC-04 validated by code inspection only; fixture-based test would catch regression on return-type refactors",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:14:25.464Z",
+      "path": "docs/plans/_archive/seo-monitoring-datepublished-baseline/results-review.user.md",
+      "idea_key": "94171ba01389aff8f13c0eb976c89cfdf61747d9",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Confirm richResultsResult field presence on next monitoring run against amalfi-positano-bus (one indexed URL) to validate API response shape empirically",
+      "body": "TASK-01 delivered with optional-chaining fallbacks; no live API response with structured data yet observed for any seed URL",
+      "suggested_action": "defer (happens automatically on next run)",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:14:25.464Z",
+      "path": "docs/plans/_archive/seo-monitoring-datepublished-baseline/results-review.user.md",
+      "idea_key": "a7d9276518b19aed313e3f444b6db67349cc1cfb",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Wire lastUpdated through HowToGetHereContent to unlock datePublished on 31 EN transport pages",
+      "body": "transport pages have no datePublished structured data; monitoring will capture HowTo detection instead of Article when they index",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:14:25.464Z",
+      "path": "docs/plans/_archive/seo-monitoring-datepublished-baseline/results-review.user.md",
+      "idea_key": "5a52fb8afce7adb5c0738ce56dd61c016da11049",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Track GA4 funnel drop-off in Explorations once custom dimensions are visible (48h)",
+      "body": "Full funnel confirmed firing; no conversion rate baseline exists yet",
+      "suggested_action": "defer (check at T+7 days when custom dimensions propagate)",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:01:53.208Z",
+      "path": "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md",
+      "idea_key": "bcdd9c80911fe4bd1a09728c3fecc7b6861104a3",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Automate periodic smoke test runs against production (e.g. weekly cron) so GA4 event regressions are caught without manual operator invocation",
+      "body": "smoke test is manual-only; value of the assertion is bounded by run frequency",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T07:40:11.468Z",
+      "path": "docs/plans/_archive/brikette-smoke-view-item-list/results-review.user.md",
+      "idea_key": "b3cb39280dd5e64ca2f271505fc3617bb9ce4186",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add check_url_strict coverage to other localized booking entry points (e.g., /de/buchen, /fr/reserver)",
+      "body": "TASK-04 strict check plumbing is now reusable via healthcheck-strict-routes input in reusable-app.yml",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T07:33:03.262Z",
+      "path": "docs/plans/_archive/brikette-it-book-route-static-export/results-review.user.md",
+      "idea_key": "30a0a8985d1c87982902aead225c25cd09a5b0bc",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add datePublished to monitoring baseline to track when guide pages first appear with valid structured data in search results",
+      "body": "T+0 baseline has 29 unknown URLs; structured data correctness cannot be validated until pages are indexed",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:32:11.291Z",
+      "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md",
+      "idea_key": "361960b9c7d02a3691633298d03f6b1b32df7506",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Wire lastUpdated prop through HowToGetHereContent to unlock datePublished on transport pages",
+      "body": "31 EN transport pages have no lastUpdated in RouteDefinition; datePublished fix was deferred from TASK-03",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:32:11.291Z",
+      "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md",
+      "idea_key": "27d5c91eacc1a6e92dfea3cb5bb52da69026e1ad",
+      "priority_tier": "P5",
+      "own_priority_rank": 10
     }
   ];
 
@@ -738,6 +824,22 @@
     var map = { idea: 'badge-idea', risk: 'badge-risk', 'pending-review': 'badge-pending' };
     var lbl = { idea: 'Idea Candidate', risk: 'Open Risk', 'pending-review': 'Pending Review' };
     return '<span class="badge ' + (map[t] || 'badge-generic') + '">' + esc(lbl[t] || t) + '</span>';
+  }
+
+  function tierBadge(tier) {
+    if (!tier) return '';
+    var colorMap = {
+      'P0':  'badge-tier-crit',
+      'P0R': 'badge-tier-crit',
+      'P1':  'badge-tier-high',
+      'P1M': 'badge-tier-high',
+      'P2':  'badge-tier-med',
+      'P3':  'badge-tier-measure',
+      'P4':  'badge-tier-process',
+      'P5':  'badge-tier-default'
+    };
+    var cls = colorMap[tier] || 'badge-tier-default';
+    return '<span class="badge ' + cls + '" title="Priority tier: ' + esc(tier) + '">' + esc(tier) + '</span>';
   }
 
   // ── Render ─────────────────────────────────────────────────────────────────
@@ -831,7 +933,7 @@
     var html = '<div class="item ' + esc(item.type) + '">';
     html += '<div class="item-top">';
     html += '<div class="item-title">' + esc(item.title) + '</div>';
-    html += '<div class="item-badges">' + bizBadge(item.business) + typeBadge(item.type) + '</div>';
+    html += '<div class="item-badges">' + tierBadge(item.priority_tier) + bizBadge(item.business) + typeBadge(item.type) + '</div>';
     html += '</div>';
     html += '<div class="item-body">' + esc(item.body) + '</div>';
     if (item.suggested_action) {

@@ -9,6 +9,7 @@ import {
   REQUIRED_REFLECTION_SECTIONS,
   validateResultsReviewFile,
 } from "./lp-do-build-reflection-debt.js";
+import { classifyIdea,type IdeaClassificationInput } from "./lp-do-ideas-classifier.js";
 
 const PROCESS_HTML_RELATIVE_PATH = "docs/business-os/process-improvements.user.html";
 const PROCESS_DATA_RELATIVE_PATH = "docs/business-os/_data/process-improvements.json";
@@ -28,6 +29,10 @@ export interface ProcessImprovementItem {
   date: string;
   path: string;
   idea_key?: string;
+  /** Priority tier from the canonical classification policy (P0–P5). Only set for idea items. */
+  priority_tier?: string;
+  /** Numeric rank (1=P0 highest … 10=P5 lowest). Lower = higher priority. Only set for idea items. */
+  own_priority_rank?: number;
 }
 
 export interface CompletedIdeaEntry {
@@ -338,12 +343,39 @@ function parseReflectionDebtItems(markdown: string): ReflectionDebtLedgerItem[] 
   }
 }
 
+function suggestedActionRank(action: string | undefined): number {
+  if (!action) return 4;
+  const lower = action.toLowerCase();
+  if (/create card now|urgent/i.test(lower)) return 1;
+  if (/create card/i.test(lower)) return 2;
+  if (/spike|investigate/i.test(lower)) return 3;
+  if (/defer/i.test(lower)) return 5;
+  return 4;
+}
+
 function sortItems(items: ProcessImprovementItem[]): ProcessImprovementItem[] {
   return [...items].sort((left, right) => {
     const dateOrder = right.date.localeCompare(left.date);
     if (dateOrder !== 0) {
       return dateOrder;
     }
+    return left.title.localeCompare(right.title);
+  });
+}
+
+function sortIdeaItems(items: ProcessImprovementItem[]): ProcessImprovementItem[] {
+  return [...items].sort((left, right) => {
+    // Primary: canonical priority rank (lower integer = higher priority; unclassified → lowest)
+    const rankLeft = left.own_priority_rank ?? 999;
+    const rankRight = right.own_priority_rank ?? 999;
+    if (rankLeft !== rankRight) return rankLeft - rankRight;
+    // Secondary: suggested action urgency (create card now > create card > spike > other > defer)
+    const actionLeft = suggestedActionRank(left.suggested_action);
+    const actionRight = suggestedActionRank(right.suggested_action);
+    if (actionLeft !== actionRight) return actionLeft - actionRight;
+    // Tertiary: date descending (most recent first)
+    const dateOrder = right.date.localeCompare(left.date);
+    if (dateOrder !== 0) return dateOrder;
     return left.title.localeCompare(right.title);
   });
 }
@@ -512,7 +544,7 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
           `[generate-process-improvements] warn: idea title exceeds 100 chars in ${sourcePath} — shorten at source: "${idea.title.slice(0, 60)}..."\n`,
         );
       }
-      ideaItems.push({
+      const ideaItem: ProcessImprovementItem = {
         type: "idea",
         business,
         title: idea.title,
@@ -522,7 +554,24 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
         date: toIsoDate(date),
         path: sourcePath,
         idea_key: ideaKey,
-      });
+      };
+
+      try {
+        const classifierInput: IdeaClassificationInput = {
+          area_anchor: idea.title,
+          evidence_refs:
+            idea.body && idea.body !== MISSING_VALUE
+              ? [`operator-stated: ${idea.body}`]
+              : undefined,
+        };
+        const classification = classifyIdea(classifierInput);
+        ideaItem.priority_tier = classification.priority_tier;
+        ideaItem.own_priority_rank = classification.own_priority_rank;
+      } catch {
+        // Non-fatal: priority_tier and own_priority_rank remain unset
+      }
+
+      ideaItems.push(ideaItem);
     }
   }
 
@@ -591,7 +640,7 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
   }
 
   return {
-    ideaItems: sortItems(ideaItems),
+    ideaItems: sortIdeaItems(ideaItems),
     riskItems: sortItems(riskItems),
     pendingReviewItems: sortItems(pendingReviewItems),
   };

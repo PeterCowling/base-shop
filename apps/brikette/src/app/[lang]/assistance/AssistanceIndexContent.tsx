@@ -309,7 +309,7 @@ function AssistanceIndexContent({ lang, serverI18n }: Props): JSX.Element {
                   <dt className="font-semibold text-brand-heading dark:text-brand-text">
                     {t("addressLabel", { defaultValue: "Address" })}
                   </dt>
-                  <dd>{t("addressValue", { defaultValue: "Via Marconi 358, Positano 84017 SA" })}</dd>
+                  <dd>{t("addressValue", { defaultValue: "Via G. Marconi, 358, 84017, Positano" })}</dd>
                 </div>
               </dl>
               <div className="mt-5">

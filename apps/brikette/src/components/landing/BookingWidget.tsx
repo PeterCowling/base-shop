@@ -164,9 +164,22 @@ const BookingWidget = memo(function BookingWidget({
     }) ?? fallbackAvailabilityLabel;
 
   const handleCheckInChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setCheckIn(event.target.value);
+    const newCheckIn = event.target.value;
+    setCheckIn(newCheckIn);
     setShowError(false);
-  }, []);
+    // If checkout is now at or before the new check-in, advance it to the next day
+    if (newCheckIn && checkOut) {
+      const parsed = parseDateInput(newCheckIn, dateFormat);
+      if (parsed) {
+        const nextDay = new Date(parsed.getTime());
+        nextDay.setDate(nextDay.getDate() + 1);
+        const minCheckOutVal = formatLocalIso(nextDay);
+        if (checkOut <= newCheckIn) {
+          setCheckOut(minCheckOutVal);
+        }
+      }
+    }
+  }, [checkOut, dateFormat]);
 
   const handleCheckOutChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setCheckOut(event.target.value);
@@ -198,7 +211,9 @@ const BookingWidget = memo(function BookingWidget({
     if (!checkIn) return today || undefined;
     const parsed = parseDateInput(checkIn, dateFormat);
     if (!parsed) return today || undefined;
-    return formatLocalIso(parsed);
+    const nextDay = new Date(parsed.getTime());
+    nextDay.setDate(nextDay.getDate() + 1);
+    return formatLocalIso(nextDay);
   })();
 
   return (

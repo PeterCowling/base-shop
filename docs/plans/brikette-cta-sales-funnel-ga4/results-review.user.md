@@ -24,7 +24,7 @@ artifact: results-review
 ## New Idea Candidates
 - Add IT locale /book route to the static export to stop the redirect to /en | Trigger observation: Smoke test confirmed `/it/prenota` redirects to `/en` — IT-speaking visitors get an English booking page | Suggested next action: spike
 - Track GA4 funnel drop-off in Explorations once custom dimensions are visible (48h) | Trigger observation: Full funnel confirmed firing; no conversion rate baseline exists yet | Suggested next action: defer (check at T+7 days when custom dimensions propagate)
-- Add `view_item_list` assertions to the Playwright smoke test | Trigger observation: Smoke test confirmed `view_item_list` fires but no assertion captures it — gap in automated verification | Suggested next action: defer
+- ~~Add `view_item_list` assertions to the Playwright smoke test~~ | Actioned: plan `brikette-smoke-view-item-list` archived 2026-02-26 — `view_item_list` added to `REQUIRED_EVENTS` in `ga4-funnel-smoke.mjs`
 
 ## Standing Expansion
 No standing expansion: the beacon transport pattern (`trackThenNavigate` with `event_callback` + 150ms fallback) and the analytics placement rule (callbacks from app layer, `packages/ui` analytics-free) are the two decisions most worth codifying. These are currently captured in the build-record decision table. Consider promoting them to `docs/architecture.md` under a "GA4 / Analytics" section if a second GA4 integration is planned for another app.

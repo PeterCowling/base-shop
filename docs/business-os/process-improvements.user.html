@@ -112,7 +112,11 @@
     .pill-amber  { background: var(--amber-bg);  border-color: var(--amber-border);  color: var(--amber); }
     .pill-purple { background: var(--purple-bg); border-color: var(--purple-border); color: var(--purple); }
     .pill-green  { background: var(--green-bg);  border-color: var(--green-border);  color: var(--green); }
+    .pill-red    { background: var(--red-bg);    border-color: var(--red-border);    color: var(--red); }
     .pill-muted  { background: var(--surface-2); border-color: var(--border);        color: var(--text-muted); }
+    button.summary-pill { cursor: pointer; font-family: inherit; transition: opacity 0.12s, box-shadow 0.12s; }
+    button.summary-pill:hover { opacity: 0.85; }
+    button.summary-pill.pill-active { box-shadow: 0 0 0 2px currentColor; opacity: 1; }
 
     /* ── Section ── */
     .section { margin-bottom: 36px; }
@@ -259,7 +263,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-02-26T12:40:41.075Z";
+  var GEN_TS = "2026-02-26T13:21:47.202Z";
 
   var IDEA_ITEMS = [
     {
@@ -374,6 +378,23 @@
       "date": "2026-02-25T22:36:24.076Z",
       "path": "docs/plans/startup-loop-parallel-container-wiring/results-review.user.md",
       "idea_key": "e6d41217823fc313fd5fe0ae6781723def8af146",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "New loop process — codemoot route as named layer in critique-loop-protocol.md",
+      "body": "the protocol now has two routes (codemoot + inline fallback); the selection logic could be extracted as a named \"critique-router\" sub-skill for cleaner protocol evolution",
+      "suggested_action": "defer — low priority; current inline implementation is clear enough",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T13:16:27.600Z",
+      "path": "docs/plans/_archive/codemoot-cross-agent-critique/results-review.user.md",
+      "idea_key": "739931a7b5f8606b672c1f4ab7cb30eabb2601eb",
       "priority_tier": "P4",
       "own_priority_rank": 9,
       "urgency": "U2",
@@ -639,6 +660,23 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Calibration comparison — codemoot vs inline critique",
+      "body": "TASK-01 smoke test produced score=4/10 (lp_score=2.0) on fact-find.md; no baseline comparison against lp-do-critique exists yet. Score may be systematically harsher or softer.",
+      "suggested_action": "spike — run both critique paths on 2–3 existing artifacts and compare scores",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T13:16:27.600Z",
+      "path": "docs/plans/_archive/codemoot-cross-agent-critique/results-review.user.md",
+      "idea_key": "f3905273e1409faa4c0b6254ddf22d7ea16455c6",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "Wrangler secret rotation script for xa- staging Workers",
       "body": "TASK-10 checklist lists 6 separate wrangler secret put commands across 3 apps; a wrapper script would reduce rotation toil",
       "suggested_action": "defer (spike when secrets approach rotation schedule)",
@@ -797,6 +835,23 @@
       "date": "2026-02-26T08:53:01.939Z",
       "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md",
       "idea_key": "50250241c361b3e014540cb7f748b06e906f22b5",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Automate Codex build trigger (v2)",
+      "body": "v1 build handoff requires operator to manually start a Codex session; TASK-02 notes that codemoot run could automate this",
+      "suggested_action": "defer to v2 plan when v1 is validated in production",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T13:16:27.600Z",
+      "path": "docs/plans/_archive/codemoot-cross-agent-critique/results-review.user.md",
+      "idea_key": "c3e81fb537fe78b02811b005c9da39423ebeff88",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",
@@ -1021,6 +1076,7 @@
   // ── State ──────────────────────────────────────────────────────────────────
   var activeBusiness = 'ALL';
   var activeType = 'all';
+  var activeTierGroup = 'all';
 
   // ── Helpers ────────────────────────────────────────────────────────────────
   function fmtDate(iso) {
@@ -1074,6 +1130,13 @@
     return items.filter(function (item) {
       if (activeBusiness !== 'ALL' && item.business !== activeBusiness) return false;
       if (activeType !== 'all' && item.type !== activeType) return false;
+      if (activeTierGroup !== 'all' && item.type === 'idea') {
+        var t = item.priority_tier;
+        if (activeTierGroup === 'urgent'  && t !== 'P0'  && t !== 'P0R') return false;
+        if (activeTierGroup === 'high'    && t !== 'P1'  && t !== 'P1M') return false;
+        if (activeTierGroup === 'medium'  && t !== 'P2'  && t !== 'P3')  return false;
+        if (activeTierGroup === 'backlog' && t !== 'P4'  && t !== 'P5')  return false;
+      }
       return true;
     });
   }
@@ -1097,12 +1160,12 @@
     var medLowCount  = IDEA_ITEMS.filter(function(i){ return i.priority_tier === 'P2' || i.priority_tier === 'P3'; }).length;
     var backlogCount = IDEA_ITEMS.filter(function(i){ return i.priority_tier === 'P4' || i.priority_tier === 'P5'; }).length;
     html += '<div class="summary-bar">';
-    html += '<div class="summary-pill pill-green"><span class="count">' + urgentCount + '</span> Urgent (P0/P0R)</div>';
-    html += '<div class="summary-pill pill-amber"><span class="count">' + highCount + '</span> High (P1/P1M)</div>';
-    html += '<div class="summary-pill pill-muted"><span class="count">' + medLowCount + '</span> Medium/Steady</div>';
-    html += '<div class="summary-pill pill-muted"><span class="count">' + backlogCount + '</span> Backlog</div>';
-    html += '<div class="summary-pill pill-amber"><span class="count">' + RISK_ITEMS.length + '</span> Open Risks</div>';
-    html += '<div class="summary-pill pill-purple"><span class="count">' + PENDING_REVIEW_ITEMS.length + '</span> Pending Reviews</div>';
+    html += '<button class="summary-pill pill-red'    + (activeTierGroup==='urgent' ?' pill-active':'') + '" data-filter-tier="urgent"><span class="count">'  + urgentCount  + '</span> Urgent (P0/P0R)</button>';
+    html += '<button class="summary-pill pill-amber'  + (activeTierGroup==='high'   ?' pill-active':'') + '" data-filter-tier="high"><span class="count">'    + highCount    + '</span> High (P1/P1M)</button>';
+    html += '<button class="summary-pill pill-muted'  + (activeTierGroup==='medium' ?' pill-active':'') + '" data-filter-tier="medium"><span class="count">'  + medLowCount  + '</span> Medium/Steady</button>';
+    html += '<button class="summary-pill pill-muted'  + (activeTierGroup==='backlog'?' pill-active':'') + '" data-filter-tier="backlog"><span class="count">' + backlogCount + '</span> Backlog</button>';
+    html += '<button class="summary-pill pill-amber'  + (activeType==='risk'            ?' pill-active':'') + '" data-filter-type="risk"><span class="count">'           + RISK_ITEMS.length            + '</span> Open Risks</button>';
+    html += '<button class="summary-pill pill-purple' + (activeType==='pending-review'  ?' pill-active':'') + '" data-filter-type="pending-review"><span class="count">' + PENDING_REVIEW_ITEMS.length  + '</span> Pending Reviews</button>';
     html += '</div>';
 
     // Filter bar
@@ -1235,6 +1298,18 @@
     document.querySelectorAll('[data-filter-type]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         activeType = this.getAttribute('data-filter-type');
+        activeTierGroup = 'all';
+        try { sessionStorage.setItem('pi-filter-type', activeType); } catch (e) {}
+        try { sessionStorage.setItem('pi-filter-tier', activeTierGroup); } catch (e) {}
+        render();
+      });
+    });
+    document.querySelectorAll('[data-filter-tier]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var tier = this.getAttribute('data-filter-tier');
+        activeTierGroup = (activeTierGroup === tier) ? 'all' : tier;
+        activeType = 'all';
+        try { sessionStorage.setItem('pi-filter-tier', activeTierGroup); } catch (e) {}
         try { sessionStorage.setItem('pi-filter-type', activeType); } catch (e) {}
         render();
       });
@@ -1244,8 +1319,10 @@
   try {
     var savedBiz = sessionStorage.getItem('pi-filter-biz');
     var savedType = sessionStorage.getItem('pi-filter-type');
-    if (savedBiz) activeBusiness = savedBiz;
-    if (savedType) activeType = savedType;
+    var savedTier = sessionStorage.getItem('pi-filter-tier');
+    if (savedBiz)  activeBusiness  = savedBiz;
+    if (savedType) activeType      = savedType;
+    if (savedTier) activeTierGroup = savedTier;
   } catch (e) {}
 
   render();

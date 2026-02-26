@@ -11,6 +11,7 @@
   "otherBookingOptions": "Autres options de réservation et réseaux sociaux",
   "addressLabel": "Adresse :",
   "addressValue": "Via G. Marconi, 358, 84017, Positano",
+  "bookDirect": "Réserver en direct",
   "bookingOptions": {
     "googleBusiness": "Profil d'entreprise Google",
     "bookingCom": "Booking.com",

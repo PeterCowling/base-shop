@@ -238,7 +238,7 @@ describe("buildOctorateUrl — exact URL structure", () => {
     expect(url.searchParams.get("checkin")).toBe("2025-07-01");
     expect(url.searchParams.get("checkout")).toBe("2025-07-05");
     expect(url.searchParams.get("room")).toBe("433883");
-    expect(url.searchParams.has("pax")).toBe(false);
+    expect(url.searchParams.get("pax")).toBe("2");
   });
 
   it("Flex double_room: URL has correct flex rate code and date", () => {
@@ -258,7 +258,7 @@ describe("buildOctorateUrl — exact URL structure", () => {
     const url = new URL(result.url);
     expect(url.searchParams.get("room")).toBe("433894");
     expect(url.searchParams.get("date")).toBe("2025-08-10");
-    expect(url.searchParams.has("pax")).toBe(false);
+    expect(url.searchParams.get("pax")).toBe("1");
   });
 
   it("deal=SUMMER25: URL has deal + UTM params appended correctly", () => {

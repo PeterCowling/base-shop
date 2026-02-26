@@ -221,7 +221,7 @@ describe("TASK-32: RoomsSection onRoomSelect GA4 contracts", () => {
 
     // Regression guard: do not reintroduce legacy confirm/deep-link params.
     expect(targetUrl).not.toContain("/confirm.xhtml");
-    expect(parsed.searchParams.has("pax")).toBe(false);
+    expect(parsed.searchParams.get("pax")).toBe("1");
     expect(parsed.searchParams.has("children")).toBe(false);
     expect(parsed.searchParams.has("childrenAges")).toBe(false);
   });

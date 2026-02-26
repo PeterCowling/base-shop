@@ -46,7 +46,7 @@ export type BuildOctorateUrlResult =
 export function buildOctorateUrl(
   params: BuildOctorateUrlParams
 ): BuildOctorateUrlResult {
-  const { checkin, checkout, octorateRateCode, bookingCode, deal } = params;
+  const { checkin, checkout, pax, octorateRateCode, bookingCode, deal } = params;
 
   // Guard: booking code must be present
   if (!bookingCode || !bookingCode.trim()) {
@@ -70,9 +70,10 @@ export function buildOctorateUrl(
     date: checkin,
   });
 
-  // Preserve selected stay window for analytics/debug correlation.
+  // Preserve selected stay window for Octorate pre-fill and analytics correlation.
   urlParams.set("checkin", checkin);
   urlParams.set("checkout", checkout);
+  urlParams.set("pax", String(pax));
 
   // Append deal attribution params when a deal code is provided
   const dealCode = typeof deal === "string" ? deal.trim() : "";

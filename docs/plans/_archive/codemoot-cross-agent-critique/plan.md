@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Draft
+Status: Archived
 Domain: Agents
 Workstream: Engineering
 Created: 2026-02-26
@@ -33,7 +33,7 @@ Wire codemoot (v0.2.14) into the critique-loop-protocol.md so that lp-do-fact-fi
 - [x] TASK-02: Modify critique-loop-protocol.md — Complete (2026-02-26)
 - [x] TASK-03: Modify CODEX.md — Complete (2026-02-26)
 - [x] TASK-05: Close gap bands in critique-loop-protocol.md — Complete (2026-02-26)
-- [ ] TASK-04: Integration test
+- [x] TASK-04: Integration test — Complete (2026-02-26)
 
 ## Goals
 - Automate cross-agent critique (Codex reviews fact-find and plan artifacts) with zero operator intervention.
@@ -100,7 +100,7 @@ Wire codemoot (v0.2.14) into the critique-loop-protocol.md so that lp-do-fact-fi
 | TASK-02 | IMPLEMENT | Modify critique-loop-protocol.md: codemoot subprocess path, corrected score mapping (÷2 not ×5), gap bands, fallback | 84% | M | Complete (2026-02-26) | CHECKPOINT-01 | TASK-04 |
 | TASK-03 | IMPLEMENT | Modify CODEX.md: add codemoot prerequisites, dynamic resolution pattern, fallback | 84% | S | Complete (2026-02-26) | CHECKPOINT-01 | TASK-04 |
 | TASK-05 | IMPLEMENT | Close gap bands (2.6–2.9, 3.6–3.9) in critique-loop-protocol.md | 84% | S | Complete (2026-02-26) | CHECKPOINT-01 | TASK-04 |
-| TASK-04 | INVESTIGATE | Integration test: full fact-find → critique cycle with new protocol | 80% | S | Pending | TASK-02, TASK-03, TASK-05 | - |
+| TASK-04 | INVESTIGATE | Integration test: full fact-find → critique cycle with new protocol | 80% | S | Complete (2026-02-26) | TASK-02, TASK-03, TASK-05 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -457,7 +457,7 @@ Wire codemoot (v0.2.14) into the critique-loop-protocol.md so that lp-do-fact-fi
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `[readonly] .claude/skills/_shared/critique-loop-protocol.md`, `[readonly] CODEX.md`
 - **Depends on:** TASK-02, TASK-03, TASK-05
 - **Blocks:** -
@@ -488,6 +488,21 @@ Wire codemoot (v0.2.14) into the critique-loop-protocol.md so that lp-do-fact-fi
 - **Notes / references:**
   - Preferred test artifact: `docs/plans/codemoot-cross-agent-critique/fact-find.md` (this plan's own fact-find — already well-formed and a known quantity for comparison with the 3 manual critique rounds already run).
   - Secondary test: run a calibration comparison — run codemoot critique and inline Claude critique on the same artifact and compare score outputs to detect systematic bias.
+
+#### Build Evidence (2026-02-26)
+- **Status:** Complete
+- **Deliverable:** `docs/plans/codemoot-cross-agent-critique/integration-test-log.md`
+- **All TC checks:**
+  - TC-01 (dynamic resolution): PASS ✓
+  - TC-02 (fallback path): PASS ✓
+  - TC-03 (score-precedence, high score + needs_revision): PASS ✓
+  - TC-04 (score-precedence, low score + approved): PASS ✓
+  - TC-05 (CODEX.md readable, section present): PASS ✓
+  - TC-06 (gap band coverage): PASS ✓
+  - TC-07 (gap band application): PASS ✓
+- **DLP check:** 0 mangling artifacts in findings ✓
+- **Schema confirmed:** findings[] shape correct; score nullable guard documented ✓
+- **critique-history.md:** deferred to first live cycle (AF phase writes it; outside TASK-04 scope) ✓
 
 ---
 

@@ -20,7 +20,6 @@ No standing updates: this was a code-change plan. No Layer A strategy or market-
 
 - **RSC conversion for `RoomsStructuredData` + `ExperiencesStructuredData`** | Trigger observation: TASK-10 investigation confirmed both use `useCurrentLanguage()` (client hooks) but all underlying data is static — full RSC conversion is feasible and would eliminate the client component boundary. | Suggested next action: create card (P3 SSR, low urgency post-launch)
 - **`/how-to-get-here` server-resolved hero H1 (sub-track C)** | Trigger observation: TASK-11 deferred `useHowToGetHereContent` audit — `HowToGetHereIndexContent` hook needs investigation before server-resolved props pattern can be applied safely. | Suggested next action: spike (audit hook dependencies before scoping)
-- **`/assistance` Book Direct CTA copy i18n audit** | Trigger observation: The "Book Direct" button text in `AssistanceIndexContent` uses a hardcoded string; other locales are untested. | Suggested next action: create card (P2 i18n, can batch with next locale pass)
 
 ## Standing Expansion
 

@@ -163,8 +163,12 @@ function BookPageContent({ lang }: Props): JSX.Element {
               value={checkin}
               min={todayIso}
               onChange={(e) => {
-                setCheckin(e.target.value);
-                writeCanonicalBookingQuery({ checkin: e.target.value, checkout, pax });
+                const newCheckin = e.target.value;
+                setCheckin(newCheckin);
+                const newMin = addDays(newCheckin, 1);
+                const effectiveCheckout = checkout < newMin ? newMin : checkout;
+                if (effectiveCheckout !== checkout) setCheckout(effectiveCheckout);
+                writeCanonicalBookingQuery({ checkin: newCheckin, checkout: effectiveCheckout, pax });
               }}
               className="min-h-11 rounded-xl border border-brand-outline/40 bg-brand-bg px-3 py-2 text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
             />

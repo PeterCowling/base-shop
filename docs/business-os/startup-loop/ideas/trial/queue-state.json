@@ -2,17 +2,61 @@
   "queue_version": "queue.v1",
   "mode": "trial",
   "created_at": "2026-02-25T00:00:00Z",
-  "last_updated": "2026-02-26T14:30:00Z",
+  "last_updated": "2026-02-26T18:30:00Z",
   "counts": {
     "enqueued": 1,
     "processed": 2,
     "skipped": 2,
     "error": 0,
     "suppressed": 0,
-    "auto_executed": 10,
-    "total": 11
+    "auto_executed": 15,
+    "completed": 3,
+    "total": 19
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0014",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:process-improvements-completion-lifecycle:20260226",
+      "anchor_key": "process-improvements-completion-lifecycle",
+      "cluster_key": "BOS:BOS:process-improvements-completion-lifecycle:operator:BOS:BOS:process-improvements-completion-lifecycle:20260226",
+      "cluster_fingerprint": "f1e2d3c4b5a6078912345678901bcdef",
+      "lineage_depth": 0,
+      "area_anchor": "Process-improvements report — completed ideas must record completed_at and an output link, and must be excluded from the live report on subsequent refreshes",
+      "location_anchors": [
+        "scripts/src/startup-loop/generate-process-improvements.ts",
+        "docs/business-os/process-improvements.user.html",
+        "docs/business-os/_data/process-improvements.json",
+        "docs/business-os/startup-loop/ideas/trial/queue-state.json"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "BOS",
+      "status": "auto_executed",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: completion of build work must update the idea's canonical status with completed_at and output link; completed ideas must not render in the process-improvements report on subsequent refreshes"
+      ],
+      "current_truth": "generate-process-improvements.ts collects idea candidates from results-review.user.md 'New Idea Candidates' sections and injects them into the live HTML report. There is no completion status field on ProcessImprovementItem, no completion registry, and no filtering logic for completed ideas. Once an idea appears in a results-review file it renders in the report indefinitely, even after the corresponding plan has been built and shipped.",
+      "next_scope_now": "Fact-find to determine: (1) the right data model for idea completion — options include in-file frontmatter markers, a standalone completion-registry JSON, or extending queue-state dispatch entries; (2) what code changes are needed in generate-process-improvements.ts to filter completed items at generation time; (3) what the lp-do-build post-completion step must write to mark an idea as done; (4) whether the dispatch schema needs a 'completed' queue_state enum value; (5) produce a planning brief with concrete tasks.",
+      "adjacent_later": [
+        "Completion lifecycle for risk items (reflection-debt ledger items) — currently filtered by status: open but no completed_at / output_link tracking",
+        "Completion lifecycle for pending-review items — auto-resolve when results-review passes validation",
+        "Dashboard count chips reflect completed vs open breakdown"
+      ],
+      "created_at": "2026-02-26T18:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "process-improvements-completion-lifecycle",
+        "fact_find_path": "docs/plans/process-improvements-completion-lifecycle/fact-find.md",
+        "processed_at": "2026-02-26T18:00:00Z",
+        "route": "auto-executed"
+      }
+    },
     {
       "schema_version": "dispatch.v1",
       "dispatch_id": "IDEA-DISPATCH-20260226-0013",
@@ -24,7 +68,7 @@
       "cluster_key": "BRIK:SELL:seo-monitoring-datepublished-baseline:operator:BRIK:SELL:seo-monitoring-datepublished-baseline:20260226",
       "cluster_fingerprint": "a0b1c2d3e4f5067891234567890abcde",
       "lineage_depth": 0,
-      "area_anchor": "SEO monitoring — add datePublished structured data capture to URL inspection baseline so first valid structured-data appearances in search results are recorded",
+      "area_anchor": "SEO monitoring \u2014 add datePublished structured data capture to URL inspection baseline so first valid structured-data appearances in search results are recorded",
       "location_anchors": [
         "scripts/src/brikette/gsc-url-inspection-batch.ts",
         "docs/plans/_archive/brikette-seo-api-optimization-loop/monitoring-log.md",
@@ -38,16 +82,16 @@
       "confidence": 0.85,
       "evidence_refs": [
         "operator-stated: add datePublished to monitoring baseline to track when guide pages first appear with valid structured data in search results",
-        "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md — Article.datePublished/dateModified structured data confirmed wired and passing for guide pages; 3 contract tests",
-        "scripts/src/brikette/gsc-url-inspection-batch.ts — InspectUrlResponse type reads only indexStatusResult; richResultsResult field from GSC API is not captured",
-        "docs/plans/_archive/brikette-seo-api-optimization-loop/monitoring-log.md — every-other-day cadence active; monitoring columns: coverageState, lastCrawlTime, googleCanonical, verdict only",
-        "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md — New Idea Candidates: suggested action was defer; operator has now explicitly invoked"
+        "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md \u2014 Article.datePublished/dateModified structured data confirmed wired and passing for guide pages; 3 contract tests",
+        "scripts/src/brikette/gsc-url-inspection-batch.ts \u2014 InspectUrlResponse type reads only indexStatusResult; richResultsResult field from GSC API is not captured",
+        "docs/plans/_archive/brikette-seo-api-optimization-loop/monitoring-log.md \u2014 every-other-day cadence active; monitoring columns: coverageState, lastCrawlTime, googleCanonical, verdict only",
+        "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md \u2014 New Idea Candidates: suggested action was defer; operator has now explicitly invoked"
       ],
-      "current_truth": "The every-other-day GSC URL Inspection monitoring cadence is operational. gsc-url-inspection-batch.ts calls the GSC URL Inspection API and captures indexation status (coverageState, verdict, lastCrawlTime, googleCanonical) for 30 guide/transport URLs. The GSC URL Inspection API response also includes a richResultsResult field at the same level as indexStatusResult — the script's InspectUrlResponse type and result-capture logic do not read this field. Article.datePublished and dateModified structured data was wired and confirmed passing for guide pages during the seo-api-optimization-loop plan (3 contract tests). When pages start transitioning from 'URL is unknown to Google' to 'Submitted and indexed', there will be no automatic record of whether Google has picked up the datePublished structured data. The first transition already occurred (amalfi-positano-bus, 2026-02-25); the monitoring log has no structured data column for it.",
-      "next_scope_now": "Fact-find to scope adding datePublished structured data capture to the monitoring baseline: (1) read gsc-url-inspection-batch.ts — confirm what InspectUrlResponse currently captures; identify where richResultsResult would appear in the GSC URL Inspection API response; (2) check the existing monitoring run JSON (run-2026-02-25.json) — does the API actually returned richResultsResult data for the one indexed URL (amalfi-positano-bus), and if so what fields are present? (3) determine the minimum change to gsc-url-inspection-batch.ts: add richResultsResult to InspectUrlResponse type, capture relevant fields (detected schema types, validity, datePublished value if exposed) in InspectionResult, write them to output JSON; (4) assess whether monitoring-log.md needs a new column for structured data status, or whether per-run JSON alone is sufficient; (5) check if the GSC Rich Results Test API (separate from URL Inspection) is needed, or whether URL Inspection richResultsResult alone covers the requirement; (6) produce a planning brief scoping the script change as a single focused task.",
+      "current_truth": "The every-other-day GSC URL Inspection monitoring cadence is operational. gsc-url-inspection-batch.ts calls the GSC URL Inspection API and captures indexation status (coverageState, verdict, lastCrawlTime, googleCanonical) for 30 guide/transport URLs. The GSC URL Inspection API response also includes a richResultsResult field at the same level as indexStatusResult \u2014 the script's InspectUrlResponse type and result-capture logic do not read this field. Article.datePublished and dateModified structured data was wired and confirmed passing for guide pages during the seo-api-optimization-loop plan (3 contract tests). When pages start transitioning from 'URL is unknown to Google' to 'Submitted and indexed', there will be no automatic record of whether Google has picked up the datePublished structured data. The first transition already occurred (amalfi-positano-bus, 2026-02-25); the monitoring log has no structured data column for it.",
+      "next_scope_now": "Fact-find to scope adding datePublished structured data capture to the monitoring baseline: (1) read gsc-url-inspection-batch.ts \u2014 confirm what InspectUrlResponse currently captures; identify where richResultsResult would appear in the GSC URL Inspection API response; (2) check the existing monitoring run JSON (run-2026-02-25.json) \u2014 does the API actually returned richResultsResult data for the one indexed URL (amalfi-positano-bus), and if so what fields are present? (3) determine the minimum change to gsc-url-inspection-batch.ts: add richResultsResult to InspectUrlResponse type, capture relevant fields (detected schema types, validity, datePublished value if exposed) in InspectionResult, write them to output JSON; (4) assess whether monitoring-log.md needs a new column for structured data status, or whether per-run JSON alone is sufficient; (5) check if the GSC Rich Results Test API (separate from URL Inspection) is needed, or whether URL Inspection richResultsResult alone covers the requirement; (6) produce a planning brief scoping the script change as a single focused task.",
       "adjacent_later": [
         "Wire lastUpdated through HowToGetHereContent to unlock datePublished on 31 EN transport pages (deferred from TASK-03)",
-        "Monitoring dashboard column — structured data coverage rate alongside indexation rate",
+        "Monitoring dashboard column \u2014 structured data coverage rate alongside indexation rate",
         "GSC Rich Results Test API batch validation across all guide pages post-indexation"
       ],
       "created_at": "2026-02-26T14:30:00Z",
@@ -70,7 +114,7 @@
       "cluster_key": "BRIK:PRODUCTS:brikette-it-book-route-static-export:operator:BRIK:PRODUCTS:brikette-it-book-route-static-export:20260226",
       "cluster_fingerprint": "e3f2a1b4c9d7086523456789fabcde01",
       "lineage_depth": 0,
-      "area_anchor": "Brikette — IT locale /book route (/it/prenota) missing from static export or production routing, causing Italian visitors to land on English booking page",
+      "area_anchor": "Brikette \u2014 IT locale /book route (/it/prenota) missing from static export or production routing, causing Italian visitors to land on English booking page",
       "location_anchors": [
         "apps/brikette/src/app/[lang]/book/page.tsx",
         "apps/brikette/src/routing/sectionSegments.ts",
@@ -80,8 +124,8 @@
       ],
       "provisional_deliverable_family": "code-change",
       "domain": "PRODUCTS",
-      "current_truth": "Smoke test confirmed /it/prenota redirects to /en — IT-speaking visitors land on an English booking page. slug-map.ts maps book → prenota for IT locale. _redirects contains a 200 rewrite rule /it/prenota → /it/book (generated by generate-static-export-redirects.ts). book is listed in STATIC_EXPORT_SECTION_KEYS and generateStaticParams() in book/page.tsx calls generateLangParams() which includes all supportedLngs including it. Despite these, the redirect to /en occurs. Root cause is unconfirmed: either (1) the static export does not produce /it/book/index.html (Cloudflare Pages 200 rewrite target missing → falls through to catch-all → /en), or (2) the production Worker middleware does not translate prenota → book before routing.",
-      "next_scope_now": "Fact-find to diagnose and fix the IT locale /book route redirect: (1) determine which environment the smoke test ran against — static export (staging) or production Worker; (2) for static export: inspect whether out/it/book/index.html exists after a build — if absent, identify what excludes it (build script mv operations, output:export config, route-level export settings); (3) for production: audit the Next.js middleware chain — does it handle localized slug rewrites (prenota → book) before routing? Check apps/brikette/src/middleware.ts and any i18n routing config; (4) verify whether the _redirects 200-rewrite rule correctly resolves when its target path does not exist in the static export; (5) check whether other IT-locale slugs that differ from their internal segment names also resolve correctly — scope the fix to cover all affected locales if systemic; (6) propose a targeted fix with a regression guard (smoke test assertion or CI check) to prevent silent recurrence.",
+      "current_truth": "Smoke test confirmed /it/prenota redirects to /en \u2014 IT-speaking visitors land on an English booking page. slug-map.ts maps book \u2192 prenota for IT locale. _redirects contains a 200 rewrite rule /it/prenota \u2192 /it/book (generated by generate-static-export-redirects.ts). book is listed in STATIC_EXPORT_SECTION_KEYS and generateStaticParams() in book/page.tsx calls generateLangParams() which includes all supportedLngs including it. Despite these, the redirect to /en occurs. Root cause is unconfirmed: either (1) the static export does not produce /it/book/index.html (Cloudflare Pages 200 rewrite target missing \u2192 falls through to catch-all \u2192 /en), or (2) the production Worker middleware does not translate prenota \u2192 book before routing.",
+      "next_scope_now": "Fact-find to diagnose and fix the IT locale /book route redirect: (1) determine which environment the smoke test ran against \u2014 static export (staging) or production Worker; (2) for static export: inspect whether out/it/book/index.html exists after a build \u2014 if absent, identify what excludes it (build script mv operations, output:export config, route-level export settings); (3) for production: audit the Next.js middleware chain \u2014 does it handle localized slug rewrites (prenota \u2192 book) before routing? Check apps/brikette/src/middleware.ts and any i18n routing config; (4) verify whether the _redirects 200-rewrite rule correctly resolves when its target path does not exist in the static export; (5) check whether other IT-locale slugs that differ from their internal segment names also resolve correctly \u2014 scope the fix to cover all affected locales if systemic; (6) propose a targeted fix with a regression guard (smoke test assertion or CI check) to prevent silent recurrence.",
       "adjacent_later": [
         "Add Playwright smoke test assertion for /it/prenota (and other non-EN localized slugs) to prevent silent regression",
         "Audit all non-EN locale slug rewrites in _redirects against actual static export output to find any other missing routes",
@@ -93,10 +137,10 @@
       "confidence": 0.88,
       "evidence_refs": [
         "operator-stated: add IT locale /book route to static export to stop redirect to /en",
-        "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md — smoke test confirmed /it/prenota redirects to /en",
-        "apps/brikette/public/_redirects — 200 rewrite rule present: /it/prenota → /it/book",
-        "apps/brikette/src/routing/sectionSegments.ts — book is in STATIC_EXPORT_SECTION_KEYS",
-        "apps/brikette/src/slug-map.ts — it: prenota maps book key"
+        "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md \u2014 smoke test confirmed /it/prenota redirects to /en",
+        "apps/brikette/public/_redirects \u2014 200 rewrite rule present: /it/prenota \u2192 /it/book",
+        "apps/brikette/src/routing/sectionSegments.ts \u2014 book is in STATIC_EXPORT_SECTION_KEYS",
+        "apps/brikette/src/slug-map.ts \u2014 it: prenota maps book key"
       ],
       "created_at": "2026-02-26T14:30:00Z",
       "queue_state": "auto_executed",
@@ -118,15 +162,15 @@
       "cluster_key": "BRIK:SELL:brikette-smoke-view-item-list:operator:BRIK:SELL:brikette-smoke-view-item-list:20260226",
       "cluster_fingerprint": "f3e4d5c6b7a8091234567890fedcba12",
       "lineage_depth": 0,
-      "area_anchor": "Playwright smoke test — add view_item_list assertion to GA4 funnel verification",
+      "area_anchor": "Playwright smoke test \u2014 add view_item_list assertion to GA4 funnel verification",
       "location_anchors": [
         "apps/brikette/e2e/",
         "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md"
       ],
       "provisional_deliverable_family": "test",
       "domain": "SELL",
-      "current_truth": "The full GA4 e-commerce funnel was confirmed firing in production via Playwright smoke test (2026-02-22). The smoke test confirmed view_item_list fires but no assertion captures it — the event is verified by manual observation only, not by the automated test suite. All other funnel events (cta_click, search_availability, select_item, begin_checkout, handoff_to_engine) are confirmed present. view_item_list is the single unasserted event in the automated GA4 funnel coverage.",
-      "next_scope_now": "Fact-find to scope adding view_item_list assertions to the Playwright smoke test: (1) locate the existing GA4 funnel smoke test file(s) — where does the test live, how is it invoked, what CI command runs it?; (2) read the current test to understand the assertion pattern — how does it intercept or capture GA4 events (gtag mock, network intercept, dataLayer capture, playwright route intercept)?; (3) confirm when and where view_item_list fires — which component or hook dispatches it, what page/user action triggers it, what is the expected payload (event_name, item_list_id, items array)?; (4) assess assertion depth — is asserting the event name sufficient, or should the test also assert specific params like item_list_id or items.length > 0?; (5) check whether the test runs against a live production URL or local dev server — affects assertion structure; (6) identify shared test utilities (event capture helpers, GA4 mock setup) the new assertion should reuse; (7) produce a single-task planning brief: write and validate the view_item_list assertion.",
+      "current_truth": "The full GA4 e-commerce funnel was confirmed firing in production via Playwright smoke test (2026-02-22). The smoke test confirmed view_item_list fires but no assertion captures it \u2014 the event is verified by manual observation only, not by the automated test suite. All other funnel events (cta_click, search_availability, select_item, begin_checkout, handoff_to_engine) are confirmed present. view_item_list is the single unasserted event in the automated GA4 funnel coverage.",
+      "next_scope_now": "Fact-find to scope adding view_item_list assertions to the Playwright smoke test: (1) locate the existing GA4 funnel smoke test file(s) \u2014 where does the test live, how is it invoked, what CI command runs it?; (2) read the current test to understand the assertion pattern \u2014 how does it intercept or capture GA4 events (gtag mock, network intercept, dataLayer capture, playwright route intercept)?; (3) confirm when and where view_item_list fires \u2014 which component or hook dispatches it, what page/user action triggers it, what is the expected payload (event_name, item_list_id, items array)?; (4) assess assertion depth \u2014 is asserting the event name sufficient, or should the test also assert specific params like item_list_id or items.length > 0?; (5) check whether the test runs against a live production URL or local dev server \u2014 affects assertion structure; (6) identify shared test utilities (event capture helpers, GA4 mock setup) the new assertion should reuse; (7) produce a single-task planning brief: write and validate the view_item_list assertion.",
       "adjacent_later": [
         "Assert GA4 custom dimensions in smoke test once they propagate (cta_id, cta_location, item_list_id, coupon)",
         "Add view_item_list assertion to unit tests for faster feedback loop"
@@ -137,8 +181,8 @@
       "confidence": 0.92,
       "evidence_refs": [
         "operator-stated: add view_item_list assertions to the Playwright smoke test",
-        "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md — New Idea Candidates: smoke test confirmed view_item_list fires but no assertion captures it — gap in automated verification",
-        "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md — full GA4 funnel confirmed firing in production; view_item_list is the single unasserted event"
+        "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md \u2014 New Idea Candidates: smoke test confirmed view_item_list fires but no assertion captures it \u2014 gap in automated verification",
+        "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md \u2014 full GA4 funnel confirmed firing in production; view_item_list is the single unasserted event"
       ],
       "created_at": "2026-02-26T14:00:00Z",
       "queue_state": "auto_executed",
@@ -160,7 +204,7 @@
       "cluster_key": "BRIK:PRODUCTS:xa-restore-sync-scripts:operator:BRIK:PRODUCTS:xa-restore-sync-scripts:20260226",
       "cluster_fingerprint": "e2f3a4b5c6d7089012345678efabcd01",
       "lineage_depth": 0,
-      "area_anchor": "XA uploader — restore or port missing XA sync scripts to unblock J2",
+      "area_anchor": "XA uploader \u2014 restore or port missing XA sync scripts to unblock J2",
       "location_anchors": [
         "scripts/src/xa/validate-xa-inputs.ts",
         "scripts/src/xa/run-xa-pipeline.ts",
@@ -175,11 +219,11 @@
       "confidence": 0.98,
       "evidence_refs": [
         "operator-stated: restore or port missing XA sync scripts to unblock J2",
-        "git-log: commit 2ac91e7e5a (2026-02-24) — scripts/src/xa/validate-xa-inputs.ts and scripts/src/xa/run-xa-pipeline.ts created and committed as part of usability-hardening work batch",
-        "docs/plans/xa-uploader-usability-hardening/artifacts/usability-kpi-delta.md — scripts were absent at TASK-10 measurement (2026-02-23); scripts were committed the next day (2026-02-24) resolving the blocker",
-        "scripts/src/xa/ — all three files confirmed present: catalogSyncCommon.ts, validate-xa-inputs.ts, run-xa-pipeline.ts"
+        "git-log: commit 2ac91e7e5a (2026-02-24) \u2014 scripts/src/xa/validate-xa-inputs.ts and scripts/src/xa/run-xa-pipeline.ts created and committed as part of usability-hardening work batch",
+        "docs/plans/xa-uploader-usability-hardening/artifacts/usability-kpi-delta.md \u2014 scripts were absent at TASK-10 measurement (2026-02-23); scripts were committed the next day (2026-02-24) resolving the blocker",
+        "scripts/src/xa/ \u2014 all three files confirmed present: catalogSyncCommon.ts, validate-xa-inputs.ts, run-xa-pipeline.ts"
       ],
-      "logged_no_action_reason": "already done: scripts/src/xa/validate-xa-inputs.ts and run-xa-pipeline.ts were committed in 2ac91e7e5a (2026-02-24), one day before the results-review was written. The results-review CJDBR=50% is stale — it reflects the TASK-10 measurement taken before the commit. J2 is already unblocked. The usability-kpi-delta.md standing update (re-measure after scripts restored) is still outstanding.",
+      "logged_no_action_reason": "already done: scripts/src/xa/validate-xa-inputs.ts and run-xa-pipeline.ts were committed in 2ac91e7e5a (2026-02-24), one day before the results-review was written. The results-review CJDBR=50% is stale \u2014 it reflects the TASK-10 measurement taken before the commit. J2 is already unblocked. The usability-kpi-delta.md standing update (re-measure after scripts restored) is still outstanding.",
       "created_at": "2026-02-26T13:30:00Z",
       "queue_state": "logged_no_action"
     },
@@ -194,7 +238,7 @@
       "cluster_key": "BRIK:PRODUCTS:xa-e2e-sync-success-path:operator:BRIK:PRODUCTS:xa-e2e-sync-success-path:20260226",
       "cluster_fingerprint": "d1e2f3a4b5c6079801234567defabc90",
       "lineage_depth": 0,
-      "area_anchor": "XA uploader — E2E test coverage for sync success path (J2)",
+      "area_anchor": "XA uploader \u2014 E2E test coverage for sync success path (J2)",
       "location_anchors": [
         "apps/xa-uploader/src/app/api/catalog/sync/route.ts",
         "scripts/src/xa/validate-xa-inputs.ts",
@@ -204,32 +248,30 @@
       ],
       "provisional_deliverable_family": "test",
       "domain": "PRODUCTS",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
       "priority": "P2",
-      "confidence": 0.90,
+      "confidence": 0.9,
       "evidence_refs": [
         "operator-stated: add E2E coverage for sync success path once scripts are restored",
-        "docs/plans/xa-uploader-usability-hardening/results-review.user.md — test:e2e covers J1 (login/edit/save/delete) only; J2 (sync) has no E2E test",
-        "git-log: commit 2ac91e7e5a (2026-02-24) — scripts now exist; blocker resolved; J2 can be tested",
-        "apps/xa-uploader/src/app/api/catalog/sync/route.ts — sync API route fully implemented; spawns validate-xa-inputs.ts then run-xa-pipeline.ts; publishes catalog artifacts"
+        "docs/plans/xa-uploader-usability-hardening/results-review.user.md \u2014 test:e2e covers J1 (login/edit/save/delete) only; J2 (sync) has no E2E test",
+        "git-log: commit 2ac91e7e5a (2026-02-24) \u2014 scripts now exist; blocker resolved; J2 can be tested",
+        "apps/xa-uploader/src/app/api/catalog/sync/route.ts \u2014 sync API route fully implemented; spawns validate-xa-inputs.ts then run-xa-pipeline.ts; publishes catalog artifacts"
       ],
       "escalated_from": "logged_no_action",
       "escalation_reason": "Blocker resolved: sync scripts confirmed present in commit 2ac91e7e5a. J2 is now executable. E2E coverage gap is real and actionable.",
-      "current_truth": "The xa-uploader E2E suite (test:e2e) covers only J1 (login/edit/draft save/delete). J2 (sync) has no E2E test. The sync path is now fully unblocked: validate-xa-inputs.ts and run-xa-pipeline.ts exist and are fully implemented. The sync API route spawns both scripts, handles validation failure, pipeline failure, and on success publishes catalog artifacts to the XA storefront contract. The XA app also has a GET readiness check on the same route. The existing E2E harness (Playwright) was set up as part of the usability-hardening plan.",
-      "next_scope_now": "Fact-find to scope E2E coverage for the J2 sync success path: (1) read the existing Playwright test harness setup — where do E2E tests live, what fixtures exist, what the J1 test does so the J2 test can follow the same patterns; (2) understand what inputs J2 needs — is there a test products CSV fixture, or does one need to be created? What are the minimum valid inputs for a sync run to succeed?; (3) trace the sync API route end-to-end — what does a successful sync response look like, what side-effects (catalog JSON, media index, published version) need to be asserted?; (4) determine whether the E2E test should run against the real scripts (node spawning validate + pipeline) or whether they should be mocked at the API route level — assess what gives the most coverage value; (5) check if the XA storefront publish step needs to be stubbed or if there is a test contract endpoint; (6) check the CJDBR KPI measurement — now that scripts exist, re-measure and confirm it is 0%; (7) produce a planning-ready brief scoping the J2 E2E test as a single focused plan.",
-      "adjacent_later": [
-        "Re-measure CJDBR KPI with scripts present to confirm 0% and update usability-kpi-delta.md",
-        "E2E coverage for J2 error paths — validation failure, pipeline failure, empty input 409",
-        "Sync GET readiness endpoint E2E test (scripts-present state)"
-      ],
       "created_at": "2026-02-26T13:30:00Z",
-      "queue_state": "auto_executed",
+      "queue_state": "completed",
       "processed_by": {
         "fact_find_slug": "xa-e2e-sync-success-path",
-        "fact_find_path": "docs/plans/xa-e2e-sync-success-path/fact-find.md",
+        "fact_find_path": "docs/plans/_archive/xa-e2e-sync-success-path/fact-find.md",
         "processed_at": "2026-02-26T13:30:00Z",
         "route": "auto-executed"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/xa-e2e-sync-success-path/plan.md",
+        "completed_at": "2026-02-26T14:00:00Z",
+        "outcome": "TC-09-03 Playwright E2E test added and passing (3 passed, 3.0m). CJDBR updated to 0% in usability-kpi-delta.md. Commits: 64048da342 (gitignore), 4ddf9ac3bc (harness stub server), b59d93d2a7 (TC-09-03), 5abb996f3a (KPI delta)."
       }
     },
     {
@@ -243,7 +285,7 @@
       "cluster_key": "BOS:BOS:process-improvements-live-update:operator:BOS:BOS:process-improvements-live-update:20260226",
       "cluster_fingerprint": "c7d4e2f1a9b3085612345678ef90abcd",
       "lineage_depth": 0,
-      "area_anchor": "BOS tooling — process-improvements.user.html should regenerate automatically when source files change",
+      "area_anchor": "BOS tooling \u2014 process-improvements.user.html should regenerate automatically when source files change",
       "location_anchors": [
         "scripts/src/startup-loop/generate-process-improvements.ts",
         "scripts/package.json",
@@ -254,10 +296,10 @@
       "provisional_deliverable_family": "infra",
       "domain": "BOS",
       "current_truth": "The process-improvements HTML is regenerated only by manually running `pnpm run startup-loop:generate-process-improvements` (or via the `generate-stage-operator-views` composite script). There is no file-watching mechanism, no CI job, and no git hook that triggers regeneration when source results-review, build-record, or reflection-debt files are added or modified. As confirmed in this session: edits to results-review.user.md source files are not reflected in the HTML until the operator manually runs the script.",
-      "next_scope_now": "Fact-find to design automatic regeneration of process-improvements.user.html. Scope: (1) determine what 'live updated' means in practice — file-watcher for dev, pre-commit hook, or CI job on push; (2) audit whether the `generate-stage-operator-views` composite script already runs as part of any automated trigger (CI, build, pre-push hook); (3) check if the Business OS app build has any data dependency on process-improvements.json that could serve as a natural regeneration hook; (4) assess cost/benefit of each trigger option — file-watcher (dev only), pre-commit hook (reliable, adds latency), CI job (on push, highest latency), or chaining with an existing build step; (5) identify failure-mode handling — what happens when the script encounters a malformed source file, and how should that surface without blocking commits; (6) produce a planning brief with a recommended implementation approach and specific task breakdown.",
+      "next_scope_now": "Fact-find to design automatic regeneration of process-improvements.user.html. Scope: (1) determine what 'live updated' means in practice \u2014 file-watcher for dev, pre-commit hook, or CI job on push; (2) audit whether the `generate-stage-operator-views` composite script already runs as part of any automated trigger (CI, build, pre-push hook); (3) check if the Business OS app build has any data dependency on process-improvements.json that could serve as a natural regeneration hook; (4) assess cost/benefit of each trigger option \u2014 file-watcher (dev only), pre-commit hook (reliable, adds latency), CI job (on push, highest latency), or chaining with an existing build step; (5) identify failure-mode handling \u2014 what happens when the script encounters a malformed source file, and how should that surface without blocking commits; (6) produce a planning brief with a recommended implementation approach and specific task breakdown.",
       "adjacent_later": [
-        "Preview mode — regenerate in-memory and serve HTML via dev server so changes are visible without committing",
-        "Validation gate — lint source results-review files before generation to prevent malformed idea entries breaking the HTML"
+        "Preview mode \u2014 regenerate in-memory and serve HTML via dev server so changes are visible without committing",
+        "Validation gate \u2014 lint source results-review files before generation to prevent malformed idea entries breaking the HTML"
       ],
       "recommended_route": "lp-do-fact-find",
       "status": "fact_find_ready",
@@ -265,8 +307,8 @@
       "confidence": 0.88,
       "evidence_refs": [
         "operator-stated: process-improvements.user.html should be live updated",
-        "scripts/package.json — startup-loop:generate-process-improvements requires manual invocation; no watch or hook defined",
-        "docs/business-os/_data/process-improvements.json — regenerated manually during this session after editing source results-review.user.md"
+        "scripts/package.json \u2014 startup-loop:generate-process-improvements requires manual invocation; no watch or hook defined",
+        "docs/business-os/_data/process-improvements.json \u2014 regenerated manually during this session after editing source results-review.user.md"
       ],
       "created_at": "2026-02-26T12:00:00Z",
       "queue_state": "auto_executed",
@@ -288,7 +330,7 @@
       "cluster_key": "BRIK:PRODUCTS:reception-skeleton-canonical-doc:operator:BRIK:PRODUCTS:reception-skeleton-canonical-doc:20260226",
       "cluster_fingerprint": "b8e3d2a1f4c6097512345678cdef9012",
       "lineage_depth": 1,
-      "area_anchor": "Reception app — document ReceptionSkeleton as the canonical loading state for tables",
+      "area_anchor": "Reception app \u2014 document ReceptionSkeleton as the canonical loading state for tables",
       "location_anchors": [
         "apps/reception/src/components/common/ReceptionSkeleton.tsx",
         "apps/reception/src/app/check-ins/",
@@ -298,20 +340,20 @@
       ],
       "provisional_deliverable_family": "code-change",
       "domain": "PRODUCTS",
-      "current_truth": "ReceptionSkeleton was created during the Phase 1–3 UI polish as a shared loading skeleton component for reception app tables. It is confirmed in use in two screens (CheckinsTable, Checkout). The Phase 4 fact-find (IDEA-DISPATCH-20260226-0006) is in-flight covering all 16 remaining screens — many of which will also need table loading states. No code comment or design system note currently establishes ReceptionSkeleton as the canonical pattern, meaning Phase 4 implementers may create duplicate or inconsistent loading states.",
-      "next_scope_now": "Briefing: (1) locate ReceptionSkeleton.tsx and read its current implementation — what does it render, what props does it accept, is it generic enough for arbitrary table shapes? (2) confirm exact screens where it is currently used (CheckinsTable, Checkout — verify file paths); (3) check the Phase 4 fact-find (docs/plans/reception-ui-screen-polish-phase4/fact-find.md) — does it already capture ReceptionSkeleton as an established pattern dependency? If yes, no further action needed. If no, identify where in the fact-find or plan to add a pattern note so Phase 4 implementers know to use it; (4) determine if a JSDoc comment on the component itself is sufficient, or if a design system notes file exists that should also be updated.",
+      "current_truth": "ReceptionSkeleton was created during the Phase 1\u20133 UI polish as a shared loading skeleton component for reception app tables. It is confirmed in use in two screens (CheckinsTable, Checkout). The Phase 4 fact-find (IDEA-DISPATCH-20260226-0006) is in-flight covering all 16 remaining screens \u2014 many of which will also need table loading states. No code comment or design system note currently establishes ReceptionSkeleton as the canonical pattern, meaning Phase 4 implementers may create duplicate or inconsistent loading states.",
+      "next_scope_now": "Briefing: (1) locate ReceptionSkeleton.tsx and read its current implementation \u2014 what does it render, what props does it accept, is it generic enough for arbitrary table shapes? (2) confirm exact screens where it is currently used (CheckinsTable, Checkout \u2014 verify file paths); (3) check the Phase 4 fact-find (docs/plans/reception-ui-screen-polish-phase4/fact-find.md) \u2014 does it already capture ReceptionSkeleton as an established pattern dependency? If yes, no further action needed. If no, identify where in the fact-find or plan to add a pattern note so Phase 4 implementers know to use it; (4) determine if a JSDoc comment on the component itself is sufficient, or if a design system notes file exists that should also be updated.",
       "adjacent_later": [
-        "Phase 4 loading state audit — after Phase 4 build, verify all new table screens use ReceptionSkeleton",
+        "Phase 4 loading state audit \u2014 after Phase 4 build, verify all new table screens use ReceptionSkeleton",
         "Extend ReceptionSkeleton to support configurable column counts if Phase 4 tables have different shapes"
       ],
       "recommended_route": "lp-do-briefing",
       "status": "briefing_ready",
       "priority": "P3",
-      "confidence": 0.90,
+      "confidence": 0.9,
       "evidence_refs": [
         "operator-stated: ReceptionSkeleton should be documented as the canonical loading state for reception app tables",
-        "docs/plans/_archive/reception-ui-screen-polish/results-review.user.md — New Idea Candidates: ReceptionSkeleton used in CheckinsTable and Checkout; will be needed by Phase 4 screens",
-        "docs/business-os/startup-loop/ideas/trial/queue-state.json — IDEA-DISPATCH-20260226-0006: Phase 4 fact-find auto_executed and in-flight"
+        "docs/plans/_archive/reception-ui-screen-polish/results-review.user.md \u2014 New Idea Candidates: ReceptionSkeleton used in CheckinsTable and Checkout; will be needed by Phase 4 screens",
+        "docs/business-os/startup-loop/ideas/trial/queue-state.json \u2014 IDEA-DISPATCH-20260226-0006: Phase 4 fact-find auto_executed and in-flight"
       ],
       "created_at": "2026-02-26T12:00:00Z",
       "queue_state": "enqueued"
@@ -327,7 +369,7 @@
       "cluster_key": "BRIK:PRODUCTS:reception-ui-screen-polish-phase4:operator:BRIK:PRODUCTS:reception-ui-screen-polish-phase4:20260226",
       "cluster_fingerprint": "a9b2c3d4e5f6078901234567abcdef12",
       "lineage_depth": 1,
-      "area_anchor": "Reception app Phase 4 — extend UI polish to all 16 remaining screens using the frontend-design skill",
+      "area_anchor": "Reception app Phase 4 \u2014 extend UI polish to all 16 remaining screens using the frontend-design skill",
       "location_anchors": [
         "apps/reception/src/app/",
         "apps/reception/src/components/",
@@ -335,10 +377,10 @@
       ],
       "provisional_deliverable_family": "code-change",
       "domain": "PRODUCTS",
-      "current_truth": "Phase 1-3 reception app UI polish is complete (archived 2026-02-26). 9 screens polished: RoomsGrid, TillReconciliation, SafeManagement, PrepareDashboard, RealTimeDashboard, CheckinsTable, Checkout, EndOfDayPacket. Shared components established: PageShell (gradient backdrop), ReceptionSkeleton (loading skeleton), StatPanel (stat display), PreparePage (layout wrapper). The original fact-find identified 16 unread Phase 4 screens with a visible visual gap relative to the polished screens. The frontend-design skill must be used as primary execution skill — it was used for login and bar screens and produced the Skeuomorphic Hospitality POS design language that Phase 1-3 continued.",
-      "next_scope_now": "Fact-find to scope Phase 4 reception app UI polish using the frontend-design skill: (1) inventory the 16 Phase 4 screens identified in the archived fact-find — read each root component to establish current visual state and complexity bracket; (2) assess each screen against the established visual standard (gradient backdrop via PageShell, accent-bar heading, card elevation bg-surface rounded-xl shadow-lg, ReceptionSkeleton, StatPanel, mode banners, rounded-lg controls); (3) identify which screens already use some established components vs which need more extensive work; (4) identify new shared component opportunities that if built once would benefit multiple Phase 4 screens; (5) establish a priority order based on staff usage frequency and visual gap severity; (6) produce a phased planning brief with per-screen complexity brackets and a recommended implementation approach using the frontend-design skill.",
+      "current_truth": "Phase 1-3 reception app UI polish is complete (archived 2026-02-26). 9 screens polished: RoomsGrid, TillReconciliation, SafeManagement, PrepareDashboard, RealTimeDashboard, CheckinsTable, Checkout, EndOfDayPacket. Shared components established: PageShell (gradient backdrop), ReceptionSkeleton (loading skeleton), StatPanel (stat display), PreparePage (layout wrapper). The original fact-find identified 16 unread Phase 4 screens with a visible visual gap relative to the polished screens. The frontend-design skill must be used as primary execution skill \u2014 it was used for login and bar screens and produced the Skeuomorphic Hospitality POS design language that Phase 1-3 continued.",
+      "next_scope_now": "Fact-find to scope Phase 4 reception app UI polish using the frontend-design skill: (1) inventory the 16 Phase 4 screens identified in the archived fact-find \u2014 read each root component to establish current visual state and complexity bracket; (2) assess each screen against the established visual standard (gradient backdrop via PageShell, accent-bar heading, card elevation bg-surface rounded-xl shadow-lg, ReceptionSkeleton, StatPanel, mode banners, rounded-lg controls); (3) identify which screens already use some established components vs which need more extensive work; (4) identify new shared component opportunities that if built once would benefit multiple Phase 4 screens; (5) establish a priority order based on staff usage frequency and visual gap severity; (6) produce a phased planning brief with per-screen complexity brackets and a recommended implementation approach using the frontend-design skill.",
       "adjacent_later": [
-        "Phase 5 — navigation/sidebar visual unification across the full reception app",
+        "Phase 5 \u2014 navigation/sidebar visual unification across the full reception app",
         "Micro-interaction polish (button press states, transitions, haptic feedback patterns)",
         "Accessibility pass post-redesign (colour contrast, focus management for keyboard POS modes)",
         "Tablet/iPad layout optimisation for bar POS use"
@@ -349,8 +391,8 @@
       "confidence": 0.92,
       "evidence_refs": [
         "operator-stated: extend reception UI polish to Phase 4 screens using frontend-design skill",
-        "docs/plans/_archive/reception-ui-screen-polish/results-review.user.md — New Idea Candidates: 16 Phase 4 screens identified",
-        "docs/plans/_archive/reception-ui-screen-polish/build-record.user.md — shared components: PageShell, ReceptionSkeleton, StatPanel, PreparePage"
+        "docs/plans/_archive/reception-ui-screen-polish/results-review.user.md \u2014 New Idea Candidates: 16 Phase 4 screens identified",
+        "docs/plans/_archive/reception-ui-screen-polish/build-record.user.md \u2014 shared components: PageShell, ReceptionSkeleton, StatPanel, PreparePage"
       ],
       "created_at": "2026-02-26T02:00:00Z",
       "queue_state": "auto_executed",
@@ -372,7 +414,7 @@
       "cluster_key": "BRIK:PRODUCTS:reception-ui-screen-polish:operator:BRIK:PRODUCTS:reception-ui-screen-polish:20260225",
       "cluster_fingerprint": "e7c3a9f2b4d1085690abcdef34567891",
       "lineage_depth": 0,
-      "area_anchor": "Reception app — screen-by-screen UI polish using the frontend-design skill",
+      "area_anchor": "Reception app \u2014 screen-by-screen UI polish using the frontend-design skill",
       "location_anchors": [
         "apps/reception/src/app/",
         "apps/reception/src/components/",
@@ -380,18 +422,18 @@
       ],
       "provisional_deliverable_family": "code-change",
       "domain": "PRODUCTS",
-      "current_truth": "The reception app login and bar screens have been visually improved using the frontend-design skill. The reception-design-overhaul assessment documents a Phase 3 'screen-by-screen polish' vision but no plan has been created for it. The reception-visual-ux-audit plan addressed systematic bug fixes (token normalization, dark mode overlays, touch targets, modal unification) — not creative UI design polish. No active plan covers applying the frontend-design skill to remaining reception screens.",
-      "next_scope_now": "Fact-find to scope reception app screen-by-screen UI polish using the frontend-design skill: (1) inventory all major reception app screens/routes — which exist beyond login and bar? (checkin, checkout, room grid, till reconciliation, safe management, sales, settings, etc.); (2) for each screen, assess current visual quality against the 'Skeuomorphic Hospitality POS' direction from the design overhaul assessment — what needs attention and why?; (3) identify the highest-leverage screens first — which screens are used most frequently by bar/reception staff and would benefit most from improved visual clarity and touch usability?; (4) review what the frontend-design skill produced for login and bar screens — what design patterns were applied, what can be systematically extended to other screens?; (5) identify any shared components or layout patterns that, if redesigned once, would improve multiple screens simultaneously; (6) produce a planning-ready brief with a prioritised screen list, per-screen improvement goals, and a phased execution approach.",
+      "current_truth": "The reception app login and bar screens have been visually improved using the frontend-design skill. The reception-design-overhaul assessment documents a Phase 3 'screen-by-screen polish' vision but no plan has been created for it. The reception-visual-ux-audit plan addressed systematic bug fixes (token normalization, dark mode overlays, touch targets, modal unification) \u2014 not creative UI design polish. No active plan covers applying the frontend-design skill to remaining reception screens.",
+      "next_scope_now": "Fact-find to scope reception app screen-by-screen UI polish using the frontend-design skill: (1) inventory all major reception app screens/routes \u2014 which exist beyond login and bar? (checkin, checkout, room grid, till reconciliation, safe management, sales, settings, etc.); (2) for each screen, assess current visual quality against the 'Skeuomorphic Hospitality POS' direction from the design overhaul assessment \u2014 what needs attention and why?; (3) identify the highest-leverage screens first \u2014 which screens are used most frequently by bar/reception staff and would benefit most from improved visual clarity and touch usability?; (4) review what the frontend-design skill produced for login and bar screens \u2014 what design patterns were applied, what can be systematically extended to other screens?; (5) identify any shared components or layout patterns that, if redesigned once, would improve multiple screens simultaneously; (6) produce a planning-ready brief with a prioritised screen list, per-screen improvement goals, and a phased execution approach.",
       "adjacent_later": [
         "Shared layout/navigation component polish (sidebar, header, breadcrumbs) that spans all screens",
         "Micro-interaction and animation improvements for touch POS feedback (button press states, transitions)",
-        "Accessibility audit post-redesign — colour contrast, focus management for keyboard-navigable POS modes",
+        "Accessibility audit post-redesign \u2014 colour contrast, focus management for keyboard-navigable POS modes",
         "Responsive/tablet layout optimisation for bar POS use on iPad"
       ],
       "recommended_route": "lp-do-fact-find",
       "status": "fact_find_ready",
       "priority": "P2",
-      "confidence": 0.90,
+      "confidence": 0.9,
       "evidence_refs": [
         "operator-stated: login and bar screens improved via frontend-design skill; more opportunity to improve remaining reception screens",
         "docs/plans/reception-design-overhaul/assessment.md",
@@ -417,7 +459,7 @@
       "cluster_key": "BOS:BOS:lp-do-skills-token-efficiency-post-revision:operator:BOS:BOS:lp-do-skills-token-efficiency-post-revision:20260225",
       "cluster_fingerprint": "f5a2b8c3d4e6079012345678abcdef90",
       "lineage_depth": 0,
-      "area_anchor": "lp-do skill series — token efficiency and effectiveness improvements after recent revisions (BOS decoupling + post-build validation)",
+      "area_anchor": "lp-do skill series \u2014 token efficiency and effectiveness improvements after recent revisions (BOS decoupling + post-build validation)",
       "location_anchors": [
         ".claude/skills/lp-do-fact-find/",
         ".claude/skills/lp-do-plan/",
@@ -428,12 +470,12 @@
       ],
       "provisional_deliverable_family": "skill-change",
       "domain": "BOS",
-      "current_truth": "The lp-do skill series (fact-find, plan, build, replan, critique, factcheck) have been recently revised — BOS integration was removed (do-skills-bos-decoupling, all tasks done 2026-02-24) and post-build validation was added to lp-do-build (lp-do-build-post-build-validation, TASK-01 done 2026-02-25). Previous token efficiency work (startup-loop-token-efficiency v1 and v2) targeted other skills (lp-design-qa, lp-sequence, lp-channels, lp-seo, lp-launch-qa). The lp-do skills themselves have not had a dedicated post-revision token efficiency audit. The operator has identified this as an opportunity.",
-      "next_scope_now": "Fact-find the lp-do skill series for token efficiency and effectiveness improvements post-revision. Scope: (1) measure current SKILL.md line counts for all six lp-do skills and their modules — which exceed the 200-line thin-orchestrator threshold? (2) identify content that is now redundant post-BOS-decoupling — removed BOS phases may have left residual context, examples, or instructions that no longer apply; (3) identify module content that could be tightened without losing accuracy — verbose examples, repeated preambles, over-specified gate descriptions; (4) identify structural improvements — do the skills have clear, efficient handoff contracts, or do they repeat context that could be moved to a single shared reference? (5) assess effectiveness — do the skills produce consistent, high-quality outputs across the lp-do-fact-find → lp-do-plan → lp-do-build chain, or are there known failure modes that a better skill design would prevent? Output: a planning brief scoping specific token reduction targets per skill + any structural/effectiveness improvements.",
+      "current_truth": "The lp-do skill series (fact-find, plan, build, replan, critique, factcheck) have been recently revised \u2014 BOS integration was removed (do-skills-bos-decoupling, all tasks done 2026-02-24) and post-build validation was added to lp-do-build (lp-do-build-post-build-validation, TASK-01 done 2026-02-25). Previous token efficiency work (startup-loop-token-efficiency v1 and v2) targeted other skills (lp-design-qa, lp-sequence, lp-channels, lp-seo, lp-launch-qa). The lp-do skills themselves have not had a dedicated post-revision token efficiency audit. The operator has identified this as an opportunity.",
+      "next_scope_now": "Fact-find the lp-do skill series for token efficiency and effectiveness improvements post-revision. Scope: (1) measure current SKILL.md line counts for all six lp-do skills and their modules \u2014 which exceed the 200-line thin-orchestrator threshold? (2) identify content that is now redundant post-BOS-decoupling \u2014 removed BOS phases may have left residual context, examples, or instructions that no longer apply; (3) identify module content that could be tightened without losing accuracy \u2014 verbose examples, repeated preambles, over-specified gate descriptions; (4) identify structural improvements \u2014 do the skills have clear, efficient handoff contracts, or do they repeat context that could be moved to a single shared reference? (5) assess effectiveness \u2014 do the skills produce consistent, high-quality outputs across the lp-do-fact-find \u2192 lp-do-plan \u2192 lp-do-build chain, or are there known failure modes that a better skill design would prevent? Output: a planning brief scoping specific token reduction targets per skill + any structural/effectiveness improvements.",
       "adjacent_later": [
         "Second meta-loop-efficiency audit post-improvements to confirm H1 compliance",
         "lp-do-sequence potential merge or simplification",
-        "Shared lp-do context budget — a common preamble for the chain that avoids repeating architectural context in each skill"
+        "Shared lp-do context budget \u2014 a common preamble for the chain that avoids repeating architectural context in each skill"
       ],
       "recommended_route": "lp-do-fact-find",
       "status": "fact_find_ready",
@@ -617,6 +659,272 @@
         "processed_at": "2026-02-25T00:00:00Z",
         "route": "dispatch-routed"
       }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0014",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:PRODUCTS:rsc-structured-data-conversion:20260226",
+      "anchor_key": "rsc-structured-data-conversion",
+      "cluster_key": "BRIK:PRODUCTS:rsc-structured-data-conversion:operator:BRIK:PRODUCTS:rsc-structured-data-conversion:20260226",
+      "cluster_fingerprint": "b1c2d3e4f5a60789abcdef01234567ab",
+      "lineage_depth": 0,
+      "area_anchor": "RSC conversion \u2014 create server-only RoomsStructuredDataRsc and ExperiencesStructuredDataRsc components; move structured data rendering out of client components into RSC wrappers to improve SSR completeness and structured-data reliability",
+      "location_anchors": [
+        "apps/brikette/src/components/seo/RoomStructuredData.tsx",
+        "apps/brikette/src/components/seo/ExperiencesStructuredData.tsx",
+        "apps/brikette/src/app/[lang]/rooms/page.tsx",
+        "apps/brikette/src/app/[lang]/rooms/RoomsPageContent.tsx",
+        "apps/brikette/src/app/[lang]/experiences/page.tsx",
+        "docs/plans/_archive/brikette-deeper-route-funnel-cro/task-10-ssr-investigation.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "PRODUCTS",
+      "current_truth": "RoomsStructuredData and ExperiencesStructuredData are client components using useCurrentLanguage() (which calls useParams() + usePathname()) and useTranslation. TASK-10 investigation (docs/plans/_archive/brikette-deeper-route-funnel-cro/task-10-ssr-investigation.md) confirmed both can be converted to server-only RSC variants by accepting lang as a prop and reading data directly \u2014 but TASK-11 (the implementation task) was never executed before the parent plan was archived. No RSC variants exist in the codebase today.",
+      "next_scope_now": "Implement RSC server component versions of RoomsStructuredData and ExperiencesStructuredData: (1) create RoomsStructuredDataRsc accepting lang: AppLanguage \u2014 reads room data server-side, emits JSON-LD without client hooks; (2) create ExperiencesStructuredDataRsc accepting lang: AppLanguage \u2014 emits ItemList JSON-LD server-side; (3) integrate both into their respective RSC wrapper pages (rooms/page.tsx, experiences/page.tsx); (4) remove the hook-dependent versions from their client components; (5) verify structured data appears in initial HTML response (no hydration required). TASK-10 provides full component-level analysis and proposed interface signatures \u2014 use it as primary reference.",
+      "adjacent_later": [
+        "Extract H1 + subtitle from RoomsPageContent into rooms/page.tsx RSC wrapper (also identified in TASK-10)",
+        "Add HowToGetHereStructuredData RSC (BreadcrumbList or TouristAttraction) \u2014 TASK-10 flagged as net-new addition",
+        "Audit DirectBookingPerks and AlsoHelpful for RSC eligibility",
+        "getTranslations pre-warm check for experiences/page.tsx to prevent flash of untranslated content (TASK-10 bug-risk flag)"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.89,
+      "evidence_refs": [
+        "operator-stated: RSC conversion for RoomsStructuredData + ExperiencesStructuredData",
+        "docs/plans/_archive/brikette-deeper-route-funnel-cro/task-10-ssr-investigation.md"
+      ],
+      "created_at": "2026-02-26T15:00:00Z",
+      "queue_state": "completed",
+      "processed_by": {
+        "fact_find_slug": "brikette-rsc-structured-data-conversion",
+        "fact_find_path": "docs/plans/brikette-rsc-structured-data-conversion/fact-find.md",
+        "processed_at": "2026-02-26T15:00:00Z",
+        "route": "dispatch-routed"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/brikette-rsc-structured-data-conversion/plan.md",
+        "completed_at": "2026-02-26T16:30:00Z",
+        "outcome": "RoomsStructuredDataRsc.tsx and ExperiencesStructuredDataRsc.tsx created as server-only components. Both integrated into rooms/page.tsx and experiences/page.tsx RSC wrappers. Unit tests added for both components. Commits: c6d9cee400 (Wave 1: components + plan), 04c4f9fc8b (Wave 2: integration + tests)."
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0015",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:payments-view-test-data-cy:20260226",
+      "anchor_key": "payments-view-test-data-cy",
+      "cluster_key": "BOS:BOS:payments-view-test-data-cy:operator:BOS:BOS:payments-view-test-data-cy:20260226",
+      "cluster_fingerprint": "c2d3e4f5a6b70890bcdef012345678bc",
+      "lineage_depth": 0,
+      "area_anchor": "PaymentsView.test.tsx: change data-testid to data-cy in mock so getByTestId queries find the correct attribute (jest testIdAttribute is configured to data-cy)",
+      "location_anchors": [
+        "apps/reception/src/components/prepayments/__tests__/PaymentsView.test.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "BOS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "confidence": 1.0,
+      "evidence_refs": [
+        "operator-stated: pre-existing test failure discovered during reception-ui-screen-polish-phase4 Wave 3; root cause is testIdAttribute: data-cy jest config vs data-testid in test mock",
+        "docs/plans/_archive/reception-ui-screen-polish-phase4/results-review.user.md"
+      ],
+      "created_at": "2026-02-26T16:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "note": "Directly fixed \u2014 solution fully known (one-line change per instance); no fact-find investigation required",
+        "processed_at": "2026-02-26T16:00:00Z",
+        "route": "direct-fix"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0016",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:extension-debug-logs-removal:20260226",
+      "anchor_key": "extension-debug-logs-removal",
+      "cluster_key": "BOS:BOS:extension-debug-logs-removal:operator:BOS:BOS:extension-debug-logs-removal:20260226",
+      "cluster_fingerprint": "d3e4f5a6b7c80901cdef012345678bcd",
+      "lineage_depth": 0,
+      "area_anchor": "Extension.tsx: remove 5 debug console.log calls in availability-check logic (checkAvailability callback + availabilityMap useMemo)",
+      "location_anchors": [
+        "apps/reception/src/components/man/Extension.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "BOS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "confidence": 1.0,
+      "evidence_refs": [
+        "operator-stated: 4 debug console.log calls flagged with TODO comments in Extension.tsx during TASK-11 of reception-ui-screen-polish-phase4; removal deferred as logic-entangled per non-goal",
+        "docs/plans/_archive/reception-ui-screen-polish-phase4/results-review.user.md"
+      ],
+      "created_at": "2026-02-26T16:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "note": "Directly fixed \u2014 removed all 5 console.log calls plus the TODO comment from checkAvailability and availabilityMap; no fact-find investigation required",
+        "processed_at": "2026-02-26T16:00:00Z",
+        "route": "direct-fix"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0017",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:rounded-lg-lint-rule:20260226",
+      "anchor_key": "rounded-lg-lint-rule",
+      "cluster_key": "BOS:BOS:rounded-lg-lint-rule:operator:BOS:BOS:rounded-lg-lint-rule:20260226",
+      "cluster_fingerprint": "e4f5a6b7c8d90012def0123456789cde",
+      "lineage_depth": 0,
+      "area_anchor": "Add ESLint rule or Tailwind lint check to prevent bare rounded class (should always be rounded-lg) \u2014 recurrence observed across all 4 phases of reception UI polish",
+      "location_anchors": [
+        "apps/reception/",
+        "packages/eslint-config/",
+        ".eslintrc*"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "BOS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P3",
+      "confidence": 0.8,
+      "evidence_refs": [
+        "operator-stated: 12+ bare rounded instances found across 7 screens in reception-ui-screen-polish-phase4; same violations found in phases 1\u20133; no lint rule currently prevents reintroduction",
+        "docs/plans/_archive/reception-ui-screen-polish-phase4/results-review.user.md"
+      ],
+      "created_at": "2026-02-26T16:00:00Z",
+      "queue_state": "completed",
+      "processed_by": {
+        "fact_find_slug": "reception-rounded-lg-lint-rule",
+        "fact_find_path": "docs/plans/_archive/reception-rounded-lg-lint-rule/fact-find.md",
+        "plan_path": "docs/plans/_archive/reception-rounded-lg-lint-rule/plan.md",
+        "build_record_path": "docs/plans/_archive/reception-rounded-lg-lint-rule/build-record.user.md",
+        "results_review_path": "docs/plans/_archive/reception-rounded-lg-lint-rule/results-review.user.md",
+        "processed_at": "2026-02-26T16:30:00Z",
+        "completed_at": "2026-02-26T17:00:00Z",
+        "route": "dispatch-routed",
+        "outcome": "Plan executed and archived. ds/no-bare-rounded ESLint rule added to @acme/eslint-plugin-ds; all bare rounded violations fixed in apps/reception/src/."
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0018",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:STRATEGY:startup-loop-product-identity-gap:20260226",
+      "anchor_key": "startup-loop-product-identity-gap",
+      "cluster_key": "BOS:STRATEGY:startup-loop-product-identity-gap:operator:BOS:STRATEGY:startup-loop-product-identity-gap:20260226",
+      "cluster_fingerprint": "b2c3d4e5f6078912b345678901abcdef",
+      "lineage_depth": 0,
+      "area_anchor": "Startup loop assessment chain \u2014 covers business naming (ASSESSMENT-04/05) and brand direction (ASSESSMENT-11) but lacks explicit deliverables for product naming, logo design, and product packaging design",
+      "location_anchors": [
+        ".claude/skills/lp-do-assessment-04-candidate-names/SKILL.md",
+        ".claude/skills/lp-do-assessment-05-name-selection/SKILL.md",
+        ".claude/skills/lp-do-assessment-11-brand-identity/SKILL.md",
+        "docs/business-os/startup-loop/artifact-registry.md"
+      ],
+      "provisional_deliverable_family": "doc",
+      "domain": "STRATEGY",
+      "status": "auto_executed",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: startup loop produces a business name but also needs to produce a product name, business logo, and product packaging design"
+      ],
+      "current_truth": "The startup loop ASSESSMENT chain produces a business name (ASSESSMENT-04/05) and brand identity direction (ASSESSMENT-11: palette, typography, imagery direction, token overrides). It does not produce: a product name, a logo file or specification, or product packaging design.",
+      "next_scope_now": "Investigate what product naming, logo design, and product packaging deliverables look like in the startup loop context; determine which ASSESSMENT stage(s) each belongs to or whether new stages are needed; design extensions or new assessment skills to produce these artefacts.",
+      "adjacent_later": [
+        "Product photography spec and packaging mockup review flow",
+        "Integration with print-on-demand or manufacturer packaging workflow"
+      ],
+      "created_at": "2026-02-26T16:00:00Z",
+      "queue_state": "auto_executed"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0019",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:process-improvements-live-reload:20260226",
+      "anchor_key": "process-improvements-live-reload",
+      "cluster_key": "BOS:BOS:process-improvements-live-reload:operator:BOS:BOS:process-improvements-live-reload:20260226",
+      "cluster_fingerprint": "c3d4e5f607891023c456789012abcdef",
+      "lineage_depth": 0,
+      "area_anchor": "process-improvements.user.html dashboard — auto-reload in browser when file changes on disk so updated data is reflected without manual refresh",
+      "location_anchors": [
+        "docs/business-os/process-improvements.user.html",
+        "scripts/git-hooks/generate-process-improvements.sh",
+        "scripts/src/startup-loop/generate-process-improvements.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "BOS",
+      "status": "auto_executed",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P3",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: the process-improvements HTML dashboard needs to automatically reflect regenerated data when already open in the browser, without requiring a manual refresh"
+      ],
+      "current_truth": "The HTML is a fully static file served via file:// URL. It contains inline JS data arrays regenerated by a pre-commit hook. When the hook regenerates the file, any open browser tab shows stale data until manually refreshed.",
+      "next_scope_now": "Add a polling mechanism to the HTML that detects when the file has been regenerated and triggers a live reload. Must work under file:// URL constraints and preserve filter/scroll state where possible.",
+      "adjacent_later": [
+        "Apply same pattern to ideas.user.html and other BOS dashboard HTML files"
+      ],
+      "created_at": "2026-02-26T16:35:00Z",
+      "queue_state": "auto_executed"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0020",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:reflection-prioritization-policy-v2:20260226",
+      "anchor_key": "reflection-prioritization-policy-implementation",
+      "cluster_key": "BOS:BOS:reflection-prioritization-policy-implementation:operator:BOS:BOS:reflection-prioritization-policy-v2:20260226",
+      "cluster_fingerprint": "d4e5f6070819203d56789012abcdef01",
+      "lineage_depth": 0,
+      "area_anchor": "Post-build reflection idea prioritization — externally-reviewed canonical policy (v2) defines a complete schema (P0/P0R/P1/P1M/P2-P5 tiers, evidence gates, urgency admission rules, anti-gaming controls, prerequisite ordering) that must be implemented in the lp-do-ideas trial system",
+      "location_anchors": [
+        "docs/business-os/startup-loop/2026-02-26-reflection-prioritization-expert-brief.user.md",
+        "scripts/src/startup-loop/lp-do-ideas-trial-queue.ts",
+        "scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts",
+        "docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.schema.json"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "BOS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P4",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: externally reviewed canonical prioritization policy v2 (expert decision: Revise, close to approve) — defines idea schema with 8-tier classification tree (P0/P0R/P1+proximity/P1M/P2-P5), evidence-gated urgency admission (U0/U1/U2/U3), auto-demotion for missing evidence, prerequisite ordering via effective_priority_rank, and anti-gaming controls. All five expert-required fixes applied in v2."
+      ],
+      "current_truth": "The lp-do-ideas dispatch packet (dispatch.v1) carries routing metadata (status, recommended_route, priority, confidence) but has no canonical classification schema. Ideas are not classified with priority_tier, proximity, urgency, effort, or reason_code. The routing adapter handles evidence_refs and area_anchor but does not apply classification rules, evidence gates, or auto-demotion logic. There is no urgency admission check, no U0 WIP cap, and no anti-gaming audit.",
+      "next_scope_now": "Fact-find to determine: (1) exact gaps between current dispatch schema and canonical idea schema fields (priority_tier, proximity, urgency, effort, reason_code, effective_priority_rank, evidence fields); (2) which module should own classification — new classifier module vs extending routing adapter; (3) what changes are needed to lp-do-ideas-trial-queue.ts and lp-do-ideas-routing-adapter.ts; (4) whether dispatch.schema.json needs extending; (5) produce a planning brief with concrete tasks.",
+      "adjacent_later": [
+        "U0 WIP cap enforcement in queue ordering",
+        "Weekly audit sample of new classifications (5-10%)",
+        "Distribution anomaly alerts for P1+Direct and U0 share thresholds"
+      ],
+      "created_at": "2026-02-26T18:30:00Z",
+      "queue_state": "auto_executed"
     }
   ]
 }

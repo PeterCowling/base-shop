@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "naming-sidecar-event",
+  "type": "object",
+  "required": ["schema_version", "event_id", "business", "round", "run_date", "stage", "candidate"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "v1" },
+    "event_id": { "type": "string", "description": "UUID or deterministic hash" },
+    "business": { "type": "string" },
+    "round": { "type": "integer", "minimum": 1 },
+    "run_date": { "type": "string", "format": "date" },
+    "stage": {
+      "type": "string",
+      "enum": ["generated", "i_gate_eliminated", "rdap_checked", "shortlisted", "finalist"]
+    },
+    "candidate": {
+      "type": "object",
+      "required": ["name", "pattern"],
+      "properties": {
+        "name": { "type": "string" },
+        "pattern": { "type": "string", "enum": ["A", "B", "C", "D", "E"] },
+        "domain_string": { "type": ["string", "null"] },
+        "provenance": { "type": ["string", "null"] },
+        "scores": {
+          "type": "object",
+          "properties": {
+            "D": { "type": "integer", "minimum": 1, "maximum": 5 },
+            "W": { "type": "integer", "minimum": 1, "maximum": 5 },
+            "P": { "type": "integer", "minimum": 1, "maximum": 5 },
+            "E": { "type": "integer", "minimum": 1, "maximum": 5 },
+            "I": { "type": "integer", "minimum": 1, "maximum": 5 },
+            "total": { "type": "integer", "minimum": 5, "maximum": 25 }
+          }
+        }
+      }
+    },
+    "rdap": {
+      "type": ["object", "null"],
+      "properties": {
+        "status": { "type": "string", "enum": ["available", "taken", "unknown"] },
+        "statusCode": { "type": ["integer", "null"] },
+        "retries": { "type": "integer" },
+        "latencyMs": { "type": "number" }
+      }
+    },
+    "model_output": {
+      "type": ["object", "null"],
+      "description": "Shadow model scores — null until TASK-04",
+      "properties": {
+        "p_viable": { "type": "number", "minimum": 0, "maximum": 1 },
+        "ci90_lower": { "type": "number" },
+        "ci90_upper": { "type": "number" },
+        "model_version": { "type": "string" }
+      }
+    },
+    "timestamp": { "type": "string", "format": "date-time" }
+  }
+}

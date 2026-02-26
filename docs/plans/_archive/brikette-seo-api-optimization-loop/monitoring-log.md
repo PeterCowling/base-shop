@@ -71,6 +71,8 @@ Returns: `OK (HTTP 204): Sitemap re-pinged successfully.`
 **URL Inspection Results:** `monitoring/run-2026-02-25.json`
 **Search Analytics Results:** `monitoring/analytics-2026-02-25.json`
 
+> **Note:** This baseline was captured before structured-data fields were added to the inspection script. `richResultsResult` was not recorded in this run. From Run 02 onwards, each URL entry in the run JSON includes: `richResultsVerdict` (raw GSC verdict string, e.g. `"PASS"` / `"FAIL"` / `null`), `richResultsDetectedTypes` (array of detected schema.org type names, empty if none), and `articleStructuredDataValid` (`true` for PASS, `false` for FAIL, `null` when Google returned no structured-data verdict).
+
 **Coverage state summary (T+0):**
 
 | State | Count | Buckets |
@@ -97,6 +99,20 @@ Returns: `OK (HTTP 204): Sitemap re-pinged successfully.`
 - **TASK-13 eligible:** When ≥3 URLs show "Submitted and indexed" in a single run
 - **Current status (2026-02-25):** 1/3 transitions achieved
 - **Stagnation gate:** If 0 NEW transitions in 6 consecutive weeks → `/lp-do-replan`
+
+---
+
+## Run Summary Fields (from Run 02 onwards)
+
+Each URL entry in run JSON files includes the following structured-data fields captured from the URL Inspection API response (no additional API calls — these come from the same response as the indexing data):
+
+| Field | Type | Notes |
+|---|---|---|
+| `richResultsVerdict` | `string \| null` | Raw GSC verdict: `"PASS"`, `"FAIL"`, or `null` (Google returned no verdict) |
+| `richResultsDetectedTypes` | `string[]` | Schema.org type names detected (e.g. `["Article"]`); empty array if none |
+| `articleStructuredDataValid` | `boolean \| null` | `true` = PASS, `false` = FAIL, `null` = no verdict returned |
+
+Run 01 (2026-02-25) does not contain these fields — that baseline was captured before structured-data capture was implemented.
 
 ---
 

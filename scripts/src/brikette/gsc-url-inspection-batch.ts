@@ -52,9 +52,20 @@ type IndexStatusResult = {
   crawledAs?: string;
 };
 
+type RichResultsDetectedItem = {
+  richResultType?: string;
+  items?: Array<{ name?: string; value?: string }>;
+};
+
+type RichResultsResult = {
+  verdict?: string;
+  detectedItems?: RichResultsDetectedItem[];
+};
+
 type InspectUrlResponse = {
   inspectionResult?: {
     indexStatusResult?: IndexStatusResult;
+    richResultsResult?: RichResultsResult;
     inspectionResultLink?: string;
   };
 };
@@ -76,6 +87,9 @@ type InspectionResult = {
   robotsTxtState: string | null;
   pageFetchState: string | null;
   sitemap: string[];
+  richResultsVerdict: string | null;
+  richResultsDetectedTypes: string[];
+  articleStructuredDataValid: boolean | null;
   timestamp: string;
   error?: string;
 };
@@ -125,7 +139,7 @@ async function inspectUrl(
   token: string,
   siteUrl: string,
   inspectionUrl: string,
-): Promise<IndexStatusResult | null> {
+): Promise<{ indexStatus: IndexStatusResult | null; richResults: RichResultsResult | null }> {
   const endpoint = "https://searchconsole.googleapis.com/v1/urlInspection/index:inspect";
   const body = {
     inspectionUrl,
@@ -150,7 +164,10 @@ async function inspectUrl(
   }
 
   const data = (await resp.json()) as InspectUrlResponse;
-  return data?.inspectionResult?.indexStatusResult ?? null;
+  return {
+    indexStatus: data?.inspectionResult?.indexStatusResult ?? null,
+    richResults: data?.inspectionResult?.richResultsResult ?? null,
+  };
 }
 
 class RateLimitError extends Error {
@@ -276,6 +293,9 @@ async function main(): Promise<void> {
         robotsTxtState: null,
         pageFetchState: null,
         sitemap: [],
+        richResultsVerdict: null,
+        richResultsDetectedTypes: [],
+        articleStructuredDataValid: null,
         timestamp,
         error: "Skipped: rate limit hit earlier in batch",
       });
@@ -283,19 +303,22 @@ async function main(): Promise<void> {
     }
 
     try {
-      const result = await inspectUrl(token, GSC_SITE_URL, entry.url);
+      const { indexStatus, richResults } = await inspectUrl(token, GSC_SITE_URL, entry.url);
       results.push({
         url: entry.url,
         ...(entry.bucket ? { bucket: entry.bucket } : {}),
-        coverageState: result?.coverageState ?? "URL_IS_UNKNOWN",
-        lastCrawlTime: result?.lastCrawlTime ?? null,
-        googleCanonical: result?.googleCanonical ?? null,
-        userCanonical: result?.userCanonical ?? null,
-        verdict: result?.verdict ?? null,
-        indexingState: result?.indexingState ?? null,
-        robotsTxtState: result?.robotsTxtState ?? null,
-        pageFetchState: result?.pageFetchState ?? null,
-        sitemap: result?.sitemap ?? [],
+        coverageState: indexStatus?.coverageState ?? "URL_IS_UNKNOWN",
+        lastCrawlTime: indexStatus?.lastCrawlTime ?? null,
+        googleCanonical: indexStatus?.googleCanonical ?? null,
+        userCanonical: indexStatus?.userCanonical ?? null,
+        verdict: indexStatus?.verdict ?? null,
+        indexingState: indexStatus?.indexingState ?? null,
+        robotsTxtState: indexStatus?.robotsTxtState ?? null,
+        pageFetchState: indexStatus?.pageFetchState ?? null,
+        sitemap: indexStatus?.sitemap ?? [],
+        richResultsVerdict: richResults?.verdict ?? null,
+        richResultsDetectedTypes: richResults?.detectedItems?.map(d => d.richResultType ?? "").filter(Boolean) ?? [],
+        articleStructuredDataValid: richResults?.verdict === "PASS" ? true : richResults?.verdict === "FAIL" ? false : null,
         timestamp,
       });
     } catch (err) {
@@ -314,6 +337,9 @@ async function main(): Promise<void> {
           robotsTxtState: null,
           pageFetchState: null,
           sitemap: [],
+          richResultsVerdict: null,
+          richResultsDetectedTypes: [],
+          articleStructuredDataValid: null,
           timestamp,
           error: err.message,
         });
@@ -333,6 +359,9 @@ async function main(): Promise<void> {
           robotsTxtState: null,
           pageFetchState: null,
           sitemap: [],
+          richResultsVerdict: null,
+          richResultsDetectedTypes: [],
+          articleStructuredDataValid: null,
           timestamp,
           error: msg,
         });

@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: PRODUCTS
 Workstream: Engineering
 Created: 2026-02-26
@@ -29,7 +29,7 @@ The XA uploader Playwright E2E suite covers J1 (happy path) and J2 dry-run, but 
 - [x] TASK-01: Add gitignore entries for sync-artifact outputs
 - [x] TASK-02: Extend harness with stub contract server
 - [x] TASK-03: Add TC-09-03 real-sync E2E test
-- [ ] TASK-04: Update usability-kpi-delta.md with CJDBR = 0%
+- [x] TASK-04: Update usability-kpi-delta.md with CJDBR = 0%
 
 ## Goals
 - Add gitignore entries so `data/sync-artifacts/`, `data/backups/`, and `data/.xa-upload-state.*.json` are never committed by a test run.
@@ -88,7 +88,7 @@ The XA uploader Playwright E2E suite covers J1 (happy path) and J2 dry-run, but 
 | TASK-01 | IMPLEMENT | Add .gitignore entries for sync artifacts | 90% | S | Complete (2026-02-26) | - | TASK-02, TASK-03 |
 | TASK-02 | IMPLEMENT | Extend harness with stub contract server | 85% | M | Complete (2026-02-26) | TASK-01 | TASK-03 |
 | TASK-03 | IMPLEMENT | Add TC-09-03 real-sync E2E test | 85% | M | Complete (2026-02-26) | TASK-01, TASK-02 | TASK-04 |
-| TASK-04 | IMPLEMENT | Update usability-kpi-delta.md with CJDBR = 0% | 90% | S | Pending | TASK-03 | - |
+| TASK-04 | IMPLEMENT | Update usability-kpi-delta.md with CJDBR = 0% | 90% | S | Complete (2026-02-26) | TASK-03 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -293,7 +293,7 @@ The XA uploader Playwright E2E suite covers J1 (happy path) and J2 dry-run, but 
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `docs/plans/xa-uploader-usability-hardening/artifacts/usability-kpi-delta.md`
 - **Depends on:** TASK-03
 - **Blocks:** -
@@ -326,6 +326,15 @@ The XA uploader Playwright E2E suite covers J1 (happy path) and J2 dry-run, but 
   - `usability-kpi-delta.md` current state: CJDBR = 50%, Threshold "Not met", Next action: restore sync scripts.
   - Scripts restored in commit `2ac91e7e5a` (2026-02-24).
   - TC-09-03 pass completes the J2 journey coverage.
+- **Build evidence (2026-02-26):**
+  - Red: Verified current file state before edit — CJDBR = 50%, threshold "Not met". Confirmed no concurrent updates.
+  - Green: New column added to table (Post-change 2026-02-26, CJDBR = 0%, Delta = -50 pp). J2 remeasurement section added. Interpretation updated to "Met". Recommended Next Action updated to "no further action required".
+  - TC-04-A: `grep "0%" usability-kpi-delta.md` → line 27 (`0% | -50 pp`) and line 63 (`Met (0% vs required 0%)`). Pass.
+  - TC-04-B: `grep "TC-09-03" usability-kpi-delta.md` → line 57. Pass.
+  - TC-04-C: `grep "Met" usability-kpi-delta.md` → line 63. Pass.
+  - Commit: `5abb996f3a` — `docs(xa-uploader): TASK-04 update CJDBR KPI to 0% — threshold met via TC-09-03`
+  - Post-build validation: Mode 2 (Data Simulation). All three TC-04 grep checks pass. Pass, attempt 1.
+  - All plan acceptance criteria now met. Plan complete.
 
 ---
 
@@ -347,7 +356,7 @@ The XA uploader Playwright E2E suite covers J1 (happy path) and J2 dry-run, but 
 ## Acceptance Criteria (overall)
 - [x] `pnpm --filter @apps/xa-uploader run test:e2e` passes TC-09-01, TC-09-02, and TC-09-03 all green.
 - [x] `apps/xa-uploader/.gitignore` present with entries for `data/sync-artifacts/`, `data/backups/`, `data/.xa-upload-state.*.json`.
-- [ ] `usability-kpi-delta.md` updated with CJDBR = 0% row, threshold "Met", citing TC-09-03 evidence.
+- [x] `usability-kpi-delta.md` updated with CJDBR = 0% row, threshold "Met", citing TC-09-03 evidence.
 
 ## Decision Log
 - 2026-02-26: Chosen approach is stub contract server (Option B). Option A (omit env vars, test unconfigured path) does not exercise the true success path and does not produce "Sync completed." UI feedback. Decision self-resolved per Phase 4.5 gate — no operator input required.

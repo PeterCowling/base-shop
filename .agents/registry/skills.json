@@ -188,7 +188,7 @@
     },
     {
       "name": "lp-do-plan",
-      "description": "Thin orchestrator for confidence-gated planning. Routes to track-specific planning modules, persists plan artifacts from templates, and optionally hands off to /lp-do-build when explicit auto-build intent is present.",
+      "description": "Thin orchestrator for confidence-gated planning. Routes to track-specific planning modules, persists plan artifacts from templates, and hands off to /lp-do-build by default unless --notauto is passed.",
       "path": ".claude/skills/lp-do-plan/SKILL.md"
     },
     {
@@ -248,7 +248,7 @@
     },
     {
       "name": "lp-prioritize",
-      "description": "S5 startup go-item ranking - score and select top 2-3 items to pursue",
+      "description": "Startup go-item ranking - score and select top 2-3 items to pursue",
       "path": ".claude/skills/lp-prioritize/SKILL.md"
     },
     {

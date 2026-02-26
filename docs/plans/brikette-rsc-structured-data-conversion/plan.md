@@ -26,11 +26,11 @@ Auto-Build-Intent: plan+auto
 
 ## Active tasks
 
-- [ ] TASK-01: Create `RoomsStructuredDataRsc` server component
-- [ ] TASK-02: Create `ExperiencesStructuredDataRsc` server component
-- [ ] TASK-03: Integrate RSC components into page wrappers and remove client renders (atomic)
-- [ ] TASK-05: Delete old client-only structured data components
-- [ ] TASK-06: Unit tests for both RSC components
+- [x] TASK-01: Create `RoomsStructuredDataRsc` server component
+- [x] TASK-02: Create `ExperiencesStructuredDataRsc` server component
+- [x] TASK-03: Integrate RSC components into page wrappers and remove client renders (atomic)
+- [x] TASK-05: Delete old client-only structured data components
+- [x] TASK-06: Unit tests for both RSC components
 - [ ] TASK-07: Staging smoke-test via curl
 
 ## Goals
@@ -100,11 +100,11 @@ Auto-Build-Intent: plan+auto
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Create `RoomsStructuredDataRsc` server component | 85% | S | Pending | - | TASK-03, TASK-06 |
-| TASK-02 | IMPLEMENT | Create `ExperiencesStructuredDataRsc` server component | 85% | S | Pending | - | TASK-03, TASK-06 |
-| TASK-03 | IMPLEMENT | Integrate RSC into page wrappers + remove client renders (atomic) | 85% | S | Pending | TASK-01, TASK-02 | TASK-05, TASK-07 |
-| TASK-05 | IMPLEMENT | Delete old client-only structured data components | 85% | S | Pending | TASK-03 | TASK-07 |
-| TASK-06 | IMPLEMENT | Unit tests for `RoomsStructuredDataRsc` and `ExperiencesStructuredDataRsc` | 85% | M | Pending | TASK-01, TASK-02 | TASK-07 |
+| TASK-01 | IMPLEMENT | Create `RoomsStructuredDataRsc` server component | 85% | S | Complete (2026-02-26) | - | TASK-03, TASK-06 |
+| TASK-02 | IMPLEMENT | Create `ExperiencesStructuredDataRsc` server component | 85% | S | Complete (2026-02-26) | - | TASK-03, TASK-06 |
+| TASK-03 | IMPLEMENT | Integrate RSC into page wrappers + remove client renders (atomic) | 85% | S | Complete (2026-02-26) | TASK-01, TASK-02 | TASK-05, TASK-07 |
+| TASK-05 | IMPLEMENT | Delete old client-only structured data components | 85% | S | Complete (2026-02-26) | TASK-03 | TASK-07 |
+| TASK-06 | IMPLEMENT | Unit tests for `RoomsStructuredDataRsc` and `ExperiencesStructuredDataRsc` | 85% | M | Complete (2026-02-26) | TASK-01, TASK-02 | TASK-07 |
 | TASK-07 | IMPLEMENT | Staging smoke-test via curl (both routes, 2 locales) | 85% | S | Pending | TASK-03, TASK-05, TASK-06 | - |
 
 ## Parallelism Guide
@@ -179,6 +179,14 @@ Auto-Build-Intent: plan+auto
   - Schema constants: `apps/brikette/src/utils/schema/types.ts`
   - `buildOffer`: `apps/brikette/src/utils/schema/builders.ts` lines 169-203
   - TASK-10 prior art: `docs/plans/_archive/brikette-deeper-route-funnel-cro/task-10-ssr-investigation.md`
+- **Build evidence (Complete 2026-02-26):**
+  - File created: `apps/brikette/src/components/seo/RoomsStructuredDataRsc.tsx`
+  - Begins with `import "server-only"`. No `"use client"`, no `memo()`.
+  - Uses `loadRoomsCatalog(lang)` (async). No `useCurrentLanguage()` import.
+  - Returns `<script type="application/ld+json" dangerouslySetInnerHTML=... />` (no `suppressHydrationWarning`).
+  - `pnpm typecheck`: pass. `pnpm lint`: pass (after import-sort autofix). Pre-commit hooks: all pass.
+  - Commit: `c6d9cee400` — 5 files changed, 1218 insertions.
+  - Post-build validation: Mode 2 (Data Simulation). Static code review confirms all TC-01/02/03/04 contracts met. No `any` escapes, no `// @ts-ignore`.
 
 ---
 
@@ -246,6 +254,15 @@ Auto-Build-Intent: plan+auto
   - URL computation: `getSlug("experiences", lang)` from `apps/brikette/src/utils/slug.ts`
   - `buildCanonicalUrl`: `packages/seo/src/metadata/buildCanonicalUrl.ts` (server-safe, verified)
   - `HOTEL_ID`, `WEBSITE_ID`: `apps/brikette/src/utils/schema/types.ts`
+- **Build evidence (Complete 2026-02-26):**
+  - File created: `apps/brikette/src/components/seo/ExperiencesStructuredDataRsc.tsx`
+  - Begins with `import "server-only"`. No `"use client"`, no `memo()`, no `useCurrentLanguage`, no `usePathname`, no `useTranslation`.
+  - Uses `getTranslations(lang, "experiencesPage")` from `@/app/_lib/i18n-server`. No `!ready` guard.
+  - Computes `pathname` as `` `/${lang}/${getSlug("experiences", lang)}` `` — no `usePathname()`.
+  - `translateOrFallback` signature changed: accepts `TFunction` instead of `ReturnType<typeof useTranslation>["t"]`; removed `lng` override from `t()` calls (TFunction is already language-fixed).
+  - No `suppressHydrationWarning` on script tag.
+  - `pnpm typecheck`: pass. `pnpm lint`: pass. Pre-commit hooks: all pass.
+  - Post-build validation: Mode 2. Static code review confirms TC-01 through TC-06 contracts met.
 
 ---
 
@@ -305,6 +322,17 @@ Auto-Build-Intent: plan+auto
   - Current `rooms/page.tsx` line 60: `return <RoomsPageContent lang={validLang} serverTitle={serverTitle} serverSubtitle={serverSubtitle} />;`
   - Current `experiences/page.tsx` line 45: `return <ExperiencesPageContent lang={validLang} />;`
   - Import sort hook: `scripts/src/lint-staged-packages.sh` (enforces import order in pre-commit)
+- **Build evidence (Complete 2026-02-26):**
+  - `rooms/page.tsx`: added `import RoomsStructuredDataRsc`; return wrapped in Fragment with RSC before `<RoomsPageContent>`.
+  - `experiences/page.tsx`: added `import ExperiencesStructuredDataRsc`; return wrapped in Fragment with RSC before `<ExperiencesPageContent>`.
+  - `RoomsPageContent.tsx`: removed `import RoomsStructuredData` and `<RoomsStructuredData />` JSX call.
+  - `ExperiencesPageContent.tsx`: removed `import ExperiencesStructuredData` and `<ExperiencesStructuredData />` JSX call.
+  - Import sort autofix applied to both page.tsx files; lint pass.
+  - TC-01: `grep "RoomsStructuredDataRsc" rooms/page.tsx` — match on lines 10 and 63. PASS.
+  - TC-02: `grep "RoomsStructuredData" RoomsPageContent.tsx` — no match. PASS.
+  - TC-03: `grep "ExperiencesStructuredData" ExperiencesPageContent.tsx` — no match. PASS.
+  - TC-04/TC-05: `pnpm typecheck` and `pnpm lint` pass.
+  - Commit: `04c4f9fc8b` — 6 files changed (4 modified + 2 new test files, atomic with TASK-06).
 
 ---
 
@@ -354,6 +382,14 @@ Auto-Build-Intent: plan+auto
   - None.
 - **Notes / references:**
   - `RoomStructuredData.tsx` (singular) is NOT touched — it is the individual room detail component, unaffected.
+- **Build evidence (Complete 2026-02-26):**
+  - Scout check: no `index.ts` barrel in `apps/brikette/src/components/seo/` — no re-export risk. PASS.
+  - Scout check: `grep -r "from.*RoomsStructuredData\|from.*ExperiencesStructuredData"` — no remaining imports after TASK-03. PASS.
+  - `git rm apps/brikette/src/components/seo/RoomsStructuredData.tsx apps/brikette/src/components/seo/ExperiencesStructuredData.tsx` executed.
+  - `pnpm typecheck` passes after deletion (0 errors).
+  - TC-01: Files absent from `git ls-files`. PASS.
+  - TC-02: `pnpm typecheck --filter brikette` exits 0. PASS.
+  - Note: Deletion was included in commit `1e9567a242` (reception rounded fix, same session — writer lock acquired by parallel agent before brikette Wave 3 commit could be created). Files are deleted and typecheck confirmed clean.
 
 ---
 
@@ -420,6 +456,12 @@ Auto-Build-Intent: plan+auto
   - Test pattern reference: `apps/brikette/src/test/components/seo/SiteSearchStructuredData.test.tsx`
   - `renderWithProviders` confirmed sync-only: `apps/brikette/src/test/renderers.tsx` line 13
   - Async RSC test pattern: `const jsx = await ComponentFn(props); const { container } = render(jsx)`
+- **Build evidence (Complete 2026-02-26):**
+  - `apps/brikette/src/test/components/seo/RoomsStructuredDataRsc.test.tsx`: 6 tests — TC-01 (OfferCatalog shape/2 items), TC-02 (inLanguage: "de"), TC-02b (HotelRoom nodes), TC-03 (empty catalog numberOfItems: 0), TC-03b (no suppressHydrationWarning), TC-04b (DE rooms URL uses `zimmer` slug).
+  - `apps/brikette/src/test/components/seo/ExperiencesStructuredDataRsc.test.tsx`: 6 tests — TC-01 (ItemList 3 items), TC-02 (SECTION_DEFAULTS fallback with identity TFn), TC-03 (null return with empty TFn), TC-04 (URL with DE `erlebnisse` slug), TC-05 (no suppressHydrationWarning), TC-07 (about/isPartOf present).
+  - Governed test run: 12 passed, 0 failed (ExperiencesStructuredDataRsc: 90s, RoomsStructuredDataRsc: 36s, total 127s).
+  - Mock patterns: `jest.mock("server-only", () => ({}))`, `loadRoomsCatalog` as `jest.fn().mockResolvedValue([...])`, `getTranslations` as `jest.fn().mockResolvedValueOnce(tFn)`.
+  - Commit: `04c4f9fc8b` (same atomic Wave 2 commit with TASK-03).
 
 ---
 

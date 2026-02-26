@@ -1,11 +1,11 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Products
 Workstream: Engineering
 Created: 2026-02-26
 Last-reviewed: 2026-02-26
-Last-updated: 2026-02-26 (Wave 5 complete: TASK-07 CHECKPOINT — cart tasks eligible)
+Last-updated: 2026-02-26 (All tasks complete — plan archived)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: caryina-catalog-cart
 Deliverable-Type: multi-deliverable
@@ -35,9 +35,9 @@ Three capabilities move Caryina from a static-data demo to a fully operational e
 - [x] TASK-07: CHECKPOINT — admin workstream verified
 - [x] TASK-08: INVESTIGATE — cart API storage backend approach
 - [x] TASK-09: CartProvider wrap and /api/cart route handler
-- [ ] TASK-10: AddToCartButton and /cart page
-- [ ] TASK-11: Checkout session API route and /success payment verify
-- [ ] TASK-12: Wire /checkout to Stripe redirect; update success and cancelled pages
+- [x] TASK-10: AddToCartButton and /cart page
+- [x] TASK-11: Checkout session API route and /success payment verify
+- [x] TASK-12: Wire /checkout to Stripe redirect; update success and cancelled pages
 
 ## Goals
 

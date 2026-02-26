@@ -263,7 +263,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-02-26T17:56:29.881Z";
+  var GEN_TS = "2026-02-26T19:07:20.303Z";
 
   var IDEA_ITEMS = [
     {
@@ -540,6 +540,23 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Cart item stock-cap enforcement in AddToCartButton",
+      "body": "TASK-10 notes qty ≤ sku.stock should be enforced to prevent over-ordering low-stock items",
+      "suggested_action": "small follow-up implementation task; create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T19:05:16.763Z",
+      "path": "docs/plans/_archive/caryina-catalog-cart/results-review.user.md",
+      "idea_key": "056affbf69d8ce6cd3060b9fc9e99c44008caf11",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "Add ASSESSMENT-12 to loop-spec so GATE-ASSESSMENT-01 enforces dossier promotion before ASSESSMENT-13",
       "body": "TASK-06 acceptance note calls out that ASSESSMENT-12 should run before ASSESSMENT-13 but the gate does not enforce it — documented friction point.",
       "suggested_action": "create card to add ASSESSMENT-12 to loop-spec and update GATE-ASSESSMENT-01.",
@@ -727,6 +744,23 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Admin media upload via file input (not URL text entry)",
+      "body": "TASK-05 deferred drag-and-drop; media URLs entered as text strings — friction for operator",
+      "suggested_action": "defer; spike when catalog grows beyond 3 SKUs",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T19:05:16.763Z",
+      "path": "docs/plans/_archive/caryina-catalog-cart/results-review.user.md",
+      "idea_key": "35e5d9a04de97e0008120dc461baff7909343967",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "UIBM deep-link URL format research",
       "body": "the CLI outputs the UIBM base URL with a manual-entry instruction because no confirmed query-parameter format was found. If UIBM supports a deep-link (e.g., ?denominazione= or ?query= ), the CLI could pre-fill the search",
       "suggested_action": "spike — navigate to uibm.gov.it/bancadati manually and inspect the URL when searching for a term; update buildUibmUrl() in tm-prescreen-cli.ts if a deep-link format is confirmed",
@@ -870,6 +904,23 @@
       "date": "2026-02-25T22:32:11.291Z",
       "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md",
       "idea_key": "2a9895c0b987426e79f26ab0ad5d09a70a53152e",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Stripe test-mode end-to-end checkout flow on staging",
+      "body": "TASK-11 + TASK-12 complete but no real payment tested — Stripe keys not yet in env",
+      "suggested_action": "operator sets STRIPE_SECRET_KEY + NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY in Caryina staging/prod env; then manual payment test with Stripe test card",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T19:05:16.763Z",
+      "path": "docs/plans/_archive/caryina-catalog-cart/results-review.user.md",
+      "idea_key": "5148ae7c86977891abc55c05fbdd11046348f405",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",

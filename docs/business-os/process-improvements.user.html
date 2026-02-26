@@ -253,6 +253,36 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Add CI drift check step using check-process-improvements to catch SKIP_SIMPLE_GIT_HOOKS bypasses",
+      "body": "SKIP_SIMPLE_GIT_HOOKS=1 is used by bos-export and would bypass the hook",
+      "suggested_action": "defer (bos-export does not touch plan files, so this is low risk in practice)",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T07:36:11.273Z",
+      "path": "docs/plans/process-improvements-live-update/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add check_url_strict coverage to other localized booking entry points (e.g., /de/buchen, /fr/reserver)",
+      "body": "TASK-04 strict check plumbing is now reusable via healthcheck-strict-routes input in reusable-app.yml",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T07:33:03.262Z",
+      "path": "docs/plans/_archive/brikette-it-book-route-static-export/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Extend smoke test to cover representative IT locale routes (rooms, experiences)",
+      "body": "TASK-01 confirmed IT book present, but no other IT-locale routes are smoke-tested",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T07:33:03.262Z",
+      "path": "docs/plans/_archive/brikette-it-book-route-static-export/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "AI-to-mechanistic — LLM reasoning step replaceable with a deterministic script -->",
       "body": "AI-to-mechanistic — LLM reasoning step replaceable with a deterministic script -->",
       "source": "results-review.user.md",

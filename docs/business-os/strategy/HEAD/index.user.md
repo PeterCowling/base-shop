@@ -4,6 +4,7 @@ Business-Unit: HEAD
 Last-updated: 2026-02-26
 Brand-name: Facilella
 Brand-domain: facilella.com
+Domain-registered: 2026-02-26
 Status: Active
 Owner: Pete
 Review-trigger: After each completed build cycle touching this document.

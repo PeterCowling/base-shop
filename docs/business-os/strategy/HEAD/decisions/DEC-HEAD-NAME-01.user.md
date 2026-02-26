@@ -14,7 +14,7 @@ Owner: Pete
 
 **Selected brand name: Facilella**
 
-- Domain: facilella.com (AVAILABLE — RDAP confirmed 2026-02-26)
+- Domain: facilella.com (REGISTERED — 2026-02-26)
 - Score: 24/25 (D=5, W=5, P=5, E=4, I=5)
 - Pattern: C (fragment blend)
 - Territory: Easy Hair System
@@ -34,7 +34,7 @@ Facilella scored the joint-highest in Round 7 (24/25) and passed the ICP resonan
 ## What this unlocks
 
 - Brand dossier can be updated with confirmed name
-- Domain registration: facilella.com
+- ~~Domain registration: facilella.com~~ — registered 2026-02-26 ✓
 - Logo brief (ASSESSMENT-14) can proceed
 - Product naming (ASSESSMENT-13) can proceed using Facilella as the brand parent
 

@@ -5,7 +5,10 @@ import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 import {
+  appendCompletedIdea,
   collectProcessImprovements,
+  deriveIdeaKey,
+  loadCompletedIdeasRegistry,
   runCheck,
   updateProcessImprovementsHtml,
 } from "../generate-process-improvements";
@@ -227,5 +230,110 @@ describe("runCheck", () => {
     // No HTML file written — drift should be detected
 
     expect(() => runCheck(tmpDir)).toThrow("process.exit called with 1");
+  });
+});
+
+describe("completion lifecycle", () => {
+  let tmpDir: string;
+
+  beforeEach(async () => {
+    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "completion-lifecycle-"));
+  });
+
+  afterEach(async () => {
+    await fs.rm(tmpDir, { recursive: true, force: true });
+  });
+
+  it("deriveIdeaKey is stable and input-sensitive", () => {
+    const key1 = deriveIdeaKey("path/to/file.md", "Title");
+    const key2 = deriveIdeaKey("path/to/file.md", "Title");
+    expect(key1).toBe(key2);
+
+    const keyDifferentTitle = deriveIdeaKey("path/to/file.md", "Different Title");
+    expect(key1).not.toBe(keyDifferentTitle);
+
+    const keyDifferentPath = deriveIdeaKey("path/to/other.md", "Title");
+    expect(key1).not.toBe(keyDifferentPath);
+  });
+
+  it("collectProcessImprovements skips an idea whose key is in the completed registry", async () => {
+    const sourceRelPath = "docs/plans/feature-a/results-review.user.md";
+    const ideaTitle = "Add ranking layer";
+    const ideaKey = deriveIdeaKey(sourceRelPath, ideaTitle);
+
+    await writeFile(
+      tmpDir,
+      sourceRelPath,
+      `---
+Business-Unit: BRIK
+Review-date: 2026-02-25
+---
+# Results Review
+
+## New Idea Candidates
+- Add ranking layer | Trigger observation: test | Suggested next action: spike
+`,
+    );
+
+    const registry = {
+      schema_version: "completed-ideas.v1",
+      entries: [
+        {
+          idea_key: ideaKey,
+          title: ideaTitle,
+          source_path: sourceRelPath,
+          plan_slug: "some-plan",
+          completed_at: "2026-02-26",
+        },
+      ],
+    };
+    await writeFile(
+      tmpDir,
+      "docs/business-os/_data/completed-ideas.json",
+      `${JSON.stringify(registry, null, 2)}\n`,
+    );
+
+    const data = collectProcessImprovements(tmpDir);
+    expect(data.ideaItems).toHaveLength(0);
+  });
+
+  it("collectProcessImprovements suppresses a struck-through bullet but keeps a normal bullet", async () => {
+    await writeFile(
+      tmpDir,
+      "docs/plans/feature-a/results-review.user.md",
+      `---
+Business-Unit: BRIK
+Review-date: 2026-02-25
+---
+# Results Review
+
+## New Idea Candidates
+- Normal idea to keep
+- ~~Some completed idea~~
+`,
+    );
+
+    const data = collectProcessImprovements(tmpDir);
+    expect(data.ideaItems).toHaveLength(1);
+    expect(data.ideaItems[0]?.title).toBe("Normal idea to keep");
+    const titles = data.ideaItems.map((item) => item.title);
+    expect(titles).not.toContain("~~Some completed idea~~");
+  });
+
+  it("appendCompletedIdea is idempotent — calling twice yields one entry", async () => {
+    const entry = {
+      title: "My idea",
+      source_path: "docs/plans/test/results-review.user.md",
+      plan_slug: "test-plan",
+      completed_at: "2026-02-26",
+    };
+
+    appendCompletedIdea(tmpDir, entry);
+    appendCompletedIdea(tmpDir, entry);
+
+    const registryPath = path.join(tmpDir, "docs/business-os/_data/completed-ideas.json");
+    const raw = await fs.readFile(registryPath, "utf8");
+    const registry = JSON.parse(raw) as { entries: unknown[] };
+    expect(registry.entries).toHaveLength(1);
   });
 });

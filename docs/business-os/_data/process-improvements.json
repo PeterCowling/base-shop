@@ -3,6 +3,16 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Automate periodic smoke test runs against production (e.g. weekly cron) so GA4 event regressions are caught without manual operator invocation",
+      "body": "smoke test is manual-only; value of the assertion is bounded by run frequency",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T07:40:11.468Z",
+      "path": "docs/plans/_archive/brikette-smoke-view-item-list/results-review.user.md"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "Add CI drift check step using check-process-improvements to catch SKIP_SIMPLE_GIT_HOOKS bypasses",
       "body": "SKIP_SIMPLE_GIT_HOOKS=1 is used by bos-export and would bypass the hook",
       "suggested_action": "defer (bos-export does not touch plan files, so this is low risk in practice)",

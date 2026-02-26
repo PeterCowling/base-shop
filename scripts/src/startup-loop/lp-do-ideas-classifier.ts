@@ -10,15 +10,17 @@
  * Contract: docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md
  *
  * Design rules:
- * - Pure function: no file I/O. Injectable clock for `classified_at`.
+ * - Pure function: no file I/O. Injectable clock (`options.now: Date`) for `classified_at`.
  * - Classification failure is non-fatal — callers must handle thrown errors.
  * - `classifications.jsonl` persistence is the caller's responsibility
  *   (via `appendClassifications()` from lp-do-ideas-persistence.ts).
+ * - All `IdeaClassificationInput` fields are optional: classifier produces P5 default with no input.
+ * - Decision tree uses area_anchor regex matching for rules 4–7.
+ * - Evidence-gated tiers auto-demote to P4 with RULE_INSUFFICIENT_EVIDENCE.
  *
  * Phase 1 advisory constraints:
  * - `effective_priority_rank` prerequisite inheritance is deferred to Phase 4.
- *   `is_prerequisite` is always `false` and `parent_idea_id` is always `null`
- *   in Phase 1. See: Phase 4 prerequisite inheritance — deferred.
+ * - effort is always "M" (no effort estimation from packet fields yet).
  * - U0 leakage threshold gate is disabled by default (`u0_leakage_threshold`
  *   undefined). U0 admission relies only on `incident_id` or `deadline_date`.
  */
@@ -120,15 +122,19 @@ export type OwnPriorityRank = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
  * Mapping from (priority_tier, proximity) to `own_priority_rank` integer.
  *
  * Keyed by `"<tier>"` or `"<tier>:<proximity>"` for P1 sub-tiers.
- * See Section 6.2 of the canonical policy.
+ * Also includes underscore-style aliases (P1_Direct, P1_Near, P1_Indirect)
+ * as required by the canonical spec (Section 6.2).
  */
 export const OWN_PRIORITY_RANK: Record<string, OwnPriorityRank> = {
   P0: 1,
   P0R: 2,
   "P1:Direct": 3,
+  P1_Direct: 3,
   P1M: 4,
   "P1:Near": 5,
+  P1_Near: 5,
   "P1:Indirect": 6,
+  P1_Indirect: 6,
   P2: 7,
   P3: 8,
   P4: 9,
@@ -169,6 +175,11 @@ export type ClassificationStatus =
   | "deferred"
   | "rejected";
 
+/**
+ * Alias for ClassificationStatus — canonical export name per task spec.
+ */
+export type IdeaStatus = ClassificationStatus;
+
 // ---------------------------------------------------------------------------
 // Classifier input type
 // ---------------------------------------------------------------------------
@@ -176,9 +187,9 @@ export type ClassificationStatus =
 /**
  * Input to the classifier function (Section 4.1 identity/source + Section 4.4 evidence fields).
  *
- * All evidence fields are optional. Absent evidence may trigger auto-demotion
- * (Section 9.2) for high-impact tiers (P0, P0R, P1+Direct) but does not block
- * intake or dispatch in Phase 1 advisory mode.
+ * All fields are optional — the classifier produces a P5 default when no input is supplied.
+ * Absent evidence may trigger auto-demotion (Section 9.2) for high-impact tiers
+ * (P0, P0R, P1+Direct) but does not block intake or dispatch in Phase 1 advisory mode.
  *
  * `trigger` and `artifact_id` are passed from the originating dispatch packet.
  * For `operator_idea` trigger dispatches, `artifact_id` is `null`.
@@ -186,28 +197,28 @@ export type ClassificationStatus =
 export interface IdeaClassificationInput {
   // Identity / source (Section 4.1)
   /** Stable string ID for this idea. */
-  idea_id: string;
+  idea_id?: string;
   /** Human-readable idea title. */
-  title: string;
+  title?: string;
   /** Path to the artifact where this idea was found. */
-  source_path: string;
+  source_path?: string;
   /** Brief excerpt from the source artifact. */
-  source_excerpt: string;
+  source_excerpt?: string;
   /** ISO-8601: when this idea was first created. */
-  created_at: string;
+  created_at?: string;
 
   // Dispatch context
   /** Trigger type from the originating dispatch packet. */
-  trigger: "artifact_delta" | "operator_idea";
+  trigger?: "artifact_delta" | "operator_idea";
   /** Artifact ID from the dispatch packet; null for operator_idea trigger. */
-  artifact_id: string | null;
+  artifact_id?: string | null;
   /** Evidence references from the dispatch packet. */
   evidence_refs?: string[];
-  /** Natural language description of the idea area. */
+  /** Natural language description of the idea area (used for regex-based rule matching). */
   area_anchor?: string;
 
-  // Classification content signals (used by decision tree in Section 5)
-  /** Tags from the idea content (used for P2/P3/P4/P5 classification). */
+  // Classification content signals
+  /** Tags from the idea content (supplementary signals for P1 Near/Indirect). */
   content_tags?: string[];
 
   // Evidence fields (Section 4.4) — all nullable/optional
@@ -263,12 +274,12 @@ export interface IdeaClassificationInput {
  * Deduplication key: `idea_id + classified_at`.
  */
 export interface IdeaClassification {
-  // Section 4.1 — Identity / source (carried through from input)
-  idea_id: string;
-  title: string;
-  source_path: string;
-  source_excerpt: string;
-  created_at: string;
+  // Section 4.1 — Identity / source (optional — carried through from input; absent when input fields absent)
+  idea_id?: string;
+  title?: string;
+  source_path?: string;
+  source_excerpt?: string;
+  created_at?: string;
 
   // Section 4.2 — Classification fields
   /** 8-tier priority (Section 4.2, Section 5 decision tree). */
@@ -355,10 +366,22 @@ export interface IdeaClassification {
    */
   status: ClassificationStatus;
 
+  // Auto-demotion (Section 9.2)
+  /**
+   * True when the decision tree fired a higher-tier rule but required evidence was absent,
+   * causing automatic demotion to a lower tier (Section 9.2).
+   */
+  auto_demoted: boolean;
+  /**
+   * Human-readable explanation of the auto-demotion (Section 9.2).
+   * Present only when `auto_demoted == true`.
+   */
+  auto_demotion_reason?: string;
+
   // Dispatch context (carried through)
-  trigger: "artifact_delta" | "operator_idea";
-  artifact_id: string | null;
-  evidence_refs: string[];
+  trigger?: "artifact_delta" | "operator_idea";
+  artifact_id?: string | null;
+  evidence_refs?: string[];
 }
 
 // ---------------------------------------------------------------------------
@@ -371,10 +394,11 @@ export interface IdeaClassification {
  */
 export interface ClassifierOptions {
   /**
-   * Injectable clock function for `classified_at`.
-   * Defaults to `() => new Date()`.
+   * Injectable clock for `classified_at` and deadline comparisons.
+   * Pass a `Date` instance for deterministic tests.
+   * Defaults to `new Date()` at call time.
    */
-  now?: () => Date;
+  now?: Date;
   /**
    * U0 leakage threshold (Section 8.1, gate 3).
    *
@@ -475,6 +499,27 @@ function computeOwnPriorityRank(
 }
 
 /**
+ * Returns true when no evidence is present at all (speculative items → U3).
+ */
+function hasAnyEvidence(input: IdeaClassificationInput): boolean {
+  if ((input.evidence_refs ?? []).length > 0) return true;
+  return (
+    input.incident_id != null ||
+    input.deadline_date != null ||
+    input.repro_ref != null ||
+    input.leakage_estimate_value != null ||
+    input.leakage_estimate_unit != null ||
+    input.first_observed_at != null ||
+    input.risk_vector != null ||
+    input.risk_ref != null ||
+    input.failure_metric != null ||
+    input.baseline_value != null ||
+    input.funnel_step != null ||
+    input.metric_name != null
+  );
+}
+
+/**
  * Determine urgency level from evidence fields (Section 8).
  *
  * @param input - Evidence fields from the classification input.
@@ -497,15 +542,15 @@ function admitUrgency(
   if (input.incident_id != null && input.incident_id !== "") {
     return "U0";
   }
-  // Gate 2: deadline within 72 hours
+  // Gate 2: deadline within 72 hours (from now, inclusive of same-day)
   if (deadline !== null && deadline.getTime() - now.getTime() <= MS_72H) {
     return "U0";
   }
-  // Gate 3: leakage exceeds threshold (disabled by default in Phase 1)
+  // Gate 3: leakage >= threshold (disabled by default in Phase 1)
   if (
     u0_leakage_threshold !== undefined &&
     input.leakage_estimate_value != null &&
-    input.leakage_estimate_value > u0_leakage_threshold
+    input.leakage_estimate_value >= u0_leakage_threshold
   ) {
     return "U0";
   }
@@ -524,7 +569,12 @@ function admitUrgency(
     return "U1";
   }
 
-  // Default urgency (Section 8.3)
+  // U3: speculative — no evidence at all (empty evidence_refs AND all evidence fields null)
+  if (!hasAnyEvidence(input)) {
+    return "U3";
+  }
+
+  // Default urgency (Section 8.3): evidence present but no urgency gates fired
   return "U2";
 }
 
@@ -537,21 +587,24 @@ function admitUrgency(
  * Phase 1 advisory: classification failure is non-fatal to the dispatch
  * pipeline. Callers should catch errors, log to stderr, and continue.
  *
- * @param input - Idea identity, source, dispatch context, and evidence fields.
- * @param options - Injectable clock and configuration for Phase 1.
+ * Decision tree uses area_anchor regex matching (rules 4–7). content_tags
+ * can supplement for P1 Near/Indirect sub-tiers not covered by evidence gates.
+ *
+ * @param input - Idea identity, source, dispatch context, and evidence fields. All optional.
+ * @param options - Injectable clock (Date) and configuration for Phase 1.
  * @returns A complete `IdeaClassification` record.
  */
 export function classifyIdea(
-  input: IdeaClassificationInput,
+  input: IdeaClassificationInput = {},
   options: ClassifierOptions = {},
 ): IdeaClassification {
   const {
-    now: getNow = () => new Date(),
+    now: nowOption,
     u0_leakage_threshold,
     classifier_version = "lp-do-ideas-classifier-v1",
   } = options;
 
-  const nowDate = getNow();
+  const nowDate = nowOption ?? new Date();
 
   // Normalize evidence fields — coerce absent/undefined to null
   const risk_vector = resolveRiskVector(input.risk_vector);
@@ -566,12 +619,24 @@ export function classifyIdea(
   const leakage_estimate_value = input.leakage_estimate_value ?? null;
   const leakage_estimate_unit = input.leakage_estimate_unit ?? null;
   const first_observed_at = input.first_observed_at ?? null;
+  const areaAnchor = input.area_anchor ?? "";
+  const evidenceRefs = input.evidence_refs ?? [];
+
+  // Area-anchor regex patterns (Section 5, rules 4–7)
+  const MARGIN_LEAKAGE_RE = /margin|leakage|per-transaction|cost.?reduction/i;
+  const OPERATOR_EXCEPTION_RE =
+    /\boperator\b.*(exception|intervention|manual)|exception.*volume|manual.*intervention/i;
+  const MEASUREMENT_RE = /measurement|attribution|experiment|tracking|analytics/i;
+  const PROCESS_QUALITY_RE =
+    /process|throughput|determinism|startup.?loop|pipeline|queue|classifier|prioriti/i;
 
   // --- Decision tree (Section 5) — first match wins ---
 
   let priority_tier: PriorityTier;
   let proximity: Proximity = null;
   let reason_code: ReasonCode;
+  let auto_demoted = false;
+  let auto_demotion_reason: string | undefined;
 
   // Rule 1: P0 — legal/safety/security/privacy/compliance exposure
   if (risk_vector !== null) {
@@ -583,6 +648,9 @@ export function classifyIdea(
       // Auto-demotion: missing risk_ref → P4 (Section 9.2)
       priority_tier = "P4";
       reason_code = "RULE_INSUFFICIENT_EVIDENCE";
+      auto_demoted = true;
+      auto_demotion_reason =
+        "P0 (RULE_LEGAL_EXPOSURE) requires risk_ref; auto-demoted to P4 (RULE_INSUFFICIENT_EVIDENCE)";
     }
   }
   // Rule 2: P0R — revenue-path or fulfillment broken, or data loss
@@ -604,11 +672,10 @@ export function classifyIdea(
     proximity = "Direct";
     reason_code = "RULE_P1_DIRECT_CAUSAL";
   }
-  // Rule 3 (near/indirect): P1 without Direct evidence
-  // Check content tags for near/indirect causal signals before falling through
+  // P1 Near/Indirect — supplementary content_tag signals (no spec regex for these)
   else if (
     input.content_tags?.includes("p1_near") ||
-    input.area_anchor?.toLowerCase().includes("conversion")
+    areaAnchor.toLowerCase().includes("conversion")
   ) {
     priority_tier = "P1";
     proximity = "Near";
@@ -618,23 +685,26 @@ export function classifyIdea(
     proximity = "Indirect";
     reason_code = "RULE_P1_INDIRECT_CAUSAL";
   }
-  // Rule 4: P1M — per-transaction margin leakage/loss reduction
-  else if (input.content_tags?.includes("p1m_margin")) {
+  // Rule 4: P1M — per-transaction margin leakage/loss reduction (area_anchor regex or evidence_refs)
+  else if (
+    MARGIN_LEAKAGE_RE.test(areaAnchor) ||
+    evidenceRefs.some((ref) => MARGIN_LEAKAGE_RE.test(ref))
+  ) {
     priority_tier = "P1M";
     reason_code = "RULE_P1M_MARGIN_LEAKAGE";
   }
-  // Rule 5: P2 — operator intervention/exception volume reduction
-  else if (input.content_tags?.includes("p2_operator")) {
+  // Rule 5: P2 — operator intervention/exception volume reduction (area_anchor regex)
+  else if (OPERATOR_EXCEPTION_RE.test(areaAnchor)) {
     priority_tier = "P2";
     reason_code = "RULE_P2_OPERATOR_EXCEPTION";
   }
-  // Rule 6: P3 — measurement correctness/attribution/experiment hygiene
-  else if (input.content_tags?.includes("p3_measurement")) {
+  // Rule 6: P3 — measurement correctness/attribution/experiment hygiene (area_anchor regex)
+  else if (MEASUREMENT_RE.test(areaAnchor)) {
     priority_tier = "P3";
     reason_code = "RULE_P3_MEASUREMENT";
   }
-  // Rule 7: P4 — startup-loop process/throughput/determinism quality
-  else if (input.content_tags?.includes("p4_process")) {
+  // Rule 7: P4 — startup-loop process/throughput/determinism quality (area_anchor regex)
+  else if (PROCESS_QUALITY_RE.test(areaAnchor)) {
     priority_tier = "P4";
     reason_code = "RULE_P4_PROCESS_QUALITY";
   }
@@ -644,41 +714,33 @@ export function classifyIdea(
     reason_code = "RULE_P5_DEFAULT";
   }
 
-  // Auto-demotion for P0R: if no incident_id and no (failure_metric + baseline_value)
-  // Note: the P0R branch above already requires this evidence, so no additional demotion
-  // is needed here. This comment documents the Section 9.1 P0R rule is enforced above.
-
-  // Auto-demotion for P1+Direct: handled above (funnel evidence gates entry to the branch).
-  // If input has risk_vector but no risk_ref, it already demoted to P4 above.
+  // P1 proximity invariant (Section 4.2): P1 must always have proximity
+  if (priority_tier === "P1" && proximity === null) {
+    throw new Error(
+      "Invariant violation: P1 tier requires proximity — decision tree bug detected",
+    );
+  }
 
   // Urgency admission (Section 8)
   const urgency = admitUrgency(input, nowDate, u0_leakage_threshold);
 
-  // Effort — default to S if not specified in input content_tags
-  // (Phase 1 advisory: effort is best-guess from content signals)
-  let effort: Effort = "S";
-  if (input.content_tags?.includes("effort_xs")) effort = "XS";
-  else if (input.content_tags?.includes("effort_s")) effort = "S";
-  else if (input.content_tags?.includes("effort_m")) effort = "M";
-  else if (input.content_tags?.includes("effort_l")) effort = "L";
-  else if (input.content_tags?.includes("effort_xl")) effort = "XL";
+  // Effort — Phase 1: always "M" (no effort estimation from packet fields yet)
+  const effort: Effort = "M";
 
   // Own priority rank (Section 6.2)
   const own_priority_rank = computeOwnPriorityRank(priority_tier, proximity);
 
-  // Phase 4: prerequisite inheritance — deferred.
-  // In Phase 1, effective_priority_rank always equals own_priority_rank.
-  // When is_prerequisite=true and parent_idea_id exists (Phase 4+),
-  // effective_priority_rank should inherit from the parent classification.
+  // Phase 1: effective_priority_rank = own_priority_rank
+  // Phase 4: prerequisite inheritance — when is_prerequisite=true, inherit parent_idea_id's effective_priority_rank
   const effective_priority_rank: OwnPriorityRank = own_priority_rank;
 
-  return {
-    // Section 4.1 — Identity / source
-    idea_id: input.idea_id,
-    title: input.title,
-    source_path: input.source_path,
-    source_excerpt: input.source_excerpt,
-    created_at: input.created_at,
+  const result: IdeaClassification = {
+    // Section 4.1 — Identity / source (optional fields carried through)
+    ...(input.idea_id !== undefined ? { idea_id: input.idea_id } : {}),
+    ...(input.title !== undefined ? { title: input.title } : {}),
+    ...(input.source_path !== undefined ? { source_path: input.source_path } : {}),
+    ...(input.source_excerpt !== undefined ? { source_excerpt: input.source_excerpt } : {}),
+    ...(input.created_at !== undefined ? { created_at: input.created_at } : {}),
 
     // Section 4.2 — Classification fields
     priority_tier,
@@ -712,9 +774,15 @@ export function classifyIdea(
     classified_at: nowDate.toISOString(),
     status: "open",
 
-    // Dispatch context
-    trigger: input.trigger,
-    artifact_id: input.artifact_id,
-    evidence_refs: input.evidence_refs ?? [],
+    // Auto-demotion
+    auto_demoted,
+    ...(auto_demotion_reason !== undefined ? { auto_demotion_reason } : {}),
+
+    // Dispatch context (optional, carried through)
+    ...(input.trigger !== undefined ? { trigger: input.trigger } : {}),
+    ...(input.artifact_id !== undefined ? { artifact_id: input.artifact_id } : {}),
+    ...(input.evidence_refs !== undefined ? { evidence_refs: input.evidence_refs } : {}),
   };
+
+  return result;
 }

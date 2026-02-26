@@ -6,7 +6,7 @@ Workstream: Engineering
 Created: 2026-02-26
 Last-reviewed: 2026-02-26
 Last-updated: 2026-02-26
-Build-last-task: TASK-09 (Wave 2 complete)
+Build-last-task: TASK-16 (Wave 3 complete — all tasks done)
 Critique-Round: 2
 Critique-Score: 4.5
 Critique-Verdict: credible
@@ -39,13 +39,13 @@ Phase 1–3 of the reception app UI polish is complete (9 screens, archived 2026
 - [x] TASK-07: Wave 2 — Menu Performance screen polish
 - [x] TASK-08: Wave 2 — Ingredient Stock screen polish
 - [x] TASK-09: Wave 2 — Statistics screen polish
-- [ ] TASK-10: Wave 3 — Loan Items light polish
-- [ ] TASK-11: Wave 3 — Extension light polish
-- [ ] TASK-12: Wave 3 — Safe Reconciliation light polish
-- [ ] TASK-13: Wave 3 — Email Automation light polish
-- [ ] TASK-14: Wave 3 — Live Shift View light polish
-- [ ] TASK-15: Wave 3 — Prepayments spot-check
-- [ ] TASK-16: Wave 3 — Stock spot-check
+- [x] TASK-10: Wave 3 — Loan Items light polish
+- [x] TASK-11: Wave 3 — Extension light polish
+- [x] TASK-12: Wave 3 — Safe Reconciliation light polish
+- [x] TASK-13: Wave 3 — Email Automation light polish
+- [x] TASK-14: Wave 3 — Live Shift View light polish
+- [x] TASK-15: Wave 3 — Prepayments spot-check
+- [x] TASK-16: Wave 3 — Stock spot-check
 
 ## Goals
 - Extend the established Phase 1–3 visual standard to all 16 remaining Phase 4 reception app screens
@@ -131,13 +131,13 @@ Phase 1–3 of the reception app UI polish is complete (9 screens, archived 2026
 | TASK-07 | IMPLEMENT | Wave 2 — Menu Performance screen polish | 75% | M | Complete (2026-02-26) | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-10, TASK-11, TASK-12, TASK-13, TASK-14, TASK-15, TASK-16 |
 | TASK-08 | IMPLEMENT | Wave 2 — Ingredient Stock screen polish | 75% | S | Complete (2026-02-26) | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-10, TASK-11, TASK-12, TASK-13, TASK-14, TASK-15, TASK-16 |
 | TASK-09 | IMPLEMENT | Wave 2 — Statistics screen polish | 75% | S | Complete (2026-02-26) | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-10, TASK-11, TASK-12, TASK-13, TASK-14, TASK-15, TASK-16 |
-| TASK-10 | IMPLEMENT | Wave 3 — Loan Items light polish | 60% | S | Pending | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
-| TASK-11 | IMPLEMENT | Wave 3 — Extension light polish | 65% | M | Pending | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
-| TASK-12 | IMPLEMENT | Wave 3 — Safe Reconciliation light polish | 60% | S | Pending | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
-| TASK-13 | IMPLEMENT | Wave 3 — Email Automation light polish | 60% | S | Pending | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
-| TASK-14 | IMPLEMENT | Wave 3 — Live Shift View light polish | 60% | S | Pending | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
-| TASK-15 | IMPLEMENT | Wave 3 — Prepayments spot-check | 60% | S | Pending | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
-| TASK-16 | IMPLEMENT | Wave 3 — Stock spot-check | 60% | S | Pending | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
+| TASK-10 | IMPLEMENT | Wave 3 — Loan Items light polish | 60% | S | Complete (2026-02-26) | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
+| TASK-11 | IMPLEMENT | Wave 3 — Extension light polish | 65% | M | Complete (2026-02-26) | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
+| TASK-12 | IMPLEMENT | Wave 3 — Safe Reconciliation light polish | 60% | S | Complete (2026-02-26) | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
+| TASK-13 | IMPLEMENT | Wave 3 — Email Automation light polish | 60% | S | Complete (2026-02-26) | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
+| TASK-14 | IMPLEMENT | Wave 3 — Live Shift View light polish | 60% | S | Complete (2026-02-26) | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
+| TASK-15 | IMPLEMENT | Wave 3 — Prepayments spot-check | 60% | S | Complete (2026-02-26) | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
+| TASK-16 | IMPLEMENT | Wave 3 — Stock spot-check | 60% | S | Complete (2026-02-26) | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
 
 ## Parallelism Guide
 
@@ -755,7 +755,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `apps/reception/src/components/loans/LoansContainer.tsx`; snapshot test in `apps/reception/src/components/loans/__tests__/`
 - **Depends on:** TASK-05, TASK-06, TASK-07, TASK-08, TASK-09
 - **Blocks:** -
@@ -789,6 +789,11 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Rollout: Per-screen commit; no feature flag
   - Rollback: `git revert` the LoansContainer.tsx commit
 - **Documentation impact:** None
+- **Build evidence (2026-02-26):**
+  - `ReceptionSkeleton` imported and loading div `<div className="italic text-muted-foreground">Loading loan information...</div>` replaced with `{loading && <ReceptionSkeleton rows={3} />}`
+  - PageShell already present — preserved unchanged
+  - TC-01–TC-02: no LoansContainer-specific test for loading found (loading is tested via functional tests in sub-component tests); general tests pass; ESLint clean
+  - Commit: 62022af0c5
 
 ---
 
@@ -799,7 +804,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `apps/reception/src/components/man/Extension.tsx`; snapshot test in `apps/reception/src/components/man/__tests__/`
 - **Depends on:** TASK-05, TASK-06, TASK-07, TASK-08, TASK-09
 - **Blocks:** -
@@ -840,6 +845,15 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Rollout: Per-screen commit; no feature flag
   - Rollback: `git revert` the Extension.tsx commit
 - **Documentation impact:** None beyond inline TODO comment for console.log
+- **Build evidence (2026-02-26):**
+  - `ReceptionSkeleton` imported; loading `<p className="italic text-muted-foreground">Loading extension data...</p>` → `{loading && <ReceptionSkeleton rows={3} />}`
+  - Error state: `text-danger-fg` → `text-error-main` (token fix)
+  - Search input: `border rounded px-3 py-2` → `border rounded-lg px-3 py-2`
+  - Nights input: `border rounded px-2 py-1 w-20` → `border rounded-lg px-2 py-1 w-20`
+  - TODO comment added before first `console.log` in `checkAvailability` — flagging all 4 debug log calls (lines 192–196, 202, 205–208, 212)
+  - Extension.test.tsx loading assertion: `screen.getByText(/Loading extension data/)` → `document.querySelector('[aria-busy="true"]')`
+  - TC-01–TC-04: all 5 Extension tests pass; typecheck clean; ESLint clean
+  - Commit: 62022af0c5
 
 ---
 
@@ -850,7 +864,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `apps/reception/src/components/safe/SafeReconciliation.tsx`; snapshot test in `apps/reception/src/components/safe/__tests__/`
 - **Depends on:** TASK-05, TASK-06, TASK-07, TASK-08, TASK-09
 - **Blocks:** -
@@ -883,6 +897,12 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Rollout: Per-screen commit; no feature flag
   - Rollback: `git revert` the SafeReconciliation.tsx commit
 - **Documentation impact:** None
+- **Build evidence (2026-02-26):**
+  - SafeReconciliation.tsx: 3× bare `rounded` → `rounded-lg` — Reconcile Safe button (line 110), Bank Deposit button (line 116), Petty Cash button (line 122)
+  - PageShell preserved unchanged on line 101
+  - No raw color values present; zero `rounded` without suffix remaining
+  - TC-01–TC-02: all tests pass; ESLint clean
+  - Commit: 62022af0c5
 
 ---
 
@@ -893,7 +913,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `apps/reception/src/components/emailAutomation/EmailProgress.tsx`
 - **Depends on:** TASK-05, TASK-06, TASK-07, TASK-08, TASK-09
 - **Blocks:** -
@@ -927,6 +947,11 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Rollout: Per-screen commit; no feature flag
   - Rollback: `git revert` the EmailProgress.tsx commit
 - **Documentation impact:** None
+- **Build evidence (2026-02-26):**
+  - EmailProgress.tsx: 1× bare `rounded` → `rounded-lg` on filter input (`border border-primary-light rounded px-3 py-1` → `border border-primary-light rounded-lg px-3 py-1`)
+  - PageShell preserved unchanged; `next/dynamic` ssr:false boundary in page.tsx untouched
+  - TC-01–TC-03: all tests pass; ESLint clean
+  - Commit: 62022af0c5
 
 ---
 
@@ -937,7 +962,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `apps/reception/src/components/live/Live.tsx`
 - **Depends on:** TASK-05, TASK-06, TASK-07, TASK-08, TASK-09
 - **Blocks:** -
@@ -971,6 +996,13 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Rollout: Per-screen commit; no feature flag
   - Rollback: `git revert` the Live.tsx commit
 - **Documentation impact:** None beyond inline comment if guard is accepted as auth-redirect exception
+- **Build evidence (2026-02-26):**
+  - Live.tsx: Red-phase read confirmed guard renders are auth/empty-state checks (not router redirects — no `router.push` or `redirect()` calls)
+  - Guard 1 (unauthorized): `<p className="p-5 text-error-main">Not authorized.</p>` → wrapped in `<PageShell title="LIVE SHIFT"><p className="text-error-main">Not authorized.</p></PageShell>` (removed `p-5` padding — PageShell provides spacing)
+  - Guard 2 (no shift): `<p className="p-5">No shift is currently open.</p>` → wrapped in `<PageShell title="LIVE SHIFT"><p className="text-muted-foreground">No shift is currently open.</p></PageShell>` (token fix: plain text → `text-muted-foreground`)
+  - Main PageShell on line 25 preserved unchanged
+  - TC-01–TC-03: all tests pass; ESLint clean
+  - Commit: 62022af0c5
 
 ---
 
@@ -981,7 +1013,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `apps/reception/src/components/prepayments/PrepaymentsView.tsx` (structural JSX only — do NOT touch `PrepaymentsContainer.tsx` payment logic)
 - **Depends on:** TASK-05, TASK-06, TASK-07, TASK-08, TASK-09
 - **Blocks:** -
@@ -1017,6 +1049,14 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Rollout: Per-screen commit (or no commit if no changes); no feature flag
   - Rollback: `git revert` if any changes made
 - **Documentation impact:** None
+- **Build evidence (2026-02-26):**
+  - PrepaymentsView.tsx: 2× bare `rounded` found and fixed:
+    - Filter input: `border border-border-2 rounded px-3 py-1` → `border border-border-2 rounded-lg px-3 py-1`
+    - Error banner: `bg-error-light rounded` → `bg-error-light rounded-lg`
+  - PageShell on line 87 preserved; PrepaymentsContainer.tsx untouched; `next/dynamic` ssr:false boundary in page.tsx untouched
+  - Pre-existing PaymentsView.test.tsx failure noted and confirmed unrelated (uses `data-testid` but jest config sets `testIdAttribute: "data-cy"` — pre-dates all changes in this plan; last touched in commits b142a51dc6 and 4d9325702e before plan start)
+  - TC-01–TC-03: passes (excluding pre-existing PaymentsView test); ESLint clean
+  - Commit: 62022af0c5
 
 ---
 
@@ -1027,7 +1067,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `apps/reception/src/components/man/Stock.tsx`
 - **Depends on:** TASK-05, TASK-06, TASK-07, TASK-08, TASK-09
 - **Blocks:** -
@@ -1059,6 +1099,11 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Rollout: Per-screen commit (or no commit if no changes); no feature flag
   - Rollback: `git revert` if any changes made
 - **Documentation impact:** None
+- **Build evidence (2026-02-26):**
+  - Stock.tsx (63L): confirmed already compliant — PageShell present, no bare `rounded` (Input elements use `className="w-20 border p-1"` with no radius class at all)
+  - No changes required; task marked complete as no-op
+  - TC-01–TC-02: spot-check confirms compliance; no snapshot update needed
+  - Commit: n/a (no-op)
 
 ---
 

@@ -37,9 +37,10 @@ export type BuildOctorateUrlResult =
  * Returns `{ ok: true, url }` on success, or `{ ok: false, error }` on validation failure.
  * Never throws.
  *
- * - Uses Octorate room-rate `result.xhtml` endpoint so explicit
- *   checkin/checkout/pax are applied directly.
- * - Appends room and date params from the selected room-rate/check-in.
+ * - Uses Octorate booking `calendar.xhtml` endpoint with canonical
+ *   Octorate params (`arrivo`, `partenza`, `adulti`, `camera`).
+ * - Also appends legacy mirrors (`checkin`, `checkout`, `pax`, `room`) for
+ *   analytics/debugging continuity and backwards compatibility.
  * - Appends deal + UTM attribution params when `deal` is provided.
  *
  * 200ms timeout rationale (for callers using trackThenNavigate): empirically-established
@@ -67,16 +68,22 @@ export function buildOctorateUrl(
     return { ok: false, error: "invalid_dates" };
   }
 
+  const paxString = String(pax);
   const urlParams = new URLSearchParams({
+    // Canonical Octorate calendar params
     codice: bookingCode,
-    room: octorateRateCode,
+    camera: octorateRateCode,
+    arrivo: checkin,
+    partenza: checkout,
+    adulti: paxString,
+    bambini: "0",
+    // Compatibility mirrors retained intentionally
     date: checkin,
+    room: octorateRateCode,
+    checkin,
+    checkout,
+    pax: paxString,
   });
-
-  // Preserve selected stay window for Octorate pre-fill and analytics correlation.
-  urlParams.set("checkin", checkin);
-  urlParams.set("checkout", checkout);
-  urlParams.set("pax", String(pax));
 
   // Append deal attribution params when a deal code is provided
   const dealCode = typeof deal === "string" ? deal.trim() : "";
@@ -87,7 +94,7 @@ export function buildOctorateUrl(
     urlParams.set("utm_campaign", dealCode);
   }
 
-  const url = `${OCTORATE_BASE}/result.xhtml?${urlParams.toString()}`;
+  const url = `${OCTORATE_BASE}/calendar.xhtml?${urlParams.toString()}`;
 
   return { ok: true, url };
 }

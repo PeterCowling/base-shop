@@ -185,7 +185,7 @@ describe("TASK-32: RoomsSection onRoomSelect GA4 contracts", () => {
     expect(url.length).toBeGreaterThan(0);
   });
 
-  it("TC-06: room CTA navigation uses result endpoint with room/date params and no legacy confirm params", () => {
+  it("TC-06: room CTA navigation uses calendar endpoint with canonical params and no legacy confirm params", () => {
     render(
       <RoomsSection
         lang="en"
@@ -211,9 +211,14 @@ describe("TASK-32: RoomsSection onRoomSelect GA4 contracts", () => {
     const parsed = new URL(targetUrl);
 
     expect(parsed.origin + parsed.pathname).toBe(
-      "https://book.octorate.com/octobook/site/reservation/result.xhtml",
+      "https://book.octorate.com/octobook/site/reservation/calendar.xhtml",
     );
     expect(parsed.searchParams.get("codice")).toBe("45111");
+    expect(parsed.searchParams.get("arrivo")).toBe("2026-07-01");
+    expect(parsed.searchParams.get("partenza")).toBe("2026-07-04");
+    expect(parsed.searchParams.get("adulti")).toBe("1");
+    expect(parsed.searchParams.get("bambini")).toBe("0");
+    expect(parsed.searchParams.get("camera")).toMatch(/^\d+$/u);
     expect(parsed.searchParams.get("checkin")).toBe("2026-07-01");
     expect(parsed.searchParams.get("checkout")).toBe("2026-07-04");
     expect(parsed.searchParams.get("date")).toBe("2026-07-01");

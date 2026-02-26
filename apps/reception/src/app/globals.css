@@ -187,3 +187,19 @@ body.dark {
 /* -------- Viewport-safe height utilities ------------------------------- */
 .min-h-dvh { min-height: 100dvh; }
 .h-dvh { height: 100dvh; }
+
+/* -------- Print suppression (EndOfDay packet) -------------------------- */
+@media print {
+  /* Reset background gradients so text remains readable in print */
+  body,
+  .bg-gradient-to-b {
+    background: white !important;
+    background-image: none !important;
+    color: black !important;
+  }
+
+  /* Prevent page breaks inside report sections */
+  section {
+    break-inside: avoid;
+  }
+}

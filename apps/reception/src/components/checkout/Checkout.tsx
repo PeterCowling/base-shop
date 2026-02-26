@@ -26,6 +26,7 @@ import { getItalyIsoString, getLocalToday } from "../../utils/dateUtils";
 import { generateTransactionId } from "../../utils/generateTransactionId";
 import { showToast } from "../../utils/toastUtils";
 import { PageShell } from "../common/PageShell";
+import ReceptionSkeleton from "../common/ReceptionSkeleton";
 import { getDepositForItem } from "../loans/LoanUtils";
 
 import type { Guest } from "./CheckoutTable";
@@ -328,7 +329,7 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
           </div>
         )}
 
-        {loading && <div className="italic text-muted-foreground">Loading...</div>}
+        {loading && <ReceptionSkeleton rows={5} />}
 
         {!loading && (
           <CheckoutTable

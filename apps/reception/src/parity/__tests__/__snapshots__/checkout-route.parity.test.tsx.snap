@@ -86,48 +86,48 @@ exports[`/checkout parity matches baseline checkout selectors and DOM snapshot 1
             class="text-foreground text-left text-sm w-full border-collapse"
           >
             <thead
-              class="text-foreground border-b border-border-2 bg-surface-2"
+              class="text-foreground border-b border-border-2 sticky top-0 z-10 backdrop-blur-sm bg-surface-2/80"
             >
               <tr
                 class="border-b border-border-1 transition-colors hover:bg-surface-2 data-[state=selected]:bg-surface-3"
               >
                 <th
-                  class="font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground"
+                  class="font-semibold break-words text-center p-3 border-b border-border-2 text-muted-foreground"
                 >
                   DATE
                 </th>
                 <th
-                  class="font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground"
+                  class="font-semibold break-words text-center p-3 border-b border-border-2 text-muted-foreground"
                 >
                   REF
                 </th>
                 <th
-                  class="font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground"
+                  class="font-semibold break-words text-center p-3 border-b border-border-2 text-muted-foreground"
                 >
                   NAME
                 </th>
                 <th
-                  class="font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground"
+                  class="font-semibold break-words text-center p-3 border-b border-border-2 text-muted-foreground"
                 >
                   ROOM
                 </th>
                 <th
-                  class="font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground w-48"
+                  class="font-semibold break-words text-center p-3 border-b border-border-2 text-muted-foreground w-48"
                 >
                   LOANS
                 </th>
                 <th
-                  class="font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground"
+                  class="font-semibold break-words text-center p-3 border-b border-border-2 text-muted-foreground"
                 >
                   BAG STORAGE
                 </th>
                 <th
-                  class="font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground"
+                  class="font-semibold break-words text-center p-3 border-b border-border-2 text-muted-foreground"
                 >
                   FRIDGE
                 </th>
                 <th
-                  class="font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground w-32"
+                  class="font-semibold break-words text-center p-3 border-b border-border-2 text-muted-foreground w-32"
                 >
                   COMPLETE
                 </th>

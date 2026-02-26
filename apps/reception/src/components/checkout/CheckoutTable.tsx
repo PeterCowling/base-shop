@@ -154,30 +154,30 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
     return (
       <div className="bg-surface border border-border-2 rounded-xl shadow-md overflow-x-auto">
         <Table className="w-full border-collapse" aria-label="checkout table">
-          <TableHeader className="bg-surface-2">
+          <TableHeader className="sticky top-0 z-10 backdrop-blur-sm bg-surface-2/80">
             <TableRow>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground">
+              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground">
                 DATE
               </TableHead>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground">
+              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground">
                 REF
               </TableHead>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground">
+              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground">
                 NAME
               </TableHead>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground">
+              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground">
                 ROOM
               </TableHead>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground w-48">
+              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground w-48">
                 LOANS
               </TableHead>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground">
+              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground">
                 BAG STORAGE
               </TableHead>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground">
+              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground">
                 FRIDGE
               </TableHead>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground w-32">
+              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground w-32">
                 COMPLETE
               </TableHead>
             </TableRow>

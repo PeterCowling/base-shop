@@ -31,7 +31,7 @@ HEAD has completed company naming (Facilella, R7, 2026-02-26) and produced a Dra
 - [x] TASK-03: Build `tm-prescreen-cli.ts` — structured TM direction URL generator — Complete (2026-02-26)
 - [x] TASK-04: Generate 75 product name candidates (SPIKE) — Complete (2026-02-26) — 72 valid candidates (3 eliminations)
 - [x] TASK-05: Run `tm-prescreen-cli.ts` on the shortlist candidates; capture output — Complete (2026-02-26)
-- [ ] TASK-06: Write shortlist artifact (`product-naming-shortlist-2026-02-26.user.md`)
+- [x] TASK-06: Write shortlist artifact (`product-naming-shortlist-2026-02-26.user.md`) — Complete (2026-02-26)
 - [x] TASK-07: Update ASSESSMENT-13 SKILL.md with pipeline pointer — Complete (2026-02-26)
 
 ## Goals
@@ -105,7 +105,7 @@ HEAD has completed company naming (Facilella, R7, 2026-02-26) and produced a Dra
 | TASK-03 | IMPLEMENT | Build `tm-prescreen-cli.ts` | 85% | S | Complete (2026-02-26) | TASK-02 | TASK-05 |
 | TASK-04 | SPIKE | Generate 75 scored product name candidates | 80% | M | Complete (2026-02-26) — 72 valid | TASK-01 | TASK-05 |
 | TASK-05 | IMPLEMENT | Run `tm-prescreen-cli.ts` on top 20 candidates; capture output | 85% | S | Complete (2026-02-26) | TASK-03, TASK-04 | TASK-06 |
-| TASK-06 | IMPLEMENT | Write shortlist artifact (`product-naming-shortlist-2026-02-26.user.md`) | 90% | S | Pending | TASK-05 | - |
+| TASK-06 | IMPLEMENT | Write shortlist artifact (`product-naming-shortlist-2026-02-26.user.md`) | 90% | S | Complete (2026-02-26) | TASK-05 | - |
 | TASK-07 | IMPLEMENT | Update ASSESSMENT-13 SKILL.md with pipeline pointer | 95% | S | Complete (2026-02-26) | - | - |
 
 ## Parallelism Guide
@@ -413,7 +413,8 @@ HEAD has completed company naming (Facilella, R7, 2026-02-26) and produced a Dra
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
+- **Build Evidence:** VC-01 pass (shortlist file exists); VC-02 pass (20 bold-name rows); VC-03 pass (Operator selected field present); VC-04 pass (TM pre-screen status column present; ASSESSMENT-13 Section B updated with shortlist/reviewed statuses). Curator's analysis in Section B gives operator guidance across territories. Section D seeds scored and ranked for reference. Section E provides full TM direction file reference.
 - **Artifact-Destination:** `docs/business-os/strategy/HEAD/product-naming-shortlist-2026-02-26.user.md`
 - **Reviewer:** Pete (operator)
 - **Approval-Evidence:** Operator selection field populated in shortlist artifact ("Operator selected: [Name]")

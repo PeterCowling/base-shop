@@ -15,6 +15,7 @@
     "startup-loop:map-artifact-delta-to-website-backlog": "node --import tsx src/startup-loop/map-artifact-delta-to-website-backlog.ts",
     "startup-loop:website-iteration-throughput-report": "node --import tsx src/startup-loop/website-iteration-throughput-report.ts",
     "startup-loop:generate-process-improvements": "node --import tsx src/startup-loop/generate-process-improvements.ts",
+    "check-process-improvements": "node --import tsx src/startup-loop/generate-process-improvements.ts --check",
     "startup-loop:lp-do-ideas-live-run": "node --import tsx src/startup-loop/lp-do-ideas-live-hook.ts",
     "startup-loop:lp-do-ideas-trial-run": "node --import tsx src/startup-loop/lp-do-ideas-live-hook.ts"
   },

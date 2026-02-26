@@ -1,4 +1,4 @@
-import { mkdirSync, readdirSync, readFileSync, renameSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 import { load as loadYaml } from "js-yaml";
@@ -516,6 +516,97 @@ export function updateProcessImprovementsHtml(
   return next;
 }
 
+/**
+ * Extract a single `var NAME = [...];` assignment block from an HTML string.
+ * Returns the block text or null if the variable is not found.
+ */
+function extractArrayAssignmentBlock(html: string, variableName: string): string | null {
+  const startToken = `var ${variableName} =`;
+  const start = html.indexOf(startToken);
+  if (start < 0) return null;
+  const openBracket = html.indexOf("[", start);
+  const close = html.indexOf("];", openBracket);
+  if (openBracket < 0 || close < 0) return null;
+  return html.slice(start, close + 2);
+}
+
+/**
+ * Build the canonical `var NAME = [...];` assignment string for a given variable and items array.
+ * Mirrors the serialization used by replaceArrayAssignment.
+ */
+function buildArrayAssignmentBlock(variableName: string, items: ProcessImprovementItem[]): string {
+  const serialized = JSON.stringify(items, null, 2)
+    .split("\n")
+    .map((line, index) => (index === 0 ? line : `  ${line}`))
+    .join("\n");
+  return `var ${variableName} = ${serialized};`;
+}
+
+/**
+ * Check mode: compare only the three array variable assignment blocks in the committed HTML
+ * (avoids false positives from the date-stamp footer) plus the full JSON data file.
+ * Exits 0 if up-to-date, exits 1 if drift detected.
+ */
+export function runCheck(repoRoot: string): void {
+  const htmlPath = path.join(repoRoot, PROCESS_HTML_RELATIVE_PATH);
+  const dataPath = path.join(repoRoot, PROCESS_DATA_RELATIVE_PATH);
+
+  const data = collectProcessImprovements(repoRoot);
+  const expectedDataJson = `${JSON.stringify(data, null, 2)}\n`;
+
+  let drifted = false;
+
+  if (!existsSync(htmlPath)) {
+    process.stderr.write(
+      `[generate-process-improvements] DRIFT: ${PROCESS_HTML_RELATIVE_PATH} does not exist — re-run generator\n`,
+    );
+    drifted = true;
+  } else {
+    const committedHtml = readFileSync(htmlPath, "utf8");
+    for (const [variableName, items] of [
+      ["IDEA_ITEMS", data.ideaItems],
+      ["RISK_ITEMS", data.riskItems],
+      ["PENDING_REVIEW_ITEMS", data.pendingReviewItems],
+    ] as [string, ProcessImprovementItem[]][]) {
+      const expected = buildArrayAssignmentBlock(variableName, items);
+      const committed = extractArrayAssignmentBlock(committedHtml, variableName);
+      if (committed === null) {
+        process.stderr.write(
+          `[generate-process-improvements] DRIFT: ${PROCESS_HTML_RELATIVE_PATH} is missing ${variableName} — re-run generator\n`,
+        );
+        drifted = true;
+      } else if (committed !== expected) {
+        process.stderr.write(
+          `[generate-process-improvements] DRIFT: ${PROCESS_HTML_RELATIVE_PATH} has stale ${variableName} — re-run generator\n`,
+        );
+        drifted = true;
+      }
+    }
+  }
+
+  if (!existsSync(dataPath)) {
+    process.stderr.write(
+      `[generate-process-improvements] DRIFT: ${PROCESS_DATA_RELATIVE_PATH} does not exist — re-run generator\n`,
+    );
+    drifted = true;
+  } else {
+    const committedData = readFileSync(dataPath, "utf8");
+    if (committedData !== expectedDataJson) {
+      process.stderr.write(
+        `[generate-process-improvements] DRIFT: ${PROCESS_DATA_RELATIVE_PATH} is stale — re-run generator\n`,
+      );
+      drifted = true;
+    }
+  }
+
+  if (drifted) {
+    process.exit(1);
+  }
+  process.stdout.write(
+    "[generate-process-improvements] CHECK OK — generated files are up-to-date\n",
+  );
+}
+
 function writeFileAtomic(filePath: string, content: string): void {
   mkdirSync(path.dirname(filePath), { recursive: true });
   const tempPath = `${filePath}.tmp`;
@@ -543,6 +634,12 @@ function runCli(): void {
   process.stdout.write(
     `[generate-process-improvements] wrote ${PROCESS_DATA_RELATIVE_PATH}\n`,
   );
+}
+
+if (process.argv.includes("--check")) {
+  const repoRoot = path.resolve(process.cwd(), "..");
+  runCheck(repoRoot);
+  process.exit(0);
 }
 
 if (process.argv[1]?.includes("generate-process-improvements")) {

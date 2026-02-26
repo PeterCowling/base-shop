@@ -320,6 +320,31 @@ Review-date: 2026-02-25
     expect(titles).not.toContain("~~Some completed idea~~");
   });
 
+  it("collectProcessImprovements suppresses none-placeholder bullets in all forms", async () => {
+    await writeFile(
+      tmpDir,
+      "docs/plans/feature-a/results-review.user.md",
+      `---
+Business-Unit: BRIK
+Review-date: 2026-02-25
+---
+# Results Review
+
+## New Idea Candidates
+- Real idea to keep
+- None.
+- None identified.
+- None for the other four categories.
+- New open-source package: None identified.
+- New skill: None — this was a standard flow.
+`,
+    );
+
+    const data = collectProcessImprovements(tmpDir);
+    expect(data.ideaItems).toHaveLength(1);
+    expect(data.ideaItems[0]?.title).toBe("Real idea to keep");
+  });
+
   it("appendCompletedIdea is idempotent — calling twice yields one entry", async () => {
     const entry = {
       title: "My idea",

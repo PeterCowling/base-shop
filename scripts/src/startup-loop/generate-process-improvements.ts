@@ -474,9 +474,22 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
         }
         return true;
       })
-      .filter(
-        (item) => !/^none\.?$/i.test(item),
-      );
+      .filter((item) => {
+        const raw = item.trim();
+        // Suppress exact "none" and "none." (legacy form)
+        if (/^none\.?$/i.test(raw)) return false;
+        // Suppress items where the value after an optional "Category: " prefix starts with "none".
+        // This catches "New open-source package: None identified.", "None for the other four categories.", etc.
+        const colonIdx = raw.indexOf(":");
+        const valueAfterPrefix = colonIdx >= 0 ? raw.slice(colonIdx + 1).trim() : raw;
+        if (/^none\b/i.test(valueAfterPrefix)) {
+          process.stderr.write(
+            `[generate-process-improvements] info: suppressing none-placeholder idea in ${sourcePath}: "${raw.slice(0, 80)}"\n`,
+          );
+          return false;
+        }
+        return true;
+      });
     if (ideasRaw.length === 0) {
       continue;
     }

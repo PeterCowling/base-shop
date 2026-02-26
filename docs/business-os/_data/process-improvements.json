@@ -13,92 +13,12 @@
     {
       "type": "idea",
       "business": "BOS",
-      "title": "New loop process: None identified.",
-      "body": "New loop process: None identified.",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T09:51:20.911Z",
-      "path": "docs/plans/_archive/reception-rounded-lg-lint-rule/results-review.user.md",
-      "idea_key": "e22600775fee478e192cd1ebe2186cbec027e889"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "New open-source package: None identified.",
-      "body": "New open-source package: None identified.",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T09:51:20.911Z",
-      "path": "docs/plans/_archive/reception-rounded-lg-lint-rule/results-review.user.md",
-      "idea_key": "9b01b2eccb23490e2a6ef87e0ed01e0b2fcaa607"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "New skill: None — this was a standard lp-do-build code-change flow.",
-      "body": "New skill: None — this was a standard lp-do-build code-change flow.",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T09:51:20.911Z",
-      "path": "docs/plans/_archive/reception-rounded-lg-lint-rule/results-review.user.md",
-      "idea_key": "9517d16769495b7cb3786a19af35808319cb1c10"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "New standing data source: None identified.",
-      "body": "New standing data source: None identified.",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T09:51:20.911Z",
-      "path": "docs/plans/_archive/reception-rounded-lg-lint-rule/results-review.user.md",
-      "idea_key": "d6053f0ef147a7587944a488f5445afeed28521a"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
       "title": "AI-to-mechanistic: The extractFromJsxAttribute utility correctly handles most cases but returns confident: false for template literals with interpolations. A future improvement could expand confidence for template literals where the bare class token is always in the static portion.",
       "body": "AI-to-mechanistic: The extractFromJsxAttribute utility correctly handles most cases but returns confident: false for template literals with interpolations. A future improvement could expand confidence for template literals where the bare class token is always in the static portion.",
       "source": "results-review.user.md",
       "date": "2026-02-26T09:51:07.413Z",
       "path": "docs/plans/reception-rounded-lg-lint-rule/results-review.user.md",
       "idea_key": "fe02150793889094003f0c4a9cb631967e47e91f"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "New loop process: None identified.",
-      "body": "New loop process: None identified.",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T09:51:07.413Z",
-      "path": "docs/plans/reception-rounded-lg-lint-rule/results-review.user.md",
-      "idea_key": "bac1c74bbcdcf739f14ed4af35c828fa388c1e6d"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "New open-source package: None identified.",
-      "body": "New open-source package: None identified.",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T09:51:07.413Z",
-      "path": "docs/plans/reception-rounded-lg-lint-rule/results-review.user.md",
-      "idea_key": "96f2bd78027236806b5625b202fdd1f42d1be074"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "New skill: None — this was a standard lp-do-build code-change flow.",
-      "body": "New skill: None — this was a standard lp-do-build code-change flow.",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T09:51:07.413Z",
-      "path": "docs/plans/reception-rounded-lg-lint-rule/results-review.user.md",
-      "idea_key": "2abbd81e8f7ba92396ac4a0a7362d826c6a9ec7f"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "New standing data source: None identified.",
-      "body": "New standing data source: None identified.",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T09:51:07.413Z",
-      "path": "docs/plans/reception-rounded-lg-lint-rule/results-review.user.md",
-      "idea_key": "9dd63e5b59f4c0791afc5085b0fa568e59e3cc6e"
     },
     {
       "type": "idea",
@@ -110,16 +30,6 @@
       "date": "2026-02-26T09:47:46.087Z",
       "path": "docs/plans/_archive/process-improvements-completion-lifecycle/results-review.user.md",
       "idea_key": "b94ed760a8c6e70812f1e715d57ff654a038eda5"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "None for the other four categories.",
-      "body": "None for the other four categories.",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T09:47:46.087Z",
-      "path": "docs/plans/_archive/process-improvements-completion-lifecycle/results-review.user.md",
-      "idea_key": "b72c6a2bde48b4b9299be1d4a6860e8f6e85959e"
     },
     {
       "type": "idea",

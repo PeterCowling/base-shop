@@ -1,3 +1,9 @@
+---
+Type: Critique-History
+Status: Archived
+Feature-Slug: reception-rounded-lg-lint-rule
+---
+
 # Critique History: reception-rounded-lg-lint-rule
 
 ## Round 1 — 2026-02-26

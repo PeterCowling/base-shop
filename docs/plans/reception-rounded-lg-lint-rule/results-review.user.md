@@ -1,3 +1,10 @@
+---
+Type: Results-Review
+Status: Complete
+Feature-Slug: reception-rounded-lg-lint-rule
+Review-date: 2026-02-26
+---
+
 # Results Review: reception-rounded-lg-lint-rule
 
 **Completed:** 2026-02-26

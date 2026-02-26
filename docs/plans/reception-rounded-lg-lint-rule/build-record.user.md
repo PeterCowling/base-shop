@@ -1,3 +1,10 @@
+---
+Type: Build-Record
+Status: Complete
+Feature-Slug: reception-rounded-lg-lint-rule
+Completed-date: 2026-02-26
+---
+
 # Build Record: reception-rounded-lg-lint-rule
 
 **Plan:** docs/plans/reception-rounded-lg-lint-rule/plan.md

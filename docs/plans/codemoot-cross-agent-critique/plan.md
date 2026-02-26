@@ -30,9 +30,9 @@ Wire codemoot (v0.2.14) into the critique-loop-protocol.md so that lp-do-fact-fi
 ## Active tasks
 - [x] TASK-01: Install prerequisites and smoke test — Complete (2026-02-26)
 - [x] CHECKPOINT-01: Reassess TASK-02/03/05 confidence — Complete (2026-02-26)
-- [ ] TASK-02: Modify critique-loop-protocol.md
-- [ ] TASK-03: Modify CODEX.md
-- [ ] TASK-05: Close gap bands in critique-loop-protocol.md
+- [x] TASK-02: Modify critique-loop-protocol.md — Complete (2026-02-26)
+- [x] TASK-03: Modify CODEX.md — Complete (2026-02-26)
+- [x] TASK-05: Close gap bands in critique-loop-protocol.md — Complete (2026-02-26)
 - [ ] TASK-04: Integration test
 
 ## Goals
@@ -97,9 +97,9 @@ Wire codemoot (v0.2.14) into the critique-loop-protocol.md so that lp-do-fact-fi
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | INVESTIGATE | Install codemoot under Node 22; confirm codex binary in PATH; smoke test review JSON | 80% | S | Complete (2026-02-26) | - | CHECKPOINT-01 |
 | CHECKPOINT-01 | CHECKPOINT | Reassess TASK-02/03/05 confidence with smoke test evidence | 95% | S | Complete (2026-02-26) | TASK-01 | TASK-02, TASK-03, TASK-05 |
-| TASK-02 | IMPLEMENT | Modify critique-loop-protocol.md: codemoot subprocess path, corrected score mapping (÷2 not ×5), gap bands, fallback | 84% | M | Pending | CHECKPOINT-01 | TASK-04 |
-| TASK-03 | IMPLEMENT | Modify CODEX.md: add codemoot prerequisites, dynamic resolution pattern, fallback | 84% | S | Pending | CHECKPOINT-01 | TASK-04 |
-| TASK-05 | IMPLEMENT | Close gap bands (2.6–2.9, 3.6–3.9) in critique-loop-protocol.md | 84% | S | Pending | CHECKPOINT-01 | TASK-04 |
+| TASK-02 | IMPLEMENT | Modify critique-loop-protocol.md: codemoot subprocess path, corrected score mapping (÷2 not ×5), gap bands, fallback | 84% | M | Complete (2026-02-26) | CHECKPOINT-01 | TASK-04 |
+| TASK-03 | IMPLEMENT | Modify CODEX.md: add codemoot prerequisites, dynamic resolution pattern, fallback | 84% | S | Complete (2026-02-26) | CHECKPOINT-01 | TASK-04 |
+| TASK-05 | IMPLEMENT | Close gap bands (2.6–2.9, 3.6–3.9) in critique-loop-protocol.md | 84% | S | Complete (2026-02-26) | CHECKPOINT-01 | TASK-04 |
 | TASK-04 | INVESTIGATE | Integration test: full fact-find → critique cycle with new protocol | 80% | S | Pending | TASK-02, TASK-03, TASK-05 | - |
 
 ## Parallelism Guide
@@ -227,7 +227,7 @@ Wire codemoot (v0.2.14) into the critique-loop-protocol.md so that lp-do-fact-fi
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `.claude/skills/_shared/critique-loop-protocol.md`
 - **Depends on:** CHECKPOINT-01
 - **Blocks:** TASK-04
@@ -301,6 +301,17 @@ Wire codemoot (v0.2.14) into the critique-loop-protocol.md so that lp-do-fact-fi
   - Gap bands are added here as interim rules (2.6–2.9 → partially credible; 3.6–3.9 → credible) pending TASK-05 which makes them canonical.
   - Consumer tracing: critique-loop-protocol.md is consumed by lp-do-fact-find Phase 7a (via `../_shared/critique-loop-protocol.md`) and lp-do-plan Phase 9 (via same path). Both are safe consumers of the fallback path.
 
+#### Build Evidence (2026-02-26)
+- **Status:** Complete
+- **TC-01 check:** `## Critique Route Selection` section added; CODEMOOT resolution documented; `"$CODEMOOT" review <artifact>` call documented (no `--json` flag); score mapped via `lp_score = codemoot_score / 2`; band lookup via Post-Loop Gate (canonical bands now include gap bands via TASK-05). ✓
+- **TC-02 check:** Inline route fallback documented: "Invoke `/lp-do-critique` as normal." ✓
+- **TC-03 check:** Score-precedence rule: "Score takes precedence over verdict for all gate decisions. Verdict field is advisory context only." Explicit. ✓
+- **TC-04 check:** TC-03/04 derived from same score-precedence rule — gate uses `lp_score` from `codemoot_score / 2` and looks up band from Post-Loop Gate. ✓
+- **TC-07 check:** Band 3.0–3.5 = partially credible; 3.6–3.9 = credible (now canonical via TASK-05). score=7/10 → lp_score=3.5 → partially credible; score=8/10 → lp_score=4.0 → credible (≥4.0 boundary). ✓
+- **Null guard:** Documented: "if `score` is null, fall back to inline route for this round with a warning note." ✓
+- **Prerequisites note:** One-time codemoot init documented. ✓
+- **Files changed:** `.claude/skills/_shared/critique-loop-protocol.md` — new `## Critique Route Selection` section added before `## Iteration Rules`.
+
 ---
 
 ### TASK-03: Modify CODEX.md
@@ -309,7 +320,7 @@ Wire codemoot (v0.2.14) into the critique-loop-protocol.md so that lp-do-fact-fi
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `CODEX.md`
 - **Depends on:** CHECKPOINT-01
 - **Blocks:** TASK-04
@@ -360,6 +371,18 @@ Wire codemoot (v0.2.14) into the critique-loop-protocol.md so that lp-do-fact-fi
 - **Notes / references:**
   - Writer-lock reminder is already in CODEX.md (integrator-shell.sh reference); the new section should cross-reference it, not duplicate it.
 
+#### Build Evidence (2026-02-26)
+- **Status:** Complete
+- **TC-05 check:** `## codemoot Setup` section added to CODEX.md. Contains:
+  - Install commands: `nvm exec 22 npm install -g @codemoot/cli` and `nvm exec 22 npm install -g @openai/codex` ✓
+  - Auth verification: `nvm exec 22 codex login status` → "Logged in using ChatGPT" ✓
+  - Dynamic resolution pattern: `CODEMOOT="$(nvm exec 22 which codemoot 2>/dev/null | tail -1)"` ✓
+  - Fallback note: "If `CODEMOOT` is empty ... fallback to inline `/lp-do-critique`" ✓
+  - Writer-lock reminder: cross-references "Local Enforcement" section (integrator-shell.sh) already in CODEX.md ✓
+- **Existing sections unchanged:** workflow instructions, lp-do-build guidance, safety rules all preserved ✓
+- **Insertion point:** Before `## What Stays the Same` (clean separation from workflow section)
+- **Files changed:** `CODEX.md` — new `## codemoot Setup` section added.
+
 ---
 
 ### TASK-05: Close gap bands in critique-loop-protocol.md
@@ -368,7 +391,7 @@ Wire codemoot (v0.2.14) into the critique-loop-protocol.md so that lp-do-fact-fi
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Affects:** `.claude/skills/_shared/critique-loop-protocol.md`
 - **Depends on:** CHECKPOINT-01
 - **Blocks:** TASK-04
@@ -388,6 +411,18 @@ Wire codemoot (v0.2.14) into the critique-loop-protocol.md so that lp-do-fact-fi
 #### CHECKPOINT-01 Update (2026-02-26)
 - Confidence: 80% → **84%** — Smoke test produced real score evidence (4/10 → lp_score 2.0); gap band relevance confirmed live.
 - Note on corrected score scale: with the corrected ÷2 mapping, scores 5–7/10 map to lp_scores 2.5–3.5 which are in the partially-credible zone; gap bands 2.6–2.9 and 3.6–3.9 remain relevant and genuinely undefined.
+
+#### Build Evidence (2026-02-26)
+- **Status:** Complete
+- **TC-06 result:** Scan of critique-loop-protocol.md post-edit confirms all score ranges covered. Full band table:
+  - ≤ 2.5: not credible ✓
+  - 2.6–2.9: partially credible ✓ (gap closed)
+  - 3.0–3.5: partially credible ✓
+  - 3.6–3.9: credible ✓ (gap closed)
+  - ≥ 4.0: credible ✓
+- **Refactor check:** no duplicate definitions; no prose contradictions. TASK-02 interim rules superseded by canonical definitions here.
+- **Files changed:** `.claude/skills/_shared/critique-loop-protocol.md` — Post-Loop Gate section, both fact-find and plan modes updated.
+
 - **Acceptance:**
   - `critique-loop-protocol.md` band definitions are complete: no score between 0.0 and 5.0 produces an undefined outcome.
   - 2.6–2.9 mapped to: partially credible (same gate outcome as 3.0–3.5).

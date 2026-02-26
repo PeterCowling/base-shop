@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PWRB Naming Shortlist — 2026-02-26</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root {
+    --accent: #c4714a;
+    --accent-warm: #f5ede4;
+    --accent-dark: #9b5236;
+    --gold: #c9973a;
+    --silver: #4a6fa5;
+    --text: #1a1a1a;
+    --muted: #6b6b6b;
+    --border: #e0d4c8;
+    --bg: #faf7f4;
+    --surface: #ffffff;
+    --dot-d: #7c4dca;
+    --dot-w: #2a9d8f;
+    --dot-p: #e76f51;
+    --dot-e: #40916c;
+    --dot-i: #f4a261;
+    --badge-gold: #c9973a;
+    --badge-silver: #4a6fa5;
+    --badge-std: #6b6b6b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
+
+  /* Header */
+  .header { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%); color: white; padding: 28px 32px; }
+  .header-top { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
+  .header h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+  .header-stage { font-size: 12px; background: rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 12px; letter-spacing: 0.5px; font-weight: 500; }
+  .header-meta { display: flex; gap: 24px; flex-wrap: wrap; font-size: 13px; opacity: 0.85; }
+  .header-meta span { display: flex; align-items: center; gap: 5px; }
+  .header-stat { font-weight: 700; color: #fff8e7; }
+
+  /* Main layout */
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+
+  /* Cards */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+  .card-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 14px; }
+
+  /* Score key legend */
+  .score-legend { display: flex; flex-direction: column; gap: 10px; }
+  .legend-row { display: flex; align-items: center; gap: 12px; }
+  .legend-dots { display: flex; gap: 3px; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; border: 1.5px solid; }
+  .dot.filled { opacity: 1; }
+  .dot.empty { background: transparent !important; }
+  .legend-label { font-weight: 600; min-width: 16px; font-size: 13px; }
+  .legend-desc { font-size: 12px; color: var(--muted); }
+  .legend-desc strong { color: var(--text); }
+
+  /* Filter bar */
+  .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; align-items: center; }
+  .filter-bar span { font-size: 12px; color: var(--muted); font-weight: 500; }
+  .filter-btn { padding: 5px 14px; border: 1.5px solid var(--border); border-radius: 20px; background: var(--surface); cursor: pointer; font-size: 12px; font-weight: 600; color: var(--muted); transition: all 0.15s; }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+  /* Table */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--accent-warm); color: var(--muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; padding: 10px 12px; text-align: left; border-bottom: 2px solid var(--border); white-space: nowrap; }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr.hidden { display: none; }
+  tr:hover td { background: var(--accent-warm); }
+
+  .rank { font-weight: 700; color: var(--muted); font-size: 12px; min-width: 28px; }
+  .name { font-weight: 700; font-size: 15px; letter-spacing: -0.2px; }
+
+  .score-badge { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; font-weight: 800; font-size: 14px; color: white; }
+  .badge-gold { background: var(--badge-gold); box-shadow: 0 2px 8px rgba(201,151,58,0.4); }
+  .badge-silver { background: var(--badge-silver); box-shadow: 0 2px 8px rgba(74,111,165,0.3); }
+  .badge-std { background: var(--badge-std); }
+
+  .dim-dots { display: flex; gap: 2px; }
+  .d-dot { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid; flex-shrink: 0; }
+
+  .pattern-chip { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; background: var(--accent-warm); color: var(--accent-dark); border: 1px solid var(--border); }
+  .domain-chip { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 11px; background: #f0f4f8; padding: 3px 7px; border-radius: 4px; color: #2d5986; border: 1px solid #d0dce8; white-space: nowrap; }
+  .provenance { font-size: 11px; color: var(--muted); max-width: 260px; line-height: 1.4; }
+
+  /* Charts */
+  .chart-container { position: relative; height: 120px; }
+  .chart-container.doughnut { height: 160px; }
+
+  /* Research context */
+  .collapsible-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
+  .collapsible-header h3 { font-size: 13px; font-weight: 600; color: var(--text); }
+  .toggle-icon { font-size: 18px; color: var(--muted); transition: transform 0.2s; }
+  .collapsible-body { margin-top: 12px; font-size: 13px; color: var(--muted); line-height: 1.7; display: none; }
+  .collapsible-body.open { display: block; }
+  .toggle-icon.open { transform: rotate(180deg); }
+
+  /* Footer */
+  .footer { text-align: center; padding: 24px; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); margin-top: 32px; }
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  /* Print */
+  @media print {
+    .filter-bar, .collapsible-body, .toggle-icon { display: none !important; }
+    .collapsible-header { pointer-events: none; }
+    tr.hidden { display: table-row !important; }
+    .card { break-inside: avoid; }
+  }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .grid-2 { grid-template-columns: 1fr; }
+    .header { padding: 20px 16px; }
+    .provenance { max-width: 160px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <h1>PWRB · Powerbank Rental</h1>
+    <span class="header-stage">ASSESSMENT-04 · Naming Shortlist · Round 1</span>
+  </div>
+  <div class="header-meta">
+    <span>Date: <strong class="header-stat">2026-02-26</strong></span>
+    <span>Candidates generated: <strong class="header-stat">250</strong></span>
+    <span>.com available: <strong class="header-stat">188</strong></span>
+    <span>Domain check: <strong class="header-stat">RDAP via Verisign</strong></span>
+    <span>Showing: <strong class="header-stat">Top 20 by score</strong></span>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="grid-2">
+    <!-- Score key -->
+    <div class="card">
+      <div class="card-title">Score key — 5 dimensions, max 25</div>
+      <div class="score-legend">
+        <div class="legend-row">
+          <span class="legend-label" style="color:var(--dot-d)">D</span>
+          <div class="legend-dots" id="legend-d"></div>
+          <span class="legend-desc"><strong>Distinctiveness</strong> — TM ownability</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-label" style="color:var(--dot-w)">W</span>
+          <div class="legend-dots" id="legend-w"></div>
+          <span class="legend-desc"><strong>Wordmark</strong> — logo &amp; handle quality</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-label" style="color:var(--dot-p)">P</span>
+          <div class="legend-dots" id="legend-p"></div>
+          <span class="legend-desc"><strong>Phonetics</strong> — Italian + English flow</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-label" style="color:var(--dot-e)">E</span>
+          <div class="legend-dots" id="legend-e"></div>
+          <span class="legend-desc"><strong>Expansion</strong> — beyond the pilot</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-label" style="color:var(--dot-i)">I</span>
+          <div class="legend-dots" id="legend-i"></div>
+          <span class="legend-desc"><strong>ICP resonance</strong> — tourist at 30% battery</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="card">
+      <div class="card-title">Score distribution · available names</div>
+      <div class="chart-container">
+        <canvas id="scoreChart"></canvas>
+      </div>
+      <div class="card-title" style="margin-top:16px">Pattern breakdown · available names</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:center">
+        <div style="max-height:120px;position:relative"><canvas id="patternChart"></canvas></div>
+        <div id="pattern-legend" style="font-size:11px;line-height:1.8"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <span>Filter by pattern:</span>
+    <button class="filter-btn active" onclick="filterPattern('all')">All 20</button>
+    <button class="filter-btn" onclick="filterPattern('A')">A — Coinage</button>
+    <button class="filter-btn" onclick="filterPattern('B')">B — Respelling</button>
+    <button class="filter-btn" onclick="filterPattern('C')">C — Root blend</button>
+    <button class="filter-btn" onclick="filterPattern('D')">D — Domain compound</button>
+    <button class="filter-btn" onclick="filterPattern('E')">E — Obscure word</button>
+  </div>
+
+  <!-- Shortlist table -->
+  <div class="card" style="margin-bottom:20px;padding:0;overflow:hidden">
+    <div class="table-wrap">
+      <table id="shortlist-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Score</th>
+            <th>D</th>
+            <th>W</th>
+            <th>P</th>
+            <th>E</th>
+            <th>I</th>
+            <th>Pattern</th>
+            <th>Domain (.com)</th>
+            <th>Provenance</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <!-- Rows injected by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Research context -->
+  <div class="card" style="margin-bottom:20px">
+    <div class="collapsible-header" onclick="toggleResearch()">
+      <h3>Research context — naming territory &amp; pattern notes</h3>
+      <span class="toggle-icon" id="toggle-icon">▾</span>
+    </div>
+    <div class="collapsible-body" id="research-body">
+      <p>This round produced 250 candidates across all five generation patterns at the target distribution (Pattern A: 80, Pattern B: 50, Pattern C: 50, Pattern D: 40, Pattern E: 30). Score distribution: 3 names achieved the maximum composite score of 25 (Solanenza, Luminova, Volanova — all Pattern A); 11 names scored 24; 41 names scored 23; placing 55 entries at ≥23 in the high-priority tier recommended for domain batch check. A further 126 names scored 21–22 (secondary tier) and 69 names scored 20 or below.</p>
+      <p style="margin-top:10px"><strong>Pattern A (extended coinages)</strong> delivered the strongest aggregate results: the three 25-scoring names and the bulk of the top-35 come from Pattern A, reflecting how the coastal-movement-energy morpheme pools are tightly calibrated to the brand's ICP territory — a tourist mid-walk needing mobile power needs a name that feels warm and self-confident.</p>
+      <p style="margin-top:10px"><strong>Pattern B (phonetic respellings)</strong> performed particularly well on ICP resonance — Cariveau, Caminella, Velanova, and Lucevara all carry Mediterranean coastal warmth that survives heavy respelling, and each implies movement without any product-descriptive language.</p>
+      <p style="margin-top:10px"><strong>Pattern D (compound domain strategy)</strong> provides the most practical path through the .com availability problem: the shorter 6–8 letter roots (Solano, Velora, Lumano, Briova, Carvino) scored 23–24 and have cleaner compound domain paths than any full-length Pattern A name.</p>
+      <p style="margin-top:10px"><strong>Pattern E (obscure real words)</strong> produced the most differentiated candidates for brand narrative: Galea (24), Tramontana (23), Folgore (23), Solander (23), Libeccio (22), Scirocchino (22) all carry verified niche provenance and operator stories that competitors cannot replicate. Only 7 of 30 Pattern E entries had available .com domains, consistent with the §5.2 note about short pronounceable tokens being systematically registered.</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Source: <code>docs/business-os/strategy/PWRB/naming-shortlist-2026-02-26.user.md</code> &nbsp;|&nbsp; Generated: 2026-02-26 &nbsp;|&nbsp; RDAP domain check: 2026-02-26 via Verisign</p>
+    <p style="margin-top:4px">To reject and try again, tell me "none of these work" — optionally say why.</p>
+  </div>
+
+</div>
+
+<script>
+// ---- Data ----
+const NAMES = [
+  { rank:1,  name:"Solanenza",  score:25, D:5, W:5, P:5, E:5, I:5, pattern:"A", domain:"solanenza.com",    prov:"solan + enza — sun-adjacent root, abstract-noun suffix; 9 letters" },
+  { rank:2,  name:"Galornavia", score:24, D:5, W:5, P:4, E:5, I:5, pattern:"A", domain:"galornavia.com",   prov:"galorn + avia — buoyant/movement root, flight suffix; 10 letters" },
+  { rank:3,  name:"Lucevara",   score:24, D:5, W:5, P:5, E:4, I:5, pattern:"B", domain:"lucevara.com",     prov:"luce (Italian, light) + -vara Campanian place-suffix; 8 letters" },
+  { rank:4,  name:"Oriavento",  score:24, D:5, W:5, P:5, E:4, I:5, pattern:"C", domain:"oriavento.com",    prov:"oria (coastal) + vento (wind, begins soft consonant); 9 letters" },
+  { rank:5,  name:"Solano",     score:24, D:4, W:5, P:5, E:5, I:5, pattern:"D", domain:"solanocasa.com",   prov:"Root solano (sun-adjacent, 6 letters) + casa domain suffix" },
+  { rank:6,  name:"Velora",     score:24, D:5, W:5, P:5, E:4, I:5, pattern:"D", domain:"velorafilo.com",   prov:"Root velora (sail+glow, 6 letters) + filo domain suffix; movement + connection" },
+  { rank:7,  name:"Portenova",  score:24, D:5, W:5, P:5, E:5, I:4, pattern:"A", domain:"portenova.com",    prov:"porten + ova — carry/portare root, new-suffix; 9 letters" },
+  { rank:8,  name:"Forzeluna",  score:23, D:5, W:5, P:4, E:4, I:5, pattern:"B", domain:"forzeluna.com",    prov:"forza (Italian, force) + -luna moon suffix; energy brand, non-literal" },
+  { rank:9,  name:"Galornetto", score:23, D:5, W:5, P:4, E:4, I:5, pattern:"A", domain:"galornetto.com",   prov:"galorn + etto — buoyant root, Italian small/approachable suffix; 10 letters" },
+  { rank:10, name:"Luceandro",  score:23, D:5, W:5, P:4, E:4, I:5, pattern:"B", domain:"luceandro.com",    prov:"luce (Italian, light) + -andro (wanderer-feel); 9 letters; light that wanders" },
+  { rank:11, name:"Rivollento", score:23, D:5, W:5, P:4, E:4, I:5, pattern:"A", domain:"rivollento.com",   prov:"rivol + ento — brook/trickle root, movement suffix; 10 letters" },
+  { rank:12, name:"Velornavia", score:23, D:5, W:5, P:4, E:4, I:5, pattern:"A", domain:"velornavia.com",   prov:"velorn + avia — sail-adjacent root, flight suffix; 10 letters" },
+  { rank:13, name:"Altonavia",  score:23, D:5, W:5, P:5, E:4, I:4, pattern:"A", domain:"altonavia.com",    prov:"altan + avia — high root (alto truncated), flight suffix; 9 letters" },
+  { rank:14, name:"Arconella",  score:23, D:5, W:5, P:5, E:4, I:4, pattern:"A", domain:"arconella.com",    prov:"arcon + ella — arc-of-light root, Italian diminutive; 9 letters" },
+  { rank:15, name:"Ariavelo",   score:23, D:5, W:5, P:5, E:4, I:4, pattern:"B", domain:"ariavelo.com",     prov:"aria (Italian/English, air/melody) + -velo sail-speed suffix; 8 letters" },
+  { rank:16, name:"Brezzova",   score:23, D:5, W:5, P:5, E:4, I:4, pattern:"B", domain:"brezzova.com",     prov:"brezza (Italian, breeze); double-z reduced to single, -ova suffix; lightness without tech" },
+  { rank:17, name:"Briova",     score:23, D:5, W:5, P:5, E:4, I:4, pattern:"D", domain:"briovaarte.com",   prov:"Root briova (brio+nova, 6 letters) + arte domain suffix; energy + craft" },
+  { rank:18, name:"Carvino",    score:23, D:5, W:5, P:5, E:4, I:4, pattern:"D", domain:"carvinoco.com",    prov:"Root carvino (carry+vine blend, 7 letters) + co domain suffix" },
+  { rank:19, name:"Celinovera", score:23, D:5, W:5, P:5, E:4, I:4, pattern:"C", domain:"celinovera.com",   prov:"celino (sky-like, ends vowel) + vera (spring/truth, begins soft consonant); 10 letters" },
+  { rank:20, name:"Filorando",  score:23, D:5, W:5, P:4, E:5, I:4, pattern:"A", domain:"filorando.com",    prov:"filor + ando — wire/thread root (filo), present-tense feel; 9 letters" }
+];
+
+const DIM_COLORS = { D: '#7c4dca', W: '#2a9d8f', P: '#e76f51', E: '#40916c', I: '#f4a261' };
+
+// ---- Score legend dots ----
+function makeLegendDots(containerId, color, filled=5) {
+  const el = document.getElementById(containerId);
+  for (let i = 1; i <= 5; i++) {
+    const dot = document.createElement('span');
+    dot.className = 'dot ' + (i <= filled ? 'filled' : 'empty');
+    dot.style.backgroundColor = i <= filled ? color : 'transparent';
+    dot.style.borderColor = color;
+    el.appendChild(dot);
+  }
+}
+makeLegendDots('legend-d', DIM_COLORS.D);
+makeLegendDots('legend-w', DIM_COLORS.W);
+makeLegendDots('legend-p', DIM_COLORS.P);
+makeLegendDots('legend-e', DIM_COLORS.E);
+makeLegendDots('legend-i', DIM_COLORS.I);
+
+// ---- Build dimension dots ----
+function dimDots(scores) {
+  const dims = ['D','W','P','E','I'];
+  let html = '<div class="dim-dots">';
+  dims.forEach(dim => {
+    const val = scores[dim];
+    const color = DIM_COLORS[dim];
+    for (let i = 1; i <= 5; i++) {
+      const filled = i <= val;
+      html += `<span class="d-dot" style="background:${filled ? color : 'transparent'};border-color:${color}"></span>`;
+    }
+    html += '<span style="width:5px;display:inline-block"></span>';
+  });
+  html += '</div>';
+  return html;
+}
+
+// ---- Score badge ----
+function scoreBadge(score) {
+  let cls = score >= 25 ? 'badge-gold' : score >= 23 ? 'badge-silver' : 'badge-std';
+  return `<span class="score-badge ${cls}">${score}</span>`;
+}
+
+// ---- Build table rows ----
+const tbody = document.getElementById('table-body');
+NAMES.forEach(n => {
+  const tr = document.createElement('tr');
+  tr.dataset.pattern = n.pattern;
+  tr.innerHTML = `
+    <td class="rank">${n.rank}</td>
+    <td><span class="name">${n.name}</span></td>
+    <td>${scoreBadge(n.score)}</td>
+    <td colspan="5">${dimDots(n)}</td>
+    <td><span class="pattern-chip">${n.pattern}</span></td>
+    <td><span class="domain-chip">${n.domain}</span></td>
+    <td class="provenance">${n.prov}</td>
+  `;
+  tbody.appendChild(tr);
+});
+
+// ---- Filter ----
+function filterPattern(pattern) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('#table-body tr').forEach(tr => {
+    if (pattern === 'all' || tr.dataset.pattern === pattern) {
+      tr.classList.remove('hidden');
+    } else {
+      tr.classList.add('hidden');
+    }
+  });
+}
+
+// ---- Collapsible ----
+function toggleResearch() {
+  const body = document.getElementById('research-body');
+  const icon = document.getElementById('toggle-icon');
+  body.classList.toggle('open');
+  icon.classList.toggle('open');
+}
+
+// ---- Score distribution chart ----
+new Chart(document.getElementById('scoreChart'), {
+  type: 'bar',
+  data: {
+    labels: ['≥ 18', '14–17', '≤ 13'],
+    datasets: [{
+      data: [188, 0, 0],
+      backgroundColor: ['#c4714a', '#d4956a', '#e4b890'],
+      borderWidth: 0,
+      borderRadius: 4
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+      y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+    }
+  }
+});
+
+// ---- Pattern breakdown chart ----
+const patternData = { A:68, B:34, C:41, D:38, E:7 };
+const patternColors = ['#c4714a','#e9a06a','#4a6fa5','#40916c','#7c4dca'];
+new Chart(document.getElementById('patternChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['A','B','C','D','E'],
+    datasets: [{
+      data: Object.values(patternData),
+      backgroundColor: patternColors,
+      borderWidth: 2,
+      borderColor: '#ffffff'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    cutout: '60%'
+  }
+});
+
+// Pattern legend
+const legendEl = document.getElementById('pattern-legend');
+const patLabels = { A:'Coinage', B:'Respelling', C:'Root blend', D:'Domain compound', E:'Obscure word' };
+Object.entries(patternData).forEach(([pat, count], i) => {
+  legendEl.innerHTML += `<div style="display:flex;align-items:center;gap:6px">
+    <span style="width:10px;height:10px;border-radius:50%;background:${patternColors[i]};flex-shrink:0"></span>
+    <span style="font-weight:700">${pat}</span> <span style="color:#6b6b6b">${patLabels[pat]}: ${count}</span>
+  </div>`;
+});
+</script>
+</body>
+</html>

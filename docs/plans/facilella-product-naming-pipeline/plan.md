@@ -30,7 +30,7 @@ HEAD has completed company naming (Facilella, R7, 2026-02-26) and produced a Dra
 - [x] TASK-02: Extend `event-log-writer.ts` and `candidate-sidecar-schema.json` for product naming stages — Complete (2026-02-26)
 - [x] TASK-03: Build `tm-prescreen-cli.ts` — structured TM direction URL generator — Complete (2026-02-26)
 - [x] TASK-04: Generate 75 product name candidates (SPIKE) — Complete (2026-02-26) — 72 valid candidates (3 eliminations)
-- [ ] TASK-05: Run `tm-prescreen-cli.ts` on the shortlist candidates; capture output
+- [x] TASK-05: Run `tm-prescreen-cli.ts` on the shortlist candidates; capture output — Complete (2026-02-26)
 - [ ] TASK-06: Write shortlist artifact (`product-naming-shortlist-2026-02-26.user.md`)
 - [x] TASK-07: Update ASSESSMENT-13 SKILL.md with pipeline pointer — Complete (2026-02-26)
 
@@ -104,7 +104,7 @@ HEAD has completed company naming (Facilella, R7, 2026-02-26) and produced a Dra
 | TASK-02 | IMPLEMENT | Extend `event-log-writer.ts` + `candidate-sidecar-schema.json` for `tm_prescreened` stage | 90% | S | Complete (2026-02-26) | - | TASK-03 |
 | TASK-03 | IMPLEMENT | Build `tm-prescreen-cli.ts` | 85% | S | Complete (2026-02-26) | TASK-02 | TASK-05 |
 | TASK-04 | SPIKE | Generate 75 scored product name candidates | 80% | M | Complete (2026-02-26) — 72 valid | TASK-01 | TASK-05 |
-| TASK-05 | IMPLEMENT | Run `tm-prescreen-cli.ts` on top 20 candidates; capture output | 85% | S | Pending | TASK-03, TASK-04 | TASK-06 |
+| TASK-05 | IMPLEMENT | Run `tm-prescreen-cli.ts` on top 20 candidates; capture output | 85% | S | Complete (2026-02-26) | TASK-03, TASK-04 | TASK-06 |
 | TASK-06 | IMPLEMENT | Write shortlist artifact (`product-naming-shortlist-2026-02-26.user.md`) | 90% | S | Pending | TASK-05 | - |
 | TASK-07 | IMPLEMENT | Update ASSESSMENT-13 SKILL.md with pipeline pointer | 95% | S | Complete (2026-02-26) | - | - |
 
@@ -365,7 +365,8 @@ HEAD has completed company naming (Facilella, R7, 2026-02-26) and produced a Dra
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
+- **Build Evidence:** TC-01 pass (txt file 380 lines — above 60 minimum); TC-02 pass (sidecar JSONL = 40 lines — exactly 20 generated + 20 tm_prescreened); TC-03 pass (grep tm_prescreened = 20 events). Production sidecar dir was verified clean before run. Note: first run attempt had a 2>&1 redirect artifact that duplicated sidecar events — sidecar was cleaned and re-run as a single clean invocation. Final artifact counts are deterministic.
 - **Affects:** `docs/business-os/strategy/HEAD/product-naming-tm-2026-02-26.txt` (new), `docs/business-os/strategy/HEAD/product-naming-sidecars/2026-02-26-round-1.jsonl` (new)
 - **Depends on:** TASK-03, TASK-04
 - **Blocks:** TASK-06

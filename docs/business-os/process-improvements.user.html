@@ -250,7 +250,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-02-26T09:52:58.342Z";
+  var GEN_TS = "2026-02-26T09:56:34.493Z";
 
   var IDEA_ITEMS = [
     {
@@ -509,17 +509,6 @@
     {
       "type": "idea",
       "business": "BOS",
-      "title": "Add IT locale /book route to the static export to stop the redirect to /en",
-      "body": "Smoke test confirmed /it/prenota redirects to /en — IT-speaking visitors get an English booking page",
-      "suggested_action": "spike",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T08:01:53.208Z",
-      "path": "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md",
-      "idea_key": "25c8a8824d18b07ac37db9166dcff663b6ed4e3e"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
       "title": "Track GA4 funnel drop-off in Explorations once custom dimensions are visible (48h)",
       "body": "Full funnel confirmed firing; no conversion rate baseline exists yet",
       "suggested_action": "defer (check at T+7 days when custom dimensions propagate)",
@@ -527,39 +516,6 @@
       "date": "2026-02-26T08:01:53.208Z",
       "path": "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md",
       "idea_key": "bcdd9c80911fe4bd1a09728c3fecc7b6861104a3"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Automate rounded → rounded-lg lint rule to prevent recurrence",
-      "body": "12+ bare rounded instances found across 7 screens in this plan; same violations were found in Phase 1–3; no lint rule currently prevents reintroduction",
-      "suggested_action": "spike (ESLint custom rule or Tailwind lint plugin)",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T07:46:43.788Z",
-      "path": "docs/plans/_archive/reception-ui-screen-polish-phase4/results-review.user.md",
-      "idea_key": "2c2c1ae29f3909135687df537cc4141b8160852b"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Extension.tsx debug console.log removal",
-      "body": "4 debug console.log calls flagged with TODO comments in Extension.tsx during TASK-11; removal deferred as logic-entangled per non-goal",
-      "suggested_action": "create card (code quality, TASK-11 already has TODO markers in-place)",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T07:46:43.788Z",
-      "path": "docs/plans/_archive/reception-ui-screen-polish-phase4/results-review.user.md",
-      "idea_key": "492ebcde914e6d445092688ec0173dbbd5262ac5"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Sweep PaymentsView.test.tsx to use data-cy attribute",
-      "body": "pre-existing test failure discovered during Wave 3; root cause is testIdAttribute: \"data-cy\" jest config vs data-testid in test mock — a one-line fix in the test file",
-      "suggested_action": "create card (quick fix, low effort)",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T07:46:43.788Z",
-      "path": "docs/plans/_archive/reception-ui-screen-polish-phase4/results-review.user.md",
-      "idea_key": "0f3141291c45c80af447fafc4ca82ec1887cdd12"
     },
     {
       "type": "idea",
@@ -626,17 +582,6 @@
       "date": "2026-02-26T07:27:53.087Z",
       "path": "docs/plans/_archive/post-build-reflection-prompting/results-review.user.md",
       "idea_key": "d6de990c408eef01e2ccebf0268908ac8e4110fa"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Extend UI polish to Phase 4 screens (16 unread screens identified in fact-find) using same pattern",
-      "body": "All Phase 1–3 screens now polished; remaining screens have visible visual gap",
-      "suggested_action": "spike — quick read of all 16 Phase 4 screen root components to establish complexity brackets before starting a new plan",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T01:32:59.021Z",
-      "path": "docs/plans/_archive/reception-ui-screen-polish/results-review.user.md",
-      "idea_key": "3b8a236a10c0f0db3e1fbf72ad851005523c26e2"
     },
     {
       "type": "idea",
@@ -736,28 +681,6 @@
       "date": "2026-02-25T22:36:24.076Z",
       "path": "docs/plans/startup-loop-parallel-container-wiring/results-review.user.md",
       "idea_key": "e6d41217823fc313fd5fe0ae6781723def8af146"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Add E2E coverage for sync success path once scripts are restored",
-      "body": "test:e2e only covers J1 happy path; J2 has no E2E test",
-      "suggested_action": "defer until sync scripts exist",
-      "source": "results-review.user.md",
-      "date": "2026-02-25T22:35:19.828Z",
-      "path": "docs/plans/xa-uploader-usability-hardening/results-review.user.md",
-      "idea_key": "73feebe70f5a57c10423915e5326cc3a0b6355fc"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Restore or port missing XA sync scripts to unblock J2",
-      "body": "scripts/src/xa/validate-xa-inputs.ts and run-xa-pipeline.ts are absent; sync journey is deterministically blocked",
-      "suggested_action": "create card",
-      "source": "results-review.user.md",
-      "date": "2026-02-25T22:35:19.828Z",
-      "path": "docs/plans/xa-uploader-usability-hardening/results-review.user.md",
-      "idea_key": "16634df2ebefc5651b0a6b7551502d2bbec1b86a"
     },
     {
       "type": "idea",

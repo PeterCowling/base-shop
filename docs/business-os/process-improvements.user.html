@@ -111,6 +111,7 @@
     .pill-blue   { background: var(--blue-bg);   border-color: var(--blue-border);   color: var(--blue); }
     .pill-amber  { background: var(--amber-bg);  border-color: var(--amber-border);  color: var(--amber); }
     .pill-purple { background: var(--purple-bg); border-color: var(--purple-border); color: var(--purple); }
+    .pill-green  { background: var(--green-bg);  border-color: var(--green-border);  color: var(--green); }
     .pill-muted  { background: var(--surface-2); border-color: var(--border);        color: var(--text-muted); }
 
     /* ── Section ── */
@@ -867,8 +868,13 @@
     var html = '';
 
     // Summary bar
+    var actNowCount  = IDEA_ITEMS.filter(function(i){ var a=(i.suggested_action||'').toLowerCase(); return /create card/i.test(a)||/urgent/i.test(a); }).length;
+    var spikeCount   = IDEA_ITEMS.filter(function(i){ var a=(i.suggested_action||'').toLowerCase(); return /spike|investigate/i.test(a); }).length;
+    var deferCount   = IDEA_ITEMS.filter(function(i){ var a=(i.suggested_action||'').toLowerCase(); return /defer/i.test(a); }).length;
     html += '<div class="summary-bar">';
-    html += '<div class="summary-pill pill-blue"><span class="count">' + IDEA_ITEMS.length + '</span> Idea Candidates</div>';
+    html += '<div class="summary-pill pill-green"><span class="count">' + actNowCount + '</span> Create cards</div>';
+    html += '<div class="summary-pill pill-amber"><span class="count">' + spikeCount + '</span> Spike</div>';
+    html += '<div class="summary-pill pill-muted"><span class="count">' + deferCount + '</span> Defer</div>';
     html += '<div class="summary-pill pill-amber"><span class="count">' + RISK_ITEMS.length + '</span> Open Risks</div>';
     html += '<div class="summary-pill pill-purple"><span class="count">' + PENDING_REVIEW_ITEMS.length + '</span> Pending Reviews</div>';
     html += '</div>';
@@ -888,16 +894,39 @@
     });
     html += '</div>';
 
-    // ── Section: Idea Candidates ── //
+    // ── Section: Idea Candidates (grouped by action urgency) ── //
     if (activeType === 'all' || activeType === 'idea') {
-      html += '<div class="section">';
-      html += '<div class="section-header"><h2>Idea Candidates</h2><span class="section-count">' + ideas.length + '</span></div>';
       if (ideas.length === 0) {
-        html += '<div class="empty">No idea candidates match the current filter.</div>';
+        html += '<div class="section"><div class="section-header"><h2>Idea Candidates</h2><span class="section-count">0</span></div>';
+        html += '<div class="empty">No idea candidates match the current filter.</div></div>';
       } else {
-        ideas.forEach(function (item) { html += renderItem(item); });
+        function actionGroup(item) {
+          var a = (item.suggested_action || '').toLowerCase();
+          if (/create card now|urgent/i.test(a)) return 0;
+          if (/create card/i.test(a)) return 0;
+          if (/spike|investigate/i.test(a)) return 1;
+          if (/defer/i.test(a)) return 2;
+          return 0;
+        }
+        var actNow  = ideas.filter(function(i){ return actionGroup(i) === 0; });
+        var spike   = ideas.filter(function(i){ return actionGroup(i) === 1; });
+        var defer   = ideas.filter(function(i){ return actionGroup(i) === 2; });
+
+        function ideaGroup(label, color, items) {
+          if (items.length === 0) return '';
+          var out = '<div class="section">';
+          out += '<div class="section-header" style="border-left:3px solid ' + color + ';padding-left:10px;">';
+          out += '<h2>' + label + '</h2><span class="section-count">' + items.length + '</span>';
+          out += '</div>';
+          items.forEach(function(item){ out += renderItem(item); });
+          out += '</div>';
+          return out;
+        }
+
+        html += ideaGroup('Act — create cards', 'var(--green)', actNow);
+        html += ideaGroup('Investigate — spike first', 'var(--amber)', spike);
+        html += ideaGroup('Defer — revisit later', 'var(--text-dim)', defer);
       }
-      html += '</div>';
     }
 
     // ── Section: Open Risks ── //

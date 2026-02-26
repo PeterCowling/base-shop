@@ -5,7 +5,7 @@ Domain: BOS
 Workstream: Operations
 Created: 2026-02-26
 Last-reviewed: 2026-02-26
-Last-updated: 2026-02-26
+Last-updated: 2026-02-26 (Wave 3 complete)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: lp-do-skills-token-efficiency-post-revision
 Deliverable-Type: skill-update
@@ -28,7 +28,7 @@ The lp-do skill series was revised in two recent waves (BOS decoupling 2026-02-2
 - [x] TASK-02: Replace Phase 7a in `lp-do-fact-find/SKILL.md`
 - [x] TASK-03: Replace Phase 11 in `lp-do-plan/SKILL.md` + repair phase gap
 - [x] TASK-04: Create `_shared/queue-check-gate.md`
-- [ ] TASK-05: Replace Phase 0 in `lp-do-fact-find/SKILL.md` and `lp-do-briefing/SKILL.md`
+- [x] TASK-05: Replace Phase 0 in `lp-do-fact-find/SKILL.md` and `lp-do-briefing/SKILL.md`
 - [x] TASK-06: Extract lp-do-critique Section D to module
 - [x] TASK-07: Tighten `lp-do-factcheck/SKILL.md`
 - [x] TASK-08: Tighten `lp-do-build/SKILL.md`
@@ -98,7 +98,7 @@ The lp-do skill series was revised in two recent waves (BOS decoupling 2026-02-2
 | TASK-02 | IMPLEMENT | Replace Phase 7a in lp-do-fact-find/SKILL.md | 80% | S | Complete (2026-02-26) | TASK-01 ✓ | TASK-05 |
 | TASK-03 | IMPLEMENT | Replace Phase 11 in lp-do-plan/SKILL.md + phase gap | 80% | S | Complete (2026-02-26) | TASK-01 ✓ | - |
 | TASK-04 | IMPLEMENT | Create `_shared/queue-check-gate.md` | 80% | S | Complete (2026-02-26) | - | TASK-05 |
-| TASK-05 | IMPLEMENT | Replace Phase 0 in fact-find + briefing SKILL.md | 80% | S | Pending | TASK-02 ✓, TASK-04 ✓ | - |
+| TASK-05 | IMPLEMENT | Replace Phase 0 in fact-find + briefing SKILL.md | 80% | S | Complete (2026-02-26) | TASK-02 ✓, TASK-04 ✓ | - |
 | TASK-06 | IMPLEMENT | Extract lp-do-critique Section D to module | 80% | S | Complete (2026-02-26) | - | - |
 | TASK-07 | IMPLEMENT | Tighten lp-do-factcheck Fix Guidelines + Anti-Patterns | 75% | S | Complete (2026-02-26) | - | - |
 | TASK-08 | IMPLEMENT | Tighten lp-do-build SKILL.md to ≤200 lines | 75% | S | Complete (2026-02-26) | - | - |
@@ -311,7 +311,7 @@ The lp-do skill series was revised in two recent waves (BOS decoupling 2026-02-2
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-26)
 - **Artifact-Destination:** `.claude/skills/lp-do-fact-find/SKILL.md`, `.claude/skills/lp-do-briefing/SKILL.md`
 - **Reviewer:** None: single operator
 - **Approval-Evidence:** None: single operator
@@ -319,6 +319,7 @@ The lp-do skill series was revised in two recent waves (BOS decoupling 2026-02-2
 - **Affects:** `.claude/skills/lp-do-fact-find/SKILL.md`, `.claude/skills/lp-do-briefing/SKILL.md`
 - **Depends on:** TASK-02, TASK-04
 - **Blocks:** -
+- **Build evidence:** Phase 0 replaced in both files. lp-do-fact-find: 195 lines ≤200 ✓ (additional controlled scope expansion applied: Phase 1 compacted, compatibility rule merged, Phase 3 sentences merged — needed to compensate for Phase 7a being 54L vs 65L estimated in TASK-02). lp-do-briefing: 81 lines ≤85 ✓. VC-01 ✓: queue-state.json = 0 in both. VC-02 ✓: queue-check-gate = 1 in both. VC-03 ✓: 195 ≤200. VC-04 ✓: 81 ≤85. VC-05 ✓: Trigger-Source preserved in queue-check-gate.md line 40 (shared module, not inline — expected behavior).
 - **Confidence:** 80%
   - Implementation: 90% — Phase 0 boundaries identified in both files; replacement is a short reference block; same edit pattern as TASK-02
   - Approach: 85% — proven edit pattern; two files to edit sequentially (same-file safety with TASK-02 already complete)

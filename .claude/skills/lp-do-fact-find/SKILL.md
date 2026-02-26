@@ -54,53 +54,14 @@ Minimum intake before investigation:
 
 If any item is missing, ask only the minimum follow-up questions needed to unblock.
 
-For understanding-only briefings (no planning intent), use `/lp-do-briefing` instead.
-
 ## Phase 0: Queue Check Gate
 
-Before doing anything else, check whether a queued dispatch packet exists for this invocation.
-
-**How to check:**
-Read `docs/business-os/startup-loop/ideas/trial/queue-state.json` (if it exists). Look for any packet where:
-- `queue_state: enqueued`, AND
-- `business` matches the invoked business, AND
-- `area_anchor` or `artifact_id` overlaps materially with the invoked topic.
-
-**If a matching queued packet is found:**
-
-Stop immediately. Output only the following — do not run any phases, read any files, or produce any artifacts:
-
-> A queued dispatch packet exists for this topic and requires confirmation before proceeding.
->
-> **Area:** `<area_anchor>`
-> **What changed:** `<current_truth>`
-> **Proposed scope:** `<next_scope_now>`
-> **Priority:** `<priority>`
->
-> _(If `triggered_by` is present, insert this block — otherwise omit entirely:)_
-> ⚠️ **This was triggered by a recent build, not a new external signal.** Check that this is genuinely new work before confirming — you may be looking at a follow-on from something you already ran.
-> _Source: `<triggered_by dispatch_id>`_
->
-> Do you want to proceed with this fact-find? Reply **yes** to confirm, or anything else to leave it queued.
-
-If the operator replies **yes**: proceed to Phase 1 with `Dispatch-ID` set to the matching packet's `dispatch_id`. On artifact persistence (Phase 6), populate `processed_by` in the packet: `route: dispatch-routed`, `processed_at: <now>`, `fact_find_slug` and `fact_find_path` from the output. Set `queue_state: processed`.
-
-If the operator replies anything other than **yes**, or does not reply: stop. Do nothing. The packet remains `enqueued`.
-
-**If no matching queued packet is found:**
-
-Proceed to Phase 1 as a direct inject. `Trigger-Source` is required in the fact-find frontmatter (per `loop-output-contracts.md` Artifact 1).
+Load and follow: `../_shared/queue-check-gate.md` (fact-find mode).
 
 ## Phase 1: Discovery and Selection
 
-### Fast path (argument provided)
-
-- If argument is a topic: proceed directly to sufficiency gate.
-
-### Discovery path (no argument)
-
-1. Scan `docs/plans/` for directories that already contain a `fact-find.md` (topics already in fact-finding).
-2. Show the list and ask the user to select an entry or provide a new topic.
+- **Fast path** (argument provided): If argument is a topic, proceed directly to sufficiency gate.
+- **Discovery path** (no argument): Scan `docs/plans/` for directories with `fact-find.md`; show list; ask user to select or provide new topic.
 
 ## Phase 2: Context Hydration
 
@@ -108,9 +69,7 @@ If a matching `fact-find.md` already exists at `docs/plans/<feature-slug>/fact-f
 
 ## Phase 3: Sufficiency Gate
 
-Do not start repository investigation until minimum intake is satisfied.
-
-If insufficient, ask targeted questions only, each tied to a decision it unlocks.
+Do not start repository investigation until minimum intake is satisfied. If insufficient, ask targeted questions only, each tied to a decision it unlocks.
 
 ## Phase 4: Classification
 
@@ -127,12 +86,7 @@ Startup-Deliverable-Alias: <none | startup-budget-envelope | startup-channel-pla
 Loop-Gap-Trigger: <none | block | bottleneck | feedback>
 ```
 
-Use `routing/deliverable-routing.yaml` to map family/channel/subtype to canonical `Deliverable-Type` and execution-skill defaults.
-
-Compatibility rule:
-- Keep `Deliverable-Type` in canonical downstream format expected by `/lp-do-plan` and `/lp-do-build`.
-- Execution skill IDs in routing/frontmatter are canonicalized without leading slash (for example `lp-do-build`, `draft-email`).
-- Family/channel/subtype exist to reduce intake branching, not to break existing consumers.
+Use `routing/deliverable-routing.yaml` to map family/channel/subtype to canonical `Deliverable-Type`. Keep `Deliverable-Type` in canonical downstream format expected by `/lp-do-plan` and `/lp-do-build`. Execution skill IDs are canonicalized without leading slash (e.g., `lp-do-build`).
 
 Hard branches:
 - If invocation includes `--website-first-build-backlog`, set `Startup-Deliverable-Alias: website-first-build-backlog` before routing.

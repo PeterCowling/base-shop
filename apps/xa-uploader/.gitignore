@@ -1,0 +1,5 @@
+# Generated sync artifacts (written by the sync pipeline during test runs and real operations)
+# These are transient outputs and must not be committed.
+data/sync-artifacts/
+data/backups/
+data/.xa-upload-state.*.json

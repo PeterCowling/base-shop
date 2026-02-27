@@ -372,6 +372,11 @@
     "OPS-3210": {},
     "OPS-4201": {},
     "PAY-101": {},
+    "PRIME-1": {
+      "allow": ["apps/prime/src/**"],
+      "expires": "2027-06-30",
+      "notes": "Prime pre-existing react-hooks/rules-of-hooks and react-hooks/exhaustive-deps suppressions: conditional SDK guard pattern and stable reference dep arrays deferred pending hooks refactor."
+    },
     "PUB-05": {},
     "PB-000": {},
     "PB-0001": {},

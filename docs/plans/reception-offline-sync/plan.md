@@ -33,7 +33,7 @@ The reception app has a complete offline infrastructure module (`lib/offline/`) 
 - [x] TASK-05: Auth profile cache fallback in loadUserWithProfile
 - [x] TASK-06: Read-through cache for critical data views
 - [x] TASK-07: Sync status UI in OfflineIndicator
-- [ ] TASK-CHKPT: Checkpoint — reassess TASK-08 from Phase 2 evidence
+- [x] TASK-CHKPT: Checkpoint — reassess TASK-08 from Phase 2 evidence
 - [ ] TASK-08: Unit tests — offline primitives + auth fallback
 
 ## Goals
@@ -110,8 +110,8 @@ The reception app has a complete offline infrastructure module (`lib/offline/`) 
 | TASK-05 | IMPLEMENT | Auth profile cache fallback in loadUserWithProfile | 80% | S | Complete (2026-02-27) | - | TASK-08 |
 | TASK-06 | IMPLEMENT | Read-through cache for critical data views | 80% | M | Complete (2026-02-27) | - | - |
 | TASK-07 | IMPLEMENT | Sync status UI in OfflineIndicator | 80% | S | Complete (2026-02-27) | TASK-02 | - |
-| TASK-CHKPT | CHECKPOINT | Reassess TASK-08 from Phase 2 evidence | 95% | S | Pending | TASK-03 | TASK-08 |
-| TASK-08 | IMPLEMENT | Unit tests — offline primitives + auth fallback | 70% | M | Pending | TASK-CHKPT, TASK-01, TASK-05 | - |
+| TASK-CHKPT | CHECKPOINT | Reassess TASK-08 from Phase 2 evidence | 95% | S | Complete (2026-02-27) | TASK-03 | TASK-08 |
+| TASK-08 | IMPLEMENT | Unit tests — offline primitives + auth fallback | 80% | M | Pending | TASK-CHKPT, TASK-01, TASK-05 | - |
 
 ## Parallelism Guide
 
@@ -459,7 +459,7 @@ The reception app has a complete offline infrastructure module (`lib/offline/`) 
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
 - **Affects:** `docs/plans/reception-offline-sync/plan.md`
 - **Depends on:** TASK-03
 - **Blocks:** TASK-08
@@ -480,53 +480,55 @@ The reception app has a complete offline infrastructure module (`lib/offline/`) 
 - **Planning validation:** No pre-planning validation needed — procedural control task.
 - **Rollout / rollback:** `None: planning control task`
 - **Documentation impact:** Plan updated with replan findings.
+- **Build evidence (2026-02-27):** Checkpoint executed. Evidence gathered: (1) `jest-fake-indexeddb` NOT installed in `apps/reception` — not needed; mock `queueOfflineWrite` and `getMeta`/`setMeta` at module level using standard `jest.mock()`. (2) Test files confirmed: `useActivitiesMutations.test.ts`, `useBookingNotesMutation.test.ts`, `useChangeBookingDatesMutator.test.ts` exist in `hooks/mutations/__tests__/`; `firebaseAuth.test.ts` exists in `services/__tests__/`; `useBookingMutations.test.ts` and `useLoansMutations.test.ts` do NOT exist → create new. (3) `useOnlineStatus` mockable with `jest.mock("../../../lib/offline/useOnlineStatus", () => ({ useOnlineStatus: () => mock() }))` — no special setup required. (4) `useBookingNotesMutation.ts` confirmed using `getDatabase()` directly + `useOnlineStatus` + `queueOfflineWrite` (TASK-03 complete). TASK-08 confidence raised from 70% → 80%; scope revised to hook-level gateway tests + auth fallback, no `jest-fake-indexeddb` required.
 
 ---
 
 ### TASK-08: Unit tests — offline primitives + auth fallback
 
 - **Type:** IMPLEMENT
-- **Deliverable:** code-change — new test files in `apps/reception/src/lib/offline/__tests__/` and updated auth test
+- **Deliverable:** code-change — offline gateway tests across mutation hooks + auth fallback tests
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Pending
 - **Affects:**
-  - `apps/reception/src/lib/offline/__tests__/receptionDb.test.ts` (new)
-  - `apps/reception/src/lib/offline/__tests__/syncManager.test.ts` (new)
-  - `apps/reception/src/context/__tests__/AuthContext.test.tsx` (update)
-  - `apps/reception/jest.setup.ts` (add jest-fake-indexeddb)
+  - `apps/reception/src/hooks/mutations/__tests__/useActivitiesMutations.test.ts` (update — add offline path tests)
+  - `apps/reception/src/hooks/mutations/__tests__/useBookingNotesMutation.test.ts` (update — add offline path tests)
+  - `apps/reception/src/hooks/mutations/__tests__/useChangeBookingDatesMutator.test.ts` (update — add offline guard test)
+  - `apps/reception/src/hooks/mutations/__tests__/useBookingMutations.test.ts` (new)
+  - `apps/reception/src/hooks/mutations/__tests__/useLoansMutations.test.ts` (new)
+  - `apps/reception/src/services/__tests__/firebaseAuth.test.ts` (update — add cache fallback tests + receptionDb mock)
 - **Depends on:** TASK-CHKPT, TASK-01, TASK-05
 - **Blocks:** -
-- **Confidence:** 70%
-  - Implementation: 70% — `jest-fake-indexeddb` not confirmed installed; IndexedDB mocking in Jest is non-trivial but well-documented. Post-checkpoint evidence will revise this.
-  - Approach: 75% — unit tests for `addPendingWrite`, `getPendingWrites`, `removePendingWrite` (mock Firebase); `syncPendingWrites` (mock Firebase SDK); `loadUserWithProfile` cache fallback path (mock `getMeta`/`setMeta`).
-  - Impact: 80% — pure test additions; no production code changes; no impact on existing tests if IDB is properly mocked.
+- **Confidence:** 80%
+  - Implementation: 80% — hook import paths confirmed; `jest.mock("../../../lib/offline/useOnlineStatus", ...)` pattern verified; `useBookingNotesMutation` uses `getDatabase()` (not `useFirebaseDatabase`) — mock already in place in existing test. Revised scope avoids `jest-fake-indexeddb` entirely — mocks at hook level.
+  - Approach: 80% — offline gateway tests mock `useOnlineStatus` (return false) + `queueOfflineWrite` (return 1 = queued); verify Firebase functions NOT called; verify queue called with correct args. Auth fallback adds `getMeta`/`setMeta` mock to `firebaseAuth.test.ts` and tests catch path.
+  - Impact: 85% — pure test additions; no production code changes; existing tests unaffected.
 - **Acceptance:**
-  - `jest.setup.ts` imports `jest-fake-indexeddb/auto` to polyfill IndexedDB in Node test environment
-  - `receptionDb.test.ts`: tests for `addPendingWrite`, `getPendingWrites`, `removePendingWrite`, `clearPendingWrites`, `getPendingWriteCount`, `getMeta`, `setMeta`, `getCachedData`, `setCachedData`
-  - `syncManager.test.ts`: tests for `syncPendingWrites` (Firebase SDK mocked; confirms each operation type — set/update/remove — is called correctly from queue entries)
-  - `AuthContext.test.tsx` updated: new test case — simulated `loadUserWithProfile` network failure with cached profile available → auth status remains `authenticated`
+  - `useActivitiesMutations.test.ts`: `addActivity` when offline → `queueOfflineWrite` called, Firebase `update` NOT called, email NOT called; `removeLastActivity` when offline → returns `{ success: false }` with network error
+  - `useBookingNotesMutation.test.ts`: `addNote`/`updateNote`/`deleteNote` when offline → `queueOfflineWrite` called with correct op/path/opts; Firebase set/update/remove NOT called
+  - `useChangeBookingDatesMutator.test.ts`: `updateBookingDates` when offline → `isError: true`, `error instanceof Error`, Firebase `update` NOT called
+  - `useBookingMutations.test.ts` (new): online → Firebase `update` called; offline + IDB available → `queueOfflineWrite` called, no Firebase; offline + IDB unavailable → falls through to Firebase
+  - `useLoansMutations.test.ts` (new): `saveLoan` online → Firebase; `saveLoan` offline + IDB → queued; online-only ops (`removeOccupantIfEmpty`, `removeLoanItem`, `updateLoanDepositType`) when offline → `error instanceof Error`, Firebase `get` NOT called
+  - `firebaseAuth.test.ts`: TC-04 cache fallback → returns cached user; TC-05 no cache → returns null; success path → `setMeta` called with profile
   - All new tests pass; existing tests unchanged
-  - Validated via CI (push to `dev`; CI runs the reception test suite per AGENTS.md:93 — do not run Jest locally)
+  - Validated via CI (push to `dev`; CI runs the reception test suite per AGENTS.md:93)
 - **Validation contract (TC-08):**
-  - TC-01: `addPendingWrite({ path: "x", operation: "set", data: {} })` → IDB entry created with auto-increment ID and timestamp
-  - TC-02: `syncPendingWrites(db)` with one queued `set` op → Firebase `set` called once; entry removed from IDB
-  - TC-03: `syncPendingWrites(db)` with `update` op where path="" → Firebase `update` called on root ref
   - TC-04: `loadUserWithProfile` throws network error, cached profile exists → returns cached user
   - TC-05: `loadUserWithProfile` throws network error, no cache → returns null
+  - TC-06: `addActivity` offline → `queueOfflineWrite` called, Firebase `update` not called
+  - TC-07: `saveBooking` offline → `queueOfflineWrite("bookings/BR1/occ1", "update", data, { conflictPolicy: "fail-on-conflict" })` called
+  - TC-08: `saveLoan` offline → `queueOfflineWrite("loans/BR1/occ1/txns/txn1", "update", data, { conflictPolicy: "last-write-wins" })` called
 - **Planning validation (required for M/L):**
-  - Checks run: `jest.setup.ts` not read — executor must check current contents and add `jest-fake-indexeddb/auto` import without removing existing setup. `jest.config.cjs` not read — executor must confirm `setupFilesAfterFramework` is wired.
-  - Validation artifacts: TASK-CHKPT replan will provide confirmation.
-  - Unexpected findings: TASK-CHKPT checkpoint will resolve the key unknowns.
+  - Checks run (TASK-CHKPT evidence): `jest-fake-indexeddb` NOT installed — not needed (hook-level mocks); `useOnlineStatus` mockable with standard `jest.mock()`; `useBookingNotesMutation.ts` uses `getDatabase()` + `useOnlineStatus` + `queueOfflineWrite` confirmed; `LoanTransaction` type has required `createdAt` field (added to test fixtures).
+  - Validation artifacts: see TASK-CHKPT build evidence above.
 - **Consumer tracing:** Pure test additions; no new production values introduced.
-- **Scouts:** After TASK-CHKPT replan, confirm `jest-fake-indexeddb` package availability and `jest.setup.ts` structure.
-- **Edge Cases & Hardening:** `jest-fake-indexeddb/auto` must be imported before any IDB calls; placing in `setupFilesAfterFramework` is correct.
-- **What would make this >=90%:** `jest-fake-indexeddb` confirmed installed + working sample test passing.
+- **Edge Cases & Hardening:** `receptionDb` mock added to `firebaseAuth.test.ts` to prevent `setMeta` from trying real IDB in success path; `getMeta` defaults to `null` for existing tests (no behaviour change).
+- **What would make this >=90%:** CI confirms all tests pass first run without amendments.
 - **Rollout / rollback:** Rollout: test-only change; no production impact. Rollback: remove test files.
 - **Documentation impact:** None.
-- **Notes / references:** `jest.setup.ts` (to be read by executor), [jest-fake-indexeddb](https://github.com/dumbmatter/fakeIndexedDB).
 
 ---
 
@@ -583,7 +585,7 @@ The reception app has a complete offline infrastructure module (`lib/offline/`) 
 ## Overall-confidence Calculation
 
 - S=1, M=2, L=3
-- TASK-01 (85%, M=2): 170; TASK-02 (85%, S=1): 85; TASK-03 (75%, L=3): 225; TASK-04 (85%, S=1): 85; TASK-05 (80%, S=1): 80; TASK-06 (70%, M=2): 140; TASK-07 (80%, S=1): 80; TASK-08 (70%, M=2): 140
+- TASK-01 (85%, M=2): 170; TASK-02 (85%, S=1): 85; TASK-03 (85%, L=3): 255; TASK-04 (85%, S=1): 85; TASK-05 (80%, S=1): 80; TASK-06 (80%, M=2): 160; TASK-07 (80%, S=1): 80; TASK-08 (80%, M=2): 160
 - TASK-CHKPT excluded (procedural)
-- Total weight: 13; Weighted sum: 1005
-- Raw: 77.3% → **75%** (downward bias; multiples of 5)
+- Total weight: 13; Weighted sum: 1075
+- Raw: 82.7% → **80%** (downward bias; multiples of 5)

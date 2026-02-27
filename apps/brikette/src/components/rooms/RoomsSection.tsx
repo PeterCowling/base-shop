@@ -1,4 +1,5 @@
 import type { ComponentProps } from "react";
+import { useEffect, useRef } from "react";
 
 import RoomsSectionBase from "@acme/ui/organisms/RoomsSection";
 
@@ -37,14 +38,34 @@ export function RoomsSection({
   deal,
   ...props
 }: RoomsSectionProps & Omit<RoomsSectionBaseProps, "itemListId" | "onRoomSelect">) {
-  // Closure-level guard — prevents double-click / multi-tap from firing duplicate
-  // GA4 events. Resets on each render (safe: navigation triggers page unload
-  // before any subsequent render can occur).
-  let isNavigating = false;
+  // Ref-level guard prevents duplicate begin_checkout events on rapid re-clicks.
+  // It must be reset on `pageshow` because back/forward cache can restore a page
+  // with prior JS state after navigation away.
+  const isNavigatingRef = useRef(false);
+  const unlockTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const resetGuard = () => {
+      isNavigatingRef.current = false;
+      if (unlockTimerRef.current !== null) {
+        window.clearTimeout(unlockTimerRef.current);
+        unlockTimerRef.current = null;
+      }
+    };
+
+    window.addEventListener("pageshow", resetGuard);
+
+    return () => {
+      window.removeEventListener("pageshow", resetGuard);
+      resetGuard();
+    };
+  }, []);
 
   const onRoomSelect = (ctx: { roomSku: string; plan: RatePlan; index: number }): void => {
     // Double-click / multi-tap deduplication guard (TC-05)
-    if (isNavigating) return;
+    if (isNavigatingRef.current) return;
 
     // TC-01: fire select_item fire-and-forget with full GA4 item fields.
     // buildRoomItem now includes item_category, affiliation, currency via TASK-31.
@@ -81,7 +102,15 @@ export function RoomsSection({
         });
         if (result.ok) {
           // Set guard before async beacon dispatch to block re-entrant calls.
-          isNavigating = true;
+          isNavigatingRef.current = true;
+          // Auto-release guard if navigation is blocked/canceled and no unload occurs.
+          if (unlockTimerRef.current !== null) {
+            window.clearTimeout(unlockTimerRef.current);
+          }
+          unlockTimerRef.current = window.setTimeout(() => {
+            isNavigatingRef.current = false;
+            unlockTimerRef.current = null;
+          }, 2000);
           trackThenNavigate(
             "begin_checkout",
             {

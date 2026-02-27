@@ -219,7 +219,6 @@ describe("TASK-32: RoomsSection onRoomSelect GA4 contracts", () => {
     expect(parsed.searchParams.get("checkout")).toBe("2026-07-04");
     expect(parsed.searchParams.get("date")).toBe("2026-07-01");
     expect(parsed.searchParams.get("room")).toMatch(/^\d+$/u);
-    expect(parsed.searchParams.get("room")).toMatch(/^\d+$/u);
 
     // Regression guard: do not reintroduce legacy confirm/deep-link params.
     expect(targetUrl).not.toContain("/confirm.xhtml");
@@ -250,5 +249,33 @@ describe("TASK-32: RoomsSection onRoomSelect GA4 contracts", () => {
     fireEvent.click(buttons[0]);
 
     expect(gtagMock.mock.calls.length).toBe(countAfterFirst);
+  });
+
+  it("TC-07: pageshow resets navigation guard so CTA works after back navigation", () => {
+    render(
+      <RoomsSection
+        lang="en"
+        itemListId="book_rooms"
+        queryState="valid"
+        bookingQuery={{ checkIn: "2026-07-28", checkOut: "2026-07-31", pax: "2", queryString: "" }}
+      />,
+    );
+
+    const buttons = screen.getAllByRole("button", { name: /checkRatesNonRefundable/i });
+    fireEvent.click(buttons[0]);
+
+    const beginCheckoutEventsAfterFirst = gtagMock.mock.calls.filter(
+      (args: unknown[]) => args[0] === "event" && args[1] === "begin_checkout",
+    );
+    expect(beginCheckoutEventsAfterFirst).toHaveLength(1);
+
+    // Simulate returning to the page from browser back/forward cache.
+    window.dispatchEvent(new Event("pageshow"));
+
+    fireEvent.click(buttons[0]);
+    const beginCheckoutEventsAfterReturn = gtagMock.mock.calls.filter(
+      (args: unknown[]) => args[0] === "event" && args[1] === "begin_checkout",
+    );
+    expect(beginCheckoutEventsAfterReturn).toHaveLength(2);
   });
 });

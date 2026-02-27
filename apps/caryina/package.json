@@ -12,6 +12,7 @@
     "validate:launch-media": "pnpm exec tsx ./scripts/validate-launch-media-contract.ts"
   },
   "dependencies": {
+    "@acme/axerve": "workspace:*",
     "@acme/design-system": "workspace:*",
     "@acme/lib": "workspace:*",
     "@acme/next-config": "workspace:*",

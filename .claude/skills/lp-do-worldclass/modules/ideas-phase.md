@@ -59,7 +59,7 @@ For each filtered gap row, determine which of two patterns applies. The pattern 
 **`next_scope_now` template:**
 > "To close the gap: `<F>`, `<G>`, `<H>` as concrete tasks. Confirm whether existing artifact needs updating or a new artifact is required."
 
-**Decision rule (unambiguous):** if the `Evidence Source` cell contains a string beginning with `docs/`, `.claude/`, `apps/`, `packages/`, `scripts/`, or any other repo-relative path prefix → **Pattern B**. Otherwise → **Pattern A**.
+**Decision rule (unambiguous):** split the `Evidence Source` cell on commas; trim each token; if **any** token begins with `docs/`, `.claude/`, `apps/`, `packages/`, `scripts/`, or any other repo-relative path prefix → **Pattern B** (use the first matching repo path as the artifact reference). If **no** token begins with a repo path prefix → **Pattern A**.
 
 ## Step 3: Formulate operator_idea Dispatch per Gap Row
 
@@ -75,7 +75,7 @@ For each filtered gap row, construct one complete `dispatch.v1` packet. All fiel
 | `dispatch_id` | `"IDEA-DISPATCH-<YYYYMMDDHHmmss>-<seq4>"` — timestamp is current wall-clock time at dispatch creation; seq4 is the next available 4-digit sequence from `queue-state.json` (zero-padded, e.g. `0034`) |
 | `mode` | Always `"trial"` |
 | `root_event_id` | `sha256(<anchor_key> + "::" + <scan_date>)` — where scan_date is `<YYYY-MM-DD>` from scan output filename |
-| `anchor_key` | `"<BIZ>::worldclass::<domain_id>::<gap_slug>"` — where `gap_slug` is the first 4 words of the `Gap` column value, lowercased and hyphenated (e.g. `"no-photography-standards-documented"`) |
+| `anchor_key` | `"<BIZ>::worldclass::<domain_id>::<gap_slug>"` — where `gap_slug` is the first 6 words of the `Gap` column value, lowercased and hyphenated (e.g. `"no-professional-photography-visible-in-repo"`) |
 | `cluster_key` | `"<BIZ>::worldclass::<domain_id>"` |
 | `cluster_fingerprint` | `sha256(<cluster_key> + "::" + <goal_version>)` — where goal_version is read from the benchmark artifact frontmatter |
 | `lineage_depth` | Always `0` |
@@ -101,7 +101,7 @@ For each filtered gap row, construct one complete `dispatch.v1` packet. All fiel
 |---|---|
 | `priority` | See Priority Mapping Table below |
 | `created_at` | ISO 8601 timestamp (current wall-clock time) |
-| `queue_state` | `"enqueued"` (initial value) |
+| `queue_state` | Set at append time by Step 5: `"auto_executed"` for `fact_find_ready` dispatches; `"enqueued"` for `briefing_ready` dispatches. Set the correct value **before** appending — do not mutate after append. |
 
 ### Priority Mapping Table (VC-04)
 
@@ -141,7 +141,7 @@ The following fields are computed deterministically from stable inputs — re-ru
 
 ```
 anchor_key          = "<BIZ>::worldclass::<domain_id>::<gap_slug>"
-  gap_slug          = words 1–4 of Gap column value, lowercased, spaces → hyphens
+  gap_slug          = words 1–6 of Gap column value, lowercased, spaces → hyphens
 
 cluster_key         = "<BIZ>::worldclass::<domain_id>"
 
@@ -171,16 +171,21 @@ For rows where `Gap Classification` is `no-data`:
   > `"Confirm whether <Evidence Source or data source type> data is accessible for <BIZ>; if so, re-run scan for this domain; if not, establish the data source connection or instrument first."`
 - `location_anchors`: `["docs/business-os/strategy/<BIZ>/worldclass-scan-<YYYY-MM-DD>.md"]`
 
-## Step 5: Pass to lp-do-ideas
+## Step 5: Write dispatches and execute
 
-Pass each dispatch packet to `lp-do-ideas` using the **operator-idea intake path**. Each packet is submitted as if it were an operator-stated idea, with the constructed fields pre-filled.
+**Architecture (Model A — ideas-phase is the direct writer):** this module writes dispatch packets directly to `queue-state.json` under writer lock. Do NOT invoke `/lp-do-ideas` — that would cause a double-write. After writing, invoke `/lp-do-fact-find` or `/lp-do-briefing` directly based on the dispatch `status`.
+
+**queue_state is set before append (not mutated after):**
+
+- For each `fact_find_ready` dispatch: set `queue_state: "auto_executed"` in the packet, then append.
+- For each `briefing_ready` dispatch: set `queue_state: "enqueued"` in the packet, then append.
 
 **Auto-execute policy (applies on live runs only):**
 
-- `fact_find_ready` dispatches → immediately invoke `/lp-do-fact-find` with the dispatch packet. Do NOT stop for operator approval. Set `queue_state: "auto_executed"` after invocation.
-- `briefing_ready` dispatches → enqueue (`queue_state: "enqueued"`) and present a summary to the operator. Wait for operator confirmation before invoking `/lp-do-briefing`.
+- `fact_find_ready` dispatches → append with `queue_state: "auto_executed"`, then immediately invoke `/lp-do-fact-find` with the dispatch packet. Do NOT stop for operator approval.
+- `briefing_ready` dispatches → append with `queue_state: "enqueued"`, then present a summary to the operator. Wait for operator confirmation before invoking `/lp-do-briefing`.
 
-**Dedupe check (before append):** before writing each dispatch, scan the existing `"dispatches"` array in `queue-state.json` for any entry where `root_event_id` matches the dispatch being emitted. If a match is found: skip that dispatch entirely; do not append; record a suppression note in the dispatch summary (`1 suppressed (duplicate root_event_id)`). This prevents double-enqueue when the same scan output is processed more than once.
+**Dedupe check (before append):** before writing each dispatch, scan the existing `"dispatches"` array in `queue-state.json` for any entry where `root_event_id` matches the dispatch being emitted. If a match is found: skip that dispatch entirely; do not append; record a suppression note in the dispatch summary (`1 suppressed (duplicate root_event_id)`). This prevents double-enqueue when the same scan output is processed more than once. **Dedupe scope:** because `root_event_id = sha256(anchor_key + "::" + scan_date)`, deduplication is per gap per scan_date — re-running the same scan on the same day suppresses duplicates; a new scan date produces new `root_event_id` values and admits fresh dispatches.
 
 **Writer lock:** before appending any dispatch to `queue-state.json`, acquire the writer lock via `scripts/agents/with-writer-lock.sh`. Never write to `queue-state.json` without first acquiring the lock. Release the lock after all dispatches in the batch have been written.
 
@@ -188,7 +193,7 @@ Pass each dispatch packet to `lp-do-ideas` using the **operator-idea intake path
 
 **Dry-run mode:** if `--dry-run` is active:
 
-1. Do NOT invoke `lp-do-ideas`.
+1. Do NOT invoke `/lp-do-fact-find` or `/lp-do-briefing`.
 2. Do NOT acquire the writer lock.
 3. Do NOT write to `queue-state.json`.
 4. Instead, append a `## Dispatches (Dry Run)` section to the scan output file. For each dispatch that would be emitted, render a fenced JSON code block containing the full dispatch packet.

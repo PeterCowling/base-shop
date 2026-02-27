@@ -39,6 +39,15 @@ Fix the benchmark document at docs/business-os/strategy/<BIZ>/worldclass-benchma
 - Full text of `### Minimum Threshold` (used as the comparison target in Step 5)
 - Full bullet list from `### Key Indicators` (used for indicator-by-indicator comparison in Steps 4–5)
 
+**Validate domain_id integrity:** after parsing all `## [<domain_id>] <Domain Name>` headings, compare the set of extracted `domain_id` values against the `id` fields in the benchmark frontmatter `domains:` list. They must match exactly (same set, no missing entries, no extras). If there is a mismatch, stop with:
+
+```
+Error: worldclass-benchmark.md for <BIZ> has a domain_id mismatch.
+Heading domain_ids:  [list from body headings]
+Frontmatter ids:     [list from domains: field]
+Fix the benchmark document so heading domain_ids exactly match frontmatter domains[].id values, then re-run.
+```
+
 Record the parsed domain list. All subsequent steps iterate over this list.
 
 ## Step 2: Enumerate Data Sources to Probe
@@ -200,7 +209,7 @@ Apply these anchors to prevent discretion drift on high-variance domains:
 - `major-gap` if no room-level or product-level pages exist in app source, or no integration with a booking engine is present from any room/product page
 - `minor-gap` if room or product pages exist but the funnel is incomplete (missing pricing display, social proof, or a seamless primary CTA)
 
-**Absence anchor (applies to all domains):** if evidence is completely absent from the repo AND all data sources (including repo scan returning `not found`), classify as `major-gap`, not `no-data`. Reserve `no-data` strictly for domains where the absence of assessment is caused by missing data-source access — not by absence of the thing itself.
+**Absence anchor (applies to all domains):** if evidence is completely absent from the repo AND from all **configured** external sources, classify as `major-gap`, not `no-data`. "Configured" means sources that were accessible and probed in Steps 2–3 — not `not-configured` or `skipped` sources. Reserve `no-data` strictly for domains where the absence of assessment is caused by missing data-source access (i.e. the relevant sources are `not-configured` or `skipped` and those sources would be expected to hold the evidence). If the thing itself is simply not built or not done, classify as `major-gap` regardless of which sources are configured.
 
 ### Discrete Gap Identification
 
@@ -275,14 +284,14 @@ status: dry_run | active
 
 **Notes:**
 - Include the `[DRY RUN — no dispatches emitted]` line in the document body only when `--dry-run` was passed. Remove it for live runs.
-- Set `Status:` in frontmatter to `[DRY RUN — no dispatches emitted]` for dry-run, `Active` for live.
+- Set `status:` in frontmatter to `dry_run` for dry-run runs, `active` for live runs. The `[DRY RUN — no dispatches emitted]` text is body-only — do not embed the long string in the frontmatter `status` field.
 - The "Data Sources Probed" table uses the final resolved statuses after Step 3 operator responses.
 
 ## Step 7: Pass Gap Table to Ideas-Phase
 
 Confirm the gap table is complete:
 - All domains from Step 1 have at least one row in the table
-- All 7 columns are populated for every row
+- All 8 columns are populated for every row
 - Gap Classification for every row is one of the four valid values: `world-class`, `major-gap`, `minor-gap`, `no-data`
 - Scan output file has been written to `docs/business-os/strategy/<BIZ>/worldclass-scan-<YYYY-MM-DD>.md`
 

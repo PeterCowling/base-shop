@@ -5,7 +5,7 @@ Domain: API
 Workstream: Engineering
 Created: 2026-02-27
 Last-reviewed: 2026-02-27
-Last-updated: 2026-02-27 (Wave 1 complete)
+Last-updated: 2026-02-27 (Wave 3 complete)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: caryina-axerve-payment-gateway
 Deliverable-Type: code-change
@@ -30,7 +30,7 @@ Replace the Stripe hosted-checkout integration in `apps/caryina` with Axerve/Ges
 - [x] SPIKE-01: Create `packages/axerve/` — install node-soap, scaffold SOAP client, verify Cloudflare Pages compatibility
 - [x] IMPLEMENT-02: Update payments env schema + docs
 - [x] IMPLEMENT-03: Complete Axerve S2S SOAP client package
-- [ ] IMPLEMENT-04: Replace checkout route with Axerve S2S call
+- [x] IMPLEMENT-04: Replace checkout route with Axerve S2S call
 - [ ] IMPLEMENT-05: Add card form to CheckoutClient
 - [ ] IMPLEMENT-06: Remove Stripe verification layer; simplify success page
 - [ ] IMPLEMENT-07: Replace all payment tests with Axerve equivalents
@@ -102,7 +102,7 @@ Replace the Stripe hosted-checkout integration in `apps/caryina` with Axerve/Ges
 | SPIKE-01 | SPIKE | Create packages/axerve/ — install node-soap, verify CF Pages compat | 80% | M | Complete (2026-02-27) | - | IMPLEMENT-03 |
 | IMPLEMENT-02 | IMPLEMENT | Update payments env schema + docs/.env.reference.md | 85% | S | Complete (2026-02-27) | - | IMPLEMENT-03, IMPLEMENT-04 |
 | IMPLEMENT-03 | IMPLEMENT | Complete Axerve S2S client package (callPayment wrapper) | 80% | M | Complete (2026-02-27) | SPIKE-01 | IMPLEMENT-04 |
-| IMPLEMENT-04 | IMPLEMENT | Replace checkout route with Axerve S2S call | 80% | M | Pending | IMPLEMENT-02, IMPLEMENT-03 | IMPLEMENT-05, IMPLEMENT-06, IMPLEMENT-07 |
+| IMPLEMENT-04 | IMPLEMENT | Replace checkout route with Axerve S2S call | 80% | M | Complete (2026-02-27) | IMPLEMENT-02, IMPLEMENT-03 | IMPLEMENT-05, IMPLEMENT-06, IMPLEMENT-07 |
 | IMPLEMENT-05 | IMPLEMENT | Add card form to CheckoutClient | 80% | M | Pending | IMPLEMENT-04 | CHECKPOINT-08 |
 | IMPLEMENT-06 | IMPLEMENT | Remove Stripe verification layer; simplify success page | 80% | S | Pending | IMPLEMENT-04 | IMPLEMENT-07 |
 | IMPLEMENT-07 | IMPLEMENT | Replace all payment tests with Axerve equivalents | 80% | M | Pending | IMPLEMENT-04, IMPLEMENT-06 | CHECKPOINT-08 |
@@ -278,7 +278,8 @@ Replace the Stripe hosted-checkout integration in `apps/caryina` with Axerve/Ges
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
+- **Build Evidence:** `route.ts` rewritten (107 lines): imports `@acme/axerve` (callPayment + AxerveError), reads `{cardNumber, expiryMonth, expiryYear, cvv, buyerName, buyerEmail}` from POST body via `parseCardFields()` helper, calls `callPayment({shopLogin, apiKey, uicCode:"978", amount, shopTransactionId, ...cardFields})`. Success→200 `{success:true, transactionId, amount, currency:"eur"}`; KO→402 `{success:false, error}`; SOAP error→502; empty cart→400; missing fields→400. `@acme/axerve` added to `apps/caryina/package.json` + `jest.moduleMapper.cjs` + `packages/config/tsconfig.base.json` paths. `pnpm install` run to create workspace symlink. TC-04-01 ✓ (200 success), TC-04-02 ✓ (400 empty cart), TC-04-03 ✓ (402 KO), TC-04-04 ✓ (502 SOAP error), TC-04-05 ✓ (400 missing fields). Typecheck clean. ESLint autofix applied (import sort). Note: `console.error` spy added in `beforeEach` to suppress expected error logs in TC-04-03/04 (jest.setup.ts throws on unexpected console.error calls).
 - **Affects:** `apps/caryina/src/app/api/checkout-session/route.ts`
 - **Depends on:** IMPLEMENT-02, IMPLEMENT-03
 - **Blocks:** IMPLEMENT-05, IMPLEMENT-06, IMPLEMENT-07

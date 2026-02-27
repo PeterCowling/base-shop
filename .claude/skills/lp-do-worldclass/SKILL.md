@@ -50,7 +50,7 @@ Keep this file thin. Do not embed scan rules, benchmark rubrics, or ideas templa
 - Code changes, refactors, or production data modifications
 - Destructive shell or git commands
 - Writing to queue-state.json without first acquiring writer lock via `scripts/agents/with-writer-lock.sh`
-- Running scan-phase or ideas-phase in any state other than State 3
+- Running scan-phase or ideas-phase in any state other than State 3 (goal-phase runs in States 2, 3, and 4)
 - Skipping the dry-run flag when the operator passes it — must respect `--dry-run` and never write to queue-state.json in dry-run mode
 
 ## State Machine
@@ -62,7 +62,7 @@ The skill auto-routes to one of four states based on file presence and version a
 | **1** | `worldclass-goal.md` does not exist | Stop immediately | Emit guidance (see State 1 below) |
 | **2** | Goal exists; `worldclass-benchmark.md` does not exist | Run goal-phase only | Stop; instruct operator (see State 2 below) |
 | **3** | Goal + benchmark both exist AND `benchmark.goal_version == goal.goal_version` | Run goal-phase → scan-phase → ideas-phase | Emit summary |
-| **4** | Goal + benchmark both exist AND `benchmark.goal_version != goal.goal_version` | Stop immediately | Instruct operator to rerun research (see State 4 below) |
+| **4** | Goal + benchmark both exist AND `benchmark.goal_version != goal.goal_version` | Run goal-phase only, then stop | Refresh research prompt; instruct operator (see State 4 below) |
 
 ### State 1 — No goal artifact
 
@@ -96,7 +96,7 @@ Run all three phases in sequence: goal-phase → scan-phase → ideas-phase. Emi
 
 ### State 4 — Benchmark stale
 
-Stop with:
+Run goal-phase first (to refresh the research prompt if `goal_version` has changed), then stop with:
 
 ```
 Benchmark is out of date for <BIZ>.
@@ -116,7 +116,7 @@ Execute phases in the order shown. Only run scan-phase and ideas-phase in State 
 
 1. **Preflight** — validate `--biz` and strategy directory; fail-closed if not (see Preflight Gate below)
 2. **State routing** — determine current state from file presence and version alignment (see State Machine above)
-3. **`modules/goal-phase.md`** — validate goal artifact structure; generate or refresh the deep-research prompt; write `worldclass-research-prompt.md` *(runs in States 2, 3)*
+3. **`modules/goal-phase.md`** — validate goal artifact structure; generate or refresh the deep-research prompt; write `worldclass-research-prompt.md` *(runs in States 2, 3, and 4)*
 4. **`modules/scan-phase.md`** — read benchmark; scan strategy artifacts; compare against world-class standards; produce gap table *(runs in State 3 only)*
 5. **`modules/ideas-phase.md`** — derive improvement ideas from scan gaps; emit dispatches to queue-state.json (skipped entirely on `--dry-run`) *(runs in State 3 only)*
 
@@ -148,6 +148,6 @@ Run from repo root and verify the business identifier is correct.
 
 ## Output Paths
 
-- **Research prompt**: `docs/business-os/strategy/<BIZ>/worldclass-research-prompt.md` — written by goal-phase (States 2 and 3)
+- **Research prompt**: `docs/business-os/strategy/<BIZ>/worldclass-research-prompt.md` — written by goal-phase (States 2, 3, and 4); also used as `generated_at` value in the prompt frontmatter when `--as-of-date` is set
 - **Scan output**: `docs/business-os/strategy/<BIZ>/worldclass-scan-<YYYY-MM-DD>.md` — written by scan-phase (State 3 only; written on both live and dry-run)
 - **Queue dispatches**: `docs/business-os/startup-loop/ideas/trial/queue-state.json` — appended by ideas-phase (State 3 live runs only; skipped on `--dry-run`)

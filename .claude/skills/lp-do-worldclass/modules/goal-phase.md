@@ -173,9 +173,14 @@ domains: <same list as goal.domains, by name>
 <insert Sections a, b, c, d, e in order>
 ```
 
-After writing: update `benchmark-status` in the goal artifact to `research-prompt-ready`.
+After writing: update `benchmark-status` in the goal artifact conditionally:
 
-**Updating benchmark-status in goal artifact:** edit `docs/business-os/strategy/<BIZ>/worldclass-goal.md`, change `benchmark-status: none` (or current value) to `benchmark-status: research-prompt-ready`.
+**Updating benchmark-status in goal artifact:** edit `docs/business-os/strategy/<BIZ>/worldclass-goal.md` using the following rule:
+
+- If benchmark **does not exist** OR `benchmark.goal_version != goal.goal_version` → set `benchmark-status: research-prompt-ready`
+- If benchmark **exists AND** `benchmark.goal_version == goal.goal_version` AND `benchmark.schema_version == worldclass-benchmark.v1` → set `benchmark-status: benchmark-ready` (or leave unchanged if already `benchmark-ready`)
+
+Do NOT downgrade `benchmark-ready` to `research-prompt-ready` when the only reason for prompt regeneration was a missing or corrupt prompt file.
 
 ## Step 5: Decide Continue or Stop
 
@@ -189,6 +194,8 @@ After Steps 3–4 complete (or if they were skipped in Step 2), evaluate:
 
 **Stop (State 2 or 4)** if any check above fails. Emit the appropriate stop message from SKILL.md.
 
-**If the research prompt was just regenerated in Steps 3–4** (prompt was refreshed because goal_version changed): always stop. The existing benchmark is stale and must be replaced before a scan can proceed. Emit the State 4 stop message even if a benchmark file exists, because it will have a mismatched `goal_version`.
+**Stop decision is based on benchmark validity — not on whether the research prompt was just regenerated.** If the benchmark is current and valid (all three checks above pass), proceed to scan-phase regardless of whether the prompt was just regenerated (e.g. the prompt file was missing or had an old version).
 
 **If benchmark is missing entirely:** stop with the State 2 stop message.
+
+**If benchmark.goal_version != goal.goal_version:** stop with the State 4 stop message. (The research prompt has now been refreshed by Steps 3–4; the operator can use it immediately.)

@@ -1,3 +1,9 @@
+---
+Type: Critique-History
+Status: Archive
+Feature-Slug: brikette-direct-booking-perks-cta-positioning
+---
+
 # Critique History — brikette-direct-booking-perks-cta-positioning
 
 ## Round 1 — 2026-02-27

@@ -1,3 +1,9 @@
+---
+Type: Critique-History
+Status: Archive
+Feature-Slug: brik-room-content-schema
+---
+
 # Critique History: brik-room-content-schema
 
 ## Fact-Find Critique (fact-find.md)

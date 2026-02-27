@@ -1,4 +1,5 @@
 ---
+Type: Build-Record
 Status: Complete
 Feature-Slug: brik-room-content-schema
 Completed-date: 2026-02-27

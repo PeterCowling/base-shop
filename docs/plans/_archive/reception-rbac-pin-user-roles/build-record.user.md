@@ -1,4 +1,5 @@
 ---
+Type: Build-Record
 Status: Complete
 Feature-Slug: reception-rbac-pin-user-roles
 Completed-date: 2026-02-27

@@ -1,3 +1,9 @@
+---
+Type: Critique-History
+Status: Archive
+Feature-Slug: brikette-direct-booking-rate-trust
+---
+
 # Critique History — brikette-direct-booking-rate-trust
 
 ## Plan — Round 1 — 2026-02-27

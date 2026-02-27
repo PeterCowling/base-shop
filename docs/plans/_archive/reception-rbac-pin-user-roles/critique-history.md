@@ -1,3 +1,9 @@
+---
+Type: Critique-History
+Status: Archive
+Feature-Slug: reception-rbac-pin-user-roles
+---
+
 # Critique History: reception-rbac-pin-user-roles
 
 ## Round 1 — 2026-02-27

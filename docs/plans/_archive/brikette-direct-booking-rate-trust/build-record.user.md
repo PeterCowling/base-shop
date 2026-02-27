@@ -1,3 +1,11 @@
+---
+Type: Build-Record
+Status: Complete
+Feature-Slug: brikette-direct-booking-rate-trust
+Build-date: 2026-02-27
+artifact: build-record
+---
+
 # Build Record — Brikette Direct Booking Rate Trust
 
 **Plan:** `brikette-direct-booking-rate-trust`

@@ -1,3 +1,9 @@
+---
+Type: Fact-Find
+Status: Archive
+Feature-Slug: reception-rbac-pin-user-roles
+---
+
 # Fact-Find: Reception RBAC — PIN User Roles Data Gap
 
 **Slug:** reception-rbac-pin-user-roles

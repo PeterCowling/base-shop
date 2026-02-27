@@ -123,7 +123,7 @@ export function GuestProfileForm({ effectiveProfile, currentBookingId }: GuestPr
         <h2 className="mb-2 text-sm font-semibold text-foreground">
           {t('guestProfile.interestsLabel')}
         </h2>
-        {/* eslint-disable-next-line ds/enforce-layout-primitives -- BRIK-1 chip wrapping layout, no DS Cluster primitive in prime scope */}
+        {/* eslint-disable-next-line ds/enforce-layout-primitives -- BRIK-002 chip wrapping layout, no DS Cluster primitive in prime scope */}
         <div className="flex flex-wrap gap-2">
           {INTERESTS.map((value) => (
             <button
@@ -149,7 +149,7 @@ export function GuestProfileForm({ effectiveProfile, currentBookingId }: GuestPr
         <h2 className="mb-2 text-sm font-semibold text-foreground">
           {t('guestProfile.goalsLabel')}
         </h2>
-        {/* eslint-disable-next-line ds/enforce-layout-primitives -- BRIK-1 chip wrapping layout, no DS Cluster primitive in prime scope */}
+        {/* eslint-disable-next-line ds/enforce-layout-primitives -- BRIK-002 chip wrapping layout, no DS Cluster primitive in prime scope */}
         <div className="flex flex-wrap gap-2">
           {GOALS.map((value) => (
             <button

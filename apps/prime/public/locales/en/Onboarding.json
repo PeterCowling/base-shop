@@ -85,8 +85,11 @@
       "relaxedDesc": "Take it easy, no rush."
     },
     "paceLabel": "What's your pace?",
+    "chatOptInLabel": "Join the guest chat",
+    "saveError": "Couldn't save your profile — please try again.",
     "saveCta": "Save preferences",
     "skipCta": "Skip for now",
+    "socialOptInLabel": "Connect with other guests",
     "title": "Tell us about yourself"
   },
   "handoff": {

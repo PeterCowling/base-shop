@@ -85,8 +85,11 @@
       "relaxedDesc": "Con calma, senza fretta."
     },
     "paceLabel": "Qual è il tuo ritmo?",
+    "chatOptInLabel": "Unisciti alla chat degli ospiti",
+    "saveError": "Impossibile salvare il tuo profilo — riprova.",
     "saveCta": "Salva preferenze",
     "skipCta": "Salta per ora",
+    "socialOptInLabel": "Connettiti con gli altri ospiti",
     "title": "Parlaci di te"
   },
   "handoff": {

@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- BRIK-2 bag-storage i18n deferred */
 'use client';
 
 import { useState } from 'react';
@@ -54,7 +55,7 @@ export default function BagStoragePage() {
 
   if (isLoading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-muted p-4">
+      <main className="flex min-h-dvh items-center justify-center bg-muted p-4">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </main>
     );
@@ -62,8 +63,8 @@ export default function BagStoragePage() {
 
   if (!snapshot) {
     return (
-      <main className="min-h-screen bg-muted p-4">
-        <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
+      <main className="min-h-dvh bg-muted p-4">
+        <div className="mx-auto w-full rounded-xl bg-card p-6 text-center shadow-sm">
           <h1 className="mb-2 text-xl font-semibold text-foreground">Bag Storage</h1>
           <p className="text-sm text-muted-foreground">We could not load bag-storage details right now.</p>
           <Link href="/" className="mt-5 inline-block text-primary hover:underline">
@@ -78,8 +79,8 @@ export default function BagStoragePage() {
   const activeRequestStatus = snapshot.bagStorage?.requestStatus ?? snapshot.requestSummary?.bag_drop?.status ?? null;
 
   return (
-    <main className="min-h-screen bg-muted p-4 pb-20">
-      <div className="mx-auto max-w-md space-y-4">
+    <main className="min-h-dvh bg-muted p-4 pb-20">
+      <div className="mx-auto w-full space-y-4">
         <div className="rounded-xl bg-card p-5 shadow-sm">
           <div className="mb-3 flex items-center gap-3">
             <Package className="h-6 w-6 text-primary" />
@@ -104,14 +105,28 @@ export default function BagStoragePage() {
               <label htmlFor="pickupWindow" className="text-xs font-medium text-muted-foreground">
                 Pickup window
               </label>
-              <input
+              <select
                 id="pickupWindow"
                 value={pickupWindow}
                 onChange={(event) => setPickupWindow(event.target.value)}
-                placeholder="e.g. 16:00 - 18:00"
-                className="mt-1 w-full rounded-lg border border-border px-3 py-2 text-sm"
+                className="mt-1 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm"
                 required
-              />
+              >
+                <option value="" disabled>Select a time slot…</option>
+                {[
+                  '07:30 – 08:00', '08:00 – 08:30', '08:30 – 09:00',
+                  '09:00 – 09:30', '09:30 – 10:00', '10:00 – 10:30',
+                  '10:30 – 11:00', '11:00 – 11:30', '11:30 – 12:00',
+                  '12:00 – 12:30', '12:30 – 13:00', '13:00 – 13:30',
+                  '13:30 – 14:00', '14:00 – 14:30', '14:30 – 15:00',
+                  '15:00 – 15:30',
+                ].map((slot) => (
+                  <option key={slot} value={slot}>{slot}</option>
+                ))}
+              </select>
+              <p className="mt-1.5 text-xs text-muted-foreground">
+                Bags can be collected any time up to 15:30. After that, uncollected bags are handed to our local porter service — there is a <span className="font-medium text-foreground">€15 per bag</span> collection fee.
+              </p>
 
               <label htmlFor="bagNote" className="mt-3 block text-xs font-medium text-muted-foreground">
                 Note (optional)

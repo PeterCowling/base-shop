@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: BOS
 Workstream: Engineering
 Created: 2026-02-27
@@ -28,10 +28,10 @@ Five `tools-*` / `tool-*` prefixed skills exist in `.claude/skills/` but three a
 ## Active tasks
 
 - [x] TASK-01: Write tools-standard.md — naming convention and metadata spec
-- [ ] TASK-02: Create tools-index.md — lightweight discovery index
-- [ ] TASK-03: Backfill SKILL.md frontmatter for all five tool skills
-- [ ] TASK-04: Update AGENTS.md — add missing skills and index pointer
-- [ ] TASK-05: Checkpoint — factcheck compliance verification
+- [x] TASK-02: Create tools-index.md — lightweight discovery index
+- [x] TASK-03: Backfill SKILL.md frontmatter for all five tool skills
+- [x] TASK-04: Update AGENTS.md — add missing skills and index pointer
+- [x] TASK-05: Checkpoint — factcheck compliance verification
 
 ## Goals
 
@@ -96,10 +96,10 @@ Five `tools-*` / `tool-*` prefixed skills exist in `.claude/skills/` but three a
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Write tools-standard.md — naming convention and metadata spec | 85% | S | Complete (2026-02-27) | - | TASK-02, TASK-03, TASK-04 |
-| TASK-02 | IMPLEMENT | Create tools-index.md — discovery index for all five skills | 85% | S | Pending | TASK-01 | TASK-05 |
-| TASK-03 | IMPLEMENT | Backfill SKILL.md frontmatter for all five tool skills | 80% | S | Pending | TASK-01 | TASK-05 |
-| TASK-04 | IMPLEMENT | Update AGENTS.md — add missing skills and index pointer | 85% | S | Pending | TASK-01 | TASK-05 |
-| TASK-05 | CHECKPOINT | Factcheck compliance verification | 95% | S | Pending | TASK-02, TASK-03, TASK-04 | - |
+| TASK-02 | IMPLEMENT | Create tools-index.md — discovery index for all five skills | 85% | S | Complete (2026-02-27) | TASK-01 | TASK-05 |
+| TASK-03 | IMPLEMENT | Backfill SKILL.md frontmatter for all five tool skills | 80% | S | Complete (2026-02-27) | TASK-01 | TASK-05 |
+| TASK-04 | IMPLEMENT | Update AGENTS.md — add missing skills and index pointer | 85% | S | Complete (2026-02-27) | TASK-01 | TASK-05 |
+| TASK-05 | CHECKPOINT | Factcheck compliance verification | 95% | S | Complete (2026-02-27) | TASK-02, TASK-03, TASK-04 | - |
 
 ## Parallelism Guide
 
@@ -184,7 +184,7 @@ Five `tools-*` / `tool-*` prefixed skills exist in `.claude/skills/` but three a
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
 - **Artifact-Destination:** `.claude/skills/tools-index.md`
 - **Reviewer:** None required
 - **Approval-Evidence:** None required
@@ -228,6 +228,12 @@ Five `tools-*` / `tool-*` prefixed skills exist in `.claude/skills/` but three a
   - Creates `.claude/skills/tools-index.md`
 - **Notes / references:**
   - Index format determined by TASK-01 standard — do not invent format independently
+- **Build evidence (2026-02-27):**
+  - Red: File did not exist prior to this task — trivially confirmed.
+  - Green: File created at `.claude/skills/tools-index.md` (62 lines). Five entries present, each with all six required fields: invocation name, directory, description, operating_mode, trigger_conditions, related_skills. Entries for `tools-web-breakpoint/` and `frontend-design/` both show directory path AND invocation name. Index header contains update-when-adding instruction.
+  - VC-01: PASS (5 entries present, each with its own `## ` section)
+  - VC-02: PASS (all six fields present per entry — confirmed by grep)
+  - VC-03: PASS (62 lines < 100)
 
 ---
 
@@ -239,7 +245,7 @@ Five `tools-*` / `tool-*` prefixed skills exist in `.claude/skills/` but three a
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
 - **Artifact-Destination:** In-place edits to five existing SKILL.md files
 - **Reviewer:** None required
 - **Approval-Evidence:** None required
@@ -288,6 +294,12 @@ Five `tools-*` / `tool-*` prefixed skills exist in `.claude/skills/` but three a
     - `tools-ui-contrast-sweep`: has `name`, `description`, `operating_mode` — add `trigger_conditions`, `related_skills`
     - `tools-web-breakpoint`: has `name`, `description`, `operating_mode` — add `trigger_conditions`, `related_skills`
     - `frontend-design`: has `name`, `description` — add `operating_mode`, `trigger_conditions`, `related_skills`
+- **Build evidence (2026-02-27):**
+  - Red: Confirmed from fact-find that no SKILL.md had `trigger_conditions` or `related_skills`; two files lacked `operating_mode`.
+  - Green: All five files edited with additive frontmatter fields only. `tool-process-audit`: added `trigger_conditions`, `related_skills`. `tools-bos-design-page`: added `operating_mode`, `trigger_conditions`, `related_skills`. `tools-ui-contrast-sweep`: added `trigger_conditions`, `related_skills`. `tools-web-breakpoint`: added `trigger_conditions`, `related_skills`. `frontend-design`: added `operating_mode`, `trigger_conditions`, `related_skills`.
+  - Refactor: git diff for commit 43b5960383 shows only `+` lines (no `-` lines) in SKILL.md files — no existing content modified.
+  - VC-01: PASS (all five files have operating_mode, trigger_conditions, related_skills — confirmed by grep)
+  - VC-02: PASS (git diff shows 0 deletions in SKILL.md files; only additions)
 
 ---
 
@@ -299,7 +311,7 @@ Five `tools-*` / `tool-*` prefixed skills exist in `.claude/skills/` but three a
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
 - **Artifact-Destination:** `/Users/petercowling/base-shop/AGENTS.md`
 - **Reviewer:** None required
 - **Approval-Evidence:** None required
@@ -343,6 +355,13 @@ Five `tools-*` / `tool-*` prefixed skills exist in `.claude/skills/` but three a
   - Modifies `AGENTS.md` — adds three skill entries and one pointer line
 - **Notes / references:**
   - The `tools-ui-breakpoint-sweep` entry must use the invocation name (from SKILL.md `name` field), not the directory name (`tools-web-breakpoint`). File path in the entry points to the actual directory: `.claude/skills/tools-web-breakpoint/SKILL.md`
+- **Build evidence (2026-02-27):**
+  - Red: Confirmed from fact-find that `tool-process-audit`, `tools-ui-contrast-sweep`, `tools-ui-breakpoint-sweep` were absent from AGENTS.md.
+  - Green: Three new entries added near existing `tools-*` entries (lines 181-184 in AGENTS.md). Index pointer added at line 118 (immediately after the "Skills live in..." paragraph). Canonical invocation names used for both mismatched skills.
+  - Refactor: grep confirms all five tool skills present; `tools-ui-frontend-design` (line 137) and `tools-bos-design-page` (line 182) entries unchanged.
+  - VC-01: PASS (`tool-process-audit`, `tools-ui-contrast-sweep`, `tools-ui-breakpoint-sweep` all present in AGENTS.md)
+  - VC-02: PASS (`tools-index.md` pointer present at line 118)
+  - VC-03: PASS (`tools-bos-design-page` line 182 and `tools-ui-frontend-design` line 137 both confirmed unchanged)
 
 ---
 
@@ -353,7 +372,7 @@ Five `tools-*` / `tool-*` prefixed skills exist in `.claude/skills/` but three a
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
 - **Affects:** `docs/plans/tool-skill-discovery-protocol/plan.md`
 - **Depends on:** TASK-02, TASK-03, TASK-04
 - **Blocks:** -
@@ -375,6 +394,16 @@ Five `tools-*` / `tool-*` prefixed skills exist in `.claude/skills/` but three a
 - **Planning validation:** None: this task is itself the validation step
 - **Rollout / rollback:** None: planning control task
 - **Documentation impact:** Updates plan.md task statuses based on factcheck results
+- **Build evidence (2026-02-27):**
+  - Audit anchor: commit `43b5960383` (Wave 2 commit); HEAD at time of factcheck was `75cab2add3` (unrelated commit by another agent).
+  - AC-01 (tools-standard.md): PASS — file exists at 84 lines, all required sections present (naming, frontmatter spec, operating_mode vocabulary, classification criteria, invocation/directory rule, How to create).
+  - AC-02 (tools-index.md): PASS — file exists at 62 lines (<100), five entries each with six required fields; mismatch entries show both directory and invocation name; update note present in header.
+  - AC-03 (SKILL.md frontmatter): PASS — all five files confirmed to have name, description, operating_mode, trigger_conditions, related_skills; no existing fields or body content modified (git diff shows additions only).
+  - AC-04 (AGENTS.md five entries): PASS — all five tool skills listed: tool-process-audit (line 181), tools-bos-design-page (line 182), tools-ui-breakpoint-sweep (line 183), tools-ui-contrast-sweep (line 184), tools-ui-frontend-design (line 137).
+  - AC-05 (AGENTS.md index pointer): PASS — pointer at line 118 immediately after "Skills live in..." paragraph.
+  - Horizon assumption (invocation names): PASS — tools-ui-breakpoint-sweep uses canonical invocation name, not directory name tools-web-breakpoint.
+  - Horizon assumption (body content): PASS — git diff confirms 0 deletions in SKILL.md files.
+  - No corrections required; plan marked Complete.
 
 ---
 
@@ -405,12 +434,12 @@ Five `tools-*` / `tool-*` prefixed skills exist in `.claude/skills/` but three a
 
 ## Acceptance Criteria (overall)
 
-- [ ] `.claude/skills/tools-standard.md` exists with all required sections
-- [ ] `.claude/skills/tools-index.md` exists with five entries, all required fields per entry
-- [ ] All five SKILL.md files have `name`, `description`, `operating_mode`, `trigger_conditions`, `related_skills` in frontmatter
-- [ ] AGENTS.md lists all five tool skills (five entries total, including the three newly added)
-- [ ] AGENTS.md contains a pointer to `tools-index.md`
-- [ ] lp-do-factcheck run confirms all above criteria pass
+- [x] `.claude/skills/tools-standard.md` exists with all required sections
+- [x] `.claude/skills/tools-index.md` exists with five entries, all required fields per entry
+- [x] All five SKILL.md files have `name`, `description`, `operating_mode`, `trigger_conditions`, `related_skills` in frontmatter
+- [x] AGENTS.md lists all five tool skills (five entries total, including the three newly added)
+- [x] AGENTS.md contains a pointer to `tools-index.md`
+- [x] lp-do-factcheck run confirms all above criteria pass
 
 ## Decision Log
 

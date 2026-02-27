@@ -1,42 +1,42 @@
 {
-  "page": {
-    "title": "Dettagli Prenotazione",
-    "loadError": "Non \u00e8 stato possibile caricare i dettagli della prenotazione.",
-    "returnHome": "Torna alla Home"
-  },
-  "status": {
-    "pre-arrival": "Pre-arrivo",
-    "arrival-day": "Giorno di arrivo",
-    "checked-in": "Check-in effettuato",
-    "checked-out": "Check-out effettuato"
-  },
   "dates": {
     "checkIn": "Check-in",
     "checkOut": "Check-out",
     "unknown": "Sconosciuto"
   },
-  "room": "Camera",
-  "ref": "Rif: {{code}}",
   "extension": {
-    "title": "Richiesta Prolungamento",
-    "description": "Invia una richiesta di prolungamento soggiorno alla reception.",
     "currentStatus": "Stato attuale della richiesta: {{status}}",
     "dateLabel": "Data di check-out richiesta",
-    "noteLabel": "Nota (opzionale)",
-    "submitButton": "Invia richiesta di prolungamento",
-    "submitting": "Invio in corso\u2026",
-    "successDeduplicated": "Questa richiesta di prolungamento \u00e8 gi\u00e0 stata inviata di recente.",
-    "successDefault": "Richiesta di prolungamento inviata. La reception risponder\u00e0 via email.",
+    "description": "Invia una richiesta di prolungamento soggiorno alla reception.",
     "errorDefault": "Impossibile inviare la richiesta di prolungamento.",
     "errorNetwork": "Impossibile inviare la richiesta di prolungamento al momento.",
-    "replyNote": "La reception risponde via email, generalmente entro un giorno lavorativo."
+    "noteLabel": "Nota (opzionale)",
+    "replyNote": "La reception risponde via email, generalmente entro un giorno lavorativo.",
+    "submitButton": "Invia richiesta di prolungamento",
+    "submitting": "Invio in corso…",
+    "successDeduplicated": "Questa richiesta di prolungamento è già stata inviata di recente.",
+    "successDefault": "Richiesta di prolungamento inviata. La reception risponderà via email.",
+    "title": "Richiesta Prolungamento"
   },
   "nextActions": {
-    "title": "Prossime Azioni",
-    "breakfast": "Ordine colazione",
-    "eveningDrink": "Ordine drink serale",
     "bagDrop": "Richiesta deposito bagagli",
     "bagStorage": "Opzioni deposito bagagli",
-    "checkedOutNote": "Il soggiorno \u00e8 terminato. I servizi in-stay sono nascosti; le opzioni deposito bagagli e contatto restano disponibili."
+    "breakfast": "Ordine colazione",
+    "checkedOutNote": "Il soggiorno è terminato. I servizi in-stay sono nascosti; le opzioni deposito bagagli e contatto restano disponibili.",
+    "eveningDrink": "Ordine drink serale",
+    "title": "Prossime Azioni"
+  },
+  "page": {
+    "loadError": "Non è stato possibile caricare i dettagli della prenotazione.",
+    "returnHome": "Torna alla Home",
+    "title": "Dettagli Prenotazione"
+  },
+  "ref": "Rif: {{code}}",
+  "room": "Camera",
+  "status": {
+    "pre-arrival": "Pre-arrivo",
+    "arrival-day": "Giorno di arrivo",
+    "checked-in": "Check-in effettuato",
+    "checked-out": "Check-out effettuato"
   }
 }

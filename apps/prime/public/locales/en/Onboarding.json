@@ -1,23 +1,21 @@
 {
   "guidedFlow": {
+    "errors": {
+      "retry": "Try again",
+      "step1": "Couldn’t save your preferences. Tap to retry.",
+      "step2": "Couldn’t save your ETA. Tap to retry.",
+      "step3": "Couldn’t save checklist. Tap to retry."
+    },
     "finish": "Finish",
     "helpLink": "Need help?",
-    "loadingTip": "Loading your arrival details\u2026",
-    "methods": {
-      "bus": "Bus",
-      "ferry": "Ferry",
-      "other": "Other",
-      "private": "Private",
-      "taxi": "Taxi",
-      "train": "Train"
-    },
+    "loadingTip": "Loading your arrival details…",
     "saveAndContinue": "Save and continue",
     "skipButton": "Skip for now",
     "step1": {
       "arrivalMethodLabel": "How are you most likely arriving?",
       "celebration": "Great start. Your arrival path is now personalized.",
-      "confident": "Confident",
       "confidenceLabel": "How confident do you feel about getting here?",
+      "confident": "Confident",
       "descriptionControl": "Finish these quick steps to reduce reception wait time and avoid arrival surprises.",
       "descriptionValueLed": "Unlock faster check-in and sharper local recommendations by completing these steps now.",
       "needGuidance": "Need guidance",
@@ -26,8 +24,8 @@
       "routeGroupLabel": "Recommended routes",
       "routeLabel": "Pick a route",
       "routeOptional": "(optional)",
-      "title": "Let\u2019s get you arrival-ready",
-      "titleWithName": "Welcome {{name}}, let\u2019s get you arrival-ready"
+      "title": "Let’s get you arrival-ready",
+      "titleWithName": "Welcome {{name}}, let’s get you arrival-ready"
     },
     "step2": {
       "celebration": "ETA shared. Reception can now prepare your arrival.",
@@ -36,23 +34,25 @@
       "methodLabel": "Travel method",
       "title": "Share your ETA"
     },
-    "errors": {
-      "retry": "Try again",
-      "step1": "Couldn\u2019t save your preferences. Tap to retry.",
-      "step2": "Couldn\u2019t save your ETA. Tap to retry.",
-      "step3": "Couldn\u2019t save checklist. Tap to retry."
-    },
     "step3": {
-      "cashDescription": "City tax + keycard deposit in cash \u2014 avoids delays at reception",
+      "cashDescription": "City tax + keycard deposit in cash — avoids delays at reception",
       "cashTitle": "Cash for check-in",
       "celebration": "Nice work. Your arrival checklist is moving forward.",
-      "description": "Tick off what you can \u2014 update any time from the dashboard.",
+      "description": "Tick off what you can — update any time from the dashboard.",
       "lastCompleted": "Last completed: {{item}}",
       "locationAction": "Open in Maps",
       "locationTitle": "Save hostel location",
-      "rulesDescription": "Quick read \u2014 helps your stay go smoothly",
+      "rulesDescription": "Quick read — helps your stay go smoothly",
       "rulesTitle": "House rules",
       "title": "Final checks"
+    },
+    "methods": {
+      "bus": "Bus",
+      "ferry": "Ferry",
+      "other": "Other",
+      "private": "Private",
+      "taxi": "Taxi",
+      "train": "Train"
     }
   },
   "guestProfile": {

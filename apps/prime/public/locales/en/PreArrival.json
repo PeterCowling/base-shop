@@ -9,7 +9,7 @@
     "codeUnavailable": "Check-in code not yet available.",
     "depositLabel": "Security deposit",
     "findUs": "Find us",
-    "generatingCode": "Generating your code\u2026",
+    "generatingCode": "Generating your code…",
     "idNote": "A valid photo ID is required for each guest at check-in.",
     "idReminder": "Bring your ID",
     "offlineNoCache": "You're offline and no cached code is available.",
@@ -25,7 +25,7 @@
   },
   "calendar": {
     "addToCalendar": "Add to calendar",
-    "downloading": "Downloading\u2026"
+    "downloading": "Downloading…"
   },
   "cash": {
     "back": "Back",
@@ -68,6 +68,7 @@
       "title": "Cash prepared"
     },
     "completed": "Completed",
+    "title": "Pre-arrival checklist",
     "etaConfirmed": {
       "title": "Arrival time confirmed"
     },
@@ -87,8 +88,7 @@
     },
     "rulesReviewed": {
       "title": "House rules reviewed"
-    },
-    "title": "Pre-arrival checklist"
+    }
   },
   "eta": {
     "back": "Back",
@@ -99,14 +99,6 @@
       "title": "Late arrival"
     },
     "methodLabel": "How are you travelling?",
-    "methods": {
-      "bus": "Bus",
-      "ferry": "Ferry",
-      "other": "Other",
-      "private": "Private car",
-      "taxi": "Taxi",
-      "train": "Train"
-    },
     "noteLabel": "Notes for us",
     "notePlaceholder": "e.g. We'll have heavy luggage",
     "required": "Required",
@@ -114,18 +106,68 @@
     "stepProgress": "Step {{current}} of {{total}}",
     "subtitle": "Let us know when to expect you.",
     "timeLabel": "Estimated arrival time",
-    "title": "Confirm your arrival"
+    "title": "Confirm your arrival",
+    "methods": {
+      "bus": "Bus",
+      "ferry": "Ferry",
+      "other": "Other",
+      "private": "Private car",
+      "taxi": "Taxi",
+      "train": "Train"
+    }
   },
   "header": {
     "arrivalDay": "Arrival day",
-    "arrivalDaySubtitle": "You're arriving today \u2014 here's everything you need.",
+    "arrivalDaySubtitle": "You're arriving today — here's everything you need.",
     "preArrival": "Pre-arrival",
     "subtitle": "A few things to get ready before you arrive.",
     "welcome": "Welcome, {{name}}!",
-    "welcomeArrivalDay": "Welcome, {{name}} \u2014 today's the day!"
+    "welcomeArrivalDay": "Welcome, {{name}} — today's the day!"
+  },
+  "lateCheckin": {
+    "issuesCta": "Report an overnight issue",
+    "loadError": "We could not load late check-in guidance right now.",
+    "mainDoorCta": "Open main door guide",
+    "nextActionsTitle": "Quick links",
+    "priorityNotice": "Priority Notice",
+    "returnHome": "Return Home",
+    "steps": {
+      "step1": "Confirm you already received late check-in approval from reception.",
+      "step2": "Open the main door guide and use your personal access code.",
+      "step3": "Keep your phone charged while you complete arrival.",
+      "step4": "If anything is unclear, report the issue right away from the app.",
+      "step5": "Visit reception the next morning to complete any pending steps."
+    },
+    "stepsTitle": "What to do",
+    "subtitle": "Follow these steps if you arrive after reception closes.",
+    "title": "Out-of-hours check-in"
   },
   "location": {
     "address": "Address"
+  },
+  "mainDoor": {
+    "codeCopied": "Code copied.",
+    "codeError": "We could not load your code right now.",
+    "codeLabel": "Your door code",
+    "codeUnavailable": "Code unavailable",
+    "copyHint": "Tap to copy this code.",
+    "instructions": {
+      "step1": "Wake the keypad and enter your full code exactly as shown.",
+      "step2": "Wait for the unlock signal before pushing the door.",
+      "step3": "If the door does not open, retry once with the same code.",
+      "step4": "If access still fails, open Overnight Issues immediately."
+    },
+    "instructionsTitle": "How to enter",
+    "lateCheckinLink": "Out-of-hours check-in guide",
+    "loadError": "We could not load your door-access details right now.",
+    "offlineNoCode": "You are offline and no cached code is available.",
+    "refreshCode": "Refresh code",
+    "returnHome": "Return Home",
+    "roomKeycardNote": "Your keycard opens your room. Use this code for the main entrance.",
+    "safetyNote": "Share this code only with people included in your booking.",
+    "staleWarning": "You are viewing a cached code. Refresh when you are back online.",
+    "subtitle": "Use your personal code to enter the building after hours.",
+    "title": "Main Door Access"
   },
   "nextAction": {
     "allComplete": {
@@ -165,6 +207,30 @@
       "title": "Review house rules"
     }
   },
+  "overnightIssues": {
+    "actionsTitle": "Get help now",
+    "assistantCta": "Ask the digital assistant",
+    "email": {
+      "bodyTemplate": "Hi team,\\n\\nI need help with an overnight issue.\\nBooking: {{bookingRef}}\\nIssue details:\\n\\n\\nCurrent location:\\n\\n\\nThanks.",
+      "subjectDefault": "Overnight issue - Prime app",
+      "subjectWithBooking": "Overnight issue - Booking {{bookingRef}}",
+      "unknownBookingRef": "Unknown"
+    },
+    "emailCta": "Email reception support",
+    "followUpNote": "Reception will follow up as soon as possible.",
+    "loadError": "We could not load your booking context right now.",
+    "priorityNotice": "If safety is at risk, contact local emergency services first.",
+    "returnHome": "Return Home",
+    "safetyNote": "Keep your phone available after sending your report in case staff need more details.",
+    "subtitle": "Use this page if you need urgent help outside reception hours.",
+    "title": "Overnight Issues",
+    "whatToInclude": {
+      "item1": "Describe exactly what happened and what you already tried.",
+      "item2": "Include your current location and room number if relevant.",
+      "item3": "Attach photos if they help explain the issue."
+    },
+    "whatToIncludeTitle": "When you report an issue"
+  },
   "readiness": {
     "score": "{{score}}% ready"
   },
@@ -192,7 +258,7 @@
     "dates": "Dates",
     "eta": "ETA",
     "guestName": "Guest name",
-    "loading": "Loading\u2026",
+    "loading": "Loading…",
     "nights": "Nights",
     "noCode": "No code generated",
     "payment": "Payment",
@@ -213,70 +279,5 @@
     "tip1": "Complete each step to unlock your check-in code.",
     "tip2": "You can come back to this page any time.",
     "title": "Welcome to Prime"
-  },
-  "mainDoor": {
-    "title": "Main Door Access",
-    "subtitle": "Use your personal code to enter the building after hours.",
-    "loadError": "We could not load your door-access details right now.",
-    "codeLabel": "Your door code",
-    "codeUnavailable": "Code unavailable",
-    "codeCopied": "Code copied.",
-    "copyHint": "Tap to copy this code.",
-    "codeError": "We could not load your code right now.",
-    "staleWarning": "You are viewing a cached code. Refresh when you are back online.",
-    "offlineNoCode": "You are offline and no cached code is available.",
-    "refreshCode": "Refresh code",
-    "instructionsTitle": "How to enter",
-    "instructions": {
-      "step1": "Wake the keypad and enter your full code exactly as shown.",
-      "step2": "Wait for the unlock signal before pushing the door.",
-      "step3": "If the door does not open, retry once with the same code.",
-      "step4": "If access still fails, open Overnight Issues immediately."
-    },
-    "roomKeycardNote": "Your keycard opens your room. Use this code for the main entrance.",
-    "safetyNote": "Share this code only with people included in your booking.",
-    "lateCheckinLink": "Out-of-hours check-in guide",
-    "returnHome": "Return Home"
-  },
-  "lateCheckin": {
-    "title": "Out-of-hours check-in",
-    "subtitle": "Follow these steps if you arrive after reception closes.",
-    "loadError": "We could not load late check-in guidance right now.",
-    "stepsTitle": "What to do",
-    "steps": {
-      "step1": "Confirm you already received late check-in approval from reception.",
-      "step2": "Open the main door guide and use your personal access code.",
-      "step3": "Keep your phone charged while you complete arrival.",
-      "step4": "If anything is unclear, report the issue right away from the app.",
-      "step5": "Visit reception the next morning to complete any pending steps."
-    },
-    "nextActionsTitle": "Quick links",
-    "mainDoorCta": "Open main door guide",
-    "issuesCta": "Report an overnight issue",
-    "returnHome": "Return Home"
-  },
-  "overnightIssues": {
-    "title": "Overnight Issues",
-    "subtitle": "Use this page if you need urgent help outside reception hours.",
-    "loadError": "We could not load your booking context right now.",
-    "priorityNotice": "If safety is at risk, contact local emergency services first.",
-    "whatToIncludeTitle": "When you report an issue",
-    "whatToInclude": {
-      "item1": "Describe exactly what happened and what you already tried.",
-      "item2": "Include your current location and room number if relevant.",
-      "item3": "Attach photos if they help explain the issue."
-    },
-    "actionsTitle": "Get help now",
-    "emailCta": "Email reception support",
-    "assistantCta": "Ask the digital assistant",
-    "followUpNote": "Reception will follow up as soon as possible.",
-    "safetyNote": "Keep your phone available after sending your report in case staff need more details.",
-    "returnHome": "Return Home",
-    "email": {
-      "subjectWithBooking": "Overnight issue - Booking {{bookingRef}}",
-      "subjectDefault": "Overnight issue - Prime app",
-      "unknownBookingRef": "Unknown",
-      "bodyTemplate": "Hi team,\\n\\nI need help with an overnight issue.\\nBooking: {{bookingRef}}\\nIssue details:\\n\\n\\nCurrent location:\\n\\n\\nThanks."
-    }
   }
 }

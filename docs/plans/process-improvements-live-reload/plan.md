@@ -24,7 +24,7 @@ Auto-Build-Intent: plan+auto
 
 `docs/business-os/process-improvements.user.html` is a static file opened via `file://` URL in the browser. After a build cycle regenerates the file, the operator must manually reload the browser tab to see the updated data. This plan adds two changes: (1) the generator embeds a millisecond-precision timestamp (`GEN_TS`) on every run, allowing the page to display when content was last generated; and (2) the HTML gains a `<meta http-equiv="refresh" content="30">` tag that reloads the page every 30 seconds, plus sessionStorage persistence for the active filter state so the operator's filter selection survives the reload. Together these changes mean the operator sees refreshed data automatically without any manual action and without losing their active filter.
 
-## Active Tasks
+## Active tasks
 - [ ] TASK-01: Generator — embed millisecond-precision generation timestamp (`GEN_TS`)
 - [ ] TASK-02: HTML — add meta refresh and sessionStorage filter persistence
 

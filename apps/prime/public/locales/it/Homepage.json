@@ -8,16 +8,30 @@
     "missingData": "Impossibile caricare i dati della prenotazione."
   },
   "guest": "Ospite",
-  "loading": "Caricamento\u2026",
+  "loading": "Caricamento…",
   "ourServices": "I nostri servizi",
   "profileBanner": {
     "completeButton": "Completa il profilo",
+    "returningTitle": "Bentornato!",
+    "title": "Completa il tuo profilo",
+    "updateButton": "Aggiorna preferenze",
     "description": "Raccontaci del tuo soggiorno per ricevere suggerimenti personalizzati.",
     "returningDescription": "Aggiorna le tue preferenze per questo soggiorno per ricevere consigli personalizzati.",
-    "returningTitle": "Bentornato!",
-    "skippedDescription": "Aggiungi le tue preferenze per ricevere consigli migliori.",
-    "title": "Completa il tuo profilo",
-    "updateButton": "Aggiorna preferenze"
+    "skippedDescription": "Aggiungi le tue preferenze per ricevere consigli migliori."
+  },
+  "social": {
+    "discoverDescription": "Esplora gemme nascoste, ristoranti locali e le viste più belle di Positano.",
+    "discoverTitle": "Scopri Positano",
+    "exploreGuide": "Apri la guida",
+    "explorePositano": "Esplora Positano",
+    "upcomingActivity": "Prossima attività",
+    "browse": "Sfoglia",
+    "joinChat": "Unisciti alla chat",
+    "seeAll": "Vedi tutto",
+    "seeWhatsHappening": "Scopri cosa c'è"
+  },
+  "welcome": {
+    "greeting": "Benvenuto, {{firstName}}!"
   },
   "services": {
     "barMenu": {
@@ -27,12 +41,12 @@
     },
     "breakfastMenu": {
       "alt": "Colazione servita a tavola",
-      "description": "Scopri cosa c'\u00e8 per colazione.",
+      "description": "Scopri cosa c'è per colazione.",
       "title": "Menu colazione"
     },
     "complimentaryBreakfastService": {
       "alt": "Colazione in omaggio",
-      "description": "La tua colazione in omaggio \u00e8 pronta.",
+      "description": "La tua colazione in omaggio è pronta.",
       "title": "La tua colazione"
     },
     "digitalAssistantService": {
@@ -55,17 +69,6 @@
       "description": "Facci sapere se qualcosa necessita attenzione.",
       "title": "Segnala un problema"
     }
-  },
-  "social": {
-    "browse": "Sfoglia",
-    "discoverDescription": "Esplora gemme nascoste, ristoranti locali e le viste pi\u00f9 belle di Positano.",
-    "discoverTitle": "Scopri Positano",
-    "exploreGuide": "Apri la guida",
-    "explorePositano": "Esplora Positano",
-    "joinChat": "Unisciti alla chat",
-    "seeAll": "Vedi tutto",
-    "seeWhatsHappening": "Scopri cosa c'\u00e8",
-    "upcomingActivity": "Prossima attivit\u00e0"
   },
   "tasks": {
     "bagStorage": {
@@ -101,11 +104,8 @@
     "mainDoorAccess": {
       "alt": "Codice di accesso portone",
       "completedTitle": "Codice salvato",
-      "note": "Ti servir\u00e0 questo codice per entrare nell'edificio.",
+      "note": "Ti servirà questo codice per entrare nell'edificio.",
       "title": "Ottieni il codice del portone"
     }
-  },
-  "welcome": {
-    "greeting": "Benvenuto, {{firstName}}!"
   }
 }

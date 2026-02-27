@@ -12,12 +12,26 @@
   "ourServices": "Our Services",
   "profileBanner": {
     "completeButton": "Complete profile",
+    "returningTitle": "Welcome back!",
+    "title": "Complete your profile",
+    "updateButton": "Update preferences",
     "description": "Tell us about your stay to get personalised tips.",
     "returningDescription": "Update your preferences for this stay to get personalised recommendations.",
-    "returningTitle": "Welcome back!",
-    "skippedDescription": "Add your preferences to get better recommendations.",
-    "title": "Complete your profile",
-    "updateButton": "Update preferences"
+    "skippedDescription": "Add your preferences to get better recommendations."
+  },
+  "social": {
+    "discoverDescription": "Explore hidden gems, local restaurants, and the best views in Positano.",
+    "discoverTitle": "Discover Positano",
+    "exploreGuide": "Open guide",
+    "explorePositano": "Explore Positano",
+    "upcomingActivity": "Upcoming Activity",
+    "browse": "Browse",
+    "joinChat": "Join the chat",
+    "seeAll": "See all",
+    "seeWhatsHappening": "See what's on"
+  },
+  "welcome": {
+    "greeting": "Welcome, {{firstName}}!"
   },
   "services": {
     "barMenu": {
@@ -56,17 +70,6 @@
       "title": "Report an Issue"
     }
   },
-  "social": {
-    "browse": "Browse",
-    "discoverDescription": "Explore hidden gems, local restaurants, and the best views in Positano.",
-    "discoverTitle": "Discover Positano",
-    "exploreGuide": "Open guide",
-    "explorePositano": "Explore Positano",
-    "joinChat": "Join the chat",
-    "seeAll": "See all",
-    "seeWhatsHappening": "See what's on",
-    "upcomingActivity": "Upcoming Activity"
-  },
   "tasks": {
     "bagStorage": {
       "alt": "Luggage storage",
@@ -77,13 +80,13 @@
     "complimentaryBreakfast": {
       "alt": "Complimentary breakfast",
       "completedTitle": "Breakfast claimed",
-      "note": "Served 8:00 \u2013 10:30 in the breakfast room.",
+      "note": "Served 8:00 – 10:30 in the breakfast room.",
       "title": "Claim your breakfast"
     },
     "complimentaryEveningDrink": {
       "alt": "Complimentary evening drink",
       "completedTitle": "Drink claimed",
-      "note": "Available 18:00 \u2013 20:00 at the bar.",
+      "note": "Available 18:00 – 20:00 at the bar.",
       "title": "Claim your evening drink"
     },
     "digitalAssistant": {
@@ -104,8 +107,5 @@
       "note": "You'll need this code to enter the building.",
       "title": "Get your door code"
     }
-  },
-  "welcome": {
-    "greeting": "Welcome, {{firstName}}!"
   }
 }

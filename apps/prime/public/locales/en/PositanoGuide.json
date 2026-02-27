@@ -3,6 +3,24 @@
     "popularWithGuests": "Guest favourites",
     "poweredBy": "Powered by Brikette"
   },
+  "meta": {
+    "subtitle": "Curated tips from locals and past guests.",
+    "title": "Positano Guide"
+  },
+  "sections": {
+    "afternoon": {
+      "subtitle": "Beaches, hiking, and coastal adventures.",
+      "title": "Afternoon"
+    },
+    "evening": {
+      "subtitle": "Dining and spectacular sunset views.",
+      "title": "Evening"
+    },
+    "morning": {
+      "subtitle": "Early adventures and breakfast spots.",
+      "title": "Morning"
+    }
+  },
   "guides": {
     "boatTours": {
       "description": "Explore the Amalfi Coast from the water with a boat tour from Positano.",
@@ -43,24 +61,6 @@
       "description": "The most spectacular spots to watch the sunset over the Tyrrhenian Sea.",
       "tag": "Unmissable",
       "title": "Sunset Viewpoints"
-    }
-  },
-  "meta": {
-    "subtitle": "Curated tips from locals and past guests.",
-    "title": "Positano Guide"
-  },
-  "sections": {
-    "afternoon": {
-      "subtitle": "Beaches, hiking, and coastal adventures.",
-      "title": "Afternoon"
-    },
-    "evening": {
-      "subtitle": "Dining and spectacular sunset views.",
-      "title": "Evening"
-    },
-    "morning": {
-      "subtitle": "Early adventures and breakfast spots.",
-      "title": "Morning"
     }
   }
 }

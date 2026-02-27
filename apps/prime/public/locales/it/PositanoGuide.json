@@ -3,6 +3,24 @@
     "popularWithGuests": "I preferiti degli ospiti",
     "poweredBy": "Powered by Brikette"
   },
+  "meta": {
+    "subtitle": "Consigli curati da locali e ospiti passati.",
+    "title": "Guida di Positano"
+  },
+  "sections": {
+    "afternoon": {
+      "subtitle": "Spiagge, escursioni e avventure costiere.",
+      "title": "Pomeriggio"
+    },
+    "evening": {
+      "subtitle": "Ristoranti e tramonti spettacolari.",
+      "title": "Sera"
+    },
+    "morning": {
+      "subtitle": "Avventure mattutine e posti per colazione.",
+      "title": "Mattina"
+    }
+  },
   "guides": {
     "boatTours": {
       "description": "Esplora la Costiera Amalfitana dall'acqua con un tour in barca da Positano.",
@@ -20,7 +38,7 @@
       "title": "Dove mangiare"
     },
     "fornilloBeach": {
-      "description": "Un'alternativa pi\u00f9 tranquilla alla spiaggia principale, a pochi passi.",
+      "description": "Un'alternativa più tranquilla alla spiaggia principale, a pochi passi.",
       "tag": "Segreto locale",
       "title": "Spiaggia di Fornillo"
     },
@@ -40,27 +58,9 @@
       "title": "Escursione all'alba"
     },
     "sunsetViewpoints": {
-      "description": "I punti pi\u00f9 spettacolari per ammirare il tramonto sul Mar Tirreno.",
+      "description": "I punti più spettacolari per ammirare il tramonto sul Mar Tirreno.",
       "tag": "Imperdibile",
       "title": "Punti panoramici al tramonto"
-    }
-  },
-  "meta": {
-    "subtitle": "Consigli curati da locali e ospiti passati.",
-    "title": "Guida di Positano"
-  },
-  "sections": {
-    "afternoon": {
-      "subtitle": "Spiagge, escursioni e avventure costiere.",
-      "title": "Pomeriggio"
-    },
-    "evening": {
-      "subtitle": "Ristoranti e tramonti spettacolari.",
-      "title": "Sera"
-    },
-    "morning": {
-      "subtitle": "Avventure mattutine e posti per colazione.",
-      "title": "Mattina"
     }
   }
 }

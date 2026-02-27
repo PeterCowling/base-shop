@@ -2,12 +2,12 @@
   "cache": {
     "clear": "Cancella dati memorizzati",
     "cleared": "Cancellato!",
-    "clearing": "Cancellazione\u2026",
-    "description": "I dati memorizzati permettono all'app di funzionare offline. Cancellarli potrebbe richiedere di scaricare nuovamente i contenuti.",
+    "clearing": "Cancellazione…",
     "quota": "{{percent}}% dello spazio disponibile",
     "refresh": "Aggiorna",
     "title": "Dati memorizzati",
-    "usage": "Spazio utilizzato"
+    "usage": "Spazio utilizzato",
+    "description": "I dati memorizzati permettono all'app di funzionare offline. Cancellarli potrebbe richiedere di scaricare nuovamente i contenuti."
   },
   "chat": {
     "optIn": {
@@ -17,10 +17,10 @@
     }
   },
   "language": {
-    "title": "Lingua",
-    "subtitle": "Scegli la lingua preferita dell'app.",
     "current": "Lingua attuale: {{language}}",
     "returnHome": "Torna alla home",
+    "subtitle": "Scegli la lingua preferita dell'app.",
+    "title": "Lingua",
     "options": {
       "en": "English",
       "it": "Italiano"

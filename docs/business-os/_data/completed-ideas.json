@@ -74,12 +74,20 @@
       "output_link": "docs/plans/_archive/brikette-rsc-structured-data-conversion/"
     },
     {
-      "idea_key": "ci-only-test-execution-plans-lint-mechanistic",
+      "idea_key": "dd4b7b7bd0cc835f9462068cf8867452a1662b24",
       "title": "AI-to-mechanistic: local Jest pattern detection in plan docs",
-      "source_path": "docs/plans/ci-only-test-execution/results-review.user.md",
+      "source_path": "docs/plans/_archive/ci-only-test-execution/results-review.user.md",
       "plan_slug": "ci-only-test-execution",
       "completed_at": "2026-02-27",
       "output_link": "docs/plans/_archive/ci-only-test-execution/"
+    },
+    {
+      "idea_key": "c3e81fb537fe78b02811b005c9da39423ebeff88",
+      "title": "Automate Codex build trigger (v2)",
+      "source_path": "docs/plans/_archive/codemoot-cross-agent-critique/results-review.user.md",
+      "plan_slug": "n/a — already implemented via lp-do-plan Phase 10 plan+auto mode",
+      "completed_at": "2026-02-27",
+      "output_link": ".claude/skills/lp-do-plan/SKILL.md"
     }
   ]
 }

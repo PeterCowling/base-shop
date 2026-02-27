@@ -48,8 +48,12 @@ jobs:
       app-filter: "@apps/caryina"
       build-cmd: >
         pnpm exec turbo run build --filter=@apps/caryina^... &&
-        cd apps/caryina &&
-        pnpm exec opennextjs-cloudflare build
+        if [ "${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' }}" = "true" ]; then
+          cd apps/caryina &&
+          pnpm exec opennextjs-cloudflare build;
+        else
+          echo "Skipping OpenNext build because deploy is disabled for this event/ref.";
+        fi
       artifact-path: "apps/caryina/.open-next"
       deploy_cmd: >
         cd apps/caryina &&

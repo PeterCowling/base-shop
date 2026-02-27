@@ -17,6 +17,10 @@ import type { XaCategory, XaDepartment } from "../../../lib/xaTypes";
 
 type TabValue = XaDepartment | XaCategory | "new-in";
 
+export function generateStaticParams() {
+  return XA_BRANDS.map((b) => ({ slug: b.handle }));
+}
+
 export default async function DesignerPage({
   params,
   searchParams,

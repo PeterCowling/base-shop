@@ -3,7 +3,8 @@ import { randomUUID } from "crypto";
 
 import { AxerveError, callPayment } from "@acme/axerve";
 import { CART_COOKIE, decodeCartCookie } from "@acme/platform-core/cartCookie";
-import { getCart } from "@acme/platform-core/cartStore";
+import { deleteCart, getCart } from "@acme/platform-core/cartStore";
+import { sendSystemEmail } from "@acme/platform-core/email";
 
 export const runtime = "nodejs";
 
@@ -87,12 +88,49 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
 
     console.info("Axerve payment OK", { shopTransactionId, bankTransactionId: result.bankTransactionId }); // i18n-exempt -- developer log
-    return NextResponse.json({
+
+    if (cartId) {
+      await deleteCart(cartId);
+    }
+
+    // Fire-and-forget merchant notification — must not affect payment response
+    const notifyEmail = process.env.MERCHANT_NOTIFY_EMAIL ?? "peter.cowling1976@gmail.com";
+    const itemLines = Object.values(cart)
+      .map(
+        (line) =>
+          `<tr><td>${line.sku.title}</td><td>${line.qty}</td><td>€${(line.sku.price / 100).toFixed(2)}</td><td>€${((line.sku.price * line.qty) / 100).toFixed(2)}</td></tr>`,
+      )
+      .join("");
+    const emailHtml = `
+      <h2>New order received</h2>
+      <table border="1" cellpadding="4" cellspacing="0">
+        <thead><tr><th>Item</th><th>Qty</th><th>Unit price</th><th>Line total</th></tr></thead>
+        <tbody>${itemLines}</tbody>
+      </table>
+      <p><strong>Total: €${(totalCents / 100).toFixed(2)}</strong></p>
+      <p>Transaction ID: ${shopTransactionId}</p>
+      <p>Axerve ref: ${result.transactionId}</p>
+    `;
+    void sendSystemEmail({
+      to: notifyEmail,
+      subject: `New order — ${shopTransactionId}`,
+      html: emailHtml,
+    }).catch((err: unknown) => {
+      console.error("Merchant notification email failed", err); // i18n-exempt -- developer log
+    });
+
+    const successRes = NextResponse.json({
       success: true,
       transactionId: result.transactionId,
       amount: totalCents,
       currency: "eur",
     });
+    // Expire the cart cookie so the browser doesn't send a stale cart ID
+    successRes.headers.set(
+      "Set-Cookie",
+      `${CART_COOKIE}=; Path=/; Max-Age=0; SameSite=Lax; Secure; HttpOnly`,
+    );
+    return successRes;
   } catch (err) {
     if (err instanceof AxerveError) {
       console.error("Axerve SOAP error", err.message); // i18n-exempt -- developer log

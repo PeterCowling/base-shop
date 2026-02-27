@@ -24,6 +24,11 @@ jest.mock("@acme/platform-core/cartCookie", () => ({
 
 jest.mock("@acme/platform-core/cartStore", () => ({
   getCart: jest.fn(),
+  deleteCart: jest.fn(),
+}));
+
+jest.mock("@acme/platform-core/email", () => ({
+  sendSystemEmail: jest.fn(),
 }));
 
 const mockAxerve = jest.requireMock("@acme/axerve") as {
@@ -37,8 +42,13 @@ const { decodeCartCookie } = jest.requireMock("@acme/platform-core/cartCookie") 
   decodeCartCookie: jest.Mock;
 };
 
-const { getCart } = jest.requireMock("@acme/platform-core/cartStore") as {
+const { getCart, deleteCart } = jest.requireMock("@acme/platform-core/cartStore") as {
   getCart: jest.Mock;
+  deleteCart: jest.Mock;
+};
+
+const { sendSystemEmail } = jest.requireMock("@acme/platform-core/email") as {
+  sendSystemEmail: jest.Mock;
 };
 
 const VALID_CARD_BODY = {
@@ -85,9 +95,11 @@ describe("POST /api/checkout-session", () => {
     jest.restoreAllMocks();
   });
 
-  it("TC-04-01: populated cart + valid card data returns 200 with success result", async () => {
+  it("TC-04-01: populated cart + valid card data returns 200 with success result, deletes cart, and expires cookie", async () => {
     decodeCartCookie.mockReturnValue("cart-abc");
     getCart.mockResolvedValue({ "sku-1": mockCartItem });
+    deleteCart.mockResolvedValue(undefined);
+    sendSystemEmail.mockResolvedValue(undefined);
     callPayment.mockResolvedValue({
       success: true,
       transactionId: "txn-001",
@@ -107,6 +119,19 @@ describe("POST /api/checkout-session", () => {
     expect(body.transactionId).toBe("txn-001");
     expect(body.amount).toBe(4500);
     expect(body.currency).toBe("eur");
+    expect(deleteCart).toHaveBeenCalledWith("cart-abc");
+    const setCookie = res.headers.get("set-cookie") ?? "";
+    expect(setCookie).toContain("Max-Age=0");
+    expect(setCookie).toContain("__Host-CART_ID=;");
+    // Wait a tick for the fire-and-forget promise to resolve
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(sendSystemEmail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        to: expect.stringContaining("@"),
+        subject: expect.any(String),
+        html: expect.stringContaining("Silver Ring"),
+      }),
+    );
   });
 
   it("TC-04-02: empty cart returns 400", async () => {
@@ -155,5 +180,39 @@ describe("POST /api/checkout-session", () => {
     expect(res.status).toBe(400);
     const body = (await res.json()) as { error: string };
     expect(body.error).toBe("Missing required payment fields");
+  });
+
+  it("TC-04-06: sendSystemEmail throws → success response still returned", async () => {
+    decodeCartCookie.mockReturnValue("cart-abc");
+    getCart.mockResolvedValue({ "sku-1": mockCartItem });
+    deleteCart.mockResolvedValue(undefined);
+    callPayment.mockResolvedValue({
+      success: true,
+      transactionId: "txn-001",
+      bankTransactionId: "bank-txn-001",
+      authCode: "auth-456",
+    });
+    sendSystemEmail.mockRejectedValue(new Error("SMTP connection refused"));
+
+    const res = await POST(makeReq(VALID_CARD_BODY) as never);
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as { success: boolean };
+    expect(body.success).toBe(true);
+  });
+
+  it("TC-04-07: Axerve KO response → sendSystemEmail not called", async () => {
+    decodeCartCookie.mockReturnValue("cart-abc");
+    getCart.mockResolvedValue({ "sku-1": mockCartItem });
+    callPayment.mockResolvedValue({
+      success: false,
+      transactionId: "txn-002",
+      bankTransactionId: "",
+      errorCode: "01",
+      errorDescription: "Card declined",
+    });
+
+    const res = await POST(makeReq(VALID_CARD_BODY) as never);
+    expect(res.status).toBe(402);
+    expect(sendSystemEmail).not.toHaveBeenCalled();
   });
 });

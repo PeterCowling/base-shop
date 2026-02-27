@@ -1,1 +1,42 @@
-{}
+{
+  "3": {
+    "name": "Camera 3 (Femminile economica, 8 letti)",
+    "details": "La nostra camera femminile economica dispone di aria condizionata, accesso con keycard e otto letti."
+  },
+  "4": {
+    "name": "Camera 4 (Femminile economica, 8 letti)",
+    "details": "La nostra camera femminile economica dispone di aria condizionata, accesso con keycard e otto letti."
+  },
+  "5": {
+    "name": "Camera 5 (Femminile superiore, 6 letti)",
+    "details": "La nostra camera femminile superiore dispone di aria condizionata, accesso con keycard, bagno privato, terrazza con vista mare e sei letti."
+  },
+  "6": {
+    "name": "Camera 6 (Femminile superiore, 7 letti)",
+    "details": "La nostra camera femminile superiore dispone di aria condizionata, accesso con keycard, bagno privato, terrazza con vista mare e sette letti."
+  },
+  "7": {
+    "name": "Camera 7 (Matrimoniale)",
+    "details": "La nostra camera matrimoniale dispone di aria condizionata, accesso con keycard, bagno privato e terrazza con vista mare."
+  },
+  "8": {
+    "name": "Camera 8 (Doppia, femminile)",
+    "details": "La nostra camera doppia femminile si trova vicino ai bagni femminili e non ha vista mare."
+  },
+  "9": {
+    "name": "Camera 9 (Deluxe mista, 4 letti)",
+    "details": "La nostra camera deluxe mista a quattro letti dispone di aria condizionata, accesso con keycard e bagno privato."
+  },
+  "10": {
+    "name": "Camera 10 (Deluxe mista, 6 letti)",
+    "details": "La nostra camera deluxe mista a sei letti dispone di aria condizionata, accesso con keycard e bagno privato."
+  },
+  "11": {
+    "name": "Camera 11 (Superiore mista, 6 letti)",
+    "details": "La nostra camera superiore mista dispone di aria condizionata, accesso con keycard, bagno privato, terrazza con vista mare e sei letti. La terrazza di questa camera è extra spaziosa."
+  },
+  "12": {
+    "name": "Camera 12 (Superiore mista, 6 letti)",
+    "details": "La nostra camera superiore mista dispone di aria condizionata, accesso con keycard, bagno privato, terrazza con vista mare e sei letti. La terrazza di questa camera è extra spaziosa."
+  }
+}

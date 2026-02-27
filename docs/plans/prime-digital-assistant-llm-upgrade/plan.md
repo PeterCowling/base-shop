@@ -28,7 +28,7 @@ The Prime digital assistant currently returns a static dead-end fallback for any
 - [x] TASK-01: Create CF Function `assistant-query.ts`
 - [x] TASK-02: Extend `AssistantAnswer` and `AssistantExchange` types
 - [x] TASK-03: Update `page.tsx` with async path, history, presets, analytics
-- [ ] TASK-04: Tests (CF Function + update extinct page.tsx tests)
+- [x] TASK-04: Tests (CF Function + update extinct page.tsx tests)
 
 ## Goals
 - Replace static dead-end fallback with LLM-backed response for unmatched queries.
@@ -92,7 +92,7 @@ The Prime digital assistant currently returns a static dead-end fallback for any
 | TASK-01 | IMPLEMENT | Create CF Function `assistant-query.ts` | 80% | M | Complete (2026-02-27) | - | TASK-03 |
 | TASK-02 | IMPLEMENT | Extend `AssistantAnswer` + `AssistantExchange` types | 85% | S | Complete (2026-02-27) | - | TASK-03 |
 | TASK-03 | IMPLEMENT | Update `page.tsx` (async, history, presets, analytics) | 80% | M | Complete (2026-02-27) | TASK-01, TASK-02 | TASK-04 |
-| TASK-04 | IMPLEMENT | Tests (CF Function + update extinct page.tsx tests) | 80% | M | Pending | TASK-03 | - |
+| TASK-04 | IMPLEMENT | Tests (CF Function + update extinct page.tsx tests) | 80% | M | Complete (2026-02-27) | TASK-03 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -405,6 +405,27 @@ The Prime digital assistant currently returns a static dead-end fallback for any
 - **Documentation impact:** None.
 - **Notes / references:**
   - `answerComposer.test.ts` TC-02 is NOT extinct. `composeAssistantAnswer` still returns `answerType: 'fallback'` for unmatched queries — this is the routing signal used by `page.tsx` to trigger the LLM call. Keep the TC. If the static fallback text string in `answerComposer.ts` changes during refactor, update the text assertion accordingly; do not remove the `answerType` assertion.
+- **Build evidence (2026-02-27):**
+  - Status: Complete (2026-02-27)
+  - Files created/updated:
+    - `apps/prime/functions/api/__tests__/assistant-query.test.ts` (new, 6 TCs: TC-01 through TC-06)
+    - `apps/prime/src/app/(guarded)/digital-assistant/__tests__/page.test.tsx` (updated: added `useUnifiedBookingData` mock + 4 new TCs: TC-07 through TC-10)
+    - `apps/prime/src/lib/assistant/__tests__/answerComposer.test.ts` (unchanged — existing TCs pass without modification; TC-02 `answerType: 'fallback'` assertion preserved as routing-signal test)
+  - Test environment: CF Function tests use `/** @jest-environment node */` docblock; page tests use default jsdom.
+  - Mock strategy: `jest.spyOn(FirebaseRest.prototype, 'get')` for Firebase reads; `jest.spyOn(global, 'fetch')` for OpenAI calls; `jest.mock` for `useUnifiedBookingData` and `recordActivationFunnelEvent`.
+  - Plan discrepancy TC-02: test asserts HTTP 400 (missing token), not 401, per TASK-01 build evidence.
+  - Post-build validation: Mode 2 (Data Simulation). All 10 TCs traced:
+    - CF TC-01: valid session → getSpy returns VALID_SESSION + VALID_OCCUPANT → rate limit passes (KV empty) → fetchSpy returns OpenAI mock → 200 answerType:'llm' ✓
+    - CF TC-02: no token → validateGuestSessionToken returns 400 before Firebase read → fetchSpy not called ✓
+    - CF TC-03: KV pre-loaded with '5' at llm-assistant:occ_1234567890123 → 5>=5 → 429 before OpenAI call ✓
+    - CF TC-04: fetchSpy rejects → inner catch → 200 answerType:'llm-safety-fallback' ✓
+    - CF TC-05: fetchSpy returns response with allowlisted + non-allowlisted links → stripLinks removes example.com → links.length=1 ✓
+    - CF TC-06: durationMs = Date.now() - startMs >= 0 ✓
+    - Page TC-07: "activity" keyword match → answerType:'known' → no fetch call ✓
+    - Page TC-08: "rooftop terrace" → no keyword → LLM path → fetchSpy called → answer rendered ✓
+    - Page TC-09: 429 response → "Too many questions" message rendered ✓
+    - Page TC-10: preset button click → handleAsk("How do I walk to Fornillo beach?") → no keyword match → fetch with body containing "Fornillo beach" ✓
+  - Validation result: Pass
 
 ---
 

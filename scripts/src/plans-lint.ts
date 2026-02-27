@@ -161,6 +161,44 @@ function validateTaskLine(line: string, rel: string): string[] {
   return errors;
 }
 
+// Local Jest command patterns that should not appear in active plan/doc files
+// under the CI-only test execution policy. Each entry is a [pattern, label] pair.
+const LOCAL_JEST_PATTERNS: [RegExp, string][] = [
+  [/\bnpx jest\b/i, "npx jest"],
+  [/\bpnpm exec jest\b/i, "pnpm exec jest"],
+  [/\bpnpm run test:governed\b/i, "pnpm run test:governed (local invocation)"],
+  [/\bVALIDATE_INCLUDE_TESTS=1\b/, "VALIDATE_INCLUDE_TESTS=1"],
+];
+
+// Files that are exempt from the local-Jest lint rule because they document
+// historical patterns or are the resource governor artifacts themselves.
+const LOCAL_JEST_PATTERN_EXEMPTIONS = [
+  "docs/plans/test-execution-resource-governor",
+  "docs/historical/",
+  "docs/plans/_archive/",
+  "docs/plans/archive/",
+];
+
+function checkLocalJestPatterns(content: string, rel: string): string[] {
+  // Inline exemption marker: <!-- LINT-EXEMPT: local-jest-pattern -->
+  if (/<!--\s*LINT-EXEMPT:\s*local-jest-pattern\s*-->/.test(content)) {
+    return [];
+  }
+  // Path-based exemptions
+  for (const exempt of LOCAL_JEST_PATTERN_EXEMPTIONS) {
+    if (rel.startsWith(exempt)) return [];
+  }
+  const errors: string[] = [];
+  for (const [pattern, label] of LOCAL_JEST_PATTERNS) {
+    if (pattern.test(content)) {
+      errors.push(
+        `[plans-lint] ${rel}: active plan contains local test command pattern "${label}" — tests run in CI only (BASESHOP_CI_ONLY_TESTS=1). Add <!-- LINT-EXEMPT: local-jest-pattern --> to exempt intentional historical references.`,
+      );
+    }
+  }
+  return errors;
+}
+
 async function main() {
   const docs = await walk(DOCS_DIR);
   const planFiles = docs.filter((f) => {
@@ -259,6 +297,13 @@ async function main() {
             errs.forEach((e) => console.warn(e));
           }
         }
+      }
+
+      // CI-only test policy: active plan docs must not contain local Jest command patterns.
+      const jestPatternErrs = checkLocalJestPatterns(content, rel);
+      if (jestPatternErrs.length) {
+        hadError = true;
+        jestPatternErrs.forEach((e) => console.warn(e));
       }
     }
 

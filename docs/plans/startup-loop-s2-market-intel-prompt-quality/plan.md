@@ -19,6 +19,7 @@ Business-OS-Integration: on
 Business-Unit: BOS
 Card-ID:
 ---
+<!-- LINT-EXEMPT: local-jest-pattern -->
 
 # Startup Loop S2 Market Intelligence Prompt Quality — Plan
 

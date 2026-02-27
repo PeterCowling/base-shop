@@ -30,10 +30,10 @@ This plan establishes a CI-only test execution policy with two layers: (1) techn
 - [x] TASK-01: Update docs/testing-policy.md — CI-only rewrite
 - [x] TASK-02: Update AGENTS.md — remove local test commands, add CI feedback guidance
 - [x] TASK-03: Add BASESHOP_CI_ONLY_TESTS guard to run-governed-test.sh
-- [ ] TASK-04: Export BASESHOP_CI_ONLY_TESTS=1 in integrator-shell.sh
-- [ ] TASK-05: Block VALIDATE_INCLUDE_TESTS=1 in validate-changes.sh
+- [x] TASK-04: Export BASESHOP_CI_ONLY_TESTS=1 in integrator-shell.sh
+- [x] TASK-05: Block VALIDATE_INCLUDE_TESTS=1 in validate-changes.sh
 - [x] TASK-06: Mark test-execution-resource-governor-plan.md Superseded
-- [ ] TASK-07: Add docs lint rule for local Jest command patterns
+- [x] TASK-07: Add docs lint rule for local Jest command patterns
 - [ ] TASK-08: CHECKPOINT — validate CI-only policy after deployment
 - [x] TASK-09: INVESTIGATE — CI trigger coverage for app-specific pipelines on dev push
 
@@ -105,10 +105,10 @@ This plan establishes a CI-only test execution policy with two layers: (1) techn
 | TASK-01 | IMPLEMENT | Rewrite docs/testing-policy.md for CI-only | 85% | M | Complete (2026-02-27) | - | TASK-08 |
 | TASK-02 | IMPLEMENT | Update AGENTS.md testing rules | 90% | S | Complete (2026-02-27) | - | TASK-08 |
 | TASK-03 | IMPLEMENT | Add CI-only block to run-governed-test.sh | 90% | S | Complete (2026-02-27) | - | TASK-04, TASK-05, TASK-08 |
-| TASK-04 | IMPLEMENT | Export BASESHOP_CI_ONLY_TESTS in integrator-shell.sh | 90% | S | Pending | TASK-03 | TASK-08 |
-| TASK-05 | IMPLEMENT | Block VALIDATE_INCLUDE_TESTS in validate-changes.sh | 85% | S | Pending | TASK-03 | TASK-08 |
+| TASK-04 | IMPLEMENT | Export BASESHOP_CI_ONLY_TESTS in integrator-shell.sh | 90% | S | Complete (2026-02-27) | TASK-03 | TASK-08 |
+| TASK-05 | IMPLEMENT | Block VALIDATE_INCLUDE_TESTS in validate-changes.sh | 85% | S | Complete (2026-02-27) | TASK-03 | TASK-08 |
 | TASK-06 | IMPLEMENT | Mark governor plan Superseded | 95% | S | Complete (2026-02-27) | - | TASK-08 |
-| TASK-07 | IMPLEMENT | Add docs lint rule for local Jest patterns | 80% | M | Pending | TASK-01, TASK-02 | TASK-08 |
+| TASK-07 | IMPLEMENT | Add docs lint rule for local Jest patterns | 80% | M | Complete (2026-02-27) | TASK-01, TASK-02 | TASK-08 |
 | TASK-08 | CHECKPOINT | Validate policy after deployment | 95% | S | Pending | TASK-01..TASK-07 | - |
 | TASK-09 | INVESTIGATE | CI trigger coverage for app pipelines on dev push | 80% | S | Complete (2026-02-27) | - | - |
 

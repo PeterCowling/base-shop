@@ -105,6 +105,22 @@ Load only the relevant module file(s):
 - `website-upgrade-backlog` alias: `modules/outcome-a-website-upgrade.md`
 - `startup-loop-gap-fill` alias: `modules/outcome-a-loop-gap.md` (output path determined by trigger type inside the module)
 
+## Phase 5.5: Scope Simulation
+
+Load and follow: `../_shared/simulation-protocol.md`
+
+Run a scope simulation of the investigation completed in Phase 5. This is not a code execution trace — it is a scope-gap check. Walk through each evidence area identified in the investigation and apply the scope simulation checklist defined in the shared protocol (5 categories: concrete investigation path, investigation ordering, system boundary coverage, circular investigation dependency, missing domain coverage).
+
+Write a `## Simulation Trace` section into the fact-find draft (before persisting in Phase 6) with one row per scope area:
+
+| Scope Area | Coverage Confirmed | Issues Found | Resolution Required |
+|---|---|---|---|
+| <evidence domain or entry point> | Yes / Partial / No | None — or: [Category] [Severity]: description | Yes / No |
+
+**Hard gate (Critical findings):** If any Critical scope gap is found, do not set `Status: Ready-for-planning` or proceed to Phase 6 until the issue is resolved or a valid `Simulation-Critical-Waiver` block is written (see shared protocol for waiver format and requirements).
+
+**Advisory (Major / Moderate / Minor findings):** Write into the Simulation Trace table and proceed. These are visible to the Phase 7a critique loop and do not block fact-find persistence.
+
 ## Phase 6: Persist Artifact with Shared Templates
 
 - Output path: `docs/plans/<feature-slug>/fact-find.md`
@@ -187,6 +203,7 @@ Status-dependent next action (execute immediately, do not wait for user):
 - [ ] Routing header computed and written to frontmatter
 - [ ] Only relevant module(s) loaded
 - [ ] Output generated from shared template file (not inline template)
+- [ ] Phase 5.5 Scope Simulation run — scope trace table present in fact-find draft; Critical scope gaps resolved or waived before Phase 6 persist
 - [ ] Outcome A evidence gap review completed and recorded
 - [ ] Minimum evidence floor gate passed (or `Status: Needs-input` set if floor failed)
 - [ ] lp-do-factcheck run if fact-find contains codebase claims (file paths, function names, coverage assertions)

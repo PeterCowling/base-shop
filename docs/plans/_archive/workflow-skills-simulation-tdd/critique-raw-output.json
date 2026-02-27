@@ -1,0 +1,15 @@
+{
+  "round": "plan-round-1",
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/workflow-skills-simulation-tdd/plan.md",
+      "line": "16",
+      "message": "Overall-confidence: 86% in frontmatter conflicts with computed value of 90% in Overall-confidence Calculation section. Reconciled to 90%."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "lp_score": 4.0
+}

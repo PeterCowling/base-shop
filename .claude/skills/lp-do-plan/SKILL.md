@@ -205,6 +205,22 @@ Set plan gate statuses explicitly:
 - Edge-case review complete: Yes/No
 - Auto-build eligible: Yes/No
 
+## Phase 7.5: Simulation Trace
+
+Load and follow: `../_shared/simulation-protocol.md`
+
+Run a forward simulation trace of the fully-sequenced task list produced in Phase 7. Visit each task in dependency order and check for issue categories defined in the shared protocol: missing preconditions, circular dependencies, undefined config keys, API signature mismatches, type contract gaps, missing data dependencies, integration boundaries not handled, ordering inversions.
+
+Write a `## Simulation Trace` section into the plan draft (before persisting in Phase 8) with one row per task:
+
+| Step | Preconditions Met | Issues Found | Resolution Required |
+|---|---|---|---|
+| TASK-XX: title | Yes / Partial / No | None — or: [Category] [Severity]: description | Yes / No |
+
+**Hard gate (Critical findings):** If any Critical simulation issue is found, do not set `Status: Active` or proceed to Phase 8 until the issue is resolved or a valid `Simulation-Critical-Waiver` block is written (see shared protocol for waiver format and requirements).
+
+**Advisory (Major / Moderate / Minor findings):** Write into the Simulation Trace table and proceed. These are visible to the Phase 9 critique loop and do not block plan persistence.
+
 ## Phase 8: Persist Plan
 
 Write/update:
@@ -214,7 +230,8 @@ Status policy:
 - Default `Status: Draft`.
 - Set `Status: Active` only when:
   - mode is `plan+auto` (default) or user explicitly wants build handoff now, and
-  - plan gates pass.
+  - plan gates pass, and
+  - no unresolved Critical simulation findings remain (from Phase 7.5).
 
 ## Phase 9: Critique Loop (1–3 rounds, mandatory)
 
@@ -251,6 +268,7 @@ Plan+auto:
 - [ ] VC checks reference shared business VC checklist when relevant
 - [ ] `/lp-do-sequence` completed after structural edits
 - [ ] Consumer tracing complete for all new outputs and modified behaviors in M/L code/mixed tasks
+- [ ] Phase 7.5 Simulation Trace run — trace table present in plan draft; Critical findings resolved or waived before Phase 8 persist
 - [ ] lp-do-factcheck run if plan contains codebase claims (file paths, function signatures, coverage assertions)
 - [ ] Phase 9 critique loop run (1–3 rounds, mandatory): round count and final verdict recorded
 - [ ] Auto-build blocked if critique score ≤ 2.5

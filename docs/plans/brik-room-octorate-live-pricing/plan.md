@@ -5,7 +5,7 @@ Domain: PRODUCTS
 Workstream: Engineering
 Created: 2026-02-27
 Last-reviewed: 2026-02-27
-Last-updated: 2026-02-27
+Last-updated: 2026-02-27 (TASK-DP complete; TASK-RATES-REFRESH blocked)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: brik-room-octorate-live-pricing
 Deliverable-Type: code-change
@@ -26,7 +26,7 @@ Room detail pages (`/rooms/[id]`) currently show a static "price from" figure so
 
 ## Active tasks
 - [x] TASK-RATES-REFRESH: Refresh `rates.json` stop-gap — **Blocked** (no Octorate credentials; depends on brik-octorate-live-availability TASK-05)
-- [ ] TASK-DP: Date picker + pax selector in `RoomDetailContent`
+- [x] TASK-DP: Date picker + pax selector in `RoomDetailContent` — **Complete** (2026-02-27)
 - [ ] TASK-CP2: Horizon checkpoint — reassess TASK-RPC/RPR/RD-TEST after API contract confirmed
 - [ ] TASK-RPC: `useAvailabilityForRoom` hook
 - [ ] TASK-RPR: `RoomCard` — live NR price and sold-out display for room detail page
@@ -100,7 +100,7 @@ Room detail pages (`/rooms/[id]`) currently show a static "price from" figure so
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-RATES-REFRESH | IMPLEMENT | Refresh `rates.json` stop-gap | 90% | S | Blocked | (external) brik-octorate-live-availability TASK-05 | - |
-| TASK-DP | IMPLEMENT | Date picker + pax selector in `RoomDetailContent` | 85% | M | Pending | - | TASK-RPC, TASK-RPR |
+| TASK-DP | IMPLEMENT | Date picker + pax selector in `RoomDetailContent` | 85% | M | Complete (2026-02-27) | - | TASK-RPC, TASK-RPR |
 | TASK-CP2 | CHECKPOINT | Horizon checkpoint — reassess after API contract confirmed | 95% | S | Pending | TASK-DP, (external) brik-octorate-live-availability TASK-01 | TASK-RPC |
 | TASK-RPC | IMPLEMENT | `useAvailabilityForRoom` hook | 80% | M | Pending | TASK-CP2 | TASK-RPR, TASK-RD-TEST |
 | TASK-RPR | IMPLEMENT | `RoomCard` — live NR price and sold-out display | 80% | M | Pending | TASK-DP, TASK-RPC | TASK-RD-TEST |
@@ -233,6 +233,19 @@ Room detail pages (`/rooms/[id]`) currently show a static "price from" figure so
 - **Notes / references:**
   - `ApartmentBookContent.tsx` lines 64–66 and 168–189: reference UI pattern for native date inputs and pax buttons.
   - `RoomDetailContent.tsx` line 303: `<RoomCard room={room} checkIn={checkIn} checkOut={checkOut} adults={adults} lang={lang} queryState={queryState} />` — the `datePickerRef` prop must be added here.
+- **Build evidence (2026-02-27):**
+  - Commit: `8b8fef4d41` — `feat(brik-rooms): add date picker + pax selector to room detail pages (TASK-DP)`
+  - Affects verified: `apps/brikette/src/app/[lang]/rooms/[id]/RoomDetailContent.tsx` modified.
+  - ESLint: 0 errors (2 pre-existing warnings for regex patterns, not in scope).
+  - Typecheck (turbo): 20/20 successful, FULL TURBO cache hit after `@acme/ui` rebuild.
+  - Tests: `packages/ui/src/molecules/__tests__/RoomCard.test.tsx` — 7/7 PASS.
+  - Pre-commit hooks: all passed.
+  - Offload route: `codex exec --full-auto` (CODEX_OK=1). Exit 0.
+  - Scout discovery: `src/data/rates/latest.json` confirmed dead code (no callers of `findNightlyPrices`). TASK-RATES-REFRESH scope unchanged.
+  - `parseBookingQuery` extended to return `"invalid"` — RoomCard already handles it (confirmed in `RoomCard.tsx` lines 229–248).
+  - `BookingDatePicker` sub-component extracted to satisfy `max-lines-per-function` lint rule.
+  - `datePickerRef` typed as `RefObject<HTMLDivElement | null>` (React 19 / strict TS).
+  - Picker i18n: `selectDatesTitle`, `checkInDate`, `checkOutDate`, `adults` — confirmed present in EN, IT, FR, DE locales.
 
 ---
 

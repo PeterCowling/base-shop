@@ -187,11 +187,13 @@ When all executable tasks are complete, execute **every step below in order**. D
      - New skill — recurring agent workflow ready to be codified as a named skill
      - New loop process — missing stage, gate, or feedback path in the startup loop
      - AI-to-mechanistic — LLM reasoning step replaceable with a deterministic script
+2.5. Read the `results-review.user.md` just produced. For each entry in `## New Idea Candidates`, identify whether it describes a pattern that has recurred across recent builds or could recur in future builds. Classify each pattern as one of: repeatable rule (something the loop could do automatically next time), recurring opportunity with context variation (something worth capturing as a reusable agent workflow), or access gap (something that was discovered mid-build rather than verified upfront). Then write `docs/plans/<slug>/pattern-reflection.user.md` using the schema at `docs/plans/startup-loop-build-reflection-gate/task-01-schema-spec.md`. Each entry must include: a plain summary (≤100 characters), the category, the routing result (see schema routing criteria), and how many times the pattern has been observed. If no patterns are present, write the empty-state artifact with `None identified` in both `## Patterns` and `## Access Declarations` sections. The artifact must always be produced — an empty-state is valid and closes any potential gap in the record.
+
 3. Run reflection debt emitter; if debt emitted, produce `reflection-debt.user.html` from `docs/templates/visual/loop-output-report-template.html` (operator-readable plain language — see `MEMORY.md` Operator-Facing Content).
 4. Run `pnpm --filter scripts startup-loop:generate-process-improvements`. Confirm the output line `updated docs/business-os/process-improvements.user.html` appears before continuing.
 5. For each idea in `## New Idea Candidates` that was directly actioned by this build, add an entry to `docs/business-os/_data/completed-ideas.json` by calling `appendCompletedIdea()` from `scripts/src/startup-loop/generate-process-improvements.ts` (or by writing the JSON entry directly). Record `plan_slug` (the slug of the plan just completed), `output_link` (path to the archived plan directory), `completed_at` (today's date in ISO format), `source_path` (relative path to the results-review file where the idea was found), and `title` (the sanitized idea title as it appears in the report). Re-run `pnpm --filter scripts startup-loop:generate-process-improvements` after appending so the report reflects the exclusion immediately. Only mark ideas as complete if they were directly delivered by this build; deferred or future ideas remain in the report.
 6. Set plan `Status: Archived`. Archive per `../_shared/plan-archiving.md`.
-7. Commit all post-build artifacts (build-record, results-review, reflection-debt if produced, process-improvements, archive move) as a single commit via `scripts/agents/with-writer-lock.sh`.
+7. Commit all post-build artifacts (build-record, results-review, pattern-reflection, reflection-debt if produced, process-improvements, archive move) as a single commit via `scripts/agents/with-writer-lock.sh`.
 
 ## CHECKPOINT Contract
 
@@ -229,6 +231,7 @@ Run through this before emitting the "Build complete" message:
 
 - [ ] `build-record.user.md` produced
 - [ ] `results-review.user.md` produced (all sections filled, including New Idea Candidates)
+- [ ] `pattern-reflection.user.md` produced (empty-state with `None identified` is valid; artifact must always be present at `docs/plans/<slug>/pattern-reflection.user.md`)
 - [ ] Reflection debt emitter run (`reflection-debt.user.html` produced if debt exists, skipped if none)
 - [ ] `pnpm --filter scripts startup-loop:generate-process-improvements` run and confirmed updated
 - [ ] `completed-ideas.json` checked — entries added for any ideas directly actioned by this build

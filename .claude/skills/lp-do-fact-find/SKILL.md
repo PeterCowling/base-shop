@@ -67,6 +67,17 @@ Load and follow: `../_shared/queue-check-gate.md` (fact-find mode).
 
 If a matching `fact-find.md` already exists at `docs/plans/<feature-slug>/fact-find.md`, read it and use existing findings and open questions as starting context. Otherwise, start fresh from the topic anchor.
 
+### Access Declarations
+
+Before the investigation begins, list every external data source, service, or system that will be needed to answer the questions in this fact-find. For each source:
+
+1. Name the source (for example: GA4 analytics property, Octorate API, Stripe dashboard, specific MCP tool).
+2. State what kind of access is needed (API key, MCP tool, database credentials, login, or other).
+3. Check the agent project memory file `memory/data-access.md` (this is not a repo file — it lives at `~/.claude/projects/<project-hash>/memory/data-access.md`) to verify access is configured. If the file does not exist or does not list the source, mark the source `UNVERIFIED` rather than blocking the fact-find.
+4. Record any source that comes up during the investigation but was not listed here upfront as a "mid-investigation discovery event" in the `## Access Declarations` section of the fact-find artifact.
+
+The format for each declaration follows the access declarations schema in `docs/plans/startup-loop-build-reflection-gate/task-01-schema-spec.md` § 3. A fact-find with no external data dependencies may write `None` under this section and continue.
+
 ## Phase 3: Sufficiency Gate
 
 Do not start repository investigation until minimum intake is satisfied. If insufficient, ask targeted questions only, each tied to a decision it unlocks.
@@ -199,6 +210,7 @@ Status-dependent next action (execute immediately, do not wait for user):
 ## Quick Validation Gate
 
 - [ ] Phase 0 queue check run — matching queued packet confirmed or direct-inject path taken
+- [ ] Access declarations listed and verified (or `None` recorded) before investigation begins
 - [ ] Intake satisfied before repo audit
 - [ ] Routing header computed and written to frontmatter
 - [ ] Only relevant module(s) loaded

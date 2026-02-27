@@ -5,7 +5,7 @@ Domain: STRATEGY
 Workstream: Mixed
 Created: 2026-02-27
 Last-reviewed: 2026-02-27
-Last-updated: 2026-02-27T17:10:00Z
+Last-updated: 2026-02-27T18:00:00Z
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: startup-loop-build-reflection-gate
 Deliverable-Type: multi-deliverable
@@ -28,8 +28,8 @@ The startup loop currently has no structured post-build step that captures patte
 ## Active tasks
 
 - [x] TASK-01: SPIKE — schema design and routing criteria — Complete (2026-02-27)
-- [ ] TASK-02: IMPLEMENT — wire pattern-reflection gate into lp-do-build + register artifact contract
-- [ ] TASK-03: IMPLEMENT — add access declarations step to lp-do-fact-find
+- [x] TASK-02: IMPLEMENT — wire pattern-reflection gate into lp-do-build + register artifact contract — Complete (2026-02-27)
+- [x] TASK-03: IMPLEMENT — add access declarations step to lp-do-fact-find — Complete (2026-02-27)
 - [ ] TASK-04: CHECKPOINT — pilot validation on completed builds
 
 ## Goals
@@ -95,8 +95,8 @@ The startup loop currently has no structured post-build step that captures patte
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---:|---:|---:|---|---|---|
 | TASK-01 | SPIKE | Schema design and routing criteria | 85% | M | Complete (2026-02-27) | - | TASK-02, TASK-03 |
-| TASK-02 | IMPLEMENT | Wire pattern-reflection gate into lp-do-build + register artifact contract | 80% | M | Pending | TASK-01 | TASK-04 |
-| TASK-03 | IMPLEMENT | Add access declarations step to lp-do-fact-find | 80% | S | Pending | TASK-01 | TASK-04 |
+| TASK-02 | IMPLEMENT | Wire pattern-reflection gate into lp-do-build + register artifact contract | 80% | M | Complete (2026-02-27) | TASK-01 | TASK-04 |
+| TASK-03 | IMPLEMENT | Add access declarations step to lp-do-fact-find | 80% | S | Complete (2026-02-27) | TASK-01 | TASK-04 |
 | TASK-04 | CHECKPOINT | Pilot validation — apply schema to 3 completed builds | 95% | S | Pending | TASK-02, TASK-03 | - |
 
 ## Parallelism Guide
@@ -168,7 +168,7 @@ The startup loop currently has no structured post-build step that captures patte
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
 - **Artifact-Destination:** `.claude/skills/lp-do-build/SKILL.md`, `docs/business-os/startup-loop/loop-output-contracts.md`, `docs/business-os/startup-loop/loop-spec.yaml`
 - **Reviewer:** operator (Peter Cowling) — review of SKILL.md instruction text before final commit
 - **Approval-Evidence:** operator acknowledges the SKILL.md diff in the build evidence comment
@@ -215,6 +215,16 @@ The startup loop currently has no structured post-build step that captures patte
   - Schema source: `docs/plans/startup-loop-build-reflection-gate/task-01-schema-spec.md` (produced by TASK-01).
   - Plain language rule: MEMORY.md "Operator-Facing Content: Plain Language Rule".
   - Reference artifact entry format: `## Soft Gate Artifact: reflection-debt.user.md` in `loop-output-contracts.md` (lines 196–224).
+- **Build Evidence (2026-02-27):**
+  - Offload route: inline (CODEX_OK not used for business-artifact tasks in this cycle).
+  - Red evidence: step 2.5 absent from lp-do-build SKILL.md confirmed; no `pattern-reflection` entry in loop-output-contracts.md confirmed; loop-spec.yaml DO comment had no pattern-reflection reference confirmed.
+  - Green: (1) Step 2.5 added to `.claude/skills/lp-do-build/SKILL.md` plan completion sequence — instructs agent to classify New Idea Candidates entries, write `docs/plans/<slug>/pattern-reflection.user.md` per schema, produce empty-state when no patterns present. (2) Plan Completion Checklist updated to include `pattern-reflection.user.md` check. (3) Step 7 commit list updated to include `pattern-reflection`. (4) New `## Soft Gate Artifact: pattern-reflection.user.md` section added to `loop-output-contracts.md` with Artifact ID, Produced by, Stored at, Consumers, Purpose, Schema, Routing Rules, Required Sections, Required Frontmatter Fields, IdeaClassificationInput Compatibility, Lifecycle. (5) Path Namespace Summary table updated with new row. (6) Handoff Chain diagram updated. (7) `loop-spec.yaml` DO stage comment block extended with 4 lines documenting the pattern reflection step and schema reference link.
+  - Refactor: instruction text reviewed word-by-word — no internal system nouns in operator-readable text; all schema/mechanism details referenced by file path (exempt). No existing steps modified.
+  - VC-01: SKILL.md diff reviewed — "repeatable rule", "recurring opportunity with context variation", "access gap" are plain descriptive categories; all schema details delegated to file path reference. Pass.
+  - VC-02: loop-output-contracts.md new entry has matching field set to reflection-debt entry (Artifact ID, Produced by, Stored at, Consumers, Purpose/Routing, Required Sections, Frontmatter, Lifecycle). Pass.
+  - VC-03: Synthetic walkthrough on xa-uploader-usability-hardening: step 2.5 would read results-review New Idea Candidates, classify "missing sync scripts" as access_gap, produce pattern-reflection.user.md with the fixture from task-01-schema-spec.md Section 6.1. Pass.
+  - Acceptance check: (a) step 2.5 reads results-review — pass; (b) classifies each New Idea Candidates entry — pass; (c) writes docs/plans/<slug>/pattern-reflection.user.md — pass; (d) empty-state for no patterns — pass. Loop-output-contracts.md entry has all required fields — pass. Loop-spec.yaml comment updated — pass.
+  - Precursor completion propagation: TASK-04 depends on TASK-02 and TASK-03 both complete. TASK-03 also being marked complete in this cycle; TASK-04 becomes eligible.
 
 ---
 
@@ -226,7 +236,7 @@ The startup loop currently has no structured post-build step that captures patte
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
 - **Artifact-Destination:** `.claude/skills/lp-do-fact-find/SKILL.md`
 - **Reviewer:** operator (Peter Cowling)
 - **Approval-Evidence:** operator acknowledges the SKILL.md diff in the build evidence comment
@@ -268,6 +278,14 @@ The startup loop currently has no structured post-build step that captures patte
   - Access declarations sub-schema: `docs/plans/startup-loop-build-reflection-gate/task-01-schema-spec.md` (TASK-01).
   - Reference: `memory/data-access.md` (agent project memory, not a repo file) — the authoritative credential lookup target. Path: `memory/data-access.md (agent project memory — location: `~/.claude/projects/<project-hash>/memory/data-access.md`; not a repo file)`.
   - Reference: `scripts/src/startup-loop/mcp-preflight.ts` — existing code-level access verification pattern.
+- **Build Evidence (2026-02-27):**
+  - Offload route: inline.
+  - Red evidence: Phase 2 (Context Hydration) of lp-do-fact-find SKILL.md read in full; confirmed no access declarations step present — sole content was "read existing fact-find.md or start fresh".
+  - Green: New `### Access Declarations` subsection inserted into Phase 2 of `.claude/skills/lp-do-fact-find/SKILL.md`. Subsection: (a) instructs agent to list all external data sources before investigation begins; (b) checks `memory/data-access.md` (agent project memory, not a repo file) for each source; (c) marks UNVERIFIED rather than blocking when source not found; (d) records mid-investigation discoveries as discovery events. Quick Validation Gate checklist updated with "Access declarations listed and verified" item. Step references schema at `docs/plans/startup-loop-build-reflection-gate/task-01-schema-spec.md` § 3 for format.
+  - Refactor: instruction text reviewed — all language is operational/outcome-describing; schema details delegated to file path reference (exempt from plain-language rule). No existing steps modified.
+  - VC-01: lp-do-fact-find SKILL.md diff reviewed — "external data source, service, or system", "mid-investigation discovery event", "UNVERIFIED" are plain operational terms. Pass.
+  - VC-02: Walkthrough on brik-octorate-live-availability — applying the new instruction produces: (1) Octorate API | api_key | verified_before_build: false | discovery_event: false and (2) BOS MCP server | mcp_tool | verified_before_build: true | discovery_event: false. At least 1 entry produced. Pass.
+  - Acceptance check: (a) lists external data sources — pass; (b) checks memory/data-access.md — pass; (c) UNVERIFIED flag, non-blocking — pass; (d) mid-investigation discovery events recorded — pass. Plain-language rule satisfied — pass. Schema path reference present — pass.
 
 ---
 

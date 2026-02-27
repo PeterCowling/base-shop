@@ -17,6 +17,7 @@ import SocialProofSection from "@/components/landing/SocialProofSection";
 import RoomsSection from "@/components/rooms/RoomsSection";
 import BookPageStructuredData from "@/components/seo/BookPageStructuredData";
 import { roomsData } from "@/data/roomsData";
+import { useAvailability } from "@/hooks/useAvailability";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import {
@@ -122,6 +123,13 @@ function BookPageContent({ lang }: Props): JSX.Element {
     () => (isValidSearch(checkin, checkout, pax) ? "valid" : "invalid"),
     [checkin, checkout, pax],
   );
+
+  // TC-03-01: useAvailability called unconditionally (hooks invariant — no conditional calls).
+  const { rooms: availabilityRooms } = useAvailability({
+    checkin,
+    checkout,
+    pax: String(pax),
+  });
 
   // TC-01: fire search_availability when dates/pax change; debounced + deduped.
   useEffect(() => {
@@ -229,6 +237,7 @@ function BookPageContent({ lang }: Props): JSX.Element {
         itemListId="book_rooms"
         queryState={roomQueryState}
         deal={deal ?? undefined}
+        availabilityRooms={availabilityRooms}
         bookingQuery={{
           checkIn: checkin,
           checkOut: checkout,

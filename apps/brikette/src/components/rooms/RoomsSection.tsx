@@ -1,10 +1,12 @@
 import type { ComponentProps } from "react";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 import RoomsSectionBase from "@acme/ui/organisms/RoomsSection";
+import type { RoomCardPrice } from "@acme/ui/types/roomCard";
 
 import { BOOKING_CODE } from "@/context/modal/constants";
 import { roomsData } from "@/data/roomsData";
+import type { OctorateRoom } from "@/hooks/useAvailability";
 import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
 import { buildRoomItem, fireSelectItem, type ItemListId, type RatePlan } from "@/utils/ga4-events";
 import { trackThenNavigate } from "@/utils/trackThenNavigate";
@@ -29,6 +31,12 @@ type RoomsSectionProps = {
   queryState?: "valid" | "invalid" | "absent";
   /** Optional deal / coupon code to propagate into Octorate booking URL */
   deal?: string;
+  /**
+   * Live availability data from /api/availability.
+   * Mapped to per-room pricing via widgetRoomCode → room ID lookup.
+   * When present overrides the static basePrice display for each room.
+   */
+  availabilityRooms?: OctorateRoom[];
 };
 
 type RoomsSectionBaseProps = ComponentProps<typeof RoomsSectionBase>;
@@ -36,8 +44,31 @@ type RoomsSectionBaseProps = ComponentProps<typeof RoomsSectionBase>;
 export function RoomsSection({
   queryState,
   deal,
+  availabilityRooms,
   ...props
 }: RoomsSectionProps & Omit<RoomsSectionBaseProps, "itemListId" | "onRoomSelect">) {
+  // Map availabilityRooms (keyed by octorateRoomName) to roomPrices (keyed by room.id).
+  // Consumers match via room.widgetRoomCode === availabilityRoom.octorateRoomName.
+  const roomPrices = useMemo<Record<string, RoomCardPrice> | undefined>(() => {
+    if (!availabilityRooms || availabilityRooms.length === 0) return undefined;
+    const prices: Record<string, RoomCardPrice> = {};
+    for (const avRoom of availabilityRooms) {
+      const match = roomsData.find((r) => r.widgetRoomCode === avRoom.octorateRoomName);
+      if (!match) continue;
+      if (!avRoom.available) {
+        prices[match.id] = { soldOut: true };
+      } else if (avRoom.priceFrom !== null) {
+        // Format as "From €XX.XX" — consumers can override with t("ratesFrom") if needed.
+        // Use raw number; the UI RoomCard accepts pre-formatted string in price.formatted.
+        prices[match.id] = {
+          formatted: `From €${avRoom.priceFrom.toFixed(2)}`,
+          soldOut: false,
+        };
+      }
+    }
+    return Object.keys(prices).length > 0 ? prices : undefined;
+  }, [availabilityRooms]);
+
   // Ref-level guard prevents duplicate begin_checkout events on rapid re-clicks.
   // It must be reset on `pageshow` because back/forward cache can restore a page
   // with prior JS state after navigation away.
@@ -140,6 +171,7 @@ export function RoomsSection({
       {...props}
       itemListId={props.itemListId}
       onRoomSelect={onRoomSelect}
+      {...(roomPrices ? { roomPrices } : {})}
     />
   );
 }

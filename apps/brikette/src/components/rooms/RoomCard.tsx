@@ -21,7 +21,8 @@ import FacilityIcon from "@/components/rooms/FacilityIcon";
 import FullscreenImage from "@/components/rooms/FullscreenImage";
 import { IS_TEST } from "@/config/env";
 import { BOOKING_CODE } from "@/context/modal/constants";
-import { toFlatImageArray, type Room } from "@/data/roomsData";
+import { type Room,toFlatImageArray } from "@/data/roomsData";
+import type { OctorateRoom } from "@/hooks/useAvailability";
 import { useRoomPricing } from "@/hooks/useRoomPricing";
 import { i18nConfig } from "@/i18n.config";
 import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
@@ -39,6 +40,13 @@ interface RoomCardProps {
   queryState?: "valid" | "invalid" | "absent";
   /** Ref to date picker element for scroll-to on invalid state. */
   datePickerRef?: RefObject<HTMLElement | null>;
+  /**
+   * Live availability data for this room from /api/availability.
+   * When provided and available=true: NR button shows live priceFrom.
+   * When provided and available=false: both CTAs show sold-out state.
+   * When absent (undefined): falls back to useRoomPricing behaviour.
+   */
+  availabilityRoom?: OctorateRoom;
 }
 
 type FacilityIconRenderer = (props: { facility: FacilityKey }) => JSX.Element;
@@ -134,6 +142,7 @@ export default memo(function RoomCard({
   lang,
   queryState,
   datePickerRef,
+  availabilityRoom,
 }: RoomCardProps): JSX.Element {
   const resolvedLang = (lang ?? i18nConfig.fallbackLng) as string;
   const { t, ready: readyRaw } = useTranslation("roomsPage", { lng: resolvedLang });
@@ -167,7 +176,22 @@ export default memo(function RoomCard({
 
   const isDorm = facilities.some((facility) => facility === "mixedDorm" || facility === "femaleDorm");
 
-  const { lowestPrice, soldOut, loading: priceLoading } = useRoomPricing(room);
+  const {
+    lowestPrice: baseLowestPrice,
+    soldOut: baseSoldOut,
+    loading: priceLoading,
+  } = useRoomPricing(room);
+
+  // Overlay live availability data when present (TC-04-01 through TC-04-06).
+  // availabilityRoom.available === false → sold-out override (TC-04-02).
+  // availabilityRoom.priceFrom !== null → live per-night price override (TC-04-01).
+  // availabilityRoom undefined → fall back to useRoomPricing (TC-04-03).
+  const soldOut =
+    availabilityRoom !== undefined ? !availabilityRoom.available : baseSoldOut;
+  const lowestPrice =
+    availabilityRoom !== undefined && availabilityRoom.priceFrom !== null
+      ? availabilityRoom.priceFrom
+      : baseLowestPrice;
 
   const badgeText = ((): string | undefined => {
     if (soldOut || !tokensReady) return undefined;

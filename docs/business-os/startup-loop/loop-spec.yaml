@@ -1182,6 +1182,11 @@ stages:
   # - if missing, upsert docs/plans/<feature-slug>/reflection-debt.user.md
   #   with key reflection-debt:{build_id}, lane IMPROVE, SLA 7 days.
   # See: docs/business-os/startup-loop/loop-output-contracts.md#soft-gate-artifact-reflection-debtusermd
+  # Pattern reflection step (step 2.5): after results-review.user.md is produced,
+  # /lp-do-build reads the New Idea Candidates section and writes
+  # docs/plans/<feature-slug>/pattern-reflection.user.md (schema: pattern-reflection.v1).
+  # Empty-state (no patterns) is always valid; artifact is always required.
+  # See: docs/business-os/startup-loop/loop-output-contracts.md#soft-gate-artifact-pattern-reflectionusermd
   - id: DO
     name: Do
     processes:

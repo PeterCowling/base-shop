@@ -21,9 +21,12 @@ export type StickyBookNowClickContext = {
 
 function StickyBookNow({
   lang,
+  octorateUrl,
   onStickyCheckoutClick,
 }: {
   lang?: string;
+  /** When provided, overrides the internal calendar.xhtml fallback. Build this URL in the app layer and pass it here. */
+  octorateUrl?: string;
   /**
    * Optional click hook for analytics or other side effects. When provided, the
    * component will prevent default navigation and call `proceed()` after either:
@@ -123,6 +126,7 @@ function StickyBookNow({
   }, [t, tTokens, ready, tokensReady]);
 
   const deepLink = useMemo(() => {
+    if (octorateUrl) return octorateUrl;
     const qs = new URLSearchParams({
       codice: "45111",
       checkin: checkIn,
@@ -132,7 +136,7 @@ function StickyBookNow({
       childrenAges: "",
     });
     return `https://book.octorate.com/octobook/site/reservation/calendar.xhtml?${qs}`;
-  }, [checkIn, checkOut, adults]);
+  }, [octorateUrl, checkIn, checkOut, adults]);
 
   const onDismiss = useCallback(() => {
     if (typeof window !== "undefined") {

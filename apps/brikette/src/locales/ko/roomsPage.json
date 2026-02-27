@@ -66,6 +66,7 @@
   },
   "rooms": {
     "title": "객실 안내",
+    "soldOut": "매진",
     "double_room": {
       "title": "더블룸",
       "bed_intro": "커플에게 완벽한 멋진 바다 전망.",

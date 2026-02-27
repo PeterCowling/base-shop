@@ -66,6 +66,7 @@
   },
   "rooms": {
     "title": "客室",
+    "soldOut": "売り切れ",
     "double_room": {
       "title": "ダブルルーム",
       "bed_intro": "海を望むテラス付きで、カップルに最適。",

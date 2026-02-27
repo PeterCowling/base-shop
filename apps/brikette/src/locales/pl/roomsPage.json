@@ -66,6 +66,7 @@
   },
   "rooms": {
     "title": "Nasze pokoje",
+    "soldOut": "Wyprzedano",
     "double_room": {
       "title": "Pokój dwuosobowy",
       "bed_intro": "Zachwycające widoki na morze — idealny dla par.",

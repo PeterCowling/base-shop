@@ -66,6 +66,7 @@
   },
   "rooms": {
     "title": "Nuestras habitaciones",
+    "soldOut": "Agotado",
     "double_room": {
       "title": "Habitación Doble",
       "bed_intro": "Impresionantes vistas al mar: perfecta para parejas.",

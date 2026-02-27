@@ -28,13 +28,14 @@ import {
   Shield,
   ToggleRight,
   UserCheck,
+  Users,
   Wrench,
   X,
 } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
 
-import { canAccess,Permissions } from "../../lib/roles";
+import { canAccess, isPrivileged, Permissions } from "../../lib/roles";
 import type { User } from "../../types/domains/userDomain";
 
 interface NavItem {
@@ -95,6 +96,12 @@ const navSections: NavSection[] = [
       { label: "Real Time", route: "/real-time-dashboard", icon: LineChart },
       { label: "Statistics", route: "/statistics", icon: BarChart3 },
       { label: "Menu Perf", route: "/menu-performance", icon: PieChart },
+      {
+        label: "Staff Accounts",
+        route: "/staff-accounts",
+        icon: Users,
+        permission: Permissions.USER_MANAGEMENT,
+      },
     ],
   },
 ];
@@ -128,8 +135,8 @@ function AppNav({ user, onLogout }: AppNavProps) {
       if ("roles" in user && Array.isArray(user.roles)) {
         return canAccess(user as User, permission);
       }
-      // Fallback for legacy users: Pete has access to restricted sections
-      return user.user_name === "Pete";
+      // Fallback for legacy users without roles: treat as privileged if owner/developer
+      return isPrivileged(user as User);
     },
     [user]
   );

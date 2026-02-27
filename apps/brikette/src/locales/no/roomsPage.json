@@ -31,6 +31,7 @@
   },
   "rooms": {
     "title": "Våre rom",
+    "soldOut": "Utsolgt",
     "double_room": {
       "title": "Dobbeltrom",
       "bed_intro": "Fantastisk havutsikt — perfekt for par.",

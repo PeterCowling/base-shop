@@ -66,6 +66,7 @@
   },
   "rooms": {
     "title": "我们的房间",
+    "soldOut": "已售完",
     "double_room": {
       "title": "双人房",
       "bed_intro": "迷人海景——情侣首选。",

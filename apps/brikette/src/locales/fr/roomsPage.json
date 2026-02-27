@@ -66,6 +66,7 @@
   },
   "rooms": {
     "title": "Nos chambres",
+    "soldOut": "Complet",
     "double_room": {
       "title": "Chambre Double",
       "bed_intro": "Superbe vue sur la mer – parfaite pour les couples.",

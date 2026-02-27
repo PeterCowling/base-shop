@@ -66,6 +66,7 @@
   },
   "rooms": {
     "title": "Danh sách phòng",
+    "soldOut": "Hết chỗ",
     "double_room": {
       "title": "Phòng đôi",
       "bed_intro": "Tầm nhìn biển tuyệt đẹp — lý tưởng cho các cặp đôi.",

@@ -66,6 +66,7 @@
   },
   "rooms": {
     "title": "Unsere Zimmer",
+    "soldOut": "Ausverkauft",
     "double_room": {
       "title": "Doppelzimmer",
       "bed_intro": "Beeindruckender Meerblick – ideal für Paare.",

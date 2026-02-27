@@ -66,6 +66,7 @@
   },
   "rooms": {
     "title": "Our Rooms",
+    "soldOut": "Sold out",
     "double_room": {
       "title": "Double Room",
       "bed_intro": "Stunning sea views – perfect for couples.",

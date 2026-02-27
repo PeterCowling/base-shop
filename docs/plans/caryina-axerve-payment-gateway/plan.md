@@ -5,7 +5,7 @@ Domain: API
 Workstream: Engineering
 Created: 2026-02-27
 Last-reviewed: 2026-02-27
-Last-updated: 2026-02-27 (Wave 4 complete)
+Last-updated: 2026-02-27 (Wave 5 complete)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: caryina-axerve-payment-gateway
 Deliverable-Type: code-change
@@ -33,7 +33,7 @@ Replace the Stripe hosted-checkout integration in `apps/caryina` with Axerve/Ges
 - [x] IMPLEMENT-04: Replace checkout route with Axerve S2S call
 - [x] IMPLEMENT-05: Add card form to CheckoutClient
 - [x] IMPLEMENT-06: Remove Stripe verification layer; simplify success page
-- [ ] IMPLEMENT-07: Replace all payment tests with Axerve equivalents
+- [x] IMPLEMENT-07: Replace all payment tests with Axerve equivalents
 - [ ] CHECKPOINT-08: Post-implementation horizon checkpoint
 
 ## Goals
@@ -105,7 +105,7 @@ Replace the Stripe hosted-checkout integration in `apps/caryina` with Axerve/Ges
 | IMPLEMENT-04 | IMPLEMENT | Replace checkout route with Axerve S2S call | 80% | M | Complete (2026-02-27) | IMPLEMENT-02, IMPLEMENT-03 | IMPLEMENT-05, IMPLEMENT-06, IMPLEMENT-07 |
 | IMPLEMENT-05 | IMPLEMENT | Add card form to CheckoutClient | 80% | M | Complete (2026-02-27) | IMPLEMENT-04 | CHECKPOINT-08 |
 | IMPLEMENT-06 | IMPLEMENT | Remove Stripe verification layer; simplify success page | 80% | S | Complete (2026-02-27) | IMPLEMENT-04 | IMPLEMENT-07 |
-| IMPLEMENT-07 | IMPLEMENT | Replace all payment tests with Axerve equivalents | 80% | M | Pending | IMPLEMENT-04, IMPLEMENT-06 | CHECKPOINT-08 |
+| IMPLEMENT-07 | IMPLEMENT | Replace all payment tests with Axerve equivalents | 80% | M | Complete (2026-02-27) | IMPLEMENT-04, IMPLEMENT-06 | CHECKPOINT-08 |
 | CHECKPOINT-08 | CHECKPOINT | Horizon reassessment + sandbox E2E readiness gate | 95% | S | Pending | IMPLEMENT-05, IMPLEMENT-07 | - |
 
 ## Parallelism Guide
@@ -431,7 +431,8 @@ Replace the Stripe hosted-checkout integration in `apps/caryina` with Axerve/Ges
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
+- **Build Evidence:** All test validation contracts met. TC-07-01 ✓ (route.test.ts TC-04-01..05 all pass — delivered in IMPLEMENT-04). TC-07-02 ✓ (`packages/axerve/src/index.test.ts` TC-03-01..04 all pass — 4/4). TC-07-03 ✓ (no `@acme/stripe` mock refs in route.test.ts). TC-07-04 ✓ (full governed test run: 72 tests, 17 suites, 0 failures). No new files required — all test work was delivered as part of IMPLEMENT-03 and IMPLEMENT-04.
 - **Affects:** `apps/caryina/src/app/api/checkout-session/route.test.ts`, `packages/axerve/src/index.test.ts` (new)
 - **Depends on:** IMPLEMENT-04, IMPLEMENT-06
 - **Blocks:** CHECKPOINT-08

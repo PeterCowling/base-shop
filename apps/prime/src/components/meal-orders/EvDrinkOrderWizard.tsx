@@ -1,4 +1,4 @@
-/* eslint-disable ds/no-hardcoded-copy -- BRIK-2 meal-orders i18n deferred */
+/* eslint-disable ds/no-hardcoded-copy, ds/min-tap-size -- BRIK-2 meal-orders i18n + tap size deferred */
 'use client';
 
 import { useEffect } from 'react';

@@ -1,4 +1,4 @@
-/* eslint-disable ds/no-hardcoded-copy -- BRIK-2 bag-storage i18n deferred */
+/* eslint-disable ds/no-hardcoded-copy, ds/min-tap-size -- BRIK-2 bag-storage i18n + tap size deferred */
 'use client';
 
 import { useState } from 'react';

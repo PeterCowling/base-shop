@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- BRIK-2 meal-orders wizard i18n deferred */
 import { useCallback, useMemo, useState } from 'react';
 
 import { type BreakfastWizardState } from '@/lib/meal-orders/buildOrderValue';

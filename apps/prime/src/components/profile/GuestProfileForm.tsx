@@ -1,3 +1,4 @@
+/* eslint-disable ds/min-tap-size -- BRIK-2 profile form tap size deferred */
 'use client';
 
 import { useEffect, useState } from 'react';

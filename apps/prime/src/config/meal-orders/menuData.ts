@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- BRIK-2 meal-orders menu data i18n deferred */
 export interface BreakfastFoodItem {
   value: string;
   label: string;

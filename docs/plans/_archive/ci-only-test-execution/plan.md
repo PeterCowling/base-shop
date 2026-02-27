@@ -1,12 +1,13 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Infra
 Workstream: Engineering
 Created: 2026-02-27
 Last-reviewed: 2026-02-27
 Last-updated: 2026-02-27
 Wave-1-complete: 2026-02-27
+Archived-date: 2026-02-27
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: ci-only-test-execution
 Deliverable-Type: code-change
@@ -34,7 +35,7 @@ This plan establishes a CI-only test execution policy with two layers: (1) techn
 - [x] TASK-05: Block VALIDATE_INCLUDE_TESTS=1 in validate-changes.sh
 - [x] TASK-06: Mark test-execution-resource-governor-plan.md Superseded
 - [x] TASK-07: Add docs lint rule for local Jest command patterns
-- [ ] TASK-08: CHECKPOINT — validate CI-only policy after deployment
+- [x] TASK-08: CHECKPOINT — validate CI-only policy after deployment
 - [x] TASK-09: INVESTIGATE — CI trigger coverage for app-specific pipelines on dev push
 
 ## Goals
@@ -109,7 +110,7 @@ This plan establishes a CI-only test execution policy with two layers: (1) techn
 | TASK-05 | IMPLEMENT | Block VALIDATE_INCLUDE_TESTS in validate-changes.sh | 85% | S | Complete (2026-02-27) | TASK-03 | TASK-08 |
 | TASK-06 | IMPLEMENT | Mark governor plan Superseded | 95% | S | Complete (2026-02-27) | - | TASK-08 |
 | TASK-07 | IMPLEMENT | Add docs lint rule for local Jest patterns | 80% | M | Complete (2026-02-27) | TASK-01, TASK-02 | TASK-08 |
-| TASK-08 | CHECKPOINT | Validate policy after deployment | 95% | S | Pending | TASK-01..TASK-07 | - |
+| TASK-08 | CHECKPOINT | Validate policy after deployment | 95% | S | Complete (2026-02-27) | TASK-01..TASK-07 | - |
 | TASK-09 | INVESTIGATE | CI trigger coverage for app pipelines on dev push | 80% | S | Complete (2026-02-27) | - | - |
 
 ## Parallelism Guide

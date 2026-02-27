@@ -1,11 +1,11 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: BOS
 Workstream: Engineering
 Created: 2026-02-27
 Last-reviewed: 2026-02-27
-Last-updated: 2026-02-27T12:30Z
+Last-updated: 2026-02-27T14:00Z
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: lp-do-build-codex-offload
 Deliverable-Type: skill-update
@@ -13,7 +13,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: business-artifact
 Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
-Overall-confidence: 80%
+Overall-confidence: 85% (all tasks complete)
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
 Auto-Build-Intent: plan+auto
 artifact: plan
@@ -29,12 +29,12 @@ A SPIKE task (TASK-01) validates the prompt self-containment assumption before p
 
 ## Active tasks
 
-- [ ] TASK-01: SPIKE — validate codemoot run prompt self-containment
-- [ ] TASK-02: CHECKPOINT — reassess protocol design from spike findings
-- [ ] TASK-03: Author `_shared/build-offload-protocol.md`
-- [ ] TASK-04: Update `lp-do-build/SKILL.md` — add CODEMOOT_OK check + offload reference
-- [ ] TASK-05: Update `modules/build-code.md` + `modules/build-biz.md` — add Offload Route sections
-- [ ] TASK-06: Update `modules/build-spike.md` + `modules/build-investigate.md` — add Offload Route sections
+- [x] TASK-01: SPIKE — validate codemoot run prompt self-containment (Complete 2026-02-27)
+- [x] TASK-02: CHECKPOINT — reassess protocol design from spike findings (Complete 2026-02-27)
+- [x] TASK-03: Author `_shared/build-offload-protocol.md` (Complete 2026-02-27)
+- [x] TASK-04: Update `lp-do-build/SKILL.md` — add CODEX_OK check + offload reference (Complete 2026-02-27)
+- [x] TASK-05: Update `modules/build-code.md` + `modules/build-biz.md` — add Offload Route sections (Complete 2026-02-27)
+- [x] TASK-06: Update `modules/build-spike.md` + `modules/build-investigate.md` — add Offload Route sections (Complete 2026-02-27)
 
 ## Goals
 
@@ -104,9 +104,9 @@ A SPIKE task (TASK-01) validates the prompt self-containment assumption before p
 | TASK-01 | SPIKE | Validate codemoot run prompt self-containment | 85% | S | Complete (2026-02-27) | - | TASK-02 |
 | TASK-02 | CHECKPOINT | Reassess protocol design from spike findings | 95% | S | Complete (2026-02-27) | TASK-01 | TASK-03 |
 | TASK-03 | IMPLEMENT | Author `_shared/build-offload-protocol.md` | 85% (actualized post-CHECKPOINT; mechanism redesigned to `codex exec`) | S | Complete (2026-02-27) | TASK-02 | TASK-04, TASK-05, TASK-06 |
-| TASK-04 | IMPLEMENT | Update `lp-do-build/SKILL.md` — CODEMOOT_OK check + offload reference | 80% | S | Pending | TASK-03 | - |
-| TASK-05 | IMPLEMENT | Update `modules/build-code.md` + `modules/build-biz.md` — Offload Route sections | 80% | S | Pending | TASK-03 | - |
-| TASK-06 | IMPLEMENT | Update `modules/build-spike.md` + `modules/build-investigate.md` — Offload Route sections | 80% | S | Pending | TASK-03 | - |
+| TASK-04 | IMPLEMENT | Update `lp-do-build/SKILL.md` — CODEX_OK check + offload reference | 80% | S | Complete (2026-02-27) | TASK-03 | - |
+| TASK-05 | IMPLEMENT | Update `modules/build-code.md` + `modules/build-biz.md` — Offload Route sections | 80% | S | Complete (2026-02-27) | TASK-03 | - |
+| TASK-06 | IMPLEMENT | Update `modules/build-spike.md` + `modules/build-investigate.md` — Offload Route sections | 80% | S | Complete (2026-02-27) | TASK-03 | - |
 
 ## Parallelism Guide
 
@@ -307,15 +307,15 @@ A SPIKE task (TASK-01) validates the prompt self-containment assumption before p
 
 ---
 
-### TASK-04: Update `lp-do-build/SKILL.md` — CODEMOOT_OK check + offload reference
+### TASK-04: Update `lp-do-build/SKILL.md` — CODEX_OK check + offload reference
 
 - **Type:** IMPLEMENT
-- **Deliverable:** Updated `.claude/skills/lp-do-build/SKILL.md` — Executor Dispatch section gains a CODEMOOT_OK check before module routing, with reference to `build-offload-protocol.md`.
+- **Deliverable:** Updated `.claude/skills/lp-do-build/SKILL.md` — Executor Dispatch section gains a CODEX_OK check before module routing, with reference to `build-offload-protocol.md`.
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
 - **Artifact-Destination:** `.claude/skills/lp-do-build/SKILL.md` (internal skill file)
 - **Reviewer:** operator (Peter Cowling) — acknowledged before task is marked complete.
 - **Approval-Evidence:** Operator acknowledgement recorded in plan build evidence block.
@@ -361,6 +361,13 @@ A SPIKE task (TASK-01) validates the prompt self-containment assumption before p
   - Integration point: `.claude/skills/lp-do-build/SKILL.md` § Executor Dispatch (lines 97–110 in current version).
   - Reference pattern: same position/structure as `critique-loop-protocol.md` §Critique Route Selection.
   - CODEMOOT_OK vs CODEX_OK: critique loop uses CODEMOOT_OK; build offload uses CODEX_OK. Both checks use the same `nvm exec 22` pattern. They are independent guards for separate features.
+- **Build-Evidence (2026-02-27):**
+  - Inline execution (CODEX_OK not tested for this task — Wave 4 applied inline per build plan).
+  - VC-01 (CODEX_OK check presence): PASS — `nvm exec 22 codex --version >/dev/null 2>&1 && CODEX_OK=1 || CODEX_OK=0` inserted in Executor Dispatch before Module Routing section.
+  - VC-02 (routing logic unchanged): PASS — Module Routing block is character-identical to pre-update (additive only; no existing routes modified or removed).
+  - VC-03 (cross-file CODEX_OK fidelity): PASS — grep confirms identical command string in SKILL.md and `build-offload-protocol.md`.
+  - Mode 3 document review: PASS — Executor Dispatch section reads naturally; CODEMOOT_OK vs CODEX_OK note is clear; routing logic intact.
+  - Commit: wave 4e08bd6829 — 5 files, 87 insertions, exit code 0, no pre-commit hook failures.
 
 ---
 
@@ -372,7 +379,7 @@ A SPIKE task (TASK-01) validates the prompt self-containment assumption before p
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
 - **Artifact-Destination:** `.claude/skills/lp-do-build/modules/build-code.md`, `.claude/skills/lp-do-build/modules/build-biz.md`
 - **Reviewer:** operator (Peter Cowling)
 - **Approval-Evidence:** Operator acknowledgement recorded in plan build evidence block.
@@ -419,6 +426,13 @@ A SPIKE task (TASK-01) validates the prompt self-containment assumption before p
   - build-code.md current workflow: 6 steps (read constraints → extinct test policy → TDD → validations → post-build validation → plan update). Offload Route section at top; "Offload Route (when CODEX_OK=1)" precedes the inline "## Workflow".
   - build-biz.md current workflow: Red→Green→Refactor→post-build validation→approval. Same placement.
   - Offload Route sections reference `build-offload-protocol.md` which specifies `codex exec` (not `codemoot run`).
+- **Build-Evidence (2026-02-27):**
+  - Inline execution (CODEX_OK not tested for this task — Wave 4 applied inline per build plan).
+  - VC-01 (`build-code.md` Offload Route): PASS — section at top before "## Objective"; references `../../_shared/build-offload-protocol.md`; includes `pnpm -w run test:governed` governed-test note; includes TDD cycle; lists four post-execution steps.
+  - VC-02 (`build-biz.md` Offload Route): PASS — section at top before "## Objective"; references protocol; includes Red→Green→Refactor note; states approval gate is Claude's; lists four post-execution steps.
+  - VC-03 (no existing steps modified): PASS — diff shows only additions; original "## Objective" and all numbered steps intact in both files.
+  - Mode 3 document review: PASS — both files read as complete documents; offload route is a clean prefix; post-execution steps consistent across files; no broken references.
+  - Commit: wave 4e08bd6829 — 5 files, 87 insertions, exit code 0.
 
 ---
 
@@ -430,7 +444,7 @@ A SPIKE task (TASK-01) validates the prompt self-containment assumption before p
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
 - **Artifact-Destination:** `.claude/skills/lp-do-build/modules/build-spike.md`, `.claude/skills/lp-do-build/modules/build-investigate.md`
 - **Reviewer:** operator (Peter Cowling)
 - **Approval-Evidence:** Operator acknowledgement recorded in plan build evidence block.
@@ -475,6 +489,13 @@ A SPIKE task (TASK-01) validates the prompt self-containment assumption before p
 - **Notes / references:**
   - Resolved INVESTIGATE invocation: `codex exec -a never --sandbox workspace-write` (post-CHECKPOINT replan — INVESTIGATE tasks produce deliverable artifacts requiring write access; `codemoot run` does not write files).
   - MCP tools in Codex: base-shop MCP server registered in `~/.codex/config.toml` — Codex has access to the same evidence sources as Claude for INVESTIGATE tasks.
+- **Build-Evidence (2026-02-27):**
+  - Inline execution (CODEX_OK not tested for this task — Wave 4 applied inline per build plan).
+  - VC-01 (`build-spike.md` Offload Route): PASS — section at top before "## Objective"; references protocol; includes bounded-scope note (state what is in scope/out of scope; Codex must not expand beyond spike boundary); includes exit-criteria-in-prompt note (exit criteria verbatim from task; Codex must address each criterion individually).
+  - VC-02 (`build-investigate.md` Offload Route): PASS — section at top before "## Objective"; references protocol; states `codex exec -a never --sandbox workspace-write` (write access required; `--sandbox read-only` must not be used); states MCP tools available via `~/.codex/config.toml`; states Codex's internal parallelism replaces subagent dispatch.
+  - VC-03 (no existing steps modified): PASS — diff shows only additions; all original sections intact in both files.
+  - Mode 3 document review: PASS — both files read cleanly; build-investigate.md Offload Route correctly cross-references "## Subagent Dispatch" section it replaces; no broken references.
+  - Commit: wave 4e08bd6829 — 5 files, 87 insertions, exit code 0.
 
 ---
 

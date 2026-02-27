@@ -100,6 +100,7 @@ jobs:
         run: |
           cd apps/brikette
           [ -d "src/app/[lang]/guides/[...slug]" ] && mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" || true
+          [ -d "src/app/api" ] && mv "src/app/api" "src/app/_api-off" || true
           build_exit=0
           export OUTPUT_EXPORT=1
           export NEXT_PUBLIC_OUTPUT_EXPORT=1
@@ -112,6 +113,7 @@ jobs:
             rm -rf out/{ar,da,fr,hi,hu,ja,ko,no,pl,pt,ru,sv,vi,zh}
             find out -name "__next.*" -type f -delete
           fi
+          [ -d "src/app/_api-off" ] && mv "src/app/_api-off" "src/app/api" || true
           [ -d "src/app/[lang]/guides/_slug-off" ] && mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]" || true
           exit "$build_exit"
 
@@ -144,10 +146,12 @@ jobs:
         pnpm exec turbo run build --filter=@apps/brikette^... &&
         cd apps/brikette &&
         ([ -d "src/app/[lang]/guides/[...slug]" ] && mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" || true) &&
+        ([ -d "src/app/api" ] && mv "src/app/api" "src/app/_api-off" || true) &&
         (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_STAGING || vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }} pnpm exec next build --turbopack &&
         OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm --filter @apps/brikette generate:static-redirects &&
         rm -rf out/{ar,da,fr,hi,hu,ja,ko,no,pl,pt,ru,sv,vi,zh} &&
         find out -name "__next.*" -type f -delete; e=$?;
+        ([ -d "src/app/_api-off" ] && mv "src/app/_api-off" "src/app/api" || true);
         ([ -d "src/app/[lang]/guides/_slug-off" ] && mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]" || true);
         exit $e)
       artifact-path: "apps/brikette/out"
@@ -177,14 +181,19 @@ jobs:
       app-filter: "@apps/brikette"
       # Static export - same approach as staging. Hide routes incompatible with
       # output:'export', build, generate Cloudflare redirects, then restore.
+      # NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY=1 activates live pricing on production.
+      # The src/app/api directory is hidden during static export (force-dynamic route
+      # not compatible with output:'export'); the Pages Function handles /api/availability.
       build-cmd: >
         pnpm exec turbo run build --filter=@apps/brikette^... &&
         cd apps/brikette &&
         ([ -d "src/app/[lang]/guides/[...slug]" ] && mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" || true) &&
-        (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_PRODUCTION || vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }} pnpm exec next build --turbopack &&
+        ([ -d "src/app/api" ] && mv "src/app/api" "src/app/_api-off" || true) &&
+        (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY=1 NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_PRODUCTION || vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }} pnpm exec next build --turbopack &&
         OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm --filter @apps/brikette generate:static-redirects &&
         rm -rf out/{ar,da,fr,hi,hu,ja,ko,no,pl,pt,ru,sv,vi,zh} &&
         find out -name "__next.*" -type f -delete; e=$?;
+        ([ -d "src/app/_api-off" ] && mv "src/app/_api-off" "src/app/api" || true);
         ([ -d "src/app/[lang]/guides/_slug-off" ] && mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]" || true);
         exit $e)
       artifact-path: "apps/brikette/out"
@@ -199,4 +208,11 @@ jobs:
       environment-name: "production"
       environment-url: "https://www.hostel-positano.com"
       healthcheck-base-url: "https://www.hostel-positano.com"
+      # Also verify the Pages Function is reachable after deploy.
+      # Dates are absolute (GitHub Actions does not support dynamic with: values).
+      # Refresh annually or when dates pass. Uses redirect-following curl (2xx/3xx = pass).
+      # NOTE: HTTP 200 is returned even when NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY is unset
+      # (flag-off fast path returns { rooms: [] }). Verify the CF Pages env var binding
+      # separately in the Cloudflare dashboard after deploy.
+      healthcheck-extra-routes: "/api/health /api/availability?checkin=2026-05-01&checkout=2026-05-03&pax=1"
     secrets: inherit

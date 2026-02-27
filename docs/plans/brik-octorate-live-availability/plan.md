@@ -5,7 +5,7 @@ Domain: SELL
 Workstream: Engineering
 Created: 2026-02-27
 Last-reviewed: 2026-02-27
-Last-updated: 2026-02-27
+Last-updated: 2026-02-27 (TASK-00 blocked; credentials gate)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: brik-octorate-live-availability
 Deliverable-Type: code-change
@@ -25,7 +25,7 @@ Auto-Build-Intent: plan+auto
 Guests on the Brikette book page currently see no per-room availability or live pricing before being handed off to Octorate. This plan adds a server-side availability proxy (`/api/availability`) that calls the Octorate Connect ARI calendar endpoint with valid OAuth credentials, a `useAvailability` hook that debounces per-date-range queries, wiring through `BookPageContent` → `RoomsSection` → `RoomCard`, and updated RoomCard display states (live NR price, sold-out, loading). The existing `buildOctorateUrl.ts` and NR/flex two-button pattern are preserved. A feature flag (`NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY`) gates the live path with a graceful fallback to the existing `rates.json`/`basePrice` path.
 
 ## Active tasks
-- [ ] TASK-00: Pre-build ARI endpoint schema verification (INVESTIGATE)
+- [~] TASK-00: Pre-build ARI endpoint schema verification (INVESTIGATE) — Blocked: Octorate credentials not provisioned
 - [ ] TASK-01: API route — Octorate ARI availability proxy
 - [ ] TASK-02: `useAvailability` hook
 - [ ] TASK-03: BookPageContent — wire availability data through to RoomsSection and RoomCard
@@ -96,7 +96,7 @@ Guests on the Brikette book page currently see no per-room availability or live 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-05 | IMPLEMENT | Env var provisioning and docs update | 85% | S | Complete (2026-02-27) | - | TASK-00 |
-| TASK-00 | INVESTIGATE | Pre-build ARI endpoint schema verification | 70% | S | Pending | TASK-05 | TASK-01 |
+| TASK-00 | INVESTIGATE | Pre-build ARI endpoint schema verification | 70% | S | Blocked (Needs-Input) | TASK-05 | TASK-01 |
 | TASK-01 | IMPLEMENT | API route: Octorate ARI availability proxy | 80% | M | Pending | TASK-00 | TASK-02, TASK-CP |
 | TASK-02 | IMPLEMENT | `useAvailability` hook | 80% | M | Pending | TASK-01 | TASK-03, TASK-04 |
 | TASK-CP | CHECKPOINT | Horizon checkpoint — reassess consumer tasks | 95% | S | Pending | TASK-01 | TASK-03, TASK-04, TASK-06, TASK-07, TASK-08 |
@@ -180,7 +180,7 @@ Guests on the Brikette book page currently see no per-room availability or live 
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Blocked (Needs-Input: Octorate credentials not provisioned — see replan-notes.md)
 - **Affects:** `[readonly] https://api.octorate.com/connect/rest/v1/ari/calendar`, `docs/plans/brik-octorate-live-availability/task-00-ari-schema.md` (new)
 - **Depends on:** TASK-05
 - **Blocks:** TASK-01

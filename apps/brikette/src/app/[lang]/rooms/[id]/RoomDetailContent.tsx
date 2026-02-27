@@ -2,6 +2,7 @@
 
 // src/app/[lang]/rooms/[id]/RoomDetailContent.tsx
 // Client component for room detail page (uses useTranslation hooks)
+/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Feature section labels use hardcoded English; translation follow-on deferred. */
 import { type ComponentProps, type ComponentPropsWithoutRef, Fragment, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
@@ -13,9 +14,10 @@ import StickyBookNow, { type StickyBookNowClickContext } from "@acme/ui/organism
 
 import LocationInline from "@/components/booking/LocationInline";
 import SocialProofSection from "@/components/landing/SocialProofSection";
+import FacilityIcon from "@/components/rooms/FacilityIcon";
 import RoomCard from "@/components/rooms/RoomCard";
 import RoomStructuredData from "@/components/seo/RoomStructuredData";
-import roomsData, { type RoomId } from "@/data/roomsData";
+import roomsData, { type RoomFeatures, type RoomId } from "@/data/roomsData";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
@@ -197,6 +199,46 @@ function AmenitiesSection({
   );
 }
 
+export function FeatureSection({ features }: { features: RoomFeatures | undefined }) {
+  if (!features) return null;
+
+  return (
+    <Section className="mx-auto mt-6 max-w-3xl px-4">
+      <dl className="space-y-2">
+        <div className="flex items-start gap-2 text-sm text-brand-text dark:text-brand-surface/90">
+          <dt className="w-28 shrink-0 font-medium">Beds</dt>
+          <dd>{features.bedSpec}</dd>
+        </div>
+        <div className="flex items-start gap-2 text-sm text-brand-text dark:text-brand-surface/90">
+          <dt className="w-28 shrink-0 font-medium">Bathroom</dt>
+          <dd>{features.bathroomSpec}</dd>
+        </div>
+        {features.viewSpec ? (
+          <div className="flex items-start gap-2 text-sm text-brand-text dark:text-brand-surface/90">
+            <dt className="w-28 shrink-0 font-medium">View</dt>
+            <dd>{features.viewSpec}</dd>
+          </div>
+        ) : null}
+        {features.terracePresent ? (
+          <div className="flex items-center gap-2 text-sm text-brand-text dark:text-brand-surface/90">
+            <dt className="w-28 shrink-0 font-medium">Terrace</dt>
+            <dd>Private terrace</dd>
+          </div>
+        ) : null}
+        {features.inRoomLockers ? (
+          <div className="flex items-center gap-2 text-sm text-brand-text dark:text-brand-surface/90">
+            <dt className="w-28 shrink-0 font-medium">Lockers</dt>
+            <dd className="flex items-center gap-1">
+              <FacilityIcon facility="locker" />
+              In-room lockers
+            </dd>
+          </div>
+        ) : null}
+      </dl>
+    </Section>
+  );
+}
+
 type BookingQuery = { checkIn: string; checkOut: string; adults: number; queryState: "valid" | "absent" };
 
 function parseBookingQuery(
@@ -311,6 +353,8 @@ export default function RoomDetailContent({ lang, id }: Props) {
           <LocationInline lang={lang} />
         </div>
       </Section>
+
+      <FeatureSection features={room.features} />
 
       <OutlineSection outline={outline} />
 

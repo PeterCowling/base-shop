@@ -115,6 +115,7 @@ Full policy: [docs/testing-policy.md](docs/testing-policy.md)
 - Shared personas: `.claude/skills/_shared/cabinet/` (filter, prioritizer, dossier template, lens files)
 
 Skills live in `.claude/skills/<name>/SKILL.md`. Claude Code auto-discovers them; Codex reads them directly.
+For diagnostic and utility tool skills, see the index at `.claude/skills/tools-index.md`.
 For a short entrypoint into the workflow (progressive disclosure), see `docs/agents/feature-workflow-guide.md`.
 
 ## Skills
@@ -177,7 +178,10 @@ All skills listed here use the same name in both Claude Code and Codex. The cano
 - `lp-do-sequence`: Topologically sort plan tasks into correct implementation order, preserve stable task IDs by default, and add explicit dependency/blocker metadata. (file: `.claude/skills/lp-do-sequence/SKILL.md`)
 - `lp-signal-review`: Weekly signal strengthening review for startup loop runs. Audits a run against ten structural signal-strengthening principles and emits a Signal Review artifact with ranked Finding Briefs. (file: `.claude/skills/lp-signal-review/SKILL.md`)
 - `lp-site-upgrade`: Build website-upgrade strategy in three layers: platform capability baseline, per-business upgrade brief, and lp-do-fact-find handoff packet. (file: `.claude/skills/lp-site-upgrade/SKILL.md`)
+- `tool-process-audit`: Diagnose a business or engineering process for bottlenecks, risks, and optimization opportunities. Use when asked to review, map, or improve a workflow and return concrete next steps with effort/impact tradeoffs. (file: `.claude/skills/tool-process-audit/SKILL.md`)
 - `tools-bos-design-page`: Generate or enhance HTML documentation with polished visual diagrams (Mermaid flowcharts, state machines, sequence diagrams, Chart.js dashboards). (file: `.claude/skills/tools-bos-design-page/SKILL.md`)
+- `tools-ui-breakpoint-sweep`: Systematically detect responsive layout failures (overflow, clipping, misalignment, broken reflow) across specified viewport widths with screenshot-backed evidence. Invocation name: `tools-ui-breakpoint-sweep`. (file: `.claude/skills/tools-web-breakpoint/SKILL.md`)
+- `tools-ui-contrast-sweep`: Audit UI color contrast and visual-uniformity drift across breakpoints and theme modes; produces screenshot-backed accessibility findings with WCAG-aligned thresholds. (file: `.claude/skills/tools-ui-contrast-sweep/SKILL.md`)
 - `lp-weekly`: S10 weekly orchestration wrapper. Coordinates the full weekly decision, audit/CI, measurement compilation, and experiment lane flows into one deterministic sequence. (file: `.claude/skills/lp-weekly/SKILL.md`)
 - `meta-loop-efficiency`: Weekly startup-loop skill efficiency audit. Scans lp-* + startup-loop + draft-outreach skills with deterministic heuristics and emits a ranked opportunity artifact. (file: `.claude/skills/meta-loop-efficiency/SKILL.md`)
 - `meta-reflect`: Capture session learnings and propose targeted improvements to docs, skills, or core agent instructions. Evidence-based only — closes the feedback loop directly by updating existing files. (file: `.claude/skills/meta-reflect/SKILL.md`)

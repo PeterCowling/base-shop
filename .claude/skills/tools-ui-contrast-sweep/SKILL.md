@@ -2,6 +2,8 @@
 name: tools-ui-contrast-sweep
 description: At user-specified breakpoints, audit the UI for contrast failures (text/background, icons, controls, focus indicators) and visual-uniformity drift (inconsistent tokens, typography, spacing, component variants). Produces screenshot-backed findings with WCAG-aligned thresholds and fix hypotheses.
 operating_mode: AUDIT
+trigger_conditions: accessibility, color contrast, WCAG, pre-launch QA, visual uniformity, dark mode audit, focus indicators
+related_skills: tools-ui-breakpoint-sweep, lp-design-qa, lp-do-build
 ---
 
 # Contrast + Uniformity Sweep

@@ -2,6 +2,8 @@
 name: tools-ui-breakpoint-sweep
 description: Open the app at user-specified viewport widths and systematically detect responsive layout failures (overflow/bleed, clipping, misalignment, broken reflow). Produces a screenshot-backed issue log with repro steps and fix hypotheses.
 operating_mode: AUDIT
+trigger_conditions: responsive layout, breakpoint QA, overflow, reflow failures, mobile layout, viewport testing, horizontal scroll
+related_skills: tools-ui-contrast-sweep, lp-design-qa, lp-launch-qa, lp-do-build
 ---
 
 # UI Breakpoint Sweep

@@ -1,6 +1,9 @@
 ---
 name: tools-bos-design-page
 description: Generate or enhance HTML documentation with polished visual diagrams (Mermaid flowcharts, state machines, sequence diagrams, Chart.js dashboards). Supports multiple documents via a references directory of reusable palettes, zoom controls, and initialization patterns. Use when asked to add diagrams to a guide, visualise a system or workflow, build a KPI dashboard, or improve documentation readability with visuals.
+operating_mode: GENERATE
+trigger_conditions: add diagrams, visualise system, build KPI dashboard, improve documentation readability, HTML docs, Mermaid charts, Chart.js dashboards
+related_skills: lp-design-system, tools-ui-frontend-design
 ---
 
 # tools-bos-design-page — Visual Documentation Enhancer

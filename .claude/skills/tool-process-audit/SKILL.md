@@ -2,6 +2,8 @@
 name: tool-process-audit
 description: Diagnose a named or described business/engineering process for bottlenecks, risks, and optimization opportunities. Use when a user asks to review, map, or improve a workflow and wants concrete next steps with effort/impact tradeoffs.
 operating_mode: ANALYSIS + RECOMMENDATIONS
+trigger_conditions: process review, workflow audit, bottleneck diagnosis, operational improvement, process mapping
+related_skills: lp-do-critique, lp-do-fact-find
 ---
 
 # Process Audit

@@ -1,6 +1,9 @@
 ---
 name: tools-ui-frontend-design
 description: Create distinctive, production-grade frontend interfaces grounded in this repo's design system. Use when asked to build web components, pages, or applications. Combines bold creative direction with token-constrained implementation.
+operating_mode: GENERATE
+trigger_conditions: build UI, web components, pages, frontend interface, design system implementation, production UI, React components
+related_skills: lp-design-system, lp-design-spec, lp-design-qa, tools-bos-design-page
 ---
 
 # Frontend Design

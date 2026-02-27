@@ -1,5 +1,410 @@
 [
   {
+    "date": "2026-02-27T14:24:15.206Z",
+    "business": "HBAG",
+    "domain": "Engineering",
+    "what": "Build Record — Caryina Merchant Order Notification",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/plans/caryina-merchant-order-notification/build-record.user.md"
+      }
+    ],
+    "sourcePath": "docs/plans/caryina-merchant-order-notification/build-record.user.md"
+  },
+  {
+    "date": "2026-02-27T13:59:26.961Z",
+    "business": "BRIK",
+    "domain": "Strategy",
+    "what": "World-Class Gap Scan — BRIK (2026-02-27)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/BRIK/worldclass-scan-2026-02-27.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/BRIK/worldclass-scan-2026-02-27.md"
+  },
+  {
+    "date": "2026-02-27T13:23:20.389Z",
+    "business": "BRIK",
+    "domain": "Strategy",
+    "what": "World-Class Benchmark — BRIK",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/BRIK/worldclass-benchmark.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/BRIK/worldclass-benchmark.md"
+  },
+  {
+    "date": "2026-02-27T12:40:52.114Z",
+    "business": "BRIK",
+    "domain": "SEO / Measurement",
+    "what": "World-Class Research Prompt — BRIK",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/BRIK/worldclass-research-prompt.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/BRIK/worldclass-research-prompt.md"
+  },
+  {
+    "date": "2026-02-27T11:15:50.000Z",
+    "business": "BRIK",
+    "domain": "Strategy",
+    "what": "World-Class Goal — BRIK",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/BRIK/worldclass-goal.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/BRIK/worldclass-goal.md"
+  },
+  {
+    "date": "2026-02-27T08:59:10.864Z",
+    "business": "HBAG",
+    "domain": "Strategy",
+    "what": "Caryina Product Naming Shortlist — Round 1 (2026-02-27)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HBAG/product-naming-shortlist-2026-02-27.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HBAG/product-naming-shortlist-2026-02-27.user.md"
+  },
+  {
+    "date": "2026-02-27T08:52:27.713Z",
+    "business": "HBAG",
+    "domain": "Strategy",
+    "what": "Product Naming Candidates — Caryina / HBAG (Round 1)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HBAG/product-naming-candidates-2026-02-27.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HBAG/product-naming-candidates-2026-02-27.md"
+  },
+  {
+    "date": "2026-02-27T08:42:29.689Z",
+    "business": "HBAG",
+    "domain": "Strategy",
+    "what": "Product Naming Spec — Caryina / HBAG (Round 1)",
+    "why": "The distribution plan includes channels where English-speaking buyers are significant (Etsy global, Instagram international). The brand's English copy register is conversational and confident. Line Names from international fashion vocabulary — words that feel equally at home in English fashion copy and in Italian fash…",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HBAG/2026-02-27-product-naming-spec.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HBAG/2026-02-27-product-naming-spec.md"
+  },
+  {
+    "date": "2026-02-26T22:49:23.000Z",
+    "business": "PWRB",
+    "domain": "Strategy",
+    "what": "PWRB Naming Shortlist — 2026-02-26",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/PWRB/naming-shortlist-2026-02-26.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/PWRB/naming-shortlist-2026-02-26.user.md"
+  },
+  {
+    "date": "2026-02-26T22:28:38.000Z",
+    "business": "HEAD",
+    "domain": "Strategy",
+    "what": "Product Naming — HEAD (ASSESSMENT-13)",
+    "why": "Facilella is a coined Italian-register masterbrand with deliberate expansion headroom — it names the brand, not the product category. The product naming pattern \"Facilella [Line Name]\" follows established Italian lifestyle-accessories conventions (Furla Metropolis, Furla Candy; Marni Trunk; etc.), keeps the brand name…",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HEAD/2026-02-26-product-naming.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-26-product-naming.user.md"
+  },
+  {
+    "date": "2026-02-26T22:28:38.000Z",
+    "business": "HEAD",
+    "domain": "Strategy",
+    "what": "Brand Name Decision — HEAD",
+    "why": "Facilella scored the joint-highest in Round 7 (24/25) and passed the ICP resonance gate with I=5. The Easy Hair System territory anchors the name in the primary differentiator — a CI accessory kit that a child manages independently, without caregiver intervention. The -ella suffix gives it strong Italian-language phon…",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HEAD/decisions/DEC-HEAD-NAME-01.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HEAD/decisions/DEC-HEAD-NAME-01.user.md"
+  },
+  {
+    "date": "2026-02-26T22:28:38.000Z",
+    "business": "HEAD",
+    "domain": "Strategy",
+    "what": "Facilella Product Naming Shortlist (Round 1)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HEAD/product-naming-shortlist-2026-02-26.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HEAD/product-naming-shortlist-2026-02-26.user.md"
+  },
+  {
+    "date": "2026-02-26T22:28:38.000Z",
+    "business": "PWRB",
+    "domain": "Planning",
+    "what": "Option Selection Decision — PWRB",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/PWRB/2026-02-26-solution-decision.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/PWRB/2026-02-26-solution-decision.user.md"
+  },
+  {
+    "date": "2026-02-26T22:28:38.000Z",
+    "business": "PWRB",
+    "domain": "Strategy",
+    "what": "Solution-Profiling Results — PWRB",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/PWRB/2026-02-26-solution-profile-results.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/PWRB/2026-02-26-solution-profile-results.user.md"
+  },
+  {
+    "date": "2026-02-26T21:32:27.000Z",
+    "business": "BRIK",
+    "domain": "Strategy",
+    "what": "BRIK Signal Strengthening Review — W09 (2026-02-26)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/BRIK/signal-review-20260226-1641-W09.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/BRIK/signal-review-20260226-1641-W09.md"
+  },
+  {
+    "date": "2026-02-26T18:45:45.000Z",
+    "business": "PWRB",
+    "domain": "Strategy",
+    "what": "PWRB Naming Generation Spec — Round 1",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/PWRB/2026-02-26-naming-generation-spec.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/PWRB/2026-02-26-naming-generation-spec.md"
+  },
+  {
+    "date": "2026-02-26T18:45:45.000Z",
+    "business": "PWRB",
+    "domain": "Strategy",
+    "what": "Problem Statement — PWRB",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/PWRB/2026-02-26-problem-statement.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/PWRB/2026-02-26-problem-statement.user.md"
+  },
+  {
+    "date": "2026-02-26T18:45:45.000Z",
+    "business": "PWRB",
+    "domain": "Strategy",
+    "what": "Solution-Profiling Research Prompt — PWRB",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/PWRB/2026-02-26-solution-profiling-prompt.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/PWRB/2026-02-26-solution-profiling-prompt.md"
+  },
+  {
+    "date": "2026-02-26T18:45:45.000Z",
+    "business": "PWRB",
+    "domain": "Strategy",
+    "what": "PWRB Naming Candidates — Round 1 (250 names)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/PWRB/naming-candidates-2026-02-26.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/PWRB/naming-candidates-2026-02-26.md"
+  },
+  {
+    "date": "2026-02-26T18:45:45.000Z",
+    "business": "PWRB",
+    "domain": "Planning",
+    "what": "Powerbank Rental — Business Plan",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/PWRB/plan.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/PWRB/plan.user.md"
+  },
+  {
+    "date": "2026-02-26T17:49:07.000Z",
+    "business": "HEAD",
+    "domain": "Strategy",
+    "what": "Facilella — Product Naming Candidates (Round 1)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HEAD/product-naming-candidates-2026-02-26.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HEAD/product-naming-candidates-2026-02-26.md"
+  },
+  {
+    "date": "2026-02-26T17:41:56.000Z",
+    "business": "HEAD",
+    "domain": "Strategy",
+    "what": "Facilella — Product Naming Spec (Round 1)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HEAD/2026-02-26-product-naming-spec.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-26-product-naming-spec.md"
+  },
+  {
+    "date": "2026-02-26T17:02:41.000Z",
+    "business": "HEAD",
+    "domain": "Brand / UI",
+    "what": "Facilella — Brand Language",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HEAD/2026-02-21-brand-identity-dossier.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-21-brand-identity-dossier.user.md"
+  },
+  {
+    "date": "2026-02-26T16:29:25.000Z",
+    "business": "HEAD",
+    "domain": "Strategy",
+    "what": "HEAD — Naming Generation Spec (ASSESSMENT-04 Part 1)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HEAD/2026-02-22-naming-generation-spec.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-22-naming-generation-spec.md"
+  },
+  {
+    "date": "2026-02-26T16:29:25.000Z",
+    "business": "HEAD",
+    "domain": "Strategy",
+    "what": "HEAD — Naming Candidates Round 7",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HEAD/naming-candidates-2026-02-26-r7.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HEAD/naming-candidates-2026-02-26-r7.md"
+  },
+  {
+    "date": "2026-02-26T16:29:25.000Z",
+    "business": "HEAD",
+    "domain": "Strategy",
+    "what": "HEAD Naming Shortlist — Round 7 (2026-02-26)",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/business-os/strategy/HEAD/naming-shortlist-2026-02-26-r7.user.md"
+      }
+    ],
+    "sourcePath": "docs/business-os/strategy/HEAD/naming-shortlist-2026-02-26-r7.user.md"
+  },
+  {
+    "date": "2026-02-26T09:52:53.000Z",
+    "business": "BRIK",
+    "domain": "Engineering",
+    "what": "Build Record: reception-rounded-lg-lint-rule",
+    "why": "—",
+    "intended": "—",
+    "links": [
+      {
+        "label": "Open",
+        "href": "/docs/plans/reception-rounded-lg-lint-rule/build-record.user.md"
+      }
+    ],
+    "sourcePath": "docs/plans/reception-rounded-lg-lint-rule/build-record.user.md"
+  },
+  {
     "date": "2026-02-25T22:48:19.000Z",
     "business": "BRIK",
     "domain": "Research",
@@ -468,21 +873,6 @@
     "date": "2026-02-25T22:48:19.000Z",
     "business": "HEAD",
     "domain": "Brand / UI",
-    "what": "Solena — Brand Language",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/strategy/HEAD/2026-02-21-brand-identity-dossier.user.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-21-brand-identity-dossier.user.md"
-  },
-  {
-    "date": "2026-02-25T22:48:19.000Z",
-    "business": "HEAD",
-    "domain": "Brand / UI",
     "what": "2026-02-21-brand-identity-preview",
     "why": "—",
     "intended": "—",
@@ -538,21 +928,6 @@
       }
     ],
     "sourcePath": "docs/business-os/strategy/HEAD/2026-02-21-measurement-profile.user.md"
-  },
-  {
-    "date": "2026-02-25T22:48:19.000Z",
-    "business": "HEAD",
-    "domain": "Strategy",
-    "what": "HEAD — Naming Generation Spec (ASSESSMENT-04 Part 1)",
-    "why": "—",
-    "intended": "—",
-    "links": [
-      {
-        "label": "Open",
-        "href": "/docs/business-os/strategy/HEAD/2026-02-22-naming-generation-spec.md"
-      }
-    ],
-    "sourcePath": "docs/business-os/strategy/HEAD/2026-02-22-naming-generation-spec.md"
   },
   {
     "date": "2026-02-25T22:48:19.000Z",

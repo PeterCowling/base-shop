@@ -6,7 +6,7 @@ export interface AssistantLink {
 export interface AssistantAnswer {
   answer: string;
   category: 'booking' | 'experiences' | 'food' | 'transport' | 'bag_drop' | 'general';
-  answerType: 'known' | 'fallback';
+  answerType: 'known' | 'fallback' | 'llm' | 'llm-safety-fallback';
   links: AssistantLink[];
 }
 

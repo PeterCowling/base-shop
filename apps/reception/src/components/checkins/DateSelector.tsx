@@ -12,6 +12,8 @@ import { DayPicker } from "react-day-picker";
 
 import { Button } from "@acme/design-system/atoms";
 
+import { useAuth } from "../../context/AuthContext";
+import { canAccess, isPrivileged, Permissions } from "../../lib/roles";
 import {
   addDays,
   buildQuickDateRange,
@@ -23,25 +25,26 @@ import {
 interface DateSelectorProps {
   selectedDate: string;
   onDateChange: (date: string) => void;
-  username?: string;
 }
 
 /**
  * DateSelector:
  * - Quick-select for Today and upcoming days.
- *   - Pete sees Yesterday and the next five days.
+ *   - Privileged users (owner/developer) see Yesterday and the next five days.
  *   - All others are limited to Today and Tomorrow.
- * - If username is "pete" or "peter" show an unrestricted DayPicker
- * - If username is "serena" show a DayPicker limited to tomorrow
+ * - Privileged users see an unrestricted DayPicker.
+ * - Admin/manager users see a DayPicker limited to today + tomorrow.
  */
 export default function DateSelector({
   selectedDate,
   onDateChange,
-  username,
 }: DateSelectorProps): ReactElement {
-  const lowerName = username?.toLowerCase();
-  const isPete = lowerName === "pete" || lowerName === "peter";
-  const isSerena = lowerName === "serena";
+  const { user } = useAuth();
+  const isPete = isPrivileged(user ?? null);
+  const canAccessRestrictedCalendar = canAccess(
+    user ?? null,
+    Permissions.RESTRICTED_CALENDAR_ACCESS,
+  );
 
   // Quick selectors
   const daysAhead = isPete ? 5 : 1;
@@ -82,7 +85,7 @@ export default function DateSelector({
   );
 
 
-  // DayPicker toggle logic (Pete/Serena)
+  // DayPicker toggle logic (privileged = unrestricted; admin/manager = restricted to tomorrow)
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const calendarRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -131,7 +134,7 @@ export default function DateSelector({
   const parsedToday = useMemo(() => parseDate(today), [today]);
 
   let toggleAndCalendar: ReactElement | null = null;
-  if (isPete || isSerena) {
+  if (canAccessRestrictedCalendar) {
     toggleAndCalendar = (
       <div className="relative">
         <Button
@@ -151,7 +154,7 @@ export default function DateSelector({
               mode="single"
               selected={parseDate(selectedDate)}
               onSelect={handleDayPickerSelect}
-              {...(isSerena
+              {...(!isPete
                 ? {
                     fromDate: parsedToday,
                     toDate: parsedToday

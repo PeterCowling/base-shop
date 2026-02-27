@@ -249,7 +249,6 @@ const CheckinsTable: React.FC = () => {
     <CheckinsTableView
       selectedDate={selectedDate}
       onDateChange={setSelectedDate}
-      username={user.user_name}
       roomsReady={roomsReady}
       setRoomsReady={setRoomsReady}
       loading={loading}

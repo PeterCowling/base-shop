@@ -17,7 +17,6 @@ import TableHeader from "../TableHeader";
 interface Props {
   selectedDate: string;
   onDateChange: (d: string) => void;
-  username?: string;
   roomsReady: boolean;
   setRoomsReady: (v: boolean) => void;
   loading: boolean;
@@ -51,7 +50,6 @@ interface Props {
 const CheckinsTableView: React.FC<Props> = ({
   selectedDate,
   onDateChange,
-  username,
   roomsReady,
   setRoomsReady,
   loading,
@@ -118,7 +116,6 @@ const CheckinsTableView: React.FC<Props> = ({
         <DateSelector
           selectedDate={selectedDate}
           onDateChange={onDateChange}
-          username={username}
         />
         {/* Controls row */}
         <div className="flex items-center justify-between">

@@ -65,6 +65,9 @@ export const Permissions = {
   // Real-time dashboard - owners and developers only
   REALTIME_DASHBOARD: ["owner", "developer"] as UserRole[],
 
+  // User management - owners and developers only
+  USER_MANAGEMENT: ["owner", "developer"] as UserRole[],
+
   // Alloggiati - owners and developers only
   ALLOGGIATI_ACCESS: ["owner", "developer"] as UserRole[],
 

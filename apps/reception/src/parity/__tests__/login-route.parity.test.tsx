@@ -45,7 +45,7 @@ describe("/bar unauthenticated login parity", () => {
     const { container } = render(<Login />);
 
     expect(
-      screen.getByRole("heading", { name: /sign in to reception/i }),
+      screen.getByRole("button", { name: /^sign in$/i }),
     ).toBeInTheDocument();
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/^password$/i)).toBeInTheDocument();

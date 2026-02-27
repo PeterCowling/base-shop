@@ -5,7 +5,7 @@ Domain: API
 Workstream: Engineering
 Created: 2026-02-27
 Last-reviewed: 2026-02-27
-Last-updated: 2026-02-27 (Wave 3 complete)
+Last-updated: 2026-02-27 (Wave 4 complete)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: caryina-axerve-payment-gateway
 Deliverable-Type: code-change
@@ -31,8 +31,8 @@ Replace the Stripe hosted-checkout integration in `apps/caryina` with Axerve/Ges
 - [x] IMPLEMENT-02: Update payments env schema + docs
 - [x] IMPLEMENT-03: Complete Axerve S2S SOAP client package
 - [x] IMPLEMENT-04: Replace checkout route with Axerve S2S call
-- [ ] IMPLEMENT-05: Add card form to CheckoutClient
-- [ ] IMPLEMENT-06: Remove Stripe verification layer; simplify success page
+- [x] IMPLEMENT-05: Add card form to CheckoutClient
+- [x] IMPLEMENT-06: Remove Stripe verification layer; simplify success page
 - [ ] IMPLEMENT-07: Replace all payment tests with Axerve equivalents
 - [ ] CHECKPOINT-08: Post-implementation horizon checkpoint
 
@@ -103,8 +103,8 @@ Replace the Stripe hosted-checkout integration in `apps/caryina` with Axerve/Ges
 | IMPLEMENT-02 | IMPLEMENT | Update payments env schema + docs/.env.reference.md | 85% | S | Complete (2026-02-27) | - | IMPLEMENT-03, IMPLEMENT-04 |
 | IMPLEMENT-03 | IMPLEMENT | Complete Axerve S2S client package (callPayment wrapper) | 80% | M | Complete (2026-02-27) | SPIKE-01 | IMPLEMENT-04 |
 | IMPLEMENT-04 | IMPLEMENT | Replace checkout route with Axerve S2S call | 80% | M | Complete (2026-02-27) | IMPLEMENT-02, IMPLEMENT-03 | IMPLEMENT-05, IMPLEMENT-06, IMPLEMENT-07 |
-| IMPLEMENT-05 | IMPLEMENT | Add card form to CheckoutClient | 80% | M | Pending | IMPLEMENT-04 | CHECKPOINT-08 |
-| IMPLEMENT-06 | IMPLEMENT | Remove Stripe verification layer; simplify success page | 80% | S | Pending | IMPLEMENT-04 | IMPLEMENT-07 |
+| IMPLEMENT-05 | IMPLEMENT | Add card form to CheckoutClient | 80% | M | Complete (2026-02-27) | IMPLEMENT-04 | CHECKPOINT-08 |
+| IMPLEMENT-06 | IMPLEMENT | Remove Stripe verification layer; simplify success page | 80% | S | Complete (2026-02-27) | IMPLEMENT-04 | IMPLEMENT-07 |
 | IMPLEMENT-07 | IMPLEMENT | Replace all payment tests with Axerve equivalents | 80% | M | Pending | IMPLEMENT-04, IMPLEMENT-06 | CHECKPOINT-08 |
 | CHECKPOINT-08 | CHECKPOINT | Horizon reassessment + sandbox E2E readiness gate | 95% | S | Pending | IMPLEMENT-05, IMPLEMENT-07 | - |
 
@@ -332,7 +332,8 @@ Replace the Stripe hosted-checkout integration in `apps/caryina` with Axerve/Ges
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
+- **Build Evidence:** `CheckoutClient.client.tsx` rewritten with `CardState` interface + `EMPTY_CARD` constant. Card form in `<fieldset disabled={loading}>` with 6 fields (cardNumber, expiryMonth, expiryYear, cvv — required; buyerName, buyerEmail — optional). All fields use `htmlFor`/`id` pairing and correct `autoComplete` attributes. Client-side validation runs before `setLoading(true)`: empty required fields → error; CVV not 3-4 digits → error. POST includes card fields. On `success:true` → `window.location.href = /${lang}/success`; on `success:false` → error inline; on catch → "Something went wrong". TC-05-01 ✓ (success redirect), TC-05-02 ✓ (error inline), TC-05-03 ✓ (network error), TC-05-04 ✓ (validation blocks POST), empty state ✓. `CheckoutClient.test.tsx` updated with `fillCardForm()` helper.
 - **Affects:** `apps/caryina/src/app/[lang]/checkout/CheckoutClient.client.tsx`
 - **Depends on:** IMPLEMENT-04
 - **Blocks:** CHECKPOINT-08
@@ -385,7 +386,8 @@ Replace the Stripe hosted-checkout integration in `apps/caryina` with Axerve/Ges
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
+- **Build Evidence:** `verifyStripeSession.ts` deleted; `verifyStripeSession.test.ts` deleted. `success/page.tsx` simplified to 48 lines: removed `verifyStripeSession` import, removed `searchParams` param and all paid/amount/currency logic, removed "Payment not completed" branch. Now renders static "Order confirmed" page with `SuccessAnalytics` and "Continue shopping" link. TC-06-01 ✓ (grep confirms 0 verifyStripeSession refs), TC-06-02 ✓ (no async data fetch or query params), TC-06-03 ✓ (typecheck clean).
 - **Affects:** `apps/caryina/src/lib/verifyStripeSession.ts` (deleted), `apps/caryina/src/lib/verifyStripeSession.test.ts` (deleted), `apps/caryina/src/app/[lang]/success/page.tsx`
 - **Depends on:** IMPLEMENT-04
 - **Blocks:** IMPLEMENT-07

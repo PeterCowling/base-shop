@@ -16,6 +16,7 @@ export const dynamic = "force-dynamic";
 
 export interface OctorateRoom {
   octorateRoomName: string;
+  octorateRoomId: string;
   available: boolean;
   priceFrom: number | null;
   nights: number;
@@ -78,13 +79,12 @@ function stripTags(html: string): string {
  * Parse a single room section HTML fragment into an OctorateRoom.
  */
 function parseRoomSection(sectionHtml: string, nights: number): OctorateRoom {
-  // Extract room name from <h1 class="animated fadeInDownShort" data-id="N">Name</h1>
-  const nameMatch = sectionHtml.match(
-    /<h1[^>]*class="animated fadeInDownShort"[^>]*data-id[^>]*>(.*?)<\/h1>/s
+  // Extract room id + name from <h1 class="animated fadeInDownShort" data-id="N">Name</h1>
+  const h1Match = sectionHtml.match(
+    /<h1[^>]*class="animated fadeInDownShort"[^>]*data-id="([^"]*)"[^>]*>([\s\S]*?)<\/h1>/
   );
-  const octorateRoomName = nameMatch
-    ? stripTags(nameMatch[1]).trim()
-    : "Unknown";
+  const octorateRoomId = h1Match ? h1Match[1].trim() : "";
+  const octorateRoomName = h1Match ? stripTags(h1Match[2]).trim() : "Unknown";
 
   // Extract offert div content
   const offertMatch = sectionHtml.match(/<div[^>]*class="offert"[^>]*>([\s\S]*?)<\/div>/);
@@ -122,6 +122,7 @@ function parseRoomSection(sectionHtml: string, nights: number): OctorateRoom {
 
   return {
     octorateRoomName,
+    octorateRoomId,
     available: !isSoldOut,
     priceFrom: isSoldOut ? null : priceFrom,
     nights,

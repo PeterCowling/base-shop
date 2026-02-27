@@ -123,9 +123,11 @@ describe("GET /api/availability", () => {
       );
       const res = await GET(req);
       const body = (await res.json()) as AvailabilityRouteResponse;
+      const doubleRoom = body.rooms.find((r: OctorateRoom) => r.octorateRoomName === "Double");
 
       expect(res.status).toBe(200);
       expect(body.rooms.length).toBe(2);
+      expect(doubleRoom!.octorateRoomId).toBe("10");
       expect(body.fetchedAt).toBeTruthy();
     });
 
@@ -139,6 +141,7 @@ describe("GET /api/availability", () => {
 
       const dorm = body.rooms.find((r: OctorateRoom) => r.octorateRoomName === "Dorm");
       expect(dorm).toBeDefined();
+      expect(dorm!.octorateRoomId).toBe("7");
       expect(dorm!.available).toBe(true);
     });
 
@@ -152,6 +155,7 @@ describe("GET /api/availability", () => {
 
       const doubleRoom = body.rooms.find((r: OctorateRoom) => r.octorateRoomName === "Double");
       expect(doubleRoom).toBeDefined();
+      expect(doubleRoom!.octorateRoomId).toBe("10");
       expect(doubleRoom!.available).toBe(false);
       expect(doubleRoom!.priceFrom).toBeNull();
       expect(doubleRoom!.ratePlans).toEqual([]);
@@ -198,6 +202,7 @@ describe("GET /api/availability", () => {
       const body = (await res.json()) as AvailabilityRouteResponse;
 
       const room = body.rooms[0];
+      expect(room.octorateRoomId).toBe("3");
       // 95.00 / 1 night = 95.00
       expect(room.priceFrom).toBe(95);
       expect(room.available).toBe(true);

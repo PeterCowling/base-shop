@@ -27,6 +27,7 @@ import FacilityIcon from "@/components/rooms/FacilityIcon";
 import RoomCard from "@/components/rooms/RoomCard";
 import RoomStructuredData from "@/components/seo/RoomStructuredData";
 import roomsData, { type RoomFeatures, type RoomId } from "@/data/roomsData";
+import { useAvailabilityForRoom } from "@/hooks/useAvailabilityForRoom";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
@@ -491,6 +492,13 @@ export default function RoomDetailContent({ lang, id }: Props) {
     [router, searchParams],
   );
 
+  const { availabilityRoom } = useAvailabilityForRoom({
+    room,
+    checkIn: pickerCheckIn,
+    checkOut: pickerCheckOut,
+    adults: pickerAdults,
+  });
+
   return (
     <Fragment>
       <RoomStructuredData room={room} lang={lang} />
@@ -521,6 +529,7 @@ export default function RoomDetailContent({ lang, id }: Props) {
         lang={lang}
         queryState={queryState}
         datePickerRef={datePickerRef}
+        availabilityRoom={availabilityRoom}
       />
 
       <Section className="mx-auto max-w-3xl px-4">

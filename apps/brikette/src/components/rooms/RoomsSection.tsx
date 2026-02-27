@@ -47,13 +47,13 @@ export function RoomsSection({
   availabilityRooms,
   ...props
 }: RoomsSectionProps & Omit<RoomsSectionBaseProps, "itemListId" | "onRoomSelect">) {
-  // Map availabilityRooms (keyed by octorateRoomName) to roomPrices (keyed by room.id).
-  // Consumers match via room.widgetRoomCode === availabilityRoom.octorateRoomName.
+  // Map availabilityRooms (keyed by octorateRoomId) to roomPrices (keyed by room.id).
+  // Consumers match via room.widgetRoomCode === availabilityRoom.octorateRoomId.
   const roomPrices = useMemo<Record<string, RoomCardPrice> | undefined>(() => {
     if (!availabilityRooms || availabilityRooms.length === 0) return undefined;
     const prices: Record<string, RoomCardPrice> = {};
     for (const avRoom of availabilityRooms) {
-      const match = roomsData.find((r) => r.widgetRoomCode === avRoom.octorateRoomName);
+      const match = roomsData.find((r) => r.widgetRoomCode === avRoom.octorateRoomId);
       if (!match) continue;
       if (!avRoom.available) {
         prices[match.id] = { soldOut: true };

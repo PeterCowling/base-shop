@@ -222,6 +222,8 @@ function BookPageContent({ lang }: Props): JSX.Element {
         </div>
       </Section>
 
+      <DirectPerksBlock lang={lang} className="mb-6 rounded-2xl border border-brand-outline/30 bg-brand-surface p-6 shadow-sm" />
+
       <RoomsSection
         lang={lang}
         itemListId="book_rooms"
@@ -236,7 +238,6 @@ function BookPageContent({ lang }: Props): JSX.Element {
       />
 
       <Section padding="default" className="mx-auto max-w-7xl">
-        <DirectPerksBlock lang={lang} className="mb-8 rounded-2xl border border-brand-outline/30 bg-brand-surface p-6 shadow-sm" />
         <LocationInline lang={lang} />
         <PolicyFeeClarityPanel lang={lang} variant="hostel" />
       </Section>

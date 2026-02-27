@@ -1,8 +1,62 @@
+ 
 import "@testing-library/jest-dom";
 
+import React from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import MealOrderPage from "../MealOrderPage";
+
+// ---------------------------------------------------------------------------
+// Module mocks
+// ---------------------------------------------------------------------------
+
+jest.mock("../BreakfastOrderWizard", () => ({
+  BreakfastOrderWizard: ({
+    onSubmit,
+    isSubmitting,
+  }: {
+    onSubmit: (v: string) => void;
+    serviceDate: string;
+    isSubmitting: boolean;
+  }) => (
+    <button
+      type="button"
+      onClick={() =>
+        onSubmit(
+          "Eggs (Scrambled) | Bacon, Ham, Toast | Americano | 09:00",
+        )
+      }
+      disabled={isSubmitting}
+    >
+      Submit breakfast wizard
+    </button>
+  ),
+}));
+
+jest.mock("../EvDrinkOrderWizard", () => ({
+  __esModule: true,
+  default: ({
+    onSubmit,
+    isSubmitting,
+  }: {
+    onSubmit: (v: string) => void;
+    serviceDate: string;
+    preorders: unknown;
+    isSubmitting: boolean;
+  }) => (
+    <button
+      type="button"
+      onClick={() => onSubmit("Aperol Spritz | 19:30")}
+      disabled={isSubmitting}
+    >
+      Submit drink wizard
+    </button>
+  ),
+}));
+
+// ---------------------------------------------------------------------------
+// Shared mock factories
+// ---------------------------------------------------------------------------
 
 const useGuestBookingSnapshotMock = jest.fn();
 const fetchMock = jest.fn();
@@ -20,13 +74,17 @@ function getRomeTodayIso(): string {
   }).format(new Date());
 }
 
+// ---------------------------------------------------------------------------
+// Tests
+// ---------------------------------------------------------------------------
+
 describe("MealOrderPage", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     global.fetch = fetchMock as unknown as typeof fetch;
   });
 
-  it("TC-01: eligible guest creates future-date order successfully", async () => {
+  it("TC-01: eligible guest creates a breakfast order via wizard", async () => {
     const refetchMock = jest.fn(async () => undefined);
     useGuestBookingSnapshotMock.mockReturnValue({
       snapshot: {
@@ -52,19 +110,18 @@ describe("MealOrderPage", () => {
     });
 
     render(<MealOrderPage service="breakfast" title="Complimentary Breakfast" />);
+
+    // Select a future service date so the wizard appears
     const dateSelect = screen.getByLabelText("Service date") as HTMLSelectElement;
     const selectedDate =
       Array.from(dateSelect.options)
-        .map((option) => option.value)
-        .find((value) => value !== "") ?? "";
+        .map((o) => o.value)
+        .find((v) => v !== "") ?? "";
 
-    fireEvent.change(dateSelect, {
-      target: { value: selectedDate },
-    });
-    fireEvent.change(screen.getByLabelText("Order details"), {
-      target: { value: "Continental" },
-    });
-    fireEvent.click(screen.getByRole("button", { name: "Save order" }));
+    fireEvent.change(dateSelect, { target: { value: selectedDate } });
+
+    // The mocked wizard renders a button; click it to simulate completion
+    fireEvent.click(screen.getByRole("button", { name: "Submit breakfast wizard" }));
 
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledWith(
@@ -75,7 +132,7 @@ describe("MealOrderPage", () => {
             token: "token-1",
             service: "breakfast",
             serviceDate: selectedDate,
-            value: "Continental",
+            value: "Eggs (Scrambled) | Bacon, Ham, Toast | Americano | 09:00",
             requestChangeException: false,
           }),
         }),
@@ -85,7 +142,7 @@ describe("MealOrderPage", () => {
     });
   });
 
-  it("TC-03: same-day edit can escalate through exception request flow", async () => {
+  it("TC-03: same-day edit escalates through exception request", async () => {
     const today = getRomeTodayIso();
     const refetchMock = jest.fn(async () => undefined);
     useGuestBookingSnapshotMock.mockReturnValue({
@@ -106,44 +163,48 @@ describe("MealOrderPage", () => {
       isLoading: false,
       refetch: refetchMock,
     });
+
+    // First fetch: policyBlocked; second: success after exception
     fetchMock
       .mockResolvedValueOnce({
         ok: true,
-        json: async () => ({
-          policyBlocked: true,
-          requestQueued: false,
-        }),
+        json: async () => ({ policyBlocked: true, requestQueued: false }),
       })
       .mockResolvedValueOnce({
         ok: true,
         json: async () => ({
           requestQueued: true,
-          message: "Same-day changes require reception approval. A request has been sent.",
+          message:
+            "Same-day changes require reception approval. A request has been sent.",
         }),
       });
 
     render(<MealOrderPage service="breakfast" title="Complimentary Breakfast" />);
+
     const dateSelect = screen.getByLabelText("Service date") as HTMLSelectElement;
     const selectedDate =
       Array.from(dateSelect.options)
-        .map((option) => option.value)
-        .find((value) => value === today) ?? today;
+        .map((o) => o.value)
+        .find((v) => v === today) ?? today;
 
-    fireEvent.change(dateSelect, {
-      target: { value: selectedDate },
-    });
-    fireEvent.change(screen.getByLabelText("Order details"), {
-      target: { value: "Vegan" },
-    });
-    fireEvent.click(screen.getByRole("button", { name: "Save order" }));
+    fireEvent.change(dateSelect, { target: { value: selectedDate } });
+
+    // Wizard submission triggers the first fetch → policyBlocked
+    fireEvent.click(screen.getByRole("button", { name: "Submit breakfast wizard" }));
 
     await waitFor(() => {
       expect(
-        screen.getByText("Same-day changes are blocked. You can request a reception override."),
+        screen.getByText(
+          "Same-day changes are blocked. You can request a reception override.",
+        ),
       ).toBeInTheDocument();
     });
 
-    fireEvent.click(screen.getByRole("button", { name: "Request same-day exception" }));
+    // Exception button should now be visible
+    fireEvent.click(
+      screen.getByRole("button", { name: "Request same-day exception" }),
+    );
+
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledTimes(2);
       expect(fetchMock.mock.calls[1]?.[1]).toMatchObject({
@@ -152,12 +213,14 @@ describe("MealOrderPage", () => {
           token: "token-1",
           service: "breakfast",
           serviceDate: selectedDate,
-          value: "Vegan",
+          value: "Eggs (Scrambled) | Bacon, Ham, Toast | Americano | 09:00",
           requestChangeException: true,
         }),
       });
       expect(
-        screen.getByText("Same-day changes require reception approval. A request has been sent."),
+        screen.getByText(
+          "Same-day changes require reception approval. A request has been sent.",
+        ),
       ).toBeInTheDocument();
     });
   });
@@ -183,7 +246,9 @@ describe("MealOrderPage", () => {
 
     render(<MealOrderPage service="breakfast" title="Complimentary Breakfast" />);
     expect(
-      screen.getByText("This service is not included in your booking. You can still explore the menu at reception."),
+      screen.getByText(
+        "This service is not included in your booking. You can still explore the menu at reception.",
+      ),
     ).toBeInTheDocument();
   });
 });

@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Infra
 Workstream: Engineering
 Created: 2026-02-27
@@ -34,7 +34,7 @@ The reception app has a complete offline infrastructure module (`lib/offline/`) 
 - [x] TASK-06: Read-through cache for critical data views
 - [x] TASK-07: Sync status UI in OfflineIndicator
 - [x] TASK-CHKPT: Checkpoint — reassess TASK-08 from Phase 2 evidence
-- [ ] TASK-08: Unit tests — offline primitives + auth fallback
+- [x] TASK-08: Unit tests — offline primitives + auth fallback
 
 ## Goals
 
@@ -111,7 +111,7 @@ The reception app has a complete offline infrastructure module (`lib/offline/`) 
 | TASK-06 | IMPLEMENT | Read-through cache for critical data views | 80% | M | Complete (2026-02-27) | - | - |
 | TASK-07 | IMPLEMENT | Sync status UI in OfflineIndicator | 80% | S | Complete (2026-02-27) | TASK-02 | - |
 | TASK-CHKPT | CHECKPOINT | Reassess TASK-08 from Phase 2 evidence | 95% | S | Complete (2026-02-27) | TASK-03 | TASK-08 |
-| TASK-08 | IMPLEMENT | Unit tests — offline primitives + auth fallback | 80% | M | Pending | TASK-CHKPT, TASK-01, TASK-05 | - |
+| TASK-08 | IMPLEMENT | Unit tests — offline primitives + auth fallback | 80% | M | Complete (2026-02-27) | TASK-CHKPT, TASK-01, TASK-05 | - |
 
 ## Parallelism Guide
 
@@ -529,6 +529,7 @@ The reception app has a complete offline infrastructure module (`lib/offline/`) 
 - **What would make this >=90%:** CI confirms all tests pass first run without amendments.
 - **Rollout / rollback:** Rollout: test-only change; no production impact. Rollback: remove test files.
 - **Documentation impact:** None.
+- **Build evidence (2026-02-27):** 6 files written/updated. ESLint --fix run; typecheck clean; lint has only pre-existing warnings in unrelated files (0 errors). Commit 2c66907149. New files: `useBookingMutations.test.ts` (3 tests: online/offline/IDB-unavailable), `useLoansMutations.test.ts` (5 tests: saveLoan online+offline, 3 online-only op guards). Updated: `useActivitiesMutations.test.ts` (+2 offline tests), `useBookingNotesMutation.test.ts` (+3 offline queue tests), `useChangeBookingDatesMutator.test.ts` (+1 offline guard), `firebaseAuth.test.ts` (+3 tests: TC-04, TC-05, setMeta success; receptionDb mock added). No `jest-fake-indexeddb` required. TC-04 and TC-05 pass via getMeta/setMeta module mock. Tests validated via CI on dev push.
 
 ---
 

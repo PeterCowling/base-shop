@@ -102,8 +102,12 @@ describe("processCancellationEmail", () => {
     );
 
     // Mock Firebase PATCH /activities/{occupantId}/{activityId} (2 calls)
-    mockFetch.mockResolvedValueOnce(createMockResponse(null)); // occ1
-    mockFetch.mockResolvedValueOnce(createMockResponse(null)); // occ2
+    mockFetch.mockResolvedValueOnce(createMockResponse(null)); // occ1 activities
+    mockFetch.mockResolvedValueOnce(createMockResponse(null)); // occ2 activities
+
+    // Mock Firebase PATCH /activitiesByCode/22/{occupantId}/{activityId} (2 calls, fanout)
+    mockFetch.mockResolvedValueOnce(createMockResponse(null)); // occ1 activitiesByCode
+    mockFetch.mockResolvedValueOnce(createMockResponse(null)); // occ2 activitiesByCode
 
     // Mock Firebase PATCH /bookingMeta/{reservationCode}
     mockFetch.mockResolvedValueOnce(createMockResponse(null));
@@ -136,6 +140,13 @@ describe("processCancellationEmail", () => {
       return url.includes("/activities/");
     });
     expect(activityCalls).toHaveLength(2);
+
+    // Verify 2 activitiesByCode writes (fanout index)
+    const activitiesByCodeCalls = (mockFetch.mock.calls as unknown[][]).filter((call) => {
+      const url = getUrlFromCall(call);
+      return url.includes("/activitiesByCode/");
+    });
+    expect(activitiesByCodeCalls).toHaveLength(2);
 
     // Verify activity shape in first call
     const firstActivityCall = activityCalls[0];
@@ -308,6 +319,13 @@ describe("processCancellationEmail", () => {
         expect(id).toMatch(/^act_\d+_\d+$/);
       }
     });
+
+    // Verify activitiesByCode fanout writes (1 per occupant)
+    const activitiesByCodeCalls = (mockFetch.mock.calls as unknown[][]).filter((call) => {
+      const url = getUrlFromCall(call);
+      return url.includes("/activitiesByCode/");
+    });
+    expect(activitiesByCodeCalls).toHaveLength(4);
   });
 
   // TC-06: Activity shape validation → includes code, timestamp, who fields

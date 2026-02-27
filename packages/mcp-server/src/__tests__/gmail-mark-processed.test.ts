@@ -261,12 +261,16 @@ describe("gmail_mark_processed", () => {
     expect(messageStore["msg-mp-await"].labelIds).not.toContain("label-processing");
   });
 
-  // TC-06i: mark_processed with action "agreement_received" -> Needs-Decision + Agreement-Received
+  // TC-06i: mark_processed with action "agreement_received" (no reservationCode) -> labels only, no Firebase
   it("applies Needs-Decision and Agreement-Received labels for action 'agreement_received'", async () => {
     const labels = standardLabels();
     const msg = makeMessage("msg-mp-agree", ["label-awaiting"]);
     const { gmail, messageStore } = buildGmailStub({ labels, messages: { "msg-mp-agree": msg } });
     getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    // global.fetch is undefined in this node test environment; assign a mock to detect if it's called
+    const fetchMock = jest.fn();
+    (global as unknown as Record<string, unknown>).fetch = fetchMock;
 
     await handleGmailTool("gmail_mark_processed", {
       emailId: "msg-mp-agree",
@@ -275,6 +279,73 @@ describe("gmail_mark_processed", () => {
 
     expect(messageStore["msg-mp-agree"].labelIds).toContain("label-awaiting");
     expect(messageStore["msg-mp-agree"].labelIds).toContain("label-agree-received");
+    // No reservationCode → no Firebase calls
+    expect(fetchMock).not.toHaveBeenCalled();
+
+    delete (global as unknown as Record<string, unknown>).fetch;
+  });
+
+  // TC-06i-b: mark_processed with action "agreement_received" + reservationCode -> Firebase writes code 21
+  it("writes activity code 21 to Firebase fanout paths when reservationCode is provided", async () => {
+    const labels = standardLabels();
+    const msg = makeMessage("msg-mp-agree-b", ["label-awaiting"]);
+    const { gmail, messageStore } = buildGmailStub({ labels, messages: { "msg-mp-agree-b": msg } });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    process.env.FIREBASE_DATABASE_URL = "https://test-db.firebaseio.com";
+    const fetchMock = jest.fn().mockImplementation(async (input: RequestInfo | URL) => {
+      const url = typeof input === "string" ? input : (input as Request).url;
+      if (url.includes("/bookings/RES-42")) {
+        return { ok: true, json: async () => ({ occ1: true, occ2: true }) } as Response;
+      }
+      return { ok: true, json: async () => null } as Response;
+    });
+    (global as unknown as Record<string, unknown>).fetch = fetchMock;
+
+    await handleGmailTool("gmail_mark_processed", {
+      emailId: "msg-mp-agree-b",
+      action: "agreement_received",
+      reservationCode: "RES-42",
+    });
+
+    expect(messageStore["msg-mp-agree-b"].labelIds).toContain("label-agree-received");
+
+    const fetchUrls = (fetchMock.mock.calls as [RequestInfo | URL][]).map((c) => {
+      const input = c[0];
+      return typeof input === "string" ? input : (input as Request).url;
+    });
+    expect(fetchUrls.some((u) => u.includes("/bookings/RES-42"))).toBe(true);
+    expect(fetchUrls.some((u) => u.includes("/activities/occ1/"))).toBe(true);
+    expect(fetchUrls.some((u) => u.includes("/activitiesByCode/21/occ1/"))).toBe(true);
+    expect(fetchUrls.some((u) => u.includes("/activities/occ2/"))).toBe(true);
+    expect(fetchUrls.some((u) => u.includes("/activitiesByCode/21/occ2/"))).toBe(true);
+
+    delete (global as unknown as Record<string, unknown>).fetch;
+    delete process.env.FIREBASE_DATABASE_URL;
+  });
+
+  // TC-06i-c: agreement_received + reservationCode but Firebase fails -> graceful degradation, labels still applied
+  it("applies labels even when Firebase write fails for agreement_received", async () => {
+    const labels = standardLabels();
+    const msg = makeMessage("msg-mp-agree-c", ["label-awaiting"]);
+    const { gmail, messageStore } = buildGmailStub({ labels, messages: { "msg-mp-agree-c": msg } });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    process.env.FIREBASE_DATABASE_URL = "https://test-db.firebaseio.com";
+    const fetchMock = jest.fn().mockRejectedValue(new Error("Firebase unavailable"));
+    (global as unknown as Record<string, unknown>).fetch = fetchMock;
+
+    await handleGmailTool("gmail_mark_processed", {
+      emailId: "msg-mp-agree-c",
+      action: "agreement_received",
+      reservationCode: "RES-99",
+    });
+
+    // Labels must still be applied despite Firebase failure
+    expect(messageStore["msg-mp-agree-c"].labelIds).toContain("label-agree-received");
+
+    delete (global as unknown as Record<string, unknown>).fetch;
+    delete process.env.FIREBASE_DATABASE_URL;
   });
 
   // TC-06j: mark_processed with prepayment chase actions -> correct workflow labels

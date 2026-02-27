@@ -64,12 +64,16 @@ export default function useActivitiesMutations() {
               console.warn(
                 `[useActivitiesMutations] Guest email deferred for reservation ${reservationCode} (code ${code}): ${emailResult.reason ?? "manual-review"}`
               );
+              if (emailResult.reason === "no-recipient-email") {
+                setError("No guest email on record — email not sent.");
+              }
             }
 
             if (!emailResult.success && emailResult.status === "error") {
               console.error(
                 `[useActivitiesMutations] Guest email draft failed for reservation ${reservationCode} (code ${code}): ${emailResult.error ?? "unknown"}`
               );
+              setError("Email draft not sent — guest notification failed. Please send manually.");
             }
           } else {
             console.warn(

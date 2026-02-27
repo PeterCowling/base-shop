@@ -157,6 +157,23 @@ export async function processCancellationEmail(
             firebaseApiKey
           );
         }
+        // Fanout write: activitiesByCode index
+        try {
+          await firebasePatch(
+            firebaseUrl,
+            `/activitiesByCode/22/${occupantId}/${activityId}`,
+            activityData,
+            firebaseApiKey
+          );
+        } catch {
+          // Retry once
+          await firebasePatch(
+            firebaseUrl,
+            `/activitiesByCode/22/${occupantId}/${activityId}`,
+            activityData,
+            firebaseApiKey
+          );
+        }
       })
     );
   } catch (error) {

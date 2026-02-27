@@ -122,8 +122,53 @@ describe("useActivitiesMutations", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       expect.stringContaining("Guest email draft failed")
     );
+    expect(result.current.error).toBe("Email draft not sent — guest notification failed. Please send manually.");
 
     errorSpy.mockRestore();
+  });
+
+  it("sets error when email is deferred with no-recipient-email reason", async () => {
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => undefined);
+    sendEmailGuestMock.mockResolvedValue({
+      success: true,
+      status: "deferred",
+      bookingRef: "REF123",
+      activityCode: 21,
+      recipients: [],
+      reason: "no-recipient-email",
+    });
+
+    const { result } = renderHook(() => useActivitiesMutations());
+
+    await act(async () => {
+      await result.current.addActivity("occ1", 21);
+    });
+
+    expect(result.current.error).toBe("No guest email on record — email not sent.");
+
+    warnSpy.mockRestore();
+  });
+
+  it("does not set error when email is deferred for other reasons", async () => {
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => undefined);
+    sendEmailGuestMock.mockResolvedValue({
+      success: true,
+      status: "deferred",
+      bookingRef: "REF123",
+      activityCode: 21,
+      recipients: [],
+      reason: "unsupported-activity-code",
+    });
+
+    const { result } = renderHook(() => useActivitiesMutations());
+
+    await act(async () => {
+      await result.current.addActivity("occ1", 21);
+    });
+
+    expect(result.current.error).toBeNull();
+
+    warnSpy.mockRestore();
   });
 
   // TASK-05: Add code 27 to relevantCodes array

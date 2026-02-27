@@ -103,7 +103,7 @@ A SPIKE task (TASK-01) validates the prompt self-containment assumption before p
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | SPIKE | Validate codemoot run prompt self-containment | 85% | S | Complete (2026-02-27) | - | TASK-02 |
 | TASK-02 | CHECKPOINT | Reassess protocol design from spike findings | 95% | S | Complete (2026-02-27) | TASK-01 | TASK-03 |
-| TASK-03 | IMPLEMENT | Author `_shared/build-offload-protocol.md` | 85% (actualized post-CHECKPOINT; mechanism redesigned to `codex exec`) | S | Pending | TASK-02 | TASK-04, TASK-05, TASK-06 |
+| TASK-03 | IMPLEMENT | Author `_shared/build-offload-protocol.md` | 85% (actualized post-CHECKPOINT; mechanism redesigned to `codex exec`) | S | Complete (2026-02-27) | TASK-02 | TASK-04, TASK-05, TASK-06 |
 | TASK-04 | IMPLEMENT | Update `lp-do-build/SKILL.md` — CODEMOOT_OK check + offload reference | 80% | S | Pending | TASK-03 | - |
 | TASK-05 | IMPLEMENT | Update `modules/build-code.md` + `modules/build-biz.md` — Offload Route sections | 80% | S | Pending | TASK-03 | - |
 | TASK-06 | IMPLEMENT | Update `modules/build-spike.md` + `modules/build-investigate.md` — Offload Route sections | 80% | S | Pending | TASK-03 | - |
@@ -236,11 +236,19 @@ A SPIKE task (TASK-01) validates the prompt self-containment assumption before p
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
+- **Build-Evidence:**
+  - `.claude/skills/_shared/build-offload-protocol.md` created. All 8 required sections present.
+  - VC-01 (structural completeness): Pass — all 8 sections present (When to Use, Offload Invocation, Task Prompt Schema, Output Contract, Fallback Policy, Writer Lock Contract, Excluded Task Types, Post-Execution Verification).
+  - VC-02 (CODEX_OK check): Pass — `nvm exec 22 codex --version >/dev/null 2>&1 && CODEX_OK=1 || CODEX_OK=0` present; CODEMOOT_OK vs CODEX_OK distinction documented.
+  - VC-03 (`codex exec` invocation): Pass — `nvm exec 22 codex exec -a never --sandbox workspace-write` specified; `codemoot run` limitation explicitly noted.
+  - VC-04 (post-execution steps): Pass — all 4 steps enumerated (VC/TC recheck, build-validate.md, commit gate, plan update).
+  - VC-05 (Mode 3 document review): Pass — no broken references, no placeholders, internal consistency confirmed.
+  - Offload route: inline (business-artifact IMPLEMENT is Claude-executed; offload protocol authoring is itself a business-artifact task for which Claude is the executor).
 - **Artifact-Destination:** `.claude/skills/_shared/build-offload-protocol.md` (internal skill protocol; referenced by all lp-do-build executor modules)
 - **Reviewer:** operator (Peter Cowling) — acknowledged before task is marked complete.
 - **Approval-Evidence:** Operator acknowledgement recorded in plan build evidence block.
-- **Measurement-Readiness:** Offload route usage tracked from build evidence blocks (CODEMOOT_OK=1 vs fallback) in subsequent build cycles. Measurement window: 5 build cycles post-implementation. Owner: operator.
+- **Measurement-Readiness:** Offload route usage tracked from build evidence blocks (CODEX_OK=1 vs fallback) in subsequent build cycles. Measurement window: 5 build cycles post-implementation. Owner: operator.
 - **Affects:** `.claude/skills/_shared/build-offload-protocol.md` (create)
 - **Depends on:** TASK-02
 - **Blocks:** TASK-04, TASK-05, TASK-06

@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "2fe113bd38",
+  "feature_slug": "brik-room-content-schema",
+  "emitted_at": "2026-02-27T15:31:00.314Z",
+  "why": "Room detail pages are a critical conversion step in the BRIK booking funnel. Prospective guests cannot identify and select the right room without reliable, complete room feature information.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Room detail pages for all 10 rooms display accurate, complete feature information across beds, bathroom, view, terrace, and security — with missing optional features cleanly omitted and no broken layout.",
+    "source": "operator"
+  }
+}

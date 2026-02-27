@@ -3,6 +3,23 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Template blurb generation from RoomFeatures fields",
+      "body": "TASK-06 blurb authoring used LLM reasoning; a deterministic template could produce boilerplate copy from structured feature data, but quality would be lower for a conversion-critical page",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T15:31:16.060Z",
+      "path": "docs/plans/_archive/brik-room-content-schema/results-review.user.md",
+      "idea_key": "a4aed9470643a9a87914a09d4c222ead9419686c",
+      "priority_tier": "P1",
+      "own_priority_rank": 5,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": "Near",
+      "reason_code": "RULE_P1_NEAR_CAUSAL"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "DOM-order test as a conversion-safety pattern",
       "body": "new test file mirrors book-page-social-proof-order.test.tsx — both enforce critical above-the-fold ordering invariants on the book page. A third ordering constraint (e.g. deal banner position) could use the same pattern",
       "suggested_action": "defer",
@@ -402,6 +419,23 @@
       "effort": "M",
       "proximity": null,
       "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Typed RoomImages schema to replace flat imagesRaw: string[]",
+      "body": "this build trimmed room_3 and room_5 imagesRaw manually; typed image slots (landing, gallery, terrace, bathroom) would make cross-borrowing impossible and enable richer image alt-text",
+      "suggested_action": "create card (Dispatch 0046 already referenced in plan Goals section as Wave 2)",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T15:31:16.060Z",
+      "path": "docs/plans/_archive/brik-room-content-schema/results-review.user.md",
+      "idea_key": "ab5f5753a302003e45765f274511aca453e80dcd",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -1388,16 +1422,6 @@
   ],
   "riskItems": [],
   "pendingReviewItems": [
-    {
-      "type": "pending-review",
-      "business": "BOS",
-      "title": "Pending results review: brik-room-content-schema",
-      "body": "Build is complete but no results review has been written yet.",
-      "suggested_action": "Write docs/plans/brik-room-content-schema/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
-      "source": "build-record.user.md",
-      "date": "2026-02-27T15:22:17.712Z",
-      "path": "docs/plans/brik-room-content-schema/build-record.user.md"
-    },
     {
       "type": "pending-review",
       "business": "BOS",

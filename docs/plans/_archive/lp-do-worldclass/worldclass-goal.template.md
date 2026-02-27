@@ -3,67 +3,74 @@ schema_version: worldclass-goal.v1
 
 # WHEN TO UPDATE goal_version:
 # Bump goal_version (e.g. 1 → 2) and reset benchmark-status to 'none' whenever
-# you change singular-goal OR add/remove any domain. This tells the skill to
-# regenerate the research prompt and will block scanning until you paste in a
-# fresh benchmark that aligns with the new goal.
+# you change ANY of the following:
+#   • singular-goal
+#   • any domain's id, name, context, or examples
+#   • add/remove/reorder domains
+#   • any constraint that would change what "world-class" means for this business
+#
+# goal_version is the research contract version — it controls benchmark currency.
+# Changing it forces research-prompt regeneration and blocks scanning until a
+# fresh benchmark aligned with the new goal is pasted in.
+#
+# NOTE: The skill updates benchmark-status automatically. That write does NOT
+# require a goal_version bump or a last-updated change.
 
-# business: Short business identifier. Must match the code used in the BOS.
-# Examples: BRIK, PWRB, HBAG, HEAD, PET
 business: BRIK
 
-# goal_version: Integer. Start at 1. Increment whenever singular-goal or domains
-# change. Changing this value triggers research-prompt regeneration and blocks
-# any scan run until a fresh benchmark is pasted in.
 goal_version: 1
 
 # singular-goal: One sentence. What does world-class look like for THIS business
-# RIGHT NOW? Keep it concrete and time-bound — it will change as the business
-# matures. Wrap in double quotes if it contains colons or special characters.
-singular-goal: "World-class boutique hostel website for Positano — direct booking optimised, professional imagery, room-level conversion funnel"
+# RIGHT NOW? Keep it concrete, time-bound, and include 1-2 observable markers.
+singular-goal: "By Summer 2026, BRIK has a world-class boutique hostel website for Positano with professional imagery, room-level pages with an embedded Octorate funnel, and a direct-booking CTA hierarchy that outcompetes OTA links."
 
-# domains: List of focus areas where benchmarking will be done.
-# Each entry has:
-#   name     — short label used in research prompts and reports
-#   context  — 1-3 sentences explaining what this domain covers for THIS business
-#   examples — 1-3 world-class reference points the operator can name (people,
-#              brands, specific URLs, or descriptive phrases)
 domains:
-  - name: Website Imagery
+  # id is optional but recommended for stability. If provided, it is used verbatim
+  # as domain_id in dispatch keys and benchmark headings. If absent, domain_id is
+  # derived from name (lowercased, spaces → hyphens).
+  # IMPORTANT: domain name is identity-bearing if no explicit id is set. Renaming
+  # a domain without bumping goal_version corrupts dispatch clustering keys and
+  # causes benchmark domain mismatches. Always bump goal_version when renaming.
+  - id: website-imagery
+    name: Website Imagery
     context: >
       Photography and visual presentation across the site — hero shots, room
       galleries, outdoor/terrace imagery, and lifestyle content. For a coastal
       Positano property the imagery must convey the location as the primary
       selling point while keeping the boutique, affordable-luxury feel.
+      Excludes booking funnel UX and direct-booking incentive messaging
+      (see Room-Level Booking Funnel and Direct Booking Conversion).
     examples:
-      - Passalacqua hotel website (Lake Como) — editorial-quality room imagery
+      - "Passalacqua hotel website (Lake Como) — imagery quality and light direction only; ignore positioning and budget level"
       - La Minervetta Sorrento — authentic sense-of-place photography
       - "Airbnb Plus listings in Amalfi Coast — high dynamic range, natural light"
 
-  - name: Room-Level Booking Funnel
+  - id: room-level-booking-funnel
+    name: Room-Level Booking Funnel
     context: >
       The journey from room/bed listing page through to booking completion.
       Covers information hierarchy, pricing display, availability calendar UX,
       and how the Octorate widget is integrated so it does not feel like a
-      third-party interruption.
+      third-party interruption. Excludes broader direct-booking incentives
+      and price-match messaging (see Direct Booking Conversion).
     examples:
       - Generator Hostels — clean bed-type selector with real-time pricing
       - "Selina properties — room cards with photo, feature list, and inline CTA"
       - Hostelworld top-performer listings — social proof placement within funnel
 
-  - name: Direct Booking Conversion
+  - id: direct-booking-conversion
+    name: Direct Booking Conversion
     context: >
       Everything that nudges a visitor who found the hostel via OTA or search to
       book direct instead. Covers price-match messaging, loyalty incentives,
       trust signals, and how the direct-booking CTA competes with OTA links
-      appearing elsewhere on the page.
+      appearing elsewhere on the page. Excludes room-page information architecture
+      and booking widget UX (see Room-Level Booking Funnel).
     examples:
       - Uku Hostel (Porto) — prominent "Book Direct — Best Price" strip
       - "The Student Hotel — member-rate framing on homepage hero"
       - "Beds&Dreams hostels — cancellation policy clarity as conversion lever"
 
-# constraints: List of hard constraints the benchmark and recommendations must
-# respect. Use plain sentences. Examples: budget level, target audience, season,
-# platform/tool lock-in, language, legal requirements.
 constraints:
   - Coastal Italy (Positano, Amalfi Coast) — imagery and copy must reflect the
     Mediterranean setting and summer-peak seasonality
@@ -77,24 +84,27 @@ constraints:
 # created: Date this file was first committed (YYYY-MM-DD)
 created: 2026-02-26
 
-# last-updated: Update this whenever any field above changes (YYYY-MM-DD)
+# last-updated: Update ONLY when singular-goal, domains, or constraints change.
+# Do NOT update when benchmark-status changes — that is an automated write.
 last-updated: 2026-02-26
 
-# benchmark-status: Current state of the benchmark for this goal_version.
-#   none                  — no benchmark exists yet for the current goal_version
-#   research-prompt-ready — research prompt has been generated; operator has not
-#                           yet run it and pasted the benchmark back in
-#   benchmark-ready       — benchmark is pasted in and aligned with the current
-#                           goal_version; scans may proceed
+# benchmark-status: Managed by the skill. Reset to 'none' manually only when
+# bumping goal_version. Do not change to other values by hand.
+#   none                  — no benchmark for the current goal_version
+#   research-prompt-ready — prompt generated; operator has not yet pasted benchmark
+#   benchmark-ready       — benchmark aligned with goal_version; scans may proceed
 benchmark-status: none
 ---
 
 <!--
 =============================================================================
-WORKED EXAMPLE — BRIK (above frontmatter)
+WORKED EXAMPLE — BRIK (frontmatter above)
 The frontmatter block above is a complete worked example for the BRIK business.
-When creating a file for a different business, copy the BLANK TEMPLATE section
-below and fill it in. Do not edit this example file directly.
+When creating a per-business file, use the BLANK TEMPLATE reference below.
+
+IMPORTANT: Per-business goal artifacts must contain only ONE frontmatter block
+at the top of the file. Do not paste additional --- blocks or the blank template
+structure into a per-business file — that creates parsing ambiguity.
 =============================================================================
 -->
 
@@ -105,61 +115,71 @@ to the `lp-do-worldclass` skill. The skill uses `singular-goal` and `domains`
 to generate a structured research prompt; once the operator pastes the benchmark
 results back in, scans compare current state against that benchmark.
 
-**When you change the goal:** bump `goal_version`, reset `benchmark-status` to
-`none`, and re-run the skill to get a fresh research prompt. Do not run a scan
-until the new benchmark is in place.
+**When to bump `goal_version`:** increment and reset `benchmark-status: none` when you change any of:
+- `singular-goal`
+- any domain's `id`, `name`, `context`, or `examples`
+- add/remove/reorder domains
+- any constraint that changes what world-class means for this business
+
+**Domain identity warning:** `id` (or `name` if no `id` is set) is used in dispatch clustering keys and benchmark headings. Renaming a domain `name` without setting a stable `id` first will silently change domain_id — corrupting deduplication and clustering for any existing dispatches. Always set an explicit `id` on each domain and bump `goal_version` before renaming `name`.
+
+**`last-updated` tracks goal contract changes only** — singular-goal, domains, constraints. It does not update when `benchmark-status` changes. Automated benchmark-status writes by the skill must not touch `last-updated`.
+
+**YAML comments are ephemeral:** Automated writes to `benchmark-status` will typically preserve comments when done by an agent Edit tool, but a YAML parse-and-reserialize would strip them. The authoritative operator guidance lives in this Markdown body, not in the frontmatter comments.
 
 ---
 
 <!--
 =============================================================================
-BLANK TEMPLATE — copy this section to create a per-business goal artifact
-File path convention: docs/business-os/strategy/<BIZ>/worldclass-goal.md
-=============================================================================
+BLANK TEMPLATE — reference only
+File path for per-business files: docs/business-os/strategy/<BIZ>/worldclass-goal.md
 
----
+Copy ONLY the YAML fields below into a new per-business file. Do not copy
+this comment block. Per-business files must have exactly one --- frontmatter
+block at the top and a short Markdown body below.
+
+YAML FIELDS:
+
 schema_version: worldclass-goal.v1
-
-# WHEN TO UPDATE goal_version:
-# Bump goal_version and reset benchmark-status to 'none' whenever you change
-# singular-goal OR add/remove any domain.
-
 business: <BUSINESS_CODE>
-
 goal_version: 1
-
-singular-goal: "<One sentence — what does world-class look like for this business right now?>"
+singular-goal: "<Timebound one-sentence goal — e.g. 'By [Season Year], <BIZ> has [observable markers]'>"
 
 domains:
-  - name: <Domain Name>
+  - id: <lowercase-hyphenated-id>    # recommended; derived from name if absent
+    name: <Domain Name>
     context: >
-      <1-3 sentences: what does this domain cover for this specific business?>
+      <1-3 sentences: what this domain covers for this business.
+      Add one exclusion line if adjacent domains overlap.>
     examples:
       - <World-class reference point 1>
       - <World-class reference point 2>
 
-  - name: <Domain Name>
-    context: >
-      <1-3 sentences>
-    examples:
-      - <Reference point 1>
-
 constraints:
-  - <Hard constraint 1 — e.g. budget level, geography, platform lock-in>
-  - <Hard constraint 2>
+  - <Hard geographic/positioning/platform constraint>
+  - <Hard audience/language constraint>
+  # Optional: implementation constraints if they are real hard bounds:
+  #   - No full site rebuild this cycle; improvements must fit existing stack
+  #   - Photography budget cap: €X
+  #   - Site must remain English-first; Italian optional
+  #   - Must comply with EU consumer rules and GDPR; avoid dark patterns
 
 created: <YYYY-MM-DD>
 last-updated: <YYYY-MM-DD>
-
 benchmark-status: none
----
+
+MARKDOWN BODY (copy and adapt):
 
 # World-Class Goal — <BUSINESS_CODE>
 
 Brief description of the business and why this goal was set.
 
-**When you change the goal:** bump `goal_version`, reset `benchmark-status` to
-`none`, and re-run the skill to get a fresh research prompt.
+**When to bump `goal_version`:** increment and reset `benchmark-status: none`
+when you change singular-goal, any domain, or any constraint.
 
+**Domain identity warning:** set an explicit `id` on each domain and bump
+`goal_version` before renaming any domain `name`.
+
+**`last-updated` tracks goal contract changes only** — not benchmark-status.
 =============================================================================
 -->

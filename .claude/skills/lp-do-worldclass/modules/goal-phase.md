@@ -24,7 +24,7 @@ Read `docs/business-os/strategy/<BIZ>/worldclass-goal.md`.
 | `business`         | Yes      | Must match `--biz` value                                                       |
 | `goal_version`     | Yes      | Integer ≥1                                                                     |
 | `singular-goal`    | Yes      | Non-empty string                                                               |
-| `domains`          | Yes      | List with at least 1 entry; each entry must have `name`, `context`, `examples` |
+| `domains`          | Yes      | List with at least 1 entry; each entry must have `name`, `context`, `examples`; `id` is optional — if present, must be unique across all domains and lowercase-hyphenated; if absent, domain_id is derived from `name` (lowercased, spaces → hyphens) |
 | `constraints`      | Yes      | List (may be empty)                                                            |
 | `created`          | Yes      | YYYY-MM-DD                                                                     |
 | `last-updated`     | Yes      | YYYY-MM-DD                                                                     |
@@ -112,9 +112,9 @@ business: <BIZ>
 goal_version: <goal_version>
 generated_at: <YYYY-MM-DD when research was run>
 domains:
-  - id: <lowercase-hyphenated domain name>
+  - id: <domain_id — use domain.id if present in the goal artifact; otherwise derive as lowercase-hyphenated domain.name>
     name: <domain.name as written above>
-  (one entry per domain)
+  (one entry per domain; the id values here must exactly match the ## [<domain_id>] headings in the body below)
 ---
 
 Body: one top-level section per domain, using EXACTLY this heading format:

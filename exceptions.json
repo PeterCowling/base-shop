@@ -99,6 +99,13 @@
       "expires": "2026-12-31",
       "notes": "Brikette SEO audit, CTA, guide, routes, and schema lint exceptions (security/detect-non-literal-regexp, max-params, complexity) pending refactor."
     },
+    "BRIK-2": {
+      "allow": [
+        "apps/prime/src/**"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Prime meal-order wizard and bag-storage i18n deferred (ds/no-hardcoded-copy) and intentional hook dependency exceptions (react-hooks/exhaustive-deps) pending i18n extraction."
+    },
     "BRIK-821": {
       "allow": [
         "apps/brikette/src/hooks/usePagePreload.ts"

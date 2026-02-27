@@ -2,6 +2,7 @@
 import "server-only";
 
 import { BASE_URL } from "@/config/site";
+import { toFlatImageArray } from "@/data/roomsData";
 /* ─────────────────────────────────────────────────────────────
    RoomsStructuredDataRsc
    -------------------------------------------------------------
@@ -68,7 +69,7 @@ export default async function RoomsStructuredDataRsc({
       description: room.description,
       price: room.basePrice.amount,
       validFrom: resolveValidFrom(room),
-      images: toAbsoluteImages(room.imagesRaw),
+      images: toAbsoluteImages(toFlatImageArray(room.images)),
     });
     return { ...offer, inLanguage: lang };
   });
@@ -86,7 +87,7 @@ export default async function RoomsStructuredDataRsc({
       value: true,
     })),
     bed: { "@type": "BedDetails", numberOfBeds: room.occupancy ?? 1 },
-    image: toAbsoluteImages(room.imagesRaw),
+    image: toAbsoluteImages(toFlatImageArray(room.images)),
   }));
 
   const catalog = {

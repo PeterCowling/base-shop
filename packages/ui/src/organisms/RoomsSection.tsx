@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import { Section } from "../atoms/Section";
 import { Grid } from "../components/atoms/primitives/Grid";
-import { roomsData } from "../data/roomsData";
+import { roomsData, toFlatImageArray } from "../data/roomsData";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import RoomCard from "../molecules/RoomCard";
 import RoomFilters, { type RoomFilter } from "../molecules/RoomFilters";
@@ -206,7 +206,7 @@ function RoomsSection({
                 <RoomCard
                   id={room.id}
                   title={title}
-                  images={room.imagesRaw}
+                  images={toFlatImageArray(room.images)}
                   imageAlt={`${title} room`}
                   lang={lang}
                   actions={[

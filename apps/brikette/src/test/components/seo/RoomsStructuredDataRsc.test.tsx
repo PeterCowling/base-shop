@@ -19,7 +19,7 @@ jest.mock("@/utils/roomsCatalog", () => ({
       basePrice: { amount: 35, currency: "EUR" },
       occupancy: 6,
       amenities: [{ name: "Locker" }, { name: "Fan" }],
-      imagesRaw: ["/img/dorm-6.jpg"],
+      images: { bed: "/img/dorm-6.jpg", bathroom: "/img/test-bathroom.webp" },
       seasonalPrices: [{ start: "2024-06-01", end: "2024-09-30", amount: 45 }],
     },
     {
@@ -29,7 +29,7 @@ jest.mock("@/utils/roomsCatalog", () => ({
       basePrice: { amount: 95, currency: "EUR" },
       occupancy: 2,
       amenities: [{ name: "AC" }],
-      imagesRaw: ["/img/twin.jpg"],
+      images: { bed: "/img/twin.jpg", bathroom: "/img/test-bathroom.webp" },
       seasonalPrices: [],
     },
   ]),

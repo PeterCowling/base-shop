@@ -21,7 +21,7 @@ import FacilityIcon from "@/components/rooms/FacilityIcon";
 import FullscreenImage from "@/components/rooms/FullscreenImage";
 import { IS_TEST } from "@/config/env";
 import { BOOKING_CODE } from "@/context/modal/constants";
-import type { Room } from "@/data/roomsData";
+import { toFlatImageArray, type Room } from "@/data/roomsData";
 import { useRoomPricing } from "@/hooks/useRoomPricing";
 import { i18nConfig } from "@/i18n.config";
 import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
@@ -144,7 +144,7 @@ export default memo(function RoomCard({
 
   const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
 
-  const images = room.imagesRaw ?? [];
+  const images = toFlatImageArray(room.images);
   const baseKey = `rooms.${room.id}`;
   const fallbackLanguage = (i18nConfig.fallbackLng ?? "en") as string;
 

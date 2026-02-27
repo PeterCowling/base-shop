@@ -1,0 +1,29 @@
+{
+  "round": 1,
+  "mode": "file",
+  "artifact": "docs/plans/prime-account-profile-page/plan.md",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/prime-account-profile-page/plan.md",
+      "line": "132",
+      "message": "The plan treats `updateProfile` resolution as success and immediately invalidates + navigates, but `useGuestProfileMutator.updateProfile` currently swallows Firebase write errors (sets `isError`, does not throw). This can redirect users to home after a failed save, leaving profile/banner state unchanged while appearing successful."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/prime-account-profile-page/plan.md",
+      "line": "51",
+      "message": "Test-ID source is cited as workspace-root `jest.setup.ts`; current configuration is centrally applied via shared test setup (`test/setup/mocks.ts` through the Jest preset). The guidance is directionally correct (`data-cy`) but path evidence is imprecise."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/prime-account-profile-page/plan.md",
+      "line": "146",
+      "message": "The payload explicitly includes `updatedAt`, but `useGuestProfileMutator.updateProfile` overwrites `updatedAt` internally. Keeping both can make tests/assertions misleading about the true write contract."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "lp_score": 4.0,
+  "sessionId": "Q1qNA84XAQMYM94_"
+}

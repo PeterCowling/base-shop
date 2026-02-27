@@ -223,7 +223,7 @@
     },
     {
       "name": "lp-do-worldclass",
-      "description": "World-class benchmark skill for startup loop. Validates a business goal artifact, generates or refreshes a deep-research prompt, and (when a benchmark result is present) scans business strategy artifacts against world-class standards and emits improvement ideas to queue-state.json.",
+      "description": "World-class benchmark skill for startup loop. Validates a business goal artifact, generates or refreshes a deep-research prompt, and (when a benchmark result is present) scans business strategy artifacts against world-class standards, presents improvement ideas to the operator for selection, and invokes /lp-do-ideas for each selected idea.",
       "path": ".claude/skills/lp-do-worldclass/SKILL.md"
     },
     {

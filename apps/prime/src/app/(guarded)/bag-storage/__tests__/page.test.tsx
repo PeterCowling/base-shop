@@ -41,7 +41,7 @@ describe("BagStoragePage", () => {
     fireEvent.change(screen.getByLabelText("Note (optional)"), {
       target: { value: "Will collect before dinner." },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Request bag drop" }));
+    fireEvent.submit(screen.getByRole("button", { name: "Request bag drop" }).closest("form")!);
 
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledWith(

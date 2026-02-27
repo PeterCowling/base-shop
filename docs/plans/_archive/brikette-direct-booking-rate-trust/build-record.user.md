@@ -44,7 +44,7 @@ Four trust-signal gaps in Brikette's direct-booking proposition were fixed and l
 
 - **Intended Outcome:** Increase direct booking share toward 27% P50 target.
 - **Measurement proxy:** GA4 CTA click events on `/book` and `/rooms` (pre-Octorate-handoff), measured over 30 days post-deploy.
-- **Deploy gate still outstanding:** Operator must confirm "up to 25% off" is accurate for the current Octorate rate structure before production deploy. Fallback: change to "exclusive direct-only perks" with no % claim.
+- **Deploy gate: CLEARED (2026-02-27).** Operator confirmed "up to 25% off" is accurate for the current Octorate rate structure. Plan is production-ready.
 
 ---
 

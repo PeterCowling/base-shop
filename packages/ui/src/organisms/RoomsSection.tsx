@@ -11,6 +11,7 @@ import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import RoomCard from "../molecules/RoomCard";
 import RoomFilters, { type RoomFilter } from "../molecules/RoomFilters";
 import { SLUGS } from "../slug-map";
+import type { RoomCardPrice } from "../types/roomCard";
 import { getDatePlusTwoDays, getTodayIso } from "../utils/dateUtils";
 
 export type RoomsSectionBookingQuery = {
@@ -107,6 +108,7 @@ function RoomsSection({
   bookingQuery,
   itemListId,
   onRoomSelect,
+  roomPrices,
 }: {
   lang?: string;
   bookingQuery?: RoomsSectionBookingQuery;
@@ -117,6 +119,12 @@ function RoomsSection({
    * Kept GA4-agnostic; app callers can emit analytics using their own contract layer.
    */
   onRoomSelect?: (ctx: { roomSku: string; plan: "nr" | "flex"; index: number; itemListId?: string }) => void;
+  /**
+   * Optional per-room pricing data keyed by room ID (e.g. "room_10", "double_room").
+   * When provided for a room, overrides the default (empty) price block on that RoomCard.
+   * Used by the brikette live-availability feature to show per-date-range pricing.
+   */
+  roomPrices?: Record<string, RoomCardPrice>;
 }): JSX.Element {
   const fallbackLang = useCurrentLanguage();
   const lang = explicitLang ?? fallbackLang;
@@ -213,6 +221,7 @@ function RoomsSection({
                     { id: "nr", label: nonRefundableLabel, onSelect: () => openBooking("nonRefundable") },
                     { id: "flex", label: flexibleLabel, onSelect: () => openBooking("refundable") },
                   ]}
+                  price={roomPrices?.[room.id]}
                 />
                 <p className="mt-2 text-sm leading-relaxed text-brand-text/80 dark:text-brand-text/75">
                   {roomSummary}

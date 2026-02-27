@@ -41,5 +41,11 @@
     ],
     "footer": "Окончательная доступность и оплата выполняются в нашей официальной системе бронирования."
   },
-  "backToRooms": "Назад к номерам"
+  "backToRooms": "Назад к номерам",
+  "hostel": {
+    "directSavings": {
+      "eyebrow": "Book direct and save",
+      "headline": "Up to 25% less than Booking.com"
+    }
+  }
 }

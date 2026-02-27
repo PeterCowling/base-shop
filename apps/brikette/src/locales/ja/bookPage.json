@@ -41,5 +41,11 @@
     ],
     "footer": "最終的な在庫確認と決済は公式予約エンジンで行われます。"
   },
-  "backToRooms": "客室一覧に戻る"
+  "backToRooms": "客室一覧に戻る",
+  "hostel": {
+    "directSavings": {
+      "eyebrow": "Book direct and save",
+      "headline": "Up to 25% less than Booking.com"
+    }
+  }
 }

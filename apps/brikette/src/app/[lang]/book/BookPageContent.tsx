@@ -230,7 +230,12 @@ function BookPageContent({ lang }: Props): JSX.Element {
         </div>
       </Section>
 
-      <DirectPerksBlock lang={lang} className="mb-6 rounded-2xl border border-brand-outline/30 bg-brand-surface p-6 shadow-sm" />
+      <DirectPerksBlock
+        lang={lang}
+        className="mb-6 rounded-2xl border border-brand-outline/30 bg-brand-surface p-6 shadow-sm"
+        savingsEyebrow={t("hostel.directSavings.eyebrow", { defaultValue: "Book direct and save" /* i18n-exempt -- BRIK-005 [ttl=2026-03-15] */ })}
+        savingsHeadline={t("hostel.directSavings.headline", { defaultValue: "Up to 25% less than Booking.com" /* i18n-exempt -- BRIK-005 [ttl=2026-03-15] */ })}
+      />
 
       <RoomsSection
         lang={lang}

@@ -41,5 +41,11 @@
     ],
     "footer": "A végleges elérhetőség és a fizetés a hivatalos foglalási rendszerünkben történik."
   },
-  "backToRooms": "Vissza a szobákhoz"
+  "backToRooms": "Vissza a szobákhoz",
+  "hostel": {
+    "directSavings": {
+      "eyebrow": "Book direct and save",
+      "headline": "Up to 25% less than Booking.com"
+    }
+  }
 }

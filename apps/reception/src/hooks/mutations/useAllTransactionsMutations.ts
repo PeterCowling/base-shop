@@ -75,7 +75,6 @@ export default function useAllTransactions() {
           });
           await update(ref(database), updatePayload);
           const successMsg = `Updated void fields on allFinancialTransactions/${transactionId}`;
-          console.log(successMsg, updatePayload);
           setSuccess(successMsg);
           return;
         } else {
@@ -91,7 +90,6 @@ export default function useAllTransactions() {
             [`allFinancialTransactions/${transactionId}`]: payload,
           });
           const successMsg = `Successfully wrote to allFinancialTransactions/${transactionId}`;
-          console.log(successMsg, payload);
           setSuccess(successMsg);
         }
       } catch (err) {

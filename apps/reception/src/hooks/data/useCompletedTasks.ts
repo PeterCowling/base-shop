@@ -28,14 +28,14 @@ export function useCompletedTasks() {
   const setOccupantTasks = useCallback(
     async (occupantId: string, tasks: CompletedTaskFlags): Promise<void> => {
       if (!user) {
-        console.log("No user is logged in; cannot set occupant tasks.");
+        console.warn("No user is logged in; cannot set occupant tasks.");
         return;
       }
 
       try {
         await set(ref(database, `completedTasks/${occupantId}`), tasks);
       } catch (error) {
-        console.log("Error writing occupant tasks:", error);
+        console.error("Error writing occupant tasks:", error);
       }
     },
     [database, user]
@@ -54,7 +54,7 @@ export function useCompletedTasks() {
       value: "true" | "false"
     ): Promise<void> => {
       if (!user) {
-        console.log("No user is logged in; cannot update occupant tasks.");
+        console.warn("No user is logged in; cannot update occupant tasks.");
         return;
       }
 
@@ -64,7 +64,7 @@ export function useCompletedTasks() {
           value
         );
       } catch (error) {
-        console.log("Error writing occupant tasks:", error);
+        console.error("Error writing occupant tasks:", error);
       }
     },
     [database, user]

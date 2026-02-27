@@ -45,7 +45,7 @@ export default function useLoansMutations() {
 
       return update(loanRef, loanData)
         .then(() => {
-          console.log("Saved loan transaction:", path, loanData);
+          // success — no logging of financial payload
         })
         .catch((err) => {
           console.error("Error saving loan transaction:", path, err);
@@ -75,13 +75,7 @@ export default function useLoansMutations() {
               database,
               `loans/${bookingRef}/${occupantId}`
             );
-            return remove(occupantRef).then(() => {
-              console.log(
-                "Removed empty occupant node:",
-                bookingRef,
-                occupantId
-              );
-            });
+            return remove(occupantRef);
           }
           return null;
         })
@@ -119,9 +113,6 @@ export default function useLoansMutations() {
               if (txn.item === itemName && txn.type === "Loan") {
                 const txnPath = `loans/${bookingRef}/${occupantId}/txns/${txnSnap.key}`;
                 remove(ref(database, txnPath))
-                  .then(() => {
-                    console.log("Removed Loan transaction:", txnPath);
-                  })
                   .catch((err) => {
                     console.error("Error removing transaction:", txnPath, err);
                     setError(err);
@@ -179,8 +170,6 @@ export default function useLoansMutations() {
         })
         .then(() => remove(txnRef))
         .then(() => {
-          console.log("Removed occupant transaction:", path);
-
           if (itemName === "Keycard") {
             return logActivity(occupantId, 13)
               .then(() => {
@@ -285,9 +274,6 @@ export default function useLoansMutations() {
           const txn = snapshot.val() as LoanTransaction;
           const newDeposit = depositType === "CASH" ? 10 * txn.count : 0;
           return update(loanRef, { depositType, deposit: newDeposit });
-        })
-        .then(() => {
-          console.log("Updated deposit type:", path, depositType);
         })
         .catch((err) => {
           console.error("Error updating deposit type:", path, err);

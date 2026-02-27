@@ -263,7 +263,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-02-27T12:18:16.718Z";
+  var GEN_TS = "2026-02-27T13:50:36.992Z";
 
   var IDEA_ITEMS = [
     {
@@ -634,6 +634,23 @@
       "effort": "M",
       "proximity": null,
       "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Fix protocol-relative URL bypass in link allowlist",
+      "body": "isAllowlistedUrl accepts //evil.com (starts with /); fix: url.startsWith('/') && !url.startsWith('//')",
+      "suggested_action": "create card (security hardening)",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T13:49:00.509Z",
+      "path": "docs/plans/_archive/prime-digital-assistant-llm-upgrade/results-review.user.md",
+      "idea_key": "184b25f761d28687bf01af683263246ca4e23271",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -1254,6 +1271,23 @@
       "date": "2026-02-26T08:53:01.939Z",
       "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md",
       "idea_key": "50250241c361b3e014540cb7f748b06e906f22b5",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Expand keyword allowlist to reduce LLM fallback rate",
+      "body": "\"How do I walk to Fornillo beach?\" triggers LLM because \"walk to\" is not a transport keyword",
+      "suggested_action": "defer (low priority; LLM fallback works correctly)",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T13:49:00.509Z",
+      "path": "docs/plans/_archive/prime-digital-assistant-llm-upgrade/results-review.user.md",
+      "idea_key": "fb1392374a39996f87d46ff9534dde1b4ba8df9c",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",

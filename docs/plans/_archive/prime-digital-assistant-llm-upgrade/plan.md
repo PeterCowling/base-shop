@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Prime App
 Workstream: Engineering
 Created: 2026-02-27

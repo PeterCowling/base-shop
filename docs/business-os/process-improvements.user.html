@@ -250,7 +250,7 @@
 
   <div class="page-footer">
     <span>docs/business-os/process-improvements.user.html</span>
-    <span>Last cleared: 2026-02-26 — extracted from build records, reflection debt, and results reviews</span>
+    <span>Last cleared: 2026-02-27 — extracted from build records, reflection debt, and results reviews</span>
     <span id="footer-generated"></span>
   </div>
 
@@ -263,7 +263,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-02-26T21:33:08.421Z";
+  var GEN_TS = "2026-02-27T10:09:52.574Z";
 
   var IDEA_ITEMS = [
     {
@@ -445,6 +445,22 @@
       "date": "2026-02-25T22:36:24.076Z",
       "path": "docs/plans/startup-loop-parallel-container-wiring/results-review.user.md",
       "idea_key": "e6d41217823fc313fd5fe0ae6781723def8af146",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "None: no new standing data sources, skills, loop processes, or AI-to-mechanistic opportunities identified from this build",
+      "body": "None: no new standing data sources, skills, loop processes, or AI-to-mechanistic opportunities identified from this build",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T09:59:58.781Z",
+      "path": "docs/plans/_archive/caryina-axerve-payment-gateway/results-review.user.md",
+      "idea_key": "dde359e7777d979a74136c44537a10d72a3b860a",
       "priority_tier": "P4",
       "own_priority_rank": 9,
       "urgency": "U2",
@@ -938,6 +954,57 @@
       "date": "2026-02-25T22:32:11.291Z",
       "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md",
       "idea_key": "2a9895c0b987426e79f26ab0ad5d09a70a53152e",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add Axerve sandbox credentials to .env.local and run an end-to-end sandbox payment test",
+      "body": "CHECKPOINT-08 found credentials not set; sandbox E2E blocked",
+      "suggested_action": "operator action — set AXERVE_SHOP_LOGIN and AXERVE_API_KEY in .env.local and run pnpm dev checkout flow manually",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T09:59:58.781Z",
+      "path": "docs/plans/_archive/caryina-axerve-payment-gateway/results-review.user.md",
+      "idea_key": "5cdb816fbd25ad673767b299489cad478f98bb99",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "New open-source package: node-soap@1.7.1 introduced as monorepo dependency",
+      "body": "added to packages/axerve/package.json; no prior SOAP client existed in monorepo",
+      "suggested_action": "note for dependency audit; no new plan required",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T09:59:58.781Z",
+      "path": "docs/plans/_archive/caryina-axerve-payment-gateway/results-review.user.md",
+      "idea_key": "49ebab7c9d6390f0e623c6911ff02c2336492a33",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "PCI DSS SAQ D acknowledgment required before production deployment",
+      "body": "S2S mode passes raw card numbers through the server; PCI scope is SAQ D vs SAQ A for hosted checkout",
+      "suggested_action": "operator confirms PCI compliance posture before enabling PAYMENTS_PROVIDER=axerve in production",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T09:59:58.781Z",
+      "path": "docs/plans/_archive/caryina-axerve-payment-gateway/results-review.user.md",
+      "idea_key": "7a63e382b021724d9b9e7b900f73f07f23f47eaa",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",

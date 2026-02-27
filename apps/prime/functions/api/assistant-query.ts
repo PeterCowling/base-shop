@@ -5,7 +5,7 @@
  * - validates guest session token
  * - applies per-guest rate limiting (5 requests/minute)
  * - reads guest booking context from Firebase for grounding
- * - calls OpenAI gpt-4o-mini and returns a structured JSON response
+ * - calls OpenAI gpt-5-mini and returns a structured JSON response
  * - strips non-allowlisted links before returning
  * - returns a safe fallback on any OpenAI error
  */
@@ -165,7 +165,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'gpt-4o-mini',
+          model: 'gpt-5-mini',
           messages: allMessages,
           response_format: { type: 'json_object' },
           max_tokens: 500,

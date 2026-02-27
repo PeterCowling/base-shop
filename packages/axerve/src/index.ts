@@ -1,31 +1,20 @@
 import "server-only";
 
+import type { AxervePaymentParams, AxervePaymentResult } from "./types";
+
+export type { AxervePaymentParams, AxervePaymentResult } from "./types";
+
 const SANDBOX_WSDL =
   "https://sandbox.gestpay.net/gestpay/gestpayws/WSs2s.asmx?WSDL";
 const PRODUCTION_WSDL =
   "https://ecomms2s.sella.it/gestpay/gestpayws/WSs2s.asmx?WSDL";
 
-export interface AxervePaymentParams {
-  shopLogin: string;
-  apiKey: string;
-  uicCode: string; // "978" for EUR (ISO 4217 numeric code)
-  amount: string; // e.g. "10.00"
-  shopTransactionId: string;
-  cardNumber: string;
-  expiryMonth: string;
-  expiryYear: string;
-  cvv: string;
-  buyerName?: string;
-  buyerEmail?: string;
-}
-
-export interface AxervePaymentResult {
-  success: boolean;
-  transactionId: string;
-  bankTransactionId: string;
-  authCode?: string;
-  errorCode?: string;
-  errorDescription?: string;
+/** Thrown when the Axerve SOAP call fails at the network or protocol level. */
+export class AxerveError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "AxerveError";
+  }
 }
 
 function parseS2SResult(
@@ -44,6 +33,18 @@ function parseS2SResult(
   };
 }
 
+/**
+ * Calls the Axerve/GestPay S2S `callPagamS2S` operation.
+ *
+ * @param params - Payment parameters including card data and shop credentials.
+ * @returns Resolved payment result with success/failure status and transaction IDs.
+ * @throws {AxerveError} When the SOAP call fails at the network or protocol level.
+ *
+ * Environment variables:
+ * - `AXERVE_USE_MOCK=true` — return a hardcoded success result without any SOAP call.
+ * - `AXERVE_SANDBOX=true` — use the sandbox WSDL endpoint URL (default: production).
+ *   Note: `AXERVE_SANDBOX` only controls the endpoint URL; it does NOT trigger mock mode.
+ */
 export async function callPayment(
   params: AxervePaymentParams,
 ): Promise<AxervePaymentResult> {
@@ -64,27 +65,32 @@ export async function callPayment(
   const wsdlUrl =
     process.env.AXERVE_SANDBOX === "true" ? SANDBOX_WSDL : PRODUCTION_WSDL;
 
-  // SPIKE stub: load SOAP client from WSDL
-  // Full error handling (AxerveError) added in IMPLEMENT-03
   const { createClientAsync } = await import("soap");
   const client = await createClientAsync(wsdlUrl);
 
-  const [result] = await (
-    client as unknown as {
-      callPagamS2SAsync: (p: Record<string, string>) => Promise<unknown[]>;
-    }
-  ).callPagamS2SAsync({
-    shopLogin: params.shopLogin,
-    uicCode: params.uicCode,
-    amount: params.amount,
-    shopTransactionID: params.shopTransactionId,
-    cardNumber: params.cardNumber,
-    expiryMonth: params.expiryMonth,
-    expiryYear: params.expiryYear,
-    cvv2: params.cvv,
-    buyerName: params.buyerName ?? "",
-    buyerEmail: params.buyerEmail ?? "",
-  });
+  let result: unknown;
+  try {
+    [result] = await (
+      client as unknown as {
+        callPagamS2SAsync: (p: Record<string, string>) => Promise<unknown[]>;
+      }
+    ).callPagamS2SAsync({
+      shopLogin: params.shopLogin,
+      uicCode: params.uicCode,
+      amount: params.amount,
+      shopTransactionID: params.shopTransactionId,
+      cardNumber: params.cardNumber,
+      expiryMonth: params.expiryMonth,
+      expiryYear: params.expiryYear,
+      cvv2: params.cvv,
+      buyerName: params.buyerName ?? "",
+      buyerEmail: params.buyerEmail ?? "",
+    });
+  } catch (err) {
+    throw new AxerveError(
+      `Axerve SOAP call failed: ${err instanceof Error ? err.message : String(err)}`,
+    );
+  }
 
   return parseS2SResult(result, params.shopTransactionId);
 }

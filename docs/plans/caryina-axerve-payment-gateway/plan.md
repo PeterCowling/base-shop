@@ -29,7 +29,7 @@ Replace the Stripe hosted-checkout integration in `apps/caryina` with Axerve/Ges
 ## Active tasks
 - [x] SPIKE-01: Create `packages/axerve/` — install node-soap, scaffold SOAP client, verify Cloudflare Pages compatibility
 - [x] IMPLEMENT-02: Update payments env schema + docs
-- [ ] IMPLEMENT-03: Complete Axerve S2S SOAP client package
+- [x] IMPLEMENT-03: Complete Axerve S2S SOAP client package
 - [ ] IMPLEMENT-04: Replace checkout route with Axerve S2S call
 - [ ] IMPLEMENT-05: Add card form to CheckoutClient
 - [ ] IMPLEMENT-06: Remove Stripe verification layer; simplify success page
@@ -101,7 +101,7 @@ Replace the Stripe hosted-checkout integration in `apps/caryina` with Axerve/Ges
 |---|---|---|---:|---:|---|---|---|
 | SPIKE-01 | SPIKE | Create packages/axerve/ — install node-soap, verify CF Pages compat | 80% | M | Complete (2026-02-27) | - | IMPLEMENT-03 |
 | IMPLEMENT-02 | IMPLEMENT | Update payments env schema + docs/.env.reference.md | 85% | S | Complete (2026-02-27) | - | IMPLEMENT-03, IMPLEMENT-04 |
-| IMPLEMENT-03 | IMPLEMENT | Complete Axerve S2S client package (callPayment wrapper) | 80% | M | Pending | SPIKE-01 | IMPLEMENT-04 |
+| IMPLEMENT-03 | IMPLEMENT | Complete Axerve S2S client package (callPayment wrapper) | 80% | M | Complete (2026-02-27) | SPIKE-01 | IMPLEMENT-04 |
 | IMPLEMENT-04 | IMPLEMENT | Replace checkout route with Axerve S2S call | 80% | M | Pending | IMPLEMENT-02, IMPLEMENT-03 | IMPLEMENT-05, IMPLEMENT-06, IMPLEMENT-07 |
 | IMPLEMENT-05 | IMPLEMENT | Add card form to CheckoutClient | 80% | M | Pending | IMPLEMENT-04 | CHECKPOINT-08 |
 | IMPLEMENT-06 | IMPLEMENT | Remove Stripe verification layer; simplify success page | 80% | S | Pending | IMPLEMENT-04 | IMPLEMENT-07 |
@@ -226,7 +226,8 @@ Replace the Stripe hosted-checkout integration in `apps/caryina` with Axerve/Ges
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
+- **Build Evidence:** `src/types.ts` created (AxervePaymentParams, AxervePaymentResult with JSDoc). `AxerveError` class exported from `src/index.ts`. try/catch added around `callPagamS2SAsync` — SOAP network errors throw `AxerveError`. TC-03-01 ✓ (OK→success), TC-03-02 ✓ (KO→failure), TC-03-03 ✓ (network error→AxerveError thrown), TC-03-04 ✓ (mock mode→no SOAP call). Typecheck clean.
 - **Affects:** `packages/axerve/src/index.ts`, `packages/axerve/src/types.ts` (new)
 - **Depends on:** SPIKE-01
 - **Blocks:** IMPLEMENT-04

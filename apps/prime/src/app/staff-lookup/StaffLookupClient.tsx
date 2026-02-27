@@ -1,3 +1,4 @@
+/* eslint-disable ds/min-tap-size -- BRIK-2 tap-size deferred */
 'use client';
 
 /**

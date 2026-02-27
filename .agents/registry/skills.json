@@ -77,6 +77,11 @@
       "path": ".claude/skills/lp-channels/SKILL.md"
     },
     {
+      "name": "lp-coverage-scan",
+      "description": "Coverage gap scanner for startup loop. Reads a business coverage manifest, scans the repo and known integrations for actual artifact/data-source state, classifies gaps as CRITICAL/MAJOR/MINOR, writes a gap report, and emits dispatch packets to queue-state.json for all CRITICAL and MAJOR gaps.",
+      "path": ".claude/skills/lp-coverage-scan/SKILL.md"
+    },
+    {
       "name": "lp-design-qa",
       "description": "Audit a built UI against the design spec and design system for visual consistency (code-level), accessibility, responsive behavior, and token compliance. Produces structured issues ready for lp-do-build fixes.",
       "path": ".claude/skills/lp-design-qa/SKILL.md"
@@ -148,7 +153,7 @@
     },
     {
       "name": "lp-do-assessment-13-product-naming",
-      "description": "Product naming for new startups (ASSESSMENT-13). Reads brand strategy and product definition, produces a product naming document with 3–5 candidate names, brand-product relationship guidance, TM pre-screen direction, and a naming convention for future SKUs. Upstream of lp-do-assessment-14-logo-brief.",
+      "description": "Full product naming pipeline orchestrator (ASSESSMENT-13). Runs four parts in sequence: (1) produce <YYYY-MM-DD>-product-naming-spec.md from ASSESSMENT docs, (2) agent generates 75 scored candidates across naming territories, (3) TM pre-screen direction for all candidates via tm-prescreen-cli.ts, (4) filter and rank to produce a top-20 shortlist. Delivers a final operator-ready shortlist of scored candidates with EUIPO/WIPO/UIBM search direction pre-generated.",
       "path": ".claude/skills/lp-do-assessment-13-product-naming/SKILL.md"
     },
     {
@@ -215,6 +220,11 @@
       "name": "lp-do-sequence",
       "description": "Topologically sort plan tasks into correct implementation order, preserve stable task IDs by default, and add explicit dependency/blocker metadata to enable parallel subagent execution.",
       "path": ".claude/skills/lp-do-sequence/SKILL.md"
+    },
+    {
+      "name": "lp-do-worldclass",
+      "description": "World-class benchmark skill for startup loop. Validates a business goal artifact, generates or refreshes a deep-research prompt, and (when a benchmark result is present) scans business strategy artifacts against world-class standards and emits improvement ideas to queue-state.json.",
+      "path": ".claude/skills/lp-do-worldclass/SKILL.md"
     },
     {
       "name": "lp-experiment",

@@ -16,6 +16,7 @@ import {
 import type { Database } from "firebase/database";
 import { get,ref } from "firebase/database";
 
+import { getMeta, setMeta } from "../lib/offline/receptionDb";
 import type { User, UserProfile, UserRole } from "../types/domains/userDomain";
 import { normalizeRoles, userProfileSchema } from "../types/domains/userDomain";
 
@@ -174,16 +175,21 @@ export async function loadUserWithProfile(
       roles: normalizeRoles(parsedProfile.roles),
     };
 
-    return {
+    const resolvedUser: User = {
       uid: firebaseUser.uid,
       email: resolvedEmail,
       user_name: profile.user_name,
       displayName: profile.displayName,
       roles: profile.roles,
     };
+
+    await setMeta<User | null>("cachedUserProfile", resolvedUser);
+
+    return resolvedUser;
   } catch (error) {
     console.error("Failed to load user profile:", error);
-    return null;
+    const cached = await getMeta<User>("cachedUserProfile");
+    return cached;
   }
 }
 
@@ -199,6 +205,7 @@ export function subscribeToAuthState(
       const user = await loadUserWithProfile(database, firebaseUser);
       listener(user);
     } else {
+      await setMeta<User | null>("cachedUserProfile", null);
       listener(null);
     }
   });

@@ -1,0 +1,28 @@
+{
+  "round": 2,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-offline-sync/plan.md",
+      "line": "79",
+      "message": "Fact-find claim inaccurate: `useOnlineStatus` consumed by `OfflineIndicator.tsx` but NOT by `Login.tsx`."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-offline-sync/plan.md",
+      "line": "560",
+      "message": "Overall acceptance says 'loan ops are queued' but task scope queues only `useLoansMutations.saveLoan`; other loan ops are online-only — success-criteria mismatch."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/reception-offline-sync/plan.md",
+      "line": "70",
+      "message": "Inherited outcome contract `Why: TBD` — carries through from auto-sourced dispatch; acceptable."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 7,
+  "lp_score": 3.5,
+  "post_autofix_note": "Round 2 autofixes applied: Login.tsx removed from useOnlineStatus consumers (OfflineIndicator.tsx only); acceptance criteria updated to specify saveLoan (not all loan ops) is queued; online-only error note added. No Critical findings in Round 1 or Round 2. Score trajectory 5→7 confirms convergence. Stopping at Round 2 (no Critical remaining after Round 2 per protocol). Proceeding to build with Critique-Warning: partially-credible (lp_score 3.5)."
+}

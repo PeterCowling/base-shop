@@ -75,9 +75,15 @@ export async function syncPendingWrites(database: Database): Promise<SyncResult>
 export function queueOfflineWrite(
   path: string,
   operation: "set" | "update" | "remove",
-  data?: unknown
+  data?: unknown,
+  opts?: {
+    idempotencyKey?: string;
+    conflictPolicy?: "last-write-wins" | "fail-on-conflict";
+    atomic?: boolean;
+    domain?: string;
+  }
 ): Promise<number | null> {
-  return addPendingWrite({ path, operation, data });
+  return addPendingWrite({ path, operation, data, ...opts });
 }
 
 export function isSyncing(): boolean {

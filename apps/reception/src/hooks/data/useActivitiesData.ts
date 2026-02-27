@@ -12,6 +12,10 @@ import {
   startAt,
 } from "firebase/database";
 
+import {
+  getCachedData,
+  setCachedData,
+} from "../../lib/offline/receptionDb";
 import { activitySchema } from "../../schemas/activitySchema";
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import type {
@@ -19,6 +23,8 @@ import type {
   Activity,
   ActivityData,
 } from "../../types/hooks/data/activitiesData";
+
+const ACTIVITIES_CACHE_KEY = "activities";
 
 export interface UseActivitiesDataParams {
   startAt?: string;
@@ -40,6 +46,16 @@ export default function useActivitiesData(
   const [error, setError] = useState<unknown>(null);
 
   useEffect(() => {
+    // Pre-populate from cache unconditionally; Firebase will overwrite with fresh data when online
+    let cancelled = false;
+    void (async () => {
+      const cached = await getCachedData<Activities>(ACTIVITIES_CACHE_KEY);
+      if (!cancelled && cached) {
+        setActivities(cached);
+        setLoading(false);
+      }
+    })();
+
     const baseRef = ref(database, "activities");
     let q = query(baseRef, orderByKey());
     if (startKey) q = query(q, startAt(startKey));
@@ -68,6 +84,8 @@ export default function useActivitiesData(
           parsed[occId] = parsedActs;
         });
         setActivities(parsed);
+        // Fire-and-forget cache update
+        void setCachedData(ACTIVITIES_CACHE_KEY, parsed);
       } finally {
         setLoading(false);
       }
@@ -79,7 +97,10 @@ export default function useActivitiesData(
     };
 
     const unsubscribe = onValue(q, handleSnapshot, handleError);
-    return () => unsubscribe();
+    return () => {
+      cancelled = true;
+      unsubscribe();
+    };
   }, [database, startKey, endKey, limit]);
 
   const memoActivities = useMemo(() => activities, [activities]);

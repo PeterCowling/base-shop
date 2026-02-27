@@ -19,7 +19,9 @@ import AuthenticatedApp from "./components/AuthenticatedApp";
 import LoadingSpinner from "./components/LoadingSpinner";
 import Login from "./components/Login";
 import { useAuth } from "./context/AuthContext";
+import { OfflineSyncContext } from "./context/OfflineSyncContext";
 import useInactivityLogout from "./hooks/client/useInactivityLogoutClient";
+import { useOfflineSync } from "./lib/offline/useOfflineSync";
 import { useFirebaseDatabase } from "./services/useFirebase";
 import type { ModalName } from "./types/ModalName";
 
@@ -31,7 +33,8 @@ function App({ children }: AppProps) {
   const { user, status, logout } = useAuth();
   const [activeModal, setActiveModal] = useState<ModalName | null>(null);
 
-  useFirebaseDatabase();
+  const database = useFirebaseDatabase();
+  const offlineSyncValue = useOfflineSync({ database, autoSync: true });
 
   const router = useRouter();
   const pathname = usePathname();
@@ -147,21 +150,23 @@ function App({ children }: AppProps) {
   }
 
   return (
-    <NotificationProviderWithGlobal defaultDuration={1500}>
-      <NotificationContainer position="top-center" />
-      {user && legacyUser ? (
-        <AuthenticatedApp
-          user={legacyUser}
-          activeModal={activeModal}
-          closeModal={closeModal}
-          handleLogout={handleLogout}
-        >
-          {children}
-        </AuthenticatedApp>
-      ) : (
-        <Login onLoginSuccess={handleLoginSuccess} />
-      )}
-    </NotificationProviderWithGlobal>
+    <OfflineSyncContext.Provider value={offlineSyncValue}>
+      <NotificationProviderWithGlobal defaultDuration={1500}>
+        <NotificationContainer position="top-center" />
+        {user && legacyUser ? (
+          <AuthenticatedApp
+            user={legacyUser}
+            activeModal={activeModal}
+            closeModal={closeModal}
+            handleLogout={handleLogout}
+          >
+            {children}
+          </AuthenticatedApp>
+        ) : (
+          <Login onLoginSuccess={handleLoginSuccess} />
+        )}
+      </NotificationProviderWithGlobal>
+    </OfflineSyncContext.Provider>
   );
 }
 

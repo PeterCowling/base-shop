@@ -77,3 +77,11 @@ import { cn } from '@acme/design-system/utils/style'
 2. Add to design tokens package (`packages/design-tokens/`)
 3. Update Tailwind config
 4. Document in `docs/typography-and-color.md`
+
+## Integration
+
+This skill is a **supporting reference**, not a pipeline stage. It is consulted on demand by pipeline skills throughout the UI design chain. Do not insert it into sequential pipeline ordering.
+
+- **Role:** Token and design system reference — consulted by any skill needing semantic color, spacing, typography, border, or shadow values.
+- **Consumers:** `lp-design-spec`, `tools-ui-frontend-design`, `lp-design-qa`, `tools-refactor` (and any other skill that handles UI implementation or review).
+- **Not a pipeline stage:** `tools-design-system` has no upstream trigger and no downstream handoff. It is invoked on demand whenever a pipeline skill needs token guidance.

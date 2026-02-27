@@ -55,7 +55,7 @@ Runs GATE-BD-07 pre-flight for the business unit without producing a feature des
 | Theme tokens | `packages/themes/<theme>/src/tokens.ts` | Concrete token values for the target app |
 | Base tokens | `packages/themes/base/src/tokens.ts` | Default token system (overridden by theme) |
 | Design system handbook | `docs/design-system-handbook.md` | Component catalog, atomic design layers |
-| Token reference | `.claude/skills/lp-design-system/SKILL.md` | Quick-reference for token classes |
+| Token reference | `.claude/skills/tools-design-system/SKILL.md` | Quick-reference for token classes |
 | Typography & color | `docs/typography-and-color.md` | Font model, HSL system, dark mode |
 | Fact-find (optional) | `docs/plans/<slug>-fact-find.md` | Feature context, audience, requirements |
 
@@ -130,7 +130,7 @@ For each visual property in the design, specify the exact semantic token:
 
 **Rules:**
 - Every color must map to a semantic token. No hex, no Tailwind palette colors.
-- Reference `lp-design-system` skill for the canonical token list.
+- Reference `tools-design-system` skill for the canonical token list.
 - If a needed token doesn't exist, document it as a prerequisite (new token to add to theme package).
 - Dark mode: verify every chosen token has a dark variant. Flag gaps.
 

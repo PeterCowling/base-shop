@@ -3,7 +3,7 @@ name: tools-ui-frontend-design
 description: Create distinctive, production-grade frontend interfaces grounded in this repo's design system. Use when asked to build web components, pages, or applications. Combines bold creative direction with token-constrained implementation.
 operating_mode: GENERATE
 trigger_conditions: build UI, web components, pages, frontend interface, design system implementation, production UI, React components
-related_skills: lp-design-system, lp-design-spec, lp-design-qa, tools-bos-design-page
+related_skills: tools-design-system, lp-design-spec, lp-design-qa, tools-bos-design-page
 ---
 
 # Frontend Design
@@ -30,7 +30,7 @@ Load these before any design work:
 
 | What | Where | Load when |
 |------|-------|-----------|
-| Token quick-ref | `.claude/skills/lp-design-system/SKILL.md` | Always — first thing |
+| Token quick-ref | `.claude/skills/tools-design-system/SKILL.md` | Always — first thing |
 | Brand dossier | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md` | If it exists for the business |
 | Theme tokens | `packages/themes/<theme>/src/tokens.ts` | Before any design |
 | Base tokens | `packages/themes/base/src/tokens.ts` | Always (fallback + reference) |
@@ -89,7 +89,7 @@ Load the brand dossier: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-iden
 
 ### Step 2: Load Design System Context
 
-1. Read `.claude/skills/lp-design-system/SKILL.md` for the token quick-reference
+1. Read `.claude/skills/tools-design-system/SKILL.md` for the token quick-reference
 2. Read `packages/themes/<theme>/src/tokens.ts` for the business's concrete token values
 3. Read `docs/design-system-handbook.md` for available components
 4. If the feature is complex, also read `docs/typography-and-color.md`

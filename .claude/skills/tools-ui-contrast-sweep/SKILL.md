@@ -195,3 +195,9 @@ If no issues are found, state exactly:
 - Prefer token-level/component-variant fixes over per-page overrides.
 - Validate `focus-visible` states explicitly via keyboard path.
 - Avoid reporting micro-differences unless they affect readability, interaction, or hierarchy.
+
+## Integration
+
+- **Upstream:** `lp-design-qa` (optional trigger — contrast-sweep is often invoked after lp-design-qa flags color or accessibility concerns); `lp-do-build` (direct invocation for pre-launch QA pass).
+- **Downstream:** `tools-refactor` (contrast and token findings feed the refactor entry criteria); `lp-do-build` (issues returned as structured findings for fix tasks).
+- **Loop position:** S9C (Parallel Sweep) — runs alongside `tools-ui-breakpoint-sweep` after UI build and static QA, before refactor.

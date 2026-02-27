@@ -1,3 +1,5 @@
+/* i18n-exempt file -- PRIME-01 [ttl=2027-06-30] rule-based assistant answers scaffolded in lp-do-build; i18n extraction tracked as follow-up */
+
 export interface AssistantLink {
   label: string;
   href: string;

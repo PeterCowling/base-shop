@@ -137,7 +137,8 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Validate out/ directory
-        run: test -d apps/xa-b/out && test $(ls apps/xa-b/out | wc -l) -gt 0 && echo "out/ is non-empty" || (echo "FAIL: out/ missing or empty"; exit 1)
+        run: |
+          test -d apps/xa-b/out && test $(ls apps/xa-b/out | wc -l) -gt 0 && echo "out/ is non-empty" || (echo "FAIL: out/ missing or empty"; exit 1)
 
   deploy-xa-uploader:
     name: Deploy xa-uploader (staging)

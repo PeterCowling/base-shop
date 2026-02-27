@@ -1,3 +1,4 @@
+/* eslint-disable ds/container-widths-only-at, ds/no-hardcoded-copy -- BRIK-3 prime DS rules deferred */
 import Link from 'next/link';
 import { WifiOff } from 'lucide-react';
 

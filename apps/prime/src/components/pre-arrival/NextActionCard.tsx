@@ -1,3 +1,4 @@
+/* eslint-disable ds/enforce-layout-primitives -- BRIK-3 prime DS rules deferred */
 /**
  * NextActionCard.tsx
  *

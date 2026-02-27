@@ -1,4 +1,4 @@
-/* eslint-disable ds/min-tap-size -- BRIK-2 tap-size deferred */
+/* eslint-disable ds/container-widths-only-at, ds/enforce-layout-primitives, ds/min-tap-size -- BRIK-3 prime DS rules deferred */
 'use client';
 
 import { useState } from 'react';

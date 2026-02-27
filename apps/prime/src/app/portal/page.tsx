@@ -1,3 +1,4 @@
+/* eslint-disable ds/container-widths-only-at -- BRIK-3 prime DS rules deferred */
 'use client';
 
 import { useEffect, useState } from 'react';

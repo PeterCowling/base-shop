@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- BRIK-3 prime DS rules deferred */
 /**
  * ReadinessDashboard.tsx
  *

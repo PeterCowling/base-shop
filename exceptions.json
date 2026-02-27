@@ -106,6 +106,13 @@
       "expires": "2026-12-31",
       "notes": "Prime meal-order wizard and bag-storage i18n deferred (ds/no-hardcoded-copy) and intentional hook dependency exceptions (react-hooks/exhaustive-deps) pending i18n extraction."
     },
+    "BRIK-3": {
+      "allow": [
+        "apps/prime/src/**"
+      ],
+      "expires": "2027-06-30",
+      "notes": "Prime digital-assistant page i18n (ds/no-hardcoded-copy), tap-size (ds/min-tap-size), and layout-primitive (ds/enforce-layout-primitives) exceptions deferred pending i18n extraction and DS migration."
+    },
     "BRIK-821": {
       "allow": [
         "apps/brikette/src/hooks/usePagePreload.ts"

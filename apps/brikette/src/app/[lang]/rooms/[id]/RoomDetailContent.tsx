@@ -3,10 +3,19 @@
 // src/app/[lang]/rooms/[id]/RoomDetailContent.tsx
 // Client component for room detail page (uses useTranslation hooks)
 /* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Feature section labels use hardcoded English; translation follow-on deferred. */
-import { type ComponentProps, type ComponentPropsWithoutRef, Fragment, useCallback, useEffect } from "react";
+import {
+  type ComponentProps,
+  type ComponentPropsWithoutRef,
+  Fragment,
+  type RefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import type { TFunction } from "i18next";
 
 import { DirectBookingPerks } from "@acme/ui/molecules";
@@ -23,9 +32,15 @@ import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import { guideHref } from "@/routes.guides-helpers";
 import {
+  getMaxCheckoutForStay,
   getMinCheckoutForStay,
+  HOSTEL_MAX_PAX,
+  HOSTEL_MAX_STAY_NIGHTS,
+  HOSTEL_MIN_PAX,
+  HOSTEL_MIN_STAY_NIGHTS,
   isValidPax,
   isValidStayRange,
+  normalizeCheckoutForStay,
 } from "@/utils/bookingDateRules";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 import { buildRoomItem, fireViewItem } from "@/utils/ga4-events";
@@ -239,23 +254,28 @@ export function FeatureSection({ features }: { features: RoomFeatures | undefine
   );
 }
 
-type BookingQuery = { checkIn: string; checkOut: string; adults: number; queryState: "valid" | "absent" };
+type BookingQuery = {
+  checkIn: string;
+  checkOut: string;
+  adults: number;
+  queryState: "valid" | "invalid" | "absent";
+};
 
 function parseBookingQuery(
   searchParams: { get: (key: string) => string | null } | null,
   todayIso: string,
 ): BookingQuery {
   const checkInParam = searchParams?.get("checkin");
+  const hasCheckInParam = Boolean(checkInParam);
   const checkIn = checkInParam && getMinCheckoutForStay(checkInParam) ? checkInParam : todayIso;
   const checkOutRaw = searchParams?.get("checkout") ?? getDatePlusTwoDays(checkIn);
   const checkOut = checkOutRaw;
   const adultsRaw = parseInt(searchParams?.get("pax") ?? "", 10);
   const adults = Number.isFinite(adultsRaw) && adultsRaw > 0 ? adultsRaw : 1;
-  const hasCheckIn = Boolean(checkInParam) && checkInParam === checkIn;
-  const queryState: "valid" | "absent" =
-    hasCheckIn && checkIn >= todayIso && isValidStayRange(checkIn, checkOut) && isValidPax(adults)
-      ? "valid"
-      : "absent";
+  const isValid =
+    hasCheckInParam && checkIn >= todayIso && isValidStayRange(checkIn, checkOut) && isValidPax(adults);
+  const isInvalid = hasCheckInParam && !isValid;
+  const queryState: "valid" | "invalid" | "absent" = isValid ? "valid" : isInvalid ? "invalid" : "absent";
   return { checkIn, checkOut, adults, queryState };
 }
 
@@ -274,7 +294,106 @@ function resolveAmenitiesSection(
   return { blurbs, shouldRender: blurbs.length > 0 || hasFallback };
 }
 
+type BookingDatePickerProps = {
+  pickerCheckIn: string;
+  pickerCheckOut: string;
+  pickerAdults: number;
+  maxPickerAdults: number;
+  todayIso: string;
+  pickerRef: RefObject<HTMLDivElement | null>;
+  t: (key: string) => string;
+  onDateChange: (newCheckIn: string, newCheckOut: string, newAdults: number) => void;
+};
+
+function BookingDatePicker({
+  pickerCheckIn,
+  pickerCheckOut,
+  pickerAdults,
+  maxPickerAdults,
+  todayIso,
+  pickerRef,
+  t,
+  onDateChange,
+}: BookingDatePickerProps) {
+  return (
+    <Section className="mx-auto mt-6 max-w-3xl px-4">
+      <div ref={pickerRef}>
+        <h2 className="mb-4 text-base font-semibold text-brand-heading dark:text-brand-surface">
+          {t("selectDatesTitle")}
+        </h2>
+        <div className="grid gap-4 sm:grid-cols-3" data-min-nights={HOSTEL_MIN_STAY_NIGHTS} data-max-nights={HOSTEL_MAX_STAY_NIGHTS}>
+          <div className="flex flex-col gap-1">
+            <label htmlFor="room-checkin" className="text-sm text-brand-text dark:text-brand-surface/80">
+              {t("checkInDate")}
+            </label>
+            <input
+              id="room-checkin"
+              type="date"
+              value={pickerCheckIn}
+              min={todayIso}
+              onChange={(event) => {
+                const newCheckIn = event.target.value;
+                const newCheckOut = normalizeCheckoutForStay(newCheckIn, pickerCheckOut);
+                onDateChange(newCheckIn, newCheckOut, pickerAdults);
+              }}
+              className="rounded border border-brand-outline/40 px-3 py-2 text-sm dark:border-brand-secondary/35 dark:bg-brand-surface dark:text-brand-text"
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <label htmlFor="room-checkout" className="text-sm text-brand-text dark:text-brand-surface/80">
+              {t("checkOutDate")}
+            </label>
+            <input
+              id="room-checkout"
+              type="date"
+              value={pickerCheckOut}
+              min={getMinCheckoutForStay(pickerCheckIn) ?? getDatePlusTwoDays(pickerCheckIn)}
+              max={getMaxCheckoutForStay(pickerCheckIn) ?? undefined}
+              onChange={(event) => {
+                const normalizedCheckOut = normalizeCheckoutForStay(pickerCheckIn, event.target.value);
+                onDateChange(pickerCheckIn, normalizedCheckOut, pickerAdults);
+              }}
+              className="rounded border border-brand-outline/40 px-3 py-2 text-sm dark:border-brand-secondary/35 dark:bg-brand-surface dark:text-brand-text"
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-sm text-brand-text dark:text-brand-surface/80">{t("adults")}</label>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                aria-label="Decrease adults"
+                onClick={() => {
+                  onDateChange(pickerCheckIn, pickerCheckOut, Math.max(HOSTEL_MIN_PAX, pickerAdults - 1));
+                }}
+                disabled={pickerAdults <= HOSTEL_MIN_PAX}
+                className="min-h-11 min-w-11 rounded border border-brand-outline/40 text-brand-primary disabled:opacity-40 dark:border-brand-secondary/35 dark:text-brand-secondary"
+              >
+                -
+              </button>
+              <span className="w-6 text-center text-sm text-brand-text dark:text-brand-surface/80">
+                {pickerAdults}
+              </span>
+              <button
+                type="button"
+                aria-label="Increase adults"
+                onClick={() => {
+                  onDateChange(pickerCheckIn, pickerCheckOut, Math.min(maxPickerAdults, pickerAdults + 1));
+                }}
+                disabled={pickerAdults >= maxPickerAdults}
+                className="min-h-11 min-w-11 rounded border border-brand-outline/40 text-brand-primary disabled:opacity-40 dark:border-brand-secondary/35 dark:text-brand-secondary"
+              >
+                +
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
 export default function RoomDetailContent({ lang, id }: Props) {
+  const router = useRouter();
   const { t } = useTranslation("roomsPage", { lng: lang, useSuspense: true });
   const { t: tGuides } = useTranslation("guides", { lng: lang, useSuspense: true });
   const guidesEnT = i18n.getFixedT("en", "guides") as TFunction;
@@ -289,6 +408,11 @@ export default function RoomDetailContent({ lang, id }: Props) {
   const room = roomsData.find((r) => r.id === id)!;
   const todayIso = getTodayIso();
   const { checkIn, checkOut, adults, queryState } = parseBookingQuery(searchParams, todayIso);
+  const [pickerCheckIn, setPickerCheckIn] = useState(checkIn);
+  const [pickerCheckOut, setPickerCheckOut] = useState(checkOut);
+  const [pickerAdults, setPickerAdults] = useState(adults);
+  const datePickerRef = useRef<HTMLDivElement>(null);
+  const maxPickerAdults = Math.min(HOSTEL_MAX_PAX, room.occupancy ?? HOSTEL_MAX_PAX);
   const roomTitleKey = `rooms.${id}.title`;
   const bedDescriptionKey = `rooms.${id}.bed_description`;
 
@@ -331,6 +455,42 @@ export default function RoomDetailContent({ lang, id }: Props) {
     fireViewItem({ itemId: room.sku, itemName: title });
   }, [room.sku, title]);
 
+  // Seed booking params once when landing without explicit checkin query.
+  useEffect(() => {
+    const hasExistingParams = Boolean(searchParams?.get("checkin"));
+    if (hasExistingParams) {
+      return;
+    }
+    const defaultCheckIn = todayIso;
+    const defaultCheckOut = getDatePlusTwoDays(todayIso);
+    const params = new URLSearchParams(searchParams?.toString() ?? "");
+    params.set("checkin", defaultCheckIn);
+    params.set("checkout", defaultCheckOut);
+    params.set("pax", String(HOSTEL_MIN_PAX));
+    router.replace(`?${params.toString()}`, { scroll: false });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- LINT-1008 [ttl=2026-12-31] Mount-only effect intentionally omits deps to seed defaults once; re-running would clobber user changes.
+  }, []);
+
+  useEffect(() => {
+    setPickerCheckIn(checkIn);
+    setPickerCheckOut(checkOut);
+    setPickerAdults(adults);
+  }, [checkIn, checkOut, adults]);
+
+  const handleDateChange = useCallback(
+    (newCheckIn: string, newCheckOut: string, newAdults: number) => {
+      setPickerCheckIn(newCheckIn);
+      setPickerCheckOut(newCheckOut);
+      setPickerAdults(newAdults);
+      const params = new URLSearchParams(searchParams?.toString() ?? "");
+      params.set("checkin", newCheckIn);
+      params.set("checkout", newCheckOut);
+      params.set("pax", String(newAdults));
+      router.replace(`?${params.toString()}`, { scroll: false });
+    },
+    [router, searchParams],
+  );
+
   return (
     <Fragment>
       <RoomStructuredData room={room} lang={lang} />
@@ -342,7 +502,26 @@ export default function RoomDetailContent({ lang, id }: Props) {
 
       <SocialProofSection lang={lang} />
 
-      <RoomCard room={room} checkIn={checkIn} checkOut={checkOut} adults={adults} lang={lang} queryState={queryState} />
+      <BookingDatePicker
+        pickerCheckIn={pickerCheckIn}
+        pickerCheckOut={pickerCheckOut}
+        pickerAdults={pickerAdults}
+        maxPickerAdults={maxPickerAdults}
+        todayIso={todayIso}
+        pickerRef={datePickerRef}
+        t={t as (key: string) => string}
+        onDateChange={handleDateChange}
+      />
+
+      <RoomCard
+        room={room}
+        checkIn={pickerCheckIn}
+        checkOut={pickerCheckOut}
+        adults={pickerAdults}
+        lang={lang}
+        queryState={queryState}
+        datePickerRef={datePickerRef}
+      />
 
       <Section className="mx-auto max-w-3xl px-4">
         <p className="mt-6 text-base leading-relaxed">

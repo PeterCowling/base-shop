@@ -10,6 +10,7 @@ import {
   Home,
   KeyRound,
   type LucideIcon,
+  ShieldCheck,
   Sun,
   Users,
 } from "@/icons";
@@ -27,6 +28,7 @@ const iconMap: Record<FacilityKey, LucideIcon> = {
   gardenView: Eye,
   airCon: Sun,
   keycard: KeyRound,
+  locker: ShieldCheck,
   linen: Archive,
 };
 

@@ -1,6 +1,6 @@
 // Copied from src/components/rooms/FacilityIcon.tsx
 import { memo } from "react";
-import { Archive, Bath, BedDouble, Eye, HelpCircle, Home, KeyRound, type LucideIcon,Sun, Users } from "lucide-react";
+import { Archive, Bath, BedDouble, Eye, HelpCircle, Home, KeyRound, type LucideIcon, ShieldCheck, Sun, Users } from "lucide-react";
 
 import type { FacilityKey } from "../types/facility";
 
@@ -16,6 +16,7 @@ const iconMap: Record<FacilityKey, LucideIcon> = {
   gardenView: Eye,
   airCon: Sun,
   keycard: KeyRound,
+  locker: ShieldCheck,
   linen: Archive,
 };
 

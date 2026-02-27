@@ -314,7 +314,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-02-27T20:01:02.167Z";
+  var GEN_TS = "2026-02-27T20:27:25.923Z";
 
   var IDEA_ITEMS = [
     {
@@ -720,6 +720,23 @@
       "effort": "M",
       "proximity": null,
       "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add Playwright smoke test for /api/availability to CI on the Worker build path",
+      "body": "availability-smoke.spec.ts is not in standard CI (noted in plan Risks); every production deploy activates live pricing without automated regression coverage",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T20:26:41.048Z",
+      "path": "docs/plans/_archive/brik-live-pricing-activation/results-review.user.md",
+      "idea_key": "cd06a1badb3b3f665e9eecf502927a5f9ad05d51",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -1552,6 +1569,23 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Alert when CF Pages env var bindings diverge from build-cmd inline flag values",
+      "body": "NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY must be set in two places; divergence means feature appears active in client UI but API returns empty rooms",
+      "suggested_action": "defer (low frequency; documented in health check Known Limitation)",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T20:26:41.048Z",
+      "path": "docs/plans/_archive/brik-live-pricing-activation/results-review.user.md",
+      "idea_key": "7c25afd8d86e619cc2621e21d8d51a1f6882fb73",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "Design Gate rule could extend to lp-do-fact-find, not just lp-do-plan",
       "body": "Design-Spec-Required: yes is only enforced when the plan is being decomposed; a fact-find that encounters a UI-heavy feature has no equivalent upfront signal to request a design spec",
       "suggested_action": "defer",
@@ -1962,6 +1996,16 @@
   var RISK_ITEMS = [];
 
   var PENDING_REVIEW_ITEMS = [
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: brik-live-pricing-baseline",
+      "body": "Build is complete but no results review has been written yet.",
+      "suggested_action": "Write docs/plans/brik-live-pricing-baseline/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
+      "source": "build-record.user.md",
+      "date": "2026-02-27T20:25:17.710Z",
+      "path": "docs/plans/brik-live-pricing-baseline/build-record.user.md"
+    },
     {
       "type": "pending-review",
       "business": "BOS",

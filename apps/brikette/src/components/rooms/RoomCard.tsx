@@ -27,6 +27,7 @@ import { useRoomPricing } from "@/hooks/useRoomPricing";
 import { i18nConfig } from "@/i18n.config";
 import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
+import { buildRoomItem, fireEventAndNavigate, resolveItemListName } from "@/utils/ga4-events";
 
 const PRICE_LOADING_TEST_ID = "price-loading" as const; // legacy test id consumed by app unit tests
 
@@ -249,6 +250,14 @@ export default memo(function RoomCard({
     return result.ok ? result.url : null;
   }, [queryState, checkIn, checkOut, adults, room]);
 
+  // title is declared here (before openNonRefundable/openFlexible) to avoid a TDZ in
+  // the useCallback closures that capture it as a dep.
+  const title = resolveTranslatedCopy(
+    t(`${baseKey}.title`, { defaultValue: room.id.replace(/_/gu, " ") }),
+    `${baseKey}.title`,
+    room.id.replace(/_/gu, " ")
+  );
+
   const openNonRefundable = useCallback(() => {
     if (queryState === "invalid") {
       // Button is disabled; scroll to date picker if ref provided
@@ -258,12 +267,28 @@ export default memo(function RoomCard({
       return;
     }
     if (nrOctorateUrl) {
-      window.location.href = nrOctorateUrl;
+      fireEventAndNavigate({
+        event: "select_item",
+        payload: {
+          item_list_id: "room_detail",
+          item_list_name: resolveItemListName("room_detail"),
+          items: [buildRoomItem({ roomSku: room.sku, itemName: title, plan: "nr" })],
+        },
+        onNavigate: () => { window.location.href = nrOctorateUrl; },
+      });
       return;
     }
     // absent or valid-but-url-failed → navigate to /book
-    router.push(`/${resolvedLang}/book`);
-  }, [queryState, nrOctorateUrl, datePickerRef, router, resolvedLang]);
+    fireEventAndNavigate({
+      event: "select_item",
+      payload: {
+        item_list_id: "room_detail",
+        item_list_name: resolveItemListName("room_detail"),
+        items: [buildRoomItem({ roomSku: room.sku, itemName: title, plan: "nr" })],
+      },
+      onNavigate: () => { router.push(`/${resolvedLang}/book`); },
+    });
+  }, [queryState, nrOctorateUrl, datePickerRef, router, resolvedLang, title, room]);
 
   const openFlexible = useCallback(() => {
     if (queryState === "invalid") {
@@ -273,11 +298,28 @@ export default memo(function RoomCard({
       return;
     }
     if (flexOctorateUrl) {
-      window.location.href = flexOctorateUrl;
+      fireEventAndNavigate({
+        event: "select_item",
+        payload: {
+          item_list_id: "room_detail",
+          item_list_name: resolveItemListName("room_detail"),
+          items: [buildRoomItem({ roomSku: room.sku, itemName: title, plan: "flex" })],
+        },
+        onNavigate: () => { window.location.href = flexOctorateUrl; },
+      });
       return;
     }
-    router.push(`/${resolvedLang}/book`);
-  }, [queryState, flexOctorateUrl, datePickerRef, router, resolvedLang]);
+    // absent or valid-but-url-failed → navigate to /book
+    fireEventAndNavigate({
+      event: "select_item",
+      payload: {
+        item_list_id: "room_detail",
+        item_list_name: resolveItemListName("room_detail"),
+        items: [buildRoomItem({ roomSku: room.sku, itemName: title, plan: "flex" })],
+      },
+      onNavigate: () => { router.push(`/${resolvedLang}/book`); },
+    });
+  }, [queryState, flexOctorateUrl, datePickerRef, router, resolvedLang, title, room]);
 
   const resolveToken = useCallback(
     (key: "reserveNow" | "bookNow", lngOverride?: string) => {
@@ -380,11 +422,6 @@ export default memo(function RoomCard({
     });
   }, []);
 
-  const title = resolveTranslatedCopy(
-    t(`${baseKey}.title`, { defaultValue: room.id.replace(/_/gu, " ") }),
-    `${baseKey}.title`,
-    room.id.replace(/_/gu, " ")
-  );
   const imageAlt = ready
     ? resolveTranslatedCopy(
         t("roomImage.photoAlt", { room: title, defaultValue: `${title} room` }),

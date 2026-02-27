@@ -59,4 +59,48 @@ For naming, metadata, and classification rules, see `.claude/skills/tools-standa
 - **Description:** Create distinctive, production-grade frontend interfaces grounded in this repo's design system.
 - **operating_mode:** `GENERATE`
 - **trigger_conditions:** build UI, web components, pages, frontend interface, design system implementation, production UI
-- **related_skills:** `lp-design-system`, `lp-design-spec`, `lp-design-qa`, `tools-bos-design-page`
+- **related_skills:** `tools-design-system`, `lp-design-spec`, `lp-design-qa`, `tools-bos-design-page`
+
+---
+
+## tools-design-system
+
+- **Invocation name:** `tools-design-system`
+- **Directory:** `.claude/skills/tools-design-system/`
+- **Description:** Apply design tokens and system patterns correctly. Reference for semantic colors, spacing, typography, borders, and shadows. Never use arbitrary values.
+- **operating_mode:** `GENERATE`
+- **trigger_conditions:** design tokens, semantic colors, spacing, typography, borders, shadows, Tailwind tokens, arbitrary values
+- **related_skills:** `tools-refactor`, `lp-design-spec`, `lp-design-qa`, `tools-ui-contrast-sweep`
+
+---
+
+## tools-refactor
+
+- **Invocation name:** `tools-refactor`
+- **Directory:** `.claude/skills/tools-refactor/`
+- **Description:** Refactor React components for better maintainability, performance, or patterns. Covers hook extraction, component splitting, type safety, memoization, and composition.
+- **operating_mode:** `GENERATE`
+- **trigger_conditions:** refactor, extract hook, split component, memoization, type safety, design tokens, component composition
+- **related_skills:** `lp-do-build`, `tools-design-system`, `lp-design-qa`
+
+---
+
+## tools-meta-reflect
+
+- **Invocation name:** `tools-meta-reflect`
+- **Directory:** `.claude/skills/tools-meta-reflect/`
+- **Description:** Capture session learnings and propose targeted improvements to docs, skills, or core agent instructions. Evidence-based only — closes the feedback loop directly by updating existing files.
+- **operating_mode:** `ANALYSIS + RECOMMENDATIONS`
+- **trigger_conditions:** session review, capture learnings, improve skill, update instructions, post-build reflection, close feedback loop
+- **related_skills:** `lp-do-build`, `lp-do-fact-find`, `lp-do-plan`
+
+---
+
+## tools-review-plan-status
+
+- **Invocation name:** `tools-review-plan-status`
+- **Directory:** `.claude/skills/tools-review-plan-status/`
+- **Description:** Report on the status of incomplete plans — how many tasks remain in each. Optionally run lp-do-factcheck on plans before reporting.
+- **operating_mode:** `ANALYSIS + RECOMMENDATIONS`
+- **trigger_conditions:** plan status, incomplete plans, tasks remaining, progress report, how many tasks left
+- **related_skills:** `lp-do-factcheck`, `lp-do-build`

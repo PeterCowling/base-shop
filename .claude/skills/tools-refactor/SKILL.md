@@ -1,6 +1,9 @@
 ---
-name: lp-refactor
+name: tools-refactor
 description: Refactor React components for better maintainability, performance, or patterns. Covers hook extraction, component splitting, type safety, memoization, and composition.
+operating_mode: GENERATE
+trigger_conditions: refactor, extract hook, split component, memoization, type safety, design tokens, component composition
+related_skills: lp-do-build, tools-design-system, lp-design-qa
 ---
 
 # Refactor Component

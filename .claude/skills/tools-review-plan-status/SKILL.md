@@ -1,6 +1,9 @@
 ---
-name: review-plan-status
+name: tools-review-plan-status
 description: Report on the status of incomplete plans — how many tasks remain in each. Optionally lp-do-factcheck plans before reporting.
+operating_mode: ANALYSIS + RECOMMENDATIONS
+trigger_conditions: plan status, incomplete plans, tasks remaining, progress report, how many tasks left
+related_skills: lp-do-factcheck, lp-do-build
 ---
 
 # Plans Report Status

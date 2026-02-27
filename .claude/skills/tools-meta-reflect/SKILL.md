@@ -1,6 +1,9 @@
 ---
-name: meta-reflect
+name: tools-meta-reflect
 description: Capture session learnings and propose targeted improvements to docs, skills, or core agent instructions. Evidence-based only - no theoretical improvements. Closes the feedback loop directly by updating existing files.
+operating_mode: ANALYSIS + RECOMMENDATIONS
+trigger_conditions: session review, capture learnings, improve skill, update instructions, post-build reflection, close feedback loop
+related_skills: lp-do-build, lp-do-fact-find, lp-do-plan
 ---
 
 # Session Reflect

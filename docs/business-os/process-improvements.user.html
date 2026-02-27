@@ -314,7 +314,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-02-27T16:26:06.041Z";
+  var GEN_TS = "2026-02-27T18:19:09.013Z";
 
   var IDEA_ITEMS = [
     {
@@ -996,6 +996,23 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Automated orphaned-account cleanup — detect Firebase Auth accounts with no matching userProfiles record",
+      "body": "partial failure path (accounts:signUp succeeds, DB write fails) leaves orphaned accounts documented as a known limitation",
+      "suggested_action": "spike (mechanistic script, deterministic cleanup)",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T18:17:54.255Z",
+      "path": "docs/plans/_archive/brik-reception-user-provisioning/results-review.user.md",
+      "idea_key": "5ec63ce1394c6a6383644f696c9f49c36a625ea7",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "Calibration comparison — codemoot vs inline critique",
       "body": "TASK-01 smoke test produced score=4/10 (lp_score=2.0) on fact-find.md; no baseline comparison against lp-do-critique exists yet. Score may be systematically harsher or softer.",
       "suggested_action": "spike — run both critique paths on 2–3 existing artifacts and compare scores",
@@ -1407,6 +1424,23 @@
       "date": "2026-02-26T08:53:01.939Z",
       "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md",
       "idea_key": "50250241c361b3e014540cb7f748b06e906f22b5",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Staff onboarding checklist page in reception app — combine provisioning with role briefing and first-login guide",
+      "body": "provisioning flow creates the account but no in-app onboarding path exists for new staff after first login",
+      "suggested_action": "defer (nice-to-have, no current blocker)",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T18:17:54.255Z",
+      "path": "docs/plans/_archive/brik-reception-user-provisioning/results-review.user.md",
+      "idea_key": "4bdb597e862b3e1df62a1d2517851216fae4fd4f",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",

@@ -1,6 +1,9 @@
 ---
-name: lp-design-system
+name: tools-design-system
 description: Apply design tokens and system patterns correctly. Reference for semantic colors, spacing, typography, borders, and shadows. Never use arbitrary values.
+operating_mode: GENERATE
+trigger_conditions: design tokens, semantic colors, spacing, typography, borders, shadows, Tailwind tokens, arbitrary values
+related_skills: tools-refactor, lp-design-spec, lp-design-qa, tools-ui-contrast-sweep
 ---
 
 # Apply Design System

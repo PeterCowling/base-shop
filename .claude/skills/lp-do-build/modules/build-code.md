@@ -1,5 +1,23 @@
 # Build Executor: Code / Mixed IMPLEMENT
 
+## Offload Route
+
+When `CODEX_OK=1` (checked in `SKILL.md § Executor Dispatch`), offload this task to Codex. Load and follow: `../../_shared/build-offload-protocol.md`.
+
+**Track-specific prompt additions for code/mixed tasks:**
+
+- Include the full TDD expectation in the prompt: Red (write failing tests from TC contract) → Green (minimum change to pass) → Refactor (clean up while green).
+- Include the governed test invocation contract verbatim: `pnpm -w run test:governed -- jest -- <args>`. State that `npx jest`, `pnpm exec jest`, and direct binary invocations are blocked.
+- Include the TC contract (test names, expected pass/fail state) from the task.
+- Reference: `docs/testing-policy.md` for full test invocation policy.
+
+**Claude's post-execution verification steps (after `codex exec` returns):**
+
+1. Re-read all `Affects` files — confirm each file was written or modified as specified. If any required file is missing or empty: treat as task failure; do not proceed to commit.
+2. Run `modules/build-validate.md` (Mode 1, 2, or both per task `Deliverable-Type`) — this is Claude's gate, not Codex's.
+3. Commit gate — stage only task-scoped files (the `Affects` list). Run via `scripts/agents/with-writer-lock.sh`. Never commit broken code or failing CI outputs.
+4. Post-task plan update — mark task status Complete with date; add build evidence block (exit code, Affects files verified, VC/TC pass/fail, offload route used).
+
 ## Objective
 
 Execute IMPLEMENT work via TDD with strict scope control and accurate regression handling.

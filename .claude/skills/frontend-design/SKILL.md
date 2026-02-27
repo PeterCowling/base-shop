@@ -72,6 +72,8 @@ The plugin's creative philosophy does NOT override:
 
 Read `docs/business-os/strategy/businesses.json` to find the target business for the work.
 
+**Quick-reference only (may become stale):** The table below is illustrative. Always read `docs/business-os/strategy/businesses.json` for the authoritative app → business → theme mapping.
+
 | Business | Key Apps | Theme |
 |----------|----------|-------|
 | BRIK | brikette, reception, prime | `packages/themes/prime/` |

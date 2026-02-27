@@ -124,8 +124,8 @@ For each visual property in the design, specify the exact semantic token:
 | Property | Token | Value (from theme) | Rationale |
 |----------|-------|---------------------|-----------|
 | Primary action bg | `bg-primary` | `hsl(6 78% 57%)` | Brand coral per brand language |
-| Body text | `text-foreground` | (from base) | Default readable text |
-| Card surface | `bg-card` | (from base) | Standard card pattern |
+| Body text | `text-fg` | (from base) | Default readable text |
+| Card/surface-2 bg | `bg-[hsl(var(--surface-2))]` | (from base) | Standard surface pattern |
 | ... | ... | ... | ... |
 
 **Rules:**
@@ -169,6 +169,8 @@ Define:
 
 **Note:** GATE-BD-01 at S1 advance requires brand-dossier at Draft minimum. GATE-BD-07 here requires Active. The gap (Draft → Active) is the operator's responsibility before running lp-design-spec.
 
+**Exception — Base-System businesses:** For businesses whose theme resolves to `packages/themes/base/` and which have no customer-facing brand identity (e.g. PLAT, BOS, PIPE, XA), the Brand Dossier gate is waived. Use `packages/themes/base/src/tokens.ts` directly as the design reference. Add a note to the design spec frontmatter: `Brand-Language: None — base theme (no brand dossier for this business)`. To confirm a business is base-system, read `docs/business-os/strategy/businesses.json`.
+
 ### Step 7: Write Design Spec
 
 Create `docs/plans/<feature-slug>-design-spec.md` using the template below.
@@ -193,7 +195,7 @@ Feature-Slug: {slug}
 Business-Unit: {BIZ}
 Target-App: {app-name}
 Theme-Package: {theme-package}
-Brand-Language: docs/business-os/strategy/{BIZ}/<YYYY-MM-DD>-brand-identity-dossier.user.md
+Brand-Language: docs/business-os/strategy/{BIZ}/<YYYY-MM-DD>-brand-identity-dossier.user.md | None — base theme
 Created: {DATE}
 Updated: {DATE}
 Owner: {operator}
@@ -248,7 +250,7 @@ PageLayout
 
 | Element | Property | Token Class | Dark Mode | Notes |
 |---------|----------|-------------|-----------|-------|
-| Page bg | background | `bg-background` | auto | |
+| Page bg | background | `bg-bg` | auto | |
 | Primary CTA | background | `bg-primary` | auto | Brand: {color description} |
 | ... | ... | ... | ... | ... |
 
@@ -272,7 +274,7 @@ PageLayout
 
 | Element | Hover | Active | Disabled | Loading | Error |
 |---------|-------|--------|----------|---------|-------|
-| Primary CTA | `hover:bg-primary-hover` | `active:bg-primary-active` | `opacity-50 cursor-not-allowed` | spinner | - |
+| Primary CTA | `hover:bg-primary/90` | `active:bg-primary/80` | `opacity-50 cursor-not-allowed` | spinner | - |
 | ... | ... | ... | ... | ... | ... |
 
 ## Accessibility
@@ -285,7 +287,7 @@ PageLayout
 
 ## Prerequisites for Plan
 
-- [ ] Brand language doc exists: `docs/business-os/strategy/{BIZ}/<YYYY-MM-DD>-brand-identity-dossier.user.md`
+- [ ] Brand language: either Active brand dossier at `docs/business-os/strategy/{BIZ}/<YYYY-MM-DD>-brand-identity-dossier.user.md` OR confirmed base-system business (PLAT/BOS/PIPE/XA) — check `businesses.json`
 - [ ] Theme package exists: `packages/themes/{theme}/`
 - [ ] All required tokens exist (see "New tokens required" above)
 - [ ] All reused components verified in component catalog
@@ -293,6 +295,22 @@ PageLayout
 ## Notes
 
 {Any open questions, alternatives considered, or links to reference implementations}
+
+## QA Matrix
+
+Pre-populate from the Token Binding and Layout sections above.
+`lp-design-qa` uses this table as its expected-state baseline.
+
+| Element | Expected token / class | QA domain | Check ID |
+|---------|------------------------|-----------|----------|
+| Page bg | `bg-bg` | tokens | TC-01 |
+| Primary CTA | `bg-primary` | tokens + visual | TC-01, VR-02 |
+| Body text | `text-fg` | tokens | TC-01 |
+| Focus ring | `focus-visible:ring-2 ring-primary` | a11y | A11Y-03 |
+| Mobile layout | single-column stack at `< 768px` | responsive | RS-01 |
+| ... | ... | ... | ... |
+
+*One row per token-bound element or responsive rule. Remove placeholder rows before handoff to plan.*
 ```
 
 ## Quality Checks

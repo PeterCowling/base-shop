@@ -188,6 +188,7 @@ Return:
 If no issues are found, state exactly:
 
 `No contrast or visual-uniformity failures detected across the tested breakpoint/mode matrix.`
+- If issues were found and fixed via `/lp-do-build`: **re-run this sweep** to confirm findings are resolved before routing to `tools-refactor`.
 
 ## Guardrails
 

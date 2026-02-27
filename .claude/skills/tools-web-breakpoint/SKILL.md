@@ -186,6 +186,7 @@ Return:
 If no issues are found, explicitly state:
 
 `No responsive layout failures detected across tested breakpoint/route matrix.`
+- If issues were found and fixed via `/lp-do-build`: **re-run this sweep** to confirm findings are resolved before routing to `tools-refactor`.
 
 ## Integration
 

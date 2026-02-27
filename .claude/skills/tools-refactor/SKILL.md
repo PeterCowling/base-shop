@@ -128,4 +128,4 @@ Invoke `tools-refactor` when at least one of the following is true:
 
 - **Upstream:** QA reports from `lp-design-qa`, `tools-ui-contrast-sweep` (`contrast-sweep-report.md`), and `tools-ui-breakpoint-sweep` (`breakpoint-sweep-report.md`); or explicit operator direction.
 - **Downstream:** `lp-do-build` (refactored components committed and verified); human PR review.
-- **Loop position:** S9D (Refactor) — post-sweep QA, pre-merge.
+- **Loop position:** S9D (Conditional Refactor) — post-sweep QA, pre-merge. Skip if no QA findings meet the Entry Criteria above.

@@ -124,6 +124,7 @@ Design QA complete for <feature-slug> (<BIZ>).
 **Next:**
 - If issues found: `/lp-do-build` to fix issues in report
 - If passed: `/lp-launch-qa` for functional/compliance readiness
+- If issues found and fixed: **re-run `/lp-design-qa`** to confirm fixes before routing to S9C sweeps. Do not proceed to `tools-ui-contrast-sweep` / `tools-ui-breakpoint-sweep` with unverified fixes.
 ```
 
 ## Quality Checks
@@ -139,7 +140,7 @@ Design QA complete for <feature-slug> (<BIZ>).
 
 ## Integration
 
-- **Upstream:** `/lp-design-spec` (expected visual state); `/lp-do-build` (produces the built UI)
+- **Upstream:** `/lp-design-spec` (expected visual state); `tools-ui-frontend-design` (executes the S9A UI build via `lp-do-build`); `lp-do-build` (fix cycle after issues found)
 - **Downstream:** `/lp-do-build` (uses issue report to fix regressions); `/lp-launch-qa` (assumes design QA passed); human PR reviewers
 - **Loop position:** S9B (UI Regression QA) — post-build, pre-launch-qa
 - **Business OS sync:** Updates build stage doc with design-qa results and issue count

@@ -1,7 +1,8 @@
-/* eslint-disable ds/no-hardcoded-copy, ds/min-tap-size -- BRIK-2 meal-orders i18n + tap size deferred */
+/* eslint-disable ds/min-tap-size -- BRIK-2 meal-orders tap size deferred */
 'use client';
 
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { StepFlowShell } from '@acme/design-system/primitives';
 
@@ -11,22 +12,14 @@ import { useEvDrinkWizard } from '@/hooks/meal-orders/useEvDrinkWizard';
 import { buildEvDrinkOrderValue } from '@/lib/meal-orders/buildOrderValue';
 
 // ---------------------------------------------------------------------------
-// Modifier label map (mirrors buildOrderValue.ts MODIFIER_LABELS)
+// Modifier label key map (for i18n lookup)
 // ---------------------------------------------------------------------------
 
-const MODIFIER_DISPLAY_LABELS: Record<string, string> = {
-  milk: 'With Milk',
-  sugar: 'With Sugar',
-  sweetened: 'Sweetened',
+const MODIFIER_I18N_KEYS: Record<string, string> = {
+  milk: 'evDrinkWizard.modifiers.withMilk',
+  sugar: 'evDrinkWizard.modifiers.withSugar',
+  sweetened: 'evDrinkWizard.modifiers.sweetened',
 };
-
-function resolveModifierDisplayLabel(key: string): string {
-  if (key in MODIFIER_DISPLAY_LABELS) {
-    return MODIFIER_DISPLAY_LABELS[key];
-  }
-  const capitalised = key.charAt(0).toUpperCase() + key.slice(1);
-  return `With ${capitalised}`;
-}
 
 // ---------------------------------------------------------------------------
 // Props
@@ -49,6 +42,7 @@ export default function EvDrinkOrderWizard({
   onSubmit,
   isSubmitting,
 }: EvDrinkOrderWizardProps) {
+  const { t } = useTranslation('Homepage');
   const wizard = useEvDrinkWizard({ preorders, serviceDate });
 
   // Reset wizard when the service date changes (e.g. user picks a different night)
@@ -57,27 +51,11 @@ export default function EvDrinkOrderWizard({
     // eslint-disable-next-line react-hooks/exhaustive-deps -- BRIK-2 intentionally only depends on serviceDate
   }, [serviceDate]);
 
-  // ---------------------------------------------------------------------------
-  // Step metadata
-  // ---------------------------------------------------------------------------
-
-  const stepTitles: Record<string, string> = {
-    drink: 'Choose your drink',
-    modifier: 'Customise your drink',
-    time: 'Choose a delivery time',
-    confirmation: 'Confirm your order',
-  };
-
-  const stepDescriptions: Record<string, string> = {
-    drink: 'Select a drink from the options below.',
-    modifier: 'Add any extras you would like.',
-    time: 'Select when you would like your drink delivered.',
-    confirmation: 'Please review your order before submitting.',
-  };
-
   const { activeStep } = wizard;
-  const title = stepTitles[activeStep] ?? '';
-  const description = stepDescriptions[activeStep] ?? '';
+  const stepKeys = ['drink', 'modifier', 'time', 'confirmation'] as const;
+  const safeStep = stepKeys.includes(activeStep as typeof stepKeys[number]) ? activeStep : 'drink';
+  const title = t(`evDrinkWizard.steps.${safeStep}.title`);
+  const description = t(`evDrinkWizard.steps.${safeStep}.description`);
 
   // ---------------------------------------------------------------------------
   // Derived data for confirmation step
@@ -89,7 +67,12 @@ export default function EvDrinkOrderWizard({
 
   const activeModifiers = Object.entries(wizard.formData.modifierState)
     .filter(([, active]) => active)
-    .map(([key]) => resolveModifierDisplayLabel(key));
+    .map(([key]) => {
+      const i18nKey = MODIFIER_I18N_KEYS[key];
+      if (i18nKey) return t(i18nKey);
+      const capitalised = key.charAt(0).toUpperCase() + key.slice(1);
+      return t('evDrinkWizard.modifiers.withGeneric', { name: capitalised });
+    });
 
   // ---------------------------------------------------------------------------
   // Submit handler
@@ -116,7 +99,7 @@ export default function EvDrinkOrderWizard({
       {activeStep === 'drink' && (
         <section className="space-y-3">
           <fieldset className="space-y-2">
-            <legend className="sr-only">Select a drink</legend>
+            <legend className="sr-only">{t('evDrinkWizard.selectDrinkLegend')}</legend>
             {wizard.availableDrinks.map((drink) => (
               <label
                 key={drink.value}
@@ -145,7 +128,7 @@ export default function EvDrinkOrderWizard({
             onClick={wizard.advanceStep}
             className="mt-2 min-h-11 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-50"
           >
-            Next
+            {t('evDrinkWizard.next')}
           </button>
         </section>
       )}
@@ -154,7 +137,7 @@ export default function EvDrinkOrderWizard({
       {activeStep === 'modifier' && selectedDrinkItem?.modifiers && (
         <section className="space-y-3">
           <fieldset className="space-y-2">
-            <legend className="sr-only">Customise your drink</legend>
+            <legend className="sr-only">{t('evDrinkWizard.customiseLegend')}</legend>
             {Object.keys(selectedDrinkItem.modifiers).map((key) => (
               <label
                 key={key}
@@ -171,7 +154,7 @@ export default function EvDrinkOrderWizard({
                   className="accent-primary"
                 />
                 <span className="text-sm text-foreground">
-                  {resolveModifierDisplayLabel(key)}
+                  {MODIFIER_I18N_KEYS[key] ? t(MODIFIER_I18N_KEYS[key]) : t('evDrinkWizard.modifiers.withGeneric', { name: key.charAt(0).toUpperCase() + key.slice(1) })}
                 </span>
               </label>
             ))}
@@ -182,7 +165,7 @@ export default function EvDrinkOrderWizard({
             onClick={wizard.advanceStep}
             className="mt-2 min-h-11 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground"
           >
-            Next
+            {t('evDrinkWizard.next')}
           </button>
         </section>
       )}
@@ -192,7 +175,7 @@ export default function EvDrinkOrderWizard({
         <section className="space-y-3">
           <div>
             <label htmlFor="ev-drink-time" className="sr-only">
-              Delivery time
+              {t('evDrinkWizard.deliveryTimeSrLabel')}
             </label>
             <select
               id="ev-drink-time"
@@ -202,7 +185,7 @@ export default function EvDrinkOrderWizard({
               }
               className="w-full rounded-lg border border-border bg-card px-3 py-2.5 text-sm text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
-              <option value="">Select a time…</option>
+              <option value="">{t('evDrinkWizard.selectTime')}</option>
               {evDrinkTimes.map((time) => (
                 <option key={time} value={time}>
                   {time}
@@ -217,7 +200,7 @@ export default function EvDrinkOrderWizard({
             onClick={wizard.advanceStep}
             className="mt-2 min-h-11 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-50"
           >
-            Next
+            {t('evDrinkWizard.next')}
           </button>
         </section>
       )}
@@ -228,7 +211,7 @@ export default function EvDrinkOrderWizard({
           <div className="space-y-2 rounded-lg border border-border bg-card p-4">
             <div>
               <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Drink
+                {t('evDrinkWizard.confirmDrink')}
               </p>
               <p className="text-sm text-foreground">
                 {wizard.formData.selectedDrinkLabel ?? '—'}
@@ -238,7 +221,7 @@ export default function EvDrinkOrderWizard({
             {activeModifiers.length > 0 && (
               <div>
                 <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                  Extras
+                  {t('evDrinkWizard.confirmExtras')}
                 </p>
                 <p className="text-sm text-foreground">
                   {activeModifiers.join(', ')}
@@ -248,7 +231,7 @@ export default function EvDrinkOrderWizard({
 
             <div>
               <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Delivery time
+                {t('evDrinkWizard.confirmDeliveryTime')}
               </p>
               <p className="text-sm text-foreground">
                 {wizard.formData.selectedTime ?? '—'}
@@ -262,7 +245,7 @@ export default function EvDrinkOrderWizard({
               onClick={() => wizard.goToStep(0)}
               className="min-h-11 flex-1 rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
             >
-              Edit
+              {t('evDrinkWizard.edit')}
             </button>
 
             <button
@@ -271,7 +254,7 @@ export default function EvDrinkOrderWizard({
               onClick={handleConfirm}
               className="min-h-11 flex-1 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-50"
             >
-              {isSubmitting ? 'Submitting…' : 'Confirm order'}
+              {isSubmitting ? t('evDrinkWizard.submitting') : t('evDrinkWizard.confirmOrder')}
             </button>
           </div>
         </section>

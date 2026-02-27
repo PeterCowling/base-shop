@@ -35,6 +35,7 @@
       "label": "City tax",
       "perNight": "per night, per person"
     },
+    "loadError": "Unable to load cash preparation details.",
     "confirm": {
       "cityTax": "I have the city tax ready",
       "deposit": "I have the deposit ready"
@@ -94,6 +95,7 @@
     "back": "Back",
     "confirm": "Save and continue",
     "helperText": "You can update your arrival details any time.",
+    "loadError": "Unable to load ETA data.",
     "lateArrival": {
       "message": "Please let us know if you'll arrive after 22:00 so we can arrange access.",
       "title": "Late arrival"
@@ -116,13 +118,24 @@
       "train": "Train"
     }
   },
+  "celebration": {
+    "niceProgress": "Nice progress: {{item}} completed."
+  },
   "header": {
     "arrivalDay": "Arrival day",
+    "arrivalDayHint": "Final checks now mean a faster handoff at reception.",
     "arrivalDaySubtitle": "You're arriving today — here's everything you need.",
+    "editPreferences": "Edit preferences",
     "preArrival": "Pre-arrival",
+    "preArrivalHint": "Complete these steps now to speed up check-in on arrival day.",
     "subtitle": "A few things to get ready before you arrive.",
     "welcome": "Welcome, {{name}}!",
     "welcomeArrivalDay": "Welcome, {{name}} — today's the day!"
+  },
+  "utilityActions": {
+    "maps": "Maps",
+    "shareEta": "Share ETA",
+    "support": "Support"
   },
   "lateCheckin": {
     "issuesCta": "Report an overnight issue",
@@ -238,6 +251,7 @@
     "arrival": "Arrival",
     "back": "Back",
     "cost": "Cost",
+    "loadError": "Unable to load route planner data.",
     "fromOrigin": "From {{origin}}",
     "importantNotes": "Important notes",
     "journey": "Journey",

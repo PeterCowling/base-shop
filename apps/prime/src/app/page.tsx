@@ -1,7 +1,8 @@
-/* eslint-disable ds/container-widths-only-at, ds/no-hardcoded-copy -- BRIK-3 prime DS rules deferred */
+/* eslint-disable ds/container-widths-only-at -- BRIK-3 prime DS rules deferred */
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 
 import GuardedHomeExperience from '../components/homepage/GuardedHomeExperience';
@@ -13,6 +14,7 @@ import { canAccessStaffOwnerRoutes } from '../lib/security/staffOwnerGate';
 type RootMode = 'checking' | 'guest' | 'public';
 
 export default function HomePage() {
+  const { t } = useTranslation('Homepage');
   const [mode, setMode] = useState<RootMode>('checking');
 
   useEffect(() => {
@@ -71,24 +73,24 @@ export default function HomePage() {
     <main className="flex min-h-svh flex-col items-center justify-center bg-muted p-4">
       <div className="mx-auto max-w-md text-center">
         <h1 className="mb-4 text-3xl font-bold text-foreground">
-          Prime Guest Portal
+          {t('landing.title')}
         </h1>
         <p className="mb-8 text-muted-foreground">
-          Welcome to the guest services portal
+          {t('landing.subtitle')}
         </p>
         <div className="space-y-4">
           <Link
             href="/find-my-stay"
             className="block w-full rounded-lg bg-primary px-6 py-3 text-primary-foreground hover:bg-primary/90"
           >
-            Find My Stay
+            {t('landing.findMyStay')}
           </Link>
           {canAccessStaffOwnerRoutes() && (
             <Link
               href="/staff-lookup"
               className="block w-full rounded-lg border border-border px-6 py-3 text-foreground hover:bg-muted"
             >
-              Staff Lookup
+              {t('landing.staffLookup')}
             </Link>
           )}
         </div>

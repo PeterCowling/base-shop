@@ -1,7 +1,8 @@
-/* eslint-disable ds/container-widths-only-at, ds/min-tap-size, ds/no-hardcoded-copy -- BRIK-3 prime DS rules deferred */
+/* eslint-disable ds/container-widths-only-at, ds/min-tap-size -- BRIK-3 prime DS rules deferred */
 'use client';
 
 import { Suspense, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
@@ -10,6 +11,7 @@ import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunne
 type Status = 'loading' | 'ready' | 'error' | 'verified';
 
 function GuestEntryContent() {
+  const { t } = useTranslation('FindMyStay');
   const searchParams = useSearchParams();
   const token = useMemo(() => {
     return searchParams.get('token') || searchParams.get('t') || '';
@@ -23,7 +25,7 @@ function GuestEntryContent() {
 
   useEffect(() => {
     if (!token) {
-      setError('Missing or invalid link.');
+      setError(t('guestEntry.errors.missingLink'));
       setStatus('error');
       return;
     }
@@ -35,12 +37,12 @@ function GuestEntryContent() {
         const response = await fetch(`/api/guest-session?token=${encodeURIComponent(token)}`);
         if (!response.ok) {
           if (response.status === 404) {
-            throw new Error('This link is no longer valid.');
+            throw new Error(t('guestEntry.errors.linkInvalid'));
           }
           if (response.status === 410) {
-            throw new Error('This link has expired.');
+            throw new Error(t('guestEntry.errors.linkExpired'));
           }
-          throw new Error('Unable to validate this link.');
+          throw new Error(t('guestEntry.errors.validateFailed'));
         }
 
         if (isMounted) {
@@ -48,7 +50,7 @@ function GuestEntryContent() {
         }
       } catch (err) {
         if (isMounted) {
-          setError(err instanceof Error ? err.message : 'Unable to validate this link.');
+          setError(err instanceof Error ? err.message : t('guestEntry.errors.validateFailed'));
           setStatus('error');
         }
       }
@@ -77,12 +79,12 @@ function GuestEntryContent() {
 
       if (!response.ok) {
         if (response.status === 403) {
-          throw new Error('That last name does not match our booking.');
+          throw new Error(t('guestEntry.errors.lastNameMismatch'));
         }
         if (response.status === 429) {
-          throw new Error('Too many attempts. Please try again later.');
+          throw new Error(t('errors.tooManyAttempts'));
         }
-        throw new Error('Verification failed. Please try again.');
+        throw new Error(t('guestEntry.errors.verifyFailed'));
       }
 
       const data = await response.json() as {
@@ -112,7 +114,7 @@ function GuestEntryContent() {
       setGuestFirstName(data.guestFirstName || '');
       setStatus('verified');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Verification failed.');
+      setError(err instanceof Error ? err.message : t('guestEntry.errors.verifyFailed'));
     } finally {
       setIsVerifying(false);
     }
@@ -130,13 +132,13 @@ function GuestEntryContent() {
     return (
       <main className="min-h-svh bg-muted p-4">
         <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
-          <h1 className="mb-2 text-2xl font-bold text-foreground">Link problem</h1>
+          <h1 className="mb-2 text-2xl font-bold text-foreground">{t('guestEntry.errorTitle')}</h1>
           <p className="mb-6 text-muted-foreground">{error}</p>
           <Link
             href="/find-my-stay"
             className="inline-flex items-center justify-center rounded-lg bg-primary px-5 py-3 text-primary-foreground hover:bg-primary/90"
           >
-            Find my stay
+            {t('guestEntry.findMyStay')}
           </Link>
         </div>
       </main>
@@ -148,19 +150,19 @@ function GuestEntryContent() {
       <main className="min-h-svh bg-muted p-4">
         <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
           <h1 className="mb-2 text-2xl font-bold text-foreground">
-            {guestFirstName ? `Welcome, ${guestFirstName}` : 'You\'re in'}
+            {guestFirstName ? t('guestEntry.welcomeName', { firstName: guestFirstName }) : t('guestEntry.youreIn')}
           </h1>
           <p className="mb-6 text-muted-foreground">
-            Your portal is ready. We&apos;ll guide you through arrival prep next.
+            {t('guestEntry.portalReady')}
           </p>
           <p className="mb-6 rounded-lg bg-success-soft px-3 py-2 text-sm text-success-foreground">
-            You&apos;ll now see a short guided setup so reception can serve you faster.
+            {t('guestEntry.guidedSetupNote')}
           </p>
           <Link
             href="/portal"
             className="inline-flex items-center justify-center rounded-lg bg-primary px-5 py-3 text-primary-foreground hover:bg-primary/90"
           >
-            Continue
+            {t('guestEntry.continue')}
           </Link>
         </div>
       </main>
@@ -171,28 +173,28 @@ function GuestEntryContent() {
     <main className="min-h-svh bg-muted p-4">
       <div className="mx-auto max-w-md">
         <div className="mb-6 text-center">
-          <h1 className="text-2xl font-bold text-foreground">Confirm your stay</h1>
+          <h1 className="text-2xl font-bold text-foreground">{t('guestEntry.confirmTitle')}</h1>
           <p className="mt-2 text-muted-foreground">
-            Please enter the last name on the booking to continue.
+            {t('guestEntry.confirmSubtitle')}
           </p>
           <p className="mt-3 rounded-lg bg-info-soft px-3 py-2 text-sm text-info-foreground">
-            Why this helps: this quick check unlocks your guest tools and speeds up reception handoff.
+            {t('guestEntry.whyThisHelps')}
           </p>
           <p className="mt-2 text-xs text-muted-foreground">
-            Privacy: we only use this information for your current stay.
+            {t('guestEntry.privacyNote')}
           </p>
         </div>
 
         <form onSubmit={handleVerify} className="rounded-xl bg-card p-6 shadow-sm">
           <label htmlFor="lastName" className="block text-sm font-medium text-muted-foreground">
-            Last name
+            {t('guestEntry.lastNameLabel')}
           </label>
           <input
             id="lastName"
             type="text"
             value={lastName}
             onChange={(event) => setLastName(event.target.value)}
-            placeholder="Enter your last name"
+            placeholder={t('guestEntry.lastNamePlaceholder')}
             className="mt-2 w-full rounded-lg border border-border px-4 py-3 focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
             disabled={isVerifying}
           />
@@ -208,7 +210,7 @@ function GuestEntryContent() {
             disabled={isVerifying || !lastName.trim()}
             className="mt-5 w-full rounded-lg bg-primary px-4 py-3 text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
           >
-            {isVerifying ? 'Checking...' : 'Continue'}
+            {isVerifying ? t('guestEntry.checking') : t('guestEntry.continue')}
           </button>
         </form>
       </div>

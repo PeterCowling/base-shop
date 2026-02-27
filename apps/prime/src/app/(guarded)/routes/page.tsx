@@ -1,7 +1,8 @@
-/* eslint-disable ds/container-widths-only-at, ds/no-hardcoded-copy -- BRIK-3 prime DS rules deferred */
+/* eslint-disable ds/container-widths-only-at -- BRIK-3 prime DS rules deferred */
 'use client';
 
 import { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/navigation';
 
 import RoutePlanner from '../../../components/routes/RoutePlanner';
@@ -9,6 +10,7 @@ import { useUnifiedBookingData } from '../../../hooks/dataOrchestrator/useUnifie
 import { usePreArrivalState } from '../../../hooks/usePreArrivalState';
 
 export default function RoutesPage() {
+  const { t } = useTranslation('PreArrival');
   const router = useRouter();
   const { occupantData, isLoading, error, isCheckedIn } = useUnifiedBookingData();
 
@@ -43,7 +45,7 @@ export default function RoutesPage() {
   if (error || !occupantData) {
     return (
       <div className="p-4 text-center mt-5 text-danger">
-        Unable to load route planner data.
+        {t('routes.loadError')}
       </div>
     );
   }

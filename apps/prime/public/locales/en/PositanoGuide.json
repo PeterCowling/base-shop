@@ -1,4 +1,7 @@
 {
+  "nav": {
+    "goBack": "Go back"
+  },
   "cta": {
     "popularWithGuests": "Guest favourites",
     "poweredBy": "Powered by Brikette"

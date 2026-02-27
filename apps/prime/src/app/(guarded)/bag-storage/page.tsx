@@ -1,14 +1,27 @@
-/* eslint-disable ds/no-hardcoded-copy, ds/min-tap-size -- BRIK-2 bag-storage i18n + tap size deferred */
+/* eslint-disable ds/min-tap-size -- BRIK-2 bag-storage tap size deferred */
 'use client';
 
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { Package } from 'lucide-react';
 
 import { useGuestBookingSnapshot } from '../../../hooks/dataOrchestrator/useGuestBookingSnapshot';
 import { GUEST_CRITICAL_FLOW_ENDPOINTS } from '../../../lib/security/guestCriticalFlowEndpoints';
 
+/* eslint-disable ds/no-hardcoded-copy -- PRIME-1: pickup window labels are locale-neutral ISO clock notation */
+const PICKUP_TIME_SLOTS = [
+  '07:30 – 08:00', '08:00 – 08:30', '08:30 – 09:00',
+  '09:00 – 09:30', '09:30 – 10:00', '10:00 – 10:30',
+  '10:30 – 11:00', '11:00 – 11:30', '11:30 – 12:00',
+  '12:00 – 12:30', '12:30 – 13:00', '13:00 – 13:30',
+  '13:30 – 14:00', '14:00 – 14:30', '14:30 – 15:00',
+  '15:00 – 15:30',
+] as const;
+/* eslint-enable ds/no-hardcoded-copy */
+
 export default function BagStoragePage() {
+  const { t } = useTranslation('Homepage');
   const { snapshot, token, isLoading, refetch } = useGuestBookingSnapshot();
   const [pickupWindow, setPickupWindow] = useState('');
   const [note, setNote] = useState('');
@@ -38,16 +51,16 @@ export default function BagStoragePage() {
       });
       const payload = await response.json() as { message?: string; error?: string; deduplicated?: boolean };
       if (!response.ok) {
-        setError(payload.error ?? 'Unable to submit bag-drop request.');
+        setError(payload.error ?? t('bagStorage.errorDefault'));
         return;
       }
       setMessage(payload.message ?? (payload.deduplicated
-        ? 'An active bag-drop request already exists.'
-        : 'Bag-drop request submitted.'));
+        ? t('bagStorage.successDeduplicated')
+        : t('bagStorage.successDefault')));
       setNote('');
       await refetch();
     } catch {
-      setError('Unable to submit bag-drop request right now.');
+      setError(t('bagStorage.errorNetwork'));
     } finally {
       setIsSubmitting(false);
     }
@@ -65,10 +78,10 @@ export default function BagStoragePage() {
     return (
       <main className="min-h-dvh bg-muted p-4">
         <div className="mx-auto w-full rounded-xl bg-card p-6 text-center shadow-sm">
-          <h1 className="mb-2 text-xl font-semibold text-foreground">Bag Storage</h1>
-          <p className="text-sm text-muted-foreground">We could not load bag-storage details right now.</p>
+          <h1 className="mb-2 text-xl font-semibold text-foreground">{t('bagStorage.title')}</h1>
+          <p className="text-sm text-muted-foreground">{t('bagStorage.loadError')}</p>
           <Link href="/" className="mt-5 inline-block text-primary hover:underline">
-            Return Home
+            {t('bagStorage.returnHome')}
           </Link>
         </div>
       </main>
@@ -85,25 +98,25 @@ export default function BagStoragePage() {
           <div className="mb-3 flex items-center gap-3">
             <Package className="h-6 w-6 text-primary" />
             <div>
-              <h1 className="text-xl font-semibold text-foreground">Bag Storage</h1>
-              <p className="text-xs text-muted-foreground">Post-checkout bag-drop requests</p>
+              <h1 className="text-xl font-semibold text-foreground">{t('bagStorage.title')}</h1>
+              <p className="text-xs text-muted-foreground">{t('bagStorage.subtitle')}</p>
             </div>
           </div>
 
           {activeRequestStatus && (
             <p className="mb-3 rounded-lg bg-info-soft px-3 py-2 text-xs text-info-foreground">
-              Current request status: <span className="font-semibold">{activeRequestStatus}</span>
+              {t('bagStorage.currentStatus', { status: activeRequestStatus })}
             </p>
           )}
 
           {!isCheckedOut ? (
             <p className="text-sm text-muted-foreground">
-              Bag-drop requests become available after checkout. Please return once your stay is checked out.
+              {t('bagStorage.notCheckedOut')}
             </p>
           ) : (
             <form onSubmit={submitBagDrop}>
               <label htmlFor="pickupWindow" className="text-xs font-medium text-muted-foreground">
-                Pickup window
+                {t('bagStorage.pickupWindowLabel')}
               </label>
               <select
                 id="pickupWindow"
@@ -112,24 +125,17 @@ export default function BagStoragePage() {
                 className="mt-1 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm"
                 required
               >
-                <option value="" disabled>Select a time slot…</option>
-                {[
-                  '07:30 – 08:00', '08:00 – 08:30', '08:30 – 09:00',
-                  '09:00 – 09:30', '09:30 – 10:00', '10:00 – 10:30',
-                  '10:30 – 11:00', '11:00 – 11:30', '11:30 – 12:00',
-                  '12:00 – 12:30', '12:30 – 13:00', '13:00 – 13:30',
-                  '13:30 – 14:00', '14:00 – 14:30', '14:30 – 15:00',
-                  '15:00 – 15:30',
-                ].map((slot) => (
+                <option value="" disabled>{t('bagStorage.selectTimeSlot')}</option>
+                {PICKUP_TIME_SLOTS.map((slot) => (
                   <option key={slot} value={slot}>{slot}</option>
                 ))}
               </select>
               <p className="mt-1.5 text-xs text-muted-foreground">
-                Bags can be collected any time up to 15:30. After that, uncollected bags are handed to our local porter service — there is a <span className="font-medium text-foreground">€15 per bag</span> collection fee.
+                {t('bagStorage.collectionNote')}
               </p>
 
               <label htmlFor="bagNote" className="mt-3 block text-xs font-medium text-muted-foreground">
-                Note (optional)
+                {t('bagStorage.noteLabel')}
               </label>
               <textarea
                 id="bagNote"
@@ -156,7 +162,7 @@ export default function BagStoragePage() {
                 disabled={isSubmitting || !pickupWindow.trim()}
                 className="mt-4 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
               >
-                {isSubmitting ? 'Submitting…' : 'Request bag drop'}
+                {isSubmitting ? t('bagStorage.submitting') : t('bagStorage.submitButton')}
               </button>
             </form>
           )}
@@ -164,7 +170,7 @@ export default function BagStoragePage() {
 
         <div className="text-center">
           <Link href="/" className="text-sm text-primary hover:underline">
-            Return Home
+            {t('bagStorage.returnHome')}
           </Link>
         </div>
       </div>

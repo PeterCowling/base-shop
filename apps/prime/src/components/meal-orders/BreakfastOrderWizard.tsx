@@ -1,7 +1,8 @@
-/* eslint-disable ds/no-hardcoded-copy, ds/min-tap-size -- BRIK-2 meal-orders i18n + tap size deferred */
+/* eslint-disable ds/min-tap-size -- BRIK-2 meal-orders tap size deferred */
 'use client';
 
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { StepFlowShell } from '@acme/design-system/primitives';
 
@@ -29,44 +30,8 @@ interface BreakfastOrderWizardProps {
   onReset?: () => void;
 }
 
-// ---------------------------------------------------------------------------
-// Step metadata
-// ---------------------------------------------------------------------------
-
-const STEP_META: Record<string, { title: string; description: string }> = {
-  food: {
-    title: 'Choose your breakfast',
-    description: 'Select your main dish.',
-  },
-  eggs: {
-    title: 'Egg style & sides',
-    description: 'How would you like your eggs, and choose 3 sides.',
-  },
-  pancakes: {
-    title: 'Pancake syrup',
-    description: 'Choose your syrup.',
-  },
-  drinks: {
-    title: 'Choose your drink',
-    description: 'Select a drink to go with your breakfast.',
-  },
-  sugar: {
-    title: 'Sugar',
-    description: 'How much sugar would you like?',
-  },
-  milksugar: {
-    title: 'Milk & Sugar',
-    description: 'How would you like your drink?',
-  },
-  time: {
-    title: 'Delivery time',
-    description: 'When would you like your breakfast delivered?',
-  },
-  confirmation: {
-    title: 'Confirm your order',
-    description: 'Please review your order before submitting.',
-  },
-};
+// Step keys for i18n lookup
+const STEP_KEYS = ['food', 'eggs', 'pancakes', 'drinks', 'sugar', 'milksugar', 'time', 'confirmation'] as const;
 
 // ---------------------------------------------------------------------------
 // Component
@@ -77,6 +42,7 @@ export function BreakfastOrderWizard({
   onSubmit,
   isSubmitting,
 }: BreakfastOrderWizardProps) {
+  const { t } = useTranslation('Homepage');
   const wizard = useBreakfastWizard();
 
   useEffect(() => {
@@ -84,7 +50,9 @@ export function BreakfastOrderWizard({
     // eslint-disable-next-line react-hooks/exhaustive-deps -- BRIK-2 intentionally only depends on serviceDate
   }, [serviceDate]);
 
-  const meta = STEP_META[wizard.activeStep] ?? STEP_META['food'];
+  const stepKey = STEP_KEYS.includes(wizard.activeStep as typeof STEP_KEYS[number]) ? wizard.activeStep : 'food';
+  const metaTitle = t(`breakfastWizard.steps.${stepKey}.title`);
+  const metaDescription = t(`breakfastWizard.steps.${stepKey}.description`);
 
   // -------------------------------------------------------------------------
   // Step content renderers
@@ -125,7 +93,7 @@ export function BreakfastOrderWizard({
           onClick={wizard.advanceStep}
           className="mt-2 min-h-11 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-50"
         >
-          Next
+          {t('breakfastWizard.next')}
         </button>
       </div>
     );
@@ -137,7 +105,7 @@ export function BreakfastOrderWizard({
     return (
       <div className="space-y-4">
         <div>
-          <p className="mb-2 text-sm font-medium text-foreground">Egg style</p>
+          <p className="mb-2 text-sm font-medium text-foreground">{t('breakfastWizard.eggStyle')}</p>
           <div className="space-y-2">
             {eggStyles.map((item) => {
               const isSelected = wizard.formData.selectedEggStyle === item.value;
@@ -164,7 +132,7 @@ export function BreakfastOrderWizard({
         </div>
         <div>
           <p className="mb-2 text-sm font-medium text-foreground">
-            Select 3 sides ({remaining} remaining)
+            {t('breakfastWizard.selectSides', { remaining })}
           </p>
           <div className="space-y-2">
             {eggSides.map((item) => {
@@ -201,7 +169,7 @@ export function BreakfastOrderWizard({
           onClick={wizard.advanceStep}
           className="mt-2 min-h-11 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-50"
         >
-          Next
+          {t('breakfastWizard.next')}
         </button>
       </div>
     );
@@ -239,7 +207,7 @@ export function BreakfastOrderWizard({
           onClick={wizard.advanceStep}
           className="mt-2 min-h-11 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-50"
         >
-          Next
+          {t('breakfastWizard.next')}
         </button>
       </div>
     );
@@ -280,7 +248,7 @@ export function BreakfastOrderWizard({
           onClick={wizard.advanceStep}
           className="mt-2 min-h-11 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-50"
         >
-          Next
+          {t('breakfastWizard.next')}
         </button>
       </div>
     );
@@ -318,7 +286,7 @@ export function BreakfastOrderWizard({
           onClick={wizard.advanceStep}
           className="mt-2 min-h-11 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-50"
         >
-          Next
+          {t('breakfastWizard.next')}
         </button>
       </div>
     );
@@ -328,7 +296,7 @@ export function BreakfastOrderWizard({
     return (
       <div className="space-y-4">
         <div>
-          <p className="mb-2 text-sm font-medium text-foreground">Milk</p>
+          <p className="mb-2 text-sm font-medium text-foreground">{t('breakfastWizard.milkLabel')}</p>
           <div className="space-y-2">
             {milkOptions.map((option) => {
               const isSelected = wizard.formData.selectedMilk === option;
@@ -354,7 +322,7 @@ export function BreakfastOrderWizard({
           </div>
         </div>
         <div>
-          <p className="mb-2 text-sm font-medium text-foreground">Sugar</p>
+          <p className="mb-2 text-sm font-medium text-foreground">{t('breakfastWizard.sugarLabel')}</p>
           <div className="space-y-2">
             {sugarOptions.map((option) => {
               const isSelected = wizard.formData.selectedSugar === option;
@@ -385,7 +353,7 @@ export function BreakfastOrderWizard({
           onClick={wizard.advanceStep}
           className="mt-2 min-h-11 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-50"
         >
-          Next
+          {t('breakfastWizard.next')}
         </button>
       </div>
     );
@@ -399,7 +367,7 @@ export function BreakfastOrderWizard({
             htmlFor="breakfast-time"
             className="mb-1.5 block text-sm font-medium text-foreground"
           >
-            Delivery time
+            {t('breakfastWizard.deliveryTimeLabel')}
           </label>
           <select
             id="breakfast-time"
@@ -407,7 +375,7 @@ export function BreakfastOrderWizard({
             onChange={(e) => wizard.updateField('selectedTime', e.target.value || null)}
             className="w-full rounded-lg border border-border bg-card px-3 py-2.5 text-sm text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
-            <option value="">Select a time…</option>
+            <option value="">{t('breakfastWizard.selectTime')}</option>
             {breakfastTimes.map((time) => (
               <option key={time} value={time}>
                 {time}
@@ -421,7 +389,7 @@ export function BreakfastOrderWizard({
           onClick={wizard.advanceStep}
           className="mt-2 min-h-11 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-50"
         >
-          Next
+          {t('breakfastWizard.next')}
         </button>
       </div>
     );
@@ -461,14 +429,14 @@ export function BreakfastOrderWizard({
           <dl className="space-y-3">
             <div>
               <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Food
+                {t('breakfastWizard.confirmFood')}
               </dt>
               <dd className="mt-0.5 text-sm text-foreground">{foodDisplay}</dd>
             </div>
             {selectedFood === 'Eggs' && selectedSides.length > 0 && (
               <div>
                 <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                  Sides
+                  {t('breakfastWizard.confirmSides')}
                 </dt>
                 <dd className="mt-0.5 text-sm text-foreground">
                   {selectedSides.join(', ')}
@@ -478,7 +446,7 @@ export function BreakfastOrderWizard({
             {drinkDisplay && (
               <div>
                 <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                  Drink
+                  {t('breakfastWizard.confirmDrink')}
                 </dt>
                 <dd className="mt-0.5 text-sm text-foreground">{drinkDisplay}</dd>
               </div>
@@ -486,7 +454,7 @@ export function BreakfastOrderWizard({
             {selectedTime && (
               <div>
                 <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                  Delivery time
+                  {t('breakfastWizard.confirmDeliveryTime')}
                 </dt>
                 <dd className="mt-0.5 text-sm text-foreground">{selectedTime}</dd>
               </div>
@@ -499,7 +467,7 @@ export function BreakfastOrderWizard({
             onClick={() => wizard.goToStep(0)}
             className="min-h-11 w-full rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-medium text-foreground"
           >
-            Edit
+            {t('breakfastWizard.edit')}
           </button>
           <button
             type="button"
@@ -510,7 +478,7 @@ export function BreakfastOrderWizard({
             }}
             className="min-h-11 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-50"
           >
-            {isSubmitting ? 'Submitting…' : 'Confirm order'}
+            {isSubmitting ? t('breakfastWizard.submitting') : t('breakfastWizard.confirmOrder')}
           </button>
         </div>
       </div>
@@ -552,8 +520,8 @@ export function BreakfastOrderWizard({
     <StepFlowShell
       currentStep={wizard.currentStep}
       totalSteps={wizard.totalSteps}
-      title={meta.title}
-      description={meta.description}
+      title={metaTitle}
+      description={metaDescription}
       onBack={wizard.currentStepIndex === 0 ? undefined : wizard.goBack}
     >
       {renderStepContent()}

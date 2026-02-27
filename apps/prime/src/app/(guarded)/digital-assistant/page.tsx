@@ -1,7 +1,8 @@
-/* eslint-disable ds/no-hardcoded-copy, ds/min-tap-size, ds/enforce-layout-primitives -- BRIK-3 digital-assistant i18n + tap-size + layout-primitive deferred */
+/* eslint-disable ds/min-tap-size, ds/enforce-layout-primitives -- BRIK-3 digital-assistant tap-size + layout-primitive deferred */
 'use client';
 
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { Bot, ExternalLink, Loader2, Sparkles } from 'lucide-react';
 
@@ -17,22 +18,25 @@ interface AssistantExchange {
   links: Array<{ label: string; href: string }>;
 }
 
-const PRESET_QUERIES = [
-  'How do I walk to Fornillo beach?',
-  'How do I take the local bus?',
-  "What's on the bar menu?",
-  'How do I get to Positano port?',
-  'How do I travel around Positano?',
-  'Can I get porter help with my luggage?',
-  'How do I book a rubber boat trip?',
-  'Are there any boat tours available?',
-  'Where can I go hiking near Positano?',
-  "What's included in the breakfast?",
-];
+const PRESET_QUERY_KEYS = [
+  'presetQueries.fornilloBeach',
+  'presetQueries.localBus',
+  'presetQueries.barMenu',
+  'presetQueries.positanoPort',
+  'presetQueries.travelAround',
+  'presetQueries.porterHelp',
+  'presetQueries.rubberBoatTrip',
+  'presetQueries.boatTours',
+  'presetQueries.hiking',
+  'presetQueries.breakfastIncluded',
+] as const;
 
 const MAX_HISTORY = 5;
+// PRIME-1: HTML element ID for label/textarea a11y pairing — extracting to constant keeps lint clean
+const ASSISTANT_QUESTION_FIELD_ID = 'assistant-question';
 
 export default function DigitalAssistantPage() {
+  const { t } = useTranslation('Homepage');
   const [question, setQuestion] = useState('');
   const [exchanges, setExchanges] = useState<AssistantExchange[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -49,10 +53,10 @@ export default function DigitalAssistantPage() {
         ...prev,
         {
           question: q,
-          answer: 'I found an unsafe link in the draft answer, so I removed it. Please use Booking Details or reception.',
+          answer: t('digitalAssistant.answerUnsafeLink'),
           answerType: 'fallback',
           category: 'general',
-          links: [{ label: 'Booking details', href: '/booking-details' }],
+          links: [{ label: t('digitalAssistant.bookingDetailsLabel'), href: '/booking-details' }],
         },
       ]);
       setQuestion('');
@@ -113,7 +117,7 @@ export default function DigitalAssistantPage() {
           ...prev,
           {
             question: q,
-            answer: 'Too many questions right now. Please wait a moment before asking again.',
+            answer: t('digitalAssistant.answerRateLimited'),
             answerType: 'llm-safety-fallback',
             category: 'general',
             links: [],
@@ -174,10 +178,10 @@ export default function DigitalAssistantPage() {
         ...prev,
         {
           question: q,
-          answer: 'I am unable to answer right now. Please ask reception for help.',
+          answer: t('digitalAssistant.answerNetworkError'),
           answerType: 'llm-safety-fallback',
           category: 'general',
-          links: [{ label: 'Reception support', href: '/booking-details' }],
+          links: [{ label: t('digitalAssistant.receptionSupportLabel'), href: '/booking-details' }],
         },
       ]);
       recordActivationFunnelEvent({
@@ -215,37 +219,40 @@ export default function DigitalAssistantPage() {
             </div>
             <div>
               <h1 className="text-xl font-semibold text-foreground">
-                {firstName ? `Hi ${firstName} — Digital Assistant` : 'Digital Assistant'}
+                {firstName ? t('digitalAssistant.titleWithName', { firstName }) : t('digitalAssistant.title')}
               </h1>
-              <p className="text-xs text-muted-foreground">Ask anything about your stay</p>
+              <p className="text-xs text-muted-foreground">{t('digitalAssistant.subtitle')}</p>
             </div>
           </div>
 
           {/* Preset query buttons */}
           <div className="mb-3 flex flex-wrap gap-1.5">
-            {PRESET_QUERIES.map((preset) => (
-              <button
-                key={preset}
-                type="button"
-                onClick={() => void handleAsk(preset)}
-                disabled={isLoading}
-                className="rounded-full border border-border bg-background px-2.5 py-1 text-xs text-foreground hover:bg-muted disabled:opacity-50"
-              >
-                {preset}
-              </button>
-            ))}
+            {PRESET_QUERY_KEYS.map((key) => {
+              const preset = t(key);
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => void handleAsk(preset)}
+                  disabled={isLoading}
+                  className="rounded-full border border-border bg-background px-2.5 py-1 text-xs text-foreground hover:bg-muted disabled:opacity-50"
+                >
+                  {preset}
+                </button>
+              );
+            })}
           </div>
 
           <form onSubmit={handleFormSubmit}>
-            <label htmlFor="assistant-question" className="text-xs font-medium text-muted-foreground">
-              Ask a question
+            <label htmlFor={ASSISTANT_QUESTION_FIELD_ID} className="text-xs font-medium text-muted-foreground">
+              {t('digitalAssistant.questionLabel')}
             </label>
             <textarea
-              id="assistant-question"
+              id={ASSISTANT_QUESTION_FIELD_ID}
               value={question}
               onChange={(event) => setQuestion(event.target.value)}
               rows={3}
-              placeholder="e.g. How do I get to the hostel from Naples?"
+              placeholder={t('digitalAssistant.questionPlaceholder')}
               className="mt-1 w-full rounded-lg border border-border px-3 py-2 text-sm"
             />
             <button
@@ -256,10 +263,10 @@ export default function DigitalAssistantPage() {
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  Thinking…
+                  {t('digitalAssistant.thinking')}
                 </span>
               ) : (
-                'Ask assistant'
+                t('digitalAssistant.askButton')
               )}
             </button>
           </form>
@@ -275,7 +282,7 @@ export default function DigitalAssistantPage() {
               <div className="mt-4 rounded-lg bg-muted p-3">
                 <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                   <Sparkles className="me-1 inline h-3.5 w-3.5" />
-                  Further reading
+                  {t('digitalAssistant.furtherReading')}
                 </p>
                 <ul className="mt-2 space-y-2">
                   {exchange.links.map((link) => (
@@ -309,7 +316,7 @@ export default function DigitalAssistantPage() {
 
         <div className="text-center">
           <Link href="/" className="text-sm text-primary hover:underline">
-            Return Home
+            {t('digitalAssistant.returnHome')}
           </Link>
         </div>
       </div>

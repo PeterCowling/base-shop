@@ -1,13 +1,185 @@
 {
+  "breakfastWizard": {
+    "confirmDeliveryTime": "Delivery time",
+    "confirmDrink": "Drink",
+    "confirmFood": "Food",
+    "confirmOrder": "Confirm order",
+    "confirmSides": "Sides",
+    "deliveryTimeLabel": "Delivery time",
+    "edit": "Edit",
+    "eggStyle": "Egg style",
+    "milkLabel": "Milk",
+    "next": "Next",
+    "selectSides": "Select 3 sides ({{remaining}} remaining)",
+    "selectTime": "Select a time…",
+    "submitting": "Submitting…",
+    "sugarLabel": "Sugar",
+    "steps": {
+      "food": {
+        "title": "Choose your breakfast",
+        "description": "Select your main dish."
+      },
+      "eggs": {
+        "title": "Egg style & sides",
+        "description": "How would you like your eggs, and choose 3 sides."
+      },
+      "pancakes": {
+        "title": "Pancake syrup",
+        "description": "Choose your syrup."
+      },
+      "drinks": {
+        "title": "Choose your drink",
+        "description": "Select a drink to go with your breakfast."
+      },
+      "sugar": {
+        "title": "Sugar",
+        "description": "How much sugar would you like?"
+      },
+      "milksugar": {
+        "title": "Milk & Sugar",
+        "description": "How would you like your drink?"
+      },
+      "time": {
+        "title": "Delivery time",
+        "description": "When would you like your breakfast delivered?"
+      },
+      "confirmation": {
+        "title": "Confirm your order",
+        "description": "Please review your order before submitting."
+      }
+    }
+  },
+  "evDrinkWizard": {
+    "confirmDeliveryTime": "Delivery time",
+    "confirmDrink": "Drink",
+    "confirmExtras": "Extras",
+    "confirmOrder": "Confirm order",
+    "customiseLegend": "Customise your drink",
+    "deliveryTimeSrLabel": "Delivery time",
+    "edit": "Edit",
+    "next": "Next",
+    "selectDrinkLegend": "Select a drink",
+    "selectTime": "Select a time…",
+    "submitting": "Submitting…",
+    "modifiers": {
+      "sweetened": "Sweetened",
+      "withGeneric": "With {{name}}",
+      "withMilk": "With Milk",
+      "withSugar": "With Sugar"
+    },
+    "steps": {
+      "drink": {
+        "title": "Choose your drink",
+        "description": "Select a drink from the options below."
+      },
+      "modifier": {
+        "title": "Customise your drink",
+        "description": "Add any extras you would like."
+      },
+      "time": {
+        "title": "Choose a delivery time",
+        "description": "Select when you would like your drink delivered."
+      },
+      "confirmation": {
+        "title": "Confirm your order",
+        "description": "Please review your order before submitting."
+      }
+    }
+  },
+  "bagStorage": {
+    "collectionNote": "Bags can be collected any time up to 15:30. After that, uncollected bags are handed to our local porter service — there is a €15 per bag collection fee.",
+    "currentStatus": "Current request status: {{status}}",
+    "errorDefault": "Unable to submit bag-drop request.",
+    "errorNetwork": "Unable to submit bag-drop request right now.",
+    "loadError": "We could not load bag-storage details right now.",
+    "noteLabel": "Note (optional)",
+    "notCheckedOut": "Bag-drop requests become available after checkout. Please return once your stay is checked out.",
+    "pickupWindowLabel": "Pickup window",
+    "returnHome": "Return Home",
+    "selectTimeSlot": "Select a time slot…",
+    "submitButton": "Request bag drop",
+    "submitting": "Submitting…",
+    "successDefault": "Bag-drop request submitted.",
+    "successDeduplicated": "An active bag-drop request already exists.",
+    "subtitle": "Post-checkout bag-drop requests",
+    "title": "Bag Storage"
+  },
+  "digitalAssistant": {
+    "answerNetworkError": "I am unable to answer right now. Please ask reception for help.",
+    "answerRateLimited": "Too many questions right now. Please wait a moment before asking again.",
+    "answerUnsafeLink": "I found an unsafe link in the draft answer, so I removed it. Please use Booking Details or reception.",
+    "askButton": "Ask assistant",
+    "bookingDetailsLabel": "Booking details",
+    "furtherReading": "Further reading",
+    "questionLabel": "Ask a question",
+    "questionPlaceholder": "e.g. How do I get to the hostel from Naples?",
+    "receptionSupportLabel": "Reception support",
+    "returnHome": "Return Home",
+    "subtitle": "Ask anything about your stay",
+    "thinking": "Thinking…",
+    "title": "Digital Assistant",
+    "titleWithName": "Hi {{firstName}} — Digital Assistant",
+    "presetQueries": {
+      "fornilloBeach": "How do I walk to Fornillo beach?",
+      "localBus": "How do I take the local bus?",
+      "barMenu": "What's on the bar menu?",
+      "positanoPort": "How do I get to Positano port?",
+      "travelAround": "How do I travel around Positano?",
+      "porterHelp": "Can I get porter help with my luggage?",
+      "rubberBoatTrip": "How do I book a rubber boat trip?",
+      "boatTours": "Are there any boat tours available?",
+      "hiking": "Where can I go hiking near Positano?",
+      "breakfastIncluded": "What's included in the breakfast?"
+    }
+  },
+  "mealOrder": {
+    "errorDefault": "Unable to update order.",
+    "errorNetwork": "Unable to update order right now.",
+    "existingOrdersTitle": "Existing orders",
+    "loadError": "We could not load your meal order data right now.",
+    "noOrders": "No orders yet.",
+    "notEligible": "This service is not included in your booking. You can still explore the menu at reception.",
+    "orderSaved": "Order saved.",
+    "overrideRequestSubmitted": "Reception override request submitted.",
+    "requestException": "Request same-day exception",
+    "returnHome": "Return Home",
+    "sameDayBlocked": "Same-day changes are blocked. You can request a reception override.",
+    "sameDayPolicyNotice": "Same-day changes are blocked by policy. You can submit an exception request.",
+    "selectDate": "Select date",
+    "serviceDateLabel": "Service date",
+    "breakfastTitle": "Complimentary Breakfast",
+    "eveningDrinkTitle": "Complimentary Evening Drink",
+    "subtitle": "Create or edit your order"
+  },
   "doList": {
     "continueToExplore": "Continue exploring",
     "startYourEpicStay": "Start your stay"
+  },
+  "accessRestricted": {
+    "returnHome": "Return Home",
+    "title": "Access Restricted"
   },
   "error": {
     "loadInfo": "Error loading information. Please try again.",
     "missingData": "Unable to load your booking information."
   },
+  "errorPage": {
+    "message": "We encountered an error. Please try again.",
+    "returnHome": "Return Home",
+    "title": "Something went wrong"
+  },
   "guest": "Guest",
+  "landing": {
+    "findMyStay": "Find My Stay",
+    "staffLookup": "Staff Lookup",
+    "subtitle": "Welcome to the guest services portal",
+    "title": "Prime Guest Portal"
+  },
+  "offline": {
+    "message": "Please check your internet connection and try again.",
+    "title": "You're offline",
+    "tryAgain": "Try Again"
+  },
   "loading": "Loading...",
   "ourServices": "Our Services",
   "profileBanner": {

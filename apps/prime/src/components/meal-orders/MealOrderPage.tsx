@@ -1,7 +1,8 @@
-/* eslint-disable ds/no-hardcoded-copy, ds/min-tap-size -- BRIK-2 meal-orders i18n + tap size deferred */
+/* eslint-disable ds/min-tap-size -- BRIK-2 meal-orders tap size deferred */
 'use client';
 
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { CalendarDays, UtensilsCrossed } from 'lucide-react';
 
@@ -70,6 +71,7 @@ export default function MealOrderPage({
   title,
   iconClassName = 'text-warning-foreground',
 }: MealOrderPageProps) {
+  const { t } = useTranslation('Homepage');
   const { snapshot, token, isLoading, refetch } = useGuestBookingSnapshot();
   const [serviceDate, setServiceDate] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -144,26 +146,26 @@ export default function MealOrderPage({
       };
 
       if (!response.ok && !payload.policyBlocked) {
-        setError(payload.error ?? 'Unable to update order.');
+        setError(payload.error ?? t('mealOrder.errorDefault'));
         return;
       }
 
       if (payload.policyBlocked && !payload.requestQueued) {
-        setError('Same-day changes are blocked. You can request a reception override.');
+        setError(t('mealOrder.sameDayBlocked'));
         setPendingExceptionPayload({ serviceDate, value });
         return;
       }
 
       if (payload.requestQueued) {
-        setMessage(payload.message ?? 'Reception override request submitted.');
+        setMessage(payload.message ?? t('mealOrder.overrideRequestSubmitted'));
         setPendingExceptionPayload(null);
       } else {
-        setMessage(payload.message ?? 'Order saved.');
+        setMessage(payload.message ?? t('mealOrder.orderSaved'));
         setPendingExceptionPayload(null);
       }
       await refetch();
     } catch {
-      setError('Unable to update order right now.');
+      setError(t('mealOrder.errorNetwork'));
     } finally {
       setIsSubmitting(false);
     }
@@ -183,9 +185,9 @@ export default function MealOrderPage({
         {/* eslint-disable-next-line ds/container-widths-only-at -- BRIK-2 pre-existing layout, no DS container primitives in Prime */}
         <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
           <h1 className="mb-2 text-xl font-semibold text-foreground">{title}</h1>
-          <p className="text-sm text-muted-foreground">We could not load your meal order data right now.</p>
+          <p className="text-sm text-muted-foreground">{t('mealOrder.loadError')}</p>
           <Link href="/" className="mt-4 inline-block text-primary hover:underline">
-            Return Home
+            {t('mealOrder.returnHome')}
           </Link>
         </div>
       </main>
@@ -200,10 +202,10 @@ export default function MealOrderPage({
           <UtensilsCrossed className={`mx-auto mb-4 h-12 w-12 ${iconClassName}`} />
           <h1 className="mb-2 text-xl font-semibold text-foreground">{title}</h1>
           <p className="text-sm text-muted-foreground">
-            This service is not included in your booking. You can still explore the menu at reception.
+            {t('mealOrder.notEligible')}
           </p>
           <Link href="/" className="mt-5 inline-block text-primary hover:underline">
-            Return Home
+            {t('mealOrder.returnHome')}
           </Link>
         </div>
       </main>
@@ -221,12 +223,12 @@ export default function MealOrderPage({
             <UtensilsCrossed className={`h-6 w-6 ${iconClassName}`} />
             <div>
               <h1 className="text-xl font-semibold text-foreground">{title}</h1>
-              <p className="text-xs text-muted-foreground">Create or edit your order</p>
+              <p className="text-xs text-muted-foreground">{t('mealOrder.subtitle')}</p>
             </div>
           </div>
 
           <label htmlFor="service-date" className="text-xs font-medium text-muted-foreground">
-            Service date
+            {t('mealOrder.serviceDateLabel')}
           </label>
           <select
             id="service-date"
@@ -234,7 +236,7 @@ export default function MealOrderPage({
             onChange={(event) => setServiceDate(event.target.value)}
             className="mt-1 w-full rounded-lg border border-border px-3 py-2 text-sm"
           >
-            <option value="">Select date</option>
+            <option value="">{t('mealOrder.selectDate')}</option>
             {availableDates.map((date) => (
               <option key={date} value={date}>
                 {date}
@@ -244,7 +246,7 @@ export default function MealOrderPage({
 
           {serviceDate && serviceDate <= today && (
             <p className="mt-2 rounded-lg bg-warning-soft px-3 py-2 text-xs text-warning-foreground">
-              Same-day changes are blocked by policy. You can submit an exception request.
+              {t('mealOrder.sameDayPolicyNotice')}
             </p>
           )}
 
@@ -283,17 +285,17 @@ export default function MealOrderPage({
               disabled={isSubmitting}
               className="mt-2 w-full rounded-lg border border-warning bg-warning-soft px-4 py-2.5 text-sm font-medium text-warning-foreground hover:bg-warning-soft/80"
             >
-              Request same-day exception
+              {t('mealOrder.requestException')}
             </button>
           )}
         </div>
 
         <div className="rounded-xl bg-card p-5 shadow-sm">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground">
-            Existing orders
+            {t('mealOrder.existingOrdersTitle')}
           </h2>
           {existingOrders.length === 0 ? (
-            <p className="mt-2 text-sm text-muted-foreground">No orders yet.</p>
+            <p className="mt-2 text-sm text-muted-foreground">{t('mealOrder.noOrders')}</p>
           ) : (
             <ul className="mt-3 space-y-2">
               {existingOrders.map((order) => (
@@ -313,7 +315,7 @@ export default function MealOrderPage({
 
         <div className="text-center">
           <Link href="/" className="text-sm text-primary hover:underline">
-            Return Home
+            {t('mealOrder.returnHome')}
           </Link>
         </div>
       </div>

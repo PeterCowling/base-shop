@@ -1443,16 +1443,6 @@
     {
       "type": "pending-review",
       "business": "BOS",
-      "title": "Pending results review: brik-room-content-schema",
-      "body": "Build is complete but no results review has been written yet.",
-      "suggested_action": "Write docs/plans/brik-room-content-schema/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
-      "source": "build-record.user.md",
-      "date": "2026-02-27T15:57:00.071Z",
-      "path": "docs/plans/brik-room-content-schema/build-record.user.md"
-    },
-    {
-      "type": "pending-review",
-      "business": "BOS",
       "title": "Pending results review: reception-rounded-lg-lint-rule",
       "body": "Results review exists but the \"expansion opportunities\" section is missing.",
       "suggested_action": "Complete docs/plans/_archive/reception-rounded-lg-lint-rule/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",

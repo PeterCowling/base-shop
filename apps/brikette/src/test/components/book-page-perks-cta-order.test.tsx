@@ -25,7 +25,13 @@ jest.mock("@/components/booking/LocationInline", () => ({ __esModule: true, defa
 jest.mock("@/components/booking/PolicyFeeClarityPanel", () => ({ __esModule: true, default: () => <div data-cy="policy-panel" /> }));
 
 jest.mock("@/components/booking/DirectPerksBlock", () => ({
-  DirectPerksBlock: () => <div data-cy="direct-perks-block">Why book direct?</div>,
+  DirectPerksBlock: ({ savingsEyebrow, savingsHeadline }: { savingsEyebrow?: string; savingsHeadline?: string }) => (
+    <div data-cy="direct-perks-block">
+      {savingsEyebrow && <p>{savingsEyebrow}</p>}
+      {savingsHeadline && <p>{savingsHeadline}</p>}
+      Why book direct?
+    </div>
+  ),
 }));
 
 jest.mock("@/components/rooms/RoomsSection", () => ({
@@ -47,6 +53,19 @@ describe("Book page perks CTA order", () => {
     // compareDocumentPosition returns a bitmask; DOCUMENT_POSITION_FOLLOWING means
     // roomsSection follows perksBlock (i.e., perksBlock is rendered first).
     const order = perksBlock.compareDocumentPosition(roomsSection);
+    expect(order & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  // TC-04-05: savings headline (rendered inside DirectPerksBlock mock) precedes rooms section
+  it("renders savings headline within the perks block before the rooms section", () => {
+    render(<BookPageContent lang="en" />);
+
+    // The useTranslation mock returns defaultValue strings, so savingsEyebrow receives
+    // "Book direct and save" which the updated DirectPerksBlock mock renders.
+    const savingsEyebrow = screen.getByText("Book direct and save");
+    const roomsSection = screen.getByText("Rooms");
+
+    const order = savingsEyebrow.compareDocumentPosition(roomsSection);
     expect(order & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 

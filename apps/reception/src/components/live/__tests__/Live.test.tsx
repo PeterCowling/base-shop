@@ -18,7 +18,7 @@ async function loadComponent(transactions: Array<{ id: string; text: string }>) 
   jest.doMock("../../../hooks/client/till/useTillReconciliationUI", () => ({
     __esModule: true,
     useTillReconciliationUI: () => ({
-      user: { user_name: "Pete" },
+      user: { user_name: "Pete", roles: ["owner"] },
       isDeleteMode: false,
       isEditMode: false,
       handleRowClickForDelete: jest.fn(),

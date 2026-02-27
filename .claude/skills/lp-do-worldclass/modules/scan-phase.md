@@ -2,6 +2,8 @@
 
 Called by `/lp-do-worldclass` in State 3 only (goal + current benchmark). Reads the benchmark artifact, probes all available data sources, produces a current-state summary per domain, classifies gaps against world-class thresholds, and writes the gap comparison table.
 
+> **No caching.** Execute all Steps 1–7 from scratch on every invocation. If `worldclass-scan-<YYYY-MM-DD>.md` already exists for the current `--as-of-date`, do not read it or treat it as the result of this scan. Overwrite it with fresh output at Step 6. The only scan-phase input that is ever read is the benchmark artifact (`worldclass-benchmark.md`) and the live data sources — never a previously written scan file.
+
 ## Inputs
 
 - `--biz <BIZ>` — from SKILL.md invocation

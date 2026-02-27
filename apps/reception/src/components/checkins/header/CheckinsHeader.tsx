@@ -5,6 +5,7 @@ import { type FC, type MouseEventHandler } from "react";
 import { Inline } from "@acme/design-system/primitives";
 
 import { useAuth } from "../../../context/AuthContext";
+import { canAccess, Permissions } from "../../../lib/roles";
 
 import ArchiveButton from "./ArchiveButton";
 import DeleteButton from "./DeleteButton";
@@ -48,9 +49,9 @@ const CheckinsHeader: FC<CheckinsHeaderProps> = ({
           Check-ins
         </h1>
       </div>
-      {/* Action buttons only if user is "Pete" */}
+      {/* Action buttons only for users with bulk-action access */}
       <Inline wrap={false} gap={0} className="justify-end space-x-2">
-        {user?.user_name === "Pete" && (
+        {canAccess(user ?? null, Permissions.BULK_ACTIONS) && (
           <>
             <NewBookingButton onClick={onNewBookingClick} />
             <EditButton onClick={onEditClick} />

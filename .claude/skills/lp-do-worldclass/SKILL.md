@@ -52,6 +52,7 @@ Keep this file thin. Do not embed scan rules, benchmark rubrics, or ideas templa
 - Writing directly to queue-state.json — all queue writes are delegated to `/lp-do-ideas`
 - Running scan-phase or ideas-phase in any state other than State 3 (goal-phase runs in States 2, 3, and 4)
 - Skipping the dry-run flag when the operator passes it — must respect `--dry-run` and never write to queue-state.json in dry-run mode
+- **Reusing a pre-existing scan file.** If `worldclass-scan-<YYYY-MM-DD>.md` already exists for the current `--as-of-date`, it must be overwritten by a fresh scan — never read and reused as the output of this invocation. Scan-phase Steps 1–7 execute from scratch on every invocation without exception.
 
 ## State Machine
 

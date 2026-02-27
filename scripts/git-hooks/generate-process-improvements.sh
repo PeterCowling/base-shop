@@ -3,7 +3,7 @@ set -euo pipefail
 
 staged_files="$(git diff --cached --name-only --diff-filter=ACMRTUXB)"
 
-if ! echo "$staged_files" | grep -qE '^docs/plans/.+/(results-review|build-record|reflection-debt)\.user\.md$'; then
+if ! echo "$staged_files" | grep -qE '^(docs/plans/.+/(results-review|build-record|reflection-debt)\.user\.md|docs/business-os/_data/completed-ideas\.json)$'; then
   echo "[generate-process-improvements] No relevant files staged; skipping."
   exit 0
 fi

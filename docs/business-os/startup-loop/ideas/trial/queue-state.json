@@ -2,19 +2,68 @@
   "queue_version": "queue.v1",
   "mode": "trial",
   "created_at": "2026-02-25T00:00:00Z",
-  "last_updated": "2026-02-27T12:00:00Z",
+  "last_updated": "2026-02-27T23:50:00Z",
   "counts": {
     "enqueued": 6,
     "processed": 2,
     "skipped": 3,
     "error": 0,
     "suppressed": 0,
-    "auto_executed": 36,
+    "auto_executed": 47,
     "completed": 3,
-    "total": 50,
+    "total": 61,
     "fact_find_ready": 2
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0058",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "area_anchor": "BRIK room pages \u2014 select_item baseline missing before activation",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "processed",
+      "created_at": "2026-02-27T23:50:00Z",
+      "evidence_refs": [
+        "operator-stated: live pricing feature built and tested; no select_item baseline on room detail pages exists; without it post-activation uplift cannot be measured",
+        "funnel_step: select_item on /rooms/[id] pages",
+        "metric_name: select_item event rate on room detail pages"
+      ],
+      "summary": "Before activating the live pricing flag, capture the current select_item event rate on BRIK room detail pages from GA4 as a baseline. This anchors the post-activation comparison and closes the Intended Outcome Check in the results-review.",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-02-27T19:45:00Z",
+        "fact_find_slug": "brik-live-pricing-baseline",
+        "fact_find_path": "docs/plans/brik-live-pricing-baseline/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0059",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "area_anchor": "BRIK live pricing \u2014 production flag activation not yet planned",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "processed",
+      "created_at": "2026-02-27T23:50:00Z",
+      "evidence_refs": [
+        "operator-stated: NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY remains off on production; Cloudflare Worker env var setup and wrangler deploy steps not yet planned",
+        "depends_on: IDEA-DISPATCH-20260227-0058 (baseline capture should precede activation)"
+      ],
+      "summary": "Plan the production activation of live pricing on BRIK room detail pages: confirm which env vars to set, the Cloudflare Worker deployment steps, and what post-activation checks to run.",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-02-27T20:42:00Z",
+        "fact_find_slug": "brik-live-pricing-activation",
+        "fact_find_path": "docs/plans/brik-live-pricing-activation/fact-find.md"
+      }
+    },
     {
       "schema_version": "dispatch.v1",
       "dispatch_id": "IDEA-DISPATCH-20260226-0032",
@@ -125,7 +174,7 @@
       "status": "logged_no_action",
       "recommended_route": null,
       "priority": "P4",
-      "confidence": 1.0,
+      "confidence": 1,
       "evidence_refs": [
         "operator-stated: PWRB startup loop not yet formally started \u2014 this is an admin action, not a planning gap",
         "redirect: /startup-loop start --business PWRB"
@@ -293,7 +342,7 @@
       "status": "logged_no_action",
       "recommended_route": null,
       "priority": "P3",
-      "confidence": 1.0,
+      "confidence": 1,
       "evidence_refs": [
         "operator-stated: TASK-10 investigation confirmed both RoomsStructuredData + ExperiencesStructuredData use useCurrentLanguage() client hooks but underlying data is static \u2014 RSC conversion feasible, suggested as P3 post-launch card",
         "docs/plans/_archive/brikette-deeper-route-funnel-cro/results-review.user.md"
@@ -1020,7 +1069,7 @@
       "status": "fact_find_ready",
       "recommended_route": "lp-do-fact-find",
       "priority": "P2",
-      "confidence": 1.0,
+      "confidence": 1,
       "evidence_refs": [
         "operator-stated: pre-existing test failure discovered during reception-ui-screen-polish-phase4 Wave 3; root cause is testIdAttribute: data-cy jest config vs data-testid in test mock",
         "docs/plans/_archive/reception-ui-screen-polish-phase4/results-review.user.md"
@@ -1053,7 +1102,7 @@
       "status": "fact_find_ready",
       "recommended_route": "lp-do-fact-find",
       "priority": "P2",
-      "confidence": 1.0,
+      "confidence": 1,
       "evidence_refs": [
         "operator-stated: 4 debug console.log calls flagged with TODO comments in Extension.tsx during TASK-11 of reception-ui-screen-polish-phase4; removal deferred as logic-entangled per non-goal",
         "docs/plans/_archive/reception-ui-screen-polish-phase4/results-review.user.md"
@@ -1918,6 +1967,442 @@
       "fact_find_path": "docs/plans/brik-room-octorate-live-pricing/fact-find.md",
       "processed_at": "2026-02-27T20:00:00Z",
       "route": "dispatch-routed"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0048",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:PRODUCTS:brik-reception-user-provisioning:20260227",
+      "anchor_key": "brik-reception-user-provisioning",
+      "cluster_key": "BRIK:PRODUCTS:brik-reception-user-provisioning:operator:20260227",
+      "cluster_fingerprint": "a1b2c3d4e5f607891234567890abcdef",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK reception auth \u2014 no account provisioning, first-login password setup missing",
+      "location_anchors": [
+        "apps/reception/src/app/login/Login.tsx",
+        "apps/reception/src/types/domains/userDomain.ts",
+        "apps/reception/database.rules.json"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "PRODUCTS",
+      "current_truth": "New reception staff accounts cannot be created from within the app. Firebase Auth accounts must be manually provisioned via the Firebase console or Auth export/import CLI. Roles must then be manually written to Firebase Realtime DB userProfiles/{uid} by an admin. There is no in-app account creation flow. Users with no Firebase Auth account (e.g. Serena, Alessandro) cannot log in at all. The current login flow (Login.tsx) uses Firebase onAuthStateChanged and email/password sign-in \u2014 it assumes accounts already exist.",
+      "next_scope_now": "Fact-find to assess reception user provisioning options: (1) review current login flow in Login.tsx \u2014 what Firebase Auth methods are called, what error states are handled, whether any account-creation path exists; (2) assess Firebase Auth invite-by-email flow \u2014 does Firebase Auth support pre-creating accounts that require password setup on first login (e.g. createUserWithEmailAndPassword + sendPasswordResetEmail, or ActionCode-based invite link); (3) review database.rules.json write rules for userProfiles \u2014 what role is required to create a new profile entry for another user; (4) define minimum viable provisioning flow: admin enters email + role in-app \u2192 account created in Firebase Auth \u2192 invite/password-setup email sent \u2192 first login triggers password creation \u2192 profile written to userProfiles/{uid} with correct role; (5) assess whether role assignment should happen at account creation time (admin sets it) or at first login; (6) identify any admin UI surface needed in the reception app for this flow.",
+      "adjacent_later": [
+        "Account deactivation \u2014 ability to revoke access without deleting Auth account",
+        "Role editing \u2014 in-app UI to update existing staff roles without Firebase console access",
+        "Shift-PIN login path \u2014 wiring getUserByPin into an alternative quick-auth flow for shift handoffs"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: accounts can be pre-created for reception users; first login allows password creation; users cannot log in without setting a password first",
+        "session-evidence: Serena (sery399@gmail.com) and Alessandro (ponticorvoalessandro@gmail.com) have no Firebase Auth accounts \u2014 required manual Firebase console workaround this session",
+        "session-evidence: roles must currently be set manually via firebase CLI after first login \u2014 no in-app provisioning flow exists"
+      ],
+      "created_at": "2026-02-27T20:30:00Z",
+      "queue_state": "auto_executed",
+      "dispatched_at": "2026-02-27T20:30:00Z",
+      "auto_executed_at": "2026-02-27T20:30:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0049",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:process-improvements-transitions:20260227",
+      "anchor_key": "process-improvements-transitions",
+      "cluster_key": "BOS:BOS:process-improvements-transitions:operator:20260227",
+      "cluster_fingerprint": "a3f1c9d2e7b504123456789abcdef012",
+      "lineage_depth": 0,
+      "area_anchor": "BOS process-improvements report \u2014 no item entry/exit transitions",
+      "location_anchors": [
+        "scripts/src/startup-loop/generate-process-improvements.ts",
+        "docs/business-os/process-improvements.user.html"
+      ],
+      "domain": "BOS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "evidence_refs": [
+        "operator-stated: add cool transitions when items enter or leave the process-improvements report"
+      ],
+      "created_at": "2026-02-27T20:45:00Z",
+      "updated_at": "2026-02-27T20:45:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0050",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:Platform:reception-agreement-no-firebase-write:20260227",
+      "anchor_key": "reception-agreement-no-firebase-write",
+      "cluster_key": "BRIK:Platform:reception-agreement-no-firebase-write:operator:20260227",
+      "cluster_fingerprint": "f4a2b1c3d5e7091234567890abcdef78",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK reception WEAK-B1 \u2014 agreement reply not writing code 21 to Firebase",
+      "location_anchors": [
+        "packages/mcp-server/src/tools/gmail.ts",
+        "apps/reception/src/hooks/mutations/useActivitiesMutations.ts"
+      ],
+      "domain": "Platform",
+      "status": "briefing_ready",
+      "recommended_route": "lp-do-briefing",
+      "queue_state": "auto_executed",
+      "evidence_refs": [
+        "operator-stated: T&C agreement reply marks email agreement_received in Gmail but writes nothing to Firebase \u2014 booking can auto-cancel despite guest agreeing",
+        "fact-find: docs/plans/reception-email-activity-control-audit/fact-find.md \u2014 WEAK-B1 (CRITICAL)"
+      ],
+      "processed_by": {
+        "route": "auto-executed-via-lp-do-plan",
+        "fact_find_path": "docs/plans/reception-email-activity-control-audit/fact-find.md",
+        "processed_at": "2026-02-27T21:00:00Z"
+      },
+      "created_at": "2026-02-27T21:00:00Z",
+      "updated_at": "2026-02-27T21:00:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0051",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:Platform:reception-activitiesByCode-fanout-missing:20260227",
+      "anchor_key": "reception-activitiesByCode-fanout-missing",
+      "cluster_key": "BRIK:Platform:reception-activitiesByCode-fanout-missing:operator:20260227",
+      "cluster_fingerprint": "c9d7e5f3a1b204123456789012cdef34",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK reception WEAK-C1 \u2014 processCancellationEmail missing activitiesByCode fanout",
+      "location_anchors": [
+        "packages/mcp-server/src/tools/process-cancellation-email.ts"
+      ],
+      "domain": "Platform",
+      "status": "briefing_ready",
+      "recommended_route": "lp-do-briefing",
+      "queue_state": "auto_executed",
+      "evidence_refs": [
+        "operator-stated: processCancellationEmail writes code 22 to /activities/ only \u2014 missing /activitiesByCode/ fanout, future queries on cancellation codes find nothing",
+        "fact-find: docs/plans/reception-email-activity-control-audit/fact-find.md \u2014 WEAK-C1 (HIGH)"
+      ],
+      "processed_by": {
+        "route": "auto-executed-via-lp-do-plan",
+        "fact_find_path": "docs/plans/reception-email-activity-control-audit/fact-find.md",
+        "processed_at": "2026-02-27T21:00:00Z"
+      },
+      "created_at": "2026-02-27T21:00:00Z",
+      "updated_at": "2026-02-27T21:00:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0052",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:Platform:reception-codes-2-3-4-silent-fire:20260227",
+      "anchor_key": "reception-codes-2-3-4-silent-fire",
+      "cluster_key": "BRIK:Platform:reception-codes-2-3-4-silent-fire:operator:20260227",
+      "cluster_fingerprint": "e8f6a4b2c0d103234567890123abcd56",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK reception WEAK-A1 \u2014 codes 2/3/4 trigger activity with no email template",
+      "location_anchors": [
+        "apps/reception/src/hooks/mutations/useActivitiesMutations.ts",
+        "packages/mcp-server/src/tools/guest-email-activity.ts"
+      ],
+      "domain": "Platform",
+      "status": "briefing_ready",
+      "recommended_route": "lp-do-briefing",
+      "queue_state": "auto_executed",
+      "evidence_refs": [
+        "operator-stated: codes 2/3/4 (T&C reminders and auto-cancel) trigger silently with no UI feedback to staff and no email sent to guest",
+        "fact-find: docs/plans/reception-email-activity-control-audit/fact-find.md \u2014 WEAK-A1 (HIGH)"
+      ],
+      "processed_by": {
+        "route": "auto-executed-via-lp-do-plan",
+        "fact_find_path": "docs/plans/reception-email-activity-control-audit/fact-find.md",
+        "processed_at": "2026-02-27T21:00:00Z"
+      },
+      "created_at": "2026-02-27T21:00:00Z",
+      "updated_at": "2026-02-27T21:00:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0053",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:Platform:reception-code22-no-guest-email:20260227",
+      "anchor_key": "reception-code22-no-guest-email",
+      "cluster_key": "BRIK:Platform:reception-code22-no-guest-email:operator:20260227",
+      "cluster_fingerprint": "b5c3d1e9f7a206345678901234cdef78",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK reception WEAK-A2 \u2014 Octorate cancellation code 22 produces no guest email",
+      "location_anchors": [
+        "packages/mcp-server/src/tools/process-cancellation-email.ts",
+        "apps/reception/src/hooks/mutations/useActivitiesMutations.ts"
+      ],
+      "domain": "Platform",
+      "status": "briefing_ready",
+      "recommended_route": "lp-do-briefing",
+      "queue_state": "auto_executed",
+      "evidence_refs": [
+        "operator-stated: Octorate cancellation email triggers code 22 in Firebase but no guest cancellation email is drafted automatically \u2014 staff must manually log code 27",
+        "fact-find: docs/plans/reception-email-activity-control-audit/fact-find.md \u2014 WEAK-A2 (HIGH)"
+      ],
+      "processed_by": {
+        "route": "auto-executed-via-lp-do-plan",
+        "fact_find_path": "docs/plans/reception-email-activity-control-audit/fact-find.md",
+        "processed_at": "2026-02-27T21:00:00Z"
+      },
+      "created_at": "2026-02-27T21:00:00Z",
+      "updated_at": "2026-02-27T21:00:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0054",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:STRATEGY:startup-loop-build-reflection-gate:20260227",
+      "anchor_key": "startup-loop-build-reflection-gate",
+      "cluster_key": "BOS:STRATEGY:startup-loop-build-reflection-gate:operator:20260227",
+      "cluster_fingerprint": "f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+      "lineage_depth": 0,
+      "area_anchor": "Startup loop build reflection gate \u2014 no structured post-build step captures reuse patterns for loop or skill improvement",
+      "location_anchors": [
+        ".claude/skills/lp-do-build/SKILL.md",
+        "docs/agents/feature-workflow-guide.md",
+        "CLAUDE.md",
+        "AGENTS.md"
+      ],
+      "provisional_deliverable_family": "skill-update+loop-change",
+      "domain": "STRATEGY",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P3",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: every build is an opportunity to identify what could be done more easily next time \u2014 e.g. ensure API access or agent access is set up, not rediscovered mid-task",
+        "operator-stated: deterministic patterns should be folded into the startup loop; ad-hoc/non-deterministic patterns should become new tool-* skills"
+      ],
+      "current_truth": "The startup loop has no structured post-build reflection step. When a task or feature is completed, learnings \u2014 such as needing API access configured upfront, repeated ad-hoc data-source discoveries, or steps that could be systematised \u2014 are not captured. There is no mechanism to route deterministic patterns back into the startup loop stages, nor to trigger new tool-* skill creation for ad-hoc patterns.",
+      "next_scope_now": "Fact-find to determine: (1) where in the post-build/stage lifecycle a reflection gate should sit and what triggers it; (2) what the gate should produce \u2014 e.g. a lightweight reflection artifact with fields for data-source access gaps, repeated ad-hoc steps, and improvement opportunities; (3) routing logic: how deterministic patterns are identified and folded back into an existing loop stage or skill; (4) routing logic: criteria and process for promoting an ad-hoc pattern to a new tool-* skill; (5) data-source/API access as a canonical worked example: where does pre-flight access verification live, which loop stage owns it, and how is it recorded; (6) produce a planning brief with concrete tasks.",
+      "adjacent_later": [
+        "Retrospective sweep of completed builds to seed reflection patterns from existing work",
+        "Integration with lp-weekly to surface accumulated reflection patterns in the weekly review"
+      ],
+      "created_at": "2026-02-27T22:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "startup-loop-build-reflection-gate",
+        "fact_find_path": "docs/plans/startup-loop-build-reflection-gate/fact-find.md",
+        "processed_at": "2026-02-27T22:00:00Z",
+        "route": "auto-executed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0055",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:STRATEGY:tool-skill-discovery-protocol:20260227",
+      "anchor_key": "tool-skill-discovery-protocol",
+      "cluster_key": "BOS:STRATEGY:tool-skill-discovery-protocol:operator:20260227",
+      "cluster_fingerprint": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+      "lineage_depth": 0,
+      "area_anchor": "Tool skill discovery protocol \u2014 no standard for creating or token-efficiently surfacing tool-* skills to future agents",
+      "location_anchors": [
+        ".claude/skills/tool-process-audit/SKILL.md",
+        ".claude/skills/",
+        "CLAUDE.md",
+        "AGENTS.md"
+      ],
+      "provisional_deliverable_family": "skill-standard+docs-change",
+      "domain": "STRATEGY",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P3",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: tool-* skills need to be understood by future agents \u2014 where to find them and when to use them, with discovery being extremely token-efficient",
+        "operator-stated: ad-hoc processes that cannot be made deterministic should become tool-* skills",
+        "repo-observation: only one tool-* skill exists (tool-process-audit); no index, no naming spec, no required metadata format"
+      ],
+      "current_truth": "Only one tool-* skill exists (tool-process-audit). There is no naming convention spec, no required metadata format for tool-* SKILL.md files, no lightweight index or manifest where agents can efficiently discover available tools, and no guidance in CLAUDE.md or AGENTS.md on when or how to find tool-* skills. Discovery currently requires scanning the skills directory \u2014 expensive if done naively in a large monorepo context.",
+      "next_scope_now": "Fact-find to determine: (1) what metadata a tool-* skill SKILL.md must contain for token-efficient agent discovery (1-line purpose, trigger conditions, input/output contract, example invocation); (2) whether a lightweight tools-index.md or similar manifest should be maintained for fast lookup without directory scanning; (3) how CLAUDE.md/AGENTS.md should point agents to this index so it is consulted without re-scanning; (4) naming and location conventions for tool-* skills; (5) how to distinguish a skill that belongs in the startup loop from one that belongs in tool-* (decision criteria); (6) produce a planning brief with concrete tasks.",
+      "adjacent_later": [
+        "Backfill index entry for tool-process-audit once standard is defined",
+        "Integrate tool-* skill creation as a concrete output option from the startup loop build reflection gate"
+      ],
+      "created_at": "2026-02-27T22:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "tool-skill-discovery-protocol",
+        "fact_find_path": "docs/plans/tool-skill-discovery-protocol/fact-find.md",
+        "processed_at": "2026-02-27T22:00:00Z",
+        "route": "auto-executed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0056",
+      "trigger": "operator_idea",
+      "business": "PLAT",
+      "area_anchor": "UI design tool chain \u2014 no cohesive pipeline, lp-do-plan to lp-do-build",
+      "domain": "BOS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P3",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: seven UI design tools (lp-design-spec, tools-ui-frontend-design, tools-design-system, lp-design-qa, tools-ui-contrast-sweep, tools-ui-breakpoint-sweep, tools-refactor) lack defined handoff protocol, stale cross-references, and no end-to-end pipeline from lp-do-plan through design, build, and QA to refactor",
+        "repo-observation: SKILL.md files contain stale cross-references using old names (lp-design-system, lp-refactor) instead of current names (tools-design-system, tools-refactor)",
+        "repo-observation: lp-design-qa, tools-ui-contrast-sweep, tools-ui-breakpoint-sweep have no Integration section linking them as sequential pipeline stages",
+        "adjacent-plan: lp-responsive-qa-skill fact-find (Ready-for-planning) covers responsive QA skill spec \u2014 coordinate before touching tools-ui-breakpoint-sweep scope"
+      ],
+      "current_truth": "Seven UI design skills exist but operate as disconnected units. lp-design-spec \u2192 tools-ui-frontend-design \u2192 lp-design-qa \u2192 browser sweeps \u2192 tools-refactor is the intended pipeline but no skill declares its upstream trigger or downstream handoff. SKILL.md files contain stale cross-references. There is no defined intake contract for accepting a lp-do-plan IMPLEMENT task as the pipeline entry point. tools-refactor has no stated entry criteria from QA output.",
+      "next_scope_now": "Fact-find to determine: (1) what handoff artifacts each tool must produce for the next stage; (2) changes needed to each SKILL.md to declare upstream trigger and downstream handoff; (3) stale name references to fix across all seven SKILL.md files; (4) how lp-do-plan IMPLEMENT tasks flagged Design-Spec-Required trigger the pipeline entry; (5) produce a planning brief with tasks ordered to avoid conflict with lp-responsive-qa-skill.",
+      "adjacent_later": [
+        "End-to-end pilot: simulate a lp-do-plan output and run all 7 tools in sequence",
+        "Coordinate with lp-responsive-qa-skill plan once it is built"
+      ],
+      "created_at": "2026-02-27T23:30:00Z",
+      "queue_state": "auto_executed"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0057",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "root_event_id": "operator:BRIK:LOGISTICS:alloggiati-jsonp-timeout:20260227",
+      "anchor_key": "alloggiati-jsonp-timeout",
+      "cluster_key": "BRIK:LOGISTICS:alloggiati-jsonp-timeout:operator:20260227",
+      "cluster_fingerprint": "a3f2b1c4d5e6f7a8b9c0d1e2f3a4b5c6",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK Alloggiati JSONP \u2014 government submission promise hangs indefinitely, no timeout",
+      "location_anchors": [
+        "apps/reception/src/services/alloggiatiService.ts"
+      ],
+      "provisional_deliverable_family": "bug-fix",
+      "domain": "LOGISTICS",
+      "current_truth": "alloggiatiService.ts submits mandatory Italian guest registration (Alloggiati Web) via JSONP. script.onerror is handled, but if the JSONP callback never fires (e.g. changed response format, network stall), the returned Promise hangs indefinitely. There is no AbortController, no setTimeout wrapper, and no timeout-based rejection. A government submission can silently stall with no operator notification and no retry trigger.",
+      "next_scope_now": "Fact-find to scope a targeted fix: (1) read alloggiatiService.ts in full to understand the JSONP Promise construction and cleanup path; (2) determine the appropriate timeout duration; (3) design a timeout-wrapped Promise that rejects after N seconds and triggers an error notification; (4) confirm script tag cleanup is guaranteed on timeout to avoid memory leak; (5) produce a focused plan with one task: add timeout to the JSONP Promise.",
+      "adjacent_later": [
+        "Consider replacing JSONP with a server-side proxy route using fetch() with AbortSignal for more reliable timeout and retry semantics",
+        "Add a submission status audit trail to detect silently-missed submissions across prior days"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "operator-stated: alloggiatiService.ts:48 \u2014 script.onerror handled but JSONP callback-never-fires path has no timeout, Promise hangs indefinitely",
+        "operator-stated: risk_vector=compliance \u2014 Italian law requires Alloggiati Web submission within 24h of guest check-in; silent stall means missed legal obligation",
+        "code-observation: no AbortController, setTimeout wrapper, or rejection path triggered by elapsed time in alloggiatiService.ts JSONP construction"
+      ],
+      "risk_vector": "compliance",
+      "created_at": "2026-02-27T23:35:00Z",
+      "queue_state": "auto_executed"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0058",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "area_anchor": "Reception offline sync \u2014 write queue bypass, no idempotency, no cache, no auth fallback",
+      "location_anchors": [
+        "apps/reception/src/services/receptionDb.ts",
+        "apps/reception/src/services/syncManager.ts",
+        "apps/reception/src/hooks/useOfflineSync.ts",
+        "apps/reception/src/hooks/mutations/useActivitiesMutations.ts",
+        "apps/reception/src/hooks/mutations/useChangeBookingDatesMutator.ts",
+        "apps/reception/src/hooks/mutations/useBookingMutations.ts",
+        "apps/reception/src/context/firebaseAuth.ts",
+        "apps/reception/src/context/AuthContext.tsx"
+      ],
+      "provisional_deliverable_family": "feature+infra",
+      "domain": "LOGISTICS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "confidence": 0.93,
+      "evidence_refs": [
+        "operator-stated: useActivitiesMutations.ts, useChangeBookingDatesMutator.ts, useBookingMutations.ts write directly to Firebase \u2014 no queue-first path through existing receptionDb.ts + syncManager.ts + useOfflineSync.ts primitives",
+        "operator-stated: no idempotency keys or deterministic client IDs for create operations \u2014 retries duplicate writes",
+        "operator-stated: multi-path update(ref(database), updates) pattern not representable in current IndexedDB queue \u2014 atomic cross-path writes cannot be deferred safely",
+        "operator-stated: no conflict policy per domain \u2014 last-write-wins unsafe for financial amounts",
+        "operator-stated: no read-through cache for critical views \u2014 staff cannot work from last-known data when offline",
+        "operator-stated: no sync status UI showing pending/failed/retry write queue state or operator recovery actions",
+        "operator-stated: firebaseAuth.ts + AuthContext.tsx \u2014 profile fetch failure returns null, drops staff to unauthenticated mid-session",
+        "repo-observation: app shell offline support exists (sw.js, offline.html, ServiceWorkerRegistration.tsx, OfflineIndicator.tsx) but mutation paths do not route through IndexedDB queue"
+      ],
+      "current_truth": "The reception app has offline infrastructure stubs: a service worker + offline page + banner exists, and IndexedDB queue/caching primitives (receptionDb.ts, syncManager.ts, useOfflineSync.ts) exist. However, all mutation paths (activities, bookings, date changes, financial transactions, loans) write directly to Firebase/Realtime DB without routing through the queue. Offline writes are silently lost. No idempotency key scheme exists for create operations. Multi-path Firebase atomics (update(ref(database), updates)) cannot be queued in the current schema. Auth can drop staff to unauthenticated when a profile fetch fails during network interruption. No read-through cache exists for critical views and no sync queue status is surfaced in the UI.",
+      "next_scope_now": "Fact-find: (1) audit receptionDb.ts, syncManager.ts, useOfflineSync.ts to understand current queue schema, sync trigger mechanisms, and gaps; (2) identify all mutation hooks that bypass the queue with call-site inventory; (3) design offline-aware mutation gateway interface \u2014 queue-first, sync-on-resume; (4) determine idempotency key scheme for create operations (deterministic client IDs); (5) assess how multi-path Firebase update() atomics can be serialized in IndexedDB without losing atomicity guarantees; (6) define read-through cache strategy for critical views (bookings, guests, rooms); (7) define per-domain conflict policy options (last-write-wins acceptable for activity flags, not for financial amounts); (8) scope sync status UI requirements (pending count, failed items, retry controls, recovery actions); (9) scope auth/profile fallback (cache profile on login, serve from cache when fetch fails, maintain session); (10) produce a phased, sequenced plan.",
+      "adjacent_later": [
+        "Background sync via Service Worker Background Sync API as a progressive enhancement over IndexedDB-triggered sync",
+        "Conflict resolution dashboard for manager review of diverged financial records",
+        "Automated test harness for offline-then-sync round-trips"
+      ],
+      "created_at": "2026-02-27T23:50:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "reception-offline-sync",
+        "fact_find_path": "docs/plans/reception-offline-sync/fact-find.md",
+        "processed_at": "2026-02-27T23:50:00Z",
+        "route": "auto-executed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0060",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "root_event_id": "operator:BRIK:SELL:sticky-book-now-room-context:20260227",
+      "anchor_key": "sticky-book-now-room-context",
+      "cluster_key": "BRIK:SELL:sticky-book-now-room-context:operator:20260227",
+      "area_anchor": "BRIK Room-Level Booking Funnel \u2014 StickyBookNow loses room context on detail pages",
+      "location_anchors": [
+        "packages/ui/src/organisms/StickyBookNow.tsx",
+        "apps/brikette/src/app/[lang]/rooms/[id]/RoomDetailContent.tsx",
+        "apps/brikette/src/utils/buildOctorateUrl.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P3",
+      "confidence": 0.93,
+      "current_truth": "StickyBookNow builds its deep link to calendar.xhtml with only codice, checkin, checkout, pax \u2014 no room rate code. When a guest dismisses the calendar and then clicks StickyBookNow on a room detail page, Octorate opens the generic calendar and the guest must re-select the room. buildOctorateUrl in apps/brikette/src/utils/buildOctorateUrl.ts already constructs result.xhtml links with room and codice params, and RoomCard uses it correctly. RoomDetailContent.tsx renders StickyBookNow but passes no room rate code prop. StickyBookNow has no prop to receive an external URL or rate code.",
+      "next_scope_now": "Fact-find: (1) read StickyBookNow.tsx in full to understand deepLink memo, props interface, and click handler; (2) read RoomDetailContent.tsx to understand what room data is available at render time (roomSku, rateCodes); (3) read buildOctorateUrl.ts to confirm the result.xhtml interface (octorateRateCode, bookingCode, plan); (4) design the minimal prop addition \u2014 an optional octorateUrl prop on StickyBookNow that replaces the internally-built calendar.xhtml link when provided; (5) determine which rate plan to use by default (NR = direct.nr), and whether pax/date params from URL should still be applied; (6) scope the change: StickyBookNow prop, RoomDetailContent call-site, no changes to existing GA4 click handler interface; (7) produce a focused plan with ~2 tasks: add prop to component + wire it from RoomDetailContent.",
+      "adjacent_later": [
+        "Extend to also pass checkin/checkout from room-detail date picker state when available",
+        "Add GA4 begin_checkout context to include room rate plan (NR vs flex) from StickyBookNow click"
+      ],
+      "evidence_refs": [
+        "operator-stated: StickyBookNow on room detail pages links to calendar.xhtml \u2014 room context lost at handoff",
+        "operator-stated: fix should pass room rate code and route to result.xhtml",
+        "code-observation: StickyBookNow.tsx:125-135 \u2014 deepLink hardcoded to calendar.xhtml; no rate code param",
+        "code-observation: buildOctorateUrl.ts:90 \u2014 result.xhtml builder already available with room + codice params",
+        "code-observation: RoomDetailContent.tsx renders <StickyBookNow lang={lang} onStickyCheckoutClick={...}> \u2014 no room prop passed"
+      ],
+      "funnel_step": "room_detail_sticky_cta",
+      "created_at": "2026-02-27T23:58:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-02-27T23:59:00Z",
+        "fact_find_slug": "brik-sticky-book-now-room-context",
+        "fact_find_path": "docs/plans/brik-sticky-book-now-room-context/fact-find.md"
+      }
     }
   ]
 }

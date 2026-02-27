@@ -135,7 +135,7 @@ describe("CheckinsTable", () => {
     jest.clearAllMocks();
 
     useAuthMock.mockReturnValue({
-      user: { user_name: "Pete", email: "p@example.com" },
+      user: { user_name: "Pete", email: "p@example.com", roles: ["owner"] },
     });
     useSearchParamsMock.mockReturnValue(
       new URLSearchParams("selectedDate=2025-01-03"),

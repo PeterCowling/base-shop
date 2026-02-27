@@ -166,8 +166,13 @@ VALIDATE_INCLUDE_TESTS=1 bash scripts/validate-changes.sh
 
 If validation fails:
 
-- fix root cause locally
-- re-run `bash scripts/validate-changes.sh` until green
+1. Check Codex availability and delegate typecheck/lint fixes:
+   ```bash
+   nvm exec 22 codex --version >/dev/null 2>&1 && CODEX_OK=1 || CODEX_OK=0
+   ```
+   If `CODEX_OK=1`: run `/ops-ci-fix` (reads `.claude/skills/ops-ci-fix/SKILL.md` and offloads to Codex).
+   If `CODEX_OK=0`: fix root cause locally.
+2. Re-run `bash scripts/validate-changes.sh` until green.
 
 Testing guardrails while fixing:
 
@@ -183,7 +188,9 @@ Commit with integrator wrapper:
 scripts/agents/integrator-shell.sh -- git commit -m "<message>"
 ```
 
-If hooks fail, fix and retry with a new commit (no amend flow).
+If hooks fail (typecheck or lint):
+1. Check Codex availability and run `/ops-ci-fix` if available (same CODEX_OK check as step 5).
+2. Once ops-ci-fix reports clean, retry with a new commit (no amend flow).
 
 ### 7) Push
 
@@ -273,7 +280,8 @@ gh run view <run-id> --log-failed
 ```
 
 - reproduce locally
-- implement fix
+- if the failure is typecheck or lint: run `/ops-ci-fix` (delegates to Codex if available, falls back to inline)
+- if the failure is something else: implement fix manually
 - run `bash scripts/validate-changes.sh`
 - commit + push
 - restart CI watch for new SHA

@@ -16,10 +16,10 @@ describe("DateSelectorAllo", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    authMock.mockReturnValue({ user: { user_name: "Pete" } });
+    authMock.mockReturnValue({ user: { user_name: "Pete", roles: ["owner"] } });
   });
 
-  it("allows Pete to change date and toggle test mode", async () => {
+  it("allows privileged users to change date and toggle test mode", async () => {
     const today = new Date();
     const formattedToday = new Date(
       today.getTime() - today.getTimezoneOffset() * 60000
@@ -43,8 +43,8 @@ describe("DateSelectorAllo", () => {
     expect(onTestModeChange).toHaveBeenCalledWith(true);
   });
 
-  it("hides test mode toggle for non-Pete", () => {
-    authMock.mockReturnValue({ user: { user_name: "Alice" } });
+  it("hides test mode toggle for non-privileged users", () => {
+    authMock.mockReturnValue({ user: { user_name: "Alice", roles: ["staff"] } });
     render(
       <DateSelectorAllo
         selectedDate="2024-05-01"

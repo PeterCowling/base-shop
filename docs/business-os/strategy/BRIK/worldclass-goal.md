@@ -57,7 +57,7 @@ constraints:
 
 created: 2026-02-27
 last-updated: 2026-02-27
-benchmark-status: none
+benchmark-status: benchmark-ready
 ---
 
 # World-Class Goal — BRIK

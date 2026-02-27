@@ -3582,6 +3582,30 @@
     "domain": null
   },
   {
+    "path": "docs/plans/brik-octorate-live-availability/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "SELL"
+  },
+  {
+    "path": "docs/plans/brik-octorate-live-availability/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "SELL"
+  },
+  {
+    "path": "docs/plans/brik-room-octorate-live-pricing/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "PRODUCTS"
+  },
+  {
+    "path": "docs/plans/brik-room-octorate-live-pricing/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "PRODUCTS"
+  },
+  {
     "path": "docs/plans/brik-s2-data-capture-automation/fact-find.md",
     "type": "Fact-Find",
     "status": "Ready-for-planning (all open questions resolved 2026-02-15)",
@@ -5048,13 +5072,13 @@
   {
     "path": "docs/plans/test-execution-resource-governor-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Superseded",
     "domain": "Testing/Infra"
   },
   {
     "path": "docs/plans/test-execution-resource-governor-plan.md",
     "type": "Plan",
-    "status": "Active",
+    "status": "Superseded",
     "domain": "Infra"
   },
   {

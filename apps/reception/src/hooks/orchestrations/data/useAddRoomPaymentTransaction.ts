@@ -2,6 +2,7 @@
 import { useCallback, useState } from "react";
 import { ref, update } from "firebase/database";
 
+import { useAuth } from "../../../context/AuthContext";
 import { useFirebaseDatabase } from "../../../services/useFirebase";
 import {
   type FinancialsRoom,
@@ -27,6 +28,7 @@ export default function useAddRoomPaymentTransaction(
 ) {
   const database = useFirebaseDatabase();
   const [error, setError] = useState<unknown>(null);
+  const { user } = useAuth();
   const { addToAllTransactions } = useAllTransactions();
 
   /**
@@ -100,9 +102,6 @@ export default function useAddRoomPaymentTransaction(
 
         // Update "/financialsRoom"
         await update(ref(database), updates);
-        console.log(
-          `Updated financialsRoom for bookingRef=${bookingRef} with txnId=${txnId}`
-        );
 
         // Mirror the transaction in "/allFinancialTransactions"
         const finalType = transactionObj.type;
@@ -119,18 +118,15 @@ export default function useAddRoomPaymentTransaction(
           description:
             description ||
             (finalType === "refund" ? "Room refund" : "Room payment"),
-          user_name: "Pete",
+          user_name: user?.user_name ?? "unknown",
         });
-        console.log(
-          `Added transaction txnId=${txnId} to allFinancialTransactions successfully.`
-        );
       } catch (err) {
         console.error("addPaymentTransaction error:", err);
         setError(err);
         throw err;
       }
     },
-    [database, financialsRoom, addToAllTransactions]
+    [database, financialsRoom, user, addToAllTransactions]
   );
 
   return {

@@ -322,6 +322,11 @@
       "path": ".claude/skills/meta-user-test/SKILL.md"
     },
     {
+      "name": "ops-ci-fix",
+      "description": "Run pnpm typecheck && pnpm lint, fix all errors iteratively, and commit a clean state. Offload-ready for Codex. Terminal condition is both commands exit 0 with zero errors.",
+      "path": ".claude/skills/ops-ci-fix/SKILL.md"
+    },
+    {
       "name": "ops-git-recover",
       "description": "Recover from confusing git states. Use when git status is unexpected, commits seem lost, you have a detached HEAD, or merge conflicts are overwhelming.",
       "path": ".claude/skills/ops-git-recover/SKILL.md"

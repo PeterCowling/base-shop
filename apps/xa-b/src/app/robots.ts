@@ -1,8 +1,5 @@
 import type { MetadataRoute } from "next";
 
-// Avoid edge runtime during `next build` data collection; this route has no edge-specific needs.
-export const runtime = "nodejs";
-
 function isStealthEnabled() {
   return ["1", "true", "yes", "on"].includes(
     (

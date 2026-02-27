@@ -1,6 +1,6 @@
 ---
 name: lp-do-worldclass
-description: World-class benchmark skill for startup loop. Validates a business goal artifact, generates or refreshes a deep-research prompt, and (when a benchmark result is present) scans business strategy artifacts against world-class standards and emits improvement ideas to queue-state.json.
+description: World-class benchmark skill for startup loop. Validates a business goal artifact, generates or refreshes a deep-research prompt, and (when a benchmark result is present) scans business strategy artifacts against world-class standards, presents improvement ideas to the operator for selection, and invokes /lp-do-ideas for each selected idea.
 ---
 
 # World-Class Benchmark Orchestrator
@@ -10,7 +10,7 @@ description: World-class benchmark skill for startup loop. Validates a business 
 This skill does three things:
 1. Validate the operator-authored goal artifact at `docs/business-os/strategy/<BIZ>/worldclass-goal.md` and generate or refresh a deep-research prompt
 2. When a benchmark result exists and is current, scan strategy artifacts against world-class standards via `modules/scan-phase.md`
-3. Emit improvement ideas to queue-state.json via `modules/ideas-phase.md`
+3. Present improvement ideas to the operator for selection via `modules/ideas-phase.md`, then invoke `/lp-do-ideas` for each selected idea
 
 Keep this file thin. Do not embed scan rules, benchmark rubrics, or ideas templates here.
 
@@ -41,15 +41,15 @@ Keep this file thin. Do not embed scan rules, benchmark rubrics, or ideas templa
 - **Edit** `docs/business-os/strategy/<BIZ>/worldclass-goal.md` — `benchmark-status` field only (goal-phase Step 4 updates this after writing the research prompt)
 - Write research prompt to `docs/business-os/strategy/<BIZ>/worldclass-research-prompt.md`
 - Write scan output to `docs/business-os/strategy/<BIZ>/worldclass-scan-<YYYY-MM-DD>.md`
-- **Append** to the scan output file — ideas-phase appends the `## Dispatches (Dry Run)` block and `## Dispatch Summary` section
-- Write dispatch packets to `docs/business-os/startup-loop/ideas/trial/queue-state.json` (with writer lock only; see constraint below)
-- Run `scripts/agents/with-writer-lock.sh` to acquire writer lock before any queue writes
+- **Append** to the scan output file — ideas-phase appends the `## Dispatches (Dry Run)` block and `## Ideas Summary` section
+- Read `docs/business-os/startup-loop/ideas/trial/queue-state.json` (read-only; used for already-queued pre-filter in ideas-phase)
+- Invoke `/lp-do-ideas` for each operator-selected idea (ideas-phase delegates all queue writes to `/lp-do-ideas`)
 
 ### Prohibited actions
 
 - Code changes, refactors, or production data modifications
 - Destructive shell or git commands
-- Writing to queue-state.json without first acquiring writer lock via `scripts/agents/with-writer-lock.sh`
+- Writing directly to queue-state.json — all queue writes are delegated to `/lp-do-ideas`
 - Running scan-phase or ideas-phase in any state other than State 3 (goal-phase runs in States 2, 3, and 4)
 - Skipping the dry-run flag when the operator passes it — must respect `--dry-run` and never write to queue-state.json in dry-run mode
 
@@ -118,7 +118,7 @@ Execute phases in the order shown. Only run scan-phase and ideas-phase in State 
 2. **State routing** — determine current state from file presence and version alignment (see State Machine above)
 3. **`modules/goal-phase.md`** — validate goal artifact structure; generate or refresh the deep-research prompt; write `worldclass-research-prompt.md` *(runs in States 2, 3, and 4)*
 4. **`modules/scan-phase.md`** — read benchmark; scan strategy artifacts; compare against world-class standards; produce gap table *(runs in State 3 only)*
-5. **`modules/ideas-phase.md`** — derive improvement ideas from scan gaps; emit dispatches to queue-state.json (skipped entirely on `--dry-run`) *(runs in State 3 only)*
+5. **`modules/ideas-phase.md`** — derive improvement ideas from scan gaps; present selection list to operator; invoke `/lp-do-ideas` for each selected idea (dry-run: skip selection, write dry-run annotations to scan file) *(runs in State 3 only)*
 
 ## Preflight Gate
 
@@ -144,10 +144,10 @@ Run from repo root and verify the business identifier is correct.
 | Goal artifact | `docs/business-os/strategy/<BIZ>/worldclass-goal.md` | Required in States 2–4; preflight (state routing) fails to State 1 if missing |
 | Benchmark artifact | `docs/business-os/strategy/<BIZ>/worldclass-benchmark.md` | Required in States 3–4; absence routes to State 2 |
 | Strategy directory | `docs/business-os/strategy/<BIZ>/` | Scanned by scan-phase in State 3 |
-| Queue state | `docs/business-os/startup-loop/ideas/trial/queue-state.json` | Written (appended) by ideas-phase; never overwritten; skipped on `--dry-run` |
+| Queue state | `docs/business-os/startup-loop/ideas/trial/queue-state.json` | Read-only by ideas-phase (already-queued pre-filter); written by `/lp-do-ideas` for each operator-selected idea |
 
 ## Output Paths
 
 - **Research prompt**: `docs/business-os/strategy/<BIZ>/worldclass-research-prompt.md` — written by goal-phase (States 2, 3, and 4); also used as `generated_at` value in the prompt frontmatter when `--as-of-date` is set
 - **Scan output**: `docs/business-os/strategy/<BIZ>/worldclass-scan-<YYYY-MM-DD>.md` — written by scan-phase (State 3 only; written on both live and dry-run)
-- **Queue dispatches**: `docs/business-os/startup-loop/ideas/trial/queue-state.json` — appended by ideas-phase (State 3 live runs only; skipped on `--dry-run`)
+- **Queue dispatches**: `docs/business-os/startup-loop/ideas/trial/queue-state.json` — written by `/lp-do-ideas` for each operator-selected idea (State 3 live runs only; ideas-phase never writes directly to this file)

@@ -1,11 +1,11 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: UI
 Workstream: Engineering
 Created: 2026-02-27
 Last-reviewed: 2026-02-27
-Last-updated: 2026-02-27 (Waves 1-3 complete)
+Last-updated: 2026-02-27 (All waves complete)
 Critique-Round: 3 (fixes applied; final round)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: prime-meal-order-menu-wizard
@@ -30,8 +30,8 @@ Port the complimentary breakfast and evening drink menu wizard from the old stan
 - [x] TASK-03: Create useBreakfastWizard hook (step machine) — Complete (2026-02-27)
 - [x] TASK-04: Create BreakfastOrderWizard component — Complete (2026-02-27)
 - [x] TASK-05: Create useEvDrinkWizard hook + EvDrinkOrderWizard component — Complete (2026-02-27)
-- [ ] TASK-06: Refactor MealOrderPage to use wizards
-- [ ] TASK-07: Rewrite and extend tests
+- [x] TASK-06: Refactor MealOrderPage to use wizards — Complete (2026-02-27)
+- [x] TASK-07: Rewrite and extend tests — Complete (2026-02-27)
 
 ## Goals
 - Both `/complimentary-breakfast` and `/complimentary-evening-drink` present a guided multi-step menu selection instead of a free-text input
@@ -94,8 +94,8 @@ Port the complimentary breakfast and evening drink menu wizard from the old stan
 | TASK-03 | IMPLEMENT | useBreakfastWizard hook (step machine) | 87% | M | Complete (2026-02-27) | TASK-01 | TASK-04 |
 | TASK-04 | IMPLEMENT | BreakfastOrderWizard component | 85% | M | Complete (2026-02-27) | TASK-01, TASK-02, TASK-03 | TASK-06 |
 | TASK-05 | IMPLEMENT | useEvDrinkWizard hook + EvDrinkOrderWizard component | 88% | M | Complete (2026-02-27) | TASK-01, TASK-02 | TASK-06 |
-| TASK-06 | IMPLEMENT | Refactor MealOrderPage to use wizards | 90% | M | Pending | TASK-04, TASK-05 | TASK-07 |
-| TASK-07 | IMPLEMENT | Rewrite + extend tests | 83% | M | Pending | TASK-06 | - |
+| TASK-06 | IMPLEMENT | Refactor MealOrderPage to use wizards | 90% | M | Complete (2026-02-27) | TASK-04, TASK-05 | TASK-07 |
+| TASK-07 | IMPLEMENT | Rewrite + extend tests | 83% | M | Complete (2026-02-27) | TASK-06 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -432,7 +432,7 @@ Port the complimentary breakfast and evening drink menu wizard from the old stan
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
 - **Affects:** `apps/prime/src/components/meal-orders/MealOrderPage.tsx`
 - **Depends on:** TASK-04, TASK-05
 - **Blocks:** TASK-07
@@ -497,6 +497,17 @@ Port the complimentary breakfast and evening drink menu wizard from the old stan
   - Rollback: `git revert` the commit; free-text input is preserved in git history
 - **Documentation impact:** None
 - **Notes / references:** None
+- **Build Evidence:**
+  - `value` state and free-text `<input id="service-value">` removed
+  - `submitOrder(value: string, requestChangeException = false)` — value now passed in not read from state
+  - `BreakfastOrderWizard` and `EvDrinkOrderWizard` mounted conditionally after `serviceDate` selected
+  - `pendingExceptionPayload.value` used for same-day exception retry
+  - Same-day policy warning, message/error banners, existing-orders list preserved untouched
+  - Added `/* eslint-disable ds/no-hardcoded-copy -- BRIK-2 */` (pre-existing strings)
+  - Fixed pre-existing lint: `min-h-screen → min-h-dvh`; suppressed `max-w-md` with `eslint-disable-next-line ds/container-widths-only-at -- BRIK-2 pre-existing layout`
+  - Lint: 0 errors, 1 warning (`ds/min-tap-size` on exception button — pre-existing)
+  - Typecheck: clean
+  - Committed: `f28bfb233f`
 
 ---
 
@@ -507,7 +518,7 @@ Port the complimentary breakfast and evening drink menu wizard from the old stan
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
 - **Affects:**
   - `apps/prime/src/components/meal-orders/__tests__/MealOrderPage.test.tsx`
   - `apps/prime/src/components/meal-orders/__tests__/BreakfastOrderWizard.test.tsx` (new)
@@ -543,6 +554,15 @@ Port the complimentary breakfast and evening drink menu wizard from the old stan
   - Rollback: Restore old `MealOrderPage.test.tsx` from git
 - **Documentation impact:** None
 - **Notes / references:** `testIdAttribute: "data-cy"` — evidence: `jest.setup.ts` (workspace root, line 100); loaded via `packages/config/jest.preset.cjs:284` `setupFilesAfterEnv`
+- **Build Evidence:**
+  - 4 test files written and committed
+  - `buildOrderValue.test.ts` — 14 TCs covering Eggs/Pancakes/simple food, ev drink with/without modifiers, modifier label mapping, sides sorting, null filtering
+  - `MealOrderPage.test.tsx` — TC-01 rewritten (mocked wizard, submit button), TC-03 same-day exception flow rewritten, TC-04 ineligible preserved
+  - `BreakfastOrderWizard.test.tsx` — 5 TCs: food step render, Eggs sub-step, Next disabled <3 sides, full end-to-end happy path with Americano + milksugar sub-step
+  - `EvDrinkOrderWizard.test.tsx` — TC-01 type-1 plan (Aperol Spritz absent), TC-02 full-access plan (all drinks), TC-03 modifier step appears, TC-04 no modifier step, TC-05 `detectDrinkTier` unit tests
+  - All 32 tests pass (BASESHOP_ALLOW_BYPASS_POLICY=1 pnpm -w run test:governed -- jest -- --rootDir=apps/prime --config=apps/prime/jest.config.cjs --testPathPattern=meal-orders --no-coverage)
+  - Lint: 0 errors
+  - Committed: `64f7b57945`
 
 ---
 
@@ -558,13 +578,13 @@ Port the complimentary breakfast and evening drink menu wizard from the old stan
 - Alerts/Dashboards: None
 
 ## Acceptance Criteria (overall)
-- [ ] `/complimentary-breakfast` shows a stepped wizard (not a free-text input) for eligible guests
-- [ ] `/complimentary-evening-drink` shows a stepped wizard with plan-tier-filtered drinks for eligible guests
-- [ ] Both wizards submit a human-readable value string to `POST /api/firebase/preorders`
-- [ ] Same-day change exception request flow continues to work
-- [ ] Ineligible guests still see "not included" screen
-- [ ] Both page wrappers (`complimentary-breakfast/page.tsx`, `complimentary-evening-drink/page.tsx`) require zero changes
-- [ ] All tests pass
+- [x] `/complimentary-breakfast` shows a stepped wizard (not a free-text input) for eligible guests
+- [x] `/complimentary-evening-drink` shows a stepped wizard with plan-tier-filtered drinks for eligible guests
+- [x] Both wizards submit a human-readable value string to `POST /api/firebase/preorders`
+- [x] Same-day change exception request flow continues to work
+- [x] Ineligible guests still see "not included" screen
+- [x] Both page wrappers (`complimentary-breakfast/page.tsx`, `complimentary-evening-drink/page.tsx`) require zero changes
+- [x] All tests pass (32 tests, all green)
 
 ## Decision Log
 - 2026-02-27: Chose Option A (MealOrderPage as router) — zero page-wrapper changes, shared date selector and exception flow in one place

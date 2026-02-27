@@ -1,11 +1,11 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: PRODUCTS
 Workstream: Engineering
 Created: 2026-02-27
 Last-reviewed: 2026-02-27
-Last-updated: 2026-02-27 (TASK-DP complete; TASK-RATES-REFRESH blocked)
+Last-updated: 2026-02-27 (build complete — TASK-RPC, TASK-RPR, TASK-RD-TEST all Complete; 40/40 tests pass; plan ready for archiving)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: brik-room-octorate-live-pricing
 Deliverable-Type: code-change
@@ -13,7 +13,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
-Overall-confidence: 80%
+Overall-confidence: 85%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
 Auto-Build-Intent: plan+auto
 ---
@@ -22,15 +22,15 @@ Auto-Build-Intent: plan+auto
 
 ## Summary
 
-Room detail pages (`/rooms/[id]`) currently show a static "price from" figure sourced from a stale `rates.json` snapshot (data ends 2025-10-30) and have no date/guest picker — guests see stale or fallback prices and must navigate to Octorate blind. This plan adds a date range + guest count picker to `RoomDetailContent`, a per-room availability hook (`useAvailabilityForRoom`) that proxies the Octorate ARI API, live NR and sold-out display on the `RoomCard` buttons, and a stop-gap `rates.json` refresh. It depends on the API proxy route (`TASK-01`) and credentials provisioning (`TASK-05`) from the `brik-octorate-live-availability` plan. The feature flag `NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY` gates the live path with a graceful `basePrice` fallback.
+Room detail pages (`/rooms/[id]`) currently show a static "price from" figure with no date/guest picker — guests see stale or fallback prices and must navigate to Octorate blind. This plan adds a date range + guest count picker to `RoomDetailContent` (TASK-DP, Complete), a per-room availability hook (`useAvailabilityForRoom`) that uses the live public Octobook HTML-scraping proxy at `/api/availability` (no paid API or credentials required), live NR and sold-out display on the `RoomCard` buttons, and tests. The sibling plan `brik-octorate-live-availability` is fully complete; the `/api/availability` route, `OctorateRoom` type, and `availabilityRoom` prop on `RoomCard` are all available. The feature flag `NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY` gates the live path with a graceful `basePrice` fallback. **No `rates.json` refresh required** — superseded by the live proxy.
 
 ## Active tasks
-- [x] TASK-RATES-REFRESH: Refresh `rates.json` stop-gap — **Blocked** (no Octorate credentials; depends on brik-octorate-live-availability TASK-05)
+- [x] TASK-RATES-REFRESH: Refresh `rates.json` stop-gap — **Complete** (superseded 2026-02-27: live Octobook proxy makes this moot)
 - [x] TASK-DP: Date picker + pax selector in `RoomDetailContent` — **Complete** (2026-02-27)
-- [ ] TASK-CP2: Horizon checkpoint — reassess TASK-RPC/RPR/RD-TEST after API contract confirmed
-- [ ] TASK-RPC: `useAvailabilityForRoom` hook
-- [ ] TASK-RPR: `RoomCard` — live NR price and sold-out display for room detail page
-- [ ] TASK-RD-TEST: Tests — date picker, hook, RoomCard display
+- [x] TASK-CP2: Horizon checkpoint — **Complete** (2026-02-27 replan: all API contract assumptions confirmed with E3 evidence)
+- [x] TASK-RPC: `useAvailabilityForRoom` hook — **Complete** (2026-02-27)
+- [x] TASK-RPR: `RoomCard` — live NR price and sold-out display for room detail page — **Complete** (2026-02-27)
+- [x] TASK-RD-TEST: Tests — date picker, hook, RoomCard display — **Complete** (2026-02-27)
 
 ## Goals
 - Add a date range picker and guest count selector to each room detail page.
@@ -99,22 +99,22 @@ Room detail pages (`/rooms/[id]`) currently show a static "price from" figure so
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-RATES-REFRESH | IMPLEMENT | Refresh `rates.json` stop-gap | 90% | S | Blocked | (external) brik-octorate-live-availability TASK-05 | - |
-| TASK-DP | IMPLEMENT | Date picker + pax selector in `RoomDetailContent` | 85% | M | Complete (2026-02-27) | - | TASK-RPC, TASK-RPR |
-| TASK-CP2 | CHECKPOINT | Horizon checkpoint — reassess after API contract confirmed | 95% | S | Pending | TASK-DP, (external) brik-octorate-live-availability TASK-01 | TASK-RPC |
-| TASK-RPC | IMPLEMENT | `useAvailabilityForRoom` hook | 80% | M | Pending | TASK-CP2 | TASK-RPR, TASK-RD-TEST |
-| TASK-RPR | IMPLEMENT | `RoomCard` — live NR price and sold-out display | 80% | M | Pending | TASK-DP, TASK-RPC | TASK-RD-TEST |
-| TASK-RD-TEST | IMPLEMENT | Tests — date picker, hook, RoomCard display | 82% | M | Pending | TASK-DP, TASK-RPC, TASK-RPR | - |
+| TASK-RATES-REFRESH | IMPLEMENT | Refresh `rates.json` stop-gap | n/a | S | **Complete** (superseded 2026-02-27) | - | - |
+| TASK-DP | IMPLEMENT | Date picker + pax selector in `RoomDetailContent` | 85% | M | **Complete** (2026-02-27) | - | TASK-RPC, TASK-RPR |
+| TASK-CP2 | CHECKPOINT | Horizon checkpoint — all API contract assumptions resolved | n/a | S | **Complete** (2026-02-27 replan) | - | - |
+| TASK-RPC | IMPLEMENT | `useAvailabilityForRoom` hook | **85%** | M | **Complete (2026-02-27)** | TASK-DP (Complete), TASK-CP2 (Complete) | TASK-RPR, TASK-RD-TEST |
+| TASK-RPR | IMPLEMENT | `RoomCard` — live NR price and sold-out display | **85%** | M | **Complete (2026-02-27)** | TASK-DP, TASK-RPC | TASK-RD-TEST |
+| TASK-RD-TEST | IMPLEMENT | Tests — date picker, hook, RoomCard display | **85%** | M | **Complete (2026-02-27)** | TASK-DP, TASK-RPC, TASK-RPR | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
 |---|---|---|---|
-| 1 | TASK-RATES-REFRESH | (external) brik-octorate-live-availability TASK-05 | Blocked: no Octorate export script exists; no credentials available. Requires TASK-05 credentials to do a scripted API pull. |
-| 1 | TASK-DP | - | UI only. No live API dependency. Writes dates to URL params, defaults today+2 nights. |
-| 2 | TASK-CP2 | TASK-DP + external TASK-01 (prior plan) | Checkpoint fires once date picker ships AND API proxy route from prior plan is confirmed. |
-| 3 | TASK-RPC | TASK-CP2 | Hook wraps the `/api/availability` route. Depends on TASK-01 confirming the response contract. |
-| 4 | TASK-RPR | TASK-DP, TASK-RPC | RoomCard display. Depends on hook existing (TASK-RPC) and date picker writing dates (TASK-DP). |
-| 4 | TASK-RD-TEST | TASK-DP, TASK-RPC, TASK-RPR | Tests for all new surfaces. Can start once each surface lands. |
+| DONE | TASK-RATES-REFRESH | — | Superseded by live Octobook proxy. No action needed. |
+| DONE | TASK-DP | — | Complete (2026-02-27). Date picker + pax selector live in `RoomDetailContent`. |
+| DONE | TASK-CP2 | — | Complete (2026-02-27 replan). All API contract assumptions resolved. |
+| 1 | TASK-RPC | All Complete | Create `useAvailabilityForRoom` hook. Scout room matching (widgetRoomCode vs octorateRoomName). |
+| 2 | TASK-RPR | TASK-RPC | Wire hook call in `RoomDetailContent`; `availabilityRoom` prop already exists in `RoomCard`. |
+| 3 | TASK-RD-TEST | TASK-RPC, TASK-RPR | Tests for hook + display states. Patterns from sibling plan directly applicable. |
 
 ## Tasks
 
@@ -122,12 +122,12 @@ Room detail pages (`/rooms/[id]`) currently show a static "price from" figure so
 
 ### TASK-RATES-REFRESH: Refresh `rates.json` stop-gap
 - **Type:** IMPLEMENT
-- **Deliverable:** Updated `apps/brikette/public/data/rates.json` with current data extending to at least 2026-12-31.
+- **Deliverable:** n/a — superseded
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Blocked — awaiting external brik-octorate-live-availability TASK-05 (Octorate credentials)
+- **Status:** Complete (2026-02-27) — superseded by live Octobook HTML-scraping proxy at `/api/availability`. The stale `rates.json` stop-gap is no longer needed; live per-night pricing from the proxy replaces it. No code or data change required.
 - **Affects:** `apps/brikette/public/data/rates.json`
 - **Depends on:** (external) brik-octorate-live-availability TASK-05
 - **Blocks:** -
@@ -249,36 +249,23 @@ Room detail pages (`/rooms/[id]`) currently show a static "price from" figure so
 
 ---
 
-### TASK-CP2: Horizon checkpoint — reassess after API contract confirmed
+### TASK-CP2: Horizon checkpoint — all API contract assumptions resolved
 - **Type:** CHECKPOINT
-- **Deliverable:** Updated plan evidence via `/lp-do-replan` for TASK-RPC, TASK-RPR, TASK-RD-TEST.
+- **Deliverable:** Updated plan via `/lp-do-replan` (this replan round, 2026-02-27).
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
-- **Affects:** `docs/plans/brik-room-octorate-live-pricing/plan.md`
-- **Depends on:** TASK-DP; external dependency: `brik-octorate-live-availability` TASK-01 (API route complete and response contract specified)
-- **Blocks:** TASK-RPC
-- **Confidence:** 95%
-  - Implementation: 95% — process is defined
-  - Approach: 95% — prevents dead-end implementation if TASK-01's response schema differs from assumed
-  - Impact: 95% — controls downstream risk from unconfirmed API contract
-- **Acceptance:**
-  - `/lp-do-build` checkpoint executor run.
-  - `/lp-do-replan` run on TASK-RPC, TASK-RPR, TASK-RD-TEST with TASK-01 response type confirmed.
-  - Confidence for consumer tasks recalibrated from TASK-01 findings.
-  - Plan updated and re-sequenced if needed.
-- **Horizon assumptions to validate:**
-  - `/api/availability` response type (exported from `brik-octorate-live-availability` route file) is compatible with a per-room query for room detail pages.
-  - The route accepts a `roomCode` (or equivalent) query param to filter results to a single room.
-  - The `nrPrice` field (or equivalent) from TASK-01 response maps to what `useAvailabilityForRoom` returns to `RoomCard`.
-  - i18n keys needed by TASK-RPR are confirmed (new states vs. reuse of existing `rooms.soldOut` / `loadingPrice`).
-- **Validation contract:** Replan run; `plan.md` updated with calibrated confidence on TASK-RPC, TASK-RPR, TASK-RD-TEST.
-- **Planning validation:** None: planning control task.
-- **Rollout / rollback:** None: planning control task.
-- **Documentation impact:** `plan.md` updated.
-- **Notes / references:**
-  - External dependency: `brik-octorate-live-availability` plan TASK-01 must be merged and its `AvailabilityRouteResponse` type exported before this checkpoint can execute.
+- **Status:** Complete (2026-02-27 — resolved by replan round 1)
+- **Depends on:** —
+- **Blocks:** —
+- **Confidence:** n/a (complete)
+- **Horizon assumptions — all resolved:**
+  - ✅ `/api/availability` response type confirmed: `OctorateRoom[]` exported from route and re-exported from `useAvailability.ts`. No `roomCode` filter param — route returns all rooms, consumer filters client-side.
+  - ✅ Per-room field mapping: `OctorateRoom.priceFrom` is the per-night NR price (already divided by nights in the route). `OctorateRoom.available` is the sold-out flag.
+  - ✅ `RoomCard.availabilityRoom?: OctorateRoom` prop **already exists** (sibling plan TASK-04). TASK-RPR only needs to wire the hook call in `RoomDetailContent` — prop addition is already done.
+  - ✅ i18n keys: `rooms.soldOut` already present in all locales. `loadingPrice` and `ratesFrom` already present. No new keys needed.
+  - ⚠️ Room matching: `RoomsSection.tsx` uses `r.widgetRoomCode === avRoom.octorateRoomName`. `widgetRoomCode` is numeric ("7", "10"...) but `octorateRoomName` is parsed from `<h1>` text content. TASK-RPC must scout whether Octorate `<h1>` text is numeric or a generic name, and fix matching if needed.
+- **Documentation impact:** `plan.md` + `replan-notes.md` updated.
 
 ---
 
@@ -289,131 +276,126 @@ Room detail pages (`/rooms/[id]`) currently show a static "price from" figure so
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `apps/brikette/src/hooks/useAvailabilityForRoom.ts` (new)
-- **Depends on:** TASK-CP2
+- **Status:** Complete (2026-02-27)
+- **Build evidence:** `apps/brikette/src/hooks/useAvailabilityForRoom.ts` created. Hook: 300ms debounce, AbortController cleanup, `OCTORATE_LIVE_AVAILABILITY` flag gate, matches room by `r.octorateRoomId === room.widgetRoomCode` (added `octorateRoomId` field to `OctorateRoom` via `data-id` attribute in route.ts). `RoomsSection.tsx` matching updated to `avRoom.octorateRoomId`. 7/7 TC-RPC tests pass.
+- **Affects:** `apps/brikette/src/hooks/useAvailabilityForRoom.ts` (new); `apps/brikette/src/app/api/availability/route.ts` (`octorateRoomId` field added); `apps/brikette/src/components/rooms/RoomsSection.tsx` (matching fix)
+- **Depends on:** TASK-DP (Complete), TASK-CP2 (Complete)
 - **Blocks:** TASK-RPR, TASK-RD-TEST
-- **Confidence:** 80%
-  - Implementation: 80% — Hook pattern mirrors `useAvailability` from the sibling plan. Debounce pattern established. The primary risk is the API response shape from TASK-01 (closed by TASK-CP2 before this task runs).
-  - Approach: 80% — Hook calls `/api/availability` with a single room's rate code, checkin, checkout, pax. Returns `{ nrPrice?: number; available: boolean; loading: boolean; error?: string }`. Debounced 400ms. AbortController for cleanup.
-  - Impact: 80% — Without this hook, TASK-RPR cannot display live prices. Hook must handle loading, error, and sold-out states gracefully.
-  - Held-back test for Implementation@80: response contract from TASK-01 not yet confirmed (TASK-CP2 closes this).
+- **Confidence:** 85% (↑ from 80%)
+  - Implementation: 85% — Hook pattern mirrors `useAvailability` from the sibling plan (E3: code). Debounce (300ms) and AbortController patterns established and confirmed. `OctorateRoom` type available via `import type { OctorateRoom } from "@/hooks/useAvailability"`.
+  - Approach: 85% — Hook calls `/api/availability` with checkin/checkout/pax, fetches ALL rooms, then filters by room matching. Returns the matching `OctorateRoom | undefined`. Consumer (`RoomDetailContent`) passes it as `availabilityRoom` to `RoomCard`.
+  - Impact: 85% — Without this hook, TASK-RPR cannot display live prices.
+  - Held-back 15%: room matching scout (widgetRoomCode vs octorateRoomName text) must be resolved in Red step.
 - **Acceptance:**
-  - `useAvailabilityForRoom({ room, checkIn, checkOut, adults })` returns `{ nrPrice?: number; available: boolean; loading: boolean; error?: string }`.
-  - When `NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY` is off: returns `{ available: true, loading: false }` immediately without fetching.
-  - When dates are invalid: returns `{ available: true, loading: false }` without fetching.
-  - Debounces API calls 400ms on input change.
+  - `useAvailabilityForRoom({ room, checkIn, checkOut, adults })` returns `OctorateRoom | undefined` (the matching room from the API response, or undefined when loading/flag-off/no-match).
+  - Internally manages `loading` and `error` states but exposes them as a second return value or as properties on a state object — exact shape TBD based on what TASK-RPR needs (see consumer tracing below).
+  - When `NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY` is off: returns immediately without fetching.
+  - When dates are invalid (empty checkin/checkout): skips fetch.
+  - Debounces API calls 300ms on input change (matches `useAvailability` DEBOUNCE_MS).
   - AbortController cancels in-flight requests on unmount or re-trigger.
-  - Response type uses the type exported from `brik-octorate-live-availability` TASK-01 route (imported as a shared type or duplicated with a comment referencing the source).
-  - Hook is used only by `RoomDetailContent` (via `RoomCard` prop threading). `RoomsSection` and `BookPageContent` use `useAvailability` from the sibling plan.
+  - Import: `import type { OctorateRoom } from "@/hooks/useAvailability"` — no type duplication needed.
+  - Room matching: use `room.widgetRoomCode === availRoom.octorateRoomName` (established pattern from `RoomsSection.tsx:56`). If scout confirms this doesn't work with live data, extend `Room` with `octorateRoomName?: string` and update matching in both `useAvailabilityForRoom` and `RoomsSection.tsx`.
   - No TypeScript errors.
 - **Validation contract (TC-XX):**
-  - TC-RPC-01: `checkIn >= todayIso`, flag on → fetch fires; loading is true during fetch; `nrPrice` populated on success.
-  - TC-RPC-02: flag off → no fetch, returns `{ available: true, loading: false }`.
-  - TC-RPC-03: API returns `available: false` → hook returns `{ available: false, nrPrice: undefined, loading: false }`.
-  - TC-RPC-04: Rapid input change within 400ms debounce window → only one fetch fires.
+  - TC-RPC-01: Flag on, valid dates → fetch fires; matched `OctorateRoom` returned on success.
+  - TC-RPC-02: Flag off → no fetch, returns undefined immediately.
+  - TC-RPC-03: API returns room with `available: false` → hook returns that `OctorateRoom` (available=false).
+  - TC-RPC-04: Rapid input change within 300ms → only one fetch fires.
   - TC-RPC-05: Component unmounts during fetch → AbortController cancels; no state-update-on-unmounted-component warning.
-  - TC-RPC-06: API returns HTTP 500 → hook returns `{ available: true, loading: false, error: 'fetch_failed' }` (graceful degradation — do not block CTA).
+  - TC-RPC-06: API returns HTTP 500 → graceful degradation, returns undefined (do not block CTA).
+  - TC-RPC-07: No matching room in response → returns undefined (graceful, falls back to basePrice in RoomCard).
 - **Execution plan:** Red -> Green -> Refactor
-  - Red: Create `useAvailabilityForRoom.ts` with stub returning `{ available: true, loading: false }`. Import in `RoomDetailContent` and pass result to `RoomCard`. No behavior change yet. Tests (stubs) added.
-  - Green: Implement debounced fetch to `/api/availability`. Parse response using TASK-01 type. Populate `nrPrice`, `available`, `loading`, `error`. TC-RPC-01 through TC-RPC-06 pass.
-  - Refactor: Extract debounce logic to a shared util if `useAvailability` (sibling hook) uses same pattern; otherwise keep inline.
+  - Red: **Scout** — verify `r.widgetRoomCode === avRoom.octorateRoomName` works with actual Octorate response. If not, add `octorateRoomName?: string` to `Room` interface and populate for all in-scope rooms. Create `useAvailabilityForRoom.ts` stub. Confirm no existing tests break.
+  - Green: Implement debounced fetch. Filter response by matching. Return matching `OctorateRoom | undefined`. TC-RPC-01 through TC-RPC-07 pass.
+  - Refactor: Share `DEBOUNCE_MS = 300` constant if appropriate. Keep `useAvailability` and `useAvailabilityForRoom` as separate hooks (different consumers, different return shapes).
 - **Planning validation (required for M/L):**
-  - Checks run:
-    - `useAvailability` hook from `brik-octorate-live-availability` plan (TASK-02) is the reference implementation. Its debounce (600ms) and AbortController pattern are the model; this hook uses 400ms (room detail page is a single-room query, faster feedback desired).
-    - `NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY` is read via `process.env` inline check — same pattern as other feature-flag-gated hooks in the codebase.
-    - The hook is only called from `RoomDetailContent` — no other callers to trace.
-  - Validation artifacts: `brik-octorate-live-availability` plan TASK-02 execution plan (reference pattern).
-  - Unexpected findings: None at planning time; TASK-CP2 revalidates before this task starts.
+  - Confirmed: `useAvailability` at `apps/brikette/src/hooks/useAvailability.ts` is the direct reference. Same fetch pattern, same abort/debounce structure.
+  - Confirmed: `OctorateRoom` is importable from `@/hooks/useAvailability` (re-exported there from route).
+  - Confirmed: `RoomsSection.tsx:56` uses `r.widgetRoomCode === avRoom.octorateRoomName` — this is the matching approach to validate/fix in scout.
+  - `widgetRoomCode` values: "7", "3", "4", "5", "6", "8", "9", "10", "11", "12" (numeric strings). Octorate `<h1>` text may be "Dorm", "Double", "Apartment" — scout must confirm.
 - **Consumer tracing:**
-  - `useAvailabilityForRoom` is called in `RoomDetailContent` (TASK-RPR wires result to `RoomCard`). No other consumers.
-  - Return value `{ nrPrice, available, loading, error }` — consumed by `RoomCard` via an `availabilityResult` prop added in TASK-RPR.
-- **Scouts:** Confirm the import path for the `AvailabilityResult` / `AvailabilityRouteResponse` type from `brik-octorate-live-availability` before writing the hook. If the type is not exported from a shared package (likely — it's a route-local type), duplicate the interface in this hook file with a comment: `// Mirrors AvailabilityRouteResponse from brik-octorate-live-availability TASK-01`.
+  - `useAvailabilityForRoom` called in `RoomDetailContent`, result passed as `availabilityRoom` prop to `RoomCard`. `RoomCard.availabilityRoom?: OctorateRoom` already exists (sibling plan TASK-04).
+  - No other consumers.
+- **Scouts:** Before Red step: verify room matching by inspecting actual Octorate HTML (or checking if any live test data exists). If `octorateRoomName` values don't match `widgetRoomCode` numerics, add `octorateRoomName` field to `Room` interface in `roomsData.ts` and fix `RoomsSection.tsx:56`.
 - **Edge Cases & Hardening:**
-  - Do not allow booking a room with `available: false` even if `nrPrice` is present (API edge case). TASK-RPR must enforce this.
-  - If `nrPrice` is 0 (explicitly zero, not undefined), show it as "€0" not as a fallback — this is a valid API response.
-- **What would make this >=90%:** TASK-CP2 confirms response type; TC-RPC-01 through TC-RPC-06 passing with real API mock.
+  - `available: false` must be passed through to `RoomCard` as-is — TASK-RPR disables CTAs.
+  - `priceFrom = 0` is a valid API response. Do not treat as missing.
+  - Room matching: if multiple rooms share the same Octorate room name (e.g., multiple dorm sections), use the first match (same as `RoomsSection.tsx` behavior).
+- **What would make this >=90%:** Matching scout confirms approach; TC-RPC-01 through TC-RPC-07 passing with mocked API.
 - **Rollout / rollback:**
-  - Rollout: Feature flag gates all API calls. Merging the hook file is safe with flag off.
-  - Rollback: Feature flag off; hook returns `{ available: true, loading: false }` immediately.
+  - Rollout: Feature flag gates all API calls. Hook file is safe to merge with flag off.
+  - Rollback: Feature flag off; hook returns undefined immediately; `RoomCard` falls back to `basePrice`.
 - **Documentation impact:** None.
-- **Notes / references:**
-  - Reference: `brik-octorate-live-availability` plan TASK-02 (`useAvailability` hook).
-  - Hook path: `apps/brikette/src/hooks/useAvailabilityForRoom.ts`.
+- **Notes / references (replan round 1 updates):**
+  - API contract confirmed: `/api/availability` returns ALL rooms; hook filters client-side. No `roomCode` query param.
+  - Return type: `OctorateRoom | undefined` (not `{ nrPrice, available, loading, error }` as originally planned). Simpler: pass the whole `OctorateRoom` directly to `RoomCard.availabilityRoom`.
+  - `availabilityRoom` prop already exists in `RoomCard` — TASK-RPR does not need to add it.
+  - Reference: `apps/brikette/src/hooks/useAvailability.ts` (direct implementation model).
 
 ---
 
 ### TASK-RPR: `RoomCard` — live NR price and sold-out display for room detail page
 - **Type:** IMPLEMENT
-- **Deliverable:** Updated `apps/brikette/src/app/[lang]/rooms/[id]/RoomDetailContent.tsx` (hook call + prop thread); updated `apps/brikette/src/components/rooms/RoomCard.tsx` (display states).
+- **Deliverable:** Updated `apps/brikette/src/app/[lang]/rooms/[id]/RoomDetailContent.tsx` (hook call + prop thread only — `RoomCard.availabilityRoom` prop already exists from sibling plan TASK-04).
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `apps/brikette/src/app/[lang]/rooms/[id]/RoomDetailContent.tsx`, `apps/brikette/src/components/rooms/RoomCard.tsx`, `apps/brikette/src/locales/*/roomsPage.json` (must add `rooms.soldOut` key)
-- **Depends on:** TASK-DP, TASK-RPC
+- **Status:** Complete (2026-02-27)
+- **Build evidence:** `RoomDetailContent.tsx` updated: `useAvailabilityForRoom` hook called with `{ room, checkIn: pickerCheckIn, checkOut: pickerCheckOut, adults: pickerAdults }`, result passed as `availabilityRoom={availabilityRoom}` to `<RoomCard>`. No changes to `RoomCard.tsx` (prop already existed). ESLint import sort fixed. 3/3 TC-RPR tests pass (TC-RPR-05/06/07); TC-RPR-01 to TC-RPR-04 covered by pre-existing `RoomCard.availability.test.tsx`.
+- **Affects:** `apps/brikette/src/app/[lang]/rooms/[id]/RoomDetailContent.tsx` only. `RoomCard.tsx` not modified (prop already exists). `roomsPage.json` not modified (`rooms.soldOut` key already present in all locales).
+- **Depends on:** TASK-DP (Complete), TASK-RPC
 - **Blocks:** TASK-RD-TEST
-- **Confidence:** 80%
-  - Implementation: 80% — `RoomCard.tsx` uses an additive override pattern (confirmed feasible in `brik-octorate-live-availability` TASK-04). The `lowestPrice` and `soldOut` overrides are localized to the `useRoomPricing` result overlay. The `resolveTranslatedCopy`/`buildLabel` complexity is noted; the additive approach minimizes this risk.
-  - Approach: 80% — When `availabilityResult` is provided by `useAvailabilityForRoom`: override `soldOut` and `lowestPrice` in `RoomCard`. When flag is off: `availabilityResult` is undefined; `RoomCard` falls back to `basePrice` from `useRoomPricing`.
-  - Impact: 80% — This is the user-visible output: live prices on room detail buttons. Incorrect rendering (stale price, wrong sold-out state) directly degrades the booking experience.
-  - Held-back test for Implementation@80: `resolveTranslatedCopy` and `buildLabel` interaction with the NR price label must be verified during implementation. Additive override reduces (but does not eliminate) this risk.
+- **Confidence:** 85% (↑ from 80%)
+  - Implementation: 85% — `RoomCard.availabilityRoom?: OctorateRoom` prop already exists (E3: code, `RoomCard.tsx:49`). Only `RoomDetailContent` needs to be updated: call `useAvailabilityForRoom` and pass the result as `availabilityRoom`. `resolveTranslatedCopy`/`buildLabel` risk eliminated — `RoomCard` already handles `availabilityRoom` from sibling plan.
+  - Approach: 85% — Wire hook result from `RoomDetailContent` to `RoomCard`. The `RoomCard` display logic for availability is already implemented.
+  - Impact: 85% — User-visible output; live prices on room detail buttons.
+  - Held-back 15%: need to verify exact wiring point in `RoomDetailContent` (line ~303 `<RoomCard>` call).
 - **Acceptance:**
-  - `RoomDetailContent` calls `useAvailabilityForRoom({ room, checkIn, checkOut, adults })` and passes the result as `availabilityResult` to `RoomCard`.
-  - `RoomCard` receives optional `availabilityResult?: { nrPrice?: number; available: boolean; loading: boolean; error?: string }` prop.
-  - When `availabilityResult.available === true` and `nrPrice` is set: NR button label shows live price (e.g. "Check rates – from €45"); NR button enabled.
-  - When `availabilityResult.available === false`: both NR and flex buttons show sold-out state (disabled, `rooms.soldOut` i18n label). The `rooms.soldOut` key must be added to all locale files under the `rooms` object in `roomsPage.json` (e.g. EN: `"soldOut": "Sold Out"`). This key is referenced by `RoomCard.tsx` line 193 but is absent from all current locale files.
-  - When `availabilityResult.loading === true`: NR button shows `loadingPrice` i18n label.
-  - When `availabilityResult` is undefined (flag off or pre-hook result): NR button shows `basePrice` from `roomsData.ts` with "from" label (not stale `rates.json` for user-selected dates).
-  - Flex button in MVP: always shows `checkRatesFlexible` i18n label regardless of `availabilityResult`. Flex pricing deferred.
-  - `queryState === "valid"` guard continues to gate CTA navigation (unchanged from current behavior).
-  - `queryState === "invalid"` → NR/flex buttons disabled regardless of `availabilityResult`.
-  - Existing GA4 `select_item` tracking on CTA click fires as before.
-  - No new `describe.skip` blocks.
-  - `RoomsSection` and `BookPageContent` are NOT modified — this prop is only wired from `RoomDetailContent` (the `RoomCard` prop is already optional and backward-compatible from TASK-04 in the sibling plan if that runs first, or it is added here if not yet added).
-  - No TypeScript errors.
+  - `RoomDetailContent` calls `useAvailabilityForRoom({ room, checkIn, checkOut, adults })` and passes the matching `OctorateRoom | undefined` as `availabilityRoom` to `RoomCard`.
+  - `RoomCard.availabilityRoom` prop is already typed and handled — no changes to `RoomCard.tsx`.
+  - `rooms.soldOut` i18n key is already present in all locales — no locale file changes needed.
+  - When `availabilityRoom.available === true` and `priceFrom` is set: NR button shows live price.
+  - When `availabilityRoom.available === false`: both NR and flex buttons show sold-out state.
+  - When `availabilityRoom` is undefined (flag off, loading, or no match): NR button falls back to `basePrice` from `useRoomPricing`.
+  - `queryState === "invalid"` → buttons disabled regardless (unchanged).
+  - Existing GA4 `select_item` tracking fires as before.
+  - `RoomsSection` and `BookPageContent` are NOT modified.
+  - No TypeScript errors. No `describe.skip` blocks.
 - **Validation contract (TC-XX):**
-  - TC-RPR-01: `availabilityResult = { available: true, nrPrice: 45, loading: false }` → NR button enabled, label contains "45".
-  - TC-RPR-02: `availabilityResult = { available: false, loading: false }` → both buttons disabled, sold-out label shown.
-  - TC-RPR-03: `availabilityResult = { loading: true, available: true }` → NR button shows `loadingPrice` label.
-  - TC-RPR-04: `availabilityResult = undefined` → `basePrice` from `roomsData.ts` shown, NR button enabled (fallback path; `queryState === "valid"` still gates navigation).
-  - TC-RPR-05: `availabilityResult = { available: true, loading: false }` with no `nrPrice` → fallback to `basePrice`, not "undefined".
-  - TC-RPR-06: `queryState === "invalid"` → NR/flex buttons disabled regardless of `availabilityResult`.
-  - TC-RPR-07: GA4 `select_item` fires on NR button click when button is enabled (not when disabled).
-  - TC-RPR-08: `RoomsSection` usages outside `RoomDetailContent` (e.g. `BookPageContent`) are unaffected — `availabilityResult` prop is optional, defaults to undefined.
-  - TC-RPR-09: Sold-out display renders a human-readable string (not the key string `"rooms.soldOut"`) in all supported locales. Requires `rooms.soldOut` key in each locale's `roomsPage.json`.
+  - TC-RPR-01: `availabilityRoom = { available: true, priceFrom: 45, nights: 2, ... }` → NR button enabled, label contains "45".
+  - TC-RPR-02: `availabilityRoom = { available: false, ... }` → both buttons disabled, sold-out label shown.
+  - TC-RPR-03: hook loading (undefined `availabilityRoom`) → NR button shows `loadingPrice` label (if hook exposes loading state) or falls back to `basePrice`.
+  - TC-RPR-04: `availabilityRoom = undefined` → `basePrice` from `roomsData.ts` shown, NR button enabled.
+  - TC-RPR-05: `queryState === "invalid"` → NR/flex buttons disabled regardless of `availabilityRoom`.
+  - TC-RPR-06: GA4 `select_item` fires on NR button click when enabled.
+  - TC-RPR-07: `RoomsSection`/`BookPageContent` usages unaffected — `availabilityRoom` is optional, backward-compatible.
 - **Execution plan:** Red -> Green -> Refactor
-  - Red: Add optional `availabilityResult` prop slot to `RoomCard` type (typed but unused). Confirm no existing tests break. Confirm `RoomsSection` / `BookPageContent` are not impacted (optional prop).
-  - Green: Wire `useAvailabilityForRoom` result from `RoomDetailContent` to `RoomCard`. In `RoomCard`: overlay `soldOut` and `lowestPrice` from `availabilityResult` when present. Update NR button label construction to include `nrPrice`. Add loading and sold-out display states. Add `rooms.soldOut` key to all locale `roomsPage.json` files. TC-RPR-01 through TC-RPR-09 pass.
-  - Refactor: `rooms.soldOut` was added in the Green step. Verify `loadingPrice` and `ratesFrom` are reused (not duplicated) for loading and price-from states. Clean label construction.
+  - Red: No prop changes needed (`availabilityRoom` already in `RoomCard`). Confirm no existing tests break with hook wired.
+  - Green: In `RoomDetailContent`, call `useAvailabilityForRoom({ room, checkIn, checkOut, adults })`. Pass the matching `OctorateRoom | undefined` result as `availabilityRoom` to `<RoomCard>`. TC-RPR-01 through TC-RPR-07 pass.
+  - Refactor: Confirm loading state is properly surfaced (if `useAvailabilityForRoom` exposes a loading flag, verify it reaches `RoomCard.availabilityRoom` as undefined during loading for correct fallback display).
 - **Planning validation (required for M/L):**
-  - Checks run:
-    - `RoomCard.tsx` line 170: `const { lowestPrice, soldOut, loading: priceLoading } = useRoomPricing(room)` — override point confirmed.
-    - `RoomCard.tsx` actions array (lines 318–338): two actions (`nonRefundable`, `flexible`) confirmed from sibling plan audit.
-    - GA4 `select_item` firing in `openNonRefundable`/`openFlexible` callbacks — not in label construction — confirmed safe from sibling plan.
-    - Feature-flag-off behavior: `availabilityResult` is undefined → existing `useRoomPricing` path → `basePrice` or stale `rates.json` entry. This is improved by TASK-RATES-REFRESH (which refreshes `rates.json`) but still shows today's "price from" not the date-picker-selected range. This is acceptable for flag-off MVP: show `basePrice` with "from" label as the approved fallback.
-    - `RoomsSection` callers: `BookPageContent` only (confirmed from sibling plan TASK-03). Optional prop confirmed safe.
-  - Validation artifacts: `RoomCard.tsx` lines 170, 318–338 (from sibling plan fact-find); `roomsPage.json` i18n keys confirmed pre-existing: `loadingPrice`, `ratesFrom`, `checkRatesNonRefundable`, `checkRatesFlexible`. Confirmed absent (must add): `rooms.soldOut`.
-  - Unexpected findings: Sibling plan TASK-04 adds `availabilityResult` to `RoomCard` for the book page path. If TASK-04 ships before TASK-RPR, the prop already exists and TASK-RPR only needs to wire the hook call in `RoomDetailContent`. TASK-CP2 must confirm this overlap before TASK-RPR executes.
+  - Confirmed (replan round 1): `RoomCard.availabilityRoom?: OctorateRoom` exists at `RoomCard.tsx:49`. No prop addition needed.
+  - Confirmed: `rooms.soldOut` already in all locales. No locale changes needed.
+  - Confirmed: `RoomDetailContent.tsx` already calls `useAvailability` for book page — adding `useAvailabilityForRoom` call for room detail is analogous.
+  - Confirmed: `RoomsSection` callers: `BookPageContent` only. Backward-compatible (optional prop).
 - **Consumer tracing:**
-  - `availabilityResult` prop on `RoomCard` — new optional prop. `RoomDetailContent` is the only component wiring it for room detail pages. `BookPageContent`/`RoomsSection` use `useAvailability` (different hook, sibling plan). Both are backward-compatible (optional prop defaults to undefined).
-  - Modified behavior: `soldOut` derivation prefers `availabilityResult.available === false` over `useRoomPricing.soldOut` when `availabilityResult` is present. No change to call sites that don't pass `availabilityResult`.
-  - Modified behavior: `lowestPrice` in price label uses `availabilityResult.nrPrice` when present. Existing fallback path unchanged.
-- **Scouts:** Before implementing, grep for all `<RoomCard` usages to confirm `availabilityResult` prop does not already exist from sibling plan TASK-04 shipping. If it exists, skip the prop addition and only wire the hook call.
+  - `RoomDetailContent` calls hook → passes `availabilityRoom` to `<RoomCard>`. No other consumers.
+  - `RoomsSection`/`BookPageContent` use `useAvailability` + pass `availabilityRooms` array — unaffected.
+- **Scouts:** Confirm exact line in `RoomDetailContent.tsx` where `<RoomCard>` is rendered (currently ~line 303). Confirm hook call placement (above `<RoomCard>`).
 - **Edge Cases & Hardening:**
-  - `available: false` must disable BOTH NR and flex buttons — do not allow booking a sold-out room via the flex CTA.
-  - `nrPrice = 0` is a valid response (unlikely in practice). Show "€0" not blank/fallback.
-  - When `availabilityResult.error` is set: degrade gracefully — show `basePrice` fallback label, do not disable the CTA.
-- **What would make this >=90%:** TASK-CP2 confirms API response field mapping; all TC-RPR-XX tests passing.
+  - `available: false` disables BOTH NR and flex buttons (already enforced by `RoomCard` when `availabilityRoom.available === false`).
+  - `priceFrom = 0` is valid — show "€0", not fallback.
+  - When hook returns undefined (loading, error, flag-off): `RoomCard` falls back to `basePrice`.
+- **What would make this >=90%:** All TC-RPR-XX tests passing.
 - **Rollout / rollback:**
-  - Rollout: Feature flag gates `useAvailabilityForRoom` API calls. Prop is additive. UI display states ship with flag; live prices only show when flag is on and TASK-01 route is deployed.
-  - Rollback: Feature flag off; `availabilityResult` is always undefined; existing `basePrice` fallback shown.
-- **Documentation impact:** None (existing i18n keys cover all new display states).
-- **Notes / references:**
-  - Reference: `brik-octorate-live-availability` plan TASK-04 (same `RoomCard` override pattern for book page path).
-  - `RoomCard.tsx` line 170: `useRoomPricing` call is the override point.
-  - `roomsPage.json` i18n keys: `loadingPrice`, `ratesFrom`, `checkRatesNonRefundable`, `checkRatesFlexible` — confirmed pre-existing. `rooms.soldOut` is NOT present in any locale file — it must be added in this task (see acceptance criterion below).
+  - Rollout: Feature flag gates hook API calls. Wiring in `RoomDetailContent` is safe with flag off.
+  - Rollback: Feature flag off; `availabilityRoom` is always undefined; `basePrice` fallback shown.
+- **Documentation impact:** None.
+- **Notes / references (replan round 1 updates):**
+  - `availabilityRoom` prop already exists — TASK-RPR scope is purely wiring the hook call in `RoomDetailContent`.
+  - `rooms.soldOut` already in all locales — no locale file changes.
+  - `RoomCard.tsx:49`: `availabilityRoom?: OctorateRoom` — exact prop name confirmed.
 
 ---
 
@@ -427,14 +409,15 @@ Room detail pages (`/rooms/[id]`) currently show a static "price from" figure so
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
+- **Build evidence:** 3 test files created. `useAvailabilityForRoom.test.ts`: 7/7 TC-RPC tests pass. `room-card-live-pricing.test.tsx`: 3/3 TC-RPR tests pass. `room-detail-date-picker.test.tsx`: 4/4 TC-DP tests pass. Full regression: 40/40 tests pass across 7 suites. No `describe.skip` introduced. No live credentials required (fetch mocked via `jest.spyOn(global, "fetch")`).
 - **Affects:** Test files listed above (new).
-- **Depends on:** TASK-DP, TASK-RPC, TASK-RPR
+- **Depends on:** TASK-DP (Complete), TASK-RPC, TASK-RPR
 - **Blocks:** -
-- **Confidence:** 82%
-  - Implementation: 82% — Test framework (Jest + Testing Library) is established. MSW version must be confirmed before writing handlers (same scout as sibling plan TASK-06). Hook tests mirror the `useAvailability` tests from the sibling plan.
-  - Approach: 82% — Unit tests for hook (mock `/api/availability`); component tests for date picker interaction, URL write-back, RoomCard display states.
-  - Impact: 82% — Without tests, regressions in the date picker, hook, and display will not be caught in CI.
+- **Confidence:** 85% (↑ from 82%)
+  - Implementation: 85% — Test patterns directly from sibling plan `useAvailability.test.ts` and `route.test.ts`. `OctorateRoom` type available. `availabilityRoom` prop name confirmed. MSW scout carried forward.
+  - Approach: 85% — Unit tests for hook (mock `/api/availability`); component tests for RoomCard display states with mocked `availabilityRoom` prop. Date picker tests if not already covered by TASK-DP tests.
+  - Impact: 85% — Without tests, regressions will not be caught in CI.
 - **Acceptance:**
   - `useAvailabilityForRoom` tests: all TC-RPC-XX scenarios covered.
   - Date picker tests: TC-DP-01, TC-DP-02, TC-DP-03, TC-DP-04, TC-DP-07 covered (component with mocked router).
@@ -475,16 +458,13 @@ Room detail pages (`/rooms/[id]`) currently show a static "price from" figure so
 
 ---
 
-## Risks & Mitigations
+## Risks & Mitigations (updated replan round 1)
 | Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|
-| `brik-octorate-live-availability` TASK-01 not yet merged when TASK-RPC starts | High (TASK-01 is pending in a separate plan) | High (blocks live API path) | TASK-CP2 gates TASK-RPC. TASK-DP ships independently. Feature flag off = `basePrice` fallback works without TASK-01. |
-| Octorate credentials absent | High (confirmed not in repo) | High (blocks live API testing) | Feature flag gates live path. TASK-RATES-REFRESH improves today's display. |
-| `rates.json` stale data shown today | Confirmed | Medium | TASK-RATES-REFRESH is Wave 1, independent, run immediately. |
-| Sibling plan TASK-04 adds `RoomCard.availabilityResult` prop before TASK-RPR | Medium (both plans are active) | Low (deduplication needed) | TASK-CP2 and TASK-RPR scouts confirm prop existence before adding. Avoid duplicate prop definition. |
-| `resolveTranslatedCopy`/`buildLabel` conflict with NR price label injection | Low | Moderate | Additive `lowestPrice` override pattern confirmed in sibling plan. TASK-CP2 revalidates before TASK-RPR. |
-| API route not available on staging (static export) | Medium | Low | Feature flag defaults off on staging. Document limitation in TASK-RPC. |
-| Rate limit breach (100 calls/5 min) during date picker interaction | Low (traffic is low-medium) | Medium | 400ms debounce in `useAvailabilityForRoom` + 60s server-side cache in TASK-01 route. |
+| Room matching mismatch (`widgetRoomCode` numeric vs `octorateRoomName` text) | Medium | Medium | TASK-RPC Red step scout. If mismatch: add `octorateRoomName` field to `Room` interface + update `RoomsSection.tsx`. 2-line data fix. |
+| API route not available on staging (static export) | Confirmed | Low | Feature flag defaults off on staging. No production impact. |
+| Rate limit breach during date picker interaction | Low | Medium | 300ms debounce in `useAvailabilityForRoom` + 5-min server-side cache in `/api/availability`. |
+| `available: false` with non-null `priceFrom` from API (edge case) | Low | Low | TASK-RPC enforces: if `available: false`, pass through as-is; `RoomCard` disables both CTAs regardless of `priceFrom`. |
 
 ## Observability
 - Logging: API route logs (from TASK-01 in sibling plan) capture Octorate ARI errors server-side.
@@ -508,17 +488,17 @@ Room detail pages (`/rooms/[id]`) currently show a static "price from" figure so
 - 2026-02-27: Flex button shows policy label only in MVP (no per-date flex price). Rationale: Octorate ARI response primarily provides NR pricing; flex price enrichment is a follow-on task.
 - 2026-02-27: Feature-flag-off price display: `basePrice` from `roomsData.ts` with "from" label. Rationale: prevents stale `rates.json` entries being shown for user-selected date ranges after TASK-RATES-REFRESH may have already replaced the file.
 
-## Overall-confidence Calculation
-- TASK-RATES-REFRESH: 90%, S (weight 1)
-- TASK-DP: 85%, M (weight 2)
-- TASK-CP2: 95%, S (weight 1)
-- TASK-RPC: 80%, M (weight 2)
-- TASK-RPR: 80%, M (weight 2)
-- TASK-RD-TEST: 82%, M (weight 2)
+## Overall-confidence Calculation (replan round 1)
+- TASK-RATES-REFRESH: Complete — excluded from calculation
+- TASK-DP: Complete — excluded from calculation
+- TASK-CP2: Complete — excluded from calculation
+- TASK-RPC: 85%, M (weight 2)
+- TASK-RPR: 85%, M (weight 2)
+- TASK-RD-TEST: 85%, M (weight 2)
 
-Sum of (confidence * weight): (90*1) + (85*2) + (95*1) + (80*2) + (80*2) + (82*2) = 90 + 170 + 95 + 160 + 160 + 164 = 839
-Sum of weights: 1 + 2 + 1 + 2 + 2 + 2 = 10
-Overall-confidence = 839 / 10 = 83.9% → set to 80% in frontmatter (conservative; TASK-CP2 is an external dependency checkpoint, not pure implementation confidence).
+Sum of (confidence * weight): (85*2) + (85*2) + (85*2) = 170 + 170 + 170 = 510
+Sum of weights: 6
+Overall-confidence = 510 / 6 = 85% → set to **85%** in frontmatter.
 
 ## Simulation Trace
 

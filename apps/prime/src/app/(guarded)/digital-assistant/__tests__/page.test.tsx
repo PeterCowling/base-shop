@@ -85,7 +85,7 @@ describe("DigitalAssistantPage", () => {
     fireEvent.click(screen.getByRole("button", { name: "Ask assistant" }));
 
     await waitFor(() => {
-      expect(screen.getByText(/rooftop terrace/i)).toBeDefined();
+      expect(screen.getByText(/beautiful rooftop terrace/i)).toBeDefined();
     });
     expect(fetchSpy).toHaveBeenCalledWith(
       "/api/assistant-query",

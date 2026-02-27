@@ -138,7 +138,12 @@ jobs:
 
       - name: Validate out/ directory
         run: |
-          test -d apps/xa-b/out && test $(ls apps/xa-b/out | wc -l) -gt 0 && echo "out/ is non-empty" || (echo "FAIL: out/ missing or empty"; exit 1)
+          if [ -d apps/xa-b/out ] && [ "$(find apps/xa-b/out -maxdepth 1 -mindepth 1 | wc -l)" -gt 0 ]; then
+            echo "out/ is non-empty"
+          else
+            echo "FAIL: out/ missing or empty"
+            exit 1
+          fi
 
   deploy-xa-uploader:
     name: Deploy xa-uploader (staging)

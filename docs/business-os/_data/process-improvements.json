@@ -71,6 +71,23 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Post-activation GA4 verification step for room detail select_item",
+      "body": "Baseline shows 0 select_item from room_detail; after deploying to production and activating NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY, a follow-up query (28-day window from activation date) should confirm non-zero select_item counts from room_detail. This is the measurement step the baseline enables.",
+      "suggested_action": "create card (part of brik-octorate-live-availability results-review)",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T20:29:07.378Z",
+      "path": "docs/plans/_archive/brik-live-pricing-baseline/results-review.user.md",
+      "idea_key": "5d7c5eb51d220a44d02ac4e4be56e863eee21d72",
+      "priority_tier": "P3",
+      "own_priority_rank": 8,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P3_MEASUREMENT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "Add session_id or caller_pid to governed telemetry event schema to enable actor attribution in future zombie incidents.",
       "body": "TASK-01 could not confirm actor identity with 80% confidence; no session metadata in events.jsonl.",
       "suggested_action": "create card",
@@ -1677,16 +1694,6 @@
   ],
   "riskItems": [],
   "pendingReviewItems": [
-    {
-      "type": "pending-review",
-      "business": "BOS",
-      "title": "Pending results review: brik-live-pricing-baseline",
-      "body": "Build is complete but no results review has been written yet.",
-      "suggested_action": "Write docs/plans/brik-live-pricing-baseline/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
-      "source": "build-record.user.md",
-      "date": "2026-02-27T20:25:17.710Z",
-      "path": "docs/plans/brik-live-pricing-baseline/build-record.user.md"
-    },
     {
       "type": "pending-review",
       "business": "BOS",

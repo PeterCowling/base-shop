@@ -14,6 +14,7 @@ export interface RoomCardPrice {
   soldOut?: boolean;
   soldOutLabel?: string;
   info?: string;
+  badge?: { text: string; claimUrl: string };
 }
 
 export interface RoomCardAction {

@@ -169,6 +169,12 @@ export default memo(function RoomCard({
 
   const { lowestPrice, soldOut, loading: priceLoading } = useRoomPricing(room);
 
+  const badgeText = ((): string | undefined => {
+    if (soldOut || !tokensReady) return undefined;
+    const raw = coerceString(tTokens("bestPriceGuaranteed")).trim();
+    return raw && raw !== "bestPriceGuaranteed" ? raw : undefined;
+  })();
+
   const price: RoomCardPrice = (() => {
     const loadingLabel = ready
       ? resolveTranslatedCopy(t("loadingPrice"), "loadingPrice", "Loading price...")
@@ -186,6 +192,7 @@ export default memo(function RoomCard({
       ...(formatted !== undefined ? { formatted } : {}),
       ...(soldOut ? { soldOutLabel: t("rooms.soldOut") as string } : {}),
       ...(isDorm ? { info: t("priceNotes.dorm") as string } : {}),
+      ...(badgeText ? { badge: { text: badgeText, claimUrl: "https://wa.me/393287073695" } } : {}),
     };
   })();
 

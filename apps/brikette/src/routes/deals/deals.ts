@@ -28,6 +28,22 @@ export type DealConfig = {
 
 export const DEALS = [
   {
+    id: "direct-perks-evergreen",
+    discountPct: 25,
+    startDate: "2026-02-27",
+    endDate: "2099-12-31",
+    validity: {
+      appliesTo: "booking_dates",
+      windowStart: "2026-02-27",
+      windowEnd: "2099-12-31",
+    },
+    rules: {
+      rateType: "any",
+      directOnly: true,
+      stacksWithDirectDiscount: false,
+    },
+  },
+  {
     id: "sep20_oct31_15off",
     discountPct: 15,
     startDate: "2025-09-20",

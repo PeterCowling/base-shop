@@ -9,7 +9,6 @@ function loadUtil(usersJson?: string): (pin: string) => User | null {
     delete process.env.NEXT_PUBLIC_USERS_JSON;
   }
   jest.isolateModules(() => {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
     fn = require("../getUserByPin").getUserByPin;
   });
   if (prev !== undefined) {

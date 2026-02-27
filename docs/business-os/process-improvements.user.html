@@ -263,7 +263,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-02-27T15:32:12.257Z";
+  var GEN_TS = "2026-02-27T15:38:34.872Z";
 
   var IDEA_ITEMS = [
     {
@@ -340,7 +340,7 @@
       "body": "v1 build handoff requires operator to manually start a Codex session; TASK-02 notes that codemoot run could automate this",
       "suggested_action": "defer to v2 plan when v1 is validated in production",
       "source": "results-review.user.md",
-      "date": "2026-02-26T13:16:27.600Z",
+      "date": "2026-02-27T15:35:35.651Z",
       "path": "docs/plans/_archive/codemoot-cross-agent-critique/results-review.user.md",
       "idea_key": "c3e81fb537fe78b02811b005c9da39423ebeff88",
       "priority_tier": "P2",
@@ -625,7 +625,7 @@
       "body": "the protocol now has two routes (codemoot + inline fallback); the selection logic could be extracted as a named \"critique-router\" sub-skill for cleaner protocol evolution",
       "suggested_action": "defer — low priority; current inline implementation is clear enough",
       "source": "results-review.user.md",
-      "date": "2026-02-26T13:16:27.600Z",
+      "date": "2026-02-27T15:35:35.651Z",
       "path": "docs/plans/_archive/codemoot-cross-agent-critique/results-review.user.md",
       "idea_key": "739931a7b5f8606b672c1f4ab7cb30eabb2601eb",
       "priority_tier": "P4",
@@ -685,6 +685,23 @@
       "effort": "M",
       "proximity": null,
       "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Fix OPERATIONS_ACCESS to include admin/manager roles",
+      "body": "roles.ts gives staff OPERATIONS_ACCESS but not admin/manager — Cristiana can reach management features but not basic operations features Alessandro can reach. Likely an omission in the original permissions design.",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T15:34:03.625Z",
+      "path": "docs/plans/_archive/reception-rbac-pin-user-roles/results-review.user.md",
+      "idea_key": "2719c34c1cf128d53822fa9462b8f3c297b37a1b",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -961,6 +978,40 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Calibration comparison — codemoot vs inline critique",
+      "body": "TASK-01 smoke test produced score=4/10 (lp_score=2.0) on fact-find.md; no baseline comparison against lp-do-critique exists yet. Score may be systematically harsher or softer.",
+      "suggested_action": "spike — run both critique paths on 2–3 existing artifacts and compare scores",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T15:35:35.651Z",
+      "path": "docs/plans/_archive/codemoot-cross-agent-critique/results-review.user.md",
+      "idea_key": "f3905273e1409faa4c0b6254ddf22d7ea16455c6",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "AI-to-mechanistic: add schema validation for NEXT_PUBLIC_USERS_JSON at startup",
+      "body": "schema parse errors are swallowed silently (users = {}); a startup-time validation log line would surface misconfiguration immediately",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T15:34:03.625Z",
+      "path": "docs/plans/_archive/reception-rbac-pin-user-roles/results-review.user.md",
+      "idea_key": "207df5d6e8666224f40698b08646c1e384dbfd72",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "Governed test invocation validation script: the build-code.md Offload Route documents that npx jest, pnpm exec jest, and direct binary invocations are blocked — Codex may attempt blocked invocation forms if the prompt is unclear. A lightweight CI-time or pre-commit check that detects blocked test invocation patterns in agent output could make this enforcement automatic.",
       "body": "build-code.md Offload Route documents blocked invocation forms; Codex prompt must restate them — mechanistic check could replace this instruction",
       "suggested_action": "spike",
@@ -1053,23 +1104,6 @@
       "date": "2026-02-26T14:05:26.496Z",
       "path": "docs/plans/_archive/brikette-rsc-structured-data-conversion/results-review.user.md",
       "idea_key": "09295276928e650d2d814c123d3e966f9434dff8",
-      "priority_tier": "P5",
-      "own_priority_rank": 10,
-      "urgency": "U2",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P5_DEFAULT"
-    },
-    {
-      "type": "idea",
-      "business": "BOS",
-      "title": "Calibration comparison — codemoot vs inline critique",
-      "body": "TASK-01 smoke test produced score=4/10 (lp_score=2.0) on fact-find.md; no baseline comparison against lp-do-critique exists yet. Score may be systematically harsher or softer.",
-      "suggested_action": "spike — run both critique paths on 2–3 existing artifacts and compare scores",
-      "source": "results-review.user.md",
-      "date": "2026-02-26T13:16:27.600Z",
-      "path": "docs/plans/_archive/codemoot-cross-agent-critique/results-review.user.md",
-      "idea_key": "f3905273e1409faa4c0b6254ddf22d7ea16455c6",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",
@@ -1355,6 +1389,23 @@
       "date": "2026-02-26T08:53:01.939Z",
       "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md",
       "idea_key": "50250241c361b3e014540cb7f748b06e906f22b5",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Wire getUserByPin into auth flow for shift-PIN staff",
+      "body": "getUserByPin is fully functional but unwired; marked @deprecated for now. A shift-PIN login path (staff who share a single Firebase account) would use this.",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T15:34:03.625Z",
+      "path": "docs/plans/_archive/reception-rbac-pin-user-roles/results-review.user.md",
+      "idea_key": "3422b86c81bca3a069affda44a349f9dc629638d",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",
@@ -1690,6 +1741,16 @@
   var RISK_ITEMS = [];
 
   var PENDING_REVIEW_ITEMS = [
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: brik-room-content-schema",
+      "body": "Build is complete but no results review has been written yet.",
+      "suggested_action": "Write docs/plans/brik-room-content-schema/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
+      "source": "build-record.user.md",
+      "date": "2026-02-27T15:22:17.712Z",
+      "path": "docs/plans/brik-room-content-schema/build-record.user.md"
+    },
     {
       "type": "pending-review",
       "business": "BOS",

@@ -51,7 +51,7 @@ describe("PaymentsView", () => {
       setFilterText: jest.fn(),
       lastCompletedBooking: null,
       handleRecallLast: jest.fn(),
-      isPete: false,
+      isPrivileged: false,
       handleDeleteClick: jest.fn(),
       isDeleteMode: false,
       handleOpenBooking: jest.fn(),

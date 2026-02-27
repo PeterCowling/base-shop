@@ -10,6 +10,7 @@ import {
   type RefObject,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -26,6 +27,7 @@ import SocialProofSection from "@/components/landing/SocialProofSection";
 import FacilityIcon from "@/components/rooms/FacilityIcon";
 import RoomCard from "@/components/rooms/RoomCard";
 import RoomStructuredData from "@/components/seo/RoomStructuredData";
+import { BOOKING_CODE } from "@/context/modal/constants";
 import roomsData, { type RoomFeatures, type RoomId } from "@/data/roomsData";
 import { useAvailabilityForRoom } from "@/hooks/useAvailabilityForRoom";
 import { usePagePreload } from "@/hooks/usePagePreload";
@@ -43,6 +45,7 @@ import {
   isValidStayRange,
   normalizeCheckoutForStay,
 } from "@/utils/bookingDateRules";
+import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 import { buildRoomItem, fireViewItem } from "@/utils/ga4-events";
 import { trackThenNavigate } from "@/utils/trackThenNavigate";
@@ -450,6 +453,20 @@ export default function RoomDetailContent({ lang, id }: Props) {
     },
     [room.sku, title],
   );
+  const stickyOctorateUrlResult = useMemo(
+    () =>
+      buildOctorateUrl({
+        checkin: pickerCheckIn,
+        checkout: pickerCheckOut,
+        pax: pickerAdults,
+        plan: "nr",
+        roomSku: room.sku,
+        octorateRateCode: room.rateCodes.direct.nr,
+        bookingCode: BOOKING_CODE,
+      }),
+    [pickerCheckIn, pickerCheckOut, pickerAdults, room.sku, room.rateCodes.direct.nr],
+  );
+  const stickyOctorateUrl = stickyOctorateUrlResult.ok ? stickyOctorateUrlResult.url : undefined;
 
   // Fire view_item once per navigation
   useEffect(() => {
@@ -572,7 +589,11 @@ export default function RoomDetailContent({ lang, id }: Props) {
 
       {/* Spacer so the sticky CTA doesn't cover footer content on small screens */}
       <div className="h-20 sm:hidden" aria-hidden />
-      <StickyBookNow lang={lang} onStickyCheckoutClick={onStickyCheckoutClick} />
+      <StickyBookNow
+        lang={lang}
+        onStickyCheckoutClick={onStickyCheckoutClick}
+        octorateUrl={stickyOctorateUrl}
+      />
     </Fragment>
   );
 }

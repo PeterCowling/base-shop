@@ -27,7 +27,7 @@ export interface PrepaymentsViewProps {
   setFilterText: (text: string) => void;
   lastCompletedBooking: PrepaymentData | null;
   handleRecallLast: () => void;
-  isPete: boolean;
+  isPrivileged: boolean;
   handleDeleteClick: () => void;
   isDeleteMode: boolean;
   handleOpenBooking: (item: BookingPaymentItem) => void;
@@ -67,7 +67,7 @@ function PrepaymentsView({
   setFilterText,
   lastCompletedBooking,
   handleRecallLast,
-  isPete,
+  isPrivileged,
   handleDeleteClick,
   isDeleteMode,
   handleOpenBooking,
@@ -116,7 +116,7 @@ function PrepaymentsView({
               >
                 Recall Last
               </Button>
-              {isPete && <DeleteButton onClick={handleDeleteClick} />}
+              {isPrivileged && <DeleteButton onClick={handleDeleteClick} />}
             </div>
             {isDeleteMode && (
               <div className="bg-warning/10 border border-warning rounded-lg px-4 py-3 flex items-center gap-3">

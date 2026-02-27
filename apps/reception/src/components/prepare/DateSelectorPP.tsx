@@ -31,7 +31,7 @@ export default function DateSelector({
   username: _username,
 }: DateSelectorProps): ReactElement {
   const { user } = useAuth();
-  const isPete = isPrivileged(user ?? null);
+  const privileged = isPrivileged(user ?? null);
 
   const { today: todayLocalStr, yesterday: yesterdayLocalStr, nextDays: nextFiveDays } =
     useMemo(() => buildQuickDateRange(5), []);
@@ -84,7 +84,7 @@ export default function DateSelector({
   }, [isCalendarOpen]);
 
   let toggleAndCalendar: ReactElement | null = null;
-  if (isPete) {
+  if (privileged) {
     toggleAndCalendar = (
       <div className="relative">
         <Button

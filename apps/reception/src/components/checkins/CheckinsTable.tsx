@@ -42,19 +42,19 @@ const CheckinsTable: React.FC = () => {
     }
   }, [searchParams]);
 
-  const isPete = isPrivileged(user ?? null);
-  const fetchSelectedDate = isPete ? selectedDate : todayStr;
+  const privileged = isPrivileged(user ?? null);
+  const fetchSelectedDate = privileged ? selectedDate : todayStr;
   const { rows, loading, error, validationError } = useCheckinsTableData({
     selectedDate: fetchSelectedDate,
-    daysBefore: isPete ? 1 : 0,
-    daysAfter: isPete ? 5 : 1,
+    daysBefore: privileged ? 1 : 0,
+    daysAfter: privileged ? 5 : 1,
   });
 
   useEffect(() => {
-    if (validationError && isPete) {
+    if (validationError && privileged) {
       showToast(getErrorMessage(validationError), "warning");
     }
-  }, [validationError, isPete]);
+  }, [validationError, privileged]);
 
   /**
    * rows already contains occupants within a pre-defined range.

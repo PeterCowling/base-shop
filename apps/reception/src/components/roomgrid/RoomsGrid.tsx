@@ -97,15 +97,6 @@ const RoomsGrid: FC = () => {
           error == null &&
           knownRooms.map((roomNumber) => {
             const dataForRoom = getReservationDataForRoom(roomNumber);
-            console.log("[RoomsGrid] Rendering room", roomNumber, {
-              rows: dataForRoom.length,
-            });
-            if (dataForRoom.some((row) => row.periods.length === 0)) {
-              console.warn("[RoomsGrid] Found row with no periods", {
-                roomNumber,
-                rows: dataForRoom,
-              });
-            }
             return (
               <RoomGrid
                 key={roomNumber}

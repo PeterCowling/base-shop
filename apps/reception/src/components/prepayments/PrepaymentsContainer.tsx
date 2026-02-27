@@ -33,7 +33,7 @@ function PrepaymentsContainer({
   const { saveCCDetails } = useCCDetailsMutations();
   const { saveFinancialsRoom } = useFinancialsRoomMutations();
   const { user } = useAuth();
-  const isPete = canAccess(user ?? null, Permissions.BULK_ACTIONS);
+  const isPrivileged = canAccess(user ?? null, Permissions.BULK_ACTIONS);
   const [selectedBooking, setSelectedBooking] = useState<PrepaymentData | null>(
     null
   );
@@ -381,7 +381,7 @@ function PrepaymentsContainer({
       setFilterText={setFilterText}
       lastCompletedBooking={lastCompletedBooking}
       handleRecallLast={handleRecallLast}
-      isPete={isPete}
+      isPrivileged={isPrivileged}
       handleDeleteClick={handleDeleteClick}
       isDeleteMode={isDeleteMode}
       handleOpenBooking={handleOpenBooking}

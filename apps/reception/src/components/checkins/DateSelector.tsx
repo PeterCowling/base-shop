@@ -40,14 +40,14 @@ export default function DateSelector({
   onDateChange,
 }: DateSelectorProps): ReactElement {
   const { user } = useAuth();
-  const isPete = isPrivileged(user ?? null);
+  const privileged = isPrivileged(user ?? null);
   const canAccessRestrictedCalendar = canAccess(
     user ?? null,
     Permissions.RESTRICTED_CALENDAR_ACCESS,
   );
 
   // Quick selectors
-  const daysAhead = isPete ? 5 : 1;
+  const daysAhead = privileged ? 5 : 1;
   const { today, yesterday, nextDays } = useMemo(
     () => buildQuickDateRange(daysAhead),
     [daysAhead],
@@ -154,7 +154,7 @@ export default function DateSelector({
               mode="single"
               selected={parseDate(selectedDate)}
               onSelect={handleDayPickerSelect}
-              {...(!isPete
+              {...(!privileged
                 ? {
                     fromDate: parsedToday,
                     toDate: parsedToday
@@ -193,7 +193,7 @@ export default function DateSelector({
 
   return (
     <div className="flex flex-wrap items-center gap-2">
-      {isPete && renderButton("Yesterday", yesterday)}
+      {privileged && renderButton("Yesterday", yesterday)}
       {renderButton("Today", today)}
       {nextDays.map((day) => renderButton(getWeekdayShortLabel(day), day))}
       {toggleAndCalendar}

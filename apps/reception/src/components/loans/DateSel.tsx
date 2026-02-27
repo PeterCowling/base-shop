@@ -43,7 +43,7 @@ function DateSel({
   username: _username,
 }: DateSelProps): ReactElement {
   const { user } = useAuth();
-  const isPete = isPrivileged(user ?? null);
+  const privileged = isPrivileged(user ?? null);
 
   const { today, yesterday, nextDays: nextFiveDays } = useMemo(
     () => buildQuickDateRange(5),
@@ -105,7 +105,7 @@ function DateSel({
   }, [isCalendarOpen]);
 
   const toggleAndCalendar = useMemo<ReactElement | null>(() => {
-    if (!isPete) return null;
+    if (!privileged) return null;
     return (
       <div className="relative">
         <Button
@@ -162,7 +162,7 @@ function DateSel({
         )}
       </div>
     );
-  }, [isCalendarOpen, isPete, onDateChange, selectedDate]);
+  }, [isCalendarOpen, privileged, onDateChange, selectedDate]);
 
   return (
     <div className="relative pb-5">

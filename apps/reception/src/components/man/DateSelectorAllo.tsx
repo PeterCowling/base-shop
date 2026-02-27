@@ -37,7 +37,7 @@ export default function DateSelectorCI({
   onTestModeChange,
 }: DateSelectorProps): ReactElement {
   const { user } = useAuth();
-  const isPete = isPrivileged(user ?? null);
+  const privileged = isPrivileged(user ?? null);
 
   // Quick-select references
   const { today, yesterday, nextDays: nextFiveDays } = useMemo(
@@ -96,7 +96,7 @@ export default function DateSelectorCI({
   }, [isCalendarOpen]);
 
   let datePickerToggle: ReactElement | null = null;
-  if (isPete) {
+  if (privileged) {
     datePickerToggle = (
       <div className="relative">
         <Button
@@ -165,7 +165,7 @@ export default function DateSelectorCI({
         </Inline>
 
         {/* Show test mode toggle on far right, but only if user is Pete */}
-        {isPete && (
+        {privileged && (
           <label className="inline-flex items-center space-x-2">
             <Input compatibilityMode="no-wrapper"
               type="checkbox"

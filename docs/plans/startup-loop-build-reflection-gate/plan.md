@@ -5,7 +5,7 @@ Domain: STRATEGY
 Workstream: Mixed
 Created: 2026-02-27
 Last-reviewed: 2026-02-27
-Last-updated: 2026-02-27T18:00:00Z
+Last-updated: 2026-02-27T18:30:00Z
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: startup-loop-build-reflection-gate
 Deliverable-Type: multi-deliverable
@@ -30,7 +30,7 @@ The startup loop currently has no structured post-build step that captures patte
 - [x] TASK-01: SPIKE — schema design and routing criteria — Complete (2026-02-27)
 - [x] TASK-02: IMPLEMENT — wire pattern-reflection gate into lp-do-build + register artifact contract — Complete (2026-02-27)
 - [x] TASK-03: IMPLEMENT — add access declarations step to lp-do-fact-find — Complete (2026-02-27)
-- [ ] TASK-04: CHECKPOINT — pilot validation on completed builds
+- [x] TASK-04: CHECKPOINT — pilot validation on completed builds — Complete (2026-02-27)
 
 ## Goals
 
@@ -97,7 +97,7 @@ The startup loop currently has no structured post-build step that captures patte
 | TASK-01 | SPIKE | Schema design and routing criteria | 85% | M | Complete (2026-02-27) | - | TASK-02, TASK-03 |
 | TASK-02 | IMPLEMENT | Wire pattern-reflection gate into lp-do-build + register artifact contract | 80% | M | Complete (2026-02-27) | TASK-01 | TASK-04 |
 | TASK-03 | IMPLEMENT | Add access declarations step to lp-do-fact-find | 80% | S | Complete (2026-02-27) | TASK-01 | TASK-04 |
-| TASK-04 | CHECKPOINT | Pilot validation — apply schema to 3 completed builds | 95% | S | Pending | TASK-02, TASK-03 | - |
+| TASK-04 | CHECKPOINT | Pilot validation — apply schema to 3 completed builds | 95% | S | Complete (2026-02-27) | TASK-02, TASK-03 | - |
 
 ## Parallelism Guide
 
@@ -296,7 +296,7 @@ The startup loop currently has no structured post-build step that captures patte
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
 - **Affects:** `docs/plans/startup-loop-build-reflection-gate/plan.md`, `docs/plans/startup-loop-build-reflection-gate/task-04-pilot-notes.md`
 - **Depends on:** TASK-02, TASK-03
 - **Blocks:** -
@@ -319,6 +319,15 @@ The startup loop currently has no structured post-build step that captures patte
 - **Planning validation:** Checkpoint task — no pre-planning validation required.
 - **Rollout / rollback:** `None: planning control task`
 - **Documentation impact:** `docs/plans/startup-loop-build-reflection-gate/task-04-pilot-notes.md` created; plan updated with checkpoint completion evidence.
+- **Build Evidence (2026-02-27):**
+  - Builds reviewed: (1) `xa-uploader-usability-hardening` — 2 New Idea Candidates entries (access_gap + ad_hoc, both occurrence_count=1, both routing: defer). (2) `post-build-reflection-prompting` — 2 entries (deterministic + ad_hoc, both occurrence_count=1, both routing: defer). (3) `lp-do-ideas-startup-loop-integration` — New Idea Candidates: None; confirmed valid empty-state behavior.
+  - Synthetic artifacts produced: `pilot-xa-pattern-reflection.user.md` and `pilot-post-build-reflection-pattern-reflection.user.md` in `docs/plans/startup-loop-build-reflection-gate/`.
+  - Schema fields: all 4 required fields populated cleanly for all entries; optional fields (evidence_refs, classifier_input, access_declarations) used where applicable. No gaps or ambiguities encountered.
+  - Routing thresholds: not triggered in pilot (all entries are occurrence_count=1). This is correct for first-observed patterns. Thresholds (3/2) unchanged — no calibration needed.
+  - Access declarations schema: validated via xa-uploader entry (sync scripts discovered mid-build, verified_before_build=false, discovery_event=true). Schema correctly represents the gap.
+  - Empty-state: validated via lp-do-ideas-startup-loop-integration (entries: [], None identified in both sections). Valid.
+  - Horizon assumptions: all three confirmed or explained (see task-04-pilot-notes.md § 8). No downstream calibration via /lp-do-replan required — no tasks below threshold, no topology changes.
+  - Operator sign-off: awaited per acceptance criteria. Pilot notes at `docs/plans/startup-loop-build-reflection-gate/task-04-pilot-notes.md`.
 
 ---
 
@@ -338,12 +347,12 @@ The startup loop currently has no structured post-build step that captures patte
 
 ## Acceptance Criteria (overall)
 
-- [ ] `docs/plans/startup-loop-build-reflection-gate/task-01-schema-spec.md` exists with full field spec, routing criteria, access declarations sub-schema, and at least 1 annotated fixture.
-- [ ] `lp-do-build` SKILL.md contains new step 2.5 referencing the `pattern-reflection.user.md` schema and canonical artifact path.
-- [ ] `lp-do-fact-find` SKILL.md contains a new "Access Declarations" step in Phase 2 or Phase 3.
-- [ ] `docs/business-os/startup-loop/loop-output-contracts.md` contains a new `pattern-reflection` artifact entry.
-- [ ] Pilot validation (`task-04-pilot-notes.md`) documents at least 2 completed builds reviewed; operator has acknowledged the notes.
-- [ ] All SKILL.md instruction text passes the Operator-Facing Content: Plain Language Rule (no internal system nouns).
+- [x] `docs/plans/startup-loop-build-reflection-gate/task-01-schema-spec.md` exists with full field spec, routing criteria, access declarations sub-schema, and at least 1 annotated fixture.
+- [x] `lp-do-build` SKILL.md contains new step 2.5 referencing the `pattern-reflection.user.md` schema and canonical artifact path.
+- [x] `lp-do-fact-find` SKILL.md contains a new "Access Declarations" step in Phase 2 or Phase 3.
+- [x] `docs/business-os/startup-loop/loop-output-contracts.md` contains a new `pattern-reflection` artifact entry.
+- [ ] Pilot validation (`task-04-pilot-notes.md`) documents at least 2 completed builds reviewed; operator has acknowledged the notes. (Pilot notes written; awaiting operator acknowledgement.)
+- [x] All SKILL.md instruction text passes the Operator-Facing Content: Plain Language Rule (no internal system nouns).
 
 ## Decision Log
 

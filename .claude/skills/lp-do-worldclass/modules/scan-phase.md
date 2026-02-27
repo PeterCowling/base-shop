@@ -66,6 +66,8 @@ For each of the five fixed data-source categories below, determine its status (`
 
 **Probe action:** call `mcp__brikette__product_stats` with the shop ID for `<BIZ>` (look up in `data/shops/` or strategy docs). If no shop ID is discoverable, treat as `not-configured`.
 
+> **Environment note:** MCP tool names use the `mcp__brikette__*` namespace for this deployment. If operating in a different environment, substitute the correct namespace prefix throughout this module.
+
 ### (c) GA4
 
 **What to look for:** GA4 measurement ID (`G-XXXXXXXXXX`) in strategy docs, `.env*` files, or app source.
@@ -184,7 +186,7 @@ For each domain, compare the current-state summary (Step 4) against the benchmar
 - Current state partially meets the Minimum Threshold
 - Below threshold on exactly 1 or 2 Key Indicators
 
-**`no-data`** — cannot assess because the only data sources relevant to this domain are `not-configured` or were `skipped` in Step 3, AND the repo scan produced no evidence.
+**`no-data`** — cannot assess because the only data sources relevant to this domain require external access (Stripe, GA4, Firebase, Octorate) AND those sources are `not-configured` or were `skipped` in Step 3, AND the repo scan found no artifacts for this domain. Reserve `no-data` for domains where the gap in visibility is caused by missing data-source access — not by the thing itself being absent. The distinguishing question: "If we had the data source, would we expect to find evidence there?" If yes and the source is missing → `no-data`. If the thing is simply not built or not done → `major-gap`.
 
 ### Domain-Specific Anchors
 
@@ -210,18 +212,19 @@ Write the scan output to `docs/business-os/strategy/<BIZ>/worldclass-scan-<YYYY-
 
 ### Table Format
 
-7 columns, one row per discrete gap:
+8 columns, one row per discrete gap:
 
-| Domain | Gap | Current State | Threshold | Gap Classification | Evidence Source | Notes |
-|---|---|---|---|---|---|---|
+| Domain | domain_id | Gap | Current State | Threshold | Gap Classification | Evidence Source | Notes |
+|---|---|---|---|---|---|---|---|
 
 **Column definitions:**
-- **Domain** — `domain_name` from the benchmark heading
+- **Domain** — `domain_name` from the benchmark heading (human-readable)
+- **domain_id** — `domain_id` from the benchmark heading (e.g. `website-imagery`, `room-level-booking-funnel`). This is the machine-readable key used by ideas-phase for `anchor_key` and `cluster_key` formulas. Must match exactly the `id` field in the benchmark frontmatter `domains:` list.
 - **Gap** — short label for the specific shortfall (e.g. "No professional photography", "Missing pricing display", "No social proof on room pages"). For `world-class` rows: `None`. For `no-data` rows: `Cannot assess`.
 - **Current State** — one-sentence summary of what was found (or `Not found` / `No data available`)
 - **Threshold** — the Minimum Threshold text from the benchmark (verbatim or closely paraphrased; cite the domain's `### Minimum Threshold`)
 - **Gap Classification** — one of: `world-class`, `major-gap`, `minor-gap`, `no-data`
-- **Evidence Source** — comma-separated list of sources where evidence was found (e.g. `repo`, `Stripe`, `GA4`). `none` if no evidence found.
+- **Evidence Source** — the specific artifact path or source name where evidence was found. **Format rule:** if evidence is a repo file, write the repo-relative path (e.g. `docs/business-os/strategy/BRIK/2026-02-12-brand-identity-dossier.user.md`). If evidence is from an external data source (Stripe, GA4, Firebase, Octorate), write the source name. If multiple sources, comma-separate paths and/or names. Write `none` if no evidence found. **This field drives Pattern A vs Pattern B routing in ideas-phase:** a cell containing a repo path → Pattern B; a cell containing only source names or `none` → Pattern A.
 - **Notes** — any caveats, quality notes, or context the ideas-phase should know
 
 **Row rules:**
@@ -234,11 +237,11 @@ Write the scan output to `docs/business-os/strategy/<BIZ>/worldclass-scan-<YYYY-
 
 ```markdown
 ---
-Type: Worldclass-Scan
-Business: <BIZ>
-Scan-date: <YYYY-MM-DD>
-Goal-version: <goal.goal_version>
-Status: [DRY RUN — no dispatches emitted] | Active
+schema_version: worldclass-scan.v1
+business: <BIZ>
+goal_version: <goal.goal_version>
+scan_date: <YYYY-MM-DD>
+status: dry_run | active
 ---
 
 # World-Class Gap Scan — <BIZ> (<YYYY-MM-DD>)
@@ -257,8 +260,8 @@ Status: [DRY RUN — no dispatches emitted] | Active
 
 ## Gap Comparison Table
 
-| Domain | Gap | Current State | Threshold | Gap Classification | Evidence Source | Notes |
-|---|---|---|---|---|---|---|
+| Domain | domain_id | Gap | Current State | Threshold | Gap Classification | Evidence Source | Notes |
+|---|---|---|---|---|---|---|---|
 <rows>
 
 ## Scan Summary

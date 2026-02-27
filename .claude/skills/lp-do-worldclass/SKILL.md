@@ -25,7 +25,7 @@ Keep this file thin. Do not embed scan rules, benchmark rubrics, or ideas templa
 | Parameter | Required | Default | Notes |
 |---|---|---|---|
 | `--biz` | Required | — | Business identifier (e.g. `BRIK`, `PWRB`). Must match a directory under `docs/business-os/strategy/`. |
-| `--as-of-date` | Optional | Today (YYYY-MM-DD) | Date used for artifact naming and staleness calculation. |
+| `--as-of-date` | Optional | Today (YYYY-MM-DD) | Date used for scan output filename (`worldclass-scan-<YYYY-MM-DD>.md`) and the `scan_date` field in dispatch key formulas. Does not trigger time-based staleness — staleness is determined solely by `goal_version` mismatch. |
 | `--dry-run` | Optional | — | When present: scan runs and scan output is written, but all queue-state.json writes are skipped. Safe mode for verifying scan behavior. |
 
 ## Global Invariants
@@ -38,8 +38,10 @@ Keep this file thin. Do not embed scan rules, benchmark rubrics, or ideas templa
 
 - Read strategy artifact files, frontmatter, and goal/benchmark artifacts (read-only scan)
 - Read `docs/business-os/strategy/<BIZ>/worldclass-goal.md` and `worldclass-benchmark.md`
+- **Edit** `docs/business-os/strategy/<BIZ>/worldclass-goal.md` — `benchmark-status` field only (goal-phase Step 4 updates this after writing the research prompt)
 - Write research prompt to `docs/business-os/strategy/<BIZ>/worldclass-research-prompt.md`
 - Write scan output to `docs/business-os/strategy/<BIZ>/worldclass-scan-<YYYY-MM-DD>.md`
+- **Append** to the scan output file — ideas-phase appends the `## Dispatches (Dry Run)` block and `## Dispatch Summary` section
 - Write dispatch packets to `docs/business-os/startup-loop/ideas/trial/queue-state.json` (with writer lock only; see constraint below)
 - Run `scripts/agents/with-writer-lock.sh` to acquire writer lock before any queue writes
 

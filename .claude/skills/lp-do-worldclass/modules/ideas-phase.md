@@ -118,11 +118,13 @@ For each filtered gap row, construct one complete `dispatch.v1` packet. All fiel
 
 | Gap type / domain characteristic | `provisional_deliverable_family` |
 |---|---|
-| UI, funnel, site, booking flow, imagery gap | `"code-change"` |
+| UI, funnel, site, booking flow, or image-display implementation gap | `"code-change"` |
 | Strategy doc, content, copy, messaging gap | `"doc"` |
-| Brand, marketing, photography, visual identity gap | `"business-artifact"` |
-| Gap spans both implementation and documentation | `"multi"` |
+| Photography production, brand visual assets, marketing material gap | `"business-artifact"` |
+| Gap spans both implementation and asset-production or documentation | `"multi"` |
 | `no-data` gap (cannot assess) | `"business-artifact"` |
+
+**Imagery classification note:** "imagery" gaps split by nature. If the shortfall is that the site does not display images well (missing gallery, poor image layout, no optimisation) → `"code-change"`. If the shortfall is that professional photography does not yet exist → `"business-artifact"`. If both are missing simultaneously → `"multi"`.
 
 ## Step 4: Decomposition Rule
 
@@ -132,7 +134,10 @@ If scan-phase emits 3 gap rows for a single domain, emit 3 separate dispatch pac
 
 ### Deterministic key formulas (VC-03)
 
-All key fields are computed deterministically from stable inputs so that re-running ideas-phase on the same scan output produces identical keys:
+The following fields are computed deterministically from stable inputs — re-running ideas-phase on the same scan output produces identical values for these fields:
+- `anchor_key`, `cluster_key`, `cluster_fingerprint`, `root_event_id` — fully deterministic from BIZ, domain_id, gap_slug, goal_version, and scan_date
+
+`dispatch_id` is intentionally unique per enqueue event (timestamp + seq4); it is **not** deterministic across runs by design.
 
 ```
 anchor_key          = "<BIZ>::worldclass::<domain_id>::<gap_slug>"
@@ -174,6 +179,8 @@ Pass each dispatch packet to `lp-do-ideas` using the **operator-idea intake path
 
 - `fact_find_ready` dispatches → immediately invoke `/lp-do-fact-find` with the dispatch packet. Do NOT stop for operator approval. Set `queue_state: "auto_executed"` after invocation.
 - `briefing_ready` dispatches → enqueue (`queue_state: "enqueued"`) and present a summary to the operator. Wait for operator confirmation before invoking `/lp-do-briefing`.
+
+**Dedupe check (before append):** before writing each dispatch, scan the existing `"dispatches"` array in `queue-state.json` for any entry where `root_event_id` matches the dispatch being emitted. If a match is found: skip that dispatch entirely; do not append; record a suppression note in the dispatch summary (`1 suppressed (duplicate root_event_id)`). This prevents double-enqueue when the same scan output is processed more than once.
 
 **Writer lock:** before appending any dispatch to `queue-state.json`, acquire the writer lock via `scripts/agents/with-writer-lock.sh`. Never write to `queue-state.json` without first acquiring the lock. Release the lock after all dispatches in the batch have been written.
 

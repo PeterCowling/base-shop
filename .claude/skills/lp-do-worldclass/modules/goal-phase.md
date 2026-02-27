@@ -18,17 +18,17 @@ Read `docs/business-os/strategy/<BIZ>/worldclass-goal.md`.
 
 **If present:** validate that all required fields exist:
 
-| Field | Required | Notes |
-|---|---|---|
-| `schema_version` | Yes | Must be `worldclass-goal.v1` |
-| `business` | Yes | Must match `--biz` value |
-| `goal_version` | Yes | Integer ≥1 |
-| `singular-goal` | Yes | Non-empty string |
-| `domains` | Yes | List with at least 1 entry; each entry must have `name`, `context`, `examples` |
-| `constraints` | Yes | List (may be empty) |
-| `created` | Yes | YYYY-MM-DD |
-| `last-updated` | Yes | YYYY-MM-DD |
-| `benchmark-status` | Yes | One of: `none`, `research-prompt-ready`, `benchmark-ready` |
+| Field              | Required | Notes                                                                          |
+| ------------------ | -------- | ------------------------------------------------------------------------------ |
+| `schema_version`   | Yes      | Must be `worldclass-goal.v1`                                                   |
+| `business`         | Yes      | Must match `--biz` value                                                       |
+| `goal_version`     | Yes      | Integer ≥1                                                                     |
+| `singular-goal`    | Yes      | Non-empty string                                                               |
+| `domains`          | Yes      | List with at least 1 entry; each entry must have `name`, `context`, `examples` |
+| `constraints`      | Yes      | List (may be empty)                                                            |
+| `created`          | Yes      | YYYY-MM-DD                                                                     |
+| `last-updated`     | Yes      | YYYY-MM-DD                                                                     |
+| `benchmark-status` | Yes      | One of: `none`, `research-prompt-ready`, `benchmark-ready`                     |
 
 **Field missing or invalid:** stop with:
 
@@ -47,6 +47,7 @@ Read the existing research prompt at `docs/business-os/strategy/<BIZ>/worldclass
 Extract the `goal_version` field from its frontmatter.
 
 **Regeneration required if any of the following:**
+
 - Research prompt does not exist
 - Research prompt frontmatter has no `goal_version` field
 - `prompt.goal_version != goal.goal_version`
@@ -181,12 +182,13 @@ After writing: update `benchmark-status` in the goal artifact to `research-promp
 After Steps 3–4 complete (or if they were skipped in Step 2), evaluate:
 
 **Continue to scan-phase (State 3)** if ALL of the following are true:
+
 - `docs/business-os/strategy/<BIZ>/worldclass-benchmark.md` exists and is non-empty
 - Benchmark frontmatter `goal_version` == `goal.goal_version`
 - Benchmark frontmatter `schema_version` == `worldclass-benchmark.v1`
 
 **Stop (State 2 or 4)** if any check above fails. Emit the appropriate stop message from SKILL.md.
 
-**If benchmark was just regenerated in Steps 3–4** (prompt was refreshed because goal_version changed): always stop. The old benchmark is stale and must be replaced before a scan can proceed. Emit the State 4 stop message even if a benchmark file exists, because it will have a mismatched `goal_version`.
+**If the research prompt was just regenerated in Steps 3–4** (prompt was refreshed because goal_version changed): always stop. The existing benchmark is stale and must be replaced before a scan can proceed. Emit the State 4 stop message even if a benchmark file exists, because it will have a mismatched `goal_version`.
 
 **If benchmark is missing entirely:** stop with the State 2 stop message.

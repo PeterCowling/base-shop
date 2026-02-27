@@ -223,10 +223,15 @@ jobs:
         run: |
           set -euo pipefail
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            if ! git rev-parse --verify "origin/${{ github.base_ref }}" >/dev/null 2>&1; then
-              git fetch --no-tags origin "+${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+            # Prefer PR "before" SHA when present so lint scope tracks only the
+            # latest incremental push, not the entire long-lived branch delta.
+            export DOCS_LINT_BASE="${{ github.event.before }}"
+            if [ -z "${DOCS_LINT_BASE}" ] || [ "${DOCS_LINT_BASE}" = "0000000000000000000000000000000000000000" ]; then
+              if ! git rev-parse --verify "origin/${{ github.base_ref }}" >/dev/null 2>&1; then
+                git fetch --no-tags origin "+${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+              fi
+              export DOCS_LINT_BASE="origin/${{ github.base_ref }}"
             fi
-            export DOCS_LINT_BASE="origin/${{ github.base_ref }}"
           else
             export DOCS_LINT_BASE="${{ github.event.before }}"
           fi

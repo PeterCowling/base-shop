@@ -1,13 +1,185 @@
 {
+  "breakfastWizard": {
+    "confirmDeliveryTime": "Orario di consegna",
+    "confirmDrink": "Bevanda",
+    "confirmFood": "Cibo",
+    "confirmOrder": "Conferma ordine",
+    "confirmSides": "Contorni",
+    "deliveryTimeLabel": "Orario di consegna",
+    "edit": "Modifica",
+    "eggStyle": "Tipo di uova",
+    "milkLabel": "Latte",
+    "next": "Avanti",
+    "selectSides": "Seleziona 3 contorni ({{remaining}} rimanenti)",
+    "selectTime": "Seleziona un orario…",
+    "submitting": "Invio in corso…",
+    "sugarLabel": "Zucchero",
+    "steps": {
+      "food": {
+        "title": "Scegli la colazione",
+        "description": "Seleziona il piatto principale."
+      },
+      "eggs": {
+        "title": "Tipo di uova e contorni",
+        "description": "Come preferisci le uova? Scegli 3 contorni."
+      },
+      "pancakes": {
+        "title": "Sciroppo per pancake",
+        "description": "Scegli il tuo sciroppo."
+      },
+      "drinks": {
+        "title": "Scegli la bevanda",
+        "description": "Seleziona una bevanda da accompagnare alla colazione."
+      },
+      "sugar": {
+        "title": "Zucchero",
+        "description": "Quanto zucchero preferisci?"
+      },
+      "milksugar": {
+        "title": "Latte e zucchero",
+        "description": "Come vuoi la tua bevanda?"
+      },
+      "time": {
+        "title": "Orario di consegna",
+        "description": "Quando vuoi che ti venga consegnata la colazione?"
+      },
+      "confirmation": {
+        "title": "Conferma il tuo ordine",
+        "description": "Controlla l'ordine prima di inviare."
+      }
+    }
+  },
+  "evDrinkWizard": {
+    "confirmDeliveryTime": "Orario di consegna",
+    "confirmDrink": "Bevanda",
+    "confirmExtras": "Extra",
+    "confirmOrder": "Conferma ordine",
+    "customiseLegend": "Personalizza la tua bevanda",
+    "deliveryTimeSrLabel": "Orario di consegna",
+    "edit": "Modifica",
+    "next": "Avanti",
+    "selectDrinkLegend": "Seleziona una bevanda",
+    "selectTime": "Seleziona un orario…",
+    "submitting": "Invio in corso…",
+    "modifiers": {
+      "sweetened": "Zuccherato",
+      "withGeneric": "Con {{name}}",
+      "withMilk": "Con latte",
+      "withSugar": "Con zucchero"
+    },
+    "steps": {
+      "drink": {
+        "title": "Scegli la bevanda",
+        "description": "Seleziona una bevanda tra le opzioni disponibili."
+      },
+      "modifier": {
+        "title": "Personalizza la tua bevanda",
+        "description": "Aggiungi eventuali extra."
+      },
+      "time": {
+        "title": "Scegli l'orario di consegna",
+        "description": "Seleziona quando vuoi che ti venga consegnata la bevanda."
+      },
+      "confirmation": {
+        "title": "Conferma il tuo ordine",
+        "description": "Controlla l'ordine prima di inviare."
+      }
+    }
+  },
+  "bagStorage": {
+    "collectionNote": "I bagagli possono essere ritirati in qualsiasi momento fino alle 15:30. Dopo tale ora, i bagagli non ritirati vengono affidati al nostro servizio di portierato locale — è previsto un costo di €15 per bagaglio.",
+    "currentStatus": "Stato attuale della richiesta: {{status}}",
+    "errorDefault": "Impossibile inviare la richiesta di deposito bagagli.",
+    "errorNetwork": "Impossibile inviare ora la richiesta di deposito bagagli.",
+    "loadError": "Non riusciamo a caricare ora i dettagli del deposito bagagli.",
+    "noteLabel": "Note (facoltativo)",
+    "notCheckedOut": "Le richieste di deposito bagagli sono disponibili dopo il check-out. Torna quando il soggiorno è terminato.",
+    "pickupWindowLabel": "Finestra di ritiro",
+    "returnHome": "Torna alla home",
+    "selectTimeSlot": "Seleziona una fascia oraria…",
+    "submitButton": "Richiedi deposito bagagli",
+    "submitting": "Invio in corso…",
+    "successDefault": "Richiesta di deposito bagagli inviata.",
+    "successDeduplicated": "Esiste già una richiesta di deposito attiva.",
+    "subtitle": "Richieste di deposito bagagli post-checkout",
+    "title": "Deposito bagagli"
+  },
+  "digitalAssistant": {
+    "answerNetworkError": "Non riesco a rispondere in questo momento. Chiedi alla reception.",
+    "answerRateLimited": "Troppe domande in questo momento. Attendi un momento prima di riprovare.",
+    "answerUnsafeLink": "Ho trovato un link non sicuro nella risposta e l'ho rimosso. Usa i dettagli della prenotazione o rivolgiti alla reception.",
+    "askButton": "Chiedi all'assistente",
+    "bookingDetailsLabel": "Dettagli prenotazione",
+    "furtherReading": "Approfondisci",
+    "questionLabel": "Fai una domanda",
+    "questionPlaceholder": "es. Come arrivo all'ostello da Napoli?",
+    "receptionSupportLabel": "Supporto reception",
+    "returnHome": "Torna alla home",
+    "subtitle": "Chiedi qualsiasi cosa sul tuo soggiorno",
+    "thinking": "Sto pensando…",
+    "title": "Assistente digitale",
+    "titleWithName": "Ciao {{firstName}} — Assistente digitale",
+    "presetQueries": {
+      "fornilloBeach": "Come si va a piedi alla spiaggia di Fornillo?",
+      "localBus": "Come si prende il bus locale?",
+      "barMenu": "Cosa c'è nel menu del bar?",
+      "positanoPort": "Come arrivo al porto di Positano?",
+      "travelAround": "Come mi sposto a Positano?",
+      "porterHelp": "Posso avere aiuto con i bagagli?",
+      "rubberBoatTrip": "Come prenoto un giro in gommone?",
+      "boatTours": "Ci sono tour in barca disponibili?",
+      "hiking": "Dove posso fare escursioni vicino a Positano?",
+      "breakfastIncluded": "Cosa è incluso nella colazione?"
+    }
+  },
+  "mealOrder": {
+    "errorDefault": "Impossibile aggiornare l'ordine.",
+    "errorNetwork": "Impossibile aggiornare l'ordine in questo momento.",
+    "existingOrdersTitle": "Ordini esistenti",
+    "loadError": "Non riusciamo a caricare ora i dati del tuo ordine.",
+    "noOrders": "Nessun ordine ancora.",
+    "notEligible": "Questo servizio non è incluso nella tua prenotazione. Puoi comunque esplorare il menu alla reception.",
+    "orderSaved": "Ordine salvato.",
+    "overrideRequestSubmitted": "Richiesta di eccezione alla reception inviata.",
+    "requestException": "Richiedi eccezione per oggi",
+    "returnHome": "Torna alla home",
+    "sameDayBlocked": "Le modifiche dello stesso giorno non sono consentite. Puoi richiedere un'eccezione alla reception.",
+    "sameDayPolicyNotice": "Le modifiche dello stesso giorno sono bloccate dalla policy. Puoi inviare una richiesta di eccezione.",
+    "selectDate": "Seleziona data",
+    "serviceDateLabel": "Data del servizio",
+    "breakfastTitle": "Colazione inclusa",
+    "eveningDrinkTitle": "Aperitivo serale incluso",
+    "subtitle": "Crea o modifica il tuo ordine"
+  },
   "doList": {
     "continueToExplore": "Continua a esplorare",
     "startYourEpicStay": "Inizia il tuo soggiorno"
+  },
+  "accessRestricted": {
+    "returnHome": "Torna alla home",
+    "title": "Accesso limitato"
   },
   "error": {
     "loadInfo": "Errore durante il caricamento. Riprova.",
     "missingData": "Impossibile caricare i dati della prenotazione."
   },
+  "errorPage": {
+    "message": "Si è verificato un errore. Riprova.",
+    "returnHome": "Torna alla home",
+    "title": "Qualcosa è andato storto"
+  },
   "guest": "Ospite",
+  "landing": {
+    "findMyStay": "Trova il mio soggiorno",
+    "staffLookup": "Ricerca staff",
+    "subtitle": "Benvenuto nel portale servizi ospiti",
+    "title": "Prime Guest Portal"
+  },
+  "offline": {
+    "message": "Controlla la tua connessione internet e riprova.",
+    "title": "Sei offline",
+    "tryAgain": "Riprova"
+  },
   "loading": "Caricamento…",
   "ourServices": "I nostri servizi",
   "profileBanner": {

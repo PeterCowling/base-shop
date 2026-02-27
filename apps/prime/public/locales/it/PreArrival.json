@@ -35,6 +35,7 @@
       "label": "Tassa di soggiorno",
       "perNight": "a notte, a persona"
     },
+    "loadError": "Impossibile caricare i dettagli per la preparazione del contante.",
     "confirm": {
       "cityTax": "Ho la tassa di soggiorno pronta",
       "deposit": "Ho il deposito pronto"
@@ -94,6 +95,7 @@
     "back": "Indietro",
     "confirm": "Salva e continua",
     "helperText": "Puoi aggiornare i dettagli di arrivo in qualsiasi momento.",
+    "loadError": "Impossibile caricare i dati ETA.",
     "lateArrival": {
       "message": "Facci sapere se arriverai dopo le 22:00 così possiamo organizzare l'accesso.",
       "title": "Arrivo tardivo"
@@ -116,13 +118,24 @@
       "train": "Treno"
     }
   },
+  "celebration": {
+    "niceProgress": "Ottimo progresso: {{item}} completato."
+  },
   "header": {
     "arrivalDay": "Giorno di arrivo",
+    "arrivalDayHint": "Completare i controlli ora significa un check-in più rapido alla reception.",
     "arrivalDaySubtitle": "Arrivi oggi — ecco tutto quello che ti serve.",
+    "editPreferences": "Modifica preferenze",
     "preArrival": "Pre-arrivo",
+    "preArrivalHint": "Completa questi passaggi ora per velocizzare il check-in il giorno dell'arrivo.",
     "subtitle": "Alcune cose da preparare prima del tuo arrivo.",
     "welcome": "Benvenuto, {{name}}!",
     "welcomeArrivalDay": "Benvenuto, {{name}} — oggi è il grande giorno!"
+  },
+  "utilityActions": {
+    "maps": "Mappe",
+    "shareEta": "Condividi orario",
+    "support": "Supporto"
   },
   "lateCheckin": {
     "issuesCta": "Segnala un problema notturno",
@@ -238,6 +251,7 @@
     "arrival": "Arrivo",
     "back": "Indietro",
     "cost": "Costo",
+    "loadError": "Impossibile caricare i dati del pianificatore di percorso.",
     "fromOrigin": "Da {{origin}}",
     "importantNotes": "Note importanti",
     "journey": "Viaggio",

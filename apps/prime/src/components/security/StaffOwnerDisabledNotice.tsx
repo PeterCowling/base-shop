@@ -6,7 +6,7 @@ import { getStaffOwnerGateMessage } from '../../lib/security/staffOwnerGate';
 
 export default function StaffOwnerDisabledNotice() {
   return (
-    <main className="min-h-screen bg-muted p-4">
+    <main className="min-h-svh bg-muted p-4">
       <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
         <h1 className="mb-2 text-xl font-semibold text-foreground">Access Restricted</h1>
         <p className="mb-6 text-sm text-muted-foreground">{getStaffOwnerGateMessage()}</p>

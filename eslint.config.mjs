@@ -537,6 +537,42 @@ export default [
     },
   },
 
+  /* ▸ Prime: downgrade architectural debt rules to warn (tracked in remediation plans) */
+  // Must appear AFTER the apps/**/src/**/*.{ts,tsx} error-escalation block to take effect.
+  {
+    files: ["apps/prime/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      // Pre-existing i18n debt tracked in prime-hardcoded-copy-i18n-remediation plan
+      "ds/no-hardcoded-copy": "warn",
+      // Pre-existing layout primitive debt — tracked for future refactor
+      "ds/container-widths-only-at": "warn",
+      "ds/enforce-layout-primitives": "warn",
+    },
+  },
+
+  /* ▸ Prime tests: suppress security filesystem rule (paths are test fixtures, not user input) */
+  {
+    files: [
+      "apps/prime/src/__tests__/**/*.{ts,tsx,js,jsx}",
+      "apps/prime/src/**/__tests__/**/*.{ts,tsx,js,jsx}",
+    ],
+    rules: {
+      "security/detect-non-literal-fs-filename": "off",
+    },
+  },
+
+  /* ▸ Prime test-utils: disable project service (files are excluded from tsconfig) */
+  {
+    files: ["apps/prime/src/test-utils/**/*.{ts,tsx}"],
+    languageOptions: {
+      parserOptions: {
+        projectService: false,
+        allowDefaultProject: true,
+      },
+    },
+  },
+
   /* ▸ Try-on Cloudflare provider: non-UI copy (logged errors) */
   {
     files: ["packages/lib/src/tryon/providers/cloudflare.ts"],

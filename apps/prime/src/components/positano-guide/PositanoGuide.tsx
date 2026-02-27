@@ -184,8 +184,9 @@ const PositanoGuide: FC = memo(function PositanoGuide() {
   }, [router, searchParams]);
 
   return (
-    <div className="min-h-screen bg-muted">
+    <div className="min-h-svh bg-muted">
       {/* Header */}
+      {/* eslint-disable-next-line ds/no-nonlayered-zindex -- PRIME-1: positano guide sticky header, awaiting DS modal/popover migration */}
       <header className="sticky top-0 z-10 border-b border-border bg-card px-4 py-3">
         <div className="mx-auto flex max-w-lg items-center gap-3">
           <button
@@ -201,7 +202,7 @@ const PositanoGuide: FC = memo(function PositanoGuide() {
             </h1>
             <p className="text-sm text-muted-foreground">{t('meta.subtitle')}</p>
           </div>
-          <MapPin className="ml-auto h-5 w-5 text-success" />
+          <MapPin className="ms-auto h-5 w-5 text-success" />
         </div>
       </header>
 

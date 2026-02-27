@@ -55,7 +55,7 @@ export default function FindMyStayPage() {
   }
 
   return (
-    <main className="min-h-screen bg-muted p-4">
+    <main className="min-h-svh bg-muted p-4">
       <div className="mx-auto max-w-md">
         <div className="mb-6 flex items-center gap-3">
           <Link
@@ -81,7 +81,7 @@ export default function FindMyStayPage() {
               value={surname}
               onChange={(e) => setSurname(e.target.value)}
               placeholder="Enter your surname"
-              className="mt-1 w-full rounded-lg border border-border px-4 py-3 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+              className="mt-1 w-full rounded-lg border border-border px-4 py-3 focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
               disabled={isLoading}
             />
           </div>
@@ -96,7 +96,7 @@ export default function FindMyStayPage() {
               value={bookingRef}
               onChange={(e) => setBookingRef(e.target.value.toUpperCase())}
               placeholder="e.g. BDC-123456"
-              className="mt-1 w-full rounded-lg border border-border px-4 py-3 font-mono uppercase focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+              className="mt-1 w-full rounded-lg border border-border px-4 py-3 font-mono uppercase focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
               disabled={isLoading}
             />
           </div>

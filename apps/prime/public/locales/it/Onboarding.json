@@ -1,4 +1,41 @@
 {
+  "guestProfile": {
+    "chatOptInLabel": "Unisciti alla chat degli ospiti",
+    "goalsLabel": "Quali sono i tuoi obiettivi per questo soggiorno?",
+    "intentLabel": "Qual è il tuo stile?",
+    "interestsLabel": "Cosa ti interessa?",
+    "paceLabel": "Qual è il tuo ritmo?",
+    "saveCta": "Salva preferenze",
+    "saveError": "Impossibile salvare il tuo profilo — riprova.",
+    "skipCta": "Salta per ora",
+    "socialOptInLabel": "Connettiti con gli altri ospiti",
+    "title": "Parlaci di te",
+    "goals": {
+      "adventure": "Avventura",
+      "explore": "Esplorare la zona",
+      "meetPeople": "Conoscere gente",
+      "relax": "Rilassarsi"
+    },
+    "intent": {
+      "mixed": "Un po' di entrambi",
+      "quiet": "Tranquillo e riservato",
+      "social": "Socievole e aperto"
+    },
+    "interests": {
+      "beaches": "Spiagge",
+      "food": "Cibo e ristoranti",
+      "hiking": "Escursioni",
+      "history": "Storia e cultura",
+      "nightlife": "Vita notturna",
+      "photography": "Fotografia"
+    },
+    "pace": {
+      "active": "Attivo",
+      "activeDesc": "Fare il più possibile.",
+      "relaxed": "Rilassato",
+      "relaxedDesc": "Con calma, senza fretta."
+    }
+  },
   "guidedFlow": {
     "errors": {
       "retry": "Riprova",
@@ -54,43 +91,6 @@
       "taxi": "Taxi",
       "train": "Treno"
     }
-  },
-  "guestProfile": {
-    "goals": {
-      "adventure": "Avventura",
-      "explore": "Esplorare la zona",
-      "meetPeople": "Conoscere gente",
-      "relax": "Rilassarsi"
-    },
-    "goalsLabel": "Quali sono i tuoi obiettivi per questo soggiorno?",
-    "intent": {
-      "mixed": "Un po' di entrambi",
-      "quiet": "Tranquillo e riservato",
-      "social": "Socievole e aperto"
-    },
-    "intentLabel": "Qual è il tuo stile?",
-    "interests": {
-      "beaches": "Spiagge",
-      "food": "Cibo e ristoranti",
-      "hiking": "Escursioni",
-      "history": "Storia e cultura",
-      "nightlife": "Vita notturna",
-      "photography": "Fotografia"
-    },
-    "interestsLabel": "Cosa ti interessa?",
-    "pace": {
-      "active": "Attivo",
-      "activeDesc": "Fare il più possibile.",
-      "relaxed": "Rilassato",
-      "relaxedDesc": "Con calma, senza fretta."
-    },
-    "paceLabel": "Qual è il tuo ritmo?",
-    "chatOptInLabel": "Unisciti alla chat degli ospiti",
-    "saveError": "Impossibile salvare il tuo profilo — riprova.",
-    "saveCta": "Salva preferenze",
-    "skipCta": "Salta per ora",
-    "socialOptInLabel": "Connettiti con gli altri ospiti",
-    "title": "Parlaci di te"
   },
   "handoff": {
     "cta": "Inizia a esplorare",

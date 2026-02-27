@@ -10,7 +10,7 @@ export default function AdminUsersPage() {
   }
 
   return (
-    <main className="min-h-screen bg-muted p-4">
+    <main className="min-h-svh bg-muted p-4">
       <div className="mx-auto max-w-4xl">
         <div className="mb-6 flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-soft">

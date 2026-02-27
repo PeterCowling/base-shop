@@ -24,6 +24,7 @@
   "loadingDirectChannel": "Loading chat...",
   "noChannelSelected": "No channel selected.",
   "send": "Send",
+  "sendFailed": "Send Failed",
   "statusDirect": "Direct chat",
   "statusLive": "Live now",
   "statusUpcoming": "Starts soon",

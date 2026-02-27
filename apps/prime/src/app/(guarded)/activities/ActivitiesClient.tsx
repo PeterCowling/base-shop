@@ -209,7 +209,7 @@ export default function ActivitiesClient() {
   // Work around for strong fail-closed UX when SDK preconditions are not met.
   if (!sdkDecision.allowed) {
     return (
-      <main className="min-h-screen bg-muted p-4">
+      <main className="min-h-svh bg-muted p-4">
         <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
           <h1 className="mb-2 text-xl font-semibold text-foreground">
             {t('title')}
@@ -225,7 +225,7 @@ export default function ActivitiesClient() {
     );
   }
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks -- Pre-existing pattern: conditional SDK guard above protects this
+  // eslint-disable-next-line react-hooks/rules-of-hooks -- PRIME-1: Pre-existing pattern: conditional SDK guard above protects this
   useEffect(() => {
     const presenceRef = ref(db, `${MSG_ROOT}/activities/presence`);
     const unsubscribe = onValue(
@@ -249,7 +249,7 @@ export default function ActivitiesClient() {
   }, [db]);
 
   // Sort and categorize activities
-  // eslint-disable-next-line react-hooks/rules-of-hooks -- Pre-existing pattern: conditional SDK guard above protects this
+  // eslint-disable-next-line react-hooks/rules-of-hooks -- PRIME-1: Pre-existing pattern: conditional SDK guard above protects this
   const { liveActivities, upcomingActivities, endedActivities } = useMemo(() => {
     const all = Object.values(activities || {});
     const now = Date.now();
@@ -296,7 +296,7 @@ export default function ActivitiesClient() {
   }
 
   return (
-    <main className="min-h-screen bg-muted pb-24">
+    <main className="min-h-svh bg-muted pb-24">
       {/* Header */}
       <div className="bg-success px-4 pb-6 pt-8">
         <div className="mx-auto max-w-md">
@@ -312,7 +312,7 @@ export default function ActivitiesClient() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-md px-4 -mt-4">
+      <div className="mx-auto max-w-md px-4">
         {hasActivities ? (
           <div className="space-y-6">
             {/* Live activities */}

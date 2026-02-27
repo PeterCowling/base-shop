@@ -565,7 +565,7 @@ Dispatch-IDs: IDEA-DISPATCH-20260227-0042, IDEA-DISPATCH-20260227-0046
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
 - **Affects:** `apps/brikette/src/data/roomsData.ts`
 - **Depends on:** -
 - **Blocks:** TASK-08, TASK-09
@@ -617,6 +617,11 @@ Dispatch-IDs: IDEA-DISPATCH-20260227-0042, IDEA-DISPATCH-20260227-0046
 - **Documentation impact:** Inline comments in `roomsData.ts` for rooms 3/5 (cross-borrow) and room 8 (sparse coverage) and apartment (photography gap).
 - **Notes / references:**
   - fact-find: Resolved Q&A "Should the new schema replace imagesRaw or extend it?", Image Slot Assessment table, Suggested Task Seeds 1+2.
+- **Build completion evidence (2026-02-27):**
+  - `RoomImages` interface and `toFlatImageArray` added to `apps/brikette/src/data/roomsData.ts`. All 11 room entries (10 rooms + apartment) populated with `images` blocks. `imagesRaw` field removed from `Room` interface.
+  - Image slot assignments: rooms 3/5 cross-borrow from 4/6 (photography gap); room 8 bathroom uses `landing.webp` fallback; apartment uses provisional `apt1/2/3.jpg`; all 11 rooms get `security: "/img/keycard-tap.avif"`.
+  - `roomsDataImagePaths.test.ts` updated with TC-01 through TC-07 (TC-07 is the schema integrity test verifying bed/bathroom on all 11 entries).
+  - Mode 2 data simulation verified: no-view rooms (3/4/10), no-terrace rooms (3/4/8/9/10), 22 bed+bathroom entries for 11 rooms — all constraints pass.
 
 ---
 
@@ -628,7 +633,7 @@ Dispatch-IDs: IDEA-DISPATCH-20260227-0042, IDEA-DISPATCH-20260227-0046
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
 - **Affects:** `apps/brikette/src/components/rooms/RoomCard.tsx`, `apps/brikette/src/components/seo/RoomStructuredData.tsx`, `apps/brikette/src/components/seo/RoomsStructuredDataRsc.tsx`, `apps/brikette/src/utils/schema/builders.ts`, `[readonly] packages/ui/src/molecules/RoomCard.tsx`
 - **Depends on:** TASK-07
 - **Blocks:** -
@@ -677,6 +682,11 @@ Dispatch-IDs: IDEA-DISPATCH-20260227-0042, IDEA-DISPATCH-20260227-0046
 - **Notes / references:**
   - fact-find: Dependency & Impact Map, Suggested Task Seeds 3+4.
   - Out-of-scope: `buildHotelNode` hardcoded image refs at `builders.ts` lines 109–113 — hotel-level JSON-LD, separate from room gallery images.
+- **Build completion evidence (2026-02-27):**
+  - All 4 consumer files updated: `RoomCard.tsx` (line 147 `toFlatImageArray` call), `RoomStructuredData.tsx` (`pickImages` function, removed `Array.isArray` guard), `RoomsStructuredDataRsc.tsx` (both `imagesRaw` calls at lines 71 and 89), `builders.ts` (`pickRelativeImagePaths` function, removed `Array.isArray` guard).
+  - Controlled scope expansion: `packages/ui/src/data/roomsData.ts` (stale copy, also had `imagesRaw`) and `packages/ui/src/organisms/RoomsSection.tsx` (also used `room.imagesRaw`) updated to resolve TypeScript errors in `HomeContent.tsx` via `CarouselSlidesProps`.
+  - `pnpm --filter brikette typecheck` passes with zero errors.
+  - Zero `imagesRaw` references remain in `apps/brikette/src/` (production code).
 
 ---
 
@@ -688,7 +698,7 @@ Dispatch-IDs: IDEA-DISPATCH-20260227-0042, IDEA-DISPATCH-20260227-0046
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
 - **Affects:** `apps/brikette/src/test/utils/roomsDataImagePaths.test.ts`, `apps/brikette/src/test/utils/roomsCatalog.test.ts`, `apps/brikette/src/test/components/seo/RoomsStructuredDataRsc.test.tsx`
 - **Depends on:** TASK-07
 - **Blocks:** -
@@ -723,6 +733,11 @@ Dispatch-IDs: IDEA-DISPATCH-20260227-0042, IDEA-DISPATCH-20260227-0046
 - **Documentation impact:** None.
 - **Notes / references:**
   - fact-find: Test Landscape, Suggested Task Seed 6.
+- **Build completion evidence (2026-02-27):**
+  - `roomsCatalog.test.ts` mock updated: `imagesRaw: []` → `images: { bed: "/img/test-bed.webp", bathroom: "/img/test-bathroom.webp" }`.
+  - `RoomsStructuredDataRsc.test.tsx` two mock stubs updated: `imagesRaw: ["/img/dorm-6.jpg"]` and `imagesRaw: ["/img/twin.jpg"]` → `images: { bed, bathroom }` with `/img/test-bathroom.webp` bathroom slot.
+  - Controlled scope expansion: `packages/ui/src/data/__tests__/roomsData.test.ts` updated — `expect(room.imagesRaw.length).toBeGreaterThan(0)` → `expect(room.images.bed).toBeTruthy(); expect(room.images.bathroom).toBeTruthy()`.
+  - Zero `imagesRaw` references remain in any test file under `apps/brikette/src/test/`.
 
 ---
 

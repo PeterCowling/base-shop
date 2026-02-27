@@ -109,7 +109,7 @@ export const ChecklistItem: FC<ChecklistItemProps> = memo(function ChecklistItem
       </div>
 
       {/* Content */}
-      <div className="flex-1 text-left">
+      <div className="flex-1 text-start">
         <h4 className={`font-medium ${titleClasses}`}>
           {t(`checklist.${type}.title`)}
         </h4>

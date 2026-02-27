@@ -119,7 +119,7 @@ function GuestEntryContent() {
 
   if (status === 'loading') {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-muted p-4">
+      <main className="flex min-h-svh items-center justify-center bg-muted p-4">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </main>
     );
@@ -127,7 +127,7 @@ function GuestEntryContent() {
 
   if (status === 'error') {
     return (
-      <main className="min-h-screen bg-muted p-4">
+      <main className="min-h-svh bg-muted p-4">
         <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
           <h1 className="mb-2 text-2xl font-bold text-foreground">Link problem</h1>
           <p className="mb-6 text-muted-foreground">{error}</p>
@@ -144,7 +144,7 @@ function GuestEntryContent() {
 
   if (status === 'verified') {
     return (
-      <main className="min-h-screen bg-muted p-4">
+      <main className="min-h-svh bg-muted p-4">
         <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
           <h1 className="mb-2 text-2xl font-bold text-foreground">
             {guestFirstName ? `Welcome, ${guestFirstName}` : 'You\'re in'}
@@ -167,7 +167,7 @@ function GuestEntryContent() {
   }
 
   return (
-    <main className="min-h-screen bg-muted p-4">
+    <main className="min-h-svh bg-muted p-4">
       <div className="mx-auto max-w-md">
         <div className="mb-6 text-center">
           <h1 className="text-2xl font-bold text-foreground">Confirm your stay</h1>
@@ -192,7 +192,7 @@ function GuestEntryContent() {
             value={lastName}
             onChange={(event) => setLastName(event.target.value)}
             placeholder="Enter your last name"
-            className="mt-2 w-full rounded-lg border border-border px-4 py-3 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+            className="mt-2 w-full rounded-lg border border-border px-4 py-3 focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
             disabled={isVerifying}
           />
 
@@ -219,7 +219,7 @@ export default function GuestEntryPage() {
   return (
     <Suspense
       fallback={
-        <main className="flex min-h-screen items-center justify-center bg-muted p-4">
+        <main className="flex min-h-svh items-center justify-center bg-muted p-4">
           <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
         </main>
       }

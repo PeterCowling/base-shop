@@ -240,7 +240,7 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
             </div>
           </div>
           {!isArrivalDay && daysUntil > 0 && (
-            <div className="text-right">
+            <div className="text-end">
               <p className="text-2xl font-bold text-info-foreground">{daysUntil}</p>
               <p className="text-sm text-muted-foreground">
                 {daysUntil === 1 ? t('checkIn.dayLeft') : t('checkIn.daysLeft')}

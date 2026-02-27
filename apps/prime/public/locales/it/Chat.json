@@ -24,6 +24,7 @@
   "loadingDirectChannel": "Caricamento chat...",
   "noChannelSelected": "Nessun canale selezionato.",
   "send": "Invia",
+  "sendFailed": "[IT] Send Failed",
   "statusDirect": "Chat diretta",
   "statusLive": "In corso",
   "statusUpcoming": "Inizia a breve",

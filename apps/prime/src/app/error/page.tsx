@@ -3,7 +3,7 @@ import { AlertCircle } from 'lucide-react';
 
 export default function ErrorPage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-muted p-4">
+    <main className="flex min-h-svh flex-col items-center justify-center bg-muted p-4">
       <div className="mx-auto max-w-md text-center">
         <AlertCircle className="mx-auto mb-4 h-16 w-16 text-danger" />
         <h1 className="mb-2 text-2xl font-bold text-foreground">

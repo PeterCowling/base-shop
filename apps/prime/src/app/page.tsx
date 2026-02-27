@@ -50,7 +50,7 @@ export default function HomePage() {
 
   if (mode === 'checking') {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-muted p-4">
+      <main className="flex min-h-svh items-center justify-center bg-muted p-4">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </main>
     );
@@ -67,7 +67,7 @@ export default function HomePage() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-muted p-4">
+    <main className="flex min-h-svh flex-col items-center justify-center bg-muted p-4">
       <div className="mx-auto max-w-md text-center">
         <h1 className="mb-4 text-3xl font-bold text-foreground">
           Prime Guest Portal

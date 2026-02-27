@@ -7,7 +7,8 @@
 
 import { type FC, memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CheckCircle2,Copy, QrCode } from 'lucide-react';
+import Image from 'next/image';
+import { CheckCircle2, Copy, QrCode } from 'lucide-react';
 import QRCode from 'qrcode';
 
 interface CheckInQRProps {
@@ -82,13 +83,13 @@ export const CheckInQR: FC<CheckInQRProps> = memo(function CheckInQR({
       {/* QR Code */}
       <div className="rounded-2xl bg-card p-4 shadow-lg">
         {qrDataUrl && !qrError ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={qrDataUrl}
             alt={t('checkIn.qrAlt', { code })}
-            width={240}
-            height={240}
-            className="block"
+            width={192}
+            height={192}
+            className="mx-auto"
+            unoptimized
           />
         ) : qrError ? (
           <div className="flex h-60 w-60 flex-col items-center justify-center bg-muted text-muted-foreground">

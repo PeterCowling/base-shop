@@ -1,4 +1,41 @@
 {
+  "guestProfile": {
+    "chatOptInLabel": "Join the guest chat",
+    "goalsLabel": "What are your goals for this stay?",
+    "intentLabel": "What's your vibe?",
+    "interestsLabel": "What are you interested in?",
+    "paceLabel": "What's your pace?",
+    "saveCta": "Save preferences",
+    "saveError": "Couldn't save your profile — please try again.",
+    "skipCta": "Skip for now",
+    "socialOptInLabel": "Connect with other guests",
+    "title": "Tell us about yourself",
+    "goals": {
+      "adventure": "Adventure",
+      "explore": "Explore the area",
+      "meetPeople": "Meet people",
+      "relax": "Relax and unwind"
+    },
+    "intent": {
+      "mixed": "A bit of both",
+      "quiet": "Quiet and private",
+      "social": "Social and outgoing"
+    },
+    "interests": {
+      "beaches": "Beaches",
+      "food": "Food and dining",
+      "hiking": "Hiking",
+      "history": "History and culture",
+      "nightlife": "Nightlife",
+      "photography": "Photography"
+    },
+    "pace": {
+      "active": "Active",
+      "activeDesc": "Pack in as much as possible.",
+      "relaxed": "Relaxed",
+      "relaxedDesc": "Take it easy, no rush."
+    }
+  },
   "guidedFlow": {
     "errors": {
       "retry": "Try again",
@@ -54,43 +91,6 @@
       "taxi": "Taxi",
       "train": "Train"
     }
-  },
-  "guestProfile": {
-    "goals": {
-      "adventure": "Adventure",
-      "explore": "Explore the area",
-      "meetPeople": "Meet people",
-      "relax": "Relax and unwind"
-    },
-    "goalsLabel": "What are your goals for this stay?",
-    "intent": {
-      "mixed": "A bit of both",
-      "quiet": "Quiet and private",
-      "social": "Social and outgoing"
-    },
-    "intentLabel": "What's your vibe?",
-    "interests": {
-      "beaches": "Beaches",
-      "food": "Food and dining",
-      "hiking": "Hiking",
-      "history": "History and culture",
-      "nightlife": "Nightlife",
-      "photography": "Photography"
-    },
-    "interestsLabel": "What are you interested in?",
-    "pace": {
-      "active": "Active",
-      "activeDesc": "Pack in as much as possible.",
-      "relaxed": "Relaxed",
-      "relaxedDesc": "Take it easy, no rush."
-    },
-    "paceLabel": "What's your pace?",
-    "chatOptInLabel": "Join the guest chat",
-    "saveError": "Couldn't save your profile — please try again.",
-    "saveCta": "Save preferences",
-    "skipCta": "Skip for now",
-    "socialOptInLabel": "Connect with other guests",
-    "title": "Tell us about yourself"
   },
   "handoff": {
     "cta": "Start exploring",

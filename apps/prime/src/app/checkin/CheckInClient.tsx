@@ -101,7 +101,7 @@ export default function CheckInPage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-muted p-4">
+      <div className="min-h-svh bg-muted p-4">
         <div className="mx-auto mt-12 max-w-md rounded-xl bg-card p-6 shadow-sm">
           <h1 className="text-xl font-bold text-foreground">Staff access</h1>
           <p className="mt-2 text-sm text-muted-foreground">
@@ -114,7 +114,7 @@ export default function CheckInPage() {
               autoComplete="one-time-code"
               value={pin}
               onChange={(event) => setPin(event.target.value)}
-              className="w-full rounded-lg border border-border px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+              className="w-full rounded-lg border border-border px-3 py-2 text-foreground focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
               placeholder="PIN"
             />
             <button
@@ -143,7 +143,7 @@ export default function CheckInPage() {
   // Show loading while checking auth
   if (!role) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex min-h-svh items-center justify-center">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </div>
     );
@@ -155,7 +155,7 @@ export default function CheckInPage() {
 
   if (!code) {
     return (
-      <div className="flex min-h-screen items-center justify-center p-4">
+      <div className="flex min-h-svh items-center justify-center p-4">
         <div className="text-center">
           <AlertCircle className="mx-auto mb-3 h-10 w-10 text-muted-foreground" />
           <p className="text-muted-foreground">{t('staffLookup.noCode')}</p>
@@ -165,7 +165,7 @@ export default function CheckInPage() {
   }
 
   return (
-    <div className="min-h-screen bg-muted p-4">
+    <div className="min-h-svh bg-muted p-4">
       <div className="mx-auto max-w-md">
         {/* Header */}
         <div className="mb-6 flex items-center gap-3">

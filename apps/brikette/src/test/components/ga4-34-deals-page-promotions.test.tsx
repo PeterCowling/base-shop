@@ -3,6 +3,8 @@ import "@testing-library/jest-dom";
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 
+import { DEALS, getActiveDealCount } from "@/routes/deals/deals";
+
 jest.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (key: string, opts?: { defaultValue?: string }) => opts?.defaultValue ?? key,
@@ -76,8 +78,12 @@ describe("TASK-34: DealsPageContent view_promotion + select_promotion GA4 contra
     expect(viewPromoCall).toBeTruthy();
     const payload = viewPromoCall?.[2] as Record<string, unknown>;
     const promotions = payload.promotions as Array<Record<string, unknown>>;
-    expect(promotions).toHaveLength(1); // DEALS has one entry
+    expect(promotions).toHaveLength(2); // DEALS now has two entries: evergreen + sep20_oct31_15off
     expect(promotions[0]).toMatchObject({
+      promotion_id: "direct-perks-evergreen",
+      promotion_name: "25% off",
+    });
+    expect(promotions[1]).toMatchObject({
       promotion_id: "sep20_oct31_15off",
       promotion_name: "15% off",
     });
@@ -104,5 +110,13 @@ describe("TASK-34: DealsPageContent view_promotion + select_promotion GA4 contra
 
     expect(mockRouterPush).toHaveBeenCalledTimes(1);
     expect(mockRouterPush).toHaveBeenCalledWith("/en/book?deal=sep20_oct31_15off");
+  });
+
+  // TC-03 (TASK-05): regression guard — at least one deal is active at test time
+  it("TC-03 (TASK-05): DEALS has at least one active entry at test reference date", () => {
+    // Fake timer is set to 2025-10-01T12:00:00Z in beforeEach.
+    // At that date: sep20_oct31_15off is active; evergreen hasn't started yet.
+    const count = getActiveDealCount(DEALS, new Date());
+    expect(count).toBeGreaterThanOrEqual(1);
   });
 });

@@ -104,6 +104,23 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Track direct booking share weekly post-deploy to close the measurement loop",
+      "body": "build sets up GA4 CTA click event proxy but no standing measurement cadence exists",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T15:24:41.538Z",
+      "path": "docs/plans/_archive/brikette-direct-booking-rate-trust/results-review.user.md",
+      "idea_key": "d99e8cc37e48fd6d9ba1e8cd9ce18582cf825d09",
+      "priority_tier": "P3",
+      "own_priority_rank": 8,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P3_MEASUREMENT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "Naming pipeline sidecar logs for per-round naming analytics",
       "body": "Per-candidate stage event logs accumulate across naming rounds (docs/business-os/strategy/ /naming-sidecars/). Once 3+ live rounds exist: structured dataset for quantitative analysis of naming patterns, yield trends, and operator preferences. Currently empty — will fill as naming rounds run.",
       "source": "results-review.user.md",
@@ -1048,6 +1065,23 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Extract getActiveDealCount + deal-status helpers into a shared utility module",
+      "body": "deal status logic is split across status.ts (getDealStatus) and the new inline filter in deals.ts (getActiveDealCount) — two approaches for the same concern",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T15:24:41.538Z",
+      "path": "docs/plans/_archive/brikette-direct-booking-rate-trust/results-review.user.md",
+      "idea_key": "a1f436bf2d16351080a044528c69caa4e120dcfa",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "Add an email delivery health check to post-deploy checks so failures surface in CI",
       "body": "sendSystemEmail failures are currently only visible in Worker logs — no automated alert",
       "suggested_action": "defer",
@@ -1354,6 +1388,16 @@
   ],
   "riskItems": [],
   "pendingReviewItems": [
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: brik-room-content-schema",
+      "body": "Build is complete but no results review has been written yet.",
+      "suggested_action": "Write docs/plans/brik-room-content-schema/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
+      "source": "build-record.user.md",
+      "date": "2026-02-27T15:22:17.712Z",
+      "path": "docs/plans/brik-room-content-schema/build-record.user.md"
+    },
     {
       "type": "pending-review",
       "business": "BOS",

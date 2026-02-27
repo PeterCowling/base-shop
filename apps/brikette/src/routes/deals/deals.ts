@@ -65,3 +65,9 @@ export const DEALS = [
 ] as const satisfies readonly [DealConfig, ...DealConfig[]];
 
 export const PRIMARY_DEAL = DEALS[0];
+
+export function getActiveDealCount(deals: readonly DealConfig[], date: Date): number {
+  return deals.filter(
+    (d) => new Date(d.startDate) <= date && new Date(d.endDate) >= date,
+  ).length;
+}

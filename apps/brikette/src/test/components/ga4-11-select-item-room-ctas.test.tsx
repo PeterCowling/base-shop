@@ -251,7 +251,7 @@ describe("TASK-32: RoomsSection onRoomSelect GA4 contracts", () => {
     expect(gtagMock.mock.calls.length).toBe(countAfterFirst);
   });
 
-  it("TC-07: pageshow resets navigation guard so CTA works after back navigation", () => {
+  it("TC-07: pageshow resets navigation guard so CTA works after back navigation (TC-07)", () => {
     render(
       <RoomsSection
         lang="en"
@@ -277,5 +277,35 @@ describe("TASK-32: RoomsSection onRoomSelect GA4 contracts", () => {
       (args: unknown[]) => args[0] === "event" && args[1] === "begin_checkout",
     );
     expect(beginCheckoutEventsAfterReturn).toHaveLength(2);
+  });
+});
+
+// TASK-05: Best Rate Guarantee badge — regression guard for PriceBlock badge rendering.
+// Imports the real UI RoomCard from source (bypassing the @acme/ui/molecules stub) to verify
+// that price.badge is rendered as an accessible link in the card content area.
+describe("TASK-05: Best Rate Guarantee badge — PriceBlock renders badge text", () => {
+  it("TC-TASK05-03: badge link is rendered when price.badge is set on UI RoomCard", () => {
+    // Require the real UI RoomCard directly from source, bypassing the @acme/ui/molecules stub.
+    // The organisms RoomsSection uses this same relative-import path in its test run without issues.
+    const { RoomCard: UiRoomCard } = require("../../../../../packages/ui/src/molecules/RoomCard") as {
+      RoomCard: React.ComponentType<{
+        id: string;
+        title: string;
+        imageAlt: string;
+        price?: { badge?: { text: string; claimUrl: string } };
+      }>;
+    };
+
+    render(
+      <UiRoomCard
+        id="test-room"
+        title="Test Room"
+        imageAlt="Test room"
+        price={{ badge: { text: "Best price guaranteed", claimUrl: "https://wa.me/393287073695" } }}
+      />,
+    );
+
+    // Badge renders as an <a> whose accessible name excludes the aria-hidden ✓ span
+    expect(screen.getByRole("link", { name: "Best price guaranteed" })).toBeInTheDocument();
   });
 });

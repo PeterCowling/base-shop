@@ -6,7 +6,7 @@ Workstream: Engineering
 Created: 2026-02-27
 Last-reviewed: 2026-02-27
 Last-updated: 2026-02-27
-Build-Progress: Wave 1 complete (TASK-01, TASK-03); Wave 2 pending (TASK-02)
+Build-Progress: All waves complete (TASK-01, TASK-02, TASK-03)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: brik-live-pricing-baseline
 Deliverable-Type: code-change
@@ -30,7 +30,7 @@ This plan wires `select_item` (via `fireEventAndNavigate`) into the two navigate
 ## Active tasks
 
 - [x] TASK-01: Add `select_item` to RoomCard.tsx CTA navigate callbacks
-- [ ] TASK-02: Add test cases for room detail select_item
+- [x] TASK-02: Add test cases for room detail select_item
 - [x] TASK-03: Persist baseline numbers document
 
 ## Goals
@@ -94,7 +94,7 @@ This plan wires `select_item` (via `fireEventAndNavigate`) into the two navigate
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Add select_item to RoomCard.tsx CTA navigate callbacks | 85% | S | Complete (2026-02-27) | - | TASK-02 |
-| TASK-02 | IMPLEMENT | Add test cases for room detail select_item | 85% | S | Pending | TASK-01 | - |
+| TASK-02 | IMPLEMENT | Add test cases for room detail select_item | 85% | S | Complete (2026-02-27) | TASK-01 | - |
 | TASK-03 | IMPLEMENT | Persist baseline numbers document | 85% | S | Complete (2026-02-27) | - | - |
 
 ## Parallelism Guide
@@ -181,7 +181,13 @@ This plan wires `select_item` (via `fireEventAndNavigate`) into the two navigate
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
+- **Build evidence:**
+  - Execution route: inline
+  - Files written: `apps/brikette/src/components/rooms/RoomCard.ga4.test.tsx` (created)
+  - Changes: New test file with action-button-rendering `@acme/ui/molecules` mock, `mockBuildOctorateUrl` controllable per test, `window.gtag = jest.fn()` with `jest.useFakeTimers()`. 6 test cases (TC-01 through TC-06).
+  - Test run: governed Jest `--testPathPattern=RoomCard.ga4` → 6 passed, 0 failed.
+  - Post-build validation: Mode 2 (Data Simulation), Attempt 1, **Pass**. All TC-01 through TC-06 pass against TASK-01 implementation. Symptom patches: None. Degraded mode: No.
 - **Affects:**
   - `apps/brikette/src/components/rooms/RoomCard.ga4.test.tsx` (write — new file)
   - `[readonly] apps/brikette/src/components/rooms/RoomCard.tsx` (read)
@@ -293,7 +299,7 @@ This plan wires `select_item` (via `fireEventAndNavigate`) into the two navigate
 
 - [x] `select_item` fires on NR and Flex CTA clicks from room detail pages in production. (TASK-01 complete)
 - [x] `select_item` does NOT fire on the scroll-to-picker path (`queryState="invalid"`). (TASK-01 complete)
-- [ ] Tests pass in CI for room detail `select_item` assertions. (TASK-02 pending)
+- [x] Tests pass in CI for room detail `select_item` assertions. (TASK-02 complete)
 - [x] `docs/plans/brik-live-pricing-baseline/baseline-numbers.md` created with captured GA4 data. (TASK-03 complete)
 - [ ] GA4 Realtime confirms `item_list_id: "room_detail"` events appear after production deploy. (post-deploy, outside plan scope)
 

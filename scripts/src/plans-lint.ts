@@ -333,6 +333,7 @@ async function main() {
         console.warn(
           `[plans-lint] ${rel}: Plan has no tasks under "## Active tasks"`,
         );
+        hadError = true;
       }
     }
     for (const line of tasks) {

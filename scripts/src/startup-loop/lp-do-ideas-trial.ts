@@ -812,8 +812,7 @@ export function runTrialOrchestrator(
 
     if (
       event.updated_by_process &&
-      SELF_TRIGGER_PROCESSES.has(event.updated_by_process) &&
-      !materialDelta
+      SELF_TRIGGER_PROCESSES.has(event.updated_by_process)
     ) {
       suppressAsNoop("anti_self_trigger_non_material");
       continue;

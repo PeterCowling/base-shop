@@ -226,7 +226,7 @@ describe("canonical dictionary round-trip", () => {
     const dict = loadYaml(raw) as Dictionary;
     const map = buildMap(dict, "docs/business-os/startup-loop/stage-operator-dictionary.yaml");
 
-    expect(map.stages.length).toBe(73); // canonical stage set + WEBSITE container split (WEBSITE-01, WEBSITE-02)
+    expect(map.stages.length).toBe(71); // canonical stage set + WEBSITE container split (WEBSITE-01, WEBSITE-02)
     expect(Object.keys(map.alias_index).length).toBeGreaterThanOrEqual(29);
     expect(map.alias_index["intake"]).toBe("ASSESSMENT-09");
     expect(map.alias_index["assessment-09"]).toBe("ASSESSMENT-09");

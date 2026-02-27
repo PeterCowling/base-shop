@@ -103,7 +103,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
   deploy-xa-b:
-    name: Deploy xa-b (staging)
+    name: Deploy xa-b (Pages)
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs: [deploy-drop-worker]
@@ -122,32 +122,22 @@ jobs:
       - name: Build workspace package dependencies
         run: pnpm exec turbo run build --filter=@apps/xa-b^...
 
-      - name: Build xa-b (OpenNext)
-        run: cd apps/xa-b && pnpm exec opennextjs-cloudflare build
+      - name: Build xa-b (static export)
+        run: cd apps/xa-b && pnpm build
         env:
           XA_CATALOG_CONTRACT_READ_URL: ${{ vars.XA_CATALOG_CONTRACT_READ_URL }}
 
-      - name: Deploy xa-b to staging
-        run: cd apps/xa-b && pnpm exec wrangler deploy --env preview
+      - name: Remove __next.* metadata files (CF Pages 20k file limit)
+        run: find apps/xa-b/out -name '__next.*' -type f -delete
+
+      - name: Deploy xa-b to Cloudflare Pages
+        run: cd apps/xa-b && pnpm exec wrangler pages deploy out/ --project-name xa-b-site
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
-      - name: Health check xa-b
-        run: |
-          WORKER_URL="https://xa-b-preview.${CLOUDFLARE_ACCOUNT_ID}.workers.dev"
-          response=$(curl -s -o /dev/null -w "%{http_code}" "${WORKER_URL}/")
-          echo "Health check response: HTTP ${response}"
-          if [[ "$response" -ge 500 ]] 2>/dev/null; then
-            echo "Health check FAILED: HTTP ${response} (server error)"
-            exit 1
-          elif [[ -z "$response" || "$response" == "000" ]]; then
-            echo "Health check FAILED: no response (Worker unreachable)"
-            exit 1
-          fi
-          echo "Health check PASSED (HTTP ${response})"
-        env:
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      - name: Validate out/ directory
+        run: test -d apps/xa-b/out && test $(ls apps/xa-b/out | wc -l) -gt 0 && echo "out/ is non-empty" || (echo "FAIL: out/ missing or empty"; exit 1)
 
   deploy-xa-uploader:
     name: Deploy xa-uploader (staging)

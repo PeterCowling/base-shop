@@ -19,7 +19,7 @@ exports[`/safe-management parity matches baseline safe selectors and DOM snapsho
       </h1>
     </div>
     <div
-      class="bg-surface rounded-xl shadow-lg p-6 space-y-4"
+      class="bg-surface rounded-lg shadow-lg p-6 space-y-4"
     >
       <div
         class="flex flex-wrap gap-4"
@@ -117,25 +117,25 @@ exports[`/safe-management parity matches baseline safe selectors and DOM snapsho
           class="flex gap-2 flex-wrap"
         >
           <button
-            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
+            class="inline-flex items-center justify-center py-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-md h-9 px-3 text-sm bg-primary text-primary-foreground hover:bg-primary/90"
             data-token="--color-primary"
           >
             Open
           </button>
           <button
-            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
+            class="inline-flex items-center justify-center py-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-md h-9 px-3 text-sm bg-primary text-primary-foreground hover:bg-primary/90"
             data-token="--color-primary"
           >
             Deposit
           </button>
           <button
-            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
+            class="inline-flex items-center justify-center py-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-md h-9 px-3 text-sm bg-primary text-primary-foreground hover:bg-primary/90"
             data-token="--color-primary"
           >
             Withdraw
           </button>
           <button
-            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
+            class="inline-flex items-center justify-center py-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-md h-9 px-3 text-sm bg-primary text-primary-foreground hover:bg-primary/90"
             data-token="--color-primary"
           >
             Exchange
@@ -145,32 +145,32 @@ exports[`/safe-management parity matches baseline safe selectors and DOM snapsho
           class="flex gap-2 flex-wrap"
         >
           <button
-            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
+            class="inline-flex items-center justify-center py-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-md h-9 px-3 text-sm bg-primary text-primary-foreground hover:bg-primary/90"
             data-token="--color-primary"
           >
             Bank Deposit
           </button>
           <button
-            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
+            class="inline-flex items-center justify-center py-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-md h-9 px-3 text-sm bg-primary text-primary-foreground hover:bg-primary/90"
             data-token="--color-primary"
           >
             Petty Cash
           </button>
           <button
-            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
+            class="inline-flex items-center justify-center py-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-md h-9 px-3 text-sm bg-primary text-primary-foreground hover:bg-primary/90"
             data-token="--color-primary"
           >
             Reset Safe
           </button>
           <button
-            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
+            class="inline-flex items-center justify-center py-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-md h-9 px-3 text-sm bg-primary text-primary-foreground hover:bg-primary/90"
             data-token="--color-primary"
           >
             Return Keycards
           </button>
           <button
-            class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 bg-warning-main text-primary-fg rounded-lg hover:bg-warning-dark"
-            data-token="--color-primary"
+            class="inline-flex items-center justify-center py-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-md h-9 px-3 text-sm bg-warning text-warning-foreground hover:bg-warning/90"
+            data-token="--color-warning"
           >
             Reconcile
           </button>

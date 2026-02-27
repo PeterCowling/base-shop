@@ -87,7 +87,7 @@ function PrepaymentsView({
   return (
     <PageShell title="PREPAYMENTS">
       <div>
-        <div className="flex-grow bg-surface rounded-xl shadow-lg p-6 space-y-4">
+        <div className="flex-grow bg-surface rounded-lg shadow-lg p-6 space-y-4">
           <>
             <div className="w-full flex justify-end mb-4 gap-2">
               <div className="w-72">

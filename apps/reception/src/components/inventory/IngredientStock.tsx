@@ -53,7 +53,7 @@ function IngredientStock() {
 
   return (
     <PageShell title="Ingredient Stock">
-      <div className="bg-surface rounded-xl shadow-lg p-6 space-y-4">
+      <div className="bg-surface rounded-lg shadow-lg p-6 space-y-4">
         {Object.keys(legacyIngredients).length > 0 && !migrationComplete && (
           <div className="mb-4 rounded-lg border border-warning-main bg-warning-light/20 p-3 text-sm">
             <p className="font-semibold">Legacy ingredient data detected.</p>
@@ -83,19 +83,19 @@ function IngredientStock() {
           </div>
         )}
         <Table className="min-w-full text-sm">
-          <TableHeader>
+          <TableHeader className="bg-surface-2">
             <TableRow>
-              <TableHead className="p-2 text-start">Ingredient</TableHead>
-              <TableHead className="p-2 text-end">Quantity</TableHead>
-              <TableHead className="p-2">Update</TableHead>
+              <TableHead className="p-2 border-b border-border-2 text-start text-muted-foreground">Ingredient</TableHead>
+              <TableHead className="p-2 border-b border-border-2 text-end text-muted-foreground">Quantity</TableHead>
+              <TableHead className="p-2 border-b border-border-2 text-muted-foreground">Update</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {rows.map((ing) => (
-              <TableRow key={ing.name}>
-                <TableCell className="p-2 border-b">{ing.name}</TableCell>
-                <TableCell className="p-2 border-b text-end">{ing.quantity}</TableCell>
-                <TableCell className="p-2 border-b">
+              <TableRow key={ing.name} className="hover:bg-surface-2">
+                <TableCell className="p-2 border-b border-border-2">{ing.name}</TableCell>
+                <TableCell className="p-2 border-b border-border-2 text-end">{ing.quantity}</TableCell>
+                <TableCell className="p-2 border-b border-border-2">
                   <input
                     type="number"
                     className="border p-1 w-20"

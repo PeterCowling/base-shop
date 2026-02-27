@@ -286,7 +286,7 @@ function Extension() {
   return (
     <>
       <PageShell title="EXTENSIONS">
-        <div className="bg-surface rounded-xl shadow-lg p-6">
+        <div className="bg-surface rounded-lg shadow-lg p-6">
           {loading && <ReceptionSkeleton rows={3} />}
 
           {!loading && hasError && (
@@ -323,27 +323,27 @@ function Extension() {
               ) : (
                 <div className="overflow-auto">
                   <Table className="min-w-full border-collapse text-sm">
-                    <TableHeader>
-                      <TableRow className="bg-surface-3">
+                    <TableHeader className="bg-surface-2">
+                      <TableRow>
                         <TableHead
-                          className="p-2 border-b text-start cursor-pointer"
+                          className="p-2 border-b border-border-2 text-start text-muted-foreground cursor-pointer"
                           onClick={() => handleSort("roomNumber")}
                         >
                           Room
                           {sortField === "roomNumber" && (sortAsc ? " ↑" : " ↓")}
                         </TableHead>
                         <TableHead
-                          className="p-2 border-b text-start cursor-pointer"
+                          className="p-2 border-b border-border-2 text-start text-muted-foreground cursor-pointer"
                           onClick={() => handleSort("fullName")}
                         >
                           Guest
                           {sortField === "fullName" && (sortAsc ? " ↑" : " ↓")}
                         </TableHead>
-                        <TableHead className="p-2 border-b text-start">Check-in</TableHead>
-                        <TableHead className="p-2 border-b text-start">Check-out</TableHead>
-                        <TableHead className="p-2 border-b text-end">Price</TableHead>
-                        <TableHead className="p-2 border-b text-end">Nights</TableHead>
-                        <TableHead className="p-2 border-b text-center">Pay</TableHead>
+                        <TableHead className="p-2 border-b border-border-2 text-start text-muted-foreground">Check-in</TableHead>
+                        <TableHead className="p-2 border-b border-border-2 text-start text-muted-foreground">Check-out</TableHead>
+                        <TableHead className="p-2 border-b border-border-2 text-end text-muted-foreground">Price</TableHead>
+                        <TableHead className="p-2 border-b border-border-2 text-end text-muted-foreground">Nights</TableHead>
+                        <TableHead className="p-2 border-b border-border-2 text-center text-muted-foreground">Pay</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>

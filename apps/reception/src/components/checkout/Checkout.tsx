@@ -316,7 +316,7 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
 
   return (
     <PageShell title="CHECKOUTS">
-      <div className="flex-grow p-6 space-y-4 bg-surface rounded-xl shadow-lg">
+      <div className="flex-grow p-6 space-y-4 bg-surface rounded-lg shadow-lg">
         <DateSelector
           selectedDate={selectedDate}
           onDateChange={setSelectedDate}

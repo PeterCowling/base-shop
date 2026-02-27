@@ -353,7 +353,7 @@ const AlloggiatiComponent: FC = () => {
       )}
 
       {/* Send Section */}
-      <div className="mt-6 bg-surface rounded-xl shadow-lg p-6">
+      <div className="mt-6 bg-surface rounded-lg shadow-lg p-6">
         <h3 className="font-semibold mb-2">Send to Alloggiati Web Service</h3>
 
         <Button

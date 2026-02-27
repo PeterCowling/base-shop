@@ -99,9 +99,9 @@ function SafeReconciliation(): JSX.Element {
 
   return (
     <PageShell title="SAFE RECONCILIATION">
-      <div className="bg-surface rounded-xl shadow-lg p-6 space-y-6">
+      <div className="bg-surface rounded-lg shadow-lg p-6 space-y-6">
         {/* Balance stat card */}
-        <div className="bg-surface-2 rounded-xl border border-border-strong px-5 py-4">
+        <div className="bg-surface-2 rounded-lg border border-border-strong px-5 py-4">
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
             Expected Balance
           </p>

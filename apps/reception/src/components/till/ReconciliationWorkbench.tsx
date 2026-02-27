@@ -265,7 +265,7 @@ const ReconciliationWorkbenchContent = memo(
     /* --------------------------------- UI ---------------------------------- */
     return (
       <PageShell title="Reconciliation Workbench">
-        <div className="bg-surface rounded-xl shadow-lg p-6 space-y-4">
+        <div className="bg-surface rounded-lg shadow-lg p-6 space-y-4">
           {hasParseError && (
             <p className="text-sm text-warning-main">
               Some values could not be parsed.
@@ -286,11 +286,11 @@ const ReconciliationWorkbenchContent = memo(
           <Table className="w-full border-collapse text-sm">
             <TableHeader className="bg-surface-2">
               <TableRow>
-                <TableHead className="p-2 text-start border">Source</TableHead>
-                <TableHead className="p-2 text-end border">Cash</TableHead>
-                <TableHead className="p-2 text-end border">CC</TableHead>
-                <TableHead className="p-2 text-end border">Cash Δ</TableHead>
-                <TableHead className="p-2 text-end border">CC Δ</TableHead>
+                <TableHead className="p-2 text-start border-b border-border-2 text-muted-foreground">Source</TableHead>
+                <TableHead className="p-2 text-end border-b border-border-2 text-muted-foreground">Cash</TableHead>
+                <TableHead className="p-2 text-end border-b border-border-2 text-muted-foreground">CC</TableHead>
+                <TableHead className="p-2 text-end border-b border-border-2 text-muted-foreground">Cash Δ</TableHead>
+                <TableHead className="p-2 text-end border-b border-border-2 text-muted-foreground">CC Δ</TableHead>
               </TableRow>
             </TableHeader>
 

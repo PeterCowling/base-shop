@@ -163,7 +163,7 @@ export default function DateSelector({
                   }
                 : {})}
               classNames={{
-                root: "bg-surface border border-border-strong rounded-xl shadow-lg p-4 text-foreground",
+                root: "bg-surface border border-border-strong rounded-lg shadow-lg p-4 text-foreground",
                 months: "relative",
                 month: "space-y-3",
                 month_caption: "flex items-center justify-center h-9",

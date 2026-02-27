@@ -140,7 +140,7 @@ const DocInsertPage: React.FC = () => {
         </Button>
       </div>
 
-      <div className="bg-surface rounded-2xl shadow-xl px-8 py-12">
+      <div className="bg-surface rounded-lg shadow-xl px-8 py-12">
         {/* BookingRef component */}
         <div className="mb-50px">
           <BookingRef bookingRef={bookingRef} />

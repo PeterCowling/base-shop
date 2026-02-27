@@ -5,6 +5,8 @@ import { memo } from "react";
 import { TillDataProvider } from "../../context/TillDataContext";
 import { useTillReconciliationUI } from "../../hooks/client/till/useTillReconciliationUI";
 import { useTillReconciliationLogic } from "../../hooks/useTillReconciliationLogic";
+import { canAccess, Permissions } from "../../lib/roles";
+import type { User } from "../../types/domains/userDomain";
 import { PageShell } from "../common/PageShell";
 import SummaryAndTransactions from "../till/SummaryAndTransactions";
 
@@ -13,7 +15,7 @@ function LiveInner() {
   const logic = useTillReconciliationLogic(ui);
   const props = { ...ui, ...logic };
 
-  if (!props.user || props.user.user_name !== "Pete") {
+  if (!props.user || !canAccess(props.user as User, Permissions.REALTIME_DASHBOARD)) {
     return (
       <PageShell title="LIVE SHIFT">
         <p className="text-error-main">Not authorized.</p>
@@ -31,7 +33,7 @@ function LiveInner() {
 
   return (
     <PageShell title="LIVE SHIFT">
-      <div className="bg-surface rounded-xl shadow-lg p-6 space-y-8">
+      <div className="bg-surface rounded-lg shadow-lg p-6 space-y-8">
         <SummaryAndTransactions
           shiftOpenTime={props.shiftOpenTime}
           shiftOwner={props.shiftOwner}

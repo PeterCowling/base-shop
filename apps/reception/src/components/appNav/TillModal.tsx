@@ -1,3 +1,5 @@
+"use client";
+
 import { memo } from "react";
 import {
   Activity,
@@ -8,7 +10,9 @@ import {
   Wrench,
 } from "lucide-react";
 
+import { useAuth } from "../../context/AuthContext";
 import { type IconModalProps,withIconModal } from "../../hoc/withIconModal";
+import { canAccess, Permissions } from "../../lib/roles";
 import { type ModalAction } from "../../types/component/ModalAction";
 
 const actions: ModalAction[] = [
@@ -28,14 +32,15 @@ const BaseTillModal = withIconModal({
 
 /**
  * Wrapper component so all users can view this modal but
- * only "Pete" can navigate using the icons.
+ * only users with till access can navigate using the icons.
  */
 function TillModal({ user, ...rest }: IconModalProps) {
+  const { user: authUser } = useAuth();
   return (
     <BaseTillModal
       {...rest}
       user={user}
-      interactive={user.user_name === "Pete"}
+      interactive={canAccess(authUser, Permissions.TILL_ACCESS)}
     />
   );
 }

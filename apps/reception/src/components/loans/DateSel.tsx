@@ -15,6 +15,8 @@ import { DayPicker } from "react-day-picker";
 import { Button } from "@acme/design-system/atoms";
 import { Cluster, Inline } from "@acme/design-system/primitives";
 
+import { useAuth } from "../../context/AuthContext";
+import { isPrivileged } from "../../lib/roles";
 import {
   buildQuickDateRange,
   formatDateForInput,
@@ -38,9 +40,10 @@ interface DateSelProps {
 function DateSel({
   selectedDate,
   onDateChange,
-  username,
+  username: _username,
 }: DateSelProps): ReactElement {
-  const isPete = username?.toLowerCase() === "pete";
+  const { user } = useAuth();
+  const isPete = isPrivileged(user ?? null);
 
   const { today, yesterday, nextDays: nextFiveDays } = useMemo(
     () => buildQuickDateRange(5),
@@ -133,7 +136,7 @@ function DateSel({
                 setIsCalendarOpen(false);
               }}
               classNames={{
-                root: "bg-surface border border-border-strong rounded-xl shadow-lg p-4 text-foreground",
+                root: "bg-surface border border-border-strong rounded-lg shadow-lg p-4 text-foreground",
                 months: "relative",
                 month: "space-y-3",
                 month_caption: "flex items-center justify-center h-9",

@@ -212,7 +212,7 @@ function ActivityCodeSection({
       >
         <div
           ref={containerRef}
-          className="mb-8 w-full bg-surface border border-border-strong rounded-xl overflow-hidden"
+          className="mb-8 w-full bg-surface border border-border-strong rounded-lg overflow-hidden"
         >
           <div className={`p-4 ${style.headerBg} border-b ${style.headerBorder} flex items-center gap-3 font-heading font-bold text-sm uppercase tracking-wide ${style.labelColor}`}>
             <span className={`h-5 w-0.5 rounded-full ${style.bar} shrink-0 inline-block`} aria-hidden="true" />

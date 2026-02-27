@@ -301,8 +301,11 @@ function Login({ onLoginSuccess }: LoginProps) {
 
             <Button
               type="submit"
+              color="primary"
+              tone="solid"
+              size="lg"
               disabled={resetStatus === "sending"}
-              className="w-full rounded-lg bg-primary-main px-4 py-3 font-medium text-primary-fg hover:bg-primary-dark focus:outline-none focus-visible:focus:ring-2 focus:ring-ring focus-visible:focus:ring-offset-2 disabled:opacity-50"
+              className="w-full"
             >
               {resetStatus === "sending" ? "Sending..." : "Send reset link"}
             </Button>
@@ -319,8 +322,10 @@ function Login({ onLoginSuccess }: LoginProps) {
 
         <Button
           type="button"
+          color="primary"
+          tone="quiet"
           onClick={handleBackToLogin}
-          className="mt-4 w-full text-center text-sm font-medium text-primary-main hover:text-primary-main"
+          className="mt-4 w-full"
         >
           Back to sign in
         </Button>
@@ -361,8 +366,11 @@ function Login({ onLoginSuccess }: LoginProps) {
 
         <Button
           type="button"
+          color="default"
+          tone="outline"
+          size="lg"
           onClick={handleSkipPinSetup}
-          className="mt-4 w-full rounded-lg border border-border-strong px-4 py-3 text-sm font-medium text-foreground hover:bg-surface-2 focus:outline-none focus-visible:focus:ring-2 focus:ring-ring focus-visible:focus:ring-offset-2"
+          className="mt-4 w-full"
         >
           Skip for now
         </Button>
@@ -415,8 +423,11 @@ function Login({ onLoginSuccess }: LoginProps) {
 
         <Button
           type="button"
+          color="default"
+          tone="outline"
+          size="lg"
           onClick={handleClearDevicePin}
-          className="mt-4 w-full rounded-lg border border-border-strong px-4 py-3 text-sm font-medium text-foreground hover:bg-surface-2 focus:outline-none focus-visible:focus:ring-2 focus:ring-ring focus-visible:focus:ring-offset-2"
+          className="mt-4 w-full"
         >
           Sign in with email instead
         </Button>
@@ -466,8 +477,10 @@ function Login({ onLoginSuccess }: LoginProps) {
             </label>
             <Button
               type="button"
+              color="primary"
+              tone="quiet"
+              size="sm"
               onClick={handleShowForgotPassword}
-              className="text-sm font-medium text-primary-main hover:text-primary-main"
             >
               Forgot password?
             </Button>
@@ -485,8 +498,11 @@ function Login({ onLoginSuccess }: LoginProps) {
             />
             <Button
               type="button"
+              color="default"
+              tone="ghost"
+              size="sm"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-muted-foreground focus:outline-none focus-visible:focus:ring-2 focus:ring-ring focus-visible:focus:ring-offset-2"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? (
@@ -510,8 +526,11 @@ function Login({ onLoginSuccess }: LoginProps) {
 
         <Button
           type="submit"
+          color="primary"
+          tone="solid"
+          size="lg"
           disabled={isSubmitting || status === "loading"}
-          className="w-full rounded-lg bg-primary-main px-4 py-3 font-medium text-primary-fg hover:bg-primary-dark focus:outline-none focus-visible:focus:ring-2 focus:ring-ring focus-visible:focus:ring-offset-2 disabled:opacity-50"
+          className="w-full"
         >
           {isSubmitting ? "Signing in..." : "Sign in"}
         </Button>
@@ -542,7 +561,7 @@ interface LoginContainerProps {
 function LoginContainer({ children }: LoginContainerProps) {
   return (
     <div className="flex min-h-dvh w-full items-center justify-center bg-gradient-to-br from-surface-2 via-surface-2 to-surface-3 px-4">
-      <div className="relative w-full max-w-md rounded-2xl bg-surface px-8 py-10 shadow-xl">
+      <div className="relative w-full max-w-md rounded-lg bg-surface px-8 py-10 shadow-xl">
         {children}
       </div>
     </div>

@@ -35,6 +35,7 @@ import {
 
 import { handleOrganizeInbox as handleOrganizeInboxModule } from "./gmail-organize.js";
 import { setLockStore as setSharedLockStore } from "./gmail-shared.js";
+import { sendGuestEmailActivity } from "./guest-email-activity.js";
 import { processCancellationEmail } from "./process-cancellation-email.js";
 
 export { checkBookingRefDuplicate } from "./gmail-booking.js";
@@ -1915,6 +1916,23 @@ async function handleCancellationCase({
           removeLabelIds: ["INBOX", "UNREAD"],
         },
       });
+    }
+
+    // Draft cancellation confirmation email (code 27) for occupants with email addresses
+    if (result.status === "success" && result.guestEmails && Object.keys(result.guestEmails).length > 0 && result.reservationCode) {
+      await Promise.allSettled(
+        Object.entries(result.guestEmails).map(async ([occupantId, email]) => {
+          try {
+            await sendGuestEmailActivity({
+              bookingRef: result.reservationCode!,
+              activityCode: 27,
+              recipients: [email],
+            });
+          } catch (draftErr) {
+            console.error(`Failed to draft cancellation email for occupant ${occupantId}:`, draftErr);
+          }
+        })
+      );
     }
 
     return { processed: true };

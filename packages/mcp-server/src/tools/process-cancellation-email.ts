@@ -73,6 +73,9 @@ interface ProcessCancellationResult {
   reason?: string;
   reservationCode?: string;
   activitiesWritten?: number;
+  occupantIds?: string[];
+  /** Map of occupantId → email for occupants that have an email address (used for cancellation notification drafts) */
+  guestEmails?: Record<string, string>;
 }
 
 // ---------------------------------------------------------------------------
@@ -216,9 +219,31 @@ export async function processCancellationEmail(
     }
   }
 
+  // Step 6: Look up guest emails for cancellation notification drafts
+  const guestEmails: Record<string, string> = {};
+  try {
+    const guestsData = await firebaseGet<Record<string, { email?: string }>>(
+      firebaseUrl,
+      `/guestsDetails/${reservationCode}`,
+      firebaseApiKey
+    );
+    if (guestsData) {
+      for (const occupantId of occupantIds) {
+        const email = guestsData[occupantId]?.email;
+        if (email) {
+          guestEmails[occupantId] = email;
+        }
+      }
+    }
+  } catch {
+    // Non-fatal: email lookup failure does not block cancellation result
+  }
+
   return {
     status: "success",
     reservationCode,
     activitiesWritten: occupantIds.length,
+    occupantIds,
+    guestEmails,
   };
 }

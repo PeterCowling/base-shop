@@ -42,7 +42,7 @@ export const BankDepositForm = memo(function BankDepositForm({
   };
 
   return (
-    <div className="bg-surface-2 border border-border-strong rounded-xl p-4 mt-4">
+    <div className="bg-surface-2 border border-border-strong rounded-lg p-4 mt-4">
       <h3 className="text-lg font-semibold text-primary-main mb-4">
         Bank Deposit
       </h3>

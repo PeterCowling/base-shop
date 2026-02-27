@@ -77,7 +77,7 @@ const CheckinsTableView: React.FC<Props> = ({
   bookingStatuses,
 }) => (
   <div className="bg-gradient-to-b from-surface-2 to-surface-3 min-h-screen flex flex-col p-5">
-    <div className="bg-surface/80 rounded-xl px-4 py-3 mb-4">
+    <div className="bg-surface/80 rounded-lg px-4 py-3 mb-4">
       <CheckinsHeader
         onNewBookingClick={onNewBookingClick}
         onEditClick={onEditClick}
@@ -86,7 +86,7 @@ const CheckinsTableView: React.FC<Props> = ({
         eligibleCount={eligibleCount}
       />
     </div>
-    <div className="flex-grow bg-surface rounded-xl shadow-lg p-6 space-y-4">
+    <div className="flex-grow bg-surface rounded-lg shadow-lg p-6 space-y-4">
       {isEditMode && (
         <div className="bg-info-light/100 rounded-lg p-3 flex items-center gap-2">
           <Info className="text-info-main shrink-0" size={16} />

@@ -132,7 +132,7 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
         >
           <div
             ref={containerRef}
-            className="mb-8 w-full bg-surface border border-border-strong rounded-xl overflow-hidden"
+            className="mb-8 w-full bg-surface border border-border-strong rounded-lg overflow-hidden"
           >
             {/* Subheader */}
             <div className={`p-4 ${sectionStyles[variant].bg} border-b ${sectionStyles[variant].border} flex items-center gap-3`}>

@@ -1,3 +1,5 @@
+"use client";
+
 import { memo } from "react";
 import {
   BarChart3,
@@ -8,7 +10,9 @@ import {
   PieChart,
 } from "lucide-react";
 
+import { useAuth } from "../../context/AuthContext";
 import { type IconModalProps,withIconModal } from "../../hoc/withIconModal";
+import { canAccess, Permissions } from "../../lib/roles";
 import { type ModalAction } from "../../types/component/ModalAction";
 
 const actions: ModalAction[] = [
@@ -28,14 +32,15 @@ const BaseManModal = withIconModal({
 
 /**
  * Functional component wrapper that allows all users to view the modal
- * while only enabling navigation for the user named "Pete".
+ * while only enabling navigation for users with management access.
  */
 function ManModal({ user, ...rest }: IconModalProps) {
+  const { user: authUser } = useAuth();
   return (
     <BaseManModal
       {...rest}
       user={user}
-      interactive={user.user_name === "Pete"}
+      interactive={canAccess(authUser, Permissions.MANAGEMENT_ACCESS)}
     />
   );
 }

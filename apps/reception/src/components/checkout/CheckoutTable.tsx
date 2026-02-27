@@ -139,7 +139,7 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
   ({ guests, removeLoanItem, onComplete }) => {
     if (!guests || guests.length === 0) {
       return (
-        <div className="bg-surface border border-border-2 rounded-xl shadow-md p-8 text-center italic text-muted-foreground">
+        <div className="bg-surface border border-border-2 rounded-lg shadow-md p-8 text-center italic text-muted-foreground">
           No checkouts found for this date.
         </div>
       );
@@ -148,11 +148,8 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
     // Use the new utility to get a properly sorted list of guests
     const sortedGuests = sortCheckoutsData(guests);
 
-    // Optional debug
-    console.log("Final sorted guests for CheckoutTable:", sortedGuests);
-
     return (
-      <div className="bg-surface border border-border-2 rounded-xl shadow-md overflow-x-auto">
+      <div className="bg-surface border border-border-2 rounded-lg shadow-md overflow-x-auto">
         <Table className="w-full border-collapse" aria-label="checkout table">
           <TableHeader className="sticky top-0 z-10 backdrop-blur-sm bg-surface-2/80">
             <TableRow>
@@ -208,10 +205,6 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                   </TableCell>
                   <TableCell className="p-3 border-b border-border-2 w-48">
                     {loanEntries.map(([txnKey, loan]) => {
-                      console.debug(
-                        `[CheckoutTable] Loan entry ${txnKey}:`,
-                        loan
-                      );
                       const { Icon: LoanIcon, colorClass } = getLoanIcon(
                         loan.item,
                         loan.depositType

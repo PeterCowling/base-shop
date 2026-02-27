@@ -39,7 +39,7 @@ const Statistics: React.FC = () => {
 
   return (
     <PageShell title="Connection Test">
-      <div className="bg-surface rounded-xl shadow-lg p-6 text-center">
+      <div className="bg-surface rounded-lg shadow-lg p-6 text-center">
         <p className="text-foreground mb-4">
           {message ||
             "Press the button to test connection to the Google Apps Script endpoint with bookingRef 4382244000."}

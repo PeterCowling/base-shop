@@ -38,7 +38,7 @@ function TillReconciliation(): JSX.Element {
 
   return (
     <PageShell title="TILL MANAGEMENT">
-      <div className="flex-grow bg-surface rounded-xl shadow-lg p-6 space-y-8">
+      <div className="flex-grow bg-surface rounded-lg shadow-lg p-6 space-y-8">
         <DrawerLimitWarning
           show={props.isDrawerOverLimit}
           onLift={props.handleLiftClick}

@@ -94,7 +94,7 @@ export default function VarianceHeatMap() {
     <PageShell title="Variance Heatmap">
       <div className="space-y-6">
         {canManageThresholds && (
-          <div className="rounded-xl border border-border bg-surface p-4 shadow-lg">
+          <div className="rounded-lg border border-border bg-surface p-4 shadow-lg">
             <h2 className="text-lg font-semibold mb-3">Variance Thresholds</h2>
             <p className="text-sm text-muted-foreground">
               Update the cash variance threshold (in euros) and optional keycard
@@ -202,13 +202,13 @@ export default function VarianceHeatMap() {
         )}
         <div className="overflow-x-auto">
         <Table className="border-collapse w-full">
-          <TableHeader>
+          <TableHeader className="bg-surface-2">
             <TableRow>
-              <TableHead className="p-2 border">Employee</TableHead>
+              <TableHead className="p-2 border-b border-border-2 text-muted-foreground">Employee</TableHead>
               {shiftLabels.map((label) => (
                 <TableHead
                   key={label}
-                  className="p-2 border whitespace-nowrap"
+                  className="p-2 border-b border-border-2 text-muted-foreground whitespace-nowrap"
                 >
                   {label}
                 </TableHead>
@@ -217,7 +217,7 @@ export default function VarianceHeatMap() {
           </TableHeader>
           <TableBody>
             {users.map((user) => (
-              <TableRow key={user} className="text-center">
+              <TableRow key={user} className="text-center hover:bg-surface-2">
                 <TableCell className="p-2 border text-start font-medium">
                   {user}
                 </TableCell>

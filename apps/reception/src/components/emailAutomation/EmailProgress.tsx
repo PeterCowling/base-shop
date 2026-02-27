@@ -58,7 +58,7 @@ const EmailProgress: React.FC<EmailProgressProps> = ({
   // Render
   return (
     <PageShell title="EMAIL OPT-IN">
-      <div className="flex-grow bg-surface rounded-xl shadow-lg p-6 space-y-4">
+      <div className="flex-grow bg-surface rounded-lg shadow-lg p-6 space-y-4">
         {/* Loading or Error State */}
         {loading ? (
           <div className="flex justify-center items-center my-6">

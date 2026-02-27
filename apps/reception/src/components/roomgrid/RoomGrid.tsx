@@ -124,7 +124,7 @@ const RoomGrid: FC<RoomGridProps> = memo(
     return (
       <>
         <div
-          className={`rounded-xl overflow-hidden border border-border-2 shadow-md ${styles.roomGridWrapper} ${styles.hideInfoColumn}`}
+          className={`rounded-lg overflow-hidden border border-border-2 shadow-md ${styles.roomGridWrapper} ${styles.hideInfoColumn}`}
         >
           {/* Panel header */}
           <div className="flex items-center gap-2.5 px-4 py-2.5 bg-surface-3 border-b border-border-2">

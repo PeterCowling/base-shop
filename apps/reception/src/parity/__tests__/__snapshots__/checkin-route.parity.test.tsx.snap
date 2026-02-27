@@ -6,7 +6,7 @@ exports[`/checkin parity matches baseline selectors and DOM snapshot 1`] = `
     class="bg-gradient-to-b from-surface-2 to-surface-3 min-h-screen flex flex-col p-5"
   >
     <div
-      class="bg-surface/80 rounded-xl px-4 py-3 mb-4"
+      class="bg-surface/80 rounded-lg px-4 py-3 mb-4"
     >
       <div
         class="grid grid-cols-3 items-center mb-6"
@@ -29,21 +29,21 @@ exports[`/checkin parity matches baseline selectors and DOM snapshot 1`] = `
       </div>
     </div>
     <div
-      class="flex-grow bg-surface rounded-xl shadow-lg p-6 space-y-4"
+      class="flex-grow bg-surface rounded-lg shadow-lg p-6 space-y-4"
     >
       <div
-        class="flex items-center justify-between"
+        class="space-y-3"
       >
         <div
-          class="flex items-center gap-4"
+          data-cy="checkin-date-selector"
         >
-          <div
-            data-cy="checkin-date-selector"
-          >
-            2025-01-03
-          </div>
+          2025-01-03
+        </div>
+        <div
+          class="flex items-center justify-between"
+        >
           <label
-            class="flex items-center gap-2 text-sm cursor-pointer"
+            class="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer select-none"
           >
             <input
               class="flex border border-input bg-input px-3 text-sm text-foreground py-3 rounded-md placeholder:text-muted-foreground file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-offset-[var(--ring-offset-width)] focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 w-4 h-4 cursor-pointer"
@@ -55,14 +55,13 @@ exports[`/checkin parity matches baseline selectors and DOM snapshot 1`] = `
               Show cancelled
             </span>
           </label>
+          <button
+            class="rounded-lg bg-primary-main/100 px-4 py-2 text-sm font-semibold text-primary-fg/100 transition-all duration-150 hover:opacity-90 active:scale-95"
+            type="button"
+          >
+            Rooms Ready
+          </button>
         </div>
-        <button
-          class="inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm hover:bg-primary/90 px-3 py-2 bg-success-main text-primary-fg rounded-lg"
-          data-token="--color-primary"
-          type="button"
-        >
-          Rooms Ready
-        </button>
       </div>
       <div
         class="overflow-x-auto"

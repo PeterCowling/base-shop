@@ -15,6 +15,7 @@ import { Inline } from "@acme/design-system/primitives";
 
 // We'll derive the logged-in user from AuthContext.
 import { useAuth } from "../../context/AuthContext";
+import { isPrivileged } from "../../lib/roles";
 import {
   buildQuickDateRange,
   formatDateForInput,
@@ -35,9 +36,8 @@ export default function DateSelectorCI({
   testMode,
   onTestModeChange,
 }: DateSelectorProps): ReactElement {
-  // Check if current user is Pete
   const { user } = useAuth();
-  const isPete = user?.user_name === "Pete";
+  const isPete = isPrivileged(user ?? null);
 
   // Quick-select references
   const { today, yesterday, nextDays: nextFiveDays } = useMemo(
@@ -127,7 +127,7 @@ export default function DateSelectorCI({
                 setIsCalendarOpen(false);
               }}
               classNames={{
-                root: "bg-surface border border-border-strong rounded-xl shadow-lg p-4 text-foreground",
+                root: "bg-surface border border-border-strong rounded-lg shadow-lg p-4 text-foreground",
                 months: "relative",
                 month: "space-y-3",
                 month_caption: "flex items-center justify-center h-9",

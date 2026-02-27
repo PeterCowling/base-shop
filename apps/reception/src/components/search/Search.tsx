@@ -200,7 +200,7 @@ function Search(): JSX.Element {
 
   return (
     <PageShell title="Audit">
-      <div className="bg-surface rounded-xl shadow-lg p-6">
+      <div className="bg-surface rounded-lg shadow-lg p-6">
         <div className="flex gap-2 mb-4">
           <Button
             onClick={setBookingsTab}

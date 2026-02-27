@@ -18,69 +18,65 @@ jest.mock("../parsers/cancellation-email-parser");
 // Mock fetch for Firebase REST API
 global.fetch = jest.fn();
 
+// Helper to create mock Response with clone support
+function createMockResponse(
+  data: unknown,
+  options: { ok?: boolean; status?: number; statusText?: string } = {}
+): Response {
+  const response = {
+    ok: options.ok ?? true,
+    status: options.status ?? 200,
+    statusText: options.statusText ?? "OK",
+    json: async () => data,
+    clone: function () {
+      return this;
+    },
+  } as unknown as Response;
+  return response;
+}
+
+// Helper to extract URL from fetch call (handles Request objects and strings)
+function getUrlFromCall(call: unknown[]): string {
+  const input = call[0];
+  if (typeof input === "string") {
+    return input;
+  }
+  if (input && typeof input === "object" && "url" in input) {
+    return (input as Request).url;
+  }
+  return String(input);
+}
+
+// Helper to extract body from fetch call
+function getBodyFromCall(call: unknown[]): string | null {
+  const input = call[0];
+
+  if (input && typeof input === "object") {
+    if ("body" in input && Buffer.isBuffer(input.body)) {
+      return (input.body as Buffer).toString("utf-8");
+    }
+    if ("body" in input && typeof input.body === "string") {
+      return input.body as string;
+    }
+  }
+
+  const init = call[1] as RequestInit | undefined;
+  if (init && init.body) {
+    if (Buffer.isBuffer(init.body)) {
+      return (init.body as Buffer).toString("utf-8");
+    }
+    return init.body as string;
+  }
+
+  return null;
+}
+
 describe("processCancellationEmail", () => {
   const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
-
-  // Helper to create mock Response with clone support
-  const createMockResponse = (
-    data: unknown,
-    options: { ok?: boolean; status?: number; statusText?: string } = {}
-  ): Response => {
-    const response = {
-      ok: options.ok ?? true,
-      status: options.status ?? 200,
-      statusText: options.statusText ?? "OK",
-      json: async () => data,
-      clone: function () {
-        return this;
-      },
-    } as unknown as Response;
-    return response;
-  };
-
-  // Helper to extract URL from fetch call (handles Request objects and strings)
-  const getUrlFromCall = (call: unknown[]): string => {
-    const input = call[0];
-    if (typeof input === "string") {
-      return input;
-    }
-    if (input && typeof input === "object" && "url" in input) {
-      return (input as Request).url;
-    }
-    return String(input);
-  };
-
-  // Helper to extract body from fetch call
-  const getBodyFromCall = (call: unknown[]): string | null => {
-    const input = call[0];
-
-    if (input && typeof input === "object") {
-      // Check if body is a Buffer
-      if ("body" in input && Buffer.isBuffer(input.body)) {
-        return (input.body as Buffer).toString("utf-8");
-      }
-
-      // Check if body is a string
-      if ("body" in input && typeof input.body === "string") {
-        return input.body as string;
-      }
-    }
-
-    // Check second argument (RequestInit)
-    const init = call[1] as RequestInit | undefined;
-    if (init && init.body) {
-      if (Buffer.isBuffer(init.body)) {
-        return (init.body as Buffer).toString("utf-8");
-      }
-      return init.body as string;
-    }
-
-    return null;
-  };
 
   // TC-01: Process valid cancellation email → booking status="cancelled", 2 activities logged (code 22)
   test("TC-01: should process valid cancellation email and write status + activities", async () => {
@@ -112,6 +108,11 @@ describe("processCancellationEmail", () => {
     // Mock Firebase PATCH /bookingMeta/{reservationCode}
     mockFetch.mockResolvedValueOnce(createMockResponse(null));
 
+    // Mock Firebase GET /guestsDetails/{reservationCode} (step 6 — guest email lookup)
+    mockFetch.mockResolvedValueOnce(
+      createMockResponse({ occ1: { email: "guest1@example.com" }, occ2: {} })
+    );
+
     const result = await processCancellationEmail(
       emailId,
       emailHtml,
@@ -123,6 +124,8 @@ describe("processCancellationEmail", () => {
     expect(result.status).toBe("success");
     expect(result.reservationCode).toBe("6896451364");
     expect(result.activitiesWritten).toBe(2);
+    expect(result.occupantIds).toHaveLength(2);
+    expect(result.guestEmails).toEqual({ occ1: "guest1@example.com" });
 
     // Verify parser was called
     expect(parseCancellationEmail).toHaveBeenCalledWith(emailHtml, from);
@@ -295,6 +298,7 @@ describe("processCancellationEmail", () => {
 
     expect(result.status).toBe("success");
     expect(result.activitiesWritten).toBe(4);
+    expect(result.occupantIds).toHaveLength(4);
 
     // Verify activity IDs are unique and collision-safe
     const activityCalls = (mockFetch.mock.calls as unknown[][]).filter((call) => {
@@ -375,5 +379,71 @@ describe("processCancellationEmail", () => {
 
     // Verify timestamp is ISO format
     expect(activityBody.timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
+  });
+
+  // TC-07: guestEmails lookup — populated from guestsDetails, empty when null, non-fatal on error
+  test("TC-07a: should populate guestEmails from guestsDetails GET response", async () => {
+    (parseCancellationEmail as jest.Mock).mockReturnValue({
+      reservationCode: "6896451364",
+      provider: "octorate",
+    });
+    // Bookings GET
+    mockFetch.mockResolvedValueOnce(createMockResponse({ occ1: true }));
+    // Activities + activitiesByCode PATCHes + bookingMeta PATCH
+    mockFetch.mockResolvedValueOnce(createMockResponse(null));
+    mockFetch.mockResolvedValueOnce(createMockResponse(null));
+    mockFetch.mockResolvedValueOnce(createMockResponse(null));
+    // guestsDetails GET → occ1 has email
+    mockFetch.mockResolvedValueOnce(
+      createMockResponse({ occ1: { email: "guest@example.com" } })
+    );
+
+    const result = await processCancellationEmail(
+      "msg_tc07a", "email body", "Octorate <noreply@smtp.octorate.com>",
+      "https://test.firebaseio.com"
+    );
+
+    expect(result.status).toBe("success");
+    expect(result.guestEmails).toEqual({ occ1: "guest@example.com" });
+  });
+
+  test("TC-07b: should return empty guestEmails when guestsDetails returns null", async () => {
+    (parseCancellationEmail as jest.Mock).mockReturnValue({
+      reservationCode: "6896451364",
+      provider: "octorate",
+    });
+    mockFetch.mockResolvedValueOnce(createMockResponse({ occ1: true }));
+    mockFetch.mockResolvedValue(createMockResponse(null)); // PATCHes + guestsDetails GET (null)
+
+    const result = await processCancellationEmail(
+      "msg_tc07b", "email body", "Octorate <noreply@smtp.octorate.com>",
+      "https://test.firebaseio.com"
+    );
+
+    expect(result.status).toBe("success");
+    expect(result.guestEmails).toEqual({});
+  });
+
+  test("TC-07c: should return empty guestEmails and remain successful when guestsDetails GET throws", async () => {
+    (parseCancellationEmail as jest.Mock).mockReturnValue({
+      reservationCode: "6896451364",
+      provider: "octorate",
+    });
+    // Bookings GET
+    mockFetch.mockResolvedValueOnce(createMockResponse({ occ1: true }));
+    // Activities + activitiesByCode PATCHes + bookingMeta PATCH
+    mockFetch.mockResolvedValueOnce(createMockResponse(null));
+    mockFetch.mockResolvedValueOnce(createMockResponse(null));
+    mockFetch.mockResolvedValueOnce(createMockResponse(null));
+    // guestsDetails GET → network error (non-fatal)
+    mockFetch.mockRejectedValueOnce(new Error("Network error"));
+
+    const result = await processCancellationEmail(
+      "msg_tc07c", "email body", "Octorate <noreply@smtp.octorate.com>",
+      "https://test.firebaseio.com"
+    );
+
+    expect(result.status).toBe("success");
+    expect(result.guestEmails).toEqual({});
   });
 });

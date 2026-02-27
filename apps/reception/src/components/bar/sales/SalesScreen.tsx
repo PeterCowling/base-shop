@@ -135,8 +135,8 @@ const SalesScreen: FC = React.memo(() => {
               className={
                 "min-h-11 rounded-lg px-3 py-2 text-sm font-semibold transition-colors " +
                 (isActive
-                  ? "bg-surface/90 text-primary-main ring-2 ring-surface/50 ring-offset-1 ring-offset-primary-main"
-                  : "bg-surface/15 text-primary-fg hover:bg-surface/25")
+                  ? "bg-surface-2 text-primary-main shadow-sm"
+                  : "border border-surface/40 text-primary-fg hover:bg-surface/20")
               }
             >
               {btn}

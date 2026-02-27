@@ -196,7 +196,7 @@ function MenuPerformanceDashboard(): React.ReactElement {
 
   return (
     <PageShell title="Menu Performance">
-      <div className="bg-surface rounded-xl shadow-lg p-6 space-y-8">
+      <div className="bg-surface rounded-lg shadow-lg p-6 space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
             <Bar data={marginChartData} />

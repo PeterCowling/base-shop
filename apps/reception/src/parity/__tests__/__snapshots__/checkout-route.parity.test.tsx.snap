@@ -19,64 +19,70 @@ exports[`/checkout parity matches baseline checkout selectors and DOM snapshot 1
       </h1>
     </div>
     <div
-      class="flex-grow p-6 space-y-4 bg-surface rounded-xl shadow-lg"
+      class="flex-grow p-6 space-y-4 bg-surface rounded-lg shadow-lg"
     >
       <div
-        class="relative pb-5 bg-surface-2 rounded border border-border-2"
+        class="flex flex-col gap-3 px-4 py-3 bg-surface-2 rounded-lg border border-border-strong"
       >
         <div
-          class="flex flex-nowrap gap-2 items-center"
+          class="flex items-center justify-between gap-4"
         >
           <div
             class="flex flex-wrap gap-2 items-center justify-start"
           >
             <button
-              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2"
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded-lg text-sm font-medium text-center transition-colors bg-surface text-foreground border-border-strong hover:bg-surface-2"
               data-token="--color-primary"
             >
               Yesterday
             </button>
             <button
-              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 hover:bg-primary/90 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-primary-main text-primary-fg border-primary-main"
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 hover:bg-primary/90 px-4 py-2 border rounded-lg text-sm font-medium text-center transition-colors bg-primary-main text-primary-fg border-primary-main"
               data-token="--color-primary"
             >
               Today
             </button>
             <button
-              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2"
-              data-token="--color-primary"
-            >
-              Fri
-            </button>
-            <button
-              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2"
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded-lg text-sm font-medium text-center transition-colors bg-surface text-foreground border-border-strong hover:bg-surface-2"
               data-token="--color-primary"
             >
               Sat
             </button>
             <button
-              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2"
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded-lg text-sm font-medium text-center transition-colors bg-surface text-foreground border-border-strong hover:bg-surface-2"
               data-token="--color-primary"
             >
               Sun
             </button>
             <button
-              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2"
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded-lg text-sm font-medium text-center transition-colors bg-surface text-foreground border-border-strong hover:bg-surface-2"
               data-token="--color-primary"
             >
               Mon
             </button>
             <button
-              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2"
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded-lg text-sm font-medium text-center transition-colors bg-surface text-foreground border-border-strong hover:bg-surface-2"
               data-token="--color-primary"
             >
               Tue
             </button>
+            <button
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded-lg text-sm font-medium text-center transition-colors bg-surface text-foreground border-border-strong hover:bg-surface-2"
+              data-token="--color-primary"
+            >
+              Wed
+            </button>
           </div>
+          <button
+            class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 shrink-0 px-3 py-2 border rounded-lg text-sm font-medium transition-colors bg-surface text-foreground border-border-strong hover:bg-surface-2"
+            data-token="--color-primary"
+          >
+            2026-02-27
+          </button>
         </div>
       </div>
       <div
-        class="bg-surface border border-border-2 rounded-xl shadow-md overflow-x-auto"
+        class="bg-surface border border-border-2 rounded-lg shadow-md overflow-x-auto"
       >
         <div
           class="w-full overflow-x-auto"

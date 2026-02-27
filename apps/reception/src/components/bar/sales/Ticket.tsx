@@ -25,7 +25,7 @@ const Ticket: FC<Props> = memo(
     );
 
     return (
-      <article className="flex flex-col overflow-hidden rounded-xl border border-border-2 bg-surface-2 shadow-md">
+      <article className="flex flex-col overflow-hidden rounded-lg border border-border-2 bg-surface-2 shadow-md">
         {/* --- Ticket header --- */}
         <header
           className={`flex cursor-pointer items-center justify-between px-4 py-3 transition-colors duration-1000 ${ageColor}`}

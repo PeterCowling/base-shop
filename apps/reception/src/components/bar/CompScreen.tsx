@@ -108,7 +108,7 @@ const TableSection: React.FC<TableSectionProps> = ({
   return (
     <section className="space-y-4">
       <h2 className="text-xl font-semibold text-primary-main">{title}</h2>
-      <div className="max-h-60vh overflow-auto rounded-xl shadow focus-visible:ring-1 focus-visible:ring-primary-main">
+      <div className="max-h-60vh overflow-auto rounded-lg shadow focus-visible:ring-1 focus-visible:ring-primary-main">
         <Table className="min-w-40rem w-full table-auto text-start text-sm">
           <TableHeader
             className={`sticky top-0 bg-${accentBase} text-primary-fg uppercase`}

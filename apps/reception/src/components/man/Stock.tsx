@@ -22,32 +22,32 @@ function Stock() {
 
   return (
     <PageShell title="STOCK">
-      <div className="bg-surface rounded-xl shadow-lg p-6">
+      <div className="bg-surface rounded-lg shadow-lg p-6">
         <div className="overflow-auto">
           <Table className="min-w-full border-collapse text-sm">
-            <TableHeader>
-              <TableRow className="bg-surface-3">
-                <TableHead className="p-2 border-b text-start">Item</TableHead>
-                <TableHead className="p-2 border-b text-end">Expected</TableHead>
-                <TableHead className="p-2 border-b text-end">Add Purchase</TableHead>
-                <TableHead className="p-2 border-b text-end">Add Re-count</TableHead>
-                <TableHead className="p-2 border-b text-end">Remove Leakage</TableHead>
+            <TableHeader className="bg-surface-2">
+              <TableRow>
+                <TableHead className="p-2 border-b border-border-2 text-start text-muted-foreground">Item</TableHead>
+                <TableHead className="p-2 border-b border-border-2 text-end text-muted-foreground">Expected</TableHead>
+                <TableHead className="p-2 border-b border-border-2 text-end text-muted-foreground">Add Purchase</TableHead>
+                <TableHead className="p-2 border-b border-border-2 text-end text-muted-foreground">Add Re-count</TableHead>
+                <TableHead className="p-2 border-b border-border-2 text-end text-muted-foreground">Remove Leakage</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {productNames.map((name) => (
-                <TableRow key={name}>
-                  <TableCell className="p-2 border-b">{name}</TableCell>
-                  <TableCell className="p-2 border-b text-end">
+                <TableRow key={name} className="hover:bg-surface-2">
+                  <TableCell className="p-2 border-b border-border-2">{name}</TableCell>
+                  <TableCell className="p-2 border-b border-border-2 text-end">
                     <Input compatibilityMode="no-wrapper" type="number" className="w-20 border p-1" />
                   </TableCell>
-                  <TableCell className="p-2 border-b text-end">
+                  <TableCell className="p-2 border-b border-border-2 text-end">
                     <Input compatibilityMode="no-wrapper" type="number" className="w-20 border p-1" />
                   </TableCell>
-                  <TableCell className="p-2 border-b text-end">
+                  <TableCell className="p-2 border-b border-border-2 text-end">
                     <Input compatibilityMode="no-wrapper" type="number" className="w-20 border p-1" />
                   </TableCell>
-                  <TableCell className="p-2 border-b text-end">
+                  <TableCell className="p-2 border-b border-border-2 text-end">
                     <Input compatibilityMode="no-wrapper" type="number" className="w-20 border p-1" />
                   </TableCell>
                 </TableRow>

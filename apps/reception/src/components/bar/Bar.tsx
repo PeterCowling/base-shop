@@ -54,7 +54,7 @@ const BarRoot: FC = React.memo(() => {
         />
       )}
       <div className="p-4">
-        <div className="shadow-lg bg-surface rounded-xl ring-1 ring-border-1/50 overflow-hidden">{content}</div>
+        <div className="shadow-lg bg-surface rounded-lg ring-1 ring-border-1/50 overflow-hidden">{content}</div>
       </div>
     </div>
   );

@@ -18,7 +18,7 @@ const PreparePage = memo(function PreparePage({
 }: PreparePageProps) {
   return (
     <PageShell title="PREPARE">
-      <div className="flex-grow bg-surface rounded-xl shadow-lg p-6 space-y-4">
+      <div className="flex-grow bg-surface rounded-lg shadow-lg p-6 space-y-4">
         {dateSelector}
         {children}
       </div>

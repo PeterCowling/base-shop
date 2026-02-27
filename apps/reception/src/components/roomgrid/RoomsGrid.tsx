@@ -84,7 +84,7 @@ const RoomsGrid: FC = () => {
         </div>
       }
     >
-      <div className="bg-surface rounded-xl shadow-lg p-5 flex flex-col gap-5">
+      <div className="bg-surface rounded-lg shadow-lg p-5 flex flex-col gap-5">
         {loading && (
           <p className="p-4 italic text-muted-foreground">Loading rooms...</p>
         )}

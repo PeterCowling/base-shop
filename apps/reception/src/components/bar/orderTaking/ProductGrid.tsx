@@ -30,7 +30,7 @@ const ProductItem: FC<ProductItemProps> = React.memo(({ product, onAdd }) => {
       onClick={handleClick}
       compatibilityMode="passthrough"
       className={[
-        "group relative flex aspect-square w-full min-h-11 select-none items-center justify-center overflow-hidden rounded-xl text-center font-semibold shadow-sm motion-safe:transition-all",
+        "group relative flex aspect-square w-full min-h-11 select-none items-center justify-center overflow-hidden rounded-lg text-center font-semibold shadow-sm motion-safe:transition-all",
         "bg-surface-2 border border-border-1/50",
         "hover:bg-primary-soft hover:border-primary-main/50 hover:shadow-md hover:scale-[1.03]",
         "active:scale-97 active:bg-primary-soft",

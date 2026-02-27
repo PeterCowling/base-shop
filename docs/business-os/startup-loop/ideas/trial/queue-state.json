@@ -2,17 +2,17 @@
   "queue_version": "queue.v1",
   "mode": "trial",
   "created_at": "2026-02-25T00:00:00Z",
-  "last_updated": "2026-02-27T00:00:00Z",
+  "last_updated": "2026-02-27T12:00:00Z",
   "counts": {
     "enqueued": 6,
     "processed": 2,
     "skipped": 3,
     "error": 0,
     "suppressed": 0,
-    "auto_executed": 24,
+    "auto_executed": 36,
     "completed": 3,
-    "total": 38,
-    "fact_find_ready": 1
+    "total": 50,
+    "fact_find_ready": 2
   },
   "dispatches": [
     {
@@ -1534,6 +1534,390 @@
         "operator-stated: 6 static export blockers identified \u2014 next.config.mjs opt-out, runtime=nodejs exports in layout.tsx + robots.ts, api/search/sync route handler, server-side searchParams in /new-in and /designer/[slug], dynamic routes missing generateStaticParams, middleware security headers needing _headers file"
       ],
       "fact_find_slug": "xa-b-static-export"
+    },
+    {
+      "dispatch_id": "IDEA-DISPATCH-20260227-0038",
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "area_anchor": "BRIK Prime digital assistant \u2014 keyword fallback, needs OpenAI LLM upgrade",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "emitted_at": "2026-02-27T00:00:00Z",
+      "priority": "P1",
+      "priority_tier": "high",
+      "urgency": "pre-deploy",
+      "effort": "M",
+      "reason_code": "product-gap",
+      "location_anchors": [
+        "apps/prime/src/app/(guarded)/digital-assistant/page.tsx",
+        "apps/prime/src/lib/assistant/answerComposer.ts",
+        "apps/prime/functions/api/"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Prime digital assistant is fully client-side keyword matching. Six categories (~18 keyword triggers) cover booking, extensions, experiences, food, bag drop, and transport. Any query that does not match a keyword returns a static fallback: 'I do not have a direct answer for that yet. Use Booking Details or ask reception.' No API call is made, no LLM is involved, no AI capability exists. The page has no loading state. No preset query buttons. Single-exchange only \u2014 each submit replaces the previous answer. No booking context is passed into the answer logic. The legacy app called POST https://hostel-positano.com/primetime/api/processQuery (now decommissioned) which was an OpenAI-backed backend \u2014 no system prompt or grounding config is recoverable.",
+      "next_scope_now": "Hybrid model: (1) Keep existing 6 keyword rules as synchronous fast-path \u2014 zero change, zero regression. (2) On keyword miss (answerType === fallback), POST to a new Cloudflare Function (functions/api/assistant-query.ts) that calls OpenAI API with a Positano-focused system prompt + guest booking context (first name, check-in/out dates, entitlement status, current Rome time). (3) Safety fallback when OpenAI signals out-of-scope or call fails \u2014 serve a clear escalation message, never the old dead-end generic fallback. (4) Rate-limit via existing kv-rate-limit.ts pattern. (5) Restore multi-turn conversation history (bounded 3-5 exchanges). (6) Add loading state to the page (currently synchronous, no spinner). (7) Add preset query buttons matching legacy scope (beach, bus, port directions, boat, hiking). (8) Extend analytics: answerType 'llm' | 'llm-safety-fallback', llmDurationMs, llmFallbackReason. (9) Apply existing link allowlist (ALLOWLISTED_HOSTS + validateAssistantLinks) to any LLM-generated links.",
+      "adjacent_later": "i18n on assistant page (currently English-only); swap OpenAI for Cloudflare Workers AI if cost warrants; streaming responses",
+      "evidence_refs": [
+        "operator-stated: port the legacy AI chatbot capability using OpenAI API, parity-first",
+        "operator-stated: legacy app called OpenAI via POST /primetime/api/processQuery \u2014 backend decommissioned, system prompt not recoverable",
+        "investigation: legacy frontend had 10 preset query topics (beach, bus, bar/breakfast menu, port directions, travel, porters, rubber boat, boat tour, hiking) \u2014 these define the intended topic scope",
+        "investigation: legacy userId was hardcoded to 'current_user_id' \u2014 no per-guest context was ever passed; new implementation should pass booking context for personalised answers",
+        "investigation: current app has link allowlist, analytics, TypeScript types, tests \u2014 all reusable for LLM path",
+        "investigation: functions/lib/kv-rate-limit.ts and functions/api/guest-session.ts exist and provide the right patterns for the new CF Function",
+        "investigation: useUnifiedBookingData hook available in same guarded route group for booking context injection"
+      ],
+      "fact_find_slug": "prime-digital-assistant-llm-upgrade"
+    },
+    {
+      "dispatch_id": "IDEA-DISPATCH-20260227-0039",
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "trigger": "operator_idea",
+      "business": "HBAG",
+      "area_anchor": "HBAG checkout \u2014 merchant order notification email missing",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "emitted_at": "2026-02-27T00:00:00Z",
+      "evidence_refs": [
+        "operator-stated: send order notification email to peter.cowling1976@gmail.com when payment succeeds on POST /api/checkout-session",
+        "funnel_step: payment_confirmation; metric_name: merchant_notified_per_order; baseline_value: 0"
+      ]
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0040",
+      "mode": "trial",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "root_event_id": "operator:BRIK:SELL:direct-booking-price-comparison:20260227",
+      "anchor_key": "direct-booking-price-comparison",
+      "cluster_key": "BRIK:SELL:direct-booking-price-comparison:operator:20260227",
+      "cluster_fingerprint": "c7e2a4f8b3d106781234567890abcde1",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK direct booking \u2014 no price comparison or rate-match widget on booking page",
+      "location_anchors": [
+        "apps/brikette/src/app/[locale]/",
+        "apps/brikette/src/components/"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "SELL",
+      "current_truth": "Brikette has a direct booking funnel but no on-site price comparison or rate-match tooling. Guests navigating to the site have no visual signal showing how the direct rate compares to OTA platforms (Booking.com, Hostelworld). There is no 'book direct and save' widget, rate-match guarantee, or parity-messaging component anywhere in the booking flow.",
+      "next_scope_now": "Fact-find to assess direct booking price-advantage messaging for Brikette: (1) audit the current booking funnel pages to identify where rate-advantage messaging could appear; (2) assess OTA rate parity rules \u2014 what BRIK can legally claim given Booking.com/Hostelworld parity clauses; (3) identify which benefits can be surfaced instead of price comparison (no booking fee, flexible cancellation, add-ons); (4) determine whether a dynamic price comparison widget is feasible or static trust messaging is more appropriate; (5) produce a planning brief for a 'book direct' trust signal component.",
+      "adjacent_later": [
+        "Rate-parity monitoring \u2014 alert when OTA prices undercut direct rate",
+        "Direct booking incentive program (free breakfast, loyalty discount)",
+        "Abandoned booking recovery \u2014 exit-intent prompt with direct booking benefit summary"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.82,
+      "evidence_refs": [
+        "operator-stated: no on-site price comparison or rate-match tooling exists for BRIK direct booking",
+        "operator-stated: minor conversion gap \u2014 guests have no signal that booking direct is advantageous"
+      ],
+      "created_at": "2026-02-27T00:00:00Z",
+      "queue_state": "auto_executed",
+      "dispatched_at": "2026-02-27T00:00:00Z",
+      "auto_executed_at": "2026-02-27T00:00:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0041",
+      "mode": "trial",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "area_anchor": "BRIK direct-booking conversion \u2014 perks positioned below primary booking CTA",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "emitted_at": "2026-02-27T12:00:00Z",
+      "priority": "P3",
+      "classification": "minor-gap",
+      "provisional_deliverable_family": "code-change",
+      "location_anchors": [
+        "apps/brikette/src/app/[locale]/book/",
+        "apps/brikette/src/components/"
+      ],
+      "current_truth": "Brikette has direct-booking perks (e.g. no booking fee, flexible cancellation, add-ons) surfaced somewhere on the booking flow, but they are positioned below the primary booking CTA. Guests who do not scroll past the CTA never see the incentives to book direct vs OTA, which may suppress direct-booking conversion rate.",
+      "next_scope_now": "Fact-find to assess perks positioning relative to the primary booking CTA: (1) identify exactly which components carry direct-booking perks and where they render in the booking page DOM; (2) measure scroll depth required to reach perks vs CTA; (3) determine whether perks should move above the CTA, be embedded alongside it, or be shown as a persistent banner; (4) review GA4 scroll-depth data if available; (5) produce a positioning recommendation with implementation scope.",
+      "adjacent_later": [
+        "Animated or highlighted perks badge near CTA",
+        "Social proof / review count alongside perks",
+        "A/B test perks placement above vs below CTA"
+      ],
+      "evidence_refs": [
+        "operator-stated: direct-booking perks positioned below primary booking CTA, reducing visibility before guest makes channel decision"
+      ],
+      "fact_find_slug": "brikette-direct-booking-perks-cta-positioning"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0042",
+      "mode": "trial",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "root_event_id": "operator:BRIK:PRODUCTS:brik-room-content-schema:20260227",
+      "anchor_key": "brik-room-content-schema",
+      "cluster_key": "BRIK:PRODUCTS:brik-room-content-schema:operator:20260227",
+      "cluster_fingerprint": "a1b3c5d7e9f2041628374950abcdef42",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK room content schema \u2014 feature-set (beds, bath, view, terrace, security) not typed or resilient to missing items",
+      "location_anchors": [
+        "apps/brikette/src/data/roomsData.ts",
+        "apps/brikette/src/app/[lang]/rooms/[id]/RoomDetailContent.tsx",
+        "apps/brikette/src/components/rooms/RoomCard.tsx",
+        "apps/brikette/src/app/[lang]/rooms/RoomsPageContent.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "PRODUCTS",
+      "current_truth": "roomsData.ts is the single source of truth for all 10 rooms + apartment, containing rate codes, occupancy, pricing, and image arrays. It has no formal typed schema for the key guest decision-driver features: bed type/count, bathroom spec, view description, terrace presence, or security features (keycard access, in-room lockers). RoomDetailContent.tsx renders room details from this data but has no resilience pattern for optional or missing features \u2014 the component does not cleanly omit sections when a feature is unavailable for a given room.",
+      "next_scope_now": "Fact-find to scope a room content schema and resilient rendering layer: (1) audit roomsData.ts \u2014 what content fields currently exist per room vs what the operator requires (beds, bathroom, view, terrace, security/keycard/lockers)? Map gaps per room type; (2) review RoomDetailContent.tsx and RoomCard.tsx \u2014 how are room features currently rendered? Where would missing-feature resilience need to be added?; (3) define a typed content schema in TypeScript \u2014 which fields are always present (beds) vs optional (terrace, view description, locker presence)?; (4) audit image coverage \u2014 does each room have images covering the required decision drivers: bed, bathroom, view, terrace (if applicable), security? What are the per-room gaps?; (5) determine the render policy for optional features: omit section entirely vs show 'not applicable'; (6) produce a planning brief with: schema extension tasks, RoomDetailContent/RoomCard render updates, and per-room image-gap report.",
+      "adjacent_later": [
+        "CMS-backed room content editing to avoid manual roomsData.ts edits",
+        "Room comparison feature once all rooms have consistent schema coverage",
+        "Auto-generate Schema.org HotelRoom structured data from the extended content schema"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: room media must cover bed(s), bathroom, view, terrace (if applicable), and security (keycard access, in-room lockers); missing features should be omitted cleanly \u2014 no empty sections, placeholders, or broken layout",
+        "operator-stated: implement a room content schema resilient to missing features",
+        "funnel_step: room_detail_view; metric_name: room_selection_rate"
+      ],
+      "created_at": "2026-02-27T15:00:00Z",
+      "queue_state": "processed",
+      "dispatched_at": "2026-02-27T15:00:00Z",
+      "processed_by": {
+        "fact_find_slug": "brik-room-content-schema",
+        "fact_find_path": "docs/plans/brik-room-content-schema/fact-find.md",
+        "processed_at": "2026-02-27T16:00:00Z",
+        "route": "dispatch-routed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0043",
+      "mode": "trial",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "root_event_id": "operator:BRIK:SELL:brik-octorate-live-availability:20260227",
+      "anchor_key": "brik-octorate-live-availability",
+      "cluster_key": "BRIK:SELL:brik-octorate-live-availability:operator:20260227",
+      "cluster_fingerprint": "b2c4d6e8f0a1032547698170bcdef043",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK booking funnel \u2014 live Octorate availability and rate selection not surfaced before handoff",
+      "location_anchors": [
+        "apps/brikette/src/app/[lang]/book/BookPageContent.tsx",
+        "apps/brikette/src/utils/buildOctorateUrl.ts",
+        "apps/brikette/src/components/rooms/RoomsSection.tsx",
+        "apps/brikette/src/components/rooms/RoomCard.tsx",
+        "apps/brikette/src/data/roomsData.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "SELL",
+      "current_truth": "The Brikette booking flow builds a direct Octorate URL (buildOctorateUrl.ts) from dates, pax count, and rate codes, then navigates to Octorate's booking engine via window.location.assign(). There is no in-page availability or pricing check: guests cannot see live availability or actual prices on the Brikette site before being handed off. RoomCard.tsx shows NR and Flex CTAs statically \u2014 pricing is hardcoded in roomsData.ts, not sourced from Octorate live availability. The Octorate Octobook calendar/availability API is not integrated for in-page display. Rate selection (refundable vs non-refundable) happens implicitly by which CTA the guest clicks \u2014 no explicit choice flow exists.",
+      "next_scope_now": "Fact-find to scope live Octorate availability + in-page rate selection: (1) investigate what Octorate exposes for in-page availability/pricing \u2014 does Octobook provide a JS widget, REST API, or iframe embedding for checking room-level availability and pricing for specific dates and guest counts? Review Octorate developer/partner documentation for API surface; (2) assess feasibility of in-page availability querying \u2014 can the Brikette Next.js app query Octorate availability per room per date range (server-side API route or client-side direct call)? What auth/credentials are needed?; (3) map the desired funnel flow: guest selects dates + guest count \u2192 Brikette queries Octorate \u2192 shows per-room availability + price \u2192 guest chooses NR or Flex rate \u2192 navigates to Octorate for payment; (4) determine whether buildOctorateUrl.ts + RoomCard NR/Flex CTA pattern is preserved or replaced; (5) check CORS policy and whether a Next.js API route proxy is needed for availability calls; (6) assess Octorate Octobook embedding options for the booking completion step; (7) produce a planning brief with tasks covering: availability API integration, per-room pricing display, explicit rate selection UI (NR/Flex), and booking handoff.",
+      "adjacent_later": [
+        "In-page availability calendar showing room-level date grid across multiple nights",
+        "Dynamic pricing display with stay-length discounts surfaced inline",
+        "Octorate widget embedded directly (iframe/JS) instead of redirect on CTA click"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: source live availability and pricing from Octorate Octobook calendar/availability layer; guests must check availability for specific dates and guest counts on the Brikette site before handoff",
+        "operator-stated: guests choose between refundable and non-refundable rates before completing booking via Octorate",
+        "operator-stated: booking completion continues to use existing Octobook flow",
+        "funnel_step: availability_check; metric_name: booking_conversion_rate; baseline_value: unknown (no in-page availability today)"
+      ],
+      "created_at": "2026-02-27T15:00:00Z",
+      "queue_state": "auto_executed",
+      "dispatched_at": "2026-02-27T15:00:00Z",
+      "auto_executed_at": "2026-02-27T15:00:00Z",
+      "fact_find_slug": "brik-octorate-live-availability"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0044",
+      "mode": "trial",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "root_event_id": "operator:BRIK:STRATEGY:reception-rbac-migration-code:20260227",
+      "anchor_key": "reception-rbac-migration-code",
+      "cluster_key": "BRIK:STRATEGY:reception-rbac-migration-code:operator:20260227",
+      "cluster_fingerprint": "a1b2c3d4e5f60718293a4b5c6d7e8f04",
+      "lineage_depth": 0,
+      "area_anchor": "reception RBAC migration \u2014 3 username checks unmigrated to canAccess()",
+      "location_anchors": [
+        "apps/reception/src/hooks/mutations/useAllocateRoom.ts",
+        "apps/reception/src/components/checkins/DateSelector.tsx",
+        "apps/reception/src/components/checkins/docInsert/DOBSection.tsx",
+        "apps/reception/src/lib/roles.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "STRATEGY",
+      "current_truth": "An in-progress RBAC migration (15 uncommitted files) converts username-string access checks to canAccess()/isPrivileged() calls from apps/reception/src/lib/roles.ts. Three username checks remain unmigrated in production code: (1) useAllocateRoom.ts:105 \u2014 hardcoded allowlist [\"pete\", \"serena\"] used to gate room reallocation; (2) DateSelector.tsx:46 \u2014 isSerena defined as username?.toLowerCase() === \"serena\" to apply a restricted DayPicker calendar; (3) DOBSection.tsx:27-32 \u2014 ALLOWED_OVERRIDE_USERS constant (literal list: Pete, Serena, Allessandro, Cristiana) used to gate age-restriction override. These must be migrated to role-based checks before the in-progress batch can be committed and the migration considered complete.",
+      "next_scope_now": "Fact-find to complete the 3 remaining username-to-role migrations: (1) read roles.ts and the in-progress canAccess() call sites to understand what role/permission names already exist and which the 3 remaining checks should map to (e.g. isPrivileged(), MANAGEMENT_ACCESS, or a new OVERRIDE permission); (2) implement the migration for useAllocateRoom allowlist, DateSelector isSerena calendar restriction, and DOBSection ALLOWED_OVERRIDE_USERS; (3) audit all reception source files for any remaining username-string access checks (grep for === \"pete\", === \"serena\", === \"Pete\", ALLOWED_OVERRIDE); (4) confirm the full in-progress batch is internally consistent and ready to commit together.",
+      "adjacent_later": [
+        "Document role permission names in reception README or architecture doc",
+        "Add ESLint rule to ban username-string access checks"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: 3 username checks remain unmigrated \u2014 useAllocateRoom.ts, DateSelector.tsx, DOBSection.tsx",
+        "operator-stated: RBAC migration is ship-blocking; 15 files in progress but uncommitted"
+      ],
+      "created_at": "2026-02-27T16:00:00Z",
+      "queue_state": "auto_executed",
+      "dispatched_at": "2026-02-27T16:00:00Z",
+      "auto_executed_at": "2026-02-27T16:00:00Z",
+      "fact_find_slug": "reception-rbac-migration-code"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0045",
+      "mode": "trial",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "root_event_id": "operator:BRIK:STRATEGY:reception-rbac-pin-user-roles:20260227",
+      "anchor_key": "reception-rbac-pin-user-roles",
+      "cluster_key": "BRIK:STRATEGY:reception-rbac-pin-user-roles:operator:20260227",
+      "cluster_fingerprint": "f0e1d2c3b4a596877685a4b3c2d1e0f5",
+      "lineage_depth": 0,
+      "area_anchor": "reception RBAC data gap \u2014 PIN users in NEXT_PUBLIC_USERS_JSON have no roles",
+      "location_anchors": [
+        "apps/reception/src/utils/getUserByPin.ts",
+        "apps/reception/src/lib/roles.ts",
+        "apps/reception/.env.example"
+      ],
+      "provisional_deliverable_family": "config-change",
+      "domain": "STRATEGY",
+      "current_truth": "PIN-auth users in the reception app are loaded from NEXT_PUBLIC_USERS_JSON (getUserByPin.ts). All current entries in this env var have roles: None (or missing roles field). The RBAC migration replaces all username checks with canAccess()/isPrivileged() calls. Once migrated, PIN-auth users will have no roles and canAccess() returns false for all permission checks \u2014 silently locking all PIN-auth staff out of their usual features. Additionally, NEXT_PUBLIC_USERS_JSON is absent from .env.example, so the roles format is undocumented for new deployments.",
+      "next_scope_now": "Fact-find to resolve PIN user role assignment: (1) read roles.ts to enumerate all role names and what canAccess() permissions each role grants; (2) read NEXT_PUBLIC_USERS_JSON (from .env.local or deployment config) to list all PIN users by username; (3) determine the correct role assignment for each PIN user (owner, manager, staff, or equivalent); (4) produce updated NEXT_PUBLIC_USERS_JSON entries with roles populated; (5) add NEXT_PUBLIC_USERS_JSON with format documentation (including roles array) to apps/reception/.env.example.",
+      "adjacent_later": [
+        "Migrate roles from env var to Firebase userProfiles for Firebase-auth users",
+        "Add runtime validation that warns when a user has no roles after login"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.93,
+      "evidence_refs": [
+        "operator-stated: NEXT_PUBLIC_USERS_JSON PIN users have roles: None \u2014 will lose all access once canAccess() replaces username checks",
+        "operator-stated: NEXT_PUBLIC_USERS_JSON missing from .env.example \u2014 roles format undocumented"
+      ],
+      "created_at": "2026-02-27T16:00:00Z",
+      "queue_state": "auto_executed",
+      "dispatched_at": "2026-02-27T16:00:00Z",
+      "auto_executed_at": "2026-02-27T16:00:00Z",
+      "fact_find_slug": "reception-rbac-pin-user-roles"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0046",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:PRODUCTS:brik-room-content-schema:20260227",
+      "anchor_key": "brik-room-content-schema",
+      "cluster_key": "BRIK:PRODUCTS:brik-room-content-schema:operator:20260227",
+      "cluster_fingerprint": "c3d4e5f6a7b8091234567890cdef1234",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK room pages \u2014 content schema for key decision drivers",
+      "location_anchors": [
+        "apps/brikette/src/data/roomsData.ts",
+        "apps/brikette/src/app/[lang]/rooms/[id]/RoomDetailContent.tsx",
+        "apps/brikette/src/components/rooms/"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "PRODUCTS",
+      "current_truth": "Room detail pages exist at /rooms/[id] with roomsData.ts defining 11 room types. Each entry has imagesRaw (a flat, semantically unlabeled array of image paths), widgetRoomCode, widgetRateCodeNR/Flex, and basic metadata. RoomDetailContent.tsx renders: HeroSection \u2192 SocialProofSection \u2192 RoomCard \u2192 bed description \u2192 DirectBookingPerks \u2192 StickyBookNow CTA. There is no structured content schema enforcing presence of key decision-driver image categories (bed, bathroom, view, terrace, security/lockers). Optional features like terrace have no clean omission mechanism \u2014 their absence would produce empty sections or broken layout.",
+      "next_scope_now": "Fact-find to design a room content schema covering key decision drivers: (1) inventory all 11 room types in roomsData.ts \u2014 which features (terrace, sea view, locker/security) are present for which rooms, and which image slots are currently populated?; (2) inspect RoomDetailContent.tsx, RoomCard.tsx, and HeroSection.tsx \u2014 how is imagesRaw currently consumed and rendered?; (3) design a structured image schema (e.g. { bed, bathroom, view?, terrace?, security? }) where optional slots are cleanly omitted if absent \u2014 no empty sections, no placeholders, no broken layout; (4) assess what images exist in public/img/ that could be assigned to schema slots for each room; (5) determine resilient omission strategy \u2014 conditional render in RoomCard and gallery that silently skips absent feature slots; (6) produce a planning brief for roomsData.ts schema update and RoomDetailContent.tsx/RoomCard.tsx rendering changes.",
+      "adjacent_later": [
+        "Translate room content schema to apartment page (ApartmentPageContent.tsx uses separate GallerySection with 3 images \u2014 may benefit from same schema discipline)",
+        "Image optimisation pass once schema slots are populated (Next.js Image with explicit dimensions per slot)",
+        "Alt text strategy for each schema slot type (bed, bathroom, view, terrace, security)"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "operator-stated: room media must reliably cover the key decision drivers \u2014 bed(s), bathroom, view, terrace (if applicable), and security (e.g. keycard access, in-room lockers)",
+        "operator-stated: content schema must be resilient to missing features \u2014 if a feature is not available, it should be omitted cleanly with no empty sections, placeholders, or broken layout",
+        "operator-stated: guests must be able to review accurate room information and a complete image set before booking"
+      ],
+      "created_at": "2026-02-27T18:00:00Z",
+      "queue_state": "processed",
+      "dispatched_at": "2026-02-27T18:00:00Z",
+      "auto_executed_at": "2026-02-27T18:00:00Z",
+      "fact_find_slug": "brik-room-content-schema",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-02-27T00:00:00Z",
+        "fact_find_slug": "brik-room-content-schema",
+        "fact_find_path": "docs/plans/brik-room-content-schema/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0047",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:PRODUCTS:brik-room-octorate-live-pricing:20260227",
+      "anchor_key": "brik-room-octorate-live-pricing",
+      "cluster_key": "BRIK:PRODUCTS:brik-room-octorate-live-pricing:operator:20260227",
+      "cluster_fingerprint": "d4e5f6a7b8c9102345678901def23456",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK room pages \u2014 live pricing and availability from Octorate Octobook",
+      "location_anchors": [
+        "apps/brikette/src/utils/buildOctorateUrl.ts",
+        "apps/brikette/src/app/[lang]/rooms/[id]/RoomDetailContent.tsx",
+        "apps/brikette/src/data/roomsData.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "PRODUCTS",
+      "current_truth": "Room detail pages show no live pricing or availability before the user navigates away to book.octorate.com. buildOctorateUrl.ts constructs all booking URLs to the external Octorate domain. No date picker, guest count selector, or rate preview exists on the room page itself. Guests must click through to Octorate to see any pricing or availability information, creating an information gap before the booking decision point. RoomCard.tsx renders static room details only. The apartment booking page (ApartmentBookContent.tsx) uses hardcoded rate codes but also navigates to the external Octorate domain for completion.",
+      "next_scope_now": "Fact-find to assess live pricing and availability integration options for room pages: (1) research Octorate Octobook API \u2014 does Octorate expose a public or authenticated API for querying room availability and pricing by date range and guest count? Identify authentication method, endpoint structure, and rate/availability response format; (2) assess Octorate iFrame/embed option \u2014 does Octorate provide an embeddable booking widget that remains on the brikette.com domain without redirecting to book.octorate.com? Review 'custom page' option referenced in benchmark; (3) review existing buildOctorateUrl.ts and rate code structure in roomsData.ts (widgetRoomCode, widgetRateCodeNR, widgetRateCodeFlex) \u2014 how does the current URL construction map to Octorate's rate/room identifiers?; (4) define minimum viable on-page flow \u2014 date range picker + guest count selector \u2192 show available rate options (NR/flex with prices) \u2192 CTA to Octorate for booking completion; (5) assess integration architecture: server-side API route proxy vs client-side fetch for availability data, rate caching strategy; (6) produce a planning brief covering the Octorate API or embed integration approach, data flow design, and required UI changes to RoomDetailContent.tsx.",
+      "adjacent_later": [
+        "Rate parity display \u2014 show direct rate vs OTA rate comparison once live pricing is available",
+        "Availability calendar as a browse tool on the rooms listing page (not just per-room detail)",
+        "Rate caching strategy to avoid Octorate API rate limits during peak traffic"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: guests must be able to check availability and pricing for specific dates and guest counts before completing booking via Octorate",
+        "operator-stated: guests must be able to choose between refundable and non-refundable rates before booking handoff",
+        "operator-stated: booking completion should continue to use the existing Octobook booking flow/results as currently implemented",
+        "worldclass-scan-2026-02-27.md: gap \u2014 booking CTA routes to external book.octorate.com domain (minor-gap)"
+      ],
+      "created_at": "2026-02-27T18:00:00Z",
+      "queue_state": "processed",
+      "dispatched_at": "2026-02-27T18:00:00Z",
+      "auto_executed_at": "2026-02-27T18:00:00Z",
+      "fact_find_slug": "brik-room-octorate-live-pricing",
+      "fact_find_path": "docs/plans/brik-room-octorate-live-pricing/fact-find.md",
+      "processed_at": "2026-02-27T20:00:00Z",
+      "route": "dispatch-routed"
     }
   ]
 }

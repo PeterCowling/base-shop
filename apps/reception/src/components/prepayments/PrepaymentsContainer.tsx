@@ -11,6 +11,7 @@ import useActivitiesMutations from "../../hooks/mutations/useActivitiesMutations
 import useAllTransactions from "../../hooks/mutations/useAllTransactionsMutations";
 import useCCDetailsMutations from "../../hooks/mutations/useCCDetailsMutations";
 import useFinancialsRoomMutations from "../../hooks/mutations/useFinancialsRoomMutations";
+import { canAccess, Permissions } from "../../lib/roles";
 import { getCurrentIsoTimestamp } from "../../utils/dateUtils";
 import { generateTransactionId } from "../../utils/generateTransactionId";
 
@@ -32,7 +33,7 @@ function PrepaymentsContainer({
   const { saveCCDetails } = useCCDetailsMutations();
   const { saveFinancialsRoom } = useFinancialsRoomMutations();
   const { user } = useAuth();
-  const isPete = user?.user_name === "Pete";
+  const isPete = canAccess(user ?? null, Permissions.BULK_ACTIONS);
   const [selectedBooking, setSelectedBooking] = useState<PrepaymentData | null>(
     null
   );

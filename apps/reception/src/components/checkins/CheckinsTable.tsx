@@ -9,6 +9,7 @@ import useAddGuestToBookingMutation from "../../hooks/mutations/useAddGuestToBoo
 import useArchiveEligibleCount from "../../hooks/mutations/useArchiveEligibleCount";
 import useCheckinsModes from "../../hooks/utilities/useCheckinsModes";
 import useSharedDailyToggle from "../../hooks/utilities/useSharedDailyToggle";
+import { isPrivileged } from "../../lib/roles";
 import { type CheckInRow } from "../../types/component/CheckinRow";
 import { getLocalToday } from "../../utils/dateUtils";
 import { getErrorMessage } from "../../utils/errorMessage";
@@ -41,8 +42,7 @@ const CheckinsTable: React.FC = () => {
     }
   }, [searchParams]);
 
-  const lowerName = user?.user_name?.toLowerCase();
-  const isPete = lowerName === "pete" || lowerName === "peter";
+  const isPete = isPrivileged(user ?? null);
   const fetchSelectedDate = isPete ? selectedDate : todayStr;
   const { rows, loading, error, validationError } = useCheckinsTableData({
     selectedDate: fetchSelectedDate,

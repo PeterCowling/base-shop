@@ -28,11 +28,11 @@ The reception app has a complete offline infrastructure module (`lib/offline/`) 
 
 - [x] TASK-01: Extend PendingWrite schema + DB_VERSION 2 migration
 - [x] TASK-02: Mount useOfflineSync + OfflineSyncContext in App.tsx
-- [ ] TASK-03: Wire Phase 2 mutation hooks through offline gateway
+- [x] TASK-03: Wire Phase 2 mutation hooks through offline gateway
 - [x] TASK-04: Add online-only guard to useChangeBookingDatesMutator
 - [x] TASK-05: Auth profile cache fallback in loadUserWithProfile
 - [x] TASK-06: Read-through cache for critical data views
-- [ ] TASK-07: Sync status UI in OfflineIndicator
+- [x] TASK-07: Sync status UI in OfflineIndicator
 - [ ] TASK-CHKPT: Checkpoint — reassess TASK-08 from Phase 2 evidence
 - [ ] TASK-08: Unit tests — offline primitives + auth fallback
 
@@ -105,11 +105,11 @@ The reception app has a complete offline infrastructure module (`lib/offline/`) 
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Extend PendingWrite schema + DB_VERSION 2 migration | 85% | M | Complete (2026-02-27) | - | TASK-03 |
 | TASK-02 | IMPLEMENT | Mount useOfflineSync + OfflineSyncContext in App.tsx | 85% | S | Complete (2026-02-27) | - | TASK-03, TASK-07 |
-| TASK-03 | IMPLEMENT | Wire Phase 2 mutation hooks through offline gateway | 75% | L | Pending | TASK-01, TASK-02 | TASK-CHKPT |
+| TASK-03 | IMPLEMENT | Wire Phase 2 mutation hooks through offline gateway | 85% | L | Complete (2026-02-27) | TASK-01, TASK-02 | TASK-CHKPT |
 | TASK-04 | IMPLEMENT | Add online-only guard to useChangeBookingDatesMutator | 85% | S | Complete (2026-02-27) | - | - |
 | TASK-05 | IMPLEMENT | Auth profile cache fallback in loadUserWithProfile | 80% | S | Complete (2026-02-27) | - | TASK-08 |
 | TASK-06 | IMPLEMENT | Read-through cache for critical data views | 80% | M | Complete (2026-02-27) | - | - |
-| TASK-07 | IMPLEMENT | Sync status UI in OfflineIndicator | 80% | S | Pending | TASK-02 | - |
+| TASK-07 | IMPLEMENT | Sync status UI in OfflineIndicator | 80% | S | Complete (2026-02-27) | TASK-02 | - |
 | TASK-CHKPT | CHECKPOINT | Reassess TASK-08 from Phase 2 evidence | 95% | S | Pending | TASK-03 | TASK-08 |
 | TASK-08 | IMPLEMENT | Unit tests — offline primitives + auth fallback | 70% | M | Pending | TASK-CHKPT, TASK-01, TASK-05 | - |
 
@@ -226,7 +226,7 @@ The reception app has a complete offline infrastructure module (`lib/offline/`) 
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
 - **Affects:**
   - `apps/reception/src/hooks/mutations/useActivitiesMutations.ts` (addActivity, saveActivity only — see scope below)
   - `apps/reception/src/hooks/mutations/useBookingMutations.ts`
@@ -236,9 +236,9 @@ The reception app has a complete offline infrastructure module (`lib/offline/`) 
   - `[readonly] apps/reception/src/lib/offline/syncManager.ts` (queueOfflineWrite import)
 - **Depends on:** TASK-01, TASK-02
 - **Blocks:** TASK-CHKPT
-- **Confidence:** 75%
-  - Implementation: 75% — `useActivitiesMutations.ts` read in full (337 lines): `addActivity` and `saveActivity` are write-only (no read-before-write) and can be queued; `removeLastActivity` does `get()` before write — online-only; `maybeSendEmailGuest` at line 138 requires network and is deferred when activity is queued offline (documented below). `useLoansMutations.ts` read in full (296 lines): only `saveLoan` is a simple write — all other methods have read-before-write or chained hooks (`removeLoanItem`, `convertKeycardDocToCash`, `removeLoanTransactionsForItem`, `removeOccupantIfEmpty`, `updateLoanDepositType`). `useCompletedTasks.ts` read in full (confirmed — simple writes). `useBookingMutations.ts` not yet read in full (scout step required). Capped at 75%.
-  - Approach: 80% — gateway only wraps ops that are pure writes (no Firebase `get` before the `write`). `removeLastActivity` and most `useLoansMutations` methods get online-only guards instead. This is the only safe approach given the read-before-write patterns confirmed in the source.
+- **Confidence:** 85%
+  - Implementation: 85% — `useActivitiesMutations.ts` read in full (337 lines): `addActivity` and `saveActivity` are write-only; `removeLastActivity` online-only (read-before-write). `useLoansMutations.ts` read in full: only `saveLoan` is queueueable. `useCompletedTasks.ts` confirmed simple writes. `useBookingMutations.ts` read in full (57 lines — scout wave): `saveBooking` is pure `update()`, no read, all params are passed in. `useBookingNotesMutation.ts` read in full (45 lines — scout wave): `addNote`/`updateNote`/`deleteNote` are all pure writes, no `get()`. All scout findings positive — no blocking complexity.
+  - Approach: 80% — gateway only wraps ops that are pure writes. Online-only guards for read-before-write ops. This is the only safe approach.
   - Impact: 80% — online path is unchanged; existing tests which mock `firebase/database` will still pass. Deferred email notifications for offline activity writes are an accepted v1 limitation.
 - **Acceptance — write-only gateway ops (queued offline):**
   - `useActivitiesMutations.addActivity` and `saveActivity`: offline branch queues the multi-path `update(ref(database), updates)` call; `maybeSendEmailGuest` is NOT called when offline (it requires Firebase `get` — network dependent). Comment must document that email notification is deferred when activity is logged offline.
@@ -272,9 +272,7 @@ The reception app has a complete offline infrastructure module (`lib/offline/`) 
   - `queueOfflineWrite` calls: consumed by `syncPendingWrites` (reads `path`/`operation`/`data` only; new opts fields stored, not acted on in v1)
   - `useOnlineStatus()` added to hooks: consumers (React components) are unchanged; hook returns boolean with no side effects
   - `maybeSendEmailGuest` NOT called when offline: email notifications for activity codes (2,3,4,5,6,7,8,21,27) are deferred when activity is logged offline. The activity write itself IS queued and will reach Firebase on sync. Staff must manually trigger email or rely on the next online session's activity log to trigger the email flow. This is an accepted v1 limitation — documented in the Decision Log.
-- **Scouts:**
-  - Read `useBookingMutations.ts` before writing gateway branch — confirm write method names, path patterns, whether any methods have read-before-write patterns.
-  - Read `useBookingNotesMutation.ts` before writing gateway branch — confirm write structure.
+- **Scouts:** Completed (scout wave parallel with Wave 1): `useBookingMutations.ts` (57 lines) — `saveBooking` is pure `update()` on `bookings/${bookingRef}/${occupantId}`, no read, safe to queue. `useBookingNotesMutation.ts` (45 lines) — `addNote`/`updateNote`/`deleteNote` all pure writes, no `get()`, safe to queue. Both hooks confirmed no read-before-write patterns.
 - **Edge Cases & Hardening:**
   - `crypto.randomUUID()` availability: available in all modern browsers and Node 22+. No polyfill needed.
   - IndexedDB unavailable (`isIndexedDbAvailable()` false): `queueOfflineWrite` → `addPendingWrite` → `openDb()` rejects; `addPendingWrite` returns `null`. Gateway branch must fall through to direct Firebase write when `null` returned (not silently return).
@@ -284,6 +282,7 @@ The reception app has a complete offline infrastructure module (`lib/offline/`) 
   - Rollback: remove `if (!online)` branches; restore original function bodies.
 - **Documentation impact:** None — internal hook change.
 - **Notes / references:** `useActivitiesMutations.ts:101–155` (`addActivity` — confirmed queueueable), `:138` (`maybeSendEmailGuest` — deferred offline), `:162–244` (`removeLastActivity` — read-before-write, online-only); `useLoansMutations.ts:35–57` (`saveLoan` — queueueable), `:147–213` (`removeLoanItem` — chained, online-only); `useCompletedTasks.ts:28–76` (confirmed simple writes).
+- **Build evidence (2026-02-27):** Queue-first offline branches implemented across 5 hooks. `addActivity`/`saveActivity` (path `""`, `update`, `atomic:true`, `domain:"activities"`, email deferred); `setOccupantTasks`/`updateSingleTask` (`completedTasks/...`, `set`, `domain:"tasks"`); `saveBooking` (`bookings/{ref}/{occupantId}`, `update`, `domain:"bookings"`); notes ops (`bookings/{ref}/__notes/{id}`, `domain:"notes"`); `saveLoan` (`loans/{path}`, `update`, `domain:"loans"`). IDB-unavailable null-return fallthrough in all queued ops. Online-only guards on `removeLastActivity` + 5 `useLoansMutations` complex methods. TypeScript: clean.
 
 ---
 
@@ -420,7 +419,7 @@ The reception app has a complete offline infrastructure module (`lib/offline/`) 
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-27)
 - **Affects:** `apps/reception/src/components/OfflineIndicator.tsx`
 - **Depends on:** TASK-02
 - **Blocks:** -
@@ -449,6 +448,7 @@ The reception app has a complete offline infrastructure module (`lib/offline/`) 
 - **Rollout / rollback:** Rollout: additive UI change. Rollback: revert OfflineIndicator to current state (remove context hook + new render logic).
 - **Documentation impact:** None.
 - **Notes / references:** `OfflineIndicator.tsx:1–25` (confirmed structure), fact-find § Questions > Open (sync UI placement — default assumption taken).
+- **Build evidence (2026-02-27):** `useOnlineStatus()` import replaced by `useOfflineSyncContext()`. Four render branches: (1) online + no pending/failed → `null`; (2) online + failed > 0 → failed banner + retry button (`void triggerSync()`); (3) online + syncing → "Syncing…" banner; (4) offline → "You're offline. N write(s) queued." or "You're offline." TypeScript: clean (`SyncResult.failed` is directly a `number`).
 
 ---
 

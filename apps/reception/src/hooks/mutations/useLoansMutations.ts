@@ -2,6 +2,8 @@ import { useCallback, useState } from "react";
 import { get, ref, remove, update } from "firebase/database";
 
 import { useAuth } from "../../context/AuthContext";
+import { queueOfflineWrite } from "../../lib/offline/syncManager";
+import { useOnlineStatus } from "../../lib/offline/useOnlineStatus";
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import { type LoanMethod, type LoanTransaction } from "../../types/hooks/data/loansData";
 import { generateTransactionId } from "../../utils/generateTransactionId";
@@ -18,10 +20,11 @@ import useAllTransactions from "./useAllTransactionsMutations";
  */
 export default function useLoansMutations() {
   const database = useFirebaseDatabase();
+  const online = useOnlineStatus();
   const [error, setError] = useState<unknown>(null);
 
   // We need the user’s info for logging deposit refunds and adding an activity.
-  // Renamed 'user' to '_user' to satisfy lint rules for unused vars.
+  // Renamed ‘user’ to ‘_user’ to satisfy lint rules for unused vars.
   const { user: _user } = useAuth();
 
   // Hooks for logging activities and financial transactions
@@ -33,7 +36,7 @@ export default function useLoansMutations() {
    *   loans/<bookingRef>/<occupantId>/txns/<transactionId>
    */
   const saveLoan = useCallback(
-    (
+    async (
       bookingRef: string,
       occupantId: string,
       transactionId: string,
@@ -41,8 +44,18 @@ export default function useLoansMutations() {
     ) => {
       setError(null);
       const path = `loans/${bookingRef}/${occupantId}/txns/${transactionId}`;
-      const loanRef = ref(database, path);
 
+      if (!online) {
+        const queued = await queueOfflineWrite(path, "update", loanData, {
+          idempotencyKey: crypto.randomUUID(),
+          conflictPolicy: "last-write-wins",
+          domain: "loans",
+        });
+        if (queued !== null) return;
+        // IDB unavailable — fall through to direct write
+      }
+
+      const loanRef = ref(database, path);
       return update(loanRef, loanData)
         .then(() => {
           // success — no logging of financial payload
@@ -53,7 +66,7 @@ export default function useLoansMutations() {
           throw err;
         });
     },
-    [database]
+    [database, online]
   );
 
   /**
@@ -63,6 +76,12 @@ export default function useLoansMutations() {
   const removeOccupantIfEmpty = useCallback(
     (bookingRef: string, occupantId: string) => {
       setError(null);
+
+      if (!online) {
+        setError(new Error("This operation requires a network connection. Please reconnect and try again."));
+        return Promise.resolve(null);
+      }
+
       const occupantTxnsRef = ref(
         database,
         `loans/${bookingRef}/${occupantId}/txns`
@@ -90,7 +109,7 @@ export default function useLoansMutations() {
           throw err;
         });
     },
-    [database]
+    [database, online]
   );
 
   /**
@@ -100,6 +119,12 @@ export default function useLoansMutations() {
   const removeLoanTransactionsForItem = useCallback(
     (bookingRef: string, occupantId: string, itemName: string) => {
       setError(null);
+
+      if (!online) {
+        setError(new Error("This operation requires a network connection. Please reconnect and try again."));
+        return Promise.resolve(null);
+      }
+
       const occupantTxnsRef = ref(
         database,
         `loans/${bookingRef}/${occupantId}/txns`
@@ -136,7 +161,7 @@ export default function useLoansMutations() {
           throw err;
         });
     },
-    [database, removeOccupantIfEmpty]
+    [database, online, removeOccupantIfEmpty]
   );
 
   /**
@@ -152,6 +177,11 @@ export default function useLoansMutations() {
       itemName: string
     ) => {
       setError(null);
+
+      if (!online) {
+        setError(new Error("This operation requires a network connection. Please reconnect and try again."));
+        return Promise.resolve(null);
+      }
 
       const path = `loans/${bookingRef}/${occupantId}/txns/${transactionId}`;
       const txnRef = ref(database, path);
@@ -209,7 +239,7 @@ export default function useLoansMutations() {
           throw err;
         });
     },
-    [database, removeOccupantIfEmpty, logActivity, addToAllTransactions]
+    [database, online, removeOccupantIfEmpty, logActivity, addToAllTransactions]
   );
 
   /**
@@ -224,6 +254,11 @@ export default function useLoansMutations() {
       count: number
     ) => {
       setError(null);
+
+      if (!online) {
+        setError(new Error("This operation requires a network connection. Please reconnect and try again."));
+        return Promise.resolve(null);
+      }
 
       const deposit = 10 * count;
       const path = `loans/${bookingRef}/${occupantId}/txns/${transactionId}`;
@@ -251,7 +286,7 @@ export default function useLoansMutations() {
           throw err;
         });
     },
-    [database, addToAllTransactions, logActivity]
+    [database, online, addToAllTransactions, logActivity]
   );
 
   /**
@@ -265,6 +300,12 @@ export default function useLoansMutations() {
       depositType: LoanMethod
     ) => {
       setError(null);
+
+      if (!online) {
+        setError(new Error("This operation requires a network connection. Please reconnect and try again."));
+        return Promise.resolve(null);
+      }
+
       const path = `loans/${bookingRef}/${occupantId}/txns/${transactionId}`;
       const loanRef = ref(database, path);
 
@@ -281,7 +322,7 @@ export default function useLoansMutations() {
           throw err;
         });
     },
-    [database]
+    [database, online]
   );
 
   return {

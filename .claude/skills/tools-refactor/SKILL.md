@@ -112,3 +112,20 @@ const Item = memo(({ name }: { name: string }) => <div>{name}</div>)
 - [ ] Uses design tokens (no arbitrary values)
 - [ ] Follows architectural layer rules
 - [ ] Performance improved (if that was the goal)
+
+## Entry Criteria
+
+Invoke `tools-refactor` when at least one of the following is true:
+
+- A QA report from `lp-design-qa` contains at least one finding citing: arbitrary CSS values (inline styles, hard-coded px/rem, Tailwind arbitrary classes), missing semantic tokens, or component structure issues (over-nesting, prop drilling, missing composition patterns).
+- A sweep report from `tools-ui-contrast-sweep` (`contrast-sweep-report.md`) contains at least one actionable token-level fix (e.g., replace hard-coded color with semantic token).
+- A sweep report from `tools-ui-breakpoint-sweep` (`breakpoint-sweep-report.md`) contains at least one layout fix requiring component restructuring (not just CSS class adjustments).
+- Operator directs a refactor explicitly (no minimum findings threshold required).
+
+**Minimum threshold:** at least 1 qualifying finding from any upstream QA source, OR explicit operator direction.
+
+## Integration
+
+- **Upstream:** QA reports from `lp-design-qa`, `tools-ui-contrast-sweep` (`contrast-sweep-report.md`), and `tools-ui-breakpoint-sweep` (`breakpoint-sweep-report.md`); or explicit operator direction.
+- **Downstream:** `lp-do-build` (refactored components committed and verified); human PR review.
+- **Loop position:** S9D (Refactor) — post-sweep QA, pre-merge.

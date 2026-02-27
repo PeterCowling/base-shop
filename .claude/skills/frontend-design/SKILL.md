@@ -123,6 +123,12 @@ After building, run `/lp-design-qa` to audit:
 
 For significant features that benefit from visual documentation, suggest `/tools-bos-design-page` to create diagrams showing the component architecture, state flows, or interaction patterns.
 
+## Integration
+
+- **Upstream:** `lp-design-spec` (design spec document — provides layout, component, and token decisions); `lp-do-plan` (IMPLEMENT task with `Execution-Track: code` and UI component scope).
+- **Downstream:** `lp-design-qa` (design and token compliance audit of the built UI); `lp-do-build` (built components committed and verified before QA).
+- **Loop position:** S9A (UI Build) — post-design-spec, pre-design-qa.
+
 ## Anti-Patterns
 
 | Do NOT | Do instead |

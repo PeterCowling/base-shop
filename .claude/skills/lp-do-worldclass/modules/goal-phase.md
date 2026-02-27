@@ -16,6 +16,8 @@ Read `docs/business-os/strategy/<BIZ>/worldclass-goal.md`.
 
 **If absent:** stop immediately with the State 1 error message from SKILL.md. Do not proceed to any further step.
 
+**Parsing invariant:** parse only the first YAML frontmatter block at the very top of the file (the block delimited by `---` on lines 1 and N). Ignore any `---` sequences that appear later in the file. This invariant applies to any implementation — agent, TypeScript, or otherwise — and must not be bypassed.
+
 **If present:** validate that all required fields exist:
 
 | Field              | Required | Notes                                                                          |
@@ -24,11 +26,27 @@ Read `docs/business-os/strategy/<BIZ>/worldclass-goal.md`.
 | `business`         | Yes      | Must match `--biz` value                                                       |
 | `goal_version`     | Yes      | Integer ≥1                                                                     |
 | `singular-goal`    | Yes      | Non-empty string                                                               |
-| `domains`          | Yes      | List with at least 1 entry; each entry must have `name`, `context`, `examples`; `id` is optional — if present, must be unique across all domains and lowercase-hyphenated; if absent, domain_id is derived from `name` (lowercased, spaces → hyphens) |
+| `domains`          | Yes      | List with at least 1 entry; each entry must have `name`, `context`, `examples`; `id` is optional — see Domain id rules below |
 | `constraints`      | Yes      | List (may be empty)                                                            |
 | `created`          | Yes      | YYYY-MM-DD                                                                     |
 | `last-updated`     | Yes      | YYYY-MM-DD                                                                     |
 | `benchmark-status` | Yes      | One of: `none`, `research-prompt-ready`, `benchmark-ready`                     |
+
+**Domain id rules (applies when any domain has an explicit `id` field):**
+
+- **Format:** each `id` must match `^[a-z0-9]+(?:-[a-z0-9]+)*$` — lowercase alphanumeric and hyphens; no underscores, spaces, or uppercase.
+- **Uniqueness:** all explicit `id` values must be unique across the domains list.
+- **`name` is display-only when `id` is present:** when a domain has an explicit `id`, `name` is used only for display and research prompt text. Renaming `name` without changing `id` does NOT change domain_id and does NOT require a `goal_version` bump.
+- **Derived path (no `id`):** if `id` is absent, domain_id is derived from `name` (lowercased, spaces → hyphens). Renaming `name` in the no-id path changes domain_id — bump `goal_version` before renaming.
+
+If any domain `id` fails format or uniqueness, stop with:
+
+```
+Error: worldclass-goal.md for <BIZ> has an invalid domain id.
+Domain: <domain.name>
+Problem: <"id does not match required format ^[a-z0-9]+(?:-[a-z0-9]+)*$" | "duplicate id — must be unique across all domains">
+Fix the domain id in docs/business-os/strategy/<BIZ>/worldclass-goal.md, then re-run.
+```
 
 **Field missing or invalid:** stop with:
 
@@ -58,6 +76,26 @@ Extract the `goal_version` field from its frontmatter.
 **If regeneration required:** proceed to Step 3.
 
 ## Step 3: Generate Deep-Research Prompt
+
+**Before generating sections — compute `goal_contract_hash`:**
+
+Compute this hash from the validated goal artifact. It is written to both the research prompt frontmatter (Step 4) and the benchmark output format spec (Section d), enabling automatic detection of goal contract drift even when `goal_version` was not bumped.
+
+```
+resolved_domain_ids  = for each domain: use domain.id if present, else lowercase-hyphenate domain.name
+contract_string      = <singular-goal>
+                     + "||"
+                     + sort(resolved_domain_ids).join(",")
+                     + "||"
+                     + sort(constraints).join("|")
+goal_contract_hash   = sha256(contract_string) — lowercase hex (64 chars)
+```
+
+Both `resolved_domain_ids` and `constraints` are sorted alphabetically before joining — this makes the hash order-independent (reordering domains or constraints in the goal does not change the hash).
+
+If SHA-256 is not feasible in the agent runtime: use the fallback `<contract_string[:40]>-fp` padded to 64 characters with `0`. Same fallback pattern as ideas-phase deterministic keys. Document the fallback in the research prompt frontmatter as `goal_contract_hash_method: fallback`.
+
+---
 
 Generate the content of the research prompt document. The prompt must contain all five sections below, in order.
 
@@ -159,6 +197,7 @@ Write the generated prompt to `docs/business-os/strategy/<BIZ>/worldclass-resear
 schema_version: worldclass-research-prompt.v1
 business: <BIZ>
 goal_version: <goal.goal_version>
+goal_contract_hash: <computed in Step 3>
 generated_at: <--as-of-date>
 domains: <same list as goal.domains, by name>
 ---
@@ -199,3 +238,23 @@ After Steps 3–4 complete (or if they were skipped in Step 2), evaluate:
 **If benchmark is missing entirely:** stop with the State 2 stop message.
 
 **If benchmark.goal_version != goal.goal_version:** stop with the State 4 stop message. (The research prompt has now been refreshed by Steps 3–4; the operator can use it immediately.)
+
+**Additional check — goal contract hash drift (run only when all three checks above pass):**
+
+If `benchmark.goal_contract_hash` is present in the benchmark frontmatter, compute `goal_contract_hash` from the current goal artifact using the formula from Step 3. This computation is deterministic from goal content and may be run at any step regardless of whether Steps 3–4 executed.
+
+- If `benchmark.goal_contract_hash` is absent → proceed (benchmark predates this check; `goal_version` match is sufficient)
+- If present AND matches computed hash → proceed to scan-phase
+- If present AND does NOT match computed hash → stop with:
+
+```
+Error: worldclass-goal.md and worldclass-benchmark.md for <BIZ> have diverged.
+goal_contract_hash in benchmark: <benchmark value>
+goal_contract_hash computed now:  <computed value>
+goal_version:                     <goal.goal_version> (unchanged — hash mismatch means contract changed without a version bump)
+
+The goal contract (singular-goal, domain ids, or constraints) was modified without bumping goal_version.
+The benchmark no longer matches the current goal.
+Fix: bump goal_version in docs/business-os/strategy/<BIZ>/worldclass-goal.md, set benchmark-status: none,
+then re-run /lp-do-worldclass --biz <BIZ> to regenerate the research prompt. Paste a fresh benchmark before scanning.
+```

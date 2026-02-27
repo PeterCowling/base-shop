@@ -50,6 +50,20 @@ Fix the benchmark document so heading domain_ids exactly match frontmatter domai
 
 Record the parsed domain list. All subsequent steps iterate over this list.
 
+**Validate goal/benchmark domain alignment:** read `docs/business-os/strategy/<BIZ>/worldclass-goal.md` and resolve each domain's id — use `domain.id` if present, else lowercase-hyphenate `domain.name`. Compare the resolved set of goal domain_ids against the set of `id` values in the benchmark frontmatter `domains:` list. They must match exactly (same set, no missing entries, no extras). If they differ, stop with:
+
+```
+Error: worldclass-goal.md and worldclass-benchmark.md for <BIZ> have different domain sets.
+Goal domains:       [resolved domain_ids from goal]
+Benchmark domains:  [id values from benchmark frontmatter]
+
+The benchmark was generated for a different goal contract.
+Fix by either:
+  (a) bumping goal_version in worldclass-goal.md, setting benchmark-status: none, and re-running
+      /lp-do-worldclass --biz <BIZ> to regenerate the research prompt; or
+  (b) restoring the goal domains to match the benchmark, if the domain change was unintentional.
+```
+
 ## Step 2: Enumerate Data Sources to Probe
 
 For each of the five fixed data-source categories below, determine its status (`configured`, `not-configured`, or `uncertain`) before proceeding to scan.

@@ -6,7 +6,7 @@ schema_version: worldclass-goal.v1
 # you change ANY of the following:
 #   • singular-goal
 #   • any domain's id, name, context, or examples
-#   • add/remove/reorder domains
+#   • add or remove domains (reordering is non-semantic — goal_contract_hash uses sorted order)
 #   • any constraint that would change what "world-class" means for this business
 #
 # goal_version is the research contract version — it controls benchmark currency.
@@ -118,8 +118,10 @@ results back in, scans compare current state against that benchmark.
 **When to bump `goal_version`:** increment and reset `benchmark-status: none` when you change any of:
 - `singular-goal`
 - any domain's `id`, `name`, `context`, or `examples`
-- add/remove/reorder domains
+- add or remove domains
 - any constraint that changes what world-class means for this business
+
+**Reordering is non-semantic:** reordering domains or constraints in the YAML does not require a `goal_version` bump. The `goal_contract_hash` sorts domain ids and constraints before hashing, so the hash is identical regardless of list order.
 
 **Domain identity warning:** `id` (or `name` if no `id` is set) is used in dispatch clustering keys and benchmark headings. Renaming a domain `name` without setting a stable `id` first will silently change domain_id — corrupting deduplication and clustering for any existing dispatches. Always set an explicit `id` on each domain and bump `goal_version` before renaming `name`.
 
@@ -175,7 +177,8 @@ MARKDOWN BODY (copy and adapt):
 Brief description of the business and why this goal was set.
 
 **When to bump `goal_version`:** increment and reset `benchmark-status: none`
-when you change singular-goal, any domain, or any constraint.
+when you change singular-goal, any domain (add/remove/edit), or any constraint.
+Reordering domains or constraints is non-semantic — no bump needed.
 
 **Domain identity warning:** set an explicit `id` on each domain and bump
 `goal_version` before renaming any domain `name`.

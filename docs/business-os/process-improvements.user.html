@@ -231,6 +231,57 @@
         --border: #dde0ed; --text: #1a1d2e; --text-muted: #5a6080; --text-dim: #a0a8c0;
       }
     }
+    /* pi-transitions: entry/exit animations --- */
+    @keyframes pi-enter {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pi-gone {
+      from { opacity: 1; }
+      to   { opacity: 0; }
+    }
+    .item.is-new {
+      animation: pi-enter 350ms ease-out forwards;
+    }
+    .pi-gone-section {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .pi-gone-section { animation: none; }
+    }
+    .pi-gone-section h4 {
+      margin: 0 0 8px 0;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .pi-gone-card {
+      padding: 8px 10px;
+      border-radius: 4px;
+      background: var(--surface-2);
+      margin-bottom: 6px;
+      opacity: 0.7;
+    }
+    .pi-gone-card:last-child { margin-bottom: 0; }
+    .pi-gone-card .item-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    .pi-gone-card .item-badges {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .item.is-new { animation-duration: 0.01ms; }
+    }
   </style>
 
 <style id="sl-theme-css">html[data-theme="dark"]{--bg:#0e1016;--surface:#161921;--surface-2:#1e2230;--surface-raised:#1e2230;--border:#2a2f45;--text:#e4e7f2;--text-muted:#6b728f;--text-dim:#454d6a;--accent:#5b9cf6;--accent-soft:rgba(91,156,246,.15);--code-bg:#161921;--code-border:#2a2f45;--red-bg:rgba(240,92,92,.10);--amber-bg:rgba(245,166,35,.10);--green-bg:rgba(74,222,128,.08);--blue-bg:rgba(91,156,246,.10);--purple-bg:rgba(167,139,250,.10)}html[data-theme="dark"] body{background:var(--bg)!important;color:var(--text)!important}html[data-theme="light"]{--bg:#f5f6fa;--surface:#ffffff;--surface-2:#f0f1f7;--surface-raised:#f0f1f7;--border:#dde0ed;--text:#1a1d2e;--text-muted:#5a6080;--text-dim:#a0a8c0;--accent:#3362d0;--accent-soft:#e8eeff;--code-bg:#f0f1f7;--code-border:#dde0ed;--red-bg:rgba(200,50,50,.08);--amber-bg:rgba(180,120,0,.08);--green-bg:rgba(40,160,80,.06);--blue-bg:rgba(40,100,220,.08);--purple-bg:rgba(120,80,200,.08)}html[data-theme="light"] body{background:var(--bg)!important;color:var(--text)!important}[data-theme="light"] #sl-nav{background:#eef0f7!important;border-bottom-color:#dde0ed!important}[data-theme="light"] #sl-nav .sl-brand,[data-theme="light"] #sl-nav a,[data-theme="light"] #sl-theme-btn{color:#5a6080!important}[data-theme="light"] #sl-nav a:hover,[data-theme="light"] #sl-nav a.sl-on{color:#1a1d2e!important}</style>
@@ -1936,7 +1987,7 @@
   }
 
   function renderItem(item) {
-    var html = '<div class="item ' + esc(item.type) + '">';
+    var html = '<div class="item ' + esc(item.type) + '"' + (item.idea_key ? ' data-idea-key="' + esc(item.idea_key) + '"' : '') + '>';
     html += '<div class="item-top">';
     html += '<div class="item-title">' + esc(item.title) + '</div>';
     html += '<div class="item-badges">' + tierBadge(item.priority_tier) + bizBadge(item.business) + typeBadge(item.type) + '</div>';
@@ -1992,7 +2043,89 @@
     if (savedTier) activeTierGroup = savedTier;
   } catch (e) {}
 
+  // pi-transitions: read stored idea keys for change detection
+  var piPrevTuples = [];
+  var piPrevKeys = new Set();
+  var piFirstVisit = false;
+  try {
+    var piRaw = localStorage.getItem('pi-seen-keys');
+    if (!piRaw) {
+      piFirstVisit = true;
+    } else {
+      piPrevTuples = JSON.parse(piRaw);
+      if (!Array.isArray(piPrevTuples)) {
+        piPrevTuples = [];
+        piFirstVisit = true;
+      } else {
+        piPrevTuples.forEach(function(t) { if (t && t.k) piPrevKeys.add(t.k); });
+      }
+    }
+  } catch(e) { piPrevTuples = []; piFirstVisit = true; }
+
   render();
+
+  // pi-transitions: write current keys to localStorage
+  try {
+    var piCurrentTuples = IDEA_ITEMS.map(function(item) {
+      return {k: item.idea_key || '', t: item.priority_tier || '', n: item.title || ''};
+    }).filter(function(t) { return !!t.k; });
+    localStorage.setItem('pi-seen-keys', JSON.stringify(piCurrentTuples));
+  } catch(e) {}
+
+  // pi-transitions: apply entry animations and ghost section
+  if (!piFirstVisit) {
+    var piCurrentKeys = new Set();
+    IDEA_ITEMS.forEach(function(item) { if (item.idea_key) piCurrentKeys.add(item.idea_key); });
+
+    // New items: in current but not in previous
+    var piNewKeys = [];
+    IDEA_ITEMS.forEach(function(item) {
+      if (item.idea_key && !piPrevKeys.has(item.idea_key)) piNewKeys.push(item.idea_key);
+    });
+
+    // Gone items: in previous but not in current
+    var piGoneItems = piPrevTuples.filter(function(t) {
+      return t && t.k && !piCurrentKeys.has(t.k);
+    });
+
+    // Apply .is-new class with staggered delay via double-RAF
+    if (piNewKeys.length > 0) {
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          piNewKeys.forEach(function(k, i) {
+            var el = document.querySelector('[data-idea-key="' + k + '"]');
+            if (!el) return;
+            el.classList.add('is-new');
+            el.style.animationDelay = Math.min(i * 30, 300) + 'ms';
+          });
+        });
+      });
+    }
+
+    // Inject "Recently removed" ghost section at top of #app
+    if (piGoneItems.length > 0) {
+      var piGoneHtml = '<div class="pi-gone-section"><h4>Recently removed since last visit</h4>';
+      piGoneItems.forEach(function(t) {
+        piGoneHtml += '<div class="pi-gone-card">';
+        piGoneHtml += '<div class="item-title">' + esc(t.n) + '</div>';
+        piGoneHtml += '<div class="item-badges">' + esc(t.t) + ' \u2014 recently removed</div>';
+        piGoneHtml += '</div>';
+      });
+      piGoneHtml += '</div>';
+      var piAppEl = document.getElementById('app');
+      if (piAppEl) {
+        var piGoneDiv = document.createElement('div');
+        piGoneDiv.innerHTML = piGoneHtml;
+        var piGoneSection = piGoneDiv.firstChild;
+        piAppEl.insertBefore(piGoneSection, piAppEl.firstChild);
+        setTimeout(function() {
+          if (piGoneSection && piGoneSection.parentNode) {
+            piGoneSection.parentNode.removeChild(piGoneSection);
+          }
+        }, 6000);
+      }
+    }
+  }
 
   var genEl = document.getElementById('footer-generated');
   if (genEl) {

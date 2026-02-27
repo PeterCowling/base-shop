@@ -1,0 +1,16 @@
+{
+  "round": 2,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/ci-only-test-execution/plan.md",
+      "line": "25",
+      "message": "Summary overstates enforcement scope: it says local tests are eliminated 'via agent-mediated paths,' but the same paragraph (and Goals at line 41) acknowledges direct local commands such as `pnpm test:affected` are policy-only and not technically blocked. This creates a scope contradiction in correctness language."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 9,
+  "lp_score": 4.5,
+  "gate_result": "credible — score 4.5 >= 4.0 threshold; no Critical findings; Round 3 not required per iteration rules"
+}

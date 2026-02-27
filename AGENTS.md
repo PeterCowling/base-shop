@@ -37,20 +37,16 @@ When you identify that the "right" solution requires significantly more work, ex
 | Build | `pnpm build` |
 | Typecheck | `pnpm --filter <pkg> typecheck` |
 | Lint | `pnpm --filter <pkg> lint` |
-| Test (single file) | `pnpm --filter <pkg> test -- path/to/file.test.ts` |
-| Test (pattern) | `pnpm --filter <pkg> test -- --testPathPattern="name"` |
+| Test feedback | `gh run watch $(gh run list --limit 1 --json databaseId -q '.[0].databaseId')` |
 | Validate all (local default) | `bash scripts/validate-changes.sh` |
-| Validate all (+ targeted local tests) | `VALIDATE_INCLUDE_TESTS=1 bash scripts/validate-changes.sh` |
 
 ## Validation Gate (Before Every Commit)
 
 ```bash
 # Scope validation to changed packages only (preferred default).
 pnpm --filter <pkg> typecheck && pnpm --filter <pkg> lint
-# Default local gate (policy + typecheck + lint):
+# Default local gate (policy + typecheck + lint — no test execution):
 bash scripts/validate-changes.sh
-# Optional: include targeted local tests; CI remains source of truth for test gating.
-VALIDATE_INCLUDE_TESTS=1 bash scripts/validate-changes.sh
 ```
 
 If multiple packages changed, run typecheck + lint for each affected package.
@@ -94,17 +90,10 @@ If one of these commands seems necessary, STOP and ask for help. Full guide: [do
 
 ## Testing Rules
 
-- **Default local gate is lint + typecheck:** `bash scripts/validate-changes.sh` skips targeted tests unless explicitly opted in
-- **GitHub Actions is source of truth for required tests:** rely on CI/merge-gate for test pass/fail gating
-- **When running tests locally, always use targeted scope** — single file or pattern
-- **Never run `pnpm test` unfiltered** — spawns too many workers
-- **Limit workers:** `--maxWorkers=2` for broader runs
-- **Check for orphans first:** `ps aux | grep jest | grep -v grep`
-- **Governed timeout defaults:** `BASESHOP_TEST_TIMEOUT_SEC=600` (wall-clock, `0` disables) and `BASESHOP_TEST_ADMISSION_TIMEOUT_SEC=300` (admission polling, `0` disables)
-- **Governed cleanup semantics:** on forced stop, runner kills child processes and parent with `SIGTERM`, then escalates to `SIGKILL` after 5s if still alive; timeout exits with code `124`
-- **Telemetry fields for runaway prevention:** `timeout_killed` and `kill_escalation` (`none|sigterm|sigkill`) in `.cache/test-governor/events.jsonl`
-- **Jest defaults:** shared preset enforces `forceExit: true` and `detectOpenHandles: true`
-- **ESM vs CJS in Jest:** If a test or imported file fails with ESM parsing errors (for example, `Cannot use import statement outside a module` or `import.meta` issues), rerun that test with `JEST_FORCE_CJS=1` to force the CommonJS preset and avoid ESM transform gaps.
+- **Tests run in CI only.** Do not run Jest or e2e commands locally. Push to `dev` and watch CI for results.
+- **CI feedback:** `gh run watch $(gh run list --limit 1 --json databaseId -q '.[0].databaseId')`
+- **GitHub Actions is source of truth for required tests:** rely on CI/merge-gate for test pass/fail gating.
+- **ESM vs CJS in Jest (CI debugging):** If CI fails with ESM parsing errors (`Cannot use import statement outside a module` or `import.meta` issues), add `JEST_FORCE_CJS=1` to the CI command to force the CommonJS preset.
 
 Full policy: [docs/testing-policy.md](docs/testing-policy.md)
 

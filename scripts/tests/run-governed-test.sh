@@ -123,6 +123,15 @@ baseshop_runner_extract_worker_count() {
   printf 0
 }
 
+# CI-only test execution policy: block local test invocations when BASESHOP_CI_ONLY_TESTS=1.
+# CI environments (GitHub Actions sets CI=true) bypass this block automatically.
+if [[ "${BASESHOP_CI_ONLY_TESTS:-0}" == "1" && "${CI:-}" != "true" ]]; then
+  echo "BLOCKED: local test execution is disabled (BASESHOP_CI_ONLY_TESTS=1)." >&2
+  echo "Tests run in GitHub Actions CI only. Push your changes and monitor:" >&2
+  echo "  gh run watch \$(gh run list --limit 1 --json databaseId -q '.[0].databaseId')" >&2
+  exit 1
+fi
+
 # pnpm run forwards a separator token before script args; normalize it.
 while [[ "${1:-}" == "--" ]]; do
   shift

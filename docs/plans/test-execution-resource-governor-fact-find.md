@@ -1,7 +1,7 @@
 ---
 Type: Fact-Find
 Outcome: Planning
-Status: Ready-for-planning
+Status: Superseded
 Domain: Testing/Infra
 Last-reviewed: 2026-02-13
 Relates-to: docs/testing-policy.md

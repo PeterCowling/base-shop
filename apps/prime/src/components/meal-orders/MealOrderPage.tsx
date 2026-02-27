@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- BRIK-2 meal-orders i18n deferred */
 'use client';
 
 import { useMemo, useState } from 'react';
@@ -6,6 +7,9 @@ import { CalendarDays, UtensilsCrossed } from 'lucide-react';
 
 import { useGuestBookingSnapshot } from '../../hooks/dataOrchestrator/useGuestBookingSnapshot';
 import { GUEST_CRITICAL_FLOW_ENDPOINTS } from '../../lib/security/guestCriticalFlowEndpoints';
+
+import { BreakfastOrderWizard } from './BreakfastOrderWizard';
+import EvDrinkOrderWizard from './EvDrinkOrderWizard';
 
 type MealService = 'breakfast' | 'drink';
 
@@ -68,7 +72,6 @@ export default function MealOrderPage({
 }: MealOrderPageProps) {
   const { snapshot, token, isLoading, refetch } = useGuestBookingSnapshot();
   const [serviceDate, setServiceDate] = useState('');
-  const [value, setValue] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -110,8 +113,8 @@ export default function MealOrderPage({
     return hasMealEntitlement(service, snapshot.preorders);
   }, [service, snapshot]);
 
-  async function submitOrder(requestChangeException = false) {
-    if (!token || !serviceDate || !value) {
+  async function submitOrder(value: string, requestChangeException = false) {
+    if (!token || !serviceDate) {
       return;
     }
 
@@ -158,7 +161,6 @@ export default function MealOrderPage({
         setMessage(payload.message ?? 'Order saved.');
         setPendingExceptionPayload(null);
       }
-      setValue('');
       await refetch();
     } catch {
       setError('Unable to update order right now.');
@@ -169,7 +171,7 @@ export default function MealOrderPage({
 
   if (isLoading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-muted p-4">
+      <main className="flex min-h-dvh items-center justify-center bg-muted p-4">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </main>
     );
@@ -177,7 +179,8 @@ export default function MealOrderPage({
 
   if (!snapshot) {
     return (
-      <main className="min-h-screen bg-muted p-4">
+      <main className="min-h-dvh bg-muted p-4">
+        {/* eslint-disable-next-line ds/container-widths-only-at -- BRIK-2 pre-existing layout, no DS container primitives in Prime */}
         <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
           <h1 className="mb-2 text-xl font-semibold text-foreground">{title}</h1>
           <p className="text-sm text-muted-foreground">We could not load your meal order data right now.</p>
@@ -191,7 +194,8 @@ export default function MealOrderPage({
 
   if (!eligible) {
     return (
-      <main className="min-h-screen bg-muted p-4">
+      <main className="min-h-dvh bg-muted p-4">
+        {/* eslint-disable-next-line ds/container-widths-only-at -- BRIK-2 pre-existing layout, no DS container primitives in Prime */}
         <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
           <UtensilsCrossed className={`mx-auto mb-4 h-12 w-12 ${iconClassName}`} />
           <h1 className="mb-2 text-xl font-semibold text-foreground">{title}</h1>
@@ -209,7 +213,8 @@ export default function MealOrderPage({
   const today = getRomeTodayIso();
 
   return (
-    <main className="min-h-screen bg-muted p-4 pb-20">
+    <main className="min-h-dvh bg-muted p-4 pb-20">
+      {/* eslint-disable-next-line ds/container-widths-only-at -- BRIK-2 pre-existing layout, no DS container primitives in Prime */}
       <div className="mx-auto max-w-md space-y-4">
         <div className="rounded-xl bg-card p-5 shadow-sm">
           <div className="mb-4 flex items-center gap-3">
@@ -237,18 +242,6 @@ export default function MealOrderPage({
             ))}
           </select>
 
-          <label htmlFor="service-value" className="mt-3 block text-xs font-medium text-muted-foreground">
-            Order details
-          </label>
-          <input
-            id="service-value"
-            type="text"
-            value={value}
-            onChange={(event) => setValue(event.target.value)}
-            placeholder={service === 'breakfast' ? 'e.g. Continental' : 'e.g. Spritz'}
-            className="mt-1 w-full rounded-lg border border-border px-3 py-2 text-sm"
-          />
-
           {serviceDate && serviceDate <= today && (
             <p className="mt-2 rounded-lg bg-warning-soft px-3 py-2 text-xs text-warning-foreground">
               Same-day changes are blocked by policy. You can submit an exception request.
@@ -266,19 +259,27 @@ export default function MealOrderPage({
             </p>
           )}
 
-          <button
-            type="button"
-            onClick={() => void submitOrder(false)}
-            disabled={isSubmitting || !serviceDate || !value.trim()}
-            className="mt-4 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
-          >
-            {isSubmitting ? 'Saving…' : 'Save order'}
-          </button>
+          {serviceDate && service === 'breakfast' && (
+            <BreakfastOrderWizard
+              serviceDate={serviceDate}
+              onSubmit={(v) => void submitOrder(v, false)}
+              isSubmitting={isSubmitting}
+            />
+          )}
+
+          {serviceDate && service === 'drink' && (
+            <EvDrinkOrderWizard
+              serviceDate={serviceDate}
+              preorders={snapshot.preorders}
+              onSubmit={(v) => void submitOrder(v, false)}
+              isSubmitting={isSubmitting}
+            />
+          )}
 
           {pendingExceptionPayload && (
             <button
               type="button"
-              onClick={() => void submitOrder(true)}
+              onClick={() => void submitOrder(pendingExceptionPayload.value, true)}
               disabled={isSubmitting}
               className="mt-2 w-full rounded-lg border border-warning bg-warning-soft px-4 py-2.5 text-sm font-medium text-warning-foreground hover:bg-warning-soft/80"
             >

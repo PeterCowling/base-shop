@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 
 import { canAccess } from "../../../lib/roles";
 import EodChecklistContent from "../EodChecklistContent";
@@ -8,7 +8,10 @@ import EodChecklistContent from "../EodChecklistContent";
 /* eslint-disable no-var */
 var useTillShiftsDataMock: jest.Mock;
 var useSafeCountsDataMock: jest.Mock;
+var useCashCountsDataMock: jest.Mock;
 var useInventoryLedgerMock: jest.Mock;
+var useEodClosureDataMock: jest.Mock;
+var confirmDayClosedMock: jest.Mock;
 /* eslint-enable no-var */
 
 jest.mock("../../../context/AuthContext", () => ({
@@ -32,9 +35,26 @@ jest.mock("../../../hooks/data/useSafeCountsData", () => {
   return { useSafeCountsData: useSafeCountsDataMock };
 });
 
+jest.mock("../../../hooks/data/useCashCountsData", () => {
+  useCashCountsDataMock = jest.fn();
+  return { useCashCountsData: useCashCountsDataMock };
+});
+
 jest.mock("../../../hooks/data/inventory/useInventoryLedger", () => {
   useInventoryLedgerMock = jest.fn();
   return { __esModule: true, default: useInventoryLedgerMock };
+});
+
+jest.mock("../../../hooks/data/useEodClosureData", () => {
+  useEodClosureDataMock = jest.fn();
+  return { useEodClosureData: useEodClosureDataMock };
+});
+
+jest.mock("../../../hooks/mutations/useEodClosureMutations", () => {
+  confirmDayClosedMock = jest.fn();
+  return {
+    useEodClosureMutations: () => ({ confirmDayClosed: confirmDayClosedMock }),
+  };
 });
 
 jest.mock("../../../lib/roles", () => ({
@@ -48,6 +68,9 @@ jest.mock("../../../utils/dateUtils", () => ({
   sameItalyDate: jest.fn(
     (ts: string | number | Date) =>
       typeof ts === "string" && ts.startsWith("2026-02-28")
+  ),
+  formatItalyDateTimeFromIso: jest.fn(
+    (iso: string) => `formatted:${iso}`
   ),
 }));
 
@@ -65,11 +88,22 @@ beforeEach(() => {
     loading: false,
     error: null,
   });
+  useCashCountsDataMock.mockReturnValue({
+    cashCounts: [],
+    loading: false,
+    error: null,
+  });
   useInventoryLedgerMock.mockReturnValue({
     entries: [],
     loading: false,
     error: null,
   });
+  useEodClosureDataMock.mockReturnValue({
+    closure: null,
+    loading: false,
+    error: null,
+  });
+  confirmDayClosedMock.mockResolvedValue(undefined);
 });
 
 describe("EodChecklistContent", () => {
@@ -253,5 +287,116 @@ describe("EodChecklistContent", () => {
     expect(screen.getByTestId("stock-loading")).toHaveTextContent(
       "Loading..."
     );
+  });
+
+  it("TC-10: allDone=true, closure=null, eodClosureLoading=false — confirm button visible, banner absent", () => {
+    useTillShiftsDataMock.mockReturnValue({
+      shifts: [{ id: "s1", status: "closed", openedAt: "2026-02-28T07:00:00Z" }],
+      loading: false,
+      error: null,
+    });
+    useSafeCountsDataMock.mockReturnValue({
+      safeCounts: [{ id: "sc1", type: "safeReconcile", timestamp: "2026-02-28T20:00:00Z" }],
+      loading: false,
+      error: null,
+    });
+    useInventoryLedgerMock.mockReturnValue({
+      entries: [{ id: "e1", type: "count", timestamp: "2026-02-28T18:00:00Z", itemId: "item-1" }],
+      loading: false,
+      error: null,
+    });
+    useEodClosureDataMock.mockReturnValue({
+      closure: null,
+      loading: false,
+      error: null,
+    });
+
+    render(<EodChecklistContent />);
+
+    expect(screen.getByTestId("confirm-day-closed")).toBeInTheDocument();
+    expect(screen.queryByTestId("day-closed-banner")).not.toBeInTheDocument();
+  });
+
+  it("TC-11: allDone=true, closure exists, eodClosureLoading=false — banner with timestamp visible, confirm button absent", () => {
+    useTillShiftsDataMock.mockReturnValue({
+      shifts: [{ id: "s1", status: "closed", openedAt: "2026-02-28T07:00:00Z" }],
+      loading: false,
+      error: null,
+    });
+    useSafeCountsDataMock.mockReturnValue({
+      safeCounts: [{ id: "sc1", type: "safeReconcile", timestamp: "2026-02-28T20:00:00Z" }],
+      loading: false,
+      error: null,
+    });
+    useInventoryLedgerMock.mockReturnValue({
+      entries: [{ id: "e1", type: "count", timestamp: "2026-02-28T18:00:00Z", itemId: "item-1" }],
+      loading: false,
+      error: null,
+    });
+    useEodClosureDataMock.mockReturnValue({
+      closure: {
+        date: "2026-02-28",
+        timestamp: "2026-02-28T22:30:00.000+01:00",
+        confirmedBy: "pete",
+      },
+      loading: false,
+      error: null,
+    });
+
+    render(<EodChecklistContent />);
+
+    expect(screen.getByTestId("day-closed-banner")).toBeInTheDocument();
+    expect(screen.getByTestId("day-closed-banner")).toHaveTextContent("pete");
+    expect(screen.getByTestId("day-closed-banner")).toHaveTextContent(
+      "formatted:2026-02-28T22:30:00.000+01:00"
+    );
+    expect(screen.queryByTestId("confirm-day-closed")).not.toBeInTheDocument();
+  });
+
+  it("TC-12: allDone=false — confirm button absent", () => {
+    // till: incomplete (open shift)
+    useTillShiftsDataMock.mockReturnValue({
+      shifts: [{ id: "s1", status: "open", openedAt: "2026-02-28T15:00:00Z" }],
+      loading: false,
+      error: null,
+    });
+    useEodClosureDataMock.mockReturnValue({
+      closure: null,
+      loading: false,
+      error: null,
+    });
+
+    render(<EodChecklistContent />);
+
+    expect(screen.queryByTestId("confirm-day-closed")).not.toBeInTheDocument();
+  });
+
+  it("TC-13: confirm button clicked — confirmDayClosed called once", () => {
+    useTillShiftsDataMock.mockReturnValue({
+      shifts: [{ id: "s1", status: "closed", openedAt: "2026-02-28T07:00:00Z" }],
+      loading: false,
+      error: null,
+    });
+    useSafeCountsDataMock.mockReturnValue({
+      safeCounts: [{ id: "sc1", type: "safeReconcile", timestamp: "2026-02-28T20:00:00Z" }],
+      loading: false,
+      error: null,
+    });
+    useInventoryLedgerMock.mockReturnValue({
+      entries: [{ id: "e1", type: "count", timestamp: "2026-02-28T18:00:00Z", itemId: "item-1" }],
+      loading: false,
+      error: null,
+    });
+    useEodClosureDataMock.mockReturnValue({
+      closure: null,
+      loading: false,
+      error: null,
+    });
+
+    render(<EodChecklistContent />);
+
+    fireEvent.click(screen.getByTestId("confirm-day-closed"));
+
+    expect(confirmDayClosedMock).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,13 +1,13 @@
 {
   "generatedAt": "2026-02-28",
-  "_manualExtension": "trustStrip added manually 2026-02-28 — materializer update pending. Do not run materializer without porting productPage.trustStrip block first.",
   "sourcePacketPath": "docs/business-os/startup-baselines/HBAG-content-packet.md",
-  "sourceHash": "d1dcc6092ea1bc598ba0fb9fcf01f26d538300cdc27250dd7911af008c7f1597",
+  "sourceHash": "05fbd6c15750221375db8edb71215911c9d3386808a7f35a3c2ab33d764f0fb1",
   "sourcePaths": [
     "docs/business-os/market-research/HBAG/2026-02-20-market-intelligence.user.md",
     "docs/business-os/startup-baselines/HBAG-channels.md",
     "docs/business-os/startup-baselines/HBAG-offer.md",
     "docs/business-os/strategy/HBAG/2026-02-22-product-from-photo.user.md",
+    "docs/business-os/strategy/HBAG/logistics-pack.user.md",
     "docs/business-os/strategy/HBAG/products-line-mapping.user.md"
   ],
   "seoKeywords": [
@@ -135,20 +135,6 @@
     ],
     "relatedHeading": {
       "en": "You may also like"
-    },
-    "trustStrip": {
-      "delivery": {
-        "en": "Usually ships in 2–5 business days (EU)"
-      },
-      "exchange": {
-        "en": "30-day exchange"
-      },
-      "origin": {
-        "en": "Designed in Positano, Italy"
-      },
-      "securePayment": {
-        "en": "Secure checkout"
-      }
     }
   },
   "support": {
@@ -156,7 +142,7 @@
       "en": "Support"
     },
     "summary": {
-      "en": "Support and policy responses are generated from packet-aligned content blocks."
+      "en": "Support expectations are derived from logistics and fulfillment policy inputs."
     },
     "channels": [
       {
@@ -167,7 +153,7 @@
       }
     ],
     "responseSla": {
-      "en": "Target response time: within 4 hours during active launch hours."
+      "en": "Within 48 hours"
     }
   },
   "policies": {
@@ -195,14 +181,14 @@
         "en": "Shipping"
       },
       "summary": {
-        "en": "Shipping windows and tracking availability depend on destination and fulfillment mode."
+        "en": "Dispatch policy: Delivery estimated at checkout"
       },
       "bullets": [
         {
-          "en": "Delivery windows are shown at checkout."
+          "en": "Delivery estimated at checkout"
         },
         {
-          "en": "International customs duties remain buyer-responsible unless explicitly stated otherwise."
+          "en": "International buyers are responsible for applicable customs duties and import taxes"
         }
       ]
     },
@@ -211,14 +197,14 @@
         "en": "Returns & Exchanges"
       },
       "summary": {
-        "en": "Launch orders include exchange-first handling and hardware support coverage."
+        "en": "Returns policy: 30-day free exchange on any order"
       },
       "bullets": [
         {
-          "en": "Request exchange with order reference and product colorway."
+          "en": "30-day free exchange on any order"
         },
         {
-          "en": "Return items should include original accessories where applicable."
+          "en": "Exchange includes all colorways; original accessories should be included where applicable"
         }
       ]
     },

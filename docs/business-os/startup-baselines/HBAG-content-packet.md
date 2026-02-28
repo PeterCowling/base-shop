@@ -15,6 +15,7 @@ depends_on:
   - docs/business-os/strategy/HBAG/2026-02-22-product-from-photo.user.md
   - docs/business-os/strategy/HBAG/products-line-mapping.user.md
   - docs/business-os/market-research/HBAG/2026-02-20-market-intelligence.user.md
+  - docs/business-os/strategy/HBAG/logistics-pack.user.md
 ---
 
 # HBAG Website Content Packet (Launch V1)

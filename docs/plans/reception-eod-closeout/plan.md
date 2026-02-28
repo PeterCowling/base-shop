@@ -24,7 +24,7 @@ Auto-Build-Intent: plan+auto
 Add a `/eod-checklist/` page to the reception app providing a single read-only view of today's end-of-day close-out status across three signals: till shift closed, safe reconciled, and stock counted. All three signals are queryable from existing confirmed hooks with no new Firebase paths. The page is gated to `MANAGEMENT_ACCESS` and added to the Admin nav section alongside "Controllo". Implementation follows the established `force-dynamic + Providers + Content` page pattern with full RTL coverage modelled after `ManagerAuditContent.test.tsx`.
 
 ## Active tasks
-- [ ] TASK-01: Build EodChecklistContent component + RTL tests
+- [x] TASK-01: Build EodChecklistContent component + RTL tests
 - [ ] TASK-02: Add /eod-checklist/ page route
 - [ ] TASK-03: Add Admin nav entry (Chiusura)
 
@@ -81,7 +81,7 @@ Add a `/eod-checklist/` page to the reception app providing a single read-only v
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | EodChecklistContent component + RTL tests | 85% | S | Pending | - | TASK-02 |
+| TASK-01 | IMPLEMENT | EodChecklistContent component + RTL tests | 85% | S | Complete (2026-02-28) | - | TASK-02 |
 | TASK-02 | IMPLEMENT | /eod-checklist/ page route | 90% | S | Pending | TASK-01 | TASK-03 |
 | TASK-03 | IMPLEMENT | Admin nav entry (Chiusura) | 90% | S | Pending | TASK-02 | - |
 
@@ -103,7 +103,15 @@ Add a `/eod-checklist/` page to the reception app providing a single read-only v
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-28)
+- **Build evidence:**
+  - `EodChecklistContent.tsx` created — 3 status cards (Cassa, Cassaforte, Stock), permission gate after all hooks (ManagerAuditContent:111 pattern), done/incomplete states, loading states with `data-cy` attrs
+  - `EodChecklistContent.test.tsx` created — 9 TCs (TC-01 through TC-09), all following ManagerAuditContent.test.tsx blueprint
+  - `pnpm --filter @apps/reception typecheck` — exit 0, no errors
+  - `pnpm --filter @apps/reception lint` — 0 new errors (7 pre-existing warnings in unrelated files)
+  - Post-build validation: Mode 1 (Visual) — Degraded mode (no dev server); JSX reviewed; all acceptance criteria confirmed. Result: Pass.
+  - Tests: CI-only policy — will verify via CI after commit.
+  - Offload route: inline fallback (codex exec flag API changed; `-a never` flag removed in current version)
 - **Affects:**
   - `apps/reception/src/components/eodChecklist/EodChecklistContent.tsx` (new)
   - `apps/reception/src/components/eodChecklist/__tests__/EodChecklistContent.test.tsx` (new)

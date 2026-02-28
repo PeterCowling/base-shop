@@ -399,4 +399,78 @@ describe("EodChecklistContent", () => {
 
     expect(confirmDayClosedMock).toHaveBeenCalledTimes(1);
   });
+
+  it("TC-14: shows float loading indicator when useCashCountsData is loading", () => {
+    useCashCountsDataMock.mockReturnValue({
+      cashCounts: [],
+      loading: true,
+      error: null,
+    });
+
+    render(<EodChecklistContent />);
+
+    expect(screen.getByTestId("float-loading")).toBeInTheDocument();
+    expect(screen.getByTestId("float-loading")).toHaveTextContent(
+      "Loading..."
+    );
+  });
+
+  it("TC-15: openingFloat entry for today marks float as complete", () => {
+    useCashCountsDataMock.mockReturnValue({
+      cashCounts: [
+        {
+          id: "cc1",
+          type: "openingFloat",
+          timestamp: "2026-02-28T06:30:00Z",
+          amount: 50,
+        },
+      ],
+      loading: false,
+      error: null,
+    });
+
+    render(<EodChecklistContent />);
+
+    expect(screen.getByTestId("float-status")).toHaveTextContent("Complete");
+  });
+
+  it("TC-16: no openingFloat entry for today marks float as incomplete and shows button", () => {
+    useCashCountsDataMock.mockReturnValue({
+      cashCounts: [],
+      loading: false,
+      error: null,
+    });
+
+    render(<EodChecklistContent />);
+
+    expect(screen.getByTestId("float-status")).toHaveTextContent(
+      "Incomplete"
+    );
+    expect(screen.getByTestId("float-set-button")).toBeInTheDocument();
+    expect(screen.getByTestId("float-set-button")).toHaveTextContent(
+      "Set Opening Float"
+    );
+  });
+
+  it("TC-17: intra-shift float entry does not satisfy openingFloat completion", () => {
+    useCashCountsDataMock.mockReturnValue({
+      cashCounts: [
+        {
+          id: "cc1",
+          type: "float",
+          timestamp: "2026-02-28T06:30:00Z",
+          amount: 20,
+        },
+      ],
+      loading: false,
+      error: null,
+    });
+
+    render(<EodChecklistContent />);
+
+    expect(screen.getByTestId("float-status")).toHaveTextContent(
+      "Incomplete"
+    );
+    expect(screen.getByTestId("float-set-button")).toBeInTheDocument();
+  });
 });

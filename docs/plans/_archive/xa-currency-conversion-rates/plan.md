@@ -1,11 +1,11 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: API
 Workstream: Engineering
 Created: 2026-02-28
 Last-reviewed: 2026-02-28
-Last-updated: 2026-02-28 (Wave 2 complete)
+Last-updated: 2026-02-28 (all tasks complete)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: xa-currency-conversion-rates
 Deliverable-Type: code-change
@@ -30,7 +30,7 @@ xa-b currently displays the same raw USD number in all four supported currencies
 - [x] TASK-03: Pipeline extension — per-currency price computation — Complete 2026-02-28
 - [x] TASK-04: xa-b type + display update (6 files) — Complete 2026-02-28
 - [x] TASK-05: i18n strings for CurrencyRatesPanel — Complete 2026-02-28
-- [ ] TASK-06: Tests
+- [x] TASK-06: Tests — Complete 2026-02-28
 
 ## Goals
 - Operator can configure EUR, GBP, AUD multipliers against a USD base price
@@ -89,7 +89,7 @@ xa-b currently displays the same raw USD number in all four supported currencies
 | TASK-03 | IMPLEMENT | Pipeline extension — per-currency price computation | 85% | M | Complete (2026-02-28) | - | TASK-04 |
 | TASK-04 | IMPLEMENT | xa-b type + display update (6 files) | 85% | M | Complete (2026-02-28) | TASK-03 | TASK-06 |
 | TASK-05 | IMPLEMENT | i18n strings for CurrencyRatesPanel | 90% | S | Complete (2026-02-28) | - | TASK-02 |
-| TASK-06 | IMPLEMENT | Tests (API, UI, pipeline, xa-b display) | 80% | M | Pending | TASK-01, TASK-02, TASK-03, TASK-04 | - |
+| TASK-06 | IMPLEMENT | Tests (API, UI, pipeline, xa-b display) | 80% | M | Complete (2026-02-28) | TASK-01, TASK-02, TASK-03, TASK-04 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -428,7 +428,14 @@ xa-b currently displays the same raw USD number in all four supported currencies
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-28)
+- **Build Evidence:**
+  - Offload route: codex exec (CODEX_OK=1), exit code 0
+  - Affects files present: all 4 test files + run-xa-pipeline.ts exports ✓
+  - Commit: `86b65ed9b4` (Wave 3 — TASK-01/03/05 code + TASK-06 tests)
+  - Tests: 20 passing (scripts 5, xa-uploader route 8, CurrencyRatesPanel 2, xa-b 5)
+  - TypeCheck: pass (xa-b, xa-uploader, scripts)
+  - Lint: pass (5 warnings on security/detect-non-literal-fs-filename in route — expected, pre-existing pattern)
 - **Affects:**
   - `apps/xa-uploader/src/app/api/catalog/currency-rates/__tests__/route.test.ts` (new)
   - `apps/xa-uploader/src/components/catalog/__tests__/CurrencyRatesPanel.test.tsx` (new)

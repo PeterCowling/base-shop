@@ -8,6 +8,7 @@ import { useTillShiftsData } from "../../hooks/data/till/useTillShiftsData";
 import { useCashCountsData } from "../../hooks/data/useCashCountsData";
 import { useEodClosureData } from "../../hooks/data/useEodClosureData";
 import { useSafeCountsData } from "../../hooks/data/useSafeCountsData";
+import { useCashCountsMutations } from "../../hooks/mutations/useCashCountsMutations";
 import { useEodClosureMutations } from "../../hooks/mutations/useEodClosureMutations";
 import { canAccess, Permissions } from "../../lib/roles";
 import {
@@ -16,6 +17,8 @@ import {
   sameItalyDate,
   startOfDayIso,
 } from "../../utils/dateUtils";
+
+import OpeningFloatModal from "./OpeningFloatModal";
 
 export default function EodChecklistContent() {
   const { user } = useAuth();
@@ -39,6 +42,7 @@ export default function EodChecklistContent() {
   const { entries, loading: stockLoading } = useInventoryLedger();
   const { closure, loading: eodClosureLoading } = useEodClosureData();
   const { confirmDayClosed } = useEodClosureMutations();
+  const { addOpeningFloatEntry } = useCashCountsMutations();
 
   if (!canView) return null;
 
@@ -196,6 +200,13 @@ export default function EodChecklistContent() {
         >
           Confirm day closed
         </button>
+      )}
+
+      {showFloatModal && (
+        <OpeningFloatModal
+          onConfirm={addOpeningFloatEntry}
+          onClose={() => setShowFloatModal(false)}
+        />
       )}
     </div>
   );

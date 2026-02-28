@@ -57,6 +57,28 @@ jest.mock("../../../hooks/mutations/useEodClosureMutations", () => {
   };
 });
 
+jest.mock("../../../hooks/mutations/useCashCountsMutations", () => ({
+  useCashCountsMutations: () => ({
+    addOpeningFloatEntry: jest.fn().mockResolvedValue(undefined),
+    addCashCount: jest.fn(),
+    addFloatEntry: jest.fn(),
+    addDeposit: jest.fn(),
+    addWithdrawal: jest.fn(),
+    addExchange: jest.fn(),
+  }),
+}));
+
+jest.mock("../OpeningFloatModal", () => ({
+  __esModule: true,
+  default: ({ onClose }: { onClose: () => void }) => (
+    <div data-cy="opening-float-modal">
+      <button onClick={onClose} type="button">
+        Close modal
+      </button>
+    </div>
+  ),
+}));
+
 jest.mock("../../../lib/roles", () => ({
   canAccess: jest.fn(() => true),
   Permissions: { MANAGEMENT_ACCESS: ["owner"] },
@@ -472,5 +494,21 @@ describe("EodChecklistContent", () => {
       "Incomplete"
     );
     expect(screen.getByTestId("float-set-button")).toBeInTheDocument();
+  });
+
+  it("TC-18: clicking 'Set Opening Float' button opens the OpeningFloatModal", () => {
+    useCashCountsDataMock.mockReturnValue({
+      cashCounts: [],
+      loading: false,
+      error: null,
+    });
+
+    render(<EodChecklistContent />);
+
+    expect(screen.queryByTestId("opening-float-modal")).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByTestId("float-set-button"));
+
+    expect(screen.getByTestId("opening-float-modal")).toBeInTheDocument();
   });
 });

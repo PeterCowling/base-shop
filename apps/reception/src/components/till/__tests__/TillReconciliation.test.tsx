@@ -23,6 +23,24 @@ jest.mock("../DrawerLimitWarning", () => ({
   }) => (show ? <button onClick={onLift}>lift</button> : null),
 }));
 
+/* eslint-disable no-var */
+var useCashCountsDataMock: jest.Mock;
+/* eslint-enable no-var */
+
+jest.mock("../../../hooks/data/useCashCountsData", () => {
+  useCashCountsDataMock = jest.fn();
+  return { useCashCountsData: useCashCountsDataMock };
+});
+
+jest.mock("../../../utils/dateUtils", () => ({
+  startOfDayIso: jest.fn(() => "2026-02-28T00:00:00.000+00:00"),
+  endOfDayIso: jest.fn(() => "2026-02-28T23:59:59.999+00:00"),
+  sameItalyDate: jest.fn(
+    (ts: string | number | Date) =>
+      typeof ts === "string" && ts.startsWith("2026-02-28")
+  ),
+}));
+
 const baseProps = {
   isDrawerOverLimit: false,
   handleLiftClick: jest.fn(),
@@ -84,6 +102,22 @@ jest.mock("../../../hooks/useTillReconciliationLogic", () => ({
   useTillReconciliationLogic: () => ({})
 }));
 
+beforeEach(() => {
+  jest.clearAllMocks();
+  // Reset baseProps to clean state before each test
+  baseProps.user = { user_name: "Tester" };
+  baseProps.shiftOpenTime = null;
+  baseProps.isEditMode = false;
+  baseProps.isDeleteMode = false;
+  baseProps.isDrawerOverLimit = false;
+
+  useCashCountsDataMock.mockReturnValue({
+    cashCounts: [],
+    loading: false,
+    error: null,
+  });
+});
+
 describe("TillReconciliation", () => {
   it("requires login when user missing", () => {
     baseProps.user = null;
@@ -92,12 +126,11 @@ describe("TillReconciliation", () => {
   });
 
   it("shows edit and delete mode alerts", () => {
-    baseProps.user = { user_name: "Tester" };
     baseProps.isEditMode = true;
     baseProps.isDeleteMode = true;
     render(<TillReconciliation />);
     expect(screen.getByText(/Click a row to edit/)).toBeInTheDocument();
-    expect(screen.getByText(/Click a row to delete/)).toBeInTheDocument();
+    expect(screen.getByText(/Click a row to void/)).toBeInTheDocument();
   });
 
   it("renders drawer limit warning and invokes handler", async () => {
@@ -105,6 +138,68 @@ describe("TillReconciliation", () => {
     render(<TillReconciliation />);
     await userEvent.click(screen.getByText("lift"));
     expect(baseProps.handleLiftClick).toHaveBeenCalled();
-    baseProps.isDrawerOverLimit = false;
+  });
+
+  // Float nudge banner tests
+
+  it("TC-01: shiftOpenTime=null, no openingFloat today — nudge banner visible with link to /eod-checklist/", () => {
+    baseProps.shiftOpenTime = null;
+    useCashCountsDataMock.mockReturnValue({
+      cashCounts: [],
+      loading: false,
+      error: null,
+    });
+
+    render(<TillReconciliation />);
+
+    expect(screen.getByTestId("float-nudge-banner")).toBeInTheDocument();
+    expect(screen.getByTestId("float-nudge-link")).toBeInTheDocument();
+  });
+
+  it("TC-02: shiftOpenTime is a Date (shift open) — nudge not shown", () => {
+    baseProps.shiftOpenTime = new Date("2026-02-28T08:00:00Z");
+    useCashCountsDataMock.mockReturnValue({
+      cashCounts: [],
+      loading: false,
+      error: null,
+    });
+
+    render(<TillReconciliation />);
+
+    expect(screen.queryByTestId("float-nudge-banner")).not.toBeInTheDocument();
+  });
+
+  it("TC-03: shiftOpenTime=null, openingFloat entry exists today — nudge not shown", () => {
+    baseProps.shiftOpenTime = null;
+    useCashCountsDataMock.mockReturnValue({
+      cashCounts: [
+        {
+          id: "cc1",
+          type: "openingFloat",
+          timestamp: "2026-02-28T06:30:00Z",
+          amount: 50,
+        },
+      ],
+      loading: false,
+      error: null,
+    });
+
+    render(<TillReconciliation />);
+
+    expect(screen.queryByTestId("float-nudge-banner")).not.toBeInTheDocument();
+  });
+
+  it("TC-04: nudge link href is /eod-checklist/", () => {
+    baseProps.shiftOpenTime = null;
+    useCashCountsDataMock.mockReturnValue({
+      cashCounts: [],
+      loading: false,
+      error: null,
+    });
+
+    render(<TillReconciliation />);
+
+    const link = screen.getByTestId("float-nudge-link");
+    expect(link).toHaveAttribute("href", "/eod-checklist/");
   });
 });

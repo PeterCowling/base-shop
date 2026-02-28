@@ -10,7 +10,7 @@
   },
   "callouts": {
     "cta": "Trenger du alle transportalternativene? Åpne %HOWTO:how-to-get-here|oversikten \\\\\"Slik kommer du hit\\\\\"% for ferge-, taxi- og kombinasjonsreiseruter.",
-    "tip": "Reiser du om vinteren eller i lavsesongen? Sjekk %GUIDES:travelHelp|varsler om transportforstyrrelser% før du drar – streiker og endringar i rutetabeller er meir vanleg frå november til mars."
+    "tip": "Reiser du om vinteren eller i lavsesongen? Sjekk %LINK:travelHelp|varsler om transportforstyrrelser% før du drar – streiker og endringar i rutetabeller er meir vanleg frå november til mars."
   },
   "sections": [
     {
@@ -130,7 +130,7 @@
     {
       "id": "seasonal",
       "title": "Sesongmessige og tidsmessige hensyn",
-      "body": "**Sommer (juni–september):**\n- SITA-busser går oftere men fylles raskt. Kom 10–15 minutter tidlig.\n- Circumvesuviana-togene er fulle, spesielt midt på dagen og i helger.\n- Varme kan være ubehagelig – både buss og tog har begrenset aircondition.\n\n**Lavsesong (april–mai, oktober):**\n- Moderat folkemengder; kom 5–10 minutter tidlig til bussen.\n- Behagelige temperaturer gjør reisen mer komfortabel.\n\n**Vinter (november–mars):**\n- SITA reduserer frekvensen; sjekk rutetabeller på forhånd.\n- Circumvesuviana-timeplaner kan endres på grunn av vedlikehold eller streiker – bekreft avgangstider dagen før reise.\n- Færre turister betyr lettere ombordstigning og mer plass, men tjenester kan være mindre pålitelige.\n\n**Streiker og forstyrrelser:**\n- Offentlig transportstreiker (sciopero) kunngjøres minst 48 timer i forveien. Sjekk %GUIDES:travelHelp|vår transportvarselsside% eller spør hostellresepsjonen for de siste oppdateringene.\n- Under streiker kan SITA og Circumvesuviana kjøre reduserte tjenester eller kansellere helt. Planlegg alternativ transport (taxi, privat overføring, eller ferge hvis tilgjengelig) hvis en streik er planlagt på reisedagen din."
+      "body": "**Sommer (juni–september):**\n- SITA-busser går oftere men fylles raskt. Kom 10–15 minutter tidlig.\n- Circumvesuviana-togene er fulle, spesielt midt på dagen og i helger.\n- Varme kan være ubehagelig – både buss og tog har begrenset aircondition.\n\n**Lavsesong (april–mai, oktober):**\n- Moderat folkemengder; kom 5–10 minutter tidlig til bussen.\n- Behagelige temperaturer gjør reisen mer komfortabel.\n\n**Vinter (november–mars):**\n- SITA reduserer frekvensen; sjekk rutetabeller på forhånd.\n- Circumvesuviana-timeplaner kan endres på grunn av vedlikehold eller streiker – bekreft avgangstider dagen før reise.\n- Færre turister betyr lettere ombordstigning og mer plass, men tjenester kan være mindre pålitelige.\n\n**Streiker og forstyrrelser:**\n- Offentlig transportstreiker (sciopero) kunngjøres minst 48 timer i forveien. Sjekk %LINK:travelHelp|vår transportvarselsside% eller spør hostellresepsjonen for de siste oppdateringene.\n- Under streiker kan SITA og Circumvesuviana kjøre reduserte tjenester eller kansellere helt. Planlegg alternativ transport (taxi, privat overføring, eller ferge hvis tilgjengelig) hvis en streik er planlagt på reisedagen din."
     },
     {
       "id": "alternatives",
@@ -168,7 +168,7 @@
     {
       "q": "Hva skal jeg gjøre hvis det er en offentlig transportstreik på reisedagen min?",
       "a": [
-        "Streiker (sciopero) kunngjøres minst 48 timer i forveien. Sjekk %GUIDES:travelHelp|transportvarselsiden% eller spør hostellresepsjonen for oppdateringer. Under streiker kan SITA og Circumvesuviana kjøre reduserte tjenester eller kansellere helt. Bestill en privat overføring eller taxi som backup – hvis ferger går (april–oktober), er %HOWTO:positanoNaplesCenterFerry|Positano-Napoli fergen% et pålitelig alternativ."
+        "Streiker (sciopero) kunngjøres minst 48 timer i forveien. Sjekk %LINK:travelHelp|transportvarselsiden% eller spør hostellresepsjonen for oppdateringer. Under streiker kan SITA og Circumvesuviana kjøre reduserte tjenester eller kansellere helt. Bestill en privat overføring eller taxi som backup – hvis ferger går (april–oktober), er %HOWTO:positanoNaplesCenterFerry|Positano-Napoli fergen% et pålitelig alternativ."
       ]
     }
   ]

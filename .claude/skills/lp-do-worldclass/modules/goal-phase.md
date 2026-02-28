@@ -4,17 +4,24 @@ Called by `/lp-do-worldclass` in States 2 and 3. Validates the goal artifact, ch
 
 ## Inputs
 
-- `--biz <BIZ>` — from SKILL.md invocation
+- `BIZ` — resolved by SKILL.md preflight (from `--biz` value or from businesses.json lookup when `--app` was used)
+- `APP` — `--app` value, or `null` in biz mode
+- `artifact_dir` — resolved by SKILL.md preflight:
+  - biz mode: `docs/business-os/strategy/<BIZ>/`
+  - app mode: `docs/business-os/strategy/<BIZ>/apps/<APP>/`
+- `app_dir` — resolved by SKILL.md preflight (e.g. `apps/reception/`)
 - `--as-of-date <YYYY-MM-DD>` — from SKILL.md invocation (defaults to today)
-- Goal artifact: `docs/business-os/strategy/<BIZ>/worldclass-goal.md`
-- Existing research prompt (may not exist): `docs/business-os/strategy/<BIZ>/worldclass-research-prompt.md`
-- Existing benchmark (may not exist): `docs/business-os/strategy/<BIZ>/worldclass-benchmark.md`
+- Goal artifact: `<artifact_dir>/worldclass-goal.md`
+- Existing research prompt (may not exist): `<artifact_dir>/worldclass-research-prompt.md`
+- Existing benchmark (may not exist): `<artifact_dir>/worldclass-benchmark.md`
 
 ## Step 1: Read and Validate Goal Artifact
 
-Read `docs/business-os/strategy/<BIZ>/worldclass-goal.md`.
+Read `<artifact_dir>/worldclass-goal.md`.
 
-**If absent:** stop immediately with the State 1 error message from SKILL.md. Do not proceed to any further step.
+**If absent (app mode only):** if `artifact_dir` does not exist as a directory, create it before stopping — the directory must exist for the operator to write the goal artifact. Then stop with the State 1 error message from SKILL.md. Do not proceed to any further step.
+
+**If absent (directory exists but file is missing):** stop immediately with the State 1 error message from SKILL.md. Do not proceed to any further step.
 
 **Parsing invariant:** parse only the first YAML frontmatter block at the very top of the file (the block delimited by `---` on lines 1 and N). Ignore any `---` sequences that appear later in the file. This invariant applies to any implementation — agent, TypeScript, or otherwise — and must not be bypassed.
 
@@ -23,9 +30,10 @@ Read `docs/business-os/strategy/<BIZ>/worldclass-goal.md`.
 | Field              | Required | Notes                                                                          |
 | ------------------ | -------- | ------------------------------------------------------------------------------ |
 | `schema_version`   | Yes      | Must be `worldclass-goal.v1`                                                   |
-| `business`         | Yes      | Must match `--biz` value                                                       |
+| `business`         | Yes      | Must match resolved `BIZ` value                                                |
+| `app`              | App mode only | Must match `APP` value when `--app` was used; must be absent (or is ignored) in biz mode |
 | `goal_version`     | Yes      | Integer ≥1                                                                     |
-| `singular-goal`    | Yes      | Non-empty string                                                               |
+| `singular-goal`    | Yes      | Non-empty string. Aspirational framing: describes the **target state**, not current reality and not a future date. Use "should have" or "needs to have" — e.g. "<BIZ> should have world-class [X] with [observable markers]". Avoid "has" (implies already achieved) and "By [date]" (implies future-dated — this skill evaluates against today's world-class standard). |
 | `domains`          | Yes      | List with at least 1 entry; each entry must have `name`, `context`, `examples`; `id` is optional — see Domain id rules below |
 | `constraints`      | Yes      | List (may be empty)                                                            |
 | `created`          | Yes      | YYYY-MM-DD                                                                     |
@@ -45,7 +53,7 @@ If any domain `id` fails format or uniqueness, stop with:
 Error: worldclass-goal.md for <BIZ> has an invalid domain id.
 Domain: <domain.name>
 Problem: <"id does not match required format ^[a-z0-9]+(?:-[a-z0-9]+)*$" | "duplicate id — must be unique across all domains">
-Fix the domain id in docs/business-os/strategy/<BIZ>/worldclass-goal.md, then re-run.
+Fix the domain id in <artifact_dir>/worldclass-goal.md, then re-run.
 ```
 
 **Field missing or invalid:** stop with:
@@ -53,14 +61,14 @@ Fix the domain id in docs/business-os/strategy/<BIZ>/worldclass-goal.md, then re
 ```
 Error: worldclass-goal.md for <BIZ> is missing or has an invalid field.
 Problem: <field name> — <brief description of the issue>
-Fix the goal artifact at docs/business-os/strategy/<BIZ>/worldclass-goal.md using the template at docs/plans/lp-do-worldclass/worldclass-goal.template.md, then re-run.
+Fix the goal artifact at <artifact_dir>/worldclass-goal.md using the template at docs/plans/lp-do-worldclass/worldclass-goal.template.md, then re-run.
 ```
 
 **`goal_version` missing:** treat as version `0`; proceed but force prompt regeneration in Step 2.
 
 ## Step 2: Version-Check Research Prompt
 
-Read the existing research prompt at `docs/business-os/strategy/<BIZ>/worldclass-research-prompt.md`.
+Read the existing research prompt at `<artifact_dir>/worldclass-research-prompt.md`.
 
 Extract the `goal_version` field from its frontmatter.
 
@@ -103,12 +111,14 @@ Generate the content of the research prompt document. The prompt must contain al
 
 ```
 Business: <BIZ>
+App: <APP>   ← include only when --app was used; omit in biz mode
 Business type: <infer from strategy directory context — e.g. "boutique hostel, Positano, Amalfi Coast, Italy">
+App scope: <infer from app_dir source — e.g. "bar POS / reception app for on-site operations">   ← include only when --app was used
 Operator-stated goal version: <goal_version>
 Goal set on: <last-updated from goal artifact>
 ```
 
-Supplement with any relevant context found in `docs/business-os/strategy/<BIZ>/` — brand strategy, offer docs, ICP docs — to give the research tool enough grounding to return relevant, specific results rather than generic advice.
+Supplement with any relevant context found in `docs/business-os/strategy/<BIZ>/` and (in app mode) `<app_dir>` — brand strategy, offer docs, ICP docs, app README — to give the research tool enough grounding to return relevant, specific results rather than generic advice.
 
 ### Section (b) — Singular Goal (verbatim)
 
@@ -188,7 +198,7 @@ Research that violates these constraints (e.g. recommending luxury-only solution
 
 ## Step 4: Write Research Prompt
 
-Write the generated prompt to `docs/business-os/strategy/<BIZ>/worldclass-research-prompt.md`.
+Write the generated prompt to `<artifact_dir>/worldclass-research-prompt.md`.
 
 **Document structure:**
 
@@ -196,17 +206,18 @@ Write the generated prompt to `docs/business-os/strategy/<BIZ>/worldclass-resear
 ---
 schema_version: worldclass-research-prompt.v1
 business: <BIZ>
+app: <APP>   ← include only when --app was used; omit in biz mode
 goal_version: <goal.goal_version>
 goal_contract_hash: <computed in Step 3>
 generated_at: <--as-of-date>
 domains: <same list as goal.domains, by name>
 ---
 
-# World-Class Research Prompt — <BIZ>
+# World-Class Research Prompt — <BIZ></ APP>   ← append "/<APP>" in app mode
 
 > Generated by `/lp-do-worldclass` on <--as-of-date>.
 > Run this prompt in a deep-research tool (e.g. Perplexity Deep Research, Claude extended thinking, or equivalent).
-> Paste the result as `docs/business-os/strategy/<BIZ>/worldclass-benchmark.md` with the frontmatter shown in Section (d) above.
+> Paste the result as `<artifact_dir>/worldclass-benchmark.md` with the frontmatter shown in Section (d) above.
 > Set `benchmark-status: benchmark-ready` in `worldclass-goal.md` once the benchmark is in place.
 
 <insert Sections a, b, c, d, e in order>
@@ -214,7 +225,7 @@ domains: <same list as goal.domains, by name>
 
 After writing: update `benchmark-status` in the goal artifact conditionally:
 
-**Updating benchmark-status in goal artifact:** edit `docs/business-os/strategy/<BIZ>/worldclass-goal.md` using the following rule:
+**Updating benchmark-status in goal artifact:** edit `<artifact_dir>/worldclass-goal.md` using the following rule:
 
 - If benchmark **does not exist** OR `benchmark.goal_version != goal.goal_version` → set `benchmark-status: research-prompt-ready`
 - If benchmark **exists AND** `benchmark.goal_version == goal.goal_version` AND `benchmark.schema_version == worldclass-benchmark.v1` → set `benchmark-status: benchmark-ready` (or leave unchanged if already `benchmark-ready`)
@@ -227,7 +238,7 @@ After Steps 3–4 complete (or if they were skipped in Step 2), evaluate:
 
 **Continue to scan-phase (State 3)** if ALL of the following are true:
 
-- `docs/business-os/strategy/<BIZ>/worldclass-benchmark.md` exists and is non-empty
+- `<artifact_dir>/worldclass-benchmark.md` exists and is non-empty
 - Benchmark frontmatter `goal_version` == `goal.goal_version`
 - Benchmark frontmatter `schema_version` == `worldclass-benchmark.v1`
 
@@ -255,6 +266,6 @@ goal_version:                     <goal.goal_version> (unchanged — hash mismat
 
 The goal contract (singular-goal, domain ids, or constraints) was modified without bumping goal_version.
 The benchmark no longer matches the current goal.
-Fix: bump goal_version in docs/business-os/strategy/<BIZ>/worldclass-goal.md, set benchmark-status: none,
-then re-run /lp-do-worldclass --biz <BIZ> to regenerate the research prompt. Paste a fresh benchmark before scanning.
+Fix: bump goal_version in <artifact_dir>/worldclass-goal.md, set benchmark-status: none,
+then re-run /lp-do-worldclass <original-invocation-form> to regenerate the research prompt. Paste a fresh benchmark before scanning.
 ```

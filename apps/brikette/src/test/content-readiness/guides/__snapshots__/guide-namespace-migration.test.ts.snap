@@ -84,7 +84,7 @@ exports[`guide namespace migration preserves namespace assignment for all guides
   "offSeasonLongStay": "assistance",
   "offbeatVillagesAmalfi": "experiences",
   "onlyHostel": "assistance",
-  "parking": "assistance",
+  "arriveByCar": "assistance",
   "pathOfTheGods": "experiences",
   "pathOfTheGodsBus": "experiences",
   "pathOfTheGodsFerry": "experiences",

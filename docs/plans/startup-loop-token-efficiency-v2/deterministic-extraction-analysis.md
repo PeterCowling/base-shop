@@ -36,13 +36,41 @@ The extracted code is the single source of truth; the model only reads a summary
 
 ## B) Prioritized Extraction Table
 
-### ROI Scoring Formula
+### Priority Score Formula (ranking only, not payback)
 
 ```
-ROI = (Freq × 0.30) + (DetConf × 0.30) + (Blast × 0.20) + ((5 - MaintCost) × 0.20)
+PriorityScore = (Freq × 0.30) + (DetConf × 0.30) + (Blast × 0.20) + ((5 - MaintCost) × 0.20)
 ```
 
 Scale 1–5 for all inputs. `MaintCost` is inverted (1 = easiest to maintain = best).
+
+### Payback Formula (true ROI for implementation decisions)
+
+Use payback economics (not priority score) to decide whether to implement:
+
+```
+MonthlyNetValueUSD = (WeeklyTokensSaved × 4.33 / 1_000_000) × ModelCostPerMTokUSD
+                  + (EngineerHoursSavedPerWeek × 4.33 × LoadedEngineerRatePerHourUSD)
+                  - MonthlyMaintenanceCostUSD
+
+PaybackMonths = BuildCostUSD / MonthlyNetValueUSD
+PaybackROI = MonthlyNetValueUSD / (BuildCostUSD / 12)
+
+ExpectedMonthlyNetValueUSD = RealizationProbability × MonthlyNetValueUSD
+ExpectedROI = ExpectedMonthlyNetValueUSD / (BuildCostUSD / 12)
+```
+
+Expected payback-positive condition:
+
+- `ExpectedROI > 1.0x` (expected annualized value exceeds build cost).
+
+Decision gates:
+
+| Metric | Implement now | Backlog | Do not implement |
+|---|---|---|---|
+| **PaybackMonths** | `<= 3` | `> 3 and <= 6` | `> 6` |
+| **PaybackROI** | `>= 4.0x` | `>= 2.0x and < 4.0x` | `< 2.0x` |
+| **PriorityScore** | tie-breaker only | tie-breaker only | tie-breaker only |
 
 | Component | Description |
 |---|---|
@@ -55,7 +83,7 @@ Scale 1–5 for all inputs. `MaintCost` is inverted (1 = easiest to maintain = b
 
 ### Table (20 candidates)
 
-| # | Skill / Sub-step | Why deterministic | Proposed artifact(s) | Interface contract (in → out) | Tests to add | ROI score | Edge cases / limits |
+| # | Skill / Sub-step | Why deterministic | Proposed artifact(s) | Interface contract (in → out) | Tests to add | Priority score | Edge cases / limits |
 |---|---|---|---|---|---|---|---|
 | 1 | **Confidence threshold enforcement** (`confidence-scoring-rules.md`) | Exact numeric thresholds (IMPLEMENT ≥80, SPIKE ≥80, INVESTIGATE ≥60, replan <60) plus caps (reasoning-only → 75, incomplete VC → 70) are pure lookup tables | `packages/skill-runner/src/confidence-thresholds.yaml` + `packages/skill-runner/src/validate-task-confidence.ts` | In: `{type, confidence, evidence_class?, vc_coverage?}` → Out: `{eligible: bool, capped_at?: number, reason: string}` | Unit: each threshold boundary ±1; cap application; multiples-of-5 rule; exact-80 flag | **4.6** (F:5 D:5 B:5 M:2) | Business fail-first caps interact with evidence class — requires evidence_class field to be well-typed |
 | 2 | **Build eligibility gate** (`lp-do-build`, `lp-do-plan`) | Gate is a pure function of task type + confidence score + dependency status | Bundled with #1 as `validate-task-confidence.ts` + wrapper CLI `scripts/validate-build-eligibility.sh` | In: plan.md path + task ID → Out: eligible/blocked + reason (stdout), exit 0/1 | Unit: CHECKPOINT task always eligible; SPIKE=75 blocked; INVESTIGATE=65 eligible | **4.6** (F:5 D:5 B:5 M:2) | CHECKPOINT task type has no numeric gate — must be handled as a special case |
@@ -80,9 +108,9 @@ Scale 1–5 for all inputs. `MaintCost` is inverted (1 = easiest to maintain = b
 
 ---
 
-**Top 10 by ROI (sorted):**
+**Top 10 by priority score (sorted):**
 
-| Rank | Item | ROI |
+| Rank | Item | Priority score |
 |---|---|---|
 | 1 | Confidence threshold enforcement | 4.6 |
 | 2 | Build eligibility gate | 4.6 |
@@ -94,6 +122,67 @@ Scale 1–5 for all inputs. `MaintCost` is inverted (1 = easiest to maintain = b
 | 8 | Critique round-iteration rules | 3.7 |
 | 9 | Deliverable routing validator | 3.6 |
 | 10 | Fact-find status gate | 3.6 |
+
+---
+
+### Payback Scorecard (estimated)
+
+Because the current artifacts do not yet have measured per-candidate telemetry for all 20 items,
+the payback inputs below are estimated from the deterministic row factors.
+
+Assumptions used for this score update:
+
+| Input | Value |
+|---|---|
+| `ModelCostPerMTokUSD` | `8` |
+| `LoadedEngineerRatePerHourUSD` | `120` |
+| `RealizationEvidenceQuality` | `proxy` |
+| `RealizationProbability` | `0.50` |
+| `MonthlyMaintenanceCostUSD` | `20 + (5 × M)` |
+| `WeeklyTokensSaved` proxy | `(2500 × F) + (500 × D) + (300 × B)` |
+| `EngineerHoursSavedPerWeek` proxy | `(0.16 × F) + (0.08 × B) + (0.05 × (5 - M))` |
+| `BuildCostUSD` proxy | `(6 + (1.4 × M) + (0.5 × B) + (0.4 × F)) × LoadedEngineerRatePerHourUSD` |
+
+Updated scores using the new payback metric:
+
+| # | Candidate | Priority score | Payback months | Payback ROI | Expected ROI | Decision |
+|---|---|---:|---:|---:|---:|---|
+| 1 | Confidence threshold enforcement (confidence-scoring-rules.md) | 4.6 | 2.37 | 5.05x | 2.53x | Implement now |
+| 2 | Build eligibility gate (lp-do-build, lp-do-plan) | 4.6 | 2.37 | 5.05x | 2.53x | Implement now |
+| 3 | Plan frontmatter schema validation (lp-do-plan, lp-do-build) | 4.3 | 2.63 | 4.56x | 2.28x | Implement now |
+| 4 | Canonical path resolver (workspace-paths.md) | 4.2 | 2.51 | 4.79x | 2.39x | Implement now |
+| 5 | lp-do-sequence topological sort (seq-algorithm.md) | 4.1 | 2.72 | 4.41x | 2.21x | Implement now |
+| 6 | Critique autofix trigger rule (lp-do-critique) | 4.1 | 2.72 | 4.41x | 2.21x | Implement now |
+| 7 | Critique score stability rule (lp-do-critique) | 3.7 | 3.36 | 3.57x | 1.78x | Backlog |
+| 8 | Deliverable routing validator (deliverable-routing.yaml) | 3.6 | 3.21 | 3.74x | 1.87x | Backlog |
+| 9 | lp-do-worldclass state machine (lp-do-worldclass) | 3.5 | 3.66 | 3.28x | 1.64x | Backlog |
+| 10 | lp-do-worldclass goal_contract_hash (modules/goal-phase.md) | 3.5 | 3.66 | 3.28x | 1.64x | Backlog |
+| 11 | Evidence cap rules (confidence-scoring-rules.md) | 3.5 | 2.44 | 4.93x | 2.46x | Implement now |
+| 12 | Fact-find status gate (lp-do-fact-find) | 3.6 | 3.21 | 3.74x | 1.87x | Backlog |
+| 13 | lp-do-build wave dispatch parser (lp-do-build) | 3.1 | 3.95 | 3.03x | 1.52x | Backlog |
+| 14 | Plan archiving trigger check (_shared/plan-archiving.md) | 3.2 | 4.76 | 2.52x | 1.26x | Backlog |
+| 15 | Startup-loop stage ID validator (check-startup-loop-contracts.sh SQ-01D) | 3.3 | 3.95 | 3.03x | 1.52x | Backlog |
+| 16 | Assessment artifact discovery (lp-do-assessment-14-logo-brief) | 3.4 | 3.95 | 3.03x | 1.52x | Backlog |
+| 17 | lp-do-assessment-14 quality gate (logo brief, 16 checks) | 3.3 | 3.93 | 3.06x | 1.53x | Backlog |
+| 18 | Critique round-iteration rules (critique-loop-protocol.md) | 3.7 | 3.36 | 3.57x | 1.78x | Backlog |
+| 19 | Stage-doc API key policy (workspace-paths.md) | 2.8 | 5.19 | 2.31x | 1.16x | Backlog |
+| 20 | Business fail-first caps (confidence-scoring-rules.md) | 3.5 | 2.72 | 4.41x | 2.21x | Implement now |
+
+Payback summary:
+- Implement now: 8
+- Backlog: 12
+- Do not implement: 0
+- Expected payback-positive (`ExpectedROI > 1.0x`): 20
+
+### Auto-Scout Register (new opportunities from latest audit)
+
+Source audit: `skill-efficiency-audit-2026-02-18-1357.md`
+
+| Key | Skill | Signal | Tier | Metric | Delta | Priority score | Payback months | Payback ROI | Expected ROI | Decision | Notes |
+|---|---|---|---|---|---|---:|---:|---:|---:|---|---|
+| H1:lp-do-fact-find | lp-do-fact-find | H1 | high | lines=201 | **REGRESSION** (was 198L compliant) | 4.6 | 2.37 | 5.05x | 2.53x | Implement now | Has modules/; 3-line growth crossed threshold; trim orchestrator to ≤200L |
+| H2:lp-sequence | lp-sequence | H2 | high | phase_matches=9 | **NEW** | 4.1 | 2.75 | 4.36x | 2.18x | Implement now | H1 compliant (124L); Step-N headings in new modules trigger heuristic — **advisory: false positive** (sequential algorithm steps, not parallel domains; Step headings in modules are not dispatch targets) |
+| H3:lp-sequence | lp-sequence | H3 | high | phase_matches=9 | **NEW** | 3.8 | 2.75 | 4.36x | 2.18x | Implement now | H1 compliant (124L); Step-N headings in new modules trigger heuristic — **advisory: false positive** (sequential algorithm steps, not parallel domains; Step headings in modules are not dispatch targets) |
 
 ---
 
@@ -158,9 +247,17 @@ scripts/
 
 ## D) First 3 Extractions to Implement Now
 
+### Implementation Gate (payback-first)
+
+All extraction candidates in this section must pass payback gating before implementation:
+
+1. `PaybackMonths <= 3`
+2. `PaybackROI >= 4.0x`
+3. If both pass for multiple candidates, pick highest `PriorityScore` first
+
 ### Extraction 1: Confidence Threshold Config + Build Eligibility Gate
 
-**ROI: 4.6 — Highest priority. Every plan execution re-reads 3.2KB of threshold rules.**
+**Priority score: 4.6; Payback: 2.37 months, 5.05x ROI (Expected: 2.53x) — Highest-priority payback candidate.**
 
 #### Minimal implementation
 
@@ -309,7 +406,7 @@ export function validateTaskEligibility(input: EligibilityInput): EligibilityRes
 
 ### Extraction 2: Plan Frontmatter Schema Validation
 
-**ROI: 4.3 — Eliminates the Foundation Gate manual check on every plan creation/activation.**
+**Priority score: 4.3; Payback: 2.63 months, 4.56x ROI (Expected: 2.28x) — Meets implement-now payback gate.**
 
 #### Minimal implementation
 
@@ -397,7 +494,7 @@ export function validatePlan(content: string): ValidationResult {
 
 ### Extraction 3: lp-do-sequence Topological Sort
 
-**ROI: 4.1 — Biggest token saving per invocation; called after every plan topology edit.**
+**Priority score: 4.1; Payback: 2.72 months, 4.41x ROI (Expected: 2.21x) — Meets implement-now payback gate.**
 
 #### Minimal implementation
 

@@ -11,7 +11,7 @@ import type { AppLanguage } from "../i18n.config";
 import { i18nConfig } from "../i18n.config";
 import { LanguageSwitcher } from "../molecules/LanguageSwitcher";
 import { ThemeToggle } from "../molecules/ThemeToggle";
-import { buildNavLinks, type TranslateFn } from "../utils/buildNavLinks";
+import { buildNavLinks, type NavItemChild, type TranslateFn } from "../utils/buildNavLinks";
 import { translatePath } from "../utils/translate-path";
 
 interface Props {
@@ -19,6 +19,8 @@ interface Props {
   setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
   lang?: AppLanguage;
   bannerHeight?: number;
+  experienceNavItems?: NavItemChild[];
+  howToGetHereNavItems?: NavItemChild[];
 }
 
 const MOBILE_NAV_HEIGHT = 64;
@@ -26,7 +28,7 @@ const FALLBACK_SITE_MENU_LABEL =
   /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback heading copy. */
   "Site menu";
 
-function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 0 }: Props): JSX.Element {
+function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 0, experienceNavItems, howToGetHereNavItems }: Props): JSX.Element {
   const fallbackLang = useCurrentLanguage();
   const { i18n } = useTranslation();
   const normalizedI18nLang = useMemo(() => {
@@ -50,6 +52,16 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
     const roomsPath = `/${lang}/${translatePath("rooms", lang)}`;
     if (pathname.startsWith(roomsPath)) {
       setExpandedKey("rooms");
+      return;
+    }
+    const experiencesPath = `/${lang}/${translatePath("experiences", lang)}`;
+    if (pathname.startsWith(experiencesPath)) {
+      setExpandedKey("experiences");
+      return;
+    }
+    const howToGetHerePath = `/${lang}/${translatePath("howToGetHere", lang)}`;
+    if (pathname.startsWith(howToGetHerePath)) {
+      setExpandedKey("howToGetHere");
     }
   }, [pathname, lang]);
 
@@ -58,7 +70,7 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
   /* Paths & links ------------------------------------------------------ */
   // Build links on each render so labels reflect the active language
   // as soon as namespaces load.
-  const { navLinks } = buildNavLinks(lang, t as unknown as TranslateFn);
+  const { navLinks } = buildNavLinks(lang, t as unknown as TranslateFn, experienceNavItems, howToGetHereNavItems);
 
   /* Render ------------------------------------------------------------- */
   const menuOffset = MOBILE_NAV_HEIGHT + bannerHeight;
@@ -116,7 +128,7 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
                       onClick={() => setExpandedKey((k) => (k === key ? null : key))}
                       className={clsx(
                         "flex w-full min-h-12 items-center justify-between px-6 py-4 text-xl text-brand-heading hover:bg-brand-heading/5 focus-visible:outline-none focus-visible:ring-inset focus-visible:ring-2 focus-visible:ring-brand-secondary/60 transition-colors",
-                        isCurrent ? "font-semibold text-brand-secondary" : "font-medium"
+                        isCurrent ? "font-semibold text-brand-primary" : "font-medium"
                       )}
                     >
                       {label}
@@ -161,7 +173,7 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
                     aria-current={isCurrent ? "page" : undefined}
                     className={clsx(
                       "flex w-full min-h-12 items-center px-6 py-4 text-xl text-brand-heading hover:bg-brand-heading/5 focus-visible:outline-none focus-visible:ring-inset focus-visible:ring-2 focus-visible:ring-brand-secondary/60 transition-colors",
-                      isCurrent ? "font-semibold text-brand-secondary" : "font-medium"
+                      isCurrent ? "font-semibold text-brand-primary" : "font-medium"
                     )}
                     onClick={close}
                   >

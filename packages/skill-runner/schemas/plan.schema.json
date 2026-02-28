@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://acme.local/schemas/plan.schema.json",
+  "title": "Plan Frontmatter",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "Type",
+    "Status",
+    "Domain",
+    "Last-reviewed",
+    "Relates-to charter",
+    "Execution-Track",
+    "Primary-Execution-Skill",
+    "Deliverable-Type",
+    "Feature-Slug",
+    "Workstream"
+  ],
+  "properties": {
+    "Type": { "const": "Plan" },
+    "Status": {
+      "type": "string",
+      "enum": ["Draft", "Active", "Archived", "Complete", "Superseded", "Historical"]
+    },
+    "Execution-Track": {
+      "type": "string",
+      "enum": ["code", "business-artifact", "mixed"]
+    },
+    "Deliverable-Type": {
+      "type": "string",
+      "enum": [
+        "code-change",
+        "email-message",
+        "whatsapp-message",
+        "product-brief",
+        "marketing-asset",
+        "spreadsheet",
+        "multi-deliverable"
+      ]
+    },
+    "Feature-Slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    }
+  }
+}

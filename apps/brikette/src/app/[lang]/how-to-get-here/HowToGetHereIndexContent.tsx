@@ -167,7 +167,7 @@ function HowToGetHereIndexContent({ lang, initialFilters, basePath }: Props) {
   const [highlightedRouteSlug, setHighlightedRouteSlug] = useState<string | null>(null);
   const [isLateNight, setIsLateNight] = useState(false);
   const stickyOffset = useHeaderStickyOffset();
-  const parkingHref = isGuideLive("parking") ? guideHref(lang, "parking") : undefined;
+  const parkingHref = isGuideLive("arriveByCar") ? guideHref(lang, "arriveByCar") : undefined;
 
   const handleRoutePick = useCallback((sel: RoutePickerSelection) => {
     // Track if user selected late-night arrival for taxi emphasis

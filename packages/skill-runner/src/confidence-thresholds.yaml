@@ -1,0 +1,17 @@
+thresholds:
+  implement: 80
+  spike: 80
+  investigate: 60
+  replan_trigger: 60
+
+caps:
+  reasoning_only_ml: 75
+  incomplete_validation_contract: 70
+  business_fail_first:
+    no_red: 79
+    red_no_green: 84
+    green_no_refactor: 89
+
+rules:
+  confidence_step: 5
+  exact_threshold_flag: 80

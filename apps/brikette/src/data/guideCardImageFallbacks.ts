@@ -31,7 +31,7 @@ const GUIDE_CARD_IMAGE_FALLBACKS: Readonly<Record<string, GuideCardImage>> = {
   "marinaDiPraiaBeaches": { src: "/img/guides/marina-di-praia/01-marina-di-praia-overlook.webp", alt: "Aerial view of Marina di Praia cove with boats, umbrellas, and surrounding cliffs in Praiano" },
   "naplesAirportPositanoBus": { src: "/img/directions/naples-airport-positano-bus-bus-stop.png", alt: "Naples Airport Terminal 1 arrivals level showing Curreri bus stop signage" },
   "naplesCenterTrainBus": { src: "/img/guides/naples-center-train-bus/napoli-garibaldi-station.jpg", alt: "Entrance to Circumvesuviana platform at Napoli Garibaldi station in Naples" },
-  "parking": { src: "/images/guides/amalfiPositanoBus/amalfi-coast-road.jpg", alt: "Coastal road on the Amalfi Coast with steep cliffs and tight bends" },
+  "arriveByCar": { src: "/images/guides/amalfiPositanoBus/amalfi-coast-road.jpg", alt: "Coastal road on the Amalfi Coast with steep cliffs and tight bends" },
   "pathOfTheGods": { src: "/img/guides/topics/pathOfTheGods.jpg", alt: "The Path of the Gods trail with sweeping Amalfi Coast views." },
   "pathOfTheGodsBus": { src: "/img/guides/path-of-the-gods-bus/01-nav.jpg", alt: "Bar Internazionale cafe location in Positano where SITA bus tickets are sold" },
   "pathOfTheGodsFerry": { src: "/img/guides/path-of-the-gods-ferry/01-nav.jpg", alt: "Route map from Hostel Brikette to Positano port with numbered waypoints (1-5)" },

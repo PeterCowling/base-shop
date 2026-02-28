@@ -152,7 +152,7 @@ const BookingWidget = memo(function BookingWidget({
             <div className="flex items-end gap-3">
               <label
                 htmlFor={BOOKING_GUESTS_ID}
-                className="flex flex-col gap-1.5 text-sm font-semibold text-brand-heading text-brand-surface"
+                className="flex flex-col gap-1.5 text-sm font-semibold text-brand-heading"
               >
                 {tModals("booking.guestsLabel")}
                 <input

@@ -6,17 +6,20 @@ Called by `/lp-do-worldclass` in State 3 only (goal + current benchmark). Reads 
 
 ## Inputs
 
-- `--biz <BIZ>` — from SKILL.md invocation
+- `BIZ` — resolved by SKILL.md preflight
+- `APP` — `--app` value, or `null` in biz mode
+- `artifact_dir` — resolved by SKILL.md preflight (e.g. `docs/business-os/strategy/BRIK/apps/reception/`)
+- `app_dir` — resolved by SKILL.md preflight (e.g. `apps/reception/`); may be `null` in biz mode if no apps listed
 - `--as-of-date <YYYY-MM-DD>` — from SKILL.md invocation (defaults to today)
 - `--dry-run` — from SKILL.md invocation (affects scan output frontmatter; does not skip writing the scan file)
-- Benchmark artifact: `docs/business-os/strategy/<BIZ>/worldclass-benchmark.md` (validated present and current by goal-phase before this module runs)
-- Goal artifact (for `goal_version`): `docs/business-os/strategy/<BIZ>/worldclass-goal.md`
-- Strategy directory: `docs/business-os/strategy/<BIZ>/`
-- App source (if applicable): `apps/brikette/` or equivalent app directory for `<BIZ>`
+- Benchmark artifact: `<artifact_dir>/worldclass-benchmark.md` (validated present and current by goal-phase before this module runs)
+- Goal artifact (for `goal_version`): `<artifact_dir>/worldclass-goal.md`
+- Strategy directory: `docs/business-os/strategy/<BIZ>/` (always the parent business directory; provides broader context even in app mode)
+- App source: `<app_dir>` (resolved from preflight; `apps/reception/` in app mode, or the primary app for the business in biz mode)
 
 ## Step 1: Read and Parse Benchmark
 
-Read `docs/business-os/strategy/<BIZ>/worldclass-benchmark.md`.
+Read `<artifact_dir>/worldclass-benchmark.md`.
 
 **Validate schema_version:** frontmatter must contain `schema_version: worldclass-benchmark.v1`. If missing or wrong value, stop with:
 
@@ -24,7 +27,7 @@ Read `docs/business-os/strategy/<BIZ>/worldclass-benchmark.md`.
 Error: worldclass-benchmark.md for <BIZ> has an unexpected schema version.
 Found:    schema_version: <actual value>
 Expected: schema_version: worldclass-benchmark.v1
-Fix the benchmark frontmatter or re-run deep research and replace the file, then re-run /lp-do-worldclass --biz <BIZ>.
+Fix the benchmark frontmatter or re-run deep research and replace the file, then re-run /lp-do-worldclass (using the same --biz or --app invocation form as before).
 ```
 
 **Parse domain sections:** scan the body for all headings matching `## [<domain_id>] <Domain Name>`. Each domain section must contain all four subsections: `### Current Best Practice`, `### Exemplars`, `### Key Indicators`, `### Minimum Threshold`. If a domain section is missing any of these subsections, stop with:
@@ -33,7 +36,7 @@ Fix the benchmark frontmatter or re-run deep research and replace the file, then
 Error: worldclass-benchmark.md for <BIZ> has a malformed domain section.
 Domain: <domain_id> — <Domain Name>
 Missing subsection: <subsection heading>
-Fix the benchmark document at docs/business-os/strategy/<BIZ>/worldclass-benchmark.md, then re-run.
+Fix the benchmark document at <artifact_dir>/worldclass-benchmark.md, then re-run.
 ```
 
 **Extract per domain:**
@@ -52,7 +55,7 @@ Fix the benchmark document so heading domain_ids exactly match frontmatter domai
 
 Record the parsed domain list. All subsequent steps iterate over this list.
 
-**Validate goal/benchmark domain alignment:** read `docs/business-os/strategy/<BIZ>/worldclass-goal.md` and resolve each domain's id — use `domain.id` if present, else lowercase-hyphenate `domain.name`. Compare the resolved set of goal domain_ids against the set of `id` values in the benchmark frontmatter `domains:` list. They must match exactly (same set, no missing entries, no extras). If they differ, stop with:
+**Validate goal/benchmark domain alignment:** read `<artifact_dir>/worldclass-goal.md` and resolve each domain's id — use `domain.id` if present, else lowercase-hyphenate `domain.name`. Compare the resolved set of goal domain_ids against the set of `id` values in the benchmark frontmatter `domains:` list. They must match exactly (same set, no missing entries, no extras). If they differ, stop with:
 
 ```
 Error: worldclass-goal.md and worldclass-benchmark.md for <BIZ> have different domain sets.
@@ -62,7 +65,7 @@ Benchmark domains:  [id values from benchmark frontmatter]
 The benchmark was generated for a different goal contract.
 Fix by either:
   (a) bumping goal_version in worldclass-goal.md, setting benchmark-status: none, and re-running
-      /lp-do-worldclass --biz <BIZ> to regenerate the research prompt; or
+      /lp-do-worldclass (using the same --biz or --app invocation form as before) to regenerate the research prompt; or
   (b) restoring the goal domains to match the benchmark, if the domain change was unintentional.
 ```
 
@@ -72,13 +75,13 @@ For each of the five fixed data-source categories below, determine its status (`
 
 ### (a) Repo
 
-**What to look for:** strategy documents, website pages, content files, and source code at `docs/business-os/strategy/<BIZ>/` and the equivalent app directory (`apps/brikette/` for BRIK, or the corresponding app for other businesses).
+**What to look for:** strategy documents, website pages, content files, and source code at `docs/business-os/strategy/<BIZ>/` and the resolved app source directory (`<app_dir>`).
 
 **Status determination:**
 - Always `configured` — the repo is always accessible.
 - The amount of relevant content found in Step 4 determines scan quality, not repo status itself.
 
-**Probe action in Step 4:** read strategy docs, page source, and content files in `docs/business-os/strategy/<BIZ>/` and the relevant app directory.
+**Probe action in Step 4:** read strategy docs, page source, and content files in `docs/business-os/strategy/<BIZ>/` and `<app_dir>`.
 
 ### (b) Stripe
 
@@ -117,14 +120,14 @@ For each of the five fixed data-source categories below, determine its status (`
 
 ### (e) Octorate
 
-**What to look for:** Octorate PMS references in `apps/reception/` source, or available `mcp__brikette__octorate_*` tools with a valid session.
+**What to look for:** Octorate PMS references in `<app_dir>` source, or available `mcp__brikette__octorate_*` tools with a valid session.
 
 **Status determination:**
-- `configured` — Octorate references (API calls, config, constants) found in `apps/reception/` source, OR `mcp__brikette__octorate_calendar_check` returns a valid session.
-- `not-configured` — no Octorate references found in `apps/reception/` and no Octorate MCP tools available or configured.
+- `configured` — Octorate references (API calls, config, constants) found in `<app_dir>` source, OR `mcp__brikette__octorate_calendar_check` returns a valid session.
+- `not-configured` — no Octorate references found in `<app_dir>` and no Octorate MCP tools available or configured.
 - `uncertain` — Octorate referenced in source but session state is unknown (e.g. `mcp__brikette__octorate_calendar_check` not callable or returns session-expired).
 
-**Probe action:** grep `apps/reception/` for `octorate` (case-insensitive). If found, note file locations. Do not attempt to create a session; only check whether one is accessible.
+**Probe action:** grep `<app_dir>` for `octorate` (case-insensitive). If found, note file locations. Do not attempt to create a session; only check whether one is accessible.
 
 ---
 
@@ -169,7 +172,7 @@ If no data sources are `uncertain`, proceed directly to Step 4.
 
 For each domain parsed in Step 1, search all `configured` and operator-confirmed data sources (from Steps 2–3) for evidence relevant to that domain.
 
-**Repo scan (always):** search `docs/business-os/strategy/<BIZ>/` and the relevant app directory for:
+**Repo scan (always):** search `docs/business-os/strategy/<BIZ>/` and `<app_dir>` for:
 - Content, copy, imagery references, or page structure relevant to this domain
 - Any existing benchmarks, audits, or assessments that reference the domain by name or by Key Indicator terms
 - Source code, templates, or configuration that relates to the domain's subject matter
@@ -233,7 +236,7 @@ A single domain may contain multiple discrete gaps. Identify each gap separately
 
 ## Step 6: Write Gap Comparison Table
 
-Write the scan output to `docs/business-os/strategy/<BIZ>/worldclass-scan-<YYYY-MM-DD>.md`. If a file already exists for the same `<YYYY-MM-DD>`, overwrite it.
+Write the scan output to `<artifact_dir>/worldclass-scan-<YYYY-MM-DD>.md`. If a file already exists for the same `<YYYY-MM-DD>`, overwrite it.
 
 ### Table Format
 
@@ -264,12 +267,13 @@ Write the scan output to `docs/business-os/strategy/<BIZ>/worldclass-scan-<YYYY-
 ---
 schema_version: worldclass-scan.v1
 business: <BIZ>
+app: <APP>   ← include only when --app was used; omit in biz mode
 goal_version: <goal.goal_version>
 scan_date: <YYYY-MM-DD>
 status: dry_run | active
 ---
 
-# World-Class Gap Scan — <BIZ> (<YYYY-MM-DD>)
+# World-Class Gap Scan — <BIZ>/<APP> (<YYYY-MM-DD>)   ← use "<BIZ>/<APP>" in app mode; use "<BIZ>" in biz mode
 
 [DRY RUN — no dispatches emitted]   ← include only if --dry-run
 
@@ -309,14 +313,14 @@ Confirm the gap table is complete:
 - All domains from Step 1 have at least one row in the table
 - All 8 columns are populated for every row
 - Gap Classification for every row is one of the four valid values: `world-class`, `major-gap`, `minor-gap`, `no-data`
-- Scan output file has been written to `docs/business-os/strategy/<BIZ>/worldclass-scan-<YYYY-MM-DD>.md`
+- Scan output file has been written to `<artifact_dir>/worldclass-scan-<YYYY-MM-DD>.md`
 
 If any check fails, fix before proceeding.
 
 Once confirmed, pass the following to ideas-phase:
 - The parsed domain list from Step 1
 - The full gap table (all rows)
-- The `--biz` value
+- `BIZ`, `APP` (null in biz mode), and `artifact_dir`
 - The `--as-of-date` value
 - The `--dry-run` flag (if present)
 - The path to the written scan file

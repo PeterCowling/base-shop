@@ -71,12 +71,10 @@ If a matching `fact-find.md` already exists at `docs/plans/<feature-slug>/fact-f
 
 Before the investigation begins, list every external data source, service, or system that will be needed to answer the questions in this fact-find. For each source:
 
-1. Name the source (for example: GA4 analytics property, Octorate API, Stripe dashboard, specific MCP tool).
-2. State what kind of access is needed (API key, MCP tool, database credentials, login, or other).
-3. Check the agent project memory file `memory/data-access.md` (this is not a repo file — it lives at `~/.claude/projects/<project-hash>/memory/data-access.md`) to verify access is configured. If the file does not exist or does not list the source, mark the source `UNVERIFIED` rather than blocking the fact-find.
-4. Record any source that comes up during the investigation but was not listed here upfront as a "mid-investigation discovery event" in the `## Access Declarations` section of the fact-find artifact.
-
-The format for each declaration follows the access declarations schema in `docs/plans/startup-loop-build-reflection-gate/task-01-schema-spec.md` § 3. A fact-find with no external data dependencies may write `None` under this section and continue.
+- Name the source and required access type.
+- Check `memory/data-access.md` (`~/.claude/projects/<project-hash>/memory/data-access.md`); if absent/unlisted, mark `UNVERIFIED` (do not block).
+- Record sources discovered mid-investigation under `## Access Declarations`.
+- Follow schema: `docs/plans/startup-loop-build-reflection-gate/task-01-schema-spec.md` § 3. If no external dependencies, write `None`.
 
 ## Phase 3: Sufficiency Gate
 
@@ -128,9 +126,7 @@ Write a `## Simulation Trace` section into the fact-find draft (before persistin
 |---|---|---|---|
 | <evidence domain or entry point> | Yes / Partial / No | None — or: [Category] [Severity]: description | Yes / No |
 
-**Hard gate (Critical findings):** If any Critical scope gap is found, do not set `Status: Ready-for-planning` or proceed to Phase 6 until the issue is resolved or a valid `Simulation-Critical-Waiver` block is written (see shared protocol for waiver format and requirements).
-
-**Advisory (Major / Moderate / Minor findings):** Write into the Simulation Trace table and proceed. These are visible to the Phase 7a critique loop and do not block fact-find persistence.
+Critical findings block Phase 6 until resolved or waived (`Simulation-Critical-Waiver`). Major/Moderate/Minor findings are advisory and proceed to critique.
 
 ## Phase 6: Persist Artifact with Shared Templates
 
@@ -143,20 +139,7 @@ Write a `## Simulation Trace` section into the fact-find draft (before persistin
 
 Before running the evidence gap review or critique, review every question currently marked as Open.
 
-For each open question, apply this test:
-
-> Can I answer this by reasoning about available evidence, effectiveness, efficiency, and the documented business requirements?
-
-If yes: answer it. Move it to the Resolved section with a reasoned answer and the evidence or logic basis. Do not leave it open.
-
-A question is genuinely Open (operator input required) only if it meets one of these:
-- Requires knowledge the operator holds that is not documented anywhere (budget cap, undocumented strategic intent, personal preference)
-- Requires a real-world fact the agent cannot determine from any accessible source (supplier availability, current sales data not in the repo, regulatory status)
-- Is a strategic fork where the operator's preference is the deciding factor AND that preference is genuinely absent from all docs
-
-Questions of the form "which approach is better?", "how should we handle X?", or "what's the right architecture here?" are almost never genuinely open — reason through the tradeoffs using documented constraints and recommend. If the recommendation has uncertainty, state the confidence and the assumption it rests on, but do not defer the decision to the operator.
-
-The goal is a Resolved section that is long and an Open section that is short or empty.
+Self-resolve any question answerable from available evidence and business constraints; move it to `Resolved` with evidence/logic. Keep a question in `Open` only when operator-only knowledge is required (undocumented preference/intent, unavailable real-world fact, or genuine preference fork). Default posture: reason and recommend rather than defer.
 
 ## Phase 7: Mandatory Evidence Gap Review (Outcome A)
 
@@ -178,18 +161,10 @@ If unresolved blockers remain, classify the blocker type before setting status:
 
 ### Minimum Evidence Floor Gate
 
-Before running critique, verify the brief is not empty in critical areas. A brief that passes critique scoring but has no substance in core sections will produce a low-quality plan. If any floor condition below fails, set `Status: Needs-input` immediately and list what is missing — do not run critique on an empty brief.
-
-**Code track (required):**
-- At least 1 entry point identified with a file path.
-- At least 1 key module/file listed with a role description.
-- Test landscape section present with at least a characterisation of coverage (even if gaps are noted).
-
-**Business track (required):**
-- At least 1 hypothesis stated in the Hypothesis & Validation Landscape section.
-- `Delivery-Readiness` confidence input ≥ 60%. If below 60%, the owner, channel, or approval path is too uncertain to proceed — surface what is blocking it.
-
-**Mixed:** apply both code and business checks above.
+Before critique, ensure minimum substance exists. If floor fails, set `Status: Needs-input` and stop (do not critique empty briefs):
+- Code: ≥1 entry-point path, ≥1 key module with role, test landscape present.
+- Business: ≥1 hypothesis, `Delivery-Readiness` ≥ 60%.
+- Mixed: must pass both.
 
 ## Phase 7a: Critique Loop (1–3 rounds, mandatory)
 
@@ -211,14 +186,9 @@ Status-dependent next action (execute immediately, do not wait for user):
 
 - [ ] Phase 0 queue check run — matching queued packet confirmed or direct-inject path taken
 - [ ] Access declarations listed and verified (or `None` recorded) before investigation begins
-- [ ] Intake satisfied before repo audit
 - [ ] Routing header computed and written to frontmatter
 - [ ] Only relevant module(s) loaded
-- [ ] Output generated from shared template file (not inline template)
-- [ ] Phase 5.5 Scope Simulation run — scope trace table present in fact-find draft; Critical scope gaps resolved or waived before Phase 6 persist
 - [ ] Outcome A evidence gap review completed and recorded
-- [ ] Minimum evidence floor gate passed (or `Status: Needs-input` set if floor failed)
 - [ ] lp-do-factcheck run if fact-find contains codebase claims (file paths, function names, coverage assertions)
-- [ ] Critique loop run (1–3 rounds): round count, final verdict, and score recorded (≥4.0 required for auto-handoff)
 - [ ] Status classified as `Ready-for-planning`, `Needs-input`, or `Infeasible` (not left ambiguous)
 - [ ] If `Ready-for-planning`: `/lp-do-plan <feature-slug> --auto` automatically invoked

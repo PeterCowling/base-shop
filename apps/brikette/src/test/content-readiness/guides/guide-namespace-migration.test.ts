@@ -44,7 +44,7 @@ describe("guide namespace migration", () => {
       "onlyHostel",
       "porterServices",
       "luggageStorage",
-      "parking",
+      "arriveByCar",
       "whatToPack",
       "simsAtms",
       "workCafes",

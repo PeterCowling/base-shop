@@ -5,7 +5,7 @@
 
  
 
-export const parking = {
+export const arriveByCar = {
   seo: {
     title: "Parking in Positano",
     description: "Where to park your car in Positano",

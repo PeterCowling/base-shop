@@ -205,7 +205,7 @@ function VarianceBreakdownSection({
             <TableHeader>
               <TableRow className="bg-surface-2">
                 <TableHead className="p-2 text-start">Motivo</TableHead>
-                <TableHead className="p-2 text-end">Totale varianza</TableHead>
+                <TableHead className="p-2 text-end">Varianza totale</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

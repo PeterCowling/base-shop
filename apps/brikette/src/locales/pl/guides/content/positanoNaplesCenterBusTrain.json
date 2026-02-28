@@ -10,7 +10,7 @@
   },
   "callouts": {
     "cta": "Potrzebujesz wszystkich opcji transportu? Otwórz %HOWTO:how-to-get-here|przegląd Jak do nas dotrzeć%, aby zobaczyć opcje promu, taksówki i mieszanych tras.",
-    "tip": "Podróżujesz zimą lub w sezonie przejściowym? Sprawdź %GUIDES:travelHelp|alerty o zakłóceniach w transporcie% przed wyjazdem – strajki i zmiany w rozkładach są częstsze od listopada do marca."
+    "tip": "Podróżujesz zimą lub w sezonie przejściowym? Sprawdź %LINK:travelHelp|alerty o zakłóceniach w transporcie% przed wyjazdem – strajki i zmiany w rozkładach są częstsze od listopada do marca."
   },
   "sections": [
     {
@@ -130,7 +130,7 @@
     {
       "id": "seasonal",
       "title": "Uwagi sezonowe i czasowe",
-      "body": "**Lato (czerwiec–wrzesień):**\n- Autobusy SITA jeżdżą częściej, ale szybko się zapełniają. Przyjedź 10–15 minut wcześniej.\n- Pociągi Circumvesuviana są zatłoczone, szczególnie w południe i w weekendy.\n- Upał może być nieprzyjemny – zarówno autobus, jak i pociąg mają ograniczoną klimatyzację.\n\n**Sezon przejściowy (kwiecień–maj, październik):**\n- Umiarkowane tłumy; przyjedź 5–10 minut wcześniej na autobus.\n- Przyjemne temperatury sprawiają, że podróż jest bardziej komfortowa.\n\n**Zima (listopad–marzec):**\n- SITA zmniejsza częstotliwość; sprawdź rozkłady jazdy z wyprzedzeniem.\n- Rozkłady Circumvesuviana mogą się zmieniać z powodu konserwacji lub strajków – potwierdź godziny odjazdów dzień przed podróżą.\n- Mniej turystów oznacza łatwiejsze wejście i więcej miejsca, ale usługi mogą być mniej niezawodne.\n\n**Strajki i zakłócenia:**\n- Strajki transportu publicznego (sciopero) są ogłaszane co najmniej 48 godzin wcześniej. Sprawdź %GUIDES:travelHelp|naszą stronę z alertami transportowymi% lub zapytaj recepcję hostelu o najnowsze aktualizacje.\n- Podczas strajków SITA i Circumvesuviana mogą prowadzić ograniczone usługi lub całkowicie odwołać. Zaplanuj alternatywny transport (taksówkę, prywatny transfer lub prom, jeśli jest dostępny), jeśli strajk jest zaplanowany w dniu twojej podróży."
+      "body": "**Lato (czerwiec–wrzesień):**\n- Autobusy SITA jeżdżą częściej, ale szybko się zapełniają. Przyjedź 10–15 minut wcześniej.\n- Pociągi Circumvesuviana są zatłoczone, szczególnie w południe i w weekendy.\n- Upał może być nieprzyjemny – zarówno autobus, jak i pociąg mają ograniczoną klimatyzację.\n\n**Sezon przejściowy (kwiecień–maj, październik):**\n- Umiarkowane tłumy; przyjedź 5–10 minut wcześniej na autobus.\n- Przyjemne temperatury sprawiają, że podróż jest bardziej komfortowa.\n\n**Zima (listopad–marzec):**\n- SITA zmniejsza częstotliwość; sprawdź rozkłady jazdy z wyprzedzeniem.\n- Rozkłady Circumvesuviana mogą się zmieniać z powodu konserwacji lub strajków – potwierdź godziny odjazdów dzień przed podróżą.\n- Mniej turystów oznacza łatwiejsze wejście i więcej miejsca, ale usługi mogą być mniej niezawodne.\n\n**Strajki i zakłócenia:**\n- Strajki transportu publicznego (sciopero) są ogłaszane co najmniej 48 godzin wcześniej. Sprawdź %LINK:travelHelp|naszą stronę z alertami transportowymi% lub zapytaj recepcję hostelu o najnowsze aktualizacje.\n- Podczas strajków SITA i Circumvesuviana mogą prowadzić ograniczone usługi lub całkowicie odwołać. Zaplanuj alternatywny transport (taksówkę, prywatny transfer lub prom, jeśli jest dostępny), jeśli strajk jest zaplanowany w dniu twojej podróży."
     },
     {
       "id": "alternatives",
@@ -168,7 +168,7 @@
     {
       "q": "Co powinienem zrobić, jeśli w dniu mojej podróży jest strajk transportu publicznego?",
       "a": [
-        "Strajki (sciopero) są ogłaszane co najmniej 48 godzin wcześniej. Sprawdź %GUIDES:travelHelp|stronę z alertami transportowymi% lub zapytaj recepcję hostelu o aktualizacje. Podczas strajków SITA i Circumvesuviana mogą prowadzić ograniczone usługi lub całkowicie odwołać. Zarezerwuj prywatny transfer lub taksówkę jako zapasowy plan – jeśli promy kursują (kwiecień–październik), %HOWTO:positanoNaplesCenterFerry|prom Positano-Neapol% jest niezawodną alternatywą."
+        "Strajki (sciopero) są ogłaszane co najmniej 48 godzin wcześniej. Sprawdź %LINK:travelHelp|stronę z alertami transportowymi% lub zapytaj recepcję hostelu o aktualizacje. Podczas strajków SITA i Circumvesuviana mogą prowadzić ograniczone usługi lub całkowicie odwołać. Zarezerwuj prywatny transfer lub taksówkę jako zapasowy plan – jeśli promy kursują (kwiecień–październik), %HOWTO:positanoNaplesCenterFerry|prom Positano-Neapol% jest niezawodną alternatywą."
       ]
     }
   ]

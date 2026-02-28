@@ -170,7 +170,7 @@ function TransportNotice({ className = "" }: Props): JSX.Element {
     {
       key: "driving",
       components: {
-        arrivingByCarLink: <TransLink className={LINK_CLASS_NAME} href={guideHref(lang, "parking")} />,
+        arrivingByCarLink: <TransLink className={LINK_CLASS_NAME} href={guideHref(lang, "arriveByCar")} />,
       } satisfies TransComponents,
     },
   ];

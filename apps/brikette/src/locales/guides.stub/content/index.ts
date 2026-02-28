@@ -7,6 +7,8 @@
 import { stubFaq } from "../shared";
 
 import { arienzoBeachBusBack } from "./arienzoBeachBusBack";
+// Compose the legacy `content` structure expected by the stub bundle
+import { arriveByCar } from "./arriveByCar";
 import { backpackerItineraries } from "./backpackerItineraries";
 import { backpackingSouthernItaly } from "./backpackingSouthernItaly";
 import { beachHoppingAmalfi } from "./beachHoppingAmalfi";
@@ -23,8 +25,6 @@ import { ferrySchedules } from "./ferrySchedules";
 import { hostelToFerryDock } from "./hostelToFerryDock";
 import { lauritoBeachBusBack } from "./lauritoBeachBusBack";
 import { onlyHostel } from "./onlyHostel";
-// Compose the legacy `content` structure expected by the stub bundle
-import { parking } from "./parking";
 import { pathOfTheGods } from "./pathOfTheGods";
 import { porterService } from "./porterService";
 import { positanoBudget } from "./positanoBudget";
@@ -32,7 +32,7 @@ import { reachBudget } from "./reachBudget";
 import { travelInsuranceAmalfi } from "./travelInsuranceAmalfi";
 
 export const content = {
-  parking,
+  arriveByCar,
   onlyHostel,
   reachBudget,
   ferrySchedules,

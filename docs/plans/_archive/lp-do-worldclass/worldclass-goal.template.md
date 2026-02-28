@@ -22,7 +22,7 @@ goal_version: 1
 
 # singular-goal: One sentence. What does world-class look like for THIS business
 # RIGHT NOW? Keep it concrete, time-bound, and include 1-2 observable markers.
-singular-goal: "By Summer 2026, BRIK has a world-class boutique hostel website for Positano with professional imagery, room-level pages with an embedded Octorate funnel, and a direct-booking CTA hierarchy that outcompetes OTA links."
+singular-goal: "BRIK should have a world-class boutique hostel website for Positano with professional imagery, room-level pages with an embedded Octorate funnel, and a direct-booking CTA hierarchy that outcompetes OTA links."
 
 domains:
   # id is optional but recommended for stability. If provided, it is used verbatim
@@ -134,18 +134,22 @@ results back in, scans compare current state against that benchmark.
 <!--
 =============================================================================
 BLANK TEMPLATE — reference only
-File path for per-business files: docs/business-os/strategy/<BIZ>/worldclass-goal.md
+File path for biz-level goals:  docs/business-os/strategy/<BIZ>/worldclass-goal.md
+File path for app-level goals:  docs/business-os/strategy/<BIZ>/apps/<APP>/worldclass-goal.md
 
-Copy ONLY the YAML fields below into a new per-business file. Do not copy
-this comment block. Per-business files must have exactly one --- frontmatter
+Copy ONLY the YAML fields below into a new per-business or per-app file. Do not copy
+this comment block. Per-business/app files must have exactly one --- frontmatter
 block at the top and a short Markdown body below.
 
 YAML FIELDS:
 
 schema_version: worldclass-goal.v1
 business: <BUSINESS_CODE>
+# app: <app-name>   # Required when goal was created via --app <APP>.
+#                   # Must match the app identifier in businesses.json.
+#                   # Omit this field entirely for biz-level goals (--biz mode).
 goal_version: 1
-singular-goal: "<Timebound one-sentence goal — e.g. 'By [Season Year], <BIZ> has [observable markers]'>"
+singular-goal: "<Aspirational framing — e.g. '<BIZ> should have world-class [X] with [observable markers that confirm it]'>"
 
 domains:
   - id: <lowercase-hyphenated-id>    # recommended; derived from name if absent

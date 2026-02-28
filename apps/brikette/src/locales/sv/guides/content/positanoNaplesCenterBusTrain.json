@@ -10,7 +10,7 @@
   },
   "callouts": {
     "cta": "Behöver alla transportalternativ? Öppna %HOWTO:how-to-get-here|översikten Så tar du dig hit% för färja, taxi och blandade resor.",
-    "tip": "Reser du under vintern eller lågsäsong? Kolla %GUIDES:travelHelp|varningar om trafikstörningar% innan du ger dig av – strejker och schemaändringar är vanligare november till mars."
+    "tip": "Reser du under vintern eller lågsäsong? Kolla %LINK:travelHelp|varningar om trafikstörningar% innan du ger dig av – strejker och schemaändringar är vanligare november till mars."
   },
   "sections": [
     {
@@ -130,7 +130,7 @@
     {
       "id": "seasonal",
       "title": "Säsongsbetonade och tidsöverväganden",
-      "body": "**Sommar (juni–september):**\n- SITA-bussar går oftare men fylls snabbt. Kom 10–15 minuter tidigt.\n- Circumvesuviana-tåg är fulla, särskilt mitt på dagen och helger.\n- Värmen kan vara obehaglig – både buss och tåg har begränsad luftkonditionering.\n\n**Lågsäsong (april–maj, oktober):**\n- Måttliga folkmassor; kom 5–10 minuter tidigt för bussen.\n- Behagliga temperaturer gör resan bekvämare.\n\n**Vinter (november–mars):**\n- SITA minskar frekvensen; kontrollera tidtabeller i förväg.\n- Circumvesuvianas scheman kan ändras på grund av underhåll eller strejker – verifiera avgångstider dagen före resan.\n- Färre turister betyder enklare ombordstigning och mer utrymme, men tjänster kan vara mindre pålitliga.\n\n**Strejker och störningar:**\n- Kollektivtrafikstrejker (sciopero) annonseras minst 48 timmar i förväg. Kolla %GUIDES:travelHelp|vår sida för transportvarningar% eller fråga hostellets reception för de senaste uppdateringarna.\n- Under strejker kan SITA och Circumvesuviana köra reducerade tjänster eller ställa in helt. Planera alternativ transport (taxi, privat transfer eller färja om tillgänglig) om en strejk är schemalagd på din resedag."
+      "body": "**Sommar (juni–september):**\n- SITA-bussar går oftare men fylls snabbt. Kom 10–15 minuter tidigt.\n- Circumvesuviana-tåg är fulla, särskilt mitt på dagen och helger.\n- Värmen kan vara obehaglig – både buss och tåg har begränsad luftkonditionering.\n\n**Lågsäsong (april–maj, oktober):**\n- Måttliga folkmassor; kom 5–10 minuter tidigt för bussen.\n- Behagliga temperaturer gör resan bekvämare.\n\n**Vinter (november–mars):**\n- SITA minskar frekvensen; kontrollera tidtabeller i förväg.\n- Circumvesuvianas scheman kan ändras på grund av underhåll eller strejker – verifiera avgångstider dagen före resan.\n- Färre turister betyder enklare ombordstigning och mer utrymme, men tjänster kan vara mindre pålitliga.\n\n**Strejker och störningar:**\n- Kollektivtrafikstrejker (sciopero) annonseras minst 48 timmar i förväg. Kolla %LINK:travelHelp|vår sida för transportvarningar% eller fråga hostellets reception för de senaste uppdateringarna.\n- Under strejker kan SITA och Circumvesuviana köra reducerade tjänster eller ställa in helt. Planera alternativ transport (taxi, privat transfer eller färja om tillgänglig) om en strejk är schemalagd på din resedag."
     },
     {
       "id": "alternatives",
@@ -168,7 +168,7 @@
     {
       "q": "Vad ska jag göra om det är en kollektivtrafikstrejk på min resedag?",
       "a": [
-        "Strejker (sciopero) annonseras minst 48 timmar i förväg. Kolla %GUIDES:travelHelp|sidan för transportvarningar% eller fråga hostellets reception för uppdateringar. Under strejker kan SITA och Circumvesuviana köra reducerade tjänster eller ställa in helt. Boka en privat transfer eller taxi som backup – om färjor går (april–oktober), är %HOWTO:positanoNaplesCenterFerry|Positano-Neapel-färjan% ett pålitligt alternativ."
+        "Strejker (sciopero) annonseras minst 48 timmar i förväg. Kolla %LINK:travelHelp|sidan för transportvarningar% eller fråga hostellets reception för uppdateringar. Under strejker kan SITA och Circumvesuviana köra reducerade tjänster eller ställa in helt. Boka en privat transfer eller taxi som backup – om färjor går (april–oktober), är %HOWTO:positanoNaplesCenterFerry|Positano-Neapel-färjan% ett pålitligt alternativ."
       ]
     }
   ]

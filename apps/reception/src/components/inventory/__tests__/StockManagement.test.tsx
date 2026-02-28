@@ -420,8 +420,31 @@ describe("StockManagement", () => {
     clickSpy.mockRestore();
   });
 
+  it("TC-R08: Count Variance Report renders reason column value for count entry with reason", () => {
+    useInventoryLedgerMock.mockReturnValue({
+      ...baseLedgerReturn,
+      entries: [
+        {
+          id: "entry-1",
+          itemId: "item-1",
+          type: "count",
+          quantity: -2,
+          reason: "Furto",
+          user: "Pete",
+          timestamp: new Date().toISOString(),
+        },
+      ],
+    });
+
+    render(<StockManagement />);
+
+    const reportSection = screen.getByText("Count Variance Report").closest("section");
+    expect(reportSection).not.toBeNull();
+    expect(within(reportSection as HTMLElement).getByText("Furto")).toBeInTheDocument();
+  });
+
   describe("Variance Breakdown", () => {
-    const makeEntry = (type: string, qty: number, daysAgo = 0) => ({
+    const makeEntry = (type: string, qty: number, daysAgo = 0, reason?: string) => ({
       id: `vb-${type}-${daysAgo}-${Math.random().toString(36).slice(2)}`,
       itemId: "item-1",
       type,
@@ -430,6 +453,7 @@ describe("StockManagement", () => {
       timestamp: new Date(
         Date.now() - daysAgo * 24 * 60 * 60 * 1000
       ).toISOString(),
+      ...(reason !== undefined ? { reason } : {}),
     });
 
     const getVarianceSection = () =>
@@ -550,6 +574,74 @@ describe("StockManagement", () => {
         within(section).getByText(/no stock variance to explain/i)
       ).toBeInTheDocument();
       expect(within(section).queryByRole("table")).toBeNull();
+    });
+
+    it("TC-VR01: reason breakdown shows \"Scarto\" total for count entry with reason \"Scarto\"", () => {
+      useInventoryLedgerMock.mockReturnValue({
+        ...baseLedgerReturn,
+        entries: [makeEntry("count", -5, 0, "Scarto")],
+      });
+
+      render(<StockManagement />);
+
+      const section = getVarianceSection();
+      const reasonTable = within(section).getByTestId("reason-breakdown-table");
+      expect(reasonTable).toBeInTheDocument();
+      const row = within(reasonTable).getByText("Scarto").closest("tr")!;
+      expect(within(row).getByText("5")).toBeInTheDocument();
+    });
+
+    it("TC-VR02: ungrouped reason shows \"Non specificato\" for entry with no reason", () => {
+      useInventoryLedgerMock.mockReturnValue({
+        ...baseLedgerReturn,
+        entries: [makeEntry("count", -3, 0)],
+      });
+
+      render(<StockManagement />);
+
+      const section = getVarianceSection();
+      const reasonTable = within(section).getByTestId("reason-breakdown-table");
+      const row = within(reasonTable).getByText("Non specificato").closest("tr")!;
+      expect(within(row).getByText("3")).toBeInTheDocument();
+    });
+
+    it("TC-VR03: legacy \"conteggio batch\" reason groups under \"Non specificato\"", () => {
+      useInventoryLedgerMock.mockReturnValue({
+        ...baseLedgerReturn,
+        entries: [makeEntry("count", -2, 0, "conteggio batch")],
+      });
+
+      render(<StockManagement />);
+
+      const section = getVarianceSection();
+      const reasonTable = within(section).getByTestId("reason-breakdown-table");
+      const row = within(reasonTable).getByText("Non specificato").closest("tr")!;
+      expect(within(row).getByText("2")).toBeInTheDocument();
+      expect(within(reasonTable).queryByText("conteggio batch")).toBeNull();
+    });
+
+    it("TC-VR04: positive count entry not included in reason breakdown", () => {
+      useInventoryLedgerMock.mockReturnValue({
+        ...baseLedgerReturn,
+        entries: [makeEntry("count", 3, 0, "Scarto")],
+      });
+
+      render(<StockManagement />);
+
+      const section = getVarianceSection();
+      expect(within(section).queryByTestId("reason-breakdown-table")).toBeNull();
+    });
+
+    it("TC-VR05: reason breakdown absent when all count entries outside window", () => {
+      useInventoryLedgerMock.mockReturnValue({
+        ...baseLedgerReturn,
+        entries: [makeEntry("count", -5, 15, "Furto")],
+      });
+
+      render(<StockManagement />);
+
+      const section = getVarianceSection();
+      expect(within(section).queryByTestId("reason-breakdown-table")).toBeNull();
     });
   });
 });

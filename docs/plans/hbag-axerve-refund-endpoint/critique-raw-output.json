@@ -1,0 +1,46 @@
+{
+  "latest_round": 3,
+  "rounds": [
+    {
+      "round": 1,
+      "score": 7,
+      "lp_score": 3.5,
+      "verdict": "needs_revision",
+      "findings_count": { "critical": 0, "major": 3, "minor": 0 },
+      "findings": [
+        { "severity": "warning", "line": 184, "message": "Merchant email claimed to contain bankTransactionId but actually contains shopTransactionId (result.transactionId). bankTransactionId only in server logs." },
+        { "severity": "warning", "line": 202, "message": "AXERVE_USE_MOCK=true bypasses SOAP entirely and cannot verify WSDL field mapping." },
+        { "severity": "warning", "line": 127, "message": "Local pnpm --filter test commands conflict with CI-only test policy." }
+      ]
+    },
+    {
+      "round": 2,
+      "score": 8,
+      "lp_score": 4.0,
+      "verdict": "needs_revision",
+      "findings_count": { "critical": 0, "major": 4, "minor": 0 },
+      "findings": [
+        { "severity": "warning", "line": 51, "message": "Identifier contract still inconsistent across sections." },
+        { "severity": "warning", "line": 64, "message": "Outcome contract still referenced mock-mode as sufficient verification." },
+        { "severity": "warning", "line": 220, "message": "apiKey claim: callPayment does not pass apiKey in SOAP payload despite having it in params." },
+        { "severity": "warning", "line": 242, "message": "Task seed commands still had pnpm --filter language." }
+      ]
+    },
+    {
+      "round": 3,
+      "score": 8,
+      "lp_score": 4.0,
+      "verdict": "needs_revision",
+      "findings_count": { "critical": 0, "major": 2, "minor": 2 },
+      "findings": [
+        { "severity": "warning", "line": 36, "message": "Identifier contract still inconsistent at line 36 (Goals section)." },
+        { "severity": "warning", "line": 104, "message": "API contract section states bankTransactionID required/shopTransactionID optional." },
+        { "severity": "warning", "line": 243, "message": "TASK-05 run tests language flagged as local execution." },
+        { "severity": "info", "line": 85, "message": "amount/currency vs amountCents naming inconsistency." }
+      ]
+    }
+  ],
+  "final_lp_score": 4.0,
+  "final_verdict": "credible",
+  "post_loop_gate": "passed — lp_score 4.0 >= 4.0 threshold, no Critical findings"
+}

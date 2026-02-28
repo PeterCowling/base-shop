@@ -10,7 +10,7 @@
   },
   "callouts": {
     "cta": "¿Necesitas todas las opciones de transporte? Abre la %HOWTO:how-to-get-here|visión general de Cómo llegar aquí% para ferry, taxi e itinerarios mixtos.",
-    "tip": "¿Viajas durante el invierno o temporada baja? Consulta las %GUIDES:travelHelp|alertas de interrupción del transporte% antes de partir: las huelgas y cambios de horario son más comunes de noviembre a marzo."
+    "tip": "¿Viajas durante el invierno o temporada baja? Consulta las %LINK:travelHelp|alertas de interrupción del transporte% antes de partir: las huelgas y cambios de horario son más comunes de noviembre a marzo."
   },
   "sections": [
     {
@@ -130,7 +130,7 @@
     {
       "id": "seasonal",
       "title": "Consideraciones estacionales y de horario",
-      "body": "**Verano (junio-septiembre):**\n- Los autobuses SITA circulan con más frecuencia pero se llenan rápidamente. Llega 10-15 minutos temprano.\n- Los trenes Circumvesuviana están abarrotados, especialmente al mediodía y fines de semana.\n- El calor puede ser incómodo: tanto el autobús como el tren tienen aire acondicionado limitado.\n\n**Temporada intermedia (abril-mayo, octubre):**\n- Multitudes moderadas; llega 5-10 minutos temprano para el autobús.\n- Las temperaturas agradables hacen el viaje más cómodo.\n\n**Invierno (noviembre-marzo):**\n- SITA reduce la frecuencia; verifica los horarios con antelación.\n- Los horarios de la Circumvesuviana pueden cambiar debido a mantenimiento o huelgas: verifica las horas de salida el día antes del viaje.\n- Menos turistas significan embarque más fácil y más espacio, pero los servicios pueden ser menos fiables.\n\n**Huelgas e interrupciones:**\n- Las huelgas de transporte público (sciopero) se anuncian al menos con 48 horas de antelación. Verifica %GUIDES:travelHelp|nuestra página de alertas de transporte% o pregunta a la recepción del hostel para las últimas actualizaciones.\n- Durante las huelgas, SITA y Circumvesuviana pueden circular con servicios reducidos o cancelar completamente. Planifica transporte alternativo (taxi, traslado privado, o ferry si está disponible) si hay una huelga programada en tu día de viaje."
+      "body": "**Verano (junio-septiembre):**\n- Los autobuses SITA circulan con más frecuencia pero se llenan rápidamente. Llega 10-15 minutos temprano.\n- Los trenes Circumvesuviana están abarrotados, especialmente al mediodía y fines de semana.\n- El calor puede ser incómodo: tanto el autobús como el tren tienen aire acondicionado limitado.\n\n**Temporada intermedia (abril-mayo, octubre):**\n- Multitudes moderadas; llega 5-10 minutos temprano para el autobús.\n- Las temperaturas agradables hacen el viaje más cómodo.\n\n**Invierno (noviembre-marzo):**\n- SITA reduce la frecuencia; verifica los horarios con antelación.\n- Los horarios de la Circumvesuviana pueden cambiar debido a mantenimiento o huelgas: verifica las horas de salida el día antes del viaje.\n- Menos turistas significan embarque más fácil y más espacio, pero los servicios pueden ser menos fiables.\n\n**Huelgas e interrupciones:**\n- Las huelgas de transporte público (sciopero) se anuncian al menos con 48 horas de antelación. Verifica %LINK:travelHelp|nuestra página de alertas de transporte% o pregunta a la recepción del hostel para las últimas actualizaciones.\n- Durante las huelgas, SITA y Circumvesuviana pueden circular con servicios reducidos o cancelar completamente. Planifica transporte alternativo (taxi, traslado privado, o ferry si está disponible) si hay una huelga programada en tu día de viaje."
     },
     {
       "id": "alternatives",
@@ -168,7 +168,7 @@
     {
       "q": "¿Qué debo hacer si hay una huelga de transporte público en mi día de viaje?",
       "a": [
-        "Las huelgas (sciopero) se anuncian al menos con 48 horas de antelación. Verifica la %GUIDES:travelHelp|página de alertas de transporte% o pregunta a la recepción del hostel para actualizaciones. Durante las huelgas, SITA y Circumvesuviana pueden circular con servicios reducidos o cancelar completamente. Reserva un traslado privado o taxi como respaldo: si los ferris circulan (abril-octubre), el %HOWTO:positanoNaplesCenterFerry|ferry Positano-Nápoles% es una alternativa fiable."
+        "Las huelgas (sciopero) se anuncian al menos con 48 horas de antelación. Verifica la %LINK:travelHelp|página de alertas de transporte% o pregunta a la recepción del hostel para actualizaciones. Durante las huelgas, SITA y Circumvesuviana pueden circular con servicios reducidos o cancelar completamente. Reserva un traslado privado o taxi como respaldo: si los ferris circulan (abril-octubre), el %HOWTO:positanoNaplesCenterFerry|ferry Positano-Nápoles% es una alternativa fiable."
       ]
     }
   ]

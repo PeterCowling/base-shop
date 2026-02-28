@@ -125,6 +125,19 @@ function renderBatchStockCount() {
   return { onComplete };
 }
 
+async function submitCategoryWithReason(
+  user: ReturnType<typeof userEvent.setup>,
+  reason: string,
+  note?: string
+) {
+  await user.click(screen.getByRole("button", { name: "Complete category" }));
+  await user.selectOptions(screen.getByTestId("variance-reason-select"), reason);
+  if (note) {
+    await user.type(screen.getByTestId("variance-reason-note"), note);
+  }
+  await user.click(screen.getByRole("button", { name: "Conferma" }));
+}
+
 describe("groupItemsByCategory", () => {
   it("groups items by category", () => {
     const barItem = makeItem({ id: "bar-1", name: "Gin", category: "Bar" });
@@ -278,7 +291,7 @@ describe("BatchStockCount component", () => {
     expect(screen.getByRole("heading", { name: "Uncategorized" })).toBeInTheDocument();
   });
 
-  it("submits positive count delta without reauth", async () => {
+  it("TC-R02: all deltas >= 0 does not show reason prompt and uses batch reason", async () => {
     const user = userEvent.setup();
     const addLedgerEntry = jest.fn().mockResolvedValue(undefined);
     const item = makeItem({
@@ -303,6 +316,7 @@ describe("BatchStockCount component", () => {
     await user.clear(quantityInput);
     await user.type(quantityInput, "10");
     await user.click(screen.getByRole("button", { name: "Complete category" }));
+    expect(screen.queryByTestId("variance-reason-select")).not.toBeInTheDocument();
 
     await waitFor(() => {
       expect(addLedgerEntry).toHaveBeenCalledWith(
@@ -340,7 +354,7 @@ describe("BatchStockCount component", () => {
     const quantityInput = within(row).getByRole("spinbutton");
     await user.clear(quantityInput);
     await user.type(quantityInput, "5");
-    await user.click(screen.getByRole("button", { name: "Complete category" }));
+    await submitCategoryWithReason(user, "Scarto");
 
     await waitFor(() => {
       expect(addLedgerEntry).toHaveBeenCalledWith(
@@ -348,6 +362,217 @@ describe("BatchStockCount component", () => {
           itemId: "item-1",
           type: "count",
           quantity: -3,
+          reason: "Scarto",
+        })
+      );
+    });
+  });
+
+  it("TC-R01: delta < 0 shows reason-code select prompt", async () => {
+    const user = userEvent.setup();
+    const item = makeItem({
+      id: "item-1",
+      name: "Beans",
+      openingCount: 8,
+      category: "Bar",
+    });
+
+    useInventoryItemsMock.mockReturnValue({
+      items: [item],
+      itemsById: { "item-1": item },
+      loading: false,
+      error: null,
+    });
+
+    renderBatchStockCount();
+
+    const row = screen.getByText("Beans").closest("tr") as HTMLElement;
+    const quantityInput = within(row).getByRole("spinbutton");
+    await user.clear(quantityInput);
+    await user.type(quantityInput, "5");
+    await user.click(screen.getByRole("button", { name: "Complete category" }));
+
+    expect(screen.getByTestId("variance-reason-select")).toBeInTheDocument();
+  });
+
+  it("TC-R03: selected reason is used for negative variance submission", async () => {
+    const user = userEvent.setup();
+    const addLedgerEntry = jest.fn().mockResolvedValue(undefined);
+    const item = makeItem({
+      id: "item-1",
+      name: "Beans",
+      openingCount: 8,
+      category: "Bar",
+    });
+
+    useInventoryItemsMock.mockReturnValue({
+      items: [item],
+      itemsById: { "item-1": item },
+      loading: false,
+      error: null,
+    });
+    useInventoryLedgerMutationsMock.mockReturnValue({ addLedgerEntry });
+
+    renderBatchStockCount();
+
+    const row = screen.getByText("Beans").closest("tr") as HTMLElement;
+    const quantityInput = within(row).getByRole("spinbutton");
+    await user.clear(quantityInput);
+    await user.type(quantityInput, "5");
+    await submitCategoryWithReason(user, "Scarto");
+
+    await waitFor(() => {
+      expect(addLedgerEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          reason: "Scarto",
+          quantity: -3,
+        })
+      );
+    });
+  });
+
+  it("TC-R04: Altro reason includes note in submission", async () => {
+    const user = userEvent.setup();
+    const addLedgerEntry = jest.fn().mockResolvedValue(undefined);
+    const item = makeItem({
+      id: "item-1",
+      name: "Beans",
+      openingCount: 8,
+      category: "Bar",
+    });
+
+    useInventoryItemsMock.mockReturnValue({
+      items: [item],
+      itemsById: { "item-1": item },
+      loading: false,
+      error: null,
+    });
+    useInventoryLedgerMutationsMock.mockReturnValue({ addLedgerEntry });
+
+    renderBatchStockCount();
+
+    const row = screen.getByText("Beans").closest("tr") as HTMLElement;
+    const quantityInput = within(row).getByRole("spinbutton");
+    await user.clear(quantityInput);
+    await user.type(quantityInput, "5");
+    await submitCategoryWithReason(user, "Altro", "caduto");
+
+    await waitFor(() => {
+      expect(addLedgerEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          reason: "Altro",
+          note: "caduto",
+          quantity: -3,
+        })
+      );
+    });
+  });
+
+  it("TC-R05: note input is visible only when Altro is selected", async () => {
+    const user = userEvent.setup();
+    const item = makeItem({
+      id: "item-1",
+      name: "Beans",
+      openingCount: 8,
+      category: "Bar",
+    });
+
+    useInventoryItemsMock.mockReturnValue({
+      items: [item],
+      itemsById: { "item-1": item },
+      loading: false,
+      error: null,
+    });
+
+    renderBatchStockCount();
+
+    const row = screen.getByText("Beans").closest("tr") as HTMLElement;
+    const quantityInput = within(row).getByRole("spinbutton");
+    await user.clear(quantityInput);
+    await user.type(quantityInput, "5");
+    await user.click(screen.getByRole("button", { name: "Complete category" }));
+
+    expect(screen.queryByTestId("variance-reason-note")).not.toBeInTheDocument();
+
+    await user.selectOptions(screen.getByTestId("variance-reason-select"), "Altro");
+    expect(screen.getByTestId("variance-reason-note")).toBeInTheDocument();
+
+    await user.selectOptions(screen.getByTestId("variance-reason-select"), "Scarto");
+    expect(screen.queryByTestId("variance-reason-note")).not.toBeInTheDocument();
+  });
+
+  it("TC-R06: canceling reason prompt does not submit and dismisses prompt", async () => {
+    const user = userEvent.setup();
+    const addLedgerEntry = jest.fn().mockResolvedValue(undefined);
+    const item = makeItem({
+      id: "item-1",
+      name: "Beans",
+      openingCount: 8,
+      category: "Bar",
+    });
+
+    useInventoryItemsMock.mockReturnValue({
+      items: [item],
+      itemsById: { "item-1": item },
+      loading: false,
+      error: null,
+    });
+    useInventoryLedgerMutationsMock.mockReturnValue({ addLedgerEntry });
+
+    renderBatchStockCount();
+
+    const row = screen.getByText("Beans").closest("tr") as HTMLElement;
+    const quantityInput = within(row).getByRole("spinbutton");
+    await user.clear(quantityInput);
+    await user.type(quantityInput, "5");
+    await user.click(screen.getByRole("button", { name: "Complete category" }));
+
+    expect(screen.getByTestId("variance-reason-select")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Annulla" }));
+
+    expect(addLedgerEntry).not.toHaveBeenCalled();
+    expect(screen.queryByTestId("variance-reason-select")).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Complete category" }));
+    expect(screen.getByTestId("variance-reason-select")).toBeInTheDocument();
+  });
+
+  it("TC-R07: negative variance requiring reauth preserves selected reason after reauth", async () => {
+    const user = userEvent.setup();
+    const addLedgerEntry = jest.fn().mockResolvedValue(undefined);
+    const item = makeItem({
+      id: "item-1",
+      name: "Beans",
+      openingCount: 15,
+      category: "Bar",
+    });
+
+    useInventoryItemsMock.mockReturnValue({
+      items: [item],
+      itemsById: { "item-1": item },
+      loading: false,
+      error: null,
+    });
+    useInventoryLedgerMutationsMock.mockReturnValue({ addLedgerEntry });
+
+    renderBatchStockCount();
+
+    const row = screen.getByText("Beans").closest("tr") as HTMLElement;
+    const quantityInput = within(row).getByRole("spinbutton");
+    await user.clear(quantityInput);
+    await user.type(quantityInput, "2");
+    await submitCategoryWithReason(user, "Furto");
+
+    expect(screen.getByTestId("password-reauth-modal")).toBeInTheDocument();
+    expect(addLedgerEntry).not.toHaveBeenCalled();
+
+    await user.click(screen.getByTestId("reauth-confirm"));
+
+    await waitFor(() => {
+      expect(addLedgerEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          reason: "Furto",
+          quantity: -13,
         })
       );
     });

@@ -10,7 +10,7 @@
   },
   "callouts": {
     "cta": "Szükséged van minden közlekedési lehetőségre? Nyisd meg a %HOWTO:how-to-get-here|Hogyan juthatsz el ide áttekintést% a kompokhoz, taxikhoz és vegyes útvonalakhoz.",
-    "tip": "Télen vagy alacsony szezonban utazol? Ellenőrizd a %GUIDES:travelHelp|közlekedési fennakadás értesítéseket% indulás előtt - a sztrájkok és menetrend változások gyakoribbak november és március között."
+    "tip": "Télen vagy alacsony szezonban utazol? Ellenőrizd a %LINK:travelHelp|közlekedési fennakadás értesítéseket% indulás előtt - a sztrájkok és menetrend változások gyakoribbak november és március között."
   },
   "sections": [
     {
@@ -130,7 +130,7 @@
     {
       "id": "seasonal",
       "title": "Szezonális és időzítési megfontolások",
-      "body": "**Nyár (június-szeptember):**\n- A SITA buszok gyakrabban járnak, de gyorsan megtelnek. Érkezz 10-15 perccel korábban.\n- A Circumvesuviana vonatok zsúfoltak, különösen délidőben és hétvégeken.\n- A hőség kényelmetlen lehet - mind a busz, mind a vonat korlátozott légkondicionálással rendelkezik.\n\n**Közepes szezon (április-május, október):**\n- Mérsékelt tömeg; érkezz 5-10 perccel korábban a buszhoz.\n- A kellemes hőmérsékletek kényelmesebbé teszik az utazást.\n\n**Tél (november-március):**\n- A SITA csökkenti a gyakoriságot; előre ellenőrizd a menetrendeket.\n- A Circumvesuviana menetrendek változhatnak karbantartás vagy sztrájkok miatt - ellenőrizd az indulási időket az utazás előtti napon.\n- Kevesebb turista könnyebb beszállást és több helyet jelent, de a szolgáltatások kevésbé megbízhatók lehetnek.\n\n**Sztrájkok és fennakadások:**\n- A tömegközlekedési sztrájkokat (sciopero) legalább 48 órával előre bejelentik. Ellenőrizd a %GUIDES:travelHelp|közlekedési értesítések oldalt% vagy kérdezd meg a hostel recepciót a legfrissebb frissítésekért.\n- Sztrájkok alatt a SITA és Circumvesuviana csökkentett szolgáltatásokat futtathat vagy teljesen törölhet. Tervezz alternatív közlekedést (taxi, magán transzfer vagy komp, ha elérhető), ha sztrájk van ütemezve az utazás napján."
+      "body": "**Nyár (június-szeptember):**\n- A SITA buszok gyakrabban járnak, de gyorsan megtelnek. Érkezz 10-15 perccel korábban.\n- A Circumvesuviana vonatok zsúfoltak, különösen délidőben és hétvégeken.\n- A hőség kényelmetlen lehet - mind a busz, mind a vonat korlátozott légkondicionálással rendelkezik.\n\n**Közepes szezon (április-május, október):**\n- Mérsékelt tömeg; érkezz 5-10 perccel korábban a buszhoz.\n- A kellemes hőmérsékletek kényelmesebbé teszik az utazást.\n\n**Tél (november-március):**\n- A SITA csökkenti a gyakoriságot; előre ellenőrizd a menetrendeket.\n- A Circumvesuviana menetrendek változhatnak karbantartás vagy sztrájkok miatt - ellenőrizd az indulási időket az utazás előtti napon.\n- Kevesebb turista könnyebb beszállást és több helyet jelent, de a szolgáltatások kevésbé megbízhatók lehetnek.\n\n**Sztrájkok és fennakadások:**\n- A tömegközlekedési sztrájkokat (sciopero) legalább 48 órával előre bejelentik. Ellenőrizd a %LINK:travelHelp|közlekedési értesítések oldalt% vagy kérdezd meg a hostel recepciót a legfrissebb frissítésekért.\n- Sztrájkok alatt a SITA és Circumvesuviana csökkentett szolgáltatásokat futtathat vagy teljesen törölhet. Tervezz alternatív közlekedést (taxi, magán transzfer vagy komp, ha elérhető), ha sztrájk van ütemezve az utazás napján."
     },
     {
       "id": "alternatives",
@@ -168,7 +168,7 @@
     {
       "q": "Mit tegyek, ha tömegközlekedési sztrájk van az utazás napján?",
       "a": [
-        "A sztrájkokat (sciopero) legalább 48 órával előre bejelentik. Ellenőrizd a %GUIDES:travelHelp|közlekedési értesítések oldalt% vagy kérdezd meg a hostel recepciót frissítésekért. Sztrájkok alatt a SITA és Circumvesuviana csökkentett szolgáltatásokat futtathat vagy teljesen törölhet. Foglalj magán transzfert vagy taxit tartalékként - ha a kompok járnak (április-október), a %HOWTO:positanoNaplesCenterFerry|Positano-Nápoly komp% megbízható alternatíva."
+        "A sztrájkokat (sciopero) legalább 48 órával előre bejelentik. Ellenőrizd a %LINK:travelHelp|közlekedési értesítések oldalt% vagy kérdezd meg a hostel recepciót frissítésekért. Sztrájkok alatt a SITA és Circumvesuviana csökkentett szolgáltatásokat futtathat vagy teljesen törölhet. Foglalj magán transzfert vagy taxit tartalékként - ha a kompok járnak (április-október), a %HOWTO:positanoNaplesCenterFerry|Positano-Nápoly komp% megbízható alternatíva."
       ]
     }
   ]

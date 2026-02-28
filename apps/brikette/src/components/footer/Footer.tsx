@@ -201,7 +201,7 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
               {bookDirectCtaLabel} →
             </Link>
             <div className="flex flex-col gap-2 pt-1">
-              <p className="text-xs font-semibold uppercase tracking-widest text-brand-bg/60 dark:text-brand-text/60">
+              <p className="text-xs font-semibold uppercase tracking-widest text-brand-bg/75 dark:text-brand-text/75">
                 {tFooter("locationHeading", { lng: lang })}
               </p>
               <address className="flex items-start gap-2 text-sm not-italic">
@@ -275,7 +275,7 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
           {/* Column 3: Contact + Social */}
           <div className="flex flex-col gap-6 sm:col-span-1 xl:col-span-1">
             <div className="flex flex-col gap-2">
-              <p className="text-xs font-semibold uppercase tracking-widest text-brand-bg/60 dark:text-brand-text/60">
+              <p className="text-xs font-semibold uppercase tracking-widest text-brand-bg/75 dark:text-brand-text/75">
                 {tFooter("contactHeading", { lng: lang })}
               </p>
               <FooterTextLink
@@ -289,7 +289,7 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
             </div>
 
             <div className="flex flex-col gap-2">
-              <p className="text-xs font-semibold uppercase tracking-widest text-brand-bg/60 dark:text-brand-text/60">
+              <p className="text-xs font-semibold uppercase tracking-widest text-brand-bg/75 dark:text-brand-text/75">
                 {tFooter("follow", { lng: lang })}
               </p>
               <Cluster as="ul" className="items-center">

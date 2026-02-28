@@ -1,0 +1,30 @@
+{
+  "name": "@acme/skill-runner",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "schemas",
+    "fixtures",
+    "src/confidence-thresholds.yaml"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -b --noEmit",
+    "clean": "rimraf dist *.tsbuildinfo",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "js-yaml": "4.1.1"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  }
+}

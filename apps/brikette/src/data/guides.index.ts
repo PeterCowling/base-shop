@@ -78,7 +78,7 @@ const GUIDES_INDEX_BASE: GuideIndexEntry[] = [
   { key: "topOfTheMountainHike", tags: ["hiking", "positano", "viewpoints"] },
   { key: "santaMariaDelCastelloHike", tags: ["hiking", "positano", "viewpoints", "village"] },
   { key: "sunriseHike", tags: ["hiking", "viewpoints", "positano"] },
-  { key: "parking", tags: ["transport", "car", "positano"] },
+  { key: "arriveByCar", tags: ["transport", "car", "positano"] },
   { key: "luggageStorage", tags: ["porters", "logistics", "positano"] },
   // Use the actual guide key that maps to src/routes/guides/positano-beaches.tsx
   { key: "positanoBeaches", tags: ["beaches", "positano"] },

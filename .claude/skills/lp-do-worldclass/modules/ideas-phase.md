@@ -4,23 +4,25 @@ Called by `/lp-do-worldclass` in State 3, immediately after scan-phase completes
 
 ## Inputs
 
-- `--biz <BIZ>` — from SKILL.md invocation
+- `BIZ` — resolved by SKILL.md preflight
+- `APP` — `--app` value, or `null` in biz mode
+- `artifact_dir` — resolved by SKILL.md preflight (e.g. `docs/business-os/strategy/BRIK/apps/reception/`)
 - `--as-of-date <YYYY-MM-DD>` — from SKILL.md invocation (defaults to today)
 - `--dry-run` — from SKILL.md invocation (optional; skips operator selection and lp-do-ideas invocations)
-- Scan output file: `docs/business-os/strategy/<BIZ>/worldclass-scan-<YYYY-MM-DD>.md`
+- Scan output file: `<artifact_dir>/worldclass-scan-<YYYY-MM-DD>.md`
 - Gap table: the `## Gap Comparison Table` section within the scan output file
 - Queue state: `docs/business-os/startup-loop/ideas/trial/queue-state.json` (read-only; used for already-queued pre-filter in Step 5)
 
 ## Step 1: Read Gap Table
 
-Read the scan output file at `docs/business-os/strategy/<BIZ>/worldclass-scan-<YYYY-MM-DD>.md`.
+Read the scan output file at `<artifact_dir>/worldclass-scan-<YYYY-MM-DD>.md`.
 
 **If the file is absent:** stop with:
 
 ```
 Error: Scan output not found.
-Expected: docs/business-os/strategy/<BIZ>/worldclass-scan-<YYYY-MM-DD>.md
-ideas-phase requires a completed scan-phase output. Run /lp-do-worldclass --biz <BIZ> again to regenerate.
+Expected: <artifact_dir>/worldclass-scan-<YYYY-MM-DD>.md
+ideas-phase requires a completed scan-phase output. Run /lp-do-worldclass (using the same --biz or --app invocation form as before) again to regenerate.
 ```
 
 **If present:** locate the `## Gap Comparison Table` section. Extract every row. Apply the filter:
@@ -66,15 +68,15 @@ For each filtered gap row, prepare the operator-idea payload. These fields are u
 
 | Field | Rule |
 |---|---|
-| `area_anchor` | `"<BIZ> <domain_name> — <gap in ≤12 words, no full sentences>"` — use the `Gap` column value, trimmed to 12 words or fewer |
+| `area_anchor` | `"<BIZ>/<APP> <domain_name> — <gap in ≤12 words, no full sentences>"` in app mode; `"<BIZ> <domain_name> — <gap in ≤12 words, no full sentences>"` in biz mode — use the `Gap` column value, trimmed to 12 words or fewer |
 | `business` | `<BIZ>` |
 | `current_truth` | Constructed per Pattern A or Pattern B template from Step 2 |
 | `next_scope_now` | Constructed per Pattern A or Pattern B template from Step 2 |
 | `priority` | See Priority Mapping Table below |
 | `recommended_route` | `"lp-do-fact-find"` for `major-gap` and `no-data` rows; `"lp-do-briefing"` for `minor-gap` rows that are primarily informational |
 | `provisional_deliverable_family` | See Deliverable Family Rules below |
-| `location_anchors` | Array: if Pattern B → use the repo path from `Evidence Source`; if Pattern A → `["docs/business-os/strategy/<BIZ>/worldclass-scan-<YYYY-MM-DD>.md"]` |
-| `evidence_refs` | `["operator-stated: worldclass-scan gap: <domain_id>", "docs/business-os/strategy/<BIZ>/worldclass-scan-<YYYY-MM-DD>.md"]` |
+| `location_anchors` | Array: if Pattern B → use the repo path from `Evidence Source`; if Pattern A → `["<artifact_dir>/worldclass-scan-<YYYY-MM-DD>.md"]` |
+| `evidence_refs` | `["operator-stated: worldclass-scan gap: <domain_id>", "<artifact_dir>/worldclass-scan-<YYYY-MM-DD>.md"]` |
 
 ### Priority Mapping Table
 
@@ -107,7 +109,7 @@ For rows where `Gap Classification` is `no-data`, use these fixed templates inst
   > `"Cannot assess <Domain Name> — <Evidence Source value, or 'data source'> not confirmed available or accessible for <BIZ>."`
 - `next_scope_now`:
   > `"Confirm whether <Evidence Source or data source type> data is accessible for <BIZ>; if so, re-run scan for this domain; if not, establish the data source connection or instrument first."`
-- `location_anchors`: `["docs/business-os/strategy/<BIZ>/worldclass-scan-<YYYY-MM-DD>.md"]`
+- `location_anchors`: `["<artifact_dir>/worldclass-scan-<YYYY-MM-DD>.md"]`
 - All other fields (priority P2, deliverable family `"business-artifact"`, route `"lp-do-fact-find"`) follow from the tables above.
 
 ## Step 4: Decomposition Rule
@@ -125,7 +127,7 @@ If scan-phase emits 3 gap rows for a single domain, prepare 3 separate operator-
 **Selection presentation:** present a numbered list, P1 first then P2 then P3:
 
 ```
-Gap scan complete for <BIZ>. Found N idea(s) from the scan.
+Gap scan complete for <BIZ>/<APP>. Found N idea(s) from the scan.   ← use "<BIZ>/<APP>" in app mode; use "<BIZ>" in biz mode
 Select which to take forward (comma-separated numbers, 'all', or 'none'):
 
   1. [P1] <area_anchor>
@@ -150,7 +152,7 @@ Wait for the operator response before proceeding.
 
 ## Step 7: Write Completion Summary
 
-Append the following section to the scan output file `docs/business-os/strategy/<BIZ>/worldclass-scan-<YYYY-MM-DD>.md`:
+Append the following section to the scan output file `<artifact_dir>/worldclass-scan-<YYYY-MM-DD>.md`:
 
 ```
 ## Ideas Summary
@@ -170,8 +172,8 @@ On dry-run runs, replace `"Selected by operator"` with `"Would be available for 
 After appending the summary, report to the operator:
 
 ```
-ideas-phase complete for <BIZ>.
-Scan file: docs/business-os/strategy/<BIZ>/worldclass-scan-<YYYY-MM-DD>.md
+ideas-phase complete for <BIZ>/<APP>.   ← use "<BIZ>/<APP>" in app mode; use "<BIZ>" in biz mode
+Scan file: <artifact_dir>/worldclass-scan-<YYYY-MM-DD>.md
 
 Ideas found: N  |  Selected: N  |  Skipped: N
 Passed to lp-do-ideas: N  (P1: N  P2: N  P3: N)

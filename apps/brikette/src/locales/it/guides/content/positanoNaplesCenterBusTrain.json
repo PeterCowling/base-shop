@@ -10,7 +10,7 @@
   },
   "callouts": {
     "cta": "Serve ogni opzione di trasporto? Apri la %HOWTO:how-to-get-here|panoramica Come arrivare% per traghetti, taxi e itinerari combinati.",
-    "tip": "Viaggi in inverno o bassa stagione? Controlla gli %GUIDES:travelHelp|avvisi di interruzione del trasporto% prima di partire - scioperi e cambiamenti di orario sono più comuni da novembre a marzo."
+    "tip": "Viaggi in inverno o bassa stagione? Controlla gli %LINK:travelHelp|avvisi di interruzione del trasporto% prima di partire - scioperi e cambiamenti di orario sono più comuni da novembre a marzo."
   },
   "sections": [
     {
@@ -130,7 +130,7 @@
     {
       "id": "seasonal",
       "title": "Considerazioni stagionali e di tempistica",
-      "body": "**Estate (giugno-settembre):**\n- Gli autobus SITA funzionano più frequentemente ma si riempiono rapidamente. Arriva 10-15 minuti prima.\n- I treni Circumvesuviana sono affollati, specialmente a metà giornata e nei fine settimana.\n- Il caldo può essere scomodo - sia l'autobus che il treno hanno aria condizionata limitata.\n\n**Mezza stagione (aprile-maggio, ottobre):**\n- Folle moderate; arriva 5-10 minuti prima per l'autobus.\n- Le temperature piacevoli rendono il viaggio più confortevole.\n\n**Inverno (novembre-marzo):**\n- SITA riduce la frequenza; controlla gli orari in anticipo.\n- Gli orari Circumvesuviana possono cambiare a causa di manutenzione o scioperi - verifica gli orari di partenza il giorno prima del viaggio.\n- Meno turisti significano imbarco più facile e più spazio, ma i servizi possono essere meno affidabili.\n\n**Scioperi e interruzioni:**\n- Gli scioperi dei trasporti pubblici (sciopero) sono annunciati almeno 48 ore in anticipo. Controlla la %GUIDES:travelHelp|nostra pagina degli avvisi di trasporto% o chiedi alla reception dell'ostello per gli ultimi aggiornamenti.\n- Durante gli scioperi, SITA e Circumvesuviana potrebbero funzionare con servizi ridotti o cancellare completamente. Pianifica un trasporto alternativo (taxi, trasferimento privato o traghetto se disponibile) se è programmato uno sciopero nel giorno del viaggio."
+      "body": "**Estate (giugno-settembre):**\n- Gli autobus SITA funzionano più frequentemente ma si riempiono rapidamente. Arriva 10-15 minuti prima.\n- I treni Circumvesuviana sono affollati, specialmente a metà giornata e nei fine settimana.\n- Il caldo può essere scomodo - sia l'autobus che il treno hanno aria condizionata limitata.\n\n**Mezza stagione (aprile-maggio, ottobre):**\n- Folle moderate; arriva 5-10 minuti prima per l'autobus.\n- Le temperature piacevoli rendono il viaggio più confortevole.\n\n**Inverno (novembre-marzo):**\n- SITA riduce la frequenza; controlla gli orari in anticipo.\n- Gli orari Circumvesuviana possono cambiare a causa di manutenzione o scioperi - verifica gli orari di partenza il giorno prima del viaggio.\n- Meno turisti significano imbarco più facile e più spazio, ma i servizi possono essere meno affidabili.\n\n**Scioperi e interruzioni:**\n- Gli scioperi dei trasporti pubblici (sciopero) sono annunciati almeno 48 ore in anticipo. Controlla la %LINK:travelHelp|nostra pagina degli avvisi di trasporto% o chiedi alla reception dell'ostello per gli ultimi aggiornamenti.\n- Durante gli scioperi, SITA e Circumvesuviana potrebbero funzionare con servizi ridotti o cancellare completamente. Pianifica un trasporto alternativo (taxi, trasferimento privato o traghetto se disponibile) se è programmato uno sciopero nel giorno del viaggio."
     },
     {
       "id": "alternatives",
@@ -168,7 +168,7 @@
     {
       "q": "Cosa devo fare se c'è uno sciopero dei trasporti pubblici nel giorno del viaggio?",
       "a": [
-        "Gli scioperi (sciopero) sono annunciati almeno 48 ore in anticipo. Controlla la %GUIDES:travelHelp|pagina degli avvisi di trasporto% o chiedi alla reception dell'ostello per aggiornamenti. Durante gli scioperi, SITA e Circumvesuviana potrebbero funzionare con servizi ridotti o cancellare completamente. Prenota un trasferimento privato o un taxi come backup - se i traghetti sono in funzione (aprile-ottobre), il %HOWTO:positanoNaplesCenterFerry|traghetto Positano-Napoli% è un'alternativa affidabile."
+        "Gli scioperi (sciopero) sono annunciati almeno 48 ore in anticipo. Controlla la %LINK:travelHelp|pagina degli avvisi di trasporto% o chiedi alla reception dell'ostello per aggiornamenti. Durante gli scioperi, SITA e Circumvesuviana potrebbero funzionare con servizi ridotti o cancellare completamente. Prenota un trasferimento privato o un taxi come backup - se i traghetti sono in funzione (aprile-ottobre), il %HOWTO:positanoNaplesCenterFerry|traghetto Positano-Napoli% è un'alternativa affidabile."
       ]
     }
   ]

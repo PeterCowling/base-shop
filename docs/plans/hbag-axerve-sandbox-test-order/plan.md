@@ -88,8 +88,8 @@ The `@acme/axerve` package already implements both `AXERVE_USE_MOCK=true` (local
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Document Axerve env vars in `.env.example` | 85% | S | Pending | - | - |
-| TASK-02 | IMPLEMENT | Write pre-launch test order runbook | 85% | M | Pending | - | - |
+| TASK-01 | IMPLEMENT | Document Axerve env vars in `.env.example` | 85% | S | Complete (2026-02-28) | - | - |
+| TASK-02 | IMPLEMENT | Write pre-launch test order runbook | 85% | M | Complete (2026-02-28) | - | - |
 
 ## Parallelism Guide
 

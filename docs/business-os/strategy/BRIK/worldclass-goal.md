@@ -4,7 +4,7 @@ business: BRIK
 
 goal_version: 1
 
-singular-goal: "As soon as possible, BRIK has a world-class boutique hostel website for Positano with professional imagery and some level of video material, room-level pages with an embedded Octorate funnel, and a direct-booking CTA hierarchy that outcompetes OTA links."
+singular-goal: "BRIK should have a world-class boutique hostel website for Positano with professional imagery and some level of video material, room-level pages with an embedded Octorate funnel, and a direct-booking CTA hierarchy that outcompetes OTA links."
 
 domains:
   - id: website-imagery-video

@@ -54,14 +54,14 @@ jest.mock("next/navigation", () => ({
   useRouter: () => ({ push: mockRouterPush, replace: jest.fn() }),
 }));
 
-const mockUseRoomPricing = jest.fn(() => ({
+const mockUseRoomPricing = jest.fn((_room: Room) => ({
   lowestPrice: 100,
   soldOut: false,
   loading: false,
   error: undefined,
 }));
 jest.mock("@/hooks/useRoomPricing", () => ({
-  useRoomPricing: (...args: unknown[]) => mockUseRoomPricing(...args),
+  useRoomPricing: (room: Room) => mockUseRoomPricing(room),
 }));
 
 // buildOctorateUrl returns ok=false so CTA falls through to router.push (no window.location.href)

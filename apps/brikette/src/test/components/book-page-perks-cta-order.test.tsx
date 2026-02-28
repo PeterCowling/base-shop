@@ -44,7 +44,7 @@ const BookPageContent = require("@/app/[lang]/book/BookPageContent")
 
 describe("Book page perks CTA order", () => {
   it("renders direct-booking perks above the rooms section", () => {
-    render(<BookPageContent lang="en" />);
+    render(<BookPageContent lang="en" heading="Book your stay" />);
 
     const perksBlock = screen.getByText("Why book direct?");
     const roomsSection = screen.getByText("Rooms");
@@ -58,7 +58,7 @@ describe("Book page perks CTA order", () => {
 
   // TC-04-05: savings headline (rendered inside DirectPerksBlock mock) precedes rooms section
   it("renders savings headline within the perks block before the rooms section", () => {
-    render(<BookPageContent lang="en" />);
+    render(<BookPageContent lang="en" heading="Book your stay" />);
 
     // The useTranslation mock returns defaultValue strings, so savingsEyebrow receives
     // "Book direct and save" which the updated DirectPerksBlock mock renders.
@@ -70,7 +70,7 @@ describe("Book page perks CTA order", () => {
   });
 
   it("still renders LocationInline and PolicyFeeClarityPanel after rooms section", () => {
-    render(<BookPageContent lang="en" />);
+    render(<BookPageContent lang="en" heading="Book your stay" />);
 
     const roomsSection = screen.getByText("Rooms");
     const locationInline = screen.getByTestId("location-inline");

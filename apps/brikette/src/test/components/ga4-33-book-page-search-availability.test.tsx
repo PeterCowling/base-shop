@@ -55,7 +55,7 @@ describe("TASK-33: BookPageContent search_availability GA4 contract", () => {
   // TC-01: Changing dates fires search_availability after debounce.
   // Payload must not include raw date strings (nights/lead_time_days only).
   it("TC-01: changing dates fires search_availability after debounce with nights/lead_time_days/pax", () => {
-    render(<BookPageContent lang="en" />);
+    render(<BookPageContent lang="en" heading="Book your stay" />);
 
     const checkinInput = screen.getByLabelText(/check in/i);
     const checkoutInput = screen.getByLabelText(/check out/i);
@@ -89,7 +89,7 @@ describe("TASK-33: BookPageContent search_availability GA4 contract", () => {
   // TC-02: Mount with no URL params does not fire search_availability (even after debounce).
   it("TC-02: mount with no URL params does not fire search_availability", () => {
     mockSearchParams = new URLSearchParams();
-    render(<BookPageContent lang="en" />);
+    render(<BookPageContent lang="en" heading="Book your stay" />);
 
     jest.advanceTimersByTime(1000);
 
@@ -102,7 +102,7 @@ describe("TASK-33: BookPageContent search_availability GA4 contract", () => {
   // TC-03: Mount with valid URL params fires search_availability exactly once.
   it("TC-03: mount with valid URL params fires search_availability exactly once", () => {
     mockSearchParams = new URLSearchParams("checkin=2026-06-10&checkout=2026-06-12&pax=2");
-    render(<BookPageContent lang="en" />);
+    render(<BookPageContent lang="en" heading="Book your stay" />);
 
     const searchCalls = gtagMock.mock.calls.filter(
       (args: unknown[]) => args[0] === "event" && args[1] === "search_availability",
@@ -117,7 +117,7 @@ describe("TASK-33: BookPageContent search_availability GA4 contract", () => {
   });
 
   it("TC-04: check-in change auto-adjusts checkout to preserve two-night minimum", () => {
-    render(<BookPageContent lang="en" />);
+    render(<BookPageContent lang="en" heading="Book your stay" />);
 
     const checkinInput = screen.getByLabelText(/check in/i);
     const checkoutInput = screen.getByLabelText(/check out/i) as HTMLInputElement;
@@ -132,7 +132,7 @@ describe("TASK-33: BookPageContent search_availability GA4 contract", () => {
 
   it("TC-05: one-night URL params remain invalid and do not emit search_availability", () => {
     mockSearchParams = new URLSearchParams("checkin=2026-06-10&checkout=2026-06-11&pax=1");
-    render(<BookPageContent lang="en" />);
+    render(<BookPageContent lang="en" heading="Book your stay" />);
 
     const checkinInput = screen.getByLabelText(/check in/i) as HTMLInputElement;
     const checkoutInput = screen.getByLabelText(/check out/i) as HTMLInputElement;
@@ -149,7 +149,7 @@ describe("TASK-33: BookPageContent search_availability GA4 contract", () => {
   });
 
   it("TC-06: pax above max prevents search_availability emission", () => {
-    render(<BookPageContent lang="en" />);
+    render(<BookPageContent lang="en" heading="Book your stay" />);
 
     const checkinInput = screen.getByLabelText(/check in/i);
     const checkoutInput = screen.getByLabelText(/check out/i);

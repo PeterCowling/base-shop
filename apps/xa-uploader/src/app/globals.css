@@ -10,3 +10,61 @@ body {
   min-height: 100%;
 }
 
+/* Gate token aliases — maps XA uploader local tokens to base theme */
+:root {
+  --gate-ink: hsl(var(--color-fg));
+  --gate-muted: hsl(var(--color-fg-muted));
+  --gate-bg: hsl(var(--color-bg));
+  --gate-accent: hsl(var(--color-fg));
+}
+
+/* Gate color utilities */
+@utility text-gate-ink {
+  color: var(--gate-ink);
+}
+
+@utility text-gate-muted {
+  color: var(--gate-muted);
+}
+
+@utility bg-gate-bg {
+  background-color: var(--gate-bg);
+}
+
+@utility bg-gate-ink {
+  background-color: var(--gate-ink);
+}
+
+@utility border-gate-ink {
+  border-color: var(--gate-ink);
+}
+
+@utility ring-gate-ink {
+  --tw-ring-color: var(--gate-ink);
+}
+
+/* Typography utilities — XA uploader local scale */
+@utility text-2xs {
+  font-size: 10px;
+  line-height: 1rem;
+}
+
+@utility tracking-label-xs {
+  letter-spacing: 0.2em;
+}
+
+@utility tracking-label-sm {
+  letter-spacing: 0.25em;
+}
+
+@utility tracking-label {
+  letter-spacing: 0.3em;
+}
+
+@utility tracking-label-lg {
+  letter-spacing: 0.35em;
+}
+
+@utility tracking-label-xl {
+  letter-spacing: 0.45em;
+}

@@ -3,9 +3,10 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 
 import { parseFrontmatterMarkdown } from "../hypothesis-portfolio/markdown";
+
 import {
-  mapLogisticsPolicyBlocks,
   type LogisticsPolicyBlocks,
+  mapLogisticsPolicyBlocks,
 } from "./map-logistics-policy-blocks";
 
 export type LocaleKey = "en" | "de" | "it";
@@ -99,7 +100,8 @@ function extractBulletList(markdown: string, heading: string): string[] {
 
   const startIndex = startMatch.index + startMatch[0].length;
   const rest = markdown.slice(startIndex);
-  const nextHeadingIndex = rest.search(/^###\s+/m);
+  // Stop at the next heading of any level (h2 or h3) to avoid spilling into subsequent sections.
+  const nextHeadingIndex = rest.search(/^#{2,}\s+/m);
   const block = nextHeadingIndex >= 0 ? rest.slice(0, nextHeadingIndex) : rest;
 
   return block
@@ -271,11 +273,12 @@ function buildPayload(args: {
     },
     productPage: {
       proofHeading: en("Product proof points"),
-      proofBullets: [
-        en("Generated from canonical packet and source ledger."),
-        en("Claims constrained by packet and lint contracts."),
-        en("Policy and support blocks remain deterministic."),
-      ],
+      // Extracted from the `### Product Proof Bullets` section of the content packet.
+      // Fail-closed: materializeSiteContentPayload returns ok:false if this list is empty.
+      proofBullets: extractBulletList(
+        args.packetContent,
+        "Product Proof Bullets",
+      ).map((line) => en(line)),
       relatedHeading: en("You may also like"),
     },
     support: {
@@ -410,6 +413,17 @@ export function materializeSiteContentPayload(
     asOfDate,
     logisticsPolicy: logisticsResult.blocks ?? null,
   });
+
+  // Fail-closed: the content packet must have a `### Product Proof Bullets` section
+  // with at least one bullet line. An empty list means the section is missing or has
+  // no `- ` lines — either case is a content error that must not produce output.
+  if (payload.productPage.proofBullets.length === 0) {
+    diagnostics.push(
+      "Missing required ## Product Proof Bullets section in content packet (or section has no bullet lines). " +
+        "Add a `### Product Proof Bullets` h3 section with at least one `- ` bullet to the content packet.",
+    );
+    return { ok: false, outputPath: resolvedOutputPath, diagnostics };
+  }
 
   if (write) {
     fs.mkdirSync(path.dirname(resolvedOutputPath), { recursive: true });

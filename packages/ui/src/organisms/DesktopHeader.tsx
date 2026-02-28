@@ -204,6 +204,7 @@ function DesktopHeader({
                   <li key={key}>
                     <DropdownMenu
                       open={openKey === key}
+                      modal={false}
                       onOpenChange={(o) => {
                         // Only handle Radix-driven close events (Escape, click outside,
                         // item select). Hover open is managed by onMouseEnter/onMouseLeave;
@@ -212,42 +213,53 @@ function DesktopHeader({
                         if (!o) setOpenKey(null);
                       }}
                     >
-                      <div
-                        className="flex items-center"
-                        onMouseEnter={() => {
-                          if (timerRef.current) {
-                            clearTimeout(timerRef.current);
-                            timerRef.current = null;
-                          }
-                          setOpenKey(key);
-                        }}
-                        onMouseLeave={(e) => {
-                          // If the cursor moved into the Radix portal content (which is
-                          // portalled to document.body outside this wrapper), don't start
-                          // the close timer. Without this check, the portal appearing under
-                          // a stationary cursor fires mouseleave here before mouseenter on
-                          // the portal, causing a flicker loop.
-                          const related = e.relatedTarget as Element | null;
-                          if (related?.closest("[data-radix-popper-content-wrapper]")) return;
-                          timerRef.current = setTimeout(() => {
-                            setOpenKey(null);
-                          }, 150);
-                        }}
-                      >
-                        <Link
-                          href={`/${lang}${to}`}
-                          aria-current={current ? "page" : undefined}
-                          aria-label={label}
-                          prefetch={to === apartmentPath ? true : prefetch}
-                          className={`inline-flex min-h-11 items-center px-2 underline-offset-4 transition hover:underline hover:decoration-brand-bougainvillea focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/70 ${highlight}`}
+                      {/*
+                        DropdownMenuTrigger wraps the whole row so Radix uses it as the
+                        positioning anchor. align="start" then aligns the dropdown left edge
+                        with the left edge of the nav item (the "Dorms" text), not the chevron.
+                        onPointerDown stopPropagation on both children prevents Radix's internal
+                        onOpenToggle from firing — our hover/click state management stays in
+                        full control.
+                      */}
+                      <DropdownMenuTrigger asChild>
+                        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+                        <div
+                          className="flex items-center"
+                          onMouseEnter={() => {
+                            if (timerRef.current) {
+                              clearTimeout(timerRef.current);
+                              timerRef.current = null;
+                            }
+                            setOpenKey(key);
+                          }}
+                          onMouseLeave={(e) => {
+                            // If the cursor moved into the Radix portal content (which is
+                            // portalled to document.body outside this wrapper), don't start
+                            // the close timer. Without this check, the portal appearing under
+                            // a stationary cursor fires mouseleave here before mouseenter on
+                            // the portal, causing a flicker loop.
+                            const related = e.relatedTarget as Element | null;
+                            if (related?.closest("[data-radix-popper-content-wrapper]")) return;
+                            timerRef.current = setTimeout(() => {
+                              setOpenKey(null);
+                            }, 150);
+                          }}
                         >
-                          {label}
-                        </Link>
-                        <DropdownMenuTrigger asChild>
+                          <Link
+                            href={`/${lang}${to}`}
+                            aria-current={current ? "page" : undefined}
+                            aria-label={label}
+                            prefetch={to === apartmentPath ? true : prefetch}
+                            onPointerDown={(e) => e.stopPropagation()}
+                            className={`inline-flex min-h-11 items-center px-2 underline-offset-4 transition hover:underline hover:decoration-brand-bougainvillea focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/70 ${highlight}`}
+                          >
+                            {label}
+                          </Link>
                           <button
                             aria-label={`${label} sub-menu`}
                             className="inline-flex items-center px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/70"
-                            onClick={() => setOpenKey(key)}
+                            onPointerDown={(e) => e.stopPropagation()}
+                            onClick={() => setOpenKey(openKey === key ? null : key)}
                           >
                             <svg
                               aria-hidden="true"
@@ -264,8 +276,8 @@ function DesktopHeader({
                               />
                             </svg>
                           </button>
-                        </DropdownMenuTrigger>
-                      </div>
+                        </div>
+                      </DropdownMenuTrigger>
                       <DropdownMenuContent
                         align="start"
                         sideOffset={4}

@@ -28,7 +28,7 @@ This plan makes Codex startup instructions and skill discovery reliable without 
 - [ ] TASK-01: Refactor AGENTS.md to a durable size budget and preserve canonical rules
 - [x] TASK-02: Add `.codex/config.toml` with only effective project-doc controls - **Complete (2026-02-28)**
 - [ ] TASK-03: Move Codex-critical guidance into always-loaded instruction surface
-- [ ] TASK-04: Create `.agents/skills/` native discovery mirror
+- [x] TASK-04: Create `.agents/skills/` native discovery mirror - **Complete (2026-02-28)**
 - [ ] TASK-05: Add strong skills integrity validation
 - [x] TASK-06: Repair and gate skill registry drift - **Complete (2026-02-28)**
 - [ ] TASK-07: Wire validation into local and CI gates
@@ -111,7 +111,7 @@ It did not validate completeness against `.claude/skills/*/SKILL.md`, symlink co
 | TASK-01 | IMPLEMENT | Refactor AGENTS.md to durable size budget and move verbose policy to linked docs | 88% | M | Pending | - | TASK-03, TASK-08 |
 | TASK-02 | IMPLEMENT | Add `.codex/config.toml` with effective settings only (`project_doc_max_bytes`) | 95% | S | Complete (2026-02-28) | - | TASK-08 |
 | TASK-03 | IMPLEMENT | Ensure Codex-critical guidance is in always-loaded runbook surface | 82% | M | Pending | TASK-01 | TASK-08 |
-| TASK-04 | IMPLEMENT | Create `.agents/skills/` native mirror from `.claude/skills/*/SKILL.md` | 90% | M | Pending | - | TASK-05, TASK-08 |
+| TASK-04 | IMPLEMENT | Create `.agents/skills/` native mirror from `.claude/skills/*/SKILL.md` | 90% | M | Complete (2026-02-28) | - | TASK-05, TASK-08 |
 | TASK-05 | IMPLEMENT | Add strong `scripts/validate-codex-skills.sh` integrity checks | 84% | M | Pending | TASK-04 | TASK-07, TASK-08 |
 | TASK-06 | IMPLEMENT | Regenerate and gate `.agents/registry/skills.json` consistency | 90% | S | Complete (2026-02-28) | - | TASK-07, TASK-08 |
 | TASK-07 | IMPLEMENT | Wire size + skills + registry checks into local/CI validation | 80% | M | Pending | TASK-05, TASK-06 | TASK-08 |
@@ -198,7 +198,7 @@ It did not validate completeness against `.claude/skills/*/SKILL.md`, symlink co
 - **Deliverable:** `.agents/skills/` real directory containing one per-skill relative symlink for every `.claude/skills/*/SKILL.md` entry, committed to git.
 - **Execution-Skill:** lp-do-build
 - **Affects:** `.agents/skills/` (new directory and per-skill symlinks; `.agents/` directory already exists).
-- **Status:** Pending
+- **Status:** Complete (2026-02-28)
 - **Confidence:** 90% (Implementation 92 / Approach 90 / Impact 90)
 - **Scope:** Create `.agents/skills/` as a real directory (not a symlink — the specific Codex CLI failure mode is `.agents/skills` itself being a symlink). For each skill directory in `.claude/skills/` that contains a `SKILL.md` (excluding non-skill entries: `_shared/`, `temp_fix_filenames.py`, `tools-index.md`, `tools-standard.md`), create a per-skill relative symlink:
   ```
@@ -215,6 +215,12 @@ It did not validate completeness against `.claude/skills/*/SKILL.md`, symlink co
   - **Refactor:** Run `scripts/validate-codex-skills.sh` against the staged state before committing; confirm all 76 resolve correctly.
 - **Rollout/rollback:** Immediate on commit; fresh clones have symlinks automatically. Rollback: `git revert <commit>`.
 - **Documentation impact:** AGENTS.md skills one-liner (from TASK-01) updated to note `.agents/skills/` is the Codex-native mirror.
+- **Build evidence (2026-02-28):**
+  - Created `.agents/skills/` as a real directory and generated one relative symlink per `.claude/skills/<name>/SKILL.md` entry (76 total).
+  - VC-04 PASS: `[ -d .agents/skills ] && ! [ -L .agents/skills ]` succeeded.
+  - VC-04 PASS: `ls .agents/skills | wc -l` = 76 and matches `ls .claude/skills | grep -v "^_" | grep -v "\." | wc -l` = 76.
+  - VC-04 PASS: for every `.agents/skills/<name>`, `.agents/skills/<name>/SKILL.md` exists via symlink resolution.
+  - Refactor note: `scripts/validate-codex-skills.sh` is introduced in TASK-05, so TASK-04 refactor used direct VC-04 checks only.
 
 ### TASK-05: Add strong skills validation
 - **Type:** IMPLEMENT

@@ -8,9 +8,10 @@ import type { SKU } from "@acme/types";
 interface StickyCheckoutBarProps {
   priceLabel: string;
   sku: SKU;
+  trustLine?: string;
 }
 
-export function StickyCheckoutBar({ priceLabel, sku }: StickyCheckoutBarProps) {
+export function StickyCheckoutBar({ priceLabel, sku, trustLine }: StickyCheckoutBarProps) {
   const [visible, setVisible] = useState(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
@@ -37,9 +38,14 @@ export function StickyCheckoutBar({ priceLabel, sku }: StickyCheckoutBarProps) {
         }`}
         aria-hidden={!visible}
       >
-        <div className="mx-auto flex max-w-lg items-center justify-between gap-4">
-          <p className="text-base font-medium">{priceLabel}</p>
-          <AddToCartButton sku={sku} disabled={sku.stock === 0} />
+        <div className="mx-auto max-w-lg space-y-1">
+          <div className="flex items-center justify-between gap-4">
+            <p className="text-base font-medium">{priceLabel}</p>
+            <AddToCartButton sku={sku} disabled={sku.stock === 0} />
+          </div>
+          {trustLine && (
+            <p className="text-xs text-muted-foreground">{trustLine}</p>
+          )}
         </div>
       </div>
     </>

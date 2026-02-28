@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "객실 및 요금 | Brikette 호스텔 포지타노",
+    "title": "포지타노 도미토리 침대 | Brikette Hostel 직접 예약",
     "description": "바다 전망의 프라이빗 더블룸과 가성비 좋은 도미토리: 사진, 시설, 실시간 요금을 확인한 후 Brikette 호스텔 포지타노를 최저가로 직접 예약하세요.",
     "ogImageAlt": "공용 도미토리 객실 내부"
   },
@@ -65,7 +65,7 @@
     "perBed": "침대"
   },
   "rooms": {
-    "title": "객실 안내",
+    "title": "도미토리 침대",
     "soldOut": "매진",
     "double_room": {
       "title": "더블룸",
@@ -275,7 +275,7 @@
     "nextSlide": "다음 슬라이드"
   },
   "hero": {
-    "heading": "객실",
+    "heading": "도미토리 침대",
     "subheading": "완벽한 객실을 선택하세요"
   },
   "filters": {

@@ -235,6 +235,9 @@ function RoomCardComponent({
   className,
   lang,
   onRequestFullscreen,
+  titleOverlay,
+  detailHref,
+  detailLabel,
 }: RoomCardProps): JSX.Element {
   const [imageIndex, setImageIndex] = useState(0);
   const galleryImages = useMemo(() => {
@@ -297,25 +300,46 @@ function RoomCardComponent({
         className
       )}
     >
-      {currentImage ? (
-        <RoomImage
-          image={currentImage}
-          imageIndex={imageIndex}
-          totalImages={totalImages}
-          onPrev={goToPrev}
-          onNext={goToNext}
-          onEnlarge={onRequestFullscreen ? handleEnlarge : undefined}
-          alt={imageAlt}
-          labels={labels}
-        />
-      ) : (
-        <Stack align="center" className="aspect-square justify-center bg-brand-surface text-sm text-brand-outline">
-          {labels.empty ?? DEFAULT_IMAGE_LABELS.empty}
-        </Stack>
+      <div className="relative">
+        {currentImage ? (
+          <RoomImage
+            image={currentImage}
+            imageIndex={imageIndex}
+            totalImages={totalImages}
+            onPrev={goToPrev}
+            onNext={goToNext}
+            onEnlarge={onRequestFullscreen ? handleEnlarge : undefined}
+            alt={imageAlt}
+            labels={labels}
+          />
+        ) : (
+          <Stack align="center" className="aspect-square justify-center bg-brand-surface text-sm text-brand-outline">
+            {labels.empty ?? DEFAULT_IMAGE_LABELS.empty}
+          </Stack>
+        )}
+        {titleOverlay && currentImage && (
+          <div className="pointer-events-none absolute right-0 top-0 px-3 pt-3">
+            <h3 className="inline-block rounded bg-blue-600 px-2.5 py-1 text-sm font-semibold tracking-wide text-white">{title}</h3>
+          </div>
+        )}
+      </div>
+
+      {detailHref && (
+        <a
+          href={detailHref}
+          className="flex min-h-10 items-center justify-between border-b border-brand-surface px-4 py-2.5 text-sm font-medium text-brand-primary transition-colors hover:bg-brand-primary/5 dark:border-brand-surface/30 dark:text-brand-secondary dark:hover:bg-brand-secondary/5"
+        >
+          <span>{detailLabel ?? "More About This Room"}</span>
+          <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
       )}
 
       <div className="flex flex-1 flex-col p-4">
-        <h3 className="mb-1 text-lg font-semibold tracking-wide text-brand-primary dark:text-brand-secondary">{title}</h3>
+        {(!titleOverlay || !currentImage) && (
+          <h3 className="mb-1 text-lg font-semibold tracking-wide text-brand-primary dark:text-brand-secondary">{title}</h3>
+        )}
 
         <PriceBlock price={price} />
 

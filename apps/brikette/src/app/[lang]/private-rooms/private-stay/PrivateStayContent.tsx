@@ -1,6 +1,6 @@
 "use client";
 
-// src/app/[lang]/apartment/private-stay/PrivateStayContent.tsx
+// src/app/[lang]/private-rooms/private-stay/PrivateStayContent.tsx
 // Client component for private stay page
 import { memo } from "react";
 import { useTranslation } from "react-i18next";

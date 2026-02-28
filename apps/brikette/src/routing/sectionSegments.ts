@@ -5,14 +5,14 @@ import type { SlugKey } from "@/types/slugs";
  * Localized slugs are rewritten/redirected to these segment names.
  */
 export const INTERNAL_SEGMENT_BY_KEY: Readonly<Record<SlugKey, string>> = {
-  rooms: "rooms",
+  rooms: "dorms",
   deals: "deals",
   careers: "careers",
   about: "about",
   assistance: "assistance",
   experiences: "experiences",
   howToGetHere: "how-to-get-here",
-  apartment: "apartment",
+  apartment: "private-rooms",
   book: "book",
   guides: "guides",
   guidesTags: "tags",

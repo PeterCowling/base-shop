@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "客室と料金 | Brikette Hostel Positano",
+    "title": "ポジターノのドミトリーベッド | Brikette Hostelで直接予約",
     "description": "専用の海が見えるダブルルームとお得なドミトリー：写真・設備・最新料金をチェックして、Brikette Hostel Positanoを直接予約して最安値を手に入れよう。",
     "ogImageAlt": "共用ドミトリールームの内観"
   },
@@ -65,7 +65,7 @@
     "perBed": "1ベッド"
   },
   "rooms": {
-    "title": "客室",
+    "title": "ドミトリーベッド",
     "soldOut": "売り切れ",
     "double_room": {
       "title": "ダブルルーム",
@@ -275,7 +275,7 @@
     "nextSlide": "次のスライド"
   },
   "hero": {
-    "heading": "客室",
+    "heading": "ドミトリーベッド",
     "subheading": "あなたにぴったりの部屋を選ぼう"
   },
   "filters": {

@@ -51,12 +51,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function BookPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
+  const t = await getTranslations(validLang, ["bookPage"], { optional: true });
+  const heading = (t("heading") as string) || "";
 
   return (
     <>
       {/* Wrap in Suspense because BookPageContent uses useSearchParams */}
       <Suspense fallback={null}>
-        <BookPageContent lang={validLang} />
+        <BookPageContent lang={validLang} heading={heading} />
       </Suspense>
       {/* No-JS fallback (TASK-10B): direct Octorate link rendered in RSC layer so it
           is always present in server HTML, visible only when JavaScript is disabled.

@@ -110,7 +110,7 @@ const roomsData: Room[] = [
       security: "/img/keycard-tap.avif",
     },
     landingImage: "/img/7/landing.webp",
-    roomsHref: "/rooms/double_room",
+    roomsHref: "/private-rooms/double-room",
     features: {
       bedSpec: "1 double bed",
       bathroomSpec: "Ensuite bathroom",
@@ -429,7 +429,7 @@ const roomsData: Room[] = [
       security: "/img/keycard-tap.avif",
     },
     landingImage: "/img/apt1.jpg",
-    roomsHref: "/apartment",
+    roomsHref: "/private-rooms",
   },
 ];
 

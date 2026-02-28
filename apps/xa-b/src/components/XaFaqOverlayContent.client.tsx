@@ -56,7 +56,7 @@ const qaSections: QaSection[] = [
         answer: (
           <p className="text-sm text-muted-foreground">
             Use the{" "}
-            <Link href="/account/trackingorder" className="underline text-foreground">{xaI18n.t("xaB.src.components.xafaqoverlaycontent.client.l64c87")}</Link>{" "}{xaI18n.t("xaB.src.components.xafaqoverlaycontent.client.l66c25")}</p>
+            <Link href="/service-center" className="underline text-foreground">{xaI18n.t("xaB.src.components.xafaqoverlaycontent.client.l64c87")}</Link>{" "}{xaI18n.t("xaB.src.components.xafaqoverlaycontent.client.l66c25")}</p>
         ),
       },
       {

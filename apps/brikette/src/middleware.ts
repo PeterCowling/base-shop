@@ -38,6 +38,25 @@ for (const key of Object.keys(SLUGS) as SlugKey[]) {
   INTERNAL_SEGMENT_TO_KEY.set(internalSegment, key);
 }
 
+// Legacy segment aliases: old internal segment → current SlugKey.
+// Allows the middleware to redirect /en/rooms/* → /en/dorms/* after the rename.
+INTERNAL_SEGMENT_TO_KEY.set("rooms", "rooms");
+// Allows the middleware to redirect /en/apartment/* → /en/private-rooms/* after the rename.
+INTERNAL_SEGMENT_TO_KEY.set("apartment", "apartment");
+
+// Legacy localized apartment slugs (pre-private-rooms rename) — redirect to new slugs.
+// e.g. /de/wohnungen → /de/privatzimmer/
+for (const oldSlug of [
+  "wohnungen", "apartamentos", "appartements", "appartamenti",
+  "apaato", "apateu", "kvartiry", "gongyu",
+  "shuqaq", "awas", "can-ho", "apartamenty",
+  "lagenheter", "leiligheter", "lejligheder", "apartmanok",
+]) {
+  if (!ANY_TOP_LEVEL_SLUG_TO_KEY.has(oldSlug)) {
+    ANY_TOP_LEVEL_SLUG_TO_KEY.set(oldSlug, "apartment");
+  }
+}
+
 for (const key of TOP_LEVEL_SEGMENT_KEYS) {
   const localizedValues = Object.values(SLUGS[key]);
   for (const localizedSlug of localizedValues) {

@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Rom og priser | Hostel Brikette Positano",
+    "title": "Sovesalsplasser i Positano | Book direkte på Brikette Hostel",
     "description": "Private dobbeltrom med havutsikt og rimelige sovesaler: se bilder, fasiliteter og live‑priser, og bestill deretter direkte for beste tilbud.",
     "ogImageAlt": "Interiør av delt sovesal"
   },
@@ -30,7 +30,7 @@
     "linen": "Sengetøy og håndkle inkludert"
   },
   "rooms": {
-    "title": "Våre rom",
+    "title": "Sovesalsplasser",
     "soldOut": "Utsolgt",
     "double_room": {
       "title": "Dobbeltrom",
@@ -240,7 +240,7 @@
     "nextSlide": "Neste lysbilde"
   },
   "hero": {
-    "heading": "Våre rom",
+    "heading": "Sovesalsplasser",
     "subheading": "Velg det perfekte rommet for oppholdet ditt"
   },
   "filters": {

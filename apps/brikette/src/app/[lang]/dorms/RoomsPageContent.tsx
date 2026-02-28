@@ -1,6 +1,6 @@
 "use client";
 
-// src/app/[lang]/rooms/RoomsPageContent.tsx
+// src/app/[lang]/dorms/RoomsPageContent.tsx
 // Client component for rooms listing page
 import { Fragment, memo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -8,7 +8,6 @@ import { useTranslation } from "react-i18next";
 import { Section } from "@acme/design-system/atoms";
 import { DirectBookingPerks } from "@acme/ui/molecules";
 
-import AlsoHelpful from "@/components/common/AlsoHelpful";
 import RoomsSection, { type RoomsSectionBookingQuery } from "@/components/rooms/RoomsSection";
 import { roomsData } from "@/data/roomsData";
 import { usePagePreload } from "@/hooks/usePagePreload";
@@ -72,21 +71,13 @@ function RoomsPageContent({ lang, bookingQuery, serverTitle, serverSubtitle }: P
       </Section>
 
       {/* Rooms Grid */}
-      <RoomsSection lang={lang} bookingQuery={bookingQuery} itemListId="rooms_index" />
+      <RoomsSection lang={lang} bookingQuery={bookingQuery} itemListId="rooms_index" excludeRoomIds={["double_room"]} />
 
       {/* Direct Booking Perks */}
       <Section padding="default">
         <DirectBookingPerks lang={lang} />
       </Section>
 
-      {/* Also Helpful */}
-      <Section padding="default">
-        <AlsoHelpful
-          lang={lang}
-          tags={["accommodation", "budget"]}
-          section="experiences"
-        />
-      </Section>
     </Fragment>
   );
 }

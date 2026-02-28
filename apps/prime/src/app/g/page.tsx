@@ -61,6 +61,7 @@ function GuestEntryContent() {
     return () => {
       isMounted = false;
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- PRIME-1: t from useTranslation is a stable reference
   }, [token]);
 
   async function handleVerify(event: React.FormEvent) {

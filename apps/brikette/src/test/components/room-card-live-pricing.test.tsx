@@ -131,7 +131,7 @@ const TEST_ROOM: Room = {
   availability: { totalBeds: 2, defaultRelease: 2 },
   images: { bed: "/img/7/7_1.webp", bathroom: "/img/7/7_2.webp" },
   landingImage: "/img/7/landing.webp",
-  roomsHref: "/rooms/double_room",
+  roomsHref: "/private-rooms/double-room",
   features: { bedSpec: "1 double bed", bathroomSpec: "Ensuite bathroom" },
 } as unknown as Room;
 

@@ -31,6 +31,7 @@ import { fireSearchAvailability, fireViewItemList } from "@/utils/ga4-events";
 
 type Props = {
   lang: AppLanguage;
+  heading: string;
 };
 
 function parsePositiveInt(value: string | null, fallback: number): number {
@@ -71,7 +72,7 @@ function isValidSearch(checkIn: string, checkOut: string, pax: number): boolean 
   return checkIn.length > 0 && checkOut.length > 0 && isValidStayRange(checkIn, checkOut) && isValidPax(pax);
 }
 
-function BookPageContent({ lang }: Props): JSX.Element {
+function BookPageContent({ lang, heading }: Props): JSX.Element {
   const { t } = useTranslation("bookPage", { lng: lang, useSuspense: true });
   usePagePreload({
     lang,
@@ -174,7 +175,7 @@ function BookPageContent({ lang }: Props): JSX.Element {
 
       <Section padding="default" className="mx-auto max-w-7xl">
         <h1 className="text-3xl font-bold tracking-tight text-brand-heading sm:text-4xl">
-          {t("heading")}
+          {heading}
         </h1>
         <p className="mt-2 text-sm text-brand-text/80">
           {t("subheading", { defaultValue: "Choose your dates, then pick a room." }) as string}

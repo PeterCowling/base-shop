@@ -1,4 +1,4 @@
-// src/app/[lang]/rooms/page.tsx
+// src/app/[lang]/dorms/page.tsx
 // Rooms listing page - App Router version
 import type { Metadata } from "next";
 

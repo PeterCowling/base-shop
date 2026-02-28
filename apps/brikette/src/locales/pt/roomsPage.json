@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Quartos e Tarifas | Brikette Hostel Positano",
+    "title": "Camas em Dormitório em Positano | Reserve Direto no Brikette Hostel",
     "description": "Quartos duplos privados com vista para o mar e dormitórios económicos: explore fotos, instalações e preços em tempo real e reserve diretamente para obter a melhor oferta no Brikette Hostel Positano.",
     "ogImageAlt": "Interior de dormitório partilhado"
   },
@@ -65,7 +65,7 @@
     "perBed": "cama"
   },
   "rooms": {
-    "title": "Os nossos quartos",
+    "title": "Camas em Dormitório",
     "soldOut": "Esgotado",
     "double_room": {
       "title": "Quarto Duplo",
@@ -275,7 +275,7 @@
     "nextSlide": "Próximo slide"
   },
   "hero": {
-    "heading": "Os nossos quartos",
+    "heading": "Camas em Dormitório",
     "subheading": "Escolha o quarto perfeito para a sua estadia"
   },
   "filters": {

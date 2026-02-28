@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Bản dịch đang được chuẩn bị.",
+    "title": "Giường Ký Túc Xá ở Positano | Đặt Trực Tiếp tại Brikette Hostel",
     "description": "Phòng đôi riêng nhìn ra biển và ký túc xá tiết kiệm: xem ảnh, tiện nghi và giá theo thời gian thực, sau đó đặt trực tiếp để có giá tốt nhất tại Hostel Brikette Positano.",
     "ogImageAlt": "Nội thất phòng ký túc xá"
   },
@@ -65,7 +65,7 @@
     "linen": "Có sẵn ga giường và khăn tắm"
   },
   "rooms": {
-    "title": "Danh sách phòng",
+    "title": "Giường Ký Túc Xá",
     "soldOut": "Hết chỗ",
     "double_room": {
       "title": "Phòng đôi",
@@ -275,7 +275,7 @@
     "nextSlide": "Trang chiếu tiếp theo"
   },
   "hero": {
-    "heading": "Phòng của chúng tôi",
+    "heading": "Giường Ký Túc Xá",
     "subheading": "Chọn phòng hoàn hảo cho kỳ nghỉ của bạn"
   },
   "filters": {

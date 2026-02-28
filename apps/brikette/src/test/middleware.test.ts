@@ -114,6 +114,40 @@ describe("middleware", () => {
     });
   });
 
+  describe("redirect legacy apartment slugs to private-rooms slugs", () => {
+    it("redirects /de/wohnungen → /de/privatzimmer/ (old apartment slug in German)", () => {
+      const request = createRequest("/de/wohnungen");
+      const response = middleware(request);
+
+      expect(response?.status).toBe(301);
+      expect(response?.headers.get("location")).toContain("/de/privatzimmer/");
+    });
+
+    it("redirects /fr/appartements → /fr/chambres-privees/ (old apartment slug in French)", () => {
+      const request = createRequest("/fr/appartements");
+      const response = middleware(request);
+
+      expect(response?.status).toBe(301);
+      expect(response?.headers.get("location")).toContain("/fr/chambres-privees/");
+    });
+
+    it("redirects /it/appartamenti → /it/camere-private/ (old apartment slug in Italian)", () => {
+      const request = createRequest("/it/appartamenti");
+      const response = middleware(request);
+
+      expect(response?.status).toBe(301);
+      expect(response?.headers.get("location")).toContain("/it/camere-private/");
+    });
+
+    it("redirects /es/apartamentos → /es/habitaciones-privadas/ (old apartment slug in Spanish)", () => {
+      const request = createRequest("/es/apartamentos");
+      const response = middleware(request);
+
+      expect(response?.status).toBe(301);
+      expect(response?.headers.get("location")).toContain("/es/habitaciones-privadas/");
+    });
+  });
+
   describe("redirect cross-locale and legacy aliases (Search Console 404 sample)", () => {
     it("redirects cross-locale help roots to localized help index and drops child segment", () => {
       const request = createRequest("/it/aide/checkin-checkout?utm_source=test");
@@ -160,13 +194,13 @@ describe("middleware", () => {
   });
 
   describe("preserve language-agnostic child segments (no redirect)", () => {
-    it("allows /en/rooms/double_room (room ID is language-agnostic)", () => {
+    it("redirects /en/rooms/double_room → /en/dorms/double_room/ (legacy rooms segment)", () => {
       const request = createRequest("/en/rooms/double_room");
       const response = middleware(request);
 
-      // Should rewrite, not redirect
-      expect(response?.status).not.toBe(301);
-      expect(response?.status).not.toBe(302);
+      // "rooms" is the legacy segment; redirects to the current slug "dorms"
+      expect(response?.status).toBe(301);
+      expect(response?.headers.get("location")).toContain("/en/dorms/double_room/");
     });
 
     it("allows /de/zimmer/room_4 (room ID in German context)", () => {
@@ -263,8 +297,8 @@ describe("middleware", () => {
       expect(response?.status).not.toBe(302);
     });
 
-    it("does not redirect /en/rooms (English is correct in English locale)", () => {
-      const request = createRequest("/en/rooms");
+    it("does not redirect /en/dorms (current canonical English rooms slug)", () => {
+      const request = createRequest("/en/dorms");
       const response = middleware(request);
 
       // Should rewrite, not redirect

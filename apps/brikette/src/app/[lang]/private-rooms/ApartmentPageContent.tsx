@@ -1,6 +1,6 @@
 "use client";
 
-// src/app/[lang]/apartment/ApartmentPageContent.tsx
+// src/app/[lang]/private-rooms/ApartmentPageContent.tsx
 // Client component for apartment page - migrated from routes/apartment.tsx
 import { Fragment, memo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -115,7 +115,7 @@ function ApartmentPageContent({ lang }: Props) {
                 {t("directSavings.heading")}
               </p>
               <div className="grid gap-3 sm:grid-cols-2">
-                <div className="rounded-xl bg-white/70 px-4 py-3 dark:bg-black/20">
+                <div className="rounded-xl bg-surface/70 px-4 py-3 dark:bg-black/20">
                   <div className="flex items-baseline justify-between gap-2">
                     <span className="text-sm font-semibold text-brand-heading">{t("directSavings.nr.label")}</span>
                     <span className="rounded-full bg-brand-secondary px-2.5 py-0.5 text-sm font-bold text-brand-heading">
@@ -124,7 +124,7 @@ function ApartmentPageContent({ lang }: Props) {
                   </div>
                   <p className="mt-0.5 text-xs text-brand-text/70">{t("directSavings.nr.detail")}</p>
                 </div>
-                <div className="rounded-xl bg-white/70 px-4 py-3 dark:bg-black/20">
+                <div className="rounded-xl bg-surface/70 px-4 py-3 dark:bg-black/20">
                   <div className="flex items-baseline justify-between gap-2">
                     <span className="text-sm font-semibold text-brand-heading">{t("directSavings.flex.label")}</span>
                     <span className="rounded-full bg-brand-secondary px-2.5 py-0.5 text-sm font-bold text-brand-heading">

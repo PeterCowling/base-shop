@@ -4,7 +4,7 @@ import "@testing-library/jest-dom";
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
-import { FeatureSection } from "@/app/[lang]/rooms/[id]/RoomDetailContent";
+import { FeatureSection } from "@/app/[lang]/dorms/[id]/RoomDetailContent";
 import type { RoomFeatures } from "@/data/roomsData";
 
 // FacilityIcon renders an SVG icon — mock to a testable label so assertions stay stable.

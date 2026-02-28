@@ -1,6 +1,6 @@
 "use client";
 
-// src/app/[lang]/apartment/street-level-arrival/StreetLevelArrivalContent.tsx
+// src/app/[lang]/private-rooms/street-level-arrival/StreetLevelArrivalContent.tsx
 // Client component for street-level arrival page
 import { memo } from "react";
 import { useTranslation } from "react-i18next";

@@ -106,7 +106,7 @@ jobs:
     name: Deploy xa-b (Pages)
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    needs: [deploy-drop-worker]
+    needs: [test]
     concurrency:
       group: xa-deploy-xa-b-${{ github.ref }}
       cancel-in-progress: false

@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 
 import { Section } from "../atoms/Section";
 import { Grid } from "../components/atoms/primitives/Grid";
+import { ROOM_DROPDOWN_NAMES } from "../config/roomNames";
 import { roomsData, toFlatImageArray } from "../data/roomsData";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import RoomCard from "../molecules/RoomCard";
@@ -20,18 +21,6 @@ export type RoomsSectionBookingQuery = {
   queryString?: string;
 };
 
-const ROOM_TITLE_FALLBACKS: Record<string, string> = {
-  double_room: "Double Room",
-  room_10: "Premium Mixed Dorm",
-  room_11: "Superior Mixed Dorm",
-  room_12: "Superior Mixed Dorm Plus",
-  room_3: "Mixed Dorm",
-  room_4: "Mixed Dorm",
-  room_5: "Mixed Dorm",
-  room_6: "Mixed Dorm",
-  room_8: "Female Dorm",
-  room_9: "Female Dorm",
-};
 
 function looksLikeI18nKeyToken(value: string): boolean {
   if (!value.includes(".")) return false;
@@ -164,9 +153,9 @@ function RoomsSection({
             const href = `/${lang}/${roomsSlug}/${room.id}`;
             const title = resolveTranslatedCopy(
               t(`rooms.${room.id}.title`, {
-                defaultValue: ROOM_TITLE_FALLBACKS[room.id] ?? "Room",
+                defaultValue: ROOM_DROPDOWN_NAMES[room.id] ?? "Room",
               }),
-              ROOM_TITLE_FALLBACKS[room.id] ?? "Room"
+              ROOM_DROPDOWN_NAMES[room.id] ?? "Room"
             );
             const nonRefundableLabel = resolveTranslatedCopy(
               t("checkRatesNonRefundable", { defaultValue: "Non-Refundable Rates" }),

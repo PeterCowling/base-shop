@@ -42,17 +42,17 @@ export default function EodChecklistContent() {
   return (
     <div className="space-y-4">
       <h1 className="text-xl font-semibold text-foreground">
-        Chiusura Giornata
+        End of Day
       </h1>
 
       <section className="rounded-lg border border-border-2 bg-surface p-4">
-        <h2 className="mb-2 text-lg font-semibold text-foreground">Cassa</h2>
+        <h2 className="mb-2 text-lg font-semibold text-foreground">Till</h2>
         {tillLoading ? (
           <p
             className="text-sm text-muted-foreground"
             data-cy="till-loading"
           >
-            Caricamento...
+            Loading...
           </p>
         ) : (
           <p
@@ -61,21 +61,21 @@ export default function EodChecklistContent() {
             }
             data-cy="till-status"
           >
-            {tillDone ? "✓ Completata" : "✗ Incompleta"}
+            {tillDone ? "✓ Complete" : "✗ Incomplete"}
           </p>
         )}
       </section>
 
       <section className="rounded-lg border border-border-2 bg-surface p-4">
         <h2 className="mb-2 text-lg font-semibold text-foreground">
-          Cassaforte
+          Safe
         </h2>
         {safeLoading ? (
           <p
             className="text-sm text-muted-foreground"
             data-cy="safe-loading"
           >
-            Caricamento...
+            Loading...
           </p>
         ) : (
           <p
@@ -84,7 +84,7 @@ export default function EodChecklistContent() {
             }
             data-cy="safe-status"
           >
-            {safeDone ? "✓ Completata" : "✗ Incompleta"}
+            {safeDone ? "✓ Complete" : "✗ Incomplete"}
           </p>
         )}
       </section>
@@ -96,7 +96,7 @@ export default function EodChecklistContent() {
             className="text-sm text-muted-foreground"
             data-cy="stock-loading"
           >
-            Caricamento...
+            Loading...
           </p>
         ) : (
           <p
@@ -107,7 +107,7 @@ export default function EodChecklistContent() {
             }
             data-cy="stock-status"
           >
-            {stockDone ? "✓ Completata" : "✗ Incompleta"}
+            {stockDone ? "✓ Complete" : "✗ Incomplete"}
           </p>
         )}
       </section>

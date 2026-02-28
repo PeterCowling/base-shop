@@ -44,10 +44,10 @@ function formatDateTime(timestamp: unknown): string {
 
 function formatShiftStatus(status?: "open" | "closed"): string {
   if (status === "open") {
-    return "Aperto";
+    return "Open";
   }
   if (status === "closed") {
-    return "Chiuso";
+    return "Closed";
   }
   return "—";
 }
@@ -114,16 +114,16 @@ export default function ManagerAuditContent() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold text-foreground">Controllo Manager</h1>
+      <h1 className="text-xl font-semibold text-foreground">Manager Audit</h1>
 
       <section className="rounded-lg border border-border-2 bg-surface p-4">
-        <h2 className="text-lg font-semibold text-foreground">Variazione Stock</h2>
+        <h2 className="text-lg font-semibold text-foreground">Stock Variance</h2>
         {inventoryItemsLoading || inventoryLedgerLoading ? (
-          <p className="mt-3 text-sm text-muted-foreground">Caricamento...</p>
+          <p className="mt-3 text-sm text-muted-foreground">Loading...</p>
         ) : null}
         {!inventoryItemsLoading && !inventoryLedgerLoading && (inventoryItemsError || inventoryLedgerError) ? (
           <p className="mt-3 text-sm text-danger-fg">
-            Errore caricamento stock: {String(inventoryItemsError ?? inventoryLedgerError)}
+            Error loading stock: {String(inventoryItemsError ?? inventoryLedgerError)}
           </p>
         ) : null}
         {!inventoryItemsLoading &&
@@ -132,7 +132,7 @@ export default function ManagerAuditContent() {
         !inventoryLedgerError ? (
           stockVarianceRows.length === 0 ? (
             <p className="mt-3 text-sm text-muted-foreground">
-              Nessuna variazione negli ultimi 7 giorni
+              No variance in the last 7 days
             </p>
           ) : (
             <div className="mt-3 overflow-x-auto rounded-lg border border-border-2">
@@ -140,13 +140,13 @@ export default function ManagerAuditContent() {
                 <TableHeader className="bg-surface-2">
                   <TableRow>
                     <TableHead className="p-2 text-start border-b border-border-2">
-                      Articolo
+                      Item
                     </TableHead>
                     <TableHead className="p-2 text-end border-b border-border-2">
                       Delta
                     </TableHead>
                     <TableHead className="p-2 text-start border-b border-border-2">
-                      Data
+                      Date
                     </TableHead>
                   </TableRow>
                 </TableHeader>
@@ -172,34 +172,34 @@ export default function ManagerAuditContent() {
       </section>
 
       <section className="rounded-lg border border-border-2 bg-surface p-4">
-        <h2 className="text-lg font-semibold text-foreground">Ultimi Turni</h2>
+        <h2 className="text-lg font-semibold text-foreground">Recent Shifts</h2>
         {shiftsLoading ? (
-          <p className="mt-3 text-sm text-muted-foreground">Caricamento...</p>
+          <p className="mt-3 text-sm text-muted-foreground">Loading...</p>
         ) : null}
         {!shiftsLoading && shiftsError ? (
           <p className="mt-3 text-sm text-danger-fg">
-            Errore caricamento turni: {String(shiftsError)}
+            Error loading shifts: {String(shiftsError)}
           </p>
         ) : null}
         {!shiftsLoading && !shiftsError ? (
           lastThreeShifts.length === 0 ? (
-            <p className="mt-3 text-sm text-muted-foreground">Nessun turno registrato</p>
+            <p className="mt-3 text-sm text-muted-foreground">No shifts recorded</p>
           ) : (
             <div className="mt-3 overflow-x-auto rounded-lg border border-border-2">
               <Table className="min-w-full text-sm">
                 <TableHeader className="bg-surface-2">
                   <TableRow>
                     <TableHead className="p-2 text-start border-b border-border-2">
-                      Stato
+                      Status
                     </TableHead>
                     <TableHead className="p-2 text-start border-b border-border-2">
-                      Chiuso il
+                      Closed at
                     </TableHead>
                     <TableHead className="p-2 text-start border-b border-border-2">
-                      Chiuso da
+                      Closed by
                     </TableHead>
                     <TableHead className="p-2 text-end border-b border-border-2">
-                      Differenza
+                      Difference
                     </TableHead>
                     <TableHead className="p-2 text-center border-b border-border-2">
                       Signoff
@@ -234,18 +234,18 @@ export default function ManagerAuditContent() {
       </section>
 
       <section className="rounded-lg border border-border-2 bg-surface p-4">
-        <h2 className="text-lg font-semibold text-foreground">Check-in Oggi</h2>
+        <h2 className="text-lg font-semibold text-foreground">Check-ins Today</h2>
         {checkinsLoading ? (
-          <p className="mt-3 text-sm text-muted-foreground">Caricamento...</p>
+          <p className="mt-3 text-sm text-muted-foreground">Loading...</p>
         ) : null}
         {!checkinsLoading && checkinsError ? (
           <p className="mt-3 text-sm text-danger-fg">
-            Errore caricamento check-in: {String(checkinsError)}
+            Error loading check-ins: {String(checkinsError)}
           </p>
         ) : null}
         {!checkinsLoading && !checkinsError ? (
           <p className="mt-3 text-base font-medium text-foreground">
-            {todayCheckinCount} check-in oggi
+            {todayCheckinCount} check-in(s) today
           </p>
         ) : null}
       </section>

@@ -92,7 +92,7 @@ describe("EodChecklistContent", () => {
 
     expect(screen.getByTestId("till-loading")).toBeInTheDocument();
     expect(screen.getByTestId("till-loading")).toHaveTextContent(
-      "Caricamento..."
+      "Loading..."
     );
   });
 
@@ -139,7 +139,7 @@ describe("EodChecklistContent", () => {
       /till-status|safe-status|stock-status/
     );
     statusEls.forEach((el) => {
-      expect(el).toHaveTextContent("Completata");
+      expect(el).toHaveTextContent("Complete");
     });
   });
 
@@ -158,7 +158,7 @@ describe("EodChecklistContent", () => {
 
     render(<EodChecklistContent />);
 
-    expect(screen.getByTestId("till-status")).toHaveTextContent("Incompleta");
+    expect(screen.getByTestId("till-status")).toHaveTextContent("Incomplete");
   });
 
   it("TC-05: stock entries but none with type count today — stock incomplete", () => {
@@ -177,7 +177,7 @@ describe("EodChecklistContent", () => {
 
     render(<EodChecklistContent />);
 
-    expect(screen.getByTestId("stock-status")).toHaveTextContent("Incompleta");
+    expect(screen.getByTestId("stock-status")).toHaveTextContent("Incomplete");
   });
 
   it("TC-06: safe entries but none with safeReconcile or reconcile type — safe incomplete", () => {
@@ -191,7 +191,7 @@ describe("EodChecklistContent", () => {
 
     render(<EodChecklistContent />);
 
-    expect(screen.getByTestId("safe-status")).toHaveTextContent("Incompleta");
+    expect(screen.getByTestId("safe-status")).toHaveTextContent("Incomplete");
   });
 
   it("TC-07: mixed state — each card reflects its own signal independently", () => {
@@ -220,9 +220,9 @@ describe("EodChecklistContent", () => {
 
     render(<EodChecklistContent />);
 
-    expect(screen.getByTestId("till-status")).toHaveTextContent("Completata");
-    expect(screen.getByTestId("safe-status")).toHaveTextContent("Completata");
-    expect(screen.getByTestId("stock-status")).toHaveTextContent("Incompleta");
+    expect(screen.getByTestId("till-status")).toHaveTextContent("Complete");
+    expect(screen.getByTestId("safe-status")).toHaveTextContent("Complete");
+    expect(screen.getByTestId("stock-status")).toHaveTextContent("Incomplete");
   });
 
   it("TC-08: shows safe loading indicator when useSafeCountsData is loading", () => {
@@ -236,7 +236,7 @@ describe("EodChecklistContent", () => {
 
     expect(screen.getByTestId("safe-loading")).toBeInTheDocument();
     expect(screen.getByTestId("safe-loading")).toHaveTextContent(
-      "Caricamento..."
+      "Loading..."
     );
   });
 
@@ -251,7 +251,7 @@ describe("EodChecklistContent", () => {
 
     expect(screen.getByTestId("stock-loading")).toBeInTheDocument();
     expect(screen.getByTestId("stock-loading")).toHaveTextContent(
-      "Caricamento..."
+      "Loading..."
     );
   });
 });

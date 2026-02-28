@@ -96,8 +96,8 @@ const navSections: NavSection[] = [
       { label: "Stock", route: "/stock", icon: Package },
       { label: "Ingredients", route: "/ingredient-stock", icon: Carrot },
       { label: "Real Time", route: "/real-time-dashboard", icon: LineChart },
-      { label: "Controllo", route: "/manager-audit", icon: ClipboardCheck },
-      { label: "Chiusura", route: "/eod-checklist", icon: ListChecks },
+      { label: "Manager Audit", route: "/manager-audit", icon: ClipboardCheck },
+      { label: "End of Day", route: "/eod-checklist", icon: ListChecks },
       { label: "Statistics", route: "/statistics", icon: BarChart3 },
       { label: "Menu Perf", route: "/menu-performance", icon: PieChart },
       {

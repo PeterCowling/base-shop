@@ -7,7 +7,7 @@ Created: 2026-02-28
 Last-reviewed: 2026-02-28
 Last-updated: 2026-02-28
 Audit-Ref: b48884a6757b79c41102c47e047241b9dca805be (working-tree; plan.md is new/untracked)
-Build-Progress: Wave 1 complete (TASK-01, TASK-02, TASK-04); Wave 2 in progress (TASK-03); Wave 3 pending (TASK-05)
+Build-Progress: All waves complete — TASK-01, TASK-02, TASK-03, TASK-04, TASK-05 done
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: hbag-pdp-return-visit-capture
 Deliverable-Type: code-change
@@ -30,9 +30,9 @@ Adds a "Notify me" email capture form to the Caryina product detail page (PDP). 
 
 - [x] TASK-01: Create `NotifyMeForm.client.tsx` — Complete (2026-02-28)
 - [x] TASK-02: Create `/api/notify-me/route.ts` and extend analytics allowlist — Complete (2026-02-28)
-- [ ] TASK-03: Wire `NotifyMeForm` into PDP `page.tsx`
+- [x] TASK-03: Wire `NotifyMeForm` into PDP `page.tsx` — Complete (2026-02-28)
 - [x] TASK-04: Update privacy policy content and env var documentation — Complete (2026-02-28)
-- [ ] TASK-05: Unit tests for `NotifyMeForm` and `notify-me` route
+- [x] TASK-05: Unit tests for `NotifyMeForm` and `notify-me` route — Complete (2026-02-28)
 
 ## Goals
 
@@ -101,9 +101,9 @@ Adds a "Notify me" email capture form to the Caryina product detail page (PDP). 
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Create `NotifyMeForm.client.tsx` | 85% | S | Complete (2026-02-28) | - | TASK-03, TASK-05 |
 | TASK-02 | IMPLEMENT | Create `/api/notify-me/route.ts` + extend analytics allowlist | 85% | S | Complete (2026-02-28) | - | TASK-03, TASK-05 |
-| TASK-03 | IMPLEMENT | Wire `NotifyMeForm` into PDP `page.tsx` | 85% | S | Pending | TASK-01, TASK-02 | TASK-05 |
+| TASK-03 | IMPLEMENT | Wire `NotifyMeForm` into PDP `page.tsx` | 85% | S | Complete (2026-02-28) | TASK-01, TASK-02 | TASK-05 |
 | TASK-04 | IMPLEMENT | Update privacy policy content + env var docs | 85% | S | Complete (2026-02-28) | - | - |
-| TASK-05 | IMPLEMENT | Unit tests for `NotifyMeForm` and `notify-me` route | 80% | M | Pending | TASK-01, TASK-02, TASK-03 | - |
+| TASK-05 | IMPLEMENT | Unit tests for `NotifyMeForm` and `notify-me` route | 80% | M | Complete (2026-02-28) | TASK-01, TASK-02, TASK-03 | - |
 
 ## Parallelism Guide
 
@@ -277,7 +277,7 @@ Adds a "Notify me" email capture form to the Caryina product detail page (PDP). 
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-28)
 - **Affects:**
   - `apps/caryina/src/app/[lang]/product/[slug]/page.tsx` (modify — import + render `NotifyMeForm`)
 - **Depends on:** TASK-01, TASK-02
@@ -324,6 +324,8 @@ Adds a "Notify me" email capture form to the Caryina product detail page (PDP). 
 
 - **Notes / references:**
   - The form appears on desktop (within the sticky `md:sticky md:top-6` column) and on mobile. `StickyCheckoutBar` remains unchanged — it only shows on mobile scroll-past.
+
+- **Build evidence (2026-02-28):** `import { NotifyMeForm }` added to page.tsx; `<NotifyMeForm productSlug={product.slug} />` inserted after `</StickyCheckoutBar>` closing div and before proof-points `<section>`. Import sorted correctly in `@/` import group. Zero TypeScript errors (MCP diagnostics clean). Zero lint errors.
 
 ---
 
@@ -401,7 +403,7 @@ Adds a "Notify me" email capture form to the Caryina product detail page (PDP). 
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-28)
 - **Affects:**
   - `apps/caryina/src/components/catalog/NotifyMeForm.client.test.tsx` (new)
   - `apps/caryina/src/app/api/notify-me/route.test.ts` (new)
@@ -462,6 +464,8 @@ Adds a "Notify me" email capture form to the Caryina product detail page (PDP). 
 
 - **Notes / references:**
   - CI-only test policy: do not run `pnpm --filter caryina test` locally. Push and monitor: `gh run watch $(gh run list --limit 1 --json databaseId -q '.[0].databaseId')`.
+
+- **Build evidence (2026-02-28):** `apps/caryina/src/app/api/notify-me/route.test.ts` created (6 TCs: valid body 200, consent false 400, consent absent 400, invalid email 400, missing slug 400, fire-and-forget throw 200). `apps/caryina/src/components/catalog/NotifyMeForm.client.test.tsx` created (6 TCs: render, submit fetch, success state with analytics event, error state, consent blocked, loading state). Zero TypeScript errors (MCP diagnostics clean). Zero lint errors. Tests submitted to CI per CI-only policy.
 
 ---
 

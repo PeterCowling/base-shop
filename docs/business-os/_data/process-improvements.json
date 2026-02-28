@@ -1693,6 +1693,23 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Env var pre-flight check as a reusable pattern for other apps",
+      "body": "TASK-01 introduced a dedicated getCatalogContractReadiness() export to encapsulate env var presence checks; the same pattern (check-then-surface-errors before expensive operations) could be codified as a shared utility or lp-do-build executor pattern for other apps with external service dependencies",
+      "suggested_action": "defer (low frequency; implement when a second app needs it)",
+      "source": "results-review.user.md",
+      "date": "2026-02-28T18:08:48.901Z",
+      "path": "docs/plans/_archive/xa-uploader-sync-health-check/results-review.user.md",
+      "idea_key": "0c19a0dfeeefd3a3704d7ba6b55a582fdcb72760",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "Xa-uploader deployment runbook — full sequence from clone to live",
       "body": ".env.example and wrangler.toml cover the var inventory but not the ordered deployment steps (wrangler login, build, secret setup, deploy)",
       "suggested_action": "defer (vars were the acute gap; runbook is a nice-to-have)",
@@ -2356,6 +2373,16 @@
   ],
   "riskItems": [],
   "pendingReviewItems": [
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: hbag-axerve-sandbox-test-order",
+      "body": "Build is complete but no results review has been written yet.",
+      "suggested_action": "Write docs/plans/hbag-axerve-sandbox-test-order/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
+      "source": "build-record.user.md",
+      "date": "2026-02-28T17:54:57.627Z",
+      "path": "docs/plans/hbag-axerve-sandbox-test-order/build-record.user.md"
+    },
     {
       "type": "pending-review",
       "business": "BOS",

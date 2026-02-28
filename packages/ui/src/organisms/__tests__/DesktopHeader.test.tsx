@@ -52,7 +52,8 @@ describe("DesktopHeader rooms dropdown", () => {
     await user.click(screen.getByRole("button", { name: "Rooms sub-menu" }));
 
     const doubleRoomLink = screen.getByRole("menuitem", { name: "Double Room" });
-    expect(doubleRoomLink).toHaveAttribute("href", "/en/rooms/double_room");
+    // rooms slug in English is "dorms" (slug-map.ts: rooms.en = "dorms")
+    expect(doubleRoomLink).toHaveAttribute("href", "/en/dorms/double_room");
   });
 
   it("See-all-rooms sentinel is the first menuitem", async () => {

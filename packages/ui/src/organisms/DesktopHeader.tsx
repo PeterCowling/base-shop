@@ -205,8 +205,11 @@ function DesktopHeader({
                     <DropdownMenu
                       open={openKey === key}
                       onOpenChange={(o) => {
-                        if (o) setOpenKey(key);
-                        else setOpenKey(null);
+                        // Only handle Radix-driven close events (Escape, click outside,
+                        // item select). Hover open is managed by onMouseEnter/onMouseLeave;
+                        // keyboard/click open is managed by the trigger's onClick below.
+                        // Handling o=true here interferes with hover state and causes flicker.
+                        if (!o) setOpenKey(null);
                       }}
                     >
                       <div
@@ -237,6 +240,7 @@ function DesktopHeader({
                           <button
                             aria-label={`${label} sub-menu`}
                             className="inline-flex items-center px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/70"
+                            onClick={() => setOpenKey(key)}
                           >
                             <svg
                               aria-hidden="true"

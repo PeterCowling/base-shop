@@ -7,9 +7,79 @@ compatibility_flags = ["nodejs_compat"]
 directory = ".open-next/assets"
 binding = "ASSETS"
 
+# ============================================================================
+# REQUIRED SECRETS — never put values in this file.
+# Set via `wrangler secret put` for production; add --env preview for preview.
+#
+# Build-time enforced (next.config.mjs hard-fails without these on local
+# non-CI production builds; CI=true bypasses this check automatically):
+#   wrangler secret put XA_UPLOADER_SESSION_SECRET
+#   wrangler secret put XA_UPLOADER_ADMIN_TOKEN
+#   wrangler secret put NEXTAUTH_SECRET
+#   wrangler secret put SESSION_SECRET
+#   wrangler secret put CART_COOKIE_SECRET
+#
+# Runtime required (catalog sync returns 503 "unconfigured" if missing):
+#   wrangler secret put XA_CATALOG_CONTRACT_BASE_URL
+#   wrangler secret put XA_CATALOG_CONTRACT_WRITE_TOKEN
+#
+# Optional (vendor mode only):
+#   wrangler secret put XA_UPLOADER_VENDOR_TOKEN
+#
+# Preview equivalents — append --env preview to each command above.
+# ============================================================================
+
+[vars]
+# NEXT_PUBLIC vars are baked into client bundles at build time by Next.js.
+# Changing these here only affects server-side Worker runtime code.
+# For client-visible behavior changes, set these vars in the build environment
+# before running `opennextjs-cloudflare build` — a new deploy is required.
+NEXT_PUBLIC_XA_UPLOADER_MODE = ""
+NEXT_PUBLIC_XA_UPLOADER_MIN_IMAGE_EDGE = "1600"
+NEXT_PUBLIC_XA_UPLOADER_R2_DESTINATION = ""
+# Enablement toggle for R2 image upload — empty = feature disabled (default).
+# Set to the presigned upload URL to enable R2 image submission.
+NEXT_PUBLIC_XA_UPLOADER_R2_UPLOAD_URL = ""
+
+# Deployment mode — set to "vendor" to enable vendor mode.
+XA_UPLOADER_MODE = ""
+# Trusted on Cloudflare Workers to use CF-Connecting-IP for rate limiting.
+XA_TRUST_PROXY_IP_HEADERS = "1"
+# Optional tuning vars — uncomment to override defaults.
+# XA_CATALOG_CONTRACT_TIMEOUT_MS = "20000"
+# XA_UPLOADER_SYNC_VALIDATE_TIMEOUT_MS = "45000"
+# XA_UPLOADER_SYNC_TIMEOUT_MS = "300000"
+# XA_UPLOADER_SYNC_LOG_MAX_BYTES = "131072"
+# XA_UPLOADER_EXPOSE_SYNC_LOGS = ""
+# XA_UPLOADER_MAX_FILES_SCANNED = "10000"
+# XA_UPLOADER_MAX_FILES_PER_SPEC = "500"
+# XA_UPLOADER_MAX_IMAGES_PER_PRODUCT = "100"
+# XA_UPLOADER_MAX_IMAGES_PER_SUBMISSION = "400"
+# XA_UPLOADER_MIN_IMAGE_EDGE = "1600"
+# XA_UPLOADER_ALLOWED_IMAGE_ROOTS = ""
+# XA_UPLOADER_RATE_LIMIT_MAX_KEYS = "20000"
+
 [env.preview]
 name = "xa-uploader-preview"
 
 [env.preview.vars]
-# Operator console: staging env vars
-# Session/auth secrets must be set via wrangler secret put --env preview
+# NEXT_PUBLIC vars — see top-level [vars] for build-time inlining note.
+NEXT_PUBLIC_XA_UPLOADER_MODE = ""
+NEXT_PUBLIC_XA_UPLOADER_MIN_IMAGE_EDGE = "1600"
+NEXT_PUBLIC_XA_UPLOADER_R2_DESTINATION = ""
+NEXT_PUBLIC_XA_UPLOADER_R2_UPLOAD_URL = ""
+
+XA_UPLOADER_MODE = ""
+XA_TRUST_PROXY_IP_HEADERS = "1"
+# XA_CATALOG_CONTRACT_TIMEOUT_MS = "20000"
+# XA_UPLOADER_SYNC_VALIDATE_TIMEOUT_MS = "45000"
+# XA_UPLOADER_SYNC_TIMEOUT_MS = "300000"
+# XA_UPLOADER_SYNC_LOG_MAX_BYTES = "131072"
+# XA_UPLOADER_EXPOSE_SYNC_LOGS = ""
+# XA_UPLOADER_MAX_FILES_SCANNED = "10000"
+# XA_UPLOADER_MAX_FILES_PER_SPEC = "500"
+# XA_UPLOADER_MAX_IMAGES_PER_PRODUCT = "100"
+# XA_UPLOADER_MAX_IMAGES_PER_SUBMISSION = "400"
+# XA_UPLOADER_MIN_IMAGE_EDGE = "1600"
+# XA_UPLOADER_ALLOWED_IMAGE_ROOTS = ""
+# XA_UPLOADER_RATE_LIMIT_MAX_KEYS = "20000"

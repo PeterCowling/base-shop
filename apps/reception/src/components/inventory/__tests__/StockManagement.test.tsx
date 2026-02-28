@@ -289,7 +289,29 @@ describe("StockManagement", () => {
     ).toBeInTheDocument();
   });
 
-  it("shows shrinkage alert when removals exceed threshold", () => {
+  it("shows shrinkage alert when unexplained count discrepancy exceeds threshold", () => {
+    const recent = new Date().toISOString();
+    useInventoryLedgerMock.mockReturnValue({
+      ...baseLedgerReturn,
+      entries: [
+        {
+          id: "entry-1",
+          itemId: "item-1",
+          type: "count",
+          quantity: -12,
+          user: "Pete",
+          timestamp: recent,
+        },
+      ],
+    });
+
+    render(<StockManagement />);
+    expect(
+      screen.getByText(/beans: 12 unexplained units in 24h/i)
+    ).toBeInTheDocument();
+  });
+
+  it("does not alert when count discrepancy is fully covered by documented waste", () => {
     const recent = new Date().toISOString();
     useInventoryLedgerMock.mockReturnValue({
       ...baseLedgerReturn,
@@ -302,12 +324,20 @@ describe("StockManagement", () => {
           user: "Pete",
           timestamp: recent,
         },
+        {
+          id: "entry-2",
+          itemId: "item-1",
+          type: "count",
+          quantity: -12,
+          user: "Pete",
+          timestamp: recent,
+        },
       ],
     });
 
     render(<StockManagement />);
     expect(
-      screen.getByText(/beans: 12 units removed in 24h/i)
+      screen.getByText(/no abnormal shrinkage detected/i)
     ).toBeInTheDocument();
   });
 
@@ -388,5 +418,138 @@ describe("StockManagement", () => {
     createObjectUrlSpy.mockRestore();
     revokeSpy.mockRestore();
     clickSpy.mockRestore();
+  });
+
+  describe("Variance Breakdown", () => {
+    const makeEntry = (type: string, qty: number, daysAgo = 0) => ({
+      id: `vb-${type}-${daysAgo}-${Math.random().toString(36).slice(2)}`,
+      itemId: "item-1",
+      type,
+      quantity: qty,
+      user: "Pete",
+      timestamp: new Date(
+        Date.now() - daysAgo * 24 * 60 * 60 * 1000
+      ).toISOString(),
+    });
+
+    const getVarianceSection = () =>
+      screen.getByText("Variance Breakdown").closest("section")!;
+
+    it("TC-01: shows unexplained gap when waste partially covers count discrepancy", () => {
+      useInventoryLedgerMock.mockReturnValue({
+        ...baseLedgerReturn,
+        entries: [makeEntry("waste", -5), makeEntry("count", -8)],
+      });
+
+      render(<StockManagement />);
+
+      expect(screen.getByText("Variance Breakdown")).toBeInTheDocument();
+      const section = getVarianceSection();
+      const row = within(section).getByText("Beans").closest("tr")!;
+      expect(within(row).getByText("5")).toBeInTheDocument(); // Explained
+      expect(within(row).getByText("8")).toBeInTheDocument(); // Count Discrepancy
+      expect(within(row).getByText("3")).toBeInTheDocument(); // Unexplained
+    });
+
+    it("TC-02: shows zero unexplained when waste fully covers count discrepancy", () => {
+      useInventoryLedgerMock.mockReturnValue({
+        ...baseLedgerReturn,
+        entries: [makeEntry("waste", -10), makeEntry("count", -8)],
+      });
+
+      render(<StockManagement />);
+
+      const section = getVarianceSection();
+      const row = within(section).getByText("Beans").closest("tr")!;
+      expect(within(row).getByText("10")).toBeInTheDocument(); // Explained
+      expect(within(row).getByText("8")).toBeInTheDocument(); // Count Discrepancy
+      expect(within(row).getByText("0")).toBeInTheDocument(); // Unexplained
+    });
+
+    it("TC-03: excludes items with no count entries from variance breakdown", () => {
+      useInventoryLedgerMock.mockReturnValue({
+        ...baseLedgerReturn,
+        entries: [makeEntry("waste", -5)],
+      });
+
+      render(<StockManagement />);
+
+      const section = getVarianceSection();
+      expect(within(section).queryByText("Beans")).toBeNull();
+      expect(
+        within(section).getByText(/no stock variance to explain/i)
+      ).toBeInTheDocument();
+    });
+
+    it("TC-04: excludes items with net-positive count delta from variance breakdown", () => {
+      useInventoryLedgerMock.mockReturnValue({
+        ...baseLedgerReturn,
+        entries: [makeEntry("count", 3)],
+      });
+
+      render(<StockManagement />);
+
+      const section = getVarianceSection();
+      expect(within(section).queryByText("Beans")).toBeNull();
+      expect(
+        within(section).getByText(/no stock variance to explain/i)
+      ).toBeInTheDocument();
+    });
+
+    it("TC-05: uses net count delta across multiple count entries", () => {
+      useInventoryLedgerMock.mockReturnValue({
+        ...baseLedgerReturn,
+        entries: [makeEntry("count", 2), makeEntry("count", -5)],
+      });
+
+      render(<StockManagement />);
+
+      const section = getVarianceSection();
+      const row = within(section).getByText("Beans").closest("tr")!;
+      expect(within(row).getByText("0")).toBeInTheDocument(); // Explained=0
+      // Discrepancy=3 and Unexplained=3 both appear
+      expect(within(row).getAllByText("3")).toHaveLength(2);
+    });
+
+    it("TC-06: window selector recomputes breakdown on change", async () => {
+      useInventoryLedgerMock.mockReturnValue({
+        ...baseLedgerReturn,
+        entries: [makeEntry("waste", -3, 9), makeEntry("count", -5, 9)],
+      });
+
+      render(<StockManagement />);
+
+      // 7-day window (default): 9-day-old entries are outside → empty state
+      const section = getVarianceSection();
+      expect(within(section).queryByText("Beans")).toBeNull();
+
+      // Change to 14-day window
+      await userEvent.selectOptions(
+        within(section).getByTestId("variance-window-select"),
+        "14"
+      );
+
+      // Now 9-day-old entries are inside 14-day window → row appears
+      const sectionAfter = getVarianceSection();
+      const row = within(sectionAfter).getByText("Beans").closest("tr")!;
+      expect(within(row).getByText("3")).toBeInTheDocument(); // Explained
+      expect(within(row).getByText("5")).toBeInTheDocument(); // Count Discrepancy
+      expect(within(row).getByText("2")).toBeInTheDocument(); // Unexplained
+    });
+
+    it("TC-07: shows empty state when no items have net-negative count delta", () => {
+      useInventoryLedgerMock.mockReturnValue({
+        ...baseLedgerReturn,
+        entries: [makeEntry("count", 1)],
+      });
+
+      render(<StockManagement />);
+
+      const section = getVarianceSection();
+      expect(
+        within(section).getByText(/no stock variance to explain/i)
+      ).toBeInTheDocument();
+      expect(within(section).queryByRole("table")).toBeNull();
+    });
   });
 });

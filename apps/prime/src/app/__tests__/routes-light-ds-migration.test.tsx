@@ -507,8 +507,10 @@ describe('TASK-12: Route pages — DS migration', () => {
 
     const RootPage = jest.requireActual('../page').default;
     const { container } = render(<RootPage />);
+    // This test file mocks t() as key passthrough, so 'landing.title' (raw key) is
+    // what renders — not the translated string. Wait for the public landing state.
     await waitFor(() => {
-      expect(container.textContent).toContain('Prime Guest Portal');
+      expect(container.textContent).toContain('landing.title');
     });
     const html = container.innerHTML;
     assertNoRawPaletteClasses(html, 'root');

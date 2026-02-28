@@ -87,7 +87,7 @@
       }
     },
     "room_10": {
-      "title": "Premium Gemischter Schlafsaal",
+      "title": "Gemischter Schlafsaal – Eigenes Bad",
       "bed_intro": "Wenn du sechs Betten und ein hochwertiges Bad möchtest.",
       "bed_description": "Unser Premium-Schlafsaal ist ein gemischter Schlafsaal mit drei Schlafsaalbetten und bietet insgesamt Platz für bis zu sechs Gäste. Er befindet sich im vierten Stock und verfügt über Klimaanlage, sicheren Schlüsselkartenzugang und ein eigenes Bad (kein Ausblick). Bettwäsche und Handtuch erhältst du beim Check-in.",
       "facilities": [
@@ -106,7 +106,7 @@
       }
     },
     "room_11": {
-      "title": "Superior Frauenschlafsaal – Große Terrasse",
+      "title": "Frauenschlafsaal – Große Meerterrasse",
       "bed_intro": "Die besten Aussichten, eine großzügige Terrasse und ein tolles Bad.",
       "bed_description": "Unser Superior Frauen-Schlafsaal umfasst drei Schlafsaalbetten, insgesamt sechs Betten, und bietet Platz für bis zu sechs Gäste. Er befindet sich im vierten Stock und verfügt über Klimaanlage, sicheren Schlüsselkartenzugang, ein eigenes Bad sowie Meerblick mit extra großer Terrasse. Bettwäsche und Handtuch erhältst du beim Check-in.",
       "facilities": [
@@ -125,7 +125,7 @@
       }
     },
     "room_12": {
-      "title": "Superior Gemischter Schlafsaal",
+      "title": "Gemischter Schlafsaal – Meerterrasse",
       "bed_intro": "Die beste Aussicht, eine große Terrasse und ein großartiges Bad.",
       "bed_description": "Unser Superior Gemischter Schlafsaal verfügt über drei Schlafsaalbetten, insgesamt sechs Betten, und bietet Platz für bis zu sechs Gäste. Er befindet sich im vierten Stock und bietet Klimaanlage, sicheren Schlüsselkartenzugang, ein privates Bad und Meerblick mit extra großer Terrasse. Bettwäsche und Handtuch erhältst du beim Check-in.",
       "facilities": [
@@ -144,7 +144,7 @@
       }
     },
     "room_3": {
-      "title": "Value Frauen-Schlafsaal",
+      "title": "Frauenschlafsaal – 8 Betten",
       "bed_intro": "Eine preisgünstige Wahl für weibliche Reisende.",
       "bed_description": "Unser Value Frauen-Schlafsaal bietet bis zu acht Gästen Platz in vier Schlafsaalbetten. Er befindet sich im dritten Stock, verfügt über Klimaanlage, sicheren Schlüsselkartenzugang und Zugang zu einem Gemeinschaftsbad (Frauen). Es gibt keinen Ausblick. Bettwäsche und Handtuch erhältst du beim Check-in.",
       "facilities": [
@@ -163,7 +163,7 @@
       }
     },
     "room_4": {
-      "title": "Value Gemischter Schlafsaal",
+      "title": "Gemischter Schlafsaal – 8 Betten",
       "bed_intro": "Eine preisgünstige Wahl für männliche und weibliche Reisende.",
       "bed_description": "Unser Value Gemischter Schlafsaal bietet bis zu acht Gästen Platz in vier Schlafsaalbetten. Er befindet sich im dritten Stock, verfügt über Klimaanlage, sicheren Schlüsselkartenzugang und Zugang zu einem Gemeinschaftsbad (Frauen). Es gibt keinen Ausblick. Bettwäsche und Handtuch erhältst du beim Check-in.",
       "facilities": [
@@ -182,7 +182,7 @@
       }
     },
     "room_5": {
-      "title": "Superior Frauenschlafsaal – Meerblick",
+      "title": "Frauenschlafsaal – Meerblick",
       "bed_intro": "Beeindruckende Meeresblicke und ein privates Bad.",
       "bed_description": "Unser Superior Frauen-Schlafsaal bietet bis zu sechs Gästen Platz in drei Schlafsaalbetten. Er befindet sich im dritten Stock und verfügt über ein eigenes Bad, eine Terrasse mit Meerblick, Klimaanlage und sicheren Schlüsselkartenzugang. Bettwäsche und Handtuch erhältst du beim Check-in.",
       "facilities": [
@@ -201,7 +201,7 @@
       }
     },
     "room_6": {
-      "title": "Superior Frauenschlafsaal – 7 Betten",
+      "title": "Frauenschlafsaal – 7 Betten – Meerblick",
       "bed_intro": "Beeindruckende Meeresblicke und ein privates Bad.",
       "bed_description": "Unser Superior Frauen-Schlafsaal verfügt über drei Schlafsaalbetten plus ein Einzelbett und bietet Platz für bis zu sieben Gäste. Er befindet sich im dritten Stock und bietet ein eigenes Bad, eine Terrasse mit Meerblick, Klimaanlage und sicheren Schlüsselkartenzugang. Bettwäsche und Handtuch erhältst du beim Check-in.",
       "facilities": [
@@ -220,7 +220,7 @@
       }
     },
     "room_9": {
-      "title": "Deluxe Gemischtes Zimmer",
+      "title": "Gemischtes Zimmer – Einzelbetten",
       "bed_intro": "Eine preiswerte Möglichkeit, einen Drei-Bett-Schlafsaal zu bekommen.",
       "bed_description": "Unser Deluxe Gemischtes Zimmer bietet drei Einzelbetten und Platz für bis zu drei Gäste. Es befindet sich im vierten Stock und verfügt über ein eigenes Bad, Innenhofblick, Klimaanlage und sicheren Schlüsselkartenzugang. Bettwäsche und Handtuch erhältst du beim Check-in.",
       "facilities": [
@@ -239,7 +239,7 @@
       }
     },
     "room_8": {
-      "title": "Frauen-Schlafsaal mit einem Etagenbett",
+      "title": "Frauenzimmer – Gartenblick",
       "bed_intro": "Eine preisgünstige Option für zwei weibliche Reisende.",
       "bed_description": "Unser Frauen-Schlafsaal mit einem Etagenbett verfügt über ein Schlafsaalbett (Etagenbett) und bietet Platz für bis zu zwei Gäste. Er befindet sich im dritten Stock, bietet Klimaanlage, sicheren Schlüsselkartenzugang, Gartenblick und liegt neben dem Gemeinschaftsbad (Frauen). Bettwäsche und Handtuch erhältst du beim Check-in.",
       "facilities": [
@@ -304,5 +304,10 @@
   "landingImageAlt": "Titelbild von {{room}}",
   "priceNotes": {
     "dorm": "Pro Nacht, pro Gast. Ein Gast in einem Etagenbett."
+  },
+  "date": {
+    "stayHelper": "2–8 nights",
+    "clearDates": "Clear dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
   }
 }

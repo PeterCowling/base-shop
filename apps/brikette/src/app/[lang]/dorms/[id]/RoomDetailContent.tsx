@@ -7,7 +7,6 @@ import {
   type ComponentProps,
   type ComponentPropsWithoutRef,
   Fragment,
-  type RefObject,
   useCallback,
   useEffect,
   useMemo,
@@ -22,6 +21,8 @@ import type { TFunction } from "i18next";
 import { DirectBookingPerks } from "@acme/ui/molecules";
 import StickyBookNow, { type StickyBookNowClickContext } from "@acme/ui/organisms/StickyBookNow";
 
+import type { DateRange } from "@/components/booking/DateRangePicker";
+import { DateRangePicker } from "@/components/booking/DateRangePicker";
 import LocationInline from "@/components/booking/LocationInline";
 import SocialProofSection from "@/components/landing/SocialProofSection";
 import FacilityIcon from "@/components/rooms/FacilityIcon";
@@ -35,18 +36,14 @@ import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import { guideHref } from "@/routes.guides-helpers";
 import {
-  getMaxCheckoutForStay,
   getMinCheckoutForStay,
   HOSTEL_MAX_PAX,
-  HOSTEL_MAX_STAY_NIGHTS,
   HOSTEL_MIN_PAX,
-  HOSTEL_MIN_STAY_NIGHTS,
   isValidPax,
   isValidStayRange,
-  normalizeCheckoutForStay,
 } from "@/utils/bookingDateRules";
 import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
-import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
+import { formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
 import { buildRoomItem, fireViewItem } from "@/utils/ga4-events";
 import { trackThenNavigate } from "@/utils/trackThenNavigate";
 import { getGuideLinkLabel } from "@/utils/translationFallbacks";
@@ -298,97 +295,62 @@ function resolveAmenitiesSection(
   return { blurbs, shouldRender: blurbs.length > 0 || hasFallback };
 }
 
-type BookingDatePickerProps = {
-  pickerCheckIn: string;
-  pickerCheckOut: string;
+type BookingPickerSectionProps = {
+  datePickerRef: React.RefObject<HTMLDivElement | null>;
+  range: DateRange;
+  onRangeChange: (r: DateRange | undefined) => void;
+  stayHelperText: string;
+  clearDatesText: string;
+  adultsLabel: string;
   pickerAdults: number;
   maxPickerAdults: number;
-  todayIso: string;
-  pickerRef: RefObject<HTMLDivElement | null>;
-  t: (key: string) => string;
-  onDateChange: (newCheckIn: string, newCheckOut: string, newAdults: number) => void;
+  onAdultsChange: (n: number) => void;
 };
 
-function BookingDatePicker({
-  pickerCheckIn,
-  pickerCheckOut,
+function BookingPickerSection({
+  datePickerRef,
+  range,
+  onRangeChange,
+  stayHelperText,
+  clearDatesText,
+  adultsLabel,
   pickerAdults,
   maxPickerAdults,
-  todayIso,
-  pickerRef,
-  t,
-  onDateChange,
-}: BookingDatePickerProps) {
+  onAdultsChange,
+}: BookingPickerSectionProps) {
   return (
     <Section className="mx-auto mt-6 max-w-3xl px-4">
-      <div ref={pickerRef}>
-        <h2 className="mb-4 text-base font-semibold text-brand-heading dark:text-brand-surface">
-          {t("selectDatesTitle")}
-        </h2>
-        <div className="grid gap-4 sm:grid-cols-3" data-min-nights={HOSTEL_MIN_STAY_NIGHTS} data-max-nights={HOSTEL_MAX_STAY_NIGHTS}>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="room-checkin" className="text-sm text-brand-text dark:text-brand-surface/80">
-              {t("checkInDate")}
-            </label>
-            <input
-              id="room-checkin"
-              type="date"
-              value={pickerCheckIn}
-              min={todayIso}
-              onChange={(event) => {
-                const newCheckIn = event.target.value;
-                const newCheckOut = normalizeCheckoutForStay(newCheckIn, pickerCheckOut);
-                onDateChange(newCheckIn, newCheckOut, pickerAdults);
-              }}
-              className="rounded border border-brand-outline/40 px-3 py-2 text-sm dark:border-brand-secondary/35 dark:bg-brand-surface dark:text-brand-text"
-            />
-          </div>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="room-checkout" className="text-sm text-brand-text dark:text-brand-surface/80">
-              {t("checkOutDate")}
-            </label>
-            <input
-              id="room-checkout"
-              type="date"
-              value={pickerCheckOut}
-              min={getMinCheckoutForStay(pickerCheckIn) ?? getDatePlusTwoDays(pickerCheckIn)}
-              max={getMaxCheckoutForStay(pickerCheckIn) ?? undefined}
-              onChange={(event) => {
-                const normalizedCheckOut = normalizeCheckoutForStay(pickerCheckIn, event.target.value);
-                onDateChange(pickerCheckIn, normalizedCheckOut, pickerAdults);
-              }}
-              className="rounded border border-brand-outline/40 px-3 py-2 text-sm dark:border-brand-secondary/35 dark:bg-brand-surface dark:text-brand-text"
-            />
-          </div>
-          <div className="flex flex-col gap-1">
-            <label className="text-sm text-brand-text dark:text-brand-surface/80">{t("adults")}</label>
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                aria-label="Decrease adults"
-                onClick={() => {
-                  onDateChange(pickerCheckIn, pickerCheckOut, Math.max(HOSTEL_MIN_PAX, pickerAdults - 1));
-                }}
-                disabled={pickerAdults <= HOSTEL_MIN_PAX}
-                className="min-h-11 min-w-11 rounded border border-brand-outline/40 text-brand-primary disabled:opacity-40 dark:border-brand-secondary/35 dark:text-brand-secondary"
-              >
-                -
-              </button>
-              <span className="w-6 text-center text-sm text-brand-text dark:text-brand-surface/80">
-                {pickerAdults}
-              </span>
-              <button
-                type="button"
-                aria-label="Increase adults"
-                onClick={() => {
-                  onDateChange(pickerCheckIn, pickerCheckOut, Math.min(maxPickerAdults, pickerAdults + 1));
-                }}
-                disabled={pickerAdults >= maxPickerAdults}
-                className="min-h-11 min-w-11 rounded border border-brand-outline/40 text-brand-primary disabled:opacity-40 dark:border-brand-secondary/35 dark:text-brand-secondary"
-              >
-                +
-              </button>
-            </div>
+      <div ref={datePickerRef}>
+        <DateRangePicker
+          selected={range}
+          onRangeChange={onRangeChange}
+          stayHelperText={stayHelperText}
+          clearDatesText={clearDatesText}
+        />
+        <div className="mt-4 flex flex-col gap-1">
+          <label className="text-sm text-brand-text dark:text-brand-surface/80">{adultsLabel}</label>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              aria-label="Decrease adults"
+              onClick={() => onAdultsChange(Math.max(HOSTEL_MIN_PAX, pickerAdults - 1))}
+              disabled={pickerAdults <= HOSTEL_MIN_PAX}
+              className="min-h-11 min-w-11 rounded border border-brand-outline/40 text-brand-primary disabled:opacity-40 dark:border-brand-secondary/35 dark:text-brand-secondary"
+            >
+              -
+            </button>
+            <span className="w-6 text-center text-sm text-brand-text dark:text-brand-surface/80">
+              {pickerAdults}
+            </span>
+            <button
+              type="button"
+              aria-label="Increase adults"
+              onClick={() => onAdultsChange(Math.min(maxPickerAdults, pickerAdults + 1))}
+              disabled={pickerAdults >= maxPickerAdults}
+              className="min-h-11 min-w-11 rounded border border-brand-outline/40 text-brand-primary disabled:opacity-40 dark:border-brand-secondary/35 dark:text-brand-secondary"
+            >
+              +
+            </button>
           </div>
         </div>
       </div>
@@ -412,9 +374,13 @@ export default function RoomDetailContent({ lang, id }: Props) {
   const room = roomsData.find((r) => r.id === id)!;
   const todayIso = getTodayIso();
   const { checkIn, checkOut, adults, queryState } = parseBookingQuery(searchParams, todayIso);
-  const [pickerCheckIn, setPickerCheckIn] = useState(checkIn);
-  const [pickerCheckOut, setPickerCheckOut] = useState(checkOut);
+  const [range, setRange] = useState<DateRange>({
+    from: safeParseIso(checkIn),
+    to: safeParseIso(checkOut),
+  });
   const [pickerAdults, setPickerAdults] = useState(adults);
+  const pickerCheckIn = range.from ? formatDate(range.from) : checkIn;
+  const pickerCheckOut = range.to ? formatDate(range.to) : checkOut;
   const datePickerRef = useRef<HTMLDivElement>(null);
   const maxPickerAdults = Math.min(HOSTEL_MAX_PAX, room.occupancy ?? HOSTEL_MAX_PAX);
   const roomTitleKey = `rooms.${id}.title`;
@@ -490,23 +456,38 @@ export default function RoomDetailContent({ lang, id }: Props) {
   }, []);
 
   useEffect(() => {
-    setPickerCheckIn(checkIn);
-    setPickerCheckOut(checkOut);
+    setRange({
+      from: safeParseIso(checkIn),
+      to: safeParseIso(checkOut),
+    });
     setPickerAdults(adults);
   }, [checkIn, checkOut, adults]);
 
-  const handleDateChange = useCallback(
-    (newCheckIn: string, newCheckOut: string, newAdults: number) => {
-      setPickerCheckIn(newCheckIn);
-      setPickerCheckOut(newCheckOut);
+  const handleRangeChange = useCallback(
+    (newRange: DateRange | undefined) => {
+      setRange(newRange ?? { from: undefined, to: undefined });
+      const newCheckin = newRange?.from ? formatDate(newRange.from) : "";
+      const newCheckout = newRange?.to ? formatDate(newRange.to) : "";
+      if (!newCheckin || !newCheckout) return;
+      const params = new URLSearchParams(searchParams?.toString() ?? "");
+      params.set("checkin", newCheckin);
+      params.set("checkout", newCheckout);
+      params.set("pax", String(pickerAdults));
+      router.replace(`?${params.toString()}`, { scroll: false });
+    },
+    [pickerAdults, router, searchParams],
+  );
+
+  const handleAdultsChange = useCallback(
+    (newAdults: number) => {
       setPickerAdults(newAdults);
       const params = new URLSearchParams(searchParams?.toString() ?? "");
-      params.set("checkin", newCheckIn);
-      params.set("checkout", newCheckOut);
+      if (pickerCheckIn) params.set("checkin", pickerCheckIn);
+      if (pickerCheckOut) params.set("checkout", pickerCheckOut);
       params.set("pax", String(newAdults));
       router.replace(`?${params.toString()}`, { scroll: false });
     },
-    [router, searchParams],
+    [pickerCheckIn, pickerCheckOut, router, searchParams],
   );
 
   const { availabilityRoom } = useAvailabilityForRoom({
@@ -527,15 +508,16 @@ export default function RoomDetailContent({ lang, id }: Props) {
 
       <SocialProofSection lang={lang} />
 
-      <BookingDatePicker
-        pickerCheckIn={pickerCheckIn}
-        pickerCheckOut={pickerCheckOut}
+      <BookingPickerSection
+        datePickerRef={datePickerRef}
+        range={range}
+        onRangeChange={handleRangeChange}
+        stayHelperText={t("date.stayHelper") as string}
+        clearDatesText={t("date.clearDates") as string}
+        adultsLabel={t("adults") as string}
         pickerAdults={pickerAdults}
         maxPickerAdults={maxPickerAdults}
-        todayIso={todayIso}
-        pickerRef={datePickerRef}
-        t={t as (key: string) => string}
-        onDateChange={handleDateChange}
+        onAdultsChange={handleAdultsChange}
       />
 
       <RoomCard

@@ -87,7 +87,7 @@
       }
     },
     "room_10": {
-      "title": "Bản dịch đang được chuẩn bị.",
+      "title": "Ký túc xá hỗn hợp có phòng tắm riêng",
       "bed_intro": "Khi bạn cần sáu giường và phòng tắm cao cấp.",
       "bed_description": "Ký túc xá Premium là ký túc hỗn hợp với ba giường (tổng sáu), cho tối đa sáu khách. Nằm ở tầng bốn, có điều hòa, cửa vào bằng thẻ từ và phòng tắm trong phòng (không có tầm nhìn). Cung cấp ga giường và khăn tắm khi nhận phòng.",
       "facilities": [
@@ -106,7 +106,7 @@
       }
     },
     "room_11": {
-      "title": "Ký túc xá nữ hạng Superior – Sân thượng lớn",
+      "title": "Ký túc xá nữ – Sân thượng biển lớn",
       "bed_intro": "Tầm nhìn đẹp nhất từ sân thượng rộng rãi và phòng tắm tuyệt vời.",
       "bed_description": "Ký túc xá nữ hạng Superior có ba giường ký túc (tổng sáu), cho tối đa sáu khách. Nằm ở tầng bốn, có điều hòa, cửa vào thẻ từ, phòng tắm trong phòng và tầm nhìn biển với sân thượng siêu rộng. Cung cấp ga giường và khăn tắm khi nhận phòng.",
       "facilities": [
@@ -125,7 +125,7 @@
       }
     },
     "room_12": {
-      "title": "Bản dịch đang được chuẩn bị.",
+      "title": "Ký túc xá hỗn hợp – Sân thượng hướng biển",
       "bed_intro": "Tầm nhìn đẹp nhất từ sân thượng rộng rãi và phòng tắm chất lượng.",
       "bed_description": "Ký túc xá hỗn hợp hạng Superior có ba giường ký túc (tổng sáu), cho tối đa sáu khách. Nằm ở tầng bốn, gồm điều hòa, cửa vào thẻ từ, phòng tắm riêng và tầm nhìn biển với sân thượng siêu rộng. Cung cấp ga giường và khăn tắm khi nhận phòng.",
       "facilities": [
@@ -144,7 +144,7 @@
       }
     },
     "room_3": {
-      "title": "Ký túc xá nữ giá tốt",
+      "title": "Ký túc xá nữ 8 giường",
       "bed_intro": "Lựa chọn tiết kiệm cho khách nữ.",
       "bed_description": "Ký túc xá nữ giá tốt có bốn giường (tổng tám), cho tối đa tám khách. Nằm ở tầng ba, có điều hòa, cửa vào thẻ từ và sử dụng phòng tắm nữ chung. Không có tầm nhìn. Cung cấp ga giường và khăn tắm khi nhận phòng.",
       "facilities": [
@@ -163,7 +163,7 @@
       }
     },
     "room_4": {
-      "title": "Ký túc xá hỗn hợp giá tốt",
+      "title": "Ký túc xá hỗn hợp 8 giường",
       "bed_intro": "Lựa chọn tiết kiệm cho khách nam và nữ.",
       "bed_description": "Ký túc xá hỗn hợp giá tốt có bốn giường ký túc (tổng tám), cho tối đa tám khách. Ở tầng ba, có điều hòa, cửa vào thẻ từ và dùng chung phòng tắm nữ. Không có tầm nhìn. Cung cấp ga giường và khăn tắm khi nhận phòng.",
       "facilities": [
@@ -182,7 +182,7 @@
       }
     },
     "room_5": {
-      "title": "Bản dịch đang được chuẩn bị.",
+      "title": "Ký túc xá nữ – Hướng biển",
       "bed_intro": "Tầm nhìn biển ấn tượng và phòng tắm riêng.",
       "bed_description": "Ký túc xá nữ hạng Superior có ba giường (tổng sáu) cho tối đa sáu khách. Ở tầng ba, có phòng tắm trong phòng, sân thượng nhìn ra biển, điều hòa và cửa vào thẻ từ. Cung cấp ga giường và khăn tắm khi nhận phòng.",
       "facilities": [
@@ -201,7 +201,7 @@
       }
     },
     "room_6": {
-      "title": "Bản dịch đang được chuẩn bị.",
+      "title": "Ký túc xá nữ – Hướng biển, 7 giường",
       "bed_intro": "Tầm nhìn biển ấn tượng và phòng tắm riêng.",
       "bed_description": "Ký túc xá nữ hạng Superior có ba giường ký túc cộng một giường đơn (tổng 7), cho tối đa bảy khách. Nằm ở tầng ba, có phòng tắm trong phòng, sân thượng nhìn ra biển, điều hòa và cửa vào thẻ từ. Cung cấp ga giường và khăn tắm khi nhận phòng.",
       "facilities": [
@@ -220,7 +220,7 @@
       }
     },
     "room_9": {
-      "title": "Bản dịch đang được chuẩn bị.",
+      "title": "Phòng hỗn hợp – Giường đơn",
       "bed_intro": "Cách tiết kiệm để có phòng ba giường.",
       "bed_description": "Phòng hỗn hợp hạng Deluxe có ba giường đơn, cho tối đa ba khách. Ở tầng bốn, có phòng tắm trong phòng, hướng sân trong, điều hòa và cửa vào thẻ từ. Cung cấp ga giường và khăn tắm khi nhận phòng.",
       "facilities": [
@@ -239,7 +239,7 @@
       }
     },
     "room_8": {
-      "title": "Ký túc xá nữ với một giường tầng",
+      "title": "Phòng nữ – Hướng vườn",
       "bed_intro": "Lựa chọn tiết kiệm cho hai khách nữ.",
       "bed_description": "Ký túc xá nữ này có một giường tầng (ký túc), cho tối đa hai khách. Nằm ở tầng ba, có điều hòa, cửa vào thẻ từ, hướng vườn và cạnh phòng tắm nữ chung. Cung cấp ga giường và khăn tắm khi nhận phòng.",
       "facilities": [
@@ -304,5 +304,10 @@
   "landingImageAlt": "Ảnh trang đích của {{room}}",
   "priceNotes": {
     "dorm": "Mỗi đêm, mỗi khách. Một khách trên một giường tầng."
+  },
+  "date": {
+    "stayHelper": "2–8 nights",
+    "clearDates": "Clear dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
   }
 }

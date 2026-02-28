@@ -87,7 +87,7 @@
       }
     },
     "room_10": {
-      "title": "Dortoir Mixte Premium",
+      "title": "Dortoir Mixte – Salle de Bain Privée",
       "bed_intro": "Quand vous voulez six lits et une salle de bain supérieure.",
       "bed_description": "Notre Dortoir Premium est un dortoir mixte avec trois lits de dortoir pouvant accueillir jusqu’à six personnes. Situé au quatrième étage, il comprend la climatisation, un accès sécurisé par carte-clé et une salle de bain attenante (sans vue). Draps et serviette fournis à l’arrivée.",
       "facilities": [
@@ -106,7 +106,7 @@
       }
     },
     "room_11": {
-      "title": "Dortoir féminin supérieur – Grande terrasse",
+      "title": "Dortoir Féminin – Grande Terrasse Vue Mer",
       "bed_intro": "La meilleure vue, depuis une grande terrasse, et une excellente salle de bain.",
       "bed_description": "Notre Dortoir Féminin Supérieur comprend trois lits de dortoir, soit six lits au total, pouvant accueillir jusqu’à six personnes. Situé au quatrième étage, il dispose de la climatisation, d’un accès sécurisé par carte-clé, d’une salle de bain attenante et d’une vue sur la mer avec une terrasse extra-large. Draps et serviette fournis à l’arrivée.",
       "facilities": [
@@ -125,7 +125,7 @@
       }
     },
     "room_12": {
-      "title": "Dortoir Mixte Supérieur",
+      "title": "Dortoir Mixte – Terrasse Vue Mer",
       "bed_intro": "La meilleure vue, depuis une grande terrasse, et une excellente salle de bain.",
       "bed_description": "Notre Dortoir Mixte Supérieur dispose de trois lits de dortoir, soit six lits au total, pouvant accueillir jusqu’à six personnes. Situé au quatrième étage, il comprend la climatisation, un accès sécurisé par carte-clé, une salle de bain privée et une vue sur la mer avec une terrasse extra-large. Draps et serviette fournis à l’arrivée.",
       "facilities": [
@@ -144,7 +144,7 @@
       }
     },
     "room_3": {
-      "title": "Dortoir Féminin Économique",
+      "title": "Dortoir Féminin 8 Lits",
       "bed_intro": "Un choix économique pour les voyageuses.",
       "bed_description": "Notre Dortoir Féminin Économique peut accueillir jusqu’à huit personnes grâce à quatre lits de dortoir. Situé au troisième étage, il offre la climatisation, un accès sécurisé par carte-clé et l’accès à une salle de bain partagée (femmes). Sans vue. Draps et serviette fournis à l’arrivée.",
       "facilities": [
@@ -163,7 +163,7 @@
       }
     },
     "room_4": {
-      "title": "Dortoir Mixte Économique",
+      "title": "Dortoir Mixte 8 Lits",
       "bed_intro": "Un choix économique pour voyageurs et voyageuses.",
       "bed_description": "Notre Dortoir Mixte Économique peut accueillir jusqu’à huit personnes grâce à quatre lits de dortoir. Situé au troisième étage, il offre la climatisation, un accès sécurisé par carte-clé et l’accès à une salle de bain partagée (femmes). Sans vue. Draps et serviette fournis à l’arrivée.",
       "facilities": [
@@ -182,7 +182,7 @@
       }
     },
     "room_5": {
-      "title": "Dortoir féminin supérieur – Vue sur la mer",
+      "title": "Dortoir Féminin – Vue sur la Mer",
       "bed_intro": "Vues imprenables sur la mer et salle de bain privée.",
       "bed_description": "Notre Dortoir Féminin Supérieur peut accueillir jusqu’à six personnes dans trois lits de dortoir. Situé au troisième étage, il dispose d’une salle de bain attenante, d’une terrasse avec vue sur la mer, de la climatisation et d’un accès sécurisé par carte-clé. Draps et serviette fournis à l’arrivée.",
       "facilities": [
@@ -201,7 +201,7 @@
       }
     },
     "room_6": {
-      "title": "Dortoir féminin supérieur – 7 lits",
+      "title": "Dortoir Féminin 7 Lits – Vue sur la Mer",
       "bed_intro": "Vues imprenables sur la mer et salle de bain privée.",
       "bed_description": "Notre Dortoir Féminin Supérieur dispose de trois lits de dortoir plus un lit simple, soit sept lits au total, pouvant accueillir jusqu’à sept personnes. Situé au troisième étage, il comprend une salle de bain attenante, une terrasse avec vue sur la mer, la climatisation et un accès sécurisé par carte-clé. Draps et serviette fournis à l’arrivée.",
       "facilities": [
@@ -220,7 +220,7 @@
       }
     },
     "room_9": {
-      "title": "Chambre Mixte Deluxe",
+      "title": "Chambre Mixte – Lits Simples",
       "bed_intro": "Une manière économique d’obtenir un dortoir de trois lits.",
       "bed_description": "Notre Chambre Mixte Deluxe offre trois lits simples et peut accueillir jusqu’à trois personnes. Située au quatrième étage, elle dispose d’une salle de bain attenante, d’une vue sur la cour, de la climatisation et d’un accès sécurisé par carte-clé. Draps et serviette fournis à l’arrivée.",
       "facilities": [
@@ -239,7 +239,7 @@
       }
     },
     "room_8": {
-      "title": "Chambre Twin Féminine",
+      "title": "Chambre Féminine – Jardin",
       "bed_intro": "Une option économique pour deux voyageuses.",
       "bed_description": "Notre Chambre Twin Féminine comporte un lit superposé (dortoir) et peut accueillir jusqu’à deux personnes. Située au troisième étage, elle offre la climatisation, un accès sécurisé par carte-clé, une vue sur le jardin et se trouve à côté de la salle de bain partagée (femmes). Draps et serviette fournis à l’arrivée.",
       "facilities": [
@@ -304,5 +304,10 @@
   "landingImageAlt": "Image d’accueil de {{room}}",
   "priceNotes": {
     "dorm": "Par nuit, par personne. Une personne par lit superposé."
+  },
+  "date": {
+    "stayHelper": "2–8 nights",
+    "clearDates": "Clear dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
   }
 }

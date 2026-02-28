@@ -254,6 +254,12 @@
         ".write": "auth != null && root.child('userProfiles').child(auth.uid).exists() && (root.child('userProfiles').child(auth.uid).child('roles').child('owner').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('developer').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('admin').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('manager').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('staff').val() == true) && newData.exists()"
       }
     },
+    "eodClosures": {
+      ".read": "auth != null",
+      "$dateKey": {
+        ".write": "auth != null && root.child('userProfiles').child(auth.uid).exists() && (root.child('userProfiles').child(auth.uid).child('roles').child('owner').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('developer').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('admin').val() == true || root.child('userProfiles').child(auth.uid).child('roles').child('manager').val() == true) && newData.exists()"
+      }
+    },
     "$other": {
       ".read": "auth != null",
       ".write": "auth != null"

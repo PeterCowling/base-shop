@@ -38,6 +38,8 @@ interface CategoryVarianceRow {
 interface PendingBatchSubmission {
   category: string;
   categoryItems: InventoryItem[];
+  reason?: VarianceReasonCode;
+  note?: string;
 }
 
 interface PendingReasonCapture {
@@ -283,7 +285,12 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
   );
 
   const executeCategorySubmit = useCallback(
-    async (category: string, categoryItems: InventoryItem[]) => {
+    async (
+      category: string,
+      categoryItems: InventoryItem[],
+      reason?: VarianceReasonCode,
+      note?: string
+    ) => {
       const varianceRows: CategoryVarianceRow[] = [];
 
       setSubmittingCategory(category);
@@ -304,12 +311,15 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
 
           const expectedOnHand = snapshot[itemId]?.onHand ?? item.openingCount;
           const delta = countedQuantity - expectedOnHand;
+          const entryReason = delta < 0 && reason !== undefined ? reason : BATCH_REASON;
+          const entryNote = delta < 0 && reason === "Altro" ? (note || undefined) : undefined;
 
           await addLedgerEntry({
             itemId,
             type: "count",
             quantity: delta,
-            reason: BATCH_REASON,
+            reason: entryReason,
+            note: entryNote,
             unit: item.unit,
           });
 
@@ -383,14 +393,16 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
     async (
       category: string,
       categoryItems: InventoryItem[],
-      deltas: number[]
+      deltas: number[],
+      reason?: VarianceReasonCode,
+      note?: string
     ) => {
       if (requiresReauth(deltas, STOCK_ADJUSTMENT_REAUTH_THRESHOLD)) {
-        setPendingBatch({ category, categoryItems });
+        setPendingBatch({ category, categoryItems, reason, note });
         return;
       }
 
-      await executeCategorySubmit(category, categoryItems);
+      await executeCategorySubmit(category, categoryItems, reason, note);
     },
     [executeCategorySubmit]
   );
@@ -432,9 +444,17 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
     }
 
     const { category, categoryItems } = pendingReason;
+    const reason = pendingReason.reason ?? undefined;
+    const note = pendingReason.note || undefined;
     const deltas = getCategoryDeltas(categoryItems);
     setPendingReason(null);
-    await submitCategoryWithReauthGate(category, categoryItems, deltas);
+    await submitCategoryWithReauthGate(
+      category,
+      categoryItems,
+      deltas,
+      reason,
+      note
+    );
   }, [
     getCategoryDeltas,
     pendingReason,
@@ -637,7 +657,9 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
             try {
               await executeCategorySubmit(
                 pendingBatch.category,
-                pendingBatch.categoryItems
+                pendingBatch.categoryItems,
+                pendingBatch.reason,
+                pendingBatch.note
               );
             } finally {
               setPendingBatch(null);

@@ -15,6 +15,7 @@ import { Grid as LayoutGrid } from "@acme/design-system/atoms/Grid";
 import { Section } from "@acme/design-system/atoms/Section";
 import { Breadcrumbs } from "@acme/design-system/molecules";
 import { Inline } from "@acme/design-system/primitives/Inline";
+import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 
 import { useCart } from "../contexts/XaCartContext";
 import type { XaProduct } from "../lib/demoData";
@@ -50,6 +51,7 @@ export function XaProductListing({
   showTypeFilter?: boolean;
 }) {
   const [cart] = useCart();
+  const [currency] = useCurrency();
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   const {
@@ -80,6 +82,7 @@ export function XaProductListing({
     showTypeFilter,
     cart,
     filtersOpen,
+    currency,
   });
 
   return (

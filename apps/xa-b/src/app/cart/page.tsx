@@ -15,17 +15,19 @@ import {
 } from "@acme/design-system/atoms";
 import { Section } from "@acme/design-system/atoms/Section";
 import { QuantityInput } from "@acme/design-system/molecules";
+import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 
 import { useCart } from "../../contexts/XaCartContext";
 import { xaI18n } from "../../lib/xaI18n";
 
 export default function CartPage() {
+  const [currency] = useCurrency();
   const [cart, dispatch] = useCart();
   const lines = React.useMemo(() => Object.entries(cart), [cart]);
 
   const subtotal = React.useMemo(() => {
-    return lines.reduce((sum, [, line]) => sum + line.qty * (line.sku.price ?? 0), 0);
-  }, [lines]);
+    return lines.reduce((sum, [, line]) => sum + line.qty * (line.sku.prices?.[currency] ?? line.sku.price ?? 0), 0);
+  }, [lines, currency]);
 
   return (
     <main className="sf-content">
@@ -46,13 +48,13 @@ export default function CartPage() {
             <div className="overflow-x-auto rounded-lg border">
               <Table>
                 <TableHeader>
-	                  <TableRow>
-	                    <TableHead>Item</TableHead>
-	                    <TableHead>Qty</TableHead>
-	                    <TableHead className="text-end">Total</TableHead>
-	                    <TableHead />
-	                  </TableRow>
-	                </TableHeader>
+                  <TableRow>
+                    <TableHead>Item</TableHead>
+                    <TableHead>Qty</TableHead>
+                    <TableHead className="text-end">Total</TableHead>
+                    <TableHead />
+                  </TableRow>
+                </TableHeader>
                 <TableBody>
                   {lines.map(([id, line]) => (
                     <TableRow key={id}>
@@ -65,7 +67,11 @@ export default function CartPage() {
                             </div>
                           ) : null}
                           <div className="text-xs text-muted-foreground">
-                            <Price amount={line.sku.price} className="font-medium" />
+                            <Price
+                              amount={line.sku.prices?.[currency] ?? line.sku.price}
+                              currency={currency}
+                              className="font-medium"
+                            />
                           </div>
                         </div>
                       </TableCell>
@@ -79,14 +85,18 @@ export default function CartPage() {
                           }}
                         />
                       </TableCell>
-	                      <TableCell className="text-end">
-	                        <Price amount={line.qty * line.sku.price} className="font-semibold" />
-	                      </TableCell>
-	                      <TableCell className="text-end">
-	                        <Button
-	                          variant="outline"
-	                          onClick={() => void dispatch({ type: "remove", id })}
-	                        >
+                      <TableCell className="text-end">
+                        <Price
+                          amount={line.qty * (line.sku.prices?.[currency] ?? line.sku.price)}
+                          currency={currency}
+                          className="font-semibold"
+                        />
+                      </TableCell>
+                      <TableCell className="text-end">
+                        <Button
+                          variant="outline"
+                          onClick={() => void dispatch({ type: "remove", id })}
+                        >
                           Remove
                         </Button>
                       </TableCell>
@@ -98,7 +108,7 @@ export default function CartPage() {
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div className="text-lg font-semibold">
-                Subtotal: <Price amount={subtotal} />
+                Subtotal: <Price amount={subtotal} currency={currency} />
               </div>
               <div className="flex flex-wrap gap-3">
                 <Button variant="outline" onClick={() => void dispatch({ type: "clear" })}>

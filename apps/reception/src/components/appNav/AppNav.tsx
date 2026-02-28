@@ -10,6 +10,7 @@ import {
   Calculator,
   CalendarPlus,
   Carrot,
+  ClipboardCheck,
   ClipboardList,
   CreditCard,
   Database,
@@ -94,6 +95,7 @@ const navSections: NavSection[] = [
       { label: "Stock", route: "/stock", icon: Package },
       { label: "Ingredients", route: "/ingredient-stock", icon: Carrot },
       { label: "Real Time", route: "/real-time-dashboard", icon: LineChart },
+      { label: "Controllo", route: "/manager-audit", icon: ClipboardCheck },
       { label: "Statistics", route: "/statistics", icon: BarChart3 },
       { label: "Menu Perf", route: "/menu-performance", icon: PieChart },
       {

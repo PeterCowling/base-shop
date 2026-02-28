@@ -146,29 +146,13 @@ const HeroProofPanel = memo(function HeroProofPanel({
   );
 });
 
-const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang, onPrimaryCtaClick }) => {
+const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang }) => {
   const fallbackLang = useCurrentLanguage();
   const lang = explicitLang ?? fallbackLang;
   const { t, ready } = useTranslation("landingPage", { lng: lang });
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
   const { t: tRatings, i18n: ratingsI18n } = useTranslation("ratingsBar", { lng: lang });
   const { openModal } = useOptionalModal();
-
-  const selectDatesLabel = useMemo(() => {
-    const direct = t("heroSection.selectDatesCta") as string;
-    if (direct && direct.trim() && direct !== "heroSection.selectDatesCta") {
-      return direct;
-    }
-    const fallback = t("heroSection.primaryCta") as string;
-    if (fallback && fallback.trim() && fallback !== "heroSection.primaryCta") {
-      return fallback;
-    }
-    const fallbackEn = t("heroSection.primaryCta", { lng: i18nConfig.fallbackLng }) as string;
-    if (fallbackEn && fallbackEn.trim() && fallbackEn !== "heroSection.primaryCta") {
-      return fallbackEn;
-    }
-    return "Select dates";
-  }, [t]);
 
   const perksLabel = useMemo(() => {
     if (!tokensReady) {
@@ -217,14 +201,6 @@ const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang, o
     );
   }, [ready, t]);
 
-  const handleReserve = useCallback(() => {}, []);
-  const handlePrimaryCta = useCallback(() => {
-    if (onPrimaryCtaClick) {
-      onPrimaryCtaClick();
-      return;
-    }
-    handleReserve();
-  }, [handleReserve, onPrimaryCtaClick]);
   const handlePerksClick = useCallback(() => openModal("offers"), [openModal]);
 
   const trustIcons = useMemo(() => [BusFront, Waves, ConciergeBell], []);
@@ -285,8 +261,8 @@ const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang, o
             priority
             className="h-full w-full object-cover"
           />
-          <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-r from-brand-bg/70 via-brand-bg/35 to-brand-bg/0" />
-          <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-t from-brand-bg/30 to-transparent" />
+          <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-r from-brand-bg/50 via-brand-bg/20 to-brand-bg/0" />
+          <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-t from-brand-bg/15 to-transparent" />
         </div>
 
         <Section
@@ -312,27 +288,10 @@ const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang, o
               ) : null}
 
               <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                {onPrimaryCtaClick ? (
-                  <a
-                    href="#booking"
-                    onClick={handlePrimaryCta}
-                    className="min-h-12 min-w-11 rounded-full bg-brand-secondary px-9 py-3 text-base font-semibold tracking-wide text-brand-on-accent shadow-lg transition-colors duration-200 hover:bg-brand-primary hover:text-brand-on-primary focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:ring-offset-2"
-                  >
-                    {selectDatesLabel}
-                  </a>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={handlePrimaryCta}
-                    className="min-h-12 min-w-11 rounded-full bg-brand-secondary px-9 py-3 text-base font-semibold tracking-wide text-brand-on-accent shadow-lg transition-colors duration-200 hover:bg-brand-primary hover:text-brand-on-primary focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:ring-offset-2"
-                  >
-                    {selectDatesLabel}
-                  </button>
-                )}
                 <Link
                   href={`/${lang}/${translatePath("rooms", lang)}`}
                   prefetch={true}
-                  className="inline-flex min-h-11 min-w-11 items-center gap-2 rounded-full border border-primary-fg/40 bg-surface/10 px-7 py-3 text-sm font-semibold text-primary-fg transition hover:border-white hover:bg-surface/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                  className="inline-flex min-h-12 min-w-11 items-center gap-2 rounded-full bg-brand-secondary px-9 py-3 text-base font-semibold tracking-wide text-brand-on-accent shadow-lg transition-colors duration-200 hover:bg-brand-primary hover:text-brand-on-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:ring-offset-2"
                 >
                   {secondaryCta}
                   <ArrowRight className="size-4" aria-hidden />

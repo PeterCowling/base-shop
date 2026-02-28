@@ -9,6 +9,7 @@ import { Button, IconButton, Price, ProductBadge } from "@acme/design-system/ato
 import { Cluster } from "@acme/design-system/primitives/Cluster";
 import { Inline } from "@acme/design-system/primitives/Inline";
 import { cn } from "@acme/design-system/utils/style";
+import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 
 import { useCart } from "../contexts/XaCartContext";
 import { useWishlist } from "../contexts/XaWishlistContext";
@@ -23,6 +24,7 @@ export function XaProductCard({ product }: { product: XaProduct }) {
   const [touched, setTouched] = useState(false);
   const [cart, dispatch] = useCart();
   const [wishlist, wishlistDispatch] = useWishlist();
+  const [currency] = useCurrency();
   const images = product.media.filter((m) => m.type === "image" && m.url.trim());
   const primaryImage = images[0];
   const secondaryImage = images[1];
@@ -30,14 +32,16 @@ export function XaProductCard({ product }: { product: XaProduct }) {
   const designerName = getDesignerName(product.brand);
   const category = product.taxonomy.category;
   const isWishlisted = wishlist.includes(product.id);
+  const effectivePrice = product.prices?.[currency] ?? product.price;
+  const effectiveCompareAtPrice = product.compareAtPrices?.[currency] ?? product.compareAtPrice;
 
   const hasDiscount =
-    typeof product.compareAtPrice === "number" &&
-    product.compareAtPrice > product.price;
+    typeof effectiveCompareAtPrice === "number" &&
+    effectiveCompareAtPrice > effectivePrice;
   const discountPct = hasDiscount
-    ? Math.round(100 - (product.price / product.compareAtPrice!) * 100)
+    ? Math.round(100 - (effectivePrice / effectiveCompareAtPrice!) * 100)
     : 0;
-  const saving = hasDiscount ? product.compareAtPrice! - product.price : 0;
+  const saving = hasDiscount ? effectiveCompareAtPrice! - effectivePrice : 0;
 
   const jewelryDetail = (() => {
     if (category !== "jewelry") return null;
@@ -133,10 +137,10 @@ export function XaProductCard({ product }: { product: XaProduct }) {
           </div>
           <div className="text-sm text-muted-foreground">{product.title}</div>
           <Inline gap={2} alignY="baseline" wrap={false}>
-            <Price amount={product.price} className="font-semibold" />
+            <Price amount={effectivePrice} className="font-semibold" />
             {hasDiscount ? (
               <Price
-                amount={product.compareAtPrice!}
+                amount={effectiveCompareAtPrice!}
                 className="text-sm text-muted-foreground line-through"
               />
             ) : null}

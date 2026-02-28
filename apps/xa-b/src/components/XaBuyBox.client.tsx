@@ -36,6 +36,8 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
   const [cart, dispatch] = useCart();
   const [wishlist, wishlistDispatch] = useWishlist();
   const [currency] = useCurrency();
+  const effectivePrice = product.prices?.[currency] ?? product.price;
+  const effectiveCompareAtPrice = product.compareAtPrices?.[currency] ?? product.compareAtPrice;
 
   const [size, setSize] = React.useState<string>(product.sizes[0] ?? "");
   const [qty, setQty] = React.useState(1);
@@ -82,16 +84,16 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
     <div className="space-y-6">
       <div className="space-y-2">
         <PriceCluster
-          price={product.price}
-          compare={product.compareAtPrice}
+          price={effectivePrice}
+          compare={effectiveCompareAtPrice}
           currency={currency}
           className="xa-pdp-price"
         />
-        {product.compareAtPrice && product.compareAtPrice > product.price ? (
+        {effectiveCompareAtPrice && effectiveCompareAtPrice > effectivePrice ? (
           <div className="text-sm text-muted-foreground">
             Save{" "}
             <Price
-              amount={Math.max(0, product.compareAtPrice - product.price)}
+              amount={Math.max(0, effectiveCompareAtPrice - effectivePrice)}
               currency={currency}
               className="font-medium"
             />

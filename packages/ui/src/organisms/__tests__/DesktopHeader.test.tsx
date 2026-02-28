@@ -27,11 +27,13 @@ jest.mock("react-i18next", () => ({
 }));
 
 describe("DesktopHeader rooms dropdown", () => {
-  it("renders a sub-menu trigger button only for the Rooms nav item", () => {
+  it("renders sub-menu trigger buttons for Rooms and Apartment nav items", () => {
     render(<DesktopHeader lang="en" />);
     const triggers = screen.getAllByRole("button", { name: /sub-menu/i });
-    expect(triggers).toHaveLength(1);
-    expect(triggers[0]).toHaveAttribute("aria-label", "Rooms sub-menu");
+    expect(triggers).toHaveLength(2);
+    const labels = triggers.map((el) => el.getAttribute("aria-label"));
+    expect(labels).toContain("rooms sub-menu");
+    expect(labels).toContain("apartment sub-menu");
   });
 
   it("TC-01: clicking the trigger opens the panel with 11 items", async () => {

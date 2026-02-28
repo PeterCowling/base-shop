@@ -5,13 +5,17 @@ import { notFound } from "next/navigation";
 import { type Locale, LOCALES, resolveLocale } from "@acme/i18n/locales";
 import AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
 
+import { NotifyMeForm } from "@/components/catalog/NotifyMeForm.client";
 import { ProductGallery } from "@/components/catalog/ProductGallery.client";
 import { ProductMediaCard } from "@/components/catalog/ProductMediaCard";
 import { StockBadge } from "@/components/catalog/StockBadge";
+import ShippingReturnsTrustBlock from "@/components/ShippingReturnsTrustBlock";
 import {
   getLaunchFamilyCopy,
+  getPolicyContent,
   getProductPageContent,
   getSeoKeywords,
+  getTrustStripContent,
 } from "@/lib/contentPacket";
 import {
   buildCatalogCardMedia,
@@ -26,6 +30,7 @@ import {
   readShopSkus,
 } from "@/lib/shop";
 
+import { PdpTrustStrip } from "./PdpTrustStrip";
 import ProductAnalytics from "./ProductAnalytics.client";
 import { StickyCheckoutBar } from "./StickyCheckoutBar.client";
 
@@ -63,6 +68,9 @@ export default async function ProductDetailPage({
   ]);
 
   if (!product) return notFound();
+  const shippingContent = getPolicyContent(lang, "shipping");
+  const returnsContent = getPolicyContent(lang, "returns");
+  const trustStrip = getTrustStripContent(lang);
   const inventoryItem = inventoryItems.find((item) => item.productId === product.id);
   const lowStockThreshold = inventoryItem?.lowStockThreshold ?? 2;
   const allProducts = await readShopSkus(lang);
@@ -107,8 +115,18 @@ export default async function ProductDetailPage({
               <StickyCheckoutBar
                 priceLabel={formatMoney(product.price, currency)}
                 sku={product}
+                trustLine={trustStrip?.exchange}
+              />
+              <ShippingReturnsTrustBlock
+                shippingSummary={shippingContent.summary}
+                returnsSummary={returnsContent.summary}
+                lang={lang}
               />
             </div>
+
+            <PdpTrustStrip lang={lang} />
+
+            <NotifyMeForm productSlug={product.slug} />
 
             <section
               className="space-y-3 border-t pt-5"
@@ -126,6 +144,42 @@ export default async function ProductDetailPage({
                 ))}
               </ul>
             </section>
+
+            {product.materials && product.dimensions && product.weight ? (
+              <section
+                className="space-y-3 border-t pt-5"
+                aria-label="Material details"
+              >
+                <h2 className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
+                  Details
+                </h2>
+                <dl className="space-y-2 text-sm text-muted-foreground">
+                  <div className="flex gap-2">
+                    <dt className="shrink-0 font-medium text-foreground">Material</dt>
+                    <dd>
+                      {(product.materials as Record<string, string>)[lang] ??
+                        product.materials.en}
+                    </dd>
+                  </div>
+                  <div className="flex gap-2">
+                    <dt className="shrink-0 font-medium text-foreground">Dimensions</dt>
+                    <dd>
+                      {product.dimensions.h}&thinsp;mm &times;{" "}
+                      {product.dimensions.w}&thinsp;mm &times;{" "}
+                      {product.dimensions.d}&thinsp;mm
+                    </dd>
+                  </div>
+                  <div className="flex gap-2">
+                    <dt className="shrink-0 font-medium text-foreground">Weight</dt>
+                    <dd>{product.weight.value}&thinsp;{product.weight.unit}</dd>
+                  </div>
+                  <div className="flex gap-2">
+                    <dt className="shrink-0 font-medium text-foreground">Origin</dt>
+                    <dd>Designed in Positano, Italy</dd>
+                  </div>
+                </dl>
+              </section>
+            ) : null}
           </div>
         </div>
 

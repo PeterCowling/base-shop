@@ -31,7 +31,7 @@ This plan makes Codex startup instructions and skill discovery reliable without 
 - [x] TASK-04: Create `.agents/skills/` native discovery mirror - **Complete (2026-02-28)**
 - [x] TASK-05: Add strong skills integrity validation - **Complete (2026-02-28)**
 - [x] TASK-06: Repair and gate skill registry drift - **Complete (2026-02-28)**
-- [ ] TASK-07: Wire validation into local and CI gates
+- [x] TASK-07: Wire validation into local and CI gates - **Complete (2026-02-28)**
 - [ ] TASK-08: Checkpoint verification (docs loading + skills discovery)
 
 ## Goals
@@ -114,7 +114,7 @@ It did not validate completeness against `.claude/skills/*/SKILL.md`, symlink co
 | TASK-04 | IMPLEMENT | Create `.agents/skills/` native mirror from `.claude/skills/*/SKILL.md` | 90% | M | Complete (2026-02-28) | - | TASK-05, TASK-08 |
 | TASK-05 | IMPLEMENT | Add strong `scripts/validate-codex-skills.sh` integrity checks | 84% | M | Complete (2026-02-28) | TASK-04 | TASK-07, TASK-08 |
 | TASK-06 | IMPLEMENT | Regenerate and gate `.agents/registry/skills.json` consistency | 90% | S | Complete (2026-02-28) | - | TASK-07, TASK-08 |
-| TASK-07 | IMPLEMENT | Wire size + skills + registry checks into local/CI validation | 80% | M | Pending | TASK-05, TASK-06 | TASK-08 |
+| TASK-07 | IMPLEMENT | Wire size + skills + registry checks into local/CI validation | 80% | M | Complete (2026-02-28) | TASK-05, TASK-06 | TASK-08 |
 | TASK-08 | CHECKPOINT | Verify instruction loading and skill discovery behavior end-to-end | 78% | M | Pending | TASK-01, TASK-02, TASK-03, TASK-04, TASK-06, TASK-07 | - |
 
 ## Parallelism Guide
@@ -282,7 +282,7 @@ It did not validate completeness against `.claude/skills/*/SKILL.md`, symlink co
 - **Execution-Skill:** lp-do-build
 - **Affects:** `scripts/validate-changes.sh`.
 - **Depends on:** TASK-05, TASK-06
-- **Status:** Pending
+- **Status:** Complete (2026-02-28)
 - **Confidence:** 80% (Implementation 82 / Approach 80 / Impact 80)
 - **Scope:** Add three checks to `scripts/validate-changes.sh`, run unconditionally (not change-scoped — skill/AGENTS state must always be validated regardless of which files changed):
   1. **AGENTS size check:** warn (exit 0 with message) when `AGENTS.md` > 22,528 bytes (22 KiB); hard fail (exit 1) at > 24,576 bytes (24 KiB — matching TASK-01 durable budget). Byte thresholds are named constants defined at the top of the added block.
@@ -301,6 +301,13 @@ It did not validate completeness against `.claude/skills/*/SKILL.md`, symlink co
 - **Rollout/rollback:** Immediate for local; CI picks up on next PR. Rollback: `git revert <commit>`.
 - **Documentation impact:** None — checks are self-documenting via failure messages.
 - **What would make this >=90%:** confirm exact CI workflow files call `validate-changes.sh` without requiring a workflow edit.
+- **Build evidence (2026-02-28):**
+  - Added unconditional checks to `scripts/validate-changes.sh` before changed-file scoping: AGENTS size thresholding, skills mirror validation, and registry drift validation.
+  - VC-07 PASS: hard-fail behavior verified with `AGENTS_HARD_BYTES=100` (exit 1).
+  - VC-07 PASS: warning behavior verified with `AGENTS_WARN_BYTES=100 AGENTS_HARD_BYTES=999999` (warn message, exit 0).
+  - VC-07 PASS: skills mirror failure propagated via `AGENTS_SKILLS_DIR=/tmp/nonexistent-skills` (exit 1).
+  - VC-07 PASS: registry drift failure propagated by deliberate stale-registry mutation, then restored with `scripts/agents/generate-skill-registry --write`.
+  - CI integration note: no workflow file change required because CI already invokes `scripts/validate-changes.sh`.
 
 ### TASK-08: Checkpoint verification
 - **Type:** CHECKPOINT

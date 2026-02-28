@@ -286,6 +286,7 @@
   "filtersAria": "Filtruj według typu pokoju",
   "checkRatesNonRefundable": "Stawki bezzwrotne",
   "checkRatesFlexible": "Elastyczne stawki",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "Niezbędne",
     "flexible": "Elastyczny"

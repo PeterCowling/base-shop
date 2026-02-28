@@ -286,6 +286,7 @@
   "filtersAria": "Фильтр по типу номера",
   "checkRatesNonRefundable": "Безвозвратные тарифы",
   "checkRatesFlexible": "Гибкие тарифы",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "Безвозвратный",
     "flexible": "Гибкий"

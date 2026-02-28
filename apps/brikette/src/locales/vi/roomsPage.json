@@ -286,6 +286,7 @@
   "filtersAria": "Lọc theo loại phòng",
   "checkRatesNonRefundable": "Giá không hoàn tiền",
   "checkRatesFlexible": "Giá linh hoạt",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "Non‑Refundable",
     "flexible": "Flexible"

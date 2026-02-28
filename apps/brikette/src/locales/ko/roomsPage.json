@@ -286,6 +286,7 @@
   "filtersAria": "객실 유형별로 필터링",
   "checkRatesNonRefundable": "환불 불가 요금",
   "checkRatesFlexible": "유연 요금",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "환불 불가",
     "flexible": "유연 요금"

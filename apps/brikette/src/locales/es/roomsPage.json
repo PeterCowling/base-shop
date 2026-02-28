@@ -286,6 +286,7 @@
   "filtersAria": "Filtrar por tipo de habitación",
   "checkRatesNonRefundable": "Tarifas no reembolsables",
   "checkRatesFlexible": "Tarifas flexibles",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "No reembolsable",
     "flexible": "Flexible"

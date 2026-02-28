@@ -251,6 +251,7 @@
   "filtersAria": "Filtrera efter rumstyp",
   "checkRatesNonRefundable": "Icke återbetalningsbara priser",
   "checkRatesFlexible": "Flexibla rumspriser",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "Ej återbetalningsbar",
     "flexible": "Flexibelt"

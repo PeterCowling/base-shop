@@ -251,6 +251,7 @@
   "filtersAria": "تصفية حسب نوع الغرفة",
   "checkRatesNonRefundable": "أسعار غير قابلة للاسترداد",
   "checkRatesFlexible": "أسعار مرنة",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "غير قابل للاسترداد",
     "flexible": "مرن"

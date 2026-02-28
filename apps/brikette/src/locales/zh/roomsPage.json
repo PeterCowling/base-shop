@@ -286,6 +286,7 @@
   "filtersAria": "按房型筛选",
   "checkRatesNonRefundable": "不可退款价格",
   "checkRatesFlexible": "灵活价格",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "不可退款",
     "flexible": "灵活"

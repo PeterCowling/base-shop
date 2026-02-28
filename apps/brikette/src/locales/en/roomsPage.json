@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Positano Hostel Rooms & Rates | Book Direct at Brikette",
+    "title": "Dorm Beds in Positano | Book Direct at Brikette Hostel",
     "description": "Compare private rooms and dorm beds in Positano, with live rates from EUR 55/night. Check photos and facilities, then book direct at Brikette Hostel for the best deal.",
     "ogImageAlt": "Shared dorm room interior"
   },
@@ -65,7 +65,7 @@
     "perBed": "bed"
   },
   "rooms": {
-    "title": "Our Rooms",
+    "title": "Dorm Beds",
     "soldOut": "Sold out",
     "double_room": {
       "title": "Double Room",
@@ -286,6 +286,7 @@
   "filtersAria": "Filter by room type",
   "checkRatesNonRefundable": "Non-Refundable Rates",
   "checkRatesFlexible": "Flexible Room Rates",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "Non‑Refundable",
     "flexible": "Flexible"

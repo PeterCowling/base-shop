@@ -251,6 +251,7 @@
   "filtersAria": "कक्ष प्रकार के अनुसार फ़िल्टर करें",
   "checkRatesNonRefundable": "गैर‑वापसी योग्य दरें",
   "checkRatesFlexible": "लचीली कक्ष दरें",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "गैर-वापसी योग्य",
     "flexible": "लचीला"

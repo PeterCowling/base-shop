@@ -286,6 +286,7 @@
   "filtersAria": "Szűrés szobatípus szerint",
   "checkRatesNonRefundable": "Nem visszatéríthető árak",
   "checkRatesFlexible": "Rugalmas szobaárak",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "Nem visszatéríthető",
     "flexible": "Rugalmas"

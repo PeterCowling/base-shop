@@ -286,6 +286,7 @@
   "filtersAria": "部屋タイプで絞り込む",
   "checkRatesNonRefundable": "返金不可料金",
   "checkRatesFlexible": "フレキシブル料金",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "Non‑Refundable",
     "flexible": "Flexible"

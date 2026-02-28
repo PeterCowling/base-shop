@@ -314,7 +314,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-02-28T13:26:57.861Z";
+  var GEN_TS = "2026-02-28T13:51:14.753Z";
 
   var IDEA_ITEMS = [
     {
@@ -479,6 +479,23 @@
       "date": "2026-02-26T15:18:20.625Z",
       "path": "docs/plans/_archive/startup-loop-naming-pipeline-science-upgrade/results-review.user.md",
       "idea_key": "322c2fe54d86bc98f403ce301173d6450329e5f9",
+      "priority_tier": "P3",
+      "own_priority_rank": 8,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P3_MEASUREMENT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Email provider upgrade to Resend for better deliverability + bounce tracking",
+      "body": "sendSystemEmail via Gmail SMTP silently simulates if credentials absent; no delivery confirmation or bounce visibility",
+      "suggested_action": "defer until submission volume justifies upgrade",
+      "source": "results-review.user.md",
+      "date": "2026-02-28T13:45:10.222Z",
+      "path": "docs/plans/_archive/hbag-pdp-return-visit-capture/results-review.user.md",
+      "idea_key": "daff792971a9d4bbb2d619110443d224c5d1f5b3",
       "priority_tier": "P3",
       "own_priority_rank": 8,
       "urgency": "U2",
@@ -788,6 +805,23 @@
       "effort": "M",
       "proximity": null,
       "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Track notify-me submissions in a lightweight DB table (Prisma + D1) to enable follow-up campaigns when new stock arrives",
+      "body": "v1 fire-and-forget sends to merchant inbox — no queryable capture store for automated follow-up",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-28T13:45:10.222Z",
+      "path": "docs/plans/_archive/hbag-pdp-return-visit-capture/results-review.user.md",
+      "idea_key": "039db3168b3e3f23b07448ab56f4778820256f30",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -2319,6 +2353,16 @@
   var RISK_ITEMS = [];
 
   var PENDING_REVIEW_ITEMS = [
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: reception-manager-audit",
+      "body": "Build is complete but no results review has been written yet.",
+      "suggested_action": "Write docs/plans/reception-manager-audit/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
+      "source": "build-record.user.md",
+      "date": "2026-02-28T13:50:44.078Z",
+      "path": "docs/plans/reception-manager-audit/build-record.user.md"
+    },
     {
       "type": "pending-review",
       "business": "BOS",

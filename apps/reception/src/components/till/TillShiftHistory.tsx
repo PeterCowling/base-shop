@@ -4,8 +4,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 
 import { useTillData } from "../../context/TillDataContext";
 import { useTillShiftsRange } from "../../hooks/data/till/useTillShiftsRange";
-import type { CashCount } from "../../types/hooks/data/cashCountData";
 import { DENOMINATIONS } from "../../types/component/Till";
+import type { CashCount } from "../../types/hooks/data/cashCountData";
 import { endOfDayIso, formatEnGbDateTimeFromIso, startOfDayIso } from "../../utils/dateUtils";
 import ReceptionSkeleton from "../common/ReceptionSkeleton";
 
@@ -255,7 +255,7 @@ const TillShiftHistory = memo(function TillShiftHistory() {
                             onClick={() => toggleExpanded(rowKey)}
                             aria-expanded={isExpanded}
                             aria-label={`${isExpanded ? "Collapse" : "Expand"} denomination breakdown for shift ${shift.shiftId}`}
-                            className="flex items-center gap-1 focus:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded"
+                            className="flex items-center gap-1 focus:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-lg"
                           >
                             <VarianceCell value={shift.closeDifference} />
                             <span className="text-xs text-muted-foreground ml-1" aria-hidden="true">

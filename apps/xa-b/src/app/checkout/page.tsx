@@ -19,8 +19,8 @@ export default function CheckoutPage() {
 
   const lines = React.useMemo(() => Object.entries(cart), [cart]);
   const subtotal = React.useMemo(
-    () => lines.reduce((sum, [, line]) => sum + line.qty * (line.sku.price ?? 0), 0),
-    [lines],
+    () => lines.reduce((sum, [, line]) => sum + line.qty * (line.sku.prices?.[currency] ?? line.sku.price ?? 0), 0),
+    [lines, currency],
   );
 
   const [loading, setLoading] = React.useState(false);
@@ -46,7 +46,7 @@ export default function CheckoutPage() {
             title: line.sku.title ?? "Item", // i18n-exempt -- XA-0023: fallback label
             size: line.size,
             qty: line.qty,
-            unitPrice: line.sku.price ?? 0,
+            unitPrice: line.sku.prices?.[currency] ?? line.sku.price ?? 0,
           })),
         }),
       });
@@ -98,7 +98,7 @@ export default function CheckoutPage() {
                     <TableCell>{line.size ? `Size: ${line.size}` : "—"}</TableCell>
                     <TableCell className="text-end">{line.qty}</TableCell>
                     <TableCell className="text-end">
-                      <Price amount={line.qty * (line.sku.price ?? 0)} currency={currency} />
+                      <Price amount={line.qty * (line.sku.prices?.[currency] ?? line.sku.price ?? 0)} currency={currency} />
                     </TableCell>
                   </TableRow>
                 ))}

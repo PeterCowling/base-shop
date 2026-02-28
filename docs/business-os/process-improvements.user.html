@@ -314,7 +314,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-02-28T17:22:06.408Z";
+  var GEN_TS = "2026-02-28T17:30:28.569Z";
 
   var IDEA_ITEMS = [
     {
@@ -877,6 +877,57 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Add a deterministic locale-key parity check for required i18n keys across locale namespace files when adding picker UI",
+      "body": "this build manually propagated new keys to EN plus 17 non-EN locale files across two namespaces — no automated gate existed to catch missing keys",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-28T17:29:09.866Z",
+      "path": "docs/plans/brik-date-range-picker/results-review.user.md",
+      "idea_key": "624b7dba45b7a56c2f258fcb279655b13c05c83a",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Reuse react-day-picker as the standard range-calendar primitive across other booking or date surfaces to retire any remaining duplicated native date-input patterns",
+      "body": "this build promoted react-day-picker to a direct dependency and replaced four native input flows across all Brikette booking surfaces",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-28T17:29:09.866Z",
+      "path": "docs/plans/brik-date-range-picker/results-review.user.md",
+      "idea_key": "f4eb9c859738c222121551cc8c6023e928affc55",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Auto-generate results-review when build-record reaches Complete",
+      "body": "results-review artifact was missing at plan completion; build-record was written but results-review required a separate manual step",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-28T17:29:04.321Z",
+      "path": "docs/plans/_archive/brik-till-shift-history-filter-denom/results-review.user.md",
+      "idea_key": "dad8a4dbd717e3a76fd153fdbd04d77b11737214",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "Add a pre-merge materializer-parity gate for manual site-content.generated.json extensions",
       "body": "the plan documents that the materializer does not model productPage.trustStrip; _manualExtension is a temporary guard and a follow-on mitigation task is explicitly noted in the plan non-goals",
       "suggested_action": "create card",
@@ -1326,6 +1377,40 @@
       "date": "2026-02-25T22:34:30.738Z",
       "path": "docs/plans/do-skills-bos-decoupling/results-review.user.md",
       "idea_key": "c5a46e9603aeec9f92f8561051fbaed85592406d",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add a migration preflight checklist item for known lint-gate hotspots (max-lines-per-function, ds/no-hardcoded-copy, import-order rules) before large UI surface rewires",
+      "body": "multiple controlled scope expansions were required in this build to clear lint gates that were predictable upfront",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-28T17:29:09.866Z",
+      "path": "docs/plans/brik-date-range-picker/results-review.user.md",
+      "idea_key": "7fa4a2e3ef079fd10e3a32e73ea55684fd0faaec",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Deterministic QA script for results-review sections",
+      "body": "frontmatter/section/verdict checks are manual but follow a fixed checklist; the same logic runs each cycle",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-28T17:29:04.321Z",
+      "path": "docs/plans/_archive/brik-till-shift-history-filter-denom/results-review.user.md",
+      "idea_key": "873278838ff2b2b57e5a589237bc10df7d3f1217",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",
@@ -2590,26 +2675,6 @@
   var RISK_ITEMS = [];
 
   var PENDING_REVIEW_ITEMS = [
-    {
-      "type": "pending-review",
-      "business": "BOS",
-      "title": "Pending results review: brik-date-range-picker",
-      "body": "Build is complete but no results review has been written yet.",
-      "suggested_action": "Write docs/plans/brik-date-range-picker/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
-      "source": "build-record.user.md",
-      "date": "2026-02-28T17:19:23.043Z",
-      "path": "docs/plans/brik-date-range-picker/build-record.user.md"
-    },
-    {
-      "type": "pending-review",
-      "business": "BOS",
-      "title": "Pending results review: brik-till-shift-history-filter-denom",
-      "body": "Build is complete but no results review has been written yet.",
-      "suggested_action": "Write docs/plans/brik-till-shift-history-filter-denom/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
-      "source": "build-record.user.md",
-      "date": "2026-02-28T17:13:57.605Z",
-      "path": "docs/plans/brik-till-shift-history-filter-denom/build-record.user.md"
-    },
     {
       "type": "pending-review",
       "business": "BOS",

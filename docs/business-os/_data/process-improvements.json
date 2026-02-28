@@ -189,6 +189,23 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "New loop process: Introduce a lightweight deployment-activation evidence checkpoint before using Met for intended outcomes containing the word \"live\"",
+      "body": "the intended statement includes \"live\", but available evidence for this build is implementation + tests only",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-28T14:08:15.067Z",
+      "path": "docs/plans/_archive/reception-manager-audit/results-review.user.md",
+      "idea_key": "a8ddb79a52e5f4780298ce619d47241a0148fd0d",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "Materializer CLI fails silently when run from the wrong working directory",
       "body": "pnpm --filter scripts startup-loop:materialize-site-content-payload resolves repoRoot to the scripts/ package directory, causing a \"Missing source packet\" error with no helpful diagnostic about the cwd.",
       "suggested_action": "create card — add a cwd sanity check to the materializer CLI (detect when docs/ is not a subdirectory of process.cwd() and emit a helpful error).",
@@ -2051,16 +2068,6 @@
   ],
   "riskItems": [],
   "pendingReviewItems": [
-    {
-      "type": "pending-review",
-      "business": "BOS",
-      "title": "Pending results review: reception-manager-audit",
-      "body": "Build is complete but no results review has been written yet.",
-      "suggested_action": "Write docs/plans/reception-manager-audit/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
-      "source": "build-record.user.md",
-      "date": "2026-02-28T13:50:44.078Z",
-      "path": "docs/plans/reception-manager-audit/build-record.user.md"
-    },
     {
       "type": "pending-review",
       "business": "BOS",

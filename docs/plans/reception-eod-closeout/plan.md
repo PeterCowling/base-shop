@@ -25,7 +25,7 @@ Add a `/eod-checklist/` page to the reception app providing a single read-only v
 
 ## Active tasks
 - [x] TASK-01: Build EodChecklistContent component + RTL tests
-- [ ] TASK-02: Add /eod-checklist/ page route
+- [x] TASK-02: Add /eod-checklist/ page route
 - [ ] TASK-03: Add Admin nav entry (Chiusura)
 
 ## Goals
@@ -82,7 +82,7 @@ Add a `/eod-checklist/` page to the reception app providing a single read-only v
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | EodChecklistContent component + RTL tests | 85% | S | Complete (2026-02-28) | - | TASK-02 |
-| TASK-02 | IMPLEMENT | /eod-checklist/ page route | 90% | S | Pending | TASK-01 | TASK-03 |
+| TASK-02 | IMPLEMENT | /eod-checklist/ page route | 90% | S | Complete (2026-02-28) | TASK-01 | TASK-03 |
 | TASK-03 | IMPLEMENT | Admin nav entry (Chiusura) | 90% | S | Pending | TASK-02 | - |
 
 ## Parallelism Guide
@@ -178,7 +178,11 @@ Add a `/eod-checklist/` page to the reception app providing a single read-only v
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-28)
+- **Build evidence:**
+  - `apps/reception/src/app/eod-checklist/page.tsx` created — `export const dynamic = "force-dynamic"` + `<Providers><EodChecklistContent /></Providers>` (identical to manager-audit/page.tsx pattern)
+  - `pnpm --filter @apps/reception typecheck` — exit 0, no errors
+  - Post-build validation: Mode 2 (Data Simulation) — TC-01 typecheck confirms imports resolve correctly. Pass.
 - **Affects:**
   - `apps/reception/src/app/eod-checklist/page.tsx` (new)
   - `[readonly] apps/reception/src/components/eodChecklist/EodChecklistContent.tsx`

@@ -205,7 +205,8 @@ function DesktopHeader({
                     <DropdownMenu
                       open={openKey === key}
                       onOpenChange={(o) => {
-                        if (!o) setOpenKey(null);
+                        if (o) setOpenKey(key);
+                        else setOpenKey(null);
                       }}
                     >
                       <div

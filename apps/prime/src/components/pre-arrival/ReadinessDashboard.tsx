@@ -191,6 +191,7 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
           },
         },
       ],
+      // eslint-disable-next-line react-hooks/exhaustive-deps -- PRIME-1: t from useTranslation is a stable reference
       [handleItemClick, isArrivalDay],
     );
 

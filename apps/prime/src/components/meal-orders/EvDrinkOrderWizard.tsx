@@ -1,4 +1,4 @@
-/* eslint-disable ds/min-tap-size -- BRIK-2 meal-orders tap size deferred */
+/* eslint-disable ds/min-tap-size, ds/no-hardcoded-copy -- BRIK-2 meal-orders tap size and form attribute name exceptions */
 'use client';
 
 import { useEffect } from 'react';

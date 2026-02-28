@@ -1,10 +1,16 @@
 // src: packages/ui/src/organisms/DesktopHeader.tsx
-import { memo, type MouseEvent, useCallback, useMemo } from "react";
+import { memo, type MouseEvent, useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { Section } from "../atoms/Section";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../components/atoms/primitives/dropdown-menu";
 import { Inline } from "../components/atoms/primitives/Inline";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import type { AppLanguage } from "../i18n.config";
@@ -17,7 +23,7 @@ import { buildNavLinks, type TranslateFn } from "../utils/buildNavLinks";
 import { translatePath } from "../utils/translate-path";
 
 /*  Public assets are referenced by absolute URL paths.
-    “?url” lets Vite keep the file name stable in development
+    "?url" lets Vite keep the file name stable in development
     while permitting hashing in production. */
 const logoIcon = "/img/hostel_brikette_icon.png"; // original raster – small icon
 const BRAND_NAME = "hostel-brikette";
@@ -52,6 +58,8 @@ function DesktopHeader({
   const headerT = useMemo(() => i18n.getFixedT(lang, "header"), [i18n, lang]);
   const hasHeaderBundle = i18n.hasResourceBundle(lang, "header");
   const pathname = usePathname();
+  const [openKey, setOpenKey] = useState<string | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Apartment-aware CTA routing (TASK-07): on apartment routes, link directly to apartment
   // booking page instead of opening the hostel booking modal.
   const apartmentPath = `/${translatePath("apartment", lang)}`;
@@ -167,24 +175,114 @@ function DesktopHeader({
         <nav aria-label="Primary navigation" className="header-row-2">
           <Inline asChild gap={8} className="justify-start text-sm font-medium">
             <ul>
-              {navLinks.map(({ key, to, label, prefetch }) => {
-                const current = pathname === `/${lang}${to}`;
+              {navLinks.map(({ key, to, label, prefetch, children }) => {
+                const current = children
+                  ? pathname.startsWith(`/${lang}${to}`)
+                  : pathname === `/${lang}${to}`;
                 const highlight = current
                   ? /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
                     "font-semibold text-brand-secondary underline"
                   : "";
 
+                if (!children) {
+                  return (
+                    <li key={key}>
+                      <Link
+                        href={`/${lang}${to}`}
+                        aria-current={current ? "page" : undefined}
+                        aria-label={label}
+                        prefetch={to === apartmentPath ? true : prefetch}
+                        className={`inline-flex min-h-11 items-center px-2 underline-offset-4 transition hover:underline hover:decoration-brand-bougainvillea focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/70 ${highlight}`}
+                      >
+                        {label}
+                      </Link>
+                    </li>
+                  );
+                }
+
                 return (
                   <li key={key}>
-                    <Link
-                      href={`/${lang}${to}`}
-                      aria-current={current ? "page" : undefined}
-                      aria-label={label}
-                      prefetch={to === apartmentPath ? true : prefetch}
-                      className={`inline-flex min-h-11 items-center px-2 underline-offset-4 transition hover:underline hover:decoration-brand-bougainvillea focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/70 ${highlight}`}
+                    <DropdownMenu
+                      open={openKey === key}
+                      onOpenChange={(o) => {
+                        if (!o) setOpenKey(null);
+                      }}
                     >
-                      {label}
-                    </Link>
+                      <div
+                        className="flex items-center"
+                        onMouseEnter={() => {
+                          if (timerRef.current) {
+                            clearTimeout(timerRef.current);
+                            timerRef.current = null;
+                          }
+                          setOpenKey(key);
+                        }}
+                        onMouseLeave={() => {
+                          timerRef.current = setTimeout(() => {
+                            setOpenKey(null);
+                          }, 150);
+                        }}
+                      >
+                        <Link
+                          href={`/${lang}${to}`}
+                          aria-current={current ? "page" : undefined}
+                          aria-label={label}
+                          prefetch={to === apartmentPath ? true : prefetch}
+                          className={`inline-flex min-h-11 items-center px-2 underline-offset-4 transition hover:underline hover:decoration-brand-bougainvillea focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/70 ${highlight}`}
+                        >
+                          {label}
+                        </Link>
+                        <DropdownMenuTrigger asChild>
+                          <button
+                            aria-label={`${label} sub-menu`}
+                            className="inline-flex items-center px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/70"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              className="size-3"
+                              fill="none"
+                              viewBox="0 0 10 6"
+                            >
+                              <path
+                                d="M1 1l4 4 4-4"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </button>
+                        </DropdownMenuTrigger>
+                      </div>
+                      <DropdownMenuContent
+                        align="start"
+                        sideOffset={4}
+                        className="max-h-[80vh] overflow-y-auto"
+                        onMouseEnter={() => {
+                          if (timerRef.current) {
+                            clearTimeout(timerRef.current);
+                            timerRef.current = null;
+                          }
+                        }}
+                        onMouseLeave={() => {
+                          timerRef.current = setTimeout(() => {
+                            setOpenKey(null);
+                          }, 150);
+                        }}
+                      >
+                        {children.map((child) => (
+                          <DropdownMenuItem key={child.key} asChild>
+                            <Link
+                              href={`/${lang}${child.to}`}
+                              onClick={() => setOpenKey(null)}
+                              className="cursor-pointer"
+                            >
+                              {child.label}
+                            </Link>
+                          </DropdownMenuItem>
+                        ))}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </li>
                 );
               })}

@@ -10,6 +10,7 @@ import { toPositiveInt } from "@acme/lib";
 
 import {
   type CatalogPublishError,
+  getCatalogContractReadiness,
   publishCatalogArtifactsToContract,
 } from "../../../../lib/catalogContractClient";
 import { resolveXaUploaderProductsCsvPath } from "../../../../lib/catalogCsv";
@@ -491,14 +492,21 @@ export async function GET(request: Request) {
   const storefront = new URL(request.url).searchParams.get("storefront");
   const storefrontId = parseStorefront(storefront);
   const syncReadiness = await getSyncReadiness(repoRoot);
+  const contractReadiness = getCatalogContractReadiness();
 
   return withRateHeaders(
     NextResponse.json({
       ok: true,
       storefront: storefrontId,
-      ready: syncReadiness.ready,
+      ready: syncReadiness.ready && contractReadiness.configured,
       missingScripts: syncReadiness.missingScripts,
-      recovery: syncReadiness.ready ? undefined : "restore_sync_scripts",
+      contractConfigured: contractReadiness.configured,
+      contractConfigErrors: contractReadiness.errors,
+      recovery: !syncReadiness.ready
+        ? "restore_sync_scripts"
+        : !contractReadiness.configured
+          ? "configure_catalog_contract"
+          : undefined,
       checkedAt: new Date().toISOString(),
     }),
     limit,

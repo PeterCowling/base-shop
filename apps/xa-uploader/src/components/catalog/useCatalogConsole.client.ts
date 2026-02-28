@@ -58,6 +58,8 @@ type SyncReadinessState = {
   missingScripts: SyncScriptId[];
   error: string | null;
   checkedAt: string | null;
+  contractConfigured: boolean;
+  contractConfigErrors: string[];
 };
 
 function useCatalogConsoleState() {
@@ -118,6 +120,8 @@ function useCatalogConsoleState() {
     missingScripts: [],
     error: null,
     checkedAt: null,
+    contractConfigured: false,
+    contractConfigErrors: [],
   });
 
   const loadSession = React.useCallback(async () => {
@@ -155,6 +159,8 @@ function useCatalogConsoleState() {
         missingScripts: data.missingScripts ?? [],
         error: null,
         checkedAt: data.checkedAt ?? null,
+        contractConfigured: Boolean(data.contractConfigured),
+        contractConfigErrors: data.contractConfigErrors ?? [],
       });
     } catch {
       setSyncReadiness({
@@ -163,6 +169,8 @@ function useCatalogConsoleState() {
         missingScripts: [],
         error: t("syncReadinessCheckFailed"),
         checkedAt: null,
+        contractConfigured: false,
+        contractConfigErrors: [],
       });
     }
   }, [storefront, t, uploaderMode]);
@@ -195,6 +203,8 @@ function useCatalogConsoleState() {
         missingScripts: [],
         error: null,
         checkedAt: null,
+        contractConfigured: false,
+        contractConfigErrors: [],
       });
       return;
     }

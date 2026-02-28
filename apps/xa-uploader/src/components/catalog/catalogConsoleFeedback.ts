@@ -53,6 +53,8 @@ export type SyncReadinessResponse = {
   recovery?: SyncRecoveryCode | string;
   missingScripts?: SyncScriptId[];
   checkedAt?: string;
+  contractConfigured?: boolean;
+  contractConfigErrors?: string[];
 };
 
 export type BusyLockRef = React.MutableRefObject<boolean>;

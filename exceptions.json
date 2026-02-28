@@ -81,6 +81,13 @@
       "expires": "2026-12-31",
       "notes": "Internal developer invariant logger and i18n-exempt non-user-facing strings in brikette (console.error, ModalProvider nesting guard)."
     },
+    "BRIK-1": {
+      "allow": [
+        "apps/brikette/playwright.config.ts"
+      ],
+      "expires": "2027-02-27",
+      "notes": "Playwright config test-infrastructure identifiers; non-UI copy exception."
+    },
     "BRK-001": {},
     "BRIK-DS-001": {},
     "BRIK-ENG-0017": {},

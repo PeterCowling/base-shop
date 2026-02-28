@@ -26,6 +26,8 @@ export function CatalogSyncPanel({
     ready: boolean;
     missingScripts: SyncScriptId[];
     error: string | null;
+    contractConfigured?: boolean;
+    contractConfigErrors?: string[];
   };
   monoClassName?: string;
   feedback: ActionFeedback | null;
@@ -53,6 +55,9 @@ export function CatalogSyncPanel({
     readinessClassName = "text-sm text-danger-fg";
   } else if (syncReadiness.ready) {
     readinessMessage = t("syncReadinessReady");
+  } else if (!syncReadiness.checking && syncReadiness.contractConfigErrors?.length) {
+    readinessMessage = `${t("syncPublishContractUnconfigured")} ${t("syncRecoveryConfigureCatalogContract")}`;
+    readinessClassName = "text-sm text-danger-fg";
   } else if (!syncReadiness.checking) {
     readinessMessage = `${t("syncDependenciesMissing", {
       scripts: formatSyncMissingScripts(syncReadiness.missingScripts, t),

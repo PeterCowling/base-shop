@@ -11,6 +11,7 @@ const mkdirMock = jest.fn();
 const hasUploaderSessionMock = jest.fn();
 const getCatalogSyncInputStatusMock = jest.fn();
 const publishCatalogArtifactsToContractMock = jest.fn();
+const getCatalogContractReadinessMock = jest.fn();
 
 jest.mock("node:child_process", () => ({
   spawn: (...args: unknown[]) => spawnMock(...args),
@@ -42,6 +43,7 @@ jest.mock("../../../../../lib/catalogSyncInput", () => ({
 
 jest.mock("../../../../../lib/catalogContractClient", () => ({
   publishCatalogArtifactsToContract: (...args: unknown[]) => publishCatalogArtifactsToContractMock(...args),
+  getCatalogContractReadiness: () => getCatalogContractReadinessMock(),
 }));
 
 function createChild(
@@ -78,6 +80,7 @@ describe("catalog sync route", () => {
       version: "v-test",
       publishedAt: "2026-02-24T00:00:00.000Z",
     });
+    getCatalogContractReadinessMock.mockReturnValue({ configured: true, errors: [] });
     delete process.env.XA_UPLOADER_MODE;
     delete process.env.XA_UPLOADER_EXPOSE_SYNC_LOGS;
   });
@@ -123,6 +126,54 @@ describe("catalog sync route", () => {
         ready: false,
         missingScripts: ["validate", "sync"],
         recovery: "restore_sync_scripts",
+      }),
+    );
+  });
+
+  it("TC-00e: GET reports ready=true with contractConfigured=true when scripts and contract are both configured", async () => {
+    accessMock.mockResolvedValue(undefined);
+    getCatalogContractReadinessMock.mockReturnValue({ configured: true, errors: [] });
+
+    const { GET } = await import("../route");
+    const response = await GET(
+      new Request("http://localhost/api/catalog/sync?storefront=xa-b", {
+        method: "GET",
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({
+        ok: true,
+        ready: true,
+        contractConfigured: true,
+        contractConfigErrors: [],
+      }),
+    );
+  });
+
+  it("TC-00f: GET reports ready=false with contractConfigured=false when contract env vars are missing", async () => {
+    accessMock.mockResolvedValue(undefined);
+    getCatalogContractReadinessMock.mockReturnValue({
+      configured: false,
+      errors: ["XA_CATALOG_CONTRACT_BASE_URL not set"],
+    });
+
+    const { GET } = await import("../route");
+    const response = await GET(
+      new Request("http://localhost/api/catalog/sync?storefront=xa-b", {
+        method: "GET",
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({
+        ok: true,
+        ready: false,
+        contractConfigured: false,
+        contractConfigErrors: ["XA_CATALOG_CONTRACT_BASE_URL not set"],
+        recovery: "configure_catalog_contract",
       }),
     );
   });

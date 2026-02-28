@@ -48,7 +48,7 @@ describe("GA4 select_item on room CTA clicks (GA4-11)", () => {
 
     // In this test we mock i18n to return key tokens; the UI RoomCard uses those
     // tokens as aria-labels when they don't look like dotted i18n keys.
-    const buttons = screen.getAllByRole("button", { name: /checkRatesNonRefundable/i });
+    const buttons = screen.getAllByRole("button", { name: /checkRatesSingle/i });
     fireEvent.click(buttons[0]);
 
     const gtag = window.gtag as unknown as jest.Mock;
@@ -112,7 +112,7 @@ describe("TASK-32: RoomsSection onRoomSelect GA4 contracts", () => {
       />,
     );
 
-    const buttons = screen.getAllByRole("button", { name: /checkRatesNonRefundable/i });
+    const buttons = screen.getAllByRole("button", { name: /checkRatesSingle/i });
     fireEvent.click(buttons[0]);
 
     const selectItemCall = gtagMock.mock.calls.find(
@@ -140,7 +140,7 @@ describe("TASK-32: RoomsSection onRoomSelect GA4 contracts", () => {
       />,
     );
 
-    const buttons = screen.getAllByRole("button", { name: /checkRatesNonRefundable/i });
+    const buttons = screen.getAllByRole("button", { name: /checkRatesSingle/i });
     fireEvent.click(buttons[0]);
 
     const beginCheckoutCall = gtagMock.mock.calls.find(
@@ -165,7 +165,7 @@ describe("TASK-32: RoomsSection onRoomSelect GA4 contracts", () => {
     );
 
     const assignMock = window.location.assign as jest.Mock;
-    const buttons = screen.getAllByRole("button", { name: /checkRatesNonRefundable/i });
+    const buttons = screen.getAllByRole("button", { name: /checkRatesSingle/i });
     fireEvent.click(buttons[0]);
 
     // Immediately after click, assign should NOT have been called (beacon pending)
@@ -196,7 +196,7 @@ describe("TASK-32: RoomsSection onRoomSelect GA4 contracts", () => {
     );
 
     const assignMock = window.location.assign as jest.Mock;
-    const buttons = screen.getAllByRole("button", { name: /checkRatesNonRefundable/i });
+    const buttons = screen.getAllByRole("button", { name: /checkRatesSingle/i });
     fireEvent.click(buttons[0]);
 
     const beginCheckoutCall = gtagMock.mock.calls.find(
@@ -238,7 +238,7 @@ describe("TASK-32: RoomsSection onRoomSelect GA4 contracts", () => {
       />,
     );
 
-    const buttons = screen.getAllByRole("button", { name: /checkRatesNonRefundable/i });
+    const buttons = screen.getAllByRole("button", { name: /checkRatesSingle/i });
 
     // First click — sets isNavigating = true
     fireEvent.click(buttons[0]);
@@ -261,7 +261,7 @@ describe("TASK-32: RoomsSection onRoomSelect GA4 contracts", () => {
       />,
     );
 
-    const buttons = screen.getAllByRole("button", { name: /checkRatesNonRefundable/i });
+    const buttons = screen.getAllByRole("button", { name: /checkRatesSingle/i });
     fireEvent.click(buttons[0]);
 
     const beginCheckoutEventsAfterFirst = gtagMock.mock.calls.filter(

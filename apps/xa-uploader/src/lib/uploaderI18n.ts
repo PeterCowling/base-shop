@@ -208,6 +208,21 @@ const messages = {
     imageGuidelines:
       "Recommended: portrait 4:5 or square. Use JPG/PNG/WebP at {minEdge}px+ on the shortest edge.",
     placeholderImageAltTexts: "One per image (pipe, comma, or newline)",
+    currencyRatesTitle: "Currency rates",
+    currencyRatesSubtitle:
+      "Enter USD-base multipliers. AUD, EUR, and GBP prices are computed from the USD price at sync time.",
+    currencyRatesUsdLabel: "USD (base)",
+    currencyRatesEurLabel: "EUR rate",
+    currencyRatesGbpLabel: "GBP rate",
+    currencyRatesAudLabel: "AUD rate",
+    currencyRatesSaveAndSync: "Save & sync",
+    currencyRatesSaving: "Saving...",
+    currencyRatesSaved: "Rates saved.",
+    currencyRatesSaveFailed: "Failed to save rates.",
+    currencyRatesSyncedRebuildNote:
+      "Rates applied. Rebuild xa-b to publish updated prices to the live website.",
+    currencyRatesSavedSyncNotReady: "Rates saved. Run sync manually to apply to catalog.",
+    currencyRatesLoadFailed: "Failed to load currency rates.",
   },
   zh: {
     pageKicker: "目录上传器",
@@ -402,6 +417,20 @@ const messages = {
     imageAltTexts: "图片替代文本（可选）",
     imageGuidelines: "建议：比例 4:5 竖图或正方形；JPG/PNG/WebP，短边至少 {minEdge}px。",
     placeholderImageAltTexts: "每张图片一条（用 |、逗号或换行分隔）",
+    currencyRatesTitle: "汇率设置",
+    currencyRatesSubtitle:
+      "输入以 USD 为基准的汇率倍数。同步时将根据 USD 价格计算 AUD、EUR 和 GBP 价格。",
+    currencyRatesUsdLabel: "USD（基准）",
+    currencyRatesEurLabel: "EUR 汇率",
+    currencyRatesGbpLabel: "GBP 汇率",
+    currencyRatesAudLabel: "AUD 汇率",
+    currencyRatesSaveAndSync: "保存并同步",
+    currencyRatesSaving: "保存中…",
+    currencyRatesSaved: "汇率已保存。",
+    currencyRatesSaveFailed: "保存汇率失败。",
+    currencyRatesSyncedRebuildNote: "汇率已应用。重新构建 xa-b 以将更新的价格发布到网站。",
+    currencyRatesSavedSyncNotReady: "汇率已保存。请手动运行同步以应用到目录。",
+    currencyRatesLoadFailed: "加载汇率失败。",
   },
 } as const;
 

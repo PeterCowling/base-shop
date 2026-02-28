@@ -7,12 +7,14 @@ import HttpBackend from 'i18next-http-backend';
 
 // Define namespace groups based on actual useTranslation usage (DS-05)
 export const NAMESPACE_GROUPS = {
-  // Always loaded (critical — entire guest activation flow)
-  core: ['Homepage', 'FindMyStay', 'Onboarding', 'PreArrival'],
+  // Always loaded (critical — entire guest activation flow + guarded home)
+  // BookingDetails/rooms: used by useUnifiedBookingData on guarded home
+  // Quests: used by QuestCard on guarded home
+  core: ['Homepage', 'FindMyStay', 'Onboarding', 'PreArrival', 'BookingDetails', 'rooms', 'Quests'],
 
   // Lazy loaded by route/feature area
-  preArrival: ['BookingDetails', 'rooms'],
-  social: ['Chat', 'Activities', 'Quests'],
+  preArrival: [],
+  social: ['Chat', 'Activities'],
   onboarding: [],
   settings: ['Settings', 'PositanoGuide'],
 } as const;

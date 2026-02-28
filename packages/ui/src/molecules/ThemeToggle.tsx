@@ -55,7 +55,7 @@ const SKY_DAY = "linear-gradient(180deg, var(--color-brand-primary) 0%, var(--co
 const SKY_NIGHT = "linear-gradient(180deg, var(--color-brand-bg) 0%, var(--color-brand-surface) 100%)";
 const SUN_COLOR = "var(--color-brand-secondary)";
 const SUN_GLOW = "0 0 8px 3px rgba(244,211,94,0.4)";
-const MOON_COLOR = "var(--color-brand-muted)";
+const MOON_COLOR = "hsl(var(--color-muted))";
 const MOON_GLOW = "0 0 6px 2px rgba(200,204,208,0.15)";
 const CRESCENT = "var(--color-brand-bg)";
 
@@ -135,14 +135,14 @@ export const ThemeToggle = memo((): JSX.Element => {
         aria-hidden="true"
         style={{
           position: "absolute",
-          top: PAD,
+          top: "50%",
           left: PAD,
           width: THUMB,
           height: THUMB,
           borderRadius: "50%",
           background: isDark ? MOON_COLOR : SUN_COLOR,
           boxShadow: isDark ? MOON_GLOW : SUN_GLOW,
-          transform: `translateX(${isDark ? TRAVEL : 0}px)`,
+          transform: `translateX(${isDark ? TRAVEL : 0}px) translateY(-50%)`,
           transition: `all ${MS} ${EASE}`,
           zIndex: 10,
           overflow: "hidden",

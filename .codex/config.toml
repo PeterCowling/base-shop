@@ -1,0 +1,7 @@
+# Raise project-doc load budget so root + nested instruction files are not
+# truncated in normal repo growth scenarios.
+project_doc_max_bytes = 65536
+
+# Intentionally omit fallback filename config here.
+# Fallback names are not additive when AGENTS.md exists at the same level,
+# so critical rules must remain in AGENTS.md.

@@ -1061,6 +1061,9 @@ importers:
       '@acme/tailwind-config':
         specifier: workspace:*
         version: link:../../packages/tailwind-config
+      '@themes/base':
+        specifier: workspace:*
+        version: link:../../packages/themes/base
       next:
         specifier: 16.1.6
         version: 16.1.6(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
@@ -2243,6 +2246,12 @@ importers:
       typescript:
         specifier: 5.8.3
         version: 5.8.3
+
+  packages/skill-runner:
+    dependencies:
+      js-yaml:
+        specifier: 4.1.1
+        version: 4.1.1
 
   packages/stripe:
     dependencies:

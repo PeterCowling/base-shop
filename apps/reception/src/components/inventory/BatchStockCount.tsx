@@ -68,14 +68,14 @@ function VarianceReasonPrompt({
 }: VarianceReasonPromptProps) {
   return (
     <section className="rounded-lg border border-border-2 bg-surface p-4">
-      <h3 className="text-base font-semibold">Motivo varianza negativa</h3>
+      <h3 className="text-base font-semibold">Variance Reason</h3>
       <p className="mt-1 text-sm text-muted-foreground">
-        Categoria: {pendingReason.category}
+        Category: {pendingReason.category}
       </p>
 
       <div className="mt-3 space-y-3">
         <label className="block text-sm font-medium">
-          Motivo
+          Reason
           <select
             className="mt-1 w-full rounded-lg border border-border-2 bg-surface px-3 py-2"
             data-cy="variance-reason-select"
@@ -90,7 +90,7 @@ function VarianceReasonPrompt({
             }}
           >
             <option disabled value="">
-              Seleziona motivo…
+              Select reason…
             </option>
             {VARIANCE_REASON_CODES.map((option) => (
               <option key={option.value} value={option.value}>
@@ -102,7 +102,7 @@ function VarianceReasonPrompt({
 
         {pendingReason.reason === "Altro" && (
           <label className="block text-sm font-medium">
-            Nota
+            Note
             <textarea
               className="mt-1 w-full rounded-lg border border-border-2 bg-surface px-3 py-2"
               data-cy="variance-reason-note"
@@ -123,7 +123,7 @@ function VarianceReasonPrompt({
           variant="outline"
           onClick={onCancel}
         >
-          Annulla
+          Cancel
         </Button>
         <Button
           data-cy="variance-reason-confirm"
@@ -131,7 +131,7 @@ function VarianceReasonPrompt({
           type="button"
           onClick={onConfirm}
         >
-          Conferma
+          Confirm
         </Button>
       </div>
     </section>

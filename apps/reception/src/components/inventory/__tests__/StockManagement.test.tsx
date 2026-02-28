@@ -591,7 +591,7 @@ describe("StockManagement", () => {
       expect(within(row).getByText("5")).toBeInTheDocument();
     });
 
-    it("TC-VR02: ungrouped reason shows \"Non specificato\" for entry with no reason", () => {
+    it('TC-VR02: ungrouped reason shows "Unspecified" for entry with no reason', () => {
       useInventoryLedgerMock.mockReturnValue({
         ...baseLedgerReturn,
         entries: [makeEntry("count", -3, 0)],
@@ -601,11 +601,11 @@ describe("StockManagement", () => {
 
       const section = getVarianceSection();
       const reasonTable = within(section).getByTestId("reason-breakdown-table");
-      const row = within(reasonTable).getByText("Non specificato").closest("tr")!;
+      const row = within(reasonTable).getByText("Unspecified").closest("tr")!;
       expect(within(row).getByText("3")).toBeInTheDocument();
     });
 
-    it("TC-VR03: legacy \"conteggio batch\" reason groups under \"Non specificato\"", () => {
+    it('TC-VR03: legacy "conteggio batch" reason groups under "Unspecified"', () => {
       useInventoryLedgerMock.mockReturnValue({
         ...baseLedgerReturn,
         entries: [makeEntry("count", -2, 0, "conteggio batch")],
@@ -615,7 +615,7 @@ describe("StockManagement", () => {
 
       const section = getVarianceSection();
       const reasonTable = within(section).getByTestId("reason-breakdown-table");
-      const row = within(reasonTable).getByText("Non specificato").closest("tr")!;
+      const row = within(reasonTable).getByText("Unspecified").closest("tr")!;
       expect(within(row).getByText("2")).toBeInTheDocument();
       expect(within(reasonTable).queryByText("conteggio batch")).toBeNull();
     });

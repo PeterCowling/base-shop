@@ -135,7 +135,7 @@ async function submitCategoryWithReason(
   if (note) {
     await user.type(screen.getByTestId("variance-reason-note"), note);
   }
-  await user.click(screen.getByRole("button", { name: "Conferma" }));
+  await user.click(screen.getByRole("button", { name: "Confirm" }));
 }
 
 describe("groupItemsByCategory", () => {
@@ -528,7 +528,7 @@ describe("BatchStockCount component", () => {
     await user.click(screen.getByRole("button", { name: "Complete category" }));
 
     expect(screen.getByTestId("variance-reason-select")).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: "Annulla" }));
+    await user.click(screen.getByRole("button", { name: "Cancel" }));
 
     expect(addLedgerEntry).not.toHaveBeenCalled();
     expect(screen.queryByTestId("variance-reason-select")).not.toBeInTheDocument();

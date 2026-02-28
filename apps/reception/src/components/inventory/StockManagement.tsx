@@ -123,7 +123,7 @@ function buildReasonBreakdown(
     const reasonKey =
       typeof entry.reason === "string" && validReasonsSet.has(entry.reason)
         ? entry.reason
-        : "Non specificato";
+        : "Unspecified";
 
     acc[reasonKey] = (acc[reasonKey] ?? 0) + Math.abs(entry.quantity);
     return acc;
@@ -200,12 +200,12 @@ function VarianceBreakdownSection({
       )}
       {Object.keys(reasonBreakdown).length > 0 && (
         <div className="mt-4">
-          <h3 className="font-semibold mb-2">Varianza conteggio batch per motivo</h3>
+          <h3 className="font-semibold mb-2">Batch Count Variance by Reason</h3>
           <Table data-cy="reason-breakdown-table" className="min-w-full text-sm border border-border">
             <TableHeader>
               <TableRow className="bg-surface-2">
-                <TableHead className="p-2 text-start">Motivo</TableHead>
-                <TableHead className="p-2 text-end">Varianza totale</TableHead>
+                <TableHead className="p-2 text-start">Reason</TableHead>
+                <TableHead className="p-2 text-end">Total Variance</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

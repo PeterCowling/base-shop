@@ -102,11 +102,11 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
             return FALLBACK_SITE_MENU_LABEL;
           })()}
         </h2>
-        <ul className="flex flex-col items-center space-y-6 pt-6 pb-10">
+        <ul className="flex flex-col pb-10">
           {navLinks.map(({ key, to, label, prefetch, children }, idx) => {
             const isCurrent = children ? pathname.startsWith(`/${lang}${to}`) : pathname === `/${lang}${to}`;
             return (
-              <li key={key}>
+              <li key={key} className="border-b border-brand-outline/15 dark:border-brand-outline/10">
                 {children ? (
                   <>
                     <button
@@ -115,14 +115,14 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
                       tabIndex={menuOpen ? 0 : -1}
                       onClick={() => setExpandedKey((k) => (k === key ? null : key))}
                       className={clsx(
-                        "flex min-h-11 w-full items-center gap-1 px-2 py-2 text-xl text-brand-heading dark:text-brand-heading hover:underline focus-visible:outline-none focus-visible:underline",
-                        isCurrent ? "font-semibold text-brand-secondary underline" : "font-medium"
+                        "flex w-full min-h-12 items-center justify-between px-6 py-4 text-xl text-brand-heading hover:bg-brand-heading/5 focus-visible:outline-none focus-visible:ring-inset focus-visible:ring-2 focus-visible:ring-brand-secondary/60 transition-colors",
+                        isCurrent ? "font-semibold text-brand-secondary" : "font-medium"
                       )}
                     >
                       {label}
                       <svg
                         aria-hidden="true"
-                        className={clsx("size-4 transition-transform", expandedKey === key ? "rotate-180" : "")}
+                        className={clsx("size-4 shrink-0 transition-transform", expandedKey === key ? "rotate-180" : "")}
                         fill="none"
                         viewBox="0 0 10 6"
                       >
@@ -136,13 +136,13 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
                       </svg>
                     </button>
                     {expandedKey === key && (
-                      <ul id={`mobile-subnav-${key}`} className="pl-4 pt-2 space-y-2">
+                      <ul id={`mobile-subnav-${key}`} className="border-l-2 border-brand-secondary/30 mx-6 mb-4 mt-1">
                         {children.map((child) => (
                           <li key={child.key}>
                             <Link
                               href={`/${lang}${child.to}`}
                               tabIndex={menuOpen ? 0 : -1}
-                              className="block min-h-11 min-w-11 px-2 py-2 text-lg text-brand-heading dark:text-brand-heading hover:underline focus-visible:underline font-medium"
+                              className="flex w-full min-h-10 items-center px-4 py-2.5 text-base text-brand-heading/75 hover:text-brand-heading hover:bg-brand-heading/5 focus-visible:outline-none focus-visible:ring-inset focus-visible:ring-2 focus-visible:ring-brand-secondary/50 font-medium transition-colors"
                               onClick={close}
                             >
                               {child.label}
@@ -160,8 +160,8 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
                     tabIndex={menuOpen ? 0 : -1}
                     aria-current={isCurrent ? "page" : undefined}
                     className={clsx(
-                      "block min-h-11 min-w-11 px-2 py-2 text-xl underline-offset-4 text-brand-heading dark:text-brand-heading hover:underline focus-visible:underline",
-                      isCurrent ? "font-semibold text-brand-secondary underline" : "font-medium"
+                      "flex w-full min-h-12 items-center px-6 py-4 text-xl text-brand-heading hover:bg-brand-heading/5 focus-visible:outline-none focus-visible:ring-inset focus-visible:ring-2 focus-visible:ring-brand-secondary/60 transition-colors",
+                      isCurrent ? "font-semibold text-brand-secondary" : "font-medium"
                     )}
                     onClick={close}
                   >
@@ -173,7 +173,7 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
           })}
 
           {/* footer row — theme toggle + language chips */}
-          <li className="mt-8 flex flex-wrap items-center justify-center gap-4">
+          <li className="border-t border-brand-outline/20 flex flex-wrap items-center justify-center gap-4 px-6 py-6">
             <ThemeToggle />
             <LanguageSwitcher closeMenu={close} />
           </li>

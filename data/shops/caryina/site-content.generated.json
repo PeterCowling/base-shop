@@ -1,5 +1,6 @@
 {
   "generatedAt": "2026-02-28",
+  "_manualExtension": "trustStrip added manually 2026-02-28 — materializer update pending. Do not run materializer without porting productPage.trustStrip block first.",
   "sourcePacketPath": "docs/business-os/startup-baselines/HBAG-content-packet.md",
   "sourceHash": "05fbd6c15750221375db8edb71215911c9d3386808a7f35a3c2ab33d764f0fb1",
   "sourcePaths": [
@@ -135,6 +136,20 @@
     ],
     "relatedHeading": {
       "en": "You may also like"
+    },
+    "trustStrip": {
+      "delivery": {
+        "en": "Usually ships in 2–5 business days (EU)"
+      },
+      "exchange": {
+        "en": "30-day exchange"
+      },
+      "origin": {
+        "en": "Designed in Positano, Italy"
+      },
+      "securePayment": {
+        "en": "Secure checkout"
+      }
     }
   },
   "support": {
@@ -170,6 +185,9 @@
         },
         {
           "en": "Platform providers process payment and delivery data under their legal terms."
+        },
+        {
+          "en": "Your email address may be used to send a one-time notification about products you expressed interest in. You can withdraw consent at any time by contacting us."
         }
       ],
       "notice": {

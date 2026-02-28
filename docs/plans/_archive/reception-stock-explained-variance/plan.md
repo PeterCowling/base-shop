@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: STRATEGY
 Workstream: Engineering
 Created: 2026-02-28

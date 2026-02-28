@@ -5,7 +5,7 @@ Domain: API
 Workstream: Engineering
 Created: 2026-02-28
 Last-reviewed: 2026-02-28
-Last-updated: 2026-02-28 (Wave 1 complete)
+Last-updated: 2026-02-28 (Wave 2 complete)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: xa-currency-conversion-rates
 Deliverable-Type: code-change
@@ -26,9 +26,9 @@ xa-b currently displays the same raw USD number in all four supported currencies
 
 ## Active tasks
 - [x] TASK-01: Currency rates API route (`GET/PUT /api/catalog/currency-rates`) — Complete 2026-02-28
-- [ ] TASK-02: CurrencyRatesPanel UI + CatalogConsole integration
+- [x] TASK-02: CurrencyRatesPanel UI + CatalogConsole integration — Complete 2026-02-28
 - [x] TASK-03: Pipeline extension — per-currency price computation — Complete 2026-02-28
-- [ ] TASK-04: xa-b type + display update (5 files)
+- [x] TASK-04: xa-b type + display update (6 files) — Complete 2026-02-28
 - [x] TASK-05: i18n strings for CurrencyRatesPanel — Complete 2026-02-28
 - [ ] TASK-06: Tests
 
@@ -85,9 +85,9 @@ xa-b currently displays the same raw USD number in all four supported currencies
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Currency rates API route | 90% | S | Complete (2026-02-28) | - | TASK-02 |
-| TASK-02 | IMPLEMENT | CurrencyRatesPanel UI + console integration | 85% | M | Pending | TASK-01, TASK-05 | TASK-06 |
+| TASK-02 | IMPLEMENT | CurrencyRatesPanel UI + console integration | 85% | M | Complete (2026-02-28) | TASK-01, TASK-05 | TASK-06 |
 | TASK-03 | IMPLEMENT | Pipeline extension — per-currency price computation | 85% | M | Complete (2026-02-28) | - | TASK-04 |
-| TASK-04 | IMPLEMENT | xa-b type + display update (6 files) | 85% | M | Pending | TASK-03 | TASK-06 |
+| TASK-04 | IMPLEMENT | xa-b type + display update (6 files) | 85% | M | Complete (2026-02-28) | TASK-03 | TASK-06 |
 | TASK-05 | IMPLEMENT | i18n strings for CurrencyRatesPanel | 90% | S | Complete (2026-02-28) | - | TASK-02 |
 | TASK-06 | IMPLEMENT | Tests (API, UI, pipeline, xa-b display) | 80% | M | Pending | TASK-01, TASK-02, TASK-03, TASK-04 | - |
 
@@ -173,7 +173,14 @@ xa-b currently displays the same raw USD number in all four supported currencies
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-28)
+- **Build Evidence:**
+  - Offload route: codex exec (CODEX_OK=1), exit code 0
+  - Affects files present: `CurrencyRatesPanel.client.tsx` ✓, `CatalogConsole.client.tsx` ✓
+  - Commit: `2aef742462` (Wave 2 batch with TASK-04)
+  - TypeCheck: pass (xa-uploader)
+  - Lint: pass (0 errors)
+  - CurrencyRatesPanel: GET on mount, PUT + handleSync on save; unconditional post-save rebuild note; data-cy="currency-rates-save"; ESLint-disabled per XAUP-0001
 - **Affects:**
   - `apps/xa-uploader/src/components/catalog/CurrencyRatesPanel.client.tsx` (new)
   - `apps/xa-uploader/src/components/catalog/CatalogConsole.client.tsx` (add panel inside `uploaderMode === "internal"` block)
@@ -299,7 +306,15 @@ xa-b currently displays the same raw USD number in all four supported currencies
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-28)
+- **Build Evidence:**
+  - Offload route: codex exec (CODEX_OK=1), exit code 0
+  - Affects files present: all 7 files ✓ (demoData.ts, XaBuyBox, XaProductCard, XaProductListing, cart/page, checkout/page, useXaListingFilters)
+  - Commit: `2aef742462` (Wave 2 batch with TASK-02)
+  - TypeCheck: pass (xa-b)
+  - Lint: pass (0 errors)
+  - `??` (not `||`) used throughout for zero-price safety
+  - `useCurrency` added to XaProductCard, cart/page, XaProductListing; `effectivePrice`/`effectiveCompareAtPrice` pattern applied in buy box and product card
 - **Affects:**
   - `apps/xa-b/src/lib/demoData.ts`
   - `apps/xa-b/src/components/XaBuyBox.client.tsx`

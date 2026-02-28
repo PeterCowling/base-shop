@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: Repo
 Workstream: Engineering
 Created: 2026-02-28
@@ -32,7 +32,7 @@ This plan makes Codex startup instructions and skill discovery reliable without 
 - [x] TASK-05: Add strong skills integrity validation - **Complete (2026-02-28)**
 - [x] TASK-06: Repair and gate skill registry drift - **Complete (2026-02-28)**
 - [x] TASK-07: Wire validation into local and CI gates - **Complete (2026-02-28)**
-- [ ] TASK-08: Checkpoint verification (docs loading + skills discovery)
+- [x] TASK-08: Checkpoint verification (docs loading + skills discovery) - **Complete (2026-02-28)**
 
 ## Goals
 - Ensure root project instructions are never silently truncated in normal growth scenarios.
@@ -115,7 +115,7 @@ It did not validate completeness against `.claude/skills/*/SKILL.md`, symlink co
 | TASK-05 | IMPLEMENT | Add strong `scripts/validate-codex-skills.sh` integrity checks | 84% | M | Complete (2026-02-28) | TASK-04 | TASK-07, TASK-08 |
 | TASK-06 | IMPLEMENT | Regenerate and gate `.agents/registry/skills.json` consistency | 90% | S | Complete (2026-02-28) | - | TASK-07, TASK-08 |
 | TASK-07 | IMPLEMENT | Wire size + skills + registry checks into local/CI validation | 80% | M | Complete (2026-02-28) | TASK-05, TASK-06 | TASK-08 |
-| TASK-08 | CHECKPOINT | Verify instruction loading and skill discovery behavior end-to-end | 78% | M | Pending | TASK-01, TASK-02, TASK-03, TASK-04, TASK-06, TASK-07 | - |
+| TASK-08 | CHECKPOINT | Verify instruction loading and skill discovery behavior end-to-end | 78% | M | Complete (2026-02-28) | TASK-01, TASK-02, TASK-03, TASK-04, TASK-06, TASK-07 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -316,7 +316,7 @@ It did not validate completeness against `.claude/skills/*/SKILL.md`, symlink co
 
 ### TASK-08: Checkpoint verification
 - **Type:** CHECKPOINT
-- **Status:** Pending
+- **Status:** Complete (2026-02-28)
 - **Confidence:** 78% (Implementation 80 / Approach 78 / Impact 78)
 - **Scope:** Verify project-doc discovery and skill discovery outcomes end-to-end.
 - **Acceptance:**
@@ -324,6 +324,11 @@ It did not validate completeness against `.claude/skills/*/SKILL.md`, symlink co
   - Skill loading: Codex `/skills` (or equivalent loader output) shows mirrored skills discoverable from `.agents/skills/`.
   - All validation scripts pass: `validate-codex-skills.sh`, `generate-skill-registry --check`, `validate-changes.sh`.
 - **What would make this >=90%:** run proof in a real Codex session and capture output artifact.
+- **Build evidence (2026-02-28):**
+  - Doc loading PASS: `wc -c AGENTS.md` = 18668 (< project_doc_max_bytes 65536) and live Codex probe returned bottom-of-file `Previous version` path exactly: `docs/historical/AGENTS-2026-01-17-pre-ralph.md`.
+  - Skill discovery PASS (equivalent loader evidence): `bash scripts/validate-codex-skills.sh` reports valid mirror with 76 entries.
+  - Validation gate PASS: `scripts/agents/generate-skill-registry --check` exits 0 and `VALIDATE_RANGE=HEAD..HEAD bash scripts/validate-changes.sh` exits 0 with all new integrity checks passing.
+  - Checkpoint outcome: downstream task set is empty (all IMPLEMENT tasks completed); no replan or resequence action required.
 
 ## Risks & Mitigations
 - Risk: instruction drift between AGENTS and CODEX.
@@ -338,12 +343,12 @@ It did not validate completeness against `.claude/skills/*/SKILL.md`, symlink co
   - Mitigation: verify against Codex docs or live session before shipping TASK-02. If opt-in required, document the setup step in CODEX.md.
 
 ## Acceptance Criteria (overall)
-- [ ] `AGENTS.md` within agreed durable size budget.
-- [ ] `.codex/config.toml` present with effective settings only.
-- [ ] Critical Codex rules available via always-loaded project docs.
-- [ ] `.agents/skills/` exists and mirrors current `.claude/skills/*/SKILL.md` inventory.
-- [ ] `scripts/validate-codex-skills.sh` and registry check pass and are CI-enforced.
-- [ ] End-to-end checkpoint evidence captured.
+- [x] `AGENTS.md` within agreed durable size budget.
+- [x] `.codex/config.toml` present with effective settings only.
+- [x] Critical Codex rules available via always-loaded project docs.
+- [x] `.agents/skills/` exists and mirrors current `.claude/skills/*/SKILL.md` inventory.
+- [x] `scripts/validate-codex-skills.sh` and registry check pass and are CI-enforced.
+- [x] End-to-end checkpoint evidence captured.
 
 ## Decision Log
 - 2026-02-28: Rejected fallback-only `CODEX.md` loading strategy at root (not additive when `AGENTS.md` exists).

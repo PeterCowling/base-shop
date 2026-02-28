@@ -1,12 +1,12 @@
 "use client";
 
-/* eslint-disable -- XAUP-0001 [ttl=2026-12-31] legacy uploader form pending design token refactor */
-
 import * as React from "react";
 
-import { slugify, type CatalogProductDraftInput } from "@acme/lib/xa/catalogAdminSchema";
+import { type CatalogProductDraftInput,slugify } from "@acme/lib/xa/catalogAdminSchema";
+
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
+// eslint-disable-next-line complexity, max-lines-per-function -- XAUP-0001 large-operator-form
 export function CatalogProductBaseFields({
   draft,
   fieldErrors,
@@ -29,9 +29,10 @@ export function CatalogProductBaseFields({
 
   return (
     <div className="grid gap-4 md:grid-cols-2">
-      <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)] md:col-span-2">
+      <label className="block text-xs uppercase tracking-label text-gate-muted md:col-span-2">
         {t("fieldTitle")}
         <input
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="catalog-field-title"
           value={draft.title}
           onChange={(event) => {
@@ -42,7 +43,7 @@ export function CatalogProductBaseFields({
               slug: draft.slug ? draft.slug : slugify(title),
             });
           }}
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
         />
         {fieldErrors.title ? (
           <div className="mt-1 text-xs text-danger-fg">{fieldErrors.title}</div>
@@ -50,17 +51,17 @@ export function CatalogProductBaseFields({
       </label>
 
       <label
-        className={`block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)] ${monoClassName}`}
+        className={`block text-xs uppercase tracking-label text-gate-muted ${monoClassName}`}
       >
         {t("fieldSlug")}
         <input
           value={draft.slug ?? ""}
           onChange={(event) => onChange({ ...draft, slug: slugify(event.target.value) })}
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
         />
       </label>
 
-      <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+      <label className="block text-xs uppercase tracking-label text-gate-muted">
         {t("fieldPrice")}
         <input
           value={String(draft.price ?? "")}
@@ -68,14 +69,14 @@ export function CatalogProductBaseFields({
           type="number"
           min="0"
           step="0.01"
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
         />
         {fieldErrors.price ? (
           <div className="mt-1 text-xs text-danger-fg">{fieldErrors.price}</div>
         ) : null}
       </label>
 
-      <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+      <label className="block text-xs uppercase tracking-label text-gate-muted">
         {t("fieldCompareAtPrice")}
         <input
           value={draft.compareAtPrice ? String(draft.compareAtPrice) : ""}
@@ -83,74 +84,77 @@ export function CatalogProductBaseFields({
           type="number"
           min="0"
           step="0.01"
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
         />
       </label>
 
-      <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+      <label className="block text-xs uppercase tracking-label text-gate-muted">
         {t("fieldBrandHandle")}
         <input
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="catalog-field-brand-handle"
           value={draft.brandHandle ?? ""}
           onChange={(event) => onChange({ ...draft, brandHandle: slugify(event.target.value) })}
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
         />
         {fieldErrors.brandHandle ? (
           <div className="mt-1 text-xs text-danger-fg">{fieldErrors.brandHandle}</div>
         ) : null}
       </label>
 
-      <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+      <label className="block text-xs uppercase tracking-label text-gate-muted">
         {t("fieldBrandName")}
         <input
           value={draft.brandName ?? ""}
           onChange={(event) => onChange({ ...draft, brandName: event.target.value })}
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
         />
       </label>
 
-      <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+      <label className="block text-xs uppercase tracking-label text-gate-muted">
         {t("fieldCollectionHandle")}
         <input
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="catalog-field-collection-handle"
           value={draft.collectionHandle ?? ""}
           onChange={(event) =>
             onChange({ ...draft, collectionHandle: slugify(event.target.value) })
           }
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
         />
         {fieldErrors.collectionHandle ? (
           <div className="mt-1 text-xs text-danger-fg">{fieldErrors.collectionHandle}</div>
         ) : null}
       </label>
 
-      <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+      <label className="block text-xs uppercase tracking-label text-gate-muted">
         {t("fieldCollectionTitle")}
         <input
           value={draft.collectionTitle ?? ""}
           onChange={(event) => onChange({ ...draft, collectionTitle: event.target.value })}
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
         />
       </label>
 
-      <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)] md:col-span-2">
+      <label className="block text-xs uppercase tracking-label text-gate-muted md:col-span-2">
         {t("fieldCollectionDescription")}
         <textarea
           value={draft.collectionDescription ?? ""}
           onChange={(event) => onChange({ ...draft, collectionDescription: event.target.value })}
           rows={2}
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
         />
       </label>
 
-      <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)] md:col-span-2">
+      <label className="block text-xs uppercase tracking-label text-gate-muted md:col-span-2">
         {t("fieldDescription")}
         <textarea
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="catalog-field-description"
           value={draft.description ?? ""}
           onChange={(event) => onChange({ ...draft, description: event.target.value })}
           rows={3}
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
         />
         {fieldErrors.description ? (
           <div className="mt-1 text-xs text-danger-fg">{fieldErrors.description}</div>
@@ -158,7 +162,7 @@ export function CatalogProductBaseFields({
       </label>
 
       <div className="md:col-span-2 grid gap-4 md:grid-cols-2">
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+        <label className="block text-xs uppercase tracking-label text-gate-muted">
           {t("fieldDepartment")}
           <select
             value={draft.taxonomy.department}
@@ -168,14 +172,14 @@ export function CatalogProductBaseFields({
                 taxonomy: { ...draft.taxonomy, department: event.target.value as never },
               })
             }
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
           >
             <option value="women">{t("departmentWomen")}</option>
             <option value="men">{t("departmentMen")}</option>
           </select>
         </label>
 
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+        <label className="block text-xs uppercase tracking-label text-gate-muted">
           {t("fieldCategoryProductType")}
           <select
             value={draft.taxonomy.category}
@@ -185,7 +189,7 @@ export function CatalogProductBaseFields({
                 taxonomy: { ...draft.taxonomy, category: event.target.value as never },
               })
             }
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
           >
             <option value="clothing">{t("categoryClothing")}</option>
             <option value="bags">{t("categoryBags")}</option>
@@ -194,9 +198,10 @@ export function CatalogProductBaseFields({
         </label>
       </div>
 
-      <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+      <label className="block text-xs uppercase tracking-label text-gate-muted">
         {t("fieldSubcategory")}
         <input
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="catalog-field-subcategory"
           value={draft.taxonomy.subcategory ?? ""}
           onChange={(event) =>
@@ -205,37 +210,39 @@ export function CatalogProductBaseFields({
               taxonomy: { ...draft.taxonomy, subcategory: slugify(event.target.value) },
             })
           }
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
         />
         {fieldErrors["taxonomy.subcategory"] ? (
           <div className="mt-1 text-xs text-danger-fg">{fieldErrors["taxonomy.subcategory"]}</div>
         ) : null}
       </label>
 
-      <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+      <label className="block text-xs uppercase tracking-label text-gate-muted">
         {t("fieldColors")}
         <input
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="catalog-field-colors"
           value={draft.taxonomy.color ?? ""}
           onChange={(event) =>
             onChange({ ...draft, taxonomy: { ...draft.taxonomy, color: event.target.value } })
           }
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
         />
         {fieldErrors["taxonomy.color"] ? (
           <div className="mt-1 text-xs text-danger-fg">{fieldErrors["taxonomy.color"]}</div>
         ) : null}
       </label>
 
-      <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+      <label className="block text-xs uppercase tracking-label text-gate-muted">
         {t("fieldMaterials")}
         <input
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="catalog-field-materials"
           value={draft.taxonomy.material ?? ""}
           onChange={(event) =>
             onChange({ ...draft, taxonomy: { ...draft.taxonomy, material: event.target.value } })
           }
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
         />
         {fieldErrors["taxonomy.material"] ? (
           <div className="mt-1 text-xs text-danger-fg">{fieldErrors["taxonomy.material"]}</div>
@@ -243,7 +250,7 @@ export function CatalogProductBaseFields({
       </label>
 
       <div className="md:col-span-2 grid gap-4 md:grid-cols-3">
-        <label className="flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+        <label className="flex items-center gap-2 text-xs uppercase tracking-label text-gate-muted">
           <input
             type="checkbox"
             checked={Boolean(draft.forSale)}
@@ -251,7 +258,7 @@ export function CatalogProductBaseFields({
           />
           {t("fieldForSale")}
         </label>
-        <label className="flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+        <label className="flex items-center gap-2 text-xs uppercase tracking-label text-gate-muted">
           <input
             type="checkbox"
             checked={Boolean(draft.forRental)}
@@ -261,7 +268,7 @@ export function CatalogProductBaseFields({
         </label>
       </div>
 
-      <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+      <label className="block text-xs uppercase tracking-label text-gate-muted">
         {t("fieldDeposit")}
         <input
           value={draft.deposit ? String(draft.deposit) : ""}
@@ -269,11 +276,11 @@ export function CatalogProductBaseFields({
           type="number"
           min="0"
           step="0.01"
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
         />
       </label>
 
-      <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+      <label className="block text-xs uppercase tracking-label text-gate-muted">
         {t("fieldStock")}
         <input
           value={draft.stock ? String(draft.stock) : ""}
@@ -281,11 +288,11 @@ export function CatalogProductBaseFields({
           type="number"
           min="0"
           step="1"
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
         />
       </label>
 
-      <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+      <label className="block text-xs uppercase tracking-label text-gate-muted">
         {t("fieldPopularity")}
         <input
           value={draft.popularity ? String(draft.popularity) : ""}
@@ -293,11 +300,11 @@ export function CatalogProductBaseFields({
           type="number"
           min="0"
           step="1"
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
         />
       </label>
 
-      <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)] md:col-span-2">
+      <label className="block text-xs uppercase tracking-label text-gate-muted md:col-span-2">
         {t("fieldCreatedAt")}
         <input
           value={createdAtValue}
@@ -305,8 +312,9 @@ export function CatalogProductBaseFields({
             const next = event.target.value ? new Date(event.target.value).toISOString() : "";
             onChange({ ...draft, createdAt: next });
           }}
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 operator-tool input-type
           type="datetime-local"
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
         />
         {fieldErrors.createdAt ? (
           <div className="mt-1 text-xs text-danger-fg">{fieldErrors.createdAt}</div>

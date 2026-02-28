@@ -1,10 +1,10 @@
 "use client";
 
-/* eslint-disable -- XAUP-0001 [ttl=2026-12-31] legacy uploader clothing form pending design/i18n overhaul */
-
 import type { CatalogProductDraftInput } from "@acme/lib/xa";
+
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
+// eslint-disable-next-line complexity -- XAUP-0001 large-operator-form
 export function CatalogProductClothingFields({
   draft,
   fieldErrors,
@@ -18,16 +18,17 @@ export function CatalogProductClothingFields({
 
   return (
     <div className="mt-8 space-y-4">
-      <div className="text-xs uppercase tracking-[0.35em] text-[color:var(--gate-muted)]">
+      <div className="text-xs uppercase tracking-label-lg text-gate-muted">
         {t("clothingFieldsTitle")}
       </div>
       <div className="grid gap-4 md:grid-cols-2">
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+        <label className="block text-xs uppercase tracking-label text-gate-muted">
           {t("clothingSizes")}
           <input
             value={draft.sizes ?? ""}
             onChange={(event) => onChange({ ...draft, sizes: event.target.value })}
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
+             
             placeholder="S|M|L|XL"
           />
           {fieldErrors.sizes ? (
@@ -35,7 +36,7 @@ export function CatalogProductClothingFields({
           ) : null}
         </label>
 
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+        <label className="block text-xs uppercase tracking-label text-gate-muted">
           {t("clothingOccasion")}
           <input
             value={draft.taxonomy.occasion ?? ""}
@@ -45,33 +46,33 @@ export function CatalogProductClothingFields({
                 taxonomy: { ...draft.taxonomy, occasion: event.target.value },
               })
             }
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
           />
         </label>
 
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+        <label className="block text-xs uppercase tracking-label text-gate-muted">
           {t("clothingFit")}
           <input
             value={draft.taxonomy.fit ?? ""}
             onChange={(event) =>
               onChange({ ...draft, taxonomy: { ...draft.taxonomy, fit: event.target.value } })
             }
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
           />
         </label>
 
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+        <label className="block text-xs uppercase tracking-label text-gate-muted">
           {t("clothingLength")}
           <input
             value={draft.taxonomy.length ?? ""}
             onChange={(event) =>
               onChange({ ...draft, taxonomy: { ...draft.taxonomy, length: event.target.value } })
             }
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
           />
         </label>
 
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+        <label className="block text-xs uppercase tracking-label text-gate-muted">
           {t("clothingNeckline")}
           <input
             value={draft.taxonomy.neckline ?? ""}
@@ -81,11 +82,11 @@ export function CatalogProductClothingFields({
                 taxonomy: { ...draft.taxonomy, neckline: event.target.value },
               })
             }
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
           />
         </label>
 
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+        <label className="block text-xs uppercase tracking-label text-gate-muted">
           {t("clothingSleeveLength")}
           <input
             value={draft.taxonomy.sleeveLength ?? ""}
@@ -95,11 +96,11 @@ export function CatalogProductClothingFields({
                 taxonomy: { ...draft.taxonomy, sleeveLength: event.target.value },
               })
             }
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
           />
         </label>
 
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+        <label className="block text-xs uppercase tracking-label text-gate-muted">
           {t("clothingPattern")}
           <input
             value={draft.taxonomy.pattern ?? ""}
@@ -109,11 +110,11 @@ export function CatalogProductClothingFields({
                 taxonomy: { ...draft.taxonomy, pattern: event.target.value },
               })
             }
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
           />
         </label>
 
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)] md:col-span-2">
+        <label className="block text-xs uppercase tracking-label text-gate-muted md:col-span-2">
           {t("clothingDetailsTitle")}
           <div className="mt-2 grid gap-3 md:grid-cols-2">
             <input
@@ -124,7 +125,7 @@ export function CatalogProductClothingFields({
                   details: { ...draft.details, modelHeight: event.target.value },
                 })
               }
-              className="w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+              className="w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
               placeholder={t("placeholderModelHeight")}
             />
             <input
@@ -135,7 +136,7 @@ export function CatalogProductClothingFields({
                   details: { ...draft.details, modelSize: event.target.value },
                 })
               }
-              className="w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+              className="w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
               placeholder={t("placeholderModelSize")}
             />
             <input
@@ -146,7 +147,7 @@ export function CatalogProductClothingFields({
                   details: { ...draft.details, fabricFeel: event.target.value },
                 })
               }
-              className="w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+              className="w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
               placeholder={t("placeholderFabricFeel")}
             />
             <input
@@ -154,7 +155,7 @@ export function CatalogProductClothingFields({
               onChange={(event) =>
                 onChange({ ...draft, details: { ...draft.details, care: event.target.value } })
               }
-              className="w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+              className="w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
               placeholder={t("placeholderCare")}
             />
             <textarea
@@ -166,7 +167,7 @@ export function CatalogProductClothingFields({
                 })
               }
               rows={2}
-              className="md:col-span-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+              className="md:col-span-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
               placeholder={t("placeholderFitNote")}
             />
             <textarea
@@ -178,7 +179,7 @@ export function CatalogProductClothingFields({
                 })
               }
               rows={2}
-              className="md:col-span-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+              className="md:col-span-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
               placeholder={t("placeholderSizeGuide")}
             />
           </div>

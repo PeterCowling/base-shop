@@ -1,18 +1,17 @@
 "use client";
 
-/* eslint-disable -- XAUP-0001 [ttl=2026-12-31] legacy uploader product form pending design/i18n overhaul */
-
 import * as React from "react";
 
 import type { CatalogProductDraftInput } from "@acme/lib/xa";
-import { useUploaderI18n } from "../../lib/uploaderI18n.client";
-import type { ActionFeedback } from "./useCatalogConsole.client";
 
+import { useUploaderI18n } from "../../lib/uploaderI18n.client";
+
+import { CatalogProductBagFields } from "./CatalogProductBagFields.client";
 import { CatalogProductBaseFields } from "./CatalogProductBaseFields.client";
 import { CatalogProductClothingFields } from "./CatalogProductClothingFields.client";
-import { CatalogProductBagFields } from "./CatalogProductBagFields.client";
-import { CatalogProductJewelryFields } from "./CatalogProductJewelryFields.client";
 import { CatalogProductImagesFields } from "./CatalogProductImagesFields.client";
+import { CatalogProductJewelryFields } from "./CatalogProductJewelryFields.client";
+import type { ActionFeedback } from "./useCatalogConsole.client";
 
 export function CatalogProductForm({
   selectedSlug,
@@ -41,7 +40,7 @@ export function CatalogProductForm({
   return (
     <section className="rounded-xl border border-border-2 bg-surface p-6 shadow-elevation-1">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="text-xs uppercase tracking-[0.35em] text-[color:var(--gate-muted)]">
+        <div className="text-xs uppercase tracking-label-lg text-gate-muted">
           {selectedSlug ? t("editProduct") : t("newProduct")}
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -50,7 +49,8 @@ export function CatalogProductForm({
               type="button"
               onClick={onDelete}
               disabled={busy}
-              className="rounded-md border border-danger px-3 py-1 text-xs uppercase tracking-[0.3em] text-danger-fg disabled:opacity-50"
+              // eslint-disable-next-line ds/min-tap-size -- XAUP-0001 operator-desktop-tool
+              className="rounded-md border border-danger px-3 py-1 text-xs uppercase tracking-label text-danger-fg disabled:opacity-50"
             >
               {t("delete")}
             </button>
@@ -59,7 +59,9 @@ export function CatalogProductForm({
             type="button"
             onClick={onSave}
             disabled={busy}
-            className="rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-primary-fg disabled:opacity-60"
+            // eslint-disable-next-line ds/min-tap-size -- XAUP-0001 operator-desktop-tool
+            className="rounded-md border border-gate-ink bg-gate-ink px-4 py-2 text-xs font-semibold uppercase tracking-label text-primary-fg disabled:opacity-60"
+            // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
             data-testid="catalog-save-details"
           >
             {busy ? t("saving") : t("saveDetails")}
@@ -72,6 +74,7 @@ export function CatalogProductForm({
           role={feedback.kind === "error" ? "alert" : "status"}
           aria-live={feedback.kind === "error" ? "assertive" : "polite"}
           className={feedback.kind === "error" ? "mt-4 text-sm text-danger-fg" : "mt-4 text-sm text-success-fg"}
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="catalog-draft-feedback"
         >
           {feedback.message}

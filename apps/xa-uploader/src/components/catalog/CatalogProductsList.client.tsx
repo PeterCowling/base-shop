@@ -1,10 +1,9 @@
 "use client";
 
-/* eslint-disable -- XAUP-0001 [ttl=2026-12-31] legacy uploader product list pending design/i18n overhaul */
-
 import * as React from "react";
 
-import { slugify, type CatalogProductDraftInput } from "@acme/lib/xa/catalogAdminSchema";
+import { type CatalogProductDraftInput,slugify } from "@acme/lib/xa/catalogAdminSchema";
+
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 export function CatalogProductsList({
@@ -44,32 +43,34 @@ export function CatalogProductsList({
   return (
     <aside className="rounded-xl border border-border-2 bg-surface p-4 shadow-elevation-1">
       <div className="flex items-center justify-between gap-3">
-        <div className="text-xs uppercase tracking-[0.35em] text-[color:var(--gate-muted)]">
+        <div className="text-xs uppercase tracking-label-lg text-gate-muted">
           {t("products")}
         </div>
         <button
           type="button"
           onClick={onNew}
-          className="rounded-md border border-border-2 px-3 py-1 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-ink)]"
+          // eslint-disable-next-line ds/min-tap-size -- XAUP-0001 operator-desktop-tool
+          className="rounded-md border border-border-2 px-3 py-1 text-xs uppercase tracking-label text-gate-ink"
         >
           {t("new")}
         </button>
       </div>
 
-      <label className="mt-3 block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+      <label className="mt-3 block text-xs uppercase tracking-label text-gate-muted">
         {t("search")}
         <input
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="catalog-search"
           value={query}
           onChange={(event) => onQueryChange(event.target.value)}
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink placeholder:text-gate-muted focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
           placeholder={t("searchPlaceholder")}
         />
       </label>
 
       <div className="mt-4 space-y-2 text-sm">
         {filtered.length === 0 ? (
-          <div className="text-[color:var(--gate-muted)]">{t("noProductsFound")}</div>
+          <div className="text-gate-muted">{t("noProductsFound")}</div>
         ) : null}
         {filtered.map((product) => {
           const slug = slugify(product.slug || product.title);
@@ -82,7 +83,7 @@ export function CatalogProductsList({
               key={slug || product.title}
               className={`flex items-stretch gap-2 rounded-md border px-3 py-2 transition ${
                 selected
-                  ? "border-[color:var(--gate-ink)] bg-muted"
+                  ? "border-gate-ink bg-muted"
                   : "border-border-2 bg-surface hover:bg-muted"
               }`}
             >
@@ -106,16 +107,17 @@ export function CatalogProductsList({
               <button
                 type="button"
                 onClick={() => onSelect(product)}
-                className="flex-1 text-left"
+                // eslint-disable-next-line ds/min-tap-size -- XAUP-0001 operator-desktop-tool
+                className="flex-1 text-start"
               >
-                <div className="text-[color:var(--gate-ink)]">{product.title}</div>
+                <div className="text-gate-ink">{product.title}</div>
                 <div
-                  className={`mt-1 text-[10px] uppercase tracking-[0.3em] text-[color:var(--gate-muted)] ${monoClassName}`}
+                  className={`mt-1 text-2xs uppercase tracking-label text-gate-muted ${monoClassName}`}
                 >
                   {slug}
                 </div>
                 {disableAdd ? (
-                  <div className="mt-1 text-xs text-[color:var(--gate-muted)]">
+                  <div className="mt-1 text-xs text-gate-muted">
                     {t("selectionLimitReached", { max: submissionMax })}
                   </div>
                 ) : null}

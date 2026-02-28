@@ -1,10 +1,9 @@
 "use client";
 
-/* eslint-disable -- XAUP-0001 [ttl=2026-12-31] legacy uploader sync panel pending design/i18n overhaul */
-
 import * as React from "react";
 
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
+
 import { formatSyncMissingScripts, type SyncScriptId } from "./catalogConsoleFeedback";
 import type { ActionFeedback } from "./useCatalogConsole.client";
 
@@ -49,7 +48,7 @@ export function CatalogSyncPanel({
   const syncDisabled = busy || syncReadiness.checking || !syncReadiness.ready;
 
   let readinessMessage = t("syncReadinessChecking");
-  let readinessClassName = "text-sm text-[color:var(--gate-muted)]";
+  let readinessClassName = "text-sm text-gate-muted";
   if (syncReadiness.error) {
     readinessMessage = syncReadiness.error;
     readinessClassName = "text-sm text-danger-fg";
@@ -74,7 +73,7 @@ export function CatalogSyncPanel({
   return (
     <section className="rounded-xl border border-border-2 bg-surface p-6 shadow-elevation-1">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="text-xs uppercase tracking-[0.35em] text-[color:var(--gate-muted)]">
+        <div className="text-xs uppercase tracking-label-lg text-gate-muted">
           {t("validateAndSync")}
         </div>
         <button
@@ -82,8 +81,11 @@ export function CatalogSyncPanel({
           type="button"
           onClick={onSync}
           disabled={syncDisabled}
-          className="rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-primary-fg disabled:opacity-60"
+          // eslint-disable-next-line ds/min-tap-size -- XAUP-0001 operator-desktop-tool
+          className="rounded-md border border-gate-ink bg-gate-ink px-4 py-2 text-xs font-semibold uppercase tracking-label text-primary-fg disabled:opacity-60"
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="catalog-run-sync"
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-cy="catalog-run-sync"
         >
           {busy ? t("running") : t("runSync")}
@@ -92,8 +94,11 @@ export function CatalogSyncPanel({
           type="button"
           onClick={onRefreshReadiness}
           disabled={busy || syncReadiness.checking}
-          className="rounded-md border border-border-2 px-3 py-2 text-[10px] uppercase tracking-[0.25em] text-[color:var(--gate-ink)] disabled:opacity-60"
+          // eslint-disable-next-line ds/min-tap-size -- XAUP-0001 operator-desktop-tool
+          className="rounded-md border border-border-2 px-3 py-2 text-2xs uppercase tracking-label-sm text-gate-ink disabled:opacity-60"
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="catalog-sync-readiness-refresh"
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-cy="catalog-sync-readiness-refresh"
         >
           {t("syncReadinessRefresh")}
@@ -102,17 +107,20 @@ export function CatalogSyncPanel({
 
       <p
         className={`mt-3 ${readinessClassName}`}
+        // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
         data-testid="catalog-sync-readiness"
+        // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
         data-cy="catalog-sync-readiness"
       >
         {readinessMessage}
       </p>
 
+      {/* eslint-disable-next-line ds/enforce-layout-primitives -- XAUP-0001 operator-tool checkbox group */}
       <div className="mt-4 flex flex-wrap gap-4 text-sm">
         {(["strict", "recursive", "replace", "dryRun"] as const).map((key) => (
           <label
             key={key}
-            className="inline-flex items-center gap-2 text-xs text-[color:var(--gate-muted)]"
+            className="inline-flex items-center gap-2 text-xs text-gate-muted"
           >
             <input
               type="checkbox"
@@ -129,7 +137,9 @@ export function CatalogSyncPanel({
           role={feedback.kind === "error" ? "alert" : "status"}
           aria-live={feedback.kind === "error" ? "assertive" : "polite"}
           className={feedback.kind === "error" ? "mt-4 text-sm text-danger-fg" : "mt-4 text-sm text-success-fg"}
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="catalog-sync-feedback"
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-cy="catalog-sync-feedback"
         >
           {feedback.message}
@@ -138,7 +148,7 @@ export function CatalogSyncPanel({
 
       {syncOutput ? (
         <pre
-          className={`mt-4 max-h-80 overflow-auto rounded-md border border-border-2 bg-muted p-3 text-xs text-[color:var(--gate-ink)] ${monoClassName}`}
+          className={`mt-4 max-h-80 overflow-auto rounded-md border border-border-2 bg-muted p-3 text-xs text-gate-ink ${monoClassName}`}
         >
           {syncOutput}
         </pre>

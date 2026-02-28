@@ -1,8 +1,7 @@
 "use client";
 
-/* eslint-disable -- XAUP-0001 [ttl=2026-12-31] legacy gate form pending design token refactor */
-
 import type { CatalogProductDraftInput } from "@acme/lib/xa";
+
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 export function CatalogProductBagFields({
@@ -16,11 +15,11 @@ export function CatalogProductBagFields({
 
   return (
     <div className="mt-8 space-y-4">
-      <div className="text-xs uppercase tracking-[0.35em] text-[color:var(--gate-muted)]">
+      <div className="text-xs uppercase tracking-label-lg text-gate-muted">
         {t("bagFieldsTitle")}
       </div>
       <div className="grid gap-4 md:grid-cols-2">
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+        <label className="block text-xs uppercase tracking-label text-gate-muted">
           {t("bagSizeClass")}
           <input
             value={draft.taxonomy.sizeClass ?? ""}
@@ -30,11 +29,11 @@ export function CatalogProductBagFields({
                 taxonomy: { ...draft.taxonomy, sizeClass: event.target.value },
               })
             }
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
           />
         </label>
 
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+        <label className="block text-xs uppercase tracking-label text-gate-muted">
           {t("bagFits")}
           <input
             value={draft.taxonomy.fits ?? ""}
@@ -44,11 +43,11 @@ export function CatalogProductBagFields({
                 taxonomy: { ...draft.taxonomy, fits: event.target.value },
               })
             }
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
           />
         </label>
 
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+        <label className="block text-xs uppercase tracking-label text-gate-muted">
           {t("bagStrapStyle")}
           <input
             value={draft.taxonomy.strapStyle ?? ""}
@@ -58,11 +57,11 @@ export function CatalogProductBagFields({
                 taxonomy: { ...draft.taxonomy, strapStyle: event.target.value },
               })
             }
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
           />
         </label>
 
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+        <label className="block text-xs uppercase tracking-label text-gate-muted">
           {t("bagHardwareColor")}
           <input
             value={draft.taxonomy.hardwareColor ?? ""}
@@ -72,11 +71,11 @@ export function CatalogProductBagFields({
                 taxonomy: { ...draft.taxonomy, hardwareColor: event.target.value },
               })
             }
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
           />
         </label>
 
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+        <label className="block text-xs uppercase tracking-label text-gate-muted">
           {t("bagClosureType")}
           <input
             value={draft.taxonomy.closureType ?? ""}
@@ -86,11 +85,11 @@ export function CatalogProductBagFields({
                 taxonomy: { ...draft.taxonomy, closureType: event.target.value },
               })
             }
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
           />
         </label>
 
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)] md:col-span-2">
+        <label className="block text-xs uppercase tracking-label text-gate-muted md:col-span-2">
           {t("bagDetailsTitle")}
           <div className="mt-2 grid gap-3 md:grid-cols-2">
             <input
@@ -101,7 +100,7 @@ export function CatalogProductBagFields({
                   details: { ...draft.details, dimensions: event.target.value },
                 })
               }
-              className="w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+              className="w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
               placeholder={t("placeholderDimensions")}
             />
             <input
@@ -112,7 +111,7 @@ export function CatalogProductBagFields({
                   details: { ...draft.details, strapDrop: event.target.value },
                 })
               }
-              className="w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+              className="w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
               placeholder={t("placeholderStrapDrop")}
             />
             <textarea
@@ -121,7 +120,7 @@ export function CatalogProductBagFields({
                 onChange({ ...draft, details: { ...draft.details, whatFits: event.target.value } })
               }
               rows={2}
-              className="w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+              className="w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
               placeholder={t("placeholderWhatFits")}
             />
             <textarea
@@ -130,7 +129,7 @@ export function CatalogProductBagFields({
                 onChange({ ...draft, details: { ...draft.details, interior: event.target.value } })
               }
               rows={2}
-              className="w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+              className="w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
               placeholder={t("placeholderInterior")}
             />
           </div>

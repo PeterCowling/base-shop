@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-hardcoded-copy -- XAUP-0001 [ttl=2026-12-31] machine-token route guards and reason codes */
 import fs from "node:fs/promises";
 import path from "node:path";
 

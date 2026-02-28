@@ -1,10 +1,8 @@
 "use client";
 
-/* eslint-disable -- XAUP-0001 [ttl=2026-12-31] legacy uploader images form pending design/i18n overhaul */
-
 import { toPositiveInt } from "@acme/lib";
-
 import type { CatalogProductDraftInput } from "@acme/lib/xa";
+
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 export function CatalogProductImagesFields({
@@ -25,30 +23,32 @@ export function CatalogProductImagesFields({
 
   return (
     <div className="mt-8 space-y-4">
-      <div className="text-xs uppercase tracking-[0.35em] text-[color:var(--gate-muted)]">
+      <div className="text-xs uppercase tracking-label-lg text-gate-muted">
         {t("imagesFieldsTitle")}
       </div>
-      <div className="text-sm text-[color:var(--gate-muted)]">{t("imageGuidelines", { minEdge })}</div>
+      <div className="text-sm text-gate-muted">{t("imageGuidelines", { minEdge })}</div>
       <div className="grid gap-4 md:grid-cols-2">
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)] md:col-span-2">
+        <label className="block text-xs uppercase tracking-label text-gate-muted md:col-span-2">
           {t("imageFiles")}
           <textarea
+            // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
             data-testid="catalog-field-image-files"
             value={draft.imageFiles ?? ""}
             onChange={(event) => onChange({ ...draft, imageFiles: event.target.value })}
             rows={3}
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
+            // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 operator-tool format hint
             placeholder="images/my-product/*.jpg"
           />
         </label>
 
-        <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)] md:col-span-2">
+        <label className="block text-xs uppercase tracking-label text-gate-muted md:col-span-2">
           {t("imageAltTexts")}
           <textarea
             value={draft.imageAltTexts ?? ""}
             onChange={(event) => onChange({ ...draft, imageAltTexts: event.target.value })}
             rows={2}
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
             placeholder={t("placeholderImageAltTexts")}
           />
           {fieldErrors.imageAltTexts ? (

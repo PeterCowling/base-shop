@@ -1,7 +1,5 @@
 "use client";
 
-/* eslint-disable ds/no-raw-typography, ds/no-arbitrary-tailwind -- XAUP-0001 [ttl=2026-12-31] Gate UI pending design token refactor */
-
 import { useUploaderI18n } from "../lib/uploaderI18n.client";
 
 export function LanguageToggle({
@@ -17,14 +15,14 @@ export function LanguageToggle({
   return (
     <div className={rootClassName}>
       <span className="sr-only">{t("languageLabel")}</span>
-      <div className="inline-flex overflow-hidden rounded-md border border-border-2 bg-surface text-[10px] uppercase tracking-[0.35em] text-[color:var(--gate-muted)]">
+      <div className="inline-flex overflow-hidden rounded-md border border-border-2 bg-surface text-2xs uppercase tracking-label-lg text-gate-muted">
         <button
           type="button"
           onClick={() => setLocale("en")}
           aria-pressed={locale === "en"}
           className={`px-3 py-2 transition ${
             locale === "en"
-              ? "bg-muted text-[color:var(--gate-ink)]"
+              ? "bg-muted text-gate-ink"
               : "hover:bg-muted"
           }`}
         >
@@ -36,7 +34,7 @@ export function LanguageToggle({
           aria-pressed={locale === "zh"}
           className={`px-3 py-2 transition ${
             locale === "zh"
-              ? "bg-muted text-[color:var(--gate-ink)]"
+              ? "bg-muted text-gate-ink"
               : "hover:bg-muted"
           }`}
         >

@@ -59,3 +59,53 @@ export const Inline = ({ children, asChild, ...props }: any) => {
   }
   return React.createElement("div", { "data-testid": "inline", ...rest }, children);
 };
+
+// ---- Dropdown menu stubs ----
+
+const DropdownMenuCtx = React.createContext<{
+  open: boolean;
+  onOpenChange?: (open: boolean) => void;
+}>({ open: false });
+
+export const DropdownMenu = ({ children, open = false, onOpenChange }: any) =>
+  React.createElement(DropdownMenuCtx.Provider, { value: { open, onOpenChange } }, children);
+
+export const DropdownMenuTrigger = ({ children, asChild }: any) => {
+  if (asChild && React.isValidElement(children)) {
+    return children;
+  }
+  return React.createElement("button", {}, children);
+};
+
+export const DropdownMenuContent = ({ children, onMouseEnter, onMouseLeave }: any) => {
+  const { open, onOpenChange } = React.useContext(DropdownMenuCtx);
+  React.useEffect(() => {
+    if (!open) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onOpenChange?.(false);
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [open, onOpenChange]);
+  if (!open) return null;
+  return React.createElement("div", { role: "menu", onMouseEnter, onMouseLeave }, children);
+};
+
+export const DropdownMenuItem = ({ children, asChild, ...props }: any) => {
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children as React.ReactElement<any>, { role: "menuitem" });
+  }
+  return React.createElement("div", { role: "menuitem", ...props }, children);
+};
+
+export const DropdownMenuSeparator = () => React.createElement("hr", {});
+export const DropdownMenuLabel = ({ children }: any) => React.createElement("div", {}, children);
+export const DropdownMenuGroup = ({ children }: any) => React.createElement("div", {}, children);
+export const DropdownMenuPortal = ({ children }: any) => children;
+export const DropdownMenuSub = ({ children }: any) => React.createElement("div", {}, children);
+export const DropdownMenuSubTrigger = ({ children }: any) => React.createElement("div", {}, children);
+export const DropdownMenuSubContent = ({ children }: any) => React.createElement("div", {}, children);
+export const DropdownMenuRadioGroup = ({ children }: any) => React.createElement("div", {}, children);
+export const DropdownMenuCheckboxItem = ({ children }: any) => React.createElement("div", {}, children);
+export const DropdownMenuRadioItem = ({ children }: any) => React.createElement("div", {}, children);
+export const DropdownMenuShortcut = ({ children }: any) => React.createElement("span", {}, children);

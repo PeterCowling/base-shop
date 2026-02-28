@@ -205,8 +205,11 @@ function DesktopHeader({
                     <DropdownMenu
                       open={openKey === key}
                       onOpenChange={(o) => {
-                        if (o) setOpenKey(key);
-                        else setOpenKey(null);
+                        // Only handle Radix-driven close events (Escape, click outside,
+                        // item select). Hover open is managed by onMouseEnter/onMouseLeave;
+                        // keyboard/click open is managed by the trigger's onClick below.
+                        // Handling o=true here interferes with hover state and causes flicker.
+                        if (!o) setOpenKey(null);
                       }}
                     >
                       <div
@@ -218,7 +221,14 @@ function DesktopHeader({
                           }
                           setOpenKey(key);
                         }}
-                        onMouseLeave={() => {
+                        onMouseLeave={(e) => {
+                          // If the cursor moved into the Radix portal content (which is
+                          // portalled to document.body outside this wrapper), don't start
+                          // the close timer. Without this check, the portal appearing under
+                          // a stationary cursor fires mouseleave here before mouseenter on
+                          // the portal, causing a flicker loop.
+                          const related = e.relatedTarget as Element | null;
+                          if (related?.closest("[data-radix-popper-content-wrapper]")) return;
                           timerRef.current = setTimeout(() => {
                             setOpenKey(null);
                           }, 150);
@@ -237,6 +247,7 @@ function DesktopHeader({
                           <button
                             aria-label={`${label} sub-menu`}
                             className="inline-flex items-center px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/70"
+                            onClick={() => setOpenKey(key)}
                           >
                             <svg
                               aria-hidden="true"

@@ -7,6 +7,39 @@ import { render, screen, waitFor } from '@testing-library/react';
 
 import GuestEntryPage from '../page';
 
+// Mock react-i18next using actual FindMyStay locale so translation strings match test expectations
+jest.mock('react-i18next', () => {
+  const en = require('../../../../public/locales/en/FindMyStay.json');
+  function flatten(obj: Record<string, unknown>, prefix?: string): Record<string, string> {
+    const result: Record<string, string> = {};
+    for (const [k, v] of Object.entries(obj)) {
+      const full = prefix ? `${prefix}.${k}` : k;
+      if (v !== null && typeof v === 'object') {
+        Object.assign(result, flatten(v as Record<string, unknown>, full));
+      } else {
+        result[full] = String(v);
+      }
+    }
+    return result;
+  }
+  const lookup = flatten(en);
+  return {
+    useTranslation: () => ({
+      t: (key: string, opts?: Record<string, unknown>) => {
+        let value = lookup[key] ?? key;
+        if (opts) {
+          for (const [k, v] of Object.entries(opts)) {
+            value = value.replace(`{{${k}}}`, String(v));
+          }
+        }
+        return value;
+      },
+      i18n: { language: 'en', changeLanguage: jest.fn() },
+    }),
+    initReactI18next: { type: '3rdParty', init: jest.fn() },
+  };
+});
+
 // Mock next/navigation at module level
 let mockSearchParamsGet: (key: string) => string | null = () => null;
 

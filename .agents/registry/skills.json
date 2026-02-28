@@ -92,11 +92,6 @@
       "path": ".claude/skills/lp-design-spec/SKILL.md"
     },
     {
-      "name": "lp-design-system",
-      "description": "Apply design tokens and system patterns correctly. Reference for semantic colors, spacing, typography, borders, and shadows. Never use arbitrary values.",
-      "path": ".claude/skills/lp-design-system/SKILL.md"
-    },
-    {
       "name": "lp-do-assessment-01-problem-statement",
       "description": "Problem framing for new startups (ASSESSMENT-01). Produces a falsifiable problem statement artifact before entering ASSESSMENT intake. Upstream of lp-do-assessment-02-solution-profiling.",
       "path": ".claude/skills/lp-do-assessment-01-problem-statement/SKILL.md"
@@ -282,11 +277,6 @@
       "path": ".claude/skills/lp-readiness/SKILL.md"
     },
     {
-      "name": "lp-refactor",
-      "description": "Refactor React components for better maintainability, performance, or patterns. Covers hook extraction, component splitting, type safety, memoization, and composition.",
-      "path": ".claude/skills/lp-refactor/SKILL.md"
-    },
-    {
       "name": "lp-seo",
       "description": "S6B phased SEO strategy skill - keyword research, content clustering, SERP analysis, technical audit, and snippet optimization for any business",
       "path": ".claude/skills/lp-seo/SKILL.md"
@@ -312,18 +302,13 @@
       "path": ".claude/skills/meta-loop-efficiency/SKILL.md"
     },
     {
-      "name": "meta-reflect",
-      "description": "Capture session learnings and propose targeted improvements to docs, skills, or core agent instructions. Evidence-based only - no theoretical improvements. Closes the feedback loop directly by updating existing files.",
-      "path": ".claude/skills/meta-reflect/SKILL.md"
-    },
-    {
       "name": "meta-user-test",
       "description": "Run a repeatable two-layer site audit: full sitemap JS-off coverage for complete issue inventory, then focused JS-on flow checks for hydration/booking UX. Emit dated markdown+JSON artifacts with prioritized findings and acceptance criteria.",
       "path": ".claude/skills/meta-user-test/SKILL.md"
     },
     {
       "name": "ops-ci-fix",
-      "description": "Run pnpm typecheck && pnpm lint, fix all errors iteratively, and commit a clean state. Offload-ready for Codex. Terminal condition is both commands exit 0 with zero errors.",
+      "description": "Run typecheck and lint scoped to changed packages, fix all errors iteratively, and commit a clean state. Offload-ready for Codex. Terminal condition is all affected packages pass typecheck and lint with zero errors.",
       "path": ".claude/skills/ops-ci-fix/SKILL.md"
     },
     {
@@ -342,11 +327,6 @@
       "path": ".claude/skills/ops-ship/SKILL.md"
     },
     {
-      "name": "review-plan-status",
-      "description": "Report on the status of incomplete plans — how many tasks remain in each. Optionally lp-do-factcheck plans before reporting.",
-      "path": ".claude/skills/review-plan-status/SKILL.md"
-    },
-    {
       "name": "startup-loop",
       "description": "Chat command wrapper for operating Startup Loop runs. Supports /startup-loop start|status|submit|advance with strict stage gating, prompt handoff, and Business OS sync checks. Routes to lp-* stage skills at each stage.",
       "path": ".claude/skills/startup-loop/SKILL.md"
@@ -360,6 +340,31 @@
       "name": "tools-bos-design-page",
       "description": "Generate or enhance HTML documentation with polished visual diagrams (Mermaid flowcharts, state machines, sequence diagrams, Chart.js dashboards). Supports multiple documents via a references directory of reusable palettes, zoom controls, and initialization patterns. Use when asked to add diagrams to a guide, visualise a system or workflow, build a KPI dashboard, or improve documentation readability with visuals.",
       "path": ".claude/skills/tools-bos-design-page/SKILL.md"
+    },
+    {
+      "name": "tools-design-system",
+      "description": "Apply design tokens and system patterns correctly. Reference for semantic colors, spacing, typography, borders, and shadows. Never use arbitrary values.",
+      "path": ".claude/skills/tools-design-system/SKILL.md"
+    },
+    {
+      "name": "tools-loop-efficiency-deterministic-extraction",
+      "description": "Scout new skill-efficiency opportunities, register them in docs/plans/startup-loop-token-efficiency-v2/deterministic-extraction-analysis.md, recompute true ROI/payback, and auto-implement every item in Implement now and Backlog via an execution queue.",
+      "path": ".claude/skills/tools-loop-efficiency-deterministic-extraction/SKILL.md"
+    },
+    {
+      "name": "tools-meta-reflect",
+      "description": "Capture session learnings and propose targeted improvements to docs, skills, or core agent instructions. Evidence-based only - no theoretical improvements. Closes the feedback loop directly by updating existing files.",
+      "path": ".claude/skills/tools-meta-reflect/SKILL.md"
+    },
+    {
+      "name": "tools-refactor",
+      "description": "Refactor React components for better maintainability, performance, or patterns. Covers hook extraction, component splitting, type safety, memoization, and composition.",
+      "path": ".claude/skills/tools-refactor/SKILL.md"
+    },
+    {
+      "name": "tools-review-plan-status",
+      "description": "Report on the status of incomplete plans — how many tasks remain in each. Optionally lp-do-factcheck plans before reporting.",
+      "path": ".claude/skills/tools-review-plan-status/SKILL.md"
     },
     {
       "name": "tools-ui-breakpoint-sweep",

@@ -30,7 +30,7 @@ This plan makes Codex startup instructions and skill discovery reliable without 
 - [ ] TASK-03: Move Codex-critical guidance into always-loaded instruction surface
 - [ ] TASK-04: Create `.agents/skills/` native discovery mirror
 - [ ] TASK-05: Add strong skills integrity validation
-- [ ] TASK-06: Repair and gate skill registry drift
+- [x] TASK-06: Repair and gate skill registry drift - **Complete (2026-02-28)**
 - [ ] TASK-07: Wire validation into local and CI gates
 - [ ] TASK-08: Checkpoint verification (docs loading + skills discovery)
 
@@ -113,7 +113,7 @@ It did not validate completeness against `.claude/skills/*/SKILL.md`, symlink co
 | TASK-03 | IMPLEMENT | Ensure Codex-critical guidance is in always-loaded runbook surface | 82% | M | Pending | TASK-01 | TASK-08 |
 | TASK-04 | IMPLEMENT | Create `.agents/skills/` native mirror from `.claude/skills/*/SKILL.md` | 90% | M | Pending | - | TASK-05, TASK-08 |
 | TASK-05 | IMPLEMENT | Add strong `scripts/validate-codex-skills.sh` integrity checks | 84% | M | Pending | TASK-04 | TASK-07, TASK-08 |
-| TASK-06 | IMPLEMENT | Regenerate and gate `.agents/registry/skills.json` consistency | 90% | S | Pending | - | TASK-07, TASK-08 |
+| TASK-06 | IMPLEMENT | Regenerate and gate `.agents/registry/skills.json` consistency | 90% | S | Complete (2026-02-28) | - | TASK-07, TASK-08 |
 | TASK-07 | IMPLEMENT | Wire size + skills + registry checks into local/CI validation | 80% | M | Pending | TASK-05, TASK-06 | TASK-08 |
 | TASK-08 | CHECKPOINT | Verify instruction loading and skill discovery behavior end-to-end | 78% | M | Pending | TASK-01, TASK-02, TASK-03, TASK-04, TASK-06, TASK-07 | - |
 
@@ -240,7 +240,7 @@ It did not validate completeness against `.claude/skills/*/SKILL.md`, symlink co
 - **Deliverable:** Updated `.agents/registry/skills.json` matching current `.claude/skills/` state.
 - **Execution-Skill:** lp-do-build
 - **Affects:** `.agents/registry/skills.json`.
-- **Status:** Pending
+- **Status:** Complete (2026-02-28)
 - **Confidence:** 90% (Implementation 94 / Approach 90 / Impact 90)
 - **Scope:** Run `scripts/agents/generate-skill-registry --write` to regenerate `.agents/registry/skills.json`. The `--check` flag is implemented at `scripts/src/agents/generate-skill-registry.ts:18,39–67` — it JSON-compares current registry against a freshly-built one and exits non-zero on any diff. Confirm `--check` exits 0 after regeneration.
 - **VC-06:**
@@ -252,6 +252,11 @@ It did not validate completeness against `.claude/skills/*/SKILL.md`, symlink co
   - **Refactor:** Review diff of regenerated registry to confirm no unexpected additions or removals.
 - **Rollout/rollback:** Immediate for all callers of `list-skills`. Rollback not ideal (restores stale registry); re-run `--write` to recover.
 - **Documentation impact:** None.
+- **Build evidence (2026-02-28):**
+  - Red state captured: `scripts/agents/generate-skill-registry --check` exited 1 with stale-registry message for `.agents/registry/skills.json`.
+  - Green state achieved: ran `scripts/agents/generate-skill-registry --write`; command reported `Wrote .agents/registry/skills.json (76 skills)`.
+  - VC-06 PASS: `scripts/agents/generate-skill-registry --check` exits 0; registry `skills` count is 76 and matches filesystem-derived `.claude/skills/*/SKILL.md` count (76).
+  - Refactor PASS: reviewed registry diff scope; only `.agents/registry/skills.json` changed for this task.
 
 ### TASK-07: Wire checks into local and CI gates
 - **Type:** IMPLEMENT

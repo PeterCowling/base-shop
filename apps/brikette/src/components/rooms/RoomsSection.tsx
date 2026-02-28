@@ -169,6 +169,7 @@ export function RoomsSection({
   return (
     <RoomsSectionBase
       {...props}
+      singleCtaMode
       itemListId={props.itemListId}
       onRoomSelect={onRoomSelect}
       {...(roomPrices ? { roomPrices } : {})}

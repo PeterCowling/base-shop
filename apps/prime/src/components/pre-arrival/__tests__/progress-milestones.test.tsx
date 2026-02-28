@@ -3,12 +3,6 @@ import { render, screen } from '@testing-library/react';
 import type { PreArrivalData } from '../../../types/preArrival';
 import ReadinessDashboard from '../ReadinessDashboard';
 
-jest.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key: string) => key,
-  }),
-}));
-
 const makeData = (overrides: Partial<PreArrivalData['checklistProgress']> = {}): PreArrivalData => ({
   etaWindow: null,
   etaMethod: null,

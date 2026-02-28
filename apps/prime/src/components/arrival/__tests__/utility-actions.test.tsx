@@ -5,17 +5,6 @@ import type { PreArrivalData } from '../../../types/preArrival';
 import { ReadinessDashboard } from '../../pre-arrival/ReadinessDashboard';
 import ArrivalHome from '../ArrivalHome';
 
-jest.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key: string, params?: Record<string, string | number>) => {
-      if (params && typeof params.name === 'string') {
-        return `${key}:${params.name}`;
-      }
-      return key;
-    },
-  }),
-}));
-
 jest.mock('../../../lib/analytics/activationFunnel', () => ({
   recordActivationFunnelEvent: jest.fn(),
 }));

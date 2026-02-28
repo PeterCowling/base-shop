@@ -87,11 +87,13 @@ const mockCartItem = {
 describe("POST /api/checkout-session", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    process.env.MERCHANT_NOTIFY_EMAIL = "merchant@test.com";
     // Suppress expected console.error calls (KO response, SOAP error)
     jest.spyOn(console, "error").mockImplementation(() => {});
   });
 
   afterEach(() => {
+    delete process.env.MERCHANT_NOTIFY_EMAIL;
     jest.restoreAllMocks();
   });
 
@@ -123,14 +125,16 @@ describe("POST /api/checkout-session", () => {
     const setCookie = res.headers.get("set-cookie") ?? "";
     expect(setCookie).toContain("Max-Age=0");
     expect(setCookie).toContain("__Host-CART_ID=;");
-    // Wait a tick for the fire-and-forget promise to resolve
+    // Wait a tick for the fire-and-forget promises to resolve
     await new Promise((resolve) => setTimeout(resolve, 0));
-    expect(sendSystemEmail).toHaveBeenCalledWith(
-      expect.objectContaining({
-        to: expect.stringContaining("@"),
-        subject: expect.any(String),
-        html: expect.stringContaining("Silver Ring"),
-      }),
+    expect(sendSystemEmail).toHaveBeenCalledTimes(2);
+    expect(sendSystemEmail).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({ to: "merchant@test.com" }),
+    );
+    expect(sendSystemEmail).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({ to: "jane@example.com" }),
     );
   });
 
@@ -214,5 +218,69 @@ describe("POST /api/checkout-session", () => {
     const res = await POST(makeReq(VALID_CARD_BODY) as never);
     expect(res.status).toBe(402);
     expect(sendSystemEmail).not.toHaveBeenCalled();
+  });
+
+  it("TC-04-08: success + empty buyerEmail → sendSystemEmail called once (merchant only)", async () => {
+    decodeCartCookie.mockReturnValue("cart-abc");
+    getCart.mockResolvedValue({ "sku-1": mockCartItem });
+    deleteCart.mockResolvedValue(undefined);
+    sendSystemEmail.mockResolvedValue(undefined);
+    callPayment.mockResolvedValue({
+      success: true,
+      transactionId: "txn-001",
+      bankTransactionId: "bank-txn-001",
+      authCode: "auth-456",
+    });
+
+    const res = await POST(makeReq({ ...VALID_CARD_BODY, buyerEmail: "" }) as never);
+    expect(res.status).toBe(200);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(sendSystemEmail).toHaveBeenCalledTimes(1);
+    expect(sendSystemEmail).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({ to: "merchant@test.com" }),
+    );
+  });
+
+  it("TC-04-09: customer email throws → success response still returned", async () => {
+    decodeCartCookie.mockReturnValue("cart-abc");
+    getCart.mockResolvedValue({ "sku-1": mockCartItem });
+    deleteCart.mockResolvedValue(undefined);
+    sendSystemEmail
+      .mockResolvedValueOnce(undefined)
+      .mockRejectedValueOnce(new Error("SMTP error"));
+    callPayment.mockResolvedValue({
+      success: true,
+      transactionId: "txn-001",
+      bankTransactionId: "bank-txn-001",
+      authCode: "auth-456",
+    });
+
+    const res = await POST(makeReq(VALID_CARD_BODY) as never);
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as { success: boolean };
+    expect(body.success).toBe(true);
+  });
+
+  it("TC-04-10: whitespace-only buyerEmail → sendSystemEmail called once (merchant only)", async () => {
+    decodeCartCookie.mockReturnValue("cart-abc");
+    getCart.mockResolvedValue({ "sku-1": mockCartItem });
+    deleteCart.mockResolvedValue(undefined);
+    sendSystemEmail.mockResolvedValue(undefined);
+    callPayment.mockResolvedValue({
+      success: true,
+      transactionId: "txn-001",
+      bankTransactionId: "bank-txn-001",
+      authCode: "auth-456",
+    });
+
+    const res = await POST(makeReq({ ...VALID_CARD_BODY, buyerEmail: "   " }) as never);
+    expect(res.status).toBe(200);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(sendSystemEmail).toHaveBeenCalledTimes(1);
+    expect(sendSystemEmail).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({ to: "merchant@test.com" }),
+    );
   });
 });

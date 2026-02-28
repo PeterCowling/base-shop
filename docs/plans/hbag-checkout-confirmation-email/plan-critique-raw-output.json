@@ -1,0 +1,28 @@
+{
+  "round": 3,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/hbag-checkout-confirmation-email/plan.md",
+      "line": "241",
+      "message": "Test guidance hardcodes merchant assertion to `expect.stringContaining(\"peter\")`; this is brittle if `MERCHANT_NOTIFY_EMAIL` differs in CI/runtime. Assert against a deterministic test value (set `process.env.MERCHANT_NOTIFY_EMAIL` in test) instead of name-specific matching. Resolved: updated test guidance to set env var in beforeEach/afterEach."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/hbag-checkout-confirmation-email/plan.md",
+      "line": "53",
+      "message": "The `escHtml` note claims coverage for attribute-value context, but the helper does not escape `'`; current snippet is safe for text-node interpolation, so wording should be narrowed. Resolved: narrowed wording to text-node context."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/hbag-checkout-confirmation-email/plan.md",
+      "line": "305",
+      "message": "Validation criteria mention TypeScript build only; repo gate policy expects lint alongside typecheck. Resolved: added lint to acceptance criteria."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 9,
+  "lp_score": 4.5,
+  "note": "Final round. lp_score 4.5 >= 4.0 — credible. All Major findings resolved. Plan Status: Active."
+}

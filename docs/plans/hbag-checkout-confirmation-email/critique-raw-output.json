@@ -1,0 +1,22 @@
+{
+  "round": 3,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/hbag-checkout-confirmation-email/fact-find.md",
+      "line": "200",
+      "message": "The confidence section still states `if buyerEmail` is the "right default" guard, which conflicts with the stricter documented requirement at lines 90/231 (trim + format validation). Resolved by updating Approach confidence wording to specify trim + format validation."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/hbag-checkout-confirmation-email/fact-find.md",
+      "line": "176",
+      "message": "Empty string is falsy and already excluded by truthy guard. Real failure cases are whitespace-only/malformed non-empty strings. Resolved by tightening Resolved section wording."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 9,
+  "lp_score": 4.5,
+  "note": "Final round — no further rounds. lp_score 4.5 >= 4.0 threshold — credible."
+}

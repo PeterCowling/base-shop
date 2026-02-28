@@ -8,6 +8,14 @@ import { sendSystemEmail } from "@acme/platform-core/email";
 
 export const runtime = "nodejs";
 
+function escHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 const REQUIRED_CARD_FIELDS = [
   "cardNumber",
   "expiryMonth",
@@ -118,6 +126,36 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }).catch((err: unknown) => {
       console.error("Merchant notification email failed", err); // i18n-exempt -- developer log
     });
+    const recipientEmail = cardFields.buyerEmail?.trim();
+    if (recipientEmail && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(recipientEmail)) {
+      const customerItemLines = Object.values(cart)
+        .map(
+          (line) =>
+            `<tr><td>${escHtml(line.sku.title)}</td><td>${line.qty}</td><td>€${(line.sku.price / 100).toFixed(2)}</td><td>€${((line.sku.price * line.qty) / 100).toFixed(2)}</td></tr>`,
+        )
+        .join("");
+      const customerEmailHtml = `
+        <h2>Order confirmed — thank you!</h2>
+        <p>Hi${cardFields.buyerName ? ` ${escHtml(cardFields.buyerName)}` : ""},</p>
+        <p>Your order has been received and payment processed successfully.</p>
+        <table border="1" cellpadding="4" cellspacing="0">
+          <thead><tr><th>Item</th><th>Qty</th><th>Unit price</th><th>Line total</th></tr></thead>
+          <tbody>${customerItemLines}</tbody>
+        </table>
+        <p><strong>Total: €${(totalCents / 100).toFixed(2)}</strong></p>
+        <p>Order reference: ${shopTransactionId}</p>
+        <p>Payment reference: ${result.transactionId ?? ""}</p>
+        <p>If you have any questions, reply to this email or contact our support.</p>
+      `;
+      void sendSystemEmail({
+        to: recipientEmail,
+        subject: `Order confirmed — ${shopTransactionId}`,
+        html: customerEmailHtml,
+      }).catch((err: unknown) => {
+        console.error("Customer confirmation email failed", err); // i18n-exempt -- developer log
+      });
+      console.info("Customer confirmation email dispatched", { shopTransactionId }); // i18n-exempt -- developer log
+    }
 
     const successRes = NextResponse.json({
       success: true,

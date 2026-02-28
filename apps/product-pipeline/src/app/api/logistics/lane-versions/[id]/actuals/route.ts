@@ -3,6 +3,8 @@ import { onRequestPost } from "@/routes/api/logistics/lane-versions/[id]/actuals
 
 export const runtime = "edge";
 
+export const dynamic = "force-static";
+
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> },

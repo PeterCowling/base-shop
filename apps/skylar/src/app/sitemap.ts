@@ -6,6 +6,8 @@ import { DEFAULT_LOCALE, LOCALES } from "@/lib/locales";
 
 const SITE_URL = "https://skylarsrl.com";
 
+export const dynamic = "force-static";
+
 const pages = [
   { path: "", priority: 1.0, changeFrequency: "monthly" as const },
   { path: "/products", priority: 0.9, changeFrequency: "monthly" as const },

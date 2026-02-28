@@ -5,7 +5,7 @@ Domain: Infra
 Workstream: Engineering
 Created: 2026-02-28
 Last-reviewed: 2026-02-28
-Last-updated: 2026-02-28 (TASK-01 complete)
+Last-updated: 2026-02-28 (TASK-02 complete — all tasks done)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: xa-uploader-deployment-config
 Deliverable-Type: operator-config-doc
@@ -34,7 +34,7 @@ effort. TASK-01 runs first; TASK-02 runs after and mirrors its var list to preve
 
 ## Active tasks
 - [x] TASK-01: Create `apps/xa-uploader/.env.example`
-- [ ] TASK-02: Update `apps/xa-uploader/wrangler.toml` with [vars] sections
+- [x] TASK-02: Update `apps/xa-uploader/wrangler.toml` with [vars] sections
 
 ## Goals
 - Create `apps/xa-uploader/.env.example` documenting all env vars (required vs optional, format, default, secrets use placeholder values only)
@@ -95,7 +95,7 @@ effort. TASK-01 runs first; TASK-02 runs after and mirrors its var list to preve
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Create `apps/xa-uploader/.env.example` with all vars documented | 90% | S | Complete (2026-02-28) | - | TASK-02 |
-| TASK-02 | IMPLEMENT | Update `wrangler.toml` [vars] and [env.preview.vars] | 85% | S | Pending | TASK-01 | - |
+| TASK-02 | IMPLEMENT | Update `wrangler.toml` [vars] and [env.preview.vars] | 85% | S | Complete (2026-02-28) | TASK-01 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -172,7 +172,7 @@ effort. TASK-01 runs first; TASK-02 runs after and mirrors its var list to preve
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-28)
 - **Affects:** `apps/xa-uploader/wrangler.toml`
 - **Depends on:** TASK-01
 - **Blocks:** -
@@ -216,6 +216,12 @@ effort. TASK-01 runs first; TASK-02 runs after and mirrors its var list to preve
   - Production `[vars]` and `[env.preview.vars]` should mirror each other for this task — both start with empty defaults
   - Future: operator sets actual R2 values in Cloudflare dashboard or commits them to `[vars]` when R2 upload feature is enabled
   - `NEXT_PUBLIC_*` vars in `wrangler.toml [vars]` are available to server-side Worker runtime code. They are NOT updated in client bundles at runtime — the bundle inlines the build-time values. For client-side changes to take effect, the operator must rebuild with the new values in the build environment. A comment in `[vars]` must explain this.
+
+**Build Evidence (2026-02-28):**
+- Red phase: confirmed `[vars]` absent and `[env.preview.vars]` comment-only in prior wrangler.toml
+- Green phase: added top-level `[vars]` section with 4 NEXT_PUBLIC vars (active, empty/1600 defaults), `XA_UPLOADER_MODE` (active), `XA_TRUST_PROXY_IP_HEADERS = "1"` (active, CF Workers default), 13 optional tuning vars (commented); populated `[env.preview.vars]` with identical content; added required-secrets comment block (9 `wrangler secret put` lines for all 7 required secrets + optional vendor token) plus NEXT_PUBLIC inlining warning
+- Refactor phase: all 5 TCs passed; cross-check confirms schema identity with TASK-01 `.env.example`; filesystem-only vars excluded; dev/E2E vars excluded
+- Post-build validation: Mode 3 (Document Review) — Attempt 1 — **Pass**. All required secrets listed, NEXT_PUBLIC inlining note present, no secret values committed, valid TOML structure.
 
 ## Simulation Trace
 

@@ -87,6 +87,9 @@ function skuFromProduct(args: {
       ? { maintenanceCycle: product.maintenanceCycle }
       : {}),
     ...(product.availability ? { availability: product.availability } : {}),
+    ...(product.materials ? { materials: product.materials } : {}),
+    ...(product.dimensions ? { dimensions: product.dimensions } : {}),
+    ...(product.weight ? { weight: product.weight } : {}),
     media: product.media ?? [],
     sizes,
     description,

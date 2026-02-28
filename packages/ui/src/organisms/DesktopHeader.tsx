@@ -204,6 +204,7 @@ function DesktopHeader({
                   <li key={key}>
                     <DropdownMenu
                       open={openKey === key}
+                      modal={false}
                       onOpenChange={(o) => {
                         // Only handle Radix-driven close events (Escape, click outside,
                         // item select). Hover open is managed by onMouseEnter/onMouseLeave;

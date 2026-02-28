@@ -314,7 +314,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-02-28T19:29:04.637Z";
+  var GEN_TS = "2026-02-28T19:46:18.510Z";
 
   var IDEA_ITEMS = [
     {
@@ -1404,6 +1404,40 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Eslint --fix corrupts focus-ring utilities — post-fix verification step",
+      "body": "eslint --fix rewrote focus:ring-2 focus:ring-X/20 → focus-visible:focus:ring-2 focus-visible:focus:ring-X/20 (double-prefix, invalid); all affected lines required manual correction",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-28T19:43:01.977Z",
+      "path": "docs/plans/_archive/xa-uploader-design-token-migration/results-review.user.md",
+      "idea_key": "190ab871bf29b4480c47b876aa167b86c3f9225a",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Lint violation scanner outputs exact line/rule before migration starts",
+      "body": "agent read each file manually to identify which rules needed targeted disables; eslint --format json would give exact line numbers deterministically, reducing per-file reasoning",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-28T19:43:01.977Z",
+      "path": "docs/plans/_archive/xa-uploader-design-token-migration/results-review.user.md",
+      "idea_key": "05b77820457d7a15d18583f59796fdae67a934c6",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "Add a migration preflight checklist item for known lint-gate hotspots (max-lines-per-function, ds/no-hardcoded-copy, import-order rules) before large UI surface rewires",
       "body": "multiple controlled scope expansions were required in this build to clear lint gates that were predictable upfront",
       "suggested_action": "spike",
@@ -2017,6 +2051,23 @@
       "date": "2026-02-26T08:53:01.939Z",
       "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md",
       "idea_key": "50250241c361b3e014540cb7f748b06e906f22b5",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Design system blanket-disable removal workflow as a reusable skill",
+      "body": "this build followed a repeatable 4-step pattern (read file → identify violations → place targeted disables → verify with lint) identical to any future XAUP-0001 or equivalent migration",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-28T19:43:01.977Z",
+      "path": "docs/plans/_archive/xa-uploader-design-token-migration/results-review.user.md",
+      "idea_key": "3c2d00026262a457bd2e321e7a2867493b4ced23",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",

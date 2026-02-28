@@ -1,0 +1,30 @@
+{
+  "round": 4,
+  "mode": "file",
+  "artifact": "docs/plans/hbag-proof-bullets-real-copy/plan.md",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/hbag-proof-bullets-real-copy/plan.md",
+      "line": "16",
+      "message": "Overall-confidence in frontmatter (85%) conflicts with the plan's own weighted calculation (88% at line 374), creating metadata inconsistency."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/hbag-proof-bullets-real-copy/plan.md",
+      "line": "199",
+      "message": "The fail-closed rule only blocks missing/empty sections; it does not enforce the stated five-bullet outcome (lines 69, 152), so a 1–4 bullet regression can still ship."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/hbag-proof-bullets-real-copy/plan.md",
+      "line": "200",
+      "message": "This still references 'pre-built dist or ts-node,' which conflicts with the corrected source-direct tsx execution model documented later (lines 312, 315, 324)."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "lp_score": 4.0,
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "note": "All three warnings fixed after Round 2. No Critical findings present — Round 3 not triggered per iteration rules. Plan is credible (lp_score 4.0)."
+}

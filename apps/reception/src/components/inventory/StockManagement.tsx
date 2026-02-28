@@ -282,26 +282,11 @@ function StockManagement() {
   }, [countEntries]);
 
   const shrinkageAlerts = useMemo(() => {
-    const cutoff = Date.now() - 24 * 60 * 60 * 1000;
-    const shrinkageTypes = new Set(["waste", "adjust", "count"]);
-    const totals = entries.reduce<Record<string, number>>((acc, entry) => {
-      if (
-        entry.quantity >= 0 ||
-        !shrinkageTypes.has(entry.type) ||
-        new Date(entry.timestamp).getTime() < cutoff
-      ) {
-        return acc;
-      }
-      acc[entry.itemId] = (acc[entry.itemId] ?? 0) + Math.abs(entry.quantity);
-      return acc;
-    }, {});
-
-    return Object.entries(totals)
-      .filter(([, total]) => total >= STOCK_SHRINKAGE_ALERT_THRESHOLD)
-      .map(([itemId, total]) => ({
-        itemId,
-        total,
-      }))
+    const explained1d = buildExplainedShrinkageByItem(entries, 1);
+    const unexplained1d = buildUnexplainedVarianceByItem(entries, 1, explained1d);
+    return Object.entries(unexplained1d)
+      .filter(([, row]) => row.unexplained >= STOCK_SHRINKAGE_ALERT_THRESHOLD)
+      .map(([itemId, row]) => ({ itemId, total: row.unexplained }))
       .sort((a, b) => b.total - a.total);
   }, [entries]);
 
@@ -913,7 +898,7 @@ function StockManagement() {
               {shrinkageAlerts.map((alert) => (
                 <li key={alert.itemId} className="text-error-main">
                   {itemsById[alert.itemId]?.name ?? alert.itemId}: {alert.total}{" "}
-                  units removed in 24h
+                  unexplained units in 24h
                 </li>
               ))}
             </ul>

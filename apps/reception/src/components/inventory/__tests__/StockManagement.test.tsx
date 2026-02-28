@@ -289,7 +289,29 @@ describe("StockManagement", () => {
     ).toBeInTheDocument();
   });
 
-  it("shows shrinkage alert when removals exceed threshold", () => {
+  it("shows shrinkage alert when unexplained count discrepancy exceeds threshold", () => {
+    const recent = new Date().toISOString();
+    useInventoryLedgerMock.mockReturnValue({
+      ...baseLedgerReturn,
+      entries: [
+        {
+          id: "entry-1",
+          itemId: "item-1",
+          type: "count",
+          quantity: -12,
+          user: "Pete",
+          timestamp: recent,
+        },
+      ],
+    });
+
+    render(<StockManagement />);
+    expect(
+      screen.getByText(/beans: 12 unexplained units in 24h/i)
+    ).toBeInTheDocument();
+  });
+
+  it("does not alert when count discrepancy is fully covered by documented waste", () => {
     const recent = new Date().toISOString();
     useInventoryLedgerMock.mockReturnValue({
       ...baseLedgerReturn,
@@ -302,12 +324,20 @@ describe("StockManagement", () => {
           user: "Pete",
           timestamp: recent,
         },
+        {
+          id: "entry-2",
+          itemId: "item-1",
+          type: "count",
+          quantity: -12,
+          user: "Pete",
+          timestamp: recent,
+        },
       ],
     });
 
     render(<StockManagement />);
     expect(
-      screen.getByText(/beans: 12 units removed in 24h/i)
+      screen.getByText(/no abnormal shrinkage detected/i)
     ).toBeInTheDocument();
   });
 

@@ -16,6 +16,8 @@ Startup-Deliverable-Alias: <none | startup-budget-envelope | startup-channel-pla
 Primary-Execution-Skill: <lp-do-build | draft-email | biz-product-brief | draft-marketing | biz-spreadsheet | draft-whatsapp>
 Supporting-Skills: <comma-separated or none>
 Related-Plan: docs/plans/<feature-slug>/plan.md
+Trigger-Why: <leave blank for dispatch-routed — populated from FactFindInvocationPayload.why; fill here for direct-inject path to supply the outcome contract source>
+Trigger-Intended-Outcome: <leave blank for dispatch-routed — populated from FactFindInvocationPayload.intended_outcome; fill here for direct-inject path; format: "type: measurable|operational | statement: <text> | source: operator|auto">
 ---
 
 # <Feature Name> Fact-Find Brief
@@ -35,6 +37,28 @@ Related-Plan: docs/plans/<feature-slug>/plan.md
   - ...
 - Assumptions:
   - ...
+
+## Outcome Contract
+
+<!--
+NON-OMITTABLE SECTION. This section cannot be skipped even if values are unknown.
+Minimum payload: Why: TBD and Source: auto if operator has not confirmed values.
+
+Propagation rules:
+- dispatch-routed path: populate Why and Intended Outcome from FactFindInvocationPayload
+  (which carries values from the dispatch.v2 packet via routeDispatchV2).
+- direct-inject path: read Trigger-Why and Trigger-Intended-Outcome from frontmatter above;
+  if both are present and non-empty, Source is "operator"; otherwise default to TBD / auto.
+- Legacy fact-finds (no Outcome Contract section): treated as Source: auto / Why: TBD downstream.
+
+Do not fabricate values. If the operator has not confirmed why this work is happening,
+use Why: TBD and Source: auto — these are excluded from quality metrics.
+-->
+
+- **Why:** <operator-authored explanation of why this work is happening now — e.g. "Channel mix shifted toward DTC; we need to validate sell-pack guidance impact on hostel ROI". Use TBD if unknown.>
+- **Intended Outcome Type:** <measurable | operational>
+- **Intended Outcome Statement:** <non-empty statement; for measurable: include metric + target + timeframe; for operational: describe process/doc deliverable; use TBD placeholder if unknown>
+- **Source:** <operator | auto> <!-- "operator" = confirmed by operator at Option B; "auto" = auto-generated fallback, excluded from quality metrics -->
 
 ## Evidence Audit (Current State)
 ### Entry Points
@@ -231,3 +255,7 @@ For each score, include evidence basis and what would raise it to >=80 and >=90.
 If a section has no evidence for this run, either:
 - omit it, or
 - keep one line: `Not investigated: <reason>`
+
+**Exception — non-omittable sections:**
+- `## Outcome Contract` — MUST be present. If operator has not confirmed values, use:
+  `Why: TBD` and `Source: auto`. Do not omit even for legacy or infrastructure-only fact-finds.

@@ -70,6 +70,8 @@
         "packages/email-templates/src/*",
         "packages/email-templates/dist/*"
       ],
+      "@acme/axerve": ["packages/axerve/src/index.ts", "packages/axerve/dist/index.d.ts"],
+      "@acme/axerve/*": ["packages/axerve/src/*", "packages/axerve/dist/*"],
       "@acme/stripe": ["packages/stripe/src/index.ts", "packages/stripe/dist/index.d.ts"],
       "@acme/stripe/*": ["packages/stripe/src/*", "packages/stripe/dist/*"],
       "@acme/sanity": ["packages/sanity/src/index.ts", "packages/sanity/dist/index.d.ts"],

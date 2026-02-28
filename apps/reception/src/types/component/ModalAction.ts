@@ -1,7 +1,7 @@
-/* src/types/ModalAction.ts */
+import type { LucideIcon } from "lucide-react";
 
 export interface ModalAction {
   label: string;
-  iconClass: string;
+  icon: LucideIcon;
   route: string;
 }

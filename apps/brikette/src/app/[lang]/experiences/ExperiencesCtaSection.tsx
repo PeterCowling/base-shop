@@ -12,6 +12,7 @@ type Props = {
   subtitle?: string;
   bookLabel?: string;
   onBookClick?: () => void;
+  bookHref?: string;
   eventsLabel?: string;
   eventsHref?: string;
   breakfastLabel?: string;
@@ -25,6 +26,7 @@ export function ExperiencesCtaSection({
   subtitle,
   bookLabel,
   onBookClick,
+  bookHref,
   eventsLabel,
   eventsHref,
   breakfastLabel,
@@ -58,9 +60,15 @@ export function ExperiencesCtaSection({
         ) : null}
         <Inline className="mt-7 flex-wrap justify-center gap-3">
           {bookLabel ? (
-            <Button onClick={onBookClick} size="lg">
-              {bookLabel}
-            </Button>
+            bookHref ? (
+              <Button asChild size="lg">
+                <a href={bookHref} onClick={(e) => { e.preventDefault(); onBookClick?.(); }}>{bookLabel}</a>
+              </Button>
+            ) : (
+              <Button onClick={onBookClick} size="lg">
+                {bookLabel}
+              </Button>
+            )
           ) : null}
           {eventsLabel && eventsHref ? (
             <Button asChild size="lg" tone="outline">

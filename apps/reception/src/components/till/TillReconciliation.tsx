@@ -1,6 +1,7 @@
 // src/components/till/TillReconciliation.tsx
 
 import { memo } from "react";
+import { AlertTriangle, Info } from "lucide-react";
 
 import { useTillReconciliationUI } from "../../hooks/client/till/useTillReconciliationUI";
 import { useTillReconciliationLogic } from "../../hooks/useTillReconciliationLogic";
@@ -31,13 +32,13 @@ function TillReconciliation(): JSX.Element {
 
   if (!props.user) {
     return (
-      <p className="p-5 text-error-main">Not authorized. Please log in.</p>
+      <p className="p-5 text-danger-fg">Not authorized. Please log in.</p>
     );
   }
 
   return (
     <PageShell title="TILL MANAGEMENT">
-      <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-8">
+      <div className="flex-grow bg-surface rounded-lg shadow-lg p-6 space-y-8">
         <DrawerLimitWarning
           show={props.isDrawerOverLimit}
           onLift={props.handleLiftClick}
@@ -60,13 +61,19 @@ function TillReconciliation(): JSX.Element {
           handleLiftClick={props.handleLiftClick}
         />
         {props.isEditMode && (
-          <div className="text-info-main text-sm font-semibold text-center">
-            Click a row to edit the transaction
+          <div className="bg-primary-soft border border-primary-main/30 rounded-lg px-4 py-3 flex items-center gap-3">
+            <Info className="text-primary-main shrink-0" size={16} aria-hidden="true" />
+            <span className="text-foreground text-sm font-semibold">
+              Click a row to edit the transaction
+            </span>
           </div>
         )}
         {props.isDeleteMode && (
-          <div className="text-error-main text-sm font-semibold text-center">
-            Click a row to delete the transaction
+          <div className="bg-warning/10 border border-warning rounded-lg px-4 py-3 flex items-center gap-3">
+            <AlertTriangle className="text-warning shrink-0" size={16} aria-hidden="true" />
+            <span className="text-foreground text-sm font-semibold">
+              Click a row to void the transaction
+            </span>
           </div>
         )}
         <FormsContainer

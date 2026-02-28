@@ -41,5 +41,11 @@
     ],
     "footer": "Endelig tilgjengelighet og betaling fullføres i vår offisielle bookingsløsning."
   },
-  "backToRooms": "Tilbake til rom"
+  "backToRooms": "Tilbake til rom",
+  "hostel": {
+    "directSavings": {
+      "eyebrow": "Book direct and save",
+      "headline": "Up to 25% less than Booking.com"
+    }
+  }
 }

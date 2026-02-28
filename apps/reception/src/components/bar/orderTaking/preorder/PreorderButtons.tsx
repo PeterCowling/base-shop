@@ -286,7 +286,7 @@ const PreorderButton: FC<PreorderButtonProps> = memo(({ data, onClick }) => {
         compatibilityMode="passthrough"
         className={`
           group flex h-80px w-28 flex-col items-center justify-center gap-0.5
-          rounded-lg bg-gradient-to-br from-info-main to-primary-main
+          rounded-lg bg-gradient-to-br from-primary-main to-primary-dark
           text-center font-semibold text-primary-fg shadow-lg ring-1 ring-inset ring-foreground/10
           transition-transform hover:scale-102 active:scale-95
           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring
@@ -325,10 +325,10 @@ const PreorderButton: FC<PreorderButtonProps> = memo(({ data, onClick }) => {
         <div
           className={`
             absolute bottom-full left-1/2 z-30 w-60 -translate-x-1/2
-            whitespace-pre-line rounded-md bg-black/90 px-3 py-2 text-13px font-medium text-primary-fg
+            whitespace-pre-line rounded-md bg-surface/95 px-3 py-2 text-13px font-medium text-primary-fg
             shadow-lg backdrop-blur-md
             before:absolute before:-bottom-1.5 before:left-1/2 before:-translate-x-1/2
-            before:h-3 before:w-3 before:rotate-45 before:rounded-md before:bg-black/90
+            before:h-3 before:w-3 before:rotate-45 before:rounded-md before:bg-surface/95
           `}
         >
           {tooltipText}
@@ -500,7 +500,7 @@ const PreorderButtons: FC<PreorderButtonsProps> = memo(() => {
         id="preorder-buttons-container"
         className={`
         auto-rows-fr grid-flow-row p-4
-        border-t border-info-main/40 bg-gradient-to-b from-surface to-surface-2
+        border-t border-primary-main/20 bg-gradient-to-b from-surface to-surface-2
         transition-all duration-800 md:grid-cols-auto-fill-7
       `}
       >

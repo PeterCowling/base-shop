@@ -55,17 +55,17 @@ const sizeStyles = {
 
 const variantStyles = {
   default: {
-    base: 'bg-white dark:bg-darkSurface text-gray-700 dark:text-darkAccentGreen border-gray-300 dark:border-darkSurface',
+    base: 'bg-surface dark:bg-darkSurface text-muted-foreground dark:text-darkAccentGreen border-border-2 dark:border-darkSurface',
     hover: 'hover:bg-gray-50 dark:hover:bg-gray-800',
-    active: 'active:bg-gray-100 dark:active:bg-gray-700',
+    active: 'active:bg-surface-2 dark:active:bg-gray-700',
   },
   primary: {
-    base: 'bg-blue-600 text-white border-blue-600',
+    base: 'bg-info-main text-primary-fg border-border-2',
     hover: 'hover:bg-blue-700',
     active: 'active:bg-blue-800',
   },
   danger: {
-    base: 'bg-red-600 text-white border-red-600',
+    base: 'bg-error-main text-primary-fg border-border-2',
     hover: 'hover:bg-red-700',
     active: 'active:bg-red-800',
   },
@@ -129,7 +129,7 @@ export function QuickActionBar({
               'relative flex items-center justify-center',
               'rounded-lg border font-medium',
               'transition-all duration-150',
-              'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
+              'focus:outline-none focus:ring-2 focus:ring-info-main focus:ring-offset-2',
               sizes.button,
               sizes.text,
               variant.base,
@@ -149,7 +149,7 @@ export function QuickActionBar({
                     'absolute -top-1 -right-1',
                     'flex items-center justify-center',
                     'rounded-full',
-                    'bg-red-500 text-white font-bold',
+                    'bg-error-main text-primary-fg font-bold',
                     sizes.badge
                   )}
                 >

@@ -58,7 +58,7 @@ export const DenominationInput = memo(function DenominationInput({
               compatibilityMode="no-wrapper"
               id={`${idPrefix}${idx}`}
               type="text"
-              className={`border ${borderClass} rounded p-1 text-sm w-[130px] text-center`}
+              className={`border ${borderClass} rounded-lg p-1 text-sm w-[130px] text-center`}
               value={localValues[idx]}
               onChange={(e) => {
                 const val = e.target.value;

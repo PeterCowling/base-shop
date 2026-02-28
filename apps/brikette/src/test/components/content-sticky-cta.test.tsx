@@ -88,8 +88,8 @@ describe("ContentStickyCta", () => {
     expect(screen.getByText("Lock in our best available rate in under two minutes.")).toBeInTheDocument();
     expect(screen.getByText("Skip third-party fees and get priority help from our Positano team.")).toBeInTheDocument();
 
-    // Find and click the CTA button
-    const ctaButton = screen.getByRole("button", { name: /check availability/i });
+    // CTA is now rendered as <a href> for no-JS fallback; role is "link"
+    const ctaButton = screen.getByRole("link", { name: /check availability/i });
     expect(ctaButton).toBeInTheDocument();
 
     fireEvent.click(ctaButton);
@@ -114,8 +114,8 @@ describe("ContentStickyCta", () => {
     // Verify CTA is rendered
     expect(getStickyCta()).toBeInTheDocument();
 
-    // Click the CTA button
-    const ctaButton = screen.getByRole("button", { name: /check availability/i });
+    // CTA is rendered as <a href> for no-JS fallback; role is "link"
+    const ctaButton = screen.getByRole("link", { name: /check availability/i });
     fireEvent.click(ctaButton);
 
     // Verify GA4 event was fired with correct location
@@ -132,7 +132,7 @@ describe("ContentStickyCta", () => {
     });
   });
 
-  it("TC-03: dismiss persists within session via sessionStorage", async () => {
+  it("TC-03: dismiss is per-surface — dismissing one surface does not suppress others", async () => {
     const { rerender } = render(
       <ContentStickyCta lang="en" ctaLocation="guide_detail" />
     );
@@ -147,14 +147,18 @@ describe("ContentStickyCta", () => {
     // Verify CTA is hidden after dismiss
     expect(getStickyCta()).not.toBeInTheDocument();
 
-    // Verify sessionStorage was set
-    expect(window.sessionStorage.getItem("content-sticky-cta-dismissed")).toBe("true");
+    // Verify sessionStorage uses per-surface key
+    expect(window.sessionStorage.getItem("content-sticky-cta-dismissed:guide_detail")).toBe("true");
+    // about_page key is NOT set — no cross-surface bleed
+    expect(window.sessionStorage.getItem("content-sticky-cta-dismissed:about_page")).toBeNull();
 
-    // Simulate navigation to another Tier 1 page (unmount and remount with different location)
+    // Switch to about_page — CTA should be visible (different surface key)
     rerender(<ContentStickyCta lang="en" ctaLocation="about_page" />);
 
-    // Verify CTA stays hidden (reads from sessionStorage)
-    expect(getStickyCta()).not.toBeInTheDocument();
+    // CTA is visible on about_page (per-surface key was not set for about_page)
+    await waitFor(() => {
+      expect(getStickyCta()).toBeInTheDocument();
+    });
   });
 
   it("TC-04: cta_click event fires with correct cta_id + cta_location enums for all Tier 1 pages", async () => {
@@ -172,7 +176,7 @@ describe("ContentStickyCta", () => {
         <ContentStickyCta lang="en" ctaLocation={location} />
       );
 
-      const ctaButton = screen.getByRole("button", { name: /check availability/i });
+      const ctaButton = screen.getByRole("link", { name: /check availability/i });
       fireEvent.click(ctaButton);
 
       await waitFor(() => {

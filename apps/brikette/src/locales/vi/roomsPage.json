@@ -66,6 +66,7 @@
   },
   "rooms": {
     "title": "Danh sách phòng",
+    "soldOut": "Hết chỗ",
     "double_room": {
       "title": "Phòng đôi",
       "bed_intro": "Tầm nhìn biển tuyệt đẹp — lý tưởng cho các cặp đôi.",
@@ -285,6 +286,7 @@
   "filtersAria": "Lọc theo loại phòng",
   "checkRatesNonRefundable": "Giá không hoàn tiền",
   "checkRatesFlexible": "Giá linh hoạt",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "Non‑Refundable",
     "flexible": "Flexible"

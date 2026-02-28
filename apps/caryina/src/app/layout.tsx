@@ -26,6 +26,31 @@ export const metadata: Metadata = {
   // i18n-exempt -- CARYINA-102 [ttl=2026-12-31]
   description:
     "Caryina mini bag charms and micro accessories designed in Positano, Italy.",
+  icons: {
+    icon: "/favicon.svg",
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/site.webmanifest",
+  openGraph: {
+    // i18n-exempt -- CARYINA-101 [ttl=2026-12-31]
+    title: "Caryina",
+    // i18n-exempt -- CARYINA-102 [ttl=2026-12-31]
+    description:
+      "Caryina mini bag charms and micro accessories designed in Positano, Italy.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        // i18n-exempt -- CARYINA-101 [ttl=2026-12-31]
+        alt: "Caryina",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({

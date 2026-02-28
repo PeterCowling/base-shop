@@ -66,6 +66,7 @@
   },
   "rooms": {
     "title": "Nasze pokoje",
+    "soldOut": "Wyprzedano",
     "double_room": {
       "title": "Pokój dwuosobowy",
       "bed_intro": "Zachwycające widoki na morze — idealny dla par.",
@@ -285,6 +286,7 @@
   "filtersAria": "Filtruj według typu pokoju",
   "checkRatesNonRefundable": "Stawki bezzwrotne",
   "checkRatesFlexible": "Elastyczne stawki",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "Niezbędne",
     "flexible": "Elastyczny"

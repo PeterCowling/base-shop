@@ -234,7 +234,7 @@ sell-pack.user.md   ──────►
 product-pack.user.md ─────►
 logistics-pack.user.md ───►
 any registered artifact ──►
-intake-packet.user.md ────►
+assessment-intake-packet.user.md ────►
                              plan.md
                              build-record.user.md
                              results-review.user.md ──► Layer A standing updates

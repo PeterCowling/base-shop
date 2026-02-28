@@ -48,7 +48,7 @@ Load the relevant module per command:
 
 | Module | Trigger |
 |---|---|
-| `modules/assessment-intake-sync.md` | Called by `cmd-start` and `cmd-advance` as part of ASSESSMENT-09 Intake contract validation (`GATE-ASSESSMENT-00`). Writes or refreshes `<BIZ>-intake-packet.user.md` from ASSESSMENT-01–ASSESSMENT-08 precursors. No-op when precursors are unchanged. |
+| `modules/assessment-intake-sync.md` | Called by `cmd-start` and `cmd-advance` as part of ASSESSMENT-09 Intake contract validation (`GATE-ASSESSMENT-00`). Writes or refreshes `<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md` from ASSESSMENT-01–ASSESSMENT-08 precursors. No-op when precursors are unchanged. |
 
 ## Required Output Contract
 
@@ -156,9 +156,7 @@ Stages (canonical IDs from loop-spec):
 | SELL-06 | Partnership and referral standing | prompt handoff | — |
 | SELL-07 | Sell aggregate pack | prompt handoff | — |
 | SELL-08 | Activation readiness (pre-spend) | `/startup-loop advance` | paid_spend_requested |
-| S4 | Baseline merge (join barrier) | `/lp-baseline-merge` | — |
-| S5A | Prioritize | `/lp-prioritize` | — |
-| S5B | BOS sync (sole mutation boundary) | `/lp-bos-sync` | — |
+| S4 | Baseline merge + manifest commit (join barrier) | `/lp-baseline-merge` | — |
 | WEBSITE | Website (container) | — | — |
 | WEBSITE-01 | L1 first build framework | `/lp-site-upgrade` (auto-handover to DO sequence `/lp-do-fact-find --website-first-build-backlog` -> `/lp-do-plan` -> `/lp-do-build` once Active) | launch-surface=pre-website |
 | WEBSITE-02 | Site-upgrade synthesis | `/lp-site-upgrade` (L1 Build 2 auto-mode: image-first merchandising for visual-heavy catalogs) | launch-surface=website-live |
@@ -169,6 +167,6 @@ Stages (canonical IDs from loop-spec):
 ## Global Invariants
 
 - Never allow silent stage skipping.
-- BOS sync must be confirmed complete before advance for all non-DO stages. See `modules/cmd-advance.md` for sync contract.
+- Never bypass the S4 merge-and-commit boundary before WEBSITE/DO progression.
 - Canonical source of truth is always `loop-spec.yaml` — not markdown mirrors of cards or ideas.
 - All stage references are resolved via stage-addressing.ts — never guess stage IDs.

@@ -90,7 +90,7 @@ export default function CarouselContainer({
           <Button
             type="button"
             variant="outline"
-            className="pointer-events-auto ms-2 h-10 w-10 min-h-10 min-w-10 p-0"
+            className="pointer-events-auto ms-2 h-10 w-10 min-h-11 min-w-11 p-0"
             onClick={() => scrollBy(-1)}
             aria-label={t("carousel.prev") as string}
           >
@@ -102,7 +102,7 @@ export default function CarouselContainer({
           <Button
             type="button"
             variant="outline"
-            className="pointer-events-auto me-2 h-10 w-10 min-h-10 min-w-10 p-0"
+            className="pointer-events-auto me-2 h-10 w-10 min-h-11 min-w-11 p-0"
             onClick={() => scrollBy(1)}
             aria-label={t("carousel.next") as string}
           >

@@ -14,7 +14,7 @@ import FitCheck from "@/components/apartment/FitCheck";
 import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
-import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
+import { addDays, getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 import { fireHandoffToEngine, fireWhatsappClick } from "@/utils/ga4-events";
 
 type Props = {
@@ -40,7 +40,7 @@ function buildOctorateLink(
   plan: "flex" | "nr",
   pax: 2 | 3
 ): string {
-  const base = "https://book.octorate.com/octobook/site/reservation/result.xhtml";
+  const base = "https://book.octorate.com/octobook/site/reservation/calendar.xhtml";
   const params = new URLSearchParams();
   params.set("codice", "45111");
   params.set("checkin", checkin);
@@ -113,7 +113,7 @@ function ApartmentBookContent({ lang }: Props) {
     // Canonical handoff event (TASK-05A). Beacon transport ensures delivery before same-tab navigation.
     fireHandoffToEngine({
       handoff_mode: "same_tab",
-      engine_endpoint: "result",
+      engine_endpoint: "calendar",
       checkin,
       checkout,
       pax,
@@ -166,7 +166,10 @@ function ApartmentBookContent({ lang }: Props) {
                 onChange={(e) => {
                   const newCheckin = e.target.value;
                   setCheckin(newCheckin);
-                  setCheckout(getDatePlusTwoDays(newCheckin));
+                  // Only advance checkout if it would become invalid; preserve the user's chosen duration
+                  if (!checkout || checkout <= newCheckin) {
+                    setCheckout(addDays(newCheckin, 1));
+                  }
                 }}
                 min={getTodayIso()}
                 className="w-full rounded-md border border-brand-outline/50 bg-brand-bg px-3 py-2 text-brand-text focus:border-brand-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/20"

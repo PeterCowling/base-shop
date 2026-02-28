@@ -11,6 +11,12 @@ import { resolvePrimaryCtaLabel } from "@acme/ui/shared";
 import { resolveBookingDateFormat } from "@acme/ui/utils/bookingDateFormat";
 
 import type { AppLanguage } from "@/i18n.config";
+import {
+  ensureMinCheckoutForStay,
+  getMinCheckoutForStay,
+  isValidPax,
+  isValidStayRange,
+} from "@/utils/bookingDateRules";
 import { fireCtaClick } from "@/utils/ga4-events";
 
 const BOOKING_QUERY_KEYS = {
@@ -26,8 +32,6 @@ const BOOKING_FIELD_IDS = {
   guests: "booking-guests",
 } as const;
 
-const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
-
 function formatLocalIso(date: Date): string {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -35,51 +39,10 @@ function formatLocalIso(date: Date): string {
   return `${year}-${month}-${day}`;
 }
 
-function parseDateInput(value: string, dateFormat: string): Date | null {
-  if (!value) return null;
-  if (ISO_DATE_PATTERN.test(value)) {
-    const [year, month, day] = value.split("-").map((part) => Number.parseInt(part, 10));
-    if (!year || !month || !day) return null;
-    const parsed = new Date(year, month - 1, day);
-    if (Number.isNaN(parsed.getTime())) return null;
-    return parsed;
-  }
-  const parts = value.split(/[./-]/);
-  if (parts.length !== 3) return null;
-  const [first, second, third] = parts;
-  if (!first || !second || !third) return null;
-  const format = dateFormat.toLowerCase();
-  const monthFirst = format.startsWith("mm");
-  const day = Number.parseInt(monthFirst ? second : first, 10);
-  const month = Number.parseInt(monthFirst ? first : second, 10);
-  const year = Number.parseInt(third, 10);
-  if (!year || !month || !day) return null;
-  const parsed = new Date(year, month - 1, day);
-  if (
-    parsed.getFullYear() !== year ||
-    parsed.getMonth() !== month - 1 ||
-    parsed.getDate() !== day
-  ) {
-    return null;
-  }
-  return parsed;
-}
-
-function isValidDate(value: string, dateFormat: string): boolean {
-  if (!value) return false;
-  return Boolean(parseDateInput(value, dateFormat));
-}
-
 function toPositiveInt(value: string): number {
   const parsed = Number.parseInt(value, 10);
   if (Number.isNaN(parsed) || parsed < 1) return 1;
   return parsed;
-}
-
-function getDateParts(value: string, dateFormat: string): number {
-  const parsed = parseDateInput(value, dateFormat);
-  if (!parsed) return Number.NaN;
-  return parsed.getTime();
 }
 
 type BookingWidgetProps = {
@@ -99,7 +62,7 @@ const BookingWidget = memo(function BookingWidget({
   const { t: tTokens } = useTranslation("_tokens", translationOptions);
   const { t: tLanding } = useTranslation("landingPage", translationOptions);
   const hasHydrated = useRef(false);
-  const { dateFormat, placeholder, inputLocale } = resolveBookingDateFormat(lang);
+  const { placeholder, inputLocale } = resolveBookingDateFormat(lang);
 
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
@@ -112,8 +75,10 @@ const BookingWidget = memo(function BookingWidget({
     hasHydrated.current = true;
     if (typeof window === "undefined") return;
     const params = new URLSearchParams(window.location.search);
-    setCheckIn(params.get(BOOKING_QUERY_KEYS.checkIn) ?? "");
-    setCheckOut(params.get(BOOKING_QUERY_KEYS.checkOut) ?? "");
+    const hydratedCheckIn = params.get(BOOKING_QUERY_KEYS.checkIn) ?? "";
+    const hydratedCheckOut = params.get(BOOKING_QUERY_KEYS.checkOut) ?? "";
+    setCheckIn(hydratedCheckIn);
+    setCheckOut(ensureMinCheckoutForStay(hydratedCheckIn, hydratedCheckOut));
     const guestsValue = params.get(BOOKING_QUERY_KEYS.guests);
     if (guestsValue) {
       setGuests(toPositiveInt(guestsValue));
@@ -153,8 +118,7 @@ const BookingWidget = memo(function BookingWidget({
 
   const invalidRange = (() => {
     if (!checkIn || !checkOut) return false;
-    if (!isValidDate(checkIn, dateFormat) || !isValidDate(checkOut, dateFormat)) return false;
-    return getDateParts(checkOut, dateFormat) <= getDateParts(checkIn, dateFormat);
+    return !isValidStayRange(checkIn, checkOut) || !isValidPax(guests);
   })();
 
   const fallbackAvailabilityLabel = tModals("booking.buttonAvailability") as string;
@@ -164,9 +128,14 @@ const BookingWidget = memo(function BookingWidget({
     }) ?? fallbackAvailabilityLabel;
 
   const handleCheckInChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setCheckIn(event.target.value);
+    const newCheckIn = event.target.value;
+    setCheckIn(newCheckIn);
     setShowError(false);
-  }, []);
+    const effectiveCheckOut = ensureMinCheckoutForStay(newCheckIn, checkOut);
+    if (effectiveCheckOut !== checkOut) {
+      setCheckOut(effectiveCheckOut);
+    }
+  }, [checkOut]);
 
   const handleCheckOutChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setCheckOut(event.target.value);
@@ -195,10 +164,9 @@ const BookingWidget = memo(function BookingWidget({
   const errorMessage = tLanding("bookingWidget.invalidDateRange") as string;
   const minCheckIn = today ?? undefined;
   const minCheckOut = (() => {
-    if (!checkIn) return today || undefined;
-    const parsed = parseDateInput(checkIn, dateFormat);
-    if (!parsed) return today || undefined;
-    return formatLocalIso(parsed);
+    const fallbackMinCheckout = today ? getMinCheckoutForStay(today) : null;
+    if (!checkIn) return fallbackMinCheckout ?? undefined;
+    return getMinCheckoutForStay(checkIn) ?? fallbackMinCheckout ?? undefined;
   })();
 
   return (

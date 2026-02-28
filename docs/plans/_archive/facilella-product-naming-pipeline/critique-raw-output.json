@@ -1,0 +1,38 @@
+{
+  "round_1": {
+    "mode": "file",
+    "findings": [
+      {
+        "severity": "warning",
+        "file": "docs/plans/facilella-product-naming-pipeline/plan.md",
+        "line": "316",
+        "message": "TASK-04 acceptance says company-naming eliminated names are disallowed, but TASK-04 notes later say they are **not excluded** (line 352). This is a direct rule conflict."
+      },
+      {
+        "severity": "warning",
+        "file": "docs/plans/facilella-product-naming-pipeline/plan.md",
+        "line": "250",
+        "message": "TASK-03 validation runs the CLI with 3 names and writes sidecar events, while TASK-05 later requires exactly 40 sidecar lines (line 380). Without a reset/new run file, the count check becomes non-deterministic."
+      },
+      {
+        "severity": "warning",
+        "file": "docs/plans/facilella-product-naming-pipeline/plan.md",
+        "line": "17",
+        "message": "`Confidence-Method` declares `min(Implementation,Approach,Impact)` weighting, but the final value is computed from a weighted average at lines 543–547. Method and calculation do not match."
+      }
+    ],
+    "verdict": "needs_revision",
+    "score": 8,
+    "lp_score": 4.0
+  },
+  "round_2": {
+    "mode": "file",
+    "findings": [],
+    "verdict": "approved",
+    "score": 10,
+    "lp_score": 5.0
+  },
+  "final_lp_score": 5.0,
+  "final_verdict": "approved",
+  "autofix_summary": "Three Major findings resolved: (1) removed contradictory company naming exclusion rule from TASK-04 acceptance; (2) TASK-03 test runs now explicitly use temp sidecar dir to prevent production sidecar contamination; (3) Confidence-Method clarified in frontmatter and calculation section to distinguish per-task min() from plan-level weighted average."
+}

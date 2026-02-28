@@ -146,6 +146,18 @@ function PriceBlock({ price }: { price?: RoomCardPrice }): JSX.Element | null {
         </div>
       ) : null}
 
+      {price.badge && !price.soldOut ? (
+        <a
+          href={price.badge.claimUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mb-2 inline-flex min-h-11 min-w-11 items-center gap-1 text-xs font-medium text-brand-primary underline-offset-2 hover:underline dark:text-brand-secondary"
+        >
+          <span aria-hidden="true">✓</span>
+          {price.badge.text}
+        </a>
+      ) : null}
+
       {price.soldOut && price.soldOutLabel ? (
         <p className="mb-3 text-base font-medium text-brand-primary dark:text-brand-secondary">
           {price.soldOutLabel}

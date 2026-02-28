@@ -1,0 +1,191 @@
+name: XA Apps CI
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+    paths:
+      - 'apps/xa-b/**'
+      - 'apps/xa-drop-worker/**'
+      - 'apps/xa-uploader/**'
+      - '.github/workflows/xa.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: xa-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Lint & Typecheck
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup repo
+        uses: ./.github/actions/setup-repo
+
+      - name: Build workspace package dependencies
+        run: pnpm exec turbo run build --filter=@apps/xa-b^... --filter=@apps/xa-drop-worker^... --filter=@apps/xa-uploader^...
+
+      - name: Lint xa-b
+        run: pnpm --filter @apps/xa-b lint
+
+      - name: Lint xa-drop-worker
+        run: pnpm --filter @apps/xa-drop-worker lint
+
+      - name: Lint xa-uploader
+        run: pnpm --filter @apps/xa-uploader lint
+
+      - name: Typecheck xa-b
+        run: pnpm --filter @apps/xa-b typecheck
+
+      - name: Typecheck xa-drop-worker
+        run: pnpm --filter @apps/xa-drop-worker typecheck
+
+      - name: Typecheck xa-uploader
+        run: pnpm --filter @apps/xa-uploader typecheck
+
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup repo
+        uses: ./.github/actions/setup-repo
+
+      - name: Build workspace package dependencies
+        run: pnpm exec turbo run build --filter=@apps/xa-b^... --filter=@apps/xa-drop-worker^... --filter=@apps/xa-uploader^...
+
+      - name: Test xa-b
+        run: pnpm --filter @apps/xa-b test
+
+      - name: Test xa-drop-worker
+        run: pnpm --filter @apps/xa-drop-worker test
+
+      - name: Test xa-uploader
+        run: pnpm --filter @apps/xa-uploader test
+
+  deploy-drop-worker:
+    name: Deploy xa-drop-worker (staging)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [test]
+    concurrency:
+      group: xa-deploy-drop-worker-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup repo
+        uses: ./.github/actions/setup-repo
+
+      - name: Build xa-drop-worker
+        run: pnpm --filter @apps/xa-drop-worker build
+
+      - name: Deploy xa-drop-worker to staging
+        run: cd apps/xa-drop-worker && pnpm exec wrangler deploy --env preview
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+  deploy-xa-b:
+    name: Deploy xa-b (Pages)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [test]
+    concurrency:
+      group: xa-deploy-xa-b-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup repo
+        uses: ./.github/actions/setup-repo
+
+      - name: Build workspace package dependencies
+        run: pnpm exec turbo run build --filter=@apps/xa-b^...
+
+      - name: Build xa-b (static export)
+        run: cd apps/xa-b && pnpm build
+        env:
+          XA_CATALOG_CONTRACT_READ_URL: ${{ vars.XA_CATALOG_CONTRACT_READ_URL }}
+
+      - name: Remove __next.* metadata files (CF Pages 20k file limit)
+        run: find apps/xa-b/out -name '__next.*' -type f -delete
+
+      - name: Deploy xa-b to Cloudflare Pages
+        run: cd apps/xa-b && pnpm exec wrangler pages deploy out/ --project-name xa-b-site
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Validate out/ directory
+        run: |
+          if [ -d apps/xa-b/out ] && [ "$(find apps/xa-b/out -maxdepth 1 -mindepth 1 | wc -l)" -gt 0 ]; then
+            echo "out/ is non-empty"
+          else
+            echo "FAIL: out/ missing or empty"
+            exit 1
+          fi
+
+  deploy-xa-uploader:
+    name: Deploy xa-uploader (staging)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [test]
+    concurrency:
+      group: xa-deploy-xa-uploader-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup repo
+        uses: ./.github/actions/setup-repo
+
+      - name: Build workspace package dependencies
+        run: pnpm exec turbo run build --filter=@apps/xa-uploader^...
+
+      - name: Build xa-uploader (OpenNext)
+        run: cd apps/xa-uploader && pnpm exec opennextjs-cloudflare build
+
+      - name: Deploy xa-uploader to staging
+        run: cd apps/xa-uploader && pnpm exec wrangler deploy --env preview
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Health check xa-uploader
+        run: |
+          WORKER_URL="https://xa-uploader-preview.${CLOUDFLARE_ACCOUNT_ID}.workers.dev"
+          response=$(curl -s -o /dev/null -w "%{http_code}" "${WORKER_URL}/")
+          echo "Health check response: HTTP ${response}"
+          if [[ "$response" -ge 500 ]] 2>/dev/null; then
+            echo "Health check FAILED: HTTP ${response} (server error)"
+            exit 1
+          elif [[ -z "$response" || "$response" == "000" ]]; then
+            echo "Health check FAILED: no response (Worker unreachable)"
+            exit 1
+          fi
+          echo "Health check PASSED (HTTP ${response})"
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

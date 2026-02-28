@@ -11,7 +11,7 @@ const BASE_PARAMS = {
 
 // TC-01: NR plan for double_room (widgetRateCodeNR: "433883")
 describe("buildOctorateUrl — NR plan", () => {
-  it("returns ok:true and calendar URL containing checkin/checkout/codice/date/room for NR rate code (double_room)", () => {
+  it("returns ok:true and result URL containing room/date/checkin/checkout for NR rate code (double_room)", () => {
     const result = buildOctorateUrl({
       ...BASE_PARAMS,
       plan: "nr",
@@ -22,7 +22,8 @@ describe("buildOctorateUrl — NR plan", () => {
     expect(result.ok).toBe(true);
     if (!result.ok) throw new Error("Expected ok:true");
 
-    expect(result.url).toContain("book.octorate.com/octobook/site/reservation/calendar.xhtml");
+    expect(result.url).toContain("book.octorate.com/octobook/site/reservation/result.xhtml");
+    expect(result.url).toContain("adulti=2");
     expect(result.url).toContain("checkin=2025-07-01");
     expect(result.url).toContain("checkout=2025-07-05");
     expect(result.url).toContain("date=2025-07-01");
@@ -42,6 +43,7 @@ describe("buildOctorateUrl — NR plan", () => {
     if (!result.ok) throw new Error("Expected ok:true");
 
     expect(result.url).toContain("room=433887");
+    expect(result.url).toContain("adulti=2");
     expect(result.url).toContain("date=2025-07-01");
     expect(result.url).toContain("codice=45111");
     expect(result.url).toContain("checkin=2025-07-01");
@@ -63,6 +65,7 @@ describe("buildOctorateUrl — Flex plan", () => {
     if (!result.ok) throw new Error("Expected ok:true");
 
     expect(result.url).toContain("room=433894");
+    expect(result.url).toContain("adulti=2");
     expect(result.url).toContain("date=2025-07-01");
     expect(result.url).toContain("codice=45111");
     expect(result.url).toContain("checkin=2025-07-01");
@@ -211,11 +214,55 @@ describe("buildOctorateUrl — validation guards", () => {
     if (result.ok) throw new Error("Expected ok:false");
     expect(result.error).toBe("invalid_dates");
   });
+
+  it("returns ok:false with error invalid_dates when stay is shorter than two nights", () => {
+    const result = buildOctorateUrl({
+      ...BASE_PARAMS,
+      checkin: "2025-07-01",
+      checkout: "2025-07-02",
+      plan: "nr",
+      roomSku: "double_room",
+      octorateRateCode: "433883",
+    });
+
+    expect(result.ok).toBe(false);
+    if (result.ok) throw new Error("Expected ok:false");
+    expect(result.error).toBe("invalid_dates");
+  });
+
+  it("returns ok:false with error invalid_dates when stay is longer than eight nights", () => {
+    const result = buildOctorateUrl({
+      ...BASE_PARAMS,
+      checkin: "2025-07-01",
+      checkout: "2025-07-10",
+      plan: "nr",
+      roomSku: "double_room",
+      octorateRateCode: "433883",
+    });
+
+    expect(result.ok).toBe(false);
+    if (result.ok) throw new Error("Expected ok:false");
+    expect(result.error).toBe("invalid_dates");
+  });
+
+  it("returns ok:false with error invalid_dates when pax exceeds eight", () => {
+    const result = buildOctorateUrl({
+      ...BASE_PARAMS,
+      pax: 9,
+      plan: "nr",
+      roomSku: "double_room",
+      octorateRateCode: "433883",
+    });
+
+    expect(result.ok).toBe(false);
+    if (result.ok) throw new Error("Expected ok:false");
+    expect(result.error).toBe("invalid_dates");
+  });
 });
 
 // Exact URL structure assertions
 describe("buildOctorateUrl — exact URL structure", () => {
-  it("NR double_room: URL starts with correct calendar.xhtml base and has all required params", () => {
+  it("NR double_room: URL starts with correct result.xhtml base and has all required params", () => {
     const result = buildOctorateUrl({
       checkin: "2025-07-01",
       checkout: "2025-07-05",
@@ -231,14 +278,15 @@ describe("buildOctorateUrl — exact URL structure", () => {
 
     const url = new URL(result.url);
     expect(url.origin + url.pathname).toBe(
-      "https://book.octorate.com/octobook/site/reservation/calendar.xhtml"
+      "https://book.octorate.com/octobook/site/reservation/result.xhtml"
     );
     expect(url.searchParams.get("codice")).toBe("45111");
+    expect(url.searchParams.get("adulti")).toBe("2");
     expect(url.searchParams.get("date")).toBe("2025-07-01");
     expect(url.searchParams.get("checkin")).toBe("2025-07-01");
     expect(url.searchParams.get("checkout")).toBe("2025-07-05");
     expect(url.searchParams.get("room")).toBe("433883");
-    expect(url.searchParams.has("pax")).toBe(false);
+    expect(url.searchParams.get("pax")).toBe("2");
   });
 
   it("Flex double_room: URL has correct flex rate code and date", () => {
@@ -258,7 +306,8 @@ describe("buildOctorateUrl — exact URL structure", () => {
     const url = new URL(result.url);
     expect(url.searchParams.get("room")).toBe("433894");
     expect(url.searchParams.get("date")).toBe("2025-08-10");
-    expect(url.searchParams.has("pax")).toBe(false);
+    expect(url.searchParams.get("adulti")).toBe("1");
+    expect(url.searchParams.get("pax")).toBe("1");
   });
 
   it("deal=SUMMER25: URL has deal + UTM params appended correctly", () => {

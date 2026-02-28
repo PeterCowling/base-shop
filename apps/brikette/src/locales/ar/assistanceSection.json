@@ -11,6 +11,7 @@
   "otherBookingOptions": "خيارات حجز أخرى ووسائل التواصل الاجتماعي",
   "addressLabel": "العنوان:",
   "addressValue": "Via G. Marconi, 358, 84017, Positano",
+  "bookDirect": "احجز مباشرة",
   "bookingOptions": {
     "googleBusiness": "جوجل للأعمال",
     "bookingCom": "Booking.com",

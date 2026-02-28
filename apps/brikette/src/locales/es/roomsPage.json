@@ -66,6 +66,7 @@
   },
   "rooms": {
     "title": "Nuestras habitaciones",
+    "soldOut": "Agotado",
     "double_room": {
       "title": "Habitación Doble",
       "bed_intro": "Impresionantes vistas al mar: perfecta para parejas.",
@@ -285,6 +286,7 @@
   "filtersAria": "Filtrar por tipo de habitación",
   "checkRatesNonRefundable": "Tarifas no reembolsables",
   "checkRatesFlexible": "Tarifas flexibles",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "No reembolsable",
     "flexible": "Flexible"

@@ -1,0 +1,37 @@
+{
+  "round": 2,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/brik-reception-user-provisioning/plan.md",
+      "line": "95",
+      "message": "Proposed approach still says client sends `idToken` in request body, but constraints/TASK-04 now require using the verified bearer token from `Authorization`; this security-contract mismatch can cause implementation drift."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/brik-reception-user-provisioning/plan.md",
+      "line": "403",
+      "message": "TASK-05 suggests `sendPasswordResetEmail(auth, email)` with \"auth instance from `import { auth } from \\\"../../services/firebaseAuth\\\"`\", but no `auth` export exists in `firebaseAuth.ts`; following this step will fail at build time."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/brik-reception-user-provisioning/plan.md",
+      "line": "503",
+      "message": "Overall acceptance still requires `roles` as an array, conflicting with the corrected map-form requirement (`{[role]: true}`) needed for DB rules enforcement."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/brik-reception-user-provisioning/plan.md",
+      "line": "516",
+      "message": "Decision log still records \"`idToken` forwarded from client in request body,\" which contradicts the updated bearer-token approach documented earlier."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "lp_score": 4.0,
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019c9a09-f0b4-7291-8993-723d4d4bb701",
+  "durationMs": 38010,
+  "note": "No Critical findings present after Round 2 — Round 3 not triggered. lp_score 4.0 = credible. All Round 2 warnings addressed in post-round autofixes."
+}

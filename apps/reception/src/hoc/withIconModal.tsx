@@ -1,8 +1,9 @@
-/* File: /src/hoc/withIconModal.tsx */
+"use client";
+
 import { useRouter } from "next/navigation";
 
 import { Button } from "@acme/design-system/atoms";
-import { Grid } from "@acme/design-system/primitives";
+import { cn } from "@acme/design-system/utils/style";
 import { SimpleModal } from "@acme/ui/molecules";
 
 import { type ModalAction } from "../types/component/ModalAction";
@@ -35,30 +36,35 @@ export function withIconModal(config: WithIconModalConfig) {
         isOpen={visible}
         onClose={onClose}
         title={config.label}
-        maxWidth="max-w-md"
+        maxWidth="max-w-lg"
+        backdropClassName="bg-surface/80 backdrop-blur-md"
         footer={
           <Button color="default" tone="outline" onClick={onClose}>
             Close
           </Button>
         }
       >
-        <Grid cols={2} gap={4}>
-          {config.actions.map((action, index) => (
-            <button
-              key={index}
-              onClick={() => handleActionClick(action.route)}
-              disabled={!interactive}
-              className={`flex flex-col items-center justify-center rounded border p-4 transition-colors ${
-                interactive
-                  ? "cursor-pointer hover:bg-surface-2"
-                  : "opacity-50 cursor-not-allowed"
-              }`}
-            >
-              <i className={`${action.iconClass} text-3xl mb-2`} />
-              <span className="text-sm">{action.label}</span>
-            </button>
-          ))}
-        </Grid>
+        <div className="grid grid-cols-3 gap-3">
+          {config.actions.map((action) => {
+            const Icon = action.icon;
+            return (
+              <button
+                key={action.route}
+                onClick={() => handleActionClick(action.route)}
+                disabled={!interactive}
+                className={cn(
+                  "flex flex-col items-center justify-center gap-3 rounded-lg border bg-surface-2 p-5 transition-all duration-150 text-center",
+                  interactive
+                    ? "cursor-pointer border-border-2 text-primary-main hover:border-primary hover:bg-primary-soft active:scale-95"
+                    : "cursor-not-allowed border-border-1 text-muted-foreground opacity-40"
+                )}
+              >
+                <Icon size={26} className="shrink-0" />
+                <span className="text-sm font-medium leading-tight text-foreground">{action.label}</span>
+              </button>
+            );
+          })}
+        </div>
       </SimpleModal>
     );
   };

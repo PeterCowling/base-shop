@@ -113,7 +113,7 @@ describe("Extension", () => {
   it("shows loading state", () => {
     bookingsMock.mockReturnValue({ bookings: {}, loading: true, error: null });
     render(<Extension />);
-    expect(screen.getByText(/Loading extension data/)).toBeInTheDocument();
+    expect(document.querySelector('[aria-busy="true"]')).toBeInTheDocument();
   });
 
   it("shows error state", () => {

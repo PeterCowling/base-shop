@@ -8,6 +8,7 @@ import { Button } from "@acme/design-system/atoms";
 
 import useActivitiesMutations from "../../hooks/mutations/useActivitiesMutations";
 import { type CheckInRow } from "../../types/component/CheckinRow";
+import { Spinner } from "../common/Spinner";
 
 /**
  * Known activity codes for display hints
@@ -125,15 +126,15 @@ function StatusButton({ booking }: StatusButtonProps) {
    */
   const getButtonStyle = useCallback((code: number): string => {
     if (code === 12) {
-      // "Check-in complete" => greenish
-      return "bg-success-light text-primary-fg cursor-pointer hover:opacity-80";
+      // "Check-in complete" — success green; light text for contrast on dark bg
+      return "bg-success-main/100 text-foreground cursor-pointer hover:opacity-80";
     }
     if (code === 23) {
-      // "Bags dropped" => a warning color
-      return "bg-warning-main text-primary-fg hover:opacity-80";
+      // "Bags dropped" — warning amber; light text for contrast on dark bg
+      return "bg-warning-main/100 text-foreground hover:opacity-80";
     }
-    // default or no code => normal
-    return "bg-primary-main text-primary-fg hover:bg-primary-dark";
+    // code=0 => not yet arrived — muted inactive state
+    return "bg-surface-3 text-foreground/60 hover:opacity-90";
   }, []);
 
   /**
@@ -205,18 +206,15 @@ function StatusButton({ booking }: StatusButtonProps) {
    */
   const buttonClass = `
     ${getButtonStyle(occupantCode)}
-    px-4 py-2
+    h-9 w-9
     rounded-md
-    shadow
     flex
     items-center
     justify-center
     transition-all
-    duration-300
+    duration-200
     disabled:opacity-60
     disabled:cursor-not-allowed
-    min-h-55px
-    min-w-[55px]
   `;
 
   /**
@@ -225,6 +223,7 @@ function StatusButton({ booking }: StatusButtonProps) {
   return (
     <>
       <Button
+        compatibilityMode="passthrough"
         onClick={handleStatusChange}
         disabled={isDisabled}
         className={buttonClass}
@@ -232,30 +231,11 @@ function StatusButton({ booking }: StatusButtonProps) {
         aria-label={`Status: ${activityCodes[occupantCode] || "Pending"}`}
       >
         {loading ? (
-          // spinner
-          <svg
-            className="animate-spin h-5 w-5 transition-opacity duration-300"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-              fill="none"
-            />
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 018 8"
-            />
-          </svg>
+          <Spinner size="sm" className="transition-opacity duration-300" />
         ) : (
           (() => {
             const StatusIcon = getStatusIcon(occupantCode);
-            return <StatusIcon size={20} className="transition-opacity duration-300" />;
+            return <StatusIcon size={24} className="transition-opacity duration-300" />;
           })()
         )}
       </Button>

@@ -78,7 +78,7 @@ export default function HeaderSection({
     return (
       <div className="relative">
         <ExperimentGate flag={experimentKey ? `${experimentKey}:search` : undefined}>
-          <button aria-label={String(t("header.openSearch"))} className="p-2 min-h-10 min-w-10" onClick={() => setOpen(true)}>
+          <button aria-label={String(t("header.openSearch"))} className="p-2 min-h-11 min-w-11" onClick={() => setOpen(true)}>
             <span aria-hidden>🔎</span> {/* i18n-exempt -- DS-1027: icon glyph only [ttl=2026-12-31] */}
           </button>
         </ExperimentGate>
@@ -104,7 +104,7 @@ export default function HeaderSection({
               >
                 <Cluster justify="between" alignY="center" className="mb-2">
                   <h2 id="search-title" className="font-medium">{t("header.search")}</h2>
-                  <button aria-label={String(t("actions.close"))} className="min-h-10 min-w-10" onClick={() => setOpen(false)}>
+                  <button aria-label={String(t("actions.close"))} className="min-h-11 min-w-11" onClick={() => setOpen(false)}>
                     <span aria-hidden>✕</span> {/* i18n-exempt -- DS-1027: icon glyph only [ttl=2026-12-31] */}
                   </button>
                 </Cluster>
@@ -129,7 +129,7 @@ export default function HeaderSection({
       ) : null}
       <div className="relative mx-auto px-4 py-3">
         <Cluster alignY="center" gap={4}>
-          <Link className="font-bold inline-flex items-center min-h-10 min-w-10" href="/">{t("header.brand")}</Link>
+          <Link className="font-bold inline-flex items-center min-h-11 min-w-11" href="/">{t("header.brand")}</Link>
           {variant === "centerLogo" ? <div className="mx-auto" /> : null}
           <nav className="ms-auto">
             <Cluster alignY="center" gap={3}>
@@ -152,7 +152,7 @@ export default function HeaderSection({
             <ol>
               {breadcrumbs.map((c: { href: string; label: string }, i: number) => (
                 <li key={c.href} className="inline-block align-middle me-2 last:me-0">
-                  <Link href={c.href} className="inline-flex items-center min-h-10 min-w-10 hover:underline px-1">{c.label}</Link> {/* i18n-exempt -- DS-1024: dynamic route labels provided by router [ttl=2026-12-31] */}
+                  <Link href={c.href} className="inline-flex items-center min-h-11 min-w-11 hover:underline px-1">{c.label}</Link> {/* i18n-exempt -- DS-1024: dynamic route labels provided by router [ttl=2026-12-31] */}
                   {i < breadcrumbs.length - 1 ? <span className="mx-1" aria-hidden>/</span> : null} {/* i18n-exempt -- DS-1027: separator glyph only [ttl=2026-12-31] */}
                 </li>
               ))}

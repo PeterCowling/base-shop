@@ -6,7 +6,7 @@ Status: Active
 Created: 2026-02-17
 Last-reviewed: 2026-02-17
 Token-Source: packages/themes/prime/src/tokens.ts
-Related-Brand-Identity: docs/business-os/strategy/BRIK/brand-identity.user.md
+Related-Brand-Identity: docs/business-os/strategy/BRIK/2026-02-12-brand-identity-dossier.user.md
 Owner: Pete
 Review-trigger: After each completed build cycle touching this document.
 ---
@@ -54,7 +54,7 @@ guest portal. For cross-cutting brand decisions (voice, personality, audience), 
 
 ## Token Rationale
 
-See `docs/business-os/strategy/BRIK/brand-identity.user.md` § Token Rationale for the full table.
+See `docs/business-os/strategy/BRIK/2026-02-12-brand-identity-dossier.user.md` § Token Rationale for the full table.
 Key Prime-specific decisions:
 - `--color-primary`: Warm coral (replaces cold teal) — aligned to Airbnb/Glossier aesthetic for 18-25 female demographic
 - `--font-sans`: Plus Jakarta Sans — geometric warmth, high x-height for mobile legibility
@@ -78,7 +78,7 @@ _More patterns will be added as `/lp-design-spec` identifies them during feature
 
 ## References
 
-- Brand Dossier (cross-cutting brand decisions): `docs/business-os/strategy/BRIK/brand-identity.user.md`
+- Brand Dossier (cross-cutting brand decisions): `docs/business-os/strategy/BRIK/2026-02-12-brand-identity-dossier.user.md`
 - Prime theme tokens (source of truth): `packages/themes/prime/src/tokens.ts`
 - Base theme tokens: `packages/themes/base/src/tokens.ts`
 - Design system handbook: `docs/design-system-handbook.md`

@@ -34,7 +34,7 @@ export default function TabsAccordionContainer({ children, mode = "tabs", tabs, 
             <button
               type={"button" /* i18n-exempt -- I18N-0003 [ttl=2025-01-31] HTML attribute value */}
               // i18n-exempt -- I18N-0003 [ttl=2025-01-31] CSS utility class strings
-              className="w-full px-3 py-2 text-start font-medium min-h-10 min-w-10"
+              className="w-full px-3 py-2 text-start font-medium min-h-11 min-w-11"
               onClick={() => setActive((prev) => (prev === i ? -1 : i))}
               aria-expanded={active === i}
             >
@@ -70,7 +70,7 @@ export default function TabsAccordionContainer({ children, mode = "tabs", tabs, 
           const title = titles[i];
           // i18n-exempt -- ABC-123 [ttl=2025-01-31] CSS utility classes only
           // i18n-exempt -- ABC-123 [ttl=2025-01-31]
-          const base = "-mb-px border-b-2 px-3 py-2 text-sm min-h-10 min-w-10";
+          const base = "-mb-px border-b-2 px-3 py-2 text-sm min-h-11 min-w-11";
           // i18n-exempt -- ABC-123 [ttl=2025-01-31]
           const stateActive = "border-foreground";
           // i18n-exempt -- ABC-123 [ttl=2025-01-31]

@@ -185,7 +185,7 @@ function AutoComplete({
         placeholder={placeholder}
         className={
           inputClassName ||
-          "w-full border border-border-2 rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-ring"
+          "w-full border border-border-2 rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-ring"
         }
       />
 

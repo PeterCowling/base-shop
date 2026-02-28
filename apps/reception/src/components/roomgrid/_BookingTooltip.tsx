@@ -34,7 +34,7 @@ const BookingTooltip: FC<BookingTooltipProps> = ({
         left: position.x + 10,
         zIndex: 10000, // Ensure it appears on top
       }}
-      className="pointer-events-none rounded bg-surface-3 px-2 py-1 text-primary-fg"
+      className="pointer-events-none rounded-lg bg-surface-3 px-2 py-1 text-primary-fg"
     >
       <p>
         <strong>

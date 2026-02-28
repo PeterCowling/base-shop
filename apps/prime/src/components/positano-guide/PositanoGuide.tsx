@@ -1,3 +1,4 @@
+/* eslint-disable ds/container-widths-only-at, ds/min-tap-size -- BRIK-3 prime DS rules deferred */
 /**
  * PositanoGuide.tsx
  *
@@ -184,14 +185,15 @@ const PositanoGuide: FC = memo(function PositanoGuide() {
   }, [router, searchParams]);
 
   return (
-    <div className="min-h-screen bg-muted">
+    <div className="min-h-svh bg-muted">
       {/* Header */}
+      {/* eslint-disable-next-line ds/no-nonlayered-zindex -- PRIME-1: positano guide sticky header, awaiting DS modal/popover migration */}
       <header className="sticky top-0 z-10 border-b border-border bg-card px-4 py-3">
         <div className="mx-auto flex max-w-lg items-center gap-3">
           <button
             onClick={handleBack}
             className="rounded-full p-2 transition-colors hover:bg-muted"
-            aria-label="Go back"
+            aria-label={t('nav.goBack')}
           >
             <ArrowLeft className="h-5 w-5 text-foreground" />
           </button>
@@ -201,7 +203,7 @@ const PositanoGuide: FC = memo(function PositanoGuide() {
             </h1>
             <p className="text-sm text-muted-foreground">{t('meta.subtitle')}</p>
           </div>
-          <MapPin className="ml-auto h-5 w-5 text-success" />
+          <MapPin className="ms-auto h-5 w-5 text-success" />
         </div>
       </header>
 
@@ -215,6 +217,7 @@ const PositanoGuide: FC = memo(function PositanoGuide() {
           </span>
         </div>
 
+        {/* eslint-disable ds/no-hardcoded-copy -- PRIME-1: sectionId values are HTML element IDs for in-page scroll navigation, not UI copy */}
         {/* Morning section */}
         <GuideSection
           sectionId="guide-morning"
@@ -248,6 +251,7 @@ const PositanoGuide: FC = memo(function PositanoGuide() {
           icon={Sunset}
         />
 
+        {/* eslint-enable ds/no-hardcoded-copy */}
         {/* Attribution */}
         <div className="mt-8 text-center text-xs text-muted-foreground">
           {t('cta.poweredBy')}

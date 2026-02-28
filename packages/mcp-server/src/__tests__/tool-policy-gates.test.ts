@@ -16,7 +16,7 @@ describe("tool policy gates", () => {
         business: "BRIK",
         cardId: "BRIK-ENG-0001",
         runId: "2026-02-13-run-01",
-        current_stage: "S5B",
+        current_stage: "S4",
       },
       knownToolNames: new Set(["bos_cards_list"]),
       policyMap: parsePolicyMap({}),
@@ -46,7 +46,7 @@ describe("tool policy gates", () => {
         business: "BRIK",
         cardId: "BRIK-ENG-0001",
         runId: "2026-02-13-run-01",
-        current_stage: "S5B",
+        current_stage: "S4",
       },
       knownToolNames: new Set(["bos_stage_doc_get"]),
       policyMap,
@@ -56,7 +56,7 @@ describe("tool policy gates", () => {
     const payload = JSON.parse(result?.content[0]?.text ?? "{}");
     expect(payload.error.code).toBe("FORBIDDEN_STAGE");
     expect(payload.error.message).toContain("bos_stage_doc_get");
-    expect(payload.error.message).toContain("S5B");
+    expect(payload.error.message).toContain("S4");
   });
 
   it("TC-03: strict read tool with valid context passes preflight", () => {
@@ -64,7 +64,7 @@ describe("tool policy gates", () => {
       bos_stage_doc_get: {
         permission: "read",
         sideEffects: "none",
-        allowedStages: ["S5B", "DO"],
+        allowedStages: ["S4", "DO"],
         auditTag: "bos:stage-doc:get",
         contextRequired: ["business", "cardId", "runId"],
         sensitiveFields: ["baseEntitySha"],
@@ -91,7 +91,7 @@ describe("tool policy gates", () => {
       bos_stage_doc_patch_guarded: {
         permission: "guarded_write",
         sideEffects: "bos_write",
-        allowedStages: ["S5B", "DO"],
+        allowedStages: ["DO", "S9B"],
         auditTag: "bos:stage-doc:patch",
         contextRequired: ["business", "cardId", "runId"],
         requiresEntitySha: true,
@@ -105,7 +105,7 @@ describe("tool policy gates", () => {
         business: "BRIK",
         cardId: "BRIK-ENG-0001",
         runId: "2026-02-13-run-01",
-        current_stage: "S5B",
+        current_stage: "DO",
         baseEntitySha: "abc123",
       },
       knownToolNames: new Set(["bos_stage_doc_patch_guarded"]),
@@ -118,7 +118,7 @@ describe("tool policy gates", () => {
         business: "BRIK",
         cardId: "BRIK-ENG-0001",
         runId: "2026-02-13-run-01",
-        current_stage: "S5B",
+        current_stage: "DO",
         write_reason: "sync plan to stage doc",
       },
       knownToolNames: new Set(["bos_stage_doc_patch_guarded"]),

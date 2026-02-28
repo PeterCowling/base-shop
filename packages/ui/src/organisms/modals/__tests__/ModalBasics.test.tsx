@@ -267,7 +267,7 @@ describe("TASK-07: modal layout contract (TC-07)", () => {
     const el = container.firstChild as HTMLElement;
     expect(el.className).toMatch(/overflow-y-auto/);
     expect(el.className).toMatch(/overscroll-contain/);
-    expect(el.className).toMatch(/max-h-\[90dvh\]/);
+    expect(el.className).toMatch(/max-h-dvh/);
   });
 
   it("ModalScrollArea renders with scroll contract classes", () => {

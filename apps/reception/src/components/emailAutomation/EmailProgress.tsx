@@ -9,6 +9,7 @@ import useEmailProgressData, {
 } from "../../hooks/client/checkin/useEmailProgressData";
 import useEmailProgressActions from "../../hooks/orchestrations/emailAutomation/useEmailProgressActions";
 import { PageShell } from "../common/PageShell";
+import { Spinner } from "../common/Spinner";
 
 import EmailProgressLists from "./EmailProgressLists";
 
@@ -57,14 +58,14 @@ const EmailProgress: React.FC<EmailProgressProps> = ({
   // Render
   return (
     <PageShell title="EMAIL OPT-IN">
-      <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-4">
+      <div className="flex-grow bg-surface rounded-lg shadow-lg p-6 space-y-4">
         {/* Loading or Error State */}
         {loading ? (
           <div className="flex justify-center items-center my-6">
-            <div className="w-8 h-8 border-4 border-border-2 border-t-transparent rounded-full animate-spin" />
+            <Spinner size="md" />
           </div>
         ) : error ? (
-          <div className="text-error-main font-semibold text-center mt-8">
+          <div className="text-danger-fg font-semibold text-center mt-8 p-3 bg-danger-fg/10 rounded-lg border border-danger-fg/30">
             Error loading email progress data:{" "}
             {error instanceof Error ? error.message : String(error)}
           </div>
@@ -83,7 +84,7 @@ const EmailProgress: React.FC<EmailProgressProps> = ({
                   compatibilityMode="no-wrapper"
                   id="filterInput"
                   type="text"
-                  className="w-full border border-primary-light rounded px-3 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-main"
+                  className="w-full border border-border-strong rounded-lg px-3 py-1"
                   placeholder="Type to filter..."
                   value={filterText}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>

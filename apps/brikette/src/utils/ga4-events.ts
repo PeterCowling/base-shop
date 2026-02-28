@@ -18,6 +18,7 @@ export const GA4_ENUMS = {
     "deals_book_direct",
     "content_sticky_check_availability",
     "offers_modal_reserve",
+    "experiences_book_cta",
   ] as const,
   ctaLocation: [
     "desktop_header",
@@ -28,6 +29,7 @@ export const GA4_ENUMS = {
     "book_page",
     "room_detail",
     "deals_page",
+    "experiences_page",
     "guide_detail",
     "about_page",
     "bar_menu",
@@ -410,7 +412,7 @@ export function fireViewItem(params: { itemId: string; itemName?: string }): voi
 // Required params: handoff_mode, engine_endpoint, checkin, checkout, pax.
 
 export type HandoffMode = "new_tab" | "same_tab";
-export type EngineEndpoint = "result" | "confirm";
+export type EngineEndpoint = "calendar" | "result" | "confirm";
 
 export interface HandoffToEngineParams {
   handoff_mode: HandoffMode;

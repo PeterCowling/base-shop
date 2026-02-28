@@ -50,14 +50,14 @@ const ArchiveConfirmationModal: FC<ArchiveConfirmationModalProps> = ({
         <div className="flex justify-end space-x-3">
           <Button
             onClick={onClose}
-            className="px-4 py-2 rounded bg-surface-3 hover:bg-surface-3 text-foreground"
+            className="px-4 py-2 rounded-lg bg-surface-3 hover:bg-surface-3 text-foreground"
           >
             Cancel
           </Button>
           <Button
             onClick={handleConfirm}
             disabled={loading}
-            className="px-4 py-2 rounded bg-primary-main hover:bg-primary-dark text-primary-fg"
+            className="px-4 py-2 rounded-lg bg-primary-main hover:bg-primary-dark text-primary-fg"
           >
             {loading ? "Archiving..." : "Archive"}
           </Button>

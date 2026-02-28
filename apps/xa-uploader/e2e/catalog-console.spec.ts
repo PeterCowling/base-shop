@@ -117,4 +117,33 @@ test.describe("catalog console e2e", () => {
     await expect(syncFeedback).toContainText("Sync completed.");
     await expect(runSyncButton).toBeFocused();
   });
+
+  test("TC-09-03 real sync (non-dry-run) succeeds and keeps keyboard access on the sync action", async ({
+    page,
+  }) => {
+    await loginViaKeyboard(page);
+    await fillRequiredProductFields(page);
+
+    const saveButton = page.getByTestId("catalog-save-details");
+    await saveButton.click();
+    await expect(page.getByTestId("catalog-draft-feedback")).toContainText("Saved product details.", {
+      timeout: 120_000,
+    });
+
+    // dryRun toggle is NOT checked — default state is dryRun: false per useCatalogConsole initial state.
+    // This is the key difference from TC-09-02: we leave dryRun unchecked so the publish step executes.
+
+    const syncReadiness = page.getByTestId("catalog-sync-readiness");
+    await expect(syncReadiness).toContainText("Sync dependencies are ready.");
+
+    const runSyncButton = page.getByTestId("catalog-run-sync");
+    await expect(runSyncButton).toBeEnabled();
+    await runSyncButton.focus();
+    await expect(runSyncButton).toBeFocused();
+    await page.keyboard.press("Enter");
+
+    const syncFeedback = page.getByTestId("catalog-sync-feedback");
+    await expect(syncFeedback).toContainText("Sync completed.", { timeout: 120_000 });
+    await expect(runSyncButton).toBeFocused();
+  });
 });

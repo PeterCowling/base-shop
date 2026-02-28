@@ -31,6 +31,7 @@
   },
   "rooms": {
     "title": "Vores værelser",
+    "soldOut": "Udsolgt",
     "double_room": {
       "title": "Dobbeltværelse",
       "bed_intro": "Fantastisk havudsigt — perfekt til par.",
@@ -250,6 +251,7 @@
   "filtersAria": "Filtrer efter værelsestype",
   "checkRatesNonRefundable": "Ikke‑refunderbare priser",
   "checkRatesFlexible": "Fleksible værelsespriser",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "Ikke‑refunderbar",
     "flexible": "Fleksibel"

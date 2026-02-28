@@ -22,15 +22,15 @@ interface QuickLinksSectionProps {
 const QuickLinkCard: FC<QuickLink> = memo(({ label, description, Icon, href }): ReactNode => {
   const container =
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-    "group flex h-full min-h-[120px] flex-col items-start gap-3 rounded-2xl border border-brand-outline/30 bg-white/90 p-5 text-start shadow-sm backdrop-blur " +
+    "group flex h-full min-h-[120px] flex-col items-start gap-3 rounded-2xl border border-brand-outline/30 bg-surface/90 p-5 text-start shadow-sm backdrop-blur " +
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-    "dark:bg-brand-text dark:border-white/10 transition hover:-translate-y-1 hover:shadow-lg " +
+    "dark:bg-brand-text dark:border-primary-fg/10 transition hover:-translate-y-1 hover:shadow-lg " +
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2";
 
   const iconWrapper =
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-    "inline-flex size-10 items-center justify-center rounded-full bg-brand-secondary/20 text-brand-primary shadow-sm transition group-hover:scale-105 dark:bg-brand-surface/20";
+    "inline-flex size-11 items-center justify-center rounded-full bg-brand-secondary/20 text-brand-primary shadow-sm transition group-hover:scale-105 dark:bg-brand-surface/20";
 
   const icon =
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */

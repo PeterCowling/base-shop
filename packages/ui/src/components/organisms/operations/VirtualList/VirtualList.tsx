@@ -232,7 +232,7 @@ function VirtualListInner<T>(
           aria-label="Loading more items"
         >
           {loadingIndicator || (
-            <div className="flex items-center gap-2 text-sm text-slate-500">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <svg
                 className="h-4 w-4 animate-spin"
                 xmlns="http://www.w3.org/2000/svg"

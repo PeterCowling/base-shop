@@ -29,7 +29,7 @@ export function PaymentMethodSelector({
   return (
     <div className={cn("flex flex-col gap-2", /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */ className)} {...props}>
       {methods.map((m) => (
-        <label key={m.value} className="flex cursor-pointer items-center gap-2 min-h-10">
+        <label key={m.value} className="flex cursor-pointer items-center gap-2 min-h-11">
           <input
             type="radio"
             name={group}

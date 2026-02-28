@@ -11,6 +11,7 @@
   "otherBookingOptions": "다른 예약 옵션 및 소셜 미디어",
   "addressLabel": "주소:",
   "addressValue": "Via G. Marconi, 358, 84017, Positano",
+  "bookDirect": "직접 예약하기",
   "bookingOptions": {
     "googleBusiness": "구글 비즈니스",
     "bookingCom": "Booking.com",

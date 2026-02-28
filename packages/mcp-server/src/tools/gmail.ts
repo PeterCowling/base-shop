@@ -35,6 +35,7 @@ import {
 
 import { handleOrganizeInbox as handleOrganizeInboxModule } from "./gmail-organize.js";
 import { setLockStore as setSharedLockStore } from "./gmail-shared.js";
+import { sendGuestEmailActivity } from "./guest-email-activity.js";
 import { processCancellationEmail } from "./process-cancellation-email.js";
 
 export { checkBookingRefDuplicate } from "./gmail-booking.js";
@@ -577,6 +578,7 @@ const markProcessedSchema = z.object({
     .optional()
     .default("queue"),
   prepaymentProvider: z.enum(["octorate", "hostelworld"]).optional(),
+  reservationCode: z.string().optional(),
 });
 
 const telemetryDailyRollupSchema = z.object({
@@ -1916,6 +1918,23 @@ async function handleCancellationCase({
       });
     }
 
+    // Draft cancellation confirmation email (code 27) for occupants with email addresses
+    if (result.status === "success" && result.guestEmails && Object.keys(result.guestEmails).length > 0 && result.reservationCode) {
+      await Promise.allSettled(
+        Object.entries(result.guestEmails).map(async ([occupantId, email]) => {
+          try {
+            await sendGuestEmailActivity({
+              bookingRef: result.reservationCode!,
+              activityCode: 27,
+              recipients: [email],
+            });
+          } catch (draftErr) {
+            console.error(`Failed to draft cancellation email for occupant ${occupantId}:`, draftErr);
+          }
+        })
+      );
+    }
+
     return { processed: true };
   } catch (error) {
     // Log error but don't throw - we've already marked it as received
@@ -2718,7 +2737,7 @@ async function handleMarkProcessed(
   gmail: gmail_v1.Gmail,
   args: unknown
 ): Promise<ReturnType<typeof jsonResult> | ReturnType<typeof errorResult>> {
-  const { emailId, action, actor, sourcePath, prepaymentProvider } = markProcessedSchema.parse(args);
+  const { emailId, action, actor, sourcePath, prepaymentProvider, reservationCode } = markProcessedSchema.parse(args);
 
   const labelMap = await ensureLabelMap(gmail, REQUIRED_LABELS);
   const preModify = await gmail.users.messages.get({
@@ -2899,6 +2918,40 @@ async function handleMarkProcessed(
     return errorResult(`Failed to apply labels: ${errorMessage}. ${cleanupStatus}`);
   }
   lockStoreRef.release(emailId);
+
+  // Write activity code 21 (AGREEMENT_RECEIVED) to Firebase fanout paths
+  if (action === "agreement_received" && reservationCode) {
+    const fbUrl = process.env.FIREBASE_DATABASE_URL ?? "";
+    const fbKey = process.env.FIREBASE_API_KEY;
+    if (fbUrl) {
+      try {
+        const makeUrl = (path: string): string => {
+          const u = new URL(`${fbUrl}${path}.json`);
+          if (fbKey) u.searchParams.set("auth", fbKey);
+          return u.toString();
+        };
+        const bookingResp = await fetch(makeUrl(`/bookings/${reservationCode}`));
+        if (bookingResp.ok) {
+          const bookingData = (await bookingResp.json()) as Record<string, unknown> | null;
+          const occupantIds = bookingData ? Object.keys(bookingData) : [];
+          const actTs = new Date().toISOString();
+          const actBaseId = Date.now();
+          const actPayload = JSON.stringify({ code: 21, timestamp: actTs, who: "Reception" });
+          await Promise.all(
+            occupantIds.map(async (occupantId, index) => {
+              const actId = `act_${actBaseId}_${index}`;
+              const patchOpts = { method: "PATCH", headers: { "Content-Type": "application/json" }, body: actPayload };
+              await fetch(makeUrl(`/activities/${occupantId}/${actId}`), patchOpts);
+              await fetch(makeUrl(`/activitiesByCode/21/${occupantId}/${actId}`), patchOpts);
+            })
+          );
+        }
+      } catch {
+        // Graceful degradation: Firebase write failure does not block label application
+      }
+    }
+  }
+
   const ts = new Date().toISOString();
   appendAuditEntry({ ts, messageId: emailId, action: "lock-released", actor: "system" });
   appendAuditEntry({ ts, messageId: emailId, action: "outcome", actor, result: action });

@@ -24,7 +24,7 @@ const ArchiveButton: FC<ArchiveButtonProps> = ({ onClick, eligibleCount }) => {
     <Button
       type="button"
       onClick={onClick}
-      className="flex items-center justify-center border border-warning-main rounded-md p-1 hover:bg-yellow-100 active:bg-warning-light"
+      className="flex items-center justify-center border border-warning-main rounded-md p-1 hover:bg-warning-light active:bg-warning-light"
       aria-label="Archive"
     >
       {/* Archive icon (24x24) */}

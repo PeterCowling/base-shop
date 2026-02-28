@@ -1,11 +1,11 @@
 ---
 name: lp-do-assessment-05-name-selection
-description: Produce a naming-generation-spec.md for a business. Reads ASSESSMENT stage docs, extracts ICP, product, brand personality, competitive set, and any prior eliminated names, then writes a fully-structured agent-executable spec that generates 250 scored candidate names. Part 1 of a 4-part naming pipeline (spec → generate → RDAP batch check → rank).
+description: Produce a <YYYY-MM-DD>-naming-generation-spec.md for a business. Reads ASSESSMENT stage docs, extracts ICP, product, brand personality, competitive set, and any prior eliminated names, then writes a fully-structured agent-executable spec that generates 250 scored candidate names. Part 1 of a 4-part naming pipeline (spec → generate → RDAP batch check → rank).
 ---
 
 # lp-do-assessment-05-name-selection — Name Selection (ASSESSMENT-05)
 
-Produces a `naming-generation-spec.md` tailored to a specific business. The spec is the input to a name-generation agent that produces 250 scored candidates, which are then batch-checked for .com availability via RDAP and ranked.
+Produces a `<YYYY-MM-DD>-naming-generation-spec.md` tailored to a specific business. The spec is the input to a name-generation agent that produces 250 scored candidates, which are then batch-checked for .com availability via RDAP and ranked.
 
 This skill replaced the former naming research prompt approach (obsolete since deep research tools cannot verify domain availability).
 
@@ -21,7 +21,7 @@ This skill produces Part 1 only. The full pipeline is:
 
 | Part | What | Who runs it |
 |------|------|-------------|
-| **1 — Spec** | This skill. Reads ASSESSMENT docs, writes `naming-generation-spec.md` | This skill |
+| **1 — Spec** | This skill. Reads ASSESSMENT docs, writes `<YYYY-MM-DD>-naming-generation-spec.md` | This skill |
 | **2 — Generate** | Agent reads the spec and produces 250 scored candidate names | Spawn a general-purpose agent with the spec as input |
 | **3 — RDAP batch check** | Shell loop hits `https://rdap.verisign.com/com/v1/domain/<name>.com` for all 250; 404 = available, 200 = taken | Bash tool |
 | **4 — Rank** | Filter to available names, sort by score, produce final shortlist | Agent or inline |
@@ -30,7 +30,7 @@ This skill produces Part 1 only. The full pipeline is:
 
 **SPEC AUTHORING ONLY**
 
-**Allowed:** read ASSESSMENT docs, synthesize context, write `naming-generation-spec.md`.
+**Allowed:** read ASSESSMENT docs, synthesize context, write `<YYYY-MM-DD>-naming-generation-spec.md`.
 
 **Not allowed:** generate candidate names, check domains, make naming recommendations.
 
@@ -38,9 +38,9 @@ This skill produces Part 1 only. The full pipeline is:
 
 Read and synthesise from:
 
-- `docs/business-os/strategy/<BIZ>/problem-statement.user.md` — falsifiable problem, user segments
+- `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-problem-statement.user.md` — falsifiable problem, user segments
 - `docs/business-os/strategy/<BIZ>/s0c-option-select.user.md` — selected product option(s), price points
-- `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` — brand personality, positioning, visual direction
+- `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md` — brand personality, positioning, visual direction
 - `docs/business-os/strategy/<BIZ>/s0a-research-appendix.user.md` — segment truth, purchase triggers, competitive set
 - `docs/business-os/strategy/<BIZ>/s1-readiness.user.md` — ICP confirmation, outcome contract
 
@@ -53,7 +53,7 @@ If any file is missing, note the gap in a preflight comment at the top of the sp
 Save to:
 
 ```
-docs/business-os/strategy/<BIZ>/naming-generation-spec.md
+docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-generation-spec.md
 ```
 
 If the file already exists (a prior naming round was run), **update it in place**: add newly eliminated names to the elimination list, update the ICP section if it has changed, and increment the round note at the top. Do not overwrite a spec from scratch.
@@ -270,13 +270,13 @@ After the table, write a one-paragraph summary: names per pattern, score distrib
 
 ## Completion message
 
-> "Naming generation spec ready: `docs/business-os/strategy/<BIZ>/naming-generation-spec.md`. Next: spawn a general-purpose agent with this spec as input to generate 250 scored candidates. Then run the RDAP batch check. Then filter and rank."
+> "Naming generation spec ready: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-generation-spec.md`. Next: spawn a general-purpose agent with this spec as input to generate 250 scored candidates. Then run the RDAP batch check. Then filter and rank."
 
 ## Integration
 
 **Upstream (ASSESSMENT-03):** Runs after `/lp-do-assessment-03-solution-selection` produces a product decision record.
 
-**Downstream — Part 2:** Spawn a general-purpose agent with the spec. Prompt: "Read `docs/business-os/strategy/<BIZ>/naming-generation-spec.md` in full, then generate exactly 250 brand name candidates following the spec exactly. Save to `docs/business-os/strategy/<BIZ>/naming-candidates-<YYYY-MM-DD>.md`."
+**Downstream — Part 2:** Spawn a general-purpose agent with the spec. Prompt: "Read `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-generation-spec.md` in full, then generate exactly 250 brand name candidates following the spec exactly. Save to `docs/business-os/strategy/<BIZ>/naming-candidates-<YYYY-MM-DD>.md`."
 
 **Downstream — Part 3 (RDAP batch):** Extract all names from the candidates file. Run:
 ```bash

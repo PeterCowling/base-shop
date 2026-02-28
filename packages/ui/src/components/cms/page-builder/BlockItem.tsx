@@ -106,7 +106,7 @@ const BlockItem = memo(function BlockItemComponent({
      
     "hover:border-primary relative rounded border hover:border-dashed" +
      
-    (selected ? " ring-2 ring-blue-500" : "") +
+    (selected ? " ring-2 ring-info-main" : "") +
      
     (overlay.snapping ? " border-primary" : "") +
     (dnd.isOver || dnd.isDragging

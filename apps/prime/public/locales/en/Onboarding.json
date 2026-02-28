@@ -1,74 +1,26 @@
 {
-  "guidedFlow": {
-    "finish": "Finish",
-    "helpLink": "Need help?",
-    "loadingTip": "Loading your arrival details\u2026",
-    "methods": {
-      "bus": "Bus",
-      "ferry": "Ferry",
-      "other": "Other",
-      "private": "Private",
-      "taxi": "Taxi",
-      "train": "Train"
-    },
-    "saveAndContinue": "Save and continue",
-    "skipButton": "Skip for now",
-    "step1": {
-      "arrivalMethodLabel": "How are you most likely arriving?",
-      "celebration": "Great start. Your arrival path is now personalized.",
-      "confident": "Confident",
-      "confidenceLabel": "How confident do you feel about getting here?",
-      "descriptionControl": "Finish these quick steps to reduce reception wait time and avoid arrival surprises.",
-      "descriptionValueLed": "Unlock faster check-in and sharper local recommendations by completing these steps now.",
-      "needGuidance": "Need guidance",
-      "privacyDescription": "We only use this information for your current stay and reception operations.",
-      "privacyTitle": "Privacy reassurance",
-      "routeGroupLabel": "Recommended routes",
-      "routeLabel": "Pick a route",
-      "routeOptional": "(optional)",
-      "title": "Let\u2019s get you arrival-ready",
-      "titleWithName": "Welcome {{name}}, let\u2019s get you arrival-ready"
-    },
-    "step2": {
-      "celebration": "ETA shared. Reception can now prepare your arrival.",
-      "description": "Sharing your ETA helps reception prepare for a faster check-in.",
-      "etaLabel": "Arrival time window",
-      "methodLabel": "Travel method",
-      "title": "Share your ETA"
-    },
-    "errors": {
-      "retry": "Try again",
-      "step1": "Couldn\u2019t save your preferences. Tap to retry.",
-      "step2": "Couldn\u2019t save your ETA. Tap to retry.",
-      "step3": "Couldn\u2019t save checklist. Tap to retry."
-    },
-    "step3": {
-      "cashDescription": "City tax + keycard deposit in cash \u2014 avoids delays at reception",
-      "cashTitle": "Cash for check-in",
-      "celebration": "Nice work. Your arrival checklist is moving forward.",
-      "description": "Tick off what you can \u2014 update any time from the dashboard.",
-      "lastCompleted": "Last completed: {{item}}",
-      "locationAction": "Open in Maps",
-      "locationTitle": "Save hostel location",
-      "rulesDescription": "Quick read \u2014 helps your stay go smoothly",
-      "rulesTitle": "House rules",
-      "title": "Final checks"
-    }
-  },
   "guestProfile": {
+    "chatOptInLabel": "Join the guest chat",
+    "goalsLabel": "What are your goals for this stay?",
+    "intentLabel": "What's your vibe?",
+    "interestsLabel": "What are you interested in?",
+    "paceLabel": "What's your pace?",
+    "saveCta": "Save preferences",
+    "saveError": "Couldn't save your profile — please try again.",
+    "skipCta": "Skip for now",
+    "socialOptInLabel": "Connect with other guests",
+    "title": "Tell us about yourself",
     "goals": {
       "adventure": "Adventure",
       "explore": "Explore the area",
       "meetPeople": "Meet people",
       "relax": "Relax and unwind"
     },
-    "goalsLabel": "What are your goals for this stay?",
     "intent": {
       "mixed": "A bit of both",
       "quiet": "Quiet and private",
       "social": "Social and outgoing"
     },
-    "intentLabel": "What's your vibe?",
     "interests": {
       "beaches": "Beaches",
       "food": "Food and dining",
@@ -77,17 +29,68 @@
       "nightlife": "Nightlife",
       "photography": "Photography"
     },
-    "interestsLabel": "What are you interested in?",
     "pace": {
       "active": "Active",
       "activeDesc": "Pack in as much as possible.",
       "relaxed": "Relaxed",
       "relaxedDesc": "Take it easy, no rush."
+    }
+  },
+  "guidedFlow": {
+    "errors": {
+      "retry": "Try again",
+      "step1": "Couldn’t save your preferences. Tap to retry.",
+      "step2": "Couldn’t save your ETA. Tap to retry.",
+      "step3": "Couldn’t save checklist. Tap to retry."
     },
-    "paceLabel": "What's your pace?",
-    "saveCta": "Save preferences",
-    "skipCta": "Skip for now",
-    "title": "Tell us about yourself"
+    "finish": "Finish",
+    "helpLink": "Need help?",
+    "loadingTip": "Loading your arrival details…",
+    "saveAndContinue": "Save and continue",
+    "skipButton": "Skip for now",
+    "step1": {
+      "arrivalMethodLabel": "How are you most likely arriving?",
+      "celebration": "Great start. Your arrival path is now personalized.",
+      "confidenceLabel": "How confident do you feel about getting here?",
+      "confident": "Confident",
+      "descriptionControl": "Finish these quick steps to reduce reception wait time and avoid arrival surprises.",
+      "descriptionValueLed": "Unlock faster check-in and sharper local recommendations by completing these steps now.",
+      "needGuidance": "Need guidance",
+      "privacyDescription": "We only use this information for your current stay and reception operations.",
+      "privacyTitle": "Privacy reassurance",
+      "routeGroupLabel": "Recommended routes",
+      "routeLabel": "Pick a route",
+      "routeOptional": "(optional)",
+      "title": "Let’s get you arrival-ready",
+      "titleWithName": "Welcome {{name}}, let’s get you arrival-ready"
+    },
+    "step2": {
+      "celebration": "ETA shared. Reception can now prepare your arrival.",
+      "description": "Sharing your ETA helps reception prepare for a faster check-in.",
+      "etaLabel": "Arrival time window",
+      "methodLabel": "Travel method",
+      "title": "Share your ETA"
+    },
+    "step3": {
+      "cashDescription": "City tax + keycard deposit in cash — avoids delays at reception",
+      "cashTitle": "Cash for check-in",
+      "celebration": "Nice work. Your arrival checklist is moving forward.",
+      "description": "Tick off what you can — update any time from the dashboard.",
+      "lastCompleted": "Last completed: {{item}}",
+      "locationAction": "Open in Maps",
+      "locationTitle": "Save hostel location",
+      "rulesDescription": "Quick read — helps your stay go smoothly",
+      "rulesTitle": "House rules",
+      "title": "Final checks"
+    },
+    "methods": {
+      "bus": "Bus",
+      "ferry": "Ferry",
+      "other": "Other",
+      "private": "Private",
+      "taxi": "Taxi",
+      "train": "Train"
+    }
   },
   "handoff": {
     "cta": "Start exploring",

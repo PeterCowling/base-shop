@@ -124,7 +124,7 @@ const PreorderNightDetails: React.FC<{
   // If invalid nightIndex or missing checkInDate, show a basic summary.
   if (!nightIndex || !checkInDateObj) {
     return (
-      <div className="border p-2 mb-3 rounded">
+      <div className="border p-2 mb-3 rounded-lg">
         <p className="font-semibold">Night: {nightKey}</p>
         <p>Breakfast: {fallbackBreakfast}</p>
         <p>Drink1: {fallbackDrink1}</p>
@@ -143,7 +143,7 @@ const PreorderNightDetails: React.FC<{
   const drinkLoading2 = drink2Res.loading;
 
   return (
-    <div className="border p-2 mb-3 rounded">
+    <div className="border p-2 mb-3 rounded-lg">
       <p className="font-semibold">Night: {nightKey}</p>
 
       {/* Breakfast */}

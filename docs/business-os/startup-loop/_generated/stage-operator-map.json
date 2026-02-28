@@ -169,7 +169,7 @@
       "display_order": 1,
       "conditional": false,
       "condition": "always",
-      "operator_next_prompt": "Run /lp-do-assessment-11-brand-identity to create brand-identity.user.md."
+      "operator_next_prompt": "Run /lp-do-assessment-11-brand-identity to create <YYYY-MM-DD>-brand-identity-dossier.user.md."
     },
     {
       "id": "ASSESSMENT-11",
@@ -814,7 +814,7 @@
       "display_order": 14,
       "conditional": true,
       "condition": "growth_intent includes product_range OR operator_invoked",
-      "operator_next_prompt": "PRODUCT-02 (PRODUCT container) is non-blocking at S4. Share results artifact as optional go-item candidates with S5A Prioritize."
+      "operator_next_prompt": "PRODUCT-02 (PRODUCT container) is non-blocking at S4. Share results artifact as optional baseline context for S4 merge."
     },
     {
       "id": "SELL",
@@ -983,38 +983,12 @@
       "name_machine": "baseline-merge",
       "label_operator_short": "Baseline merge",
       "label_operator_long": "S4 — Baseline merge",
-      "outcome_operator": "Candidate baseline snapshot and draft manifest combining offer, forecast, and channel artifacts.",
+      "outcome_operator": "Merged baseline snapshot and manifest commit combining offer, forecast, and channel artifacts.",
       "aliases": [
         "baseline-merge",
         "s4"
       ],
       "display_order": 16,
-      "operator_next_prompt": "Proceed to S5A Prioritize."
-    },
-    {
-      "id": "S5A",
-      "name_machine": "prioritize",
-      "label_operator_short": "Prioritize",
-      "label_operator_long": "S5A — Prioritize",
-      "outcome_operator": "Scored and ranked action list — top 2-3 items to work on next.",
-      "aliases": [
-        "prioritize",
-        "s5a"
-      ],
-      "display_order": 17,
-      "operator_next_prompt": "Proceed to S5B BOS sync to persist prioritization outputs."
-    },
-    {
-      "id": "S5B",
-      "name_machine": "bos-sync",
-      "label_operator_short": "BOS sync",
-      "label_operator_long": "S5B — BOS sync",
-      "outcome_operator": "Business OS cards and stage docs persisted to D1. Manifest pointer committed.",
-      "aliases": [
-        "bos-sync",
-        "s5b"
-      ],
-      "display_order": 18,
       "operator_next_prompt": "Website stage can now proceed. Run WEBSITE-01 (pre-website) or WEBSITE-02 (website-live), then continue to DO."
     },
     {
@@ -1028,7 +1002,7 @@
         "website-workstream",
         "website-container"
       ],
-      "display_order": 19,
+      "display_order": 17,
       "operator_next_prompt": "Proceed to DO."
     },
     {
@@ -1044,7 +1018,7 @@
         "first-build-framework",
         "site-v1-builder"
       ],
-      "display_order": 19,
+      "display_order": 17,
       "conditional": true,
       "condition": "launch-surface = pre-website",
       "operator_next_prompt": "Proceed to WEBSITE container completion, then DO."
@@ -1061,7 +1035,7 @@
         "site-upgrade",
         "site-upgrade-synthesis"
       ],
-      "display_order": 19,
+      "display_order": 17,
       "conditional": true,
       "condition": "launch-surface = website-live",
       "operator_next_prompt": "Proceed to WEBSITE container completion, then DO."
@@ -1081,7 +1055,7 @@
         "s8",
         "s9"
       ],
-      "display_order": 20,
+      "display_order": 18,
       "operator_next_prompt": "Proceed to S9B QA gates before launch."
     },
     {
@@ -1095,7 +1069,7 @@
         "qa",
         "s9b"
       ],
-      "display_order": 21,
+      "display_order": 19,
       "operator_next_prompt": "Proceed to SIGNALS loop."
     },
     {
@@ -1111,7 +1085,7 @@
         "weekly",
         "s10"
       ],
-      "display_order": 22,
+      "display_order": 20,
       "operator_next_prompt": "Repeat weekly. Run standing refresh prompts on monthly/quarterly cadence."
     },
     {
@@ -1347,10 +1321,6 @@
     "sell-08": "SELL-08",
     "baseline-merge": "S4",
     "s4": "S4",
-    "prioritize": "S5A",
-    "s5a": "S5A",
-    "bos-sync": "S5B",
-    "s5b": "S5B",
     "website": "WEBSITE",
     "website-workstream": "WEBSITE",
     "website-container": "WEBSITE",

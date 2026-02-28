@@ -104,13 +104,13 @@ function MobileNav({
               if (logoAlt && logoAlt !== "logoAlt") return logoAlt;
               return FALLBACK_LOGO_ALT;
             })()}
-            className="size-10"
+            className="size-11"
             width={40}
             height={40}
             loading="eager"
             decoding="async"
           />
-          <span className="whitespace-nowrap text-sm font-bold text-white sm:text-lg">
+          <span className="whitespace-nowrap text-sm font-bold text-primary-fg sm:text-lg">
             {(() => {
               const title = t("title") as string;
               if (title && title !== "title") return title;
@@ -156,7 +156,7 @@ function MobileNav({
       </div>
 
       {/* subtle bottom divider */}
-      <div className="absolute inset-x-0 bottom-0 h-px bg-brand-surface/60 dark:bg-white/5" />
+      <div className="absolute inset-x-0 bottom-0 h-px bg-brand-surface/60 dark:bg-surface/5" />
     </nav>
   );
 }

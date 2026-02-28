@@ -63,7 +63,7 @@ export default function MinMaxItems({ component, onChange, handleInput }: Props)
           error={minItemsError}
         />
         <Tooltip text={t("cms.builder.items.min.tooltip")}>
-          <span className="inline-flex items-center justify-center size-10">?</span>
+          <span className="inline-flex items-center justify-center size-11">?</span>
         </Tooltip>
       </div>
 
@@ -89,7 +89,7 @@ export default function MinMaxItems({ component, onChange, handleInput }: Props)
           error={maxItemsError}
         />
         <Tooltip text={t("cms.builder.items.max.tooltip")}>
-          <span className="inline-flex items-center justify-center size-10">?</span>
+          <span className="inline-flex items-center justify-center size-11">?</span>
         </Tooltip>
       </div>
     </>

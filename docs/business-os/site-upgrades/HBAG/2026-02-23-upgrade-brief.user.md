@@ -40,7 +40,7 @@ Decision links unlocked:
 
 Non-negotiables:
 - Product imagery stays primary; copy supports, not dominates.
-- Preserve active brand language and token contract from `docs/business-os/strategy/HBAG/brand-dossier.user.md`.
+- Preserve active brand language and token contract from `docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md`.
 - Keep accessibility parity (semantic text remains present; no canvas-only semantic dependency).
 - Avoid heavy runtime additions (no WebGL/effects libraries required for this upgrade lane).
 - Mobile-first behavior is mandatory (social-origin traffic assumption).

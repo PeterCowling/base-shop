@@ -99,7 +99,7 @@ Decision: <GO | NO-GO>
 
 ## Domain 5: Brand Copy Compliance
 
-<_Skip this section if brand-dossier.user.md is absent. All Domain 5 failures are Warnings (GATE-BD-06b)._>
+<_Skip this section if <YYYY-MM-DD>-brand-identity-dossier.user.md is absent. All Domain 5 failures are Warnings (GATE-BD-06b)._>
 
 ### BC-04: Words to Avoid
 - **Status:** <PASS | WARN | SKIPPED>

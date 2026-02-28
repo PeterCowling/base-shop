@@ -76,15 +76,15 @@ export const SafeReconcileForm = memo(function SafeReconcileForm({
         <Button
           onClick={onCancel}
           aria-label="Close"
-          className="absolute right-2 top-2 h-6 w-6 rounded-full bg-error-main text-primary-fg"
+          className="absolute right-2 top-2 h-6 w-6 rounded-full bg-surface-2 border border-border-strong text-muted-foreground hover:bg-surface-3 flex items-center justify-center text-xs"
         >
-          x
+          ✕
         </Button>
         <CashCountingForm
           idPrefix="safeRecon_"
           title="Reconcile Safe"
-          borderClass="border-warning-main"
-          textClass="text-warning-main"
+          borderClass="border-warning"
+          textClass="text-warning"
           confirmColor="warning"
           confirmLabel="Go"
           expectedCash={expectedSafe}

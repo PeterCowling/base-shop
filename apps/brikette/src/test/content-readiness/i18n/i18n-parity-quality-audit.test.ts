@@ -607,8 +607,20 @@ describe("i18n parity & quality audit (guide content structure)", () => {
       throw new Error(message);
     }
 
-     
+
     console.warn("[WARN] " + message);
     expect(true).toBe(true);
+  });
+});
+
+describe("TASK-05: discount claim cross-namespace consistency", () => {
+  // Regression guard: ensures EN modals.offers.perks.discount stays aligned with the 25% claim
+  // used on all other surfaces. Reverts to "10%" would surface here immediately.
+  it("TC-01: EN modals.offers.perks.discount contains '25'", () => {
+    const modalsPath = path.join(LOCALES_ROOT, "en", "modals.json");
+    const modals = JSON.parse(readFileSync(modalsPath, "utf-8")) as Record<string, unknown>;
+    const offers = modals.offers as Record<string, Record<string, string>> | undefined;
+    const discount: string = offers?.perks?.discount ?? "";
+    expect(discount).toContain("25");
   });
 });

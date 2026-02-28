@@ -20,15 +20,15 @@ function StatusFilter() {
   return (
     <div className="space-y-2">
       <label className="flex items-center gap-2">
-        <input type="checkbox" className="rounded" />
+        <input type="checkbox" className="rounded min-h-11 min-w-11" />
         <span className="text-sm">Active</span>
       </label>
       <label className="flex items-center gap-2">
-        <input type="checkbox" className="rounded" />
+        <input type="checkbox" className="rounded min-h-11 min-w-11" />
         <span className="text-sm">Inactive</span>
       </label>
       <label className="flex items-center gap-2">
-        <input type="checkbox" className="rounded" />
+        <input type="checkbox" className="rounded min-h-11 min-w-11" />
         <span className="text-sm">Pending</span>
       </label>
     </div>
@@ -39,12 +39,12 @@ function DateRangeFilter() {
   return (
     <div className="space-y-2">
       <div>
-        <label className="mb-1 block text-xs text-slate-600">From</label>
-        <input type="date" className="w-full rounded border border-slate-200 px-2 py-1 text-sm" />
+        <label className="mb-1 block text-xs text-muted-foreground">From</label>
+        <input type="date" className="w-full rounded border border-border-2 px-2 py-1 text-sm" />
       </div>
       <div>
-        <label className="mb-1 block text-xs text-slate-600">To</label>
-        <input type="date" className="w-full rounded border border-slate-200 px-2 py-1 text-sm" />
+        <label className="mb-1 block text-xs text-muted-foreground">To</label>
+        <input type="date" className="w-full rounded border border-border-2 px-2 py-1 text-sm" />
       </div>
     </div>
   );
@@ -54,15 +54,15 @@ function CategoryFilter() {
   return (
     <div className="space-y-2">
       <label className="flex items-center gap-2">
-        <input type="checkbox" className="rounded" />
+        <input type="checkbox" className="rounded min-h-11 min-w-11" />
         <span className="text-sm">Electronics</span>
       </label>
       <label className="flex items-center gap-2">
-        <input type="checkbox" className="rounded" />
+        <input type="checkbox" className="rounded min-h-11 min-w-11" />
         <span className="text-sm">Clothing</span>
       </label>
       <label className="flex items-center gap-2">
-        <input type="checkbox" className="rounded" />
+        <input type="checkbox" className="rounded min-h-11 min-w-11" />
         <span className="text-sm">Home & Garden</span>
       </label>
     </div>
@@ -155,18 +155,18 @@ function InteractiveStory() {
         onApply={() => alert(`Applied ${activeCount} filters`)}
       />
 
-      <div className="rounded border border-slate-200 bg-slate-50 p-4">
+      <div className="rounded border border-border-2 bg-surface p-4">
         <p className="mb-2 text-sm font-medium">Simulate filters:</p>
         <div className="flex gap-2">
           <button
             onClick={() => setActiveCount((c) => Math.min(c + 1, 10))}
-            className="rounded bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-700"
+            className="rounded bg-info-main px-3 py-1 text-sm text-primary-fg hover:bg-blue-700 min-h-11 min-w-11"
           >
             Add Filter
           </button>
           <button
             onClick={() => setActiveCount((c) => Math.max(c - 1, 0))}
-            className="rounded bg-slate-600 px-3 py-1 text-sm text-white hover:bg-slate-700"
+            className="rounded bg-slate-600 px-3 py-1 text-sm text-primary-fg hover:bg-slate-700 min-h-11 min-w-11"
           >
             Remove Filter
           </button>

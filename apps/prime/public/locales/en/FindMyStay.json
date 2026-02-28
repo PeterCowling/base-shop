@@ -1,13 +1,39 @@
 {
+  "guestEntry": {
+    "checking": "Checking…",
+    "confirmSubtitle": "Please enter the last name on the booking to continue.",
+    "confirmTitle": "Confirm your stay",
+    "continue": "Continue",
+    "errorTitle": "Link problem",
+    "errors": {
+      "lastNameMismatch": "That last name does not match our booking.",
+      "linkExpired": "This link has expired.",
+      "linkInvalid": "This link is no longer valid.",
+      "missingLink": "Missing or invalid link.",
+      "validateFailed": "Unable to validate this link.",
+      "verifyFailed": "Verification failed. Please try again."
+    },
+    "findMyStay": "Find my stay",
+    "guidedSetupNote": "You'll now see a short guided setup so reception can serve you faster.",
+    "lastNameLabel": "Last name",
+    "lastNamePlaceholder": "Enter your last name",
+    "portalReady": "Your portal is ready. We'll guide you through arrival prep next.",
+    "privacyNote": "Privacy: we only use this information for your current stay.",
+    "welcomeName": "Welcome, {{firstName}}",
+    "whyThisHelps": "Why this helps: this quick check unlocks your guest tools and speeds up reception handoff.",
+    "youreIn": "You're in"
+  },
   "button": {
-    "loading": "Searching\u2026",
+    "loading": "Searching…",
     "submit": "Find my stay"
   },
   "errors": {
     "fieldsRequired": "Please enter both your booking code and last name.",
-    "networkError": "Connection error. Please check your internet and try again.",
-    "notFound": "We couldn't find a booking with those details. Please check and try again.",
-    "tooManyAttempts": "Too many attempts. Please wait a few minutes and try again."
+    "generic": "Something went wrong. Please try again.",
+    "networkError": "Connection error. Please try again.",
+    "notFound": "Booking not found. Please check your details.",
+    "redirectFailed": "We found your booking, but could not open your guest link. Please try again.",
+    "tooManyAttempts": "Too many attempts. Please try again later."
   },
   "fields": {
     "bookingCode": "Booking code",
@@ -24,3 +50,4 @@
   "subtitle": "Enter your booking details to access your guest portal.",
   "title": "Find My Stay"
 }
+

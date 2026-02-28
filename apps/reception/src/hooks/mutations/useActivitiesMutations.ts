@@ -4,6 +4,8 @@ import { useCallback, useMemo, useState } from "react";
 import { get, ref, update } from "firebase/database";
 
 import { useAuth } from "../../context/AuthContext";
+import { queueOfflineWrite } from "../../lib/offline/syncManager";
+import { useOnlineStatus } from "../../lib/offline/useOnlineStatus";
 import useEmailGuest from "../../services/useEmailGuest";
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import {
@@ -24,6 +26,7 @@ export default function useActivitiesMutations() {
   const database = useFirebaseDatabase();
   const { sendEmailGuest } = useEmailGuest();
   const { user } = useAuth(); // Access the authenticated user
+  const online = useOnlineStatus();
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -64,12 +67,16 @@ export default function useActivitiesMutations() {
               console.warn(
                 `[useActivitiesMutations] Guest email deferred for reservation ${reservationCode} (code ${code}): ${emailResult.reason ?? "manual-review"}`
               );
+              if (emailResult.reason === "no-recipient-email") {
+                setError("No guest email on record — email not sent.");
+              }
             }
 
             if (!emailResult.success && emailResult.status === "error") {
               console.error(
                 `[useActivitiesMutations] Guest email draft failed for reservation ${reservationCode} (code ${code}): ${emailResult.error ?? "unknown"}`
               );
+              setError("Email draft not sent — guest notification failed. Please send manually.");
             }
           } else {
             console.warn(
@@ -111,6 +118,43 @@ export default function useActivitiesMutations() {
         return { success: false, error: noUserError };
       }
 
+      if (!online) {
+        const offlineActivityId = generateActivityId();
+        const offlineTimestamp = getItalyIsoString();
+        const offlineWho = user.user_name || "System";
+
+        const offlineActivity: Activity = {
+          code,
+          who: offlineWho,
+          timestamp: offlineTimestamp,
+        };
+
+        // Multi-path update — use path="" with atomic:true
+        const offlineUpdates: Record<string, unknown> = {};
+        offlineUpdates[`activities/${occupantId}/${offlineActivityId}`] = offlineActivity;
+        offlineUpdates[`activitiesByCode/${code}/${occupantId}/${offlineActivityId}`] = {
+          who: offlineWho,
+          timestamp: offlineTimestamp,
+        };
+
+        const queued = await queueOfflineWrite("", "update", offlineUpdates, {
+          idempotencyKey: crypto.randomUUID(),
+          atomic: true,
+          domain: "activities",
+        });
+        if (queued !== null) {
+          // Successfully queued — do NOT call maybeSendEmailGuest (network-dependent)
+          // NOTE: email notification is deferred when activity is logged offline
+          setLoading(false);
+          return {
+            success: true,
+            data: offlineActivity,
+            message: "Activity queued for sync",
+          };
+        }
+        // If queued === null (IDB unavailable), fall through to direct Firebase write
+      }
+
       try {
         const activityId = generateActivityId();
         const timestamp = getItalyIsoString();
@@ -147,7 +191,7 @@ export default function useActivitiesMutations() {
         return { success: false, error: msg };
       }
     },
-    [database, maybeSendEmailGuest, user]
+    [database, maybeSendEmailGuest, online, user]
   );
 
   /**
@@ -170,6 +214,13 @@ export default function useActivitiesMutations() {
         setError(noUserError);
         setLoading(false);
         return { success: false, error: noUserError };
+      }
+
+      if (!online) {
+        const offlineError = "Removing activities requires a network connection. Please reconnect and try again.";
+        setError(offlineError);
+        setLoading(false);
+        return { success: false, error: offlineError };
       }
 
       try {
@@ -236,7 +287,7 @@ export default function useActivitiesMutations() {
         return { success: false, error: msg };
       }
     },
-    [database, user]
+    [database, online, user]
   );
 
   /**
@@ -279,6 +330,44 @@ export default function useActivitiesMutations() {
         return { success: false, error: noUserError };
       }
 
+      if (!online) {
+        const offlineActivityId = generateActivityId();
+        const offlineTimestamp = getItalyIsoString();
+        const offlineWho = user.user_name || "System";
+        const offlineCode = activityData.code;
+
+        const offlineActivity: Activity = {
+          code: offlineCode,
+          who: offlineWho,
+          timestamp: offlineTimestamp,
+        };
+
+        // Multi-path update — use path="" with atomic:true
+        const offlineUpdates: Record<string, unknown> = {};
+        offlineUpdates[`activities/${occupantId}/${offlineActivityId}`] = offlineActivity;
+        offlineUpdates[`activitiesByCode/${offlineCode}/${occupantId}/${offlineActivityId}`] = {
+          who: offlineWho,
+          timestamp: offlineTimestamp,
+        };
+
+        const queued = await queueOfflineWrite("", "update", offlineUpdates, {
+          idempotencyKey: crypto.randomUUID(),
+          atomic: true,
+          domain: "activities",
+        });
+        if (queued !== null) {
+          // Successfully queued — do NOT call maybeSendEmailGuest (network-dependent)
+          // NOTE: email notification is deferred when activity is logged offline
+          setLoading(false);
+          return {
+            success: true,
+            data: offlineActivity,
+            message: "Activity queued for sync",
+          };
+        }
+        // If queued === null (IDB unavailable), fall through to direct Firebase write
+      }
+
       try {
         const activityId = generateActivityId();
         const timestamp = getItalyIsoString();
@@ -315,7 +404,7 @@ export default function useActivitiesMutations() {
         return { success: false, error: msg };
       }
     },
-    [database, maybeSendEmailGuest, user]
+    [database, maybeSendEmailGuest, online, user]
   );
 
   /**

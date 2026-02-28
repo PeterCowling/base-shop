@@ -1,41 +1,27 @@
-/* File: /src/components/appNav/TillModal.tsx */
+"use client";
 
 import { memo } from "react";
+import {
+  Activity,
+  AreaChart,
+  Calculator,
+  FileText,
+  Shield,
+  Wrench,
+} from "lucide-react";
 
+import { useAuth } from "../../context/AuthContext";
 import { type IconModalProps,withIconModal } from "../../hoc/withIconModal";
+import { canAccess, Permissions } from "../../lib/roles";
 import { type ModalAction } from "../../types/component/ModalAction";
 
 const actions: ModalAction[] = [
-  {
-    label: "Till",
-    iconClass: "fas fa-cash-register",
-    route: "/till-reconciliation",
-  },
-  {
-    label: "Safe",
-    iconClass: "fas fa-shield-alt",
-    route: "/safe-reconciliation",
-  },
-  {
-    label: "Workbench",
-    iconClass: "fas fa-tools",
-    route: "/reconciliation-workbench",
-  },
-  {
-    label: "Live",
-    iconClass: "fas fa-stream",
-    route: "/live",
-  },
-  {
-    label: "Variance",
-    iconClass: "fas fa-chart-area",
-    route: "/variance-heatmap",
-  },
-  {
-    label: "End of Day",
-    iconClass: "fas fa-file-alt",
-    route: "/end-of-day",
-  },
+  { label: "Till",       icon: Calculator, route: "/till-reconciliation" },
+  { label: "Safe",       icon: Shield,     route: "/safe-reconciliation" },
+  { label: "Workbench",  icon: Wrench,     route: "/reconciliation-workbench" },
+  { label: "Live",       icon: Activity,   route: "/live" },
+  { label: "Variance",   icon: AreaChart,  route: "/variance-heatmap" },
+  { label: "End of Day", icon: FileText,   route: "/end-of-day" },
 ];
 
 // Build a base modal using the HOC.
@@ -46,14 +32,15 @@ const BaseTillModal = withIconModal({
 
 /**
  * Wrapper component so all users can view this modal but
- * only "Pete" can navigate using the icons.
+ * only users with till access can navigate using the icons.
  */
 function TillModal({ user, ...rest }: IconModalProps) {
+  const { user: authUser } = useAuth();
   return (
     <BaseTillModal
       {...rest}
       user={user}
-      interactive={user.user_name === "Pete"}
+      interactive={canAccess(authUser, Permissions.TILL_ACCESS)}
     />
   );
 }

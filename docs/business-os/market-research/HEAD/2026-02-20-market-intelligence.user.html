@@ -5,13 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Market Intelligence Pack: HEAD (Refresh 2026-02-20)</title>
   <style>
+    /* ── Defaults (overridden when palette CSS is injected) ── */
     :root {
       --bg: #ffffff;
+      --surface: #f5f8fb;
       --text: #101418;
-      --muted: #5a6570;
+      --text-muted: #5a6570;
       --border: #d9e0e7;
-      --header: #f5f8fb;
-      --link: #0b63ce;
+      --accent: #0b63ce;
+      --accent-soft: #e8f0fa;
+      --code-bg: #f5f8fb;
+      --code-border: #d9e0e7;
+      --radius: 6px;
+      --radius-lg: 10px;
+    }
+
+    /* ── Palette (substituted by render pipeline — overrides defaults above) ── */
+    :root {
+  --bg:#f9f8f6;--surface:#ffffff;--border:#e4e2de;--border-soft:#eeece9;
+  --text:#1a1918;--text-muted:#6b6762;--accent:#2d6a4f;--accent-soft:#e8f4ee;
+  --warn:#92400e;--warn-soft:#fef3c7;--danger:#991b1b;--danger-soft:#fee2e2;
+  --code-bg:#f3f1ee;--code-border:#dbd9d4;--radius:6px;--radius-lg:10px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1a1918;--surface:#242220;--border:#3d3a37;--border-soft:#2e2c2a;
+  --text:#f5f3f0;--text-muted:#a39e98;--accent:#52b788;--accent-soft:#1e3d30;
+  --warn:#fbbf24;--warn-soft:#27201a;--danger:#f87171;--danger-soft:#3b1515;
+  --code-bg:#2e2c2a;--code-border:#3d3a37;
+}}
+
+    /* ── Aliases for basic-template-specific variable names ── */
+    :root {
+      --muted: var(--text-muted);
+      --header: var(--surface);
+      --link: var(--accent);
     }
     html, body {
       margin: 0;
@@ -23,88 +50,45 @@
     main {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 24px;
+      padding: 2rem 1.5rem 4rem;
     }
-    h1, h2, h3 {
-      line-height: 1.25;
-    }
-    p, li {
-      line-height: 1.5;
-    }
-    a {
-      color: var(--link);
-    }
-    code, pre {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    }
-    pre {
-      background: #f7f9fb;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px;
-      overflow-x: auto;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 16px 0 24px;
-    }
-    th, td {
-      border: 1px solid var(--border);
-      padding: 10px 12px;
-      text-align: left;
-      vertical-align: top;
-    }
-    th {
+    h1 { font-size: 1.8rem; font-weight: 700; margin: 0 0 1.5rem; }
+    h2 { font-size: 1.3rem; font-weight: 600; margin: 2rem 0 0.75rem; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+    h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.5rem; }
+    p { line-height: 1.7; margin: 0 0 0.8rem; }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.8rem; }
+    li { margin-bottom: 0.35rem; line-height: 1.6; }
+    code {
+      font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, monospace;
+      font-size: 0.85em;
       background: var(--header);
-      font-weight: 700;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.15em 0.35em;
     }
-    tr:nth-child(even) td {
-      background: #fcfdff;
-    }
-    hr {
-      border: 0;
-      border-top: 1px solid var(--border);
-      margin: 24px 0;
-    }
-    blockquote {
-      border-left: 4px solid var(--border);
-      margin: 16px 0;
-      padding: 0 12px;
-      color: var(--muted);
-    }
-    .meta {
-      margin-top: 24px;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-    /* Audience toggle — Model A: single engineering appendix wrapper */
-    [data-audience="engineering"] {
-      display: none;
-    }
-    body.show-engineering [data-audience="engineering"] {
-      display: block;
-    }
+    pre { background: var(--header); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; overflow-x: auto; margin: 0.8rem 0; }
+    pre code { background: none; border: none; padding: 0; font-size: 0.82rem; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    blockquote { border-left: 3px solid var(--border); margin: 0.8rem 0; padding: 0.5rem 1rem; color: var(--muted); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin: 0.8rem 0; }
+    thead tr { background: var(--header); }
+    th { text-align: left; padding: 0.6rem 0.8rem; font-weight: 600; border-bottom: 2px solid var(--border); }
+    td { padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    img { max-width: 100%; height: auto; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+    .meta { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--muted); }
+    /* Engineering appendix — hidden by default */
+    [data-audience="engineering"] { display: none; }
+    body.show-engineering [data-audience="engineering"] { display: block; }
     .audience-toggle {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin: 16px 0 24px;
-      padding: 8px 16px;
-      background: var(--header);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.875rem;
-      color: var(--muted);
-      font-family: inherit;
+      position: fixed; bottom: 1rem; right: 1rem;
+      padding: 0.4rem 0.8rem; font-size: 0.75rem; font-weight: 600;
+      border: 1px solid var(--border); border-radius: 4px;
+      background: var(--bg); color: var(--muted);
+      cursor: pointer; z-index: 100;
     }
-    .audience-toggle:hover {
-      background: var(--border);
-      color: var(--text);
-    }
+    .audience-toggle:hover { background: var(--border); color: var(--text); }
     @media print {
       [data-audience="engineering"] { display: none !important; }
       .audience-toggle { display: none !important; }
@@ -115,7 +99,7 @@
 <script id="sl-theme-init">(function(){try{var t=localStorage.getItem("sl-theme");if(!t)t=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}catch(e){}})()</script>
 </head>
 <body>
-<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><span class="sl-brand">Startup Loop</span><a href="../../startup-loop-workflow.user.html">Workflow</a><a href="../../startup-loop-files.user.html">Loop Files</a><a href="../../startup-loop-file-types.user.html">File Types</a><a href="../../startup-loop-output-registry.user.html">Output Registry</a><a href="../../pending-reviews.user.html">Pending Reviews</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
+<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><span class="sl-brand">Startup Loop</span><a href="../../business-os/startup-loop-workflow.user.html">Workflow</a><a href="../../business-os/startup-loop-files.user.html">Loop Files</a><a href="../../business-os/startup-loop-file-types.user.html">File Types</a><a href="../../business-os/startup-loop-output-registry.user.html">Output Registry</a><a href="../../business-os/ideas.user.html">Ideas</a><a href="../../business-os/process-improvements.user.html">Process</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
   <main>
     <button class="audience-toggle" id="audience-toggle" aria-pressed="false">
       Show technical details
@@ -238,25 +222,276 @@
 <li><code>docs/business-os/startup-baselines/HEAD-offer.md</code> (S2B)</li>
 <li><code>docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md</code> (S3)</li>
 <li><code>docs/business-os/startup-baselines/HEAD-channels.md</code> (S6B)</li>
-<li><code>docs/business-os/strategy/HEAD/2026-02-20-prioritization-scorecard.user.md</code> (S5A)</li>
+<li><code>docs/business-os/strategy/HEAD/2026-02-20-prioritization-scorecard.user.md</code> (S4)</li>
 </ul>
 <p>Canonical outcome contract remains:</p>
 <ul>
 <li><code>docs/business-os/contracts/HEAD/outcome-contract.user.md</code></li>
 </ul>
+<hr>
+<h2>I) Evidence Addendum — External Research (2026-02-20)</h2>
+<p>This section adds externally-researched data not present in the original market intel pack. All items tagged <code>research-checked</code> are sourced from public references.</p>
+<h3>I.1 Scale and Demographics (research-checked)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Figure</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Italian CI installed base</td>
+<td>~17,000–20,000 users</td>
+<td>MDPI 2024/2025 Italian incidence study; brand dossier</td>
+</tr>
+<tr>
+<td>New Italian implants/year (2023)</td>
+<td>~1,595 (27 per million inhabitants)</td>
+<td>MDPI 2024/2025</td>
+</tr>
+<tr>
+<td>European CI users</td>
+<td>~500,000</td>
+<td>EURO-CIU</td>
+</tr>
+<tr>
+<td>New European implants/year</td>
+<td>~25,000</td>
+<td>EURO-CIU</td>
+</tr>
+<tr>
+<td>European adult/paediatric split</td>
+<td>~60% adult / 40% paediatric</td>
+<td>EURO-CIU</td>
+</tr>
+<tr>
+<td>Global installed base (2019)</td>
+<td>~737,000</td>
+<td>NIDCD</td>
+</tr>
+<tr>
+<td>Italian children implanted before 24 months</td>
+<td>~55%</td>
+<td>PMC 9935678 (Italian survey)</td>
+</tr>
+<tr>
+<td>Median age at implantation (children, global)</td>
+<td>~16 months</td>
+<td>PMC 9913281</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Implication</strong>: The caregiver segment begins at/before age 2 and persists for ~10 years per child. Italy generates ~1,600 new patients/year (ongoing market refresh). EU total provides viable scale for expansion.</p>
+<h3>I.2 Manufacturer Market Share (research-checked, global)</h3>
+<table>
+<thead>
+<tr>
+<th>Manufacturer</th>
+<th>Global share</th>
+<th>Europe notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cochlear Limited (AUS)</td>
+<td>~50–55%</td>
+<td>Global leader; strong UK/ANZ/US</td>
+</tr>
+<tr>
+<td>MED-EL (Austria)</td>
+<td>~20–25%</td>
+<td>Stronger in Central/Southern Europe; acquired Oticon Medical implant assets Dec 2024</td>
+</tr>
+<tr>
+<td>Advanced Bionics (US/CH)</td>
+<td>~15–20%</td>
+<td>Consistently third; Geneva HQ, EU manufacturing</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Italy note</strong>: No Italy-specific breakdown found. MED-EL's home-market advantage in Central/Southern Europe suggests its Italian share is likely above the global 20–25%. All three brands appear in Italian clinical literature. Products from all three brands must be considered in compatibility guidance.</p>
+<h3>I.3 Competitor Detail — Third-Party Retention Products (research-checked)</h3>
+<table>
+<thead>
+<tr>
+<th>Brand</th>
+<th>Product</th>
+<th>Price</th>
+<th>Key notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Geniebands (Etsy)</td>
+<td>Sports-pocket headband</td>
+<td>~USD20–30 est.</td>
+<td>9,156 total Etsy shop sales, 500 reviews, 4.8/5; 6 sizes (6m–adult); Oeko-Tex certified fabric; 35+ countries; strongest third-party WTP signal</td>
+</tr>
+<tr>
+<td>Ear Suspenders</td>
+<td>Silicone grip retention headband</td>
+<td>~USD18.50–19.50</td>
+<td>~29.9k total Etsy sales, 4.7 rating, ~2.1k reviews; on Etsy since 2011; adjustable sizing, non-slip silicone — operational maturity benchmark</td>
+</tr>
+<tr>
+<td>Ear Gear</td>
+<td>Spandex sleeve/cover</td>
+<td>~USD29.99–38</td>
+<td>Addresses sweat/moisture; cross-compatible across Cochlear/AB/Oticon Medical/MED-EL explicitly; documented complaints: too tight, changes processor programme</td>
+</tr>
+<tr>
+<td>SyNAPS</td>
+<td>Bluesign/Oeko-Tex headband/hat</td>
+<td>Not yet scraped</td>
+<td>Non-slip silicone, moisture-wicking; new entrant</td>
+</tr>
+<tr>
+<td>Deafmetal</td>
+<td>Jewellery-style retention accessories</td>
+<td>~USD54–60+</td>
+<td>Adult/teen identity; child-safety constraints</td>
+</tr>
+<tr>
+<td>SmartEAR (Italian retailer)</td>
+<td>Universal cotton pocket headband</td>
+<td>EUR18</td>
+<td>Italian-language listing; side pockets; child use cases described; sold via Italian hearing-products retailer — confirms Italian-language retail exists but is retailer-distributed, not DTC lifestyle-brand</td>
+</tr>
+</tbody>
+</table>
+<p><strong>WTP confirmation</strong>: Third-party functional retention products sell at EUR18–USD38. Decorative/identity accessories (CI bling, Etsy) sell at USD2.50–20.</p>
+<p><strong>Italian retail gap clarification</strong>: Italian-language accessibility for retention accessories exists via hearing-product distributors and marketplaces. The defensible gap is the absence of a cohesive, lifestyle-coded, cross-compatible DTC brand with Italian-first UX — not the total absence of Italian-language product.</p>
+<h3>I.4 Documented Comfort Failure Modes (research-checked)</h3>
+<p>These are confirmed in public sources and should inform product spec and copy:</p>
+<ul>
+<li><strong>Pressure on magnet site</strong>: Cochlear own support documentation states headbands can place "pressure on your processor" causing soreness, numbness, or heat at the implant site.</li>
+<li><strong>Heat and sweat</strong>: MED-EL sports headband explicitly markets breathability (implies non-breathable options cause heat); Ear Gear product exists specifically because wearers suffered sweat damage (one reviewer replaced processors "4–5 times due to sweat damage" before using sleeve).</li>
+<li><strong>Skin irritation / contact dermatitis</strong>: BCIG Skin Health Information Leaflet (September 2023) published formally; contact dermatitis to silicone is a documented clinical condition post-implantation.</li>
+<li><strong>Inconsistent positioning</strong>: HearingTracker forum: Snugfit "doesn't settle into one right position which it will consistently go to."</li>
+<li><strong>Glasses incompatibility</strong>: Ear Gear attachment "pulls glasses into a weird angle" (forum); glasses arm creates uncomfortable "lumpy bumpy area."</li>
+<li><strong>Hair and coil displacement</strong>: coil wire catches on hair; some centres require shaving over the magnet site as a retention intervention.</li>
+</ul>
+<h3>I.5 Active Communities (research-checked)</h3>
+<table>
+<thead>
+<tr>
+<th>Community</th>
+<th>Platform</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HearPeers</td>
+<td>forum.hearpeers.com</td>
+<td>MED-EL hosted but cross-brand; active accessory and retention threads</td>
+</tr>
+<tr>
+<td>HearingJourney</td>
+<td>hearingjourney.com</td>
+<td>Described as largest dedicated CI forum; parent sub-section active</td>
+</tr>
+<tr>
+<td>HearingTracker Forum</td>
+<td>forum.hearingtracker.com/c/cochlear-implants</td>
+<td>Independent; specific retention-methods thread with product comparisons</td>
+</tr>
+<tr>
+<td>CI Facebook groups</td>
+<td>Facebook</td>
+<td>~18,000+ members across 60 groups (2015 baseline; higher now); parent groups active</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note</strong>: Primary English-language communities. HearPeers is a promoted community asset in the manufacturer ecosystem (MED-EL explicitly directs users to it on its corporate community page — not just a generic forum). Italian-language equivalent not yet identified, but APIC (Associazione Portatori Impianto Cocleare) is an established Italian CI user non-profit association (volunteer, founded in Turin) that functions as a potential community hub for partnership outreach and qualitative discovery.</p>
+<h3>I.6 Daily Kit (what users carry) (research-checked)</h3>
+<p>Understanding the organisation job-to-be-done requires knowing what's in the kit:</p>
+<p><strong>Core daily carry:</strong></p>
+<ul>
+<li>Spare coil (external magnetic disc) — documented as the most commonly lost single item</li>
+<li>Spare batteries (disposable 675, 3–6 day life) or rechargeable battery pack</li>
+<li>Safety cord / retention lanyard</li>
+<li>Retention device (headband, sleeve, or clip)</li>
+</ul>
+<p><strong>Bag additions:</strong></p>
+<ul>
+<li>Mini drying kit / desiccant pot</li>
+<li>Cleaning brush / wax pick</li>
+<li>Spare earhook or tubing</li>
+<li>Processor carry case / pouch (for when processor is off)</li>
+</ul>
+<p><strong>For children / travel / active use:</strong></p>
+<ul>
+<li>Aqua/waterproof sleeve or case (swimming)</li>
+<li>Portable power pack</li>
+<li>Teacher/carer instruction card ("what to do if processor falls off")</li>
+<li>Spare processor (where programme provides one)</li>
+</ul>
+<p><strong>Organisation implication</strong>: The kit is 6–12 items minimum. No lifestyle product currently provides a coherent "daily kit system" at accessible pricing. This is the organisation gap.</p>
+<p>Sources: EURO-CIU; MDPI 2024/2025 Italian incidence study; PMC 9935678; PMC 9913281; NIDCD; BCIG (bcig.org.uk); Cochlear support (support.cochlear.com); HearingTracker forum; HearPeers forum; PMC 4487612; Geniebands Etsy; EarSuspenders (earsuspenders.com); Ear Gear Amazon reviews.</p>
+<h3>I.7 Validated Accessory Category Evidence (S0B live research, 2026-02-20)</h3>
+<p>The following accessory categories are validated by direct evidence in the CI ecosystem — not inferred. Relevant for range architecture decisions.</p>
+<ul>
+<li><strong>Pocket headband (retention)</strong>: UK NHS patient page explicitly recommends "headbands with pockets" and breathable material to prevent overheating. Third-party purchase is treated as routine (third-party providers listed on NHS page).</li>
+<li><strong>Identity/label accessories</strong>: Cochlear sells "Bilateral Identification Adhesive Labels" (colour-coded stickers to differentiate L/R processors) — direct validation that identity/personalisation accessories are a real purchase category in this ecosystem.</li>
+<li><strong>Organiser/carry case</strong>: Cochlear sells a storage case sized to hold two sound processors with cables/accessories — validates organiser and carry products as part of the standard CI accessory set.</li>
+<li><strong>Breathability as clinical requirement</strong>: NHS guidance explicitly states headbands must be breathable to avoid overheating the skin. Oeko-Tex certification is already used as a trust marker by Geniebands (explicit in shop copy). Both are first-order product requirements, not optional.</li>
+<li><strong>Italian B2B distributor channel</strong>: An Italian hearing-products distributor catalogues Cochlear safety lines and MED-EL protective cases behind a login-to-see-price model — confirms B2B/B2B2C distribution exists in Italy but is access-restricted, reinforcing that open DTC is an underserved layer.</li>
+</ul>
+<h3>I.8 Regulatory Timeline (S0B live research, 2026-02-20)</h3>
+<p>Time-sensitive regulatory milestones relevant to HEAD's 2026 launch year:</p>
+<table>
+<thead>
+<tr>
+<th>Regulation</th>
+<th>Status</th>
+<th>HEAD implication</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EU MDR (Reg. (EU) 2017/745)</td>
+<td>In force</td>
+<td>"Intended purpose" on labels/copy determines MDR accessory scope. Copy discipline is non-negotiable from day one.</td>
+</tr>
+<tr>
+<td>Eudamed actor registration</td>
+<td><strong>Mandatory from 28 May 2026</strong></td>
+<td>HEAD's launch window overlaps this deadline. If products are classified as MDR accessories, Eudamed registration is required. Monitor classification decision.</td>
+</tr>
+<tr>
+<td>EU GPSR (Reg. (EU) 2023/988)</td>
+<td>Applicable from 13 December 2024</td>
+<td>Applies to all children's wearable products regardless of MDR status. Requires documented hazard identification, traceability, and warnings where needed.</td>
+</tr>
+<tr>
+<td>EN 14682</td>
+<td>Standard</td>
+<td>Governs cords/drawstrings in children's clothing. Applies to any tether-class or corded component around children's neck/head region. Reinforces tether deferral gate.</td>
+</tr>
+<tr>
+<td>Textile labelling (Reg. (EU) 1007/2011)</td>
+<td>In force</td>
+<td>Italy-facing products must display fibre composition in Italian, in descending proportion order, without abbreviations.</td>
+</tr>
+<tr>
+<td>REACH (SVHCs)</td>
+<td>In force</td>
+<td>Duty to communicate if candidate-list substances exceed thresholds in articles. Standard baseline for any EU textile accessory brand.</td>
+</tr>
+</tbody>
+</table>
     <div class="meta">
       <div>Source: <code>docs/business-os/market-research/HEAD/2026-02-20-market-intelligence.user.md</code></div>
-      <div>Generated: 2026-02-20T13:28:09.656Z</div>
+      <div>Generated: 2026-02-25T16:02:50.166Z</div>
     </div>
   </main>
   <script type="module">
     import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-    // startOnLoad: false — we render manually so hidden engineering diagrams
-    // (inside display:none) are not attempted on load, which causes spurious
-    // "Syntax error in text" failures in Mermaid v11.
     mermaid.initialize({ startOnLoad: false, securityLevel: "antiscript", theme: "neutral" });
 
-    // Render only the visible (operator) diagrams immediately.
     const operatorDiagrams = Array.from(document.querySelectorAll(".mermaid")).filter(
       (el) => !el.closest("[data-audience='engineering']")
     );
@@ -264,8 +499,6 @@
       mermaid.run({ nodes: operatorDiagrams });
     }
 
-    // Audience toggle — Model A.
-    // Engineering diagrams are rendered on first reveal (not on load).
     let engineeringRendered = false;
     const toggleBtn = document.getElementById("audience-toggle");
     if (toggleBtn) {
@@ -274,7 +507,6 @@
         toggleBtn.textContent = isShowing ? "Hide technical details" : "Show technical details";
         toggleBtn.setAttribute("aria-pressed", String(isShowing));
         if (isShowing && !engineeringRendered) {
-          // Render engineering diagrams now that they are visible.
           const nodes = Array.from(document.querySelectorAll("[data-audience='engineering'] .mermaid"));
           if (nodes.length > 0) {
             mermaid.run({ nodes });

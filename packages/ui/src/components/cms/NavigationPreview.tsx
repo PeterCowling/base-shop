@@ -43,7 +43,7 @@ function NavItemView({ item }: { item: NavItem }) {
     <li className="relative group">
       <a
         href={item.url || "#"}
-        className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-md px-3 font-medium hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md px-3 font-medium hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         data-token="--color-fg"
       >
         {item.label || (t("nav.itemFallback") as string)}
@@ -59,7 +59,7 @@ function NavItemView({ item }: { item: NavItem }) {
               <li key={child.id}>
                 <a
                   href={child.url || "#"}
-                  className="inline-flex min-h-10 min-w-10 items-center rounded px-2 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                  className="inline-flex min-h-11 min-w-11 items-center rounded px-2 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                   data-token="--color-fg"
                 >
                   {child.label || (t("nav.itemFallback") as string)}

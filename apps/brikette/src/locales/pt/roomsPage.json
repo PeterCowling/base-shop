@@ -66,6 +66,7 @@
   },
   "rooms": {
     "title": "Os nossos quartos",
+    "soldOut": "Esgotado",
     "double_room": {
       "title": "Quarto Duplo",
       "bed_intro": "Deslumbrantes vistas para o mar – perfeito para casais.",
@@ -285,6 +286,7 @@
   "filtersAria": "Filtrar por tipo de quarto",
   "checkRatesNonRefundable": "Tarifas não reembolsáveis",
   "checkRatesFlexible": "Tarifas flexíveis",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "Não reembolsável",
     "flexible": "Flexível"

@@ -5,7 +5,7 @@ Business: HEAD
 Status: Active
 Created: 2026-02-20
 Method: back-propagated — generated from ASSESSMENT-01 problem statement and existing HEAD research artifacts
-Input: docs/business-os/strategy/HEAD/problem-statement.user.md
+Input: docs/business-os/strategy/HEAD/2026-02-20-problem-statement.user.md
 Results-artifact: docs/business-os/strategy/HEAD/2026-02-20-solution-profile-results.user.md
 ---
 

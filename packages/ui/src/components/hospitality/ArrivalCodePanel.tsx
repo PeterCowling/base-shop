@@ -26,7 +26,7 @@ export function ArrivalCodePanel({
   return (
     <div
       className={cn(
-        'rounded-2xl bg-[linear-gradient(180deg,hsl(var(--hospitality-info))_0%,hsl(var(--hospitality-ready))_100%)] p-6',
+        'rounded-2xl bg-info-main p-6',
         className,
       )}
       data-token="hospitality-arrival-panel"

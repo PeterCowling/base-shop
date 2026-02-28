@@ -19,7 +19,7 @@ const FormContainer: FC<FormContainerProps> = ({
 }) => {
   return (
     <div
-      className={`relative mb-6 border ${borderColor} rounded p-4 pr-8 pt-8 ${
+      className={`relative mb-6 border ${borderColor} rounded-lg p-4 pr-8 pt-8 ${
         className ?? ""
       }`.trim()}
     >

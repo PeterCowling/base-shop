@@ -37,13 +37,27 @@ jest.mock("@/utils/translationFallbacks", () => ({ getGuideLinkLabel: () => "Gui
 // Mock StickyBookNow to call onStickyCheckoutClick with a mock ctx on click.
 // Note: project uses data-cy as testIdAttribute (jest.setup.ts configure({ testIdAttribute: "data-cy" })).
 let capturedProceed: jest.Mock | null = null;
+let capturedOctorateUrl: string | undefined = undefined;
 jest.mock("@acme/ui/organisms/StickyBookNow", () => {
   const React = require("react");
   return {
     __esModule: true,
-    default: ({ onStickyCheckoutClick }: { onStickyCheckoutClick?: (ctx: { checkin: string; checkout: string; pax: number; href: string; proceed: () => void }) => void }) => {
+    default: ({
+      onStickyCheckoutClick,
+      octorateUrl,
+    }: {
+      onStickyCheckoutClick?: (ctx: {
+        checkin: string;
+        checkout: string;
+        pax: number;
+        href: string;
+        proceed: () => void;
+      }) => void;
+      octorateUrl?: string;
+    }) => {
       const proceed = jest.fn();
       capturedProceed = proceed;
+      capturedOctorateUrl = octorateUrl;
       return (
         <button
           type="button"
@@ -53,7 +67,7 @@ jest.mock("@acme/ui/organisms/StickyBookNow", () => {
               checkin: "2026-06-10",
               checkout: "2026-06-12",
               pax: 2,
-              href: "https://book.octorate.com/octobook/site/reservation/result.xhtml",
+              href: "https://book.octorate.com/octobook/site/reservation/calendar.xhtml",
               proceed,
             });
           }}
@@ -76,6 +90,7 @@ describe("TASK-35: RoomDetailContent sticky CTA begin_checkout GA4 contract", ()
     jest.clearAllMocks();
     jest.useFakeTimers();
     capturedProceed = null;
+    capturedOctorateUrl = undefined;
     originalGtag = window.gtag;
     gtagMock = jest.fn();
     window.gtag = gtagMock;
@@ -145,5 +160,12 @@ describe("TASK-35: RoomDetailContent sticky CTA begin_checkout GA4 contract", ()
 
     jest.advanceTimersByTime(1);
     expect(capturedProceed).toHaveBeenCalledTimes(1);
+  });
+
+  it("TC-WireUrl: passes a result.xhtml URL with room code to StickyBookNow for room_10", () => {
+    capturedOctorateUrl = undefined;
+    render(<RoomDetailContent lang="en" id="room_10" />);
+    expect(capturedOctorateUrl).toContain("result.xhtml");
+    expect(capturedOctorateUrl).toContain("room=433887");
   });
 });

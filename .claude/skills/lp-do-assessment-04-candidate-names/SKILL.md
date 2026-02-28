@@ -1,6 +1,6 @@
 ---
 name: lp-do-assessment-04-candidate-names
-description: Full naming pipeline orchestrator (ASSESSMENT-04). Runs four parts in sequence: (1) produce naming-generation-spec.md from ASSESSMENT docs, (2) agent generates 250 scored candidates, (3) RDAP batch check all .com domains, (4) filter to available names and produce ranked shortlist. Delivers a final operator-ready shortlist of domain-verified, scored brand name candidates.
+description: Full naming pipeline orchestrator (ASSESSMENT-04). Runs four parts in sequence: (1) produce <YYYY-MM-DD>-naming-generation-spec.md from ASSESSMENT docs, (2) agent generates 250 scored candidates, (3) RDAP batch check all .com domains, (4) filter to available names and produce ranked shortlist. Delivers a final operator-ready shortlist of domain-verified, scored brand name candidates.
 ---
 
 # lp-do-assessment-04-candidate-names — Candidate Names Pipeline (ASSESSMENT-04)
@@ -23,7 +23,7 @@ Rerunnable. If a spec and/or candidates file already exist from a prior round, t
 
 | Part | Name | What happens | Tool |
 |------|------|--------------|------|
-| 1 | **Spec** | Read ASSESSMENT docs → write `naming-generation-spec.md` | Invoke `lp-do-assessment-05-name-selection` |
+| 1 | **Spec** | Read ASSESSMENT docs → write `<YYYY-MM-DD>-naming-generation-spec.md` | Invoke `lp-do-assessment-05-name-selection` |
 | 2 | **Generate** | Read spec → generate 250 scored candidates → write `naming-candidates-<date>.md` | Spawn general-purpose agent |
 | 3 | **RDAP check** | Batch-check all .com domains → write `naming-rdap-<date>.txt` | Bash |
 | 4 | **Rank** | Filter to available → sort by score → write `naming-shortlist-<date>.user.md` | Inline |
@@ -37,11 +37,11 @@ All five parts run sequentially. Each part gates on the output of the prior part
 
 ### Part 1 — Spec
 
-Invoke the `lp-do-assessment-05-name-selection` skill for the target business. That skill reads the ASSESSMENT docs and writes `docs/business-os/strategy/<BIZ>/naming-generation-spec.md`.
+Invoke the `lp-do-assessment-05-name-selection` skill for the target business. That skill reads the ASSESSMENT docs and writes `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-generation-spec.md`.
 
-If `naming-generation-spec.md` already exists and a prior naming round has been run, the shaping skill updates the spec in place (adds newly eliminated names, refreshes ICP if changed). Do not skip Part 1 even if the spec exists — it must be current.
+If `<YYYY-MM-DD>-naming-generation-spec.md` already exists and a prior naming round has been run, the shaping skill updates the spec in place (adds newly eliminated names, refreshes ICP if changed). Do not skip Part 1 even if the spec exists — it must be current.
 
-Gate: `naming-generation-spec.md` exists and is dated today before proceeding to Part 2.
+Gate: `<YYYY-MM-DD>-naming-generation-spec.md` exists and is dated today before proceeding to Part 2.
 
 ---
 
@@ -190,7 +190,7 @@ After Part 4 produces the `.user.md` shortlist, render a polished HTML artifact 
 - **Meta footer** — Source file, Generated timestamp, RDAP check date
 
 **Design requirements:**
-- Brand-appropriate warm palette for the business (read from `brand-dossier.user.md` if it exists — use `--accent` and `--accent-warm` CSS vars derived from brand colours; fall back to a warm terracotta/sand palette `#c4714a` / `#f5ede4` if no brand dossier)
+- Brand-appropriate warm palette for the business (read from `<YYYY-MM-DD>-brand-identity-dossier.user.md` if it exists — use `--accent` and `--accent-warm` CSS vars derived from brand colours; fall back to a warm terracotta/sand palette `#c4714a` / `#f5ede4` if no brand dossier)
 - Score tier colour coding: Perfect (25) = gold `#c9973a`; High (23-24) = slate-blue `#4a6fa5`; Standard (<23) = standard text
 - Dimension score dots: filled `●` vs empty `○`, coloured by dimension (D=violet, W=teal, P=coral, E=green, I=amber)
 - Chart.js loaded from CDN (`https://cdn.jsdelivr.net/npm/chart.js`)
@@ -229,7 +229,7 @@ A new round is triggered in two ways:
 **User-triggered** — if the operator reviews the shortlist and rejects it (says "none of these work", "try again", "I don't like these", or equivalent). The operator may optionally say *why* (e.g. "too clinical", "wrong feel", "too similar to each other") — if they do, capture that as a **rejection note** and encode it as an additional anti-criterion in the next round's spec.
 
 **New round procedure:**
-1. Add all names from the current candidates file to §5.3 of `naming-generation-spec.md` as eliminated (reason: "domain taken" for RDAP-failed names; "operator rejected" for RDAP-available names the operator did not want). If a rejection note was given, add it as a new bullet under §6 Anti-Criteria.
+1. Add all names from the current candidates file to §5.3 of `<YYYY-MM-DD>-naming-generation-spec.md` as eliminated (reason: "domain taken" for RDAP-failed names; "operator rejected" for RDAP-available names the operator did not want). If a rejection note was given, add it as a new bullet under §6 Anti-Criteria.
 2. Increment the round counter in the spec frontmatter.
 3. Re-run Parts 2–4 with a fresh date stamp. Do not re-run Part 1 unless the ICP or product has changed.
 4. Present the new shortlist to the operator.
@@ -240,7 +240,7 @@ There is no cap on the number of rounds. Each round adds all prior candidates to
 
 ## Quality gate (before declaring pipeline complete)
 
-- [ ] `naming-generation-spec.md` updated today
+- [ ] `<YYYY-MM-DD>-naming-generation-spec.md` updated today
 - [ ] `naming-candidates-<date>.md` contains ≥ 240 rows with scores
 - [ ] `naming-rdap-<date>.txt` contains a result line for every name in the candidates file
 - [ ] `naming-shortlist-<date>.user.md` contains ≥ 10 AVAILABLE names with score ≥ 14

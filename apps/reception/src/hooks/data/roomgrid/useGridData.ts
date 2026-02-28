@@ -232,12 +232,6 @@ export default function useGridData(startDate: string, endDate: string) {
       const beds = getBedCount(room) || 1;
       const rows: GridReservationRow[] = [];
 
-      console.log("[useGridData] Processing room", room, {
-        beds,
-        startDate,
-        endDate,
-      });
-
       Object.entries(bookingsData).forEach(([ref, occMap]) => {
         Object.entries(occMap as Record<string, unknown>).forEach(([occId, rawData]) => {
           if (occId.startsWith("__")) {
@@ -294,10 +288,6 @@ export default function useGridData(startDate: string, endDate: string) {
           });
         });
       });
-
-      if (rows.length === 0) {
-        console.log("[useGridData] No bookings mapped for room", room);
-      }
 
       result[room] = packBookingsIntoRows(rows, beds);
     });

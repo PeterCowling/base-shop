@@ -41,5 +41,11 @@
     ],
     "footer": "A disponibilidade final e o pagamento são concluídos no nosso motor de reservas oficial."
   },
-  "backToRooms": "Voltar aos quartos"
+  "backToRooms": "Voltar aos quartos",
+  "hostel": {
+    "directSavings": {
+      "eyebrow": "Book direct and save",
+      "headline": "Up to 25% less than Booking.com"
+    }
+  }
 }

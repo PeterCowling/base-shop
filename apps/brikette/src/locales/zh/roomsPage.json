@@ -66,6 +66,7 @@
   },
   "rooms": {
     "title": "我们的房间",
+    "soldOut": "已售完",
     "double_room": {
       "title": "双人房",
       "bed_intro": "迷人海景——情侣首选。",
@@ -285,6 +286,7 @@
   "filtersAria": "按房型筛选",
   "checkRatesNonRefundable": "不可退款价格",
   "checkRatesFlexible": "灵活价格",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "不可退款",
     "flexible": "灵活"

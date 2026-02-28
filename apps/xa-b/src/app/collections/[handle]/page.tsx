@@ -4,6 +4,10 @@ import { notFound } from "next/navigation";
 import { XaProductListing } from "../../../components/XaProductListing.client";
 import { XA_COLLECTIONS, XA_PRODUCTS } from "../../../lib/demoData";
 
+export function generateStaticParams() {
+  return [...XA_COLLECTIONS.map((c) => ({ handle: c.handle })), { handle: "all" }];
+}
+
 export default async function CollectionPage({
   params,
 }: {

@@ -34,15 +34,14 @@ BOS sync actions write only to local files (docs, strategy plans, startup baseli
 
 | Stage | Name | BOS Sync Action | Tier |
 |-------|------|-----------------|------|
-| ASSESSMENT-09 | Intake | Validate required ASSESSMENT precursors; write/refresh `docs/business-os/startup-baselines/<BIZ>-intake-packet.user.md` | Autonomous |
+| ASSESSMENT-09 | Intake | Validate required ASSESSMENT precursors; write/refresh `docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md` | Autonomous |
 | MEASURE-01 | Agent-Setup | Record agent setup stage status under `docs/business-os/strategy/<BIZ>/` | Autonomous |
 | MEASURE-02 | Results | Persist results baseline under `docs/business-os/strategy/<BIZ>/` | Autonomous |
 | S2 | Market intelligence | Update `latest.user.md` pointer + strategy assumptions | Autonomous |
 | S2B | Offer design | Persist offer artifact under `docs/business-os/startup-baselines/<BIZ>/` | Autonomous |
 | S3 | Forecast | Update latest pointer + strategy assumptions/targets | Autonomous |
 | S6B | Channel strategy + GTM | Persist channel artifact under `docs/business-os/startup-baselines/<BIZ>/` | Autonomous |
-| S4 | Baseline merge | Write candidate baseline snapshot (local only, no manifest commit) | Autonomous |
-| S5A | Prioritize | None (`side_effects: none` in loop-spec) | Autonomous |
+| S4 | Baseline merge | Write merged baseline snapshot + manifest commit (local control-plane write) | Autonomous |
 | WEBSITE-01 | L1 first build framework | Persist/refresh `site-v1-builder-prompt.user.md` and strategy index status | Autonomous |
 | WEBSITE-02 | Site-upgrade synthesis | Update `latest.user.md` pointer | Autonomous |
 
@@ -54,14 +53,9 @@ or performs lane transitions.
 
 | Stage | Name | BOS Sync Action | Side-Effect Type |
 |-------|------|-----------------|------------------|
-| S5B | BOS sync | Persist cards/stage-docs to D1 via `/api/agent/*`; commit manifest pointer (candidate → current) | D1 write + manifest commit |
 | DO | Do | Upsert fact-find, plan, and build stage docs + lane transitions | D1 write + lane transition |
 | S9B | QA gates | Record QA results in build stage doc | D1 write |
 | S10 | Weekly readout | Record K/P/C/S decision + update card/plan state | D1 write + state change |
-
-**S5B is the highest-risk guarded stage** because it both writes to D1 and commits
-the manifest pointer (promoting `candidate` → `current`). All other guarded stages
-write to D1 but do not affect the manifest lifecycle.
 
 ### Prohibited Actions
 
@@ -71,7 +65,7 @@ These actions are never performed by automated agents regardless of stage.
 |--------|---------------|----------------------|
 | Delete run history (`events.jsonl`, `state.json`) | Destroys audit trail; derived state cannot be reconstructed | None — data loss is permanent |
 | Delete or overwrite completed stage artifacts | Violates append-only contract; downstream stages may reference them | Re-run affected stages from scratch |
-| Force-promote manifest (skip S5B gate) | Bypasses the guarded BOS sync + prioritization review (S5A) | Revert manifest to prior `current`; re-run S5A → S5B |
+| Force-promote manifest (skip S4 merge gate) | Bypasses the required merge-and-commit boundary | Revert manifest to prior `current`; re-run S4 |
 | Destructive bulk mutation on D1 (delete cards, wipe stage docs) | Shared state across all runs and businesses | Restore from D1 backup (if available) |
 | Rollback manifest to prior version without new run | Manifest tracks run progression; direct rollback creates inconsistency | Start new run from the desired prior state |
 | Modify `events.jsonl` (edit or delete existing lines) | Violates append-only ledger contract | Replay from backup; all derived state suspect |
@@ -123,19 +117,15 @@ Use these criteria when adding new stages or actions to the loop:
 | Does the action mutate shared state (D1, manifest, cards)? | Guarded | Continue |
 | Does the action perform a lane transition? | Guarded | Continue |
 | Does the action delete or overwrite existing data? | Prohibited | Continue |
-| Does the action bypass a required gate (S5A, S5B)? | Prohibited | Continue |
+| Does the action bypass a required gate (S4 merge-and-commit)? | Prohibited | Continue |
 | None of the above? | Autonomous | — |
 
 ## 5) Tier Coverage Verification
 
-All 26 stages from loop-spec.yaml are classified:
+All active execution stages from loop-spec.yaml are classified:
 
-- **Autonomous:** 11 stages — ASSESSMENT-09, MEASURE-01, MEASURE-02, S2, S2B, S3, S6B, S4, S5A, WEBSITE-01, WEBSITE-02
-- **Guarded (BOS sync):** 4 stages — S5B, DO, S9B, S10
+- **Autonomous:** 10 stages — ASSESSMENT-09, MEASURE-01, MEASURE-02, S2, S2B, S3, S6B, S4, WEBSITE-01, WEBSITE-02
+- **Guarded (BOS sync):** 3 stages — DO, S9B, S10
 - **Prohibited:** 0 stages (prohibited applies to actions, not stages)
 
-Total classified: 14 startup execution stages plus ASSESSMENT family container/sub-stages (26 stage IDs total). No stage is unclassified.
-
-Stages with `side_effects` field in loop-spec.yaml:
-- S5A: `side_effects: none` → classified Autonomous ✓
-- S5B: `side_effects: guarded` → classified Guarded ✓
+Total classified: 13 startup execution stages plus ASSESSMENT family container/sub-stages. No stage is unclassified.

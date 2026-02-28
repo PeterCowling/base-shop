@@ -66,6 +66,7 @@
   },
   "rooms": {
     "title": "Unsere Zimmer",
+    "soldOut": "Ausverkauft",
     "double_room": {
       "title": "Doppelzimmer",
       "bed_intro": "Beeindruckender Meerblick – ideal für Paare.",
@@ -285,6 +286,7 @@
   "filtersAria": "Nach Zimmertyp filtern",
   "checkRatesNonRefundable": "Nicht erstattbare Preise",
   "checkRatesFlexible": "Flexible Zimmerpreise",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "Nicht erstattbar",
     "flexible": "Flexibel"

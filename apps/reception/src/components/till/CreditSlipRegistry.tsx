@@ -22,14 +22,14 @@ export const CreditSlipRegistry = memo(function CreditSlipRegistry() {
   };
 
   return (
-    <div className="mt-6 border border-info-light rounded p-3">
+    <div className="mt-6 border border-info-light rounded-lg p-3">
       <h3 className="text-lg font-semibold mb-2">Credit Slip Registry</h3>
       <div className="flex flex-wrap gap-2 mb-2">
         <Input
           compatibilityMode="no-wrapper"
           type="text"
           placeholder="Slip #"
-          className="border rounded p-1 flex-1"
+          className="border rounded-lg p-1 flex-1"
           value={slipNumber}
           onChange={(e) => setSlipNumber(e.target.value)}
         />
@@ -37,14 +37,14 @@ export const CreditSlipRegistry = memo(function CreditSlipRegistry() {
           compatibilityMode="no-wrapper"
           type="text"
           placeholder="Amount"
-          className="border rounded p-1 w-28"
+          className="border rounded-lg p-1 w-28"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
       </div>
       <Button
         onClick={handleAdd}
-        className="px-3 py-1 bg-primary-main text-primary-fg rounded"
+        className="px-3 py-1 bg-primary-main text-primary-fg rounded-lg"
       >
         Add Slip
       </Button>

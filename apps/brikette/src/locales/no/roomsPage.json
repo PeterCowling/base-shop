@@ -31,6 +31,7 @@
   },
   "rooms": {
     "title": "Våre rom",
+    "soldOut": "Utsolgt",
     "double_room": {
       "title": "Dobbeltrom",
       "bed_intro": "Fantastisk havutsikt — perfekt for par.",
@@ -250,6 +251,7 @@
   "filtersAria": "Filtrer etter romtype",
   "checkRatesNonRefundable": "Ikke‑refunderbare priser",
   "checkRatesFlexible": "Fleksible rompriser",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "Ikke‑refunderbar",
     "flexible": "Fleksibel"

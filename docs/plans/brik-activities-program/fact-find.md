@@ -100,7 +100,7 @@ Prime staff auth building blocks (relevant if we add schedule-management UI):
 - Production kill-switch for staff/owner tools: `apps/prime/src/lib/security/staffOwnerGate.ts`.
 
 Brikette marketing primitives:
-- Brand language guidance: `docs/business-os/strategy/BRIK/brand-identity.user.md` currently says to use "Experiences" not "Activities".
+- Brand language guidance: `docs/business-os/strategy/BRIK/2026-02-12-brand-identity-dossier.user.md` currently says to use "Experiences" not "Activities".
   - This is now inconsistent with the clarified taxonomy (experiences = self-guided; activities = hostel-led) and should be updated as part of the work.
 
 Related plans:

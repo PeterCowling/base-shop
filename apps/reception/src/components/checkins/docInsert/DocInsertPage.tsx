@@ -7,6 +7,7 @@ import { Button } from "@acme/design-system/atoms";
 
 import useSingleGuestDetails from "../../../hooks/data/useSingleGuestDetails";
 import useActivitiesMutations from "../../../hooks/mutations/useActivitiesMutations";
+import { PageShell } from "../../common/PageShell";
 
 import BookingRef from "./BookingRef";
 import { occupantIsComplete } from "./occupantCompleteHelpers";
@@ -54,7 +55,7 @@ const DocInsertPage: React.FC = () => {
     setSnackbar((prev) => ({ ...prev, open: false }));
   }, []);
 
-  // For logging “activities”
+  // For logging "activities"
   const { logActivity } = useActivitiesMutations();
 
   // Hide the snackbar automatically after a few seconds
@@ -102,25 +103,31 @@ const DocInsertPage: React.FC = () => {
   }, [occupantDetails, occupantId, logActivity]);
 
   if (loading) {
-    return <p className="p-4">Loading guest details...</p>;
+    return (
+      <PageShell title="Insert Guest Details">
+        <p className="text-muted-foreground">Loading guest details...</p>
+      </PageShell>
+    );
   }
   if (error) {
     return (
-      <p className="p-4 text-error-main">
-        Error: {error instanceof Error ? error.message : String(error)}
-      </p>
+      <PageShell title="Insert Guest Details">
+        <p className="text-error-main">
+          Error: {error instanceof Error ? error.message : String(error)}
+        </p>
+      </PageShell>
     );
   }
   if (!occupantDetails) {
-    return <p className="p-4 text-error-main">No occupant details found.</p>;
+    return (
+      <PageShell title="Insert Guest Details">
+        <p className="text-error-main">No occupant details found.</p>
+      </PageShell>
+    );
   }
 
   return (
-    <div className="p-4 mx-auto font-body">
-      <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-2">
-        Insert Guest Details
-      </h1>
-
+    <PageShell title="Insert Guest Details">
       {/* Back button */}
       <div className="flex justify-end mb-4">
         <Button
@@ -133,7 +140,7 @@ const DocInsertPage: React.FC = () => {
         </Button>
       </div>
 
-      <div className="bg-surface rounded-lg shadow px-8 py-12">
+      <div className="bg-surface rounded-lg shadow-xl px-8 py-12">
         {/* BookingRef component */}
         <div className="mb-50px">
           <BookingRef bookingRef={bookingRef} />
@@ -156,7 +163,7 @@ const DocInsertPage: React.FC = () => {
       {/* Snackbar-like feedback */}
       {snackbar.open && (
         <div
-          className={`fixed bottom-4 right-4 p-4 rounded shadow-md
+          className={`fixed bottom-4 right-4 p-4 rounded-lg shadow-md
             flex items-center justify-between w-72
             ${
               snackbar.severity === "success"
@@ -165,7 +172,7 @@ const DocInsertPage: React.FC = () => {
                 ? "bg-error-main/50 text-primary-fg"
                 : snackbar.severity === "warning"
                 ? "bg-warning-main/50 text-foreground"
-                : "bg-info-main/50 text-primary-fg"
+                : "bg-primary-main/50 text-primary-fg"
             }`}
         >
           <span>{snackbar.message}</span>
@@ -174,7 +181,7 @@ const DocInsertPage: React.FC = () => {
           </Button>
         </div>
       )}
-    </div>
+    </PageShell>
   );
 };
 

@@ -1,3 +1,4 @@
+/* eslint-disable ds/container-widths-only-at, ds/enforce-layout-primitives, ds/min-tap-size -- BRIK-3 prime DS rules deferred */
 'use client';
 
 import { useState } from 'react';
@@ -22,7 +23,7 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <main className="min-h-screen bg-muted p-4">
+    <main className="min-h-svh bg-muted p-4">
       <div className="mx-auto max-w-md">
         <div className="mb-6 flex items-center gap-3">
           <Link href="/" className="rounded-full p-2 hover:bg-muted/80">
@@ -41,7 +42,7 @@ export default function AdminLoginPage() {
               value={pin}
               onChange={(e) => setPin(e.target.value)}
               placeholder="Enter PIN"
-              className="w-full rounded-lg border border-border px-4 py-3 text-center text-2xl tracking-widest focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+              className="w-full rounded-lg border border-border px-4 py-3 text-center text-2xl tracking-widest focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
               maxLength={6}
               disabled={isLoading}
             />

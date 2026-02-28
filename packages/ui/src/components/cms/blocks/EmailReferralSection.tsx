@@ -63,7 +63,7 @@ export default function EmailReferralSection({ headline, subtitle, giveLabel, ge
             placeholder={t("referral.email.placeholder") as string}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="flex-1 min-h-10 min-w-10 rounded border px-3"
+            className="flex-1 min-h-11 min-w-11 rounded border px-3"
           />
           <input
             type="email"
@@ -71,18 +71,18 @@ export default function EmailReferralSection({ headline, subtitle, giveLabel, ge
             placeholder={t("referral.friend.placeholder") as string}
             value={friend}
             onChange={(e) => setFriend(e.target.value)}
-            className="flex-1 min-h-10 min-w-10 rounded border px-3"
+            className="flex-1 min-h-11 min-w-11 rounded border px-3"
           />
           <button
             type="submit"
             disabled={!adapter || status === "loading"}
-            className="inline-flex min-h-10 min-w-10 items-center justify-center rounded bg-foreground px-4 text-foreground disabled:opacity-50"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded bg-foreground px-4 text-foreground disabled:opacity-50"
           >
             {t("referral.submit")}
           </button>
         </form>
         {termsHref ? (
-          <a href={termsHref} className="inline-flex min-h-10 min-w-10 items-center text-xs text-muted-foreground underline">{t("referral.terms")}</a>
+          <a href={termsHref} className="inline-flex min-h-11 min-w-11 items-center text-xs text-muted-foreground underline">{t("referral.terms")}</a>
         ) : null}
         {status === "loading" ? <div className="text-xs text-muted-foreground">{t("referral.sending")}</div> : null}
         {status === "ok" ? <div className="text-xs text-primary">{t("referral.ok")} {message ? `— ${message}` : ""}</div> : null}

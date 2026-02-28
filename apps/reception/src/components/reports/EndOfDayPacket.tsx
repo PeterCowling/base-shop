@@ -309,7 +309,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
     }
 
     return (
-      <div className="p-4 bg-surface text-foreground space-y-6">
+      <div className="p-4 bg-gradient-to-b from-surface-2 to-surface-3 text-foreground space-y-6">
         <h2 className="text-2xl font-semibold">
           End of Day Packet for {targetDateStr}
         </h2>
@@ -721,7 +721,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
         <Button
           type="button"
           onClick={handlePrint}
-          className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+          className="px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
         >
           Print Packet
         </Button>

@@ -25,18 +25,18 @@ const Ticket: FC<Props> = memo(
     );
 
     return (
-      <article className="flex flex-col overflow-hidden rounded-lg border border-border-2 bg-surface/90 shadow-sm backdrop-blur-sm">
+      <article className="flex flex-col overflow-hidden rounded-lg border border-border-2 bg-surface-2 shadow-md">
         {/* --- Ticket header --- */}
         <header
-          className={`flex cursor-pointer items-center justify-between gap-4 px-4 py-2 transition-colors duration-1000 ${ageColor}`}
+          className={`flex cursor-pointer items-center justify-between px-4 py-3 transition-colors duration-1000 ${ageColor}`}
           onDoubleClick={handleHeaderDblClick}
         >
-          <span className="text-shadow font-extrabold tracking-wider text-primary-fg">
+          <span className="text-2xl font-extrabold tracking-wider text-primary-fg drop-shadow-sm">
             {bleepNumber}
           </span>
           <time
             dateTime={time}
-            className="text-sm font-semibold text-primary-fg opacity-90"
+            className="text-xs font-semibold uppercase tracking-widest text-primary-fg/80"
           >
             {time}
           </time>

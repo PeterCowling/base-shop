@@ -26,8 +26,8 @@
 
 **ASSESSMENT-01 — Problem framing:**
 - `prompt_file`: `.claude/skills/lp-do-assessment-01-problem-statement/SKILL.md`
-- `required_output_path`: `docs/business-os/strategy/<BIZ>/problem-statement.user.md`
-- **Re-entry**: If `problem-statement.user.md` exists for this business → ASSESSMENT-01 complete; skip to ASSESSMENT-02.
+- `required_output_path`: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-problem-statement.user.md`
+- **Re-entry**: If `<YYYY-MM-DD>-problem-statement.user.md` exists for this business → ASSESSMENT-01 complete; skip to ASSESSMENT-02.
 
 **ASSESSMENT-02 — Solution-profiling scan (two-tier):**
 - Tier 1 — prompt written (started): `docs/business-os/strategy/<BIZ>/solution-profiling-prompt.md`
@@ -38,8 +38,8 @@
 
 **ASSESSMENT-03 — Solution selection:**
 - `prompt_file`: `.claude/skills/lp-do-assessment-03-solution-selection/SKILL.md`
-- `required_output_path`: `docs/business-os/strategy/<BIZ>/solution-select.user.md`
-- **Re-entry**: If `solution-select.user.md` exists → ASSESSMENT-03 complete; skip to ASSESSMENT-04.
+- `required_output_path`: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-solution-decision.user.md`
+- **Re-entry**: If `<YYYY-MM-DD>-solution-decision.user.md` exists → ASSESSMENT-03 complete; skip to ASSESSMENT-04.
 
 **ASSESSMENT-04 — Candidate names (two-tier):**
 - Tier 1 — prompt written (started): `docs/business-os/strategy/<BIZ>/candidate-names-prompt.md`
@@ -50,33 +50,33 @@
 
 **ASSESSMENT-06 — Distribution profiling:**
 - `prompt_file`: `.claude/skills/lp-do-assessment-06-distribution-profiling/SKILL.md`
-- `required_output_path`: `docs/business-os/strategy/<BIZ>/distribution-profiling.user.md`
-- **Re-entry**: If `distribution-profiling.user.md` exists with ≥2 channels → ASSESSMENT-06 complete; skip to ASSESSMENT-07.
+- `required_output_path`: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-launch-distribution-plan.user.md`
+- **Re-entry**: If `<YYYY-MM-DD>-launch-distribution-plan.user.md` exists with ≥2 channels → ASSESSMENT-06 complete; skip to ASSESSMENT-07.
 
 **ASSESSMENT-07 — Measurement profiling:**
 - `prompt_file`: `.claude/skills/lp-do-assessment-07-measurement-profiling/SKILL.md`
-- `required_output_path`: `docs/business-os/strategy/<BIZ>/measurement-profiling.user.md`
-- **Re-entry**: If `measurement-profiling.user.md` exists with tracking method + ≥2 metrics → ASSESSMENT-07 complete; skip to ASSESSMENT-08.
+- `required_output_path`: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-measurement-profile.user.md`
+- **Re-entry**: If `<YYYY-MM-DD>-measurement-profile.user.md` exists with tracking method + ≥2 metrics → ASSESSMENT-07 complete; skip to ASSESSMENT-08.
 
 **ASSESSMENT-08 — Current situation:**
 - `prompt_file`: `.claude/skills/lp-do-assessment-08-current-situation/SKILL.md`
-- `required_output_path`: `docs/business-os/strategy/<BIZ>/current-situation.user.md`
-- **Re-entry**: If `current-situation.user.md` exists → ASSESSMENT-08 complete; continue to ASSESSMENT-09 Intake contract.
+- `required_output_path`: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-operator-context.user.md`
+- **Re-entry**: If `<YYYY-MM-DD>-operator-context.user.md` exists → ASSESSMENT-08 complete; continue to ASSESSMENT-09 Intake contract.
 
 **ASSESSMENT-09 — Intake contract (validate + produce intake packet):**
 When all seven completion artifacts exist:
-1. `problem-statement.user.md`
+1. `<YYYY-MM-DD>-problem-statement.user.md`
 2. Any `*-solution-profile-results.user.md`
-3. `solution-select.user.md`
+3. `<YYYY-MM-DD>-solution-decision.user.md`
 4. Any `*-candidate-names.user.md`
-5. `distribution-profiling.user.md`
-6. `measurement-profiling.user.md`
-7. `current-situation.user.md`
+5. `<YYYY-MM-DD>-launch-distribution-plan.user.md`
+6. `<YYYY-MM-DD>-measurement-profile.user.md`
+7. `<YYYY-MM-DD>-operator-context.user.md`
 
 → Gate D is satisfied. Run ASSESSMENT intake sync (the intake packet production step) — apply `modules/assessment-intake-sync.md` (first-run or drift check) before continuing to Gate E (ASSESSMENT brand routing).
 
 **ASSESSMENT-09 output (canonical):**
-- `required_output_path`: `docs/business-os/startup-baselines/<BIZ>-intake-packet.user.md`
+- `required_output_path`: `docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md`
 - Advance rule: ASSESSMENT-09 completes only when precursor validation passes and the intake sync runs successfully (or is no-op up-to-date), then routing may continue to ASSESSMENT-10.
 
 ---
@@ -89,18 +89,18 @@ When all seven completion artifacts exist:
 
 **ASSESSMENT-10 — Brand profiling:**
 - `prompt_file`: `.claude/skills/lp-do-assessment-10-brand-profiling/SKILL.md`
-- `required_output_path`: `docs/business-os/strategy/<BIZ>/brand-profiling.user.md`
-- **Re-entry**: If `brand-profiling.user.md` exists → ASSESSMENT-10 complete; skip to ASSESSMENT-11.
+- `required_output_path`: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-profile.user.md`
+- **Re-entry**: If `<YYYY-MM-DD>-brand-profile.user.md` exists → ASSESSMENT-10 complete; skip to ASSESSMENT-11.
 
 **ASSESSMENT-11 — Brand identity:**
 - `prompt_file`: `.claude/skills/lp-do-assessment-11-brand-identity/SKILL.md`
-- `required_output_path`: `docs/business-os/strategy/<BIZ>/brand-identity.user.md`
-- **Re-entry**: If `brand-identity.user.md` exists → ASSESSMENT-11 complete; proceed to `MEASURE-01`.
+- `required_output_path`: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md`
+- **Re-entry**: If `<YYYY-MM-DD>-brand-identity-dossier.user.md` exists → ASSESSMENT-11 complete; proceed to `MEASURE-01`.
 
 **ASSESSMENT pass-through (both artifacts complete):**
 When both completion artifacts exist:
-1. `brand-profiling.user.md`
-2. `brand-identity.user.md`
+1. `<YYYY-MM-DD>-brand-profile.user.md`
+2. `<YYYY-MM-DD>-brand-identity-dossier.user.md`
 
 → Gate E is satisfied. Continue to Gate A (`MEASURE-01`), then Gate B (`MEASURE-02`).
 

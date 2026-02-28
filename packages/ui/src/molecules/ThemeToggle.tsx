@@ -108,7 +108,7 @@ export const ThemeToggle = memo((): JSX.Element => {
       onClick={toggle}
       title={isDark ? t("themeToggle.switchToLight") : t("themeToggle.switchToDark")}
       aria-label={isDark ? t("themeToggle.enableLight") : t("themeToggle.enableDark")}
-      className="scenic-toggle relative inline-flex shrink-0 cursor-pointer items-center rounded-full border-0 p-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-secondary"
+      className="scenic-toggle relative inline-flex shrink-0 cursor-pointer items-center rounded-full border-0 p-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-secondary min-h-11 min-w-11"
       style={{
         width: W,
         height: H,

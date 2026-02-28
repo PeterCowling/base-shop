@@ -3,6 +3,7 @@
 import { useCallback, useState } from "react";
 
 import { useAuth } from "../../context/AuthContext";
+import { canAccess, Permissions } from "../../lib/roles";
 import type { SaveRoomsByDateParams } from "../../types/hooks/mutations/saveRoomsByDateParams";
 import { showToast } from "../../utils/toastUtils";
 
@@ -62,9 +63,9 @@ export function isUpgrade(
 }
 
 /**
- * Hook: Allows "pete" or "serena" to change a guest's allocated room,
- * update the /roomsByDate node to reflect the new assignment,
- * and log an activity in two locations.
+ * Hook: Allows users with ROOM_ALLOCATION permission (owners, developers, admins, managers)
+ * to change a guest's allocated room, update the /roomsByDate node to reflect the new
+ * assignment, and log an activity in two locations.
  *
  * After a successful update:
  *  - If the change is an upgrade, log activity with code 17.
@@ -102,9 +103,7 @@ export default function useAllocateRoom() {
         showToast("No user found, cannot update occupant room.", "error");
         throw new Error("No user found");
       }
-      const allowedUsernames = ["pete", "serena"];
-      const lowerName = (user.user_name || "").toLowerCase();
-      if (!allowedUsernames.includes(lowerName)) {
+      if (!canAccess(user, Permissions.ROOM_ALLOCATION)) {
         showToast(
           "You do not have permission to update this occupant's room.",
           "info"

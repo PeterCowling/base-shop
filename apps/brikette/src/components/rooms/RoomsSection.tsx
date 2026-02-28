@@ -1,9 +1,12 @@
 import type { ComponentProps } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 import RoomsSectionBase from "@acme/ui/organisms/RoomsSection";
+import type { RoomCardPrice } from "@acme/ui/types/roomCard";
 
 import { BOOKING_CODE } from "@/context/modal/constants";
 import { roomsData } from "@/data/roomsData";
+import type { OctorateRoom } from "@/hooks/useAvailability";
 import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
 import { buildRoomItem, fireSelectItem, type ItemListId, type RatePlan } from "@/utils/ga4-events";
 import { trackThenNavigate } from "@/utils/trackThenNavigate";
@@ -28,6 +31,12 @@ type RoomsSectionProps = {
   queryState?: "valid" | "invalid" | "absent";
   /** Optional deal / coupon code to propagate into Octorate booking URL */
   deal?: string;
+  /**
+   * Live availability data from /api/availability.
+   * Mapped to per-room pricing via widgetRoomCode → room ID lookup.
+   * When present overrides the static basePrice display for each room.
+   */
+  availabilityRooms?: OctorateRoom[];
 };
 
 type RoomsSectionBaseProps = ComponentProps<typeof RoomsSectionBase>;
@@ -35,16 +44,59 @@ type RoomsSectionBaseProps = ComponentProps<typeof RoomsSectionBase>;
 export function RoomsSection({
   queryState,
   deal,
+  availabilityRooms,
   ...props
 }: RoomsSectionProps & Omit<RoomsSectionBaseProps, "itemListId" | "onRoomSelect">) {
-  // Closure-level guard — prevents double-click / multi-tap from firing duplicate
-  // GA4 events. Resets on each render (safe: navigation triggers page unload
-  // before any subsequent render can occur).
-  let isNavigating = false;
+  // Map availabilityRooms (keyed by octorateRoomId) to roomPrices (keyed by room.id).
+  // Consumers match via room.widgetRoomCode === availabilityRoom.octorateRoomId.
+  const roomPrices = useMemo<Record<string, RoomCardPrice> | undefined>(() => {
+    if (!availabilityRooms || availabilityRooms.length === 0) return undefined;
+    const prices: Record<string, RoomCardPrice> = {};
+    for (const avRoom of availabilityRooms) {
+      const match = roomsData.find((r) => r.widgetRoomCode === avRoom.octorateRoomId);
+      if (!match) continue;
+      if (!avRoom.available) {
+        prices[match.id] = { soldOut: true };
+      } else if (avRoom.priceFrom !== null) {
+        // Format as "From €XX.XX" — consumers can override with t("ratesFrom") if needed.
+        // Use raw number; the UI RoomCard accepts pre-formatted string in price.formatted.
+        prices[match.id] = {
+          formatted: `From €${avRoom.priceFrom.toFixed(2)}`,
+          soldOut: false,
+        };
+      }
+    }
+    return Object.keys(prices).length > 0 ? prices : undefined;
+  }, [availabilityRooms]);
+
+  // Ref-level guard prevents duplicate begin_checkout events on rapid re-clicks.
+  // It must be reset on `pageshow` because back/forward cache can restore a page
+  // with prior JS state after navigation away.
+  const isNavigatingRef = useRef(false);
+  const unlockTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const resetGuard = () => {
+      isNavigatingRef.current = false;
+      if (unlockTimerRef.current !== null) {
+        window.clearTimeout(unlockTimerRef.current);
+        unlockTimerRef.current = null;
+      }
+    };
+
+    window.addEventListener("pageshow", resetGuard);
+
+    return () => {
+      window.removeEventListener("pageshow", resetGuard);
+      resetGuard();
+    };
+  }, []);
 
   const onRoomSelect = (ctx: { roomSku: string; plan: RatePlan; index: number }): void => {
     // Double-click / multi-tap deduplication guard (TC-05)
-    if (isNavigating) return;
+    if (isNavigatingRef.current) return;
 
     // TC-01: fire select_item fire-and-forget with full GA4 item fields.
     // buildRoomItem now includes item_category, affiliation, currency via TASK-31.
@@ -81,7 +133,15 @@ export function RoomsSection({
         });
         if (result.ok) {
           // Set guard before async beacon dispatch to block re-entrant calls.
-          isNavigating = true;
+          isNavigatingRef.current = true;
+          // Auto-release guard if navigation is blocked/canceled and no unload occurs.
+          if (unlockTimerRef.current !== null) {
+            window.clearTimeout(unlockTimerRef.current);
+          }
+          unlockTimerRef.current = window.setTimeout(() => {
+            isNavigatingRef.current = false;
+            unlockTimerRef.current = null;
+          }, 2000);
           trackThenNavigate(
             "begin_checkout",
             {
@@ -109,8 +169,10 @@ export function RoomsSection({
   return (
     <RoomsSectionBase
       {...props}
+      singleCtaMode
       itemListId={props.itemListId}
       onRoomSelect={onRoomSelect}
+      {...(roomPrices ? { roomPrices } : {})}
     />
   );
 }

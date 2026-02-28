@@ -105,7 +105,7 @@ export function MetricsCard({
       <div className="flex items-start justify-between">
         <div className="flex-1">
           {/* Label */}
-          <div className="text-[var(--label-size)] font-medium text-muted-foreground uppercase tracking-wide">
+          <div className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
             {label}
           </div>
 
@@ -116,7 +116,7 @@ export function MetricsCard({
 
           {/* Description */}
           {description && (
-            <div className="mt-1 text-[var(--label-size)] text-muted-foreground">
+            <div className="mt-1 text-sm text-muted-foreground">
               {description}
             </div>
           )}

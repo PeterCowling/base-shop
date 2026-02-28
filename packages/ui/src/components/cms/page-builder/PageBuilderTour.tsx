@@ -185,7 +185,7 @@ export default function PageBuilderTour({ steps, run, callback }: PageBuilderTou
           <button
             type="button"
             onClick={skip}
-            className="bg-transparent text-muted-foreground border-0 px-3 py-2 cursor-pointer min-h-10 min-w-10"
+            className="bg-transparent text-muted-foreground border-0 px-3 py-2 cursor-pointer min-h-11 min-w-11"
           >
             {t("pb.tour.skip")}
           </button>
@@ -194,7 +194,7 @@ export default function PageBuilderTour({ steps, run, callback }: PageBuilderTou
               type="button"
               onClick={() => setActive((i) => Math.max(0, i - 1))}
               disabled={active === 0}
-              className="bg-surface-2 text-foreground border border-border px-3 py-2 rounded-md disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer min-h-10 min-w-10"
+              className="bg-surface-2 text-foreground border border-border px-3 py-2 rounded-md disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer min-h-11 min-w-11"
             >
               {t("pb.tour.back")}
             </button>
@@ -202,7 +202,7 @@ export default function PageBuilderTour({ steps, run, callback }: PageBuilderTou
               <button
                 type="button"
                 onClick={() => setActive((i) => Math.min(steps.length - 1, i + 1))}
-                className="bg-primary text-foreground border border-primary px-3 py-2 rounded-md cursor-pointer min-h-10 min-w-10"
+                className="bg-primary text-foreground border border-primary px-3 py-2 rounded-md cursor-pointer min-h-11 min-w-11"
               >
                 {t("pb.tour.next")}
               </button>
@@ -210,7 +210,7 @@ export default function PageBuilderTour({ steps, run, callback }: PageBuilderTou
               <button
                 type="button"
                 onClick={finish}
-                className="bg-primary text-foreground border border-primary px-3 py-2 rounded-md cursor-pointer min-h-10 min-w-10"
+                className="bg-primary text-foreground border border-primary px-3 py-2 rounded-md cursor-pointer min-h-11 min-w-11"
               >
                 {t("pb.tour.done")}
               </button>

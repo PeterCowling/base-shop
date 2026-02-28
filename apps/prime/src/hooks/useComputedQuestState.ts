@@ -58,7 +58,7 @@ export function useComputedQuestState(): ComputedQuestStateResult {
   // Get completed tasks directly from unified booking data
   // This is needed because useGuestProgressData doesn't expose completedTasks directly
   const { occupantData } = useGuestProgressDataInternal();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- PRIME-1: completedTasks reference stable; deep-equal check would cause infinite loop
   const completedTasks: OccupantCompletedTasks = occupantData?.completedTasks ?? {};
 
   // Get quest progress mutator

@@ -1,3 +1,4 @@
+/* eslint-disable ds/container-widths-only-at, ds/enforce-layout-primitives -- BRIK-3 prime DS rules deferred */
 /**
  * TaskCard.tsx
  *
@@ -6,6 +7,7 @@
  */
 
 import { memo } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { CheckCircle } from 'lucide-react';
 
@@ -48,7 +50,7 @@ export const TaskCard = memo(function TaskCard({
           overflow-hidden
           transition-all duration-300
           flex flex-col
-          text-left
+          text-start
           hover:-translate-y-1
           hover:shadow-lg
           cursor-pointer
@@ -74,20 +76,24 @@ export const TaskCard = memo(function TaskCard({
             {image &&
               (link ? (
                 <Link href={link}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={image}
                     alt={alt || ''}
-                    className="max-w-[200px] h-auto object-cover rounded"
+                    width={200}
+                    height={200}
+                    className="max-w-48 object-cover rounded"
+                    unoptimized
                   />
                 </Link>
               ) : (
                 <>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={image}
                     alt={alt || ''}
-                    className="max-w-[200px] h-auto object-cover rounded"
+                    width={200}
+                    height={200}
+                    className="max-w-48 object-cover rounded"
+                    unoptimized
                   />
                 </>
               ))}
@@ -114,7 +120,7 @@ export const TaskCard = memo(function TaskCard({
     >
       <div className="flex items-center w-full">
         {/* Checkmark for completed */}
-        <span className="text-success text-xl mr-3 flex items-center">
+        <span className="text-success text-xl me-3 flex items-center">
           <CheckCircle />
         </span>
 

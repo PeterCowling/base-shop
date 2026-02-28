@@ -57,13 +57,13 @@ const BookingNotesModal: FC<Props> = ({ bookingRef, onClose }) => {
       footer={
         <div className="flex justify-end gap-2">
           <Button
-            className="px-4 py-2 bg-surface-3 text-foreground rounded"
+            className="px-4 py-2 bg-surface-3 text-foreground rounded-lg"
             onClick={onClose}
           >
             Close
           </Button>
           <Button
-            className="px-4 py-2 bg-primary text-primary-fg rounded"
+            className="px-4 py-2 bg-primary text-primary-fg rounded-lg"
             onClick={handleAdd}
           >
             Add Note
@@ -74,7 +74,7 @@ const BookingNotesModal: FC<Props> = ({ bookingRef, onClose }) => {
       <div className="max-h-64 overflow-y-auto mb-4 space-y-2">
         {sorted.length === 0 && <p className="italic">No notes</p>}
         {sorted.map(([id, note]) => (
-          <div key={id} className="border p-2 rounded space-y-1">
+          <div key={id} className="border p-2 rounded-lg space-y-1">
             <div className="text-xs text-muted-foreground">
               {formatEnGbDateTimeFromIso(note.timestamp)} - {note.user}
             </div>
@@ -82,14 +82,14 @@ const BookingNotesModal: FC<Props> = ({ bookingRef, onClose }) => {
               <>
                 <Textarea
                   compatibilityMode="no-wrapper"
-                  className="w-full border rounded p-1 text-foreground"
+                  className="w-full border rounded-lg p-1 text-foreground"
                   rows={2}
                   value={editText}
                   onChange={(e) => setEditText(e.target.value)}
                 />
                 <div className="flex justify-end gap-2">
                   <Button
-                    className="px-2 py-1 bg-surface-3 text-foreground rounded"
+                    className="px-2 py-1 bg-surface-3 text-foreground rounded-lg"
                     onClick={() => {
                       setEditingId(null);
                       setEditText("");
@@ -98,7 +98,7 @@ const BookingNotesModal: FC<Props> = ({ bookingRef, onClose }) => {
                     Cancel
                   </Button>
                   <Button
-                    className="px-2 py-1 bg-primary text-primary-fg rounded"
+                    className="px-2 py-1 bg-primary text-primary-fg rounded-lg"
                     onClick={handleUpdate}
                   >
                     Save
@@ -134,7 +134,7 @@ const BookingNotesModal: FC<Props> = ({ bookingRef, onClose }) => {
       </div>
       <Textarea
         compatibilityMode="no-wrapper"
-        className="w-full border rounded p-2 mb-2 text-foreground"
+        className="w-full border rounded-lg p-2 mb-2 text-foreground"
         rows={3}
         value={text}
         onChange={(e) => setText(e.target.value)}

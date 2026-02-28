@@ -31,6 +31,7 @@
   },
   "rooms": {
     "title": "غرفنا",
+    "soldOut": "غير متوفر",
     "double_room": {
       "title": "غرفة مزدوجة",
       "bed_intro": "إطلالات بحرية خلابة — مثالية للأزواج.",
@@ -250,6 +251,7 @@
   "filtersAria": "تصفية حسب نوع الغرفة",
   "checkRatesNonRefundable": "أسعار غير قابلة للاسترداد",
   "checkRatesFlexible": "أسعار مرنة",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "غير قابل للاسترداد",
     "flexible": "مرن"

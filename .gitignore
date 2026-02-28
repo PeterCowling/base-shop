@@ -49,6 +49,13 @@ apps/cms/dist/
 docs/api/
 
 # ---------------------------
+# Python tooling
+# ---------------------------
+tools/naminglab/.venv/
+**/__pycache__/
+**/*.pyc
+
+# ---------------------------
 # Misc
 # ---------------------------
 .DS_Store
@@ -152,3 +159,6 @@ data/octorate/
 # Email draft fallback queues (may contain customer content/PII)
 data/email-fallback-queue/
 packages/mcp-server/.tmp/
+
+.cowork/
+.cowork.yml

@@ -39,14 +39,14 @@ export default function RentalAvailabilitySection({ sku, locationId, className, 
         <div className="flex gap-3">
           <div>
             <label className="block text-sm">{t("Start")}</label>
-            <input type="date" value={start} onChange={(e) => setStart(e.target.value)} className="rounded border px-2 py-1 min-h-10" />
+            <input type="date" value={start} onChange={(e) => setStart(e.target.value)} className="rounded border px-2 py-1 min-h-11" />
           </div>
           <div>
             <label className="block text-sm">{t("End")}</label>
-            <input type="date" value={end} onChange={(e) => setEnd(e.target.value)} className="rounded border px-2 py-1 min-h-10" />
+            <input type="date" value={end} onChange={(e) => setEnd(e.target.value)} className="rounded border px-2 py-1 min-h-11" />
           </div>
           <div className="self-end">
-            <button type="button" onClick={check} disabled={disabled} className="rounded bg-foreground px-3 py-1 text-foreground disabled:opacity-50 min-h-10 min-w-10">{t("Check")}</button>
+            <button type="button" onClick={check} disabled={disabled} className="rounded bg-foreground px-3 py-1 text-foreground disabled:opacity-50 min-h-11 min-w-11">{t("Check")}</button>
           </div>
         </div>
         {status === "loading" && <p className="text-sm text-muted-foreground">{t("Checking availability…")}</p>}

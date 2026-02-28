@@ -8,7 +8,6 @@ import {
   HeartIcon,
   MagnifyingGlassIcon,
   MoonIcon,
-  PersonIcon,
   SunIcon,
 } from "@radix-ui/react-icons";
 
@@ -121,14 +120,7 @@ export function XaShell({ children }: { children: ReactNode }) {
                   >
                     {isDark ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
                   </IconButton>
-                  <Link
-                    href="/account/login"
-                    className="inline-flex min-h-11 min-w-11 items-center justify-center"
-                    aria-label="Account"
-                    title="Account"
-                  >
-                    <PersonIcon className="h-4 w-4" />
-                  </Link>
+
                   <Link
                     href="/cart"
                     className="relative inline-flex min-h-11 min-w-11 items-center justify-center"

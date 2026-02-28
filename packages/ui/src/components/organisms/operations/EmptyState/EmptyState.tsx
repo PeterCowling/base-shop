@@ -141,9 +141,9 @@ export function EmptyState({
     >
       {/* Icon */}
       {Icon && (
-        <div className="mb-4 rounded-full bg-gray-100 p-4 dark:bg-darkBg">
+        <div className="mb-4 rounded-full bg-surface-2 p-4 dark:bg-darkBg">
           <Icon
-            className={`${sizes.icon} text-gray-400 dark:text-gray-500`}
+            className={`${sizes.icon} text-muted-foreground dark:text-muted-foreground`}
             strokeWidth={1.5}
           />
         </div>
@@ -152,12 +152,12 @@ export function EmptyState({
       {/* Content */}
       <div className={`flex max-w-md flex-col ${sizes.gap}`}>
         <h3
-          className={`${sizes.title} font-semibold text-gray-900 dark:text-darkAccentGreen`}
+          className={`${sizes.title} font-semibold text-foreground dark:text-darkAccentGreen`}
         >
           {title}
         </h3>
 
-        <p className={`${sizes.description} text-gray-600 dark:text-gray-400`}>
+        <p className={`${sizes.description} text-muted-foreground dark:text-muted-foreground`}>
           {description}
         </p>
 
@@ -181,8 +181,8 @@ export function EmptyState({
                     transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2
                     ${
                       isPrimary
-                        ? 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-green-600'
-                        : 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:ring-primary-500 dark:border-darkSurface dark:bg-darkSurface dark:text-darkAccentGreen dark:hover:bg-darkBg'
+                        ? 'bg-primary-600 text-primary-fg hover:bg-primary-700 focus:ring-primary-500 dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-green-600'
+                        : 'border border-border-2 bg-surface text-muted-foreground hover:bg-gray-50 focus:ring-primary-500 dark:border-darkSurface dark:bg-darkSurface dark:text-darkAccentGreen dark:hover:bg-darkBg'
                     }
                   `}
                 >

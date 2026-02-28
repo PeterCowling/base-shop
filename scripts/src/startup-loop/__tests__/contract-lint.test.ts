@@ -180,7 +180,7 @@ describe("lintBriefingContract — briefing schema checks (TC-01..TC-04)", () =>
     const issues = lintBriefingContract({
       artifacts: [
         {
-          artifactPath: "docs/business-os/startup-baselines/HEAD-intake-packet.user.md",
+          artifactPath: "docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md",
           expectedBusiness: "HEAD",
           fields: missingDependsOn,
         },
@@ -190,7 +190,7 @@ describe("lintBriefingContract — briefing schema checks (TC-01..TC-04)", () =>
     const missing = issues.find((issue) => issue.code === "missing_required_field");
     expect(missing).toBeDefined();
     if (missing) {
-      expect(missing.message).toContain("HEAD-intake-packet.user.md");
+      expect(missing.message).toContain("assessment-intake-packet.user.md");
       expect(missing.message).toContain("depends_on");
       expect(missing.severity).toBe("error");
     }

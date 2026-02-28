@@ -1,43 +1,24 @@
-/* File: /src/components/appNav/OperationsModal.tsx */
+import {
+  Bed,
+  CalendarPlus,
+  DoorOpen,
+  GlassWater,
+  Inbox,
+  Lock,
+  LogIn,
+} from "lucide-react";
+
 import { withIconModal } from "../../hoc/withIconModal";
 import { type ModalAction } from "../../types/component/ModalAction";
 
 const actions: ModalAction[] = [
-  {
-    label: "Bar",
-    iconClass: "fas fa-cocktail",
-    route: "/bar",
-  },
-  {
-    label: "Checkin",
-    iconClass: "fas fa-sign-in-alt",
-    route: "/checkin",
-  },
-  {
-    label: "View Rooms",
-    iconClass: "fas fa-eye",
-    route: "/rooms-grid",
-  },
-  {
-    label: "Checkout",
-    iconClass: "fas fa-sign-out-alt",
-    route: "/checkout",
-  },
-  {
-    label: "Loans",
-    iconClass: "fas fa-lock",
-    route: "/loan-items",
-  },
-  {
-    label: "Extension",
-    iconClass: "fas fa-calendar-plus",
-    route: "/extension",
-  },
-  {
-    label: "Prime Requests",
-    iconClass: "fas fa-inbox",
-    route: "/prime-requests",
-  },
+  { label: "Bar",            icon: GlassWater,  route: "/bar" },
+  { label: "Check-in",       icon: LogIn,        route: "/checkin" },
+  { label: "Rooms",          icon: Bed,          route: "/rooms-grid" },
+  { label: "Check-out",      icon: DoorOpen,     route: "/checkout" },
+  { label: "Loans",          icon: Lock,         route: "/loan-items" },
+  { label: "Extension",      icon: CalendarPlus, route: "/extension" },
+  { label: "Prime Requests", icon: Inbox,        route: "/prime-requests" },
 ];
 
 export default withIconModal({

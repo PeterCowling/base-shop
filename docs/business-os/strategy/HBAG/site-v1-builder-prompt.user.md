@@ -99,19 +99,19 @@ These artifacts are source-of-truth inputs for the build. Consult them; do not r
 |------|-------------|
 | Master artifact index + gate status | `docs/business-os/strategy/HBAG/index.user.md` |
 | Business plan + outcome contracts | `docs/business-os/strategy/HBAG/plan.user.md` |
-| Intake + constraints + missing data | `docs/business-os/startup-baselines/HBAG-intake-packet.user.md` |
+| Intake + constraints + missing data | `docs/business-os/startup-baselines/HBAG-2026-02-20assessment-intake-packet.user.md` |
 | Offer definition (ICP, positioning, pricing) | `docs/business-os/startup-baselines/HBAG-offer.md` |
 | Channel strategy | `docs/business-os/startup-baselines/HBAG-channels.md` |
 | Website content packet (SEO + launch copy) | `docs/business-os/startup-baselines/HBAG-content-packet.md` |
-| Measurement plan | `docs/business-os/strategy/HBAG/measurement-plan.user.md` |
+| Measurement plan | `docs/business-os/strategy/HBAG/2026-02-21-measurement-profile.user.md` |
 
 ### Brand and Design Language
 
 | Layer | Source path |
 |------|-------------|
-| Active brand dossier (gating artifact) | `docs/business-os/strategy/HBAG/brand-dossier.user.md` |
-| Brand strategy source | `docs/business-os/strategy/HBAG/brand-strategy.user.md` |
-| Brand discovery render artifact | `docs/business-os/strategy/HBAG/brand-discovery-document.user.html` |
+| Active brand dossier (gating artifact) | `docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md` |
+| Brand strategy source | `docs/business-os/strategy/HBAG/2026-02-21-brand-profile.user.md` |
+| Brand discovery render artifact | `docs/business-os/strategy/HBAG/2026-02-21-brand-identity-preview.user.html` |
 | Tagline decision rationale | `docs/business-os/strategy/HBAG/tagline-options.user.md` |
 
 ### Existing Implementation Assets
@@ -224,7 +224,7 @@ These artifacts are source-of-truth inputs for the build. Consult them; do not r
 ## Build Sequence (Framework-First)
 
 1. Confirm gate status in `docs/business-os/strategy/HBAG/index.user.md` (consult only; do not edit gating artifacts during build).
-2. Lock visual language by consuming `docs/business-os/strategy/HBAG/brand-dossier.user.md`.
+2. Lock visual language by consuming `docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md`.
 3. Establish Caryina route framework using `apps/cover-me-pretty/src/app/` as structural baseline, preserving locale parity by default.
 4. Bind Caryina theme and brand primitives across reused routes/components.
 5. Bootstrap `data/shops/caryina/` using the default minimum dataset.
@@ -236,7 +236,7 @@ These artifacts are source-of-truth inputs for the build. Consult them; do not r
 
 - For TODOs tied to missing business inputs:
   - Format: `TODO(<source-path>): <required decision/data>`
-  - Example: `TODO(docs/business-os/startup-baselines/HBAG-intake-packet.user.md): confirm launch SKU color set`
+  - Example: `TODO(docs/business-os/startup-baselines/HBAG-2026-02-20assessment-intake-packet.user.md): confirm launch SKU color set`
 - For seeded placeholder copy/data:
   - Add adjacent comment or note with `source:` path to originating artifact.
 - For implementation decisions that diverge from defaults:
@@ -277,7 +277,7 @@ Build the first full Caryina website version using `docs/business-os/strategy/HB
 Execution rules:
 1. Treat the Source Map in that file as authoritative; do not re-run broad discovery.
 2. Build framework first (app shell + route structure + shared commerce flow), not fine content polish.
-3. Reuse proven pieces from `apps/cover-me-pretty/src/app/` where appropriate, but enforce Caryina brand language from `docs/business-os/strategy/HBAG/brand-dossier.user.md` and `packages/themes/caryina/src/tokens.ts`.
+3. Reuse proven pieces from `apps/cover-me-pretty/src/app/` where appropriate, but enforce Caryina brand language from `docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md` and `packages/themes/caryina/src/tokens.ts`.
 4. Use default operational decisions from this brief unless explicitly overridden (locale parity, data bootstrap, analytics scope).
 5. Preserve accessibility and reduced-motion behavior.
 6. Keep token-driven styling only; no arbitrary values.

@@ -7,6 +7,7 @@ import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 import { getTranslations,toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
+import RoomsStructuredDataRsc from "@/components/seo/RoomsStructuredDataRsc";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { getSlug } from "@/utils/slug";
 
@@ -51,6 +52,16 @@ export default async function RoomsPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
 
-  await getTranslations(validLang, ["roomsPage", "_tokens"]);
-  return <RoomsPageContent lang={validLang} />;
+  // Pre-warm i18n cache and resolve hero copy server-side so the H1 is
+  // guaranteed to render with translated content in the initial SSR HTML.
+  const t = await getTranslations(validLang, ["roomsPage", "_tokens"]);
+  const serverTitle = (t("hero.heading") as string) || "Our rooms";
+  const serverSubtitle = (t("hero.subheading") as string) || "";
+
+  return (
+    <>
+      <RoomsStructuredDataRsc lang={validLang} />
+      <RoomsPageContent lang={validLang} serverTitle={serverTitle} serverSubtitle={serverSubtitle} />
+    </>
+  );
 }

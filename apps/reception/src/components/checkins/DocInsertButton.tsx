@@ -1,6 +1,7 @@
 // src/components/checkins/DocInsertButton.tsx
 import React, { memo, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { FileText } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
 
@@ -61,16 +62,16 @@ const DocInsertButton: React.FC<DocInsertButtonProps> = ({
 
   /* ---------- styling --------------------------------------------------- */
   const baseClass =
-    "min-h-55px px-4 flex items-center justify-center rounded-md text-primary-fg transition-colors focus:outline-none";
+    "h-9 px-2.5 flex items-center gap-1.5 justify-center rounded-md text-primary-fg/100 text-xs font-medium transition-colors focus:outline-none";
 
   const colorClass = (() => {
     switch (status) {
       case "complete":
-        return "bg-success-main hover:bg-success-dark";
+        return "bg-success-main/100 hover:opacity-90";
       case "partial":
-        return "bg-warning-main hover:bg-warning-dark";
+        return "bg-warning-main/100 hover:opacity-90";
       default:
-        return "bg-primary-main hover:bg-primary-dark";
+        return "bg-primary-main/100 hover:opacity-90";
     }
   })();
 
@@ -86,8 +87,8 @@ const DocInsertButton: React.FC<DocInsertButtonProps> = ({
       className={`${baseClass} ${colorClass}`}
       title={title}
     >
-      <i className="fas fa-passport" />
-      <span className="ms-2">Doc</span>
+      <FileText size={14} />
+      <span>Doc</span>
     </Button>
   );
 };

@@ -51,11 +51,6 @@ docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/
     S4/                               # STAGE-OWNED: only S4 worker writes here
       stage-result.json
       baseline.snapshot.md
-    S5A/                              # STAGE-OWNED: only S5A worker writes here
-      stage-result.json
-      prioritized-items.md
-    S5B/                              # STAGE-OWNED: only S5B worker writes here
-      stage-result.json
 ```
 
 **Rules:**

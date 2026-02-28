@@ -48,7 +48,7 @@ describe("GA4 select_item on room CTA clicks (GA4-11)", () => {
 
     // In this test we mock i18n to return key tokens; the UI RoomCard uses those
     // tokens as aria-labels when they don't look like dotted i18n keys.
-    const buttons = screen.getAllByRole("button", { name: /checkRatesNonRefundable/i });
+    const buttons = screen.getAllByRole("button", { name: /checkRatesSingle/i });
     fireEvent.click(buttons[0]);
 
     const gtag = window.gtag as unknown as jest.Mock;
@@ -112,7 +112,7 @@ describe("TASK-32: RoomsSection onRoomSelect GA4 contracts", () => {
       />,
     );
 
-    const buttons = screen.getAllByRole("button", { name: /checkRatesNonRefundable/i });
+    const buttons = screen.getAllByRole("button", { name: /checkRatesSingle/i });
     fireEvent.click(buttons[0]);
 
     const selectItemCall = gtagMock.mock.calls.find(
@@ -140,7 +140,7 @@ describe("TASK-32: RoomsSection onRoomSelect GA4 contracts", () => {
       />,
     );
 
-    const buttons = screen.getAllByRole("button", { name: /checkRatesNonRefundable/i });
+    const buttons = screen.getAllByRole("button", { name: /checkRatesSingle/i });
     fireEvent.click(buttons[0]);
 
     const beginCheckoutCall = gtagMock.mock.calls.find(
@@ -165,7 +165,7 @@ describe("TASK-32: RoomsSection onRoomSelect GA4 contracts", () => {
     );
 
     const assignMock = window.location.assign as jest.Mock;
-    const buttons = screen.getAllByRole("button", { name: /checkRatesNonRefundable/i });
+    const buttons = screen.getAllByRole("button", { name: /checkRatesSingle/i });
     fireEvent.click(buttons[0]);
 
     // Immediately after click, assign should NOT have been called (beacon pending)
@@ -185,7 +185,7 @@ describe("TASK-32: RoomsSection onRoomSelect GA4 contracts", () => {
     expect(url.length).toBeGreaterThan(0);
   });
 
-  it("TC-06: room CTA navigation uses calendar endpoint with room/date params and no legacy confirm params", () => {
+  it("TC-06: room CTA navigation uses result endpoint with room/date params and no legacy confirm params", () => {
     render(
       <RoomsSection
         lang="en"
@@ -196,7 +196,7 @@ describe("TASK-32: RoomsSection onRoomSelect GA4 contracts", () => {
     );
 
     const assignMock = window.location.assign as jest.Mock;
-    const buttons = screen.getAllByRole("button", { name: /checkRatesNonRefundable/i });
+    const buttons = screen.getAllByRole("button", { name: /checkRatesSingle/i });
     fireEvent.click(buttons[0]);
 
     const beginCheckoutCall = gtagMock.mock.calls.find(
@@ -211,9 +211,10 @@ describe("TASK-32: RoomsSection onRoomSelect GA4 contracts", () => {
     const parsed = new URL(targetUrl);
 
     expect(parsed.origin + parsed.pathname).toBe(
-      "https://book.octorate.com/octobook/site/reservation/calendar.xhtml",
+      "https://book.octorate.com/octobook/site/reservation/result.xhtml",
     );
     expect(parsed.searchParams.get("codice")).toBe("45111");
+    expect(parsed.searchParams.get("adulti")).toBe("1");
     expect(parsed.searchParams.get("checkin")).toBe("2026-07-01");
     expect(parsed.searchParams.get("checkout")).toBe("2026-07-04");
     expect(parsed.searchParams.get("date")).toBe("2026-07-01");
@@ -221,7 +222,7 @@ describe("TASK-32: RoomsSection onRoomSelect GA4 contracts", () => {
 
     // Regression guard: do not reintroduce legacy confirm/deep-link params.
     expect(targetUrl).not.toContain("/confirm.xhtml");
-    expect(parsed.searchParams.has("pax")).toBe(false);
+    expect(parsed.searchParams.get("pax")).toBe("1");
     expect(parsed.searchParams.has("children")).toBe(false);
     expect(parsed.searchParams.has("childrenAges")).toBe(false);
   });
@@ -237,7 +238,7 @@ describe("TASK-32: RoomsSection onRoomSelect GA4 contracts", () => {
       />,
     );
 
-    const buttons = screen.getAllByRole("button", { name: /checkRatesNonRefundable/i });
+    const buttons = screen.getAllByRole("button", { name: /checkRatesSingle/i });
 
     // First click — sets isNavigating = true
     fireEvent.click(buttons[0]);
@@ -248,5 +249,63 @@ describe("TASK-32: RoomsSection onRoomSelect GA4 contracts", () => {
     fireEvent.click(buttons[0]);
 
     expect(gtagMock.mock.calls.length).toBe(countAfterFirst);
+  });
+
+  it("TC-07: pageshow resets navigation guard so CTA works after back navigation (TC-07)", () => {
+    render(
+      <RoomsSection
+        lang="en"
+        itemListId="book_rooms"
+        queryState="valid"
+        bookingQuery={{ checkIn: "2026-07-28", checkOut: "2026-07-31", pax: "2", queryString: "" }}
+      />,
+    );
+
+    const buttons = screen.getAllByRole("button", { name: /checkRatesSingle/i });
+    fireEvent.click(buttons[0]);
+
+    const beginCheckoutEventsAfterFirst = gtagMock.mock.calls.filter(
+      (args: unknown[]) => args[0] === "event" && args[1] === "begin_checkout",
+    );
+    expect(beginCheckoutEventsAfterFirst).toHaveLength(1);
+
+    // Simulate returning to the page from browser back/forward cache.
+    window.dispatchEvent(new Event("pageshow"));
+
+    fireEvent.click(buttons[0]);
+    const beginCheckoutEventsAfterReturn = gtagMock.mock.calls.filter(
+      (args: unknown[]) => args[0] === "event" && args[1] === "begin_checkout",
+    );
+    expect(beginCheckoutEventsAfterReturn).toHaveLength(2);
+  });
+});
+
+// TASK-05: Best Rate Guarantee badge — regression guard for PriceBlock badge rendering.
+// Imports the real UI RoomCard from source (bypassing the @acme/ui/molecules stub) to verify
+// that price.badge is rendered as an accessible link in the card content area.
+describe("TASK-05: Best Rate Guarantee badge — PriceBlock renders badge text", () => {
+  it("TC-TASK05-03: badge link is rendered when price.badge is set on UI RoomCard", () => {
+    // Require the real UI RoomCard directly from source, bypassing the @acme/ui/molecules stub.
+    // The organisms RoomsSection uses this same relative-import path in its test run without issues.
+    const { RoomCard: UiRoomCard } = require("../../../../../packages/ui/src/molecules/RoomCard") as {
+      RoomCard: React.ComponentType<{
+        id: string;
+        title: string;
+        imageAlt: string;
+        price?: { badge?: { text: string; claimUrl: string } };
+      }>;
+    };
+
+    render(
+      <UiRoomCard
+        id="test-room"
+        title="Test Room"
+        imageAlt="Test room"
+        price={{ badge: { text: "Best price guaranteed", claimUrl: "https://wa.me/393287073695" } }}
+      />,
+    );
+
+    // Badge renders as an <a> whose accessible name excludes the aria-hidden ✓ span
+    expect(screen.getByRole("link", { name: "Best price guaranteed" })).toBeInTheDocument();
   });
 });

@@ -43,7 +43,7 @@ function KeycardDepositMenu({
   closeMenu,
 }: KeycardDepositMenuProps) {
   const containerClass = `
-    z-50 w-72 border border-border-2 rounded shadow-lg bg-surface p-4
+    z-50 w-72 border border-border-2 rounded-lg shadow-lg bg-surface p-4
     transition-opacity duration-200 transform-gpu
     ${menuOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"}
   `;
@@ -85,7 +85,7 @@ function KeycardDepositMenu({
             maxLength={3}
             value={keycardNumber}
             onChange={(e) => setKeycardNumber(e.target.value)}
-            className="w-full border rounded px-2 py-1"
+            className="w-full border rounded-lg px-2 py-1"
           />
         </div>
       )}
@@ -98,10 +98,10 @@ function KeycardDepositMenu({
       <Button
         onClick={handleConfirm}
         disabled={buttonDisabled}
-        className={`w-full mt-4 py-2 rounded text-primary-fg ${
+        className={`w-full mt-4 py-2 rounded-lg text-primary-fg ${
           buttonDisabled
             ? "bg-surface-3 cursor-not-allowed"
-            : "bg-info-main hover:bg-info-dark"
+            : "bg-primary-main hover:bg-primary-dark"
         }`}
       >
         Confirm

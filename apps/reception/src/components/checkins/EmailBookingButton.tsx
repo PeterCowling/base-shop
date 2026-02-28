@@ -90,28 +90,23 @@ function EmailBookingButton({
   return (
     <div className="relative flex items-center">
       <Button
+        compatibilityMode="passthrough"
         type="button"
         onClick={handleClick}
         disabled={loading}
-        className="min-h-55px px-4 bg-primary-main text-primary-fg rounded-md hover:bg-primary-dark transition-colors"
+        className="h-9 w-9 flex items-center justify-center bg-primary-main/100 text-primary-fg/100 rounded-md hover:opacity-90 transition-colors"
         title="Create booking email draft"
       >
         {loading ? "..." : <LayoutGrid size={20} />}
       </Button>
 
-      {/* --- “i” badge centred horizontally at the top of the button --- */}
+      {/* info badge — top-right corner of button */}
       <CustomTooltip
         title={tooltipContent}
-        placement="left" /* display tooltip on the left side of the icon */
+        placement="left"
       >
         <span
-           
-          className={[
-            "absolute top-0 left-1/2",
-            "-translate-x-8 -translate-y-8",
-            "w-4 h-4 rounded-full bg-warning-main text-primary-fg",
-            "flex items-center justify-center text-10px cursor-default select-none",
-          ].join(" ")}
+          className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-warning-main/100 text-primary-fg/100 flex items-center justify-center text-10px cursor-default select-none"
         >
           i
         </span>

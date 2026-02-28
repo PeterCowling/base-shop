@@ -183,13 +183,45 @@
       display:flex; align-items:center; gap:0.6rem;
     }
     .divider-label::after { content:''; flex:1; border-top:1px solid var(--border); }
+    /* ── Mermaid zoom controls ── */
+    .mermaid-wrap {
+      position: relative; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.5rem 1.2rem 1rem; overflow: auto;
+      margin: 1rem 0 1.5rem; scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    .mermaid-wrap .mermaid {
+      margin: 0; padding: 0; background: none; border: none;
+      transition: transform 0.2s ease; transform-origin: top center;
+    }
+    .zoom-controls {
+      position: absolute; top: 8px; right: 8px; display: flex; gap: 2px; z-index: 10;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 2px;
+    }
+    .zoom-controls button {
+      width: 26px; height: 26px; border: none; background: transparent;
+      color: var(--text-muted); font-family: "SF Mono", monospace; font-size: 13px;
+      cursor: pointer; border-radius: 3px; display: flex; align-items: center;
+      justify-content: center; transition: background 0.15s, color 0.15s;
+    }
+    .zoom-controls button:hover { background: var(--border); color: var(--text); }
+    .mermaid-wrap.is-zoomed  { cursor: grab; }
+    .mermaid-wrap.is-panning { cursor: grabbing; user-select: none; }
+    .mermaid .nodeLabel  { color: var(--text) !important; }
+    .mermaid .edgeLabel  { color: var(--text-muted) !important; }
+    .mermaid .edgeLabel rect { fill: var(--bg) !important; }
+    .diagram-caption {
+      font-size: 0.78rem; color: var(--text-muted); text-align: center;
+      margin-top: -0.8rem; margin-bottom: 1rem; font-style: italic;
+    }
+    @media (prefers-reduced-motion: reduce) { .mermaid-wrap .mermaid { transition: none; } }
   </style>
 
 <style id="sl-theme-css">html[data-theme="dark"]{--bg:#0e1016;--surface:#161921;--surface-2:#1e2230;--surface-raised:#1e2230;--border:#2a2f45;--text:#e4e7f2;--text-muted:#6b728f;--text-dim:#454d6a;--accent:#5b9cf6;--accent-soft:rgba(91,156,246,.15);--code-bg:#161921;--code-border:#2a2f45;--red-bg:rgba(240,92,92,.10);--amber-bg:rgba(245,166,35,.10);--green-bg:rgba(74,222,128,.08);--blue-bg:rgba(91,156,246,.10);--purple-bg:rgba(167,139,250,.10)}html[data-theme="dark"] body{background:var(--bg)!important;color:var(--text)!important}html[data-theme="light"]{--bg:#f5f6fa;--surface:#ffffff;--surface-2:#f0f1f7;--surface-raised:#f0f1f7;--border:#dde0ed;--text:#1a1d2e;--text-muted:#5a6080;--text-dim:#a0a8c0;--accent:#3362d0;--accent-soft:#e8eeff;--code-bg:#f0f1f7;--code-border:#dde0ed;--red-bg:rgba(200,50,50,.08);--amber-bg:rgba(180,120,0,.08);--green-bg:rgba(40,160,80,.06);--blue-bg:rgba(40,100,220,.08);--purple-bg:rgba(120,80,200,.08)}html[data-theme="light"] body{background:var(--bg)!important;color:var(--text)!important}[data-theme="light"] #sl-nav{background:#eef0f7!important;border-bottom-color:#dde0ed!important}[data-theme="light"] #sl-nav .sl-brand,[data-theme="light"] #sl-nav a,[data-theme="light"] #sl-theme-btn{color:#5a6080!important}[data-theme="light"] #sl-nav a:hover,[data-theme="light"] #sl-nav a.sl-on{color:#1a1d2e!important}</style>
 <script id="sl-theme-init">(function(){try{var t=localStorage.getItem("sl-theme");if(!t)t=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}catch(e){}})()</script>
 </head>
 <body>
-<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><span class="sl-brand">Startup Loop</span><a href="startup-loop-workflow.user.html">Workflow</a><a href="startup-loop-files.user.html">Loop Files</a><a href="startup-loop-file-types.user.html">File Types</a><a href="startup-loop-output-registry.user.html">Output Registry</a><a href="pending-reviews.user.html">Pending Reviews</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
+<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><span class="sl-brand">Startup Loop</span><a href="startup-loop-workflow.user.html">Workflow</a><a href="startup-loop-files.user.html">Loop Files</a><a href="startup-loop-file-types.user.html">File Types</a><a href="startup-loop-output-registry.user.html">Output Registry</a><a href="ideas.user.html">Ideas</a><a href="process-improvements.user.html">Process</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
 <main>
 
   <h1>Your Startup Loop File Guide</h1>
@@ -260,7 +292,31 @@
     </div>
   </div>
 
+  <div class="mermaid-wrap">
+    <div class="zoom-controls">
+      <button onclick="zoomDiagram(this,1.2)" title="Zoom in">+</button>
+      <button onclick="zoomDiagram(this,0.8)" title="Zoom out">&minus;</button>
+      <button onclick="resetZoom(this)" title="Reset zoom">&#8634;</button>
+    </div>
+    <pre class="mermaid">flowchart LR
+  subgraph Build["Feature Build Loop — docs/plans/slug/"]
+    FF1["/lp-do-fact-find · fact-find.md"] --> FF2["/lp-do-plan · plan.md"]
+    FF2 --> FF3["/lp-do-build · build-record.user.md"]
+    FF3 --> FF4["You · results-review.user.md"]
+  end
+  subgraph LA["Layer A — Standing Strategy"]
+    LS["brand + offer + market pack + operator context"]
+  end
+  FF4 -->|"updates"| LA
+  LA -.->|"informs next run"| FF1
+  FF3 -->|"archive"| ARC[("_archive/")]
 
+  classDef agent fill:#10254e33,stroke:#5b9cf6,stroke-width:1px
+  classDef human fill:#1a3d1a33,stroke:#52b788,stroke-width:1.5px
+  class FF1,FF2,FF3 agent
+  class FF4 human</pre>
+  </div>
+  <p class="diagram-caption">Each feature run creates a folder under docs/plans/. Agent writes fact-find → plan → build-record. You write results-review. Layer A standing files are updated from results and feed the next run.</p>
 
   <!-- PART 1: FEATURE BUILD LOOP FILES -->
   <hr>
@@ -536,25 +592,25 @@
 
     <div class="file-card operator">
       <span class="card-tag">You write</span>
-      <div class="card-filename">&lt;BIZ&gt;-intake-packet.user.md</div>
+      <div class="card-filename">&lt;BIZ&gt;-&lt;YYYY-MM-DD&gt;assessment-intake-packet.user.md</div>
       <p class="card-desc">
         The founding brief for a business entering the loop. You fill this in once at onboarding.
         It tells the agent what the business is, who it's for, what you know so far, and
         what constraints apply (budget, geography, time). The agent reads this before every
         strategy-building run.
       </p>
-      <p class="card-when">Path: <code>startup-baselines/&lt;BIZ&gt;-intake-packet.user.md</code></p>
+      <p class="card-when">Path: <code>startup-baselines/&lt;BIZ&gt;-&lt;YYYY-MM-DD&gt;assessment-intake-packet.user.md</code></p>
     </div>
 
     <div class="file-card operator">
       <span class="card-tag">You write</span>
-      <div class="card-filename">brand-dossier.user.md</div>
+      <div class="card-filename">&lt;YYYY-MM-DD&gt;-brand-identity-dossier.user.md</div>
       <p class="card-desc">
         Visual and verbal brand identity: colour palette, typography, imagery direction,
         voice and tone, and design token overrides. The agent drafts the first version
         (ASSESSMENT-11) but you confirm and maintain it. Feeds the design spec and website builder.
       </p>
-      <p class="card-when">Path: <code>strategy/&lt;BIZ&gt;/brand-dossier.user.md</code></p>
+      <p class="card-when">Path: <code>strategy/&lt;BIZ&gt;/&lt;YYYY-MM-DD&gt;-brand-identity-dossier.user.md</code></p>
     </div>
 
   </div>
@@ -677,13 +733,13 @@
         <td><strong>Yes — required.</strong> Unlocks archiving. Updates strategy.</td>
       </tr>
       <tr>
-        <td><code>&lt;BIZ&gt;-intake-packet.user.md</code></td>
+        <td><code>&lt;BIZ&gt;-&lt;YYYY-MM-DD&gt;assessment-intake-packet.user.md</code></td>
         <td><span class="badge badge-operator">You</span></td>
         <td>Once at onboarding</td>
         <td>Fill in once. Update when the business fundamentally changes.</td>
       </tr>
       <tr>
-        <td><code>brand-dossier.user.md</code></td>
+        <td><code>&lt;YYYY-MM-DD&gt;-brand-identity-dossier.user.md</code></td>
         <td><span class="badge badge-operator">You</span> + <span class="badge badge-agent">Agent draft</span></td>
         <td>ASSESSMENT-11</td>
         <td>Confirm agent draft. Maintain over time.</td>
@@ -793,31 +849,31 @@
 
     <div class="file-card operator">
       <span class="card-tag">You write / Agent drafts</span>
-      <div class="card-filename">problem-statement.user.md</div>
+      <div class="card-filename">&lt;YYYY-MM-DD&gt;-problem-statement.user.md</div>
       <p class="card-desc">Falsifiable problem definition. Who has it, what it costs them, and why existing solutions fall short. Created at ASSESSMENT-01 if you use the problem-first route. Feeds every downstream stage.</p>
     </div>
 
     <div class="file-card operator">
       <span class="card-tag">You write / Agent drafts</span>
-      <div class="card-filename">current-situation.user.md</div>
+      <div class="card-filename">&lt;YYYY-MM-DD&gt;-operator-context.user.md</div>
       <p class="card-desc">Baseline snapshot of the business as it stands: revenue, traffic, inventory, operational constraints. Critical for an existing business entering the loop — it's what the forecast recalibrates from.</p>
     </div>
 
     <div class="file-card operator">
       <span class="card-tag">You write / Agent drafts</span>
-      <div class="card-filename">distribution-plan.user.md</div>
+      <div class="card-filename">&lt;YYYY-MM-DD&gt;-launch-distribution-plan.user.md</div>
       <p class="card-desc">Primary and secondary distribution channels, partnerships, and logistics constraints identified at ASSESSMENT-06. Consumed by the forecast and channel strategy steps.</p>
     </div>
 
     <div class="file-card operator">
       <span class="card-tag">You write / Agent drafts</span>
-      <div class="card-filename">measurement-plan.user.md</div>
+      <div class="card-filename">&lt;YYYY-MM-DD&gt;-measurement-profile.user.md</div>
       <p class="card-desc">KPIs, dashboard setup, leading/lagging indicators, and how you'll collect data. Created at ASSESSMENT-07. Feeds the MEASURE stage and S10 weekly review.</p>
     </div>
 
     <div class="file-card operator">
       <span class="card-tag">You write / Agent drafts</span>
-      <div class="card-filename">brand-strategy.user.md</div>
+      <div class="card-filename">&lt;YYYY-MM-DD&gt;-brand-profile.user.md</div>
       <p class="card-desc">Brand positioning, key messages, target audience, and competitive differentiation. Sits upstream of brand identity (ASSESSMENT-11) and feeds all marketing and content work.</p>
     </div>
 
@@ -830,7 +886,7 @@
     <div class="file-card operator">
       <span class="card-tag">You write</span>
       <div class="card-filename">experiment-backlog.user.md</div>
-      <p class="card-desc">Hypothesis list with priority scores, measurement plan, owner, and current status. Created at S5A and updated weekly at S10. Drives what you build or test next.</p>
+      <p class="card-desc">Hypothesis list with priority scores, measurement plan, owner, and current status. Created at S4 and updated weekly at S10. Drives what you build or test next.</p>
     </div>
 
     <div class="file-card operator">
@@ -855,7 +911,7 @@
 
   <div class="callout">
     <strong>Why Layer A matters:</strong> Every time the agent runs a planning or strategy skill, it reads the relevant Layer A files as context.
-    If your <code>current-situation.user.md</code> is six months out of date, the agent's advice will be too.
+    If your <code>&lt;YYYY-MM-DD&gt;-operator-context.user.md</code> is six months out of date, the agent's advice will be too.
     After each <code>results-review.user.md</code>, use the <strong>Standing Updates</strong> section you wrote to identify which Layer A files to refresh.
   </div>
 
@@ -864,5 +920,64 @@
   </div>
 
 </main>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    const dark = document.documentElement.getAttribute('data-theme') !== 'light';
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      look: 'classic',
+      themeVariables: {
+        primaryColor:         dark ? '#102251' : '#e8f0ff',
+        primaryBorderColor:   dark ? '#5b9cf6' : '#3362d0',
+        primaryTextColor:     dark ? '#e4e7f2' : '#1a1d2e',
+        secondaryColor:       dark ? '#161921' : '#ffffff',
+        secondaryBorderColor: dark ? '#2a2f45' : '#dde0ed',
+        tertiaryColor:        dark ? '#1e2230' : '#f0f1f7',
+        tertiaryBorderColor:  dark ? '#2a2f45' : '#dde0ed',
+        lineColor:            dark ? '#6b728f' : '#5a6080',
+        edgeLabelBackground:  dark ? '#0e1016' : '#f5f6fa',
+        fontSize: '13px',
+      }
+    });
+  </script>
+  <script>
+    function zoomDiagram(btn, factor) {
+      var wrap = btn.closest('.mermaid-wrap');
+      var el   = wrap.querySelector('.mermaid');
+      var z    = Math.min(Math.max((parseFloat(el.dataset.zoom || '1')) * factor, 0.3), 5);
+      el.dataset.zoom = z; el.style.transform = 'scale(' + z + ')';
+      wrap.classList.toggle('is-zoomed', z > 1);
+    }
+    function resetZoom(btn) {
+      var wrap = btn.closest('.mermaid-wrap');
+      var el   = wrap.querySelector('.mermaid');
+      el.dataset.zoom = '1'; el.style.transform = '';
+      wrap.classList.remove('is-zoomed');
+    }
+    document.querySelectorAll('.mermaid-wrap').forEach(function(wrap) {
+      wrap.addEventListener('wheel', function(e) {
+        if (!e.ctrlKey && !e.metaKey) return;
+        e.preventDefault();
+        var el = wrap.querySelector('.mermaid');
+        var z  = Math.min(Math.max((parseFloat(el.dataset.zoom || '1')) * (e.deltaY < 0 ? 1.1 : 0.9), 0.3), 5);
+        el.dataset.zoom = z; el.style.transform = 'scale(' + z + ')';
+        wrap.classList.toggle('is-zoomed', z > 1);
+      }, { passive: false });
+      var sx, sy, sl, st;
+      wrap.addEventListener('mousedown', function(e) {
+        if (e.target.closest('.zoom-controls')) return;
+        var el = wrap.querySelector('.mermaid');
+        if (parseFloat(el.dataset.zoom || '1') <= 1) return;
+        wrap.classList.add('is-panning'); sx = e.clientX; sy = e.clientY;
+        sl = wrap.scrollLeft; st = wrap.scrollTop;
+      });
+      window.addEventListener('mousemove', function(e) {
+        if (!wrap.classList.contains('is-panning')) return;
+        wrap.scrollLeft = sl - (e.clientX - sx); wrap.scrollTop = st - (e.clientY - sy);
+      });
+      window.addEventListener('mouseup', function() { wrap.classList.remove('is-panning'); });
+    });
+  </script>
 </body>
 </html>

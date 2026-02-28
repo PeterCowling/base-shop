@@ -1,5 +1,5 @@
 // src: packages/ui/src/organisms/MobileMenu.tsx
-import { memo, useEffect, useMemo, useRef } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -12,6 +12,7 @@ import { i18nConfig } from "../i18n.config";
 import { LanguageSwitcher } from "../molecules/LanguageSwitcher";
 import { ThemeToggle } from "../molecules/ThemeToggle";
 import { buildNavLinks, type TranslateFn } from "../utils/buildNavLinks";
+import { translatePath } from "../utils/translate-path";
 
 interface Props {
   menuOpen: boolean;
@@ -37,12 +38,20 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
   const lang = explicitLang ?? normalizedI18nLang ?? fallbackLang;
   const { t } = useTranslation("header", { lng: lang });
   const pathname = usePathname();
+  const [expandedKey, setExpandedKey] = useState<string | null>(null);
 
   /* Focus management --------------------------------------------------- */
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
   useEffect(() => {
     if (menuOpen && firstLinkRef.current) firstLinkRef.current.focus();
   }, [menuOpen]);
+
+  useEffect(() => {
+    const roomsPath = `/${lang}/${translatePath("rooms", lang)}`;
+    if (pathname.startsWith(roomsPath)) {
+      setExpandedKey("rooms");
+    }
+  }, [pathname, lang]);
 
   const close = (): void => setMenuOpen(false);
 
@@ -94,24 +103,71 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
           })()}
         </h2>
         <ul className="flex flex-col items-center space-y-6 pt-6 pb-10">
-          {navLinks.map(({ key, to, label, prefetch }, idx) => {
-            const isCurrent = pathname === `/${lang}${to}`;
+          {navLinks.map(({ key, to, label, prefetch, children }, idx) => {
+            const isCurrent = children ? pathname.startsWith(`/${lang}${to}`) : pathname === `/${lang}${to}`;
             return (
               <li key={key}>
-                <Link
-                  ref={idx === 0 ? firstLinkRef : undefined}
-                  href={`/${lang}${to}`}
-                  prefetch={prefetch}
-                  tabIndex={menuOpen ? 0 : -1}
-                  aria-current={isCurrent ? "page" : undefined}
-                  className={clsx(
-                    "block min-h-11 min-w-11 px-2 py-2 text-xl underline-offset-4 text-brand-heading dark:text-brand-heading hover:underline focus-visible:underline",
-                    isCurrent ? "font-semibold text-brand-secondary underline" : "font-medium"
-                  )}
-                  onClick={close}
-                >
-                  {label}
-                </Link>
+                {children ? (
+                  <>
+                    <button
+                      aria-expanded={expandedKey === key}
+                      aria-controls={`mobile-subnav-${key}`}
+                      tabIndex={menuOpen ? 0 : -1}
+                      onClick={() => setExpandedKey((k) => (k === key ? null : key))}
+                      className={clsx(
+                        "flex min-h-11 w-full items-center gap-1 px-2 py-2 text-xl text-brand-heading dark:text-brand-heading hover:underline focus-visible:outline-none focus-visible:underline",
+                        isCurrent ? "font-semibold text-brand-secondary underline" : "font-medium"
+                      )}
+                    >
+                      {label}
+                      <svg
+                        aria-hidden="true"
+                        className={clsx("size-4 transition-transform", expandedKey === key ? "rotate-180" : "")}
+                        fill="none"
+                        viewBox="0 0 10 6"
+                      >
+                        <path
+                          d="M1 1l4 4 4-4"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+                    {expandedKey === key && (
+                      <ul id={`mobile-subnav-${key}`} className="pl-4 pt-2 space-y-2">
+                        {children.map((child) => (
+                          <li key={child.key}>
+                            <Link
+                              href={`/${lang}${child.to}`}
+                              tabIndex={menuOpen ? 0 : -1}
+                              className="block min-h-11 min-w-11 px-2 py-2 text-lg text-brand-heading dark:text-brand-heading hover:underline focus-visible:underline font-medium"
+                              onClick={close}
+                            >
+                              {child.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </>
+                ) : (
+                  <Link
+                    ref={idx === 0 ? firstLinkRef : undefined}
+                    href={`/${lang}${to}`}
+                    prefetch={prefetch}
+                    tabIndex={menuOpen ? 0 : -1}
+                    aria-current={isCurrent ? "page" : undefined}
+                    className={clsx(
+                      "block min-h-11 min-w-11 px-2 py-2 text-xl underline-offset-4 text-brand-heading dark:text-brand-heading hover:underline focus-visible:underline",
+                      isCurrent ? "font-semibold text-brand-secondary underline" : "font-medium"
+                    )}
+                    onClick={close}
+                  >
+                    {label}
+                  </Link>
+                )}
               </li>
             );
           })}

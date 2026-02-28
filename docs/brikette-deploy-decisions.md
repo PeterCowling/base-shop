@@ -113,6 +113,49 @@ The middleware file isn't deleted; it just doesn't execute on static Pages. Next
 
 Some versions of Next.js don't detect synchronous `generateStaticParams` during static export. Always use `export async function generateStaticParams()`.
 
+### 6. Next.js 16 emits `__next.*` metadata files — delete before deploying
+
+Next.js 16 writes `__next._tree.txt`, `__next._head.txt`, `__next.__PAGE__.txt` and similar files alongside every route directory. A full build produces ~33k of these files, pushing the total past Cloudflare Pages' 20k-file free-plan limit.
+
+**Always run after `next build` and before `wrangler pages deploy`:**
+
+```bash
+find out -name "__next.*" -type f -delete
+```
+
+---
+
+## Direct Wrangler Deploy (Bypass Git Flow)
+
+Use when `ship-to-staging.sh` / `promote-to-main.sh` is blocked (e.g. dirty working tree from uncommitted changes in other apps/packages) or you need to ship immediately without a PR.
+
+Run from `apps/brikette/`:
+
+```bash
+# 1. Build package dependencies (fast if already cached)
+pnpm exec turbo run build --filter=@apps/brikette^...
+
+# 2. Fetch the GA measurement ID from repo variables
+GA_ID=$(gh variable list | grep NEXT_PUBLIC_GA_MEASUREMENT_ID | awk '{print $2}')
+
+# 3. Static export build
+OUTPUT_EXPORT=1 NEXT_PUBLIC_GA_MEASUREMENT_ID="$GA_ID" pnpm exec next build --turbopack
+
+# 4. REQUIRED — strip Next.js 16 metadata bloat
+#    Next.js 16 emits ~33k __next.* txt files per route build.
+#    Without this step the upload exceeds Cloudflare Pages' 20k-file free-plan limit.
+find out -name "__next.*" -type f -delete
+
+# 5. Deploy
+pnpm exec wrangler pages deploy out --project-name brikette-website --branch main --commit-dirty=true
+```
+
+For staging, swap `--branch main` → `--branch staging`.
+
+**Auth**: wrangler uses the OAuth token for peter.cowling1976@gmail.com. Run `pnpm exec wrangler whoami` to confirm.
+
+**Route hiding**: `src/app/[lang]/guides/` is currently an empty directory (no `[...slug]` catch-all exists). If a catch-all is added back, hide it before the build: `mv "src/app/[lang]/guides/[...slug]" _slug-off` and restore after. Same pattern for `src/app/api/` if route handlers are added inside dynamic segments.
+
 ---
 
 ## CI Pipeline Details

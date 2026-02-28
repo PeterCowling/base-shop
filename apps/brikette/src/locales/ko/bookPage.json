@@ -41,5 +41,11 @@
     ],
     "footer": "최종 재고 확인과 결제는 공식 예약 엔진에서 진행됩니다."
   },
-  "backToRooms": "객실로 돌아가기"
+  "backToRooms": "객실로 돌아가기",
+  "hostel": {
+    "directSavings": {
+      "eyebrow": "Book direct and save",
+      "headline": "Up to 25% less than Booking.com"
+    }
+  }
 }

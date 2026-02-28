@@ -31,7 +31,6 @@ jest.mock("react-i18next", () => ({
           "date.checkIn": "Check in",
           "date.checkOut": "Check out",
           "date.guests": "Guests",
-          "date.apply": "Update",
         };
         return bookPageKeys[key] ?? options?.defaultValue ?? key;
       }

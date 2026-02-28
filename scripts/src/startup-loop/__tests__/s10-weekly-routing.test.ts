@@ -74,7 +74,7 @@ describe("TC-06-01: SIGNALS stage contract stability (loop-spec.yaml)", () => {
     const raw = fs.readFileSync(loopSpecPath, "utf8");
     const idMatches = raw.match(/^\s+- id: [A-Z][A-Z0-9-]*/gm);
     expect(idMatches).not.toBeNull();
-    expect(idMatches!.length).toBe(69); // Includes ASSESSMENT, IDEAS, MEASURE, PRODUCT, PRODUCTS, LOGISTICS, MARKET, SELL, WEBSITE, and downstream stages.
+    expect(idMatches!.length).toBe(70); // Includes ASSESSMENT, IDEAS, MEASURE, PRODUCT, PRODUCTS, LOGISTICS, MARKET, SELL, WEBSITE, and downstream stages.
   });
 });
 

@@ -464,7 +464,7 @@ export function StepActions({
             type="button"
             onClick={prevStep}
             disabled={!canGoPrev || isValidating}
-            className="inline-flex items-center gap-2 rounded-lg border border-border bg-bg px-4 py-2 text-sm font-medium text-fg shadow-sm hover:bg-bg-2 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary focus-visible:focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-lg border border-border bg-bg px-4 py-2 text-sm font-medium text-fg shadow-sm hover:bg-bg-2 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary focus-visible:focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-11 min-w-11"
           >
             <ChevronLeft className="h-4 w-4" aria-hidden="true" />
             {prevLabel}
@@ -480,7 +480,7 @@ export function StepActions({
             type="button"
             onClick={isLastStep ? completeWizard : nextStep}
             disabled={(!canGoNext && !isLastStep) || isValidating}
-            className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-fg shadow-sm hover:bg-primary-hover focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary focus-visible:focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-fg shadow-sm hover:bg-primary-hover focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary focus-visible:focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-11 min-w-11"
           >
             {isValidating ? (
               <>

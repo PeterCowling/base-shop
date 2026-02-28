@@ -142,9 +142,8 @@ function AssistanceQuickLinksSection({
                     "dark:hover:bg-brand-secondary/5",
                   ),
                   children: (
-                    <>
-                      <div className={clsx("flex", "flex-col", "h-full")}>
-                        <div className={clsx("grid", "grid-cols-[4.5rem_1fr]", "gap-4", "items-start")}>
+                    <div className={clsx("flex", "flex-col", "h-full")}>
+                        <div className={clsx("grid", "grid-cols-2", "gap-4", "items-start")}>
                           {item.image?.src ? (
                             // eslint-disable-next-line @next/next/no-img-element -- UI-1000 [ttl=2026-12-31] UI package accepts mixed local/remote URLs at runtime.
                             <img
@@ -203,7 +202,7 @@ function AssistanceQuickLinksSection({
                                 "[-webkit-box-orient:vertical]",
                                 "[-webkit-line-clamp:3]",
                                 // visually normalise card heights
-                                "min-h-[3.75rem]",
+                                "min-h-15",
                               )}
                             >
                               {item.description}
@@ -228,7 +227,6 @@ function AssistanceQuickLinksSection({
                         <ArrowRight aria-hidden className="size-4" strokeWidth={2} />
                       </span>
                       </div>
-                    </>
                   ),
                 })}
               </Fragment>

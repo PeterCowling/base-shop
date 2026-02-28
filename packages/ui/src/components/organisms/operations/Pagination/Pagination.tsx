@@ -71,22 +71,22 @@ export function Pagination({
 
   return (
     <div
-      className={`flex items-center justify-between gap-4 rounded-lg border border-slate-200 bg-white px-4 py-3 dark:border-slate-700 dark:bg-slate-800 ${className}`}
+      className={`flex items-center justify-between gap-4 rounded-lg border border-border-2 bg-surface px-4 py-3 dark:border-slate-700 dark:bg-slate-800 ${className}`}
       role="navigation"
       aria-label="Pagination"
     >
       {/* Items info */}
       <div className="flex items-center gap-4">
-        <span className="text-sm text-slate-600 dark:text-slate-400">
+        <span className="text-sm text-muted-foreground dark:text-muted-foreground">
           {totalItems === 0 ? (
             'No items'
           ) : (
             <>
-              Showing <span className="font-medium text-slate-900 dark:text-slate-100">{startItem}</span>
+              Showing <span className="font-medium text-foreground dark:text-slate-100">{startItem}</span>
               {' - '}
-              <span className="font-medium text-slate-900 dark:text-slate-100">{endItem}</span>
+              <span className="font-medium text-foreground dark:text-slate-100">{endItem}</span>
               {' of '}
-              <span className="font-medium text-slate-900 dark:text-slate-100">{totalItems}</span>
+              <span className="font-medium text-foreground dark:text-slate-100">{totalItems}</span>
             </>
           )}
         </span>
@@ -94,7 +94,7 @@ export function Pagination({
         {/* Page size selector */}
         {showPageSizeSelector && onPageSizeChange && (
           <div className="flex items-center gap-2">
-            <label htmlFor="page-size" className="text-sm text-slate-600 dark:text-slate-400">
+            <label htmlFor="page-size" className="text-sm text-muted-foreground dark:text-muted-foreground">
               Per page:
             </label>
             <select
@@ -102,7 +102,7 @@ export function Pagination({
               value={pageSize}
               onChange={(e) => handlePageSizeChange(Number(e.target.value))}
               disabled={disabled}
-              className="rounded border border-slate-200 bg-white px-2 py-1 text-sm text-slate-900 transition-colors hover:border-slate-300 focus:border-blue-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-blue-200 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:hover:border-slate-500 dark:focus:border-blue-400 focus-visible:dark:focus:ring-blue-900"
+              className="rounded border border-border-2 bg-surface px-2 py-1 text-sm text-foreground transition-colors hover:border-slate-300 focus:border-blue-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-blue-200 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:hover:border-slate-500 dark:focus:border-blue-400 focus-visible:dark:focus:ring-blue-900"
             >
               {pageSizeOptions.map((option) => (
                 <option key={option} value={option}>
@@ -121,7 +121,7 @@ export function Pagination({
             onClick={() => handlePageChange(1)}
             disabled={!canGoPrevious}
             aria-label="Go to first page"
-            className="rounded p-2 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-100"
+            className="rounded p-2 text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent dark:text-muted-foreground dark:hover:bg-slate-700 dark:hover:text-slate-100 min-h-11 min-w-11"
           >
             <ChevronsLeft className="h-4 w-4" />
           </button>
@@ -131,12 +131,12 @@ export function Pagination({
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={!canGoPrevious}
           aria-label="Go to previous page"
-          className="rounded p-2 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-100"
+          className="rounded p-2 text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent dark:text-muted-foreground dark:hover:bg-slate-700 dark:hover:text-slate-100 min-h-11 min-w-11"
         >
           <ChevronLeft className="h-4 w-4" />
         </button>
 
-        <span className="min-w-[100px] text-center text-sm text-slate-900 dark:text-slate-100">
+        <span className="min-w-24 text-center text-sm text-foreground dark:text-slate-100">
           Page {currentPage} of {totalPages}
         </span>
 
@@ -144,7 +144,7 @@ export function Pagination({
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={!canGoNext}
           aria-label="Go to next page"
-          className="rounded p-2 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-100"
+          className="rounded p-2 text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent dark:text-muted-foreground dark:hover:bg-slate-700 dark:hover:text-slate-100 min-h-11 min-w-11"
         >
           <ChevronRight className="h-4 w-4" />
         </button>
@@ -154,7 +154,7 @@ export function Pagination({
             onClick={() => handlePageChange(totalPages)}
             disabled={!canGoNext}
             aria-label="Go to last page"
-            className="rounded p-2 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-100"
+            className="rounded p-2 text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent dark:text-muted-foreground dark:hover:bg-slate-700 dark:hover:text-slate-100 min-h-11 min-w-11"
           >
             <ChevronsRight className="h-4 w-4" />
           </button>

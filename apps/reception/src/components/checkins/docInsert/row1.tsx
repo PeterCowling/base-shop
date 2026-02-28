@@ -212,7 +212,7 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
           </label>
           <Input compatibilityMode="no-wrapper"
             id="firstName"
-            className={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
+            className={`border border-info-light rounded-lg px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
               isFirstNamePlaceholder
                 ? "bg-warning-light/50"
                 : isFirstNamePopulated
@@ -235,7 +235,7 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
           </label>
           <Input compatibilityMode="no-wrapper"
             id="lastName"
-            className={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
+            className={`border border-info-light rounded-lg px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
               isLastNamePlaceholder
                 ? "bg-warning-light/50"
                 : isLastNamePopulated
@@ -272,7 +272,7 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
           >
             <SelectTrigger
               id="gender"
-              className={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
+              className={`border border-info-light rounded-lg px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
                 isGenderPopulated ? "bg-success-light/50" : ""
               }`}
             >

@@ -56,7 +56,7 @@ export default function FormBuilderBlock({
       <button
         type="submit"
         // i18n-exempt -- DS-1023: CSS utility class names only [ttl=2026-12-31]
-        className="rounded bg-primary px-4 py-2 min-h-10 min-w-10"
+        className="rounded bg-primary px-4 py-2 min-h-11 min-w-11"
         // i18n-exempt -- DS-1025: design token attribute, not user-facing copy [ttl=2026-12-31]
         data-token="--color-primary"
       >

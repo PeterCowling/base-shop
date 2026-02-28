@@ -21,6 +21,8 @@ import {
 } from "../../utils/dateUtils";
 import { type AlloggiatiResultDetail } from "../../utils/parseAlloggiatiResponse";
 import { showToast } from "../../utils/toastUtils";
+import { PageShell } from "../common/PageShell";
+import ReceptionSkeleton from "../common/ReceptionSkeleton";
 
 import DateSelectorCI from "./DateSelectorAllo";
 
@@ -257,9 +259,7 @@ const AlloggiatiComponent: FC = () => {
 
   // ----------- Rendering -----------
   return (
-    <>
-      <h2 className="text-xl font-bold">Alloggiati</h2>
-
+    <PageShell title="Alloggiati">
       <DateSelectorCI
         selectedDate={selectedDate}
         onDateChange={setSelectedDate}
@@ -268,9 +268,9 @@ const AlloggiatiComponent: FC = () => {
       />
 
       {isLoading && (
-        <p className="mt-4">
-          Loading checkins, financial data, guest details, or occupant logs...
-        </p>
+        <div className="mt-4">
+          <ReceptionSkeleton rows={3} />
+        </div>
       )}
       {combinedError && (
         <p className="mt-4 text-error-main">Error: {String(combinedError)}</p>
@@ -353,7 +353,7 @@ const AlloggiatiComponent: FC = () => {
       )}
 
       {/* Send Section */}
-      <div className="mt-6 p-3 border border-border-2 rounded">
+      <div className="mt-6 bg-surface rounded-lg shadow-lg p-6">
         <h3 className="font-semibold mb-2">Send to Alloggiati Web Service</h3>
 
         <Button
@@ -384,7 +384,7 @@ const AlloggiatiComponent: FC = () => {
           </div>
         )}
       </div>
-    </>
+    </PageShell>
   );
 };
 

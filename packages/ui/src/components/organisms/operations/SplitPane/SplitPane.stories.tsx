@@ -39,16 +39,16 @@ export const Default: StoryObj<typeof SplitPane> = {
   render: () => (
     <div style={{ height: 400 }}>
       <SplitPane>
-        <div className="flex h-full items-center justify-center bg-slate-100 p-4">
+        <div className="flex h-full items-center justify-center bg-surface-2 p-4">
           <div className="text-center">
             <h3 className="font-semibold">Primary Pane</h3>
-            <p className="text-sm text-slate-500">Drag the handle to resize</p>
+            <p className="text-sm text-muted-foreground">Drag the handle to resize</p>
           </div>
         </div>
-        <div className="flex h-full items-center justify-center bg-slate-50 p-4">
+        <div className="flex h-full items-center justify-center bg-surface p-4">
           <div className="text-center">
             <h3 className="font-semibold">Secondary Pane</h3>
-            <p className="text-sm text-slate-500">This pane fills remaining space</p>
+            <p className="text-sm text-muted-foreground">This pane fills remaining space</p>
           </div>
         </div>
       </SplitPane>
@@ -60,16 +60,16 @@ export const Vertical: StoryObj<typeof SplitPane> = {
   render: () => (
     <div style={{ height: 500 }}>
       <SplitPane direction="vertical" defaultSize="40%">
-        <div className="flex h-full items-center justify-center bg-slate-100 p-4">
+        <div className="flex h-full items-center justify-center bg-surface-2 p-4">
           <div className="text-center">
             <h3 className="font-semibold">Top Pane</h3>
-            <p className="text-sm text-slate-500">Drag the handle to resize vertically</p>
+            <p className="text-sm text-muted-foreground">Drag the handle to resize vertically</p>
           </div>
         </div>
-        <div className="flex h-full items-center justify-center bg-slate-50 p-4">
+        <div className="flex h-full items-center justify-center bg-surface p-4">
           <div className="text-center">
             <h3 className="font-semibold">Bottom Pane</h3>
-            <p className="text-sm text-slate-500">This pane fills remaining space</p>
+            <p className="text-sm text-muted-foreground">This pane fills remaining space</p>
           </div>
         </div>
       </SplitPane>
@@ -86,9 +86,9 @@ export const WithConstraints: StoryObj<typeof SplitPane> = {
         minSecondarySize={150}
         defaultSize={300}
       >
-        <div className="flex h-full flex-col items-center justify-center bg-blue-50 p-4">
+        <div className="flex h-full flex-col items-center justify-center bg-info-light p-4">
           <h3 className="font-semibold text-blue-900">Constrained Pane</h3>
-          <p className="text-sm text-blue-600">Min: 200px, Max: 500px</p>
+          <p className="text-sm text-info-main">Min: 200px, Max: 500px</p>
         </div>
         <div className="flex h-full flex-col items-center justify-center bg-amber-50 p-4">
           <h3 className="font-semibold text-amber-900">Secondary Pane</h3>
@@ -107,11 +107,11 @@ function CollapsibleStory() {
       <div className="flex items-center gap-4 px-4">
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="rounded bg-slate-700 px-3 py-1 text-sm text-white"
+          className="rounded bg-slate-700 px-3 py-1 text-sm text-primary-fg min-h-11 min-w-11"
         >
           {collapsed ? "Expand" : "Collapse"} Sidebar
         </button>
-        <span className="text-sm text-slate-500">
+        <span className="text-sm text-muted-foreground">
           Or drag the handle to the left to collapse
         </span>
       </div>
@@ -123,7 +123,7 @@ function CollapsibleStory() {
           defaultSize={250}
           minSize={200}
         >
-          <div className="flex h-full flex-col bg-slate-800 p-4 text-white">
+          <div className="flex h-full flex-col bg-slate-800 p-4 text-primary-fg">
             <h3 className="font-semibold">Sidebar</h3>
             <nav className="mt-4 space-y-2">
               <div className="rounded bg-slate-700 px-3 py-2">Dashboard</div>
@@ -131,10 +131,10 @@ function CollapsibleStory() {
               <div className="rounded px-3 py-2 hover:bg-slate-700">Settings</div>
             </nav>
           </div>
-          <div className="flex h-full items-center justify-center bg-slate-50 p-4">
+          <div className="flex h-full items-center justify-center bg-surface p-4">
             <div className="text-center">
               <h3 className="font-semibold">Main Content</h3>
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-muted-foreground">
                 The sidebar can be collapsed by dragging
               </p>
             </div>
@@ -153,7 +153,7 @@ export const CodeEditor: StoryObj<typeof SplitPane> = {
     <div style={{ height: 500 }}>
       <SplitPane direction="vertical" defaultSize="70%">
         <div className="h-full bg-slate-900 p-4">
-          <div className="mb-2 flex items-center gap-2 text-sm text-slate-400">
+          <div className="mb-2 flex items-center gap-2 text-sm text-muted-foreground">
             <span>index.tsx</span>
           </div>
           <pre className="font-mono text-sm text-slate-300">
@@ -172,12 +172,12 @@ export default App;`}
           </pre>
         </div>
         <div className="h-full bg-slate-950 p-4">
-          <div className="mb-2 text-sm font-semibold text-slate-400">
+          <div className="mb-2 text-sm font-semibold text-muted-foreground">
             Terminal
           </div>
           <div className="font-mono text-sm text-green-400">
             $ npm run dev<br />
-            <span className="text-slate-400">Starting development server...</span><br />
+            <span className="text-muted-foreground">Starting development server...</span><br />
             <span className="text-blue-400">Ready on http://localhost:3000</span>
           </div>
         </div>
@@ -190,18 +190,18 @@ export const NestedSplits: StoryObj<typeof SplitPane> = {
   render: () => (
     <div style={{ height: 500 }}>
       <SplitPane defaultSize={200}>
-        <div className="flex h-full flex-col bg-slate-800 p-3 text-white">
+        <div className="flex h-full flex-col bg-slate-800 p-3 text-primary-fg">
           <div className="text-sm font-semibold">Explorer</div>
           <div className="mt-3 space-y-1 text-sm">
             <div className="rounded bg-slate-700 px-2 py-1">src/</div>
-            <div className="pl-4 text-slate-400">components/</div>
-            <div className="pl-4 text-slate-400">pages/</div>
+            <div className="pl-4 text-muted-foreground">components/</div>
+            <div className="pl-4 text-muted-foreground">pages/</div>
             <div className="rounded px-2 py-1 hover:bg-slate-700">package.json</div>
           </div>
         </div>
         <SplitPane direction="vertical" defaultSize="60%">
           <div className="h-full bg-slate-900 p-4">
-            <div className="text-sm text-slate-400">Editor</div>
+            <div className="text-sm text-muted-foreground">Editor</div>
             <pre className="mt-2 font-mono text-sm text-slate-300">
               {"// Your code here"}
             </pre>
@@ -227,12 +227,12 @@ function WithResizeCallbacksStory() {
   return (
     <div className="flex flex-col gap-4" style={{ height: 400 }}>
       <div className="flex items-center gap-4 px-4">
-        <div className="rounded bg-slate-100 px-3 py-1 text-sm">
+        <div className="rounded bg-surface-2 px-3 py-1 text-sm">
           Size: {size ? `${Math.round(size)}px` : "–"}
         </div>
         <div
           className={`rounded px-3 py-1 text-sm ${
-            isResizing ? "bg-green-100 text-green-700" : "bg-slate-100"
+            isResizing ? "bg-success-light text-green-700" : "bg-surface-2"
           }`}
         >
           {isResizing ? "Resizing..." : "Idle"}
@@ -245,10 +245,10 @@ function WithResizeCallbacksStory() {
           onResizeStart={() => setIsResizing(true)}
           onResizeEnd={() => setIsResizing(false)}
         >
-          <div className="flex h-full items-center justify-center bg-slate-100 p-4">
+          <div className="flex h-full items-center justify-center bg-surface-2 p-4">
             Primary Pane
           </div>
-          <div className="flex h-full items-center justify-center bg-slate-50 p-4">
+          <div className="flex h-full items-center justify-center bg-surface p-4">
             Secondary Pane
           </div>
         </SplitPane>
@@ -267,10 +267,10 @@ export const CustomHandle: StoryObj<typeof SplitPane> = {
         handleSize={12}
         handleClassName="bg-gradient-to-r from-purple-500 to-pink-500 opacity-50 hover:opacity-100 transition-opacity"
       >
-        <div className="flex h-full items-center justify-center bg-slate-100 p-4">
+        <div className="flex h-full items-center justify-center bg-surface-2 p-4">
           <span>Left</span>
         </div>
-        <div className="flex h-full items-center justify-center bg-slate-50 p-4">
+        <div className="flex h-full items-center justify-center bg-surface p-4">
           <span>Right</span>
         </div>
       </SplitPane>
@@ -282,16 +282,16 @@ export const Disabled: StoryObj<typeof SplitPane> = {
   render: () => (
     <div style={{ height: 400 }}>
       <SplitPane disabled defaultSize={300}>
-        <div className="flex h-full items-center justify-center bg-slate-100 p-4">
+        <div className="flex h-full items-center justify-center bg-surface-2 p-4">
           <div className="text-center">
             <h3 className="font-semibold">Fixed Pane</h3>
-            <p className="text-sm text-slate-500">Resizing is disabled</p>
+            <p className="text-sm text-muted-foreground">Resizing is disabled</p>
           </div>
         </div>
-        <div className="flex h-full items-center justify-center bg-slate-50 p-4">
+        <div className="flex h-full items-center justify-center bg-surface p-4">
           <div className="text-center">
             <h3 className="font-semibold">Secondary Pane</h3>
-            <p className="text-sm text-slate-500">Handle is not interactive</p>
+            <p className="text-sm text-muted-foreground">Handle is not interactive</p>
           </div>
         </div>
       </SplitPane>
@@ -319,9 +319,9 @@ export const WithHook: StoryObj<typeof SplitPane> = {
               onChange={(e) => setSize(Number(e.target.value))}
               className="w-40"
             />
-            <span className="text-sm text-slate-600">{Math.round(size)}px</span>
+            <span className="text-sm text-muted-foreground">{Math.round(size)}px</span>
             {isResizing && (
-              <span className="text-sm text-green-600">Resizing...</span>
+              <span className="text-sm text-success-main">Resizing...</span>
             )}
           </div>
           <div
@@ -330,7 +330,7 @@ export const WithHook: StoryObj<typeof SplitPane> = {
             style={{ width: "100%" }}
           >
             <div
-              className="flex items-center justify-center bg-slate-100"
+              className="flex items-center justify-center bg-surface-2"
               style={{ width: size }}
             >
               Primary ({Math.round(size)}px)
@@ -339,7 +339,7 @@ export const WithHook: StoryObj<typeof SplitPane> = {
               {...handleProps}
               className="w-1 flex-shrink-0 bg-slate-300 hover:bg-slate-400 transition-colors"
             />
-            <div className="flex flex-1 items-center justify-center bg-slate-50">
+            <div className="flex flex-1 items-center justify-center bg-surface">
               Secondary
             </div>
           </div>

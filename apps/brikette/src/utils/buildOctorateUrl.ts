@@ -4,6 +4,8 @@
 /*  No side-effects, no throws — always returns a discriminated-union result. */
 /* -------------------------------------------------------------------------- */
 
+import { isValidPax, isValidStayRange } from "@/utils/bookingDateRules";
+
 const OCTORATE_BASE = "https://book.octorate.com/octobook/site/reservation";
 
 export interface BuildOctorateUrlParams {
@@ -35,8 +37,9 @@ export type BuildOctorateUrlResult =
  * Returns `{ ok: true, url }` on success, or `{ ok: false, error }` on validation failure.
  * Never throws.
  *
- * - Uses Octorate room-rate `calendar.xhtml` endpoint.
- * - Appends room and date params from the selected room-rate/check-in.
+ * - Uses Octorate `result.xhtml` endpoint so explicit checkin/checkout
+ *   selections are preserved from the booking flow.
+ * - Appends room/date/checkin/checkout/pax params (plus adulti mirror).
  * - Appends deal + UTM attribution params when `deal` is provided.
  *
  * 200ms timeout rationale (for callers using trackThenNavigate): empirically-established
@@ -46,7 +49,7 @@ export type BuildOctorateUrlResult =
 export function buildOctorateUrl(
   params: BuildOctorateUrlParams
 ): BuildOctorateUrlResult {
-  const { checkin, checkout, octorateRateCode, bookingCode, deal } = params;
+  const { checkin, checkout, pax, octorateRateCode, bookingCode, deal } = params;
 
   // Guard: booking code must be present
   if (!bookingCode || !bookingCode.trim()) {
@@ -60,19 +63,20 @@ export function buildOctorateUrl(
 
   // Guard: dates must be non-empty strings in YYYY-MM-DD format
   const datePattern = /^\d{4}-\d{2}-\d{2}$/;
-  if (!datePattern.test(checkin) || !datePattern.test(checkout)) {
+  if (!datePattern.test(checkin) || !datePattern.test(checkout) || !isValidStayRange(checkin, checkout) || !isValidPax(pax)) {
     return { ok: false, error: "invalid_dates" };
   }
 
+  const paxString = String(pax);
   const urlParams = new URLSearchParams({
     codice: bookingCode,
     room: octorateRateCode,
     date: checkin,
+    checkin,
+    checkout,
+    pax: paxString,
+    adulti: paxString,
   });
-
-  // Preserve selected stay window for analytics/debug correlation.
-  urlParams.set("checkin", checkin);
-  urlParams.set("checkout", checkout);
 
   // Append deal attribution params when a deal code is provided
   const dealCode = typeof deal === "string" ? deal.trim() : "";
@@ -83,7 +87,7 @@ export function buildOctorateUrl(
     urlParams.set("utm_campaign", dealCode);
   }
 
-  const url = `${OCTORATE_BASE}/calendar.xhtml?${urlParams.toString()}`;
+  const url = `${OCTORATE_BASE}/result.xhtml?${urlParams.toString()}`;
 
   return { ok: true, url };
 }

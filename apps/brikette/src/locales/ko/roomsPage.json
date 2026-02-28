@@ -66,6 +66,7 @@
   },
   "rooms": {
     "title": "객실 안내",
+    "soldOut": "매진",
     "double_room": {
       "title": "더블룸",
       "bed_intro": "커플에게 완벽한 멋진 바다 전망.",
@@ -285,6 +286,7 @@
   "filtersAria": "객실 유형별로 필터링",
   "checkRatesNonRefundable": "환불 불가 요금",
   "checkRatesFlexible": "유연 요금",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "환불 불가",
     "flexible": "유연 요금"

@@ -41,5 +41,11 @@
     ],
     "footer": "Disponibilità e pagamento finali avvengono sul nostro booking engine ufficiale."
   },
-  "backToRooms": "Torna alle camere"
+  "backToRooms": "Torna alle camere",
+  "hostel": {
+    "directSavings": {
+      "eyebrow": "Book direct and save",
+      "headline": "Up to 25% less than Booking.com"
+    }
+  }
 }

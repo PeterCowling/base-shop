@@ -2,15 +2,16 @@
 // Responsive list of room cards (moved from app src)
 import { memo, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Link from "next/link";
 
 import { Section } from "../atoms/Section";
 import { Grid } from "../components/atoms/primitives/Grid";
-import { roomsData } from "../data/roomsData";
+import { ROOM_DROPDOWN_NAMES } from "../config/roomNames";
+import { roomsData, toFlatImageArray } from "../data/roomsData";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import RoomCard from "../molecules/RoomCard";
 import RoomFilters, { type RoomFilter } from "../molecules/RoomFilters";
 import { SLUGS } from "../slug-map";
+import type { RoomCardPrice } from "../types/roomCard";
 import { getDatePlusTwoDays, getTodayIso } from "../utils/dateUtils";
 
 export type RoomsSectionBookingQuery = {
@@ -20,18 +21,6 @@ export type RoomsSectionBookingQuery = {
   queryString?: string;
 };
 
-const ROOM_TITLE_FALLBACKS: Record<string, string> = {
-  double_room: "Double Room",
-  room_10: "Premium Mixed Dorm",
-  room_11: "Superior Mixed Dorm",
-  room_12: "Superior Mixed Dorm Plus",
-  room_3: "Mixed Dorm",
-  room_4: "Mixed Dorm",
-  room_5: "Mixed Dorm",
-  room_6: "Mixed Dorm",
-  room_8: "Female Dorm",
-  room_9: "Female Dorm",
-};
 
 function looksLikeI18nKeyToken(value: string): boolean {
   if (!value.includes(".")) return false;
@@ -71,42 +60,14 @@ function parseClientBookingQuery(): RoomsSectionBookingQuery {
   };
 }
 
-function formatRoomBasePrice(
-  amount: number | undefined,
-  currency: string | undefined
-): string {
-  const safeAmount =
-    typeof amount === "number" && Number.isFinite(amount) ? amount : null;
-  if (safeAmount === null) return "";
-  const normalizedCurrency =
-    typeof currency === "string" && currency.trim() ? currency : "EUR";
-  try {
-    return new Intl.NumberFormat("en", {
-      style: "currency",
-      currency: normalizedCurrency,
-      maximumFractionDigits: safeAmount % 1 === 0 ? 0 : 2,
-    }).format(safeAmount);
-  } catch {
-    return `${normalizedCurrency} ${safeAmount.toFixed(0)}`;
-  }
-}
-
-function buildRoomInventorySummary(room: (typeof roomsData)[number], title: string): string {
-  const occupancy = Number.isFinite(room.occupancy) ? Math.max(1, room.occupancy) : 1;
-  const occupancyLabel = occupancy === 1 ? "1 guest" : `${occupancy} guests`;
-  const pricingUnit = room.pricingModel === "perRoom" ? "room" : "bed";
-  const pricingLabel = room.pricingModel === "perRoom" ? "Private room" : "Dorm room";
-  const formattedPrice = formatRoomBasePrice(room.basePrice?.amount, room.basePrice?.currency);
-  const priceFragment = formattedPrice ? ` From ${formattedPrice} per ${pricingUnit}.` : "";
-
-  return `${title}. ${pricingLabel} for up to ${occupancyLabel}.${priceFragment}`;
-}
 
 function RoomsSection({
   lang: explicitLang,
   bookingQuery,
   itemListId,
   onRoomSelect,
+  roomPrices,
+  singleCtaMode,
 }: {
   lang?: string;
   bookingQuery?: RoomsSectionBookingQuery;
@@ -117,6 +78,17 @@ function RoomsSection({
    * Kept GA4-agnostic; app callers can emit analytics using their own contract layer.
    */
   onRoomSelect?: (ctx: { roomSku: string; plan: "nr" | "flex"; index: number; itemListId?: string }) => void;
+  /**
+   * Optional per-room pricing data keyed by room ID (e.g. "room_10", "double_room").
+   * When provided for a room, overrides the default (empty) price block on that RoomCard.
+   * Used by the brikette live-availability feature to show per-date-range pricing.
+   */
+  roomPrices?: Record<string, RoomCardPrice>;
+  /**
+   * When true, renders a single "Check Rates" CTA (NR rate plan) instead of the default
+   * dual Non-Refundable / Flexible buttons. The cheapest (NR) rate is always used.
+   */
+  singleCtaMode?: boolean;
 }): JSX.Element {
   const fallbackLang = useCurrentLanguage();
   const lang = explicitLang ?? fallbackLang;
@@ -181,9 +153,9 @@ function RoomsSection({
             const href = `/${lang}/${roomsSlug}/${room.id}`;
             const title = resolveTranslatedCopy(
               t(`rooms.${room.id}.title`, {
-                defaultValue: ROOM_TITLE_FALLBACKS[room.id] ?? "Room",
+                defaultValue: ROOM_DROPDOWN_NAMES[room.id] ?? "Room",
               }),
-              ROOM_TITLE_FALLBACKS[room.id] ?? "Room"
+              ROOM_DROPDOWN_NAMES[room.id] ?? "Room"
             );
             const nonRefundableLabel = resolveTranslatedCopy(
               t("checkRatesNonRefundable", { defaultValue: "Non-Refundable Rates" }),
@@ -193,8 +165,10 @@ function RoomsSection({
               t("checkRatesFlexible", { defaultValue: "Flexible Rates" }),
               "Flexible Rates"
             );
-            const roomSummary = buildRoomInventorySummary(room, title);
-
+            const checkRatesSingleLabel = resolveTranslatedCopy(
+              t("checkRatesSingle", { defaultValue: "Check Rates" }),
+              "Check Rates"
+            );
             const openBooking = (rateType: "nonRefundable" | "refundable") => {
               const plan = rateType === "nonRefundable" ? "nr" : "flex";
               onRoomSelect?.({ roomSku: room.id, plan, index, itemListId });
@@ -202,31 +176,29 @@ function RoomsSection({
               // via RoomCard props (brikette: TASK-27 direct Octorate link).
             };
             return (
-              <div key={room.id} className="flex flex-col">
-                <RoomCard
-                  id={room.id}
-                  title={title}
-                  images={room.imagesRaw}
-                  imageAlt={`${title} room`}
-                  lang={lang}
-                  actions={[
-                    { id: "nr", label: nonRefundableLabel, onSelect: () => openBooking("nonRefundable") },
-                    { id: "flex", label: flexibleLabel, onSelect: () => openBooking("refundable") },
-                  ]}
-                />
-                <p className="mt-2 text-sm leading-relaxed text-brand-text/80 dark:text-brand-text/75">
-                  {roomSummary}
-                </p>
-                <Link
-                  href={`${href}${searchString}`}
-                  className="mt-2 inline-flex min-h-11 items-center self-start text-sm font-medium text-brand-primary underline hover:text-brand-bougainvillea focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/70 dark:text-brand-secondary dark:hover:text-brand-secondary/85 dark:focus-visible:ring-brand-secondary/70"
-                >
-                  {resolveTranslatedCopy(
-                    t("moreAboutThisRoom", { defaultValue: "More About This Room" }),
-                    "More About This Room"
-                  )}
-                </Link>
-              </div>
+              <RoomCard
+                key={room.id}
+                id={room.id}
+                title={title}
+                images={toFlatImageArray(room.images)}
+                imageAlt={`${title} room`}
+                lang={lang}
+                actions={
+                  singleCtaMode
+                    ? [{ id: "nr", label: checkRatesSingleLabel, onSelect: () => openBooking("nonRefundable") }]
+                    : [
+                        { id: "nr", label: nonRefundableLabel, onSelect: () => openBooking("nonRefundable") },
+                        { id: "flex", label: flexibleLabel, onSelect: () => openBooking("refundable") },
+                      ]
+                }
+                price={roomPrices?.[room.id]}
+                titleOverlay
+                detailHref={`${href}${searchString}`}
+                detailLabel={resolveTranslatedCopy(
+                  t("moreAboutThisRoom", { defaultValue: "More About This Room" }),
+                  "More About This Room"
+                )}
+              />
             );
           })}
         </Grid>

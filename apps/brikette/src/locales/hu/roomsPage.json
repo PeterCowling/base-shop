@@ -66,6 +66,7 @@
   },
   "rooms": {
     "title": "Szobáink",
+    "soldOut": "Elfogyott",
     "double_room": {
       "title": "Franciaágyas szoba",
       "bed_intro": "Lélegzetelállító tengeri kilátás — pároknak tökéletes.",
@@ -285,6 +286,7 @@
   "filtersAria": "Szűrés szobatípus szerint",
   "checkRatesNonRefundable": "Nem visszatéríthető árak",
   "checkRatesFlexible": "Rugalmas szobaárak",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "Nem visszatéríthető",
     "flexible": "Rugalmas"

@@ -45,5 +45,11 @@
     ],
     "footer": "يتم إتمام التحقق النهائي من التوفر والدفع في محرك الحجز الرسمي."
   },
-  "backToRooms": "العودة إلى الغرف"
+  "backToRooms": "العودة إلى الغرف",
+  "hostel": {
+    "directSavings": {
+      "eyebrow": "Book direct and save",
+      "headline": "Up to 25% less than Booking.com"
+    }
+  }
 }

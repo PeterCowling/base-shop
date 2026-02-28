@@ -192,7 +192,7 @@ Refresh the visual design of the Prime guest portal to better resonate with its 
   - Evidence: Base tokens define `--color-fg: 0 0% 10%` which is equivalent to `gray-900` in Tailwind.
 
 - Q: Is the demographic data already documented anywhere?
-  - A: No. The BRIK intake packet (`docs/business-os/startup-baselines/BRIK-intake-packet.user.md`) describes the ICP as "Travelers booking hostel stays/experiences" (inferred) but does not include age/gender breakdown.
+  - A: No. The BRIK intake packet (`docs/business-os/startup-baselines/BRIK-2026-02-12assessment-intake-packet.user.md`) describes the ICP as "Travelers booking hostel stays/experiences" (inferred) but does not include age/gender breakdown.
   - Evidence: BRIK intake packet section C.
 
 - Q: What primary color direction?

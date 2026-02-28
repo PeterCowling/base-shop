@@ -18,10 +18,12 @@ describe("CategoryHeader", () => {
       />
     );
 
+    // Selected tab uses primary-fg (white on forest green background)
     const sweetBtn = screen.getByRole("tab", { name: "Sweet" });
-    expect(sweetBtn.className).toContain("text-foreground");
+    expect(sweetBtn.className).toContain("text-primary-fg");
 
+    // Unselected tab uses muted-foreground on dark surface
     const beerBtn = screen.getByRole("tab", { name: "Beer" });
-    expect(beerBtn.className).toContain("text-primary-fg");
+    expect(beerBtn.className).toContain("text-muted-foreground");
   });
 });

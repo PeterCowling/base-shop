@@ -1,3 +1,4 @@
+/* eslint-disable ds/container-widths-only-at, ds/min-tap-size -- BRIK-3 prime DS rules deferred */
 'use client';
 
 import { useMemo, useState } from 'react';
@@ -94,7 +95,7 @@ export default function BookingDetailsPage() {
 
   if (isLoading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-muted p-4">
+      <main className="flex min-h-svh items-center justify-center bg-muted p-4">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </main>
     );
@@ -102,7 +103,7 @@ export default function BookingDetailsPage() {
 
   if (!snapshot || !arrivalState) {
     return (
-      <main className="min-h-screen bg-muted p-4">
+      <main className="min-h-svh bg-muted p-4">
         <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
           <h1 className="mb-2 text-xl font-semibold text-foreground">{t('page.title')}</h1>
           <p className="text-sm text-muted-foreground">{t('page.loadError')}</p>
@@ -118,7 +119,7 @@ export default function BookingDetailsPage() {
   const showStayActions = arrivalState === 'checked-in' || arrivalState === 'arrival-day';
 
   return (
-    <main className="min-h-screen bg-muted p-4 pb-20">
+    <main className="min-h-svh bg-muted p-4 pb-20">
       <div className="mx-auto max-w-md space-y-4">
         <div className="rounded-xl bg-card p-5 shadow-sm">
           <div className="mb-4 flex items-start justify-between gap-3">

@@ -11,6 +11,8 @@ var refMock: jest.Mock;
 var setMock: jest.Mock;
 var updateMock: jest.Mock;
 var removeMock: jest.Mock;
+var useOnlineStatusMock: jest.Mock;
+var queueOfflineWriteMock: jest.Mock;
 /* eslint-enable no-var */
 
 jest.mock("../../../context/AuthContext", () => ({
@@ -29,6 +31,14 @@ jest.mock("firebase/database", () => ({
   remove: (...args: unknown[]) => removeMock(...args),
 }));
 
+jest.mock("../../../lib/offline/useOnlineStatus", () => ({
+  useOnlineStatus: () => useOnlineStatusMock(),
+}));
+
+jest.mock("../../../lib/offline/syncManager", () => ({
+  queueOfflineWrite: (...args: unknown[]) => queueOfflineWriteMock(...args),
+}));
+
 beforeEach(() => {
   database = {};
   user = { user_name: "tester" };
@@ -36,6 +46,8 @@ beforeEach(() => {
   setMock = jest.fn();
   updateMock = jest.fn();
   removeMock = jest.fn();
+  useOnlineStatusMock = jest.fn().mockReturnValue(true);
+  queueOfflineWriteMock = jest.fn().mockResolvedValue(1);
 });
 
 describe("useBookingNotesMutation", () => {
@@ -83,6 +95,60 @@ describe("useBookingNotesMutation", () => {
 
     await expect(result.current.deleteNote("BR1", "id1")).rejects.toThrow("boom");
     expect(refMock).toHaveBeenCalledWith(database, "bookings/BR1/__notes/id1");
+  });
+
+  describe("offline paths", () => {
+    beforeEach(() => {
+      useOnlineStatusMock.mockReturnValue(false);
+    });
+
+    it("queues addNote via set operation when offline", async () => {
+      const { result } = renderHook(() => useBookingNotesMutation());
+
+      await act(async () => {
+        await result.current.addNote("BR1", " hello ");
+      });
+
+      expect(queueOfflineWriteMock).toHaveBeenCalledWith(
+        "bookings/BR1/__notes/note_20240101T100000Z",
+        "set",
+        { text: "hello", timestamp: "2024-01-01T10:00:00Z", user: "tester" },
+        expect.objectContaining({ conflictPolicy: "last-write-wins", domain: "notes" })
+      );
+      expect(setMock).not.toHaveBeenCalled();
+    });
+
+    it("queues updateNote via update operation when offline", async () => {
+      const { result } = renderHook(() => useBookingNotesMutation());
+
+      await act(async () => {
+        await result.current.updateNote("BR1", "id1", " new ");
+      });
+
+      expect(queueOfflineWriteMock).toHaveBeenCalledWith(
+        "bookings/BR1/__notes/id1",
+        "update",
+        { text: "new" },
+        expect.objectContaining({ conflictPolicy: "last-write-wins", domain: "notes" })
+      );
+      expect(updateMock).not.toHaveBeenCalled();
+    });
+
+    it("queues deleteNote via remove operation when offline", async () => {
+      const { result } = renderHook(() => useBookingNotesMutation());
+
+      await act(async () => {
+        await result.current.deleteNote("BR1", "id1");
+      });
+
+      expect(queueOfflineWriteMock).toHaveBeenCalledWith(
+        "bookings/BR1/__notes/id1",
+        "remove",
+        undefined,
+        expect.objectContaining({ conflictPolicy: "last-write-wins", domain: "notes" })
+      );
+      expect(removeMock).not.toHaveBeenCalled();
+    });
   });
 });
 

@@ -1,0 +1,2568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="30">
+  <title>Startup Loop — Process Improvements</title>
+  <style>
+    :root {
+      --bg:            #0e1016;
+      --surface:       #161921;
+      --surface-2:     #1e2230;
+      --border:        #2a2f45;
+      --text:          #e4e7f2;
+      --text-muted:    #6b728f;
+      --text-dim:      #454d6a;
+
+      --red:           #f05c5c;
+      --red-bg:        rgba(240,92,92,0.10);
+      --red-border:    rgba(240,92,92,0.28);
+
+      --amber:         #f5a623;
+      --amber-bg:      rgba(245,166,35,0.10);
+      --amber-border:  rgba(245,166,35,0.28);
+
+      --blue:          #5b9cf6;
+      --blue-bg:       rgba(91,156,246,0.10);
+      --blue-border:   rgba(91,156,246,0.28);
+
+      --green:         #4ade80;
+      --green-bg:      rgba(74,222,128,0.08);
+      --green-border:  rgba(74,222,128,0.25);
+
+      --purple:        #a78bfa;
+      --purple-bg:     rgba(167,139,250,0.10);
+      --purple-border: rgba(167,139,250,0.28);
+
+      --radius:        8px;
+      --radius-sm:     5px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .sl-content {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+    }
+
+    .page-header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+      margin-bottom: 28px;
+    }
+    .page-header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
+    .page-header p  { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
+
+    /* ── Filter bar ── */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+      align-items: center;
+    }
+    .filter-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-dim);
+      margin-right: 4px;
+    }
+    .filter-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 100px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.12s;
+    }
+    .filter-btn:hover { color: var(--text); border-color: var(--text-dim); }
+    .filter-btn.active           { background: var(--blue-bg);   border-color: var(--blue-border);   color: var(--blue); }
+    .filter-btn.active.biz-HBAG { background: var(--purple-bg); border-color: var(--purple-border); color: var(--purple); }
+    .filter-btn.active.biz-BRIK { background: var(--green-bg);  border-color: var(--green-border);  color: var(--green); }
+    .filter-btn.active.biz-BOS  { background: var(--blue-bg);   border-color: var(--blue-border);   color: var(--blue); }
+    .filter-btn.active.biz-PLAT { background: var(--amber-bg);  border-color: var(--amber-border);  color: var(--amber); }
+    .filter-divider { width: 1px; height: 20px; background: var(--border); margin: 0 4px; }
+
+    /* ── Summary bar ── */
+    .summary-bar { display: flex; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; }
+    .summary-pill {
+      display: flex; align-items: center; gap: 6px;
+      padding: 5px 12px; border-radius: 100px;
+      font-size: 12px; font-weight: 500; border: 1px solid;
+    }
+    .summary-pill .count { font-size: 15px; font-weight: 700; line-height: 1; }
+    .pill-blue   { background: var(--blue-bg);   border-color: var(--blue-border);   color: var(--blue); }
+    .pill-amber  { background: var(--amber-bg);  border-color: var(--amber-border);  color: var(--amber); }
+    .pill-purple { background: var(--purple-bg); border-color: var(--purple-border); color: var(--purple); }
+    .pill-green  { background: var(--green-bg);  border-color: var(--green-border);  color: var(--green); }
+    .pill-red    { background: var(--red-bg);    border-color: var(--red-border);    color: var(--red); }
+    .pill-muted  { background: var(--surface-2); border-color: var(--border);        color: var(--text-muted); }
+    button.summary-pill { cursor: pointer; font-family: inherit; transition: opacity 0.12s, box-shadow 0.12s; }
+    button.summary-pill:hover { opacity: 0.85; }
+    button.summary-pill.pill-active { box-shadow: 0 0 0 2px currentColor; opacity: 1; }
+
+    /* ── Section ── */
+    .section { margin-bottom: 36px; }
+    .section-header {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+    }
+    .section-header h2 {
+      font-size: 13px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.6px; color: var(--text-muted);
+    }
+    .section-count {
+      font-size: 11px; font-weight: 700; padding: 1px 7px;
+      border-radius: 100px; background: var(--surface-2); color: var(--text-muted);
+    }
+
+    /* ── Item card ── */
+    .item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      margin-bottom: 10px;
+      border-left: 3px solid transparent;
+    }
+    .item.idea { border-left-color: var(--blue); }
+    .item.risk { border-left-color: var(--amber); }
+    .item.pending-review { border-left-color: var(--purple); }
+
+    .item-top {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 12px; margin-bottom: 8px;
+    }
+    .item-title { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.4; }
+    .item-badges { display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0; }
+
+    .badge {
+      font-size: 10px; font-weight: 700; padding: 2px 7px;
+      border-radius: var(--radius-sm); text-transform: uppercase; letter-spacing: 0.4px; white-space: nowrap;
+    }
+    .badge-idea    { background: var(--blue-bg);   color: var(--blue);   border: 1px solid var(--blue-border); }
+    .badge-risk    { background: var(--amber-bg);  color: var(--amber);  border: 1px solid var(--amber-border); }
+    .badge-pending { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+    .badge-HBAG    { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+    .badge-BRIK    { background: var(--green-bg);  color: var(--green);  border: 1px solid var(--green-border); }
+    .badge-BOS     { background: var(--blue-bg);   color: var(--blue);   border: 1px solid var(--blue-border); }
+    .badge-PLAT    { background: var(--amber-bg);  color: var(--amber);  border: 1px solid var(--amber-border); }
+    .badge-generic { background: var(--surface-2); color: var(--text-muted); border: 1px solid var(--border); }
+
+    /* Priority tier badges (P0–P5) */
+    .badge-tier-crit    { background: var(--red-bg);    color: var(--red);        border: 1px solid var(--red-border); }
+    .badge-tier-high    { background: var(--amber-bg);  color: var(--amber);      border: 1px solid var(--amber-border); }
+    .badge-tier-med     { background: var(--amber-bg);  color: var(--amber);      border: 1px solid var(--amber-border); opacity: 0.75; }
+    .badge-tier-measure { background: var(--blue-bg);   color: var(--blue);       border: 1px solid var(--blue-border); }
+    .badge-tier-process { background: var(--surface-2); color: var(--text-muted); border: 1px solid var(--border); }
+    .badge-tier-default { background: var(--surface-2); color: var(--text-dim);   border: 1px solid var(--border); }
+
+    .item-body { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+    .item-body strong { color: var(--text); }
+
+    .item-action {
+      margin-top: 10px; padding: 8px 12px;
+      background: var(--surface-2); border-radius: var(--radius-sm);
+      font-size: 12.5px; color: var(--text);
+    }
+    .item-action-label {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 3px;
+    }
+
+    .item-meta {
+      display: flex; flex-wrap: wrap; gap: 16px;
+      margin-top: 10px; padding-top: 10px;
+      border-top: 1px solid var(--border);
+      font-size: 11px; color: var(--text-dim);
+    }
+    .item-meta span { display: flex; align-items: center; gap: 4px; }
+    .item-meta code {
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 10px; background: var(--surface-2);
+      padding: 1px 5px; border-radius: 3px; color: var(--text-muted);
+    }
+
+    /* ── Empty ── */
+    .empty {
+      padding: 20px; text-align: center; color: var(--text-dim);
+      font-size: 13px; border: 1px dashed var(--border); border-radius: var(--radius);
+    }
+
+    /* ── Stale notice ── */
+    .stale-notice {
+      padding: 10px 14px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-bottom: 24px;
+    }
+    .stale-notice strong { color: var(--text-muted); }
+
+    /* ── Footer ── */
+    .page-footer {
+      margin-top: 48px; padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 12px; color: var(--text-dim);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f5f6fa; --surface: #ffffff; --surface-2: #f0f1f7;
+        --border: #dde0ed; --text: #1a1d2e; --text-muted: #5a6080; --text-dim: #a0a8c0;
+      }
+    }
+    /* pi-transitions: entry/exit animations --- */
+    @keyframes pi-enter {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pi-gone {
+      from { opacity: 1; }
+      to   { opacity: 0; }
+    }
+    .item.is-new {
+      animation: pi-enter 350ms ease-out forwards;
+    }
+    .pi-gone-section {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .pi-gone-section { animation: none; }
+    }
+    .pi-gone-section h4 {
+      margin: 0 0 8px 0;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .pi-gone-card {
+      padding: 8px 10px;
+      border-radius: 4px;
+      background: var(--surface-2);
+      margin-bottom: 6px;
+      opacity: 0.7;
+    }
+    .pi-gone-card:last-child { margin-bottom: 0; }
+    .pi-gone-card .item-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    .pi-gone-card .item-badges {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .item.is-new { animation-duration: 0.01ms; }
+    }
+  </style>
+
+<style id="sl-theme-css">html[data-theme="dark"]{--bg:#0e1016;--surface:#161921;--surface-2:#1e2230;--surface-raised:#1e2230;--border:#2a2f45;--text:#e4e7f2;--text-muted:#6b728f;--text-dim:#454d6a;--accent:#5b9cf6;--accent-soft:rgba(91,156,246,.15);--code-bg:#161921;--code-border:#2a2f45;--red-bg:rgba(240,92,92,.10);--amber-bg:rgba(245,166,35,.10);--green-bg:rgba(74,222,128,.08);--blue-bg:rgba(91,156,246,.10);--purple-bg:rgba(167,139,250,.10)}html[data-theme="dark"] body{background:var(--bg)!important;color:var(--text)!important}html[data-theme="light"]{--bg:#f5f6fa;--surface:#ffffff;--surface-2:#f0f1f7;--surface-raised:#f0f1f7;--border:#dde0ed;--text:#1a1d2e;--text-muted:#5a6080;--text-dim:#a0a8c0;--accent:#3362d0;--accent-soft:#e8eeff;--code-bg:#f0f1f7;--code-border:#dde0ed;--red-bg:rgba(200,50,50,.08);--amber-bg:rgba(180,120,0,.08);--green-bg:rgba(40,160,80,.06);--blue-bg:rgba(40,100,220,.08);--purple-bg:rgba(120,80,200,.08)}html[data-theme="light"] body{background:var(--bg)!important;color:var(--text)!important}[data-theme="light"] #sl-nav{background:#eef0f7!important;border-bottom-color:#dde0ed!important}[data-theme="light"] #sl-nav .sl-brand,[data-theme="light"] #sl-nav a,[data-theme="light"] #sl-theme-btn{color:#5a6080!important}[data-theme="light"] #sl-nav a:hover,[data-theme="light"] #sl-nav a.sl-on{color:#1a1d2e!important}</style>
+<script id="sl-theme-init">(function(){try{var t=localStorage.getItem("sl-theme");if(!t)t=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}catch(e){}})()</script>
+</head>
+<body>
+<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}</style><span class="sl-brand">Startup Loop</span><a href="startup-loop-workflow.user.html">Workflow</a><a href="startup-loop-files.user.html">Loop Files</a><a href="startup-loop-file-types.user.html">File Types</a><a href="startup-loop-output-registry.user.html">Output Registry</a><a href="ideas.user.html">Ideas</a><a href="process-improvements.user.html">Process</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
+
+<div class="sl-content">
+
+  <div class="page-header">
+    <h1>Process Improvements</h1>
+    <p>Improvements, risks, and pending reviews from completed build cycles. Filter by business or type to focus your review. Regenerate after each build cycle completes.</p>
+  </div>
+
+  <div id="app"></div>
+
+  <div class="page-footer">
+    <span>docs/business-os/process-improvements.user.html</span>
+    <span>Last cleared: 2026-02-28 — extracted from build records, reflection debt, and results reviews</span>
+    <span id="footer-generated"></span>
+  </div>
+
+</div><!-- /.sl-content -->
+
+<script>
+(function () {
+  'use strict';
+
+  // ── Inline data extracted from results-review and build-record files ────────
+  // Regenerate after each build cycle by re-running the extraction.
+
+  var GEN_TS = "2026-02-28T10:17:19.353Z";
+
+  var IDEA_ITEMS = [
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Template blurb generation from RoomFeatures fields",
+      "body": "TASK-06 blurb authoring used LLM reasoning; a deterministic template could produce boilerplate copy from structured feature data, but quality would be lower for a conversion-critical page",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T15:31:16.060Z",
+      "path": "docs/plans/_archive/brik-room-content-schema/results-review.user.md",
+      "idea_key": "a4aed9470643a9a87914a09d4c222ead9419686c",
+      "priority_tier": "P1",
+      "own_priority_rank": 5,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": "Near",
+      "reason_code": "RULE_P1_NEAR_CAUSAL"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "DOM-order test as a conversion-safety pattern",
+      "body": "new test file mirrors book-page-social-proof-order.test.tsx — both enforce critical above-the-fold ordering invariants on the book page. A third ordering constraint (e.g. deal banner position) could use the same pattern",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T14:56:34.781Z",
+      "path": "docs/plans/_archive/brikette-direct-booking-perks-cta-positioning/results-review.user.md",
+      "idea_key": "58042855d6c4b2cbc36850aaa0dff272b7d20996",
+      "priority_tier": "P1",
+      "own_priority_rank": 5,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": "Near",
+      "reason_code": "RULE_P1_NEAR_CAUSAL"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Track GA4 funnel drop-off in Explorations once custom dimensions are visible (48h)",
+      "body": "Full funnel confirmed firing; no conversion rate baseline exists yet",
+      "suggested_action": "defer (check at T+7 days when custom dimensions propagate)",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:01:53.208Z",
+      "path": "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md",
+      "idea_key": "bcdd9c80911fe4bd1a09728c3fecc7b6861104a3",
+      "priority_tier": "P1",
+      "own_priority_rank": 5,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": "Near",
+      "reason_code": "RULE_P1_NEAR_CAUSAL"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Automate periodic smoke test runs against production (e.g. weekly cron) so GA4 event regressions are caught without manual operator invocation",
+      "body": "smoke test is manual-only; value of the assertion is bounded by run frequency",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T07:40:11.468Z",
+      "path": "docs/plans/_archive/brikette-smoke-view-item-list/results-review.user.md",
+      "idea_key": "b3cb39280dd5e64ca2f271505fc3617bb9ce4186",
+      "priority_tier": "P2",
+      "own_priority_rank": 7,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P2_OPERATOR_EXCEPTION"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Post-activation GA4 verification step for room detail select_item",
+      "body": "Baseline shows 0 select_item from room_detail; after deploying to production and activating NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY, a follow-up query (28-day window from activation date) should confirm non-zero select_item counts from room_detail. This is the measurement step the baseline enables.",
+      "suggested_action": "create card (part of brik-octorate-live-availability results-review)",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T20:29:07.378Z",
+      "path": "docs/plans/_archive/brik-live-pricing-baseline/results-review.user.md",
+      "idea_key": "5d7c5eb51d220a44d02ac4e4be56e863eee21d72",
+      "priority_tier": "P3",
+      "own_priority_rank": 8,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P3_MEASUREMENT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add session_id or caller_pid to governed telemetry event schema to enable actor attribution in future zombie incidents.",
+      "body": "TASK-01 could not confirm actor identity with 80% confidence; no session metadata in events.jsonl.",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:24:07.859Z",
+      "path": "docs/plans/_archive/build-subagent-jest-zombie-cleanup/results-review.user.md",
+      "idea_key": "2adca1b79137219ebded92915d3d2b227e9b00db",
+      "priority_tier": "P3",
+      "own_priority_rank": 8,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P3_MEASUREMENT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Capture select_item baseline on room detail pages before flag activation",
+      "body": "Outcome contract specifies select_item rate as the measurement metric; no baseline captured pre-build",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T19:15:02.295Z",
+      "path": "docs/plans/_archive/brik-room-octorate-live-pricing/results-review.user.md",
+      "idea_key": "fcd31df8d40423c0c970a10fb447ece1c2bc678e",
+      "priority_tier": "P3",
+      "own_priority_rank": 8,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P3_MEASUREMENT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Track direct booking share weekly post-deploy to close the measurement loop",
+      "body": "build sets up GA4 CTA click event proxy but no standing measurement cadence exists",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T15:24:41.538Z",
+      "path": "docs/plans/_archive/brikette-direct-booking-rate-trust/results-review.user.md",
+      "idea_key": "d99e8cc37e48fd6d9ba1e8cd9ce18582cf825d09",
+      "priority_tier": "P3",
+      "own_priority_rank": 8,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P3_MEASUREMENT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Naming pipeline sidecar logs for per-round naming analytics",
+      "body": "Per-candidate stage event logs accumulate across naming rounds (docs/business-os/strategy/ /naming-sidecars/). Once 3+ live rounds exist: structured dataset for quantitative analysis of naming patterns, yield trends, and operator preferences. Currently empty — will fill as naming rounds run.",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T15:18:20.625Z",
+      "path": "docs/plans/_archive/startup-loop-naming-pipeline-science-upgrade/results-review.user.md",
+      "idea_key": "322c2fe54d86bc98f403ce301173d6450329e5f9",
+      "priority_tier": "P3",
+      "own_priority_rank": 8,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P3_MEASUREMENT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Phase 4 enforcement gate — wire effective_priority_rank into the queue as a production constraint, blocking low-tier ideas from the DO lane until high-tier ideas clear",
+      "body": "this build wired classification into the scheduler in advisory mode; Phase 4 requirement was explicitly deferred in the classifier",
+      "suggested_action": "defer — create card after ~4 weeks of trial data",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T12:39:24.688Z",
+      "path": "docs/plans/_archive/ideas-classifier-queue-wiring-and-report/results-review.user.md",
+      "idea_key": "08bcec8c75af75313b1489de7fa1cbcb7ccdf46a",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Phase 4 enforcement — wire priority rank into dispatch sort and enforce evidence gates",
+      "body": "Phase 4 deferred in classifier with explicit comment; natural next step after advisory calibration period",
+      "suggested_action": "create card after ~2 weeks of trial data",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T10:34:44.683Z",
+      "path": "docs/plans/_archive/reflection-prioritization-policy-implementation/results-review.user.md",
+      "idea_key": "8c68b866f7784e56527f73e12625cc53b0f986d0",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "E2E coverage for J2 error paths (validation failure, pipeline failure, empty-input 409)",
+      "body": "TC-09-03 added only the success path; the plan explicitly deferred error-path coverage as non-goals. Now that the success path is tested, error paths are the natural next expansion.",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:03:55.075Z",
+      "path": "docs/plans/_archive/xa-e2e-sync-success-path/results-review.user.md",
+      "idea_key": "352a6020732ed972f3a5203e01616eb26ad89742",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Classify which mutation hook methods can be safely queued offline automatically",
+      "body": "This build required manual method-by-method review to identify read-before-write patterns across 51 mutation files — a repeatable categorisation task",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T21:24:34.587Z",
+      "path": "docs/plans/_archive/reception-offline-sync/results-review.user.md",
+      "idea_key": "486cdab3ed27abfcee062548c9384e019e97a587",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "New loop process — codemoot run output-to-disk bridge: this build discovered that codemoot run text output is never written to disk. A bridging mechanism (parse session DB → apply text diff to target file) could enable codemoot run for text-artifact tasks without requiring the manual inline fallback used here.",
+      "body": "codemoot run iterated 3 times in the results-review session and never wrote the file; Claude had to write inline",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T11:50:11.597Z",
+      "path": "docs/plans/_archive/lp-do-build-codex-offload/results-review.user.md",
+      "idea_key": "21a2e58de04f569ba5c0ecbe85232431cc75f0f7",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Queue state persistence — the classification field is currently in-memory only; adding it to the serialized queue-state.json would allow backfill to survive process restarts",
+      "body": "classification is set on QueueEntry after enqueue and lost on re-hydration",
+      "suggested_action": "spike (assess queue-state.json schema extension)",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T12:39:24.688Z",
+      "path": "docs/plans/_archive/ideas-classifier-queue-wiring-and-report/results-review.user.md",
+      "idea_key": "41b4ab1eec49e4b5d14c9b32c883019a64945229",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "The reflection debt emitter currently runs as a TypeScript script triggered by pnpm --filter scripts startup-loop:generate-process-improvements. The five-category scan in the pre-fill step is still LLM reasoning (agent reads build context and scans). A future mechanistic check could diff the New Idea Candidates section of committed results-reviews against the five category labels and flag missing categories as a lint warning.",
+      "body": "this build added a structured five-category checklist to step 2, revealing that compliance checking (are all five categories addressed?) is a deterministic pattern-match, not a reasoning task",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T07:27:53.087Z",
+      "path": "docs/plans/_archive/post-build-reflection-prompting/results-review.user.md",
+      "idea_key": "a8bd43e491362bb28adf381f0d335f9b08dccbfe",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Visual diff test for process-map HTML to catch silent regressions",
+      "body": "swim-lane layout was browser-verified manually; no regression test exists",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:36:24.076Z",
+      "path": "docs/plans/startup-loop-parallel-container-wiring/results-review.user.md",
+      "idea_key": "e6d41217823fc313fd5fe0ae6781723def8af146",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "None for: new standing data source, new open-source package, new skill, new loop process, AI-to-mechanistic.",
+      "body": "None for: new standing data source, new open-source package, new skill, new loop process, AI-to-mechanistic.",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T10:57:17.827Z",
+      "path": "docs/plans/_archive/prime-meal-order-menu-wizard/results-review.user.md",
+      "idea_key": "066a673fd0026ca5a2a9b1df8dfdced3fce56553",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "New loop process — CI-only build validation: This build validated that IMPLEMENT tasks can complete correctly using only grep/bash TCs (no local Jest run), confirming that CI-only policy does not impede the build loop. Trigger observation: all 9 acceptance criteria passed using non-Jest validation commands. Suggested next action: update docs/testing-policy.md TC examples to emphasise grep/bash-based TCs as the preferred form for policy tasks. Create card.",
+      "body": "New loop process — CI-only build validation: This build validated that IMPLEMENT tasks can complete correctly using only grep/bash TCs (no local Jest run), confirming that CI-only policy does not impede the build loop. Trigger observation: all 9 acceptance criteria passed using non-Jest validation commands. Suggested next action: update docs/testing-policy.md TC examples to emphasise grep/bash-based TCs as the preferred form for policy tasks. Create card.",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T10:41:04.704Z",
+      "path": "docs/plans/_archive/ci-only-test-execution/results-review.user.md",
+      "idea_key": "252062b71176bc1dcc49dfe2138c53e56e3f6f9e",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "None: no new standing data sources, skills, loop processes, or AI-to-mechanistic opportunities identified from this build",
+      "body": "None: no new standing data sources, skills, loop processes, or AI-to-mechanistic opportunities identified from this build",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T09:59:58.781Z",
+      "path": "docs/plans/_archive/caryina-axerve-payment-gateway/results-review.user.md",
+      "idea_key": "dde359e7777d979a74136c44537a10d72a3b860a",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "New loop process: post-build re-scan to confirm gap was satisfied",
+      "body": "skill emits dispatches for gaps but has no mechanism to close/resolve dispatches when a satisfying artifact is later created; a post-build coverage-check step would close the feedback loop",
+      "suggested_action": "add to lp-weekly integration scope in companion packet 0032",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T19:29:52.802Z",
+      "path": "docs/plans/_archive/coverage-manifest-scan-core/results-review.user.md",
+      "idea_key": "57a90832ed120619b948f902d8f555fb4a84a4f2",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Product naming pipeline as a reusable skill",
+      "body": "the facilella-product-naming-pipeline plan was designed as a standalone pipeline analogous to the company naming pipeline, but no lp-do-product-naming-pipeline skill exists — each future business that wants a rigorous product naming run would need to re-plan from scratch",
+      "suggested_action": "create a skill document at .claude/skills/lp-do-product-naming-pipeline/SKILL.md encoding this pipeline as a repeatable agent workflow (spec → generate → TM direction → shortlist)",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T17:55:44.559Z",
+      "path": "docs/plans/_archive/facilella-product-naming-pipeline/results-review.user.md",
+      "idea_key": "482832b11bd238863377b6a9511638e252007807",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "New loop process — codemoot route as named layer in critique-loop-protocol.md",
+      "body": "the protocol now has two routes (codemoot + inline fallback); the selection logic could be extracted as a named \"critique-router\" sub-skill for cleaner protocol evolution",
+      "suggested_action": "defer — low priority; current inline implementation is clear enough",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T15:52:02.375Z",
+      "path": "docs/plans/_archive/codemoot-cross-agent-critique/results-review.user.md",
+      "idea_key": "739931a7b5f8606b672c1f4ab7cb30eabb2601eb",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Classifier auto-demotion rate dashboard for Phase 4 readiness",
+      "body": "all dispatches auto-demote to P4/P5 without operator evidence fields; a weekly count would surface this clearly",
+      "suggested_action": "defer (manual inspection sufficient for Phase 1)",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T10:34:44.683Z",
+      "path": "docs/plans/_archive/reflection-prioritization-policy-implementation/results-review.user.md",
+      "idea_key": "c53d8fe7718817a876e18b3b40f8a53467ed3aeb",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add CI drift check step using check-process-improvements to catch SKIP_SIMPLE_GIT_HOOKS bypasses",
+      "body": "SKIP_SIMPLE_GIT_HOOKS=1 is used by bos-export and would bypass the hook",
+      "suggested_action": "defer (bos-export does not touch plan files, so this is low risk in practice)",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T07:36:11.273Z",
+      "path": "docs/plans/_archive/process-improvements-live-update/results-review.user.md",
+      "idea_key": "9dc16843ce70700259c1e422c106cdb28273ecb2",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "The wave build execution for this plan (three independent S-effort markdown edits) was orchestrated manually. A docs-patch skill that handles batches of bounded markdown edits to SKILL.md files (verify current state, apply edit, verify result, commit) would eliminate the lp-do-build overhead for this class of purely-additive process-doc changes.",
+      "body": "all three tasks were trivial file edits with identical Red/Green/Refactor structure",
+      "suggested_action": "defer (needs more examples to justify)",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T07:27:53.087Z",
+      "path": "docs/plans/_archive/post-build-reflection-prompting/results-review.user.md",
+      "idea_key": "d6de990c408eef01e2ccebf0268908ac8e4110fa",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Room names in dropdown are English-only — translate room names in dropdown to IT/DE/FR locales",
+      "body": "ROOM_DROPDOWN_NAMES in roomNames.ts is hardcoded EN; non-English visitors will see English room names in the Rooms dropdown",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-28T10:15:13.282Z",
+      "path": "docs/plans/_archive/brik-header-rooms-dropdown/results-review.user.md",
+      "idea_key": "33797787d28b82384dbdf4bb21b855def7a92989",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Static base-price display on /rooms (no-date context)",
+      "body": "plan explicitly deferred showing price on /rooms when no dates are set — cards show button only",
+      "suggested_action": "create card (follow-on feature; would complete the price-display story for the /rooms page)",
+      "source": "results-review.user.md",
+      "date": "2026-02-28T09:35:02.796Z",
+      "path": "docs/plans/_archive/brik-room-card-cheapest-rate/results-review.user.md",
+      "idea_key": "b2d639f98e3b947e309bf24eef2121212815204f",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "New skill — Codex offload flag discovery: the --dangerously-bypass-approvals-and-sandbox flag replaces the deprecated -a never flag in current codex exec. The build-offload-protocol.md references the old flag. This is a recurring maintenance need for the build loop.",
+      "body": "Build offload failed with unexpected argument '-a' on TASK-01; required flag discovery before Codex could be used.",
+      "suggested_action": "Update build-offload-protocol.md to use current flag syntax (create card or inline fix on next skill update cycle).",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T21:57:49.119Z",
+      "path": "docs/plans/_archive/brik-sticky-book-now-room-context/results-review.user.md",
+      "idea_key": "7892f4ae9d641845f770b10a59cba6748ecee97f",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add a gate that checks the results-review artifact is filled before a plan is marked archived",
+      "body": "This completion step has no hard enforcement — the build record and results-review can be skipped without blocking archiving",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T21:24:34.587Z",
+      "path": "docs/plans/_archive/reception-offline-sync/results-review.user.md",
+      "idea_key": "6c9befce45b564f1638b3e124bdb52a2d83c6af0",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add Playwright smoke test for /api/availability to CI on the Worker build path",
+      "body": "availability-smoke.spec.ts is not in standard CI (noted in plan Risks); every production deploy activates live pricing without automated regression coverage",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T20:26:41.048Z",
+      "path": "docs/plans/_archive/brik-live-pricing-activation/results-review.user.md",
+      "idea_key": "cd06a1badb3b3f665e9eecf502927a5f9ad05d51",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Activate live pricing flag for room detail pages",
+      "body": "NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY remains off by default after build completes",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T19:15:02.295Z",
+      "path": "docs/plans/_archive/brik-room-octorate-live-pricing/results-review.user.md",
+      "idea_key": "5547d7f177c290c9ff8019b5452e83b3ccd37d60",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add a mandatory checkpoint check for \"test exists vs test must be created\" before approving any \"unskip existing test\" task",
+      "body": "TASK-03 found no existing translations-completeness test, requiring a scope correction in TASK-07",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T19:09:30.315Z",
+      "path": "docs/plans/_archive/prime-hardcoded-copy-i18n-remediation/results-review.user.md",
+      "idea_key": "adbb59fe4ab0088ab6ea7a768e91f56eff4fa96a",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Ops-inbox skill must pass reservationCode on agreement_received to activate WEAK-B1 fix",
+      "body": "TASK-02 fix is a no-op until the skill is updated; noted as required follow-on in Decision Log",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T18:38:09.949Z",
+      "path": "docs/plans/_archive/reception-email-activity-control-audit/results-review.user.md",
+      "idea_key": "2686237b8eea9f28109b90f52ff85a7aac9fb50e",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Fix OPERATIONS_ACCESS to include admin/manager roles",
+      "body": "roles.ts gives staff OPERATIONS_ACCESS but not admin/manager — Cristiana can reach management features but not basic operations features Alessandro can reach. Likely an omission in the original permissions design.",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T15:34:03.625Z",
+      "path": "docs/plans/_archive/reception-rbac-pin-user-roles/results-review.user.md",
+      "idea_key": "2719c34c1cf128d53822fa9462b8f3c297b37a1b",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Typed RoomImages schema to replace flat imagesRaw: string[]",
+      "body": "this build trimmed room_3 and room_5 imagesRaw manually; typed image slots (landing, gallery, terrace, bathroom) would make cross-borrowing impossible and enable richer image alt-text",
+      "suggested_action": "create card (Dispatch 0046 already referenced in plan Goals section as Wave 2)",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T15:31:16.060Z",
+      "path": "docs/plans/_archive/brik-room-content-schema/results-review.user.md",
+      "idea_key": "ab5f5753a302003e45765f274511aca453e80dcd",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Fix protocol-relative URL bypass in link allowlist",
+      "body": "isAllowlistedUrl accepts //evil.com (starts with /); fix: url.startsWith('/') && !url.startsWith('//')",
+      "suggested_action": "create card (security hardening)",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T13:49:00.509Z",
+      "path": "docs/plans/_archive/prime-digital-assistant-llm-upgrade/results-review.user.md",
+      "idea_key": "184b25f761d28687bf01af683263246ca4e23271",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add simulation to lp-do-replan (excluded from this 3-skill scope)",
+      "body": "replan produces new task sequences that are not simulation-checked by the current implementation",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T10:23:20.500Z",
+      "path": "docs/plans/_archive/workflow-skills-simulation-tdd/results-review.user.md",
+      "idea_key": "68e4a11adac111aa1ce3a10f4f89541be7f944f1",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Per-business goal artifact initialization for BRIK",
+      "body": "Template exists but no docs/business-os/strategy/BRIK/worldclass-goal.md yet — first invocation will halt at State 1",
+      "suggested_action": "create card to initialize BRIK goal artifact and run first scan",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T21:14:37.634Z",
+      "path": "docs/plans/_archive/lp-do-worldclass/results-review.user.md",
+      "idea_key": "b1d964653ece7ed11c1dcec9ae0d7d177aac3ee9",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Cart item stock-cap enforcement in AddToCartButton",
+      "body": "TASK-10 notes qty ≤ sku.stock should be enforced to prevent over-ordering low-stock items",
+      "suggested_action": "small follow-up implementation task; create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T19:05:16.763Z",
+      "path": "docs/plans/_archive/caryina-catalog-cart/results-review.user.md",
+      "idea_key": "056affbf69d8ce6cd3060b9fc9e99c44008caf11",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add ASSESSMENT-12 to loop-spec so GATE-ASSESSMENT-01 enforces dossier promotion before ASSESSMENT-13",
+      "body": "TASK-06 acceptance note calls out that ASSESSMENT-12 should run before ASSESSMENT-13 but the gate does not enforce it — documented friction point.",
+      "suggested_action": "create card to add ASSESSMENT-12 to loop-spec and update GATE-ASSESSMENT-01.",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:53:10.111Z",
+      "path": "docs/plans/_archive/startup-loop-product-identity-gap/results-review.user.md",
+      "idea_key": "c4bd1e648763f424e2bd509de647df7b3925a428",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add ASSESSMENT-12 to loop-spec so GATE-ASSESSMENT-01 enforces dossier promotion before ASSESSMENT-13",
+      "body": "TASK-06 acceptance note calls out that ASSESSMENT-12 should run before ASSESSMENT-13 but the gate does not enforce it — documented friction point.",
+      "suggested_action": "create card to add ASSESSMENT-12 to loop-spec and update GATE-ASSESSMENT-01.",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:53:01.939Z",
+      "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md",
+      "idea_key": "b2d857f1b9b0b1a353fed9023a281fee1f85a525",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Extend smoke test to cover representative IT locale routes (rooms, experiences)",
+      "body": "TASK-01 confirmed IT book present, but no other IT-locale routes are smoke-tested",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T07:33:03.262Z",
+      "path": "docs/plans/_archive/brikette-it-book-route-static-export/results-review.user.md",
+      "idea_key": "d8e5e55862f2c3c4703d7605ba2e1dc4773b1615",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "ReceptionSkeleton pattern should be documented as the canonical loading state for reception app tables",
+      "body": "Component created and used in 2 screens (CheckinsTable, Checkout); will be needed by Phase 4 screens",
+      "suggested_action": "create card — add to design system notes or code comment in shared component",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T01:32:59.021Z",
+      "path": "docs/plans/_archive/reception-ui-screen-polish/results-review.user.md",
+      "idea_key": "56df98e4006fb2a28f3af4e6e16e10228c829801",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add validate:launch-media to CI so media contract failures block merges",
+      "body": "contract validator currently run manually; new SKUs could be merged without images",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:37:02.398Z",
+      "path": "docs/plans/hbag-website-02-image-first-upgrade/results-review.user.md",
+      "idea_key": "ac3d068ddeedab6a631cf1798af0a87688c96116",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Expand catalog from 3 to target SKU count with production imagery",
+      "body": "launch media contract passes for 3 active SKUs — catalog is minimal for launch",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:37:02.398Z",
+      "path": "docs/plans/hbag-website-02-image-first-upgrade/results-review.user.md",
+      "idea_key": "45c78ffe03dc5912a945f665dc9fb674e05e72e6",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Real-device performance spot-check before public launch",
+      "body": "build-record flags this as the only remaining pre-launch gate; a QA matrix is already drafted at artifacts/real-device-qa-matrix.md",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:37:02.398Z",
+      "path": "docs/plans/hbag-website-02-image-first-upgrade/results-review.user.md",
+      "idea_key": "c4b0e1bcf4fabf89df721f914bf64e644fdb801b",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Post-stay review workflow using T178 as the trigger template",
+      "body": "T178 built and lint-passing but review-link URL still a placeholder; workflow not yet activated",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:36:44.667Z",
+      "path": "docs/plans/hostel-email-template-expansion/results-review.user.md",
+      "idea_key": "0788a8f4a7e332d5daa0073b10366b7d35840f7c",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Template selection rate monitoring dashboard or weekly report",
+      "body": "build-record recommends running draft_signal_stats after 4 weeks; no scheduled monitoring exists",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:36:44.667Z",
+      "path": "docs/plans/hostel-email-template-expansion/results-review.user.md",
+      "idea_key": "19390ebb667f9ecf94a405949128d0acbeb629e5",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add automated constraint-graph cycle check to CI",
+      "body": "cycles were manually verified via generate-stage-operator-views.ts; no automated CI gate exists",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:36:24.076Z",
+      "path": "docs/plans/startup-loop-parallel-container-wiring/results-review.user.md",
+      "idea_key": "d5ebf7bacf8d307645289097e7a30d2d68601692",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add filesystem discovery smoke test to CI",
+      "body": "rebuild-discovery-index.sh is validated manually; no automated regression guard on its output shape",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:34:30.738Z",
+      "path": "docs/plans/do-skills-bos-decoupling/results-review.user.md",
+      "idea_key": "c5a46e9603aeec9f92f8561051fbaed85592406d",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Keyboard accessibility bug in onOpenChange (o=true not handled) was only caught during test writing, not during implementation",
+      "body": "TASK-02 shipped with controlled DropdownMenu that ignored onOpenChange(true), making keyboard open impossible; found in TASK-04",
+      "suggested_action": "spike (consider accessibility lint rule for Radix controlled components)",
+      "source": "results-review.user.md",
+      "date": "2026-02-28T10:15:13.282Z",
+      "path": "docs/plans/_archive/brik-header-rooms-dropdown/results-review.user.md",
+      "idea_key": "7140bff490a6bc36695c3f386e815749a3690ac8",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Mechanistic locale sync check: flag new EN keys missing from non-EN files",
+      "body": "TASK-05 required a Python script each time new EN i18n keys were added to propagate fallbacks to 17 non-EN files; a deterministic pre-commit hook or CI check could automate this instead of a manual build step",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T21:56:36.669Z",
+      "path": "docs/plans/_archive/brikette-direct-booking-savings-callout/results-review.user.md",
+      "idea_key": "0a6d762ab16eeada0e937e8adfedd0f292a0b56a",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Generate the results-review skeleton from the plan and build-record automatically",
+      "body": "Most sections (outcomes, intended statement, test evidence) are already in the build-record and were manually transcribed here",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T21:24:34.587Z",
+      "path": "docs/plans/_archive/reception-offline-sync/results-review.user.md",
+      "idea_key": "ae123dd793921a60b26bcb4e868ef88a56cf48e1",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add a deterministic locale audit script that emits per-namespace key parity and stub counts as a pre-build artifact",
+      "body": "TASK-02 manual audit and TASK-07 automated assertions show this signal is deterministic and gate-friendly",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T19:09:30.315Z",
+      "path": "docs/plans/_archive/prime-hardcoded-copy-i18n-remediation/results-review.user.md",
+      "idea_key": "371794876ad835fbf08a7eb1bbed272715dda3e2",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Module-split architectural map for mcp-server tools — gmail.ts, gmail-organize.ts, gmail-booking.ts, gmail-shared.ts relationships are not documented; caused one misplacement during build",
+      "body": "email drafting loop placed in dead _handleOrganizeInbox function before architectural discovery required a fix; no standing doc describes the module boundaries",
+      "suggested_action": "spike (brief architecture note in email-autodraft-system.md)",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T18:38:09.949Z",
+      "path": "docs/plans/_archive/reception-email-activity-control-audit/results-review.user.md",
+      "idea_key": "6f2d009fad5b1bb754dab94e80c0028533c98771",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Automated orphaned-account cleanup — detect Firebase Auth accounts with no matching userProfiles record",
+      "body": "partial failure path (accounts:signUp succeeds, DB write fails) leaves orphaned accounts documented as a known limitation",
+      "suggested_action": "spike (mechanistic script, deterministic cleanup)",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T18:17:54.255Z",
+      "path": "docs/plans/_archive/brik-reception-user-provisioning/results-review.user.md",
+      "idea_key": "5ec63ce1394c6a6383644f696c9f49c36a625ea7",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Calibration comparison — codemoot vs inline critique",
+      "body": "TASK-01 smoke test produced score=4/10 (lp_score=2.0) on fact-find.md; no baseline comparison against lp-do-critique exists yet. Score may be systematically harsher or softer.",
+      "suggested_action": "spike — run both critique paths on 2–3 existing artifacts and compare scores",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T15:52:02.375Z",
+      "path": "docs/plans/_archive/codemoot-cross-agent-critique/results-review.user.md",
+      "idea_key": "f3905273e1409faa4c0b6254ddf22d7ea16455c6",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "AI-to-mechanistic: add schema validation for NEXT_PUBLIC_USERS_JSON at startup",
+      "body": "schema parse errors are swallowed silently (users = {}); a startup-time validation log line would surface misconfiguration immediately",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T15:34:03.625Z",
+      "path": "docs/plans/_archive/reception-rbac-pin-user-roles/results-review.user.md",
+      "idea_key": "207df5d6e8666224f40698b08646c1e384dbfd72",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Governed test invocation validation script: the build-code.md Offload Route documents that npx jest, pnpm exec jest, and direct binary invocations are blocked — Codex may attempt blocked invocation forms if the prompt is unclear. A lightweight CI-time or pre-commit check that detects blocked test invocation patterns in agent output could make this enforcement automatic.",
+      "body": "build-code.md Offload Route documents blocked invocation forms; Codex prompt must restate them — mechanistic check could replace this instruction",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T11:50:11.597Z",
+      "path": "docs/plans/_archive/lp-do-build-codex-offload/results-review.user.md",
+      "idea_key": "269739fd2d0d9d009b89fbdf18cc9b4a4b71939a",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "New skill — lp-do-build Codex offload integration test: after the first real task is offloaded, a spike to verify the complete flow (CODEX_OK=1 → codex exec → Affects files written → post-execution steps pass) would actualize the 80% → 90%+ confidence gap on the four module tasks",
+      "body": "TASK-04/05/06 all have \"What would make this >=90%: First build cycle confirming offload route invoked correctly\"",
+      "suggested_action": "spike (low priority; activate after first offload use)",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T11:50:11.597Z",
+      "path": "docs/plans/_archive/lp-do-build-codex-offload/results-review.user.md",
+      "idea_key": "0c243ce8254e803c55e282acda7b932d6cd09569",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Calibrate simulation false-positive rate from first Simulation-Critical-Waiver blocks",
+      "body": "The waiver format is new and has no usage data; the threshold for \"Critical\" may be miscalibrated on first use",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T10:23:20.500Z",
+      "path": "docs/plans/_archive/workflow-skills-simulation-tdd/results-review.user.md",
+      "idea_key": "8817caff8c155283577345ff1cf7a07198b7b697",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Admin media upload via file input (not URL text entry)",
+      "body": "TASK-05 deferred drag-and-drop; media URLs entered as text strings — friction for operator",
+      "suggested_action": "defer; spike when catalog grows beyond 3 SKUs",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T19:05:16.763Z",
+      "path": "docs/plans/_archive/caryina-catalog-cart/results-review.user.md",
+      "idea_key": "35e5d9a04de97e0008120dc461baff7909343967",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "UIBM deep-link URL format research",
+      "body": "the CLI outputs the UIBM base URL with a manual-entry instruction because no confirmed query-parameter format was found. If UIBM supports a deep-link (e.g., ?denominazione= or ?query= ), the CLI could pre-fill the search",
+      "suggested_action": "spike — navigate to uibm.gov.it/bancadati manually and inspect the URL when searching for a term; update buildUibmUrl() in tm-prescreen-cli.ts if a deep-link format is confirmed",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T17:55:44.559Z",
+      "path": "docs/plans/_archive/facilella-product-naming-pipeline/results-review.user.md",
+      "idea_key": "d86a618feb4e1a0376ad6af0e952cb7945d8a22e",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "/how-to-get-here RSC sub-track",
+      "body": "/how-to-get-here RSC sub-track | Trigger: brikette-deeper-route-funnel-cro TASK-11 deferred this — useHowToGetHereContent hook dependencies were not audited. If that hook is static-data-only, the same RSC pattern applied here could eliminate the client boundary on the how-to-get-here route. | Suggested next action: spike (audit hook dependencies before scoping)",
+      "suggested_action": "spike (audit hook dependencies before scoping)",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T14:05:26.496Z",
+      "path": "docs/plans/_archive/brikette-rsc-structured-data-conversion/results-review.user.md",
+      "idea_key": "09295276928e650d2d814c123d3e966f9434dff8",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Wrangler secret rotation script for xa- staging Workers",
+      "body": "TASK-10 checklist lists 6 separate wrangler secret put commands across 3 apps; a wrapper script would reduce rotation toil",
+      "suggested_action": "defer (spike when secrets approach rotation schedule)",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T12:36:40.247Z",
+      "path": "docs/plans/_archive/xa-apps-ci-staging/results-review.user.md",
+      "idea_key": "cc6b18ebb6ee381f0481a27685c73932198a069e",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Backfill older completed ideas into the registry",
+      "body": "many historical results-review files have ideas that have been actioned but are still appearing in the report (51 ideas shown, unknown fraction already done)",
+      "suggested_action": "manual audit pass or INVESTIGATE task to identify and backfill the highest-priority completed entries",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T09:47:46.087Z",
+      "path": "docs/plans/_archive/process-improvements-completion-lifecycle/results-review.user.md",
+      "idea_key": "b94ed760a8c6e70812f1e715d57ff654a038eda5",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "/how-to-get-here server-resolved hero H1 (sub-track C)",
+      "body": "TASK-11 deferred useHowToGetHereContent audit — HowToGetHereIndexContent hook needs investigation before server-resolved props pattern can be applied safely.",
+      "suggested_action": "spike (audit hook dependencies before scoping)",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:02:22.786Z",
+      "path": "docs/plans/_archive/brikette-deeper-route-funnel-cro/results-review.user.md",
+      "idea_key": "b550e7d7075385897bfdb286e51d043750f351d7",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Automated policy-fact consistency check across templates",
+      "body": "three policy facts manually verified across 125 templates; any future policy change has no automated catch",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:36:44.667Z",
+      "path": "docs/plans/hostel-email-template-expansion/results-review.user.md",
+      "idea_key": "d6c0d012a20bfaa110f0a2ea0fdeded4b3e11bc3",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Audit existing in-flight plans for stale BOS frontmatter fields",
+      "body": "Templates cleaned but older active plans may still carry Business-OS-Integration/Card-ID fields",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:34:30.738Z",
+      "path": "docs/plans/do-skills-bos-decoupling/results-review.user.md",
+      "idea_key": "336cadb8c091f25f65d75cf9beca9c762c25d087",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Enable Google Indexing API and test URL submission eligibility",
+      "body": "All 5 test submissions returned HTTP 403 — API not enabled in GCP project 98263641014",
+      "suggested_action": "spike (operator enables API at GCP console, then re-runs 5 test URLs)",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:32:11.291Z",
+      "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md",
+      "idea_key": "2a9895c0b987426e79f26ab0ad5d09a70a53152e",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "None for: new standing data source, new open-source package, AI-to-mechanistic.",
+      "body": "None for: new standing data source, new open-source package, AI-to-mechanistic.",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T19:27:19.993Z",
+      "path": "docs/plans/_archive/ui-design-tool-chain-pipeline/results-review.user.md",
+      "idea_key": "6f0a1d91dc75bdf4d5882149c3b4bf2a6104a8fd",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "AI-to-mechanistic: A mechanistic grep check for username-string access patterns (=== \"pete\", === \"serena\", etc.) could be added as a pre-commit lint rule to prevent regressions — currently caught only by manual grep at review time.",
+      "body": "AI-to-mechanistic: A mechanistic grep check for username-string access patterns (=== \"pete\", === \"serena\", etc.) could be added as a pre-commit lint rule to prevent regressions — currently caught only by manual grep at review time.",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T14:58:21.097Z",
+      "path": "docs/plans/_archive/reception-rbac-migration-code/results-review.user.md",
+      "idea_key": "ef2b270495fab5fa6c17ed598f7e002ce9b01f73",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "New skill — plans-lint rule extension pattern: The approach of adding a checkXxxPatterns() function with inline-exemption markers to plans-lint.ts is a repeatable pattern for new policy-enforcement lint rules (e.g., a future \"no hardcoded URLs\" rule or \"no deprecated env var\" rule). Trigger observation: TASK-07 extended plans-lint successfully in ~30 lines with path-based and inline exemptions, no schema changes needed. Suggested next action: defer — document the pattern in plans-lint.ts file comments when a second rule is added.",
+      "body": "New skill — plans-lint rule extension pattern: The approach of adding a checkXxxPatterns() function with inline-exemption markers to plans-lint.ts is a repeatable pattern for new policy-enforcement lint rules (e.g., a future \"no hardcoded URLs\" rule or \"no deprecated env var\" rule). Trigger observation: TASK-07 extended plans-lint successfully in ~30 lines with path-based and inline exemptions, no schema changes needed. Suggested next action: defer — document the pattern in plans-lint.ts file comments when a second rule is added.",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T10:41:04.704Z",
+      "path": "docs/plans/_archive/ci-only-test-execution/results-review.user.md",
+      "idea_key": "38aaa97ce97c92bdc48388bcc89fba49a4591ee2",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add Axerve sandbox credentials to .env.local and run an end-to-end sandbox payment test",
+      "body": "CHECKPOINT-08 found credentials not set; sandbox E2E blocked",
+      "suggested_action": "operator action — set AXERVE_SHOP_LOGIN and AXERVE_API_KEY in .env.local and run pnpm dev checkout flow manually",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T09:59:58.781Z",
+      "path": "docs/plans/_archive/caryina-axerve-payment-gateway/results-review.user.md",
+      "idea_key": "5cdb816fbd25ad673767b299489cad478f98bb99",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "New open-source package: node-soap@1.7.1 introduced as monorepo dependency",
+      "body": "added to packages/axerve/package.json; no prior SOAP client existed in monorepo",
+      "suggested_action": "note for dependency audit; no new plan required",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T09:59:58.781Z",
+      "path": "docs/plans/_archive/caryina-axerve-payment-gateway/results-review.user.md",
+      "idea_key": "49ebab7c9d6390f0e623c6911ff02c2336492a33",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "PCI DSS SAQ D acknowledgment required before production deployment",
+      "body": "S2S mode passes raw card numbers through the server; PCI scope is SAQ D vs SAQ A for hosted checkout",
+      "suggested_action": "operator confirms PCI compliance posture before enabling PAYMENTS_PROVIDER=axerve in production",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T09:59:58.781Z",
+      "path": "docs/plans/_archive/caryina-axerve-payment-gateway/results-review.user.md",
+      "idea_key": "7a63e382b021724d9b9e7b900f73f07f23f47eaa",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Coverage manifest initialization for BRIK and PWRB",
+      "body": "lp-coverage-scan skill is ready; BRIK and PWRB have no manifests yet; the scanner cannot run until manifests exist",
+      "suggested_action": "companion packet IDEA-DISPATCH-20260226-0032 already covers this; no new card needed",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T19:29:52.802Z",
+      "path": "docs/plans/_archive/coverage-manifest-scan-core/results-review.user.md",
+      "idea_key": "9f63fe44dc0a428b7e3f0c5a2df1c616a04f37ae",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Stripe test-mode end-to-end checkout flow on staging",
+      "body": "TASK-11 + TASK-12 complete but no real payment tested — Stripe keys not yet in env",
+      "suggested_action": "operator sets STRIPE_SECRET_KEY + NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY in Caryina staging/prod env; then manual payment test with Stripe test card",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T19:05:16.763Z",
+      "path": "docs/plans/_archive/caryina-catalog-cart/results-review.user.md",
+      "idea_key": "5148ae7c86977891abc55c05fbdd11046348f405",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "AI-to-mechanistic: The extractFromJsxAttribute utility correctly handles most cases but returns confident: false for template literals with interpolations. A future improvement could expand confidence for template literals where the bare class token is always in the static portion.",
+      "body": "AI-to-mechanistic: The extractFromJsxAttribute utility correctly handles most cases but returns confident: false for template literals with interpolations. A future improvement could expand confidence for template literals where the bare class token is always in the static portion.",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T09:51:20.911Z",
+      "path": "docs/plans/_archive/reception-rounded-lg-lint-rule/results-review.user.md",
+      "idea_key": "78659c800551efcc152a19e465ce0ed9f94f6ffb",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "AI-to-mechanistic: The extractFromJsxAttribute utility correctly handles most cases but returns confident: false for template literals with interpolations. A future improvement could expand confidence for template literals where the bare class token is always in the static portion.",
+      "body": "AI-to-mechanistic: The extractFromJsxAttribute utility correctly handles most cases but returns confident: false for template literals with interpolations. A future improvement could expand confidence for template literals where the bare class token is always in the static portion.",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T09:51:07.413Z",
+      "path": "docs/plans/reception-rounded-lg-lint-rule/results-review.user.md",
+      "idea_key": "fe02150793889094003f0c4a9cb631967e47e91f",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Validate packaging brief with a real physical-product operator",
+      "body": "TASK-04 and TASK-03 confidence capped at 80% — regulatory reference data not yet validated against real production experience.",
+      "suggested_action": "when a physical-product business first runs ASSESSMENT-15, collect feedback and update regulatory-requirements.md.",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:53:10.111Z",
+      "path": "docs/plans/_archive/startup-loop-product-identity-gap/results-review.user.md",
+      "idea_key": "45bfc4f2a076416e63c7fa72dc75143a2d0591a9",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Validate packaging brief with a real physical-product operator",
+      "body": "TASK-04 and TASK-03 confidence capped at 80% — regulatory reference data not yet validated against real production experience.",
+      "suggested_action": "when a physical-product business first runs ASSESSMENT-15, collect feedback and update regulatory-requirements.md.",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:53:01.939Z",
+      "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md",
+      "idea_key": "50250241c361b3e014540cb7f748b06e906f22b5",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Room card copy review: translate \"Check Rates\" into primary guest locales",
+      "body": "checkRatesSingle value is English placeholder \"Check Rates\" in all 18 locales, including DE/IT/FR/ES/RU/ZH",
+      "suggested_action": "defer (minor copy task; operator can update directly when ready)",
+      "source": "results-review.user.md",
+      "date": "2026-02-28T09:35:02.796Z",
+      "path": "docs/plans/_archive/brik-room-card-cheapest-rate/results-review.user.md",
+      "idea_key": "b66c07cad479fb31e7868961cb37de4f75c574bb",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Automate EN i18n fallback propagation as a reusable build utility",
+      "body": "Python json.load/json.dumps(ensure_ascii=False) pattern used to safely edit 17 multi-byte locale files; this exact pattern will recur on every new i18n key addition across brikette",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T21:56:36.669Z",
+      "path": "docs/plans/_archive/brikette-direct-booking-savings-callout/results-review.user.md",
+      "idea_key": "e3136ff47f11c99160fc6395de52964b16387cbc",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Skill templates drift from repo token names without a detection mechanism",
+      "body": "lp-design-spec template used shadcn/ui names absent from this repo's token system; caught only by manual fact-check",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T21:08:01.479Z",
+      "path": "docs/plans/_archive/ui-design-tool-chain-corrections/results-review.user.md",
+      "idea_key": "d8e0063d255375d77377dd3dff38de304e361552",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Alert when CF Pages env var bindings diverge from build-cmd inline flag values",
+      "body": "NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY must be set in two places; divergence means feature appears active in client UI but API returns empty rooms",
+      "suggested_action": "defer (low frequency; documented in health check Known Limitation)",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T20:26:41.048Z",
+      "path": "docs/plans/_archive/brik-live-pricing-activation/results-review.user.md",
+      "idea_key": "7c25afd8d86e619cc2621e21d8d51a1f6882fb73",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Design Gate rule could extend to lp-do-fact-find, not just lp-do-plan",
+      "body": "Design-Spec-Required: yes is only enforced when the plan is being decomposed; a fact-find that encounters a UI-heavy feature has no equivalent upfront signal to request a design spec",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T19:27:19.993Z",
+      "path": "docs/plans/_archive/ui-design-tool-chain-pipeline/results-review.user.md",
+      "idea_key": "525f5d7983023965f1d5b47d798e16ec6ec63a4f",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Document Octorate room matching convention: use numeric data-id not text name",
+      "body": "Matching required octorateRoomId (data-id) not octorateRoomName text — discovered mid-build",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T19:15:02.295Z",
+      "path": "docs/plans/_archive/brik-room-octorate-live-pricing/results-review.user.md",
+      "idea_key": "70fc349ae3e21132607be2f10b46115b6d00080b",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Codify a reusable i18n-remediation skill (audit → checkpoint rescore → migration → translation → parity test)",
+      "body": "TASK-02 through TASK-07 followed this repeatable sequence and produced a clean closure pattern",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T19:09:30.315Z",
+      "path": "docs/plans/_archive/prime-hardcoded-copy-i18n-remediation/results-review.user.md",
+      "idea_key": "301228454d43315e695cdf069df02f6352127fad",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Staff onboarding checklist page in reception app — combine provisioning with role briefing and first-login guide",
+      "body": "provisioning flow creates the account but no in-app onboarding path exists for new staff after first login",
+      "suggested_action": "defer (nice-to-have, no current blocker)",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T18:17:54.255Z",
+      "path": "docs/plans/_archive/brik-reception-user-provisioning/results-review.user.md",
+      "idea_key": "4bdb597e862b3e1df62a1d2517851216fae4fd4f",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Wire getUserByPin into auth flow for shift-PIN staff",
+      "body": "getUserByPin is fully functional but unwired; marked @deprecated for now. A shift-PIN login path (staff who share a single Firebase account) would use this.",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T15:34:03.625Z",
+      "path": "docs/plans/_archive/reception-rbac-pin-user-roles/results-review.user.md",
+      "idea_key": "3422b86c81bca3a069affda44a349f9dc629638d",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Extract getActiveDealCount + deal-status helpers into a shared utility module",
+      "body": "deal status logic is split across status.ts (getDealStatus) and the new inline filter in deals.ts (getActiveDealCount) — two approaches for the same concern",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T15:24:41.538Z",
+      "path": "docs/plans/_archive/brikette-direct-booking-rate-trust/results-review.user.md",
+      "idea_key": "a1f436bf2d16351080a044528c69caa4e120dcfa",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add an email delivery health check to post-deploy checks so failures surface in CI",
+      "body": "sendSystemEmail failures are currently only visible in Worker logs — no automated alert",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T14:24:47.378Z",
+      "path": "docs/plans/_archive/caryina-merchant-order-notification/results-review.user.md",
+      "idea_key": "5b8770e12f357c835da43707c179daaa47a1acc3",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Expand keyword allowlist to reduce LLM fallback rate",
+      "body": "\"How do I walk to Fornillo beach?\" triggers LLM because \"walk to\" is not a transport keyword",
+      "suggested_action": "defer (low priority; LLM fallback works correctly)",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T13:49:00.509Z",
+      "path": "docs/plans/_archive/prime-digital-assistant-llm-upgrade/results-review.user.md",
+      "idea_key": "fb1392374a39996f87d46ff9534dde1b4ba8df9c",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add CF Pages project creation to pre-deploy operator checklist",
+      "body": "TASK-08 noted this in edge cases; no automated check exists",
+      "suggested_action": "defer (low urgency — document in PR description)",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T12:17:40.166Z",
+      "path": "docs/plans/_archive/xa-b-static-export/results-review.user.md",
+      "idea_key": "36e6dd97259c19c75a157a01a1e52a6d1545d579",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Extract __next.* cleanup into reusable CI composite action",
+      "body": "MEMORY.md documents the pattern for brikette; xa-b now duplicates it",
+      "suggested_action": "defer (minor — candidate when CI DRY-up is prioritised)",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T12:17:40.166Z",
+      "path": "docs/plans/_archive/xa-b-static-export/results-review.user.md",
+      "idea_key": "4885788d9dbb9b0608278f6f383c9bf0cd34ed37",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Menu item data now lives in apps/prime/src/config/meal-orders/menuData.ts — if menu items change seasonally, an operator-editable config surface (CMS or admin UI) would prevent code deploys for menu updates",
+      "body": "hardcoded arrays for breakfast foods, egg sides, syrups, and drinks require a code change to add/remove items",
+      "suggested_action": "defer — track as future enhancement when menu changes become frequent",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T10:57:17.827Z",
+      "path": "docs/plans/_archive/prime-meal-order-menu-wizard/results-review.user.md",
+      "idea_key": "f31e191f4711452271660aa343b6674eed2c8599",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Mechanistic linter for \"Undefined config key\" and \"Missing precondition\" simulation categories",
+      "body": "TC-02 for TASK-01 was verified by counting rows — this same count could be run deterministically",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-27T10:23:20.500Z",
+      "path": "docs/plans/_archive/workflow-skills-simulation-tdd/results-review.user.md",
+      "idea_key": "a1e24ca2e7226739f46352951386f609748641d6",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "AI-to-mechanistic: deterministic key formula computation (sha256)",
+      "body": "ideas-phase uses fallback \"prefix anchor_key-fp padded to 64 chars with 0\" when SHA-256 is not feasible in agent runtime — a small utility script or prompt helper could make this deterministic and consistent",
+      "suggested_action": "defer until first live scan surfaces an actual inconsistency",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T21:14:37.634Z",
+      "path": "docs/plans/_archive/lp-do-worldclass/results-review.user.md",
+      "idea_key": "a451bdc906fb3d9b69f73925b3147415fdfe8300",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Per-business goal artifact initialization for PWRB",
+      "body": "PWRB strategy directory exists; same blocker applies",
+      "suggested_action": "defer until BRIK scan validates the skill end-to-end",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T21:14:37.634Z",
+      "path": "docs/plans/_archive/lp-do-worldclass/results-review.user.md",
+      "idea_key": "b019dcd8f0b8694d2c33dd1186a83e475b16a2c4",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "AI-to-mechanistic: lp-coverage-scan staleness detection uses agent file-reading",
+      "body": "staleness multi-key chain reads frontmatter via agent text parsing; a deterministic TypeScript script could replicate this more reliably and at scale (Phase 2 candidate)",
+      "suggested_action": "defer to Phase 2 scanner enhancement",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T19:29:52.802Z",
+      "path": "docs/plans/_archive/coverage-manifest-scan-core/results-review.user.md",
+      "idea_key": "40224e697a02a777a14367f053458c446b734599",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Scheduled liveness check for xa- staging Workers",
+      "body": "xa.yml health checks exist only on deploy; a nightly workflow_dispatch run would confirm Workers remain reachable between deploys",
+      "suggested_action": "defer (low priority; implement when staging is actively used)",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T12:36:40.247Z",
+      "path": "docs/plans/_archive/xa-apps-ci-staging/results-review.user.md",
+      "idea_key": "4a4c80993f6c5ec1393de69f97404db15db30dbc",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Assess whether ASSESSMENT-13/14/15 need prompt template files",
+      "body": "prompt_required: false set for all three new stages — consistent with skill-file execution but may need revisiting if the loop UI requires prompt templates.",
+      "suggested_action": "defer — assess when first real business runs ASSESSMENT-13.",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:53:10.111Z",
+      "path": "docs/plans/_archive/startup-loop-product-identity-gap/results-review.user.md",
+      "idea_key": "d60d167a7803b1b4c4e2b9a54192015a1ca9c2ff",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Assess whether ASSESSMENT-13/14/15 need prompt template files",
+      "body": "prompt_required: false set for all three new stages — consistent with skill-file execution but may need revisiting if the loop UI requires prompt templates.",
+      "suggested_action": "defer — assess when first real business runs ASSESSMENT-13.",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:53:01.939Z",
+      "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md",
+      "idea_key": "515ff10d4c18b25b9a19da5a477002662c796142",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add Jest unit test with fixture JSON mock for gsc-url-inspection-batch.ts extraction logic",
+      "body": "TC-01 through TC-04 validated by code inspection only; fixture-based test would catch regression on return-type refactors",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:14:25.464Z",
+      "path": "docs/plans/_archive/seo-monitoring-datepublished-baseline/results-review.user.md",
+      "idea_key": "94171ba01389aff8f13c0eb976c89cfdf61747d9",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Confirm richResultsResult field presence on next monitoring run against amalfi-positano-bus (one indexed URL) to validate API response shape empirically",
+      "body": "TASK-01 delivered with optional-chaining fallbacks; no live API response with structured data yet observed for any seed URL",
+      "suggested_action": "defer (happens automatically on next run)",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:14:25.464Z",
+      "path": "docs/plans/_archive/seo-monitoring-datepublished-baseline/results-review.user.md",
+      "idea_key": "a7d9276518b19aed313e3f444b6db67349cc1cfb",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Wire lastUpdated through HowToGetHereContent to unlock datePublished on 31 EN transport pages",
+      "body": "transport pages have no datePublished structured data; monitoring will capture HowTo detection instead of Article when they index",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T08:14:25.464Z",
+      "path": "docs/plans/_archive/seo-monitoring-datepublished-baseline/results-review.user.md",
+      "idea_key": "5a52fb8afce7adb5c0738ce56dd61c016da11049",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add check_url_strict coverage to other localized booking entry points (e.g., /de/buchen, /fr/reserver)",
+      "body": "TASK-04 strict check plumbing is now reusable via healthcheck-strict-routes input in reusable-app.yml",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-26T07:33:03.262Z",
+      "path": "docs/plans/_archive/brikette-it-book-route-static-export/results-review.user.md",
+      "idea_key": "30a0a8985d1c87982902aead225c25cd09a5b0bc",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add datePublished to monitoring baseline to track when guide pages first appear with valid structured data in search results",
+      "body": "T+0 baseline has 29 unknown URLs; structured data correctness cannot be validated until pages are indexed",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:32:11.291Z",
+      "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md",
+      "idea_key": "361960b9c7d02a3691633298d03f6b1b32df7506",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Wire lastUpdated prop through HowToGetHereContent to unlock datePublished on transport pages",
+      "body": "31 EN transport pages have no lastUpdated in RouteDefinition; datePublished fix was deferred from TASK-03",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-02-25T22:32:11.291Z",
+      "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md",
+      "idea_key": "27d5c91eacc1a6e92dfea3cb5bb52da69026e1ad",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    }
+  ];
+
+  var RISK_ITEMS = [];
+
+  var PENDING_REVIEW_ITEMS = [
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: reception-rounded-lg-lint-rule",
+      "body": "Results review exists but the \"expansion opportunities\" section is missing.",
+      "suggested_action": "Complete docs/plans/_archive/reception-rounded-lg-lint-rule/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
+      "source": "build-record.user.md",
+      "date": "2026-02-26T09:51:16.379Z",
+      "path": "docs/plans/_archive/reception-rounded-lg-lint-rule/build-record.user.md"
+    },
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: reception-rounded-lg-lint-rule",
+      "body": "Results review exists but the \"expansion opportunities\" section is missing.",
+      "suggested_action": "Complete docs/plans/reception-rounded-lg-lint-rule/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
+      "source": "build-record.user.md",
+      "date": "2026-02-26T09:51:03.206Z",
+      "path": "docs/plans/reception-rounded-lg-lint-rule/build-record.user.md"
+    }
+  ];
+
+  // ── State ──────────────────────────────────────────────────────────────────
+  var activeBusiness = 'ALL';
+  var activeType = 'all';
+  var activeTierGroup = 'all';
+
+  // ── Helpers ────────────────────────────────────────────────────────────────
+  function fmtDate(iso) {
+    try {
+      var d = new Date(iso);
+      if (isNaN(d.getTime())) return iso;
+      return d.toLocaleString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    } catch (e) { return iso; }
+  }
+
+  function esc(s) {
+    return String(s || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function bizBadge(b) {
+    var known = ['HBAG','BRIK','BOS','PLAT','XA'];
+    var cls = known.indexOf(b) >= 0 ? 'badge-' + b : 'badge-generic';
+    return '<span class="badge ' + cls + '">' + esc(b) + '</span>';
+  }
+
+  function typeBadge(t) {
+    var map = { idea: 'badge-idea', risk: 'badge-risk', 'pending-review': 'badge-pending' };
+    var lbl = { idea: 'Idea Candidate', risk: 'Open Risk', 'pending-review': 'Pending Review' };
+    return '<span class="badge ' + (map[t] || 'badge-generic') + '">' + esc(lbl[t] || t) + '</span>';
+  }
+
+  function tierBadge(tier) {
+    if (!tier) return '';
+    var colorMap = {
+      'P0':  'badge-tier-crit',
+      'P0R': 'badge-tier-crit',
+      'P1':  'badge-tier-high',
+      'P1M': 'badge-tier-high',
+      'P2':  'badge-tier-med',
+      'P3':  'badge-tier-measure',
+      'P4':  'badge-tier-process',
+      'P5':  'badge-tier-default'
+    };
+    var cls = colorMap[tier] || 'badge-tier-default';
+    return '<span class="badge ' + cls + '" title="Priority tier: ' + esc(tier) + '">' + esc(tier) + '</span>';
+  }
+
+  // ── Render ─────────────────────────────────────────────────────────────────
+  function allItems() { return IDEA_ITEMS.concat(RISK_ITEMS).concat(PENDING_REVIEW_ITEMS); }
+
+  function filtered(items) {
+    return items.filter(function (item) {
+      if (activeBusiness !== 'ALL' && item.business !== activeBusiness) return false;
+      if (activeType !== 'all' && item.type !== activeType) return false;
+      if (activeTierGroup !== 'all' && item.type === 'idea') {
+        var t = item.priority_tier;
+        if (activeTierGroup === 'urgent'  && t !== 'P0'  && t !== 'P0R') return false;
+        if (activeTierGroup === 'high'    && t !== 'P1'  && t !== 'P1M') return false;
+        if (activeTierGroup === 'medium'  && t !== 'P2'  && t !== 'P3')  return false;
+        if (activeTierGroup === 'backlog' && t !== 'P4'  && t !== 'P5')  return false;
+      }
+      return true;
+    });
+  }
+
+  function render() {
+    var ideas    = filtered(IDEA_ITEMS);
+    var risks    = filtered(RISK_ITEMS);
+    var pending  = filtered(PENDING_REVIEW_ITEMS);
+
+    // All distinct businesses
+    var bizsAll = ['ALL'];
+    allItems().forEach(function (item) {
+      if (item.business && bizsAll.indexOf(item.business) < 0) bizsAll.push(item.business);
+    });
+
+    var html = '';
+
+    // Summary bar
+    var urgentCount  = IDEA_ITEMS.filter(function(i){ return i.priority_tier === 'P0' || i.priority_tier === 'P0R'; }).length;
+    var highCount    = IDEA_ITEMS.filter(function(i){ return i.priority_tier === 'P1' || i.priority_tier === 'P1M'; }).length;
+    var medLowCount  = IDEA_ITEMS.filter(function(i){ return i.priority_tier === 'P2' || i.priority_tier === 'P3'; }).length;
+    var backlogCount = IDEA_ITEMS.filter(function(i){ return i.priority_tier === 'P4' || i.priority_tier === 'P5'; }).length;
+    html += '<div class="summary-bar">';
+    html += '<button class="summary-pill pill-red'    + (activeTierGroup==='urgent' ?' pill-active':'') + '" data-filter-tier="urgent"><span class="count">'  + urgentCount  + '</span> Urgent (P0/P0R)</button>';
+    html += '<button class="summary-pill pill-amber'  + (activeTierGroup==='high'   ?' pill-active':'') + '" data-filter-tier="high"><span class="count">'    + highCount    + '</span> High (P1/P1M)</button>';
+    html += '<button class="summary-pill pill-muted'  + (activeTierGroup==='medium' ?' pill-active':'') + '" data-filter-tier="medium"><span class="count">'  + medLowCount  + '</span> Medium/Steady</button>';
+    html += '<button class="summary-pill pill-muted'  + (activeTierGroup==='backlog'?' pill-active':'') + '" data-filter-tier="backlog"><span class="count">' + backlogCount + '</span> Backlog</button>';
+    html += '<button class="summary-pill pill-amber'  + (activeType==='risk'            ?' pill-active':'') + '" data-filter-type="risk"><span class="count">'           + RISK_ITEMS.length            + '</span> Open Risks</button>';
+    html += '<button class="summary-pill pill-purple' + (activeType==='pending-review'  ?' pill-active':'') + '" data-filter-type="pending-review"><span class="count">' + PENDING_REVIEW_ITEMS.length  + '</span> Pending Reviews</button>';
+    html += '</div>';
+
+    // Filter bar
+    html += '<div class="filter-bar">';
+    html += '<span class="filter-label">Business</span>';
+    bizsAll.forEach(function (b) {
+      var active = activeBusiness === b ? ' active biz-' + b : '';
+      html += '<button class="filter-btn' + active + '" data-filter-biz="' + esc(b) + '">' + esc(b) + '</button>';
+    });
+    html += '<div class="filter-divider"></div>';
+    html += '<span class="filter-label">Type</span>';
+    [['all','All'],['idea','Ideas'],['risk','Risks'],['pending-review','Pending Review']].forEach(function (p) {
+      var active = activeType === p[0] ? ' active' : '';
+      html += '<button class="filter-btn' + active + '" data-filter-type="' + esc(p[0]) + '">' + esc(p[1]) + '</button>';
+    });
+    html += '</div>';
+
+    // ── Section: Idea Candidates (grouped by classifier priority tier) ── //
+    if (activeType === 'all' || activeType === 'idea') {
+      if (ideas.length === 0) {
+        html += '<div class="section"><div class="section-header"><h2>Idea Candidates</h2><span class="section-count">0</span></div>';
+        html += '<div class="empty">No idea candidates match the current filter.</div></div>';
+      } else {
+        var TIER_ORDER = ['P0', 'P0R', 'P1', 'P1M', 'P2', 'P3', 'P4', 'P5'];
+        var TIER_LABELS = {
+          'P0':  'Urgent — act immediately',
+          'P0R': 'Escalated — fast-track review',
+          'P1':  'High — next sprint, direct path',
+          'P1M': 'High — multi-step path',
+          'P2':  'Medium priority',
+          'P3':  'Steady-state',
+          'P4':  'Low priority',
+          'P5':  'Backlog'
+        };
+        var TIER_COLORS = {
+          'P0':  'var(--red, #e53e3e)',
+          'P0R': 'var(--red, #e53e3e)',
+          'P1':  'var(--amber, #d69e2e)',
+          'P1M': 'var(--amber, #d69e2e)',
+          'P2':  'var(--blue, #3182ce)',
+          'P3':  'var(--green, #38a169)',
+          'P4':  'var(--text-dim, #718096)',
+          'P5':  'var(--text-dim, #718096)'
+        };
+
+        function urgencyLabel(u) {
+          var map = { 'U0': 'Critical now', 'U1': 'Soon', 'U2': 'Routine', 'U3': 'No urgency' };
+          return map[u] || u;
+        }
+
+        function tierSection(tier, label, color, items) {
+          if (items.length === 0) return '';
+          var out = '<div class="section">';
+          out += '<div class="section-header" style="border-left:3px solid ' + color + ';padding-left:10px;">';
+          out += '<h2>' + esc(label) + '</h2><span class="section-count">' + items.length + '</span>';
+          out += '</div>';
+          items.forEach(function(item){ out += renderItem(item); });
+          out += '</div>';
+          return out;
+        }
+
+        // Render classified tiers in order
+        TIER_ORDER.forEach(function(tier) {
+          var tierItems = ideas.filter(function(i){ return i.priority_tier === tier; });
+          html += tierSection(tier, TIER_LABELS[tier] || tier, TIER_COLORS[tier] || 'var(--text-dim)', tierItems);
+        });
+
+        // Catch-all for items without a priority_tier
+        var unclassified = ideas.filter(function(i){ return !i.priority_tier || TIER_ORDER.indexOf(i.priority_tier) < 0; });
+        html += tierSection('unclassified', 'Unclassified', 'var(--text-dim, #718096)', unclassified);
+      }
+    }
+
+    // ── Section: Open Risks ── //
+    if (activeType === 'all' || activeType === 'risk') {
+      html += '<div class="section">';
+      html += '<div class="section-header"><h2>Open Risks</h2><span class="section-count">' + risks.length + '</span></div>';
+      if (risks.length === 0) {
+        html += '<div class="empty">No open risks match the current filter.</div>';
+      } else {
+        risks.forEach(function (item) { html += renderItem(item); });
+      }
+      html += '</div>';
+    }
+
+    // ── Section: Pending Results Reviews ── //
+    if (activeType === 'all' || activeType === 'pending-review') {
+      html += '<div class="section">';
+      html += '<div class="section-header"><h2>Pending Results Reviews</h2><span class="section-count">' + pending.length + '</span></div>';
+      if (pending.length === 0) {
+        html += '<div class="empty">No pending reviews match the current filter.</div>';
+      } else {
+        html += '<p style="font-size:12px;color:var(--text-dim);margin-bottom:12px;">These plans have build records but no <code>results-review.user.md</code> yet. Plans cannot be archived until the operator produces a results review.</p>';
+        pending.forEach(function (item) { html += renderItem(item); });
+      }
+      html += '</div>';
+    }
+
+    document.getElementById('app').innerHTML = html;
+    attachHandlers();
+  }
+
+  function renderItem(item) {
+    var html = '<div class="item ' + esc(item.type) + '"' + (item.idea_key ? ' data-idea-key="' + esc(item.idea_key) + '"' : '') + '>';
+    html += '<div class="item-top">';
+    html += '<div class="item-title">' + esc(item.title) + '</div>';
+    html += '<div class="item-badges">' + tierBadge(item.priority_tier) + bizBadge(item.business) + typeBadge(item.type) + '</div>';
+    html += '</div>';
+    html += '<div class="item-body">' + esc(item.body) + '</div>';
+    if (item.suggested_action) {
+      html += '<div class="item-action"><div class="item-action-label">Suggested Next Action</div>' + esc(item.suggested_action) + '</div>';
+    }
+    html += '<div class="item-meta">';
+    html += '<span>Source: <code>' + esc(item.source) + '</code></span>';
+    if (item.date) html += '<span>Date: ' + esc(fmtDate(item.date)) + '</span>';
+    if (item.path) html += '<span>Path: <code>' + esc(item.path) + '</code></span>';
+    html += '</div>';
+    html += '</div>';
+    return html;
+  }
+
+  function attachHandlers() {
+    document.querySelectorAll('[data-filter-biz]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        activeBusiness = this.getAttribute('data-filter-biz');
+        try { sessionStorage.setItem('pi-filter-biz', activeBusiness); } catch (e) {}
+        render();
+      });
+    });
+    document.querySelectorAll('[data-filter-type]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        activeType = this.getAttribute('data-filter-type');
+        activeTierGroup = 'all';
+        try { sessionStorage.setItem('pi-filter-type', activeType); } catch (e) {}
+        try { sessionStorage.setItem('pi-filter-tier', activeTierGroup); } catch (e) {}
+        render();
+      });
+    });
+    document.querySelectorAll('[data-filter-tier]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var tier = this.getAttribute('data-filter-tier');
+        activeTierGroup = (activeTierGroup === tier) ? 'all' : tier;
+        activeType = 'all';
+        try { sessionStorage.setItem('pi-filter-tier', activeTierGroup); } catch (e) {}
+        try { sessionStorage.setItem('pi-filter-type', activeType); } catch (e) {}
+        render();
+      });
+    });
+  }
+
+  try {
+    var savedBiz = sessionStorage.getItem('pi-filter-biz');
+    var savedType = sessionStorage.getItem('pi-filter-type');
+    var savedTier = sessionStorage.getItem('pi-filter-tier');
+    if (savedBiz)  activeBusiness  = savedBiz;
+    if (savedType) activeType      = savedType;
+    if (savedTier) activeTierGroup = savedTier;
+  } catch (e) {}
+
+  // pi-transitions: read stored idea keys for change detection
+  var piPrevTuples = [];
+  var piPrevKeys = new Set();
+  var piFirstVisit = false;
+  try {
+    var piRaw = localStorage.getItem('pi-seen-keys');
+    if (!piRaw) {
+      piFirstVisit = true;
+    } else {
+      piPrevTuples = JSON.parse(piRaw);
+      if (!Array.isArray(piPrevTuples)) {
+        piPrevTuples = [];
+        piFirstVisit = true;
+      } else {
+        piPrevTuples.forEach(function(t) { if (t && t.k) piPrevKeys.add(t.k); });
+      }
+    }
+  } catch(e) { piPrevTuples = []; piFirstVisit = true; }
+
+  render();
+
+  // pi-transitions: write current keys to localStorage
+  try {
+    var piCurrentTuples = IDEA_ITEMS.map(function(item) {
+      return {k: item.idea_key || '', t: item.priority_tier || '', n: item.title || ''};
+    }).filter(function(t) { return !!t.k; });
+    localStorage.setItem('pi-seen-keys', JSON.stringify(piCurrentTuples));
+  } catch(e) {}
+
+  // pi-transitions: apply entry animations and ghost section
+  if (!piFirstVisit) {
+    var piCurrentKeys = new Set();
+    IDEA_ITEMS.forEach(function(item) { if (item.idea_key) piCurrentKeys.add(item.idea_key); });
+
+    // New items: in current but not in previous
+    var piNewKeys = [];
+    IDEA_ITEMS.forEach(function(item) {
+      if (item.idea_key && !piPrevKeys.has(item.idea_key)) piNewKeys.push(item.idea_key);
+    });
+
+    // Gone items: in previous but not in current
+    var piGoneItems = piPrevTuples.filter(function(t) {
+      return t && t.k && !piCurrentKeys.has(t.k);
+    });
+
+    // Apply .is-new class with staggered delay via double-RAF
+    if (piNewKeys.length > 0) {
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          piNewKeys.forEach(function(k, i) {
+            var el = document.querySelector('[data-idea-key="' + k + '"]');
+            if (!el) return;
+            el.classList.add('is-new');
+            el.style.animationDelay = Math.min(i * 30, 300) + 'ms';
+          });
+        });
+      });
+    }
+
+    // Inject "Recently removed" ghost section at top of #app
+    if (piGoneItems.length > 0) {
+      var piGoneHtml = '<div class="pi-gone-section"><h4>Recently removed since last visit</h4>';
+      piGoneItems.forEach(function(t) {
+        piGoneHtml += '<div class="pi-gone-card">';
+        piGoneHtml += '<div class="item-title">' + esc(t.n) + '</div>';
+        piGoneHtml += '<div class="item-badges">' + esc(t.t) + ' \u2014 recently removed</div>';
+        piGoneHtml += '</div>';
+      });
+      piGoneHtml += '</div>';
+      var piAppEl = document.getElementById('app');
+      if (piAppEl) {
+        var piGoneDiv = document.createElement('div');
+        piGoneDiv.innerHTML = piGoneHtml;
+        var piGoneSection = piGoneDiv.firstChild;
+        piAppEl.insertBefore(piGoneSection, piAppEl.firstChild);
+        setTimeout(function() {
+          if (piGoneSection && piGoneSection.parentNode) {
+            piGoneSection.parentNode.removeChild(piGoneSection);
+          }
+        }, 6000);
+      }
+    }
+  }
+
+  var genEl = document.getElementById('footer-generated');
+  if (genEl) {
+    genEl.textContent = 'Generated: ' + new Date(GEN_TS).toLocaleString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' \u2014 auto-refreshes every 30s';
+  }
+})();
+</script>
+</body>
+</html>

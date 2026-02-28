@@ -11,7 +11,7 @@ describe("Slot primitive", () => {
 
     const { container } = render(
       <Slot className="parent" ref={parentRef} id="outer" onClick={() => {}}>
-        <button className="child" ref={childRef} data-id="button" />
+        <button className="child min-h-11 min-w-11" ref={childRef} data-id="button" />
       </Slot>
     );
 

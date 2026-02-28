@@ -1,7 +1,10 @@
 // Reception Service Worker
 // Provides offline-first caching for the reception app.
 
-const CACHE_NAME = "reception-v1";
+// Derive cache version from the SW URL's ?v= query param so that bumping
+// NEXT_PUBLIC_RECEPTION_SW_VERSION both re-registers the SW and busts the cache.
+const _swVersion = new URL(self.location.href).searchParams.get("v") || "1";
+const CACHE_NAME = `reception-v${_swVersion}`;
 const OFFLINE_URL = "/offline.html";
 
 // Key routes to precache on install

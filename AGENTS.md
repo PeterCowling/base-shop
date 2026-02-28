@@ -37,20 +37,16 @@ When you identify that the "right" solution requires significantly more work, ex
 | Build | `pnpm build` |
 | Typecheck | `pnpm --filter <pkg> typecheck` |
 | Lint | `pnpm --filter <pkg> lint` |
-| Test (single file) | `pnpm --filter <pkg> test -- path/to/file.test.ts` |
-| Test (pattern) | `pnpm --filter <pkg> test -- --testPathPattern="name"` |
+| Test feedback | `gh run watch $(gh run list --limit 1 --json databaseId -q '.[0].databaseId')` |
 | Validate all (local default) | `bash scripts/validate-changes.sh` |
-| Validate all (+ targeted local tests) | `VALIDATE_INCLUDE_TESTS=1 bash scripts/validate-changes.sh` |
 
 ## Validation Gate (Before Every Commit)
 
 ```bash
 # Scope validation to changed packages only (preferred default).
 pnpm --filter <pkg> typecheck && pnpm --filter <pkg> lint
-# Default local gate (policy + typecheck + lint):
+# Default local gate (policy + typecheck + lint — no test execution):
 bash scripts/validate-changes.sh
-# Optional: include targeted local tests; CI remains source of truth for test gating.
-VALIDATE_INCLUDE_TESTS=1 bash scripts/validate-changes.sh
 ```
 
 If multiple packages changed, run typecheck + lint for each affected package.
@@ -94,17 +90,10 @@ If one of these commands seems necessary, STOP and ask for help. Full guide: [do
 
 ## Testing Rules
 
-- **Default local gate is lint + typecheck:** `bash scripts/validate-changes.sh` skips targeted tests unless explicitly opted in
-- **GitHub Actions is source of truth for required tests:** rely on CI/merge-gate for test pass/fail gating
-- **When running tests locally, always use targeted scope** — single file or pattern
-- **Never run `pnpm test` unfiltered** — spawns too many workers
-- **Limit workers:** `--maxWorkers=2` for broader runs
-- **Check for orphans first:** `ps aux | grep jest | grep -v grep`
-- **Governed timeout defaults:** `BASESHOP_TEST_TIMEOUT_SEC=600` (wall-clock, `0` disables) and `BASESHOP_TEST_ADMISSION_TIMEOUT_SEC=300` (admission polling, `0` disables)
-- **Governed cleanup semantics:** on forced stop, runner kills child processes and parent with `SIGTERM`, then escalates to `SIGKILL` after 5s if still alive; timeout exits with code `124`
-- **Telemetry fields for runaway prevention:** `timeout_killed` and `kill_escalation` (`none|sigterm|sigkill`) in `.cache/test-governor/events.jsonl`
-- **Jest defaults:** shared preset enforces `forceExit: true` and `detectOpenHandles: true`
-- **ESM vs CJS in Jest:** If a test or imported file fails with ESM parsing errors (for example, `Cannot use import statement outside a module` or `import.meta` issues), rerun that test with `JEST_FORCE_CJS=1` to force the CommonJS preset and avoid ESM transform gaps.
+- **Tests run in CI only.** Do not run Jest or e2e commands locally. Push to `dev` and watch CI for results.
+- **CI feedback:** `gh run watch $(gh run list --limit 1 --json databaseId -q '.[0].databaseId')`
+- **GitHub Actions is source of truth for required tests:** rely on CI/merge-gate for test pass/fail gating.
+- **ESM vs CJS in Jest (CI debugging):** If CI fails with ESM parsing errors (`Cannot use import statement outside a module` or `import.meta` issues), add `JEST_FORCE_CJS=1` to the CI command to force the CommonJS preset.
 
 Full policy: [docs/testing-policy.md](docs/testing-policy.md)
 
@@ -119,13 +108,14 @@ Full policy: [docs/testing-policy.md](docs/testing-policy.md)
 
 **Feature workflow**: `/lp-do-fact-find` → `/lp-do-plan` → `/lp-do-build` → `/lp-do-replan` (when tasks are below execution threshold, blocked, or scope shifts)
 
-**Idea generation**: `/idea-generate` — Cabinet Secretary sweep that generates, filters, prioritizes business ideas and seeds lp-do-fact-find docs. Feeds into the feature workflow above.
-- Full pipeline: `/idea-generate` → `/lp-do-fact-find` → `/lp-do-plan` → `/lp-do-build`
+**Idea generation**: `/lp-do-idea-generate` — Cabinet Secretary sweep that generates, filters, prioritizes business ideas and seeds lp-do-fact-find docs. Feeds into the feature workflow above.
+- Full pipeline: `/lp-do-idea-generate` → `/lp-do-fact-find` → `/lp-do-plan` → `/lp-do-build`
 - Spec: `.claude/skills/idea-generate/SKILL.md`
 - Stances: `--stance=improve-data` (default) or `--stance=grow-business` (activates traction mode for market-facing L1-L2 businesses)
 - Shared personas: `.claude/skills/_shared/cabinet/` (filter, prioritizer, dossier template, lens files)
 
 Skills live in `.claude/skills/<name>/SKILL.md`. Claude Code auto-discovers them; Codex reads them directly.
+For diagnostic and utility tool skills, see the index at `.claude/skills/tools-index.md`.
 For a short entrypoint into the workflow (progressive disclosure), see `docs/agents/feature-workflow-guide.md`.
 
 ## Skills
@@ -146,16 +136,15 @@ All skills listed here use the same name in both Claude Code and Codex. The cano
 - `draft-whatsapp`: Draft WhatsApp-ready business messages with concise structure, clear CTA, and compliance-aware guardrails. (file: `.claude/skills/draft-whatsapp/SKILL.md`)
 - `tools-ui-frontend-design`: Create distinctive, production-grade frontend interfaces grounded in this repo's design system. Use when asked to build web components, pages, or applications. (file: `.claude/skills/frontend-design/SKILL.md`)
 - `guide-translate`: Propagate updated EN guide content to all locales using parallel translation. Requires EN audit to be clean first. (file: `.claude/skills/guide-translate/SKILL.md`)
-- `idea-forecast`: Build a 90-day startup forecast and proposed goals from a business idea and product specs using web research. (file: `.claude/skills/idea-forecast/SKILL.md`)
-- `idea-generate`: Radical business growth process auditor. Cabinet Secretary orchestrates multi-lens composite idea generation with attribution, confidence gating, and priority ranking. (file: `.claude/skills/idea-generate/SKILL.md`)
+- `lp-do-idea-forecast`: Build a 90-day startup forecast and proposed goals from a business idea and product specs using web research. (file: `.claude/skills/idea-forecast/SKILL.md`)
+- `lp-do-idea-generate`: Radical business growth process auditor. Cabinet Secretary orchestrates multi-lens composite idea generation with attribution, confidence gating, and priority ranking. (file: `.claude/skills/idea-generate/SKILL.md`)
 - `idea-scan`: Scan docs/business-os/ for changes and create business-relevant ideas from findings. (file: `.claude/skills/idea-scan/SKILL.md`)
-- `lp-assessment-bootstrap`: Bootstrap a brand-dossier.user.md for a business entering the startup loop. Used at S0/S1 when the doc is missing, or at DO before /lp-design-spec. (file: `.claude/skills/lp-assessment-bootstrap/SKILL.md`)
+- `lp-assessment-bootstrap`: Bootstrap a brand-identity-dossier.user.md for a business entering the startup loop. Used at S0/S1 when the doc is missing, or at DO before /lp-design-spec. (file: `.claude/skills/lp-assessment-bootstrap/SKILL.md`)
 - `lp-baseline-merge`: Join startup-loop fan-out outputs (S2B + S3 + S6B) into a single baseline snapshot and draft manifest. (file: `.claude/skills/lp-baseline-merge/SKILL.md`)
-- `lp-bos-sync`: S5B BOS sync stage worker. Persists prioritized baseline outputs to Business OS (D1) via agent API, then emits S5B stage-result.json. (file: `.claude/skills/lp-bos-sync/SKILL.md`)
 - `lp-channels`: Startup channel strategy + GTM skill (S6B). Analyzes channel-customer fit, selects 2-3 launch channels with rationale, and produces a 30-day GTM timeline. (file: `.claude/skills/lp-channels/SKILL.md`)
 - `lp-design-qa`: Audit a built UI against the design spec and design system for visual consistency, accessibility, responsive behavior, and token compliance. (file: `.claude/skills/lp-design-qa/SKILL.md`)
 - `lp-design-spec`: Translate a feature requirement into a concrete frontend design specification mapped to the design system, theme tokens, and per-business brand language. (file: `.claude/skills/lp-design-spec/SKILL.md`)
-- `lp-design-system`: Apply design tokens and system patterns correctly. Reference for semantic colors, spacing, typography, borders, and shadows. Never use arbitrary values. (file: `.claude/skills/lp-design-system/SKILL.md`)
+- `tools-design-system`: Apply design tokens and system patterns correctly. Reference for semantic colors, spacing, typography, borders, and shadows. Never use arbitrary values. (file: `.claude/skills/tools-design-system/SKILL.md`)
 - `lp-do-assessment-01-problem-statement`: Problem framing for new startups (ASSESSMENT-01). Produces a falsifiable problem statement artifact before entering ASSESSMENT intake. Upstream of lp-do-assessment-02-solution-profiling. (file: `.claude/skills/lp-do-assessment-01-problem-statement/SKILL.md`)
 - `lp-do-assessment-02-solution-profiling`: Solution space scanning for new startups (ASSESSMENT-02). Produces a structured deep-research-ready prompt covering 5-10 candidate product-type options with feasibility flags. (file: `.claude/skills/lp-do-assessment-02-solution-profiling/SKILL.md`)
 - `lp-do-assessment-03-solution-selection`: Solution selection gate for new startups (ASSESSMENT-03). Builds an evaluation matrix and produces a shortlist of 1-2 options with elimination rationale. Explicit kill gate. (file: `.claude/skills/lp-do-assessment-03-solution-selection/SKILL.md`)
@@ -182,35 +171,39 @@ All skills listed here use the same name in both Claude Code and Codex. The cano
 - `lp-offer`: Startup offer design skill (S2B). Consolidates ICP, positioning, pricing, and offer design into one artifact with 6 sections. (file: `.claude/skills/lp-offer/SKILL.md`)
 - `lp-onboarding-audit`: Audit an app's onboarding flow against the "Onboarding Done Right" checklist. Produces a planning-ready brief. (file: `.claude/skills/lp-onboarding-audit/SKILL.md`)
 - `lp-other-products`: Produce a deep research prompt for adjacent product range exploration covering customer JTBD, product candidate set, prioritisation rubric, and 90-day MVP plan. (file: `.claude/skills/lp-other-products/SKILL.md`)
-- `lp-prioritize`: S5 startup go-item ranking — score and select top 2-3 items to pursue. (file: `.claude/skills/lp-prioritize/SKILL.md`)
+- `lp-prioritize`: Startup go-item ranking — score and select top 2-3 items to pursue. (file: `.claude/skills/lp-prioritize/SKILL.md`)
 - `lp-readiness`: Startup preflight gate (S1). Lightweight readiness check before entering the offer-building stage. (file: `.claude/skills/lp-readiness/SKILL.md`)
-- `lp-refactor`: Refactor React components for better maintainability, performance, or patterns. Covers hook extraction, component splitting, type safety, memoization, and composition. (file: `.claude/skills/lp-refactor/SKILL.md`)
+- `tools-refactor`: Refactor React components for better maintainability, performance, or patterns. Covers hook extraction, component splitting, type safety, memoization, and composition. (file: `.claude/skills/tools-refactor/SKILL.md`)
 - `lp-seo`: S6B phased SEO strategy skill — keyword research, content clustering, SERP analysis, technical audit, and snippet optimization for any business. (file: `.claude/skills/lp-seo/SKILL.md`)
 - `lp-do-sequence`: Topologically sort plan tasks into correct implementation order, preserve stable task IDs by default, and add explicit dependency/blocker metadata. (file: `.claude/skills/lp-do-sequence/SKILL.md`)
 - `lp-signal-review`: Weekly signal strengthening review for startup loop runs. Audits a run against ten structural signal-strengthening principles and emits a Signal Review artifact with ranked Finding Briefs. (file: `.claude/skills/lp-signal-review/SKILL.md`)
 - `lp-site-upgrade`: Build website-upgrade strategy in three layers: platform capability baseline, per-business upgrade brief, and lp-do-fact-find handoff packet. (file: `.claude/skills/lp-site-upgrade/SKILL.md`)
-- `lp-visual`: Generate or enhance HTML documentation with polished visual diagrams (Mermaid flowcharts, state machines, sequence diagrams, Chart.js dashboards). (file: `.claude/skills/lp-visual/SKILL.md`)
+- `tool-process-audit`: Diagnose a business or engineering process for bottlenecks, risks, and optimization opportunities. Use when asked to review, map, or improve a workflow and return concrete next steps with effort/impact tradeoffs. (file: `.claude/skills/tool-process-audit/SKILL.md`)
+- `tools-bos-design-page`: Generate or enhance HTML documentation with polished visual diagrams (Mermaid flowcharts, state machines, sequence diagrams, Chart.js dashboards). (file: `.claude/skills/tools-bos-design-page/SKILL.md`)
+- `tools-ui-breakpoint-sweep`: Systematically detect responsive layout failures (overflow, clipping, misalignment, broken reflow) across specified viewport widths with screenshot-backed evidence. Invocation name: `tools-ui-breakpoint-sweep`. (file: `.claude/skills/tools-web-breakpoint/SKILL.md`)
+- `tools-ui-contrast-sweep`: Audit UI color contrast and visual-uniformity drift across breakpoints and theme modes; produces screenshot-backed accessibility findings with WCAG-aligned thresholds. (file: `.claude/skills/tools-ui-contrast-sweep/SKILL.md`)
 - `lp-weekly`: S10 weekly orchestration wrapper. Coordinates the full weekly decision, audit/CI, measurement compilation, and experiment lane flows into one deterministic sequence. (file: `.claude/skills/lp-weekly/SKILL.md`)
 - `meta-loop-efficiency`: Weekly startup-loop skill efficiency audit. Scans lp-* + startup-loop + draft-outreach skills with deterministic heuristics and emits a ranked opportunity artifact. (file: `.claude/skills/meta-loop-efficiency/SKILL.md`)
-- `meta-reflect`: Capture session learnings and propose targeted improvements to docs, skills, or core agent instructions. Evidence-based only — closes the feedback loop directly by updating existing files. (file: `.claude/skills/meta-reflect/SKILL.md`)
+- `tools-meta-reflect`: Capture session learnings and propose targeted improvements to docs, skills, or core agent instructions. Evidence-based only — closes the feedback loop directly by updating existing files. (file: `.claude/skills/tools-meta-reflect/SKILL.md`)
 - `meta-user-test`: Run a repeatable two-layer site audit: full sitemap JS-off coverage for complete issue inventory, then focused JS-on flow checks for hydration/booking UX. (file: `.claude/skills/meta-user-test/SKILL.md`)
+- `ops-ci-fix`: Run typecheck and lint scoped to changed packages, fix all errors iteratively, and commit a clean state. Offload-ready for Codex. Terminal condition is all affected packages pass typecheck and lint with zero errors. (file: `.claude/skills/ops-ci-fix/SKILL.md`)
 - `ops-git-recover`: Recover from confusing git states. Use when git status is unexpected, commits seem lost, you have a detached HEAD, or merge conflicts are overwhelming. (file: `.claude/skills/ops-git-recover/SKILL.md`)
 - `ops-inbox`: Process pending Brikette customer emails and generate draft responses using MCP tools. (file: `.claude/skills/ops-inbox/SKILL.md`)
 - `ops-ship`: Ship local changes to origin/dev with hard-enforced git safety policy, integrator-shell lock/guard flow, validate-changes gating, and CI watch-fix loops until required checks pass. (file: `.claude/skills/ops-ship/SKILL.md`)
-- `review-plan-status`: Report on the status of incomplete plans — how many tasks remain in each. Optionally lp-do-factcheck plans before reporting. (file: `.claude/skills/review-plan-status/SKILL.md`)
+- `tools-review-plan-status`: Report on the status of incomplete plans — how many tasks remain in each. Optionally lp-do-factcheck plans before reporting. (file: `.claude/skills/tools-review-plan-status/SKILL.md`)
 - `startup-loop`: Chat command wrapper for operating Startup Loop runs. Supports /startup-loop start|status|submit|advance with strict stage gating, prompt handoff, and Business OS sync checks. (file: `.claude/skills/startup-loop/SKILL.md`)
 
 ### Design & Visual routing
 
 When the user's request involves building or modifying UI:
 1. Load `tools-ui-frontend-design` for aesthetic direction grounded in the design system
-2. Reference `lp-design-system` for token quick-ref during implementation
-3. After significant UI work, suggest `/lp-visual` to document the feature visually
+2. Reference `tools-design-system` for token quick-ref during implementation
+3. After significant UI work, suggest `/tools-bos-design-page` to document the feature visually
 
 When the user's request involves documentation or diagrams:
-1. Load `lp-visual` for diagram/chart creation
+1. Load `tools-bos-design-page` for diagram/chart creation
 2. If the doc is for a specific business, derive palette from the brand dossier (see `references/css-variables.md` Brand-Derived Palettes)
-3. Reference `lp-design-system` for consistent color language
+3. Reference `tools-design-system` for consistent color language
 
 ### How to use `lp-*` skills
 
@@ -416,7 +409,7 @@ After completing significant work, consider capturing learnings to improve futur
 - Discovered gaps in documentation or skills
 
 **How to reflect:**
-1. Use `/meta-reflect` (or read `.claude/skills/meta-reflect/SKILL.md`)
+1. Use `/tools-meta-reflect` (or read `.claude/skills/tools-meta-reflect/SKILL.md`)
 2. Follow the skill workflow: identify friction, classify by layer, propose atomic changes to existing docs/skills
 3. All improvements go into existing target files — no separate learnings store
 

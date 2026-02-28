@@ -123,6 +123,15 @@ baseshop_runner_extract_worker_count() {
   printf 0
 }
 
+# CI-only test execution policy: block local test invocations when BASESHOP_CI_ONLY_TESTS=1.
+# CI environments (GitHub Actions sets CI=true) bypass this block automatically.
+if [[ "${BASESHOP_CI_ONLY_TESTS:-0}" == "1" && "${CI:-}" != "true" ]]; then
+  echo "BLOCKED: local test execution is disabled (BASESHOP_CI_ONLY_TESTS=1)." >&2
+  echo "Tests run in GitHub Actions CI only. Push your changes and monitor:" >&2
+  echo "  gh run watch \$(gh run list --limit 1 --json databaseId -q '.[0].databaseId')" >&2
+  exit 1
+fi
+
 # pnpm run forwards a separator token before script args; normalize it.
 while [[ "${1:-}" == "--" ]]; do
   shift
@@ -250,8 +259,22 @@ baseshop_terminate_command_tree() {
     return 0
   fi
 
-  pkill -TERM -P "$target_pid" 2>/dev/null || true
-  kill -TERM "$target_pid" 2>/dev/null || true
+  # Attempt process-group kill to reach grandchildren (jest workers).
+  # Requires the command to have been spawned via setsid into its own pgid.
+  local pgid
+  pgid="$(ps -o pgid= -p "$target_pid" 2>/dev/null | tr -d ' ' || true)"
+
+  # Safety guard: never kill our own shell's process group or pgid 0.
+  local own_pgid
+  own_pgid="$(ps -o pgid= -p "$$" 2>/dev/null | tr -d ' ' || true)"
+
+  if [[ -n "$pgid" && "$pgid" =~ ^[0-9]+$ && "$pgid" != "0" && "$pgid" != "$own_pgid" ]]; then
+    kill -TERM -- "-$pgid" 2>/dev/null || true
+  else
+    # Fallback: pgid unavailable or unsafe — use direct children only.
+    pkill -TERM -P "$target_pid" 2>/dev/null || true
+    kill -TERM "$target_pid" 2>/dev/null || true
+  fi
   baseshop_record_kill_escalation "sigterm"
 
   local grace_start="$SECONDS"
@@ -260,8 +283,12 @@ baseshop_terminate_command_tree() {
   done
 
   if kill -0 "$target_pid" 2>/dev/null; then
-    pkill -KILL -P "$target_pid" 2>/dev/null || true
-    kill -KILL "$target_pid" 2>/dev/null || true
+    if [[ -n "$pgid" && "$pgid" =~ ^[0-9]+$ && "$pgid" != "0" && "$pgid" != "$own_pgid" ]]; then
+      kill -KILL -- "-$pgid" 2>/dev/null || true
+    else
+      pkill -KILL -P "$target_pid" 2>/dev/null || true
+      kill -KILL "$target_pid" 2>/dev/null || true
+    fi
     baseshop_record_kill_escalation "sigkill"
   fi
 }
@@ -382,7 +409,15 @@ fi
 export BASESHOP_GOVERNED_CONTEXT=1
 
 set +e
-"${command[@]}" &
+# Spawn the command in a dedicated process group so that kill -TERM -- -$pgid
+# reaches grandchildren (jest workers), not only direct children.
+# setsid creates a new session+process-group; command PID becomes the leader.
+if command -v setsid >/dev/null 2>&1; then
+  setsid "${command[@]}" &
+else
+  echo "WARNING: setsid not available; jest worker processes may be orphaned on kill" >&2
+  "${command[@]}" &
+fi
 command_pid="$!"
 
 timeout_deadline_sec=0

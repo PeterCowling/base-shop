@@ -1,3 +1,4 @@
+/* eslint-disable ds/container-widths-only-at, ds/min-tap-size -- BRIK-3 prime DS rules deferred */
 'use client';
 
 /**
@@ -114,7 +115,7 @@ function StaffLookupContent() {
   // Show loading while checking auth
   if (!user) {
     return (
-      <div className="min-h-screen bg-muted p-4">
+      <div className="min-h-svh bg-muted p-4">
         <div className="mx-auto mt-12 max-w-md rounded-xl bg-card p-6 shadow-sm">
           <h1 className="text-xl font-bold text-foreground">Staff access</h1>
           <p className="mt-2 text-sm text-muted-foreground">
@@ -127,7 +128,7 @@ function StaffLookupContent() {
               autoComplete="one-time-code"
               value={pin}
               onChange={(event) => setPin(event.target.value)}
-              className="w-full rounded-lg border border-border px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+              className="w-full rounded-lg border border-border px-3 py-2 text-foreground focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
               placeholder="PIN"
             />
             <button
@@ -155,7 +156,7 @@ function StaffLookupContent() {
 
   if (!role) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex min-h-svh items-center justify-center">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </div>
     );
@@ -166,7 +167,7 @@ function StaffLookupContent() {
   }
 
   return (
-    <div className="min-h-screen bg-muted p-4">
+    <div className="min-h-svh bg-muted p-4">
       <div className="mx-auto max-w-md">
         {/* Header */}
         <div className="mb-6 flex items-center gap-3">
@@ -192,7 +193,7 @@ function StaffLookupContent() {
               value={inputCode}
               onChange={(e) => setInputCode(e.target.value.toUpperCase())}
               placeholder={t('staffLookup.placeholder')}
-              className="flex-1 rounded-lg border border-border px-4 py-3 text-lg font-mono uppercase focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+              className="flex-1 rounded-lg border border-border px-4 py-3 text-lg font-mono uppercase focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
               disabled={isLoading}
             />
             <button
@@ -335,7 +336,7 @@ function StaffLookupContent() {
 export default function StaffLookupPage() {
   return (
     <Suspense fallback={
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex min-h-svh items-center justify-center">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </div>
     }>

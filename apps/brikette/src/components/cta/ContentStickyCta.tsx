@@ -1,11 +1,11 @@
 "use client";
-/* eslint-disable ds/no-hardcoded-copy, ds/absolute-parent-guard, ds/no-nonlayered-zindex -- BRIK-2145 [ttl=2026-12-31] Temporary CTA variant copy/layout override during funnel experiment. */
+/* eslint-disable ds/no-hardcoded-copy, ds/absolute-parent-guard, ds/no-nonlayered-zindex, ds/no-raw-tailwind-color -- BRIK-2145 [ttl=2026-12-31] Temporary CTA variant copy/layout override during funnel experiment. */
 
 // apps/brikette/src/components/cta/ContentStickyCta.tsx
 // Sticky CTA Variant A for content pages - opens BookingModal (generic availability)
 // Pattern reference: StickyBookNow, but opens modal instead of deep-link
 
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
 import { ArrowRight, BadgeCheck, Sparkles, X } from "lucide-react";
@@ -16,13 +16,11 @@ import { resolveBookingCtaLabel } from "@acme/ui/shared";
 import type { AppLanguage } from "@/i18n.config";
 import { type CtaLocation, fireCtaClick } from "@/utils/ga4-events";
 
-const CONTENT_STICKY_CTA_STORAGE_KEY = "content-sticky-cta-dismissed";
-
 type ContentStickyCtaProps = {
   lang: AppLanguage;
   ctaLocation: Extract<
     CtaLocation,
-    "guide_detail" | "about_page" | "bar_menu" | "breakfast_menu" | "how_to_get_here" | "assistance"
+    "guide_detail" | "about_page" | "bar_menu" | "breakfast_menu" | "how_to_get_here" | "assistance" | "experiences_page"
   >;
 };
 
@@ -40,14 +38,12 @@ function ContentStickyCta({ lang, ctaLocation }: ContentStickyCtaProps): JSX.Ele
     }
 
     try {
-      const storedValue = window.sessionStorage.getItem(CONTENT_STICKY_CTA_STORAGE_KEY);
-      if (storedValue === "true") {
-        setIsDismissed(true);
-      }
+      const storedValue = window.sessionStorage.getItem(`content-sticky-cta-dismissed:${ctaLocation}`);
+      setIsDismissed(storedValue === "true");
     } catch {
       // Ignore storage access errors (e.g. Safari private mode).
     }
-  }, []);
+  }, [ctaLocation]);
 
   const perksEyebrow = useMemo(
     () => (tokensReady ? (tTokens("directBookingPerks") as string) : ""),
@@ -115,15 +111,16 @@ function ContentStickyCta({ lang, ctaLocation }: ContentStickyCtaProps): JSX.Ele
   const onDismiss = useCallback(() => {
     if (typeof window !== "undefined") {
       try {
-        window.sessionStorage.setItem(CONTENT_STICKY_CTA_STORAGE_KEY, "true");
+        window.sessionStorage.setItem(`content-sticky-cta-dismissed:${ctaLocation}`, "true");
       } catch {
         // Ignore storage access errors (e.g. Safari private mode).
       }
     }
     setIsDismissed(true);
-  }, []);
+  }, [ctaLocation]);
 
-  const onCtaClick = useCallback(() => {
+  const onCtaClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
     // Fire cta_click event with canonical enums
     fireCtaClick({
       ctaId: "content_sticky_check_availability",
@@ -172,8 +169,8 @@ function ContentStickyCta({ lang, ctaLocation }: ContentStickyCtaProps): JSX.Ele
             <p className="text-lg font-semibold text-brand-heading sm:text-xl">{highlightHeadline}</p>
             <p className="mt-1 text-sm text-brand-text/80 sm:text-base">{highlightSubcopy}</p>
           </div>
-          <button
-            type="button"
+          <a
+            href={`/${lang}/book`}
             onClick={onCtaClick}
             className="group relative inline-flex min-h-11 min-w-11 w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-brand-secondary px-6 py-3 text-base font-semibold text-brand-heading shadow-lg transition-transform focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-primary hover:scale-105 hover:bg-brand-secondary/90 sm:px-5 sm:py-3 sm:text-sm"
             aria-label={ctaLabel}
@@ -186,7 +183,7 @@ function ContentStickyCta({ lang, ctaLocation }: ContentStickyCtaProps): JSX.Ele
               <span>{ctaLabel}</span>
               <ArrowRight aria-hidden className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </span>
-          </button>
+          </a>
         </div>
       </Section>
     </div>

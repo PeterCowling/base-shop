@@ -18,7 +18,7 @@ const roomsDataMock = [
     basePrice: { amount: 100, currency: "EUR" },
     seasonalPrices: [],
     availability: { totalBeds: 2, defaultRelease: 2 },
-    imagesRaw: [],
+    images: { bed: "/img/test-bed.webp", bathroom: "/img/test-bathroom.webp" },
     landingImage: "/landing.jpg",
     roomsHref: "/rooms#room_1",
   },

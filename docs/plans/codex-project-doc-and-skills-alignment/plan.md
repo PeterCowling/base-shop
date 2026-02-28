@@ -25,7 +25,7 @@ Auto-Build-Intent: plan-only
 This plan makes Codex startup instructions and skill discovery reliable without adding maintenance debt. It has two outcomes: (1) eliminate AGENTS.md truncation risk and keep critical instructions in always-loaded docs; (2) provide native Codex skill discovery via `.agents/skills/` with robust validation. The plan explicitly avoids mechanisms that are ineffective with Codex loader semantics (`project_doc_fallback_filenames` as an additive loader at directories where `AGENTS.md` already exists).
 
 ## Active tasks
-- [ ] TASK-01: Refactor AGENTS.md to a durable size budget and preserve canonical rules
+- [x] TASK-01: Refactor AGENTS.md to a durable size budget and preserve canonical rules - **Complete (2026-02-28)**
 - [x] TASK-02: Add `.codex/config.toml` with only effective project-doc controls - **Complete (2026-02-28)**
 - [ ] TASK-03: Move Codex-critical guidance into always-loaded instruction surface
 - [x] TASK-04: Create `.agents/skills/` native discovery mirror - **Complete (2026-02-28)**
@@ -108,7 +108,7 @@ It did not validate completeness against `.claude/skills/*/SKILL.md`, symlink co
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Refactor AGENTS.md to durable size budget and move verbose policy to linked docs | 88% | M | Pending | - | TASK-03, TASK-08 |
+| TASK-01 | IMPLEMENT | Refactor AGENTS.md to durable size budget and move verbose policy to linked docs | 88% | M | Complete (2026-02-28) | - | TASK-03, TASK-08 |
 | TASK-02 | IMPLEMENT | Add `.codex/config.toml` with effective settings only (`project_doc_max_bytes`) | 95% | S | Complete (2026-02-28) | - | TASK-08 |
 | TASK-03 | IMPLEMENT | Ensure Codex-critical guidance is in always-loaded runbook surface | 82% | M | Pending | TASK-01 | TASK-08 |
 | TASK-04 | IMPLEMENT | Create `.agents/skills/` native mirror from `.claude/skills/*/SKILL.md` | 90% | M | Complete (2026-02-28) | - | TASK-05, TASK-08 |
@@ -132,7 +132,7 @@ It did not validate completeness against `.claude/skills/*/SKILL.md`, symlink co
 - **Deliverable:** `AGENTS.md` at repo root, trimmed to ≤ 24,576 bytes with all removed bulk content pointer-backed by existing docs.
 - **Execution-Skill:** lp-do-build
 - **Affects:** `AGENTS.md`. Pointer targets must already exist — no new docs created in this task.
-- **Status:** Pending
+- **Status:** Complete (2026-02-28)
 - **Confidence:** 88% (Implementation 90 / Approach 90 / Impact 88)
 - **Scope:** Reduce `AGENTS.md` to ≤ 24 KiB by replacing bulky enumerations with pointers to canonical indexes/docs while preserving policy-critical sections inline. The skills catalog (lines 121–215, ~16 KiB) is the primary cut; replace with: `”Discover skills: scripts/agents/list-skills (Claude Code: auto-discovered; Codex: native via .agents/skills/)”`. Removing the skills catalog alone is sufficient to reach the 24 KiB target (34,557 − 16,354 = ~18,203 bytes) — `## User-Facing Step-by-Step Standard` and other verbose sections should NOT be moved unless future growth requires it. Confirm with operator which sections to retain vs move before execution.
 - **VC-01:**
@@ -147,6 +147,12 @@ It did not validate completeness against `.claude/skills/*/SKILL.md`, symlink co
 - **Rollout/rollback:** Single-commit change to one file. Immediate for all agent sessions. Rollback: `git revert <commit>`.
 - **Documentation impact:** None — pointer targets are existing docs; no new docs created.
 - **What would make this >=90%:** operator confirms exact sections to move vs retain before execution begins.
+- **Build evidence (2026-02-28):**
+  - Replaced the oversized `## Skills` catalog block with pointer-based discovery guidance (scripts + canonical index paths).
+  - VC-01 PASS: `wc -c AGENTS.md` = 18564 (<= 24576).
+  - VC-01 PASS: core sections retained inline (`No Shortcuts`, `Commands`, `Validation Gate`, `Git Rules`, `Testing Rules`, `Task Workflow`, `Plan Confidence Policy`, `Multi-Agent Environment`).
+  - VC-01 PASS: removed-content pointers resolve to existing paths: `.claude/skills/tools-index.md`, `docs/agents/feature-workflow-guide.md`, `scripts/agents/list-skills`.
+  - Scope note: only skills-catalog compression was required to hit budget; no additional policy sections were moved out in this task.
 
 ### TASK-02: Add effective `.codex/config.toml`
 - **Type:** IMPLEMENT

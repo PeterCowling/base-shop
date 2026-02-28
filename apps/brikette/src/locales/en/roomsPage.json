@@ -87,7 +87,7 @@
       }
     },
     "room_10": {
-      "title": "Premium Mixed Dorm",
+      "title": "Mixed Ensuite Dorm",
       "bed_intro": "When you want six beds and a superior bathroom.",
       "bed_description": "Our Premium Dorm is a mixed dorm with three dorm beds, accommodating up to six guests in total. Located on the fourth floor, it includes air conditioning, secure keycard door entry and an ensuite bathroom (no view). Bed linen and a towel are provided on check-in.",
       "facilities": [
@@ -106,7 +106,7 @@
       }
     },
     "room_11": {
-      "title": "Superior Female Dorm – Large Terrace",
+      "title": "Female Dorm – Large Sea Terrace",
       "bed_intro": "The best views, from a spacious terrace, and a great bathroom.",
       "bed_description": "Our Superior All-Female Dorm includes three dorm beds for a total of six beds, accommodating up to six guests. Located on the fourth floor, it has air conditioning, secure keycard door entry, an ensuite bathroom and a sea-view with an extra-large terrace. Bed linen and a towel are provided on check-in.",
       "facilities": [
@@ -125,7 +125,7 @@
       }
     },
     "room_12": {
-      "title": "Superior Mixed Dorm",
+      "title": "Mixed Dorm – Sea Terrace",
       "bed_intro": "The best views, from a spacious terrace, and a great bathroom.",
       "bed_description": "Our Superior Mixed Dorm features three dorm beds for a total of six beds, accommodating up to six guests. Located on the fourth floor, it includes air conditioning, secure keycard door entry, a private bathroom and a sea-view with an extra-large terrace. Bed linen and a towel are provided on check-in.",
       "facilities": [
@@ -144,7 +144,7 @@
       }
     },
     "room_3": {
-      "title": "Value Female Dorm",
+      "title": "8-Bed Female Dorm",
       "bed_intro": "A budget-friendly choice for female travellers.",
       "bed_description": "Our Value All-Female Dorm accommodates up to eight guests across four dorm beds. Located on the third floor, it offers air conditioning, secure keycard door entry and access to a shared female bathroom. There is no view. Bed linen and a towel are provided on check-in.",
       "facilities": [
@@ -163,7 +163,7 @@
       }
     },
     "room_4": {
-      "title": "Value Mixed Dorm",
+      "title": "8-Bed Mixed Dorm",
       "bed_intro": "A budget-friendly choice for male and female travellers.",
       "bed_description": "Our Value Mixed Dorm accommodates up to eight guests across four dorm beds. Located on the third floor, it offers air conditioning, secure keycard door entry and access to a shared female bathroom. There is no view. Bed linen and a towel are provided on check-in.",
       "facilities": [
@@ -182,7 +182,7 @@
       }
     },
     "room_5": {
-      "title": "Superior Female Dorm – Sea View",
+      "title": "Female Sea View Dorm",
       "bed_intro": "Stunning sea vistas and a private bathroom.",
       "bed_description": "Our Superior All-Female Dorm accommodates up to six guests in three dorm beds. Located on the third floor, it provides an ensuite bathroom, a sea-view terrace, air conditioning and secure keycard door entry. Bed linen and a towel are provided on check-in.",
       "facilities": [
@@ -201,7 +201,7 @@
       }
     },
     "room_6": {
-      "title": "Superior Female Dorm – 7 Beds",
+      "title": "7-Bed Female Sea View Dorm",
       "bed_intro": "Stunning sea vistas and a private bathroom.",
       "bed_description": "Our Superior All-Female Dorm features three dorm beds plus one single bed, accommodating up to seven guests. Located on the third floor, it includes an ensuite bathroom, sea-view terrace, air conditioning and secure keycard door entry. Bed linen and a towel are provided on check-in.",
       "facilities": [
@@ -220,7 +220,7 @@
       }
     },
     "room_9": {
-      "title": "Deluxe Mixed Room",
+      "title": "Mixed Room – Single Beds",
       "bed_intro": "A budget-friendly way to get a three-bed dorm.",
       "bed_description": "Our Deluxe Mixed Room offers three single beds, accommodating up to three guests. Located on the fourth floor, it provides an ensuite bathroom, a courtyard view, air conditioning and secure keycard door entry. Bed linen and a towel are provided on check-in.",
       "facilities": [
@@ -239,7 +239,7 @@
       }
     },
     "room_8": {
-      "title": "All Female Dorm with one Bunkbed",
+      "title": "Female Garden Room",
       "bed_intro": "A budget-friendly option for two female travellers.",
       "bed_description": "Our All Female Dorm with one Bunkbed has one bunk (dorm) bed, accommodating up to two guests. Located on the third floor, it offers air conditioning, secure keycard door entry, a garden view and is next to the shared female bathroom. Bed linen and a towel are provided on check-in.",
       "facilities": [

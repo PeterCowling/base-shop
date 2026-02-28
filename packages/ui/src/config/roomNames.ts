@@ -3,14 +3,13 @@
 // Order matches roomsData.ts catalogue order.
 
 export const ROOM_DROPDOWN_NAMES: Readonly<Record<string, string>> = {
-  double_room: "Double Room",
-  room_10: "Premium Mixed Dorm",
-  room_11: "Superior Female Dorm – Large Terrace",
-  room_12: "Superior Mixed Dorm",
-  room_3: "Value Female Dorm",
-  room_4: "Value Mixed Dorm",
-  room_5: "Superior Female Dorm – Sea View",
-  room_6: "Superior Female Dorm – 7 Beds",
-  room_9: "Deluxe Mixed Room",
-  room_8: "All Female Dorm with one Bunkbed",
+  room_10: "Mixed Ensuite Dorm",
+  room_11: "Female Dorm – Large Sea Terrace",
+  room_12: "Mixed Dorm – Sea Terrace",
+  room_3: "8-Bed Female Dorm",
+  room_4: "8-Bed Mixed Dorm",
+  room_5: "Female Sea View Dorm",
+  room_6: "7-Bed Female Sea View Dorm",
+  room_9: "Mixed Room – Single Beds",
+  room_8: "Female Garden Room",
 };

@@ -314,7 +314,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-02-28T09:41:25.048Z";
+  var GEN_TS = "2026-02-28T10:17:19.353Z";
 
   var IDEA_ITEMS = [
     {
@@ -758,6 +758,23 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Room names in dropdown are English-only — translate room names in dropdown to IT/DE/FR locales",
+      "body": "ROOM_DROPDOWN_NAMES in roomNames.ts is hardcoded EN; non-English visitors will see English room names in the Rooms dropdown",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-02-28T10:15:13.282Z",
+      "path": "docs/plans/_archive/brik-header-rooms-dropdown/results-review.user.md",
+      "idea_key": "33797787d28b82384dbdf4bb21b855def7a92989",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "Static base-price display on /rooms (no-date context)",
       "body": "plan explicitly deferred showing price on /rooms when no dates are set — cards show button only",
       "suggested_action": "create card (follow-on feature; would complete the price-display story for the /rooms page)",
@@ -1156,6 +1173,23 @@
       "date": "2026-02-25T22:34:30.738Z",
       "path": "docs/plans/do-skills-bos-decoupling/results-review.user.md",
       "idea_key": "c5a46e9603aeec9f92f8561051fbaed85592406d",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Keyboard accessibility bug in onOpenChange (o=true not handled) was only caught during test writing, not during implementation",
+      "body": "TASK-02 shipped with controlled DropdownMenu that ignored onOpenChange(true), making keyboard open impossible; found in TASK-04",
+      "suggested_action": "spike (consider accessibility lint rule for Radix controlled components)",
+      "source": "results-review.user.md",
+      "date": "2026-02-28T10:15:13.282Z",
+      "path": "docs/plans/_archive/brik-header-rooms-dropdown/results-review.user.md",
+      "idea_key": "7140bff490a6bc36695c3f386e815749a3690ac8",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",

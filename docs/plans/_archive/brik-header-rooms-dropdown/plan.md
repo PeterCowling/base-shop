@@ -1,11 +1,18 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: UI
 Workstream: Engineering
 Created: 2026-02-28
 Last-reviewed: 2026-02-28
 Last-updated: 2026-02-28
+Task-04-build-evidence: >
+  Fix onOpenChange: was only handling o=false; now handles o=true → setOpenKey(key) so
+  Enter/Space/click on chevron trigger correctly opens dropdown (keyboard a11y AC met).
+  buildNavLinks.test.ts: TC-01–04 all green (11 children, distinct labels, /rooms/{id},
+  non-rooms=undefined). DesktopHeader.test.tsx: trigger renders, 11 menuitems on click,
+  Double Room href correct, Escape closes. MobileMenu.test.tsx: expand/collapse, sub-link
+  calls setMenuOpen(false), aria-expanded state. Typecheck+lint clean. Commit: e9dc432f1e.
 Wave-2-build-evidence: >
   TASK-02: DesktopHeader — useState+useRef added, DropdownMenu primitives imported,
   openKey+timerRef state, hover debounce (150ms) on wrapper+DropdownMenuContent,
@@ -35,7 +42,7 @@ Add a dropdown flyout to the "Rooms" nav link in the Brikette site header. On de
 - [x] TASK-01: Extract shared room names and extend NavItem with children
 - [x] TASK-02: Desktop dropdown in DesktopHeader
 - [x] TASK-03: Mobile accordion in MobileMenu
-- [ ] TASK-04: Tests for new nav behavior
+- [x] TASK-04: Tests for new nav behavior
 
 ## Goals
 - Direct-link each of the 10 `/rooms/{id}` pages from the primary nav on both desktop and mobile
@@ -92,7 +99,7 @@ Add a dropdown flyout to the "Rooms" nav link in the Brikette site header. On de
 | TASK-01 | IMPLEMENT | Extract shared room names + extend NavItem + wire children | 85% | S | Complete (2026-02-28) | - | TASK-02, TASK-03 |
 | TASK-02 | IMPLEMENT | Desktop hover DropdownMenu in DesktopHeader | 80% | M | Complete (2026-02-28) | TASK-01 | TASK-04 |
 | TASK-03 | IMPLEMENT | Mobile accordion in MobileMenu | 85% | S | Complete (2026-02-28) | TASK-01 | TASK-04 |
-| TASK-04 | IMPLEMENT | Tests for new nav behavior | 75% | S | Pending | TASK-02, TASK-03 | - |
+| TASK-04 | IMPLEMENT | Tests for new nav behavior | 75% | S | Complete (2026-02-28) | TASK-02, TASK-03 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |

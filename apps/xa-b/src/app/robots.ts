@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 
+export const dynamic = "force-static";
+
 function isStealthEnabled() {
   return ["1", "true", "yes", "on"].includes(
     (

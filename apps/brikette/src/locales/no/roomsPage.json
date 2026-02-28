@@ -52,7 +52,7 @@
       }
     },
     "room_10": {
-      "title": "Blandet sovesal Premium",
+      "title": "Blandet sovesal – eget bad",
       "bed_intro": "Når du vil ha seks senger og et bedre bad.",
       "bed_description": "Premium-sovesal er en blandet sovesal med tre senger (totalt seks), for opptil seks gjester. Ligger i fjerde etasje, med aircondition, nøkkelkort og eget bad (ingen utsikt). Sengetøy og håndkle gis ved innsjekk.",
       "facilities": [
@@ -71,7 +71,7 @@
       }
     },
     "room_11": {
-      "title": "Kvinnerom Superior – Stor terrasse",
+      "title": "Kvinnerom – stor havterrasse",
       "bed_intro": "De beste utsiktene fra en romslig terrasse og et flott bad.",
       "bed_description": "Kvinnerom Superior har tre sovesalsenger (totalt seks), for opptil seks gjester. Ligger i fjerde etasje; aircondition, nøkkelkort, eget bad og havutsikt med ekstra stor terrasse. Sengetøy og håndkle ved innsjekk.",
       "facilities": [
@@ -90,7 +90,7 @@
       }
     },
     "room_12": {
-      "title": "Blandet sovesal Superior",
+      "title": "Blandet sovesal – havterrasse",
       "bed_intro": "Flotte utsikter fra romslig terrasse og godt bad.",
       "bed_description": "Blandet sovesal Superior har tre sovesalsenger (totalt seks) for opptil seks gjester. I fjerde etasje; aircondition, nøkkelkort, privat bad og havutsikt med ekstra stor terrasse. Sengetøy og håndkle ved innsjekk.",
       "facilities": [
@@ -109,7 +109,7 @@
       }
     },
     "room_3": {
-      "title": "Kvinnerom Value",
+      "title": "Kvinnerom – 8 senger",
       "bed_intro": "Et rimelig valg for kvinnelige reisende.",
       "bed_description": "Kvinnerom Value rommer opptil åtte gjester på fire senger. Ligger i tredje etasje; aircondition, nøkkelkort og tilgang til delt bad (kun kvinner). Ingen utsikt. Sengetøy og håndkle ved innsjekk.",
       "facilities": [
@@ -128,7 +128,7 @@
       }
     },
     "room_4": {
-      "title": "Blandet sovesal Value",
+      "title": "Blandet sovesal – 8 senger",
       "bed_intro": "Et rimelig valg for både kvinner og menn.",
       "bed_description": "Blandet sovesal Value rommer opptil åtte gjester på fire senger. I tredje etasje; aircondition, nøkkelkort og tilgang til delt bad (kvinner). Ingen utsikt. Sengetøy og håndkle ved innsjekk.",
       "facilities": [
@@ -147,7 +147,7 @@
       }
     },
     "room_5": {
-      "title": "Kvinnerom Superior – Havutsikt",
+      "title": "Kvinnerom – havutsikt",
       "bed_intro": "Fantastisk havutsikt og eget bad.",
       "bed_description": "Kvinnerom Superior har tre senger (totalt seks), for opptil seks gjester. Tredje etasje; eget bad, terrasse med havutsikt, aircondition og nøkkelkort. Sengetøy og håndkle ved innsjekk.",
       "facilities": [
@@ -166,7 +166,7 @@
       }
     },
     "room_6": {
-      "title": "Kvinnerom Superior – 7 senger",
+      "title": "Kvinnerom – 7 senger med havutsikt",
       "bed_intro": "Flott havutsikt og eget bad.",
       "bed_description": "Kvinnerom Superior har tre sovesalsenger pluss én enkeltseng (totalt 7) for opptil sju gjester. På tredje etasje; eget bad, terrasse med havutsikt, aircondition og nøkkelkort. Sengetøy og håndkle ved innsjekk.",
       "facilities": [
@@ -185,7 +185,7 @@
       }
     },
     "room_9": {
-      "title": "Blandet Deluxe-rom",
+      "title": "Blandet rom – enkeltsenger",
       "bed_intro": "Rimelig måte å få et rom med tre senger.",
       "bed_description": "Deluxe-blandingsrom har tre enkeltsenger for opptil tre gjester. Ligger i fjerde etasje og har eget bad, utsikt mot gårdsrom, aircondition og nøkkelkort. Sengetøy og håndkle ved innsjekk.",
       "facilities": [
@@ -204,7 +204,7 @@
       }
     },
     "room_8": {
-      "title": "Kvinnerom med én køyeseng",
+      "title": "Kvinnerom – hageutsikt",
       "bed_intro": "Et rimelig alternativ for to kvinnelige reisende.",
       "bed_description": "Dette kvinnerommet har én køyeseng (sovesalseng) for opptil to gjester. Ligger i tredje etasje; aircondition, nøkkelkort, hageutsikt og ved siden av delt bad (kvinner). Sengetøy og håndkle ved innsjekk.",
       "facilities": [
@@ -304,5 +304,10 @@
   "priceUnits": {
     "perRoom": "rom",
     "perBed": "seng"
+  },
+  "date": {
+    "stayHelper": "2–8 nights",
+    "clearDates": "Clear dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
   }
 }

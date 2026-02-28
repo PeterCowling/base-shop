@@ -82,6 +82,20 @@ jest.mock("@/hooks/useAvailabilityForRoom", () => ({
   useAvailabilityForRoom: () => ({ availabilityRoom: undefined, loading: false, error: null }),
 }));
 
+// Stub DateRangePicker — exposes a button that fires onRangeChange for TC-DP-02
+jest.mock("@/components/booking/DateRangePicker", () => ({
+  __esModule: true,
+  DateRangePicker: ({ onRangeChange }: { onRangeChange: (range: { from: Date; to: Date }) => void }) => (
+    <button
+      type="button"
+      data-cy="mock-date-range-picker"
+      onClick={() => onRangeChange({ from: new Date(2025, 5, 15), to: new Date(2025, 5, 17) })}
+    >
+      Mock DateRangePicker
+    </button>
+  ),
+}));
+
 // Stub other components that cause import errors in test environment
 jest.mock("@/components/booking/LocationInline", () => ({ __esModule: true, default: () => null }));
 jest.mock("@/components/landing/SocialProofSection", () => ({ __esModule: true, default: () => null }));
@@ -166,20 +180,20 @@ describe("RoomDetailContent — date picker (TASK-DP)", () => {
     );
   });
 
-  // TC-DP-02: Changing check-in input → router.replace called with new check-in
-  it("TC-DP-02: check-in change → router.replace with new checkin param", async () => {
+  // TC-DP-02: Date range change → router.replace called with new checkin/checkout params
+  it("TC-DP-02: range change → router.replace with new checkin param", async () => {
     const todayIso = getTodayIso();
-    const tomorrow = addDays(todayIso, 1);
     // Provide existing params so no default seed fires
     renderRoomDetail(new URLSearchParams(`checkin=${todayIso}&checkout=${addDays(todayIso, 2)}&pax=1`));
 
-    const checkInInput = screen.getByLabelText(/check.?in/i) as HTMLInputElement;
-    fireEvent.change(checkInInput, { target: { value: tomorrow } });
+    // The mock DateRangePicker fires onRangeChange({ from: 2025-06-15, to: 2025-06-17 }) on click
+    const mockPicker = screen.getByRole("button", { name: /mock date range picker/i });
+    fireEvent.click(mockPicker);
 
     await waitFor(() => {
       const replaceCalls = mockReplace.mock.calls;
       const hasNewCheckin = replaceCalls.some(
-        (args) => typeof args[0] === "string" && args[0].includes(`checkin=${tomorrow}`)
+        (args) => typeof args[0] === "string" && args[0].includes("checkin=2025-06-15")
       );
       expect(hasNewCheckin).toBe(true);
     }, { timeout: 1000 });

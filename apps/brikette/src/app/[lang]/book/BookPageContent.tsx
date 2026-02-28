@@ -9,6 +9,8 @@ import { useSearchParams } from "next/navigation";
 
 import { Section } from "@acme/design-system/atoms";
 
+import type { DateRange } from "@/components/booking/DateRangePicker";
+import { DateRangePicker } from "@/components/booking/DateRangePicker";
 import { DirectPerksBlock } from "@/components/booking/DirectPerksBlock";
 import LocationInline from "@/components/booking/LocationInline";
 import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
@@ -21,12 +23,11 @@ import { useAvailability } from "@/hooks/useAvailability";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import {
-  ensureMinCheckoutForStay,
   getMinCheckoutForStay,
   isValidPax,
   isValidStayRange,
 } from "@/utils/bookingDateRules";
-import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
+import { formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
 import { fireSearchAvailability, fireViewItemList } from "@/utils/ga4-events";
 
 type Props = {
@@ -104,21 +105,22 @@ function BookPageContent({ lang, heading }: Props): JSX.Element {
       : null,
   );
 
-  const [checkin, setCheckin] = useState(initialCheckin);
-  const [checkout, setCheckout] = useState(initialCheckout);
+  const [range, setRange] = useState<DateRange>({
+    from: safeParseIso(initialCheckin),
+    to: safeParseIso(initialCheckout),
+  });
   const [pax, setPax] = useState(initialPax);
+  const checkin = range.from ? formatDate(range.from) : "";
+  const checkout = range.to ? formatDate(range.to) : "";
 
   useEffect(() => {
     // Keep state in sync if user lands with different params.
-    setCheckin(initialCheckin);
-    setCheckout(initialCheckout);
+    setRange({
+      from: safeParseIso(initialCheckin),
+      to: safeParseIso(initialCheckout),
+    });
     setPax(initialPax);
   }, [initialCheckin, initialCheckout, initialPax]);
-
-  const minCheckout = useMemo(
-    () => getMinCheckoutForStay(checkin) ?? getMinCheckoutForStay(todayIso) ?? getDatePlusTwoDays(todayIso),
-    [checkin, todayIso],
-  );
 
   const roomQueryState = useMemo<"valid" | "invalid">(
     () => (isValidSearch(checkin, checkout, pax) ? "valid" : "invalid"),
@@ -181,38 +183,20 @@ function BookPageContent({ lang, heading }: Props): JSX.Element {
           {t("subheading", { defaultValue: "Choose your dates, then pick a room." }) as string}
         </p>
 
-        <div className="mt-6 grid gap-4 rounded-2xl border border-brand-outline/40 bg-brand-surface p-4 shadow-sm sm:grid-cols-3">
-          <label className="flex flex-col gap-1 text-sm font-medium text-brand-heading">
-            {t("date.checkIn", { defaultValue: "Check in" }) as string}
-            <input
-              type="date"
-              value={checkin}
-              min={todayIso}
-              onChange={(e) => {
-                const newCheckin = e.target.value;
-                setCheckin(newCheckin);
-                const effectiveCheckout = ensureMinCheckoutForStay(newCheckin, checkout);
-                if (effectiveCheckout !== checkout) setCheckout(effectiveCheckout);
-                writeCanonicalBookingQuery({ checkin: newCheckin, checkout: effectiveCheckout, pax });
-              }}
-              className="min-h-11 rounded-xl border border-brand-outline/40 bg-brand-bg px-3 py-2 text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
-            />
-          </label>
-
-          <label className="flex flex-col gap-1 text-sm font-medium text-brand-heading">
-            {t("date.checkOut", { defaultValue: "Check out" }) as string}
-            <input
-              type="date"
-              value={checkout}
-              min={minCheckout}
-              onChange={(e) => {
-                setCheckout(e.target.value);
-                writeCanonicalBookingQuery({ checkin, checkout: e.target.value, pax });
-              }}
-              className="min-h-11 rounded-xl border border-brand-outline/40 bg-brand-bg px-3 py-2 text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
-            />
-          </label>
-
+        <div className="mt-6 space-y-4 rounded-2xl border border-brand-outline/40 bg-brand-surface p-4 shadow-sm">
+          <DateRangePicker
+            selected={range}
+            onRangeChange={(newRange) => {
+              setRange(newRange ?? { from: undefined, to: undefined });
+              const newCheckin = newRange?.from ? formatDate(newRange.from) : "";
+              const newCheckout = newRange?.to ? formatDate(newRange.to) : "";
+              if (newCheckin && newCheckout) {
+                writeCanonicalBookingQuery({ checkin: newCheckin, checkout: newCheckout, pax });
+              }
+            }}
+            stayHelperText={t("date.stayHelper", { defaultValue: "2–8 nights" }) as string}
+            clearDatesText={t("date.clearDates", { defaultValue: "Clear dates" }) as string}
+          />
           <label className="flex flex-col gap-1 text-sm font-medium text-brand-heading">
             {t("date.guests", { defaultValue: "Guests" }) as string}
             <input
@@ -225,7 +209,7 @@ function BookPageContent({ lang, heading }: Props): JSX.Element {
                 setPax(newPax);
                 writeCanonicalBookingQuery({ checkin, checkout, pax: newPax });
               }}
-              className="min-h-11 rounded-xl border border-brand-outline/40 bg-brand-bg px-3 py-2 text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+              className="min-h-11 w-24 rounded-xl border border-brand-outline/40 bg-brand-bg px-3 py-2 text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
             />
           </label>
         </div>

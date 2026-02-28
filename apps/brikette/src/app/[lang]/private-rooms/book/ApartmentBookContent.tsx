@@ -11,10 +11,12 @@ import { Section } from "@acme/design-system/atoms";
 import { Inline } from "@acme/design-system/primitives";
 
 import FitCheck from "@/components/apartment/FitCheck";
+import type { DateRange } from "@/components/booking/DateRangePicker";
+import { DateRangePicker } from "@/components/booking/DateRangePicker";
 import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
-import { addDays, getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
+import { formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
 import { fireHandoffToEngine, fireWhatsappClick } from "@/utils/ga4-events";
 
 type Props = {
@@ -61,9 +63,14 @@ function ApartmentBookContent({ lang }: Props) {
 
   usePagePreload({ lang, namespaces: ["apartmentPage", "bookPage", "footer", "modals", "translation"] });
 
-  const [checkin, setCheckin] = useState(getTodayIso());
-  const [checkout, setCheckout] = useState(getDatePlusTwoDays(getTodayIso()));
+  const [range, setRange] = useState<DateRange>({
+    from: safeParseIso(getTodayIso()),
+    to: safeParseIso(getDatePlusTwoDays(getTodayIso())),
+  });
   const [pax, setPax] = useState<2 | 3>(2);
+
+  const checkinIso = range.from ? formatDate(range.from) : "";
+  const checkoutIso = range.to ? formatDate(range.to) : "";
 
   // Option A: restore dates if user returns from Octorate (TASK-09 / spike-octorate-precheck)
   useEffect(() => {
@@ -71,26 +78,26 @@ function ApartmentBookContent({ lang }: Props) {
     if (!stored) return;
     try {
       const data = JSON.parse(stored) as { checkin?: string; checkout?: string };
-      if (data.checkin) setCheckin(data.checkin);
-      if (data.checkout) setCheckout(data.checkout);
+      setRange({
+        from: data.checkin ? safeParseIso(data.checkin) : undefined,
+        to: data.checkout ? safeParseIso(data.checkout) : undefined,
+      });
     } catch {
       // ignore malformed data
     }
     sessionStorage.removeItem(APARTMENT_BOOKING_RETURN_KEY);
   }, []);
 
-  // Derive nights and long-stay flag reactively from date state
-  const nights = Math.max(
-    1,
-    Math.round(
-      (new Date(checkout).getTime() - new Date(checkin).getTime()) /
-        (1000 * 60 * 60 * 24),
-    ),
-  );
+  // Derive nights and long-stay flag reactively from date state (TZ-safe via Date objects)
+  const nights = range.from && range.to
+    ? Math.max(1, Math.round((range.to.getTime() - range.from.getTime()) / (1000 * 60 * 60 * 24)))
+    : 1;
   const isLongStay = nights > 14;
+  const isValidRange = Boolean(checkinIso && checkoutIso);
 
   const handleCheckout = useCallback((plan: "flex" | "nr") => {
-    const octorateUrl = buildOctorateLink(checkin, checkout, plan, pax);
+    if (!checkinIso || !checkoutIso) return;
+    const octorateUrl = buildOctorateLink(checkinIso, checkoutIso, plan, pax);
 
     // Compat: begin_checkout kept during migration window (TASK-05B will decide cleanup policy).
     const win = window as unknown as { gtag?: (...args: unknown[]) => void };
@@ -114,8 +121,8 @@ function ApartmentBookContent({ lang }: Props) {
     fireHandoffToEngine({
       handoff_mode: "same_tab",
       engine_endpoint: "calendar",
-      checkin,
-      checkout,
+      checkin: checkinIso,
+      checkout: checkoutIso,
       pax,
       source: `apartment_${plan}`,
     });
@@ -123,12 +130,12 @@ function ApartmentBookContent({ lang }: Props) {
     // Store booking state before navigation so we can restore on return (Option A — TASK-09)
     sessionStorage.setItem(
       APARTMENT_BOOKING_RETURN_KEY,
-      JSON.stringify({ checkin, checkout, plan }),
+      JSON.stringify({ checkin: checkinIso, checkout: checkoutIso, plan }),
     );
 
     // Navigate to Octorate
     window.location.assign(octorateUrl);
-  }, [checkin, checkout, nights, pax]);
+  }, [checkinIso, checkoutIso, nights, pax]);
 
   const handleWhatsappClick = useCallback(() => {
     fireWhatsappClick({
@@ -151,47 +158,12 @@ function ApartmentBookContent({ lang }: Props) {
               {tModals("booking2.selectDatesTitle")}
             </h2>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div>
-              <label
-                htmlFor="checkin"
-                className="mb-1 block text-sm font-medium text-brand-text"
-              >
-                {tModals("booking2.checkInDate")}
-              </label>
-              <input
-                type="date"
-                id="checkin"
-                value={checkin}
-                onChange={(e) => {
-                  const newCheckin = e.target.value;
-                  setCheckin(newCheckin);
-                  // Only advance checkout if it would become invalid; preserve the user's chosen duration
-                  if (!checkout || checkout <= newCheckin) {
-                    setCheckout(addDays(newCheckin, 1));
-                  }
-                }}
-                min={getTodayIso()}
-                className="w-full rounded-md border border-brand-outline/50 bg-brand-bg px-3 py-2 text-brand-text focus:border-brand-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/20"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="checkout"
-                className="mb-1 block text-sm font-medium text-brand-text"
-              >
-                {tModals("booking2.checkOutDate")}
-              </label>
-              <input
-                type="date"
-                id="checkout"
-                value={checkout}
-                onChange={(e) => setCheckout(e.target.value)}
-                min={checkin}
-                className="w-full rounded-md border border-brand-outline/50 bg-brand-bg px-3 py-2 text-brand-text focus:border-brand-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/20"
-              />
-            </div>
-          </div>
+          <DateRangePicker
+            selected={range}
+            onRangeChange={(r) => setRange(r ?? { from: undefined, to: undefined })}
+            stayHelperText={tModals("date.stayHelper") as string}
+            clearDatesText={tModals("date.clearDates") as string}
+          />
           <p className="mt-3 text-sm text-brand-text/60">
             {tBook("apartment.nightsSummary", { count: nights })}
           </p>
@@ -236,7 +208,8 @@ function ApartmentBookContent({ lang }: Props) {
             <button
               type="button"
               onClick={() => handleCheckout("nr")}
-              className="group flex flex-col rounded-lg border border-brand-outline/30 bg-brand-bg text-start transition-all hover:border-brand-accent hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent"
+              disabled={!isValidRange}
+              className="group flex flex-col rounded-lg border border-brand-outline/30 bg-brand-bg text-start transition-all hover:border-brand-accent hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent disabled:pointer-events-none disabled:opacity-50"
             >
               <div className="flex flex-1 flex-col p-4">
                 <div className="mb-2 flex items-start justify-between gap-2">
@@ -262,7 +235,8 @@ function ApartmentBookContent({ lang }: Props) {
             <button
               type="button"
               onClick={() => handleCheckout("flex")}
-              className="group flex flex-col rounded-lg border border-brand-outline/30 bg-brand-bg text-start transition-all hover:border-brand-primary hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+              disabled={!isValidRange}
+              className="group flex flex-col rounded-lg border border-brand-outline/30 bg-brand-bg text-start transition-all hover:border-brand-primary hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary disabled:pointer-events-none disabled:opacity-50"
             >
               <div className="flex flex-1 flex-col p-4">
                 <div className="mb-2 flex items-start justify-between gap-2">
@@ -296,7 +270,7 @@ function ApartmentBookContent({ lang }: Props) {
           <a
             data-testid="whatsapp-cta"
             data-long-stay-primary={isLongStay ? "true" : undefined}
-            href={buildWhatsappUrl(checkin, checkout)}
+            href={buildWhatsappUrl(checkinIso, checkoutIso)}
             onClick={handleWhatsappClick}
             target="_blank"
             rel="noopener noreferrer"

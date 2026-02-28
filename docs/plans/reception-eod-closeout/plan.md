@@ -26,7 +26,7 @@ Add a `/eod-checklist/` page to the reception app providing a single read-only v
 ## Active tasks
 - [x] TASK-01: Build EodChecklistContent component + RTL tests
 - [x] TASK-02: Add /eod-checklist/ page route
-- [ ] TASK-03: Add Admin nav entry (Chiusura)
+- [x] TASK-03: Add Admin nav entry (Chiusura)
 
 ## Goals
 - Single manager-facing page showing today's till, safe, and stock close-out status
@@ -83,7 +83,7 @@ Add a `/eod-checklist/` page to the reception app providing a single read-only v
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | EodChecklistContent component + RTL tests | 85% | S | Complete (2026-02-28) | - | TASK-02 |
 | TASK-02 | IMPLEMENT | /eod-checklist/ page route | 90% | S | Complete (2026-02-28) | TASK-01 | TASK-03 |
-| TASK-03 | IMPLEMENT | Admin nav entry (Chiusura) | 90% | S | Pending | TASK-02 | - |
+| TASK-03 | IMPLEMENT | Admin nav entry (Chiusura) | 90% | S | Complete (2026-02-28) | TASK-02 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -220,7 +220,12 @@ Add a `/eod-checklist/` page to the reception app providing a single read-only v
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-28)
+- **Build evidence:**
+  - `ListChecks` added to lucide-react imports (alphabetical order, after `List` before `LogOut`)
+  - `{ label: "Chiusura", route: "/eod-checklist", icon: ListChecks }` added to Admin section items after "Controllo" and before "Statistics"
+  - `pnpm --filter @apps/reception typecheck` — exit 0, no errors
+  - `pnpm --filter @apps/reception lint` — 0 new errors (7 pre-existing warnings in unrelated files)
 - **Affects:**
   - `apps/reception/src/components/appNav/AppNav.tsx`
 - **Depends on:** TASK-02

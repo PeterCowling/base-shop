@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Operations
 Workstream: Engineering
 Created: 2026-02-28
@@ -29,8 +29,8 @@ The EOD close-out checklist (`/eod-checklist/`) is missing a prompted step for s
 - [x] TASK-01: Extend cashCountSchema with "openingFloat" type
 - [x] TASK-02: Add addOpeningFloatEntry mutation + standardFloat setting
 - [x] TASK-03: Add float status section to EodChecklistContent
-- [ ] TASK-04: Build OpeningFloatModal and wire into EOD checklist
-- [ ] TASK-05: Add post-close float nudge in till page
+- [x] TASK-04: Build OpeningFloatModal and wire into EOD checklist
+- [x] TASK-05: Add post-close float nudge in till page
 
 ## Goals
 
@@ -100,8 +100,8 @@ The EOD close-out checklist (`/eod-checklist/`) is missing a prompted step for s
 | TASK-01  | IMPLEMENT | Extend cashCountSchema with "openingFloat" type     | 90%        | S      | Complete (2026-02-28) | -               | TASK-02, TASK-03 |
 | TASK-02  | IMPLEMENT | Add addOpeningFloatEntry mutation + standardFloat   | 90%        | S      | Complete (2026-02-28) | TASK-01         | TASK-04       |
 | TASK-03  | IMPLEMENT | Add float status section to EodChecklistContent     | 85%        | S      | Complete (2026-02-28) | TASK-01         | TASK-04       |
-| TASK-04  | IMPLEMENT | Build OpeningFloatModal and wire into EOD checklist | 85%        | S      | Pending | TASK-02, TASK-03 | -            |
-| TASK-05  | IMPLEMENT | Add post-close float nudge in till page             | 85%        | S      | Pending | TASK-01, TASK-02 | -             |
+| TASK-04  | IMPLEMENT | Build OpeningFloatModal and wire into EOD checklist | 85%        | S      | Complete (2026-02-28) | TASK-02, TASK-03 | -            |
+| TASK-05  | IMPLEMENT | Add post-close float nudge in till page             | 85%        | S      | Complete (2026-02-28) | TASK-01, TASK-02 | -             |
 
 ## Parallelism Guide
 
@@ -368,6 +368,16 @@ The EOD close-out checklist (`/eod-checklist/`) is missing a prompted step for s
   - Rollback: Remove `OpeningFloatModal.tsx` and the modal state/render block from `EodChecklistContent`.
 - **Documentation impact:** None.
 - **Notes:** `FloatEntryModal` uses a `ModalContainer` imported from `../bar/orderTaking/modal/ModalContainer` (relative to `components/till/`). From `components/eodChecklist/`, the equivalent path to the same file is `../bar/orderTaking/modal/ModalContainer`. Verify this import resolves during implementation.
+- **Build evidence (2026-02-28):**
+  - Committed in `1e920aab23`.
+  - `OpeningFloatModal.tsx` (new): `withModalBackground` HOC, `z.number().min(0)` validation, pre-fills `settings.standardFloat` (empty when 0), `submitting` state disables button on first click.
+  - `EodChecklistContent.tsx`: `useCashCountsMutations` added (unconditionally before guard); `OpeningFloatModal` imported and rendered when `showFloatModal === true`.
+  - `EodChecklistContent.test.tsx`: TC-18 added (click button → modal appears). 18 tests pass.
+  - `OpeningFloatModal.test.tsx` (new): TC-01 through TC-06 + TC-01b. 7 tests pass.
+  - TC results: all EodChecklistContent (18 pass) + all OpeningFloatModal (7 pass).
+  - Typecheck: `@apps/reception:typecheck` cache miss → pass. Full-repo typecheck: 58/58 tasks successful.
+  - Lint: 0 errors on all 6 new/modified files after `eslint --fix` for import sort.
+  - Status: Complete.
 
 ---
 
@@ -428,6 +438,13 @@ The EOD close-out checklist (`/eod-checklist/`) is missing a prompted step for s
   - Rollback: Remove the `useCashCountsData` call and the nudge banner JSX. Clean revert.
 - **Documentation impact:** None.
 - **Notes:** The nudge wording should be concise and actionable. Suggested: "Opening float not set — [Set float →]" which opens the `OpeningFloatModal` directly (preferred) OR links to `/eod-checklist/`. Given the modal is in `EodChecklistContent` (TASK-04), the simpler approach is a link to `/eod-checklist/`. This avoids duplicating the modal in the till page.
+- **Build evidence (2026-02-28):**
+  - Committed in `1e920aab23`.
+  - `TillReconciliation.tsx`: `useCashCountsData` (today's range) added; `floatDoneToday` derived via `some()` with `sameItalyDate` check; nudge banner (`data-cy="float-nudge-banner"`) rendered when `shiftOpenTime === null && !floatDoneToday`; link `href="/eod-checklist/"` with `data-cy="float-nudge-link"`.
+  - `TillReconciliation.test.tsx`: TC-01 through TC-04 added; `useCashCountsData` mocked via hoistable `var` pattern; pre-existing test failure fixed (expected `/Click a row to delete/` → corrected to `/Click a row to void/`). 7 tests pass.
+  - TC results: all TillReconciliation (7 pass).
+  - Lint: 0 errors after `eslint --fix` for import sort.
+  - Status: Complete.
 
 ---
 

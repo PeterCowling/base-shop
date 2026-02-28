@@ -2,19 +2,446 @@
   "queue_version": "queue.v1",
   "mode": "trial",
   "created_at": "2026-02-25T00:00:00Z",
-  "last_updated": "2026-02-27T23:50:00Z",
+  "last_updated": "2026-02-28T21:00:00Z",
   "counts": {
-    "enqueued": 6,
+    "enqueued": 12,
     "processed": 2,
     "skipped": 3,
     "error": 0,
     "suppressed": 0,
-    "auto_executed": 47,
+    "auto_executed": 61,
     "completed": 3,
-    "total": 61,
-    "fact_find_ready": 2
+    "total": 80,
+    "fact_find_ready": 12
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0073",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "area_anchor": "HBAG checkout \u2014 no customer order confirmation email",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P2",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "According to `apps/caryina/src/app/api/checkout-session/route.ts`, current state is: payment success triggers only a merchant notification email (fire-and-forget); no customer confirmation email is sent. The success page shows a generic message with no order reference. World-class threshold (per benchmark domain `launch-readiness`) is: refunds + fulfilment notifications tested end-to-end so a real customer order cannot disappear operationally.",
+      "next_scope_now": "To close the gap: add customer order confirmation email in checkout-session route on payment success, including order summary, transaction ID, and next-steps. Confirm email template structure and whether `sendSystemEmail` / nodemailer is the right delivery path. Confirm whether buyer email is required at checkout or must be made mandatory.",
+      "location_anchors": [
+        "apps/caryina/src/app/api/checkout-session/route.ts"
+      ],
+      "evidence_refs": [
+        "operator-stated: worldclass-scan gap: launch-readiness",
+        "docs/business-os/strategy/HBAG/worldclass-scan-2026-02-28.md"
+      ],
+      "created_at": "2026-02-28T21:00:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0074",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "area_anchor": "HBAG checkout \u2014 no test order workflow or Axerve sandbox mode",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "processed",
+      "priority": "P2",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "According to `apps/caryina/src/app/api/checkout-session/route.ts`, current state is: no sandbox or test-mode detection; route reads live AXERVE_SHOP_LOGIN and AXERVE_API_KEY from env with no test-credential variant or mode switch. No pre-launch test order checklist or test card documentation exists. World-class threshold (per benchmark domain `launch-readiness`) is: one live-like test order (including at least one failed transaction) completed before sending any real traffic.",
+      "next_scope_now": "To close the gap: confirm Axerve sandbox credentials and test card details; add test-mode detection (env flag or separate credentials) to the route; document and run a pre-launch test order checklist covering success, decline, and any 3DS flows. Produce a runbook artifact.",
+      "location_anchors": [
+        "apps/caryina/src/app/api/checkout-session/route.ts"
+      ],
+      "evidence_refs": [
+        "operator-stated: worldclass-scan gap: launch-readiness",
+        "docs/business-os/strategy/HBAG/worldclass-scan-2026-02-28.md"
+      ],
+      "created_at": "2026-02-28T21:00:00Z",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-02-28T00:00:00Z",
+        "fact_find_slug": "hbag-axerve-sandbox-test-order",
+        "fact_find_path": "docs/plans/hbag-axerve-sandbox-test-order/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0075",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "area_anchor": "HBAG checkout \u2014 no refund workflow or admin refund tooling",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P2",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Not yet in strategy docs: HBAG needs a refund workflow. No /api/refund endpoint exists in apps/caryina/src/app/api/. The logistics policy (logistics-pack.user.md) states 30-day free exchange but no mechanism exists to execute a financial reversal through Axerve. Based on world-class benchmark: refunds (full and partial) must be executable end-to-end and tested before launch.",
+      "next_scope_now": "Recommended action: create a refund endpoint or admin mechanism (Axerve refund API or server-side script). Investigate: whether Axerve supports server-side refund initiation, what credentials/transaction-ID parameters are required, and whether a simple admin UI or operator-run script is the right form for a founder-led operation.",
+      "location_anchors": [
+        "docs/business-os/strategy/HBAG/worldclass-scan-2026-02-28.md"
+      ],
+      "evidence_refs": [
+        "operator-stated: worldclass-scan gap: launch-readiness",
+        "docs/business-os/strategy/HBAG/worldclass-scan-2026-02-28.md"
+      ],
+      "created_at": "2026-02-28T21:00:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0076",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "area_anchor": "HBAG caryina \u2014 no cookie consent banner, analytics blocked",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P2",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "According to `apps/caryina/src/app/[lang]/layout.tsx` and `packages/platform-core/src/analytics/client.ts`, current state is: no cookie consent banner in the layout; the analytics client gates all events on a `consent.analytics=true` cookie that is never set for new EU visitors. All analytics events (page_view, product_view, checkout_started, order_completed) are silently skipped. World-class threshold (per benchmark domain `launch-measurement`) is: measurement is operationally debuggable; operator can validate events in real time.",
+      "next_scope_now": "To close the gap: add a GDPR-compliant cookie consent banner to the caryina layout that sets `consent.analytics=true` when accepted. Confirm whether minimal consent-only mode is sufficient (no third-party scripts) or if a full CMP is needed. Confirm privacy policy references the banner. Also wire analytics.provider to 'ga' with a GA4 measurement ID once consent is live.",
+      "location_anchors": [
+        "apps/caryina/src/app/[lang]/layout.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: worldclass-scan gap: launch-measurement",
+        "docs/business-os/strategy/HBAG/worldclass-scan-2026-02-28.md"
+      ],
+      "created_at": "2026-02-28T21:00:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0077",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "area_anchor": "HBAG PDP \u2014 no gifting cues for accessories gift buyers",
+      "domain": "SELL",
+      "status": "briefing_ready",
+      "recommended_route": "lp-do-briefing",
+      "queue_state": "enqueued",
+      "priority": "P3",
+      "provisional_deliverable_family": "doc",
+      "current_truth": "According to `apps/caryina/src/app/[lang]/product/[slug]/page.tsx` and `data/shops/caryina/site-content.generated.json`, current state is: no gift-ready packaging description, no gift message option, and no gifting-oriented copy on the PDP. The 30-day free exchange policy is present in proof bullets but not framed as a gifting benefit. World-class threshold (per benchmark domain `first-visitor-conversion`) is: gifting cues explicit (gift-ready packaging, easy returns/exchanges for gifts).",
+      "next_scope_now": "To close the gap: add gift-oriented copy to product proof bullets or trust strip (e.g. 'Gift-ready: arrives in a branded box; easy exchange within 30 days for recipients'). Confirm whether Caryina packaging is actually gift-ready and what copy is accurate before writing. A doc or site-content update is the right deliverable.",
+      "location_anchors": [
+        "apps/caryina/src/app/[lang]/product/[slug]/page.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: worldclass-scan gap: first-visitor-conversion",
+        "docs/business-os/strategy/HBAG/worldclass-scan-2026-02-28.md"
+      ],
+      "created_at": "2026-02-28T21:00:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0072",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "area_anchor": "XA uploader \u2014 design token exemptions XAUP-0001 unresolved",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "enqueued",
+      "priority": "P3",
+      "provisional_deliverable_family": "code-change",
+      "created_at": "2026-02-28T19:30:00Z",
+      "location_anchors": [
+        "apps/xa-uploader/src/"
+      ],
+      "evidence_refs": [
+        "operator-stated: xa-uploader readiness review \u2014 XAUP-0001 exemption ticket in use for components using non-system design tokens; exemptions are overdue for resolution"
+      ],
+      "routing_rationale": "XA uploader components carry exemption tickets (XAUP-0001) covering non-system token usage instead of design system tokens. Resolving them ensures consistent visual behaviour across the operator tool and reduces future maintenance cost. Needs audit of which components have exemptions and which system tokens should replace the inline values."
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0071",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "area_anchor": "XA uploader \u2014 operator UI shows raw i18n keys for untranslated strings",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "enqueued",
+      "priority": "P2",
+      "provisional_deliverable_family": "doc",
+      "created_at": "2026-02-28T19:30:00Z",
+      "location_anchors": [
+        "apps/xa-uploader/src/lib/uploaderI18n.ts"
+      ],
+      "evidence_refs": [
+        "operator-stated: xa-uploader readiness review \u2014 uploaderI18n returns the raw key string when a translation is missing; some UI strings are still untranslated in the EN and ZH locale files"
+      ],
+      "routing_rationale": "The xa-uploader i18n system returns the raw lookup key (e.g. 'xa-uploader.catalog.sync.title') when a translation entry is absent. Operators see raw keys instead of proper labels. Needs a complete audit of all keys vs locale file entries and completion of any missing EN/ZH translations."
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0070",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "area_anchor": "XA uploader sync \u2014 silent 503 failure when catalog contract unconfigured",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "enqueued",
+      "priority": "P1",
+      "provisional_deliverable_family": "code-change",
+      "created_at": "2026-02-28T19:30:00Z",
+      "location_anchors": [
+        "apps/xa-uploader/src/app/api/catalog/sync/route.ts"
+      ],
+      "evidence_refs": [
+        "operator-stated: xa-uploader readiness review \u2014 sync returns 503 silently when XA_CATALOG_CONTRACT_WRITE_TOKEN is unset; no health check endpoint exists to surface config issues before attempting a sync"
+      ],
+      "routing_rationale": "When XA_CATALOG_CONTRACT_BASE_URL or XA_CATALOG_CONTRACT_WRITE_TOKEN are not configured the sync endpoint returns a 503 with no actionable message. Operators have no way to verify deployment readiness before triggering a sync. A health check endpoint would surface config completeness and dependency reachability upfront."
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0069",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "area_anchor": "XA uploader \u2014 no .env.example, deployment config undocumented",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "route": "auto-executed",
+        "processed_at": "2026-02-28T19:30:00Z",
+        "fact_find_slug": "xa-uploader-deployment-config",
+        "fact_find_path": "docs/plans/xa-uploader-deployment-config/fact-find.md"
+      },
+      "priority": "P1",
+      "provisional_deliverable_family": "doc",
+      "created_at": "2026-02-28T19:30:00Z",
+      "location_anchors": [
+        "apps/xa-uploader/",
+        "apps/xa-uploader/wrangler.toml"
+      ],
+      "evidence_refs": [
+        "operator-stated: xa-uploader readiness review \u2014 no .env.example exists; wrangler.toml has an empty [vars] section; required env vars (XA_UPLOADER_SESSION_SECRET, XA_UPLOADER_ADMIN_TOKEN, XA_CATALOG_CONTRACT_BASE_URL, XA_CATALOG_CONTRACT_WRITE_TOKEN) are undocumented"
+      ],
+      "routing_rationale": "An operator deploying xa-uploader has no documented list of required env vars, their expected formats, or whether they are optional. wrangler.toml [vars] is empty. No .env.example file exists. Without this, deployment is a guessing exercise. Needs fact-find to enumerate all required and optional vars and produce an .env.example and wrangler.toml [vars] stubs."
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0009",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "area_anchor": "BRIK room names \u2014 apply agreed names to dropdown config and EN locale",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P2",
+      "provisional_deliverable_family": "code-change",
+      "created_at": "2026-02-28T19:00:00Z",
+      "location_anchors": [
+        "packages/ui/src/config/roomNames.ts",
+        "apps/brikette/src/locales/en/roomsPage.json"
+      ],
+      "evidence_refs": [
+        "operator-stated: 9 room names reviewed and agreed in session \u2014 apply to dropdown config and EN locale roomsPage.json"
+      ],
+      "current_truth": "packages/ui/src/config/roomNames.ts holds stale names (e.g. 'Value Female Dorm', 'Deluxe Mixed Room', 'Superior Mixed Dorm'). apps/brikette/src/locales/en/roomsPage.json titles match the same stale set. Nine replacement names were agreed in the operator session.",
+      "next_scope_now": "Update ROOM_DROPDOWN_NAMES in roomNames.ts and corresponding title keys in roomsPage.json EN locale with the agreed names. Verify no other EN locale files reference the old strings."
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0008",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "area_anchor": "BRIK locale files \u2014 English changes need propagation to all non-EN locales",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P2",
+      "provisional_deliverable_family": "code-change",
+      "created_at": "2026-02-28T19:00:00Z",
+      "location_anchors": [
+        "apps/brikette/src/locales/"
+      ],
+      "evidence_refs": [
+        "operator-stated: several English content changes have accumulated (room names, nav dropdown fix, xa-b pages) \u2014 all non-EN locale files must be updated to match"
+      ],
+      "current_truth": "Multiple EN locale changes have been made this session (room names in roomsPage.json, nav dropdown removal of double_room). Non-EN locales (de, es, fr, it, nl, and others) are now out of sync. Stale translated strings may appear to users.",
+      "next_scope_now": "Audit diff between EN locale files and each non-EN locale. Propagate changed keys \u2014 translate room title updates, remove any stale keys that no longer exist in EN. Scope applies to apps/brikette/src/locales/ at minimum; verify xa-b locales too."
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0007",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "area_anchor": "HBAG Mobile Conversion \u2014 no trust cues near PDP purchase CTA",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P2",
+      "provisional_deliverable_family": "code-change",
+      "created_at": "2026-02-28T12:00:00Z",
+      "location_anchors": [
+        "apps/caryina/src/app/[lang]/product/[slug]/page.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: worldclass-scan gap: mobile-conversion",
+        "docs/business-os/strategy/HBAG/worldclass-scan-2026-02-28.md"
+      ],
+      "current_truth": "According to `apps/caryina/src/app/[lang]/product/[slug]/page.tsx`, current state is the PDP purchase area (including StickyCheckoutBar) shows price + Add to Cart only \u2014 no warranty statement, no delivery clarity, no returns summary, no payment method logos. World-class threshold (per benchmark domain `mobile-conversion`) requires premium trust cues (warranty, delivery clarity, returns) placed close to the CTA.",
+      "next_scope_now": "To close the gap: add a trust strip or inline trust cues below the Add to Cart button \u2014 delivery timeframe, return window, and accepted payment methods. Update StickyCheckoutBar to include a brief trust signal on mobile. Confirm trust copy from /shipping and /returns policy pages.",
+      "routing_rationale": "PDP has no trust cues near the purchase CTA \u2014 zero warranty, delivery, or returns visibility at the moment of decision. For a new/unknown brand with no physical retail, this is a documented abandonment driver at the \u20ac80\u2013\u20ac150 price point. Needs scoping of which trust elements to add and where to surface them."
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0006",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "area_anchor": "HBAG Mobile Conversion \u2014 no wishlist or return-visit capture on PDP",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P2",
+      "provisional_deliverable_family": "code-change",
+      "created_at": "2026-02-28T12:00:00Z",
+      "location_anchors": [
+        "apps/caryina/src/app/[lang]/product/[slug]/page.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: worldclass-scan gap: mobile-conversion",
+        "docs/business-os/strategy/HBAG/worldclass-scan-2026-02-28.md"
+      ],
+      "current_truth": "According to `apps/caryina/src/app/[lang]/product/[slug]/page.tsx`, current state is no wishlist, no back-in-stock alerts, and no email capture anywhere in the app. World-class threshold (per benchmark domain `mobile-conversion`) is at least one robust return-visit mechanism (wishlist or email capture).",
+      "next_scope_now": "To close the gap: implement at least one return-visit mechanism \u2014 options include a save/wishlist button on the PDP, an email-capture 'notify me when back in stock' flow, or a persistent email CTA. Confirm which mechanism fits the v1 scope and customer data/GDPR approach.",
+      "routing_rationale": "TikTok/Instagram-sourced visitors in a 3\u20137 day consideration window have no mechanism to save intent or be recalled. The conversion window is explicitly 3\u20137 days for this ICP. Without a return-visit mechanism, every visitor who doesn't buy immediately is permanently lost."
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0005",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "area_anchor": "HBAG Product Storytelling \u2014 shipping and returns not visible on PDP",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P2",
+      "provisional_deliverable_family": "code-change",
+      "created_at": "2026-02-28T12:00:00Z",
+      "location_anchors": [
+        "apps/caryina/src/app/[lang]/product/[slug]/page.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: worldclass-scan gap: product-storytelling",
+        "docs/business-os/strategy/HBAG/worldclass-scan-2026-02-28.md"
+      ],
+      "current_truth": "According to `apps/caryina/src/app/[lang]/product/[slug]/page.tsx`, current state is the PDP purchase area contains price, stock badge, and Add to Cart only \u2014 no shipping timeframe, no returns summary, no link or drawer for delivery/returns information. Separate /shipping and /returns pages exist but are not surfaced on the PDP. World-class threshold (per benchmark domain `product-storytelling`) is shipping/returns visibility on the product page (not only at checkout).",
+      "next_scope_now": "To close the gap: add shipping/returns summary to the PDP below or near the Add to Cart CTA. Implement as an accordion drawer or inline trust block. Confirm copy for shipping timeframe and return policy from the /shipping and /returns pages.",
+      "routing_rationale": "Users look for shipping costs and return expectations before committing to add to cart \u2014 this is a documented abandonment driver. Policy pages exist (/shipping, /returns) but are only discoverable via footer navigation. Scoping needed for how to surface this on the PDP."
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0004",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "area_anchor": "HBAG Product Storytelling \u2014 no material specs or dimensions in product copy",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P2",
+      "provisional_deliverable_family": "multi",
+      "created_at": "2026-02-28T12:00:00Z",
+      "location_anchors": [
+        "data/shops/caryina/products.json"
+      ],
+      "evidence_refs": [
+        "operator-stated: worldclass-scan gap: product-storytelling",
+        "docs/business-os/strategy/HBAG/worldclass-scan-2026-02-28.md"
+      ],
+      "current_truth": "According to `data/shops/caryina/products.json`, current state is product descriptions use vague finish adjectives ('metallic silver', 'polished hardware accents', 'textured finish') with no alloy type, plating standard, dimensions in mm, or weight. World-class threshold (per benchmark domain `product-storytelling`) is explicit materials and dimensions/scale guidance on the product page.",
+      "next_scope_now": "To close the gap: add concrete material specs (alloy/finish standard), product dimensions (mm), and weight to the product data schema and descriptions. Update products.json and any content packet inputs that source product copy. Confirm material data is available from the supplier.",
+      "routing_rationale": "At \u20ac80\u2013\u20ac150, material specificity is core to price justification \u2014 buyers want to know exactly what they're getting and why it costs this. Missing specs cause uncertainty and reduce trust. Needs supplier data gathering + product schema extension + PDP display update."
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0003",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "area_anchor": "HBAG Product Storytelling \u2014 proof bullets show system text not product copy",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P2",
+      "provisional_deliverable_family": "doc",
+      "created_at": "2026-02-28T12:00:00Z",
+      "location_anchors": [
+        "data/shops/caryina/site-content.generated.json"
+      ],
+      "evidence_refs": [
+        "operator-stated: worldclass-scan gap: product-storytelling",
+        "docs/business-os/strategy/HBAG/worldclass-scan-2026-02-28.md"
+      ],
+      "current_truth": "According to `data/shops/caryina/site-content.generated.json`, current state is proofBullets contain placeholder system text ('Generated from canonical packet and source ledger', 'Claims constrained by packet and lint contracts', 'Policy and support blocks remain deterministic') \u2014 internal system messages rendered on the live PDP. World-class threshold (per benchmark domain `product-storytelling`) is a concise but informative description with explicit materials and layered proof that justifies the price.",
+      "next_scope_now": "To close the gap: produce real customer-facing proof bullets for the productPage section \u2014 material claims, craft signals, provenance confirmation, care/durability proof. Determine which source file controls proofBullets in the startup-loop materializer and update it with real content.",
+      "routing_rationale": "Placeholder system text is rendering on the live PDP where customers can see it. This is an active correctness problem, not just a quality gap. The materializer has not yet produced real proof copy for the product page. Needs investigation of the content pipeline and production of real copy."
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0002",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "area_anchor": "BRIK room cards \u2014 cheapest rate price display replaces dual buttons",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "created_at": "2026-02-28T09:00:00Z",
+      "evidence_refs": [
+        "operator-stated: replace Non-Refundable/Flexible two-button CTA with cheapest-rate price display; button copy 'Check Room Rate' or similar; price shown inside button or adjacent as separate label"
+      ],
+      "routing_rationale": "Material conversion-funnel change \u2014 replaces the primary booking CTA on every room card. Needs investigation of: availability/pricing data sources, how cheapest rate is determined, and which of several UX layouts (price-in-button vs price-outside + CTA) is viable. No in-flight plan covers this."
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "area_anchor": "BRIK rooms listing \u2014 room cards lack link to per-room detail page",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "created_at": "2026-02-28T00:00:00Z",
+      "evidence_refs": [
+        "operator-stated: /en/rooms room cards have no 'more about' link to /en/rooms/[id] per-room detail route"
+      ],
+      "routing_rationale": "Material UI gap: per-room detail route exists but is not discoverable from room cards on the listing/book pages. No in-flight plan covers this navigation link. fact_find needed to scope component changes and SEO impact."
+    },
     {
       "schema_version": "dispatch.v1",
       "dispatch_id": "IDEA-DISPATCH-20260227-0058",
@@ -2402,6 +2829,303 @@
         "processed_at": "2026-02-27T23:59:00Z",
         "fact_find_slug": "brik-sticky-book-now-room-context",
         "fact_find_path": "docs/plans/brik-sticky-book-now-room-context/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0061",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "area_anchor": "BRIK header nav \u2014 rooms link needs dropdown to individual room pages",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "evidence_refs": [
+        "operator-stated: header rooms link should open a dropdown with a link to each individual room page"
+      ],
+      "created_at": "2026-02-28T10:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "route": "auto-executed",
+        "processed_at": "2026-02-28T10:00:00Z"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0062",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "area_anchor": "XA xa-b \u2014 staging live, user testing not yet planned",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "evidence_refs": [
+        "operator-stated: xa-b staging deployment live on Cloudflare Pages; app finalized for user testing; unrelated CI failures do not block testing"
+      ],
+      "created_at": "2026-02-28T10:30:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "route": "auto-executed",
+        "processed_at": "2026-02-28T10:30:00Z"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0063",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "area_anchor": "BRIK prime staging \u2014 shared-package lint scope blocks prime deploy",
+      "domain": "BOS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "evidence_refs": [
+        "operator-stated: prime app code-complete and ready for user testing on staging; reusable-app.yml lint step uses pnpm --filter @apps/prime... which includes all dependency packages; unrelated lint failures in those packages block prime CI; operator requires prime to deploy to staging independently of other-package failures"
+      ],
+      "created_at": "2026-02-28T12:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "route": "auto-executed",
+        "processed_at": "2026-02-28T12:00:00Z"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0064",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "area_anchor": "BRIK/reception Stock Accountability \u2014 no guided batch count flow",
+      "domain": "STRATEGY",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "According to apps/reception/src/components/inventory/StockManagement.tsx, current state is StockManagement renders a full inventory ledger table; 'count' is one of 6 action types selectable per row \u2014 no storage-area grouping, no progress indicator, no batch count sequence, no completion gate. IngredientStock is a legacy direct-edit table with no audit trail. World-class threshold (per benchmark domain stock-accountability) is a storage-area/category-based count sheet with fast quantity entry, offline save, and automatic expected-vs-counted variance calculation.",
+      "next_scope_now": "Design and build a guided batch stock count flow with storage-area grouping, progress indicator, and immediate variance surfacing at count completion; deprecate IngredientStock direct-edit table in favour of audited count entries. Confirm physical storage layout to structure count areas correctly.",
+      "location_anchors": [
+        "apps/reception/src/components/inventory/StockManagement.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: worldclass-scan gap: stock-accountability",
+        "docs/business-os/strategy/BRIK/apps/reception/worldclass-scan-2026-02-28.md"
+      ],
+      "created_at": "2026-02-28T14:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "route": "auto-executed",
+        "processed_at": "2026-02-28T14:00:00Z"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0065",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "area_anchor": "BRIK/reception Manager Audit Visibility \u2014 no unified cross-domain manager summary",
+      "domain": "STRATEGY",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "According to apps/reception/src/components/till/TillShiftHistory.tsx, current state is till shift history and end-of-day packet cover cash/safe only; stock count variances are visible only inside StockManagement \u2014 no single screen combines cash, safe, and stock variance status for a 30-second 'is today clean?' confirmation. World-class threshold (per benchmark domain manager-audit-visibility) is a single manager view per shift/day showing expected vs actual cash and any stock variances, with user attribution, timestamps, and exportable log.",
+      "next_scope_now": "Build a unified manager audit screen that consolidates till variance, safe variance, and stock count variance into one view with user attribution and timestamps; extend EndOfDayPacket or create a new summary component. Confirm whether manager role detection is already in place.",
+      "location_anchors": [
+        "apps/reception/src/components/till/TillShiftHistory.tsx",
+        "apps/reception/src/components/reports/EndOfDayPacket.tsx",
+        "apps/reception/src/components/inventory/StockManagement.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: worldclass-scan gap: manager-audit-visibility",
+        "docs/business-os/strategy/BRIK/apps/reception/worldclass-scan-2026-02-28.md"
+      ],
+      "created_at": "2026-02-28T14:01:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "route": "auto-executed",
+        "processed_at": "2026-02-28T14:01:00Z"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0066",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "area_anchor": "BRIK/reception End-of-Day Close-Out \u2014 no unified EOD close-out wizard",
+      "domain": "STRATEGY",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "According to apps/reception/src/components/reports/EndOfDayPacket.tsx, current state is till, safe, and stock close-out are separate uncoordinated flows with no guided daily close-out sequence that orders steps, checks completion, blocks confirmation on outstanding items, or produces a single 'day closed' artefact. World-class threshold (per benchmark domain end-of-day-closeout) is a single guided close-out checklist confirming drawers counted, stock logging confirmed, outstanding items resolved, and an offline-readable stored summary.",
+      "next_scope_now": "Design and build a unified EOD close-out wizard that sequences till close, safe close, and stock logging confirmation into an ordered checklist, blocks final confirmation on incomplete steps, and produces an offline-readable stored summary. Confirm whether per-step completion detection is feasible from existing Firebase data.",
+      "location_anchors": [
+        "apps/reception/src/components/reports/EndOfDayPacket.tsx",
+        "apps/reception/src/components/till/CloseShiftForm.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: worldclass-scan gap: end-of-day-closeout",
+        "docs/business-os/strategy/BRIK/apps/reception/worldclass-scan-2026-02-28.md"
+      ],
+      "created_at": "2026-02-28T14:02:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "route": "auto-executed",
+        "processed_at": "2026-02-28T14:02:00Z"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0067",
+      "trigger": "operator_idea",
+      "business": "XA",
+      "area_anchor": "XA uploader \u2014 no configurable currency conversion rates",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The xa-uploader facility (apps/xa-uploader) lets operators manage product catalog data including prices. Products have a single numeric `price` field. The xa-b storefront (apps/xa-b) displays prices in EUR/USD/GBP via CurrencyContext/CurrencySwitcher, but there are no per-currency multipliers \u2014 the same numeric value is shown across all currencies with just the currency symbol changing. No conversion rate configuration screen exists in the uploader. Operators currently have no way to enter USD-base prices and apply currency conversion rates to derive EUR and GBP prices automatically.",
+      "next_scope_now": "Add a currency conversion rates configuration screen to xa-uploader. Screen allows operator to enter conversion rates with USD as the base (e.g. EUR=0.93, GBP=0.79). A 'Apply rates' button recalculates prices for all products using each product's USD price \u00d7 conversion rate and writes the derived per-currency prices. Derived prices are then pushed through the existing catalog sync flow to update live website prices displayed to customers.",
+      "location_anchors": [
+        "apps/xa-uploader/src/app/UploaderHome.client.tsx",
+        "apps/xa-uploader/src/components/catalog/CatalogProductForm.client.tsx",
+        "apps/xa-uploader/src/components/catalog/CatalogSyncPanel.client.tsx",
+        "apps/xa-uploader/src/app/api/catalog/products/route.ts",
+        "packages/lib/src/xa/types.ts",
+        "apps/xa-b/src/lib/currency.ts"
+      ],
+      "evidence_refs": [
+        "operator-stated: prices shown in EUR/USD/GBP on xa-b but currency conversion not configurable; USD is base rate; conversion rates should be entered by operator and applied to all products at once",
+        "operator-stated: pressing 'apply' should push updated prices to live website prices"
+      ],
+      "created_at": "2026-02-28T18:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "route": "auto-executed",
+        "processed_at": "2026-02-28T18:00:00Z"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0068",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "area_anchor": "BRIK /book date selection \u2014 two-field selectors, needs range UX",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The Brikette /book page (BookPageContent.tsx) and BookingWidget.tsx use two separate DateInput fields for check-in and check-out. Users make two independent date selections with no visual range indication, no min/max stay enforcement at the picker level, and no derived nights display adjacent to the control. RoomDetailContent.tsx and ApartmentBookContent.tsx share the same two-field pattern. react-day-picker is not currently installed.",
+      "next_scope_now": "Replace two-field date selectors with react-day-picker Range Mode across /book page, BookingWidget, and RoomDetailContent. Enforce min 2 / max 8 nights at selection time (prevent or snap + inline message). Store as {from, to}; derive nights. Show DD MMM \u2192 DD MMM (N nights) summary adjacent to picker. Inline helper: '2\u20138 nights'. Provide Clear dates action (reset to undefined).",
+      "location_anchors": [
+        "apps/brikette/src/app/[lang]/book/BookPageContent.tsx",
+        "apps/brikette/src/components/landing/BookingWidget.tsx",
+        "apps/brikette/src/app/[lang]/dorms/[id]/RoomDetailContent.tsx",
+        "apps/brikette/src/app/[lang]/private-rooms/book/ApartmentBookContent.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: replace two-field check-in/check-out selectors with react-day-picker Range Mode; store as {from,to}; min 2 / max 8 nights enforced at picker; first click sets from, second sets to; inline helper '2\u20138 nights'; derived summary DD MMM \u2192 DD MMM (N nights); Clear dates resets to undefined",
+        "funnel_step: date selection \u2014 /book page"
+      ],
+      "created_at": "2026-02-28T18:30:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "route": "auto-executed",
+        "processed_at": "2026-02-28T18:30:00Z"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0073",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "area_anchor": "BRIK reception TillShiftHistory \u2014 no filter or denomination drill-down",
+      "domain": "STRATEGY",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "TillShiftHistory is hard-coded to limitToLast: 10 with no staff/date filter controls. Rows have no click handler \u2014 clicking a row with non-zero variance opens nothing. Denomination data exists in Firebase (passed via CloseShiftForm denomBreakdown) but is not surfaced in a detail view.",
+      "next_scope_now": "Add staff/date filter controls to TillShiftHistory. Add denomination detail view or expandable row when clicking a shift with non-zero variance.",
+      "location_anchors": [
+        "apps/reception/src/components/till/TillShiftHistory.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: remove the gaps identified in worldclass scan",
+        "docs/business-os/strategy/BRIK/apps/reception/worldclass-scan-2026-02-28.md"
+      ],
+      "created_at": "2026-02-28T20:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "route": "auto-executed",
+        "processed_at": "2026-02-28T20:00:00Z"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0074",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "area_anchor": "BRIK reception stock variance \u2014 no explained vs unexplained split",
+      "domain": "STRATEGY",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "StockManagement.tsx shrinkageAlerts memo aggregates waste, adjust, and count entry types together into a single total. No screen separates logged waste/transfers (explained shrinkage) from count discrepancies (unexplained variance). The Count Variance Report shows count-type entries only but does not cross-reference waste/transfer records for the same period.",
+      "next_scope_now": "Add an explained vs unexplained variance split to the stock variance display. Explained = logged waste/comp/transfer entries for the period. Unexplained = count discrepancy minus explained entries.",
+      "location_anchors": [
+        "apps/reception/src/components/inventory/StockManagement.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: remove the gaps identified in worldclass scan",
+        "docs/business-os/strategy/BRIK/apps/reception/worldclass-scan-2026-02-28.md"
+      ],
+      "created_at": "2026-02-28T20:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "route": "auto-executed",
+        "processed_at": "2026-02-28T20:00:00Z"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "dispatch_id": "IDEA-DISPATCH-20260228-0075",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "area_anchor": "BRIK reception language \u2014 standardize UI to English default",
+      "domain": "STRATEGY",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Reception app is bilingual with inconsistent language distribution: older till screens (TillShiftHistory, CloseShiftForm labels) are English; newer screens (BatchStockCount, ManagerAuditContent, EodChecklistContent) are Italian-only. Operator policy: English is the default language. Italian already in place is acceptable but must not be the only option.",
+      "next_scope_now": "Audit all hardcoded UI strings in apps/reception/src/. Convert Italian-only text in newer screens to English as the primary label. Italian already in place may remain alongside English. Establish English as the default for all new work.",
+      "location_anchors": [
+        "apps/reception/src/components/inventory/BatchStockCount.tsx",
+        "apps/reception/src/components/managerAudit/ManagerAuditContent.tsx",
+        "apps/reception/src/components/eodChecklist/EodChecklistContent.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: all screens should be in English as default; Italian already in place is acceptable",
+        "docs/business-os/strategy/BRIK/apps/reception/worldclass-scan-2026-02-28.md"
+      ],
+      "created_at": "2026-02-28T20:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "route": "auto-executed",
+        "processed_at": "2026-02-28T20:00:00Z"
       }
     }
   ]

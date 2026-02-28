@@ -1,7 +1,7 @@
 
 import "@testing-library/jest-dom";
 
-import { addDays, getDatePlusTwoDays, getToday, getTodayIso } from "@/utils/dateUtils";
+import { addDays, formatDate, formatDisplayDate, getDatePlusTwoDays, getToday, getTodayIso, parseIsoToLocalDate, safeParseIso } from "@/utils/dateUtils";
 
 describe("dateUtils", () => {
   describe("getToday", () => {
@@ -76,6 +76,66 @@ describe("dateUtils", () => {
 
     it("uses the same validation as addDays", () => {
       expect(() => getDatePlusTwoDays("bad-date")).toThrow("Invalid date string: bad-date");
+    });
+  });
+
+  // TC-02 (from TASK-08 plan)
+  describe("parseIsoToLocalDate", () => {
+    it("TC-02: parses YYYY-MM-DD into correct local-time Date", () => {
+      const d = parseIsoToLocalDate("2026-03-15");
+      expect(d.getFullYear()).toBe(2026);
+      expect(d.getMonth()).toBe(2); // 0-indexed March
+      expect(d.getDate()).toBe(15);
+    });
+
+    it("constructs date at local midnight (not UTC)", () => {
+      const d = parseIsoToLocalDate("2026-01-01");
+      expect(d.getHours()).toBe(0);
+      expect(d.getMinutes()).toBe(0);
+    });
+  });
+
+  describe("safeParseIso", () => {
+    it("returns a valid Date for a well-formed ISO string", () => {
+      const d = safeParseIso("2026-03-15");
+      expect(d).toBeInstanceOf(Date);
+      expect(d?.getDate()).toBe(15);
+    });
+
+    it("returns undefined for an empty string", () => {
+      expect(safeParseIso("")).toBeUndefined();
+    });
+
+    it("returns undefined for a non-date string", () => {
+      expect(safeParseIso("not-a-date")).toBeUndefined();
+    });
+  });
+
+  // TC-03 (from TASK-08 plan)
+  describe("formatDisplayDate", () => {
+    it("TC-03: formats a Date as 'DD Mon'", () => {
+      expect(formatDisplayDate(new Date(2026, 2, 3))).toBe("03 Mar");
+    });
+
+    it("formats single-digit days with leading zero", () => {
+      expect(formatDisplayDate(new Date(2026, 0, 7))).toBe("07 Jan");
+    });
+
+    it("formats December correctly", () => {
+      expect(formatDisplayDate(new Date(2026, 11, 31))).toBe("31 Dec");
+    });
+  });
+
+  // TC-04 (from TASK-08 plan): round-trip ISO string
+  describe("round-trip parseIsoToLocalDate → formatDate", () => {
+    it("TC-04: parses and re-formats to the original ISO string", () => {
+      const iso = "2026-03-15";
+      expect(formatDate(parseIsoToLocalDate(iso))).toBe(iso);
+    });
+
+    it("handles end-of-year boundary", () => {
+      const iso = "2025-12-31";
+      expect(formatDate(parseIsoToLocalDate(iso))).toBe(iso);
     });
   });
 });

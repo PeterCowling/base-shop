@@ -28,6 +28,8 @@ It converts offer, channel, and product-evidence artifacts into concise launch c
 - claim-safe (no unsupported material/compliance claims)
 - reusable across homepage, PLP, PDP, support, and policy/trust pages
 
+> **Compiler Warning:** The `compile-website-content-packet` tool writes to this exact file path when run for HBAG. Do NOT run `compile-website-content-packet --business HBAG` after the `## Product Proof Bullets` section has been added without first porting the proof bullet section into the compiler. Running it without this extension would silently overwrite this file and erase the proof bullets — the materializer would then fail-closed (missing section) and the PDP would show no proof copy.
+
 ## Refresh Trigger
 
 Refresh this packet whenever one of the following changes:
@@ -98,6 +100,16 @@ Refresh this packet whenever one of the following changes:
 - Designed in Positano, Italy; manufactured to spec.
 - Launch gallery follows a six-view sequence (hero, angle, detail, on-body, scale, alternate).
 - 30-day exchange window and 90-day hardware support.
+
+## Product Proof Bullets
+
+### Product Proof Bullets
+
+- Structured silhouette, top-handle carry. A shaped body with side gussets holds its form — designed to hang from a bag strap, not fold into it.
+- Turn-lock hardware closure. A front strap with a turn-lock clasp closes the bag cleanly. Polished metal hardware on the strap keeper and clasp plate.
+- Designed in Positano, Italy. Manufactured to specification; designed in Italy. The Amalfi origin story is in the object, not just the packaging.
+- Textured finishes across colorways — metallic reptile emboss, croc emboss, pebbled grain. Selected colorways include a stitched building facade applique.
+- 30-day free exchange, 90-day hardware guarantee. Change of mind — exchange within 30 days. Hardware fails within 90 days: replacement, no forms.
 
 ## Operational Integration
 

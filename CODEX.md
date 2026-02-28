@@ -11,7 +11,8 @@ Last-updated-by: Codex (GPT-5.2)
 
 # CODEX.md — Codex Agent Context
 
-This file contains Codex-specific guidance. For universal commands, see `AGENTS.md`.
+This file is **supplemental** guidance for Codex.
+`AGENTS.md` is the canonical, always-loaded runbook and source of mandatory safety rules.
 
 ## Safety Rules (CRITICAL)
 
@@ -82,8 +83,7 @@ scripts/agents/integrator-shell.sh -- codex
 ```
 
 This blocks commands like `git reset --hard`, `git clean -fd`, force pushes, `rebase`, stash mutations, and `commit --amend`,
-blocks repo-wide/bulk discard patterns (`git restore` / `git checkout --`), and enforces a single-writer lock for commits/pushes.
-blocks repo-wide/bulk discard patterns (`git restore` / `git checkout --`), and enforces a single-writer lock for commits/pushes.
+repo-wide/bulk discard patterns (`git restore` / `git checkout --`), and enforces a single-writer lock for commits/pushes.
 
 If you are running Codex non-interactively (no TTY; e.g. CI or API-driven agents), you can't open an integrator subshell.
 Instead, wrap each command that may write (git operations, installs, builds) with:

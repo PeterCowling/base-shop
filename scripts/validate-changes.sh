@@ -36,6 +36,39 @@ echo "========================================"
 echo "  Validation Gate"
 echo "========================================"
 
+# 0. Repository integrity checks (always run, even with no changed files)
+AGENTS_WARN_BYTES="${AGENTS_WARN_BYTES:-22528}"
+AGENTS_HARD_BYTES="${AGENTS_HARD_BYTES:-24576}"
+
+if [ ! -f "$REPO_ROOT/AGENTS.md" ]; then
+    echo "FAIL: AGENTS.md not found at $REPO_ROOT/AGENTS.md"
+    exit 1
+fi
+
+AGENTS_BYTES=$(wc -c < "$REPO_ROOT/AGENTS.md" | tr -d ' ')
+if [ "$AGENTS_BYTES" -gt "$AGENTS_HARD_BYTES" ]; then
+    echo "FAIL: AGENTS.md size $AGENTS_BYTES bytes exceeds hard limit $AGENTS_HARD_BYTES bytes"
+    exit 1
+elif [ "$AGENTS_BYTES" -gt "$AGENTS_WARN_BYTES" ]; then
+    echo "WARN: AGENTS.md size $AGENTS_BYTES bytes exceeds warning threshold $AGENTS_WARN_BYTES bytes"
+else
+    echo "OK: AGENTS.md size $AGENTS_BYTES bytes (<= $AGENTS_WARN_BYTES warning threshold)"
+fi
+
+echo "Checking Codex skills mirror integrity..."
+if ! bash "$REPO_ROOT/scripts/validate-codex-skills.sh"; then
+    echo "FAIL: Codex skills mirror validation failed"
+    exit 1
+fi
+echo "OK: Codex skills mirror validation passed"
+
+echo "Checking skill registry drift..."
+if ! "$REPO_ROOT/scripts/agents/generate-skill-registry" --check; then
+    echo "FAIL: Skill registry drift check failed"
+    exit 1
+fi
+echo "OK: Skill registry drift check passed"
+
 # 0. Check for orphaned test processes (incident 2026-01-16)
 if [ "$VALIDATE_INCLUDE_TESTS" = "1" ] && [ "$ALLOW_TEST_PROCS" != "1" ]; then
     JEST_PROCS=$(ps -ef | grep -E 'jest-worker|jest\.js' | grep -v grep | wc -l | tr -d ' ')

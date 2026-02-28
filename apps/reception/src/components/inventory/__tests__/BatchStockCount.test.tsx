@@ -141,7 +141,7 @@ describe("groupItemsByCategory", () => {
     expect(grouped.Cucina).toEqual([kitchenItem]);
   });
 
-  it("puts null or undefined category items under Senza categoria", () => {
+  it("puts null or undefined category items under Uncategorized", () => {
     const nullCategory = makeItem({
       id: "item-null",
       name: "No Cat 1",
@@ -155,7 +155,7 @@ describe("groupItemsByCategory", () => {
 
     const grouped = groupItemsByCategory([nullCategory, blankCategory]);
 
-    expect(grouped["Senza categoria"]).toEqual([nullCategory, blankCategory]);
+    expect(grouped["Uncategorized"]).toEqual([nullCategory, blankCategory]);
   });
 
   it("handles mixed categorized and uncategorized items", () => {
@@ -175,7 +175,7 @@ describe("groupItemsByCategory", () => {
 
     expect(grouped.Bar).toEqual([barItem]);
     expect(grouped.Cucina).toEqual([kitchenItem]);
-    expect(grouped["Senza categoria"]).toEqual([uncategorizedItem]);
+    expect(grouped["Uncategorized"]).toEqual([uncategorizedItem]);
   });
 });
 
@@ -208,7 +208,7 @@ describe("BatchStockCount component", () => {
 
     renderBatchStockCount();
 
-    expect(screen.getByText("Caricamento inventario...")).toBeInTheDocument();
+    expect(screen.getByText("Loading inventory...")).toBeInTheDocument();
   });
 
   it("renders error state", () => {
@@ -222,7 +222,7 @@ describe("BatchStockCount component", () => {
     renderBatchStockCount();
 
     expect(
-      screen.getByText("Errore durante il caricamento dell'inventario.")
+      screen.getByText("Error loading inventory.")
     ).toBeInTheDocument();
   });
 
@@ -259,7 +259,7 @@ describe("BatchStockCount component", () => {
     expect(screen.getByRole("heading", { name: "Cucina" })).toBeInTheDocument();
   });
 
-  it("shows Senza categoria heading for item without category", () => {
+  it("shows Uncategorized heading for item without category", () => {
     const uncategorizedItem = makeItem({
       id: "uncat-1",
       name: "Unknown",
@@ -275,7 +275,7 @@ describe("BatchStockCount component", () => {
 
     renderBatchStockCount();
 
-    expect(screen.getByRole("heading", { name: "Senza categoria" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Uncategorized" })).toBeInTheDocument();
   });
 
   it("submits positive count delta without reauth", async () => {
@@ -302,7 +302,7 @@ describe("BatchStockCount component", () => {
     const quantityInput = within(row).getByRole("spinbutton");
     await user.clear(quantityInput);
     await user.type(quantityInput, "10");
-    await user.click(screen.getByRole("button", { name: "Completa categoria" }));
+    await user.click(screen.getByRole("button", { name: "Complete category" }));
 
     await waitFor(() => {
       expect(addLedgerEntry).toHaveBeenCalledWith(
@@ -340,7 +340,7 @@ describe("BatchStockCount component", () => {
     const quantityInput = within(row).getByRole("spinbutton");
     await user.clear(quantityInput);
     await user.type(quantityInput, "5");
-    await user.click(screen.getByRole("button", { name: "Completa categoria" }));
+    await user.click(screen.getByRole("button", { name: "Complete category" }));
 
     await waitFor(() => {
       expect(addLedgerEntry).toHaveBeenCalledWith(
@@ -373,7 +373,7 @@ describe("BatchStockCount component", () => {
 
     renderBatchStockCount();
 
-    await user.click(screen.getByRole("button", { name: "Completa categoria" }));
+    await user.click(screen.getByRole("button", { name: "Complete category" }));
 
     await waitFor(() => {
       expect(addLedgerEntry).not.toHaveBeenCalled();
@@ -404,7 +404,7 @@ describe("BatchStockCount component", () => {
     const quantityInput = within(row).getByRole("spinbutton");
     await user.clear(quantityInput);
     await user.type(quantityInput, "10");
-    await user.click(screen.getByRole("button", { name: "Completa categoria" }));
+    await user.click(screen.getByRole("button", { name: "Complete category" }));
 
     await waitFor(() => {
       expect(screen.getAllByText("Beans").length).toBeGreaterThan(1);
@@ -449,10 +449,10 @@ describe("BatchStockCount component", () => {
     const quantityInput = within(row).getByRole("spinbutton");
     await user.clear(quantityInput);
     await user.type(quantityInput, "3");
-    await user.click(within(barSection).getByRole("button", { name: "Completa categoria" }));
+    await user.click(within(barSection).getByRole("button", { name: "Complete category" }));
 
     await waitFor(() => {
-      expect(screen.getByText("1 / 2 categorie complete")).toBeInTheDocument();
+      expect(screen.getByText("1 / 2 categories complete")).toBeInTheDocument();
     });
   });
 
@@ -515,7 +515,7 @@ describe("BatchStockCount component", () => {
     const quantityInput = within(row).getByRole("spinbutton");
     await user.clear(quantityInput);
     await user.type(quantityInput, "15");
-    await user.click(screen.getByRole("button", { name: "Completa categoria" }));
+    await user.click(screen.getByRole("button", { name: "Complete category" }));
 
     expect(screen.getByTestId("password-reauth-modal")).toBeInTheDocument();
     expect(addLedgerEntry).not.toHaveBeenCalled();
@@ -545,7 +545,7 @@ describe("BatchStockCount component", () => {
     const quantityInput = within(row).getByRole("spinbutton");
     await user.clear(quantityInput);
     await user.type(quantityInput, "7");
-    await user.click(screen.getByRole("button", { name: "Completa categoria" }));
+    await user.click(screen.getByRole("button", { name: "Complete category" }));
 
     await waitFor(() => {
       expect(addLedgerEntry).toHaveBeenCalledWith(
@@ -583,7 +583,7 @@ describe("BatchStockCount component", () => {
     const quantityInput = within(row).getByRole("spinbutton");
     await user.clear(quantityInput);
     await user.type(quantityInput, "15");
-    await user.click(screen.getByRole("button", { name: "Completa categoria" }));
+    await user.click(screen.getByRole("button", { name: "Complete category" }));
 
     await user.click(screen.getByTestId("reauth-cancel"));
 

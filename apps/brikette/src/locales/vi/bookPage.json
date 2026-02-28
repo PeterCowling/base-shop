@@ -47,5 +47,10 @@
       "eyebrow": "Book direct and save",
       "headline": "Up to 25% less than Booking.com"
     }
+  },
+  "date": {
+    "stayHelper": "2–8 nights",
+    "clearDates": "Clear dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
   }
 }

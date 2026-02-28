@@ -16,7 +16,7 @@ import type { InventoryItem } from "../../types/hooks/data/inventoryItemData";
 import { buildInventorySnapshot } from "../../utils/inventoryLedger";
 import PasswordReauthModal from "../common/PasswordReauthModal";
 
-const UNCATEGORIZED_LABEL = "Senza categoria";
+const UNCATEGORIZED_LABEL = "Uncategorized";
 const BATCH_REASON = "conteggio batch";
 
 interface BatchStockCountProps {
@@ -293,7 +293,7 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
   if (itemsLoading || ledgerLoading) {
     return (
       <div className="p-4">
-        <p>Caricamento inventario...</p>
+        <p>Loading inventory...</p>
       </div>
     );
   }
@@ -301,7 +301,7 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
   if (itemsError || ledgerError) {
     return (
       <div className="p-4">
-        <p className="text-error-main">Errore durante il caricamento dell&apos;inventario.</p>
+        <p className="text-error-main">Error loading inventory.</p>
       </div>
     );
   }
@@ -310,12 +310,12 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
     <div className="space-y-4">
       {!isOnline && (
         <div className="rounded-lg border border-warning-main bg-warning-light/20 px-3 py-2 text-sm text-warning-dark">
-          Sincronizzazione in attesa...
+          Sync pending...
         </div>
       )}
 
       <p className="text-sm font-medium">
-        {completeCategorySet.size} / {categoryNames.length} categorie complete
+        {completeCategorySet.size} / {categoryNames.length} categories complete
       </p>
 
       {categoryNames.map((category) => {
@@ -334,17 +334,17 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
                   void handleCompleteCategory(category);
                 }}
               >
-                Completa categoria
+                Complete category
               </Button>
             </div>
 
             <Table className="min-w-full text-sm">
               <TableHeader className="bg-surface-2">
                 <TableRow>
-                  <TableHead className="p-2 text-start">Articolo</TableHead>
-                  <TableHead className="p-2 text-start">Unità</TableHead>
-                  <TableHead className="p-2 text-end">Previsto</TableHead>
-                  <TableHead className="p-2 text-end">Conteggiato</TableHead>
+                  <TableHead className="p-2 text-start">Item</TableHead>
+                  <TableHead className="p-2 text-start">Unit</TableHead>
+                  <TableHead className="p-2 text-end">Expected</TableHead>
+                  <TableHead className="p-2 text-end">Counted</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -392,9 +392,9 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
                   <Table className="min-w-full text-sm">
                     <TableHeader>
                       <TableRow>
-                        <TableHead className="p-2 text-start">Articolo</TableHead>
-                        <TableHead className="p-2 text-end">Previsto</TableHead>
-                        <TableHead className="p-2 text-end">Conteggiato</TableHead>
+                        <TableHead className="p-2 text-start">Item</TableHead>
+                        <TableHead className="p-2 text-end">Expected</TableHead>
+                        <TableHead className="p-2 text-end">Counted</TableHead>
                         <TableHead className="p-2 text-end">Delta</TableHead>
                       </TableRow>
                     </TableHeader>
@@ -421,7 +421,7 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
                   </Table>
                 ) : (
                   <p className="text-sm text-muted-foreground">
-                    Nessuna quantità inserita per questa categoria.
+                    No quantities entered for this category.
                   </p>
                 )}
               </div>
@@ -431,8 +431,8 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
       })}
       {pendingBatch && (
         <PasswordReauthModal
-          title="Conferma conteggio"
-          instructions="Inserisci la tua password per confermare il conteggio batch con grandi variazioni."
+          title="Confirm batch count"
+          instructions="Enter your password to confirm the batch count with large variances."
           onCancel={() => setPendingBatch(null)}
           onSuccess={async () => {
             if (!pendingBatch || submittingCategory) {

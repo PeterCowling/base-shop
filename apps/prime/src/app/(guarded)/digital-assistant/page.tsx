@@ -19,16 +19,16 @@ interface AssistantExchange {
 }
 
 const PRESET_QUERY_KEYS = [
-  'presetQueries.fornilloBeach',
-  'presetQueries.localBus',
-  'presetQueries.barMenu',
-  'presetQueries.positanoPort',
-  'presetQueries.travelAround',
-  'presetQueries.porterHelp',
-  'presetQueries.rubberBoatTrip',
-  'presetQueries.boatTours',
-  'presetQueries.hiking',
-  'presetQueries.breakfastIncluded',
+  'digitalAssistant.presetQueries.fornilloBeach',
+  'digitalAssistant.presetQueries.localBus',
+  'digitalAssistant.presetQueries.barMenu',
+  'digitalAssistant.presetQueries.positanoPort',
+  'digitalAssistant.presetQueries.travelAround',
+  'digitalAssistant.presetQueries.porterHelp',
+  'digitalAssistant.presetQueries.rubberBoatTrip',
+  'digitalAssistant.presetQueries.boatTours',
+  'digitalAssistant.presetQueries.hiking',
+  'digitalAssistant.presetQueries.breakfastIncluded',
 ] as const;
 
 const MAX_HISTORY = 5;

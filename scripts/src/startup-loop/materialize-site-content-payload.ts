@@ -100,7 +100,8 @@ function extractBulletList(markdown: string, heading: string): string[] {
 
   const startIndex = startMatch.index + startMatch[0].length;
   const rest = markdown.slice(startIndex);
-  const nextHeadingIndex = rest.search(/^###\s+/m);
+  // Stop at the next heading of any level (h2 or h3) to avoid spilling into subsequent sections.
+  const nextHeadingIndex = rest.search(/^#{2,}\s+/m);
   const block = nextHeadingIndex >= 0 ? rest.slice(0, nextHeadingIndex) : rest;
 
   return block

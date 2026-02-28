@@ -1,7 +1,8 @@
 {
-  "generatedAt": "2026-02-24",
-  "sourcePacketPath": "../docs/business-os/startup-baselines/HBAG-content-packet.md",
-  "sourceHash": "87332c2cb42f479077568e00155f394e54fcf0e5cf055706aa996fa9cfff150b",
+  "generatedAt": "2026-02-28",
+  "_manualExtension": "trustStrip added manually 2026-02-28 — materializer update pending. Do not run materializer without porting productPage.trustStrip block first.",
+  "sourcePacketPath": "docs/business-os/startup-baselines/HBAG-content-packet.md",
+  "sourceHash": "d1dcc6092ea1bc598ba0fb9fcf01f26d538300cdc27250dd7911af008c7f1597",
   "sourcePaths": [
     "docs/business-os/market-research/HBAG/2026-02-20-market-intelligence.user.md",
     "docs/business-os/startup-baselines/HBAG-channels.md",
@@ -117,17 +118,37 @@
     },
     "proofBullets": [
       {
-        "en": "Generated from canonical packet and source ledger."
+        "en": "Structured silhouette, top-handle carry. A shaped body with side gussets holds its form — designed to hang from a bag strap, not fold into it."
       },
       {
-        "en": "Claims constrained by packet and lint contracts."
+        "en": "Turn-lock hardware closure. A front strap with a turn-lock clasp closes the bag cleanly. Polished metal hardware on the strap keeper and clasp plate."
       },
       {
-        "en": "Policy and support blocks remain deterministic."
+        "en": "Designed in Positano, Italy. Manufactured to specification; designed in Italy. The Amalfi origin story is in the object, not just the packaging."
+      },
+      {
+        "en": "Textured finishes across colorways — metallic reptile emboss, croc emboss, pebbled grain. Selected colorways include a stitched building facade applique."
+      },
+      {
+        "en": "30-day free exchange, 90-day hardware guarantee. Change of mind — exchange within 30 days. Hardware fails within 90 days: replacement, no forms."
       }
     ],
     "relatedHeading": {
       "en": "You may also like"
+    },
+    "trustStrip": {
+      "delivery": {
+        "en": "Usually ships in 2–5 business days (EU)"
+      },
+      "exchange": {
+        "en": "30-day exchange"
+      },
+      "origin": {
+        "en": "Designed in Positano, Italy"
+      },
+      "securePayment": {
+        "en": "Secure checkout"
+      }
     }
   },
   "support": {

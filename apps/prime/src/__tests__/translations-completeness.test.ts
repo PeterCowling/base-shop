@@ -106,10 +106,10 @@ const NAMESPACES = [
 for (const namespace of NAMESPACES) {
   describe(`Namespace: ${namespace}`, () => {
     const en = readLocale('en', namespace);
-    const it = readLocale('it', namespace);
+    const itLocale = readLocale('it', namespace);
 
     const enKeys = getLeafKeys(en);
-    const itKeys = new Set(getLeafKeys(it));
+    const itKeys = new Set(getLeafKeys(itLocale));
 
     it(`IT locale has all EN keys for namespace ${namespace} (TC-TRANS-01)`, () => {
       const missingKeys = enKeys.filter((key) => !itKeys.has(key));
@@ -117,7 +117,7 @@ for (const namespace of NAMESPACES) {
     });
 
     it(`IT locale has no [IT] stub values for namespace ${namespace} (TC-TRANS-02)`, () => {
-      const stubKeys = getStubKeys(it);
+      const stubKeys = getStubKeys(itLocale);
       expect(stubKeys).toEqual([]);
     });
   });

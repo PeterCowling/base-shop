@@ -5,13 +5,17 @@ import { notFound } from "next/navigation";
 import { type Locale, LOCALES, resolveLocale } from "@acme/i18n/locales";
 import AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
 
+import { NotifyMeForm } from "@/components/catalog/NotifyMeForm.client";
 import { ProductGallery } from "@/components/catalog/ProductGallery.client";
 import { ProductMediaCard } from "@/components/catalog/ProductMediaCard";
 import { StockBadge } from "@/components/catalog/StockBadge";
+import ShippingReturnsTrustBlock from "@/components/ShippingReturnsTrustBlock";
 import {
   getLaunchFamilyCopy,
+  getPolicyContent,
   getProductPageContent,
   getSeoKeywords,
+  getTrustStripContent,
 } from "@/lib/contentPacket";
 import {
   buildCatalogCardMedia,
@@ -26,6 +30,7 @@ import {
   readShopSkus,
 } from "@/lib/shop";
 
+import { PdpTrustStrip } from "./PdpTrustStrip";
 import ProductAnalytics from "./ProductAnalytics.client";
 import { StickyCheckoutBar } from "./StickyCheckoutBar.client";
 
@@ -63,6 +68,9 @@ export default async function ProductDetailPage({
   ]);
 
   if (!product) return notFound();
+  const shippingContent = getPolicyContent(lang, "shipping");
+  const returnsContent = getPolicyContent(lang, "returns");
+  const trustStrip = getTrustStripContent(lang);
   const inventoryItem = inventoryItems.find((item) => item.productId === product.id);
   const lowStockThreshold = inventoryItem?.lowStockThreshold ?? 2;
   const allProducts = await readShopSkus(lang);
@@ -107,8 +115,18 @@ export default async function ProductDetailPage({
               <StickyCheckoutBar
                 priceLabel={formatMoney(product.price, currency)}
                 sku={product}
+                trustLine={trustStrip?.exchange}
+              />
+              <ShippingReturnsTrustBlock
+                shippingSummary={shippingContent.summary}
+                returnsSummary={returnsContent.summary}
+                lang={lang}
               />
             </div>
+
+            <PdpTrustStrip lang={lang} />
+
+            <NotifyMeForm productSlug={product.slug} />
 
             <section
               className="space-y-3 border-t pt-5"

@@ -29,7 +29,7 @@ This plan makes Codex startup instructions and skill discovery reliable without 
 - [x] TASK-02: Add `.codex/config.toml` with only effective project-doc controls - **Complete (2026-02-28)**
 - [ ] TASK-03: Move Codex-critical guidance into always-loaded instruction surface
 - [x] TASK-04: Create `.agents/skills/` native discovery mirror - **Complete (2026-02-28)**
-- [ ] TASK-05: Add strong skills integrity validation
+- [x] TASK-05: Add strong skills integrity validation - **Complete (2026-02-28)**
 - [x] TASK-06: Repair and gate skill registry drift - **Complete (2026-02-28)**
 - [ ] TASK-07: Wire validation into local and CI gates
 - [ ] TASK-08: Checkpoint verification (docs loading + skills discovery)
@@ -112,7 +112,7 @@ It did not validate completeness against `.claude/skills/*/SKILL.md`, symlink co
 | TASK-02 | IMPLEMENT | Add `.codex/config.toml` with effective settings only (`project_doc_max_bytes`) | 95% | S | Complete (2026-02-28) | - | TASK-08 |
 | TASK-03 | IMPLEMENT | Ensure Codex-critical guidance is in always-loaded runbook surface | 82% | M | Pending | TASK-01 | TASK-08 |
 | TASK-04 | IMPLEMENT | Create `.agents/skills/` native mirror from `.claude/skills/*/SKILL.md` | 90% | M | Complete (2026-02-28) | - | TASK-05, TASK-08 |
-| TASK-05 | IMPLEMENT | Add strong `scripts/validate-codex-skills.sh` integrity checks | 84% | M | Pending | TASK-04 | TASK-07, TASK-08 |
+| TASK-05 | IMPLEMENT | Add strong `scripts/validate-codex-skills.sh` integrity checks | 84% | M | Complete (2026-02-28) | TASK-04 | TASK-07, TASK-08 |
 | TASK-06 | IMPLEMENT | Regenerate and gate `.agents/registry/skills.json` consistency | 90% | S | Complete (2026-02-28) | - | TASK-07, TASK-08 |
 | TASK-07 | IMPLEMENT | Wire size + skills + registry checks into local/CI validation | 80% | M | Pending | TASK-05, TASK-06 | TASK-08 |
 | TASK-08 | CHECKPOINT | Verify instruction loading and skill discovery behavior end-to-end | 78% | M | Pending | TASK-01, TASK-02, TASK-03, TASK-04, TASK-06, TASK-07 | - |
@@ -228,7 +228,7 @@ It did not validate completeness against `.claude/skills/*/SKILL.md`, symlink co
 - **Execution-Skill:** lp-do-build
 - **Affects:** `scripts/validate-codex-skills.sh` (new file).
 - **Depends on:** TASK-04
-- **Status:** Pending
+- **Status:** Complete (2026-02-28)
 - **Confidence:** 84% (Implementation 88 / Approach 84 / Impact 84)
 - **Scope:** Write `scripts/validate-codex-skills.sh` checking: (1) `.agents/skills` is a real directory not a symlink; (2) every entry in `.agents/skills/*` resolves to an existing `.claude/skills/<name>/SKILL.md`; (3) every skill directory in `.claude/skills/` (with a `SKILL.md`) has a corresponding entry in `.agents/skills/` — bidirectional completeness; (4) directory-name uniqueness in `.agents/skills/`. Note: frontmatter `name:` field vs directory-name divergence (e.g. `frontend-design` dir vs `tools-ui-frontend-design` frontmatter) is a known pre-existing issue tracked separately and is out of scope for this script.
 - **VC-05:**
@@ -240,6 +240,12 @@ It did not validate completeness against `.claude/skills/*/SKILL.md`, symlink co
   - **Refactor:** Remove temporary breakage-test states; confirm clean exit on final repo state.
 - **Rollout/rollback:** Immediate; gated by TASK-07 wiring. Rollback: `git revert <commit>`.
 - **Documentation impact:** None.
+- **Build evidence (2026-02-28):**
+  - Added executable `scripts/validate-codex-skills.sh` implementing bidirectional mirror validation between `.agents/skills` and `.claude/skills/*/SKILL.md`.
+  - VC-05 PASS: `bash scripts/validate-codex-skills.sh` exits 0 on repo state (`OK: .agents/skills valid (76 entries)`).
+  - VC-05 negative probes PASS: (1) mirror path as symlink exits 1, (2) canonical skill missing mirror exits 1, (3) mirror entry missing `SKILL.md` target exits 1.
+  - Duplicate-name guard implemented defensively via `total` vs `sort -u` mirror-name count check in the script.
+  - Refactor PASS: no temp probe artifacts persisted in repo; only task-scoped files changed.
 
 ### TASK-06: Regenerate and gate skill registry consistency
 - **Type:** IMPLEMENT

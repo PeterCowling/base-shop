@@ -314,7 +314,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-02-28T12:40:52.350Z";
+  var GEN_TS = "2026-02-28T12:46:42.989Z";
 
   var IDEA_ITEMS = [
     {
@@ -367,6 +367,23 @@
       "effort": "M",
       "proximity": "Near",
       "reason_code": "RULE_P1_NEAR_CAUSAL"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Category assignment helper: batch-assign categories to inventory items via CSV or UI bulk edit",
+      "body": "TASK-01 found category field is free-text with no UI picker; operator must assign manually item-by-item — a slow process for 20–60 items",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-02-28T12:43:24.592Z",
+      "path": "docs/plans/_archive/reception-stock-batch-count/results-review.user.md",
+      "idea_key": "2302f961b8c8129c3d9c2d6cc8625c71b9b5eaff",
+      "priority_tier": "P2",
+      "own_priority_rank": 7,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P2_OPERATOR_EXCEPTION"
     },
     {
       "type": "idea",
@@ -1712,6 +1729,23 @@
       "date": "2026-02-26T08:53:01.939Z",
       "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md",
       "idea_key": "50250241c361b3e014540cb7f748b06e906f22b5",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Extract pure transform functions from components for easier unit testing",
+      "body": "TASK-06 unit tests hit groupItemsByCategory/requiresReauth directly without mounting the full component",
+      "suggested_action": "defer (apply opportunistically during future inventory work)",
+      "source": "results-review.user.md",
+      "date": "2026-02-28T12:43:24.592Z",
+      "path": "docs/plans/_archive/reception-stock-batch-count/results-review.user.md",
+      "idea_key": "149002b45ed37b1a3285fe11f82d8a17db0717fa",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",

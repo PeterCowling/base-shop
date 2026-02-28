@@ -57,7 +57,7 @@ export default function HomePage() {
               asChild
               className="xa-hero-cta rounded-none bg-foreground px-6 text-primary-fg hover:bg-foreground/90"
             >
-              <Link href="/account/register">Join Us</Link>
+              <Link href="/pages/how-to-shop">Join Us</Link>
             </Button>
           </div>
           <div className="xa-hero-media w-full md:justify-self-end xa-hero-media-max">

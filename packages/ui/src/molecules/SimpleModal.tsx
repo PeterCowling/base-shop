@@ -59,17 +59,21 @@ export const SimpleModal: React.FC<SimpleModalProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogPortal>
-        <DialogOverlay className={cn("bg-black/50 backdrop-blur-sm", backdropClassName)} />
+        <DialogOverlay style={{ zIndex: 9998 }} className={cn("bg-surface/50 backdrop-blur-sm", backdropClassName)} />
         <DialogPrimitive.Content
           aria-describedby={undefined}
+          style={{ zIndex: 9999 }}
           className={cn(
-            "fixed top-1/2 start-1/2 z-modal w-full -translate-x-1/2 -translate-y-1/2",
+            "fixed top-1/2 left-1/2 w-full -translate-x-1/2 -translate-y-1/2",
             "rounded-lg border border-border-2 bg-panel text-foreground shadow-elevation-4",
             "focus:outline-none",
             maxWidth,
             className
           )}
         >
+          {/* DialogTitle must always be in the DOM for Radix accessibility — hidden when no title prop */}
+          {!title && <DialogTitle className="sr-only">Dialog</DialogTitle>}
+
           {(title || showCloseButton) && (
             // eslint-disable-next-line ds/enforce-layout-primitives -- UI-LINT-05 Modal header layout; fixed 2-column structure
             <div className="flex items-center justify-between px-6 py-4 border-b border-border-2">
@@ -80,7 +84,7 @@ export const SimpleModal: React.FC<SimpleModalProps> = ({
               )}
               {showCloseButton && (
                 <DialogPrimitive.Close
-                  className="min-h-10 min-w-10 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+                  className="min-h-11 min-w-11 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
                   aria-label="Close modal"
                 >
                   <svg

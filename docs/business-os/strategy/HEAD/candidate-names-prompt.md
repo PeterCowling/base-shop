@@ -4,7 +4,7 @@ Stage: ASSESSMENT-04
 Business: HEAD
 Status: Active
 Created: 2026-02-19
-Input: docs/business-os/strategy/HEAD/solution-select.user.md
+Input: docs/business-os/strategy/HEAD/2026-02-20-solution-decision.user.md
 Selected-option: Cross-compatible textile lifestyle accessory brand for CI processor wearers
 Results-artifact: docs/business-os/strategy/HEAD/2026-02-20-candidate-names.user.md
 ---

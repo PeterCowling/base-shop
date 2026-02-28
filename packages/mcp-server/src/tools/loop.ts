@@ -96,8 +96,6 @@ const STARTUP_LOOP_STAGES = [
   "SELL-07",
   "SELL-08",
   "S4",
-  "S5A",
-  "S5B",
   "WEBSITE",
   "WEBSITE-01",
   "WEBSITE-02",

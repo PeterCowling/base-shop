@@ -20,7 +20,7 @@
     "title": "Reserve Direto e Economize",
     "description": "Obrigado por reservar diretamente conosco! Como forma de agradecimento, você desfrutará de:",
     "perks": {
-      "discount": "Até 10% de desconto na diária",
+      "discount": "Até 25% de desconto na diária",
       "breakfast": "Café da manhã gratuito todas as manhãs",
       "drinks": "Bebidas de boas-vindas gratuitas",
       "upgrades": "Upgrade prioritário de quarto (sujeito à disponibilidade)"
@@ -160,5 +160,10 @@
   },
   "loader": {
     "ariaLabel": "Loading"
+  },
+  "date": {
+    "stayHelper": "2–8 nights",
+    "clearDates": "Clear dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
   }
 }

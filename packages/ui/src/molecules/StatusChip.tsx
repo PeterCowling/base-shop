@@ -45,13 +45,13 @@ export const StatusChip: React.FC<StatusChipProps> = ({
   ...rest
 }) => {
   const variants: Record<NonNullable<StatusChipProps['variant']>, string> = {
-    success: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-    warning: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
-    error: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
-    info: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
-    neutral: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300',
-    primary: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400',
-    secondary: 'bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-400',
+    success: 'bg-success-light text-success-main dark:bg-green-900/30 dark:text-green-400',
+    warning: 'bg-warning-light text-warning-main dark:bg-yellow-900/30 dark:text-yellow-400',
+    error: 'bg-error-light text-danger-fg dark:bg-red-900/30 dark:text-red-400',
+    info: 'bg-info-light text-info-main dark:bg-blue-900/30 dark:text-blue-400',
+    neutral: 'bg-surface-2 text-foreground dark:bg-gray-800 dark:text-gray-300',
+    primary: 'bg-secondary-light text-secondary-main dark:bg-purple-900/30 dark:text-purple-400',
+    secondary: 'bg-info-light text-info-main dark:bg-teal-900/30 dark:text-teal-400',
   }
 
   const sizes: Record<NonNullable<StatusChipProps['size']>, string> = {

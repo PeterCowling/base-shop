@@ -345,6 +345,8 @@ const IGNORED_ERROR_PATTERNS: ConsolePattern[] = [
   "Failed to load upgrade changes",
   "Publish failed",
   /^\[api\/delivery\] schedulePickup error:/,
+  // Availability proxy route — error-path logs exercised in TC-01-08 and TC-01-09
+  /^\[availability\] Octobook /,
 ];
 
 const IGNORED_WARN_PATTERNS: ConsolePattern[] = [

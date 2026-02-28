@@ -1,0 +1,2408 @@
+{
+  "queue_version": "queue.v1",
+  "mode": "trial",
+  "created_at": "2026-02-25T00:00:00Z",
+  "last_updated": "2026-02-27T23:50:00Z",
+  "counts": {
+    "enqueued": 6,
+    "processed": 2,
+    "skipped": 3,
+    "error": 0,
+    "suppressed": 0,
+    "auto_executed": 47,
+    "completed": 3,
+    "total": 61,
+    "fact_find_ready": 2
+  },
+  "dispatches": [
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0058",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "area_anchor": "BRIK room pages \u2014 select_item baseline missing before activation",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "processed",
+      "created_at": "2026-02-27T23:50:00Z",
+      "evidence_refs": [
+        "operator-stated: live pricing feature built and tested; no select_item baseline on room detail pages exists; without it post-activation uplift cannot be measured",
+        "funnel_step: select_item on /rooms/[id] pages",
+        "metric_name: select_item event rate on room detail pages"
+      ],
+      "summary": "Before activating the live pricing flag, capture the current select_item event rate on BRIK room detail pages from GA4 as a baseline. This anchors the post-activation comparison and closes the Intended Outcome Check in the results-review.",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-02-27T19:45:00Z",
+        "fact_find_slug": "brik-live-pricing-baseline",
+        "fact_find_path": "docs/plans/brik-live-pricing-baseline/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0059",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "area_anchor": "BRIK live pricing \u2014 production flag activation not yet planned",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "processed",
+      "created_at": "2026-02-27T23:50:00Z",
+      "evidence_refs": [
+        "operator-stated: NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY remains off on production; Cloudflare Worker env var setup and wrangler deploy steps not yet planned",
+        "depends_on: IDEA-DISPATCH-20260227-0058 (baseline capture should precede activation)"
+      ],
+      "summary": "Plan the production activation of live pricing on BRIK room detail pages: confirm which env vars to set, the Cloudflare Worker deployment steps, and what post-activation checks to run.",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-02-27T20:42:00Z",
+        "fact_find_slug": "brik-live-pricing-activation",
+        "fact_find_path": "docs/plans/brik-live-pricing-activation/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0032",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:STRATEGY:coverage-system-integration:20260226",
+      "anchor_key": "coverage-system-integration",
+      "cluster_key": "BOS:STRATEGY:coverage-system-integration:operator:20260226",
+      "cluster_fingerprint": "b8c4d2e3f5a1092345678901bcdefa67",
+      "lineage_depth": 0,
+      "area_anchor": "Coverage system integration \u2014 lp-weekly step + per-business manifests not initialized",
+      "location_anchors": [
+        ".claude/skills/lp-weekly/SKILL.md",
+        "docs/business-os/strategy/BRIK/",
+        "docs/business-os/strategy/PWRB/"
+      ],
+      "provisional_deliverable_family": "config+skill-update",
+      "domain": "STRATEGY",
+      "current_truth": "lp-weekly skill exists but contains no coverage scan step. No per-business coverage manifests exist for BRIK, PWRB, or any other business. The Startup Loop S1 onboarding gate has no manifest initialization hook. Coverage gaps are currently discovered only when an operator explicitly asks or when ad hoc work surfaces them \u2014 never by proactive systemic audit.",
+      "next_scope_now": "Fact-find to scope coverage system integration (contingent on coverage-manifest-scan-core schema being defined): (1) audit lp-weekly SKILL.md \u2014 where does a coverage scan step slot in relative to signal review and other standing steps, and what output format does weekly workflow expect?; (2) determine per-business manifest initialization requirements for BRIK (hospitality profile) and PWRB (physical-product/rental profile) \u2014 which domains are mandatory vs optional for each?; (3) design S1 onboarding hook \u2014 what does 'initialize manifest + run scan once' mean in the context of the S1 gate, and which existing skill or step triggers it?; (4) assess post-build re-scan integration \u2014 which event or hook triggers a re-scan, and how does it update the expected-state contract when a gap is resolved?; (5) produce a planning brief for lp-weekly integration, BRIK/PWRB manifest initialization, and S1 onboarding hook.",
+      "adjacent_later": [
+        "Initialize coverage manifests for HEAD and HBAG after BRIK/PWRB done",
+        "Retroactive coverage scan to discover existing blind spots across all active businesses as baseline",
+        "Per-business coverage health summary in Business OS dashboard"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.87,
+      "evidence_refs": [
+        "operator-stated: lp-weekly should run coverage scan on cadence alongside signal review",
+        "operator-stated: Startup Loop S1 should initialize manifest and run scan once to surface foundational gaps early",
+        "operator-stated: post-build re-scan should confirm coverage gaps were satisfied and update expected-state contract"
+      ],
+      "created_at": "2026-02-26T22:05:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "coverage-system-integration",
+        "fact_find_path": "docs/plans/coverage-system-integration/fact-find.md",
+        "processed_at": "2026-02-26T22:05:00Z",
+        "route": "auto-executed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0031",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:coverage-manifest-scan-core:20260226",
+      "anchor_key": "coverage-manifest-scan-core",
+      "cluster_key": "BOS:BOS:coverage-manifest-scan-core:operator:20260226",
+      "cluster_fingerprint": "a7b3c1d2e4f0981234567890abcdef56",
+      "lineage_depth": 0,
+      "area_anchor": "Coverage manifest schema + lp-coverage-scan \u2014 deterministic artifact-gap detector, not yet built",
+      "location_anchors": [
+        ".claude/skills/",
+        "docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.schema.json",
+        "docs/business-os/strategy/",
+        "docs/business-os/startup-loop/ideas/"
+      ],
+      "provisional_deliverable_family": "skill+schema",
+      "domain": "BOS",
+      "current_truth": "No coverage manifest schema or lp-coverage-scan skill exists. The system has quality audits of what exists (signal review, lp-do-ideas change detection) but no mechanism that asks 'what should exist but doesn't?' \u2014 no expected-state contract per business, no scanner comparing actual artifact/data-source state to expected coverage, and no automated detection of blind spots. Ad hoc workflow divergence currently defines coverage boundaries by default.",
+      "next_scope_now": "Fact-find to design and scope the core coverage infrastructure: (1) define the YAML schema for coverage-manifest.yaml \u2014 domain taxonomy (Financial, Inventory, Customer, Operational, Marketing, Compliance), profile scoping rules (physical-product, SaaS, hospitality), staleness thresholds, document-only vs data-backed distinction; (2) scan what exists that could be reused \u2014 any artifact existence checkers, staleness validators, data-connection detectors, or domain classification logic already in the codebase or skills; (3) design gap classification model \u2014 CRITICAL (no artifact and no data source), MAJOR (stale artifact or missing live backing), MINOR (thin structure or missing required fields); (4) design dispatch emission format \u2014 how does lp-coverage-scan produce fact_find_ready packets schema-compatible with lp-do-ideas-dispatch.schema.json?; (5) confirm skill file and manifest file locations and naming conventions; (6) produce a planning brief for implementing the manifest schema template and lp-coverage-scan skill.",
+      "adjacent_later": [
+        "Per-business coverage manifest initialization for BRIK and PWRB (blocked by schema design)",
+        "lp-weekly integration to run coverage scan as a standing weekly step",
+        "S1 onboarding hook: initialize manifest + run scan once to surface foundational gaps early",
+        "Post-build re-scan to confirm coverage gaps were satisfied"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: ad hoc workflow creates permanent blind spots \u2014 need deterministic coverage radar to surface missing artifact and data-source domains automatically",
+        "operator-stated: deterministic processes are faster, more incisive, and compound tooling; ad hoc variance creates inconsistency and execution imbalance",
+        "operator-stated: current quality audits audit what exists \u2014 neither asks 'what should exist but doesn't?'"
+      ],
+      "created_at": "2026-02-26T22:05:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "coverage-manifest-scan-core",
+        "fact_find_path": "docs/plans/coverage-manifest-scan-core/fact-find.md",
+        "processed_at": "2026-02-26T22:05:00Z",
+        "route": "auto-executed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0025",
+      "mode": "trial",
+      "business": "PWRB",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:PWRB:BOS:pwrb-startup-loop-registration:20260226",
+      "anchor_key": "pwrb-startup-loop-registration",
+      "cluster_key": "PWRB:BOS:pwrb-startup-loop-registration:admin:20260226",
+      "cluster_fingerprint": "a1b2c3d4e5f6789012345678901234ab",
+      "lineage_depth": 0,
+      "area_anchor": "PWRB startup loop \u2014 not formally started, run /startup-loop start",
+      "location_anchors": [
+        "docs/business-os/strategy/businesses.json"
+      ],
+      "provisional_deliverable_family": "none",
+      "domain": "BOS",
+      "status": "logged_no_action",
+      "recommended_route": null,
+      "priority": "P4",
+      "confidence": 1,
+      "evidence_refs": [
+        "operator-stated: PWRB startup loop not yet formally started \u2014 this is an admin action, not a planning gap",
+        "redirect: /startup-loop start --business PWRB"
+      ],
+      "created_at": "2026-02-26T21:30:00Z",
+      "queue_state": "logged_no_action"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0026",
+      "mode": "trial",
+      "business": "PWRB",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:PWRB:SELL:pwrb-psp-preauth-validation:20260226",
+      "anchor_key": "pwrb-psp-preauth-validation",
+      "cluster_key": "PWRB:SELL:pwrb-psp-preauth-validation:20260226",
+      "cluster_fingerprint": "b2c3d4e5f6789012345678901234bc",
+      "lineage_depth": 0,
+      "area_anchor": "PWRB PSP pre-auth hold \u2014 52h auth window unconfirmed, validation needed",
+      "location_anchors": [
+        "docs/business-os/strategy/PWRB/plan.user.md"
+      ],
+      "provisional_deliverable_family": "investigation-report",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P1",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: PWRB-DEC-2026-01-29-01 \u2014 PSP validation pending; target flow AUTH \u20ac25 \u2192 void on return \u226452h \u2192 capture on non-return",
+        "operator-stated: PWRB-RISK-001 \u2014 deposit mechanics unresolved; pre-auth hold is a named pre-launch gate in the business plan"
+      ],
+      "created_at": "2026-02-26T21:30:00Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0027",
+      "mode": "trial",
+      "business": "PWRB",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:PWRB:LOGISTICS:pwrb-hardware-sku-selection:20260226",
+      "anchor_key": "pwrb-hardware-sku-selection",
+      "cluster_key": "PWRB:LOGISTICS:pwrb-hardware-sku-selection:20260226",
+      "cluster_fingerprint": "c3d4e5f6789012345678901234cd",
+      "lineage_depth": 0,
+      "area_anchor": "PWRB hardware SKU \u2014 no unit selected, CE-marked supplier research needed",
+      "location_anchors": [
+        "docs/business-os/strategy/PWRB/plan.user.md",
+        "docs/business-os/strategy/PWRB/2026-02-26-solution-profile-results.user.md"
+      ],
+      "provisional_deliverable_family": "supplier-research",
+      "domain": "LOGISTICS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: PWRB-DEC-2026-01-29-05 \u2014 70/30 hardware posture decided (7 small + 3 large stations, built-in tethered cables) but specific SKUs not selected",
+        "operator-stated: CE/GPSR compliance required; coastal salt-air deployment adds corrosion risk to connectors and enclosures"
+      ],
+      "created_at": "2026-02-26T21:30:00Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0028",
+      "mode": "trial",
+      "business": "PWRB",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:PWRB:SELL:pwrb-pilot-venue-shortlist:20260226",
+      "anchor_key": "pwrb-pilot-venue-shortlist",
+      "cluster_key": "PWRB:SELL:pwrb-pilot-venue-shortlist:20260226",
+      "cluster_fingerprint": "d4e5f678901234567890123456de",
+      "lineage_depth": 0,
+      "area_anchor": "PWRB pilot venue shortlist \u2014 no venues selected from IPEI customer base",
+      "location_anchors": [
+        "docs/business-os/strategy/PWRB/plan.user.md"
+      ],
+      "provisional_deliverable_family": "venue-selection",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: PWRB-DEC-2026-01-29-03 \u2014 10 venues needed in core towns (Sorrento 4, Piano 2, Sant'Agnello 2, Meta 2) from IPEI customer base; venue selection pending"
+      ],
+      "created_at": "2026-02-26T21:30:00Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0029",
+      "mode": "trial",
+      "business": "PWRB",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:PWRB:LOGISTICS:pwrb-ipei-agreement:20260226",
+      "anchor_key": "pwrb-ipei-agreement",
+      "cluster_key": "PWRB:LOGISTICS:pwrb-ipei-agreement:20260226",
+      "cluster_fingerprint": "e5f67890123456789012345678ef",
+      "lineage_depth": 0,
+      "area_anchor": "PWRB IPEI agreement \u2014 document empty, needs drafting",
+      "location_anchors": [
+        "docs/business-os/strategy/PWRB/plan.user.md"
+      ],
+      "provisional_deliverable_family": "legal-agreement",
+      "domain": "LOGISTICS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: PWRB-DEC-2026-01-29-06 \u2014 IPEI services/access agreement not drafted; defines scope (install, swap, troubleshooting), scheduling rules, cost-basis, and liability boundary between PWRB NewCo and IPEI"
+      ],
+      "created_at": "2026-02-26T21:30:00Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0030",
+      "mode": "trial",
+      "business": "PWRB",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:PWRB:MARKET:pwrb-brand-name:20260226",
+      "anchor_key": "pwrb-brand-name",
+      "cluster_key": "PWRB:MARKET:pwrb-brand-name:20260226",
+      "cluster_fingerprint": "f678901234567890123456789012f0",
+      "lineage_depth": 0,
+      "area_anchor": "PWRB brand name \u2014 'PWRB' is a code not a brand, ASSESSMENT-10 pending",
+      "location_anchors": [
+        "docs/business-os/strategy/PWRB/2026-02-26-solution-decision.user.md"
+      ],
+      "provisional_deliverable_family": "brand-strategy",
+      "domain": "MARKET",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: PWRB is a code identifier only; no brand name, visual identity, or brand strategy exists; solution-decision references /lp-do-assessment-04-candidate-names as next step",
+        "operator-stated: brand should support Amalfi Coast / southern Italy identity or multi-destination expansion"
+      ],
+      "created_at": "2026-02-26T21:30:00Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0024",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:PRODUCTS:rsc-structured-data-conversion-results-review:20260226",
+      "anchor_key": "rsc-structured-data-conversion-results-review",
+      "cluster_key": "BRIK:PRODUCTS:rsc-structured-data-conversion:results-review:20260226",
+      "cluster_fingerprint": "c3d4e5f6a7b8901234567890abcdef34",
+      "lineage_depth": 0,
+      "area_anchor": "RSC conversion for RoomsStructuredData + ExperiencesStructuredData \u2014 feasibility confirmed in results-review TASK-10 investigation; both use useCurrentLanguage() client hooks but underlying data is static.",
+      "location_anchors": [
+        "docs/plans/_archive/brikette-deeper-route-funnel-cro/results-review.user.md",
+        "docs/plans/brikette-rsc-structured-data-conversion/plan.md"
+      ],
+      "provisional_deliverable_family": "rsc-components",
+      "domain": "PRODUCTS",
+      "status": "logged_no_action",
+      "recommended_route": null,
+      "priority": "P3",
+      "confidence": 1,
+      "evidence_refs": [
+        "operator-stated: TASK-10 investigation confirmed both RoomsStructuredData + ExperiencesStructuredData use useCurrentLanguage() client hooks but underlying data is static \u2014 RSC conversion feasible, suggested as P3 post-launch card",
+        "docs/plans/_archive/brikette-deeper-route-funnel-cro/results-review.user.md"
+      ],
+      "suppression_reason": "Work already planned and executed. IDEA-DISPATCH-20260226-0014 (rsc-structured-data-conversion) is completed \u2014 TASK-01 through TASK-06 done (commits c6d9cee400, 04c4f9fc8b). Only TASK-07 staging smoke-test remains. Active plan: docs/plans/brikette-rsc-structured-data-conversion/plan.md.",
+      "created_at": "2026-02-26T21:00:00Z",
+      "queue_state": "logged_no_action"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0014",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:process-improvements-completion-lifecycle:20260226",
+      "anchor_key": "process-improvements-completion-lifecycle",
+      "cluster_key": "BOS:BOS:process-improvements-completion-lifecycle:operator:BOS:BOS:process-improvements-completion-lifecycle:20260226",
+      "cluster_fingerprint": "f1e2d3c4b5a6078912345678901bcdef",
+      "lineage_depth": 0,
+      "area_anchor": "Process-improvements report \u2014 completed ideas must record completed_at and an output link, and must be excluded from the live report on subsequent refreshes",
+      "location_anchors": [
+        "scripts/src/startup-loop/generate-process-improvements.ts",
+        "docs/business-os/process-improvements.user.html",
+        "docs/business-os/_data/process-improvements.json",
+        "docs/business-os/startup-loop/ideas/trial/queue-state.json"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "BOS",
+      "status": "auto_executed",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: completion of build work must update the idea's canonical status with completed_at and output link; completed ideas must not render in the process-improvements report on subsequent refreshes"
+      ],
+      "current_truth": "generate-process-improvements.ts collects idea candidates from results-review.user.md 'New Idea Candidates' sections and injects them into the live HTML report. There is no completion status field on ProcessImprovementItem, no completion registry, and no filtering logic for completed ideas. Once an idea appears in a results-review file it renders in the report indefinitely, even after the corresponding plan has been built and shipped.",
+      "next_scope_now": "Fact-find to determine: (1) the right data model for idea completion \u2014 options include in-file frontmatter markers, a standalone completion-registry JSON, or extending queue-state dispatch entries; (2) what code changes are needed in generate-process-improvements.ts to filter completed items at generation time; (3) what the lp-do-build post-completion step must write to mark an idea as done; (4) whether the dispatch schema needs a 'completed' queue_state enum value; (5) produce a planning brief with concrete tasks.",
+      "adjacent_later": [
+        "Completion lifecycle for risk items (reflection-debt ledger items) \u2014 currently filtered by status: open but no completed_at / output_link tracking",
+        "Completion lifecycle for pending-review items \u2014 auto-resolve when results-review passes validation",
+        "Dashboard count chips reflect completed vs open breakdown"
+      ],
+      "created_at": "2026-02-26T18:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "process-improvements-completion-lifecycle",
+        "fact_find_path": "docs/plans/process-improvements-completion-lifecycle/fact-find.md",
+        "processed_at": "2026-02-26T18:00:00Z",
+        "route": "auto-executed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0013",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:SELL:seo-monitoring-datepublished-baseline:20260226",
+      "anchor_key": "seo-monitoring-datepublished-baseline",
+      "cluster_key": "BRIK:SELL:seo-monitoring-datepublished-baseline:operator:BRIK:SELL:seo-monitoring-datepublished-baseline:20260226",
+      "cluster_fingerprint": "a0b1c2d3e4f5067891234567890abcde",
+      "lineage_depth": 0,
+      "area_anchor": "SEO monitoring \u2014 add datePublished structured data capture to URL inspection baseline so first valid structured-data appearances in search results are recorded",
+      "location_anchors": [
+        "scripts/src/brikette/gsc-url-inspection-batch.ts",
+        "docs/plans/_archive/brikette-seo-api-optimization-loop/monitoring-log.md",
+        "docs/plans/_archive/brikette-seo-api-optimization-loop/monitoring/run-2026-02-25.json"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P3",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: add datePublished to monitoring baseline to track when guide pages first appear with valid structured data in search results",
+        "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md \u2014 Article.datePublished/dateModified structured data confirmed wired and passing for guide pages; 3 contract tests",
+        "scripts/src/brikette/gsc-url-inspection-batch.ts \u2014 InspectUrlResponse type reads only indexStatusResult; richResultsResult field from GSC API is not captured",
+        "docs/plans/_archive/brikette-seo-api-optimization-loop/monitoring-log.md \u2014 every-other-day cadence active; monitoring columns: coverageState, lastCrawlTime, googleCanonical, verdict only",
+        "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md \u2014 New Idea Candidates: suggested action was defer; operator has now explicitly invoked"
+      ],
+      "current_truth": "The every-other-day GSC URL Inspection monitoring cadence is operational. gsc-url-inspection-batch.ts calls the GSC URL Inspection API and captures indexation status (coverageState, verdict, lastCrawlTime, googleCanonical) for 30 guide/transport URLs. The GSC URL Inspection API response also includes a richResultsResult field at the same level as indexStatusResult \u2014 the script's InspectUrlResponse type and result-capture logic do not read this field. Article.datePublished and dateModified structured data was wired and confirmed passing for guide pages during the seo-api-optimization-loop plan (3 contract tests). When pages start transitioning from 'URL is unknown to Google' to 'Submitted and indexed', there will be no automatic record of whether Google has picked up the datePublished structured data. The first transition already occurred (amalfi-positano-bus, 2026-02-25); the monitoring log has no structured data column for it.",
+      "next_scope_now": "Fact-find to scope adding datePublished structured data capture to the monitoring baseline: (1) read gsc-url-inspection-batch.ts \u2014 confirm what InspectUrlResponse currently captures; identify where richResultsResult would appear in the GSC URL Inspection API response; (2) check the existing monitoring run JSON (run-2026-02-25.json) \u2014 does the API actually returned richResultsResult data for the one indexed URL (amalfi-positano-bus), and if so what fields are present? (3) determine the minimum change to gsc-url-inspection-batch.ts: add richResultsResult to InspectUrlResponse type, capture relevant fields (detected schema types, validity, datePublished value if exposed) in InspectionResult, write them to output JSON; (4) assess whether monitoring-log.md needs a new column for structured data status, or whether per-run JSON alone is sufficient; (5) check if the GSC Rich Results Test API (separate from URL Inspection) is needed, or whether URL Inspection richResultsResult alone covers the requirement; (6) produce a planning brief scoping the script change as a single focused task.",
+      "adjacent_later": [
+        "Wire lastUpdated through HowToGetHereContent to unlock datePublished on 31 EN transport pages (deferred from TASK-03)",
+        "Monitoring dashboard column \u2014 structured data coverage rate alongside indexation rate",
+        "GSC Rich Results Test API batch validation across all guide pages post-indexation"
+      ],
+      "created_at": "2026-02-26T14:30:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "seo-monitoring-datepublished-baseline",
+        "fact_find_path": "docs/plans/seo-monitoring-datepublished-baseline/fact-find.md",
+        "processed_at": "2026-02-26T14:30:00Z",
+        "route": "auto-executed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0012",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:PRODUCTS:brikette-it-book-route-static-export:20260226",
+      "anchor_key": "brikette-it-book-route-static-export",
+      "cluster_key": "BRIK:PRODUCTS:brikette-it-book-route-static-export:operator:BRIK:PRODUCTS:brikette-it-book-route-static-export:20260226",
+      "cluster_fingerprint": "e3f2a1b4c9d7086523456789fabcde01",
+      "lineage_depth": 0,
+      "area_anchor": "Brikette \u2014 IT locale /book route (/it/prenota) missing from static export or production routing, causing Italian visitors to land on English booking page",
+      "location_anchors": [
+        "apps/brikette/src/app/[lang]/book/page.tsx",
+        "apps/brikette/src/routing/sectionSegments.ts",
+        "apps/brikette/src/routing/staticExportRedirects.ts",
+        "apps/brikette/public/_redirects",
+        "apps/brikette/src/slug-map.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "PRODUCTS",
+      "current_truth": "Smoke test confirmed /it/prenota redirects to /en \u2014 IT-speaking visitors land on an English booking page. slug-map.ts maps book \u2192 prenota for IT locale. _redirects contains a 200 rewrite rule /it/prenota \u2192 /it/book (generated by generate-static-export-redirects.ts). book is listed in STATIC_EXPORT_SECTION_KEYS and generateStaticParams() in book/page.tsx calls generateLangParams() which includes all supportedLngs including it. Despite these, the redirect to /en occurs. Root cause is unconfirmed: either (1) the static export does not produce /it/book/index.html (Cloudflare Pages 200 rewrite target missing \u2192 falls through to catch-all \u2192 /en), or (2) the production Worker middleware does not translate prenota \u2192 book before routing.",
+      "next_scope_now": "Fact-find to diagnose and fix the IT locale /book route redirect: (1) determine which environment the smoke test ran against \u2014 static export (staging) or production Worker; (2) for static export: inspect whether out/it/book/index.html exists after a build \u2014 if absent, identify what excludes it (build script mv operations, output:export config, route-level export settings); (3) for production: audit the Next.js middleware chain \u2014 does it handle localized slug rewrites (prenota \u2192 book) before routing? Check apps/brikette/src/middleware.ts and any i18n routing config; (4) verify whether the _redirects 200-rewrite rule correctly resolves when its target path does not exist in the static export; (5) check whether other IT-locale slugs that differ from their internal segment names also resolve correctly \u2014 scope the fix to cover all affected locales if systemic; (6) propose a targeted fix with a regression guard (smoke test assertion or CI check) to prevent silent recurrence.",
+      "adjacent_later": [
+        "Add Playwright smoke test assertion for /it/prenota (and other non-EN localized slugs) to prevent silent regression",
+        "Audit all non-EN locale slug rewrites in _redirects against actual static export output to find any other missing routes",
+        "Add CI step that verifies all generated redirect targets exist in the static export output"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: add IT locale /book route to static export to stop redirect to /en",
+        "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md \u2014 smoke test confirmed /it/prenota redirects to /en",
+        "apps/brikette/public/_redirects \u2014 200 rewrite rule present: /it/prenota \u2192 /it/book",
+        "apps/brikette/src/routing/sectionSegments.ts \u2014 book is in STATIC_EXPORT_SECTION_KEYS",
+        "apps/brikette/src/slug-map.ts \u2014 it: prenota maps book key"
+      ],
+      "created_at": "2026-02-26T14:30:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "brikette-it-book-route-static-export",
+        "fact_find_path": "docs/plans/brikette-it-book-route-static-export/fact-find.md",
+        "processed_at": "2026-02-26T14:30:00Z",
+        "route": "auto-executed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0011",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:SELL:brikette-smoke-view-item-list:20260226",
+      "anchor_key": "brikette-smoke-view-item-list",
+      "cluster_key": "BRIK:SELL:brikette-smoke-view-item-list:operator:BRIK:SELL:brikette-smoke-view-item-list:20260226",
+      "cluster_fingerprint": "f3e4d5c6b7a8091234567890fedcba12",
+      "lineage_depth": 0,
+      "area_anchor": "Playwright smoke test \u2014 add view_item_list assertion to GA4 funnel verification",
+      "location_anchors": [
+        "apps/brikette/e2e/",
+        "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md"
+      ],
+      "provisional_deliverable_family": "test",
+      "domain": "SELL",
+      "current_truth": "The full GA4 e-commerce funnel was confirmed firing in production via Playwright smoke test (2026-02-22). The smoke test confirmed view_item_list fires but no assertion captures it \u2014 the event is verified by manual observation only, not by the automated test suite. All other funnel events (cta_click, search_availability, select_item, begin_checkout, handoff_to_engine) are confirmed present. view_item_list is the single unasserted event in the automated GA4 funnel coverage.",
+      "next_scope_now": "Fact-find to scope adding view_item_list assertions to the Playwright smoke test: (1) locate the existing GA4 funnel smoke test file(s) \u2014 where does the test live, how is it invoked, what CI command runs it?; (2) read the current test to understand the assertion pattern \u2014 how does it intercept or capture GA4 events (gtag mock, network intercept, dataLayer capture, playwright route intercept)?; (3) confirm when and where view_item_list fires \u2014 which component or hook dispatches it, what page/user action triggers it, what is the expected payload (event_name, item_list_id, items array)?; (4) assess assertion depth \u2014 is asserting the event name sufficient, or should the test also assert specific params like item_list_id or items.length > 0?; (5) check whether the test runs against a live production URL or local dev server \u2014 affects assertion structure; (6) identify shared test utilities (event capture helpers, GA4 mock setup) the new assertion should reuse; (7) produce a single-task planning brief: write and validate the view_item_list assertion.",
+      "adjacent_later": [
+        "Assert GA4 custom dimensions in smoke test once they propagate (cta_id, cta_location, item_list_id, coupon)",
+        "Add view_item_list assertion to unit tests for faster feedback loop"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "operator-stated: add view_item_list assertions to the Playwright smoke test",
+        "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md \u2014 New Idea Candidates: smoke test confirmed view_item_list fires but no assertion captures it \u2014 gap in automated verification",
+        "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md \u2014 full GA4 funnel confirmed firing in production; view_item_list is the single unasserted event"
+      ],
+      "created_at": "2026-02-26T14:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "brikette-smoke-view-item-list",
+        "fact_find_path": "docs/plans/brikette-smoke-view-item-list/fact-find.md",
+        "processed_at": "2026-02-26T14:00:00Z",
+        "route": "auto-executed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0010",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:PRODUCTS:xa-restore-sync-scripts:20260226",
+      "anchor_key": "xa-restore-sync-scripts",
+      "cluster_key": "BRIK:PRODUCTS:xa-restore-sync-scripts:operator:BRIK:PRODUCTS:xa-restore-sync-scripts:20260226",
+      "cluster_fingerprint": "e2f3a4b5c6d7089012345678efabcd01",
+      "lineage_depth": 0,
+      "area_anchor": "XA uploader \u2014 restore or port missing XA sync scripts to unblock J2",
+      "location_anchors": [
+        "scripts/src/xa/validate-xa-inputs.ts",
+        "scripts/src/xa/run-xa-pipeline.ts",
+        "scripts/src/xa/catalogSyncCommon.ts",
+        "docs/plans/xa-uploader-usability-hardening/results-review.user.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "PRODUCTS",
+      "status": "logged_no_action",
+      "recommended_route": null,
+      "priority": "P3",
+      "confidence": 0.98,
+      "evidence_refs": [
+        "operator-stated: restore or port missing XA sync scripts to unblock J2",
+        "git-log: commit 2ac91e7e5a (2026-02-24) \u2014 scripts/src/xa/validate-xa-inputs.ts and scripts/src/xa/run-xa-pipeline.ts created and committed as part of usability-hardening work batch",
+        "docs/plans/xa-uploader-usability-hardening/artifacts/usability-kpi-delta.md \u2014 scripts were absent at TASK-10 measurement (2026-02-23); scripts were committed the next day (2026-02-24) resolving the blocker",
+        "scripts/src/xa/ \u2014 all three files confirmed present: catalogSyncCommon.ts, validate-xa-inputs.ts, run-xa-pipeline.ts"
+      ],
+      "logged_no_action_reason": "already done: scripts/src/xa/validate-xa-inputs.ts and run-xa-pipeline.ts were committed in 2ac91e7e5a (2026-02-24), one day before the results-review was written. The results-review CJDBR=50% is stale \u2014 it reflects the TASK-10 measurement taken before the commit. J2 is already unblocked. The usability-kpi-delta.md standing update (re-measure after scripts restored) is still outstanding.",
+      "created_at": "2026-02-26T13:30:00Z",
+      "queue_state": "logged_no_action"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0009",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:PRODUCTS:xa-e2e-sync-success-path:20260226",
+      "anchor_key": "xa-e2e-sync-success-path",
+      "cluster_key": "BRIK:PRODUCTS:xa-e2e-sync-success-path:operator:BRIK:PRODUCTS:xa-e2e-sync-success-path:20260226",
+      "cluster_fingerprint": "d1e2f3a4b5c6079801234567defabc90",
+      "lineage_depth": 0,
+      "area_anchor": "XA uploader \u2014 E2E test coverage for sync success path (J2)",
+      "location_anchors": [
+        "apps/xa-uploader/src/app/api/catalog/sync/route.ts",
+        "scripts/src/xa/validate-xa-inputs.ts",
+        "scripts/src/xa/run-xa-pipeline.ts",
+        "apps/xa-uploader/src/tests/",
+        "docs/plans/xa-uploader-usability-hardening/results-review.user.md"
+      ],
+      "provisional_deliverable_family": "test",
+      "domain": "PRODUCTS",
+      "status": "completed",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: add E2E coverage for sync success path once scripts are restored",
+        "docs/plans/xa-uploader-usability-hardening/results-review.user.md \u2014 test:e2e covers J1 (login/edit/save/delete) only; J2 (sync) has no E2E test",
+        "git-log: commit 2ac91e7e5a (2026-02-24) \u2014 scripts now exist; blocker resolved; J2 can be tested",
+        "apps/xa-uploader/src/app/api/catalog/sync/route.ts \u2014 sync API route fully implemented; spawns validate-xa-inputs.ts then run-xa-pipeline.ts; publishes catalog artifacts"
+      ],
+      "escalated_from": "logged_no_action",
+      "escalation_reason": "Blocker resolved: sync scripts confirmed present in commit 2ac91e7e5a. J2 is now executable. E2E coverage gap is real and actionable.",
+      "created_at": "2026-02-26T13:30:00Z",
+      "queue_state": "completed",
+      "processed_by": {
+        "fact_find_slug": "xa-e2e-sync-success-path",
+        "fact_find_path": "docs/plans/_archive/xa-e2e-sync-success-path/fact-find.md",
+        "processed_at": "2026-02-26T13:30:00Z",
+        "route": "auto-executed"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/xa-e2e-sync-success-path/plan.md",
+        "completed_at": "2026-02-26T14:00:00Z",
+        "outcome": "TC-09-03 Playwright E2E test added and passing (3 passed, 3.0m). CJDBR updated to 0% in usability-kpi-delta.md. Commits: 64048da342 (gitignore), 4ddf9ac3bc (harness stub server), b59d93d2a7 (TC-09-03), 5abb996f3a (KPI delta)."
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226120000-0008",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:process-improvements-live-update:20260226",
+      "anchor_key": "process-improvements-live-update",
+      "cluster_key": "BOS:BOS:process-improvements-live-update:operator:BOS:BOS:process-improvements-live-update:20260226",
+      "cluster_fingerprint": "c7d4e2f1a9b3085612345678ef90abcd",
+      "lineage_depth": 0,
+      "area_anchor": "BOS tooling \u2014 process-improvements.user.html should regenerate automatically when source files change",
+      "location_anchors": [
+        "scripts/src/startup-loop/generate-process-improvements.ts",
+        "scripts/package.json",
+        "docs/business-os/process-improvements.user.html",
+        "docs/business-os/_data/process-improvements.json",
+        "docs/plans/"
+      ],
+      "provisional_deliverable_family": "infra",
+      "domain": "BOS",
+      "current_truth": "The process-improvements HTML is regenerated only by manually running `pnpm run startup-loop:generate-process-improvements` (or via the `generate-stage-operator-views` composite script). There is no file-watching mechanism, no CI job, and no git hook that triggers regeneration when source results-review, build-record, or reflection-debt files are added or modified. As confirmed in this session: edits to results-review.user.md source files are not reflected in the HTML until the operator manually runs the script.",
+      "next_scope_now": "Fact-find to design automatic regeneration of process-improvements.user.html. Scope: (1) determine what 'live updated' means in practice \u2014 file-watcher for dev, pre-commit hook, or CI job on push; (2) audit whether the `generate-stage-operator-views` composite script already runs as part of any automated trigger (CI, build, pre-push hook); (3) check if the Business OS app build has any data dependency on process-improvements.json that could serve as a natural regeneration hook; (4) assess cost/benefit of each trigger option \u2014 file-watcher (dev only), pre-commit hook (reliable, adds latency), CI job (on push, highest latency), or chaining with an existing build step; (5) identify failure-mode handling \u2014 what happens when the script encounters a malformed source file, and how should that surface without blocking commits; (6) produce a planning brief with a recommended implementation approach and specific task breakdown.",
+      "adjacent_later": [
+        "Preview mode \u2014 regenerate in-memory and serve HTML via dev server so changes are visible without committing",
+        "Validation gate \u2014 lint source results-review files before generation to prevent malformed idea entries breaking the HTML"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: process-improvements.user.html should be live updated",
+        "scripts/package.json \u2014 startup-loop:generate-process-improvements requires manual invocation; no watch or hook defined",
+        "docs/business-os/_data/process-improvements.json \u2014 regenerated manually during this session after editing source results-review.user.md"
+      ],
+      "created_at": "2026-02-26T12:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "process-improvements-live-update",
+        "fact_find_path": "docs/plans/process-improvements-live-update/fact-find.md",
+        "processed_at": "2026-02-26T12:00:00Z",
+        "route": "auto-executed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0007",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:PRODUCTS:reception-skeleton-canonical-doc:20260226",
+      "anchor_key": "reception-skeleton-canonical-doc",
+      "cluster_key": "BRIK:PRODUCTS:reception-skeleton-canonical-doc:operator:BRIK:PRODUCTS:reception-skeleton-canonical-doc:20260226",
+      "cluster_fingerprint": "b8e3d2a1f4c6097512345678cdef9012",
+      "lineage_depth": 1,
+      "area_anchor": "Reception app \u2014 document ReceptionSkeleton as the canonical loading state for tables",
+      "location_anchors": [
+        "apps/reception/src/components/common/ReceptionSkeleton.tsx",
+        "apps/reception/src/app/check-ins/",
+        "apps/reception/src/app/checkout/",
+        "docs/plans/_archive/reception-ui-screen-polish/fact-find.md",
+        "docs/plans/reception-ui-screen-polish-phase4/fact-find.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "PRODUCTS",
+      "current_truth": "ReceptionSkeleton was created during the Phase 1\u20133 UI polish as a shared loading skeleton component for reception app tables. It is confirmed in use in two screens (CheckinsTable, Checkout). The Phase 4 fact-find (IDEA-DISPATCH-20260226-0006) is in-flight covering all 16 remaining screens \u2014 many of which will also need table loading states. No code comment or design system note currently establishes ReceptionSkeleton as the canonical pattern, meaning Phase 4 implementers may create duplicate or inconsistent loading states.",
+      "next_scope_now": "Briefing: (1) locate ReceptionSkeleton.tsx and read its current implementation \u2014 what does it render, what props does it accept, is it generic enough for arbitrary table shapes? (2) confirm exact screens where it is currently used (CheckinsTable, Checkout \u2014 verify file paths); (3) check the Phase 4 fact-find (docs/plans/reception-ui-screen-polish-phase4/fact-find.md) \u2014 does it already capture ReceptionSkeleton as an established pattern dependency? If yes, no further action needed. If no, identify where in the fact-find or plan to add a pattern note so Phase 4 implementers know to use it; (4) determine if a JSDoc comment on the component itself is sufficient, or if a design system notes file exists that should also be updated.",
+      "adjacent_later": [
+        "Phase 4 loading state audit \u2014 after Phase 4 build, verify all new table screens use ReceptionSkeleton",
+        "Extend ReceptionSkeleton to support configurable column counts if Phase 4 tables have different shapes"
+      ],
+      "recommended_route": "lp-do-briefing",
+      "status": "briefing_ready",
+      "priority": "P3",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: ReceptionSkeleton should be documented as the canonical loading state for reception app tables",
+        "docs/plans/_archive/reception-ui-screen-polish/results-review.user.md \u2014 New Idea Candidates: ReceptionSkeleton used in CheckinsTable and Checkout; will be needed by Phase 4 screens",
+        "docs/business-os/startup-loop/ideas/trial/queue-state.json \u2014 IDEA-DISPATCH-20260226-0006: Phase 4 fact-find auto_executed and in-flight"
+      ],
+      "created_at": "2026-02-26T12:00:00Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0006",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:PRODUCTS:reception-ui-screen-polish-phase4:20260226",
+      "anchor_key": "reception-ui-screen-polish-phase4",
+      "cluster_key": "BRIK:PRODUCTS:reception-ui-screen-polish-phase4:operator:BRIK:PRODUCTS:reception-ui-screen-polish-phase4:20260226",
+      "cluster_fingerprint": "a9b2c3d4e5f6078901234567abcdef12",
+      "lineage_depth": 1,
+      "area_anchor": "Reception app Phase 4 \u2014 extend UI polish to all 16 remaining screens using the frontend-design skill",
+      "location_anchors": [
+        "apps/reception/src/app/",
+        "apps/reception/src/components/",
+        "docs/plans/_archive/reception-ui-screen-polish/fact-find.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "PRODUCTS",
+      "current_truth": "Phase 1-3 reception app UI polish is complete (archived 2026-02-26). 9 screens polished: RoomsGrid, TillReconciliation, SafeManagement, PrepareDashboard, RealTimeDashboard, CheckinsTable, Checkout, EndOfDayPacket. Shared components established: PageShell (gradient backdrop), ReceptionSkeleton (loading skeleton), StatPanel (stat display), PreparePage (layout wrapper). The original fact-find identified 16 unread Phase 4 screens with a visible visual gap relative to the polished screens. The frontend-design skill must be used as primary execution skill \u2014 it was used for login and bar screens and produced the Skeuomorphic Hospitality POS design language that Phase 1-3 continued.",
+      "next_scope_now": "Fact-find to scope Phase 4 reception app UI polish using the frontend-design skill: (1) inventory the 16 Phase 4 screens identified in the archived fact-find \u2014 read each root component to establish current visual state and complexity bracket; (2) assess each screen against the established visual standard (gradient backdrop via PageShell, accent-bar heading, card elevation bg-surface rounded-xl shadow-lg, ReceptionSkeleton, StatPanel, mode banners, rounded-lg controls); (3) identify which screens already use some established components vs which need more extensive work; (4) identify new shared component opportunities that if built once would benefit multiple Phase 4 screens; (5) establish a priority order based on staff usage frequency and visual gap severity; (6) produce a phased planning brief with per-screen complexity brackets and a recommended implementation approach using the frontend-design skill.",
+      "adjacent_later": [
+        "Phase 5 \u2014 navigation/sidebar visual unification across the full reception app",
+        "Micro-interaction polish (button press states, transitions, haptic feedback patterns)",
+        "Accessibility pass post-redesign (colour contrast, focus management for keyboard POS modes)",
+        "Tablet/iPad layout optimisation for bar POS use"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "operator-stated: extend reception UI polish to Phase 4 screens using frontend-design skill",
+        "docs/plans/_archive/reception-ui-screen-polish/results-review.user.md \u2014 New Idea Candidates: 16 Phase 4 screens identified",
+        "docs/plans/_archive/reception-ui-screen-polish/build-record.user.md \u2014 shared components: PageShell, ReceptionSkeleton, StatPanel, PreparePage"
+      ],
+      "created_at": "2026-02-26T02:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "reception-ui-screen-polish-phase4",
+        "fact_find_path": "docs/plans/reception-ui-screen-polish-phase4/fact-find.md",
+        "processed_at": "2026-02-26T02:00:00Z",
+        "route": "auto-executed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260225-0005",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:PRODUCTS:reception-ui-screen-polish:20260225",
+      "anchor_key": "reception-ui-screen-polish",
+      "cluster_key": "BRIK:PRODUCTS:reception-ui-screen-polish:operator:BRIK:PRODUCTS:reception-ui-screen-polish:20260225",
+      "cluster_fingerprint": "e7c3a9f2b4d1085690abcdef34567891",
+      "lineage_depth": 0,
+      "area_anchor": "Reception app \u2014 screen-by-screen UI polish using the frontend-design skill",
+      "location_anchors": [
+        "apps/reception/src/app/",
+        "apps/reception/src/components/",
+        "docs/plans/reception-design-overhaul/assessment.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "PRODUCTS",
+      "current_truth": "The reception app login and bar screens have been visually improved using the frontend-design skill. The reception-design-overhaul assessment documents a Phase 3 'screen-by-screen polish' vision but no plan has been created for it. The reception-visual-ux-audit plan addressed systematic bug fixes (token normalization, dark mode overlays, touch targets, modal unification) \u2014 not creative UI design polish. No active plan covers applying the frontend-design skill to remaining reception screens.",
+      "next_scope_now": "Fact-find to scope reception app screen-by-screen UI polish using the frontend-design skill: (1) inventory all major reception app screens/routes \u2014 which exist beyond login and bar? (checkin, checkout, room grid, till reconciliation, safe management, sales, settings, etc.); (2) for each screen, assess current visual quality against the 'Skeuomorphic Hospitality POS' direction from the design overhaul assessment \u2014 what needs attention and why?; (3) identify the highest-leverage screens first \u2014 which screens are used most frequently by bar/reception staff and would benefit most from improved visual clarity and touch usability?; (4) review what the frontend-design skill produced for login and bar screens \u2014 what design patterns were applied, what can be systematically extended to other screens?; (5) identify any shared components or layout patterns that, if redesigned once, would improve multiple screens simultaneously; (6) produce a planning-ready brief with a prioritised screen list, per-screen improvement goals, and a phased execution approach.",
+      "adjacent_later": [
+        "Shared layout/navigation component polish (sidebar, header, breadcrumbs) that spans all screens",
+        "Micro-interaction and animation improvements for touch POS feedback (button press states, transitions)",
+        "Accessibility audit post-redesign \u2014 colour contrast, focus management for keyboard-navigable POS modes",
+        "Responsive/tablet layout optimisation for bar POS use on iPad"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: login and bar screens improved via frontend-design skill; more opportunity to improve remaining reception screens",
+        "docs/plans/reception-design-overhaul/assessment.md",
+        "docs/plans/reception-visual-ux-audit/plan.md"
+      ],
+      "created_at": "2026-02-25T16:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "reception-ui-screen-polish",
+        "fact_find_path": "docs/plans/reception-ui-screen-polish/fact-find.md",
+        "processed_at": "2026-02-25T16:00:00Z",
+        "route": "auto-executed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260225-0004",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:lp-do-skills-token-efficiency-post-revision:20260225",
+      "anchor_key": "lp-do-skills-token-efficiency-post-revision",
+      "cluster_key": "BOS:BOS:lp-do-skills-token-efficiency-post-revision:operator:BOS:BOS:lp-do-skills-token-efficiency-post-revision:20260225",
+      "cluster_fingerprint": "f5a2b8c3d4e6079012345678abcdef90",
+      "lineage_depth": 0,
+      "area_anchor": "lp-do skill series \u2014 token efficiency and effectiveness improvements after recent revisions (BOS decoupling + post-build validation)",
+      "location_anchors": [
+        ".claude/skills/lp-do-fact-find/",
+        ".claude/skills/lp-do-plan/",
+        ".claude/skills/lp-do-build/",
+        ".claude/skills/lp-do-replan/",
+        ".claude/skills/lp-do-critique/",
+        ".claude/skills/lp-do-factcheck/"
+      ],
+      "provisional_deliverable_family": "skill-change",
+      "domain": "BOS",
+      "current_truth": "The lp-do skill series (fact-find, plan, build, replan, critique, factcheck) have been recently revised \u2014 BOS integration was removed (do-skills-bos-decoupling, all tasks done 2026-02-24) and post-build validation was added to lp-do-build (lp-do-build-post-build-validation, TASK-01 done 2026-02-25). Previous token efficiency work (startup-loop-token-efficiency v1 and v2) targeted other skills (lp-design-qa, lp-sequence, lp-channels, lp-seo, lp-launch-qa). The lp-do skills themselves have not had a dedicated post-revision token efficiency audit. The operator has identified this as an opportunity.",
+      "next_scope_now": "Fact-find the lp-do skill series for token efficiency and effectiveness improvements post-revision. Scope: (1) measure current SKILL.md line counts for all six lp-do skills and their modules \u2014 which exceed the 200-line thin-orchestrator threshold? (2) identify content that is now redundant post-BOS-decoupling \u2014 removed BOS phases may have left residual context, examples, or instructions that no longer apply; (3) identify module content that could be tightened without losing accuracy \u2014 verbose examples, repeated preambles, over-specified gate descriptions; (4) identify structural improvements \u2014 do the skills have clear, efficient handoff contracts, or do they repeat context that could be moved to a single shared reference? (5) assess effectiveness \u2014 do the skills produce consistent, high-quality outputs across the lp-do-fact-find \u2192 lp-do-plan \u2192 lp-do-build chain, or are there known failure modes that a better skill design would prevent? Output: a planning brief scoping specific token reduction targets per skill + any structural/effectiveness improvements.",
+      "adjacent_later": [
+        "Second meta-loop-efficiency audit post-improvements to confirm H1 compliance",
+        "lp-do-sequence potential merge or simplification",
+        "Shared lp-do context budget \u2014 a common preamble for the chain that avoids repeating architectural context in each skill"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: lp-do skills have been revised; opportunity to make them more token efficient and effective",
+        "docs/plans/do-skills-bos-decoupling/plan.md",
+        "docs/plans/lp-do-build-post-build-validation/plan.md"
+      ],
+      "created_at": "2026-02-25T15:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "lp-do-skills-token-efficiency-post-revision",
+        "fact_find_path": "docs/plans/lp-do-skills-token-efficiency-post-revision/fact-find.md",
+        "processed_at": "2026-02-25T15:00:00Z",
+        "route": "auto-executed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260225-0003",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:PRODUCTS:reception-remove-light-mode:20260225",
+      "anchor_key": "reception-remove-light-mode",
+      "cluster_key": "BRIK:PRODUCTS:reception-remove-light-mode:operator:BRIK:PRODUCTS:reception-remove-light-mode:20260225",
+      "cluster_fingerprint": "d4e9f1a2b3c5076890abcdef12345678",
+      "lineage_depth": 0,
+      "area_anchor": "Reception app \u2014 remove light mode, enforce dark-mode-only theming throughout",
+      "location_anchors": [
+        "apps/reception/src/context/DarkModeContext.tsx",
+        "apps/reception/src/context/__tests__/DarkModeContext.test.tsx",
+        "apps/reception/src/components/common/DarkModeToggle.tsx",
+        "apps/reception/src/providers/ReceptionThemeProvider.tsx",
+        "apps/reception/tailwind.config.mjs",
+        "apps/reception/src/app/globals.css"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "PRODUCTS",
+      "current_truth": "The reception app has historically supported both light and dark modes via DarkModeContext (localStorage + Firebase sync). The operator has confirmed light mode is no longer needed \u2014 the app is dark-mode-only. DarkModeContext.tsx and its test file are already deleted (confirmed in git status). However, the DarkModeToggle UI component, any light-mode CSS variable overrides, tailwind light/dark variants, and any remaining toggling logic in providers or hooks have not yet been systematically audited and removed. The app should run exclusively in dark mode with no toggle mechanism.",
+      "next_scope_now": "Fact-find to scope the full removal of light-mode support from the reception app: (1) audit what light-mode-specific CSS exists \u2014 any :root variables that define a separate light palette, any Tailwind `dark:` variant classes that imply a light baseline, any `light` class conditionals in JSX; (2) identify all consumers of the deleted DarkModeContext (components that imported it, hooks that referenced it, Firebase paths that stored preference data) and verify none are broken by the deletion; (3) audit ReceptionThemeProvider \u2014 does it still reference DarkModeContext or toggle classes?; (4) locate DarkModeToggle.tsx in the component tree and identify everywhere it is rendered so it can be removed; (5) check globals.css and tailwind.config.mjs for any light-mode-specific token overrides that can be pruned; (6) check parity snapshots \u2014 do any snapshot tests capture light-mode states that will now fail?; (7) scope the safe removal sequence: provider simplification \u2192 toggle removal \u2192 CSS cleanup \u2192 snapshot updates.",
+      "adjacent_later": [
+        "Remove DarkModeToggle from all nav/settings surfaces once confirmed unused",
+        "Prune Firebase darkMode preference path from user records (data migration, optional)",
+        "Audit other apps (prime, brikette) to determine if they share any DarkModeContext logic that is now orphaned",
+        "Simplify ReceptionThemeProvider to a static dark-class injector (no toggle state)"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "operator-stated: reception app is dark-mode-only; light mode can be removed",
+        "git-status: apps/reception/src/context/DarkModeContext.tsx deleted",
+        "git-status: apps/reception/src/context/__tests__/DarkModeContext.test.tsx deleted"
+      ],
+      "created_at": "2026-02-25T14:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "reception-remove-light-mode",
+        "fact_find_path": "docs/plans/reception-remove-light-mode/fact-find.md",
+        "processed_at": "2026-02-25T14:00:00Z",
+        "route": "auto-executed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260225120000-0002",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:SELL:deeper-route-funnel:20260225",
+      "anchor_key": "brik-deeper-route-funnel-cro",
+      "cluster_key": "BRIK:SELL:brik-deeper-route-funnel-cro:operator:BRIK:SELL:deeper-route-funnel:20260225",
+      "cluster_fingerprint": "a3f8c2d1e7b94506f0123456789abcde",
+      "lineage_depth": 0,
+      "area_anchor": "Sales funnel \u2014 deeper route conversion improvement (/book, /rooms, /rooms/[slug], /experiences, /how-to-get-here)",
+      "location_anchors": [
+        "apps/brikette/src/app/[lang]/book/",
+        "apps/brikette/src/app/[lang]/rooms/",
+        "apps/brikette/src/app/[lang]/experiences/",
+        "apps/brikette/src/app/[lang]/how-to-get-here/",
+        "apps/brikette/src/app/[lang]/apartment/"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The Brikette homepage is performing adequately. Deeper funnel routes \u2014 /book, /rooms, /rooms/[slug], /experiences, /how-to-get-here \u2014 lack the conversion polish of the homepage. An unplanned usability-hardening fact-find (docs/plans/brikette-booking-funnel-usability-hardening-fact-find.md) documents SSR/no-JS CTA fallback failures and i18n key leakage on these routes but has never been converted into a plan. No active plan covers broader UX or CRO improvements on these deeper pages. The in-flight octorate-funnel-reduction plan covers measurement reconciliation only, not page-level UX design.",
+      "next_scope_now": "Fact-find for deeper-route sales funnel improvement. Scope: (1) audit current UX and conversion signals on /book, /rooms/[slug], /experiences, and /how-to-get-here \u2014 what does a user see, what frictions exist, what is missing relative to the homepage quality bar; (2) incorporate the unplanned usability-hardening findings (SSR/no-JS CTA fallbacks, i18n key leakage in initial HTML) as confirmed technical blockers; (3) identify the highest-leverage UX changes per route \u2014 social proof placement, CTA hierarchy, information completeness, trust signals, mobile experience; (4) check what GA4 data is available (exit rates, scroll depth, cta_click events) for these routes to prioritise by drop-off signal; (5) produce a planning-ready brief that scopes implementation tracks by route, distinguishing quick wins from larger redesigns.",
+      "adjacent_later": [
+        "Dedicated /rooms/[slug] room detail page with richer photos, amenities breakdown, and inline availability CTA",
+        "Experiences page conversion \u2014 structured offers with pricing, booking CTA per activity",
+        "How-to-get-here page as a trust/reassurance step in the pre-booking journey \u2014 proximity signals, map embed",
+        "Mobile-first CTA audit across all deeper routes (sticky CTA on scroll, thumb-friendly button sizes)",
+        "A/B test framework for CTA copy and placement on /book page (post SSR hardening)"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.87,
+      "evidence_refs": [
+        "operator-stated: homepage is performing adequately; deeper funnel routes need conversion improvement",
+        "docs/plans/brikette-booking-funnel-usability-hardening-fact-find.md",
+        "docs/plans/brikette-octorate-funnel-reduction/plan.md"
+      ],
+      "created_at": "2026-02-25T12:00:00Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "fact_find_slug": "brikette-deeper-route-funnel-cro",
+        "fact_find_path": "docs/plans/brikette-deeper-route-funnel-cro/fact-find.md",
+        "processed_at": "2026-02-25T12:30:00Z",
+        "route": "dispatch-routed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260225000000-0001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "area_anchor": "API-driven SEO optimization loop \u2014 indexation, locale content promotion, and data-pipeline cadence using Cloudflare, GSC, and GTM",
+      "location_anchors": [
+        "apps/brikette/src/",
+        "apps/brikette/public/sitemap.xml",
+        "apps/brikette/scripts/generate-public-seo.ts",
+        "docs/plans/brikette-seo-traffic-growth/plan.md",
+        "docs/plans/brikette-seo-traffic-growth/fact-find.md"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "BRIK has API access to Cloudflare Analytics, Google Search Console, and GA4/GTM. The site has 4,093 sitemap URLs across 18 locales with significant translated content, but all 30 sampled guide URLs returned 'URL is unknown to Google' in Phase A investigation (TASK-11). The current Phase B plan contains TASK-13 (content quality pass) gated on indexation recovery signal, with confidence at 45% \u2014 effectively stalled. No systematic mechanism exists to use available data APIs to diagnose crawl gaps, prioritise locale content for indexation, or drive a measurable optimization cadence. SEO work to date has been reactive (fix known blockers) rather than proactive (instrument and iterate).",
+      "next_scope_now": "Fact-find to design a systematic, API-driven SEO optimization loop: (1) establish what Cloudflare, GSC, and GTM data is currently available and queryable per-page/per-locale; (2) identify the specific signals that explain why 4,093 URLs remain largely unknown to Google despite active crawling; (3) design a data pipeline that surfaces crawl-gap pages, tracks indexation progression per locale, and prioritises which translated content to submit for recrawl; (4) determine what on-page signals Google needs to promote translated pages (hreflang health, freshness, authority, internal link depth); (5) scope what a measurable every-other-day optimization cadence looks like using zero-cost first-party data APIs \u2014 we are in an active growth phase and need signal frequently, not weekly/monthly. Output: a plan that replaces passive waiting with an instrumented improvement loop.",
+      "adjacent_later": [
+        "Schema.org Article.datePublished fix across guide pages (5 critical findings from TASK-05 \u2014 currently unfixed)",
+        "Programmatic GSC recrawl submission for newly-modified guide pages (post TASK-13 content edits)",
+        "Cloudflare Cache Analytics for crawl-bot traffic segmentation vs human traffic baseline",
+        "GA4 organic landing-page funnel to identify which locale content converts vs which bounces",
+        "Locale-specific sitemap partitioning to give Google clearer crawl priority signals per language"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: API access available (Cloudflare, GSC, GTM); 18-locale content translated; guide pages not indexed; need systematic optimization loop rather than waiting for Google",
+        "docs/plans/brikette-seo-traffic-growth/task-11-gsc-indexing.md",
+        "docs/plans/brikette-seo-traffic-growth/task-03b-gsc-canonical-validation.md",
+        "docs/plans/brikette-seo-traffic-growth/plan-v1.md"
+      ],
+      "created_at": "2026-02-25T00:00:00Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "fact_find_slug": "brikette-seo-api-optimization-loop",
+        "fact_find_path": "docs/plans/brikette-seo-api-optimization-loop/fact-find.md",
+        "processed_at": "2026-02-25T00:00:00Z",
+        "route": "dispatch-routed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "dispatch_id": "DISPATCH-BOS-2026-02-25-002",
+      "trigger": "operator_idea",
+      "business": "BOS",
+      "area_anchor": "lp-do-build post-build validation",
+      "domain": "BOS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P1",
+      "confidence": 0.92,
+      "current_truth": "lp-do-build has no post-build validation phase. After a task is implemented the workflow advances to the next task with no simulation or end-to-end verification of the built item.",
+      "next_scope_now": "Design and embed a post-build validation phase in lp-do-build: (1) visual walkthrough via screenshots for UI, (2) data-flow simulation for coded systems, (3) document review for business artifacts. Issues trigger a fix+retry loop with explicit proof of resolution before the task is marked done.",
+      "evidence_refs": [
+        "operator-stated: post-build validation should simulate/walk through the built item \u2014 screenshots for UI, data simulation for code, document review for business artifacts",
+        "operator-stated: issues found during validation must be fixed and retried to prove resolution before proceeding"
+      ],
+      "created_at": "2026-02-25T00:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "lp-do-build-post-build-validation",
+        "fact_find_path": "docs/plans/lp-do-build-post-build-validation/fact-find.md",
+        "processed_at": "2026-02-25T00:00:00Z",
+        "route": "dispatch-routed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0014",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:PRODUCTS:rsc-structured-data-conversion:20260226",
+      "anchor_key": "rsc-structured-data-conversion",
+      "cluster_key": "BRIK:PRODUCTS:rsc-structured-data-conversion:operator:BRIK:PRODUCTS:rsc-structured-data-conversion:20260226",
+      "cluster_fingerprint": "b1c2d3e4f5a60789abcdef01234567ab",
+      "lineage_depth": 0,
+      "area_anchor": "RSC conversion \u2014 create server-only RoomsStructuredDataRsc and ExperiencesStructuredDataRsc components; move structured data rendering out of client components into RSC wrappers to improve SSR completeness and structured-data reliability",
+      "location_anchors": [
+        "apps/brikette/src/components/seo/RoomStructuredData.tsx",
+        "apps/brikette/src/components/seo/ExperiencesStructuredData.tsx",
+        "apps/brikette/src/app/[lang]/rooms/page.tsx",
+        "apps/brikette/src/app/[lang]/rooms/RoomsPageContent.tsx",
+        "apps/brikette/src/app/[lang]/experiences/page.tsx",
+        "docs/plans/_archive/brikette-deeper-route-funnel-cro/task-10-ssr-investigation.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "PRODUCTS",
+      "current_truth": "RoomsStructuredData and ExperiencesStructuredData are client components using useCurrentLanguage() (which calls useParams() + usePathname()) and useTranslation. TASK-10 investigation (docs/plans/_archive/brikette-deeper-route-funnel-cro/task-10-ssr-investigation.md) confirmed both can be converted to server-only RSC variants by accepting lang as a prop and reading data directly \u2014 but TASK-11 (the implementation task) was never executed before the parent plan was archived. No RSC variants exist in the codebase today.",
+      "next_scope_now": "Implement RSC server component versions of RoomsStructuredData and ExperiencesStructuredData: (1) create RoomsStructuredDataRsc accepting lang: AppLanguage \u2014 reads room data server-side, emits JSON-LD without client hooks; (2) create ExperiencesStructuredDataRsc accepting lang: AppLanguage \u2014 emits ItemList JSON-LD server-side; (3) integrate both into their respective RSC wrapper pages (rooms/page.tsx, experiences/page.tsx); (4) remove the hook-dependent versions from their client components; (5) verify structured data appears in initial HTML response (no hydration required). TASK-10 provides full component-level analysis and proposed interface signatures \u2014 use it as primary reference.",
+      "adjacent_later": [
+        "Extract H1 + subtitle from RoomsPageContent into rooms/page.tsx RSC wrapper (also identified in TASK-10)",
+        "Add HowToGetHereStructuredData RSC (BreadcrumbList or TouristAttraction) \u2014 TASK-10 flagged as net-new addition",
+        "Audit DirectBookingPerks and AlsoHelpful for RSC eligibility",
+        "getTranslations pre-warm check for experiences/page.tsx to prevent flash of untranslated content (TASK-10 bug-risk flag)"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.89,
+      "evidence_refs": [
+        "operator-stated: RSC conversion for RoomsStructuredData + ExperiencesStructuredData",
+        "docs/plans/_archive/brikette-deeper-route-funnel-cro/task-10-ssr-investigation.md"
+      ],
+      "created_at": "2026-02-26T15:00:00Z",
+      "queue_state": "completed",
+      "processed_by": {
+        "fact_find_slug": "brikette-rsc-structured-data-conversion",
+        "fact_find_path": "docs/plans/brikette-rsc-structured-data-conversion/fact-find.md",
+        "processed_at": "2026-02-26T15:00:00Z",
+        "route": "dispatch-routed"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/brikette-rsc-structured-data-conversion/plan.md",
+        "completed_at": "2026-02-26T16:30:00Z",
+        "outcome": "RoomsStructuredDataRsc.tsx and ExperiencesStructuredDataRsc.tsx created as server-only components. Both integrated into rooms/page.tsx and experiences/page.tsx RSC wrappers. Unit tests added for both components. Commits: c6d9cee400 (Wave 1: components + plan), 04c4f9fc8b (Wave 2: integration + tests)."
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0015",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:payments-view-test-data-cy:20260226",
+      "anchor_key": "payments-view-test-data-cy",
+      "cluster_key": "BOS:BOS:payments-view-test-data-cy:operator:BOS:BOS:payments-view-test-data-cy:20260226",
+      "cluster_fingerprint": "c2d3e4f5a6b70890bcdef012345678bc",
+      "lineage_depth": 0,
+      "area_anchor": "PaymentsView.test.tsx: change data-testid to data-cy in mock so getByTestId queries find the correct attribute (jest testIdAttribute is configured to data-cy)",
+      "location_anchors": [
+        "apps/reception/src/components/prepayments/__tests__/PaymentsView.test.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "BOS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "confidence": 1,
+      "evidence_refs": [
+        "operator-stated: pre-existing test failure discovered during reception-ui-screen-polish-phase4 Wave 3; root cause is testIdAttribute: data-cy jest config vs data-testid in test mock",
+        "docs/plans/_archive/reception-ui-screen-polish-phase4/results-review.user.md"
+      ],
+      "created_at": "2026-02-26T16:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "note": "Directly fixed \u2014 solution fully known (one-line change per instance); no fact-find investigation required",
+        "processed_at": "2026-02-26T16:00:00Z",
+        "route": "direct-fix"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0016",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:extension-debug-logs-removal:20260226",
+      "anchor_key": "extension-debug-logs-removal",
+      "cluster_key": "BOS:BOS:extension-debug-logs-removal:operator:BOS:BOS:extension-debug-logs-removal:20260226",
+      "cluster_fingerprint": "d3e4f5a6b7c80901cdef012345678bcd",
+      "lineage_depth": 0,
+      "area_anchor": "Extension.tsx: remove 5 debug console.log calls in availability-check logic (checkAvailability callback + availabilityMap useMemo)",
+      "location_anchors": [
+        "apps/reception/src/components/man/Extension.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "BOS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "confidence": 1,
+      "evidence_refs": [
+        "operator-stated: 4 debug console.log calls flagged with TODO comments in Extension.tsx during TASK-11 of reception-ui-screen-polish-phase4; removal deferred as logic-entangled per non-goal",
+        "docs/plans/_archive/reception-ui-screen-polish-phase4/results-review.user.md"
+      ],
+      "created_at": "2026-02-26T16:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "note": "Directly fixed \u2014 removed all 5 console.log calls plus the TODO comment from checkAvailability and availabilityMap; no fact-find investigation required",
+        "processed_at": "2026-02-26T16:00:00Z",
+        "route": "direct-fix"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0017",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:rounded-lg-lint-rule:20260226",
+      "anchor_key": "rounded-lg-lint-rule",
+      "cluster_key": "BOS:BOS:rounded-lg-lint-rule:operator:BOS:BOS:rounded-lg-lint-rule:20260226",
+      "cluster_fingerprint": "e4f5a6b7c8d90012def0123456789cde",
+      "lineage_depth": 0,
+      "area_anchor": "Add ESLint rule or Tailwind lint check to prevent bare rounded class (should always be rounded-lg) \u2014 recurrence observed across all 4 phases of reception UI polish",
+      "location_anchors": [
+        "apps/reception/",
+        "packages/eslint-config/",
+        ".eslintrc*"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "BOS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P3",
+      "confidence": 0.8,
+      "evidence_refs": [
+        "operator-stated: 12+ bare rounded instances found across 7 screens in reception-ui-screen-polish-phase4; same violations found in phases 1\u20133; no lint rule currently prevents reintroduction",
+        "docs/plans/_archive/reception-ui-screen-polish-phase4/results-review.user.md"
+      ],
+      "created_at": "2026-02-26T16:00:00Z",
+      "queue_state": "completed",
+      "processed_by": {
+        "fact_find_slug": "reception-rounded-lg-lint-rule",
+        "fact_find_path": "docs/plans/_archive/reception-rounded-lg-lint-rule/fact-find.md",
+        "plan_path": "docs/plans/_archive/reception-rounded-lg-lint-rule/plan.md",
+        "build_record_path": "docs/plans/_archive/reception-rounded-lg-lint-rule/build-record.user.md",
+        "results_review_path": "docs/plans/_archive/reception-rounded-lg-lint-rule/results-review.user.md",
+        "processed_at": "2026-02-26T16:30:00Z",
+        "completed_at": "2026-02-26T17:00:00Z",
+        "route": "dispatch-routed",
+        "outcome": "Plan executed and archived. ds/no-bare-rounded ESLint rule added to @acme/eslint-plugin-ds; all bare rounded violations fixed in apps/reception/src/."
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0018",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:STRATEGY:startup-loop-product-identity-gap:20260226",
+      "anchor_key": "startup-loop-product-identity-gap",
+      "cluster_key": "BOS:STRATEGY:startup-loop-product-identity-gap:operator:BOS:STRATEGY:startup-loop-product-identity-gap:20260226",
+      "cluster_fingerprint": "b2c3d4e5f6078912b345678901abcdef",
+      "lineage_depth": 0,
+      "area_anchor": "Startup loop assessment chain \u2014 covers business naming (ASSESSMENT-04/05) and brand direction (ASSESSMENT-11) but lacks explicit deliverables for product naming, logo design, and product packaging design",
+      "location_anchors": [
+        ".claude/skills/lp-do-assessment-04-candidate-names/SKILL.md",
+        ".claude/skills/lp-do-assessment-05-name-selection/SKILL.md",
+        ".claude/skills/lp-do-assessment-11-brand-identity/SKILL.md",
+        "docs/business-os/startup-loop/artifact-registry.md"
+      ],
+      "provisional_deliverable_family": "doc",
+      "domain": "STRATEGY",
+      "status": "auto_executed",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: startup loop produces a business name but also needs to produce a product name, business logo, and product packaging design"
+      ],
+      "current_truth": "The startup loop ASSESSMENT chain produces a business name (ASSESSMENT-04/05) and brand identity direction (ASSESSMENT-11: palette, typography, imagery direction, token overrides). It does not produce: a product name, a logo file or specification, or product packaging design.",
+      "next_scope_now": "Investigate what product naming, logo design, and product packaging deliverables look like in the startup loop context; determine which ASSESSMENT stage(s) each belongs to or whether new stages are needed; design extensions or new assessment skills to produce these artefacts.",
+      "adjacent_later": [
+        "Product photography spec and packaging mockup review flow",
+        "Integration with print-on-demand or manufacturer packaging workflow"
+      ],
+      "created_at": "2026-02-26T16:00:00Z",
+      "queue_state": "auto_executed"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0019",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:process-improvements-live-reload:20260226",
+      "anchor_key": "process-improvements-live-reload",
+      "cluster_key": "BOS:BOS:process-improvements-live-reload:operator:BOS:BOS:process-improvements-live-reload:20260226",
+      "cluster_fingerprint": "c3d4e5f607891023c456789012abcdef",
+      "lineage_depth": 0,
+      "area_anchor": "process-improvements.user.html dashboard \u2014 auto-reload in browser when file changes on disk so updated data is reflected without manual refresh",
+      "location_anchors": [
+        "docs/business-os/process-improvements.user.html",
+        "scripts/git-hooks/generate-process-improvements.sh",
+        "scripts/src/startup-loop/generate-process-improvements.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "BOS",
+      "status": "auto_executed",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P3",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: the process-improvements HTML dashboard needs to automatically reflect regenerated data when already open in the browser, without requiring a manual refresh"
+      ],
+      "current_truth": "The HTML is a fully static file served via file:// URL. It contains inline JS data arrays regenerated by a pre-commit hook. When the hook regenerates the file, any open browser tab shows stale data until manually refreshed.",
+      "next_scope_now": "Add a polling mechanism to the HTML that detects when the file has been regenerated and triggers a live reload. Must work under file:// URL constraints and preserve filter/scroll state where possible.",
+      "adjacent_later": [
+        "Apply same pattern to ideas.user.html and other BOS dashboard HTML files"
+      ],
+      "created_at": "2026-02-26T16:35:00Z",
+      "queue_state": "auto_executed"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0020",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:reflection-prioritization-policy-v2:20260226",
+      "anchor_key": "reflection-prioritization-policy-implementation",
+      "cluster_key": "BOS:BOS:reflection-prioritization-policy-implementation:operator:BOS:BOS:reflection-prioritization-policy-v2:20260226",
+      "cluster_fingerprint": "d4e5f6070819203d56789012abcdef01",
+      "lineage_depth": 0,
+      "area_anchor": "Post-build reflection idea prioritization \u2014 externally-reviewed canonical policy (v2) defines a complete schema (P0/P0R/P1/P1M/P2-P5 tiers, evidence gates, urgency admission rules, anti-gaming controls, prerequisite ordering) that must be implemented in the lp-do-ideas trial system",
+      "location_anchors": [
+        "docs/business-os/startup-loop/2026-02-26-reflection-prioritization-expert-brief.user.md",
+        "scripts/src/startup-loop/lp-do-ideas-trial-queue.ts",
+        "scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts",
+        "docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.schema.json"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "BOS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P4",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: externally reviewed canonical prioritization policy v2 (expert decision: Revise, close to approve) \u2014 defines idea schema with 8-tier classification tree (P0/P0R/P1+proximity/P1M/P2-P5), evidence-gated urgency admission (U0/U1/U2/U3), auto-demotion for missing evidence, prerequisite ordering via effective_priority_rank, and anti-gaming controls. All five expert-required fixes applied in v2."
+      ],
+      "current_truth": "The lp-do-ideas dispatch packet (dispatch.v1) carries routing metadata (status, recommended_route, priority, confidence) but has no canonical classification schema. Ideas are not classified with priority_tier, proximity, urgency, effort, or reason_code. The routing adapter handles evidence_refs and area_anchor but does not apply classification rules, evidence gates, or auto-demotion logic. There is no urgency admission check, no U0 WIP cap, and no anti-gaming audit.",
+      "next_scope_now": "Fact-find to determine: (1) exact gaps between current dispatch schema and canonical idea schema fields (priority_tier, proximity, urgency, effort, reason_code, effective_priority_rank, evidence fields); (2) which module should own classification \u2014 new classifier module vs extending routing adapter; (3) what changes are needed to lp-do-ideas-trial-queue.ts and lp-do-ideas-routing-adapter.ts; (4) whether dispatch.schema.json needs extending; (5) produce a planning brief with concrete tasks.",
+      "adjacent_later": [
+        "U0 WIP cap enforcement in queue ordering",
+        "Weekly audit sample of new classifications (5-10%)",
+        "Distribution anomaly alerts for P1+Direct and U0 share thresholds"
+      ],
+      "created_at": "2026-02-26T18:30:00Z",
+      "queue_state": "auto_executed"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0021",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:HBAG:PRODUCTS:caryina-product-catalog-upload-inventory-cart:20260226",
+      "anchor_key": "caryina-product-catalog-upload-inventory-cart",
+      "cluster_key": "HBAG:PRODUCTS:caryina-product-catalog-upload-inventory-cart:operator:HBAG:PRODUCTS:caryina-product-catalog-upload-inventory-cart:20260226",
+      "cluster_fingerprint": "e5f6070819203a4b67890123cdef0123",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina website product upload facility \u2014 products tied to centralised inventory, displayed on the storefront, and integrated with shopping cart for multi-item checkout",
+      "location_anchors": [
+        "apps/caryina/src/app/[lang]/shop/page.tsx",
+        "apps/caryina/src/app/[lang]/product/[slug]/page.tsx",
+        "apps/caryina/src/app/[lang]/checkout/page.tsx",
+        "data/shops/caryina/products.json",
+        "data/shops/caryina/inventory.json",
+        "apps/caryina/src/lib/shop.ts"
+      ],
+      "provisional_deliverable_family": "multi",
+      "domain": "PRODUCTS",
+      "status": "auto_executed",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "operator-stated: caryina business website needs a product upload facility tied to centralised inventory, displayed on site, and ready for shopping cart usage",
+        "docs/business-os/strategy/HBAG/index.user.md",
+        "data/shops/caryina/products.json",
+        "data/shops/caryina/inventory.json"
+      ],
+      "current_truth": "Caryina products are stored as manually maintained JSON files (data/shops/caryina/products.json and inventory.json). The checkout is a single-SKU direct flow with no cart state or multi-product basket. There is no admin interface for uploading or managing product listings.",
+      "next_scope_now": "Investigate and plan: (1) a product upload facility for adding and managing products tied to centralised inventory, (2) how products should be displayed dynamically on the Caryina storefront, and (3) shopping cart functionality enabling a multi-product basket and checkout flow.",
+      "adjacent_later": [
+        "Inventory sync across channels (Etsy, Instagram Shopping)",
+        "Order management and fulfilment tracking UI",
+        "Product variant support (size, colour)"
+      ],
+      "created_at": "2026-02-26T19:00:00Z",
+      "queue_state": "auto_executed"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260226-0022",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:XA:BOS:xa-apps-ci-staging:20260226",
+      "anchor_key": "xa-apps-ci-staging",
+      "cluster_key": "XA:BOS:xa-apps-ci-staging:operator:XA:BOS:xa-apps-ci-staging:20260226",
+      "cluster_fingerprint": "a1b2c3d4e5f6789012345678901abcde",
+      "lineage_depth": 0,
+      "area_anchor": "xa-b, xa-drop-worker, xa-uploader \u2014 no CI workflows exist; operator wants all three built, tested, and deployed to Cloudflare staging for user testing",
+      "location_anchors": [
+        "apps/xa-b/",
+        "apps/xa-drop-worker/",
+        "apps/xa-uploader/",
+        ".github/workflows/"
+      ],
+      "provisional_deliverable_family": "ci-config + cloudflare-deploy",
+      "domain": "BOS",
+      "status": "auto_executed",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P1",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "operator-stated: three xa- apps (xa-b storefront on CF Pages, xa-drop-worker CF Worker, xa-uploader operator console) have no CI workflows; staging deploy on Cloudflare required for user testing",
+        "operator-stated: goal is user testing \u2014 staging environment readiness is the success criterion"
+      ],
+      "queue_state": "auto_executed",
+      "dispatched_at": "2026-02-26T19:30:00Z",
+      "auto_executed_at": "2026-02-26T19:30:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0002",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:PRODUCTS:prime-account-profile-page:20260227",
+      "anchor_key": "prime-account-profile-page",
+      "cluster_key": "BRIK:PRODUCTS:prime-account-profile-page:operator:20260227",
+      "cluster_fingerprint": "c9e1d4f2a8b305674321fedcba098765",
+      "lineage_depth": 0,
+      "area_anchor": "Prime /account/profile route \u2014 missing, 404 from ProfileCompletionBanner CTA",
+      "location_anchors": [
+        "apps/prime/src/components/profile/ProfileCompletionBanner.tsx",
+        "apps/prime/src/app/(guarded)/",
+        "apps/prime/src/app/"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P1",
+      "confidence": 0.97,
+      "current_truth": "ProfileCompletionBanner is displayed prominently on the Prime home screen for any guest whose profile is incomplete, partial, skipped, or stale. The banner's CTA button (line 70) links to /account/profile. No /account/ route group exists in apps/prime/src/app/ \u2014 the path is a 404. The component has been shipped and is live, meaning every tap of 'Complete profile' or 'Update preferences' leads to a dead end.",
+      "next_scope_now": "Fact-find to design and plan the /account/profile page for the Prime guest app: (1) audit what profile data already exists \u2014 what does the profile data model look like (profileStatus, bookingId, any preference fields) and where is it stored (Firebase? local state? API?); (2) understand what 'complete profile' means \u2014 what fields does a guest fill in, what constitutes profileStatus='complete', and who consumes these preferences downstream (digital assistant, recommendations, staff-facing views?); (3) check whether any other screens reference /account/* routes that are also missing; (4) determine what the guarded route structure looks like \u2014 does /account/ belong inside (guarded)/ or at a different nesting level; (5) review i18n requirements \u2014 which namespace handles profile form content; (6) assess whether the profile form should be a multi-step flow or a single-screen form; (7) produce a planning brief with a task breakdown for implementing the route, the page component, data persistence, and status update logic.",
+      "adjacent_later": [
+        "Profile data used by digital assistant for personalised recommendations",
+        "/account/ hub page if additional account sub-routes are planned (settings, past stays, etc.)",
+        "Staff-facing profile summary view in reception app to see guest preferences at check-in"
+      ],
+      "evidence_refs": [
+        "repro_ref: apps/prime/src/components/profile/ProfileCompletionBanner.tsx:70 \u2014 Link href='/account/profile' \u2192 404, no /account/ route exists in apps/prime",
+        "funnel_step: profile completion \u2014 banner is shown on home screen (guarded); every guest with profileStatus !== 'complete' sees it; tapping CTA leads to 404",
+        "operator-stated: build the profile page"
+      ],
+      "created_at": "2026-02-27T09:00:00Z",
+      "queue_state": "auto_executed",
+      "dispatched_at": "2026-02-27T09:00:00Z",
+      "auto_executed_at": "2026-02-27T09:00:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0001",
+      "mode": "trial",
+      "business": "CARYINA",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:CARYINA:PRODUCTS:payment-gateway-axerve:20260227",
+      "anchor_key": "payment-gateway-axerve",
+      "cluster_key": "CARYINA:PRODUCTS:payment-gateway-axerve:operator:20260227",
+      "cluster_fingerprint": "a7f3c1d2e5b9082345678901abcdef12",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina payment gateway \u2014 replace Stripe with Axerve/GestPay",
+      "location_anchors": [
+        "apps/caryina/src/app/api/checkout-session/route.ts",
+        "apps/caryina/src/app/[lang]/checkout/page.tsx",
+        "apps/caryina/src/app/[lang]/success/page.tsx",
+        "apps/caryina/src/lib/verifyStripeSession.ts",
+        "packages/stripe/"
+      ],
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "trigger_why": "Operator decision to replace Stripe with Axerve/Fabrick Payment Orchestra (ex GestPay) following a commercial offer from Banca Stabiese. The Stripe checkout flow just shipped in caryina-catalog-cart (TASK-11/12). Axerve uses a SOAP/WSDL S2S API \u2014 a fundamentally different integration pattern from Stripe's REST SDK. Full replacement required across checkout session creation, payment verification, and success/cancelled pages.",
+      "evidence_refs": [
+        "operator-stated: Banca Stabiese offered an improved rate; gateway is Axerve/Fabrick Payment Orchestra (ex GestPay); sandbox WSDL: https://sandbox.gestpay.net/gestpay/gestpayws/WSs2s.asmx?WSDL",
+        "funnel_step: payment \u2014 existing Stripe implementation in apps/caryina must be fully replaced"
+      ],
+      "queue_state": "auto_executed",
+      "dispatched_at": "2026-02-27T00:00:00Z",
+      "auto_executed_at": "2026-02-27T00:00:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0033",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:PRODUCTS:prime-meal-order-menu-wizard:20260227",
+      "anchor_key": "prime-meal-order-menu-wizard",
+      "cluster_key": "BRIK:PRODUCTS:prime-meal-order-menu-wizard:operator:20260227",
+      "cluster_fingerprint": "a3f7c1d9e2b4058612345678abcdef90",
+      "lineage_depth": 0,
+      "area_anchor": "Prime meal orders \u2014 stepped menu wizard not ported from standalone app",
+      "location_anchors": [
+        "apps/prime/src/components/meal-orders/MealOrderPage.tsx",
+        "apps/prime/src/app/(guarded)/complimentary-breakfast/page.tsx",
+        "apps/prime/src/app/(guarded)/complimentary-evening-drink/page.tsx",
+        "apps/prime/functions/api/firebase/preorders.ts",
+        "apps/prime/src/types/preorder.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "PRODUCTS",
+      "current_truth": "MealOrderPage.tsx uses a free-text <input> for both breakfast and evening drink order value fields. No menu config exists in the current codebase. The feature existed in the previous standalone React app (/Users/petercowling/Documents/prime_src/) as a full multi-step wizard: 6 breakfast food options with conditional sub-steps (egg style + exactly-3 sides for Eggs; syrup for Pancakes), 8 breakfast drink options (with milk/sugar modifiers for Americano/Tea/espresso variants), collection time selection (08:00\u201310:15 in 15-min slots), and a confirmation screen. Evening drinks used a flat flow with plan-type filtering (type-1 soft drinks/teas for all guests; type-2 spirits/spritz/etc. for higher plan tiers), optional modifiers, and time selection (18:00\u201320:30). The port to this monorepo omitted all of this \u2014 guests currently type free text with no guidance.",
+      "next_scope_now": "Port the complimentary meal order menu system from /Users/petercowling/Documents/prime_src/ into the current Prime app: (1) extract all menu data from ComplimentaryData.js into a TypeScript config at apps/prime/src/config/meal-orders/; (2) replace MealOrderPage.tsx free-text input with a mobile-first multi-step wizard using the conditional sub-step pattern from useBreakfastWorkflow.js (egg style+sides for Eggs, syrup for Pancakes, milk+sugar modifiers for applicable drinks, time selection, confirmation); (3) implement plan-type filtering for evening drinks (type-1 vs type-2 based on guest complimentary.drink1/drink2 codes from the booking snapshot); (4) wire the structured selections into a human-readable value string submitted to the existing POST /api/firebase/preorders endpoint \u2014 no schema changes needed; (5) skip the kitchen bleep/breakfastpreorders system.",
+      "adjacent_later": [
+        "Edit flow for existing meal orders (old app had /complimentary-breakfast-edit/:nightKey route)",
+        "Kitchen display and bleep number system (explicitly deferred)",
+        "Juice/smoothie option (present in old app data but not wired into active workflow)"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.94,
+      "evidence_refs": [
+        "operator-stated: feature existed in standalone React app at /Users/petercowling/Documents/prime_src/ before monorepo port; port failed to carry across menu system",
+        "operator-stated: keep stepped wizard UX; skip kitchen/bleep system for now",
+        "/Users/petercowling/Documents/prime_src/src/data/ComplimentaryData.js \u2014 full menu item data source",
+        "/Users/petercowling/Documents/prime_src/src/hooks/useBreakfastWorkflow.js \u2014 step machine and conditional sub-step logic"
+      ],
+      "created_at": "2026-02-27T10:00:00Z",
+      "queue_state": "auto_executed",
+      "dispatched_at": "2026-02-27T10:00:00Z",
+      "auto_executed_at": "2026-02-27T10:00:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0034",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:PLAT:STRATEGY:ci-only-test-execution:20260227",
+      "anchor_key": "ci-only-test-execution",
+      "cluster_key": "PLAT:STRATEGY:ci-only-test-execution:operator:20260227",
+      "cluster_fingerprint": "d4e7b1c3a9f2085671234567890fedcb",
+      "lineage_depth": 0,
+      "area_anchor": "Dev workflow \u2014 all Jest/e2e test execution offloaded to CI; local test commands suppressed",
+      "location_anchors": [
+        "docs/testing-policy.md",
+        "AGENTS.md",
+        "docs/plans/test-execution-resource-governor-plan.md",
+        ".github/workflows/"
+      ],
+      "provisional_deliverable_family": "policy-update + config-change",
+      "domain": "STRATEGY",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "confidence": 0.88,
+      "current_truth": "The test-execution-resource-governor fact-find and plan exist (status: Ready-for-planning) and are scoped to local admission control \u2014 throttling, concurrency caps, and command-path guarding. They explicitly scope out CI adoption as a 'separate follow-on decision after local stability is proven.' No policy currently prevents agents or humans from running Jest/e2e tests locally. docs/testing-policy.md governs what tests must run, not where they run. Running tests locally consumes significant RAM/CPU and can destabilise the machine during bursty agent/human workflows. The resource governor addresses the symptom (too many concurrent local processes) rather than the root cause (tests run locally at all). Note: linting and typechecking are explicitly excluded from this idea \u2014 they remain local.",
+      "next_scope_now": "Fact-find to design a CI-only test execution policy (Jest/e2e only; linting and typechecking remain local): (1) audit what tests are currently expected to run locally \u2014 review AGENTS.md, docs/testing-policy.md, and CLAUDE.md for any local-test expectations that need reframing; (2) determine the correct CI feedback loop for agents and humans \u2014 what does an agent do after pushing code to get test results (poll PR check? trigger a workflow dispatch? which branch/PR strategy enables fast feedback?); (3) assess whether the test-execution-resource-governor plan can be simplified or superseded \u2014 if tests don't run locally, the governor becomes 'block all local test commands' rather than a throttling/scheduling system; (4) identify any tests that genuinely need to stay local (e.g., a fast unit-test smoke check before committing a specific module) and decide whether those are kept as exceptions or eliminated entirely; (5) check GitHub Actions quota and cost implications of heavier CI test load; (6) produce a planning brief with tasks covering policy doc updates, local test-command enforcement (block rule), and any CI workflow adjustments needed to handle the increased load.",
+      "adjacent_later": [
+        "Simplify or retire test-execution-resource-governor once local test suppression is in place",
+        "PR-gated test result dashboard so agents can see pass/fail without polling raw workflow logs",
+        "Per-package CI test sharding if test runtime grows with full offload"
+      ],
+      "evidence_refs": [
+        "operator-stated: offload all Jest/e2e testing to CI to reduce local machine resource usage; linting and typechecking explicitly excluded and remain local"
+      ],
+      "created_at": "2026-02-27T14:00:00Z",
+      "queue_state": "auto_executed",
+      "dispatched_at": "2026-02-27T14:00:00Z",
+      "auto_executed_at": "2026-02-27T14:00:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0035",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:STRATEGY:workflow-skills-simulation-tdd:20260227",
+      "anchor_key": "workflow-skills-simulation-tdd",
+      "cluster_key": "BOS:STRATEGY:workflow-skills-simulation-tdd:operator:20260227",
+      "cluster_fingerprint": "f2a9c7d1e3b0541289012345678abcde",
+      "lineage_depth": 0,
+      "area_anchor": "lp-do-plan/fact-find/critique skills \u2014 simulation walk-through replaces local test runs for TDD validation",
+      "location_anchors": [
+        ".claude/skills/lp-do-plan/SKILL.md",
+        ".claude/skills/lp-do-fact-find/SKILL.md",
+        ".claude/skills/lp-do-critique/SKILL.md"
+      ],
+      "provisional_deliverable_family": "skill-update",
+      "domain": "STRATEGY",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "confidence": 0.85,
+      "current_truth": "lp-do-plan produces implementation plans but has no built-in step where the agent simulates or traces through the proposed changes step-by-step before emitting tasks. lp-do-fact-find gathers evidence and scopes work but does not simulate how a proposed system would behave end-to-end. lp-do-critique critiques documents but does not walk through a simulated execution path of the thing being critiqued. When TDD-style validation is needed during planning, the only mechanism is to actually run tests locally \u2014 which is expensive and adds to local resource pressure. There is no agent-driven simulation protocol in any of the three skills today. The resource offload idea (IDEA-DISPATCH-20260227-0034) removes local tests entirely, which makes a simulation-based substitute for TDD validation during planning strictly necessary.",
+      "next_scope_now": "Fact-find to design a simulation-based TDD validation protocol for lp-do-plan, lp-do-fact-find, and lp-do-critique: (1) define 'simulation' precisely in this context \u2014 is it a structured agent walk-through of the proposed task sequence, checking each task for missing preconditions, type errors, API contract mismatches, missing config, or integration failures? How formal should the trace be?; (2) determine insertion points in each skill \u2014 for lp-do-plan, does simulation run after the plan is drafted but before it is emitted to the operator? For lp-do-fact-find, does the agent simulate the investigation scope to check for gaps in coverage? For lp-do-critique, does the agent simulate executing what is being critiqued to surface failure modes?; (3) define what constitutes a simulation 'issue' \u2014 what categories of problem can an agent catch without running code (missing data dependency, API signature mismatch, circular task ordering, undefined config key, etc.) and what are the limits of simulation vs actual test execution?; (4) decide whether the simulation output is a hard gate (blocks plan emission) or an advisory block in the output; (5) read the current SKILL.md files for all three skills and identify exact protocol sections where simulation steps would be inserted; (6) produce a planning brief with specific SKILL.md edits for each of the three skills plus any shared simulation-protocol doc.",
+      "adjacent_later": [
+        "Simulation protocol shared doc that all three skills reference, avoiding SKILL.md duplication",
+        "Simulation output format standardisation so critique and plan results can be compared across runs",
+        "Extension to lp-do-build: simulate a build task before executing it to catch obvious blockers"
+      ],
+      "evidence_refs": [
+        "operator-stated: lp-do-plan TDD should use simulation \u2014 agent steps through proposed system step-by-step to identify issues; same for lp-do-fact-find and lp-do-critique",
+        "operator-stated: this is a consequence of moving all Jest/e2e tests to CI (IDEA-DISPATCH-20260227-0034) \u2014 need an alternative validation mechanism during the planning phase"
+      ],
+      "created_at": "2026-02-27T14:00:00Z",
+      "queue_state": "auto_executed",
+      "dispatched_at": "2026-02-27T14:00:00Z",
+      "auto_executed_at": "2026-02-27T14:00:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0036",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:lp-do-build-codex-offload:20260227",
+      "anchor_key": "lp-do-build-codex-offload",
+      "cluster_key": "BOS:BOS:lp-do-build-codex-offload:operator:20260227",
+      "cluster_fingerprint": "a7b2c4d8f1e3059261849372ef1a2b3c",
+      "lineage_depth": 0,
+      "area_anchor": "lp-do-build Codex offload \u2014 build execution runs inline, not offloaded like critique",
+      "location_anchors": [
+        ".claude/skills/lp-do-build/SKILL.md",
+        ".claude/skills/_shared/critique-loop-protocol.md"
+      ],
+      "provisional_deliverable_family": "skill-update",
+      "domain": "BOS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "confidence": 0.85,
+      "current_truth": "lp-do-build executes plan tasks inline \u2014 Claude reads the plan, picks a task, and performs the implementation work directly in the conversation. lp-do-critique has been offloaded to Codex via codemoot (nvm exec 22 codemoot review <artifact>), with Claude receiving results via JSON and applying fixes. No equivalent mechanism exists for lp-do-build: Codex cannot currently receive a plan task and execute the implementation autonomously, with Claude acting as orchestrator and gating on the result.",
+      "next_scope_now": "Fact-find to design a Codex offload protocol for lp-do-build, mirroring how codemoot/Codex is used for critique: (1) map exactly how critique offloading works today \u2014 what command is run, what input is passed (artifact path), what output is consumed (JSON findings), how Claude applies results \u2014 to establish the reference pattern; (2) determine whether lp-do-build tasks can be passed to Codex via codemoot or via a direct codex CLI invocation, and what the equivalent input/output contract would be (task description + plan.md path + relevant file list \u2192 diff/commit output); (3) identify what gates Claude must still own even when Codex runs the implementation (writer lock acquisition, VC check, post-build validation, results-review update) vs what Codex can own end-to-end; (4) determine fallback policy if Codex is unavailable (CODEMOOT_OK=0 / codex not installed) \u2014 inline execution by Claude is the natural fallback; (5) assess whether Codex can reliably handle the breadth of lp-do-build task types (code IMPLEMENT, biz artifact, skill-update) or whether offloading is only viable for a subset; (6) produce a planning brief with specific SKILL.md edits to lp-do-build and any new shared protocol doc needed.",
+      "adjacent_later": [
+        "Shared build-offload-protocol.md analogous to critique-loop-protocol.md",
+        "Codex + Claude handoff contract for task-level results reporting back to the orchestrator",
+        "Extension to lp-do-replan: if Codex execution fails repeatedly, escalate back to Claude inline"
+      ],
+      "evidence_refs": [
+        "operator-stated: lp-do-critique offloaded to Codex via codemoot; same pattern requested for lp-do-build"
+      ],
+      "created_at": "2026-02-27T00:00:00Z",
+      "queue_state": "auto_executed",
+      "dispatched_at": "2026-02-27T00:00:00Z",
+      "auto_executed_at": "2026-02-27T00:00:00Z"
+    },
+    {
+      "dispatch_id": "IDEA-DISPATCH-20260227-0037",
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "trigger": "operator_idea",
+      "business": "XA",
+      "area_anchor": "xa-b storefront \u2014 SSR blocks CF free tier, needs static export",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "emitted_at": "2026-02-27T00:00:00Z",
+      "evidence_refs": [
+        "operator-stated: xa-b SSR on CF Workers free tier hits 10ms CPU limit causing 1102 errors; static export on CF Pages free tier avoids $5/month Workers Standard cost",
+        "operator-stated: 6 static export blockers identified \u2014 next.config.mjs opt-out, runtime=nodejs exports in layout.tsx + robots.ts, api/search/sync route handler, server-side searchParams in /new-in and /designer/[slug], dynamic routes missing generateStaticParams, middleware security headers needing _headers file"
+      ],
+      "fact_find_slug": "xa-b-static-export"
+    },
+    {
+      "dispatch_id": "IDEA-DISPATCH-20260227-0038",
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "area_anchor": "BRIK Prime digital assistant \u2014 keyword fallback, needs OpenAI LLM upgrade",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "emitted_at": "2026-02-27T00:00:00Z",
+      "priority": "P1",
+      "priority_tier": "high",
+      "urgency": "pre-deploy",
+      "effort": "M",
+      "reason_code": "product-gap",
+      "location_anchors": [
+        "apps/prime/src/app/(guarded)/digital-assistant/page.tsx",
+        "apps/prime/src/lib/assistant/answerComposer.ts",
+        "apps/prime/functions/api/"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Prime digital assistant is fully client-side keyword matching. Six categories (~18 keyword triggers) cover booking, extensions, experiences, food, bag drop, and transport. Any query that does not match a keyword returns a static fallback: 'I do not have a direct answer for that yet. Use Booking Details or ask reception.' No API call is made, no LLM is involved, no AI capability exists. The page has no loading state. No preset query buttons. Single-exchange only \u2014 each submit replaces the previous answer. No booking context is passed into the answer logic. The legacy app called POST https://hostel-positano.com/primetime/api/processQuery (now decommissioned) which was an OpenAI-backed backend \u2014 no system prompt or grounding config is recoverable.",
+      "next_scope_now": "Hybrid model: (1) Keep existing 6 keyword rules as synchronous fast-path \u2014 zero change, zero regression. (2) On keyword miss (answerType === fallback), POST to a new Cloudflare Function (functions/api/assistant-query.ts) that calls OpenAI API with a Positano-focused system prompt + guest booking context (first name, check-in/out dates, entitlement status, current Rome time). (3) Safety fallback when OpenAI signals out-of-scope or call fails \u2014 serve a clear escalation message, never the old dead-end generic fallback. (4) Rate-limit via existing kv-rate-limit.ts pattern. (5) Restore multi-turn conversation history (bounded 3-5 exchanges). (6) Add loading state to the page (currently synchronous, no spinner). (7) Add preset query buttons matching legacy scope (beach, bus, port directions, boat, hiking). (8) Extend analytics: answerType 'llm' | 'llm-safety-fallback', llmDurationMs, llmFallbackReason. (9) Apply existing link allowlist (ALLOWLISTED_HOSTS + validateAssistantLinks) to any LLM-generated links.",
+      "adjacent_later": "i18n on assistant page (currently English-only); swap OpenAI for Cloudflare Workers AI if cost warrants; streaming responses",
+      "evidence_refs": [
+        "operator-stated: port the legacy AI chatbot capability using OpenAI API, parity-first",
+        "operator-stated: legacy app called OpenAI via POST /primetime/api/processQuery \u2014 backend decommissioned, system prompt not recoverable",
+        "investigation: legacy frontend had 10 preset query topics (beach, bus, bar/breakfast menu, port directions, travel, porters, rubber boat, boat tour, hiking) \u2014 these define the intended topic scope",
+        "investigation: legacy userId was hardcoded to 'current_user_id' \u2014 no per-guest context was ever passed; new implementation should pass booking context for personalised answers",
+        "investigation: current app has link allowlist, analytics, TypeScript types, tests \u2014 all reusable for LLM path",
+        "investigation: functions/lib/kv-rate-limit.ts and functions/api/guest-session.ts exist and provide the right patterns for the new CF Function",
+        "investigation: useUnifiedBookingData hook available in same guarded route group for booking context injection"
+      ],
+      "fact_find_slug": "prime-digital-assistant-llm-upgrade"
+    },
+    {
+      "dispatch_id": "IDEA-DISPATCH-20260227-0039",
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "trigger": "operator_idea",
+      "business": "HBAG",
+      "area_anchor": "HBAG checkout \u2014 merchant order notification email missing",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "emitted_at": "2026-02-27T00:00:00Z",
+      "evidence_refs": [
+        "operator-stated: send order notification email to peter.cowling1976@gmail.com when payment succeeds on POST /api/checkout-session",
+        "funnel_step: payment_confirmation; metric_name: merchant_notified_per_order; baseline_value: 0"
+      ]
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0040",
+      "mode": "trial",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "root_event_id": "operator:BRIK:SELL:direct-booking-price-comparison:20260227",
+      "anchor_key": "direct-booking-price-comparison",
+      "cluster_key": "BRIK:SELL:direct-booking-price-comparison:operator:20260227",
+      "cluster_fingerprint": "c7e2a4f8b3d106781234567890abcde1",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK direct booking \u2014 no price comparison or rate-match widget on booking page",
+      "location_anchors": [
+        "apps/brikette/src/app/[locale]/",
+        "apps/brikette/src/components/"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "SELL",
+      "current_truth": "Brikette has a direct booking funnel but no on-site price comparison or rate-match tooling. Guests navigating to the site have no visual signal showing how the direct rate compares to OTA platforms (Booking.com, Hostelworld). There is no 'book direct and save' widget, rate-match guarantee, or parity-messaging component anywhere in the booking flow.",
+      "next_scope_now": "Fact-find to assess direct booking price-advantage messaging for Brikette: (1) audit the current booking funnel pages to identify where rate-advantage messaging could appear; (2) assess OTA rate parity rules \u2014 what BRIK can legally claim given Booking.com/Hostelworld parity clauses; (3) identify which benefits can be surfaced instead of price comparison (no booking fee, flexible cancellation, add-ons); (4) determine whether a dynamic price comparison widget is feasible or static trust messaging is more appropriate; (5) produce a planning brief for a 'book direct' trust signal component.",
+      "adjacent_later": [
+        "Rate-parity monitoring \u2014 alert when OTA prices undercut direct rate",
+        "Direct booking incentive program (free breakfast, loyalty discount)",
+        "Abandoned booking recovery \u2014 exit-intent prompt with direct booking benefit summary"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.82,
+      "evidence_refs": [
+        "operator-stated: no on-site price comparison or rate-match tooling exists for BRIK direct booking",
+        "operator-stated: minor conversion gap \u2014 guests have no signal that booking direct is advantageous"
+      ],
+      "created_at": "2026-02-27T00:00:00Z",
+      "queue_state": "auto_executed",
+      "dispatched_at": "2026-02-27T00:00:00Z",
+      "auto_executed_at": "2026-02-27T00:00:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0041",
+      "mode": "trial",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "area_anchor": "BRIK direct-booking conversion \u2014 perks positioned below primary booking CTA",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "emitted_at": "2026-02-27T12:00:00Z",
+      "priority": "P3",
+      "classification": "minor-gap",
+      "provisional_deliverable_family": "code-change",
+      "location_anchors": [
+        "apps/brikette/src/app/[locale]/book/",
+        "apps/brikette/src/components/"
+      ],
+      "current_truth": "Brikette has direct-booking perks (e.g. no booking fee, flexible cancellation, add-ons) surfaced somewhere on the booking flow, but they are positioned below the primary booking CTA. Guests who do not scroll past the CTA never see the incentives to book direct vs OTA, which may suppress direct-booking conversion rate.",
+      "next_scope_now": "Fact-find to assess perks positioning relative to the primary booking CTA: (1) identify exactly which components carry direct-booking perks and where they render in the booking page DOM; (2) measure scroll depth required to reach perks vs CTA; (3) determine whether perks should move above the CTA, be embedded alongside it, or be shown as a persistent banner; (4) review GA4 scroll-depth data if available; (5) produce a positioning recommendation with implementation scope.",
+      "adjacent_later": [
+        "Animated or highlighted perks badge near CTA",
+        "Social proof / review count alongside perks",
+        "A/B test perks placement above vs below CTA"
+      ],
+      "evidence_refs": [
+        "operator-stated: direct-booking perks positioned below primary booking CTA, reducing visibility before guest makes channel decision"
+      ],
+      "fact_find_slug": "brikette-direct-booking-perks-cta-positioning"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0042",
+      "mode": "trial",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "root_event_id": "operator:BRIK:PRODUCTS:brik-room-content-schema:20260227",
+      "anchor_key": "brik-room-content-schema",
+      "cluster_key": "BRIK:PRODUCTS:brik-room-content-schema:operator:20260227",
+      "cluster_fingerprint": "a1b3c5d7e9f2041628374950abcdef42",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK room content schema \u2014 feature-set (beds, bath, view, terrace, security) not typed or resilient to missing items",
+      "location_anchors": [
+        "apps/brikette/src/data/roomsData.ts",
+        "apps/brikette/src/app/[lang]/rooms/[id]/RoomDetailContent.tsx",
+        "apps/brikette/src/components/rooms/RoomCard.tsx",
+        "apps/brikette/src/app/[lang]/rooms/RoomsPageContent.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "PRODUCTS",
+      "current_truth": "roomsData.ts is the single source of truth for all 10 rooms + apartment, containing rate codes, occupancy, pricing, and image arrays. It has no formal typed schema for the key guest decision-driver features: bed type/count, bathroom spec, view description, terrace presence, or security features (keycard access, in-room lockers). RoomDetailContent.tsx renders room details from this data but has no resilience pattern for optional or missing features \u2014 the component does not cleanly omit sections when a feature is unavailable for a given room.",
+      "next_scope_now": "Fact-find to scope a room content schema and resilient rendering layer: (1) audit roomsData.ts \u2014 what content fields currently exist per room vs what the operator requires (beds, bathroom, view, terrace, security/keycard/lockers)? Map gaps per room type; (2) review RoomDetailContent.tsx and RoomCard.tsx \u2014 how are room features currently rendered? Where would missing-feature resilience need to be added?; (3) define a typed content schema in TypeScript \u2014 which fields are always present (beds) vs optional (terrace, view description, locker presence)?; (4) audit image coverage \u2014 does each room have images covering the required decision drivers: bed, bathroom, view, terrace (if applicable), security? What are the per-room gaps?; (5) determine the render policy for optional features: omit section entirely vs show 'not applicable'; (6) produce a planning brief with: schema extension tasks, RoomDetailContent/RoomCard render updates, and per-room image-gap report.",
+      "adjacent_later": [
+        "CMS-backed room content editing to avoid manual roomsData.ts edits",
+        "Room comparison feature once all rooms have consistent schema coverage",
+        "Auto-generate Schema.org HotelRoom structured data from the extended content schema"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: room media must cover bed(s), bathroom, view, terrace (if applicable), and security (keycard access, in-room lockers); missing features should be omitted cleanly \u2014 no empty sections, placeholders, or broken layout",
+        "operator-stated: implement a room content schema resilient to missing features",
+        "funnel_step: room_detail_view; metric_name: room_selection_rate"
+      ],
+      "created_at": "2026-02-27T15:00:00Z",
+      "queue_state": "processed",
+      "dispatched_at": "2026-02-27T15:00:00Z",
+      "processed_by": {
+        "fact_find_slug": "brik-room-content-schema",
+        "fact_find_path": "docs/plans/brik-room-content-schema/fact-find.md",
+        "processed_at": "2026-02-27T16:00:00Z",
+        "route": "dispatch-routed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0043",
+      "mode": "trial",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "root_event_id": "operator:BRIK:SELL:brik-octorate-live-availability:20260227",
+      "anchor_key": "brik-octorate-live-availability",
+      "cluster_key": "BRIK:SELL:brik-octorate-live-availability:operator:20260227",
+      "cluster_fingerprint": "b2c4d6e8f0a1032547698170bcdef043",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK booking funnel \u2014 live Octorate availability and rate selection not surfaced before handoff",
+      "location_anchors": [
+        "apps/brikette/src/app/[lang]/book/BookPageContent.tsx",
+        "apps/brikette/src/utils/buildOctorateUrl.ts",
+        "apps/brikette/src/components/rooms/RoomsSection.tsx",
+        "apps/brikette/src/components/rooms/RoomCard.tsx",
+        "apps/brikette/src/data/roomsData.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "SELL",
+      "current_truth": "The Brikette booking flow builds a direct Octorate URL (buildOctorateUrl.ts) from dates, pax count, and rate codes, then navigates to Octorate's booking engine via window.location.assign(). There is no in-page availability or pricing check: guests cannot see live availability or actual prices on the Brikette site before being handed off. RoomCard.tsx shows NR and Flex CTAs statically \u2014 pricing is hardcoded in roomsData.ts, not sourced from Octorate live availability. The Octorate Octobook calendar/availability API is not integrated for in-page display. Rate selection (refundable vs non-refundable) happens implicitly by which CTA the guest clicks \u2014 no explicit choice flow exists.",
+      "next_scope_now": "Fact-find to scope live Octorate availability + in-page rate selection: (1) investigate what Octorate exposes for in-page availability/pricing \u2014 does Octobook provide a JS widget, REST API, or iframe embedding for checking room-level availability and pricing for specific dates and guest counts? Review Octorate developer/partner documentation for API surface; (2) assess feasibility of in-page availability querying \u2014 can the Brikette Next.js app query Octorate availability per room per date range (server-side API route or client-side direct call)? What auth/credentials are needed?; (3) map the desired funnel flow: guest selects dates + guest count \u2192 Brikette queries Octorate \u2192 shows per-room availability + price \u2192 guest chooses NR or Flex rate \u2192 navigates to Octorate for payment; (4) determine whether buildOctorateUrl.ts + RoomCard NR/Flex CTA pattern is preserved or replaced; (5) check CORS policy and whether a Next.js API route proxy is needed for availability calls; (6) assess Octorate Octobook embedding options for the booking completion step; (7) produce a planning brief with tasks covering: availability API integration, per-room pricing display, explicit rate selection UI (NR/Flex), and booking handoff.",
+      "adjacent_later": [
+        "In-page availability calendar showing room-level date grid across multiple nights",
+        "Dynamic pricing display with stay-length discounts surfaced inline",
+        "Octorate widget embedded directly (iframe/JS) instead of redirect on CTA click"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: source live availability and pricing from Octorate Octobook calendar/availability layer; guests must check availability for specific dates and guest counts on the Brikette site before handoff",
+        "operator-stated: guests choose between refundable and non-refundable rates before completing booking via Octorate",
+        "operator-stated: booking completion continues to use existing Octobook flow",
+        "funnel_step: availability_check; metric_name: booking_conversion_rate; baseline_value: unknown (no in-page availability today)"
+      ],
+      "created_at": "2026-02-27T15:00:00Z",
+      "queue_state": "auto_executed",
+      "dispatched_at": "2026-02-27T15:00:00Z",
+      "auto_executed_at": "2026-02-27T15:00:00Z",
+      "fact_find_slug": "brik-octorate-live-availability"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0044",
+      "mode": "trial",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "root_event_id": "operator:BRIK:STRATEGY:reception-rbac-migration-code:20260227",
+      "anchor_key": "reception-rbac-migration-code",
+      "cluster_key": "BRIK:STRATEGY:reception-rbac-migration-code:operator:20260227",
+      "cluster_fingerprint": "a1b2c3d4e5f60718293a4b5c6d7e8f04",
+      "lineage_depth": 0,
+      "area_anchor": "reception RBAC migration \u2014 3 username checks unmigrated to canAccess()",
+      "location_anchors": [
+        "apps/reception/src/hooks/mutations/useAllocateRoom.ts",
+        "apps/reception/src/components/checkins/DateSelector.tsx",
+        "apps/reception/src/components/checkins/docInsert/DOBSection.tsx",
+        "apps/reception/src/lib/roles.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "STRATEGY",
+      "current_truth": "An in-progress RBAC migration (15 uncommitted files) converts username-string access checks to canAccess()/isPrivileged() calls from apps/reception/src/lib/roles.ts. Three username checks remain unmigrated in production code: (1) useAllocateRoom.ts:105 \u2014 hardcoded allowlist [\"pete\", \"serena\"] used to gate room reallocation; (2) DateSelector.tsx:46 \u2014 isSerena defined as username?.toLowerCase() === \"serena\" to apply a restricted DayPicker calendar; (3) DOBSection.tsx:27-32 \u2014 ALLOWED_OVERRIDE_USERS constant (literal list: Pete, Serena, Allessandro, Cristiana) used to gate age-restriction override. These must be migrated to role-based checks before the in-progress batch can be committed and the migration considered complete.",
+      "next_scope_now": "Fact-find to complete the 3 remaining username-to-role migrations: (1) read roles.ts and the in-progress canAccess() call sites to understand what role/permission names already exist and which the 3 remaining checks should map to (e.g. isPrivileged(), MANAGEMENT_ACCESS, or a new OVERRIDE permission); (2) implement the migration for useAllocateRoom allowlist, DateSelector isSerena calendar restriction, and DOBSection ALLOWED_OVERRIDE_USERS; (3) audit all reception source files for any remaining username-string access checks (grep for === \"pete\", === \"serena\", === \"Pete\", ALLOWED_OVERRIDE); (4) confirm the full in-progress batch is internally consistent and ready to commit together.",
+      "adjacent_later": [
+        "Document role permission names in reception README or architecture doc",
+        "Add ESLint rule to ban username-string access checks"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: 3 username checks remain unmigrated \u2014 useAllocateRoom.ts, DateSelector.tsx, DOBSection.tsx",
+        "operator-stated: RBAC migration is ship-blocking; 15 files in progress but uncommitted"
+      ],
+      "created_at": "2026-02-27T16:00:00Z",
+      "queue_state": "auto_executed",
+      "dispatched_at": "2026-02-27T16:00:00Z",
+      "auto_executed_at": "2026-02-27T16:00:00Z",
+      "fact_find_slug": "reception-rbac-migration-code"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0045",
+      "mode": "trial",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "root_event_id": "operator:BRIK:STRATEGY:reception-rbac-pin-user-roles:20260227",
+      "anchor_key": "reception-rbac-pin-user-roles",
+      "cluster_key": "BRIK:STRATEGY:reception-rbac-pin-user-roles:operator:20260227",
+      "cluster_fingerprint": "f0e1d2c3b4a596877685a4b3c2d1e0f5",
+      "lineage_depth": 0,
+      "area_anchor": "reception RBAC data gap \u2014 PIN users in NEXT_PUBLIC_USERS_JSON have no roles",
+      "location_anchors": [
+        "apps/reception/src/utils/getUserByPin.ts",
+        "apps/reception/src/lib/roles.ts",
+        "apps/reception/.env.example"
+      ],
+      "provisional_deliverable_family": "config-change",
+      "domain": "STRATEGY",
+      "current_truth": "PIN-auth users in the reception app are loaded from NEXT_PUBLIC_USERS_JSON (getUserByPin.ts). All current entries in this env var have roles: None (or missing roles field). The RBAC migration replaces all username checks with canAccess()/isPrivileged() calls. Once migrated, PIN-auth users will have no roles and canAccess() returns false for all permission checks \u2014 silently locking all PIN-auth staff out of their usual features. Additionally, NEXT_PUBLIC_USERS_JSON is absent from .env.example, so the roles format is undocumented for new deployments.",
+      "next_scope_now": "Fact-find to resolve PIN user role assignment: (1) read roles.ts to enumerate all role names and what canAccess() permissions each role grants; (2) read NEXT_PUBLIC_USERS_JSON (from .env.local or deployment config) to list all PIN users by username; (3) determine the correct role assignment for each PIN user (owner, manager, staff, or equivalent); (4) produce updated NEXT_PUBLIC_USERS_JSON entries with roles populated; (5) add NEXT_PUBLIC_USERS_JSON with format documentation (including roles array) to apps/reception/.env.example.",
+      "adjacent_later": [
+        "Migrate roles from env var to Firebase userProfiles for Firebase-auth users",
+        "Add runtime validation that warns when a user has no roles after login"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.93,
+      "evidence_refs": [
+        "operator-stated: NEXT_PUBLIC_USERS_JSON PIN users have roles: None \u2014 will lose all access once canAccess() replaces username checks",
+        "operator-stated: NEXT_PUBLIC_USERS_JSON missing from .env.example \u2014 roles format undocumented"
+      ],
+      "created_at": "2026-02-27T16:00:00Z",
+      "queue_state": "auto_executed",
+      "dispatched_at": "2026-02-27T16:00:00Z",
+      "auto_executed_at": "2026-02-27T16:00:00Z",
+      "fact_find_slug": "reception-rbac-pin-user-roles"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0046",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:PRODUCTS:brik-room-content-schema:20260227",
+      "anchor_key": "brik-room-content-schema",
+      "cluster_key": "BRIK:PRODUCTS:brik-room-content-schema:operator:20260227",
+      "cluster_fingerprint": "c3d4e5f6a7b8091234567890cdef1234",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK room pages \u2014 content schema for key decision drivers",
+      "location_anchors": [
+        "apps/brikette/src/data/roomsData.ts",
+        "apps/brikette/src/app/[lang]/rooms/[id]/RoomDetailContent.tsx",
+        "apps/brikette/src/components/rooms/"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "PRODUCTS",
+      "current_truth": "Room detail pages exist at /rooms/[id] with roomsData.ts defining 11 room types. Each entry has imagesRaw (a flat, semantically unlabeled array of image paths), widgetRoomCode, widgetRateCodeNR/Flex, and basic metadata. RoomDetailContent.tsx renders: HeroSection \u2192 SocialProofSection \u2192 RoomCard \u2192 bed description \u2192 DirectBookingPerks \u2192 StickyBookNow CTA. There is no structured content schema enforcing presence of key decision-driver image categories (bed, bathroom, view, terrace, security/lockers). Optional features like terrace have no clean omission mechanism \u2014 their absence would produce empty sections or broken layout.",
+      "next_scope_now": "Fact-find to design a room content schema covering key decision drivers: (1) inventory all 11 room types in roomsData.ts \u2014 which features (terrace, sea view, locker/security) are present for which rooms, and which image slots are currently populated?; (2) inspect RoomDetailContent.tsx, RoomCard.tsx, and HeroSection.tsx \u2014 how is imagesRaw currently consumed and rendered?; (3) design a structured image schema (e.g. { bed, bathroom, view?, terrace?, security? }) where optional slots are cleanly omitted if absent \u2014 no empty sections, no placeholders, no broken layout; (4) assess what images exist in public/img/ that could be assigned to schema slots for each room; (5) determine resilient omission strategy \u2014 conditional render in RoomCard and gallery that silently skips absent feature slots; (6) produce a planning brief for roomsData.ts schema update and RoomDetailContent.tsx/RoomCard.tsx rendering changes.",
+      "adjacent_later": [
+        "Translate room content schema to apartment page (ApartmentPageContent.tsx uses separate GallerySection with 3 images \u2014 may benefit from same schema discipline)",
+        "Image optimisation pass once schema slots are populated (Next.js Image with explicit dimensions per slot)",
+        "Alt text strategy for each schema slot type (bed, bathroom, view, terrace, security)"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "operator-stated: room media must reliably cover the key decision drivers \u2014 bed(s), bathroom, view, terrace (if applicable), and security (e.g. keycard access, in-room lockers)",
+        "operator-stated: content schema must be resilient to missing features \u2014 if a feature is not available, it should be omitted cleanly with no empty sections, placeholders, or broken layout",
+        "operator-stated: guests must be able to review accurate room information and a complete image set before booking"
+      ],
+      "created_at": "2026-02-27T18:00:00Z",
+      "queue_state": "processed",
+      "dispatched_at": "2026-02-27T18:00:00Z",
+      "auto_executed_at": "2026-02-27T18:00:00Z",
+      "fact_find_slug": "brik-room-content-schema",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-02-27T00:00:00Z",
+        "fact_find_slug": "brik-room-content-schema",
+        "fact_find_path": "docs/plans/brik-room-content-schema/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0047",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:PRODUCTS:brik-room-octorate-live-pricing:20260227",
+      "anchor_key": "brik-room-octorate-live-pricing",
+      "cluster_key": "BRIK:PRODUCTS:brik-room-octorate-live-pricing:operator:20260227",
+      "cluster_fingerprint": "d4e5f6a7b8c9102345678901def23456",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK room pages \u2014 live pricing and availability from Octorate Octobook",
+      "location_anchors": [
+        "apps/brikette/src/utils/buildOctorateUrl.ts",
+        "apps/brikette/src/app/[lang]/rooms/[id]/RoomDetailContent.tsx",
+        "apps/brikette/src/data/roomsData.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "PRODUCTS",
+      "current_truth": "Room detail pages show no live pricing or availability before the user navigates away to book.octorate.com. buildOctorateUrl.ts constructs all booking URLs to the external Octorate domain. No date picker, guest count selector, or rate preview exists on the room page itself. Guests must click through to Octorate to see any pricing or availability information, creating an information gap before the booking decision point. RoomCard.tsx renders static room details only. The apartment booking page (ApartmentBookContent.tsx) uses hardcoded rate codes but also navigates to the external Octorate domain for completion.",
+      "next_scope_now": "Fact-find to assess live pricing and availability integration options for room pages: (1) research Octorate Octobook API \u2014 does Octorate expose a public or authenticated API for querying room availability and pricing by date range and guest count? Identify authentication method, endpoint structure, and rate/availability response format; (2) assess Octorate iFrame/embed option \u2014 does Octorate provide an embeddable booking widget that remains on the brikette.com domain without redirecting to book.octorate.com? Review 'custom page' option referenced in benchmark; (3) review existing buildOctorateUrl.ts and rate code structure in roomsData.ts (widgetRoomCode, widgetRateCodeNR, widgetRateCodeFlex) \u2014 how does the current URL construction map to Octorate's rate/room identifiers?; (4) define minimum viable on-page flow \u2014 date range picker + guest count selector \u2192 show available rate options (NR/flex with prices) \u2192 CTA to Octorate for booking completion; (5) assess integration architecture: server-side API route proxy vs client-side fetch for availability data, rate caching strategy; (6) produce a planning brief covering the Octorate API or embed integration approach, data flow design, and required UI changes to RoomDetailContent.tsx.",
+      "adjacent_later": [
+        "Rate parity display \u2014 show direct rate vs OTA rate comparison once live pricing is available",
+        "Availability calendar as a browse tool on the rooms listing page (not just per-room detail)",
+        "Rate caching strategy to avoid Octorate API rate limits during peak traffic"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: guests must be able to check availability and pricing for specific dates and guest counts before completing booking via Octorate",
+        "operator-stated: guests must be able to choose between refundable and non-refundable rates before booking handoff",
+        "operator-stated: booking completion should continue to use the existing Octobook booking flow/results as currently implemented",
+        "worldclass-scan-2026-02-27.md: gap \u2014 booking CTA routes to external book.octorate.com domain (minor-gap)"
+      ],
+      "created_at": "2026-02-27T18:00:00Z",
+      "queue_state": "processed",
+      "dispatched_at": "2026-02-27T18:00:00Z",
+      "auto_executed_at": "2026-02-27T18:00:00Z",
+      "fact_find_slug": "brik-room-octorate-live-pricing",
+      "fact_find_path": "docs/plans/brik-room-octorate-live-pricing/fact-find.md",
+      "processed_at": "2026-02-27T20:00:00Z",
+      "route": "dispatch-routed"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0048",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:PRODUCTS:brik-reception-user-provisioning:20260227",
+      "anchor_key": "brik-reception-user-provisioning",
+      "cluster_key": "BRIK:PRODUCTS:brik-reception-user-provisioning:operator:20260227",
+      "cluster_fingerprint": "a1b2c3d4e5f607891234567890abcdef",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK reception auth \u2014 no account provisioning, first-login password setup missing",
+      "location_anchors": [
+        "apps/reception/src/app/login/Login.tsx",
+        "apps/reception/src/types/domains/userDomain.ts",
+        "apps/reception/database.rules.json"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "PRODUCTS",
+      "current_truth": "New reception staff accounts cannot be created from within the app. Firebase Auth accounts must be manually provisioned via the Firebase console or Auth export/import CLI. Roles must then be manually written to Firebase Realtime DB userProfiles/{uid} by an admin. There is no in-app account creation flow. Users with no Firebase Auth account (e.g. Serena, Alessandro) cannot log in at all. The current login flow (Login.tsx) uses Firebase onAuthStateChanged and email/password sign-in \u2014 it assumes accounts already exist.",
+      "next_scope_now": "Fact-find to assess reception user provisioning options: (1) review current login flow in Login.tsx \u2014 what Firebase Auth methods are called, what error states are handled, whether any account-creation path exists; (2) assess Firebase Auth invite-by-email flow \u2014 does Firebase Auth support pre-creating accounts that require password setup on first login (e.g. createUserWithEmailAndPassword + sendPasswordResetEmail, or ActionCode-based invite link); (3) review database.rules.json write rules for userProfiles \u2014 what role is required to create a new profile entry for another user; (4) define minimum viable provisioning flow: admin enters email + role in-app \u2192 account created in Firebase Auth \u2192 invite/password-setup email sent \u2192 first login triggers password creation \u2192 profile written to userProfiles/{uid} with correct role; (5) assess whether role assignment should happen at account creation time (admin sets it) or at first login; (6) identify any admin UI surface needed in the reception app for this flow.",
+      "adjacent_later": [
+        "Account deactivation \u2014 ability to revoke access without deleting Auth account",
+        "Role editing \u2014 in-app UI to update existing staff roles without Firebase console access",
+        "Shift-PIN login path \u2014 wiring getUserByPin into an alternative quick-auth flow for shift handoffs"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: accounts can be pre-created for reception users; first login allows password creation; users cannot log in without setting a password first",
+        "session-evidence: Serena (sery399@gmail.com) and Alessandro (ponticorvoalessandro@gmail.com) have no Firebase Auth accounts \u2014 required manual Firebase console workaround this session",
+        "session-evidence: roles must currently be set manually via firebase CLI after first login \u2014 no in-app provisioning flow exists"
+      ],
+      "created_at": "2026-02-27T20:30:00Z",
+      "queue_state": "auto_executed",
+      "dispatched_at": "2026-02-27T20:30:00Z",
+      "auto_executed_at": "2026-02-27T20:30:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0049",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:process-improvements-transitions:20260227",
+      "anchor_key": "process-improvements-transitions",
+      "cluster_key": "BOS:BOS:process-improvements-transitions:operator:20260227",
+      "cluster_fingerprint": "a3f1c9d2e7b504123456789abcdef012",
+      "lineage_depth": 0,
+      "area_anchor": "BOS process-improvements report \u2014 no item entry/exit transitions",
+      "location_anchors": [
+        "scripts/src/startup-loop/generate-process-improvements.ts",
+        "docs/business-os/process-improvements.user.html"
+      ],
+      "domain": "BOS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "evidence_refs": [
+        "operator-stated: add cool transitions when items enter or leave the process-improvements report"
+      ],
+      "created_at": "2026-02-27T20:45:00Z",
+      "updated_at": "2026-02-27T20:45:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0050",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:Platform:reception-agreement-no-firebase-write:20260227",
+      "anchor_key": "reception-agreement-no-firebase-write",
+      "cluster_key": "BRIK:Platform:reception-agreement-no-firebase-write:operator:20260227",
+      "cluster_fingerprint": "f4a2b1c3d5e7091234567890abcdef78",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK reception WEAK-B1 \u2014 agreement reply not writing code 21 to Firebase",
+      "location_anchors": [
+        "packages/mcp-server/src/tools/gmail.ts",
+        "apps/reception/src/hooks/mutations/useActivitiesMutations.ts"
+      ],
+      "domain": "Platform",
+      "status": "briefing_ready",
+      "recommended_route": "lp-do-briefing",
+      "queue_state": "auto_executed",
+      "evidence_refs": [
+        "operator-stated: T&C agreement reply marks email agreement_received in Gmail but writes nothing to Firebase \u2014 booking can auto-cancel despite guest agreeing",
+        "fact-find: docs/plans/reception-email-activity-control-audit/fact-find.md \u2014 WEAK-B1 (CRITICAL)"
+      ],
+      "processed_by": {
+        "route": "auto-executed-via-lp-do-plan",
+        "fact_find_path": "docs/plans/reception-email-activity-control-audit/fact-find.md",
+        "processed_at": "2026-02-27T21:00:00Z"
+      },
+      "created_at": "2026-02-27T21:00:00Z",
+      "updated_at": "2026-02-27T21:00:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0051",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:Platform:reception-activitiesByCode-fanout-missing:20260227",
+      "anchor_key": "reception-activitiesByCode-fanout-missing",
+      "cluster_key": "BRIK:Platform:reception-activitiesByCode-fanout-missing:operator:20260227",
+      "cluster_fingerprint": "c9d7e5f3a1b204123456789012cdef34",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK reception WEAK-C1 \u2014 processCancellationEmail missing activitiesByCode fanout",
+      "location_anchors": [
+        "packages/mcp-server/src/tools/process-cancellation-email.ts"
+      ],
+      "domain": "Platform",
+      "status": "briefing_ready",
+      "recommended_route": "lp-do-briefing",
+      "queue_state": "auto_executed",
+      "evidence_refs": [
+        "operator-stated: processCancellationEmail writes code 22 to /activities/ only \u2014 missing /activitiesByCode/ fanout, future queries on cancellation codes find nothing",
+        "fact-find: docs/plans/reception-email-activity-control-audit/fact-find.md \u2014 WEAK-C1 (HIGH)"
+      ],
+      "processed_by": {
+        "route": "auto-executed-via-lp-do-plan",
+        "fact_find_path": "docs/plans/reception-email-activity-control-audit/fact-find.md",
+        "processed_at": "2026-02-27T21:00:00Z"
+      },
+      "created_at": "2026-02-27T21:00:00Z",
+      "updated_at": "2026-02-27T21:00:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0052",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:Platform:reception-codes-2-3-4-silent-fire:20260227",
+      "anchor_key": "reception-codes-2-3-4-silent-fire",
+      "cluster_key": "BRIK:Platform:reception-codes-2-3-4-silent-fire:operator:20260227",
+      "cluster_fingerprint": "e8f6a4b2c0d103234567890123abcd56",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK reception WEAK-A1 \u2014 codes 2/3/4 trigger activity with no email template",
+      "location_anchors": [
+        "apps/reception/src/hooks/mutations/useActivitiesMutations.ts",
+        "packages/mcp-server/src/tools/guest-email-activity.ts"
+      ],
+      "domain": "Platform",
+      "status": "briefing_ready",
+      "recommended_route": "lp-do-briefing",
+      "queue_state": "auto_executed",
+      "evidence_refs": [
+        "operator-stated: codes 2/3/4 (T&C reminders and auto-cancel) trigger silently with no UI feedback to staff and no email sent to guest",
+        "fact-find: docs/plans/reception-email-activity-control-audit/fact-find.md \u2014 WEAK-A1 (HIGH)"
+      ],
+      "processed_by": {
+        "route": "auto-executed-via-lp-do-plan",
+        "fact_find_path": "docs/plans/reception-email-activity-control-audit/fact-find.md",
+        "processed_at": "2026-02-27T21:00:00Z"
+      },
+      "created_at": "2026-02-27T21:00:00Z",
+      "updated_at": "2026-02-27T21:00:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0053",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:Platform:reception-code22-no-guest-email:20260227",
+      "anchor_key": "reception-code22-no-guest-email",
+      "cluster_key": "BRIK:Platform:reception-code22-no-guest-email:operator:20260227",
+      "cluster_fingerprint": "b5c3d1e9f7a206345678901234cdef78",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK reception WEAK-A2 \u2014 Octorate cancellation code 22 produces no guest email",
+      "location_anchors": [
+        "packages/mcp-server/src/tools/process-cancellation-email.ts",
+        "apps/reception/src/hooks/mutations/useActivitiesMutations.ts"
+      ],
+      "domain": "Platform",
+      "status": "briefing_ready",
+      "recommended_route": "lp-do-briefing",
+      "queue_state": "auto_executed",
+      "evidence_refs": [
+        "operator-stated: Octorate cancellation email triggers code 22 in Firebase but no guest cancellation email is drafted automatically \u2014 staff must manually log code 27",
+        "fact-find: docs/plans/reception-email-activity-control-audit/fact-find.md \u2014 WEAK-A2 (HIGH)"
+      ],
+      "processed_by": {
+        "route": "auto-executed-via-lp-do-plan",
+        "fact_find_path": "docs/plans/reception-email-activity-control-audit/fact-find.md",
+        "processed_at": "2026-02-27T21:00:00Z"
+      },
+      "created_at": "2026-02-27T21:00:00Z",
+      "updated_at": "2026-02-27T21:00:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0054",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:STRATEGY:startup-loop-build-reflection-gate:20260227",
+      "anchor_key": "startup-loop-build-reflection-gate",
+      "cluster_key": "BOS:STRATEGY:startup-loop-build-reflection-gate:operator:20260227",
+      "cluster_fingerprint": "f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+      "lineage_depth": 0,
+      "area_anchor": "Startup loop build reflection gate \u2014 no structured post-build step captures reuse patterns for loop or skill improvement",
+      "location_anchors": [
+        ".claude/skills/lp-do-build/SKILL.md",
+        "docs/agents/feature-workflow-guide.md",
+        "CLAUDE.md",
+        "AGENTS.md"
+      ],
+      "provisional_deliverable_family": "skill-update+loop-change",
+      "domain": "STRATEGY",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P3",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: every build is an opportunity to identify what could be done more easily next time \u2014 e.g. ensure API access or agent access is set up, not rediscovered mid-task",
+        "operator-stated: deterministic patterns should be folded into the startup loop; ad-hoc/non-deterministic patterns should become new tool-* skills"
+      ],
+      "current_truth": "The startup loop has no structured post-build reflection step. When a task or feature is completed, learnings \u2014 such as needing API access configured upfront, repeated ad-hoc data-source discoveries, or steps that could be systematised \u2014 are not captured. There is no mechanism to route deterministic patterns back into the startup loop stages, nor to trigger new tool-* skill creation for ad-hoc patterns.",
+      "next_scope_now": "Fact-find to determine: (1) where in the post-build/stage lifecycle a reflection gate should sit and what triggers it; (2) what the gate should produce \u2014 e.g. a lightweight reflection artifact with fields for data-source access gaps, repeated ad-hoc steps, and improvement opportunities; (3) routing logic: how deterministic patterns are identified and folded back into an existing loop stage or skill; (4) routing logic: criteria and process for promoting an ad-hoc pattern to a new tool-* skill; (5) data-source/API access as a canonical worked example: where does pre-flight access verification live, which loop stage owns it, and how is it recorded; (6) produce a planning brief with concrete tasks.",
+      "adjacent_later": [
+        "Retrospective sweep of completed builds to seed reflection patterns from existing work",
+        "Integration with lp-weekly to surface accumulated reflection patterns in the weekly review"
+      ],
+      "created_at": "2026-02-27T22:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "startup-loop-build-reflection-gate",
+        "fact_find_path": "docs/plans/startup-loop-build-reflection-gate/fact-find.md",
+        "processed_at": "2026-02-27T22:00:00Z",
+        "route": "auto-executed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0055",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:STRATEGY:tool-skill-discovery-protocol:20260227",
+      "anchor_key": "tool-skill-discovery-protocol",
+      "cluster_key": "BOS:STRATEGY:tool-skill-discovery-protocol:operator:20260227",
+      "cluster_fingerprint": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+      "lineage_depth": 0,
+      "area_anchor": "Tool skill discovery protocol \u2014 no standard for creating or token-efficiently surfacing tool-* skills to future agents",
+      "location_anchors": [
+        ".claude/skills/tool-process-audit/SKILL.md",
+        ".claude/skills/",
+        "CLAUDE.md",
+        "AGENTS.md"
+      ],
+      "provisional_deliverable_family": "skill-standard+docs-change",
+      "domain": "STRATEGY",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P3",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: tool-* skills need to be understood by future agents \u2014 where to find them and when to use them, with discovery being extremely token-efficient",
+        "operator-stated: ad-hoc processes that cannot be made deterministic should become tool-* skills",
+        "repo-observation: only one tool-* skill exists (tool-process-audit); no index, no naming spec, no required metadata format"
+      ],
+      "current_truth": "Only one tool-* skill exists (tool-process-audit). There is no naming convention spec, no required metadata format for tool-* SKILL.md files, no lightweight index or manifest where agents can efficiently discover available tools, and no guidance in CLAUDE.md or AGENTS.md on when or how to find tool-* skills. Discovery currently requires scanning the skills directory \u2014 expensive if done naively in a large monorepo context.",
+      "next_scope_now": "Fact-find to determine: (1) what metadata a tool-* skill SKILL.md must contain for token-efficient agent discovery (1-line purpose, trigger conditions, input/output contract, example invocation); (2) whether a lightweight tools-index.md or similar manifest should be maintained for fast lookup without directory scanning; (3) how CLAUDE.md/AGENTS.md should point agents to this index so it is consulted without re-scanning; (4) naming and location conventions for tool-* skills; (5) how to distinguish a skill that belongs in the startup loop from one that belongs in tool-* (decision criteria); (6) produce a planning brief with concrete tasks.",
+      "adjacent_later": [
+        "Backfill index entry for tool-process-audit once standard is defined",
+        "Integrate tool-* skill creation as a concrete output option from the startup loop build reflection gate"
+      ],
+      "created_at": "2026-02-27T22:00:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "tool-skill-discovery-protocol",
+        "fact_find_path": "docs/plans/tool-skill-discovery-protocol/fact-find.md",
+        "processed_at": "2026-02-27T22:00:00Z",
+        "route": "auto-executed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0056",
+      "trigger": "operator_idea",
+      "business": "PLAT",
+      "area_anchor": "UI design tool chain \u2014 no cohesive pipeline, lp-do-plan to lp-do-build",
+      "domain": "BOS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P3",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: seven UI design tools (lp-design-spec, tools-ui-frontend-design, tools-design-system, lp-design-qa, tools-ui-contrast-sweep, tools-ui-breakpoint-sweep, tools-refactor) lack defined handoff protocol, stale cross-references, and no end-to-end pipeline from lp-do-plan through design, build, and QA to refactor",
+        "repo-observation: SKILL.md files contain stale cross-references using old names (lp-design-system, lp-refactor) instead of current names (tools-design-system, tools-refactor)",
+        "repo-observation: lp-design-qa, tools-ui-contrast-sweep, tools-ui-breakpoint-sweep have no Integration section linking them as sequential pipeline stages",
+        "adjacent-plan: lp-responsive-qa-skill fact-find (Ready-for-planning) covers responsive QA skill spec \u2014 coordinate before touching tools-ui-breakpoint-sweep scope"
+      ],
+      "current_truth": "Seven UI design skills exist but operate as disconnected units. lp-design-spec \u2192 tools-ui-frontend-design \u2192 lp-design-qa \u2192 browser sweeps \u2192 tools-refactor is the intended pipeline but no skill declares its upstream trigger or downstream handoff. SKILL.md files contain stale cross-references. There is no defined intake contract for accepting a lp-do-plan IMPLEMENT task as the pipeline entry point. tools-refactor has no stated entry criteria from QA output.",
+      "next_scope_now": "Fact-find to determine: (1) what handoff artifacts each tool must produce for the next stage; (2) changes needed to each SKILL.md to declare upstream trigger and downstream handoff; (3) stale name references to fix across all seven SKILL.md files; (4) how lp-do-plan IMPLEMENT tasks flagged Design-Spec-Required trigger the pipeline entry; (5) produce a planning brief with tasks ordered to avoid conflict with lp-responsive-qa-skill.",
+      "adjacent_later": [
+        "End-to-end pilot: simulate a lp-do-plan output and run all 7 tools in sequence",
+        "Coordinate with lp-responsive-qa-skill plan once it is built"
+      ],
+      "created_at": "2026-02-27T23:30:00Z",
+      "queue_state": "auto_executed"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0057",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "root_event_id": "operator:BRIK:LOGISTICS:alloggiati-jsonp-timeout:20260227",
+      "anchor_key": "alloggiati-jsonp-timeout",
+      "cluster_key": "BRIK:LOGISTICS:alloggiati-jsonp-timeout:operator:20260227",
+      "cluster_fingerprint": "a3f2b1c4d5e6f7a8b9c0d1e2f3a4b5c6",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK Alloggiati JSONP \u2014 government submission promise hangs indefinitely, no timeout",
+      "location_anchors": [
+        "apps/reception/src/services/alloggiatiService.ts"
+      ],
+      "provisional_deliverable_family": "bug-fix",
+      "domain": "LOGISTICS",
+      "current_truth": "alloggiatiService.ts submits mandatory Italian guest registration (Alloggiati Web) via JSONP. script.onerror is handled, but if the JSONP callback never fires (e.g. changed response format, network stall), the returned Promise hangs indefinitely. There is no AbortController, no setTimeout wrapper, and no timeout-based rejection. A government submission can silently stall with no operator notification and no retry trigger.",
+      "next_scope_now": "Fact-find to scope a targeted fix: (1) read alloggiatiService.ts in full to understand the JSONP Promise construction and cleanup path; (2) determine the appropriate timeout duration; (3) design a timeout-wrapped Promise that rejects after N seconds and triggers an error notification; (4) confirm script tag cleanup is guaranteed on timeout to avoid memory leak; (5) produce a focused plan with one task: add timeout to the JSONP Promise.",
+      "adjacent_later": [
+        "Consider replacing JSONP with a server-side proxy route using fetch() with AbortSignal for more reliable timeout and retry semantics",
+        "Add a submission status audit trail to detect silently-missed submissions across prior days"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "operator-stated: alloggiatiService.ts:48 \u2014 script.onerror handled but JSONP callback-never-fires path has no timeout, Promise hangs indefinitely",
+        "operator-stated: risk_vector=compliance \u2014 Italian law requires Alloggiati Web submission within 24h of guest check-in; silent stall means missed legal obligation",
+        "code-observation: no AbortController, setTimeout wrapper, or rejection path triggered by elapsed time in alloggiatiService.ts JSONP construction"
+      ],
+      "risk_vector": "compliance",
+      "created_at": "2026-02-27T23:35:00Z",
+      "queue_state": "auto_executed"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0058",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "area_anchor": "Reception offline sync \u2014 write queue bypass, no idempotency, no cache, no auth fallback",
+      "location_anchors": [
+        "apps/reception/src/services/receptionDb.ts",
+        "apps/reception/src/services/syncManager.ts",
+        "apps/reception/src/hooks/useOfflineSync.ts",
+        "apps/reception/src/hooks/mutations/useActivitiesMutations.ts",
+        "apps/reception/src/hooks/mutations/useChangeBookingDatesMutator.ts",
+        "apps/reception/src/hooks/mutations/useBookingMutations.ts",
+        "apps/reception/src/context/firebaseAuth.ts",
+        "apps/reception/src/context/AuthContext.tsx"
+      ],
+      "provisional_deliverable_family": "feature+infra",
+      "domain": "LOGISTICS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "confidence": 0.93,
+      "evidence_refs": [
+        "operator-stated: useActivitiesMutations.ts, useChangeBookingDatesMutator.ts, useBookingMutations.ts write directly to Firebase \u2014 no queue-first path through existing receptionDb.ts + syncManager.ts + useOfflineSync.ts primitives",
+        "operator-stated: no idempotency keys or deterministic client IDs for create operations \u2014 retries duplicate writes",
+        "operator-stated: multi-path update(ref(database), updates) pattern not representable in current IndexedDB queue \u2014 atomic cross-path writes cannot be deferred safely",
+        "operator-stated: no conflict policy per domain \u2014 last-write-wins unsafe for financial amounts",
+        "operator-stated: no read-through cache for critical views \u2014 staff cannot work from last-known data when offline",
+        "operator-stated: no sync status UI showing pending/failed/retry write queue state or operator recovery actions",
+        "operator-stated: firebaseAuth.ts + AuthContext.tsx \u2014 profile fetch failure returns null, drops staff to unauthenticated mid-session",
+        "repo-observation: app shell offline support exists (sw.js, offline.html, ServiceWorkerRegistration.tsx, OfflineIndicator.tsx) but mutation paths do not route through IndexedDB queue"
+      ],
+      "current_truth": "The reception app has offline infrastructure stubs: a service worker + offline page + banner exists, and IndexedDB queue/caching primitives (receptionDb.ts, syncManager.ts, useOfflineSync.ts) exist. However, all mutation paths (activities, bookings, date changes, financial transactions, loans) write directly to Firebase/Realtime DB without routing through the queue. Offline writes are silently lost. No idempotency key scheme exists for create operations. Multi-path Firebase atomics (update(ref(database), updates)) cannot be queued in the current schema. Auth can drop staff to unauthenticated when a profile fetch fails during network interruption. No read-through cache exists for critical views and no sync queue status is surfaced in the UI.",
+      "next_scope_now": "Fact-find: (1) audit receptionDb.ts, syncManager.ts, useOfflineSync.ts to understand current queue schema, sync trigger mechanisms, and gaps; (2) identify all mutation hooks that bypass the queue with call-site inventory; (3) design offline-aware mutation gateway interface \u2014 queue-first, sync-on-resume; (4) determine idempotency key scheme for create operations (deterministic client IDs); (5) assess how multi-path Firebase update() atomics can be serialized in IndexedDB without losing atomicity guarantees; (6) define read-through cache strategy for critical views (bookings, guests, rooms); (7) define per-domain conflict policy options (last-write-wins acceptable for activity flags, not for financial amounts); (8) scope sync status UI requirements (pending count, failed items, retry controls, recovery actions); (9) scope auth/profile fallback (cache profile on login, serve from cache when fetch fails, maintain session); (10) produce a phased, sequenced plan.",
+      "adjacent_later": [
+        "Background sync via Service Worker Background Sync API as a progressive enhancement over IndexedDB-triggered sync",
+        "Conflict resolution dashboard for manager review of diverged financial records",
+        "Automated test harness for offline-then-sync round-trips"
+      ],
+      "created_at": "2026-02-27T23:50:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "fact_find_slug": "reception-offline-sync",
+        "fact_find_path": "docs/plans/reception-offline-sync/fact-find.md",
+        "processed_at": "2026-02-27T23:50:00Z",
+        "route": "auto-executed"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "mode": "trial",
+      "dispatch_id": "IDEA-DISPATCH-20260227-0060",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "root_event_id": "operator:BRIK:SELL:sticky-book-now-room-context:20260227",
+      "anchor_key": "sticky-book-now-room-context",
+      "cluster_key": "BRIK:SELL:sticky-book-now-room-context:operator:20260227",
+      "area_anchor": "BRIK Room-Level Booking Funnel \u2014 StickyBookNow loses room context on detail pages",
+      "location_anchors": [
+        "packages/ui/src/organisms/StickyBookNow.tsx",
+        "apps/brikette/src/app/[lang]/rooms/[id]/RoomDetailContent.tsx",
+        "apps/brikette/src/utils/buildOctorateUrl.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P3",
+      "confidence": 0.93,
+      "current_truth": "StickyBookNow builds its deep link to calendar.xhtml with only codice, checkin, checkout, pax \u2014 no room rate code. When a guest dismisses the calendar and then clicks StickyBookNow on a room detail page, Octorate opens the generic calendar and the guest must re-select the room. buildOctorateUrl in apps/brikette/src/utils/buildOctorateUrl.ts already constructs result.xhtml links with room and codice params, and RoomCard uses it correctly. RoomDetailContent.tsx renders StickyBookNow but passes no room rate code prop. StickyBookNow has no prop to receive an external URL or rate code.",
+      "next_scope_now": "Fact-find: (1) read StickyBookNow.tsx in full to understand deepLink memo, props interface, and click handler; (2) read RoomDetailContent.tsx to understand what room data is available at render time (roomSku, rateCodes); (3) read buildOctorateUrl.ts to confirm the result.xhtml interface (octorateRateCode, bookingCode, plan); (4) design the minimal prop addition \u2014 an optional octorateUrl prop on StickyBookNow that replaces the internally-built calendar.xhtml link when provided; (5) determine which rate plan to use by default (NR = direct.nr), and whether pax/date params from URL should still be applied; (6) scope the change: StickyBookNow prop, RoomDetailContent call-site, no changes to existing GA4 click handler interface; (7) produce a focused plan with ~2 tasks: add prop to component + wire it from RoomDetailContent.",
+      "adjacent_later": [
+        "Extend to also pass checkin/checkout from room-detail date picker state when available",
+        "Add GA4 begin_checkout context to include room rate plan (NR vs flex) from StickyBookNow click"
+      ],
+      "evidence_refs": [
+        "operator-stated: StickyBookNow on room detail pages links to calendar.xhtml \u2014 room context lost at handoff",
+        "operator-stated: fix should pass room rate code and route to result.xhtml",
+        "code-observation: StickyBookNow.tsx:125-135 \u2014 deepLink hardcoded to calendar.xhtml; no rate code param",
+        "code-observation: buildOctorateUrl.ts:90 \u2014 result.xhtml builder already available with room + codice params",
+        "code-observation: RoomDetailContent.tsx renders <StickyBookNow lang={lang} onStickyCheckoutClick={...}> \u2014 no room prop passed"
+      ],
+      "funnel_step": "room_detail_sticky_cta",
+      "created_at": "2026-02-27T23:58:00Z",
+      "queue_state": "auto_executed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-02-27T23:59:00Z",
+        "fact_find_slug": "brik-sticky-book-now-room-context",
+        "fact_find_path": "docs/plans/brik-sticky-book-now-room-context/fact-find.md"
+      }
+    }
+  ]
+}

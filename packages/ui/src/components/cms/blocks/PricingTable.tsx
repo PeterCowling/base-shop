@@ -56,7 +56,7 @@ export default function PricingTable({
               "mt-6 inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium", // i18n-exempt -- DS-1023: class names [ttl=2026-12-31]
               "bg-primary text-primary-foreground hover:bg-primary/90", // i18n-exempt -- DS-1023: class names [ttl=2026-12-31]
               // Ensure minimum tap target size
-              "self-start min-h-10 min-w-10" // i18n-exempt -- DS-1023: class names [ttl=2026-12-31]
+              "self-start min-h-11 min-w-11" // i18n-exempt -- DS-1023: class names [ttl=2026-12-31]
             )}
           >
             {plan.ctaLabel}

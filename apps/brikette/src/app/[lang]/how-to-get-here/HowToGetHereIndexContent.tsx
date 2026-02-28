@@ -9,6 +9,7 @@ import dynamic from "next/dynamic";
 
 import { Section } from "@acme/design-system/atoms";
 
+import ContentStickyCta from "@/components/cta/ContentStickyCta";
 import { isGuideLive } from "@/data/guides.index";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
@@ -382,6 +383,8 @@ function HowToGetHereIndexContent({ lang, initialFilters, basePath }: Props) {
         filtersHelper={content.filtersHelper}
         filters={filtersState}
       />
+
+      <ContentStickyCta lang={lang} ctaLocation="how_to_get_here" />
     </div>
   );
 }

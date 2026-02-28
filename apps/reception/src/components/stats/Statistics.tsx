@@ -5,6 +5,8 @@ import React, { useCallback, useState } from "react";
 
 import { Button } from "@acme/design-system/atoms";
 
+import { PageShell } from "../common/PageShell";
+
 /**
  * Statistics component provides a button to test connection
  * to the Google Apps Script endpoint with a fixed booking reference.
@@ -36,22 +38,23 @@ const Statistics: React.FC = () => {
   }, []);
 
   return (
-    <div className="p-6 text-center bg-surface-2 rounded border border-border">
-      <h2 className="text-2xl font-semibold mb-2">Connection Test</h2>
-      <p className="text-foreground mb-4">
-        {message ||
-          "Press the button to test connection to the Google Apps Script endpoint with bookingRef 4382244000."}
-      </p>
-      <Button
-        type="button"
-        color="primary"
-        tone="solid"
-        onClick={handleTestConnection}
-        disabled={loading}
-      >
-        {loading ? "Testing..." : "Test Connection"}
-      </Button>
-    </div>
+    <PageShell title="Connection Test">
+      <div className="bg-surface rounded-lg shadow-lg p-6 text-center">
+        <p className="text-foreground mb-4">
+          {message ||
+            "Press the button to test connection to the Google Apps Script endpoint with bookingRef 4382244000."}
+        </p>
+        <Button
+          type="button"
+          color="primary"
+          tone="solid"
+          onClick={handleTestConnection}
+          disabled={loading}
+        >
+          {loading ? "Testing..." : "Test Connection"}
+        </Button>
+      </div>
+    </PageShell>
   );
 };
 

@@ -36,12 +36,12 @@ describe("BagStoragePage", () => {
 
     render(<BagStoragePage />);
     fireEvent.change(screen.getByLabelText("Pickup window"), {
-      target: { value: "16:00-18:00" },
+      target: { value: "09:00 \u2013 09:30" },
     });
     fireEvent.change(screen.getByLabelText("Note (optional)"), {
       target: { value: "Will collect before dinner." },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Request bag drop" }));
+    fireEvent.submit(screen.getByRole("button", { name: "Request bag drop" }).closest("form")!);
 
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledWith(
@@ -51,7 +51,7 @@ describe("BagStoragePage", () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             token: "token-1",
-            pickupWindow: "16:00-18:00",
+            pickupWindow: "09:00 \u2013 09:30",
             note: "Will collect before dinner.",
           }),
         }),

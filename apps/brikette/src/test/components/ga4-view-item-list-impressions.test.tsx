@@ -66,7 +66,7 @@ jest.mock("next/navigation", () => ({
 
 const { ModalContext } = require("@acme/ui/context/ModalContext");
 const { resetImpressionDedupe } = require("../../utils/ga4-events");
-const RoomsPageContent = require("../../app/[lang]/rooms/RoomsPageContent").default;
+const RoomsPageContent = require("../../app/[lang]/dorms/RoomsPageContent").default;
 const BookPageContent = require("../../app/[lang]/book/BookPageContent").default;
 const HomeContent = require("../../app/[lang]/HomeContent").default;
 const DealsPageContent = require("../../app/[lang]/deals/DealsPageContent").default;

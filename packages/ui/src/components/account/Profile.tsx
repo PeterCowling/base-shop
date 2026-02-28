@@ -67,7 +67,7 @@ export default async function ProfilePage({
             <div className="mt-4">
               <Link
                 href={ACCOUNT_CHANGE_PASSWORD_PATH}
-                className="text-sm underline inline-block min-h-10 min-w-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className="text-sm underline inline-block min-h-11 min-w-11 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 {t("account.profile.changePassword")}
               </Link>

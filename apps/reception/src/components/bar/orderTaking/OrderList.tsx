@@ -3,7 +3,6 @@
 import React, { type FC, useCallback, useState } from "react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
-import { Button } from "@acme/design-system/atoms";
 import { Cluster } from "@acme/design-system/primitives";
 
 import { type AggregatedOrder } from "../../../types/bar/BarTypes";
@@ -63,7 +62,7 @@ const OrderList: FC<OrderListProps> = React.memo(
                   <TableRow
                     key={o.product}
                     onClick={makeRowHandler(o.product)}
-                    className="group cursor-pointer bg-surface hover:bg-info-main/10 motion-safe:transition-colors"
+                    className="group cursor-pointer bg-surface hover:bg-primary-soft motion-safe:transition-colors"
                   >
                     <TableCell className="whitespace-pre-wrap px-4 py-2">
                       {o.count > 1 ? `${o.count}× ${o.product}` : o.product}
@@ -87,29 +86,22 @@ const OrderList: FC<OrderListProps> = React.memo(
           )}
 
           {/* ─────── Action buttons ─────── */}
-          <div className="space-y-3 bg-gradient-to-t from-surface-2 via-surface/90 to-transparent p-4">
-            <Button
+          <div className="space-y-2 border-t border-border-2 bg-surface-2 p-4">
+            <button
               type="button"
               disabled={!orders.length}
               onClick={() => setShowPayModal(true)}
-              color="success"
-              tone="solid"
-              size="sm"
-              className="w-full"
+              className="w-full min-h-14 rounded-lg bg-primary-main/100 px-4 py-3 text-lg font-bold text-primary-fg/100 transition-all duration-150 hover:opacity-90 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
             >
               Pay
-            </Button>
-
-            <Button
+            </button>
+            <button
               type="button"
               onClick={onClearAll}
-              color="danger"
-              tone="solid"
-              size="sm"
-              className="w-full"
+              className="w-full min-h-10 rounded-lg border-2 border-danger/100 px-4 py-2 text-sm font-semibold text-danger/100 transition-all duration-150 hover:bg-danger/10 active:scale-95"
             >
-              Clear&nbsp;All
-            </Button>
+              Clear All
+            </button>
           </div>
         </section>
 

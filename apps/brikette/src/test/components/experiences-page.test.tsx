@@ -216,7 +216,8 @@ describe("<ExperiencesPageContent />", () => {
       screen.getByRole("heading", { name: /sunsets, slow mornings/i })
     ).toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: /book now/i }));
+    // Book button is rendered as <a href> via Button asChild; role is "link"
+    await user.click(screen.getByRole("link", { name: /book now/i }));
     expect(mockPush).toHaveBeenCalledWith("/en/book");
 
     await user.click(screen.getByRole("button", { name: /chat with the concierge/i }));

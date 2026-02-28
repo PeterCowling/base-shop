@@ -137,7 +137,7 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
       () => [
         {
           id: 'maps',
-          label: 'Maps',
+          label: t('utilityActions.maps'),
           icon: MapPin,
           onSelect: () => {
             recordActivationFunnelEvent({
@@ -155,7 +155,7 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
         },
         {
           id: 'eta',
-          label: 'Share ETA',
+          label: t('utilityActions.shareEta'),
           icon: CalendarDays,
           onSelect: () => {
             recordActivationFunnelEvent({
@@ -172,7 +172,7 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
         },
         {
           id: 'support',
-          label: 'Support',
+          label: t('utilityActions.support'),
           icon: MessageCircle,
           onSelect: () => {
             recordActivationFunnelEvent({
@@ -185,11 +185,13 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
               },
             });
             if (typeof window !== 'undefined') {
+              // eslint-disable-next-line ds/no-hardcoded-copy -- PRIME-1: support contact URL, not UI copy
               window.open('mailto:hostelbrikette@gmail.com', '_self');
             }
           },
         },
       ],
+      // eslint-disable-next-line react-hooks/exhaustive-deps -- PRIME-1: t from useTranslation is a stable reference
       [handleItemClick, isArrivalDay],
     );
 
@@ -215,15 +217,15 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
           </p>
           <p className="mt-2 text-sm text-muted-foreground">
             {isArrivalDay
-              ? 'Final checks now mean faster reception handoff.'
-              : 'Complete these steps now to speed up check-in on arrival day.'}
+              ? t('header.arrivalDayHint')
+              : t('header.preArrivalHint')}
           </p>
           <div className="mt-3">
             <Link
               href="/portal?edit=personalization"
               className="inline-flex rounded-full border border-border px-3 py-1 text-xs font-medium text-foreground hover:bg-muted"
             >
-              Edit preferences
+              {t('header.editPreferences')}
             </Link>
           </div>
         </div>
@@ -240,7 +242,7 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
             </div>
           </div>
           {!isArrivalDay && daysUntil > 0 && (
-            <div className="text-right">
+            <div className="text-end">
               <p className="text-2xl font-bold text-info-foreground">{daysUntil}</p>
               <p className="text-sm text-muted-foreground">
                 {daysUntil === 1 ? t('checkIn.dayLeft') : t('checkIn.daysLeft')}
@@ -266,7 +268,7 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
         {recentlyCompletedItem && (
           <div className="flex animate-pulse items-center gap-2 rounded-xl bg-success-soft px-4 py-3 text-sm font-medium text-success-foreground">
             <Sparkles className="h-4 w-4" />
-            Nice progress: {getChecklistItemLabel(recentlyCompletedItem)} completed.
+            {t('celebration.niceProgress', { item: getChecklistItemLabel(recentlyCompletedItem) })}
           </div>
         )}
 
@@ -308,6 +310,7 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
               })}
               onClick={() => handleItemClick('cashPrepared')}
             />
+            {/* eslint-disable ds/no-hardcoded-copy -- PRIME-1: ChecklistItem type values are component discriminator keys, not UI copy */}
             <ChecklistItem
               type="rulesReviewed"
               completed={checklistProgress.rulesReviewed}
@@ -318,6 +321,7 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
               completed={checklistProgress.locationSaved}
               onClick={() => handleItemClick('locationSaved')}
             />
+            {/* eslint-enable ds/no-hardcoded-copy */}
           </div>
         </div>
 

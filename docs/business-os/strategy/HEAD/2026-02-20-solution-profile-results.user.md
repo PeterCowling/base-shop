@@ -7,7 +7,7 @@ Created: 2026-02-20
 Updated: 2026-02-20
 Method: live deep-research run — supersedes back-propagated version of same date
 Prompt-artifact: docs/business-os/strategy/HEAD/2026-02-20-solution-profiling-prompt.md
-Downstream: docs/business-os/strategy/HEAD/solution-select.user.md
+Downstream: docs/business-os/strategy/HEAD/2026-02-20-solution-decision.user.md
 ASSESSMENT-03-note: ASSESSMENT-03 was produced from the back-propagated version; live research confirms Option 1 selection and makes two corrections documented in solution-select.user.md
 Owner: Pete
 Review-trigger: After each completed build cycle touching this document.

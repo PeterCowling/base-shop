@@ -8,7 +8,7 @@ Created: 2026-02-12
 Last-reviewed: 2026-02-12
 Owner: Pete
 Card-ID: BRIK-ENG-0021
-Related-Intake: docs/business-os/startup-baselines/BRIK-intake-packet.user.md
+Related-Intake: docs/business-os/startup-baselines/BRIK-2026-02-12assessment-intake-packet.user.md
 Review-trigger: After each completed build cycle touching this document.
 ---
 

@@ -16,6 +16,7 @@ const RULES_PATH = path.resolve(
 
 const STAFF_UID = "staff-uid";
 const MANAGER_UID = "manager-uid";
+const OWNER_UID = "owner-uid";
 
 let testEnv: RulesTestEnvironment;
 
@@ -54,6 +55,7 @@ beforeEach(async () => {
   await testEnv.clearDatabase();
   await seedUser(STAFF_UID, ["staff"]);
   await seedUser(MANAGER_UID, ["manager"]);
+  await seedUser(OWNER_UID, ["owner"]);
 });
 
 describe("Reception database rules", () => {
@@ -311,6 +313,47 @@ describe("Reception database rules", () => {
     // Staff cannot delete an assignment (newData must exist)
     await assertFails(
       set(ref(staffDb, "keycardAssignments/assign1"), null)
+    );
+  });
+
+  // TC-13: userProfiles — owner can write with any role; unauthenticated write is denied
+  it("allows owner to write userProfiles with manager role for another user", async () => {
+    const ownerDb = testEnv.authenticatedContext(OWNER_UID).database();
+
+    // Owner can create a new userProfile for a different uid, assigning manager role
+    // Roles must be map form {manager: true} — DB rules check .child('manager').val() == true
+    await assertSucceeds(
+      set(ref(ownerDb, "userProfiles/new-user-uid"), {
+        email: "new-user@test.com",
+        user_name: "new-user-uid",
+        roles: { manager: true },
+      })
+    );
+  });
+
+  it("blocks unauthenticated writes to userProfiles", async () => {
+    const db = testEnv.unauthenticatedContext().database();
+
+    // Unauthenticated writes to any userProfile are denied
+    await assertFails(
+      set(ref(db, "userProfiles/new-user-uid"), {
+        email: "new-user@test.com",
+        user_name: "new-user-uid",
+        roles: { staff: true },
+      })
+    );
+  });
+
+  it("allows owner to write userProfiles with developer role for another user", async () => {
+    const ownerDb = testEnv.authenticatedContext(OWNER_UID).database();
+
+    // Owner can assign developer role to a new user
+    await assertSucceeds(
+      set(ref(ownerDb, "userProfiles/new-dev-uid"), {
+        email: "new-dev@test.com",
+        user_name: "new-dev-uid",
+        roles: { developer: true },
+      })
     );
   });
 

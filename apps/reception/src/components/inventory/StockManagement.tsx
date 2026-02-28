@@ -6,6 +6,7 @@ import { Button } from "@acme/design-system/atoms";
 import {
   STOCK_ADJUSTMENT_REAUTH_THRESHOLD,
   STOCK_SHRINKAGE_ALERT_THRESHOLD,
+  STOCK_VARIANCE_WINDOW_DAYS,
 } from "../../constants/stock";
 import { useAuth } from "../../context/AuthContext";
 import useProductsHook from "../../hooks/data/bar/useProducts";
@@ -19,6 +20,8 @@ import { canAccess,Permissions } from "../../lib/roles";
 import { buildInventorySnapshot } from "../../utils/inventoryLedger";
 import { showToast } from "../../utils/toastUtils";
 import PasswordReauthModal from "../common/PasswordReauthModal";
+
+import BatchStockCount from "./BatchStockCount";
 
 type StockAction =
   | "receive"
@@ -34,6 +37,139 @@ interface ActionState {
   reason: string;
   reference: string;
   note: string;
+}
+
+type LedgerEntryForVariance = {
+  itemId: string;
+  quantity: number;
+  timestamp: string;
+  type: string;
+};
+
+type VarianceRow = {
+  explained: number;
+  discrepancy: number;
+  unexplained: number;
+};
+
+function buildExplainedShrinkageByItem(
+  entries: LedgerEntryForVariance[],
+  varianceWindowDays: number
+): Record<string, number> {
+  const cutoff = Date.now() - varianceWindowDays * 24 * 60 * 60 * 1000;
+  const explainedTypes = new Set(["waste", "transfer"]);
+  return entries.reduce<Record<string, number>>((acc, entry) => {
+    if (
+      entry.quantity >= 0 ||
+      !explainedTypes.has(entry.type) ||
+      new Date(entry.timestamp).getTime() < cutoff
+    ) {
+      return acc;
+    }
+    acc[entry.itemId] = (acc[entry.itemId] ?? 0) + Math.abs(entry.quantity);
+    return acc;
+  }, {});
+}
+
+function buildUnexplainedVarianceByItem(
+  entries: LedgerEntryForVariance[],
+  varianceWindowDays: number,
+  explainedShrinkageByItem: Record<string, number>
+): Record<string, VarianceRow> {
+  const cutoff = Date.now() - varianceWindowDays * 24 * 60 * 60 * 1000;
+  const countNetByItem = entries.reduce<Record<string, number>>((acc, entry) => {
+    if (
+      entry.type !== "count" ||
+      new Date(entry.timestamp).getTime() < cutoff
+    ) {
+      return acc;
+    }
+    acc[entry.itemId] = (acc[entry.itemId] ?? 0) + entry.quantity;
+    return acc;
+  }, {});
+
+  const result: Record<string, VarianceRow> = {};
+  for (const [itemId, net] of Object.entries(countNetByItem)) {
+    if (net >= 0) continue; // net-positive or zero: skip
+    const discrepancy = Math.abs(Math.min(0, net));
+    const explained = explainedShrinkageByItem[itemId] ?? 0;
+    result[itemId] = {
+      explained,
+      discrepancy,
+      unexplained: Math.max(0, discrepancy - explained),
+    };
+  }
+  return result;
+}
+
+interface VarianceBreakdownSectionProps {
+  itemsById: Record<string, { name?: string } | undefined>;
+  unexplainedVarianceByItem: Record<string, VarianceRow>;
+  varianceWindowDays: number;
+  setVarianceWindowDays: (value: number) => void;
+}
+
+function VarianceBreakdownSection({
+  itemsById,
+  unexplainedVarianceByItem,
+  varianceWindowDays,
+  setVarianceWindowDays,
+}: VarianceBreakdownSectionProps) {
+  return (
+    <section className="border border-border rounded-lg p-4">
+      <h2 className="text-xl font-semibold mb-3">Variance Breakdown</h2>
+      <div className="mb-3 flex items-center gap-2">
+        <label htmlFor="variance-window" className="text-sm text-muted-foreground">
+          Window:
+        </label>
+        <select
+          id="variance-window"
+          data-cy="variance-window-select"
+          className="border px-2 py-1 text-sm"
+          value={varianceWindowDays}
+          onChange={(e) => setVarianceWindowDays(Number(e.target.value))}
+        >
+          <option value={7}>7 days</option>
+          <option value={14}>14 days</option>
+          <option value={30}>30 days</option>
+        </select>
+      </div>
+      {Object.keys(unexplainedVarianceByItem).length === 0 ? (
+        <p className="text-sm text-muted-foreground">
+          No stock variance to explain in this period.
+        </p>
+      ) : (
+        <Table className="min-w-full text-sm border border-border">
+          <TableHeader>
+            <TableRow className="bg-surface-2">
+              <TableHead className="p-2 text-start">Item</TableHead>
+              <TableHead className="p-2 text-end">Explained (waste/transfer)</TableHead>
+              <TableHead className="p-2 text-end">Count Discrepancy</TableHead>
+              <TableHead className="p-2 text-end">Unexplained</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {Object.entries(unexplainedVarianceByItem).map(([itemId, row]) => (
+              <TableRow key={itemId}>
+                <TableCell className="p-2 border-b">
+                  {itemsById[itemId]?.name ?? itemId}
+                </TableCell>
+                <TableCell className="p-2 border-b text-end">{row.explained}</TableCell>
+                <TableCell className="p-2 border-b text-end">{row.discrepancy}</TableCell>
+                <TableCell
+                  className={`p-2 border-b text-end font-semibold ${
+                    row.unexplained > 0 ? "text-error-main" : "text-muted-foreground"
+                  }`}
+                >
+                  {row.unexplained}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
+    </section>
+  );
 }
 
 const defaultActionState: ActionState = {
@@ -71,6 +207,8 @@ function StockManagement() {
     note: string;
     unit: string;
   } | null>(null);
+  const [batchCountMode, setBatchCountMode] = useState(false);
+  const [varianceWindowDays, setVarianceWindowDays] = useState<number>(STOCK_VARIANCE_WINDOW_DAYS);
 
   const snapshot = useMemo(
     () => buildInventorySnapshot(itemsById, entries),
@@ -144,28 +282,16 @@ function StockManagement() {
   }, [countEntries]);
 
   const shrinkageAlerts = useMemo(() => {
-    const cutoff = Date.now() - 24 * 60 * 60 * 1000;
-    const shrinkageTypes = new Set(["waste", "adjust", "count"]);
-    const totals = entries.reduce<Record<string, number>>((acc, entry) => {
-      if (
-        entry.quantity >= 0 ||
-        !shrinkageTypes.has(entry.type) ||
-        new Date(entry.timestamp).getTime() < cutoff
-      ) {
-        return acc;
-      }
-      acc[entry.itemId] = (acc[entry.itemId] ?? 0) + Math.abs(entry.quantity);
-      return acc;
-    }, {});
-
-    return Object.entries(totals)
-      .filter(([, total]) => total >= STOCK_SHRINKAGE_ALERT_THRESHOLD)
-      .map(([itemId, total]) => ({
-        itemId,
-        total,
-      }))
+    const explained1d = buildExplainedShrinkageByItem(entries, 1);
+    const unexplained1d = buildUnexplainedVarianceByItem(entries, 1, explained1d);
+    return Object.entries(unexplained1d)
+      .filter(([, row]) => row.unexplained >= STOCK_SHRINKAGE_ALERT_THRESHOLD)
+      .map(([itemId, row]) => ({ itemId, total: row.unexplained }))
       .sort((a, b) => b.total - a.total);
   }, [entries]);
+
+  const explainedShrinkageByItem = useMemo(() => buildExplainedShrinkageByItem(entries, varianceWindowDays), [entries, varianceWindowDays]);
+  const unexplainedVarianceByItem = useMemo(() => buildUnexplainedVarianceByItem(entries, varianceWindowDays, explainedShrinkageByItem), [entries, varianceWindowDays, explainedShrinkageByItem]);
 
   if (!canManageStock) {
     return (
@@ -494,7 +620,7 @@ function StockManagement() {
       {(missingRecipeItems.missingItems.length > 0 ||
         missingRecipeItems.missingInventory.length > 0 ||
         legacyRecipes.length > 0) && (
-        <section className="border border-warning-main rounded p-4 bg-warning-light/10">
+        <section className="border border-warning-main rounded-lg p-4 bg-warning-light/10">
           <h2 className="text-xl font-semibold mb-2 text-warning-main">
             Recipe Coverage Warnings
           </h2>
@@ -518,7 +644,7 @@ function StockManagement() {
               </p>
               <Button
                 type="button"
-                className="px-3 py-1 rounded bg-warning-main text-primary-fg hover:bg-warning-dark"
+                className="px-3 py-1 rounded-lg bg-warning-main text-primary-fg hover:bg-warning-dark"
                 onClick={handleMigrateLegacyRecipes}
               >
                 Migrate Legacy Recipes
@@ -528,7 +654,7 @@ function StockManagement() {
         </section>
       )}
 
-      <section className="border border-border rounded p-4 ">
+      <section className="border border-border rounded-lg p-4 ">
         <h2 className="text-xl font-semibold mb-3">Add Inventory Item</h2>
         <div className="grid gap-3 md:grid-cols-5">
           <input
@@ -586,15 +712,26 @@ function StockManagement() {
         <Button
           type="button"
           onClick={handleAddItem}
-          className="mt-3 inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+          className="mt-3 inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
         >
           Add Item
         </Button>
       </section>
 
       <section>
-        <h2 className="text-xl font-semibold mb-3">Inventory Ledger</h2>
-        {items.length === 0 ? (
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+          <h2 className="text-xl font-semibold">Inventory Ledger</h2>
+          <Button
+            type="button"
+            onClick={() => setBatchCountMode(true)}
+            className="inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
+          >
+            Start batch count
+          </Button>
+        </div>
+        {batchCountMode ? (
+          <BatchStockCount onComplete={() => setBatchCountMode(false)} />
+        ) : items.length === 0 ? (
           <p className="text-sm text-muted-foreground">
             No inventory items added yet.
           </p>
@@ -721,7 +858,7 @@ function StockManagement() {
                         <Button
                           type="button"
                           onClick={() => handleRecordAction(item.id ?? "")}
-                          className="inline-flex min-h-11 min-w-11 items-center justify-center px-3 py-1 rounded bg-primary-main text-primary-fg hover:bg-primary-dark"
+                          className="inline-flex min-h-11 min-w-11 items-center justify-center px-3 py-1 rounded-lg bg-primary-main text-primary-fg hover:bg-primary-dark"
                         >
                           Record
                         </Button>
@@ -735,7 +872,7 @@ function StockManagement() {
         )}
       </section>
 
-      <section className="border border-border rounded p-4 ">
+      <section className="border border-border rounded-lg p-4 ">
         <h2 className="text-xl font-semibold mb-3">Alerts</h2>
         {lowStockItems.length === 0 ? (
           <p className="text-sm text-muted-foreground">
@@ -761,7 +898,7 @@ function StockManagement() {
               {shrinkageAlerts.map((alert) => (
                 <li key={alert.itemId} className="text-error-main">
                   {itemsById[alert.itemId]?.name ?? alert.itemId}: {alert.total}{" "}
-                  units removed in 24h
+                  unexplained units in 24h
                 </li>
               ))}
             </ul>
@@ -769,27 +906,27 @@ function StockManagement() {
         </div>
       </section>
 
-      <section className="border border-border rounded p-4 ">
+      <section className="border border-border rounded-lg p-4 ">
         <h2 className="text-xl font-semibold mb-3">Exports</h2>
         <div className="flex flex-wrap gap-2">
           <Button
             type="button"
             onClick={handleExportLedger}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
           >
             Export Ledger CSV
           </Button>
           <Button
             type="button"
             onClick={handleExportVariance}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
           >
             Export Variance CSV
           </Button>
         </div>
       </section>
 
-      <section className="border border-border rounded p-4 ">
+      <section className="border border-border rounded-lg p-4 ">
         <h2 className="text-xl font-semibold mb-3">Count Variance Report</h2>
         {countEntries.length === 0 ? (
           <p className="text-sm text-muted-foreground">
@@ -846,6 +983,8 @@ function StockManagement() {
           </>
         )}
       </section>
+
+      <VarianceBreakdownSection itemsById={itemsById} unexplainedVarianceByItem={unexplainedVarianceByItem} varianceWindowDays={varianceWindowDays} setVarianceWindowDays={setVarianceWindowDays} />
 
       <p className="text-xs text-muted-foreground">
         Changes of {STOCK_ADJUSTMENT_REAUTH_THRESHOLD}+ units require re-authentication.

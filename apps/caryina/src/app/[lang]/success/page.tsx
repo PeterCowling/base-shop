@@ -35,8 +35,7 @@ export default async function SuccessPage({
       <section className="space-y-6 text-center">
         <h1 className="text-4xl font-display">Order confirmed</h1>
         <p className="mx-auto max-w-xl text-muted-foreground">
-          Thank you for shopping Caryina. Your order has been logged and support can help with
-          any follow-up requests.
+          Thank you for shopping Caryina. Your order has been logged and support can help with any follow-up requests.
         </p>
         <div>
           <Link href={`/${lang}/shop`} className="text-sm hover:underline">

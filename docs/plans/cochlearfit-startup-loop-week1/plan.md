@@ -8,6 +8,7 @@ Last-reviewed: 2026-02-14
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: cochlearfit-startup-loop-week1
 Fact-Find-Reference: docs/plans/cochlearfit-startup-loop-week1/fact-find.md
+Workstream: startup-loop
 Execution-Track: mixed
 Deliverable-Type: multi-deliverable
 Primary-Execution-Skill: /lp-do-build

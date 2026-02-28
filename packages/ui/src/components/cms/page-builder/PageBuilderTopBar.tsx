@@ -417,7 +417,7 @@ const PageBuilderTopBar = ({
         />
         <button
           type="button"
-          className="rounded border px-2 py-1 text-sm min-h-10 min-w-10"
+          className="rounded border px-2 py-1 text-sm min-h-11 min-w-11"
           onClick={onToggleInspector}
           aria-label={showInspector ? (t("cms.builder.inspector.hide") as string) : (t("cms.builder.inspector.show") as string)}
           title={showInspector ? (t("cms.builder.inspector.hide") as string) : (t("cms.builder.inspector.show") as string)}

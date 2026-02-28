@@ -14,6 +14,7 @@ export interface RoomCardPrice {
   soldOut?: boolean;
   soldOutLabel?: string;
   info?: string;
+  badge?: { text: string; claimUrl: string };
 }
 
 export interface RoomCardAction {
@@ -48,4 +49,9 @@ export interface RoomCardProps {
   className?: string;
   lang?: string;
   onRequestFullscreen?: (payload: RoomCardFullscreenRequest) => void;
+  /** When true, renders the title as a gradient overlay at the top of the image instead of below it. */
+  titleOverlay?: boolean;
+  /** When provided, renders a "more details" link directly below the image. */
+  detailHref?: string;
+  detailLabel?: string;
 }

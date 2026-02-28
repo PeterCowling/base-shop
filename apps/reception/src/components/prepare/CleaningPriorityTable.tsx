@@ -50,7 +50,7 @@ const Chip: FC<ChipProps> = memo(function Chip({ label, color }) {
       : "";
   return (
     <span
-      className={`${backgroundClass} text-primary-fg px-2 py-1 rounded text-sm`}
+      className={`${backgroundClass} text-primary-fg px-2 py-1 rounded-lg text-sm`}
     >
       {label}
     </span>
@@ -72,7 +72,7 @@ const Chip: FC<ChipProps> = memo(function Chip({ label, color }) {
 const CleaningPriorityTable: FC<CleaningPriorityTableProps> = memo(
   function CleaningPriorityTable({ data, isToday }) {
     return (
-      <div className="bg-surface shadow-md rounded p-4">
+      <div className="bg-surface shadow-md rounded-lg p-4">
         <Table className="w-full border-collapse">
           <TableHeader>
             <DSTableRow>

@@ -13,6 +13,7 @@ jest.mock("@/context/RatesContext", () => ({
 }));
 jest.mock("@/utils/dateUtils", () => ({
   getToday: () => new Date("2025-06-15T00:00:00Z"),
+  getTodayIso: () => "2025-06-15",
 }));
 jest.mock("@/rooms/pricing", () => ({
   getPriceForDate: (...args: unknown[]) => getPriceForDateMock(...args),
@@ -60,6 +61,13 @@ describe("useRoomPricing", () => {
 
   it("falls back to the base price once rates finish loading without a live price", () => {
     getPriceForDateMock.mockReturnValue(undefined);
+    // Use a properly-shaped RateCalendar with an entry on/after "today" (2025-06-15)
+    // so calendarIsFresh is true and soldOut can be determined.
+    mockedUseRates.mockReturnValue({
+      rates: { "433883": [{ date: "2025-06-15", nr: 120 }] },
+      loading: false,
+      error: undefined,
+    });
 
     const { result } = renderHook(() => useRoomPricing(room));
 
@@ -69,12 +77,30 @@ describe("useRoomPricing", () => {
 
   it("treats rooms without a base price as unavailable when no rate is returned", () => {
     getPriceForDateMock.mockReturnValue(undefined);
+    mockedUseRates.mockReturnValue({
+      rates: { "433883": [{ date: "2025-06-15", nr: 120 }] },
+      loading: false,
+      error: undefined,
+    });
     const roomWithoutBasePrice = { ...room, basePrice: undefined } as unknown as typeof room;
 
     const { result } = renderHook(() => useRoomPricing(roomWithoutBasePrice));
 
     expect(result.current.lowestPrice).toBeUndefined();
     expect(result.current.soldOut).toBe(true);
+  });
+
+  it("does not mark sold out when calendar is stale (all entries before today)", () => {
+    getPriceForDateMock.mockReturnValue(undefined);
+    mockedUseRates.mockReturnValue({
+      rates: { "433883": [{ date: "2025-05-01", nr: 120 }, { date: "2025-06-14", nr: 130 }] },
+      loading: false,
+      error: undefined,
+    });
+
+    const { result } = renderHook(() => useRoomPricing(room));
+
+    expect(result.current.soldOut).toBe(false);
   });
 
   it("surfaces errors reported by the rates context", () => {

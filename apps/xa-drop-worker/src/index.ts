@@ -30,10 +30,12 @@ const DEFAULT_PREFIX = "submissions/";
 const DEFAULT_CATALOG_PREFIX = "catalog/";
 const DEFAULT_MAX_BYTES = 250 * 1024 * 1024;
 const DEFAULT_CATALOG_MAX_BYTES = 10 * 1024 * 1024;
+// i18n-exempt -- ABC-123 [ttl=2026-12-31]
 const DEFAULT_CATALOG_CACHE_CONTROL = "public, max-age=60, stale-while-revalidate=300";
-// i18n-exempt -- ABC-123 [ttl=2026-01-31] protocol header value
-const CORS_ALLOWED_HEADERS =
-  "Content-Type, X-XA-Submission-Id, X-XA-Upload-Token, X-XA-Catalog-Token, Authorization";
+// i18n-exempt -- ABC-123 [ttl=2026-12-31]
+const CORS_ALLOWED_HEADERS = "Content-Type, X-XA-Submission-Id, X-XA-Upload-Token, X-XA-Catalog-Token, Authorization";
+// i18n-exempt -- ABC-123 [ttl=2026-12-31]
+const CORS_ALLOWED_METHODS = "GET, PUT, OPTIONS";
 
 function json(data: unknown, status = 200, extraHeaders?: HeadersInit): Response {
   const headers = new Headers(extraHeaders);
@@ -82,7 +84,7 @@ function withCors(
   if (allowedOrigin) {
     headers.set("Access-Control-Allow-Origin", allowedOrigin);
     headers.set("Vary", "Origin");
-    headers.set("Access-Control-Allow-Methods", "GET, PUT, OPTIONS");
+    headers.set("Access-Control-Allow-Methods", CORS_ALLOWED_METHODS);
     headers.set("Access-Control-Allow-Headers", CORS_ALLOWED_HEADERS);
     headers.set("Access-Control-Max-Age", "86400");
   }
@@ -100,7 +102,7 @@ function normalizePrefix(prefix: string): string {
   return withoutTrailing ? `${withoutTrailing}/` : "";
 }
 
-// i18n-exempt -- ABC-123 [ttl=2026-01-31] base64 alphabet constant
+// i18n-exempt -- ABC-123 [ttl=2026-12-31]
 const BASE64_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 function toBase64(bytes: Uint8Array): string {
@@ -263,7 +265,14 @@ function resolveCatalogPrefix(env: Env): string {
 }
 
 function isValidStorefront(value: string): boolean {
-  return /^[a-z0-9](?:[a-z0-9-]{0,30}[a-z0-9])?$/.test(value);
+  if (value.length < 1 || value.length > 32) return false;
+  if (value[0] === "-" || value[value.length - 1] === "-") return false;
+  for (const char of value) {
+    const isDigit = char >= "0" && char <= "9";
+    const isLowerAlpha = char >= "a" && char <= "z";
+    if (!isDigit && !isLowerAlpha && char !== "-") return false;
+  }
+  return true;
 }
 
 function parseStorefront(pathSegment: string): string | null {

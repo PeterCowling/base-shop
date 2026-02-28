@@ -116,7 +116,7 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
       onClick={handleClick}
       className={cn(
         'px-3 py-2 font-semibold text-sm border-b',
-        'bg-gray-100 text-gray-700',
+        'bg-surface-2 text-muted-foreground',
         'dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface',
         isSortable && 'cursor-pointer select-none hover:bg-gray-200 dark:hover:bg-gray-800',
         alignStyles[align],

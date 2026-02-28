@@ -35,7 +35,7 @@ function LoanFiltersComponent({
           type="text"
           value={guestFilter}
           onChange={(e) => onGuestFilterChange(e.target.value)}
-          className="border rounded px-2 py-1"
+          className="border rounded-lg px-2 py-1"
           placeholder="Type a name..."
         />
       </div>

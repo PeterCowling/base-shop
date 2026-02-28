@@ -41,5 +41,16 @@
     ],
     "footer": "Ostateczna dostępność i płatność realizowane są w naszym oficjalnym systemie rezerwacji."
   },
-  "backToRooms": "Powrót do pokoi"
+  "backToRooms": "Powrót do pokoi",
+  "hostel": {
+    "directSavings": {
+      "eyebrow": "Book direct and save",
+      "headline": "Up to 25% less than Booking.com"
+    }
+  },
+  "date": {
+    "stayHelper": "2–8 nights",
+    "clearDates": "Clear dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  }
 }

@@ -41,5 +41,16 @@
     ],
     "footer": "अंतिम उपलब्धता और भुगतान हमारे आधिकारिक बुकिंग इंजन पर पूर्ण होते हैं।"
   },
-  "backToRooms": "कमरों पर वापस जाएँ"
+  "backToRooms": "कमरों पर वापस जाएँ",
+  "hostel": {
+    "directSavings": {
+      "eyebrow": "Book direct and save",
+      "headline": "Up to 25% less than Booking.com"
+    }
+  },
+  "date": {
+    "stayHelper": "2–8 nights",
+    "clearDates": "Clear dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  }
 }

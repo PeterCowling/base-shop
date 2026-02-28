@@ -33,6 +33,12 @@ interface HeadSectionProps {
   canonicalUrl?: string;
   /** When true, avoid consulting i18n.getFixedT for twitter:card overrides. */
   suppressTwitterCardResolve?: boolean;
+  /**
+   * Content publication/revision date (ISO string, e.g. "2024-12-01").
+   * When provided, emitted as datePublished and dateModified in Article JSON-LD.
+   * Source: guide content `lastUpdated` field.
+   */
+  lastUpdated?: string;
 }
 
 export default function HeadSection({
@@ -50,6 +56,7 @@ export default function HeadSection({
   additionalScripts,
   canonicalUrl: _canonicalUrl,
   suppressTwitterCardResolve,
+  lastUpdated,
 }: HeadSectionProps) {
   // Move all document.head mutations to useEffect to follow React patterns and avoid
   // hydration issues. Render-time side effects violate React expectations.
@@ -191,7 +198,13 @@ export default function HeadSection({
         // Tests assert exact prop shapes (headline/description only) for
         // ArticleStructuredData. Avoid passing an `image` prop here; route
         // meta()/links() already surface og:image.
-        <ArticleStructuredData headline={pageTitle} description={description} />
+        // lastUpdated (non-empty string) is emitted as both datePublished and
+        // dateModified per the Article schema contract (SEO-datePublished-01).
+        <ArticleStructuredData
+          headline={pageTitle}
+          description={description}
+          {...(lastUpdated && lastUpdated.trim() ? { datePublished: lastUpdated, dateModified: lastUpdated } : {})}
+        />
       )}
       <BreadcrumbStructuredData breadcrumb={breadcrumb} />
       {howToJson ? (

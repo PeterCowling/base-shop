@@ -36,7 +36,7 @@ Does NOT:
 ## Precursor Inputs
 
 Read before eliciting any fields:
-- `docs/business-os/strategy/<BIZ>/problem-statement.user.md` — ICP Group 1 (primary), Group 2 (secondary)
+- `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-problem-statement.user.md` — ICP Group 1 (primary), Group 2 (secondary)
 - `docs/business-os/strategy/<BIZ>/s0c-option-select.user.md` — selected product and scope
 - Any existing strategy doc with channel references (plan.user.md, index.user.md, etc.)
 
@@ -65,7 +65,7 @@ Which channel is primary (launch focus)? Which is secondary (probe/test)?
 
 ## Output Artifact
 
-**Path:** `docs/business-os/strategy/<BIZ>/distribution-plan.user.md`
+**Path:** `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-launch-distribution-plan.user.md`
 
 **Frontmatter:**
 ```yaml
@@ -124,7 +124,7 @@ Invalid outputs — do not emit:
 
 ## Completion Message
 
-> "Distribution plan recorded: `docs/business-os/strategy/<BIZ>/distribution-plan.user.md`. [N] channels identified; [channel name] primary. Ready for ASSESSMENT-07 Measurement Profiling."
+> "Distribution plan recorded: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-launch-distribution-plan.user.md`. [N] channels identified; [channel name] primary. Ready for ASSESSMENT-07 Measurement Profiling."
 
 ---
 
@@ -132,6 +132,6 @@ Invalid outputs — do not emit:
 
 **Upstream (ASSESSMENT-04):** Runs after `/lp-do-assessment-04-candidate-names --business <BIZ>` returns a naming shortlist.
 
-**Downstream consumer:** `modules/assessment-intake-sync.md` reads `distribution-plan.user.md` as its fifth precursor (ASSESSMENT-06). Section A channels inform intake Section C (Channel Packet). Section C priority order informs intake Section A (Execution posture).
+**Downstream consumer:** `modules/assessment-intake-sync.md` reads `<YYYY-MM-DD>-launch-distribution-plan.user.md` as its fifth precursor (ASSESSMENT-06). Section A channels inform intake Section C (Channel Packet). Section C priority order informs intake Section A (Execution posture).
 
 **Downstream:** `/lp-do-assessment-07-measurement-profiling --business <BIZ>` reads this artifact as input to determine which channels need measurement instrumentation.

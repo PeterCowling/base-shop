@@ -1,43 +1,64 @@
+/* eslint-disable ds/no-nonlayered-zindex -- CARYINA-104 sticky site header uses z-50 to overlay page content [ttl=2027-01-01] */
+import Image from "next/image";
 import Link from "next/link";
 
-import { BrandMark } from "@/components/BrandMark/BrandMark";
-import { ThemeModeSwitch } from "@/components/ThemeModeSwitch";
+import { CartIcon } from "@/components/CartIcon.client";
+import { HeaderThemeToggle } from "@/components/HeaderThemeToggle.client";
 
 export function Header({ lang }: { lang: string }) {
   return (
     <header
-      className="sticky top-0 shadow-sm backdrop-blur-sm"
-      style={{ backgroundColor: "hsl(var(--color-bg) / 0.88)" }}
+      className="sticky top-0 z-50 border-b border-border backdrop-blur-md"
+      style={{ backgroundColor: "hsl(var(--color-bg) / 0.92)" }}
     >
-      <div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-6 px-6 py-5">
+      <div className="relative mx-auto flex w-full max-w-5xl items-center px-6 py-4">
+        {/* Logo — crop wrapper clips tagline from the full brand-mark PNG.
+            Image is rendered taller than the container; overflow:hidden
+            reveals only the wordmark portion (top ~65%). */}
         <Link
           href={`/${lang}`}
           aria-label="Caryina"
-          className="inline-flex"
+          className="inline-flex shrink-0"
         >
-          <BrandMark trigger="hover" />
+          {/* i18n-exempt -- CARYINA-104 [ttl=2026-12-31] */}
+          <div className="h-10 w-fit overflow-hidden">
+            <Image
+              src="/images/caryina-logo.png"
+              alt="Caryina"
+              width={797}
+              height={376}
+              className="block w-auto"
+              style={{ height: "52px" }}
+              priority
+            />
+          </div>
         </Link>
-        <nav className="flex items-center gap-5" aria-label="Primary">
+
+        {/* Nav — absolutely centered so it sits at the true midpoint of the
+            header regardless of logo/icon widths. Hidden on mobile. */}
+        <nav
+          className="absolute start-1/2 hidden -translate-x-1/2 items-center gap-8 sm:flex"
+          aria-label="Primary"
+        >
           <Link
             href={`/${lang}/shop`}
-            className="hidden sm:block text-xs font-medium tracking-widest uppercase opacity-70 transition-opacity hover:opacity-100"
+            className="text-xs font-medium tracking-widest uppercase text-fg-muted transition-colors duration-200 hover:text-fg"
           >
             Shop
           </Link>
           <Link
             href={`/${lang}/support`}
-            className="hidden sm:block text-xs font-medium tracking-widest uppercase opacity-70 transition-opacity hover:opacity-100"
+            className="text-xs font-medium tracking-widest uppercase text-fg-muted transition-colors duration-200 hover:text-fg"
           >
             Support
           </Link>
-          <ThemeModeSwitch />
-          <Link
-            href={`/${lang}/checkout`}
-            className="btn-primary rounded-full px-5 py-2 text-xs font-medium tracking-widest uppercase"
-          >
-            Checkout
-          </Link>
         </nav>
+
+        {/* Icon cluster — pushed to the far right */}
+        <div className="ms-auto flex items-center gap-2">
+          <HeaderThemeToggle />
+          <CartIcon lang={lang} />
+        </div>
       </div>
     </header>
   );

@@ -20,7 +20,7 @@
     "title": "डायरेक्ट बुक करें और बचत करें",
     "description": "हमारे साथ सीधे बुकिंग चुनने के लिए धन्यवाद! धन्यवाद के तौर पर आपको मिलेगा:",
     "perks": {
-      "discount": "कक्ष दर पर अधिकतम 10% तक की छूट",
+      "discount": "कक्ष दर पर अधिकतम 25% तक की छूट",
       "breakfast": "हर सुबह निःशुल्क नाश्ता",
       "drinks": "निःशुल्क स्वागत पेय",
       "upgrades": "प्राथमिकता कक्ष अपग्रेड (उपलब्धता पर)"
@@ -160,5 +160,10 @@
   },
   "loader": {
     "ariaLabel": "Loading"
+  },
+  "date": {
+    "stayHelper": "2–8 nights",
+    "clearDates": "Clear dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
   }
 }

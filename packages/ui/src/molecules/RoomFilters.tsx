@@ -51,7 +51,7 @@ function RoomFilters({ selected, onChange, lang }: RoomFiltersProps): JSX.Elemen
   const filters: RoomFilter[] = ["all", "private", "dorms"];
   const activeClass =
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-    "bg-brand-primary text-white border-brand-primary dark:bg-brand-secondary dark:text-brand-bg dark:border-brand-secondary";
+    "bg-brand-primary text-primary-fg border-brand-primary dark:bg-brand-secondary dark:text-brand-bg dark:border-brand-secondary";
   const inactiveClass =
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
     "bg-brand-bg text-brand-primary border-brand-primary hover:bg-brand-primary/10 dark:bg-brand-bg dark:text-brand-text dark:border-brand-secondary/60 dark:hover:bg-brand-secondary/20";

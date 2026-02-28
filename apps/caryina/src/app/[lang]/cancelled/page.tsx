@@ -29,13 +29,15 @@ export default async function CancelledPage({
 
   return (
     <section className="space-y-6 text-center">
-      <h1 className="text-4xl font-display">Checkout cancelled</h1>
+      <h1 className="text-4xl font-display">Payment cancelled</h1>
       <p className="mx-auto max-w-xl text-muted-foreground">
-        Your order was not completed. You can return to the catalog and restart the flow
-        anytime.
+        Your payment was not completed. Your cart is still saved — you can try again anytime.
       </p>
-      <div>
-        <Link href={`/${lang}/shop`} className="text-sm hover:underline">
+      <div className="flex flex-wrap items-center justify-center gap-4">
+        <Link href={`/${lang}/cart`} className="text-sm hover:underline">
+          Return to cart
+        </Link>
+        <Link href={`/${lang}/shop`} className="text-sm text-muted-foreground hover:underline">
           Back to shop
         </Link>
       </div>

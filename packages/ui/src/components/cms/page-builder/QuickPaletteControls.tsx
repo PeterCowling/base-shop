@@ -41,7 +41,7 @@ const QuickPaletteControls = ({
           <button
             type="button"
             aria-label={t("Quick components")}
-            className="rounded border border-border-2 bg-surface-2 px-1 text-xs min-h-10 min-w-10 text-center"
+            className="rounded border border-border-2 bg-surface-2 px-1 text-xs min-h-11 min-w-11 text-center"
           >
             {/* i18n-exempt — decorative icon glyph */}
             🧩
@@ -66,7 +66,7 @@ const QuickPaletteControls = ({
       <button
         type="button"
         aria-label={t("Show palette")}
-        className="rounded border border-border-2 bg-surface-2 px-1 text-xs min-h-10 min-w-10 text-center"
+        className="rounded border border-border-2 bg-surface-2 px-1 text-xs min-h-11 min-w-11 text-center"
         onClick={onShowPalette}
         title={t("Show palette")}
       >

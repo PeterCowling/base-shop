@@ -136,7 +136,7 @@ export default function SocialProof({
             {ugc.map((u) => (
               <a key={u.href || u.src || `${u.author || u.handle || u.alt || "ugc"}`}
                  href={u.href ?? "#"}
-                 className="group relative block overflow-hidden rounded aspect-square min-h-10 min-w-10">
+                 className="group relative block overflow-hidden rounded aspect-square min-h-11 min-w-11">
                 <Image
                   src={u.src}
                   alt={u.alt ?? ""}
@@ -157,7 +157,7 @@ export default function SocialProof({
             {influencers.map((inf) => (
               <a key={inf.href || inf.handle || inf.name}
                  href={inf.href ?? "#"}
-                 className="flex items-center gap-3 rounded border p-3 min-h-10 min-w-10">
+                 className="flex items-center gap-3 rounded border p-3 min-h-11 min-w-11">
                 {inf.avatarSrc ? (
                   <Image src={inf.avatarSrc} alt={inf.name} width={40} height={40} className="rounded-full object-cover" />
                 ) : (
@@ -177,7 +177,7 @@ export default function SocialProof({
             {logos.map((l) => (
               <a key={l.href || l.src || l.alt}
                  href={l.href ?? "#"}
-                 className="opacity-75 grayscale transition hover:opacity-100 hover:grayscale-0 min-h-10 min-w-10">
+                 className="opacity-75 grayscale transition hover:opacity-100 hover:grayscale-0 min-h-11 min-w-11">
                 <div className="relative h-8 w-24">
                   <Image src={l.src} alt={l.alt ?? ""} fill sizes="96px" className="object-contain" />
                 </div>

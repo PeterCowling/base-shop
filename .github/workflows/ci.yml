@@ -223,10 +223,15 @@ jobs:
         run: |
           set -euo pipefail
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            if ! git rev-parse --verify "origin/${{ github.base_ref }}" >/dev/null 2>&1; then
-              git fetch --no-tags origin "+${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+            # Prefer PR "before" SHA when present so lint scope tracks only the
+            # latest incremental push, not the entire long-lived branch delta.
+            export DOCS_LINT_BASE="${{ github.event.before }}"
+            if [ -z "${DOCS_LINT_BASE}" ] || [ "${DOCS_LINT_BASE}" = "0000000000000000000000000000000000000000" ]; then
+              if ! git rev-parse --verify "origin/${{ github.base_ref }}" >/dev/null 2>&1; then
+                git fetch --no-tags origin "+${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+              fi
+              export DOCS_LINT_BASE="origin/${{ github.base_ref }}"
             fi
-            export DOCS_LINT_BASE="origin/${{ github.base_ref }}"
           else
             export DOCS_LINT_BASE="${{ github.event.before }}"
           fi
@@ -309,6 +314,10 @@ jobs:
           echo "TURBO_SCM_HEAD=${{ github.sha }}" >> "$GITHUB_ENV"
       - name: Typecheck (affected workspaces)
         run: pnpm exec turbo run typecheck --affected
+      - name: Build workspace deps for downstream type resolution
+        run: |
+          # Build package-level declaration outputs so typecheck-tests can resolve path aliases.
+          pnpm -r --filter "./packages/**" --if-present build
       - name: Typecheck tests (Phase-1 + Phase-4 + Phase-5 packages + apps/cms)
         run: |
           set -e
@@ -497,6 +506,8 @@ jobs:
           NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
           NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID }}
           NEXTAUTH_SECRET: build-nextauth-secret-32-chars-long-string!
+          SESSION_SECRET: build-session-secret-32-chars-long-string!!
+          CART_COOKIE_SECRET: build-cart-cookie-secret
         run: pnpm build
 
   e2e:

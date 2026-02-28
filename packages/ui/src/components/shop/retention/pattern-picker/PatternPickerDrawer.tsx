@@ -171,7 +171,7 @@ export function PatternPickerDrawer({
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerPortal>
-        <DrawerOverlay className="fixed inset-0 z-40 bg-black/40" /> {/* i18n-exempt */}
+        <DrawerOverlay className="fixed inset-0 z-40 bg-surface/40" /> {/* i18n-exempt */}
         <DrawerContent side={sheetSide} className={sheetClass}>
           <div className="flex h-full flex-col">
             <div className="flex items-center justify-between gap-3 border-b border-border-1 bg-surface-1/95 px-4 py-4 backdrop-blur">

@@ -21,9 +21,12 @@ export type StickyBookNowClickContext = {
 
 function StickyBookNow({
   lang,
+  octorateUrl,
   onStickyCheckoutClick,
 }: {
   lang?: string;
+  /** When provided, overrides the internal calendar.xhtml fallback. Build this URL in the app layer and pass it here. */
+  octorateUrl?: string;
   /**
    * Optional click hook for analytics or other side effects. When provided, the
    * component will prevent default navigation and call `proceed()` after either:
@@ -38,11 +41,17 @@ function StickyBookNow({
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
 
   const [isDismissed, setIsDismissed] = useState(false);
+  const [urlParams, setUrlParams] = useState<URLSearchParams | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") {
       return;
     }
+
+    // Reading URL params in an effect avoids SSR/hydration mismatches: both server
+    // and the initial client render use defaults, then this effect patches the deep
+    // link after mount so the correct dates are always sent to Octorate.
+    setUrlParams(new URLSearchParams(window.location.search));
 
     try {
       const storedValue = window.sessionStorage.getItem(STICKY_CTA_STORAGE_KEY);
@@ -54,14 +63,12 @@ function StickyBookNow({
     }
   }, []);
 
-  const search = typeof window !== "undefined" ? window.location.search : "";
-  const urlParams = useMemo(() => new URLSearchParams(search), [search]);
-  const checkIn = useMemo(() => urlParams.get("checkin") ?? getTodayIso(), [urlParams]);
+  const checkIn = useMemo(() => urlParams?.get("checkin") ?? getTodayIso(), [urlParams]);
   const checkOut = useMemo(
-    () => urlParams.get("checkout") ?? getDatePlusTwoDays(checkIn),
+    () => urlParams?.get("checkout") ?? getDatePlusTwoDays(checkIn),
     [urlParams, checkIn]
   );
-  const adults = useMemo(() => parseInt(urlParams.get("pax") ?? "1", 10) || 1, [urlParams]);
+  const adults = useMemo(() => parseInt(urlParams?.get("pax") ?? "1", 10) || 1, [urlParams]);
 
   const perksEyebrow = useMemo(
     () => (tokensReady ? (tTokens("directBookingPerks") as string) : ""),
@@ -119,6 +126,7 @@ function StickyBookNow({
   }, [t, tTokens, ready, tokensReady]);
 
   const deepLink = useMemo(() => {
+    if (octorateUrl) return octorateUrl;
     const qs = new URLSearchParams({
       codice: "45111",
       checkin: checkIn,
@@ -127,8 +135,8 @@ function StickyBookNow({
       children: "0",
       childrenAges: "",
     });
-    return `https://book.octorate.com/octobook/site/reservation/result.xhtml?${qs}`;
-  }, [checkIn, checkOut, adults]);
+    return `https://book.octorate.com/octobook/site/reservation/calendar.xhtml?${qs}`;
+  }, [octorateUrl, checkIn, checkOut, adults]);
 
   const onDismiss = useCallback(() => {
     if (typeof window !== "undefined") {
@@ -212,7 +220,7 @@ function StickyBookNow({
         <button
           type="button"
           onClick={onDismiss}
-          className="absolute end-4 top-4 inline-flex size-10 items-center justify-center rounded-full bg-brand-surface/70 text-brand-heading transition hover:bg-brand-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
+          className="absolute end-4 top-4 inline-flex size-11 items-center justify-center rounded-full bg-brand-surface/70 text-brand-heading transition hover:bg-brand-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
           aria-label={tTokens("close", { defaultValue: "Close" }) as string}
         >
           <X aria-hidden className="h-4 w-4" />
@@ -241,7 +249,7 @@ function StickyBookNow({
           >
             <span
               aria-hidden
-              className="absolute inset-0 rounded-full bg-white/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+              className="absolute inset-0 rounded-full bg-surface/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
             />
             <span className="relative flex items-center gap-2">
               <span>{ctaLabel}</span>

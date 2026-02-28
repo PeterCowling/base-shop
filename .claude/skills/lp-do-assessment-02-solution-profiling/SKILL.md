@@ -35,7 +35,7 @@ The operator runs the compiled prompt in an external research tool. The results 
 ## Required Inputs (pre-flight)
 
 Required:
-- `docs/business-os/strategy/<BIZ>/problem-statement.user.md` — output from `/lp-do-assessment-01-problem-statement`
+- `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-problem-statement.user.md` — output from `/lp-do-assessment-01-problem-statement`
 
 If this file is missing, stop and instruct the operator to run `/lp-do-assessment-01-problem-statement --business <BIZ>` first.
 
@@ -69,7 +69,7 @@ Instruct the researcher to act as a product-type landscape researcher. Frame the
 
 ### 2. Problem context
 
-Paste or paraphrase the `## Core Problem` and `## Affected User Groups` sections from `problem-statement.user.md` directly. Do not reframe or abstract. If the problem statement uses specific language, preserve it.
+Paste or paraphrase the `## Core Problem` and `## Affected User Groups` sections from `<YYYY-MM-DD>-problem-statement.user.md` directly. Do not reframe or abstract. If the problem statement uses specific language, preserve it.
 
 ### 3. Solution type landscape
 
@@ -110,7 +110,7 @@ Do not skip the results file. `/lp-do-assessment-03-solution-selection` requires
 
 Before saving the compiled prompt, verify:
 
-- [ ] Problem context section quotes or closely paraphrases `problem-statement.user.md` — not reformulated
+- [ ] Problem context section quotes or closely paraphrases `<YYYY-MM-DD>-problem-statement.user.md` — not reformulated
 - [ ] Prompt requests 5–10 distinct product-type options (not feature variants)
 - [ ] All 4 feasibility criteria are present for each option
 - [ ] Prompt contains explicit instruction: no demand scoring, feasibility flags only
@@ -127,7 +127,7 @@ Before saving the compiled prompt, verify:
 
 ## Integration
 
-**Upstream (ASSESSMENT-01):** Reads `docs/business-os/strategy/<BIZ>/problem-statement.user.md` from `/lp-do-assessment-01-problem-statement`.
+**Upstream (ASSESSMENT-01):** Reads `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-problem-statement.user.md` from `/lp-do-assessment-01-problem-statement`.
 
 **Downstream (ASSESSMENT-03):** `/lp-do-assessment-03-solution-selection --business <BIZ>` reads the results artifact filled by the operator after the research run.
 

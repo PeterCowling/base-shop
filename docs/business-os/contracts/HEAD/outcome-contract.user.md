@@ -13,7 +13,7 @@ owner: Pete
 last_updated: 2026-02-20
 source_of_truth: true
 depends_on:
-  - docs/business-os/startup-baselines/HEAD-intake-packet.user.md
+  - docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md
   - docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md
   - docs/business-os/market-research/HEAD/2026-02-20-market-intelligence.user.md
   - docs/business-os/startup-baselines/HEAD-offer.md

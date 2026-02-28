@@ -218,7 +218,7 @@ Invalid outputs:
 ## Integration
 
 ### Upstream (S0)
-- Preceded by optional `/idea-forecast` or manual strategy doc creation
+- Preceded by optional `/lp-do-idea-forecast` or manual strategy doc creation
 - Does NOT require BOS card/stage-doc setup
 
 ### Downstream (S2)

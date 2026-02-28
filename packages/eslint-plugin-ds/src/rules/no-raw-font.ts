@@ -15,7 +15,7 @@ function containsDisallowed(value: string): string | undefined {
   if (value.includes("var(")) return undefined;
   const lower = value.toLowerCase();
   if (lower.includes("aria-label") || lower.includes("arialabel")) return undefined;
-  return DISALLOWED_FONTS.find((f) => lower.includes(f));
+  return DISALLOWED_FONTS.find((f) => new RegExp(`\\b${f}\\b`).test(lower));
 }
 
 const rule: Rule.RuleModule = {

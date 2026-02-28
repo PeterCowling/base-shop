@@ -20,7 +20,7 @@
     "title": "Boka direkt och spara",
     "description": "Tack för att du bokar direkt hos oss! Som tack får du:",
     "perks": {
-      "discount": "Upp till 10 % rabatt på rumspriset",
+      "discount": "Upp till 25 % rabatt på rumspriset",
       "breakfast": "Gratis frukost varje morgon",
       "drinks": "Kostnadsfria välkomstdrycker",
       "upgrades": "Prioriterade rumsuppgraderingar (vid tillgänglighet)"
@@ -160,5 +160,10 @@
   },
   "loader": {
     "ariaLabel": "Loading"
+  },
+  "date": {
+    "stayHelper": "2–8 nights",
+    "clearDates": "Clear dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
   }
 }

@@ -165,13 +165,13 @@ Each principle entry has these fields:
 - **id:** P10
 - **name:** Human Judgment Gates
 - **audit_question:** Are ICP commitment, pricing decisions, and channel selection decisions marked with at least one explicit human sign-off marker in the relevant stage artifact?
-- **evidence_expectation:** One or more of the following markers is present in the relevant stage artifact (S2B offer, S5A prioritise, S6B channel):
+- **evidence_expectation:** One or more of the following markers is present in the relevant stage artifact (S2B offer, S4 prioritise, S6B channel):
   1. Frontmatter fields `Human-approved: true` and `Approved-By: <name>` present in the artifact
   2. A `## Human Decisions This Week` section in the weekly readout artifact with ≥1 named decision and decision-maker
   3. A DECISION task in the plan with `Status: Complete` and a named decision-maker in the task body
 - **severity_default:** 5
 - **failure_indicators:**
-  - Relevant stage artifact (S2B, S5A, S6B) exists but lacks all three marker types above
+  - Relevant stage artifact (S2B, S4, S6B) exists but lacks all three marker types above
   - Pricing, ICP, or channel decision is recorded only in an AI-produced artifact with no human confirmation field
   - Weekly readout has no `## Human Decisions This Week` section for a week when a key commitment was made
   - A DECISION task in the plan was marked `Complete` but has no named decision-maker

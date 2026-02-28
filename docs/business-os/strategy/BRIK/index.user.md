@@ -16,7 +16,7 @@ Gates read `Status` from this table — not from individual file frontmatters.
 
 | Artifact | Path | Status | Last-reviewed |
 |----------|------|--------|---------------|
-| Brand Dossier | `docs/business-os/strategy/BRIK/brand-identity.user.md` | Active | 2026-02-17 |
+| Brand Dossier | `docs/business-os/strategy/BRIK/2026-02-12-brand-identity-dossier.user.md` | Active | 2026-02-17 |
 | Competitive Positioning | `docs/business-os/strategy/BRIK/competitive-positioning.user.md` | — | — |
 | Messaging Hierarchy | `docs/business-os/strategy/BRIK/messaging-hierarchy.user.md` | — | — |
 | Creative Voice Brief | `docs/business-os/strategy/BRIK/creative-voice-brief.user.md` | — | — |

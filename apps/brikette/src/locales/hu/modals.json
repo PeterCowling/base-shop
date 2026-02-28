@@ -20,7 +20,7 @@
     "title": "Foglalj közvetlenül és spórolj",
     "description": "Köszönjük, hogy közvetlen foglalást választottál! Hálánk jeléül a következőket kapod:",
     "perks": {
-      "discount": "Akár 10% kedvezmény a szobaárból",
+      "discount": "Akár 25% kedvezmény a szobaárból",
       "breakfast": "Ingyenes reggeli minden reggel",
       "drinks": "Ingyenes üdvözlőital",
       "upgrades": "Elsőbbségi szobafrissítések (elérhetőség függvényében)"
@@ -160,5 +160,10 @@
   },
   "loader": {
     "ariaLabel": "Loading"
+  },
+  "date": {
+    "stayHelper": "2–8 nights",
+    "clearDates": "Clear dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
   }
 }

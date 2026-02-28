@@ -2,6 +2,8 @@
 name: tools-ui-contrast-sweep
 description: At user-specified breakpoints, audit the UI for contrast failures (text/background, icons, controls, focus indicators) and visual-uniformity drift (inconsistent tokens, typography, spacing, component variants). Produces screenshot-backed findings with WCAG-aligned thresholds and fix hypotheses.
 operating_mode: AUDIT
+trigger_conditions: accessibility, color contrast, WCAG, pre-launch QA, visual uniformity, dark mode audit, focus indicators
+related_skills: tools-ui-breakpoint-sweep, lp-design-qa, lp-do-build
 ---
 
 # Contrast + Uniformity Sweep
@@ -186,6 +188,7 @@ Return:
 If no issues are found, state exactly:
 
 `No contrast or visual-uniformity failures detected across the tested breakpoint/mode matrix.`
+- If issues were found and fixed via `/lp-do-build`: **re-run this sweep** to confirm findings are resolved before routing to `tools-refactor`.
 
 ## Guardrails
 
@@ -193,3 +196,9 @@ If no issues are found, state exactly:
 - Prefer token-level/component-variant fixes over per-page overrides.
 - Validate `focus-visible` states explicitly via keyboard path.
 - Avoid reporting micro-differences unless they affect readability, interaction, or hierarchy.
+
+## Integration
+
+- **Upstream:** `lp-design-qa` (optional trigger — contrast-sweep is often invoked after lp-design-qa flags color or accessibility concerns); `lp-do-build` (direct invocation for pre-launch QA pass).
+- **Downstream:** `tools-refactor` (contrast and token findings feed the refactor entry criteria); `lp-do-build` (issues returned as structured findings for fix tasks).
+- **Loop position:** S9C (Parallel Sweep) — runs alongside `tools-ui-breakpoint-sweep` after UI build and static QA, before refactor.

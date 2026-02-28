@@ -1,0 +1,33 @@
+{
+  "model_version": "v1",
+  "training_date": "2026-02-26",
+  "n_training_samples": 1523,
+  "n_positive": 631,
+  "n_negative": 892,
+  "feature_names": [
+    "score_D",
+    "score_W",
+    "score_P",
+    "score_E",
+    "score_I",
+    "score_total",
+    "pattern_A",
+    "pattern_B",
+    "pattern_C",
+    "pattern_D",
+    "pattern_E",
+    "name_length",
+    "vowel_ratio",
+    "has_italian_suffix"
+  ],
+  "seed": 42,
+  "cv_brier_mean": 0.21905763541039577,
+  "cv_brier_std": 0.07704633355844187,
+  "training_rounds": [
+    "HBAG-r1",
+    "HEAD-r1",
+    "HEAD-r4",
+    "HEAD-r5",
+    "HEAD-r6"
+  ]
+}

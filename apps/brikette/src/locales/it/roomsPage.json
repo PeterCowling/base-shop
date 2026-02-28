@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Camere e Tariffe | Brikette Hostel Positano",
+    "title": "Posti Letto in Dormitorio a Positano | Prenota Diretto al Brikette Hostel",
     "description": "Camere matrimoniali private con vista mare e dormitori economici: scopri foto, servizi e prezzi in tempo reale, poi prenota direttamente per ottenere la migliore offerta al Brikette Hostel Positano.",
     "ogImageAlt": "Interno luminoso di un dormitorio condiviso con letti a castello"
   },
@@ -30,7 +30,8 @@
     "linen": "Biancheria da letto e asciugamano inclusi"
   },
   "rooms": {
-    "title": "Le nostre camere",
+    "title": "Posti letto in dormitorio",
+    "soldOut": "Non disponibile",
     "double_room": {
       "title": "Camera Matrimoniale",
       "bed_intro": "Vista mare mozzafiato – perfetta per coppie.",
@@ -51,7 +52,7 @@
       }
     },
     "room_10": {
-      "title": "Dormitorio Misto Premium",
+      "title": "Dormitorio Misto – Bagno Privato",
       "bed_intro": "Per chi desidera sei posti letto e un bagno superiore.",
       "bed_description": "Il nostro Dormitorio Premium è un dormitorio misto con tre posti letto, per un totale di sei posti letto. Situato al quarto piano, include aria condizionata, accesso sicuro con tessera e bagno privato interno (senza vista). Biancheria da letto e asciugamano forniti al check-in.",
       "facilities": [
@@ -70,7 +71,7 @@
       }
     },
     "room_11": {
-      "title": "Dormitorio femminile Superior – Ampia terrazza",
+      "title": "Dormitorio Femminile – Ampia Terrazza Mare",
       "bed_intro": "Le migliori viste da un’ampia terrazza e un ottimo bagno.",
       "bed_description": "Il nostro Dormitorio Femminile Superior dispone di tre posti letto, per un totale di sei posti letto, e può ospitare fino a sei persone. Situato al quarto piano, offre aria condizionata, accesso sicuro con tessera, bagno privato interno e vista mare con terrazza extra grande. Biancheria da letto e asciugamano forniti al check-in.",
       "facilities": [
@@ -89,7 +90,7 @@
       }
     },
     "room_12": {
-      "title": "Dormitorio Misto Superior",
+      "title": "Dormitorio Misto – Terrazza Mare",
       "bed_intro": "Le migliori viste da un’ampia terrazza e un ottimo bagno.",
       "bed_description": "Il nostro Dormitorio Misto Superior offre tre posti letto, per un totale di sei posti letto. Situato al quarto piano, include aria condizionata, accesso sicuro con tessera, bagno privato e vista mare con terrazza extra grande. Biancheria da letto e asciugamano forniti al check-in.",
       "facilities": [
@@ -108,7 +109,7 @@
       }
     },
     "room_3": {
-      "title": "Dormitorio Femminile Economy",
+      "title": "Dormitorio Femminile 8 Posti",
       "bed_intro": "Un’opzione economica per viaggiatrici.",
       "bed_description": "Il nostro Dormitorio Femminile Economy può ospitare fino a otto persone in quattro posti letto. Situato al terzo piano, offre aria condizionata, accesso sicuro con tessera e bagno condiviso femminile. Senza vista. Biancheria da letto e asciugamano forniti al check-in.",
       "facilities": [
@@ -127,7 +128,7 @@
       }
     },
     "room_4": {
-      "title": "Dormitorio Misto Economy",
+      "title": "Dormitorio Misto 8 Posti",
       "bed_intro": "Un’opzione economica per viaggiatori e viaggiatrici.",
       "bed_description": "Il nostro Dormitorio Misto Economy può ospitare fino a otto persone in quattro posti letto. Situato al terzo piano, offre aria condizionata, accesso sicuro con tessera e bagno condiviso femminile. Senza vista. Biancheria da letto e asciugamano forniti al check-in.",
       "facilities": [
@@ -146,7 +147,7 @@
       }
     },
     "room_5": {
-      "title": "Dormitorio femminile Superior – Vista mare",
+      "title": "Dormitorio Femminile – Vista Mare",
       "bed_intro": "Splendide viste sul mare e bagno privato.",
       "bed_description": "Il nostro Dormitorio Femminile Superior ospita fino a sei persone in tre posti letto. Situato al terzo piano, offre bagno privato interno, terrazza con vista mare, aria condizionata e accesso sicuro con tessera. Biancheria da letto e asciugamano forniti al check-in.",
       "facilities": [
@@ -165,7 +166,7 @@
       }
     },
     "room_6": {
-      "title": "Dormitorio femminile Superior – 7 letti",
+      "title": "Dormitorio Femminile 7 Letti – Vista Mare",
       "bed_intro": "Splendide viste sul mare e bagno privato.",
       "bed_description": "Il nostro Dormitorio Femminile Superior dispone di tre posti letto in dormitorio più un letto singolo, per un totale di sette posti letto, e può ospitare fino a sette persone. Situato al terzo piano, offre bagno privato interno, terrazza con vista mare, aria condizionata e accesso sicuro con tessera. Biancheria da letto e asciugamano forniti al check-in.",
       "facilities": [
@@ -184,7 +185,7 @@
       }
     },
     "room_9": {
-      "title": "Camera Mista Deluxe",
+      "title": "Camera Mista – Letti Singoli",
       "bed_intro": "Un modo economico per avere un dormitorio da tre letti.",
       "bed_description": "La nostra Camera Mista Deluxe offre tre letti singoli e può ospitare fino a tre persone. Situata al quarto piano, dispone di bagno privato interno, vista cortile, aria condizionata e accesso sicuro con tessera. Biancheria da letto e asciugamano forniti al check-in.",
       "facilities": [
@@ -203,7 +204,7 @@
       }
     },
     "room_8": {
-      "title": "Camera Twin Femminile",
+      "title": "Camera Femminile – Vista Giardino",
       "bed_intro": "Un’opzione economica per due viaggiatrici.",
       "bed_description": "La nostra Camera Twin Femminile dispone di un letto a castello (posto letto in dormitorio) e può ospitare fino a due persone. Situata al terzo piano, offre aria condizionata, accesso sicuro con tessera, vista giardino e si trova accanto al bagno condiviso femminile. Biancheria da letto e asciugamano forniti al check-in.",
       "facilities": [
@@ -239,7 +240,7 @@
     "nextSlide": "Diapositiva successiva"
   },
   "hero": {
-    "heading": "Le nostre camere",
+    "heading": "Posti letto in dormitorio",
     "subheading": "Scegli la camera perfetta per il tuo soggiorno"
   },
   "filters": {
@@ -250,6 +251,7 @@
   "filtersAria": "Filtra per tipologia di camera",
   "checkRatesNonRefundable": "Tariffe non rimborsabili",
   "checkRatesFlexible": "Tariffe flessibili",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "Non‑Refundable",
     "flexible": "Flexible"
@@ -302,5 +304,10 @@
   "priceUnits": {
     "perRoom": "Camera",
     "perBed": "Letto"
+  },
+  "date": {
+    "stayHelper": "2–8 nights",
+    "clearDates": "Clear dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
   }
 }

@@ -8,9 +8,15 @@ import { useRouter } from "next/navigation";
 import { Section } from "@acme/design-system/atoms";
 import { Button } from "@acme/design-system/primitives";
 import { resolvePrimaryCtaLabel } from "@acme/ui/shared";
-import { resolveBookingDateFormat } from "@acme/ui/utils/bookingDateFormat";
 
+import type { DateRange } from "@/components/booking/DateRangePicker";
+import { DateRangePicker } from "@/components/booking/DateRangePicker";
 import type { AppLanguage } from "@/i18n.config";
+import {
+  isValidPax,
+  isValidStayRange,
+} from "@/utils/bookingDateRules";
+import { formatDate, safeParseIso } from "@/utils/dateUtils";
 import { fireCtaClick } from "@/utils/ga4-events";
 
 const BOOKING_QUERY_KEYS = {
@@ -20,55 +26,7 @@ const BOOKING_QUERY_KEYS = {
 } as const;
 
 /* i18n-exempt -- DX-452 [ttl=2026-12-31] Form field ids are non-UI tokens. */
-const BOOKING_FIELD_IDS = {
-  checkIn: "booking-check-in",
-  checkOut: "booking-check-out",
-  guests: "booking-guests",
-} as const;
-
-const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
-
-function formatLocalIso(date: Date): string {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
-
-function parseDateInput(value: string, dateFormat: string): Date | null {
-  if (!value) return null;
-  if (ISO_DATE_PATTERN.test(value)) {
-    const [year, month, day] = value.split("-").map((part) => Number.parseInt(part, 10));
-    if (!year || !month || !day) return null;
-    const parsed = new Date(year, month - 1, day);
-    if (Number.isNaN(parsed.getTime())) return null;
-    return parsed;
-  }
-  const parts = value.split(/[./-]/);
-  if (parts.length !== 3) return null;
-  const [first, second, third] = parts;
-  if (!first || !second || !third) return null;
-  const format = dateFormat.toLowerCase();
-  const monthFirst = format.startsWith("mm");
-  const day = Number.parseInt(monthFirst ? second : first, 10);
-  const month = Number.parseInt(monthFirst ? first : second, 10);
-  const year = Number.parseInt(third, 10);
-  if (!year || !month || !day) return null;
-  const parsed = new Date(year, month - 1, day);
-  if (
-    parsed.getFullYear() !== year ||
-    parsed.getMonth() !== month - 1 ||
-    parsed.getDate() !== day
-  ) {
-    return null;
-  }
-  return parsed;
-}
-
-function isValidDate(value: string, dateFormat: string): boolean {
-  if (!value) return false;
-  return Boolean(parseDateInput(value, dateFormat));
-}
+const BOOKING_GUESTS_ID = "booking-guests";
 
 function toPositiveInt(value: string): number {
   const parsed = Number.parseInt(value, 10);
@@ -76,22 +34,14 @@ function toPositiveInt(value: string): number {
   return parsed;
 }
 
-function getDateParts(value: string, dateFormat: string): number {
-  const parsed = parseDateInput(value, dateFormat);
-  if (!parsed) return Number.NaN;
-  return parsed.getTime();
-}
-
 type BookingWidgetProps = {
   lang?: AppLanguage;
   sectionRef?: Ref<HTMLElement>;
-  checkInRef?: Ref<HTMLInputElement>;
 };
 
 const BookingWidget = memo(function BookingWidget({
   lang,
   sectionRef,
-  checkInRef,
 }: BookingWidgetProps): JSX.Element {
   const router = useRouter();
   const translationOptions = lang ? { lng: lang } : undefined;
@@ -99,29 +49,30 @@ const BookingWidget = memo(function BookingWidget({
   const { t: tTokens } = useTranslation("_tokens", translationOptions);
   const { t: tLanding } = useTranslation("landingPage", translationOptions);
   const hasHydrated = useRef(false);
-  const { dateFormat, placeholder, inputLocale } = resolveBookingDateFormat(lang);
 
-  const [checkIn, setCheckIn] = useState("");
-  const [checkOut, setCheckOut] = useState("");
+  const [range, setRange] = useState<DateRange>({ from: undefined, to: undefined });
   const [guests, setGuests] = useState(1);
   const [showError, setShowError] = useState(false);
-  const [today, setToday] = useState<string | null>(null);
+  const checkIn = range.from ? formatDate(range.from) : "";
+  const checkOut = range.to ? formatDate(range.to) : "";
 
   useEffect(() => {
     if (hasHydrated.current) return;
     hasHydrated.current = true;
     if (typeof window === "undefined") return;
     const params = new URLSearchParams(window.location.search);
-    setCheckIn(params.get(BOOKING_QUERY_KEYS.checkIn) ?? "");
-    setCheckOut(params.get(BOOKING_QUERY_KEYS.checkOut) ?? "");
+    const hydratedCheckIn = params.get(BOOKING_QUERY_KEYS.checkIn) ?? "";
+    const hydratedCheckOut = params.get(BOOKING_QUERY_KEYS.checkOut) ?? "";
+    if (hydratedCheckIn || hydratedCheckOut) {
+      setRange({
+        from: safeParseIso(hydratedCheckIn),
+        to: safeParseIso(hydratedCheckOut),
+      });
+    }
     const guestsValue = params.get(BOOKING_QUERY_KEYS.guests);
     if (guestsValue) {
       setGuests(toPositiveInt(guestsValue));
     }
-  }, []);
-
-  useEffect(() => {
-    setToday(formatLocalIso(new Date()));
   }, []);
 
   useEffect(() => {
@@ -153,8 +104,7 @@ const BookingWidget = memo(function BookingWidget({
 
   const invalidRange = (() => {
     if (!checkIn || !checkOut) return false;
-    if (!isValidDate(checkIn, dateFormat) || !isValidDate(checkOut, dateFormat)) return false;
-    return getDateParts(checkOut, dateFormat) <= getDateParts(checkIn, dateFormat);
+    return !isValidStayRange(checkIn, checkOut) || !isValidPax(guests);
   })();
 
   const fallbackAvailabilityLabel = tModals("booking.buttonAvailability") as string;
@@ -162,16 +112,6 @@ const BookingWidget = memo(function BookingWidget({
     resolvePrimaryCtaLabel(tTokens, {
       fallback: () => fallbackAvailabilityLabel,
     }) ?? fallbackAvailabilityLabel;
-
-  const handleCheckInChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setCheckIn(event.target.value);
-    setShowError(false);
-  }, []);
-
-  const handleCheckOutChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setCheckOut(event.target.value);
-    setShowError(false);
-  }, []);
 
   const handleGuestsChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setGuests(toPositiveInt(event.target.value));
@@ -193,13 +133,6 @@ const BookingWidget = memo(function BookingWidget({
   }, [checkIn, checkOut, guests, invalidRange, lang, router]);
 
   const errorMessage = tLanding("bookingWidget.invalidDateRange") as string;
-  const minCheckIn = today ?? undefined;
-  const minCheckOut = (() => {
-    if (!checkIn) return today || undefined;
-    const parsed = parseDateInput(checkIn, dateFormat);
-    if (!parsed) return today || undefined;
-    return formatLocalIso(parsed);
-  })();
 
   return (
     <section
@@ -209,68 +142,40 @@ const BookingWidget = memo(function BookingWidget({
     >
       <Section as="div" padding="none" className="max-w-5xl px-4">
         <div className="rounded-2xl border border-overlay-scrim-1/10 bg-panel/95 p-3 shadow-lg backdrop-blur border-fg-inverse/10 dark:bg-brand-text/90">
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-12 md:items-end">
-            <label
-              htmlFor={BOOKING_FIELD_IDS.checkIn}
-              className="flex flex-col gap-1.5 text-sm font-semibold text-brand-heading text-brand-surface md:col-span-4"
-            >
-              {tModals("booking.checkInLabel")}
-              <input
-                id={BOOKING_FIELD_IDS.checkIn}
-                type="date"
-                lang={inputLocale}
-                min={minCheckIn}
-                value={checkIn}
-                onChange={handleCheckInChange}
-                placeholder={placeholder}
-                ref={checkInRef}
-                className="min-h-11 rounded-xl border border-brand-outline/40 bg-panel/90 px-3 py-2 text-sm text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:bg-brand-surface"
-              />
-            </label>
-
-            <label
-              htmlFor={BOOKING_FIELD_IDS.checkOut}
-              className="flex flex-col gap-1.5 text-sm font-semibold text-brand-heading text-brand-surface md:col-span-4"
-            >
-              {tModals("booking.checkOutLabel")}
-              <input
-                id={BOOKING_FIELD_IDS.checkOut}
-                type="date"
-                lang={inputLocale}
-                min={minCheckOut}
-                value={checkOut}
-                onChange={handleCheckOutChange}
-                placeholder={placeholder}
-                className="min-h-11 rounded-xl border border-brand-outline/40 bg-panel/90 px-3 py-2 text-sm text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:bg-brand-surface"
-              />
-            </label>
-
-            <label
-              htmlFor={BOOKING_FIELD_IDS.guests}
-              className="flex flex-col gap-1.5 text-sm font-semibold text-brand-heading text-brand-surface md:col-span-2"
-            >
-              {tModals("booking.guestsLabel")}
-              <input
-                id={BOOKING_FIELD_IDS.guests}
-                type="number"
-                min={1}
-                max={8}
-                value={guests}
-                onChange={handleGuestsChange}
-                className="min-h-11 rounded-xl border border-brand-outline/40 bg-panel/90 px-3 py-2 text-sm text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:bg-brand-surface"
-              />
-            </label>
-
-            <Button
-              type="button"
-              onClick={handleSubmit}
-              color="accent"
-              tone="solid"
-              size="lg"
-              className="w-full rounded-full md:col-span-2 bg-brand-secondary text-brand-on-accent hover:bg-brand-primary hover:text-brand-on-primary focus-visible:ring-brand-secondary"
-            >
-              {checkAvailabilityLabel}
-            </Button>
+          <div className="space-y-3">
+            <DateRangePicker
+              selected={range}
+              onRangeChange={(r) => setRange(r ?? { from: undefined, to: undefined })}
+              stayHelperText={tModals("date.stayHelper") as string}
+              clearDatesText={tModals("date.clearDates") as string}
+            />
+            <div className="flex items-end gap-3">
+              <label
+                htmlFor={BOOKING_GUESTS_ID}
+                className="flex flex-col gap-1.5 text-sm font-semibold text-brand-heading text-brand-surface"
+              >
+                {tModals("booking.guestsLabel")}
+                <input
+                  id={BOOKING_GUESTS_ID}
+                  type="number"
+                  min={1}
+                  max={8}
+                  value={guests}
+                  onChange={handleGuestsChange}
+                  className="min-h-11 w-20 rounded-xl border border-brand-outline/40 bg-panel/90 px-3 py-2 text-sm text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:bg-brand-surface"
+                />
+              </label>
+              <Button
+                type="button"
+                onClick={handleSubmit}
+                color="accent"
+                tone="solid"
+                size="lg"
+                className="w-full rounded-full bg-brand-secondary text-brand-on-accent hover:bg-brand-primary hover:text-brand-on-primary focus-visible:ring-brand-secondary"
+              >
+                {checkAvailabilityLabel}
+              </Button>
+            </div>
           </div>
           {showError ? (
             <p className="mt-3 text-sm text-brand-bougainvillea" role="alert">

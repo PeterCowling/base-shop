@@ -53,16 +53,16 @@ This fact-find is focused on preventing future briefing quality regressions (met
 ### Entry Points
 - `docs/business-os/startup-loop-output-registry.user.html` - compiled operator artifact under review.
 - `docs/business-os/strategy/HEAD/plan.user.md` - current HEAD strategy and contract wording.
-- `docs/business-os/startup-baselines/HEAD-intake-packet.user.md` - intake-level channel and contract statements.
+- `docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md` - intake-level channel and contract statements.
 
 ### Key Modules / Files
 - `docs/business-os/startup-loop-output-registry.user.html` - HEAD header labels, rendered statuses, and top-of-fold structure.
 - `docs/business-os/strategy/HEAD/plan.user.md` - locked/frozen contract language and learning placeholder.
-- `docs/business-os/startup-baselines/HEAD-intake-packet.user.md` - own-site-first channel intent and draft outcome contract.
+- `docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md` - own-site-first channel intent and draft outcome contract.
 - `docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md` - assumptions register (including confidence values).
 - `docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md` - marketplace-first recommendation.
 - `docs/business-os/site-upgrades/HEAD/2026-02-12-upgrade-brief.user.md` - open-question set that overlaps with intake unknowns.
-- `docs/business-os/strategy/HEAD/brand-identity.user.md` - low-confidence proof ledger for claims also marked high elsewhere.
+- `docs/business-os/strategy/HEAD/2026-02-21-brand-identity-dossier.user.md` - low-confidence proof ledger for claims also marked high elsewhere.
 - `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md` - authoritative S10 prompt structure and required sections.
 - `docs/business-os/startup-loop/process-registry-v2.md` - weekly feedback responsibilities and S10 authority boundaries.
 - `docs/business-os/startup-loop/artifact-registry.md` - canonical-path + lint-rule precedent for artifact validation.
@@ -70,11 +70,11 @@ This fact-find is focused on preventing future briefing quality regressions (met
 ### Findings (Operator Feedback Verification)
 | ID | Finding | Verification | Evidence |
 |---|---|---|---|
-| F-01 | Metadata contamination in HEAD panel title | Confirmed | `docs/business-os/startup-loop-output-registry.user.html:380` shows `HEAD — Mini Pet Headband`, conflicting with HEAD naming in `docs/business-os/strategy/HEAD/plan.user.md:11` and `docs/business-os/startup-baselines/HEAD-intake-packet.user.md:30`. |
-| F-02 | Outcome contract is duplicated across artifacts | Confirmed | Contract definitions appear in `docs/business-os/strategy/HEAD/plan.user.md:17`, `docs/business-os/strategy/HEAD/plan.user.md:38`, `docs/business-os/startup-baselines/HEAD-intake-packet.user.md:56`, and `docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md:149`. |
-| F-03 | Channel posture contradiction (own-site-first vs marketplace-first) | Confirmed | Own-site-first in intake (`docs/business-os/startup-baselines/HEAD-intake-packet.user.md:21`, `docs/business-os/startup-baselines/HEAD-intake-packet.user.md:43`) versus marketplace-first in market intel (`docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md:22`, `docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md:105`). |
+| F-01 | Metadata contamination in HEAD panel title | Confirmed | `docs/business-os/startup-loop-output-registry.user.html:380` shows `HEAD — Mini Pet Headband`, conflicting with HEAD naming in `docs/business-os/strategy/HEAD/plan.user.md:11` and `docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md:30`. |
+| F-02 | Outcome contract is duplicated across artifacts | Confirmed | Contract definitions appear in `docs/business-os/strategy/HEAD/plan.user.md:17`, `docs/business-os/strategy/HEAD/plan.user.md:38`, `docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md:56`, and `docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md:149`. |
+| F-03 | Channel posture contradiction (own-site-first vs marketplace-first) | Confirmed | Own-site-first in intake (`docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md:21`, `docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md:43`) versus marketplace-first in market intel (`docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md:22`, `docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md:105`). |
 | F-04 | Status taxonomy drift in compiled output | Confirmed | Source files are `Status: Active` (`docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md:3`, `docs/business-os/site-upgrades/HEAD/2026-02-12-upgrade-brief.user.md:3`), but compiled labels render as `Resolved` (`docs/business-os/startup-loop-output-registry.user.html:521`, `docs/business-os/startup-loop-output-registry.user.html:681`). |
-| F-05 | Confidence conflict for the same claim (`~17k CI users`) | Confirmed | Forecast assumption marks high confidence (`docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md:127`) while brand proof ledger marks low confidence (`docs/business-os/strategy/HEAD/brand-identity.user.md:134`). |
+| F-05 | Confidence conflict for the same claim (`~17k CI users`) | Confirmed | Forecast assumption marks high confidence (`docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md:127`) while brand proof ledger marks low confidence (`docs/business-os/strategy/HEAD/2026-02-21-brand-identity-dossier.user.md:134`). |
 | F-06 | Operator top-of-fold is not a strict decision card | Confirmed | HEAD top-of-fold starts with long narrative artifacts (`docs/business-os/startup-loop-output-registry.user.html:387` onward); probe found no `Decision Register`, `Blockers & Unknowns`, or pass/warn/fail gate block in current output (rg probe, 2026-02-19). |
 | F-07 | Unknowns are scattered across artifacts | Confirmed | `Missing-Data Checklist` and `Open Questions` appear in multiple sections (`docs/business-os/startup-loop-output-registry.user.html:615`, `docs/business-os/startup-loop-output-registry.user.html:705`, `docs/business-os/site-upgrades/HEAD/2026-02-12-upgrade-brief.user.md:121`). |
 | F-08 | Learning loop intent exists but is not enforced | Confirmed | Placeholder text appears in compiled output (`docs/business-os/startup-loop-output-registry.user.html:414`), while S10 prompt required output sections stop at A-G with no mandatory learning append (`docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md:44`). |
@@ -131,8 +131,8 @@ This fact-find is focused on preventing future briefing quality regressions (met
 | Hypothesis | Evidence available | Source | Confidence in signal |
 |---|---|---|---|
 | H1 | Direct contamination example present | `docs/business-os/startup-loop-output-registry.user.html:380` | High |
-| H2 | Contract duplication across plan/intake/market docs | `docs/business-os/strategy/HEAD/plan.user.md:17`, `docs/business-os/startup-baselines/HEAD-intake-packet.user.md:56` | High |
-| H3 | Contradictory channel recommendations are explicit | `docs/business-os/startup-baselines/HEAD-intake-packet.user.md:43`, `docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md:105` | High |
+| H2 | Contract duplication across plan/intake/market docs | `docs/business-os/strategy/HEAD/plan.user.md:17`, `docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md:56` | High |
+| H3 | Contradictory channel recommendations are explicit | `docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md:43`, `docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md:105` | High |
 | H4 | Current T1 contains long narrative blocks without strict operator card schema | `docs/business-os/startup-loop-output-registry.user.html:387` | Medium-High |
 | H5 | Learning placeholder exists; S10 prompt lacks explicit learning section | `docs/business-os/startup-loop-output-registry.user.html:414`, `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md:44` | High |
 
@@ -203,7 +203,7 @@ This fact-find is focused on preventing future briefing quality regressions (met
   - Evidence: `docs/business-os/startup-loop-output-registry.user.html:380`, `docs/business-os/strategy/HEAD/plan.user.md:11`.
 - Q: Is channel contradiction present in source artifacts?
   - A: Yes. Own-site-first and marketplace-first recommendations are both active and unresolved.
-  - Evidence: `docs/business-os/startup-baselines/HEAD-intake-packet.user.md:43`, `docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md:105`.
+  - Evidence: `docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md:43`, `docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md:105`.
 - Q: Is learning loop enforcement currently explicit in S10 output contract?
   - A: No explicit learning payload section is required today.
   - Evidence: `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md:44`.

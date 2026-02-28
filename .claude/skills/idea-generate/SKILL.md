@@ -1,5 +1,5 @@
 ---
-name: idea-generate
+name: lp-do-idea-generate
 description: Radical business growth process auditor. Cabinet Secretary orchestrates multi-lens composite idea generation with attribution, confidence gating, and priority ranking.
 ---
 
@@ -7,23 +7,23 @@ description: Radical business growth process auditor. Cabinet Secretary orchestr
 
 Cabinet Secretary orchestrates composite business idea generation across multiple expert lenses. Not a kanban health checker. Not a WIP counter. This is a multi-stage pipeline that produces ideas, scores them, clusters them, filters them, prioritizes them, creates cards for top-priority ideas, and seeds fact-find stage docs for immediate investigation.
 
-Pete triggers the sweep via `/idea-generate`. Everything after that is autonomous.
+Pete triggers the sweep via `/lp-do-idea-generate`. Everything after that is autonomous.
 
 ---
 
 ## Invocation
 
 ```
-/idea-generate                           # default: --stance=improve-data
-/idea-generate --stance=improve-data
-/idea-generate --stance=grow-business
-/idea-generate --dry-run                # preview-only: generate/report ideas, no API writes
-/idea-generate --dry-run --stance=grow-business
-/idea-generate --dry-run --allow-api-degraded   # allow filesystem-only fallback when API preflight fails
-/idea-generate --force-code-review       # force technical cabinet even without triggers
-/idea-generate --assumptions-file <path-to-md>  # optional assumptions input file
-/idea-generate --verbosity=compact|standard|extended
-/idea-generate --stage7b                 # enable optional Stage 7b single-card backfill slot
+/lp-do-idea-generate                           # default: --stance=improve-data
+/lp-do-idea-generate --stance=improve-data
+/lp-do-idea-generate --stance=grow-business
+/lp-do-idea-generate --dry-run                # preview-only: generate/report ideas, no API writes
+/lp-do-idea-generate --dry-run --stance=grow-business
+/lp-do-idea-generate --dry-run --allow-api-degraded   # allow filesystem-only fallback when API preflight fails
+/lp-do-idea-generate --force-code-review       # force technical cabinet even without triggers
+/lp-do-idea-generate --assumptions-file <path-to-md>  # optional assumptions input file
+/lp-do-idea-generate --verbosity=compact|standard|extended
+/lp-do-idea-generate --stage7b                 # enable optional Stage 7b single-card backfill slot
 scripts/run-idea-generate.sh --dry-run --stance=improve-data   # recommended runner (loads .env.local)
 scripts/run-idea-generate.sh --dry-run --allow-api-degraded --stance=improve-data
 ```
@@ -37,6 +37,12 @@ scripts/run-idea-generate.sh --dry-run --allow-api-degraded --stance=improve-dat
 - `--allow-api-degraded` is valid only with `--dry-run` (never valid for live mode).
 - Recommended execution path is `scripts/run-idea-generate.sh` so Agent API env vars are loaded from `.env.local`.
 - `scripts/run-idea-generate.sh` is initiator-agent-preserving: it auto-selects the local agent CLI (`codex` first, then `claude`) so the invoking agent can execute the sweep without forced cross-agent handoff.
+
+### Mandatory CLI Reminder
+
+At the start of every `/lp-do-idea-generate` run, emit this exact CLI message:
+
+`remember to find out why any good ideas generated via this skill have not been picked up automatically, and revise the workflow so that in the future they are`
 
 ---
 
@@ -71,7 +77,7 @@ The Musk lens applies this algorithm in **strict order** during its generation p
 
 ### Sales-First Portfolio Directives (Ideas-Generation Scope)
 
-For `/idea-generate`, operate in **sales-first mode**:
+For `/lp-do-idea-generate`, operate in **sales-first mode**:
 
 - Treat **revenue businesses** as primary: `BRIK`, `PIPE`, `XA`, `HEAD`, `PET`, `HBAG`.
 - Treat **enabling systems** as secondary: `PLAT`, `BOS`.

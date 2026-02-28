@@ -1,4 +1,4 @@
-import Providers from "@/components/Providers";
+import Providers from "@/components/ClientProviders";
 import RealTimeDashboard from "@/components/reports/RealTimeDashboard";
 
 // Prevent static prerendering — Firebase RTDB requires runtime env vars

@@ -70,15 +70,13 @@ Last-reviewed: 2026-02-21
 | 15 | `SELL-06` | Partnership and referral | Standing record of partnership pipeline, referral programmes, and affiliate activity with performance notes. | `partnership-and-referral-standing`, `partnership-standing`, `sell-06` | — |
 | 15 | `SELL-07` | Sell aggregate pack | Aggregate sell pack combining channel performance, outreach/content, SEO, paid channel, and partnership standing into one artifact. | `sell-aggregate-pack`, `sell-07` | — |
 | 15 | `SELL-08` | Activation readiness | Paid-spend authorization state documented from measurement/risk/conversion checks. | `activation-readiness`, `spend-authorization`, `sell-08` | paid_spend_requested |
-| 16 | `S4` | Baseline merge | Candidate baseline snapshot and draft manifest combining offer, forecast, and channel artifacts. | `baseline-merge`, `s4` | — |
-| 17 | `S5A` | Prioritize | Scored and ranked action list — top 2-3 items to work on next. | `prioritize`, `s5a` | — |
-| 18 | `S5B` | BOS sync | Business OS cards and stage docs persisted to D1. Manifest pointer committed. | `bos-sync`, `s5b` | — |
-| 19 | `WEBSITE` | Website | Website workstream complete via one named process: WEBSITE-01 (L1 first build) or WEBSITE-02 (site-upgrade synthesis). | `website`, `website-workstream`, `website-container` | — |
-| 19 | `WEBSITE-01` | L1 first build | Framework-first assembly contract for the first website build, mapping canonical assets, boundaries, and implementation order. | `website-01`, `l1-first-build`, `first-build-framework`, `site-v1-builder` | launch-surface = pre-website |
-| 19 | `WEBSITE-02` | Site-upgrade synthesis | Site upgrade brief with prioritized improvement backlog derived from competitor best-of analysis. | `website-02`, `site-upgrade`, `site-upgrade-synthesis` | launch-surface = website-live |
-| 20 | `DO` | Do | Feature or artifact delivered: fact-find brief, sequenced plan, and implementation with validation evidence. | `do`, `fact-find`, `plan`, `build`, `s7`, `s8`, `s9` | — |
-| 21 | `S9B` | QA gates | QA gate pass evidence: conversion flows, SEO readiness, performance budget, and legal compliance verified. | `qa-gates`, `qa`, `s9b` | — |
-| 22 | `SIGNALS` | Signals | Weekly signals container complete: forecast refreshed, KPIs compiled, K/P/C/S decision made, signal quality reviewed, experiments read out and next cycle specs updated. | `signals`, `weekly-readout`, `weekly-decision`, `weekly`, `s10` | — |
+| 16 | `S4` | Baseline merge | Merged baseline snapshot and manifest commit combining offer, forecast, and channel artifacts. | `baseline-merge`, `s4` | — |
+| 17 | `WEBSITE` | Website | Website workstream complete via one named process: WEBSITE-01 (L1 first build) or WEBSITE-02 (site-upgrade synthesis). | `website`, `website-workstream`, `website-container` | — |
+| 17 | `WEBSITE-01` | L1 first build | Framework-first assembly contract for the first website build, mapping canonical assets, boundaries, and implementation order. | `website-01`, `l1-first-build`, `first-build-framework`, `site-v1-builder` | launch-surface = pre-website |
+| 17 | `WEBSITE-02` | Site-upgrade synthesis | Site upgrade brief with prioritized improvement backlog derived from competitor best-of analysis. | `website-02`, `site-upgrade`, `site-upgrade-synthesis` | launch-surface = website-live |
+| 18 | `DO` | Do | Feature or artifact delivered: fact-find brief, sequenced plan, and implementation with validation evidence. | `do`, `fact-find`, `plan`, `build`, `s7`, `s8`, `s9` | — |
+| 19 | `S9B` | QA gates | QA gate pass evidence: conversion flows, SEO readiness, performance budget, and legal compliance verified. | `qa-gates`, `qa`, `s9b` | — |
+| 20 | `SIGNALS` | Signals | Weekly signals container complete: forecast refreshed, KPIs compiled, K/P/C/S decision made, signal quality reviewed, experiments read out and next cycle specs updated. | `signals`, `weekly-readout`, `weekly-decision`, `weekly`, `s10` | — |
 | 23 | `SIGNALS-01` | Forecast | 90-day P10/P50/P90 revenue forecast with assumption register and sparse-evidence guardrails. Refreshed each cycle as signals accumulate. | `forecast`, `s3`, `signals-01` | — |
 | 24 | `SIGNALS-02` | Measure | Normalised KPI snapshot for the week: traffic, revenue, conversion rates, and denominator-valid metric set compiled from live analytics. | `weekly-measure`, `signals-02` | — |
 | 25 | `SIGNALS-03` | Decide | K/P/C/S decision document: what to Keep, Pivot, Cut, and Scale this week, with rationale anchored to the KPI snapshot. | `weekly-decide`, `kpcs`, `signals-03` | — |

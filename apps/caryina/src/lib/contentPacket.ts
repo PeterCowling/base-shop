@@ -9,6 +9,13 @@ interface LocalizedText {
   it?: string;
 }
 
+interface TrustStripCopy {
+  delivery: LocalizedText;
+  exchange: LocalizedText;
+  origin: LocalizedText;
+  securePayment: LocalizedText;
+}
+
 interface FaqItem {
   question: LocalizedText;
   answer: LocalizedText;
@@ -46,6 +53,7 @@ interface SiteContentPayload {
     proofHeading: LocalizedText;
     proofBullets: LocalizedText[];
     relatedHeading: LocalizedText;
+    trustStrip?: TrustStripCopy;
   };
   support: {
     title: LocalizedText;
@@ -149,6 +157,20 @@ export function getProductPageContent(locale: Locale) {
     proofHeading: localizedText(productPage.proofHeading, locale),
     proofBullets: localizedList(productPage.proofBullets, locale),
     relatedHeading: localizedText(productPage.relatedHeading, locale),
+  };
+}
+
+export function getTrustStripContent(
+  locale: Locale,
+): { delivery: string; exchange: string; origin: string; securePayment: string } | undefined {
+  const productPage = readPayload().productPage;
+  if (!productPage.trustStrip) return undefined;
+  const ts = productPage.trustStrip;
+  return {
+    delivery: localizedText(ts.delivery, locale),
+    exchange: localizedText(ts.exchange, locale),
+    origin: localizedText(ts.origin, locale),
+    securePayment: localizedText(ts.securePayment, locale),
   };
 }
 

@@ -28,12 +28,16 @@ jest.mock("../../../../utils/generateTransactionId", () => ({
   generateTransactionId: () => "txn123",
 }));
 
+jest.mock("../../../../context/AuthContext", () => ({
+  useAuth: () => ({ user: { user_name: "test-user", email: "test@test.com" } }),
+}));
+
 describe("useAddRoomPaymentTransaction", () => {
   let consoleErrorSpy: jest.SpyInstance;
   let consoleLogSpy: jest.SpyInstance;
 
   beforeEach(() => {
-    consoleErrorSpy = vi
+    consoleErrorSpy = jest
       .spyOn(console, "error")
       .mockImplementation(() => undefined);
     consoleLogSpy = jest.spyOn(console, "log").mockImplementation(() => undefined);
@@ -94,7 +98,7 @@ describe("useAddRoomPaymentTransaction", () => {
       nonRefundable: true,
       docType: "",
       description: "Room payment",
-      user_name: "Pete",
+      user_name: "test-user",
     });
     expect(result.current.error).toBeNull();
   });

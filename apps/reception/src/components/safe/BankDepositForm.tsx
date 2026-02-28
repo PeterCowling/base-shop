@@ -42,7 +42,7 @@ export const BankDepositForm = memo(function BankDepositForm({
   };
 
   return (
-    <div className="border-2 border-primary-main rounded-lg p-4 mt-4">
+    <div className="bg-surface-2 border border-border-strong rounded-lg p-4 mt-4">
       <h3 className="text-lg font-semibold text-primary-main mb-4">
         Bank Deposit
       </h3>
@@ -66,7 +66,7 @@ export const BankDepositForm = memo(function BankDepositForm({
             min="0"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="w-full border border-border-2 rounded px-3 py-2"
+            className="w-full border border-border-strong rounded-lg px-3 py-2"
             placeholder="0.00"
           />
         </div>
@@ -85,7 +85,7 @@ export const BankDepositForm = memo(function BankDepositForm({
             step="1"
             value={keycardInput}
             onChange={(e) => setKeycardInput(e.target.value)}
-            className="w-full border border-border-2 rounded px-3 py-2"
+            className="w-full border border-border-strong rounded-lg px-3 py-2"
             placeholder="0"
           />
           <p className="text-xs text-muted-foreground mt-1">

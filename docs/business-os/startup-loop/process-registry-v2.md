@@ -1,9 +1,9 @@
 ---
 Type: Process-Registry
 Status: Active
-Version: 2.0.2
+Version: 2.0.3
 Created: 2026-02-18
-Last-updated: 2026-02-23
+Last-updated: 2026-02-25
 Owner: startup-loop maintainers
 Taxonomy-Ref: docs/business-os/startup-loop/workstream-workflow-taxonomy-v2.yaml
 Assignment-Ref: docs/business-os/startup-loop/process-assignment-v2.yaml
@@ -54,7 +54,7 @@ This registry answers: *"During each startup-loop run and weekly operating cycle
 | CDI-1 | Weekly signal intake and insight synthesis | CDI | S10 | Weekly | All profiles |
 | CDI-2 | Customer development interviews and field validation | CDI | MARKET-01, DO, recurring | Weekly (pre-PMF) / Biweekly (PMF+) | All profiles |
 | CDI-3 | Market and competitor scan | CDI | MARKET-01, recurring | Weekly (hospitality, high season) / Biweekly (product) | All |
-| CDI-4 | Experiment backlog design and prioritisation | CDI | S5A, S10 | Weekly | All |
+| CDI-4 | Experiment backlog design and prioritisation | CDI | S4, S10 | Weekly | All |
 | OFF-1 | Offer and value proposition iteration | OFF | MARKET-06, recurring | Weekly (pre-PMF/PMF) / Monthly (scaling) | All |
 | OFF-2 | Pricing and revenue management review | OFF | MARKET-06, S10 | Weekly (hospitality always; product if volatile) | All |
 | OFF-3 | Product / listing content and merchandising refresh | OFF | WEBSITE-01 (bootstrap), WEBSITE-02 (recurring; L1 Build 2 image-first default for visual-heavy catalogs) | One-time at first build, then Weekly (top assets) / Monthly full audit | All |
@@ -74,7 +74,7 @@ This registry answers: *"During each startup-loop run and weekly operating cycle
 | FIN-1 | Weekly cash and unit economics review | FIN | S3, S10 | Weekly | All |
 | FIN-2 | Billing, payouts and reconciliation | FIN | Post-DO launch | Weekly / Daily (high volume) | All (activates after first transactions) |
 | FIN-3 | Risk register, compliance, and incident readiness | FIN | ASSESSMENT, recurring | Weekly light / Monthly deep | All (see exception-runbooks-v1.md) |
-| FIN-4 | Vendor and procurement management | FIN | Post-S5B, recurring | Monthly; Weekly exceptions | `inventory_present`, `hospitality`, scaling stage |
+| FIN-4 | Vendor and procurement management | FIN | Post-S4, recurring | Monthly; Weekly exceptions | `inventory_present`, `hospitality`, scaling stage |
 | DATA-1 | KPI refresh and data integrity checks | DATA | MEASURE-01/MEASURE-02, S3, S10 | Weekly + Daily key metrics | All |
 | DATA-2 | Leading indicator monitoring and alerting | DATA | S10, recurring | Daily monitoring / Weekly summary | All (see exception-runbooks-v1.md) |
 | DATA-3 | Incident post-mortems and corrective actions | DATA | Triggered | As-needed | All (see exception-runbooks-v1.md) |
@@ -96,9 +96,7 @@ Every core startup-loop stage anchor has at least one linked workstream process 
 | MARKET-06 | Offer design | OFF-1 (offer iteration), OFF-2 (initial pricing hypothesis) |
 | S3 | Forecast | FIN-1 (unit economics baseline), DATA-1 (KPI modeling) |
 | SELL-01 | Channel strategy + GTM | GTM-1 (demand plan), GTM-2 (distribution ops), OFF-4 (channel policy), CDI-4 (experiment design) |
-| S4 | Baseline merge | DATA-1 (artifact integrity audit) |
-| S5A | Prioritize | CDI-4 (experiment backlog prioritisation) |
-| S5B | BOS sync | DATA-4 (decision log state sync) |
+| S4 | Baseline merge + prioritization | DATA-1 (artifact integrity audit), CDI-4 (experiment backlog prioritisation) |
 | WEBSITE-01 | L1 first build framework | OFF-3 (first-build framework and content/listing baseline contract) |
 | WEBSITE-02 | Site-upgrade synthesis | OFF-3 (recurring content/listing refresh and merchandising iteration) |
 | DO | Do | CDI-2 (field validation), CDI-4 (hypothesis design), GTM-1 (demand plan inputs), OPS-1 (capacity planning inputs), OPS-2 (delivery execution preparation), CX-4 (SOP updates), OPS-4 (build QA) |
@@ -159,7 +157,7 @@ Every core startup-loop stage anchor has at least one linked workstream process 
 | **Primary phase** | Sense |
 | **Activation** | conditional — Weekly in high season or wholesale-heavy; biweekly/monthly for digital-only; mandatory during Demand Shock exception |
 | **Purpose** | Keep pricing, positioning, and channel presence grounded in the current market (seasonality and local competition). |
-| **Stage anchor** | MARKET-01 (initial deep research); recurring post-S5B |
+| **Stage anchor** | MARKET-01 (initial deep research); recurring post-S4 |
 | **Cadence** | Weekly (hospitality, high season); biweekly/monthly (product, depending on volatility) |
 | **Owner role** | Commercial Lead; in small teams: Growth Lead |
 | **Inputs** | Competitor list; scrape/notes of competitor prices and offers; OTA market view; retail shelf checks (wholesale) |
@@ -180,7 +178,7 @@ Every core startup-loop stage anchor has at least one linked workstream process 
 | **Primary phase** | Decide/Plan |
 | **Activation** | always |
 | **Purpose** | Turn hypotheses into testable experiments and prioritise them by expected impact and effort, maintaining a steady weekly experimentation throughput. |
-| **Stage anchor** | S5A (initial prioritisation), S10 (weekly reprioritisation) |
+| **Stage anchor** | S4 (initial prioritisation), S10 (weekly reprioritisation) |
 | **Cadence** | Weekly |
 | **Owner role** | Growth Lead (product) or Commercial/Revenue Lead (hospitality); facilitated by Data Lead |
 | **Inputs** | Hypotheses (CDI-1/CDI-2); operational constraints (OPS-1); OKRs/targets; bottleneck diagnosis output |
@@ -204,7 +202,7 @@ Every core startup-loop stage anchor has at least one linked workstream process 
 | **Primary phase** | Decide/Plan |
 | **Activation** | always |
 | **Purpose** | Maintain a coherent offer catalogue and evolve it from learning; distinct from the one-time MARKET-06 offer design stage. |
-| **Stage anchor** | MARKET-06 (initial creation via `lp-offer`); recurring post-S5B |
+| **Stage anchor** | MARKET-06 (initial creation via `lp-offer`); recurring post-S4 |
 | **Cadence** | Weekly (pre-PMF/PMF); monthly (scaling) |
 | **Owner role** | Product Lead (product) or Experience Lead (hospitality); approval: Founder/GM |
 | **Inputs** | Insights (CDI-1/CDI-2); margin/unit economics (FIN-1); operational constraints (OPS-1) |
@@ -607,9 +605,9 @@ Every core startup-loop stage anchor has at least one linked workstream process 
 | **Workstream** | FIN — Finance and Sustainability |
 | **Workflow phases** | Decide/Plan |
 | **Primary phase** | Decide/Plan |
-| **Activation** | conditional — Mandatory for hospitality / inventory_present; monthly review; weekly only on exception; activates post-S5B |
+| **Activation** | conditional — Mandatory for hospitality / inventory_present; monthly review; weekly only on exception; activates post-S4 |
 | **Purpose** | Stabilise supply and service quality via clear vendor selection, SLAs, and cost control. |
-| **Stage anchor** | Post-S5B ongoing; activates when vendors are in use |
+| **Stage anchor** | Post-S4 ongoing; activates when vendors are in use |
 | **Cadence** | Monthly review; weekly exceptions |
 | **Owner role** | Ops Lead + Finance Owner |
 | **Inputs** | Vendor list; contracts; performance issues; cost trends; risk register (FIN-3) |

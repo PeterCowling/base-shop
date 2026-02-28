@@ -41,7 +41,6 @@ export function useAllTransactions() {
             timestamp: getItalyIsoString(),
           },
         });
-        console.log(`Successfully wrote to allTransactions at ${path}`, data);
       } catch (error) {
         console.error("Failed to write transaction to allTransactions:", error);
         throw error;

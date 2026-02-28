@@ -8,8 +8,8 @@ const DEFAULT_TEST_ID = "language-modal";
 
 const OPTION_BASE = [
   "inline-flex",
-  "min-h-10",
-  "min-w-10",
+  "min-h-11",
+  "min-w-11",
   "flex-1",
   "basis-full",
   "items-center",
@@ -97,7 +97,7 @@ function LanguageModal({
         <ModalPanel
           widthClassName={/* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */ "w-full sm:w-96"}
           data-theme={theme}
-          className="layer-modal-panel transform p-6 text-start motion-safe:animate-in motion-safe:animate-fade-in motion-safe:animate-zoom-in-95 duration-200 flex max-h-[90dvh] flex-col"
+          className="layer-modal-panel transform p-6 text-start motion-safe:animate-in motion-safe:animate-fade-in motion-safe:animate-zoom-in-95 duration-200 flex max-h-dvh flex-col"
         >
           <h2 className="mb-4 text-xl font-semibold text-brand-heading">
             {copy.title}

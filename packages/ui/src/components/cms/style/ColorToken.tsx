@@ -109,7 +109,7 @@ export function ColorToken({
           {showExtras && supportsEyeDropper && (
             <button
               type="button"
-              className="rounded border px-2 py-1 text-xs min-h-10 min-w-10"
+              className="rounded border px-2 py-1 text-xs min-h-11 min-w-11"
               onClick={() => void handleEyeDropper()}
             >
               {t("cms.style.eyedropper") as string}
@@ -121,7 +121,7 @@ export function ColorToken({
                 <button
                   type="button"
                   aria-label={`${t("cms.style.moreActions") as string} ${tokenKey}`}
-                  className="rounded border px-2 py-1 text-xs min-h-10 min-w-10"
+                  className="rounded border px-2 py-1 text-xs min-h-11 min-w-11"
                 >
                   •••
                 </button>
@@ -144,7 +144,7 @@ export function ColorToken({
         {isOverridden && (
           <button
             type="button"
-            className="rounded border px-2 py-1 text-xs min-h-10 min-w-10"
+            className="rounded border px-2 py-1 text-xs min-h-11 min-w-11"
             onClick={() => setToken(tokenKey, defaultValue ?? "")}
           >
           {t("actions.reset") as string}

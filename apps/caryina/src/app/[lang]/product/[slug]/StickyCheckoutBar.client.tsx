@@ -1,17 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+
+import AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
+import type { SKU } from "@acme/types";
 
 interface StickyCheckoutBarProps {
   priceLabel: string;
-  checkoutHref: string;
+  sku: SKU;
+  trustLine?: string;
 }
 
-export function StickyCheckoutBar({
-  priceLabel,
-  checkoutHref,
-}: StickyCheckoutBarProps) {
+export function StickyCheckoutBar({ priceLabel, sku, trustLine }: StickyCheckoutBarProps) {
   const [visible, setVisible] = useState(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
@@ -38,14 +38,14 @@ export function StickyCheckoutBar({
         }`}
         aria-hidden={!visible}
       >
-        <div className="mx-auto flex max-w-lg items-center justify-between gap-4">
-          <p className="text-base font-medium">{priceLabel}</p>
-          <Link
-            href={checkoutHref}
-            className="btn-primary rounded-full px-5 py-2.5 text-sm"
-          >
-            Checkout
-          </Link>
+        <div className="mx-auto max-w-lg space-y-1">
+          <div className="flex items-center justify-between gap-4">
+            <p className="text-base font-medium">{priceLabel}</p>
+            <AddToCartButton sku={sku} disabled={sku.stock === 0} />
+          </div>
+          {trustLine && (
+            <p className="text-xs text-muted-foreground">{trustLine}</p>
+          )}
         </div>
       </div>
     </>

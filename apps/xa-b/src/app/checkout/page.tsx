@@ -11,10 +11,6 @@ import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 import { useCart } from "../../contexts/XaCartContext";
 import { xaI18n } from "../../lib/xaI18n";
 
-type SessionPayload = {
-  authenticated?: boolean;
-  email?: string;
-};
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -23,52 +19,15 @@ export default function CheckoutPage() {
 
   const lines = React.useMemo(() => Object.entries(cart), [cart]);
   const subtotal = React.useMemo(
-    () => lines.reduce((sum, [, line]) => sum + line.qty * (line.sku.price ?? 0), 0),
-    [lines],
+    () => lines.reduce((sum, [, line]) => sum + line.qty * (line.sku.prices?.[currency] ?? line.sku.price ?? 0), 0),
+    [lines, currency],
   );
 
-  const [sessionLoading, setSessionLoading] = React.useState(true);
-  const [authenticated, setAuthenticated] = React.useState(false);
-  const [sessionEmail, setSessionEmail] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
-  React.useEffect(() => {
-    let cancelled = false;
-
-    fetch("/api/account/session", { cache: "no-store" })
-      .then(async (response) => {
-        if (!response.ok) return null;
-        return (await response.json()) as SessionPayload;
-      })
-      .then((payload) => {
-        if (cancelled) return;
-        setAuthenticated(Boolean(payload?.authenticated));
-        setSessionEmail(payload?.email ?? "");
-      })
-      .catch(() => {
-        if (cancelled) return;
-        setAuthenticated(false);
-        setSessionEmail("");
-      })
-      .finally(() => {
-        if (!cancelled) {
-          setSessionLoading(false);
-        }
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
   const placeOrder = async () => {
     setError(null);
-
-    if (!authenticated) {
-      setError("Please log in before placing your order."); // i18n-exempt -- XA-0111: checkout UX copy
-      return;
-    }
 
     if (!lines.length) {
       setError("Your cart is empty."); // i18n-exempt -- XA-0023
@@ -87,16 +46,10 @@ export default function CheckoutPage() {
             title: line.sku.title ?? "Item", // i18n-exempt -- XA-0023: fallback label
             size: line.size,
             qty: line.qty,
-            unitPrice: line.sku.price ?? 0,
+            unitPrice: line.sku.prices?.[currency] ?? line.sku.price ?? 0,
           })),
         }),
       });
-
-      if (response.status === 401) {
-        setAuthenticated(false);
-        setError("Please log in before placing your order."); // i18n-exempt -- XA-0111: checkout UX copy
-        return;
-      }
 
       if (!response.ok) {
         setError("Unable to place order right now."); // i18n-exempt -- XA-0111: checkout UX copy
@@ -145,7 +98,7 @@ export default function CheckoutPage() {
                     <TableCell>{line.size ? `Size: ${line.size}` : "—"}</TableCell>
                     <TableCell className="text-end">{line.qty}</TableCell>
                     <TableCell className="text-end">
-                      <Price amount={line.qty * (line.sku.price ?? 0)} currency={currency} />
+                      <Price amount={line.qty * (line.sku.prices?.[currency] ?? line.sku.price ?? 0)} currency={currency} />
                     </TableCell>
                   </TableRow>
                 ))}
@@ -170,28 +123,6 @@ export default function CheckoutPage() {
         )}
 
         <Section as="div" padding="none" width="full" className="max-w-md space-y-4">
-          <div className="rounded-lg border p-4 text-sm">
-            {sessionLoading ? (
-              <div className="text-muted-foreground">Checking account session...</div>
-            ) : authenticated ? (
-              <>
-                <div className="font-medium">Signed in as</div>
-                <div className="mt-1 text-muted-foreground">{sessionEmail}</div>
-              </>
-            ) : (
-              <>
-                <div className="font-medium">Login required</div>
-                <div className="mt-1 text-muted-foreground">
-                  Sign in or create an account to place this order.
-                </div>
-                <div className="mt-3 flex flex-wrap gap-3">
-                  <Link href="/account/login" className="underline">Login</Link>
-                  <Link href="/account/register" className="underline">Create account</Link>
-                </div>
-              </>
-            )}
-          </div>
-
           {error ? (
             <div className="rounded-md border border-danger/30 bg-danger/5 p-3 text-sm">
               {error}
@@ -202,7 +133,7 @@ export default function CheckoutPage() {
             <Button
               type="button"
               onClick={() => void placeOrder()}
-              disabled={loading || !lines.length || !authenticated || sessionLoading}
+              disabled={loading || !lines.length}
             >
               {loading ? xaI18n.t("xaB.src.app.checkout.page.l148c28") : "Place order"}
             </Button>

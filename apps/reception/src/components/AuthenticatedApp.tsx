@@ -3,7 +3,6 @@ import { memo, type ReactNode } from "react";
 import type { ModalName } from "../types/ModalName";
 
 import AppModals from "./AppModals";
-import DarkModeToggle from "./common/DarkModeToggle";
 
 export interface AuthenticatedAppProps {
   user: { email: string; user_name: string };
@@ -21,12 +20,9 @@ const AuthenticatedApp = memo(function AuthenticatedApp({
   children,
 }: AuthenticatedAppProps) {
   return (
-    <div className="min-h-screen bg-surface-2">
-      <div className="w-full max-w-6xl mx-auto border-l border-r border-border-2 shadow-lg">
+    <div className="min-h-screen bg-gradient-to-b from-surface-2 to-surface-3">
+      <div className="w-full max-w-6xl mx-auto border-l border-r border-border-1/50 shadow-xl">
         <div className="p-6">
-          <nav className="mb-4 flex justify-end">
-            <DarkModeToggle />
-          </nav>
           {children}
         </div>
       </div>

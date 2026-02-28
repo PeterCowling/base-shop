@@ -144,7 +144,7 @@ export function ActionSheet({
         onClick={handleContentClick}
       >
         {/* Header */}
-        <div className="sticky top-0 z-10 flex items-start justify-between border-b border-border-2 bg-surface-2 px-[var(--card-padding)] py-4">
+        <div className="sticky top-0 z-10 flex items-start justify-between border-b border-border-2 bg-surface-2 px-4 py-4">
           <div className="flex-1 pr-4">
             <h3
               id="action-sheet-title"
@@ -161,7 +161,7 @@ export function ActionSheet({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full p-1 text-muted-foreground hover:bg-surface-1 hover:text-foreground focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary"
+            className="rounded-full p-1 text-muted-foreground hover:bg-surface-1 hover:text-foreground focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary min-h-11 min-w-11"
             aria-label="Close"
           >
             <X className="h-5 w-5" />
@@ -169,7 +169,7 @@ export function ActionSheet({
         </div>
 
         {/* Content */}
-        <div className="overflow-y-auto px-[var(--card-padding)] py-[var(--card-padding)]">
+        <div className="overflow-y-auto px-4 py-4">
           {children}
         </div>
       </div>

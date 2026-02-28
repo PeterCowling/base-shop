@@ -41,5 +41,16 @@
     ],
     "footer": "Xác nhận phòng cuối cùng và thanh toán được thực hiện trên công cụ đặt chỗ chính thức."
   },
-  "backToRooms": "Quay lại phòng"
+  "backToRooms": "Quay lại phòng",
+  "hostel": {
+    "directSavings": {
+      "eyebrow": "Book direct and save",
+      "headline": "Up to 25% less than Booking.com"
+    }
+  },
+  "date": {
+    "stayHelper": "2–8 nights",
+    "clearDates": "Clear dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  }
 }

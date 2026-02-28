@@ -36,11 +36,11 @@ Does NOT:
 
 | Source | Path | Required |
 |--------|------|----------|
-| Brand dossier | `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` | Yes — blocks if absent |
-| Brand strategy | `docs/business-os/strategy/<BIZ>/brand-strategy.user.md` | No — cross-reference if present |
+| Brand dossier | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md` | Yes — blocks if absent |
+| Brand strategy | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-profile.user.md` | No — cross-reference if present |
 
 If brand dossier is absent, halt and emit:
-> "Brand dossier not found at `docs/business-os/strategy/<BIZ>/brand-dossier.user.md`. Run `/lp-do-assessment-11-brand-identity --business <BIZ>` first."
+> "Brand dossier not found at `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md`. Run `/lp-do-assessment-11-brand-identity --business <BIZ>` first."
 
 If brand dossier Status is already Active, emit:
 > "Brand dossier is already Active. No action needed."
@@ -95,7 +95,7 @@ If any fail, list the gaps and recommend `/lp-do-assessment-11-brand-identity --
 
 ## Output Contract
 
-**Path:** Same file — `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` (in-place update)
+**Path:** Same file — `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md` (in-place update)
 
 **Changes:** Only frontmatter fields (Status, Updated, Last-reviewed). No content changes.
 
@@ -118,7 +118,7 @@ Invalid actions — do not perform:
 
 ## Completion Message
 
-> "Brand dossier promoted to Active: `docs/business-os/strategy/<BIZ>/brand-dossier.user.md`. All 10 completeness checks passed."
+> "Brand dossier promoted to Active: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md`. All 10 completeness checks passed."
 >
 > "GATE-BD-07 is now satisfiable. `/lp-design-spec` can proceed for this business."
 

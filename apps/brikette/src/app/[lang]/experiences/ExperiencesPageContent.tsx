@@ -9,16 +9,17 @@ import { useRouter } from "next/navigation";
 
 import { Section } from "@acme/design-system/atoms";
 
+import ContentStickyCta from "@/components/cta/ContentStickyCta";
 import GroupedGuideCollection from "@/components/guides/GroupedGuideCollection";
 import GuideCollection from "@/components/guides/GuideCollection";
 import GuideFaqSection, { type GuideFaq } from "@/components/guides/GuideFaqSection";
 import { useGuideTopicOptions } from "@/components/guides/useGuideTopicOptions";
-import ExperiencesStructuredData from "@/components/seo/ExperiencesStructuredData";
 import { useOptionalModal } from "@/context/ModalContext";
 import { type GuideMeta, GUIDES_INDEX } from "@/data/guides.index";
 import { matchesGuideTopic, resolveGuideTopicId } from "@/data/guideTopics";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
+import { fireCtaClick } from "@/utils/ga4-events";
 import { getSlug } from "@/utils/slug";
 import { getTagMeta } from "@/utils/tags";
 import { resolveLabel, useEnglishFallback } from "@/utils/translation-fallback";
@@ -122,7 +123,10 @@ function ExperiencesPageContent({ lang, topicParam = "", tagParam = "", queryStr
 
   const experiencesEnT = useEnglishFallback("experiencesPage");
 
-  const handleOpenBooking = useCallback(() => router.push(`/${lang}/book`), [router, lang]);
+  const handleOpenBooking = useCallback(() => {
+    fireCtaClick({ ctaId: "experiences_book_cta", ctaLocation: "experiences_page" });
+    router.push(`/${lang}/book`);
+  }, [router, lang]);
   const handleOpenConcierge = useCallback(() => openModal("contact"), [openModal]);
 
   const [clientTopicParam, setClientTopicParam] = useState(topicParam);
@@ -197,7 +201,6 @@ function ExperiencesPageContent({ lang, topicParam = "", tagParam = "", queryStr
 
   return (
     <Fragment>
-      <ExperiencesStructuredData />
       <Section as="main" width="full" padding="none" className="bg-brand-surface text-brand-text dark:bg-brand-bg">
         {/* Hero */}
         <Section padding="none" width="full" className="px-4 pt-10 sm:pt-12">
@@ -278,6 +281,7 @@ function ExperiencesPageContent({ lang, topicParam = "", tagParam = "", queryStr
             subtitle={ctaSubtitle || undefined}
             bookLabel={ctaBook || undefined}
             onBookClick={handleOpenBooking}
+            bookHref={`/${lang}/book`}
             eventsLabel={ctaEvents || undefined}
             eventsHref={barMenuHref}
             breakfastLabel={ctaBreakfast || undefined}
@@ -287,6 +291,8 @@ function ExperiencesPageContent({ lang, topicParam = "", tagParam = "", queryStr
           />
         </Section>
       </Section>
+
+      <ContentStickyCta lang={lang} ctaLocation="experiences_page" />
     </Fragment>
   );
 }

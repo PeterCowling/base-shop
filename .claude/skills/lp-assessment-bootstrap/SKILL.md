@@ -1,6 +1,6 @@
 ---
 name: lp-assessment-bootstrap
-description: Bootstrap a brand-dossier.user.md for a business entering the startup loop. Gathers context from strategy docs, existing UI, and theme packages, then fills the shared template. Used at S0/S1 when the doc is missing, or at DO before /lp-design-spec.
+description: Bootstrap a <YYYY-MM-DD>-brand-identity-dossier.user.md for a business entering the startup loop. Gathers context from strategy docs, existing UI, and theme packages, then fills the shared template. Used at S0/S1 when the doc is missing, or at DO before /lp-design-spec.
 operating_mode: EXECUTE
 ---
 
@@ -12,7 +12,7 @@ Initialize brand language documentation for a business in the startup loop.
 
 ## When to Use
 
-- **S0/S1 gate**: Startup loop detects missing `docs/business-os/strategy/<BIZ>/brand-dossier.user.md`
+- **S0/S1 gate**: Startup loop detects missing `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md`
 - **DO prerequisite**: `/lp-do-fact-find` flags `Design-Spec-Required: yes` but no brand language exists
 - **Manual**: Operator invokes `/lp-assessment-bootstrap <BIZ>` at any time
 
@@ -27,7 +27,7 @@ Initialize brand language documentation for a business in the startup loop.
 | Launch forecast | `docs/business-os/strategy/<BIZ>/*-launch-forecast*.user.md` | No |
 | Theme package | `packages/themes/<theme>/src/tokens.ts` | No — only if app exists |
 | Existing app UI | `apps/<app>/src/app/layout.tsx`, key pages | No — only if app exists |
-| Existing brand doc (BRIK) | `docs/business-os/strategy/BRIK/brand-dossier.user.md` | No — reference example |
+| Existing brand doc (BRIK) | `docs/business-os/strategy/BRIK/<YYYY-MM-DD>-brand-identity-dossier.user.md` | No — reference example |
 
 ## Workflow
 
@@ -65,7 +65,7 @@ If the business has no app yet:
 
 ### Step 4: Write and Report
 
-1. Save to `docs/business-os/strategy/<BIZ>/brand-dossier.user.md`
+1. Save to `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md`
 2. Report completion status:
    - Sections complete vs TBD
    - Recommended next actions to resolve TBDs

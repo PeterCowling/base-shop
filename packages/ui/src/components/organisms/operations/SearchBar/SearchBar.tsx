@@ -194,7 +194,7 @@ export function SearchBar({
           <button
             type="button"
             onClick={handleClear}
-            className="rounded-full p-0.5 text-fg-muted hover:bg-bg-2 hover:text-fg focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary"
+            className="rounded-full p-0.5 text-fg-muted hover:bg-bg-2 hover:text-fg focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary min-h-11 min-w-11"
             aria-label="Clear search"
           >
             <X className="h-4 w-4" />
@@ -216,7 +216,7 @@ export function SearchBar({
               <button
                 type="button"
                 onClick={onClearRecent}
-                className="text-xs font-medium text-fg-muted hover:text-fg"
+                className="text-xs font-medium text-fg-muted hover:text-fg min-h-11 min-w-11"
               >
                 Clear
               </button>
@@ -228,7 +228,7 @@ export function SearchBar({
                 <button
                   type="button"
                   onClick={() => handleSelectRecent(search)}
-                  className="flex w-full items-center gap-2 px-3 py-2 text-start text-sm text-fg hover:bg-bg-2"
+                  className="flex w-full items-center gap-2 px-3 py-2 text-start text-sm text-fg hover:bg-bg-2 min-h-11 min-w-11"
                 >
                   <Search className="h-4 w-4 flex-shrink-0 text-fg-muted" />
                   <span className="truncate">{search}</span>

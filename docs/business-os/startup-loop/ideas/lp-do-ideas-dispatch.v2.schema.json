@@ -1,0 +1,239 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "lp-do-ideas-dispatch.v2.schema.json",
+  "title": "lp-do-ideas Dispatch Packet (dispatch.v2)",
+  "description": "dispatch.v2 extends dispatch.v1 by adding required typed outcome contract fields (`why` and `intended_outcome`) and a `source` flag distinguishing operator-authored content from auto-generated fallback strings. This schema is additive — dispatch.v1 consumers continue to read v1 packets via the compatibility reader in the routing adapter. Changelog: introduced in startup-loop-why-intended-outcome-automation to eliminate the structural cause of 98.9%/100% missing rates for `why`/`intended_outcome` in Build Summary.",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "dispatch.v2",
+      "description": "Schema version identifier. Must be 'dispatch.v2' for v2 packets. dispatch.v1 packets are handled by the compat reader in lp-do-ideas-routing-adapter.ts."
+    },
+    "dispatch_id": {
+      "type": "string",
+      "pattern": "^IDEA-DISPATCH-[0-9]{14}-[0-9]{4}$",
+      "description": "Unique dispatch identifier. Format: IDEA-DISPATCH-<YYYYMMDDHHmmss>-<seq4>."
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["trial", "live"],
+      "description": "Operating mode. 'trial' is the default for pre-go-live operation. 'live' is reserved for go-live integration."
+    },
+    "business": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Business identifier. Example: HBAG, BRIK."
+    },
+    "trigger": {
+      "type": "string",
+      "enum": ["artifact_delta", "operator_idea"],
+      "description": "Trigger type. 'artifact_delta' — a standing artifact was updated; this dispatch processes the diff. 'operator_idea' — new information provided directly by the operator."
+    },
+    "artifact_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Registered artifact key from the standing registry."
+    },
+    "before_sha": {
+      "type": ["string", "null"],
+      "description": "Git commit SHA or content hash of the artifact before the delta. Null for first-registration events."
+    },
+    "after_sha": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Git commit SHA or content hash of the artifact after the delta."
+    },
+    "root_event_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable causal root ID for the triggering change-set."
+    },
+    "anchor_key": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Normalized anchor key representing the cluster target area/section."
+    },
+    "cluster_key": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable cluster key for cluster-aware dedupe."
+    },
+    "cluster_fingerprint": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Deterministic cluster fingerprint from stable evidence inputs."
+    },
+    "lineage_depth": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Cascade depth index. Root dispatches start at 0."
+    },
+    "area_anchor": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Feature, component, or system area this dispatch addresses."
+    },
+    "location_anchors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "description": "One or more paths, routes, endpoints, or flows relevant to this dispatch."
+    },
+    "provisional_deliverable_family": {
+      "type": "string",
+      "enum": ["code-change", "doc", "multi", "business-artifact", "design", "infra"],
+      "description": "Provisional deliverable family for routing and fact-find intake."
+    },
+    "current_truth": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Plain-language statement of what is now true after this delta. Carried from dispatch.v1; for semantic narrative use `why` instead."
+    },
+    "next_scope_now": {
+      "type": "string",
+      "minLength": 1,
+      "description": "What should be investigated or acted on now. Carried from dispatch.v1; for structured outcome use `intended_outcome` instead."
+    },
+    "adjacent_later": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Optional future opportunities identified alongside this dispatch."
+    },
+    "recommended_route": {
+      "type": "string",
+      "enum": ["lp-do-fact-find", "lp-do-briefing"],
+      "description": "Downstream routing recommendation."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["fact_find_ready", "briefing_ready", "auto_executed", "logged_no_action"],
+      "description": "Dispatch lifecycle status."
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["P1", "P2", "P3"],
+      "description": "Dispatch priority. P1 is highest."
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "description": "Confidence score 0.0–1.0 for this dispatch being actionable."
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "description": "One or more artifact paths or anchors supporting this dispatch."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this dispatch was created."
+    },
+    "queue_state": {
+      "type": "string",
+      "enum": ["enqueued", "processed", "skipped", "error"],
+      "description": "Current queue lifecycle state for this dispatch."
+    },
+    "why": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Required. Operator-authored explanation of why this work is happening now — the strategic or operational context that makes this dispatch actionable. Must be a real explanation, not a auto-generated string (auto-generated values should carry intended_outcome.source: 'auto'). Example: 'Channel mix shifted toward DTC — we need to validate whether new sell-pack guidance improves hostel channel ROI'."
+    },
+    "intended_outcome": {
+      "type": "object",
+      "description": "Required. The intended outcome of this build. Distinguishes operator-authored (source: 'operator') from auto-generated (source: 'auto') values. Auto values pass schema validation but are excluded from quality metrics.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["measurable", "operational"],
+          "description": "'measurable' — outcome has a quantifiable KPI target. 'operational' — outcome is process/documentation work; no KPI required, but statement must be non-empty."
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Non-empty statement of the intended outcome. For measurable outcomes: include the metric, target value, and timeframe. For operational outcomes: describe the process or documentation deliverable. Must not be a template placeholder."
+        },
+        "source": {
+          "type": "string",
+          "enum": ["operator", "auto"],
+          "description": "'operator' — the operator authored this value at Option B confirmation. 'auto' — value was auto-generated (e.g. artifact_delta fallback text). Auto values are excluded from operator-quality metrics. Operator should update auto-generated values at Option B confirmation."
+        }
+      },
+      "required": ["type", "statement", "source"],
+      "additionalProperties": false
+    },
+    "processed_by": {
+      "type": "object",
+      "properties": {
+        "fact_find_slug": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fact_find_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "processed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "route": {
+          "type": "string",
+          "enum": ["dispatch-routed", "direct-inject"]
+        }
+      },
+      "required": ["fact_find_slug", "fact_find_path", "processed_at", "route"],
+      "additionalProperties": false
+    },
+    "triggered_by": {
+      "type": "string",
+      "description": "Dispatch ID of the packet whose downstream build produced the artifact change that triggered this dispatch. Absent for direct operator actions."
+    },
+    "clarification_needed": {
+      "type": "object",
+      "properties": {
+        "questions": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        },
+        "blocks_invocation": {
+          "type": "boolean"
+        }
+      },
+      "required": ["questions", "blocks_invocation"],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "dispatch_id",
+    "mode",
+    "root_event_id",
+    "anchor_key",
+    "cluster_key",
+    "cluster_fingerprint",
+    "lineage_depth",
+    "area_anchor",
+    "location_anchors",
+    "provisional_deliverable_family",
+    "recommended_route",
+    "status",
+    "evidence_refs",
+    "why",
+    "intended_outcome"
+  ],
+  "additionalProperties": false
+}

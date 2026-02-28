@@ -3,8 +3,8 @@ Type: Briefing
 Status: Active
 Domain: Venture-Studio
 Created: 2026-02-13
-Updated: 2026-02-13
-Last-reviewed: 2026-02-13
+Updated: 2026-02-25
+Last-reviewed: 2026-02-25
 Owner: Pete
 Audience: External-Reviewer
 ---
@@ -79,7 +79,7 @@ These are explicit closure points. The proposal should not move to build until e
 | Migration window | Confirm compatibility window length and exit criteria | Set a defined migration period plus hard exit checks before removing legacy paths |
 | Locking model | Confirm whether shared-output writer locks are mandatory, including TTL and recovery rules | Prefer lock-free single-writer updates; use TTL lock only as exceptional recovery/fallback mechanism |
 | Run concurrency policy | Confirm whether multiple concurrent runs per business are allowed | Start with one active run per business (queue additional runs), then relax only after explicit health criteria are met |
-| Baseline semantics | Confirm run-level baseline vs business-level current baseline and commit point | Keep run baseline immutable; update business-current baseline only at explicit commit stage (`S4` or `S5B`) |
+| Baseline semantics | Confirm run-level baseline vs business-level current baseline and commit point | Keep run baseline immutable; update business-current baseline only at explicit commit stage (`S4`) |
 
 ## 5) What the Current System Is Trying to Do
 
@@ -235,7 +235,7 @@ To avoid partial-strategy contamination:
 
 1. Run-level baseline is immutable and scoped to the run.
 2. Business-level “current baseline” is a controlled pointer.
-3. Only explicit commit stages (`S4` or `S5B`, per final decision) can update that business-level pointer.
+3. Only explicit commit stage (`S4`) can update that business-level pointer.
 
 #### Change G: S10 primitive unification
 
@@ -298,7 +298,7 @@ Track operational autonomy quality, not just output artifacts. Minimum metrics:
 | Stage model | Defined in multiple places, can drift | One canonical loop spec, all views validated against it |
 | Artifact lookup | Skill-specific hardcoded paths | Manifest-driven resolution with legacy fallback |
 | Fact-find -> plan -> build handoff | File naming conventions, inconsistent | Canonical per-feature workspace |
-| Prioritization and BOS writes | Mixed expectations, conflicting contracts | Explicit split: prioritize vs bos-sync |
+| Prioritization and BOS writes | Mixed expectations, conflicting contracts | Keep prioritization in S4 and keep BOS writes out of startup-loop stage execution |
 | Stage-doc naming | Inconsistent keys in some contracts | Canonical keys + alias bridge |
 | Shared state ownership | Multiple skills may contend on shared pointers | Single-writer control plane for manifest + run state |
 | Parallel execution | Identified but partially informal | Explicit fan-out/fan-in with merge barrier |
@@ -321,14 +321,13 @@ Track operational autonomy quality, not just output artifacts. Minimum metrics:
    - S3 Forecast.
    - S6B Channels/SEO/Outreach.
 8. S4 Baseline merge stage (`/lp-baseline-merge`): explicit join barrier that writes `baseline.snapshot` and updates the manifest.
-9. S5A Prioritize.
-10. S5B BOS sync.
-11. S6 Site-upgrade synthesis (when in scope).
-12. DO Fact-find (`/lp-do-fact-find`).
-13. DO Plan (`/lp-do-plan`).
-14. DO Build (`/lp-do-build`).
-15. S9B QA gates.
-16. S10 Weekly experiment/readout loop.
+9. S4 Prioritize (integrated with baseline merge).
+10. S6 Site-upgrade synthesis (when in scope).
+11. DO Fact-find (`/lp-do-fact-find`).
+12. DO Plan (`/lp-do-plan`).
+13. DO Build (`/lp-do-build`).
+14. S9B QA gates.
+15. S10 Weekly experiment/readout loop.
 
 ### Existing-business path additions
 
@@ -361,8 +360,7 @@ flowchart LR
   S3 --> S4[S4 Baseline Merge /lp-baseline-merge]
   SEO --> S4
   OUT --> S4
-  S4 --> S5A[S5A Prioritize /lp-prioritize]
-  S5A --> S5B[S5B BOS Sync /lp-bos-sync]
+  S4 --> DO[DO Chain]
 ```
 
 ### Runtime Discipline (Non-Negotiables)
@@ -552,8 +550,8 @@ Suggested operating rule:
 | CI strictness slows iteration early | Teams may bypass checks | Phased rollout: observe mode first, then enforce mode |
 | Over-specification overhead | Process could become bureaucratic | Keep loop spec minimal: stages, requires/produces, fan-out/join rules only |
 | Alias policy never sunsets | Legacy names persist indefinitely | Fixed deprecation date and explicit “remove alias” gate in migration plan |
-| Split S5 introduces perceived extra step | Teams might bypass persistence discipline | Make `bos-sync` the only write path and include in stage completion criteria |
-| Run-level baseline leaks into business-current baseline prematurely | Downstream work uses partial strategy and diverges | Update business-current baseline pointer only at explicit commit stage (`S4`/`S5B`) |
+| Split S5 introduces perceived extra step | Teams might bypass discipline | Keep prioritize in `S4` and keep BOS writes outside stage completion criteria |
+| Run-level baseline leaks into business-current baseline prematurely | Downstream work uses partial strategy and diverges | Update business-current baseline pointer only at explicit commit stage (`S4`) |
 
 ## 14) Decision Checklist for “Proceed / Pause”
 
@@ -700,8 +698,7 @@ stages:
     "S2B": {"status": "Done", "artifact_key": "offer"},
     "S3": {"status": "Done", "artifact_key": "forecast"},
     "S6B": {"status": "Done", "artifact_key": "channels"},
-    "S4": {"status": "Active"},
-    "S5A": {"status": "NotStarted"}
+    "S4": {"status": "Active"}
   }
 }
 ```
@@ -724,7 +721,7 @@ stages:
 | A. Canonical loop spec | Keep | Runtime-authoritative requirement added; run records `loop_spec_version` |
 | B. Manifest + resolver | Keep (modified) | Single-writer manifest updates + integrity metadata |
 | C. Feature workspace | Keep | Stable identity expectations reinforced via canonical workspace contract |
-| D. Split prioritize/persist | Keep | Explicit dry-run reasoning + idempotent side-effect boundary via `bos-sync` |
+| D. Split prioritize/persist | Superseded | Prioritization is integrated into `S4`; startup-loop no longer models `bos-sync` as a stage |
 | E. Canonical keys + aliasing | Keep | Alias sunset treated as measurable run-based exit, not open-ended |
 | F. Run-state convergence | Keep (modified) | Preferred append-only run events + derived state model |
 | G. S10 primitive | Keep | Unified post-build continuation model retained |

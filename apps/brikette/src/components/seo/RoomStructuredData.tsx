@@ -3,7 +3,7 @@
 import { memo } from "react";
 
 import { BASE_URL } from "@/config/site";
-import type { Room as DataRoom } from "@/data/roomsData";
+import { toFlatImageArray, type Room as DataRoom } from "@/data/roomsData";
 import { getRoomsCatalog, type LocalizedRoom,resolveFallbackLanguage } from "@/utils/roomsCatalog";
 import { buildOffer } from "@/utils/schema";
 import { serializeJsonLdValue } from "@/utils/seo/jsonld";
@@ -25,7 +25,7 @@ const resolveValidFrom = (room: DataRoom): string | undefined => {
 };
 
 function pickImages(room: DataRoom): string[] {
-  return Array.isArray(room.imagesRaw) ? room.imagesRaw.slice(0, 4).map((u) => `${BASE_URL}${u}`) : [];
+  return toFlatImageArray(room.images).slice(0, 4).map((u) => `${BASE_URL}${u}`);
 }
 
 interface Props {

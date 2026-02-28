@@ -51,7 +51,11 @@ function SlideItemBase(
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
   const currentLang = useCurrentLanguage();
   const effectiveLang = lang ?? currentLang;
-  const roomsSlug = getSlug("rooms", toAppLanguage(effectiveLang));
+  const firstSegment = item.roomsHref.split("/")[1] ?? "rooms";
+  const roomsSlug = getSlug(
+    firstSegment === "apartment" ? "apartment" : "rooms",
+    toAppLanguage(effectiveLang)
+  );
   const { loading: priceLoading, lowestPrice } = useRoomPricing(item);
 
   const restPath = useMemo(() => item.roomsHref.replace(DROP_FIRST_SEGMENT, ""), [item.roomsHref]);
@@ -222,7 +226,7 @@ function SlideItemBase(
             prefetch
             aria-label={detailsAriaLabel}
             title={t("details")}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 text-sm font-semibold text-brand-bougainvillea underline-offset-4 transition hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bougainvillea dark:text-white"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 text-sm font-semibold text-brand-bougainvillea underline-offset-4 transition hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bougainvillea dark:text-primary-fg"
           >
             {t("moreAboutThisRoom")} <ArrowRight className="h-4 w-4 shrink-0" />
           </Link>

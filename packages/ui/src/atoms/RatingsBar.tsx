@@ -72,7 +72,7 @@ const PANEL_OVERLAY_CLASSES = [
   "opacity-70",
   "mix-blend-screen",
   /* i18n-exempt -- ABC-123 [ttl=2026-12-31] decorative gradient class */
-  "bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.35),transparent_55%)]",
+  "bg-surface",
   "dark:mix-blend-normal",
   "dark:bg-[radial-gradient(circle_at_top_left,rgba(var(--rgb-brand-primary),0.28),transparent_60%)]",
 ] as const;

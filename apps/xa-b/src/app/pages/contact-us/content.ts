@@ -13,10 +13,10 @@ export const customerServiceSidebarLinks = [
 ] as const;
 
 export const quickActions = [
-  { label: xaI18n.t("xaB.src.app.pages.contact.us.content.l14c12"), href: "/account/trackingorder" },
-  { label: xaI18n.t("xaB.src.app.pages.contact.us.content.l15c12"), href: "/account/orders" },
-  { label: xaI18n.t("xaB.src.app.pages.contact.us.content.l16c12"), href: "/account/orders" },
-  { label: xaI18n.t("xaB.src.app.pages.contact.us.content.l17c12"), href: "/account/orders" },
+  { label: xaI18n.t("xaB.src.app.pages.contact.us.content.l14c12"), href: "/service-center" },
+  { label: xaI18n.t("xaB.src.app.pages.contact.us.content.l15c12"), href: "/service-center" },
+  { label: xaI18n.t("xaB.src.app.pages.contact.us.content.l16c12"), href: "/service-center" },
+  { label: xaI18n.t("xaB.src.app.pages.contact.us.content.l17c12"), href: "/service-center" },
 ] as const;
 
 export const cancelSteps = [

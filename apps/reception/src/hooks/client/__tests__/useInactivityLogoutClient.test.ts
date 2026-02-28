@@ -4,11 +4,11 @@ import { act, renderHook } from "@testing-library/react";
 
 import useInactivityLogout from "../useInactivityLogoutClient";
 
-let mockUsername = "Alice";
+let mockUser = { user_name: "Alice", roles: [] as string[] };
 const logoutMock = jest.fn();
 
 jest.mock("../../../context/AuthContext", () => ({
-  useAuth: () => ({ user: { user_name: mockUsername } }),
+  useAuth: () => ({ user: mockUser }),
 }));
 
 const TIMEOUT = 1000;
@@ -17,7 +17,7 @@ describe("useInactivityLogout", () => {
   beforeEach(() => {
     jest.useFakeTimers();
     jest.clearAllMocks();
-    mockUsername = "Alice";
+    mockUser = { user_name: "Alice", roles: [] };
   });
 
   afterEach(() => {
@@ -63,9 +63,9 @@ describe("useInactivityLogout", () => {
     expect(logoutMock).toHaveBeenCalledTimes(1);
   });
 
-  it("does not create timer when username is Cristiana", () => {
+  it("does not create timer when user has admin role", () => {
     const setTimeoutSpy = jest.spyOn(global, "setTimeout");
-    mockUsername = "Cristiana";
+    mockUser = { user_name: "cristiana", roles: ["admin"] };
     renderHook(() => useInactivityLogout(true, logoutMock, TIMEOUT));
 
     act(() => {

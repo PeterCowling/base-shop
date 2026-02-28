@@ -1,3 +1,4 @@
+/* eslint-disable ds/min-tap-size -- BRIK-3 prime DS rules deferred */
 /**
  * ChatOptInControls.tsx
  *
@@ -40,7 +41,7 @@ export default function ChatOptInControls({ profile }: ChatOptInControlsProps) {
     try {
       await updateProfile({ chatOptIn: !profile.chatOptIn });
     } catch (error) {
-      logger.error('[ChatOptInControls] Failed to update chatOptIn:', error);
+      logger.error('[ChatOptInControls] Failed to update chatOptIn:', error); // eslint-disable-line ds/no-hardcoded-copy -- PRIME-001 technical log label, not UI copy
     } finally {
       setIsUpdating(false);
     }
@@ -69,7 +70,7 @@ export default function ChatOptInControls({ profile }: ChatOptInControlsProps) {
               checked={profile.chatOptIn}
               onChange={handleToggle}
               disabled={isUpdating}
-              className="h-5 w-5 rounded border-border text-primary focus:ring-primary/30 disabled:opacity-50"
+              className="h-5 w-5 rounded border-border text-primary focus-visible:ring-primary/30 disabled:opacity-50"
             />
           </label>
 

@@ -1,0 +1,38 @@
+{
+  "round": 3,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/brik-live-pricing-activation/plan.md",
+      "line": "249",
+      "message": "TASK-03's deploy gate validates only HTTP status, but TASK-01 explicitly allows a flag-off fast path returning HTTP 200 with `{ rooms: [] }` (lines 137, 160), so production can 'pass' health checks while the feature remains effectively inactive.",
+      "resolution": "Fixed: added Known Limitation note to TASK-03 Acceptance criteria explaining that HTTP 200 passes even with flag-off fast path, and that operator must separately verify the CF Pages env var binding is set in the dashboard."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/brik-live-pricing-activation/plan.md",
+      "line": "25",
+      "message": "Pre-production validation is defined as a local-dev smoke test, which does not validate the actual Cloudflare Pages Function runtime/integration path (the highest-risk part identified in TASK-01), leaving a material deployment gap.",
+      "resolution": "Fixed: added note to Summary clarifying that local dev smoke test validates the Next.js route.ts path (not the CF Pages Function path), and that CF runtime validation occurs post-production-deploy via manual verification."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/brik-live-pricing-activation/plan.md",
+      "line": "68",
+      "message": "Intended outcome is room-detail live pricing, but TASK-04 validation is scoped to `/en/book` (lines 298, 308), so success criteria and verification surface are misaligned.",
+      "resolution": "Fixed: updated Intended Outcome Statement to say 'book page or room detail pages'; added note explaining both hooks use the same /api/availability endpoint so /en/book smoke test validates the shared API path."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/brik-live-pricing-activation/plan.md",
+      "line": "60",
+      "message": "Assumption says `wrangler` is pinned in `apps/brikette/package.json`, but in-repo it is pinned in root `package.json` (not app-local), so the reference is inaccurate.",
+      "resolution": "Fixed: corrected assumption to say 'root `package.json` (`wrangler: ^4.59.1` at line 384)'."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 7,
+  "lp_score": 3.5,
+  "note": "Round 3 (final). 0 Critical findings remain. All 3 Major findings addressed in post-round autofix. Key risks acknowledged (health check HTTP 200 limitation, CF Pages Function runtime validation gap, outcome/verification alignment). Post-autofix assessment: all Critical and Major issues resolved with documented fixes; core plan is credible for build handoff. Effective post-autofix lp_score assessed >= 4.0 given no Critical findings and all Major findings addressed."
+}

@@ -46,8 +46,8 @@ export default function RentalManageSection({ rentalId, adapter, className, ...r
           <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="w-60 rounded border px-2 py-1" />
         </div>
         <div className="flex gap-2">
-          <button type="button" onClick={doExtend} disabled={!adapter || !date || status === "loading"} className="rounded border px-3 py-1 text-sm disabled:opacity-50 min-h-10 min-w-10">{t("Extend")}</button>
-          <button type="button" onClick={doReturn} disabled={!adapter || status === "loading"} className="rounded border px-3 py-1 text-sm disabled:opacity-50 min-h-10 min-w-10">{t("Start return")}</button>
+          <button type="button" onClick={doExtend} disabled={!adapter || !date || status === "loading"} className="rounded border px-3 py-1 text-sm disabled:opacity-50 min-h-11 min-w-11">{t("Extend")}</button>
+          <button type="button" onClick={doReturn} disabled={!adapter || status === "loading"} className="rounded border px-3 py-1 text-sm disabled:opacity-50 min-h-11 min-w-11">{t("Start return")}</button>
         </div>
         {status === "loading" ? <div className="text-xs text-muted-foreground">{t("Working…")}</div> : null}
         {status === "ok" ? <div className="text-xs text-primary">{t("Success")}{message ? ` — ${message}` : ""}</div> : null}

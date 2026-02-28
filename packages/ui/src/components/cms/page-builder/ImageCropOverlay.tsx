@@ -137,7 +137,7 @@ export default function ImageCropOverlay({ value, onChange, visible = false }: {
           </div>
           <button
             type="button"
-            className="pointer-events-auto inline-flex min-h-10 min-w-10 items-center justify-center rounded bg-foreground/60 px-1 text-xs text-foreground shadow hover:bg-foreground/70 dark:bg-card/70 dark:text-foreground dark:hover:bg-card"
+            className="pointer-events-auto inline-flex min-h-11 min-w-11 items-center justify-center rounded bg-foreground/60 px-1 text-xs text-foreground shadow hover:bg-foreground/70 dark:bg-card/70 dark:text-foreground dark:hover:bg-card"
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); onChange(undefined); }}
             title={String(t("cms.builder.crop.resetTitle"))}
           >

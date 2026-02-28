@@ -9,6 +9,7 @@ import { CatalogProductForm } from "./CatalogProductForm.client";
 import { CatalogProductsList } from "./CatalogProductsList.client";
 import { CatalogSubmissionPanel } from "./CatalogSubmissionPanel.client";
 import { CatalogSyncPanel } from "./CatalogSyncPanel.client";
+import { CurrencyRatesPanel } from "./CurrencyRatesPanel.client";
 import { useCatalogConsole } from "./useCatalogConsole.client";
 
 type CatalogConsoleProps = {
@@ -153,6 +154,14 @@ export default function CatalogConsole({ monoClassName }: CatalogConsoleProps) {
               onSync={consoleState.handleSync}
               onRefreshReadiness={consoleState.refreshSyncReadiness}
               onChangeSyncOptions={consoleState.setSyncOptions}
+            />
+          ) : null}
+
+          {consoleState.uploaderMode === "internal" ? (
+            <CurrencyRatesPanel
+              busy={consoleState.busy}
+              syncReadiness={consoleState.syncReadiness}
+              onSync={() => void consoleState.handleSync()}
             />
           ) : null}
         </div>

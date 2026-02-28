@@ -157,6 +157,7 @@ function buildSyncArgs(paths: {
   statePath: string;
   backupDir: string;
   options: SyncOptions;
+  currencyRatesPath?: string;
 }): string[] {
   const args = [
     "--products",
@@ -176,6 +177,9 @@ function buildSyncArgs(paths: {
   if (paths.options.recursive) args.push("--recursive");
   if (paths.options.dryRun) args.push("--dry-run");
   if (paths.options.strict) args.push("--strict");
+  if (paths.currencyRatesPath) {
+    args.push("--currency-rates", paths.currencyRatesPath);
+  }
   return args;
 }
 
@@ -280,6 +284,7 @@ async function runSyncPipeline(params: {
   const { repoRoot, storefrontId, payload, startedAt } = params;
   const productsCsvPath = resolveXaUploaderProductsCsvPath(storefrontId);
   const uploaderDataDir = path.join(repoRoot, "apps", "xa-uploader", "data");
+  const currencyRatesPath = path.join(uploaderDataDir, "currency-rates.json");
   const statePath = path.join(uploaderDataDir, `.xa-upload-state.${storefrontId}.json`);
   const backupDir = path.join(uploaderDataDir, "backups", storefrontId);
   await fs.mkdir(uploaderDataDir, { recursive: true });
@@ -333,6 +338,7 @@ async function runSyncPipeline(params: {
     statePath,
     backupDir,
     options: payload.options,
+    currencyRatesPath,
   });
 
   const validateResult = await runNodeTsx(

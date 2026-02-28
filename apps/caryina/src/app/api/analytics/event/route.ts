@@ -14,6 +14,7 @@ const ALLOWED_EVENT_TYPES = new Set([
   "add_to_cart",
   "checkout_started",
   "order_completed",
+  "notify_me_submit",
 ]);
 
 type AnalyticsPayload = {

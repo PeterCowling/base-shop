@@ -114,6 +114,15 @@ function isTypeHeaderOptionalDoc(rel: string): boolean {
   return TYPE_HEADER_OPTIONAL_PATH_SUFFIXES.has(rel.split(path.sep).join("/"));
 }
 
+function isArchivedPlanDoc(rel: string): boolean {
+  const normalized = rel.split(path.sep).join("/");
+  return (
+    normalized.startsWith("docs/plans/_archive/") ||
+    normalized.startsWith("docs/plans/archive/") ||
+    normalized.startsWith("docs/historical/plans/")
+  );
+}
+
 function isMissingFileError(error: unknown): boolean {
   return (
     error instanceof Error &&
@@ -142,6 +151,9 @@ async function buildRegistry(docs: string[]) {
   const entries = [];
   for (const file of docs) {
     const rel = path.relative(ROOT, file);
+    if (isArchivedPlanDoc(rel)) {
+      continue;
+    }
     let content: string;
     try {
       content = await readDocFile(file);

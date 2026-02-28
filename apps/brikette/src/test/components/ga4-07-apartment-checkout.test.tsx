@@ -32,7 +32,7 @@ jest.mock("@/utils/dateUtils", () => ({
 
 jest.mock("next/navigation", () => ({
   useRouter: () => ({ push: jest.fn(), replace: jest.fn() }),
-  usePathname: () => "/en/apartment/book",
+  usePathname: () => "/en/private-rooms/book",
   useSearchParams: () => new URLSearchParams(),
 }));
 
@@ -44,7 +44,7 @@ jest.mock("next/link", () => ({
 }));
 
 // eslint-disable-next-line import/first -- mocks must be declared before the import under test
-import ApartmentBookContent from "@/app/[lang]/apartment/book/ApartmentBookContent";
+import ApartmentBookContent from "@/app/[lang]/private-rooms/book/ApartmentBookContent";
 
 jest.mock("@/components/booking/PolicyFeeClarityPanel", () => ({
   __esModule: true,
@@ -212,7 +212,7 @@ describe("TASK-09: WhatsApp prefill, long-stay reroute, and sessionStorage redir
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const nodePath = require("path") as typeof import("path");
     const src = fs.readFileSync(
-      nodePath.resolve(__dirname, "../../app/[lang]/apartment/book/ApartmentBookContent.tsx"),
+      nodePath.resolve(__dirname, "../../app/[lang]/private-rooms/book/ApartmentBookContent.tsx"),
       "utf8",
     );
     // Per pricing-claim-policy.md — these phrases must never appear in source

@@ -45,5 +45,16 @@
     ],
     "footer": "La disponibilité finale et le paiement sont effectués sur notre moteur de réservation officiel."
   },
-  "backToRooms": "Retour aux chambres"
+  "backToRooms": "Retour aux chambres",
+  "hostel": {
+    "directSavings": {
+      "eyebrow": "Book direct and save",
+      "headline": "Up to 25% less than Booking.com"
+    }
+  },
+  "date": {
+    "stayHelper": "2–8 nights",
+    "clearDates": "Clear dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  }
 }

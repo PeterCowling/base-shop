@@ -52,18 +52,23 @@ describe("TASK-33: BookPageContent search_availability GA4 contract", () => {
     jest.useRealTimers();
   });
 
-  // TC-01: Click Update with valid dates fires search_availability.
+  // TC-01: Changing dates fires search_availability after debounce.
   // Payload must not include raw date strings (nights/lead_time_days only).
-  it("TC-01: click Update with valid dates fires search_availability with nights/lead_time_days/pax", () => {
+  it("TC-01: changing dates fires search_availability after debounce with nights/lead_time_days/pax", () => {
     render(<BookPageContent lang="en" />);
 
     const checkinInput = screen.getByLabelText(/check in/i);
     const checkoutInput = screen.getByLabelText(/check out/i);
-    const updateBtn = screen.getByRole("button", { name: /update/i });
 
     fireEvent.change(checkinInput, { target: { value: "2026-06-10" } });
     fireEvent.change(checkoutInput, { target: { value: "2026-06-12" } });
-    fireEvent.click(updateBtn);
+
+    // No fire yet — debounce pending
+    expect(
+      gtagMock.mock.calls.filter((args: unknown[]) => args[1] === "search_availability"),
+    ).toHaveLength(0);
+
+    jest.advanceTimersByTime(600);
 
     const searchCall = gtagMock.mock.calls.find(
       (args: unknown[]) => args[0] === "event" && args[1] === "search_availability",
@@ -81,10 +86,12 @@ describe("TASK-33: BookPageContent search_availability GA4 contract", () => {
     expect(payload).not.toHaveProperty("checkout");
   });
 
-  // TC-02: Mount with no URL params does not fire search_availability.
+  // TC-02: Mount with no URL params does not fire search_availability (even after debounce).
   it("TC-02: mount with no URL params does not fire search_availability", () => {
     mockSearchParams = new URLSearchParams();
     render(<BookPageContent lang="en" />);
+
+    jest.advanceTimersByTime(1000);
 
     const searchCalls = gtagMock.mock.calls.filter(
       (args: unknown[]) => args[0] === "event" && args[1] === "search_availability",
@@ -107,5 +114,56 @@ describe("TASK-33: BookPageContent search_availability GA4 contract", () => {
       nights: 2,
       pax: 2,
     });
+  });
+
+  it("TC-04: check-in change auto-adjusts checkout to preserve two-night minimum", () => {
+    render(<BookPageContent lang="en" />);
+
+    const checkinInput = screen.getByLabelText(/check in/i);
+    const checkoutInput = screen.getByLabelText(/check out/i) as HTMLInputElement;
+
+    fireEvent.change(checkinInput, { target: { value: "2026-06-10" } });
+
+    expect(checkoutInput.value).toBe("2026-06-12");
+    expect(checkoutInput.min).toBe("2026-06-12");
+    expect(window.location.search).toContain("checkin=2026-06-10");
+    expect(window.location.search).toContain("checkout=2026-06-12");
+  });
+
+  it("TC-05: one-night URL params remain invalid and do not emit search_availability", () => {
+    mockSearchParams = new URLSearchParams("checkin=2026-06-10&checkout=2026-06-11&pax=1");
+    render(<BookPageContent lang="en" />);
+
+    const checkinInput = screen.getByLabelText(/check in/i) as HTMLInputElement;
+    const checkoutInput = screen.getByLabelText(/check out/i) as HTMLInputElement;
+
+    expect(checkinInput.value).toBe("2026-06-10");
+    expect(["", "2026-06-11"]).toContain(checkoutInput.value);
+    expect(checkoutInput.min).toBe("2026-06-12");
+
+    jest.advanceTimersByTime(1000);
+    const searchCalls = gtagMock.mock.calls.filter(
+      (args: unknown[]) => args[0] === "event" && args[1] === "search_availability",
+    );
+    expect(searchCalls).toHaveLength(0);
+  });
+
+  it("TC-06: pax above max prevents search_availability emission", () => {
+    render(<BookPageContent lang="en" />);
+
+    const checkinInput = screen.getByLabelText(/check in/i);
+    const checkoutInput = screen.getByLabelText(/check out/i);
+    const paxInput = screen.getByLabelText(/guests/i);
+
+    fireEvent.change(checkinInput, { target: { value: "2026-06-10" } });
+    fireEvent.change(checkoutInput, { target: { value: "2026-06-12" } });
+    fireEvent.change(paxInput, { target: { value: "9" } });
+
+    jest.advanceTimersByTime(1000);
+
+    const searchCalls = gtagMock.mock.calls.filter(
+      (args: unknown[]) => args[0] === "event" && args[1] === "search_availability",
+    );
+    expect(searchCalls).toHaveLength(0);
   });
 });

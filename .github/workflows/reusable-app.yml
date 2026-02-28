@@ -52,10 +52,18 @@ on:
         type: string
         default: ""
       # Extra routes to check after deploy (space-separated, e.g. "/api/health /shop")
+      # Uses redirect-following curl (2xx and 3xx = pass).
       healthcheck-extra-routes:
         required: false
         type: string
         default: "/api/health"
+      # Strict routes that must return HTTP 200 with no redirect following
+      # (space-separated, e.g. "/it/prenota"). Use for Cloudflare Pages
+      # 200-rewrite routes where a 301 redirect indicates a broken route.
+      healthcheck-strict-routes:
+        required: false
+        type: string
+        default: ""
       # Number of Jest test shards. Set >1 to enable sharded parallel tests
       # with changed-file detection. Default 1 = single test job, full suite.
       test-shard-count:
@@ -710,6 +718,7 @@ jobs:
         env:
           BASE_URL: ${{ inputs.healthcheck-base-url }}
           EXTRA_ROUTES: ${{ inputs.healthcheck-extra-routes }}
+          STRICT_ROUTES: ${{ inputs.healthcheck-strict-routes }}
           MAX_RETRIES: "10"
           RETRY_DELAY: "6"
 

@@ -54,7 +54,7 @@ export default function SizeControls({ component, locked, handleResize, handleFu
           {isOverridden(cmp["width"], cmp[`width${vp}`]) && (
             <div className="flex items-center gap-2 text-xs">
               <span className="rounded bg-muted px-1 text-primary">{LABEL_OVERRIDE_ACTIVE}</span>
-              <button type="button" className="underline inline-flex items-center justify-center min-h-10 min-w-10 px-2" onClick={() => handleResize(`width${vp}`, "")}>
+              <button type="button" className="underline inline-flex items-center justify-center min-h-11 min-w-11 px-2" onClick={() => handleResize(`width${vp}`, "")}>
                 {LABEL_RESET}
               </button>
             </div>
@@ -83,7 +83,7 @@ export default function SizeControls({ component, locked, handleResize, handleFu
           {isOverridden(cmp["height"], cmp[`height${vp}`]) && (
             <div className="flex items-center gap-2 text-xs">
               <span className="rounded bg-muted px-1 text-primary">{LABEL_OVERRIDE_ACTIVE}</span>
-              <button type="button" className="underline inline-flex items-center justify-center min-h-10 min-w-10 px-2" onClick={() => handleResize(`height${vp}`, "")}>
+              <button type="button" className="underline inline-flex items-center justify-center min-h-11 min-w-11 px-2" onClick={() => handleResize(`height${vp}`, "")}>
                 {LABEL_RESET}
               </button>
             </div>

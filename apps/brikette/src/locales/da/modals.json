@@ -20,7 +20,7 @@
     "title": "Book direkte og spar",
     "description": "Tak fordi du vælger at booke direkte hos os! Som tak får du:",
     "perks": {
-      "discount": "Op til 10 % rabat på værelsesprisen",
+      "discount": "Op til 25 % rabat på værelsesprisen",
       "breakfast": "Gratis morgenmad hver morgen",
       "drinks": "Gratis velkomstdrinks",
       "upgrades": "Prioriterede opgraderinger (når tilgængelige)"
@@ -160,5 +160,10 @@
   },
   "loader": {
     "ariaLabel": "Loading"
+  },
+  "date": {
+    "stayHelper": "2–8 nights",
+    "clearDates": "Clear dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
   }
 }

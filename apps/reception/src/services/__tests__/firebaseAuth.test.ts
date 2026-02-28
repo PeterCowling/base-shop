@@ -6,6 +6,8 @@ import { loadUserWithProfile } from "../firebaseAuth";
 /* eslint-disable no-var */
 var getMock: jest.Mock;
 var refMock: jest.Mock;
+var getMetaMock: jest.Mock;
+var setMetaMock: jest.Mock;
 /* eslint-enable no-var */
 
 jest.mock("firebase/database", () => {
@@ -16,6 +18,11 @@ jest.mock("firebase/database", () => {
     ref: refMock,
   };
 });
+
+jest.mock("../../lib/offline/receptionDb", () => ({
+  getMeta: (...args: unknown[]) => getMetaMock(...args),
+  setMeta: (...args: unknown[]) => setMetaMock(...args),
+}));
 
 function createSnapshot(data: unknown, exists = true): DataSnapshot {
   return {
@@ -38,6 +45,8 @@ describe("loadUserWithProfile", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    getMetaMock = jest.fn().mockResolvedValue(null);
+    setMetaMock = jest.fn().mockResolvedValue(undefined);
   });
 
   it("loads profiles that omit uid/email/user_name and falls back to firebase auth identity", async () => {
@@ -87,5 +96,46 @@ describe("loadUserWithProfile", () => {
 
     expect(user?.user_name).toBe("first_last");
     expect(user?.email).toBe("first.last@example.com");
+  });
+
+  it("returns cached profile when Firebase get throws (TC-04)", async () => {
+    const cachedUser = {
+      uid: "user-1",
+      email: "front.desk@example.com",
+      user_name: "FrontDesk",
+      displayName: "Front Desk",
+      roles: ["staff"] as const,
+    };
+    getMock.mockRejectedValue(new Error("network error"));
+    getMetaMock.mockResolvedValue(cachedUser);
+
+    const user = await loadUserWithProfile(database, createFirebaseUser());
+
+    expect(user).toEqual(cachedUser);
+  });
+
+  it("returns null when Firebase get throws and no cached profile exists (TC-05)", async () => {
+    getMock.mockRejectedValue(new Error("network error"));
+    getMetaMock.mockResolvedValue(null);
+
+    const user = await loadUserWithProfile(database, createFirebaseUser());
+
+    expect(user).toBeNull();
+  });
+
+  it("caches user profile on successful load", async () => {
+    getMock.mockResolvedValue(
+      createSnapshot({
+        displayName: "Front Desk",
+        roles: { manager: true },
+      })
+    );
+
+    await loadUserWithProfile(database, createFirebaseUser());
+
+    expect(setMetaMock).toHaveBeenCalledWith(
+      "cachedUserProfile",
+      expect.objectContaining({ uid: "user-1", email: "front.desk@example.com" })
+    );
   });
 });

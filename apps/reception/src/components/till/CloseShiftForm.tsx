@@ -256,7 +256,7 @@ export const CloseShiftForm = memo(function CloseShiftForm({
             onCancel={onCancel}
           />
           <Button
-            className="mt-2 px-3 py-1 bg-info-main text-primary-fg rounded"
+            className="mt-2 px-3 py-1 bg-primary-main text-primary-fg rounded-lg"
             onClick={saveProgress}
           >
             Save Progress
@@ -266,7 +266,7 @@ export const CloseShiftForm = memo(function CloseShiftForm({
 
       {step === 1 && (
         <div
-          className={`border ${styles.border} rounded p-4`}
+          className={`border ${styles.border} rounded-lg p-4`}
         >
           {isReconcile ? (
             <CreditCardReceiptCheck
@@ -286,19 +286,19 @@ export const CloseShiftForm = memo(function CloseShiftForm({
           <div className="mt-4 flex gap-2">
             <Button
               onClick={() => setStep(0)}
-              className="px-4 py-2 bg-info-main text-primary-fg rounded"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded-lg"
             >
               Back
             </Button>
             <Button
               onClick={handleStep1Next}
-              className="px-4 py-2 bg-info-main text-primary-fg rounded"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded-lg"
             >
               Next
             </Button>
             <Button
               onClick={saveProgress}
-              className="px-4 py-2 bg-info-main text-primary-fg rounded"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded-lg"
             >
               Save Progress
             </Button>
@@ -352,7 +352,7 @@ export const CloseShiftForm = memo(function CloseShiftForm({
             </p>
           )}
           <Button
-            className="mt-2 px-3 py-1 bg-info-main text-primary-fg rounded"
+            className="mt-2 px-3 py-1 bg-primary-main text-primary-fg rounded-lg"
             onClick={saveProgress}
           >
             Save Progress

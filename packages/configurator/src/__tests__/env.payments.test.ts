@@ -30,6 +30,7 @@ describe("payments env schema", () => {
       STRIPE_WEBHOOK_SECRET: "whsec_live_123",
       PAYMENTS_CURRENCY: "EUR",
       PAYMENTS_SANDBOX: false,
+      AXERVE_SANDBOX: false,
     });
   });
 

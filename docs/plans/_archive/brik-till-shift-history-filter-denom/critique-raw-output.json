@@ -1,0 +1,52 @@
+{
+  "artifact": "plan.md",
+  "rounds": [
+    {
+      "round": 1,
+      "score": 7,
+      "lp_score": 3.5,
+      "verdict": "needs_revision",
+      "critical": 0,
+      "major": 4,
+      "minor": 2,
+      "findings_summary": [
+        "Goal inconsistency: 'default last 30 days' vs empty-date → undefined (unbounded fetch). Fixed.",
+        "Open-shift sort claim ('sort last') inaccurate for closedAt-ordered RTDB query. Fixed.",
+        "'Take first matching cashCount' risks stale data; should be most recent (.at(-1)). Fixed.",
+        "No keyboard/ARIA requirement for expand/collapse row. Fixed.",
+        "TASK-02 TC missing zero-variance non-expandability and empty-date bound tests. Fixed.",
+        "Confidence methodology described inconsistently in two places. Fixed."
+      ]
+    },
+    {
+      "round": 2,
+      "score": 7,
+      "lp_score": 3.5,
+      "verdict": "needs_revision",
+      "critical": 1,
+      "major": 3,
+      "minor": 1,
+      "findings_summary": [
+        "CRITICAL: Execution step used shifts.map() instead of filteredShifts.map() — bypasses staff filter. Fixed.",
+        "Denomination source rule inconsistent ('first' in acceptance vs 'most recent' in execution). Fixed.",
+        "Date-bound policy inconsistent: some places still referenced undefined. Fixed.",
+        "Open-shift behavior accepted but no acceptance criterion/test to lock it. Fixed.",
+        "TC-08 clock not frozen — brittle test. Fixed with jest.useFakeTimers() instruction."
+      ]
+    },
+    {
+      "round": 3,
+      "score": 9,
+      "lp_score": 4.5,
+      "verdict": "needs_revision",
+      "critical": 0,
+      "major": 1,
+      "minor": 1,
+      "findings_summary": [
+        "Keyboard interaction TC missing from TASK-01 validation contract despite being a hard requirement. Fixed: TC-08 added.",
+        "Ambiguous 'now (ISO end-of-day)' wording. Fixed to 'today end-of-day'."
+      ],
+      "note": "Round 3 is the final round. No Critical remaining. lp_score 4.5 is credible. Proceeding to build."
+    }
+  ]
+}

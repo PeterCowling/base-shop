@@ -54,63 +54,33 @@ Minimum intake before investigation:
 
 If any item is missing, ask only the minimum follow-up questions needed to unblock.
 
-For understanding-only briefings (no planning intent), use `/lp-do-briefing` instead.
-
 ## Phase 0: Queue Check Gate
 
-Before doing anything else, check whether a queued dispatch packet exists for this invocation.
-
-**How to check:**
-Read `docs/business-os/startup-loop/ideas/trial/queue-state.json` (if it exists). Look for any packet where:
-- `queue_state: enqueued`, AND
-- `business` matches the invoked business, AND
-- `area_anchor` or `artifact_id` overlaps materially with the invoked topic.
-
-**If a matching queued packet is found:**
-
-Stop immediately. Output only the following — do not run any phases, read any files, or produce any artifacts:
-
-> A queued dispatch packet exists for this topic and requires confirmation before proceeding.
->
-> **Area:** `<area_anchor>`
-> **What changed:** `<current_truth>`
-> **Proposed scope:** `<next_scope_now>`
-> **Priority:** `<priority>`
->
-> _(If `triggered_by` is present, insert this block — otherwise omit entirely:)_
-> ⚠️ **This was triggered by a recent build, not a new external signal.** Check that this is genuinely new work before confirming — you may be looking at a follow-on from something you already ran.
-> _Source: `<triggered_by dispatch_id>`_
->
-> Do you want to proceed with this fact-find? Reply **yes** to confirm, or anything else to leave it queued.
-
-If the operator replies **yes**: proceed to Phase 1 with `Dispatch-ID` set to the matching packet's `dispatch_id`. On artifact persistence (Phase 6), populate `processed_by` in the packet: `route: dispatch-routed`, `processed_at: <now>`, `fact_find_slug` and `fact_find_path` from the output. Set `queue_state: processed`.
-
-If the operator replies anything other than **yes**, or does not reply: stop. Do nothing. The packet remains `enqueued`.
-
-**If no matching queued packet is found:**
-
-Proceed to Phase 1 as a direct inject. `Trigger-Source` is required in the fact-find frontmatter (per `loop-output-contracts.md` Artifact 1).
+Load and follow: `../_shared/queue-check-gate.md` (fact-find mode).
 
 ## Phase 1: Discovery and Selection
 
-### Fast path (argument provided)
-
-- If argument is a topic: proceed directly to sufficiency gate.
-
-### Discovery path (no argument)
-
-1. Scan `docs/plans/` for directories that already contain a `fact-find.md` (topics already in fact-finding).
-2. Show the list and ask the user to select an entry or provide a new topic.
+- **Fast path** (argument provided): If argument is a topic, proceed directly to sufficiency gate.
+- **Discovery path** (no argument): Scan `docs/plans/` for directories with `fact-find.md`; show list; ask user to select or provide new topic.
 
 ## Phase 2: Context Hydration
 
 If a matching `fact-find.md` already exists at `docs/plans/<feature-slug>/fact-find.md`, read it and use existing findings and open questions as starting context. Otherwise, start fresh from the topic anchor.
 
+### Access Declarations
+
+Before the investigation begins, list every external data source, service, or system that will be needed to answer the questions in this fact-find. For each source:
+
+1. Name the source (for example: GA4 analytics property, Octorate API, Stripe dashboard, specific MCP tool).
+2. State what kind of access is needed (API key, MCP tool, database credentials, login, or other).
+3. Check the agent project memory file `memory/data-access.md` (this is not a repo file — it lives at `~/.claude/projects/<project-hash>/memory/data-access.md`) to verify access is configured. If the file does not exist or does not list the source, mark the source `UNVERIFIED` rather than blocking the fact-find.
+4. Record any source that comes up during the investigation but was not listed here upfront as a "mid-investigation discovery event" in the `## Access Declarations` section of the fact-find artifact.
+
+The format for each declaration follows the access declarations schema in `docs/plans/startup-loop-build-reflection-gate/task-01-schema-spec.md` § 3. A fact-find with no external data dependencies may write `None` under this section and continue.
+
 ## Phase 3: Sufficiency Gate
 
-Do not start repository investigation until minimum intake is satisfied.
-
-If insufficient, ask targeted questions only, each tied to a decision it unlocks.
+Do not start repository investigation until minimum intake is satisfied. If insufficient, ask targeted questions only, each tied to a decision it unlocks.
 
 ## Phase 4: Classification
 
@@ -127,12 +97,7 @@ Startup-Deliverable-Alias: <none | startup-budget-envelope | startup-channel-pla
 Loop-Gap-Trigger: <none | block | bottleneck | feedback>
 ```
 
-Use `routing/deliverable-routing.yaml` to map family/channel/subtype to canonical `Deliverable-Type` and execution-skill defaults.
-
-Compatibility rule:
-- Keep `Deliverable-Type` in canonical downstream format expected by `/lp-do-plan` and `/lp-do-build`.
-- Execution skill IDs in routing/frontmatter are canonicalized without leading slash (for example `lp-do-build`, `draft-email`).
-- Family/channel/subtype exist to reduce intake branching, not to break existing consumers.
+Use `routing/deliverable-routing.yaml` to map family/channel/subtype to canonical `Deliverable-Type`. Keep `Deliverable-Type` in canonical downstream format expected by `/lp-do-plan` and `/lp-do-build`. Execution skill IDs are canonicalized without leading slash (e.g., `lp-do-build`).
 
 Hard branches:
 - If invocation includes `--website-first-build-backlog`, set `Startup-Deliverable-Alias: website-first-build-backlog` before routing.
@@ -150,6 +115,22 @@ Load only the relevant module file(s):
 - `website-first-build-backlog` alias: `modules/outcome-a-website-first-build.md`
 - `website-upgrade-backlog` alias: `modules/outcome-a-website-upgrade.md`
 - `startup-loop-gap-fill` alias: `modules/outcome-a-loop-gap.md` (output path determined by trigger type inside the module)
+
+## Phase 5.5: Scope Simulation
+
+Load and follow: `../_shared/simulation-protocol.md`
+
+Run a scope simulation of the investigation completed in Phase 5. This is not a code execution trace — it is a scope-gap check. Walk through each evidence area identified in the investigation and apply the scope simulation checklist defined in the shared protocol (5 categories: concrete investigation path, investigation ordering, system boundary coverage, circular investigation dependency, missing domain coverage).
+
+Write a `## Simulation Trace` section into the fact-find draft (before persisting in Phase 6) with one row per scope area:
+
+| Scope Area | Coverage Confirmed | Issues Found | Resolution Required |
+|---|---|---|---|
+| <evidence domain or entry point> | Yes / Partial / No | None — or: [Category] [Severity]: description | Yes / No |
+
+**Hard gate (Critical findings):** If any Critical scope gap is found, do not set `Status: Ready-for-planning` or proceed to Phase 6 until the issue is resolved or a valid `Simulation-Critical-Waiver` block is written (see shared protocol for waiver format and requirements).
+
+**Advisory (Major / Moderate / Minor findings):** Write into the Simulation Trace table and proceed. These are visible to the Phase 7a critique loop and do not block fact-find persistence.
 
 ## Phase 6: Persist Artifact with Shared Templates
 
@@ -210,36 +191,15 @@ Before running critique, verify the brief is not empty in critical areas. A brie
 
 **Mixed:** apply both code and business checks above.
 
-## Phase 7a: Automatic Critique
+## Phase 7a: Critique Loop (1–3 rounds, mandatory)
 
-After persisting the fact-find artifact and completing the evidence gap review, automatically invoke `/lp-do-critique` on the written document.
+After persisting the fact-find artifact and completing the evidence gap review, run the critique loop in **fact-find mode**.
 
-### When to run
-
-- Run after Phase 7 evidence gap review is complete and written into the artifact.
-
-### Execution
-
-1. Invoke `/lp-do-critique` with the path to the persisted fact-find: `docs/plans/<feature-slug>/fact-find.md`.
-2. Use default mode (`full` scope, autofix enabled).
-3. Let the critique skill apply its autofix phase directly to the fact-find document.
-
-### Post-critique gate
-
-- If critique verdict is `not credible`: evaluate whether the issues are recoverable.
-  - Recoverable (fixable with more evidence or scope adjustment): set `Status: Needs-input`, surface the top Critical/Major issues to the user, and stop.
-  - Structural (Critical/Major issues cannot be resolved without fundamentally changing the scope): set `Status: Infeasible`, write `## Kill Rationale`, and stop.
-- If critique verdict is `partially credible` (score 3.0–3.5): set `Status: Needs-input`, surface the top-ranked findings to the user, and stop. A fact-find must reach a `credible` verdict (score ≥4.0) before auto-handoff to planning. Extend the investigation or decompose the complexity to address the findings, then re-run `/lp-do-critique`.
-- If critique verdict is `credible` (score ≥4.0): record the critique round number and overall score in the completion message and proceed to completion.
-
-### Idempotency
-
-- The critique creates/updates `docs/plans/<feature-slug>/critique-history.md`. This is expected and does not require separate user approval.
-- If the fact-find is re-run (scope restart), the critique will append a new round to the existing ledger.
+Load and follow: `../_shared/critique-loop-protocol.md`
 
 ## Completion Message
 
-> Fact-find complete. Brief saved to `docs/plans/<feature-slug>/fact-find.md`. Status: `<Ready-for-planning | Needs-input | Infeasible>`. Primary execution skill: `<skill>`. Evidence gap review complete. Critique round <N>: verdict `<credible | partially credible | not credible>`, score <X.X>/5.0.
+> Fact-find complete. Brief saved to `docs/plans/<feature-slug>/fact-find.md`. Status: `<Ready-for-planning | Needs-input | Infeasible>`. Primary execution skill: `<skill>`. Evidence gap review complete. Critique: `<N>` round(s), final verdict `<credible | partially credible | not credible>`, score `<X.X>`/5.0.
 
 Status-dependent next action (execute immediately, do not wait for user):
 
@@ -250,12 +210,15 @@ Status-dependent next action (execute immediately, do not wait for user):
 ## Quick Validation Gate
 
 - [ ] Phase 0 queue check run — matching queued packet confirmed or direct-inject path taken
+- [ ] Access declarations listed and verified (or `None` recorded) before investigation begins
 - [ ] Intake satisfied before repo audit
 - [ ] Routing header computed and written to frontmatter
 - [ ] Only relevant module(s) loaded
 - [ ] Output generated from shared template file (not inline template)
+- [ ] Phase 5.5 Scope Simulation run — scope trace table present in fact-find draft; Critical scope gaps resolved or waived before Phase 6 persist
 - [ ] Outcome A evidence gap review completed and recorded
 - [ ] Minimum evidence floor gate passed (or `Status: Needs-input` set if floor failed)
-- [ ] Outcome A automatic critique run and verdict recorded (≥4.0 required for auto-handoff)
+- [ ] lp-do-factcheck run if fact-find contains codebase claims (file paths, function names, coverage assertions)
+- [ ] Critique loop run (1–3 rounds): round count, final verdict, and score recorded (≥4.0 required for auto-handoff)
 - [ ] Status classified as `Ready-for-planning`, `Needs-input`, or `Infeasible` (not left ambiguous)
 - [ ] If `Ready-for-planning`: `/lp-do-plan <feature-slug> --auto` automatically invoked

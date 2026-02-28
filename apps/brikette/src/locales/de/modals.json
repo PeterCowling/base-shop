@@ -20,7 +20,7 @@
     "title": "Direkt buchen & sparen",
     "description": "Vielen Dank, dass Sie direkt bei uns buchen! Als Dankeschön erhalten Sie:",
     "perks": {
-      "discount": "Bis zu 10 % Rabatt auf den Zimmerpreis",
+      "discount": "Bis zu 25 % Rabatt auf den Zimmerpreis",
       "breakfast": "Kostenloses Frühstück jeden Morgen",
       "drinks": "Kostenlose Begrüßungsgetränke",
       "upgrades": "Bevorzugte Zimmer-Upgrades (nach Verfügbarkeit)"
@@ -160,5 +160,10 @@
   },
   "loader": {
     "ariaLabel": "Loading"
+  },
+  "date": {
+    "stayHelper": "2–8 nights",
+    "clearDates": "Clear dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
   }
 }

@@ -90,7 +90,7 @@ export default function NotificationsBell({ shop, pageId }: { shop?: string | nu
       <PopoverTrigger asChild>
         <Tooltip text={count > 0 ? `${count} notifications` : "Notifications"}>
           {/* i18n-exempt — icon-only control with accessible label */}
-          <button type="button" aria-label="Notifications" className="relative rounded border px-2 py-1 text-sm min-h-10 min-w-10 inline-flex items-center justify-center">
+          <button type="button" aria-label="Notifications" className="relative rounded border px-2 py-1 text-sm min-h-11 min-w-11 inline-flex items-center justify-center">
             <BellIcon className="h-4 w-4" />
             {count > 0 && (
               <span className="absolute -end-1 -top-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive/100 px-1 text-xs font-semibold text-foreground">
@@ -114,7 +114,7 @@ export default function NotificationsBell({ shop, pageId }: { shop?: string | nu
               <li key={it.id}>
                 <button
                   type="button"
-                  className="w-full text-start rounded border px-2 py-1 hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary min-h-10 min-w-10"
+                  className="w-full text-start rounded border px-2 py-1 hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary min-h-11 min-w-11"
                   onClick={() => {
                     if (it.source === 'comments') {
                       const tid = it.id.startsWith('c:') ? it.id.slice(2) : it.id;

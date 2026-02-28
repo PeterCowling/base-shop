@@ -11,7 +11,8 @@ Last-updated-by: Codex (GPT-5.2)
 
 # CODEX.md — Codex Agent Context
 
-This file contains Codex-specific guidance. For universal commands, see `AGENTS.md`.
+This file is **supplemental** guidance for Codex.
+`AGENTS.md` is the canonical, always-loaded runbook and source of mandatory safety rules.
 
 ## Safety Rules (CRITICAL)
 
@@ -82,8 +83,7 @@ scripts/agents/integrator-shell.sh -- codex
 ```
 
 This blocks commands like `git reset --hard`, `git clean -fd`, force pushes, `rebase`, stash mutations, and `commit --amend`,
-blocks repo-wide/bulk discard patterns (`git restore` / `git checkout --`), and enforces a single-writer lock for commits/pushes.
-blocks repo-wide/bulk discard patterns (`git restore` / `git checkout --`), and enforces a single-writer lock for commits/pushes.
+repo-wide/bulk discard patterns (`git restore` / `git checkout --`), and enforces a single-writer lock for commits/pushes.
 
 If you are running Codex non-interactively (no TTY; e.g. CI or API-driven agents), you can't open an integrator subshell.
 Instead, wrap each command that may write (git operations, installs, builds) with:
@@ -233,6 +233,67 @@ scripts/agents/list-skills
 ```
 
 The skill registry (`.agents/registry/skills.json`) lists all available skills with descriptions. Core workflow skills: `lp-do-fact-find`, `lp-do-plan`, `lp-do-build`, `lp-do-replan`. Read each skill's `SKILL.md` file for instructions.
+
+## codemoot Setup
+
+codemoot v0.2.14 is used for cross-agent critique: after Claude (host) produces a fact-find or plan artifact, Codex (via codemoot) reviews it and returns findings. Claude's autofix phase (AF-1 through AF-4) then applies corrections using the findings list.
+
+### One-time setup (per machine)
+
+```bash
+# 1. Install codemoot (requires Node 22)
+nvm exec 22 npm install -g @codemoot/cli
+
+# 2. Install Codex CLI (if not already installed)
+nvm exec 22 npm install -g @openai/codex
+
+# 3. Init project config (creates .cowork.yml and .cowork/ — both gitignored)
+cd /path/to/repo && nvm exec 22 codemoot init --non-interactive
+
+# 4. Verify auth
+nvm exec 22 codex login status
+# Expected: "Logged in using ChatGPT"
+```
+
+### Dynamic resolution (used in critique-loop-protocol.md)
+
+At each critique call, the protocol resolves the codemoot path dynamically:
+
+```bash
+CODEMOOT="$(nvm exec 22 which codemoot 2>/dev/null | tail -1)"
+```
+
+If `CODEMOOT` is non-empty: use codemoot route.
+If `CODEMOOT` is empty (nvm unavailable, Node 22 not installed, or codemoot not installed): fallback to inline `/lp-do-critique`. This is correct fallback behaviour — never hardcode the binary path.
+
+### Running a review
+
+```bash
+# Review a file (stdout is always JSON — no --json flag needed)
+"$CODEMOOT" review docs/plans/<slug>/fact-find.md
+
+# Or if calling interactively from the host shell:
+PATH="/Users/petercowling/.nvm/versions/node/v22.16.0/bin:$PATH" codemoot review <file>
+```
+
+Output shape:
+```json
+{
+  "mode": "file",
+  "findings": [{ "severity": "critical|warning|info", "file": "...", "line": "...", "message": "..." }],
+  "verdict": "approved|needs_revision|unknown",
+  "score": 4,
+  "review": "<capped text string, ≤2KB>"
+}
+```
+
+Score mapping: `lp_score = score / 2` (score is 0–10 integer). Score takes precedence over verdict for all gate decisions.
+
+### Writer lock
+
+Before any file write in lp-do-build, acquire the writer lock per the instructions in `scripts/agents/integrator-shell.sh`. See "Local Enforcement" section above.
+
+---
 
 ## What Stays the Same
 

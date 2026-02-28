@@ -8,7 +8,7 @@ Created: 2026-02-23
 Updated: 2026-02-23
 Last-reviewed: 2026-02-23
 Owner: Pete
-Seed-Source: docs/business-os/startup-baselines/HBAG-intake-packet.user.md
+Seed-Source: docs/business-os/startup-baselines/HBAG-2026-02-20assessment-intake-packet.user.md
 Seed-Date: 2026-02-23
 Review-trigger: After each completed build cycle touching this document.
 ---

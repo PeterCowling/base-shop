@@ -19,6 +19,10 @@ This gives fast semantic answers without running `pnpm typecheck` on every chang
 
 **When asked to “check types” or “check TypeScript errors,” agents should use these MCP tools first.** `pnpm typecheck && pnpm lint` remains the final validation gate before commits.
 
+**Tool selection rule:** Use `vscodeDiagnostics` (this server) only. Do not call `mcp__ide__getDiagnostics` or any `mcp__ide__*` tool for type-checking — that is the Claude Code built-in IDE server, which requires a separate VS Code extension connection and is not this server.
+
+**Availability:** Before calling `vscodeDiagnostics`, confirm `.vscode/.mcp-port` exists. If missing or if the first call fails, fall back to `pnpm --filter <pkg> typecheck` for affected packages. Do not retry until `.vscode/.mcp-port` appears/changes or `scripts/mcp/register-ts-language.sh` is re-run.
+
 ## What this is not
 
 - A replacement for `pnpm typecheck && pnpm lint` (still the validation gate)

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 // i18n-exempt -- CARYINA-103 [ttl=2026-12-31]
@@ -15,10 +16,13 @@ export function SiteFooter({ lang }: { lang: string }) {
       <div className="mx-auto w-full max-w-5xl space-y-6 px-6 py-10 text-sm text-muted-foreground">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           {/* i18n-exempt -- CARYINA-104 [ttl=2026-12-31] */}
-          <div className="space-y-1">
-            <p className="font-display text-base text-foreground">Caryina</p>
-            <p className="text-xs">Un solo dettaglio. Quello carino.</p>
-          </div>
+          <Image
+            src="/images/caryina-logo.webp"
+            alt="Caryina — Un solo dettaglio. Quello carino."
+            width={127}
+            height={60}
+            className="h-16 w-auto"
+          />
           <nav
             className="flex flex-wrap gap-x-5 gap-y-2"
             aria-label="Footer"

@@ -1,13 +1,14 @@
-import EmailProgress from "@/components/emailAutomation/EmailProgress";
-import Providers from "@/components/Providers";
+"use client";
 
-// Prevent static prerendering — Firebase RTDB requires runtime env vars
-export const dynamic = "force-dynamic";
+import dynamicImport from "next/dynamic";
+
+// ssr: false — prevents Firebase/auth provider tree from running during SSR.
+// (Also avoids RSC constraint: function props cannot cross Server→Client boundary.)
+const EmailAutomationContent = dynamicImport(
+  () => import("./EmailAutomationContent"),
+  { ssr: false }
+);
 
 export default function EmailAutomationPage() {
-  return (
-    <Providers>
-      <EmailProgress setMessage={() => {}} />
-    </Providers>
-  );
+  return <EmailAutomationContent />;
 }

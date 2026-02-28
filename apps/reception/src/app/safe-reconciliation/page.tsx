@@ -1,4 +1,4 @@
-import Providers from "@/components/Providers";
+import Providers from "@/components/ClientProviders";
 import SafeReconciliation from "@/components/safe/SafeReconciliation";
 import { SafeDataProvider } from "@/context/SafeDataContext";
 

@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { StockBadge } from "./StockBadge";
+
 interface ProductMediaCardProps {
   href: string;
   category?: string | null;
@@ -10,6 +12,8 @@ interface ProductMediaCardProps {
   primaryAlt: string;
   secondarySrc?: string | null;
   secondaryAlt?: string | null;
+  stock?: number;
+  lowStockThreshold?: number;
 }
 
 export function ProductMediaCard({
@@ -21,6 +25,8 @@ export function ProductMediaCard({
   primaryAlt,
   secondarySrc,
   secondaryAlt,
+  stock,
+  lowStockThreshold,
 }: ProductMediaCardProps) {
   return (
     <article className="group media-card space-y-3">
@@ -56,6 +62,9 @@ export function ProductMediaCard({
           </Link>
         </h2>
         <p className="text-sm text-muted-foreground">{priceLabel}</p>
+        {typeof stock === "number" ? (
+          <StockBadge stock={stock} lowStockThreshold={lowStockThreshold} />
+        ) : null}
       </div>
     </article>
   );

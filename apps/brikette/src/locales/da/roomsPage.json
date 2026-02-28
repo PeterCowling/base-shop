@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Værelser og priser | Hostel Brikette Positano",
+    "title": "Sovesalspladser i Positano | Book direkte hos Brikette Hostel",
     "description": "Private dobbeltværelser med havudsigt og prisvenlige sovesale: se billeder, faciliteter og aktuelle priser, og book derefter direkte for den bedste pris.",
     "ogImageAlt": "Interiør af delt sovesal"
   },
@@ -30,7 +30,8 @@
     "linen": "Sengetøj og håndklæde inkluderet"
   },
   "rooms": {
-    "title": "Vores værelser",
+    "title": "Sovesalspladser",
+    "soldOut": "Udsolgt",
     "double_room": {
       "title": "Dobbeltværelse",
       "bed_intro": "Fantastisk havudsigt — perfekt til par.",
@@ -51,7 +52,7 @@
       }
     },
     "room_10": {
-      "title": "Blandet sovesal Premium",
+      "title": "Blandet sovesal – Eget badeværelse",
       "bed_intro": "Når du vil have seks senge og et bedre badeværelse.",
       "bed_description": "Premium-sovesalen er en blandet sovesal med tre senge (i alt seks), til op til seks gæster. På fjerde sal med aircondition, nøglekort og eget badeværelse (ingen udsigt). Sengetøj og håndklæde udleveres ved check‑in.",
       "facilities": [
@@ -70,7 +71,7 @@
       }
     },
     "room_11": {
-      "title": "Kvinde‑sovesal Superior – Stor terrasse",
+      "title": "Kvinde-sovesal – Stor havterrasse",
       "bed_intro": "De bedste udsigter fra en rummelig terrasse og et lækkert badeværelse.",
       "bed_description": "Vores kvinde‑sovesal Superior har tre sovesalsenge (i alt seks), til op til seks gæster. På fjerde sal; aircondition, nøglekort, eget badeværelse og havudsigt med ekstra stor terrasse. Sengetøj og håndklæde ved check‑in.",
       "facilities": [
@@ -89,7 +90,7 @@
       }
     },
     "room_12": {
-      "title": "Blandet sovesal Superior",
+      "title": "Blandet sovesal – Havterrasse",
       "bed_intro": "Flotte udsigter fra rummelig terrasse og godt badeværelse.",
       "bed_description": "Blandet sovesal Superior har tre sovesalsenge (i alt seks) til op til seks gæster. På fjerde sal; aircondition, nøglekort, privat badeværelse og havudsigt med ekstra stor terrasse. Sengetøj og håndklæde ved check‑in.",
       "facilities": [
@@ -108,7 +109,7 @@
       }
     },
     "room_3": {
-      "title": "Kvinde‑sovesal Value",
+      "title": "Kvinde-sovesal – 8 senge",
       "bed_intro": "Et prisvenligt valg for kvindelige rejsende.",
       "bed_description": "Kvinde‑sovesal Value rummer op til otte gæster på fire senge. På tredje sal; aircondition, nøglekort og adgang til fælles badeværelse (kun kvinder). Ingen udsigt. Sengetøj og håndklæde ved check‑in.",
       "facilities": [
@@ -127,7 +128,7 @@
       }
     },
     "room_4": {
-      "title": "Blandet sovesal Value",
+      "title": "Blandet sovesal – 8 senge",
       "bed_intro": "Et prisvenligt valg for både kvinder og mænd.",
       "bed_description": "Blandet sovesal Value rummer op til otte gæster på fire senge. På tredje sal; aircondition, nøglekort og adgang til fælles badeværelse (kvinder). Ingen udsigt. Sengetøj og håndklæde ved check‑in.",
       "facilities": [
@@ -146,7 +147,7 @@
       }
     },
     "room_5": {
-      "title": "Kvinde‑sovesal Superior – Havudsigt",
+      "title": "Kvinde-sovesal – Havudsigt",
       "bed_intro": "Fantastisk havudsigt og eget badeværelse.",
       "bed_description": "Kvinde‑sovesal Superior rummer op til seks gæster i tre senge. På tredje sal; eget badeværelse, terrasse med havudsigt, aircondition og nøglekort. Sengetøj og håndklæde ved check‑in.",
       "facilities": [
@@ -165,7 +166,7 @@
       }
     },
     "room_6": {
-      "title": "Kvinde‑sovesal Superior – 7 senge",
+      "title": "Kvinde-sovesal – 7 senge – Havudsigt",
       "bed_intro": "Fantastisk havudsigt og eget badeværelse.",
       "bed_description": "Kvinde‑sovesal Superior har tre sovesalsenge plus en enkeltseng (i alt 7) til op til syv gæster. På tredje sal; eget badeværelse, terrasse med havudsigt, aircondition og nøglekort. Sengetøj og håndklæde ved check‑in.",
       "facilities": [
@@ -184,7 +185,7 @@
       }
     },
     "room_9": {
-      "title": "Deluxe‑værelse (blandet)",
+      "title": "Blandet værelse – Enkeltsenge",
       "bed_intro": "En prisvenlig måde at få et værelse med tre senge.",
       "bed_description": "Deluxe‑værelset (blandet) har tre enkeltsenge til op til tre gæster. På fjerde sal; eget badeværelse, udsigt til gårdhave, aircondition og nøglekort. Sengetøj og håndklæde ved check‑in.",
       "facilities": [
@@ -203,7 +204,7 @@
       }
     },
     "room_8": {
-      "title": "Kvinde‑sovesal med én køjeseng",
+      "title": "Kvindeværelse – Haveudsigt",
       "bed_intro": "Et prisvenligt valg for to kvindelige rejsende.",
       "bed_description": "Denne kvinde‑sovesal har én køjeseng (sovesalseng) til op til to gæster. På tredje sal; aircondition, nøglekort, haveudsigt og ved siden af fælles badeværelse (kvinder). Sengetøj og håndklæde ved check‑in.",
       "facilities": [
@@ -239,7 +240,7 @@
     "nextSlide": "Næste slide"
   },
   "hero": {
-    "heading": "Vores værelser",
+    "heading": "Sovesalspladser",
     "subheading": "Vælg det perfekte værelse til dit ophold"
   },
   "filters": {
@@ -250,6 +251,7 @@
   "filtersAria": "Filtrer efter værelsestype",
   "checkRatesNonRefundable": "Ikke‑refunderbare priser",
   "checkRatesFlexible": "Fleksible værelsespriser",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "Ikke‑refunderbar",
     "flexible": "Fleksibel"
@@ -302,5 +304,10 @@
   "priceUnits": {
     "perRoom": "værelse",
     "perBed": "seng"
+  },
+  "date": {
+    "stayHelper": "2–8 nights",
+    "clearDates": "Clear dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
   }
 }

@@ -324,7 +324,8 @@ export async function updateManifest(
     run_id: options.run_id,
     business: options.business,
     loop_spec_version: options.loop_spec_version,
-    status: "candidate",
+    // S4 is the merge-and-commit boundary.
+    status: "current",
     created_at: createdAt,
     updated_at: now,
     artifacts: sortKeys(artifacts),

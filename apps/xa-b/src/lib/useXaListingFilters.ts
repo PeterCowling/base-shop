@@ -4,6 +4,8 @@
 import * as React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
+import type { Currency } from "@acme/platform-core/contexts/CurrencyContext";
+
 import type { XaProduct } from "./demoData";
 import { getAvailableStock } from "./inventoryStore";
 import type { XaCartState } from "./xaCart";
@@ -29,6 +31,7 @@ type UseXaListingFiltersArgs = {
   showTypeFilter?: boolean;
   cart: XaCartState;
   filtersOpen: boolean;
+  currency: Currency;
 };
 
 type FilterValues = ReturnType<typeof createEmptyFilterValues>;
@@ -68,6 +71,7 @@ function filterAndSortProducts({
   appliedMax,
   referenceTimestamp,
   sort,
+  currency,
 }: {
   products: XaProduct[];
   cart: XaCartState;
@@ -81,6 +85,7 @@ function filterAndSortProducts({
   appliedMax: number | null;
   referenceTimestamp: number;
   sort: SortKey;
+  currency: Currency;
 }) {
   const newInDays = resolveNewInDays(appliedWindow, appliedNewIn);
 
@@ -94,8 +99,9 @@ function filterAndSortProducts({
       if (delta > newInDays * 24 * 60 * 60 * 1000) return false;
     }
 
-    if (typeof appliedMin === "number" && product.price < appliedMin) return false;
-    if (typeof appliedMax === "number" && product.price > appliedMax) return false;
+    const effectivePrice = product.prices?.[currency] ?? product.price;
+    if (typeof appliedMin === "number" && effectivePrice < appliedMin) return false;
+    if (typeof appliedMax === "number" && effectivePrice > appliedMax) return false;
 
     for (const config of filterConfigs) {
       const selected = appliedValues[config.key];
@@ -274,6 +280,7 @@ export function useXaListingFilters({
   showTypeFilter = true,
   cart,
   filtersOpen,
+  currency,
 }: UseXaListingFiltersArgs) {
   const router = useRouter();
   const pathname = usePathname();
@@ -347,6 +354,7 @@ export function useXaListingFilters({
       appliedMax,
       referenceTimestamp,
       sort,
+      currency,
     });
   }, [
     appliedInStock,
@@ -361,6 +369,7 @@ export function useXaListingFilters({
     products,
     referenceTimestamp,
     sort,
+    currency,
   ]);
 
   const setQuery = React.useCallback(

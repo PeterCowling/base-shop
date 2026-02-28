@@ -16,7 +16,7 @@ import {
   LAUNCH_FAMILY_ANCHORS,
   resolveLaunchFamily,
 } from "@/lib/launchMerchandising";
-import { formatMoney, readShopCurrency, readShopSkus } from "@/lib/shop";
+import { formatMoney, readShopCurrency, readShopInventory, readShopSkus } from "@/lib/shop";
 
 import ShopAnalytics from "./ShopAnalytics.client";
 
@@ -47,10 +47,17 @@ export default async function ShopPage({
   const lang: Locale = resolveLocale(rawLang);
   const familyParam = Array.isArray(rawFamily) ? rawFamily[0] : rawFamily;
   const activeFamily = resolveLaunchFamily(familyParam);
-  const [skus, currency] = await Promise.all([
+  const [skus, currency, inventoryItems] = await Promise.all([
     readShopSkus(lang),
     readShopCurrency(),
+    readShopInventory(),
   ]);
+  const thresholdByProductId = new Map<string, number>();
+  for (const item of inventoryItems) {
+    if (typeof item.lowStockThreshold === "number") {
+      thresholdByProductId.set(item.productId, item.lowStockThreshold);
+    }
+  }
   const shopContent = getShopContent(lang);
   const familyCopy = getLaunchFamilyCopy(lang);
   const filteredSkus = filterSkusByLaunchFamily(skus, activeFamily);
@@ -132,6 +139,8 @@ export default async function ShopPage({
                     primaryAlt={media.primaryAlt}
                     secondarySrc={media.secondarySrc}
                     secondaryAlt={media.secondaryAlt}
+                    stock={sku.stock}
+                    lowStockThreshold={thresholdByProductId.get(sku.id)}
                   />
                 </li>
               );

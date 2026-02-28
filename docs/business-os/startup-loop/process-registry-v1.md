@@ -40,7 +40,7 @@ This registry answers: *"During each startup-loop run and weekly operating cycle
 | CDI-1 | Weekly signal intake and insight synthesis | CDI | S10 | Weekly | All profiles |
 | CDI-2 | Customer development interviews and field validation | CDI | S2, S7, recurring | Weekly (pre-PMF) / Biweekly (PMF+) | All profiles |
 | CDI-3 | Market and competitor scan | CDI | S2, recurring | Weekly (hospitality, high season) / Biweekly (product) | All |
-| CDI-4 | Experiment backlog design and prioritisation | CDI | S5A, S10 | Weekly | All |
+| CDI-4 | Experiment backlog design and prioritisation | CDI | S4, S10 | Weekly | All |
 | OFF-1 | Offer and value proposition iteration | OFF | S2B, recurring | Weekly (pre-PMF/PMF) / Monthly (scaling) | All |
 | OFF-2 | Pricing and revenue management review | OFF | S2B, S10 | Weekly (hospitality always; product if volatile) | All |
 | OFF-3 | Product / listing content and merchandising refresh | OFF | S6, recurring | Weekly (top assets) / Monthly full audit | All |
@@ -60,7 +60,7 @@ This registry answers: *"During each startup-loop run and weekly operating cycle
 | FIN-1 | Weekly cash and unit economics review | FIN | S3, S10 | Weekly | All |
 | FIN-2 | Billing, payouts and reconciliation | FIN | Post-S9 launch | Weekly / Daily (high volume) | All (activates after first transactions) |
 | FIN-3 | Risk register, compliance, and incident readiness | FIN | S1, recurring | Weekly light / Monthly deep | All (see exception-runbooks-v1.md) |
-| FIN-4 | Vendor and procurement management | FIN | Post-S5B, recurring | Monthly; Weekly exceptions | `inventory_present`, `hospitality`, scaling stage |
+| FIN-4 | Vendor and procurement management | FIN | Post-S4, recurring | Monthly; Weekly exceptions | `inventory_present`, `hospitality`, scaling stage |
 | DATA-1 | KPI refresh and data integrity checks | DATA | MEASURE-01/MEASURE-02, S3, S10 | Weekly + Daily key metrics | All |
 | DATA-2 | Leading indicator monitoring and alerting | DATA | S10, recurring | Daily monitoring / Weekly summary | All (see exception-runbooks-v1.md) |
 | DATA-3 | Incident post-mortems and corrective actions | DATA | Triggered | As-needed | All (see exception-runbooks-v1.md) |
@@ -82,9 +82,7 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 | S2B | Offer design | OFF-1 (offer iteration), OFF-2 (initial pricing hypothesis) |
 | S3 | Forecast | FIN-1 (unit economics baseline), DATA-1 (KPI modeling) |
 | S6B | Channel strategy + GTM | GTM-1 (demand plan), GTM-2 (distribution ops), OFF-4 (channel policy), CDI-4 (experiment design) |
-| S4 | Baseline merge | DATA-1 (artifact integrity audit) |
-| S5A | Prioritize | CDI-4 (experiment backlog prioritisation) |
-| S5B | BOS sync | DATA-4 (decision log state sync) |
+| S4 | Baseline merge + prioritization | DATA-1 (artifact integrity audit), CDI-4 (experiment backlog prioritisation) |
 | S6 | Site-upgrade synthesis | OFF-3 (content/listing refresh) |
 | S7 | Fact-find | CDI-2 (field validation), CDI-4 (hypothesis design) |
 | S8 | Plan | GTM-1 (demand plan inputs), OPS-1 (capacity planning inputs) |
@@ -134,7 +132,7 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 | Field | Value |
 |---|---|
 | **Purpose** | Keep pricing, positioning, and channel presence grounded in the current market (seasonality and local competition). |
-| **Stage anchor** | S2 (initial deep research); recurring post-S5B |
+| **Stage anchor** | S2 (initial deep research); recurring post-S4 |
 | **Cadence** | Weekly (hospitality, high season); biweekly/monthly (product, depending on volatility) |
 | **Owner role** | Commercial Lead; in small teams: Growth Lead |
 | **Inputs** | Competitor list; scrape/notes of competitor prices and offers; OTA market view; retail shelf checks (wholesale) |
@@ -151,7 +149,7 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 | Field | Value |
 |---|---|
 | **Purpose** | Turn hypotheses into testable experiments and prioritise them by expected impact and effort, maintaining a steady weekly experimentation throughput. |
-| **Stage anchor** | S5A (initial prioritisation), S10 (weekly reprioritisation) |
+| **Stage anchor** | S4 (initial prioritisation), S10 (weekly reprioritisation) |
 | **Cadence** | Weekly |
 | **Owner role** | Growth Lead (product) or Commercial/Revenue Lead (hospitality); facilitated by Data Lead |
 | **Inputs** | Hypotheses (CDI-1/CDI-2); operational constraints (OPS-1); OKRs/targets; bottleneck diagnosis output |
@@ -171,7 +169,7 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 | Field | Value |
 |---|---|
 | **Purpose** | Maintain a coherent offer catalogue and evolve it from learning; distinct from the one-time S2B offer design stage. |
-| **Stage anchor** | S2B (initial creation via `lp-offer`); recurring post-S5B |
+| **Stage anchor** | S2B (initial creation via `lp-offer`); recurring post-S4 |
 | **Cadence** | Weekly (pre-PMF/PMF); monthly (scaling) |
 | **Owner role** | Product Lead (product) or Experience Lead (hospitality); approval: Founder/GM |
 | **Inputs** | Insights (CDI-1/CDI-2); margin/unit economics (FIN-1); operational constraints (OPS-1) |
@@ -500,7 +498,7 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 | Field | Value |
 |---|---|
 | **Purpose** | Stabilise supply and service quality via clear vendor selection, SLAs, and cost control. |
-| **Stage anchor** | Post-S5B ongoing; activates when vendors are in use |
+| **Stage anchor** | Post-S4 ongoing; activates when vendors are in use |
 | **Cadence** | Monthly review; weekly exceptions |
 | **Owner role** | Ops Lead + Finance Owner |
 | **Inputs** | Vendor list; contracts; performance issues; cost trends; risk register (FIN-3) |

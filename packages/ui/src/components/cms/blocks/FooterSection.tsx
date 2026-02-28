@@ -31,7 +31,7 @@ export default function FooterSection({ variant = "simple", className, ...rest }
             <p>
               {t("footer.simple.copyright", { year: String(new Date().getFullYear()) })}
             </p>
-            <Link href="/legal" className="inline-flex items-center min-h-10 min-w-10 px-2 text-foreground hover:underline">
+            <Link href="/legal" className="inline-flex items-center min-h-11 min-w-11 px-2 text-foreground hover:underline">
               {t("footer.simple.legal")}
             </Link>
           </div>
@@ -42,17 +42,17 @@ export default function FooterSection({ variant = "simple", className, ...rest }
               <h3 className="font-medium text-foreground break-words">{t("footer.columns.shop")}</h3>
               <ul className="min-w-0 space-y-2 break-words">
                 <li>
-                  <Link href="/collections/new" className="inline-flex items-center min-h-10 min-w-10 px-2 text-foreground hover:underline">
+                  <Link href="/collections/new" className="inline-flex items-center min-h-11 min-w-11 px-2 text-foreground hover:underline">
                     {t("footer.shop.new")}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/collections/best" className="inline-flex items-center min-h-10 min-w-10 px-2 text-foreground hover:underline">
+                  <Link href="/collections/best" className="inline-flex items-center min-h-11 min-w-11 px-2 text-foreground hover:underline">
                     {t("footer.shop.best")}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/collections/sale" className="inline-flex items-center min-h-10 min-w-10 px-2 text-foreground hover:underline">
+                  <Link href="/collections/sale" className="inline-flex items-center min-h-11 min-w-11 px-2 text-foreground hover:underline">
                     {t("footer.shop.sale")}
                   </Link>
                 </li>
@@ -62,17 +62,17 @@ export default function FooterSection({ variant = "simple", className, ...rest }
               <h3 className="font-medium text-foreground break-words">{t("footer.columns.support")}</h3>
               <ul className="min-w-0 space-y-2 break-words">
                 <li>
-                  <Link href="/help/shipping" className="inline-flex items-center min-h-10 min-w-10 px-2 text-foreground hover:underline">
+                  <Link href="/help/shipping" className="inline-flex items-center min-h-11 min-w-11 px-2 text-foreground hover:underline">
                     {t("footer.support.shipping")}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/help/returns" className="inline-flex items-center min-h-10 min-w-10 px-2 text-foreground hover:underline">
+                  <Link href="/help/returns" className="inline-flex items-center min-h-11 min-w-11 px-2 text-foreground hover:underline">
                     {t("footer.support.returns")}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/contact" className="inline-flex items-center min-h-10 min-w-10 px-2 text-foreground hover:underline">
+                  <Link href="/contact" className="inline-flex items-center min-h-11 min-w-11 px-2 text-foreground hover:underline">
                     {t("footer.support.contact")}
                   </Link>
                 </li>
@@ -82,17 +82,17 @@ export default function FooterSection({ variant = "simple", className, ...rest }
               <h3 className="font-medium text-foreground break-words">{t("footer.columns.company")}</h3>
               <ul className="min-w-0 space-y-2 break-words">
                 <li>
-                  <Link href="/about" className="inline-flex items-center min-h-10 min-w-10 px-2 text-foreground hover:underline">
+                  <Link href="/about" className="inline-flex items-center min-h-11 min-w-11 px-2 text-foreground hover:underline">
                     {t("footer.company.about")}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/careers" className="inline-flex items-center min-h-10 min-w-10 px-2 text-foreground hover:underline">
+                  <Link href="/careers" className="inline-flex items-center min-h-11 min-w-11 px-2 text-foreground hover:underline">
                     {t("footer.company.careers")}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/press" className="inline-flex items-center min-h-10 min-w-10 px-2 text-foreground hover:underline">
+                  <Link href="/press" className="inline-flex items-center min-h-11 min-w-11 px-2 text-foreground hover:underline">
                     {t("footer.company.press")}
                   </Link>
                 </li>

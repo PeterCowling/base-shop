@@ -3,6 +3,10 @@ import { notFound } from "next/navigation";
 import { XaDepartmentListing } from "../../../../components/XaDepartmentListing";
 import { isCategoryAllowed, isDepartmentAllowed,XA_SUBCATEGORIES } from "../../../../lib/xaCatalog";
 
+export function generateStaticParams() {
+  return XA_SUBCATEGORIES.clothing.map((c) => ({ category: c }));
+}
+
 export default async function KidsClothingCategoryPage({
   params,
 }: {

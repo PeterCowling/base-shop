@@ -66,7 +66,7 @@ Convert the active HBAG WEBSITE-02 L1 Build 2 brief into a plan-ready implementa
 - `apps/caryina/src/lib/shop.ts` - catalog/settings read helpers and money formatting.
 - `data/shops/caryina/products.json` - current SKU data source; `media` arrays currently empty.
 - `docs/business-os/site-upgrades/HBAG/2026-02-23-upgrade-brief.user.md` - best-of matrix and image-heavy launch contract.
-- `docs/business-os/strategy/HBAG/brand-dossier.user.md` - active imagery-first brand language and visual constraints.
+- `docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md` - active imagery-first brand language and visual constraints.
 - `docs/business-os/platform-capability/2026-02-12-platform-capability-baseline.user.md` - platform fit and delivery constraints.
 
 ### Patterns & Conventions Observed
@@ -93,7 +93,7 @@ Convert the active HBAG WEBSITE-02 L1 Build 2 brief into a plan-ready implementa
 - Upstream dependencies:
   - `docs/business-os/platform-capability/latest.user.md`
   - `docs/business-os/site-upgrades/HBAG/latest.user.md`
-  - `docs/business-os/strategy/HBAG/brand-dossier.user.md`
+  - `docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md`
 - Downstream dependents:
   - `docs/plans/hbag-website-02-image-first-upgrade/plan.md` (next stage)
   - `apps/caryina/src/app/[lang]/shop/page.tsx`

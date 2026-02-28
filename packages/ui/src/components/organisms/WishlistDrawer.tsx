@@ -67,7 +67,7 @@ export function WishlistDrawer({
                 className="flex items-center justify-between gap-2 rounded px-2 py-1 hover:bg-surface-2"
               >
                 <span>{item.title}</span>
-                <Button variant="outline" className="min-h-10 px-3">
+                <Button variant="outline" className="min-h-11 px-3">
                   {t("actions.view") as string}
                 </Button>
               </li>

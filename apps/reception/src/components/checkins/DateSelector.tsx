@@ -8,11 +8,12 @@ import {
   useRef,
   useState,
 } from "react";
-import { DayPicker, getDefaultClassNames } from "react-day-picker";
+import { DayPicker } from "react-day-picker";
 
 import { Button } from "@acme/design-system/atoms";
-import { Cluster, Inline } from "@acme/design-system/primitives";
 
+import { useAuth } from "../../context/AuthContext";
+import { canAccess, isPrivileged, Permissions } from "../../lib/roles";
 import {
   addDays,
   buildQuickDateRange,
@@ -24,28 +25,29 @@ import {
 interface DateSelectorProps {
   selectedDate: string;
   onDateChange: (date: string) => void;
-  username?: string;
 }
 
 /**
  * DateSelector:
  * - Quick-select for Today and upcoming days.
- *   - Pete sees Yesterday and the next five days.
+ *   - Privileged users (owner/developer) see Yesterday and the next five days.
  *   - All others are limited to Today and Tomorrow.
- * - If username is "pete" or "peter" show an unrestricted DayPicker
- * - If username is "serena" show a DayPicker limited to tomorrow
+ * - Privileged users see an unrestricted DayPicker.
+ * - Admin/manager users see a DayPicker limited to today + tomorrow.
  */
 export default function DateSelector({
   selectedDate,
   onDateChange,
-  username,
 }: DateSelectorProps): ReactElement {
-  const lowerName = username?.toLowerCase();
-  const isPete = lowerName === "pete" || lowerName === "peter";
-  const isSerena = lowerName === "serena";
+  const { user } = useAuth();
+  const privileged = isPrivileged(user ?? null);
+  const canAccessRestrictedCalendar = canAccess(
+    user ?? null,
+    Permissions.RESTRICTED_CALENDAR_ACCESS,
+  );
 
   // Quick selectors
-  const daysAhead = isPete ? 5 : 1;
+  const daysAhead = privileged ? 5 : 1;
   const { today, yesterday, nextDays } = useMemo(
     () => buildQuickDateRange(daysAhead),
     [daysAhead],
@@ -65,12 +67,12 @@ export default function DateSelector({
         <Button
           key={day}
           className={`
-            px-4 py-2 border rounded text-sm font-medium w-100px text-center
+            px-4 py-2 border rounded-lg text-sm font-medium w-100px text-center
             transition-colors
             ${
               isSelected
                 ? "bg-primary-main text-primary-fg border-primary-main"
-                : "bg-surface text-foreground border-border-2 hover:bg-surface-2"
+                : "bg-surface text-foreground border-border-strong hover:bg-surface-2"
             }
           `}
           onClick={() => handleQuickSelect(day)}
@@ -82,27 +84,8 @@ export default function DateSelector({
     [handleQuickSelect, selectedDate],
   );
 
-  const daySelectors = useMemo(
-    () => (
-      <Cluster gap={2}>
-        {isPete && renderButton("Yesterday", yesterday)}
-        {renderButton("Today", today)}
-        {nextDays.map((day) => {
-          const shortLabel = getWeekdayShortLabel(day);
-          return renderButton(shortLabel, day);
-        })}
-      </Cluster>
-    ),
-    [
-      today,
-      yesterday,
-      isPete,
-      nextDays,
-      renderButton,
-    ],
-  );
 
-  // DayPicker toggle logic (Pete/Serena)
+  // DayPicker toggle logic (privileged = unrestricted; admin/manager = restricted to tomorrow)
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const calendarRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -148,18 +131,15 @@ export default function DateSelector({
     [],
   );
 
-  // Extend default DayPicker class names
-  const defaultNames = getDefaultClassNames();
-
   const parsedToday = useMemo(() => parseDate(today), [today]);
 
   let toggleAndCalendar: ReactElement | null = null;
-  if (isPete || isSerena) {
+  if (canAccessRestrictedCalendar) {
     toggleAndCalendar = (
       <div className="relative">
         <Button
           ref={toggleRef}
-          className="px-3 py-2 border rounded focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main text-sm"
+          className="px-3 py-2 border rounded-lg focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main text-sm"
           onClick={handleToggleCalendar}
         >
           {selectedDate ? formatDateForInput(selectedDate) : "Select a date"}
@@ -174,7 +154,7 @@ export default function DateSelector({
               mode="single"
               selected={parseDate(selectedDate)}
               onSelect={handleDayPickerSelect}
-              {...(isSerena
+              {...(!privileged
                 ? {
                     fromDate: parsedToday,
                     toDate: parsedToday
@@ -183,12 +163,26 @@ export default function DateSelector({
                   }
                 : {})}
               classNames={{
-                root: `${defaultNames.root} bg-surface shadow-lg p-5 rounded`,
-                /* eslint-disable ds/no-raw-tailwind-color -- calendar day-picker accent styling (amber-500); no semantic token equivalent [REC-09] */
-                today: "border-amber-500",
-                selected: "bg-amber-500 border-amber-500 text-primary-fg",
-                chevron: `${defaultNames.chevron} fill-amber-500`,
-                /* eslint-enable ds/no-raw-tailwind-color */
+                root: "bg-surface border border-border-strong rounded-lg shadow-lg p-4 text-foreground",
+                months: "relative",
+                month: "space-y-3",
+                month_caption: "flex items-center justify-center h-9",
+                caption_label: "text-sm font-semibold text-foreground",
+                nav: "absolute top-0 inset-x-0 flex justify-between",
+                button_previous: "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-surface-2 hover:text-foreground transition-colors",
+                button_next: "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-surface-2 hover:text-foreground transition-colors",
+                chevron: "w-4 h-4 fill-current",
+                month_grid: "border-collapse",
+                weekdays: "flex",
+                weekday: "flex h-9 w-9 items-center justify-center text-xs font-medium text-muted-foreground",
+                weeks: "space-y-1 mt-1",
+                week: "flex",
+                day: "p-0",
+                day_button: "flex h-9 w-9 items-center justify-center rounded-lg text-sm font-medium text-foreground hover:bg-surface-2 transition-colors cursor-pointer",
+                today: "font-bold text-primary-main/100",
+                selected: "bg-primary-main/100 text-primary-fg/100 hover:bg-primary-main/100",
+                outside: "opacity-30",
+                disabled: "opacity-25 cursor-not-allowed",
               }}
             />
           </div>
@@ -198,11 +192,11 @@ export default function DateSelector({
   }
 
   return (
-    <div className="relative pb-5">
-      <Inline wrap={false} gap={2}>
-        {daySelectors}
-        {toggleAndCalendar}
-      </Inline>
+    <div className="flex flex-wrap items-center gap-2">
+      {privileged && renderButton("Yesterday", yesterday)}
+      {renderButton("Today", today)}
+      {nextDays.map((day) => renderButton(getWeekdayShortLabel(day), day))}
+      {toggleAndCalendar}
     </div>
   );
 }

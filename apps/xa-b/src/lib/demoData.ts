@@ -1,3 +1,4 @@
+import type { Currency } from "@acme/platform-core/contexts/CurrencyContext";
 import type { SKU } from "@acme/types";
 
 import catalog from "../data/catalog.runtime.json";
@@ -9,6 +10,8 @@ export type XaProduct = SKU & {
   brand: string;
   collection: string;
   compareAtPrice?: number;
+  prices?: Partial<Record<Currency, number>>;
+  compareAtPrices?: Partial<Record<Currency, number>>;
   createdAt: string;
   popularity: number;
   variantGroup?: string;

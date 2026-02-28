@@ -47,16 +47,6 @@
       "path": ".claude/skills/guide-translate/SKILL.md"
     },
     {
-      "name": "idea-forecast",
-      "description": "Build a 90-day startup forecast and proposed goals from a business idea and product specs using web research (competitor analysis, price bands, channel benchmarks, demand signals). Use when a user provides idea/product inputs and wants the agent to set most targets, assumptions, risks, and validation metrics before SFS-00 or idea-generate.",
-      "path": ".claude/skills/idea-forecast/SKILL.md"
-    },
-    {
-      "name": "idea-generate",
-      "description": "Radical business growth process auditor. Cabinet Secretary orchestrates multi-lens composite idea generation with attribution, confidence gating, and priority ranking.",
-      "path": ".claude/skills/idea-generate/SKILL.md"
-    },
-    {
       "name": "idea-scan",
       "description": "Analyze standing-intelligence pack diffs and produce scan-proposals.md for IDEAS-02 backlog updates.",
       "path": ".claude/skills/idea-scan/SKILL.md"
@@ -68,18 +58,13 @@
     },
     {
       "name": "lp-assessment-bootstrap",
-      "description": "Bootstrap a brand-dossier.user.md for a business entering the startup loop. Gathers context from strategy docs, existing UI, and theme packages, then fills the shared template. Used at S0/S1 when the doc is missing, or at DO before /lp-design-spec.",
+      "description": "Bootstrap a <YYYY-MM-DD>-brand-identity-dossier.user.md for a business entering the startup loop. Gathers context from strategy docs, existing UI, and theme packages, then fills the shared template. Used at S0/S1 when the doc is missing, or at DO before /lp-design-spec.",
       "path": ".claude/skills/lp-assessment-bootstrap/SKILL.md"
     },
     {
       "name": "lp-baseline-merge",
       "description": "Join parallel fan-out outputs (MARKET-06 + S3 + SELL-01, with optional PRODUCT-02) into a single baseline snapshot and draft manifest.",
       "path": ".claude/skills/lp-baseline-merge/SKILL.md"
-    },
-    {
-      "name": "lp-bos-sync",
-      "description": "S5B BOS sync stage worker. Persists prioritized baseline outputs to Business OS (D1) via agent API, then emits S5B stage-result.json to signal control plane commit.",
-      "path": ".claude/skills/lp-bos-sync/SKILL.md"
     },
     {
       "name": "lp-brand-refresh",
@@ -92,6 +77,11 @@
       "path": ".claude/skills/lp-channels/SKILL.md"
     },
     {
+      "name": "lp-coverage-scan",
+      "description": "Coverage gap scanner for startup loop. Reads a business coverage manifest, scans the repo and known integrations for actual artifact/data-source state, classifies gaps as CRITICAL/MAJOR/MINOR, writes a gap report, and emits dispatch packets to queue-state.json for all CRITICAL and MAJOR gaps.",
+      "path": ".claude/skills/lp-coverage-scan/SKILL.md"
+    },
+    {
       "name": "lp-design-qa",
       "description": "Audit a built UI against the design spec and design system for visual consistency (code-level), accessibility, responsive behavior, and token compliance. Produces structured issues ready for lp-do-build fixes.",
       "path": ".claude/skills/lp-design-qa/SKILL.md"
@@ -100,11 +90,6 @@
       "name": "lp-design-spec",
       "description": "Translate a feature requirement into a concrete frontend design specification mapped to the design system, theme tokens, and per-business brand language. Sits between fact-find and plan.",
       "path": ".claude/skills/lp-design-spec/SKILL.md"
-    },
-    {
-      "name": "lp-design-system",
-      "description": "Apply design tokens and system patterns correctly. Reference for semantic colors, spacing, typography, borders, and shadows. Never use arbitrary values.",
-      "path": ".claude/skills/lp-design-system/SKILL.md"
     },
     {
       "name": "lp-do-assessment-01-problem-statement",
@@ -123,12 +108,12 @@
     },
     {
       "name": "lp-do-assessment-04-candidate-names",
-      "description": "Full naming pipeline orchestrator (ASSESSMENT-04). Runs four parts in sequence: (1) produce naming-generation-spec.md from ASSESSMENT docs, (2) agent generates 250 scored candidates, (3) RDAP batch check all .com domains, (4) filter to available names and produce ranked shortlist. Delivers a final operator-ready shortlist of domain-verified, scored brand name candidates.",
+      "description": "Full naming pipeline orchestrator (ASSESSMENT-04). Runs four parts in sequence: (1) produce <YYYY-MM-DD>-naming-generation-spec.md from ASSESSMENT docs, (2) agent generates 250 scored candidates, (3) RDAP batch check all .com domains, (4) filter to available names and produce ranked shortlist. Delivers a final operator-ready shortlist of domain-verified, scored brand name candidates.",
       "path": ".claude/skills/lp-do-assessment-04-candidate-names/SKILL.md"
     },
     {
       "name": "lp-do-assessment-05-name-selection",
-      "description": "Produce a naming-generation-spec.md for a business. Reads ASSESSMENT stage docs, extracts ICP, product, brand personality, competitive set, and any prior eliminated names, then writes a fully-structured agent-executable spec that generates 250 scored candidate names. Part 1 of a 4-part naming pipeline (spec → generate → RDAP batch check → rank).",
+      "description": "Produce a <YYYY-MM-DD>-naming-generation-spec.md for a business. Reads ASSESSMENT stage docs, extracts ICP, product, brand personality, competitive set, and any prior eliminated names, then writes a fully-structured agent-executable spec that generates 250 scored candidate names. Part 1 of a 4-part naming pipeline (spec → generate → RDAP batch check → rank).",
       "path": ".claude/skills/lp-do-assessment-05-name-selection/SKILL.md"
     },
     {
@@ -162,6 +147,21 @@
       "path": ".claude/skills/lp-do-assessment-12-promote/SKILL.md"
     },
     {
+      "name": "lp-do-assessment-13-product-naming",
+      "description": "Full product naming pipeline orchestrator (ASSESSMENT-13). Runs four parts in sequence: (1) produce <YYYY-MM-DD>-product-naming-spec.md from ASSESSMENT docs, (2) agent generates 75 scored candidates across naming territories, (3) TM pre-screen direction for all candidates via tm-prescreen-cli.ts, (4) filter and rank to produce a top-20 shortlist. Delivers a final operator-ready shortlist of scored candidates with EUIPO/WIPO/UIBM search direction pre-generated.",
+      "path": ".claude/skills/lp-do-assessment-13-product-naming/SKILL.md"
+    },
+    {
+      "name": "lp-do-assessment-14-logo-brief",
+      "description": "Logo design brief for new startups (ASSESSMENT-14). Synthesises brand identity dossier, brand profile, and product naming to produce a complete logo design brief ready to hand to a designer. Upstream of lp-do-assessment-15-packaging-brief and /lp-design-spec.",
+      "path": ".claude/skills/lp-do-assessment-14-logo-brief/SKILL.md"
+    },
+    {
+      "name": "lp-do-assessment-15-packaging-brief",
+      "description": "Packaging design brief for new startups (ASSESSMENT-15). Conditional on physical-product profile. Reads brand identity, product naming, logo brief, and distribution plan to produce a complete packaging brief covering structural format, regulatory requirements, surface design, and designer handoff checklist.",
+      "path": ".claude/skills/lp-do-assessment-15-packaging-brief/SKILL.md"
+    },
+    {
       "name": "lp-do-briefing",
       "description": "Produce an understanding-only system briefing — how something works now, traced end-to-end with evidence pointers. No planning artifacts or tasks. Use when you need current-behavior understanding without committing to a plan.",
       "path": ".claude/skills/lp-do-briefing/SKILL.md"
@@ -187,13 +187,23 @@
       "path": ".claude/skills/lp-do-factcheck/SKILL.md"
     },
     {
+      "name": "lp-do-idea-forecast",
+      "description": "Build a 90-day startup forecast and proposed goals from a business idea and product specs using web research (competitor analysis, price bands, channel benchmarks, demand signals). Use when a user provides idea/product inputs and wants the agent to set most targets, assumptions, risks, and validation metrics before SFS-00 or lp-do-idea-generate.",
+      "path": ".claude/skills/idea-forecast/SKILL.md"
+    },
+    {
+      "name": "lp-do-idea-generate",
+      "description": "Radical business growth process auditor. Cabinet Secretary orchestrates multi-lens composite idea generation with attribution, confidence gating, and priority ranking.",
+      "path": ".claude/skills/idea-generate/SKILL.md"
+    },
+    {
       "name": "lp-do-ideas",
       "description": "Trial-mode idea orchestrator. Ingests standing-artifact delta events and emits schema-valid dispatch packets routed to lp-do-fact-find or lp-do-briefing. Trial mode only — does not mutate startup-loop stage state.",
       "path": ".claude/skills/lp-do-ideas/SKILL.md"
     },
     {
       "name": "lp-do-plan",
-      "description": "Thin orchestrator for confidence-gated planning. Routes to track-specific planning modules, persists plan artifacts from templates, and optionally hands off to /lp-do-build when explicit auto-build intent is present.",
+      "description": "Thin orchestrator for confidence-gated planning. Routes to track-specific planning modules, persists plan artifacts from templates, and hands off to /lp-do-build by default unless --notauto is passed.",
       "path": ".claude/skills/lp-do-plan/SKILL.md"
     },
     {
@@ -205,6 +215,11 @@
       "name": "lp-do-sequence",
       "description": "Topologically sort plan tasks into correct implementation order, preserve stable task IDs by default, and add explicit dependency/blocker metadata to enable parallel subagent execution.",
       "path": ".claude/skills/lp-do-sequence/SKILL.md"
+    },
+    {
+      "name": "lp-do-worldclass",
+      "description": "World-class benchmark skill for startup loop. Validates a business goal artifact, generates or refreshes a deep-research prompt, and (when a benchmark result is present) scans business strategy artifacts against world-class standards, presents improvement ideas to the operator for selection, and invokes /lp-do-ideas for each selected idea.",
+      "path": ".claude/skills/lp-do-worldclass/SKILL.md"
     },
     {
       "name": "lp-experiment",
@@ -253,18 +268,13 @@
     },
     {
       "name": "lp-prioritize",
-      "description": "S5 startup go-item ranking - score and select top 2-3 items to pursue",
+      "description": "Startup go-item ranking - score and select top 2-3 items to pursue",
       "path": ".claude/skills/lp-prioritize/SKILL.md"
     },
     {
       "name": "lp-readiness",
       "description": "Startup preflight gate (S1). Lightweight readiness check before entering the offer-building stage. Validates offer clarity, distribution feasibility, and measurement plan against minimal startup criteria.",
       "path": ".claude/skills/lp-readiness/SKILL.md"
-    },
-    {
-      "name": "lp-refactor",
-      "description": "Refactor React components for better maintainability, performance, or patterns. Covers hook extraction, component splitting, type safety, memoization, and composition.",
-      "path": ".claude/skills/lp-refactor/SKILL.md"
     },
     {
       "name": "lp-seo",
@@ -282,11 +292,6 @@
       "path": ".claude/skills/lp-site-upgrade/SKILL.md"
     },
     {
-      "name": "lp-visual",
-      "description": "Generate or enhance HTML documentation with polished visual diagrams (Mermaid flowcharts, state machines, sequence diagrams, Chart.js dashboards). Supports multiple documents via a references directory of reusable palettes, zoom controls, and initialization patterns. Use when asked to add diagrams to a guide, visualise a system or workflow, build a KPI dashboard, or improve documentation readability with visuals.",
-      "path": ".claude/skills/lp-visual/SKILL.md"
-    },
-    {
       "name": "lp-weekly",
       "description": "S10 weekly orchestration wrapper. Coordinates the full weekly decision, audit/CI, measurement compilation, and experiment lane flows into one deterministic sequence. Additive-first; never replaces canonical S10 authorities. No new hard stage blocks in first iteration.",
       "path": ".claude/skills/lp-weekly/SKILL.md"
@@ -297,14 +302,14 @@
       "path": ".claude/skills/meta-loop-efficiency/SKILL.md"
     },
     {
-      "name": "meta-reflect",
-      "description": "Capture session learnings and propose targeted improvements to docs, skills, or core agent instructions. Evidence-based only - no theoretical improvements. Closes the feedback loop directly by updating existing files.",
-      "path": ".claude/skills/meta-reflect/SKILL.md"
-    },
-    {
       "name": "meta-user-test",
       "description": "Run a repeatable two-layer site audit: full sitemap JS-off coverage for complete issue inventory, then focused JS-on flow checks for hydration/booking UX. Emit dated markdown+JSON artifacts with prioritized findings and acceptance criteria.",
       "path": ".claude/skills/meta-user-test/SKILL.md"
+    },
+    {
+      "name": "ops-ci-fix",
+      "description": "Run typecheck and lint scoped to changed packages, fix all errors iteratively, and commit a clean state. Offload-ready for Codex. Terminal condition is all affected packages pass typecheck and lint with zero errors.",
+      "path": ".claude/skills/ops-ci-fix/SKILL.md"
     },
     {
       "name": "ops-git-recover",
@@ -322,14 +327,44 @@
       "path": ".claude/skills/ops-ship/SKILL.md"
     },
     {
-      "name": "review-plan-status",
-      "description": "Report on the status of incomplete plans — how many tasks remain in each. Optionally lp-do-factcheck plans before reporting.",
-      "path": ".claude/skills/review-plan-status/SKILL.md"
-    },
-    {
       "name": "startup-loop",
       "description": "Chat command wrapper for operating Startup Loop runs. Supports /startup-loop start|status|submit|advance with strict stage gating, prompt handoff, and Business OS sync checks. Routes to lp-* stage skills at each stage.",
       "path": ".claude/skills/startup-loop/SKILL.md"
+    },
+    {
+      "name": "tool-process-audit",
+      "description": "Diagnose a named or described business/engineering process for bottlenecks, risks, and optimization opportunities. Use when a user asks to review, map, or improve a workflow and wants concrete next steps with effort/impact tradeoffs.",
+      "path": ".claude/skills/tool-process-audit/SKILL.md"
+    },
+    {
+      "name": "tools-bos-design-page",
+      "description": "Generate or enhance HTML documentation with polished visual diagrams (Mermaid flowcharts, state machines, sequence diagrams, Chart.js dashboards). Supports multiple documents via a references directory of reusable palettes, zoom controls, and initialization patterns. Use when asked to add diagrams to a guide, visualise a system or workflow, build a KPI dashboard, or improve documentation readability with visuals.",
+      "path": ".claude/skills/tools-bos-design-page/SKILL.md"
+    },
+    {
+      "name": "tools-design-system",
+      "description": "Apply design tokens and system patterns correctly. Reference for semantic colors, spacing, typography, borders, and shadows. Never use arbitrary values.",
+      "path": ".claude/skills/tools-design-system/SKILL.md"
+    },
+    {
+      "name": "tools-loop-efficiency-deterministic-extraction",
+      "description": "Scout new skill-efficiency opportunities, register them in docs/plans/startup-loop-token-efficiency-v2/deterministic-extraction-analysis.md, recompute true ROI/payback, and auto-implement every item in Implement now and Backlog via an execution queue.",
+      "path": ".claude/skills/tools-loop-efficiency-deterministic-extraction/SKILL.md"
+    },
+    {
+      "name": "tools-meta-reflect",
+      "description": "Capture session learnings and propose targeted improvements to docs, skills, or core agent instructions. Evidence-based only - no theoretical improvements. Closes the feedback loop directly by updating existing files.",
+      "path": ".claude/skills/tools-meta-reflect/SKILL.md"
+    },
+    {
+      "name": "tools-refactor",
+      "description": "Refactor React components for better maintainability, performance, or patterns. Covers hook extraction, component splitting, type safety, memoization, and composition.",
+      "path": ".claude/skills/tools-refactor/SKILL.md"
+    },
+    {
+      "name": "tools-review-plan-status",
+      "description": "Report on the status of incomplete plans — how many tasks remain in each. Optionally lp-do-factcheck plans before reporting.",
+      "path": ".claude/skills/tools-review-plan-status/SKILL.md"
     },
     {
       "name": "tools-ui-breakpoint-sweep",

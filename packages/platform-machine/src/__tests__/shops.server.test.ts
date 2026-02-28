@@ -128,8 +128,8 @@ describe("shops repository", () => {
         catalogFilters: [],
         themeId: "base",
         filterMappings: {},
-        themeDefaults: { color: "red" },
-        themeOverrides: { color: "blue" },
+        themeDefaults: { "--color": "red" },
+        themeOverrides: { "--color": "blue" },
       } as any;
 
       const readSpy = jest
@@ -138,12 +138,12 @@ describe("shops repository", () => {
 
       const patch = {
         id: "shop1",
-        themeDefaults: { spacing: "10px", extraDefault: "value" },
+        themeDefaults: { "--spacing": "10px", "--extraDefault": "value" },
         themeOverrides: {
-          color: null,
-          spacing: "10px",
-          extraDefault: "value",
-          newOverride: "15px",
+          "--color": null,
+          "--spacing": "10px",
+          "--extraDefault": "value",
+          "--newOverride": "15px",
         } as any,
       };
 
@@ -154,26 +154,26 @@ describe("shops repository", () => {
         expect.objectContaining({
           id: "shop1",
           themeDefaults: {
-            color: "red",
-            spacing: "10px",
-            extraDefault: "value",
+            "--color": "red",
+            "--spacing": "10px",
+            "--extraDefault": "value",
           },
-          themeOverrides: { newOverride: "15px" },
+          themeOverrides: { "--newOverride": "15px" },
           themeTokens: {
-            color: "red",
-            spacing: "10px",
-            extraDefault: "value",
-            newOverride: "15px",
+            "--color": "red",
+            "--spacing": "10px",
+            "--extraDefault": "value",
+            "--newOverride": "15px",
           },
         }),
       );
 
-      expect(result.themeOverrides).toEqual({ newOverride: "15px" });
+      expect(result.themeOverrides).toEqual({ "--newOverride": "15px" });
       expect(result.themeTokens).toEqual({
-        color: "red",
-        spacing: "10px",
-        extraDefault: "value",
-        newOverride: "15px",
+        "--color": "red",
+        "--spacing": "10px",
+        "--extraDefault": "value",
+        "--newOverride": "15px",
       });
 
       readSpy.mockRestore();

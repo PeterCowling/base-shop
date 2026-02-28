@@ -78,9 +78,9 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
 
   const sections = useMemo(
     () => [
-      { data: code21List, title: SECTION_TITLES[0] },
-      { data: code5List, title: SECTION_TITLES[1] },
-      { data: code6List, title: SECTION_TITLES[2] },
+      { data: code21List, title: SECTION_TITLES[0], variant: "neutral" as const },
+      { data: code5List, title: SECTION_TITLES[1], variant: "warning" as const },
+      { data: code6List, title: SECTION_TITLES[2], variant: "danger" as const },
     ],
     [code21List, code5List, code6List]
   );
@@ -104,9 +104,16 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
    * Key point: We skip rendering the entire <TransitionGroup> if 'listData' is empty.
    * This ensures <TransitionGroup> always has valid children.
    */
+  const sectionStyles = {
+    neutral: { bg: "bg-surface-2", border: "border-border-strong", bar: "bg-primary-main", text: "text-foreground" },
+    warning: { bg: "bg-warning/10", border: "border-warning", bar: "bg-warning", text: "text-foreground" },
+    danger: { bg: "bg-danger-fg/10", border: "border-danger-fg", bar: "bg-danger-fg", text: "text-foreground" },
+  } as const;
+
   const renderListSection = (
     listData: BookingPaymentItem[],
-    title: string
+    title: string,
+    variant: keyof typeof sectionStyles = "neutral"
   ) => {
     if (listData.length === 0) {
       // No items => No <TransitionGroup> => No type conflict
@@ -125,11 +132,14 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
         >
           <div
             ref={containerRef}
-            className="mb-8 w-full bg-surface border border-border-2 rounded"
+            className="mb-8 w-full bg-surface border border-border-strong rounded-lg overflow-hidden"
           >
             {/* Subheader */}
-            <div className="p-4 bg-primary-main text-primary-fg border-b border-primary-main font-heading text-lg font-bold uppercase">
-              {title}
+            <div className={`p-4 ${sectionStyles[variant].bg} border-b ${sectionStyles[variant].border} flex items-center gap-3`}>
+              <div className={`h-5 w-0.5 rounded-full ${sectionStyles[variant].bar} shrink-0`} aria-hidden="true" />
+              <h3 className={`font-heading font-bold text-sm uppercase tracking-wide ${sectionStyles[variant].text}`}>
+                {title}
+              </h3>
             </div>
 
             {/* Items transition */}
@@ -189,7 +199,7 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
                             }
                           }
                         }}
-                        className="w-full text-start cursor-pointer transition-colors p-4 rounded hover:bg-surface-2 font-body flex flex-wrap items-center justify-between gap-3"
+                        className="w-full text-start cursor-pointer transition-colors p-4 rounded-lg hover:bg-surface-2 font-body flex flex-wrap items-center justify-between gap-3"
                       >
                         {/* Left side: Check-In Date, Booking Ref, Guest Name */}
                         <div className="flex flex-wrap items-center gap-3">
@@ -251,8 +261,8 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
 
   return (
     <Stack gap={0} align="center" className="font-body w-full">
-      {sections.map(({ data, title }) => {
-        const content = renderListSection(data, title);
+      {sections.map(({ data, title, variant }) => {
+        const content = renderListSection(data, title, variant);
 
         return content ? (
           <React.Fragment key={title}>{content}</React.Fragment>

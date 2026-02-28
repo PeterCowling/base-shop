@@ -152,7 +152,7 @@ ModalPanel.displayName = "ModalPanel";
  * Background page scrolling is locked by the host (ModalProvider.useModalScrollLock).
  *
  * Layout invariant contract (TASK-07):
- * - `max-h-[90dvh]` — dynamic viewport height so mobile browser chrome does not cut content.
+ * - `max-h-dvh` — dynamic viewport height so mobile browser chrome does not cut content.
  * - `overflow-y-auto` — content scrolls in a single container.
  * - `overscroll-contain` — prevents scroll-chaining to the background page.
  */
@@ -165,7 +165,7 @@ const SCROLL_PANEL_BASE = [
   "overflow-x-hidden",
   "overflow-y-auto",
   "overscroll-contain",
-  "max-h-[90dvh]",
+  "max-h-dvh",
   "rounded-2xl",
   "bg-brand-bg",
   "shadow-2xl",
@@ -212,8 +212,8 @@ export type ModalFooterButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
 const FOOTER_BUTTON_BASE = [
   "inline-flex",
-  "min-h-10",
-  "min-w-10",
+  "min-h-11",
+  "min-w-11",
   "items-center",
   "justify-center",
   "rounded-md",

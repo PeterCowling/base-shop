@@ -21,6 +21,12 @@ var removeLastActivityMock: jest.Mock;
 /* ------------------------------------------------------------------ */
 /*  Module mocks                                                      */
 /* ------------------------------------------------------------------ */
+const useAuthMock = jest.fn();
+
+jest.mock("../../../context/AuthContext", () => ({
+  useAuth: () => useAuthMock(),
+}));
+
 jest.mock("../../../hooks/mutations/useActivitiesMutations", () => {
   addActivityMock = jest.fn();
   removeLastActivityMock = jest.fn();
@@ -76,6 +82,10 @@ const baseBooking = {
 describe("DateSelector", () => {
   let user: ReturnType<typeof userEvent.setup>;
   beforeEach(() => {
+    // Default: staff user — no privileged access, no calendar access
+    useAuthMock.mockReturnValue({
+      user: { user_name: "alice", roles: ["staff"] },
+    });
     // Only mock the Date object so userEvent timers still run normally
     jest.useFakeTimers({ toFake: ["Date"] });
     jest.setSystemTime(new Date("2025-01-02T00:00:00Z"));
@@ -95,14 +105,13 @@ describe("DateSelector", () => {
     expect(onDateChange).toHaveBeenCalledWith("2025-01-02");
   });
 
-  it("opens calendar for Pete and selects a date", async () => {
+  it("opens calendar for privileged user (owner) and selects a date", async () => {
+    useAuthMock.mockReturnValue({
+      user: { user_name: "pete", roles: ["owner"] },
+    });
     const onDateChange = jest.fn();
     render(
-      <DateSelector
-        selectedDate="2025-01-01"
-        onDateChange={onDateChange}
-        username="pete"
-      />
+      <DateSelector selectedDate="2025-01-01" onDateChange={onDateChange} />
     );
     // When a date is already selected the toggle displays that date
     const toggle = screen.getByRole("button", { name: "2025-01-01" });
@@ -117,14 +126,29 @@ describe("DateSelector", () => {
     expect(screen.queryByRole("button", { name: /pick/i })).not.toBeInTheDocument();
   });
 
-  it("limits non-Pete users to today and tomorrow", () => {
+  it("shows restricted DayPicker toggle for admin/manager users", () => {
+    useAuthMock.mockReturnValue({
+      user: { user_name: "serena", roles: ["admin"] },
+    });
     const onDateChange = jest.fn();
     render(
-      <DateSelector
-        selectedDate="2025-01-02"
-        onDateChange={onDateChange}
-        username="alex"
-      />
+      <DateSelector selectedDate="2025-01-02" onDateChange={onDateChange} />
+    );
+    // Admin/manager users see the calendar toggle but not the Yesterday button
+    expect(
+      screen.queryByRole("button", { name: /yesterday/i })
+    ).not.toBeInTheDocument();
+    // The calendar toggle button should be present (displays selected date)
+    expect(
+      screen.getByRole("button", { name: "2025-01-02" })
+    ).toBeInTheDocument();
+  });
+
+  it("limits staff users to today and tomorrow (no calendar toggle)", () => {
+    // Default beforeEach mock: staff user
+    const onDateChange = jest.fn();
+    render(
+      <DateSelector selectedDate="2025-01-02" onDateChange={onDateChange} />
     );
     expect(
       screen.queryByRole("button", { name: /yesterday/i })
@@ -136,6 +160,7 @@ describe("DateSelector", () => {
     expect(
       screen.getByRole("button", { name: tomorrowLabel })
     ).toBeInTheDocument();
+    // Staff see only Today + Tomorrow (no calendar toggle)
     expect(screen.getAllByRole("button")).toHaveLength(2);
   });
 });

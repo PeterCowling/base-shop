@@ -10,6 +10,7 @@ import {
   Calculator,
   CalendarPlus,
   Carrot,
+  ClipboardCheck,
   ClipboardList,
   CreditCard,
   Database,
@@ -20,6 +21,7 @@ import {
   Inbox,
   LineChart,
   List,
+  ListChecks,
   LogOut,
   Menu,
   Package,
@@ -28,13 +30,14 @@ import {
   Shield,
   ToggleRight,
   UserCheck,
+  Users,
   Wrench,
   X,
 } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
 
-import { canAccess,Permissions } from "../../lib/roles";
+import { canAccess, isPrivileged, Permissions } from "../../lib/roles";
 import type { User } from "../../types/domains/userDomain";
 
 interface NavItem {
@@ -93,8 +96,16 @@ const navSections: NavSection[] = [
       { label: "Stock", route: "/stock", icon: Package },
       { label: "Ingredients", route: "/ingredient-stock", icon: Carrot },
       { label: "Real Time", route: "/real-time-dashboard", icon: LineChart },
+      { label: "Manager Audit", route: "/manager-audit", icon: ClipboardCheck },
+      { label: "End of Day", route: "/eod-checklist", icon: ListChecks },
       { label: "Statistics", route: "/statistics", icon: BarChart3 },
       { label: "Menu Perf", route: "/menu-performance", icon: PieChart },
+      {
+        label: "Staff Accounts",
+        route: "/staff-accounts",
+        icon: Users,
+        permission: Permissions.USER_MANAGEMENT,
+      },
     ],
   },
 ];
@@ -128,8 +139,8 @@ function AppNav({ user, onLogout }: AppNavProps) {
       if ("roles" in user && Array.isArray(user.roles)) {
         return canAccess(user as User, permission);
       }
-      // Fallback for legacy users: Pete has access to restricted sections
-      return user.user_name === "Pete";
+      // Fallback for legacy users without roles: treat as privileged if owner/developer
+      return isPrivileged(user as User);
     },
     [user]
   );
@@ -152,7 +163,7 @@ function AppNav({ user, onLogout }: AppNavProps) {
       {/* Backdrop */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+          className="fixed inset-0 bg-surface/80 backdrop-blur-sm"
           onClick={closeNav}
           aria-hidden="true"
         />
@@ -240,8 +251,8 @@ function AppNav({ user, onLogout }: AppNavProps) {
 
       {/* Keyboard shortcut hint (only shown when nav is closed) */}
       {!isOpen && (
-        <div className="fixed bottom-4 left-4 z-30 rounded-lg bg-black/80 px-3 py-1.5 text-xs text-primary-fg opacity-50 backdrop-blur-sm">
-          <kbd className="rounded bg-surface-3 px-1.5 py-0.5 font-mono">
+        <div className="fixed bottom-4 left-4 z-30 rounded-lg bg-surface/90 px-3 py-1.5 text-xs text-primary-fg opacity-50 backdrop-blur-sm">
+          <kbd className="rounded-lg bg-surface-3 px-1.5 py-0.5 font-mono">
             Arrow Up/Down
           </kbd>{" "}
           for modals

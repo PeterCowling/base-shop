@@ -61,7 +61,7 @@ control plane may create or update this file.
 | `run_id` | string | yes | Stable run identifier matching `SFS-<BIZ>-<YYYYMMDD>-<hhmm>`. |
 | `business` | string | yes | Business key (e.g., `BRIK`, `HEAD`, `PET`). |
 | `loop_spec_version` | string | yes | Version of the loop spec this manifest was built against. |
-| `status` | enum | yes | `candidate` = S4 has merged but S5B has not committed. `current` = S5B has committed the pointer. |
+| `status` | enum | yes | `current` = S4 has merged and committed the pointer. `candidate` is legacy pre-v3.13 compatibility only. |
 | `created_at` | string | yes | ISO 8601 UTC — when the manifest was first created (by S4). |
 | `updated_at` | string | yes | ISO 8601 UTC — when the manifest was last updated. |
 | `artifacts` | object | yes | Map of `<stage>/<artifact_key>` to relative path from run root. |
@@ -127,11 +127,11 @@ The `baseline_pointers` field tracks three pointer classes for baseline artifact
 ### 3B) Status Lifecycle
 
 ```
-(empty) ──S4──▶ candidate ──S5B──▶ current
+(empty) ──S4──▶ current
 ```
 
-- **S4 `/lp-baseline-merge`** creates the manifest with `status: candidate` after joining S3/S6B outputs.
-- **S5B `/lp-bos-sync`** promotes `status: candidate → current` after persisting cards and stage-docs to D1.
+- **S4 `/lp-baseline-merge`** creates/updates the manifest with `status: current` after joining required upstream outputs.
+- `candidate` status is retained only for backward compatibility with older runs.
 - A manifest at `current` is immutable for the run. New runs create new manifests.
 
 ## 4) Single-Writer Update Contract
@@ -141,7 +141,7 @@ The control plane updates the manifest via a deterministic function:
 1. **Discovery:** Scan `stages/*/stage-result.json` under the run directory.
 2. **Validation:** For each discovered file, validate against the stage-result schema (v1).
 3. **Gate check:** All required upstream stage results must have `status: Done`.
-   - Required stages for S4 barrier: `S2B` (offer), `S3` (forecast), `S6B` (channels).
+   - Required stages for S4 barrier: `MARKET-06` (offer), `SIGNALS-01`/`S3` (forecast), `SELL-01` (channels).
    - If any required result is missing, malformed, or `Failed`/`Blocked`, the update is rejected.
 4. **Artifact collection:** Collect artifact pointers from all `Done` stage results.
 5. **Manifest write:** Write `baseline.manifest.json` with collected artifacts and stage completions.
@@ -175,7 +175,7 @@ Two invocations with identical stage-result files produce byte-identical manifes
 
 ## 5) Examples
 
-### Example 1: Candidate manifest after S4 merge
+### Example 1: Current manifest after S4 merge-and-commit
 
 ```json
 {
@@ -183,7 +183,7 @@ Two invocations with identical stage-result files produce byte-identical manifes
   "run_id": "SFS-HEAD-20260213-1200",
   "business": "HEAD",
   "loop_spec_version": "1.0.0",
-  "status": "candidate",
+  "status": "current",
   "created_at": "2026-02-13T12:06:00Z",
   "updated_at": "2026-02-13T12:06:00Z",
   "artifacts": {
@@ -230,7 +230,7 @@ Two invocations with identical stage-result files produce byte-identical manifes
 }
 ```
 
-### Example 2: Current manifest after S5B commit
+### Example 2: Legacy candidate manifest (pre-v3.13 compatibility)
 
 ```json
 {
@@ -238,7 +238,7 @@ Two invocations with identical stage-result files produce byte-identical manifes
   "run_id": "SFS-HEAD-20260213-1200",
   "business": "HEAD",
   "loop_spec_version": "1.0.0",
-  "status": "current",
+  "status": "candidate",
   "created_at": "2026-02-13T12:06:00Z",
   "updated_at": "2026-02-13T12:15:00Z",
   "artifacts": {

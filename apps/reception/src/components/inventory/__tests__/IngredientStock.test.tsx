@@ -33,7 +33,7 @@ describe("IngredientStock", () => {
     });
 
     render(<IngredientStock />);
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    expect(document.querySelector('[aria-busy="true"]')).toBeInTheDocument();
   });
 
   it("shows error state", () => {

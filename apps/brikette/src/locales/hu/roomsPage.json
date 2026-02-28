@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Szobák és árak | Hostel Brikette Positano",
+    "title": "Hálótermi ágyak Positanóban | Foglalj közvetlenül a Brikette Hostelnél",
     "description": "Privát, tengerre néző franciaágyas szobák és pénztárcabarát hálótermek: nézd meg a fotókat, szolgáltatásokat és élő árakat, majd foglalj közvetlenül a legjobb ajánlatért.",
     "ogImageAlt": "Közös hálóterem belső tere"
   },
@@ -65,7 +65,8 @@
     "perBed": "ágy"
   },
   "rooms": {
-    "title": "Szobáink",
+    "title": "Hálótermi ágyak",
+    "soldOut": "Elfogyott",
     "double_room": {
       "title": "Franciaágyas szoba",
       "bed_intro": "Lélegzetelállító tengeri kilátás — pároknak tökéletes.",
@@ -86,7 +87,7 @@
       }
     },
     "room_10": {
-      "title": "Prémium vegyes hálóterem",
+      "title": "Vegyes hálóterem – saját fürdővel",
       "bed_intro": "Ha hat fekhelyet és jobb fürdőt szeretnél.",
       "bed_description": "Prémium hálótermünk vegyes elrendezésű, három hálótermi ággyal (összesen hat), legfeljebb hat vendégnek. A negyedik emeleten; légkondicionálás, kártyás beléptetés és saját fürdőszoba (nincs kilátás). Ágynemű és törölköző a check‑in során biztosított.",
       "facilities": [
@@ -105,7 +106,7 @@
       }
     },
     "room_11": {
-      "title": "Superior női hálóterem – nagy terasz",
+      "title": "Női hálóterem – nagy tengeri terasz",
       "bed_intro": "A legszebb kilátások tágas teraszról és remek fürdő.",
       "bed_description": "A Superior női hálóterem három hálótermi ággyal (összesen hat fekhellyel) legfeljebb hat vendéget fogad. A negyedik emeleten található; légkondicionálás, kártyás beléptetés, saját fürdőszoba és tengerre néző, extra nagy terasz tartozik hozzá. Ágyneműt és törölközőt a check-in során biztosítunk.",
       "facilities": [
@@ -124,7 +125,7 @@
       }
     },
     "room_12": {
-      "title": "Superior vegyes hálóterem",
+      "title": "Vegyes hálóterem – tengeri terasz",
       "bed_intro": "Pazar kilátás tágas teraszról és kényelmes fürdő.",
       "bed_description": "A Superior vegyes hálóterem három hálótermi ágyat kínál (összesen hat fekhely), legfeljebb hat vendégnek. A negyedik emeleten található; légkondicionálás, kártyás beléptetés, privát fürdőszoba és tengerre néző, extra nagy terasz tartozik hozzá. Ágyneműt és törölközőt a check-in során biztosítunk.",
       "facilities": [
@@ -143,7 +144,7 @@
       }
     },
     "room_3": {
-      "title": "Női hálóterem Value",
+      "title": "Női hálóterem – 8 ágyas",
       "bed_intro": "Pénztárcabarát választás női utazóknak.",
       "bed_description": "A Value női hálóterem legfeljebb nyolc vendéget fogad négy hálótermi ágyon. A harmadik emeleten; légkondicionálás, kártyás beléptetés és hozzáférés a közös női fürdőszobához. Nincs kilátás. Ágynemű és törölköző biztosított a check‑in során.",
       "facilities": [
@@ -162,7 +163,7 @@
       }
     },
     "room_4": {
-      "title": "Vegyes hálóterem Value",
+      "title": "Vegyes hálóterem – 8 ágyas",
       "bed_intro": "Pénztárcabarát megoldás nőknek és férfiaknak egyaránt.",
       "bed_description": "A Value vegyes hálóterem négy hálótermi ággyal (összesen nyolc) legfeljebb nyolc vendégnek. A harmadik emeleten; légkondicionálás, kártyás beléptetés és hozzáférés a közös (női) fürdőszobához. Nincs kilátás. Ágynemű és törölköző a check‑in során biztosított.",
       "facilities": [
@@ -181,7 +182,7 @@
       }
     },
     "room_5": {
-      "title": "Superior női hálóterem – tengerre néző",
+      "title": "Női hálóterem – tengerre néző",
       "bed_intro": "Lenyűgöző tengeri kilátás és saját fürdő.",
       "bed_description": "A Superior női hálóterem három hálótermi ággyal (összesen hat fekhely) legfeljebb hat vendéget fogad. A harmadik emeleten; saját fürdőszoba, tengerre néző terasz, légkondicionálás és kártyás beléptetés tartozik hozzá. Ágyneműt és törölközőt a check-in során biztosítunk.",
       "facilities": [
@@ -200,7 +201,7 @@
       }
     },
     "room_6": {
-      "title": "Superior női hálóterem – 7 ágy",
+      "title": "Női hálóterem – 7 ágyas, tengerre néző",
       "bed_intro": "Pazar tengeri kilátás és saját fürdő.",
       "bed_description": "A Superior női hálóterem három hálótermi ágyat és egy egyszemélyes ágyat kínál (összesen hét fekhely), legfeljebb hét vendégnek. A harmadik emeleten található; saját fürdőszoba, tengerre néző terasz, légkondicionálás és kártyás beléptetés tartozik hozzá. Ágyneműt és törölközőt a check-in során biztosítunk.",
       "facilities": [
@@ -219,7 +220,7 @@
       }
     },
     "room_9": {
-      "title": "Deluxe vegyes szoba",
+      "title": "Vegyes szoba – egyszemélyes ágyak",
       "bed_intro": "Kedvező árú mód három ágyas elhelyezésre.",
       "bed_description": "A Deluxe vegyes szoba három egyszemélyes ággyal legfeljebb három vendégnek. A negyedik emeleten; saját fürdőszoba, udvarra néző kilátás, légkondicionálás és kártyás beléptetés. Ágynemű és törölköző biztosított.",
       "facilities": [
@@ -238,7 +239,7 @@
       }
     },
     "room_8": {
-      "title": "Női hálóterem — egy emeletes ággyal",
+      "title": "Női szoba – kertre néző",
       "bed_intro": "Pénztárcabarát opció két női utazónak.",
       "bed_description": "Ez a női hálóterem egy emeletes ággyal rendelkezik, legfeljebb két vendég számára. A harmadik emeleten; légkondicionálás, kártyás beléptetés, kertre néző kilátás és a közös női fürdőszoba mellett. Ágynemű és törölköző a check‑in során biztosított.",
       "facilities": [
@@ -274,7 +275,7 @@
     "nextSlide": "Következő dia"
   },
   "hero": {
-    "heading": "Szobáink",
+    "heading": "Hálótermi ágyak",
     "subheading": "Válaszd ki a tökéletes szobát a tartózkodásodhoz"
   },
   "filters": {
@@ -285,6 +286,7 @@
   "filtersAria": "Szűrés szobatípus szerint",
   "checkRatesNonRefundable": "Nem visszatéríthető árak",
   "checkRatesFlexible": "Rugalmas szobaárak",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "Nem visszatéríthető",
     "flexible": "Rugalmas"
@@ -302,5 +304,10 @@
   "landingImageAlt": "A(z) {{room}} nyitóképe",
   "priceNotes": {
     "dorm": "Éjszakánként, vendégenként. Egy vendég egy emeletes ágyban."
+  },
+  "date": {
+    "stayHelper": "2–8 nights",
+    "clearDates": "Clear dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
   }
 }

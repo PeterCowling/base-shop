@@ -62,7 +62,7 @@ jest.mock("../../../hooks/mutations/useFinancialsRoomMutations", () => {
 });
 
 jest.mock("../../../context/AuthContext", () => ({
-  useAuth: () => ({ user: { user_name: "Pete" } }),
+  useAuth: () => ({ user: { user_name: "Pete", roles: ["owner"] } }),
 }));
 
 jest.mock("../../../utils/generateTransactionId", () => ({

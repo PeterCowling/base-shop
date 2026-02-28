@@ -1,42 +1,42 @@
 {
-  "page": {
-    "title": "Booking Details",
-    "loadError": "We could not load your booking details right now.",
-    "returnHome": "Return Home"
-  },
-  "status": {
-    "pre-arrival": "Pre-arrival",
-    "arrival-day": "Arrival day",
-    "checked-in": "Checked in",
-    "checked-out": "Checked out"
-  },
   "dates": {
     "checkIn": "Check-in",
     "checkOut": "Check-out",
     "unknown": "Unknown"
   },
-  "room": "Room",
-  "ref": "Ref: {{code}}",
   "extension": {
-    "title": "Request Extension",
-    "description": "Send a stay-extension request to reception.",
     "currentStatus": "Current extension request status: {{status}}",
     "dateLabel": "Requested check-out date",
-    "noteLabel": "Note (optional)",
-    "submitButton": "Send extension request",
-    "submitting": "Sending request\u2026",
-    "successDeduplicated": "This extension request was already submitted recently.",
-    "successDefault": "Extension request sent. Reception will respond via email.",
+    "description": "Send a stay-extension request to reception.",
     "errorDefault": "Unable to submit extension request.",
     "errorNetwork": "Unable to submit extension request right now.",
-    "replyNote": "Reception replies via email, usually within one business day."
+    "noteLabel": "Note (optional)",
+    "replyNote": "Reception replies via email, usually within one business day.",
+    "submitButton": "Send extension request",
+    "submitting": "Sending request…",
+    "successDeduplicated": "This extension request was already submitted recently.",
+    "successDefault": "Extension request sent. Reception will respond via email.",
+    "title": "Request Extension"
   },
   "nextActions": {
-    "title": "Next Actions",
-    "breakfast": "Breakfast order",
-    "eveningDrink": "Evening drink order",
     "bagDrop": "Request bag drop",
     "bagStorage": "Bag storage options",
-    "checkedOutNote": "Your stay is checked out. In-stay services are now hidden; bag-drop and contact options remain available."
+    "breakfast": "Breakfast order",
+    "checkedOutNote": "Your stay is checked out. In-stay services are now hidden; bag-drop and contact options remain available.",
+    "eveningDrink": "Evening drink order",
+    "title": "Next Actions"
+  },
+  "page": {
+    "loadError": "We could not load your booking details right now.",
+    "returnHome": "Return Home",
+    "title": "Booking Details"
+  },
+  "ref": "Ref: {{code}}",
+  "room": "Room",
+  "status": {
+    "pre-arrival": "Pre-arrival",
+    "arrival-day": "Arrival day",
+    "checked-in": "Checked in",
+    "checked-out": "Checked out"
   }
 }

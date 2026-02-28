@@ -3,7 +3,7 @@
 **Goal**: Verify guest-facing copy aligns with the Brand Dossier voice, messaging hierarchy, and avoidance list.
 **Required output schema**: `{ domain: "brand-copy", status: "pass|fail|warn", checks: [{ id: "<BC-04>", status: "pass|fail|warn", evidence: "<string>" }] }`
 
-> **Pre-flight check:** If `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` is absent, skip all Domain 5 checks with note: _"Brand Dossier absent — skipping brand copy compliance checks."_ All Domain 5 failures are warnings (GATE-BD-06b Warn) — they do not block launch.
+> **Pre-flight check:** If `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md` is absent, skip all Domain 5 checks with note: _"Brand Dossier absent — skipping brand copy compliance checks."_ All Domain 5 failures are warnings (GATE-BD-06b Warn) — they do not block launch.
 
 ## Checks
 
@@ -30,4 +30,4 @@
 
 ## Domain Pass Criteria
 
-All Domain 5 failures are warnings — skip the domain entirely if `brand-dossier.user.md` is absent.
+All Domain 5 failures are warnings — skip the domain entirely if `<YYYY-MM-DD>-brand-identity-dossier.user.md` is absent.

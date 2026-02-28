@@ -52,7 +52,7 @@ export default function ServiceCenterPage() {
           <div className="md:col-span-3 space-y-6 scroll-mt-28" id="orders">
             <ResourceCard title="Order help" description={xaI18n.t("xaB.src.app.service.center.page.l53c58")}>
               <Button asChild>
-                <Link href="/account/trackingorder">{xaI18n.t("xaB.src.app.service.center.page.l55c53")}</Link>
+                <Link href="/pages/contact-us">{xaI18n.t("xaB.src.app.service.center.page.l55c53")}</Link>
               </Button>
               {siteConfig.showContactInfo ? (
                 <div className="text-xs text-muted-foreground">{xaI18n.t("xaB.src.app.service.center.page.l58c64")}</div>

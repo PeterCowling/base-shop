@@ -131,10 +131,10 @@ export const WithMetadata: Story = {
         icon: Truck,
         iconColor: 'blue' as const,
         metadata: (
-          <div className="mt-2 rounded border border-blue-200 bg-blue-50 p-2 text-xs dark:border-blue-900 dark:bg-blue-950">
+          <div className="mt-2 rounded border border-border-2 bg-info-light p-2 text-xs dark:border-blue-900 dark:bg-blue-950">
             <p className="font-medium">Tracking Information</p>
-            <p className="text-slate-600 dark:text-slate-400">Carrier: FedEx</p>
-            <p className="text-slate-600 dark:text-slate-400">Tracking: 1234567890</p>
+            <p className="text-muted-foreground dark:text-muted-foreground">Carrier: FedEx</p>
+            <p className="text-muted-foreground dark:text-muted-foreground">Tracking: 1234567890</p>
           </div>
         ),
       },

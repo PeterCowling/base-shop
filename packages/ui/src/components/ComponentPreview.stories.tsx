@@ -7,7 +7,7 @@ import ComponentPreview from './ComponentPreview';
 
 // Provide a mock component via the global mapping consumed by ComponentPreview
 const Demo = ({ label = 'Demo' }: { label?: string }) => (
-  <button type="button" className="rounded border px-3 py-2">{label}</button>
+  <button type="button" className="rounded border px-3 py-2 min-h-11 min-w-11">{label}</button>
 );
 
 // @ts-expect-error augment global for story runtime
@@ -19,7 +19,7 @@ if (typeof globalThis !== 'undefined') {
   (globalThis as unknown as { __UPGRADE_MOCKS__?: Record<string, React.ComponentType<unknown>> }).__UPGRADE_MOCKS__ = {
     '@acme/ui/components/demo/Button': Demo,
     '@acme/ui/components/demo/Button.bak': (props: { label?: string }) => (
-      <button type="button" className="rounded border px-3 py-2 opacity-70">{props.label || 'Demo (old)'}</button>
+      <button type="button" className="rounded border px-3 py-2 opacity-70 min-h-11 min-w-11">{props.label || 'Demo (old)'}</button>
     ),
   };
 }

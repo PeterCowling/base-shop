@@ -7,53 +7,9 @@ import { Input } from "@acme/design-system";
 import useRoomConfigs from "../../hooks/client/checkin/useRoomConfigs";
 import useGridData from "../../hooks/data/roomgrid/useGridData";
 import { addDays, formatDateForInput, getYesterday } from "../../utils/dateUtils";
+import { PageShell } from "../common/PageShell";
 
 import RoomGrid from "./RoomGrid";
-
-/**
-* Essential reservation-grid styles are
- * bundled locally in `reservationGrid.css` to keep the original look and feel
- * without any external package dependency. If you
- * need to tweak colours or spacing, edit that file instead of overriding
- * Tailwind classes elsewhere.
- *
-const reservationGridCss = /* css *`
-.reservation-grid {
-  font-family: var(--font-face, sans-serif);
-  font-size: var(--font-size, 14px);
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-}
-
-.reservation-grid__header,
-.reservation-grid__cell {
-  border: 1px solid var(--color-border, #DDEBF3);
-  padding: 0.25rem 0.5rem;
-  text-align: center;
-}
-
-.reservation-grid__header {
-  background: var(--color-background, #FFFFFF);
-  font-weight: 600;
-}
-
-.reservation-grid__cell--today    { background: var(--color-today,      #E4FFE6); }
-.reservation-grid__cell--weekend  { background: var(--color-weekend,    #F8FAFB); }
-.reservation-grid__cell--free     { background: var(--date-status-free,        transparent); }
-.reservation-grid__cell--disabled { background: var(--date-status-disabled,    #759AB5); }
-.reservation-grid__cell--awaiting { background: var(--date-status-awaiting,    #DDEBF3); }
-.reservation-grid__cell--confirmed{ background: var(--date-status-confirmed,   #006490); }
-
-.reservation-grid__title,
-.reservation-grid__info {
-  width: var(--width-title, 50%);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-`;
-*/
 
 /**
  * Renders multiple reservation grids (one per room) using the known room configs
@@ -74,7 +30,13 @@ const RoomsGrid: FC = () => {
   );
 
   const handleStartChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setStartDate(e.target.value);
+    const newStart = e.target.value;
+    const spanDays = Math.round(
+      (new Date(endDate).getTime() - new Date(startDate).getTime()) /
+        (24 * 60 * 60 * 1000)
+    );
+    setStartDate(newStart);
+    setEndDate(formatDateForInput(addDays(new Date(newStart), spanDays)));
   };
 
   const handleEndChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -82,33 +44,47 @@ const RoomsGrid: FC = () => {
   };
 
   return (
-    <>
-      <div className="font-sans p-4">
-        <h1 className="text-2xl font-bold mb-4">Multiple Room Grids</h1>
-        <div className="flex items-center gap-4 mb-4">
-          <label className="font-semibold" htmlFor="start-date">
-            Start:
-          </label>
-          <Input
-            compatibilityMode="no-wrapper"
-            id="start-date"
-            type="date"
-            className="border rounded px-2 py-1 text-foreground"
-            value={startDate}
-            onChange={handleStartChange}
-          />
-          <label className="font-semibold" htmlFor="end-date">
-            End:
-          </label>
-          <Input
-            compatibilityMode="no-wrapper"
-            id="end-date"
-            type="date"
-            className="border rounded px-2 py-1 text-foreground"
-            value={endDate}
-            onChange={handleEndChange}
-          />
+    <PageShell
+      title="Room Grid"
+      headerSlot={
+        <div className="mb-5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="h-7 w-1 rounded-full bg-primary-main" aria-hidden="true" />
+            <h1 className="text-2xl font-heading font-semibold text-foreground">Room Grid</h1>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
+              <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider" htmlFor="start-date">
+                From
+              </label>
+              <Input
+                compatibilityMode="no-wrapper"
+                id="start-date"
+                type="date"
+                className="rounded-lg border border-border-2 bg-surface px-3 py-1.5 text-sm text-foreground focus:border-primary-main focus:outline-none"
+                value={startDate}
+                onChange={handleStartChange}
+              />
+            </div>
+            <span className="text-muted-foreground text-sm select-none">→</span>
+            <div className="flex items-center gap-1.5">
+              <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider" htmlFor="end-date">
+                To
+              </label>
+              <Input
+                compatibilityMode="no-wrapper"
+                id="end-date"
+                type="date"
+                className="rounded-lg border border-border-2 bg-surface px-3 py-1.5 text-sm text-foreground focus:border-primary-main focus:outline-none"
+                value={endDate}
+                onChange={handleEndChange}
+              />
+            </div>
+          </div>
         </div>
+      }
+    >
+      <div className="bg-surface rounded-lg shadow-lg p-5 flex flex-col gap-5">
         {loading && (
           <p className="p-4 italic text-muted-foreground">Loading rooms...</p>
         )}
@@ -121,15 +97,6 @@ const RoomsGrid: FC = () => {
           error == null &&
           knownRooms.map((roomNumber) => {
             const dataForRoom = getReservationDataForRoom(roomNumber);
-            console.log("[RoomsGrid] Rendering room", roomNumber, {
-              rows: dataForRoom.length,
-            });
-            if (dataForRoom.some((row) => row.periods.length === 0)) {
-              console.warn("[RoomsGrid] Found row with no periods", {
-                roomNumber,
-                rows: dataForRoom,
-              });
-            }
             return (
               <RoomGrid
                 key={roomNumber}
@@ -141,7 +108,7 @@ const RoomsGrid: FC = () => {
             );
           })}
       </div>
-    </>
+    </PageShell>
   );
 };
 

@@ -37,7 +37,7 @@ Does NOT:
 
 Read before eliciting any fields:
 - `docs/business-os/strategy/<BIZ>/s0c-option-select.user.md` — selected product (what is being measured)
-- `docs/business-os/strategy/<BIZ>/distribution-plan.user.md` — channels (what needs instrumentation)
+- `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-launch-distribution-plan.user.md` — channels (what needs instrumentation)
 - Any existing strategy doc with measurement or analytics references
 
 ## Elicitation Questions
@@ -68,7 +68,7 @@ For each metric (minimum 2):
 
 ## Output Artifact
 
-**Path:** `docs/business-os/strategy/<BIZ>/measurement-plan.user.md`
+**Path:** `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-measurement-profile.user.md`
 
 **Frontmatter:**
 ```yaml
@@ -132,14 +132,14 @@ Invalid outputs — do not emit:
 
 ## Completion Message
 
-> "Measurement plan recorded: `docs/business-os/strategy/<BIZ>/measurement-plan.user.md`. [N] metrics defined; tracking via [method]. Ready for ASSESSMENT-08 Current Situation."
+> "Measurement plan recorded: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-measurement-profile.user.md`. [N] metrics defined; tracking via [method]. Ready for ASSESSMENT-08 Current Situation."
 
 ---
 
 ## Integration
 
-**Upstream (ASSESSMENT-06):** Runs after `/lp-do-assessment-06-distribution-profiling --business <BIZ>` produces distribution-plan.user.md.
+**Upstream (ASSESSMENT-06):** Runs after `/lp-do-assessment-06-distribution-profiling --business <BIZ>` produces <YYYY-MM-DD>-launch-distribution-plan.user.md.
 
-**Downstream consumer:** `modules/assessment-intake-sync.md` reads `measurement-plan.user.md` as its sixth precursor (ASSESSMENT-07). Section B metrics inform intake Section F (Missing-Data Checklist — any metric with feasibility gap). Section A tracking setup informs intake Section A (Execution posture).
+**Downstream consumer:** `modules/assessment-intake-sync.md` reads `<YYYY-MM-DD>-measurement-profile.user.md` as its sixth precursor (ASSESSMENT-07). Section B metrics inform intake Section F (Missing-Data Checklist — any metric with feasibility gap). Section A tracking setup informs intake Section A (Execution posture).
 
 **Downstream:** `/lp-do-assessment-08-current-situation --business <BIZ>` runs after this artifact is active. ASSESSMENT gate checks ≥2 metrics and a named tracking method before allowing ASSESSMENT→S1 advance.

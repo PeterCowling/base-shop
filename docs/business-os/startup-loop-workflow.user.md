@@ -3,8 +3,8 @@ Type: Operator-Guide
 Status: Active
 Domain: Venture-Studio
 Created: 2026-02-12
-Updated: 2026-02-23
-Last-reviewed: 2026-02-23
+Updated: 2026-02-25
+Last-reviewed: 2026-02-25
 Owner: Pete
 ---
 
@@ -14,9 +14,9 @@ Owner: Pete
 
 This page tells you what to do next for HEAD, PET, and BRIK — and how to do it.
 
-## Canonical stage IDs (loop-spec v3.11.0)
+## Canonical stage IDs (loop-spec v3.13.0)
 
-`ASSESSMENT-01`, `ASSESSMENT-02`, `ASSESSMENT-03`, `ASSESSMENT-04`, `ASSESSMENT-05`, `ASSESSMENT-06`, `ASSESSMENT-07`, `ASSESSMENT-08`, `ASSESSMENT-09`, `ASSESSMENT`, `ASSESSMENT-10`, `ASSESSMENT-11`, `IDEAS`, `IDEAS-01`, `IDEAS-02`, `IDEAS-03`, `MEASURE-00`, `MEASURE-01`, `MEASURE-02`, `PRODUCT`, `PRODUCT-01`, `PRODUCTS`, `PRODUCTS-01`, `PRODUCTS-02`, `PRODUCTS-03`, `PRODUCTS-04`, `PRODUCTS-05`, `PRODUCTS-06`, `PRODUCTS-07`, `LOGISTICS`, `LOGISTICS-01`, `LOGISTICS-02`, `LOGISTICS-03`, `LOGISTICS-04`, `LOGISTICS-05`, `LOGISTICS-06`, `LOGISTICS-07`, `MARKET`, `MARKET-01`, `MARKET-02`, `MARKET-03`, `MARKET-04`, `MARKET-05`, `MARKET-06`, `MARKET-07`, `MARKET-08`, `MARKET-09`, `MARKET-10`, `MARKET-11`, `SIGNALS-01`, `PRODUCT-02`, `SELL`, `SELL-01`, `SELL-02`, `SELL-03`, `SELL-04`, `SELL-05`, `SELL-06`, `SELL-07`, `SELL-08`, `S4`, `S5A`, `S5B`, `WEBSITE`, `WEBSITE-01`, `WEBSITE-02`, `DO`, `S9B`, `SIGNALS` (legacy aliases: `S3`, `S10`).
+`ASSESSMENT-01`, `ASSESSMENT-02`, `ASSESSMENT-03`, `ASSESSMENT-04`, `ASSESSMENT-05`, `ASSESSMENT-06`, `ASSESSMENT-07`, `ASSESSMENT-08`, `ASSESSMENT-09`, `ASSESSMENT`, `ASSESSMENT-10`, `ASSESSMENT-11`, `IDEAS`, `IDEAS-01`, `IDEAS-02`, `IDEAS-03`, `MEASURE-00`, `MEASURE-01`, `MEASURE-02`, `PRODUCT`, `PRODUCT-01`, `PRODUCTS`, `PRODUCTS-01`, `PRODUCTS-02`, `PRODUCTS-03`, `PRODUCTS-04`, `PRODUCTS-05`, `PRODUCTS-06`, `PRODUCTS-07`, `LOGISTICS`, `LOGISTICS-01`, `LOGISTICS-02`, `LOGISTICS-03`, `LOGISTICS-04`, `LOGISTICS-05`, `LOGISTICS-06`, `LOGISTICS-07`, `MARKET`, `MARKET-01`, `MARKET-02`, `MARKET-03`, `MARKET-04`, `MARKET-05`, `MARKET-06`, `MARKET-07`, `MARKET-08`, `MARKET-09`, `MARKET-10`, `MARKET-11`, `SIGNALS-01`, `PRODUCT-02`, `SELL`, `SELL-01`, `SELL-02`, `SELL-03`, `SELL-04`, `SELL-05`, `SELL-06`, `SELL-07`, `SELL-08`, `S4`, `WEBSITE`, `WEBSITE-01`, `WEBSITE-02`, `DO`, `S9B`, `SIGNALS` (legacy aliases: `S3`, `S10`).
 
 ## Open tasks (updated 2026-02-21)
 
@@ -66,8 +66,7 @@ flowchart LR
     N2["Research\n(MARKET-01)"]
     N3["Offer Design\n(MARKET-06)"]
     N4["Forecast + Channels\n(S3/SELL-01)"]
-    N5["Prioritise\n(S4–S5)"]
-    N6["Pick top actions\n(S5A)"]
+    N5["Baseline merge + prioritise\n(S4)"]
     N7["Execute\n(DO–S9B)"]
     N8["Weekly review\n(S10)"]
     NEND["End"]
@@ -76,8 +75,7 @@ flowchart LR
     N2 --> N3
     N3 --> N4
     N4 --> N5
-    N5 --> N6
-    N6 --> N7
+    N5 --> N7
     N7 --> N8
 
     N8 -->|Continue| N2
@@ -135,7 +133,7 @@ When each stage was last completed per business. **Draft** means the artifact ex
 | **S3 — Forecast** | Offer artifact, market intel | Builds P10/P50/P90 revenue scenarios with guardrails | 90-day forecast document | Tells you what success looks like so you know when to pivot | Feb 12 (draft) | Feb 11 (draft) | Feb 13 ✓ |
 | **S3 — Recalibration** | Week 1/2 measured actuals | Replaces seed assumptions with real data | Recalibration document | Seed-assumption forecasts go stale; recalibrate at day 14 | **Never** | **Never** | **Never** |
 | **SELL-01 — Channel strategy** | Offer artifact, market intel, valid DEP (GATE-SELL-STRAT-01); measurement verified before spend (GATE-SELL-ACT-01) | Selects 2-3 launch channels with 30-day GTM plan | Channel plan + SEO strategy | Without a channel plan, you are guessing where to spend | **Never** | **Never** | **Never** |
-| **S4 + S5A — Baseline merge and Prioritise** | Offer + forecast + channels | Scores and ranks actions by impact | Prioritised action list | Stops you working on the wrong thing | Feb 12 ✓ | Feb 12 ✓ | Feb 13 ✓ |
+| **S4 — Baseline merge and prioritise** | Offer + forecast + channels | Scores and ranks actions by impact | Prioritised action list | Stops you working on the wrong thing | Feb 12 ✓ | Feb 12 ✓ | Feb 13 ✓ |
 | **WEBSITE — Website** | Launch-surface selection + platform baseline + business context | Routes to WEBSITE-01 (first build) or WEBSITE-02 (site upgrade synthesis) | Website workstream artifact | Keeps website work scoped to the correct launch surface path | Feb 12 ✓ | Feb 12 ✓ | Feb 13 ✓ |
 | **S10 — Weekly decision** | This week's KPIs and gate checks | Runs Keep/Pivot/Scale/Kill decision | Weekly K/P/C/S decision document | Loop health degrades within days without the weekly decision | Feb 12 ✓ | Feb 12 ✓ | Feb 13 ✓ |
 | **Standing refresh** | Time passing (monthly/quarterly cadence) | Refreshes market, channel, and regulatory inputs | Market-pulse + channel-economics + regulatory-watch documents | Inputs go stale; decisions based on stale data are dangerous | **Never** | **Never** | **Never** |
@@ -272,7 +270,7 @@ Use this table to find the right action for each stage. For prompt file paths an
 | Required MEASURE-02 data pack has arrived | Run the Historical Baseline Consolidation prompt | Historical baseline document is at Active status |
 | Market intelligence is missing, stale, or points to a Draft (MARKET-01) | Run the Deep Research: Market Intelligence prompt | Market intelligence document is at Active status with a valid latest pointer |
 | Week-1/2 actuals are available or a major assumption has broken (S3) | Run the Forecast Recalibration prompt | Forecast recalibration document exists and is dated |
-| 3 or more candidate actions are competing for priority (S5A) | Run the Prioritisation Scorer prompt | Prioritisation scorecard exists with top 2–3 items ranked |
+| 3 or more candidate actions are competing for priority (S4) | Run the Prioritisation Scorer prompt | Prioritisation scorecard exists with top 2–3 items ranked |
 | Website artifact is missing, stale, or points to a Draft (WEBSITE) | Run the launch-surface-matched website prompt (WEBSITE-01 or WEBSITE-02) | Website artifact is at Active status with a valid latest pointer; for WEBSITE-01 also complete auto-handover to `/lp-do-fact-find` |
 | It is the weekly cadence checkpoint (S10) | Run the Weekly K/P/C/S Decision prompt (includes Section H weekly audit) via `/lp-weekly` (see [S10 weekly orchestration contract](docs/business-os/startup-loop/s10-weekly-orchestration-contract-v1.md); packet schema: [s10-weekly-packet-schema-v1](docs/business-os/startup-loop/s10-weekly-packet-schema-v1.md)) | This week's K/P/C/S decision document is dated and saved; Section H audit completed; S10 weekly packet published at `docs/business-os/strategy/<BIZ>/s10-weekly-packet-<YYYY-Www>.md`; latest pointer updated |
 | It is the first week of the month | Run the monthly deep-audit checklist | `<YYYY-MM>-monthly-audit.user.md` exists for each active business; all REM tasks have owners |
@@ -288,7 +286,7 @@ These are platform and engineering tasks. They are not required from the operato
 | Action | Why it matters | Done when |
 |---|---|---|
 | Resolve MCP identity/deployment decision (TASK-05 in MCP plan) | Guarded BOS write rollout cannot proceed safely until the identity and deployment model is confirmed. | Decision documented and the MCP plan TASK-05 marked complete. |
-| Complete MCP guarded BOS write rollout (TASK-06 in MCP plan) | S5B/DO/S10 write paths need governed MCP write capability before BOS can be fully operationalised. | MCP guarded-write end-to-end test passes; TASK-06 marked complete. |
+| Complete MCP guarded BOS write rollout (TASK-06 in MCP plan) | DO/S10 write paths need governed MCP write capability before BOS can be fully operationalised. | MCP guarded-write end-to-end test passes; TASK-06 marked complete. |
 | Implement wave-2 measure_* MCP connectors | MEASURE-02/S3/S10 measurement stages need normalised cross-source measurement contracts — GA4, Search Console, and Cloudflare data accessible via MCP tools. | Wave-2 connector fact-find brief exists; at least one connector implemented and validated. |
 | Automate Octorate Batch 1 (booking value) data collection | BRIK historical baseline currently relies on manual Batch 1 extraction — automation reduces refresh friction. | Automated extraction produces a valid booking value dataset matching the manual baseline format. |
 
@@ -312,7 +310,7 @@ This sub-loop feeds the main startup loop at the lp-do-fact-find stage.
 
 ## Stage-by-Stage Workflow [Engineering Reference]
 
-Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 3.11.0).
+Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 3.13.0).
 
 | Stage | Inputs | Processing | Outputs |
 |---|---|---|---|
@@ -340,9 +338,7 @@ Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 3
 | SELL-06. Partnership and referral standing | SELL-01 outputs + partnership pipeline | Document standing partnership pipeline, referral programmes, affiliate activity | Partnership and referral standing artifact |
 | SELL-07. Sell aggregate pack | SELL-02..06 outputs | Aggregate sell pack combining all standing sales intelligence into one artifact | Sell aggregate pack artifact |
 | SELL-08. Activation readiness (pre-spend gate) | SELL-01 + measurement readiness | Validate paid spend activation readiness (GATE-SELL-ACT-01); blocks live spend until measurement thresholds met | Activation readiness decision + evidence refs |
-| S4. Baseline merge (join barrier) | Offer (MARKET-06) + forecast (S3) + channels (SELL-01) | Validate required upstream artifacts; compose deterministic baseline snapshot | Candidate baseline snapshot + draft manifest |
-| S5A. Prioritize (no side effects) | Baseline snapshot + forecast + constraints | Score and rank go-item candidates | Prioritized backlog candidates (pure ranking, no persistence) |
-| S5B. BOS sync (sole mutation boundary) | Prioritized items from S5A | Persist cards/stage-docs to D1; commit manifest pointer as current | BOS cards created/updated + manifest committed |
+| S4. Baseline merge + prioritize (join barrier) | Offer (MARKET-06) + forecast (S3) + channels (SELL-01) | Validate required upstream artifacts; compose deterministic baseline snapshot; score and rank go-item candidates | Current baseline snapshot + current manifest + prioritized backlog candidates (no BOS writes) |
 | WEBSITE-01. L1 first build framework | Brand dossier + startup baseline + existing scaffold and legacy reference app | Framework-first assembly mapping for first website build (route skeleton, reuse boundaries, implementation order) + auto-dispatch to `/lp-do-fact-find --website-first-build-backlog` once artifact is Active | Agent-ready V1 builder prompt packet + canonical `website-content-packet` contract path (`docs/business-os/startup-baselines/<BIZ>-content-packet.md`) for DO execution + first-build fact-find handover trigger |
 | WEBSITE-02. Website upgrade synthesis | Platform baseline + business upgrade brief + reference sites | Best-of decomposition and fit matrix (Adopt/Adapt/Defer/Reject) | Fact-find-ready website backlog packet |
 | DO. Fact-find (`/lp-do-fact-find`) | Chosen go-item(s), evidence docs, constraints | Deep evidence audit and task seeds | Fact-find brief (`Ready-for-planning` or `Needs-input`) |
@@ -384,10 +380,10 @@ Resolved recently (no longer missing):
 - BRIK site-upgrade brief is active (decision-grade):
   - `docs/business-os/site-upgrades/BRIK/latest.user.md`
 - Intake packets are active for HEAD and PET:
-  - `docs/business-os/startup-baselines/HEAD-intake-packet.user.md`
-  - `docs/business-os/startup-baselines/PET-intake-packet.user.md`
+  - `docs/business-os/startup-baselines/HEAD-<YYYY-MM-DD>assessment-intake-packet.user.md`
+  - `docs/business-os/startup-baselines/PET-<YYYY-MM-DD>assessment-intake-packet.user.md`
 - Intake packet is active for BRIK:
-  - `docs/business-os/startup-baselines/BRIK-intake-packet.user.md`
+  - `docs/business-os/startup-baselines/BRIK-<YYYY-MM-DD>assessment-intake-packet.user.md`
 - Readiness mapping gate now passes for active scope:
   - `docs/business-os/readiness/2026-02-12-idea-readiness.user.md` (`Run-Status: warning`)
 - Blocker interview packs are active for HEAD and PET:
@@ -436,7 +432,7 @@ Resolved recently (no longer missing):
 | MARKET-01 Market intelligence | Decision-grade pack is now active; enforce monthly freshness + change-trigger refresh | Refresh cadence risk | `docs/business-os/market-research/BRIK/2026-02-12-market-intelligence.user.md` (`Status: Active`); handoff prompt retained at `docs/business-os/market-research/BRIK/2026-02-12-deep-research-market-intelligence-prompt.user.md` |
 | S3 Forecasting | Startup-loop forecast artifact is now active (`v1`); first measured-data recalibration remains pending | Refresh/recalibration risk | `docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1.user.md` (`Status: Active`); exec summary: `docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1-exec-summary.user.md` |
 | S4 Baseline merge | Forecast seed is active and integrated into canonical plan; next action is controlled refresh/recalibration after measured week-1/2 data | Refresh/recalibration risk | `docs/business-os/startup-baselines/BRIK-forecast-seed.user.md` (`Status: Active`) + `docs/business-os/strategy/BRIK/plan.user.md` |
-| S5A Prioritization | Scored prioritization artifact is active; P1-01 routing, baseline lock, and production checkout telemetry deployment alignment are complete, while report refresh verification and P1-02/P1-03 execution remain open | Execution sequencing risk | `docs/plans/brik-ga4-baseline-lock/fact-find.md`; `docs/plans/brik-ga4-baseline-lock/plan.md`; `docs/business-os/strategy/BRIK/2026-02-13-prioritization-scorecard.user.md` (`Status: Active`) |
+| S4 Prioritization | Scored prioritization artifact is active; P1-01 routing, baseline lock, and production checkout telemetry deployment alignment are complete, while report refresh verification and P1-02/P1-03 execution remain open | Execution sequencing risk | `docs/plans/brik-ga4-baseline-lock/fact-find.md`; `docs/plans/brik-ga4-baseline-lock/plan.md`; `docs/business-os/strategy/BRIK/2026-02-13-prioritization-scorecard.user.md` (`Status: Active`) |
 | WEBSITE-02 Website synthesis | Decision-grade brief is now active; enforce monthly freshness + change-trigger refresh | Refresh cadence risk | `docs/business-os/site-upgrades/BRIK/2026-02-12-upgrade-brief.user.md` (`Status: Active`); handoff prompt retained at `docs/business-os/site-upgrades/BRIK/2026-02-12-deep-research-site-upgrade-prompt.user.md` |
 | S10 Weekly decision loop | First weekly decision artifact is now active; maintain strict weekly cadence and link to gate evidence | Cadence risk | `docs/business-os/strategy/BRIK/2026-02-13-weekly-kpcs-decision.user.md` (`Status: Active`) |
 
@@ -452,11 +448,10 @@ Resolved recently (no longer missing):
 | S3 Forecast | v2 + market-intelligence inputs exist; still needs operational confirmations | v2 + market-intelligence inputs exist; still not decision-grade without observed data | Startup-loop forecast artifact active (`v1`); recalibration pending after first 14-day measured window |
 | SELL-01 Channel strategy + GTM | Not yet started | Not yet started | Not yet started |
 | S4 Baseline merge | Draft seed exists (pre-merge format) | Draft seed exists (pre-merge format) | Seed active and integrated into canonical plan |
-| S5A Prioritize | Scored prioritization artifact active | Scored prioritization artifact active | Scored prioritization artifact active |
-| S5B BOS sync | Not yet started | Not yet started | Not yet started |
+| S4 Prioritize | Scored prioritization artifact active | Scored prioritization artifact active | Scored prioritization artifact active |
 | WEBSITE-02 Website best-of synthesis | Active brief available | Active brief available | Active brief available (`latest` active; decision-grade) |
 | DO Fact-find handoff quality | Possible but weaker due missing upstream canonical artifacts | Possible but weaker due missing upstream canonical artifacts | Possible with improved quality; still constrained by measurement completeness and SELL-01 artifact gaps |
-| DO Plan/Build | Available in process, but depends on stronger upstream inputs | Available in process, but depends on stronger upstream inputs | Available in process; confidence improved after MARKET-01/S3/S4/S5A/WEBSITE completion, still constrained by instrumentation completeness |
+| DO Plan/Build | Available in process, but depends on stronger upstream inputs | Available in process, but depends on stronger upstream inputs | Available in process; confidence improved after MARKET-01/S3/S4/WEBSITE completion, still constrained by instrumentation completeness |
 | S9B QA gates | Not yet started | Not yet started | Not yet started |
 | S10 Weekly decision loop | Active weekly decision log started | Active weekly decision log started | Active weekly decision log started |
 
@@ -565,14 +560,14 @@ Use this map to decide when the user should be handed a prompt and what output m
 
 | Stage | Trigger | Prompt template | Required inputs | Required output path |
 |---|---|---|---|---|
-| ASSESSMENT-09 Intake | New business/product idea enters loop or major scope shift | `docs/business-os/workflow-prompts/_templates/intake-normalizer-prompt.md` | Raw user idea + product spec + constraints | `docs/business-os/startup-baselines/<BIZ>-intake-packet.user.md` |
+| ASSESSMENT-09 Intake | New business/product idea enters loop or major scope shift | `docs/business-os/workflow-prompts/_templates/intake-normalizer-prompt.md` | Raw user idea + product spec + constraints | `docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md` |
 | Non-stage triage: Readiness blocker interview | Intake/readiness has `block`/`warning` or missing-context register exists (advisory support flow, not a canonical stage) | `docs/business-os/workflow-prompts/_templates/readiness-blocker-interview-prompt.md` | latest readiness report + plan + baseline seed | `docs/business-os/readiness/<YYYY-MM-DD>-<BIZ>-blocker-interview.user.md` |
 | MEASURE-01 Agent-Setup (pre-website bootstrap path) | Launch-surface mode is `pre-website` and measurement bootstrap doc is missing/stale | `docs/business-os/workflow-prompts/_templates/measurement-agent-setup-prompt.md` | intake packet + business plan + launch-surface mode + runtime/deploy details | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-pre-website-measurement-setup.user.md` |
 | MEASURE-02-1 Historical data request (existing businesses) | Business is `website-live` and latest baseline is `Blocked` or unavailable fields prevent decision-grade output | `docs/business-os/workflow-prompts/_templates/historical-data-request-prompt.md` (or business-specific handoff prompt file) | blocker summary + required metric list + known source systems | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-historical-data-request-prompt.user.md` |
 | MEASURE-02-2 Historical baseline consolidation (existing businesses) | Required MEASURE-02 data pack has been supplied | `docs/business-os/workflow-prompts/_templates/existing-business-historical-baseline-prompt.md` (or business-specific handoff prompt file) | net booking value history + Cloudflare analytics + ops logs | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-historical-performance-baseline.user.md` |
 | MARKET-01 Market intelligence | `latest.user.md` missing, stale, or points to `Draft`; market conditions changed materially | `docs/business-os/market-research/_templates/deep-research-market-intelligence-prompt.md` (or business-specific handoff prompt file) | intake packet + current constraints + channel intent | `docs/business-os/market-research/<BIZ>/<YYYY-MM-DD>-market-intelligence.user.md` |
 | S3 Forecast recalibration | Week-1/2 data available, gate failed, or major assumption breaks | `docs/business-os/workflow-prompts/_templates/forecast-recalibration-prompt.md` | previous forecast + measured KPI data + active constraints | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-forecast-recalibration.user.md` |
-| S5A Prioritization | >=3 candidate go-items or conflicting priorities | `docs/business-os/workflow-prompts/_templates/prioritization-scorer-prompt.md` | baseline seed + forecast + constraints + candidate set | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-prioritization-scorecard.user.md` |
+| S4 Prioritization | >=3 candidate go-items or conflicting priorities | `docs/business-os/workflow-prompts/_templates/prioritization-scorer-prompt.md` | baseline seed + forecast + constraints + candidate set | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-prioritization-scorecard.user.md` |
 | WEBSITE-01 L1 first build framework | `site-v1-builder-prompt.user.md` missing, stale, or points to `Draft`; business has no live website | `docs/business-os/workflow-prompts/_templates/website-first-build-framework-prompt.md` | strategy index + brand dossier + startup baselines + app scaffold + legacy storefront baseline | `docs/business-os/strategy/<BIZ>/site-v1-builder-prompt.user.md` |
 | WEBSITE->DO first-build handover | `site-v1-builder-prompt.user.md` is `Status: Active` for a `pre-website` business and handover fact-find is missing | `/lp-do-fact-find --website-first-build-backlog` | active WEBSITE-01 artifact + strategy index status + baseline source pointers + canonical packet target `docs/business-os/startup-baselines/<BIZ>-content-packet.md` | `docs/plans/<biz>-website-v1-first-build/fact-find.md` |
 | DO planning handover (first-build) | `fact-find.md` exists with `Status: Ready-for-planning` and plan artifact is missing/inactive | `/lp-do-plan docs/plans/<biz>-website-v1-first-build/fact-find.md` | ready first-build fact-find artifact | `docs/plans/<biz>-website-v1-first-build/plan.md` |
@@ -593,7 +588,7 @@ Output hygiene for every prompt run:
 > **Retired.** Design policy and brand decisions have been migrated to first-class artifacts with front matter schemas and gate enforcement.
 >
 > See:
-> - **Brand Dossier (BRIK):** `docs/business-os/strategy/BRIK/brand-identity.user.md` — audience, personality, visual identity, voice & tone
+> - **Brand Dossier (BRIK):** `docs/business-os/strategy/BRIK/2026-02-12-brand-identity-dossier.user.md` — audience, personality, visual identity, voice & tone
 > - **Prime App Design Branding:** `docs/business-os/strategy/BRIK/prime-app-design-branding.user.md` — Prime-specific design principles, token rationale, signature patterns
 > - **Strategy Index (artifact status + gate table):** `docs/business-os/strategy/BRIK/index.user.md`
 >
@@ -713,8 +708,7 @@ Reference:
 | ASSESSMENT readiness | Record blockers/warnings and owner actions | `docs/business-os/readiness/<YYYY-MM-DD>-*.user.md` + strategy plan risk section |
 | MEASURE-01 Measurement bootstrap | Record measurement setup status and blockers | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-pre-website-measurement-setup.user.md` |
 | MARKET-01/S3 Research + Forecast | Update canonical latest pointers and strategy assumptions/targets | `latest.user.md` pointer + `docs/business-os/strategy/<BIZ>/plan.user.md` |
-| S5A Prioritize | No BOS sync (pure ranking, no side effects) | n/a |
-| S5B BOS sync | Promote selected go-items into Business OS ideas/cards; commit manifest pointer | `POST /api/agent/ideas`, `POST /api/agent/cards` |
+| S4 Prioritize | No BOS sync (pure ranking and baseline commit only) | n/a |
 | DO Fact-find | Upsert `fact-find` stage doc for selected card | `GET/PATCH/POST /api/agent/stage-docs/:cardId/fact-find` |
 | DO Plan | Upsert `plan` stage doc + lane transition `Fact-finding -> Planned` | `PATCH /api/agent/cards/:id` + `GET/PATCH/POST /api/agent/stage-docs/:cardId/plan` |
 | DO Build | Upsert `build` stage doc + lane transitions to `In progress`/`Done` | `PATCH /api/agent/cards/:id` + `GET/PATCH/POST /api/agent/stage-docs/:cardId/build` |

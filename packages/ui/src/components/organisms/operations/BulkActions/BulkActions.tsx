@@ -87,7 +87,7 @@ export function BulkActions({
 
         <button
           onClick={onClearSelection}
-          className="flex items-center gap-1 rounded px-2 py-1 text-xs text-info-fg transition-colors hover:bg-info-soft"
+          className="flex items-center gap-1 rounded px-2 py-1 text-xs text-info-fg transition-colors hover:bg-info-soft min-h-11 min-w-11"
           aria-label="Clear selection"
         >
           <X className="h-3 w-3" />

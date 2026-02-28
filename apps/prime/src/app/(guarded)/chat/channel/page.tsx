@@ -102,6 +102,7 @@ export default function ChannelPage() {
   const [isPresent, setIsPresent] = useState(false);
   const [messageInput, setMessageInput] = useState('');
   const [isSending, setIsSending] = useState(false);
+  const [sendError, setSendError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const activity = channelId ? activities[channelId] : undefined;
@@ -168,6 +169,7 @@ export default function ChannelPage() {
     if (!channelId || !messageInput.trim() || isSending) return;
 
     setIsSending(true);
+    setSendError(null);
     try {
       const directSendOptions =
         channelMode === 'direct' && peerUuid && currentBookingId
@@ -187,7 +189,7 @@ export default function ChannelPage() {
       setMessageInput('');
     } catch (err) {
       console.error('Failed to send message:', err);
-      alert('Failed to send message. Please try again.');
+      setSendError(t('sendFailed', 'Message failed to send. Please try again.'));
     } finally {
       setIsSending(false);
     }
@@ -350,11 +352,17 @@ export default function ChannelPage() {
                 </Link>
               </div>
             ) : (
+              <div className="space-y-2">
+                {sendError && (
+                  <p className="rounded-lg bg-danger-soft px-3 py-2 text-xs text-danger-foreground">
+                    {sendError}
+                  </p>
+                )}
               <form onSubmit={handleSendMessage} className="flex gap-2">
                 <input
                   type="text"
                   value={messageInput}
-                  onChange={(e) => setMessageInput(e.target.value)}
+                  onChange={(e) => { setMessageInput(e.target.value); if (sendError) setSendError(null); }}
                   placeholder={t('typeMessage', 'Type a message...')}
                   className="flex-1 rounded-lg border border-border px-3 py-2 text-sm focus:border-primary focus:outline-none focus-visible:ring-1 focus-visible:ring-primary"
                   disabled={isSending}
@@ -369,6 +377,7 @@ export default function ChannelPage() {
                   <span className="hidden sm:inline">{t('send', 'Send')}</span>
                 </button>
               </form>
+              </div>
             )}
           </div>
         </div>

@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import { getDatabase, ref, remove, set, update } from "firebase/database";
 
 import { useAuth } from "../../context/AuthContext";
+import { useOnlineStatus } from "../../lib/offline/useOnlineStatus";
 // Import our utilities:
 import { getItalyIsoString } from "../../utils/dateUtils";
 import { generateTransactionId } from "../../utils/generateTransactionId";
@@ -32,6 +33,7 @@ export function useBookingDatesMutator() {
   const [isError, setIsError] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
+  const online = useOnlineStatus();
   const db = getDatabase();
   const { saveFinancialsRoom } = useFinancialsRoomMutations();
 
@@ -46,6 +48,16 @@ export function useBookingDatesMutator() {
         newCheckOut,
         extendedPrice = "0",
       } = params;
+
+      if (!online) {
+        setIsError(true);
+        setError(
+          new Error(
+            "Booking date changes require a network connection. Please reconnect and try again."
+          )
+        );
+        return;
+      }
 
       setIsLoading(true);
       setIsError(false);
@@ -192,7 +204,7 @@ export function useBookingDatesMutator() {
         setIsLoading(false);
       }
     },
-    [db, user?.user_name, saveFinancialsRoom]
+    [online, db, user?.user_name, saveFinancialsRoom]
   );
 
   return { updateBookingDates, isLoading, isError, error };

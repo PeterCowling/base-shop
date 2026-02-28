@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Pokoje i ceny | Hostel Brikette Positano",
+    "title": "Miejsca w dormitorium w Positano | Zarezerwuj bezpośrednio w Brikette Hostel",
     "description": "Prywatne dwuosobowe z widokiem na morze i budżetowe dormy: zobacz zdjęcia, udogodnienia i aktualne ceny, a następnie zarezerwuj bezpośrednio, aby uzyskać najlepszą ofertę.",
     "ogImageAlt": "Wnętrze wspólnego pokoju"
   },
@@ -65,7 +65,8 @@
     "linen": "Pościel i ręczniki w zestawie"
   },
   "rooms": {
-    "title": "Nasze pokoje",
+    "title": "Miejsca w dormitorium",
+    "soldOut": "Wyprzedano",
     "double_room": {
       "title": "Pokój dwuosobowy",
       "bed_intro": "Zachwycające widoki na morze — idealny dla par.",
@@ -86,7 +87,7 @@
       }
     },
     "room_10": {
-      "title": "Dorm mieszany Premium",
+      "title": "Dorm mieszany – łazienka w pokoju",
       "bed_intro": "Gdy potrzebujesz sześciu łóżek i lepszej łazienki.",
       "bed_description": "Dorm Premium to mieszany pokój z trzema łóżkami dormowymi (łącznie sześć miejsc), dla maksymalnie sześciu gości. Położony na czwartym piętrze, posiada klimatyzację, wejście na kartę oraz łazienkę ensuite (bez widoku). Pościel i ręcznik zapewnione przy zameldowaniu.",
       "facilities": [
@@ -105,7 +106,7 @@
       }
     },
     "room_11": {
-      "title": "Dorm żeński Superior — duży taras",
+      "title": "Dorm żeński – duży taras morski",
       "bed_intro": "Taras z widokiem na morze, łazienka ensuite i przestrzeń tylko dla kobiet.",
       "bed_description": "Ten dorm żeński Superior mieści sześć łóżek dormowych i oferuje taras z widokiem na morze oraz mnóstwo przestrzeni na relaks. Znajduje się na czwartym piętrze, ma klimatyzację, wejście na kartę oraz łazienkę ensuite, a na rozległym tarasie czekają leżaki. Pościel i ręczniki otrzymasz przy zameldowaniu.",
       "facilities": [
@@ -124,7 +125,7 @@
       }
     },
     "room_12": {
-      "title": "Dorm mieszany Superior",
+      "title": "Dorm mieszany – taras morski",
       "bed_intro": "Świetne widoki z przestronnego tarasu i wygodna łazienka.",
       "bed_description": "Dorm mieszany Superior ma trzy łóżka dormowe (razem sześć), dla maksymalnie sześciu gości. Położony na czwartym piętrze; klimatyzacja, wejście na kartę, prywatna łazienka i widok na morze z bardzo dużym tarasem. Pościel i ręcznik dostępne przy zameldowaniu.",
       "facilities": [
@@ -143,7 +144,7 @@
       }
     },
     "room_3": {
-      "title": "Dorm żeński Value",
+      "title": "Dorm żeński – 8 łóżek",
       "bed_intro": "Budżetowy wybór dla podróżujących kobiet.",
       "bed_description": "Dorm żeński Value mieści do ośmiu gości na czterech łóżkach dormowych. Na trzecim piętrze, z klimatyzacją, wejściem na kartę oraz dostępem do wspólnej damskiej łazienki. Brak widoku. Pościel i ręcznik przy zameldowaniu.",
       "facilities": [
@@ -162,7 +163,7 @@
       }
     },
     "room_4": {
-      "title": "Dorm mieszany Value",
+      "title": "Dorm mieszany – 8 łóżek",
       "bed_intro": "Budżetowa opcja dla podróżujących kobiet i mężczyzn.",
       "bed_description": "Dorm mieszany Value mieści do ośmiu gości na czterech łóżkach dormowych. Na trzecim piętrze; klimatyzacja, wejście na kartę i dostęp do wspólnej damskiej łazienki. Brak widoku. Pościel i ręcznik przy zameldowaniu.",
       "facilities": [
@@ -181,7 +182,7 @@
       }
     },
     "room_5": {
-      "title": "Dorm żeński Superior — widok na morze",
+      "title": "Dorm żeński – widok na morze",
       "bed_intro": "Zachwycające widoki na morze i prywatna łazienka.",
       "bed_description": "Dorm żeński Superior mieści do sześciu gości na trzech łóżkach dormowych. Na trzecim piętrze; łazienka ensuite, taras z widokiem na morze, klimatyzacja i wejście na kartę. Pościel i ręcznik przy zameldowaniu.",
       "facilities": [
@@ -200,7 +201,7 @@
       }
     },
     "room_6": {
-      "title": "Dorm żeński Superior — 7 łóżek",
+      "title": "Dorm żeński – 7 łóżek z widokiem na morze",
       "bed_intro": "Wspaniałe widoki na morze i łazienka ensuite.",
       "bed_description": "Dorm żeński Superior oferuje trzy łóżka dormowe oraz jedno pojedyncze (razem 7), dla maksymalnie siedmiu gości. Na trzecim piętrze; łazienka ensuite, taras z widokiem na morze, klimatyzacja i wejście na kartę. Pościel i ręcznik dostępne przy zameldowaniu.",
       "facilities": [
@@ -219,7 +220,7 @@
       }
     },
     "room_9": {
-      "title": "Pokój mieszany Deluxe",
+      "title": "Pokój mieszany – łóżka pojedyncze",
       "bed_intro": "Budżetowy sposób na pokój z trzema łóżkami.",
       "bed_description": "Pokój mieszany Deluxe ma trzy łóżka pojedyncze dla maksymalnie trzech gości. Na czwartym piętrze; łazienka ensuite, widok na dziedziniec, klimatyzacja i wejście na kartę. Pościel i ręcznik przy zameldowaniu.",
       "facilities": [
@@ -238,7 +239,7 @@
       }
     },
     "room_8": {
-      "title": "Dorm żeński z jednym łóżkiem piętrowym",
+      "title": "Pokój żeński – widok na ogród",
       "bed_intro": "Budżetowa opcja dla dwóch podróżujących kobiet.",
       "bed_description": "Ten dorm tylko dla kobiet ma jedno łóżko piętrowe (dormowe), dla maksymalnie dwóch gości. Na trzecim piętrze; klimatyzacja, wejście na kartę, widok na ogród i sąsiedztwo wspólnej damskiej łazienki. Pościel i ręcznik przy zameldowaniu.",
       "facilities": [
@@ -274,7 +275,7 @@
     "nextSlide": "Następny slajd"
   },
   "hero": {
-    "heading": "Nasze pokoje",
+    "heading": "Miejsca w dormitorium",
     "subheading": "Wybierz idealny pokój na swój pobyt"
   },
   "filters": {
@@ -285,6 +286,7 @@
   "filtersAria": "Filtruj według typu pokoju",
   "checkRatesNonRefundable": "Stawki bezzwrotne",
   "checkRatesFlexible": "Elastyczne stawki",
+  "checkRatesSingle": "Check Rates",
   "ctaSuffix": {
     "nonRefundable": "Niezbędne",
     "flexible": "Elastyczny"
@@ -302,5 +304,10 @@
   "landingImageAlt": "Obraz tytułowy pokoju {{room}}",
   "priceNotes": {
     "dorm": "Za noc, za gościa. Jeden gość w jednym łóżku piętrowym."
+  },
+  "date": {
+    "stayHelper": "2–8 nights",
+    "clearDates": "Clear dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
   }
 }

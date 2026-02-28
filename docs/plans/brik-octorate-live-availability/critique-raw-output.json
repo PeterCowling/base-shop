@@ -1,0 +1,37 @@
+{
+  "round": 3,
+  "target": "plan.md",
+  "tool": "codemoot",
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/brik-octorate-live-availability/plan.md",
+      "line": "227",
+      "message": "TASK-01 error contract is internally inconsistent with later TC cases. This line says Octorate errors return per-room `{ available:false, error:\"unavailable\" }`, but TC-01-04 requires `\"rate_limited\"` and TC-01-05 requires `{ rooms:{} }`. Split acceptance by error class (calendar-call errors vs auth/token failures) to avoid ambiguous implementation."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/brik-octorate-live-availability/plan.md",
+      "line": "435",
+      "message": "TC-04-05 conflicts with sold-out behavior. The plan also requires sold-out buttons be disabled (lines 423, 432), so \"GA4 `select_item` fires on NR button click regardless of availability state\" is not valid for sold-out/disabled CTAs."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/brik-octorate-live-availability/plan.md",
+      "line": "541",
+      "message": "E2E acceptance says verify real navigation to `book.octorate.com`, but the same task's hardening step recommends intercepting/blocking that navigation in CI (line 552). Define separate pass criteria for \"redirect attempted\" vs \"actual external navigation\" to avoid non-deterministic tests."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/brik-octorate-live-availability/plan.md",
+      "line": "196",
+      "message": "The sanitized evidence requirement for TASK-00 is strong and reduces risk of leaking commercially sensitive live pricing in committed artifacts."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "lp_score": 4.0,
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "durationMs": 55002
+}

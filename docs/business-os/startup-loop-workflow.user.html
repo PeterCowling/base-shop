@@ -99,7 +99,7 @@
 <script id="sl-theme-init">(function(){try{var t=localStorage.getItem("sl-theme");if(!t)t=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}catch(e){}})()</script>
 </head>
 <body>
-<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><span class="sl-brand">Startup Loop</span><a href="startup-loop-workflow.user.html">Workflow</a><a href="startup-loop-files.user.html">Loop Files</a><a href="startup-loop-file-types.user.html">File Types</a><a href="startup-loop-output-registry.user.html">Output Registry</a><a href="pending-reviews.user.html">Pending Reviews</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
+<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><span class="sl-brand">Startup Loop</span><a href="../../business-os/startup-loop-workflow.user.html">Workflow</a><a href="../../business-os/startup-loop-files.user.html">Loop Files</a><a href="../../business-os/startup-loop-file-types.user.html">File Types</a><a href="../../business-os/startup-loop-output-registry.user.html">Output Registry</a><a href="../../business-os/ideas.user.html">Ideas</a><a href="../../business-os/process-improvements.user.html">Process</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
   <main>
     <button class="audience-toggle" id="audience-toggle" aria-pressed="false">
       Show technical details
@@ -107,8 +107,8 @@
 <h1>Startup Loop: What to do next for HEAD, PET, and BRIK</h1>
 <h2>1) Purpose</h2>
 <p>This page tells you what to do next for HEAD, PET, and BRIK — and how to do it.</p>
-<h2>Canonical stage IDs (loop-spec v3.11.0)</h2>
-<p><code>ASSESSMENT-01</code>, <code>ASSESSMENT-02</code>, <code>ASSESSMENT-03</code>, <code>ASSESSMENT-04</code>, <code>ASSESSMENT-05</code>, <code>ASSESSMENT-06</code>, <code>ASSESSMENT-07</code>, <code>ASSESSMENT-08</code>, <code>ASSESSMENT-09</code>, <code>ASSESSMENT</code>, <code>ASSESSMENT-10</code>, <code>ASSESSMENT-11</code>, <code>IDEAS</code>, <code>IDEAS-01</code>, <code>IDEAS-02</code>, <code>IDEAS-03</code>, <code>MEASURE-00</code>, <code>MEASURE-01</code>, <code>MEASURE-02</code>, <code>PRODUCT</code>, <code>PRODUCT-01</code>, <code>PRODUCTS</code>, <code>PRODUCTS-01</code>, <code>PRODUCTS-02</code>, <code>PRODUCTS-03</code>, <code>PRODUCTS-04</code>, <code>PRODUCTS-05</code>, <code>PRODUCTS-06</code>, <code>PRODUCTS-07</code>, <code>LOGISTICS</code>, <code>LOGISTICS-01</code>, <code>LOGISTICS-02</code>, <code>LOGISTICS-03</code>, <code>LOGISTICS-04</code>, <code>LOGISTICS-05</code>, <code>LOGISTICS-06</code>, <code>LOGISTICS-07</code>, <code>MARKET</code>, <code>MARKET-01</code>, <code>MARKET-02</code>, <code>MARKET-03</code>, <code>MARKET-04</code>, <code>MARKET-05</code>, <code>MARKET-06</code>, <code>MARKET-07</code>, <code>MARKET-08</code>, <code>MARKET-09</code>, <code>MARKET-10</code>, <code>MARKET-11</code>, <code>SIGNALS-01</code>, <code>PRODUCT-02</code>, <code>SELL</code>, <code>SELL-01</code>, <code>SELL-02</code>, <code>SELL-03</code>, <code>SELL-04</code>, <code>SELL-05</code>, <code>SELL-06</code>, <code>SELL-07</code>, <code>SELL-08</code>, <code>S4</code>, <code>S5A</code>, <code>S5B</code>, <code>WEBSITE</code>, <code>WEBSITE-01</code>, <code>WEBSITE-02</code>, <code>DO</code>, <code>S9B</code>, <code>SIGNALS</code> (legacy aliases: <code>S3</code>, <code>S10</code>).</p>
+<h2>Canonical stage IDs (loop-spec v3.13.0)</h2>
+<p><code>ASSESSMENT-01</code>, <code>ASSESSMENT-02</code>, <code>ASSESSMENT-03</code>, <code>ASSESSMENT-04</code>, <code>ASSESSMENT-05</code>, <code>ASSESSMENT-06</code>, <code>ASSESSMENT-07</code>, <code>ASSESSMENT-08</code>, <code>ASSESSMENT-09</code>, <code>ASSESSMENT</code>, <code>ASSESSMENT-10</code>, <code>ASSESSMENT-11</code>, <code>IDEAS</code>, <code>IDEAS-01</code>, <code>IDEAS-02</code>, <code>IDEAS-03</code>, <code>MEASURE-00</code>, <code>MEASURE-01</code>, <code>MEASURE-02</code>, <code>PRODUCT</code>, <code>PRODUCT-01</code>, <code>PRODUCTS</code>, <code>PRODUCTS-01</code>, <code>PRODUCTS-02</code>, <code>PRODUCTS-03</code>, <code>PRODUCTS-04</code>, <code>PRODUCTS-05</code>, <code>PRODUCTS-06</code>, <code>PRODUCTS-07</code>, <code>LOGISTICS</code>, <code>LOGISTICS-01</code>, <code>LOGISTICS-02</code>, <code>LOGISTICS-03</code>, <code>LOGISTICS-04</code>, <code>LOGISTICS-05</code>, <code>LOGISTICS-06</code>, <code>LOGISTICS-07</code>, <code>MARKET</code>, <code>MARKET-01</code>, <code>MARKET-02</code>, <code>MARKET-03</code>, <code>MARKET-04</code>, <code>MARKET-05</code>, <code>MARKET-06</code>, <code>MARKET-07</code>, <code>MARKET-08</code>, <code>MARKET-09</code>, <code>MARKET-10</code>, <code>MARKET-11</code>, <code>SIGNALS-01</code>, <code>PRODUCT-02</code>, <code>SELL</code>, <code>SELL-01</code>, <code>SELL-02</code>, <code>SELL-03</code>, <code>SELL-04</code>, <code>SELL-05</code>, <code>SELL-06</code>, <code>SELL-07</code>, <code>SELL-08</code>, <code>S4</code>, <code>WEBSITE</code>, <code>WEBSITE-01</code>, <code>WEBSITE-02</code>, <code>DO</code>, <code>S9B</code>, <code>SIGNALS</code> (legacy aliases: <code>S3</code>, <code>S10</code>).</p>
 <h2>Open tasks (updated 2026-02-21)</h2>
 <p>Use these ranked lists to pick your next action. Tasks are ordered — complete from top to bottom, as each one unlocks the next.</p>
 <h3>HEAD</h3>
@@ -271,8 +271,7 @@
     N2["Research<br/>(MARKET-01)"]
     N3["Offer Design<br/>(MARKET-06)"]
     N4["Forecast + Channels<br/>(S3/SELL-01)"]
-    N5["Prioritise<br/>(S4–S5)"]
-    N6["Pick top actions<br/>(S5A)"]
+    N5["Baseline merge + prioritise<br/>(S4)"]
     N7["Execute<br/>(DO–S9B)"]
     N8["Weekly review<br/>(S10)"]
     NEND["End"]
@@ -281,50 +280,13 @@
     N2 --> N3
     N3 --> N4
     N4 --> N5
-    N5 --> N6
-    N6 --> N7
+    N5 --> N7
     N7 --> N8
 
     N8 -->|Continue| N2
     N8 -->|Scale| N5
     N8 -->|Kill| NEND</pre>
 <p>Each week the S10 review gives you one of three verdicts: Continue (loop back to Research and sharpen your data), Scale (jump straight to Prioritise with what you already know), or Kill (end the business and move on). The loop is designed to be fast — most businesses complete the full first pass in 2–4 weeks.</p>
-<h2>Supporting utilities (DO workflow)</h2>
-<div style="border: 1.5px dashed var(--border); border-radius: var(--radius-lg); background: var(--surface); padding: 1rem 1.25rem; margin: 0 0 1.5rem;">
-  <p style="margin: 0 0 0.6rem; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-muted);">Utility tools — not part of the core loop stages</p>
-  <p style="margin: 0 0 0.75rem; color: var(--text-muted); font-size: 0.9rem;">These skills work alongside the core <code>fact-find → plan → build → replan</code> flow. Most are auto-invoked; you rarely need to call them directly.</p>
-  <table style="margin: 0; font-size: 0.875rem;">
-    <thead>
-      <tr>
-        <th style="width: 13rem;">Skill</th>
-        <th>When it runs</th>
-        <th>What it does</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><code>/lp-do-sequence</code></td>
-        <td>Auto-invoked by <code>/lp-do-plan</code> and <code>/lp-do-replan</code> after topology changes</td>
-        <td>Topologically sorts plan tasks into correct implementation order and adds parallelism guidance so subagents can run independent tasks concurrently.</td>
-      </tr>
-      <tr>
-        <td><code>/lp-do-critique</code></td>
-        <td>Auto-invoked by <code>/lp-do-fact-find</code> and <code>/lp-do-plan</code></td>
-        <td>Hardnosed critic that surfaces weak claims, missing evidence, hidden assumptions, and feasibility gaps — applies autofixes where possible before the plan is approved.</td>
-      </tr>
-      <tr>
-        <td><code>/lp-do-briefing</code></td>
-        <td>Invoke explicitly when you want to understand a system without planning a change</td>
-        <td>Produces an understanding-only briefing traced end-to-end with evidence pointers. No planning artifacts or tasks are created. Use instead of <code>/lp-do-fact-find</code> when you need current-behaviour understanding only.</td>
-      </tr>
-      <tr>
-        <td><code>/lp-do-replan</code></td>
-        <td>Invoked when a task falls below the confidence threshold, or at a <code>CHECKPOINT</code> mid-build</td>
-        <td>Resolves low-confidence tasks with evidence, adds explicit precursor tasks, preserves stable task IDs, and applies checkpoint-aware reassessment before build continues.</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
 <h2>Tasks by theme</h2>
 <p>The same open tasks as above, grouped by type for when you want to tackle one theme across all three businesses at once.</p>
 <h3>Measurement setup</h3>
@@ -479,7 +441,7 @@
 <td><strong>Never</strong></td>
 </tr>
 <tr>
-<td><strong>S4 + S5A — Baseline merge and Prioritise</strong></td>
+<td><strong>S4 — Baseline merge and prioritise</strong></td>
 <td>Offer + forecast + channels</td>
 <td>Scores and ranks actions by impact</td>
 <td>Prioritised action list</td>
@@ -724,7 +686,7 @@
 <td>Forecast recalibration document exists and is dated</td>
 </tr>
 <tr>
-<td>3 or more candidate actions are competing for priority (S5A)</td>
+<td>3 or more candidate actions are competing for priority (S4)</td>
 <td>Run the Prioritisation Scorer prompt</td>
 <td>Prioritisation scorecard exists with top 2–3 items ranked</td>
 </tr>
@@ -768,7 +730,7 @@
 </tr>
 <tr>
 <td>Complete MCP guarded BOS write rollout (TASK-06 in MCP plan)</td>
-<td>S5B/DO/S10 write paths need governed MCP write capability before BOS can be fully operationalised.</td>
+<td>DO/S10 write paths need governed MCP write capability before BOS can be fully operationalised.</td>
 <td>MCP guarded-write end-to-end test passes; TASK-06 marked complete.</td>
 </tr>
 <tr>
@@ -796,7 +758,7 @@
     Q --> R[lp-do-plan/lp-do-build]</pre>
 <p>This sub-loop feeds the main startup loop at the lp-do-fact-find stage.</p>
 <h2>Stage-by-Stage Workflow [Engineering Reference]</h2>
-<p>Canonical source: <code>docs/business-os/startup-loop/loop-spec.yaml</code> (spec_version 3.11.0).</p>
+<p>Canonical source: <code>docs/business-os/startup-loop/loop-spec.yaml</code> (spec_version 3.13.0).</p>
 <table>
 <thead>
 <tr>
@@ -952,22 +914,10 @@
 <td>Activation readiness decision + evidence refs</td>
 </tr>
 <tr>
-<td>S4. Baseline merge (join barrier)</td>
+<td>S4. Baseline merge + prioritize (join barrier)</td>
 <td>Offer (MARKET-06) + forecast (S3) + channels (SELL-01)</td>
-<td>Validate required upstream artifacts; compose deterministic baseline snapshot</td>
-<td>Candidate baseline snapshot + draft manifest</td>
-</tr>
-<tr>
-<td>S5A. Prioritize (no side effects)</td>
-<td>Baseline snapshot + forecast + constraints</td>
-<td>Score and rank go-item candidates</td>
-<td>Prioritized backlog candidates (pure ranking, no persistence)</td>
-</tr>
-<tr>
-<td>S5B. BOS sync (sole mutation boundary)</td>
-<td>Prioritized items from S5A</td>
-<td>Persist cards/stage-docs to D1; commit manifest pointer as current</td>
-<td>BOS cards created/updated + manifest committed</td>
+<td>Validate required upstream artifacts; compose deterministic baseline snapshot; score and rank go-item candidates</td>
+<td>Current baseline snapshot + current manifest + prioritized backlog candidates (no BOS writes)</td>
 </tr>
 <tr>
 <td>WEBSITE-01. L1 first build framework</td>
@@ -1113,13 +1063,13 @@
 </li>
 <li>Intake packets are active for HEAD and PET:
 <ul>
-<li><code>docs/business-os/startup-baselines/HEAD-intake-packet.user.md</code></li>
-<li><code>docs/business-os/startup-baselines/PET-intake-packet.user.md</code></li>
+<li><code>docs/business-os/startup-baselines/HEAD-&#x3C;YYYY-MM-DD>assessment-intake-packet.user.md</code></li>
+<li><code>docs/business-os/startup-baselines/PET-&#x3C;YYYY-MM-DD>assessment-intake-packet.user.md</code></li>
 </ul>
 </li>
 <li>Intake packet is active for BRIK:
 <ul>
-<li><code>docs/business-os/startup-baselines/BRIK-intake-packet.user.md</code></li>
+<li><code>docs/business-os/startup-baselines/BRIK-&#x3C;YYYY-MM-DD>assessment-intake-packet.user.md</code></li>
 </ul>
 </li>
 <li>Readiness mapping gate now passes for active scope:
@@ -1289,7 +1239,7 @@
 <td><code>docs/business-os/startup-baselines/BRIK-forecast-seed.user.md</code> (<code>Status: Active</code>) + <code>docs/business-os/strategy/BRIK/plan.user.md</code></td>
 </tr>
 <tr>
-<td>S5A Prioritization</td>
+<td>S4 Prioritization</td>
 <td>Scored prioritization artifact is active; P1-01 routing, baseline lock, and production checkout telemetry deployment alignment are complete, while report refresh verification and P1-02/P1-03 execution remain open</td>
 <td>Execution sequencing risk</td>
 <td><code>docs/plans/brik-ga4-baseline-lock/fact-find.md</code>; <code>docs/plans/brik-ga4-baseline-lock/plan.md</code>; <code>docs/business-os/strategy/BRIK/2026-02-13-prioritization-scorecard.user.md</code> (<code>Status: Active</code>)</td>
@@ -1368,16 +1318,10 @@
 <td>Seed active and integrated into canonical plan</td>
 </tr>
 <tr>
-<td>S5A Prioritize</td>
+<td>S4 Prioritize</td>
 <td>Scored prioritization artifact active</td>
 <td>Scored prioritization artifact active</td>
 <td>Scored prioritization artifact active</td>
-</tr>
-<tr>
-<td>S5B BOS sync</td>
-<td>Not yet started</td>
-<td>Not yet started</td>
-<td>Not yet started</td>
 </tr>
 <tr>
 <td>WEBSITE-02 Website best-of synthesis</td>
@@ -1395,7 +1339,7 @@
 <td>DO Plan/Build</td>
 <td>Available in process, but depends on stronger upstream inputs</td>
 <td>Available in process, but depends on stronger upstream inputs</td>
-<td>Available in process; confidence improved after MARKET-01/S3/S4/S5A/WEBSITE completion, still constrained by instrumentation completeness</td>
+<td>Available in process; confidence improved after MARKET-01/S3/S4/WEBSITE completion, still constrained by instrumentation completeness</td>
 </tr>
 <tr>
 <td>S9B QA gates</td>
@@ -1528,7 +1472,7 @@ After saving:
 <td>New business/product idea enters loop or major scope shift</td>
 <td><code>docs/business-os/workflow-prompts/_templates/intake-normalizer-prompt.md</code></td>
 <td>Raw user idea + product spec + constraints</td>
-<td><code>docs/business-os/startup-baselines/&#x3C;BIZ>-intake-packet.user.md</code></td>
+<td><code>docs/business-os/startup-baselines/&#x3C;BIZ>-&#x3C;YYYY-MM-DD>assessment-intake-packet.user.md</code></td>
 </tr>
 <tr>
 <td>Non-stage triage: Readiness blocker interview</td>
@@ -1573,7 +1517,7 @@ After saving:
 <td><code>docs/business-os/strategy/&#x3C;BIZ>/&#x3C;YYYY-MM-DD>-forecast-recalibration.user.md</code></td>
 </tr>
 <tr>
-<td>S5A Prioritization</td>
+<td>S4 Prioritization</td>
 <td>>=3 candidate go-items or conflicting priorities</td>
 <td><code>docs/business-os/workflow-prompts/_templates/prioritization-scorer-prompt.md</code></td>
 <td>baseline seed + forecast + constraints + candidate set</td>
@@ -1642,7 +1586,7 @@ After saving:
 <p><strong>Retired.</strong> Design policy and brand decisions have been migrated to first-class artifacts with front matter schemas and gate enforcement.</p>
 <p>See:</p>
 <ul>
-<li><strong>Brand Dossier (BRIK):</strong> <code>docs/business-os/strategy/BRIK/brand-identity.user.md</code> — audience, personality, visual identity, voice &#x26; tone</li>
+<li><strong>Brand Dossier (BRIK):</strong> <code>docs/business-os/strategy/BRIK/2026-02-12-brand-identity-dossier.user.md</code> — audience, personality, visual identity, voice &#x26; tone</li>
 <li><strong>Prime App Design Branding:</strong> <code>docs/business-os/strategy/BRIK/prime-app-design-branding.user.md</code> — Prime-specific design principles, token rationale, signature patterns</li>
 <li><strong>Strategy Index (artifact status + gate table):</strong> <code>docs/business-os/strategy/BRIK/index.user.md</code></li>
 </ul>
@@ -1847,14 +1791,9 @@ Canonical chat wrapper skill: <code>.claude/skills/startup-loop/SKILL.md</code>.
 <td><code>latest.user.md</code> pointer + <code>docs/business-os/strategy/&#x3C;BIZ>/plan.user.md</code></td>
 </tr>
 <tr>
-<td>S5A Prioritize</td>
-<td>No BOS sync (pure ranking, no side effects)</td>
+<td>S4 Prioritize</td>
+<td>No BOS sync (pure ranking and baseline commit only)</td>
 <td>n/a</td>
-</tr>
-<tr>
-<td>S5B BOS sync</td>
-<td>Promote selected go-items into Business OS ideas/cards; commit manifest pointer</td>
-<td><code>POST /api/agent/ideas</code>, <code>POST /api/agent/cards</code></td>
 </tr>
 <tr>
 <td>DO Fact-find</td>
@@ -1888,7 +1827,7 @@ Canonical chat wrapper skill: <code>.claude/skills/startup-loop/SKILL.md</code>.
 </section>
     <div class="meta">
       <div>Source: <code>docs/business-os/startup-loop-workflow.user.md</code></div>
-      <div>Generated: 2026-02-24T11:48:38.045Z</div>
+      <div>Generated: 2026-02-25T15:52:53.614Z</div>
     </div>
   </main>
   <script type="module">

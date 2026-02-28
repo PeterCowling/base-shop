@@ -165,14 +165,14 @@ const ActionButtons: FC<ActionButtonsProps> = ({
             compatibilityMode="no-wrapper"
             id="drawerLimit"
             type="number"
-            className="border rounded p-1 w-24"
+            className="border border-border-strong rounded-lg p-1 w-24"
             value={drawerLimitInput}
             onChange={(e) => setDrawerLimitInput(e.target.value)}
           />
           <Button
             type="button"
             onClick={handleDrawerLimitSubmit}
-            className="px-3 py-1 rounded bg-primary-main text-primary-fg hover:bg-primary-dark"
+            className="px-3 py-1 rounded-lg bg-primary-main text-primary-fg hover:bg-primary-dark"
           >
             Update
           </Button>

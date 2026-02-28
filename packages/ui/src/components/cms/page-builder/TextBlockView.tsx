@@ -120,7 +120,7 @@ const TextBlockView = ({
       style={{ ...(zIndex !== undefined ? { zIndex } : {}), ...style }}
       className={
         "relative rounded border" +
-        (selected ? " ring-2 ring-blue-500" : "") +
+        (selected ? " ring-2 ring-info-main" : "") +
         (snapping ? " border-primary" : "")
       }
     >

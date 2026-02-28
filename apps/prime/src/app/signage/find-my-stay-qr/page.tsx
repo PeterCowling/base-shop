@@ -2,7 +2,7 @@ import { QrCode } from 'lucide-react';
 
 export default function FindMyStayQRPage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-card p-8">
+    <main className="flex min-h-svh flex-col items-center justify-center bg-card p-8">
       <div className="text-center">
         <h1 className="mb-4 text-4xl font-bold text-foreground">
           Find Your Stay

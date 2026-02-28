@@ -200,7 +200,25 @@ will continue to produce payloads only. See `trial-policy-decision.md` for full 
 
 ---
 
-## 9. Schema Cross-Reference
+## 9. Lane Scheduling Semantics (DO / IMPROVE)
+
+Trial queue governance uses one physical queue with a required lane on every admitted entry.
+
+| Topic | Rule |
+|---|---|
+| Lane values | `DO` or `IMPROVE` |
+| Admission assignment | Lane is assigned at admission in `TrialQueue.enqueue()` |
+| Default assignment | `fact_find_ready -> DO`; other routable statuses default to `IMPROVE` |
+| Explicit admission lane override | Allowed via queue admission options (bounded to `DO`/`IMPROVE`) |
+| Lane reassignment | Requires explicit override and non-empty rationale (`reassignLane(..., { override: true, reason })`) |
+| Scheduler model | One shared queue; scheduler applies per-lane WIP caps and aging-based priority within lane |
+| Aging behavior | Older entries gain score over time, allowing promotion over newer lower-age items in the same lane |
+
+Operational notes:
+- Lane reassignment without explicit override is rejected fail-closed.
+- Scheduler output is non-mutating planning data (`planNextDispatches`); queue state changes remain explicit.
+
+## 10. Schema Cross-Reference
 
 | Concept | Defined in |
 |---|---|

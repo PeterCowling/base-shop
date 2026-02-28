@@ -7,6 +7,7 @@
 import hotel, { CONTACT_EMAIL, RATINGS_SNAPSHOT_DATE } from "@/config/hotel";
 import { BASE_URL } from "@/config/site";
 import IMAGE_MANIFEST, { type ImageMeta } from "@/data/imageManifest";
+import { toFlatImageArray } from "@/data/roomsData";
 import type { HotelGraph, HotelRoom, Offer, OfferInput } from "@/types/schema";
 import { getRoomsCatalog, type LocalizedRoom } from "@/utils/roomsCatalog";
 
@@ -21,7 +22,7 @@ function makeImageNode(pathRel: string): string | { "@type": "ImageObject"; url:
 
 // For Home graph, snapshots expect relative image paths for room and offer nodes
 function pickRelativeImagePaths(room: LocalizedRoom): string[] {
-  return Array.isArray(room.imagesRaw) ? room.imagesRaw.slice(0, 4) : [];
+  return toFlatImageArray(room.images).slice(0, 4);
 }
 
 const RATING_SNAPSHOT_LABEL = new Intl.DateTimeFormat("en", {

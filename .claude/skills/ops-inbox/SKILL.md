@@ -373,6 +373,32 @@ If the email includes agreement **and** questions, treat as mixed response:
 2. Answer all questions.
 3. Keep the workflow state as awaiting confirmation if `likely/unclear`.
 
+**Marking agreement_received — reservation code required:**
+
+When marking an email as `agreement_received`, you **must** extract the booking reservation code and pass it as `reservationCode`. This writes activity code 21 to Firebase for all occupants on that booking.
+
+How to extract the reservation code:
+1. Check the email subject line — Octorate reservation numbers appear as `#XXXXXX` or plain numbers in subject lines like "Booking confirmation #456789".
+2. Check the email body and thread context — look for phrases like "reservation", "booking reference", "conferma prenotazione", "numero prenotazione", or a numeric/alphanumeric code near the hostel name.
+3. If the thread context includes a prior outgoing email from Brikette that mentions a booking reference, use that.
+4. If no reservation code can be found: log a warning, call `gmail_mark_processed` without `reservationCode` (labels will still be applied), and note in the session summary that the Firebase activity write was skipped.
+
+```typescript
+// When agreement is confirmed and reservation code is found:
+gmail_mark_processed({
+  emailId: "...",
+  action: "agreement_received",
+  reservationCode: "456789"  // extracted from email thread
+})
+
+// When agreement is confirmed but no reservation code found:
+gmail_mark_processed({
+  emailId: "...",
+  action: "agreement_received"
+  // No reservationCode — labels applied, Firebase write skipped
+})
+```
+
 ### 6. Processing Informational Emails
 
 When an email is classified as **Informational** (customer providing info, no reply needed):
@@ -705,6 +731,12 @@ When handling prepayment chase emails, apply these mappings:
 
 When updating Gmail labels, use `gmail_mark_processed` with:
 `prepayment_chase_1`, `prepayment_chase_2`, or `prepayment_chase_3`.
+
+### T&C Agreement Workflow
+
+When an incoming email is a T&C agreement reply:
+- **Sending the T&C request (outgoing):** Mark with `action: "awaiting_agreement"`.
+- **Receiving agreement confirmation (incoming):** Mark with `action: "agreement_received"` **and** pass `reservationCode` (see Agreement Detection section above). This triggers Firebase activity code 21 write for all occupants — required to prevent the booking from being auto-cancelled despite the guest having agreed.
 
 ### Using Templates
 

@@ -147,7 +147,7 @@ function Row3({
           onChange={handleDocNumberChange}
           onBlur={saveDocNumber}
           onKeyDown={handleDocNumberKeyDown}
-          className={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-2 focus:ring-primary-main ${
+          className={`border border-info-light rounded-lg px-3 py-2 w-300px focus:outline-none focus:ring-2 focus:ring-primary-main ${
             isDocNumberPopulated ? "bg-success-light/50" : ""
           } text-foreground`}
         />
@@ -180,7 +180,7 @@ function Row3({
         >
           <SelectTrigger
             id="documentType"
-            className={`border border-info-light rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-primary-main transition-shadow ${
+            className={`border border-info-light rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-primary-main transition-shadow ${
               isDocTypePopulated
                 ? "bg-success-light/50"
                 : "bg-surface"

@@ -44,7 +44,7 @@ export function MediaSelector({
             onClick={() => onChange?.(idx)}
             className={cn(
               "h-16 w-16 overflow-hidden rounded border", // i18n-exempt -- UI-000: class names
-              active === idx && "ring-2 ring-[color:hsl(var(--color-border-strong))]" // i18n-exempt -- UI-000: class names
+              active === idx && "ring-2 ring-border-2" // i18n-exempt -- UI-000: class names
             )}
           >
             {item.type === "image" || item.type === "360" ? (

@@ -21,11 +21,13 @@ import FacilityIcon from "@/components/rooms/FacilityIcon";
 import FullscreenImage from "@/components/rooms/FullscreenImage";
 import { IS_TEST } from "@/config/env";
 import { BOOKING_CODE } from "@/context/modal/constants";
-import type { Room } from "@/data/roomsData";
+import { type Room,toFlatImageArray } from "@/data/roomsData";
+import type { OctorateRoom } from "@/hooks/useAvailability";
 import { useRoomPricing } from "@/hooks/useRoomPricing";
 import { i18nConfig } from "@/i18n.config";
 import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
+import { buildRoomItem, fireEventAndNavigate, resolveItemListName } from "@/utils/ga4-events";
 
 const PRICE_LOADING_TEST_ID = "price-loading" as const; // legacy test id consumed by app unit tests
 
@@ -39,6 +41,13 @@ interface RoomCardProps {
   queryState?: "valid" | "invalid" | "absent";
   /** Ref to date picker element for scroll-to on invalid state. */
   datePickerRef?: RefObject<HTMLElement | null>;
+  /**
+   * Live availability data for this room from /api/availability.
+   * When provided and available=true: NR button shows live priceFrom.
+   * When provided and available=false: both CTAs show sold-out state.
+   * When absent (undefined): falls back to useRoomPricing behaviour.
+   */
+  availabilityRoom?: OctorateRoom;
 }
 
 type FacilityIconRenderer = (props: { facility: FacilityKey }) => JSX.Element;
@@ -134,17 +143,18 @@ export default memo(function RoomCard({
   lang,
   queryState,
   datePickerRef,
+  availabilityRoom,
 }: RoomCardProps): JSX.Element {
   const resolvedLang = (lang ?? i18nConfig.fallbackLng) as string;
   const { t, ready: readyRaw } = useTranslation("roomsPage", { lng: resolvedLang });
-  const ready = readyRaw !== false;
+  const ready = readyRaw === true;
   const { t: tTokens, ready: tokensReadyRaw } = useTranslation("_tokens", { lng: resolvedLang });
   const tokensReady = tokensReadyRaw !== false;
   const router = useRouter();
 
   const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
 
-  const images = room.imagesRaw ?? [];
+  const images = toFlatImageArray(room.images);
   const baseKey = `rooms.${room.id}`;
   const fallbackLanguage = (i18nConfig.fallbackLng ?? "en") as string;
 
@@ -167,7 +177,28 @@ export default memo(function RoomCard({
 
   const isDorm = facilities.some((facility) => facility === "mixedDorm" || facility === "femaleDorm");
 
-  const { lowestPrice, soldOut, loading: priceLoading } = useRoomPricing(room);
+  const {
+    lowestPrice: baseLowestPrice,
+    soldOut: baseSoldOut,
+    loading: priceLoading,
+  } = useRoomPricing(room);
+
+  // Overlay live availability data when present (TC-04-01 through TC-04-06).
+  // availabilityRoom.available === false → sold-out override (TC-04-02).
+  // availabilityRoom.priceFrom !== null → live per-night price override (TC-04-01).
+  // availabilityRoom undefined → fall back to useRoomPricing (TC-04-03).
+  const soldOut =
+    availabilityRoom !== undefined ? !availabilityRoom.available : baseSoldOut;
+  const lowestPrice =
+    availabilityRoom !== undefined && availabilityRoom.priceFrom !== null
+      ? availabilityRoom.priceFrom
+      : baseLowestPrice;
+
+  const badgeText = ((): string | undefined => {
+    if (soldOut || !tokensReady) return undefined;
+    const raw = coerceString(tTokens("bestPriceGuaranteed")).trim();
+    return raw && raw !== "bestPriceGuaranteed" ? raw : undefined;
+  })();
 
   const price: RoomCardPrice = (() => {
     const loadingLabel = ready
@@ -186,6 +217,7 @@ export default memo(function RoomCard({
       ...(formatted !== undefined ? { formatted } : {}),
       ...(soldOut ? { soldOutLabel: t("rooms.soldOut") as string } : {}),
       ...(isDorm ? { info: t("priceNotes.dorm") as string } : {}),
+      ...(badgeText ? { badge: { text: badgeText, claimUrl: "https://wa.me/393287073695" } } : {}),
     };
   })();
 
@@ -218,6 +250,14 @@ export default memo(function RoomCard({
     return result.ok ? result.url : null;
   }, [queryState, checkIn, checkOut, adults, room]);
 
+  // title is declared here (before openNonRefundable/openFlexible) to avoid a TDZ in
+  // the useCallback closures that capture it as a dep.
+  const title = resolveTranslatedCopy(
+    t(`${baseKey}.title`, { defaultValue: room.id.replace(/_/gu, " ") }),
+    `${baseKey}.title`,
+    room.id.replace(/_/gu, " ")
+  );
+
   const openNonRefundable = useCallback(() => {
     if (queryState === "invalid") {
       // Button is disabled; scroll to date picker if ref provided
@@ -227,12 +267,28 @@ export default memo(function RoomCard({
       return;
     }
     if (nrOctorateUrl) {
-      window.location.href = nrOctorateUrl;
+      fireEventAndNavigate({
+        event: "select_item",
+        payload: {
+          item_list_id: "room_detail",
+          item_list_name: resolveItemListName("room_detail"),
+          items: [buildRoomItem({ roomSku: room.sku, itemName: title, plan: "nr" })],
+        },
+        onNavigate: () => { window.location.href = nrOctorateUrl; },
+      });
       return;
     }
     // absent or valid-but-url-failed → navigate to /book
-    router.push(`/${resolvedLang}/book`);
-  }, [queryState, nrOctorateUrl, datePickerRef, router, resolvedLang]);
+    fireEventAndNavigate({
+      event: "select_item",
+      payload: {
+        item_list_id: "room_detail",
+        item_list_name: resolveItemListName("room_detail"),
+        items: [buildRoomItem({ roomSku: room.sku, itemName: title, plan: "nr" })],
+      },
+      onNavigate: () => { router.push(`/${resolvedLang}/book`); },
+    });
+  }, [queryState, nrOctorateUrl, datePickerRef, router, resolvedLang, title, room]);
 
   const openFlexible = useCallback(() => {
     if (queryState === "invalid") {
@@ -242,11 +298,28 @@ export default memo(function RoomCard({
       return;
     }
     if (flexOctorateUrl) {
-      window.location.href = flexOctorateUrl;
+      fireEventAndNavigate({
+        event: "select_item",
+        payload: {
+          item_list_id: "room_detail",
+          item_list_name: resolveItemListName("room_detail"),
+          items: [buildRoomItem({ roomSku: room.sku, itemName: title, plan: "flex" })],
+        },
+        onNavigate: () => { window.location.href = flexOctorateUrl; },
+      });
       return;
     }
-    router.push(`/${resolvedLang}/book`);
-  }, [queryState, flexOctorateUrl, datePickerRef, router, resolvedLang]);
+    // absent or valid-but-url-failed → navigate to /book
+    fireEventAndNavigate({
+      event: "select_item",
+      payload: {
+        item_list_id: "room_detail",
+        item_list_name: resolveItemListName("room_detail"),
+        items: [buildRoomItem({ roomSku: room.sku, itemName: title, plan: "flex" })],
+      },
+      onNavigate: () => { router.push(`/${resolvedLang}/book`); },
+    });
+  }, [queryState, flexOctorateUrl, datePickerRef, router, resolvedLang, title, room]);
 
   const resolveToken = useCallback(
     (key: "reserveNow" | "bookNow", lngOverride?: string) => {
@@ -349,16 +422,13 @@ export default memo(function RoomCard({
     });
   }, []);
 
-  const title = resolveTranslatedCopy(
-    t(`${baseKey}.title`, { defaultValue: room.id.replace(/_/gu, " ") }),
-    `${baseKey}.title`,
-    room.id.replace(/_/gu, " ")
-  );
-  const imageAlt = resolveTranslatedCopy(
-    t("roomImage.photoAlt", { room: title, defaultValue: `${title} room` }),
-    "roomImage.photoAlt",
-    `${title} room`
-  );
+  const imageAlt = ready
+    ? resolveTranslatedCopy(
+        t("roomImage.photoAlt", { room: title, defaultValue: `${title} room` }),
+        "roomImage.photoAlt",
+        `${title} room`
+      )
+    : "";
   const imageLabels: RoomCardImageLabels = (() => {
     if (!ready) {
       return { enlarge: "", prevAria: "", nextAria: "", empty: "" };

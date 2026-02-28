@@ -3,6 +3,7 @@ Status: Active
 Domain: Marketing
 Last-reviewed: 2025-12-02
 Relates-to charter: docs/commerce-charter.md
+<!-- LINT-EXEMPT: local-jest-pattern -->
 
 # Campaign Marketing Components – Testing Notes
 

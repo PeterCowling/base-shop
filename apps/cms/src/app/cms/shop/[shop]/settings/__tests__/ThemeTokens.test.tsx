@@ -1,4 +1,5 @@
 import type { ComponentProps } from "react";
+import * as shopsThemeActions from "@cms/actions/shops-theme.server";
 import { fireEvent,render } from "@testing-library/react";
 
 import { mapThemeTokenRows } from "../lib/pageSections";
@@ -12,9 +13,8 @@ jest.mock(
   { virtual: true },
 );
 
-const resetThemeOverride = jest.fn();
-jest.mock("@cms/actions/shops.server", () => ({
-  resetThemeOverride,
+jest.mock("@cms/actions/shops-theme.server", () => ({
+  resetThemeOverride: jest.fn(),
 }));
 
 describe("ShopThemeSection", () => {
@@ -59,7 +59,7 @@ describe("ShopThemeSection", () => {
 
     // reset override for changed token
     fireEvent.click(getAllByText("Reset")[0]);
-    expect(resetThemeOverride).toHaveBeenCalledWith(
+    expect(shopsThemeActions.resetThemeOverride).toHaveBeenCalledWith(
       "shop1",
       "color-primary",
       expect.any(FormData),

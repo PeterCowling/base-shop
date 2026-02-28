@@ -2,12 +2,12 @@
   "cache": {
     "clear": "Clear cached data",
     "cleared": "Cleared!",
-    "clearing": "Clearing\u2026",
-    "description": "Cached data helps the app work offline. Clearing it may require re-downloading content.",
+    "clearing": "Clearing…",
     "quota": "{{percent}}% of available storage",
     "refresh": "Refresh",
     "title": "Cached Data",
-    "usage": "Storage used"
+    "usage": "Storage used",
+    "description": "Cached data helps the app work offline. Clearing it may require re-downloading content."
   },
   "chat": {
     "optIn": {
@@ -17,10 +17,10 @@
     }
   },
   "language": {
-    "title": "Language",
-    "subtitle": "Choose your preferred app language.",
     "current": "Current language: {{language}}",
     "returnHome": "Return Home",
+    "subtitle": "Choose your preferred app language.",
+    "title": "Language",
     "options": {
       "en": "English",
       "it": "Italiano"

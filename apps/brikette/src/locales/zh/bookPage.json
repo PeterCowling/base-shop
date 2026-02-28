@@ -41,5 +41,16 @@
     ],
     "footer": "最终可用性与付款在我们的官方预订引擎完成。"
   },
-  "backToRooms": "返回房型"
+  "backToRooms": "返回房型",
+  "hostel": {
+    "directSavings": {
+      "eyebrow": "Book direct and save",
+      "headline": "Up to 25% less than Booking.com"
+    }
+  },
+  "date": {
+    "stayHelper": "2–8 nights",
+    "clearDates": "Clear dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  }
 }

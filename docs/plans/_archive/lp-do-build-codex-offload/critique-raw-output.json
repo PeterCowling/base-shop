@@ -1,0 +1,36 @@
+{
+  "round": 3,
+  "mode": "file",
+  "artifact": "plan.md",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/lp-do-build-codex-offload/plan.md",
+      "line": "243",
+      "message": "Offload transport guidance is internally contradictory: it says 'never inline-quoted shell argument' but the provided example uses inline command substitution. Pick one canonical safe method (stdin/pipe) and remove conflicting guidance."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/lp-do-build-codex-offload/plan.md",
+      "line": "63",
+      "message": "The plan declares the INVESTIGATE invocation decision fully agent-resolved with no operator approval needed, but the referenced fact-find still contains an Open (Operator Input Required) entry for this exact decision; source-of-truth ambiguity."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/lp-do-build-codex-offload/plan.md",
+      "line": "98",
+      "message": "Conditional confidence gating for TASK-03 is now explicitly documented and aligns with the checkpoint dependency flow."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "lp_score": 4.0,
+  "round1_score": 7,
+  "round1_lp_score": 3.5,
+  "round2_score": 7,
+  "round2_lp_score": 3.5,
+  "round3_score": 8,
+  "round3_lp_score": 4.0,
+  "final_verdict": "credible",
+  "remaining_warnings_note": "Two warnings remain but score 4.0 qualifies as credible per critique-loop-protocol.md. Both warnings are addressable during build: (1) transport method canonicalized in TASK-03/build-offload-protocol.md from spike findings; (2) fact-find INVESTIGATE decision state — comment-only artifact of edit flow, no functional ambiguity since plan.md is authoritative for planning decisions."
+}

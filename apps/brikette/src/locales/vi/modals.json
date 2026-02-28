@@ -20,7 +20,7 @@
     "title": "Đặt trực tiếp và tiết kiệm",
     "description": "Cảm ơn bạn đã chọn đặt trực tiếp với chúng tôi! Như một lời tri ân, bạn sẽ nhận được:",
     "perks": {
-      "discount": "Giảm tới 10% giá phòng",
+      "discount": "Giảm tới 25% giá phòng",
       "breakfast": "Bản dịch đang được chuẩn bị.",
       "drinks": "Đồ uống chào mừng miễn phí",
       "upgrades": "Ưu tiên nâng hạng phòng (khi có)"
@@ -160,5 +160,10 @@
   },
   "loader": {
     "ariaLabel": "Loading"
+  },
+  "date": {
+    "stayHelper": "2–8 nights",
+    "clearDates": "Clear dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
   }
 }

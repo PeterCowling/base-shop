@@ -20,7 +20,7 @@
     "title": "احجز مباشرة ووفر",
     "description": "شكرًا لاختيارك الحجز المباشر معنا! كعربون شكر، ستحصل على:",
     "perks": {
-      "discount": "حتى 10٪ خصم على سعر الغرفة",
+      "discount": "حتى 25٪ خصم على سعر الغرفة",
       "breakfast": "إفطار مجاني كل صباح",
       "drinks": "مشروبات ترحيبية مجانية",
       "upgrades": "أفضلية ترقية الغرف (عند التوفر)"
@@ -160,5 +160,10 @@
   },
   "loader": {
     "ariaLabel": "Loading"
+  },
+  "date": {
+    "stayHelper": "2–8 nights",
+    "clearDates": "Clear dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
   }
 }

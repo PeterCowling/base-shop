@@ -314,7 +314,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-02-28T10:17:19.353Z";
+  var GEN_TS = "2026-02-28T12:40:52.350Z";
 
   var IDEA_ITEMS = [
     {
@@ -1712,6 +1712,40 @@
       "date": "2026-02-26T08:53:01.939Z",
       "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md",
       "idea_key": "50250241c361b3e014540cb7f748b06e906f22b5",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Prime-lint-changed-files.ts uses --max-warnings=0 but regular pnpm lint allows warnings — gap means lint-clean locally can still fail CI",
+      "body": "eslint-disable suppressions were needed for components that passed local lint",
+      "suggested_action": "defer (known gap; BRIK-2 and PRIME-1 exception tickets exist)",
+      "source": "results-review.user.md",
+      "date": "2026-02-28T12:31:51.387Z",
+      "path": "docs/plans/_archive/prime-staging-deploy-unblock/results-review.user.md",
+      "idea_key": "f491aa867c6bad9edd423b55819033e30685cfa2",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Test files missing react-i18next mock when components use useTranslation() — caused silent translation key rendering and React concurrent rendering warnings",
+      "body": "Two prime test files had no i18n mock; fix required before CI passed",
+      "suggested_action": "defer (one-off fix; pattern is already established in chat test files)",
+      "source": "results-review.user.md",
+      "date": "2026-02-28T12:31:51.387Z",
+      "path": "docs/plans/_archive/prime-staging-deploy-unblock/results-review.user.md",
+      "idea_key": "e820e8c816cef78b51598e5a5147b9e19aa0e471",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",

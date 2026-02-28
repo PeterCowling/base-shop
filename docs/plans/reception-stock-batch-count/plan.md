@@ -5,7 +5,7 @@ Domain: UI
 Workstream: Engineering
 Created: 2026-02-28
 Last-reviewed: 2026-02-28
-Last-updated: 2026-02-28 (Wave 3 complete)
+Last-updated: 2026-02-28 (Wave 4 complete)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: reception-stock-batch-count
 Deliverable-Type: code-change
@@ -31,7 +31,7 @@ The reception app currently requires staff to count inventory item-by-item throu
 - [x] TASK-03: Build `BatchStockCount` core component
 - [x] TASK-04: Add reauth gate for large-variance items
 - [x] TASK-05: Add batch count toggle to `StockManagement`
-- [ ] TASK-06: Write `BatchStockCount` test suite
+- [x] TASK-06: Write `BatchStockCount` test suite
 - [ ] CHECKPOINT-01: Validate integrated batch count flow
 
 ## Goals
@@ -337,7 +337,8 @@ The reception app currently requires staff to count inventory item-by-item throu
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-28)
+- **Build evidence:** Codex exec exit 0. BatchStockCount.test.tsx created. 25 tests passing, 0 failures, 0 skips. Coverage: groupItemsByCategory pure function (3 cases), requiresReauth pure function (4 cases), BatchStockCount component (15 cases across loading/error/access/category/submit/variance/progress/restore/reauth), useBatchCountProgress hook (4 cases via jest.requireActual + renderHook). StockManagement regression: 9/9 pass. All TC-01 through TC-08 (TASK-03), TC-01 through TC-03 (TASK-04), TC-01 through TC-04 (TASK-02) covered.
 - **Affects:** `apps/reception/src/components/inventory/__tests__/BatchStockCount.test.tsx` (new), `[readonly] apps/reception/src/components/inventory/BatchStockCount.tsx`
 - **Depends on:** TASK-04, TASK-05
 - **Blocks:** CHECKPOINT-01

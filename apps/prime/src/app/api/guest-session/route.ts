@@ -59,21 +59,21 @@ export async function GET(request: Request): Promise<Response> {
   const token = searchParams.get('token');
 
   if (!token) {
-    return NextResponse.json({ error: 'token parameter is required' }, { status: 400 });
+    return NextResponse.json({ error: 'token parameter is required' }, { status: 400 }); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   try {
     const session = await firebaseGet<GuestSessionToken>(`guestSessionsByToken/${token}`);
     if (!session) {
-      return NextResponse.json({ error: 'Token not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Token not found' }, { status: 404 }); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
     if (isExpired(session.expiresAt)) {
-      return NextResponse.json({ error: 'Token expired' }, { status: 410 });
+      return NextResponse.json({ error: 'Token expired' }, { status: 410 }); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
-    return NextResponse.json({ status: 'ok', expiresAt: session.expiresAt });
+    return NextResponse.json({ status: 'ok', expiresAt: session.expiresAt }); // i18n-exempt -- PRIME-101 machine-readable API status [ttl=2026-12-31]
   } catch (error) {
-    console.error('Error validating guest token:', error);
-    return NextResponse.json({ error: 'Failed to validate token' }, { status: 500 });
+    console.error('Error validating guest token:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
+    return NextResponse.json({ error: 'Failed to validate token' }, { status: 500 }); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 }
 
@@ -86,27 +86,27 @@ export async function POST(request: Request): Promise<Response> {
     token = body.token ?? '';
     lastName = body.lastName ?? '';
   } catch {
-    return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+    return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 }); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   if (!token || !lastName) {
-    return NextResponse.json({ error: 'token and lastName are required' }, { status: 400 });
+    return NextResponse.json({ error: 'token and lastName are required' }, { status: 400 }); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   try {
     const session = await firebaseGet<GuestSessionToken>(`guestSessionsByToken/${token}`);
     if (!session) {
-      return NextResponse.json({ error: 'Token not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Token not found' }, { status: 404 }); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
     if (isExpired(session.expiresAt)) {
-      return NextResponse.json({ error: 'Token expired' }, { status: 410 });
+      return NextResponse.json({ error: 'Token expired' }, { status: 410 }); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     const booking = await firebaseGet<Record<string, BookingOccupant>>(
       `bookings/${session.bookingId}`,
     );
     if (!booking) {
-      return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Booking not found' }, { status: 404 }); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     const occupantKeys = Object.keys(booking).filter((key) => key.startsWith('occ_'));
@@ -118,21 +118,21 @@ export async function POST(request: Request): Promise<Response> {
     }
 
     if (!targetOccupantId) {
-      return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Booking not found' }, { status: 404 }); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     const guestDetails = await firebaseGet<GuestDetails>(
       `guestsDetails/${session.bookingId}/${targetOccupantId}`,
     );
     if (!guestDetails) {
-      return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Booking not found' }, { status: 404 }); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     const storedLastName = (guestDetails.lastName ?? '').trim().toLowerCase();
     const inputLastName = lastName.trim().toLowerCase();
 
     if (!storedLastName || storedLastName !== inputLastName) {
-      return NextResponse.json({ error: 'Verification failed' }, { status: 403 });
+      return NextResponse.json({ error: 'Verification failed' }, { status: 403 }); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     return NextResponse.json({
@@ -141,7 +141,7 @@ export async function POST(request: Request): Promise<Response> {
       guestFirstName: guestDetails.firstName ?? '',
     });
   } catch (error) {
-    console.error('Error verifying guest session:', error);
-    return NextResponse.json({ error: 'Failed to verify guest session' }, { status: 500 });
+    console.error('Error verifying guest session:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
+    return NextResponse.json({ error: 'Failed to verify guest session' }, { status: 500 }); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 }

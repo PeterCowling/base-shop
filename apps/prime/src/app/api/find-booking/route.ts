@@ -80,7 +80,7 @@ export async function GET(request: Request): Promise<Response> {
 
   if (!surname || !bookingRef) {
     return NextResponse.json(
-      { error: 'surname and bookingRef parameters are required' },
+      { error: 'surname and bookingRef parameters are required' }, // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
       { status: 400 },
     );
   }
@@ -91,14 +91,14 @@ export async function GET(request: Request): Promise<Response> {
 
     const booking = await firebaseGet<Record<string, BookingOccupant>>(`bookings/${normalizedRef}`);
     if (!booking) {
-      return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Booking not found' }, { status: 404 }); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     const guestDetailsAll = await firebaseGet<Record<string, GuestDetails>>(
       `guestsDetails/${normalizedRef}`,
     );
     if (!guestDetailsAll) {
-      return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Booking not found' }, { status: 404 }); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     const occupantKeys = Object.keys(booking).filter((key) => key.startsWith('occ_'));
@@ -112,7 +112,7 @@ export async function GET(request: Request): Promise<Response> {
     }
 
     if (!matchedOccupantId) {
-      return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Booking not found' }, { status: 404 }); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     const leadOccupantId =
@@ -132,7 +132,7 @@ export async function GET(request: Request): Promise<Response> {
 
     return NextResponse.json({ redirectUrl: `/g/${token}` });
   } catch (error) {
-    console.error('Error finding booking:', error);
-    return NextResponse.json({ error: 'Failed to find booking' }, { status: 500 });
+    console.error('Error finding booking:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
+    return NextResponse.json({ error: 'Failed to find booking' }, { status: 500 }); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 }

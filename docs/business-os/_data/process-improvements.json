@@ -1473,6 +1473,23 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Add a dispatch SLA to the HBAG logistics policy once a carrier is confirmed (current default is \"Delivery estimated at checkout\")",
+      "body": "logistics-pack.user.md uses a safe but non-specific dispatch SLA — specific carrier SLA was not available during build",
+      "suggested_action": "defer until carrier confirmed",
+      "source": "results-review.user.md",
+      "date": "2026-02-28T13:53:04.593Z",
+      "path": "docs/plans/_archive/hbag-pdp-shipping-returns/results-review.user.md",
+      "idea_key": "057059423623b084c57d29f020d5853f237dea14",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "Compiler overwrite risk still relies on a manual warning comment",
       "body": "the only guard against compile-website-content-packet --business HBAG overwriting the proof bullets is a markdown blockquote in the packet. If the operator misses it, the materializer will start failing closed with no visible explanation at the compile step.",
       "suggested_action": "defer — low probability short-term; revisit when compiler is next extended.",

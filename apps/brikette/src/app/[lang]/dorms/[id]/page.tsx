@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
+import { findRoomIdBySlug, getRoomSlug } from "@acme/ui/config/roomSlugs";
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 
 import { getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
@@ -24,18 +25,18 @@ const PRIVATE_ROOM_IDS = new Set(["double_room"]);
 
 export async function generateStaticParams() {
   const langParams = generateLangParams();
-  const roomIds = roomsData
-    .map((room) => room.id)
-    .filter((id) => !PRIVATE_ROOM_IDS.has(id));
-  return langParams.flatMap(({ lang }) =>
-    roomIds.map((id) => ({ lang, id }))
-  );
+  const dormRooms = roomsData.filter((room) => !PRIVATE_ROOM_IDS.has(room.id));
+  return langParams.flatMap(({ lang }) => {
+    const validLang = toAppLanguage(lang);
+    return dormRooms.map((room) => ({ lang, id: getRoomSlug(room.id, validLang) }));
+  });
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang, id } = await params;
   const validLang = toAppLanguage(lang);
-  const room = roomsData.find((r) => r.id === id);
+  const roomId = (findRoomIdBySlug(id, validLang) ?? id) as RoomId;
+  const room = roomsData.find((r) => r.id === roomId);
 
   if (!room) {
     return {};
@@ -44,8 +45,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Get room-specific translations
   const t = await getTranslations(validLang, "roomsPage");
   const meta = {
-    title: (t(`rooms.${id}.title`, { defaultValue: id }) as string) || id,
-    description: (t(`rooms.${id}.bed_intro`, { defaultValue: "" }) as string) || "",
+    title: (t(`rooms.${roomId}.title`, { defaultValue: roomId }) as string) || roomId,
+    description: (t(`rooms.${roomId}.bed_intro`, { defaultValue: "" }) as string) || "",
   };
 
   const roomsSlug = getSlug("rooms", validLang);
@@ -75,7 +76,9 @@ export default async function RoomDetailPage({ params }: Props) {
     redirect(`/${validLang}/${getSlug("apartment", validLang)}/double-room`);
   }
 
-  const room = roomsData.find((r) => r.id === id);
+  // Resolve slug → room ID (falls back to treating id as roomId for unknown slugs)
+  const roomId = (findRoomIdBySlug(id, validLang) ?? id) as RoomId;
+  const room = roomsData.find((r) => r.id === roomId);
 
   if (!room) {
     redirect(`/${validLang}/${getSlug("rooms", validLang)}`);
@@ -85,7 +88,7 @@ export default async function RoomDetailPage({ params }: Props) {
 
   return (
     <Suspense fallback={null}>
-      <RoomDetailContent lang={validLang} id={id as RoomId} />
+      <RoomDetailContent lang={validLang} id={roomId} />
     </Suspense>
   );
 }

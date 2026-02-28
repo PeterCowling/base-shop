@@ -5,6 +5,7 @@ export const cashCountSchema = z.object({
   timestamp: z.string(),
   type: z.enum([
     "opening",
+    "openingFloat",
     "close",
     "reconcile",
     "float",

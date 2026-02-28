@@ -3,6 +3,7 @@
 
 import { NAV_ITEMS, type NavKey } from "../config/navItems";
 import { ROOM_DROPDOWN_NAMES } from "../config/roomNames";
+import { getRoomSlug } from "../config/roomSlugs";
 import type { AppLanguage } from "../i18n.config";
 import type { SlugMap } from "../slug-map";
 
@@ -33,8 +34,14 @@ export type TranslateFn = (key: string, defaultValue?: string) => string;
  * Returns navigation slugs and translated labels for all NAV_ITEMS.
  * The "rooms" item includes a `children` array with a "See all rooms" sentinel
  * followed by one entry per room (in roomsData order), for use by dropdown/accordion nav.
+ * Pass `experienceNavItems` or `howToGetHereNavItems` to add dropdowns to those nav items.
  */
-export function buildNavLinks(lang: AppLanguage, t: TranslateFn): NavLinksResult {
+export function buildNavLinks(
+  lang: AppLanguage,
+  t: TranslateFn,
+  experienceNavItems?: NavItemChild[],
+  howToGetHereNavItems?: NavItemChild[],
+): NavLinksResult {
   const slugs = NAV_ITEMS.reduce((acc, key) => {
     acc[key] = key === "home" ? "" : `/${translatePath(key as keyof SlugMap, lang)}`;
     return acc;
@@ -55,7 +62,7 @@ export function buildNavLinks(lang: AppLanguage, t: TranslateFn): NavLinksResult
         { key: "rooms_all", to: roomsSlug, label: "See all rooms" },
         ...Object.entries(ROOM_DROPDOWN_NAMES).map(([id, name]) => ({
           key: id,
-          to: `${roomsSlug}/${id}`,
+          to: `${roomsSlug}/${getRoomSlug(id, lang)}`,
           label: name,
         })),
       ];
@@ -80,6 +87,26 @@ export function buildNavLinks(lang: AppLanguage, t: TranslateFn): NavLinksResult
         label,
         prefetch: undefined,
         children,
+      };
+    }
+
+    if (key === "experiences" && experienceNavItems && experienceNavItems.length > 0) {
+      return {
+        key,
+        to: slugs[key],
+        label,
+        prefetch: undefined,
+        children: experienceNavItems,
+      };
+    }
+
+    if (key === "howToGetHere" && howToGetHereNavItems && howToGetHereNavItems.length > 0) {
+      return {
+        key,
+        to: slugs[key],
+        label,
+        prefetch: undefined,
+        children: howToGetHereNavItems,
       };
     }
 

@@ -7,6 +7,7 @@ import { ArrowRight } from "lucide-react";
 import { CfCardImage } from "../atoms/CfCardImage";
 import { Cluster } from "../components/atoms/primitives/Cluster";
 import { Button } from "../components/atoms/shadcn";
+import { getRoomSlug } from "../config/roomSlugs";
 import type { Room } from "../data/roomsData";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import { useRoomPricing } from "../hooks/useRoomPricing";
@@ -58,7 +59,13 @@ function SlideItemBase(
   );
   const { loading: priceLoading, lowestPrice } = useRoomPricing(item);
 
-  const restPath = useMemo(() => item.roomsHref.replace(DROP_FIRST_SEGMENT, ""), [item.roomsHref]);
+  const restPath = useMemo(() => {
+    const localizedSlug = getRoomSlug(item.id, toAppLanguage(effectiveLang));
+    // getRoomSlug falls back to the room ID if no slug is registered; only use
+    // it as the path segment when it differs from the raw ID (i.e. a slug exists).
+    if (localizedSlug !== item.id) return `/${localizedSlug}`;
+    return item.roomsHref.replace(DROP_FIRST_SEGMENT, "");
+  }, [item.id, item.roomsHref, effectiveLang]);
   const roomHref = `/${effectiveLang}/${roomsSlug}${restPath}`;
 
   const normaliseLabel = useCallback((value: unknown): string => {

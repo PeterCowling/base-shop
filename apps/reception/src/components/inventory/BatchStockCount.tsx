@@ -4,6 +4,10 @@ import { onValue, ref } from "firebase/database";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
 
+import {
+  VARIANCE_REASON_CODES,
+  type VarianceReasonCode,
+} from "../../constants/inventoryReasons";
 import { STOCK_ADJUSTMENT_REAUTH_THRESHOLD } from "../../constants/stock";
 import { useAuth } from "../../context/AuthContext";
 import useInventoryItems from "../../hooks/data/inventory/useInventoryItems";
@@ -34,6 +38,102 @@ interface CategoryVarianceRow {
 interface PendingBatchSubmission {
   category: string;
   categoryItems: InventoryItem[];
+}
+
+interface PendingReasonCapture {
+  category: string;
+  categoryItems: InventoryItem[];
+  reason: VarianceReasonCode | null;
+  note: string;
+}
+
+interface VarianceReasonPromptProps {
+  disabled: boolean;
+  pendingReason: PendingReasonCapture;
+  onCancel: () => void;
+  onConfirm: () => void;
+  onNoteChange: (note: string) => void;
+  onReasonChange: (reason: VarianceReasonCode | null) => void;
+}
+
+function VarianceReasonPrompt({
+  disabled,
+  pendingReason,
+  onCancel,
+  onConfirm,
+  onNoteChange,
+  onReasonChange,
+}: VarianceReasonPromptProps) {
+  return (
+    <section className="rounded-lg border border-border-2 bg-surface p-4">
+      <h3 className="text-base font-semibold">Motivo varianza negativa</h3>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Categoria: {pendingReason.category}
+      </p>
+
+      <div className="mt-3 space-y-3">
+        <label className="block text-sm font-medium">
+          Motivo
+          <select
+            className="mt-1 w-full rounded-lg border border-border-2 bg-surface px-3 py-2"
+            data-cy="variance-reason-select"
+            value={pendingReason.reason ?? ""}
+            onChange={(event) => {
+              const selectedReason = event.target.value;
+              onReasonChange(
+                selectedReason === ""
+                  ? null
+                  : (selectedReason as VarianceReasonCode)
+              );
+            }}
+          >
+            <option disabled value="">
+              Seleziona motivo…
+            </option>
+            {VARIANCE_REASON_CODES.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        {pendingReason.reason === "Altro" && (
+          <label className="block text-sm font-medium">
+            Nota
+            <textarea
+              className="mt-1 w-full rounded-lg border border-border-2 bg-surface px-3 py-2"
+              data-cy="variance-reason-note"
+              rows={3}
+              value={pendingReason.note}
+              onChange={(event) => {
+                onNoteChange(event.target.value);
+              }}
+            />
+          </label>
+        )}
+      </div>
+
+      <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:justify-end">
+        <Button
+          data-cy="variance-reason-cancel"
+          type="button"
+          variant="outline"
+          onClick={onCancel}
+        >
+          Annulla
+        </Button>
+        <Button
+          data-cy="variance-reason-confirm"
+          disabled={disabled || pendingReason.reason === null}
+          type="button"
+          onClick={onConfirm}
+        >
+          Conferma
+        </Button>
+      </div>
+    </section>
+  );
 }
 
 export function groupItemsByCategory(
@@ -82,6 +182,9 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
     Record<string, CategoryVarianceRow[]>
   >({});
   const [pendingBatch, setPendingBatch] = useState<PendingBatchSubmission | null>(null);
+  const [pendingReason, setPendingReason] = useState<PendingReasonCapture | null>(
+    null
+  );
   const [submittingCategory, setSubmittingCategory] = useState<string | null>(null);
   const [isOnline, setIsOnline] = useState(true);
 
@@ -250,13 +353,8 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
     ]
   );
 
-  const handleCompleteCategory = useCallback(
-    async (category: string) => {
-      if (submittingCategory) {
-        return;
-      }
-
-      const categoryItems = itemsByCategory[category] ?? [];
+  const getCategoryDeltas = useCallback(
+    (categoryItems: InventoryItem[]): number[] => {
       const deltas: number[] = [];
 
       for (const item of categoryItems) {
@@ -276,6 +374,17 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
         deltas.push(countedQuantity - expectedOnHand);
       }
 
+      return deltas;
+    },
+    [snapshot]
+  );
+
+  const submitCategoryWithReauthGate = useCallback(
+    async (
+      category: string,
+      categoryItems: InventoryItem[],
+      deltas: number[]
+    ) => {
       if (requiresReauth(deltas, STOCK_ADJUSTMENT_REAUTH_THRESHOLD)) {
         setPendingBatch({ category, categoryItems });
         return;
@@ -283,7 +392,81 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
 
       await executeCategorySubmit(category, categoryItems);
     },
-    [executeCategorySubmit, itemsByCategory, snapshot, submittingCategory]
+    [executeCategorySubmit]
+  );
+
+  const handleCompleteCategory = useCallback(
+    async (category: string) => {
+      if (submittingCategory || pendingBatch || pendingReason) {
+        return;
+      }
+
+      const categoryItems = itemsByCategory[category] ?? [];
+      const deltas = getCategoryDeltas(categoryItems);
+
+      if (deltas.some((delta) => delta < 0)) {
+        setPendingReason({
+          category,
+          categoryItems,
+          reason: null,
+          note: "",
+        });
+        return;
+      }
+
+      await submitCategoryWithReauthGate(category, categoryItems, deltas);
+    },
+    [
+      getCategoryDeltas,
+      itemsByCategory,
+      pendingBatch,
+      pendingReason,
+      submittingCategory,
+      submitCategoryWithReauthGate,
+    ]
+  );
+
+  const handleConfirmReason = useCallback(async () => {
+    if (!pendingReason || pendingReason.reason === null || submittingCategory) {
+      return;
+    }
+
+    const { category, categoryItems } = pendingReason;
+    const deltas = getCategoryDeltas(categoryItems);
+    setPendingReason(null);
+    await submitCategoryWithReauthGate(category, categoryItems, deltas);
+  }, [
+    getCategoryDeltas,
+    pendingReason,
+    submittingCategory,
+    submitCategoryWithReauthGate,
+  ]);
+
+  const handleCancelReason = useCallback(() => {
+    setPendingReason(null);
+  }, []);
+
+  const handleReasonChange = useCallback((reason: VarianceReasonCode | null) => {
+    setPendingReason((current) => {
+      if (!current) {
+        return null;
+      }
+
+      return {
+        ...current,
+        reason,
+        note: reason === "Altro" ? current.note : "",
+      };
+    });
+  }, []);
+
+  const handleReasonNoteChange = useCallback((note: string) => {
+    setPendingReason((current) => (current ? { ...current, note } : null));
+  }, []);
+
+  const isReasonConfirmDisabled = useMemo(
+    () => !pendingReason || pendingReason.reason === null || submittingCategory !== null,
+    [pendingReason, submittingCategory]
   );
 
   if (!canManageStock) {
@@ -429,6 +612,18 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
           </section>
         );
       })}
+      {pendingReason && (
+        <VarianceReasonPrompt
+          disabled={isReasonConfirmDisabled}
+          pendingReason={pendingReason}
+          onCancel={handleCancelReason}
+          onConfirm={() => {
+            void handleConfirmReason();
+          }}
+          onNoteChange={handleReasonNoteChange}
+          onReasonChange={handleReasonChange}
+        />
+      )}
       {pendingBatch && (
         <PasswordReauthModal
           title="Confirm batch count"

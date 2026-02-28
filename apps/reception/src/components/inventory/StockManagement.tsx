@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
 
+import { VARIANCE_REASON_CODES, type VarianceReasonCode } from "../../constants/inventoryReasons";
 import {
   STOCK_ADJUSTMENT_REAUTH_THRESHOLD,
   STOCK_SHRINKAGE_ALERT_THRESHOLD,
@@ -44,6 +45,7 @@ type LedgerEntryForVariance = {
   quantity: number;
   timestamp: string;
   type: string;
+  reason?: string;
 };
 
 type VarianceRow = {
@@ -102,11 +104,38 @@ function buildUnexplainedVarianceByItem(
   return result;
 }
 
+function buildReasonBreakdown(
+  entries: LedgerEntryForVariance[],
+  windowDays: number,
+  validReasons: ReadonlyArray<string>
+): Record<string, number> {
+  const cutoff = Date.now() - windowDays * 24 * 60 * 60 * 1000;
+  const validReasonsSet = new Set(validReasons);
+  return entries.reduce<Record<string, number>>((acc, entry) => {
+    if (
+      entry.type !== "count" ||
+      entry.quantity >= 0 ||
+      new Date(entry.timestamp).getTime() < cutoff
+    ) {
+      return acc;
+    }
+
+    const reasonKey =
+      typeof entry.reason === "string" && validReasonsSet.has(entry.reason)
+        ? entry.reason
+        : "Non specificato";
+
+    acc[reasonKey] = (acc[reasonKey] ?? 0) + Math.abs(entry.quantity);
+    return acc;
+  }, {});
+}
+
 interface VarianceBreakdownSectionProps {
   itemsById: Record<string, { name?: string } | undefined>;
   unexplainedVarianceByItem: Record<string, VarianceRow>;
   varianceWindowDays: number;
   setVarianceWindowDays: (value: number) => void;
+  reasonBreakdown: Record<string, number>;
 }
 
 function VarianceBreakdownSection({
@@ -114,6 +143,7 @@ function VarianceBreakdownSection({
   unexplainedVarianceByItem,
   varianceWindowDays,
   setVarianceWindowDays,
+  reasonBreakdown,
 }: VarianceBreakdownSectionProps) {
   return (
     <section className="border border-border rounded-lg p-4">
@@ -167,6 +197,27 @@ function VarianceBreakdownSection({
             ))}
           </TableBody>
         </Table>
+      )}
+      {Object.keys(reasonBreakdown).length > 0 && (
+        <div className="mt-4">
+          <h3 className="font-semibold mb-2">Varianza conteggio batch per motivo</h3>
+          <Table data-cy="reason-breakdown-table" className="min-w-full text-sm border border-border">
+            <TableHeader>
+              <TableRow className="bg-surface-2">
+                <TableHead className="p-2 text-start">Motivo</TableHead>
+                <TableHead className="p-2 text-end">Totale varianza</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {Object.entries(reasonBreakdown).map(([reason, total]) => (
+                <TableRow key={reason}>
+                  <TableCell className="p-2 border-b">{reason}</TableCell>
+                  <TableCell className="p-2 border-b text-end">{total}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       )}
     </section>
   );
@@ -292,6 +343,14 @@ function StockManagement() {
 
   const explainedShrinkageByItem = useMemo(() => buildExplainedShrinkageByItem(entries, varianceWindowDays), [entries, varianceWindowDays]);
   const unexplainedVarianceByItem = useMemo(() => buildUnexplainedVarianceByItem(entries, varianceWindowDays, explainedShrinkageByItem), [entries, varianceWindowDays, explainedShrinkageByItem]);
+  const reasonBreakdown = useMemo(
+    () => buildReasonBreakdown(
+      entries,
+      varianceWindowDays,
+      VARIANCE_REASON_CODES.map((r): VarianceReasonCode => r.value)
+    ),
+    [entries, varianceWindowDays]
+  );
 
   if (!canManageStock) {
     return (
@@ -984,7 +1043,7 @@ function StockManagement() {
         )}
       </section>
 
-      <VarianceBreakdownSection itemsById={itemsById} unexplainedVarianceByItem={unexplainedVarianceByItem} varianceWindowDays={varianceWindowDays} setVarianceWindowDays={setVarianceWindowDays} />
+      <VarianceBreakdownSection itemsById={itemsById} unexplainedVarianceByItem={unexplainedVarianceByItem} varianceWindowDays={varianceWindowDays} setVarianceWindowDays={setVarianceWindowDays} reasonBreakdown={reasonBreakdown} />
 
       <p className="text-xs text-muted-foreground">
         Changes of {STOCK_ADJUSTMENT_REAUTH_THRESHOLD}+ units require re-authentication.

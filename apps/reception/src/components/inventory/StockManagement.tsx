@@ -6,6 +6,7 @@ import { Button } from "@acme/design-system/atoms";
 import {
   STOCK_ADJUSTMENT_REAUTH_THRESHOLD,
   STOCK_SHRINKAGE_ALERT_THRESHOLD,
+  STOCK_VARIANCE_WINDOW_DAYS,
 } from "../../constants/stock";
 import { useAuth } from "../../context/AuthContext";
 import useProductsHook from "../../hooks/data/bar/useProducts";
@@ -36,6 +37,139 @@ interface ActionState {
   reason: string;
   reference: string;
   note: string;
+}
+
+type LedgerEntryForVariance = {
+  itemId: string;
+  quantity: number;
+  timestamp: string;
+  type: string;
+};
+
+type VarianceRow = {
+  explained: number;
+  discrepancy: number;
+  unexplained: number;
+};
+
+function buildExplainedShrinkageByItem(
+  entries: LedgerEntryForVariance[],
+  varianceWindowDays: number
+): Record<string, number> {
+  const cutoff = Date.now() - varianceWindowDays * 24 * 60 * 60 * 1000;
+  const explainedTypes = new Set(["waste", "transfer"]);
+  return entries.reduce<Record<string, number>>((acc, entry) => {
+    if (
+      entry.quantity >= 0 ||
+      !explainedTypes.has(entry.type) ||
+      new Date(entry.timestamp).getTime() < cutoff
+    ) {
+      return acc;
+    }
+    acc[entry.itemId] = (acc[entry.itemId] ?? 0) + Math.abs(entry.quantity);
+    return acc;
+  }, {});
+}
+
+function buildUnexplainedVarianceByItem(
+  entries: LedgerEntryForVariance[],
+  varianceWindowDays: number,
+  explainedShrinkageByItem: Record<string, number>
+): Record<string, VarianceRow> {
+  const cutoff = Date.now() - varianceWindowDays * 24 * 60 * 60 * 1000;
+  const countNetByItem = entries.reduce<Record<string, number>>((acc, entry) => {
+    if (
+      entry.type !== "count" ||
+      new Date(entry.timestamp).getTime() < cutoff
+    ) {
+      return acc;
+    }
+    acc[entry.itemId] = (acc[entry.itemId] ?? 0) + entry.quantity;
+    return acc;
+  }, {});
+
+  const result: Record<string, VarianceRow> = {};
+  for (const [itemId, net] of Object.entries(countNetByItem)) {
+    if (net >= 0) continue; // net-positive or zero: skip
+    const discrepancy = Math.abs(Math.min(0, net));
+    const explained = explainedShrinkageByItem[itemId] ?? 0;
+    result[itemId] = {
+      explained,
+      discrepancy,
+      unexplained: Math.max(0, discrepancy - explained),
+    };
+  }
+  return result;
+}
+
+interface VarianceBreakdownSectionProps {
+  itemsById: Record<string, { name?: string } | undefined>;
+  unexplainedVarianceByItem: Record<string, VarianceRow>;
+  varianceWindowDays: number;
+  setVarianceWindowDays: (value: number) => void;
+}
+
+function VarianceBreakdownSection({
+  itemsById,
+  unexplainedVarianceByItem,
+  varianceWindowDays,
+  setVarianceWindowDays,
+}: VarianceBreakdownSectionProps) {
+  return (
+    <section className="border border-border rounded-lg p-4">
+      <h2 className="text-xl font-semibold mb-3">Variance Breakdown</h2>
+      <div className="mb-3 flex items-center gap-2">
+        <label htmlFor="variance-window" className="text-sm text-muted-foreground">
+          Window:
+        </label>
+        <select
+          id="variance-window"
+          data-cy="variance-window-select"
+          className="border px-2 py-1 text-sm"
+          value={varianceWindowDays}
+          onChange={(e) => setVarianceWindowDays(Number(e.target.value))}
+        >
+          <option value={7}>7 days</option>
+          <option value={14}>14 days</option>
+          <option value={30}>30 days</option>
+        </select>
+      </div>
+      {Object.keys(unexplainedVarianceByItem).length === 0 ? (
+        <p className="text-sm text-muted-foreground">
+          No stock variance to explain in this period.
+        </p>
+      ) : (
+        <Table className="min-w-full text-sm border border-border">
+          <TableHeader>
+            <TableRow className="bg-surface-2">
+              <TableHead className="p-2 text-start">Item</TableHead>
+              <TableHead className="p-2 text-end">Explained (waste/transfer)</TableHead>
+              <TableHead className="p-2 text-end">Count Discrepancy</TableHead>
+              <TableHead className="p-2 text-end">Unexplained</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {Object.entries(unexplainedVarianceByItem).map(([itemId, row]) => (
+              <TableRow key={itemId}>
+                <TableCell className="p-2 border-b">
+                  {itemsById[itemId]?.name ?? itemId}
+                </TableCell>
+                <TableCell className="p-2 border-b text-end">{row.explained}</TableCell>
+                <TableCell className="p-2 border-b text-end">{row.discrepancy}</TableCell>
+                <TableCell
+                  className={`p-2 border-b text-end font-semibold ${
+                    row.unexplained > 0 ? "text-error-main" : "text-muted-foreground"
+                  }`}
+                >
+                  {row.unexplained}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
+    </section>
+  );
 }
 
 const defaultActionState: ActionState = {
@@ -74,6 +208,7 @@ function StockManagement() {
     unit: string;
   } | null>(null);
   const [batchCountMode, setBatchCountMode] = useState(false);
+  const [varianceWindowDays, setVarianceWindowDays] = useState<number>(STOCK_VARIANCE_WINDOW_DAYS);
 
   const snapshot = useMemo(
     () => buildInventorySnapshot(itemsById, entries),
@@ -169,6 +304,9 @@ function StockManagement() {
       }))
       .sort((a, b) => b.total - a.total);
   }, [entries]);
+
+  const explainedShrinkageByItem = useMemo(() => buildExplainedShrinkageByItem(entries, varianceWindowDays), [entries, varianceWindowDays]);
+  const unexplainedVarianceByItem = useMemo(() => buildUnexplainedVarianceByItem(entries, varianceWindowDays, explainedShrinkageByItem), [entries, varianceWindowDays, explainedShrinkageByItem]);
 
   if (!canManageStock) {
     return (
@@ -603,7 +741,7 @@ function StockManagement() {
             onClick={() => setBatchCountMode(true)}
             className="inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
           >
-            Inizia conteggio batch
+            Start batch count
           </Button>
         </div>
         {batchCountMode ? (
@@ -860,6 +998,8 @@ function StockManagement() {
           </>
         )}
       </section>
+
+      <VarianceBreakdownSection itemsById={itemsById} unexplainedVarianceByItem={unexplainedVarianceByItem} varianceWindowDays={varianceWindowDays} setVarianceWindowDays={setVarianceWindowDays} />
 
       <p className="text-xs text-muted-foreground">
         Changes of {STOCK_ADJUSTMENT_REAUTH_THRESHOLD}+ units require re-authentication.

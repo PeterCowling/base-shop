@@ -126,6 +126,42 @@ export default async function ProductDetailPage({
                 ))}
               </ul>
             </section>
+
+            {product.materials && product.dimensions && product.weight ? (
+              <section
+                className="space-y-3 border-t pt-5"
+                aria-label="Material details"
+              >
+                <h2 className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
+                  Details
+                </h2>
+                <dl className="space-y-2 text-sm text-muted-foreground">
+                  <div className="flex gap-2">
+                    <dt className="shrink-0 font-medium text-foreground">Material</dt>
+                    <dd>
+                      {(product.materials as Record<string, string>)[lang] ??
+                        product.materials.en}
+                    </dd>
+                  </div>
+                  <div className="flex gap-2">
+                    <dt className="shrink-0 font-medium text-foreground">Dimensions</dt>
+                    <dd>
+                      {product.dimensions.h}&thinsp;mm &times;{" "}
+                      {product.dimensions.w}&thinsp;mm &times;{" "}
+                      {product.dimensions.d}&thinsp;mm
+                    </dd>
+                  </div>
+                  <div className="flex gap-2">
+                    <dt className="shrink-0 font-medium text-foreground">Weight</dt>
+                    <dd>{product.weight.value}&thinsp;{product.weight.unit}</dd>
+                  </div>
+                  <div className="flex gap-2">
+                    <dt className="shrink-0 font-medium text-foreground">Origin</dt>
+                    <dd>Designed in Positano, Italy</dd>
+                  </div>
+                </dl>
+              </section>
+            ) : null}
           </div>
         </div>
 

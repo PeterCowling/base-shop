@@ -68,6 +68,21 @@ export function buildNavLinks(lang: AppLanguage, t: TranslateFn): NavLinksResult
       };
     }
 
+    if (key === "apartment") {
+      const apartmentSlug = slugs["apartment"];
+      const children: NavItemChild[] = [
+        { key: "apartment_double_room", to: `${apartmentSlug}/double-room`, label: "Double Room" },
+        { key: "apartment_private_stay", to: `${apartmentSlug}/private-stay`, label: "Apartment" },
+      ];
+      return {
+        key,
+        to: slugs[key],
+        label,
+        prefetch: undefined,
+        children,
+      };
+    }
+
     return {
       key,
       to: slugs[key],

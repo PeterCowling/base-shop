@@ -35,7 +35,7 @@
     "perBed": "lit"
   },
   "meta": {
-    "title": "Chambres & Tarifs | Brikette Hostel Positano",
+    "title": "Lits en Dortoir à Positano | Réservez en Direct à Brikette Hostel",
     "description": "Chambres doubles privées avec vue sur la mer et dortoirs économiques : découvrez photos, équipements et tarifs en direct, puis réservez en direct pour le meilleur prix au Brikette Hostel Positano.",
     "ogImageAlt": "Intérieur d’un dortoir partagé"
   },
@@ -65,7 +65,7 @@
     "linen": "Draps et serviette fournis"
   },
   "rooms": {
-    "title": "Nos chambres",
+    "title": "Lits en Dortoir",
     "soldOut": "Complet",
     "double_room": {
       "title": "Chambre Double",
@@ -275,7 +275,7 @@
     "nextSlide": "Diapositive suivante"
   },
   "hero": {
-    "heading": "Nos chambres",
+    "heading": "Lits en Dortoir",
     "subheading": "Choisissez la chambre parfaite pour votre séjour"
   },
   "filters": {

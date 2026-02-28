@@ -68,6 +68,7 @@ function RoomsSection({
   onRoomSelect,
   roomPrices,
   singleCtaMode,
+  excludeRoomIds,
 }: {
   lang?: string;
   bookingQuery?: RoomsSectionBookingQuery;
@@ -89,6 +90,11 @@ function RoomsSection({
    * dual Non-Refundable / Flexible buttons. The cheapest (NR) rate is always used.
    */
   singleCtaMode?: boolean;
+  /**
+   * Optional list of room IDs to exclude from the listing entirely.
+   * Used by the dorms page to hide rooms that have moved to a different route.
+   */
+  excludeRoomIds?: string[];
 }): JSX.Element {
   const fallbackLang = useCurrentLanguage();
   const lang = explicitLang ?? fallbackLang;
@@ -112,14 +118,16 @@ function RoomsSection({
 
   const filteredRooms = useMemo(
     () =>
-      roomsData.filter((r) =>
-        filter === "all"
-          ? true
-          : filter === "private"
-          ? r.pricingModel === "perRoom"
-          : r.pricingModel === "perBed"
-      ),
-    [filter]
+      roomsData
+        .filter((r) => !excludeRoomIds?.includes(r.id))
+        .filter((r) =>
+          filter === "all"
+            ? true
+            : filter === "private"
+            ? r.pricingModel === "perRoom"
+            : r.pricingModel === "perBed"
+        ),
+    [filter, excludeRoomIds]
   );
 
   const sectionClasses = useMemo(

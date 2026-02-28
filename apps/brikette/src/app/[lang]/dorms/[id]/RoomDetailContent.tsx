@@ -1,6 +1,6 @@
 "use client";
 
-// src/app/[lang]/rooms/[id]/RoomDetailContent.tsx
+// src/app/[lang]/dorms/[id]/RoomDetailContent.tsx
 // Client component for room detail page (uses useTranslation hooks)
 /* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Feature section labels use hardcoded English; translation follow-on deferred. */
 import {

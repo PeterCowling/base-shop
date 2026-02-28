@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Szobák és árak | Hostel Brikette Positano",
+    "title": "Hálótermi ágyak Positanóban | Foglalj közvetlenül a Brikette Hostelnél",
     "description": "Privát, tengerre néző franciaágyas szobák és pénztárcabarát hálótermek: nézd meg a fotókat, szolgáltatásokat és élő árakat, majd foglalj közvetlenül a legjobb ajánlatért.",
     "ogImageAlt": "Közös hálóterem belső tere"
   },
@@ -65,7 +65,7 @@
     "perBed": "ágy"
   },
   "rooms": {
-    "title": "Szobáink",
+    "title": "Hálótermi ágyak",
     "soldOut": "Elfogyott",
     "double_room": {
       "title": "Franciaágyas szoba",
@@ -275,7 +275,7 @@
     "nextSlide": "Következő dia"
   },
   "hero": {
-    "heading": "Szobáink",
+    "heading": "Hálótermi ágyak",
     "subheading": "Válaszd ki a tökéletes szobát a tartózkodásodhoz"
   },
   "filters": {

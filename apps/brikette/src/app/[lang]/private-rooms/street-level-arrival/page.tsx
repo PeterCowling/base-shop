@@ -1,5 +1,5 @@
-// src/app/[lang]/apartment/private-stay/page.tsx
-// Private stay page - App Router version
+// src/app/[lang]/private-rooms/street-level-arrival/page.tsx
+// Street-level arrival page - App Router version
 import type { Metadata } from "next";
 
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
@@ -9,7 +9,7 @@ import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
 import { OG_IMAGE } from "@/utils/headConstants";
 
-import PrivateStayContent from "./PrivateStayContent";
+import StreetLevelArrivalContent from "./StreetLevelArrivalContent";
 
 type Props = {
   params: Promise<{ lang: string }>;
@@ -24,10 +24,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const validLang = toAppLanguage(lang);
   const t = await getTranslations(validLang, ["apartmentPage"]);
 
-  const title = (t("privateStay.meta.title") as string) || "";
-  const description = (t("privateStay.meta.description") as string) || "";
+  const title = (t("streetLevelArrival.meta.title") as string) || "";
+  const description = (t("streetLevelArrival.meta.description") as string) || "";
 
-  const path = `/${validLang}/apartment/private-stay`;
+  const path = `/${validLang}/apartment/street-level-arrival`;
 
   const image = buildCfImageUrl("/img/facade.avif", {
     width: OG_IMAGE.width,
@@ -45,9 +45,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
-export default async function PrivateStayPage({ params }: Props) {
+export default async function StreetLevelArrivalPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
 
-  return <PrivateStayContent lang={validLang} />;
+  return <StreetLevelArrivalContent lang={validLang} />;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-// src/app/[lang]/apartment/book/ApartmentBookContent.tsx
+// src/app/[lang]/private-rooms/book/ApartmentBookContent.tsx
 // Client component for apartment booking page
 import type React from "react";
 import { memo, useCallback, useEffect, useState } from "react";

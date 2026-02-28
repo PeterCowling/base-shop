@@ -63,8 +63,8 @@ jest.mock("next/link", () => {
 });
 
 const { ModalContext } = require("@acme/ui/context/ModalContext");
-const RoomDetailContent = require("@/app/[lang]/rooms/[id]/RoomDetailContent").default as typeof import("@/app/[lang]/rooms/[id]/RoomDetailContent").default;
-const ApartmentPageContent = require("@/app/[lang]/apartment/ApartmentPageContent").default as typeof import("@/app/[lang]/apartment/ApartmentPageContent").default;
+const RoomDetailContent = require("@/app/[lang]/dorms/[id]/RoomDetailContent").default as typeof import("@/app/[lang]/dorms/[id]/RoomDetailContent").default;
+const ApartmentPageContent = require("@/app/[lang]/private-rooms/ApartmentPageContent").default as typeof import("@/app/[lang]/private-rooms/ApartmentPageContent").default;
 
 describe("GA4 view_item on detail pages (GA4-VIEW-ITEM)", () => {
   let originalGtag: typeof window.gtag;

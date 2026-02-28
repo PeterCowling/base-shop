@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Camere e Tariffe | Brikette Hostel Positano",
+    "title": "Posti Letto in Dormitorio a Positano | Prenota Diretto al Brikette Hostel",
     "description": "Camere matrimoniali private con vista mare e dormitori economici: scopri foto, servizi e prezzi in tempo reale, poi prenota direttamente per ottenere la migliore offerta al Brikette Hostel Positano.",
     "ogImageAlt": "Interno luminoso di un dormitorio condiviso con letti a castello"
   },
@@ -30,7 +30,7 @@
     "linen": "Biancheria da letto e asciugamano inclusi"
   },
   "rooms": {
-    "title": "Le nostre camere",
+    "title": "Posti letto in dormitorio",
     "soldOut": "Non disponibile",
     "double_room": {
       "title": "Camera Matrimoniale",
@@ -240,7 +240,7 @@
     "nextSlide": "Diapositiva successiva"
   },
   "hero": {
-    "heading": "Le nostre camere",
+    "heading": "Posti letto in dormitorio",
     "subheading": "Scegli la camera perfetta per il tuo soggiorno"
   },
   "filters": {

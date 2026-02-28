@@ -1,5 +1,5 @@
-// src/app/[lang]/apartment/book/page.tsx
-// Apartment booking page - App Router version
+// src/app/[lang]/private-rooms/page.tsx
+// Apartment page - App Router version
 import type { Metadata } from "next";
 
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
@@ -10,7 +10,7 @@ import { generateLangParams } from "@/app/_lib/static-params";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { getSlug } from "@/utils/slug";
 
-import ApartmentBookContent from "./ApartmentBookContent";
+import ApartmentPageContent from "./ApartmentPageContent";
 
 type Props = {
   params: Promise<{ lang: string }>;
@@ -25,11 +25,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const validLang = toAppLanguage(lang);
   const t = await getTranslations(validLang, ["apartmentPage"]);
 
-  const title = (t("book.meta.title") as string) || "";
-  const description = (t("book.meta.description") as string) || "";
+  const title = (t("meta.title") as string) || "";
+  const description = (t("meta.description") as string) || "";
+  const imageAlt = (t("heroImageAlt") as string) || "";
 
   const apartmentSlug = getSlug("apartment", validLang);
-  const path = `/${validLang}/${apartmentSlug}/book`;
+  const path = `/${validLang}/${apartmentSlug}`;
 
   const image = buildCfImageUrl("/img/facade.avif", {
     width: OG_IMAGE.width,
@@ -44,25 +45,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     path,
     image: { src: image, width: OG_IMAGE.width, height: OG_IMAGE.height },
+    imageAlt,
   });
 }
 
-export default async function ApartmentBookPage({ params }: Props) {
+export default async function ApartmentPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
 
-  return (
-    <>
-      <ApartmentBookContent lang={validLang} />
-      {/* No-JS fallback (TASK-08): direct Octorate link rendered in RSC layer so it
-          is always present in server HTML, visible only when JavaScript is disabled.
-          Satisfies TASK-08 TC-04 gate (no dead-end pre-hydration for /{lang}/apartment/book). */}
-      <noscript>
-        {/* eslint-disable-next-line ds/no-hardcoded-copy -- i18n-exempt: noscript-only technical fallback for no-JS users, not rendered in normal UI. TASK-08 [ttl=2026-12-31] */}
-        <a href="https://book.octorate.com/octobook/site/reservation/calendar.xhtml?codice=45111">
-          Check availability
-        </a>
-      </noscript>
-    </>
-  );
+  return <ApartmentPageContent lang={validLang} />;
 }

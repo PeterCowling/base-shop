@@ -236,8 +236,8 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
   );
 
   if (!isVisible) return null;
-  // Suppress banner on apartment routes — perks_apply_apartment: false (TASK-04/TASK-07)
-  if (pathname.includes("/apartment")) return null;
+  // Suppress banner on private-rooms routes — perks_apply_apartment: false (TASK-04/TASK-07)
+  if (pathname.includes("/private-rooms")) return null;
 
   return (
     <div className="sticky top-0">

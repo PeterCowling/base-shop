@@ -1,4 +1,4 @@
-// src/app/[lang]/rooms/[id]/page.tsx
+// src/app/[lang]/dorms/[id]/page.tsx
 // Room detail page - App Router version
 import { Suspense } from "react";
 import type { Metadata } from "next";
@@ -19,9 +19,14 @@ type Props = {
   params: Promise<{ lang: string; id: string }>;
 };
 
+// double_room has moved to /private-rooms/double-room
+const PRIVATE_ROOM_IDS = new Set(["double_room"]);
+
 export async function generateStaticParams() {
   const langParams = generateLangParams();
-  const roomIds = roomsData.map((room) => room.id);
+  const roomIds = roomsData
+    .map((room) => room.id)
+    .filter((id) => !PRIVATE_ROOM_IDS.has(id));
   return langParams.flatMap(({ lang }) =>
     roomIds.map((id) => ({ lang, id }))
   );
@@ -64,6 +69,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function RoomDetailPage({ params }: Props) {
   const { lang, id } = await params;
   const validLang = toAppLanguage(lang);
+
+  // double_room has moved to /private-rooms/double-room
+  if (PRIVATE_ROOM_IDS.has(id)) {
+    redirect(`/${validLang}/${getSlug("apartment", validLang)}/double-room`);
+  }
+
   const room = roomsData.find((r) => r.id === id);
 
   if (!room) {

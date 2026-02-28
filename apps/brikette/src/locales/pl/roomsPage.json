@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Pokoje i ceny | Hostel Brikette Positano",
+    "title": "Miejsca w dormitorium w Positano | Zarezerwuj bezpośrednio w Brikette Hostel",
     "description": "Prywatne dwuosobowe z widokiem na morze i budżetowe dormy: zobacz zdjęcia, udogodnienia i aktualne ceny, a następnie zarezerwuj bezpośrednio, aby uzyskać najlepszą ofertę.",
     "ogImageAlt": "Wnętrze wspólnego pokoju"
   },
@@ -65,7 +65,7 @@
     "linen": "Pościel i ręczniki w zestawie"
   },
   "rooms": {
-    "title": "Nasze pokoje",
+    "title": "Miejsca w dormitorium",
     "soldOut": "Wyprzedano",
     "double_room": {
       "title": "Pokój dwuosobowy",
@@ -275,7 +275,7 @@
     "nextSlide": "Następny slajd"
   },
   "hero": {
-    "heading": "Nasze pokoje",
+    "heading": "Miejsca w dormitorium",
     "subheading": "Wybierz idealny pokój na swój pobyt"
   },
   "filters": {

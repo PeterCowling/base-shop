@@ -79,8 +79,8 @@ jest.mock("@acme/ui/organisms/StickyBookNow", () => {
   };
 });
 
-const RoomDetailContent = require("@/app/[lang]/rooms/[id]/RoomDetailContent")
-  .default as typeof import("@/app/[lang]/rooms/[id]/RoomDetailContent").default;
+const RoomDetailContent = require("@/app/[lang]/dorms/[id]/RoomDetailContent")
+  .default as typeof import("@/app/[lang]/dorms/[id]/RoomDetailContent").default;
 
 describe("TASK-35: RoomDetailContent sticky CTA begin_checkout GA4 contract", () => {
   let originalGtag: typeof window.gtag;

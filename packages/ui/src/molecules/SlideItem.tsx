@@ -51,7 +51,11 @@ function SlideItemBase(
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
   const currentLang = useCurrentLanguage();
   const effectiveLang = lang ?? currentLang;
-  const roomsSlug = getSlug("rooms", toAppLanguage(effectiveLang));
+  const firstSegment = item.roomsHref.split("/")[1] ?? "rooms";
+  const roomsSlug = getSlug(
+    firstSegment === "apartment" ? "apartment" : "rooms",
+    toAppLanguage(effectiveLang)
+  );
   const { loading: priceLoading, lowestPrice } = useRoomPricing(item);
 
   const restPath = useMemo(() => item.roomsHref.replace(DROP_FIRST_SEGMENT, ""), [item.roomsHref]);

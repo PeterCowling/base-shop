@@ -97,7 +97,7 @@ jest.mock("@acme/ui/molecules", () => ({
 // ---------------------------------------------------------------------------
 
 const { ModalContext } = require("@acme/ui/context/ModalContext");
-const RoomDetailContent = require("@/app/[lang]/rooms/[id]/RoomDetailContent").default as typeof import("@/app/[lang]/rooms/[id]/RoomDetailContent").default;
+const RoomDetailContent = require("@/app/[lang]/dorms/[id]/RoomDetailContent").default as typeof import("@/app/[lang]/dorms/[id]/RoomDetailContent").default;
 
 // ---------------------------------------------------------------------------
 // Helpers

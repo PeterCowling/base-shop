@@ -35,7 +35,7 @@
     "perBed": "Bett"
   },
   "meta": {
-    "title": "Zimmer & Preise | Brikette Hostel Positano",
+    "title": "Schlafsaalplätze in Positano | Direkt buchen im Brikette Hostel",
     "description": "Private Doppelzimmer mit Meerblick und preisgünstige Schlafsäle: Entdecke Fotos, Ausstattungen und Live-Preise und buche direkt für das beste Angebot im Brikette Hostel Positano.",
     "ogImageAlt": "Innenraum eines Gemeinschaftsschlafsaals"
   },
@@ -65,7 +65,7 @@
     "linen": "Bettwäsche und Handtuch inklusive"
   },
   "rooms": {
-    "title": "Unsere Zimmer",
+    "title": "Schlafsaalplätze",
     "soldOut": "Ausverkauft",
     "double_room": {
       "title": "Doppelzimmer",
@@ -275,7 +275,7 @@
     "nextSlide": "Nächste Folie"
   },
   "hero": {
-    "heading": "Unsere Zimmer",
+    "heading": "Schlafsaalplätze",
     "subheading": "Wähle das perfekte Zimmer für deinen Aufenthalt"
   },
   "filters": {

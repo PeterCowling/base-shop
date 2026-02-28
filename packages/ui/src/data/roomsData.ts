@@ -96,7 +96,7 @@ const roomsData: Room[] = [
       security: "/img/keycard-tap.avif",
     },
     landingImage: "/img/7/landing.webp",
-    roomsHref: "/rooms#double_room",
+    roomsHref: "/apartment/double-room",
   },
 
   /* ── Room 10 → room_10 ────────────────────────────────────────────── */

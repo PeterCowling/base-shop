@@ -4,6 +4,7 @@ import { onValue, ref } from "firebase/database";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
 
+import { STOCK_ADJUSTMENT_REAUTH_THRESHOLD } from "../../constants/stock";
 import { useAuth } from "../../context/AuthContext";
 import useInventoryItems from "../../hooks/data/inventory/useInventoryItems";
 import useInventoryLedger from "../../hooks/data/inventory/useInventoryLedger";
@@ -13,6 +14,7 @@ import { canAccess, Permissions } from "../../lib/roles";
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import type { InventoryItem } from "../../types/hooks/data/inventoryItemData";
 import { buildInventorySnapshot } from "../../utils/inventoryLedger";
+import PasswordReauthModal from "../common/PasswordReauthModal";
 
 const UNCATEGORIZED_LABEL = "Senza categoria";
 const BATCH_REASON = "conteggio batch";
@@ -29,6 +31,11 @@ interface CategoryVarianceRow {
   delta: number;
 }
 
+interface PendingBatchSubmission {
+  category: string;
+  categoryItems: InventoryItem[];
+}
+
 export function groupItemsByCategory(
   items: InventoryItem[]
 ): Record<string, InventoryItem[]> {
@@ -43,6 +50,10 @@ export function groupItemsByCategory(
     acc[category].push(item);
     return acc;
   }, {});
+}
+
+export function requiresReauth(deltas: number[], threshold: number): boolean {
+  return deltas.some((delta) => Math.abs(delta) >= threshold);
 }
 
 function formatDelta(delta: number): string {
@@ -70,6 +81,7 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
   const [varianceByCategory, setVarianceByCategory] = useState<
     Record<string, CategoryVarianceRow[]>
   >({});
+  const [pendingBatch, setPendingBatch] = useState<PendingBatchSubmission | null>(null);
   const [submittingCategory, setSubmittingCategory] = useState<string | null>(null);
   const [isOnline, setIsOnline] = useState(true);
 
@@ -167,13 +179,8 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
     [saveBatchProgress]
   );
 
-  const handleCompleteCategory = useCallback(
-    async (category: string) => {
-      if (submittingCategory) {
-        return;
-      }
-
-      const categoryItems = itemsByCategory[category] ?? [];
+  const executeCategorySubmit = useCallback(
+    async (category: string, categoryItems: InventoryItem[]) => {
       const varianceRows: CategoryVarianceRow[] = [];
 
       setSubmittingCategory(category);
@@ -237,12 +244,46 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
       addLedgerEntry,
       categoryNames.length,
       clearProgress,
-      itemsByCategory,
       onComplete,
       saveBatchProgress,
       snapshot,
-      submittingCategory,
     ]
+  );
+
+  const handleCompleteCategory = useCallback(
+    async (category: string) => {
+      if (submittingCategory) {
+        return;
+      }
+
+      const categoryItems = itemsByCategory[category] ?? [];
+      const deltas: number[] = [];
+
+      for (const item of categoryItems) {
+        const itemId = item.id;
+
+        if (!itemId) {
+          continue;
+        }
+
+        const countedQuantity = enteredQuantitiesRef.current[itemId];
+
+        if (typeof countedQuantity !== "number") {
+          continue;
+        }
+
+        const expectedOnHand = snapshot[itemId]?.onHand ?? item.openingCount;
+        deltas.push(countedQuantity - expectedOnHand);
+      }
+
+      if (requiresReauth(deltas, STOCK_ADJUSTMENT_REAUTH_THRESHOLD)) {
+        setPendingBatch({ category, categoryItems });
+        return;
+      }
+
+      await executeCategorySubmit(category, categoryItems);
+    },
+    [executeCategorySubmit, itemsByCategory, snapshot, submittingCategory]
   );
 
   if (!canManageStock) {
@@ -388,6 +429,27 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
           </section>
         );
       })}
+      {pendingBatch && (
+        <PasswordReauthModal
+          title="Conferma conteggio"
+          instructions="Inserisci la tua password per confermare il conteggio batch con grandi variazioni."
+          onCancel={() => setPendingBatch(null)}
+          onSuccess={async () => {
+            if (!pendingBatch || submittingCategory) {
+              return;
+            }
+
+            try {
+              await executeCategorySubmit(
+                pendingBatch.category,
+                pendingBatch.categoryItems
+              );
+            } finally {
+              setPendingBatch(null);
+            }
+          }}
+        />
+      )}
     </div>
   );
 }

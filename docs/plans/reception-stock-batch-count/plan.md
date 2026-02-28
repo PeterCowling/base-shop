@@ -5,7 +5,7 @@ Domain: UI
 Workstream: Engineering
 Created: 2026-02-28
 Last-reviewed: 2026-02-28
-Last-updated: 2026-02-28 (Wave 1 complete)
+Last-updated: 2026-02-28 (Wave 3 complete)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: reception-stock-batch-count
 Deliverable-Type: code-change
@@ -29,8 +29,8 @@ The reception app currently requires staff to count inventory item-by-item throu
 - [x] TASK-01: Confirm and assign category values for active inventory items
 - [x] TASK-02: Extract `useBatchCountProgress` hook
 - [x] TASK-03: Build `BatchStockCount` core component
-- [ ] TASK-04: Add reauth gate for large-variance items
-- [ ] TASK-05: Add batch count toggle to `StockManagement`
+- [x] TASK-04: Add reauth gate for large-variance items
+- [x] TASK-05: Add batch count toggle to `StockManagement`
 - [ ] TASK-06: Write `BatchStockCount` test suite
 - [ ] CHECKPOINT-01: Validate integrated batch count flow
 
@@ -262,7 +262,8 @@ The reception app currently requires staff to count inventory item-by-item throu
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-28)
+- **Build evidence:** Codex exec exit 0. BatchStockCount.tsx extended (+80 lines). Added `requiresReauth(deltas, threshold): boolean` exported helper. Added `pendingBatch` state and `executeCategorySubmit` extracted function. handleCompleteCategory now computes deltas, checks abs >= threshold, shows PasswordReauthModal on match; direct submit otherwise. Modal onSuccess runs executeCategorySubmit; onCancel clears pending state only (quantities preserved). Typecheck + lint passed. TC-01/TC-02/TC-03 contract satisfied.
 - **Affects:** `apps/reception/src/components/inventory/BatchStockCount.tsx`, `[readonly] apps/reception/src/components/common/PasswordReauthModal.tsx`, `[readonly] apps/reception/src/constants/stock.ts`
 - **Depends on:** TASK-03
 - **Blocks:** TASK-06
@@ -297,7 +298,8 @@ The reception app currently requires staff to count inventory item-by-item throu
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-28)
+- **Build evidence:** Codex exec exit 0. StockManagement.tsx modified (+18 lines). BatchStockCount imported. batchCountMode state added. "Inizia conteggio batch" button added to inventory section header. Conditional render: batchCountMode true → BatchStockCount; false → existing ledger table. onComplete callback wires back to setBatchCountMode(false). All existing StockManagement functionality unchanged. Typecheck + lint passed. TC-01/TC-02/TC-03 contract satisfied.
 - **Affects:** `apps/reception/src/components/inventory/StockManagement.tsx`
 - **Depends on:** TASK-03
 - **Blocks:** TASK-06

@@ -20,6 +20,8 @@ import { buildInventorySnapshot } from "../../utils/inventoryLedger";
 import { showToast } from "../../utils/toastUtils";
 import PasswordReauthModal from "../common/PasswordReauthModal";
 
+import BatchStockCount from "./BatchStockCount";
+
 type StockAction =
   | "receive"
   | "adjust"
@@ -71,6 +73,7 @@ function StockManagement() {
     note: string;
     unit: string;
   } | null>(null);
+  const [batchCountMode, setBatchCountMode] = useState(false);
 
   const snapshot = useMemo(
     () => buildInventorySnapshot(itemsById, entries),
@@ -593,8 +596,19 @@ function StockManagement() {
       </section>
 
       <section>
-        <h2 className="text-xl font-semibold mb-3">Inventory Ledger</h2>
-        {items.length === 0 ? (
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+          <h2 className="text-xl font-semibold">Inventory Ledger</h2>
+          <Button
+            type="button"
+            onClick={() => setBatchCountMode(true)}
+            className="inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
+          >
+            Inizia conteggio batch
+          </Button>
+        </div>
+        {batchCountMode ? (
+          <BatchStockCount onComplete={() => setBatchCountMode(false)} />
+        ) : items.length === 0 ? (
           <p className="text-sm text-muted-foreground">
             No inventory items added yet.
           </p>

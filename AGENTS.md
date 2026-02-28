@@ -81,6 +81,7 @@ Only run full-repo `pnpm typecheck` / `pnpm lint` when:
   - Promote `staging` to production (PR + auto-merge): `scripts/git/promote-to-main.sh`
 - **Commit every 30 minutes** or after completing any significant change
 - **Push `dev` every 2 hours** (or every 3 commits) — GitHub is your backup
+- **Codex attribution:** include `Co-Authored-By: Codex <noreply@openai.com>` in Codex-authored commits
 
 **Destructive / history-rewriting commands (agents: never):**
 - `git reset --hard`, `git clean -fd`, `git push --force` / `-f`

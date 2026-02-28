@@ -27,7 +27,7 @@ This plan makes Codex startup instructions and skill discovery reliable without 
 ## Active tasks
 - [x] TASK-01: Refactor AGENTS.md to a durable size budget and preserve canonical rules - **Complete (2026-02-28)**
 - [x] TASK-02: Add `.codex/config.toml` with only effective project-doc controls - **Complete (2026-02-28)**
-- [ ] TASK-03: Move Codex-critical guidance into always-loaded instruction surface
+- [x] TASK-03: Move Codex-critical guidance into always-loaded instruction surface - **Complete (2026-02-28)**
 - [x] TASK-04: Create `.agents/skills/` native discovery mirror - **Complete (2026-02-28)**
 - [x] TASK-05: Add strong skills integrity validation - **Complete (2026-02-28)**
 - [x] TASK-06: Repair and gate skill registry drift - **Complete (2026-02-28)**
@@ -110,7 +110,7 @@ It did not validate completeness against `.claude/skills/*/SKILL.md`, symlink co
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Refactor AGENTS.md to durable size budget and move verbose policy to linked docs | 88% | M | Complete (2026-02-28) | - | TASK-03, TASK-08 |
 | TASK-02 | IMPLEMENT | Add `.codex/config.toml` with effective settings only (`project_doc_max_bytes`) | 95% | S | Complete (2026-02-28) | - | TASK-08 |
-| TASK-03 | IMPLEMENT | Ensure Codex-critical guidance is in always-loaded runbook surface | 82% | M | Pending | TASK-01 | TASK-08 |
+| TASK-03 | IMPLEMENT | Ensure Codex-critical guidance is in always-loaded runbook surface | 82% | M | Complete (2026-02-28) | TASK-01 | TASK-08 |
 | TASK-04 | IMPLEMENT | Create `.agents/skills/` native mirror from `.claude/skills/*/SKILL.md` | 90% | M | Complete (2026-02-28) | - | TASK-05, TASK-08 |
 | TASK-05 | IMPLEMENT | Add strong `scripts/validate-codex-skills.sh` integrity checks | 84% | M | Complete (2026-02-28) | TASK-04 | TASK-07, TASK-08 |
 | TASK-06 | IMPLEMENT | Regenerate and gate `.agents/registry/skills.json` consistency | 90% | S | Complete (2026-02-28) | - | TASK-07, TASK-08 |
@@ -184,7 +184,7 @@ It did not validate completeness against `.claude/skills/*/SKILL.md`, symlink co
 - **Execution-Skill:** lp-do-build
 - **Affects:** `AGENTS.md`, `CODEX.md`.
 - **Depends on:** TASK-01
-- **Status:** Pending
+- **Status:** Complete (2026-02-28)
 - **Confidence:** 82% (Implementation 85 / Approach 82 / Impact 82)
 - **Scope:** Audit `CODEX.md` for rules Codex requires on every session (git destructive command prohibitions, writer lock rules, attribution format). Ensure each is present inline in `AGENTS.md`. The `AGENTS.override.md` strategy was rejected (Decision Log 2026-02-28) — all required-every-run content goes into `AGENTS.md` directly; do not create an `AGENTS.override.md`.
 - **VC-03:**
@@ -198,6 +198,11 @@ It did not validate completeness against `.claude/skills/*/SKILL.md`, symlink co
 - **Rollout/rollback:** Immediate. Rollback: `git revert <commit>`.
 - **Documentation impact:** `CODEX.md` preamble updated to note supplemental status.
 - **What would make this >=90%:** operator confirms which rules from `CODEX.md` must be inline (vs which can remain supplemental) before execution begins.
+- **Build evidence (2026-02-28):**
+  - AGENTS now contains Codex attribution format inline: `Co-Authored-By: Codex <noreply@openai.com>`.
+  - VC-03 PASS: destructive-command and writer-lock rules are present inline in AGENTS (including `git reset --hard`, `git clean -fd`, `git push --force`, `SKIP_WRITER_LOCK=1` prohibition, and integrator-shell/writer-lock flow).
+  - VC-03 PASS: AGENTS remains within TASK-01 budget after this addition (`wc -c AGENTS.md` = 18668).
+  - CODEX preamble updated to explicit supplemental status relative to AGENTS; duplicated local-enforcement sentence removed to reduce drift risk.
 
 ### TASK-04: Create `.agents/skills/` native mirror
 - **Type:** IMPLEMENT

@@ -6,8 +6,10 @@ import { useTranslation } from "react-i18next";
 import { Section } from "../atoms/Section";
 import { Grid } from "../components/atoms/primitives/Grid";
 import { ROOM_DROPDOWN_NAMES } from "../config/roomNames";
+import { getRoomSlug } from "../config/roomSlugs";
 import { roomsData, toFlatImageArray } from "../data/roomsData";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
+import type { AppLanguage } from "../i18n.config";
 import RoomCard from "../molecules/RoomCard";
 import RoomFilters, { type RoomFilter } from "../molecules/RoomFilters";
 import { SLUGS } from "../slug-map";
@@ -158,7 +160,7 @@ function RoomsSection({
 
         <Grid cols={1} gap={8} className="sm:grid-cols-2">
           {filteredRooms.map((room, index) => {
-            const href = `/${lang}/${roomsSlug}/${room.id}`;
+            const href = `/${lang}/${roomsSlug}/${getRoomSlug(room.id, lang as AppLanguage)}`;
             const title = resolveTranslatedCopy(
               t(`rooms.${room.id}.title`, {
                 defaultValue: ROOM_DROPDOWN_NAMES[room.id] ?? "Room",

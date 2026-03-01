@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
 
@@ -10,8 +10,6 @@ import useInventoryLedger from "../../hooks/data/inventory/useInventoryLedger";
 import { useTillShiftsData } from "../../hooks/data/till/useTillShiftsData";
 import { useCheckins } from "../../hooks/data/useCheckins";
 import { canAccess, Permissions } from "../../lib/roles";
-
-const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
 
 function toTimestampMs(timestamp: unknown): number {
   if (typeof timestamp === "number") {
@@ -62,6 +60,9 @@ function formatCloseDifference(value?: number): string {
 export default function ManagerAuditContent() {
   const { user } = useAuth();
   const canView = canAccess(user, Permissions.MANAGEMENT_ACCESS);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [staffFilter, setStaffFilter] = useState("");
 
   const {
     itemsById,
@@ -84,17 +85,27 @@ export default function ManagerAuditContent() {
   });
 
   const stockVarianceRows = useMemo(() => {
-    const todayMinus7 = Date.now() - SEVEN_DAYS_MS;
+    const effectiveStartMs = startDate
+      ? toTimestampMs(`${startDate}T00:00:00.000+00:00`)
+      : Date.now() - 30 * 24 * 60 * 60 * 1000;
+    const effectiveEndMs = endDate
+      ? toTimestampMs(`${endDate}T23:59:59.999+00:00`)
+      : Date.now();
+    const normalizedStaffFilter = staffFilter.toLowerCase();
 
     return entries
       .filter(
         (entry) =>
-          entry.type === "count" && toTimestampMs(entry.timestamp) >= todayMinus7
+          entry.type === "count" &&
+          toTimestampMs(entry.timestamp) >= effectiveStartMs &&
+          toTimestampMs(entry.timestamp) <= effectiveEndMs &&
+          (!staffFilter ||
+            (entry.user ?? "").toLowerCase().includes(normalizedStaffFilter))
       )
       .sort(
         (a, b) => toTimestampMs(b.timestamp) - toTimestampMs(a.timestamp)
       );
-  }, [entries]);
+  }, [endDate, entries, staffFilter, startDate]);
 
   const lastThreeShifts = useMemo(
     () =>
@@ -130,50 +141,102 @@ export default function ManagerAuditContent() {
         !inventoryLedgerLoading &&
         !inventoryItemsError &&
         !inventoryLedgerError ? (
-          stockVarianceRows.length === 0 ? (
-            <p className="mt-3 text-sm text-muted-foreground">
-              No variance in the last 7 days
-            </p>
-          ) : (
-            <div className="mt-3 overflow-x-auto rounded-lg border border-border-2">
-              <Table className="min-w-full text-sm">
-                <TableHeader className="bg-surface-2">
-                  <TableRow>
-                    <TableHead className="p-2 text-start border-b border-border-2">
-                      Item
-                    </TableHead>
-                    <TableHead className="p-2 text-end border-b border-border-2">
-                      Delta
-                    </TableHead>
-                    <TableHead className="p-2 text-start border-b border-border-2">
-                      Date
-                    </TableHead>
-                    <TableHead className="p-2 text-start border-b border-border-2">
-                      Counted by
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {stockVarianceRows.map((entry) => (
-                    <TableRow key={entry.id ?? `${entry.itemId}-${entry.timestamp}`}>
-                      <TableCell className="p-2 border-b border-border-2">
-                        {itemsById[entry.itemId]?.name ?? entry.itemId}
-                      </TableCell>
-                      <TableCell className="p-2 border-b border-border-2 text-end font-mono">
-                        {formatDelta(entry.quantity)}
-                      </TableCell>
-                      <TableCell className="p-2 border-b border-border-2">
-                        {formatDateTime(entry.timestamp)}
-                      </TableCell>
-                      <TableCell className="p-2 border-b border-border-2">
-                        {entry.user || "—"}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+          <>
+            <div className="mt-3 flex flex-wrap gap-4 items-end">
+              <div className="flex flex-col">
+                <label
+                  htmlFor="variance-start-date"
+                  className="text-xs font-semibold text-muted-foreground mb-1"
+                >
+                  From
+                </label>
+                <input
+                  id="variance-start-date"
+                  type="date"
+                  data-cy="variance-start-date"
+                  value={startDate}
+                  onChange={(event) => setStartDate(event.target.value)}
+                  className="border border-border-strong rounded-md px-2 py-1 text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                />
+              </div>
+              <div className="flex flex-col">
+                <label
+                  htmlFor="variance-end-date"
+                  className="text-xs font-semibold text-muted-foreground mb-1"
+                >
+                  To
+                </label>
+                <input
+                  id="variance-end-date"
+                  type="date"
+                  data-cy="variance-end-date"
+                  value={endDate}
+                  onChange={(event) => setEndDate(event.target.value)}
+                  className="border border-border-strong rounded-md px-2 py-1 text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                />
+              </div>
+              <div className="flex flex-col">
+                <label
+                  htmlFor="variance-staff-filter"
+                  className="text-xs font-semibold text-muted-foreground mb-1"
+                >
+                  Staff
+                </label>
+                <input
+                  id="variance-staff-filter"
+                  type="text"
+                  data-cy="variance-staff-filter"
+                  value={staffFilter}
+                  onChange={(event) => setStaffFilter(event.target.value)}
+                  className="border border-border-strong rounded-md px-2 py-1 text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                />
+              </div>
             </div>
-          )
+            {stockVarianceRows.length === 0 ? (
+              <p className="mt-3 text-sm text-muted-foreground">
+                No variance in the selected period
+              </p>
+            ) : (
+              <div className="mt-3 overflow-x-auto rounded-lg border border-border-2">
+                <Table className="min-w-full text-sm">
+                  <TableHeader className="bg-surface-2">
+                    <TableRow>
+                      <TableHead className="p-2 text-start border-b border-border-2">
+                        Item
+                      </TableHead>
+                      <TableHead className="p-2 text-end border-b border-border-2">
+                        Delta
+                      </TableHead>
+                      <TableHead className="p-2 text-start border-b border-border-2">
+                        Date
+                      </TableHead>
+                      <TableHead className="p-2 text-start border-b border-border-2">
+                        Counted by
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {stockVarianceRows.map((entry) => (
+                      <TableRow key={entry.id ?? `${entry.itemId}-${entry.timestamp}`}>
+                        <TableCell className="p-2 border-b border-border-2">
+                          {itemsById[entry.itemId]?.name ?? entry.itemId}
+                        </TableCell>
+                        <TableCell className="p-2 border-b border-border-2 text-end font-mono">
+                          {formatDelta(entry.quantity)}
+                        </TableCell>
+                        <TableCell className="p-2 border-b border-border-2">
+                          {formatDateTime(entry.timestamp)}
+                        </TableCell>
+                        <TableCell className="p-2 border-b border-border-2">
+                          {entry.user || "—"}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            )}
+          </>
         ) : null}
       </section>
 

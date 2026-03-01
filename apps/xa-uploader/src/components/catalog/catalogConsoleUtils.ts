@@ -16,6 +16,8 @@ const SCHEMA_MESSAGE_TO_I18N_KEY: Record<string, UploaderMessageKey> = {
   "At least one color is required": "validationColorRequired",
   "At least one material is required": "validationMaterialRequired",
   "Image alt texts must match the number of images": "validationImageAltCount",
+  "Image roles must match the number of images": "validationImageRoleCount",
+  "Image roles contain unsupported values": "validationImageRoleUnsupported",
   "Sizes are required for clothing": "validationSizesRequired",
   "Metal is required for jewelry": "validationMetalRequired",
   "createdAt must be a valid date/time": "validationCreatedAt",
@@ -28,6 +30,7 @@ export function localizeSchemaIssueMessage(message: string, t?: SchemaTranslate)
   if (message.startsWith("Invalid ")) return t("validationInvalidValue");
   if (message.includes(" must be ≥ ")) return t("validationNonNegative");
   if (message.endsWith(" must be an integer")) return t("validationIntegerRequired");
+  if (message.startsWith("Missing required image role:")) return t("validationImageRoleMissing");
   return t("validationUnknown");
 }
 

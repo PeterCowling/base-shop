@@ -55,6 +55,26 @@ function parseDraftCategory(
   return (value || "clothing") as CatalogProductDraftInput["taxonomy"]["category"];
 }
 
+function buildMediaPaths(imageFiles: string, imageRoles: string): string {
+  const files = splitList(imageFiles);
+  const roles = splitList(imageRoles);
+  if (!files.length || files.length !== roles.length) return "";
+  return joinList(files.map((file, index) => `${roles[index]}:${file}`));
+}
+
+function parseImageRolesFromMediaPaths(mediaPaths: string | null | undefined): string | undefined {
+  const entries = splitList(mediaPaths ?? "");
+  if (!entries.length) return undefined;
+  const roles = entries
+    .map((entry) => {
+      const idx = entry.indexOf(":");
+      if (idx <= 0) return "";
+      return entry.slice(0, idx).trim();
+    })
+    .filter(Boolean);
+  return roles.length ? joinList(roles) : undefined;
+}
+
 export function buildCsvRowUpdateFromDraft(input: CatalogProductDraftInput): XaProductsCsvRow {
   const value = catalogProductDraftSchema.parse(input);
   const normalizedSlug = normalizeSlug(value);
@@ -64,6 +84,7 @@ export function buildCsvRowUpdateFromDraft(input: CatalogProductDraftInput): XaP
   const sizes = normalizeCsvList(value.sizes);
   const imageFiles = normalizeCsvList(value.imageFiles);
   const imageAltTexts = normalizeCsvList(value.imageAltTexts);
+  const imageRoles = normalizeCsvList(value.imageRoles);
 
   const color = normalizeCsvList(value.taxonomy.color);
   const material = normalizeCsvList(value.taxonomy.material);
@@ -95,6 +116,8 @@ export function buildCsvRowUpdateFromDraft(input: CatalogProductDraftInput): XaP
     popularity: stringifyNumberOrEmpty(value.popularity),
     image_files: imageFiles,
     image_alt_texts: imageAltTexts,
+    media_paths: buildMediaPaths(imageFiles, imageRoles),
+    media_alt_texts: imageAltTexts,
     taxonomy_department: value.taxonomy.department,
     taxonomy_category: value.taxonomy.category,
     taxonomy_subcategory: trimOrEmpty(value.taxonomy.subcategory),
@@ -154,6 +177,7 @@ export function rowToDraftInput(row: XaProductsCsvRow): CatalogProductDraftInput
     popularity: trimOrUndefined(row.popularity),
     imageFiles: trimOrUndefined(row.image_files),
     imageAltTexts: trimOrUndefined(row.image_alt_texts),
+    imageRoles: parseImageRolesFromMediaPaths(row.media_paths),
     taxonomy: {
       department,
       category,

@@ -29,6 +29,19 @@ export function slugify(input: string): string {
 const departmentSchema = z.enum(["women", "men", "kids"]) satisfies z.ZodType<XaDepartment>;
 const categorySchema = z.enum(["clothing", "bags", "jewelry"]) satisfies z.ZodType<XaCategory>;
 
+const allowedImageRoles = ["front", "side", "top", "back", "detail", "interior", "scale"] as const;
+type ImageRole = (typeof allowedImageRoles)[number];
+
+function requiredImageRolesByCategory(category: XaCategory): ImageRole[] {
+  if (category === "clothing") return ["front", "side"];
+  if (category === "bags") return ["front", "side", "top"];
+  return ["front", "side", "detail"];
+}
+
+function parseImageRoles(input: string | null | undefined): ImageRole[] {
+  return splitList(input ?? "") as ImageRole[];
+}
+
 const numberField = (label: string, options?: { min?: number; integer?: boolean }) => {
   const min = options?.min ?? 0;
   const integer = options?.integer ?? false;
@@ -106,6 +119,7 @@ export const catalogProductDraftSchema = z
     popularity: optionalNumberField("Popularity", { min: 0, integer: true }),
     imageFiles: z.string().optional(),
     imageAltTexts: z.string().optional(),
+    imageRoles: z.string().optional(),
     taxonomy: z.object({
       department: departmentSchema,
       category: categorySchema,
@@ -182,6 +196,37 @@ export const catalogProductDraftSchema = z
         path: ["imageAltTexts"],
         message: "Image alt texts must match the number of images",
       });
+    }
+
+    const imageRoles = parseImageRoles(value.imageRoles);
+    if (imageFiles.length && imageRoles.length !== imageFiles.length) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["imageRoles"],
+        message: "Image roles must match the number of images",
+      });
+    }
+
+    const invalidImageRole = imageRoles.find((role) => !allowedImageRoles.includes(role));
+    if (invalidImageRole) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["imageRoles"],
+        message: "Image roles contain unsupported values",
+      });
+    }
+
+    if (imageFiles.length) {
+      const requiredRoles = requiredImageRolesByCategory(value.taxonomy.category);
+      for (const role of requiredRoles) {
+        if (!imageRoles.includes(role)) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["imageRoles"],
+            message: `Missing required image role: ${role}`,
+          });
+        }
+      }
     }
 
     if (value.taxonomy.category === "clothing") {

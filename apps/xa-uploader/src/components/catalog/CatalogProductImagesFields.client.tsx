@@ -43,6 +43,20 @@ export function CatalogProductImagesFields({
         </label>
 
         <label className="block text-xs uppercase tracking-label text-gate-muted md:col-span-2">
+          {t("imageRoles")}
+          <textarea
+            value={draft.imageRoles ?? ""}
+            onChange={(event) => onChange({ ...draft, imageRoles: event.target.value })}
+            rows={2}
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
+            placeholder={t("placeholderImageRoles")}
+          />
+          {fieldErrors.imageRoles ? (
+            <div className="mt-1 text-xs text-danger-fg">{fieldErrors.imageRoles}</div>
+          ) : null}
+        </label>
+
+        <label className="block text-xs uppercase tracking-label text-gate-muted md:col-span-2">
           {t("imageAltTexts")}
           <textarea
             value={draft.imageAltTexts ?? ""}

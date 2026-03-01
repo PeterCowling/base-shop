@@ -184,6 +184,27 @@ Replatform xa-uploader away from local filesystem dependencies so hosted Cloudfl
 - Lost updates across concurrent writes -> add document revision + 409 conflict contract.
 - Auth leakage across contract paths -> enforce token checks per route and test negative cases.
 
+## Free-Tier Compliance: Explicitly Not Implemented
+These options were intentionally not selected for this replatform tranche to preserve Cloudflare Free Tier operational fit and keep the product aligned to the agreed two-lane workflow.
+
+### Rejected for this tranche
+- Single-pass "data + all media in one bulk upload" flow.
+  Reason: pushes request/runtime complexity and file-size pressure into one operation, increasing timeout/failure risk on free-tier limits.
+- Large monolithic upload target (for example, 100MB single upload payloads).
+  Reason: unnecessary for current operator workflow and increases risk of request rejection, retries, and degraded UX.
+- Desktop-native uploader packaging as the primary operational path.
+  Reason: adds distribution/install/support burden; web-hosted flow is required for day-one operator usability.
+- Local filesystem dependent APIs as production behavior.
+  Reason: not compatible with hosted Cloudflare runtime expectations.
+- Local script-spawn orchestration as required publish path.
+  Reason: process-spawn dependencies are not a reliable free-tier hosted assumption.
+
+### Chosen shape instead
+- Two-lane model:
+  - Lane 1: bulk product data upload/edit (cloud draft contract).
+  - Lane 2: media assign/reassign per product with per-image constraints and role-specific slots (front/side/top, etc.).
+- Incremental cloud-native contracts and API fallbacks that keep requests bounded and recoverable.
+
 ## Acceptance Criteria (overall)
 - [x] Hosted uploader can list/save/delete product drafts in cloud mode.
 - [x] Cloud-mode failure messages are actionable.

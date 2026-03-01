@@ -113,7 +113,6 @@ async function syncCatalogFromContract() {
       details: message,
       syncedAt: new Date().toISOString(),
       required: false,
-      readUrl,
     });
     return;
   }
@@ -133,7 +132,6 @@ async function syncCatalogFromContract() {
       status: response.status,
       syncedAt: new Date().toISOString(),
       required: false,
-      readUrl,
     });
     return;
   }
@@ -151,7 +149,6 @@ async function syncCatalogFromContract() {
       reason: "invalid_json",
       syncedAt: new Date().toISOString(),
       required: false,
-      readUrl,
     });
     return;
   }
@@ -167,7 +164,6 @@ async function syncCatalogFromContract() {
       reason: "missing_catalog",
       syncedAt: new Date().toISOString(),
       required: false,
-      readUrl,
     });
     return;
   }
@@ -187,7 +183,6 @@ async function syncCatalogFromContract() {
   await writeRuntimeMeta({
     source: "contract",
     syncedAt: new Date().toISOString(),
-    readUrl,
     version: isRecord(payload) && typeof payload.version === "string" ? payload.version : undefined,
     publishedAt:
       isRecord(payload) && typeof payload.publishedAt === "string" ? payload.publishedAt : undefined,

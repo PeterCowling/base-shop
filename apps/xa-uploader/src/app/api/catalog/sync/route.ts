@@ -64,7 +64,6 @@ function buildDisplaySyncGuidance() {
     mode: "build_time_runtime_catalog",
     requiresXaBBuild: true,
     nextAction: "rebuild_and_deploy_xa_b",
-    runtimeMetaPath: "apps/xa-b/src/data/catalog.runtime.meta.json",
   };
 }
 

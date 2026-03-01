@@ -118,8 +118,53 @@ describe("catalogProductDraftSchema", () => {
       sizes: "S|M|L",
       imageFiles: "a|b",
       imageAltTexts: "one",
+      imageRoles: "front|side",
     };
     const result = catalogProductDraftSchema.safeParse(draft);
     expect(result.success).toBe(false);
+  });
+
+  it("rejects image role count mismatches", () => {
+    const draft = {
+      ...baseDraft(),
+      sizes: "S|M|L",
+      imageFiles: "a|b",
+      imageAltTexts: "one|two",
+      imageRoles: "front",
+    };
+    const result = catalogProductDraftSchema.safeParse(draft);
+    expect(result.success).toBe(false);
+  });
+
+  it("requires category-specific image roles when images are present", () => {
+    const draft = {
+      ...baseDraft(),
+      sizes: "S|M|L",
+      imageFiles: "a|b",
+      imageAltTexts: "one|two",
+      imageRoles: "front|detail",
+      taxonomy: {
+        ...baseDraft().taxonomy,
+        category: "clothing",
+      },
+    };
+    const result = catalogProductDraftSchema.safeParse(draft);
+    expect(result.success).toBe(false);
+  });
+
+  it("accepts valid image roles for bag products", () => {
+    const draft = {
+      ...baseDraft(),
+      sizes: "",
+      imageFiles: "a|b|c",
+      imageAltTexts: "one|two|three",
+      imageRoles: "front|side|top",
+      taxonomy: {
+        ...baseDraft().taxonomy,
+        category: "bags",
+      },
+    };
+    const result = catalogProductDraftSchema.safeParse(draft);
+    expect(result.success).toBe(true);
   });
 });

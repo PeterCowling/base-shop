@@ -13,8 +13,9 @@ compatibility_date = "2025-12-26"
 # R2 object key prefix for incoming submissions.
 R2_PREFIX = "submissions/"
 
-# Maximum accepted upload size in bytes (default 250MB).
-MAX_BYTES = "262144000"
+# Maximum accepted upload size in bytes (default 25MB).
+MAX_BYTES = "26214400"
+UPLOAD_TOKEN_MAX_TTL_SECONDS = "900"
 
 # Optional CORS allowlist for browser-based uploads.
 # Comma-separated origins, for example:
@@ -42,7 +43,8 @@ name = "xa-drop-worker-preview"
 
 [env.preview.vars]
 R2_PREFIX = "submissions/"
-MAX_BYTES = "262144000"
+MAX_BYTES = "26214400"
+UPLOAD_TOKEN_MAX_TTL_SECONDS = "900"
 CATALOG_PREFIX = "catalog/"
 CATALOG_MAX_BYTES = "10485760"
 

@@ -208,7 +208,10 @@ export async function POST(request: Request) {
     }
     if (error instanceof Error) {
       return withRateHeaders(
-        NextResponse.json({ ok: false, error: "invalid", reason: "bulk_validation_failed", details: error.message }, { status: 400 }),
+        NextResponse.json(
+          { ok: false, error: "invalid", reason: "bulk_validation_failed" },
+          { status: 400 },
+        ),
         limit,
       );
     }

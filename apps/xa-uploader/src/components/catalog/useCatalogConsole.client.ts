@@ -85,7 +85,12 @@ function useCatalogConsoleState() {
   const [selectedSlug, setSelectedSlug] = React.useState<string | null>(null);
 
   const submissionMax = 10;
-  const submissionMaxBytes = 250 * 1024 * 1024;
+  const submissionMaxMb = toPositiveInt(
+    process.env.NEXT_PUBLIC_XA_UPLOADER_SUBMISSION_MAX_MB ?? "25",
+    25,
+    1,
+  );
+  const submissionMaxBytes = submissionMaxMb * 1024 * 1024;
   const minImageEdge = toPositiveInt(
     process.env.NEXT_PUBLIC_XA_UPLOADER_MIN_IMAGE_EDGE ?? "1600",
     1600,

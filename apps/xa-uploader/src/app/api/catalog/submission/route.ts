@@ -23,6 +23,10 @@ const SUBMISSION_MAX_SLUGS = 20;
 const DEFAULT_SUBMISSION_MAX_BYTES = 25 * 1024 * 1024;
 const FREE_TIER_SUBMISSION_MAX_BYTES = 25 * 1024 * 1024;
 
+function shouldExposeSubmissionR2Key(): boolean {
+  return process.env.NODE_ENV !== "production" && process.env.XA_UPLOADER_EXPOSE_SUBMISSION_R2_KEY === "1";
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
@@ -157,7 +161,7 @@ export async function POST(request: Request) {
         "Content-Disposition": `attachment; filename="${filename}"`,
         "Cache-Control": "no-store",
         "X-XA-Submission-Id": manifest.submissionId,
-        "X-XA-Submission-R2-Key": manifest.suggestedR2Key,
+        ...(shouldExposeSubmissionR2Key() ? { "X-XA-Submission-R2-Key": manifest.suggestedR2Key } : {}),
       },
     });
     applyRateLimitHeaders(response.headers, limit);

@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 
 import { canAccess } from "../../../lib/roles";
 import ManagerAuditContent from "../ManagerAuditContent";
@@ -177,5 +177,54 @@ describe("ManagerAuditContent", () => {
     render(<ManagerAuditContent />);
 
     expect(screen.getByText("0 check-in(s) today")).toBeInTheDocument();
+  });
+
+  it("renders 'Counted by' column with staff name from entry.user", () => {
+    const now = Date.now();
+    useInventoryItemsMock.mockReturnValue({
+      items: [],
+      itemsById: { "item-1": { id: "item-1", name: "Test Item", unit: "pz" } },
+      loading: false,
+      error: null,
+    });
+
+    // TC-01: entry with user "alice" — column header and value both render
+    useInventoryLedgerMock.mockReturnValue({
+      entries: [
+        { id: "e-user", itemId: "item-1", type: "count", quantity: 2, timestamp: now - 1000, user: "alice" },
+      ],
+      loading: false,
+      error: null,
+    });
+
+    render(<ManagerAuditContent />);
+
+    expect(screen.getByText("Counted by")).toBeInTheDocument();
+    expect(screen.getByText("alice")).toBeInTheDocument();
+  });
+
+  it("renders '—' in 'Counted by' column when entry.user is empty", () => {
+    const now = Date.now();
+    useInventoryItemsMock.mockReturnValue({
+      items: [],
+      itemsById: { "item-1": { id: "item-1", name: "Test Item", unit: "pz" } },
+      loading: false,
+      error: null,
+    });
+
+    // TC-02: entry with blank user — fallback "—" renders in the Stock Variance table
+    useInventoryLedgerMock.mockReturnValue({
+      entries: [
+        { id: "e-blank", itemId: "item-1", type: "count", quantity: 1, timestamp: now - 1000, user: "" },
+      ],
+      loading: false,
+      error: null,
+    });
+
+    render(<ManagerAuditContent />);
+
+    const stockVarianceSection = screen.getByText("Stock Variance").closest("section")!;
+    const dashCells = within(stockVarianceSection).getAllByText("—");
+    expect(dashCells.length).toBeGreaterThanOrEqual(1);
   });
 });

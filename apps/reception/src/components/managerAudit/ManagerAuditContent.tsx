@@ -148,6 +148,9 @@ export default function ManagerAuditContent() {
                     <TableHead className="p-2 text-start border-b border-border-2">
                       Date
                     </TableHead>
+                    <TableHead className="p-2 text-start border-b border-border-2">
+                      Counted by
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -161,6 +164,9 @@ export default function ManagerAuditContent() {
                       </TableCell>
                       <TableCell className="p-2 border-b border-border-2">
                         {formatDateTime(entry.timestamp)}
+                      </TableCell>
+                      <TableCell className="p-2 border-b border-border-2">
+                        {entry.user || "—"}
                       </TableCell>
                     </TableRow>
                   ))}

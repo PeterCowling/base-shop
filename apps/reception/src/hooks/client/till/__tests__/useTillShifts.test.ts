@@ -330,3 +330,162 @@ describe("useTillShifts", () => {
     );
   });
 });
+
+describe("useTillShifts — drawer lock and override", () => {
+  it("non-owner handleCloseShiftClick shows DrawerOverrideModal (not a toast)", async () => {
+    // Shift opened by Bob; logged-in user is Alice (mocked as Alice globally)
+    cashCounts = [
+      { user: "Bob", timestamp: "2024-01-01T09:00:00Z", type: "opening", count: 100 },
+    ];
+
+    const { useTillShifts } = await import("../useTillShifts");
+    const { result } = renderHook(() => useTillShifts());
+
+    await waitFor(() => expect(result.current.shiftOwner).toBe("Bob"));
+
+    expect(result.current.showDrawerOverrideModal).toBe(false);
+
+    act(() => {
+      result.current.handleCloseShiftClick("close");
+    });
+
+    expect(result.current.showDrawerOverrideModal).toBe(true);
+    // No blocking toast shown
+    expect(showToastMock).not.toHaveBeenCalled();
+  });
+
+  it("cancelDrawerOverride hides modal and shows no form", async () => {
+    cashCounts = [
+      { user: "Bob", timestamp: "2024-01-01T09:00:00Z", type: "opening", count: 100 },
+    ];
+
+    const { useTillShifts } = await import("../useTillShifts");
+    const { result } = renderHook(() => useTillShifts());
+
+    await waitFor(() => expect(result.current.shiftOwner).toBe("Bob"));
+
+    act(() => {
+      result.current.handleCloseShiftClick("close");
+    });
+    expect(result.current.showDrawerOverrideModal).toBe(true);
+
+    act(() => {
+      result.current.cancelDrawerOverride();
+    });
+
+    expect(result.current.showDrawerOverrideModal).toBe(false);
+    expect(result.current.showCloseShiftForm).toBe(false);
+  });
+
+  it("confirmDrawerOverride hides modal and shows close form", async () => {
+    cashCounts = [
+      { user: "Bob", timestamp: "2024-01-01T09:00:00Z", type: "opening", count: 100 },
+    ];
+
+    const { useTillShifts } = await import("../useTillShifts");
+    const { result } = renderHook(() => useTillShifts());
+
+    await waitFor(() => expect(result.current.shiftOwner).toBe("Bob"));
+
+    act(() => {
+      result.current.handleCloseShiftClick("close");
+    });
+
+    const override = {
+      overriddenBy: "Manager",
+      overriddenByUid: "mgr-uid",
+      overriddenAt: "2024-01-01T10:00:00Z",
+      overrideReason: "Staff left early",
+    };
+
+    act(() => {
+      result.current.confirmDrawerOverride(override);
+    });
+
+    expect(result.current.showDrawerOverrideModal).toBe(false);
+    expect(result.current.showCloseShiftForm).toBe(true);
+  });
+
+  it("confirmShiftClose with mismatched user and no pendingOverride shows error and aborts close", async () => {
+    // Shift opened by Bob; Alice is logged in but no override
+    cashCounts = [
+      { user: "Bob", timestamp: "2024-01-01T09:00:00Z", type: "opening", count: 100 },
+    ];
+
+    const { useTillShifts } = await import("../useTillShifts");
+    const { result } = renderHook(() => useTillShifts());
+
+    await waitFor(() => expect(result.current.shiftOwner).toBe("Bob"));
+
+    act(() => {
+      // Call confirmShiftClose directly without going through the override modal
+      result.current.confirmShiftClose("close", 100, 0, true, {});
+    });
+
+    expect(showToastMock).toHaveBeenCalledWith(
+      "Only the shift owner or an authorized manager can close this shift.",
+      "error"
+    );
+    expect(recordShiftClose).not.toHaveBeenCalled();
+  });
+
+  it("override path: confirmDrawerOverride then confirmShiftClose calls recordShiftClose with override fields", async () => {
+    cashCounts = [
+      { user: "Bob", timestamp: "2024-01-01T09:00:00Z", type: "opening", count: 100 },
+    ];
+
+    const { useTillShifts } = await import("../useTillShifts");
+    const { result } = renderHook(() => useTillShifts());
+
+    await waitFor(() => expect(result.current.shiftOwner).toBe("Bob"));
+
+    const override = {
+      overriddenBy: "Manager",
+      overriddenByUid: "mgr-uid",
+      overriddenAt: "2024-01-01T10:00:00Z",
+      overrideReason: "Staff left early",
+    };
+
+    act(() => {
+      result.current.handleCloseShiftClick("close");
+    });
+    act(() => {
+      result.current.confirmDrawerOverride(override);
+    });
+    act(() => {
+      result.current.confirmShiftClose("close", 100, 0, true, {});
+    });
+
+    expect(recordShiftClose).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        override: expect.objectContaining({
+          overriddenBy: "Manager",
+          overriddenByUid: "mgr-uid",
+          overrideReason: "Staff left early",
+        }),
+      })
+    );
+  });
+
+  it("normal close by shift owner calls recordShiftClose without override fields", async () => {
+    // Alice opens and closes her own shift
+    cashCounts = [
+      { user: "Alice", timestamp: "2024-01-01T09:00:00Z", type: "opening", count: 100 },
+    ];
+
+    const { useTillShifts } = await import("../useTillShifts");
+    const { result } = renderHook(() => useTillShifts());
+
+    await waitFor(() => expect(result.current.shiftOwner).toBe("Alice"));
+
+    act(() => {
+      result.current.confirmShiftClose("close", 100, 0, true, {});
+    });
+
+    expect(recordShiftClose).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.not.objectContaining({ override: expect.anything() })
+    );
+  });
+});

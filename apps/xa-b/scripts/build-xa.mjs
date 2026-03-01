@@ -7,7 +7,10 @@ const scriptFilePath = fileURLToPath(import.meta.url);
 const scriptDir = path.dirname(scriptFilePath);
 const appRoot = path.resolve(scriptDir, "..");
 const fallbackCatalogPath = path.join(appRoot, "src", "data", "catalog.json");
+const fallbackMediaIndexPath = path.join(appRoot, "src", "data", "catalog.media.json");
 const runtimeCatalogPath = path.join(appRoot, "src", "data", "catalog.runtime.json");
+const runtimeMediaIndexPath = path.join(appRoot, "src", "data", "catalog.media.runtime.json");
+const runtimeMetaPath = path.join(appRoot, "src", "data", "catalog.runtime.meta.json");
 
 function resolveCatalogReadUrl() {
   const explicit = (process.env.XA_CATALOG_CONTRACT_READ_URL ?? "").trim();
@@ -30,7 +33,10 @@ function resolveCatalogReadTimeoutMs() {
 }
 
 function requireCatalogReadSuccess() {
-  return process.env.XA_CATALOG_CONTRACT_READ_REQUIRED === "1";
+  const raw = (process.env.XA_CATALOG_CONTRACT_READ_REQUIRED ?? "").trim().toLowerCase();
+  if (["1", "true", "yes"].includes(raw)) return true;
+  if (["0", "false", "no"].includes(raw)) return false;
+  return process.env.NODE_ENV === "production";
 }
 
 async function ensureRuntimeCatalogSeed() {
@@ -43,6 +49,21 @@ async function ensureRuntimeCatalogSeed() {
 
   const fallbackRaw = await fs.readFile(fallbackCatalogPath, "utf8");
   await fs.writeFile(runtimeCatalogPath, fallbackRaw, "utf8");
+
+  try {
+    await fs.access(runtimeMediaIndexPath);
+  } catch {
+    const fallbackMediaRaw = await fs
+      .readFile(fallbackMediaIndexPath, "utf8")
+      .catch(() => JSON.stringify({ generatedAt: null, totals: { products: 0, media: 0, warnings: 0 }, items: [] }));
+    await fs.writeFile(runtimeMediaIndexPath, `${fallbackMediaRaw.trim()}\n`, "utf8");
+  }
+}
+
+async function writeRuntimeMeta(meta) {
+  const tempPath = `${runtimeMetaPath}.tmp`;
+  await fs.writeFile(tempPath, `${JSON.stringify(meta, null, 2)}\n`, "utf8");
+  await fs.rename(tempPath, runtimeMetaPath);
 }
 
 function isRecord(value) {
@@ -54,7 +75,16 @@ async function syncCatalogFromContract() {
 
   const readUrl = resolveCatalogReadUrl();
   if (!readUrl) {
+    if (requireCatalogReadSuccess()) {
+      throw new Error("[xa-build] catalog contract read URL not configured.");
+    }
     console.log("[xa-build] catalog contract read URL not configured; using local runtime catalog seed.");
+    await writeRuntimeMeta({
+      source: "fallback",
+      reason: "read_url_unconfigured",
+      syncedAt: new Date().toISOString(),
+      required: false,
+    });
     return;
   }
 
@@ -77,6 +107,14 @@ async function syncCatalogFromContract() {
       throw new Error(`[xa-build] failed to fetch catalog contract: ${message}`);
     }
     console.warn(`[xa-build] failed to fetch catalog contract: ${message}; using existing runtime catalog.`);
+    await writeRuntimeMeta({
+      source: "fallback",
+      reason: "fetch_failed",
+      details: message,
+      syncedAt: new Date().toISOString(),
+      required: false,
+      readUrl,
+    });
     return;
   }
   clearTimeout(timeout);
@@ -89,6 +127,14 @@ async function syncCatalogFromContract() {
       throw new Error(message);
     }
     console.warn(`${message}; using existing runtime catalog.`);
+    await writeRuntimeMeta({
+      source: "fallback",
+      reason: "http_error",
+      status: response.status,
+      syncedAt: new Date().toISOString(),
+      required: false,
+      readUrl,
+    });
     return;
   }
 
@@ -100,6 +146,13 @@ async function syncCatalogFromContract() {
       throw new Error("[xa-build] catalog contract response was not valid JSON.");
     }
     console.warn("[xa-build] catalog contract response was not valid JSON; using existing runtime catalog.");
+    await writeRuntimeMeta({
+      source: "fallback",
+      reason: "invalid_json",
+      syncedAt: new Date().toISOString(),
+      required: false,
+      readUrl,
+    });
     return;
   }
 
@@ -109,13 +162,37 @@ async function syncCatalogFromContract() {
       throw new Error("[xa-build] catalog contract response missing catalog object.");
     }
     console.warn("[xa-build] catalog contract response missing catalog object; using existing runtime catalog.");
+    await writeRuntimeMeta({
+      source: "fallback",
+      reason: "missing_catalog",
+      syncedAt: new Date().toISOString(),
+      required: false,
+      readUrl,
+    });
     return;
+  }
+  const mediaIndex = isRecord(payload) && isRecord(payload.mediaIndex) ? payload.mediaIndex : null;
+  if (!mediaIndex && requireCatalogReadSuccess()) {
+    throw new Error("[xa-build] catalog contract response missing mediaIndex object.");
   }
 
   const next = `${JSON.stringify(catalog, null, 2)}\n`;
   const tempPath = `${runtimeCatalogPath}.tmp`;
+  const mediaIndexNext = `${JSON.stringify(mediaIndex ?? { generatedAt: null, totals: { products: 0, media: 0, warnings: 0 }, items: [] }, null, 2)}\n`;
+  const mediaIndexTempPath = `${runtimeMediaIndexPath}.tmp`;
   await fs.writeFile(tempPath, next, "utf8");
+  await fs.writeFile(mediaIndexTempPath, mediaIndexNext, "utf8");
   await fs.rename(tempPath, runtimeCatalogPath);
+  await fs.rename(mediaIndexTempPath, runtimeMediaIndexPath);
+  await writeRuntimeMeta({
+    source: "contract",
+    syncedAt: new Date().toISOString(),
+    readUrl,
+    version: isRecord(payload) && typeof payload.version === "string" ? payload.version : undefined,
+    publishedAt:
+      isRecord(payload) && typeof payload.publishedAt === "string" ? payload.publishedAt : undefined,
+    hasMediaIndex: Boolean(mediaIndex),
+  });
   console.log(`[xa-build] synced runtime catalog from contract: ${readUrl}`);
 }
 

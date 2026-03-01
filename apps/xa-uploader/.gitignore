@@ -3,3 +3,4 @@
 data/sync-artifacts/
 data/backups/
 data/.xa-upload-state.*.json
+data/publish-history/

@@ -18,6 +18,10 @@ export const tillShiftSchema = z.object({
   signedOffByUid: z.string().optional(),
   signedOffAt: z.string().optional(),
   varianceNote: z.string().optional(),
+  overriddenBy: z.string().optional(),
+  overriddenByUid: z.string().optional(),
+  overriddenAt: z.string().optional(),
+  overrideReason: z.string().optional(),
 });
 
 export const tillShiftsSchema = z.record(tillShiftSchema);

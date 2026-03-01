@@ -19,6 +19,10 @@ export interface TillShift {
   signedOffByUid?: string;
   signedOffAt?: string;
   varianceNote?: string;
+  overriddenBy?: string;
+  overriddenByUid?: string;
+  overriddenAt?: string;
+  overrideReason?: string;
 }
 
 export type TillShifts = Record<string, TillShift> | null;

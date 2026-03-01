@@ -49,6 +49,13 @@ export interface VarianceSignoff {
   varianceNote: string;
 }
 
+export interface DrawerOverride {
+  overriddenBy: string;
+  overriddenByUid?: string;
+  overriddenAt: string;
+  overrideReason: string;
+}
+
 /**
  * Properties accepted by the `ShiftSummary` component. Each monetary
  * property is a plain number rather than a formatted string to allow

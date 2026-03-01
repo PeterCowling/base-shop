@@ -13,6 +13,8 @@ export interface KeycardCountFormProps {
   onConfirm: (counted: number) => void;
   onCancel: () => void;
   hideCancel?: boolean;
+  showExpected?: boolean;
+  onChange?: (count: number) => void;
 }
 
 export const KeycardCountForm = memo(function KeycardCountForm({
@@ -20,6 +22,8 @@ export const KeycardCountForm = memo(function KeycardCountForm({
   onConfirm,
   onCancel,
   hideCancel,
+  showExpected = true,
+  onChange,
 }: KeycardCountFormProps) {
   const [countInput, setCountInput] = useState<string>("0");
   const counted = parseInt(countInput || "0", 10);
@@ -51,14 +55,20 @@ export const KeycardCountForm = memo(function KeycardCountForm({
           id="keycardCount"
           type="number"
           value={countInput}
-          onChange={(e) => setCountInput(e.target.value)}
+          onChange={(e) => {
+            setCountInput(e.target.value);
+            const parsed = parseInt(e.target.value || "0", 10);
+            onChange?.(parsed);
+          }}
           className="border rounded-lg p-1 w-24"
         />
       </div>
-      <div className="text-sm text-warning-main text-end mb-2">
-        Expected: {expectedCount} &nbsp;
-        <DifferenceBadge value={diff} />
-      </div>
+      {showExpected && (
+        <div className="text-sm text-warning-main text-end mb-2">
+          Expected: {expectedCount} &nbsp;
+          <DifferenceBadge value={diff} />
+        </div>
+      )}
       <FormActionButtons
         onCancel={onCancel}
         onConfirm={handleConfirm}

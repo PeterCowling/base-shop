@@ -6,29 +6,42 @@ import { type CatalogProductDraftInput,slugify } from "@acme/lib/xa/catalogAdmin
 
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
-// eslint-disable-next-line complexity, max-lines-per-function -- XAUP-0001 large-operator-form
-export function CatalogProductBaseFields({
-  draft,
-  fieldErrors,
-  monoClassName,
-  onChange,
-}: {
+type BaseFieldsProps = {
   draft: CatalogProductDraftInput;
   fieldErrors: Record<string, string>;
   monoClassName?: string;
   onChange: (next: CatalogProductDraftInput) => void;
-}) {
-  const { t } = useUploaderI18n();
-  const createdAtValue = (() => {
-    if (!draft.createdAt) return "";
-    const parsed = new Date(draft.createdAt);
-    if (Number.isNaN(parsed.getTime())) return "";
-    const local = new Date(parsed.getTime() - parsed.getTimezoneOffset() * 60_000);
-    return local.toISOString().slice(0, 16);
-  })();
+};
 
+type Translate = ReturnType<typeof useUploaderI18n>["t"];
+
+const INPUT_CLASSNAME =
+  "mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20";
+const INPUT_SIMPLE_CLASSNAME =
+  "mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink";
+
+function FieldError({ message }: { message?: string }) {
+  if (!message) return null;
+  return <div className="mt-1 text-xs text-danger-fg">{message}</div>;
+}
+
+function toDateTimeLocalValue(value: string | undefined): string {
+  if (!value) return "";
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return "";
+  const local = new Date(parsed.getTime() - parsed.getTimezoneOffset() * 60_000);
+  return local.toISOString().slice(0, 16);
+}
+
+function IdentityFields({
+  t,
+  draft,
+  fieldErrors,
+  monoClassName,
+  onChange,
+}: BaseFieldsProps & { t: Translate }) {
   return (
-    <div className="grid gap-4 md:grid-cols-2">
+    <>
       <label className="block text-xs uppercase tracking-label text-gate-muted md:col-span-2">
         {t("fieldTitle")}
         <input
@@ -43,21 +56,17 @@ export function CatalogProductBaseFields({
               slug: draft.slug ? draft.slug : slugify(title),
             });
           }}
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
+          className={INPUT_CLASSNAME}
         />
-        {fieldErrors.title ? (
-          <div className="mt-1 text-xs text-danger-fg">{fieldErrors.title}</div>
-        ) : null}
+        <FieldError message={fieldErrors.title} />
       </label>
 
-      <label
-        className={`block text-xs uppercase tracking-label text-gate-muted ${monoClassName}`}
-      >
+      <label className={`block text-xs uppercase tracking-label text-gate-muted ${monoClassName}`}>
         {t("fieldSlug")}
         <input
           value={draft.slug ?? ""}
           onChange={(event) => onChange({ ...draft, slug: slugify(event.target.value) })}
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
+          className={INPUT_CLASSNAME}
         />
       </label>
 
@@ -69,11 +78,9 @@ export function CatalogProductBaseFields({
           type="number"
           min="0"
           step="0.01"
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
+          className={INPUT_CLASSNAME}
         />
-        {fieldErrors.price ? (
-          <div className="mt-1 text-xs text-danger-fg">{fieldErrors.price}</div>
-        ) : null}
+        <FieldError message={fieldErrors.price} />
       </label>
 
       <label className="block text-xs uppercase tracking-label text-gate-muted">
@@ -84,7 +91,7 @@ export function CatalogProductBaseFields({
           type="number"
           min="0"
           step="0.01"
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
+          className={INPUT_CLASSNAME}
         />
       </label>
 
@@ -95,11 +102,9 @@ export function CatalogProductBaseFields({
           data-testid="catalog-field-brand-handle"
           value={draft.brandHandle ?? ""}
           onChange={(event) => onChange({ ...draft, brandHandle: slugify(event.target.value) })}
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
+          className={INPUT_CLASSNAME}
         />
-        {fieldErrors.brandHandle ? (
-          <div className="mt-1 text-xs text-danger-fg">{fieldErrors.brandHandle}</div>
-        ) : null}
+        <FieldError message={fieldErrors.brandHandle} />
       </label>
 
       <label className="block text-xs uppercase tracking-label text-gate-muted">
@@ -107,7 +112,7 @@ export function CatalogProductBaseFields({
         <input
           value={draft.brandName ?? ""}
           onChange={(event) => onChange({ ...draft, brandName: event.target.value })}
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
+          className={INPUT_CLASSNAME}
         />
       </label>
 
@@ -117,14 +122,10 @@ export function CatalogProductBaseFields({
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="catalog-field-collection-handle"
           value={draft.collectionHandle ?? ""}
-          onChange={(event) =>
-            onChange({ ...draft, collectionHandle: slugify(event.target.value) })
-          }
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
+          onChange={(event) => onChange({ ...draft, collectionHandle: slugify(event.target.value) })}
+          className={INPUT_CLASSNAME}
         />
-        {fieldErrors.collectionHandle ? (
-          <div className="mt-1 text-xs text-danger-fg">{fieldErrors.collectionHandle}</div>
-        ) : null}
+        <FieldError message={fieldErrors.collectionHandle} />
       </label>
 
       <label className="block text-xs uppercase tracking-label text-gate-muted">
@@ -132,7 +133,7 @@ export function CatalogProductBaseFields({
         <input
           value={draft.collectionTitle ?? ""}
           onChange={(event) => onChange({ ...draft, collectionTitle: event.target.value })}
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
+          className={INPUT_CLASSNAME}
         />
       </label>
 
@@ -142,7 +143,7 @@ export function CatalogProductBaseFields({
           value={draft.collectionDescription ?? ""}
           onChange={(event) => onChange({ ...draft, collectionDescription: event.target.value })}
           rows={2}
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
+          className={INPUT_CLASSNAME}
         />
       </label>
 
@@ -154,13 +155,17 @@ export function CatalogProductBaseFields({
           value={draft.description ?? ""}
           onChange={(event) => onChange({ ...draft, description: event.target.value })}
           rows={3}
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
+          className={INPUT_CLASSNAME}
         />
-        {fieldErrors.description ? (
-          <div className="mt-1 text-xs text-danger-fg">{fieldErrors.description}</div>
-        ) : null}
+        <FieldError message={fieldErrors.description} />
       </label>
+    </>
+  );
+}
 
+function TaxonomyFields({ t, draft, fieldErrors, onChange }: BaseFieldsProps & { t: Translate }) {
+  return (
+    <>
       <div className="md:col-span-2 grid gap-4 md:grid-cols-2">
         <label className="block text-xs uppercase tracking-label text-gate-muted">
           {t("fieldDepartment")}
@@ -172,7 +177,7 @@ export function CatalogProductBaseFields({
                 taxonomy: { ...draft.taxonomy, department: event.target.value as never },
               })
             }
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
+            className={INPUT_CLASSNAME}
           >
             <option value="women">{t("departmentWomen")}</option>
             <option value="men">{t("departmentMen")}</option>
@@ -190,7 +195,7 @@ export function CatalogProductBaseFields({
                 taxonomy: { ...draft.taxonomy, category: event.target.value as never },
               })
             }
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
+            className={INPUT_CLASSNAME}
           >
             <option value="clothing">{t("categoryClothing")}</option>
             <option value="bags">{t("categoryBags")}</option>
@@ -211,11 +216,9 @@ export function CatalogProductBaseFields({
               taxonomy: { ...draft.taxonomy, subcategory: slugify(event.target.value) },
             })
           }
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
+          className={INPUT_CLASSNAME}
         />
-        {fieldErrors["taxonomy.subcategory"] ? (
-          <div className="mt-1 text-xs text-danger-fg">{fieldErrors["taxonomy.subcategory"]}</div>
-        ) : null}
+        <FieldError message={fieldErrors["taxonomy.subcategory"]} />
       </label>
 
       <label className="block text-xs uppercase tracking-label text-gate-muted">
@@ -227,11 +230,9 @@ export function CatalogProductBaseFields({
           onChange={(event) =>
             onChange({ ...draft, taxonomy: { ...draft.taxonomy, color: event.target.value } })
           }
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
+          className={INPUT_CLASSNAME}
         />
-        {fieldErrors["taxonomy.color"] ? (
-          <div className="mt-1 text-xs text-danger-fg">{fieldErrors["taxonomy.color"]}</div>
-        ) : null}
+        <FieldError message={fieldErrors["taxonomy.color"]} />
       </label>
 
       <label className="block text-xs uppercase tracking-label text-gate-muted">
@@ -243,11 +244,9 @@ export function CatalogProductBaseFields({
           onChange={(event) =>
             onChange({ ...draft, taxonomy: { ...draft.taxonomy, material: event.target.value } })
           }
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
+          className={INPUT_CLASSNAME}
         />
-        {fieldErrors["taxonomy.material"] ? (
-          <div className="mt-1 text-xs text-danger-fg">{fieldErrors["taxonomy.material"]}</div>
-        ) : null}
+        <FieldError message={fieldErrors["taxonomy.material"]} />
       </label>
 
       <div className="md:col-span-2 grid gap-4 md:grid-cols-3">
@@ -268,7 +267,15 @@ export function CatalogProductBaseFields({
           {t("fieldForRental")}
         </label>
       </div>
+    </>
+  );
+}
 
+function CommercialFields({ t, draft, fieldErrors, onChange }: BaseFieldsProps & { t: Translate }) {
+  const createdAtValue = toDateTimeLocalValue(draft.createdAt);
+
+  return (
+    <>
       <label className="block text-xs uppercase tracking-label text-gate-muted">
         {t("fieldDeposit")}
         <input
@@ -277,7 +284,7 @@ export function CatalogProductBaseFields({
           type="number"
           min="0"
           step="0.01"
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
+          className={INPUT_SIMPLE_CLASSNAME}
         />
       </label>
 
@@ -289,7 +296,7 @@ export function CatalogProductBaseFields({
           type="number"
           min="0"
           step="1"
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
+          className={INPUT_SIMPLE_CLASSNAME}
         />
       </label>
 
@@ -301,7 +308,7 @@ export function CatalogProductBaseFields({
           type="number"
           min="0"
           step="1"
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
+          className={INPUT_SIMPLE_CLASSNAME}
         />
       </label>
 
@@ -315,12 +322,22 @@ export function CatalogProductBaseFields({
           }}
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 operator-tool input-type
           type="datetime-local"
-          className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink"
+          className={INPUT_SIMPLE_CLASSNAME}
         />
-        {fieldErrors.createdAt ? (
-          <div className="mt-1 text-xs text-danger-fg">{fieldErrors.createdAt}</div>
-        ) : null}
+        <FieldError message={fieldErrors.createdAt} />
       </label>
+    </>
+  );
+}
+
+export function CatalogProductBaseFields(props: BaseFieldsProps) {
+  const { t } = useUploaderI18n();
+
+  return (
+    <div className="grid gap-4 md:grid-cols-2">
+      <IdentityFields {...props} t={t} />
+      <TaxonomyFields {...props} t={t} />
+      <CommercialFields {...props} t={t} />
     </div>
   );
 }

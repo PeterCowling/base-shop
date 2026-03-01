@@ -6,7 +6,86 @@ import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 import type { ActionFeedback } from "./useCatalogConsole.client";
 
-// eslint-disable-next-line complexity -- XAUP-0001 conditional-upload-logic
+type CatalogSubmissionPanelProps = {
+  busy: boolean;
+  submissionAction?: "export" | "upload" | null;
+  selectedCount: number;
+  maxProducts: number;
+  maxBytes?: number;
+  minImageEdge?: number;
+  r2Destination?: string;
+  uploadUrl?: string;
+  feedback?: ActionFeedback | null;
+  onUploadUrlChange?: (value: string) => void;
+  onUploadToR2?: () => void;
+  onExport: () => void;
+  onClear: () => void;
+};
+
+function SubmissionFeedback({ feedback }: { feedback: ActionFeedback | null }) {
+  if (!feedback) return null;
+
+  return (
+    <div
+      role={feedback.kind === "error" ? "alert" : "status"}
+      aria-live={feedback.kind === "error" ? "assertive" : "polite"}
+      className={feedback.kind === "error" ? "text-sm text-danger-fg" : "text-sm text-success-fg"}
+      // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+      data-testid="catalog-submission-feedback"
+    >
+      {feedback.message}
+    </div>
+  );
+}
+
+function SubmissionRules({
+  t,
+  maxProducts,
+  maxMb,
+  minImageEdge,
+}: {
+  t: ReturnType<typeof useUploaderI18n>["t"];
+  maxProducts: number;
+  maxMb: number;
+  minImageEdge: number;
+}) {
+  return (
+    <div className="mt-4 text-sm text-gate-muted">
+      <div className="text-xs uppercase tracking-label-lg">{t("submissionRulesTitle")}</div>
+      <ul className="mt-2 list-disc space-y-1 ps-5">
+        <li>{t("submissionRuleMaxProducts", { max: maxProducts })}</li>
+        <li>{t("submissionRuleMaxSize", { maxMb })}</li>
+        <li>{t("submissionRuleLocalRun")}</li>
+        <li>{t("submissionRuleImageSpec", { minEdge: minImageEdge })}</li>
+        <li>{t("submissionRuleNewLink")}</li>
+      </ul>
+    </div>
+  );
+}
+
+function deriveSubmissionState({
+  busy,
+  selectedCount,
+  maxProducts,
+  maxBytes,
+  uploadUrl,
+  uploadSectionEnabled,
+}: {
+  busy: boolean;
+  selectedCount: number;
+  maxProducts: number;
+  maxBytes: number;
+  uploadUrl: string;
+  uploadSectionEnabled: boolean;
+}) {
+  const disabled = busy || selectedCount < 1 || selectedCount > maxProducts;
+  return {
+    disabled,
+    maxMb: Math.max(1, Math.round(maxBytes / 1024 / 1024)),
+    uploadDisabled: !uploadSectionEnabled || disabled || !uploadUrl.trim(),
+  };
+}
+
 export function CatalogSubmissionPanel({
   busy,
   submissionAction = null,
@@ -21,28 +100,19 @@ export function CatalogSubmissionPanel({
   onUploadToR2,
   onExport,
   onClear,
-}: {
-  busy: boolean;
-  submissionAction?: "export" | "upload" | null;
-  selectedCount: number;
-  maxProducts: number;
-  maxBytes?: number;
-  minImageEdge?: number;
-  r2Destination?: string;
-  uploadUrl?: string;
-  feedback?: ActionFeedback | null;
-  onUploadUrlChange?: (value: string) => void;
-  onUploadToR2?: () => void;
-  onExport: () => void;
-  onClear: () => void;
-}) {
+}: CatalogSubmissionPanelProps) {
   const { t } = useUploaderI18n();
   const exportButtonRef = React.useRef<HTMLButtonElement | null>(null);
-  const disabled = busy || selectedCount < 1 || selectedCount > maxProducts;
-  const uploadFieldValue = uploadUrl ?? "";
   const uploadSectionEnabled = Boolean(onUploadUrlChange && onUploadToR2);
-  const uploadDisabled = !uploadSectionEnabled || disabled || !uploadFieldValue.trim();
-  const maxMb = Math.max(1, Math.round(maxBytes / 1024 / 1024));
+  const uploadFieldValue = uploadUrl ?? "";
+  const { disabled, uploadDisabled, maxMb } = deriveSubmissionState({
+    busy,
+    selectedCount,
+    maxProducts,
+    maxBytes,
+    uploadUrl: uploadFieldValue,
+    uploadSectionEnabled,
+  });
 
   React.useEffect(() => {
     if (feedback?.kind === "error") {
@@ -86,16 +156,7 @@ export function CatalogSubmissionPanel({
         </div>
       </div>
 
-      <div className="mt-4 text-sm text-gate-muted">
-        <div className="text-xs uppercase tracking-label-lg">{t("submissionRulesTitle")}</div>
-        <ul className="mt-2 list-disc space-y-1 ps-5">
-          <li>{t("submissionRuleMaxProducts", { max: maxProducts })}</li>
-          <li>{t("submissionRuleMaxSize", { maxMb })}</li>
-          <li>{t("submissionRuleLocalRun")}</li>
-          <li>{t("submissionRuleImageSpec", { minEdge: minImageEdge })}</li>
-          <li>{t("submissionRuleNewLink")}</li>
-        </ul>
-      </div>
+      <SubmissionRules t={t} maxProducts={maxProducts} maxMb={maxMb} minImageEdge={minImageEdge} />
 
       {uploadSectionEnabled ? (
         <div className="mt-6 border-t border-border-2 pt-6">
@@ -129,19 +190,7 @@ export function CatalogSubmissionPanel({
             >
               {submissionAction === "upload" ? t("uploadingToR2") : t("uploadToR2")}
             </button>
-            {feedback ? (
-              <div
-                role={feedback.kind === "error" ? "alert" : "status"}
-                aria-live={feedback.kind === "error" ? "assertive" : "polite"}
-                className={
-                  feedback.kind === "error" ? "text-sm text-danger-fg" : "text-sm text-success-fg"
-                }
-                // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-                data-testid="catalog-submission-feedback"
-              >
-                {feedback.message}
-              </div>
-            ) : null}
+            <SubmissionFeedback feedback={feedback} />
           </div>
         </div>
       ) : null}

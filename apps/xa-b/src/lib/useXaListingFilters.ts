@@ -38,6 +38,26 @@ type FilterValues = ReturnType<typeof createEmptyFilterValues>;
 
 type AppliedChip = { label: string; onRemove: () => void };
 
+type AppliedFilterState = {
+  appliedValues: FilterValues;
+  appliedInStock: boolean;
+  appliedSale: boolean;
+  appliedWindow: string | null;
+  appliedNewIn: boolean;
+  appliedMin: number | null;
+  appliedMax: number | null;
+  sort: SortKey;
+};
+
+type DraftFilterState = {
+  draftValues: FilterValues;
+  draftInStock: boolean;
+  draftSale: boolean;
+  draftNewIn: boolean;
+  draftMin: string;
+  draftMax: string;
+};
+
 function buildAppliedValues(query: URLSearchParams): FilterValues {
   const out = createEmptyFilterValues();
   for (const key of ALL_FILTER_KEYS) {
@@ -56,6 +76,100 @@ function resolveReferenceTimestamp(products: XaProduct[]) {
 function resolveNewInDays(appliedWindow: string | null, appliedNewIn: boolean) {
   const windowDays = appliedWindow === "day" ? 1 : appliedWindow === "week" ? 7 : null;
   return windowDays ?? (appliedNewIn ? 30 : null);
+}
+
+function deriveAppliedFilterState(query: URLSearchParams): AppliedFilterState {
+  const appliedValues = buildAppliedValues(query);
+  const appliedAvailability = query.get("availability") ?? null;
+  const appliedWindow = query.get("window") ?? null;
+
+  return {
+    appliedValues,
+    appliedInStock: appliedAvailability === "in-stock",
+    appliedSale: query.get("sale") === "1",
+    appliedWindow,
+    appliedNewIn: query.get("new-in") === "1" || Boolean(appliedWindow),
+    appliedMin: toNumber(query.get("price[min]")),
+    appliedMax: toNumber(query.get("price[max]")),
+    sort: (query.get("sort") as SortKey | null) ?? "newest",
+  };
+}
+
+function toDraftFilterState(applied: AppliedFilterState): DraftFilterState {
+  return {
+    draftValues: cloneFilterValues(applied.appliedValues),
+    draftInStock: applied.appliedInStock,
+    draftSale: applied.appliedSale,
+    draftNewIn: applied.appliedNewIn,
+    draftMin: applied.appliedMin?.toString() ?? "",
+    draftMax: applied.appliedMax?.toString() ?? "",
+  };
+}
+
+function useDraftFilterState({
+  filtersOpen,
+  applied,
+}: {
+  filtersOpen: boolean;
+  applied: AppliedFilterState;
+}) {
+  const [state, setState] = React.useState<DraftFilterState>(() =>
+    toDraftFilterState(applied),
+  );
+
+  React.useEffect(() => {
+    if (!filtersOpen) return;
+    setState(toDraftFilterState(applied));
+  }, [applied, filtersOpen]);
+
+  const setDraftValues = React.useCallback((next: FilterValues | ((prev: FilterValues) => FilterValues)) => {
+    setState((prev) => ({
+      ...prev,
+      draftValues: typeof next === "function" ? next(prev.draftValues) : next,
+    }));
+  }, []);
+
+  const setDraftInStock = React.useCallback((next: boolean) => {
+    setState((prev) => ({ ...prev, draftInStock: next }));
+  }, []);
+
+  const setDraftSale = React.useCallback((next: boolean) => {
+    setState((prev) => ({ ...prev, draftSale: next }));
+  }, []);
+
+  const setDraftNewIn = React.useCallback((next: boolean) => {
+    setState((prev) => ({ ...prev, draftNewIn: next }));
+  }, []);
+
+  const setDraftMin = React.useCallback((next: string) => {
+    setState((prev) => ({ ...prev, draftMin: next }));
+  }, []);
+
+  const setDraftMax = React.useCallback((next: string) => {
+    setState((prev) => ({ ...prev, draftMax: next }));
+  }, []);
+
+  const clearAllDraft = React.useCallback(() => {
+    setState({
+      draftValues: createEmptyFilterValues(),
+      draftInStock: false,
+      draftSale: false,
+      draftNewIn: false,
+      draftMin: "",
+      draftMax: "",
+    });
+  }, []);
+
+  return {
+    ...state,
+    setDraftValues,
+    setDraftInStock,
+    setDraftSale,
+    setDraftNewIn,
+    setDraftMin,
+    setDraftMax,
+    clearAllDraft,
+  };
 }
 
 function filterAndSortProducts({
@@ -287,44 +401,32 @@ export function useXaListingFilters({
   const searchParams = useSearchParams();
   const queryKey = searchParams.toString();
   const query = React.useMemo(() => new URLSearchParams(queryKey), [queryKey]);
-
-  const appliedValues = React.useMemo(() => buildAppliedValues(query), [query]);
-
-  const appliedAvailability = query.get("availability") ?? null;
-  const appliedInStock = appliedAvailability === "in-stock";
-  const appliedSale = query.get("sale") === "1";
-  const appliedWindow = query.get("window") ?? null;
-  const appliedNewIn = query.get("new-in") === "1" || Boolean(appliedWindow);
-  const appliedMin = toNumber(query.get("price[min]"));
-  const appliedMax = toNumber(query.get("price[max]"));
-  const sort = (query.get("sort") as SortKey | null) ?? "newest";
-
-  const [draftValues, setDraftValues] = React.useState(() =>
-    cloneFilterValues(appliedValues),
-  );
-  const [draftInStock, setDraftInStock] = React.useState(appliedInStock);
-  const [draftSale, setDraftSale] = React.useState(appliedSale);
-  const [draftNewIn, setDraftNewIn] = React.useState(appliedNewIn);
-  const [draftMin, setDraftMin] = React.useState(appliedMin?.toString() ?? "");
-  const [draftMax, setDraftMax] = React.useState(appliedMax?.toString() ?? "");
-
-  React.useEffect(() => {
-    if (!filtersOpen) return;
-    setDraftValues(cloneFilterValues(appliedValues));
-    setDraftInStock(appliedInStock);
-    setDraftSale(appliedSale);
-    setDraftNewIn(appliedNewIn);
-    setDraftMin(appliedMin?.toString() ?? "");
-    setDraftMax(appliedMax?.toString() ?? "");
-  }, [
-    appliedInStock,
-    appliedMax,
-    appliedMin,
-    appliedNewIn,
-    appliedSale,
+  const applied = React.useMemo(() => deriveAppliedFilterState(query), [query]);
+  const {
+    draftValues,
+    draftInStock,
+    draftSale,
+    draftNewIn,
+    draftMin,
+    draftMax,
+    setDraftValues,
+    setDraftInStock,
+    setDraftSale,
+    setDraftNewIn,
+    setDraftMin,
+    setDraftMax,
+    clearAllDraft,
+  } = useDraftFilterState({ filtersOpen, applied });
+  const {
     appliedValues,
-    filtersOpen,
-  ]);
+    appliedInStock,
+    appliedSale,
+    appliedWindow,
+    appliedNewIn,
+    appliedMin,
+    appliedMax,
+    sort,
+  } = applied;
 
   const filterConfigs = React.useMemo(
     () => getFilterConfigs(category, { showType: showTypeFilter }),
@@ -399,15 +501,6 @@ export function useXaListingFilters({
       next[key] = bucket;
       return next;
     });
-  };
-
-  const clearAllDraft = () => {
-    setDraftValues(createEmptyFilterValues());
-    setDraftInStock(false);
-    setDraftSale(false);
-    setDraftNewIn(false);
-    setDraftMin("");
-    setDraftMax("");
   };
 
   const applyFilters = () =>

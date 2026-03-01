@@ -413,7 +413,6 @@ function useCatalogSubmissionHandlers(state: CatalogConsoleState) {
     handleExportSubmissionImpl({
       submissionSlugs: state.submissionSlugs,
       storefront: state.storefront,
-      uploaderMode: state.uploaderMode,
       t: state.t,
       busyLockRef: state.busyLockRef,
       setBusy: state.setBusy,
@@ -427,7 +426,6 @@ function useCatalogSubmissionHandlers(state: CatalogConsoleState) {
       submissionSlugs: state.submissionSlugs,
       submissionUploadUrl: state.submissionUploadUrl,
       storefront: state.storefront,
-      uploaderMode: state.uploaderMode,
       t: state.t,
       busyLockRef: state.busyLockRef,
       setBusy: state.setBusy,

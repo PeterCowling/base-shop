@@ -14,7 +14,7 @@ export function CatalogSubmissionPanel({
   maxProducts,
   maxBytes = 250 * 1024 * 1024,
   minImageEdge = 1600,
-  r2Destination = "r2://<bucket>/submissions/",
+  r2Destination = "storage://<destination>/submissions/",
   uploadUrl,
   feedback = null,
   onUploadUrlChange,

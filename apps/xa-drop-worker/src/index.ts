@@ -14,6 +14,7 @@ export interface Env {
   UPLOAD_TOKEN_MAX_TTL_SECONDS?: string;
   UPLOAD_ALLOW_URL_TOKENS?: string;
   CATALOG_ALLOW_QUERY_TOKEN?: string;
+  ALLOWED_IPS?: string;
 }
 
 type VerifiedToken = {
@@ -72,6 +73,37 @@ function parseAllowedOrigins(raw: string | undefined): string[] {
       }
     })
     .filter(Boolean);
+}
+
+function parseAllowedIps(raw: string | undefined): Set<string> {
+  return new Set(
+    (raw ?? "")
+      .split(",")
+      .map((entry) => entry.trim())
+      .filter(Boolean),
+  );
+}
+
+function firstHeaderIp(raw: string | null): string {
+  return (raw ?? "").split(",")[0]?.trim() ?? "";
+}
+
+function requestIp(request: Request): string {
+  const cfConnectingIp = firstHeaderIp(request.headers.get("cf-connecting-ip"));
+  if (cfConnectingIp) return cfConnectingIp;
+
+  const forwarded = firstHeaderIp(request.headers.get("x-forwarded-for"));
+  if (forwarded) return forwarded;
+
+  return firstHeaderIp(request.headers.get("x-real-ip"));
+}
+
+function isIpAllowed(request: Request, env: Env): boolean {
+  const allowlisted = parseAllowedIps(env.ALLOWED_IPS);
+  if (!allowlisted.size) return true;
+  const ip = requestIp(request);
+  if (!ip) return false;
+  return allowlisted.has(ip);
 }
 
 function resolveAllowedCorsOrigin(request: Request, env: Env): string | null {
@@ -890,6 +922,9 @@ const worker = {
     const url = new URL(request.url);
     const requestHasOrigin = Boolean(request.headers.get("origin"));
     const allowedCorsOrigin = resolveAllowedCorsOrigin(request, env);
+    if (!isIpAllowed(request, env)) {
+      return withCors(request, json({ ok: false }, 404), allowedCorsOrigin);
+    }
     const response = await routeRequest({
       request,
       env,

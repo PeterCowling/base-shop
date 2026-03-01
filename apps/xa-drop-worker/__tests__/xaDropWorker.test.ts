@@ -67,6 +67,34 @@ describe("xa-drop-worker", () => {
     expect(res.headers.get("access-control-allow-origin")).toBeNull();
   });
 
+  it("rejects requests from non-allowlisted IPs when ALLOWED_IPS is configured", async () => {
+    const res = await handler.fetch(
+      new Request("https://drop.example/health", {
+        headers: { "CF-Connecting-IP": "203.0.113.9" },
+      }),
+      {
+        SUBMISSIONS_BUCKET: {} as unknown as R2Bucket,
+        UPLOAD_TOKEN_SECRET: secret,
+        ALLOWED_IPS: "198.51.100.10",
+      },
+    );
+    expect(res.status).toBe(404);
+  });
+
+  it("allows requests from allowlisted IPs when ALLOWED_IPS is configured", async () => {
+    const res = await handler.fetch(
+      new Request("https://drop.example/health", {
+        headers: { "CF-Connecting-IP": "198.51.100.10" },
+      }),
+      {
+        SUBMISSIONS_BUCKET: {} as unknown as R2Bucket,
+        UPLOAD_TOKEN_SECRET: secret,
+        ALLOWED_IPS: "198.51.100.10",
+      },
+    );
+    expect(res.status).toBe(200);
+  });
+
   it("rejects invalid tokens", async () => {
     const bucket = { head: jest.fn(), put: jest.fn() } as unknown as R2Bucket;
     const res = await handler.fetch(

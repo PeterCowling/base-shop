@@ -495,7 +495,6 @@ export async function handleSyncImpl({
 export async function handleExportSubmissionImpl({
   submissionSlugs,
   storefront,
-  uploaderMode,
   t,
   busyLockRef,
   setBusy,
@@ -505,7 +504,6 @@ export async function handleExportSubmissionImpl({
 }: {
   submissionSlugs: Set<string>;
   storefront: XaCatalogStorefront;
-  uploaderMode: "vendor" | "internal";
   t: Translator;
   busyLockRef: BusyLockRef;
   setBusy: React.Dispatch<React.SetStateAction<boolean>>;
@@ -519,7 +517,7 @@ export async function handleExportSubmissionImpl({
   setSubmissionAction("export");
   try {
     const slugs = Array.from(submissionSlugs);
-    const { blob, filename, submissionId, r2Key } = await fetchSubmissionZip(
+    const { blob, filename, submissionId } = await fetchSubmissionZip(
       slugs,
       t("exportFailed"),
       storefront,
@@ -528,7 +526,6 @@ export async function handleExportSubmissionImpl({
     handleClearSubmission();
     const statusParts: string[] = [];
     statusParts.push(submissionId ? t("submissionReady", { id: submissionId }) : filename);
-    if (uploaderMode === "internal" && r2Key) statusParts.push(r2Key);
     updateActionFeedback(setActionFeedback, "submission", {
       kind: "success",
       message: statusParts.join(" · "),
@@ -548,7 +545,6 @@ export async function handleUploadSubmissionToR2Impl({
   submissionSlugs,
   submissionUploadUrl,
   storefront,
-  uploaderMode,
   t,
   busyLockRef,
   setBusy,
@@ -559,7 +555,6 @@ export async function handleUploadSubmissionToR2Impl({
   submissionSlugs: Set<string>;
   submissionUploadUrl: string;
   storefront: XaCatalogStorefront;
-  uploaderMode: "vendor" | "internal";
   t: Translator;
   busyLockRef: BusyLockRef;
   setBusy: React.Dispatch<React.SetStateAction<boolean>>;
@@ -574,7 +569,7 @@ export async function handleUploadSubmissionToR2Impl({
   setSubmissionAction("upload");
   try {
     const slugs = Array.from(submissionSlugs);
-    const { blob, filename, submissionId, r2Key } = await fetchSubmissionZip(
+    const { blob, filename, submissionId } = await fetchSubmissionZip(
       slugs,
       t("exportFailed"),
       storefront,
@@ -594,7 +589,6 @@ export async function handleUploadSubmissionToR2Impl({
     handleClearSubmission();
     const statusParts: string[] = [];
     statusParts.push(submissionId ? t("submissionUploaded", { id: submissionId }) : filename);
-    if (uploaderMode === "internal" && r2Key) statusParts.push(r2Key);
     updateActionFeedback(setActionFeedback, "submission", {
       kind: "success",
       message: statusParts.join(" · "),

@@ -23,6 +23,10 @@ UPLOAD_TOKEN_MAX_TTL_SECONDS = "900"
 # If omitted, browser-origin uploads are rejected (non-browser uploads still work).
 # UPLOAD_ALLOWED_ORIGINS = ""
 
+# Optional ingress allowlist (comma-separated source IPs).
+# When set, requests from non-allowlisted IPs return 404.
+# ALLOWED_IPS = "203.0.113.10,198.51.100.15"
+
 # Catalog contract object key prefix.
 CATALOG_PREFIX = "catalog/"
 

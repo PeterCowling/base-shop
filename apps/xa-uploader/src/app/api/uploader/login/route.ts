@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { isUploaderIpAllowedByHeaders, uploaderAccessDeniedJsonResponse } from "../../../../lib/accessControl";
 import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
 import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
 import {
@@ -24,6 +25,10 @@ function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLi
 }
 
 export async function POST(request: Request) {
+  if (!isUploaderIpAllowedByHeaders(request.headers)) {
+    return uploaderAccessDeniedJsonResponse();
+  }
+
   const requestIp = getRequestIp(request) || "unknown";
   const limit = rateLimit({
     key: `xa-uploader-login:${requestIp}`,

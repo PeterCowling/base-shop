@@ -38,10 +38,10 @@ describe("useEodClosureMutations", () => {
     setMock = jest.fn().mockResolvedValue(undefined);
   });
 
-  it("TC-01: writes set() with correct path and payload when user is present", async () => {
+  it("TC-01: confirmDayClosed with snapshot → set() called with cashVariance and stockItemsCounted", async () => {
     const { result } = renderHook(() => useEodClosureMutations());
 
-    await result.current.confirmDayClosed();
+    await result.current.confirmDayClosed({ cashVariance: -3.5, stockItemsCounted: 12 });
 
     expect(setMock).toHaveBeenCalledTimes(1);
     expect(setMock).toHaveBeenCalledWith("eodClosures/2026-02-28", {
@@ -49,6 +49,8 @@ describe("useEodClosureMutations", () => {
       timestamp: "2026-02-28T22:00:00.000+01:00",
       confirmedBy: "pete",
       uid: undefined,
+      cashVariance: -3.5,
+      stockItemsCounted: 12,
     });
   });
 
@@ -60,5 +62,38 @@ describe("useEodClosureMutations", () => {
     await result.current.confirmDayClosed();
 
     expect(setMock).not.toHaveBeenCalled();
+  });
+
+  it("TC-03: confirmDayClosed with zero-value snapshot → set() called with cashVariance: 0 and stockItemsCounted: 0", async () => {
+    const { result } = renderHook(() => useEodClosureMutations());
+
+    await result.current.confirmDayClosed({ cashVariance: 0, stockItemsCounted: 0 });
+
+    expect(setMock).toHaveBeenCalledTimes(1);
+    expect(setMock).toHaveBeenCalledWith("eodClosures/2026-02-28", {
+      date: "2026-02-28",
+      timestamp: "2026-02-28T22:00:00.000+01:00",
+      confirmedBy: "pete",
+      uid: undefined,
+      cashVariance: 0,
+      stockItemsCounted: 0,
+    });
+  });
+
+  it("TC-04: confirmDayClosed() with no args → set() called with original 4-field payload; no new fields present", async () => {
+    const { result } = renderHook(() => useEodClosureMutations());
+
+    await result.current.confirmDayClosed();
+
+    expect(setMock).toHaveBeenCalledTimes(1);
+    const calledWith = setMock.mock.calls[0][1] as Record<string, unknown>;
+    expect(calledWith).toEqual({
+      date: "2026-02-28",
+      timestamp: "2026-02-28T22:00:00.000+01:00",
+      confirmedBy: "pete",
+      uid: undefined,
+    });
+    expect("cashVariance" in calledWith).toBe(false);
+    expect("stockItemsCounted" in calledWith).toBe(false);
   });
 });

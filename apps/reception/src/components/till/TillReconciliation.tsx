@@ -12,6 +12,7 @@ import { PageShell } from "../common/PageShell";
 import ActionButtons from "./ActionButtons";
 import AddKeycardsModal from "./AddKeycardsModal";
 import DrawerLimitWarning from "./DrawerLimitWarning";
+import DrawerOverrideModal from "./DrawerOverrideModal";
 import FormsContainer from "./FormsContainer";
 import ReturnKeycardsModal from "./ReturnKeycardsModal";
 import TillShiftHistory from "./TillShiftHistory";
@@ -150,6 +151,13 @@ function TillReconciliation(): JSX.Element {
           <ReturnKeycardsModal
             onConfirm={props.confirmReturnKeycard}
             onCancel={props.cancelReturnKeycard}
+          />
+        )}
+        {props.showDrawerOverrideModal && (
+          <DrawerOverrideModal
+            shiftOwnerName={props.shiftOwner ?? ""}
+            onConfirm={props.confirmDrawerOverride}
+            onCancel={props.cancelDrawerOverride}
           />
         )}
       </div>

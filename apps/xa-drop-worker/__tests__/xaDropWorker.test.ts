@@ -269,6 +269,32 @@ describe("xa-drop-worker", () => {
     expect((bucket as any).put).not.toHaveBeenCalled();
   });
 
+  it("enforces free-tier ttl cap even if env attempts a larger token ttl", async () => {
+    const iat = Math.floor(Date.now() / 1000);
+    const token = makeToken(secret, { iat, exp: iat + 1800, nonce: "nonce-env-ttl-cap" });
+    const bucket = { put: jest.fn().mockResolvedValue({ key: "ok" }) } as unknown as R2Bucket;
+
+    const res = await handler.fetch(
+      new Request("https://drop.example/upload", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/zip",
+          "Content-Length": "3",
+          "X-XA-Upload-Token": token,
+        },
+        body: new Uint8Array([1, 2, 3]),
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        UPLOAD_TOKEN_SECRET: secret,
+        UPLOAD_TOKEN_MAX_TTL_SECONDS: "7200",
+      },
+    );
+
+    expect(res.status).toBe(401);
+    expect((bucket as any).put).not.toHaveBeenCalled();
+  });
+
   it("stores and retrieves draft snapshots with write-token auth", async () => {
     const bucketState = new Map<string, string>();
     const bucket = {

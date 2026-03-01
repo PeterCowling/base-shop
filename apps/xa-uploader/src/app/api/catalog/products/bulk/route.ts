@@ -21,40 +21,80 @@ export const runtime = "nodejs";
 
 const BULK_WINDOW_MS = 60 * 1000;
 const BULK_MAX_REQUESTS = 10;
-const BULK_PAYLOAD_MAX_BYTES = 768 * 1024;
-const BULK_MAX_PRODUCTS = 500;
+const BULK_PAYLOAD_MAX_BYTES_CEILING = 768 * 1024;
+const BULK_MAX_PRODUCTS_CEILING = 500;
+const BULK_MAX_DIAGNOSTICS = 25;
+
+type BulkDiagnostic = {
+  row: number;
+  code: string;
+  message: string;
+};
 
 function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLimit>): NextResponse {
   applyRateLimitHeaders(response.headers, limit);
   return response;
 }
 
-function normalizeBulkProducts(input: unknown): CatalogProductDraftInput[] {
+function getBulkPayloadMaxBytes(): number {
+  const raw = Number.parseInt(process.env.XA_UPLOADER_BULK_PAYLOAD_MAX_BYTES ?? "", 10);
+  if (!Number.isFinite(raw) || raw <= 0) return BULK_PAYLOAD_MAX_BYTES_CEILING;
+  return Math.min(raw, BULK_PAYLOAD_MAX_BYTES_CEILING);
+}
+
+function getBulkMaxProducts(): number {
+  const raw = Number.parseInt(process.env.XA_UPLOADER_BULK_MAX_PRODUCTS ?? "", 10);
+  if (!Number.isFinite(raw) || raw <= 0) return BULK_MAX_PRODUCTS_CEILING;
+  return Math.min(raw, BULK_MAX_PRODUCTS_CEILING);
+}
+
+function validateBulkProducts(input: unknown): {
+  products: CatalogProductDraftInput[];
+  diagnostics: BulkDiagnostic[];
+} {
+  const maxProducts = getBulkMaxProducts();
   if (!Array.isArray(input)) {
     throw new Error("products_array_required");
   }
-  if (input.length < 1 || input.length > BULK_MAX_PRODUCTS) {
+  if (input.length < 1 || input.length > maxProducts) {
     throw new Error("products_array_size_invalid");
   }
   const seenSlugs = new Set<string>();
-  const normalized: CatalogProductDraftInput[] = [];
-  for (const entry of input) {
-    const parsed = catalogProductDraftSchema.parse(entry);
-    const nextSlug = slugify(parsed.slug || parsed.title);
+  const products: CatalogProductDraftInput[] = [];
+  const diagnostics: BulkDiagnostic[] = [];
+  for (const [index, entry] of input.entries()) {
+    const row = index + 1;
+    const parsed = catalogProductDraftSchema.safeParse(entry);
+    if (!parsed.success) {
+      diagnostics.push({
+        row,
+        code: "validation_failed",
+        message: parsed.error.issues.slice(0, 3).map((issue) => issue.message).join("; "),
+      });
+      continue;
+    }
+    const parsedProduct = parsed.data;
+    const nextSlug = slugify(parsedProduct.slug || parsedProduct.title);
     if (!nextSlug) {
-      throw new Error("invalid_product_slug");
+      diagnostics.push({ row, code: "invalid_product_slug", message: "Could not derive slug." });
+      continue;
     }
     if (seenSlugs.has(nextSlug)) {
-      throw new Error(`duplicate_product_slug:${nextSlug}`);
+      diagnostics.push({
+        row,
+        code: "duplicate_product_slug",
+        message: `Duplicate slug "${nextSlug}" in payload.`,
+      });
+      continue;
     }
     seenSlugs.add(nextSlug);
-    normalized.push({
-      ...parsed,
-      id: (parsed.id ?? "").trim() || crypto.randomUUID(),
+    products.push({
+      ...parsedProduct,
+      id: (parsedProduct.id ?? "").trim() || crypto.randomUUID(),
       slug: nextSlug,
     });
   }
-  return normalized;
+  return { products, diagnostics: diagnostics.slice(0, BULK_MAX_DIAGNOSTICS) };
 }
 
 export async function POST(request: Request) {
@@ -78,7 +118,7 @@ export async function POST(request: Request) {
 
   let payload: Record<string, unknown>;
   try {
-    payload = (await readJsonBodyWithLimit(request, BULK_PAYLOAD_MAX_BYTES)) as Record<string, unknown>;
+    payload = (await readJsonBodyWithLimit(request, getBulkPayloadMaxBytes())) as Record<string, unknown>;
   } catch (error) {
     if (error instanceof PayloadTooLargeError) {
       return withRateHeaders(
@@ -100,7 +140,22 @@ export async function POST(request: Request) {
 
   try {
     const storefront = parseStorefront(new URL(request.url).searchParams.get("storefront"));
-    const products = normalizeBulkProducts(payload.products);
+    const validation = validateBulkProducts(payload.products);
+    if (validation.diagnostics.length > 0) {
+      return withRateHeaders(
+        NextResponse.json(
+          {
+            ok: false,
+            error: "invalid",
+            reason: "bulk_validation_failed",
+            diagnostics: validation.diagnostics,
+          },
+          { status: 400 },
+        ),
+        limit,
+      );
+    }
+    const products = validation.products;
 
     if (isLocalFsRuntimeEnabled()) {
       for (const product of products) {

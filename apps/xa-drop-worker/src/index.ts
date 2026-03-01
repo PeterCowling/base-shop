@@ -206,7 +206,8 @@ function submissionKeyFor(prefix: string, iat: number, nonce: string): string {
 
 function resolveMaxBytes(env: Env): number {
   const raw = typeof env.MAX_BYTES === "string" ? Number(env.MAX_BYTES) : NaN;
-  return Number.isFinite(raw) && raw > 0 ? raw : DEFAULT_MAX_BYTES;
+  if (!Number.isFinite(raw) || raw <= 0) return DEFAULT_MAX_BYTES;
+  return Math.min(Math.round(raw), DEFAULT_MAX_BYTES);
 }
 
 function resolveUploadTokenMaxTtlSeconds(env: Env): number {
@@ -214,12 +215,13 @@ function resolveUploadTokenMaxTtlSeconds(env: Env): number {
     ? Number((env as Env & { UPLOAD_TOKEN_MAX_TTL_SECONDS?: string }).UPLOAD_TOKEN_MAX_TTL_SECONDS)
     : NaN;
   if (!Number.isFinite(raw) || raw <= 0) return DEFAULT_UPLOAD_TOKEN_MAX_TTL_SECONDS;
-  return Math.min(Math.round(raw), 24 * 60 * 60);
+  return Math.min(Math.round(raw), DEFAULT_UPLOAD_TOKEN_MAX_TTL_SECONDS);
 }
 
 function resolveCatalogMaxBytes(env: Env): number {
   const raw = typeof env.CATALOG_MAX_BYTES === "string" ? Number(env.CATALOG_MAX_BYTES) : NaN;
-  return Number.isFinite(raw) && raw > 0 ? raw : DEFAULT_CATALOG_MAX_BYTES;
+  if (!Number.isFinite(raw) || raw <= 0) return DEFAULT_CATALOG_MAX_BYTES;
+  return Math.min(Math.round(raw), DEFAULT_CATALOG_MAX_BYTES);
 }
 
 function resolveDraftsMaxBytes(env: Env): number {

@@ -21,6 +21,7 @@ const SUBMISSION_MAX_REQUESTS = 8;
 const SUBMISSION_PAYLOAD_MAX_BYTES = 32 * 1024;
 const SUBMISSION_MAX_SLUGS = 20;
 const DEFAULT_SUBMISSION_MAX_BYTES = 25 * 1024 * 1024;
+const FREE_TIER_SUBMISSION_MAX_BYTES = 25 * 1024 * 1024;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -57,7 +58,7 @@ function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLi
 function getSubmissionMaxBytes(): number {
   const parsed = Number.parseInt(process.env.XA_UPLOADER_SUBMISSION_MAX_BYTES ?? "", 10);
   if (!Number.isFinite(parsed) || parsed <= 0) return DEFAULT_SUBMISSION_MAX_BYTES;
-  return parsed;
+  return Math.min(parsed, FREE_TIER_SUBMISSION_MAX_BYTES);
 }
 
 export async function POST(request: Request) {

@@ -59,6 +59,15 @@ const SYNC_PAYLOAD_MAX_BYTES = 24 * 1024;
 const SYNC_LOG_MAX_BYTES_DEFAULT = 128 * 1024;
 const SYNC_PUBLISH_HISTORY_MAX = 100;
 
+function buildDisplaySyncGuidance() {
+  return {
+    mode: "build_time_runtime_catalog",
+    requiresXaBBuild: true,
+    nextAction: "rebuild_and_deploy_xa_b",
+    runtimeMetaPath: "apps/xa-b/src/data/catalog.runtime.meta.json",
+  };
+}
+
 function getValidateTimeoutMs(): number {
   return toPositiveInt(process.env.XA_UPLOADER_SYNC_VALIDATE_TIMEOUT_MS, 45_000, 1);
 }
@@ -539,6 +548,7 @@ async function runSyncPipeline(params: {
         dryRun: Boolean(payload.options.dryRun),
         publishedVersion: publishResult?.version,
         publishedAt: publishResult?.publishedAt,
+        display: buildDisplaySyncGuidance(),
       },
       { validate: validateResult, sync: syncResult },
     ),
@@ -577,9 +587,10 @@ async function runCloudSyncPipeline(params: {
     strict: payload.options.strict === true,
   });
 
+  let publishResult: { version?: string; publishedAt?: string } | null = null;
   if (!payload.options.dryRun) {
     try {
-      await publishCatalogPayloadToContract({
+      publishResult = await publishCatalogPayloadToContract({
         storefrontId,
         payload: {
           storefront: storefrontId,
@@ -609,11 +620,14 @@ async function runCloudSyncPipeline(params: {
     durationMs: Date.now() - startedAt,
     dryRun: Boolean(payload.options.dryRun),
     mode: "cloud",
+    publishedVersion: publishResult?.version,
+    publishedAt: publishResult?.publishedAt,
     warnings,
     counts: {
       products: catalog.products.length,
       media: mediaIndex.totals.media,
     },
+    display: buildDisplaySyncGuidance(),
   });
 }
 

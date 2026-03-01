@@ -61,6 +61,7 @@ describe("catalog submission route branch coverage", () => {
       manifest: { submissionId: "sub-1", suggestedR2Key: "submissions/sub-1.zip" },
       stream: Readable.from([Buffer.from("zip-binary", "utf8")]),
     });
+    delete process.env.XA_UPLOADER_SUBMISSION_MAX_BYTES;
   });
 
   it("returns a zip stream with submission headers on success", async () => {
@@ -74,6 +75,23 @@ describe("catalog submission route branch coverage", () => {
     expect(response.headers.get("X-XA-Submission-Id")).toBe("sub-1");
     expect(response.headers.get("X-XA-Submission-R2-Key")).toBe("submissions/sub-1.zip");
     expect(response.headers.get("Content-Disposition")).toContain("submission.zip");
+  });
+
+  it("caps submission max bytes to free-tier ceiling even when env is higher", async () => {
+    process.env.XA_UPLOADER_SUBMISSION_MAX_BYTES = String(200 * 1024 * 1024);
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/submission", { method: "POST" }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(buildSubmissionZipStreamMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        options: expect.objectContaining({
+          maxBytes: 25 * 1024 * 1024,
+        }),
+      }),
+    );
   });
 
   it("returns 404 when unauthenticated", async () => {

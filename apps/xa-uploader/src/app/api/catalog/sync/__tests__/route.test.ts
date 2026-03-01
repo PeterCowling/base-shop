@@ -437,6 +437,10 @@ describe("catalog sync route", () => {
         ok: true,
         dryRun: false,
         publishedVersion: "v-test",
+        display: expect.objectContaining({
+          requiresXaBBuild: true,
+          nextAction: "rebuild_and_deploy_xa_b",
+        }),
       }),
     );
     expect(publishCatalogArtifactsToContractMock).toHaveBeenCalledWith(
@@ -555,6 +559,10 @@ describe("catalog sync route", () => {
       expect.objectContaining({
         ok: true,
         mode: "cloud",
+        display: expect.objectContaining({
+          requiresXaBBuild: true,
+          nextAction: "rebuild_and_deploy_xa_b",
+        }),
       }),
     );
     expect(spawnMock).not.toHaveBeenCalled();

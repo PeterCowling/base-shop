@@ -125,4 +125,35 @@ describe("catalog products bulk route", () => {
     expect(readCloudDraftSnapshotMock).toHaveBeenCalledTimes(1);
     expect(writeCloudDraftSnapshotMock).toHaveBeenCalledTimes(1);
   });
+
+  it("returns bounded diagnostics for invalid bulk rows", async () => {
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/products/bulk?storefront=xa-b", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          products: [
+            {
+              title: "",
+              slug: "studio-jacket",
+            },
+            {
+              title: "",
+              slug: "studio-jacket",
+            },
+          ],
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(400);
+    const payload = (await response.json()) as { diagnostics?: Array<{ row: number; code: string }> };
+    expect(payload.diagnostics).toBeDefined();
+    expect(payload.diagnostics?.length).toBeGreaterThan(0);
+    expect(payload.diagnostics?.[0]).toEqual(
+      expect.objectContaining({ row: 1, code: "validation_failed" }),
+    );
+    expect(upsertCatalogDraftMock).not.toHaveBeenCalled();
+  });
 });

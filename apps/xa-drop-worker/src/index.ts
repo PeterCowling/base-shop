@@ -1,3 +1,5 @@
+import { catalogProductDraftSchema } from "@acme/lib/xa";
+
 export interface Env {
   SUBMISSIONS_BUCKET: R2Bucket;
   CATALOG_BUCKET?: R2Bucket;
@@ -362,6 +364,33 @@ async function requireCatalogWriteToken(
   return expectedToken;
 }
 
+async function requireCatalogReadToken(
+  env: Env,
+  request: Request,
+  url: URL,
+): Promise<Response | string> {
+  const expectedReadToken = (env.CATALOG_READ_TOKEN ?? "").trim();
+  if (expectedReadToken) {
+    const providedToken = resolveCatalogToken(request, url);
+    if (!providedToken || !constantTimeEqual(providedToken, expectedReadToken)) {
+      return json({ ok: false }, 401);
+    }
+    return expectedReadToken;
+  }
+  return await requireCatalogWriteToken(env, request, url);
+}
+
+function validateDraftProducts(value: unknown): unknown[] | null {
+  if (!Array.isArray(value)) return null;
+  const normalized: unknown[] = [];
+  for (const entry of value) {
+    const parsed = catalogProductDraftSchema.safeParse(entry);
+    if (!parsed.success) return null;
+    normalized.push(parsed.data);
+  }
+  return normalized;
+}
+
 async function parseDraftPayload(request: Request, maxBytes: number): Promise<DraftPayload | Response> {
   const lengthError = validateContentLength(request.headers, maxBytes);
   if (lengthError) return lengthError;
@@ -564,7 +593,7 @@ async function handleCatalogPublish(
 }
 
 async function handleDraftRead(request: Request, env: Env, url: URL, storefront: string): Promise<Response> {
-  const auth = await requireCatalogWriteToken(env, request, url);
+  const auth = await requireCatalogReadToken(env, request, url);
   if (auth instanceof Response) return auth;
 
   const bucket = resolveCatalogBucket(env);
@@ -621,9 +650,16 @@ async function handleDraftWrite(
   if (payload.storefront && payload.storefront !== storefront) {
     return json({ ok: false }, 400);
   }
-  if (!Array.isArray(payload.products) || !isObjectRecord(payload.revisionsById)) {
+  const normalizedProducts = validateDraftProducts(payload.products);
+  if (!normalizedProducts || !isObjectRecord(payload.revisionsById)) {
     return json({ ok: false }, 400);
   }
+
+  const normalizedRevisions = Object.fromEntries(
+    Object.entries(payload.revisionsById).filter(
+      ([key, value]) => typeof key === "string" && typeof value === "string" && key.trim() && value.trim(),
+    ),
+  );
 
   const bucket = resolveCatalogBucket(env);
   const prefix = resolveCatalogPrefix(env);
@@ -655,8 +691,8 @@ async function handleDraftWrite(
     storefront,
     updatedAt,
     docRevision,
-    products: payload.products,
-    revisionsById: payload.revisionsById,
+    products: normalizedProducts,
+    revisionsById: normalizedRevisions,
   };
 
   try {

@@ -12,11 +12,15 @@ import {
   type CatalogPublishError,
   getCatalogContractReadiness,
   publishCatalogArtifactsToContract,
+  publishCatalogPayloadToContract,
 } from "../../../../lib/catalogContractClient";
 import { resolveXaUploaderProductsCsvPath } from "../../../../lib/catalogCsv";
+import { readCloudDraftSnapshot } from "../../../../lib/catalogDraftContractClient";
+import { buildCatalogArtifactsFromDrafts } from "../../../../lib/catalogDraftToContract";
 import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
 import type { XaCatalogStorefront } from "../../../../lib/catalogStorefront.types";
 import { getCatalogSyncInputStatus } from "../../../../lib/catalogSyncInput";
+import { isLocalFsRuntimeEnabled } from "../../../../lib/localFsGuard";
 import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
 import { resolveRepoRoot } from "../../../../lib/repoRoot";
 import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
@@ -541,6 +545,78 @@ async function runSyncPipeline(params: {
   );
 }
 
+async function runCloudSyncPipeline(params: {
+  storefrontId: XaCatalogStorefront;
+  payload: SyncPayload;
+  startedAt: number;
+}): Promise<NextResponse> {
+  const { storefrontId, payload, startedAt } = params;
+  const snapshot = await readCloudDraftSnapshot(storefrontId);
+
+  if (snapshot.products.length === 0 && !payload.options.confirmEmptyInput) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "catalog_input_empty",
+        recovery: "confirm_empty_catalog_sync",
+        requiresConfirmation: true,
+        input: {
+          exists: true,
+          rowCount: 0,
+          path: `cloud-draft://${storefrontId}`,
+        },
+        durationMs: Date.now() - startedAt,
+      },
+      { status: 409 },
+    );
+  }
+
+  const { catalog, mediaIndex, warnings } = buildCatalogArtifactsFromDrafts({
+    storefront: storefrontId,
+    products: snapshot.products,
+    strict: payload.options.strict === true,
+  });
+
+  if (!payload.options.dryRun) {
+    try {
+      await publishCatalogPayloadToContract({
+        storefrontId,
+        payload: {
+          storefront: storefrontId,
+          publishedAt: new Date().toISOString(),
+          catalog,
+          mediaIndex,
+        },
+      });
+    } catch (error) {
+      const publishError = getPublishErrorDetails(error);
+      const isUnconfigured = publishError.code === "unconfigured";
+      return NextResponse.json(
+        {
+          ok: false,
+          error: isUnconfigured ? "catalog_publish_unconfigured" : "catalog_publish_failed",
+          recovery: isUnconfigured ? "configure_catalog_contract" : "review_catalog_contract",
+          durationMs: Date.now() - startedAt,
+          publishStatus: publishError.status,
+        },
+        { status: isUnconfigured ? 503 : 502 },
+      );
+    }
+  }
+
+  return NextResponse.json({
+    ok: true,
+    durationMs: Date.now() - startedAt,
+    dryRun: Boolean(payload.options.dryRun),
+    mode: "cloud",
+    warnings,
+    counts: {
+      products: catalog.products.length,
+      media: mediaIndex.totals.media,
+    },
+  });
+}
+
 export async function POST(request: Request) {
   const requestIp = getRequestIp(request) || "unknown";
   const limit = rateLimit({
@@ -576,12 +652,18 @@ export async function POST(request: Request) {
   const repoRoot = resolveRepoRoot();
 
   const storefrontId = parseStorefront(payload.storefront);
-  const response = await runSyncPipeline({
-    repoRoot,
-    storefrontId,
-    payload,
-    startedAt,
-  });
+  const response = isLocalFsRuntimeEnabled()
+    ? await runSyncPipeline({
+        repoRoot,
+        storefrontId,
+        payload,
+        startedAt,
+      })
+    : await runCloudSyncPipeline({
+        storefrontId,
+        payload,
+        startedAt,
+      });
   return withRateHeaders(response, limit);
 }
 
@@ -606,6 +688,22 @@ export async function GET(request: Request) {
   const authenticated = await hasUploaderSession(request);
   if (!authenticated) {
     return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
+  }
+  if (!isLocalFsRuntimeEnabled()) {
+    const contractReadiness = getCatalogContractReadiness();
+    return withRateHeaders(
+      NextResponse.json({
+        ok: true,
+        ready: contractReadiness.configured,
+        missingScripts: [],
+        contractConfigured: contractReadiness.configured,
+        contractConfigErrors: contractReadiness.errors,
+        mode: "cloud",
+        recovery: contractReadiness.configured ? undefined : "configure_catalog_contract",
+        checkedAt: new Date().toISOString(),
+      }),
+      limit,
+    );
   }
 
   const repoRoot = resolveRepoRoot();

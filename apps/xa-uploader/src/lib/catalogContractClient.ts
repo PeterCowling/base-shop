@@ -93,15 +93,6 @@ export async function publishCatalogArtifactsToContract(params: {
   catalogOutPath: string;
   mediaOutPath: string;
 }): Promise<CatalogPublishResult> {
-  const writeToken = getCatalogContractWriteToken();
-  if (!writeToken) {
-    throw new CatalogPublishError(
-      "unconfigured",
-      "XA_CATALOG_CONTRACT_WRITE_TOKEN is not configured.",
-    );
-  }
-
-  const publishUrl = buildCatalogContractPublishUrl(params.storefrontId);
   const [catalogRaw, mediaRaw] = await Promise.all([
     readFileUtf8(params.catalogOutPath),
     readFileUtf8(params.mediaOutPath),
@@ -114,6 +105,31 @@ export async function publishCatalogArtifactsToContract(params: {
     mediaIndex: parseCatalogJson(mediaRaw, params.mediaOutPath),
   };
 
+  return await publishCatalogPayloadToContract({
+    storefrontId: params.storefrontId,
+    payload,
+  });
+}
+
+export async function publishCatalogPayloadToContract(params: {
+  storefrontId: XaCatalogStorefront;
+  payload: {
+    storefront: XaCatalogStorefront;
+    publishedAt: string;
+    catalog: unknown;
+    mediaIndex: unknown;
+  };
+}): Promise<CatalogPublishResult> {
+  const writeToken = getCatalogContractWriteToken();
+  if (!writeToken) {
+    throw new CatalogPublishError(
+      "unconfigured",
+      "XA_CATALOG_CONTRACT_WRITE_TOKEN is not configured.",
+    );
+  }
+
+  const publishUrl = buildCatalogContractPublishUrl(params.storefrontId);
+
   const controller = new AbortController();
   const timeoutHandle = setTimeout(() => controller.abort(), getCatalogContractTimeoutMs());
 
@@ -125,7 +141,7 @@ export async function publishCatalogArtifactsToContract(params: {
         "Content-Type": "application/json",
         "X-XA-Catalog-Token": writeToken,
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(params.payload),
       signal: controller.signal,
     });
   } catch (error) {

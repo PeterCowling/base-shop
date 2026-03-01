@@ -14,7 +14,10 @@ const renameMock = jest.fn();
 const hasUploaderSessionMock = jest.fn();
 const getCatalogSyncInputStatusMock = jest.fn();
 const publishCatalogArtifactsToContractMock = jest.fn();
+const publishCatalogPayloadToContractMock = jest.fn();
 const getCatalogContractReadinessMock = jest.fn();
+const readCloudDraftSnapshotMock = jest.fn();
+const buildCatalogArtifactsFromDraftsMock = jest.fn();
 
 jest.mock("node:child_process", () => ({
   spawn: (...args: unknown[]) => spawnMock(...args),
@@ -49,7 +52,16 @@ jest.mock("../../../../../lib/catalogSyncInput", () => ({
 
 jest.mock("../../../../../lib/catalogContractClient", () => ({
   publishCatalogArtifactsToContract: (...args: unknown[]) => publishCatalogArtifactsToContractMock(...args),
+  publishCatalogPayloadToContract: (...args: unknown[]) => publishCatalogPayloadToContractMock(...args),
   getCatalogContractReadiness: () => getCatalogContractReadinessMock(),
+}));
+
+jest.mock("../../../../../lib/catalogDraftContractClient", () => ({
+  readCloudDraftSnapshot: (...args: unknown[]) => readCloudDraftSnapshotMock(...args),
+}));
+
+jest.mock("../../../../../lib/catalogDraftToContract", () => ({
+  buildCatalogArtifactsFromDrafts: (...args: unknown[]) => buildCatalogArtifactsFromDraftsMock(...args),
 }));
 
 function createChild(code: number): ChildProcessWithoutNullStreams {
@@ -76,8 +88,23 @@ describe("catalog sync route branch coverage", () => {
       version: "v-test",
       publishedAt: "2026-02-24T00:00:00.000Z",
     });
+    publishCatalogPayloadToContractMock.mockResolvedValue({
+      version: "v-cloud",
+      publishedAt: "2026-02-24T00:00:00.000Z",
+    });
     getCatalogContractReadinessMock.mockReturnValue({ configured: true, errors: [] });
+    readCloudDraftSnapshotMock.mockResolvedValue({
+      products: [{ slug: "studio-jacket", title: "Studio Jacket" }],
+      revisionsById: {},
+      docRevision: "doc-1",
+    });
+    buildCatalogArtifactsFromDraftsMock.mockReturnValue({
+      catalog: { collections: [], brands: [], products: [{ slug: "studio-jacket" }] },
+      mediaIndex: { totals: { products: 1, media: 0, warnings: 0 }, items: [] },
+      warnings: [],
+    });
     delete process.env.XA_UPLOADER_MODE;
+    delete process.env.XA_UPLOADER_LOCAL_FS_DISABLED;
   });
 
   it("GET returns 404 in vendor mode", async () => {
@@ -216,6 +243,25 @@ describe("catalog sync route branch coverage", () => {
     expect(fourth.status).toBe(429);
     expect(await fourth.json()).toEqual(
       expect.objectContaining({ ok: false, error: "rate_limited", reason: "sync_rate_limited" }),
+    );
+  });
+
+  it("GET cloud mode reports contract-based readiness when local fs is disabled", async () => {
+    process.env.XA_UPLOADER_LOCAL_FS_DISABLED = "1";
+    getCatalogContractReadinessMock.mockReturnValue({ configured: false, errors: ["missing contract"] });
+
+    const { GET } = await import("../route");
+    const response = await GET(new Request("http://localhost/api/catalog/sync?storefront=xa-b"));
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({
+        ok: true,
+        ready: false,
+        mode: "cloud",
+        contractConfigured: false,
+        contractConfigErrors: ["missing contract"],
+      }),
     );
   });
 });

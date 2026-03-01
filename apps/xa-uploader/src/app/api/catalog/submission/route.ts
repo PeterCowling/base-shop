@@ -6,10 +6,12 @@ import { NextResponse } from "next/server";
 import { slugify } from "@acme/lib/xa";
 
 import { listCatalogDrafts } from "../../../../lib/catalogCsv";
+import { readCloudDraftSnapshot } from "../../../../lib/catalogDraftContractClient";
 import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
+import { isLocalFsRuntimeEnabled } from "../../../../lib/localFsGuard";
 import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
 import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
-import { buildSubmissionZipStream } from "../../../../lib/submissionZip";
+import { buildSubmissionZipFromCloudDrafts, buildSubmissionZipStream } from "../../../../lib/submissionZip";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
 
 export const runtime = "nodejs";
@@ -18,6 +20,7 @@ const SUBMISSION_WINDOW_MS = 60 * 1000;
 const SUBMISSION_MAX_REQUESTS = 8;
 const SUBMISSION_PAYLOAD_MAX_BYTES = 32 * 1024;
 const SUBMISSION_MAX_SLUGS = 20;
+const DEFAULT_SUBMISSION_MAX_BYTES = 25 * 1024 * 1024;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -38,6 +41,7 @@ const KNOWN_SUBMISSION_INVALID_PATTERNS = [
   /scan limit exceeded/i,
   /match limit exceeded/i,
   /too many images/i,
+  /image exceeds max size/i,
 ];
 
 function isKnownSubmissionValidationError(error: unknown): boolean {
@@ -48,6 +52,12 @@ function isKnownSubmissionValidationError(error: unknown): boolean {
 function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLimit>): NextResponse {
   applyRateLimitHeaders(response.headers, limit);
   return response;
+}
+
+function getSubmissionMaxBytes(): number {
+  const parsed = Number.parseInt(process.env.XA_UPLOADER_SUBMISSION_MAX_BYTES ?? "", 10);
+  if (!Number.isFinite(parsed) || parsed <= 0) return DEFAULT_SUBMISSION_MAX_BYTES;
+  return parsed;
 }
 
 export async function POST(request: Request) {
@@ -120,17 +130,24 @@ export async function POST(request: Request) {
   );
 
   try {
-    const catalog = await listCatalogDrafts(storefront);
+    const catalog = isLocalFsRuntimeEnabled()
+      ? await listCatalogDrafts(storefront)
+      : await readCloudDraftSnapshot(storefront);
     const selected = catalog.products.filter((product) => {
       const slug = slugify(product.slug || product.title);
       return slug && normalizedSlugs.includes(slug);
     });
 
-    const { filename, manifest, stream } = await buildSubmissionZipStream({
-      products: selected,
-      productsCsvPath: catalog.path,
-      options: { maxProducts: 10, maxBytes: 250 * 1024 * 1024, recursiveDirs: true },
-    });
+    const { filename, manifest, stream } = isLocalFsRuntimeEnabled()
+      ? await buildSubmissionZipStream({
+          products: selected,
+          productsCsvPath: (catalog as Awaited<ReturnType<typeof listCatalogDrafts>>).path,
+          options: { maxProducts: 10, maxBytes: getSubmissionMaxBytes(), recursiveDirs: true },
+        })
+      : await buildSubmissionZipFromCloudDrafts({
+          products: selected,
+          options: { maxProducts: 10, maxBytes: getSubmissionMaxBytes() },
+        });
 
     const response = new Response(Readable.toWeb(stream as unknown as NodeReadable), {
       status: 200,

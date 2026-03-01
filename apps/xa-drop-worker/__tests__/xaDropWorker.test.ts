@@ -340,6 +340,49 @@ describe("xa-drop-worker", () => {
     expect((bucket as any).delete).toHaveBeenCalled();
   });
 
+  it("enforces read-token auth for draft GET when configured", async () => {
+    const bucketState = new Map<string, string>();
+    bucketState.set(
+      "catalog/drafts/xa-b/latest.json",
+      JSON.stringify({
+        ok: true,
+        storefront: "xa-b",
+        docRevision: "doc-rev-1",
+        products: [{ id: "p1", slug: "studio-jacket", title: "Studio Jacket" }],
+        revisionsById: { p1: "rev-1" },
+      }),
+    );
+    const bucket = {
+      get: jest.fn(async (key: string) => {
+        const body = bucketState.get(key);
+        if (!body) return null;
+        return { text: jest.fn().mockResolvedValue(body) };
+      }),
+    } as unknown as R2Bucket;
+
+    const unauthorized = await handler.fetch(
+      new Request("https://drop.example/drafts/xa-b"),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        CATALOG_WRITE_TOKEN: "catalog-write-token-1234567890",
+        CATALOG_READ_TOKEN: "catalog-read-token-1234567890",
+      },
+    );
+    expect(unauthorized.status).toBe(401);
+
+    const authorized = await handler.fetch(
+      new Request("https://drop.example/drafts/xa-b", {
+        headers: { "X-XA-Catalog-Token": "catalog-read-token-1234567890" },
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        CATALOG_WRITE_TOKEN: "catalog-write-token-1234567890",
+        CATALOG_READ_TOKEN: "catalog-read-token-1234567890",
+      },
+    );
+    expect(authorized.status).toBe(200);
+  });
+
   it("returns draft conflict when ifMatchDocRevision does not match latest", async () => {
     const bucket = {
       get: jest.fn().mockResolvedValue({

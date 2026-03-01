@@ -13,7 +13,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
-Overall-confidence: 88%
+Overall-confidence: 90%
 Confidence-Method: min(Implementation,Approach,Impact)
 Auto-Build-Intent: plan+auto
 ---
@@ -27,14 +27,14 @@ Addresses issues found in interactive QA for the Caryina storefront: unstable co
 ## Active tasks
 
 - [x] TASK-01: Implement QA hardening fixes (consent cookie detection, metadata base, proxy migration, allowed dev origins)
-- [ ] TASK-02: Re-run simulated storefront QA and record verification evidence
+- [x] TASK-02: Re-run simulated storefront QA and record verification evidence
 
 ## Task Summary
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---:|---:|---|---|---|---|
 | TASK-01 | IMPLEMENT | Fix consent, metadata, middleware deprecation, and dev-origin config | 88% | M | Complete (2026-03-01) | - | TASK-02 |
-| TASK-02 | IMPLEMENT | Run post-fix QA pass and document outcomes | 85% | S | Pending | TASK-01 | - |
+| TASK-02 | IMPLEMENT | Run post-fix QA pass and document outcomes | 90% | S | Complete (2026-03-01) | TASK-01 | - |
 
 ## Tasks
 
@@ -69,12 +69,16 @@ Addresses issues found in interactive QA for the Caryina storefront: unstable co
 - **Type:** IMPLEMENT
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
-- **Status:** Pending
+- **Status:** Complete (2026-03-01)
 - **Affects:** `docs/plans/hbag-caryina-qa-hardening/plan.md`
 - **Depends on:** TASK-01
-- **Confidence:** 85%
+- **Confidence:** 90%
 - **Acceptance:**
   - Post-fix run confirms warnings resolved and consent flow works consistently.
 - **Validation contract (TC-XX):**
   - TC-01: Simulated session on `/en` and `/en/product/...` records no consent reappearance after accept + refresh.
   - TC-02: Dev server logs no `metadataBase`, `middleware` deprecation, or cross-origin `allowedDevOrigins` warnings.
+- **Build Evidence (2026-03-01):**
+  - Browser simulation run on `http://127.0.0.1:3018/en` and `.../en/product/caryina-mini-facade-bag-charm-silver`.
+  - Consent state verification: once `consent.analytics=true` cookie is present, subsequent navigations (`/en` ↔ `/en/product/...`) no longer show consent affordances (`Accept`/`Decline`).
+  - Dev logs during scenario show only normal requests/compilation; no warnings for `metadataBase`, middleware deprecation, or blocked cross-origin dev origin.

@@ -1,4 +1,3 @@
-import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, jest } from "@jest/globals";
 
 jest.mock("next/link", () => ({
@@ -45,6 +44,7 @@ describe("xa-b home page freshness banner", () => {
       syncedAt: "2026-03-01T10:00:00.000Z",
       readUrl: "https://internal.example/catalog/xa-b",
     });
+    const { renderToStaticMarkup } = await import("react-dom/server");
     const { default: HomePage } = await import("../page");
     const html = renderToStaticMarkup(<HomePage />);
 
@@ -59,6 +59,7 @@ describe("xa-b home page freshness banner", () => {
       isStale: false,
       syncedAt: "2026-03-01T10:00:00.000Z",
     });
+    const { renderToStaticMarkup } = await import("react-dom/server");
     const { default: HomePage } = await import("../page");
     const html = renderToStaticMarkup(<HomePage />);
 

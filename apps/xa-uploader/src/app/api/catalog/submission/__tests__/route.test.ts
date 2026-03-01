@@ -78,7 +78,7 @@ describe("catalog submission route", () => {
   });
 
   it("uses cloud submission builder when local fs runtime is disabled", async () => {
-    isLocalFsRuntimeEnabledMock.mockReturnValueOnce(false);
+    isLocalFsRuntimeEnabledMock.mockReturnValue(false);
     readCloudDraftSnapshotMock.mockResolvedValueOnce({
       products: [
         {

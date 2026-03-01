@@ -451,7 +451,31 @@ describe("xa-drop-worker", () => {
         },
         body: JSON.stringify({
           storefront: "xa-b",
-          products: [{ id: "p1", slug: "studio-jacket" }],
+          products: [
+            {
+              id: "p1",
+              slug: "studio-jacket",
+              title: "Studio jacket",
+              brandHandle: "atelier-x",
+              collectionHandle: "outerwear",
+              price: "189",
+              description: "A structured layer.",
+              createdAt: "2025-12-01T12:00:00.000Z",
+              forSale: true,
+              forRental: false,
+              popularity: "0",
+              deposit: "0",
+              stock: "0",
+              sizes: "S|M|L",
+              taxonomy: {
+                department: "women",
+                category: "clothing",
+                subcategory: "outerwear",
+                color: "black|cream",
+                material: "wool|cotton",
+              },
+            },
+          ],
           revisionsById: { p1: "rev-1" },
         }),
       }),
@@ -478,7 +502,9 @@ describe("xa-drop-worker", () => {
       expect.objectContaining({
         ok: true,
         storefront: "xa-b",
-        products: [{ id: "p1", slug: "studio-jacket" }],
+        products: expect.arrayContaining([
+          expect.objectContaining({ id: "p1", slug: "studio-jacket", title: "Studio jacket" }),
+        ]),
       }),
     );
 

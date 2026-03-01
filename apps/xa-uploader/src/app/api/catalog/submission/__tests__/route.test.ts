@@ -1,3 +1,5 @@
+import { Readable } from "node:stream";
+
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 const listCatalogDraftsMock = jest.fn();
@@ -110,12 +112,7 @@ describe("catalog submission route", () => {
       revisionsById: {},
       docRevision: "doc-1",
     });
-    const stream = new ReadableStream<Uint8Array>({
-      start(controller) {
-        controller.enqueue(new Uint8Array([80, 75, 3, 4]));
-        controller.close();
-      },
-    });
+    const stream = Readable.from(Buffer.from([80, 75, 3, 4]));
     buildSubmissionZipFromCloudDraftsMock.mockResolvedValueOnce({
       filename: "submission.zip",
       manifest: { submissionId: "sub-1", suggestedR2Key: "submissions/test.zip" },

@@ -15,6 +15,67 @@ type CurrencyRatesResponse = {
   } | null;
 };
 
+type EditableCurrencyCode = "EUR" | "GBP" | "AUD";
+type EditableCurrencyRates = Record<EditableCurrencyCode, string>;
+
+const EMPTY_RATES: EditableCurrencyRates = {
+  EUR: "",
+  GBP: "",
+  AUD: "",
+};
+
+const RATE_FIELD_CLASSNAME =
+  "mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink placeholder:text-gate-muted focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20";
+
+function formatLoadedRates(rates: CurrencyRatesResponse["rates"]): EditableCurrencyRates {
+  return {
+    EUR: typeof rates?.EUR === "number" ? rates.EUR.toFixed(4) : "",
+    GBP: typeof rates?.GBP === "number" ? rates.GBP.toFixed(4) : "",
+    AUD: typeof rates?.AUD === "number" ? rates.AUD.toFixed(4) : "",
+  };
+}
+
+function toRatesPayload(rates: EditableCurrencyRates): Record<EditableCurrencyCode, number> {
+  return {
+    EUR: Number.parseFloat(rates.EUR),
+    GBP: Number.parseFloat(rates.GBP),
+    AUD: Number.parseFloat(rates.AUD),
+  };
+}
+
+function isAbortError(error: unknown): boolean {
+  return error instanceof DOMException && error.name === "AbortError";
+}
+
+function EditableRateField({
+  label,
+  value,
+  onChange,
+  testId,
+}: {
+  label: string;
+  value: string;
+  onChange: (nextValue: string) => void;
+  testId: string;
+}) {
+  return (
+    <label className="text-xs uppercase tracking-label text-gate-muted">
+      {label}
+      <input
+        type="number"
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        step="0.0001"
+        min="0.0001"
+        placeholder="e.g. 0.9300"
+        className={RATE_FIELD_CLASSNAME}
+        data-testid={testId}
+        data-cy={testId}
+      />
+    </label>
+  );
+}
+
 export function CurrencyRatesPanel({
   busy,
   syncReadiness,
@@ -28,9 +89,7 @@ export function CurrencyRatesPanel({
   onSync: () => void;
 }) {
   const { t } = useUploaderI18n();
-  const [eurRate, setEurRate] = React.useState("");
-  const [gbpRate, setGbpRate] = React.useState("");
-  const [audRate, setAudRate] = React.useState("");
+  const [rates, setRates] = React.useState<EditableCurrencyRates>(EMPTY_RATES);
   const [saving, setSaving] = React.useState(false);
   const [feedback, setFeedback] = React.useState<ActionFeedback | null>(null);
 
@@ -49,13 +108,10 @@ export function CurrencyRatesPanel({
         }
 
         if (!active) return;
-
-        setEurRate(typeof data.rates?.EUR === "number" ? data.rates.EUR.toFixed(4) : "");
-        setGbpRate(typeof data.rates?.GBP === "number" ? data.rates.GBP.toFixed(4) : "");
-        setAudRate(typeof data.rates?.AUD === "number" ? data.rates.AUD.toFixed(4) : "");
+        setRates(formatLoadedRates(data.rates));
       } catch (error) {
         if (!active) return;
-        if (error instanceof DOMException && error.name === "AbortError") return;
+        if (isAbortError(error)) return;
         setFeedback({ kind: "error", message: t("currencyRatesLoadFailed") });
       }
     };
@@ -81,11 +137,7 @@ export function CurrencyRatesPanel({
           "content-type": "application/json",
         },
         body: JSON.stringify({
-          rates: {
-            EUR: Number.parseFloat(eurRate),
-            GBP: Number.parseFloat(gbpRate),
-            AUD: Number.parseFloat(audRate),
-          },
+          rates: toRatesPayload(rates),
         }),
       });
 
@@ -109,6 +161,12 @@ export function CurrencyRatesPanel({
   };
 
   const saveDisabled = busy || saving;
+  const setRate = React.useCallback((code: EditableCurrencyCode, nextValue: string) => {
+    setRates((prev) => ({
+      ...prev,
+      [code]: nextValue,
+    }));
+  }, []);
 
   return (
     <section className="rounded-xl border border-border-2 bg-surface p-6 shadow-elevation-1">
@@ -150,56 +208,29 @@ export function CurrencyRatesPanel({
           />
         </label>
 
-        <label className="text-xs uppercase tracking-label text-gate-muted">
-          {t("currencyRatesEurLabel")}
-          <input
-            type="number"
-            value={eurRate}
-            onChange={(event) => setEurRate(event.target.value)}
-            step="0.0001"
-            min="0.0001"
-            placeholder="e.g. 0.9300"
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink placeholder:text-gate-muted focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
-            // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-            data-testid="currency-rates-eur"
-            // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-            data-cy="currency-rates-eur"
-          />
-        </label>
+        <EditableRateField
+          label={t("currencyRatesEurLabel")}
+          value={rates.EUR}
+          onChange={(nextValue) => setRate("EUR", nextValue)}
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+          testId="currency-rates-eur"
+        />
 
-        <label className="text-xs uppercase tracking-label text-gate-muted">
-          {t("currencyRatesGbpLabel")}
-          <input
-            type="number"
-            value={gbpRate}
-            onChange={(event) => setGbpRate(event.target.value)}
-            step="0.0001"
-            min="0.0001"
-            placeholder="e.g. 0.9300"
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink placeholder:text-gate-muted focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
-            // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-            data-testid="currency-rates-gbp"
-            // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-            data-cy="currency-rates-gbp"
-          />
-        </label>
+        <EditableRateField
+          label={t("currencyRatesGbpLabel")}
+          value={rates.GBP}
+          onChange={(nextValue) => setRate("GBP", nextValue)}
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+          testId="currency-rates-gbp"
+        />
 
-        <label className="text-xs uppercase tracking-label text-gate-muted">
-          {t("currencyRatesAudLabel")}
-          <input
-            type="number"
-            value={audRate}
-            onChange={(event) => setAudRate(event.target.value)}
-            step="0.0001"
-            min="0.0001"
-            placeholder="e.g. 0.9300"
-            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink placeholder:text-gate-muted focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
-            // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-            data-testid="currency-rates-aud"
-            // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-            data-cy="currency-rates-aud"
-          />
-        </label>
+        <EditableRateField
+          label={t("currencyRatesAudLabel")}
+          value={rates.AUD}
+          onChange={(nextValue) => setRate("AUD", nextValue)}
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+          testId="currency-rates-aud"
+        />
       </div>
 
       {feedback ? (

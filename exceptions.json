@@ -94,7 +94,7 @@
     "BRIK-ENG-0020": {},
     "BRIK-BK-001": {
       "allow": [
-        "apps/brikette/src/app/*/apartment/book/ApartmentBookContent.tsx"
+        "apps/brikette/src/app/*/private-rooms/book/ApartmentBookContent.tsx"
       ],
       "expires": "2026-12-31",
       "notes": "max-lines-per-function exception for ApartmentBookContent apartment booking form; sub-component extraction follow-up."
@@ -128,6 +128,14 @@
       "notes": "Brikette i18n preload hook dependency exception for stable namespace arrays used by page components."
     },
     "CAR-1432": {},
+    "CARYINA-104": {
+      "allow": [
+        "apps/caryina/src/components/Header.tsx",
+        "apps/caryina/src/components/HeaderThemeToggle.client.tsx"
+      ],
+      "expires": "2027-01-01",
+      "notes": "Caryina header layering and theme-toggle z-index lint exceptions tracked for later DS-compliant refactor."
+    },
     "CARYINA-AUTH-01": {
       "allow": [
         "apps/caryina/src/app/admin/api/products/route.ts",

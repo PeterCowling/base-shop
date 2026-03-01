@@ -1,4 +1,8 @@
 import { IBM_Plex_Mono, Work_Sans } from "next/font/google";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+
+import { hasUploaderSessionFromCookieHeader } from "../lib/uploaderAuth";
 
 import UploaderHomeClient from "./UploaderHome.client";
 
@@ -11,7 +15,13 @@ const mono = IBM_Plex_Mono({
   weight: ["400", "500", "700"],
 });
 
-export default function XaUploaderHomePage() {
+export default async function XaUploaderHomePage() {
+  const cookieHeader = (await headers()).get("cookie");
+  const authenticated = await hasUploaderSessionFromCookieHeader(cookieHeader);
+  if (!authenticated) {
+    redirect("/login");
+  }
+
   return (
     <UploaderHomeClient displayClassName={display.className} monoClassName={mono.className} />
   );

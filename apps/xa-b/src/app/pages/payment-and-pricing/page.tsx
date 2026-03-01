@@ -10,26 +10,26 @@ export default function PaymentAndPricingPage() {
     <main className="sf-content">
       <Section padding="wide">
         <PolicyPageIntro
-          title="Payments and pricing"
-          description="Here's how pricing works."
+          title={xaI18n.t("xaB.src.app.pages.payment.and.pricing.page.title")}
+          description={xaI18n.t("xaB.src.app.pages.payment.and.pricing.page.description")}
         />
       </Section>
 
       <Section padding="default">
         <PolicyContent>
-          <PolicySection title="1. Pricing">
+          <PolicySection title={xaI18n.t("xaB.src.app.pages.payment.and.pricing.page.section.pricing")}>
             <p>{xaI18n.t("xaB.src.app.pages.payment.and.pricing.page.l30c16")}</p>
           </PolicySection>
 
-          <PolicySection title="2. Currency">
+          <PolicySection title={xaI18n.t("xaB.src.app.pages.payment.and.pricing.page.section.currency")}>
             <p>{xaI18n.t("xaB.src.app.pages.payment.and.pricing.page.l42c16")}</p>
           </PolicySection>
 
-          <PolicySection title="3. Taxes and duties">
+          <PolicySection title={xaI18n.t("xaB.src.app.pages.payment.and.pricing.page.section.taxes.and.duties")}>
             <p>{xaI18n.t("xaB.src.app.pages.payment.and.pricing.page.l49c16")}</p>
           </PolicySection>
 
-          <PolicySection title="4. Accepted payment methods">
+          <PolicySection title={xaI18n.t("xaB.src.app.pages.payment.and.pricing.page.section.accepted.payment.methods")}>
             <p>{xaI18n.t("xaB.src.app.pages.payment.and.pricing.page.l67c16")}</p>
             <ul className="list-disc space-y-1 pl-5">
               <li>{xaI18n.t("xaB.src.app.pages.payment.and.pricing.page.l72c19")}</li>
@@ -38,15 +38,15 @@ export default function PaymentAndPricingPage() {
             </ul>
           </PolicySection>
 
-          <PolicySection title="5. When you'll be charged">
+          <PolicySection title={xaI18n.t("xaB.src.app.pages.payment.and.pricing.page.section.when.youll.be.charged")}>
             <p>{xaI18n.t("xaB.src.app.pages.payment.and.pricing.page.l80c16")}</p>
           </PolicySection>
 
-          <PolicySection title="6. Payment security">
+          <PolicySection title={xaI18n.t("xaB.src.app.pages.payment.and.pricing.page.section.payment.security")}>
             <p>{xaI18n.t("xaB.src.app.pages.payment.and.pricing.page.l88c16")}</p>
           </PolicySection>
 
-          <PolicySection title="8. Need help?">
+          <PolicySection title={xaI18n.t("xaB.src.app.pages.payment.and.pricing.page.section.need.help")}>
             <p>{xaI18n.t("xaB.src.app.pages.payment.and.pricing.page.l107c18")}</p>
           </PolicySection>
         </PolicyContent>

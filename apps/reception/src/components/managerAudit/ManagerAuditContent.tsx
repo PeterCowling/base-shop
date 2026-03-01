@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
 
 import { useAuth } from "../../context/AuthContext";
 import useInventoryItems from "../../hooks/data/inventory/useInventoryItems";
@@ -10,6 +11,8 @@ import useInventoryLedger from "../../hooks/data/inventory/useInventoryLedger";
 import { useTillShiftsData } from "../../hooks/data/till/useTillShiftsData";
 import { useCheckins } from "../../hooks/data/useCheckins";
 import { canAccess, Permissions } from "../../lib/roles";
+import { formatDate } from "../../utils/dateUtils";
+import { showToast } from "../../utils/toastUtils";
 
 function toTimestampMs(timestamp: unknown): number {
   if (typeof timestamp === "number") {
@@ -57,14 +60,43 @@ function formatCloseDifference(value?: number): string {
   return formatDelta(value);
 }
 
+function escapeCsvCell(value: string): string {
+  let str = value;
+  if (/^[=+\-@\t\r]/.test(str)) {
+    str = `'${str}`;
+  }
+  return `"${str.replace(/"/g, '""')}"`;
+}
+
+function buildCsv(headers: string[], rows: string[][]): string {
+  return [
+    headers.join(","),
+    ...rows.map((row) => row.map(escapeCsvCell).join(",")),
+  ].join("\n");
+}
+
+function triggerCsvDownload(content: string, filename: string): void {
+  const blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.setAttribute("href", url);
+  link.setAttribute("download", filename);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
 export default function ManagerAuditContent() {
   const { user } = useAuth();
   const canView = canAccess(user, Permissions.MANAGEMENT_ACCESS);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [staffFilter, setStaffFilter] = useState("");
+  const [itemFilter, setItemFilter] = useState("");
 
   const {
+    items,
     itemsById,
     loading: inventoryItemsLoading,
     error: inventoryItemsError,
@@ -99,13 +131,37 @@ export default function ManagerAuditContent() {
           entry.type === "count" &&
           toTimestampMs(entry.timestamp) >= effectiveStartMs &&
           toTimestampMs(entry.timestamp) <= effectiveEndMs &&
+          (!itemFilter || entry.itemId === itemFilter) &&
           (!staffFilter ||
             (entry.user ?? "").toLowerCase().includes(normalizedStaffFilter))
       )
       .sort(
         (a, b) => toTimestampMs(b.timestamp) - toTimestampMs(a.timestamp)
       );
-  }, [endDate, entries, staffFilter, startDate]);
+  }, [endDate, entries, itemFilter, staffFilter, startDate]);
+
+  const handleExportVariance = () => {
+    const effectiveStart = startDate
+      ? formatDate(new Date(toTimestampMs(`${startDate}T00:00:00.000+00:00`)))
+      : formatDate(new Date(Date.now() - 30 * 24 * 60 * 60 * 1000));
+    const effectiveEnd = endDate
+      ? formatDate(new Date(toTimestampMs(`${endDate}T23:59:59.999+00:00`)))
+      : formatDate(new Date());
+    const headers = ["Recorded at", "Item", "Item ID", "Delta", "User", "Reason", "Note"];
+    const rows = stockVarianceRows.map((entry) => [
+      formatDateTime(entry.timestamp),
+      itemsById[entry.itemId]?.name ?? entry.itemId,
+      entry.itemId,
+      String(entry.quantity),
+      entry.user ?? "",
+      entry.reason ?? "",
+      entry.note ?? "",
+    ]);
+    const csv = buildCsv(headers, rows);
+    const filename = `stock-variance-${effectiveStart}-${effectiveEnd}.csv`;
+    triggerCsvDownload(csv, filename);
+    showToast(`Exported ${stockVarianceRows.length} variance record(s)`, "success");
+  };
 
   const lastThreeShifts = useMemo(
     () =>
@@ -191,7 +247,43 @@ export default function ManagerAuditContent() {
                   className="border border-border-strong rounded-md px-2 py-1 text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 />
               </div>
+              <div className="flex flex-col">
+                <label
+                  htmlFor="variance-item-filter"
+                  className="text-xs font-semibold text-muted-foreground mb-1"
+                >
+                  Item
+                </label>
+                <select
+                  id="variance-item-filter"
+                  data-cy="variance-item-filter"
+                  value={itemFilter}
+                  onChange={(event) => setItemFilter(event.target.value)}
+                  className="border border-border-strong rounded-md px-2 py-1 text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                >
+                  <option value="">All items</option>
+                  {items.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
+            {stockVarianceRows.length > 0 ? (
+              <div className="mt-3">
+                <Button
+                  type="button"
+                  data-cy="variance-export-btn"
+                  color="default"
+                  tone="outline"
+                  size="sm"
+                  onClick={handleExportVariance}
+                >
+                  Export CSV
+                </Button>
+              </div>
+            ) : null}
             {stockVarianceRows.length === 0 ? (
               <p className="mt-3 text-sm text-muted-foreground">
                 No variance in the selected period

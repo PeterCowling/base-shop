@@ -409,12 +409,15 @@ const roomsData: Room[] = [
   {
     id: "apartment",
     sku: "apartment",
-    widgetRoomCode: "TODO", // TODO: Get room number from Octorate
+    widgetRoomCode: "14",
     widgetRateCodeNR: "804934", // Direct, Non-Refundable, 2025-14 (2 pax)
     widgetRateCodeFlex: "804933", // Direct, Refundable, 2025-14 (2 pax)
     rateCodes: {
-      direct: { nr: "804934", flex: "804933" }, // 2 pax; 3 pax derived: nr=805559, flex=805578
-      ota: { nr: "TODO_NR_OTA", flex: "TODO_FLEX_OTA" },
+      // 2 pax base rates (default used by booking CTAs)
+      // 3 pax (+33% derived): direct nr=805559, direct flex=805578, ota nr=805560, ota flex=805579
+      // 4 pax (+20% derived): direct nr=875201, direct flex=875200, ota nr=875199, ota flex=875198
+      direct: { nr: "804934", flex: "804933" },
+      ota: { nr: "804935", flex: "804932" },
     },
     occupancy: 4,
     pricingModel: "perRoom",

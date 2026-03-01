@@ -1,0 +1,38 @@
+{
+  "round": 3,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-stock-variance-filters/fact-find.md",
+      "line": "131",
+      "message": "Existing test count is stale. The doc says `ManagerAuditContent` has 7 tests, but current repo has 8.",
+      "agent_note": "DISPUTED: direct grep-c count on test file = 7 it() blocks. Codemoot claim of 8 is incorrect. 7 is verified."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-stock-variance-filters/fact-find.md",
+      "line": "220",
+      "message": "Testability confidence rationale repeats the stale "7 tests already in place" claim.",
+      "agent_note": "DISPUTED: 7 is the correct count per direct inspection."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-stock-variance-filters/fact-find.md",
+      "line": "61",
+      "message": "Outcome contract still has `Why: TBD` despite `Status: Ready-for-planning`.",
+      "agent_note": "PER-PROTOCOL: template explicitly permits Why: TBD + Source: auto for dispatch-routed facts where operator has not confirmed intent. This is correct behaviour."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/reception-stock-variance-filters/fact-find.md",
+      "line": "21",
+      "message": "Frontmatter still has `Trigger-Why: TBD` and `Trigger-Intended-Outcome: TBD`.",
+      "agent_note": "PER-PROTOCOL: dispatch-routed path, operator has not confirmed values. TBD is correct."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "lp_score": 4.0,
+  "final_round": true
+}

@@ -10,8 +10,10 @@ import { DirectBookingPerks } from "@acme/ui/molecules";
 
 import RoomsSection, { type RoomsSectionBookingQuery } from "@/components/rooms/RoomsSection";
 import { roomsData } from "@/data/roomsData";
+import { useAvailability } from "@/hooks/useAvailability";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
+import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 import { fireViewItemList } from "@/utils/ga4-events";
 
 type Props = {
@@ -33,6 +35,10 @@ function resolveTranslatedCopy(value: unknown, fallback: string): string {
   return trimmed;
 }
 
+// apartment is a private room (lives at /private-rooms) — excluded here to keep the dorms listing
+// dorms-only, and because its widgetRoomCode is pending an Octorate ID.
+const DORMS_EXCLUDE_IDS = ["double_room", "apartment"];
+
 function RoomsPageContent({ lang, bookingQuery, serverTitle, serverSubtitle }: Props) {
   const { t } = useTranslation("roomsPage", { lng: lang, useSuspense: true });
   useTranslation("ratingsBar", { lng: lang, useSuspense: true });
@@ -50,6 +56,13 @@ function RoomsPageContent({ lang, bookingQuery, serverTitle, serverSubtitle }: P
   const pageSubtitle =
     serverSubtitle ??
     resolveTranslatedCopy(t("hero.subheading", { defaultValue: "" }), "");
+
+  // Derive checkin/checkout/pax for live availability pricing.
+  // Falls back to today/+2 days/1 pax when no booking query is present (pre-search state).
+  const checkin = bookingQuery?.checkIn?.trim() || getTodayIso();
+  const checkout = bookingQuery?.checkOut?.trim() || getDatePlusTwoDays(checkin);
+  const pax = bookingQuery?.pax ?? "1";
+  const { rooms: availabilityRooms } = useAvailability({ checkin, checkout, pax });
 
   useEffect(() => {
     fireViewItemList({
@@ -71,7 +84,13 @@ function RoomsPageContent({ lang, bookingQuery, serverTitle, serverSubtitle }: P
       </Section>
 
       {/* Rooms Grid */}
-      <RoomsSection lang={lang} bookingQuery={bookingQuery} itemListId="rooms_index" excludeRoomIds={["double_room"]} />
+      <RoomsSection
+        lang={lang}
+        bookingQuery={bookingQuery}
+        itemListId="rooms_index"
+        excludeRoomIds={DORMS_EXCLUDE_IDS}
+        availabilityRooms={availabilityRooms}
+      />
 
       {/* Direct Booking Perks */}
       <Section padding="default">

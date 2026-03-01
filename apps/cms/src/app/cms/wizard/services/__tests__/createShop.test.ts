@@ -1,9 +1,9 @@
 import { createShopOptionsSchema } from "@acme/platform-core/createShop/schema";
-import { validateShopName } from "@acme/platform-core/shops";
+import { validateShopName } from "@acme/platform-core/shops/client";
 
 import { createShop } from "../createShop";
 
-jest.mock("@acme/platform-core/shops", () => ({
+jest.mock("@acme/platform-core/shops/client", () => ({
   validateShopName: jest.fn(),
 }));
 
@@ -25,7 +25,7 @@ describe("createShop", () => {
     type: "sale",
     template: "temp",
     theme: "theme",
-    payment: {},
+    payment: [],
     shipping: {},
     pageTitle: {},
     pageDescription: {},
@@ -105,4 +105,3 @@ describe("createShop", () => {
     expect(result).toEqual({ ok: false, error: "fail" });
   });
 });
-

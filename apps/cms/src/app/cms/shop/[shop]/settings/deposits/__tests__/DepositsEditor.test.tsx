@@ -4,7 +4,13 @@ import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe, toHaveNoViolations } from "jest-axe";
 
+import {
+  __getUseSettingsSaveFormToastLog,
+  __resetUseSettingsSaveFormMock,
+} from "../../hooks/useSettingsSaveForm";
 import DepositsEditor from "../DepositsEditor";
+
+jest.mock("../../hooks/useSettingsSaveForm");
 
 expect.extend(toHaveNoViolations as any);
 
@@ -23,32 +29,6 @@ jest.mock("@cms/actions/shops.server", () => ({
 }));
 jest.mock("../../../../../../../services/shops/validation", () => ({
   parseDepositForm,
-}));
-jest.mock("@/components/atoms", () => ({
-  Toast: ({ open, message, className, onClose, ...props }: any) =>
-    open ? (
-      <div role="status" className={className} {...props}>
-        <span>{message}</span>
-        {onClose ? (
-          <button type="button" onClick={onClose}>
-            Close
-          </button>
-        ) : null}
-      </div>
-    ) : null,
-  Switch: ({ checked, onChange, ...props }: any) => (
-    <label>
-      <input
-        type="checkbox"
-        checked={checked}
-        onChange={(event) => onChange?.(event)}
-        {...props}
-      />
-    </label>
-  ),
-  Chip: ({ children, ...props }: any) => (
-    <span {...props}>{children}</span>
-  ),
 }));
 jest.mock(
   "@acme/design-system/shadcn",
@@ -70,6 +50,7 @@ jest.mock(
 
 describe("DepositsEditor", () => {
   beforeEach(() => {
+    __resetUseSettingsSaveFormMock();
     jest.clearAllMocks();
   });
 
@@ -90,8 +71,10 @@ describe("DepositsEditor", () => {
       await within(field as HTMLElement).findByText(CLIENT_VALIDATION_MESSAGE),
     ).toBeInTheDocument();
 
-    const toast = await screen.findByRole("status");
-    expect(toast).toHaveTextContent(CLIENT_VALIDATION_MESSAGE);
+    expect(__getUseSettingsSaveFormToastLog().at(-1)).toEqual({
+      status: "error",
+      message: CLIENT_VALIDATION_MESSAGE,
+    });
   });
 
   it("submits updated values, surfaces validation errors, and passes accessibility checks", async () => {
@@ -121,8 +104,10 @@ describe("DepositsEditor", () => {
 
     expect(await screen.findByText("Invalid")).toBeInTheDocument();
 
-    const toast = await screen.findByRole("status");
-    expect(toast).toHaveTextContent(SERVER_ERROR_MESSAGE);
+    expect(__getUseSettingsSaveFormToastLog().at(-1)).toEqual({
+      status: "error",
+      message: SERVER_ERROR_MESSAGE,
+    });
 
     const results = await axe(container);
     expect(results).toHaveNoViolations();
@@ -155,7 +140,9 @@ describe("DepositsEditor", () => {
 
     expect(parseDepositForm).toHaveBeenCalledTimes(1);
 
-    const toast = await screen.findByRole("status");
-    expect(toast).toHaveTextContent(SUCCESS_MESSAGE);
+    expect(__getUseSettingsSaveFormToastLog().at(-1)).toEqual({
+      status: "success",
+      message: SUCCESS_MESSAGE,
+    });
   });
 });

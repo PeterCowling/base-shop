@@ -11,7 +11,8 @@ import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { CalendarDays, MapPin, MessageCircle, Sparkles } from 'lucide-react';
 
-import { ReadinessSignalCard, UtilityActionStrip } from '@acme/ui';
+import { ReadinessSignalCard } from '@acme/ui/components/hospitality/ReadinessSignalCard';
+import { UtilityActionStrip } from '@acme/ui/components/hospitality/UtilityActionStrip';
 
 import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
 import {

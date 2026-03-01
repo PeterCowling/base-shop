@@ -18,9 +18,12 @@ export async function GET(
     }
     return NextResponse.json(draft);
   } catch (err) {
+    const message = err instanceof Error ? err.message : "Unknown error";
+    const status =
+      message === "Forbidden" || message === "Unauthorized" ? 403 : 400;
     return NextResponse.json(
-      { error: (err as Error).message },
-      { status: 400 }
+      { error: message },
+      { status }
     );
   }
 }
@@ -38,9 +41,12 @@ export async function POST(
     }
     return NextResponse.json({ id: result.page!.id });
   } catch (err) {
+    const message = err instanceof Error ? err.message : "Unknown error";
+    const status =
+      message === "Forbidden" || message === "Unauthorized" ? 403 : 400;
     return NextResponse.json(
-      { error: (err as Error).message },
-      { status: 400 }
+      { error: message },
+      { status }
     );
   }
 }

@@ -37,11 +37,17 @@ function toPositiveInt(value: string): number {
 type BookingWidgetProps = {
   lang?: AppLanguage;
   sectionRef?: Ref<HTMLElement>;
+  onDatesChange?: (payload: {
+    checkIn: string;
+    checkOut: string;
+    guests: number;
+  }) => void;
 };
 
 const BookingWidget = memo(function BookingWidget({
   lang,
   sectionRef,
+  onDatesChange,
 }: BookingWidgetProps): JSX.Element {
   const router = useRouter();
   const translationOptions = lang ? { lng: lang } : undefined;
@@ -101,6 +107,11 @@ const BookingWidget = memo(function BookingWidget({
       window.history.replaceState(null, "", nextHref);
     }
   }, [checkIn, checkOut, guests]);
+
+  useEffect(() => {
+    if (!hasHydrated.current) return;
+    onDatesChange?.({ checkIn, checkOut, guests });
+  }, [checkIn, checkOut, guests, onDatesChange]);
 
   const invalidRange = (() => {
     if (!checkIn || !checkOut) return false;

@@ -4,7 +4,13 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe, toHaveNoViolations } from "jest-axe";
 
+import {
+  __getUseSettingsSaveFormToastLog,
+  __resetUseSettingsSaveFormMock,
+} from "../../hooks/useSettingsSaveForm";
 import MaintenanceSchedulerEditor from "../MaintenanceSchedulerEditor";
+
+jest.mock("../../hooks/useSettingsSaveForm");
 
 expect.extend(toHaveNoViolations as any);
 
@@ -13,20 +19,6 @@ const updateMaintenanceSchedule = jest.fn();
 jest.mock("@cms/actions/maintenance.server", () => ({
   updateMaintenanceSchedule: (...args: any[]) => updateMaintenanceSchedule(...args),
 }));
-jest.mock(
-  "@/components/atoms",
-  () => ({
-    Toast: ({ open, message, children, ...props }: any) =>
-      open ? (
-        <div {...props}>
-          {message}
-          {children}
-        </div>
-      ) : null,
-    Chip: ({ children, ...props }: any) => <span {...props}>{children}</span>,
-  }),
-  { virtual: true },
-);
 jest.mock(
   "@/components/atoms/shadcn",
   () => ({
@@ -42,6 +34,7 @@ jest.mock(
 
 describe("MaintenanceSchedulerEditor", () => {
   beforeEach(() => {
+    __resetUseSettingsSaveFormMock();
     jest.clearAllMocks();
   });
 
@@ -54,7 +47,10 @@ describe("MaintenanceSchedulerEditor", () => {
     await userEvent.type(input, "4500");
     await userEvent.click(screen.getByRole("button", { name: /save/i }));
 
-    await screen.findByText("Maintenance scan schedule updated.");
+    expect(__getUseSettingsSaveFormToastLog().at(-1)).toEqual({
+      status: "success",
+      message: "Maintenance scan schedule updated.",
+    });
     expect(updateMaintenanceSchedule).toHaveBeenCalledTimes(1);
     const fd = updateMaintenanceSchedule.mock.calls[0][0] as FormData;
     expect(fd.get("frequency")).toBe("4500");
@@ -73,9 +69,10 @@ describe("MaintenanceSchedulerEditor", () => {
     expect(
       await screen.findByText("Enter a frequency greater than zero."),
     ).toBeInTheDocument();
-    expect(
-      await screen.findByText("Frequency must be at least 1 millisecond."),
-    ).toBeInTheDocument();
+    expect(__getUseSettingsSaveFormToastLog().at(-1)).toEqual({
+      status: "error",
+      message: "Frequency must be at least 1 millisecond.",
+    });
 
     const results = await axe(container);
     expect(results).toHaveNoViolations();

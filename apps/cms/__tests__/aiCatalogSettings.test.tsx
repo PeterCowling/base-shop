@@ -7,7 +7,9 @@ import userEvent from "@testing-library/user-event";
 import AiCatalogSettings from "../src/app/cms/shop/[shop]/settings/seo/AiCatalogSettings";
 
 const mockUpdateAiCatalog = jest.fn();
-jest.mock("@cms/actions/shops.server", () => ({ updateAiCatalog: mockUpdateAiCatalog }));
+jest.mock("@cms/actions/shops.server", () => ({
+  updateAiCatalog: (...args: any[]) => mockUpdateAiCatalog(...args),
+}));
 
 jest.mock("@acme/i18n", () => ({
   __esModule: true,
@@ -135,4 +137,3 @@ describe("AiCatalogSettings", () => {
     );
   });
 });
-

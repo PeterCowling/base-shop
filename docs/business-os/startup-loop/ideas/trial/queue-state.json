@@ -2,17 +2,17 @@
   "queue_version": "queue.v1",
   "mode": "trial",
   "created_at": "2026-02-25T00:00:00Z",
-  "last_updated": "2026-02-28T22:02:00Z",
+  "last_updated": "2026-03-01T00:00:00Z",
   "counts": {
     "enqueued": 12,
     "processed": 2,
     "skipped": 3,
     "error": 0,
     "suppressed": 0,
-    "auto_executed": 61,
+    "auto_executed": 67,
     "completed": 3,
-    "total": 80,
-    "fact_find_ready": 12
+    "total": 86,
+    "fact_find_ready": 18
   },
   "dispatches": [
     {
@@ -3226,6 +3226,175 @@
         "fact_find_slug": "brik-eod-day-closed-confirmation",
         "fact_find_path": "docs/plans/brik-eod-day-closed-confirmation/fact-find.md"
       }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260301-0079",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "area_anchor": "BRIK/reception till close — expected balance visible to all roles",
+      "domain": "STRATEGY",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "processed",
+      "priority": "P3",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "3-step CloseShiftForm wizard (Cash → Receipts → Keycards) with denomination-aware entry shows expected cash balance to all staff roles during counting. No role-aware blind mode exists to hide the expected balance from non-manager roles.",
+      "next_scope_now": "Add role-aware blind mode to CloseShiftForm / DenominationInput that hides expected balance from non-manager roles during denomination counting. Manager role retains visibility. Requires role check at the step level.",
+      "location_anchors": [
+        "apps/reception/src/components/till/CloseShiftForm.tsx",
+        "apps/reception/src/components/till/DenominationInput.tsx",
+        "apps/reception/src/components/till/StepProgress.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: worldclass-scan gap: cash-reconciliation-ux — no blind mode",
+        "docs/business-os/strategy/BRIK/apps/reception/worldclass-scan-2026-02-28.md"
+      ],
+      "created_at": "2026-03-01T00:00:00Z",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-01T00:00:00Z",
+        "queue_state": "processed",
+        "fact_find_slug": "reception-till-blind-mode",
+        "fact_find_path": "docs/plans/reception-till-blind-mode/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260301-0080",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "area_anchor": "BRIK/reception till — no drawer-to-employee lock assignment",
+      "domain": "STRATEGY",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P3",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Shift records openedBy/closedBy staff name (accountability trail exists). No mechanism prevents a different staff member from closing someone else's open shift. No 'drawer locked to employee' UI state exists in TillReconciliation.",
+      "next_scope_now": "Add drawer-to-employee lock: when a shift is opened by staff member A, only staff member A (or a manager override) can close it. Requires lock check in TillReconciliation and till schema. Manager reauth override path should log the reason.",
+      "location_anchors": [
+        "apps/reception/src/schemas/tillShiftSchema.ts",
+        "apps/reception/src/components/till/TillReconciliation.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: worldclass-scan gap: cash-reconciliation-ux — no drawer lock",
+        "docs/business-os/strategy/BRIK/apps/reception/worldclass-scan-2026-02-28.md"
+      ],
+      "created_at": "2026-03-01T00:00:00Z",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-01T00:00:00Z",
+        "fact_find_slug": "reception-till-drawer-lock",
+        "fact_find_path": "docs/plans/reception-till-drawer-lock/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260301-0081",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "area_anchor": "BRIK/reception stock counts — no submittedBy on ledger entries",
+      "domain": "STRATEGY",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P3",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Firebase ledger entries in BatchStockCount record itemId, quantity, timestamp, type, reason — but no submittedBy staff field. Post-count investigation cannot identify which staff member counted which items.",
+      "next_scope_now": "Add submittedBy attribution field to Firebase ledger entry schema and wire the current staff name into every batch count submission in BatchStockCount. Surface submittedBy in the stock variance audit view (ManagerAuditContent).",
+      "location_anchors": [
+        "apps/reception/src/components/inventory/BatchStockCount.tsx",
+        "apps/reception/src/hooks/utilities/useBatchCountProgress.ts",
+        "apps/reception/src/components/inventory/StockManagement.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: worldclass-scan gap: stock-accountability — no user attribution",
+        "docs/business-os/strategy/BRIK/apps/reception/worldclass-scan-2026-02-28.md"
+      ],
+      "created_at": "2026-03-01T00:00:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260301-0082",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "area_anchor": "BRIK/reception manager audit — stock variance fixed window, no export",
+      "domain": "STRATEGY",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P3",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "ManagerAuditContent stock variance table shows the last 7 days with item/delta/date. Fixed window, no staff filter, no date-range filter, no item filter, no CSV export capability. No user attribution on stock count entries (no submittedBy field).",
+      "next_scope_now": "Add date-range filter, item filter, and basic CSV export to the stock variance audit table in ManagerAuditContent. This gap is partially dependent on IDEA-DISPATCH-20260301-0081 (submittedBy attribution) to also enable a staff filter.",
+      "location_anchors": [
+        "apps/reception/src/components/managerAudit/ManagerAuditContent.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: worldclass-scan gap: manager-audit-visibility — stock variance not filterable or exportable",
+        "docs/business-os/strategy/BRIK/apps/reception/worldclass-scan-2026-02-28.md"
+      ],
+      "created_at": "2026-03-01T00:00:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260301-0083",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "area_anchor": "BRIK/reception EOD closure — no cash/stock totals in stored record",
+      "domain": "STRATEGY",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "processed",
+      "priority": "P3",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "EodChecklistContent Confirm day closed button stores a closure record with confirmedBy, timestamp, date only — no variance amounts, no cash totals, no stock delta summary. A manager reviewing the stored EOD record cannot see actual cash over/short or stock delta without navigating to separate screens.",
+      "next_scope_now": "Enrich the EOD closure record (eodClosureSchema) to capture actual cash over/short and stock delta at the moment of confirmation. Surface these figures inline in the EOD checklist view and in the stored record reviewable after the fact.",
+      "location_anchors": [
+        "apps/reception/src/components/eodChecklist/EodChecklistContent.tsx",
+        "apps/reception/src/schemas/eodClosureSchema.ts"
+      ],
+      "evidence_refs": [
+        "operator-stated: worldclass-scan gap: end-of-day-closeout — no inline variance amounts",
+        "docs/business-os/strategy/BRIK/apps/reception/worldclass-scan-2026-02-28.md"
+      ],
+      "created_at": "2026-03-01T00:00:00Z",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-01T00:00:00Z",
+        "fact_find_slug": "reception-eod-variance-amounts",
+        "fact_find_path": "docs/plans/reception-eod-variance-amounts/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260301-0084",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "area_anchor": "BRIK/reception EOD — hard allDone gate, no manager override path",
+      "domain": "STRATEGY",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P3",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "EodChecklistContent blocks the confirm button with a hard allDone gate (tillDone && safeDone && stockDone). No escape hatch exists for legitimate edge cases (e.g., safe inaccessible, stock count impossible due to system issue). Staff cannot complete EOD when any step is blocked.",
+      "next_scope_now": "Add manager reauth override path to EodChecklistContent: when a required step cannot be completed, a manager can authenticate and provide a mandatory reason to proceed. The override must be logged in the closure record. Consistent with the existing managerReauth pattern in the app.",
+      "location_anchors": [
+        "apps/reception/src/components/eodChecklist/EodChecklistContent.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: worldclass-scan gap: end-of-day-closeout — no exception override",
+        "docs/business-os/strategy/BRIK/apps/reception/worldclass-scan-2026-02-28.md"
+      ],
+      "created_at": "2026-03-01T00:00:00Z"
     }
   ]
 }

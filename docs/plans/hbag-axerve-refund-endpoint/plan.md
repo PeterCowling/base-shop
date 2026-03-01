@@ -30,7 +30,7 @@ Adds a secured admin-only refund endpoint to the caryina app that issues full or
 - [x] TASK-02: Implement `callRefund` in `packages/axerve/src/index.ts` and extend `packages/axerve/src/index.test.ts`
 - [x] TASK-03: Add `refundRequestSchema` to `apps/caryina/src/lib/adminSchemas.ts`
 - [x] TASK-04: Create `POST /admin/api/refunds/route.ts` and `route.test.ts`
-- [ ] TASK-05: Typecheck, lint, governed tests, and sandbox smoke-test
+- [~] TASK-05: Typecheck, lint, governed tests, and sandbox smoke-test (typecheck+lint+commit done, CI running, sandbox smoke-test is operator action)
 
 ## Goals
 
@@ -106,7 +106,7 @@ Adds a secured admin-only refund endpoint to the caryina app that issues full or
 | TASK-02 | IMPLEMENT | Implement `callRefund` + extend tests in axerve package | 85% | M | Complete (2026-03-01) | TASK-01 | TASK-04 |
 | TASK-03 | IMPLEMENT | Add `refundRequestSchema` to `adminSchemas.ts` | 95% | S | Complete (2026-03-01) | - | TASK-04 |
 | TASK-04 | IMPLEMENT | Create `POST /admin/api/refunds/route.ts` + `route.test.ts` | 85% | M | Complete (2026-03-01) | TASK-01, TASK-02, TASK-03 | TASK-05 |
-| TASK-05 | IMPLEMENT | Typecheck, lint, governed tests, sandbox smoke-test | 85% | S | Pending | TASK-04 | - |
+| TASK-05 | IMPLEMENT | Typecheck, lint, governed tests, sandbox smoke-test | 85% | S | In-Progress (2026-03-01) | TASK-04 | - |
 
 ## Parallelism Guide
 

@@ -4,6 +4,22 @@ import { fireEvent, render, screen } from "@testing-library/react";
 
 import SegmentBuilder from "../src/app/cms/segments/SegmentBuilder";
 
+const mockToast = {
+  success: jest.fn(),
+  error: jest.fn(),
+  warning: jest.fn(),
+  info: jest.fn(),
+  loading: jest.fn(),
+  dismiss: jest.fn(),
+  update: jest.fn(),
+  promise: async <T,>(value: Promise<T>) => value,
+};
+
+jest.mock("@acme/ui/operations", () => ({
+  __esModule: true,
+  useToast: () => mockToast,
+}));
+
 describe("SegmentBuilder", () => {
   beforeEach(() => {
     jest.resetAllMocks();
@@ -45,7 +61,7 @@ describe("SegmentBuilder", () => {
       })
     );
 
-    await screen.findByText("Segment saved.");
+    expect(mockToast.success).toHaveBeenCalledWith("Segment saved.");
     expect(screen.getByLabelText(/Segment ID/i)).toHaveValue("");
     expect(screen.getByLabelText(/Name/i)).toHaveValue("");
     expect(screen.getAllByLabelText(/Field/i)).toHaveLength(1);
@@ -70,6 +86,6 @@ describe("SegmentBuilder", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /save segment/i }));
 
-    await screen.findByText("fail");
+    expect(mockToast.error).toHaveBeenCalledWith("fail");
   });
 });

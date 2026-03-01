@@ -56,8 +56,7 @@ export async function GET(req: NextRequest) {
     );
     return NextResponse.json({ components });
   } catch (err) {
-    console.error("[api/edit-changes] error:", err);
-    return NextResponse.json({ error: "Failed to fetch changes" }, { status: 500 });
+    const message = err instanceof Error ? err.message : "Failed to fetch changes";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
-

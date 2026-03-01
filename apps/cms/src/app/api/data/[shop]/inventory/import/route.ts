@@ -97,9 +97,13 @@ export async function POST(
     await inventoryRepository.write(shop, parsed.data);
     return NextResponse.json({ success: true, items: parsed.data });
   } catch (err) {
-    console.error("Inventory import failed", err); // i18n-exempt -- non-UX log
-    const message = (err as Error).message;
-    const status = /delegate is unavailable/i.test(message) ? 503 : 400;
+    const message = err instanceof Error ? err.message : "Unknown error";
+    const status =
+      message === "Forbidden" || message === "Unauthorized"
+        ? 403
+        : /delegate is unavailable/i.test(message)
+          ? 503
+          : 400;
     return NextResponse.json(
       { error: message },
       { status }

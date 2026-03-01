@@ -4,7 +4,13 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe, toHaveNoViolations } from "jest-axe";
 
+import {
+  __getUseSettingsSaveFormToastLog,
+  __resetUseSettingsSaveFormMock,
+} from "../../hooks/useSettingsSaveForm";
 import ReturnsEditor from "../ReturnsEditor";
+
+jest.mock("../../hooks/useSettingsSaveForm");
 
 expect.extend(toHaveNoViolations as any);
 
@@ -13,30 +19,6 @@ const updateUpsReturns = jest.fn();
 jest.mock("@cms/actions/shops.server", () => ({
   updateUpsReturns: (...args: any[]) => updateUpsReturns(...args),
 }));
-jest.mock("@/components/atoms", () => ({
-  Toast: ({ open, message, role = "status", onClose, className }: any) => {
-    if (!open) return null;
-    return (
-      <div role={role} className={className}>
-        <span>{message}</span>
-        {onClose ? (
-          <button type="button" onClick={onClose}>
-            ×
-          </button>
-        ) : null}
-      </div>
-    );
-  },
-  Switch: ({ onChange, ...props }: any) => (
-    <input
-      type="checkbox"
-      onChange={(event) => onChange?.(event)}
-      {...props}
-    />
-  ),
-  Chip: ({ children, ...props }: any) => <span {...props}>{children}</span>,
-}));
-
 jest.mock(
   "@/components/atoms/shadcn",
   () => ({
@@ -49,6 +31,7 @@ jest.mock(
 
 describe("ReturnsEditor", () => {
   beforeEach(() => {
+    __resetUseSettingsSaveFormMock();
     jest.clearAllMocks();
   });
 
@@ -75,8 +58,10 @@ describe("ReturnsEditor", () => {
     expect(fd.get("homePickupEnabled")).toBe("on");
 
     expect(await screen.findByText("Required")).toBeInTheDocument();
-    const errorToast = await screen.findByRole("status");
-    expect(errorToast).toHaveTextContent("Unable to update return options.");
+    expect(__getUseSettingsSaveFormToastLog().at(-1)).toEqual({
+      status: "error",
+      message: "Unable to update return options.",
+    });
 
     const results = await axe(container);
     expect(results).toHaveNoViolations();
@@ -94,15 +79,15 @@ describe("ReturnsEditor", () => {
 
     expect(updateUpsReturns).not.toHaveBeenCalled();
 
-    const toast = await screen.findByRole("status");
-    expect(toast).toHaveTextContent(
-      "Select at least one return option before saving.",
-    );
+    expect(__getUseSettingsSaveFormToastLog().at(-1)).toEqual({
+      status: "error",
+      message: "Select at least one return option before saving.",
+    });
 
     const inlineErrors = screen
       .getAllByText("Select at least one return option before saving.")
-      .filter((element) => !toast.contains(element));
-    expect(inlineErrors.length).toBeGreaterThanOrEqual(1);
+      .filter((element) => element.tagName !== "BUTTON");
+    expect(inlineErrors.length).toBeGreaterThan(0);
 
     const results = await axe(container);
     expect(results).toHaveNoViolations();
@@ -135,7 +120,9 @@ describe("ReturnsEditor", () => {
       expect(pickup).not.toBeChecked();
     });
 
-    const toast = await screen.findByRole("status");
-    expect(toast).toHaveTextContent("Return options updated.");
+    expect(__getUseSettingsSaveFormToastLog().at(-1)).toEqual({
+      status: "success",
+      message: "Return options updated.",
+    });
   });
 });

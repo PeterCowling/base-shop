@@ -78,7 +78,35 @@ describe("catalog submission route", () => {
   it("uses cloud submission builder when local fs runtime is disabled", async () => {
     isLocalFsRuntimeEnabledMock.mockReturnValueOnce(false);
     readCloudDraftSnapshotMock.mockResolvedValueOnce({
-      products: [{ slug: "studio-jacket", title: "Studio Jacket" }],
+      products: [
+        {
+          id: "p1",
+          slug: "studio-jacket",
+          title: "Studio Jacket",
+          brandHandle: "atelier-x",
+          collectionHandle: "outerwear",
+          collectionTitle: "Outerwear",
+          price: "189",
+          description: "A structured layer.",
+          createdAt: "2025-12-01T12:00:00.000Z",
+          forSale: true,
+          forRental: false,
+          popularity: "0",
+          deposit: "0",
+          stock: "0",
+          sizes: "S|M|L",
+          taxonomy: {
+            department: "women",
+            category: "clothing",
+            subcategory: "outerwear",
+            color: "black",
+            material: "wool",
+          },
+          imageFiles: "studio-jacket-front.jpg|studio-jacket-side.jpg",
+          imageAltTexts: "Studio jacket front|Studio jacket side",
+          imageRoles: "front|side",
+        },
+      ],
       revisionsById: {},
       docRevision: "doc-1",
     });
@@ -106,7 +134,9 @@ describe("catalog submission route", () => {
     expect(response.status).toBe(200);
     expect(buildSubmissionZipFromCloudDraftsMock).toHaveBeenCalledWith(
       expect.objectContaining({
-        products: [{ slug: "studio-jacket", title: "Studio Jacket" }],
+        products: expect.arrayContaining([
+          expect.objectContaining({ slug: "studio-jacket", title: "Studio Jacket" }),
+        ]),
       }),
     );
     expect(response.headers.get("Content-Type")).toBe("application/zip");

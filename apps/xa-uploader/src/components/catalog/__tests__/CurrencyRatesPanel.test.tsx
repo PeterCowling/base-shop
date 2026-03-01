@@ -17,7 +17,7 @@ describe("CurrencyRatesPanel", () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
         ok: true,
-        json: () => Promise.resolve({ ok: true, rates: null }),
+        json: () => Promise.resolve({ ok: true, rates: { EUR: 0.93, GBP: 0.79, AUD: 1.55 } }),
       } as Response),
     ) as unknown as typeof fetch;
   });
@@ -75,13 +75,16 @@ describe("CurrencyRatesPanel", () => {
 
   it("calls onSync and shows synced note when save succeeds and sync is ready", async () => {
     const onSync = jest.fn();
-    global.fetch = jest
-      .fn()
-      .mockResolvedValueOnce({
+    global.fetch = jest.fn((input: RequestInfo | URL, init?: RequestInit) => {
+      const requestUrl = typeof input === "string" ? input : input.toString();
+      if (requestUrl.includes("/api/catalog/currency-rates") && init?.method === "PUT") {
+        return Promise.resolve({ ok: true, json: async () => ({ ok: true }) } as Response);
+      }
+      return Promise.resolve({
         ok: true,
         json: async () => ({ ok: true, rates: { EUR: 0.93, GBP: 0.79, AUD: 1.55 } }),
-      } as Response)
-      .mockResolvedValueOnce({ ok: true, json: async () => ({ ok: true }) } as Response) as unknown as typeof fetch;
+      } as Response);
+    }) as unknown as typeof fetch;
 
     render(
       <CurrencyRatesPanel
@@ -104,13 +107,16 @@ describe("CurrencyRatesPanel", () => {
 
   it("shows saved-not-synced feedback and does not call onSync when readiness is false", async () => {
     const onSync = jest.fn();
-    global.fetch = jest
-      .fn()
-      .mockResolvedValueOnce({
+    global.fetch = jest.fn((input: RequestInfo | URL, init?: RequestInit) => {
+      const requestUrl = typeof input === "string" ? input : input.toString();
+      if (requestUrl.includes("/api/catalog/currency-rates") && init?.method === "PUT") {
+        return Promise.resolve({ ok: true, json: async () => ({ ok: true }) } as Response);
+      }
+      return Promise.resolve({
         ok: true,
         json: async () => ({ ok: true, rates: { EUR: 0.93, GBP: 0.79, AUD: 1.55 } }),
-      } as Response)
-      .mockResolvedValueOnce({ ok: true, json: async () => ({ ok: true }) } as Response) as unknown as typeof fetch;
+      } as Response);
+    }) as unknown as typeof fetch;
 
     render(
       <CurrencyRatesPanel
@@ -132,13 +138,16 @@ describe("CurrencyRatesPanel", () => {
   });
 
   it("shows save failure feedback when PUT fails", async () => {
-    global.fetch = jest
-      .fn()
-      .mockResolvedValueOnce({
+    global.fetch = jest.fn((input: RequestInfo | URL, init?: RequestInit) => {
+      const requestUrl = typeof input === "string" ? input : input.toString();
+      if (requestUrl.includes("/api/catalog/currency-rates") && init?.method === "PUT") {
+        return Promise.resolve({ ok: false, json: async () => ({ ok: false }) } as Response);
+      }
+      return Promise.resolve({
         ok: true,
         json: async () => ({ ok: true, rates: { EUR: 0.93, GBP: 0.79, AUD: 1.55 } }),
-      } as Response)
-      .mockResolvedValueOnce({ ok: false, json: async () => ({ ok: false }) } as Response) as unknown as typeof fetch;
+      } as Response);
+    }) as unknown as typeof fetch;
 
     render(
       <CurrencyRatesPanel

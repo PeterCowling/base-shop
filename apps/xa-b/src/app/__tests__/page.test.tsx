@@ -45,8 +45,13 @@ describe("xa-b home page freshness banner", () => {
       readUrl: "https://internal.example/catalog/xa-b",
     });
     const { renderToStaticMarkup } = await import("react-dom/server");
+    const { CartProvider } = await import("../../contexts/XaCartContext");
     const { default: HomePage } = await import("../page");
-    const html = renderToStaticMarkup(<HomePage />);
+    const html = renderToStaticMarkup(
+      <CartProvider>
+        <HomePage />
+      </CartProvider>,
+    );
 
     expect(html).toContain("Catalog data may be stale. Last sync:");
     expect(html).toContain("2026-03-01T10:00:00.000Z");
@@ -60,8 +65,13 @@ describe("xa-b home page freshness banner", () => {
       syncedAt: "2026-03-01T10:00:00.000Z",
     });
     const { renderToStaticMarkup } = await import("react-dom/server");
+    const { CartProvider } = await import("../../contexts/XaCartContext");
     const { default: HomePage } = await import("../page");
-    const html = renderToStaticMarkup(<HomePage />);
+    const html = renderToStaticMarkup(
+      <CartProvider>
+        <HomePage />
+      </CartProvider>,
+    );
 
     expect(html).not.toContain("Catalog data may be stale. Last sync:");
   });

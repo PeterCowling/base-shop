@@ -1,0 +1,22 @@
+{
+  "round": 2,
+  "mode": "file",
+  "artifact": "docs/plans/reception-eod-exception-override/fact-find.md",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-eod-exception-override/fact-find.md",
+      "line": "66",
+      "message": "`Intended Outcome Statement` says \"Staff can close the day…\", but this screen is management-gated (`EodChecklistContent` checks `canAccess(user, Permissions.MANAGEMENT_ACCESS)`), so the outcome statement is role-inaccurate and should be phrased for management users."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-eod-exception-override/fact-find.md",
+      "line": "64",
+      "message": "`Why` remains `TBD` while the doc is `Status: Ready-for-planning`; this leaves the outcome contract incomplete and weakens traceability for planning/audit."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "sessionId": "Q1qNA84XAQMYM94_"
+}

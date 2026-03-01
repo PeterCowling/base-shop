@@ -98,6 +98,10 @@ function getUseTranslationMock(): jest.Mock {
   return (jest.requireMock("react-i18next") as { useTranslation: jest.Mock }).useTranslation;
 }
 
+function getBookingSubmitButton(): HTMLElement {
+  return screen.getByRole("button", { name: "booking.buttonAvailability" });
+}
+
 // ---------------------------------------------------------------------------
 // TC-01: BookingWidget → navigates to /book (TASK-27)
 // ---------------------------------------------------------------------------
@@ -122,7 +126,7 @@ describe("TC-01: BookingWidget → navigates to /book (TASK-27)", () => {
     fireEvent.change(guestsInput, { target: { value: "2" } });
 
     // Only one button in the widget (the CTA).
-    fireEvent.click(screen.getByRole("button"));
+    fireEvent.click(getBookingSubmitButton());
 
     expect(mockPush).toHaveBeenCalledTimes(1);
     expect(mockPush).toHaveBeenCalledWith("/en/book?checkin=2025-06-01&checkout=2025-06-03&pax=2");
@@ -144,7 +148,7 @@ describe("TC-01: BookingWidget → navigates to /book (TASK-27)", () => {
     render(<BookingWidget />);
 
     // Click without filling any dates — empty fields are omitted from query.
-    fireEvent.click(screen.getByRole("button"));
+    fireEvent.click(getBookingSubmitButton());
 
     expect(mockPush).toHaveBeenCalledTimes(1);
     expect(mockPush).toHaveBeenCalledWith("/en/book?pax=1");
@@ -160,7 +164,7 @@ describe("TC-01: BookingWidget → navigates to /book (TASK-27)", () => {
       target: { value: "2025-06-06" }, // 1-night stay — invalid range
     });
 
-    fireEvent.click(screen.getByRole("button"));
+    fireEvent.click(getBookingSubmitButton());
 
     // Widget shows error and does NOT navigate on invalid range.
     expect(mockPush).not.toHaveBeenCalled();
@@ -181,7 +185,7 @@ describe("TC-01: BookingWidget → navigates to /book (TASK-27)", () => {
       target: { value: "9" },
     });
 
-    fireEvent.click(screen.getByRole("button"));
+    fireEvent.click(getBookingSubmitButton());
 
     expect(mockPush).not.toHaveBeenCalled();
     expect(screen.getByRole("alert")).toBeInTheDocument();

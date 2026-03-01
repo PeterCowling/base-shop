@@ -138,7 +138,9 @@ describe("GA4 cta_click coverage (GA4-cta-click)", () => {
     render(
       <>
         <HomeContent lang="en" />
-        <BookingWidget lang="en" />
+        <div data-testid="standalone-booking-widget">
+          <BookingWidget lang="en" />
+        </div>
       </>,
     );
 
@@ -146,9 +148,8 @@ describe("GA4 cta_click coverage (GA4-cta-click)", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Hero CTA" }));
 
-    const bookingSection = document.getElementById("booking");
-    expect(bookingSection).toBeTruthy();
-    const widgetButton = within(bookingSection as HTMLElement).getByRole("button", {
+    const standaloneWidget = screen.getByTestId("standalone-booking-widget");
+    const widgetButton = within(standaloneWidget).getByRole("button", {
       name: /check availability/i,
     });
     fireEvent.click(widgetButton);

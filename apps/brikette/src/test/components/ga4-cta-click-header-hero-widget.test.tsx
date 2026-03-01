@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 
 import React from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 
 jest.mock("swiper/css", () => "");
 jest.mock("swiper/css/navigation", () => "");
@@ -146,7 +146,11 @@ describe("GA4 cta_click coverage (GA4-cta-click)", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Hero CTA" }));
 
-    const widgetButton = screen.getAllByRole("button", { name: /check availability/i })[0]!;
+    const bookingSection = document.getElementById("booking");
+    expect(bookingSection).toBeTruthy();
+    const widgetButton = within(bookingSection as HTMLElement).getByRole("button", {
+      name: /check availability/i,
+    });
     fireEvent.click(widgetButton);
 
     const ctaCalls = gtag.mock.calls.filter((args) => args[0] === "event" && args[1] === "cta_click");

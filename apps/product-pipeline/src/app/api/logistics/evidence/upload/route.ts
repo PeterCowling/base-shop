@@ -3,7 +3,6 @@ import { onRequestPost } from "@/routes/api/logistics/evidence/upload";
 
 export const runtime = "edge";
 
-export const dynamic = "force-static";
 
 export async function POST(request: Request) {
   return withPipelineContext(request, {}, onRequestPost);

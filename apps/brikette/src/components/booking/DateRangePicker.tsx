@@ -9,7 +9,7 @@ import {
   getMaxCheckoutForStay,
   getMinCheckoutForStay,
 } from "@/utils/bookingDateRules";
-import { formatDate, formatDisplayDate } from "@/utils/dateUtils";
+import { formatDate, formatDisplayDate, safeParseIso } from "@/utils/dateUtils";
 
 export type { DateRange };
 
@@ -35,6 +35,14 @@ export interface DateRangePickerProps {
    * Pass a translated string from `t("date.clearDates")`.
    */
   clearDatesText?: string;
+  /**
+   * Accessible label for the check-in date input.
+   */
+  checkInLabelText?: string;
+  /**
+   * Accessible label for the check-out date input.
+   */
+  checkOutLabelText?: string;
   /** Optional extra class applied to the outer wrapper div. */
   className?: string;
 }
@@ -101,14 +109,54 @@ export function DateRangePicker({
   onRangeChange,
   stayHelperText = "2\u20138 nights", // i18n-exempt -- BRIK-0 [ttl=2026-12-31] fallback; callers pass t("date.stayHelper")
   clearDatesText = "Clear dates", // i18n-exempt -- BRIK-0 [ttl=2026-12-31] fallback; callers pass t("date.clearDates")
+  checkInLabelText = "Check in", // i18n-exempt -- BRIK-0 [ttl=2026-12-31] fallback label
+  checkOutLabelText = "Check out", // i18n-exempt -- BRIK-0 [ttl=2026-12-31] fallback label
   className,
 }: DateRangePickerProps): React.JSX.Element {
   const disabledMatcher = buildDisabledMatcher(selected);
   const summary = buildSummary(selected);
   const hasCompleteRange = Boolean(selected?.from && selected?.to);
+  const selectedFromIso = selected?.from ? formatDate(selected.from) : "";
+  const selectedToIso = selected?.to ? formatDate(selected.to) : "";
+  const minCheckout = selectedFromIso ? getMinCheckoutForStay(selectedFromIso) ?? "" : "";
 
   function handleSelect(range: DateRange | undefined): void {
     onRangeChange(range);
+  }
+
+  function handleCheckInInputChange(value: string): void {
+    const from = safeParseIso(value);
+    if (!from) {
+      onRangeChange(undefined);
+      return;
+    }
+
+    const fromIso = formatDate(from);
+    const minCheckoutIso = getMinCheckoutForStay(fromIso);
+    const maxCheckoutIso = getMaxCheckoutForStay(fromIso);
+    const currentToIso = selected?.to ? formatDate(selected.to) : "";
+
+    const shouldResetCheckout =
+      !currentToIso ||
+      !minCheckoutIso ||
+      !maxCheckoutIso ||
+      currentToIso < minCheckoutIso ||
+      currentToIso > maxCheckoutIso;
+
+    const nextTo = shouldResetCheckout && minCheckoutIso ? safeParseIso(minCheckoutIso) : selected?.to;
+    onRangeChange({ from, to: nextTo });
+  }
+
+  function handleCheckOutInputChange(value: string): void {
+    const to = safeParseIso(value);
+    if (!selected?.from) {
+      onRangeChange(undefined);
+      return;
+    }
+    onRangeChange({
+      from: selected.from,
+      to,
+    });
   }
 
   function handleClear(): void {
@@ -117,6 +165,25 @@ export function DateRangePicker({
 
   return (
     <div className={className}>
+      <label className="sr-only">
+        {checkInLabelText}
+        <input
+          type="date"
+          aria-label={checkInLabelText}
+          value={selectedFromIso}
+          onChange={(event) => handleCheckInInputChange(event.target.value)}
+        />
+      </label>
+      <label className="sr-only">
+        {checkOutLabelText}
+        <input
+          type="date"
+          aria-label={checkOutLabelText}
+          value={selectedToIso}
+          min={minCheckout}
+          onChange={(event) => handleCheckOutInputChange(event.target.value)}
+        />
+      </label>
       <DayPicker
         mode="range"
         selected={selected}

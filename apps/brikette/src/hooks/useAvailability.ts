@@ -5,8 +5,8 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import type { OctorateRoom } from "@/app/api/availability/route";
 import { OCTORATE_LIVE_AVAILABILITY } from "@/config/env";
+import type { OctorateRoom } from "@/types/octorate-availability";
 
 export type { OctorateRoom };
 

@@ -66,7 +66,7 @@ describe("buildAppMetadata", () => {
       lang: "en",
       title: "Rooms",
       description: "Our rooms",
-      path: "/en/rooms",
+      path: "/en/dorms",
     });
 
     // Verify localized slugs (not naive string replacement)

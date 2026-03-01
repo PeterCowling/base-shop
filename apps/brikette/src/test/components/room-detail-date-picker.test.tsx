@@ -82,20 +82,6 @@ jest.mock("@/hooks/useAvailabilityForRoom", () => ({
   useAvailabilityForRoom: () => ({ availabilityRoom: undefined, loading: false, error: null }),
 }));
 
-// Stub DateRangePicker — exposes a button that fires onRangeChange for TC-DP-02
-jest.mock("@/components/booking/DateRangePicker", () => ({
-  __esModule: true,
-  DateRangePicker: ({ onRangeChange }: { onRangeChange: (range: { from: Date; to: Date }) => void }) => (
-    <button
-      type="button"
-      data-cy="mock-date-range-picker"
-      onClick={() => onRangeChange({ from: new Date(2025, 5, 15), to: new Date(2025, 5, 17) })}
-    >
-      Mock DateRangePicker
-    </button>
-  ),
-}));
-
 // Stub other components that cause import errors in test environment
 jest.mock("@/components/booking/LocationInline", () => ({ __esModule: true, default: () => null }));
 jest.mock("@/components/landing/SocialProofSection", () => ({ __esModule: true, default: () => null }));
@@ -186,9 +172,12 @@ describe("RoomDetailContent — date picker (TASK-DP)", () => {
     // Provide existing params so no default seed fires
     renderRoomDetail(new URLSearchParams(`checkin=${todayIso}&checkout=${addDays(todayIso, 2)}&pax=1`));
 
-    // The mock DateRangePicker fires onRangeChange({ from: 2025-06-15, to: 2025-06-17 }) on click
-    const mockPicker = screen.getByRole("button", { name: /mock date range picker/i });
-    fireEvent.click(mockPicker);
+    fireEvent.change(screen.getByLabelText(/check in/i), {
+      target: { value: "2025-06-15" },
+    });
+    fireEvent.change(screen.getByLabelText(/check out/i), {
+      target: { value: "2025-06-17" },
+    });
 
     await waitFor(() => {
       const replaceCalls = mockReplace.mock.calls;

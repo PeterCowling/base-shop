@@ -7,27 +7,14 @@ import { NextResponse } from "next/server";
 
 import { OCTORATE_LIVE_AVAILABILITY } from "@/config/env";
 import { BOOKING_CODE } from "@/context/modal/constants";
+import type {
+  AvailabilityRouteResponse,
+  OctorateRoom,
+} from "@/types/octorate-availability";
 
 export const dynamic = "force-dynamic";
 
-// ---------------------------------------------------------------------------
-// Exported types (consumed by useAvailability hook and RoomCard)
-// ---------------------------------------------------------------------------
-
-export interface OctorateRoom {
-  octorateRoomName: string;
-  octorateRoomId: string;
-  available: boolean;
-  priceFrom: number | null;
-  nights: number;
-  ratePlans: Array<{ label: string }>;
-}
-
-export interface AvailabilityRouteResponse {
-  rooms: OctorateRoom[];
-  fetchedAt: string;
-  error?: string;
-}
+export type { AvailabilityRouteResponse, OctorateRoom };
 
 // ---------------------------------------------------------------------------
 // Private helpers

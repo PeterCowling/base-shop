@@ -40,7 +40,13 @@ jobs:
     uses: ./.github/workflows/reusable-app.yml
     with:
       app-filter: "@apps/prime"
-      build-cmd: OUTPUT_EXPORT=1 pnpm --filter @apps/prime... build
+      build-cmd: >
+        pnpm --filter @apps/prime^... build &&
+        cd apps/prime &&
+        ([ -d "src/app/api" ] && mv "src/app/api" "src/app/_api-off" || true) &&
+        (OUTPUT_EXPORT=1 pnpm exec next build; e=$?;
+        ([ -d "src/app/_api-off" ] && mv "src/app/_api-off" "src/app/api" || true);
+        exit $e)
       artifact-path: apps/prime/out
       deploy_cmd: >
         cd apps/prime &&

@@ -10,7 +10,6 @@
 
 import { NextResponse } from 'next/server';
 
-export const dynamic = 'force-static';
 
 const FIREBASE_DATABASE_URL =
   process.env.CF_FIREBASE_DATABASE_URL ??

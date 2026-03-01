@@ -301,6 +301,8 @@ type BookingPickerSectionProps = {
   onRangeChange: (r: DateRange | undefined) => void;
   stayHelperText: string;
   clearDatesText: string;
+  checkInLabelText: string;
+  checkOutLabelText: string;
   adultsLabel: string;
   pickerAdults: number;
   maxPickerAdults: number;
@@ -313,6 +315,8 @@ function BookingPickerSection({
   onRangeChange,
   stayHelperText,
   clearDatesText,
+  checkInLabelText,
+  checkOutLabelText,
   adultsLabel,
   pickerAdults,
   maxPickerAdults,
@@ -326,6 +330,8 @@ function BookingPickerSection({
           onRangeChange={onRangeChange}
           stayHelperText={stayHelperText}
           clearDatesText={clearDatesText}
+          checkInLabelText={checkInLabelText}
+          checkOutLabelText={checkOutLabelText}
         />
         <div className="mt-4 flex flex-col gap-1">
           <label className="text-sm text-brand-text dark:text-brand-surface/80">{adultsLabel}</label>
@@ -514,6 +520,8 @@ export default function RoomDetailContent({ lang, id }: Props) {
         onRangeChange={handleRangeChange}
         stayHelperText={t("date.stayHelper") as string}
         clearDatesText={t("date.clearDates") as string}
+        checkInLabelText={t("booking.checkInLabel", { defaultValue: "Check in" }) as string}
+        checkOutLabelText={t("booking.checkOutLabel", { defaultValue: "Check out" }) as string}
         adultsLabel={t("adults") as string}
         pickerAdults={pickerAdults}
         maxPickerAdults={maxPickerAdults}

@@ -148,6 +148,8 @@ const BookingWidget = memo(function BookingWidget({
               onRangeChange={(r) => setRange(r ?? { from: undefined, to: undefined })}
               stayHelperText={tModals("date.stayHelper") as string}
               clearDatesText={tModals("date.clearDates") as string}
+              checkInLabelText={tModals("booking.checkInLabel") as string}
+              checkOutLabelText={tModals("booking.checkOutLabel") as string}
             />
             <div className="flex items-end gap-3">
               <label

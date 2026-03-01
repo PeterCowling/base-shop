@@ -196,6 +196,8 @@ function BookPageContent({ lang, heading }: Props): JSX.Element {
             }}
             stayHelperText={t("date.stayHelper", { defaultValue: "2–8 nights" }) as string}
             clearDatesText={t("date.clearDates", { defaultValue: "Clear dates" }) as string}
+            checkInLabelText={t("date.checkInLabel", { defaultValue: "Check in" }) as string}
+            checkOutLabelText={t("date.checkOutLabel", { defaultValue: "Check out" }) as string}
           />
           <label className="flex flex-col gap-1 text-sm font-medium text-brand-heading">
             {t("date.guests", { defaultValue: "Guests" }) as string}

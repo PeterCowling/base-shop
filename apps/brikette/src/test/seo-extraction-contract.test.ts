@@ -63,18 +63,18 @@ describe("SEO Extraction: seo.ts re-export contract", () => {
   });
 
   // TC-04: buildLinks() with Brikette slug translation still produces correct hreflang
-  test("buildLinks('en', '/en/rooms', origin) produces canonical + 10+ hreflang alternates", () => {
+  test("buildLinks('en', '/en/dorms', origin) produces canonical + 10+ hreflang alternates", () => {
     const origin = "https://example.com";
     const links: HtmlLinkDescriptor[] = buildLinks({
       lang: "en",
       origin,
-      path: "/en/rooms",
+      path: "/en/dorms",
     });
 
     // Canonical
     expect(links[0]).toEqual({
       rel: "canonical",
-      href: `${origin}/en/rooms`,
+      href: `${origin}/en/dorms`,
     });
 
     // At least 10 hreflang alternates + x-default

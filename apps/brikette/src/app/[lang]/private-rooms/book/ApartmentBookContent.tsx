@@ -163,6 +163,8 @@ function ApartmentBookContent({ lang }: Props) {
             onRangeChange={(r) => setRange(r ?? { from: undefined, to: undefined })}
             stayHelperText={tModals("date.stayHelper") as string}
             clearDatesText={tModals("date.clearDates") as string}
+            checkInLabelText={tModals("booking.checkInLabel") as string}
+            checkOutLabelText={tModals("booking.checkOutLabel") as string}
           />
           <p className="mt-3 text-sm text-brand-text/60">
             {tBook("apartment.nightsSummary", { count: nights })}

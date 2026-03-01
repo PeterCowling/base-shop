@@ -122,6 +122,23 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Track blind-mode variance improvement rate via till discrepancy Firebase records",
+      "body": "the feature aims to reduce cash discrepancies caused by anchoring bias but has no post-deployment measurement path wired in",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-03-01T09:03:12.798Z",
+      "path": "docs/plans/_archive/reception-till-blind-mode/results-review.user.md",
+      "idea_key": "86f3ee34b6792f98808da465923024fce55b3e46",
+      "priority_tier": "P3",
+      "own_priority_rank": 8,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P3_MEASUREMENT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "Add a standing HBAG PDP funnel feed for GA4 view_item and begin_checkout events",
       "body": "the intended outcome depends on this KPI, but build evidence states GA4-based measurement is not yet available in this cycle",
       "suggested_action": "create card",

@@ -11,6 +11,7 @@ import { useSafeCountsData } from "../../hooks/data/useSafeCountsData";
 import { useCashCountsMutations } from "../../hooks/mutations/useCashCountsMutations";
 import { useEodClosureMutations } from "../../hooks/mutations/useEodClosureMutations";
 import { canAccess, Permissions } from "../../lib/roles";
+import type { EodOverrideSignoff } from "../../schemas/eodClosureSchema";
 import {
   endOfDayIso,
   formatItalyDateTimeFromIso,
@@ -18,12 +19,14 @@ import {
   startOfDayIso,
 } from "../../utils/dateUtils";
 
+import EodOverrideModal from "./EodOverrideModal";
 import OpeningFloatModal from "./OpeningFloatModal";
 
 export default function EodChecklistContent() {
   const { user } = useAuth();
   const canView = canAccess(user, Permissions.MANAGEMENT_ACCESS);
   const [showFloatModal, setShowFloatModal] = useState(false);
+  const [showOverrideModal, setShowOverrideModal] = useState(false);
 
   // All hooks must be called before any conditional return (React rules)
   const { shifts, loading: tillLoading } = useTillShiftsData({
@@ -41,7 +44,7 @@ export default function EodChecklistContent() {
   });
   const { entries, loading: stockLoading } = useInventoryLedger();
   const { closure, loading: eodClosureLoading } = useEodClosureData();
-  const { confirmDayClosed } = useEodClosureMutations();
+  const { confirmDayClosed, confirmDayClosedWithOverride } = useEodClosureMutations();
   const { addOpeningFloatEntry } = useCashCountsMutations();
 
   if (!canView) return null;
@@ -77,6 +80,24 @@ export default function EodChecklistContent() {
             Confirmed by {closure.confirmedBy} at{" "}
             {formatItalyDateTimeFromIso(closure.timestamp)}
           </p>
+          {closure.overrideReason && (
+            <div
+              className="mt-2 rounded-md border border-warning-border bg-warning-surface p-3"
+              data-cy="day-closed-override-note"
+            >
+              <p className="text-sm font-semibold text-warning-fg">
+                Closed with manager override
+              </p>
+              {closure.overrideManagerName && (
+                <p className="text-sm text-muted-foreground">
+                  Authorised by {closure.overrideManagerName}
+                </p>
+              )}
+              <p className="mt-1 text-sm text-muted-foreground">
+                Reason: {closure.overrideReason}
+              </p>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -202,10 +223,31 @@ export default function EodChecklistContent() {
         </button>
       )}
 
+      {!allDone && !eodClosureLoading && closure === null && (
+        <button
+          className="w-full rounded-lg border border-warning-border bg-warning-surface px-4 py-3 text-sm font-semibold text-warning-fg hover:opacity-80 active:opacity-70"
+          data-cy="eod-override-button"
+          onClick={() => setShowOverrideModal(true)}
+          type="button"
+        >
+          Override &amp; close day
+        </button>
+      )}
+
       {showFloatModal && (
         <OpeningFloatModal
           onConfirm={addOpeningFloatEntry}
           onClose={() => setShowFloatModal(false)}
+        />
+      )}
+
+      {showOverrideModal && (
+        <EodOverrideModal
+          onConfirm={(signoff: EodOverrideSignoff) => {
+            void confirmDayClosedWithOverride(signoff);
+            setShowOverrideModal(false);
+          }}
+          onCancel={() => setShowOverrideModal(false)}
         />
       )}
     </div>

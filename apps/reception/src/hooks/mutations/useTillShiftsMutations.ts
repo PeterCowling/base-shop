@@ -4,6 +4,7 @@ import { ref, set, update } from "firebase/database";
 import { useAuth } from "../../context/AuthContext";
 import { tillShiftSchema } from "../../schemas/tillShiftSchema";
 import { useFirebaseDatabase } from "../../services/useFirebase";
+import type { DrawerOverride } from "../../types/component/Till";
 import type { TillShift } from "../../types/hooks/data/tillShiftData";
 import { getItalyIsoString } from "../../utils/dateUtils";
 import { getErrorMessage } from "../../utils/errorMessage";
@@ -63,6 +64,7 @@ export function useTillShiftsMutations() {
         signedOffByUid?: string;
         signedOffAt?: string;
         varianceNote?: string;
+        override?: DrawerOverride;
       }
     ): Promise<void> => {
       if (!user) {
@@ -84,6 +86,16 @@ export function useTillShiftsMutations() {
         ...(params.signedOffByUid ? { signedOffByUid: params.signedOffByUid } : {}),
         ...(params.signedOffAt ? { signedOffAt: params.signedOffAt } : {}),
         ...(params.varianceNote ? { varianceNote: params.varianceNote } : {}),
+        ...(params.override
+          ? {
+              overriddenBy: params.override.overriddenBy,
+              ...(params.override.overriddenByUid
+                ? { overriddenByUid: params.override.overriddenByUid }
+                : {}),
+              overriddenAt: params.override.overriddenAt,
+              overrideReason: params.override.overrideReason,
+            }
+          : {}),
       };
       try {
         await update(ref(database, `tillShifts/${shiftId}`), payload);

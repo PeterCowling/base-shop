@@ -98,5 +98,43 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Hostel bookings are handled with assisted support when JavaScript is disabled.",
+    "emailAssistedBooking": "Email us for assisted booking"
+  },
+  "bookingConstraints": {
+    "notice": "Hostel bookings are adults-only, 2–8 nights, up to 8 guests. Staying longer than 8 nights? Just make a second booking for the extra nights, or",
+    "assistedLink": "get in touch if you need help"
+  },
+  "expiredQuote": {
+    "message": "This quote link has expired. Rebuild your quote with new dates to continue."
+  },
+  "recovery": {
+    "title": "Need more time? Email yourself this quote and resume later.",
+    "privacyNotice": "We keep booking context and consent metadata only. Resume links expire after 7 days.",
+    "emailLabel": "Your email",
+    "emailPlaceholder": "you@example.com",
+    "consent": "I consent to receiving this quote via email and understand it expires after 7 days.",
+    "submitted": "Email draft opened. You can send it to save this quote.",
+    "submitCta": "Email me this quote",
+    "errors": {
+      "invalidEmail": "Enter a valid email address.",
+      "consentRequired": "Consent is required to send the quote email."
+    },
+    "mailto": {
+      "subject": "Quote recovery request",
+      "bodyIntro": "Please send me this quote and a follow-up reminder.",
+      "labels": {
+        "guestEmail": "Guest email",
+        "checkIn": "Check-in",
+        "checkOut": "Check-out",
+        "guests": "Guests",
+        "sourceRoute": "Source route",
+        "room": "Room",
+        "ratePlan": "Rate plan",
+        "resumeLink": "Resume link"
+      }
+    }
   }
 }

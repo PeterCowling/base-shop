@@ -29,7 +29,7 @@ function useModalHostInvariant(): void {
 
       // Developer invariant logger — not user-facing, exempt from i18n
       // i18n-exempt -- BRIK-0 [ttl=2026-12-31]
-      // eslint-disable-next-line no-console -- BRIK-0 internal invariant
+       
       console.error(
         "[ModalProvider] Invariant: nested ModalProvider detected. " + // i18n-exempt -- BRIK-0 [ttl=2026-12-31]
           "Brikette must have exactly one ModalProvider in the tree. " +

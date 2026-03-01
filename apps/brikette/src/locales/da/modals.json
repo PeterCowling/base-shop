@@ -165,5 +165,13 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "directPerks": {
+    "heading": "Hvorfor booke direkte?",
+    "items": [
+      "Op til 25 % rabat",
+      "Gratis morgenmad",
+      "Gratis aftendrink"
+    ]
   }
 }

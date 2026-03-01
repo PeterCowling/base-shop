@@ -56,5 +56,43 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Las reservas de albergue se gestionan con soporte asistido cuando JavaScript está deshabilitado.",
+    "emailAssistedBooking": "Envíenos un correo electrónico para reserva asistida"
+  },
+  "bookingConstraints": {
+    "notice": "Las reservas de albergue admiten estancias solo para adultos de entre 2 y 8 noches con hasta 8 adultos por reserva. Para grupos más grandes o estancias más largas, divida su solicitud en varias reservas o",
+    "assistedLink": "contáctenos para reserva asistida"
+  },
+  "expiredQuote": {
+    "message": "Este enlace de cotización ha caducado. Reconstruya su cotización con nuevas fechas para continuar."
+  },
+  "recovery": {
+    "title": "¿Necesitas más tiempo? Envíe esta cotización por correo electrónico y reanúcela más tarde.",
+    "privacyNotice": "Mantenemos el contexto de reserva y los metadatos de consentimiento únicamente. Los enlaces de currículum caducan después de 7 días.",
+    "emailLabel": "Tu correo electrónico",
+    "emailPlaceholder": "tu@ejemplo.com",
+    "consent": "Doy mi consentimiento para recibir esta cotización por correo electrónico y entiendo que caduca después de 7 días.",
+    "submitted": "Borrador de correo electrónico abierto. Puedes enviarlo para guardar esta cotización.",
+    "submitCta": "Envíeme esta cotización por correo electrónico",
+    "errors": {
+      "invalidEmail": "Ingrese una dirección de correo electrónico válida.",
+      "consentRequired": "Se requiere consentimiento para enviar el correo electrónico de cotización."
+    },
+    "mailto": {
+      "subject": "Solicitud de recuperación de cotización",
+      "bodyIntro": "Por favor envíeme esta cotización y un recordatorio de seguimiento.",
+      "labels": {
+        "guestEmail": "Correo electrónico de invitado",
+        "checkIn": "Registrarse",
+        "checkOut": "Verificar",
+        "guests": "Huéspedes",
+        "sourceRoute": "Ruta de origen",
+        "room": "Habitación",
+        "ratePlan": "plan tarifario",
+        "resumeLink": "Enlace de currículum"
+      }
+    }
   }
 }

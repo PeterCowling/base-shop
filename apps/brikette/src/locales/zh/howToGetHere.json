@@ -928,5 +928,9 @@
   },
   "galleries": {
     "defaultAlt": "路线照片"
+  },
+  "loadingFallback": {
+    "intro": "正在加载路线规划器副本。同时，请使用以下路线指南：",
+    "routeLabelFallback": "路线指南"
   }
 }

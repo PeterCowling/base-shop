@@ -58,7 +58,7 @@ function LoginForm() {
       <button
         type="submit"
         disabled={pending}
-        className="btn-primary min-h-[44px] w-full rounded-full px-6 py-2.5 text-sm disabled:opacity-50"
+        className="btn-primary min-h-11 min-w-11 w-full rounded-full px-6 py-2.5 text-sm disabled:opacity-50"
       >
         {pending ? "Verifying…" : "Log in"}
       </button>

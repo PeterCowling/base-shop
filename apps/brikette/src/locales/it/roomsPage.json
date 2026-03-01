@@ -309,5 +309,31 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Questo percorso in ostello utilizza la prenotazione assistita quando JavaScript è disabilitato.",
+    "contactAssistedBooking": "Contattaci per la prenotazione assistita"
+  },
+  "bookingConstraints": {
+    "notice": "Le prenotazioni degli ostelli sono solo per adulti e supportano soggiorni da 2 a 8 notti con un massimo di 8 adulti per prenotazione. Se la tua richiesta non rientra in questi limiti, suddividila in più prenotazioni oppure",
+    "assistedLink": "contattaci per la prenotazione assistita",
+    "absentWithAnchor": "{{price}} a notte (indicativo). Seleziona le date per vedere le tariffe in tempo reale.",
+    "absentNoRates": "Tariffe momentaneamente non disponibili. Seleziona le date per verificare la disponibilità in tempo reale."
+  },
+  "bookingControls": {
+    "decreaseAdults": "Diminuire gli adulti",
+    "increaseAdults": "Aumentano gli adulti"
+  },
+  "recovery": {
+    "roomTitle": "Hai bisogno di decidere più tardi? Inviati questo preventivo per la stanza."
+  },
+  "feature": {
+    "beds": "Letti",
+    "bathroom": "Bagno",
+    "view": "Visualizzazione",
+    "terrace": "Terrazza",
+    "lockers": "Armadietti",
+    "privateTerrace": "Terrazza privata",
+    "inRoomLockers": "Armadietti in camera"
   }
 }

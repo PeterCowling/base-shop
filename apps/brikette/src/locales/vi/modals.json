@@ -165,5 +165,13 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "directPerks": {
+    "heading": "Tại sao đặt trực tiếp?",
+    "items": [
+      "Giảm đến 25%",
+      "Bữa sáng miễn phí",
+      "Đồ uống buổi tối miễn phí"
+    ]
   }
 }

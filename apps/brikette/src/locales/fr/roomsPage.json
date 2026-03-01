@@ -309,5 +309,31 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Cet itinéraire d'auberge utilise la réservation assistée lorsque JavaScript est désactivé.",
+    "contactAssistedBooking": "Contactez-nous pour une réservation assistée"
+  },
+  "bookingConstraints": {
+    "notice": "Les réservations en auberge de jeunesse sont réservées aux adultes et prennent en charge les séjours entre 2 et 8 nuits avec jusqu'à 8 adultes par réservation. Si votre demande dépasse ces limites, divisez-la en plusieurs réservations ou",
+    "assistedLink": "contactez-nous pour une réservation assistée",
+    "absentWithAnchor": "{{price}} par nuit (indicatif). Sélectionnez les dates pour voir les tarifs en direct.",
+    "absentNoRates": "Tarifs temporairement indisponibles. Sélectionnez les dates pour vérifier la disponibilité en direct."
+  },
+  "bookingControls": {
+    "decreaseAdults": "Diminuer les adultes",
+    "increaseAdults": "Augmenter les adultes"
+  },
+  "recovery": {
+    "roomTitle": "Besoin de décider plus tard ? Envoyez-vous ce devis de chambre."
+  },
+  "feature": {
+    "beds": "Lits",
+    "bathroom": "Salle de bain",
+    "view": "Voir",
+    "terrace": "Terrasse",
+    "lockers": "Casiers",
+    "privateTerrace": "Terrasse privée",
+    "inRoomLockers": "Casiers dans la chambre"
   }
 }

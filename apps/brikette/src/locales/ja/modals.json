@@ -165,5 +165,13 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "directPerks": {
+    "heading": "なぜ直接予約するの？",
+    "items": [
+      "最大25%オフ",
+      "無料朝食",
+      "無料イブニングドリンク"
+    ]
   }
 }

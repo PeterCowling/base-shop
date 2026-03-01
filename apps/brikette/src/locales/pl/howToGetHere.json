@@ -928,5 +928,9 @@
   },
   "galleries": {
     "defaultAlt": "Zdjęcie wskazówek dojazdu"
+  },
+  "loadingFallback": {
+    "intro": "Trwa ładowanie kopii planu trasy. W międzyczasie skorzystaj z poniższych przewodników:",
+    "routeLabelFallback": "Przewodnik po trasie"
   }
 }

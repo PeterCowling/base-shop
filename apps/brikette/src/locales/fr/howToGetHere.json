@@ -928,5 +928,9 @@
   },
   "galleries": {
     "defaultAlt": "Photo d’itinéraire"
+  },
+  "loadingFallback": {
+    "intro": "La copie du planificateur d'itinéraire est en cours de chargement. En attendant, utilisez ces guides d'itinéraire :",
+    "routeLabelFallback": "Guide d'itinéraire"
   }
 }

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { type Locale, resolveLocale } from "@acme/i18n/locales";
 
 import { ProductMediaCard } from "@/components/catalog/ProductMediaCard";
+import { SectionEyebrow } from "@/components/typography/SectionEyebrow";
 import {
   getHomeContent,
   getLaunchFamilyCopy,
@@ -55,9 +56,7 @@ export default async function LocaleHomePage({
     <section className="space-y-12 sm:space-y-20">
       <div className="hero-grid gap-8 md:items-center">
         <div className="space-y-5">
-          <p className="text-xs uppercase tracking-widest" style={{ color: "hsl(var(--color-accent))" }}>
-            {homeContent.eyebrow}
-          </p>
+          <SectionEyebrow>{homeContent.eyebrow}</SectionEyebrow>
           <h1 className="text-4xl font-display leading-none sm:text-5xl">
             {homeContent.heading}
           </h1>
@@ -101,7 +100,7 @@ export default async function LocaleHomePage({
 
       <div className="space-y-4">
         <div className="space-y-1">
-          <p className="text-xs uppercase tracking-widest" style={{ color: "hsl(var(--color-accent))" }}>Curated</p>
+          <SectionEyebrow>Curated</SectionEyebrow>
           <h2 className="text-2xl font-display">The collections</h2>
         </div>
         <ul className="grid list-none grid-cols-2 gap-4 lg:grid-cols-3">
@@ -133,7 +132,7 @@ export default async function LocaleHomePage({
       <div className="space-y-4">
         <div className="flex items-center justify-between gap-3">
           <div className="space-y-1">
-            <p className="text-xs uppercase tracking-widest" style={{ color: "hsl(var(--color-accent))" }}>Just landed</p>
+            <SectionEyebrow>Just landed</SectionEyebrow>
             <h2 className="text-2xl font-display">New arrivals</h2>
           </div>
           <Link href={`/${lang}/shop`} className="text-sm text-muted-foreground hover:underline">

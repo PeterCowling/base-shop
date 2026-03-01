@@ -165,5 +165,13 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "directPerks": {
+    "heading": "왜 직접 예약해야 하나요?",
+    "items": [
+      "최대 25% 할인",
+      "무료 조식",
+      "무료 저녁 음료"
+    ]
   }
 }

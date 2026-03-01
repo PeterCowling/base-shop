@@ -2,19 +2,50 @@
   "queue_version": "queue.v1",
   "mode": "trial",
   "created_at": "2026-02-25T00:00:00Z",
-  "last_updated": "2026-03-01T00:00:00Z",
+  "last_updated": "2026-03-01T18:22:47.126Z",
   "counts": {
-    "enqueued": 12,
-    "processed": 2,
-    "skipped": 3,
+    "enqueued": 7,
+    "processed": 12,
+    "skipped": 0,
     "error": 0,
     "suppressed": 0,
-    "auto_executed": 67,
-    "completed": 3,
-    "total": 86,
-    "fact_find_ready": 18
+    "auto_executed": 78,
+    "completed": 11,
+    "total": 111,
+    "fact_find_ready": 88
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260301-0111",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "area_anchor": "BRIK room detail — component still oversized after refactors",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P2",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Room detail flow has improved with extracted booking hooks, but `apps/brikette/src/app/[lang]/dorms/[id]/RoomDetailContent.tsx` still centralizes too much rendering and orchestration in one route component. This raises maintenance and regression risk for future funnel iterations.",
+      "next_scope_now": "Run fact-find to define a safe component split plan: isolate booking panel, content sections, guides block, and top-level page orchestration while preserving handoff, validation, and recovery behavior.",
+      "location_anchors": [
+        "apps/brikette/src/app/[lang]/dorms/[id]/RoomDetailContent.tsx",
+        "apps/brikette/src/hooks/useRoomDetailBookingState.ts"
+      ],
+      "evidence_refs": [
+        "operator-stated: continue lp-do-ideas and take opportunities forward",
+        "operator-stated: remaining top opportunity is room-detail component split"
+      ],
+      "created_at": "2026-03-01T18:30:00Z",
+      "processed_by": {
+        "route": "auto-executed",
+        "processed_at": "2026-03-01T18:30:00Z",
+        "fact_find_slug": "brikette-room-detail-component-split",
+        "fact_find_path": "docs/plans/brikette-room-detail-component-split/fact-find.md"
+      }
+    },
     {
       "schema_version": "dispatch.v1",
       "dispatch_id": "IDEA-DISPATCH-20260228-0073",
@@ -3395,6 +3426,319 @@
         "docs/business-os/strategy/BRIK/apps/reception/worldclass-scan-2026-02-28.md"
       ],
       "created_at": "2026-03-01T00:00:00Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260301-0085",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "area_anchor": "XA uploader runtime compatibility",
+      "domain": "PRODUCTS",
+      "status": "completed",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "completed",
+      "priority": "P1",
+      "provisional_deliverable_family": "infra",
+      "current_truth": "Uploader APIs still depend on Node fs and child_process spawn, which is incompatible with Cloudflare Worker-safe operation for day-one cloud hosting.",
+      "next_scope_now": "Split local operator-only responsibilities from cloud APIs, and remove Worker-path fs/spawn dependencies from XA uploader runtime.",
+      "location_anchors": [
+        "apps/xa-uploader/src/app/api/catalog/sync/route.ts",
+        "apps/xa-uploader/src/lib/catalogCsv.ts",
+        "apps/xa-uploader/src/lib/catalogStorefront.server.ts"
+      ],
+      "evidence_refs": [
+        "apps/xa-uploader/src/app/api/catalog/sync/route.ts:210",
+        "apps/xa-uploader/src/app/api/catalog/sync/route.ts:290",
+        "apps/xa-uploader/src/lib/catalogCsv.ts:4",
+        "operator-stated: Cloudflare free-tier day-one reliability target"
+      ],
+      "created_at": "2026-03-01T11:47:03.850Z",
+      "processed_by": {
+        "fact_find_slug": "xa-two-lane-free-tier-hardening",
+        "fact_find_path": "docs/plans/xa-two-lane-free-tier-hardening/fact-find.md",
+        "processed_at": "2026-03-01T12:13:03.370Z",
+        "route": "direct-inject"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md",
+        "completed_at": "2026-03-01T12:13:03.370Z",
+        "outcome": "Implemented free-tier envelope defaults, local-FS cloud guardrails, image-role schema/mapping, uploader role UI, freshness surface, token max-TTL guard, and expanded route/schema tests."
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260301-0086",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "area_anchor": "XA two-lane upload contract",
+      "domain": "PRODUCTS",
+      "status": "completed",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "completed",
+      "priority": "P1",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Flow still exposes large ZIP submission behavior; this conflicts with strict two-lane design for data-bulk then media assign/reassign.",
+      "next_scope_now": "Enforce lane split in API and UI: lane 1 bulk data ingest, lane 2 image assignment/reassignment only, no combined bulk media-in-data path.",
+      "location_anchors": [
+        "apps/xa-uploader/src/app/api/catalog/submission/route.ts",
+        "apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts",
+        "apps/xa-drop-worker/src/index.ts"
+      ],
+      "evidence_refs": [
+        "apps/xa-uploader/src/app/api/catalog/submission/route.ts:132",
+        "apps/xa-uploader/src/components/catalog/useCatalogConsole.client.ts:88",
+        "apps/xa-drop-worker/wrangler.toml:17",
+        "operator-stated: data bulk + image assign/reassign separation"
+      ],
+      "created_at": "2026-03-01T11:47:03.850Z",
+      "processed_by": {
+        "fact_find_slug": "xa-two-lane-free-tier-hardening",
+        "fact_find_path": "docs/plans/xa-two-lane-free-tier-hardening/fact-find.md",
+        "processed_at": "2026-03-01T12:13:03.370Z",
+        "route": "direct-inject"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md",
+        "completed_at": "2026-03-01T12:13:03.370Z",
+        "outcome": "Implemented free-tier envelope defaults, local-FS cloud guardrails, image-role schema/mapping, uploader role UI, freshness surface, token max-TTL guard, and expanded route/schema tests."
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260301-0087",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "area_anchor": "XA image role semantics",
+      "domain": "PRODUCTS",
+      "status": "completed",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "completed",
+      "priority": "P1",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Image fields are list/order based and do not enforce required shot roles such as front, side, top, detail.",
+      "next_scope_now": "Add role-aware media contract and validation so role coverage is explicit and assign/reassign operations are constrained by required roles.",
+      "location_anchors": [
+        "packages/lib/src/xa/catalogAdminSchema.ts",
+        "packages/lib/src/xa/catalogCsvColumns.ts",
+        "apps/xa-b/src/components/XaProductCard.tsx"
+      ],
+      "evidence_refs": [
+        "packages/lib/src/xa/catalogAdminSchema.ts:87",
+        "packages/lib/src/xa/catalogAdminSchema.ts:108",
+        "apps/xa-b/src/components/XaProductCard.tsx:28",
+        "operator-stated: front/side/top shot requirement"
+      ],
+      "created_at": "2026-03-01T11:47:03.850Z",
+      "processed_by": {
+        "fact_find_slug": "xa-two-lane-free-tier-hardening",
+        "fact_find_path": "docs/plans/xa-two-lane-free-tier-hardening/fact-find.md",
+        "processed_at": "2026-03-01T12:13:03.370Z",
+        "route": "direct-inject"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md",
+        "completed_at": "2026-03-01T12:13:03.370Z",
+        "outcome": "Implemented free-tier envelope defaults, local-FS cloud guardrails, image-role schema/mapping, uploader role UI, freshness surface, token max-TTL guard, and expanded route/schema tests."
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260301-0088",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "area_anchor": "XA lane validation contracts",
+      "domain": "PRODUCTS",
+      "status": "completed",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "completed",
+      "priority": "P1",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Zod is present, but lane-specific invariants for media roles, reassignment guards, and per-image constraints are not fully codified end-to-end.",
+      "next_scope_now": "Extend existing Zod schemas for lane-1 and lane-2 payloads and centralize validation surfaces across UI and APIs.",
+      "location_anchors": [
+        "packages/lib/src/xa/catalogAdminSchema.ts",
+        "apps/xa-uploader/src/components/catalog/catalogConsoleUtils.ts",
+        "apps/xa-uploader/src/app/api/catalog/products/route.ts"
+      ],
+      "evidence_refs": [
+        "packages/lib/src/xa/catalogAdminSchema.ts:1",
+        "apps/xa-uploader/src/components/catalog/catalogConsoleUtils.ts:11",
+        "apps/xa-uploader/src/lib/__tests__/catalogAdminSchema.test.ts:1",
+        "operator-stated: should we put zod in the mix"
+      ],
+      "created_at": "2026-03-01T11:47:03.850Z",
+      "processed_by": {
+        "fact_find_slug": "xa-two-lane-free-tier-hardening",
+        "fact_find_path": "docs/plans/xa-two-lane-free-tier-hardening/fact-find.md",
+        "processed_at": "2026-03-01T12:13:03.370Z",
+        "route": "direct-inject"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md",
+        "completed_at": "2026-03-01T12:13:03.370Z",
+        "outcome": "Implemented free-tier envelope defaults, local-FS cloud guardrails, image-role schema/mapping, uploader role UI, freshness surface, token max-TTL guard, and expanded route/schema tests."
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260301-0089",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "area_anchor": "XA free-tier quota guardrails",
+      "domain": "LOGISTICS",
+      "status": "completed",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "completed",
+      "priority": "P1",
+      "provisional_deliverable_family": "infra",
+      "current_truth": "Current throttling and size controls are not sufficient for free-tier quota resilience under bursty operator traffic.",
+      "next_scope_now": "Implement durable quota controls, stricter payload ceilings, and explicit backpressure behavior aligned to Cloudflare free-tier constraints.",
+      "location_anchors": [
+        "apps/xa-uploader/src/lib/rateLimit.ts",
+        "apps/xa-drop-worker/src/index.ts",
+        "apps/xa-drop-worker/wrangler.toml"
+      ],
+      "evidence_refs": [
+        "apps/xa-uploader/src/lib/rateLimit.ts:20",
+        "apps/xa-drop-worker/src/index.ts:352",
+        "apps/xa-drop-worker/wrangler.toml:17",
+        "operator-stated: must work on Cloudflare free tier"
+      ],
+      "created_at": "2026-03-01T11:47:03.850Z",
+      "processed_by": {
+        "fact_find_slug": "xa-two-lane-free-tier-hardening",
+        "fact_find_path": "docs/plans/xa-two-lane-free-tier-hardening/fact-find.md",
+        "processed_at": "2026-03-01T12:13:03.370Z",
+        "route": "direct-inject"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md",
+        "completed_at": "2026-03-01T12:13:03.370Z",
+        "outcome": "Implemented free-tier envelope defaults, local-FS cloud guardrails, image-role schema/mapping, uploader role UI, freshness surface, token max-TTL guard, and expanded route/schema tests."
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260301-0090",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "area_anchor": "XA publish to storefront freshness",
+      "domain": "PRODUCTS",
+      "status": "completed",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "completed",
+      "priority": "P2",
+      "provisional_deliverable_family": "multi",
+      "current_truth": "xa-b catalog visibility is build/deploy mediated, so upload success does not guarantee immediate storefront correctness.",
+      "next_scope_now": "Define publish state machine and freshness verification from catalog contract version through xa-b deploy.",
+      "location_anchors": [
+        "apps/xa-b/src/lib/demoData.ts",
+        "apps/xa-b/src/data/README.md",
+        "apps/xa-b/scripts/build-xa.mjs"
+      ],
+      "evidence_refs": [
+        "apps/xa-b/src/lib/demoData.ts:5",
+        "apps/xa-b/src/data/README.md:11",
+        "apps/xa-b/scripts/build-xa.mjs:71",
+        "operator-stated: follow upload data to xa-b display"
+      ],
+      "created_at": "2026-03-01T11:47:03.850Z",
+      "processed_by": {
+        "fact_find_slug": "xa-two-lane-free-tier-hardening",
+        "fact_find_path": "docs/plans/xa-two-lane-free-tier-hardening/fact-find.md",
+        "processed_at": "2026-03-01T12:13:03.370Z",
+        "route": "direct-inject"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md",
+        "completed_at": "2026-03-01T12:13:03.370Z",
+        "outcome": "Implemented free-tier envelope defaults, local-FS cloud guardrails, image-role schema/mapping, uploader role UI, freshness surface, token max-TTL guard, and expanded route/schema tests."
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260301-0091",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "area_anchor": "XA upload token lifecycle",
+      "domain": "LOGISTICS",
+      "status": "completed",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "completed",
+      "priority": "P2",
+      "provisional_deliverable_family": "infra",
+      "current_truth": "Tokenized upload exists, but lifecycle guarantees and operational replay-abuse controls are not explicitly hardened for day-one production.",
+      "next_scope_now": "Define token issuance and expiry policy, single-use semantics, and audit telemetry for upload security operations.",
+      "location_anchors": [
+        "apps/xa-drop-worker/src/index.ts",
+        "apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts",
+        "apps/xa-drop-worker/__tests__/xaDropWorker.test.ts"
+      ],
+      "evidence_refs": [
+        "apps/xa-drop-worker/src/index.ts:324",
+        "apps/xa-drop-worker/src/index.ts:574",
+        "apps/xa-drop-worker/__tests__/xaDropWorker.test.ts:75",
+        "operator-stated: day-one well formed product requirement"
+      ],
+      "created_at": "2026-03-01T11:47:03.850Z",
+      "processed_by": {
+        "fact_find_slug": "xa-two-lane-free-tier-hardening",
+        "fact_find_path": "docs/plans/xa-two-lane-free-tier-hardening/fact-find.md",
+        "processed_at": "2026-03-01T12:13:03.370Z",
+        "route": "direct-inject"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md",
+        "completed_at": "2026-03-01T12:13:03.370Z",
+        "outcome": "Implemented free-tier envelope defaults, local-FS cloud guardrails, image-role schema/mapping, uploader role UI, freshness surface, token max-TTL guard, and expanded route/schema tests."
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260301-0092",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "area_anchor": "XA two-lane release test matrix",
+      "domain": "PRODUCTS",
+      "status": "completed",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "completed",
+      "priority": "P1",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Route tests exist, but full two-lane E2E plus free-tier stress/failure recovery coverage is incomplete.",
+      "next_scope_now": "Add lane-specific contract and E2E tests covering data ingest, image assign/reassign, quota edges, publish visibility, and rollback/retry behavior.",
+      "location_anchors": [
+        "apps/xa-uploader/src/app/api/catalog/submission/__tests__/route.test.ts",
+        "apps/xa-uploader/src/app/api/catalog/sync/__tests__/route.test.ts",
+        "apps/xa-drop-worker/__tests__/xaDropWorker.test.ts",
+        "apps/xa-b/src/lib/__tests__/demoData.test.ts"
+      ],
+      "evidence_refs": [
+        "apps/xa-uploader/src/app/api/catalog/submission/__tests__/route.test.ts:1",
+        "apps/xa-uploader/src/app/api/catalog/sync/__tests__/route.test.ts:1",
+        "apps/xa-drop-worker/__tests__/xaDropWorker.test.ts:1",
+        "operator-stated: list validation/verification gaps and missing tests"
+      ],
+      "created_at": "2026-03-01T11:47:03.850Z",
+      "processed_by": {
+        "fact_find_slug": "xa-two-lane-free-tier-hardening",
+        "fact_find_path": "docs/plans/xa-two-lane-free-tier-hardening/fact-find.md",
+        "processed_at": "2026-03-01T12:13:03.370Z",
+        "route": "direct-inject"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md",
+        "completed_at": "2026-03-01T12:13:03.370Z",
+        "outcome": "Implemented free-tier envelope defaults, local-FS cloud guardrails, image-role schema/mapping, uploader role UI, freshness surface, token max-TTL guard, and expanded route/schema tests."
+      }
     }
   ]
 }

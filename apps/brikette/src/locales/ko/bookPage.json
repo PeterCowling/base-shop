@@ -52,5 +52,43 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "JavaScript가 비활성화된 경우 호스텔 예약은 지원 지원을 통해 처리됩니다.",
+    "emailAssistedBooking": "예약 지원을 위해 이메일을 보내주세요"
+  },
+  "bookingConstraints": {
+    "notice": "호스텔 예약은 예약당 최대 성인 8명의 2박~8박 사이의 성인 전용 숙박을 지원합니다. 대규모 그룹 또는 장기 숙박의 경우 요청을 여러 예약으로 분할하거나",
+    "assistedLink": "예약 지원을 위해 저희에게 연락하세요"
+  },
+  "expiredQuote": {
+    "message": "이 견적 링크는 만료되었습니다. 계속하려면 새 날짜로 견적을 다시 작성하세요."
+  },
+  "recovery": {
+    "title": "시간이 더 필요하신가요? 이 견적을 자신에게 이메일로 보내고 나중에 다시 시작하세요.",
+    "privacyNotice": "예약 컨텍스트와 동의 메타데이터만 보관합니다. 이력서 링크는 7일 후에 만료됩니다.",
+    "emailLabel": "귀하의 이메일",
+    "emailPlaceholder": "you@example.com",
+    "consent": "나는 이메일을 통해 이 견적을 받는 데 동의하며 이 견적이 7일 후에 만료된다는 점을 이해합니다.",
+    "submitted": "이메일 초안이 열렸습니다. 이 견적을 저장하기 위해 보내실 수 있습니다.",
+    "submitCta": "이 견적을 이메일로 보내주세요",
+    "errors": {
+      "invalidEmail": "유효한 이메일 주소를 입력하세요.",
+      "consentRequired": "견적 이메일을 보내려면 동의가 필요합니다."
+    },
+    "mailto": {
+      "subject": "견적 복구 요청",
+      "bodyIntro": "이 견적서와 후속 알림을 보내주세요.",
+      "labels": {
+        "guestEmail": "게스트 이메일",
+        "checkIn": "체크인",
+        "checkOut": "점검",
+        "guests": "손님",
+        "sourceRoute": "소스 경로",
+        "room": "방",
+        "ratePlan": "요금제",
+        "resumeLink": "이력서 링크"
+      }
+    }
   }
 }

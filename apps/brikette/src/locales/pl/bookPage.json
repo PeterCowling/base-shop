@@ -52,5 +52,43 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Rezerwacje hosteli są obsługiwane ze wsparciem, gdy JavaScript jest wyłączony.",
+    "emailAssistedBooking": "Napisz do nas, aby uzyskać pomoc w rezerwacji"
+  },
+  "bookingConstraints": {
+    "notice": "Rezerwacje w hostelach obejmują pobyty wyłącznie dla dorosłych na okres od 2 do 8 nocy z maksymalnie 8 osobami dorosłymi na rezerwację. W przypadku większych grup lub dłuższych pobytów podziel swoją prośbę na wiele rezerwacji lub",
+    "assistedLink": "skontaktuj się z nami, aby uzyskać pomoc w rezerwacji"
+  },
+  "expiredQuote": {
+    "message": "Ten link do wyceny wygasł. Aby kontynuować, przebuduj ofertę, dodając nowe daty."
+  },
+  "recovery": {
+    "title": "Potrzebujesz więcej czasu? Wyślij do siebie tę wycenę e-mailem i wznów ją później.",
+    "privacyNotice": "Przechowujemy wyłącznie kontekst rezerwacji i metadane zgody. Linki do CV wygasają po 7 dniach.",
+    "emailLabel": "Twój e-mail",
+    "emailPlaceholder": "ty@example.com",
+    "consent": "Wyrażam zgodę na otrzymanie tej wyceny pocztą elektroniczną i przyjmuję do wiadomości, że wygasa ona po 7 dniach.",
+    "submitted": "Wersja robocza e-maila została otwarta. Możesz go wysłać, aby zapisać ten cytat.",
+    "submitCta": "Wyślij mi ten cytat na e-mail",
+    "errors": {
+      "invalidEmail": "Wpisz prawidłowy adres e-mail.",
+      "consentRequired": "Na przesłanie oferty e-mailem wymagana jest zgoda."
+    },
+    "mailto": {
+      "subject": "Prośba o odzyskanie wyceny",
+      "bodyIntro": "Proszę o przesłanie tego cytatu i kolejnego przypomnienia.",
+      "labels": {
+        "guestEmail": "E-mail gościa",
+        "checkIn": "Zameldować się",
+        "checkOut": "Wymeldować się",
+        "guests": "Goście",
+        "sourceRoute": "Trasa źródłowa",
+        "room": "Pokój",
+        "ratePlan": "Plan cenowy",
+        "resumeLink": "Wznów link"
+      }
+    }
   }
 }

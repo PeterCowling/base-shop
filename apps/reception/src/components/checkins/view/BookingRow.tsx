@@ -112,7 +112,7 @@ const BookingRowView: FC<BookingRowViewProps> = ({
         </div>
       </TableCell>
       <TableCell className="px-3 py-2">
-        <div className="flex justify-center items-center">
+        <div className="text-center">
           {booking.isFirstForBooking ? (
             <RoomPaymentButton booking={booking} />
           ) : (

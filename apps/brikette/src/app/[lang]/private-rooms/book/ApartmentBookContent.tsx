@@ -17,7 +17,7 @@ import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
-import { fireHandoffToEngine, fireWhatsappClick } from "@/utils/ga4-events";
+import { createBrikClickId, fireHandoffToEngine, fireWhatsappClick } from "@/utils/ga4-events";
 
 type Props = {
   lang: AppLanguage;
@@ -124,7 +124,11 @@ function ApartmentBookContent({ lang }: Props) {
       checkin: checkinIso,
       checkout: checkoutIso,
       pax,
-      source: `apartment_${plan}`,
+      rate_plan: plan,
+      room_id: "apartment",
+      source_route: `/${lang}/private-rooms/book`,
+      cta_location: `apartment_${plan}_cta`,
+      brik_click_id: createBrikClickId(),
     });
 
     // Store booking state before navigation so we can restore on return (Option A — TASK-09)

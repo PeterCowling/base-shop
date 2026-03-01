@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 
 import { Button } from "@acme/design-system/atoms";
+import { Grid } from "@acme/design-system/primitives";
 import { cn } from "@acme/design-system/utils/style";
 import { SimpleModal } from "@acme/ui/molecules";
 
@@ -44,7 +45,7 @@ export function withIconModal(config: WithIconModalConfig) {
           </Button>
         }
       >
-        <div className="grid grid-cols-3 gap-3">
+        <Grid cols={3} gap={3}>
           {config.actions.map((action) => {
             const Icon = action.icon;
             return (
@@ -64,7 +65,7 @@ export function withIconModal(config: WithIconModalConfig) {
               </button>
             );
           })}
-        </div>
+        </Grid>
       </SimpleModal>
     );
   };

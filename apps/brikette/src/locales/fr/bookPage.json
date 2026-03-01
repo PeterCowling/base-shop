@@ -56,5 +56,43 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Les réservations d'auberges sont traitées avec une assistance assistée lorsque JavaScript est désactivé.",
+    "emailAssistedBooking": "Envoyez-nous un email pour une réservation assistée"
+  },
+  "bookingConstraints": {
+    "notice": "Les réservations en auberge de jeunesse prennent en charge les séjours réservés aux adultes entre 2 et 8 nuits avec un maximum de 8 adultes par réservation. Pour les groupes plus importants ou les séjours plus longs, répartissez votre demande sur plusieurs réservations ou",
+    "assistedLink": "contactez-nous pour une réservation assistée"
+  },
+  "expiredQuote": {
+    "message": "Ce lien de devis a expiré. Reconstruisez votre devis avec de nouvelles dates pour continuer."
+  },
+  "recovery": {
+    "title": "Besoin de plus de temps ? Envoyez-vous ce devis par e-mail et reprenez-le plus tard.",
+    "privacyNotice": "Nous conservons uniquement le contexte de réservation et les métadonnées de consentement. Les liens de reprise expirent après 7 jours.",
+    "emailLabel": "Votre email",
+    "emailPlaceholder": "vous@exemple.com",
+    "consent": "J'accepte de recevoir ce devis par e-mail et je comprends qu'il expire après 7 jours.",
+    "submitted": "Brouillon d'e-mail ouvert. Vous pouvez l'envoyer pour enregistrer ce devis.",
+    "submitCta": "Envoyez-moi ce devis",
+    "errors": {
+      "invalidEmail": "Entrez une adresse e-mail valide.",
+      "consentRequired": "Le consentement est requis pour envoyer l’e-mail de devis."
+    },
+    "mailto": {
+      "subject": "Demande de reprise de devis",
+      "bodyIntro": "Veuillez m'envoyer ce devis et un rappel de suivi.",
+      "labels": {
+        "guestEmail": "E-mail invité",
+        "checkIn": "Enregistrement",
+        "checkOut": "Vérifier",
+        "guests": "Invités",
+        "sourceRoute": "Itinéraire source",
+        "room": "Chambre",
+        "ratePlan": "Plan tarifaire",
+        "resumeLink": "Lien de reprise"
+      }
+    }
   }
 }

@@ -52,5 +52,43 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "JavaScript が無効になっている場合、ホステルの予約はサポート付きで処理されます。",
+    "emailAssistedBooking": "予約サポートについてはメールでお問い合わせください"
+  },
+  "bookingConstraints": {
+    "notice": "ホステルの予約では、2 泊から 8 泊までの大人限定の滞在がサポートされており、1 回の予約につき大人 8 名まで宿泊できます。大人数のグループまたは長期滞在の場合は、リクエストを複数の予約に分割するか、",
+    "assistedLink": "予約サポートについてはお問い合わせください"
+  },
+  "expiredQuote": {
+    "message": "この引用リンクは有効期限が切れています。続行するには、新しい日付を使用して見積もりを再構築してください。"
+  },
+  "recovery": {
+    "title": "もっと時間が必要ですか?この見積書を自分にメールで送信し、後で履歴書を作成します。",
+    "privacyNotice": "予約コンテキストと同意メタデータのみを保持します。再開リンクは 7 日後に期限切れになります。",
+    "emailLabel": "あなたのメールアドレス",
+    "emailPlaceholder": "you@example.com",
+    "consent": "この見積もりを電子メールで受け取ることに同意し、7 日後に有効期限が切れることを理解します。",
+    "submitted": "メールの下書きが開かれました。この見積もりを保存するために送信できます。",
+    "submitCta": "この見積もりをメールで送ってください",
+    "errors": {
+      "invalidEmail": "有効な電子メール アドレスを入力してください。",
+      "consentRequired": "見積メール送信には同意が必要です。"
+    },
+    "mailto": {
+      "subject": "見積書の回復リクエスト",
+      "bodyIntro": "この見積書とフォローアップのリマインダーを私に送ってください。",
+      "labels": {
+        "guestEmail": "ゲストのメールアドレス",
+        "checkIn": "チェックイン",
+        "checkOut": "チェックアウト",
+        "guests": "ゲスト",
+        "sourceRoute": "ソースルート",
+        "room": "部屋",
+        "ratePlan": "料金プラン",
+        "resumeLink": "リンクを再開する"
+      }
+    }
   }
 }

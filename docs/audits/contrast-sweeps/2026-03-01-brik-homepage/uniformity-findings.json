@@ -1,0 +1,15 @@
+[
+  {
+    "id": "U-001",
+    "severity": "S2",
+    "breakpoint": 1024,
+    "mode": "dark",
+    "route": "/en",
+    "componentFamily": "BookingWidget / DateRangePicker",
+    "drift": "Dark mode renders form/calendar with light-gray surface backgrounds while retaining near-white text tokens, unlike surrounding dark surfaces and unlike light mode's intended pairing.",
+    "referenceScreenshot": "./screenshots/1024-light-home-booking-state.png",
+    "driftScreenshot": "./screenshots/1024-dark-home-booking-state.png",
+    "likelyCause": "Local component classes and date-picker module styles are not using a single semantic token set for both background and text in dark mode.",
+    "fixDirection": "Unify BookingWidget and DateRangePicker onto the same semantic surface + foreground tokens for dark mode; avoid mixing brand-specific fixed colors with generic dark foreground tokens."
+  }
+]

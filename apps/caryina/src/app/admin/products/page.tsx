@@ -13,7 +13,7 @@ export default async function AdminProductsPage() {
         <h1 className="text-2xl font-display">Products</h1>
         <a
           href="/admin/products/new"
-          className="btn-primary min-h-[44px] rounded-full px-6 py-2.5 text-sm"
+          className="btn-primary inline-flex min-h-11 min-w-11 items-center justify-center rounded-full px-6 py-2.5 text-sm"
         >
           + New product
         </a>
@@ -52,7 +52,7 @@ export default async function AdminProductsPage() {
                 <td className="py-3">
                   <a
                     href={`/admin/products/${p.id}`}
-                    className="text-sm underline underline-offset-2"
+                    className="inline-flex min-h-11 min-w-11 items-center text-sm underline underline-offset-2"
                   >
                     Edit
                   </a>

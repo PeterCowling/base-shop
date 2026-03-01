@@ -165,5 +165,13 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "directPerks": {
+    "heading": "सीधे बुक क्यों करें?",
+    "items": [
+      "25% तक की छूट",
+      "मानार्थ नाश्ता",
+      "मानार्थ शाम का पेय"
+    ]
   }
 }

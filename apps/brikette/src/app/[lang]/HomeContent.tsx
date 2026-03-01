@@ -28,6 +28,7 @@ import { type Room, roomsData } from "@/data/roomsData";
 import { useAvailability } from "@/hooks/useAvailability";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
+import { hydrateBookingSearch, persistBookingSearch } from "@/utils/bookingSearch";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 import { fireCtaClick, fireViewItemList } from "@/utils/ga4-events";
 
@@ -89,6 +90,19 @@ function HomeContent({ lang }: Props) {
     router.push(buildBookHref());
   }, [buildBookHref, router]);
 
+  const handleBookingDatesChange = useCallback(
+    ({ checkIn, checkOut, guests }: { checkIn: string; checkOut: string; guests: number }) => {
+      const pax = String(guests);
+      setBookingQuery((previous) => {
+        if (previous.checkIn === checkIn && previous.checkOut === checkOut && previous.pax === pax) {
+          return previous;
+        }
+        return { checkIn, checkOut, pax };
+      });
+    },
+    []
+  );
+
   // Handler for opening room rate CTA — navigates to /book (TASK-27 will add direct Octorate link)
   const handleOpenModalForRate = useCallback(
     (_room: Room, _rateType: "nonRefundable" | "refundable") => {
@@ -99,6 +113,29 @@ function HomeContent({ lang }: Props) {
 
   // Rooms data for carousel
   const roomsForCarousel = roomsData.slice(0, 6);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const hydrated = hydrateBookingSearch(new URLSearchParams(window.location.search));
+    if (!hydrated.search) return;
+    setBookingQuery({
+      checkIn: hydrated.search.checkin,
+      checkOut: hydrated.search.checkout,
+      pax: String(hydrated.search.pax),
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!bookingQuery.checkIn || !bookingQuery.checkOut) return;
+    const timer = window.setTimeout(() => {
+      persistBookingSearch({
+        checkin: bookingQuery.checkIn,
+        checkout: bookingQuery.checkOut,
+        pax: parseInt(bookingQuery.pax, 10) || 1,
+      });
+    }, 400);
+    return () => window.clearTimeout(timer);
+  }, [bookingQuery.checkIn, bookingQuery.checkOut, bookingQuery.pax]);
 
   useEffect(() => {
     fireViewItemList({
@@ -123,9 +160,7 @@ function HomeContent({ lang }: Props) {
       <Section padding="narrow">
         <BookingWidget
           lang={lang}
-          onDatesChange={({ checkIn, checkOut, guests }) =>
-            setBookingQuery({ checkIn, checkOut, pax: String(guests) })
-          }
+          onDatesChange={handleBookingDatesChange}
         />
       </Section>
 

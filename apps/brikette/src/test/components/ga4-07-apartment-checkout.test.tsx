@@ -135,7 +135,7 @@ const getWhatsappCta = () => document.querySelector('[data-testid="whatsapp-cta"
 // --- TASK-09: WhatsApp prefill, long-stay reroute, sessionStorage redirect-back ---
 
 describe("TASK-09: WhatsApp prefill, long-stay reroute, and sessionStorage redirect-back UX", () => {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
+   
   const { fireWhatsappClick } = require("@/utils/ga4-events") as {
     fireWhatsappClick: jest.Mock;
   };
@@ -212,9 +212,9 @@ describe("TASK-09: WhatsApp prefill, long-stay reroute, and sessionStorage redir
 
   // TC-04: Source contains no disallowed pricing claims (policy: pricing-claim-policy.md)
   it("TC-04: ApartmentBookContent source has no disallowed pricing claims", () => {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
+     
     const fs = require("fs") as typeof import("fs");
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
+     
     const nodePath = require("path") as typeof import("path");
     const src = fs.readFileSync(
       nodePath.resolve(__dirname, "../../app/[lang]/private-rooms/book/ApartmentBookContent.tsx"),

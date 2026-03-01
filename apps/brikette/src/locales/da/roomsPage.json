@@ -309,5 +309,31 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Denne hostelrute bruger assisteret booking, når JavaScript er deaktiveret.",
+    "contactAssistedBooking": "Kontakt os for assisteret booking"
+  },
+  "bookingConstraints": {
+    "notice": "Hostelbookinger er kun for voksne og understøtter ophold mellem 2 og 8 nætter med op til 8 voksne pr. reservation. Hvis din anmodning er uden for disse grænser, opdel den i flere reservationer eller",
+    "assistedLink": "kontakt os for assisteret booking",
+    "absentWithAnchor": "{{price}} pr. nat (vejledende). Vælg datoer for at se livepriser.",
+    "absentNoRates": "Priser midlertidigt utilgængelige. Vælg datoer for at tjekke tilgængeligheden live."
+  },
+  "bookingControls": {
+    "decreaseAdults": "Reducer voksne",
+    "increaseAdults": "Øge voksne"
+  },
+  "recovery": {
+    "roomTitle": "Skal du beslutte dig senere? Send dig selv dette værelsestilbud."
+  },
+  "feature": {
+    "beds": "Senge",
+    "bathroom": "Badeværelse",
+    "view": "Udsigt",
+    "terrace": "Terrasse",
+    "lockers": "Skabe",
+    "privateTerrace": "Privat terrasse",
+    "inRoomLockers": "Skabe på værelset"
   }
 }

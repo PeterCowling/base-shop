@@ -309,5 +309,31 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Denne vandreruten bruker assistert booking når JavaScript er deaktivert.",
+    "contactAssistedBooking": "Kontakt oss for assistert booking"
+  },
+  "bookingConstraints": {
+    "notice": "Vandrerhjemsbestillinger er kun for voksne og støtter opphold mellom 2 og 8 netter med opptil 8 voksne per bestilling. Hvis forespørselen din er utenfor disse grensene, del den opp i flere bestillinger eller",
+    "assistedLink": "kontakt oss for assistert bestilling",
+    "absentWithAnchor": "{{price}} per natt (veiledende). Velg datoer for å se livepriser.",
+    "absentNoRates": "Priser er midlertidig utilgjengelige. Velg datoer for å sjekke tilgjengeligheten."
+  },
+  "bookingControls": {
+    "decreaseAdults": "Redusere voksne",
+    "increaseAdults": "Øk voksne"
+  },
+  "recovery": {
+    "roomTitle": "Trenger du å bestemme deg senere? Send deg selv dette romtilbudet."
+  },
+  "feature": {
+    "beds": "Senger",
+    "bathroom": "Baderom",
+    "view": "Utsikt",
+    "terrace": "Terrasse",
+    "lockers": "Skap",
+    "privateTerrace": "Egen terrasse",
+    "inRoomLockers": "Skap på rommet"
   }
 }

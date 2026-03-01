@@ -52,5 +52,43 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Việc đặt phòng trọ được xử lý với sự hỗ trợ được hỗ trợ khi JavaScript bị tắt.",
+    "emailAssistedBooking": "Gửi email cho chúng tôi để được hỗ trợ đặt phòng"
+  },
+  "bookingConstraints": {
+    "notice": "Việc đặt phòng tại nhà trọ hỗ trợ thời gian lưu trú chỉ dành cho người lớn từ 2 đến 8 đêm với tối đa 8 người lớn cho mỗi lần đặt phòng. Đối với các nhóm lớn hơn hoặc thời gian lưu trú dài hơn, hãy chia yêu cầu của bạn thành nhiều lần đặt phòng hoặc",
+    "assistedLink": "liên hệ với chúng tôi để được hỗ trợ đặt phòng"
+  },
+  "expiredQuote": {
+    "message": "Liên kết trích dẫn này đã hết hạn. Xây dựng lại báo giá của bạn với ngày mới để tiếp tục."
+  },
+  "recovery": {
+    "title": "Cần thêm thời gian? Gửi email cho chính bạn báo giá này và tiếp tục sau.",
+    "privacyNotice": "Chúng tôi chỉ giữ lại siêu dữ liệu về bối cảnh đặt trước và sự đồng ý. Liên kết tiếp tục hết hạn sau 7 ngày.",
+    "emailLabel": "Email của bạn",
+    "emailPlaceholder": "bạn@example.com",
+    "consent": "Tôi đồng ý nhận báo giá này qua email và hiểu rằng nó sẽ hết hạn sau 7 ngày.",
+    "submitted": "Đã mở bản nháp email. Bạn có thể gửi nó để lưu báo giá này.",
+    "submitCta": "Gửi email cho tôi báo giá này",
+    "errors": {
+      "invalidEmail": "Nhập địa chỉ email hợp lệ.",
+      "consentRequired": "Cần có sự đồng ý để gửi email báo giá."
+    },
+    "mailto": {
+      "subject": "Yêu cầu khôi phục báo giá",
+      "bodyIntro": "Vui lòng gửi cho tôi báo giá này và lời nhắc nhở tiếp theo.",
+      "labels": {
+        "guestEmail": "Email của khách",
+        "checkIn": "Đăng ký vào",
+        "checkOut": "Trả phòng",
+        "guests": "Khách",
+        "sourceRoute": "Tuyến nguồn",
+        "room": "Phòng",
+        "ratePlan": "Gói giá",
+        "resumeLink": "Liên kết tiếp tục"
+      }
+    }
   }
 }

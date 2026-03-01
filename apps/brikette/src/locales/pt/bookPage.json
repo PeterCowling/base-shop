@@ -52,5 +52,43 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "As reservas de albergues são tratadas com suporte assistido quando o JavaScript está desativado.",
+    "emailAssistedBooking": "Envie-nos um e-mail para reserva assistida"
+  },
+  "bookingConstraints": {
+    "notice": "As reservas de albergue suportam estadias apenas para adultos entre 2 e 8 noites, com até 8 adultos por reserva. Para grupos maiores ou estadias mais longas, divida o seu pedido em várias reservas ou",
+    "assistedLink": "entre em contato conosco para reserva assistida"
+  },
+  "expiredQuote": {
+    "message": "Este link de cotação expirou. Reconstrua sua cotação com novas datas para continuar."
+  },
+  "recovery": {
+    "title": "Precisa de mais tempo? Envie esta citação para você mesmo por e-mail e retome mais tarde.",
+    "privacyNotice": "Mantemos apenas o contexto da reserva e os metadados de consentimento. Os links de currículo expiram após 7 dias.",
+    "emailLabel": "Seu e-mail",
+    "emailPlaceholder": "você@exemplo.com",
+    "consent": "Concordo em receber esta cotação por e-mail e entendo que ela expira após 7 dias.",
+    "submitted": "Rascunho de e-mail aberto. Você pode enviá-lo para salvar esta cotação.",
+    "submitCta": "Envie-me esta cotação por e-mail",
+    "errors": {
+      "invalidEmail": "Insira um endereço de e-mail válido.",
+      "consentRequired": "É necessário consentimento para enviar o e-mail de cotação."
+    },
+    "mailto": {
+      "subject": "Solicitação de recuperação de cotação",
+      "bodyIntro": "Por favor, envie-me esta cotação e um lembrete de acompanhamento.",
+      "labels": {
+        "guestEmail": "E-mail do convidado",
+        "checkIn": "Check-in",
+        "checkOut": "Confira",
+        "guests": "Convidados",
+        "sourceRoute": "Rota de origem",
+        "room": "Sala",
+        "ratePlan": "Plano de tarifas",
+        "resumeLink": "Link de currículo"
+      }
+    }
   }
 }

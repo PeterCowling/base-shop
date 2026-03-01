@@ -928,5 +928,9 @@
   },
   "galleries": {
     "defaultAlt": "Foto der Wegbeschreibung"
+  },
+  "loadingFallback": {
+    "intro": "Die Kopie des Routenplaners wird geladen. Nutzen Sie in der Zwischenzeit diese Routenführer:",
+    "routeLabelFallback": "Routenführer"
   }
 }

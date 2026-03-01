@@ -928,5 +928,9 @@
     "titleFallback": "Bild",
     "openAria": "Öppna bild",
     "openAriaWithCaption": "Öppna bild: {{caption}}"
+  },
+  "loadingFallback": {
+    "intro": "Ruttplanerarens kopia laddas. Under tiden kan du använda dessa ruttguider:",
+    "routeLabelFallback": "Ruttguide"
   }
 }

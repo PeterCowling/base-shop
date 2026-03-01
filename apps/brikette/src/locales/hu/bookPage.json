@@ -52,5 +52,43 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "A szállófoglalásokat támogatott támogatással kezeljük, ha a JavaScript le van tiltva.",
+    "emailAssistedBooking": "Segített foglalásért írjon nekünk e-mailt"
+  },
+  "bookingConstraints": {
+    "notice": "A hostel foglalások csak felnőtteknek szóló 2 és 8 éjszakás tartózkodásokat támogatnak, foglalásonként legfeljebb 8 felnőtt elszállásolására. Nagyobb csoportok vagy hosszabb tartózkodás esetén ossza fel kérését több foglalásra vagy",
+    "assistedLink": "vegye fel velünk a kapcsolatot a támogatott foglalásért"
+  },
+  "expiredQuote": {
+    "message": "Ez az idézet linkje lejárt. A folytatáshoz állítsa át árajánlatát új dátumokkal."
+  },
+  "recovery": {
+    "title": "Több időre van szüksége? Küldje el magának ezt az árajánlatot e-mailben, és folytassa később.",
+    "privacyNotice": "Csak a foglalási kontextus és a hozzájárulási metaadatokat őrizzük meg. Az önéletrajzi linkek 7 nap után lejárnak.",
+    "emailLabel": "Az Ön email címe",
+    "emailPlaceholder": "te@example.com",
+    "consent": "Hozzájárulok ahhoz, hogy ezt az árajánlatot e-mailben megkapjam, és megértem, hogy 7 nap elteltével lejár.",
+    "submitted": "E-mail piszkozat megnyitva. Az árajánlat mentéséhez elküldheti.",
+    "submitCta": "Küldje el nekem ezt az árajánlatot",
+    "errors": {
+      "invalidEmail": "Adjon meg egy érvényes e-mail címet.",
+      "consentRequired": "Az árajánlat e-mail küldéséhez hozzájárulás szükséges."
+    },
+    "mailto": {
+      "subject": "Árajánlat visszaszerzési kérés",
+      "bodyIntro": "Kérem, küldje el nekem ezt az árajánlatot és egy további emlékeztetőt.",
+      "labels": {
+        "guestEmail": "Vendég email",
+        "checkIn": "Bejelentkezés",
+        "checkOut": "Kijelentkezés",
+        "guests": "Vendégek",
+        "sourceRoute": "Forrás útvonala",
+        "room": "Szoba",
+        "ratePlan": "Díjterv",
+        "resumeLink": "Folytatás link"
+      }
+    }
   }
 }

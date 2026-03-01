@@ -12,7 +12,7 @@ import { type AppLanguage } from "@/i18n.config";
 const getStickyCta = () => document.querySelector('[data-testid="content-sticky-cta"]');
 
 // next/navigation: ContentStickyCta uses useRouter to navigate to /book.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 let mockPush: jest.Mock<any, any, any>;
 jest.mock("next/navigation", () => ({
   useRouter: () => ({ push: mockPush }),
@@ -62,7 +62,7 @@ describe("ContentStickyCta", () => {
 
   beforeEach(async () => {
     jest.clearAllMocks();
-    mockPush = jest.fn() as unknown as jest.Mock<any, any, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+    mockPush = jest.fn() as unknown as jest.Mock<any, any, any>;  
 
     // Reset sessionStorage
     if (typeof window !== "undefined") {

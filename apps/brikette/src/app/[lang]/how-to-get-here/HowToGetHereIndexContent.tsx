@@ -18,6 +18,7 @@ import { BeforeYouTravel } from "@/routes/how-to-get-here/components/BeforeYouTr
 import { ExperienceGuidesSection } from "@/routes/how-to-get-here/components/ExperienceGuidesSection";
 import { FiltersDialog } from "@/routes/how-to-get-here/components/FiltersDialog";
 import { HeaderSection } from "@/routes/how-to-get-here/components/HeaderSection";
+import { HowToLoadingFallback } from "@/routes/how-to-get-here/components/HowToLoadingFallback";
 import {
   type ActiveFilterChip,
   HowToToolbar,
@@ -271,32 +272,16 @@ function HowToGetHereIndexContent({ lang, initialFilters, basePath }: Props) {
       .slice(0, 8)
       .map((section) => ({
         id: section.id,
-        label: resolveUiLabel(section.name, "Route guide"),
+        label: resolveUiLabel(section.name, t("loadingFallback.routeLabelFallback") as string),
       }));
 
     return (
-      <Section padding="default">
-        <h1 className="text-3xl font-bold tracking-tight text-brand-heading sm:text-4xl">
-          How to Get Here
-        </h1>
-        <p className="mt-3 text-base text-brand-text/80">
-          Route planner copy is loading. In the meantime, use these route guides:
-        </p>
-        {fallbackRoutes.length ? (
-          <ul className="mt-4 space-y-2">
-            {fallbackRoutes.map((route) => (
-              <li key={route.id}>
-                <a
-                  href={`${content.internalBasePath}/${route.id}`}
-                  className="inline-flex min-h-11 min-w-11 items-center text-sm font-medium text-brand-primary underline-offset-4 hover:underline"
-                >
-                  {route.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        ) : null}
-      </Section>
+      <HowToLoadingFallback
+        routes={fallbackRoutes}
+        internalBasePath={content.internalBasePath}
+        title={t("header.title") as string}
+        intro={t("loadingFallback.intro") as string}
+      />
     );
   }
 

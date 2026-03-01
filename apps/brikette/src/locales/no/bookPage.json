@@ -52,5 +52,43 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Vandrerhjemsbestillinger håndteres med assistert støtte når JavaScript er deaktivert.",
+    "emailAssistedBooking": "Send oss ​​en e-post for assistert bestilling"
+  },
+  "bookingConstraints": {
+    "notice": "Vandrerhjemsbestillinger støtter opphold kun for voksne mellom 2 og 8 netter med opptil 8 voksne per bestilling. For større grupper eller lengre opphold, del forespørselen din på flere bestillinger eller",
+    "assistedLink": "kontakt oss for assistert bestilling"
+  },
+  "expiredQuote": {
+    "message": "Denne sitatlenken er utløpt. Bygg opp tilbudet ditt med nye datoer for å fortsette."
+  },
+  "recovery": {
+    "title": "Trenger du mer tid? Send dette tilbudet på e-post og fortsett senere.",
+    "privacyNotice": "Vi beholder kun bestillingskontekst og samtykkemetadata. CV-koblinger utløper etter 7 dager.",
+    "emailLabel": "Din e-post",
+    "emailPlaceholder": "du@eksempel.com",
+    "consent": "Jeg samtykker i å motta dette tilbudet via e-post og forstår at det utløper etter 7 dager.",
+    "submitted": "E-postutkast åpnet. Du kan sende det for å lagre dette tilbudet.",
+    "submitCta": "Send meg dette sitatet på e-post",
+    "errors": {
+      "invalidEmail": "Skriv inn en gyldig e-postadresse.",
+      "consentRequired": "Det kreves samtykke for å sende e-posttilbudet."
+    },
+    "mailto": {
+      "subject": "Forespørsel om gjenoppretting av tilbud",
+      "bodyIntro": "Send meg dette tilbudet og en oppfølgingspåminnelse.",
+      "labels": {
+        "guestEmail": "Gjeste-e-post",
+        "checkIn": "Innsjekking",
+        "checkOut": "Utsjekking",
+        "guests": "Gjester",
+        "sourceRoute": "Kilderute",
+        "room": "Rom",
+        "ratePlan": "Prisplan",
+        "resumeLink": "Fortsett-lenke"
+      }
+    }
   }
 }

@@ -74,7 +74,7 @@ export function InventoryEditor({ productSku, inventoryItems }: InventoryEditorP
         <button
           type="submit"
           disabled={status === "saving"}
-          className="btn-primary min-h-[44px] rounded-full px-6 py-2.5 text-sm disabled:opacity-50"
+          className="btn-primary min-h-11 min-w-11 rounded-full px-6 py-2.5 text-sm disabled:opacity-50"
         >
           {status === "saving" ? "Saving…" : "Update stock"}
         </button>

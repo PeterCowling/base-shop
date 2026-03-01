@@ -928,5 +928,9 @@
     "titleFallback": "छवि",
     "openAria": "छवि खोलें",
     "openAriaWithCaption": "छवि खोलें: {{caption}}"
+  },
+  "loadingFallback": {
+    "intro": "रूट प्लानर कॉपी लोड हो रही है. इस बीच, इन मार्ग मार्गदर्शिकाओं का उपयोग करें:",
+    "routeLabelFallback": "मार्ग मार्गदर्शक"
   }
 }

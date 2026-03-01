@@ -25,6 +25,12 @@ export interface BuildOctorateUrlParams {
   bookingCode: string;
   /** Optional deal / coupon code — appends deal + UTM params when provided */
   deal?: string;
+  /**
+   * Optional click identifier generated for analytics event payloads.
+   * Current reconciliation policy is proxy-mode, so this value is intentionally
+   * NOT appended to outbound Octorate URLs.
+   */
+  brikClickId?: string;
 }
 
 export type BuildOctorateUrlResult =
@@ -49,7 +55,7 @@ export type BuildOctorateUrlResult =
 export function buildOctorateUrl(
   params: BuildOctorateUrlParams
 ): BuildOctorateUrlResult {
-  const { checkin, checkout, pax, octorateRateCode, bookingCode, deal } = params;
+  const { checkin, checkout, pax, octorateRateCode, bookingCode, deal, brikClickId: _unusedBrikClickId } = params;
 
   // Guard: booking code must be present
   if (!bookingCode || !bookingCode.trim()) {

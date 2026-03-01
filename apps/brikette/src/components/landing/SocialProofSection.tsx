@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 
 import { Section } from "@acme/design-system/atoms";
 
-import { Cluster, Inline, Stack } from "@/components/ui/flex";
 import hotel, { RATINGS_SNAPSHOT_DATE } from "@/config/hotel";
 import type { AppLanguage } from "@/i18n.config";
 import { Star } from "@/icons";
@@ -39,11 +38,7 @@ function resolveTranslatedCopy(value: unknown, fallback: string): string {
 function formatSnapshotMonthYear(isoDate: string, locale: string): string {
   const parsed = new Date(isoDate);
   if (Number.isNaN(parsed.getTime())) return isoDate;
-
-  return new Intl.DateTimeFormat(locale, {
-    month: "long",
-    year: "numeric",
-  }).format(parsed);
+  return new Intl.DateTimeFormat(locale, { month: "long", year: "numeric" }).format(parsed);
 }
 
 const SocialProofSection = memo(function SocialProofSection({ lang }: { lang?: AppLanguage }): JSX.Element | null {
@@ -64,38 +59,38 @@ const SocialProofSection = memo(function SocialProofSection({ lang }: { lang?: A
   const locale = lang ?? i18n.language ?? "en";
   const snapshotMonthYear = formatSnapshotMonthYear(RATINGS_SNAPSHOT_DATE, locale);
   const snapshotAsOfLabel = resolveTranslatedCopy(
-    tRatings("snapshotAsOf", {
-      date: snapshotMonthYear,
-      defaultValue: `As of ${snapshotMonthYear}`,
-    }),
+    tRatings("snapshotAsOf", { date: snapshotMonthYear, defaultValue: `As of ${snapshotMonthYear}` }),
     `As of ${snapshotMonthYear}`
   );
 
   return (
-    <section className="bg-brand-surface py-12 scroll-mt-24 dark:bg-brand-surface">
+    <section className="bg-brand-bg py-16 scroll-mt-24">
       <Section as="div" padding="none" width="full" className="mx-auto max-w-6xl px-4">
-        <Stack className="gap-2">
-          <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-text">
+
+        {/* Header */}
+        <div className="mb-10">
+          <h2 className="text-3xl font-semibold tracking-tight text-brand-heading">
             {resolveTranslatedCopy(
               tLanding("socialProof.title", { defaultValue: FALLBACK_SOCIAL_PROOF_TITLE }),
               FALLBACK_SOCIAL_PROOF_TITLE
             )}
           </h2>
-          <p className="text-sm text-brand-text/70 dark:text-brand-text/70">
+          <p className="mt-1.5 text-brand-text/70">
             {resolveTranslatedCopy(
-              tLanding("socialProof.subtitle", {
-                defaultValue: FALLBACK_SOCIAL_PROOF_SUBTITLE,
-              }),
+              tLanding("socialProof.subtitle", { defaultValue: FALLBACK_SOCIAL_PROOF_SUBTITLE }),
               FALLBACK_SOCIAL_PROOF_SUBTITLE
             )}
           </p>
-          <p className="text-xs font-medium uppercase tracking-wide text-brand-text/70 dark:text-brand-text/70">
+          <p className="mt-2 text-xs font-medium uppercase tracking-widest text-brand-text/40">
             {snapshotAsOfLabel}
           </p>
-        </Stack>
+        </div>
 
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 mt-6">
-          <Stack className="gap-3">
+        {/* 5-col grid: ratings 2 cols, testimonials 3 cols */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
+
+          {/* Ratings */}
+          <div className="flex flex-col gap-3 lg:col-span-2">
             {ratings.map((rating) => {
               const key = SOURCE_KEYS[rating.provider];
               const providerLabel = key
@@ -110,44 +105,46 @@ const SocialProofSection = memo(function SocialProofSection({ lang }: { lang?: A
                 `${formattedCount} reviews`
               );
               return (
-                <Cluster
+                <div
                   key={rating.provider}
-                  className="items-center justify-between rounded-2xl border border-brand-outline/30 bg-brand-bg px-4 py-3 shadow-sm border-fg-inverse/10 dark:bg-brand-surface"
+                  className="flex items-center justify-between rounded-2xl border border-brand-outline/20 bg-brand-surface px-5 py-4 shadow-sm"
                 >
                   <div>
-                    <p className="text-sm font-semibold text-brand-heading dark:text-brand-text">
-                      {providerLabel}
-                    </p>
-                    <p className="text-xs text-brand-text/70 dark:text-brand-text/70">{reviewText}</p>
+                    <p className="font-semibold text-brand-heading">{providerLabel}</p>
+                    <p className="mt-0.5 text-xs text-brand-text/60">{reviewText}</p>
                   </div>
-                  <Inline
-                    as="span"
-                    className="gap-1 rounded-full bg-brand-surface/70 px-3 py-1 text-sm font-semibold text-brand-heading bg-fg-inverse/10 dark:text-brand-text"
-                  >
-                    <Star className="size-4 text-brand-secondary" aria-hidden />
-                    {rating.value.toFixed(1)}
-                  </Inline>
-                </Cluster>
+                  <div className="flex items-center gap-1.5 pl-4">
+                    <Star className="size-5 text-brand-secondary" aria-hidden />
+                    <span className="text-2xl font-bold tabular-nums text-brand-heading">
+                      {rating.value.toFixed(1)}
+                    </span>
+                  </div>
+                </div>
               );
             })}
-          </Stack>
+          </div>
 
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          {/* Testimonials */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:col-span-3">
             {featured.map((item, index) => (
-              <Stack
+              <div
                 key={`${item.text}-${index}`}
-                className="h-full gap-3 rounded-2xl border border-brand-outline/30 bg-panel/80 p-5 shadow-sm border-fg-inverse/10 dark:bg-brand-surface"
+                className="flex flex-col gap-3 rounded-2xl border border-brand-outline/15 bg-gradient-to-br from-brand-secondary/10 to-brand-bg p-5 shadow-sm"
               >
-                <Inline className="gap-2 text-sm font-semibold text-brand-heading dark:text-brand-text">
-                  <Star className="size-4 text-brand-secondary" aria-hidden />
-                  {item.rating ? item.rating.toFixed(1) : "-"}
-                </Inline>
-                <p className="text-sm leading-relaxed text-brand-text/80 dark:text-brand-text/80">
-                  &quot;{item.text}&quot;
-                </p>
-              </Stack>
+                <span aria-hidden className="select-none text-5xl font-bold leading-none text-brand-secondary/30">
+                  &ldquo;
+                </span>
+                <p className="flex-1 text-sm leading-relaxed text-brand-text/80">{item.text}</p>
+                {item.rating !== undefined && (
+                  <div className="flex items-center gap-1.5 border-t border-brand-outline/10 pt-3">
+                    <Star className="size-3.5 text-brand-secondary" aria-hidden />
+                    <span className="text-xs font-semibold text-brand-heading">{item.rating.toFixed(1)}</span>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
+
         </div>
       </Section>
     </section>

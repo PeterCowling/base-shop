@@ -928,5 +928,9 @@
   },
   "galleries": {
     "defaultAlt": "Foto das direções"
+  },
+  "loadingFallback": {
+    "intro": "A cópia do planejador de rota está sendo carregada. Enquanto isso, use estes guias de rota:",
+    "routeLabelFallback": "Guia de rota"
   }
 }

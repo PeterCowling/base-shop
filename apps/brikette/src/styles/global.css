@@ -89,6 +89,12 @@
   --hospitality-warning-fg: var(--color-warning-fg);
   --hospitality-info: var(--color-info);
   --hospitality-info-fg: var(--color-info-fg);
+
+  /* Design-system semantic token aliases (HSL triplets for hsl() usage in primitives).
+     Maps @acme/design-system component tokens → Brikette brand values. */
+  --color-panel: 0 0% 100%;       /* = #ffffff (brand-bg light) */
+  --color-bg: 0 0% 100%;          /* = #ffffff */
+  --color-fg: 0 0% 11%;           /* ≈ #1b1b1b (brand-text light) */
 }
 
 .dark {
@@ -148,6 +154,11 @@
   --hospitality-warning-fg: var(--color-warning-fg);
   --hospitality-info: var(--color-info);
   --hospitality-info-fg: var(--color-info-fg);
+
+  /* Design-system semantic token aliases (dark mode) */
+  --color-panel: 0 0% 12%;        /* ≈ #1f1f1f (brand-surface dark) */
+  --color-bg: 0 0% 9%;            /* ≈ #181818 (brand-bg dark) */
+  --color-fg: 0 0% 97%;           /* ≈ #f7f7f7 (brand-text dark) */
 }
 
 /* 2 ▪ Base layer

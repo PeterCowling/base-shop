@@ -928,5 +928,9 @@
     "titleFallback": "Kép",
     "openAria": "Kép megnyitása",
     "openAriaWithCaption": "Kép megnyitása: {{caption}}"
+  },
+  "loadingFallback": {
+    "intro": "Az útvonaltervező másolata betöltődik. Addig is használja az alábbi útikalauzokat:",
+    "routeLabelFallback": "Útvonalkalauz"
   }
 }

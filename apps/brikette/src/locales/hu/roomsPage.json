@@ -309,5 +309,31 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Ez a hostel útvonal támogatott foglalást használ, ha a JavaScript le van tiltva.",
+    "contactAssistedBooking": "Segített foglalásért vegye fel velünk a kapcsolatot"
+  },
+  "bookingConstraints": {
+    "notice": "A hostel foglalások csak felnőtteknek szólnak, és 2 és 8 éjszakás tartózkodások esetén támogatják foglalásonként legfeljebb 8 felnőttet. Ha kérése kívül esik ezeken a korlátokon, ossza fel több foglalásra vagy",
+    "assistedLink": "vegye fel velünk a kapcsolatot a támogatott foglalásért",
+    "absentWithAnchor": "{{price}} éjszakánként (tájékoztató jellegű). Válassza ki a dátumokat az élő árak megtekintéséhez.",
+    "absentNoRates": "Az árak átmenetileg nem elérhetők. Válassza ki a dátumokat az élő elérhetőség ellenőrzéséhez."
+  },
+  "bookingControls": {
+    "decreaseAdults": "Csökkentse a felnőttek számát",
+    "increaseAdults": "Növelje a felnőttek számát"
+  },
+  "recovery": {
+    "roomTitle": "Később kell dönteni? Küldje el magának ezt a szobaárajánlatot."
+  },
+  "feature": {
+    "beds": "Ágyak",
+    "bathroom": "Fürdőszoba",
+    "view": "Kilátás",
+    "terrace": "Terasz",
+    "lockers": "Zárható szekrények",
+    "privateTerrace": "Saját terasz",
+    "inRoomLockers": "Zárható szekrények a szobában"
   }
 }

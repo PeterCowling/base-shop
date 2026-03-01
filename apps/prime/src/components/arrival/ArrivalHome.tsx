@@ -6,7 +6,7 @@
  */
 'use client';
 
-import { type FC, memo, useCallback } from 'react';
+import { type FC, memo, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   AlertTriangle,
@@ -60,6 +60,12 @@ interface ArrivalHomeProps {
   className?: string;
 }
 
+interface NextStepItemProps {
+  index: number;
+  text: string;
+  isComplete?: boolean;
+}
+
 const DEFAULT_KEYCARD_STATUS: GuestKeycardStatus = {
   state: 'pending-issue',
   hasLostCardNotice: false,
@@ -78,6 +84,27 @@ function getFunnelSessionKey(): string {
     'unknown-session'
   );
 }
+
+const NextStepItem: FC<NextStepItemProps> = memo(function NextStepItem({
+  index,
+  text,
+  isComplete = false,
+}) {
+  const badgeClassName = isComplete
+    ? 'bg-success-soft text-success-foreground'
+    : 'bg-info-soft text-info-foreground';
+
+  return (
+    <li className="grid grid-cols-6 items-start gap-3">
+      <span
+        className={`col-span-1 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold ${badgeClassName}`}
+      >
+        {index}
+      </span>
+      <span className="col-span-5 text-sm text-foreground">{text}</span>
+    </li>
+  );
+});
 
 /**
  * ArrivalHome
@@ -111,56 +138,60 @@ export const ArrivalHome: FC<ArrivalHomeProps> = memo(function ArrivalHome({
     onChecklistItemClick('locationSaved');
   }, [onChecklistItemClick]);
 
-  const utilityActions = [
-    {
-      id: 'maps',
-      label: 'Maps',
-      icon: MapPin,
-      onSelect: () => {
-        recordActivationFunnelEvent({
-          type: 'utility_action_used',
-          sessionKey: getFunnelSessionKey(),
-          route: '/',
-          stepId: 'maps',
-          context: { surface: 'arrival-day' },
-        });
-        handleLocationClick();
+  const utilityActions = useMemo(
+    () => [
+      {
+        id: 'maps',
+        label: t('utilityActions.maps'),
+        icon: MapPin,
+        onSelect: () => {
+          recordActivationFunnelEvent({
+            type: 'utility_action_used',
+            sessionKey: getFunnelSessionKey(),
+            route: '/',
+            stepId: 'maps',
+            context: { surface: 'arrival-day' },
+          });
+          handleLocationClick();
+        },
+        variant: 'primary' as const,
       },
-      variant: 'primary' as const,
-    },
-    {
-      id: 'cash',
-      label: 'Cash',
-      icon: CalendarDays,
-      onSelect: () => {
-        recordActivationFunnelEvent({
-          type: 'utility_action_used',
-          sessionKey: getFunnelSessionKey(),
-          route: '/',
-          stepId: 'cash',
-          context: { surface: 'arrival-day' },
-        });
-        handleCashClick();
+      {
+        id: 'cash',
+        label: t('cash.title'),
+        icon: CalendarDays,
+        onSelect: () => {
+          recordActivationFunnelEvent({
+            type: 'utility_action_used',
+            sessionKey: getFunnelSessionKey(),
+            route: '/',
+            stepId: 'cash',
+            context: { surface: 'arrival-day' },
+          });
+          handleCashClick();
+        },
       },
-    },
-    {
-      id: 'support',
-      label: 'Support',
-      icon: MessageCircle,
-      onSelect: () => {
-        recordActivationFunnelEvent({
-          type: 'utility_action_used',
-          sessionKey: getFunnelSessionKey(),
-          route: '/',
-          stepId: 'support',
-          context: { surface: 'arrival-day' },
-        });
-        if (typeof window !== 'undefined') {
-          window.open('mailto:hostelbrikette@gmail.com', '_self');
-        }
+      {
+        id: 'support',
+        label: t('utilityActions.support'),
+        icon: MessageCircle,
+        onSelect: () => {
+          recordActivationFunnelEvent({
+            type: 'utility_action_used',
+            sessionKey: getFunnelSessionKey(),
+            route: '/',
+            stepId: 'support',
+            context: { surface: 'arrival-day' },
+          });
+          if (typeof window !== 'undefined') {
+            // i18n-exempt -- PRIME-1 [ttl=2026-12-31]: URI scheme target, not user-facing copy
+            window.open('mailto:hostelbrikette@gmail.com', '_self');
+          }
+        },
       },
-    },
-  ];
+    ],
+    [handleCashClick, handleLocationClick, t]
+  );
 
   return (
     <div className={`space-y-6 ${className}`}>
@@ -184,7 +215,7 @@ export const ArrivalHome: FC<ArrivalHomeProps> = memo(function ArrivalHome({
             <div className="flex items-center gap-2">
               <AlertTriangle className="h-4 w-4 flex-shrink-0" />
               <span>
-                {t('arrival.codeStaleWarning', { defaultValue: 'This code was cached. It may be outdated.' })}
+                {t('arrival.codeStaleWarning')}
               </span>
             </div>
           </div>
@@ -196,7 +227,7 @@ export const ArrivalHome: FC<ArrivalHomeProps> = memo(function ArrivalHome({
             <div className="flex items-center gap-2">
               <AlertTriangle className="h-4 w-4 flex-shrink-0" />
               <span>
-                {t('arrival.offlineNoCache', { defaultValue: 'Code unavailable while offline.' })}
+                {t('arrival.offlineNoCache')}
               </span>
             </div>
           </div>
@@ -216,7 +247,7 @@ export const ArrivalHome: FC<ArrivalHomeProps> = memo(function ArrivalHome({
           <button
             type="button"
             onClick={onRefreshCode}
-            className="mt-3 w-full rounded-lg bg-primary px-4 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="mt-3 h-11 min-w-11 w-full rounded-lg bg-primary px-4 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
             {t('arrival.refreshCode')}
           </button>
@@ -229,7 +260,7 @@ export const ArrivalHome: FC<ArrivalHomeProps> = memo(function ArrivalHome({
       <button
         type="button"
         onClick={handleCashClick}
-        className={`flex w-full items-start gap-4 rounded-xl p-4 text-start transition-colors ${
+        className={`flex min-h-10 min-w-10 w-full items-start gap-4 rounded-xl p-4 text-start transition-colors ${
           cashReady
             ? 'bg-success-soft'
             : 'bg-warning-soft'
@@ -282,7 +313,7 @@ export const ArrivalHome: FC<ArrivalHomeProps> = memo(function ArrivalHome({
       <button
         type="button"
         onClick={handleLocationClick}
-        className="flex w-full items-center gap-4 rounded-xl bg-muted p-4 text-start transition-colors hover:bg-muted/80"
+        className="flex h-11 min-w-11 w-full items-center gap-4 rounded-xl bg-muted p-4 text-start transition-colors hover:bg-muted/80"
       >
         <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-muted">
           <MapPin className="h-5 w-5 text-muted-foreground" />
@@ -300,30 +331,10 @@ export const ArrivalHome: FC<ArrivalHomeProps> = memo(function ArrivalHome({
           {t('arrival.whatHappensNext')}
         </h3>
         <ul className="space-y-3">
-          <li className="flex items-start gap-3">
-            <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-info-soft text-xs font-bold text-info-foreground">
-              1
-            </span>
-            <span className="text-sm text-foreground">{t('arrival.step1')}</span>
-          </li>
-          <li className="flex items-start gap-3">
-            <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-info-soft text-xs font-bold text-info-foreground">
-              2
-            </span>
-            <span className="text-sm text-foreground">{t('arrival.step2')}</span>
-          </li>
-          <li className="flex items-start gap-3">
-            <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-info-soft text-xs font-bold text-info-foreground">
-              3
-            </span>
-            <span className="text-sm text-foreground">{t('arrival.step3')}</span>
-          </li>
-          <li className="flex items-start gap-3">
-            <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-success-soft text-xs font-bold text-success-foreground">
-              4
-            </span>
-            <span className="text-sm text-foreground">{t('arrival.step4')}</span>
-          </li>
+          <NextStepItem index={1} text={t('arrival.step1')} />
+          <NextStepItem index={2} text={t('arrival.step2')} />
+          <NextStepItem index={3} text={t('arrival.step3')} />
+          <NextStepItem index={4} text={t('arrival.step4')} isComplete />
         </ul>
       </div>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
@@ -24,6 +24,17 @@ interface CardState {
   buyerEmail: string;
 }
 
+const CARD_FIELD_NAMES = [
+  "cardNumber",
+  "expiryMonth",
+  "expiryYear",
+  "cvv",
+  "buyerName",
+  "buyerEmail",
+] as const;
+
+type CardFieldName = (typeof CARD_FIELD_NAMES)[number];
+
 const EMPTY_CARD: CardState = {
   cardNumber: "",
   expiryMonth: "",
@@ -32,6 +43,32 @@ const EMPTY_CARD: CardState = {
   buyerName: "",
   buyerEmail: "",
 };
+
+function isCardFieldName(value: string): value is CardFieldName {
+  return CARD_FIELD_NAMES.includes(value as CardFieldName);
+}
+
+function validateCard(card: CardState): string | null {
+  if (!card.cardNumber || !card.expiryMonth || !card.expiryYear || !card.cvv) {
+    return "Please fill in all required card fields.";
+  }
+  if (!/^\d{3,4}$/.test(card.cvv)) {
+    return "CVV must be 3 or 4 digits.";
+  }
+  return null;
+}
+
+function buildCheckoutPayload(lang: string, card: CardState) {
+  return {
+    lang,
+    cardNumber: card.cardNumber,
+    expiryMonth: card.expiryMonth,
+    expiryYear: card.expiryYear,
+    cvv: card.cvv,
+    buyerName: card.buyerName,
+    buyerEmail: card.buyerEmail,
+  };
+}
 
 function CardForm({
   card,
@@ -153,8 +190,11 @@ export function CheckoutClient() {
   const [error, setError] = useState<string | null>(null);
   const [card, setCard] = useState<CardState>(EMPTY_CARD);
 
-  const lines = Object.entries(cart);
-  const total = lines.reduce((sum, [, line]) => sum + line.sku.price * line.qty, 0);
+  const lines = useMemo(() => Object.entries(cart), [cart]);
+  const total = useMemo(
+    () => lines.reduce((sum, [, line]) => sum + line.sku.price * line.qty, 0),
+    [lines],
+  );
 
   if (!lines.length) {
     return (
@@ -170,18 +210,18 @@ export function CheckoutClient() {
 
   function handleCardChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
+    if (!isCardFieldName(name)) {
+      return;
+    }
     setCard((prev) => ({ ...prev, [name]: value }));
   }
 
   async function handlePayNow() {
     setError(null);
 
-    if (!card.cardNumber || !card.expiryMonth || !card.expiryYear || !card.cvv) {
-      setError("Please fill in all required card fields.");
-      return;
-    }
-    if (!/^\d{3,4}$/.test(card.cvv)) {
-      setError("CVV must be 3 or 4 digits.");
+    const validationError = validateCard(card);
+    if (validationError) {
+      setError(validationError);
       return;
     }
 
@@ -190,15 +230,7 @@ export function CheckoutClient() {
       const res = await fetch("/api/checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          lang,
-          cardNumber: card.cardNumber,
-          expiryMonth: card.expiryMonth,
-          expiryYear: card.expiryYear,
-          cvv: card.cvv,
-          buyerName: card.buyerName,
-          buyerEmail: card.buyerEmail,
-        }),
+        body: JSON.stringify(buildCheckoutPayload(lang, card)),
       });
       const data = (await res.json()) as { success?: boolean; error?: string };
       if (!res.ok || !data.success) {

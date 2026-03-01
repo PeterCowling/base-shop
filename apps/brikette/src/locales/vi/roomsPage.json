@@ -309,5 +309,31 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Tuyến đường ký túc xá này sử dụng tính năng đặt phòng được hỗ trợ khi JavaScript bị tắt.",
+    "contactAssistedBooking": "Liên hệ với chúng tôi để được hỗ trợ đặt chỗ"
+  },
+  "bookingConstraints": {
+    "notice": "Đặt phòng tại nhà trọ chỉ dành cho người lớn và hỗ trợ lưu trú từ 2 đến 8 đêm với tối đa 8 người lớn cho mỗi lần đặt phòng. Nếu yêu cầu của bạn nằm ngoài những giới hạn đó, hãy chia nó thành nhiều lần đặt trước hoặc",
+    "assistedLink": "liên hệ với chúng tôi để được hỗ trợ đặt phòng",
+    "absentWithAnchor": "{{price}} mỗi đêm (biểu thị). Chọn ngày để xem tỷ giá trực tiếp.",
+    "absentNoRates": "Giá tạm thời không có sẵn. Chọn ngày để kiểm tra tính khả dụng trực tiếp."
+  },
+  "bookingControls": {
+    "decreaseAdults": "Giảm người lớn",
+    "increaseAdults": "Tăng người lớn"
+  },
+  "recovery": {
+    "roomTitle": "Cần quyết định sau? Gửi cho mình báo giá phòng này."
+  },
+  "feature": {
+    "beds": "Giường",
+    "bathroom": "Phòng tắm",
+    "view": "Xem",
+    "terrace": "sân thượng",
+    "lockers": "Tủ khóa",
+    "privateTerrace": "Sân hiên riêng",
+    "inRoomLockers": "Tủ đựng đồ trong phòng"
   }
 }

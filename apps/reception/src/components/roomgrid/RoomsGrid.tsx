@@ -3,6 +3,7 @@ import type { ChangeEvent, FC } from "react";
 import { memo, useState } from "react";
 
 import { Input } from "@acme/design-system";
+import { Stack } from "@acme/design-system/primitives";
 
 import useRoomConfigs from "../../hooks/client/checkin/useRoomConfigs";
 import useGridData from "../../hooks/data/roomgrid/useGridData";
@@ -84,7 +85,7 @@ const RoomsGrid: FC = () => {
         </div>
       }
     >
-      <div className="bg-surface rounded-lg shadow-lg p-5 flex flex-col gap-5">
+      <Stack gap={5} className="bg-surface rounded-lg shadow-lg p-5">
         {loading && (
           <p className="p-4 italic text-muted-foreground">Loading rooms...</p>
         )}
@@ -107,7 +108,7 @@ const RoomsGrid: FC = () => {
               />
             );
           })}
-      </div>
+      </Stack>
     </PageShell>
   );
 };

@@ -1,0 +1,1098 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0a0f1e" />
+  <title>Partner with CoastCharge — Existing Partner Rollout</title>
+  <style>
+    :root {
+      --ink:     #0a0f1e;
+      --ink2:    #1c2440;
+      --mid:     #4a5578;
+      --muted:   #7b87a4;
+      --border:  rgba(10,15,30,.1);
+      --border2: rgba(10,15,30,.06);
+      --bg:      #f5f7fc;
+      --card:    #ffffff;
+      --accent:  #0066ff;
+      --accent2: #004dcc;
+      --green:   #00b86e;
+      --amber:   #f59e0b;
+      --radius:  14px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100dvh;
+    }
+
+    /* ── Layout ─────────────────────────────────────── */
+    .wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 12px 14px 100px;
+    }
+
+    /* ── Topbar ─────────────────────────────────────── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px 10px 10px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      box-shadow: 0 1px 3px rgba(10,15,30,.07), 0 4px 12px rgba(10,15,30,.05);
+      position: sticky;
+      top: 10px;
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+    }
+
+    .logotype {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: var(--ink);
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logotype::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,102,255,.5) 0%, transparent 60%);
+    }
+
+    .logotype svg {
+      position: relative;
+      z-index: 1;
+      color: #fff;
+    }
+
+    .brand-name {
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: -.2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .status-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(0,184,110,.08);
+      border: 1px solid rgba(0,184,110,.2);
+      font-size: 11px;
+      font-weight: 700;
+      color: #007a4a;
+      white-space: nowrap;
+      flex: 0 0 auto;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      flex: 0 0 auto;
+      box-shadow: 0 0 0 2px rgba(0,184,110,.2);
+      animation: blink 2.5s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: .55; }
+    }
+
+    /* ── Hero ───────────────────────────────────────── */
+    .hero {
+      margin-top: 12px;
+      padding: 22px 18px 20px;
+      background: var(--ink);
+      border-radius: 18px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,102,255,.35) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.07);
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(255,255,255,.7);
+      letter-spacing: .3px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .hero h1 {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -.4px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    .hero p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: rgba(255,255,255,.65);
+      position: relative;
+    }
+
+    .hero-showcase {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7px;
+      position: relative;
+    }
+
+    .hero-shot {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      box-shadow: 0 10px 22px rgba(0,0,0,.2);
+    }
+
+    .hero-shot img {
+      width: 100%;
+      height: 108px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-shot span {
+      display: block;
+      padding: 6px 7px;
+      font-size: 10px;
+      color: rgba(255,255,255,.72);
+      line-height: 1.3;
+    }
+
+    /* ── Stat row ───────────────────────────────────── */
+    .stat-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 18px;
+      position: relative;
+    }
+
+    .stat-card {
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.1);
+    }
+
+    .stat-val {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -.5px;
+      line-height: 1;
+    }
+
+    .stat-label {
+      margin-top: 5px;
+      font-size: 11px;
+      color: rgba(255,255,255,.5);
+      line-height: 1.35;
+    }
+
+    .accent-num { color: var(--accent); }
+
+    /* ── Section card ───────────────────────────────── */
+    .card {
+      margin-top: 10px;
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(10,15,30,.05);
+      overflow: hidden;
+    }
+
+    .card-head {
+      padding: 13px 16px 12px;
+      border-bottom: 1px solid var(--border2);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: rgba(0,102,255,.08);
+      border: 1px solid rgba(0,102,255,.12);
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      color: var(--accent);
+    }
+
+    .card-head h2 {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: -.1px;
+    }
+
+    .card-body { padding: 12px 14px 14px; }
+
+    /* ── Benefit list ───────────────────────────────── */
+    .benefit-list {
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+
+    .benefit {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .benefit-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      color: var(--mid);
+      margin-top: 1px;
+    }
+
+    .benefit-text h3 {
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .benefit-text p {
+      margin-top: 3px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ── Steps ──────────────────────────────────────── */
+    .steps {
+      display: grid;
+      gap: 0;
+    }
+
+    .step {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border2);
+    }
+
+    .step:last-child { border-bottom: none; padding-bottom: 0; }
+    .step:first-child { padding-top: 0; }
+
+    .step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: var(--ink);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 900;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      margin-top: 1px;
+    }
+
+    .step h3 { font-size: 13px; font-weight: 700; line-height: 1.3; }
+    .step p { margin-top: 3px; font-size: 12px; color: var(--muted); line-height: 1.45; }
+
+    /* ── Commission grid ────────────────────────────── */
+    .commission-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .commission-cell {
+      padding: 12px;
+      border-radius: 10px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+    }
+
+    .commission-cell.highlight {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: #fff;
+    }
+
+    .commission-cell-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: var(--muted);
+    }
+
+    .commission-cell.highlight .commission-cell-label {
+      color: rgba(255,255,255,.5);
+    }
+
+    .commission-cell-val {
+      margin-top: 6px;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: -.4px;
+      line-height: 1;
+    }
+
+    .commission-cell.highlight .commission-cell-val {
+      color: #fff;
+    }
+
+    .commission-cell-note {
+      margin-top: 5px;
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.3;
+    }
+
+    .commission-cell.highlight .commission-cell-note {
+      color: rgba(255,255,255,.45);
+    }
+
+    .econ-visual {
+      margin-bottom: 10px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #e8edf5;
+      position: relative;
+    }
+
+    .econ-visual img {
+      width: 100%;
+      height: 152px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .econ-badges {
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .econ-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 5px 7px;
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(10,15,30,.72);
+      border: 1px solid rgba(255,255,255,.2);
+      backdrop-filter: blur(3px);
+    }
+
+    /* ── Responsibility split ───────────────────────── */
+    .resp-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .resp-col {
+      padding: 12px;
+      border-radius: 10px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+    }
+
+    .resp-col h3 {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .resp-items {
+      display: grid;
+      gap: 6px;
+    }
+
+    .resp-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      font-size: 12px;
+      line-height: 1.4;
+      color: var(--ink2);
+    }
+
+    .resp-item svg {
+      flex: 0 0 auto;
+      margin-top: 2px;
+    }
+
+    /* ── Gallery ────────────────────────────────────── */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .shot {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #e8edf5;
+    }
+
+    .shot img {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      display: block;
+    }
+
+    .shot figcaption {
+      padding: 7px 7px 8px;
+      font-size: 10px;
+      line-height: 1.35;
+      color: var(--mid);
+      background: #fff;
+    }
+
+    /* ── FAQ ────────────────────────────────────────── */
+    .faq-list {
+      display: grid;
+      gap: 6px;
+    }
+
+    details {
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      overflow: hidden;
+      transition: background .18s;
+    }
+
+    details[open] {
+      background: var(--card);
+      border-color: rgba(0,102,255,.2);
+    }
+
+    summary {
+      padding: 12px 14px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+    summary::marker { display: none; }
+
+    .chev {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--border);
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      color: var(--muted);
+      transition: transform .22s ease, background .18s;
+    }
+
+    details[open] .chev {
+      transform: rotate(180deg);
+      background: rgba(0,102,255,.1);
+      color: var(--accent);
+    }
+
+    .ans {
+      padding: 0 14px 13px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ── Next step ──────────────────────────────────── */
+    .next-step-body {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .next-step-body svg { flex: 0 0 auto; margin-top: 2px; color: var(--accent); }
+    .next-step-body p { font-size: 13px; line-height: 1.6; color: var(--ink2); }
+
+    /* ── Footer ─────────────────────────────────────── */
+    .foot {
+      margin-top: 14px;
+      padding: 10px 0 0;
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .foot a { color: var(--accent); text-underline-offset: 2px; }
+
+    /* ── Sticky CTA ─────────────────────────────────── */
+    .sticky {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+      z-index: 20;
+    }
+
+    .cta-inner {
+      max-width: 452px;
+      margin: 0 auto;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .cta-label {
+      flex: 0 0 auto;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      line-height: 1.3;
+      text-align: center;
+      max-width: 70px;
+    }
+
+    .btn {
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 13px 12px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 14px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn:active { transform: scale(.96); }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(0,102,255,.35);
+    }
+
+    .btn-primary:hover { filter: brightness(1.08); box-shadow: 0 6px 20px rgba(0,102,255,.4); }
+
+    .btn-secondary {
+      background: var(--bg);
+      color: var(--ink2);
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 4px rgba(10,15,30,.06);
+    }
+
+    .btn-secondary:hover { background: var(--card); }
+
+    /* ── Tablet ─────────────────────────────────────── */
+    @media (min-width: 700px) {
+      .wrap {
+        max-width: 960px;
+        padding: 16px 20px 110px;
+      }
+
+      .hero h1 { font-size: 34px; }
+
+      .hero-shot img { height: 132px; }
+
+      .two-col {
+        display: grid;
+        grid-template-columns: 1.1fr .9fr;
+        gap: 10px;
+        align-items: start;
+      }
+
+      .two-col-right {
+        display: grid;
+        gap: 10px;
+      }
+
+      .gallery {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .shot img {
+        aspect-ratio: 3/4;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="brand">
+      <div class="logotype" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M13 2L3 14h7l-1 8 12-14h-7l-1-6z"/>
+        </svg>
+      </div>
+      <span class="brand-name">CoastCharge</span>
+    </div>
+    <div class="status-pill">
+      <span class="status-dot"></span>
+      Venue interest brief
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero" aria-label="Introduction">
+    <div class="hero-tag">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-5h2v2h-2zm0-8h2v6h-2z"/>
+      </svg>
+      For owners evaluating fit
+    </div>
+    <h1>Could powerbank rental work at your venue?<br>See the product and the numbers.</h1>
+    <p>
+      This is an exploratory brief, not a commitment. The goal is simple: assess whether the hardware quality fits your venue and whether the economics make sense for your footfall.
+    </p>
+    <div class="hero-showcase" aria-label="Product look quick view">
+      <figure class="hero-shot">
+        <img src="assets/powerbank-usb.jpg" alt="Magnetic powerbank attached to smartphone" loading="lazy" />
+        <span>Magnetic format</span>
+      </figure>
+      <figure class="hero-shot">
+        <img src="assets/powerbank-portable.jpg" alt="Anker USB-C powerbank close-up" loading="lazy" />
+        <span>USB-C fast-charge</span>
+      </figure>
+      <figure class="hero-shot">
+        <img src="assets/powerbank-2025.jpg" alt="Premium powerbank hardware in studio lighting" loading="lazy" />
+        <span>Premium finish</span>
+      </figure>
+    </div>
+    <div class="stat-row" role="list">
+      <div class="stat-card" role="listitem">
+        <div class="stat-val accent-num">~10<span style="font-size:14px;font-weight:700;opacity:.7"> min</span></div>
+        <div class="stat-label">On-site installation time</div>
+      </div>
+      <div class="stat-card" role="listitem">
+        <div class="stat-val">20–35<span style="font-size:16px;font-weight:700;opacity:.7">%</span></div>
+        <div class="stat-label">Venue revenue share per rental</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="two-col">
+    <div>
+
+      <!-- Why it works -->
+      <div class="card" aria-label="Why this works for your venue">
+        <div class="card-head">
+          <div class="card-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+          </div>
+          <h2>Why it works for your venue</h2>
+        </div>
+        <div class="card-body">
+          <ul class="benefit-list">
+            <li class="benefit">
+              <div class="benefit-icon" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+              </div>
+              <div class="benefit-text">
+                <h3>Revenue from footfall you already have</h3>
+                <p>No upsell scripts, no menu additions. Tourists self-serve from their phone. You collect a share automatically.</p>
+              </div>
+            </li>
+            <li class="benefit">
+              <div class="benefit-icon" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                </svg>
+              </div>
+              <div class="benefit-text">
+                <h3>Zero staff workload</h3>
+                <p>The entire rental — payment, dispatch, return — is handled via QR on the tourist's phone. Staff involvement is optional.</p>
+              </div>
+            </li>
+            <li class="benefit">
+              <div class="benefit-icon" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12" y2="18"/>
+                </svg>
+              </div>
+              <div class="benefit-text">
+                <h3>Solves a real tourist problem at your door</h3>
+                <p>Dead phones drive guests away mid-visit. Offering a rental keeps them in your venue longer.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Rollout steps -->
+      <div class="card" aria-label="Rollout steps">
+        <div class="card-head">
+          <div class="card-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <h2>If you like it: pilot path</h2>
+        </div>
+        <div class="card-body">
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div>
+                <h3>Quick fit check at your venue</h3>
+                <p>We assess placement, visibility, and expected usage from your customer flow.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div>
+                <h3>Short pilot install (if approved)</h3>
+                <p>We install and run live test rentals so you can evaluate guest response in real conditions.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div>
+                <h3>Review results before any longer-term decision</h3>
+                <p>You review usage and payout performance, then decide whether to continue.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="two-col-right">
+
+      <!-- Commission model -->
+      <div class="card" aria-label="Commission model">
+        <div class="card-head">
+          <div class="card-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+          </div>
+          <h2>Potential venue economics</h2>
+        </div>
+        <div class="card-body">
+          <figure class="econ-visual" aria-label="Premium hardware example">
+            <img src="assets/powerbank-2025.jpg" alt="Retail-grade powerbank hardware close-up" loading="lazy" />
+            <div class="econ-badges" aria-hidden="true">
+              <span class="econ-badge">Retail-grade look</span>
+              <span class="econ-badge">Fast-charge ready</span>
+              <span class="econ-badge">Venue friendly footprint</span>
+            </div>
+          </figure>
+          <div class="commission-grid">
+            <div class="commission-cell highlight">
+              <div class="commission-cell-label">Your share</div>
+              <div class="commission-cell-val">20–35%</div>
+              <div class="commission-cell-note">Per rental. Indicative range for initial discussions.</div>
+            </div>
+            <div class="commission-cell">
+              <div class="commission-cell-label">Upfront cost</div>
+              <div class="commission-cell-val">€0</div>
+              <div class="commission-cell-note">Indicative commercial structure.</div>
+            </div>
+            <div class="commission-cell">
+              <div class="commission-cell-label">Monthly upside</div>
+              <div class="commission-cell-val">€80–250</div>
+              <div class="commission-cell-note">Highly dependent on footfall, season, and station placement.</div>
+            </div>
+            <div class="commission-cell">
+              <div class="commission-cell-label">Payout</div>
+              <div class="commission-cell-val">Monthly</div>
+              <div class="commission-cell-note">Typical structure in pilot and rollout models.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- What you provide / what we provide -->
+      <div class="card" aria-label="Responsibilities">
+        <div class="card-head">
+          <div class="card-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <h2>Responsibilities</h2>
+        </div>
+        <div class="card-body">
+          <div class="resp-split">
+            <div class="resp-col">
+              <h3>Your venue</h3>
+              <div class="resp-items">
+                <div class="resp-item">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  Visible spot near till or entrance
+                </div>
+                <div class="resp-item">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  One standard mains socket
+                </div>
+              </div>
+            </div>
+            <div class="resp-col">
+              <h3>Us</h3>
+              <div class="resp-items">
+                <div class="resp-item">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  Station, units, signage
+                </div>
+                <div class="resp-item">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  Refill and maintenance
+                </div>
+                <div class="resp-item">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  Support operations
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Hardware gallery -->
+  <div class="card" aria-label="Hardware">
+    <div class="card-head">
+      <div class="card-icon" aria-hidden="true">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/>
+        </svg>
+      </div>
+      <h2>Hardware</h2>
+    </div>
+    <div class="card-body">
+      <div class="gallery">
+        <figure class="shot">
+          <img src="assets/powerbank-usb.jpg" alt="Magnetic battery pack attached to smartphone" loading="lazy" />
+          <figcaption>Magnetic grab-and-go style for rapid tourist usage.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="assets/powerbank-portable.jpg" alt="Anker high-capacity USB-C power bank" loading="lazy" />
+          <figcaption>High-capacity unit for longer day-trip usage windows.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="assets/powerbank-2025.jpg" alt="Modern power bank retail-grade unit" loading="lazy" />
+          <figcaption>Premium visual standard aligned with quality venues.</figcaption>
+        </figure>
+      </div>
+      <p style="margin-top:10px;font-size:12px;color:var(--muted);line-height:1.45">
+        CE-marked retail-grade units. Magnetic, wired USB-C, and high-capacity configurations depending on station type.
+        Mix of 7 compact and 3 high-capacity stations per 10-venue pilot.
+      </p>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="card" aria-label="Questions">
+    <div class="card-head">
+      <div class="card-icon" aria-hidden="true">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+      </div>
+      <h2>Common questions</h2>
+    </div>
+    <div class="card-body">
+      <div class="faq-list">
+        <details>
+          <summary>
+            Are these final terms?
+            <span class="chev" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </span>
+          </summary>
+          <div class="ans">No. This document is for interest-stage discussion. Final terms are agreed only after fit-check and pilot review.</div>
+        </details>
+        <details>
+          <summary>
+            Will my staff have to manage the rentals?
+            <span class="chev" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </span>
+          </summary>
+          <div class="ans">No. Guests complete the entire rental — payment, unit release, and return — through a QR code flow on their own phone. Staff only need to point to the station if someone asks.</div>
+        </details>
+        <details>
+          <summary>
+            What happens if the station runs empty or has a fault?
+            <span class="chev" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </span>
+          </summary>
+          <div class="ans">Our operations team monitors station levels and handles refill, swap, and fault response. You do not need to report or manage this — your rep will confirm the SLA for your venue.</div>
+        </details>
+        <details>
+          <summary>
+            What if a guest doesn't return the unit?
+            <span class="chev" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </span>
+          </summary>
+          <div class="ans">A €25 deposit hold is placed on the guest's card at rental. If the unit is not returned within 48 hours, the hold converts to a purchase charge. Your venue commission is unaffected by non-returns.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- Next step -->
+  <div class="card" aria-label="Next step">
+    <div class="card-head">
+      <div class="card-icon" aria-hidden="true">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"/><path d="M12 5l7 7-7 7"/>
+        </svg>
+      </div>
+      <h2>Next step</h2>
+    </div>
+    <div class="card-body">
+      <div class="next-step-body">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.06 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z"/>
+        </svg>
+        <p>
+          If the product look and economics are interesting, the next step is a no-commitment fit check at your venue and a pilot estimate tailored to your traffic pattern.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    Internal draft — PWRB venue interest brief. All commercial numbers are indicative until pilot scope is agreed.<br/>
+    Image sources: <a href="https://commons.wikimedia.org/wiki/File:IPhone_XR_MagSafe_case_with_Romoss_Power_Bank.jpg" target="_blank" rel="noreferrer">Wikimedia</a>,
+    <a href="https://commons.wikimedia.org/wiki/File:Anker_521_Power_Bank.jpg" target="_blank" rel="noreferrer">Wikimedia</a>,
+    <a href="https://commons.wikimedia.org/wiki/File:Anker_power_bank_lit.jpg" target="_blank" rel="noreferrer">Wikimedia</a>.
+    &copy; <span id="y"></span> CoastCharge.
+  </div>
+
+</div>
+
+<!-- Sticky CTA -->
+<div class="sticky" role="region" aria-label="Call to action">
+  <div class="cta-inner">
+    <div class="cta-label">Interest<br>stage<br>only</div>
+    <a class="btn btn-primary" href="#" aria-label="Register interest for venue fit check">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M13 2L3 14h7l-1 8 12-14h-7l-1-6z"/>
+      </svg>
+      Register interest
+    </a>
+    <a class="btn btn-secondary" href="#" aria-label="View indicative economics">
+      View numbers
+    </a>
+  </div>
+</div>
+
+<script>
+  document.getElementById("y").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

@@ -113,8 +113,6 @@ function RoomsSection({
   const checkIn = resolvedBookingQuery?.checkIn?.trim() || getTodayIso();
   const _checkOut = resolvedBookingQuery?.checkOut?.trim() || getDatePlusTwoDays(checkIn);
   const _adults = parseInt(resolvedBookingQuery?.pax ?? "1", 10) || 1;
-  const normalizedQueryString = (resolvedBookingQuery?.queryString ?? "").trim().replace(/^\?/, "");
-  const searchString = normalizedQueryString ? `?${normalizedQueryString}` : "";
 
   const [filter, setFilter] = useState<RoomFilter>("all");
 
@@ -203,7 +201,7 @@ function RoomsSection({
                 }
                 price={roomPrices?.[room.id]}
                 titleOverlay
-                detailHref={`${href}${searchString}`}
+                detailHref={href}
                 detailLabel={resolveTranslatedCopy(
                   t("moreAboutThisRoom", { defaultValue: "More About This Room" }),
                   "More About This Room"

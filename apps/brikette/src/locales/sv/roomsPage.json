@@ -309,5 +309,31 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Denna vandrarhemsrutt använder assisterad bokning när JavaScript är inaktiverat.",
+    "contactAssistedBooking": "Kontakta oss för assisterad bokning"
+  },
+  "bookingConstraints": {
+    "notice": "Vandrarhemsbokningar är endast för vuxna och stöder vistelser mellan 2 och 8 nätter med upp till 8 vuxna per bokning. Om din förfrågan ligger utanför dessa gränser, dela upp den i flera bokningar eller",
+    "assistedLink": "kontakta oss för assisterad bokning",
+    "absentWithAnchor": "{{price}} per natt (vägledande). Välj datum för att se livepriser.",
+    "absentNoRates": "Priser är tillfälligt otillgängliga. Välj datum för att kontrollera tillgängligheten live."
+  },
+  "bookingControls": {
+    "decreaseAdults": "Minska vuxna",
+    "increaseAdults": "Öka vuxna"
+  },
+  "recovery": {
+    "roomTitle": "Behöver du bestämma dig senare? Skicka denna rumsoffert till dig själv."
+  },
+  "feature": {
+    "beds": "Sängar",
+    "bathroom": "Badrum",
+    "view": "Se",
+    "terrace": "Terrass",
+    "lockers": "Skåp",
+    "privateTerrace": "Privat terrass",
+    "inRoomLockers": "Skåp på rummet"
   }
 }

@@ -52,5 +52,43 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Le prenotazioni degli ostelli vengono gestite con supporto assistito quando JavaScript è disabilitato.",
+    "emailAssistedBooking": "Inviaci un'e-mail per la prenotazione assistita"
+  },
+  "bookingConstraints": {
+    "notice": "Le prenotazioni di ostelli supportano soggiorni per soli adulti da 2 a 8 notti con un massimo di 8 adulti per prenotazione. Per gruppi più numerosi o soggiorni più lunghi, dividi la tua richiesta tra più prenotazioni oppure",
+    "assistedLink": "contattaci per la prenotazione assistita"
+  },
+  "expiredQuote": {
+    "message": "Questo collegamento al preventivo è scaduto. Ricostruisci il tuo preventivo con nuove date per continuare."
+  },
+  "recovery": {
+    "title": "Hai bisogno di più tempo? Inviati questo preventivo via e-mail e riprendi più tardi.",
+    "privacyNotice": "Conserviamo solo il contesto della prenotazione e i metadati del consenso. I link al curriculum scadono dopo 7 giorni.",
+    "emailLabel": "La tua email",
+    "emailPlaceholder": "tu@esempio.com",
+    "consent": "Acconsento a ricevere questo preventivo via e-mail e sono consapevole che scade dopo 7 giorni.",
+    "submitted": "Bozza di email aperta. Puoi inviarlo per salvare questo preventivo.",
+    "submitCta": "Inviami questo preventivo tramite e-mail",
+    "errors": {
+      "invalidEmail": "Inserisci un indirizzo email valido.",
+      "consentRequired": "Per inviare la email di preventivo è necessario il consenso."
+    },
+    "mailto": {
+      "subject": "Richiesta di recupero preventivo",
+      "bodyIntro": "Per favore, inviami questo preventivo e un promemoria di follow-up.",
+      "labels": {
+        "guestEmail": "E-mail ospite",
+        "checkIn": "Check-in",
+        "checkOut": "Guardare",
+        "guests": "Ospiti",
+        "sourceRoute": "Percorso di origine",
+        "room": "Camera",
+        "ratePlan": "Piano tariffario",
+        "resumeLink": "Riprendi il collegamento"
+      }
+    }
   }
 }

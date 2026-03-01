@@ -309,5 +309,31 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Ta trasa hostelu korzysta z rezerwacji wspomaganej, gdy JavaScript jest wyłączony.",
+    "contactAssistedBooking": "Skontaktuj się z nami, aby uzyskać pomoc w rezerwacji"
+  },
+  "bookingConstraints": {
+    "notice": "Rezerwacje w hostelach dotyczą wyłącznie osób dorosłych i obejmują pobyty na okres od 2 do 8 nocy z maksymalnie 8 osobami dorosłymi na rezerwację. Jeśli Twoja prośba wykracza poza te limity, podziel ją na wiele rezerwacji lub",
+    "assistedLink": "skontaktuj się z nami, aby uzyskać pomoc w rezerwacji",
+    "absentWithAnchor": "{{price}} za noc (orientacyjnie). Wybierz daty, aby zobaczyć aktualne stawki.",
+    "absentNoRates": "Ceny chwilowo niedostępne. Wybierz daty, aby sprawdzić dostępność na żywo."
+  },
+  "bookingControls": {
+    "decreaseAdults": "Zmniejsz dorosłych",
+    "increaseAdults": "Zwiększ dorosłych"
+  },
+  "recovery": {
+    "roomTitle": "Chcesz podjąć decyzję później? Wyślij sobie tę wycenę pokoju."
+  },
+  "feature": {
+    "beds": "Łóżka",
+    "bathroom": "Łazienka",
+    "view": "Pogląd",
+    "terrace": "Taras",
+    "lockers": "Szafki",
+    "privateTerrace": "Prywatny taras",
+    "inRoomLockers": "Szafki w pokoju"
   }
 }

@@ -928,5 +928,9 @@
   },
   "galleries": {
     "defaultAlt": "Foto indicazioni"
+  },
+  "loadingFallback": {
+    "intro": "È in corso il caricamento della copia del pianificatore di percorso. Nel frattempo, utilizza queste guide di percorso:",
+    "routeLabelFallback": "Guida al percorso"
   }
 }

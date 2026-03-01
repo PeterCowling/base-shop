@@ -67,6 +67,22 @@ Load and follow: `../_shared/queue-check-gate.md` (fact-find mode).
 
 If a matching `fact-find.md` already exists at `docs/plans/<feature-slug>/fact-find.md`, read it and use existing findings and open questions as starting context. Otherwise, start fresh from the topic anchor.
 
+### Optional CASS Retrieval (Pilot, recommended)
+
+Before deep investigation, run CASS retrieval for reusable prior evidence:
+
+```bash
+pnpm startup-loop:cass-retrieve -- --mode fact-find --slug <feature-slug> --topic "<topic>"
+```
+
+Use output file (if generated) as advisory context:
+- `docs/plans/<feature-slug>/artifacts/cass-context.md`
+
+Rules:
+- Retrieval is **fail-open**. If CASS is unavailable, continue with normal investigation.
+- Keep canonical evidence in the fact-find artifact itself (paths, tests, docs, call sites).
+- Do not treat retrieval snippets as proof without verifying source paths directly.
+
 ### Access Declarations
 
 Before the investigation begins, list every external data source, service, or system that will be needed to answer the questions in this fact-find. For each source:

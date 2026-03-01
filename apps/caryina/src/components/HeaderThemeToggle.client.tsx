@@ -43,11 +43,11 @@ const EASE = "cubic-bezier(0.4, 0, 0.2, 1)";
 const MS = "500ms";
 
 /* ── layout (px) ─────────────────────────────────────────────────────── */
-const W = 70;
-const H = 32;
-const PAD = 3;
-const THUMB = H - PAD * 2; // 26
-const TRAVEL = W - THUMB - PAD * 2; // 38
+const W = 88;
+const H = 44;
+const PAD = 4;
+const THUMB = H - PAD * 2; // 36
+const TRAVEL = W - THUMB - PAD * 2; // 44
 
 /* ── scenic element configs ───────────────────────────────────────────── */
 interface Star { x: number; y: number; r: number; d: number }
@@ -157,7 +157,7 @@ export const HeaderThemeToggle = memo(function HeaderThemeToggle() {
         onClick={toggle}
         aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
         title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-        className="relative inline-flex shrink-0 cursor-pointer items-center rounded-full border-0 p-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        className="relative inline-flex min-h-11 min-w-11 shrink-0 cursor-pointer items-center rounded-full border-0 p-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         style={{
           width: W,
           height: H,

@@ -3,7 +3,7 @@
 import { memo } from "react";
 
 import { BASE_URL } from "@/config/site";
-import { toFlatImageArray, type Room as DataRoom } from "@/data/roomsData";
+import { type Room as DataRoom,toFlatImageArray } from "@/data/roomsData";
 import { getRoomsCatalog, type LocalizedRoom,resolveFallbackLanguage } from "@/utils/roomsCatalog";
 import { buildOffer } from "@/utils/schema";
 import { serializeJsonLdValue } from "@/utils/seo/jsonld";

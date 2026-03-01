@@ -2,7 +2,7 @@ describe("initWebVitals (GA4 web_vitals emission)", () => {
   beforeEach(() => {
     jest.resetModules();
     // Ensure per-test isolation for window.gtag
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     (window as any).gtag = jest.fn();
   });
 
@@ -44,7 +44,7 @@ describe("initWebVitals (GA4 web_vitals emission)", () => {
 
     callbacks["LCP"]?.(metric);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     const gtag = (window as any).gtag as jest.Mock;
     expect(gtag).toHaveBeenCalledWith(
       "event",
@@ -92,7 +92,7 @@ describe("initWebVitals (GA4 web_vitals emission)", () => {
 
     callbacks["CLS"]?.(metric);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     const gtag = (window as any).gtag as jest.Mock;
     expect(gtag).toHaveBeenCalledWith(
       "event",
@@ -132,7 +132,7 @@ describe("initWebVitals (GA4 web_vitals emission)", () => {
       navigationType: "navigate",
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     const gtag = (window as any).gtag as jest.Mock;
     expect(gtag).not.toHaveBeenCalled();
   });
@@ -165,7 +165,7 @@ describe("initWebVitals (GA4 web_vitals emission)", () => {
       navigationType: "navigate",
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     const gtag = (window as any).gtag as jest.Mock;
     expect(gtag).not.toHaveBeenCalled();
   });
@@ -187,7 +187,7 @@ describe("initWebVitals (GA4 web_vitals emission)", () => {
     }));
 
     // Remove gtag from window for this test (beforeEach sets it; delete overrides)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     delete (window as any).gtag;
 
     const { initWebVitals } = await import("@/performance/reportWebVitals");
@@ -234,7 +234,7 @@ describe("initWebVitals (GA4 web_vitals emission)", () => {
       navigationType: "navigate",
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     const gtag = (window as any).gtag as jest.Mock;
     expect(gtag).toHaveBeenCalledWith(
       "event",
@@ -268,7 +268,7 @@ describe("initWebVitals (GA4 web_vitals emission)", () => {
       onLCP: () => {},
     }));
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     (window as any).gtag = jest.fn().mockImplementation(() => {
       throw new Error("GA blocked by ad blocker");
     });

@@ -84,11 +84,27 @@ export default async function RoomDetailPage({ params }: Props) {
     redirect(`/${validLang}/${getSlug("rooms", validLang)}`);
   }
 
-  await getTranslations(validLang, ["roomsPage", "guides", "pages.rooms", "rooms"]);
+  const t = await getTranslations(validLang, "roomsPage");
+  const noscriptMessage = (t("noscript.jsDisabledAssistance") as string) || "";
+  const noscriptLinkLabel = (t("noscript.contactAssistedBooking") as string) || "";
 
   return (
-    <Suspense fallback={null}>
-      <RoomDetailContent lang={validLang} id={roomId} />
-    </Suspense>
+    <>
+      <Suspense fallback={null}>
+        <RoomDetailContent lang={validLang} id={roomId} />
+      </Suspense>
+      <noscript>
+        <div>
+          {noscriptMessage}{" "}
+          <a
+            href="mailto:hostelpositano@gmail.com?subject=Hostel%20room%20assistance"
+            rel="nofollow noopener noreferrer"
+          >
+            {noscriptLinkLabel}
+          </a>
+          .
+        </div>
+      </noscript>
+    </>
   );
 }

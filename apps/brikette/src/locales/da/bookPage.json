@@ -56,5 +56,43 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Hostelbookinger håndteres med assisteret support, når JavaScript er deaktiveret.",
+    "emailAssistedBooking": "E-mail os for assisteret booking"
+  },
+  "bookingConstraints": {
+    "notice": "Hostelbookinger understøtter kun for voksne ophold mellem 2 og 8 nætter med op til 8 voksne pr. reservation. For større grupper eller længere ophold, opdel din anmodning på flere bookinger eller",
+    "assistedLink": "kontakt os for assisteret booking"
+  },
+  "expiredQuote": {
+    "message": "Dette citatlink er udløbet. Genopbyg dit tilbud med nye datoer for at fortsætte."
+  },
+  "recovery": {
+    "title": "Har du brug for mere tid? E-mail dig selv dette citat og fortsæt senere.",
+    "privacyNotice": "Vi beholder kun reservationskontekst og samtykkemetadata. Genoptag-links udløber efter 7 dage.",
+    "emailLabel": "Din e-mail",
+    "emailPlaceholder": "dig@eksempel.com",
+    "consent": "Jeg giver samtykke til at modtage dette tilbud via e-mail og forstår, at det udløber efter 7 dage.",
+    "submitted": "E-mailkladde åbnet. Du kan sende det for at gemme dette tilbud.",
+    "submitCta": "Email mig dette citat",
+    "errors": {
+      "invalidEmail": "Indtast en gyldig e-mailadresse.",
+      "consentRequired": "Der kræves samtykke for at sende tilbudsmailen."
+    },
+    "mailto": {
+      "subject": "Anmodning om gendannelse af tilbud",
+      "bodyIntro": "Send mig venligst dette tilbud og en opfølgende påmindelse.",
+      "labels": {
+        "guestEmail": "Gæste-e-mail",
+        "checkIn": "Indtjekning",
+        "checkOut": "Check-out",
+        "guests": "Gæster",
+        "sourceRoute": "Kilde rute",
+        "room": "Værelse",
+        "ratePlan": "Prisplan",
+        "resumeLink": "Genoptag link"
+      }
+    }
   }
 }

@@ -928,5 +928,9 @@
   },
   "galleries": {
     "defaultAlt": "Foto de indicaciones"
+  },
+  "loadingFallback": {
+    "intro": "Se está cargando la copia del planificador de rutas. Mientras tanto, utiliza estas guías de ruta:",
+    "routeLabelFallback": "guía de ruta"
   }
 }

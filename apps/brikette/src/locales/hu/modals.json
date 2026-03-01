@@ -165,5 +165,13 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "directPerks": {
+    "heading": "Miért foglaljon közvetlenül?",
+    "items": [
+      "Akár 25% kedvezmény",
+      "Ingyenes reggeli",
+      "Ingyenes esti ital"
+    ]
   }
 }

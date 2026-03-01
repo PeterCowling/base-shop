@@ -55,7 +55,10 @@ export function ConsentBanner({ lang }: { lang: string }) {
         <p className="text-sm text-foreground">
           We use analytics cookies to understand how visitors interact with our
           site. See our{" "}
-          <a href={`/${lang}/privacy`} className="underline hover:text-primary">
+          <a
+            href={`/${lang}/privacy`}
+            className="inline-flex min-h-11 min-w-11 items-center underline hover:text-primary"
+          >
             privacy policy
           </a>
           .
@@ -64,14 +67,14 @@ export function ConsentBanner({ lang }: { lang: string }) {
           <button
             type="button"
             onClick={handleDecline}
-            className="rounded border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-surface-2"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-surface-2"
           >
             Decline
           </button>
           <button
             type="button"
             onClick={handleAccept}
-            className="rounded bg-primary px-4 py-2 text-sm font-medium text-primary-fg hover:bg-primary-hover"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded bg-primary px-4 py-2 text-sm font-medium text-primary-fg hover:bg-primary-hover"
           >
             Accept
           </button>

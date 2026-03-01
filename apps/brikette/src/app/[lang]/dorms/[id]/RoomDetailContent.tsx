@@ -2,367 +2,50 @@
 
 // src/app/[lang]/dorms/[id]/RoomDetailContent.tsx
 // Client component for room detail page (uses useTranslation hooks)
-/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Feature section labels use hardcoded English; translation follow-on deferred. */
-import {
-  type ComponentProps,
-  type ComponentPropsWithoutRef,
-  Fragment,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { Fragment, useCallback, useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { TFunction } from "i18next";
 
-import { DirectBookingPerks } from "@acme/ui/molecules";
 import StickyBookNow, { type StickyBookNowClickContext } from "@acme/ui/organisms/StickyBookNow";
 
-import type { DateRange } from "@/components/booking/DateRangePicker";
-import { DateRangePicker } from "@/components/booking/DateRangePicker";
-import LocationInline from "@/components/booking/LocationInline";
 import SocialProofSection from "@/components/landing/SocialProofSection";
-import FacilityIcon from "@/components/rooms/FacilityIcon";
+import {
+  BookingPickerSection,
+  RoomDetailBookingNotices,
+  RoomDetailRecoverySection,
+} from "@/components/rooms/detail/RoomDetailBookingSections";
+import {
+  AmenitiesSection,
+  coerceToContent,
+  FeatureSection,
+  type HeroContent,
+  HeroSection,
+  type OutlineContent,
+  OutlineSection,
+  resolveAmenitiesSection,
+  resolveCopy,
+  RoomDetailDescription,
+  RoomDetailGuidesSection,
+} from "@/components/rooms/detail/RoomDetailSections";
 import RoomCard from "@/components/rooms/RoomCard";
 import RoomStructuredData from "@/components/seo/RoomStructuredData";
 import { BOOKING_CODE } from "@/context/modal/constants";
-import roomsData, { type RoomFeatures, type RoomId } from "@/data/roomsData";
-import { useAvailabilityForRoom } from "@/hooks/useAvailabilityForRoom";
+import roomsData, { type RoomId } from "@/data/roomsData";
 import { usePagePreload } from "@/hooks/usePagePreload";
+import { useRoomDetailBookingState } from "@/hooks/useRoomDetailBookingState";
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
-import { guideHref } from "@/routes.guides-helpers";
-import {
-  getMinCheckoutForStay,
-  HOSTEL_MAX_PAX,
-  HOSTEL_MIN_PAX,
-  isValidPax,
-  isValidStayRange,
-} from "@/utils/bookingDateRules";
 import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
-import { formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
-import { buildRoomItem, fireViewItem } from "@/utils/ga4-events";
+import { createBrikClickId, fireViewItem } from "@/utils/ga4-events";
 import { trackThenNavigate } from "@/utils/trackThenNavigate";
-import { getGuideLinkLabel } from "@/utils/translationFallbacks";
 
 type Props = {
   lang: AppLanguage;
   id: RoomId;
 };
 
-type HeroContent = {
-  eyebrow?: string;
-  title?: string;
-  subtitle?: string;
-  bullets?: string[];
-};
-
-type OutlineContent = {
-  heading?: string;
-  items?: { title?: string; body?: string }[];
-};
-
-type AmenityContent = { title?: string; body?: string };
-
-type GridAsDivProps = ComponentPropsWithoutRef<"div"> & { as?: "div" };
-type GridAsUlProps = ComponentPropsWithoutRef<"ul"> & { as: "ul" };
-type GridProps = GridAsDivProps | GridAsUlProps;
-
-function resolveCopy(value: unknown, key: string, fallback = ""): string {
-  if (typeof value !== "string") return fallback;
-  const trimmed = value.trim();
-  if (!trimmed) return fallback;
-  if (trimmed === key) return fallback;
-  if (/^[a-z0-9_]+(?:\.[a-z0-9_]+)+$/u.test(trimmed)) return fallback;
-  if (/^[A-Z0-9_]+(?:\.[A-Z0-9_]+)+$/u.test(trimmed)) return fallback;
-  return trimmed;
-}
-
-function Grid(props: GridProps) {
-  if (props.as === "ul") {
-    const { as: _ignore, ...rest } = props;
-    return <ul {...rest} />;
-  }
-  const { as: _ignore, ...rest } = props;
-  return <div {...rest} />;
-}
-
-const Section = ({ children, ...rest }: ComponentProps<"section">) => (
-  <section {...rest}>{children}</section>
-);
-
-function HeroSection({ hero }: { hero: HeroContent | null }) {
-  if (!hero || !(hero.eyebrow || hero.title || hero.subtitle || hero.bullets?.length)) {
-    return null;
-  }
-
-  return (
-    <Section className="mx-auto mt-6 max-w-3xl px-4 text-brand-heading dark:text-brand-surface">
-      {hero.eyebrow ? (
-        <p className="text-sm font-semibold uppercase tracking-widest text-brand-primary dark:text-brand-secondary">
-          {hero.eyebrow}
-        </p>
-      ) : null}
-      {hero.title ? (
-        <p className="mt-3 text-3xl font-extrabold text-brand-primary dark:text-brand-secondary">
-          {hero.title}
-        </p>
-      ) : null}
-      {hero.subtitle ? (
-        <p className="mt-2 text-lg text-brand-text dark:text-brand-surface/90">{hero.subtitle}</p>
-      ) : null}
-      {hero.bullets?.length ? (
-        <Grid as="ul" className="mt-5 grid gap-3 sm:grid-cols-2">
-          {hero.bullets.map((bullet, idx) => (
-            <li
-              key={`${bullet}-${idx}`}
-              className="rounded-lg border border-brand-surface/60 bg-brand-bg/80 p-4 text-sm font-medium text-brand-text shadow-sm backdrop-blur dark:border-brand-surface/20 dark:bg-brand-surface dark:text-brand-text"
-            >
-              {bullet}
-            </li>
-          ))}
-        </Grid>
-      ) : null}
-    </Section>
-  );
-}
-
-function OutlineSection({ outline }: { outline: OutlineContent | null }) {
-  if (!outline || !(outline.heading || outline.items?.length)) {
-    return null;
-  }
-
-  return (
-    <Section className="mx-auto mt-8 max-w-3xl px-4">
-      {outline.heading ? (
-        <h2 className="text-lg font-semibold text-brand-heading dark:text-brand-surface">
-          {outline.heading}
-        </h2>
-      ) : null}
-      <div className="mt-4 space-y-4">
-        {outline.items?.map((item, idx) => (
-          <article
-            key={`${item.title ?? "outline"}-${idx}`}
-            className="rounded-lg border border-brand-surface/60 bg-brand-bg p-4 shadow-sm dark:border-brand-surface/20 dark:bg-brand-surface"
-          >
-            {item.title ? (
-              <h3 className="text-base font-semibold text-brand-heading dark:text-brand-secondary">
-                {item.title}
-              </h3>
-            ) : null}
-            {item.body ? (
-              <p className="mt-2 text-sm leading-relaxed text-brand-text dark:text-brand-text/80">
-                {item.body}
-              </p>
-            ) : null}
-          </article>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-function AmenitiesSection({
-  shouldRender,
-  heading,
-  intro,
-  blurbs,
-}: {
-  shouldRender: boolean;
-  heading: string;
-  intro: string;
-  blurbs: AmenityContent[];
-}) {
-  if (!shouldRender) {
-    return null;
-  }
-
-  return (
-    <Section className="mx-auto mt-8 max-w-3xl px-4">
-      {heading ? (
-        <h2 className="text-lg font-semibold text-brand-heading dark:text-brand-surface">
-          {heading}
-        </h2>
-      ) : null}
-      {intro ? (
-        <p className="mt-2 text-sm text-brand-text/80 dark:text-brand-surface/80">{intro}</p>
-      ) : null}
-      {blurbs.length ? (
-        <Grid className="mt-4 grid gap-4 md:grid-cols-2">
-          {blurbs.map((item, idx) => (
-            <div
-              key={`${item.title ?? "amenity"}-${idx}`}
-              className="rounded-lg border border-brand-surface/60 bg-brand-bg p-4 shadow-sm dark:border-brand-surface/20 dark:bg-brand-surface"
-            >
-              {item.title ? (
-                <h3 className="text-base font-semibold text-brand-heading dark:text-brand-secondary">
-                  {item.title}
-                </h3>
-              ) : null}
-              {item.body ? (
-                <p className="mt-2 text-sm leading-relaxed text-brand-text dark:text-brand-text/80">
-                  {item.body}
-                </p>
-              ) : null}
-            </div>
-          ))}
-        </Grid>
-      ) : null}
-    </Section>
-  );
-}
-
-export function FeatureSection({ features }: { features: RoomFeatures | undefined }) {
-  if (!features) return null;
-
-  return (
-    <Section className="mx-auto mt-6 max-w-3xl px-4">
-      <dl className="space-y-2">
-        <div className="flex items-start gap-2 text-sm text-brand-text dark:text-brand-surface/90">
-          <dt className="w-28 shrink-0 font-medium">Beds</dt>
-          <dd>{features.bedSpec}</dd>
-        </div>
-        <div className="flex items-start gap-2 text-sm text-brand-text dark:text-brand-surface/90">
-          <dt className="w-28 shrink-0 font-medium">Bathroom</dt>
-          <dd>{features.bathroomSpec}</dd>
-        </div>
-        {features.viewSpec ? (
-          <div className="flex items-start gap-2 text-sm text-brand-text dark:text-brand-surface/90">
-            <dt className="w-28 shrink-0 font-medium">View</dt>
-            <dd>{features.viewSpec}</dd>
-          </div>
-        ) : null}
-        {features.terracePresent ? (
-          <div className="flex items-center gap-2 text-sm text-brand-text dark:text-brand-surface/90">
-            <dt className="w-28 shrink-0 font-medium">Terrace</dt>
-            <dd>Private terrace</dd>
-          </div>
-        ) : null}
-        {features.inRoomLockers ? (
-          <div className="flex items-center gap-2 text-sm text-brand-text dark:text-brand-surface/90">
-            <dt className="w-28 shrink-0 font-medium">Lockers</dt>
-            <dd className="flex items-center gap-1">
-              <FacilityIcon facility="locker" />
-              In-room lockers
-            </dd>
-          </div>
-        ) : null}
-      </dl>
-    </Section>
-  );
-}
-
-type BookingQuery = {
-  checkIn: string;
-  checkOut: string;
-  adults: number;
-  queryState: "valid" | "invalid" | "absent";
-};
-
-function parseBookingQuery(
-  searchParams: { get: (key: string) => string | null } | null,
-  todayIso: string,
-): BookingQuery {
-  const checkInParam = searchParams?.get("checkin");
-  const hasCheckInParam = Boolean(checkInParam);
-  const checkIn = checkInParam && getMinCheckoutForStay(checkInParam) ? checkInParam : todayIso;
-  const checkOutRaw = searchParams?.get("checkout") ?? getDatePlusTwoDays(checkIn);
-  const checkOut = checkOutRaw;
-  const adultsRaw = parseInt(searchParams?.get("pax") ?? "", 10);
-  const adults = Number.isFinite(adultsRaw) && adultsRaw > 0 ? adultsRaw : 1;
-  const isValid =
-    hasCheckInParam && checkIn >= todayIso && isValidStayRange(checkIn, checkOut) && isValidPax(adults);
-  const isInvalid = hasCheckInParam && !isValid;
-  const queryState: "valid" | "invalid" | "absent" = isValid ? "valid" : isInvalid ? "invalid" : "absent";
-  return { checkIn, checkOut, adults, queryState };
-}
-
-function coerceToContent<T>(raw: unknown): T | null {
-  return raw && typeof raw === "object" && !Array.isArray(raw) ? (raw as T) : null;
-}
-
-function resolveAmenitiesSection(
-  amenityRaw: unknown,
-  heading: string,
-  intro: string,
-): { blurbs: AmenityContent[]; shouldRender: boolean } {
-  const isArray = Array.isArray(amenityRaw);
-  const blurbs = isArray ? (amenityRaw as AmenityContent[]) : [];
-  const hasFallback = !isArray && Boolean(amenityRaw) && Boolean(heading || intro);
-  return { blurbs, shouldRender: blurbs.length > 0 || hasFallback };
-}
-
-type BookingPickerSectionProps = {
-  datePickerRef: React.RefObject<HTMLDivElement | null>;
-  range: DateRange;
-  onRangeChange: (r: DateRange | undefined) => void;
-  stayHelperText: string;
-  clearDatesText: string;
-  checkInLabelText: string;
-  checkOutLabelText: string;
-  adultsLabel: string;
-  pickerAdults: number;
-  maxPickerAdults: number;
-  onAdultsChange: (n: number) => void;
-};
-
-function BookingPickerSection({
-  datePickerRef,
-  range,
-  onRangeChange,
-  stayHelperText,
-  clearDatesText,
-  checkInLabelText,
-  checkOutLabelText,
-  adultsLabel,
-  pickerAdults,
-  maxPickerAdults,
-  onAdultsChange,
-}: BookingPickerSectionProps) {
-  return (
-    <Section className="mx-auto mt-6 max-w-3xl px-4">
-      <div ref={datePickerRef}>
-        <DateRangePicker
-          selected={range}
-          onRangeChange={onRangeChange}
-          stayHelperText={stayHelperText}
-          clearDatesText={clearDatesText}
-          checkInLabelText={checkInLabelText}
-          checkOutLabelText={checkOutLabelText}
-        />
-        <div className="mt-4 flex flex-col gap-1">
-          <label className="text-sm text-brand-text dark:text-brand-surface/80">{adultsLabel}</label>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              aria-label="Decrease adults"
-              onClick={() => onAdultsChange(Math.max(HOSTEL_MIN_PAX, pickerAdults - 1))}
-              disabled={pickerAdults <= HOSTEL_MIN_PAX}
-              className="min-h-11 min-w-11 rounded border border-brand-outline/40 text-brand-primary disabled:opacity-40 dark:border-brand-secondary/35 dark:text-brand-secondary"
-            >
-              -
-            </button>
-            <span className="w-6 text-center text-sm text-brand-text dark:text-brand-surface/80">
-              {pickerAdults}
-            </span>
-            <button
-              type="button"
-              aria-label="Increase adults"
-              onClick={() => onAdultsChange(Math.min(maxPickerAdults, pickerAdults + 1))}
-              disabled={pickerAdults >= maxPickerAdults}
-              className="min-h-11 min-w-11 rounded border border-brand-outline/40 text-brand-primary disabled:opacity-40 dark:border-brand-secondary/35 dark:text-brand-secondary"
-            >
-              +
-            </button>
-          </div>
-        </div>
-      </div>
-    </Section>
-  );
-}
+export { FeatureSection };
 
 export default function RoomDetailContent({ lang, id }: Props) {
   const router = useRouter();
@@ -378,17 +61,20 @@ export default function RoomDetailContent({ lang, id }: Props) {
   });
   const searchParams = useSearchParams();
   const room = roomsData.find((r) => r.id === id)!;
-  const todayIso = getTodayIso();
-  const { checkIn, checkOut, adults, queryState } = parseBookingQuery(searchParams, todayIso);
-  const [range, setRange] = useState<DateRange>({
-    from: safeParseIso(checkIn),
-    to: safeParseIso(checkOut),
-  });
-  const [pickerAdults, setPickerAdults] = useState(adults);
-  const pickerCheckIn = range.from ? formatDate(range.from) : checkIn;
-  const pickerCheckOut = range.to ? formatDate(range.to) : checkOut;
+  const {
+    range,
+    queryState,
+    pickerAdults,
+    maxPickerAdults,
+    pickerCheckIn,
+    pickerCheckOut,
+    indicativeAnchor,
+    availabilityRoom,
+    showRebuildQuotePrompt,
+    handleRangeChange,
+    handleAdultsChange,
+  } = useRoomDetailBookingState(searchParams, router.replace, room, id);
   const datePickerRef = useRef<HTMLDivElement>(null);
-  const maxPickerAdults = Math.min(HOSTEL_MAX_PAX, room.occupancy ?? HOSTEL_MAX_PAX);
   const roomTitleKey = `rooms.${id}.title`;
   const bedDescriptionKey = `rooms.${id}.bed_description`;
 
@@ -413,17 +99,24 @@ export default function RoomDetailContent({ lang, id }: Props) {
 
   const onStickyCheckoutClick = useCallback(
     (ctx: StickyBookNowClickContext) => {
-      // TC-03: fire begin_checkout with room item context, then proceed via trackThenNavigate
       trackThenNavigate(
-        "begin_checkout",
+        "handoff_to_engine",
         {
-          source: "sticky_cta",
-          items: [buildRoomItem({ roomSku: room.sku, itemName: title })],
+          handoff_mode: "same_tab",
+          engine_endpoint: "result",
+          checkin: ctx.checkin,
+          checkout: ctx.checkout,
+          pax: ctx.pax,
+          rate_plan: "nr",
+          room_id: room.sku,
+          source_route: `/${lang}/dorms/${id}`,
+          cta_location: "room_detail_sticky_cta",
+          brik_click_id: createBrikClickId(),
         },
         ctx.proceed,
       );
     },
-    [room.sku, title],
+    [id, lang, room.sku],
   );
   const stickyOctorateUrlResult = useMemo(
     () =>
@@ -444,64 +137,6 @@ export default function RoomDetailContent({ lang, id }: Props) {
   useEffect(() => {
     fireViewItem({ itemId: room.sku, itemName: title });
   }, [room.sku, title]);
-
-  // Seed booking params once when landing without explicit checkin query.
-  useEffect(() => {
-    const hasExistingParams = Boolean(searchParams?.get("checkin"));
-    if (hasExistingParams) {
-      return;
-    }
-    const defaultCheckIn = todayIso;
-    const defaultCheckOut = getDatePlusTwoDays(todayIso);
-    const params = new URLSearchParams(searchParams?.toString() ?? "");
-    params.set("checkin", defaultCheckIn);
-    params.set("checkout", defaultCheckOut);
-    params.set("pax", String(HOSTEL_MIN_PAX));
-    router.replace(`?${params.toString()}`, { scroll: false });
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- LINT-1008 [ttl=2026-12-31] Mount-only effect intentionally omits deps to seed defaults once; re-running would clobber user changes.
-  }, []);
-
-  useEffect(() => {
-    setRange({
-      from: safeParseIso(checkIn),
-      to: safeParseIso(checkOut),
-    });
-    setPickerAdults(adults);
-  }, [checkIn, checkOut, adults]);
-
-  const handleRangeChange = useCallback(
-    (newRange: DateRange | undefined) => {
-      setRange(newRange ?? { from: undefined, to: undefined });
-      const newCheckin = newRange?.from ? formatDate(newRange.from) : "";
-      const newCheckout = newRange?.to ? formatDate(newRange.to) : "";
-      if (!newCheckin || !newCheckout) return;
-      const params = new URLSearchParams(searchParams?.toString() ?? "");
-      params.set("checkin", newCheckin);
-      params.set("checkout", newCheckout);
-      params.set("pax", String(pickerAdults));
-      router.replace(`?${params.toString()}`, { scroll: false });
-    },
-    [pickerAdults, router, searchParams],
-  );
-
-  const handleAdultsChange = useCallback(
-    (newAdults: number) => {
-      setPickerAdults(newAdults);
-      const params = new URLSearchParams(searchParams?.toString() ?? "");
-      if (pickerCheckIn) params.set("checkin", pickerCheckIn);
-      if (pickerCheckOut) params.set("checkout", pickerCheckOut);
-      params.set("pax", String(newAdults));
-      router.replace(`?${params.toString()}`, { scroll: false });
-    },
-    [pickerCheckIn, pickerCheckOut, router, searchParams],
-  );
-
-  const { availabilityRoom } = useAvailabilityForRoom({
-    room,
-    checkIn: pickerCheckIn,
-    checkOut: pickerCheckOut,
-    adults: pickerAdults,
-  });
 
   return (
     <Fragment>
@@ -527,6 +162,11 @@ export default function RoomDetailContent({ lang, id }: Props) {
         maxPickerAdults={maxPickerAdults}
         onAdultsChange={handleAdultsChange}
       />
+      <RoomDetailBookingNotices
+        queryState={queryState}
+        indicativeAnchor={indicativeAnchor}
+        showRebuildQuotePrompt={showRebuildQuotePrompt}
+      />
 
       <RoomCard
         room={room}
@@ -539,18 +179,31 @@ export default function RoomDetailContent({ lang, id }: Props) {
         availabilityRoom={availabilityRoom}
       />
 
-      <Section className="mx-auto max-w-3xl px-4">
-        <p className="mt-6 text-base leading-relaxed">
-          {resolveCopy(t(bedDescriptionKey), bedDescriptionKey)}
-        </p>
-        <div className="mt-4">
-          <DirectBookingPerks lang={lang} />
-          <LocationInline lang={lang} />
-        </div>
-      </Section>
+      <RoomDetailRecoverySection
+        lang={lang}
+        roomId={id}
+        roomSku={room.sku}
+        queryState={queryState}
+        checkin={pickerCheckIn}
+        checkout={pickerCheckOut}
+        pax={pickerAdults}
+      />
 
-      <FeatureSection features={room.features} />
+      <RoomDetailDescription
+        description={resolveCopy(t(bedDescriptionKey), bedDescriptionKey)}
+        lang={lang}
+      />
 
+      <FeatureSection
+        features={room.features}
+        bedsLabel={t("feature.beds") as string}
+        bathroomLabel={t("feature.bathroom") as string}
+        viewLabel={t("feature.view") as string}
+        terraceLabel={t("feature.terrace") as string}
+        lockersLabel={t("feature.lockers") as string}
+        privateTerraceLabel={t("feature.privateTerrace") as string}
+        inRoomLockersLabel={t("feature.inRoomLockers") as string}
+      />
       <OutlineSection outline={outline} />
 
       <AmenitiesSection
@@ -560,22 +213,7 @@ export default function RoomDetailContent({ lang, id }: Props) {
         blurbs={amenityBlurbs}
       />
 
-      <Section className="mx-auto mt-8 max-w-3xl px-4">
-        <h2 className="mb-3 text-lg font-semibold text-brand-heading dark:text-brand-surface">
-          {tGuides("labels.helpfulGuides")}
-        </h2>
-        <Grid as="ul" className="grid gap-3 sm:grid-cols-2">
-          <li>
-            <Link
-              href={guideHref(lang, "reachBudget")}
-              prefetch={true}
-              className="block rounded-lg border border-brand-outline/40 bg-brand-bg px-4 py-3 text-brand-primary underline-offset-4 hover:underline dark:border-brand-secondary/35 dark:bg-brand-surface dark:text-brand-text dark:hover:text-brand-secondary"
-            >
-              {getGuideLinkLabel(tGuides, guidesEnT, "reachBudget")}
-            </Link>
-          </li>
-        </Grid>
-      </Section>
+      <RoomDetailGuidesSection lang={lang} tGuides={tGuides} guidesEnT={guidesEnT} />
 
       {/* Spacer so the sticky CTA doesn't cover footer content on small screens */}
       <div className="h-20 sm:hidden" aria-hidden />

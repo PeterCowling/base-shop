@@ -309,5 +309,31 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "このホステルのルートは、JavaScript が無効の場合に予約アシストを使用します。",
+    "contactAssistedBooking": "予約サポートについてはお問い合わせください"
+  },
+  "bookingConstraints": {
+    "notice": "ホステルの予約は大人のみで、予約ごとに大人 8 名までの 2 ～ 8 泊の滞在がサポートされます。リクエストがこれらの制限を超えている場合は、複数の予約に分割するか、",
+    "assistedLink": "予約サポートについてはお問い合わせください",
+    "absentWithAnchor": "1 泊あたり {{price}} (目安)。ライブ料金を確認するには日付を選択してください。",
+    "absentNoRates": "料金は一時的にご利用いただけません。ライブの空き状況を確認するには日付を選択してください。"
+  },
+  "bookingControls": {
+    "decreaseAdults": "成人を減らす",
+    "increaseAdults": "大人を増やす"
+  },
+  "recovery": {
+    "roomTitle": "後で決める必要がありますか?この部屋の見積もりを自分に送信してください。"
+  },
+  "feature": {
+    "beds": "ベッド",
+    "bathroom": "バスルーム",
+    "view": "ビュー",
+    "terrace": "テラス",
+    "lockers": "ロッカー",
+    "privateTerrace": "プライベートテラス",
+    "inRoomLockers": "室内ロッカー"
   }
 }

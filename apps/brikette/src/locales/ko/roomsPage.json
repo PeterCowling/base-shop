@@ -309,5 +309,31 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "이 호스텔 경로는 JavaScript가 비활성화된 경우 예약 지원을 사용합니다.",
+    "contactAssistedBooking": "예약 지원을 위해 저희에게 연락하세요"
+  },
+  "bookingConstraints": {
+    "notice": "호스텔 예약은 성인 전용이며, 예약당 최대 성인 8명이 2~8박 숙박을 지원합니다. 요청이 해당 한도를 벗어나는 경우 여러 예약으로 분할하거나",
+    "assistedLink": "예약 지원을 위해 저희에게 연락하세요",
+    "absentWithAnchor": "1박당 {{price}}(표시). 날짜를 선택하시면 실시간 요금을 보실 수 있습니다.",
+    "absentNoRates": "일시적으로 요금을 이용할 수 없습니다. 실시간 이용 가능 여부를 확인하려면 날짜를 선택하세요."
+  },
+  "bookingControls": {
+    "decreaseAdults": "성인 감소",
+    "increaseAdults": "성인 증가"
+  },
+  "recovery": {
+    "roomTitle": "나중에 결정해야 합니까? 이 객실 견적을 자신에게 보내십시오."
+  },
+  "feature": {
+    "beds": "침대",
+    "bathroom": "화장실",
+    "view": "보다",
+    "terrace": "테라스",
+    "lockers": "사물함",
+    "privateTerrace": "전용 테라스",
+    "inRoomLockers": "객실 내 사물함"
   }
 }

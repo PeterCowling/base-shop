@@ -309,5 +309,31 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "يستخدم مسار بيت الشباب هذا الحجز المساعد عند تعطيل JavaScript.",
+    "contactAssistedBooking": "اتصل بنا للمساعدة في الحجز"
+  },
+  "bookingConstraints": {
+    "notice": "حجوزات بيوت الشباب مخصصة للبالغين فقط وإقامات الدعم لمدة تتراوح بين ليلتين و8 ليالٍ مع ما يصل إلى 8 أشخاص بالغين لكل حجز. إذا كان طلبك خارج هذه الحدود، فقم بتقسيمه إلى حجوزات متعددة أو",
+    "assistedLink": "اتصل بنا للمساعدة في الحجز",
+    "absentWithAnchor": "{{price}} في الليلة (إرشادية). حدد التواريخ لمعرفة الأسعار المباشرة.",
+    "absentNoRates": "الأسعار غير متاحة مؤقتًا. حدد التواريخ للتحقق من التوفر المباشر."
+  },
+  "bookingControls": {
+    "decreaseAdults": "تقليل البالغين",
+    "increaseAdults": "زيادة الكبار"
+  },
+  "recovery": {
+    "roomTitle": "هل تحتاج إلى اتخاذ القرار لاحقًا؟ أرسل لنفسك اقتباس الغرفة هذا."
+  },
+  "feature": {
+    "beds": "سرير",
+    "bathroom": "حمام",
+    "view": "منظر",
+    "terrace": "تراس",
+    "lockers": "خزائن",
+    "privateTerrace": "تراس خاص",
+    "inRoomLockers": "خزائن داخل الغرفة"
   }
 }

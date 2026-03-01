@@ -309,5 +309,31 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "当 JavaScript 被禁用时，此旅舍路线将使用辅助预订。",
+    "contactAssistedBooking": "联系我们获取协助预订"
+  },
+  "bookingConstraints": {
+    "notice": "青年旅舍预订仅限成人入住，支持住宿 2 至 8 晚，每次预订最多可入住 8 名成人。如果您的请求超出了这些限制，请将其分成多个预订或",
+    "assistedLink": "联系我们获取协助预订",
+    "absentWithAnchor": "每晚 {{price}}（指示性）。选择日期查看实时汇率。",
+    "absentNoRates": "价格暂时无法提供。选择日期以检查实时可用性。"
+  },
+  "bookingControls": {
+    "decreaseAdults": "减少成人",
+    "increaseAdults": "增加成人"
+  },
+  "recovery": {
+    "roomTitle": "需要稍后再决定吗？向自己发送此房间报价。"
+  },
+  "feature": {
+    "beds": "床位",
+    "bathroom": "浴室",
+    "view": "看法",
+    "terrace": "阳台",
+    "lockers": "储物柜",
+    "privateTerrace": "私人露台",
+    "inRoomLockers": "室内储物柜"
   }
 }

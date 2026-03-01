@@ -928,5 +928,9 @@
   },
   "galleries": {
     "defaultAlt": "Hình ảnh hướng dẫn"
+  },
+  "loadingFallback": {
+    "intro": "Đang tải bản sao kế hoạch tuyến đường. Trong thời gian chờ đợi, hãy sử dụng các hướng dẫn lộ trình sau:",
+    "routeLabelFallback": "Hướng dẫn lộ trình"
   }
 }

@@ -309,5 +309,31 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Diese Hostelroute nutzt die unterstützte Buchung, wenn JavaScript deaktiviert ist.",
+    "contactAssistedBooking": "Kontaktieren Sie uns für eine unterstützte Buchung"
+  },
+  "bookingConstraints": {
+    "notice": "Hostelbuchungen gelten nur für Erwachsene und unterstützen Aufenthalte zwischen 2 und 8 Nächten mit bis zu 8 Erwachsenen pro Buchung. Wenn Ihre Anfrage außerhalb dieser Grenzen liegt, teilen Sie sie auf mehrere Buchungen auf oder",
+    "assistedLink": "Kontaktieren Sie uns für eine unterstützte Buchung",
+    "absentWithAnchor": "{{price}} pro Nacht (Richtwert). Wählen Sie Daten aus, um Live-Preise anzuzeigen.",
+    "absentNoRates": "Preise vorübergehend nicht verfügbar. Wählen Sie Daten aus, um die Live-Verfügbarkeit zu überprüfen."
+  },
+  "bookingControls": {
+    "decreaseAdults": "Erwachsene reduzieren",
+    "increaseAdults": "Erhöhen Sie die Anzahl der Erwachsenen"
+  },
+  "recovery": {
+    "roomTitle": "Müssen Sie sich später entscheiden? Senden Sie sich dieses Raumangebot."
+  },
+  "feature": {
+    "beds": "Betten",
+    "bathroom": "Badezimmer",
+    "view": "Sicht",
+    "terrace": "Terrasse",
+    "lockers": "Schließfächer",
+    "privateTerrace": "Private Terrasse",
+    "inRoomLockers": "Schließfächer im Zimmer"
   }
 }

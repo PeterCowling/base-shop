@@ -928,5 +928,9 @@
     "titleFallback": "Изображение",
     "openAria": "Открыть изображение",
     "openAriaWithCaption": "Открыть изображение: {{caption}}"
+  },
+  "loadingFallback": {
+    "intro": "Копия планировщика маршрута загружается. А пока воспользуйтесь этими путеводителями:",
+    "routeLabelFallback": "Путеводитель"
   }
 }

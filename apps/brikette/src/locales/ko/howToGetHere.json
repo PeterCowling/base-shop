@@ -928,5 +928,9 @@
     "titleFallback": "이미지",
     "openAria": "이미지 열기",
     "openAriaWithCaption": "이미지 열기: {{caption}}"
+  },
+  "loadingFallback": {
+    "intro": "경로 플래너 사본을 로드하는 중입니다. 그동안 다음 경로 안내를 사용하세요.",
+    "routeLabelFallback": "노선안내"
   }
 }

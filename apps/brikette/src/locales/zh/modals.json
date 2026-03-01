@@ -165,5 +165,13 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "directPerks": {
+    "heading": "为什么直接预订？",
+    "items": [
+      "最高优惠25%",
+      "免费早餐",
+      "免费晚间饮品"
+    ]
   }
 }

@@ -52,5 +52,43 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "当 JavaScript 被禁用时，旅馆预订将在辅助支持下处理。",
+    "emailAssistedBooking": "给我们发电子邮件以协助预订"
+  },
+  "bookingConstraints": {
+    "notice": "旅馆预订支持仅限成人入住 2 至 8 晚，每次预订最多可入住 8 名成人。对于较大的团体或较长的住宿，请将您的请求分摊到多个预订中，或",
+    "assistedLink": "联系我们获取协助预订"
+  },
+  "expiredQuote": {
+    "message": "此报价链接已过期。使用新日期重建您的报价以继续。"
+  },
+  "recovery": {
+    "title": "需要更多时间吗？通过电子邮件将此报价发送给自己并稍后继续。",
+    "privacyNotice": "我们仅保留预订上下文和同意元数据。恢复链接将在 7 天后过期。",
+    "emailLabel": "您的电子邮件",
+    "emailPlaceholder": "你@example.com",
+    "consent": "我同意通过电子邮件接收此报价，并了解该报价将在 7 天后过期。",
+    "submitted": "电子邮件草稿已打开。您可以发送它来保存此报价。",
+    "submitCta": "通过电子邮件将此报价发送给我",
+    "errors": {
+      "invalidEmail": "输入有效的电子邮件地址。",
+      "consentRequired": "发送报价电子邮件需要获得同意。"
+    },
+    "mailto": {
+      "subject": "报价恢复请求",
+      "bodyIntro": "请将此报价和后续提醒发送给我。",
+      "labels": {
+        "guestEmail": "访客电子邮件",
+        "checkIn": "报到",
+        "checkOut": "查看",
+        "guests": "嘉宾",
+        "sourceRoute": "来源路线",
+        "room": "房间",
+        "ratePlan": "费率计划",
+        "resumeLink": "简历链接"
+      }
+    }
   }
 }

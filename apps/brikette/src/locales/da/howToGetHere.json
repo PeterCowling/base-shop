@@ -928,5 +928,9 @@
     "titleFallback": "Billede",
     "openAria": "Åbn billede",
     "openAriaWithCaption": "Åbn billede: {{caption}}"
+  },
+  "loadingFallback": {
+    "intro": "Ruteplanlægger-kopi indlæses. I mellemtiden kan du bruge disse rutevejledninger:",
+    "routeLabelFallback": "Ruteguide"
   }
 }

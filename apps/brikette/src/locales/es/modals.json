@@ -165,5 +165,13 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "directPerks": {
+    "heading": "¿Por qué reservar directamente?",
+    "items": [
+      "Hasta un 25 % de descuento",
+      "Desayuno de cortesía",
+      "Bebida de la tarde de cortesía"
+    ]
   }
 }

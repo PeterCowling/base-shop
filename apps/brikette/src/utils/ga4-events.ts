@@ -409,7 +409,9 @@ export function fireViewItem(params: { itemId: string; itemName?: string }): voi
 
 // ─── handoff_to_engine instrumentation (TASK-05A) ───────────────────────────
 // Canonical event emitted at every Octorate handoff click point.
-// Required params: handoff_mode, engine_endpoint, checkin, checkout, pax.
+// Required params:
+// handoff_mode, engine_endpoint, checkin, checkout, pax,
+// rate_plan, room_id, source_route, cta_location, brik_click_id.
 
 export type HandoffMode = "new_tab" | "same_tab";
 export type EngineEndpoint = "calendar" | "result" | "confirm";
@@ -420,7 +422,19 @@ export interface HandoffToEngineParams {
   checkin: string;
   checkout: string;
   pax: number;
-  source?: string;
+  rate_plan: "nr" | "flex";
+  room_id: string;
+  source_route: string;
+  cta_location: string;
+  brik_click_id: string;
+}
+
+export interface RecoveryProxySignalParams {
+  signal_type: "handoff" | "lead_capture";
+  source_route: string;
+  room_id?: string;
+  rate_plan?: "nr" | "flex";
+  recovery_channel?: "email";
 }
 
 // Per-click dedupe: prevents double-fire within 300ms (TC-02).
@@ -428,6 +442,13 @@ let _lastHandoffTs = 0;
 
 export function resetHandoffDedupe(): void {
   _lastHandoffTs = 0;
+}
+
+export function createBrikClickId(): string {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return `brik_${crypto.randomUUID()}`;
+  }
+  return `brik_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
 }
 
 /**
@@ -448,8 +469,18 @@ export function fireHandoffToEngine(params: HandoffToEngineParams): void {
     checkin: params.checkin,
     checkout: params.checkout,
     pax: params.pax,
+    rate_plan: params.rate_plan,
+    room_id: params.room_id,
+    source_route: params.source_route,
+    cta_location: params.cta_location,
+    brik_click_id: params.brik_click_id,
     transport_type: "beacon",
-    ...(params.source ? { source: params.source } : null),
+  });
+  fireRecoveryProxySignal({
+    signal_type: "handoff",
+    source_route: params.source_route,
+    room_id: params.room_id,
+    rate_plan: params.rate_plan,
   });
 }
 
@@ -475,10 +506,59 @@ export function fireHandoffToEngineAndNavigate(
       checkin: params.checkin,
       checkout: params.checkout,
       pax: params.pax,
-      ...(params.source ? { source: params.source } : null),
+      rate_plan: params.rate_plan,
+      room_id: params.room_id,
+      source_route: params.source_route,
+      cta_location: params.cta_location,
+      brik_click_id: params.brik_click_id,
     },
     onNavigate: params.onNavigate,
     timeoutMs: params.timeoutMs,
+  });
+  fireRecoveryProxySignal({
+    signal_type: "handoff",
+    source_route: params.source_route,
+    room_id: params.room_id,
+    rate_plan: params.rate_plan,
+  });
+}
+
+export function fireRecoveryProxySignal(params: RecoveryProxySignalParams): void {
+  const gtag = getGtag();
+  if (!gtag) return;
+  gtag("event", "recovery_proxy_signal", {
+    signal_type: params.signal_type,
+    source_route: params.source_route,
+    ...(params.room_id ? { room_id: params.room_id } : null),
+    ...(params.rate_plan ? { rate_plan: params.rate_plan } : null),
+    ...(params.recovery_channel ? { recovery_channel: params.recovery_channel } : null),
+  });
+}
+
+export function fireRecoveryLeadCapture(params: {
+  source_route: string;
+  room_id?: string;
+  rate_plan?: "nr" | "flex";
+  recovery_channel: "email";
+  consent_version: string;
+  resume_ttl_days: number;
+}): void {
+  const gtag = getGtag();
+  if (!gtag) return;
+  gtag("event", "recovery_lead_capture", {
+    source_route: params.source_route,
+    ...(params.room_id ? { room_id: params.room_id } : null),
+    ...(params.rate_plan ? { rate_plan: params.rate_plan } : null),
+    recovery_channel: params.recovery_channel,
+    consent_version: params.consent_version,
+    resume_ttl_days: params.resume_ttl_days,
+  });
+  fireRecoveryProxySignal({
+    signal_type: "lead_capture",
+    source_route: params.source_route,
+    room_id: params.room_id,
+    rate_plan: params.rate_plan,
+    recovery_channel: params.recovery_channel,
   });
 }
 

@@ -928,5 +928,9 @@
     "titleFallback": "صورة",
     "openAria": "فتح الصورة",
     "openAriaWithCaption": "فتح الصورة: {{caption}}"
+  },
+  "loadingFallback": {
+    "intro": "جارٍ تحميل نسخة مخطط الطريق. في هذه الأثناء، استخدم أدلة الطريق التالية:",
+    "routeLabelFallback": "دليل الطريق"
   }
 }

@@ -76,7 +76,7 @@ export const SafeReconcileForm = memo(function SafeReconcileForm({
         <Button
           onClick={onCancel}
           aria-label="Close"
-          className="absolute right-2 top-2 h-6 w-6 rounded-full bg-surface-2 border border-border-strong text-muted-foreground hover:bg-surface-3 flex items-center justify-center text-xs"
+          className="absolute right-2 top-2 h-6 w-6 rounded-full bg-surface-2 border border-border-strong text-muted-foreground hover:bg-surface-3 text-xs"
         >
           ✕
         </Button>

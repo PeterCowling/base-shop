@@ -56,5 +56,43 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Hostelbuchungen werden mit unterstütztem Support abgewickelt, wenn JavaScript deaktiviert ist.",
+    "emailAssistedBooking": "Senden Sie uns eine E-Mail für eine unterstützte Buchung"
+  },
+  "bookingConstraints": {
+    "notice": "Bei Hostelbuchungen sind Aufenthalte nur für Erwachsene zwischen 2 und 8 Nächten mit bis zu 8 Erwachsenen pro Buchung möglich. Für größere Gruppen oder längere Aufenthalte teilen Sie Ihre Anfrage auf mehrere Buchungen auf oder",
+    "assistedLink": "Kontaktieren Sie uns für eine unterstützte Buchung"
+  },
+  "expiredQuote": {
+    "message": "Dieser Angebotslink ist abgelaufen. Erstellen Sie Ihr Angebot mit neuen Daten neu, um fortzufahren."
+  },
+  "recovery": {
+    "title": "Brauchen Sie mehr Zeit? Schicken Sie sich dieses Zitat per E-Mail und machen Sie es später noch einmal.",
+    "privacyNotice": "Wir buchen weiterhin nur Kontext- und Einwilligungsmetadaten. Lebenslauf-Links verfallen nach 7 Tagen.",
+    "emailLabel": "Ihre E-Mail",
+    "emailPlaceholder": "you@example.com",
+    "consent": "Ich bin damit einverstanden, dieses Angebot per E-Mail zu erhalten und verstehe, dass es nach 7 Tagen abläuft.",
+    "submitted": "E-Mail-Entwurf geöffnet. Sie können es senden, um dieses Angebot zu speichern.",
+    "submitCta": "Schicken Sie mir dieses Zitat per E-Mail",
+    "errors": {
+      "invalidEmail": "Geben Sie eine gültige E-Mail-Adresse ein.",
+      "consentRequired": "Für den Versand der Angebots-E-Mail ist die Einwilligung erforderlich."
+    },
+    "mailto": {
+      "subject": "Anfrage zur Angebotswiederherstellung",
+      "bodyIntro": "Bitte senden Sie mir dieses Angebot und eine Erinnerung zur Nachverfolgung.",
+      "labels": {
+        "guestEmail": "Gast-E-Mail",
+        "checkIn": "Einchecken",
+        "checkOut": "Kasse",
+        "guests": "Gäste",
+        "sourceRoute": "Quellroute",
+        "room": "Zimmer",
+        "ratePlan": "Tarifplan",
+        "resumeLink": "Link zum Lebenslauf"
+      }
+    }
   }
 }

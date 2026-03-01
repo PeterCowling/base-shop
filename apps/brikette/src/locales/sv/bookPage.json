@@ -52,5 +52,43 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Vandrarhemsbokningar hanteras med assisterad support när JavaScript är inaktiverat.",
+    "emailAssistedBooking": "Maila oss för assisterad bokning"
+  },
+  "bookingConstraints": {
+    "notice": "Vandrarhemsbokningar stöder vistelser endast för vuxna mellan 2 och 8 nätter med upp till 8 vuxna per bokning. För större grupper eller längre vistelser, dela din förfrågan på flera bokningar eller",
+    "assistedLink": "kontakta oss för assisterad bokning"
+  },
+  "expiredQuote": {
+    "message": "Denna offertlänk har upphört att gälla. Bygg om din offert med nya datum för att fortsätta."
+  },
+  "recovery": {
+    "title": "Behöver du mer tid? Maila dig själv detta citat och fortsätt senare.",
+    "privacyNotice": "Vi behåller endast bokningskontext och samtyckesmetadata. Länkar till CV upphör att gälla efter 7 dagar.",
+    "emailLabel": "Din e-post",
+    "emailPlaceholder": "du@exempel.com",
+    "consent": "Jag samtycker till att ta emot denna offert via e-post och förstår att den löper ut efter 7 dagar.",
+    "submitted": "E-postutkast öppnat. Du kan skicka den för att spara den här offerten.",
+    "submitCta": "Maila mig detta citat",
+    "errors": {
+      "invalidEmail": "Ange en giltig e-postadress.",
+      "consentRequired": "Samtycke krävs för att skicka offertmejlet."
+    },
+    "mailto": {
+      "subject": "Begäran om återställning av offert",
+      "bodyIntro": "Skicka mig denna offert och en uppföljningspåminnelse.",
+      "labels": {
+        "guestEmail": "Gästmail",
+        "checkIn": "Incheckning",
+        "checkOut": "Kassa",
+        "guests": "Gäster",
+        "sourceRoute": "Källväg",
+        "room": "Rum",
+        "ratePlan": "Prisplan",
+        "resumeLink": "Återuppta länk"
+      }
+    }
   }
 }

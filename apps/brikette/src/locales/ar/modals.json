@@ -165,5 +165,13 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "directPerks": {
+    "heading": "لماذا تحجز مباشرة؟",
+    "items": [
+      "خصم يصل إلى 25٪",
+      "إفطار مجاني",
+      "مشروب مسائي مجاني"
+    ]
   }
 }

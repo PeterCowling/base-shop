@@ -66,6 +66,22 @@ Determine planning mode early:
 
 - Slug or fact-find path -> open matching plan/fact-find paths directly.
 
+### Optional CASS Retrieval (Pilot, recommended)
+
+Before task decomposition, run CASS retrieval for similar prior plans and blockers:
+
+```bash
+pnpm startup-loop:cass-retrieve -- --mode plan --slug <feature-slug> --topic "<topic>"
+```
+
+Use output file (if generated) as advisory context:
+- `docs/plans/<feature-slug>/artifacts/cass-context.md`
+
+Rules:
+- Retrieval is **fail-open**. If CASS is unavailable, continue planning.
+- Keep plan confidence grounded in directly verified evidence.
+- Any reused pattern from retrieval must still cite concrete repo paths in the plan.
+
 ### Discovery path (no argument)
 
 - Scan `docs/plans/*/fact-find.md` files for entries with `Status: Ready-for-planning`.

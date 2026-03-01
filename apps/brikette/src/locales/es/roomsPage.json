@@ -309,5 +309,31 @@
     "stayHelper": "2–8 nights",
     "clearDates": "Clear dates",
     "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Esta ruta de albergue utiliza reserva asistida cuando JavaScript está deshabilitado.",
+    "contactAssistedBooking": "Contáctenos para reserva asistida"
+  },
+  "bookingConstraints": {
+    "notice": "Las reservas de albergue son solo para adultos y admiten estancias de entre 2 y 8 noches con hasta 8 adultos por reserva. Si su solicitud está fuera de esos límites, divídala en varias reservas o",
+    "assistedLink": "contáctenos para reserva asistida",
+    "absentWithAnchor": "{{price}} por noche (orientativo). Seleccione fechas para ver tarifas en vivo.",
+    "absentNoRates": "Tarifas no disponibles temporalmente. Seleccione fechas para verificar la disponibilidad en vivo."
+  },
+  "bookingControls": {
+    "decreaseAdults": "Disminución adultos",
+    "increaseAdults": "aumentar adultos"
+  },
+  "recovery": {
+    "roomTitle": "¿Necesitas decidir más tarde? Envíate esta cotización de habitación."
+  },
+  "feature": {
+    "beds": "Camas",
+    "bathroom": "Baño",
+    "view": "Vista",
+    "terrace": "Terraza",
+    "lockers": "Taquillas",
+    "privateTerrace": "Terraza privada",
+    "inRoomLockers": "Lockers en la habitación"
   }
 }

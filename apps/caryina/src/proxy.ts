@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 import { ADMIN_COOKIE_NAME, verifyAdminSession } from "@/lib/adminAuth";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Public admin paths — pass through without auth check.

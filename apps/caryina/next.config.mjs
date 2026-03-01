@@ -9,6 +9,7 @@ const __dirname = path.dirname(__filename);
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   ...sharedConfig,
+  allowedDevOrigins: ["localhost", "127.0.0.1"],
   turbopack: {
     ...(sharedConfig.turbopack ?? {}),
     resolveAlias: {

@@ -15,8 +15,9 @@ const COOKIE_ATTRS = "SameSite=Lax; Path=/; Max-Age=31536000";
 function hasCookieSet(): boolean {
   if (typeof document === "undefined") return false;
   return document.cookie
-    .split("; ")
-    .some((c) => c.startsWith(`${COOKIE_NAME}=`));
+    .split(";")
+    .map((chunk) => chunk.trim())
+    .some((chunk) => chunk.startsWith(`${COOKIE_NAME}=`));
 }
 
 function writeConsentCookie(value: "true" | "false"): void {

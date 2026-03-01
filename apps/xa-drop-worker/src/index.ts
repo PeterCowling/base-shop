@@ -12,6 +12,8 @@ export interface Env {
   CATALOG_MAX_BYTES?: string;
   UPLOAD_ALLOWED_ORIGINS?: string;
   UPLOAD_TOKEN_MAX_TTL_SECONDS?: string;
+  UPLOAD_ALLOW_URL_TOKENS?: string;
+  CATALOG_ALLOW_QUERY_TOKEN?: string;
 }
 
 type VerifiedToken = {
@@ -259,29 +261,37 @@ function bearerTokenFrom(header: string | null): string {
   return rest.join(" ").trim();
 }
 
-function resolveUploadToken(request: Request, url: URL, pathToken: string): string {
+function resolveUploadToken(request: Request): string {
   const headerToken = request.headers.get("x-xa-upload-token")?.trim();
   if (headerToken) return headerToken;
 
   const authToken = bearerTokenFrom(request.headers.get("authorization"));
   if (authToken) return authToken;
 
-  const queryToken = url.searchParams.get("token")?.trim();
-  if (queryToken) return queryToken;
-
-  const decodedPathToken = decodePathSegment(pathToken).trim();
-  return decodedPathToken;
+  return "";
 }
 
-function resolveCatalogToken(request: Request, url: URL): string {
+function allowUploadUrlTokens(env: Env): boolean {
+  return (env.UPLOAD_ALLOW_URL_TOKENS ?? "").trim() === "1";
+}
+
+function resolveUploadTokenLegacy(url: URL, pathToken: string): string {
+  const queryToken = url.searchParams.get("token")?.trim();
+  if (queryToken) return queryToken;
+  return decodePathSegment(pathToken).trim();
+}
+
+function resolveCatalogToken(request: Request, url: URL, env: Env): string {
   const headerToken = request.headers.get("x-xa-catalog-token")?.trim();
   if (headerToken) return headerToken;
 
   const authToken = bearerTokenFrom(request.headers.get("authorization"));
   if (authToken) return authToken;
 
-  const queryToken = url.searchParams.get("token")?.trim();
-  if (queryToken) return queryToken;
+  if ((env.CATALOG_ALLOW_QUERY_TOKEN ?? "").trim() === "1") {
+    const queryToken = url.searchParams.get("token")?.trim();
+    if (queryToken) return queryToken;
+  }
 
   return "";
 }
@@ -359,7 +369,7 @@ async function requireCatalogWriteToken(
     return json({ ok: false }, 503);
   }
 
-  const providedToken = resolveCatalogToken(request, url);
+  const providedToken = resolveCatalogToken(request, url, env);
   if (!providedToken || !constantTimeEqual(providedToken, expectedToken)) {
     return json({ ok: false }, 401);
   }
@@ -373,7 +383,7 @@ async function requireCatalogReadToken(
 ): Promise<Response | string> {
   const expectedReadToken = (env.CATALOG_READ_TOKEN ?? "").trim();
   if (expectedReadToken) {
-    const providedToken = resolveCatalogToken(request, url);
+    const providedToken = resolveCatalogToken(request, url, env);
     if (!providedToken || !constantTimeEqual(providedToken, expectedReadToken)) {
       return json({ ok: false }, 401);
     }
@@ -736,7 +746,7 @@ async function handleCatalogRead(
 ): Promise<Response> {
   const expectedReadToken = (env.CATALOG_READ_TOKEN ?? "").trim();
   if (expectedReadToken) {
-    const provided = resolveCatalogToken(request, url);
+    const provided = resolveCatalogToken(request, url, env);
     if (!provided || !constantTimeEqual(provided, expectedReadToken)) {
       return json({ ok: false }, 401);
     }
@@ -829,7 +839,10 @@ async function routeRequest(params: {
     if (isCorsDenied(requestHasOrigin, allowedCorsOrigin)) {
       return json({ ok: false }, 403);
     }
-    const token = resolveUploadToken(request, url, route.pathToken);
+    let token = resolveUploadToken(request);
+    if (!token && allowUploadUrlTokens(env)) {
+      token = resolveUploadTokenLegacy(url, route.pathToken);
+    }
     if (!token) return json({ ok: false }, 401);
     return await handleUpload(request, env, token);
   }

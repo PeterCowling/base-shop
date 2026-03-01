@@ -70,7 +70,11 @@ describe("xa-drop-worker", () => {
   it("rejects invalid tokens", async () => {
     const bucket = { head: jest.fn(), put: jest.fn() } as unknown as R2Bucket;
     const res = await handler.fetch(
-      new Request("https://drop.example/upload/invalid", { method: "PUT", body: new Uint8Array([1, 2, 3]) }),
+      new Request("https://drop.example/upload", {
+        method: "PUT",
+        headers: { "X-XA-Upload-Token": "invalid" },
+        body: new Uint8Array([1, 2, 3]),
+      }),
       { SUBMISSIONS_BUCKET: bucket, UPLOAD_TOKEN_SECRET: secret },
     );
     expect(res.status).toBe(401);
@@ -85,9 +89,13 @@ describe("xa-drop-worker", () => {
     const body = new Blob([new Uint8Array([1, 2, 3])], { type: "application/zip" });
 
     const res = await handler.fetch(
-      new Request(`https://drop.example/upload/${token}`, {
+      new Request("https://drop.example/upload", {
         method: "PUT",
-        headers: { "Content-Type": "application/zip", "Content-Length": "3" },
+        headers: {
+          "Content-Type": "application/zip",
+          "Content-Length": "3",
+          "X-XA-Upload-Token": token,
+        },
         body,
       }),
       { SUBMISSIONS_BUCKET: bucket, UPLOAD_TOKEN_SECRET: secret, R2_PREFIX: "submissions/" },
@@ -123,6 +131,25 @@ describe("xa-drop-worker", () => {
     expect((bucket as any).put).toHaveBeenCalledTimes(1);
   });
 
+  it("rejects url path tokens by default when legacy mode is disabled", async () => {
+    const token = makeToken(secret, { nonce: "nonce-path-default-deny" });
+    const bucket = {
+      put: jest.fn().mockResolvedValue({ key: "ok" }),
+    } as unknown as R2Bucket;
+
+    const res = await handler.fetch(
+      new Request(`https://drop.example/upload/${token}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/zip", "Content-Length": "3" },
+        body: new Uint8Array([1, 2, 3]),
+      }),
+      { SUBMISSIONS_BUCKET: bucket, UPLOAD_TOKEN_SECRET: secret, R2_PREFIX: "submissions/" },
+    );
+
+    expect(res.status).toBe(401);
+    expect((bucket as any).put).not.toHaveBeenCalled();
+  });
+
   it("rejects overwriting an existing key", async () => {
     const token = makeToken(secret, { nonce: "nonce123" });
     const bucket = {
@@ -130,9 +157,13 @@ describe("xa-drop-worker", () => {
     } as unknown as R2Bucket;
 
     const res = await handler.fetch(
-      new Request(`https://drop.example/upload/${token}`, {
+      new Request("https://drop.example/upload", {
         method: "PUT",
-        headers: { "Content-Type": "application/zip", "Content-Length": "3" },
+        headers: {
+          "Content-Type": "application/zip",
+          "Content-Length": "3",
+          "X-XA-Upload-Token": token,
+        },
         body: new Uint8Array([1, 2, 3]),
       }),
       { SUBMISSIONS_BUCKET: bucket, UPLOAD_TOKEN_SECRET: secret, R2_PREFIX: "submissions/" },
@@ -253,9 +284,13 @@ describe("xa-drop-worker", () => {
     const bucket = { put: jest.fn().mockResolvedValue({ key: "ok" }) } as unknown as R2Bucket;
 
     const res = await handler.fetch(
-      new Request(`https://drop.example/upload/`, {
+      new Request("https://drop.example/upload", {
         method: "PUT",
-        headers: { "Content-Type": "application/zip", "Content-Length": "3" },
+        headers: {
+          "Content-Type": "application/zip",
+          "Content-Length": "3",
+          "X-XA-Upload-Token": token,
+        },
         body: new Uint8Array([1, 2, 3]),
       }),
       {
@@ -267,6 +302,30 @@ describe("xa-drop-worker", () => {
 
     expect(res.status).toBe(401);
     expect((bucket as any).put).not.toHaveBeenCalled();
+  });
+
+  it("supports legacy url token uploads only when explicitly enabled", async () => {
+    const token = makeToken(secret, { nonce: "nonce-legacy-url-token" });
+    const bucket = {
+      put: jest.fn().mockResolvedValue({ key: "ok" }),
+    } as unknown as R2Bucket;
+
+    const res = await handler.fetch(
+      new Request(`https://drop.example/upload/${token}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/zip", "Content-Length": "3" },
+        body: new Uint8Array([1, 2, 3]),
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        UPLOAD_TOKEN_SECRET: secret,
+        R2_PREFIX: "submissions/",
+        UPLOAD_ALLOW_URL_TOKENS: "1",
+      },
+    );
+
+    expect(res.status).toBe(201);
+    expect((bucket as any).put).toHaveBeenCalledTimes(1);
   });
 
   it("enforces free-tier ttl cap even if env attempts a larger token ttl", async () => {

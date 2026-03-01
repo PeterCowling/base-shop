@@ -28,6 +28,11 @@ jest.mock("@/components/apartment/FitCheck", () => ({
 jest.mock("@/utils/dateUtils", () => ({
   getTodayIso: () => "2026-03-01",
   getDatePlusTwoDays: () => "2026-03-04",
+  safeParseIso: (iso: string) => {
+    if (!iso) return undefined;
+    const [y, m, d] = iso.split("-").map(Number);
+    return new Date(y, m - 1, d);
+  },
 }));
 
 jest.mock("next/navigation", () => ({

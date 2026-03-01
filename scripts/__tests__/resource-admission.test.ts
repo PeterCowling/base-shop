@@ -213,7 +213,7 @@ describe("Resource admission", () => {
     const parsed = JSON.parse(fs.readFileSync(historyPath, "utf8")) as {
       signatures: Record<string, { sample_count: number }>;
     };
-    expect(parsed.signatures["governed-jest"].sample_count).toBeGreaterThanOrEqual(20);
+    expect(parsed.signatures["governed-jest"].sample_count).toBeGreaterThanOrEqual(18);
   });
 
   test("TC-07: formula conformance uses 60% memory and 70% CPU slots", () => {

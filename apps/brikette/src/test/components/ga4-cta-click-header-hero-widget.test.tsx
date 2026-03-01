@@ -138,7 +138,7 @@ describe("GA4 cta_click coverage (GA4-cta-click)", () => {
     render(
       <>
         <HomeContent lang="en" />
-        <div data-testid="standalone-booking-widget">
+        <div data-cy="standalone-booking-widget">
           <BookingWidget lang="en" />
         </div>
       </>,

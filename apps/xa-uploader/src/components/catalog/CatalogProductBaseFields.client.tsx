@@ -176,6 +176,7 @@ export function CatalogProductBaseFields({
           >
             <option value="women">{t("departmentWomen")}</option>
             <option value="men">{t("departmentMen")}</option>
+            <option value="kids">{t("departmentKids")}</option>
           </select>
         </label>
 

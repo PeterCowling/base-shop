@@ -22,6 +22,7 @@ describe("xaCatalog", () => {
   it("checks configured category/department allow-lists", () => {
     expect(isCategoryAllowed("bags")).toBe(true);
     expect(isDepartmentAllowed("women")).toBe(true);
+    expect(isDepartmentAllowed("kids")).toBe(true);
     expect(isCategoryAllowed("clothing")).toBe(false);
     expect(isCategoryAllowed("invalid" as any)).toBe(false);
     expect(isDepartmentAllowed("invalid" as any)).toBe(false);

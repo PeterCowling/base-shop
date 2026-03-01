@@ -107,6 +107,12 @@ function renderHarness() {
         >
           set-upload-url
         </button>
+        <button
+          type="button"
+          onClick={() => state.setSubmissionUploadUrl("ftp://upload.local/path-token")}
+        >
+          set-invalid-upload-url
+        </button>
         <button type="button" onClick={() => void state.handleExportSubmission()}>
           export
         </button>
@@ -427,5 +433,37 @@ describe("useCatalogConsole domain behavior", () => {
     await clickButton("sync");
     expect(syncPostCalls).toBe(0);
     expect(screen.getByTestId("sync-feedback")).toHaveTextContent("");
+  });
+
+  it("TC-06: upload reports invalid_upload_url when upload endpoint format is invalid", async () => {
+    fetchSubmissionZipMock.mockResolvedValueOnce({
+      blob: new Blob(["zip"]),
+      filename: "submission.invalid-url.zip",
+      submissionId: "sub-invalid-url",
+      r2Key: "submissions/sub-invalid-url.zip",
+    });
+
+    global.fetch = jest.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
+      if (url.startsWith("/api/catalog/products?storefront=")) {
+        return jsonResponse({ ok: true, products: [], revisionsById: {} });
+      }
+      if (url.startsWith("/api/catalog/sync?storefront=")) {
+        return jsonResponse({ ok: true, ready: true, missingScripts: [] });
+      }
+      throw new Error(`Unhandled fetch: ${url}`);
+    }) as unknown as typeof fetch;
+
+    renderHarness();
+    await clickButton("toggle-slug-1");
+    await clickButton("set-invalid-upload-url");
+    await clickButton("upload");
+
+    await waitFor(() => {
+      expect(screen.getByTestId("submission-feedback")).toHaveTextContent(
+        "error:Upload link format is invalid.",
+      );
+    });
   });
 });

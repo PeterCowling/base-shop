@@ -8,6 +8,9 @@ import { __clearRateLimitStoreForTests } from "../../../../../lib/rateLimit";
 const spawnMock = jest.fn();
 const accessMock = jest.fn();
 const mkdirMock = jest.fn();
+const readFileMock = jest.fn();
+const writeFileMock = jest.fn();
+const renameMock = jest.fn();
 const hasUploaderSessionMock = jest.fn();
 const getCatalogSyncInputStatusMock = jest.fn();
 const publishCatalogArtifactsToContractMock = jest.fn();
@@ -22,6 +25,9 @@ jest.mock("node:fs/promises", () => ({
   default: {
     access: (...args: unknown[]) => accessMock(...args),
     mkdir: (...args: unknown[]) => mkdirMock(...args),
+    readFile: (...args: unknown[]) => readFileMock(...args),
+    writeFile: (...args: unknown[]) => writeFileMock(...args),
+    rename: (...args: unknown[]) => renameMock(...args),
   },
 }));
 
@@ -75,6 +81,9 @@ describe("catalog sync route", () => {
     __clearRateLimitStoreForTests();
     hasUploaderSessionMock.mockResolvedValue(true);
     mkdirMock.mockResolvedValue(undefined);
+    readFileMock.mockResolvedValue('{"EUR":0.92,"GBP":0.78,"AUD":1.5}');
+    writeFileMock.mockResolvedValue(undefined);
+    renameMock.mockResolvedValue(undefined);
     getCatalogSyncInputStatusMock.mockResolvedValue({ exists: true, rowCount: 1 });
     publishCatalogArtifactsToContractMock.mockResolvedValue({
       version: "v-test",
@@ -178,8 +187,35 @@ describe("catalog sync route", () => {
     );
   });
 
-  it("TC-00c: blocks empty catalog input unless explicitly confirmed", async () => {
+
+  it("TC-00c: blocks missing catalog input without confirmation override", async () => {
     getCatalogSyncInputStatusMock.mockResolvedValue({ exists: false, rowCount: 0 });
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          storefront: "xa-b",
+          options: { strict: true, recursive: true },
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({
+        ok: false,
+        error: "catalog_input_missing",
+        recovery: "create_catalog_input",
+      }),
+    );
+    expect(spawnMock).not.toHaveBeenCalled();
+  });
+
+  it("TC-00c2: blocks empty existing CSV unless explicitly confirmed", async () => {
+    getCatalogSyncInputStatusMock.mockResolvedValue({ exists: true, rowCount: 0 });
 
     const { POST } = await import("../route");
     const response = await POST(
@@ -228,6 +264,7 @@ describe("catalog sync route", () => {
     expect(spawnMock).toHaveBeenCalledTimes(2);
     expect(publishCatalogArtifactsToContractMock).toHaveBeenCalledTimes(1);
   });
+
 
   it("TC-01: returns deterministic dependency error when required scripts are missing", async () => {
     accessMock
@@ -384,6 +421,7 @@ describe("catalog sync route", () => {
     );
   });
 
+
   it("TC-06: reports catalog_publish_unconfigured when contract settings are missing", async () => {
     accessMock.mockResolvedValue(undefined);
     spawnMock
@@ -414,5 +452,59 @@ describe("catalog sync route", () => {
         recovery: "configure_catalog_contract",
       }),
     );
+  });
+
+
+  it("TC-07: blocks sync when currency rates file is missing", async () => {
+    const missingRates = Object.assign(new Error("missing"), { code: "ENOENT" });
+    readFileMock.mockRejectedValueOnce(missingRates);
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          storefront: "xa-b",
+          options: { strict: true, recursive: true },
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({
+        ok: false,
+        error: "currency_rates_missing",
+        recovery: "save_currency_rates",
+      }),
+    );
+    expect(spawnMock).not.toHaveBeenCalled();
+  });
+
+  it("TC-08: blocks sync when currency rates file is invalid", async () => {
+    readFileMock.mockResolvedValueOnce('{"EUR":"n/a","GBP":0.78,"AUD":1.5}');
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          storefront: "xa-b",
+          options: { strict: true, recursive: true },
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({
+        ok: false,
+        error: "currency_rates_invalid",
+        recovery: "save_currency_rates",
+      }),
+    );
+    expect(spawnMock).not.toHaveBeenCalled();
   });
 });

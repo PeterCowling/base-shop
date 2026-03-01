@@ -1,4 +1,4 @@
-export type XaDepartment = "women" | "men";
+export type XaDepartment = "women" | "men" | "kids";
 export type XaCategory = "clothing" | "bags" | "jewelry";
 
 export type XaProductTaxonomy = {

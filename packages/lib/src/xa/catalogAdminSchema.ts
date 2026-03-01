@@ -26,7 +26,7 @@ export function slugify(input: string): string {
     .toLowerCase();
 }
 
-const departmentSchema = z.enum(["women", "men"]) satisfies z.ZodType<XaDepartment>;
+const departmentSchema = z.enum(["women", "men", "kids"]) satisfies z.ZodType<XaDepartment>;
 const categorySchema = z.enum(["clothing", "bags", "jewelry"]) satisfies z.ZodType<XaCategory>;
 
 const numberField = (label: string, options?: { min?: number; integer?: boolean }) => {

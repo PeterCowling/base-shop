@@ -39,6 +39,8 @@ const messages = {
     apiErrorNotFound: "The product no longer exists. Refresh and retry.",
     apiErrorConflict: "This product changed elsewhere. Refresh and save again.",
     apiErrorInternal: "The server could not complete this request. Try again.",
+    apiErrorInvalidUploadUrl:
+      "Upload link format is invalid. Use a full https:// URL (or /upload/<token> endpoint) and retry.",
     validationTitleRequired: "Title is required.",
     validationBrandHandleRequired: "Brand handle is required.",
     validationCollectionRequired: "Collection handle or title is required.",
@@ -59,12 +61,22 @@ const messages = {
     syncDependencyValidate: "input validator",
     syncDependencyPipeline: "sync pipeline runner",
     syncRecoveryRestoreScripts: "Restore the missing scripts in scripts/src/xa, then retry sync.",
+    syncCatalogInputMissingActionable:
+      "Catalog CSV file is missing. Sync is blocked to prevent accidental storefront wipes.",
+    syncRecoveryCreateCatalogInput:
+      "Create or restore the products CSV in apps/xa-uploader/data, then retry sync.",
     syncCatalogInputEmptyActionable:
-      "Catalog CSV is missing or empty. Sync would publish zero products.",
+      "Catalog CSV is empty. Sync would publish zero products.",
     syncRecoveryConfirmEmptyCatalogSync:
       "Confirm only if an empty storefront publish is intentional.",
+    syncCurrencyRatesMissingActionable:
+      "Currency rates are missing. Sync is blocked to avoid 1:1 fallback conversions.",
+    syncCurrencyRatesInvalidActionable:
+      "Currency rates file is invalid. Sync is blocked until valid rates are saved.",
+    syncRecoverySaveCurrencyRates:
+      "Use Currency rates -> Save before running sync.",
     syncConfirmEmptyCatalogSync:
-      "Catalog CSV is missing or empty. Continuing will publish zero products. Continue sync?",
+      "Catalog CSV is empty. Continuing will publish zero products. Continue sync?",
     syncPublishContractUnconfigured:
       "Catalog publish target is not configured for this environment.",
     syncRecoveryConfigureCatalogContract:
@@ -161,6 +173,7 @@ const messages = {
 
     departmentWomen: "Women",
     departmentMen: "Men",
+    departmentKids: "Kids",
     categoryClothing: "Clothing",
     categoryBags: "Bags",
     categoryJewelry: "Jewelry",
@@ -257,6 +270,8 @@ const messages = {
     apiErrorNotFound: "该商品不存在，请刷新后重试。",
     apiErrorConflict: "该商品已被他人修改，请刷新后重新保存。",
     apiErrorInternal: "服务器暂时无法完成请求，请稍后重试。",
+    apiErrorInvalidUploadUrl:
+      "上传链接格式无效。请使用完整的 https:// URL（或 /upload/<token> 端点）后重试。",
     validationTitleRequired: "标题不能为空。",
     validationBrandHandleRequired: "品牌标识不能为空。",
     validationCollectionRequired: "系列标识或系列标题至少填写一项。",
@@ -277,9 +292,14 @@ const messages = {
     syncDependencyValidate: "输入校验脚本",
     syncDependencyPipeline: "同步流水线脚本",
     syncRecoveryRestoreScripts: "请恢复 scripts/src/xa 下缺失的脚本后重试同步。",
-    syncCatalogInputEmptyActionable: "目录 CSV 缺失或为空。继续同步将发布 0 个商品。",
+    syncCatalogInputMissingActionable: "目录 CSV 文件不存在。为避免意外清空店铺，已阻止同步。",
+    syncRecoveryCreateCatalogInput: "请先在 apps/xa-uploader/data 中创建或恢复 products CSV，再重试同步。",
+    syncCatalogInputEmptyActionable: "目录 CSV 为空。继续同步将发布 0 个商品。",
     syncRecoveryConfirmEmptyCatalogSync: "仅在确认需要发布空目录时继续。",
-    syncConfirmEmptyCatalogSync: "目录 CSV 缺失或为空。继续将发布 0 个商品，是否继续同步？",
+    syncCurrencyRatesMissingActionable: "汇率文件缺失。为避免 1:1 默认换算，已阻止同步。",
+    syncCurrencyRatesInvalidActionable: "汇率文件格式无效。请保存有效汇率后再同步。",
+    syncRecoverySaveCurrencyRates: "请先在“汇率设置”中保存汇率，再运行同步。",
+    syncConfirmEmptyCatalogSync: "目录 CSV 为空。继续将发布 0 个商品，是否继续同步？",
     syncPublishContractUnconfigured: "当前环境未配置目录发布目标。",
     syncRecoveryConfigureCatalogContract:
       "请先配置 XA_CATALOG_CONTRACT_BASE_URL 与 XA_CATALOG_CONTRACT_WRITE_TOKEN 后重试。",
@@ -371,6 +391,7 @@ const messages = {
 
     departmentWomen: "女装",
     departmentMen: "男装",
+    departmentKids: "童装",
     categoryClothing: "服装",
     categoryBags: "包袋",
     categoryJewelry: "珠宝",

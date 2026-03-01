@@ -151,26 +151,40 @@ function parseUploadEndpoint(rawUploadUrl: string): {
   token?: string;
 } {
   const trimmed = rawUploadUrl.trim();
-  try {
-    const parsed = new URL(trimmed);
-    const headerToken =
-      parsed.searchParams.get("token")?.trim() || parsed.searchParams.get("uploadToken")?.trim() || "";
-    if (headerToken) {
-      parsed.searchParams.delete("token");
-      parsed.searchParams.delete("uploadToken");
-      return { endpointUrl: parsed.toString(), token: headerToken };
-    }
-
-    const segments = parsed.pathname.split("/").filter(Boolean);
-    if (segments.length === 2 && segments[0] === "upload") {
-      const pathToken = decodeURIComponent(segments[1] ?? "").trim();
-      parsed.pathname = "/upload";
-      return pathToken ? { endpointUrl: parsed.toString(), token: pathToken } : { endpointUrl: parsed.toString() };
-    }
-    return { endpointUrl: parsed.toString() };
-  } catch {
-    return { endpointUrl: trimmed };
+  if (!trimmed) {
+    throw new Error("invalid_upload_url");
   }
+
+  let parsed: URL;
+  try {
+    parsed = new URL(trimmed);
+  } catch {
+    throw new Error("invalid_upload_url");
+  }
+
+  if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+    throw new Error("invalid_upload_url");
+  }
+
+  const headerToken =
+    parsed.searchParams.get("token")?.trim() || parsed.searchParams.get("uploadToken")?.trim() || "";
+  if (headerToken) {
+    parsed.searchParams.delete("token");
+    parsed.searchParams.delete("uploadToken");
+    return { endpointUrl: parsed.toString(), token: headerToken };
+  }
+
+  const segments = parsed.pathname.split("/").filter(Boolean);
+  if (segments.length === 2 && segments[0] === "upload") {
+    const pathToken = decodeURIComponent(segments[1] ?? "").trim();
+    parsed.pathname = "/upload";
+    if (!pathToken) {
+      throw new Error("invalid_upload_url");
+    }
+    return { endpointUrl: parsed.toString(), token: pathToken };
+  }
+
+  return { endpointUrl: parsed.toString() };
 }
 
 export async function handleLoginImpl({

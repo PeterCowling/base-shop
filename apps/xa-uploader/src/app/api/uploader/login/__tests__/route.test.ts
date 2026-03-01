@@ -47,6 +47,20 @@ describe("uploader login route", () => {
     expect(setUploaderCookieMock).not.toHaveBeenCalled();
   });
 
+  it("returns payload_too_large when request body exceeds max bytes", async () => {
+    readJsonBodyWithLimitMock.mockRejectedValueOnce(new PayloadTooLargeErrorMock("too large"));
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/uploader/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      }),
+    );
+
+    expect(response.status).toBe(413);
+    expect(await response.json()).toEqual(expect.objectContaining({ ok: false, error: "payload_too_large" }));
+  });
+
   it("returns missing when token is blank", async () => {
     readJsonBodyWithLimitMock.mockResolvedValueOnce({ token: "   " });
     const { POST } = await import("../route");
@@ -84,6 +98,20 @@ describe("uploader login route", () => {
     );
     expect(issueUploaderSessionMock).not.toHaveBeenCalled();
     expect(setUploaderCookieMock).not.toHaveBeenCalled();
+  });
+
+  it("falls back to invalid when JSON reader throws unknown error", async () => {
+    readJsonBodyWithLimitMock.mockRejectedValueOnce(new Error("unexpected reader failure"));
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/uploader/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      }),
+    );
+
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual(expect.objectContaining({ ok: false, error: "invalid" }));
   });
 
   it("issues session and sets cookie for valid token", async () => {

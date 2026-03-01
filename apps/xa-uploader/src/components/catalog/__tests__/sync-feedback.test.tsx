@@ -48,8 +48,45 @@ describe("sync failure feedback", () => {
       translate,
     );
 
-    expect(message).toContain("missing or empty");
+    expect(message).toContain("CSV is empty");
     expect(message).toContain("empty storefront publish");
+  });
+
+  it("builds actionable localized message for missing catalog CSV guard", () => {
+    const message = getSyncFailureMessage(
+      {
+        ok: false,
+        error: "catalog_input_missing",
+        recovery: "create_catalog_input",
+      },
+      translate,
+    );
+
+    expect(message).toContain("CSV file is missing");
+    expect(message).toContain("Create or restore");
+  });
+
+  it("builds actionable localized message for missing/invalid currency rates", () => {
+    const missing = getSyncFailureMessage(
+      {
+        ok: false,
+        error: "currency_rates_missing",
+        recovery: "save_currency_rates",
+      },
+      translate,
+    );
+    const invalid = getSyncFailureMessage(
+      {
+        ok: false,
+        error: "currency_rates_invalid",
+        recovery: "save_currency_rates",
+      },
+      translate,
+    );
+
+    expect(missing).toContain("Currency rates are missing");
+    expect(missing).toContain("Save");
+    expect(invalid).toContain("file is invalid");
   });
 
   it("builds actionable localized message for catalog publish configuration failures", () => {

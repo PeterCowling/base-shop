@@ -38,6 +38,7 @@ type SyncPayload = {
 };
 
 type SyncScriptId = "validate" | "sync";
+type CurrencyRates = { EUR: number; GBP: number; AUD: number };
 
 type ScriptRunResult = {
   code: number;
@@ -52,6 +53,7 @@ const SYNC_READINESS_WINDOW_MS = 60 * 1000;
 const SYNC_READINESS_MAX_REQUESTS = 30;
 const SYNC_PAYLOAD_MAX_BYTES = 24 * 1024;
 const SYNC_LOG_MAX_BYTES_DEFAULT = 128 * 1024;
+const SYNC_PUBLISH_HISTORY_MAX = 100;
 
 function getValidateTimeoutMs(): number {
   return toPositiveInt(process.env.XA_UPLOADER_SYNC_VALIDATE_TIMEOUT_MS, 45_000, 1);
@@ -263,6 +265,86 @@ function resolveGeneratedArtifactPaths(
   };
 }
 
+function getPublishHistoryPath(uploaderDataDir: string, storefrontId: XaCatalogStorefront): string {
+  return path.join(uploaderDataDir, "publish-history", `${storefrontId}.json`);
+}
+
+function getPublishHistoryMaxEntries(): number {
+  return toPositiveInt(process.env.XA_UPLOADER_PUBLISH_HISTORY_MAX, SYNC_PUBLISH_HISTORY_MAX, 1);
+}
+
+function validateCurrencyRates(value: unknown): value is CurrencyRates {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  const record = value as Record<string, unknown>;
+  const rates = [record.EUR, record.GBP, record.AUD];
+  return rates.every((rate) => typeof rate === "number" && Number.isFinite(rate) && rate > 0);
+}
+
+async function getCurrencyRatesStatus(currencyRatesPath: string): Promise<{
+  ok: true;
+} | {
+  ok: false;
+  reason: "currency_rates_missing" | "currency_rates_invalid";
+}> {
+  try {
+    const raw = await fs.readFile(currencyRatesPath, "utf8");
+    const parsed = JSON.parse(raw) as unknown;
+    if (!validateCurrencyRates(parsed)) {
+      return { ok: false, reason: "currency_rates_invalid" };
+    }
+    return { ok: true };
+  } catch (error) {
+    const err = error as NodeJS.ErrnoException;
+    if (err?.code === "ENOENT") return { ok: false, reason: "currency_rates_missing" };
+    return { ok: false, reason: "currency_rates_invalid" };
+  }
+}
+
+async function recordPublishHistory(params: {
+  historyPath: string;
+  storefrontId: XaCatalogStorefront;
+  catalogOutPath: string;
+  mediaOutPath: string;
+  publishResult: { version?: string; publishedAt?: string };
+}): Promise<void> {
+  const entry = {
+    storefront: params.storefrontId,
+    version: params.publishResult.version,
+    publishedAt: params.publishResult.publishedAt,
+    recordedAt: new Date().toISOString(),
+    catalogOutPath: params.catalogOutPath,
+    mediaOutPath: params.mediaOutPath,
+  };
+  const maxEntries = getPublishHistoryMaxEntries();
+
+  let existing: { entries?: unknown } = {};
+  try {
+    existing = JSON.parse(await fs.readFile(params.historyPath, "utf8")) as { entries?: unknown };
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException)?.code !== "ENOENT") {
+      throw error;
+    }
+  }
+
+  const previousEntries = Array.isArray(existing.entries) ? existing.entries : [];
+  const entries = [...previousEntries, entry].slice(-maxEntries);
+  await fs.mkdir(path.dirname(params.historyPath), { recursive: true });
+  await fs.writeFile(
+    `${params.historyPath}.tmp`,
+    `${JSON.stringify(
+      {
+        storefront: params.storefrontId,
+        updatedAt: new Date().toISOString(),
+        entries,
+      },
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
+  await fs.rename(`${params.historyPath}.tmp`, params.historyPath);
+}
+
 function getPublishErrorDetails(error: unknown): {
   code: string;
   status?: number;
@@ -288,6 +370,7 @@ async function runSyncPipeline(params: {
   const currencyRatesPath = path.join(uploaderDataDir, "currency-rates.json");
   const statePath = path.join(uploaderDataDir, `.xa-upload-state.${storefrontId}.json`);
   const backupDir = path.join(uploaderDataDir, "backups", storefrontId);
+  const publishHistoryPath = getPublishHistoryPath(uploaderDataDir, storefrontId);
   await fs.mkdir(uploaderDataDir, { recursive: true });
   await fs.mkdir(backupDir, { recursive: true });
 
@@ -295,8 +378,23 @@ async function runSyncPipeline(params: {
   await fs.mkdir(path.dirname(catalogOutPath), { recursive: true });
 
   const inputStatus = await getCatalogSyncInputStatus(productsCsvPath);
-  const emptyInput = !inputStatus.exists || inputStatus.rowCount === 0;
-  if (emptyInput && !payload.options.confirmEmptyInput) {
+  if (!inputStatus.exists) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "catalog_input_missing",
+        recovery: "create_catalog_input",
+        input: {
+          exists: false,
+          rowCount: 0,
+          path: productsCsvPath,
+        },
+        durationMs: Date.now() - startedAt,
+      },
+      { status: 409 },
+    );
+  }
+  if (inputStatus.rowCount === 0 && !payload.options.confirmEmptyInput) {
     return NextResponse.json(
       {
         ok: false,
@@ -306,7 +404,22 @@ async function runSyncPipeline(params: {
         input: {
           exists: inputStatus.exists,
           rowCount: inputStatus.rowCount,
+          path: productsCsvPath,
         },
+        durationMs: Date.now() - startedAt,
+      },
+      { status: 409 },
+    );
+  }
+
+  const currencyRatesStatus = await getCurrencyRatesStatus(currencyRatesPath);
+  if ("reason" in currencyRatesStatus) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: currencyRatesStatus.reason,
+        recovery: "save_currency_rates",
+        currencyRatesPath,
         durationMs: Date.now() - startedAt,
       },
       { status: 409 },
@@ -388,6 +501,13 @@ async function runSyncPipeline(params: {
         storefrontId,
         catalogOutPath,
         mediaOutPath,
+      });
+      await recordPublishHistory({
+        historyPath: publishHistoryPath,
+        storefrontId,
+        catalogOutPath,
+        mediaOutPath,
+        publishResult: publishResult ?? {},
       });
     } catch (error) {
       const publishError = getPublishErrorDetails(error);

@@ -39,6 +39,19 @@ describe("catalogProductDraftSchema", () => {
     expect(result.success).toBe(true);
   });
 
+  it("accepts kids as a valid department", () => {
+    const draft = {
+      ...baseDraft(),
+      sizes: "S|M|L",
+      taxonomy: {
+        ...baseDraft().taxonomy,
+        department: "kids" as const,
+      },
+    };
+    const result = catalogProductDraftSchema.safeParse(draft);
+    expect(result.success).toBe(true);
+  });
+
   it("accepts collection_title without collection_handle", () => {
     const draft = {
       ...baseDraft(),
@@ -110,4 +123,3 @@ describe("catalogProductDraftSchema", () => {
     expect(result.success).toBe(false);
   });
 });
-

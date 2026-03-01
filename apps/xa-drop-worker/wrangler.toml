@@ -1,6 +1,7 @@
 name = "xa-drop-worker"
 main = "src/index.ts"
 compatibility_date = "2025-12-26"
+compatibility_flags = ["nodejs_compat"]
 
 [vars]
 # Shared secret used to validate signed upload links.

@@ -1,8 +1,9 @@
 import "@testing-library/jest-dom";
 
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 
 import { canAccess } from "../../../lib/roles";
+import { showToast } from "../../../utils/toastUtils";
 import ManagerAuditContent from "../ManagerAuditContent";
 
 /* eslint-disable no-var */
@@ -42,6 +43,12 @@ jest.mock("../../../lib/roles", () => ({
   canAccess: jest.fn(() => true),
   Permissions: { MANAGEMENT_ACCESS: ["owner"] },
 }));
+
+jest.mock("../../../utils/toastUtils", () => ({
+  showToast: jest.fn(),
+}));
+
+const showToastMock = showToast as unknown as jest.Mock;
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -226,5 +233,153 @@ describe("ManagerAuditContent", () => {
     const stockVarianceSection = screen.getByText("Stock Variance").closest("section")!;
     const dashCells = within(stockVarianceSection).getAllByText("—");
     expect(dashCells.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it('TC-16: staffFilter "bob" with entry.user "alice" shows 0 rows', () => {
+    const now = Date.now();
+    useInventoryItemsMock.mockReturnValue({
+      items: [],
+      itemsById: { "item-1": { id: "item-1", name: "Test Item", unit: "pz" } },
+      loading: false,
+      error: null,
+    });
+    useInventoryLedgerMock.mockReturnValue({
+      entries: [
+        { id: "e-staff", itemId: "item-1", type: "count", quantity: 2, timestamp: now - 1000, user: "alice" },
+      ],
+      loading: false,
+      error: null,
+    });
+
+    render(<ManagerAuditContent />);
+
+    fireEvent.change(screen.getByTestId("variance-staff-filter"), { target: { value: "bob" } });
+
+    const stockVarianceSection = screen.getByText("Stock Variance").closest("section")!;
+    expect(within(stockVarianceSection).queryByText("alice")).not.toBeInTheDocument();
+    expect(screen.getByText("No variance in the selected period")).toBeInTheDocument();
+  });
+
+  it("TC-17: empty staffFilter includes entries with empty user", () => {
+    const now = Date.now();
+    useInventoryItemsMock.mockReturnValue({
+      items: [],
+      itemsById: { "item-1": { id: "item-1", name: "Test Item", unit: "pz" } },
+      loading: false,
+      error: null,
+    });
+    useInventoryLedgerMock.mockReturnValue({
+      entries: [
+        { id: "e-empty-user", itemId: "item-1", type: "count", quantity: 1, timestamp: now - 1000, user: "" },
+      ],
+      loading: false,
+      error: null,
+    });
+
+    render(<ManagerAuditContent />);
+
+    expect(screen.getByText("Test Item")).toBeInTheDocument();
+    expect(screen.getByText("+1")).toBeInTheDocument();
+  });
+
+  it("TC-15: item filter shows one item and resets to all", () => {
+    const now = Date.now();
+    useInventoryItemsMock.mockReturnValue({
+      items: [
+        { id: "item-a", name: "Alfa", unit: "pz" },
+        { id: "item-b", name: "Beta", unit: "pz" },
+      ],
+      itemsById: {
+        "item-a": { id: "item-a", name: "Alfa", unit: "pz" },
+        "item-b": { id: "item-b", name: "Beta", unit: "pz" },
+      },
+      loading: false,
+      error: null,
+    });
+    useInventoryLedgerMock.mockReturnValue({
+      entries: [
+        { id: "e-item-a", itemId: "item-a", type: "count", quantity: 2, timestamp: now - 1000, user: "alice" },
+        { id: "e-item-b", itemId: "item-b", type: "count", quantity: -1, timestamp: now - 2000, user: "bob" },
+      ],
+      loading: false,
+      error: null,
+    });
+
+    render(<ManagerAuditContent />);
+
+    const stockVarianceSection = screen.getByText("Stock Variance").closest("section")!;
+    expect(stockVarianceSection.querySelectorAll("tbody tr")).toHaveLength(2);
+    expect(screen.getByText("Alfa")).toBeInTheDocument();
+    expect(screen.getByText("Beta")).toBeInTheDocument();
+
+    fireEvent.change(screen.getByTestId("variance-item-filter"), { target: { value: "item-a" } });
+
+    expect(stockVarianceSection.querySelectorAll("tbody tr")).toHaveLength(1);
+    expect(screen.getByText("Alfa")).toBeInTheDocument();
+    expect(screen.queryByText("Beta")).not.toBeInTheDocument();
+
+    fireEvent.change(screen.getByTestId("variance-item-filter"), { target: { value: "" } });
+
+    expect(stockVarianceSection.querySelectorAll("tbody tr")).toHaveLength(2);
+    expect(screen.getByText("Alfa")).toBeInTheDocument();
+    expect(screen.getByText("Beta")).toBeInTheDocument();
+  });
+
+  it("TC-18: export button is absent when there are no matching entries", () => {
+    render(<ManagerAuditContent />);
+
+    expect(screen.queryByTestId("variance-export-btn")).not.toBeInTheDocument();
+  });
+
+  it("TC-19: export button is present when there is at least one matching entry", () => {
+    const now = Date.now();
+    useInventoryItemsMock.mockReturnValue({
+      items: [],
+      itemsById: { "item-1": { id: "item-1", name: "Test Item", unit: "pz" } },
+      loading: false,
+      error: null,
+    });
+    useInventoryLedgerMock.mockReturnValue({
+      entries: [
+        { id: "e-export", itemId: "item-1", type: "count", quantity: 1, timestamp: now - 1000, user: "alice" },
+      ],
+      loading: false,
+      error: null,
+    });
+
+    render(<ManagerAuditContent />);
+
+    expect(screen.getByTestId("variance-export-btn")).toBeInTheDocument();
+  });
+
+  it("TC-20: clicking export button calls showToast with success type", () => {
+    const now = Date.now();
+    useInventoryItemsMock.mockReturnValue({
+      items: [],
+      itemsById: { "item-1": { id: "item-1", name: "Test Item", unit: "pz" } },
+      loading: false,
+      error: null,
+    });
+    useInventoryLedgerMock.mockReturnValue({
+      entries: [
+        { id: "e-export-click", itemId: "item-1", type: "count", quantity: 1, timestamp: now - 1000, user: "alice" },
+      ],
+      loading: false,
+      error: null,
+    });
+
+    const createObjectUrlSpy = jest.spyOn(URL, "createObjectURL").mockReturnValue("blob:mock");
+    const revokeObjectUrlSpy = jest.spyOn(URL, "revokeObjectURL").mockImplementation(() => undefined);
+    const clickSpy = jest.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => undefined);
+
+    render(<ManagerAuditContent />);
+
+    fireEvent.click(screen.getByTestId("variance-export-btn"));
+
+    expect(showToastMock).toHaveBeenCalledWith(expect.stringContaining("Exported"), "success");
+
+    createObjectUrlSpy.mockRestore();
+    revokeObjectUrlSpy.mockRestore();
+    clickSpy.mockRestore();
   });
 });

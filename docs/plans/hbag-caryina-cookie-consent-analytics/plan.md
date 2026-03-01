@@ -1,11 +1,11 @@
 ---
 Type: Plan
-Status: Draft
+Status: Active
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-28
 Last-reviewed: 2026-02-28
-Last-updated: 2026-02-28
+Last-updated: 2026-03-01
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: hbag-caryina-cookie-consent-analytics
 Deliverable-Type: code-change
@@ -26,12 +26,12 @@ The Caryina app has a complete analytics pipeline (client gate, server route, mu
 
 ## Active tasks
 
-- [ ] TASK-01: Create ConsentBanner.client.tsx component
-- [ ] TASK-02: Wire ConsentBanner into locale layout
-- [ ] TASK-03: Unit tests for ConsentBanner
-- [ ] TASK-04: Unit tests for analytics event route
-- [ ] TASK-05: Document and wire GA4 settings
-- [ ] TASK-06: Verify/update privacy policy content
+- [x] TASK-01: Create ConsentBanner.client.tsx component — Complete (2026-03-01)
+- [x] TASK-02: Wire ConsentBanner into locale layout — Complete (2026-03-01)
+- [x] TASK-03: Unit tests for ConsentBanner — Complete (2026-03-01)
+- [x] TASK-04: Unit tests for analytics event route — Complete (2026-03-01)
+- [x] TASK-05: Document and wire GA4 settings — Complete (2026-03-01)
+- [x] TASK-06: Verify/update privacy policy content — Complete (2026-03-01)
 
 ## Goals
 
@@ -101,12 +101,12 @@ The Caryina app has a complete analytics pipeline (client gate, server route, mu
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Create ConsentBanner.client.tsx | 85% | S | Pending | - | TASK-02, TASK-03 |
-| TASK-02 | IMPLEMENT | Wire ConsentBanner into locale layout | 90% | S | Pending | TASK-01 | - |
-| TASK-03 | IMPLEMENT | Unit tests for ConsentBanner | 80% | S | Pending | TASK-01 | - |
-| TASK-04 | IMPLEMENT | Unit tests for analytics event route | 75% | S | Pending | - | - |
-| TASK-05 | IMPLEMENT | Document and wire GA4 settings | 75% | S | Pending | - | - |
-| TASK-06 | IMPLEMENT | Verify/update privacy policy content | 70% | S | Pending | - | - |
+| TASK-01 | IMPLEMENT | Create ConsentBanner.client.tsx | 85% | S | Complete (2026-03-01) | - | TASK-02, TASK-03 |
+| TASK-02 | IMPLEMENT | Wire ConsentBanner into locale layout | 90% | S | Complete (2026-03-01) | TASK-01 | - |
+| TASK-03 | IMPLEMENT | Unit tests for ConsentBanner | 80% | S | Complete (2026-03-01) | TASK-01 | - |
+| TASK-04 | IMPLEMENT | Unit tests for analytics event route | 75% | S | Complete (2026-03-01) | - | - |
+| TASK-05 | IMPLEMENT | Document and wire GA4 settings | 75% | S | Complete (2026-03-01) | - | - |
+| TASK-06 | IMPLEMENT | Verify/update privacy policy content | 70% | S | Complete (2026-03-01) | - | - |
 
 ## Parallelism Guide
 
@@ -134,7 +134,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-01)
 - **Affects:** `apps/caryina/src/components/ConsentBanner.client.tsx` (new)
 - **Depends on:** -
 - **Blocks:** TASK-02, TASK-03
@@ -190,7 +190,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-01)
 - **Affects:** `apps/caryina/src/app/[lang]/layout.tsx`, `[readonly] apps/caryina/src/components/ConsentBanner.client.tsx`
 - **Depends on:** TASK-01
 - **Blocks:** -
@@ -236,7 +236,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-01)
 - **Affects:** `apps/caryina/src/components/ConsentBanner.client.test.tsx` (new), `[readonly] apps/caryina/src/components/ConsentBanner.client.tsx`
 - **Depends on:** TASK-01
 - **Blocks:** -
@@ -283,7 +283,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-01)
 - **Affects:** `apps/caryina/src/app/api/analytics/event/route.test.ts` (new), `[readonly] apps/caryina/src/app/api/analytics/event/route.ts`
 - **Depends on:** -
 - **Blocks:** -
@@ -328,7 +328,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-01)
 - **Affects:** `data/shops/caryina/settings.json`, `apps/caryina/NOTES.md`
 - **Depends on:** -
 - **Blocks:** -
@@ -372,7 +372,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-01)
 - **Affects:** `[readonly] data/shops/caryina/site-content.generated.json`, `docs/business-os/startup-baselines/HBAG-content-packet.md` (conditional)
 - **Depends on:** -
 - **Blocks:** -

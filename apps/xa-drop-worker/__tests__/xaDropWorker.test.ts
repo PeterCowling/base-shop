@@ -21,6 +21,7 @@ function makeToken(secret: string, options?: { iat?: number; exp?: number; nonce
   return `${payload}.${sig}`;
 }
 
+// eslint-disable-next-line max-lines-per-function -- XAUP-0102 test matrix intentionally covers route/security combinations in one flow
 describe("xa-drop-worker", () => {
   const secret = "test-xa-drop-upload-secret-32-chars!!";
 
@@ -93,6 +94,48 @@ describe("xa-drop-worker", () => {
       },
     );
     expect(res.status).toBe(200);
+  });
+
+  it("denies catalog reads from non-allowlisted IPs", async () => {
+    const bucket = {
+      get: jest.fn().mockResolvedValue({
+        httpEtag: "etag123",
+        text: jest.fn().mockResolvedValue("{\"ok\":true,\"storefront\":\"xa-b\"}\n"),
+      }),
+    } as unknown as R2Bucket;
+
+    const res = await handler.fetch(
+      new Request("https://drop.example/catalog/xa-b", {
+        method: "GET",
+        headers: { "CF-Connecting-IP": "203.0.113.9" },
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        ALLOWED_IPS: "198.51.100.10",
+      },
+    );
+
+    expect(res.status).toBe(404);
+    expect((bucket as any).get).not.toHaveBeenCalled();
+  });
+
+  it("denies upload preflight from non-allowlisted IPs", async () => {
+    const res = await handler.fetch(
+      new Request("https://drop.example/upload", {
+        method: "OPTIONS",
+        headers: {
+          Origin: "https://uploader.example",
+          "CF-Connecting-IP": "203.0.113.9",
+        },
+      }),
+      {
+        SUBMISSIONS_BUCKET: {} as unknown as R2Bucket,
+        UPLOAD_TOKEN_SECRET: secret,
+        UPLOAD_ALLOWED_ORIGINS: "https://uploader.example",
+        ALLOWED_IPS: "198.51.100.10",
+      },
+    );
+    expect(res.status).toBe(404);
   });
 
   it("rejects invalid tokens", async () => {

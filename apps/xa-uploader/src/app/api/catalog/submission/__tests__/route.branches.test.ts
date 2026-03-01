@@ -73,8 +73,28 @@ describe("catalog submission route branch coverage", () => {
     expect(response.status).toBe(200);
     expect(response.headers.get("Content-Type")).toBe("application/zip");
     expect(response.headers.get("X-XA-Submission-Id")).toBe("sub-1");
-    expect(response.headers.get("X-XA-Submission-R2-Key")).toBe("submissions/sub-1.zip");
+    expect(response.headers.get("X-XA-Submission-R2-Key")).toBeNull();
     expect(response.headers.get("Content-Disposition")).toContain("submission.zip");
+  });
+
+  it("exposes submission storage key only in explicit debug mode", async () => {
+    const previousNodeEnv = process.env.NODE_ENV;
+    const previousExpose = process.env.XA_UPLOADER_EXPOSE_SUBMISSION_R2_KEY;
+    process.env.NODE_ENV = "development";
+    process.env.XA_UPLOADER_EXPOSE_SUBMISSION_R2_KEY = "1";
+    try {
+      const { POST } = await import("../route");
+      const response = await POST(
+        new Request("http://localhost/api/catalog/submission", { method: "POST" }),
+      );
+      expect(response.status).toBe(200);
+      expect(response.headers.get("X-XA-Submission-R2-Key")).toBe("submissions/sub-1.zip");
+    } finally {
+      process.env.NODE_ENV = previousNodeEnv;
+      if (previousExpose === undefined) delete process.env.XA_UPLOADER_EXPOSE_SUBMISSION_R2_KEY;
+      else process.env.XA_UPLOADER_EXPOSE_SUBMISSION_R2_KEY = previousExpose;
+      jest.resetModules();
+    }
   });
 
   it("caps submission max bytes to free-tier ceiling even when env is higher", async () => {

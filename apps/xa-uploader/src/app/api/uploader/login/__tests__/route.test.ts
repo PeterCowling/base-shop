@@ -4,6 +4,7 @@ const issueUploaderSessionMock = jest.fn();
 const setUploaderCookieMock = jest.fn();
 const validateUploaderAdminTokenMock = jest.fn();
 const readJsonBodyWithLimitMock = jest.fn();
+const isUploaderIpAllowedByHeadersMock = jest.fn();
 
 class InvalidJsonErrorMock extends Error {}
 class PayloadTooLargeErrorMock extends Error {}
@@ -20,6 +21,11 @@ jest.mock("../../../../../lib/requestJson", () => ({
   readJsonBodyWithLimit: (...args: unknown[]) => readJsonBodyWithLimitMock(...args),
 }));
 
+jest.mock("../../../../../lib/accessControl", () => ({
+  isUploaderIpAllowedByHeaders: (...args: unknown[]) => isUploaderIpAllowedByHeadersMock(...args),
+  uploaderAccessDeniedJsonResponse: () => new Response(JSON.stringify({ ok: false }), { status: 404 }),
+}));
+
 describe("uploader login route", () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -27,6 +33,22 @@ describe("uploader login route", () => {
     issueUploaderSessionMock.mockResolvedValue("session-token-1");
     validateUploaderAdminTokenMock.mockResolvedValue(true);
     readJsonBodyWithLimitMock.mockResolvedValue({ token: "good-token" });
+    isUploaderIpAllowedByHeadersMock.mockReturnValue(true);
+  });
+
+  it("returns 404 when request IP is not allowlisted", async () => {
+    isUploaderIpAllowedByHeadersMock.mockReturnValueOnce(false);
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/uploader/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: "good-token" }),
+      }),
+    );
+    expect(response.status).toBe(404);
+    expect(validateUploaderAdminTokenMock).not.toHaveBeenCalled();
+    expect(issueUploaderSessionMock).not.toHaveBeenCalled();
   });
 
   it("returns invalid for malformed JSON", async () => {

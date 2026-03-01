@@ -5,6 +5,7 @@
  * Prominent card showing the next recommended action for pre-arrival readiness.
  * Displays contextual messaging based on what's not yet completed.
  */
+'use client';
 
 import { type FC, memo, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';

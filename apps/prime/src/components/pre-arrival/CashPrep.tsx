@@ -5,6 +5,8 @@
  * Shows city tax and keycard deposit amounts.
  */
 
+'use client';
+
 import { type FC, memo, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {

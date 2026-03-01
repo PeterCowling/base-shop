@@ -4,6 +4,7 @@
  * Arrival day home screen shown when guest is on their check-in date.
  * Displays the check-in QR code prominently along with important reminders.
  */
+'use client';
 
 import { type FC, memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';

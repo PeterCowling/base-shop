@@ -1,3 +1,5 @@
+'use client';
+
 import { type FC,memo } from 'react';
 
 import { StaffSignalBadgeGroup } from '@acme/ui';

@@ -4,6 +4,8 @@
  * Detailed view of a route with segments, times, and actions.
  */
 
+'use client';
+
 import { type FC, memo, type ReactNode, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import {

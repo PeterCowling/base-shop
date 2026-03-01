@@ -4,6 +4,8 @@
  * Card displaying a route option with transport mode, duration, and cost.
  */
 
+'use client';
+
 import { type FC, memo, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import {

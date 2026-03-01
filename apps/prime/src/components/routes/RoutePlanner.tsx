@@ -4,6 +4,8 @@
  * Main route planning component with origin selector and route list.
  */
 
+'use client';
+
 import { type FC, memo, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {

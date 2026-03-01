@@ -5,6 +5,8 @@
  * Score is computed from checklist progress (0-100).
  */
 
+'use client';
+
 import { type FC, memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CheckCircle2 } from 'lucide-react';

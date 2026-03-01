@@ -5,6 +5,8 @@
  * Fetches display text using react-i18next based on task ID.
  */
 
+'use client';
+
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 

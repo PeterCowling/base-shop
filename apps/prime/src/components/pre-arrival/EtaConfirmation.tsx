@@ -4,6 +4,8 @@
  * Component for confirming guest arrival time and travel method.
  */
 
+'use client';
+
 import { type FC, memo, type ReactNode, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {

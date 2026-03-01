@@ -5,6 +5,8 @@
  * Shows the active tier, progress bar, and next action to complete.
  */
 
+'use client';
+
 import { type FC, memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Award, ChevronRight, Clock, Sparkles } from 'lucide-react';

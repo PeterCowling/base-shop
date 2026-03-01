@@ -4,6 +4,7 @@
  * Main pre-arrival dashboard component shown to guests before check-in.
  * Displays readiness score, checklist progress, and next action card.
  */
+'use client';
 
 import { type FC, memo, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';

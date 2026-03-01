@@ -4,6 +4,7 @@
  * Individual checklist item for pre-arrival readiness.
  * Can be interactive (clickable) or informational.
  */
+'use client';
 
 import { type FC, memo, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';

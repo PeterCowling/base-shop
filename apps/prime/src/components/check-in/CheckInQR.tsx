@@ -6,6 +6,8 @@
  * Staff can scan the QR or type the code to look up the guest.
  */
 
+'use client';
+
 import { type FC, memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Image from 'next/image';

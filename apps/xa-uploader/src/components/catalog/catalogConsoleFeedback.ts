@@ -28,6 +28,7 @@ type CatalogApiErrorCode =
   | "not_found"
   | "conflict"
   | "internal_error"
+  | "service_unavailable"
   | "invalid_upload_url";
 type ActionDomain = "login" | "draft" | "submission" | "sync";
 type ActionFeedbackKind = "error" | "success";
@@ -85,6 +86,7 @@ export function getCatalogApiErrorMessage(
   if (normalized === "not_found") return t("apiErrorNotFound");
   if (normalized === "conflict") return t("apiErrorConflict");
   if (normalized === "internal_error") return t("apiErrorInternal");
+  if (normalized === "service_unavailable") return t("apiErrorServiceUnavailable");
   if (normalized === "invalid_upload_url") return t("apiErrorInvalidUploadUrl");
   return t(fallbackKey);
 }

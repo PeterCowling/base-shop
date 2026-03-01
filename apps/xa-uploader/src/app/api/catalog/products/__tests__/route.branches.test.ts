@@ -2,6 +2,9 @@ import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 const listCatalogDraftsMock = jest.fn();
 const upsertCatalogDraftMock = jest.fn();
+const readCloudDraftSnapshotMock = jest.fn();
+const upsertProductInCloudSnapshotMock = jest.fn();
+const writeCloudDraftSnapshotMock = jest.fn();
 const hasUploaderSessionMock = jest.fn();
 const parseStorefrontMock = jest.fn();
 const rateLimitMock = jest.fn();
@@ -16,6 +19,20 @@ jest.mock("../../../../../lib/catalogCsv", () => ({
   listCatalogDrafts: (...args: unknown[]) => listCatalogDraftsMock(...args),
   upsertCatalogDraft: (...args: unknown[]) => upsertCatalogDraftMock(...args),
   CatalogCsvConflictError: class extends Error {},
+}));
+
+jest.mock("../../../../../lib/catalogDraftContractClient", () => ({
+  CatalogDraftConflictError: class extends Error {},
+  CatalogDraftContractError: class extends Error {
+    code: string;
+    constructor(code: string) {
+      super(code);
+      this.code = code;
+    }
+  },
+  readCloudDraftSnapshot: (...args: unknown[]) => readCloudDraftSnapshotMock(...args),
+  upsertProductInCloudSnapshot: (...args: unknown[]) => upsertProductInCloudSnapshotMock(...args),
+  writeCloudDraftSnapshot: (...args: unknown[]) => writeCloudDraftSnapshotMock(...args),
 }));
 
 jest.mock("../../../../../lib/catalogStorefront.ts", () => ({
@@ -49,6 +66,14 @@ describe("catalog products route branch coverage", () => {
     listCatalogDraftsMock.mockResolvedValue({ products: [{ slug: "p1" }], revisionsById: { p1: "rev-1" } });
     readJsonBodyWithLimitMock.mockResolvedValue({ product: { title: "x", slug: "x" } });
     upsertCatalogDraftMock.mockResolvedValue({ product: { slug: "x" }, revision: "rev-2" });
+    readCloudDraftSnapshotMock.mockResolvedValue({ products: [], revisionsById: {}, docRevision: "doc-rev-1" });
+    upsertProductInCloudSnapshotMock.mockReturnValue({
+      product: { slug: "x", id: "p1" },
+      revision: "rev-2",
+      products: [{ slug: "x", id: "p1" }],
+      revisionsById: { p1: "rev-2" },
+    });
+    writeCloudDraftSnapshotMock.mockResolvedValue({ docRevision: "doc-rev-2" });
   });
 
   it("GET returns products list on success", async () => {

@@ -39,6 +39,8 @@ const messages = {
     apiErrorNotFound: "The product no longer exists. Refresh and retry.",
     apiErrorConflict: "This product changed elsewhere. Refresh and save again.",
     apiErrorInternal: "The server could not complete this request. Try again.",
+    apiErrorServiceUnavailable:
+      "This operation is unavailable in the current runtime. Use the cloud draft mode or local operator runtime.",
     apiErrorInvalidUploadUrl:
       "Upload link format is invalid. Use a full https:// URL (or /upload/<token> endpoint) and retry.",
     validationTitleRequired: "Title is required.",
@@ -49,6 +51,9 @@ const messages = {
     validationColorRequired: "Add at least one color.",
     validationMaterialRequired: "Add at least one material.",
     validationImageAltCount: "Image alt text count must match image file count.",
+    validationImageRoleCount: "Image role count must match image file count.",
+    validationImageRoleUnsupported: "Image roles contain unsupported values.",
+    validationImageRoleMissing: "Add required image roles for this category.",
     validationSizesRequired: "Add at least one size for clothing.",
     validationMetalRequired: "Metal is required for jewelry.",
     validationCreatedAt: "Created-at must be a valid date/time.",
@@ -218,9 +223,11 @@ const messages = {
     imagesFieldsTitle: "Images for sync",
     imageFiles: "Image files (paths, globs, or directories)",
     imageAltTexts: "Image alt texts (optional)",
+    imageRoles: "Image shot roles",
     imageGuidelines:
       "Recommended: portrait 4:5 or square. Use JPG/PNG/WebP at {minEdge}px+ on the shortest edge.",
     placeholderImageAltTexts: "One per image (pipe, comma, or newline)",
+    placeholderImageRoles: "One per image (front|side|top|back|detail|interior|scale)",
     currencyRatesTitle: "Currency rates",
     currencyRatesSubtitle:
       "Enter USD-base multipliers. AUD, EUR, and GBP prices are computed from the USD price at sync time.",
@@ -270,6 +277,8 @@ const messages = {
     apiErrorNotFound: "该商品不存在，请刷新后重试。",
     apiErrorConflict: "该商品已被他人修改，请刷新后重新保存。",
     apiErrorInternal: "服务器暂时无法完成请求，请稍后重试。",
+    apiErrorServiceUnavailable:
+      "当前运行环境暂不支持该操作。请使用云端草稿模式或本地运营环境。",
     apiErrorInvalidUploadUrl:
       "上传链接格式无效。请使用完整的 https:// URL（或 /upload/<token> 端点）后重试。",
     validationTitleRequired: "标题不能为空。",
@@ -280,6 +289,9 @@ const messages = {
     validationColorRequired: "请至少填写一个颜色。",
     validationMaterialRequired: "请至少填写一种材质。",
     validationImageAltCount: "图片替代文本数量必须与图片数量一致。",
+    validationImageRoleCount: "图片角色数量必须与图片数量一致。",
+    validationImageRoleUnsupported: "图片角色包含不支持的值。",
+    validationImageRoleMissing: "请补齐该类别要求的图片角色。",
     validationSizesRequired: "服装类商品至少填写一个尺码。",
     validationMetalRequired: "珠宝类商品必须填写金属材质。",
     validationCreatedAt: "创建时间必须是有效日期时间。",
@@ -436,8 +448,10 @@ const messages = {
     imagesFieldsTitle: "同步用图片",
     imageFiles: "图片文件（路径、glob 或目录）",
     imageAltTexts: "图片替代文本（可选）",
+    imageRoles: "图片镜位角色",
     imageGuidelines: "建议：比例 4:5 竖图或正方形；JPG/PNG/WebP，短边至少 {minEdge}px。",
     placeholderImageAltTexts: "每张图片一条（用 |、逗号或换行分隔）",
+    placeholderImageRoles: "每张图片一条（front|side|top|back|detail|interior|scale）",
     currencyRatesTitle: "汇率设置",
     currencyRatesSubtitle:
       "输入以 USD 为基准的汇率倍数。同步时将根据 USD 价格计算 AUD、EUR 和 GBP 价格。",

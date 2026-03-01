@@ -246,4 +246,137 @@ describe("xa-drop-worker", () => {
     );
     expect(authorized.status).toBe(200);
   });
+
+  it("rejects tokens whose ttl exceeds configured max", async () => {
+    const iat = Math.floor(Date.now() / 1000);
+    const token = makeToken(secret, { iat, exp: iat + 3600, nonce: "nonce-ttl" });
+    const bucket = { put: jest.fn().mockResolvedValue({ key: "ok" }) } as unknown as R2Bucket;
+
+    const res = await handler.fetch(
+      new Request(`https://drop.example/upload/`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/zip", "Content-Length": "3" },
+        body: new Uint8Array([1, 2, 3]),
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        UPLOAD_TOKEN_SECRET: secret,
+        UPLOAD_TOKEN_MAX_TTL_SECONDS: "900",
+      },
+    );
+
+    expect(res.status).toBe(401);
+    expect((bucket as any).put).not.toHaveBeenCalled();
+  });
+
+  it("stores and retrieves draft snapshots with write-token auth", async () => {
+    const bucketState = new Map<string, string>();
+    const bucket = {
+      get: jest.fn(async (key: string) => {
+        const body = bucketState.get(key);
+        if (!body) return null;
+        return { text: jest.fn().mockResolvedValue(body) };
+      }),
+      put: jest.fn(async (key: string, body: string) => {
+        bucketState.set(key, body);
+        return { key };
+      }),
+      delete: jest.fn(async (key: string) => {
+        bucketState.delete(key);
+      }),
+    } as unknown as R2Bucket;
+
+    const write = await handler.fetch(
+      new Request("https://drop.example/drafts/xa-b", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-XA-Catalog-Token": "catalog-write-token-1234567890",
+        },
+        body: JSON.stringify({
+          storefront: "xa-b",
+          products: [{ id: "p1", slug: "studio-jacket" }],
+          revisionsById: { p1: "rev-1" },
+        }),
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        CATALOG_WRITE_TOKEN: "catalog-write-token-1234567890",
+      },
+    );
+    expect(write.status).toBe(201);
+    const writePayload = await write.json() as { docRevision?: string };
+    expect(writePayload.docRevision).toBeTruthy();
+
+    const read = await handler.fetch(
+      new Request("https://drop.example/drafts/xa-b", {
+        headers: { "X-XA-Catalog-Token": "catalog-write-token-1234567890" },
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        CATALOG_WRITE_TOKEN: "catalog-write-token-1234567890",
+      },
+    );
+    expect(read.status).toBe(200);
+    await expect(read.json()).resolves.toEqual(
+      expect.objectContaining({
+        ok: true,
+        storefront: "xa-b",
+        products: [{ id: "p1", slug: "studio-jacket" }],
+      }),
+    );
+
+    const remove = await handler.fetch(
+      new Request("https://drop.example/drafts/xa-b", {
+        method: "DELETE",
+        headers: { "X-XA-Catalog-Token": "catalog-write-token-1234567890" },
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        CATALOG_WRITE_TOKEN: "catalog-write-token-1234567890",
+      },
+    );
+    expect(remove.status).toBe(200);
+    expect((bucket as any).delete).toHaveBeenCalled();
+  });
+
+  it("returns draft conflict when ifMatchDocRevision does not match latest", async () => {
+    const bucket = {
+      get: jest.fn().mockResolvedValue({
+        text: jest.fn().mockResolvedValue(
+          JSON.stringify({
+            ok: true,
+            storefront: "xa-b",
+            docRevision: "doc-rev-1",
+            products: [],
+            revisionsById: {},
+          }),
+        ),
+      }),
+      put: jest.fn(),
+    } as unknown as R2Bucket;
+
+    const res = await handler.fetch(
+      new Request("https://drop.example/drafts/xa-b", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-XA-Catalog-Token": "catalog-write-token-1234567890",
+        },
+        body: JSON.stringify({
+          storefront: "xa-b",
+          products: [],
+          revisionsById: {},
+          ifMatchDocRevision: "doc-rev-old",
+        }),
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        CATALOG_WRITE_TOKEN: "catalog-write-token-1234567890",
+      },
+    );
+
+    expect(res.status).toBe(409);
+    expect((bucket as any).put).not.toHaveBeenCalled();
+  });
 });

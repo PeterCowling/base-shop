@@ -2,12 +2,22 @@
 
 import { NextResponse } from "next/server";
 
+import type { CatalogProductDraftInput } from "@acme/lib/xa";
+
 import {
   CatalogCsvConflictError,
   listCatalogDrafts,
   upsertCatalogDraft,
 } from "../../../../lib/catalogCsv";
+import {
+  CatalogDraftConflictError,
+  CatalogDraftContractError,
+  readCloudDraftSnapshot,
+  upsertProductInCloudSnapshot,
+  writeCloudDraftSnapshot,
+} from "../../../../lib/catalogDraftContractClient";
 import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
+import { isLocalFsRuntimeEnabled, localFsUnavailableResponse } from "../../../../lib/localFsGuard";
 import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
 import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
@@ -20,7 +30,8 @@ type ProductsErrorCode =
   | "conflict"
   | "internal_error"
   | "rate_limited"
-  | "payload_too_large";
+  | "payload_too_large"
+  | "service_unavailable";
 
 const PRODUCTS_LIST_WINDOW_MS = 60 * 1000;
 const PRODUCTS_LIST_MAX_REQUESTS = 120;
@@ -71,12 +82,16 @@ export async function GET(request: Request) {
   if (!authenticated) {
     return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
   }
-
   try {
     const storefront = parseStorefront(new URL(request.url).searchParams.get("storefront"));
-    const { products, revisionsById } = await listCatalogDrafts(storefront);
+    const { products, revisionsById } = isLocalFsRuntimeEnabled()
+      ? await listCatalogDrafts(storefront)
+      : await readCloudDraftSnapshot(storefront);
     return withRateHeaders(NextResponse.json({ ok: true, products, revisionsById }), limit);
-  } catch {
+  } catch (error) {
+    if (error instanceof CatalogDraftContractError && error.code === "unconfigured") {
+      return withRateHeaders(localFsUnavailableResponse(), limit);
+    }
     return withRateHeaders(
       buildProductsErrorResponse("internal_error", 500, "products_list_failed"),
       limit,
@@ -102,7 +117,6 @@ export async function POST(request: Request) {
   if (!authenticated) {
     return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
   }
-
   let payload: Record<string, unknown>;
   try {
     payload = (await readJsonBodyWithLimit(request, PRODUCTS_UPSERT_MAX_BYTES)) as Record<string, unknown>;
@@ -133,17 +147,52 @@ export async function POST(request: Request) {
 
   try {
     const storefront = parseStorefront(new URL(request.url).searchParams.get("storefront"));
-    const result = await upsertCatalogDraft(product as never, { ifMatch, storefront });
+    if (isLocalFsRuntimeEnabled()) {
+      const result = await upsertCatalogDraft(product as never, { ifMatch, storefront });
+      return withRateHeaders(
+        NextResponse.json({ ok: true, product: result.product, revision: result.revision }),
+        limit,
+      );
+    }
+
+    const snapshot = await readCloudDraftSnapshot(storefront);
+    const result = upsertProductInCloudSnapshot({
+      product: product as CatalogProductDraftInput,
+      ifMatch,
+      snapshot,
+    });
+    const writeResult = await writeCloudDraftSnapshot({
+      storefront,
+      products: result.products,
+      revisionsById: result.revisionsById,
+      ifMatchDocRevision: snapshot.docRevision,
+    });
     return withRateHeaders(
-      NextResponse.json({ ok: true, product: result.product, revision: result.revision }),
+      NextResponse.json({
+        ok: true,
+        product: result.product,
+        revision: result.revision,
+        docRevision: writeResult.docRevision,
+      }),
       limit,
     );
   } catch (error) {
-    if (error instanceof CatalogCsvConflictError) {
+    if (error instanceof CatalogCsvConflictError || error instanceof CatalogDraftConflictError) {
       return withRateHeaders(
         buildProductsErrorResponse("conflict", 409, "revision_conflict"),
         limit,
       );
+    }
+    if (error instanceof CatalogDraftContractError) {
+      if (error.code === "unconfigured") {
+        return withRateHeaders(localFsUnavailableResponse(), limit);
+      }
+      if (error.code === "conflict") {
+        return withRateHeaders(
+          buildProductsErrorResponse("conflict", 409, "revision_conflict"),
+          limit,
+        );
+      }
     }
     if (isInvalidCatalogUpdateError(error)) {
       return withRateHeaders(

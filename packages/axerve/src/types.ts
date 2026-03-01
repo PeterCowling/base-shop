@@ -43,3 +43,38 @@ export interface AxervePaymentResult {
   /** Human-readable error description from Axerve, present on failure. */
   errorDescription?: string;
 }
+
+/**
+ * Parameters for the Axerve/GestPay S2S `callRefundS2S` operation.
+ * At least one of `shopTransactionId` or `bankTransactionId` must be supplied.
+ * `shopTransactionId` is preferred — it is present in every merchant notification email.
+ * Both may be provided; when both are present Axerve uses `bankTransactionId` (per WSDL docs).
+ */
+export interface AxerveRefundParams {
+  /** Shop login identifier from the Axerve merchant agreement. */
+  shopLogin: string;
+  /** API key from the Axerve merchant agreement. */
+  apiKey: string;
+  /** Shop-assigned transaction ID (preferred identifier, present in merchant emails). */
+  shopTransactionId?: string;
+  /** Bank-side transaction identifier (fallback, available in server logs). */
+  bankTransactionId?: string;
+  /** Refund amount as a decimal string, e.g. "45.00". */
+  amount: string;
+  /** ISO 4217 numeric currency code — use "978" for EUR. */
+  uicCode: string;
+}
+
+/** Result returned by a completed Axerve S2S refund call. */
+export interface AxerveRefundResult {
+  /** `true` when Axerve returned TransactionResult === "OK". */
+  success: boolean;
+  /** Shop-assigned transaction ID (echoed from request). */
+  transactionId: string;
+  /** Axerve's bank-side transaction identifier. */
+  bankTransactionId: string;
+  /** Axerve error code, present on failure. */
+  errorCode?: string;
+  /** Human-readable error description from Axerve, present on failure. */
+  errorDescription?: string;
+}

@@ -5,7 +5,7 @@ Domain: API
 Workstream: Engineering
 Created: 2026-02-28
 Last-reviewed: 2026-02-28
-Last-updated: 2026-02-28
+Last-updated: 2026-03-01
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: hbag-axerve-refund-endpoint
 Deliverable-Type: code-change
@@ -26,10 +26,10 @@ Adds a secured admin-only refund endpoint to the caryina app that issues full or
 
 ## Active tasks
 
-- [ ] TASK-01: Add `AxerveRefundParams` and `AxerveRefundResult` types to `packages/axerve/src/types.ts`
-- [ ] TASK-02: Implement `callRefund` in `packages/axerve/src/index.ts` and extend `packages/axerve/src/index.test.ts`
-- [ ] TASK-03: Add `refundRequestSchema` to `apps/caryina/src/lib/adminSchemas.ts`
-- [ ] TASK-04: Create `POST /admin/api/refunds/route.ts` and `route.test.ts`
+- [x] TASK-01: Add `AxerveRefundParams` and `AxerveRefundResult` types to `packages/axerve/src/types.ts`
+- [x] TASK-02: Implement `callRefund` in `packages/axerve/src/index.ts` and extend `packages/axerve/src/index.test.ts`
+- [x] TASK-03: Add `refundRequestSchema` to `apps/caryina/src/lib/adminSchemas.ts`
+- [x] TASK-04: Create `POST /admin/api/refunds/route.ts` and `route.test.ts`
 - [ ] TASK-05: Typecheck, lint, governed tests, and sandbox smoke-test
 
 ## Goals
@@ -102,10 +102,10 @@ Adds a secured admin-only refund endpoint to the caryina app that issues full or
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Add `AxerveRefundParams` and `AxerveRefundResult` types | 95% | S | Pending | - | TASK-02, TASK-04 |
-| TASK-02 | IMPLEMENT | Implement `callRefund` + extend tests in axerve package | 85% | M | Pending | TASK-01 | TASK-04 |
-| TASK-03 | IMPLEMENT | Add `refundRequestSchema` to `adminSchemas.ts` | 95% | S | Pending | - | TASK-04 |
-| TASK-04 | IMPLEMENT | Create `POST /admin/api/refunds/route.ts` + `route.test.ts` | 85% | M | Pending | TASK-01, TASK-02, TASK-03 | TASK-05 |
+| TASK-01 | IMPLEMENT | Add `AxerveRefundParams` and `AxerveRefundResult` types | 95% | S | Complete (2026-03-01) | - | TASK-02, TASK-04 |
+| TASK-02 | IMPLEMENT | Implement `callRefund` + extend tests in axerve package | 85% | M | Complete (2026-03-01) | TASK-01 | TASK-04 |
+| TASK-03 | IMPLEMENT | Add `refundRequestSchema` to `adminSchemas.ts` | 95% | S | Complete (2026-03-01) | - | TASK-04 |
+| TASK-04 | IMPLEMENT | Create `POST /admin/api/refunds/route.ts` + `route.test.ts` | 85% | M | Complete (2026-03-01) | TASK-01, TASK-02, TASK-03 | TASK-05 |
 | TASK-05 | IMPLEMENT | Typecheck, lint, governed tests, sandbox smoke-test | 85% | S | Pending | TASK-04 | - |
 
 ## Parallelism Guide

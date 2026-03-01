@@ -1,7 +1,7 @@
 /** @jest-environment node */
 // packages/axerve/src/index.test.ts
 
-import type { AxervePaymentParams } from "./types";
+import type { AxervePaymentParams, AxerveRefundParams } from "./types";
 
 const VALID_PARAMS: AxervePaymentParams = {
   shopLogin: "TEST_SHOP",
@@ -36,6 +36,36 @@ const KO_SOAP_RESPONSE = [
       BankTransactionID: "",
       ErrorCode: "01",
       ErrorDescription: "Card declined",
+    },
+  },
+];
+
+const VALID_REFUND_PARAMS: AxerveRefundParams = {
+  shopLogin: "TEST_SHOP",
+  apiKey: "TEST_API_KEY",
+  uicCode: "978",
+  amount: "45.00",
+  shopTransactionId: "test-refund-txn-001",
+};
+
+const OK_REFUND_SOAP_RESPONSE = [
+  {
+    callRefundS2SResult: {
+      TransactionResult: "OK",
+      ShopTransactionID: "test-refund-txn-001",
+      BankTransactionID: "bank-refund-001",
+    },
+  },
+];
+
+const KO_REFUND_SOAP_RESPONSE = [
+  {
+    callRefundS2SResult: {
+      TransactionResult: "KO",
+      ShopTransactionID: "test-refund-txn-001",
+      BankTransactionID: "",
+      ErrorCode: "10",
+      ErrorDescription: "Refund declined",
     },
   },
 ];
@@ -100,5 +130,67 @@ describe("callPayment", () => {
     expect(result.transactionId).toBe("test-txn-001");
     expect(result.bankTransactionId).toBe("mock-bank-txn-001");
     expect(mockCallPagamS2SAsync).not.toHaveBeenCalled();
+  });
+});
+
+describe("callRefund", () => {
+  const originalEnv = process.env;
+  let mockCallRefundS2SAsync: jest.Mock;
+
+  beforeEach(() => {
+    jest.resetModules();
+    process.env = { ...originalEnv };
+    mockCallRefundS2SAsync = jest.fn();
+    jest.doMock("soap", () => ({
+      createClientAsync: jest
+        .fn()
+        .mockResolvedValue({ callRefundS2SAsync: mockCallRefundS2SAsync }),
+    }));
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+    process.env = originalEnv;
+  });
+
+  it("TC-R-01: SOAP OK response returns success result with transactionId and bankTransactionId", async () => {
+    mockCallRefundS2SAsync.mockResolvedValue(OK_REFUND_SOAP_RESPONSE);
+    const { callRefund } = await import("./index");
+    const result = await callRefund(VALID_REFUND_PARAMS);
+
+    expect(result.success).toBe(true);
+    expect(result.transactionId).toBe("test-refund-txn-001");
+    expect(result.bankTransactionId).toBe("bank-refund-001");
+    expect(result.errorCode).toBeUndefined();
+    expect(result.errorDescription).toBeUndefined();
+  });
+
+  it("TC-R-02: SOAP KO response returns failure result with errorCode and errorDescription", async () => {
+    mockCallRefundS2SAsync.mockResolvedValue(KO_REFUND_SOAP_RESPONSE);
+    const { callRefund } = await import("./index");
+    const result = await callRefund(VALID_REFUND_PARAMS);
+
+    expect(result.success).toBe(false);
+    expect(result.errorCode).toBe("10");
+    expect(result.errorDescription).toBe("Refund declined");
+  });
+
+  it("TC-R-03: SOAP network error throws AxerveError", async () => {
+    mockCallRefundS2SAsync.mockRejectedValue(new Error("connection refused"));
+    const { callRefund, AxerveError } = await import("./index");
+
+    await expect(callRefund(VALID_REFUND_PARAMS)).rejects.toBeInstanceOf(AxerveError);
+    await expect(callRefund(VALID_REFUND_PARAMS)).rejects.toThrow("connection refused");
+  });
+
+  it("TC-R-04: AXERVE_USE_MOCK=true returns hardcoded success without SOAP call", async () => {
+    process.env.AXERVE_USE_MOCK = "true";
+    const { callRefund } = await import("./index");
+    const result = await callRefund(VALID_REFUND_PARAMS);
+
+    expect(result.success).toBe(true);
+    expect(result.transactionId).toBe("test-refund-txn-001");
+    expect(result.bankTransactionId).toBe("mock-bank-refund-001");
+    expect(mockCallRefundS2SAsync).not.toHaveBeenCalled();
   });
 });

@@ -90,6 +90,31 @@ describe("catalog submission status route", () => {
     expect(await response.json()).toEqual(expect.objectContaining({ ok: false }));
   });
 
+  it("returns 503 when uploader KV is unavailable", async () => {
+    getUploaderKvMock.mockResolvedValueOnce(null);
+
+    const { GET } = await import("../[jobId]/route");
+    const response = await GET(new Request("http://localhost/api/catalog/submission/status"), {
+      params: Promise.resolve({ jobId: TEST_JOB_ID }),
+    });
+
+    expect(response.status).toBe(503);
+    expect(await response.json()).toEqual(expect.objectContaining({ ok: false, error: "service_unavailable" }));
+    expect(getJobMock).not.toHaveBeenCalled();
+  });
+
+  it("returns 404 for invalid job id format", async () => {
+    const { GET } = await import("../[jobId]/route");
+    const response = await GET(new Request("http://localhost/api/catalog/submission/status"), {
+      params: Promise.resolve({ jobId: "bad-job-id" }),
+    });
+
+    expect(response.status).toBe(404);
+    expect(await response.json()).toEqual(expect.objectContaining({ ok: false }));
+    expect(getUploaderKvMock).not.toHaveBeenCalled();
+    expect(getJobMock).not.toHaveBeenCalled();
+  });
+
   it("TC-06f: returns 404 when request is unauthenticated", async () => {
     hasUploaderSessionMock.mockResolvedValueOnce(false);
 

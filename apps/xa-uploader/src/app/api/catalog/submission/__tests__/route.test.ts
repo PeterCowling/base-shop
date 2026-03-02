@@ -187,6 +187,198 @@ describe("catalog submission route", () => {
     );
   });
 
+  it("completes async submission job lifecycle and persists zip artifact", async () => {
+    isLocalFsRuntimeEnabledMock.mockReturnValue(false);
+    readCloudDraftSnapshotMock.mockResolvedValueOnce({
+      products: [
+        {
+          id: "p1",
+          slug: "studio-jacket",
+          title: "Studio Jacket",
+          brandHandle: "atelier-x",
+          collectionHandle: "outerwear",
+          collectionTitle: "Outerwear",
+          price: "189",
+          description: "A structured layer.",
+          createdAt: "2025-12-01T12:00:00.000Z",
+          forSale: true,
+          forRental: false,
+          popularity: "0",
+          deposit: "0",
+          stock: "1",
+          sizes: "S|M|L",
+          taxonomy: {
+            department: "women",
+            category: "clothing",
+            subcategory: "outerwear",
+            color: "black",
+            material: "wool",
+          },
+          imageFiles: "studio-jacket-front.jpg",
+          imageAltTexts: "Studio jacket front",
+          imageRoles: "front",
+        },
+      ],
+      revisionsById: {},
+      docRevision: "doc-1",
+    });
+
+    const kvStore = new Map<string, string | Buffer>();
+    getUploaderKvMock.mockResolvedValueOnce({
+      put: async (key: string, value: string | ArrayBuffer | Buffer) => {
+        if (typeof value === "string") {
+          kvStore.set(key, value);
+          return;
+        }
+        if (value instanceof ArrayBuffer) {
+          kvStore.set(key, Buffer.from(value));
+          return;
+        }
+        kvStore.set(key, Buffer.from(value));
+      },
+      get: async (key: string, options?: { type?: string }) => {
+        const value = kvStore.get(key);
+        if (!value) return null;
+        if (options?.type === "arrayBuffer") {
+          if (typeof value === "string") return Buffer.from(value, "utf8").buffer;
+          return value.buffer.slice(
+            value.byteOffset,
+            value.byteOffset + value.byteLength,
+          );
+        }
+        return typeof value === "string" ? value : value.toString("utf8");
+      },
+      delete: async (key: string) => {
+        kvStore.delete(key);
+      },
+    });
+
+    buildSubmissionZipFromCloudDraftsMock.mockResolvedValueOnce({
+      filename: "submission.zip",
+      manifest: { submissionId: "sub-1", suggestedR2Key: "submissions/sub-1.zip" },
+      stream: Readable.from([Buffer.from("zip-binary", "utf8")]),
+    });
+
+    let queuedJob: Promise<void> | null = null;
+    waitUntilMock.mockImplementationOnce((promise: Promise<void>) => {
+      queuedJob = promise;
+    });
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/submission", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slugs: ["studio-jacket"] }),
+      }),
+    );
+
+    expect(response.status).toBe(202);
+    const payload = (await response.json()) as { jobId: string };
+    expect(payload.jobId).toEqual(expect.any(String));
+    expect(queuedJob).not.toBeNull();
+
+    await queuedJob;
+
+    const jobKey = `xa-submission-job:${payload.jobId}`;
+    const zipStorageKey = `xa-submission-zip:${payload.jobId}`;
+    const storedJob = kvStore.get(jobKey);
+    const storedZip = kvStore.get(zipStorageKey);
+    expect(typeof storedJob).toBe("string");
+    expect(storedZip).toBeInstanceOf(Buffer);
+    const parsedJob = JSON.parse(String(storedJob)) as { status?: string; downloadUrl?: string };
+    expect(parsedJob.status).toBe("complete");
+    expect(parsedJob.downloadUrl).toBe(`/api/catalog/submission/download/${payload.jobId}`);
+  });
+
+  it("marks async submission job as failed when zip generation throws", async () => {
+    isLocalFsRuntimeEnabledMock.mockReturnValue(false);
+    readCloudDraftSnapshotMock.mockResolvedValueOnce({
+      products: [
+        {
+          id: "p1",
+          slug: "studio-jacket",
+          title: "Studio Jacket",
+          brandHandle: "atelier-x",
+          collectionHandle: "outerwear",
+          collectionTitle: "Outerwear",
+          price: "189",
+          description: "A structured layer.",
+          createdAt: "2025-12-01T12:00:00.000Z",
+          forSale: true,
+          forRental: false,
+          popularity: "0",
+          deposit: "0",
+          stock: "1",
+          sizes: "S|M|L",
+          taxonomy: {
+            department: "women",
+            category: "clothing",
+            subcategory: "outerwear",
+            color: "black",
+            material: "wool",
+          },
+          imageFiles: "studio-jacket-front.jpg",
+          imageAltTexts: "Studio jacket front",
+          imageRoles: "front",
+        },
+      ],
+      revisionsById: {},
+      docRevision: "doc-1",
+    });
+
+    const kvStore = new Map<string, string | Buffer>();
+    getUploaderKvMock.mockResolvedValueOnce({
+      put: async (key: string, value: string | ArrayBuffer | Buffer) => {
+        if (typeof value === "string") {
+          kvStore.set(key, value);
+          return;
+        }
+        if (value instanceof ArrayBuffer) {
+          kvStore.set(key, Buffer.from(value));
+          return;
+        }
+        kvStore.set(key, Buffer.from(value));
+      },
+      get: async (key: string) => {
+        const value = kvStore.get(key);
+        if (!value) return null;
+        return typeof value === "string" ? value : value.toString("utf8");
+      },
+      delete: async (key: string) => {
+        kvStore.delete(key);
+      },
+    });
+
+    buildSubmissionZipFromCloudDraftsMock.mockRejectedValueOnce(new Error("zip builder crashed"));
+
+    let queuedJob: Promise<void> | null = null;
+    waitUntilMock.mockImplementationOnce((promise: Promise<void>) => {
+      queuedJob = promise;
+    });
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/submission", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slugs: ["studio-jacket"] }),
+      }),
+    );
+
+    expect(response.status).toBe(202);
+    const payload = (await response.json()) as { jobId: string };
+    expect(queuedJob).not.toBeNull();
+
+    await queuedJob;
+
+    const storedJob = kvStore.get(`xa-submission-job:${payload.jobId}`);
+    expect(typeof storedJob).toBe("string");
+    const parsedJob = JSON.parse(String(storedJob)) as { status?: string; error?: string };
+    expect(parsedJob.status).toBe("failed");
+    expect(parsedJob.error).toBe("zip builder crashed");
+  });
+
   it("TC-06g: keeps synchronous zip response on local fs path", async () => {
     isLocalFsRuntimeEnabledMock.mockReturnValue(true);
     listCatalogDraftsMock.mockResolvedValueOnce({

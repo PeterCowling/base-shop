@@ -203,7 +203,7 @@ describe("TASK-09: WhatsApp prefill, long-stay reroute, and sessionStorage redir
     render(<ApartmentBookContent lang="en" />);
 
     // Set checkout to 19 nights after the mocked checkin (2026-03-01)
-    fireEvent.change(screen.getByLabelText("booking2.checkOutDate"), {
+    fireEvent.change(screen.getByLabelText("booking.checkOutLabel"), {
       target: { value: "2026-03-20" },
     });
 

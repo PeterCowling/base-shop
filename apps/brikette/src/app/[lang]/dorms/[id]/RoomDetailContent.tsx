@@ -102,6 +102,7 @@ export default function RoomDetailContent({ lang, id }: Props) {
       trackThenNavigate(
         "begin_checkout",
         {
+          source: "sticky_cta",
           handoff_mode: "same_tab",
           engine_endpoint: "result",
           checkin: ctx.checkin,

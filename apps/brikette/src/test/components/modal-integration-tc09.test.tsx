@@ -118,12 +118,14 @@ describe("TC-01: BookingWidget → navigates to /book (TASK-27)", () => {
 
     const checkInInput = screen.getByLabelText("booking.checkInLabel");
     const checkOutInput = screen.getByLabelText("booking.checkOutLabel");
-    const guestsInput = screen.getByLabelText("booking.guestsLabel");
+    const increaseGuestsButton = screen.getByRole("button", {
+      name: "bookingControls.increaseGuests",
+    });
 
     // Use ISO format — BookingWidget's parseDateInput handles YYYY-MM-DD.
     fireEvent.change(checkInInput, { target: { value: "2025-06-01" } });
     fireEvent.change(checkOutInput, { target: { value: "2025-06-03" } });
-    fireEvent.change(guestsInput, { target: { value: "2" } });
+    fireEvent.click(increaseGuestsButton);
 
     // Only one button in the widget (the CTA).
     fireEvent.click(getBookingSubmitButton());
@@ -173,17 +175,13 @@ describe("TC-01: BookingWidget → navigates to /book (TASK-27)", () => {
   });
 
   it("does not navigate when pax exceeds maximum", () => {
-    render(<BookingWidget />);
+    window.history.replaceState(
+      null,
+      "",
+      `${window.location.pathname}?checkin=2025-06-05&checkout=2025-06-09&pax=9`,
+    );
 
-    fireEvent.change(screen.getByLabelText("booking.checkInLabel"), {
-      target: { value: "2025-06-05" },
-    });
-    fireEvent.change(screen.getByLabelText("booking.checkOutLabel"), {
-      target: { value: "2025-06-09" },
-    });
-    fireEvent.change(screen.getByLabelText("booking.guestsLabel"), {
-      target: { value: "9" },
-    });
+    render(<BookingWidget />);
 
     fireEvent.click(getBookingSubmitButton());
 

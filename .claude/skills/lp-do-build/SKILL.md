@@ -1,11 +1,11 @@
 ---
 name: lp-do-build
-description: Thin build orchestrator. Executes one runnable task per cycle from an approved plan using canonical gates, track-specific executors, and shared ops utilities.
+description: Thin build orchestrator. Executes one runnable unit per cycle from an approved plan using canonical gates, track-specific executors, and shared ops utilities.
 ---
 
 # Build Orchestrator
 
-`/lp-do-build` executes plan tasks safely, one task per cycle, with gate enforcement and explicit handoffs.
+`/lp-do-build` executes plan tasks safely, one runnable unit per cycle (single task or eligible wave), with gate enforcement and explicit handoffs.
 
 ## Global Invariants
 
@@ -33,7 +33,9 @@ Even in fully autonomous / `-a never` mode, **stop and ask the user explicitly**
 
 ### Runner model
 
-- Execute one runnable task per cycle.
+- Execute one runnable unit per cycle:
+  - default: one runnable task,
+  - when `## Parallelism Guide` defines an eligible wave: one runnable wave.
 - Runnable task types: `IMPLEMENT`, `SPIKE`, `INVESTIGATE`, `CHECKPOINT`. `DECISION` tasks are resolved by plan/replan flow only.
 
 ## Inputs
@@ -74,6 +76,7 @@ All execution must pass these gates.
 - Track-specific requirements:
   - code/mixed -> TC contracts
   - business/mixed -> VC contracts + fail-first evidence progression
+- Frontend/UI IMPLEMENT tasks -> scoped QA loop must run as part of post-build validation: `/lp-design-qa`, `/tools-ui-contrast-sweep`, `/tools-ui-breakpoint-sweep` limited to changed routes/components, with mandatory auto-fix + re-run for all Critical/Major findings in the same task cycle.
 - Post-build validation (IMPLEMENT tasks only): after TC/VC contracts pass, run `modules/build-validate.md`. Mode is selected by deliverable type. Fix+retry loop (max 3 attempts) required before a task can be marked complete. SPIKE, INVESTIGATE, and CHECKPOINT tasks are exempt.
 
 4. **Commit Gate**
@@ -165,6 +168,9 @@ If confidence regresses below task threshold during execution:
 When all executable tasks are complete, execute **every step below in order**. Do not emit the completion message until all steps are done and the Plan Completion Checklist is clear.
 
 1. Produce `build-record.user.md` per `docs/business-os/startup-loop/loop-output-contracts.md`.
+   - Enforce `## Outcome Contract` presence and populated fields (`Why`, `Intended Outcome Type`, `Intended Outcome Statement`, `Source`) before proceeding. Use explicit `TBD/auto` fallback only when canonical values are unavailable.
+1.5 Emit canonical `build-event.json` in `docs/plans/<slug>/` using `scripts/src/startup-loop/lp-do-build-event-emitter.ts` (`emitBuildEvent()` + `writeBuildEvent()`) with values sourced from `build-record.user.md` `## Outcome Contract`.
+   - Verify file exists and is non-empty before continuing.
 2. Produce `results-review.user.md` using the template at `docs/plans/_templates/results-review.user.md`.
 
    **Codemoot route check:**
@@ -190,10 +196,32 @@ When all executable tasks are complete, execute **every step below in order**. D
 2.5. Read the `results-review.user.md` just produced. For each entry in `## New Idea Candidates`, identify whether it describes a pattern that has recurred across recent builds or could recur in future builds. Classify each pattern as one of: repeatable rule (something the loop could do automatically next time), recurring opportunity with context variation (something worth capturing as a reusable agent workflow), or access gap (something that was discovered mid-build rather than verified upfront). Then write `docs/plans/<slug>/pattern-reflection.user.md` using the schema at `docs/plans/startup-loop-build-reflection-gate/task-01-schema-spec.md`. Each entry must include: a plain summary (≤100 characters), the category, the routing result (see schema routing criteria), and how many times the pattern has been observed. If no patterns are present, write the empty-state artifact with `None identified` in both `## Patterns` and `## Access Declarations` sections. The artifact must always be produced — an empty-state is valid and closes any potential gap in the record.
 
 3. Run reflection debt emitter; if debt emitted, produce `reflection-debt.user.html` from `docs/templates/visual/loop-output-report-template.html` (operator-readable plain language — see `MEMORY.md` Operator-Facing Content).
-4. Run `pnpm --filter scripts startup-loop:generate-process-improvements`. Confirm the output line `updated docs/business-os/process-improvements.user.html` appears before continuing.
-5. For each idea in `## New Idea Candidates` that was directly actioned by this build, add an entry to `docs/business-os/_data/completed-ideas.json` by calling `appendCompletedIdea()` from `scripts/src/startup-loop/generate-process-improvements.ts` (or by writing the JSON entry directly). Record `plan_slug` (the slug of the plan just completed), `output_link` (path to the archived plan directory), `completed_at` (today's date in ISO format), `source_path` (relative path to the results-review file where the idea was found), and `title` (the sanitized idea title as it appears in the report). Re-run `pnpm --filter scripts startup-loop:generate-process-improvements` after appending so the report reflects the exclusion immediately. Only mark ideas as complete if they were directly delivered by this build; deferred or future ideas remain in the report.
-6. Set plan `Status: Archived`. Archive per `../_shared/plan-archiving.md`.
-7. Commit all post-build artifacts (build-record, results-review, pattern-reflection, reflection-debt if produced, process-improvements, archive move) as a single commit via `scripts/agents/with-writer-lock.sh`.
+4. Run bug scan and persist findings as a plan artifact: `pnpm bug-scan -- --changed --format=json --fail-on=none --business-scope=<BUSINESS> --idea-artifact=docs/plans/<slug>/bug-scan-findings.user.json`.
+5. Run `pnpm --filter scripts startup-loop:generate-process-improvements`. Confirm the output line `updated docs/business-os/process-improvements.user.html` appears before continuing.
+6. For each idea in `## New Idea Candidates` that was directly actioned by this build, add an entry to `docs/business-os/_data/completed-ideas.json` by calling `appendCompletedIdea()` from `scripts/src/startup-loop/generate-process-improvements.ts` (or by writing the JSON entry directly). Record `plan_slug` (the slug of the plan just completed), `output_link` (path to the archived plan directory), `completed_at` (today's date in ISO format), `source_path` (relative path to the results-review file where the idea was found), and `title` (the sanitized idea title as it appears in the report). Re-run `pnpm --filter scripts startup-loop:generate-process-improvements` after appending so the report reflects the exclusion immediately. Only mark ideas as complete if they were directly delivered by this build; deferred or future ideas remain in the report.
+7. Set plan `Status: Archived`. Archive per `../_shared/plan-archiving.md`.
+7.5. **Queue-state completion hook** — inside the writer lock scope (which must already be held from step 7 onward and continues through step 8), invoke `markDispatchesCompleted()` from `scripts/src/startup-loop/lp-do-ideas-queue-state-completion.ts` to mark the originating dispatch as completed in `docs/business-os/startup-loop/ideas/trial/queue-state.json`:
+
+   ```typescript
+   import { markDispatchesCompleted } from "scripts/src/startup-loop/lp-do-ideas-queue-state-completion.js";
+
+   const result = await markDispatchesCompleted({
+     queueStatePath: "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+     featureSlug: "<feature-slug>",          // the archived plan slug
+     planPath: "docs/plans/_archive/<feature-slug>/plan.md",  // the archived plan path from step 7
+     outcome: "<one-line outcome from build-record ## Outcome Contract>",
+     business: "<BUSINESS>",  // optional; include when known to prevent cross-business slug collision
+   });
+   ```
+
+   **Failure policy (must enforce before proceeding to step 8):**
+   - `{ ok: true }` — log `mutated` count and continue.
+   - `{ ok: false, reason: "no_match" }` — benign no-op (plan was not triggered by a dispatch); log a notice and continue.
+   - `{ ok: false, reason: "parse_error" | "write_error" | "file_not_found" }` — **stop immediately and escalate to the operator**. Do not proceed to step 8. The commit must not happen while queue-state sync has failed — doing so would permanently lose the completion record for these dispatches. Surface the `reason` and `error` fields in the build output.
+
+   The writer lock scope covers steps 7.5 through 8 as a single atomic unit (hook write + commit). Do not release the lock between step 7.5 and step 8.
+
+8. Commit all post-build artifacts (build-record, build-event, results-review, pattern-reflection, reflection-debt if produced, bug-scan-findings, process-improvements, archive move, queue-state.json if mutated) as a single commit via `scripts/agents/with-writer-lock.sh`.
 
 ## CHECKPOINT Contract
 
@@ -220,7 +248,7 @@ Stopped by gate:
 ## Quick Checklist
 
 - [ ] Canonical gates passed
-- [ ] One task executed this cycle
+- [ ] One runnable unit executed this cycle (single task or full wave)
 - [ ] Scope respected (or controlled expansion documented)
 - [ ] Validation evidence captured
 - [ ] Plan updated after task
@@ -230,10 +258,14 @@ Stopped by gate:
 Run through this before emitting the "Build complete" message:
 
 - [ ] `build-record.user.md` produced
+- [ ] `build-record.user.md` includes `## Outcome Contract` with populated fields (or explicit `TBD/auto` fallback)
+- [ ] `build-event.json` emitted and non-empty at `docs/plans/<slug>/build-event.json`
 - [ ] `results-review.user.md` produced (all sections filled, including New Idea Candidates)
 - [ ] `pattern-reflection.user.md` produced (empty-state with `None identified` is valid; artifact must always be present at `docs/plans/<slug>/pattern-reflection.user.md`)
 - [ ] Reflection debt emitter run (`reflection-debt.user.html` produced if debt exists, skipped if none)
+- [ ] Bug scan run and artifact written to `docs/plans/<slug>/bug-scan-findings.user.json`
 - [ ] `pnpm --filter scripts startup-loop:generate-process-improvements` run and confirmed updated
 - [ ] `completed-ideas.json` checked — entries added for any ideas directly actioned by this build
+- [ ] Queue-state completion hook run (`markDispatchesCompleted` called with feature slug, archived plan path, and outcome; `no_match` is the only acceptable continue-on-failure; all other failures must stop and escalate before commit)
 - [ ] Plan moved to `docs/plans/_archive/<slug>/` (no stale copy in active `docs/plans/`)
-- [ ] All post-build artifacts committed via writer lock
+- [ ] All post-build artifacts committed via writer lock (including `queue-state.json` if mutated)

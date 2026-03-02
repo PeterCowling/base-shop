@@ -32,7 +32,12 @@ describe("XaCartContext", () => {
       return null;
     };
 
-    expect(() => render(<Broken />)).toThrow("useCart must be inside CartProvider");
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      expect(() => render(<Broken />)).toThrow("useCart must be inside CartProvider");
+    } finally {
+      consoleErrorSpy.mockRestore();
+    }
   });
 
   it("hydrates sanitized cart from storage", async () => {

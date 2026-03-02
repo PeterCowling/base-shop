@@ -37,14 +37,18 @@ class MockWorker {
   }
 }
 
+const createXaSearchWorkerMock = jest.fn<Worker, []>();
+
+jest.mock("../xaSearchWorkerFactory", () => ({
+  createXaSearchWorker: () => createXaSearchWorkerMock(),
+}));
+
 describe("xaSearchWorkerClient", () => {
   beforeEach(() => {
     jest.resetModules();
     MockWorker.instances = [];
-    Object.defineProperty(globalThis, "Worker", {
-      writable: true,
-      value: MockWorker,
-    });
+    createXaSearchWorkerMock.mockReset();
+    createXaSearchWorkerMock.mockImplementation(() => new MockWorker() as unknown as Worker);
   });
 
   it("builds index via worker request/response", async () => {

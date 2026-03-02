@@ -19,7 +19,12 @@ describe("XaWishlistContext", () => {
       return null;
     };
 
-    expect(() => render(<Broken />)).toThrow("useWishlist must be inside WishlistProvider");
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      expect(() => render(<Broken />)).toThrow("useWishlist must be inside WishlistProvider");
+    } finally {
+      consoleErrorSpy.mockRestore();
+    }
   });
 
   it("hydrates deduped ids from storage", async () => {

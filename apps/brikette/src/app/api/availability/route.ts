@@ -63,6 +63,14 @@ function stripTags(html: string): string {
 }
 
 /**
+ * Normalise Octobook room name variants to canonical category strings.
+ * Keys are exact Octobook h1 text; values are the canonical form used in roomsData.octorateRoomCategory.
+ */
+const OCTOBOOK_ROOM_NAME_NORMALIZATIONS: Record<string, string> = {
+  "Dorm Room": "Dorm",
+};
+
+/**
  * Parse a single room section HTML fragment into an OctorateRoom.
  */
 function parseRoomSection(sectionHtml: string, nights: number): OctorateRoom {
@@ -71,7 +79,8 @@ function parseRoomSection(sectionHtml: string, nights: number): OctorateRoom {
     /<h1[^>]*class="animated fadeInDownShort"[^>]*data-id="([^"]*)"[^>]*>([\s\S]*?)<\/h1>/
   );
   const octorateRoomId = h1Match ? h1Match[1].trim() : "";
-  const octorateRoomName = h1Match ? stripTags(h1Match[2]).trim() : "Unknown";
+  const rawName = h1Match ? stripTags(h1Match[2]).trim() : "Unknown";
+  const octorateRoomName = OCTOBOOK_ROOM_NAME_NORMALIZATIONS[rawName] ?? rawName;
 
   // Extract offert div content
   const offertMatch = sectionHtml.match(/<div[^>]*class="offert"[^>]*>([\s\S]*?)<\/div>/);

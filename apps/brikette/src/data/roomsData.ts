@@ -67,6 +67,8 @@ export interface Room extends Omit<RoomCategory, "images" | "name" | "descriptio
   landingImage: string;
   roomsHref: string;
   features?: RoomFeatures;
+  /** Canonical Octobook room category name used for live pricing match (e.g. "Dorm", "Double", "Apartment", "Dorm Room with One Bunkbed"). */
+  octorateRoomCategory?: string;
 }
 
 const SEASONAL: SeasonalPrice[] = [
@@ -117,6 +119,7 @@ const roomsData: Room[] = [
       viewSpec: "Sea view",
       terracePresent: true,
     },
+    octorateRoomCategory: "Double",
   },
 
   /* ── Room 10 → room_10 ────────────────────────────────────────────── */
@@ -146,6 +149,7 @@ const roomsData: Room[] = [
       bedSpec: "3 bunk beds (6 beds total)",
       bathroomSpec: "Ensuite bathroom",
     },
+    octorateRoomCategory: "Dorm",
   },
 
   /* ── Room 11 → room_11 ───────────────────────────────────────────── */
@@ -180,6 +184,7 @@ const roomsData: Room[] = [
       terracePresent: true,
       inRoomLockers: true,
     },
+    octorateRoomCategory: "Dorm",
   },
 
   /* ── Room 12 → room_12 ───────────────────────────────────────────── */
@@ -214,6 +219,7 @@ const roomsData: Room[] = [
       terracePresent: true,
       inRoomLockers: true,
     },
+    octorateRoomCategory: "Dorm",
   },
 
   /* ── Room 3 → room_3 ─────────────────────────────────────────────── */
@@ -244,6 +250,7 @@ const roomsData: Room[] = [
       bedSpec: "4 bunk beds (8 beds total)",
       bathroomSpec: "Shared female bathroom",
     },
+    octorateRoomCategory: "Dorm",
   },
 
   /* ── Room 4 → room_4 ─────────────────────────────────────────────── */
@@ -273,6 +280,7 @@ const roomsData: Room[] = [
       bedSpec: "4 bunk beds (8 beds total)",
       bathroomSpec: "Shared female bathroom",
     },
+    octorateRoomCategory: "Dorm",
   },
 
   /* ── Room 5 → room_5 ─────────────────────────────────────────────── */
@@ -307,6 +315,7 @@ const roomsData: Room[] = [
       viewSpec: "Sea view",
       terracePresent: true,
     },
+    octorateRoomCategory: "Dorm",
   },
 
   /* ── Room 6 → room_6 ─────────────────────────────────────────────── */
@@ -340,6 +349,7 @@ const roomsData: Room[] = [
       viewSpec: "Sea view",
       terracePresent: true,
     },
+    octorateRoomCategory: "Dorm",
   },
 
   /* ── Room 9 → room_9 ─────────────────────────────────────────────── */
@@ -371,6 +381,7 @@ const roomsData: Room[] = [
       bathroomSpec: "Ensuite bathroom",
       viewSpec: "Courtyard view",
     },
+    octorateRoomCategory: "Dorm",
   },
 
   /* ── Room 8 → room_8 ─────────────────────────────────────────────── */
@@ -403,6 +414,7 @@ const roomsData: Room[] = [
       bathroomSpec: "Shared female bathroom",
       viewSpec: "Garden view",
     },
+    octorateRoomCategory: "Dorm Room with One Bunkbed",
   },
 
   /* ── Apartment → apartment ───────────────────────────────────────── */
@@ -433,6 +445,7 @@ const roomsData: Room[] = [
     },
     landingImage: "/img/apt1.jpg",
     roomsHref: "/private-rooms",
+    octorateRoomCategory: "Apartment",
   },
 ];
 

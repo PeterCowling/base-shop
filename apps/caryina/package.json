@@ -5,12 +5,13 @@
     "dev": "next dev -p 3018",
     "build": "next build",
     "build:worker": "opennextjs-cloudflare build",
+    "build:deps": "pnpm exec turbo run build --filter=@apps/caryina^...",
     "start": "next start -p 3018",
     "lint": "eslint . --no-error-on-unmatched-pattern",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "bash ../../scripts/tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs --passWithNoTests",
-    "e2e": "pnpm exec playwright test --config ./playwright.config.ts",
-    "e2e:smoke": "pnpm exec playwright test --config ./playwright.config.ts --grep @smoke",
+    "e2e": "pnpm run build:deps && pnpm exec playwright test --config ./playwright.config.ts",
+    "e2e:smoke": "pnpm run build:deps && pnpm exec playwright test --config ./playwright.config.ts --grep @smoke",
     "validate:launch-media": "pnpm exec tsx ./scripts/validate-launch-media-contract.ts"
   },
   "dependencies": {

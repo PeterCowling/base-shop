@@ -9,7 +9,7 @@
     "openAriaWithCaption": "Abrir imagen: {{caption}}"
   },
   "header": {
-    "eyebrow": "Hostel Brikette",
+    "eyebrow": "Hostel brikette",
     "title": "Lista de indicaciones de viaje",
     "description": "Utiliza esta guía para ir y volver de tu destino en la Costa Amalfitana y del Hostel Brikette.",
     "heroAlt": "Escalones de piedra enmarcados por buganvillas que conducen a la entrada del Hostel Brikette",
@@ -801,14 +801,14 @@
           "steps": {
             "from": {
               "1": "Positano → puerto (los porteadores pueden ayudar con las maletas).",
-              "2": "Ferry Positano → Salerno.",
+              "2": "Ferri Positano → Salerno.",
               "3": "Camina del puerto de Salerno a la estación de tren.",
               "4": "Tren Salerno → Roma."
             },
             "to": {
               "1": "Tren Roma → Salerno (llegas a la estación de Salerno).",
               "2": "Camina al puerto de Salerno.",
-              "3": "Ferry Salerno → Positano.",
+              "3": "Ferri Salerno → Positano.",
               "4": "Desde el puerto de Positano → hostel (el trayecto puede ser pesado; los porteadores/Interno Bus ayudan)."
             }
           }

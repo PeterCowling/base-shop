@@ -266,7 +266,7 @@
     "clickToEnlarge": "Zum Vergrößern auf das Bild klicken",
     "prevAria": "Vorheriges Bild",
     "nextAria": "Nächstes Bild",
-    "pagination": "{{current}}/{{total}}",
+    "pagination": "{{current}}_{{total}}_",
     "photoAlt": "Foto von {{room}}",
     "noImage": "Kein Bild verfügbar"
   },
@@ -286,7 +286,7 @@
   "filtersAria": "Nach Zimmertyp filtern",
   "checkRatesNonRefundable": "Nicht erstattbare Preise",
   "checkRatesFlexible": "Flexible Zimmerpreise",
-  "checkRatesSingle": "Check Rates",
+  "checkRatesSingle": "Prüfsätze",
   "ctaSuffix": {
     "nonRefundable": "Nicht erstattbar",
     "flexible": "Flexibel"
@@ -306,9 +306,9 @@
     "dorm": "Pro Nacht, pro Gast. Ein Gast in einem Etagenbett."
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2–8 Nächte",
+    "clearDates": "Klare Termine",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} Nächte)"
   },
   "noscript": {
     "jsDisabledAssistance": "Diese Hostelroute nutzt die unterstützte Buchung, wenn JavaScript deaktiviert ist.",

@@ -1,12 +1,12 @@
 {
-  "title": "Hospitality Theme Preview",
+  "title": "ホスピタリティテーマプレビュー",
   "guestActivation": {
-    "label": "Guest activation",
-    "description": "Last 7 days"
+    "label": "ゲストアクティベーション",
+    "description": "7日前"
   },
   "signalBridge": {
-    "title": "Signal bridge check",
-    "etaShared": "ETA shared",
-    "cashPrepared": "Cash prepared"
+    "title": "信号橋点検",
+    "etaShared": "ETA共有",
+    "cashPrepared": "現金準備"
   }
 }

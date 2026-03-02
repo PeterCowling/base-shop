@@ -251,7 +251,7 @@
   "filtersAria": "Filtrer etter romtype",
   "checkRatesNonRefundable": "Ikke‑refunderbare priser",
   "checkRatesFlexible": "Fleksible rompriser",
-  "checkRatesSingle": "Check Rates",
+  "checkRatesSingle": "Sjekk priser",
   "ctaSuffix": {
     "nonRefundable": "Ikke‑refunderbar",
     "flexible": "Fleksibel"
@@ -306,9 +306,9 @@
     "perBed": "seng"
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2-8 netter",
+    "clearDates": "Tøm datoer",
+    "nightsSummary": "{{from}} → {{to}}__{{nights}} nights)"
   },
   "noscript": {
     "jsDisabledAssistance": "Denne vandreruten bruker assistert booking når JavaScript er deaktivert.",

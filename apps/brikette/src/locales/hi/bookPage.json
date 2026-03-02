@@ -44,14 +44,14 @@
   "backToRooms": "कमरों पर वापस जाएँ",
   "hostel": {
     "directSavings": {
-      "eyebrow": "Book direct and save",
-      "headline": "Up to 25% less than Booking.com"
+      "eyebrow": "बुक डायरेक्ट और सेव",
+      "headline": "Booking.com से 25% तक कम"
     }
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2-8 रात",
+    "clearDates": "स्पष्ट तिथि",
+    "nightsSummary": "{{from}}__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________"
   },
   "noscript": {
     "jsDisabledAssistance": "जावास्क्रिप्ट अक्षम होने पर छात्रावास बुकिंग को सहायक सहायता से नियंत्रित किया जाता है।",
@@ -75,7 +75,7 @@
     "errors": {
       "invalidEmail": "एक मान्य ईमेल पता दर्ज करें।",
       "consentRequired": "कोटेशन ईमेल भेजने के लिए सहमति आवश्यक है.",
-      "sendFailed": "Something went wrong. Please try again or contact us directly."
+      "sendFailed": "कुछ गलत हो गया। कृपया फिर से प्रयास करें या सीधे हमसे संपर्क करें।"
     },
     "mailto": {
       "subject": "उद्धरण पुनर्प्राप्ति अनुरोध",
@@ -91,6 +91,52 @@
         "resumeLink": "लिंक फिर से शुरू करें"
       }
     },
-    "sending": "Sending…"
+    "sending": "भेजना"
+  },
+  "subheading": "अपनी तारीख चुनें, फिर एक कमरा चुनें।",
+  "dealBanner": {
+    "applied": "डील लागू: {{code}}_"
+  },
+  "apartment": {
+    "heading": "निजी अपार्टमेंट बुक करें",
+    "subheading": "अपनी तारीख और मेहमानों की संख्या का चयन करें, फिर एक दर चुनें।",
+    "guestLabel": "मेहमानों की संख्या",
+    "guests": {
+      "2": "2 अतिथि",
+      "3": "3 अतिथि"
+    },
+    "flex": {
+      "title": "लचीली दर",
+      "saving": "बचाओ 21% बनाम ओटीए",
+      "bullets": [
+        "Free cancellation up to 3 days before arrival.",
+        "Changes subject to availability."
+      ]
+    },
+    "nr": {
+      "title": "गैर वापसी योग्य",
+      "saving": "26% बनाम ओटीए सहेजें",
+      "bullets": [
+        "Best direct price — paid in full upfront.",
+        "No refunds or changes after booking."
+      ]
+    },
+    "nightsSummary_one": "To make the next step.",
+    "nightsSummary_other": "The night of a day.",
+    "rateLabel": "अपनी दर चुनें",
+    "ratePrompt": "जारी रखने के लिए ऊपर की दर का चयन करें",
+    "cta": {
+      "unselected": "जारी रखने की दर का चयन करें →",
+      "flex": "लचीले - चेकआउट जारी",
+      "nr": "गैर वापसी योग्य - चेकआउट जारी रखें"
+    },
+    "policies": {
+      "title": "नीतियां और शुल्क",
+      "items": [
+        "City/tourist tax: €2.50 per guest per night (added at checkout).",
+        "Cancellation admin fee: typically 15% of booking price.",
+        "Final availability and payment are completed on our official booking engine."
+      ]
+    }
   }
 }

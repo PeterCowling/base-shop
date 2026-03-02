@@ -48,14 +48,14 @@
   "backToRooms": "العودة إلى الغرف",
   "hostel": {
     "directSavings": {
-      "eyebrow": "Book direct and save",
-      "headline": "Up to 25% less than Booking.com"
+      "eyebrow": "كتاب مباشر وفر",
+      "headline": "أقل بنسبة 25% من \"بوكينغ\"."
     }
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "ليالي ٢-٨",
+    "clearDates": "المواعيد النهائية",
+    "nightsSummary": "_"
   },
   "noscript": {
     "jsDisabledAssistance": "تتم معالجة حجوزات النزل من خلال الدعم المساعد عند تعطيل JavaScript.",
@@ -79,7 +79,7 @@
     "errors": {
       "invalidEmail": "أدخل عنوان بريد إلكتروني صالحًا.",
       "consentRequired": "الموافقة مطلوبة لإرسال الاقتباس عبر البريد الإلكتروني.",
-      "sendFailed": "Something went wrong. Please try again or contact us directly."
+      "sendFailed": "حدث شيء خاطئ حاول مرة أخرى أو اتصل بنا مباشرة"
     },
     "mailto": {
       "subject": "طلب استرداد الاقتباس",
@@ -95,6 +95,48 @@
         "resumeLink": "استئناف الارتباط"
       }
     },
-    "sending": "Sending…"
+    "sending": "إرسال..."
+  },
+  "apartment": {
+    "heading": "كتاب الشقة الخاصة",
+    "subheading": "اختيار مواعيدك وعدد الضيوف، ثم اختيار معدل.",
+    "guestLabel": "عدد الضيوف",
+    "guests": {
+      "2": "ضيفان",
+      "3": "3 ضيوف"
+    },
+    "flex": {
+      "title": "المعدل المرن",
+      "saving": "توفير 21 في المائة مقابل تكلفة التشغيل",
+      "bullets": [
+        "Free cancellation up to 3 days before arrival.",
+        "Changes subject to availability."
+      ]
+    },
+    "nr": {
+      "title": "غير قابلة للاسترداد",
+      "saving": "إنقاذ 26 في المائة ضد شركة OTA",
+      "bullets": [
+        "Best direct price — paid in full upfront.",
+        "No refunds or changes after booking."
+      ]
+    },
+    "nightsSummary_one": "__TOK0_ night -- availability confirmed in the next step.",
+    "nightsSummary_other": "__TOK0 __ nights -- availability confirmed in the next step.",
+    "rateLabel": "اختر سعرك",
+    "ratePrompt": "اختيار معدل أعلى من ذلك",
+    "cta": {
+      "unselected": "اختيار معدل لمواصلة",
+      "flex": "مرن - الاستمرار في المراقبة",
+      "nr": "غير قابلة للاسترداد - مواصلة التحقق"
+    },
+    "policies": {
+      "title": "رسوم السياسات",
+      "items": [
+        "City/tourist tax: €2.50 per guest per night (added at checkout).",
+        "Cancellation admin fee: typically 15% of booking price.",
+        "Final availability and payment are completed on our official booking engine."
+      ]
+    }
   }
 }

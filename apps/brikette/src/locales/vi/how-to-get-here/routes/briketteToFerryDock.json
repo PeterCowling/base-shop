@@ -1,40 +1,40 @@
 {
   "figures": {
     "map": {
-      "alt": "Map showing the walking route from Hostel Brikette to Positano port with points 1–5.",
-      "caption": "Route overview: Hostel → Port (points 1–5)."
+      "alt": "Bản đồ cho thấy đường đi từ Hostel Brikette đến cảng Positano với điểm 1–5.",
+      "caption": "Con đường tổng quát: Cổng Hostel  vội (điểm 1–5)."
     },
     "point1": {
-      "alt": "Intersection near Viale Pasitea with a marked route and a label: '1 Turn Right'.",
-      "caption": "Point 1: turn right."
+      "alt": "Giao nhau gần Viale Pasita với một con đường đánh dấu và nhãn: '1 turn right'.",
+      "caption": "Điểm 1: Rẽ phải."
     },
     "tabacchi": {
-      "alt": "Tabacchi storefront with an ATM next to it.",
-      "caption": "Tabacchi near point 1 (good landmark)."
+      "alt": "Cửa hàng Tatacchi có máy ATM kế bên.",
+      "caption": "Tatacchi gần điểm 1 (hình đẹp)."
     },
     "point2": {
-      "alt": "Road switchback with a marked line toward stairs and a label: '2 Take the stairs straight ahead'.",
-      "caption": "Point 2: leave the road and take the stairs straight ahead."
+      "alt": "Công tắc chuyển đổi đường với một dòng được đánh dấu hướng cầu thang và nhãn hiệu: '2 đi cầu thang thẳng về phía trước'.",
+      "caption": "Điểm 2: Rời khỏi đường và đi thẳng cầu thang."
     },
     "point3": {
-      "alt": "Narrow alley with steps and a marked path, labelled '3 Take the stairs straight ahead'.",
-      "caption": "Point 3: continue straight down the stairs."
+      "alt": "Con hẻm hẹp có những bậc thang và một con đường đánh dấu, có nhãn chữ '3 Hãy đi cầu thang thẳng về phía trước'.",
+      "caption": "Điểm 3: Tiếp tục đi thẳng xuống cầu thang."
     },
     "point4": {
-      "alt": "Crosswalk and road with a marked route toward stairs on the right, labelled '4'.",
-      "caption": "Point 4: cross the road, turn left briefly, then take the stairs down on the right."
+      "alt": "Băng qua đường và đi với một con đường đánh dấu về phía cầu thang bên phải, có nhãn là '4'.",
+      "caption": "Điểm 4: băng qua đường, rẽ trái một chút, rồi đi cầu thang xuống bên phải."
     },
     "point5": {
-      "alt": "Small square near the port with a marked route, labelled '5'.",
-      "caption": "Point 5: continue under the archway toward the port."
+      "alt": "Hình vuông nhỏ gần cổng với một con đường đánh dấu, được dán nhãn là 5.",
+      "caption": "Điểm 5: Tiếp tục ở dưới cổng vào."
     },
     "tickets": {
-      "alt": "Ferry ticket booths at Positano port with timetable boards.",
-      "caption": "Ticket booths: check the sign for the next departure."
+      "alt": "Các quầy vé ở cảng Positino với bảng xếp lịch.",
+      "caption": "Bàn vé: Kiểm tra biển hiệu cho chuyến khởi hành tiếp theo."
     },
     "port": {
-      "alt": "View of Positano port with a ferry in the foreground and Positano hillside behind.",
-      "caption": "Positano port: wait near the end of the pier for boarding calls."
+      "alt": "Nhìn thấy cảng Positano với một phà ở sườn đồi Positano phía sau.",
+      "caption": "Cảng Positano: Hãy đợi gần bến tàu để đón khách."
     }
   }
 }

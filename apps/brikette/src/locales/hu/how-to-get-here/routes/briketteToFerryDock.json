@@ -1,40 +1,40 @@
 {
   "figures": {
     "map": {
-      "alt": "Map showing the walking route from Hostel Brikette to Positano port with points 1–5.",
-      "caption": "Route overview: Hostel → Port (points 1–5)."
+      "alt": "A Brikette Hostel és Positano kikötője közötti sétatávolságot bemutató térkép 1-5 ponttal.",
+      "caption": "Útvonal áttekintés: Hostel → Port (1-5. pont)."
     },
     "point1": {
-      "alt": "Intersection near Viale Pasitea with a marked route and a label: '1 Turn Right'.",
-      "caption": "Point 1: turn right."
+      "alt": "A Viale Pasitea közelében lévő keresztmetszet jelöléssel és címkével: \"1 Turn right\".",
+      "caption": "1. pont: fordulj jobbra."
     },
     "tabacchi": {
-      "alt": "Tabacchi storefront with an ATM next to it.",
-      "caption": "Tabacchi near point 1 (good landmark)."
+      "alt": "Tabacchi előtér, mellette ATM.",
+      "caption": "Tabacchi közel 1. pont (jó mérföldkő)."
     },
     "point2": {
-      "alt": "Road switchback with a marked line toward stairs and a label: '2 Take the stairs straight ahead'.",
-      "caption": "Point 2: leave the road and take the stairs straight ahead."
+      "alt": "Út visszaváltás egy megjelölt vonal felé lépcsők és egy címke: \"2 Take a lépcsőn egyenesen előttünk\".",
+      "caption": "2. pont: hagyd el az utat és menj egyenesen a lépcsőn."
     },
     "point3": {
-      "alt": "Narrow alley with steps and a marked path, labelled '3 Take the stairs straight ahead'.",
-      "caption": "Point 3: continue straight down the stairs."
+      "alt": "Szűk sikátor léptekkel és egy megjelölt ösvény, \"3 Take the steps right ahead\" felirattal.",
+      "caption": "3. pont: egyenesen lefelé a lépcsőn."
     },
     "point4": {
-      "alt": "Crosswalk and road with a marked route toward stairs on the right, labelled '4'.",
-      "caption": "Point 4: cross the road, turn left briefly, then take the stairs down on the right."
+      "alt": "Crosswalk és az út egy jelölt útvonal felé lépcsők a jobb oldalon, címkézett \"4\".",
+      "caption": "4-es pont: átkelünk az úton, rövid időre balra fordulunk, majd a jobb oldali lépcsőn megyünk."
     },
     "point5": {
-      "alt": "Small square near the port with a marked route, labelled '5'.",
-      "caption": "Point 5: continue under the archway toward the port."
+      "alt": "Kis tér a kikötő közelében, jelöléssel ellátott útvonalon, '5' jelöléssel.",
+      "caption": "5-ös pont: folytassuk az íj alatt a kikötő felé."
     },
     "tickets": {
-      "alt": "Ferry ticket booths at Positano port with timetable boards.",
-      "caption": "Ticket booths: check the sign for the next departure."
+      "alt": "A Positano kikötőjében lévő kompjegyfülkék menetrendtáblákkal.",
+      "caption": "Jegyfülkék: ellenőrizzék a következő indulási jelet."
     },
     "port": {
-      "alt": "View of Positano port with a ferry in the foreground and Positano hillside behind.",
-      "caption": "Positano port: wait near the end of the pier for boarding calls."
+      "alt": "Kilátás Positano kikötő komppal az előtérben és Positano domboldalon mögött.",
+      "caption": "Positano kikötő: várjon a móló végén a beszállási hívásokra."
     }
   }
 }

@@ -1,40 +1,40 @@
 {
   "figures": {
     "map": {
-      "alt": "Map showing the walking route from Hostel Brikette to Positano port with points 1–5.",
-      "caption": "Route overview: Hostel → Port (points 1–5)."
+      "alt": "显示从布里凯特旅店到波西塔诺港的步行路线的地图,有1–5点.",
+      "caption": "路线概况:招待所 →埠(点1~5)."
     },
     "point1": {
-      "alt": "Intersection near Viale Pasitea with a marked route and a label: '1 Turn Right'.",
-      "caption": "Point 1: turn right."
+      "alt": "Viale Pasita附近有标记的路线和标签:\"1转右\".",
+      "caption": "第1点:右转。"
     },
     "tabacchi": {
-      "alt": "Tabacchi storefront with an ATM next to it.",
-      "caption": "Tabacchi near point 1 (good landmark)."
+      "alt": "塔巴奇店面旁边有自动取款机",
+      "caption": "塔巴奇靠近1号点(良好的地标)."
     },
     "point2": {
-      "alt": "Road switchback with a marked line toward stairs and a label: '2 Take the stairs straight ahead'.",
-      "caption": "Point 2: leave the road and take the stairs straight ahead."
+      "alt": "路向回转 上面有一条通往楼梯的标志线 上面有一条标签 \"2号楼梯直走\"",
+      "caption": "第二点:离开道路,直走楼梯。"
     },
     "point3": {
-      "alt": "Narrow alley with steps and a marked path, labelled '3 Take the stairs straight ahead'.",
-      "caption": "Point 3: continue straight down the stairs."
+      "alt": "狭小的小巷,有台阶和标记的路径,标注\"3 直接走楼梯\".",
+      "caption": "第3点:继续直下楼梯。"
     },
     "point4": {
-      "alt": "Crosswalk and road with a marked route toward stairs on the right, labelled '4'.",
-      "caption": "Point 4: cross the road, turn left briefly, then take the stairs down on the right."
+      "alt": "十字路口和道路 右侧有一条通往楼梯的标记路线 标记为\"4\"",
+      "caption": "第4点:穿过道路,向左短暂转弯,然后沿右侧楼梯下行."
     },
     "point5": {
-      "alt": "Small square near the port with a marked route, labelled '5'.",
-      "caption": "Point 5: continue under the archway toward the port."
+      "alt": "港口附近有个小广场,有标记路线,标签为\"5\".",
+      "caption": "第5点: 继续往港口的拱门下"
     },
     "tickets": {
-      "alt": "Ferry ticket booths at Positano port with timetable boards.",
-      "caption": "Ticket booths: check the sign for the next departure."
+      "alt": "波西塔诺港的轮机售票亭设有时间表板.",
+      "caption": "票房:检查牌子 下一站出发."
     },
     "port": {
-      "alt": "View of Positano port with a ferry in the foreground and Positano hillside behind.",
-      "caption": "Positano port: wait near the end of the pier for boarding calls."
+      "alt": "波西塔诺港的景色在前方有渡轮,后面还有波西塔诺山坡.",
+      "caption": "波西塔诺港:在码头尽头附近等待登机."
     }
   }
 }

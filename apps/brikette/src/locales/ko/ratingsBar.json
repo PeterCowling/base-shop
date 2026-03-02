@@ -9,12 +9,13 @@
   "lastChecked": "마지막 확인:",
   "sources": {
     "hostelworld": {
-      "ariaName": "Hostelworld",
-      "label": "Hostelworld"
+      "ariaName": "호스텔월드",
+      "label": "호스텔월드"
     },
     "booking": {
       "ariaName": "부킹닷컴",
-      "label": "Booking.com"
+      "label": "호텔 예약"
     }
-  }
+  },
+  "snapshotAsOf": "{{date}}의 경우"
 }

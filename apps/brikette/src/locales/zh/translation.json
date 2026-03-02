@@ -24,8 +24,8 @@
     "reload": "重新加载页面"
   },
   "meta": {
-    "twitterCard": "summary_large_image",
-    "twitterHandle": "@brikette"
+    "twitterCard": "摘要_ 大图像",
+    "twitterHandle": "@brikette (英语)."
   },
   "internalErrors": {
     "assistanceSlugMissing": "ARTICLE_SLUGS 必须定义至少一个 assistance slug"

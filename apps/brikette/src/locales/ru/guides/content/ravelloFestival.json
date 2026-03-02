@@ -60,11 +60,11 @@
     }
   ],
   "eventSchema": {
-    "name": "Ravello Festival",
+    "name": "Фестиваль Равелло",
     "startDate": "2025-07-01",
     "endDate": "2025-09-15",
     "locationName": "Площадки Ravello Festival",
-    "addressLocality": "Ravello",
+    "addressLocality": "Равелло",
     "description": "Летний фестиваль классической музыки с видами на Амальфитанское побережье. Смотрите официальную программу для дат и билетов."
   }
 }

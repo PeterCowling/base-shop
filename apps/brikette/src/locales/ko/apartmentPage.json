@@ -52,5 +52,115 @@
         "alt": "포지타노 거리"
       }
     ]
+  },
+  "directSavings": {
+    "eyebrow": "직접 예약 및 저장",
+    "heading": "최대 26% 미만 Booking.com",
+    "nr": {
+      "label": "환불 규정",
+      "saving": "저장 26%",
+      "detail": "공급 업체"
+    },
+    "flex": {
+      "label": "가동 가능한 비율",
+      "saving": "저장 21%",
+      "detail": "무료 취소"
+    }
+  },
+  "heroTagline": "Private Apartment · Positano, 이탈리아",
+  "galleryCaptions": [
+    "Full private bathroom with rain-head shower and designer fittings",
+    "Bright open-plan living space with dining area, TV lounge and mezzanine staircase",
+    "Fully equipped kitchen with dishwasher, washing machine and traditional Positano tilework"
+  ],
+  "fitCheck": {
+    "heading": "이 아파트는 맞습니까?",
+    "arrival": {
+      "label": "이름 *",
+      "text": "도로에서 아파트 입구까지 거리 계단 없음."
+    },
+    "inside": {
+      "label": "이름 *",
+      "text": "거실과 침실 사이에 내부 계단을 가진 분할 수준 실내."
+    },
+    "sleeping": {
+      "label": "잠자는엄마",
+      "text": "소파 침대 downstairs; 더블 침대 upstairs."
+    },
+    "sound": {
+      "label": "지원하다",
+      "text": "일부 도로와 테라스 주변; 자정에서 조용한 시간."
+    },
+    "bestFit": {
+      "label": "가장 좋은",
+      "text": "커플에 이상적입니다. 그룹에 있는 사람이 계단을 피하기 위하여 선호하는 경우에, downstairs 소파 침대는 안락한 대안입니다. 아주 가벼운 슬리퍼를 위해 추천되지 않습니다."
+    }
+  },
+  "hub": {
+    "streetLevelCard": {
+      "title": "스트리트 레벨 도착",
+      "subtitle": "도로에서 입구까지 거리 계단 없음",
+      "cta": "더 알아보기"
+    },
+    "privateStayCard": {
+      "title": "숙박 약관",
+      "subtitle": "옵션 테라스, 바 및 아침 식사 다음 문",
+      "cta": "더 알아보기"
+    }
+  },
+  "checkAvailability": "자주 묻는 질문",
+  "streetLevelArrival": {
+    "meta": {
+      "title": "Positano의 단계 무료 도착 — No Street Stairs",
+      "description": "우리의 아파트는 도로에서 입구까지 무료 액세스 할 수 있습니다 - 가파른 Positano에서 드문. 계단 없음, 수하물과 투쟁 없음."
+    },
+    "heroTitle": "Step-free 도착",
+    "heroSubtitle": "도로에서 아파트 입구까지 거리 계단 없음",
+    "heroBody": "수백 개의 단계로 유명한 도시에서, 우리의 아파트는 다릅니다. 프론트 도어로 도로에서 직진 - 계단 없음, 수하물이나 유모차와 투쟁.",
+    "videoPlaceholder": "곧 다가오는 거리에 문 비디오",
+    "clarification": "아파트 입구는 거리에서 무료입니다. 내부, 아파트는 거실과 침실 사이에 내부 계단으로 나뉩니다.",
+    "whatsappCta": "빠른 답변을위한 WhatsApp",
+    "checkAvailability": "자주 묻는 질문"
+  },
+  "privateStay": {
+    "meta": {
+      "title": "Positano의 개인 서비스 아파트",
+      "description": "전체 부엌이있는 개인 85sqm 아파트, 테라스, 아침 식사 및 바 옆 문에 옵션 액세스를 전문으로 관리."
+    },
+    "heroTitle": "Positano의 개인 아파트",
+    "heroSubtitle": "해당 이용 후기에 달린 코멘트가 없습니다.",
+    "sections": {
+      "privacy": {
+        "title": "자주 묻는 질문",
+        "body": "85sqm 아파트는 전적으로 당신입니다. 풀 주방, 세탁기 및 건조기, 2 개의 욕실 및 공간을 확산합니다. 공유 공간 없음, 체크인 데스크 없음 - 그냥 당신의 자신의 앞문."
+      },
+      "support": {
+        "title": "당신이 그것을 필요로 할 때 직업적인 지원",
+        "body": "경험있는 환대 팀에 의해 관리 바로 다음 문. 레스토랑 권고 사항, 방향에 도움, 또는 아무것도 도움? 전문 지원은 짧은 도보."
+      },
+      "amenities": {
+        "title": "옵션 추가 다음 문",
+        "body": "원하는 경우, 바다 전망 테라스, 아침 식사 서비스, 바는 다음 문 사용할 수 있습니다. 일정에 그들을 즐기거나 완전히 건너 뛰기 - 선택은 당신입니다."
+      }
+    },
+    "whatsappCta": "빠른 답변을위한 WhatsApp",
+    "checkAvailability": "자주 묻는 질문"
+  },
+  "book": {
+    "meta": {
+      "title": "Positano 아파트",
+      "description": "Positano의 전용 아파트를 예약하십시오. Step-free 도착, 전체 주방, 수면 4."
+    },
+    "heroTitle": "자주 묻는 질문",
+    "heroSubtitle": "Positano의 개인 아파트",
+    "dateLabel": "자주 묻는 질문",
+    "checkinLabel": "체크인",
+    "checkoutLabel": "체크아웃",
+    "rateNonRefundable": "환불 불가",
+    "rateFlexible": "가동 가능한 (무료 취소)",
+    "checkAvailability": "자주 묻는 질문",
+    "orBookingCom": "또는 Booking.com에 예약",
+    "whatsappCta": "빠른 답변을위한 WhatsApp",
+    "backLink": "← 아파트 상세"
   }
 }

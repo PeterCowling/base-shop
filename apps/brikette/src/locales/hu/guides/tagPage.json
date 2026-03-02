@@ -3,6 +3,6 @@
   "articleCount_other": "{{count}} cikk",
   "topTagsHeading": "Legnépszerűbb címkék",
   "robots": {
-    "noindexFollow": "noindex,follow"
+    "noindexFollow": "noindex, követ"
   }
 }

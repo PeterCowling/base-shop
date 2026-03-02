@@ -20,15 +20,15 @@
   "howToGetHere": "Como chegar",
   "exploreHeading": "Explorar",
   "infoHeading": "Informações",
-  "legalHeading": "Legal",
+  "legalHeading": "Jurídico",
   "locationHeading": "Localização",
   "mapLink": "Abrir no Google Maps",
   "addressCountry": "Itália",
   "faq": "FAQ",
-  "checkinCheckout": "Check-in / Check-out",
+  "checkinCheckout": "check-in / check-out",
   "houseRules": "Regras da casa",
   "cancellationPolicy": "Política de cancelamento",
   "privacy": "Política de privacidade",
   "cookies": "Política de cookies",
-  "navAriaLabel": "Footer navigation"
+  "navAriaLabel": "Navegação de rodapé"
 }

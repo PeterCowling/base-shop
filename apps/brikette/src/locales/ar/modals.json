@@ -159,12 +159,12 @@
     "close": "إغلاق"
   },
   "loader": {
-    "ariaLabel": "Loading"
+    "ariaLabel": "التحميل"
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "ليالي ٢-٨",
+    "clearDates": "المواعيد النهائية",
+    "nightsSummary": "_"
   },
   "directPerks": {
     "heading": "لماذا تحجز مباشرة؟",

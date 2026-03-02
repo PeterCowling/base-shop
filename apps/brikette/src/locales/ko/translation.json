@@ -24,8 +24,8 @@
     "reload": "페이지 다시 불러오기"
   },
   "meta": {
-    "twitterCard": "summary_large_image",
-    "twitterHandle": "@brikette"
+    "twitterCard": "요약_large_image",
+    "twitterHandle": "@brikette의"
   },
   "internalErrors": {
     "assistanceSlugMissing": "ARTICLE_SLUGS에는 최소 한 개의 도움말 슬러그가 정의되어야 합니다."

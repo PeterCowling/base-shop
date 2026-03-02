@@ -4,7 +4,7 @@
     "description": "Gyakorlati útmutatók a Hostel Brikette megközelítéséhez Amalfiból, Capriból, Nápolyból, Salernóból, Ravellóból, Rómából és Szorrentóból, a közlekedési lehetőségek előnyeivel és hátrányaival együtt."
   },
   "header": {
-    "eyebrow": "Hostel Brikette",
+    "eyebrow": "Brikette Hostel",
     "title": "Utazási útvonalak listája",
     "description": "Használd ezt az útmutatót, hogy oda-vissza eljuss az Amalfi-parti úti célodhoz és a Hostel Brikette-hez.",
     "heroAlt": "Bugenvilleával szegélyezett kőlépcsők a Hostel Brikette bejáratához",
@@ -70,8 +70,8 @@
     "taxi": "Taxis rendeléséhez WhatsAppon írjon az alábbi számra angolul vagy olaszul: <Strong>{{contact}}</Strong>.",
     "shuttle": "Szeretne inkább transzfert? A Sea Horse Car Service megosztott transzfereket indít; foglaljon helyet az <Link>hivatalos shuttle oldalán</Link>.",
     "taxiContact": "+39 379 125 6222",
-    "taxiEyebrow": "Hostel Brikette by Taxi",
-    "shuttleEyebrow": "Hostel Brikette by Shuttle",
+    "taxiEyebrow": "Hostel Brikette taxival",
+    "shuttleEyebrow": "Hostel Brikette transzferrel",
     "whatsappTemplate": "Üdvözlöm! A Hostel Brikette-ben szállok meg. Taxit szeretnék foglalni Positanóba/Positanóból. Az érkezésem ideje: ____",
     "emailSubject": "Segítség az érkezéshez",
     "emailBody": "Üdvözlöm, Hostel Brikette csapat — ma érkezem, és segítségre van szükségem a legjobb út kiválasztásához. A várható érkezésem: ____",

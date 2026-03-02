@@ -4,7 +4,7 @@
     "description": "Reggeli naponta 08:00–10:30. Tojásos kombinációk, édes és egészséges opciók, levek, turmixok és kávé – görgess le a részletekhez."
   },
   "header": {
-    "brand": "Hostel Brikette",
+    "brand": "Brikette Hostel",
     "menuTitle": "Reggeli menü, 2025",
     "hours": "Naponta 08:00 – 10:30"
   },
@@ -127,7 +127,7 @@
       "name": "Macchiato"
     },
     "americano": {
-      "name": "Americano / Long Black"
+      "name": "Amerikai / hosszú fekete"
     },
     "cappuccino": {
       "name": "Cappuccino"

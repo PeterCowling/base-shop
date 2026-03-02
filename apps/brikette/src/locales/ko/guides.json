@@ -347,5 +347,10 @@
         "experience": "체험"
       }
     }
+  },
+  "search": {
+    "noResults": "자주 묻는 질문",
+    "resultsCount_one": "{{count}} 가이드",
+    "resultsCount_other": "{{count}} 가이드"
   }
 }

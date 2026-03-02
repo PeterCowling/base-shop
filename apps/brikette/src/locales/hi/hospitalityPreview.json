@@ -1,12 +1,12 @@
 {
-  "title": "Hospitality Theme Preview",
+  "title": "आतिथ्य थीम पूर्वावलोकन",
   "guestActivation": {
-    "label": "Guest activation",
-    "description": "Last 7 days"
+    "label": "अतिथि सक्रियण",
+    "description": "पिछले 7 दिनों"
   },
   "signalBridge": {
-    "title": "Signal bridge check",
-    "etaShared": "ETA shared",
-    "cashPrepared": "Cash prepared"
+    "title": "सिग्नल ब्रिज चेक",
+    "etaShared": "ETA साझा",
+    "cashPrepared": "नकद तैयार"
   }
 }

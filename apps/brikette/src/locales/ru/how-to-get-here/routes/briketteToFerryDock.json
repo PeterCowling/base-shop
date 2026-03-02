@@ -1,40 +1,40 @@
 {
   "figures": {
     "map": {
-      "alt": "Map showing the walking route from Hostel Brikette to Positano port with points 1–5.",
-      "caption": "Route overview: Hostel → Port (points 1–5)."
+      "alt": "Карта, показывающая пешеходный маршрут от Хостела Брикетт до порта Позитано с точками 1-5.",
+      "caption": "Обзор маршрута: Хостел → Порт (точки 1-5)."
     },
     "point1": {
-      "alt": "Intersection near Viale Pasitea with a marked route and a label: '1 Turn Right'.",
-      "caption": "Point 1: turn right."
+      "alt": "Пересечение возле Виале Паситеа с обозначенным маршрутом и надписью: «1 Повернуть направо».",
+      "caption": "Пункт 1: повернуть направо."
     },
     "tabacchi": {
-      "alt": "Tabacchi storefront with an ATM next to it.",
-      "caption": "Tabacchi near point 1 (good landmark)."
+      "alt": "Магазин Tabacchi с банкоматом рядом с ним.",
+      "caption": "Табаччи около точки 1 (хорошая достопримечательность)."
     },
     "point2": {
-      "alt": "Road switchback with a marked line toward stairs and a label: '2 Take the stairs straight ahead'.",
-      "caption": "Point 2: leave the road and take the stairs straight ahead."
+      "alt": "Обратная дорога с обозначенной линией по направлению к лестнице и надписью: «2 Возьмите лестницу прямо вперед».",
+      "caption": "Пункт 2: выйдите из дороги и пройдите по лестнице прямо вперед."
     },
     "point3": {
-      "alt": "Narrow alley with steps and a marked path, labelled '3 Take the stairs straight ahead'.",
-      "caption": "Point 3: continue straight down the stairs."
+      "alt": "Узкая аллея со ступенями и обозначенной тропой, помеченной как «3 Ступенька прямо вперед».",
+      "caption": "Пункт 3: продолжить прямо по лестнице."
     },
     "point4": {
-      "alt": "Crosswalk and road with a marked route toward stairs on the right, labelled '4'.",
-      "caption": "Point 4: cross the road, turn left briefly, then take the stairs down on the right."
+      "alt": "Прогулка и дорога с обозначенным маршрутом к лестнице справа, обозначенным как «4».",
+      "caption": "Пункт 4: пересечь дорогу, ненадолго повернуть налево, затем спуститься по лестнице направо."
     },
     "point5": {
-      "alt": "Small square near the port with a marked route, labelled '5'.",
-      "caption": "Point 5: continue under the archway toward the port."
+      "alt": "Небольшая площадь возле порта с обозначенным маршрутом, обозначенным как «5».",
+      "caption": "Пункт 5: продолжить под аркой в сторону порта."
     },
     "tickets": {
-      "alt": "Ferry ticket booths at Positano port with timetable boards.",
-      "caption": "Ticket booths: check the sign for the next departure."
+      "alt": "Автобусы в порту Позитано с расписанием.",
+      "caption": "Билетные кабинки: проверьте знак для следующего отправления."
     },
     "port": {
-      "alt": "View of Positano port with a ferry in the foreground and Positano hillside behind.",
-      "caption": "Positano port: wait near the end of the pier for boarding calls."
+      "alt": "Вид на порт Позитано с паромом на переднем плане и холмом Позитано позади.",
+      "caption": "Порт Позитано: подождите ближе к концу пирса для посадки."
     }
   }
 }

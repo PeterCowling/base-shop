@@ -44,14 +44,14 @@
   "backToRooms": "Torna alle camere",
   "hostel": {
     "directSavings": {
-      "eyebrow": "Book direct and save",
-      "headline": "Up to 25% less than Booking.com"
+      "eyebrow": "Prenota direttamente e risparmia",
+      "headline": "Fino al 25% in meno di Booking.com"
     }
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2-8 notti",
+    "clearDates": "Date chiare",
+    "nightsSummary": "{{from}} → {{to}} (_TOK2__ notti)"
   },
   "noscript": {
     "jsDisabledAssistance": "Le prenotazioni degli ostelli vengono gestite con supporto assistito quando JavaScript è disabilitato.",
@@ -75,14 +75,14 @@
     "errors": {
       "invalidEmail": "Inserisci un indirizzo email valido.",
       "consentRequired": "Per inviare la email di preventivo è necessario il consenso.",
-      "sendFailed": "Something went wrong. Please try again or contact us directly."
+      "sendFailed": "Qualcosa è andato storto. Si prega di riprovare o contattarci direttamente."
     },
     "mailto": {
       "subject": "Richiesta di recupero preventivo",
       "bodyIntro": "Per favore, inviami questo preventivo e un promemoria di follow-up.",
       "labels": {
         "guestEmail": "E-mail ospite",
-        "checkIn": "Check-in",
+        "checkIn": "check-in",
         "checkOut": "Guardare",
         "guests": "Ospiti",
         "sourceRoute": "Percorso di origine",
@@ -91,6 +91,52 @@
         "resumeLink": "Riprendi il collegamento"
       }
     },
-    "sending": "Sending…"
+    "sending": "Invio..."
+  },
+  "subheading": "Scegli le tue date e scegli una stanza.",
+  "dealBanner": {
+    "applied": "Affare fatto: {{code}}"
+  },
+  "apartment": {
+    "heading": "Prenota l'appartamento privato",
+    "subheading": "Selezionare le date e il numero di ospiti, quindi scegliere un tasso.",
+    "guestLabel": "Numero di ospiti",
+    "guests": {
+      "2": "2 ospiti",
+      "3": "3 ospiti"
+    },
+    "flex": {
+      "title": "Tariffa flessibile",
+      "saving": "Salva 21% contro OTA",
+      "bullets": [
+        "Free cancellation up to 3 days before arrival.",
+        "Changes subject to availability."
+      ]
+    },
+    "nr": {
+      "title": "Non rimborsabile",
+      "saving": "Salva 26% contro OTA",
+      "bullets": [
+        "Best direct price — paid in full upfront.",
+        "No refunds or changes after booking."
+      ]
+    },
+    "nightsSummary_one": "{{count}} notte — disponibilità confermata nella fase successiva.",
+    "nightsSummary_other": "{{count}} notti — disponibilità confermata nella fase successiva.",
+    "rateLabel": "Scegli la tua tariffa",
+    "ratePrompt": "Selezionare una tariffa sopra per continuare",
+    "cta": {
+      "unselected": "Seleziona una tariffa per continuare →",
+      "flex": "Flessibile – Continua a controllare",
+      "nr": "Non rimborsabile – Continua al checkout"
+    },
+    "policies": {
+      "title": "Politiche e costi",
+      "items": [
+        "City/tourist tax: €2.50 per guest per night (added at checkout).",
+        "Cancellation admin fee: typically 15% of booking price.",
+        "Final availability and payment are completed on our official booking engine."
+      ]
+    }
   }
 }

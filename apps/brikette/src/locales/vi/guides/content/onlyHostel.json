@@ -39,25 +39,25 @@
       ]
     }
   ],
-  "highlightsTitle": "Highlights",
+  "highlightsTitle": "Tô sáng",
   "highlights": [
     "Bản dịch đang được chuẩn bị.",
     "Bản dịch đang được chuẩn bị.",
     "Bản dịch đang được chuẩn bị.",
     "Bản dịch đang được chuẩn bị."
   ],
-  "saveTitle": "How to save",
+  "saveTitle": "Cách cứu người",
   "save": [
     "Bản dịch đang được chuẩn bị.",
     "Bản dịch đang được chuẩn bị.",
     "Bản dịch đang được chuẩn bị."
   ],
   "toc": {
-    "onThisPage": "On this page",
-    "rooms": "Rooms & Facilities",
-    "arrival": "Getting here",
-    "etiquette": "House rules & etiquette",
-    "faqs": "FAQs"
+    "onThisPage": "Trên trang này",
+    "rooms": "Các tiện ích & phòng",
+    "arrival": "Đến rồi",
+    "etiquette": "Nguyên tắc nhà & xã giao",
+    "faqs": "Câu hỏi thường gặp"
   },
   "roomsList": [
     "Bản dịch đang được chuẩn bị.",
@@ -75,7 +75,7 @@
     "ferryDockToBrikette",
     "ferrySchedules"
   ],
-  "arrivalRoutesLabel": "Routes:",
+  "arrivalRoutesLabel": "Đường:",
   "arrivalRoutes": [
     "naplesPositano",
     "salernoPositano"

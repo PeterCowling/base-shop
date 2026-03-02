@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "Hostel Brikette",
+    "title": "Brikette hostel",
     "reserve": "Zarezerwuj teraz"
   },
   "intro": {
@@ -25,7 +25,7 @@
   },
   "meta": {
     "twitterCard": "podsumowanie_LARGE_IMAGE",
-    "twitterHandle": "@brikette"
+    "twitterHandle": "@ brikette"
   },
   "internalErrors": {
     "assistanceSlugMissing": "ARTICLE_SLUGS musi definiować co najmniej jeden slug pomocy"

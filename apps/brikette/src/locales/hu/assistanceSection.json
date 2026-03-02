@@ -13,7 +13,7 @@
   "addressValue": "Via G. Marconi, 358, 84017, Positano",
   "bookDirect": "Közvetlen foglalás",
   "bookingOptions": {
-    "googleBusiness": "Google Business",
+    "googleBusiness": "Google üzlet",
     "bookingCom": "Booking.com",
     "hostelWorld": "Hostelworld",
     "instagram": "Instagram"
@@ -42,7 +42,7 @@
     "cardCta": "Olvasd el a {{guideTitle}} tervezési útmutatót"
   },
   "crosslinks": {
-    "heading": "{{howToTitle}} · {{experiencesTitle}}",
-    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}"
+    "heading": "TOK0 _ BAR _ TOK1 _ BAR _",
+    "intro": "TOK0 _ _ _ _ _ TOK1 _ _"
   }
 }

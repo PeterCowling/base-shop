@@ -266,7 +266,7 @@
     "clickToEnlarge": "画像をクリックして拡大",
     "prevAria": "前の画像",
     "nextAria": "次の画像",
-    "pagination": "{{current}}/{{total}}",
+    "pagination": "お問い合わせ",
     "photoAlt": "{{room}}の写真",
     "noImage": "利用可能な画像はありません"
   },
@@ -286,10 +286,10 @@
   "filtersAria": "部屋タイプで絞り込む",
   "checkRatesNonRefundable": "返金不可料金",
   "checkRatesFlexible": "フレキシブル料金",
-  "checkRatesSingle": "Check Rates",
+  "checkRatesSingle": "料金をチェック",
   "ctaSuffix": {
-    "nonRefundable": "Non‑Refundable",
-    "flexible": "Flexible"
+    "nonRefundable": "返金不可",
+    "flexible": "フレキシブル"
   },
   "details": "詳細",
   "ratesFrom": "€{{price}} から",
@@ -300,15 +300,15 @@
   "confirm": "確認",
   "cancel": "キャンセル",
   "moreAboutThisRoom": "この部屋の詳細",
-  "loadingPrice": "Loading price…",
+  "loadingPrice": "ローディング価格...",
   "landingImageAlt": "{{room}}のメイン画像",
   "priceNotes": {
     "dorm": "1泊1名様。1つの二段ベッドに1名様。"
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2～8泊",
+    "clearDates": "明確な日付",
+    "nightsSummary": "{{from}}_ → {{to}}_ ({{nights}}__ 夜)"
   },
   "noscript": {
     "jsDisabledAssistance": "このホステルのルートは、JavaScript が無効の場合に予約アシストを使用します。",

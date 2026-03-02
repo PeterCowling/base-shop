@@ -52,5 +52,115 @@
         "alt": "Positanos gator"
       }
     ]
+  },
+  "directSavings": {
+    "eyebrow": "Boka direkt och spara",
+    "heading": "Upp till 26% mindre än Booking.com",
+    "nr": {
+      "label": "Icke-Refundable",
+      "saving": "Spara 26%",
+      "detail": "Bästa direktpriset"
+    },
+    "flex": {
+      "label": "Flexibelt pris",
+      "saving": "Spara 21%",
+      "detail": "Gratis avbokning"
+    }
+  },
+  "heroTagline": "Privat lägenhet · Positano, Italien",
+  "galleryCaptions": [
+    "Full private bathroom with rain-head shower and designer fittings",
+    "Bright open-plan living space with dining area, TV lounge and mezzanine staircase",
+    "Fully equipped kitchen with dishwasher, washing machine and traditional Positano tilework"
+  ],
+  "fitCheck": {
+    "heading": "Är denna lägenhet rätt för dig?",
+    "arrival": {
+      "label": "Ankomst",
+      "text": "Inga gatutrappor från vägen till lägenheten ingång."
+    },
+    "inside": {
+      "label": "Inuti",
+      "text": "Split-nivå interiör med inre trappor mellan vardagsrum och sovrum."
+    },
+    "sleeping": {
+      "label": "Sova",
+      "text": "Soffa säng nere, dubbelsäng på övervåningen."
+    },
+    "sound": {
+      "label": "Ljud",
+      "text": "Några väg och terrass atmosfär; terrass tysta timmar från midnatt."
+    },
+    "bestFit": {
+      "label": "Bästa fit",
+      "text": "Perfekt för par. Om någon i din grupp föredrar att undvika trappor, är bottenbädden ett bekvämt alternativ. Rekommenderas inte för mycket lätta sovande."
+    }
+  },
+  "hub": {
+    "streetLevelCard": {
+      "title": "Street-nivå ankomst",
+      "subtitle": "Inga gatutrappor från väg till ingång",
+      "cta": "Lär dig mer"
+    },
+    "privateStayCard": {
+      "title": "Privat serviced vistelse",
+      "subtitle": "Med valfri terrass, bar och frukost bredvid",
+      "cta": "Lär dig mer"
+    }
+  },
+  "checkAvailability": "Kolla tillgänglighet",
+  "streetLevelArrival": {
+    "meta": {
+      "title": "Stegfri ankomst i Positano - Ingen trappa",
+      "description": "Vår lägenhet erbjuder stegfri tillgång från vägen till ingången - sällsynt i brant Positano. Inga trappor, ingen kamp med bagage."
+    },
+    "heroTitle": "Stegfri ankomst",
+    "heroSubtitle": "Inga gatutrappor från vägen till lägenheten ingången",
+    "heroBody": "I en stad känd för hundratals steg är vår lägenhet annorlunda. Gå direkt från vägen till din ytterdörr - inga trappor, ingen kamp med bagage eller barnvagnar.",
+    "videoPlaceholder": "Street-to-door video kommer snart",
+    "clarification": "Lägenheten ingången är stegfri från gatan. Inuti är lägenheten delad nivå med inre trappor mellan vardagsrummet och sovrummet.",
+    "whatsappCta": "WhatsApp för snabba svar",
+    "checkAvailability": "Kolla tillgänglighet"
+  },
+  "privateStay": {
+    "meta": {
+      "title": "Privat service lägenhet i Positano",
+      "description": "En privat 85sqm lägenhet med fullt kök, professionellt hanteras med valfri tillgång till terrass, frukost och bar bredvid."
+    },
+    "heroTitle": "Din privata lägenhet i Positano",
+    "heroSubtitle": "Professionellt hanterad med gästfrihetsgrad stöd bredvid",
+    "sections": {
+      "privacy": {
+        "title": "Fullständig självständighet",
+        "body": "En 85 kvm lägenhet som är helt din. Fullt kök, tvättmaskin och torktumlare, två badrum och utrymme att sprida ut. Inga delade utrymmen, ingen incheckningsdisk - bara din egen ytterdörr."
+      },
+      "support": {
+        "title": "Professionellt stöd när du behöver det",
+        "body": "Hanteras av ett erfaret gästfrihetsteam baserat precis intill. Behöver du restaurangrekommendationer, hjälp med riktningar eller hjälp med något? Professionellt stöd är en kort promenad bort."
+      },
+      "amenities": {
+        "title": "Valfria extras bredvid",
+        "body": "Om du vill ha dem, en terrass med havsutsikt, frukostservice och en bar finns bredvid. Njut av dem på ditt schema, eller hoppa över dem helt - valet är ditt."
+      }
+    },
+    "whatsappCta": "WhatsApp för snabba svar",
+    "checkAvailability": "Kolla tillgänglighet"
+  },
+  "book": {
+    "meta": {
+      "title": "Boka vår Positano lägenhet",
+      "description": "Kontrollera tillgänglighet och boka vår privata lägenhet i Positano. Stegfri ankomst, fullt kök, sover 4."
+    },
+    "heroTitle": "Boka din vistelse",
+    "heroSubtitle": "Privat lägenhet i Positano",
+    "dateLabel": "Välj datum",
+    "checkinLabel": "Incheckning",
+    "checkoutLabel": "check-out",
+    "rateNonRefundable": "Icke återbetalningsbara",
+    "rateFlexible": "Flexibel (fri avbokning)",
+    "checkAvailability": "Kolla tillgänglighet",
+    "orBookingCom": "Eller boka på Booking.com",
+    "whatsappCta": "WhatsApp för snabba svar",
+    "backLink": "← Tillbaka till lägenhet detaljer"
   }
 }

@@ -48,14 +48,14 @@
   "backToRooms": "Retour aux chambres",
   "hostel": {
     "directSavings": {
-      "eyebrow": "Book direct and save",
-      "headline": "Up to 25% less than Booking.com"
+      "eyebrow": "Réservez directement et enregistrez",
+      "headline": "Jusqu'à 25% de moins que Booking.com"
     }
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2–8 nuits",
+    "clearDates": "Effacer les dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nuits)"
   },
   "noscript": {
     "jsDisabledAssistance": "Les réservations d'auberges sont traitées avec une assistance assistée lorsque JavaScript est désactivé.",
@@ -79,7 +79,7 @@
     "errors": {
       "invalidEmail": "Entrez une adresse e-mail valide.",
       "consentRequired": "Le consentement est requis pour envoyer l’e-mail de devis.",
-      "sendFailed": "Something went wrong. Please try again or contact us directly."
+      "sendFailed": "Quelque chose s'est mal passé. Veuillez réessayer ou nous contacter directement."
     },
     "mailto": {
       "subject": "Demande de reprise de devis",
@@ -95,6 +95,48 @@
         "resumeLink": "Lien de reprise"
       }
     },
-    "sending": "Sending…"
+    "sending": "Envoyer..."
+  },
+  "apartment": {
+    "heading": "Réservez votre appartement privé",
+    "subheading": "Sélectionnez vos dates et le nombre d'invités, puis choisissez un tarif.",
+    "guestLabel": "Nombre de visiteurs",
+    "guests": {
+      "2": "2 invités",
+      "3": "3 invités"
+    },
+    "flex": {
+      "title": "Taux flexible",
+      "saving": "Économisez 21% par rapport à OTA",
+      "bullets": [
+        "Free cancellation up to 3 days before arrival.",
+        "Changes subject to availability."
+      ]
+    },
+    "nr": {
+      "title": "Non remboursable",
+      "saving": "Économisez 26% par rapport à OTA",
+      "bullets": [
+        "Best direct price — paid in full upfront.",
+        "No refunds or changes after booking."
+      ]
+    },
+    "nightsSummary_one": "{{count}} nuit — disponibilité confirmée dans la prochaine étape.",
+    "nightsSummary_other": "{{count}} nuits — disponibilité confirmée dans la prochaine étape.",
+    "rateLabel": "Choisissez votre tarif",
+    "ratePrompt": "Sélectionnez un taux ci-dessus pour continuer",
+    "cta": {
+      "unselected": "Sélectionnez un taux pour continuer →",
+      "flex": "Flexible – Continuer la commande",
+      "nr": "Non remboursable – Continuer la commande"
+    },
+    "policies": {
+      "title": "Politiques et frais",
+      "items": [
+        "City/tourist tax: €2.50 per guest per night (added at checkout).",
+        "Cancellation admin fee: typically 15% of booking price.",
+        "Final availability and payment are completed on our official booking engine."
+      ]
+    }
   }
 }

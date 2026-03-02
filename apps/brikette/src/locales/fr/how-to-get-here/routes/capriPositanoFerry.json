@@ -35,7 +35,7 @@
     },
     "capriPort": {
       "link": "Comparez les horaires de ferry et réservez : <capriLink>Capri.net – Capri ↔ Positano</capriLink> · <positanoLink>Positano.com (horaires regroupés)</positanoLink>.",
-      "linkLabelCapri": "Capri.net – Capri ↔ Positano",
+      "linkLabelCapri": "Capri.net – Capri Positano",
       "linkLabelPositano": "Positano.com (horaires regroupés)",
       "list": [
         "Vérifiez les horaires et les tarifs puis identifiez l'opérateur de votre traversée.",
@@ -58,7 +58,7 @@
       "title": "Aperçu du trajet"
     }
   },
-  "slug": "capri-positano-ferry",
+  "slug": "Capri-positano-ferry",
   "tip": {
     "copy": "Besoin d'autres itinéraires ou de plans B quand la mer est agitée ? Ouvrez la <link>vue d'ensemble Comment venir</link>.",
     "eyebrow": "Astuce",

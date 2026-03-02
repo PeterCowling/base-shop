@@ -3,7 +3,11 @@
   "meta": {
     "title": "Risparmia il 15 % per soggiorni dal 20 settembre al 31 ottobre",
     "description": "Offerta a tempo limitato: risparmia il 15 % sulle prenotazioni dirette per soggiorni dal 20 settembre al 31 ottobre.",
-    "ogImageAlt": "Banner sconto a tempo limitato"
+    "ogImageAlt": "Banner sconto a tempo limitato",
+    "defaultTitle": "Offerte e Offerte | Hostel Brikette",
+    "defaultDescription": "Percorsi di prenotazione diretti e offerte stagionali presso Hostel Brikette.",
+    "activeTitle": "Salva {{percent}} sui soggiorni da {{from}} a {{to}}",
+    "activeDescription": "Auto-applied al checkout. Solo prenotazioni dirette."
   },
   "title": "Risparmia {{percent}} % per soggiorni dal {{from}} al {{to}}",
   "promo": "Prenota direttamente e il tuo sconto del {{percent}} % viene applicato automaticamente al checkout.",
@@ -119,6 +123,6 @@
     "other": "Vedi termini e condizioni."
   },
   "robots": {
-    "expiredNoindex": "noindex,follow"
+    "expiredNoindex": "noindex, seguito"
   }
 }

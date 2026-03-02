@@ -25,7 +25,7 @@
     "title": "Lịch xe buýt",
     "description": "Bạn sẽ đi <Strong>Salerno → Amalfi</Strong> rồi <Strong>Amalfi → Positano</Strong>.",
     "link": "Xem lịch SITA mới nhất trên <ScheduleLink>{{label}}</ScheduleLink>.",
-    "scheduleLinkLabel": "Positano.com",
+    "scheduleLinkLabel": "Xem thời gian biểu",
     "rowsTitle": "Đọc các hàng",
     "columnsTitle": "Đọc các cột",
     "combineTitle": "Kết hợp hàng và cột",

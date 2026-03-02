@@ -3,7 +3,7 @@
     "title": "菲奥多迪富罗雷海滩：巴士、楼梯和游泳指南",
     "description": "菲奥多迪富罗雷青年旅舍友好指南：如何乘坐SITA巴士到达隐藏的峡湾海滩，楼梯和设施的真实情况，安全提示，拍照地点，以及如何在不错过最后一班巴士的情况下返回。"
   },
-  "lastUpdated": "2026-01-29T00:00:00Z",
+  "lastUpdated": "2026-01-29 T00:00 Z 时",
   "linkLabel": "菲奥多迪富罗雷：桥下的峡湾海滩",
   "intro": [
     "Fiordo di Furore (sometimes called the “Furore fjord”) is one of the Amalfi Coast’s most dramatic swim spots: a narrow gorge of turquoise water, sheer rock walls, and a stone bridge high above. It looks like a secret beach, but it is tiny and raw — no beach clubs, limited space, and steep stairs down to the water.",
@@ -181,30 +181,30 @@
       ]
     }
   ],
-  "essentialsTitle": "What to expect",
+  "essentialsTitle": "还有什么期待",
   "essentials": [
     "A tiny pebble beach at the bottom of a steep staircase — not a full-service beach day.",
     "Bus stop on the coastal road above the gorge; the beach is down the stairs.",
     "Almost no facilities: bring water, snacks, sun protection, and a small dry bag."
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "典型费用",
   "typicalCosts": [
     "SITA bus tickets are inexpensive, but availability is the real constraint in summer (buses can be full).",
     "Emergency taxi from the road above can be pricey — splitting with other guests helps."
   ],
-  "tipsTitle": "Quick tips",
+  "tipsTitle": "快速提示",
   "tips": [
     "Arrive early if you want photos without crowds under the bridge.",
     "Pack reef-safe sunscreen and water shoes — the rocks are slick when wet.",
     "Pair this stop with a bigger beach day from our %LINK:positanoBeaches|Positano beaches overview% so you’re not relying on one tiny cove for the whole afternoon."
   ],
-  "warningsTitle": "Good to know",
+  "warningsTitle": "很高兴知道",
   "warnings": [
     "Buy round-trip bus tickets in Positano; there is nowhere to purchase or validate them at the fiord.",
     "Buses sometimes skip the stop when full in peak months — allow extra time to get home.",
     "Space on the beach is tight and shade arrives quickly in the afternoon."
   ],
-  "faqsTitle": "Fiordo di Furore FAQs",
+  "faqsTitle": "费奥多·迪·富罗尔",
   "faqs": [
     {
       "q": "Is Fiordo di Furore a sandy beach?",
@@ -233,7 +233,7 @@
   ],
   "sectionFigure": {
     "src": "/img/guides/fiordo-di-furore/01-beach-and-bridge.jpg",
-    "alt": "Fiordo di Furore bridge above the cove",
-    "caption": "The narrow inlet sits beneath the arched bridge."
+    "alt": "菲奥多·迪·富罗尔桥在海湾之上",
+    "caption": "狭窄的入口坐落在拱桥下方."
   }
 }

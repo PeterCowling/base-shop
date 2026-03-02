@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "Hostel Brikette",
+    "title": "छात्रावास ब्रिकेट",
     "reserve": "अभी बुक करें"
   },
   "intro": {
@@ -24,8 +24,8 @@
     "reload": "पेज को फिर से लोड करें"
   },
   "meta": {
-    "twitterCard": "summary_large_image",
-    "twitterHandle": "@brikette"
+    "twitterCard": "सारांश_large_image",
+    "twitterHandle": "@Burkette"
   },
   "internalErrors": {
     "assistanceSlugMissing": "ARTICLE_SLUGS में कम से कम एक assistance slug परिभाषित होना चाहिए"

@@ -286,7 +286,7 @@
   "filtersAria": "Filtruj według typu pokoju",
   "checkRatesNonRefundable": "Stawki bezzwrotne",
   "checkRatesFlexible": "Elastyczne stawki",
-  "checkRatesSingle": "Check Rates",
+  "checkRatesSingle": "Sprawdź stawki",
   "ctaSuffix": {
     "nonRefundable": "Niezbędne",
     "flexible": "Elastyczny"
@@ -306,9 +306,9 @@
     "dorm": "Za noc, za gościa. Jeden gość w jednym łóżku piętrowym."
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2- 8 nocy",
+    "clearDates": "Wyczyść daty",
+    "nightsSummary": "_ _ TOK0 _ _ → _ _ TOK1 _ _ (_ _ TOK2 _ _ noce)"
   },
   "noscript": {
     "jsDisabledAssistance": "Ta trasa hostelu korzysta z rezerwacji wspomaganej, gdy JavaScript jest wyłączony.",

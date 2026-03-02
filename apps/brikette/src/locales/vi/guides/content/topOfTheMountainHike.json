@@ -39,24 +39,24 @@
       ]
     }
   ],
-  "essentialsTitle": "Essentials",
+  "essentialsTitle": "Điều thiết yếu",
   "essentials": [
     "Ít nhất 2 lít nước/người và đồ ăn nhẹ có muối; không có lần nạp tiền đáng tin cậy nào sau Santa Maria del Castello.",
     "Giày đi bộ đường dài chắc chắn có độ bám—các đoạn đường phía trên đầy đá, lỏng lẻo và lộ ra ngoài.",
     "Chống nắng và tạo lớp cho đỉnh; gió có thể thổi qua sườn núi ngay cả trong những ngày ấm áp."
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "Giá điển hình",
   "typicalCosts": [
     "Truy cập đường mòn là miễn phí; ngân sách €5–€10 nếu bạn định tự thưởng cho mình đồ uống hoặc đồ ăn nhẹ ở Santa Maria del Castello.",
     "Trả lại vé xe buýt SITA hoặc vé phà nếu bạn quyết định đi xuống qua một ngôi làng khác thay vì đi bộ suốt chặng đường về."
   ],
-  "tipsTitle": "Smart timing",
+  "tipsTitle": "Thời gian thông minh",
   "tips": [
     "Bắt đầu vào lúc bình minh vào mùa hè để tránh leo núi dưới cái nóng đỉnh điểm; những buổi chiều cuối thu và mùa xuân mang lại ánh sáng dịu hơn, không còn nắng gắt.",
     "Kiểm tra dự báo bão – đám mây che phủ có thể xóa tầm nhìn và đá ướt khiến các bậc thang lên đỉnh trơn trượt.",
     "Hãy cho ai đó ở ký túc xá biết kế hoạch của bạn và thời gian trở về dự kiến ​​trước khi bạn khởi hành."
   ],
-  "warningsTitle": "When to reconsider",
+  "warningsTitle": "Khi nào cần xem xét lại",
   "warnings": [
     "Bỏ qua chuyến đi bộ đường dài nếu bạn thiếu kinh nghiệm leo núi hoặc thể lực tốt; mức tăng độ cao bền vững đang bị trừng phạt và có rất ít điểm cứu trợ.",
     "Tránh tuyến đường nếu độ cao khiến bạn lo lắng—những gờ đá lộ ra ngoài và những đoạn dốc cao thách thức ngay cả những người đi bộ đường dài tự tin.",
@@ -88,7 +88,7 @@
       "text": "Đi theo chặng leo núi cuối cùng lên đỉnh và tận hưởng toàn cảnh trước khi quay trở lại Santa Maria."
     }
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "Câu hỏi thường gặp",
   "faqs": [
     {
       "q": "How long does the full hike take?",
@@ -111,7 +111,7 @@
   ],
   "toc": {
     "labels": {
-      "warnings": "When to reconsider"
+      "warnings": "Khi nào cần xem xét lại"
     }
   }
 }

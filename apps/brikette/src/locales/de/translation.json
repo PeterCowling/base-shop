@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "Hostel Brikette",
+    "title": "Gästehaus Brikette",
     "reserve": "Jetzt buchen"
   },
   "intro": {
@@ -24,7 +24,7 @@
     "reload": "Seite neu laden"
   },
   "meta": {
-    "twitterCard": "summary_large_image",
+    "twitterCard": "Zusammenfassung_large_image",
     "twitterHandle": "@brikette"
   },
   "internalErrors": {

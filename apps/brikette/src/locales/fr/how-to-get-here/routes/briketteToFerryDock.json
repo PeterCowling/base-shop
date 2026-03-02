@@ -1,40 +1,40 @@
 {
   "figures": {
     "map": {
-      "alt": "Map showing the walking route from Hostel Brikette to Positano port with points 1–5.",
-      "caption": "Route overview: Hostel → Port (points 1–5)."
+      "alt": "Carte montrant la route à pied de l'Hostel Brikette au port de Positano avec les points 1–5.",
+      "caption": "Aperçu de l'itinéraire: Auberge → Port (points 1–5)."
     },
     "point1": {
-      "alt": "Intersection near Viale Pasitea with a marked route and a label: '1 Turn Right'.",
-      "caption": "Point 1: turn right."
+      "alt": "Intersection près de Viale Pasitea avec un itinéraire marqué et une étiquette: '1 Tourner à droite'.",
+      "caption": "Point 1: tournez à droite."
     },
     "tabacchi": {
-      "alt": "Tabacchi storefront with an ATM next to it.",
-      "caption": "Tabacchi near point 1 (good landmark)."
+      "alt": "Tabacchi vitrine avec un distributeur à côté.",
+      "caption": "Tabacchi près du point 1 (bon point de repère)."
     },
     "point2": {
-      "alt": "Road switchback with a marked line toward stairs and a label: '2 Take the stairs straight ahead'.",
-      "caption": "Point 2: leave the road and take the stairs straight ahead."
+      "alt": "Retour de route avec une ligne marquée vers les escaliers et une étiquette: '2 Prenez les escaliers tout droit devant'.",
+      "caption": "Point 2: quitter la route et prendre les escaliers tout droit."
     },
     "point3": {
-      "alt": "Narrow alley with steps and a marked path, labelled '3 Take the stairs straight ahead'.",
-      "caption": "Point 3: continue straight down the stairs."
+      "alt": "Une ruelle étroite avec des marches et un sentier marqué, marqué '3 Prenez les escaliers tout droit devant'.",
+      "caption": "Point 3: continuer tout droit dans les escaliers."
     },
     "point4": {
-      "alt": "Crosswalk and road with a marked route toward stairs on the right, labelled '4'.",
-      "caption": "Point 4: cross the road, turn left briefly, then take the stairs down on the right."
+      "alt": "Crosswalk et route avec un itinéraire marqué vers les escaliers à droite, étiqueté '4'.",
+      "caption": "Point 4: traverser la route, tourner à gauche brièvement, puis prendre l'escalier à droite."
     },
     "point5": {
-      "alt": "Small square near the port with a marked route, labelled '5'.",
-      "caption": "Point 5: continue under the archway toward the port."
+      "alt": "Petit carré près du port avec un itinéraire marqué, marqué '5'.",
+      "caption": "Point 5: continuer sous l'arche vers le port."
     },
     "tickets": {
-      "alt": "Ferry ticket booths at Positano port with timetable boards.",
-      "caption": "Ticket booths: check the sign for the next departure."
+      "alt": "Billetterie de ferry au port de Positano avec horaires.",
+      "caption": "Billetterie : vérifiez le panneau pour le prochain départ."
     },
     "port": {
-      "alt": "View of Positano port with a ferry in the foreground and Positano hillside behind.",
-      "caption": "Positano port: wait near the end of the pier for boarding calls."
+      "alt": "Vue du port de Positano avec un ferry au premier plan et sur la colline de Positano derrière.",
+      "caption": "Port Positano: attendez près de l'extrémité de la jetée pour les appels d'embarquement."
     }
   }
 }

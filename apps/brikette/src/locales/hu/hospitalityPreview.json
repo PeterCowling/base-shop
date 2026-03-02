@@ -1,12 +1,12 @@
 {
-  "title": "Hospitality Theme Preview",
+  "title": "Kórházi témájú előnézet",
   "guestActivation": {
-    "label": "Guest activation",
-    "description": "Last 7 days"
+    "label": "Vendég aktiválása",
+    "description": "Az elmúlt 7 nap"
   },
   "signalBridge": {
-    "title": "Signal bridge check",
-    "etaShared": "ETA shared",
-    "cashPrepared": "Cash prepared"
+    "title": "Jelhídellenőrzés",
+    "etaShared": "ETA megosztott",
+    "cashPrepared": "Készpénz"
   }
 }

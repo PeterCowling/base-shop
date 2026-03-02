@@ -266,7 +266,7 @@
     "clickToEnlarge": "Nhấp để phóng to ảnh",
     "prevAria": "Ảnh trước",
     "nextAria": "Ảnh tiếp",
-    "pagination": "{{current}}/{{total}}",
+    "pagination": "ZXQTOKEN0QZZZZTOKEN2QXZ",
     "photoAlt": "Ảnh {{room}}",
     "noImage": "Không có hình ảnh"
   },
@@ -286,10 +286,10 @@
   "filtersAria": "Lọc theo loại phòng",
   "checkRatesNonRefundable": "Giá không hoàn tiền",
   "checkRatesFlexible": "Giá linh hoạt",
-  "checkRatesSingle": "Check Rates",
+  "checkRatesSingle": "Kiểm tra tỷ lệ",
   "ctaSuffix": {
-    "nonRefundable": "Non‑Refundable",
-    "flexible": "Flexible"
+    "nonRefundable": "Không thể thay thế được",
+    "flexible": "Dễ uốn cong"
   },
   "details": "Chi tiết",
   "ratesFrom": "Từ €{{price}}",
@@ -306,9 +306,9 @@
     "dorm": "Mỗi đêm, mỗi khách. Một khách trên một giường tầng."
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2–8 đêm",
+    "clearDates": "Xoá ngày tháng",
+    "nightsSummary": "{{from}}  thể hiện ZXQQOKEN1QXZ (ZXQTOKEN2QZ đêm)"
   },
   "noscript": {
     "jsDisabledAssistance": "Tuyến đường ký túc xá này sử dụng tính năng đặt phòng được hỗ trợ khi JavaScript bị tắt.",

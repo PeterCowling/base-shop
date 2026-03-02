@@ -1,40 +1,40 @@
 {
   "figures": {
     "map": {
-      "alt": "Map showing the walking route from Hostel Brikette to Positano port with points 1–5.",
-      "caption": "Route overview: Hostel → Port (points 1–5)."
+      "alt": "मानचित्र में हॉस्टल ब्रिकेट से पोसिटानो बंदरगाह तक 1-5 अंक मिलते हैं।",
+      "caption": "रूट ओवरव्यू: हॉस्टल → पोर्ट (पॉइंट 1-5)।"
     },
     "point1": {
-      "alt": "Intersection near Viale Pasitea with a marked route and a label: '1 Turn Right'.",
-      "caption": "Point 1: turn right."
+      "alt": "एक चिह्नित मार्ग और एक लेबल के साथ Viale Pasitea के पास छेड़छाड़: '1 सही बारी'।",
+      "caption": "अंक 1: सही बारी।"
     },
     "tabacchi": {
-      "alt": "Tabacchi storefront with an ATM next to it.",
-      "caption": "Tabacchi near point 1 (good landmark)."
+      "alt": "Tabacchi उसके बगल में एक एटीएम के साथ स्टोरफ्रंट।",
+      "caption": "बिन्दु 1 के पास Tabacchi (अच्छा भूचिह्न)।"
     },
     "point2": {
-      "alt": "Road switchback with a marked line toward stairs and a label: '2 Take the stairs straight ahead'.",
-      "caption": "Point 2: leave the road and take the stairs straight ahead."
+      "alt": "सीढ़ियों और लेबल की ओर एक चिह्नित लाइन के साथ रोड स्विचबैक: '2 सीढ़ियों को सीधे आगे ले लो'।",
+      "caption": "प्वाइंट 2: सड़क छोड़ दें और सीढ़ियों को सीधे आगे ले जाएं।"
     },
     "point3": {
-      "alt": "Narrow alley with steps and a marked path, labelled '3 Take the stairs straight ahead'.",
-      "caption": "Point 3: continue straight down the stairs."
+      "alt": "कदम और एक चिह्नित पथ के साथ संकीर्ण गली, लेबल '3 सीढ़ियों को सीधे आगे ले लो'।",
+      "caption": "प्वाइंट 3: सीढ़ियों को सीधे नीचे जारी रखें।"
     },
     "point4": {
-      "alt": "Crosswalk and road with a marked route toward stairs on the right, labelled '4'.",
-      "caption": "Point 4: cross the road, turn left briefly, then take the stairs down on the right."
+      "alt": "क्रॉसवॉक और सड़क के साथ सही रास्ते पर सीढ़ियों की ओर एक चिह्नित मार्ग, '4' लेबल किया गया।",
+      "caption": "प्वाइंट 4: सड़क को पार करें, संक्षेप में छोड़ दें, फिर सीढ़ियों को दाईं ओर ले जाएं।"
     },
     "point5": {
-      "alt": "Small square near the port with a marked route, labelled '5'.",
-      "caption": "Point 5: continue under the archway toward the port."
+      "alt": "एक चिह्नित मार्ग के साथ बंदरगाह के पास छोटा वर्ग, '5' लेबल किया गया।",
+      "caption": "प्वाइंट 5: पोर्ट की ओर आर्कवे के नीचे जारी है।"
     },
     "tickets": {
-      "alt": "Ferry ticket booths at Positano port with timetable boards.",
-      "caption": "Ticket booths: check the sign for the next departure."
+      "alt": "समय सारिणी बोर्डों के साथ Positano बंदरगाह पर नौका टिकट बूथ।",
+      "caption": "टिकट बूथ: अगले प्रस्थान के लिए संकेत की जाँच करें।"
     },
     "port": {
-      "alt": "View of Positano port with a ferry in the foreground and Positano hillside behind.",
-      "caption": "Positano port: wait near the end of the pier for boarding calls."
+      "alt": "अग्रभूमि में एक नौका के साथ Positano बंदरगाह का दृश्य और पीछे Positano पहाड़ी।",
+      "caption": "Positano बंदरगाह: बोर्डिंग कॉल के लिए पियर के अंत के पास प्रतीक्षा करें।"
     }
   }
 }

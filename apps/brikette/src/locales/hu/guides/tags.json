@@ -70,7 +70,7 @@
     "planning": "Tervezés",
     "decision": "Döntés",
     "experiences": "Élmények",
-    "positano": "Positano",
+    "positano": "Pozitano",
     "amalfi": "Amalfi",
     "ravello": "Ravello",
     "sorrento": "Sorrento",
@@ -79,14 +79,14 @@
     "ischia": "Ischia",
     "procida": "Procida",
     "naples": "Nápoly",
-    "salerno": "Salerno",
+    "salerno": "Szalerno",
     "tramonti": "Tramonti",
-    "pompei": "Pompeii",
-    "herculaneum": "Herculaneum",
+    "pompei": "Pompeji",
+    "herculaneum": "Herkulánum",
     "winter": "Tél",
     "summer": "Nyár",
     "shoulder": "Elő-/utószezon",
-    "ferragosto": "Ferragosto",
+    "ferragosto": "Ferragoszto",
     "off-season": "Szezonon kívül"
   },
   "titles": {
@@ -123,7 +123,7 @@
     "ravello": "Ravello útikalauzok",
     "capri": "Capri költségbarát módon",
     "naples": "Nápoly ↔ Positano",
-    "salerno": "Salerno ↔ Positano"
+    "salerno": "Szalerno ↔ positano"
   },
   "descriptions": {
     "transport": "A part menti közlekedés maga is élmény. E címke alatt döntést segítő útmutatókat találsz, amelyek összevetik a kompot, buszt, shuttle-t és privát transzfert, plusz B terveket viharos napokra és csúcsidős sorokra. A fő fókusz a megbízható, egész éves megoldásokon (vonat+busz Sorrentón át) van, kiegészítve a kompokkal, ha az időjárás engedi.",

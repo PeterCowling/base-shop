@@ -4,7 +4,7 @@
     "description": "Praktiska vägbeskrivningar till Hostel Brikette från Amalfi, Capri, Neapel, Salerno, Ravello, Rom och Sorrento – inklusive för- och nackdelar för varje transportsätt."
   },
   "header": {
-    "eyebrow": "Hostel Brikette",
+    "eyebrow": "Hotell nära Hostel Brikette",
     "title": "Lista över resevägar",
     "description": "Använd den här guiden för att ta dig till och från destinationen på Amalfikusten och Hostel Brikette.",
     "heroAlt": "Stentrappa med bougainvillea som leder till Hostel Brikettes entré",
@@ -70,8 +70,8 @@
     "taxi": "Vill du boka taxi? Skicka ett WhatsApp-meddelande på engelska eller italienska till <Strong>{{contact}}</Strong>.",
     "shuttle": "Föredrar du shuttle? Sea Horse Car Service kör delade transfer. Boka en plats via deras <Link>officiella shuttlesida</Link>.",
     "taxiContact": "+39 379 125 6222",
-    "taxiEyebrow": "Hostel Brikette by Taxi",
-    "shuttleEyebrow": "Hostel Brikette by Shuttle",
+    "taxiEyebrow": "Hotell nära Hostel Brikette by Taxi",
+    "shuttleEyebrow": "Hostel Brikette från Shuttle",
     "whatsappTemplate": "Hej! Jag bor på Hostel Brikette. Jag vill boka en taxi till/från Positano. Min ankomsttid är: ____",
     "emailSubject": "Hjälp vid ankomst",
     "emailBody": "Hej Hostel Brikette-teamet — jag kommer idag och behöver hjälp att välja bästa sättet att ta mig fram. Min beräknade ankomsttid är: ____",
@@ -849,7 +849,7 @@
       "changeBusesAmalfi": "Du måste byta buss i Amalfi."
     },
     "tag": {
-      "cheap": "Budget",
+      "cheap": "Budgetbudget",
       "directish": "Enkel",
       "scenic": "Vacker",
       "transfer": "Byte",
@@ -919,10 +919,10 @@
     ]
   },
   "breadcrumbs": {
-    "itemTitleFallback": "Directions"
+    "itemTitleFallback": "Vägbeskrivning"
   },
   "galleries": {
-    "defaultAlt": "Directions photo"
+    "defaultAlt": "Vägbeskrivning foto"
   },
   "lightbox": {
     "titleFallback": "Bild",

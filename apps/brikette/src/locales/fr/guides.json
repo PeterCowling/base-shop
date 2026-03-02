@@ -347,5 +347,10 @@
         "experience": "Expériences"
       }
     }
+  },
+  "search": {
+    "noResults": "Aucun guide trouvé",
+    "resultsCount_one": "trouvé guide {{count}}",
+    "resultsCount_other": "Trouvés guides {{count}}"
   }
 }

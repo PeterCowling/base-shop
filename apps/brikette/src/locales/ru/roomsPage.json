@@ -266,7 +266,7 @@
     "clickToEnlarge": "Нажмите на изображение, чтобы увеличить",
     "prevAria": "Предыдущее изображение",
     "nextAria": "Следующее изображение",
-    "pagination": "{{current}}/{{total}}",
+    "pagination": "{{current}}{{total}}",
     "photoAlt": "Фото {{room}}",
     "noImage": "Изображение недоступно"
   },
@@ -286,7 +286,7 @@
   "filtersAria": "Фильтр по типу номера",
   "checkRatesNonRefundable": "Безвозвратные тарифы",
   "checkRatesFlexible": "Гибкие тарифы",
-  "checkRatesSingle": "Check Rates",
+  "checkRatesSingle": "Проверьте ставки",
   "ctaSuffix": {
     "nonRefundable": "Безвозвратный",
     "flexible": "Гибкий"
@@ -306,9 +306,9 @@
     "dorm": "За ночь, за гостя. Один гость на одном спальном месте."
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2-8 ночей",
+    "clearDates": "Ясные даты",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} ночи)"
   },
   "noscript": {
     "jsDisabledAssistance": "Этот маршрут хостела использует помощь при бронировании, когда JavaScript отключен.",

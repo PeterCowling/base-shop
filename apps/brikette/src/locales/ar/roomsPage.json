@@ -231,7 +231,7 @@
     "clickToEnlarge": "انقر لتكبير الصورة",
     "prevAria": "الصورة السابقة",
     "nextAria": "الصورة التالية",
-    "pagination": "{{current}}/{{total}}",
+    "pagination": "_",
     "photoAlt": "صورة {{room}}",
     "noImage": "لا توجد صورة متاحة"
   },
@@ -251,7 +251,7 @@
   "filtersAria": "تصفية حسب نوع الغرفة",
   "checkRatesNonRefundable": "أسعار غير قابلة للاسترداد",
   "checkRatesFlexible": "أسعار مرنة",
-  "checkRatesSingle": "Check Rates",
+  "checkRatesSingle": "التحقق من المعدلات",
   "ctaSuffix": {
     "nonRefundable": "غير قابل للاسترداد",
     "flexible": "مرن"
@@ -306,9 +306,9 @@
     "perBed": "للسرير"
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "ليالي ٢-٨",
+    "clearDates": "المواعيد النهائية",
+    "nightsSummary": "_"
   },
   "noscript": {
     "jsDisabledAssistance": "يستخدم مسار بيت الشباب هذا الحجز المساعد عند تعطيل JavaScript.",

@@ -1,12 +1,12 @@
 {
-  "title": "Hospitality Theme Preview",
+  "title": "Antevisão do Tema de Hospitalidade",
   "guestActivation": {
-    "label": "Guest activation",
-    "description": "Last 7 days"
+    "label": "Activação de hóspedes",
+    "description": "Últimos 7 dias"
   },
   "signalBridge": {
-    "title": "Signal bridge check",
-    "etaShared": "ETA shared",
-    "cashPrepared": "Cash prepared"
+    "title": "Verificação da ponte de sinal",
+    "etaShared": "ETA partilhada",
+    "cashPrepared": "Dinheiro preparado"
   }
 }

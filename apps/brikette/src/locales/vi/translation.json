@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "Hostel Brikette",
+    "title": "Name",
     "reserve": "Đặt ngay"
   },
   "intro": {
@@ -24,8 +24,8 @@
     "reload": "Tải lại trang"
   },
   "meta": {
-    "twitterCard": "summary_large_image",
-    "twitterHandle": "@brikette"
+    "twitterCard": "Bản tóm tắt_ hình lớn",
+    "twitterHandle": "@brette"
   },
   "internalErrors": {
     "assistanceSlugMissing": "ARTICLE_SLUGS phải định nghĩa ít nhất một assistance slug"

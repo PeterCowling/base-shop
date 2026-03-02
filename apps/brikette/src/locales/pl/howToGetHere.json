@@ -4,7 +4,7 @@
     "description": "Praktyczne wskazówki, jak dotrzeć do Hostelu Brikette z Amalfi, Capri, Neapolu, Salerno, Ravello, Rzymu i Sorrento, wraz z plusami i minusami poszczególnych środków transportu."
   },
   "header": {
-    "eyebrow": "Hostel Brikette",
+    "eyebrow": "Brikette hostel",
     "title": "Lista wskazówek dojazdu",
     "description": "Skorzystaj z tego przewodnika, aby dostać się do i z celu podróży na Wybrzeżu Amalfitańskim oraz do Hostelu Brikette.",
     "heroAlt": "Kamienne schody otoczone bugenwillą prowadzące do wejścia Hostel Brikette",
@@ -677,11 +677,11 @@
     ]
   },
   "filters": {
-    "title": "Filter routes",
+    "title": "Drogi filtrowania",
     "resultsCount": "Wyniki: {{count}} trasy",
     "editLabel": "Edytuj filtry",
     "shareHint": "Filtry są odzwierciedlone w URL dla łatwego udostępniania.",
-    "transportLabel": "Transport type",
+    "transportLabel": "Rodzaj transportu",
     "transportAll": "Wszystkie",
     "transportModes": {
       "bus": "Autobus",
@@ -880,12 +880,12 @@
       }
     },
     "ui": {
-      "showDetails": "Show details",
-      "hideDetails": "Hide details",
-      "steps": "Steps",
-      "notes": "Notes",
-      "pros": "Pros",
-      "cons": "Cons"
+      "showDetails": "Pokaż szczegóły",
+      "hideDetails": "Ukryj szczegóły",
+      "steps": "Kroki",
+      "notes": "Uwagi",
+      "pros": "Za",
+      "cons": "Wózki"
     }
   },
   "experienceGuides": {

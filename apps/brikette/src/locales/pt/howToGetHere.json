@@ -4,7 +4,7 @@
     "description": "Instruções práticas para chegar ao Hostel Brikette a partir de Amalfi, Capri, Nápoles, Salerno, Ravello, Roma e Sorrento, incluindo os prós e contras de cada transporte."
   },
   "header": {
-    "eyebrow": "Hostel Brikette",
+    "eyebrow": "Albergue brikette",
     "title": "Lista de direções de viagem",
     "description": "Use este guia para ir e voltar do destino na Costa Amalfitana e do Hostel Brikette.",
     "heroAlt": "Escadas de pedra emolduradas por buganvílias que levam à entrada do Hostel Brikette",
@@ -70,8 +70,8 @@
     "taxi": "Para pedir um táxi, pode usar o WhatsApp para contactar o número seguinte em inglês ou italiano: <Strong>{{contact}}</Strong>.",
     "shuttle": "Prefere um shuttle? O Sea Horse Car Service oferece transfers compartilhados. Reserve um lugar através da <Link>página oficial de shuttle</Link>.",
     "taxiContact": "+39 379 125 6222",
-    "taxiEyebrow": "Hostel Brikette by Taxi",
-    "shuttleEyebrow": "Hostel Brikette by Shuttle",
+    "taxiEyebrow": "Hostel Brikette de táxi",
+    "shuttleEyebrow": "Hostel Brikette de ônibus",
     "whatsappTemplate": "Olá! Estou hospedado no Hostel Brikette. Gostaria de reservar um táxi para/de Positano. A minha hora de chegada é: ____",
     "emailSubject": "Ajuda na chegada",
     "emailBody": "Olá equipa do Hostel Brikette — chego hoje e preciso de ajuda para escolher a melhor forma de chegar. A minha hora estimada de chegada é: ____",
@@ -86,8 +86,8 @@
     "helpBestFor": "Ideal para: atrasos · cancelamentos de ferry · check-in tardio"
   },
   "destinations": {
-    "filterLabel": "Place",
-    "filterAll": "All places",
+    "filterLabel": "Local",
+    "filterAll": "Todos os lugares",
     "sections": [
       {
         "name": "Dentro de Positano",
@@ -685,7 +685,7 @@
     "transportAll": "Todos",
     "transportModes": {
       "bus": "Autocarro",
-      "ferry": "Ferry",
+      "ferry": "Balsa",
       "train": "Comboio",
       "car": "Carro / Táxi",
       "walk": "A pé"
@@ -741,7 +741,7 @@
             "from": {
               "1": "Autocarro Positano → Sorrento (deixa na estação de comboios de Sorrento).",
               "2": "Comboio local Sorrento → Nápoles (chegada na estação de comboios de Nápoles).",
-              "3": "Train Naples → Rome."
+              "3": "Trem Nápoles → Roma."
             },
             "to": {
               "1": "Comboio Roma → Nápoles (chegada na estação de comboios de Nápoles).",
@@ -759,14 +759,14 @@
           "steps": {
             "from": {
               "1": "Positano → porto (carregadores podem ajudar com as malas).",
-              "2": "Ferry Positano → Naples.",
-              "3": "Tram Naples port → train station.",
-              "4": "Train Naples → Rome."
+              "2": "Ferry Positano → Nápoles.",
+              "3": "Tram Nápoles porto → estação ferroviária.",
+              "4": "Trem Nápoles → Roma."
             },
             "to": {
               "1": "Comboio Roma → Nápoles (chegada na estação de Nápoles).",
-              "2": "Tram Naples station → port.",
-              "3": "Ferry Naples → Positano.",
+              "2": "Estação de Tram Nápoles → porto.",
+              "3": "Ferry Nápoles → Positano.",
               "4": "Do porto de Positano → hostel (o trajeto pode ser trabalhoso; carregadores/Interno Bus podem ajudar)."
             }
           }
@@ -783,7 +783,7 @@
             "from": {
               "1": "Autocarro Positano → Amalfi (troca de autocarro em Amalfi).",
               "2": "Autocarro Amalfi → Salerno (deixa na estação de comboios de Salerno).",
-              "3": "Train Salerno → Rome."
+              "3": "Trem Salerno → Roma."
             },
             "to": {
               "1": "Comboio Roma → Salerno (chegada na estação de comboios de Salerno).",
@@ -801,14 +801,14 @@
           "steps": {
             "from": {
               "1": "Positano → porto (carregadores podem ajudar com as malas).",
-              "2": "Ferry Positano → Salerno.",
-              "3": "Walk Salerno port → train station.",
-              "4": "Train Salerno → Rome."
+              "2": "Balsa Positano → Salerno.",
+              "3": "Caminhe Salerno porto → estação ferroviária.",
+              "4": "Trem Salerno → Roma."
             },
             "to": {
               "1": "Comboio Roma → Salerno (chegada na estação de Salerno).",
-              "2": "Walk to Salerno port.",
-              "3": "Ferry Salerno → Positano.",
+              "2": "Caminhe até o porto de Salerno.",
+              "3": "Balsa Salerno → Positano.",
               "4": "Do porto de Positano → hostel (o trajeto pode ser trabalhoso; carregadores/Interno Bus podem ajudar)."
             }
           }
@@ -835,7 +835,7 @@
       },
       "busCollectsSalernoStation": "O autocarro parte mesmo da estação de comboios de Salerno.",
       "busDropsSalernoStation": "O autocarro deixa-o mesmo na estação de comboios de Salerno.",
-      "busCheap": "Bus is very cheap.",
+      "busCheap": "O autocarro é muito barato.",
       "portersHelp": "Entregar as malas aos carregadores permite viajar com mais conforto e facilidade.",
       "ferryEnjoyableEasy": "A viagem de ferry é agradável e simples.",
       "shortWalkSalernoStationPort": "O percurso entre a estação de comboios de Salerno e o porto é curto e direto."
@@ -843,9 +843,9 @@
     "con": {
       "changeBusToTrain": "Tem de mudar do autocarro para o comboio.",
       "crowdedBusTrain": "Autocarro e comboio costumam ir cheios.",
-      "fewHours": "Takes a few hours.",
+      "fewHours": "Leva algumas horas.",
       "changeTrainToBusSorrento": "Tem de mudar do comboio para o autocarro em Sorrento.",
-      "busUsuallyCrowded": "Bus is usually crowded.",
+      "busUsuallyCrowded": "O autocarro costuma estar cheio.",
       "ferryCostHigherBus": "O ferry é mais caro do que o autocarro.",
       "hostelEasierBySita": "Chegar ao hostel de autocarro SITA é mais simples do que de ferry (o trajeto a partir do porto é bastante trabalhoso — mesmo com o Interno Bus de Positano e os carregadores).",
       "naplesPortComfort": "O porto e a cidade de Nápoles podem não ser adequados para toda a gente, pois algumas pessoas podem sentir-se desconfortáveis lá.",
@@ -854,18 +854,18 @@
       "changeBusesAmalfi": "Tem de mudar de autocarro em Amalfi."
     },
     "tag": {
-      "cheap": "Budget",
-      "directish": "Simple",
-      "scenic": "Scenic",
-      "transfer": "Transfer",
-      "bus": "Bus",
-      "train": "Train",
-      "ferry": "Ferry"
+      "cheap": "Orçamento",
+      "directish": "Simples",
+      "scenic": "Cênica",
+      "transfer": "Transferência",
+      "bus": "Ônibus",
+      "train": "Comboio",
+      "ferry": "Balsa"
     },
     "reasons": {
       "cheapest": {
         "busTrain": "Mais barato → as opções de autocarro/comboio são muito económicas.",
-        "ferry": "Cheapest → ferry costs higher than bus/train."
+        "ferry": "Mais barato → ferry custa mais do que ônibus / trem."
       },
       "fewest_changes": {
         "busTrain": "Menos mudanças → autocarro + comboio exigem uma mudança de modo.",

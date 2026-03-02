@@ -27,11 +27,11 @@
       "description": "Astuces pour dépenser moins en transports, nourriture et activités."
     },
     "bus": {
-      "label": "Bus",
+      "label": "Autobus",
       "title": "Guides bus & SITA"
     },
     "camping": {
-      "label": "Camping",
+      "label": "Campings",
       "title": "Camping sur la côte"
     },
     "capri": {
@@ -55,15 +55,15 @@
       "title": "Coûts & comparatifs"
     },
     "couples": {
-      "label": "Couples",
+      "label": "En couple",
       "title": "Couples en auberge"
     },
     "cuisine": {
-      "label": "Cuisine",
+      "label": "Gastronomie",
       "title": "Cuisine & bons plans"
     },
     "culture": {
-      "label": "Culture",
+      "label": "Culture locale",
       "title": "Culture & événements"
     },
     "day-trip": {
@@ -99,7 +99,7 @@
       "title": "Ferragosto à Positano"
     },
     "ferry": {
-      "label": "Ferry",
+      "label": "Navette maritime",
       "title": "Guides des ferries"
     },
     "free": {
@@ -149,7 +149,7 @@
     },
     "naples": {
       "label": "Naples",
-      "title": "Naples ↔ Positano"
+      "title": "Naples Positano"
     },
     "nightlife": {
       "label": "Vie nocturne",
@@ -217,7 +217,7 @@
       "title": "Guides de Sorrento"
     },
     "souvenirs": {
-      "label": "Souvenirs",
+      "label": "Souvenirs cadeaux",
       "title": "Souvenirs & achats"
     },
     "stairs": {
@@ -233,7 +233,7 @@
       "title": "Conseils de voyage"
     },
     "train": {
-      "label": "Train",
+      "label": "Trains",
       "title": "Correspondances en train"
     },
     "tramonti": {

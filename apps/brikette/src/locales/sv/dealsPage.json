@@ -3,7 +3,11 @@
   "meta": {
     "title": "Spara 15 % på vistelser från 20 september till 31 oktober",
     "description": "Erbjudande under begränsad tid: spara 15 % vid direktbokning för vistelser från 20 september till 31 oktober.",
-    "ogImageAlt": "Banner för tidsbegränsat erbjudande"
+    "ogImageAlt": "Banner för tidsbegränsat erbjudande",
+    "defaultTitle": "Erbjudanden och erbjudanden | Hostel Brikette",
+    "defaultDescription": "Direkt bokning förmåner och säsongserbjudanden på Hostel Brikette.",
+    "activeTitle": "Spara {{percent}} på vistelser från {{from}} till {{to}}",
+    "activeDescription": "Auto-appliceras vid kassan. Direkta bokningar endast."
   },
   "title": "Spara {{percent}} % på vistelser från {{from}} till {{to}}",
   "promo": "Boka direkt och din {{percent}} % rabatt dras automatiskt i kassan.",

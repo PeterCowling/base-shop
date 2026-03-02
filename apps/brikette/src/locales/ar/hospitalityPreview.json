@@ -1,12 +1,12 @@
 {
-  "title": "Hospitality Theme Preview",
+  "title": "الضيافة",
   "guestActivation": {
-    "label": "Guest activation",
-    "description": "Last 7 days"
+    "label": "تفعيل الضيوف",
+    "description": "7 أيام الماضية"
   },
   "signalBridge": {
-    "title": "Signal bridge check",
-    "etaShared": "ETA shared",
-    "cashPrepared": "Cash prepared"
+    "title": "شيك جسر الإشارة",
+    "etaShared": "eta shared",
+    "cashPrepared": "النقدية المعدة"
   }
 }

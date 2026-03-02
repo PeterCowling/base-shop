@@ -9,7 +9,7 @@
     "description": "Rejs fra Ravello til Positano med et enkelt skift i Amalfi. Denne guide forklarer, hvor du køber og validerer SITA-billetter, hvordan du læser køreplanen, og hvad du kan forvente ved skiftet i Amalfi — plus den korte gåtur fra Positanos Chiesa Nuova-stop til Hostel Brikette."
   },
   "tip": {
-    "eyebrow": "Tip",
+    "eyebrow": "Råd",
     "body": "Skal du bruge alle transportmuligheder? Åbn <GuideLink>{{guideLabel}}</GuideLink> for færger, taxaer og kombinationsture."
   },
   "journeyOverview": {
@@ -38,7 +38,7 @@
     "linkLabel": "Positano.com (overblik over SITA-køreplanen)"
   },
   "ravelloToAmalfi": {
-    "title": "Ravello → Amalfi",
+    "title": "Ravello → amalfi",
     "points": [
       "Tag SITA 5110 eller 5120 fra Ravello til Amalfi (5110 er som regel hurtigere).",
       "Valider din billet ved ombordstigning og gem den, til du ankommer.",

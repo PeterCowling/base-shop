@@ -63,7 +63,7 @@
   "jumpTo": {
     "label": "Đi tới",
     "arrival": "Hỗ trợ khi đến",
-    "rome": "Rome",
+    "rome": "La Mã",
     "experiences": "Trải nghiệm"
   },
   "intro": {
@@ -456,7 +456,7 @@
     "openAriaWithCaption": "Mở hình ảnh: {{caption}}"
   },
   "rome": {
-    "title": "Rome",
+    "title": "La Mã",
     "image": {
       "src": "/img/directions/rome-forum.jpg",
       "alt": "Đàn Forum La Mã nhìn từ Bảo tàng Capitoline",
@@ -619,7 +619,7 @@
     }
   },
   "sorrento": {
-    "title": "Sorrento",
+    "title": "Sorento",
     "image": {
       "src": "/img/directions/sorrento-marina.jpg",
       "alt": "Toàn cảnh Marina Grande Sorrento",

@@ -60,11 +60,11 @@
     }
   ],
   "eventSchema": {
-    "name": "Ravello Festival",
+    "name": "拉维罗节",
     "startDate": "2025-07-01",
     "endDate": "2025-09-15",
-    "locationName": "Ravello Festival venues",
-    "addressLocality": "Ravello",
+    "locationName": "拉维罗节活动场所",
+    "addressLocality": "拉维罗",
     "description": "夏季的拉韦洛音乐节在悬崖之上演出古典音乐，俯瞰整片阿马尔菲海岸；日期与门票请以官方网站为准。"
   }
 }

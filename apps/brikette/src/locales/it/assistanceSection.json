@@ -13,9 +13,9 @@
   "addressValue": "Via G. Marconi, 358, 84017, Positano",
   "bookDirect": "Prenota direttamente",
   "bookingOptions": {
-    "googleBusiness": "Google Business",
-    "bookingCom": "Booking.com",
-    "hostelWorld": "Hostelworld",
+    "googleBusiness": "Google business",
+    "bookingCom": "Prenotazione.com",
+    "hostelWorld": "Ostello nel mondo",
     "instagram": "Instagram"
   },
   "amaHeadingPart1": "Come possiamo ",
@@ -42,7 +42,7 @@
     "cardCta": "Leggi la guida di pianificazione {{guideTitle}}"
   },
   "crosslinks": {
-    "heading": "{{howToTitle}} · {{experiencesTitle}}",
-    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}"
+    "heading": "____________________________________________",
+    "intro": "________________"
   }
 }

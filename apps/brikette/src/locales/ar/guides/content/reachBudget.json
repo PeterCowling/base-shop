@@ -81,7 +81,7 @@
   "ferryCta": "تفضّل العبّارات صيفًا؟ اطّلع على دليل العبّارات المخصص لدينا ومقال المساعدة الخاص بالوصول عبر العبّارة للحصول على نصائح الميناء والمعلومات المتعلقة بإمكانية الوصول.",
   "mapIframeTitle": "من مطار نابولي إلى بوسيتانو عبر سورينتو",
   "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d768989.930376533!2d14.43034800958525!3d40.7530661290345!2m3!1f0!2f&hl=ar",
-  "mapReferrerPolicy": "no-referrer-when-downgrade",
+  "mapReferrerPolicy": "لا يُذكر عندما يُخفض",
   "howTo": {
     "totalTime": "PT2H30M",
     "estimatedCost": {
@@ -90,10 +90,10 @@
     }
   },
   "sectionIds": {
-    "map": "reach-budget-map",
-    "steps": "reach-budget-steps",
-    "alternatives": "reach-budget-alternatives",
-    "costs": "reach-budget-costs",
-    "tips": "reach-budget-tips"
+    "map": "خطة الوصول إلى الميزانية",
+    "steps": "خطوات الوصول إلى الميزانية",
+    "alternatives": "النواتج",
+    "costs": "تكاليف الوصول إلى الميزانية",
+    "tips": "الموارد الخارجة عن الميزانية"
   }
 }

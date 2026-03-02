@@ -60,10 +60,10 @@
     }
   ],
   "eventSchema": {
-    "name": "Ravello Festival",
+    "name": "Festival Ravello",
     "startDate": "2025-07-01",
     "endDate": "2025-09-15",
-    "locationName": "Ravello Festival venues",
+    "locationName": "Locais do Festival Ravello",
     "addressLocality": "Ravello",
     "description": "Festival de música clássica de verão sobre a Costa Amalfitana. Consulte o programa oficial para datas e bilhetes."
   }

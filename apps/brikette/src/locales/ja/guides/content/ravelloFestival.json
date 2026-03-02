@@ -60,11 +60,11 @@
     }
   ],
   "eventSchema": {
-    "name": "Ravello Festival",
+    "name": "ラヴェッロフェスティバル",
     "startDate": "2025-07-01",
     "endDate": "2025-09-15",
-    "locationName": "Ravello Festival venues",
-    "addressLocality": "Ravello",
+    "locationName": "ラヴェッロフェスティバル会場",
+    "addressLocality": "ラヴェロ",
     "description": "アマルフィ海岸を見下ろす夏のクラシック音楽祭。日程とチケットは公式プログラムを確認してください。"
   }
 }

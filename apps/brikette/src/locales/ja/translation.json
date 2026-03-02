@@ -24,8 +24,8 @@
     "reload": "ページを再読み込み"
   },
   "meta": {
-    "twitterCard": "summary_large_image",
-    "twitterHandle": "@brikette"
+    "twitterCard": "概要_large_image",
+    "twitterHandle": "@ブリケット"
   },
   "internalErrors": {
     "assistanceSlugMissing": "ARTICLE_SLUGSには少なくとも1つのアシスタンススラッグが定義されている必要があります"

@@ -3,7 +3,11 @@
   "meta": {
     "title": "9月20日–10月31日入住立省 15 %",
     "description": "限时优惠：直接预订，9月20日至10月31日期间入住可享 15 % 折扣，结账自动应用。",
-    "ogImageAlt": "限时折扣横幅"
+    "ogImageAlt": "限时折扣横幅",
+    "defaultTitle": "交易和提供QQ招待所",
+    "defaultDescription": "直接预订优惠和季节性报价 在旅店Brikette。",
+    "activeTitle": "在从 {TOK1} 到{TOK2}的停留中保存 {TOK0}}",
+    "activeDescription": "离职时自动应用. 只有直接预订。"
   },
   "title": "在{{from}}至{{to}}期间入住立省 {{percent}} %",
   "promo": "直接预订，{{percent}} % 折扣在结账时自动应用。",
@@ -119,6 +123,6 @@
     "other": "查看条款与条件。"
   },
   "robots": {
-    "expiredNoindex": "noindex,follow"
+    "expiredNoindex": "无索引,跟着"
   }
 }

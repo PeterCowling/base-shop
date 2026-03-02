@@ -286,7 +286,7 @@
   "filtersAria": "객실 유형별로 필터링",
   "checkRatesNonRefundable": "환불 불가 요금",
   "checkRatesFlexible": "유연 요금",
-  "checkRatesSingle": "Check Rates",
+  "checkRatesSingle": "자주 묻는 질문",
   "ctaSuffix": {
     "nonRefundable": "환불 불가",
     "flexible": "유연 요금"
@@ -306,9 +306,9 @@
     "dorm": "1박 1인 기준입니다. 1인당 1개 침대를 제공합니다."
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2～8박",
+    "clearDates": "자주 묻는 질문",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} 박)"
   },
   "noscript": {
     "jsDisabledAssistance": "이 호스텔 경로는 JavaScript가 비활성화된 경우 예약 지원을 사용합니다.",

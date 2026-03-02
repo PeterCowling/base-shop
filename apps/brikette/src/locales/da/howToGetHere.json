@@ -4,7 +4,7 @@
     "description": "Praktiske anvisninger til at komme til Hostel Brikette fra Amalfi, Capri, Napoli, Salerno, Ravello, Rom og Sorrento – med fordele og ulemper ved hvert transportmiddel."
   },
   "header": {
-    "eyebrow": "Hostel Brikette",
+    "eyebrow": "Hostel Brkette",
     "title": "Samling af rejsevejledninger",
     "description": "Brug denne guide til at komme til og fra destinationen på Amalfikysten og Hostel Brikette.",
     "heroAlt": "Stentrappe omkranset af bougainvillea på vej mod Hostel Brikettes indgang",
@@ -78,7 +78,7 @@
     "whatsappCta": "WhatsApp-taxi",
     "callCta": "Ring",
     "taxiBestFor": "Bedst til: sene ankomster · tung bagage · hurtigste mulighed",
-    "shuttleCta": "Book shuttle",
+    "shuttleCta": "Bogfærge",
     "shuttleBestFor": "Bedst til: ankomster i lufthavnen · delt transfer · planlægning i god tid",
     "helpEyebrow": "Brug for hjælp?",
     "helpCopy": "Ankommer du sent eller har forsinkelser? Skriv til os, så vi kan planlægge din check-in og foreslå en alternativ rute.",
@@ -679,7 +679,7 @@
     "transportLabel": "Transporttype",
     "transportAll": "Alle",
     "transportModes": {
-      "bus": "Bus",
+      "bus": "Busrute",
       "ferry": "Færge",
       "train": "Tog",
       "car": "Bil / taxa",
@@ -849,11 +849,11 @@
       "changeBusesAmalfi": "Du skal skifte bus i Amalfi."
     },
     "tag": {
-      "cheap": "Budget",
+      "cheap": "Billig",
       "directish": "Simpel",
       "scenic": "Naturskøn",
       "transfer": "Skift",
-      "bus": "Bus",
+      "bus": "Busrute",
       "train": "Tog",
       "ferry": "Færge"
     },

@@ -39,24 +39,24 @@
       ]
     }
   ],
-  "essentialsTitle": "Essentials",
+  "essentialsTitle": "Lényegek",
   "essentials": [
     "Személyenként legalább 2 liter víz plusz sós harapnivalók; Santa Maria del Castello után nincs megbízható utántöltés.",
     "Masszív túracipő markolattal – a felső ösvény szakaszai sziklásak, lazak és kilátszottak.",
     "Napvédelem és rétegek a csúcsra; a szél még meleg napokon is átcsaphat a gerincen."
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "Jellemző költségek",
   "typicalCosts": [
     "A túraútvonal ingyenes; költségvetése 5–10 euró, ha azt tervezi, hogy megjutalmazza magát egy itallal vagy harapnivalóval a Santa Maria del Castellóban.",
     "Ha úgy dönt, hogy egy másik falun keresztül ereszkedik le, ahelyett, hogy visszafelé gyalogolna, adja vissza a SITA buszjegyeit vagy a komp viteldíjait."
   ],
-  "tipsTitle": "Smart timing",
+  "tipsTitle": "Okos időzítés",
   "tips": [
     "Nyáron hajnalban kezdje, hogy elkerülje a csúcshő alatti mászást; a késő őszi és tavaszi délutánok lágyabb fényt kínálnak tűző nap nélkül.",
     "Ellenőrizze a vihar-előrejelzést – a felhőtakaró eltörölheti a kilátást, a nedves szikla pedig csúszóssá teszi a csúcs lépcsőit.",
     "Tájékoztassa valaki a hostelben a tervét és a várható visszatérési idejét, mielőtt elindulna."
   ],
-  "warningsTitle": "When to reconsider",
+  "warningsTitle": "Mikor kell átgondolni",
   "warnings": [
     "Hagyja ki a túrát, ha nem rendelkezik hegyi tapasztalattal vagy erős erőnléttel; a tartós szintemelkedés büntető, és kevés a mentőpont.",
     "Kerülje el az útvonalat, ha a magasságok nyugtalanítanak – a szabaddá vált párkányok és meredek esések még a magabiztos túrázókat is kihívás elé állítják.",
@@ -88,7 +88,7 @@
       "text": "Kövesse az utolsó emelkedőt a csúcsra, és élvezze a panorámát, mielőtt visszamenne a Santa Maria felé."
     }
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "GYIK",
   "faqs": [
     {
       "q": "How long does the full hike take?",
@@ -111,7 +111,7 @@
   ],
   "toc": {
     "labels": {
-      "warnings": "When to reconsider"
+      "warnings": "Mikor kell átgondolni"
     }
   }
 }

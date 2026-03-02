@@ -9,7 +9,7 @@
     "openAriaWithCaption": "Bild öffnen: {{caption}}"
   },
   "header": {
-    "eyebrow": "Hostel Brikette",
+    "eyebrow": "Gästehaus Brikette",
     "title": "Übersicht der Anreisebeschreibungen",
     "description": "Nutze diesen Guide, um zu deiner Destination an der Amalfiküste und zum Hostel Brikette zu gelangen und wieder zurück.",
     "heroAlt": "Steintreppe, gesäumt von Bougainvillea, führt zum Eingang des Hostel Brikette",
@@ -465,7 +465,7 @@
     },
     "table": {
       "headers": {
-        "route": "Route",
+        "route": "Strecke",
         "toRome": "Auf dem Weg nach Rom",
         "toHostel": "Auf dem Weg zum Hostel"
       },
@@ -684,7 +684,7 @@
     "transportLabel": "Verkehrsmittel",
     "transportAll": "Alle",
     "transportModes": {
-      "bus": "Bus",
+      "bus": "Busverbindung",
       "ferry": "Fähre",
       "train": "Zug",
       "car": "Auto / Taxi",
@@ -854,11 +854,11 @@
       "changeBusesAmalfi": "Du musst in Amalfi den Bus wechseln."
     },
     "tag": {
-      "cheap": "Budget",
+      "cheap": "Haushaltsplan",
       "directish": "Einfach",
       "scenic": "Landschaftlich",
       "transfer": "Umstieg",
-      "bus": "Bus",
+      "bus": "Busverbindung",
       "train": "Zug",
       "ferry": "Fähre"
     },

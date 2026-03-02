@@ -50,12 +50,12 @@
       "items": {
         "sita": {
           "href": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result",
-          "label": "Positano.com",
+          "label": "카테고리",
           "text": "SITA 버스 포지타노 ⇄ 소렌토 시간표는 <Link>Positano.com</Link>에서 확인하세요"
         },
         "curreri": {
           "href": "https://www.curreriviaggi.it/",
-          "label": "curreriviaggi.it",
+          "label": "curreriviaggi.it의",
           "text": "Curreri 소렌토 ⇄ 나폴리 공항 시간표는 <Link>curreriviaggi.it</Link>에서 확인하세요"
         }
       }

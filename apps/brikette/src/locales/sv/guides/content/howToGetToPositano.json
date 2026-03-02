@@ -6,17 +6,17 @@
   "linkLabel": "Så tar du dig till Positano (guide för val)",
   "intro": "Alla realistiska sätt att nå Positano — jämfört med säsong, budget, bagage och ankomsttid.",
   "toc": {
-    "onThisPage": "On this page",
-    "naples": "Via Naples",
-    "salerno": "Via Salerno",
-    "ferry": "Ferry (summer)",
-    "private": "Private transfer",
-    "faqs": "FAQs"
+    "onThisPage": "På denna sida",
+    "naples": "Via Neapel",
+    "salerno": "Via salerno",
+    "ferry": "Ferry (sommar)",
+    "private": "Privat transfer",
+    "faqs": "Faqs"
   },
   "labels": {
-    "whenHeading": "When to choose",
-    "cheapestHeading": "Cheapest route",
-    "seasonalHeading": "Seasonal notes"
+    "whenHeading": "När man väljer",
+    "cheapestHeading": "Billigaste rutten",
+    "seasonalHeading": "Seasonal Notes"
   },
   "sections": [
     {

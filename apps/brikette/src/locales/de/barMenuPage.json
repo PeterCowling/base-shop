@@ -4,7 +4,7 @@
     "description": "Spritz, Cocktails, Weine, Biere, Mixgetränke, Shots und Gelato."
   },
   "header": {
-    "brand": "Hostel Brikette",
+    "brand": "Gästehaus Brikette",
     "menuTitle": "Barkarte, 2025",
     "hours": "Täglich geöffnet (Uhrzeiten an der Bar)"
   },
@@ -42,24 +42,24 @@
       "title": "Kurze"
     },
     "gelato": {
-      "title": "Gelato"
+      "title": "Gelat"
     }
   },
   "items": {
     "aperolSpritz": {
-      "name": "Aperol Spritz",
+      "name": "Aperolspritz",
       "note": "Der italienische Klassiker, serviert auf Crushed Ice."
     },
     "limoncelloSpritz": {
-      "name": "Limoncello Spritz",
+      "name": "Limoncello spritz",
       "note": "Eine Spezialität der Amalfiküste, serviert mit Crushed Ice."
     },
     "hugoSpritz": {
-      "name": "Hugo Spritz",
+      "name": "Ich weiß nicht.",
       "note": "Sekt über Minze, Limette und Holunderblütensaft. Serviert auf Crushed Ice."
     },
     "rossiniSpritz": {
-      "name": "Rossini Spritz",
+      "name": "Ich weiß nicht.",
       "note": "Sekt über Erdbeersaft. Serviert auf Crushed Ice."
     },
     "lemonStrawberryDaiquiri": {
@@ -70,7 +70,7 @@
       "note": "Erdbeer- oder Zitronensaft mit Tequila, Cointreau und Eis – serviert im klassischen Margarita-Stil."
     },
     "lemonDropMartini": {
-      "name": "Lemon Drop Martini",
+      "name": "Zitronentropfen martini",
       "note": "Frisch gepresster Zitronensaft, geschüttelt mit Absolut Vodka, Cointreau und Eis."
     },
     "redWhiteGlass": {
@@ -89,13 +89,13 @@
       "name": "Nastro, 660 ml"
     },
     "peroni330": {
-      "name": "Peroni, 330ml"
+      "name": "Peroni, 330 ml"
     },
     "peroni660": {
       "name": "Peroni, 660 ml"
     },
     "skyy": {
-      "name": "Skyy"
+      "name": "Himmel"
     },
     "absolut": {
       "name": "Absolut"
@@ -104,49 +104,49 @@
       "name": "Smirnoff"
     },
     "greyGoose": {
-      "name": "Grey Goose"
+      "name": "Schwarze Gans"
     },
     "pampero": {
       "name": "Pampero"
     },
     "bacardiSuperior": {
-      "name": "Bacardi Superior"
+      "name": "Bacardi superior"
     },
     "captainMorgan": {
-      "name": "Captain Morgan"
+      "name": "Kapitän morgan"
     },
     "angosturaReserva": {
-      "name": "Angostura Reserva"
+      "name": "Angostura reserva"
     },
     "beefeater": {
-      "name": "Beefeater"
+      "name": "Beefeat"
     },
     "bombaySapphire": {
-      "name": "Bombay Sapphire"
+      "name": "Bombay Saphir"
     },
     "tanqueray": {
-      "name": "Tanqueray"
+      "name": "Tanquen"
     },
     "hendricks": {
-      "name": "Hendrick's"
+      "name": "hendrick's"
     },
     "jwRed": {
       "name": "Johnnie Walker Red Label (Blended Scotch)"
     },
     "jameson": {
-      "name": "Jameson (Irish)"
+      "name": "Jameson (irish)"
     },
     "jackDaniels": {
       "name": "Jack Daniel's Old No. 07 (Sour Mash)"
     },
     "wildTurkey": {
-      "name": "Wild Turkey (Bourbon)"
+      "name": "Wilder Truthahn (Bürbon)"
     },
     "chivas12": {
-      "name": "Chivas Regal 12 Year Old (Blended Scotch)"
+      "name": "Chivas Regal 12 Jahre alt (Blended Scotch)"
     },
     "glenfiddich12": {
-      "name": "Glenfiddich 12 Year Old (Single Malt)"
+      "name": "Glenfiddich 12 Jahre alt (Single Malt)"
     },
     "joseCuervoSilver": {
       "name": "Jose Cuervo Tequila, Silber",

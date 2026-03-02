@@ -1,12 +1,12 @@
 {
-  "title": "Hospitality Theme Preview",
+  "title": "招待主题预览",
   "guestActivation": {
-    "label": "Guest activation",
-    "description": "Last 7 days"
+    "label": "嘉宾激活",
+    "description": "过去7天"
   },
   "signalBridge": {
-    "title": "Signal bridge check",
-    "etaShared": "ETA shared",
-    "cashPrepared": "Cash prepared"
+    "title": "信号桥检查",
+    "etaShared": "共享的ETA",
+    "cashPrepared": "准备的现金"
   }
 }

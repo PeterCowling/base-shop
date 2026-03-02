@@ -48,14 +48,14 @@
   "backToRooms": "Zurück zu den Zimmern",
   "hostel": {
     "directSavings": {
-      "eyebrow": "Book direct and save",
-      "headline": "Up to 25% less than Booking.com"
+      "eyebrow": "Buchen Sie direkt und sparen",
+      "headline": "Bis zu 25% weniger als Booking.com"
     }
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2–8 Nächte",
+    "clearDates": "Klare Termine",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} Nächte)"
   },
   "noscript": {
     "jsDisabledAssistance": "Hostelbuchungen werden mit unterstütztem Support abgewickelt, wenn JavaScript deaktiviert ist.",
@@ -72,14 +72,14 @@
     "title": "Brauchen Sie mehr Zeit? Schicken Sie sich dieses Zitat per E-Mail und machen Sie es später noch einmal.",
     "privacyNotice": "Wir buchen weiterhin nur Kontext- und Einwilligungsmetadaten. Lebenslauf-Links verfallen nach 7 Tagen.",
     "emailLabel": "Ihre E-Mail",
-    "emailPlaceholder": "you@example.com",
+    "emailPlaceholder": "Sie@example.com",
     "consent": "Ich bin damit einverstanden, dieses Angebot per E-Mail zu erhalten und verstehe, dass es nach 7 Tagen abläuft.",
     "submitted": "E-Mail-Entwurf geöffnet. Sie können es senden, um dieses Angebot zu speichern.",
     "submitCta": "Schicken Sie mir dieses Zitat per E-Mail",
     "errors": {
       "invalidEmail": "Geben Sie eine gültige E-Mail-Adresse ein.",
       "consentRequired": "Für den Versand der Angebots-E-Mail ist die Einwilligung erforderlich.",
-      "sendFailed": "Something went wrong. Please try again or contact us directly."
+      "sendFailed": "Etwas ging schief. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt."
     },
     "mailto": {
       "subject": "Anfrage zur Angebotswiederherstellung",
@@ -95,6 +95,48 @@
         "resumeLink": "Link zum Lebenslauf"
       }
     },
-    "sending": "Sending…"
+    "sending": "Senden..."
+  },
+  "apartment": {
+    "heading": "Buchen Sie das Private Apartment",
+    "subheading": "Wählen Sie Ihre Daten und Anzahl der Gäste aus, wählen Sie dann einen Preis.",
+    "guestLabel": "Anzahl der Gäste",
+    "guests": {
+      "2": "2 Gäste",
+      "3": "3 Gäste"
+    },
+    "flex": {
+      "title": "Flexibler Tarif",
+      "saving": "21% vs OTA speichern",
+      "bullets": [
+        "Free cancellation up to 3 days before arrival.",
+        "Changes subject to availability."
+      ]
+    },
+    "nr": {
+      "title": "Nicht erstattbar",
+      "saving": "26% vs OTA speichern",
+      "bullets": [
+        "Best direct price — paid in full upfront.",
+        "No refunds or changes after booking."
+      ]
+    },
+    "nightsSummary_one": "{{count}} Nacht — Verfügbarkeit im nächsten Schritt bestätigt.",
+    "nightsSummary_other": "{{count}} Nächte – Verfügbarkeit im nächsten Schritt bestätigt.",
+    "rateLabel": "Wählen Sie Ihren Preis",
+    "ratePrompt": "Wählen Sie eine Rate oben weiter",
+    "cta": {
+      "unselected": "Wählen Sie eine Rate weiter →",
+      "flex": "Flexibel – Weiter zum Checkout",
+      "nr": "Nicht erstattbar – Weiter zur Kasse"
+    },
+    "policies": {
+      "title": "Richtlinien und Gebühren",
+      "items": [
+        "City/tourist tax: €2.50 per guest per night (added at checkout).",
+        "Cancellation admin fee: typically 15% of booking price.",
+        "Final availability and payment are completed on our official booking engine."
+      ]
+    }
   }
 }

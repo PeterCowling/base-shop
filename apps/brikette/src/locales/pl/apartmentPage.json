@@ -52,5 +52,115 @@
         "alt": "Ulice Positano"
       }
     ]
+  },
+  "directSavings": {
+    "eyebrow": "Zarezerwuj bezpośrednio i zapisz",
+    "heading": "Do 26% mniej niż",
+    "nr": {
+      "label": "Niepodlegające zwrotowi",
+      "saving": "Zapisz 26%",
+      "detail": "Najlepsza cena bezpośrednia"
+    },
+    "flex": {
+      "label": "Elastyczna szybkość",
+      "saving": "Zapisz 21%",
+      "detail": "Bezpłatne anulowanie"
+    }
+  },
+  "heroTagline": "Prywatny apartament · Positano, Włochy",
+  "galleryCaptions": [
+    "Full private bathroom with rain-head shower and designer fittings",
+    "Bright open-plan living space with dining area, TV lounge and mezzanine staircase",
+    "Fully equipped kitchen with dishwasher, washing machine and traditional Positano tilework"
+  ],
+  "fitCheck": {
+    "heading": "Czy to mieszkanie jest dla ciebie odpowiednie?",
+    "arrival": {
+      "label": "Przyjazd",
+      "text": "Nie ma schodów od drogi do wejścia do mieszkania."
+    },
+    "inside": {
+      "label": "Wewnątrz",
+      "text": "Split- poziom wnętrza ze schodami wewnętrznymi między salonem i sypialnią."
+    },
+    "sleeping": {
+      "label": "Śpi",
+      "text": "Łóżko sofy na dole, łóżko podwójne na górze."
+    },
+    "sound": {
+      "label": "Dźwięk",
+      "text": "Trochę drogi i taras atmosfera; taras spokojne godziny od północy."
+    },
+    "bestFit": {
+      "label": "Najlepsze dopasowanie",
+      "text": "Idealny dla par. Jeśli ktoś z twojej grupy woli unikać schodów, sofa na dole jest wygodną alternatywą. Nie zaleca się dla bardzo lekkich śpiących."
+    }
+  },
+  "hub": {
+    "streetLevelCard": {
+      "title": "Przyjazd na poziom strumienia",
+      "subtitle": "Brak schodów ulicznych od drogi do wejścia",
+      "cta": "Więcej informacji"
+    },
+    "privateStayCard": {
+      "title": "Prywatny pobyt serwisowany",
+      "subtitle": "Z opcjonalnym tarasem, bar i śniadanie obok",
+      "cta": "Więcej informacji"
+    }
+  },
+  "checkAvailability": "Sprawdź dostępność",
+  "streetLevelArrival": {
+    "meta": {
+      "title": "Step- Free Przyjazd w Positano - No Street Schody",
+      "description": "Nasze mieszkanie oferuje step-free dostęp z drogi do wejścia - rzadko w stromym Positano. Żadnych schodów, żadnej walki z bagażem."
+    },
+    "heroTitle": "Step-free przyjazd",
+    "heroSubtitle": "Brak schodów ulicznych od drogi do wejścia mieszkania",
+    "heroBody": "W mieście znanym z setek kroków, nasze mieszkanie jest inne. Spacer prosto z drogi do drzwi frontowych - bez schodów, bez walki z bagażem lub wózkami.",
+    "videoPlaceholder": "Video-do-drzwi nadchodzi wkrótce",
+    "clarification": "Wejście do mieszkania jest stopniowo wolne od ulicy. Wewnątrz mieszkania jest podzielony poziom ze schodami wewnętrznymi między salon i sypialnia.",
+    "whatsappCta": "WhatsApp dla szybkich odpowiedzi",
+    "checkAvailability": "Sprawdź dostępność"
+  },
+  "privateStay": {
+    "meta": {
+      "title": "Prywatny apartament z obsługą w Positano",
+      "description": "Prywatny 85m2 apartament z pełną kuchnią, profesjonalnie zarządzany z opcjonalnym dostępem do tarasu, śniadanie i bar obok."
+    },
+    "heroTitle": "Twoje prywatne mieszkanie w Positano",
+    "heroSubtitle": "Profesjonalnie zarządzane z pomocą w zakresie hospitalizacji obok",
+    "sections": {
+      "privacy": {
+        "title": "Całkowita niezależność",
+        "body": "85m2 mieszkanie, które jest całkowicie twoje. Pełna kuchnia, pralka i suszarka, dwie łazienki, i miejsce do rozłożenia. Żadnych dzielonych pomieszczeń, żadnych czeków w biurku - tylko twoje drzwi."
+      },
+      "support": {
+        "title": "Profesjonalne wsparcie w razie potrzeby",
+        "body": "Zarządzany przez doświadczoną ekipę gościnność z siedzibą tuż obok. Potrzebujesz rekomendacji restauracji, pomocy ze wskazówkami, czy pomocy z czymkolwiek? Profesjonalne wsparcie jest niedaleko."
+      },
+      "amenities": {
+        "title": "Opcjonalne dodatki obok",
+        "body": "Jeśli chcesz, taras z widokiem na morze, śniadanie i bar są dostępne obok. Ciesz się nimi w harmonogramie, lub pominąć je całkowicie - wybór jest twój."
+      }
+    },
+    "whatsappCta": "WhatsApp dla szybkich odpowiedzi",
+    "checkAvailability": "Sprawdź dostępność"
+  },
+  "book": {
+    "meta": {
+      "title": "Zarezerwuj nasz apartament Positano",
+      "description": "Sprawdź dostępność i zarezerwuj nasz prywatny apartament w Positano. Step-free przyjazd, pełna kuchnia, śpi 4."
+    },
+    "heroTitle": "Zarezerwuj swój pobyt",
+    "heroSubtitle": "Prywatny apartament w Positano",
+    "dateLabel": "Wybierz daty",
+    "checkinLabel": "Kontrola",
+    "checkoutLabel": "Kontrola",
+    "rateNonRefundable": "Niepodlegające zwrotowi",
+    "rateFlexible": "Elastyczne (wolne anulowanie)",
+    "checkAvailability": "Sprawdź dostępność",
+    "orBookingCom": "Albo książka o Beverly",
+    "whatsappCta": "WhatsApp dla szybkich odpowiedzi",
+    "backLink": "← Powrót do szczegółów apartamentu"
   }
 }

@@ -347,5 +347,10 @@
         "experience": "التجارب"
       }
     }
+  },
+  "search": {
+    "noResults": "لا توجد أدلة",
+    "resultsCount_one": "وجدت دليل",
+    "resultsCount_other": "وجدت __TK0 _ أدلة"
   }
 }

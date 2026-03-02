@@ -231,7 +231,7 @@
     "clickToEnlarge": "Clicca sull’immagine per ingrandire",
     "prevAria": "Immagine precedente",
     "nextAria": "Immagine successiva",
-    "pagination": "{{current}}/{{total}}",
+    "pagination": "Traduzione:",
     "photoAlt": "Foto di {{room}}",
     "noImage": "Nessuna immagine disponibile"
   },
@@ -251,10 +251,10 @@
   "filtersAria": "Filtra per tipologia di camera",
   "checkRatesNonRefundable": "Tariffe non rimborsabili",
   "checkRatesFlexible": "Tariffe flessibili",
-  "checkRatesSingle": "Check Rates",
+  "checkRatesSingle": "Verifica tariffe",
   "ctaSuffix": {
-    "nonRefundable": "Non‑Refundable",
-    "flexible": "Flexible"
+    "nonRefundable": "Non rimborsabile",
+    "flexible": "Flessibile"
   },
   "details": "Dettagli",
   "ratesFrom": "Da €{{price}}",
@@ -265,7 +265,7 @@
   "confirm": "Conferma",
   "cancel": "Annulla",
   "moreAboutThisRoom": "Scopri di più su questa camera",
-  "loadingPrice": "Loading price…",
+  "loadingPrice": "Prezzo di caricamento...",
   "landingImageAlt": "Immagine principale di {{room}}",
   "priceNotes": {
     "dorm": "Per notte, per ospite. Un ospite in un letto a castello."
@@ -306,9 +306,9 @@
     "perBed": "Letto"
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2-8 notti",
+    "clearDates": "Date chiare",
+    "nightsSummary": "{{from}} → {{to}} (_TOK2__ notti)"
   },
   "noscript": {
     "jsDisabledAssistance": "Questo percorso in ostello utilizza la prenotazione assistita quando JavaScript è disabilitato.",

@@ -1,12 +1,12 @@
 {
-  "title": "Hospitality Theme Preview",
+  "title": "Xem thử sắc thái khách",
   "guestActivation": {
-    "label": "Guest activation",
-    "description": "Last 7 days"
+    "label": "Kích hoạt khách",
+    "description": "7 ngày qua"
   },
   "signalBridge": {
-    "title": "Signal bridge check",
-    "etaShared": "ETA shared",
-    "cashPrepared": "Cash prepared"
+    "title": "Kiểm tra cầu tín hiệu",
+    "etaShared": "Được chia sẻ từ xa",
+    "cashPrepared": "Chuẩn bị tiền mặt"
   }
 }

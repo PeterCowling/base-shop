@@ -109,19 +109,130 @@ const formatList = (items: string[], maxItems: number): { shown: string[]; remai
   return { shown: items.slice(0, maxItems), remaining: items.length - maxItems };
 };
 
+const NON_TRANSLATABLE_EXACT_VALUES = new Set([
+  "summary_large_image",
+  "@brikette",
+  "Absolut",
+  "Amalfi",
+  "Beefeater",
+  "Cappuccino",
+  "Capri",
+  "Capri.net – Capri ↔ Positano",
+  "Ferragosto",
+  "Gelato",
+  "Herculaneum",
+  "Hostelworld",
+  "Ischia",
+  "Johnnie Walker Red Label (Blended Scotch)",
+  "Latte",
+  "Limoncello",
+  "Luminaria di San Domenico",
+  "Luminaria di San Domenico (Praiano)",
+  "Macchiato",
+  "Naples",
+  "noindex,follow",
+  "noindex,nofollow",
+  "Pampero",
+  "Piazza San Gennaro, Praiano",
+  "Positano",
+  "Praiano",
+  "Procida",
+  "Ravello",
+  "Salerno",
+  "Skyy",
+  "Smirnoff",
+  "Sorrento",
+  "Tanqueray",
+  "Travelmar",
+  "Tramonti",
+  "Whisky",
+]);
+
+const PLACEHOLDER_TOKEN_REGEX =
+  /\{\{\s*[^{}]+\s*\}\}|%(?:\d+\$)?[+#0\- ]*(?:\d+|\*)?(?:\.(?:\d+|\*))?[sdif]|%\([^)]+\)[sdif]|<\/?[0-9]+>|<[0-9]+\s*\/>|%[A-Z]+:[^%]+%/g;
+
 const isCandidateForTranslationDiff = (value: string): boolean => {
   const trimmed = value.trim();
   if (trimmed.length === 0) return false;
+  if (NON_TRANSLATABLE_EXACT_VALUES.has(trimmed)) return false;
+  const withoutPlaceholders = trimmed.replace(PLACEHOLDER_TOKEN_REGEX, "").trim();
+  if (withoutPlaceholders.length === 0) return false;
+  if (/^[:/%\-\s.,()]+$/.test(withoutPlaceholders)) return false;
 
   // Ignore obvious non-natural-language values.
   if (/^https?:\/\//i.test(trimmed)) return false;
+  if (/^[a-z0-9.-]+\.[a-z]{2,}(?:\/[^\s]*)?$/i.test(trimmed)) return false;
+  if (/^[^\s]+\.(?:png|jpe?g|webp|gif|svg|ico|avif)$/i.test(trimmed)) return false;
+  if (/^[^\s]+\.(?:json|md|txt|csv)$/i.test(trimmed)) return false;
   if (/^\/[a-z0-9/_\-]*$/i.test(trimmed)) return false;
+  if (/^[a-z0-9/_\-]+\.(?:png|jpe?g|webp|gif|svg|ico|avif)$/i.test(trimmed)) return false;
+  if (/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/i.test(trimmed)) return false;
   if (/^\{\{[^}]+\}\}$/.test(trimmed)) return false;
   if (/^%[sdif]$/i.test(trimmed)) return false;
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/.test(trimmed)) return false;
+  if (/^[\p{P}\p{S}\s]+$/u.test(trimmed)) return false;
   if (/^[0-9\s.,:%€$£¥+-]+$/.test(trimmed)) return false;
   if (/^[A-Z0-9_]+$/.test(trimmed)) return false;
 
   return true;
+};
+
+const isNonTranslatableKeyPath = (pathKey: string): boolean => {
+  const normalized = pathKey.toLowerCase();
+  const terminal = normalized.split(".").at(-1) ?? normalized;
+  if (
+    terminal === "src" ||
+    terminal === "slug" ||
+    terminal === "email" ||
+    terminal === "facebook" ||
+    terminal === "instagram" ||
+    terminal === "twitter" ||
+    terminal === "x" ||
+    terminal === "url" ||
+    terminal === "href" ||
+    terminal === "handle" ||
+    terminal === "username" ||
+    terminal === "filename" ||
+    terminal === "filepath" ||
+    terminal === "lastupdated" ||
+    terminal === "address" ||
+    terminal === "addressvalue" ||
+    terminal === "cityname" ||
+    terminal === "brand" ||
+    terminal === "brandname" ||
+    terminal === "addresslocality" ||
+    terminal === "locationname" ||
+    terminal === "mapreferrerpolicy" ||
+    terminal === "twittercard"
+  ) {
+    return true;
+  }
+
+  return (
+    normalized.endsWith(".src") ||
+    normalized.endsWith(".slug") ||
+    normalized.endsWith(".email") ||
+    normalized.endsWith(".facebook") ||
+    normalized.endsWith(".instagram") ||
+    normalized.endsWith(".twitter") ||
+    normalized.endsWith(".x") ||
+    normalized.endsWith(".url") ||
+    normalized.endsWith(".href") ||
+    normalized.endsWith(".handle") ||
+    normalized.endsWith(".username") ||
+    normalized.endsWith(".filename") ||
+    normalized.endsWith(".filepath") ||
+    normalized.endsWith(".lastupdated") ||
+    normalized.endsWith(".address") ||
+    normalized.endsWith(".addressvalue") ||
+    normalized.endsWith(".cityname") ||
+    normalized.endsWith(".brand") ||
+    normalized.endsWith(".brandname") ||
+    normalized.endsWith(".addresslocality") ||
+    normalized.endsWith(".locationname") ||
+    normalized.endsWith(".mapreferrerpolicy") ||
+    normalized.endsWith(".twittercard")
+  );
 };
 
 const collectUntranslatedKeys = (
@@ -145,6 +256,9 @@ const collectUntranslatedKeys = (
     }
 
     if (typeof value === "string" && typeof targetValue === "string") {
+      if (isNonTranslatableKeyPath(pathKey)) {
+        continue;
+      }
       const left = value.trim();
       const right = targetValue.trim();
       if (left === right && isCandidateForTranslationDiff(left)) {

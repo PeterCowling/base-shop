@@ -3,6 +3,6 @@
   "articleCount_other": "{{count}} مقالات",
   "topTagsHeading": "أبرز الوسوم",
   "robots": {
-    "noindexFollow": "noindex,follow"
+    "noindexFollow": "لا يوجد مقياس"
   }
 }

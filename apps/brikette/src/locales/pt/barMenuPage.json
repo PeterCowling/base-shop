@@ -35,11 +35,11 @@
       "note": "Servido com água tónica Schweppes, sobre gelo picado e decorado com um delicioso limão da Costa Amalfitana."
     },
     "whisky": {
-      "title": "Whisky",
+      "title": "Uísque",
       "note": "Escolha entre os nossos whiskies e indique se precisa de gelo, água ou um mixer com cafeína. O café pode ser servido gelado ou quente, como espresso ou lungo/americano."
     },
     "shots": {
-      "title": "Shots"
+      "title": "Tiros"
     },
     "gelato": {
       "title": "Gelado"
@@ -47,19 +47,19 @@
   },
   "items": {
     "aperolSpritz": {
-      "name": "Aperol Spritz",
+      "name": "Aperol spritz",
       "note": "O clássico spritz italiano, servido com gelo picado."
     },
     "limoncelloSpritz": {
-      "name": "Limoncello Spritz",
+      "name": "Limoncello spritz",
       "note": "Especialidade da Costa Amalfitana, servida com gelo picado."
     },
     "hugoSpritz": {
-      "name": "Hugo Spritz",
+      "name": "Hugo spritz",
       "note": "Espumante servido sobre hortelã, lima e sumo de flor de sabugueiro, acompanhado de gelo picado."
     },
     "rossiniSpritz": {
-      "name": "Rossini Spritz",
+      "name": "Rossini spritz",
       "note": "Espumante servido sobre sumo de morango, acompanhado de gelo picado."
     },
     "lemonStrawberryDaiquiri": {
@@ -70,7 +70,7 @@
       "note": "Sumo de morango ou limão com tequila, Cointreau e gelo, finalizado no estilo clássico da margarita."
     },
     "lemonDropMartini": {
-      "name": "Lemon Drop Martini",
+      "name": "Martini Gota de Limão",
       "note": "Sumo de limão espremido na hora agitado com vodka Absolut, Cointreau e gelo."
     },
     "redWhiteGlass": {
@@ -95,40 +95,40 @@
       "name": "Peroni 660 ml"
     },
     "skyy": {
-      "name": "Skyy"
+      "name": "Céu"
     },
     "absolut": {
-      "name": "Absolut"
+      "name": "Absoluto"
     },
     "smirnoff": {
       "name": "Smirnoff"
     },
     "greyGoose": {
-      "name": "Grey Goose"
+      "name": "Ganso Cinzento"
     },
     "pampero": {
       "name": "Pampero"
     },
     "bacardiSuperior": {
-      "name": "Bacardi Superior"
+      "name": "Bacardi superior"
     },
     "captainMorgan": {
-      "name": "Captain Morgan"
+      "name": "Capitão Morgan."
     },
     "angosturaReserva": {
-      "name": "Angostura Reserva"
+      "name": "Angostura reserva"
     },
     "beefeater": {
-      "name": "Beefeater"
+      "name": "Carne de bovino"
     },
     "bombaySapphire": {
-      "name": "Bombay Sapphire"
+      "name": "Safira de Bombaim"
     },
     "tanqueray": {
       "name": "Tanqueray"
     },
     "hendricks": {
-      "name": "Hendrick's"
+      "name": "Hendrick's Gin"
     },
     "jwRed": {
       "name": "Johnnie Walker Red Label (whisky escocês blended)"

@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "Hostel Brikette",
+    "title": "Albergue brikette",
     "reserve": "Reservar agora"
   },
   "intro": {
@@ -24,7 +24,7 @@
     "reload": "Recarregar a página"
   },
   "meta": {
-    "twitterCard": "summary_large_image",
+    "twitterCard": "sumário_large_image",
     "twitterHandle": "@brikette"
   },
   "internalErrors": {

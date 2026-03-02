@@ -266,7 +266,7 @@
     "clickToEnlarge": "Cliquez sur l’image pour l’agrandir",
     "prevAria": "Image précédente",
     "nextAria": "Image suivante",
-    "pagination": "{{current}}/{{total}}",
+    "pagination": "{{current}}XQTOKEN2QXZ",
     "photoAlt": "Photo de {{room}}",
     "noImage": "Aucune image disponible"
   },
@@ -286,10 +286,10 @@
   "filtersAria": "Filtrer par type de chambre",
   "checkRatesNonRefundable": "Tarifs non remboursables",
   "checkRatesFlexible": "Tarifs flexibles",
-  "checkRatesSingle": "Check Rates",
+  "checkRatesSingle": "Taux de vérification",
   "ctaSuffix": {
     "nonRefundable": "Non remboursable",
-    "flexible": "Flexible"
+    "flexible": "Souple"
   },
   "details": "Détails",
   "ratesFrom": "À partir de €{{price}}",
@@ -306,9 +306,9 @@
     "dorm": "Par nuit, par personne. Une personne par lit superposé."
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2–8 nuits",
+    "clearDates": "Effacer les dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nuits)"
   },
   "noscript": {
     "jsDisabledAssistance": "Cet itinéraire d'auberge utilise la réservation assistée lorsque JavaScript est désactivé.",

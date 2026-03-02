@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "Hostel Brikette",
+    "title": "سماء الاستضافة",
     "reserve": "احجز الآن"
   },
   "intro": {
@@ -24,7 +24,7 @@
     "reload": "إعادة تحميل الصفحة"
   },
   "meta": {
-    "twitterCard": "summary_large_image",
+    "twitterCard": "موجز - حجم البعثة",
     "twitterHandle": "@brikette"
   },
   "internalErrors": {

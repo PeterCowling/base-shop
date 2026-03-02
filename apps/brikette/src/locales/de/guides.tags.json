@@ -27,15 +27,15 @@
       "description": "Smarte Wege, bei Transport, Essen und Aktivitäten zu sparen."
     },
     "bus": {
-      "label": "Bus",
+      "label": "Busverbindung",
       "title": "Bus- & SITA-Guides"
     },
     "camping": {
-      "label": "Camping",
+      "label": "Campingplatz",
       "title": "Camping an der Küste"
     },
     "capri": {
-      "label": "Capri",
+      "label": "Paprika",
       "title": "Capri mit kleinem Budget"
     },
     "car": {
@@ -95,8 +95,8 @@
       "title": "Reise-FAQs"
     },
     "ferragosto": {
-      "label": "Ferragosto",
-      "title": "Ferragosto in Positano"
+      "label": "Eisenwaren",
+      "title": "ferragosto in positano"
     },
     "ferry": {
       "label": "Fähre",
@@ -185,7 +185,7 @@
       "title": "Positano-Guides"
     },
     "praiano": {
-      "label": "Praiano",
+      "label": "Praktiker",
       "title": "Praiano-Guides"
     },
     "procida": {
@@ -193,7 +193,7 @@
       "title": "Procida-Guides"
     },
     "ravello": {
-      "label": "Ravello",
+      "label": "Ravental",
       "title": "Ravello-Guides"
     },
     "safety": {
@@ -201,8 +201,8 @@
       "title": "Sicherheit an der Amalfiküste"
     },
     "salerno": {
-      "label": "Salerno",
-      "title": "Salerno ↔ Positano"
+      "label": "Salbei",
+      "title": "Salerno ▪ Positano"
     },
     "shopping": {
       "label": "Einkaufen",
@@ -250,7 +250,7 @@
       "title": "Geführte Spaziergänge"
     },
     "winter": {
-      "label": "Winter",
+      "label": "Winterzeit",
       "title": "Positano im Winter"
     },
     "work-life": {

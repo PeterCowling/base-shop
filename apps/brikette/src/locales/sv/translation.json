@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "Hostel Brikette",
+    "title": "Hotell nära Hostel Brikette",
     "reserve": "Boka nu"
   },
   "intro": {
@@ -24,7 +24,7 @@
     "reload": "Ladda om sidan"
   },
   "meta": {
-    "twitterCard": "summary_large_image",
+    "twitterCard": "Sammanfattning_large_image",
     "twitterHandle": "@brikette"
   },
   "internalErrors": {

@@ -44,14 +44,14 @@
   "backToRooms": "객실로 돌아가기",
   "hostel": {
     "directSavings": {
-      "eyebrow": "Book direct and save",
-      "headline": "Up to 25% less than Booking.com"
+      "eyebrow": "직접 예약 및 저장",
+      "headline": "최대 25% 미만 Booking.com"
     }
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2～8박",
+    "clearDates": "자주 묻는 질문",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} 박)"
   },
   "noscript": {
     "jsDisabledAssistance": "JavaScript가 비활성화된 경우 호스텔 예약은 지원 지원을 통해 처리됩니다.",
@@ -75,7 +75,7 @@
     "errors": {
       "invalidEmail": "유효한 이메일 주소를 입력하세요.",
       "consentRequired": "견적 이메일을 보내려면 동의가 필요합니다.",
-      "sendFailed": "Something went wrong. Please try again or contact us directly."
+      "sendFailed": "뭔가 잘못되었습니다. 자주 묻는 질문"
     },
     "mailto": {
       "subject": "견적 복구 요청",
@@ -91,6 +91,52 @@
         "resumeLink": "이력서 링크"
       }
     },
-    "sending": "Sending…"
+    "sending": "이름 *"
+  },
+  "subheading": "날짜를 선택하면 방을 선택하십시오.",
+  "dealBanner": {
+    "applied": "적용된 거래: {{code}}"
+  },
+  "apartment": {
+    "heading": "개인 아파트 예약",
+    "subheading": "날짜와 인원을 선택한 다음 요금을 선택하십시오.",
+    "guestLabel": "인원수",
+    "guests": {
+      "2": "2명",
+      "3": "3명"
+    },
+    "flex": {
+      "title": "가동 가능한 비율",
+      "saving": "저장 21% 대 OTA",
+      "bullets": [
+        "Free cancellation up to 3 days before arrival.",
+        "Changes subject to availability."
+      ]
+    },
+    "nr": {
+      "title": "환불 규정",
+      "saving": "저장 26% 대 OTA",
+      "bullets": [
+        "Best direct price — paid in full upfront.",
+        "No refunds or changes after booking."
+      ]
+    },
+    "nightsSummary_one": "{{count}} night - 다음 단계에서 확인된 가용성.",
+    "nightsSummary_other": "{{count}} nights — 다음 단계에서 확인된 가용성.",
+    "rateLabel": "당신의 비율을 선택하십시오",
+    "ratePrompt": "계속하기",
+    "cta": {
+      "unselected": "계속 →",
+      "flex": "유연한 – 체크 아웃 계속",
+      "nr": "환불 불가 – 체크아웃"
+    },
+    "policies": {
+      "title": "정책 및 수수료",
+      "items": [
+        "City/tourist tax: €2.50 per guest per night (added at checkout).",
+        "Cancellation admin fee: typically 15% of booking price.",
+        "Final availability and payment are completed on our official booking engine."
+      ]
+    }
   }
 }

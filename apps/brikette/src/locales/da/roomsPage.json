@@ -231,7 +231,7 @@
     "clickToEnlarge": "Klik for at forstørre billedet",
     "prevAria": "Forrige billede",
     "nextAria": "Næste billede",
-    "pagination": "{{current}}/{{total}}",
+    "pagination": "_ _ TOK0 _ _ / _ _ TOK1 _ _",
     "photoAlt": "Foto af {{room}}",
     "noImage": "Intet billede tilgængeligt"
   },
@@ -251,7 +251,7 @@
   "filtersAria": "Filtrer efter værelsestype",
   "checkRatesNonRefundable": "Ikke‑refunderbare priser",
   "checkRatesFlexible": "Fleksible værelsespriser",
-  "checkRatesSingle": "Check Rates",
+  "checkRatesSingle": "Kontrolsatser",
   "ctaSuffix": {
     "nonRefundable": "Ikke‑refunderbar",
     "flexible": "Fleksibel"
@@ -306,9 +306,9 @@
     "perBed": "seng"
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2- 8 nætter",
+    "clearDates": "Ryd datoer",
+    "nightsSummary": "_ _ TOK0 _ _ → _ TOK1 _ _ (_ TOK2 _ _ nætter)"
   },
   "noscript": {
     "jsDisabledAssistance": "Denne hostelrute bruger assisteret booking, når JavaScript er deaktiveret.",

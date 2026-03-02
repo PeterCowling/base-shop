@@ -9,12 +9,13 @@
   "lastChecked": "Zuletzt geprüft:",
   "sources": {
     "hostelworld": {
-      "ariaName": "Hostelworld",
-      "label": "Hostelworld"
+      "ariaName": "Hervorragend",
+      "label": "Hervorragend"
     },
     "booking": {
       "ariaName": "Booking Punkt com",
-      "label": "Booking.com"
+      "label": "Buchung.com"
     }
-  }
+  },
+  "snapshotAsOf": "Ab {{date}}"
 }

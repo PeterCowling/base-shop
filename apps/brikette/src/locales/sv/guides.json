@@ -347,5 +347,10 @@
         "experience": "Upplevelser"
       }
     }
+  },
+  "search": {
+    "noResults": "Inga guider hittades",
+    "resultsCount_one": "Hittade {{count}} guide",
+    "resultsCount_other": "Hittade {{count}}-guider"
   }
 }

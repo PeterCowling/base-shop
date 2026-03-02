@@ -315,7 +315,7 @@
       "status": {
         "draft": "Kladde",
         "review": "Til gennemgang",
-        "live": "Live"
+        "live": "Levende"
       },
       "workflow": {
         "draftPreview": "Kladde-preview",
@@ -347,5 +347,10 @@
         "experience": "Oplevelser"
       }
     }
+  },
+  "search": {
+    "noResults": "Ingen guider fundet",
+    "resultsCount_one": "Fundet _ _ TOK0 _ _ guide",
+    "resultsCount_other": "Fundet _ _ TOK0 _ _ guider"
   }
 }

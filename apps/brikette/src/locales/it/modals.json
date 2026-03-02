@@ -159,12 +159,12 @@
     "close": "Chiudi"
   },
   "loader": {
-    "ariaLabel": "Loading"
+    "ariaLabel": "Caricamento"
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2-8 notti",
+    "clearDates": "Date chiare",
+    "nightsSummary": "{{from}} → {{to}} (_TOK2__ notti)"
   },
   "directPerks": {
     "heading": "Perché prenotare direttamente?",

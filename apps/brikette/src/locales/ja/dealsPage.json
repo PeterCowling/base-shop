@@ -3,7 +3,11 @@
   "meta": {
     "title": "9月20日〜10月31日のご滞在が15 %オフ",
     "description": "期間限定：直接予約で9月20日〜10月31日のご滞在が15 %割引。割引はチェックアウト時に自動適用されます。",
-    "ogImageAlt": "期間限定割引バナー"
+    "ogImageAlt": "期間限定割引バナー",
+    "defaultTitle": "ディール&オファー | ホステルブリケット",
+    "defaultDescription": "Hostel Briketteの直接予約特典と季節限定のオファー。",
+    "activeTitle": "{{from}} から {{to}}_ への滞在で {{percent}} を保存します。",
+    "activeDescription": "チェックアウト時に自動適用されます。 直接予約のみ。"
   },
   "title": "{{from}}〜{{to}}のご滞在が{{percent}} %オフ",
   "promo": "直接予約で{{percent}} %割引。割引はチェックアウト時に自動適用されます。",
@@ -119,6 +123,6 @@
     "other": "利用規約を見る。"
   },
   "robots": {
-    "expiredNoindex": "noindex,follow"
+    "expiredNoindex": "noindex,フォロー"
   }
 }

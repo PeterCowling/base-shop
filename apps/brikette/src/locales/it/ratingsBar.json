@@ -9,12 +9,13 @@
   "lastChecked": "Ultimo controllo:",
   "sources": {
     "hostelworld": {
-      "ariaName": "Hostelworld",
-      "label": "Hostelworld"
+      "ariaName": "Ostello nel mondo",
+      "label": "Ostello nel mondo"
     },
     "booking": {
       "ariaName": "Booking punto com",
-      "label": "Booking.com"
+      "label": "Prenotazione.com"
     }
-  }
+  },
+  "snapshotAsOf": "A partire da __TOK0_"
 }

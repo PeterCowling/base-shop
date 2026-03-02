@@ -159,12 +159,12 @@
     "close": "Luk"
   },
   "loader": {
-    "ariaLabel": "Loading"
+    "ariaLabel": "Indlæser"
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2- 8 nætter",
+    "clearDates": "Ryd datoer",
+    "nightsSummary": "_ _ TOK0 _ _ → _ TOK1 _ _ (_ TOK2 _ _ nætter)"
   },
   "directPerks": {
     "heading": "Hvorfor booke direkte?",

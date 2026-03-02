@@ -16,5 +16,6 @@
       "ariaName": "Booking punkt com",
       "label": "Booking.com"
     }
-  }
+  },
+  "snapshotAsOf": "Från {{date}}"
 }

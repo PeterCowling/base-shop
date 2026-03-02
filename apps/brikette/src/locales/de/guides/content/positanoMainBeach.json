@@ -3,7 +3,7 @@
     "title": "Spiaggia Grande (Positanos Hauptstrand) Guide",
     "description": "Freie Bereiche, Strandclubs, Preise und ein Lageplan für Spiaggia Grande – plus Tipps für den Weg nach Fornillo und wann du Liegen reservieren solltest."
   },
-  "lastUpdated": "2026-01-29T00:00:00.000Z",
+  "lastUpdated": "2026-01-29T00:00:00 Uhr.000Z",
   "linkLabel": "Spiaggia Grande Guide (Positanos Hauptstrand)",
   "intro": [
     "Spiaggia Grande ist Positanos Postkartenstrand: ein breiter, kieselförmiger Halbmond mit der Skyline auf der Klippe hinter den Sonnenschirmen und Fähren, die den ganzen Tag an- und abfahren.",
@@ -207,7 +207,7 @@
     "Liegestühle und Sonnenschirme in der ersten Reihe sind im August bereits Tage im Voraus ausverkauft – reservieren Sie, wenn Sie garantierten Schatten benötigen.",
     "Kartenautomaten gehen gelegentlich offline; Nehmen Sie Bargeld für Kioske, Stuhlguthaben und den Interno-Busfahrer mit."
   ],
-  "faqsTitle": "Spiaggia Grande FAQs",
+  "faqsTitle": "spiaggia grande faqs",
   "faqs": [
     {
       "q": "Muss ich L'Incanto oder La Scogliera im Voraus buchen?",

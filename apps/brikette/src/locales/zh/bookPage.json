@@ -44,14 +44,14 @@
   "backToRooms": "返回房型",
   "hostel": {
     "directSavings": {
-      "eyebrow": "Book direct and save",
-      "headline": "Up to 25% less than Booking.com"
+      "eyebrow": "直接书本并保存",
+      "headline": "比Booking.com少25%"
     }
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2-8个晚上",
+    "clearDates": "清除日期",
+    "nightsSummary": "_TOK0_____(_TOK2_晚间)"
   },
   "noscript": {
     "jsDisabledAssistance": "当 JavaScript 被禁用时，旅馆预订将在辅助支持下处理。",
@@ -75,7 +75,7 @@
     "errors": {
       "invalidEmail": "输入有效的电子邮件地址。",
       "consentRequired": "发送报价电子邮件需要获得同意。",
-      "sendFailed": "Something went wrong. Please try again or contact us directly."
+      "sendFailed": "出了点问题 请再试一次 或者直接联系我们"
     },
     "mailto": {
       "subject": "报价恢复请求",
@@ -91,6 +91,52 @@
         "resumeLink": "简历链接"
       }
     },
-    "sending": "Sending…"
+    "sending": "正在发送..."
+  },
+  "subheading": "选择你的约会,然后选择一个房间。",
+  "dealBanner": {
+    "applied": "应用协议 : _TOK0_"
+  },
+  "apartment": {
+    "heading": "订下私人公寓",
+    "subheading": "选择您的日期和宾客数量, 然后选择一个比例 。",
+    "guestLabel": "来宾人数",
+    "guests": {
+      "2": "两个客人",
+      "3": "三个客人"
+    },
+    "flex": {
+      "title": "灵活费率",
+      "saving": "省21%对OTA",
+      "bullets": [
+        "Free cancellation up to 3 days before arrival.",
+        "Changes subject to availability."
+      ]
+    },
+    "nr": {
+      "title": "不可退还",
+      "saving": "节省26%对OTA",
+      "bullets": [
+        "Best direct price — paid in full upfront.",
+        "No refunds or changes after booking."
+      ]
+    },
+    "nightsSummary_one": "[永久失效連結]_TOK0_晚间——下一步确认可用.",
+    "nightsSummary_other": "[永久失效連結] 腾讯网_腾讯网_晚间_腾讯网. 腾讯网.",
+    "rateLabel": "选择利率",
+    "ratePrompt": "选择上方的速率继续",
+    "cta": {
+      "unselected": "选择要继续的速率_",
+      "flex": "弹性 — 继续退出",
+      "nr": "不可退还 – 继续退票"
+    },
+    "policies": {
+      "title": "政策和费用",
+      "items": [
+        "City/tourist tax: €2.50 per guest per night (added at checkout).",
+        "Cancellation admin fee: typically 15% of booking price.",
+        "Final availability and payment are completed on our official booking engine."
+      ]
+    }
   }
 }

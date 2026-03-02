@@ -47,15 +47,15 @@
   },
   "items": {
     "aperolSpritz": {
-      "name": "Aperol Spritz",
+      "name": "Aperol spritz",
       "note": "Klasyczny włoski spritz, podawany z kruszonym lodem."
     },
     "limoncelloSpritz": {
-      "name": "Limoncello Spritz",
+      "name": "Limoncello spritz",
       "note": "Specjał z Wybrzeża Amalfi, podawany z kruszonym lodem."
     },
     "hugoSpritz": {
-      "name": "Hugo Spritz",
+      "name": "Hugo spritz",
       "note": "Wino musujące z miętą, limonką i sokiem z czarnego bzu. Podawane z kruszonym lodem."
     },
     "rossiniSpritz": {
@@ -95,7 +95,7 @@
       "name": "Peroni, 660 ml"
     },
     "skyy": {
-      "name": "Skyy"
+      "name": "Sky"
     },
     "absolut": {
       "name": "Absolutne"
@@ -110,13 +110,13 @@
       "name": "Pampero"
     },
     "bacardiSuperior": {
-      "name": "Bacardi Superior"
+      "name": "Bacardi superior"
     },
     "captainMorgan": {
       "name": "Kapitan Morgan"
     },
     "angosturaReserva": {
-      "name": "Angostura Reserva"
+      "name": "Angostura reserva"
     },
     "beefeater": {
       "name": "Wołowina"
@@ -128,10 +128,10 @@
       "name": "Tanqueray"
     },
     "hendricks": {
-      "name": "Hendrick's"
+      "name": "Hendrick"
     },
     "jwRed": {
-      "name": "Johnnie Walker Red Label (Blended Scotch)"
+      "name": "Johnnie Walker Red Label (mieszanka szkockiej)"
     },
     "jameson": {
       "name": "Jameson (irlandzki)"

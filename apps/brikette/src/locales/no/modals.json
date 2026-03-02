@@ -159,12 +159,12 @@
     "close": "Lukk"
   },
   "loader": {
-    "ariaLabel": "Loading"
+    "ariaLabel": "Laster"
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2-8 netter",
+    "clearDates": "Tøm datoer",
+    "nightsSummary": "{{from}} → {{to}}__{{nights}} nights)"
   },
   "directPerks": {
     "heading": "Hvorfor booke direkte?",

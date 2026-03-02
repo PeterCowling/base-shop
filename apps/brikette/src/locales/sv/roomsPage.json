@@ -231,7 +231,7 @@
     "clickToEnlarge": "Klicka för att förstora bilden",
     "prevAria": "Föregående bild",
     "nextAria": "Nästa bild",
-    "pagination": "{{current}}/{{total}}",
+    "pagination": "{{current}}/{{total}}Z",
     "photoAlt": "Foto av {{room}}",
     "noImage": "Ingen bild tillgänglig"
   },
@@ -251,7 +251,7 @@
   "filtersAria": "Filtrera efter rumstyp",
   "checkRatesNonRefundable": "Icke återbetalningsbara priser",
   "checkRatesFlexible": "Flexibla rumspriser",
-  "checkRatesSingle": "Check Rates",
+  "checkRatesSingle": "Check rates",
   "ctaSuffix": {
     "nonRefundable": "Ej återbetalningsbar",
     "flexible": "Flexibelt"
@@ -306,9 +306,9 @@
     "perBed": "bädd"
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2-8 nätter",
+    "clearDates": "Tydliga datum",
+    "nightsSummary": "{{from}} {{to}} (ZZTOK2Z-nätter)"
   },
   "noscript": {
     "jsDisabledAssistance": "Denna vandrarhemsrutt använder assisterad bokning när JavaScript är inaktiverat.",

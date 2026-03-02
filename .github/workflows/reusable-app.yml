@@ -71,6 +71,13 @@ on:
         type: number
         default: 1
 
+      # Force Jest coverage collection for this app pipeline's test jobs.
+      # Enables per-app coverage threshold enforcement in jest config.
+      jest-force-coverage:
+        required: false
+        type: boolean
+        default: false
+
     secrets:
       CLOUDFLARE_API_TOKEN:
         required: true
@@ -425,6 +432,7 @@ jobs:
           APP_FILTER: ${{ inputs.app-filter }}
           TEST_SCOPE: ${{ needs.validate.outputs.test_scope }}
           RELATED_TEST_PATHS_JSON: ${{ needs.validate.outputs.related_test_paths_json }}
+          JEST_FORCE_COVERAGE: ${{ inputs.jest-force-coverage && '1' || '0' }}
         run: |
           set -euo pipefail
 
@@ -514,6 +522,7 @@ jobs:
           APP_FILTER: ${{ inputs.app-filter }}
           TEST_SCOPE: ${{ needs.validate.outputs.test_scope }}
           RELATED_TEST_PATHS_JSON: ${{ needs.validate.outputs.related_test_paths_json }}
+          JEST_FORCE_COVERAGE: ${{ inputs.jest-force-coverage && '1' || '0' }}
         run: |
           set -euo pipefail
 

@@ -1,4 +1,4 @@
-import { DELETE,GET, POST } from "@/app/api/cart/route";
+import { DELETE, GET, PATCH, POST, PUT } from "@/app/api/cart/route";
 
 jest.mock("@acme/platform-core/cartApiForShop", () => ({
   createShopCartApi: jest.fn(() => ({
@@ -15,20 +15,27 @@ const { createShopCartApi } = jest.requireMock("@acme/platform-core/cartApiForSh
 };
 
 function getHandlers() {
-  // The factory is called once at module load; get the return value
   return createShopCartApi.mock.results[0]?.value as {
     GET: jest.Mock;
     POST: jest.Mock;
+    PATCH: jest.Mock;
     DELETE: jest.Mock;
+    PUT: jest.Mock;
   };
 }
 
 const makeReq = (method: string, body?: unknown) =>
-  new Request(`http://localhost/api/cart`, {
+  new Request("http://localhost/api/cart", {
     method,
     headers: { "Content-Type": "application/json" },
     ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
   });
+
+describe("/api/cart route delegation", () => {
+  it("initializes factory with caryina shop id", () => {
+    expect(createShopCartApi).toHaveBeenCalledWith({ shop: "caryina" });
+  });
+});
 
 describe("GET /api/cart", () => {
   it("TC-02: returns 200 with empty cart on fresh session", async () => {
@@ -52,6 +59,32 @@ describe("POST /api/cart", () => {
     expect(res.status).toBe(200);
     const body = (await res.json()) as { cart: Record<string, unknown> };
     expect(body.cart["sku-1"]).toBeDefined();
+  });
+});
+
+describe("PATCH /api/cart", () => {
+  it("delegates PATCH requests to cart API handler", async () => {
+    getHandlers().PATCH.mockResolvedValue(
+      new Response(JSON.stringify({ cart: { "sku-1": { qty: 3 } } }), { status: 200 }),
+    );
+
+    const res = await PATCH(makeReq("PATCH", { action: "setQty", skuId: "sku-1", qty: 3 }) as never);
+
+    expect(getHandlers().PATCH).toHaveBeenCalledTimes(1);
+    expect(res.status).toBe(200);
+  });
+});
+
+describe("PUT /api/cart", () => {
+  it("delegates PUT requests to cart API handler", async () => {
+    getHandlers().PUT.mockResolvedValue(
+      new Response(JSON.stringify({ cart: { "sku-1": { qty: 2 } } }), { status: 200 }),
+    );
+
+    const res = await PUT(makeReq("PUT", { action: "replace", cart: { "sku-1": { qty: 2 } } }) as never);
+
+    expect(getHandlers().PUT).toHaveBeenCalledTimes(1);
+    expect(res.status).toBe(200);
   });
 });
 

@@ -1,11 +1,13 @@
 import { spawnSync } from "child_process";
 import { promises as fs } from "fs";
+import os from "os";
 import path from "path";
 
-const DEFAULT_SOURCE_ROOTS = [
+export const DEFAULT_SOURCE_ROOTS = [
   "docs/plans",
   "docs/business-os/startup-loop",
   ".claude/skills",
+  "docs/business-os/strategy",
 ];
 
 type Mode = "fact-find" | "plan";
@@ -174,6 +176,11 @@ function normalizeWhitespace(value: string): string {
   return value.replace(/\s+/g, " ").trim();
 }
 
+function truncateSnippet(value: string, max = 280): string {
+  if (value.length <= max) return value;
+  return `${value.slice(0, max - 3)}...`;
+}
+
 function makeDefaultQuery(options: CassRetrieveOptions): string {
   if (options.queryOverride) return options.queryOverride;
 
@@ -229,12 +236,7 @@ function collectTerms(query: string): string[] {
 function runCassCommand(query: string, options: CassRetrieveOptions): { ok: boolean; output: string; warning?: string } {
   const command = process.env.CASS_RETRIEVE_COMMAND?.trim();
   if (!command) {
-    return {
-      ok: false,
-      output: "",
-      warning:
-        "CASS_RETRIEVE_COMMAND is not configured; using local rg fallback retrieval. Set CASS_RETRIEVE_COMMAND to enable CASS.",
-    };
+    return runBuiltInCassProvider(query, options);
   }
 
   const env = {
@@ -261,6 +263,108 @@ function runCassCommand(query: string, options: CassRetrieveOptions): { ok: bool
   }
 
   return { ok: true, output: (result.stdout || "").trim() };
+}
+
+function runBuiltInCassProvider(query: string, options: CassRetrieveOptions): { ok: boolean; output: string; warning?: string } {
+  const terms = collectTerms(query);
+  if (terms.length === 0) {
+    return {
+      ok: false,
+      output: "",
+      warning: "Built-in CASS provider found no usable query terms; using local rg fallback retrieval.",
+    };
+  }
+
+  const sessionRootsRaw = process.env.CASS_SESSION_ROOTS?.trim();
+  const defaultRoots = [
+    path.join(os.homedir(), ".claude", "projects"),
+    path.join(os.homedir(), ".codex", "sessions"),
+  ];
+  const sessionRoots = (sessionRootsRaw ? sessionRootsRaw.split(",") : defaultRoots)
+    .map((x) => x.trim())
+    .filter(Boolean)
+    .map((x) => path.resolve(x));
+
+  const existingRoots = sessionRoots.filter((root) => {
+    const stat = spawnSync("bash", ["-lc", `[ -d ${shellEscapeSingleQuotes(root)} ] && echo yes || echo no`], {
+      encoding: "utf8",
+    });
+    return (stat.stdout || "").trim() === "yes";
+  });
+
+  if (existingRoots.length === 0) {
+    return {
+      ok: false,
+      output: "",
+      warning:
+        "Built-in CASS provider could not find session roots (~/.claude/projects, ~/.codex/sessions); using local rg fallback retrieval.",
+    };
+  }
+
+  const pattern = terms.map((term) => term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
+  const rootsEscaped = existingRoots.map((root) => shellEscapeSingleQuotes(root)).join(" ");
+  const cmd = [
+    "rg",
+    "--line-number",
+    "--no-heading",
+    "--color",
+    "never",
+    "--max-count",
+    String(options.topK),
+    shellEscapeSingleQuotes(pattern),
+    rootsEscaped,
+  ].join(" ");
+
+  const result = spawnSync("bash", ["-lc", cmd], {
+    cwd: process.cwd(),
+    encoding: "utf8",
+    maxBuffer: 2 * 1024 * 1024,
+  });
+
+  if (result.status !== 0 && (result.stderr || "").trim()) {
+    return {
+      ok: false,
+      output: "",
+      warning: `Built-in CASS provider failed: ${normalizeWhitespace(result.stderr)}. Using local rg fallback retrieval.`,
+    };
+  }
+
+  const lines = (result.stdout || "").split(/\r?\n/).filter(Boolean).slice(0, options.topK);
+  const hits = lines
+    .map((line) => {
+      const match = line.match(/^(.*?):(\d+):(.*)$/);
+      if (!match) return null;
+      return {
+        file: toPosix(match[1].replace(`${os.homedir()}/`, "~/")),
+        line: Number(match[2]),
+        snippet: truncateSnippet(normalizeWhitespace(match[3].trim())).replaceAll("|", "\\|"),
+      };
+    })
+    .filter((hit): hit is { file: string; line: number; snippet: string } => hit !== null);
+
+  const outputLines: string[] = [];
+  outputLines.push("### Built-in CASS Provider (session-history retrieval)");
+  outputLines.push(`- query: ${query}`);
+  outputLines.push(`- roots: ${existingRoots.map((root) => toPosix(root.replace(`${os.homedir()}/`, "~/"))).join(", ")}`);
+  outputLines.push(`- hits: ${hits.length}`);
+  outputLines.push("");
+
+  if (hits.length > 0) {
+    outputLines.push("| Session File | Line | Snippet |");
+    outputLines.push("|---|---:|---|");
+    for (const hit of hits) {
+      outputLines.push(`| ${hit.file} | ${hit.line} | ${hit.snippet} |`);
+    }
+  } else {
+    outputLines.push("No session-history matches found for this query.");
+  }
+
+  return {
+    ok: true,
+    output: outputLines.join("\n"),
+    warning:
+      "CASS_RETRIEVE_COMMAND is not configured; using built-in CASS session-history provider. Set CASS_RETRIEVE_COMMAND to use an external CASS backend.",
+  };
 }
 
 function runFallbackRg(query: string, options: CassRetrieveOptions): { hits: RetrievedHit[]; warning?: string } {

@@ -23,9 +23,10 @@ const { useAvailabilityForRoom } = require("./useAvailabilityForRoom") as typeof
 // Fixtures
 // ---------------------------------------------------------------------------
 
+// octorateRoomId is always "3" in live Octobook HTML — matching is now name-based.
 const MATCHED_ROOM: OctorateRoom = {
   octorateRoomName: "Dorm",
-  octorateRoomId: "7",
+  octorateRoomId: "3",
   available: true,
   priceFrom: 94.99,
   nights: 2,
@@ -34,7 +35,7 @@ const MATCHED_ROOM: OctorateRoom = {
 
 const UNMATCHED_ROOM: OctorateRoom = {
   octorateRoomName: "Double",
-  octorateRoomId: "10",
+  octorateRoomId: "3",
   available: true,
   priceFrom: 120,
   nights: 2,
@@ -46,10 +47,11 @@ const MOCK_RESPONSE = {
   fetchedAt: "2026-06-01T10:00:00.000Z",
 };
 
-// Room with widgetRoomCode "7" matches MATCHED_ROOM.octorateRoomId "7"
+// Room with octorateRoomCategory "Dorm" matches MATCHED_ROOM.octorateRoomName "Dorm"
 const TEST_ROOM = {
   id: "dorm_6_bed",
   widgetRoomCode: "7",
+  octorateRoomCategory: "Dorm",
 } as unknown as Room;
 
 // ---------------------------------------------------------------------------
@@ -72,8 +74,8 @@ describe("useAvailabilityForRoom", () => {
     fetchSpy.mockRestore();
   });
 
-  // TC-RPC-01: Successful fetch → matched room returned
-  it("TC-RPC-01: returns the matching OctorateRoom after fetch resolves", async () => {
+  // TC-RPC-01: Successful fetch → aggregated room returned (synthetic ratePlans: [])
+  it("TC-RPC-01: returns the aggregated OctorateRoom for matching category after fetch resolves", async () => {
     const { result } = renderHook(() =>
       useAvailabilityForRoom({
         room: TEST_ROOM,
@@ -90,7 +92,11 @@ describe("useAvailabilityForRoom", () => {
       { timeout: 2000 }
     );
 
-    expect(result.current.availabilityRoom).toEqual(MATCHED_ROOM);
+    // aggregateAvailabilityByCategory returns synthetic record: ratePlans: [] (multiple sections)
+    expect(result.current.availabilityRoom?.octorateRoomName).toBe("Dorm");
+    expect(result.current.availabilityRoom?.available).toBe(true);
+    expect(result.current.availabilityRoom?.priceFrom).toBe(94.99);
+    expect(result.current.availabilityRoom?.ratePlans).toEqual([]);
     expect(result.current.error).toBeNull();
 
     const calledUrl = String(fetchSpy.mock.calls[0][0]);
@@ -118,11 +124,11 @@ describe("useAvailabilityForRoom", () => {
     expect(fetchSpy).not.toHaveBeenCalled();
   });
 
-  // TC-RPC-03: API returns room with available=false → hook returns that OctorateRoom
+  // TC-RPC-03: API returns room with available=false → hook returns aggregated sold-out record
   it("TC-RPC-03: returns OctorateRoom with available=false when room is sold out", async () => {
     const soldOutRoom: OctorateRoom = {
       octorateRoomName: "Dorm",
-      octorateRoomId: "7",
+      octorateRoomId: "3",
       available: false,
       priceFrom: null,
       nights: 2,
@@ -232,9 +238,9 @@ describe("useAvailabilityForRoom", () => {
     expect(result.current.error).toBeInstanceOf(Error);
   });
 
-  // TC-RPC-07: No matching room in response → availabilityRoom undefined
-  it("TC-RPC-07: no room in response matches widgetRoomCode → availabilityRoom undefined", async () => {
-    // Only UNMATCHED_ROOM (octorateRoomId "10") in response; TEST_ROOM.widgetRoomCode is "7"
+  // TC-RPC-07: No matching category in response → availabilityRoom undefined
+  it("TC-RPC-07: no room in response matches octorateRoomCategory → availabilityRoom undefined", async () => {
+    // Only UNMATCHED_ROOM (octorateRoomName "Double") in response; TEST_ROOM.octorateRoomCategory is "Dorm"
     fetchSpy.mockResolvedValue(
       new Response(
         JSON.stringify({ rooms: [UNMATCHED_ROOM], fetchedAt: "2026-06-01T10:00:00.000Z" }),
@@ -260,5 +266,46 @@ describe("useAvailabilityForRoom", () => {
 
     expect(result.current.availabilityRoom).toBeUndefined();
     expect(result.current.error).toBeNull();
+  });
+
+  // TC-RPC-08: Multiple sections with same category → min priceFrom returned
+  it("TC-RPC-08: multiple Dorm sections → aggregated result with min priceFrom", async () => {
+    const dormA: OctorateRoom = { octorateRoomName: "Dorm", octorateRoomId: "3", available: true, priceFrom: 80, nights: 2, ratePlans: [{ label: "Non-Refundable" }] };
+    const dormB: OctorateRoom = { octorateRoomName: "Dorm", octorateRoomId: "3", available: true, priceFrom: 65, nights: 2, ratePlans: [{ label: "Flexible" }] };
+
+    fetchSpy.mockResolvedValue(
+      new Response(JSON.stringify({ rooms: [dormA, dormB], fetchedAt: "2026-06-01T10:00:00.000Z" }),
+        { status: 200, headers: { "Content-Type": "application/json" } })
+    );
+
+    const { result } = renderHook(() =>
+      useAvailabilityForRoom({ room: TEST_ROOM, checkIn: "2026-06-01", checkOut: "2026-06-03", adults: 1 })
+    );
+
+    await waitFor(() => { expect(result.current.loading).toBe(false); }, { timeout: 2000 });
+
+    expect(result.current.availabilityRoom?.available).toBe(true);
+    expect(result.current.availabilityRoom?.priceFrom).toBe(65);
+    expect(result.current.availabilityRoom?.ratePlans).toEqual([]);
+  });
+
+  // TC-RPC-09: Mixed sold-out and available sections → available=true, priceFrom from available only
+  it("TC-RPC-09: mixed sold-out and available Dorm sections → available=true with min available priceFrom", async () => {
+    const dormAvail: OctorateRoom = { octorateRoomName: "Dorm", octorateRoomId: "3", available: true, priceFrom: 72, nights: 2, ratePlans: [] };
+    const dormSoldOut: OctorateRoom = { octorateRoomName: "Dorm", octorateRoomId: "3", available: false, priceFrom: null, nights: 2, ratePlans: [] };
+
+    fetchSpy.mockResolvedValue(
+      new Response(JSON.stringify({ rooms: [dormSoldOut, dormAvail], fetchedAt: "2026-06-01T10:00:00.000Z" }),
+        { status: 200, headers: { "Content-Type": "application/json" } })
+    );
+
+    const { result } = renderHook(() =>
+      useAvailabilityForRoom({ room: TEST_ROOM, checkIn: "2026-06-01", checkOut: "2026-06-03", adults: 1 })
+    );
+
+    await waitFor(() => { expect(result.current.loading).toBe(false); }, { timeout: 2000 });
+
+    expect(result.current.availabilityRoom?.available).toBe(true);
+    expect(result.current.availabilityRoom?.priceFrom).toBe(72);
   });
 });

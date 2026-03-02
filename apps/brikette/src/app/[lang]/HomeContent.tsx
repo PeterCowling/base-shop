@@ -144,7 +144,7 @@ function HomeContent({ lang }: Props) {
       itemListId: "home_rooms_carousel",
       rooms: roomsForCarousel,
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- BRIK-1 fire-once on mount; roomsForCarousel is static (roomsData.slice of module-level constant)
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- BRIK-2145 fire-once on mount; roomsForCarousel is static (roomsData.slice of module-level constant)
   }, []);
 
   return (

@@ -26,11 +26,15 @@ jest.mock("../../../lib/catalogStorefront.ts", () => ({
       : { id: "xa-b", appDir: "xa-b", labelKey: "storefrontXAB", defaultCategory: "bags" },
 }));
 
-jest.mock("../catalogSubmissionClient", () => ({
-  enqueueSubmissionJob: (...args: unknown[]) => enqueueSubmissionJobMock(...args),
-  pollJobUntilComplete: (...args: unknown[]) => pollJobUntilCompleteMock(...args),
-  downloadBlob: (...args: unknown[]) => downloadBlobMock(...args),
-}));
+jest.mock("../catalogSubmissionClient", () => {
+  const actual = jest.requireActual("../catalogSubmissionClient") as Record<string, unknown>;
+  return {
+    ...actual,
+    enqueueSubmissionJob: (...args: unknown[]) => enqueueSubmissionJobMock(...args),
+    pollJobUntilComplete: (...args: unknown[]) => pollJobUntilCompleteMock(...args),
+    downloadBlob: (...args: unknown[]) => downloadBlobMock(...args),
+  };
+});
 
 const VALID_DRAFT: CatalogProductDraftInput = {
   id: "p1",

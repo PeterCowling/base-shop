@@ -7,7 +7,7 @@ import { StickyCheckoutBar } from "./StickyCheckoutBar.client";
 jest.mock("@acme/platform-core/components/shop/AddToCartButton.client", () => ({
   __esModule: true,
   default: ({ sku, disabled }: { sku: SKU; disabled?: boolean }) => (
-    <button type="button" disabled={disabled} data-testid="add-to-cart" data-sku-id={sku.id}>
+    <button type="button" disabled={disabled} data-cy="add-to-cart" data-sku-id={sku.id}>
       Add to cart
     </button>
   ),

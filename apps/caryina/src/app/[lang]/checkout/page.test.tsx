@@ -9,7 +9,7 @@ jest.mock("@/lib/contentPacket", () => ({
 }));
 
 jest.mock("./CheckoutClient.client", () => ({
-  CheckoutClient: () => <div data-testid="checkout-client" />,
+  CheckoutClient: () => <div data-cy="checkout-client" />,
 }));
 
 const mockGetSeoKeywords = getSeoKeywords as jest.MockedFunction<typeof getSeoKeywords>;

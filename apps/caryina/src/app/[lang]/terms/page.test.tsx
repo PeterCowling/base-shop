@@ -11,7 +11,7 @@ jest.mock("@/lib/contentPacket", () => ({
 }));
 
 jest.mock("@/components/PolicyPage", () => ({
-  PolicyPage: ({ title }: { title: string }) => <div data-testid="policy-page">{title}</div>,
+  PolicyPage: ({ title }: { title: string }) => <div data-cy="policy-page">{title}</div>,
 }));
 
 const mockGetPolicyContent = getPolicyContent as jest.MockedFunction<typeof getPolicyContent>;

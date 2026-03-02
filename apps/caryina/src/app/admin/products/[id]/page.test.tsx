@@ -22,7 +22,7 @@ jest.mock("@acme/platform-core/repositories/products.server", () => ({
 
 jest.mock("@/components/admin/ProductForm.client", () => ({
   ProductForm: ({ product }: { product?: { id: string } }) => (
-    <div data-testid="product-form">{product ? `product:${product.id}` : "product:new"}</div>
+    <div data-cy="product-form">{product ? `product:${product.id}` : "product:new"}</div>
   ),
 }));
 
@@ -34,7 +34,7 @@ jest.mock("@/components/admin/InventoryEditor.client", () => ({
     productSku: string;
     inventoryItems: unknown[];
   }) => (
-    <div data-testid="inventory-editor">{`${productSku}:${inventoryItems.length}`}</div>
+    <div data-cy="inventory-editor">{`${productSku}:${inventoryItems.length}`}</div>
   ),
 }));
 

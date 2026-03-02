@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import AdminProductNewPage from "./page";
 
 jest.mock("@/components/admin/ProductForm.client", () => ({
-  ProductForm: () => <div data-testid="product-form" />,
+  ProductForm: () => <div data-cy="product-form" />,
 }));
 
 describe("AdminProductNewPage", () => {

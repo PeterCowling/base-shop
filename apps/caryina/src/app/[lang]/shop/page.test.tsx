@@ -35,7 +35,7 @@ jest.mock("next/link", () => ({
 
 jest.mock("@/components/catalog/ProductMediaCard", () => ({
   ProductMediaCard: ({ title }: { title: string }) => (
-    <div data-testid="product-media-card">{title}</div>
+    <div data-cy="product-media-card">{title}</div>
   ),
 }));
 
@@ -70,7 +70,7 @@ jest.mock("@/lib/shop", () => ({
 
 jest.mock("./ShopAnalytics.client", () => ({
   __esModule: true,
-  default: ({ locale }: { locale: string }) => <div data-testid="shop-analytics">{locale}</div>,
+  default: ({ locale }: { locale: string }) => <div data-cy="shop-analytics">{locale}</div>,
 }));
 
 const mockGetLaunchFamilyCopy = getLaunchFamilyCopy as jest.MockedFunction<typeof getLaunchFamilyCopy>;

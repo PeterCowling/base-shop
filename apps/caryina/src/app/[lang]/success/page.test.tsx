@@ -29,7 +29,7 @@ jest.mock("@/lib/contentPacket", () => ({
 jest.mock("./SuccessAnalytics.client", () => ({
   __esModule: true,
   default: ({ locale }: { locale: string }) => (
-    <div data-testid="success-analytics">{locale}</div>
+    <div data-cy="success-analytics">{locale}</div>
   ),
 }));
 

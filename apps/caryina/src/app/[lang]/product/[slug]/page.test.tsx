@@ -79,24 +79,24 @@ jest.mock("@/lib/launchMerchandising", () => ({
 }));
 
 jest.mock("@/components/catalog/ProductGallery.client", () => ({
-  ProductGallery: () => <div data-testid="product-gallery" />,
+  ProductGallery: () => <div data-cy="product-gallery" />,
 }));
 
 jest.mock("@/components/catalog/ProductMediaCard", () => ({
-  ProductMediaCard: () => <div data-testid="product-media-card" />,
+  ProductMediaCard: () => <div data-cy="product-media-card" />,
 }));
 
 jest.mock("@/components/catalog/StockBadge", () => ({
-  StockBadge: () => <div data-testid="stock-badge" />,
+  StockBadge: () => <div data-cy="stock-badge" />,
 }));
 
 jest.mock("@/components/ShippingReturnsTrustBlock", () => ({
   __esModule: true,
-  default: () => <div data-testid="shipping-returns-block" />,
+  default: () => <div data-cy="shipping-returns-block" />,
 }));
 
 jest.mock("@/components/catalog/NotifyMeForm.client", () => ({
-  NotifyMeForm: () => <div data-testid="notify-me-form" />,
+  NotifyMeForm: () => <div data-cy="notify-me-form" />,
 }));
 
 jest.mock("@acme/platform-core/components/shop/AddToCartButton.client", () => ({
@@ -105,7 +105,7 @@ jest.mock("@acme/platform-core/components/shop/AddToCartButton.client", () => ({
 }));
 
 jest.mock("./PdpTrustStrip", () => ({
-  PdpTrustStrip: () => <div data-testid="pdp-trust-strip" />,
+  PdpTrustStrip: () => <div data-cy="pdp-trust-strip" />,
 }));
 
 jest.mock("./ProductAnalytics.client", () => ({
@@ -114,7 +114,7 @@ jest.mock("./ProductAnalytics.client", () => ({
 }));
 
 jest.mock("./StickyCheckoutBar.client", () => ({
-  StickyCheckoutBar: () => <div data-testid="sticky-checkout-bar" />,
+  StickyCheckoutBar: () => <div data-cy="sticky-checkout-bar" />,
 }));
 
 const mockReadShopSkuBySlug = readShopSkuBySlug as jest.MockedFunction<typeof readShopSkuBySlug>;

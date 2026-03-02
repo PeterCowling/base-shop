@@ -17,7 +17,7 @@ import LocaleHomePage, { generateMetadata } from "./page";
 
 jest.mock("next/image", () => ({
   __esModule: true,
-  default: ({ alt }: { alt: string }) => <div data-testid="next-image">{alt}</div>,
+  default: ({ alt }: { alt: string }) => <div data-cy="next-image">{alt}</div>,
 }));
 
 jest.mock("next/link", () => ({
@@ -39,13 +39,13 @@ jest.mock("next/link", () => ({
 
 jest.mock("@/components/catalog/ProductMediaCard", () => ({
   ProductMediaCard: ({ title }: { title: string }) => (
-    <div data-testid="product-media-card">{title}</div>
+    <div data-cy="product-media-card">{title}</div>
   ),
 }));
 
 jest.mock("@/components/typography/SectionEyebrow", () => ({
   SectionEyebrow: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid="section-eyebrow">{children}</div>
+    <div data-cy="section-eyebrow">{children}</div>
   ),
 }));
 

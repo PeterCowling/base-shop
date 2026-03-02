@@ -12,7 +12,7 @@ jest.mock("@/lib/contentPacket", () => ({
 
 jest.mock("@/components/PolicyPage", () => ({
   PolicyPage: ({ title, sourcePath }: { title: string; sourcePath?: string }) => (
-    <div data-testid="policy-page">{`${title}:${sourcePath ?? ""}`}</div>
+    <div data-cy="policy-page">{`${title}:${sourcePath ?? ""}`}</div>
   ),
 }));
 

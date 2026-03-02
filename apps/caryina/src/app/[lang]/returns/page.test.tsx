@@ -24,7 +24,7 @@ jest.mock("@/components/PolicyPage", () => ({
     notice?: string | null;
     sourcePath?: string;
   }) => (
-    <div data-testid="policy-page">
+    <div data-cy="policy-page">
       <h1>{title}</h1>
       <p>{summary}</p>
       <p>{(bullets ?? []).join("|")}</p>

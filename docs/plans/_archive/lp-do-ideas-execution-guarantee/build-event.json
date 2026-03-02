@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "build-0362e275-1772471591409",
+  "feature_slug": "lp-do-ideas-execution-guarantee",
+  "emitted_at": "2026-03-02T17:13:11.409Z",
+  "why": "The queue pipeline records routing intent without enforcing execution — 31/67 dispatches with processed_by set have no fact-find artifact on disk. This creates false confidence that work was done and permanently loses those dispatches from the queue without any output.",
+  "why_source": "auto",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "After this fix, a dispatch entry will only be marked as processed when the fact-find artifact can be verified on disk, and any existing processed_by-without-artifact entries can be detected and reported by a read-only detection utility.",
+    "source": "auto"
+  }
+}

@@ -314,7 +314,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-03-02T12:10:10.289Z";
+  var GEN_TS = "2026-03-02T17:19:46.832Z";
 
   var IDEA_ITEMS = [
     {
@@ -519,6 +519,23 @@
       "effort": "M",
       "proximity": null,
       "reason_code": "RULE_P3_MEASUREMENT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Queue-check-gate prose drift is not covered by automated tests",
+      "body": "TASK-01 is a behavioral guard in a prose instruction file — no automated test coverage exists; the guard could drift in execution behavior across agent versions",
+      "suggested_action": "create card.",
+      "source": "results-review.user.md",
+      "date": "2026-03-02T17:17:18.164Z",
+      "path": "docs/plans/_archive/lp-do-ideas-execution-guarantee/results-review.user.md",
+      "idea_key": "98d924b155c48cd2c5511cc5b254dd684ec6fa44",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
     },
     {
       "type": "idea",
@@ -3161,6 +3178,16 @@
   var RISK_ITEMS = [];
 
   var PENDING_REVIEW_ITEMS = [
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: lp-do-ideas-queue-state-sync",
+      "body": "Build is complete but no results review has been written yet.",
+      "suggested_action": "Write docs/plans/lp-do-ideas-queue-state-sync/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
+      "source": "build-record.user.md",
+      "date": "2026-03-02T17:10:42.126Z",
+      "path": "docs/plans/lp-do-ideas-queue-state-sync/build-record.user.md"
+    },
     {
       "type": "pending-review",
       "business": "BOS",

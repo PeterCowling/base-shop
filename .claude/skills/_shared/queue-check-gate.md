@@ -11,6 +11,11 @@ Read `docs/business-os/startup-loop/ideas/trial/queue-state.json` (if it exists)
 - **Briefing mode only:** `status: briefing_ready`, AND
 - `area_anchor` or `artifact_id` overlaps materially with the invoked topic.
 
+Queue-state compatibility note:
+- Canonical lifecycle states are `enqueued`, `processed`, `skipped`, `error`.
+- Historical entries may contain legacy states (`auto_executed`, `completed`, `logged_no_action`).
+- Treat legacy states as non-pending for this gate. Only `queue_state: enqueued` is actionable.
+
 **If a matching queued packet is found:**
 
 Stop immediately. Output only the following — do not run any phases, read any files, or produce any artifacts:
@@ -28,7 +33,7 @@ Stop immediately. Output only the following — do not run any phases, read any 
 >
 > Do you want to proceed with this [fact-find | briefing]? Reply **yes** to confirm, or anything else to leave it queued.
 
-If the operator replies **yes**: proceed to Phase 1 with `Dispatch-ID` set to the matching packet's `dispatch_id`. On artifact persistence, populate `processed_by` in the packet:
+If the operator replies **yes**: proceed to Phase 1 with `Dispatch-ID` set to the matching packet's `dispatch_id`. After artifact persistence is confirmed, and before writing `processed_by`, verify the artifact file at `fact_find_path` exists on disk (use the Read or Bash tool). If the file does not exist: do **not** write `processed_by`; instead, surface an error naming the dispatch (`dispatch_id`) and the missing `fact_find_path`. If the file exists, populate `processed_by` in the packet:
 - `route: dispatch-routed`, `processed_at: <now>`, `queue_state: processed`
 - **Fact-find mode (Phase 6):** `fact_find_slug` and `fact_find_path` from the output.
 - **Briefing mode (Phase 4):** `fact_find_slug` (briefing topic slug), `fact_find_path` (briefing output path).

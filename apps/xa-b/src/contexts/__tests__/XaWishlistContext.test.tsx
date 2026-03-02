@@ -9,7 +9,6 @@ const productB = { id: "sku-b" } as const;
 describe("XaWishlistContext", () => {
   beforeEach(() => {
     localStorage.clear();
-    jest.resetModules();
   });
 
   it("throws when useWishlist is used outside provider", async () => {

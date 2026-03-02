@@ -20,7 +20,6 @@ const baseProduct = {
 describe("XaCartContext", () => {
   beforeEach(() => {
     localStorage.clear();
-    jest.resetModules();
     jest.clearAllMocks();
     getSoldQtyMock.mockReturnValue(0);
   });

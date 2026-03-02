@@ -392,6 +392,16 @@
       "expires": "2027-06-30",
       "notes": "Prime pre-existing react-hooks/rules-of-hooks and react-hooks/exhaustive-deps suppressions: conditional SDK guard pattern and stable reference dep arrays deferred pending hooks refactor."
     },
+    "PRIME-DATE-UTILS-001": {
+      "allow": ["apps/prime/src/utils/dateUtils.ts"],
+      "expires": "2026-12-31",
+      "notes": "Prime date utility parser/formatter constants and internal log labels are intentionally non-localized."
+    },
+    "PRIME-ROUTES-001": {
+      "allow": ["apps/prime/src/data/routes.ts"],
+      "expires": "2026-12-31",
+      "notes": "Prime canonical route seed content for fallback dataset pending content pipeline localization."
+    },
     "PUB-05": {},
     "PB-000": {},
     "PB-0001": {},
@@ -561,6 +571,16 @@
       ],
       "expires": "2026-12-31",
       "notes": "Catalog contract client request/error helpers carry temporary lint exceptions pending API client split."
+    },
+    "XAUP-0101": {
+      "allow": ["apps/xa-drop-worker/src/index.ts"],
+      "expires": "2026-12-31",
+      "notes": "XA drop-worker cloud contract routing keeps explicit branch mapping; complexity exception tracked for future decomposition."
+    },
+    "XAUP-0102": {
+      "allow": ["apps/xa-drop-worker/__tests__/xaDropWorker.test.ts"],
+      "expires": "2026-12-31",
+      "notes": "XA drop-worker integration-style route/security matrix intentionally stays in one long test flow."
     },
     "XAUP-0001": {}
   }

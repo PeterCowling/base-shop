@@ -11,6 +11,9 @@ const designSystemStylePath = path.resolve(
   "../../packages/design-system/src/utils/style/index.ts",
 );
 
+// Brikette hands booking to Octobook and does not use platform cart flows.
+process.env.CART_FEATURE_ENABLED ??= "false";
+
 const readEnv = (...keys) => {
   for (const key of keys) {
     const value = process.env[key];

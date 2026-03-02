@@ -64,6 +64,26 @@ describe("coreEnv error handling and logging", () => {
     errorSpy.mockRestore();
   });
 
+  it("does not throw when CART_FEATURE_ENABLED=false and CART_COOKIE_SECRET is missing in production", () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+      NODE_ENV: "production",
+      CART_FEATURE_ENABLED: "false",
+    } as NodeJS.ProcessEnv;
+    delete process.env.CART_COOKIE_SECRET;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    expect(() => {
+      const mod = require("../../core.ts");
+      void mod.coreEnv.CMS_SPACE_URL;
+    }).not.toThrow();
+    expect(errorSpy).not.toHaveBeenCalledWith(
+      "❌ Invalid core environment variables:",
+    );
+    errorSpy.mockRestore();
+  });
+
   it("throws on import in production for invalid deposit variables", () => {
     process.env = {
       ...ORIGINAL_ENV,

@@ -49,7 +49,17 @@ export const ENV_SCHEMA = [
         owner: "platform-core",
         whereUsed: ["packages/platform-core/src/cart"],
         description: "Secret for cart cookie encryption.",
+        condition: "when CART_FEATURE_ENABLED is not false",
         devDefault: "dev-cart-cookie-secret-32-chars!",
+    },
+    {
+        name: "CART_FEATURE_ENABLED",
+        required: "dev-only",
+        phase: "both",
+        exposure: "public",
+        owner: "platform-core",
+        whereUsed: ["packages/config/src/env/core", "apps/*/next.config.*"],
+        description: "Feature gate for platform cart env enforcement. Set to false for non-cart apps.",
     },
     // =============================================================================
     // PAYMENTS (conditional on PAYMENTS_PROVIDER=stripe)

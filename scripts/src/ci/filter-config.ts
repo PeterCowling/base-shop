@@ -32,6 +32,18 @@ export const CI_FILTER: FilterConfig = {
     ],
     exclude: [],
   },
+  email_shadow_replay: {
+    include: [
+      "packages/mcp-server/src/tools/draft-*.ts",
+      "packages/mcp-server/src/utils/signal-events.ts",
+      "packages/mcp-server/src/__tests__/draft-*.test.ts",
+      "packages/mcp-server/scripts/shadow-replay-refinement.ts",
+      "packages/mcp-server/scripts/fixtures/shadow-replay-fixture.json",
+      "packages/mcp-server/package.json",
+      ".github/workflows/ci.yml",
+    ],
+    exclude: [],
+  },
 };
 
 /**

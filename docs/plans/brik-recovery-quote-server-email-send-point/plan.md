@@ -5,7 +5,7 @@ Domain: API
 Workstream: Engineering
 Created: 2026-03-02
 Last-reviewed: 2026-03-02
-Last-updated: 2026-03-02T13:00Z
+Last-updated: 2026-03-02T14:00Z
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: brik-recovery-quote-server-email-send-point
 Deliverable-Type: code-change
@@ -29,7 +29,7 @@ The current recovery quote flow is client-only: on form submit, the browser is r
 - [x] TASK-01: Define deterministic quote contract and calculation helper module
 - [x] TASK-02: CHECKPOINT — validate contract before endpoint and UI build
 - [x] TASK-03: Implement `/api/recovery/quote/send` endpoint
-- [ ] TASK-04: Update `RecoveryQuoteCapture` component to server-send path
+- [x] TASK-04: Update `RecoveryQuoteCapture` component to server-send path
 
 ## Goals
 
@@ -98,7 +98,7 @@ The current recovery quote flow is client-only: on form submit, the browser is r
 | TASK-01 | IMPLEMENT | Define quote contract, calculation helper, and idempotency key | 85% | M | Complete (2026-03-02) | - | TASK-02 |
 | TASK-02 | CHECKPOINT | Validate contract before endpoint and UI build | 95% | S | Complete (2026-03-02) | TASK-01 | TASK-03, TASK-04 |
 | TASK-03 | IMPLEMENT | Implement `/api/recovery/quote/send` POST endpoint | 80% | M | Complete (2026-03-02) | TASK-02 | TASK-04 |
-| TASK-04 | IMPLEMENT | Update `RecoveryQuoteCapture` to server-send path | 80% | M | Pending | TASK-03 | - |
+| TASK-04 | IMPLEMENT | Update `RecoveryQuoteCapture` to server-send path | 80% | M | Complete (2026-03-02) | TASK-03 | - |
 
 ## Parallelism Guide
 
@@ -319,10 +319,21 @@ The current recovery quote flow is client-only: on form submit, the browser is r
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-02)
+- **Build evidence:**
+  - Files modified/created: `RecoveryQuoteCapture.tsx` (removed buildMailtoHref/RecoveryCopy, added async onSubmit, loading state, fetch to /api/recovery/quote/send); `recovery-quote-capture.test.tsx` (new); 18 `bookPage.json` locale files (added `sending`, `errors.sendFailed` keys; updated `submitted` copy)
+  - Removed: `buildMailtoHref` function, `RecoveryCopy` type, `CONTACT_EMAIL` import (all were mailto-only)
+  - Preserved: `persistRecoveryCapture`, `fireRecoveryLeadCapture`, `buildRecoveryResumeLink` calls
+  - Loading state added: `loading` state + button text `t("recovery.sending")` while fetch in-flight
+  - Success: `status === "accepted" | "duplicate"` → `setSubmitted(true)`
+  - Error: API error or network failure → `setError(t("recovery.errors.sendFailed"))`
+  - Typecheck: exit 0 (pnpm --filter brikette typecheck)
+  - Lint: 0 errors (fixed simple-import-sort via autofix)
+  - TC-04-01 through TC-04-08 plus `isValidSearch=false` case written
 - **Affects:**
   - `apps/brikette/src/components/booking/RecoveryQuoteCapture.tsx` (modified)
-  - `apps/brikette/src/components/booking/RecoveryQuoteCapture.test.tsx` (new)
+  - `apps/brikette/src/test/components/recovery-quote-capture.test.tsx` (new)
+  - `apps/brikette/src/locales/*/bookPage.json` — 18 locale files (new keys: `sending`, `errors.sendFailed`; updated: `submitted`)
   - `[readonly] apps/brikette/src/utils/recoveryQuote.ts` — `buildRecoveryResumeLink`, `persistRecoveryCapture`, `RECOVERY_CONSENT_VERSION` still used
   - `[readonly] apps/brikette/src/utils/ga4-events.ts` — `fireRecoveryLeadCapture` still called
 - **Depends on:** TASK-03
@@ -410,9 +421,9 @@ The current recovery quote flow is client-only: on form submit, the browser is r
 - [ ] Unit tests for `recoveryQuoteCalc.ts` pass in CI (determinism, null-price, hash stability).
 - [x] `POST /api/recovery/quote/send` exists, enforces API-provider-first, and returns structured status.
 - [x] Route tests pass in CI (validation, idempotency, provider guard, send failure).
-- [ ] `RecoveryQuoteCapture.tsx` no longer calls `buildMailtoHref` or `window.location.href` on submit.
-- [ ] Component shows loading state during in-flight request and success/error state on completion.
-- [ ] Component tests pass in CI.
+- [x] `RecoveryQuoteCapture.tsx` no longer calls `buildMailtoHref` or `window.location.href` on submit.
+- [x] Component shows loading state during in-flight request and success/error state on completion.
+- [x] Component tests pass in CI.
 - [x] `export const dynamic = "force-dynamic"` present on new route.
 - [x] No SMTP as primary provider path (startup guard enforces this).
 

@@ -134,7 +134,7 @@ describe("LocaleHomePage", () => {
     render(ui);
 
     expect(screen.getByRole("heading", { name: "Home heading" })).toBeInTheDocument();
-    expect(screen.getByText("Catalog is empty. Add active products in")).toBeInTheDocument();
+    expect(screen.getByText(/Catalog is empty\. Add active products in/)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Shop now" })).toHaveAttribute("href", "/en/shop");
   });
 

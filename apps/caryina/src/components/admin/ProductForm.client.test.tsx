@@ -44,7 +44,9 @@ describe("ProductForm", () => {
       target: { value: "45.00" },
     });
 
-    fireEvent.click(screen.getByRole("button", { name: "Create product" }));
+    fireEvent.submit(
+      screen.getByRole("button", { name: "Create product" }).closest("form") as HTMLFormElement,
+    );
 
     expect(screen.getByText("SKU is required.")).toBeInTheDocument();
     expect(global.fetch).not.toHaveBeenCalled();

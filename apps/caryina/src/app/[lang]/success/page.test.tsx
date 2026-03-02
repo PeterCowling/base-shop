@@ -42,10 +42,10 @@ describe("SuccessPage", () => {
   });
 
   it("generates localized metadata", async () => {
-    const metadata = await generateMetadata({ params: Promise.resolve({ lang: "fr" }) });
+    const metadata = await generateMetadata({ params: Promise.resolve({ lang: "it" }) });
 
     expect(metadata).toEqual({
-      title: "Order success (fr) | Caryina",
+      title: "Order success (it) | Caryina",
       description: "Your Caryina order has been confirmed.",
       keywords: ["order", "success"],
     });
@@ -53,16 +53,16 @@ describe("SuccessPage", () => {
 
   it("renders analytics and localized continue-shopping link", async () => {
     const ui = (await SuccessPage({
-      params: Promise.resolve({ lang: "fr" }),
+      params: Promise.resolve({ lang: "it" }),
     })) as ReactElement;
 
     render(ui);
 
-    expect(screen.getByTestId("success-analytics")).toHaveTextContent("fr");
+    expect(screen.getByTestId("success-analytics")).toHaveTextContent("it");
     expect(screen.getByRole("heading", { name: "Order confirmed" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Continue shopping" })).toHaveAttribute(
       "href",
-      "/fr/shop",
+      "/it/shop",
     );
   });
 });

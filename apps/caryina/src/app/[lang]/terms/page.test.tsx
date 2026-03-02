@@ -30,19 +30,19 @@ describe("TermsPage", () => {
   });
 
   it("generates localized metadata", async () => {
-    const metadata = await generateMetadata({ params: Promise.resolve({ lang: "fr" }) });
+    const metadata = await generateMetadata({ params: Promise.resolve({ lang: "it" }) });
 
     expect(metadata).toEqual({
       title: "Terms | Caryina",
       description: "Terms summary",
       keywords: ["terms", "policy"],
     });
-    expect(mockGetPolicyContent).toHaveBeenCalledWith("fr", "terms");
+    expect(mockGetPolicyContent).toHaveBeenCalledWith("it", "terms");
   });
 
   it("renders terms policy page", async () => {
     const ui = (await TermsPage({
-      params: Promise.resolve({ lang: "fr" }),
+      params: Promise.resolve({ lang: "it" }),
     })) as ReactElement;
 
     render(ui);

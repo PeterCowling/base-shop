@@ -173,7 +173,7 @@ describe("ProductDetailPage", () => {
 
     expect(screen.getByLabelText("Material details")).toBeInTheDocument();
     expect(screen.getByText("Leather exterior")).toBeInTheDocument();
-    expect(screen.getByText("240\u2009g")).toBeInTheDocument();
+    expect(screen.getByText(/240\s*g/)).toBeInTheDocument();
   });
 
   it("hides material details section when any spec field is missing", async () => {

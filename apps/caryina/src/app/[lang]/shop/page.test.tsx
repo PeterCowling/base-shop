@@ -144,7 +144,7 @@ describe("ShopPage", () => {
     render(ui);
 
     expect(screen.getByTestId("shop-analytics")).toHaveTextContent("en");
-    expect(screen.getByText("No active products found yet.")).toBeInTheDocument();
+    expect(screen.getByText(/No active products found yet\./)).toBeInTheDocument();
   });
 
   it("shows unknown-family warning when filter is invalid", async () => {

@@ -28,6 +28,7 @@ import { type Room, roomsData } from "@/data/roomsData";
 import { useAvailability } from "@/hooks/useAvailability";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
+import { aggregateAvailabilityByCategory } from "@/utils/aggregateAvailabilityByCategory";
 import { hydrateBookingSearch, persistBookingSearch } from "@/utils/bookingSearch";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 import { fireCtaClick, fireViewItemList } from "@/utils/ga4-events";
@@ -70,13 +71,14 @@ function HomeContent({ lang }: Props) {
   const roomPrices = useMemo<Record<string, RoomCardPrice> | undefined>(() => {
     if (!availabilityRooms.length) return undefined;
     const prices: Record<string, RoomCardPrice> = {};
-    for (const availabilityRoom of availabilityRooms) {
-      const roomMatch = roomsData.find((room) => room.widgetRoomCode === availabilityRoom.octorateRoomId);
-      if (!roomMatch) continue;
+    for (const room of roomsData) {
+      if (!room.octorateRoomCategory) continue;
+      const availabilityRoom = aggregateAvailabilityByCategory(availabilityRooms, room.octorateRoomCategory);
+      if (!availabilityRoom) continue;
       if (!availabilityRoom.available) {
-        prices[roomMatch.id] = { soldOut: true };
+        prices[room.id] = { soldOut: true };
       } else if (availabilityRoom.priceFrom !== null) {
-        prices[roomMatch.id] = {
+        prices[room.id] = {
           formatted: `From €${availabilityRoom.priceFrom.toFixed(2)}`,
           soldOut: false,
         };
@@ -142,6 +144,7 @@ function HomeContent({ lang }: Props) {
       itemListId: "home_rooms_carousel",
       rooms: roomsForCarousel,
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- BRIK-1 fire-once on mount; roomsForCarousel is static (roomsData.slice of module-level constant)
   }, []);
 
   return (

@@ -1,6 +1,6 @@
 // src/hooks/useAvailabilityForRoom.ts
 // Debounced hook that fetches availability for a single room from /api/availability.
-// Calls /api/availability (returns all rooms), then filters by room.widgetRoomCode === octorateRoomId.
+// Calls /api/availability (returns all rooms), then aggregates sections by room.octorateRoomCategory.
 // Feature-flagged: returns undefined immediately when OCTORATE_LIVE_AVAILABILITY is false.
 // Supports AbortController cleanup to prevent setState-after-unmount.
 
@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import { OCTORATE_LIVE_AVAILABILITY } from "@/config/env";
 import type { Room } from "@/data/roomsData";
 import type { OctorateRoom } from "@/types/octorate-availability";
+import { aggregateAvailabilityByCategory } from "@/utils/aggregateAvailabilityByCategory";
 
 export type { OctorateRoom };
 
@@ -37,12 +38,12 @@ const EMPTY_STATE: UseAvailabilityForRoomState = {
  * Fetch live availability for a specific room for given dates and guest count.
  *
  * Calls /api/availability (returns all rooms for the dates/pax combination),
- * then filters to the room matching room.widgetRoomCode === octorateRoomId.
+ * then aggregates sections by room.octorateRoomCategory (name-based matching).
  *
  * Debounces 300ms on input change. Returns undefined when:
  * - feature flag is off
  * - dates are empty/invalid
- * - no matching room found in API response
+ * - no matching category found in API response
  * - loading or error state
  */
 export function useAvailabilityForRoom({
@@ -100,8 +101,8 @@ export function useAvailabilityForRoom({
         .then((data) => {
           if (signal.aborted) return;
           const rooms: OctorateRoom[] = data.rooms ?? [];
-          // Match by octorateRoomId (data-id attribute) === widgetRoomCode (numeric room code)
-          const matched = rooms.find((r) => r.octorateRoomId === room.widgetRoomCode);
+          // Aggregate by octorateRoomCategory (name-based matching)
+          const matched = aggregateAvailabilityByCategory(rooms, room.octorateRoomCategory ?? "");
           setState({ availabilityRoom: matched, loading: false, error: null });
         })
         .catch((err: unknown) => {
@@ -125,7 +126,7 @@ export function useAvailabilityForRoom({
         abortRef.current = null;
       }
     };
-  }, [checkIn, checkOut, adults, room.widgetRoomCode]);
+  }, [checkIn, checkOut, adults, room.octorateRoomCategory]);
 
   return state;
 }

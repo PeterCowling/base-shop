@@ -1,17 +1,151 @@
 {
-  "last_updated": "2026-03-02T19:06:14.377Z",
+  "last_updated": "2026-03-02T21:20:41.427Z",
   "counts": {
     "enqueued": 7,
     "processed": 10,
-    "skipped": 0,
+    "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
-    "completed": 87,
-    "fact_find_ready": 33,
-    "total": 129
+    "completed": 89,
+    "fact_find_ready": 35,
+    "total": 132
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260302210000-0125",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:STRATEGY:loop-assessment-containers-not-registered-as-signal-sources:20260302",
+      "anchor_key": "loop-assessment-containers-not-registered-as-signal-sources",
+      "cluster_key": "BOS:STRATEGY:loop-assessment-containers-not-registered-as-signal-sources:operator:20260302",
+      "cluster_fingerprint": "a8f3d291c4e76b05a8f3d291c4e76b05a8f3d291c4e76b05a8f3d291c4e76b05",
+      "lineage_depth": 0,
+      "area_anchor": "Loop standing registry — assessment containers not registered as signal sources",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/lp-do-ideas-standing-registry.schema.json",
+        "docs/business-os/strategy/PWRB/",
+        "docs/business-os/strategy/BRIK/",
+        "scripts/src/startup-loop/lp-do-ideas-trial.ts"
+      ],
+      "provisional_deliverable_family": "multi",
+      "recommended_route": "lp-do-fact-find",
+      "status": "completed",
+      "priority": "P2",
+      "confidence": 0.88,
+      "current_truth": "Assessment artifacts (~47 .user.md files across all businesses: brand identity, solution evaluations, naming specs, business plans) are absent from the standing registry. Changes to these files never trigger dispatch events. The loop treats them as one-time baseline inputs consumed at GATE-ASSESSMENT-01 and never re-reads them.",
+      "next_scope_now": "Fact-find to determine which assessment artifact classes should be registered with trigger_policy: eligible, define their delta signal semantics (what constitutes a material change vs. cosmetic edit), and design the registration data file the TS orchestrator can consume.",
+      "adjacent_later": [
+        "Define suppression rules for assessment artifact deltas that are administrative (status updates, minor edits) vs. substantive strategy changes."
+      ],
+      "evidence_refs": [
+        "operator-stated: assessment containers are the 'balance sheet' of accumulated strategic knowledge — currently invisible to the loop's signal layer",
+        "agent-verified: lp-do-ideas-standing-registry.schema.json defines artifact_class with source/pack/loop-output classes; no assessment class exists",
+        "agent-verified: GATE-ASSESSMENT-01 in loop-output-contracts.md treats assessment layer as one-time pass-through, never re-read post-build",
+        "agent-verified: ~47 assessment .user.md files across docs/business-os/strategy/ with zero standing registry entries"
+      ],
+      "why": "The self-improving loop has a structural blind spot: assessment containers accumulate strategic decisions (brand names, solution selections, naming methodologies, business plan updates) but changes to them never trigger the ideas layer. This means the loop cannot detect when a strategic decision has been made or updated, and cannot automatically route follow-on planning work. Fixing this closes the feedback loop between strategic decisions and operational action.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Assessment artifact classes registered in the standing registry with appropriate trigger_policy and delta-signal semantics, enabling future changes to assessment containers to automatically surface as dispatch candidates.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-02T21:00:00.000Z",
+      "queue_state": "completed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-02T21:30:00.000Z",
+        "fact_find_slug": "bos-loop-assessment-registry",
+        "fact_find_path": "docs/plans/bos-loop-assessment-registry/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/bos-loop-assessment-registry/plan.md",
+        "completed_at": "2026-03-02T21:20:41.426Z",
+        "outcome": "Assessment artifact classes registered in the standing registry; T1 keywords extended; live hook wired."
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260302210001-0126",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:STRATEGY:loop-cass-retrieval-excludes-assessment-containers:20260302",
+      "anchor_key": "loop-cass-retrieval-excludes-assessment-containers",
+      "cluster_key": "BOS:STRATEGY:loop-cass-retrieval-excludes-assessment-containers:operator:20260302",
+      "cluster_fingerprint": "b9e4c302d5f78a16b9e4c302d5f78a16b9e4c302d5f78a16b9e4c302d5f78a16",
+      "lineage_depth": 0,
+      "area_anchor": "Loop CASS retrieval — assessment containers excluded from context scope",
+      "location_anchors": [
+        "scripts/src/startup-loop/cass-retrieve.ts",
+        "docs/business-os/startup-loop/loop-output-contracts.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.85,
+      "current_truth": "CASS retrieval indexes loop output artifacts (fact-finds, plans, results-reviews) to provide prior-plan context for new fact-finds and plans. Assessment containers — the accumulated strategic knowledge layer — are not in the retrieval scope, so agents starting a new fact-find cannot access brand decisions, solution evaluations, or naming specs from previous assessment cycles.",
+      "next_scope_now": "Fact-find to determine how CASS should index assessment containers: which artifact types, at what granularity (full file vs. section-level), and how to surface them without overwhelming retrieval context during non-strategy work.",
+      "adjacent_later": [
+        "Consider a separate 'balance sheet retrieval mode' that returns all current assessment state for a business, distinct from the delta-signal mode used by the ideas layer."
+      ],
+      "evidence_refs": [
+        "operator-stated: executing a fact-find for new strategy work currently has no automatic access to prior assessment decisions (brand, solution, naming) — must be manually retrieved",
+        "agent-verified: cass-retrieve.ts scope covers fact-find, plan, and results-review artifacts; assessment containers are absent from retrieval index definitions"
+      ],
+      "why": "When a fact-find or plan runs for any business, it needs to know what strategic decisions have already been made (brand identity, solution selection, naming). CASS retrieval currently only surfaces prior loop artifacts, not the assessment layer. This means every new planning cycle manually rediscovers the same strategic context instead of having it pre-loaded — wasting fact-find depth and risking inconsistency with prior decisions.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "CASS retrieval extended to index assessment containers, so fact-finds and plans for a business automatically receive relevant assessment-layer context (brand decisions, solution evaluations, naming specs) without manual retrieval steps.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-02T21:00:01.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260302210002-0127",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:STRATEGY:loop-assessment-intake-packet-static-not-updated-post-build:20260302",
+      "anchor_key": "loop-assessment-intake-packet-static-not-updated-post-build",
+      "cluster_key": "BOS:STRATEGY:loop-assessment-intake-packet-static-not-updated-post-build:operator:20260302",
+      "cluster_fingerprint": "c1f5a403e6089b27c1f5a403e6089b27c1f5a403e6089b27c1f5a403e6089b27",
+      "lineage_depth": 0,
+      "area_anchor": "Loop intake packet — static snapshot, not updated post-build",
+      "location_anchors": [
+        "docs/business-os/startup-loop/loop-output-contracts.md",
+        "docs/plans/_templates/results-review.user.md",
+        ".claude/skills/lp-do-build/SKILL.md"
+      ],
+      "provisional_deliverable_family": "multi",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.82,
+      "current_truth": "assessment-intake-packet.user.md is defined as a one-time static snapshot taken at GATE-ASSESSMENT-01 before Layer A standing intelligence. It is never updated after builds complete, even when build results reveal new strategic facts or update assessment-container decisions. The only post-build feedback path (results-review → Layer A) does not include assessment containers.",
+      "next_scope_now": "Fact-find to determine the right update mechanism: should results-review write back to assessment containers directly, should the intake packet be regenerated periodically, or should a separate 'balance sheet refresh' step be defined in the loop for strategic synthesis after each build cycle.",
+      "adjacent_later": [
+        "Define what constitutes a 'balance sheet refresh trigger' — not every build should force an assessment update, but builds that touch strategy, brand, or offer artifacts should."
+      ],
+      "evidence_refs": [
+        "operator-stated: the 'balance sheet' (assessment containers) is currently static while the 'P&L' (ideas→build loop) runs — the two layers do not synchronise",
+        "agent-verified: loop-output-contracts.md defines results-review feedback path to Layer A only; no assessment container update step exists in post-build protocol",
+        "agent-verified: lp-do-build SKILL.md post-build protocol (steps 1-8) has no step for updating assessment-intake-packet or assessment containers"
+      ],
+      "why": "The assessment layer represents the accumulated strategic knowledge of a business — the 'balance sheet' that should grow richer after each loop cycle. Currently, builds can change strategic facts (decide a brand name, confirm a solution) but the assessment layer never receives those updates. The balance sheet drifts increasingly out of sync with the P&L as the loop runs more cycles.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "A defined mechanism exists for assessment containers to be updated after builds that touch strategy-relevant artifacts, preventing the assessment layer from drifting out of sync with accumulated loop learnings.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-02T21:00:02.000Z",
+      "queue_state": "enqueued"
+    },
     {
       "schema_version": "dispatch.v1",
       "dispatch_id": "IDEA-DISPATCH-20260302100133-0124",
@@ -1347,7 +1481,8 @@
         "operator-stated: PWRB-DEC-2026-01-29-06 — IPEI services/access agreement not drafted; defines scope (install, swap, troubleshooting), scheduling rules, cost-basis, and liability boundary between PWRB NewCo and IPEI"
       ],
       "created_at": "2026-02-26T21:30:00Z",
-      "queue_state": "enqueued"
+      "queue_state": "skipped",
+      "skip_reason": "operator-decision: IPEI director will become a director of PWRB NewCo; formal services agreement is superseded by directorship relationship"
     },
     {
       "schema_version": "dispatch.v1",
@@ -1375,7 +1510,9 @@
         "operator-stated: brand should support Amalfi Coast / southern Italy identity or multi-destination expansion"
       ],
       "created_at": "2026-02-26T21:30:00Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "completed_at": "2026-03-02T00:00:00Z",
+      "outcome": "operator-decision: brand name selected as 'Amalfi Coast Charge'; domain amalficoastcharge.com available, no trademark overhang found"
     },
     {
       "schema_version": "dispatch.v1",

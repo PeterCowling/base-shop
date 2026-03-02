@@ -1,11 +1,11 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: BOS
 Workstream: Engineering
 Created: 2026-03-02
 Last-reviewed: 2026-03-02
-Last-updated: 2026-03-02
+Last-updated: 2026-03-02 (TASK-01, TASK-02, TASK-03 complete)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: bos-loop-assessment-registry
 Deliverable-Type: multi-deliverable
@@ -25,9 +25,9 @@ Auto-Build-Intent: plan+auto
 The self-improving loop monitors standing artifacts via a registry, but no registry data file has ever existed — only the schema. This plan creates the initial `standing-registry.json` with 15 high-value assessment containers, extends the T1 semantic keyword list in `lp-do-ideas-trial.ts` to cover assessment sections (brand identity, solution decision, naming), wires the live hook's `--registry-path` argument to the new file, and adds unit tests for the new artifact class/domain combination. Once complete, changes to registered assessment artifacts (brand decisions, solution selections, business plans) will generate dispatch candidates for the first time.
 
 ## Active tasks
-- [ ] TASK-01: Create `standing-registry.json` with initial 15 assessment artifacts
-- [ ] TASK-02: Extend T1 keywords + wire `--registry-path` + update trial-contract.md
-- [ ] TASK-03: Add unit tests for `source_reference ASSESSMENT` + T1 keyword match
+- [x] TASK-01: Create `standing-registry.json` with initial 15 assessment artifacts
+- [x] TASK-02: Extend T1 keywords + wire `--registry-path` + update trial-contract.md
+- [x] TASK-03: Add unit tests for `source_reference ASSESSMENT` + T1 keyword match
 
 ## Goals
 - Create the first standing registry data file with high-signal assessment entries
@@ -87,9 +87,9 @@ The self-improving loop monitors standing artifacts via a registry, but no regis
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Create `standing-registry.json` with 15 assessment artifacts | 88% | S | Pending | - | TASK-02, TASK-03 |
-| TASK-02 | IMPLEMENT | Extend T1 keywords + wire --registry-path + update contract doc | 85% | S | Pending | TASK-01 | TASK-03 |
-| TASK-03 | IMPLEMENT | Unit tests for `source_reference ASSESSMENT` + T1 keyword match | 80% | S | Pending | TASK-01, TASK-02 | - |
+| TASK-01 | IMPLEMENT | Create `standing-registry.json` with 15 assessment artifacts | 88% | S | Complete (2026-03-02) | - | TASK-02, TASK-03 |
+| TASK-02 | IMPLEMENT | Extend T1 keywords + wire --registry-path + update contract doc | 85% | S | Complete (2026-03-02) | TASK-01 | TASK-03 |
+| TASK-03 | IMPLEMENT | Unit tests for `source_reference ASSESSMENT` + T1 keyword match | 80% | S | Complete (2026-03-02) | TASK-01, TASK-02 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -249,7 +249,7 @@ The self-improving loop monitors standing artifacts via a registry, but no regis
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-02)
 - **Affects:**
   - `scripts/src/startup-loop/lp-do-ideas-trial.test.ts`
   - `[readonly] scripts/src/startup-loop/lp-do-ideas-trial.ts`

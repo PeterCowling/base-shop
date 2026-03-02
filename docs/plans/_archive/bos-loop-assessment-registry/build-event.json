@@ -1,0 +1,12 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "bos-loop-assessment-registry-2026-03-02",
+  "feature_slug": "bos-loop-assessment-registry",
+  "emitted_at": "2026-03-02T21:14:33.200Z",
+  "why": "The self-improving loop had a structural blind spot: changes to assessment containers never triggered dispatch events. Closing this gap lets strategic decisions inform the loop automatically.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Assessment artifact classes registered in the standing registry with appropriate trigger_policy and delta-signal semantics, enabling future changes to assessment containers to automatically surface as dispatch candidates."
+  }
+}

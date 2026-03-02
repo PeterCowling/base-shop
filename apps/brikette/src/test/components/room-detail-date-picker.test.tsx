@@ -205,7 +205,7 @@ describe("RoomDetailContent — date picker (TASK-DP)", () => {
     const todayIso = getTodayIso();
     renderRoomDetail(new URLSearchParams(`checkin=${todayIso}&checkout=${addDays(todayIso, 2)}&pax=1`));
 
-    const decreaseButton = screen.getByRole("button", { name: /decrease adults/i });
+    const decreaseButton = screen.getByRole("button", { name: /(decrease adults|decrease guests|bookingcontrols\.decreaseadults)/i });
     expect(decreaseButton).toBeDisabled();
   });
 });

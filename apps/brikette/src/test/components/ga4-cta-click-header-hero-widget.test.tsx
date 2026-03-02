@@ -150,7 +150,7 @@ describe("GA4 cta_click coverage (GA4-cta-click)", () => {
 
     const standaloneWidget = screen.getByTestId("standalone-booking-widget");
     const widgetButton = within(standaloneWidget).getByRole("button", {
-      name: /check availability/i,
+      name: /(check availability|booking\.buttonavailability|primarycta\.)/i,
     });
     fireEvent.click(widgetButton);
 

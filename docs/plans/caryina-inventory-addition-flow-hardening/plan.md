@@ -27,7 +27,7 @@ Caryina admin inventory updates currently fail for brand-new SKUs because the PA
 ## Active tasks
 
 - [x] TASK-01: Implement inventory PATCH first-write creation and align admin messaging/tests
-- [ ] TASK-02: Verify CI test/lint/typecheck outcomes and close rollout notes (Blocked: awaiting push + CI run)
+- [x] TASK-02: Verify CI test/lint/typecheck outcomes and close rollout notes (Caryina scope)
 
 ## Goals
 
@@ -86,7 +86,7 @@ Caryina admin inventory updates currently fail for brand-new SKUs because the PA
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Implement PATCH first-write create contract, align UI copy/error handling, expand route/UI unit coverage | 85% | M | Complete (2026-03-02) | - | TASK-02 |
-| TASK-02 | INVESTIGATE | Capture CI validation evidence and rollout notes for TASK-01 | 80% | S | Blocked (awaiting push + CI run) | TASK-01 | - |
+| TASK-02 | INVESTIGATE | Capture CI validation evidence and rollout notes for TASK-01 | 80% | S | Complete (2026-03-02, Caryina scope) | TASK-01 | - |
 
 ## Parallelism Guide
 
@@ -200,7 +200,7 @@ Caryina admin inventory updates currently fail for brand-new SKUs because the PA
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Blocked
+- **Status:** Complete (2026-03-02, Caryina scope)
 - **Affects:** `docs/plans/caryina-inventory-addition-flow-hardening/plan.md`
 - **Depends on:** TASK-01
 - **Blocks:** -
@@ -232,17 +232,22 @@ Caryina admin inventory updates currently fail for brand-new SKUs because the PA
 - **Notes / references:**
   - `docs/testing-policy.md`
 
-- **Build attempt evidence (2026-03-02):**
-  - Result: Blocked - CI validation artifact is unavailable until these changes are committed and pushed.
-  - Required next command after push:
-    - `gh run watch $(gh run list --limit 1 --json databaseId -q '.[0].databaseId')`
+- **Build completion evidence (2026-03-02, Caryina scope):**
+  - Caryina deployment workflow: `Deploy Caryina` run `22571373515` -> `success`.
+  - Core Platform CI for the same commit:
+    - `22571373441` -> `failure`
+    - `22571371506` -> `cancelled`
+  - Failure attribution (out of Caryina scope):
+    - Lint exceptions governance failed in `apps/xa-uploader/src/app/api/catalog/currency-rates/route.ts` (ticket XAUP-118 path allowlist mismatch).
+    - Unit-test failure in `@apps/business-os` governed calibration harness (`ERR_MODULE_NOT_FOUND` for scripts test dependency path).
+  - Operator scope directive applied: ignore XA and focus only on Caryina for this task.
 
 ## Simulation Trace
 
 | Step | Preconditions Met | Issues Found | Resolution Required |
 |---|---|---|---|
 | TASK-01: Implement inventory PATCH first-write creation and align admin messaging/tests | Yes | None | No |
-| TASK-02: Capture CI validation evidence and rollout notes | Partial | [Missing data dependency] [Moderate]: requires CI run artifact not produced within local execution context | Yes |
+| TASK-02: Capture CI validation evidence and rollout notes | Yes | [Scope override] [Minor]: non-Caryina failures exist but were excluded per operator directive | No |
 
 ## Risks & Mitigations
 
@@ -266,7 +271,7 @@ Caryina admin inventory updates currently fail for brand-new SKUs because the PA
 - [x] Inventory editor helper and error text are contract-accurate.
 - [x] Unit tests updated for route + editor behavior.
 - [x] Caryina typecheck and lint pass locally.
-- [ ] CI verification recorded in plan (TASK-02).
+- [x] CI verification recorded in plan (TASK-02).
 
 ## Decision Log
 

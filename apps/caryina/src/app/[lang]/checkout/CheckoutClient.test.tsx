@@ -89,17 +89,27 @@ describe("CheckoutClient", () => {
       expect(global.fetch).toHaveBeenCalledWith("/api/checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          lang: "en",
-          cardNumber: "4111111111111111",
-          expiryMonth: "12",
-          expiryYear: "2027",
-          cvv: "123",
-          buyerName: "",
-          buyerEmail: "",
-        }),
+        body: expect.any(String),
       });
     });
+
+    const fetchCall = (global.fetch as jest.Mock).mock.calls[0] as [
+      string,
+      { body: string },
+    ];
+    const payload = JSON.parse(fetchCall[1].body) as Record<string, string>;
+    expect(payload).toEqual(
+      expect.objectContaining({
+        idempotencyKey: expect.any(String),
+        lang: "en",
+        cardNumber: "4111111111111111",
+        expiryMonth: "12",
+        expiryYear: "2027",
+        cvv: "123",
+        buyerName: "",
+        buyerEmail: "",
+      }),
+    );
 
     await waitFor(() => {
       expect(window.location.href).toBe("/en/success");

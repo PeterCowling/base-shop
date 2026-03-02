@@ -59,7 +59,13 @@ function validateCard(card: CardState): string | null {
 }
 
 function buildCheckoutPayload(lang: string, card: CardState) {
+  const idempotencyKey =
+    typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
   return {
+    idempotencyKey,
     lang,
     cardNumber: card.cardNumber,
     expiryMonth: card.expiryMonth,

@@ -171,19 +171,34 @@ describe("checkoutReconciliation.server", () => {
       },
     ]);
     releaseInventoryHold.mockRejectedValue(new Error("inventory service unavailable"));
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
 
-    const summary = await reconcileStaleCheckoutAttempts({
-      shopId: "caryina",
-      staleMinutes: 1,
-    });
+    try {
+      const summary = await reconcileStaleCheckoutAttempts({
+        shopId: "caryina",
+        staleMinutes: 1,
+      });
 
-    expect(summary).toEqual({
-      scanned: 1,
-      released: 0,
-      failedWithoutHold: 0,
-      needsReview: 0,
-      errors: 1,
-    });
-    expect(markCheckoutAttemptResult).not.toHaveBeenCalled();
+      expect(summary).toEqual({
+        scanned: 1,
+        released: 0,
+        failedWithoutHold: 0,
+        needsReview: 0,
+        errors: 1,
+      });
+      expect(markCheckoutAttemptResult).not.toHaveBeenCalled();
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        "Checkout reconciliation failure",
+        expect.objectContaining({
+          attempt: expect.objectContaining({
+            idempotencyKey: "idem-4",
+            holdId: "hold-4",
+          }),
+          err: expect.any(Error),
+        }),
+      );
+    } finally {
+      consoleErrorSpy.mockRestore();
+    }
   });
 });

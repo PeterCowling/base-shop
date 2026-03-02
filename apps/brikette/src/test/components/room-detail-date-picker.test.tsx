@@ -87,6 +87,86 @@ jest.mock("@/components/booking/LocationInline", () => ({ __esModule: true, defa
 jest.mock("@/components/landing/SocialProofSection", () => ({ __esModule: true, default: () => null }));
 jest.mock("@/components/rooms/FacilityIcon", () => ({ __esModule: true, default: () => null }));
 jest.mock("@/components/seo/RoomStructuredData", () => ({ __esModule: true, default: () => null }));
+jest.mock("@/components/rooms/detail/RoomDetailSections", () => ({
+  __esModule: true,
+  coerceToContent: () => null,
+  resolveAmenitiesSection: () => ({ blurbs: [], shouldRender: false }),
+  resolveCopy: (value: unknown, _key?: string, fallback = "") => {
+    const text = typeof value === "string" ? value.trim() : "";
+    return text.length > 0 ? text : fallback;
+  },
+  HeroSection: () => null,
+  OutlineSection: () => null,
+  AmenitiesSection: () => null,
+  FeatureSection: () => null,
+  RoomDetailDescription: () => null,
+  RoomDetailGuidesSection: () => null,
+}));
+jest.mock("@/components/rooms/detail/RoomDetailBookingSections", () => ({
+  __esModule: true,
+  BookingPickerSection: ({
+    range,
+    onRangeChange,
+    pickerAdults,
+    maxPickerAdults = 8,
+    onAdultsChange,
+    checkInLabelText,
+    checkOutLabelText,
+  }: {
+    range: { from?: Date; to?: Date };
+    onRangeChange: (next: { from?: Date; to?: Date } | undefined) => void;
+    pickerAdults: number;
+    maxPickerAdults?: number;
+    onAdultsChange: (next: number) => void;
+    checkInLabelText: string;
+    checkOutLabelText: string;
+  }) => (
+    <div>
+      <label>
+        {checkInLabelText}
+        <input
+          aria-label={checkInLabelText}
+          type="date"
+          value={range.from ? range.from.toISOString().slice(0, 10) : ""}
+          onChange={(event) => {
+            const nextFrom = event.target.value ? new Date(`${event.target.value}T00:00:00.000Z`) : undefined;
+            onRangeChange({ from: nextFrom, to: range.to });
+          }}
+        />
+      </label>
+      <label>
+        {checkOutLabelText}
+        <input
+          aria-label={checkOutLabelText}
+          type="date"
+          value={range.to ? range.to.toISOString().slice(0, 10) : ""}
+          onChange={(event) => {
+            const nextTo = event.target.value ? new Date(`${event.target.value}T00:00:00.000Z`) : undefined;
+            onRangeChange({ from: range.from, to: nextTo });
+          }}
+        />
+      </label>
+      <button
+        type="button"
+        aria-label="Decrease guests"
+        disabled={pickerAdults <= 1}
+        onClick={() => onAdultsChange(Math.max(1, pickerAdults - 1))}
+      >
+        -
+      </button>
+      <button
+        type="button"
+        aria-label="Increase guests"
+        disabled={pickerAdults >= maxPickerAdults}
+        onClick={() => onAdultsChange(Math.min(maxPickerAdults, pickerAdults + 1))}
+      >
+        +
+      </button>
+    </div>
+  ),
+  RoomDetailBookingNotices: () => null,
+  RoomDetailRecoverySection: () => null,
+}));
 jest.mock("@acme/ui/molecules", () => ({
   DirectBookingPerks: () => null,
   RoomCard: () => null,

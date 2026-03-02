@@ -3,14 +3,16 @@ import { expect, test } from "playwright/test";
 async function seedCartFromFirstProduct(page: import("playwright/test").Page) {
   await page.goto("/en/shop", { waitUntil: "networkidle" });
 
-  const productLinks = page.locator('a[href^="/en/product/"]');
-  await expect(productLinks.first()).toBeVisible();
-  await productLinks.first().click();
-  await page.waitForURL(/\/en\/product\/.+/);
+  const firstProductLink = page.locator('a[href^="/en/product/"]').first();
+  await expect(firstProductLink).toBeVisible();
+  const productHref = await firstProductLink.getAttribute("href");
+  expect(productHref).toMatch(/^\/en\/product\/.+/);
+  await page.goto(productHref ?? "/en/shop", { waitUntil: "networkidle" });
 
   const addToCart = page.getByRole("button", { name: /add to cart/i });
   await expect(addToCart).toBeVisible();
   await addToCart.click();
+  await expect(page.getByRole("link", { name: /cart \(\d+ item/i })).toBeVisible();
 }
 
 async function fillCardForm(page: import("playwright/test").Page) {
@@ -26,7 +28,7 @@ test("@smoke checkout path renders payment form after adding product", async ({ 
   await page.goto("/en/checkout", { waitUntil: "networkidle" });
 
   await expect(page.getByRole("heading", { name: "Checkout" })).toBeVisible();
-  await expect(page.getByText("Card details")).toBeVisible();
+  await expect(page.getByLabel(/card number/i)).toBeVisible();
   await expect(page.getByRole("button", { name: "Pay now" })).toBeVisible();
 });
 

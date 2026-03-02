@@ -64,6 +64,16 @@ jest.mock("../../../../../lib/catalogDraftToContract", () => ({
   buildCatalogArtifactsFromDrafts: (...args: unknown[]) => buildCatalogArtifactsFromDraftsMock(...args),
 }));
 
+const getUploaderKvMock = jest.fn();
+const acquireSyncMutexMock = jest.fn();
+const releaseSyncMutexMock = jest.fn();
+
+jest.mock("../../../../../lib/syncMutex", () => ({
+  getUploaderKv: (...args: unknown[]) => getUploaderKvMock(...args),
+  acquireSyncMutex: (...args: unknown[]) => acquireSyncMutexMock(...args),
+  releaseSyncMutex: (...args: unknown[]) => releaseSyncMutexMock(...args),
+}));
+
 function createChild(
   code: number,
   stdout = "",
@@ -119,6 +129,11 @@ describe("catalog sync route", () => {
     delete process.env.XA_UPLOADER_MODE;
     delete process.env.XA_UPLOADER_EXPOSE_SYNC_LOGS;
     delete process.env.XA_UPLOADER_LOCAL_FS_DISABLED;
+
+    // Default: KV unavailable (null) → mutex skipped, existing tests unaffected
+    getUploaderKvMock.mockResolvedValue(null);
+    acquireSyncMutexMock.mockResolvedValue(true);
+    releaseSyncMutexMock.mockResolvedValue(undefined);
   });
 
   it("TC-00: reports ready=true from GET when scripts exist", async () => {
@@ -567,5 +582,131 @@ describe("catalog sync route", () => {
     );
     expect(spawnMock).not.toHaveBeenCalled();
     expect(publishCatalogPayloadToContractMock).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("TASK-04: catalog sync route — KV mutex (F4+F6)", () => {
+  const mockKv = {} as import("../../../../../lib/syncMutex").UploaderKvNamespace;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    __clearRateLimitStoreForTests();
+    hasUploaderSessionMock.mockResolvedValue(true);
+    readCloudDraftSnapshotMock.mockResolvedValue({
+      products: [{ slug: "studio-jacket", title: "Studio Jacket" }],
+      revisionsById: {},
+      docRevision: "doc-1",
+    });
+    buildCatalogArtifactsFromDraftsMock.mockReturnValue({
+      catalog: { collections: [], brands: [], products: [{ slug: "studio-jacket" }] },
+      mediaIndex: { totals: { products: 1, media: 0, warnings: 0 }, items: [] },
+      warnings: [],
+    });
+    publishCatalogPayloadToContractMock.mockResolvedValue({
+      version: "v-cloud",
+      publishedAt: "2026-02-24T00:00:00.000Z",
+    });
+    getCatalogContractReadinessMock.mockReturnValue({ configured: true, errors: [] });
+    delete process.env.XA_UPLOADER_MODE;
+    delete process.env.XA_UPLOADER_LOCAL_FS_DISABLED;
+
+    // Default: mutex skipped (KV null)
+    getUploaderKvMock.mockResolvedValue(null);
+    acquireSyncMutexMock.mockResolvedValue(true);
+    releaseSyncMutexMock.mockResolvedValue(undefined);
+  });
+
+  it("TC-04a: returns 409 when KV lock key is already held (lock present)", async () => {
+    getUploaderKvMock.mockResolvedValue(mockKv);
+    acquireSyncMutexMock.mockResolvedValue(false); // lock already held
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ options: {}, storefront: "xa-b" }),
+      }),
+    );
+
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual({
+      ok: false,
+      error: "conflict",
+      reason: "sync_already_running",
+    });
+    // Pipeline must not have been called
+    expect(publishCatalogPayloadToContractMock).not.toHaveBeenCalled();
+    expect(spawnMock).not.toHaveBeenCalled();
+  });
+
+  it("TC-04b: fail-open when KV acquire throws — sync proceeds normally", async () => {
+    getUploaderKvMock.mockResolvedValue(mockKv);
+    acquireSyncMutexMock.mockRejectedValue(new Error("KV unavailable"));
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ options: {}, storefront: "xa-b" }),
+      }),
+    );
+
+    // Sync should proceed (fail-open)
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual(expect.objectContaining({ ok: true }));
+  });
+
+  it("TC-04c: acquireSyncMutex called with correct kv and storefront", async () => {
+    getUploaderKvMock.mockResolvedValue(mockKv);
+    acquireSyncMutexMock.mockResolvedValue(true); // lock acquired
+
+    const { POST } = await import("../route");
+    await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ options: {}, storefront: "xa-b" }),
+      }),
+    );
+
+    // acquireSyncMutex called with the kv object and the resolved storefront ID
+    expect(acquireSyncMutexMock).toHaveBeenCalledWith(mockKv, "xa-b");
+  });
+
+  it("TC-04d: releaseSyncMutex called after successful sync", async () => {
+    getUploaderKvMock.mockResolvedValue(mockKv);
+    acquireSyncMutexMock.mockResolvedValue(true);
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ options: {}, storefront: "xa-b" }),
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    // Mutex released in finally block
+    expect(releaseSyncMutexMock).toHaveBeenCalledWith(mockKv, "xa-b");
+  });
+
+  it("TC-04e: mutex skipped when KV unavailable (getUploaderKv returns null)", async () => {
+    getUploaderKvMock.mockResolvedValue(null); // KV not available
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ options: {}, storefront: "xa-b" }),
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(acquireSyncMutexMock).not.toHaveBeenCalled();
+    expect(releaseSyncMutexMock).not.toHaveBeenCalled();
   });
 });

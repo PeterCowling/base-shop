@@ -24,6 +24,7 @@ import { isLocalFsRuntimeEnabled } from "../../../../lib/localFsGuard";
 import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
 import { resolveRepoRoot } from "../../../../lib/repoRoot";
 import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
+import { acquireSyncMutex, getUploaderKv, releaseSyncMutex } from "../../../../lib/syncMutex";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
 
 export const runtime = "nodejs";
@@ -675,18 +676,57 @@ export async function POST(request: Request) {
   const repoRoot = resolveRepoRoot();
 
   const storefrontId = parseStorefront(payload.storefront);
-  const response = isLocalFsRuntimeEnabled()
-    ? await runSyncPipeline({
-        repoRoot,
-        storefrontId,
-        payload,
-        startedAt,
-      })
-    : await runCloudSyncPipeline({
-        storefrontId,
-        payload,
-        startedAt,
+
+  // Best-effort concurrency guard: concurrent sync invocations for the same storefront
+  // return 409 when the KV lock key is present. KV unavailability is fail-open — a KV
+  // outage must not block all sync operations. See syncMutex.ts for full rationale.
+  const kv = await getUploaderKv();
+  let mutexAcquired = false;
+  if (kv) {
+    try {
+      const acquired = await acquireSyncMutex(kv, storefrontId);
+      if (!acquired) {
+        return withRateHeaders(
+          NextResponse.json(
+            { ok: false, error: "conflict", reason: "sync_already_running" },
+            { status: 409 },
+          ),
+          limit,
+        ); // i18n-exempt -- XAUP-0001 [ttl=2026-12-31] machine response
+      }
+      mutexAcquired = true;
+    } catch {
+      // KV acquire failed — fail open. Log warning; sync proceeds without mutex.
+      console.warn({
+        route: "POST /api/catalog/sync",
+        warning: "mutex_acquire_failed_kv_unavailable",
       });
+    }
+  }
+
+  let response: NextResponse;
+  try {
+    response = isLocalFsRuntimeEnabled()
+      ? await runSyncPipeline({
+          repoRoot,
+          storefrontId,
+          payload,
+          startedAt,
+        })
+      : await runCloudSyncPipeline({
+          storefrontId,
+          payload,
+          startedAt,
+        });
+  } finally {
+    if (kv && mutexAcquired) {
+      try {
+        await releaseSyncMutex(kv, storefrontId);
+      } catch {
+        // Release failure is non-fatal — TTL will self-expire in 5 minutes.
+      }
+    }
+  }
   return withRateHeaders(response, limit);
 }
 

@@ -3,10 +3,10 @@ const path = require("path");
 
 const phaseTwoCoverageThreshold = {
   global: {
-    lines: 10,
-    branches: 5,
-    functions: 10,
-    statements: 10,
+    lines: 12,
+    branches: 8,
+    functions: 12,
+    statements: 12,
   },
 };
 

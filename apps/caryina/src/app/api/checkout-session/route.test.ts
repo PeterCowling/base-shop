@@ -97,6 +97,12 @@ const {
   markCheckoutAttemptResult: jest.Mock;
 };
 
+const { reconcileStaleCheckoutAttempts } = jest.requireMock(
+  "@/lib/checkoutReconciliation.server",
+) as {
+  reconcileStaleCheckoutAttempts: jest.Mock;
+};
+
 const VALID_BODY = {
   idempotencyKey: "idem-123",
   lang: "en",
@@ -156,6 +162,13 @@ describe("POST /api/checkout-session", () => {
     markCheckoutAttemptReservation.mockResolvedValue(undefined);
     markCheckoutAttemptPaymentAttempted.mockResolvedValue(undefined);
     markCheckoutAttemptResult.mockResolvedValue(undefined);
+    reconcileStaleCheckoutAttempts.mockResolvedValue({
+      scanned: 0,
+      released: 0,
+      failedWithoutHold: 0,
+      needsReview: 0,
+      errors: 0,
+    });
     commitInventoryHold.mockResolvedValue(undefined);
     releaseInventoryHold.mockResolvedValue({ ok: true, status: "released" });
     sendSystemEmail.mockResolvedValue(undefined);
@@ -444,5 +457,32 @@ describe("POST /api/checkout-session", () => {
     expect(body.error).toBe("Inventory backend unavailable");
     expect(body.code).toBe("inventory_unavailable");
     expect(callPayment).not.toHaveBeenCalled();
+  });
+
+  it("TC-06-11: auto-reconcile trigger runs when CARYINA_CHECKOUT_AUTO_RECONCILE=1", async () => {
+    process.env.CARYINA_CHECKOUT_AUTO_RECONCILE = "1";
+
+    const res = await POST(makeReq(VALID_BODY) as never);
+
+    expect(res.status).toBe(200);
+    expect(reconcileStaleCheckoutAttempts).toHaveBeenCalledWith({
+      shopId: "caryina",
+      maxAttempts: 5,
+    });
+  });
+
+  it("TC-06-12: auto-reconcile failures are logged without breaking checkout", async () => {
+    process.env.CARYINA_CHECKOUT_AUTO_RECONCILE = "1";
+    reconcileStaleCheckoutAttempts.mockRejectedValue(new Error("reconcile failed"));
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+
+    const res = await POST(makeReq(VALID_BODY) as never);
+
+    expect(res.status).toBe(200);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(errorSpy).toHaveBeenCalledWith(
+      "Auto checkout reconciliation failed",
+      expect.any(Error),
+    );
   });
 });

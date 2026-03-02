@@ -197,6 +197,14 @@ function parseUploadEndpoint(rawUploadUrl: string): {
   return { endpointUrl: parsed.toString() };
 }
 
+function getSubmissionErrorReason(error: unknown): string | undefined {
+  if (!error || typeof error !== "object" || !("reason" in error)) {
+    return undefined;
+  }
+  const reason = (error as { reason?: unknown }).reason;
+  return typeof reason === "string" ? reason : undefined;
+}
+
 export async function handleLoginImpl({
   event,
   token,
@@ -543,10 +551,10 @@ export async function handleExportSubmissionImpl({
     handleClearSubmission();
     updateActionFeedback(setActionFeedback, "submission", {
       kind: "success",
-      message: t("submissionReady", { id: filename }),
+      message: t("submissionReady", { id: jobId || filename }),
     });
   } catch (err) {
-    const reason = err instanceof SubmissionApiError ? err.reason : undefined;
+    const reason = getSubmissionErrorReason(err);
     updateActionFeedback(setActionFeedback, "submission", {
       kind: "error",
       message: getCatalogApiErrorMessage(
@@ -622,7 +630,7 @@ export async function handleUploadSubmissionToR2Impl({
       message: t("submissionUploaded", { id: jobId || filename }),
     });
   } catch (err) {
-    const reason = err instanceof SubmissionApiError ? err.reason : undefined;
+    const reason = getSubmissionErrorReason(err);
     updateActionFeedback(setActionFeedback, "submission", {
       kind: "error",
       message: getCatalogApiErrorMessage(

@@ -424,6 +424,9 @@ async function main(): Promise<void> {
         refinement_mode: "deterministic_only",
         rewrite_reason: "none",
         originalBodyPlain: generatedBodyPlain,
+        // Keep compatibility with older draft_refine schemas that still require
+        // refinedBodyPlain even for deterministic mode.
+        refinedBodyPlain: generatedBodyPlain,
       });
       const deterministic = parseToolResult<RefinePayload>(
         deterministicRaw as { isError?: boolean; content?: Array<{ text?: string }> },

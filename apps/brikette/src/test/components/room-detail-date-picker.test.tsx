@@ -92,6 +92,76 @@ jest.mock("@acme/ui/molecules", () => ({
   RoomCard: () => null,
 }));
 
+// Lightweight calendar panel mock to keep contract tests fast in CI.
+jest.mock("@/components/booking/BookingCalendarPanel", () => ({
+  BookingCalendarPanel: ({
+    range,
+    onRangeChange,
+    pax,
+    minPax = 1,
+    maxPax = 8,
+    onPaxChange,
+    checkInLabelText,
+    checkOutLabelText,
+    decreaseGuestsAriaLabel,
+    increaseGuestsAriaLabel,
+  }: {
+    range: { from?: Date; to?: Date };
+    onRangeChange: (next: { from?: Date; to?: Date } | undefined) => void;
+    pax: number;
+    minPax?: number;
+    maxPax?: number;
+    onPaxChange: (next: number) => void;
+    checkInLabelText: string;
+    checkOutLabelText: string;
+    decreaseGuestsAriaLabel: string;
+    increaseGuestsAriaLabel: string;
+  }) => (
+    <div>
+      <label>
+        {checkInLabelText}
+        <input
+          aria-label={checkInLabelText}
+          type="date"
+          value={range.from ? range.from.toISOString().slice(0, 10) : ""}
+          onChange={(event) => {
+            const nextFrom = event.target.value ? new Date(`${event.target.value}T00:00:00.000Z`) : undefined;
+            onRangeChange({ from: nextFrom, to: range.to });
+          }}
+        />
+      </label>
+      <label>
+        {checkOutLabelText}
+        <input
+          aria-label={checkOutLabelText}
+          type="date"
+          value={range.to ? range.to.toISOString().slice(0, 10) : ""}
+          onChange={(event) => {
+            const nextTo = event.target.value ? new Date(`${event.target.value}T00:00:00.000Z`) : undefined;
+            onRangeChange({ from: range.from, to: nextTo });
+          }}
+        />
+      </label>
+      <button
+        type="button"
+        aria-label={decreaseGuestsAriaLabel}
+        disabled={pax <= minPax}
+        onClick={() => onPaxChange(Math.max(minPax, pax - 1))}
+      >
+        -
+      </button>
+      <button
+        type="button"
+        aria-label={increaseGuestsAriaLabel}
+        disabled={pax >= maxPax}
+        onClick={() => onPaxChange(Math.min(maxPax, pax + 1))}
+      >
+        +
+      </button>
+    </div>
+  ),
+}));
+
 // ---------------------------------------------------------------------------
 // Import component after mocks
 // ---------------------------------------------------------------------------

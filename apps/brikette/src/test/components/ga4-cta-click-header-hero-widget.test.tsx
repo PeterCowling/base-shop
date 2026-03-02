@@ -80,6 +80,13 @@ jest.mock("@/components/landing/WhyStaySection", () => () => null);
 jest.mock("@/components/landing/SocialProofSection", () => () => null);
 jest.mock("@/components/landing/LocationMiniBlock", () => () => null);
 jest.mock("@/components/landing/FaqStrip", () => () => null);
+jest.mock("@/components/booking/BookingCalendarPanel", () => ({
+  BookingCalendarPanel: ({
+    actionSlot,
+  }: {
+    actionSlot?: React.ReactNode;
+  }) => <div>{actionSlot}</div>,
+}));
 
 jest.mock("@acme/ui/organisms/CarouselSlides", () => () => null);
 jest.mock("@acme/ui/organisms/DesktopHeader", () => ({

@@ -26,6 +26,7 @@ function buildValidStartupState(): StartupState {
     startup_state_id: "state-1",
     business_id: "BRIK",
     stage: "prelaunch",
+    current_website_generation: 1,
     offer: { headline: "Offer" },
     icp: { segment: "SMB" },
     positioning: { angle: "Fast launch" },

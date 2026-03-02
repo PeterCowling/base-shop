@@ -105,6 +105,21 @@ function runPreflightChecks(
           return "no_feedback_source_available";
         }
         break;
+      case "website_generation_lte_1":
+        if (startupState.current_website_generation > 1) {
+          return "website_generation_not_eligible_for_v1";
+        }
+        break;
+      case "website_generation_eq_2":
+        if (startupState.current_website_generation !== 2) {
+          return "website_generation_not_eligible_for_v2";
+        }
+        break;
+      case "website_generation_gte_3":
+        if (startupState.current_website_generation < 3) {
+          return "website_generation_not_eligible_for_v3";
+        }
+        break;
       default:
         break;
     }
@@ -138,12 +153,22 @@ export const STARTUP_MOTION_CONTAINERS: Record<string, ContainerContract> = {
     idempotency_key_strategy: "business+website_surface+container_version",
     startup_state_ref: "required",
     required_inputs: ["site_scope_delta"],
-    preflight_checks: ["startup_state_present", "brand_present", "offer_present"],
+    preflight_checks: [
+      "startup_state_present",
+      "brand_present",
+      "offer_present",
+      "website_generation_lte_1",
+    ],
     steps: defaultSteps("website-v1", true),
     state_store_contract: "writes_site_contract_artifacts",
     outputs: ["website_build_contract", "qa_checklist", "launch_readiness_notes"],
     acceptance_checks: ["build_contract_complete", "qa_gate_attached"],
-    blocked_reason_enum: ["missing_brand_data", "missing_offer_data", "deploy_target_unset"],
+    blocked_reason_enum: [
+      "missing_brand_data",
+      "missing_offer_data",
+      "deploy_target_unset",
+      "website_generation_not_eligible_for_v1",
+    ],
     rollback_plan: "restore_previous_site_contract_snapshot",
     kpi_contract: "website_activation_baseline",
     experiment_hook_contract: "website_variant_hook_optional",
@@ -174,12 +199,44 @@ export const STARTUP_MOTION_CONTAINERS: Record<string, ContainerContract> = {
     idempotency_key_strategy: "business+website_iteration+container_version",
     startup_state_ref: "required",
     required_inputs: ["upgrade_delta"],
-    preflight_checks: ["website_v1_exists", "analytics_v1_exists"],
+    preflight_checks: [
+      "website_v1_exists",
+      "analytics_v1_exists",
+      "website_generation_eq_2",
+    ],
     steps: defaultSteps("website-v2", true),
     state_store_contract: "writes_upgrade_contract_artifacts",
     outputs: ["upgrade_contract", "release_notes"],
     acceptance_checks: ["canary_ready"],
-    blocked_reason_enum: ["missing_upgrade_evidence"],
+    blocked_reason_enum: [
+      "missing_upgrade_evidence",
+      "website_generation_not_eligible_for_v2",
+    ],
+    rollback_plan: "restore_previous_release_candidate",
+    kpi_contract: "post_upgrade_conversion_kpi",
+    experiment_hook_contract: "website_upgrade_variants",
+    actuator_refs: ["site-repo-adapter"],
+  },
+  "website-v3": {
+    container_name: "website-v3",
+    container_version: "1.0.0",
+    maturity_level: "M2",
+    idempotency_key_strategy: "business+website_generation+container_version",
+    startup_state_ref: "required",
+    required_inputs: ["upgrade_delta"],
+    preflight_checks: [
+      "website_v1_exists",
+      "analytics_v1_exists",
+      "website_generation_gte_3",
+    ],
+    steps: defaultSteps("website-v3", true),
+    state_store_contract: "writes_upgrade_contract_artifacts",
+    outputs: ["upgrade_contract", "release_notes", "experiment_plan"],
+    acceptance_checks: ["canary_ready", "experiment_hook_attached"],
+    blocked_reason_enum: [
+      "missing_upgrade_evidence",
+      "website_generation_not_eligible_for_v3",
+    ],
     rollback_plan: "restore_previous_release_candidate",
     kpi_contract: "post_upgrade_conversion_kpi",
     experiment_hook_contract: "website_upgrade_variants",

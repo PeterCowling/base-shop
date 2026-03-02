@@ -2,7 +2,8 @@
   "schema_version": "startup-state.v1",
   "startup_state_id": "state-brik-1",
   "business_id": "BRIK",
-  "stage": "prelaunch",
+  "stage": "traction",
+  "current_website_generation": 3,
   "offer": {
     "headline": "Rapid launch storefront"
   },

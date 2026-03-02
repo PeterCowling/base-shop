@@ -16,7 +16,8 @@ function buildStartupState(): StartupState {
     schema_version: "startup-state.v1",
     startup_state_id: "state-1",
     business_id: "BRIK",
-    stage: "prelaunch",
+    stage: "traction",
+    current_website_generation: 3,
     offer: { title: "Starter offer" },
     icp: { segment: "SMB" },
     positioning: { angle: "fast launch" },
@@ -120,6 +121,9 @@ describe("self-evolving orchestrator integration", () => {
     expect(result.orchestrator.candidates_generated).toBeGreaterThan(0);
     expect(result.backbone_queued).toBeGreaterThan(0);
     expect(result.orchestrator.ranked_candidates[0]?.route.route).toBe("lp-do-build");
+    expect(result.orchestrator.ranked_candidates[0]?.candidate.executor_path).toBe(
+      "lp-do-build:container:website-v3",
+    );
 
     const queueRaw = readFileSync(result.backbone_queue_path, "utf-8").trim();
     expect(queueRaw.length).toBeGreaterThan(0);

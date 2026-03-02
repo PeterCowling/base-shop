@@ -3,6 +3,7 @@
   "startup_state_id": "state-sim",
   "business_id": "SIMC",
   "stage": "prelaunch",
+  "current_website_generation": 1,
   "offer": {
     "x": 1
   },

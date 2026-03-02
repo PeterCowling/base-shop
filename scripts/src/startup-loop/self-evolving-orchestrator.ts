@@ -98,10 +98,28 @@ function classifyCandidateType(observations: MetaObservation[]): ImprovementCand
   return "container_update";
 }
 
-function inferExecutorPath(observations: MetaObservation[]): string {
+function inferWebsiteExecutorPath(startupState: StartupState): string {
+  const generation =
+    Number.isInteger(startupState.current_website_generation) &&
+    startupState.current_website_generation > 0
+      ? startupState.current_website_generation
+      : startupState.stage === "prelaunch"
+        ? 1
+        : startupState.stage === "launched"
+          ? 2
+          : 3;
+
+  if (generation >= 3) return "lp-do-build:container:website-v3";
+  if (generation === 2) return "lp-do-build:container:website-v2";
+  return "lp-do-build:container:website-v1";
+}
+
+function inferExecutorPath(
+  observations: MetaObservation[],
+  startupState: StartupState,
+): string {
   const context = observations[0]?.context_path.toLowerCase() ?? "";
-  if (context.includes("website-v2")) return "lp-do-build:container:website-v2";
-  if (context.includes("website")) return "lp-do-build:container:website-v1";
+  if (context.includes("website")) return inferWebsiteExecutorPath(startupState);
   if (context.includes("offer")) return "lp-do-build:container:offer-v1";
   if (context.includes("distribution")) return "lp-do-build:container:distribution-sprint-v1";
   if (context.includes("activation")) return "lp-do-build:container:activation-loop-v1";
@@ -166,6 +184,7 @@ function buildCandidateFromRepeat(input: {
   runId: string;
   repeat: RepeatWorkCandidate;
   observations: MetaObservation[];
+  startupState: StartupState;
   now: Date;
 }): ImprovementCandidate {
   const candidateType = classifyCandidateType(input.observations);
@@ -185,7 +204,7 @@ function buildCandidateFromRepeat(input: {
     candidate_state: "draft",
     problem_statement: `Repeated work signature ${input.repeat.hard_signature.slice(0, 8)} detected ${input.repeat.recurrence_count} times in ${input.business}.`,
     trigger_observations: input.repeat.observation_ids,
-    executor_path: inferExecutorPath(input.observations),
+    executor_path: inferExecutorPath(input.observations, input.startupState),
     change_scope: "business_only",
     applicability_predicates: [`business=${input.business}`],
     expected_benefit: "Reduce repetitive operator/manual workflow load.",
@@ -285,6 +304,7 @@ export function runSelfEvolvingOrchestrator(
       runId: input.run_id,
       repeat,
       observations: repeatObservations,
+      startupState: input.startup_state,
       now,
     });
     const contractErrors = validateImprovementCandidate(candidate);

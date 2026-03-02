@@ -13,6 +13,7 @@ function buildStartupState(): StartupState {
     startup_state_id: "state-1",
     business_id: "BRIK",
     stage: "prelaunch",
+    current_website_generation: 1,
     offer: {},
     icp: {},
     positioning: {},

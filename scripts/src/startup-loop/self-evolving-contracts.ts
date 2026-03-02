@@ -137,6 +137,7 @@ export interface StartupState {
   startup_state_id: string;
   business_id: string;
   stage: StartupStage;
+  current_website_generation: number;
   offer: Record<string, unknown>;
   icp: Record<string, unknown>;
   positioning: Record<string, unknown>;
@@ -286,6 +287,12 @@ export function validateStartupState(state: StartupState): string[] {
   if (!nonEmptyString(state.schema_version)) errors.push("schema_version");
   if (!nonEmptyString(state.startup_state_id)) errors.push("startup_state_id");
   if (!nonEmptyString(state.business_id)) errors.push("business_id");
+  if (
+    !Number.isInteger(state.current_website_generation) ||
+    state.current_website_generation < 1
+  ) {
+    errors.push("current_website_generation");
+  }
   if (!nonEmptyString(state.brand.voice_tone)) errors.push("brand.voice_tone");
   if (!nonEmptyArray(state.brand.do_rules)) errors.push("brand.do_rules");
   if (!nonEmptyArray(state.brand.dont_rules)) errors.push("brand.dont_rules");

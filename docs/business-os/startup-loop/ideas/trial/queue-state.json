@@ -2,19 +2,508 @@
   "queue_version": "queue.v1",
   "mode": "trial",
   "created_at": "2026-02-25T00:00:00Z",
-  "last_updated": "2026-03-01T18:22:47.126Z",
+  "last_updated": "2026-03-02T10:01:33.107Z",
   "counts": {
     "enqueued": 7,
-    "processed": 12,
+    "processed": 14,
     "skipped": 0,
     "error": 0,
     "suppressed": 0,
-    "auto_executed": 78,
+    "auto_executed": 90,
     "completed": 11,
-    "total": 111,
-    "fact_find_ready": 88
+    "total": 124,
+    "fact_find_ready": 100
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260302100133-0124",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:HBAG:SELL:caryina-inventory-addition-create-path-broken:20260302",
+      "anchor_key": "caryina-inventory-addition-create-path-broken",
+      "cluster_key": "HBAG:SELL:caryina-inventory-addition-create-path-broken:operator:20260302",
+      "cluster_fingerprint": "3314ef76709cf691cd9da8627adf2b75dbdb6add5a0c231990edc23e283e76c6",
+      "lineage_depth": 0,
+      "area_anchor": "HBAG Caryina inventory add — missing-record create path broken",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P1",
+      "confidence": 0.93,
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Caryina admin product creation succeeds, but inventory update for a new SKU fails with 404 not_found because /admin/api/inventory/:sku only updates existing records. Storefront still publishes the active SKU with stock=0, disabling Add to cart.",
+      "next_scope_now": "Run fact-find for an explicit create/upsert inventory path, aligned admin UX copy/error mapping, and publish-readiness guardrails so newly created products can reliably reach customer-visible in-stock state.",
+      "adjacent_later": [
+        "Map admin API machine errors (not_found/validation_error) to operator-facing copy.",
+        "Evaluate whether active status should require initial inventory and media readiness."
+      ],
+      "location_anchors": [
+        "apps/caryina/src/components/admin/InventoryEditor.client.tsx",
+        "apps/caryina/src/app/admin/api/inventory/[sku]/route.ts",
+        "apps/caryina/src/app/admin/api/products/route.ts",
+        "apps/caryina/src/app/[lang]/shop/page.tsx",
+        "apps/caryina/src/app/[lang]/product/[slug]/page.tsx",
+        "packages/platform-core/src/repositories/catalogSkus.server.ts"
+      ],
+      "evidence_refs": [
+        "operator-stated: take forward Caryina inventory-addition simulation findings through lp-do-ideas",
+        "observed: PATCH /admin/api/inventory/caryina-codex-audit-20260302 returned 404 {ok:false,error:not_found}",
+        "observed: newly created active SKU rendered in /en/shop and PDP as Out of stock with Add to cart disabled"
+      ],
+      "created_at": "2026-03-02T10:01:33.107Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260302100120-0123",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:HBAG:SELL:hbag-caryina-checkout-inventory-not-decremented-after-sale:20260302",
+      "anchor_key": "hbag-caryina-checkout-inventory-not-decremented-after-sale",
+      "cluster_key": "HBAG:SELL:hbag-caryina-checkout-inventory-not-decremented-after-sale:operator:20260302",
+      "cluster_fingerprint": "c2712442266863e5a4f210d458123525b44ffc1cdadb8d5c81a7af8cf028d77d",
+      "lineage_depth": 0,
+      "area_anchor": "HBAG Caryina checkout — inventory not decremented after successful sale",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P1",
+      "confidence": 0.93,
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Caryina checkout succeeds and clears cart, but successful payment does not decrement or reserve inventory. Inventory remains unchanged after sale, so stock integrity relies only on cart-time checks.",
+      "next_scope_now": "Define and validate a safe inventory-integrity design for Caryina checkout: real inventory validation at checkout submit, atomic decrement on successful payment, and tests proving no-oversell behavior under concurrent purchases.",
+      "adjacent_later": [],
+      "location_anchors": [
+        "apps/caryina/src/app/api/checkout-session/route.ts",
+        "packages/platform-core/src/cartApiForShop.ts",
+        "apps/caryina/src/app/api/checkout-session/route.test.ts",
+        "data/shops/caryina/inventory.json"
+      ],
+      "evidence_refs": [
+        "operator-stated: take forward via lp-do-ideas after customer-flow simulation",
+        "agent-verified: successful checkout (200 -> /en/success) leaves data/shops/caryina/inventory.json unchanged",
+        "agent-verified: checkout success path has no inventory write call; only cart delete"
+      ],
+      "created_at": "2026-03-02T10:01:20.477Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260302095925-0118",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:HBAG:PRODUCTS:caryina-admin-proxy-guard-tests-missing:20260302",
+      "anchor_key": "caryina-admin-proxy-guard-tests-missing",
+      "cluster_key": "HBAG:PRODUCTS:caryina-admin-proxy-guard-tests-missing:operator:20260302",
+      "cluster_fingerprint": "7e1b2c6d4cfb7cdc2358bd7ec33741b7e7a9dd9a713d8939fcd1ba45ff88f36e",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina admin guard — proxy auth paths untested",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P1",
+      "confidence": 0.9,
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The /admin access boundary depends on proxy.ts cookie and token verification branches, but there is no direct proxy unit test coverage for allowlist, redirect, invalid token, or missing-secret behavior.",
+      "next_scope_now": "Open fact-find to define explicit contract tests for all proxy auth branches and hard-fail behavior so admin exposure regressions are caught before deploy.",
+      "adjacent_later": [],
+      "location_anchors": [
+        "apps/caryina/src/proxy.ts",
+        "apps/caryina/src/lib/adminAuth.ts",
+        "apps/caryina/src/app/admin/api/auth/route.ts"
+      ],
+      "evidence_refs": [
+        "operator-stated: Caryina coverage review identified zero direct tests for proxy.ts admin guard logic",
+        "operator-stated: admin authentication boundary is a release-risk path and needs explicit branch coverage"
+      ],
+      "created_at": "2026-03-02T09:59:25.138Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260302095925-0119",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:HBAG:PRODUCTS:caryina-storefront-server-page-contract-tests-missing:20260302",
+      "anchor_key": "caryina-storefront-server-page-contract-tests-missing",
+      "cluster_key": "HBAG:PRODUCTS:caryina-storefront-server-page-contract-tests-missing:operator:20260302",
+      "cluster_fingerprint": "49dcfc93f2712f8bb57c09040bad84ee5e6f817abaa17f952c2b06f95f6a397f",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina storefront pages — server render contracts untested",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P1",
+      "confidence": 0.89,
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Caryina has 17 page.tsx routes with only one page-level test file. Core server pages (home, shop, PDP, policy/support/success routes) currently lack direct render and branch contract tests.",
+      "next_scope_now": "Open fact-find to define targeted server-component test contracts for home/shop/PDP and policy wrappers, including empty states, not-found path, filter behavior, metadata, and material-details branch rendering.",
+      "adjacent_later": [],
+      "location_anchors": [
+        "apps/caryina/src/app/[lang]/page.tsx",
+        "apps/caryina/src/app/[lang]/shop/page.tsx",
+        "apps/caryina/src/app/[lang]/product/[slug]/page.tsx",
+        "apps/caryina/src/app/[lang]/privacy/page.tsx",
+        "apps/caryina/src/app/[lang]/support/page.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: coverage audit found one page test for seventeen page routes in Caryina",
+        "operator-stated: PDP and PLP server paths contain highest conversion-risk branch logic without direct test contracts"
+      ],
+      "created_at": "2026-03-02T09:59:26.138Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260302095925-0120",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:HBAG:PRODUCTS:caryina-admin-ui-flow-tests-missing:20260302",
+      "anchor_key": "caryina-admin-ui-flow-tests-missing",
+      "cluster_key": "HBAG:PRODUCTS:caryina-admin-ui-flow-tests-missing:operator:20260302",
+      "cluster_fingerprint": "256a4666812a2bf92c62bd73e7826b67adf33165952a54e43869fba19f9b888c",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina admin UI — product and inventory flows untested",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P1",
+      "confidence": 0.88,
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Admin login and admin product/inventory client flows are untested end-to-end at component level, leaving validation, submit, network error, and delete behavior without regression protection.",
+      "next_scope_now": "Open fact-find to define RTL contracts for AdminLoginPage, ProductForm, and InventoryEditor covering form validation, pending states, API success/error, and destructive action confirmation.",
+      "adjacent_later": [],
+      "location_anchors": [
+        "apps/caryina/src/app/admin/login/page.tsx",
+        "apps/caryina/src/components/admin/ProductForm.client.tsx",
+        "apps/caryina/src/components/admin/InventoryEditor.client.tsx",
+        "apps/caryina/src/app/admin/products/[id]/page.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: coverage review found no tests for admin login page and admin form client components",
+        "operator-stated: catalog and inventory admin regressions can block operations without early detection"
+      ],
+      "created_at": "2026-03-02T09:59:27.138Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260302095925-0121",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:HBAG:PRODUCTS:caryina-analytics-emitter-contract-tests-missing:20260302",
+      "anchor_key": "caryina-analytics-emitter-contract-tests-missing",
+      "cluster_key": "HBAG:PRODUCTS:caryina-analytics-emitter-contract-tests-missing:operator:20260302",
+      "cluster_fingerprint": "d75f7e06838742115e3eb13790abfcf01c14efc7fb76804af325bd163f66f0aa",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina analytics emitters — event payload contracts untested",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P2",
+      "confidence": 0.86,
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "ShopAnalytics, CheckoutAnalytics, ProductAnalytics, and SuccessAnalytics emit event payloads from pathname/search params but have no direct tests asserting event shape or guard behavior.",
+      "next_scope_now": "Open fact-find to specify unit tests for analytics emitter components to lock payload contracts and prevent silent telemetry drift in conversion funnel events.",
+      "adjacent_later": [],
+      "location_anchors": [
+        "apps/caryina/src/app/[lang]/shop/ShopAnalytics.client.tsx",
+        "apps/caryina/src/app/[lang]/checkout/CheckoutAnalytics.client.tsx",
+        "apps/caryina/src/app/[lang]/product/[slug]/ProductAnalytics.client.tsx",
+        "apps/caryina/src/app/[lang]/success/SuccessAnalytics.client.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: no direct tests currently validate analytics event payloads from storefront emitter components",
+        "operator-stated: funnel instrumentation drift risk is high because these components trigger monetization events"
+      ],
+      "created_at": "2026-03-02T09:59:28.138Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260302095925-0122",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:HBAG:PRODUCTS:caryina-test-governance-coverage-gate-gap:20260302",
+      "anchor_key": "caryina-test-governance-coverage-gate-gap",
+      "cluster_key": "HBAG:PRODUCTS:caryina-test-governance-coverage-gate-gap:operator:20260302",
+      "cluster_fingerprint": "659c08482483cb5d4b707b48642592f29c1df6196e3c1e491b1caceb15072ce3",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina CI test governance — no coverage threshold gate",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P2",
+      "confidence": 0.83,
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Caryina CI currently runs lint, typecheck, and jest tests but does not enforce a Caryina-specific coverage threshold/reporting gate in reusable-app workflow.",
+      "next_scope_now": "Open fact-find to determine a pragmatic Caryina coverage gate strategy (targeted thresholds + reporting cadence) that improves confidence without blocking delivery unnecessarily.",
+      "adjacent_later": [],
+      "location_anchors": [
+        ".github/workflows/caryina.yml",
+        ".github/workflows/reusable-app.yml",
+        "apps/caryina/jest.config.cjs",
+        "packages/config/jest.preset.cjs"
+      ],
+      "evidence_refs": [
+        "operator-stated: caryina pipeline lacks an app-specific enforced coverage threshold while other app quality gates are present",
+        "operator-stated: current test pass signal does not quantify behavioral coverage depth for storefront-critical paths"
+      ],
+      "created_at": "2026-03-02T09:59:29.138Z"
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260302094245-0117",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:SELL:brik-recovery-quote-server-email-send-point:20260302",
+      "anchor_key": "brik-recovery-quote-server-email-send-point",
+      "cluster_key": "BRIK:SELL:brik-recovery-quote-server-email-send-point:operator:20260302",
+      "cluster_fingerprint": "96891792baee3d6047fea5371f37d7afabb541081c0eb8939b9e4caef7366066",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK quote recovery email — no server sender or exact quote payload",
+      "domain": "SELL",
+      "status": "briefing_ready",
+      "recommended_route": "lp-do-briefing",
+      "queue_state": "processed",
+      "priority": "P2",
+      "confidence": 0.86,
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "RecoveryQuoteCapture currently validates email + consent, persists metadata locally, fires GA4, and opens a mailto draft to hostel inbox. Brikette has no API send endpoint for this flow, and no quote email is system-sent to the guest.",
+      "next_scope_now": "Brief the exact server send-point design: where submit should POST, how to derive quote prices from existing Octorate availability path, which sender/provider path to use (@acme/email), and what payload/expiry fields should be included for room+dates+pax+plan quotes.",
+      "adjacent_later": [],
+      "location_anchors": [
+        "apps/brikette/src/components/booking/RecoveryQuoteCapture.tsx",
+        "apps/brikette/src/app/api/availability/route.ts",
+        "packages/email/src/send.ts",
+        "packages/config/src/env/email.ts"
+      ],
+      "evidence_refs": [
+        "operator-stated: customer expects actual quote email (room, pax, selected dates) instead of mailbox draft flow",
+        "operator-stated: before implementation, confirm exact send point and sender path"
+      ],
+      "created_at": "2026-03-02T09:42:45.644Z",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-02T09:48:02.278Z",
+        "queue_state": "processed",
+        "fact_find_slug": "brik-recovery-quote-server-email-send-point",
+        "fact_find_path": "docs/briefs/brik-recovery-quote-server-email-send-point-briefing.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260302093958-0112",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "sell:brik-booking-calendar-shared-component-contract-tests-missing:20260302093958",
+      "anchor_key": "brik-booking-calendar-shared-component-contract-tests-missing",
+      "cluster_key": "brik:sell:brik-booking-calendar-shared-component-contract-tests-missing:sell:brik-booking-calendar-shared-component-contract-tests-missing:20260302093958",
+      "cluster_fingerprint": "7b7b9ce5db1ee4835513789158e4aec7bd5b6c125a273e20e0fea905a257658d",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK booking calendar — shared component contract tests missing",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P1",
+      "confidence": 0.9,
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "BookingCalendarPanel is reused across homepage widget, book page, room detail, and apartment booking flows, but has no direct test file. Regression risk is concentrated in shared pax/date control behavior and desktop/mobile label rendering.",
+      "next_scope_now": "Run fact-find to define a targeted test contract for BookingCalendarPanel (pax clamp boundaries, aria labels, disable states, action slot wiring) and identify fastest insertion points in the current component test suite.",
+      "adjacent_later": [],
+      "location_anchors": [
+        "apps/brikette/src/components/booking/BookingCalendarPanel.tsx",
+        "apps/brikette/src/components/landing/BookingWidget.tsx",
+        "apps/brikette/src/components/booking/BookPageSections.tsx",
+        "apps/brikette/src/components/rooms/detail/RoomDetailBookingSections.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: sales funnel test review identified BookingCalendarPanel as highest untested shared risk",
+        "operator-stated: current coverage is indirect through parent component tests only"
+      ],
+      "created_at": "2026-03-02T09:39:58.239Z",
+      "processed_by": {
+        "route": "auto-executed",
+        "processed_at": "2026-03-02T12:40:00Z",
+        "fact_find_slug": "brikette-funnel-test-hardening",
+        "fact_find_path": "docs/plans/brikette-funnel-test-hardening/fact-find.md",
+        "plan_path": "docs/plans/brikette-funnel-test-hardening/plan.md",
+        "build_record_path": "docs/plans/brikette-funnel-test-hardening/build-record.user.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260302093958-0113",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "sell:brik-recovery-resume-hook-expired-quote-reset-flow-untested:20260302093958",
+      "anchor_key": "brik-recovery-resume-hook-expired-quote-reset-flow-untested",
+      "cluster_key": "brik:sell:brik-recovery-resume-hook-expired-quote-reset-flow-untested:sell:brik-recovery-resume-hook-expired-quote-reset-flow-untested:20260302093958",
+      "cluster_fingerprint": "c8546c5e9a249adb32e885608ea1efaa4ad2350aa2930c32aa81af9845b1a5ea",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK recovery resume hook — expired quote reset flow untested",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P1",
+      "confidence": 0.88,
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "useRecoveryResumeFallback clears persisted booking state and rewrites query params for expired resume flows, but no direct tests validate side effects or guard conditions.",
+      "next_scope_now": "Run fact-find to specify direct hook tests for expired/non-expired branches, rebuild_quote visibility behavior, and replace() call contracts to prevent silent recovery regressions.",
+      "adjacent_later": [],
+      "location_anchors": [
+        "apps/brikette/src/hooks/useRecoveryResumeFallback.ts",
+        "apps/brikette/src/app/[lang]/book/BookPageContent.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: error recovery path is currently unverified and user-impacting",
+        "operator-stated: stale resume state can silently break booking continuity"
+      ],
+      "created_at": "2026-03-02T09:39:58.239Z",
+      "processed_by": {
+        "route": "auto-executed",
+        "processed_at": "2026-03-02T12:40:00Z",
+        "fact_find_slug": "brikette-funnel-test-hardening",
+        "fact_find_path": "docs/plans/brikette-funnel-test-hardening/fact-find.md",
+        "plan_path": "docs/plans/brikette-funnel-test-hardening/plan.md",
+        "build_record_path": "docs/plans/brikette-funnel-test-hardening/build-record.user.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260302093958-0114",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "sell:brik-apartment-booking-urls-rate-code-matrix-lacks-contract-tests:20260302093958",
+      "anchor_key": "brik-apartment-booking-urls-rate-code-matrix-lacks-contract-tests",
+      "cluster_key": "brik:sell:brik-apartment-booking-urls-rate-code-matrix-lacks-contract-tests:sell:brik-apartment-booking-urls-rate-code-matrix-lacks-contract-tests:20260302093958",
+      "cluster_fingerprint": "5957b4cc04a220af296857a62dbf85a794e8b03c7ad7d3bc82357108dea86a03",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK apartment booking URLs — rate-code matrix lacks contract tests",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P2",
+      "confidence": 0.84,
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "ApartmentBookContent hardcodes NR/Flex and 2/3 pax Octorate rate-code mappings in runtime code; existing tests focus on GA4/session behavior and do not fully assert URL matrix integrity.",
+      "next_scope_now": "Run fact-find to scope URL-contract tests for all plan+pax combinations, including room code and utm campaign assertions, to protect apartment booking handoff correctness.",
+      "adjacent_later": [],
+      "location_anchors": [
+        "apps/brikette/src/app/[lang]/private-rooms/book/ApartmentBookContent.tsx",
+        "apps/brikette/src/test/components/ga4-07-apartment-checkout.test.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: apartment stream is separate revenue path with hardcoded rate codes",
+        "operator-stated: missing matrix tests could allow silent wrong-room handoff"
+      ],
+      "created_at": "2026-03-02T09:39:58.239Z",
+      "processed_by": {
+        "route": "auto-executed",
+        "processed_at": "2026-03-02T12:40:00Z",
+        "fact_find_slug": "brikette-funnel-test-hardening",
+        "fact_find_path": "docs/plans/brikette-funnel-test-hardening/fact-find.md",
+        "plan_path": "docs/plans/brikette-funnel-test-hardening/plan.md",
+        "build_record_path": "docs/plans/brikette-funnel-test-hardening/build-record.user.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260302093958-0115",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "sell:brik-room-sticky-cta-url-wiring-validated-for-one-room-only:20260302093958",
+      "anchor_key": "brik-room-sticky-cta-url-wiring-validated-for-one-room-only",
+      "cluster_key": "brik:sell:brik-room-sticky-cta-url-wiring-validated-for-one-room-only:sell:brik-room-sticky-cta-url-wiring-validated-for-one-room-only:20260302093958",
+      "cluster_fingerprint": "62675f09b78a02034c42ffff7b53c321cd7491f8c77290b350dc6eff62998f52",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK room sticky CTA — URL wiring validated for one room only",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P2",
+      "confidence": 0.81,
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "RoomDetailContent sticky CTA begin_checkout behavior is tested, but URL wire assertions currently target only room_10, leaving multi-room mapping regressions weakly protected.",
+      "next_scope_now": "Run fact-find to define an expanded sticky URL wiring matrix across additional room IDs and rate-code mappings while preserving existing GA4 contract coverage.",
+      "adjacent_later": [],
+      "location_anchors": [
+        "apps/brikette/src/app/[lang]/dorms/[id]/RoomDetailContent.tsx",
+        "apps/brikette/src/test/components/ga4-35-sticky-begin-checkout.test.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: sticky CTA routing is critical handoff point",
+        "operator-stated: current test only asserts room_10 URL wire path"
+      ],
+      "created_at": "2026-03-02T09:39:58.239Z",
+      "processed_by": {
+        "route": "auto-executed",
+        "processed_at": "2026-03-02T12:40:00Z",
+        "fact_find_slug": "brikette-funnel-test-hardening",
+        "fact_find_path": "docs/plans/brikette-funnel-test-hardening/fact-find.md",
+        "plan_path": "docs/plans/brikette-funnel-test-hardening/plan.md",
+        "build_record_path": "docs/plans/brikette-funnel-test-hardening/build-record.user.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260302093958-0116",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "sell:brik-funnel-e2e-no-sold-out-or-api-failure-journey-coverage:20260302093958",
+      "anchor_key": "brik-funnel-e2e-no-sold-out-or-api-failure-journey-coverage",
+      "cluster_key": "brik:sell:brik-funnel-e2e-no-sold-out-or-api-failure-journey-coverage:sell:brik-funnel-e2e-no-sold-out-or-api-failure-journey-coverage:20260302093958",
+      "cluster_fingerprint": "32a39696058557ab12f0d47df7548a774c9fc26171df0d731fe7041b9739eecb",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK funnel E2E — no sold-out or API-failure journey coverage",
+      "domain": "SELL",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P1",
+      "confidence": 0.86,
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Playwright booking coverage is currently a 3-test smoke path focused on happy flow. No E2E scenarios assert sold-out behavior, availability API failure fallback, or full homepage-widget-to-Octorate handoff.",
+      "next_scope_now": "Run fact-find to scope resilient E2E additions for no-availability and API-failure cases plus full funnel traversal from homepage booking widget through room CTA handoff.",
+      "adjacent_later": [],
+      "location_anchors": [
+        "apps/brikette/e2e/availability-smoke.spec.ts",
+        "apps/brikette/src/components/landing/BookingWidget.tsx",
+        "apps/brikette/src/app/[lang]/book/BookPageContent.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: current E2E has only happy-path smoke assertions",
+        "operator-stated: resilience gaps remain in sold-out and network failure flows"
+      ],
+      "created_at": "2026-03-02T09:39:58.239Z",
+      "processed_by": {
+        "route": "auto-executed",
+        "processed_at": "2026-03-02T12:40:00Z",
+        "fact_find_slug": "brikette-funnel-test-hardening",
+        "fact_find_path": "docs/plans/brikette-funnel-test-hardening/fact-find.md",
+        "plan_path": "docs/plans/brikette-funnel-test-hardening/plan.md",
+        "build_record_path": "docs/plans/brikette-funnel-test-hardening/build-record.user.md"
+      }
+    },
     {
       "schema_version": "dispatch.v1",
       "dispatch_id": "IDEA-DISPATCH-20260301-0111",
@@ -3739,6 +4228,62 @@
         "completed_at": "2026-03-01T12:13:03.370Z",
         "outcome": "Implemented free-tier envelope defaults, local-FS cloud guardrails, image-role schema/mapping, uploader role UI, freshness surface, token max-TTL guard, and expanded route/schema tests."
       }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260302-0093",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "area_anchor": "xa-uploader backend — F2 schema drift, F3 async submission, F4 sync lock, F6 catalog cache, F8 error telemetry",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "processed",
+      "priority": "P1",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "xa-uploader submission route is synchronous (timeout risk for large batches), has no concurrency lock (duplicate submissions possible), client draft schema diverges from API Zod schema, catalog KV key lacks TTL so stale data persists indefinitely, and submission errors are not logged or surfaced.",
+      "next_scope_now": "Align draft schema with API Zod validator (F2); add KV-based async job with status polling endpoint (F3); add KV mutex to prevent concurrent sync runs (F4); add TTL to catalog KV writes (F6); add structured error logging to submission and sync routes (F8). All implementable on Cloudflare free tier.",
+      "location_anchors": [
+        "apps/xa-uploader/src/app/api/catalog/submission/route.ts",
+        "apps/xa-uploader/src/app/api/catalog/sync/route.ts",
+        "apps/xa-uploader/src/lib/xa-schema.ts",
+        "apps/xa-uploader/src/lib/kv-catalog.ts"
+      ],
+      "evidence_refs": [
+        "operator-stated: process audit F2 (schema drift), F3 (synchronous long poll), F4 (no sync lock), F6 (stale cache), F8 (no error telemetry) — implement as written, free-tier only"
+      ],
+      "created_at": "2026-03-02T00:00:00.000Z",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-02T00:00:00Z",
+        "fact_find_slug": "xa-uploader-submission-pipeline-hardening",
+        "fact_find_path": "docs/plans/xa-uploader-submission-pipeline-hardening/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260302-0094",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "area_anchor": "xa-uploader frontend UX — F1 validation feedback, F5 progress signals missing",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "auto_executed",
+      "priority": "P2",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Validation errors from the API are not surfaced to the user — they see a generic failure state. There are no progress indicators during the multi-step submission flow (draft to ZIP to upload to sync), so users cannot tell what is happening or whether the system is working.",
+      "next_scope_now": "Surface API validation error messages in the submission UI (F1); add per-step progress indicators to the submission flow (F5).",
+      "location_anchors": [
+        "apps/xa-uploader/src/app/(uploader)/submit/page.tsx",
+        "apps/xa-uploader/src/components/SubmissionForm.tsx"
+      ],
+      "evidence_refs": [
+        "operator-stated: process audit F1 (validation errors not shown to user), F5 (no progress signals during submission) — implement as written"
+      ],
+      "created_at": "2026-03-02T00:00:01.000Z"
     }
   ]
 }

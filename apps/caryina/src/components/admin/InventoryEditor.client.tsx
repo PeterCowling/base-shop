@@ -9,6 +9,19 @@ interface InventoryEditorProps {
   inventoryItems: InventoryItem[];
 }
 
+function mapInventoryError(error?: string): string {
+  switch (error) {
+    case "not_found":
+      return "No matching product was found for this SKU.";
+    case "validation_error":
+      return "Stock update payload was invalid. Refresh and try again.";
+    case "invalid_body":
+      return "Could not read stock update request. Please try again.";
+    default:
+      return "Update failed.";
+  }
+}
+
 export function InventoryEditor({ productSku, inventoryItems }: InventoryEditorProps) {
   const item = inventoryItems.find((i) => i.sku === productSku) ?? null;
 
@@ -35,7 +48,7 @@ export function InventoryEditor({ productSku, inventoryItems }: InventoryEditorP
         setTimeout(() => setStatus("idle"), 2000);
       } else {
         const data = (await res.json()) as { error?: string };
-        setErrorMsg(data.error ?? "Update failed.");
+        setErrorMsg(mapInventoryError(data.error));
         setStatus("error");
       }
     } catch {
@@ -49,11 +62,11 @@ export function InventoryEditor({ productSku, inventoryItems }: InventoryEditorP
       <h2 className="mb-4 text-lg font-medium">Inventory</h2>
       {item ? (
         <p className="mb-4 text-sm text-muted-foreground">
-          Low-stock threshold: {item.lowStockThreshold ?? "—"}
+          Low-stock threshold: {item.lowStockThreshold ?? "-"}
         </p>
       ) : (
         <p className="mb-4 text-sm text-muted-foreground">
-          No inventory record found for this SKU. Saving will create one.
+          No inventory record found for this SKU yet. Saving will create one if the product exists.
         </p>
       )}
       <form onSubmit={handleSubmit} className="flex items-end gap-4">
@@ -76,7 +89,7 @@ export function InventoryEditor({ productSku, inventoryItems }: InventoryEditorP
           disabled={status === "saving"}
           className="btn-primary min-h-11 min-w-11 rounded-full px-6 py-2.5 text-sm disabled:opacity-50"
         >
-          {status === "saving" ? "Saving…" : "Update stock"}
+          {status === "saving" ? "Saving..." : "Update stock"}
         </button>
         {status === "saved" ? (
           <span className="text-sm text-success-fg">Saved!</span>

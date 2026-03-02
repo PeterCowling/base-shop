@@ -314,7 +314,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-03-02T09:54:26.749Z";
+  var GEN_TS = "2026-03-02T10:47:54.266Z";
 
   var IDEA_ITEMS = [
     {
@@ -939,6 +939,23 @@
       "effort": "M",
       "proximity": null,
       "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add direct tests for BookingWidget and BookPageContent funnel-entry behavior",
+      "body": "current dispatch batch did not include those two entrypoint components even though they remain high leverage",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-03-02T09:58:41.700Z",
+      "path": "docs/plans/brikette-funnel-test-hardening/results-review.user.md",
+      "idea_key": "10af70430993488d92efcadeb2cb5ab36465354d",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -1997,6 +2014,23 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Add pre-deploy gate for KV namespace sentinel IDs in wrangler.toml",
+      "body": "TASK-01 used placeholder IDs by design; real IDs require manual operator step with no automated gate.",
+      "suggested_action": "add to deployment docs or create a pre-deploy validation script (AI-to-mechanistic candidate).",
+      "source": "results-review.user.md",
+      "date": "2026-03-02T10:47:23.057Z",
+      "path": "docs/plans/_archive/xa-uploader-submission-pipeline-hardening/results-review.user.md",
+      "idea_key": "20b31212bf8e43858a11e79fa77041a5d51f2a92",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "None (AI-to-mechanistic: no LLM reasoning step present in this build)",
       "body": "None (AI-to-mechanistic: no LLM reasoning step present in this build)",
       "source": "results-review.user.md",
@@ -2282,6 +2316,23 @@
       "date": "2026-02-26T08:53:01.939Z",
       "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md",
       "idea_key": "50250241c361b3e014540cb7f748b06e906f22b5",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Upgrade submission zip storage from KV to R2 when volume grows",
+      "body": "TASK-06 implemented Option B (KV blob, ≤25 MB); Option A remains a clean upgrade path if R2 binding is added to wrangler.toml.",
+      "suggested_action": "defer until submission volume justifies R2 overhead.",
+      "source": "results-review.user.md",
+      "date": "2026-03-02T10:47:23.057Z",
+      "path": "docs/plans/_archive/xa-uploader-submission-pipeline-hardening/results-review.user.md",
+      "idea_key": "4177c0e8f300803401ccaa543375bd89f4b4bd71",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",

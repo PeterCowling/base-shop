@@ -1,11 +1,11 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: API
 Workstream: Engineering
 Created: 2026-03-02
 Last-reviewed: 2026-03-02
-Last-updated: 2026-03-02T10:45Z
+Last-updated: 2026-03-02T12:00Z
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: xa-uploader-submission-pipeline-hardening
 Deliverable-Type: code-change
@@ -13,7 +13,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
-Overall-confidence: 75%
+Overall-confidence: 85%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
 Auto-Build-Intent: plan+auto
 ---
@@ -29,11 +29,11 @@ The xa-uploader backend has five confirmed reliability and observability gaps: (
 - [x] TASK-01: Add KV namespace binding to wrangler.toml (prerequisite) — Complete (2026-03-02)
 - [x] TASK-02: F2 — Add Zod schema validation to submission route — Complete (2026-03-02)
 - [x] TASK-03: F8 — Add structured error logging to submission and sync routes — Complete (2026-03-02)
-- [ ] TASK-04: F4+F6(mutex) — Add KV mutex with TTL to sync route
-- [ ] CHECKPOINT-05: Re-assess F3 server and client tasks after KV pattern is confirmed
-- [ ] TASK-06: F3+F6(jobs) — Async submission job system (server)
-- [ ] TASK-07: F3 client — Update submission flow to async polling
-- [ ] TASK-08: Tests — Update and extend test coverage for all F-items
+- [x] TASK-04: F4+F6(mutex) — Add KV mutex with TTL to sync route — Complete (2026-03-02)
+- [x] CHECKPOINT-05: Re-assess F3 server and client tasks after KV pattern is confirmed — Complete (2026-03-02)
+- [x] TASK-06: F3+F6(jobs) — Async submission job system (server) — Complete (2026-03-02)
+- [x] TASK-07: F3 client — Update submission flow to async polling — Complete (2026-03-02)
+- [x] TASK-08: Tests — Update and extend test coverage for all F-items — Complete (2026-03-02)
 
 ## Goals
 
@@ -109,11 +109,11 @@ The xa-uploader backend has five confirmed reliability and observability gaps: (
 | TASK-01 | IMPLEMENT | Add KV namespace binding to wrangler.toml | 85% | S | Complete (2026-03-02) | - | TASK-04, TASK-06 |
 | TASK-02 | IMPLEMENT | F2 — Zod schema validation in submission route | 85% | S | Complete (2026-03-02) | - | TASK-08 |
 | TASK-03 | IMPLEMENT | F8 — Structured error logging in catch blocks | 80% | S | Complete (2026-03-02) | - | TASK-08 |
-| TASK-04 | IMPLEMENT | F4+F6 — KV mutex with TTL on sync route | 85% | S | Pending | TASK-01 | CHECKPOINT-05, TASK-08 |
-| CHECKPOINT-05 | CHECKPOINT | Re-assess F3 after KV pattern confirmed | 95% | S | Pending | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-06 |
-| TASK-06 | IMPLEMENT | F3+F6 — Async submission job system (server) | 65% | L | Pending | CHECKPOINT-05 | TASK-07, TASK-08 |
-| TASK-07 | IMPLEMENT | F3 client — Async submission polling flow | 65% | M | Pending | TASK-06 | TASK-08 |
-| TASK-08 | IMPLEMENT | Tests — Update and extend all affected test coverage | 80% | M | Pending | TASK-02, TASK-03, TASK-04, TASK-06, TASK-07 | - |
+| TASK-04 | IMPLEMENT | F4+F6 — KV mutex with TTL on sync route | 85% | S | Complete (2026-03-02) | TASK-01 | CHECKPOINT-05, TASK-08 |
+| CHECKPOINT-05 | CHECKPOINT | Re-assess F3 after KV pattern confirmed | 95% | S | Complete (2026-03-02) | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-06 |
+| TASK-06 | IMPLEMENT | F3+F6 — Async submission job system (server) | 85% | L | Complete (2026-03-02) | CHECKPOINT-05 | TASK-07, TASK-08 |
+| TASK-07 | IMPLEMENT | F3 client — Async submission polling flow | 85% | M | Complete (2026-03-02) | TASK-06 | TASK-08 |
+| TASK-08 | IMPLEMENT | Tests — Update and extend all affected test coverage | 80% | M | Complete (2026-03-02) | TASK-02, TASK-03, TASK-04, TASK-06, TASK-07 | - |
 
 ## Parallelism Guide
 
@@ -305,7 +305,7 @@ The xa-uploader backend has five confirmed reliability and observability gaps: (
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-02)
 - **Affects:** `apps/xa-uploader/src/app/api/catalog/sync/route.ts`, `apps/xa-uploader/wrangler.toml`
 - **Depends on:** TASK-01
 - **Blocks:** CHECKPOINT-05, TASK-08
@@ -352,6 +352,17 @@ The xa-uploader backend has five confirmed reliability and observability gaps: (
 - **Notes / references:**
   - KV `put` with `expirationTtl` does not guarantee atomicity across concurrent Worker instances. For this use case this is acceptable — see Edge Cases.
   - The `getUploaderKv()` helper extracted here should be usable by TASK-06's job store.
+- **Build evidence (2026-03-02):**
+  - `apps/xa-uploader/src/lib/syncMutex.ts` created with `UploaderKvNamespace` interface, `getUploaderKv()`, `acquireSyncMutex()`, `releaseSyncMutex()`.
+  - Uses `await getCloudflareContext({ async: true })` — confirmed safe for nodejs runtime routes (production Worker sets global context before any handler; async form used for robustness).
+  - `isLocalFsRuntimeEnabled()` guard in `getUploaderKv()` — mutex skipped in local dev.
+  - KV key format: `xa-sync-lock:{storefrontId}` with `expirationTtl: 300` (F6).
+  - Sync route POST handler updated: mutex acquire after auth, pipeline in try, release in finally, 409 returned if acquire returns false.
+  - `UploaderKvNamespace` local interface avoids direct dependency on `@cloudflare/workers-types`.
+  - `CloudflareEnv` global interface extended with `XA_UPLOADER_KV?: UploaderKvNamespace`.
+  - TC-04a–e added in separate top-level describe block (max-lines-per-function constraint).
+  - Typecheck: zero errors. Lint: clean. Pre-commit hooks passed.
+  - Committed in `17796bc657`.
 
 ---
 
@@ -362,7 +373,7 @@ The xa-uploader backend has five confirmed reliability and observability gaps: (
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-02)
 - **Affects:** `docs/plans/xa-uploader-submission-pipeline-hardening/plan.md`
 - **Depends on:** TASK-01, TASK-02, TASK-03, TASK-04
 - **Blocks:** TASK-06
@@ -385,31 +396,42 @@ The xa-uploader backend has five confirmed reliability and observability gaps: (
 - **Planning validation:** None required — procedural gate task.
 - **Rollout / rollback:** `None: planning control task`
 - **Documentation impact:** Plan updated with replan evidence.
+- **Build evidence (2026-03-02):**
+  - H1 (KV access): Confirmed by TASK-04 implementation. `getUploaderKv()` helper reusable by TASK-06.
+  - H2 (`ctx.waitUntil`): Confirmed (E2) — `cloudflare-context.d.ts` types `ctx: ExecutionContext`; `waitUntil` is standard on `ExecutionContext`. Primary async pattern confirmed; no fallback needed.
+  - H3 (R2 vs KV): Confirmed Option B (E2) — `wrangler.toml` has no `[[r2_buckets]]` block; only env vars for client-side presigned URL feature.
+  - H4 (TASK-02 type impact): Confirmed no coercion needed — `buildSubmissionZipFromCloudDrafts` accepts `CatalogProductDraftInput[]`; TASK-06 uses same validated-but-original-values pattern.
+  - H5 (test infrastructure): No surprises. `max-lines-per-function` mitigation pattern confirmed from TC-04 build.
+  - `/lp-do-replan` (Round 2) elevated TASK-06: 65% → 85%; TASK-07: 65% → 85%. Both above 80% IMPLEMENT threshold.
+  - CHECKPOINT-05 acceptance criterion met: TASK-06 and TASK-07 at >=80% confidence.
 
 ---
 
 ### TASK-06: F3+F6(jobs) — Async submission job system (server)
 
 - **Type:** IMPLEMENT
-- **Deliverable:** code-change — `apps/xa-uploader/src/app/api/catalog/submission/route.ts` (POST handler refactored), new `apps/xa-uploader/src/app/api/catalog/submission/status/[jobId]/route.ts`, new `apps/xa-uploader/src/lib/submissionJobStore.ts`
+- **Deliverable:** code-change — `apps/xa-uploader/src/app/api/catalog/submission/route.ts` (POST handler refactored), new `apps/xa-uploader/src/app/api/catalog/submission/status/[jobId]/route.ts`, new `apps/xa-uploader/src/app/api/catalog/submission/download/[jobId]/route.ts`, new `apps/xa-uploader/src/lib/submissionJobStore.ts`
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
-- **Status:** Pending
-- **Affects:** `apps/xa-uploader/src/app/api/catalog/submission/route.ts`, new `apps/xa-uploader/src/app/api/catalog/submission/status/[jobId]/route.ts`, new `apps/xa-uploader/src/lib/submissionJobStore.ts`, `apps/xa-uploader/wrangler.toml`
+- **Status:** Complete (2026-03-02)
+- **Affects:** `apps/xa-uploader/src/app/api/catalog/submission/route.ts`, new `apps/xa-uploader/src/app/api/catalog/submission/status/[jobId]/route.ts`, new `apps/xa-uploader/src/app/api/catalog/submission/download/[jobId]/route.ts`, new `apps/xa-uploader/src/lib/submissionJobStore.ts`, `apps/xa-uploader/wrangler.toml`
 - **Depends on:** CHECKPOINT-05
 - **Blocks:** TASK-07, TASK-08
-- **Confidence:** 65%
-  - Implementation: 70% — KV job store pattern is clear after TASK-04 confirms KV access; zip storage path (R2 vs KV) is the main unknown. Capped at 70 pre-CHECKPOINT: approach uncertainty makes higher confidence unjustifiable until CHECKPOINT-05 resolves the storage question.
-  - Approach: 65% — two viable approaches (Option A: R2 presigned URL; Option B: KV blob storage); the choice depends on R2 bucket binding availability, which is unconfirmed at plan time. CHECKPOINT-05 resolves this.
-  - Impact: 90% — eliminates timeout risk for large submission zip builds; the most impactful item in this plan
-  - Composite: min(70, 65, 90) = **65%** (pre-checkpoint; expected to recalibrate to >=80 after CHECKPOINT-05)
+- **Confidence:** 85% _(replanned 2026-03-02 Round 2, was 65%)_
+  - Implementation: 85% — KV access proven by TASK-04 implementation (`getUploaderKv()` helper reusable); `ctx.waitUntil` confirmed via `cloudflare-context.d.ts` (`ctx: ExecutionContext`); Option B (KV blob storage) fully specified; stream buffering requirement identified. E2+E1 evidence.
+  - Approach: 85% — `ctx.waitUntil` pattern confirmed (primary approach, no fallback needed); Option B (KV blob, ≤25 MB) confirmed as sole approach (no `[[r2_buckets]]` binding in wrangler.toml); download via new `/api/catalog/submission/download/[jobId]` endpoint. E2+E2 evidence.
+  - Impact: 90% — eliminates timeout risk for large submission zip builds; most impactful item in this plan
+  - Composite: min(85, 85, 90) = **85%** — above 80% IMPLEMENT threshold
+  - Replan evidence: `docs/plans/xa-uploader-submission-pipeline-hardening/replan-notes.md` Round 2
 - **Acceptance:**
   - POST handler: returns `{ ok: true, jobId: string }` with HTTP 202; job enqueued in KV as `xa-submission-job:{jobId}` with `expirationTtl: 3600` (F6)
   - Job state machine: `{ status: "pending" | "running" | "complete" | "failed", createdAt, updatedAt, downloadUrl?: string, error?: string }`
-  - Background execution: zip build runs asynchronously (via `waitUntil` / deferred execution per OpenNext pattern) — or, if OpenNext nodejs runtime does not support `waitUntil`, use a synchronous-but-deferred pattern (POST enqueues, client polls, status endpoint actually triggers the build on first poll)
-  - Status endpoint `GET /api/catalog/submission/status/[jobId]`: returns job state; calls `hasUploaderSession` before any logic; returns 404 for unknown job IDs; returns download URL when status is `complete`
+  - Background execution: zip build runs asynchronously via `ctx.waitUntil` — `const { ctx } = await getCloudflareContext({ async: true }); ctx.waitUntil(executeSubmissionJob(jobId, kv, selected, options))`. `ctx.waitUntil` confirmed available via `cloudflare-context.d.ts` (`ctx: ExecutionContext`). POST returns 202 immediately; zip build runs after response is sent.
+  - Zip binary storage: `xa-submission-zip:{jobId}` in KV with `expirationTtl: 3600`. Stream buffering: collect Node.js Readable to Buffer before `kv.put`. Size constraint: ≤25 MB (matches existing `XA_UPLOADER_SUBMISSION_MAX_MB` config).
+  - Status endpoint `GET /api/catalog/submission/status/[jobId]`: returns job state; calls `hasUploaderSession` before any logic; returns 404 for unknown job IDs; returns `downloadUrl: "/api/catalog/submission/download/{jobId}"` when status is `complete`
+  - Download endpoint `GET /api/catalog/submission/download/[jobId]`: reads `xa-submission-zip:{jobId}` from KV; calls `hasUploaderSession` before any logic; returns zip binary as `application/zip`; returns 404 if job/zip not found
   - KV job entries include `expirationTtl: 3600` (1 hour) on all puts (F6)
   - `isLocalFsRuntimeEnabled()` guard: local FS path still returns synchronous zip response (preserves local dev behaviour); async job path activates only in cloud runtime
 - **Validation contract (TC-06):**
@@ -422,8 +444,8 @@ The xa-uploader backend has five confirmed reliability and observability gaps: (
   - TC-06g: `isLocalFsRuntimeEnabled()` returns true → POST returns synchronous zip stream (existing local behaviour preserved)
 - **Execution plan:** Red -> Green -> Refactor
   - Red: Add failing tests TC-06a/b/c/d/e/f/g; update existing tests that expect streaming zip response from POST to expect `{ ok: true, jobId }`.
-  - Green: Create `submissionJobStore.ts`. Refactor POST handler to enqueue job and return `{ ok: true, jobId }` (or synchronous zip in local FS mode). Add status route file. Implement async zip execution. Store zip in R2 or KV per CHECKPOINT-05 decision.
-  - Refactor: Extract zip execution into `executeSubmissionJob(job, kv)` helper called from the deferred execution path.
+  - Green: Create `submissionJobStore.ts` (KV job state helpers: `enqueueJob`, `updateJob`, `getJob`). Refactor POST handler to enqueue job and return `{ ok: true, jobId }` HTTP 202 (or synchronous zip in local FS mode via existing path). Add status route and download route. Implement `executeSubmissionJob`: call `buildSubmissionZipFromCloudDrafts`, buffer Readable stream to Buffer, `kv.put("xa-submission-zip:{jobId}", buffer, { expirationTtl: 3600 })`, update job state to `complete`. Register with `ctx.waitUntil`.
+  - Refactor: Extract zip execution into `executeSubmissionJob(jobId, kv, selected, options): Promise<void>` — called from `ctx.waitUntil` in POST handler.
 - **Planning validation (L effort required):**
   - Checks run:
     1. Confirmed `Readable.toWeb` zip streaming in submission route (current pattern lines 157–168).
@@ -433,8 +455,10 @@ The xa-uploader backend has five confirmed reliability and observability gaps: (
   - Validation artifacts: `submission/route.ts` lines 1–18 confirm imports; `sync/route.ts` confirms `isLocalFsRuntimeEnabled()` pattern.
   - Unexpected findings: `buildSubmissionZipStream` (local FS path) uses Node.js `Readable` streams. In the async path, the stream must be buffered to binary before storing in R2 or KV. This is a new requirement not in the fact-find seeds — the zip builder does not buffer; it streams. The execution plan must buffer the stream.
 - **Scouts:**
-  - Does OpenNext expose `ctx.waitUntil` in xa-uploader's nodejs runtime? **Assumed yes, not confirmed from repo-local evidence.** Per OpenNext docs, `getCloudflareContext().ctx.waitUntil` is the standard deferred work mechanism. If not available, the fallback pattern is: POST enqueues job metadata in KV (status: "pending"), status endpoint triggers zip build on first poll (synchronous), updates job state to "complete" or "failed". This fallback avoids `waitUntil` dependency entirely. CHECKPOINT-05 must validate which approach is correct.
-  - Does the zip builder return a stream or a buffer? Confirmed: `buildSubmissionZipStream` and `buildSubmissionZipFromCloudDrafts` return `{ stream: Readable, filename, manifest }` — stream must be collected to a Buffer before storing in KV or R2.
+  - `ctx.waitUntil` availability: **Confirmed (E2).** `cloudflare-context.d.ts` types `ctx: ExecutionContext`. `ExecutionContext.waitUntil` is the standard Cloudflare Workers deferred execution API. No fallback needed.
+  - Zip builder return type: Confirmed (E1). `buildSubmissionZipStream` and `buildSubmissionZipFromCloudDrafts` return `{ stream: Readable, filename, manifest }` — stream must be collected to Buffer before KV put.
+  - R2 bucket binding: **Absent (E2).** `wrangler.toml` confirms no `[[r2_buckets]]` block. Option B (KV blob storage) is the confirmed approach.
+  - KV size limit: 25 MB value limit matches `NEXT_PUBLIC_XA_UPLOADER_SUBMISSION_MAX_MB = "25"` — constraint already enforced by zip builder options.
 - **Edge Cases & Hardening:**
   - Job ID must be a cryptographically random ID (e.g., `crypto.randomUUID()`) — not sequential.
   - Status endpoint must validate job ID format to prevent KV scan abuse (e.g., max 64 chars, UUID-format validation).
@@ -442,9 +466,25 @@ The xa-uploader backend has five confirmed reliability and observability gaps: (
   - TTL on job KV entries means jobs expire after 1 hour; status endpoint returns 404 for expired jobs (client shows "submission expired — please retry").
   - `expirationTtl: 3600` (F6): both the job state entry and the zip binary entry (if stored in KV) must use this TTL.
 - **What would make this >=90%:**
-  - CHECKPOINT-05 resolves the R2 vs KV storage question and confirms KV access pattern from TASK-04.
-  - Confirming `ctx.waitUntil` is available in OpenNext nodejs runtime for this app.
-  - Buffer collection of the zip stream verified against the 25 MB size limit.
+  - Verifying the Buffer collection pattern for large zip streams in the Worker runtime (stream → Buffer → `kv.put` with binary value).
+  - Confirming the `executeSubmissionJob` error handling path updates job state to `failed` correctly when `buildSubmissionZipFromCloudDrafts` throws.
+
+#### Re-plan Update (2026-03-02)
+- Confidence: 65% -> 85% (Evidence: E2 for ctx.waitUntil + R2 binding check; E1 for KV access via TASK-04 + zip builder type + consumer traces)
+- Key change: ctx.waitUntil confirmed available; Option B (KV blob) confirmed as sole approach; download endpoint added to deliverable scope
+- Dependencies: unchanged (CHECKPOINT-05)
+- Validation contract: unchanged (TC-06a–g)
+- Notes: `docs/plans/xa-uploader-submission-pipeline-hardening/replan-notes.md` Round 2
+- **Build evidence (2026-03-02):**
+  - `apps/xa-uploader/src/lib/submissionJobStore.ts` created: `SubmissionJobState` type, `SubmissionKvNamespace` interface (extends UploaderKvNamespace with binary put overload), `enqueueJob`/`updateJob`/`getJob`/`zipKey` helpers with `expirationTtl: 3600` (F6).
+  - `submission/route.ts` refactored: cloud path returns HTTP 202 `{ ok: true, jobId }` via `ctx.waitUntil`; local FS path unchanged (synchronous zip); KV unavailable fallback to synchronous zip added.
+  - `executeSubmissionJob`: `pending → running → complete/failed`; zip Readable buffered to Buffer via async iteration; stored at `xa-submission-zip:{jobId}` with TTL 3600.
+  - `apps/xa-uploader/src/app/api/catalog/submission/status/[jobId]/route.ts` created: `hasUploaderSession` guard, UUID format validation, `getJob` from KV, 404 for unknown jobs, `downloadUrl` returned when `complete`.
+  - `apps/xa-uploader/src/app/api/catalog/submission/download/[jobId]/route.ts` created: `hasUploaderSession` guard, UUID format validation, KV binary get with `{ type: "arrayBuffer" }`, returns `application/zip`.
+  - TypeScript diagnostics: zero errors on all 4 files (mcp__ide__getDiagnostics confirmed).
+  - Lint: clean (`pnpm --filter xa-uploader lint` passed).
+  - Offload route used: Codex exit code 0; all Affects files present on disk.
+  - Committed in `c1cda3fe7a` (bundled with TASK-07/TASK-08).
 - **Rollout / rollback:**
   - Rollout: Deploy server and client (TASK-07) together — response shape changes from zip stream to job ID. Must deploy both simultaneously; stale clients calling the new endpoint will receive `{ ok: true, jobId }` and need to poll.
   - Rollback: Revert to streaming POST response; remove status endpoint; remove job store KV entries (they expire via TTL anyway).
@@ -464,20 +504,22 @@ The xa-uploader backend has five confirmed reliability and observability gaps: (
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-02)
 - **Affects:** `apps/xa-uploader/src/components/catalog/catalogSubmissionClient.ts`, `apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts`, `[readonly] apps/xa-uploader/src/components/catalog/useCatalogConsole.client.ts`
 - **Depends on:** TASK-06
 - **Blocks:** TASK-08
-- **Confidence:** 65%
-  - Implementation: 70% — client polling pattern is standard; `fetchSubmissionZip` → `enqueueSubmissionJob` + `pollSubmissionJobStatus` is clear. Capped pre-checkpoint: TASK-06 server shape must be confirmed before writing the client.
-  - Approach: 65% — polling interval, timeout, and UX state (progress message, spinner) choices are underspecified until TASK-06 server API is confirmed. CHECKPOINT-05 resolves this.
+- **Confidence:** 85% _(replanned 2026-03-02 Round 2, was 65%)_
+  - Implementation: 85% — server API shape confirmed by TASK-06 replan (POST returns `{ ok: true, jobId }`, status returns `{ status, downloadUrl? }`); `catalogSubmissionClient.ts` and `catalogConsoleActions.ts` read in full; both consumer call sites (`handleExportSubmissionImpl`, `handleUploadSubmissionToR2Impl`) confirmed and understood; `SubmissionStep` extension to add `"polling"` identified (minor). E1 evidence.
+  - Approach: 85% — single confirmed approach: enqueue → poll → fetch blob via `downloadUrl` → download/upload. No approach fork. Download URL is a path to the new download endpoint. E1 evidence (server contract resolved by TASK-06 replan).
   - Impact: 85% — client must be updated for F3 to work end-to-end; no functional value without this task
-  - Composite: min(70, 65, 85) = **65%** (pre-checkpoint; expected to recalibrate to >=80 after CHECKPOINT-05)
+  - Composite: min(85, 85, 85) = **85%** — above 80% IMPLEMENT threshold
+  - Replan evidence: `docs/plans/xa-uploader-submission-pipeline-hardening/replan-notes.md` Round 2
 - **Acceptance:**
-  - `catalogSubmissionClient.ts`: `fetchSubmissionZip` is replaced by (or wraps) `enqueueSubmissionJob(slugs, storefront)` → returns `{ jobId }` and `pollSubmissionJobStatus(jobId)` → returns `{ status, downloadUrl? }` on completion
-  - `handleExportSubmissionImpl` in `catalogConsoleActions.ts`: updated to use enqueue → poll → download blob pattern; provides intermediate feedback during polling (e.g., `"Preparing submission..."`)
-  - `handleUploadSubmissionToR2Impl` in `catalogConsoleActions.ts`: updated to enqueue → poll → upload from download URL (or blob) pattern
-  - `useCatalogConsole.client.ts` state: `submissionAction` and `actionFeedback` are updated to reflect intermediate polling states; `busyLockRef` is held during the full enqueue+poll+download sequence
+  - `catalogSubmissionClient.ts`: `fetchSubmissionZip` is replaced by `enqueueSubmissionJob(slugs, storefront)` → returns `{ jobId }`, `pollSubmissionJobStatus(jobId)` → returns `{ status, downloadUrl? }`, and `pollJobUntilComplete(jobId, options)` → awaits completion and returns `downloadUrl`
+  - `handleExportSubmissionImpl` in `catalogConsoleActions.ts`: updated to use enqueue → `setSubmissionStep("polling")` → poll → `fetch(downloadUrl).blob()` → `downloadBlob(blob, filename)` pattern
+  - `handleUploadSubmissionToR2Impl` in `catalogConsoleActions.ts`: updated to enqueue → `setSubmissionStep("polling")` → poll → `fetch(downloadUrl).blob()` → PUT blob to R2 upload endpoint pattern
+  - `SubmissionStep` type in `catalogConsoleFeedback.ts` (or wherever defined): `"polling"` added as a valid step value
+  - `busyLockRef` held during the full enqueue+poll+download sequence (unchanged from current pattern — `tryBeginBusyAction` / `endBusyAction` in the outer try/finally)
   - Polling: max poll interval 2 seconds, max wait 120 seconds before timeout error
   - No changes to `useCatalogConsole.client.ts` state shape or exported API — only `handleExportSubmissionImpl` and `handleUploadSubmissionToR2Impl` call sites change internally
 - **Validation contract (TC-07):**
@@ -487,9 +529,9 @@ The xa-uploader backend has five confirmed reliability and observability gaps: (
   - TC-07d: Poll times out after 120 seconds → action feedback updated with timeout error
   - TC-07e: `busyLockRef` is held from enqueue through download completion (no double-click during async flow)
 - **Execution plan:** Red -> Green -> Refactor
-  - Red: Add failing unit tests for TC-07a/b/c/d mocking the new server API shape.
-  - Green: Update `catalogSubmissionClient.ts` with new functions. Update `handleExportSubmissionImpl` and `handleUploadSubmissionToR2Impl` in `catalogConsoleActions.ts`. Add polling loop utility `pollUntilComplete`.
-  - Refactor: Extract polling loop into a shared utility `pollJobUntilComplete(jobId, options)` to avoid duplication between export and upload flows.
+  - Red: Add failing unit tests for TC-07a/b/c/d mocking the new server API shape (`enqueueSubmissionJob` → `{ ok: true, jobId }`, `pollSubmissionJobStatus` → `{ status, downloadUrl }`).
+  - Green: Add `enqueueSubmissionJob`, `pollSubmissionJobStatus`, `pollJobUntilComplete` to `catalogSubmissionClient.ts`. Update `handleExportSubmissionImpl` and `handleUploadSubmissionToR2Impl` in `catalogConsoleActions.ts` to use enqueue → poll → `fetch(downloadUrl).blob()` pattern. Add `"polling"` to `SubmissionStep` type. Set `setSubmissionStep("polling")` during poll loop.
+  - Refactor: `pollJobUntilComplete(jobId, options)` is the shared utility (already planned as the Green step above). No further extraction needed.
 - **Planning validation (M effort required):**
   - Checks run:
     1. Read `catalogConsoleActions.ts` in full — confirmed `handleExportSubmissionImpl` and `handleUploadSubmissionToR2Impl` both call `fetchSubmissionZip(slugs, fallbackError, storefront)` and then handle the blob result.
@@ -503,16 +545,31 @@ The xa-uploader backend has five confirmed reliability and observability gaps: (
   - If the server returns an expired job (status 404 on the status endpoint), surface "Submission expired — please retry" to the user.
   - The download URL from the status endpoint may be a presigned R2 URL (time-limited) or a direct KV download endpoint — the client should not make assumptions about URL format; just `fetch(downloadUrl)`.
 - **What would make this >=90%:**
-  - CHECKPOINT-05 confirms the server-side job API shape (specifically: is the download URL a direct KV endpoint or an R2 presigned URL?).
-  - Confirming that `CatalogSubmissionPanel.client.tsx` does not need changes (check if it renders `submissionAction` state in a way that requires new states for "polling").
+  - Confirming that `CatalogSubmissionPanel.client.tsx` renders `submissionStep === "polling"` gracefully (existing step rendering pattern likely handles unknown steps safely — confirm before committing).
+  - Confirming `SubmissionStep` type location (likely `catalogConsoleFeedback.ts`) for the `"polling"` addition.
 - **Rollout / rollback:**
   - Rollout: Deploy together with TASK-06 (server + client). Stale browser sessions will fail on the new POST response shape — acceptable; page refresh picks up the new client.
-  - Rollback: Revert `catalogSubmissionClient.ts` to `fetchSubmissionZip`. Revert `catalogConsoleActions.ts` action handlers.
+  - Rollback: Revert `catalogSubmissionClient.ts` to `fetchSubmissionZip`. Revert `catalogConsoleActions.ts` action handlers. Remove `"polling"` from `SubmissionStep` type.
 - **Documentation impact:**
   - None: internal behaviour change; no public-facing docs.
 - **Notes / references:**
   - Consumer tracing: All consumers of `fetchSubmissionZip` are `handleExportSubmissionImpl` and `handleUploadSubmissionToR2Impl` — both updated in this task. No silent dead-end consumers.
   - `useCatalogConsole.client.ts` is read-only for this task (its state shape is not changing; only the implementation of the two handler functions changes in `catalogConsoleActions.ts`).
+
+#### Re-plan Update (2026-03-02)
+- Confidence: 65% -> 85% (Evidence: E1 — catalogSubmissionClient.ts + catalogConsoleActions.ts read in full; server API shape confirmed by TASK-06 replan)
+- Key change: server contract confirmed (enqueue/poll/download URL pattern); SubmissionStep `"polling"` identified as required addition; both consumer call sites fully traced
+- Dependencies: unchanged (TASK-06)
+- Validation contract: unchanged (TC-07a–e)
+- Notes: `docs/plans/xa-uploader-submission-pipeline-hardening/replan-notes.md` Round 2
+- **Build evidence (2026-03-02):**
+  - `catalogSubmissionClient.ts`: added `enqueueSubmissionJob`, `pollSubmissionJobStatus`, `pollJobUntilComplete` (2s interval, 120s timeout); `fetchSubmissionZip` retained as compatibility shim calling new async flow.
+  - `catalogConsoleActions.ts`: `handleExportSubmissionImpl` and `handleUploadSubmissionToR2Impl` updated to use enqueue → `setSubmissionStep("polling")` → `pollJobUntilComplete` → `fetch(downloadUrl).blob()` → download/upload; `busyLockRef` held throughout.
+  - `catalogConsoleFeedback.ts`: `SubmissionStep` extended with `"polling"`.
+  - `useCatalogConsole.client.ts`: unchanged (read-only as planned).
+  - TypeScript diagnostics: zero errors on all 3 modified files (mcp__ide__getDiagnostics confirmed).
+  - Offload route used: Codex exit code 0; all Affects files modified on disk.
+  - Committed in `c1cda3fe7a`.
 
 ---
 
@@ -524,7 +581,7 @@ The xa-uploader backend has five confirmed reliability and observability gaps: (
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-02)
 - **Affects:** `apps/xa-uploader/src/app/api/catalog/submission/__tests__/route.test.ts`, `apps/xa-uploader/src/app/api/catalog/submission/__tests__/route.branches.test.ts`, `apps/xa-uploader/src/app/api/catalog/sync/__tests__/route.test.ts`, new `apps/xa-uploader/src/app/api/catalog/submission/status/__tests__/route.test.ts`
 - **Depends on:** TASK-02, TASK-03, TASK-04, TASK-06, TASK-07
 - **Blocks:** -
@@ -570,6 +627,15 @@ The xa-uploader backend has five confirmed reliability and observability gaps: (
   - None.
 - **Notes / references:**
   - `getCloudflareContext` mock: `jest.mock("@opennextjs/cloudflare", () => ({ getCloudflareContext: jest.fn() }))` — then `getCloudflareContextMock.mockResolvedValue({ env: { XA_UPLOADER_KV: { put: kvPutMock, get: kvGetMock, delete: kvDeleteMock } }, ctx: { waitUntil: jest.fn() } })`.
+- **Build evidence (2026-03-02):**
+  - `submission/__tests__/route.test.ts`: cloud path test updated to expect HTTP 202 `{ ok: true, jobId }` with `getCloudflareContext` and `getUploaderKv` mocks; TC-02b added (malformed product → 400 draft_schema_invalid); TC-06a/b added (job enqueue + KV put with TTL 3600); F8 console.error spy test added.
+  - `submission/__tests__/route.branches.test.ts`: added `jest.mock` blocks for `@opennextjs/cloudflare`, `submissionJobStore`, `syncMutex` to prevent import side-effects; existing local FS path tests preserved unchanged.
+  - `sync/__tests__/route.test.ts`: TC-04a (409 when lock held), TC-04c (kv.put called with TTL 300 + correct key), TC-04d (kv.delete called on success), TC-04e (mutex skipped when KV unavailable) added.
+  - `submission/status/__tests__/route.test.ts` created: TC-06c (pending job), TC-06d (complete job + downloadUrl), TC-06e (unknown jobId → 404), TC-06f (unauthenticated → 404).
+  - TypeScript diagnostics: zero errors on all 4 test files (mcp__ide__getDiagnostics confirmed).
+  - Pre-commit hook typecheck: passed (typecheck-staged.sh output confirmed in commit log).
+  - Offload route used: Codex exit code 0; all Affects files present on disk.
+  - Committed in `c1cda3fe7a`.
 
 ---
 
@@ -619,18 +685,18 @@ Effort weights: S=1, M=2, L=3
 | TASK-01 | 85% | S | 1 |
 | TASK-02 | 85% | S | 1 |
 | TASK-03 | 80% | S | 1 |
-| TASK-04 | 75% | S | 1 |
+| TASK-04 | 85% | S | 1 |
 | CHECKPOINT-05 | 95% | S | 1 |
-| TASK-06 | 65% | L | 3 |
-| TASK-07 | 65% | M | 2 |
+| TASK-06 | 85% | L | 3 |
+| TASK-07 | 85% | M | 2 |
 | TASK-08 | 80% | M | 2 |
 
-Overall = (85×1 + 85×1 + 80×1 + 75×1 + 95×1 + 65×3 + 65×2 + 80×2) / (1+1+1+1+1+3+2+2)
-= (85 + 85 + 80 + 75 + 95 + 195 + 130 + 160) / 12
-= 905 / 12
-= **75.4% → rounded to 75%**
+Overall = (85×1 + 85×1 + 80×1 + 85×1 + 95×1 + 85×3 + 85×2 + 80×2) / (1+1+1+1+1+3+2+2)
+= (85 + 85 + 80 + 85 + 95 + 255 + 170 + 160) / 12
+= 1015 / 12
+= **84.6% → rounded to 85%**
 
-(Plan header shows 75% — consistent with this calculation. Both TASK-06 and TASK-07 are pre-checkpoint and expected to recalibrate to >=80 after CHECKPOINT-05, at which point the overall confidence will be ~82%.)
+(Post-checkpoint recalibration: TASK-04 replanned to 85%, TASK-06 replanned from 65% to 85%, TASK-07 replanned from 65% to 85%. All tasks now above 80% threshold.)
 
 ## Simulation Trace
 

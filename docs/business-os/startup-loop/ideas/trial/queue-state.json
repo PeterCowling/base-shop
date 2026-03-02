@@ -1,14 +1,14 @@
 {
-  "last_updated": "2026-03-02T21:20:41.427Z",
+  "last_updated": "2026-03-02T22:01:45.493Z",
   "counts": {
-    "enqueued": 7,
+    "enqueued": 6,
     "processed": 10,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
-    "completed": 89,
-    "fact_find_ready": 35,
+    "completed": 90,
+    "fact_find_ready": 34,
     "total": 132
   },
   "dispatches": [
@@ -84,7 +84,7 @@
       ],
       "provisional_deliverable_family": "code-change",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.85,
       "current_truth": "CASS retrieval indexes loop output artifacts (fact-finds, plans, results-reviews) to provide prior-plan context for new fact-finds and plans. Assessment containers — the accumulated strategic knowledge layer — are not in the retrieval scope, so agents starting a new fact-find cannot access brand decisions, solution evaluations, or naming specs from previous assessment cycles.",
@@ -103,7 +103,18 @@
         "source": "operator"
       },
       "created_at": "2026-03-02T21:00:01.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-02T22:00:00.000Z",
+        "fact_find_slug": "cass-assessment-retrieval",
+        "fact_find_path": "docs/plans/_archive/cass-assessment-retrieval/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/cass-assessment-retrieval/plan.md",
+        "completed_at": "2026-03-02T22:01:45.492Z",
+        "outcome": "CASS retrieval extended to index docs/business-os/strategy/ so fact-finds and plans automatically receive assessment-layer context."
+      }
     },
     {
       "schema_version": "dispatch.v2",

@@ -47,6 +47,11 @@
       "path": ".claude/skills/guide-translate/SKILL.md"
     },
     {
+      "name": "i18n-locale-coverage",
+      "description": "Safely repair locale JSON coverage gaps (missing files, missing keys, untranslated EN strings) using deterministic validation gates.",
+      "path": ".claude/skills/i18n-locale-coverage/SKILL.md"
+    },
+    {
       "name": "idea-scan",
       "description": "Analyze standing-intelligence pack diffs and produce scan-proposals.md for IDEAS-02 backlog updates.",
       "path": ".claude/skills/idea-scan/SKILL.md"
@@ -168,7 +173,7 @@
     },
     {
       "name": "lp-do-build",
-      "description": "Thin build orchestrator. Executes one runnable task per cycle from an approved plan using canonical gates, track-specific executors, and shared ops utilities.",
+      "description": "Thin build orchestrator. Executes one runnable unit per cycle from an approved plan using canonical gates, track-specific executors, and shared ops utilities.",
       "path": ".claude/skills/lp-do-build/SKILL.md"
     },
     {
@@ -340,6 +345,11 @@
       "name": "tools-bos-design-page",
       "description": "Generate or enhance HTML documentation with polished visual diagrams (Mermaid flowcharts, state machines, sequence diagrams, Chart.js dashboards). Supports multiple documents via a references directory of reusable palettes, zoom controls, and initialization patterns. Use when asked to add diagrams to a guide, visualise a system or workflow, build a KPI dashboard, or improve documentation readability with visuals.",
       "path": ".claude/skills/tools-bos-design-page/SKILL.md"
+    },
+    {
+      "name": "tools-bug-scan",
+      "description": "Run the repository-native bug scanner (`pnpm bug-scan` / `pnpm bug-scan:changed`), summarize findings by severity and rule, and propose concrete next fixes or targeted rescans.",
+      "path": ".claude/skills/tools-bug-scan/SKILL.md"
     },
     {
       "name": "tools-design-system",

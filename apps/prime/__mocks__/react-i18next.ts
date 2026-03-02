@@ -11,6 +11,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import React from 'react';
 
 const localesDir = path.resolve(__dirname, '../public/locales/en');
 
@@ -67,7 +68,44 @@ function makeTFunction(ns: string | string[]) {
 
 const DEFAULT_NS = 'Homepage';
 
+const I18nContext = React.createContext<{
+  language: string;
+  t: (key: string, options?: Record<string, unknown>) => string;
+  exists?: (key: string, options?: Record<string, unknown>) => boolean;
+  changeLanguage?: (language: string) => Promise<unknown> | unknown;
+  getFixedT?: (language: string, ns?: string | string[]) => (key: string, options?: Record<string, unknown>) => string;
+} | null>(null);
+
+export function I18nextProvider({
+  i18n,
+  children,
+}: {
+  i18n: {
+    language: string;
+    t: (key: string, options?: Record<string, unknown>) => string;
+    exists?: (key: string, options?: Record<string, unknown>) => boolean;
+    changeLanguage?: (language: string) => Promise<unknown> | unknown;
+    getFixedT?: (language: string, ns?: string | string[]) => (key: string, options?: Record<string, unknown>) => string;
+  };
+  children: React.ReactNode;
+}) {
+  return <I18nContext.Provider value={i18n}>{children}</I18nContext.Provider>;
+}
+
 export function useTranslation(ns?: string | string[]) {
+  const providerI18n = React.useContext(I18nContext);
+  if (providerI18n) {
+    const namespace = ns ?? DEFAULT_NS;
+    const fixedT = providerI18n.getFixedT
+      ? providerI18n.getFixedT(providerI18n.language, namespace)
+      : (key: string, options?: Record<string, unknown>) => providerI18n.t(key, { ...options, ns: namespace });
+    return {
+      t: (key: string, opts?: Record<string, unknown>) => fixedT(key, opts),
+      i18n: providerI18n,
+      ready: true,
+    };
+  }
+
   const namespace = ns ?? DEFAULT_NS;
   const t = makeTFunction(namespace);
   return {
@@ -88,4 +126,4 @@ export const initReactI18next = {
 
 export const Trans = ({ children }: { children: React.ReactNode }) => children;
 
-export default { useTranslation, initReactI18next, Trans };
+export default { useTranslation, initReactI18next, Trans, I18nextProvider };

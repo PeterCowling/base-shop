@@ -16,7 +16,7 @@ const messages = {
     storefrontXAJ: "XA-J (Jewelry)",
     languageLabel: "Language",
     languageEnglish: "EN",
-    languageChinese: "中文",
+    languageZh: "ZH",
 
     checkingConsoleAccess: "Checking console access...",
     consoleActive: "Console active",
@@ -96,6 +96,8 @@ const messages = {
     syncPipelineFailedActionable: "Sync pipeline failed.",
     syncRecoveryReviewSyncLogs:
       "Review sync log output, fix the pipeline error, then retry.",
+    submissionValidationFailed:
+      "Submission validation failed. Check product count, image sizes, and image files, then retry.",
     exportFailed: "Export failed.",
 
     loginIntro: "Admin access requires the console token.",
@@ -254,7 +256,7 @@ const messages = {
     storefrontXAJ: "XA-J（珠宝）",
     languageLabel: "语言",
     languageEnglish: "EN",
-    languageChinese: "中文",
+    languageZh: "ZH",
 
     checkingConsoleAccess: "正在检查控制台访问权限…",
     consoleActive: "控制台已启用",
@@ -321,6 +323,7 @@ const messages = {
     syncRecoveryReviewValidationLogs: "请根据同步日志修复校验错误后重试。",
     syncPipelineFailedActionable: "同步流水线执行失败。",
     syncRecoveryReviewSyncLogs: "请查看同步日志，修复流水线错误后重试。",
+    submissionValidationFailed: "提交验证失败。请检查产品数量、图片尺寸及图片文件，然后重试。",
     exportFailed: "导出失败。",
 
     loginIntro: "管理员访问需要控制台令牌。",
@@ -379,7 +382,7 @@ const messages = {
     selectionLimitReached: "已达到 {max} 个商品上限。",
 
     fieldTitle: "标题",
-    fieldSlug: "Slug",
+    fieldSlug: "Slug（URL 标识）",
     fieldPrice: "价格",
     fieldCompareAtPrice: "划线价",
     fieldBrandHandle: "品牌标识",

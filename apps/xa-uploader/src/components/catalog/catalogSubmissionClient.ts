@@ -15,6 +15,16 @@ export function downloadBlob(blob: Blob, filename: string) {
   window.URL.revokeObjectURL(url);
 }
 
+export class SubmissionApiError extends Error {
+  reason?: string;
+
+  constructor(message: string, reason?: string) {
+    super(message);
+    this.name = "SubmissionApiError";
+    this.reason = reason;
+  }
+}
+
 export async function fetchSubmissionZip(
   slugs: string[],
   fallbackError: string,
@@ -32,8 +42,8 @@ export async function fetchSubmissionZip(
   });
 
   if (!response.ok) {
-    const data = (await response.json().catch(() => null)) as { error?: string } | null;
-    throw new Error(data?.error || fallbackError);
+    const data = (await response.json().catch(() => null)) as { error?: string; reason?: string } | null;
+    throw new SubmissionApiError(data?.error || fallbackError, data?.reason);
   }
 
   const blob = await response.blob();

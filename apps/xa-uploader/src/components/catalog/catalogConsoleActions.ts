@@ -26,7 +26,7 @@ import {
 } from "./catalogConsoleFeedback";
 import { buildLogBlock, toErrorMap } from "./catalogConsoleUtils";
 import { buildEmptyDraft, withDraftDefaults } from "./catalogDraft";
-import { downloadBlob, fetchSubmissionZip } from "./catalogSubmissionClient";
+import { downloadBlob, fetchSubmissionZip, SubmissionApiError } from "./catalogSubmissionClient";
 
 type Translator = (key: string, vars?: Record<string, unknown>) => string;
 
@@ -531,9 +531,15 @@ export async function handleExportSubmissionImpl({
       message: statusParts.join(" · "),
     });
   } catch (err) {
+    const reason = err instanceof SubmissionApiError ? err.reason : undefined;
     updateActionFeedback(setActionFeedback, "submission", {
       kind: "error",
-      message: getCatalogApiErrorMessage(err instanceof Error ? err.message : undefined, "exportFailed", t),
+      message: getCatalogApiErrorMessage(
+        err instanceof Error ? err.message : undefined,
+        "exportFailed",
+        t,
+        reason,
+      ),
     });
   } finally {
     setSubmissionAction(null);
@@ -594,9 +600,15 @@ export async function handleUploadSubmissionToR2Impl({
       message: statusParts.join(" · "),
     });
   } catch (err) {
+    const reason = err instanceof SubmissionApiError ? err.reason : undefined;
     updateActionFeedback(setActionFeedback, "submission", {
       kind: "error",
-      message: getCatalogApiErrorMessage(err instanceof Error ? err.message : undefined, "exportFailed", t),
+      message: getCatalogApiErrorMessage(
+        err instanceof Error ? err.message : undefined,
+        "exportFailed",
+        t,
+        reason,
+      ),
     });
   } finally {
     setSubmissionAction(null);

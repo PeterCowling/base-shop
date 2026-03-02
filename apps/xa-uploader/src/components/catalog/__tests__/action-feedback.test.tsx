@@ -7,15 +7,20 @@ import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { CatalogProductDraftInput } from "@acme/lib/xa";
 
 import { UploaderI18nProvider } from "../../../lib/uploaderI18n.client";
+import { SubmissionApiError } from "../catalogSubmissionClient";
 import { useCatalogConsole } from "../useCatalogConsole.client";
 
 const fetchSubmissionZipMock = jest.fn();
 const downloadBlobMock = jest.fn();
 
-jest.mock("../catalogSubmissionClient", () => ({
-  fetchSubmissionZip: (...args: unknown[]) => fetchSubmissionZipMock(...args),
-  downloadBlob: (...args: unknown[]) => downloadBlobMock(...args),
-}));
+jest.mock("../catalogSubmissionClient", () => {
+  const actual = jest.requireActual("../catalogSubmissionClient") as Record<string, unknown>;
+  return {
+    ...actual,
+    fetchSubmissionZip: (...args: unknown[]) => fetchSubmissionZipMock(...args),
+    downloadBlob: (...args: unknown[]) => downloadBlobMock(...args),
+  };
+});
 
 const VALID_DRAFT: CatalogProductDraftInput = {
   id: "p1",
@@ -76,6 +81,14 @@ function renderHarness() {
         </button>
         <button type="button" onClick={() => void state.handleExportSubmission()}>
           export
+        </button>
+        <input
+          aria-label="upload-url"
+          value={state.submissionUploadUrl}
+          onChange={(event) => state.setSubmissionUploadUrl(event.target.value)}
+        />
+        <button type="button" onClick={() => void state.handleUploadSubmissionToR2()}>
+          upload
         </button>
         <button type="button" onClick={() => void state.handleSync()}>
           sync
@@ -256,6 +269,103 @@ describe("useCatalogConsole scoped action feedback", () => {
       expect(screen.getByTestId("sync-feedback")).toHaveTextContent("success:Sync completed.");
     });
     expect(screen.getByTestId("draft-feedback")).toHaveTextContent("success:Saved product details.");
+  });
+
+  describe("TASK-01: submission validation error reason", () => {
+    function mockConsoleBootstrapFetch() {
+      global.fetch = jest.fn(async (input: RequestInfo | URL) => {
+        const url = String(input);
+        if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
+        if (url.startsWith("/api/catalog/products?storefront=")) {
+          return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
+        }
+        if (url.startsWith("/api/catalog/sync?storefront=")) {
+          return jsonResponse({ ok: true, ready: true, missingScripts: [] });
+        }
+        throw new Error(`Unhandled fetch: ${url}`);
+      }) as unknown as typeof fetch;
+    }
+
+    it("TC-01: Export action with validation failure reason", async () => {
+      fetchSubmissionZipMock.mockRejectedValue(
+        new SubmissionApiError("invalid", "submission_validation_failed"),
+      );
+      mockConsoleBootstrapFetch();
+
+      renderHarness();
+      await clickButton("toggle-submission");
+      await clickButton("export");
+
+      await waitFor(() => {
+        expect(screen.getByTestId("submission-feedback")).toHaveTextContent(
+          "Submission validation failed. Check product count, image sizes, and image files, then retry.",
+        );
+      });
+    });
+
+    it("TC-02: Export action with internal_error reason", async () => {
+      fetchSubmissionZipMock.mockRejectedValue(new Error("internal_error"));
+      mockConsoleBootstrapFetch();
+
+      renderHarness();
+      await clickButton("toggle-submission");
+      await clickButton("export");
+
+      await waitFor(() => {
+        expect(screen.getByTestId("submission-feedback")).toHaveTextContent(
+          "The server could not complete this request. Try again.",
+        );
+      });
+    });
+
+    it("TC-03: Export action with unknown error code", async () => {
+      fetchSubmissionZipMock.mockRejectedValue(new Error("unknown_code"));
+      mockConsoleBootstrapFetch();
+
+      renderHarness();
+      await clickButton("toggle-submission");
+      await clickButton("export");
+
+      await waitFor(() => {
+        expect(screen.getByTestId("submission-feedback")).toHaveTextContent("Export failed.");
+      });
+    });
+
+    it("TC-04: Upload action with validation failure reason", async () => {
+      fetchSubmissionZipMock.mockRejectedValue(
+        new SubmissionApiError("invalid", "submission_validation_failed"),
+      );
+      let uploadPutCalls = 0;
+      global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+        const url = String(input);
+        if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
+        if (url.startsWith("/api/catalog/products?storefront=")) {
+          return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
+        }
+        if (url.startsWith("/api/catalog/sync?storefront=")) {
+          return jsonResponse({ ok: true, ready: true, missingScripts: [] });
+        }
+        if (init?.method === "PUT") {
+          uploadPutCalls += 1;
+          return new Response(null, { status: 200 });
+        }
+        throw new Error(`Unhandled fetch: ${url}`);
+      }) as unknown as typeof fetch;
+
+      renderHarness();
+      fireEvent.change(screen.getByLabelText("upload-url"), {
+        target: { value: "https://upload.local/upload/path-token" },
+      });
+      await clickButton("toggle-submission");
+      await clickButton("upload");
+
+      await waitFor(() => {
+        expect(screen.getByTestId("submission-feedback")).toHaveTextContent(
+          "Submission validation failed. Check product count, image sizes, and image files, then retry.",
+        );
+      });
+      expect(uploadPutCalls).toBe(0);
+    });
   });
 
   it("TC-04: busy lock prevents duplicate save submissions while in-flight", async () => {

@@ -2,6 +2,8 @@ import type * as React from "react";
 
 import type { CatalogProductDraftInput } from "@acme/lib/xa";
 
+import type { SubmissionApiError } from "./catalogSubmissionClient";
+
 export type SyncScriptId = "validate" | "sync";
 type SyncErrorCode =
   | "sync_dependencies_missing"
@@ -79,8 +81,12 @@ export function getCatalogApiErrorMessage(
   code: string | undefined,
   fallbackKey: string,
   t: (key: string, vars?: Record<string, unknown>) => string,
+  reason?: SubmissionApiError["reason"],
 ): string {
   const normalized = (code ?? "").trim() as CatalogApiErrorCode | "";
+  if (normalized === "invalid" && reason === "submission_validation_failed") {
+    return t("submissionValidationFailed");
+  }
   if (normalized === "invalid") return t("apiErrorInvalid");
   if (normalized === "missing_product") return t("apiErrorMissingProduct");
   if (normalized === "not_found") return t("apiErrorNotFound");

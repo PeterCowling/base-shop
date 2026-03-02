@@ -11,12 +11,12 @@ const listShopsMock = jest.fn().mockResolvedValue(mockShops);
 const shopChooserMock = jest.fn((props: any) => <div data-testid="shop-chooser" />);
 
 jest.mock("../src/app/cms/themes/../../../lib/listShops", () => ({
-  listShops: (...args: any[]) => listShopsMock(...args),
+  listShops: () => listShopsMock(),
 }));
 
 jest.mock("@/components/cms/ShopChooser", () => ({
   __esModule: true,
-  default: (...args: any[]) => shopChooserMock(...args),
+  default: (props: any) => shopChooserMock(props),
 }));
 
 describe("ThemesIndexPage", () => {

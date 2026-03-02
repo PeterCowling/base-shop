@@ -75,8 +75,8 @@ describe("coreEnv error handling and logging", () => {
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
     expect(() => {
-      const mod = require("../../core.ts");
-      void mod.coreEnv.CMS_SPACE_URL;
+      const { loadCoreEnv } = require("../../core/loader.parse.ts");
+      loadCoreEnv(process.env);
     }).not.toThrow();
     expect(errorSpy).not.toHaveBeenCalledWith(
       "❌ Invalid core environment variables:",

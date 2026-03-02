@@ -123,6 +123,21 @@ describe("T1_SEMANTIC_KEYWORDS", () => {
     expect(T1_SEMANTIC_KEYWORDS).toContain("positioning");
     expect(T1_SEMANTIC_KEYWORDS).toContain("channel strategy");
   });
+
+  // TC-03-04 / TC-03-05 / TC-03-06: assessment section keywords
+  it("TC-03-04: contains assessment keyword 'brand identity'", () => {
+    expect(T1_SEMANTIC_KEYWORDS).toContain("brand identity");
+  });
+
+  it("TC-03-05: contains assessment keyword 'solution decision'", () => {
+    expect(T1_SEMANTIC_KEYWORDS).toContain("solution decision");
+  });
+
+  it("TC-03-06: does not contain non-keyword 'historical data'", () => {
+    const lowered = "historical data request".toLowerCase();
+    const match = T1_SEMANTIC_KEYWORDS.some((k) => lowered.includes(k));
+    expect(match).toBe(false);
+  });
 });
 
 describe("buildDedupeKey", () => {
@@ -812,5 +827,123 @@ describe("runTrialOrchestrator — TC-07 anti-loop invariants", () => {
     expect(result.ok).toBe(true);
     if (!result.ok) return;
     expect(result.dispatched).toHaveLength(1);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TC-03: source_reference ASSESSMENT artifact registration
+// (bos-loop-assessment-registry — verifies new artifact class/domain combo)
+// ---------------------------------------------------------------------------
+
+const ASSESSMENT_ELIGIBLE_REGISTRY = {
+  artifacts: [
+    {
+      artifact_id: "HBAG-ASSESSMENT-BRAND-IDENTITY",
+      path: "docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md",
+      domain: "ASSESSMENT" as const,
+      business: "HBAG",
+      artifact_class: "source_reference" as const,
+      trigger_policy: "eligible" as const,
+      propagation_mode: "source_task" as const,
+      depends_on: [],
+      produces: [],
+      active: true,
+    },
+    {
+      artifact_id: "HBAG-ASSESSMENT-DISTRIBUTION-PLAN",
+      path: "docs/business-os/strategy/HBAG/2026-02-21-launch-distribution-plan.user.md",
+      domain: "ASSESSMENT" as const,
+      business: "HBAG",
+      artifact_class: "source_reference" as const,
+      trigger_policy: "manual_override_only" as const,
+      propagation_mode: "source_task" as const,
+      depends_on: [],
+      produces: [],
+      active: true,
+    },
+  ],
+};
+
+const ASSESSMENT_BRAND_IDENTITY_T1_EVENT: ArtifactDeltaEvent = {
+  artifact_id: "HBAG-ASSESSMENT-BRAND-IDENTITY",
+  business: "HBAG",
+  before_sha: "aaa1111",
+  after_sha: "bbb2222",
+  path: "docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md",
+  domain: "ASSESSMENT",
+  changed_sections: ["Brand Identity"],
+};
+
+const ASSESSMENT_BRAND_IDENTITY_NON_T1_EVENT: ArtifactDeltaEvent = {
+  artifact_id: "HBAG-ASSESSMENT-BRAND-IDENTITY",
+  business: "HBAG",
+  before_sha: "ccc3333",
+  after_sha: "ddd4444",
+  path: "docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md",
+  domain: "ASSESSMENT",
+  changed_sections: ["Historical Context", "Format notes"],
+};
+
+const ASSESSMENT_DISTRIBUTION_PLAN_EVENT: ArtifactDeltaEvent = {
+  artifact_id: "HBAG-ASSESSMENT-DISTRIBUTION-PLAN",
+  business: "HBAG",
+  before_sha: "eee5555",
+  after_sha: "fff6666",
+  path: "docs/business-os/strategy/HBAG/2026-02-21-launch-distribution-plan.user.md",
+  domain: "ASSESSMENT",
+  changed_sections: ["Distribution Plan"],
+};
+
+describe("source_reference ASSESSMENT artifact registration (TC-03)", () => {
+  // TC-03-01: source_reference ASSESSMENT + T1 section → fact_find_ready
+  it("TC-03-01: eligible ASSESSMENT source_reference with T1 section match dispatches fact_find_ready", () => {
+    const result = runTrialOrchestrator({
+      mode: "trial",
+      cutoverPhase: "P2",
+      standingRegistry: ASSESSMENT_ELIGIBLE_REGISTRY,
+      events: [ASSESSMENT_BRAND_IDENTITY_T1_EVENT],
+      clock: FIXED_CLOCK,
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.dispatched).toHaveLength(1);
+    expect(result.dispatched[0].status).toBe("fact_find_ready");
+    expect(result.dispatched[0].recommended_route).toBe("lp-do-fact-find");
+  });
+
+  // TC-03-02: source_reference ASSESSMENT + non-T1 section → briefing_ready (not suppressed)
+  it("TC-03-02: eligible ASSESSMENT source_reference with non-T1 section routes to briefing_ready", () => {
+    const result = runTrialOrchestrator({
+      mode: "trial",
+      cutoverPhase: "P2",
+      standingRegistry: ASSESSMENT_ELIGIBLE_REGISTRY,
+      events: [ASSESSMENT_BRAND_IDENTITY_NON_T1_EVENT],
+      clock: FIXED_CLOCK,
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.dispatched).toHaveLength(1);
+    expect(result.dispatched[0].status).toBe("briefing_ready");
+    expect(result.dispatched[0].recommended_route).toBe("lp-do-briefing");
+  });
+
+  // TC-03-03: source_reference ASSESSMENT + manual_override_only → suppressed
+  it("TC-03-03: manual_override_only ASSESSMENT source_reference is suppressed without override", () => {
+    const result = runTrialOrchestrator({
+      mode: "trial",
+      cutoverPhase: "P2",
+      standingRegistry: ASSESSMENT_ELIGIBLE_REGISTRY,
+      events: [ASSESSMENT_DISTRIBUTION_PLAN_EVENT],
+      clock: FIXED_CLOCK,
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.dispatched).toHaveLength(0);
+    expect(
+      result.shadow_telemetry.suppression_reason_counts.trigger_policy_blocked,
+    ).toBe(1);
   });
 });

@@ -626,6 +626,23 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Submission errors could show which specific products failed, not just that validation failed",
+      "body": "server-side validateSelectedProducts returns per-product diagnostics but the client only shows a single-sentence fallback",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-03-02T09:52:05.388Z",
+      "path": "docs/plans/_archive/xa-uploader-submission-ux/results-review.user.md",
+      "idea_key": "9d31fd593a844366e0df3847d803a487fb7b937a",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "Expose cashVariance trend over time in ManagerAuditContent",
       "body": "cashVariance is now stored per-day — a 7-day rolling view would surface systematic cash shortfall patterns",
       "suggested_action": "create card",

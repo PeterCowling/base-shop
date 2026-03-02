@@ -78,7 +78,8 @@
     "submitCta": "أرسل لي هذا الاقتباس",
     "errors": {
       "invalidEmail": "أدخل عنوان بريد إلكتروني صالحًا.",
-      "consentRequired": "الموافقة مطلوبة لإرسال الاقتباس عبر البريد الإلكتروني."
+      "consentRequired": "الموافقة مطلوبة لإرسال الاقتباس عبر البريد الإلكتروني.",
+      "sendFailed": "Something went wrong. Please try again or contact us directly."
     },
     "mailto": {
       "subject": "طلب استرداد الاقتباس",
@@ -93,6 +94,7 @@
         "ratePlan": "خطة الأسعار",
         "resumeLink": "استئناف الارتباط"
       }
-    }
+    },
+    "sending": "Sending…"
   }
 }

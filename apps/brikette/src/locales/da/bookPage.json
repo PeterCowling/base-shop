@@ -78,7 +78,8 @@
     "submitCta": "Email mig dette citat",
     "errors": {
       "invalidEmail": "Indtast en gyldig e-mailadresse.",
-      "consentRequired": "Der kræves samtykke for at sende tilbudsmailen."
+      "consentRequired": "Der kræves samtykke for at sende tilbudsmailen.",
+      "sendFailed": "Something went wrong. Please try again or contact us directly."
     },
     "mailto": {
       "subject": "Anmodning om gendannelse af tilbud",
@@ -93,6 +94,7 @@
         "ratePlan": "Prisplan",
         "resumeLink": "Genoptag link"
       }
-    }
+    },
+    "sending": "Sending…"
   }
 }

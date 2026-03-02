@@ -116,11 +116,13 @@
     "emailLabel": "Your email",
     "emailPlaceholder": "you@example.com",
     "consent": "I consent to receiving this quote via email and understand it expires after 7 days.",
-    "submitted": "Email draft opened. You can send it to save this quote.",
+    "submitted": "Quote sent. Check your email for the booking summary.",
     "submitCta": "Email me this quote",
+    "sending": "Sending…",
     "errors": {
       "invalidEmail": "Enter a valid email address.",
-      "consentRequired": "Consent is required to send the quote email."
+      "consentRequired": "Consent is required to send the quote email.",
+      "sendFailed": "Something went wrong. Please try again or contact us directly."
     },
     "mailto": {
       "subject": "Quote recovery request",

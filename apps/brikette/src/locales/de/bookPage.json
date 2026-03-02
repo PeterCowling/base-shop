@@ -78,7 +78,8 @@
     "submitCta": "Schicken Sie mir dieses Zitat per E-Mail",
     "errors": {
       "invalidEmail": "Geben Sie eine gültige E-Mail-Adresse ein.",
-      "consentRequired": "Für den Versand der Angebots-E-Mail ist die Einwilligung erforderlich."
+      "consentRequired": "Für den Versand der Angebots-E-Mail ist die Einwilligung erforderlich.",
+      "sendFailed": "Something went wrong. Please try again or contact us directly."
     },
     "mailto": {
       "subject": "Anfrage zur Angebotswiederherstellung",
@@ -93,6 +94,7 @@
         "ratePlan": "Tarifplan",
         "resumeLink": "Link zum Lebenslauf"
       }
-    }
+    },
+    "sending": "Sending…"
   }
 }

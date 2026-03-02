@@ -74,7 +74,8 @@
     "submitCta": "Maila mig detta citat",
     "errors": {
       "invalidEmail": "Ange en giltig e-postadress.",
-      "consentRequired": "Samtycke krävs för att skicka offertmejlet."
+      "consentRequired": "Samtycke krävs för att skicka offertmejlet.",
+      "sendFailed": "Something went wrong. Please try again or contact us directly."
     },
     "mailto": {
       "subject": "Begäran om återställning av offert",
@@ -89,6 +90,7 @@
         "ratePlan": "Prisplan",
         "resumeLink": "Återuppta länk"
       }
-    }
+    },
+    "sending": "Sending…"
   }
 }

@@ -74,7 +74,8 @@
     "submitCta": "Отправьте мне эту цитату по электронной почте",
     "errors": {
       "invalidEmail": "Введите действительный адрес электронной почты.",
-      "consentRequired": "Для отправки предложения по электронной почте требуется согласие."
+      "consentRequired": "Для отправки предложения по электронной почте требуется согласие.",
+      "sendFailed": "Something went wrong. Please try again or contact us directly."
     },
     "mailto": {
       "subject": "Запрос на восстановление котировок",
@@ -89,6 +90,7 @@
         "ratePlan": "Тарифный план",
         "resumeLink": "Ссылка на резюме"
       }
-    }
+    },
+    "sending": "Sending…"
   }
 }

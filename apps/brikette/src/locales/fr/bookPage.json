@@ -78,7 +78,8 @@
     "submitCta": "Envoyez-moi ce devis",
     "errors": {
       "invalidEmail": "Entrez une adresse e-mail valide.",
-      "consentRequired": "Le consentement est requis pour envoyer l’e-mail de devis."
+      "consentRequired": "Le consentement est requis pour envoyer l’e-mail de devis.",
+      "sendFailed": "Something went wrong. Please try again or contact us directly."
     },
     "mailto": {
       "subject": "Demande de reprise de devis",
@@ -93,6 +94,7 @@
         "ratePlan": "Plan tarifaire",
         "resumeLink": "Lien de reprise"
       }
-    }
+    },
+    "sending": "Sending…"
   }
 }

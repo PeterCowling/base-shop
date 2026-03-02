@@ -74,7 +74,8 @@
     "submitCta": "Küldje el nekem ezt az árajánlatot",
     "errors": {
       "invalidEmail": "Adjon meg egy érvényes e-mail címet.",
-      "consentRequired": "Az árajánlat e-mail küldéséhez hozzájárulás szükséges."
+      "consentRequired": "Az árajánlat e-mail küldéséhez hozzájárulás szükséges.",
+      "sendFailed": "Something went wrong. Please try again or contact us directly."
     },
     "mailto": {
       "subject": "Árajánlat visszaszerzési kérés",
@@ -89,6 +90,7 @@
         "ratePlan": "Díjterv",
         "resumeLink": "Folytatás link"
       }
-    }
+    },
+    "sending": "Sending…"
   }
 }

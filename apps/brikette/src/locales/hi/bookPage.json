@@ -74,7 +74,8 @@
     "submitCta": "यह उद्धरण मुझे ईमेल करें",
     "errors": {
       "invalidEmail": "एक मान्य ईमेल पता दर्ज करें।",
-      "consentRequired": "कोटेशन ईमेल भेजने के लिए सहमति आवश्यक है."
+      "consentRequired": "कोटेशन ईमेल भेजने के लिए सहमति आवश्यक है.",
+      "sendFailed": "Something went wrong. Please try again or contact us directly."
     },
     "mailto": {
       "subject": "उद्धरण पुनर्प्राप्ति अनुरोध",
@@ -89,6 +90,7 @@
         "ratePlan": "दर योजना",
         "resumeLink": "लिंक फिर से शुरू करें"
       }
-    }
+    },
+    "sending": "Sending…"
   }
 }

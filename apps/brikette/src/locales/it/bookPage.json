@@ -74,7 +74,8 @@
     "submitCta": "Inviami questo preventivo tramite e-mail",
     "errors": {
       "invalidEmail": "Inserisci un indirizzo email valido.",
-      "consentRequired": "Per inviare la email di preventivo è necessario il consenso."
+      "consentRequired": "Per inviare la email di preventivo è necessario il consenso.",
+      "sendFailed": "Something went wrong. Please try again or contact us directly."
     },
     "mailto": {
       "subject": "Richiesta di recupero preventivo",
@@ -89,6 +90,7 @@
         "ratePlan": "Piano tariffario",
         "resumeLink": "Riprendi il collegamento"
       }
-    }
+    },
+    "sending": "Sending…"
   }
 }

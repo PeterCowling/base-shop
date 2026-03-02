@@ -74,7 +74,8 @@
     "submitCta": "Send meg dette sitatet på e-post",
     "errors": {
       "invalidEmail": "Skriv inn en gyldig e-postadresse.",
-      "consentRequired": "Det kreves samtykke for å sende e-posttilbudet."
+      "consentRequired": "Det kreves samtykke for å sende e-posttilbudet.",
+      "sendFailed": "Something went wrong. Please try again or contact us directly."
     },
     "mailto": {
       "subject": "Forespørsel om gjenoppretting av tilbud",
@@ -89,6 +90,7 @@
         "ratePlan": "Prisplan",
         "resumeLink": "Fortsett-lenke"
       }
-    }
+    },
+    "sending": "Sending…"
   }
 }

@@ -74,7 +74,8 @@
     "submitCta": "Envie-me esta cotação por e-mail",
     "errors": {
       "invalidEmail": "Insira um endereço de e-mail válido.",
-      "consentRequired": "É necessário consentimento para enviar o e-mail de cotação."
+      "consentRequired": "É necessário consentimento para enviar o e-mail de cotação.",
+      "sendFailed": "Something went wrong. Please try again or contact us directly."
     },
     "mailto": {
       "subject": "Solicitação de recuperação de cotação",
@@ -89,6 +90,7 @@
         "ratePlan": "Plano de tarifas",
         "resumeLink": "Link de currículo"
       }
-    }
+    },
+    "sending": "Sending…"
   }
 }

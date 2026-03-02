@@ -74,7 +74,8 @@
     "submitCta": "Wyślij mi ten cytat na e-mail",
     "errors": {
       "invalidEmail": "Wpisz prawidłowy adres e-mail.",
-      "consentRequired": "Na przesłanie oferty e-mailem wymagana jest zgoda."
+      "consentRequired": "Na przesłanie oferty e-mailem wymagana jest zgoda.",
+      "sendFailed": "Something went wrong. Please try again or contact us directly."
     },
     "mailto": {
       "subject": "Prośba o odzyskanie wyceny",
@@ -89,6 +90,7 @@
         "ratePlan": "Plan cenowy",
         "resumeLink": "Wznów link"
       }
-    }
+    },
+    "sending": "Sending…"
   }
 }

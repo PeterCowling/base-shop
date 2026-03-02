@@ -74,7 +74,8 @@
     "submitCta": "Gửi email cho tôi báo giá này",
     "errors": {
       "invalidEmail": "Nhập địa chỉ email hợp lệ.",
-      "consentRequired": "Cần có sự đồng ý để gửi email báo giá."
+      "consentRequired": "Cần có sự đồng ý để gửi email báo giá.",
+      "sendFailed": "Something went wrong. Please try again or contact us directly."
     },
     "mailto": {
       "subject": "Yêu cầu khôi phục báo giá",
@@ -89,6 +90,7 @@
         "ratePlan": "Gói giá",
         "resumeLink": "Liên kết tiếp tục"
       }
-    }
+    },
+    "sending": "Sending…"
   }
 }

@@ -74,7 +74,8 @@
     "submitCta": "この見積もりをメールで送ってください",
     "errors": {
       "invalidEmail": "有効な電子メール アドレスを入力してください。",
-      "consentRequired": "見積メール送信には同意が必要です。"
+      "consentRequired": "見積メール送信には同意が必要です。",
+      "sendFailed": "Something went wrong. Please try again or contact us directly."
     },
     "mailto": {
       "subject": "見積書の回復リクエスト",
@@ -89,6 +90,7 @@
         "ratePlan": "料金プラン",
         "resumeLink": "リンクを再開する"
       }
-    }
+    },
+    "sending": "Sending…"
   }
 }

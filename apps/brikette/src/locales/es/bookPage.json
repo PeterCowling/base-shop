@@ -78,7 +78,8 @@
     "submitCta": "Envíeme esta cotización por correo electrónico",
     "errors": {
       "invalidEmail": "Ingrese una dirección de correo electrónico válida.",
-      "consentRequired": "Se requiere consentimiento para enviar el correo electrónico de cotización."
+      "consentRequired": "Se requiere consentimiento para enviar el correo electrónico de cotización.",
+      "sendFailed": "Something went wrong. Please try again or contact us directly."
     },
     "mailto": {
       "subject": "Solicitud de recuperación de cotización",
@@ -93,6 +94,7 @@
         "ratePlan": "plan tarifario",
         "resumeLink": "Enlace de currículum"
       }
-    }
+    },
+    "sending": "Sending…"
   }
 }

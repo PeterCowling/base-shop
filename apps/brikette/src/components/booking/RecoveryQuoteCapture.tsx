@@ -3,7 +3,6 @@
 import { type FormEvent, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { CONTACT_EMAIL } from "@/config/hotel";
 import { createBrikClickId, fireRecoveryLeadCapture } from "@/utils/ga4-events";
 import {
   buildRecoveryResumeLink,
@@ -20,45 +19,9 @@ type Props = {
   title?: string;
 };
 
-type RecoveryCopy = {
-  mailto: {
-    subject: string;
-    bodyIntro: string;
-    labels: {
-      guestEmail: string;
-      checkIn: string;
-      checkOut: string;
-      guests: string;
-      sourceRoute: string;
-      room: string;
-      ratePlan: string;
-      resumeLink: string;
-    };
-  };
-};
-
-function buildMailtoHref(
-  guestEmail: string,
-  resumeLink: string,
-  context: RecoveryQuoteContext,
-  copy: RecoveryCopy,
-): string {
-  const subject = copy.mailto.subject;
-  const bodyLines = [
-    copy.mailto.bodyIntro,
-    "",
-    `${copy.mailto.labels.guestEmail}: ${guestEmail}`,
-    `${copy.mailto.labels.checkIn}: ${context.checkin}`,
-    `${copy.mailto.labels.checkOut}: ${context.checkout}`,
-    `${copy.mailto.labels.guests}: ${context.pax}`,
-    `${copy.mailto.labels.sourceRoute}: ${context.source_route}`,
-    context.room_id ? `${copy.mailto.labels.room}: ${context.room_id}` : null,
-    context.rate_plan ? `${copy.mailto.labels.ratePlan}: ${context.rate_plan}` : null,
-    `${copy.mailto.labels.resumeLink}: ${resumeLink}`,
-  ].filter(Boolean);
-
-  return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
-}
+type SendResponse =
+  | { status: "accepted" | "duplicate"; idempotencyKey: string }
+  | { error: string };
 
 export function RecoveryQuoteCapture({
   isValidSearch,
@@ -70,37 +33,19 @@ export function RecoveryQuoteCapture({
   const [guestEmail, setGuestEmail] = useState("");
   const [consent, setConsent] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const disabled = !isValidSearch;
+  const disabled = !isValidSearch || loading;
 
   const retentionExpiresAt = useMemo(
     () => new Date(Date.now() + RECOVERY_CAPTURE_RETENTION_DAYS * 24 * 60 * 60 * 1000).toISOString(),
     [],
   );
-  const copy = useMemo<RecoveryCopy>(
-    () => ({
-      mailto: {
-        subject: t("recovery.mailto.subject") as string,
-        bodyIntro: t("recovery.mailto.bodyIntro") as string,
-        labels: {
-          guestEmail: t("recovery.mailto.labels.guestEmail") as string,
-          checkIn: t("recovery.mailto.labels.checkIn") as string,
-          checkOut: t("recovery.mailto.labels.checkOut") as string,
-          guests: t("recovery.mailto.labels.guests") as string,
-          sourceRoute: t("recovery.mailto.labels.sourceRoute") as string,
-          room: t("recovery.mailto.labels.room") as string,
-          ratePlan: t("recovery.mailto.labels.ratePlan") as string,
-          resumeLink: t("recovery.mailto.labels.resumeLink") as string,
-        },
-      },
-    }),
-    [t],
-  );
 
   if (!isValidSearch) return null;
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
 
@@ -144,8 +89,32 @@ export function RecoveryQuoteCapture({
       resume_ttl_days: 7,
     });
 
-    window.location.href = buildMailtoHref(normalizedEmail, resumeLink, context, copy);
-    setSubmitted(true);
+    setLoading(true);
+    try {
+      const response = await fetch("/api/recovery/quote/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          context,
+          guestEmail: normalizedEmail,
+          consentVersion: RECOVERY_CONSENT_VERSION,
+          leadCaptureId,
+          resumeLink,
+        }),
+      });
+
+      const data = (await response.json()) as SendResponse;
+
+      if ("status" in data && (data.status === "accepted" || data.status === "duplicate")) {
+        setSubmitted(true);
+      } else {
+        setError(t("recovery.errors.sendFailed") as string);
+      }
+    } catch {
+      setError(t("recovery.errors.sendFailed") as string);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -186,9 +155,11 @@ export function RecoveryQuoteCapture({
         <button
           type="submit"
           disabled={disabled}
-          className="min-h-11 rounded-xl bg-brand-primary px-4 py-2 text-sm font-semibold text-brand-on-accent disabled:opacity-50"
+          className="min-h-11 rounded-xl bg-brand-primary px-4 py-2 text-sm font-semibold text-brand-on-primary disabled:opacity-50"
         >
-          {t("recovery.submitCta") as string}
+          {loading
+            ? (t("recovery.sending") as string)
+            : (t("recovery.submitCta") as string)}
         </button>
       </form>
     </section>

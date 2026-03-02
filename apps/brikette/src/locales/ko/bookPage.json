@@ -74,7 +74,8 @@
     "submitCta": "이 견적을 이메일로 보내주세요",
     "errors": {
       "invalidEmail": "유효한 이메일 주소를 입력하세요.",
-      "consentRequired": "견적 이메일을 보내려면 동의가 필요합니다."
+      "consentRequired": "견적 이메일을 보내려면 동의가 필요합니다.",
+      "sendFailed": "Something went wrong. Please try again or contact us directly."
     },
     "mailto": {
       "subject": "견적 복구 요청",
@@ -89,6 +90,7 @@
         "ratePlan": "요금제",
         "resumeLink": "이력서 링크"
       }
-    }
+    },
+    "sending": "Sending…"
   }
 }

@@ -74,7 +74,8 @@
     "submitCta": "通过电子邮件将此报价发送给我",
     "errors": {
       "invalidEmail": "输入有效的电子邮件地址。",
-      "consentRequired": "发送报价电子邮件需要获得同意。"
+      "consentRequired": "发送报价电子邮件需要获得同意。",
+      "sendFailed": "Something went wrong. Please try again or contact us directly."
     },
     "mailto": {
       "subject": "报价恢复请求",
@@ -89,6 +90,7 @@
         "ratePlan": "费率计划",
         "resumeLink": "简历链接"
       }
-    }
+    },
+    "sending": "Sending…"
   }
 }

@@ -1,5 +1,6 @@
 // src/app/[lang]/dorms/page.tsx
 // Rooms listing page - App Router version
+import { Suspense } from "react";
 import type { Metadata } from "next";
 
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
@@ -61,7 +62,9 @@ export default async function RoomsPage({ params }: Props) {
   return (
     <>
       <RoomsStructuredDataRsc lang={validLang} />
-      <RoomsPageContent lang={validLang} serverTitle={serverTitle} serverSubtitle={serverSubtitle} />
+      <Suspense fallback={null}>
+        <RoomsPageContent lang={validLang} serverTitle={serverTitle} serverSubtitle={serverSubtitle} />
+      </Suspense>
     </>
   );
 }

@@ -40,7 +40,7 @@ jest.mock("next/navigation", () => ({
 
 jest.mock("react-i18next", () => ({
   useTranslation: (_ns?: string) => ({
-    t: (_key: string, opts?: { defaultValue?: string }) => opts?.defaultValue ?? "Check availability",
+    t: (key: string, opts?: { defaultValue?: string }) => opts?.defaultValue ?? key,
     i18n: { language: "en", hasResourceBundle: () => true, getFixedT: () => (k: string) => k },
     ready: true,
   }),

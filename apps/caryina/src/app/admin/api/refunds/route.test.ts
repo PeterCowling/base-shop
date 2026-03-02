@@ -32,9 +32,11 @@ const makeReq = (body?: unknown) =>
 
 describe("POST /admin/api/refunds", () => {
   const originalEnv = process.env;
+  let consoleErrorSpy: jest.SpyInstance;
 
   beforeEach(() => {
     jest.clearAllMocks();
+    consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     process.env = {
       ...originalEnv,
       AXERVE_SHOP_LOGIN: "TEST_SHOP",
@@ -43,6 +45,7 @@ describe("POST /admin/api/refunds", () => {
   });
 
   afterEach(() => {
+    consoleErrorSpy.mockRestore();
     process.env = originalEnv;
   });
 
@@ -132,6 +135,10 @@ describe("POST /admin/api/refunds", () => {
       error: "Refund declined by issuer",
       errorCode: "10",
     });
+    expect(consoleErrorSpy).toHaveBeenCalledWith("[refunds] Axerve refund KO", {
+      errorCode: "10",
+      errorDescription: "Refund declined by issuer",
+    });
   });
 
   // TC-04-06: callRefund throws AxerveError → 502 payment service unavailable.
@@ -145,6 +152,7 @@ describe("POST /admin/api/refunds", () => {
 
     expect(res.status).toBe(502);
     expect(body).toMatchObject({ ok: false, error: "Payment service unavailable" });
+    expect(consoleErrorSpy).toHaveBeenCalledWith("[refunds] Axerve SOAP error", "SOAP connection refused");
   });
 
   // TC-04-07: Missing env var → 503 before calling Axerve.
@@ -159,5 +167,6 @@ describe("POST /admin/api/refunds", () => {
     expect(res.status).toBe(503);
     expect(body).toMatchObject({ ok: false, error: "Payment service not configured" });
     expect(callRefund).not.toHaveBeenCalled();
+    expect(consoleErrorSpy).toHaveBeenCalledWith("[refunds] Missing AXERVE_SHOP_LOGIN or AXERVE_API_KEY");
   });
 });

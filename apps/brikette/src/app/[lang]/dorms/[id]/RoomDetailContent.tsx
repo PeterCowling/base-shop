@@ -100,7 +100,7 @@ export default function RoomDetailContent({ lang, id }: Props) {
   const onStickyCheckoutClick = useCallback(
     (ctx: StickyBookNowClickContext) => {
       trackThenNavigate(
-        "handoff_to_engine",
+        "begin_checkout",
         {
           handoff_mode: "same_tab",
           engine_endpoint: "result",

@@ -99,7 +99,7 @@ describe('utility action surfaces', () => {
     );
 
     expect(screen.getByRole('button', { name: 'Maps' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Cash' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /cash/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Support' })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Share ETA' })).toBeNull();
   });

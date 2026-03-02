@@ -55,19 +55,19 @@ const sizeStyles = {
 
 const variantStyles = {
   default: {
-    base: 'bg-surface dark:bg-darkSurface text-muted-foreground dark:text-darkAccentGreen border-border-2 dark:border-darkSurface',
-    hover: 'hover:bg-gray-50 dark:hover:bg-gray-800',
-    active: 'active:bg-surface-2 dark:active:bg-gray-700',
+    base: 'bg-surface text-muted-foreground border-border-2',
+    hover: 'hover:bg-muted',
+    active: 'active:bg-surface-2',
   },
   primary: {
     base: 'bg-info-main text-primary-fg border-border-2',
-    hover: 'hover:bg-blue-700',
-    active: 'active:bg-blue-800',
+    hover: 'hover:opacity-90',
+    active: 'active:opacity-80',
   },
   danger: {
     base: 'bg-error-main text-primary-fg border-border-2',
-    hover: 'hover:bg-red-700',
-    active: 'active:bg-red-800',
+    hover: 'hover:opacity-90',
+    active: 'active:opacity-80',
   },
 }
 

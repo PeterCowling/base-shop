@@ -146,7 +146,7 @@ export function RoomsSection({
             unlockTimerRef.current = null;
           }, 2000);
           trackThenNavigate(
-            "handoff_to_engine",
+            "begin_checkout",
             {
               handoff_mode: "same_tab",
               engine_endpoint: "result",

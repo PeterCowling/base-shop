@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import SegmentBuilder from "../src/app/cms/segments/SegmentBuilder";
 
@@ -61,11 +61,13 @@ describe("SegmentBuilder", () => {
       })
     );
 
-    expect(mockToast.success).toHaveBeenCalledWith("Segment saved.");
-    expect(screen.getByLabelText(/Segment ID/i)).toHaveValue("");
-    expect(screen.getByLabelText(/Name/i)).toHaveValue("");
-    expect(screen.getAllByLabelText(/Field/i)).toHaveLength(1);
-    expect(screen.getAllByLabelText(/Value/i)[0]).toHaveValue("");
+    await waitFor(() => {
+      expect(mockToast.success).toHaveBeenCalledWith("Segment saved.");
+      expect(screen.getByLabelText(/Segment ID/i)).toHaveValue("");
+      expect(screen.getByLabelText(/Name/i)).toHaveValue("");
+      expect(screen.getAllByLabelText(/Field/i)).toHaveLength(1);
+      expect(screen.getAllByLabelText(/Value/i)[0]).toHaveValue("");
+    });
   });
 
   it("shows Failed status on network error", async () => {
@@ -86,6 +88,8 @@ describe("SegmentBuilder", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /save segment/i }));
 
-    expect(mockToast.error).toHaveBeenCalledWith("fail");
+    await waitFor(() => {
+      expect(mockToast.error).toHaveBeenCalledWith("fail");
+    });
   });
 });

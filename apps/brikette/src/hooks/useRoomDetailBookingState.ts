@@ -8,7 +8,7 @@ import { useAvailabilityForRoom } from "@/hooks/useAvailabilityForRoom";
 import { useRecoveryResumeFallback } from "@/hooks/useRecoveryResumeFallback";
 import { HOSTEL_MAX_PAX, isValidPax, isValidStayRange } from "@/utils/bookingDateRules";
 import { hydrateBookingSearch, persistBookingSearch } from "@/utils/bookingSearch";
-import { formatDate, safeParseIso } from "@/utils/dateUtils";
+import { formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
 import { getIndicativeAnchor } from "@/utils/indicativePricing";
 
 type QueryState = "valid" | "invalid" | "absent";
@@ -58,6 +58,20 @@ export function useRoomDetailBookingState(params: ParamsLike, replace: ReplaceLi
     });
     setPickerAdults(adults);
   }, [checkIn, checkOut, adults]);
+
+  useEffect(() => {
+    if (queryState !== "absent") return;
+
+    const seededCheckIn = getTodayIso();
+    const seededCheckOut = getDatePlusTwoDays(seededCheckIn);
+    const seededPax = 1;
+    const nextParams = new URLSearchParams(params?.toString() ?? "");
+    nextParams.set("checkin", seededCheckIn);
+    nextParams.set("checkout", seededCheckOut);
+    nextParams.set("pax", String(seededPax));
+    replace(`?${nextParams.toString()}`, { scroll: false });
+    persistBookingSearch({ checkin: seededCheckIn, checkout: seededCheckOut, pax: seededPax });
+  }, [params, queryState, replace]);
 
   const pickerCheckIn = range.from ? formatDate(range.from) : checkIn;
   const pickerCheckOut = range.to ? formatDate(range.to) : checkOut;

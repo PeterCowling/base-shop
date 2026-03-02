@@ -38,7 +38,7 @@ export function LanguageToggle({
               : "hover:bg-muted"
           }`}
         >
-          {t("languageChinese")}
+          {t("languageZh")}
         </button>
       </div>
     </div>

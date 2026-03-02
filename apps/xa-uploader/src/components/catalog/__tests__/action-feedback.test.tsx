@@ -54,6 +54,16 @@ function jsonResponse(body: unknown, init: ResponseInit = {}): Response {
   });
 }
 
+function createDeferred<T>() {
+  let resolveFn!: (value: T | PromiseLike<T>) => void;
+  let rejectFn!: (reason?: unknown) => void;
+  const promise = new Promise<T>((resolve, reject) => {
+    resolveFn = resolve;
+    rejectFn = reject;
+  });
+  return { promise, resolve: resolveFn, reject: rejectFn };
+}
+
 function renderHarness() {
   function Harness() {
     const state = useCatalogConsole();
@@ -110,6 +120,7 @@ function renderHarness() {
             ? `${state.actionFeedback.submission.kind}:${state.actionFeedback.submission.message}`
             : ""}
         </div>
+        <div data-cy="submission-step">{state.submissionStep ?? ""}</div>
         <div data-cy="sync-feedback">
           {state.actionFeedback.sync ? `${state.actionFeedback.sync.kind}:${state.actionFeedback.sync.message}` : ""}
         </div>
@@ -269,6 +280,140 @@ describe("useCatalogConsole scoped action feedback", () => {
       expect(screen.getByTestId("sync-feedback")).toHaveTextContent("success:Sync completed.");
     });
     expect(screen.getByTestId("draft-feedback")).toHaveTextContent("success:Saved product details.");
+  });
+
+  describe("TASK-02: per-step progress labels", () => {
+    function mockConsoleBootstrapFetch() {
+      global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+        const url = String(input);
+        if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
+        if (url.startsWith("/api/catalog/products?storefront=")) {
+          return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
+        }
+        if (url.startsWith("/api/catalog/sync?storefront=")) {
+          return jsonResponse({ ok: true, ready: true, missingScripts: [] });
+        }
+        if (init?.method === "PUT") {
+          return new Response(null, { status: 200 });
+        }
+        throw new Error(`Unhandled fetch: ${url}`);
+      }) as unknown as typeof fetch;
+    }
+
+    it("TC-01: Export action — step label shown during in-flight export", async () => {
+      const zipDeferred = createDeferred<{
+        blob: Blob;
+        filename: string;
+        submissionId: string;
+        r2Key: string;
+      }>();
+      fetchSubmissionZipMock.mockReturnValue(zipDeferred.promise);
+      mockConsoleBootstrapFetch();
+
+      renderHarness();
+      await clickButton("toggle-submission");
+      await clickButton("export");
+
+      await waitFor(() => {
+        expect(screen.getByTestId("submission-step")).toHaveTextContent("Building package…");
+      });
+
+      await act(async () => {
+        zipDeferred.resolve({
+          blob: new Blob(["zip"]),
+          filename: "submission.test.zip",
+          submissionId: "sub-123",
+          r2Key: "r2://bucket/submissions/sub-123.zip",
+        });
+        await zipDeferred.promise;
+      });
+
+      await waitFor(() => {
+        expect(screen.getByTestId("submission-step")).toHaveTextContent("");
+      });
+      expect(screen.getByTestId("submission-feedback")).toHaveTextContent("success:Submission ID: sub-123");
+    });
+
+    it("TC-02: Upload action — step label transitions during in-flight upload", async () => {
+      const uploadDeferred = createDeferred<Response>();
+      fetchSubmissionZipMock.mockResolvedValue({
+        blob: new Blob(["zip"]),
+        filename: "submission.test.zip",
+        submissionId: "sub-123",
+        r2Key: "r2://bucket/submissions/sub-123.zip",
+      });
+      global.fetch = jest.fn((input: RequestInfo | URL, init?: RequestInit) => {
+        const url = String(input);
+        if (url === "/api/uploader/session") return Promise.resolve(jsonResponse({ authenticated: true }));
+        if (url.startsWith("/api/catalog/products?storefront=")) {
+          return Promise.resolve(
+            jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } }),
+          );
+        }
+        if (url.startsWith("/api/catalog/sync?storefront=")) {
+          return Promise.resolve(jsonResponse({ ok: true, ready: true, missingScripts: [] }));
+        }
+        if (init?.method === "PUT") {
+          return uploadDeferred.promise;
+        }
+        throw new Error(`Unhandled fetch: ${url}`);
+      }) as unknown as typeof fetch;
+
+      renderHarness();
+      fireEvent.change(screen.getByLabelText("upload-url"), {
+        target: { value: "https://upload.local/upload/path-token" },
+      });
+      await clickButton("toggle-submission");
+      await clickButton("upload");
+
+      await waitFor(() => {
+        expect(screen.getByTestId("submission-step")).toHaveTextContent("Uploading…");
+      });
+
+      await act(async () => {
+        uploadDeferred.resolve(new Response(null, { status: 200 }));
+        await uploadDeferred.promise;
+      });
+
+      await waitFor(() => {
+        expect(screen.getByTestId("submission-step")).toHaveTextContent("");
+      });
+    });
+
+    it("TC-03: Export action fails — step label absent after failure", async () => {
+      fetchSubmissionZipMock.mockRejectedValue(new Error("internal_error"));
+      mockConsoleBootstrapFetch();
+
+      renderHarness();
+      await clickButton("toggle-submission");
+      await clickButton("export");
+
+      await waitFor(() => {
+        expect(screen.getByTestId("submission-feedback")).toHaveTextContent(
+          "The server could not complete this request. Try again.",
+        );
+      });
+      expect(screen.getByTestId("submission-step")).toHaveTextContent("");
+    });
+
+    it("TC-04: Clear submission — step label cleared", async () => {
+      fetchSubmissionZipMock.mockResolvedValue({
+        blob: new Blob(["zip"]),
+        filename: "submission.test.zip",
+        submissionId: "sub-123",
+        r2Key: "r2://bucket/submissions/sub-123.zip",
+      });
+      mockConsoleBootstrapFetch();
+
+      renderHarness();
+      await clickButton("toggle-submission");
+      await clickButton("export");
+
+      await waitFor(() => {
+        expect(screen.getByTestId("submission-feedback")).toHaveTextContent("success:Submission ID: sub-123");
+      });
+      expect(screen.getByTestId("submission-step")).toHaveTextContent("");
+    });
   });
 
   describe("TASK-01: submission validation error reason", () => {

@@ -82,7 +82,7 @@ export function CatalogSyncPanel({
           onClick={onSync}
           disabled={syncDisabled}
           // eslint-disable-next-line ds/min-tap-size -- XAUP-0001 operator-desktop-tool
-          className="rounded-md border border-gate-ink bg-gate-ink px-4 py-2 text-xs font-semibold uppercase tracking-label text-primary-fg disabled:opacity-60"
+          className="rounded-md border border-gate-ink bg-gate-ink px-4 py-2 text-xs font-semibold uppercase tracking-label text-bg disabled:opacity-60"
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="catalog-run-sync"
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id

@@ -4,11 +4,14 @@ import * as React from "react";
 
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
+import type { SubmissionStep } from "./catalogConsoleFeedback";
 import type { ActionFeedback } from "./useCatalogConsole.client";
 
 type CatalogSubmissionPanelProps = {
   busy: boolean;
   submissionAction?: "export" | "upload" | null;
+  // TODO: pass submissionStep={consoleState.submissionStep} in CatalogConsole.client.tsx
+  submissionStep?: SubmissionStep;
   selectedCount: number;
   maxProducts: number;
   maxBytes?: number;
@@ -63,6 +66,28 @@ function SubmissionRules({
   );
 }
 
+function SubmissionStepLabel({
+  step,
+  t,
+}: {
+  step: SubmissionStep;
+  t: ReturnType<typeof useUploaderI18n>["t"];
+}) {
+  if (!step) return null;
+  const label = step === "uploading-zip" ? t("uploadingZip") : t("buildingZip");
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      className="text-sm text-gate-muted"
+      // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+      data-testid="catalog-submission-step"
+    >
+      {label}
+    </div>
+  );
+}
+
 function deriveSubmissionState({
   busy,
   selectedCount,
@@ -89,6 +114,7 @@ function deriveSubmissionState({
 export function CatalogSubmissionPanel({
   busy,
   submissionAction = null,
+  submissionStep = null,
   selectedCount,
   maxProducts,
   maxBytes = 250 * 1024 * 1024,
@@ -147,7 +173,7 @@ export function CatalogSubmissionPanel({
             onClick={onExport}
             disabled={disabled}
             // eslint-disable-next-line ds/min-tap-size -- XAUP-0001 operator-desktop-tool
-            className="rounded-md border border-gate-ink bg-gate-ink px-4 py-2 text-xs font-semibold uppercase tracking-label text-primary-fg disabled:opacity-60"
+            className="rounded-md border border-gate-ink bg-gate-ink px-4 py-2 text-xs font-semibold uppercase tracking-label text-bg disabled:opacity-60"
             // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
             data-testid="catalog-export-zip"
           >
@@ -155,6 +181,8 @@ export function CatalogSubmissionPanel({
           </button>
         </div>
       </div>
+
+      {submissionStep && !feedback && <SubmissionStepLabel step={submissionStep} t={t} />}
 
       <SubmissionRules t={t} maxProducts={maxProducts} maxMb={maxMb} minImageEdge={minImageEdge} />
 

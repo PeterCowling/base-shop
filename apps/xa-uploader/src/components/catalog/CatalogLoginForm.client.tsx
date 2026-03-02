@@ -72,7 +72,7 @@ export function CatalogLoginForm({
           type="submit"
           disabled={busy}
           // eslint-disable-next-line ds/min-tap-size, ds/enforce-layout-primitives -- XAUP-0001 operator-desktop-tool
-          className="inline-flex items-center gap-2 rounded-md border border-gate-ink bg-gate-ink px-4 py-2 text-sm font-semibold text-primary-fg transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex items-center gap-2 rounded-md border border-gate-ink bg-gate-ink px-4 py-2 text-sm font-semibold text-bg transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="catalog-login-submit"
         >

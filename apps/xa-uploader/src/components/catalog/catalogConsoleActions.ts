@@ -20,6 +20,7 @@ import {
   getCatalogApiErrorMessage,
   getSyncFailureMessage,
   type SubmissionAction,
+  type SubmissionStep,
   type SyncResponse,
   tryBeginBusyAction,
   updateActionFeedback,
@@ -138,12 +139,15 @@ export function toggleSubmissionSlug(
 export function handleClearSubmissionImpl({
   setSubmissionSlugs,
   setActionFeedback,
+  setSubmissionStep,
 }: {
   setSubmissionSlugs: React.Dispatch<React.SetStateAction<Set<string>>>;
   setActionFeedback: React.Dispatch<React.SetStateAction<ActionFeedbackState>>;
+  setSubmissionStep: React.Dispatch<React.SetStateAction<SubmissionStep>>;
 }): void {
   setSubmissionSlugs(new Set());
   clearActionFeedbackDomains(setActionFeedback, ["submission"]);
+  setSubmissionStep(null);
 }
 
 function parseUploadEndpoint(rawUploadUrl: string): {
@@ -500,6 +504,7 @@ export async function handleExportSubmissionImpl({
   setBusy,
   setActionFeedback,
   setSubmissionAction,
+  setSubmissionStep,
   handleClearSubmission,
 }: {
   submissionSlugs: Set<string>;
@@ -509,6 +514,7 @@ export async function handleExportSubmissionImpl({
   setBusy: React.Dispatch<React.SetStateAction<boolean>>;
   setActionFeedback: React.Dispatch<React.SetStateAction<ActionFeedbackState>>;
   setSubmissionAction: React.Dispatch<React.SetStateAction<SubmissionAction>>;
+  setSubmissionStep: React.Dispatch<React.SetStateAction<SubmissionStep>>;
   handleClearSubmission: () => void;
 }): Promise<void> {
   if (submissionSlugs.size === 0) return;
@@ -516,6 +522,7 @@ export async function handleExportSubmissionImpl({
   clearActionFeedbackDomains(setActionFeedback, ["submission"]);
   setSubmissionAction("export");
   try {
+    setSubmissionStep("building-zip");
     const slugs = Array.from(submissionSlugs);
     const { blob, filename, submissionId } = await fetchSubmissionZip(
       slugs,
@@ -542,6 +549,7 @@ export async function handleExportSubmissionImpl({
       ),
     });
   } finally {
+    setSubmissionStep(null);
     setSubmissionAction(null);
     endBusyAction(busyLockRef, setBusy);
   }
@@ -556,6 +564,7 @@ export async function handleUploadSubmissionToR2Impl({
   setBusy,
   setActionFeedback,
   setSubmissionAction,
+  setSubmissionStep,
   handleClearSubmission,
 }: {
   submissionSlugs: Set<string>;
@@ -566,6 +575,7 @@ export async function handleUploadSubmissionToR2Impl({
   setBusy: React.Dispatch<React.SetStateAction<boolean>>;
   setActionFeedback: React.Dispatch<React.SetStateAction<ActionFeedbackState>>;
   setSubmissionAction: React.Dispatch<React.SetStateAction<SubmissionAction>>;
+  setSubmissionStep: React.Dispatch<React.SetStateAction<SubmissionStep>>;
   handleClearSubmission: () => void;
 }): Promise<void> {
   if (submissionSlugs.size === 0) return;
@@ -574,12 +584,14 @@ export async function handleUploadSubmissionToR2Impl({
   clearActionFeedbackDomains(setActionFeedback, ["submission"]);
   setSubmissionAction("upload");
   try {
+    setSubmissionStep("building-zip");
     const slugs = Array.from(submissionSlugs);
     const { blob, filename, submissionId } = await fetchSubmissionZip(
       slugs,
       t("exportFailed"),
       storefront,
     );
+    setSubmissionStep("uploading-zip");
     const uploadTarget = parseUploadEndpoint(submissionUploadUrl);
     const headers: Record<string, string> = { "Content-Type": "application/zip" };
     if (submissionId) headers["X-XA-Submission-Id"] = submissionId;
@@ -611,6 +623,7 @@ export async function handleUploadSubmissionToR2Impl({
       ),
     });
   } finally {
+    setSubmissionStep(null);
     setSubmissionAction(null);
     endBusyAction(busyLockRef, setBusy);
   }

@@ -524,6 +524,11 @@ async function runSyncPipeline(params: {
     } catch (error) {
       const publishError = getPublishErrorDetails(error);
       const isUnconfigured = publishError.code === "unconfigured";
+      console.error({
+        route: "POST /api/catalog/sync",
+        error: error instanceof Error ? error.message : String(error),
+        durationMs: Date.now() - startedAt,
+      });
       const failurePayload = maybeAttachLogs(
         {
           ok: false,
@@ -601,6 +606,11 @@ async function runCloudSyncPipeline(params: {
     } catch (error) {
       const publishError = getPublishErrorDetails(error);
       const isUnconfigured = publishError.code === "unconfigured";
+      console.error({
+        route: "POST /api/catalog/sync",
+        error: error instanceof Error ? error.message : String(error),
+        durationMs: Date.now() - startedAt,
+      });
       return NextResponse.json(
         {
           ok: false,

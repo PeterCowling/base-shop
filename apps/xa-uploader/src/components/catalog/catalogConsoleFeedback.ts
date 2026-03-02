@@ -47,6 +47,7 @@ export type CatalogListResponse = {
 export type ActionFeedback = { kind: ActionFeedbackKind; message: string };
 export type ActionFeedbackState = Record<ActionDomain, ActionFeedback | null>;
 export type SubmissionAction = "export" | "upload" | null;
+export type SubmissionStep = "building-zip" | "uploading-zip" | null;
 
 export type SyncResponse = {
   ok: boolean;

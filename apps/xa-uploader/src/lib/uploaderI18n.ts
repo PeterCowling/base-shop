@@ -99,6 +99,8 @@ const messages = {
     submissionValidationFailed:
       "Submission validation failed. Check product count, image sizes, and image files, then retry.",
     exportFailed: "Export failed.",
+    buildingZip: "Building package…",
+    uploadingZip: "Uploading…",
 
     loginIntro: "Admin access requires the console token.",
     loginTokenLabel: "Console token",
@@ -325,6 +327,8 @@ const messages = {
     syncRecoveryReviewSyncLogs: "请查看同步日志，修复流水线错误后重试。",
     submissionValidationFailed: "提交验证失败。请检查产品数量、图片尺寸及图片文件，然后重试。",
     exportFailed: "导出失败。",
+    buildingZip: "正在构建压缩包…",
+    uploadingZip: "正在上传…",
 
     loginIntro: "管理员访问需要控制台令牌。",
     loginTokenLabel: "控制台令牌",

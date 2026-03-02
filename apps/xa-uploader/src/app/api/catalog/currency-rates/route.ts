@@ -96,6 +96,7 @@ export async function GET(request: Request) {
   }
 
   try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-118 controlled path rooted to repo-local uploader data dir
     const raw = await fs.readFile(ratesFilePath, "utf8");
     try {
       const parsed = JSON.parse(raw) as unknown;
@@ -169,8 +170,11 @@ export async function PUT(request: Request) {
 
   const tmpPath = `${ratesFilePath}.tmp`;
   try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-118 controlled path rooted to repo-local uploader data dir
     await fs.mkdir(uploaderDataDir, { recursive: true });
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-118 controlled path rooted to repo-local uploader data dir
     await fs.writeFile(tmpPath, `${JSON.stringify(validated.rates, null, 2)}\n`, "utf8");
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-118 controlled path rooted to repo-local uploader data dir
     await fs.rename(tmpPath, ratesFilePath);
     return withRateHeaders(NextResponse.json({ ok: true }), limit);
   } catch {

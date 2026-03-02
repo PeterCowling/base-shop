@@ -37,6 +37,7 @@ import {
   getSyncFailureMessage,
   type SessionState,
   type SubmissionAction,
+  type SubmissionStep,
   type SyncReadinessResponse,
   type SyncScriptId,
   updateActionFeedback,
@@ -101,6 +102,7 @@ function useCatalogConsoleState() {
     process.env.NEXT_PUBLIC_XA_UPLOADER_R2_UPLOAD_URL ?? "",
   );
   const [submissionAction, setSubmissionAction] = React.useState<SubmissionAction>(null);
+  const [submissionStep, setSubmissionStep] = React.useState<SubmissionStep>(null);
 
   const [draft, setDraft] = React.useState<CatalogProductDraftInput>(() =>
     buildEmptyDraft(storefrontConfig.defaultCategory),
@@ -245,6 +247,8 @@ function useCatalogConsoleState() {
     setSubmissionUploadUrl,
     submissionAction,
     setSubmissionAction,
+    submissionStep,
+    setSubmissionStep,
     draft,
     setDraft,
     draftRevision,
@@ -407,6 +411,7 @@ function useCatalogSubmissionHandlers(state: CatalogConsoleState) {
     handleClearSubmissionImpl({
       setSubmissionSlugs: state.setSubmissionSlugs,
       setActionFeedback: state.setActionFeedback,
+      setSubmissionStep: state.setSubmissionStep,
     });
 
   const handleExportSubmission = async () =>
@@ -418,6 +423,7 @@ function useCatalogSubmissionHandlers(state: CatalogConsoleState) {
       setBusy: state.setBusy,
       setActionFeedback: state.setActionFeedback,
       setSubmissionAction: state.setSubmissionAction,
+      setSubmissionStep: state.setSubmissionStep,
       handleClearSubmission,
     });
 
@@ -431,6 +437,7 @@ function useCatalogSubmissionHandlers(state: CatalogConsoleState) {
       setBusy: state.setBusy,
       setActionFeedback: state.setActionFeedback,
       setSubmissionAction: state.setSubmissionAction,
+      setSubmissionStep: state.setSubmissionStep,
       handleClearSubmission,
     });
 
@@ -457,6 +464,7 @@ export function useCatalogConsole() {
     submissionUploadUrl: state.submissionUploadUrl,
     setSubmissionUploadUrl: state.setSubmissionUploadUrl,
     submissionAction: state.submissionAction,
+    submissionStep: state.submissionStep,
   };
 
   return {

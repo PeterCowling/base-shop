@@ -3,7 +3,8 @@ import { Readable } from "node:stream";
 
 import { NextResponse } from "next/server";
 
-import { slugify } from "@acme/lib/xa";
+import type { CatalogProductDraftInput } from "@acme/lib/xa";
+import { catalogProductDraftSchema, slugify } from "@acme/lib/xa";
 
 import { listCatalogDrafts } from "../../../../lib/catalogCsv";
 import { readCloudDraftSnapshot } from "../../../../lib/catalogDraftContractClient";
@@ -52,6 +53,25 @@ const KNOWN_SUBMISSION_INVALID_PATTERNS = [
 function isKnownSubmissionValidationError(error: unknown): boolean {
   if (!(error instanceof Error)) return false;
   return KNOWN_SUBMISSION_INVALID_PATTERNS.some((pattern) => pattern.test(error.message));
+}
+
+type SchemaDiagnostic = { slug: string; issues: string[] };
+
+function validateSelectedProducts(products: CatalogProductDraftInput[]): {
+  valid: boolean;
+  diagnostics: SchemaDiagnostic[];
+} {
+  const diagnostics: SchemaDiagnostic[] = [];
+  for (const product of products) {
+    const result = catalogProductDraftSchema.safeParse(product);
+    if (!result.success) {
+      diagnostics.push({
+        slug: typeof product.slug === "string" ? product.slug : "(unknown)",
+        issues: result.error.issues.map((issue) => issue.message),
+      });
+    }
+  }
+  return { valid: diagnostics.length === 0, diagnostics };
 }
 
 function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLimit>): NextResponse {
@@ -134,6 +154,7 @@ export async function POST(request: Request) {
     ),
   );
 
+  const startedAt = Date.now();
   try {
     const catalog = isLocalFsRuntimeEnabled()
       ? await listCatalogDrafts(storefront)
@@ -142,6 +163,22 @@ export async function POST(request: Request) {
       const slug = slugify(product.slug || product.title);
       return slug && normalizedSlugs.includes(slug);
     });
+
+    const validation = validateSelectedProducts(selected);
+    if (!validation.valid) {
+      return withRateHeaders(
+        NextResponse.json(
+          {
+            ok: false,
+            error: "invalid",
+            reason: "draft_schema_invalid",
+            diagnostics: validation.diagnostics,
+          },
+          { status: 400 },
+        ),
+        limit,
+      ); // i18n-exempt -- XAUP-0001 [ttl=2026-12-31] machine response
+    }
 
     const { filename, manifest, stream } = isLocalFsRuntimeEnabled()
       ? await buildSubmissionZipStream({
@@ -176,6 +213,11 @@ export async function POST(request: Request) {
         limit,
       ); // i18n-exempt -- XAUP-0001 [ttl=2026-12-31] machine response
     }
+    console.error({
+      route: "POST /api/catalog/submission",
+      error: error instanceof Error ? error.message : String(error),
+      durationMs: Date.now() - startedAt,
+    });
     return withRateHeaders(
       NextResponse.json(
         { ok: false, error: "internal_error", reason: "submission_export_failed" },

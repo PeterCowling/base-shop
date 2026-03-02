@@ -182,7 +182,7 @@ export function CurrencyRatesPanel({
           onClick={() => void handleSaveAndSync()}
           disabled={saveDisabled}
           // eslint-disable-next-line ds/min-tap-size -- XAUP-0001 operator-desktop-tool
-          className="rounded-md border border-gate-ink bg-gate-ink px-4 py-2 text-xs font-semibold uppercase tracking-label text-primary-fg disabled:opacity-60"
+          className="rounded-md border border-bg bg-gate-ink px-4 py-2 text-xs font-semibold uppercase tracking-label text-bg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-60"
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="currency-rates-save"
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
@@ -200,7 +200,7 @@ export function CurrencyRatesPanel({
             value="1.0000"
             disabled
             readOnly
-            className="mt-2 w-full rounded-md border border-border-2 bg-muted px-3 py-2 text-sm text-gate-muted"
+            className="mt-2 w-full rounded-md border border-border-2 bg-muted px-3 py-2 text-sm text-gate-ink"
             // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
             data-testid="currency-rates-usd"
             // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id

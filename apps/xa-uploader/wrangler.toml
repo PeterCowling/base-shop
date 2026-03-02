@@ -8,6 +8,20 @@ directory = ".open-next/assets"
 binding = "ASSETS"
 
 # ============================================================================
+# KV NAMESPACE SETUP (required for F3 async submission jobs and F4 sync mutex)
+#
+# Create namespaces before deploying:
+#   wrangler kv namespace create XA_UPLOADER_KV
+#   wrangler kv namespace create XA_UPLOADER_KV --env preview
+#
+# Replace the placeholder IDs below with the IDs returned by those commands.
+# ============================================================================
+
+[[kv_namespaces]]
+binding = "XA_UPLOADER_KV"
+id = "REPLACE_WITH_PROD_NS_ID"
+
+# ============================================================================
 # REQUIRED SECRETS — never put values in this file.
 # Set via `wrangler secret put` for production; add --env preview for preview.
 #
@@ -67,6 +81,10 @@ XA_TRUST_PROXY_IP_HEADERS = "1"
 
 [env.preview]
 name = "xa-uploader-preview"
+
+[[env.preview.kv_namespaces]]
+binding = "XA_UPLOADER_KV"
+id = "REPLACE_WITH_PREVIEW_NS_ID"
 
 [env.preview.vars]
 # NEXT_PUBLIC vars — see top-level [vars] for build-time inlining note.

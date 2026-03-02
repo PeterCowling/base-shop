@@ -10,14 +10,16 @@ import { UploaderI18nProvider } from "../../../lib/uploaderI18n.client";
 import { SubmissionApiError } from "../catalogSubmissionClient";
 import { useCatalogConsole } from "../useCatalogConsole.client";
 
-const fetchSubmissionZipMock = jest.fn();
+const enqueueSubmissionJobMock = jest.fn();
+const pollJobUntilCompleteMock = jest.fn();
 const downloadBlobMock = jest.fn();
 
 jest.mock("../catalogSubmissionClient", () => {
   const actual = jest.requireActual("../catalogSubmissionClient") as Record<string, unknown>;
   return {
     ...actual,
-    fetchSubmissionZip: (...args: unknown[]) => fetchSubmissionZipMock(...args),
+    enqueueSubmissionJob: (...args: unknown[]) => enqueueSubmissionJobMock(...args),
+    pollJobUntilComplete: (...args: unknown[]) => pollJobUntilCompleteMock(...args),
     downloadBlob: (...args: unknown[]) => downloadBlobMock(...args),
   };
 });
@@ -148,6 +150,8 @@ describe("useCatalogConsole scoped action feedback", () => {
     jest.clearAllMocks();
     window.localStorage.clear();
     jest.spyOn(window, "confirm").mockReturnValue(true);
+    enqueueSubmissionJobMock.mockResolvedValue({ jobId: "sub-123" });
+    pollJobUntilCompleteMock.mockResolvedValue("/api/catalog/submission/download/sub-123");
   });
 
   afterEach(() => {
@@ -224,13 +228,6 @@ describe("useCatalogConsole scoped action feedback", () => {
   });
 
   it("TC-03: submission/sync feedback updates do not overwrite draft feedback", async () => {
-    fetchSubmissionZipMock.mockResolvedValue({
-      blob: new Blob(["zip"]),
-      filename: "submission.test.zip",
-      submissionId: "sub-123",
-      r2Key: "r2://bucket/submissions/sub-123.zip",
-    });
-
     global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input);
       if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
@@ -250,6 +247,12 @@ describe("useCatalogConsole scoped action feedback", () => {
             validate: { code: 0, stdout: "ok", stderr: "" },
             sync: { code: 0, stdout: "ok", stderr: "" },
           },
+        });
+      }
+      if (url === "/api/catalog/submission/download/sub-123") {
+        return new Response(new Blob(["zip"]), {
+          status: 200,
+          headers: { "Content-Disposition": 'attachment; filename="submission.test.zip"' },
         });
       }
       throw new Error(`Unhandled fetch: ${url}`);
@@ -299,18 +302,19 @@ describe("useCatalogConsole scoped action feedback", () => {
         if (init?.method === "PUT") {
           return new Response(null, { status: 200 });
         }
+        if (url === "/api/catalog/submission/download/sub-123") {
+          return new Response(new Blob(["zip"]), {
+            status: 200,
+            headers: { "Content-Disposition": 'attachment; filename="submission.test.zip"' },
+          });
+        }
         throw new Error(`Unhandled fetch: ${url}`);
       }) as unknown as typeof fetch;
     }
 
     it("TC-01: Export action — step label shown during in-flight export", async () => {
-      const zipDeferred = createDeferred<{
-        blob: Blob;
-        filename: string;
-        submissionId: string;
-        r2Key: string;
-      }>();
-      fetchSubmissionZipMock.mockReturnValue(zipDeferred.promise);
+      const pollDeferred = createDeferred<string>();
+      pollJobUntilCompleteMock.mockReturnValue(pollDeferred.promise);
       mockConsoleBootstrapFetch();
 
       renderHarness();
@@ -321,17 +325,12 @@ describe("useCatalogConsole scoped action feedback", () => {
       await clickButton("export");
 
       await waitFor(() => {
-        expect(screen.getByTestId("submission-step")).toHaveTextContent("Building package…");
+        expect(screen.getByTestId("submission-step")).toHaveTextContent("polling");
       });
 
       await act(async () => {
-        zipDeferred.resolve({
-          blob: new Blob(["zip"]),
-          filename: "submission.test.zip",
-          submissionId: "sub-123",
-          r2Key: "r2://bucket/submissions/sub-123.zip",
-        });
-        await zipDeferred.promise;
+        pollDeferred.resolve("/api/catalog/submission/download/sub-123");
+        await pollDeferred.promise;
       });
 
       await waitFor(() => {
@@ -341,13 +340,9 @@ describe("useCatalogConsole scoped action feedback", () => {
     });
 
     it("TC-02: Upload action — step label transitions during in-flight upload", async () => {
+      const pollDeferred = createDeferred<string>();
       const uploadDeferred = createDeferred<Response>();
-      fetchSubmissionZipMock.mockResolvedValue({
-        blob: new Blob(["zip"]),
-        filename: "submission.test.zip",
-        submissionId: "sub-123",
-        r2Key: "r2://bucket/submissions/sub-123.zip",
-      });
+      pollJobUntilCompleteMock.mockReturnValue(pollDeferred.promise);
       global.fetch = jest.fn((input: RequestInfo | URL, init?: RequestInit) => {
         const url = String(input);
         if (url === "/api/uploader/session") return Promise.resolve(jsonResponse({ authenticated: true }));
@@ -358,6 +353,14 @@ describe("useCatalogConsole scoped action feedback", () => {
         }
         if (url.startsWith("/api/catalog/sync?storefront=")) {
           return Promise.resolve(jsonResponse({ ok: true, ready: true, missingScripts: [] }));
+        }
+        if (url === "/api/catalog/submission/download/sub-123") {
+          return Promise.resolve(
+            new Response(new Blob(["zip"]), {
+              status: 200,
+              headers: { "Content-Disposition": 'attachment; filename="submission.test.zip"' },
+            }),
+          );
         }
         if (init?.method === "PUT") {
           return uploadDeferred.promise;
@@ -373,7 +376,16 @@ describe("useCatalogConsole scoped action feedback", () => {
       await clickButton("upload");
 
       await waitFor(() => {
-        expect(screen.getByTestId("submission-step")).toHaveTextContent("Uploading…");
+        expect(screen.getByTestId("submission-step")).toHaveTextContent("polling");
+      });
+
+      await act(async () => {
+        pollDeferred.resolve("/api/catalog/submission/download/sub-123");
+        await pollDeferred.promise;
+      });
+
+      await waitFor(() => {
+        expect(screen.getByTestId("submission-step")).toHaveTextContent("uploading-zip");
       });
 
       await act(async () => {
@@ -387,7 +399,7 @@ describe("useCatalogConsole scoped action feedback", () => {
     });
 
     it("TC-03: Export action fails — step label absent after failure", async () => {
-      fetchSubmissionZipMock.mockRejectedValue(new Error("internal_error"));
+      enqueueSubmissionJobMock.mockRejectedValue(new Error("internal_error"));
       mockConsoleBootstrapFetch();
 
       renderHarness();
@@ -403,12 +415,6 @@ describe("useCatalogConsole scoped action feedback", () => {
     });
 
     it("TC-04: Clear submission — step label cleared", async () => {
-      fetchSubmissionZipMock.mockResolvedValue({
-        blob: new Blob(["zip"]),
-        filename: "submission.test.zip",
-        submissionId: "sub-123",
-        r2Key: "r2://bucket/submissions/sub-123.zip",
-      });
       mockConsoleBootstrapFetch();
 
       renderHarness();
@@ -438,7 +444,7 @@ describe("useCatalogConsole scoped action feedback", () => {
     }
 
     it("TC-01: Export action with validation failure reason", async () => {
-      fetchSubmissionZipMock.mockRejectedValue(
+      enqueueSubmissionJobMock.mockRejectedValue(
         new SubmissionApiError("invalid", "submission_validation_failed"),
       );
       mockConsoleBootstrapFetch();
@@ -455,7 +461,7 @@ describe("useCatalogConsole scoped action feedback", () => {
     });
 
     it("TC-02: Export action with internal_error reason", async () => {
-      fetchSubmissionZipMock.mockRejectedValue(new Error("internal_error"));
+      enqueueSubmissionJobMock.mockRejectedValue(new Error("internal_error"));
       mockConsoleBootstrapFetch();
 
       renderHarness();
@@ -470,7 +476,7 @@ describe("useCatalogConsole scoped action feedback", () => {
     });
 
     it("TC-03: Export action with unknown error code", async () => {
-      fetchSubmissionZipMock.mockRejectedValue(new Error("unknown_code"));
+      enqueueSubmissionJobMock.mockRejectedValue(new Error("unknown_code"));
       mockConsoleBootstrapFetch();
 
       renderHarness();
@@ -483,7 +489,7 @@ describe("useCatalogConsole scoped action feedback", () => {
     });
 
     it("TC-04: Upload action with validation failure reason", async () => {
-      fetchSubmissionZipMock.mockRejectedValue(
+      enqueueSubmissionJobMock.mockRejectedValue(
         new SubmissionApiError("invalid", "submission_validation_failed"),
       );
       let uploadPutCalls = 0;

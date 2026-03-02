@@ -216,27 +216,32 @@ describe("catalog sync route branch coverage", () => {
       status: 500,
       details: "upstream unavailable",
     });
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
 
-    const { POST } = await import("../route");
-    const response = await POST(
-      new Request("http://localhost/api/catalog/sync", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          storefront: "xa-b",
-          options: { strict: true, recursive: true },
+    try {
+      const { POST } = await import("../route");
+      const response = await POST(
+        new Request("http://localhost/api/catalog/sync", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            storefront: "xa-b",
+            options: { strict: true, recursive: true },
+          }),
         }),
-      }),
-    );
+      );
 
-    expect(response.status).toBe(502);
-    expect(await response.json()).toEqual(
-      expect.objectContaining({
-        ok: false,
-        error: "catalog_publish_failed",
-        recovery: "review_catalog_contract",
-      }),
-    );
+      expect(response.status).toBe(502);
+      expect(await response.json()).toEqual(
+        expect.objectContaining({
+          ok: false,
+          error: "catalog_publish_failed",
+          recovery: "review_catalog_contract",
+        }),
+      );
+    } finally {
+      consoleErrorSpy.mockRestore();
+    }
   });
 
   it("POST rate limits after the configured number of sync calls", async () => {

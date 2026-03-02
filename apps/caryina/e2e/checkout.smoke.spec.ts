@@ -3,19 +3,31 @@ import { expect, test } from "playwright/test";
 const SMOKE_PRODUCT_ID = "01KCS72C6YV3PFWJQNF0A4T1P1";
 
 async function seedCartFromFirstProduct(page: import("playwright/test").Page) {
-  const response = await page.request.post("/api/cart", {
-    data: {
-      sku: { id: SMOKE_PRODUCT_ID },
-      qty: 1,
-    },
-  });
-  expect(response.ok()).toBeTruthy();
-  const payload = (await response.json()) as {
-    ok?: boolean;
-    cart?: Record<string, unknown>;
+  await page.goto("/en/checkout", { waitUntil: "networkidle" });
+  const payload = (await page.evaluate(async (productId) => {
+    const response = await fetch("/api/cart", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        sku: { id: productId },
+        qty: 1,
+      }),
+    });
+    const body = (await response.json().catch(() => ({}))) as Record<string, unknown>;
+    return {
+      ok: response.ok,
+      body,
+    };
+  }, SMOKE_PRODUCT_ID)) as {
+    ok: boolean;
+    body?: {
+      ok?: boolean;
+      cart?: Record<string, unknown>;
+    };
   };
   expect(payload.ok).toBeTruthy();
-  expect(Object.keys(payload.cart ?? {})).not.toHaveLength(0);
+  expect(payload.body?.ok).toBeTruthy();
+  expect(Object.keys(payload.body?.cart ?? {})).not.toHaveLength(0);
 }
 
 async function fillCardForm(page: import("playwright/test").Page) {

@@ -9,6 +9,8 @@
     "lint": "eslint . --no-error-on-unmatched-pattern",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "bash ../../scripts/tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs --passWithNoTests",
+    "e2e": "pnpm exec playwright test --config ./playwright.config.ts",
+    "e2e:smoke": "pnpm exec playwright test --config ./playwright.config.ts --grep @smoke",
     "validate:launch-media": "pnpm exec tsx ./scripts/validate-launch-media-contract.ts"
   },
   "dependencies": {

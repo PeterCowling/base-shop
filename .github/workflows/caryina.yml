@@ -47,6 +47,7 @@ jobs:
     with:
       app-filter: "@apps/caryina"
       jest-force-coverage: true
+      e2e-smoke-cmd: "pnpm --filter @apps/caryina e2e:smoke"
       build-cmd: >
         pnpm exec turbo run build --filter=@apps/caryina^... &&
         if [ "${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' }}" = "true" ]; then

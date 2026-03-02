@@ -77,6 +77,8 @@ describe("callPayment", () => {
   beforeEach(() => {
     jest.resetModules();
     process.env = { ...originalEnv };
+    // Ensure SOAP-path tests are deterministic even when CI exports AXERVE_USE_MOCK.
+    delete process.env.AXERVE_USE_MOCK;
     mockCallPagamS2SAsync = jest.fn();
     jest.doMock("soap", () => ({
       createClientAsync: jest
@@ -140,6 +142,8 @@ describe("callRefund", () => {
   beforeEach(() => {
     jest.resetModules();
     process.env = { ...originalEnv };
+    // Ensure SOAP-path tests are deterministic even when CI exports AXERVE_USE_MOCK.
+    delete process.env.AXERVE_USE_MOCK;
     mockCallRefundS2SAsync = jest.fn();
     jest.doMock("soap", () => ({
       createClientAsync: jest

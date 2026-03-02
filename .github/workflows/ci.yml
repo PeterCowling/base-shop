@@ -35,6 +35,7 @@ jobs:
     timeout-minutes: 5
     outputs:
       shop: ${{ steps.filter.outputs.shop }}
+      email_shadow_replay: ${{ steps.filter.outputs.email_shadow_replay }}
     steps:
       - uses: actions/checkout@v4
         with:

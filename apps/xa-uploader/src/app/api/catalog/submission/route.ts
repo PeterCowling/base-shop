@@ -1,7 +1,9 @@
+import crypto from "node:crypto";
 import type { Readable as NodeReadable } from "node:stream";
 import { Readable } from "node:stream";
 
 import { NextResponse } from "next/server";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 import type { CatalogProductDraftInput } from "@acme/lib/xa";
 import { catalogProductDraftSchema, slugify } from "@acme/lib/xa";
@@ -12,7 +14,15 @@ import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
 import { isLocalFsRuntimeEnabled } from "../../../../lib/localFsGuard";
 import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
 import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
+import {
+  enqueueJob,
+  JOB_TTL_SECONDS,
+  type SubmissionKvNamespace,
+  updateJob,
+  zipKey,
+} from "../../../../lib/submissionJobStore";
 import { buildSubmissionZipFromCloudDrafts, buildSubmissionZipStream } from "../../../../lib/submissionZip";
+import { getUploaderKv } from "../../../../lib/syncMutex";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
 
 export const runtime = "nodejs";
@@ -83,6 +93,66 @@ function getSubmissionMaxBytes(): number {
   const parsed = Number.parseInt(process.env.XA_UPLOADER_SUBMISSION_MAX_BYTES ?? "", 10);
   if (!Number.isFinite(parsed) || parsed <= 0) return DEFAULT_SUBMISSION_MAX_BYTES;
   return Math.min(parsed, FREE_TIER_SUBMISSION_MAX_BYTES);
+}
+
+function buildZipResponse({
+  filename,
+  submissionId,
+  suggestedR2Key,
+  stream,
+  exposeR2Key,
+}: {
+  filename: string;
+  submissionId: string;
+  suggestedR2Key: string;
+  stream: NodeJS.ReadableStream;
+  exposeR2Key: boolean;
+}): Response {
+  return new Response(Readable.toWeb(stream as unknown as NodeReadable), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/zip",
+      "Content-Disposition": `attachment; filename="${filename}"`,
+      "Cache-Control": "no-store",
+      "X-XA-Submission-Id": submissionId,
+      ...(exposeR2Key ? { "X-XA-Submission-R2-Key": suggestedR2Key } : {}),
+    },
+  });
+}
+
+async function streamToBuffer(readable: NodeReadable): Promise<Buffer> {
+  const chunks: Buffer[] = [];
+  for await (const chunk of readable) {
+    chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk as Uint8Array));
+  }
+  return Buffer.concat(chunks);
+}
+
+async function executeSubmissionJob(
+  jobId: string,
+  kv: SubmissionKvNamespace,
+  selected: CatalogProductDraftInput[],
+  maxBytes: number,
+): Promise<void> {
+  try {
+    await updateJob(kv, jobId, { status: "running", error: undefined });
+    const { stream } = await buildSubmissionZipFromCloudDrafts({
+      products: selected,
+      options: { maxProducts: 10, maxBytes },
+    });
+    const zipBuffer = await streamToBuffer(stream as unknown as NodeReadable);
+    await kv.put(zipKey(jobId), zipBuffer, { expirationTtl: JOB_TTL_SECONDS });
+    await updateJob(kv, jobId, {
+      status: "complete",
+      downloadUrl: `/api/catalog/submission/download/${jobId}`,
+      error: undefined,
+    });
+  } catch (error) {
+    await updateJob(kv, jobId, {
+      status: "failed",
+      error: error instanceof Error ? error.message : String(error),
+    }).catch(() => null);
+  }
 }
 
 export async function POST(request: Request) {
@@ -156,7 +226,9 @@ export async function POST(request: Request) {
 
   const startedAt = Date.now();
   try {
-    const catalog = isLocalFsRuntimeEnabled()
+    const localFsRuntimeEnabled = isLocalFsRuntimeEnabled();
+    const submissionMaxBytes = getSubmissionMaxBytes();
+    const catalog = localFsRuntimeEnabled
       ? await listCatalogDrafts(storefront)
       : await readCloudDraftSnapshot(storefront);
     const selected = catalog.products.filter((product) => {
@@ -180,29 +252,53 @@ export async function POST(request: Request) {
       ); // i18n-exempt -- XAUP-0001 [ttl=2026-12-31] machine response
     }
 
-    const { filename, manifest, stream } = isLocalFsRuntimeEnabled()
-      ? await buildSubmissionZipStream({
-          products: selected,
-          productsCsvPath: (catalog as Awaited<ReturnType<typeof listCatalogDrafts>>).path,
-          options: { maxProducts: 10, maxBytes: getSubmissionMaxBytes(), recursiveDirs: true },
-        })
-      : await buildSubmissionZipFromCloudDrafts({
-          products: selected,
-          options: { maxProducts: 10, maxBytes: getSubmissionMaxBytes() },
-        });
+    if (localFsRuntimeEnabled) {
+      const { filename, manifest, stream } = await buildSubmissionZipStream({
+        products: selected,
+        productsCsvPath: (catalog as Awaited<ReturnType<typeof listCatalogDrafts>>).path,
+        options: { maxProducts: 10, maxBytes: submissionMaxBytes, recursiveDirs: true },
+      });
 
-    const response = new Response(Readable.toWeb(stream as unknown as NodeReadable), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/zip",
-        "Content-Disposition": `attachment; filename="${filename}"`,
-        "Cache-Control": "no-store",
-        "X-XA-Submission-Id": manifest.submissionId,
-        ...(shouldExposeSubmissionR2Key() ? { "X-XA-Submission-R2-Key": manifest.suggestedR2Key } : {}),
-      },
-    });
-    applyRateLimitHeaders(response.headers, limit);
-    return response;
+      const response = buildZipResponse({
+        filename,
+        submissionId: manifest.submissionId,
+        suggestedR2Key: manifest.suggestedR2Key,
+        stream,
+        exposeR2Key: shouldExposeSubmissionR2Key(),
+      });
+      applyRateLimitHeaders(response.headers, limit);
+      return response;
+    }
+
+    const kv = await getUploaderKv();
+    if (!kv) {
+      const { filename, manifest, stream } = await buildSubmissionZipFromCloudDrafts({
+        products: selected,
+        options: { maxProducts: 10, maxBytes: submissionMaxBytes },
+      });
+      const response = buildZipResponse({
+        filename,
+        submissionId: manifest.submissionId,
+        suggestedR2Key: manifest.suggestedR2Key,
+        stream,
+        exposeR2Key: false,
+      });
+      applyRateLimitHeaders(response.headers, limit);
+      return response;
+    }
+
+    const jobId = crypto.randomUUID();
+    await enqueueJob(kv, jobId);
+    const { ctx } = await getCloudflareContext({ async: true });
+    ctx.waitUntil(
+      executeSubmissionJob(
+        jobId,
+        kv as SubmissionKvNamespace,
+        selected,
+        submissionMaxBytes,
+      ),
+    );
+    return withRateHeaders(NextResponse.json({ ok: true, jobId }, { status: 202 }), limit);
   } catch (error) {
     if (isKnownSubmissionValidationError(error)) {
       return withRateHeaders(

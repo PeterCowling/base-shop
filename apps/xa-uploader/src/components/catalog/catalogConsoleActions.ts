@@ -27,7 +27,13 @@ import {
 } from "./catalogConsoleFeedback";
 import { buildLogBlock, toErrorMap } from "./catalogConsoleUtils";
 import { buildEmptyDraft, withDraftDefaults } from "./catalogDraft";
-import { downloadBlob, fetchSubmissionZip, SubmissionApiError } from "./catalogSubmissionClient";
+import {
+  downloadBlob,
+  enqueueSubmissionJob,
+  parseFilenameFromDisposition,
+  pollJobUntilComplete,
+  SubmissionApiError,
+} from "./catalogSubmissionClient";
 
 type Translator = (key: string, vars?: Record<string, unknown>) => string;
 
@@ -522,20 +528,22 @@ export async function handleExportSubmissionImpl({
   clearActionFeedbackDomains(setActionFeedback, ["submission"]);
   setSubmissionAction("export");
   try {
-    setSubmissionStep("building-zip");
     const slugs = Array.from(submissionSlugs);
-    const { blob, filename, submissionId } = await fetchSubmissionZip(
-      slugs,
-      t("exportFailed"),
-      storefront,
-    );
+    const { jobId } = await enqueueSubmissionJob(slugs, storefront);
+    setSubmissionStep("polling");
+    const downloadUrl = await pollJobUntilComplete(jobId);
+    const response = await fetch(downloadUrl);
+    if (!response.ok) {
+      throw new SubmissionApiError("download_failed");
+    }
+    const blob = await response.blob();
+    const filename =
+      parseFilenameFromDisposition(response.headers.get("Content-Disposition")) || "submission.zip";
     downloadBlob(blob, filename);
     handleClearSubmission();
-    const statusParts: string[] = [];
-    statusParts.push(submissionId ? t("submissionReady", { id: submissionId }) : filename);
     updateActionFeedback(setActionFeedback, "submission", {
       kind: "success",
-      message: statusParts.join(" · "),
+      message: t("submissionReady", { id: filename }),
     });
   } catch (err) {
     const reason = err instanceof SubmissionApiError ? err.reason : undefined;
@@ -584,17 +592,21 @@ export async function handleUploadSubmissionToR2Impl({
   clearActionFeedbackDomains(setActionFeedback, ["submission"]);
   setSubmissionAction("upload");
   try {
-    setSubmissionStep("building-zip");
     const slugs = Array.from(submissionSlugs);
-    const { blob, filename, submissionId } = await fetchSubmissionZip(
-      slugs,
-      t("exportFailed"),
-      storefront,
-    );
+    const { jobId } = await enqueueSubmissionJob(slugs, storefront);
+    setSubmissionStep("polling");
+    const downloadUrl = await pollJobUntilComplete(jobId);
     setSubmissionStep("uploading-zip");
+    const dlResponse = await fetch(downloadUrl);
+    if (!dlResponse.ok) {
+      throw new SubmissionApiError("download_failed");
+    }
+    const blob = await dlResponse.blob();
+    const filename =
+      parseFilenameFromDisposition(dlResponse.headers.get("Content-Disposition")) || "submission.zip";
     const uploadTarget = parseUploadEndpoint(submissionUploadUrl);
     const headers: Record<string, string> = { "Content-Type": "application/zip" };
-    if (submissionId) headers["X-XA-Submission-Id"] = submissionId;
+    if (jobId) headers["X-XA-Submission-Id"] = jobId;
     if (uploadTarget.token) headers["X-XA-Upload-Token"] = uploadTarget.token;
     const res = await fetch(uploadTarget.endpointUrl, {
       method: "PUT",
@@ -605,11 +617,9 @@ export async function handleUploadSubmissionToR2Impl({
       throw new Error("internal_error");
     }
     handleClearSubmission();
-    const statusParts: string[] = [];
-    statusParts.push(submissionId ? t("submissionUploaded", { id: submissionId }) : filename);
     updateActionFeedback(setActionFeedback, "submission", {
       kind: "success",
-      message: statusParts.join(" · "),
+      message: t("submissionUploaded", { id: jobId || filename }),
     });
   } catch (err) {
     const reason = err instanceof SubmissionApiError ? err.reason : undefined;

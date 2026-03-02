@@ -42,6 +42,23 @@ jest.mock("../../../../../lib/requestJson", () => ({
   readJsonBodyWithLimit: (...args: unknown[]) => readJsonBodyWithLimitMock(...args),
 }));
 
+jest.mock("../../../../../lib/submissionJobStore", () => ({
+  enqueueJob: jest.fn(),
+  updateJob: jest.fn(),
+  JOB_TTL_SECONDS: 3600,
+  zipKey: jest.fn((id: string) => `xa-submission-zip:${id}`),
+}));
+
+jest.mock("@opennextjs/cloudflare", () => ({
+  getCloudflareContext: jest.fn(),
+}));
+
+jest.mock("../../../../../lib/syncMutex", () => ({
+  getUploaderKv: jest.fn().mockResolvedValue(null),
+  acquireSyncMutex: jest.fn(),
+  releaseSyncMutex: jest.fn(),
+}));
+
 describe("catalog submission route branch coverage", () => {
   beforeEach(() => {
     jest.clearAllMocks();

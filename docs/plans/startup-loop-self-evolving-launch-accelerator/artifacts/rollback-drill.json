@@ -1,0 +1,8 @@
+{
+  "drill": "controlled_bad_candidate",
+  "decision": {
+    "action": "revert",
+    "reason": "error_rate_guardrail_breached"
+  },
+  "passed": true
+}

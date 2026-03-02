@@ -1,0 +1,2 @@
+{"queued_at":"2026-03-02T15:16:18.957Z","business":"BRIK","candidate_id":"9275eda27f0e5149","route":"lp-do-build","reason":"container_update_ready_for_build","executor_path":"lp-do-build:container:website-v1","autonomy_cap":2,"priority":7.75}
+{"queued_at":"2026-03-02T15:17:43.706Z","business":"BRIK","candidate_id":"ffd76eb2589b2505","route":"lp-do-build","reason":"container_update_ready_for_build","executor_path":"lp-do-build:container:website-v1","autonomy_cap":2,"priority":7.75}

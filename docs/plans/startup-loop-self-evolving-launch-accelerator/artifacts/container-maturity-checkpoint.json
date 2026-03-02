@@ -1,0 +1,17 @@
+{
+  "generated_at": "2026-03-02T15:17:33.886Z",
+  "total_containers": 8,
+  "m2_containers": [
+    "analytics-v1",
+    "website-v1",
+    "website-v2",
+    "offer-v1",
+    "distribution-sprint-v1",
+    "activation-loop-v1",
+    "feedback-intel-v1"
+  ],
+  "m3_containers": [
+    "experiment-cycle-v1"
+  ],
+  "readiness_pass": true
+}

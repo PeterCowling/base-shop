@@ -1,0 +1,22 @@
+{
+  "business": "BRIK",
+  "generated_at": "2026-03-02T15:19:59.916Z",
+  "dashboard": {
+    "totals": {
+      "observations": 9,
+      "candidates": 2,
+      "active_candidates": 2,
+      "blocked_candidates": 0,
+      "promoted_candidates": 0,
+      "reverted_candidates": 0
+    },
+    "precision_proxy": 1,
+    "data_quality_ok_ratio": 0,
+    "backlog_saturation": 0.2
+  },
+  "boundary": {
+    "mature_stage_detected": false,
+    "autonomy_level_cap": 4,
+    "reasons": []
+  }
+}

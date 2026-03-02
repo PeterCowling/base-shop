@@ -1,0 +1,124 @@
+{
+  "schema_version": "candidate-ledger.v1",
+  "business": "BRIK",
+  "updated_at": "2026-03-02T15:17:43.705Z",
+  "candidates": [
+    {
+      "candidate": {
+        "schema_version": "candidate.v1",
+        "candidate_id": "9275eda27f0e5149",
+        "candidate_type": "container_update",
+        "candidate_state": "validated",
+        "problem_statement": "Repeated work signature 2fe80bbc detected 6 times in BRIK.",
+        "trigger_observations": [
+          "8848e37d42163af4",
+          "be73cf88d4fcf7e2",
+          "9cb6ae9367afe9e5",
+          "6b628ec0ab5db473",
+          "b28b89bc6465274b",
+          "d6e65e8f040fdbb9"
+        ],
+        "executor_path": "lp-do-build:container:website-v1",
+        "change_scope": "business_only",
+        "applicability_predicates": [
+          "business=BRIK"
+        ],
+        "expected_benefit": "Reduce repetitive operator/manual workflow load.",
+        "risk_level": "medium",
+        "blast_radius_tag": "medium",
+        "autonomy_level_required": 2,
+        "estimated_effort": "M",
+        "recommended_action": "route_into_lp-do-build_backbone",
+        "owners": [
+          "startup-loop"
+        ],
+        "approvers": [
+          "operator"
+        ],
+        "test_plan": "offline_replay_plus_canary",
+        "validation_contract": "self-evolving.validation.v1",
+        "rollout_plan": "feature_flag_canary_then_promote",
+        "rollback_contract": "auto_revert_on_guardrail_breach",
+        "kill_switch": "self_evolving_global_kill_switch",
+        "blocked_reason_code": null,
+        "unblock_requirements": [],
+        "blocked_since": null,
+        "expiry_at": "2026-04-01T15:16:18.952Z"
+      },
+      "score": {
+        "priority_score_v1": 7.75,
+        "priority_score_v2": null,
+        "autonomy_cap": 2,
+        "reasons": [
+          "v2_evidence_missing_or_low_quality"
+        ]
+      },
+      "route": {
+        "route": "lp-do-build",
+        "reason": "container_update_ready_for_build"
+      },
+      "source_hard_signature": "2fe80bbc47fafca421db173975134befd8e7947aa1d2d25cfb4344b1bc83b008",
+      "generated_at": "2026-03-02T15:16:18.952Z"
+    },
+    {
+      "candidate": {
+        "schema_version": "candidate.v1",
+        "candidate_id": "ffd76eb2589b2505",
+        "candidate_type": "container_update",
+        "candidate_state": "validated",
+        "problem_statement": "Repeated work signature 2fe80bbc detected 9 times in BRIK.",
+        "trigger_observations": [
+          "8848e37d42163af4",
+          "be73cf88d4fcf7e2",
+          "9cb6ae9367afe9e5",
+          "6b628ec0ab5db473",
+          "b28b89bc6465274b",
+          "d6e65e8f040fdbb9",
+          "2220363926cd8cba",
+          "5be433625dda0d6d",
+          "f72c7dbdce59d20a"
+        ],
+        "executor_path": "lp-do-build:container:website-v1",
+        "change_scope": "business_only",
+        "applicability_predicates": [
+          "business=BRIK"
+        ],
+        "expected_benefit": "Reduce repetitive operator/manual workflow load.",
+        "risk_level": "medium",
+        "blast_radius_tag": "medium",
+        "autonomy_level_required": 2,
+        "estimated_effort": "M",
+        "recommended_action": "route_into_lp-do-build_backbone",
+        "owners": [
+          "startup-loop"
+        ],
+        "approvers": [
+          "operator"
+        ],
+        "test_plan": "offline_replay_plus_canary",
+        "validation_contract": "self-evolving.validation.v1",
+        "rollout_plan": "feature_flag_canary_then_promote",
+        "rollback_contract": "auto_revert_on_guardrail_breach",
+        "kill_switch": "self_evolving_global_kill_switch",
+        "blocked_reason_code": null,
+        "unblock_requirements": [],
+        "blocked_since": null,
+        "expiry_at": "2026-04-01T15:17:43.701Z"
+      },
+      "score": {
+        "priority_score_v1": 7.75,
+        "priority_score_v2": null,
+        "autonomy_cap": 2,
+        "reasons": [
+          "v2_evidence_missing_or_low_quality"
+        ]
+      },
+      "route": {
+        "route": "lp-do-build",
+        "reason": "container_update_ready_for_build"
+      },
+      "source_hard_signature": "2fe80bbc47fafca421db173975134befd8e7947aa1d2d25cfb4344b1bc83b008",
+      "generated_at": "2026-03-02T15:17:43.701Z"
+    }
+  ]
+}

@@ -1,0 +1,362 @@
+import { mapCandidateToBackboneRoute } from "./self-evolving-backbone.js";
+import {
+  evaluateMatureBoundary,
+  type MatureBoundarySignals,
+  type MatureBoundaryThresholds,
+} from "./self-evolving-boundary.js";
+import {
+  mergeRankedCandidates,
+  type RankedCandidate,
+  readCandidateLedger,
+  writeCandidateLedger,
+} from "./self-evolving-candidates.js";
+import {
+  type ImprovementCandidate,
+  type MetaObservation,
+  stableHash,
+  type StartupState,
+  throwOnContractErrors,
+  validateImprovementCandidate,
+} from "./self-evolving-contracts.js";
+import { buildDashboardSnapshot } from "./self-evolving-dashboard.js";
+import {
+  detectRepeatWorkCandidates,
+  type RepeatWorkCandidate,
+  type RepeatWorkDetectorConfig,
+} from "./self-evolving-detector.js";
+import {
+  appendObservationAsEvent,
+  readMetaObservations,
+} from "./self-evolving-events.js";
+import {
+  canCreateCandidate,
+  type CandidateBudgetPolicy,
+  enforceCreationGate,
+  validateTransition,
+} from "./self-evolving-lifecycle.js";
+import {
+  type CandidateEvidenceGate,
+  computeScoreResult,
+  type ScoreDimensionsV2,
+  type ScoreWeights,
+} from "./self-evolving-scoring.js";
+import {
+  createStartupStateStore,
+  writeStartupState,
+} from "./self-evolving-startup-state.js";
+
+const DEFAULT_DETECTOR_CONFIG: RepeatWorkDetectorConfig = {
+  recurrence_threshold: 2,
+  window_days: 7,
+  time_density_threshold: 0.2,
+  cooldown_days: 2,
+};
+
+const DEFAULT_SCORE_WEIGHTS: ScoreWeights = {
+  w1: 1,
+  w2: 1,
+  w3: 1,
+  w4: 0.75,
+  w5: 0.75,
+  w6: 1,
+  w7: 1.25,
+  w8: 1,
+};
+
+const DEFAULT_BUDGET_POLICY: CandidateBudgetPolicy = {
+  max_active_candidates: 10,
+  max_candidates_created_per_day: 20,
+  blocked_sla_days: 14,
+};
+
+const DEFAULT_BOUNDARY_SIGNALS: MatureBoundarySignals = {
+  monthly_revenue: 0,
+  headcount: 1,
+  support_ticket_volume_per_week: 0,
+  multi_region_compliance_flag: false,
+  operational_complexity_score: 1,
+};
+
+const DEFAULT_BOUNDARY_THRESHOLDS: MatureBoundaryThresholds = {
+  monthly_revenue: 10000,
+  headcount: 5,
+  support_ticket_volume_per_week: 100,
+  operational_complexity_score: 6,
+};
+
+function classifyCandidateType(observations: MetaObservation[]): ImprovementCandidate["candidate_type"] {
+  const contexts = observations.map((observation) => observation.context_path.toLowerCase());
+  if (contexts.some((context) => context.includes("token") || context.includes("deterministic"))) {
+    return "deterministic_extraction";
+  }
+  if (contexts.some((context) => context.includes("skill_refactor") || context.includes("refactor"))) {
+    return "skill_refactor";
+  }
+  if (contexts.some((context) => context.includes("new_skill") || context.includes("new-skill"))) {
+    return "new_skill";
+  }
+  return "container_update";
+}
+
+function inferExecutorPath(observations: MetaObservation[]): string {
+  const context = observations[0]?.context_path.toLowerCase() ?? "";
+  if (context.includes("website-v2")) return "lp-do-build:container:website-v2";
+  if (context.includes("website")) return "lp-do-build:container:website-v1";
+  if (context.includes("offer")) return "lp-do-build:container:offer-v1";
+  if (context.includes("distribution")) return "lp-do-build:container:distribution-sprint-v1";
+  if (context.includes("activation")) return "lp-do-build:container:activation-loop-v1";
+  if (context.includes("feedback")) return "lp-do-build:container:feedback-intel-v1";
+  if (context.includes("experiment")) return "lp-do-build:container:experiment-cycle-v1";
+  return "lp-do-build:container:analytics-v1";
+}
+
+function buildScoreDimensions(observations: MetaObservation[]): ScoreDimensionsV2 {
+  const count = observations.length;
+  const avgMinutes =
+    observations.reduce((sum, observation) => sum + observation.operator_minutes_estimate, 0) /
+    Math.max(1, count);
+  const avgQualityImpact =
+    observations.reduce((sum, observation) => sum + observation.quality_impact_estimate, 0) /
+    Math.max(1, count);
+  const avgSeverity =
+    observations.reduce((sum, observation) => sum + observation.severity, 0) /
+    Math.max(1, count);
+  const hasKpi = observations.some((observation) => observation.kpi_name != null);
+
+  return {
+    frequency_score: Math.min(5, count),
+    operator_time_score: Math.min(5, avgMinutes / 10),
+    quality_risk_reduction_score: Math.min(5, avgQualityImpact * 5),
+    token_savings_score: hasKpi ? 2 : 3,
+    implementation_effort_score: hasKpi ? 3 : 2,
+    blast_radius_risk_score: Math.min(5, avgSeverity * 5),
+    outcome_impact_score: hasKpi ? Math.min(5, avgSeverity * 6) : 1,
+    time_to_impact_score: hasKpi ? 4 : 2,
+  };
+}
+
+function buildEvidenceGate(observations: MetaObservation[]): CandidateEvidenceGate {
+  const sampleSize = observations
+    .map((observation) => observation.sample_size)
+    .filter((value): value is number => typeof value === "number")
+    .sort((a, b) => b - a)[0] ?? null;
+  const dataQualityStatus =
+    observations.find((observation) => observation.data_quality_status === "ok")
+      ?.data_quality_status ??
+    observations[0]?.data_quality_status ??
+    null;
+
+  return {
+    has_kpi_baseline: observations.some((observation) => observation.baseline_ref != null),
+    has_impact_mechanism: observations.some(
+      (observation) => observation.quality_impact_estimate > 0,
+    ),
+    has_measurement_plan: observations.some(
+      (observation) => observation.measurement_window != null,
+    ),
+    has_canary_path: true,
+    data_quality_status: dataQualityStatus,
+    sample_size: sampleSize,
+    minimum_sample_size: 30,
+  };
+}
+
+function buildCandidateFromRepeat(input: {
+  business: string;
+  runId: string;
+  repeat: RepeatWorkCandidate;
+  observations: MetaObservation[];
+  now: Date;
+}): ImprovementCandidate {
+  const candidateType = classifyCandidateType(input.observations);
+  const riskLevel: ImprovementCandidate["risk_level"] =
+    candidateType === "container_update" ? "medium" : "low";
+  const blastRadius: ImprovementCandidate["blast_radius_tag"] =
+    candidateType === "container_update" ? "medium" : "small";
+  const candidateId = stableHash(
+    `${input.business}|${input.repeat.hard_signature}|${input.runId}`,
+  ).slice(0, 16);
+  const expiryAt = new Date(input.now.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString();
+
+  return {
+    schema_version: "candidate.v1",
+    candidate_id: candidateId,
+    candidate_type: candidateType,
+    candidate_state: "draft",
+    problem_statement: `Repeated work signature ${input.repeat.hard_signature.slice(0, 8)} detected ${input.repeat.recurrence_count} times in ${input.business}.`,
+    trigger_observations: input.repeat.observation_ids,
+    executor_path: inferExecutorPath(input.observations),
+    change_scope: "business_only",
+    applicability_predicates: [`business=${input.business}`],
+    expected_benefit: "Reduce repetitive operator/manual workflow load.",
+    risk_level: riskLevel,
+    blast_radius_tag: blastRadius,
+    autonomy_level_required: 2,
+    estimated_effort: "M",
+    recommended_action: "route_into_lp-do-build_backbone",
+    owners: ["startup-loop"],
+    approvers: ["operator"],
+    test_plan: "offline_replay_plus_canary",
+    validation_contract: "self-evolving.validation.v1",
+    rollout_plan: "feature_flag_canary_then_promote",
+    rollback_contract: "auto_revert_on_guardrail_breach",
+    kill_switch: "self_evolving_global_kill_switch",
+    blocked_reason_code: null,
+    unblock_requirements: [],
+    blocked_since: null,
+    expiry_at: expiryAt,
+  };
+}
+
+export interface SelfEvolvingOrchestratorInput {
+  rootDir: string;
+  business: string;
+  run_id: string;
+  session_id: string;
+  startup_state: StartupState;
+  observations: MetaObservation[];
+  now?: Date;
+  detector_config?: RepeatWorkDetectorConfig;
+  score_weights?: ScoreWeights;
+  budget_policy?: CandidateBudgetPolicy;
+  boundary_signals?: MatureBoundarySignals;
+  boundary_thresholds?: MatureBoundaryThresholds;
+}
+
+export interface SelfEvolvingOrchestratorResult {
+  business: string;
+  generated_at: string;
+  startup_state_path: string;
+  candidate_path: string;
+  observations_count: number;
+  repeat_candidates_detected: number;
+  candidates_generated: number;
+  candidate_rejections: string[];
+  ranked_candidates: RankedCandidate[];
+  dashboard: ReturnType<typeof buildDashboardSnapshot>;
+  boundary: ReturnType<typeof evaluateMatureBoundary>;
+}
+
+export function runSelfEvolvingOrchestrator(
+  input: SelfEvolvingOrchestratorInput,
+): SelfEvolvingOrchestratorResult {
+  const now = input.now ?? new Date();
+  const detectorConfig = input.detector_config ?? DEFAULT_DETECTOR_CONFIG;
+  const scoreWeights = input.score_weights ?? DEFAULT_SCORE_WEIGHTS;
+  const budgetPolicy = input.budget_policy ?? DEFAULT_BUDGET_POLICY;
+
+  const store = createStartupStateStore(input.rootDir);
+  const startupStatePath = writeStartupState(store, input.startup_state);
+
+  for (const observation of input.observations) {
+    appendObservationAsEvent(input.rootDir, input.business, {
+      ...observation,
+      business: input.business,
+      run_id: observation.run_id || input.run_id,
+      session_id: observation.session_id || input.session_id,
+    });
+  }
+
+  const allObservations = readMetaObservations(input.rootDir, input.business);
+  const detectedRepeats = detectRepeatWorkCandidates(
+    allObservations,
+    detectorConfig,
+    { now },
+  ).filter((candidate) => !candidate.dropped_by_cooldown);
+
+  const existingLedger = readCandidateLedger(input.rootDir, input.business);
+  const existingCandidates = existingLedger.candidates.map((item) => item.candidate);
+
+  const generated: RankedCandidate[] = [];
+  const rejections: string[] = [];
+  let createdTodayCount = 0;
+
+  for (const repeat of detectedRepeats) {
+    const repeatObservations = allObservations.filter(
+      (observation) => observation.hard_signature === repeat.hard_signature,
+    );
+    if (repeatObservations.length === 0) {
+      rejections.push(`missing_observations_for_signature:${repeat.hard_signature}`);
+      continue;
+    }
+
+    const candidate = buildCandidateFromRepeat({
+      business: input.business,
+      runId: input.run_id,
+      repeat,
+      observations: repeatObservations,
+      now,
+    });
+    const contractErrors = validateImprovementCandidate(candidate);
+    if (contractErrors.length > 0) {
+      rejections.push(
+        `invalid_candidate:${candidate.candidate_id}:${contractErrors.join(",")}`,
+      );
+      continue;
+    }
+
+    const creationGate = enforceCreationGate(candidate);
+    if (!creationGate.allowed) {
+      rejections.push(`${candidate.candidate_id}:${creationGate.reason}`);
+      continue;
+    }
+    const budgetGate = canCreateCandidate(
+      [...existingCandidates, ...generated.map((item) => item.candidate)],
+      budgetPolicy,
+      createdTodayCount,
+    );
+    if (!budgetGate.allowed) {
+      rejections.push(`${candidate.candidate_id}:${budgetGate.reason}`);
+      continue;
+    }
+
+    const dimensions = buildScoreDimensions(repeatObservations);
+    const evidence = buildEvidenceGate(repeatObservations);
+    const score = computeScoreResult(candidate, dimensions, scoreWeights, evidence);
+    const transition = validateTransition(candidate.candidate_state, "validated");
+    const validatedCandidate: ImprovementCandidate = transition.allowed
+      ? { ...candidate, candidate_state: "validated" }
+      : candidate;
+    throwOnContractErrors(
+      "improvement_candidate",
+      validateImprovementCandidate(validatedCandidate),
+    );
+
+    generated.push({
+      candidate: validatedCandidate,
+      score,
+      route: mapCandidateToBackboneRoute(validatedCandidate),
+      source_hard_signature: repeat.hard_signature,
+      generated_at: now.toISOString(),
+    });
+    createdTodayCount += 1;
+  }
+
+  const mergedCandidates = mergeRankedCandidates(existingLedger.candidates, generated);
+  const candidatePath = writeCandidateLedger(input.rootDir, input.business, mergedCandidates);
+
+  const dashboard = buildDashboardSnapshot({
+    observations: allObservations,
+    candidates: mergedCandidates.map((item) => item.candidate),
+    wipCap: budgetPolicy.max_active_candidates,
+  });
+
+  const boundary = evaluateMatureBoundary(
+    input.boundary_signals ?? DEFAULT_BOUNDARY_SIGNALS,
+    input.boundary_thresholds ?? DEFAULT_BOUNDARY_THRESHOLDS,
+  );
+
+  return {
+    business: input.business,
+    generated_at: now.toISOString(),
+    startup_state_path: startupStatePath,
+    candidate_path: candidatePath,
+    observations_count: allObservations.length,
+    repeat_candidates_detected: detectedRepeats.length,
+    candidates_generated: generated.length,
+    candidate_rejections: rejections,
+    ranked_candidates: mergedCandidates,
+    dashboard,
+    boundary,
+  };
+}

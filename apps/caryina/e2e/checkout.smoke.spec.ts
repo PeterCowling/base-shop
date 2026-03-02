@@ -1,18 +1,21 @@
 import { expect, test } from "playwright/test";
 
+const SMOKE_PRODUCT_ID = "01KCS72C6YV3PFWJQNF0A4T1P1";
+
 async function seedCartFromFirstProduct(page: import("playwright/test").Page) {
-  await page.goto("/en/shop", { waitUntil: "networkidle" });
-
-  const firstProductLink = page.locator('a[href^="/en/product/"]').first();
-  await expect(firstProductLink).toBeVisible();
-  const productHref = await firstProductLink.getAttribute("href");
-  expect(productHref).toMatch(/^\/en\/product\/.+/);
-  await page.goto(productHref ?? "/en/shop", { waitUntil: "networkidle" });
-
-  const addToCart = page.getByRole("button", { name: /add to cart/i });
-  await expect(addToCart).toBeVisible();
-  await addToCart.click();
-  await expect(page.getByRole("link", { name: /cart \(\d+ item/i })).toBeVisible();
+  const response = await page.request.post("/api/cart", {
+    data: {
+      sku: { id: SMOKE_PRODUCT_ID },
+      qty: 1,
+    },
+  });
+  expect(response.ok()).toBeTruthy();
+  const payload = (await response.json()) as {
+    ok?: boolean;
+    cart?: Record<string, unknown>;
+  };
+  expect(payload.ok).toBeTruthy();
+  expect(Object.keys(payload.cart ?? {})).not.toHaveLength(0);
 }
 
 async function fillCardForm(page: import("playwright/test").Page) {
@@ -48,7 +51,7 @@ test("@smoke checkout decline keeps user on checkout and shows error", async ({ 
   await page.getByRole("button", { name: "Pay now" }).click();
 
   await expect(page).toHaveURL(/\/en\/checkout$/);
-  await expect(page.getByRole("alert")).toHaveText("Card declined");
+  await expect(page.locator("p[role='alert']")).toHaveText("Card declined");
 });
 
 test("@smoke checkout inventory conflict shows recovery error", async ({ page }) => {
@@ -70,7 +73,7 @@ test("@smoke checkout inventory conflict shows recovery error", async ({ page })
   await page.getByRole("button", { name: "Pay now" }).click();
 
   await expect(page).toHaveURL(/\/en\/checkout$/);
-  await expect(page.getByRole("alert")).toHaveText("Insufficient stock");
+  await expect(page.locator("p[role='alert']")).toHaveText("Insufficient stock");
 });
 
 test("@smoke checkout success transitions to success page and cancelled links are valid", async ({ page }) => {

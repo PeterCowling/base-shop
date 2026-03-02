@@ -80,8 +80,31 @@ function readPayload(): SiteContentPayload {
     );
   }
 
-  const raw = fs.readFileSync(GENERATED_PAYLOAD_PATH, "utf8");
-  const parsed = JSON.parse(raw) as Partial<SiteContentPayload>;
+  let parsed: Partial<SiteContentPayload> | null = null;
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    const raw = fs.readFileSync(GENERATED_PAYLOAD_PATH, "utf8");
+    try {
+      parsed = JSON.parse(raw) as Partial<SiteContentPayload>;
+      break;
+    } catch (error) {
+      const isUnexpectedEnd =
+        error instanceof SyntaxError &&
+        error.message.includes("Unexpected end of JSON input");
+      if (!isUnexpectedEnd || attempt === 1) {
+        throw new Error(
+          `Invalid generated site-content payload at ${GENERATED_PAYLOAD_PATH}: ${
+            error instanceof Error ? error.message : "failed to parse JSON"
+          }.`,
+        );
+      }
+    }
+  }
+
+  if (!parsed) {
+    throw new Error(
+      `Invalid generated site-content payload at ${GENERATED_PAYLOAD_PATH}: failed to parse JSON.`,
+    );
+  }
 
   if (!parsed.home || !parsed.shop || !parsed.productPage || !parsed.support || !parsed.policies) {
     throw new Error(

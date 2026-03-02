@@ -26,7 +26,7 @@ CASS retrieval currently searches `docs/plans`, `docs/business-os/startup-loop`,
 
 ## Active tasks
 - [x] TASK-01: Add `docs/business-os/strategy` to `DEFAULT_SOURCE_ROOTS` + export + update runbook
-- [ ] TASK-02: Add unit tests asserting the new default source roots
+- [x] TASK-02: Add unit tests asserting the new default source roots
 
 ## Goals
 - Make assessment-layer context available in every CASS retrieval invocation without any change to caller invocation patterns
@@ -78,7 +78,7 @@ CASS retrieval currently searches `docs/plans`, `docs/business-os/startup-loop`,
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Add `docs/business-os/strategy` to `DEFAULT_SOURCE_ROOTS`, export it, update runbook | 90% | S | Complete (2026-03-02) | - | TASK-02 |
-| TASK-02 | IMPLEMENT | Unit tests asserting `DEFAULT_SOURCE_ROOTS` content | 85% | S | Pending | TASK-01 | - |
+| TASK-02 | IMPLEMENT | Unit tests asserting `DEFAULT_SOURCE_ROOTS` content | 85% | S | Complete (2026-03-02) | TASK-01 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -147,7 +147,14 @@ CASS retrieval currently searches `docs/plans`, `docs/business-os/startup-loop`,
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** startup-loop-gap-fill
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-02)
+- **Build evidence:**
+  - TC-02-01: test `"includes docs/business-os/strategy"` — `expect(DEFAULT_SOURCE_ROOTS).toContain("docs/business-os/strategy")` ✓
+  - TC-02-02: test `"includes all 3 original roots"` — asserts `docs/plans`, `docs/business-os/startup-loop`, `.claude/skills` ✓
+  - TC-02-03: test `"has exactly 4 entries"` — `expect(DEFAULT_SOURCE_ROOTS).toHaveLength(4)` ✓
+  - TypeScript: `tsc --noEmit` → 0 errors with test file included ✓
+  - Import pattern: `import { DEFAULT_SOURCE_ROOTS } from "../cass-retrieve.js"` (ESM `.js` per existing test convention) ✓
+  - Test discovery: file at `__tests__/cass-retrieve.test.ts` matches `jest testMatch: **/?(*.)+(spec|test).ts?(x)` ✓
 - **Affects:**
   - `scripts/src/startup-loop/__tests__/cass-retrieve.test.ts` (new)
   - `[readonly] scripts/src/startup-loop/cass-retrieve.ts`

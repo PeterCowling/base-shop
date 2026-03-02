@@ -9,9 +9,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Section } from "@acme/design-system/atoms";
 import { DirectBookingPerks } from "@acme/ui/molecules";
 
+import { BookingCalendarPanel } from "@/components/booking/BookingCalendarPanel";
 import BookingNotice from "@/components/booking/BookingNotice";
 import type { DateRange } from "@/components/booking/DateRangePicker";
-import { DateRangePicker } from "@/components/booking/DateRangePicker";
 import RoomsSection, { type RoomsSectionBookingQuery } from "@/components/rooms/RoomsSection";
 import { roomsData } from "@/data/roomsData";
 import { useAvailability } from "@/hooks/useAvailability";
@@ -198,34 +198,24 @@ function RoomsSearchPanel({
 }) {
   const { range, pax, queryState, setRange, setPax } = model;
 
-  const onPaxInputChange = (value: string): void => {
-    const nextPax = parseInt(value, 10);
-    const normalized = Number.isFinite(nextPax) && nextPax > 0 ? nextPax : 1;
-    setPax(normalized);
-  };
-
   return (
     <Section padding="default" className="mx-auto max-w-7xl">
       <div className="rounded-2xl border border-brand-outline/40 bg-brand-surface p-4 shadow-sm">
-        <DateRangePicker
-          selected={range}
+        <BookingCalendarPanel
+          range={range}
           onRangeChange={setRange}
+          pax={pax}
+          onPaxChange={setPax}
+          minPax={1}
+          maxPax={8}
           stayHelperText={t("date.stayHelper", { defaultValue: "2–8 nights" }) as string}
           clearDatesText={t("date.clearDates", { defaultValue: "Clear dates" }) as string}
           checkInLabelText={t("booking.checkInLabel", { defaultValue: "Check in" }) as string}
           checkOutLabelText={t("booking.checkOutLabel", { defaultValue: "Check out" }) as string}
+          guestsLabelText={t("date.guests", { defaultValue: "Guests" }) as string}
+          decreaseGuestsAriaLabel={t("bookingControls.decreaseGuests") as string}
+          increaseGuestsAriaLabel={t("bookingControls.increaseGuests") as string}
         />
-        <label className="mt-4 flex flex-col gap-1 text-sm font-medium text-brand-heading">
-          {t("date.guests", { defaultValue: "Guests" }) as string}
-          <input
-            type="number"
-            min={1}
-            max={8}
-            value={pax}
-            onChange={(event) => onPaxInputChange(event.target.value)}
-            className="min-h-11 w-24 rounded-xl border border-brand-outline/40 bg-brand-bg px-3 py-2 text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
-          />
-        </label>
         {queryState === "invalid" ? (
           <BookingNotice className="mt-4">
             {t("bookingConstraints.notice") as string}{" "}
@@ -246,7 +236,7 @@ function RoomsPageContent({ lang, bookingQuery, serverTitle, serverSubtitle }: P
   usePagePreload({
     lang,
     namespaces: ["roomsPage", "assistanceCommon"],
-    optionalNamespaces: ["ratingsBar", "modals", "guides"],
+    optionalNamespaces: ["ratingsBar", "modals", "guides", "landingPage", "testimonials"],
   });
 
   // Use server-resolved props when available (guaranteed SSR content from RSC wrapper).

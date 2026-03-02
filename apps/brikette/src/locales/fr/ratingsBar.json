@@ -7,6 +7,7 @@
   "countReviews_one": "{{formattedCount}} avis",
   "countReviews_other": "{{formattedCount}} avis",
   "lastChecked": "Dernière vérification :",
+  "snapshotAsOf": "En date de {{date}}",
   "sources": {
     "hostelworld": {
       "ariaName": "Hostelworld",

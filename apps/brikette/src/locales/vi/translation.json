@@ -29,5 +29,9 @@
   },
   "internalErrors": {
     "assistanceSlugMissing": "ARTICLE_SLUGS phải định nghĩa ít nhất một assistance slug"
+  },
+  "stickyCta": {
+    "directHeadline": "Đặt mức giá tốt nhất hiện có trong vòng chưa đầy hai phút.",
+    "directSubcopy": "Bỏ qua phí của bên thứ ba và nhận hỗ trợ ưu tiên từ đội ngũ của chúng tôi tại Positano."
   }
 }

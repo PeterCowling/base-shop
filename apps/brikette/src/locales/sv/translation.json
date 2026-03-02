@@ -29,5 +29,9 @@
   },
   "internalErrors": {
     "assistanceSlugMissing": "ARTICLE_SLUGS måste definiera minst en assistance slug"
+  },
+  "stickyCta": {
+    "directHeadline": "Säkra vår bästa tillgängliga pris på under två minuter.",
+    "directSubcopy": "Undvik tredjepartsavgifter och få prioriterad hjälp från vårt team i Positano."
   }
 }

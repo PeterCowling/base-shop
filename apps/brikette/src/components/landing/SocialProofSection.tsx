@@ -41,17 +41,40 @@ function formatSnapshotMonthYear(isoDate: string, locale: string): string {
   return new Intl.DateTimeFormat(locale, { month: "long", year: "numeric" }).format(parsed);
 }
 
-const SocialProofSection = memo(function SocialProofSection({ lang }: { lang?: AppLanguage }): JSX.Element | null {
+const SocialProofSection = memo(function SocialProofSection({
+  lang,
+  showPerks = false,
+}: {
+  lang?: AppLanguage;
+  showPerks?: boolean;
+}): JSX.Element | null {
   const translationOptions = lang ? { lng: lang } : undefined;
   const { t: tLanding } = useTranslation("landingPage", translationOptions);
   const { t: tRatings, i18n } = useTranslation("ratingsBar", translationOptions);
   const { t: tTestimonials, ready } = useTranslation("testimonials", translationOptions);
+  const { t: tModals } = useTranslation("modals", translationOptions);
   const ratings = hotel.ratings ?? [];
 
   const featured: Testimonial[] = (() => {
     if (!ready) return [];
     const raw = tTestimonials("hostelworld.featured", { returnObjects: true }) as unknown;
     return Array.isArray(raw) ? (raw as Testimonial[]).slice(0, 2) : [];
+  })();
+
+  const perks: string[] = (() => {
+    if (!showPerks) return [];
+    const raw = tModals("directPerks.items", {
+      returnObjects: true,
+      defaultValue: [
+        // i18n-exempt -- BRIK-005 [ttl=2026-12-31] fallback copy for missing locale bundles.
+        "Up to 25% off",
+        // i18n-exempt -- BRIK-005 [ttl=2026-12-31] fallback copy for missing locale bundles.
+        "Complimentary breakfast",
+        // i18n-exempt -- BRIK-005 [ttl=2026-12-31] fallback copy for missing locale bundles.
+        "Complimentary evening drink",
+      ],
+    });
+    return Array.isArray(raw) ? (raw as string[]) : [];
   })();
 
   if (!ratings.length && !featured.length) return null;
@@ -63,13 +86,19 @@ const SocialProofSection = memo(function SocialProofSection({ lang }: { lang?: A
     `As of ${snapshotMonthYear}`
   );
 
+  const perksHeading = resolveTranslatedCopy(
+    tModals("directPerks.heading"),
+    // i18n-exempt -- BRIK-005 [ttl=2026-12-31] fallback.
+    "Why book direct?"
+  );
+
   return (
-    <section className="bg-brand-bg py-16 scroll-mt-24">
+    <section className="bg-brand-bg py-12 scroll-mt-24 sm:py-16">
       <Section as="div" padding="none" width="full" className="mx-auto max-w-6xl px-4">
 
         {/* Header */}
-        <div className="mb-10">
-          <h2 className="text-3xl font-semibold tracking-tight text-brand-heading">
+        <div className="mb-8 sm:mb-10">
+          <h2 className="text-2xl font-semibold tracking-tight text-brand-heading sm:text-3xl">
             {resolveTranslatedCopy(
               tLanding("socialProof.title", { defaultValue: FALLBACK_SOCIAL_PROOF_TITLE }),
               FALLBACK_SOCIAL_PROOF_TITLE
@@ -81,13 +110,13 @@ const SocialProofSection = memo(function SocialProofSection({ lang }: { lang?: A
               FALLBACK_SOCIAL_PROOF_SUBTITLE
             )}
           </p>
-          <p className="mt-2 text-xs font-medium uppercase tracking-widest text-brand-text/40">
+          <p className="mt-2 text-xs font-medium uppercase tracking-widest text-brand-text/60">
             {snapshotAsOfLabel}
           </p>
         </div>
 
         {/* 5-col grid: ratings 2 cols, testimonials 3 cols */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
+        <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-5">
 
           {/* Ratings */}
           <div className="flex flex-col gap-3 lg:col-span-2">
@@ -111,7 +140,7 @@ const SocialProofSection = memo(function SocialProofSection({ lang }: { lang?: A
                 >
                   <div>
                     <p className="font-semibold text-brand-heading">{providerLabel}</p>
-                    <p className="mt-0.5 text-xs text-brand-text/60">{reviewText}</p>
+                    <p className="mt-0.5 text-xs text-brand-text/70">{reviewText}</p>
                   </div>
                   <div className="flex items-center gap-1.5 pl-4">
                     <Star className="size-5 text-brand-secondary" aria-hidden />
@@ -146,6 +175,24 @@ const SocialProofSection = memo(function SocialProofSection({ lang }: { lang?: A
           </div>
 
         </div>
+
+        {/* Direct booking perks — shown only when showPerks is true */}
+        {showPerks && perks.length > 0 && (
+          <div className="mt-8 border-t border-brand-outline/20 pt-6">
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+              <span className="inline-flex shrink-0 items-center rounded-full bg-brand-secondary px-3 py-1 text-xs font-semibold uppercase tracking-wider text-brand-on-accent">
+                {perksHeading}
+              </span>
+              {perks.map((perk) => (
+                <span key={perk} className="flex items-center gap-1.5 text-sm text-brand-text/80">
+                  <span className="text-brand-secondary" aria-hidden>✓</span>
+                  {perk}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
       </Section>
     </section>
   );

@@ -117,7 +117,7 @@ function buildSummary(selected: DateRange | undefined): string | null {
  * ```
  */
 function useDayPickerCellSize(): number {
-  const [size, setSize] = useState(32);
+  const [size, setSize] = useState(36); // 36 = desktop default; matches SSR output, effect updates for mobile
   useEffect(() => {
     function update() {
       const w = window.innerWidth;
@@ -140,13 +140,21 @@ export function DateRangePicker({
   lang,
   className,
 }: DateRangePickerProps): React.JSX.Element {
+  const [hasMounted, setHasMounted] = useState(false);
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
   const cellSize = useDayPickerCellSize();
   const dayPickerLocale = lang ? (DAYPICKER_LOCALE_MAP[lang] ?? enUS) : enUS;
-  const disabledMatcher = buildDisabledMatcher(selected);
-  const summary = buildSummary(selected);
-  const hasCompleteRange = Boolean(selected?.from && selected?.to);
-  const selectedFromIso = selected?.from ? formatDate(selected.from) : "";
-  const selectedToIso = selected?.to ? formatDate(selected.to) : "";
+  // Keep SSR and first client render deterministic to avoid hydration drift.
+  // Restore user-selected state after mount.
+  const stableSelected = hasMounted ? selected : undefined;
+  const disabledMatcher = buildDisabledMatcher(stableSelected);
+  const summary = buildSummary(stableSelected);
+  const hasCompleteRange = Boolean(stableSelected?.from && stableSelected?.to);
+  const selectedFromIso = stableSelected?.from ? formatDate(stableSelected.from) : "";
+  const selectedToIso = stableSelected?.to ? formatDate(stableSelected.to) : "";
   const minCheckout = selectedFromIso ? getMinCheckoutForStay(selectedFromIso) ?? "" : "";
 
   function handleSelect(range: DateRange | undefined): void {
@@ -215,7 +223,7 @@ export function DateRangePicker({
       </label>
       <DayPicker
         mode="range"
-        selected={selected}
+        selected={stableSelected}
         onSelect={handleSelect}
         disabled={disabledMatcher}
         locale={dayPickerLocale}
@@ -242,7 +250,7 @@ export function DateRangePicker({
       </span>
 
       {/* Clear dates — centred under the calendar */}
-      <div className="mt-1 flex justify-center">
+      <div className="mt-1 mb-3 flex justify-center">
         <button
           type="button"
           data-cy={TEST_IDS.clear}

@@ -51,6 +51,118 @@
           "body": "Minden ágyhoz tartozik konnektor, olvasólámpa és kártyás szekrény, így értékeid biztonságban vannak."
         }
       ]
+    },
+    "room_3": {
+      "amenities": [
+        {
+          "title": "Kiváló ár-érték arány, tökéletes elhelyezkedés",
+          "body": "Egyik legkedvezőbb árú szálláslehetőségünk az ifjúsági szálló szívébe épül — közel a recepcióhoz, a közös konyhához és a többi utazóhoz."
+        },
+        {
+          "title": "Csak nőknek fenntartott emelet",
+          "body": "A 3-as szoba az ifjúsági szálló csak nőknek fenntartott szárnyának a része. A közeli közös fürdőszoba tiszta, jól felszerelt és kizárólag a női vendégek számára fenntartott."
+        },
+        {
+          "title": "Minden ágyban beépített adatvédelem",
+          "body": "Minden emeletes ágy adatvédelmi függönyöket, személyes olvasólámpát és töltőaljzatokat tartalmaz, hogy bármikor berendezhessük magunkat anélkül, hogy megzavarnánk a szomszédokat."
+        }
+      ]
+    },
+    "room_4": {
+      "amenities": [
+        {
+          "title": "Kizárólag nőknek fenntartott tér",
+          "body": "Kizárólag nőknek szánt közösségi hálóterem saját közös fürdőszobával — tiszta, jól karbantartott és kizárólag az ezen az emeleten tartózkodó női vendégek számára fenntartott."
+        },
+        {
+          "title": "Mindenki számára van hely",
+          "body": "Nyolc ágy négy emeletes ágyban azt jelenti, hogy mindig akad valaki, akivel egy ajánlást vagy strandkirándulást megoszthat, anélkül, hogy egy nagyobb vegyes hálóterem káosza sújtaná."
+        },
+        {
+          "title": "Minden ágynál az alapvető felszerelés",
+          "body": "Minden ágynál adatvédelmi függöny, olvasólámpa és USB-töltő aljzat biztosítja, hogy telefonja készen álljon a holnapi kalandokra."
+        }
+      ]
+    },
+    "room_5": {
+      "amenities": [
+        {
+          "title": "Tengerre néző terasz mellékelve",
+          "body": "Lépjen ki a közös teraszra, hogy élvezhesse Positano és a Tirrén-tenger panorámaképét — egy háttér, amelyet a legtöbb vendég soha nem akar elhagyni."
+        },
+        {
+          "title": "Saját fürdőszoba a szobához",
+          "body": "Csak a szobatársak által megosztott magánfürdőszoba azt jelenti, hogy nincs reggeli várakozás, és van elegendő hely, hogy saját tempójában felkészülhessen."
+        },
+        {
+          "title": "Társasági, mégis kényelmes",
+          "body": "Hat ágy nyílt elrendezésben, függönyökkel, olvasólámpákkal és töltési pontokkal minden ágynál — elég közel ahhoz, hogy barátokat lehessen szerezni, elég személyes ahhoz, hogy jól lehessen aludni."
+        }
+      ]
+    },
+    "room_6": {
+      "amenities": [
+        {
+          "title": "Az Amalfi-partra néző terasz",
+          "body": "A tengerre néző közös terasz pár lépésnyire van a szobától — tökéletes a hajnali nyújtásokhoz, az esti aperitivóhoz, vagy egyszerűen a lent lévő öbölben úszó hajók figyeléséhez."
+        },
+        {
+          "title": "Saját fürdőszoba",
+          "body": "Az ensuites fürdőszoba kizárólag ehhez a szobához tartozik, így Ön határozza meg a reggeli zuhanyozás menetrendjét, soha nem kell sorban állnia."
+        },
+        {
+          "title": "Rugalmas ágyelrendezés",
+          "body": "Három emeletes ágy és egy egyszemélyes ágy természetes módon illeszkedik az egyedüli utazók és a párok igényeihez, minden hely függönnyel, lámpával és töltőaljzattal felszerelve."
+        }
+      ]
+    },
+    "room_8": {
+      "amenities": [
+        {
+          "title": "Kertre néző menedék",
+          "body": "Az ifjúsági szálló kertjére néző csendes kilátás a 8-as szobát az épület egyik legcsendesebb helyévé teszi — ideális korán kelőknek vagy könnyű álomból ébredőknek."
+        },
+        {
+          "title": "Bensőséges csak nőknek fenntartott környezet",
+          "body": "Mindössze két ággyal egy csak nőknek fenntartott környezetben, ez a legközelebb álló ifjúsági szálló-élmény a magánszoba megtapasztalásához — a magánszoba ára nélkül."
+        },
+        {
+          "title": "Közeli megosztott fürdőszoba",
+          "body": "Egy szeplőtlen csak nőknek fenntartott közös fürdőszoba mindössze néhány lépésnyire van az ajtótól, egész nap jól felszerelt és karbantartott."
+        }
+      ]
+    },
+    "room_9": {
+      "amenities": [
+        {
+          "title": "Fürdőszoba három főre",
+          "body": "Mindössze három vendég által megosztott magánfürdőszoba valóban rövid sorokat és pihentető reggeli rutint jelent — ritka luxus az ifjúsági szálló-utazásban."
+        },
+        {
+          "title": "Az udvar nyugalma",
+          "body": "Az ifjúsági szálló védett udvarára befelé néző szoba hűvösebb és csendesebb, mint a tengerpartra néző emeletek — kellemetes menedék egy teljes felfedezési nap után."
+        },
+        {
+          "title": "Bensőséges csoporthangulat",
+          "body": "Emeletes ágyak helyett három egyszemélyes ágy lazább elrendezést ad a szobának — kényelmes az egyedüli utazóknak, akik egy kis extra padlóhelyet és fényt értékelnek."
+        }
+      ]
+    },
+    "room_10": {
+      "amenities": [
+        {
+          "title": "Fürdőszoba az egész hálóteremnek",
+          "body": "Hat vendég oszt meg egy fürdőszobát, és senki más — a reggeli rutinok gördülékenyebbek, ha a fürdőszoba az Öné, és nem az egész emeleté."
+        },
+        {
+          "title": "Klasszikus ifjúsági szálló hangulat",
+          "body": "Háromágyú emeletes ágyakkal rendelkező élénk vegyes hálóterem tökéletes azoknak az egyedüli utazóknak, akik megérkezésük első órájában készen állnak a világ minden tájáról érkező emberekkel ismerkedni."
+        },
+        {
+          "title": "Feltöltve és készen",
+          "body": "Minden emeletes ágy tartalmaz olvasólámpát, USB-töltő aljzatokat és adatvédelmi függönyöket, hogy saját menetrendje szerint pihenjen, még akkor is, ha a szoba tele van."
+        }
+      ]
     }
   }
 }

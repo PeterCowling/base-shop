@@ -127,28 +127,28 @@ export function FeatureSection({
   return (
     <Section className="mx-auto mt-6 max-w-3xl px-4">
       <dl className="space-y-2">
-        <div className="flex items-start gap-2 text-sm text-brand-text dark:text-brand-surface/90">
+        <div className="flex items-start gap-2 text-sm text-brand-text dark:text-brand-text/90">
           <dt className="w-28 shrink-0 font-medium">{bedsLabel}</dt>
           <dd>{features.bedSpec}</dd>
         </div>
-        <div className="flex items-start gap-2 text-sm text-brand-text dark:text-brand-surface/90">
+        <div className="flex items-start gap-2 text-sm text-brand-text dark:text-brand-text/90">
           <dt className="w-28 shrink-0 font-medium">{bathroomLabel}</dt>
           <dd>{features.bathroomSpec}</dd>
         </div>
         {features.viewSpec ? (
-          <div className="flex items-start gap-2 text-sm text-brand-text dark:text-brand-surface/90">
+          <div className="flex items-start gap-2 text-sm text-brand-text dark:text-brand-text/90">
             <dt className="w-28 shrink-0 font-medium">{viewLabel}</dt>
             <dd>{features.viewSpec}</dd>
           </div>
         ) : null}
         {features.terracePresent ? (
-          <div className="flex items-center gap-2 text-sm text-brand-text dark:text-brand-surface/90">
+          <div className="flex items-center gap-2 text-sm text-brand-text dark:text-brand-text/90">
             <dt className="w-28 shrink-0 font-medium">{terraceLabel}</dt>
             <dd>{privateTerraceLabel}</dd>
           </div>
         ) : null}
         {features.inRoomLockers ? (
-          <div className="flex items-center gap-2 text-sm text-brand-text dark:text-brand-surface/90">
+          <div className="flex items-center gap-2 text-sm text-brand-text dark:text-brand-text/90">
             <dt className="w-28 shrink-0 font-medium">{lockersLabel}</dt>
             <dd className="flex items-center gap-1">
               <FacilityIcon facility="locker" />
@@ -257,7 +257,7 @@ export function RoomDetailGuidesSection({
 }) {
   return (
     <Section className="mx-auto mt-8 max-w-3xl px-4">
-      <h2 className="mb-3 text-lg font-semibold text-brand-heading dark:text-brand-surface">
+        <h2 className="mb-3 text-lg font-semibold text-brand-heading dark:text-brand-text">
         {tGuides("labels.helpfulGuides")}
       </h2>
       <Grid as="ul" className="grid gap-3 sm:grid-cols-2">

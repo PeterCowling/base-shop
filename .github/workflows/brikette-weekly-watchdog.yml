@@ -1,0 +1,76 @@
+name: Brikette Weekly Smoke + Locale Watchdog
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1"
+
+concurrency:
+  group: brikette-weekly-watchdog-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  BRIKETTE_PROD_BASE_URL: https://www.hostel-positano.com
+  # Current debt baseline (2026-03-02). Tighten toward zero as locale backlog is fixed.
+  I18N_MAX_MISSING_FILES: "51"
+  I18N_MAX_MISSING_KEYS: "304"
+  I18N_MAX_UNTRANSLATED_KEYS: "3131"
+
+jobs:
+  production-smoke:
+    name: Production smoke audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Install Playwright browser
+        run: pnpm --filter @apps/brikette exec playwright install chromium --with-deps
+      - name: Run Brikette smoke against production
+        env:
+          E2E_BASE_URL: ${{ env.BRIKETTE_PROD_BASE_URL }}
+        run: node apps/brikette/scripts/e2e/brikette-smoke.mjs --mode=audit
+
+  locale-watchdog:
+    name: Locale JSON watchdog
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Run locale coverage + untranslated audit (threshold gated)
+        run: |
+          pnpm --filter @apps/brikette check-i18n-coverage --json --output=apps/brikette/i18n-coverage-report.json \
+            --max-missing-files=${I18N_MAX_MISSING_FILES} \
+            --max-missing-keys=${I18N_MAX_MISSING_KEYS} \
+            --max-untranslated-keys=${I18N_MAX_UNTRANSLATED_KEYS}
+      - name: Display locale watchdog summary
+        if: always()
+        run: |
+          node -e '
+            const fs = require("fs");
+            const reportPath = "apps/brikette/i18n-coverage-report.json";
+            if (!fs.existsSync(reportPath)) {
+              console.log("i18n report not found");
+              process.exit(0);
+            }
+            const report = JSON.parse(fs.readFileSync(reportPath, "utf8"));
+            const summary = report.summary ?? {};
+            console.log("## Locale Watchdog Summary");
+            console.log(`- Missing files: ${summary.totalMissingFiles ?? 0}`);
+            console.log(`- Missing keys: ${summary.totalMissingKeys ?? 0}`);
+            console.log(`- Untranslated keys: ${summary.totalUntranslatedKeys ?? 0}`);
+          '
+      - name: Upload locale watchdog report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: brikette-locale-watchdog-report
+          path: apps/brikette/i18n-coverage-report.json
+          if-no-files-found: warn

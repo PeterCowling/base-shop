@@ -29,5 +29,9 @@
   },
   "internalErrors": {
     "assistanceSlugMissing": "ARTICLE_SLUGS musi definiować co najmniej jeden slug pomocy"
+  },
+  "stickyCta": {
+    "directHeadline": "Zablokuj naszą najlepszą dostępną stawkę w mniej niż dwie minuty.",
+    "directSubcopy": "Unikaj opłat pośredników i uzyskaj priorytetową pomoc od naszego zespołu w Positano."
   }
 }

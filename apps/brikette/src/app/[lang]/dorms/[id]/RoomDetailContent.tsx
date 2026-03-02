@@ -57,7 +57,7 @@ export default function RoomDetailContent({ lang, id }: Props) {
   usePagePreload({
     lang,
     namespaces: ["roomsPage", "guides", "pages.rooms", "rooms"],
-    optionalNamespaces: ["assistanceCommon", "modals", "ratingsBar"],
+    optionalNamespaces: ["assistanceCommon", "modals", "ratingsBar", "landingPage", "testimonials"],
   });
   const searchParams = useSearchParams();
   const room = roomsData.find((r) => r.id === id)!;

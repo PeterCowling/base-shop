@@ -2,9 +2,9 @@ import { useTranslation } from "react-i18next";
 
 import { Section } from "@acme/design-system/atoms";
 
+import { BookingCalendarPanel } from "@/components/booking/BookingCalendarPanel";
 import BookingNotice from "@/components/booking/BookingNotice";
 import type { DateRange } from "@/components/booking/DateRangePicker";
-import { DateRangePicker } from "@/components/booking/DateRangePicker";
 import ExpiredQuoteNotice from "@/components/booking/ExpiredQuoteNotice";
 import RecoveryQuoteCapture from "@/components/booking/RecoveryQuoteCapture";
 import type { AppLanguage } from "@/i18n.config";
@@ -48,10 +48,10 @@ export function BookPageSearchPanel({
   const { t } = useTranslation("bookPage");
 
   return (
-    <div className="mt-6 space-y-4 rounded-2xl border border-brand-outline/40 bg-brand-surface p-4 shadow-sm">
-      <DateRangePicker
+    <div className="mt-6 mx-auto rounded-2xl border border-brand-outline/40 bg-brand-surface p-4 shadow-sm">
+      <BookingCalendarPanel
         lang={lang}
-        selected={range}
+        range={range}
         onRangeChange={(newRange) => {
           onRangeChange(newRange);
           const newCheckin = newRange?.from ? formatDate(newRange.from) : "";
@@ -60,38 +60,35 @@ export function BookPageSearchPanel({
             onCanonicalQuery({ checkin: newCheckin, checkout: newCheckout, pax });
           }
         }}
+        pax={pax}
+        onPaxChange={(next) => {
+          onPaxChange(next);
+          onCanonicalQuery({ checkin, checkout, pax: next });
+        }}
+        minPax={1}
+        maxPax={8}
         stayHelperText={stayHelperText}
         clearDatesText={clearDatesText}
         checkInLabelText={checkInLabelText}
         checkOutLabelText={checkOutLabelText}
+        guestsLabelText={guestsLabelText}
+        decreaseGuestsAriaLabel={t("bookingControls.decreaseGuests") as string}
+        increaseGuestsAriaLabel={t("bookingControls.increaseGuests") as string}
       />
-      <label className="flex flex-col gap-1 text-sm font-medium text-brand-heading">
-        {guestsLabelText}
-        <input
-          type="number"
-          min={1}
-          max={8}
-          value={pax}
-          onChange={(e) => {
-            const newPax = Number.isFinite(Number.parseInt(e.target.value, 10))
-              ? Math.max(1, Number.parseInt(e.target.value, 10))
-              : 1;
-            onPaxChange(newPax);
-            onCanonicalQuery({ checkin, checkout, pax: newPax });
-          }}
-          className="min-h-11 w-24 rounded-xl border border-brand-outline/40 bg-brand-bg px-3 py-2 text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
-        />
-      </label>
+
+      {/* Notices sit below the calendar row */}
       {showConstraintGuidance ? (
-        <BookingNotice>
-          {t("bookingConstraints.notice") as string}{" "}
-          <a className="underline" href="mailto:hostelpositano@gmail.com?subject=Split%20booking%20help">
-            {t("bookingConstraints.assistedLink") as string}
-          </a>
-          .
-        </BookingNotice>
+        <div className="mt-4">
+          <BookingNotice>
+            {t("bookingConstraints.notice") as string}{" "}
+            <a className="underline" href="mailto:hostelpositano@gmail.com?subject=Split%20booking%20help">
+              {t("bookingConstraints.assistedLink") as string}
+            </a>
+            .
+          </BookingNotice>
+        </div>
       ) : null}
-      {showRebuildQuotePrompt ? <ExpiredQuoteNotice /> : null}
+      {showRebuildQuotePrompt ? <div className="mt-4"><ExpiredQuoteNotice /></div> : null}
     </div>
   );
 }

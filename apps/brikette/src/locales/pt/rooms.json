@@ -51,6 +51,118 @@
           "body": "Cada cama oferece tomadas individuais, luz de leitura e cacifos com cartão para maior tranquilidade."
         }
       ]
+    },
+    "room_3": {
+      "amenities": [
+        {
+          "title": "Ótimo custo-benefício, localização perfeita",
+          "body": "Uma das nossas opções mais acessíveis fica no coração do hostel — perto da recepção, da cozinha compartilhada e dos outros viajantes."
+        },
+        {
+          "title": "Andar exclusivo para mulheres",
+          "body": "O quarto 3 faz parte de uma seção do hostel exclusiva para mulheres. O banheiro compartilhado próximo é limpo, bem abastecido e exclusivo para as hóspedes."
+        },
+        {
+          "title": "Privacidade embutida em cada beliche",
+          "body": "Cada beliche vem com cortinas de privacidade, uma luz de leitura pessoal e tomadas de carregamento para você se acomodar a qualquer hora sem incomodar os vizinhos."
+        }
+      ]
+    },
+    "room_4": {
+      "amenities": [
+        {
+          "title": "Espaço exclusivo para mulheres",
+          "body": "Um dormitório dedicado às mulheres com seu próprio banheiro compartilhado — limpo, bem mantido e reservado exclusivamente para as hóspedes deste andar."
+        },
+        {
+          "title": "Espaço para todos",
+          "body": "Oito camas em quatro beliches significa que sempre há alguém com quem compartilhar uma recomendação ou uma ida à praia, sem o caos de um dormitório misto maior."
+        },
+        {
+          "title": "O essencial em cada beliche",
+          "body": "Cada cama tem cortinas de privacidade, uma luz de leitura e tomadas USB para que seu telefone esteja pronto para as aventuras de amanhã."
+        }
+      ]
+    },
+    "room_5": {
+      "amenities": [
+        {
+          "title": "Varanda com vista para o mar incluída",
+          "body": "Saia para a varanda compartilhada para apreciar as vistas panorâmicas de Positano e o Mar Tirreno — um cenário do qual a maioria dos hóspedes nunca quer ir embora."
+        },
+        {
+          "title": "Banheiro privativo para o quarto",
+          "body": "Um banheiro privativo compartilhado apenas entre os colegas de quarto significa sem filas pela manhã e todo o espaço necessário para se preparar no seu ritmo."
+        },
+        {
+          "title": "Social mas confortável",
+          "body": "Seis camas em um layout aberto com cortinas, luzes de leitura e pontos de carregamento em cada beliche — perto o suficiente para fazer amigos, privado o suficiente para dormir bem."
+        }
+      ]
+    },
+    "room_6": {
+      "amenities": [
+        {
+          "title": "Varanda com vista para a Costa Amalfitana",
+          "body": "A varanda compartilhada com vista para o mar fica a poucos passos do quarto — perfeita para alongamentos ao amanhecer, aperitivo à noite ou simplesmente observar os barcos na baía."
+        },
+        {
+          "title": "Seu próprio banheiro",
+          "body": "O banheiro privativo pertence apenas a este quarto, então você define o horário dos banhos matinais sem nunca esperar na fila."
+        },
+        {
+          "title": "Distribuição flexível de camas",
+          "body": "Três beliches mais uma cama de solteiro se adaptam naturalmente a viajantes solo e duplas, cada lugar equipado com cortinas, luzes e tomadas."
+        }
+      ]
+    },
+    "room_8": {
+      "amenities": [
+        {
+          "title": "Refúgio com vista para o jardim",
+          "body": "Uma vista tranquila para o jardim do hostel faz do quarto 8 um dos lugares mais tranquilos do prédio — ideal para os que acordam cedo ou dormem levemente."
+        },
+        {
+          "title": "Ambiente íntimo exclusivo para mulheres",
+          "body": "Com apenas duas camas em um ambiente exclusivo para mulheres, esta é a experiência de hostel mais próxima de ter um quarto privativo — sem o preço de um quarto privativo."
+        },
+        {
+          "title": "Banheiro compartilhado próximo",
+          "body": "Um banheiro compartilhado imaculado exclusivo para mulheres fica a poucos passos da porta, bem abastecido e mantido durante todo o dia."
+        }
+      ]
+    },
+    "room_9": {
+      "amenities": [
+        {
+          "title": "Banheiro para três",
+          "body": "Um banheiro privativo compartilhado entre apenas três hóspedes significa filas genuinamente curtas e uma rotina matinal relaxada — um luxo raro nas viagens de hostel."
+        },
+        {
+          "title": "Calma do pátio",
+          "body": "Voltado para o interior sobre o pátio abrigado do hostel, o quarto permanece mais fresco e quieto do que os andares com vista para o mar — uma fuga bem-vinda após um dia cheio de explorações."
+        },
+        {
+          "title": "Sensação íntima de grupo",
+          "body": "Três camas de solteiro em vez de beliches dão ao quarto um layout mais relaxado — confortável para viajantes solo que apreciam um pouco mais de espaço e luz."
+        }
+      ]
+    },
+    "room_10": {
+      "amenities": [
+        {
+          "title": "Banheiro para todo o dormitório",
+          "body": "Seis hóspedes compartilham um banheiro e mais ninguém — as rotinas matinais ficam mais tranquilas quando o banheiro é seu e não de todo o andar."
+        },
+        {
+          "title": "Atmosfera clássica de hostel",
+          "body": "Um dormitório misto animado com três beliches é perfeito para viajantes solo prontos para conhecer pessoas de todo o mundo na primeira hora de chegada."
+        },
+        {
+          "title": "Carregado e pronto",
+          "body": "Cada beliche inclui uma luz de leitura, tomadas USB e cortinas de privacidade para que você possa descansar no seu ritmo mesmo quando o quarto está movimentado."
+        }
+      ]
     }
   }
 }

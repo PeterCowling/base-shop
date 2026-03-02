@@ -29,5 +29,9 @@
   },
   "internalErrors": {
     "assistanceSlugMissing": "يجب أن يعرّف ARTICLE_SLUGS مُعرّف مساعدة واحدًا على الأقل"
+  },
+  "stickyCta": {
+    "directHeadline": "احجز أفضل سعر متاح في أقل من دقيقتين.",
+    "directSubcopy": "تجنب رسوم الوسطاء واحصل على مساعدة ذات أولوية من فريقنا في بوزيتانو."
   }
 }

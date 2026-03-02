@@ -1,9 +1,9 @@
 import type { RefObject } from "react";
 import { useTranslation } from "react-i18next";
 
+import { BookingCalendarPanel } from "@/components/booking/BookingCalendarPanel";
 import BookingNotice from "@/components/booking/BookingNotice";
 import type { DateRange } from "@/components/booking/DateRangePicker";
-import { DateRangePicker } from "@/components/booking/DateRangePicker";
 import ExpiredQuoteNotice from "@/components/booking/ExpiredQuoteNotice";
 import RecoveryQuoteCapture from "@/components/booking/RecoveryQuoteCapture";
 import type { AppLanguage } from "@/i18n.config";
@@ -41,40 +41,21 @@ export function BookingPickerSection({
   return (
     <Section className="mx-auto mt-6 max-w-3xl px-4">
       <div ref={datePickerRef}>
-        <DateRangePicker
-          selected={range}
+        <BookingCalendarPanel
+          range={range}
           onRangeChange={onRangeChange}
+          pax={pickerAdults}
+          onPaxChange={onAdultsChange}
+          minPax={HOSTEL_MIN_PAX}
+          maxPax={maxPickerAdults}
           stayHelperText={stayHelperText}
           clearDatesText={clearDatesText}
           checkInLabelText={checkInLabelText}
           checkOutLabelText={checkOutLabelText}
+          guestsLabelText={adultsLabel}
+          decreaseGuestsAriaLabel={t("bookingControls.decreaseAdults") as string}
+          increaseGuestsAriaLabel={t("bookingControls.increaseAdults") as string}
         />
-        <div className="mt-4 flex flex-col gap-1">
-          <label className="text-sm text-brand-text dark:text-brand-surface/80">{adultsLabel}</label>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              aria-label={t("bookingControls.decreaseAdults") as string}
-              onClick={() => onAdultsChange(Math.max(HOSTEL_MIN_PAX, pickerAdults - 1))}
-              disabled={pickerAdults <= HOSTEL_MIN_PAX}
-              className="min-h-11 min-w-11 rounded border border-brand-outline/40 text-brand-primary disabled:opacity-40 dark:border-brand-secondary/35 dark:text-brand-secondary"
-            >
-              -
-            </button>
-            <span className="w-6 text-center text-sm text-brand-text dark:text-brand-surface/80">
-              {pickerAdults}
-            </span>
-            <button
-              type="button"
-              aria-label={t("bookingControls.increaseAdults") as string}
-              onClick={() => onAdultsChange(Math.min(maxPickerAdults, pickerAdults + 1))}
-              disabled={pickerAdults >= maxPickerAdults}
-              className="min-h-11 min-w-11 rounded border border-brand-outline/40 text-brand-primary disabled:opacity-40 dark:border-brand-secondary/35 dark:text-brand-secondary"
-            >
-              +
-            </button>
-          </div>
-        </div>
       </div>
     </Section>
   );

@@ -29,5 +29,9 @@
   },
   "internalErrors": {
     "assistanceSlugMissing": "ARTICLE_SLUGS muss mindestens einen Assistance-Slug definieren"
+  },
+  "stickyCta": {
+    "directHeadline": "Sichern Sie sich unseren besten verfügbaren Preis in weniger als zwei Minuten.",
+    "directSubcopy": "Umgehen Sie Drittanbietergebühren und erhalten Sie vorrangige Hilfe von unserem Team in Positano."
   }
 }

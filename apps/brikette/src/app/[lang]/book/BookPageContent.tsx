@@ -15,7 +15,6 @@ import {
   BookPageSearchPanel,
 } from "@/components/booking/BookPageSections";
 import type { DateRange } from "@/components/booking/DateRangePicker";
-import { DirectPerksBlock } from "@/components/booking/DirectPerksBlock";
 import LocationInline from "@/components/booking/LocationInline";
 import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
 import FaqStrip from "@/components/landing/FaqStrip";
@@ -37,6 +36,7 @@ import {
   type BookingSearchSource,
   hydrateBookingSearch,
   persistBookingSearch,
+  readBookingSearchFromStore,
 } from "@/utils/bookingSearch";
 import { formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
 import { fireSearchAvailability, fireViewItemList } from "@/utils/ga4-events";
@@ -176,7 +176,19 @@ function BookPageContent({ lang, heading }: Props): JSX.Element {
 
   const todayIso = useMemo(() => getTodayIso(), []);
   const hydrated = useMemo(
-    () => hydrateBookingSearch(params),
+    // Keep initial SSR/client render deterministic by hydrating only from URL params here.
+    // Shared-store hydration runs after mount to avoid hydration mismatches.
+    () =>
+      hydrateBookingSearch(params, {
+        storage: {
+          length: 0,
+          clear: () => undefined,
+          getItem: () => null,
+          key: () => null,
+          removeItem: () => undefined,
+          setItem: () => undefined,
+        },
+      }),
     [params],
   );
   const initialCheckin = hydrated.search?.checkin ?? "";
@@ -213,6 +225,22 @@ function BookPageContent({ lang, heading }: Props): JSX.Element {
     });
     setPax(initialPax);
   }, [initialCheckin, initialCheckout, initialPax]);
+
+  useEffect(() => {
+    // Only restore from shared store when URL does not provide an explicit range.
+    if (initialCheckin || initialCheckout) return;
+    const fromStore = readBookingSearchFromStore();
+    if (!fromStore) return;
+
+    const { checkin: storeCheckin, checkout: storeCheckout, pax: storePax } = fromStore.search;
+    if (!isValidSearch(storeCheckin, storeCheckout, storePax)) return;
+
+    setRange({
+      from: safeParseIso(storeCheckin),
+      to: safeParseIso(storeCheckout),
+    });
+    setPax(storePax);
+  }, [initialCheckin, initialCheckout]);
 
   const roomQueryState = useMemo<"valid" | "invalid" | "absent">(
     () => deriveRoomQueryState(checkin, checkout, pax),
@@ -259,13 +287,13 @@ function BookPageContent({ lang, heading }: Props): JSX.Element {
 
       {renderDealBanner(deal, t as TranslateFn)}
 
-      <SocialProofSection lang={lang} />
+      <SocialProofSection lang={lang} showPerks />
 
       <Section padding="default" className="mx-auto max-w-7xl">
-        <h1 className="text-3xl font-bold tracking-tight text-brand-heading sm:text-4xl">
+        <h1 className="text-center text-3xl font-bold tracking-tight text-brand-heading sm:text-4xl">
           {heading}
         </h1>
-        <p className="mt-2 text-sm text-brand-text/80">
+        <p className="mx-auto mt-2 text-center text-sm text-brand-text/80">
           {t("subheading", { defaultValue: "Choose your dates, then pick a room." }) as string}
         </p>
 
@@ -287,13 +315,6 @@ function BookPageContent({ lang, heading }: Props): JSX.Element {
           showRebuildQuotePrompt={showRebuildQuotePrompt}
         />
       </Section>
-
-      <DirectPerksBlock
-        lang={lang}
-        className="mb-6 rounded-2xl border border-brand-outline/30 bg-brand-surface p-6 shadow-sm"
-        savingsEyebrow={t("hostel.directSavings.eyebrow", { defaultValue: "Book direct and save" /* i18n-exempt -- BRIK-005 [ttl=2026-03-15] */ })}
-        savingsHeadline={t("hostel.directSavings.headline", { defaultValue: "Up to 25% less than Booking.com" /* i18n-exempt -- BRIK-005 [ttl=2026-03-15] */ })}
-      />
 
       <RoomsSection
         lang={lang}

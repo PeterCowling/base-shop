@@ -128,6 +128,13 @@
       "notes": "Brikette i18n preload hook dependency exception for stable namespace arrays used by page components."
     },
     "CAR-1432": {},
+    "CARY-TESTS-001": {
+      "allow": [
+        "apps/caryina/playwright.config.ts"
+      ],
+      "expires": "2027-03-01",
+      "notes": "Caryina Playwright config uses non-UI literals for local test server and admin key wiring."
+    },
     "CARYINA-104": {
       "allow": [
         "apps/caryina/src/components/Header.tsx",
@@ -143,6 +150,13 @@
       ],
       "expires": "2027-12-31",
       "notes": "Dynamic require used only in jsdom test environment (no globalThis.crypto.subtle); dead path in Worker/Node 18+."
+    },
+    "CARYINA-CHECKOUT-01": {
+      "allow": [
+        "apps/caryina/src/lib/checkoutIdempotency.server.ts"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Checkout idempotency server path uses scoped lint exceptions while integrity hardening work is underway."
     },
     "CF-1001": {},
     "CF-1002": {},
@@ -567,7 +581,8 @@
     },
     "XAUP-118": {
       "allow": [
-        "apps/xa-uploader/src/lib/catalogContractClient.ts"
+        "apps/xa-uploader/src/lib/catalogContractClient.ts",
+        "apps/xa-uploader/src/app/api/catalog/currency-rates/route.ts"
       ],
       "expires": "2026-12-31",
       "notes": "Catalog contract client request/error helpers carry temporary lint exceptions pending API client split."

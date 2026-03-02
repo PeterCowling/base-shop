@@ -28,6 +28,7 @@ jest.mock("@/components/apartment/FitCheck", () => ({
 jest.mock("@/utils/dateUtils", () => ({
   getTodayIso: () => "2026-03-01",
   getDatePlusTwoDays: () => "2026-03-04",
+  formatDisplayDate: (date: Date) => date.toISOString().slice(0, 10),
   formatDate: (date: Date) => date.toISOString().slice(0, 10),
   safeParseIso: (iso: string) => {
     if (!iso) return undefined;

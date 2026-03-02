@@ -135,13 +135,14 @@ describe("RecoveryQuoteCapture", () => {
     });
 
     // Resolve fetch to clean up
-    act(() => {
+    await act(async () => {
       resolveFetch(
         new Response(JSON.stringify({ status: "accepted", idempotencyKey: "rq:test" }), {
           status: 200,
           headers: { "Content-Type": "application/json" },
         }),
       );
+      await Promise.resolve();
     });
   });
 
@@ -170,13 +171,14 @@ describe("RecoveryQuoteCapture", () => {
       fireEvent.submit(form!);
     });
 
-    act(() => {
+    await act(async () => {
       resolveFetch(
         new Response(JSON.stringify({ status: "accepted", idempotencyKey: "rq:test" }), {
           status: 200,
           headers: { "Content-Type": "application/json" },
         }),
       );
+      await Promise.resolve();
     });
 
     await waitFor(() => {

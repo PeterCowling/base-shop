@@ -118,17 +118,13 @@ export const ReadinessScore: FC<ReadinessScoreProps> = memo(function ReadinessSc
         </svg>
 
         {/* Center content */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <div className="absolute inset-0 pt-7 text-center">
           {isComplete ? (
-            <CheckCircle2 className={`h-10 w-10 ${colors.text}`} />
+            <CheckCircle2 className={`mx-auto h-10 w-10 ${colors.text}`} />
           ) : (
             <>
-              <span className={`text-3xl font-bold ${colors.text}`}>
-                {score}%
-              </span>
-              <span className="text-xs text-muted-foreground">
-                {t('readiness.score')}
-              </span>
+              <span className={`block text-3xl font-bold ${colors.text}`}>{score}%</span>
+              <span className="block text-xs text-muted-foreground">{t('readiness.score')}</span>
             </>
           )}
         </div>

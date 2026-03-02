@@ -44,13 +44,13 @@ const QuestCard: FC<QuestCardProps> = memo(function QuestCard({ className = '' }
               {questState.totalXp} XP
             </p>
           </div>
-          <div className="flex -space-x-1">
+          <div className="whitespace-nowrap">
             {questState.badges.slice(0, 3).map((badge) => (
               <div
                 key={badge}
-                className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-card bg-accent-soft"
+                className="first:ms-0 -ms-1 inline-block h-8 w-8 rounded-full border-2 border-card bg-accent-soft text-center"
               >
-                <Sparkles className="h-4 w-4 text-accent" />
+                <Sparkles className="mx-auto mt-1.5 h-4 w-4 text-accent" />
               </div>
             ))}
           </div>
@@ -129,14 +129,14 @@ const QuestCard: FC<QuestCardProps> = memo(function QuestCard({ className = '' }
       {questState.badges.length > 0 && (
         <div className="mt-3 flex items-center gap-2">
           <span className="text-xs text-muted-foreground">{t('labels.badges')}:</span>
-          <div className="flex -space-x-1">
+          <div className="whitespace-nowrap">
             {questState.badges.map((badge) => (
               <div
                 key={badge}
-                className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-card bg-accent-soft"
+                className="first:ms-0 -ms-1 inline-block h-6 w-6 rounded-full border-2 border-card bg-accent-soft text-center"
                 title={t(`badges.${badge}.name`)}
               >
-                <Sparkles className="h-3 w-3 text-accent" />
+                <Sparkles className="mx-auto mt-1 h-3 w-3 text-accent" />
               </div>
             ))}
           </div>

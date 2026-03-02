@@ -73,7 +73,7 @@ export const CashPrep: FC<CashPrepProps> = memo(function CashPrep({
           <button
             type="button"
             onClick={onBack}
-            className="mt-1 rounded-full p-2 hover:bg-muted"
+            className="mt-1 min-h-11 min-w-11 rounded-full p-2 hover:bg-muted"
             aria-label={t('cash.back')}
           >
             <ArrowLeft className="h-5 w-5" />
@@ -100,7 +100,7 @@ export const CashPrep: FC<CashPrepProps> = memo(function CashPrep({
             <button
               type="button"
               onClick={() => setCityTaxReady(!cityTaxReady)}
-              className="focus:outline-none"
+              className="min-h-11 min-w-11 focus:outline-none"
               aria-label={t('cash.confirm.cityTax')}
             >
               {cityTaxReady ? (
@@ -125,7 +125,7 @@ export const CashPrep: FC<CashPrepProps> = memo(function CashPrep({
             <button
               type="button"
               onClick={() => setDepositReady(!depositReady)}
-              className="focus:outline-none"
+              className="min-h-11 min-w-11 focus:outline-none"
               aria-label={t('cash.confirm.deposit')}
             >
               {depositReady ? (

@@ -53,11 +53,11 @@ function getOriginIcon(icon?: string) {
 /**
  * Mode filter options.
  */
-const MODE_FILTERS: { mode: TransportMode | 'all'; label: string }[] = [
-  { mode: 'all', label: 'All' },
-  { mode: 'bus', label: 'Bus' },
-  { mode: 'ferry', label: 'Ferry' },
-  { mode: 'train', label: 'Train' },
+const MODE_FILTERS: { mode: TransportMode | 'all'; labelKey: string }[] = [
+  { mode: 'all', labelKey: 'routes.filters.all' },
+  { mode: 'bus', labelKey: 'routes.filters.bus' },
+  { mode: 'ferry', labelKey: 'routes.filters.ferry' },
+  { mode: 'train', labelKey: 'routes.filters.train' },
 ];
 
 export const RoutePlanner: FC<RoutePlannerProps> = memo(function RoutePlanner({
@@ -161,7 +161,7 @@ export const RoutePlanner: FC<RoutePlannerProps> = memo(function RoutePlanner({
           <button
             type="button"
             onClick={handleBack}
-            className="rounded-full p-2 hover:bg-muted"
+            className="min-h-11 min-w-11 rounded-full p-2 hover:bg-muted"
             aria-label={t('routes.back')}
           >
             <ArrowLeft className="h-5 w-5" />
@@ -173,14 +173,14 @@ export const RoutePlanner: FC<RoutePlannerProps> = memo(function RoutePlanner({
         </div>
 
         {/* Mode filter */}
-        <div className="flex gap-2 overflow-x-auto pb-2">
+        <div className="space-x-2 overflow-x-auto whitespace-nowrap pb-2">
           {MODE_FILTERS.map((filter) => (
             <button
               key={filter.mode}
               type="button"
               onClick={() => setSelectedMode(filter.mode)}
               className={`
-                whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium
+                inline-block rounded-full px-4 py-2 text-sm font-medium
                 transition-colors
                 ${
                   selectedMode === filter.mode
@@ -189,13 +189,13 @@ export const RoutePlanner: FC<RoutePlannerProps> = memo(function RoutePlanner({
                 }
               `}
             >
-              {filter.label}
+              {t(filter.labelKey)}
             </button>
           ))}
         </div>
 
         {/* Route list */}
-        <div className="flex flex-col gap-3">
+        <div className="space-y-3">
           {filteredRoutes.length > 0 ? (
             filteredRoutes.map((route) => (
               <RouteCard
@@ -224,7 +224,7 @@ export const RoutePlanner: FC<RoutePlannerProps> = memo(function RoutePlanner({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full p-2 hover:bg-muted"
+            className="min-h-11 min-w-11 rounded-full p-2 hover:bg-muted"
             aria-label={t('routes.back')}
           >
             <ArrowLeft className="h-5 w-5" />
@@ -242,7 +242,7 @@ export const RoutePlanner: FC<RoutePlannerProps> = memo(function RoutePlanner({
           <h3 className="mb-2 text-sm font-medium uppercase tracking-wide text-muted-foreground">
             {t(`routes.categories.${category}`)}
           </h3>
-          <div className="flex flex-col gap-2">
+          <div className="space-y-2">
             {categoryOrigins.map((origin) => (
               <OriginButton
                 key={origin.id}
@@ -268,15 +268,16 @@ const OriginButton: FC<{
     <button
       type="button"
       onClick={onClick}
-      className="flex w-full items-center justify-between rounded-xl border bg-card p-4 transition-all hover:border-primary/30 hover:shadow-sm"
+      // eslint-disable-next-line ds/min-tap-size -- BRIK-3 full-row control exceeds mobile tap target.
+      className="h-11 w-full rounded-xl border bg-card p-4 text-start transition-all hover:border-primary/30 hover:shadow-sm"
     >
-      <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-muted-foreground">
+      <div className="inline-block">
+        <div className="inline-block h-10 w-10 rounded-full bg-muted text-center align-middle text-muted-foreground">
           {getOriginIcon(origin.icon)}
         </div>
-        <span className="font-medium text-foreground">{origin.name}</span>
+        <span className="ms-3 align-middle font-medium text-foreground">{origin.name}</span>
       </div>
-      <ChevronRight className="h-5 w-5 text-muted-foreground" />
+      <ChevronRight className="float-end h-5 w-5 text-muted-foreground" />
     </button>
   );
 });

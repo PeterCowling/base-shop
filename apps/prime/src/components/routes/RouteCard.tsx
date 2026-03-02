@@ -106,7 +106,7 @@ export const RouteCard: FC<RouteCardProps> = memo(function RouteCard({
     >
       {/* Header with mode badges */}
       <div className="mb-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
+        <div className="space-x-2 whitespace-nowrap">
           {route.modes.map((mode, idx) => (
             <span
               key={`${mode}-${idx}`}
@@ -118,13 +118,13 @@ export const RouteCard: FC<RouteCardProps> = memo(function RouteCard({
           ))}
         </div>
         {route.recommended && (
-          <span className="inline-flex items-center gap-1 rounded-full bg-warning-soft px-2 py-1 text-xs font-medium text-warning-foreground">
+          <span className="inline-grid grid-flow-col auto-cols-max items-center gap-1 rounded-full bg-warning-soft px-2 py-1 text-xs font-medium text-warning-foreground">
             <Star className="h-3 w-3" />
             {t('routes.recommended')}
           </span>
         )}
         {isSaved && (
-          <span className="inline-flex items-center gap-1 rounded-full bg-success-soft px-2 py-1 text-xs font-medium text-success-foreground">
+          <span className="rounded-full bg-success-soft px-2 py-1 text-xs font-medium text-success-foreground">
             {t('routes.savedRoute')}
           </span>
         )}

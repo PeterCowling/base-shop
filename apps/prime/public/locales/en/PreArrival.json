@@ -250,6 +250,12 @@
   "routes": {
     "arrival": "Arrival",
     "back": "Back",
+    "filters": {
+      "all": "All",
+      "bus": "Bus",
+      "ferry": "Ferry",
+      "train": "Train"
+    },
     "cost": "Cost",
     "loadError": "Unable to load route planner data.",
     "fromOrigin": "From {{origin}}",
@@ -265,6 +271,18 @@
     "title": "Getting here",
     "totalTime": "Total time",
     "viewFullGuide": "View full guide"
+  },
+  "staffReadiness": {
+    "bagDropActive": "Post-checkout bag-drop request is active.",
+    "signals": {
+      "cashPrepared": "Cash prepared",
+      "etaShared": "ETA shared",
+      "locationSaved": "Location saved",
+      "routePlanned": "Route planned",
+      "rulesReviewed": "Rules reviewed"
+    },
+    "signalsTitle": "Signals",
+    "title": "Arrival readiness"
   },
   "staffLookup": {
     "back": "Back",

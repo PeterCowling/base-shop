@@ -1,6 +1,7 @@
 'use client';
 
-import { type FC,memo } from 'react';
+import { type FC, memo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { StaffSignalBadgeGroup } from '@acme/ui';
 
@@ -17,15 +18,15 @@ interface StaffReadinessBadgesProps {
 
 interface ReadinessBadgeConfig {
   key: keyof Omit<StaffReadinessSignals, 'readinessScore'>;
-  label: string;
+  labelKey: string;
 }
 
 const BADGE_CONFIG: ReadinessBadgeConfig[] = [
-  { key: 'etaConfirmed', label: 'ETA shared' },
-  { key: 'cashPrepared', label: 'Cash prepared' },
-  { key: 'routePlanned', label: 'Route planned' },
-  { key: 'rulesReviewed', label: 'Rules reviewed' },
-  { key: 'locationSaved', label: 'Location saved' },
+  { key: 'etaConfirmed', labelKey: 'etaShared' },
+  { key: 'cashPrepared', labelKey: 'cashPrepared' },
+  { key: 'routePlanned', labelKey: 'routePlanned' },
+  { key: 'rulesReviewed', labelKey: 'rulesReviewed' },
+  { key: 'locationSaved', labelKey: 'locationSaved' },
 ];
 
 export const StaffReadinessBadges: FC<StaffReadinessBadgesProps> = memo(function StaffReadinessBadges({
@@ -34,9 +35,10 @@ export const StaffReadinessBadges: FC<StaffReadinessBadgesProps> = memo(function
   operational,
   className = '',
 }) {
+  const { t } = useTranslation('PreArrival');
   const signals = BADGE_CONFIG.map((badge) => ({
     id: badge.key,
-    label: badge.label,
+    label: t(`staffReadiness.signals.${badge.labelKey}`),
     ready: readiness[badge.key] === true,
   }));
 
@@ -44,14 +46,14 @@ export const StaffReadinessBadges: FC<StaffReadinessBadgesProps> = memo(function
     <section className={`rounded-xl bg-muted p-4 ${className}`} aria-label="staff-readiness">
       <div className="mb-3 flex items-center justify-between">
         <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-          Arrival readiness
+          {t('staffReadiness.title')}
         </h3>
         <span className="rounded-full bg-border px-2 py-1 text-xs font-semibold text-foreground">
           {readiness.readinessScore}%
         </span>
       </div>
 
-      <StaffSignalBadgeGroup title="Signals" signals={signals} />
+      <StaffSignalBadgeGroup title={t('staffReadiness.signalsTitle')} signals={signals} />
 
       {(personalization?.arrivalMethodPreference || personalization?.arrivalConfidence) && (
         <p className="mt-3 text-xs text-foreground">
@@ -63,7 +65,7 @@ export const StaffReadinessBadges: FC<StaffReadinessBadgesProps> = memo(function
 
       {operational?.bagDropRequested && (
         <p className="mt-2 text-xs font-medium text-warning-foreground">
-          Post-checkout bag-drop request is active.
+          {t('staffReadiness.bagDropActive')}
         </p>
       )}
     </section>

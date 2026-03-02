@@ -7,6 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const platformCoreSrc = path.resolve(__dirname, "../../packages/platform-core/src");
 const i18nSrc = path.resolve(__dirname, "../../packages/i18n/src");
+const typesSrc = path.resolve(__dirname, "../../packages/types/src");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -19,6 +20,7 @@ const nextConfig = {
       "@": path.resolve(__dirname, "src"),
       "@acme/platform-core": platformCoreSrc,
       "@acme/i18n": i18nSrc,
+      "@acme/types": typesSrc,
     },
   },
   webpack: (config, context) => {
@@ -38,6 +40,7 @@ const nextConfig = {
       "@": path.resolve(__dirname, "src"),
       "@acme/platform-core": platformCoreSrc,
       "@acme/i18n": i18nSrc,
+      "@acme/types": typesSrc,
     };
     return config;
   },

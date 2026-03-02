@@ -1,0 +1,31 @@
+Running node v22.16.0 (npm v10.9.2)
+{
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "info",
+      "file": "docs/plans/brik-recovery-quote-server-email-send-point/fact-find.md",
+      "line": "49",
+      "message": "`queue-state.json` is a repo-local artifact and directly readable; marking it `UNVERIFIED` may be process-correct for access-policy provenance, but it weakens evidence clarity unless that verification rule is explained inline."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/brik-recovery-quote-server-email-send-point/fact-find.md",
+      "line": "265",
+      "message": "`codemoot route` is not defined in the document; expanding this term would improve audit readability."
+    }
+  ],
+  "verdict": "approved",
+  "score": 9,
+  "review": "I’m doing a final evidence check on the updated coverage claims (availability tests and recovery hook tests) before issuing the verdict.\n- INFO: docs/plans/brik-recovery-quote-server-email-send-point/fact-find.md:49 `queue-state.json` is a repo-local artifact and directly readable; marking it `UNVERIFIED` may be process-correct for access-policy provenance, but it weakens evidence clarity unless that verification rule is explained inline.\n- INFO: docs/plans/brik-recovery-quote-server-email-send-point/fact-find.md:265 `codemoot route` is not defined in the document; expanding this term would improve audit readability.\n\nVERDICT: APPROVED\nSCORE: 9/10",
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019ca587-9845-7080-a55d-ee2b7a43ec79",
+  "resumed": true,
+  "usage": {
+    "inputTokens": 34523655,
+    "outputTokens": 55678,
+    "totalTokens": 34579333,
+    "costUsd": 0
+  },
+  "durationMs": 42997
+}

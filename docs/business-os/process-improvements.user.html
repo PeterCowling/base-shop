@@ -314,7 +314,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-03-02T10:47:54.266Z";
+  var GEN_TS = "2026-03-02T11:54:55.432Z";
 
   var IDEA_ITEMS = [
     {
@@ -2014,6 +2014,23 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "Add E2E smoke test covering the full submit → server send → success flow",
+      "body": "TASK-04 acceptance criteria noted this as a \"what would make this >=90%\" item; all test coverage is currently unit/integration only; the end-to-end path (component → API route → email provider mock) is not tested at the system level.",
+      "suggested_action": "add to Cypress/Playwright test suite as a smoke test that mocks the API route response; label as AI-to-mechanistic candidate (Cypress template exists in codebase).",
+      "source": "results-review.user.md",
+      "date": "2026-03-02T11:53:17.879Z",
+      "path": "docs/plans/_archive/brik-recovery-quote-server-email-send-point/results-review.user.md",
+      "idea_key": "1a2945bf3a88012446b971d437e189f41e95558a",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "Add pre-deploy gate for KV namespace sentinel IDs in wrangler.toml",
       "body": "TASK-01 used placeholder IDs by design; real IDs require manual operator step with no automated gate.",
       "suggested_action": "add to deployment docs or create a pre-deploy validation script (AI-to-mechanistic candidate).",
@@ -2316,6 +2333,23 @@
       "date": "2026-02-26T08:53:01.939Z",
       "path": "docs/plans/startup-loop-product-identity-gap/results-review.user.md",
       "idea_key": "50250241c361b3e014540cb7f748b06e906f22b5",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Upgrade idempotency dedup from module-level Map to a durable store (KV or similar)",
+      "body": "TASK-03 documented the cross-instance dedup limitation explicitly; in-memory Map resets on Worker cold start, meaning a rapid double-submit in different instances could still double-send.",
+      "suggested_action": "defer until send volume justifies adding a KV binding; record as a known limitation in the route comment (already present).",
+      "source": "results-review.user.md",
+      "date": "2026-03-02T11:53:17.879Z",
+      "path": "docs/plans/_archive/brik-recovery-quote-server-email-send-point/results-review.user.md",
+      "idea_key": "1120c3d20279c39581ab44931fd75e03c2816157",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",

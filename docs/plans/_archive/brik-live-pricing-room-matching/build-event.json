@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "brik-live-pricing-room-matching-1772478231641",
+  "feature_slug": "brik-live-pricing-room-matching",
+  "emitted_at": "2026-03-02T19:03:51.641Z",
+  "why": "Live pricing is running in production but only one room type shows a live price. The majority of rooms silently fall back to basePrice. Guests comparing rooms see inconsistent data.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "All Brikette room categories (Dorm, Double, Apartment) show live Octorate prices on the /book page and room detail pages when dates are selected and availability data is returned by the proxy.",
+    "source": "operator"
+  }
+}

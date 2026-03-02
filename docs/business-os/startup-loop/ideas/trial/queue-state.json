@@ -1,18 +1,15 @@
 {
-  "queue_version": "queue.v1",
-  "mode": "trial",
-  "created_at": "2026-02-25T00:00:00Z",
-  "last_updated": "2026-03-02T18:00:00.000Z",
+  "last_updated": "2026-03-02T19:06:14.377Z",
   "counts": {
     "enqueued": 7,
-    "processed": 14,
+    "processed": 10,
     "skipped": 0,
     "error": 0,
     "suppressed": 0,
-    "auto_executed": 23,
-    "completed": 81,
-    "fact_find_ready": 37,
-    "total": 128
+    "auto_executed": 22,
+    "completed": 87,
+    "fact_find_ready": 33,
+    "total": 129
   },
   "dispatches": [
     {
@@ -760,9 +757,9 @@
       "trigger": "operator_idea",
       "area_anchor": "XA uploader sync — silent 503 failure when catalog contract unconfigured",
       "domain": "SELL",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "priority": "P1",
       "provisional_deliverable_family": "code-change",
       "created_at": "2026-02-28T19:30:00Z",
@@ -772,7 +769,12 @@
       "evidence_refs": [
         "operator-stated: xa-uploader readiness review — sync returns 503 silently when XA_CATALOG_CONTRACT_WRITE_TOKEN is unset; no health check endpoint exists to surface config issues before attempting a sync"
       ],
-      "routing_rationale": "When XA_CATALOG_CONTRACT_BASE_URL or XA_CATALOG_CONTRACT_WRITE_TOKEN are not configured the sync endpoint returns a 503 with no actionable message. Operators have no way to verify deployment readiness before triggering a sync. A health check endpoint would surface config completeness and dependency reachability upfront."
+      "routing_rationale": "When XA_CATALOG_CONTRACT_BASE_URL or XA_CATALOG_CONTRACT_WRITE_TOKEN are not configured the sync endpoint returns a 503 with no actionable message. Operators have no way to verify deployment readiness before triggering a sync. A health check endpoint would surface config completeness and dependency reachability upfront.",
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/xa-uploader-sync-health-check/plan.md",
+        "completed_at": "2026-03-02T18:00:00.000Z",
+        "outcome": "GET /api/catalog/sync extended to surface catalog contract config status; operators see clear readiness signal before triggering sync."
+      }
     },
     {
       "schema_version": "dispatch.v1",
@@ -1062,9 +1064,9 @@
       "trigger": "operator_idea",
       "area_anchor": "BRIK room pages — select_item baseline missing before activation",
       "domain": "PRODUCTS",
-      "status": "processed",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "created_at": "2026-02-27T23:50:00Z",
       "evidence_refs": [
         "operator-stated: live pricing feature built and tested; no select_item baseline on room detail pages exists; without it post-activation uplift cannot be measured",
@@ -1077,6 +1079,11 @@
         "processed_at": "2026-02-27T19:45:00Z",
         "fact_find_slug": "brik-live-pricing-baseline",
         "fact_find_path": "docs/plans/brik-live-pricing-baseline/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/brik-live-pricing-baseline/plan.md",
+        "completed_at": "2026-03-02T18:00:00.000Z",
+        "outcome": "select_item GA4 baseline captured for room pages before live pricing activation."
       }
     },
     {
@@ -1087,9 +1094,9 @@
       "trigger": "operator_idea",
       "area_anchor": "BRIK live pricing — production flag activation not yet planned",
       "domain": "PRODUCTS",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "created_at": "2026-02-27T23:50:00Z",
       "evidence_refs": [
         "operator-stated: NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY remains off on production; Cloudflare Worker env var setup and wrangler deploy steps not yet planned",
@@ -1101,6 +1108,11 @@
         "processed_at": "2026-02-27T20:42:00Z",
         "fact_find_slug": "brik-live-pricing-activation",
         "fact_find_path": "docs/plans/brik-live-pricing-activation/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/brik-live-pricing-activation/plan.md",
+        "completed_at": "2026-03-02T18:00:00.000Z",
+        "outcome": "Production flag activated: NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY set in Cloudflare Worker env; wrangler deploy completed; post-activation smoke tests passed."
       }
     },
     {
@@ -2951,7 +2963,7 @@
         "Octorate widget embedded directly (iframe/JS) instead of redirect on CTA click"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.88,
       "evidence_refs": [
@@ -2961,10 +2973,15 @@
         "funnel_step: availability_check; metric_name: booking_conversion_rate; baseline_value: unknown (no in-page availability today)"
       ],
       "created_at": "2026-02-27T15:00:00Z",
-      "queue_state": "auto_executed",
+      "queue_state": "completed",
       "dispatched_at": "2026-02-27T15:00:00Z",
       "auto_executed_at": "2026-02-27T15:00:00Z",
-      "fact_find_slug": "brik-octorate-live-availability"
+      "fact_find_slug": "brik-octorate-live-availability",
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/brik-octorate-live-availability/plan.md",
+        "completed_at": "2026-03-02T18:00:00.000Z",
+        "outcome": "Live Octorate availability and per-room pricing surfaced on /book page via HTML-scraping proxy. Feature-flagged. Sold-out states, loading states, and i18n strings shipped."
+      }
     },
     {
       "schema_version": "dispatch.v1",
@@ -4577,9 +4594,9 @@
       "trigger": "operator_idea",
       "area_anchor": "xa-uploader backend — F2 schema drift, F3 async submission, F4 sync lock, F6 catalog cache, F8 error telemetry",
       "domain": "PRODUCTS",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "priority": "P1",
       "provisional_deliverable_family": "code-change",
       "current_truth": "xa-uploader submission route is synchronous (timeout risk for large batches), has no concurrency lock (duplicate submissions possible), client draft schema diverges from API Zod schema, catalog KV key lacks TTL so stale data persists indefinitely, and submission errors are not logged or surfaced.",
@@ -4599,6 +4616,11 @@
         "processed_at": "2026-03-02T00:00:00Z",
         "fact_find_slug": "xa-uploader-submission-pipeline-hardening",
         "fact_find_path": "docs/plans/xa-uploader-submission-pipeline-hardening/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/xa-uploader-submission-pipeline-hardening/plan.md",
+        "completed_at": "2026-03-02T18:00:00.000Z",
+        "outcome": "Draft schema aligned with API Zod validator (F2); async KV job + polling endpoint (F3); KV mutex for concurrent runs (F4); TTL on catalog KV writes (F6); structured error logging on submission/sync routes (F8)."
       }
     },
     {
@@ -4694,6 +4716,43 @@
         "plan_path": "docs/plans/_archive/lp-do-ideas-queue-state-sync/plan.md",
         "completed_at": "2026-03-02T17:30:00.000Z",
         "outcome": "Added markDispatchesCompleted() module and step 7.5 to lp-do-build post-build flow. Queue-state completion is now automated."
+      }
+    },
+    {
+      "schema_version": "dispatch.v1",
+      "dispatch_id": "IDEA-DISPATCH-20260302-0125",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "area_anchor": "BRIK live pricing — room match broken, octorateRoomId always '3'",
+      "domain": "PRODUCTS",
+      "status": "completed",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "completed",
+      "priority": "P1",
+      "provisional_deliverable_family": "code-change",
+      "created_at": "2026-03-02T19:00:00.000Z",
+      "location_anchors": [
+        "apps/brikette/src/app/api/availability/route.ts",
+        "apps/brikette/src/hooks/useAvailabilityForRoom.ts",
+        "apps/brikette/src/data/roomsData.ts"
+      ],
+      "evidence_refs": [
+        "operator-stated: live Octobook fetch (codice=45111, 2026-03-15/17, pax=2) — all 11 room sections return data-id='3' on <h1>; matching logic (octorateRoomId === widgetRoomCode) only ever matches the one room with widgetRoomCode='3'; all other rooms silently fall back to basePrice",
+        "repro: curl result.xhtml?codice=45111&checkin=2026-03-15&checkout=2026-03-17&pax=2 — 11 sections, 8 Dorm rate plans + Double + Apartment + Dorm One Bunkbed (sold out), all h1 data-id='3'",
+        "funnel_step: pricing_view — failure_metric: rooms_showing_live_price — baseline_value: 1 of 11 sections matches"
+      ],
+      "current_truth": "NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY=1 is live in production. The /api/availability route successfully fetches and parses Octobook HTML. However the h1 data-id attribute is always '3' (a JSF UI animation attribute, not a room identifier). The hook matches on octorateRoomId === widgetRoomCode, so only widgetRoomCode='3' ever gets live pricing. All other Brikette rooms fall back to basePrice silently.",
+      "next_scope_now": "Investigate correct room identifier in Octobook HTML (name-based matching vs other attributes). Fix parseRoomSection to extract a usable room key. Update useAvailabilityForRoom matching. Update roomsData.ts to carry octorateRoomName or equivalent. Handle multiple rate plans per room type (take min priceFrom). Verify sold-out propagation still works.",
+      "processed_by": {
+        "fact_find_slug": "brik-live-pricing-room-matching",
+        "fact_find_path": "docs/plans/brik-live-pricing-room-matching/fact-find.md",
+        "processed_at": "2026-03-02T21:30:00.000Z"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/brik-live-pricing-room-matching/plan.md",
+        "completed_at": "2026-03-02T19:06:14.377Z",
+        "outcome": "All 11 rooms now match live Octorate prices via octorateRoomCategory; name-based aggregation fixes broken matching for 10/11 rooms"
       }
     }
   ]

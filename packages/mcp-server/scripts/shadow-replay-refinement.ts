@@ -398,14 +398,21 @@ async function main(): Promise<void> {
       const generated = parseToolResult<GeneratePayload>(
         generateResultRaw as { isError?: boolean; content?: Array<{ text?: string }> },
       );
+      const generatedBodyPlain =
+        typeof generated.draft?.bodyPlain === "string" && generated.draft.bodyPlain.trim().length > 0
+          ? generated.draft.bodyPlain
+          : email.body;
+      if (!generatedBodyPlain.trim()) {
+        throw new Error("Generated draft body is empty");
+      }
 
       const baselineRaw = await handleDraftRefineTool("draft_refine", {
         actionPlan,
         draft_id: `shadow-${id}-baseline`,
         refinement_mode: "external",
         rewrite_reason: "none",
-        originalBodyPlain: generated.draft.bodyPlain,
-        refinedBodyPlain: generated.draft.bodyPlain,
+        originalBodyPlain: generatedBodyPlain,
+        refinedBodyPlain: generatedBodyPlain,
       });
       const baseline = parseToolResult<RefinePayload>(
         baselineRaw as { isError?: boolean; content?: Array<{ text?: string }> },
@@ -416,7 +423,7 @@ async function main(): Promise<void> {
         draft_id: `shadow-${id}-deterministic`,
         refinement_mode: "deterministic_only",
         rewrite_reason: "none",
-        originalBodyPlain: generated.draft.bodyPlain,
+        originalBodyPlain: generatedBodyPlain,
       });
       const deterministic = parseToolResult<RefinePayload>(
         deterministicRaw as { isError?: boolean; content?: Array<{ text?: string }> },
@@ -431,7 +438,7 @@ async function main(): Promise<void> {
       const category = actionPlan.scenario.category;
       const hardRuleViolation =
         PROTECTED_CATEGORIES.has(category) &&
-        deterministic.draft.bodyPlain.trim() !== generated.draft.bodyPlain.trim();
+        deterministic.draft.bodyPlain.trim() !== generatedBodyPlain.trim();
 
       rows.push({
         id,

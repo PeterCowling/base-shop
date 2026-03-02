@@ -1,12 +1,13 @@
 /**
  * lp-do-ideas trial orchestrator.
  *
- * Ingests standing-artifact delta events and emits dispatch.v1 packets.
+ * Ingests standing-artifact delta events and emits dispatch packets.
+ * Primary emission is dispatch.v2; dispatch.v1 is compatibility-only.
  * Operates in mode="trial" only — rejects mode="live" fail-closed.
  * Does not mutate startup-loop stage state.
  *
  * Contract: docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md
- * Schema:   docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.schema.json
+ * Schema:   docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.v2.schema.json (primary), docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.schema.json (compat)
  */
 
 import { createHash } from "node:crypto";
@@ -45,6 +46,12 @@ export const T1_SEMANTIC_KEYWORDS: readonly string[] = [
   "channel mix",
   "channel priorities",
   "channel selection",
+  // Assessment-container section keywords (registered in standing-registry.json)
+  "brand identity",
+  "brand name",
+  "solution decision",
+  "naming",
+  "distribution plan",
 ];
 
 // ---------------------------------------------------------------------------
@@ -121,7 +128,7 @@ export interface ArtifactDeltaEvent {
 }
 
 export interface TrialDispatchPacket {
-  schema_version: "dispatch.v1";
+  schema_version: "dispatch.v1" | "dispatch.v2";
   dispatch_id: string;
   mode: PacketMode;
   business: string;
@@ -147,6 +154,10 @@ export interface TrialDispatchPacket {
   evidence_refs: [string, ...string[]];
   created_at: string;
   queue_state: QueueState;
+  /** dispatch.v2 field (required in v2, optional in compat typing) */
+  why?: string;
+  /** dispatch.v2 field (required in v2, optional in compat typing) */
+  intended_outcome?: IntendedOutcomeV2;
 }
 
 export interface ShadowTelemetrySnapshot {
@@ -909,7 +920,7 @@ export function runTrialOrchestrator(
     const afterShort = event.after_sha.slice(0, 7);
 
     const packet: TrialDispatchPacket = {
-      schema_version: "dispatch.v1",
+      schema_version: "dispatch.v2",
       dispatch_id: dispatchId,
       mode: "trial",
       business: event.business,
@@ -935,6 +946,12 @@ export function runTrialOrchestrator(
       evidence_refs: evidenceRefs,
       created_at: now.toISOString(),
       queue_state: "enqueued",
+      why: `Assess ${areaAnchor} implications from ${event.artifact_id} delta for ${event.business}.`,
+      intended_outcome: {
+        type: "operational",
+        statement: `Produce a validated routing outcome and scoped next action for ${areaAnchor}.`,
+        source: "auto",
+      },
     };
     dispatched.push(packet);
 

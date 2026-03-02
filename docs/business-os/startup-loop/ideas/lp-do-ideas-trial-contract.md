@@ -8,7 +8,7 @@ Created: 2026-02-24
 Updated: 2026-02-26
 Owner: startup-loop maintainers
 Related-plan: docs/plans/lp-do-ideas-startup-loop-integration/plan.md
-Related-schema: lp-do-ideas-dispatch.schema.json, lp-do-ideas-standing-registry.schema.json
+Related-schema: lp-do-ideas-dispatch.v2.schema.json, lp-do-ideas-dispatch.schema.json (compat), lp-do-ideas-standing-registry.schema.json
 Related-skill: /lp-do-ideas (pending — TASK-03)
 Related-artifacts: docs/plans/lp-do-ideas-startup-loop-integration/artifacts/trial-policy-decision.md
 ---
@@ -68,6 +68,13 @@ a semantic change to one of the following section types:
 | Positioning / value proposition | `positioning`, `value proposition`, `unique`, `differentiation`, `key message` |
 | Pricing / offer structure | `pricing`, `price point`, `offer`, `bundle`, `promotional` |
 | Channel strategy | `channel strategy`, `launch channel`, `channel mix`, `channel priorities`, `channel selection` |
+| Assessment — brand & identity | `brand identity`, `brand name` |
+| Assessment — solution & product | `solution decision` |
+| Assessment — naming | `naming` |
+| Assessment — distribution | `distribution plan` |
+
+Assessment-container keywords were added in bos-loop-assessment-registry (2026-03-02) to support
+registered artifacts in `docs/business-os/startup-loop/ideas/standing-registry.json`.
 
 All other artifact changes yield `status: logged_no_action`.
 
@@ -81,7 +88,7 @@ Escalation is permitted once:
 
 All dispatches emitted in trial mode must:
 
-1. Conform to `lp-do-ideas-dispatch.schema.json` (`schema_version: dispatch.v1`)
+1. Conform to `lp-do-ideas-dispatch.v2.schema.json` (`schema_version: dispatch.v2`) for new emissions. `dispatch.v1` is compatibility-only for legacy packets.
 2. Carry `"mode": "trial"` — immutable in this tranche
 3. Include all required intake fields for their route:
 
@@ -127,7 +134,7 @@ All trial-mode writes are restricted to the following paths:
 | Queue state | `docs/business-os/startup-loop/ideas/trial/queue-state.json` | JSON object |
 | Telemetry records | `docs/business-os/startup-loop/ideas/trial/telemetry.jsonl` | newline-delimited JSON |
 | Classification records | `docs/business-os/startup-loop/ideas/trial/classifications.jsonl` | newline-delimited JSON |
-| Standing registry (live) | `docs/business-os/startup-loop/ideas/trial/standing-registry.json` | JSON object conforming to `lp-do-ideas-standing-registry.schema.json` |
+| Standing registry | `docs/business-os/startup-loop/ideas/standing-registry.json` | JSON object conforming to `lp-do-ideas-standing-registry.schema.json` |
 
 No trial-mode operation may write to any path outside this list.
 
@@ -191,7 +198,7 @@ As of this date, the following live-mode components have been implemented:
 | Live artifact paths (`live/`) | Complete | `docs/business-os/startup-loop/ideas/live/` |
 | Autonomous gate + kill-switch | Complete (inactive) | `scripts/src/startup-loop/lp-do-ideas-autonomous-gate.ts` |
 | KPI rollup runner | Complete | `scripts/src/startup-loop/lp-do-ideas-metrics-runner.ts` |
-| Production standing registry | Pending | Requires operator artifact review and SHA capture |
+| Production standing registry | Partial | `docs/business-os/startup-loop/ideas/standing-registry.json` — 15 assessment artifacts registered (bos-loop-assessment-registry, 2026-03-02). Expand incrementally. |
 | Go-live activation | Pending | Blocked: KPI evidence, rollback drill, policy update |
 
 Activation prerequisites (Section 8, full list in seam doc) remain unmet — KPI evidence
@@ -202,7 +209,7 @@ data will drive Section A/B checklist completion.
 
 This contract is designed for forward compatibility with live mode:
 
-- All artifacts use versioned schemas (`dispatch.v1`, `registry.v2`) with controlled compatibility migration from `registry.v1` entries.
+- All artifacts use versioned schemas (`dispatch.v2` primary, `dispatch.v1` compatibility, `registry.v2`) with controlled compatibility migration from legacy entries.
 - `mode` field is present and validated in all dispatch packets
 - Required fields for `lp-do-fact-find` intake are a strict superset of live mode requirements
 - No standing registry entries depend on startup-loop internal state
@@ -212,7 +219,7 @@ This contract is designed for forward compatibility with live mode:
 
 | Concept | Defined in |
 |---|---|
-| Dispatch packet format | `lp-do-ideas-dispatch.schema.json` |
+| Dispatch packet format | `lp-do-ideas-dispatch.v2.schema.json` (primary), `lp-do-ideas-dispatch.schema.json` (compat) |
 | Standing artifact registry format | `lp-do-ideas-standing-registry.schema.json` |
 | Autonomy/threshold policy | `docs/plans/lp-do-ideas-startup-loop-integration/artifacts/trial-policy-decision.md` |
 | Go-live activation criteria | `lp-do-ideas-go-live-seam.md` (TASK-07, pending) |
@@ -324,3 +331,31 @@ Runtime enforces the following anti-loop invariants on top of classification and
 Determinism requirements:
 - `cluster_fingerprint` and materiality inputs must be deterministic.
 - Non-deterministic free-text summary fields are prohibited in fingerprint paths.
+
+## 12. Registry Invocation Pattern (Added 2026-03-02)
+
+The live hook requires four arguments to operate. The static paths are now wired in the npm scripts
+(`scripts/package.json`). The `--business` argument must be supplied by the caller.
+
+**Standard invocation** (via pnpm):
+
+```bash
+pnpm --filter scripts startup-loop:lp-do-ideas-trial-run -- --business <BIZ>
+# e.g.:
+pnpm --filter scripts startup-loop:lp-do-ideas-trial-run -- --business BRIK
+```
+
+The wired static args are:
+- `--registry-path docs/business-os/startup-loop/ideas/standing-registry.json`
+- `--queue-state-path docs/business-os/startup-loop/ideas/trial/queue-state.json`
+- `--telemetry-path docs/business-os/startup-loop/ideas/trial/telemetry.jsonl`
+
+**Standing registry location:** `docs/business-os/startup-loop/ideas/standing-registry.json`
+- Initial 15 assessment artifacts registered (2026-03-02)
+- Add new artifacts by editing the JSON file (schema at `lp-do-ideas-standing-registry.schema.json`)
+- No code changes required to register additional artifacts
+
+**T1 keyword source of truth:** `T1_SEMANTIC_KEYWORDS` constant in `scripts/src/startup-loop/lp-do-ideas-trial.ts`
+- The `t1_semantic_sections` field in `standing-registry.json` mirrors this list for documentation/schema compliance
+- The runtime does not read `t1_semantic_sections` from the registry at runtime; the TS constant is authoritative
+- To add new keywords, update both the TS constant and the registry file's `t1_semantic_sections` field

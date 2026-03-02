@@ -147,6 +147,14 @@ describe("RecoveryQuoteCapture", () => {
 
   // TC-04-03: Fetch returns { status: "accepted" } → submitted state shown
   it("TC-04-03: accepted response shows submitted message", async () => {
+    let resolveFetch!: (value: Response) => void;
+    fetchSpy.mockImplementation(
+      () =>
+        new Promise<Response>((resolve) => {
+          resolveFetch = resolve;
+        }),
+    );
+
     renderComponent();
 
     fireEvent.change(screen.getByPlaceholderText("you@example.com"), {
@@ -154,8 +162,21 @@ describe("RecoveryQuoteCapture", () => {
     });
     fireEvent.click(screen.getByRole("checkbox"));
 
+    const submitButton = screen.getByRole("button", { name: "Email me this quote" });
+    const form = submitButton.closest("form");
+    expect(form).not.toBeNull();
+
     await act(async () => {
-      fireEvent.submit(screen.getByRole("button", { name: "Email me this quote" }));
+      fireEvent.submit(form!);
+    });
+
+    act(() => {
+      resolveFetch(
+        new Response(JSON.stringify({ status: "accepted", idempotencyKey: "rq:test" }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        }),
+      );
     });
 
     await waitFor(() => {

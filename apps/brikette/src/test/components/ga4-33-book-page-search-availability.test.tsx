@@ -42,6 +42,9 @@ describe("TASK-33: BookPageContent search_availability GA4 contract", () => {
     jest.useFakeTimers();
     jest.setSystemTime(new Date("2026-02-18T12:00:00Z"));
     mockSearchParams = new URLSearchParams();
+    window.localStorage.clear();
+    window.sessionStorage.clear();
+    window.history.replaceState(null, "", "/en/book");
     originalGtag = window.gtag;
     gtagMock = jest.fn();
     window.gtag = gtagMock;
@@ -149,15 +152,8 @@ describe("TASK-33: BookPageContent search_availability GA4 contract", () => {
   });
 
   it("TC-06: pax above max prevents search_availability emission", () => {
+    mockSearchParams = new URLSearchParams("checkin=2026-06-10&checkout=2026-06-12&pax=9");
     render(<BookPageContent lang="en" heading="Book your stay" />);
-
-    const checkinInput = screen.getByLabelText(/check in/i);
-    const checkoutInput = screen.getByLabelText(/check out/i);
-    const paxInput = screen.getByLabelText(/guests/i);
-
-    fireEvent.change(checkinInput, { target: { value: "2026-06-10" } });
-    fireEvent.change(checkoutInput, { target: { value: "2026-06-12" } });
-    fireEvent.change(paxInput, { target: { value: "9" } });
 
     jest.advanceTimersByTime(1000);
 

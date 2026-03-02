@@ -201,6 +201,9 @@ describe("useCatalogConsole scoped action feedback", () => {
     }) as unknown as typeof fetch;
 
     renderHarness();
+    await waitFor(() => {
+      expect(screen.getByTestId("sync-ready")).toHaveTextContent("yes");
+    });
 
     await clickButton("seed-draft");
     await clickButton("save");
@@ -311,6 +314,9 @@ describe("useCatalogConsole scoped action feedback", () => {
       mockConsoleBootstrapFetch();
 
       renderHarness();
+      await waitFor(() => {
+        expect(screen.getByTestId("sync-ready")).toHaveTextContent("yes");
+      });
       await clickButton("toggle-submission");
       await clickButton("export");
 

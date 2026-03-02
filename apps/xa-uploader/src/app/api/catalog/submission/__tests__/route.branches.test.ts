@@ -11,6 +11,31 @@ const applyRateLimitHeadersMock = jest.fn();
 const getRequestIpMock = jest.fn();
 const readJsonBodyWithLimitMock = jest.fn();
 
+const VALID_DRAFT = {
+  id: "p1",
+  slug: "studio-jacket",
+  title: "Studio jacket",
+  brandHandle: "atelier-x",
+  collectionHandle: "outerwear",
+  collectionTitle: "Outerwear",
+  price: "189",
+  description: "A structured layer.",
+  createdAt: "2025-12-01T12:00:00.000Z",
+  forSale: true,
+  forRental: false,
+  popularity: "0",
+  deposit: "0",
+  stock: "1",
+  sizes: "S|M|L",
+  taxonomy: {
+    department: "women",
+    category: "clothing",
+    subcategory: "outerwear",
+    color: "black",
+    material: "wool",
+  },
+} as const;
+
 class InvalidJsonErrorMock extends Error {}
 class PayloadTooLargeErrorMock extends Error {}
 
@@ -70,7 +95,7 @@ describe("catalog submission route branch coverage", () => {
     readJsonBodyWithLimitMock.mockResolvedValue({ slugs: ["studio-jacket"], storefront: "xa-b" });
     listCatalogDraftsMock.mockResolvedValue({
       path: "/repo/apps/xa-uploader/data/products.csv",
-      products: [{ slug: "studio-jacket", title: "Studio jacket" }],
+      products: [VALID_DRAFT],
       revisionsById: {},
     });
     buildSubmissionZipStreamMock.mockResolvedValue({

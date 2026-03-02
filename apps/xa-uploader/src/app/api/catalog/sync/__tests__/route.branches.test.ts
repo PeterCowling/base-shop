@@ -64,6 +64,16 @@ jest.mock("../../../../../lib/catalogDraftToContract", () => ({
   buildCatalogArtifactsFromDrafts: (...args: unknown[]) => buildCatalogArtifactsFromDraftsMock(...args),
 }));
 
+const getUploaderKvMock = jest.fn();
+const acquireSyncMutexMock = jest.fn();
+const releaseSyncMutexMock = jest.fn();
+
+jest.mock("../../../../../lib/syncMutex", () => ({
+  getUploaderKv: (...args: unknown[]) => getUploaderKvMock(...args),
+  acquireSyncMutex: (...args: unknown[]) => acquireSyncMutexMock(...args),
+  releaseSyncMutex: (...args: unknown[]) => releaseSyncMutexMock(...args),
+}));
+
 function createChild(code: number): ChildProcessWithoutNullStreams {
   const child = new EventEmitter() as ChildProcessWithoutNullStreams;
   const childStdout = new EventEmitter();
@@ -103,6 +113,9 @@ describe("catalog sync route branch coverage", () => {
       mediaIndex: { totals: { products: 1, media: 0, warnings: 0 }, items: [] },
       warnings: [],
     });
+    getUploaderKvMock.mockResolvedValue(null);
+    acquireSyncMutexMock.mockResolvedValue(true);
+    releaseSyncMutexMock.mockResolvedValue(undefined);
     delete process.env.XA_UPLOADER_MODE;
     delete process.env.XA_UPLOADER_LOCAL_FS_DISABLED;
   });

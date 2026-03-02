@@ -478,6 +478,7 @@ describe("catalog sync route", () => {
       message: "missing config",
     });
 
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     const { POST } = await import("../route");
     const response = await POST(
       new Request("http://localhost/api/catalog/sync", {
@@ -489,6 +490,7 @@ describe("catalog sync route", () => {
         }),
       }),
     );
+    consoleErrorSpy.mockRestore();
 
     expect(response.status).toBe(503);
     expect(await response.json()).toEqual(
@@ -672,6 +674,7 @@ describe("TASK-04: catalog sync route — KV mutex (F4+F8)", () => {
   it("TC-04b: fail-open when KV acquire throws — sync proceeds normally", async () => {
     acquireSyncMutexMock.mockRejectedValue(new Error("KV unavailable"));
 
+    const consoleWarnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     const { POST } = await import("../route");
     const response = await POST(
       new Request("http://localhost/api/catalog/sync", {
@@ -680,6 +683,7 @@ describe("TASK-04: catalog sync route — KV mutex (F4+F8)", () => {
         body: JSON.stringify({ options: {}, storefront: "xa-b" }),
       }),
     );
+    consoleWarnSpy.mockRestore();
 
     // Sync should proceed (fail-open)
     expect(response.status).toBe(200);

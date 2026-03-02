@@ -89,9 +89,9 @@ describe("catalogSubmissionClient", () => {
       ) as unknown as typeof fetch;
 
     const pending = pollJobUntilComplete("job-1", { intervalMs: 5, maxWaitMs: 20 });
+    const assertion = expect(pending).rejects.toThrow("submission_timeout");
     await jest.advanceTimersByTimeAsync(50);
-
-    await expect(pending).rejects.toThrow("submission_timeout");
+    await assertion;
     jest.useRealTimers();
   });
 

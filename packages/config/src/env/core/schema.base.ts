@@ -10,13 +10,7 @@ export const baseEnvSchema = z
     NEXT_PUBLIC_DEFAULT_SHOP: z.string().optional(),
     NEXT_PUBLIC_SHOP_ID: z.string().optional(),
     SHOP_CODE: z.string().optional(),
-    CART_FEATURE_ENABLED: z
-      .preprocess((value) => (typeof value === "boolean" ? String(value) : value), z.string())
-      .refine((v) => v === "true" || v === "false", {
-        message: "must be true or false", // i18n-exempt: validation copy (non-UI)
-      })
-      .transform((v) => v === "true")
-      .optional(),
+    CART_FEATURE_ENABLED: z.coerce.boolean().optional(),
     CART_COOKIE_SECRET: isProd
       ? z.string().min(1)
       : z.string().min(1).default("dev-cart-secret"),

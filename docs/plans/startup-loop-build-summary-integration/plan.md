@@ -88,13 +88,13 @@ This plan adds a deterministic Build Summary surface into the canonical startup-
 
 ### TASK-01: Implement deterministic Build Summary generator + CLI wiring
 - **Type:** IMPLEMENT
-- **Deliverable:** New generator at `scripts/src/startup-loop/generate-build-summary.ts`, new root script entry `startup-loop:build-summary` in `package.json`
+- **Deliverable:** New generator at `scripts/src/startup-loop/build/generate-build-summary.ts`, new root script entry `startup-loop:build-summary` in `package.json`
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Completed
-- **Affects:** `scripts/src/startup-loop/generate-build-summary.ts`, `package.json`
+- **Affects:** `scripts/src/startup-loop/build/generate-build-summary.ts`, `package.json`
 - **Depends on:** -
 - **Blocks:** TASK-02, TASK-03, TASK-04
 - **Confidence:** 85%
@@ -124,8 +124,8 @@ This plan adds a deterministic Build Summary surface into the canonical startup-
 - **Documentation impact:** none.
 - **Notes / references:** `docs/plans/startup-loop-build-summary-integration/fact-find.md`.
 - **Completion evidence (2026-02-25):**
-  - Added generator: `scripts/src/startup-loop/generate-build-summary.ts`
-  - Added npm script: `package.json` -> `"startup-loop:build-summary": "node --import tsx scripts/src/startup-loop/generate-build-summary.ts"`
+  - Added generator: `scripts/src/startup-loop/build/generate-build-summary.ts`
+  - Added npm script: `package.json` -> `"startup-loop:build-summary": "node --import tsx scripts/src/startup-loop/build/generate-build-summary.ts"`
   - Implemented deterministic scope controls:
     - authoritative business filter from `docs/business-os/strategy/businesses.json` (when present)
     - source-scope enforcement for `startup-baselines/<BUSINESS>-*` top-level files only

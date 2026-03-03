@@ -54,7 +54,7 @@ This work is prompted by quality issues in the current auto-generated prompt (ca
 
 ### Entry Points
 - Current generator:
-  - `scripts/src/startup-loop/s2-market-intelligence-handoff.ts`
+  - `scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts`
 - Current generic template:
   - `docs/business-os/market-research/_templates/deep-research-market-intelligence-prompt.md`
 - Example output showing issues (BRIK):
@@ -202,7 +202,7 @@ If base URL cannot be determined, prompt must return `Status: BLOCKED` with miss
 
 ## Task Seeds For `/lp-do-plan`
 1. Add hospitality S2 prompt template + update deliverable language to booking/distribution/ops.
-2. Update generator (`scripts/src/startup-loop/s2-market-intelligence-handoff.ts`) to:
+2. Update generator (`scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts`) to:
 - select template by inferred profile (registry + matchers)
 - honor `research-profile.user.md` override
 - generate exemplar-style hospitality prompt (classification gate + standardized scenarios + measurement repair)

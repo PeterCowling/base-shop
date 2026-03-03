@@ -12,7 +12,7 @@
  * This module performs NO file writes in its pure `runLiveHook` export.
  *
  * CLI invocation:
- *   node --import tsx scripts/src/startup-loop/lp-do-ideas-live-hook.ts \
+ *   node --import tsx scripts/src/startup-loop/ideas/lp-do-ideas-live-hook.ts \
  *     --business <BUSINESS> \
  *     --registry-path <path> \
  *     --queue-state-path <path> \

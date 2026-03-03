@@ -676,15 +676,15 @@ Do not build a separate orchestration stack for meta evolution. Route improvemen
 | 11 | TASK-25 | TASK-24 | Boundary enforcement finalization |
 
 ## Implementation evidence (2026-03-02)
-- Runtime contracts + validators: `scripts/src/startup-loop/self-evolving-contracts.ts`
-- Startup state store: `scripts/src/startup-loop/self-evolving-startup-state.ts`
-- Event + observation ingestion: `scripts/src/startup-loop/self-evolving-events.ts`
-- Repeat detector + scoring: `scripts/src/startup-loop/self-evolving-detector.ts`, `scripts/src/startup-loop/self-evolving-scoring.ts`
-- Lifecycle + release controls + experiments: `scripts/src/startup-loop/self-evolving-lifecycle.ts`, `scripts/src/startup-loop/self-evolving-release-controls.ts`, `scripts/src/startup-loop/self-evolving-experiment.ts`
-- Container framework + maturity gates: `scripts/src/startup-loop/self-evolving-containers.ts`
-- Backbone integration (`lp-do-ideas -> lp-do-build`): `scripts/src/startup-loop/self-evolving-from-ideas.ts`
-- Candidate ledger + dashboard/reporting: `scripts/src/startup-loop/self-evolving-candidates.ts`, `scripts/src/startup-loop/self-evolving-dashboard.ts`, `scripts/src/startup-loop/self-evolving-report.ts`
-- Replay/pilot/autofix harness: `scripts/src/startup-loop/self-evolving-replay.ts`, `scripts/src/startup-loop/self-evolving-pilot.ts`, `scripts/src/startup-loop/self-evolving-autofix.ts`
+- Runtime contracts + validators: `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`
+- Startup state store: `scripts/src/startup-loop/self-evolving/self-evolving-startup-state.ts`
+- Event + observation ingestion: `scripts/src/startup-loop/self-evolving/self-evolving-events.ts`
+- Repeat detector + scoring: `scripts/src/startup-loop/self-evolving/self-evolving-detector.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`
+- Lifecycle + release controls + experiments: `scripts/src/startup-loop/self-evolving/self-evolving-lifecycle.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-release-controls.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-experiment.ts`
+- Container framework + maturity gates: `scripts/src/startup-loop/self-evolving/self-evolving-containers.ts`
+- Backbone integration (`lp-do-ideas -> lp-do-build`): `scripts/src/startup-loop/self-evolving/self-evolving-from-ideas.ts`
+- Candidate ledger + dashboard/reporting: `scripts/src/startup-loop/self-evolving/self-evolving-candidates.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`
+- Replay/pilot/autofix harness: `scripts/src/startup-loop/self-evolving/self-evolving-replay.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-pilot.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-autofix.ts`
 - Tests: `scripts/src/startup-loop/__tests__/self-evolving-*.test.ts`
 - Simulation and pilot outputs:
   - `docs/plans/startup-loop-self-evolving-launch-accelerator/artifacts/simulation.terms-and-conditions.json`

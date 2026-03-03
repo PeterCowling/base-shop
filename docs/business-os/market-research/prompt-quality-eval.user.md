@@ -23,7 +23,7 @@ Run the rubric on the generated prompt for each business:
 ## How To Run
 
 1. Generate (or re-generate) each business prompt for the same as-of date:
-   - Command: `pnpm exec tsx scripts/src/startup-loop/s2-market-intelligence-handoff.ts -- --business <BIZ> --as-of YYYY-MM-DD --owner <NAME>`
+   - Command: `pnpm exec tsx scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts -- --business <BIZ> --as-of YYYY-MM-DD --owner <NAME>`
 2. Open the generated prompt file:
    - Path: `docs/business-os/market-research/<BIZ>/YYYY-MM-DD-deep-research-market-intelligence-prompt.user.md`
 3. Score using the rubric below and record results in a short note (append to this doc under "Runs").

@@ -91,7 +91,7 @@ Add an IMPLEMENT task via `/lp-do-replan` after Wave 1/2 complete:
 Type: IMPLEMENT
 Title: Implement diagnosis_status partial_data in bottleneck-detector.ts
 Affects:
-  - scripts/src/startup-loop/bottleneck-detector.ts
+  - scripts/src/startup-loop/diagnostics/bottleneck-detector.ts
   - scripts/src/startup-loop/__tests__/bottleneck-detector.test.ts
 Confidence: 90% (trigger condition fully specified; implementation is single boolean expression)
 TC: partial_data trigger test (new) + TC-04 + TC-09 assertion updates

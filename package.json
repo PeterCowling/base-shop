@@ -144,9 +144,9 @@
     "preflight:brikette-deploy": "node --import tsx scripts/src/brikette/preflight-deploy.ts",
     "preflight:mcp-startup-loop": "node --import tsx scripts/src/startup-loop/mcp-preflight.ts",
     "startup-loop:cass-retrieve": "node --import tsx scripts/src/startup-loop/cass-retrieve.ts",
-    "startup-loop:s2-market-intel-handoff": "node --import tsx scripts/src/startup-loop/s2-market-intelligence-handoff.ts",
-    "startup-loop:lint-market-intel-pack": "node --import tsx scripts/src/startup-loop/market-intelligence-pack-lint.ts",
-    "startup-loop:build-summary": "node --import tsx scripts/src/startup-loop/generate-build-summary.ts",
+    "startup-loop:s2-market-intel-handoff": "node --import tsx scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts",
+    "startup-loop:lint-market-intel-pack": "node --import tsx scripts/src/startup-loop/s2/market-intelligence-pack-lint.ts",
+    "startup-loop:build-summary": "node --import tsx scripts/src/startup-loop/build/generate-build-summary.ts",
     "brik:export-cloudflare-proxies": "node --import tsx scripts/src/brikette/export-cloudflare-monthly-proxies.ts",
     "brik:analyse-room-pricing": "python3 scripts/brik/analyse-room-pricing.py",
     "validate:manifest": "node scripts/validate-agent-manifest.js",
@@ -157,7 +157,13 @@
     "register-stripe-webhook": "node --import tsx scripts/src/register-stripe-webhook.ts",
     "provision-secrets": "node --require ./test/server-only-stub.cjs --import tsx scripts/src/provision-secrets.ts",
     "checkout-test": "node --import tsx scripts/src/checkout-test-suite.ts",
-    "synthetic-monitor": "node --import tsx scripts/src/synthetic-monitor.ts"
+    "synthetic-monitor": "node --import tsx scripts/src/synthetic-monitor.ts",
+    "bug-scan": "node --import tsx scripts/src/quality/bug-scan.ts",
+    "bug-scan:changed": "node --import tsx scripts/src/quality/bug-scan.ts --changed",
+    "bug-scan:rules": "node --import tsx scripts/src/quality/bug-scan.ts --list-rules",
+    "bug-scan:changed:json": "node --import tsx scripts/src/quality/bug-scan.ts --changed --format=json",
+    "bug-scan:changed:critical": "node --import tsx scripts/src/quality/bug-scan.ts --changed --fail-on=critical",
+    "bug-scan:baseline:write": "node --import tsx scripts/src/quality/bug-scan.ts --changed --fail-on=none --write-baseline=tools/bug-scan-baseline.json"
   },
   "lint-staged": {
     "**/*.{ts,tsx,js,jsx}": [

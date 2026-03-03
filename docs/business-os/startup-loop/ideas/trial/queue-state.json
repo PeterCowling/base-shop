@@ -28,7 +28,7 @@
         "docs/business-os/startup-loop/ideas/lp-do-ideas-standing-registry.schema.json",
         "docs/business-os/strategy/PWRB/",
         "docs/business-os/strategy/BRIK/",
-        "scripts/src/startup-loop/lp-do-ideas-trial.ts"
+        "scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts"
       ],
       "provisional_deliverable_family": "multi",
       "recommended_route": "lp-do-fact-find",
@@ -1568,7 +1568,7 @@
       "lineage_depth": 0,
       "area_anchor": "Process-improvements report — completed ideas must record completed_at and an output link, and must be excluded from the live report on subsequent refreshes",
       "location_anchors": [
-        "scripts/src/startup-loop/generate-process-improvements.ts",
+        "scripts/src/startup-loop/build/generate-process-improvements.ts",
         "docs/business-os/process-improvements.user.html",
         "docs/business-os/_data/process-improvements.json",
         "docs/business-os/startup-loop/ideas/trial/queue-state.json"
@@ -1848,7 +1848,7 @@
       "lineage_depth": 0,
       "area_anchor": "BOS tooling — process-improvements.user.html should regenerate automatically when source files change",
       "location_anchors": [
-        "scripts/src/startup-loop/generate-process-improvements.ts",
+        "scripts/src/startup-loop/build/generate-process-improvements.ts",
         "scripts/package.json",
         "docs/business-os/process-improvements.user.html",
         "docs/business-os/_data/process-improvements.json",
@@ -2466,7 +2466,7 @@
       "location_anchors": [
         "docs/business-os/process-improvements.user.html",
         "scripts/git-hooks/generate-process-improvements.sh",
-        "scripts/src/startup-loop/generate-process-improvements.ts"
+        "scripts/src/startup-loop/build/generate-process-improvements.ts"
       ],
       "provisional_deliverable_family": "code-change",
       "domain": "BOS",
@@ -2499,8 +2499,8 @@
       "area_anchor": "Post-build reflection idea prioritization — externally-reviewed canonical policy (v2) defines a complete schema (P0/P0R/P1/P1M/P2-P5 tiers, evidence gates, urgency admission rules, anti-gaming controls, prerequisite ordering) that must be implemented in the lp-do-ideas trial system",
       "location_anchors": [
         "docs/business-os/startup-loop/2026-02-26-reflection-prioritization-expert-brief.user.md",
-        "scripts/src/startup-loop/lp-do-ideas-trial-queue.ts",
-        "scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts",
+        "scripts/src/startup-loop/ideas/lp-do-ideas-trial-queue.ts",
+        "scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts",
         "docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.schema.json"
       ],
       "provisional_deliverable_family": "code-change",
@@ -3370,7 +3370,7 @@
       "lineage_depth": 0,
       "area_anchor": "BOS process-improvements report — no item entry/exit transitions",
       "location_anchors": [
-        "scripts/src/startup-loop/generate-process-improvements.ts",
+        "scripts/src/startup-loop/build/generate-process-improvements.ts",
         "docs/business-os/process-improvements.user.html"
       ],
       "domain": "BOS",
@@ -4816,8 +4816,8 @@
       "current_truth": "When a dispatch is routed to lp-do-fact-find and processed_by is set in queue-state.json, the actual lp-do-fact-find invocation is not guaranteed — 19 of 43 selected dispatches have processed_by set but no fact-find.md on disk. The queue records routing intent but does not enforce execution.",
       "next_scope_now": "Ensure that when a dispatch transitions to processed_by, the lp-do-fact-find invocation is atomic with the queue state write — if execution fails, the queue state must not be written. Alternatively, add an execution-verification step that detects processed_by-without-artifact dispatches and re-queues them. This is a reliability fix, not an autonomy change.",
       "location_anchors": [
-        "scripts/src/startup-loop/lp-do-ideas-trial.ts",
-        "scripts/src/startup-loop/lp-do-ideas-trial-queue.ts",
+        "scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts",
+        "scripts/src/startup-loop/ideas/lp-do-ideas-trial-queue.ts",
         "docs/business-os/startup-loop/ideas/trial/queue-state.json"
       ],
       "evidence_refs": [
@@ -4846,7 +4846,7 @@
       "current_truth": "When a plan completes the full build + archive cycle, the originating dispatch in queue-state.json is not automatically marked completed. The completed_by field must be written manually. 5 dispatches from brikette-sales-funnel-analysis are fully built and archived but still show queue_state: auto_executed. This means completion rate metrics undercount real throughput and the queue accumulates stale entries.",
       "next_scope_now": "Add a queue-state completion hook to the lp-do-build post-build flow: after archiving a plan, look up any dispatches whose processed_by.fact_find_slug matches the feature slug and write completed_by { plan_path, completed_at, outcome }. This should be deterministic and idempotent — safe to re-run if the plan slug is already completed.",
       "location_anchors": [
-        "scripts/src/startup-loop/lp-do-ideas-trial-queue.ts",
+        "scripts/src/startup-loop/ideas/lp-do-ideas-trial-queue.ts",
         "docs/business-os/startup-loop/ideas/trial/queue-state.json",
         ".claude/skills/lp-do-build"
       ],
@@ -5004,8 +5004,8 @@
       "area_anchor": "Self-evolving system — per-type directories instead of per-business",
       "location_anchors": [
         "docs/business-os/startup-loop/self-evolving/",
-        "scripts/src/startup-loop/self-evolving-events.ts",
-        "scripts/src/startup-loop/self-evolving-index.ts"
+        "scripts/src/startup-loop/self-evolving/self-evolving-events.ts",
+        "scripts/src/startup-loop/self-evolving/self-evolving-index.ts"
       ],
       "provisional_deliverable_family": "code-change",
       "recommended_route": "lp-do-fact-find",

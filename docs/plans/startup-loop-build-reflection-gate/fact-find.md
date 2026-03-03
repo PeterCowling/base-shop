@@ -74,22 +74,22 @@ The startup loop has no structured post-build reflection step that captures reus
 ### Entry Points
 
 - `.claude/skills/lp-do-build/SKILL.md` (lines 164–194) — plan completion sequence; the location where any new reflection gate step must be inserted. Currently contains: build-record production, results-review auto-draft, reflection debt emission, process-improvements regeneration, completed-ideas append, archive.
-- `docs/business-os/startup-loop/loop-output-contracts.md` (lines 196–224) — formal schema for `reflection-debt.user.md`; defines soft-gate mechanism, required sections, breach behavior. Extension point for a new artifact.
-- `scripts/src/startup-loop/lp-do-build-reflection-debt.ts` — TypeScript emitter for reflection debt; validates `results-review.user.md` against `REQUIRED_REFLECTION_SECTIONS`. Pattern to follow for any new emitter.
+- `docs/business-os/startup-loop/contracts/loop-output-contracts.md` (lines 196–224) — formal schema for `reflection-debt.user.md`; defines soft-gate mechanism, required sections, breach behavior. Extension point for a new artifact.
+- `scripts/src/startup-loop/build/lp-do-build-reflection-debt.ts` — TypeScript emitter for reflection debt; validates `results-review.user.md` against `REQUIRED_REFLECTION_SECTIONS`. Pattern to follow for any new emitter.
 - `docs/plans/_templates/results-review.user.md` — five idea categories in `## New Idea Candidates`; this is the upstream source that the new gate must complement without duplicating.
 
 ### Key Modules / Files
 
 - `.claude/skills/lp-do-build/SKILL.md` — primary target for instruction changes; step 2 (results-review auto-draft) and step 3 (reflection debt emitter) are where the new gate step is anchored.
-- `docs/business-os/startup-loop/loop-output-contracts.md` — artifact contract registry; a new artifact (`pattern-reflection.user.md` or similar) needs a contract entry here if it becomes canonical.
-- `scripts/src/startup-loop/lp-do-build-reflection-debt.ts` — TypeScript emitter schema; exports `REQUIRED_REFLECTION_SECTIONS`, `ReflectionDebtLedger`, `EmitReflectionDebtInput`. The new gate's emitter should follow the same pattern.
-- `scripts/src/startup-loop/generate-process-improvements.ts` — downstream consumer of `results-review.user.md` ideas; if the new reflection artifact produces structured idea candidates, this script may need to consume them.
-- `docs/business-os/startup-loop/two-layer-model.md` (lines 172–180) — Layer B implementation loop structure; the reflection gate is a step inside Layer B, feeding back into Layer A standing intelligence.
+- `docs/business-os/startup-loop/contracts/loop-output-contracts.md` — artifact contract registry; a new artifact (`pattern-reflection.user.md` or similar) needs a contract entry here if it becomes canonical.
+- `scripts/src/startup-loop/build/lp-do-build-reflection-debt.ts` — TypeScript emitter schema; exports `REQUIRED_REFLECTION_SECTIONS`, `ReflectionDebtLedger`, `EmitReflectionDebtInput`. The new gate's emitter should follow the same pattern.
+- `scripts/src/startup-loop/build/generate-process-improvements.ts` — downstream consumer of `results-review.user.md` ideas; if the new reflection artifact produces structured idea candidates, this script may need to consume them.
+- `docs/business-os/startup-loop/specifications/two-layer-model.md` (lines 172–180) — Layer B implementation loop structure; the reflection gate is a step inside Layer B, feeding back into Layer A standing intelligence.
 - `.claude/skills/meta-reflect/SKILL.md` — existing semi-manual post-session reflection skill; the new structured gate is the systematic, mandatory version of what `meta-reflect` does optionally.
 - `docs/business-os/startup-loop/2026-02-26-reflection-prioritization-expert-brief.user.md` — defines the canonical idea schema (priority tier, urgency, effort, reason_code, evidence fields) that any new idea-candidate output must conform to.
 - `docs/business-os/startup-loop/process-registry-v2.md` — process registry; a new `REFL-1` or similar process entry may be needed under the `DATA` or a new `REFL` workstream.
 - `scripts/src/startup-loop/mcp-preflight.ts` + `mcp-preflight-config.ts` — existing preflight pattern for MCP/tool access verification; this is the code-level analogue of the "data-source/API access" worked example.
-- `docs/business-os/startup-loop/loop-spec.yaml` (lines 1178–1184) — DO stage comment documenting the build-completion soft gate and reflection debt rules; any loop-spec change to add a reflection stage must be done here.
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml` (lines 1178–1184) — DO stage comment documenting the build-completion soft gate and reflection debt rules; any loop-spec change to add a reflection stage must be done here.
 
 ### Patterns and Conventions Observed
 
@@ -202,8 +202,8 @@ The startup loop has no structured post-build reflection step that captures reus
 
 ### Recent Git History (Targeted)
 
-- `scripts/src/startup-loop/lp-do-build-reflection-debt.ts` — last modified as part of `startup-loop-why-intended-outcome-automation`; `WARN_REFLECTION_SECTIONS` (Intended Outcome Check) staged as warn-mode addition. Pattern confirms the schema is designed to evolve incrementally.
-- `docs/business-os/startup-loop/loop-output-contracts.md` — updated 2026-02-25 (Version 1.2.0) with the `## Soft Gate Artifact: reflection-debt.user.md` section. Confirms the artifact contract file is actively maintained and is the right place to register new artifacts.
+- `scripts/src/startup-loop/build/lp-do-build-reflection-debt.ts` — last modified as part of `startup-loop-why-intended-outcome-automation`; `WARN_REFLECTION_SECTIONS` (Intended Outcome Check) staged as warn-mode addition. Pattern confirms the schema is designed to evolve incrementally.
+- `docs/business-os/startup-loop/contracts/loop-output-contracts.md` — updated 2026-02-25 (Version 1.2.0) with the `## Soft Gate Artifact: reflection-debt.user.md` section. Confirms the artifact contract file is actively maintained and is the right place to register new artifacts.
 - `docs/business-os/startup-loop/2026-02-26-reflection-prioritization-expert-brief.user.md` — created 2026-02-26 with expert-reviewed idea prioritization schema. This is directly upstream of this fact-find and defines the classification contract the new artifact must respect.
 - Recent `results-review.user.md` files across multiple plans confirm the current state: free-text idea candidates with plain-language `Suggested next action`, no structured tier/routing fields, some entries deferred indefinitely.
 

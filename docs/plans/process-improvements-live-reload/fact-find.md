@@ -29,7 +29,7 @@ File: `docs/business-os/process-improvements.user.html`
 
 - Generator writes atomically via `writeFileSync(tempPath)` + `renameSync(tempPath, filePath)` (lines 617-621).
 - It also writes a companion JSON file: `docs/business-os/_data/process-improvements.json` — same data, always in sync with the HTML (lines 635-636).
-- The generator is invoked from `scripts/src/startup-loop/generate-process-improvements.ts`. The pre-commit hook auto-stages the result.
+- The generator is invoked from `scripts/src/startup-loop/build/generate-process-improvements.ts`. The pre-commit hook auto-stages the result.
 
 ---
 
@@ -106,7 +106,7 @@ The HTML needs a way to detect that the file on disk has changed since the page 
 
 ### Task 1 — Embed a generation timestamp in the HTML template and generator
 
-**File changed**: `docs/business-os/process-improvements.user.html` (the template) and `scripts/src/startup-loop/generate-process-improvements.ts`.
+**File changed**: `docs/business-os/process-improvements.user.html` (the template) and `scripts/src/startup-loop/build/generate-process-improvements.ts`.
 
 **What to add to the HTML**: A JS variable assignment near the top of the main script block:
 

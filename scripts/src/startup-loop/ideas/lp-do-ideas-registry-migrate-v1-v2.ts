@@ -703,7 +703,7 @@ function runCli(): void {
   const args = parseCliArgs(process.argv.slice(2));
   if (!args.inputPath || !args.outputPath) {
     console.error(
-      "[lp-do-ideas-registry-migrate-v1-v2] Usage: pnpm --filter scripts exec tsx src/startup-loop/lp-do-ideas-registry-migrate-v1-v2.ts -- --input <registry.v1.json> --output <registry.v2.json> [--report <report.md>] [--pilot-business <BIZ> --pilot-output <pilot.md>]",
+      "[lp-do-ideas-registry-migrate-v1-v2] Usage: pnpm --filter scripts exec tsx src/startup-loop/ideas/lp-do-ideas-registry-migrate-v1-v2.ts -- --input <registry.v1.json> --output <registry.v2.json> [--report <report.md>] [--pilot-business <BIZ> --pilot-output <pilot.md>]",
     );
     process.exitCode = 2;
     return;

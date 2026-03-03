@@ -5,6 +5,7 @@ import * as React from "react";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 import { formatSyncMissingScripts, type SyncScriptId } from "./catalogConsoleFeedback";
+import { BTN_PRIMARY_CLASS, BTN_SECONDARY_CLASS, PANEL_CLASS } from "./catalogStyles";
 import type { ActionFeedback } from "./useCatalogConsole.client";
 
 export function CatalogSyncPanel({
@@ -71,7 +72,7 @@ export function CatalogSyncPanel({
   }, [feedback]);
 
   return (
-    <section className="rounded-xl border border-border-2 bg-surface p-6 shadow-elevation-1">
+    <section className={PANEL_CLASS}>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="text-xs uppercase tracking-label-lg text-gate-muted">
           {t("validateAndSync")}
@@ -81,8 +82,8 @@ export function CatalogSyncPanel({
           type="button"
           onClick={onSync}
           disabled={syncDisabled}
-          // eslint-disable-next-line ds/min-tap-size -- XAUP-0001 operator-desktop-tool
-          className="rounded-md border border-gate-ink bg-gate-ink px-4 py-2 text-xs font-semibold uppercase tracking-label text-bg disabled:opacity-60"
+           
+          className={BTN_PRIMARY_CLASS}
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="catalog-run-sync"
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
@@ -94,8 +95,8 @@ export function CatalogSyncPanel({
           type="button"
           onClick={onRefreshReadiness}
           disabled={busy || syncReadiness.checking}
-          // eslint-disable-next-line ds/min-tap-size -- XAUP-0001 operator-desktop-tool
-          className="rounded-md border border-border-2 px-3 py-2 text-2xs uppercase tracking-label-sm text-gate-ink disabled:opacity-60"
+           
+          className={BTN_SECONDARY_CLASS}
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="catalog-sync-readiness-refresh"
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id

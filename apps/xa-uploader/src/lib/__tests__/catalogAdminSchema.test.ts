@@ -85,6 +85,16 @@ describe("catalogProductDraftSchema", () => {
     expect(result.success).toBe(false);
   });
 
+  it("accepts missing createdAt (auto-filled on save)", () => {
+    const draft = {
+      ...baseDraft(),
+      sizes: "S|M|L",
+      createdAt: "",
+    };
+    const result = catalogProductDraftSchema.safeParse(draft);
+    expect(result.success).toBe(true);
+  });
+
   it("requires sizes for clothing", () => {
     const draft = {
       ...baseDraft(),

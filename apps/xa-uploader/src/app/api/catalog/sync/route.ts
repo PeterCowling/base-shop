@@ -7,6 +7,11 @@ import path from "node:path";
 import { NextResponse } from "next/server";
 
 import { toPositiveInt } from "@acme/lib";
+import {
+  type CatalogProductDraftInput,
+  getCatalogDraftWorkflowReadiness,
+  slugify,
+} from "@acme/lib/xa";
 
 import {
   type CatalogPublishError,
@@ -15,7 +20,10 @@ import {
   publishCatalogPayloadToContract,
 } from "../../../../lib/catalogContractClient";
 import { resolveXaUploaderProductsCsvPath } from "../../../../lib/catalogCsv";
-import { readCloudDraftSnapshot } from "../../../../lib/catalogDraftContractClient";
+import {
+  readCloudDraftSnapshot,
+  writeCloudDraftSnapshot,
+} from "../../../../lib/catalogDraftContractClient";
 import { buildCatalogArtifactsFromDrafts } from "../../../../lib/catalogDraftToContract";
 import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
 import type { XaCatalogStorefront } from "../../../../lib/catalogStorefront.types";
@@ -293,6 +301,20 @@ function validateCurrencyRates(value: unknown): value is CurrencyRates {
   return rates.every((rate) => typeof rate === "number" && Number.isFinite(rate) && rate > 0);
 }
 
+function normalizePublishState(product: CatalogProductDraftInput): "draft" | "ready" | "live" {
+  if (product.publishState === "draft" || product.publishState === "ready" || product.publishState === "live") {
+    return product.publishState;
+  }
+  const readiness = getCatalogDraftWorkflowReadiness(product);
+  return readiness.isPublishReady ? "live" : "draft";
+}
+
+function productIdentity(product: CatalogProductDraftInput): string {
+  const id = (product.id ?? "").trim();
+  if (id) return `id:${id}`;
+  return `slug:${slugify(product.slug || product.title)}`;
+}
+
 async function getCurrencyRatesStatus(currencyRatesPath: string): Promise<{
   ok: true;
 } | {
@@ -311,6 +333,51 @@ async function getCurrencyRatesStatus(currencyRatesPath: string): Promise<{
     if (err?.code === "ENOENT") return { ok: false, reason: "currency_rates_missing" };
     return { ok: false, reason: "currency_rates_invalid" };
   }
+}
+
+function buildCatalogInputGuardResponse(params: {
+  inputStatus: Awaited<ReturnType<typeof getCatalogSyncInputStatus>>;
+  confirmEmptyInput: boolean;
+  inputPath: string;
+  startedAt: number;
+}): NextResponse | null {
+  const { inputStatus, confirmEmptyInput, inputPath, startedAt } = params;
+  if (!inputStatus.exists) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "catalog_input_missing",
+        recovery: "create_catalog_input",
+        input: {
+          exists: false,
+          rowCount: 0,
+          path: inputPath,
+        },
+        durationMs: Date.now() - startedAt,
+      },
+      { status: 409 },
+    );
+  }
+
+  if (inputStatus.rowCount === 0 && !confirmEmptyInput) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "catalog_input_empty",
+        recovery: "confirm_empty_catalog_sync",
+        requiresConfirmation: true,
+        input: {
+          exists: inputStatus.exists,
+          rowCount: inputStatus.rowCount,
+          path: inputPath,
+        },
+        durationMs: Date.now() - startedAt,
+      },
+      { status: 409 },
+    );
+  }
+
+  return null;
 }
 
 async function recordPublishHistory(params: {
@@ -371,6 +438,44 @@ function getPublishErrorDetails(error: unknown): {
   };
 }
 
+async function readGeneratedCatalogProductCount(catalogOutPath: string): Promise<number> {
+  try {
+    const catalogRaw = await fs.readFile(catalogOutPath, "utf8");
+    const parsed = JSON.parse(catalogRaw) as { products?: unknown };
+    return Array.isArray(parsed.products) ? parsed.products.length : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function buildNoPublishableProductsResponse(params: {
+  inputPath: string;
+  totalDraftRows: number;
+  startedAt: number;
+  validateResult: ScriptRunResult;
+  syncResult: ScriptRunResult;
+}): NextResponse {
+  return NextResponse.json(
+    maybeAttachLogs(
+      {
+        ok: false,
+        error: "no_publishable_products",
+        recovery: "mark_products_ready",
+        requiresConfirmation: true,
+        input: {
+          exists: true,
+          rowCount: 0,
+          totalDraftRows: params.totalDraftRows,
+          path: params.inputPath,
+        },
+        durationMs: Date.now() - params.startedAt,
+      },
+      { validate: params.validateResult, sync: params.syncResult },
+    ),
+    { status: 409 },
+  );
+}
+
 async function runSyncPipeline(params: {
   repoRoot: string;
   storefrontId: XaCatalogStorefront;
@@ -391,38 +496,14 @@ async function runSyncPipeline(params: {
   await fs.mkdir(path.dirname(catalogOutPath), { recursive: true });
 
   const inputStatus = await getCatalogSyncInputStatus(productsCsvPath);
-  if (!inputStatus.exists) {
-    return NextResponse.json(
-      {
-        ok: false,
-        error: "catalog_input_missing",
-        recovery: "create_catalog_input",
-        input: {
-          exists: false,
-          rowCount: 0,
-          path: productsCsvPath,
-        },
-        durationMs: Date.now() - startedAt,
-      },
-      { status: 409 },
-    );
-  }
-  if (inputStatus.rowCount === 0 && !payload.options.confirmEmptyInput) {
-    return NextResponse.json(
-      {
-        ok: false,
-        error: "catalog_input_empty",
-        recovery: "confirm_empty_catalog_sync",
-        requiresConfirmation: true,
-        input: {
-          exists: inputStatus.exists,
-          rowCount: inputStatus.rowCount,
-          path: productsCsvPath,
-        },
-        durationMs: Date.now() - startedAt,
-      },
-      { status: 409 },
-    );
+  const inputGuardResponse = buildCatalogInputGuardResponse({
+    inputStatus,
+    confirmEmptyInput: payload.options.confirmEmptyInput === true,
+    inputPath: productsCsvPath,
+    startedAt,
+  });
+  if (inputGuardResponse) {
+    return inputGuardResponse;
   }
 
   const currencyRatesStatus = await getCurrencyRatesStatus(currencyRatesPath);
@@ -507,6 +588,17 @@ async function runSyncPipeline(params: {
     );
   }
 
+  const publishableCount = await readGeneratedCatalogProductCount(catalogOutPath);
+  if (publishableCount === 0 && inputStatus.rowCount > 0 && !payload.options.confirmEmptyInput) {
+    return buildNoPublishableProductsResponse({
+      inputPath: productsCsvPath,
+      totalDraftRows: inputStatus.rowCount,
+      startedAt,
+      validateResult,
+      syncResult,
+    });
+  }
+
   let publishResult: Awaited<ReturnType<typeof publishCatalogArtifactsToContract>> | null = null;
   if (!payload.options.dryRun) {
     try {
@@ -567,17 +659,22 @@ async function runCloudSyncPipeline(params: {
 }): Promise<NextResponse> {
   const { storefrontId, payload, startedAt } = params;
   const snapshot = await readCloudDraftSnapshot(storefrontId);
+  const publishableProducts = snapshot.products.filter((product) => {
+    const state = normalizePublishState(product);
+    return state === "ready" || state === "live";
+  });
 
-  if (snapshot.products.length === 0 && !payload.options.confirmEmptyInput) {
+  if (publishableProducts.length === 0 && !payload.options.confirmEmptyInput) {
     return NextResponse.json(
       {
         ok: false,
-        error: "catalog_input_empty",
-        recovery: "confirm_empty_catalog_sync",
+        error: "no_publishable_products",
+        recovery: "mark_products_ready",
         requiresConfirmation: true,
         input: {
           exists: true,
-          rowCount: 0,
+          rowCount: publishableProducts.length,
+          totalDraftRows: snapshot.products.length,
           path: `cloud-draft://${storefrontId}`,
         },
         durationMs: Date.now() - startedAt,
@@ -586,11 +683,27 @@ async function runCloudSyncPipeline(params: {
     );
   }
 
-  const { catalog, mediaIndex, warnings } = buildCatalogArtifactsFromDrafts({
-    storefront: storefrontId,
-    products: snapshot.products,
-    strict: payload.options.strict === true,
-  });
+  let builtArtifacts: Awaited<ReturnType<typeof buildCatalogArtifactsFromDrafts>>;
+  try {
+    builtArtifacts = await buildCatalogArtifactsFromDrafts({
+      storefront: storefrontId,
+      products: publishableProducts,
+      strict: payload.options.strict === true,
+    });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "validation_failed",
+        recovery: "review_validation_logs",
+        durationMs: Date.now() - startedAt,
+        details: error instanceof Error ? error.message : String(error),
+      },
+      { status: 400 },
+    );
+  }
+  const { catalog, mediaIndex } = builtArtifacts;
+  const warnings = [...builtArtifacts.warnings];
 
   let publishResult: { version?: string; publishedAt?: string } | null = null;
   if (!payload.options.dryRun) {
@@ -622,6 +735,25 @@ async function runCloudSyncPipeline(params: {
         },
         { status: isUnconfigured ? 503 : 502 },
       );
+    }
+
+    const promotedIds = new Set(publishableProducts.map(productIdentity));
+    const promotedProducts = snapshot.products.map((product) => {
+      if (promotedIds.has(productIdentity(product))) {
+        return { ...product, publishState: "live" as const };
+      }
+      return { ...product, publishState: normalizePublishState(product) };
+    });
+
+    try {
+      await writeCloudDraftSnapshot({
+        storefront: storefrontId,
+        products: promotedProducts,
+        revisionsById: snapshot.revisionsById,
+        ifMatchDocRevision: snapshot.docRevision,
+      });
+    } catch {
+      warnings.push("publish_state_promotion_failed");
     }
   }
 

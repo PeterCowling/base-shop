@@ -5,6 +5,7 @@ import * as React from "react";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 import type { ActionFeedback } from "./catalogConsoleFeedback";
+import { BTN_PRIMARY_CLASS, INPUT_CLASS, PANEL_CLASS } from "./catalogStyles";
 
 type CurrencyRatesResponse = {
   ok: boolean;
@@ -23,9 +24,6 @@ const EMPTY_RATES: EditableCurrencyRates = {
   GBP: "",
   AUD: "",
 };
-
-const RATE_FIELD_CLASSNAME =
-  "mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink placeholder:text-gate-muted focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20";
 
 function formatLoadedRates(rates: CurrencyRatesResponse["rates"]): EditableCurrencyRates {
   return {
@@ -68,7 +66,7 @@ function EditableRateField({
         step="0.0001"
         min="0.0001"
         placeholder="e.g. 0.9300"
-        className={RATE_FIELD_CLASSNAME}
+        className={INPUT_CLASS}
         data-testid={testId}
         data-cy={testId}
       />
@@ -169,7 +167,7 @@ export function CurrencyRatesPanel({
   }, []);
 
   return (
-    <section className="rounded-xl border border-border-2 bg-surface p-6 shadow-elevation-1">
+    <section className={PANEL_CLASS}>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="space-y-1">
           <div className="text-xs uppercase tracking-label-lg text-gate-muted">
@@ -181,8 +179,8 @@ export function CurrencyRatesPanel({
           type="button"
           onClick={() => void handleSaveAndSync()}
           disabled={saveDisabled}
-          // eslint-disable-next-line ds/min-tap-size -- XAUP-0001 operator-desktop-tool
-          className="rounded-md border border-bg bg-gate-ink px-4 py-2 text-xs font-semibold uppercase tracking-label text-bg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-60"
+           
+          className={BTN_PRIMARY_CLASS}
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="currency-rates-save"
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id

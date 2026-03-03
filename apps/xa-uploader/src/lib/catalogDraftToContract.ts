@@ -3,6 +3,7 @@ import {
   catalogProductDraftSchema,
   slugify,
   splitList,
+  withAutoCatalogDraftFields,
 } from "@acme/lib/xa";
 
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
@@ -20,13 +21,8 @@ type CatalogProduct = {
   brand: string;
   collection: string;
   price: number;
-  compareAtPrice?: number;
   prices: { AUD: number; EUR: number; GBP: number; USD: number };
-  compareAtPrices?: { AUD: number; EUR: number; GBP: number; USD: number };
-  deposit: number;
   stock: number;
-  forSale: boolean;
-  forRental: boolean;
   media: CatalogMediaEntry[];
   sizes: string[];
   description: string;
@@ -44,9 +40,9 @@ type CatalogProduct = {
     sleeveLength?: string;
     pattern?: string;
     occasion?: string[];
-    sizeClass?: string;
     strapStyle?: string;
     hardwareColor?: string;
+    interiorColor?: string[];
     closureType?: string;
     fits?: string[];
     metal?: string;
@@ -197,11 +193,17 @@ function buildTaxonomy(draft: ReturnType<typeof catalogProductDraftSchema.parse>
   appendIfPresent(taxonomy, "sleeveLength", draft.taxonomy.sleeveLength);
   appendIfPresent(taxonomy, "pattern", draft.taxonomy.pattern);
   appendIfListHasValues(taxonomy, "occasion", draft.taxonomy.occasion);
-  appendIfPresent(taxonomy, "sizeClass", draft.taxonomy.sizeClass);
   appendIfPresent(taxonomy, "strapStyle", draft.taxonomy.strapStyle);
   appendIfPresent(taxonomy, "hardwareColor", draft.taxonomy.hardwareColor);
+  appendIfListHasValues(taxonomy, "interiorColor", draft.taxonomy.interiorColor);
   appendIfPresent(taxonomy, "closureType", draft.taxonomy.closureType);
-  appendIfListHasValues(taxonomy, "fits", draft.taxonomy.fits);
+  const mergedFits = new Set([
+    ...splitList(draft.taxonomy.fits ?? ""),
+    ...splitList(draft.details?.whatFits ?? ""),
+  ]);
+  if (mergedFits.size > 0) {
+    taxonomy.fits = Array.from(mergedFits);
+  }
   appendIfPresent(taxonomy, "metal", draft.taxonomy.metal);
   appendIfPresent(taxonomy, "gemstone", draft.taxonomy.gemstone);
   appendIfPresent(taxonomy, "jewelrySize", draft.taxonomy.jewelrySize);
@@ -284,7 +286,7 @@ export function buildCatalogArtifactsFromDrafts(params: {
   const mediaItems: MediaIndexPayload["items"] = [];
 
   for (const [index, input] of params.products.entries()) {
-    const parsed = catalogProductDraftSchema.parse(input);
+    const parsed = catalogProductDraftSchema.parse(withAutoCatalogDraftFields(input));
     const rowNumber = index + 1;
     const productSlug = deriveProductSlug({
       rowNumber,
@@ -341,9 +343,6 @@ export function buildCatalogArtifactsFromDrafts(params: {
     const taxonomy = buildTaxonomy(parsed);
 
     const normalizedPrice = normalizeNumber(parsed.price);
-    const normalizedCompareAtPrice =
-      typeof parsed.compareAtPrice === "number" ? normalizeNumber(parsed.compareAtPrice) : undefined;
-
     catalogProducts.push({
       id: productId,
       slug: productSlug,
@@ -352,16 +351,7 @@ export function buildCatalogArtifactsFromDrafts(params: {
       collection: collectionHandle,
       price: normalizedPrice,
       prices: applyCurrencyRates(normalizedPrice, rates),
-      ...(typeof normalizedCompareAtPrice === "number"
-        ? {
-            compareAtPrice: normalizedCompareAtPrice,
-            compareAtPrices: applyCurrencyRates(normalizedCompareAtPrice, rates),
-          }
-        : {}),
-      deposit: normalizeNumber(parsed.deposit),
       stock: normalizeNumber(parsed.stock),
-      forSale: parsed.forSale ?? true,
-      forRental: parsed.forRental ?? false,
       media,
       sizes: splitList(parsed.sizes ?? ""),
       description: parsed.description,

@@ -6,6 +6,7 @@ import {
   splitList,
 } from "./catalogAdminSchema.js";
 import { parseBoolean, type XaProductsCsvRow } from "./catalogCsvFormat.js";
+import { withAutoCatalogDraftFields } from "./catalogWorkflow.js";
 
 function trimOrEmpty(value: string | null | undefined): string {
   return (value ?? "").trim();
@@ -55,6 +56,13 @@ function parseDraftCategory(
   return (value || "clothing") as CatalogProductDraftInput["taxonomy"]["category"];
 }
 
+function parseDraftPublishState(
+  value: string | null | undefined,
+): CatalogProductDraftInput["publishState"] {
+  if (value === "draft" || value === "ready" || value === "live") return value;
+  return undefined;
+}
+
 function buildMediaPaths(imageFiles: string, imageRoles: string): string {
   const files = splitList(imageFiles);
   const roles = splitList(imageRoles);
@@ -76,7 +84,7 @@ function parseImageRolesFromMediaPaths(mediaPaths: string | null | undefined): s
 }
 
 export function buildCsvRowUpdateFromDraft(input: CatalogProductDraftInput): XaProductsCsvRow {
-  const value = catalogProductDraftSchema.parse(input);
+  const value = catalogProductDraftSchema.parse(withAutoCatalogDraftFields(input));
   const normalizedSlug = normalizeSlug(value);
   const normalizedBrand = normalizeHandle(value.brandHandle);
   const normalizedCollection = normalizeOptionalHandle(value.collectionHandle || value.collectionTitle);
@@ -89,6 +97,7 @@ export function buildCsvRowUpdateFromDraft(input: CatalogProductDraftInput): XaP
   const color = normalizeCsvList(value.taxonomy.color);
   const material = normalizeCsvList(value.taxonomy.material);
   const occasion = normalizeCsvList(value.taxonomy.occasion);
+  const interiorColor = normalizeCsvList(value.taxonomy.interiorColor);
   const fits = normalizeCsvList(value.taxonomy.fits);
 
   const details = value.details ?? {};
@@ -110,6 +119,7 @@ export function buildCsvRowUpdateFromDraft(input: CatalogProductDraftInput): XaP
     stock: stringifyNumberOrEmpty(value.stock),
     for_sale: stringifyBooleanOrEmpty(value.forSale),
     for_rental: stringifyBooleanOrEmpty(value.forRental),
+    publish_state: value.publishState ?? "draft",
     sizes,
     description: trimOrEmpty(value.description),
     created_at: trimOrEmpty(value.createdAt),
@@ -132,6 +142,7 @@ export function buildCsvRowUpdateFromDraft(input: CatalogProductDraftInput): XaP
     taxonomy_size_class: trimOrEmpty(value.taxonomy.sizeClass),
     taxonomy_strap_style: trimOrEmpty(value.taxonomy.strapStyle),
     taxonomy_hardware_color: trimOrEmpty(value.taxonomy.hardwareColor),
+    taxonomy_interior_color: interiorColor,
     taxonomy_closure_type: trimOrEmpty(value.taxonomy.closureType),
     taxonomy_fits: fits,
     taxonomy_metal: trimOrEmpty(value.taxonomy.metal),
@@ -171,6 +182,7 @@ export function rowToDraftInput(row: XaProductsCsvRow): CatalogProductDraftInput
     stock: trimOrUndefined(row.stock),
     forSale: parseBoolean(row.for_sale || "", true),
     forRental: parseBoolean(row.for_rental || "", false),
+    publishState: parseDraftPublishState(row.publish_state),
     sizes: trimOrUndefined(row.sizes),
     description: trimOrEmpty(row.description),
     createdAt: trimOrEmpty(row.created_at),
@@ -193,6 +205,7 @@ export function rowToDraftInput(row: XaProductsCsvRow): CatalogProductDraftInput
       sizeClass: trimOrUndefined(row.taxonomy_size_class),
       strapStyle: trimOrUndefined(row.taxonomy_strap_style),
       hardwareColor: trimOrUndefined(row.taxonomy_hardware_color),
+      interiorColor: trimOrUndefined(row.taxonomy_interior_color),
       closureType: trimOrUndefined(row.taxonomy_closure_type),
       fits: trimOrUndefined(row.taxonomy_fits),
       metal: trimOrUndefined(row.taxonomy_metal),

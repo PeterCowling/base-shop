@@ -14,11 +14,11 @@
 import { promises as fs } from "fs";
 import path from "path";
 
-import type { StageResult } from "./manifest-update";
+import type { StageResult } from "../manifest-update";
 import {
   FORECAST_STAGE_CANDIDATES,
   FORECAST_STAGE_ID,
-} from "./stage-id-compat";
+} from "../stage-id-compat";
 
 // -- Types --
 

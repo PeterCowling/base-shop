@@ -4,7 +4,7 @@ import { promises as fs } from "fs";
 import os from "os";
 import path from "path";
 
-import { buildOperatorCapturedDataBlock, csvLooksEmptyOrHeaderOnly } from "../s2-market-intelligence-handoff";
+import { buildOperatorCapturedDataBlock, csvLooksEmptyOrHeaderOnly } from "../s2/s2-market-intelligence-handoff";
 
 async function writeFile(absolutePath: string, content: string): Promise<void> {
   await fs.mkdir(path.dirname(absolutePath), { recursive: true });

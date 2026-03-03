@@ -16,8 +16,8 @@ import {
   type GrowthMetricsAdapterOptions,
   type GrowthPeriod,
   type WeeklyGrowthMetrics,
-} from "./growth-metrics-adapter";
-import { WEEKLY_STAGE_ID } from "./stage-id-compat";
+} from "../diagnostics/growth-metrics-adapter";
+import { WEEKLY_STAGE_ID } from "../stage-id-compat";
 
 export interface S10GrowthAccountingOptions extends GrowthMetricsAdapterOptions {
   dataRoot?: string;

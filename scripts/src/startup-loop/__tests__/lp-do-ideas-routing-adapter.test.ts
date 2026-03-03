@@ -29,8 +29,8 @@ import {
   routeDispatchV2,
   type RouteError,
   type RouteSuccess,
-} from "../lp-do-ideas-routing-adapter.js";
-import type { TrialDispatchPacket, TrialDispatchPacketV2 } from "../lp-do-ideas-trial.js";
+} from "../ideas/lp-do-ideas-routing-adapter.js";
+import type { TrialDispatchPacket, TrialDispatchPacketV2 } from "../ideas/lp-do-ideas-trial.js";
 
 // ---------------------------------------------------------------------------
 // Fixtures

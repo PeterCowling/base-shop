@@ -19,14 +19,14 @@ import { createHash } from "node:crypto";
 
 import { describe, expect, it } from "@jest/globals";
 
-import type { TrialDispatchPacket } from "../lp-do-ideas-trial.js";
+import type { TrialDispatchPacket } from "../ideas/lp-do-ideas-trial.js";
 import {
   type QueueEntry,
   type TelemetryAggregates,
   type TelemetryRecord,
   TrialQueue,
   validatePacket,
-} from "../lp-do-ideas-trial-queue.js";
+} from "../ideas/lp-do-ideas-trial-queue.js";
 
 // ---------------------------------------------------------------------------
 // Fixtures

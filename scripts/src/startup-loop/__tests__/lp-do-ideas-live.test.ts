@@ -16,9 +16,9 @@ import {
   type LiveDispatchPacket,
   type LiveOrchestratorResult,
   runLiveOrchestrator,
-} from "../lp-do-ideas-live.js";
-import { routeDispatch, type RouteError, type RouteSuccess } from "../lp-do-ideas-routing-adapter.js";
-import type { ArtifactDeltaEvent } from "../lp-do-ideas-trial.js";
+} from "../ideas/lp-do-ideas-live.js";
+import { routeDispatch, type RouteError, type RouteSuccess } from "../ideas/lp-do-ideas-routing-adapter.js";
+import type { ArtifactDeltaEvent } from "../ideas/lp-do-ideas-trial.js";
 
 // ---------------------------------------------------------------------------
 // Fixtures

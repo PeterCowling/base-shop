@@ -169,7 +169,7 @@ When all executable tasks are complete, execute **every step below in order**. D
 
 1. Produce `build-record.user.md` per `docs/business-os/startup-loop/contracts/loop-output-contracts.md`.
    - Enforce `## Outcome Contract` presence and populated fields (`Why`, `Intended Outcome Type`, `Intended Outcome Statement`, `Source`) before proceeding. Use explicit `TBD/auto` fallback only when canonical values are unavailable.
-1.5 Emit canonical `build-event.json` in `docs/plans/<slug>/` using `scripts/src/startup-loop/lp-do-build-event-emitter.ts` (`emitBuildEvent()` + `writeBuildEvent()`) with values sourced from `build-record.user.md` `## Outcome Contract`.
+1.5 Emit canonical `build-event.json` in `docs/plans/<slug>/` using `scripts/src/startup-loop/build/lp-do-build-event-emitter.ts` (`emitBuildEvent()` + `writeBuildEvent()`) with values sourced from `build-record.user.md` `## Outcome Contract`.
    - Verify file exists and is non-empty before continuing.
 2. Produce `results-review.user.md` using the template at `docs/plans/_templates/results-review.user.md`.
 
@@ -198,12 +198,12 @@ When all executable tasks are complete, execute **every step below in order**. D
 3. Run reflection debt emitter; if debt emitted, produce `reflection-debt.user.html` from `docs/templates/visual/loop-output-report-template.html` (operator-readable plain language — see `MEMORY.md` Operator-Facing Content).
 4. Run bug scan and persist findings as a plan artifact: `pnpm bug-scan -- --changed --format=json --fail-on=none --business-scope=<BUSINESS> --idea-artifact=docs/plans/<slug>/bug-scan-findings.user.json`.
 5. Run `pnpm --filter scripts startup-loop:generate-process-improvements`. Confirm the output line `updated docs/business-os/process-improvements.user.html` appears before continuing.
-6. For each idea in `## New Idea Candidates` that was directly actioned by this build, add an entry to `docs/business-os/_data/completed-ideas.json` by calling `appendCompletedIdea()` from `scripts/src/startup-loop/generate-process-improvements.ts` (or by writing the JSON entry directly). Record `plan_slug` (the slug of the plan just completed), `output_link` (path to the archived plan directory), `completed_at` (today's date in ISO format), `source_path` (relative path to the results-review file where the idea was found), and `title` (the sanitized idea title as it appears in the report). Re-run `pnpm --filter scripts startup-loop:generate-process-improvements` after appending so the report reflects the exclusion immediately. Only mark ideas as complete if they were directly delivered by this build; deferred or future ideas remain in the report.
+6. For each idea in `## New Idea Candidates` that was directly actioned by this build, add an entry to `docs/business-os/_data/completed-ideas.json` by calling `appendCompletedIdea()` from `scripts/src/startup-loop/build/generate-process-improvements.ts` (or by writing the JSON entry directly). Record `plan_slug` (the slug of the plan just completed), `output_link` (path to the archived plan directory), `completed_at` (today's date in ISO format), `source_path` (relative path to the results-review file where the idea was found), and `title` (the sanitized idea title as it appears in the report). Re-run `pnpm --filter scripts startup-loop:generate-process-improvements` after appending so the report reflects the exclusion immediately. Only mark ideas as complete if they were directly delivered by this build; deferred or future ideas remain in the report.
 7. Set plan `Status: Archived`. Archive per `../_shared/plan-archiving.md`.
-7.5. **Queue-state completion hook** — inside the writer lock scope (which must already be held from step 7 onward and continues through step 8), invoke `markDispatchesCompleted()` from `scripts/src/startup-loop/lp-do-ideas-queue-state-completion.ts` to mark the originating dispatch as completed in `docs/business-os/startup-loop/ideas/trial/queue-state.json`:
+7.5. **Queue-state completion hook** — inside the writer lock scope (which must already be held from step 7 onward and continues through step 8), invoke `markDispatchesCompleted()` from `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-completion.ts` to mark the originating dispatch as completed in `docs/business-os/startup-loop/ideas/trial/queue-state.json`:
 
    ```typescript
-   import { markDispatchesCompleted } from "scripts/src/startup-loop/lp-do-ideas-queue-state-completion.js";
+   import { markDispatchesCompleted } from "scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-completion.js";
 
    const result = await markDispatchesCompleted({
      queueStatePath: "docs/business-os/startup-loop/ideas/trial/queue-state.json",

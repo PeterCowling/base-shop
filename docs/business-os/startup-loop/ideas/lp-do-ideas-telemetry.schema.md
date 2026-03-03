@@ -6,8 +6,8 @@ Status: Active
 Created: 2026-02-24
 Owner: startup-loop maintainers
 Related-contract: lp-do-ideas-trial-contract.md
-Related-module: scripts/src/startup-loop/lp-do-ideas-trial-queue.ts
-Related-module-2: scripts/src/startup-loop/lp-do-ideas-metrics-rollup.ts
+Related-module: scripts/src/startup-loop/ideas/lp-do-ideas-trial-queue.ts
+Related-module-2: scripts/src/startup-loop/ideas/lp-do-ideas-metrics-rollup.ts
 Related-artifacts:
   - docs/business-os/startup-loop/ideas/trial/telemetry.jsonl
   - docs/business-os/startup-loop/ideas/trial/queue-state.json

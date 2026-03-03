@@ -44,7 +44,7 @@ self-evolving/
 
 ## Runtime implementation
 
-Implementation lives in `scripts/src/startup-loop/self-evolving-*.ts` modules.
+Implementation lives in `scripts/src/startup-loop/self-evolving/self-evolving-*.ts` modules.
 
 ## Runtime entrypoints
 

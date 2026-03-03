@@ -267,8 +267,8 @@ The `seenDedupeKeys` set is maintained across calls to the queue layer.
 - Standing registry: `docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-standing-registry.schema.json`
 - Trial contract: `docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md`
 - Policy decision: `docs/plans/lp-do-ideas-startup-loop-integration/artifacts/trial-policy-decision.md`
-- Routing adapter: `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts` (TASK-04)
-- Queue + telemetry: `scripts/src/startup-loop/lp-do-ideas-trial-queue.ts` (TASK-05)
+- Routing adapter: `scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts` (TASK-04)
+- Queue + telemetry: `scripts/src/startup-loop/ideas/lp-do-ideas-trial-queue.ts` (TASK-05)
 
 ## Known Issues
 

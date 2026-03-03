@@ -1,12 +1,13 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
+
 import {
   FORECAST_STAGE_CANDIDATES,
   FORECAST_STAGE_ID,
   resolveStageResultPath,
   WEEKLY_STAGE_CANDIDATES,
   WEEKLY_STAGE_ID,
-} from "./stage-id-compat";
+} from "../stage-id-compat";
 
 /**
  * BL-02: Funnel metrics extraction into canonical diagnosis input shape

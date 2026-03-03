@@ -1,6 +1,6 @@
 import { describe, expect, it } from "@jest/globals";
 
-import { detectMissingArtifacts } from "../lp-do-ideas-queue-audit.js";
+import { detectMissingArtifacts } from "../ideas/lp-do-ideas-queue-audit.js";
 
 describe("detectMissingArtifacts", () => {
   it("TC-01 returns empty when all fact_find_path artifacts exist", () => {

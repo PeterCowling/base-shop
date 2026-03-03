@@ -4,7 +4,7 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "@jest/globals";
 
-import { runMetricsRollup } from "../lp-do-ideas-metrics-runner.js";
+import { runMetricsRollup } from "../ideas/lp-do-ideas-metrics-runner.js";
 
 // ---------------------------------------------------------------------------
 // Helpers

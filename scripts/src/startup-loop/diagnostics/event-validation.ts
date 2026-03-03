@@ -7,7 +7,7 @@
  * @see docs/business-os/startup-loop/schemas/event-state-schema.md
  */
 
-import type { RunEvent } from "./derive-state";
+import type { RunEvent } from "../derive-state";
 
 // -- Types --
 

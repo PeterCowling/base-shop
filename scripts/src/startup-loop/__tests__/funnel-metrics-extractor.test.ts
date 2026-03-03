@@ -4,7 +4,7 @@ import * as path from "node:path";
 
 import { afterEach,beforeEach, describe, expect, it } from "@jest/globals";
 
-import { extractFunnelMetrics, type FunnelMetricsInput } from "../funnel-metrics-extractor";
+import { extractFunnelMetrics, type FunnelMetricsInput } from "../diagnostics/funnel-metrics-extractor";
 
 /**
  * BL-02: Funnel metrics extraction into canonical diagnosis input shape

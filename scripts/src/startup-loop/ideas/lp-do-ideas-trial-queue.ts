@@ -206,7 +206,7 @@ const DEFAULT_AGING_WINDOW_HOURS = 24;
  * Checks:
  * - dispatch_id: present and non-empty
  * - mode: must be "trial"
- * - schema_version: must be "dispatch.v1"
+ * - schema_version: must be "dispatch.v1" or "dispatch.v2"
  * - evidence_refs: non-empty array
  * - status: must be a valid DispatchStatus
  */
@@ -230,12 +230,36 @@ export function validatePacket(
   }
 
   // schema_version
-  if (packet.schema_version !== "dispatch.v1") {
+  if (
+    packet.schema_version !== "dispatch.v1" &&
+    packet.schema_version !== "dispatch.v2"
+  ) {
     return {
       valid: false,
       reason: "wrong_schema_version",
-      detail: `schema_version must be "dispatch.v1", got ${JSON.stringify(packet.schema_version)}`,
+      detail: `schema_version must be "dispatch.v1" or "dispatch.v2", got ${JSON.stringify(packet.schema_version)}`,
     };
+  }
+
+  // dispatch.v2 required fields
+  if (packet.schema_version === "dispatch.v2") {
+    if (typeof packet.why !== "string" || packet.why.trim() === "") {
+      return {
+        valid: false,
+        reason: "missing_required_field",
+        detail: "dispatch.v2 requires non-empty `why`",
+      };
+    }
+    if (
+      typeof packet.intended_outcome !== "object" ||
+      packet.intended_outcome === null
+    ) {
+      return {
+        valid: false,
+        reason: "missing_required_field",
+        detail: "dispatch.v2 requires `intended_outcome`",
+      };
+    }
   }
 
   // mode

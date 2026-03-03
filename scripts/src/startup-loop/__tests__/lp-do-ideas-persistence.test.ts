@@ -21,8 +21,8 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "@jest/globals";
 
-import type { IdeaClassification } from "../lp-do-ideas-classifier.js";
-import type { LiveDispatchPacket } from "../lp-do-ideas-live.js";
+import type { IdeaClassification } from "../ideas/lp-do-ideas-classifier.js";
+import type { LiveDispatchPacket } from "../ideas/lp-do-ideas-live.js";
 import {
   appendClassifications,
   appendTelemetry,
@@ -31,8 +31,8 @@ import {
   type PersistedTelemetryRecord,
   persistOrchestratorResult,
   writeQueueState,
-} from "../lp-do-ideas-persistence.js";
-import type { TrialDispatchPacket } from "../lp-do-ideas-trial.js";
+} from "../ideas/lp-do-ideas-persistence.js";
+import type { TrialDispatchPacket } from "../ideas/lp-do-ideas-trial.js";
 
 // ---------------------------------------------------------------------------
 // Fixtures

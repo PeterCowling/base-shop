@@ -5,7 +5,7 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "@jest/globals";
 
-import { markDispatchesCompleted } from "../lp-do-ideas-queue-state-completion.js";
+import { markDispatchesCompleted } from "../ideas/lp-do-ideas-queue-state-completion.js";
 
 interface TestDispatch {
   schema_version: "dispatch.v1";

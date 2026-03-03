@@ -5,9 +5,9 @@ import * as path from "node:path";
 import { describe, expect, it } from "@jest/globals";
 
 import type { RunEvent } from "../derive-state";
-import { validateEventStream } from "../event-validation";
-import { runDiagnosisPipeline } from "../s10-diagnosis-integration";
-import { runS10GrowthAccounting } from "../s10-growth-accounting";
+import { validateEventStream } from "../diagnostics/event-validation";
+import { runDiagnosisPipeline } from "../s10/s10-diagnosis-integration";
+import { runS10GrowthAccounting } from "../s10/s10-growth-accounting";
 import { FORECAST_STAGE_ID, WEEKLY_STAGE_CANDIDATES, WEEKLY_STAGE_ID } from "../stage-id-compat";
 
 function writeJson(filePath: string, value: unknown): void {

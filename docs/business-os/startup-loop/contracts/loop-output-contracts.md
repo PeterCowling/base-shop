@@ -196,7 +196,7 @@ artifact: results-review
 ## Soft Gate Artifact: `reflection-debt.user.md`
 
 **Artifact ID:** `reflection-debt`  
-**Produced by:** `/lp-do-build` deterministic emitter (`scripts/src/startup-loop/lp-do-build-reflection-debt.ts`)  
+**Produced by:** `/lp-do-build` deterministic emitter (`scripts/src/startup-loop/build/lp-do-build-reflection-debt.ts`)  
 **Stored at:** `docs/plans/<feature-slug>/reflection-debt.user.md`  
 **Consumers:** lane scheduler (`IMPROVE`), operations governance, admission controls
 
@@ -327,5 +327,5 @@ The `.user.md` suffix marks operator-facing loop artifacts. Only `results-review
 - Artifact registry: `docs/business-os/startup-loop/artifact-registry.md`
 - Plan archiving procedure: `.claude/skills/_shared/plan-archiving.md`
 - Loop spec: `docs/business-os/startup-loop/specifications/loop-spec.yaml`
-- Reflection debt emitter: `scripts/src/startup-loop/lp-do-build-reflection-debt.ts`
+- Reflection debt emitter: `scripts/src/startup-loop/build/lp-do-build-reflection-debt.ts`
 - Producer skills: `.claude/skills/lp-do-fact-find/SKILL.md`, `.claude/skills/lp-do-plan/SKILL.md`, `.claude/skills/lp-do-build/SKILL.md`

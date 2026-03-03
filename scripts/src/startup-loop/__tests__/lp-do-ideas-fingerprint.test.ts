@@ -7,7 +7,7 @@ import {
   computeTruthFingerprint,
   computeTruthMateriality,
   normalizeForTruthFingerprint,
-} from "../lp-do-ideas-fingerprint.js";
+} from "../ideas/lp-do-ideas-fingerprint.js";
 
 const BASE_CONTENT = `---
 Type: Artifact

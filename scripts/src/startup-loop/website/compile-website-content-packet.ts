@@ -1,7 +1,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 
-import { parseFrontmatterMarkdown } from "../hypothesis-portfolio/markdown";
+import { parseFrontmatterMarkdown } from "../../hypothesis-portfolio/markdown";
 
 type Severity = "error" | "warning";
 type SourceStatus = "loaded" | "missing" | "skipped";

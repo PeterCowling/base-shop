@@ -10,8 +10,8 @@ Related-contract: docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract
 Related-checklist: docs/business-os/startup-loop/ideas/lp-do-ideas-go-live-checklist.md
 Related-rollback: docs/business-os/startup-loop/ideas/lp-do-ideas-rollback-playbook.md
 Related-policy: docs/plans/lp-do-ideas-startup-loop-integration/artifacts/trial-policy-decision.md
-Related-adapter: scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts
-Related-orchestrator: scripts/src/startup-loop/lp-do-ideas-trial.ts
+Related-adapter: scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts
+Related-orchestrator: scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts
 ---
 
 # lp-do-ideas Go-Live Seam Contract
@@ -81,7 +81,7 @@ it computes SHA deltas and invokes the hook with those events.
 - Integration is advisory — it does not block the build cycle or require the operator
   to act before continuing.
 
-**Location**: `scripts/src/startup-loop/lp-do-ideas-live-hook.ts`
+**Location**: `scripts/src/startup-loop/ideas/lp-do-ideas-live-hook.ts`
 (IMPLEMENTED — hook module is ready; wiring into `/lp-do-build` is the remaining activation step).
 
 ### 2.2 Mode Guard Updates (code changes required at activation)
@@ -90,8 +90,8 @@ Two functions previously hard-rejected `mode: live`. Both have been updated:
 
 | Function | File | Previous guard | Live-mode update required |
 |---|---|---|---|
-| `runTrialOrchestrator()` | `scripts/src/startup-loop/lp-do-ideas-trial.ts` | Rejects if `mode !== "trial"` | COMPLETE |
-| `routeDispatch()` | `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts` | Rejects if `mode !== "trial"` | COMPLETE |
+| `runTrialOrchestrator()` | `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts` | Rejects if `mode !== "trial"` | COMPLETE |
+| `routeDispatch()` | `scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts` | Rejects if `mode !== "trial"` | COMPLETE |
 
 **Status**: Both mode guards implemented as of 2026-02-25. `lp-do-ideas-live.ts` created
 as a separate module. `routeDispatch()` guard updated to accept `"trial" | "live"`.
@@ -183,8 +183,8 @@ grep "Sign-Off" docs/business-os/startup-loop/ideas/lp-do-ideas-go-live-checklis
 ### Step 3 — Create live orchestrator and update routing adapter
 
 **Action**:
-1. Create `scripts/src/startup-loop/lp-do-ideas-live.ts` — live-mode orchestrator
-2. Update `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts`:
+1. Create `scripts/src/startup-loop/ideas/lp-do-ideas-live.ts` — live-mode orchestrator
+2. Update `scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts`:
    - Change mode guard from `=== "trial"` to `=== "trial" || === "live"`
 3. Add tests for live-mode path in both files
 
@@ -206,7 +206,7 @@ echo '{"entries":{},"dedupe_index":{}}' > docs/business-os/startup-loop/ideas/li
 
 ### Step 6 — Wire build-time integration hook
 
-**Action**: `scripts/src/startup-loop/lp-do-ideas-live-hook.ts` is already implemented.
+**Action**: `scripts/src/startup-loop/ideas/lp-do-ideas-live-hook.ts` is already implemented.
 Wire it into `/lp-do-build` so that after each task commit, the skill:
 1. Checks the committed file set against `live/standing-registry.json`
 2. Constructs `ArtifactDeltaEvent[]` for any registered files (using `git diff HEAD~1 HEAD -- <file>` to obtain before/after SHAs)

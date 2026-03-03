@@ -1,7 +1,8 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
-import type { TrialDispatchPacket } from "./lp-do-ideas-trial.js";
+import type { TrialDispatchPacket } from "../ideas/lp-do-ideas-trial.js";
+
 import type { RankedCandidate } from "./self-evolving-candidates.js";
 import type { MetaObservation, StartupState } from "./self-evolving-contracts.js";
 import { stableHash } from "./self-evolving-contracts.js";

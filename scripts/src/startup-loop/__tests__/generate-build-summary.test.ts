@@ -14,8 +14,8 @@ import {
   serializeRows,
   shouldExcludeSourcePath,
   sortRows,
-} from "../generate-build-summary";
-import { emitBuildEvent, writeBuildEvent } from "../lp-do-build-event-emitter";
+} from "../build/generate-build-summary";
+import { emitBuildEvent, writeBuildEvent } from "../build/lp-do-build-event-emitter";
 
 const FIXED_TIMESTAMP = "2026-02-25T00:00:00.000Z";
 

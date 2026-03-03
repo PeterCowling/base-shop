@@ -41,7 +41,7 @@ import { describe, expect, it } from "@jest/globals";
 import {
   classifyIdea,
   OWN_PRIORITY_RANK,
-} from "../lp-do-ideas-classifier.js";
+} from "../ideas/lp-do-ideas-classifier.js";
 
 // ---------------------------------------------------------------------------
 // Fixtures

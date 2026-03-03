@@ -14,26 +14,26 @@ import {
   buildPriorIndex,
   type ManifestPointer,
   type PriorIndex,
-} from './baseline-priors';
+} from '../baselines/baseline-priors';
 import {
   compileExperimentLearning,
   type CompilerResult,
   type ExperimentReadout,
-} from './learning-compiler';
+} from '../baselines/learning-compiler';
 import {
   appendLearningEntry,
   type LearningEntry,
   queryLearningEntries,
-} from './learning-ledger';
+} from '../baselines/learning-ledger';
 import {
   applyPriorDeltas,
   computeSnapshotPath,
   type PriorDelta,
-} from './prior-update-writer';
+} from '../baselines/prior-update-writer';
 import {
   WEEKLY_STAGE_CANDIDATES,
   WEEKLY_STAGE_ID,
-} from "./stage-id-compat";
+} from "../stage-id-compat";
 
 /**
  * Extended experiment readout with supersede support.

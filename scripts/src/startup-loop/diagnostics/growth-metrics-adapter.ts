@@ -15,7 +15,7 @@ import {
   resolveStageResultPath,
   WEEKLY_STAGE_CANDIDATES,
   WEEKLY_STAGE_ID,
-} from "./stage-id-compat";
+} from "../stage-id-compat";
 
 export interface GrowthPeriod {
   period_id: string;

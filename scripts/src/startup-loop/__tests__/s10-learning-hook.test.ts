@@ -5,15 +5,15 @@
 
 import * as fs from 'node:fs';
 
-import type { ManifestPointer, PriorIndex } from '../baseline-priors';
-import type { CompilerResult } from '../learning-compiler';
-import type { LearningEntry } from '../learning-ledger';
-import type { PriorDelta } from '../prior-update-writer';
+import type { ManifestPointer, PriorIndex } from '../baselines/baseline-priors';
+import type { CompilerResult } from '../baselines/learning-compiler';
+import type { LearningEntry } from '../baselines/learning-ledger';
+import type { PriorDelta } from '../baselines/prior-update-writer';
 import {
   runLearningCompilation,
   type S10LearningInput,
   type S10LearningResult,
-} from '../s10-learning-hook';
+} from '../s10/s10-learning-hook';
 
 // Mock all imported modules
 jest.mock('node:fs');

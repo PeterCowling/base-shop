@@ -92,11 +92,11 @@ with verified no stage mutations.
 
 | Item | Check |
 |---|---|
-| `scripts/src/startup-loop/lp-do-ideas-live.ts` created and all tests pass | `[x]` |
-| `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts` mode guard updated to accept `"live"` | `[x]` |
+| `scripts/src/startup-loop/ideas/lp-do-ideas-live.ts` created and all tests pass | `[x]` |
+| `scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts` mode guard updated to accept `"live"` | `[x]` |
 | All existing tests in `lp-do-ideas-*.test.ts` still pass after adapter change | `[x]` |
 | New live-mode tests added covering `mode: live` path through orchestrator and adapter | `[x]` |
-| `scripts/src/startup-loop/lp-do-ideas-live-hook.ts` created with SIGNALS integration | `[x]` |
+| `scripts/src/startup-loop/ideas/lp-do-ideas-live-hook.ts` created with SIGNALS integration | `[x]` |
 
 **Evidence**:
 - `lp-do-ideas-live.ts` created and tests pass: committed `089da144cf`; 22 TC-02 tests pass

@@ -11,7 +11,7 @@ import {
   loadCompletedIdeasRegistry,
   runCheck,
   updateProcessImprovementsHtml,
-} from "../generate-process-improvements";
+} from "../build/generate-process-improvements";
 
 async function writeFile(root: string, relativePath: string, content: string): Promise<void> {
   const absPath = path.join(root, relativePath);
@@ -402,6 +402,44 @@ Review-date: 2026-02-26
     expect(item.proximity === null || typeof item.proximity === "string").toBe(true);
 
     await fs.rm(tmpRoot, { recursive: true, force: true });
+  });
+
+  it("collectProcessImprovements ingests bug-scan artifacts as idea candidates", async () => {
+    await writeFile(
+      tmpDir,
+      "docs/plans/bug-scan-flow/bug-scan-findings.user.json",
+      `${JSON.stringify(
+        {
+          schema_version: "bug-scan-findings.v1",
+          generated_at: "2026-03-02T10:00:00.000Z",
+          business_scope: "BRIK",
+          finding_count: 1,
+          critical_count: 1,
+          warning_count: 0,
+          findings: [
+            {
+              ruleId: "no-eval-call",
+              severity: "critical",
+              message: "`eval()` execution is unsafe and hard to audit.",
+              suggestion: "Replace with explicit parsing/dispatch logic.",
+              file: "apps/brikette/src/lib/risky.ts",
+              line: 14,
+              column: 7,
+            },
+          ],
+        },
+        null,
+        2,
+      )}\n`,
+    );
+
+    const data = collectProcessImprovements(tmpDir);
+    expect(data.ideaItems).toHaveLength(1);
+    expect(data.ideaItems[0]?.business).toBe("BRIK");
+    expect(data.ideaItems[0]?.source).toBe("bug-scan-findings.user.json");
+    expect(data.ideaItems[0]?.title).toContain("no-eval-call");
+    expect(data.ideaItems[0]?.suggested_action).toContain("--only-rules=no-eval-call");
+    expect(data.ideaItems[0]?.path).toBe("docs/plans/bug-scan-flow/bug-scan-findings.user.json");
   });
 
   it("appendCompletedIdea is idempotent — calling twice yields one entry", async () => {

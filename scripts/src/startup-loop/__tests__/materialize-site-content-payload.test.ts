@@ -4,7 +4,7 @@ import * as path from "node:path";
 
 import { describe, expect, it } from "@jest/globals";
 
-import { materializeSiteContentPayload } from "../materialize-site-content-payload.js";
+import { materializeSiteContentPayload } from "../website/materialize-site-content-payload.js";
 
 function writeFile(repoRoot: string, relativePath: string, content: string): void {
   const fullPath = path.join(repoRoot, relativePath);

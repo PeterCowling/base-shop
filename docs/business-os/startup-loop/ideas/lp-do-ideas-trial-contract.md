@@ -9,7 +9,7 @@ Created: 2026-02-24
 Updated: 2026-02-26
 Owner: startup-loop maintainers
 Related-plan: docs/plans/lp-do-ideas-startup-loop-integration/plan.md
-Primary code entrypoints: scripts/src/startup-loop/lp-do-ideas-trial.ts, scripts/src/startup-loop/lp-do-ideas-trial-queue.ts
+Primary code entrypoints: scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts, scripts/src/startup-loop/ideas/lp-do-ideas-trial-queue.ts
 Related-schema: schemas/lp-do-ideas-dispatch.v2.schema.json, _deprecated/lp-do-ideas-dispatch.schema.json (compat), schemas/lp-do-ideas-standing-registry.schema.json
 Related-skill: /lp-do-ideas (pending — TASK-03)
 Related-artifacts: docs/plans/lp-do-ideas-startup-loop-integration/artifacts/trial-policy-decision.md
@@ -193,13 +193,13 @@ As of this date, the following live-mode components have been implemented:
 
 | Component | Status | Location |
 |---|---|---|
-| Live orchestrator (`runLiveOrchestrator`) | Complete | `scripts/src/startup-loop/lp-do-ideas-live.ts` |
-| Routing adapter live-mode guard | Complete | `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts` |
-| SIGNALS advisory hook (`runLiveHook`) | Complete | `scripts/src/startup-loop/lp-do-ideas-live-hook.ts` |
-| Persistence adapter | Complete | `scripts/src/startup-loop/lp-do-ideas-persistence.ts` |
+| Live orchestrator (`runLiveOrchestrator`) | Complete | `scripts/src/startup-loop/ideas/lp-do-ideas-live.ts` |
+| Routing adapter live-mode guard | Complete | `scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts` |
+| SIGNALS advisory hook (`runLiveHook`) | Complete | `scripts/src/startup-loop/ideas/lp-do-ideas-live-hook.ts` |
+| Persistence adapter | Complete | `scripts/src/startup-loop/ideas/lp-do-ideas-persistence.ts` |
 | Live artifact paths (`live/`) | Complete | `docs/business-os/startup-loop/ideas/live/` |
-| Autonomous gate + kill-switch | Complete (inactive) | `scripts/src/startup-loop/lp-do-ideas-autonomous-gate.ts` |
-| KPI rollup runner | Complete | `scripts/src/startup-loop/lp-do-ideas-metrics-runner.ts` |
+| Autonomous gate + kill-switch | Complete (inactive) | `scripts/src/startup-loop/ideas/lp-do-ideas-autonomous-gate.ts` |
+| KPI rollup runner | Complete | `scripts/src/startup-loop/ideas/lp-do-ideas-metrics-runner.ts` |
 | Production standing registry | Partial | `docs/business-os/startup-loop/ideas/standing-registry.json` — 15 assessment artifacts registered (bos-loop-assessment-registry, 2026-03-02). Expand incrementally. |
 | Go-live activation | Pending | Blocked: KPI evidence, rollback drill, policy update |
 
@@ -357,7 +357,7 @@ The wired static args are:
 - Add new artifacts by editing the JSON file (schema at `schemas/lp-do-ideas-standing-registry.schema.json`)
 - No code changes required to register additional artifacts
 
-**T1 keyword source of truth:** `T1_SEMANTIC_KEYWORDS` constant in `scripts/src/startup-loop/lp-do-ideas-trial.ts`
+**T1 keyword source of truth:** `T1_SEMANTIC_KEYWORDS` constant in `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts`
 - The `t1_semantic_sections` field in `standing-registry.json` mirrors this list for documentation/schema compliance
 - The runtime does not read `t1_semantic_sections` from the registry at runtime; the TS constant is authoritative
 - To add new keywords, update both the TS constant and the registry file's `t1_semantic_sections` field

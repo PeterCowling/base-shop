@@ -6,13 +6,13 @@ import * as path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "@jest/globals";
 
 import {
+  type BuildEvent,
+  type BuildEventInput,
   emitBuildEvent,
   getBuildEventPath,
   readBuildEvent,
   writeBuildEvent,
-  type BuildEvent,
-  type BuildEventInput,
-} from "../lp-do-build-event-emitter.js";
+} from "../build/lp-do-build-event-emitter.js";
 
 // ---------------------------------------------------------------------------
 // Helpers

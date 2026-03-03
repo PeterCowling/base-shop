@@ -1,12 +1,12 @@
 import { describe, expect, it } from "@jest/globals";
 
-import type { ImprovementCandidate, MetaObservation } from "../self-evolving-contracts.js";
+import type { ImprovementCandidate, MetaObservation } from "../self-evolving/self-evolving-contracts.js";
 import {
   buildHardSignature,
   computeCooldownUntil,
   detectRepeatWorkCandidates,
-} from "../self-evolving-detector.js";
-import { canUseScoringV2, computeScoreResult } from "../self-evolving-scoring.js";
+} from "../self-evolving/self-evolving-detector.js";
+import { canUseScoringV2, computeScoreResult } from "../self-evolving/self-evolving-scoring.js";
 
 function buildObservation(id: string, timestamp: string): MetaObservation {
   const signature = buildHardSignature({

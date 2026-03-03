@@ -9,7 +9,7 @@ import {
   REQUIRED_REFLECTION_SECTIONS,
   validateResultsReviewFile,
 } from "./lp-do-build-reflection-debt.js";
-import { classifyIdea,type IdeaClassificationInput } from "./lp-do-ideas-classifier.js";
+import { classifyIdea,type IdeaClassificationInput } from "../ideas/lp-do-ideas-classifier.js";
 
 const PROCESS_HTML_RELATIVE_PATH = "docs/business-os/process-improvements.user.html";
 const PROCESS_DATA_RELATIVE_PATH = "docs/business-os/_data/process-improvements.json";
@@ -73,6 +73,23 @@ interface ReflectionDebtLedgerItem {
 
 interface ReflectionDebtLedger {
   items?: ReflectionDebtLedgerItem[];
+}
+
+interface BugScanFindingItem {
+  ruleId?: string;
+  severity?: string;
+  message?: string;
+  suggestion?: string;
+  file?: string;
+  line?: number;
+  column?: number;
+}
+
+interface BugScanFindingsArtifact {
+  schema_version?: string;
+  generated_at?: string;
+  business_scope?: string | null;
+  findings?: BugScanFindingItem[];
 }
 
 interface FrontmatterParseResult {
@@ -388,6 +405,29 @@ function sortIdeaItems(items: ProcessImprovementItem[]): ProcessImprovementItem[
   });
 }
 
+function classifyIdeaItem(ideaItem: ProcessImprovementItem): void {
+  try {
+    const classifierInput: IdeaClassificationInput = {
+      area_anchor: [ideaItem.title, ideaItem.body !== MISSING_VALUE ? ideaItem.body : ""]
+        .filter(Boolean)
+        .join(" "),
+      evidence_refs:
+        ideaItem.body && ideaItem.body !== MISSING_VALUE
+          ? [`operator-stated: ${ideaItem.body}`]
+          : undefined,
+    };
+    const classification = classifyIdea(classifierInput);
+    ideaItem.priority_tier = classification.priority_tier;
+    ideaItem.own_priority_rank = classification.own_priority_rank;
+    ideaItem.urgency = classification.urgency;
+    ideaItem.effort = classification.effort;
+    ideaItem.proximity = classification.proximity ?? null;
+    ideaItem.reason_code = classification.reason_code;
+  } catch {
+    // Non-fatal: leave classifier fields unset on errors.
+  }
+}
+
 export interface ProcessImprovementsData {
   ideaItems: ProcessImprovementItem[];
   riskItems: ProcessImprovementItem[];
@@ -486,6 +526,9 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
   const reflectionDebtPaths = allPaths.filter((sourcePath) =>
     sourcePath.endsWith("/reflection-debt.user.md"),
   );
+  const bugScanPaths = allPaths.filter((sourcePath) =>
+    sourcePath.endsWith("/bug-scan-findings.user.json"),
+  );
 
   const ideaItems: ProcessImprovementItem[] = [];
   const riskItems: ProcessImprovementItem[] = [];
@@ -563,29 +606,64 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
         path: sourcePath,
         idea_key: ideaKey,
       };
+      classifyIdeaItem(ideaItem);
 
-      try {
-        const classifierInput: IdeaClassificationInput = {
-          area_anchor: [idea.title, idea.body !== MISSING_VALUE ? idea.body : ""]
-            .filter(Boolean)
-            .join(" "),
-          evidence_refs:
-            idea.body && idea.body !== MISSING_VALUE
-              ? [`operator-stated: ${idea.body}`]
-              : undefined,
-        };
-        const classification = classifyIdea(classifierInput);
-        ideaItem.priority_tier = classification.priority_tier;
-        ideaItem.own_priority_rank = classification.own_priority_rank;
-        ideaItem.urgency = classification.urgency;
-        ideaItem.effort = classification.effort;
-        ideaItem.proximity = classification.proximity ?? null;
-        ideaItem.reason_code = classification.reason_code;
-      } catch {
-        // Non-fatal: all six classification fields (priority_tier, own_priority_rank,
-        // urgency, effort, proximity, reason_code) remain unset on classifier error
+      ideaItems.push(ideaItem);
+    }
+  }
+
+  for (const sourcePath of bugScanPaths) {
+    const absPath = path.join(repoRoot, sourcePath);
+    let parsed: BugScanFindingsArtifact | null = null;
+    try {
+      const raw = readFileSync(absPath, "utf8");
+      parsed = JSON.parse(raw) as BugScanFindingsArtifact;
+    } catch {
+      parsed = null;
+    }
+    if (!parsed || !Array.isArray(parsed.findings)) {
+      continue;
+    }
+
+    const business =
+      sanitizeText(parsed.business_scope ?? "").toUpperCase() ||
+      sanitizeText(inferFeatureSlugFromPath(sourcePath).split("-")[0] ?? "").toUpperCase() ||
+      "BOS";
+    const ideaDate = toIsoDate(parsed.generated_at ?? statSync(absPath).mtime.toISOString());
+
+    for (const finding of parsed.findings) {
+      const ruleId = sanitizeText(finding.ruleId ?? "");
+      const file = sanitizeText(finding.file ?? "");
+      const line = Number.isFinite(finding.line) ? Number(finding.line) : 0;
+      const column = Number.isFinite(finding.column) ? Number(finding.column) : 0;
+      const message = sanitizeText(finding.message ?? "");
+      const suggestion = sanitizeText(finding.suggestion ?? "");
+      const severity = sanitizeText(finding.severity ?? "").toLowerCase();
+      if (!ruleId || !file || !message) {
+        continue;
       }
 
+      const location =
+        line > 0 ? `${file}:${line}${column > 0 ? `:${column}` : ""}` : file;
+      const title = `Bug scan ${ruleId} at ${location}`;
+      const ideaKey = deriveIdeaKey(sourcePath, title);
+      if (completedKeys.has(ideaKey)) {
+        continue;
+      }
+
+      const ideaItem: ProcessImprovementItem = {
+        type: "idea",
+        business,
+        title,
+        body: `${message} (${severity || "warning"})`,
+        suggested_action:
+          `${suggestion || "Fix the flagged pattern at source."} Re-run: pnpm bug-scan -- --only-rules=${ruleId} ${file}`,
+        source: "bug-scan-findings.user.json",
+        date: ideaDate,
+        path: sourcePath,
+        idea_key: ideaKey,
+      };
+      classifyIdeaItem(ideaItem);
       ideaItems.push(ideaItem);
     }
   }

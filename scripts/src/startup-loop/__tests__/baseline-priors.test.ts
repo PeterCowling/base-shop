@@ -11,14 +11,14 @@ import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
 
-import type { ManifestPointer, PriorIndex } from '../baseline-priors';
+import type { ManifestPointer, PriorIndex } from '../baselines/baseline-priors';
 import {
   buildPriorIndex,
   extractPriors,
   replaceMachineBlock,
   serializePriors,
   validateNoDuplicateBareIds,
-} from '../baseline-priors';
+} from '../baselines/baseline-priors';
 
 // Test fixture: forecast artifact
 const FIXTURE_FORECAST_ARTIFACT = `---

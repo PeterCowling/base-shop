@@ -3,7 +3,7 @@ import { describe, expect, it } from "@jest/globals";
 import {
   computeHospitalityScenarioDateLabels,
   computeHospitalityScenarioInputs,
-} from "../hospitality-scenarios";
+} from "../s2/hospitality-scenarios";
 
 /**
  * Hospitality scenario date computation tests

@@ -7,7 +7,7 @@ Owner: startup-loop maintainers
 Related-contract: docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md
 Related-policy: docs/plans/lp-do-ideas-startup-loop-integration/artifacts/trial-policy-decision.md
 Related-schema: docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-dispatch.v2.schema.json, docs/business-os/startup-loop/ideas/_deprecated/lp-do-ideas-dispatch.schema.json (compat)
-Related-adapter: scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts
+Related-adapter: scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts
 Related-skills: .claude/skills/lp-do-fact-find/SKILL.md, .claude/skills/lp-do-briefing/SKILL.md
 ---
 
@@ -225,8 +225,8 @@ Operational notes:
 | Dispatch packet format | `docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-dispatch.v2.schema.json` (primary), `docs/business-os/startup-loop/ideas/_deprecated/lp-do-ideas-dispatch.schema.json` (compat) |
 | Trial mode contract | `docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md` |
 | Autonomy/threshold policy | `docs/plans/lp-do-ideas-startup-loop-integration/artifacts/trial-policy-decision.md` |
-| Routing adapter implementation | `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts` |
+| Routing adapter implementation | `scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts` |
 | Fact-find intake contract | `.claude/skills/lp-do-fact-find/SKILL.md` |
 | Briefing intake contract | `.claude/skills/lp-do-briefing/SKILL.md` |
-| Orchestrator (upstream) | `scripts/src/startup-loop/lp-do-ideas-trial.ts` |
-| Queue/telemetry (downstream) | `scripts/src/startup-loop/lp-do-ideas-trial-queue.ts` (TASK-05) |
+| Orchestrator (upstream) | `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts` |
+| Queue/telemetry (downstream) | `scripts/src/startup-loop/ideas/lp-do-ideas-trial-queue.ts` (TASK-05) |

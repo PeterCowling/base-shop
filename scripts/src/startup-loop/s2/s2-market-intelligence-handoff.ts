@@ -3,7 +3,7 @@ import path from "path";
 
 import { pearson as libPearson } from "@acme/lib";
 
-import { parseFrontmatterMarkdown } from "../hypothesis-portfolio/markdown";
+import { parseFrontmatterMarkdown } from "../../hypothesis-portfolio/markdown";
 
 import { computeHospitalityScenarioDateLabels } from "./hospitality-scenarios";
 

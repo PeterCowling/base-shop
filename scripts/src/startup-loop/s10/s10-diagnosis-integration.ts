@@ -15,14 +15,15 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 
-import { appendBottleneckHistory, checkConstraintPersistence } from "./bottleneck-history";
-import { type DiagnosisSnapshot,generateDiagnosisSnapshot } from "./diagnosis-snapshot";
-import { type McpPreflightResult,runMcpPreflight } from "./mcp-preflight";
-import { checkAndTriggerReplan, type ReplanTrigger } from "./replan-trigger";
+import { appendBottleneckHistory, checkConstraintPersistence } from "../diagnostics/bottleneck-history";
+import { type DiagnosisSnapshot,generateDiagnosisSnapshot } from "../diagnostics/diagnosis-snapshot";
+import { type McpPreflightResult,runMcpPreflight } from "../mcp-preflight";
+import { checkAndTriggerReplan, type ReplanTrigger } from "../replan-trigger";
 import {
   WEEKLY_STAGE_CANDIDATES,
   WEEKLY_STAGE_ID,
-} from "./stage-id-compat";
+} from "../stage-id-compat";
+
 import {
   type GrowthAccountingEventPayload,
   runS10GrowthAccounting,

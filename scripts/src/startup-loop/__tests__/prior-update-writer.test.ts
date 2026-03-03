@@ -6,12 +6,12 @@ import * as path from 'node:path';
 
 import { afterEach, beforeEach, describe, expect, it } from '@jest/globals';
 
-import type { PriorDelta } from '../learning-compiler';
+import type { PriorDelta } from '../baselines/learning-compiler';
 import {
   applyPriorDeltas,
   computeSnapshotPath,
   verifySnapshotIntegrity,
-} from '../prior-update-writer';
+} from '../baselines/prior-update-writer';
 
 describe('prior-update-writer', () => {
   let testDir: string;

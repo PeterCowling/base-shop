@@ -4,12 +4,12 @@ import path from "node:path";
 
 import { describe, expect, it } from "@jest/globals";
 
-import type { TrialDispatchPacket } from "../lp-do-ideas-trial.js";
-import type { StartupState } from "../self-evolving-contracts.js";
+import type { TrialDispatchPacket } from "../ideas/lp-do-ideas-trial.js";
+import type { StartupState } from "../self-evolving/self-evolving-contracts.js";
 import {
   dispatchToMetaObservation,
   runSelfEvolvingFromIdeas,
-} from "../self-evolving-from-ideas.js";
+} from "../self-evolving/self-evolving-from-ideas.js";
 
 function buildStartupState(): StartupState {
   return {

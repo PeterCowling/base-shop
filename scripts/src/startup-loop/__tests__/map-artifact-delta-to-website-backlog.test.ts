@@ -1,6 +1,6 @@
 import { describe, expect, it } from "@jest/globals";
 
-import { mapArtifactDeltaToWebsiteBacklog } from "../map-artifact-delta-to-website-backlog.js";
+import { mapArtifactDeltaToWebsiteBacklog } from "../website/map-artifact-delta-to-website-backlog.js";
 
 describe("mapArtifactDeltaToWebsiteBacklog", () => {
   it("TC-06-01: offer-only change emits home/PLP/PDP copy tasks", () => {

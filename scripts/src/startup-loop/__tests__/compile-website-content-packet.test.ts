@@ -4,7 +4,7 @@ import * as path from "node:path";
 
 import { describe, expect, it } from "@jest/globals";
 
-import { compileWebsiteContentPacket } from "../compile-website-content-packet.js";
+import { compileWebsiteContentPacket } from "../website/compile-website-content-packet.js";
 
 function writeFile(repoRoot: string, relativePath: string, content: string): void {
   const fullPath = path.join(repoRoot, relativePath);

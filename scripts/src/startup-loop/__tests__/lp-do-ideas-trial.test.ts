@@ -6,7 +6,7 @@ import {
   buildDispatchId,
   runTrialOrchestrator,
   T1_SEMANTIC_KEYWORDS,
-} from "../lp-do-ideas-trial.js";
+} from "../ideas/lp-do-ideas-trial.js";
 
 // Fixed clock for deterministic dispatch_id generation
 const FIXED_DATE = new Date("2026-02-24T15:30:00.000Z");

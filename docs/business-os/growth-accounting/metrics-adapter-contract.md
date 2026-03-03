@@ -16,10 +16,10 @@ This contract resolves GAK-05 ambiguity and is the authoritative input shape for
 
 ## Ownership Decision
 
-- Adapter owner: `scripts/src/startup-loop/growth-metrics-adapter.ts` (new in GAK-06).
-- Primary caller: `scripts/src/startup-loop/s10-growth-accounting.ts` (new in GAK-06).
+- Adapter owner: `scripts/src/startup-loop/diagnostics/growth-metrics-adapter.ts` (new in GAK-06).
+- Primary caller: `scripts/src/startup-loop/s10/s10-growth-accounting.ts` (new in GAK-06).
 - Existing source readers reused by adapter:
-  - `scripts/src/startup-loop/funnel-metrics-extractor.ts` style pointer traversal.
+  - `scripts/src/startup-loop/diagnostics/funnel-metrics-extractor.ts` style pointer traversal.
   - S3 target source: `stage-result-S3.json` -> `artifacts.forecast`.
   - S10 actual source: `stage-result-S10.json` -> `artifacts.readout`.
   - Events source: `events.jsonl` (for completeness flags and blocked-stage context).

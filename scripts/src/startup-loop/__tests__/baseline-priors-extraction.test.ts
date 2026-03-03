@@ -7,8 +7,8 @@
  * Task: LC-00 from the learning-compiler plan (archived — see git history)
  */
 
-import type { Prior } from '../baseline-priors';
-import { extractPriors, replaceMachineBlock, serializePriors } from '../baseline-priors';
+import type { Prior } from '../baselines/baseline-priors';
+import { extractPriors, replaceMachineBlock, serializePriors } from '../baselines/baseline-priors';
 
 // Fixture: Sample baseline doc with Priors (Machine) block
 const FIXTURE_BASELINE_DOC = `---

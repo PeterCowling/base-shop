@@ -2,8 +2,8 @@ import { promises as fs } from "fs";
 import os from "os";
 import path from "path";
 
-import { computeHospitalityScenarioInputs } from "../hospitality-scenarios";
-import { buildS2MarketIntelligenceHandoff, findLatestDatedMarketResearchDataFile } from "../s2-market-intelligence-handoff";
+import { computeHospitalityScenarioInputs } from "../s2/hospitality-scenarios";
+import { buildS2MarketIntelligenceHandoff, findLatestDatedMarketResearchDataFile } from "../s2/s2-market-intelligence-handoff";
 
 async function writeFile(absolutePath: string, content: string): Promise<void> {
   await fs.mkdir(path.dirname(absolutePath), { recursive: true });

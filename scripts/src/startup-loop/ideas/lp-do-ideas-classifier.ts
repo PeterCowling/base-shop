@@ -673,10 +673,7 @@ export function classifyIdea(
     reason_code = "RULE_P1_DIRECT_CAUSAL";
   }
   // P1 Near/Indirect — supplementary content_tag signals (no spec regex for these)
-  else if (
-    input.content_tags?.includes("p1_near") ||
-    areaAnchor.toLowerCase().includes("conversion")
-  ) {
+  else if (input.content_tags?.includes("p1_near")) {
     priority_tier = "P1";
     proximity = "Near";
     reason_code = "RULE_P1_NEAR_CAUSAL";

@@ -1,15 +1,15 @@
 {
-  "last_updated": "2026-03-03T11:12:40.816Z",
+  "last_updated": "2026-03-03T16:44:16.172Z",
   "counts": {
-    "enqueued": 12,
+    "enqueued": 15,
     "processed": 11,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
-    "completed": 91,
-    "fact_find_ready": 41,
-    "total": 140
+    "completed": 95,
+    "fact_find_ready": 47,
+    "total": 147
   },
   "dispatches": [
     {
@@ -5012,8 +5012,8 @@
       "status": "fact_find_ready",
       "priority": "P1",
       "confidence": 0.9,
-      "current_truth": "self-evolving/ organises data by type (events/, observations/, candidates/, backbone-queue/, startup-state/, reports/) with per-business files inside each. Finding all BRIK data requires checking 6 directories. 4 schema files sit at root alongside data directories.",
-      "next_scope_now": "Fact-find to: (1) map all code references to self-evolving/ paths across 17 self-evolving-*.ts files, (2) identify test fixtures referencing these paths, (3) design per-business directory structure, (4) plan schema file relocation to schemas/ subdirectory.",
+      "current_truth": "self-evolving/ data is ALREADY per-business (BRIK/, SIMC/ subdirectories with events.jsonl, candidates.json, etc. inside each). All 17 self-evolving-*.ts scripts already write to per-business paths. Schemas already relocated to schemas/ subdirectory. BUT 6 empty per-type scaffold directories (events/, observations/, candidates/, backbone-queue/, startup-state/, reports/) remain alongside the per-business dirs — dead scaffold from an earlier convention.",
+      "next_scope_now": "Fact-find to: (1) confirm no code references the empty per-type directories, (2) verify all scripts write exclusively to per-business paths, (3) delete empty scaffold directories, (4) update README if it references the old per-type convention.",
       "adjacent_later": [
         "Scripts code reorganisation — moving self-evolving-*.ts files into their own subdirectory depends on data paths being stable first"
       ],
@@ -5031,7 +5031,13 @@
         "source": "operator"
       },
       "created_at": "2026-03-03T07:58:46.608Z",
-      "queue_state": "enqueued"
+      "queue_state": "processed",
+      "processed_by": {
+        "fact_find_slug": "self-evolving-per-business-reorg",
+        "fact_find_path": "docs/plans/self-evolving-per-business-reorg/fact-find.md",
+        "processed_at": "2026-03-03T18:05:00.000Z",
+        "route": "dispatch-routed"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -5275,6 +5281,310 @@
       "completed_by": {
         "fact_find_slug": "startup-loop-deprecation-sweep",
         "outcome": "Infeasible — intended outcome already achieved. _deprecated/ directory exists with superseded files properly documented."
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303180000-0136",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:STRATEGY:startup-baselines-per-business-consolidation:20260303",
+      "anchor_key": "startup-baselines-per-business-consolidation",
+      "cluster_key": "BOS:STRATEGY:startup-baselines-per-business-consolidation:operator:20260303",
+      "cluster_fingerprint": "b2c4a91e7f3d8056b2c4a91e7f3d8056b2c4a91e7f3d8056b2c4a91e7f3d8056",
+      "lineage_depth": 0,
+      "area_anchor": "startup-baselines — flat files mixed with per-business subdirs",
+      "location_anchors": [
+        "docs/business-os/startup-baselines/",
+        "scripts/src/startup-loop/baselines/baseline-merge.ts",
+        "scripts/src/startup-loop/baselines/learning-ledger.ts",
+        "scripts/src/startup-loop/baselines/prior-update-writer.ts",
+        "scripts/src/startup-loop/diagnostics/diagnosis-snapshot.ts",
+        "scripts/src/startup-loop/website/compile-website-content-packet.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.9,
+      "current_truth": "startup-baselines/ has 20 flat files (BRIK-forecast-seed.user.md, HBAG-channels.md, HEAD-offer.md, etc.) at the root alongside per-business subdirectories (BRIK/, HBAG/, HEAD/) for the same businesses. Naming is inconsistent: some files have date prefixes, some don't; some have .user. suffix, some don't; one date format has a missing hyphen. Subdirectories contain newer artifacts (demand-evidence-pack.md, S3-forecast/) while flat files are older baselines. PET has only flat files, no subdirectory. ~15 scripts read/write to this directory.",
+      "next_scope_now": "Fact-find to: (1) map all script and skill references to startup-baselines/ paths, (2) identify which flat files duplicate content already in subdirectories, (3) plan file moves into per-business subdirectories with BIZ prefix dropped, (4) normalize naming convention (.user.md suffix, date prefix policy).",
+      "adjacent_later": [
+        "Naming convention policy for all domain directories — date prefix vs no date prefix"
+      ],
+      "evidence_refs": [
+        "agent-verified: 20 flat files at startup-baselines/ root with BIZ- prefix naming",
+        "agent-verified: BRIK/, HBAG/, HEAD/ subdirectories coexist alongside flat files for same businesses",
+        "agent-verified: PET has 5 flat files but no subdirectory",
+        "agent-verified: naming inconsistency — BRIK-2026-02-12assessment (missing hyphen), HBAG-channels.md (no .user. suffix)",
+        "agent-verified: ~15 scripts in baselines/, diagnostics/, website/, s10/ read/write here",
+        "operator-stated: domain-organized with per-business subdirectories is the correct pattern"
+      ],
+      "why": "startup-baselines/ is split-brained — same businesses have data both as flat files at the root and in per-business subdirectories. Naming conventions vary across files. Every other domain directory (strategy/, site-upgrades/, market-research/) uses clean per-business subdirectories. This one should too.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "All flat files in startup-baselines/ moved into per-business subdirectories. BIZ prefix dropped from filenames (now redundant inside subdirectory). Naming normalised to consistent .user.md suffix. All script/skill path references updated. No stale paths remain.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-03T18:00:00.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303160000-0137",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:standing-data-freshness-enforcement:20260303",
+      "anchor_key": "standing-data-freshness-enforcement",
+      "cluster_key": "BOS:BOS:standing-data-freshness-enforcement:operator:20260303",
+      "cluster_fingerprint": "b2c4e8f1a3d5c7b9e1f3a5d7c9b1e3f5a7d9c1b3e5f7a9d1c3b5e7f9a1d3c5",
+      "lineage_depth": 0,
+      "area_anchor": "Standing data — no freshness enforcement for startup-baselines files",
+      "location_anchors": [
+        "docs/business-os/startup-baselines/",
+        "scripts/src/startup-loop/mcp-preflight.ts",
+        "docs/business-os/startup-loop/aggregate-pack-contracts.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Standing data files in startup-baselines/ (offer.md, channels.md, content-packet.md, forecast-seed, assessment-intake-packet) have no freshness enforcement. Only _generated/stage-operator-map.json and MCP loop runtime artifacts have staleness checks. Aggregate packs have a 90d/conf<0.6 freshness policy defined but individual baseline files do not.",
+      "next_scope_now": "Investigate and implement a freshness enforcement mechanism for startup-baselines files — frontmatter metadata, scripted staleness checks, or git-log-based validation — so stale standing data is surfaced before decisions are made on it.",
+      "adjacent_later": [
+        "Extend freshness enforcement to other standing data directories beyond startup-baselines",
+        "Add freshness warnings to the weekly S10 report for stale standing data"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "completed",
+      "priority": "P2",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: During startup-baselines reorganisation, discovered no file has freshness metadata or staleness checks — you cannot tell if BRIK/offer.md is current or 3 months stale without git log",
+        "scripts/src/startup-loop/mcp-preflight.ts (existing artifact-freshness check covers loop runtime only)",
+        "docs/business-os/startup-loop/aggregate-pack-contracts.md (freshness policy exists for packs but not individual baselines)",
+        "docs/plans/_archive/startup-baselines-per-business-consolidation/results-review.user.md"
+      ],
+      "created_at": "2026-03-03T16:00:00.000Z",
+      "queue_state": "completed",
+      "why": "Standing data files are the input to every startup-loop stage decision. Without freshness enforcement, an agent or operator can make a strategy decision based on a 3-month-old offer doc without any warning. The baselines reorganisation made this visible — the files are now tidy but still have no way to signal when they need refreshing.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Startup-baselines files have a freshness enforcement mechanism — stale files are surfaced automatically via a script or preflight check, so decisions are never silently made on outdated standing data.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "fact_find_slug": "standing-data-freshness-enforcement",
+        "fact_find_path": "docs/plans/standing-data-freshness-enforcement/fact-find.md",
+        "processed_at": "2026-03-03T16:00:02.708Z",
+        "route": "dispatch-routed"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/standing-data-freshness-enforcement/plan.md",
+        "completed_at": "2026-03-03T16:44:16.171Z",
+        "outcome": "Standing-baselines .md files now have age-based freshness enforcement via mcp-preflight and CLI"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303200000-0138",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:XA:PRODUCTS:xa-catalog-image-upload-missing:20260303",
+      "anchor_key": "xa-catalog-image-upload-missing",
+      "cluster_key": "XA:PRODUCTS:xa-catalog-image-upload-missing:operator:20260303",
+      "cluster_fingerprint": "c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2",
+      "lineage_depth": 0,
+      "area_anchor": "XA catalog sync — no image binary upload in cloud mode",
+      "location_anchors": [
+        "apps/xa-uploader/src/app/api/catalog/sync/route.ts",
+        "apps/xa-uploader/src/lib/catalogDraftToContract.ts",
+        "apps/xa-b/src/components/XaProductCard.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Cloud sync publishes image paths (URLs/references) into the catalog artifact but does not upload local image binaries to any storage service. If image assets are not already hosted at the referenced URLs, xa-b renders broken images. The workflow rebuild enforces image path presence at submission time but does not validate that the URLs resolve to actual hosted assets.",
+      "next_scope_now": "Fact-find to determine the image hosting approach within Cloudflare free tier constraints (R2 free tier: 10GB storage, 10M class A ops/month, 1M class B reads; or external free hosting). Design the upload path from xa-uploader save/sync through to xa-b consumption.",
+      "adjacent_later": [
+        "Image optimization/resizing pipeline for xa-b product cards",
+        "CDN caching strategy for product images"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "operator-stated: In cloud mode, sync publishes image paths only; does not upload local image binaries — xa-b can render broken images",
+        "apps/xa-uploader/src/app/api/catalog/sync/route.ts (cloud sync path writes catalog artifact with image URLs but no upload step)",
+        "apps/xa-uploader/src/lib/catalogDraftToContract.ts (maps draft image paths to contract format without upload verification)"
+      ],
+      "created_at": "2026-03-03T20:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Without an actual image upload path, every product synced in cloud mode risks broken images on the storefront. This is the most critical gap in the catalog workflow — the entire visual merchandising layer depends on images resolving correctly. Must stay within Cloudflare free tier.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Product images uploaded through xa-uploader are stored in a Cloudflare-free-tier-compatible location and reliably served on xa-b product pages after sync.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303200000-0139",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:XA:PRODUCTS:xa-live-product-unpublish-safety:20260303",
+      "anchor_key": "xa-live-product-unpublish-safety",
+      "cluster_key": "XA:PRODUCTS:xa-live-product-unpublish-safety:operator:20260303",
+      "cluster_fingerprint": "d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3",
+      "lineage_depth": 0,
+      "area_anchor": "XA catalog workflow — live product edit can unpublish",
+      "location_anchors": [
+        "apps/xa-uploader/src/app/api/catalog/products/route.ts",
+        "apps/xa-uploader/src/app/api/catalog/sync/route.ts",
+        "packages/lib/src/xa/catalogWorkflow.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "When a live product is saved in an incomplete state (e.g. image paths removed), publishState is auto-derived as 'draft' by catalogWorkflow readiness logic. Next sync excludes draft products from the published catalog. There is no mechanism to keep the currently-live version while editing a draft revision. A single incomplete save can silently remove a product from the storefront.",
+      "next_scope_now": "Fact-find to design a safety model for live product editing — options include last-published snapshot preservation, edit-in-draft-copy pattern, or save-time warnings when edits would demote a live product.",
+      "adjacent_later": [
+        "Audit trail for publishState transitions",
+        "Undo/revert capability for accidental unpublish"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: If a live product is saved in incomplete state, it becomes draft; next sync drops it from published catalog — no keep-live-while-editing safety model",
+        "packages/lib/src/xa/catalogWorkflow.ts (readiness auto-derivation demotes live → draft on incomplete data)",
+        "apps/xa-uploader/src/app/api/catalog/sync/route.ts (sync only publishes ready/live products)"
+      ],
+      "created_at": "2026-03-03T20:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "A single accidental incomplete save can silently remove a product from the live storefront. This is a data-loss risk that grows as the catalog scales — one wrong edit during a price update session could take multiple products offline without warning.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Editing a live product cannot silently unpublish it — the system either preserves the live version, warns before demotion, or requires explicit confirmation to unpublish.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303200000-0140",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:XA:PRODUCTS:xa-console-storefront-logout-regression:20260303",
+      "anchor_key": "xa-console-storefront-logout-regression",
+      "cluster_key": "XA:PRODUCTS:xa-console-storefront-logout-regression:operator:20260303",
+      "cluster_fingerprint": "e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4",
+      "lineage_depth": 0,
+      "area_anchor": "XA console — storefront selector and logout missing",
+      "location_anchors": [
+        "apps/xa-uploader/src/components/catalog/CatalogConsole.client.tsx",
+        "apps/xa-uploader/src/app/login/page.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "CatalogConsole currently shows the product form, product list, sync panel, and currency rates panel but has no storefront selector or logout button. Multi-storefront session management UX is absent — users cannot switch between storefronts or end their session from the console.",
+      "next_scope_now": "Fact-find to determine what storefront/session UX existed previously, what the multi-storefront model requires, and implement the missing selector and logout controls in the console header.",
+      "adjacent_later": [
+        "Per-storefront product filtering in the product list"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: Multi-storefront/session UX is missing from CatalogConsole — no storefront selector or logout present in current UI",
+        "apps/xa-uploader/src/components/catalog/CatalogConsole.client.tsx (console layout has no header controls for session management)"
+      ],
+      "created_at": "2026-03-03T20:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Without a logout button, users cannot end their session securely. Without a storefront selector, multi-storefront operation is impossible — users are locked into whichever storefront was set at login with no way to switch.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "CatalogConsole has a storefront selector and logout button, enabling secure session management and multi-storefront operation.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303200000-0141",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:XA:PRODUCTS:xa-sync-confirm-flow-mismatch:20260303",
+      "anchor_key": "xa-sync-confirm-flow-mismatch",
+      "cluster_key": "XA:PRODUCTS:xa-sync-confirm-flow-mismatch:operator:20260303",
+      "cluster_fingerprint": "f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5",
+      "lineage_depth": 0,
+      "area_anchor": "XA sync API — confirm flow client/server mismatch",
+      "location_anchors": [
+        "apps/xa-uploader/src/app/api/catalog/sync/route.ts",
+        "apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Sync API returns requiresConfirmation for no_publishable_products, but the client-side confirm flow in catalogConsoleActions only handles the catalog_input_empty confirmation case. The no_publishable_products confirmation response is silently ignored or hits the default error path, producing a confusing user experience.",
+      "next_scope_now": "Fact-find to map all API confirmation codes vs. client handlers, then fix the mismatch so no_publishable_products gets a proper client-side confirm dialog.",
+      "adjacent_later": [
+        "Unified API response contract between sync route and client actions"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: no_publishable_products returns requiresConfirmation but client confirm flow only handles catalog_input_empty — API/client behavior mismatch",
+        "apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts (client-side confirmation handling)",
+        "apps/xa-uploader/src/app/api/catalog/sync/route.ts (server-side confirmation codes)"
+      ],
+      "created_at": "2026-03-03T20:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "When no products are publishable, the user sees either a generic error or a confirmation dialog for the wrong action. This breaks the feedback loop between 'why can't I sync?' and 'what do I need to fix?' — a core workflow moment.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "All sync API confirmation codes have matching client-side handlers with clear user-facing messages explaining the situation and recovery steps.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303200000-0142",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:XA:PRODUCTS:xa-dead-zip-submission-code:20260303",
+      "anchor_key": "xa-dead-zip-submission-code",
+      "cluster_key": "XA:PRODUCTS:xa-dead-zip-submission-code:operator:20260303",
+      "cluster_fingerprint": "a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6",
+      "lineage_depth": 0,
+      "area_anchor": "XA uploader — dead ZIP/submission backend code",
+      "location_anchors": [
+        "apps/xa-uploader/src/app/api/catalog/submission/route.ts",
+        "apps/xa-uploader/src/components/catalog/CatalogSubmissionPanel.client.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The ZIP-based submission backend route and CatalogSubmissionPanel UI component still exist in the codebase despite the 'drop ZIP approach' decision. The UI is hidden but the API route is still callable. This is dead code that contradicts the current cloud-sync workflow and creates confusion about which path is canonical.",
+      "next_scope_now": "Fact-find to inventory all ZIP/submission-related code paths, confirm they are fully unreachable, then remove them cleanly without breaking the active cloud sync workflow.",
+      "adjacent_later": [
+        "Validate no other code references the submission route or ZIP packaging utilities"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: ZIP/submission backend code still exists with hidden UI only — contradicts 'drop ZIP approach' at codebase level",
+        "apps/xa-uploader/src/app/api/catalog/submission/route.ts (submission API route still present and callable)",
+        "apps/xa-uploader/src/components/catalog/CatalogSubmissionPanel.client.tsx (UI hidden but component still in tree)"
+      ],
+      "created_at": "2026-03-03T20:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Dead code that represents an abandoned approach creates maintenance burden and confusion. A new contributor cannot tell which submission path is canonical. The route being callable but unused is also a minor security surface.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "All ZIP/submission-related code is removed from the codebase, leaving only the cloud sync workflow as the single canonical publish path.",
+        "source": "operator"
       }
     }
   ]

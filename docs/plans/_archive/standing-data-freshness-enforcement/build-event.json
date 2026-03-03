@@ -1,0 +1,17 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "standing-data-freshness-enforcement",
+  "completed_date": "2026-03-03",
+  "plan_path": "docs/plans/standing-data-freshness-enforcement/plan.md",
+  "build_record_path": "docs/plans/standing-data-freshness-enforcement/build-record.user.md",
+  "outcome_contract": {
+    "why": "Standing data files are the input to every startup-loop stage decision. Without freshness enforcement, an agent or operator can make a strategy decision based on a 3-month-old offer doc without any warning.",
+    "why_source": "operator",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Startup-baselines files have a freshness enforcement mechanism — stale files are surfaced automatically via a script or preflight check, so decisions are never silently made on outdated standing data."
+  },
+  "tasks_completed": ["TASK-01"],
+  "deliverable_type": "code-change",
+  "execution_track": "code",
+  "business": "BOS"
+}

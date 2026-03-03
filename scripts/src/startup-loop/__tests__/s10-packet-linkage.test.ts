@@ -18,7 +18,7 @@ const REPO_ROOT = path.resolve(__dirname, "../../../../");
 
 const SCHEMA_PATH = path.join(
   REPO_ROOT,
-  "docs/business-os/startup-loop/s10-weekly-packet-schema-v1.md"
+  "docs/business-os/startup-loop/schemas/s10-weekly-packet-schema-v1.md"
 );
 
 // ── TC-06-03: Artifact continuity ────────────────────────────────────────────

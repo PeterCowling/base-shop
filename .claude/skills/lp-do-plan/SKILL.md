@@ -142,6 +142,19 @@ Route to one module only (or mixed pair):
 - business-artifact -> `modules/plan-business.md`
 - mixed -> `modules/plan-mixed.md`
 
+## Phase 4.1: Outcome Contract Inheritance Gate
+
+Before task decomposition, carry forward outcome context from fact-find to plan:
+
+- Ensure plan section `## Inherited Outcome Contract` is present and populated from fact-find `## Outcome Contract`.
+- Preserve source attribution (`operator` vs `auto`) exactly as provided.
+- If upstream values are unavailable, use explicit fallback:
+  - `Why: TBD`
+  - `Intended Outcome Type: TBD`
+  - `Intended Outcome Statement: TBD`
+  - `Source: auto`
+- Do not fabricate operator-authored rationale.
+
 ## Phase 4.5: DECISION Task Self-Resolve Gate
 
 Before creating any DECISION task, apply this test:
@@ -174,6 +187,8 @@ Rules:
 - One logical unit per task.
 - Use CHECKPOINT tasks for long dependency chains.
 - If a field is not applicable: write `None: <reason>` (no placeholder `TBD`).
+- For any user-facing/UI-impacting IMPLEMENT task, include an `Expected user-observable behavior` checklist in Acceptance (what a user should see/do when complete).
+- For frontend IMPLEMENT tasks, include a scoped post-build QA loop requirement in the task contract: run targeted `lp-design-qa`, `tools-ui-contrast-sweep`, and `tools-ui-breakpoint-sweep`; log findings; auto-fix and re-verify until no Critical/Major issues remain (Minor findings may be deferred only with explicit rationale and follow-up).
 
 ## Phase 5.5: Consumer Tracing (code/mixed, M/L effort only)
 
@@ -273,7 +288,7 @@ Plan-only:
 
 Plan+auto:
 
-> Plan complete and eligible. Saved to `docs/plans/<feature-slug>/plan.md`. Status: `Active`. Gates passed. Critique: `<N>` round(s), final verdict `<credible | partially credible | not credible>` (score: `<X.X>`). Auto-continuing to `/lp-do-build <feature-slug>`.
+> Plan complete and eligible. Saved to `docs/plans/<feature-slug>/plan.md`. Status: `Active`. Gates passed. Critique: `<N>` round(s), final verdict `credible` (score: `<X.X>`). Auto-continuing to `/lp-do-build <feature-slug>`.
 
 ## Quick Checklist
 
@@ -283,9 +298,12 @@ Plan+auto:
 - [ ] Confidence rules applied from shared scoring doc
 - [ ] VC checks reference shared business VC checklist when relevant
 - [ ] `/lp-do-sequence` completed after structural edits
+- [ ] `## Inherited Outcome Contract` populated from fact-find `## Outcome Contract` (or explicit fallback `TBD/auto`)
+- [ ] UI-impacting IMPLEMENT tasks define `Expected user-observable behavior` in Acceptance
+- [ ] Frontend IMPLEMENT tasks include scoped post-build QA loop requirements (design QA + contrast + breakpoint sweeps)
 - [ ] Consumer tracing complete for all new outputs and modified behaviors in M/L code/mixed tasks
 - [ ] Phase 7.5 Simulation Trace run — trace table present in plan draft; Critical findings resolved or waived before Phase 8 persist
 - [ ] lp-do-factcheck run if plan contains codebase claims (file paths, function signatures, coverage assertions)
 - [ ] Phase 9 critique loop run (1–3 rounds, mandatory): round count and final verdict recorded
-- [ ] Auto-build blocked if critique score ≤ 2.5
-- [ ] Auto-build blocked only if `--notauto` passed or critique score ≤ 2.5
+- [ ] Auto-build blocked if critique score ≤ 3.5 (`partially credible` or worse)
+- [ ] Auto-build allowed only when mode is `plan+auto` and critique verdict is `credible`

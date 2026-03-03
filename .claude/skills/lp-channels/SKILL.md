@@ -32,7 +32,7 @@ Required:
 
 **Demand Evidence Pack (DEP) — strategy eligibility gate (GATE-SELL-STRAT-01):**
 
-Before SELL-01 starts, a valid DEP record must pass the floor defined in `docs/business-os/startup-loop/demand-evidence-pack-schema.md`. Full gate logic is in startup-loop advance gate docs. Summary:
+Before SELL-01 starts, a valid DEP record must pass the floor defined in `docs/business-os/startup-loop/schemas/demand-evidence-pack-schema.md`. Full gate logic is in startup-loop advance gate docs. Summary:
 - DEP passes → SELL-01 strategy design is eligible.
 - DEP missing or fails → SELL-01 is blocked.
 

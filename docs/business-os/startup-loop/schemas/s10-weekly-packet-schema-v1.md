@@ -8,7 +8,7 @@ Last-reviewed: 2026-02-18
 Owner: Operator
 Skill: /lp-weekly
 Spec-version: v1
-Related-contract: docs/business-os/startup-loop/s10-weekly-orchestration-contract-v1.md
+Related-contract: docs/business-os/startup-loop/contracts/s10-weekly-orchestration-contract-v1.md
 Related-skill: .claude/skills/lp-weekly/SKILL.md
 ---
 
@@ -138,8 +138,8 @@ These three fields are required in every packet. A value of `0` is valid. A miss
 
 ## 9. Cross-References
 
-- Orchestration contract (full S10 sequence, lane contracts, authority isolation, idempotency rules): `docs/business-os/startup-loop/s10-weekly-orchestration-contract-v1.md`
+- Orchestration contract (full S10 sequence, lane contracts, authority isolation, idempotency rules): `docs/business-os/startup-loop/contracts/s10-weekly-orchestration-contract-v1.md`
 - Orchestrator skill (invocation, output contract, module routing): `.claude/skills/lp-weekly/SKILL.md`
 - Weekly decision content authority: `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`
-- Audit cadence contract (Section H full checklist, monthly deep-audit): `docs/business-os/startup-loop/audit-cadence-contract-v1.md`
+- Audit cadence contract (Section H full checklist, monthly deep-audit): `docs/business-os/startup-loop/contracts/audit-cadence-contract-v1.md`
 - Operator workflow guide: `docs/business-os/startup-loop-workflow.user.md`

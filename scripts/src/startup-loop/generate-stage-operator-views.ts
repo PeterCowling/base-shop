@@ -2,7 +2,7 @@
  * Stage operator view generator.
  *
  * Reads:
- *   docs/business-os/startup-loop/stage-operator-dictionary.yaml
+ *   docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml
  *
  * Emits deterministic outputs:
  *   docs/business-os/startup-loop/_generated/stage-operator-map.json
@@ -624,7 +624,7 @@ export function run(opts: { check: boolean; repoRoot: string }): void {
 
   const dictionaryPath = path.join(
     repoRoot,
-    "docs/business-os/startup-loop/stage-operator-dictionary.yaml"
+    "docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml"
   );
   const outDir = path.join(
     repoRoot,

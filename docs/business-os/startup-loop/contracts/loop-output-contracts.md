@@ -17,7 +17,7 @@ Related-plan: docs/plans/startup-loop-standing-info-gap-analysis/plan.md
 Formal artifact contracts for the four core documents produced by the feature development loop (`/lp-do-fact-find` → `/lp-do-plan` → `/lp-do-build` → operator review), plus the soft-gate reflection debt artifact. Each contract defines the canonical path, producer skill, required sections, frontmatter fields, lifecycle, and consumer list.
 
 These contracts close two feedback paths:
-- **Layer B → Layer A feedback**: the `results-review.user.md` artifact carries observed outcomes back into standing-information layer (Layer A), completing the loop as specified in `docs/business-os/startup-loop/two-layer-model.md`.
+- **Layer B → Layer A feedback**: the `results-review.user.md` artifact carries observed outcomes back into standing-information layer (Layer A), completing the loop as specified in `docs/business-os/startup-loop/specifications/two-layer-model.md`.
 - **Skill handoff integrity**: each artifact is the single authoritative input to its downstream consumer. Consumers MUST read from the canonical path defined here.
 
 Skills MUST NOT store outputs at ad-hoc paths. All loop output artifacts in this contract use the path namespace `docs/plans/<feature-slug>/`.
@@ -323,9 +323,9 @@ The `.user.md` suffix marks operator-facing loop artifacts. Only `results-review
 
 ## References
 
-- Two-layer architecture contract: `docs/business-os/startup-loop/two-layer-model.md`
+- Two-layer architecture contract: `docs/business-os/startup-loop/specifications/two-layer-model.md`
 - Artifact registry: `docs/business-os/startup-loop/artifact-registry.md`
 - Plan archiving procedure: `.claude/skills/_shared/plan-archiving.md`
-- Loop spec: `docs/business-os/startup-loop/loop-spec.yaml`
+- Loop spec: `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 - Reflection debt emitter: `scripts/src/startup-loop/lp-do-build-reflection-debt.ts`
 - Producer skills: `.claude/skills/lp-do-fact-find/SKILL.md`, `.claude/skills/lp-do-plan/SKILL.md`, `.claude/skills/lp-do-build/SKILL.md`

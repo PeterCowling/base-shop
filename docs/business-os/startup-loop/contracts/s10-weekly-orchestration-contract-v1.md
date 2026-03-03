@@ -37,7 +37,7 @@ Authority over S10 is split across three distinct surfaces. Each surface has exp
 
 | Surface | Owns | Does NOT own |
 |---|---|---|
-| `docs/business-os/startup-loop/loop-spec.yaml` | Stage graph: stage IDs, stage ordering constraints, gate semantics, skill mapping, run packet contract | Weekly decision content; execution sequence within S10; lane structure |
+| `docs/business-os/startup-loop/specifications/loop-spec.yaml` | Stage graph: stage IDs, stage ordering constraints, gate semantics, skill mapping, run packet contract | Weekly decision content; execution sequence within S10; lane structure |
 | `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md` | Weekly decision content authority: KPI denominator checks (Section A), KPI delta summary (B), decision class (C), signal analysis (D), next-week actions (E), risk watchlist (F), data quality (G), weekly audit compliance (Section H) | Stage graph; execution order of S10 steps; lane orchestration; packet structure |
 | S10 orchestrator (`/lp-weekly`, this contract) | Execution order of S10 steps; preflight checks; lane sequencing; additive packet structure; cross-artifact linking; idempotency key; REM emission policy | Does not set decision content (that is the KPCS prompt's authority); does not mutate stage IDs, gate semantics, or stage ordering (those belong to `loop-spec.yaml`) |
 
@@ -239,8 +239,8 @@ This contract is introduced in Phase 0/1 (additive wrapper, no mapping change to
 
 ## 10. Cross-References
 
-- Stage graph authority: `docs/business-os/startup-loop/loop-spec.yaml`
+- Stage graph authority: `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 - Decision content authority: `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`
-- Weekly audit checklist (full): `docs/business-os/startup-loop/audit-cadence-contract-v1.md`
+- Weekly audit checklist (full): `docs/business-os/startup-loop/contracts/audit-cadence-contract-v1.md`
 - Operator workflow guide: `docs/business-os/startup-loop-workflow.user.md`
 - Fact-find basis: `docs/plans/startup-loop-s10-weekly-orchestration/fact-find.md`

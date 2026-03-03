@@ -9,7 +9,7 @@ Last-updated: 2026-02-18
 Owner: startup-loop maintainers + operator
 Related-plan: docs/plans/startup-loop-orchestrated-os-comparison/plan.md
 Related-process-registry: docs/business-os/startup-loop/process-registry-v2.md
-Related-bottleneck-schema: docs/business-os/startup-loop/bottleneck-diagnosis-schema.md
+Related-bottleneck-schema: docs/business-os/startup-loop/schemas/bottleneck-diagnosis-schema.md
 ---
 
 # Exception Runbooks v1

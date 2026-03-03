@@ -196,7 +196,7 @@ ASSESSMENT intake sync: COMPLETE
 
 ## Operator-locked fields (never overwrite on refresh)
 
-Carry-mode classification for all intake packet fields is defined in `docs/business-os/startup-loop/carry-mode-schema.md`. The entries below are the subset of `link`-mode fields that are directly enforced by this sync module. Consult the carry-mode schema for full field-level mapping including lifecycle-phase transition rules.
+Carry-mode classification for all intake packet fields is defined in `docs/business-os/startup-loop/schemas/carry-mode-schema.md`. The entries below are the subset of `link`-mode fields that are directly enforced by this sync module. Consult the carry-mode schema for full field-level mapping including lifecycle-phase transition rules.
 
 These fields are `link` mode — they derive from operator direct knowledge or committed decisions, not from ASSESSMENT precursor artifacts, and must never be overwritten by automated refresh:
 

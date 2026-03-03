@@ -6,7 +6,7 @@ Created: 2026-02-22
 Last-updated: 2026-02-22
 Owner: startup-loop maintainers
 Related-plan: docs/plans/startup-loop-standing-info-gap-analysis/plan.md
-Related-contract: docs/business-os/startup-loop/two-layer-model.md
+Related-contract: docs/business-os/startup-loop/specifications/two-layer-model.md
 Related-skill: .claude/skills/startup-loop/modules/assessment-intake-sync.md
 ---
 

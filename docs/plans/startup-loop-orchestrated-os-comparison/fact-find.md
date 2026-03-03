@@ -35,7 +35,7 @@ Compare the research model in `docs/briefs/orchestrated-business-startup-loop-op
 - Propose planning seeds that can be executed without destabilizing current stage control.
 
 ### Non-goals
-- Rewriting `docs/business-os/startup-loop/loop-spec.yaml` in this run.
+- Rewriting `docs/business-os/startup-loop/specifications/loop-spec.yaml` in this run.
 - Implementing new skills or process modules in this run.
 - Reclassifying business statuses for HEAD/PET/BRIK beyond current documented state.
 
@@ -51,34 +51,34 @@ Compare the research model in `docs/briefs/orchestrated-business-startup-loop-op
 
 ### Entry Points
 - `docs/briefs/orchestrated-business-startup-loop-operating-system-research.md` - saved research baseline.
-- `docs/business-os/startup-loop/loop-spec.yaml` - stage graph and orchestration gates.
-- `docs/business-os/startup-loop/manifest-schema.md` - single-writer baseline state model.
-- `docs/business-os/startup-loop/marketing-sales-capability-contract.md` - capability completeness contract.
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml` - stage graph and orchestration gates.
+- `docs/business-os/startup-loop/schemas/manifest-schema.md` - single-writer baseline state model.
+- `docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md` - capability completeness contract.
 - `docs/business-os/startup-loop-workflow.user.md` - current operator-facing stage status.
 - `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md` - weekly decision contract.
-- `docs/business-os/startup-loop/bottleneck-diagnosis-schema.md` - profile-aware constraint diagnosis.
+- `docs/business-os/startup-loop/schemas/bottleneck-diagnosis-schema.md` - profile-aware constraint diagnosis.
 - `docs/business-os/startup-loop-current-vs-proposed.user.md` - prior drift diagnosis and architecture direction.
 
 ### Key Modules / Files
-- `docs/business-os/startup-loop/loop-spec.yaml` - versioned stage machine, fan-out/fan-in, stage gates.
-- `docs/business-os/startup-loop/manifest-schema.md` - candidate/current lifecycle + deterministic merge rules.
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml` - versioned stage machine, fan-out/fan-in, stage gates.
+- `docs/business-os/startup-loop/schemas/manifest-schema.md` - candidate/current lifecycle + deterministic merge rules.
 - `docs/business-os/startup-loop/artifact-registry.md` - canonical producer/consumer artifact paths.
-- `docs/business-os/startup-loop/demand-evidence-pack-schema.md` - pre-spend demand evidence pass floor.
-- `docs/business-os/startup-loop/marketing-sales-capability-contract.md` - CAP-01..CAP-07 status.
+- `docs/business-os/startup-loop/schemas/demand-evidence-pack-schema.md` - pre-spend demand evidence pass floor.
+- `docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md` - CAP-01..CAP-07 status.
 - `docs/plans/startup-loop-signal-strengthening-review/fact-find.md` - current S10 signal-strengthening audit posture.
 
 ### Patterns & Conventions Observed
-- Strong stage-level orchestration exists with explicit ordering and join barrier - evidence: `docs/business-os/startup-loop/loop-spec.yaml`.
-- Single-writer control-plane semantics are explicit and deterministic - evidence: `docs/business-os/startup-loop/manifest-schema.md`.
+- Strong stage-level orchestration exists with explicit ordering and join barrier - evidence: `docs/business-os/startup-loop/specifications/loop-spec.yaml`.
+- Single-writer control-plane semantics are explicit and deterministic - evidence: `docs/business-os/startup-loop/schemas/manifest-schema.md`.
 - Artifact path standardization is formalized for core strategy artifacts - evidence: `docs/business-os/startup-loop/artifact-registry.md`.
 - Weekly decision governance includes denominator validity and no-decision guardrails - evidence: `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`.
 - Current operations still show major incomplete capability execution (S2B/S6B/standing refresh) - evidence: `docs/business-os/startup-loop-workflow.user.md`.
 
 ### Data & Contracts
 - Types/schemas/events:
-  - Loop stage graph and run packet contract: `docs/business-os/startup-loop/loop-spec.yaml`.
-  - Baseline manifest lifecycle/state: `docs/business-os/startup-loop/manifest-schema.md`.
-  - Bottleneck diagnosis + profile adapter schemas: `docs/business-os/startup-loop/bottleneck-diagnosis-schema.md`.
+  - Loop stage graph and run packet contract: `docs/business-os/startup-loop/specifications/loop-spec.yaml`.
+  - Baseline manifest lifecycle/state: `docs/business-os/startup-loop/schemas/manifest-schema.md`.
+  - Bottleneck diagnosis + profile adapter schemas: `docs/business-os/startup-loop/schemas/bottleneck-diagnosis-schema.md`.
 - Persistence:
   - Strategy and baseline artifacts under `docs/business-os/strategy/<BIZ>/` and `docs/business-os/startup-baselines/`.
   - Planning/fact-find artifacts under `docs/plans/<slug>/`.
@@ -163,11 +163,11 @@ Not investigated: no code-level test implementation in this run; this brief is d
 ### Resolved
 - Q: Is the loop missing stage orchestration primitives?
   - A: No; stage orchestration is mature and explicit.
-  - Evidence: `docs/business-os/startup-loop/loop-spec.yaml`, `docs/business-os/startup-loop/manifest-schema.md`.
+  - Evidence: `docs/business-os/startup-loop/specifications/loop-spec.yaml`, `docs/business-os/startup-loop/schemas/manifest-schema.md`.
 
 - Q: Are capability gaps the primary current weakness?
   - A: Yes; CAP-05/CAP-06 missing and other CAPs partial.
-  - Evidence: `docs/business-os/startup-loop/marketing-sales-capability-contract.md`.
+  - Evidence: `docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md`.
 
 - Q: Is weekly decision quality already guarded?
   - A: Partially yes; denominator-gated no-decision policy exists.

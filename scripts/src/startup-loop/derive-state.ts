@@ -4,7 +4,7 @@
  * Replays events from events.jsonl to produce a deterministic derived
  * state (state.json). The derivation is pure: same events → same state.
  *
- * @see docs/business-os/startup-loop/event-state-schema.md
+ * @see docs/business-os/startup-loop/schemas/event-state-schema.md
  */
 
 import stageOperatorMap from "../../../docs/business-os/startup-loop/_generated/stage-operator-map.json";

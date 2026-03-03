@@ -9,7 +9,7 @@ Last-updated: 2026-02-18
 Owner: startup-loop maintainers + operator
 Related-plan: docs/plans/startup-loop-orchestrated-os-comparison/plan.md
 Related-process-registry: docs/business-os/startup-loop/process-registry-v2.md
-Related-exception-runbooks: docs/business-os/startup-loop/exception-runbooks-v1.md
+Related-exception-runbooks: docs/business-os/startup-loop/operations/exception-runbooks-v1.md
 Related-kpcs-prompt: docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md
 ---
 
@@ -244,7 +244,7 @@ Exception: if item A1 (Measurement active) FAILs, Section A of the KPCs decision
 
 ### With Capability Contract Registry
 
-- Items B1–B4 use `docs/business-os/startup-loop/marketing-sales-capability-contract.md` as the source of truth.
+- Items B1–B4 use `docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md` as the source of truth.
 - Any CAP status change discovered during the audit must be reflected in the capability contract registry.
 
 ---
@@ -283,9 +283,9 @@ Exception: if item A1 (Measurement active) FAILs, Section A of the KPCs decision
 |---|---|
 | `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md` | Section H (weekly audit) appended to each S10 decision document |
 | `docs/business-os/startup-loop-workflow.user.md` | Audit cadence referenced in Quick Actions and stage status table |
-| `docs/business-os/startup-loop/exception-runbooks-v1.md` | Exception SLA thresholds referenced in items A4, B8, B9, B10 |
+| `docs/business-os/startup-loop/operations/exception-runbooks-v1.md` | Exception SLA thresholds referenced in items A4, B8, B9, B10 |
 | `docs/business-os/startup-loop/process-registry-v2.md` | Process sample audit (B5) and owner check (B6) source |
-| `docs/business-os/startup-loop/marketing-sales-capability-contract.md` | CAP health items B1–B4 source of truth |
+| `docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md` | CAP health items B1–B4 source of truth |
 
 ---
 
@@ -315,9 +315,9 @@ N/A items are excluded from the pass/fail count but must be documented in the ou
 
 ## References
 
-- Capability contract: `docs/business-os/startup-loop/marketing-sales-capability-contract.md`
+- Capability contract: `docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md`
 - Process registry: `docs/business-os/startup-loop/process-registry-v2.md`
-- Exception runbooks: `docs/business-os/startup-loop/exception-runbooks-v1.md`
+- Exception runbooks: `docs/business-os/startup-loop/operations/exception-runbooks-v1.md`
 - Weekly KPCs prompt: `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`
-- Bottleneck diagnosis: `docs/business-os/startup-loop/bottleneck-diagnosis-schema.md`
+- Bottleneck diagnosis: `docs/business-os/startup-loop/schemas/bottleneck-diagnosis-schema.md`
 - Workflow guide: `docs/business-os/startup-loop-workflow.user.md`

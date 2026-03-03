@@ -99,14 +99,14 @@ check_warn() {
 
 # ── Reference files ──
 
-LOOP_SPEC="docs/business-os/startup-loop/loop-spec.yaml"
+LOOP_SPEC="docs/business-os/startup-loop/specifications/loop-spec.yaml"
 WRAPPER_SKILL=".claude/skills/startup-loop/SKILL.md"
 WORKFLOW_GUIDE="docs/business-os/startup-loop-workflow.user.md"
 PROMPT_INDEX="docs/business-os/workflow-prompts/README.user.md"
-AUTONOMY_POLICY="docs/business-os/startup-loop/autonomy-policy.md"
+AUTONOMY_POLICY="docs/business-os/startup-loop/specifications/autonomy-policy.md"
 WORKSPACE_PATHS=".claude/skills/_shared/workspace-paths.md"
 STAGE_DOC_OPS=".claude/skills/_shared/stage-doc-operations.md"
-STAGE_OPERATOR_DICT="docs/business-os/startup-loop/stage-operator-dictionary.yaml"
+STAGE_OPERATOR_DICT="docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml"
 STAGE_OPERATOR_MAP="docs/business-os/startup-loop/_generated/stage-operator-map.json"
 
 # ── Prerequisite: reference files exist ──
@@ -411,7 +411,7 @@ fi
 sq08_fail=0
 if [[ -f ".claude/skills/lp-launch-qa/SKILL.md" ]]; then
   # The event-state-schema.md defines state.json (replaces loop-state.json)
-  if ! [[ -f "docs/business-os/startup-loop/event-state-schema.md" ]]; then
+  if ! [[ -f "docs/business-os/startup-loop/schemas/event-state-schema.md" ]]; then
     check_fail "event-state-schema.md missing — lp-launch-qa depends on state.json schema (SQ-08)"
     sq08_fail=1
   fi
@@ -503,7 +503,7 @@ fi
 for active_contract in \
   ".claude/skills/startup-loop/SKILL.md" \
   ".claude/skills/startup-loop/modules/cmd-advance.md" \
-  "docs/business-os/startup-loop/stage-operator-dictionary.yaml"
+  "docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml"
 do
   if [[ -f "$active_contract" ]] && rg -q '\bS5[A-B]\b' "$active_contract" 2>/dev/null; then
     check_fail "${active_contract} still references removed stage IDs (SQ-12)"
@@ -521,10 +521,10 @@ fi
 sq14_fail=0
 declare -a decision_ref_sources=(
   "$LOOP_SPEC"
-  "docs/business-os/startup-loop/autonomy-policy.md"
-  "docs/business-os/startup-loop/event-state-schema.md"
-  "docs/business-os/startup-loop/manifest-schema.md"
-  "docs/business-os/startup-loop/stage-result-schema.md"
+  "docs/business-os/startup-loop/specifications/autonomy-policy.md"
+  "docs/business-os/startup-loop/schemas/event-state-schema.md"
+  "docs/business-os/startup-loop/schemas/manifest-schema.md"
+  "docs/business-os/startup-loop/schemas/stage-result-schema.md"
 )
 
 for src in "${decision_ref_sources[@]}"; do
@@ -549,7 +549,7 @@ fi
 
 sq15_fail=0
 declare -a MIGRATION_ALLOWLIST=(
-  "docs/business-os/startup-loop/contract-migration.yaml"
+  "docs/business-os/startup-loop/operations/contract-migration.yaml"
   "docs/business-os/cards/BRIK-ENG-0020.user.md"
   "docs/registry.json"
 )

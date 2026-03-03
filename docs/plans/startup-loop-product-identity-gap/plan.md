@@ -270,7 +270,7 @@ The startup loop ASSESSMENT chain (ASSESSMENT-01 through ASSESSMENT-12) produces
   - Refactor evidence plan: After first test run, check that the Regulatory Requirements Checklist is actionable (operator can use it to prepare for production) and that the Designer Handoff Checklist covers all assets the designer needs (brand dossier path, logo brief path, approved colour tokens, typography spec)
 - **Planning validation:**
   - Checks run: Read `two-layer-model.md` LOGISTICS conditional pattern to confirm the conditionality approach. Read ASSESSMENT-11 and ASSESSMENT-14 skill patterns for structural reference. Read `loop-spec.yaml` LOGISTICS conditional block for exact YAML syntax.
-  - Validation artifacts: `docs/business-os/startup-loop/two-layer-model.md`, `docs/business-os/startup-loop/loop-spec.yaml` (LOGISTICS block)
+  - Validation artifacts: `docs/business-os/startup-loop/specifications/two-layer-model.md`, `docs/business-os/startup-loop/specifications/loop-spec.yaml` (LOGISTICS block)
   - Unexpected findings: The LOGISTICS conditionality in `two-layer-model.md` uses `business_profile includes logistics-heavy OR physical-product` as the condition expression. ASSESSMENT-15 will use `physical-product` only (not `logistics-heavy` — a logistics-heavy business without physical products does not need packaging).
 - **Scouts:** Regulatory requirements are the highest-risk component. TASK-04 must be complete before TASK-03 can be finalised. If TASK-04 reveals a regulatory category that cannot be handled with a simple checklist (e.g., medical devices), that category should be noted as out-of-scope in the skill with a direction to seek professional advice.
 - **Edge Cases & Hardening:**
@@ -286,7 +286,7 @@ The startup loop ASSESSMENT chain (ASSESSMENT-01 through ASSESSMENT-12) produces
   - Artifact registry: new `packaging-brief` artifact type (TASK-07)
   - Brand language template: Packaging section stub added (TASK-05)
 - **Notes / references:**
-  - Conditionality pattern reference: `docs/business-os/startup-loop/two-layer-model.md` LOGISTICS section
+  - Conditionality pattern reference: `docs/business-os/startup-loop/specifications/two-layer-model.md` LOGISTICS section
   - Fact-find gap analysis section C for full input/output specification
 
 ---
@@ -392,17 +392,17 @@ The startup loop ASSESSMENT chain (ASSESSMENT-01 through ASSESSMENT-12) produces
 ### TASK-06: Update loop-spec.yaml — Add ASSESSMENT-13/14/15, Revise GATE-ASSESSMENT-01
 
 - **Type:** IMPLEMENT
-- **Deliverable:** Updated `docs/business-os/startup-loop/loop-spec.yaml`
+- **Deliverable:** Updated `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Pending
-- **Artifact-Destination:** `docs/business-os/startup-loop/loop-spec.yaml` (in-place update)
+- **Artifact-Destination:** `docs/business-os/startup-loop/specifications/loop-spec.yaml` (in-place update)
 - **Reviewer:** Operator
 - **Approval-Evidence:** Operator confirms loop-spec changes before TASK-07 runs
 - **Measurement-Readiness:** None: infrastructure document update; no metric owner required
-- **Affects:** `docs/business-os/startup-loop/loop-spec.yaml`
+- **Affects:** `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 - **Depends on:** TASK-01, TASK-02, TASK-03, TASK-05
 - **Blocks:** TASK-07
 - **Confidence:** 85%
@@ -421,7 +421,7 @@ The startup loop ASSESSMENT chain (ASSESSMENT-01 through ASSESSMENT-12) produces
   - [ ] No existing stage entries (ASSESSMENT-01 through ASSESSMENT-12) are modified
   - [ ] YAML is valid (no syntax errors)
 - **Validation contract:**
-  - VC-01: YAML validity -> pass when `python3 -c "import yaml; yaml.safe_load(open('docs/business-os/startup-loop/loop-spec.yaml'))"` exits 0; timebox: immediately after edit; sample: the file itself
+  - VC-01: YAML validity -> pass when `python3 -c "import yaml; yaml.safe_load(open('docs/business-os/startup-loop/specifications/loop-spec.yaml'))"` exits 0; timebox: immediately after edit; sample: the file itself
   - VC-02: New stage entries present -> pass when grep finds all three new stage IDs (ASSESSMENT-13, ASSESSMENT-14, ASSESSMENT-15) in loop-spec.yaml; timebox: immediately after edit
   - VC-03: Ordering constraints complete -> pass when grep finds `ASSESSMENT-15 → ASSESSMENT` in ordering_constraints and `ASSESSMENT-11 → ASSESSMENT` is removed or replaced; timebox: immediately after edit
 - **Execution plan:**
@@ -430,7 +430,7 @@ The startup loop ASSESSMENT chain (ASSESSMENT-01 through ASSESSMENT-12) produces
   - Refactor evidence plan: Run YAML validation immediately after the edit. Read the updated ASSESSMENT container block to visually confirm ordering constraints are correct.
 - **Planning validation:**
   - Checks run: Read loop-spec.yaml ASSESSMENT container (lines 313–349) for exact YAML structure. Read LOGISTICS conditional stage entries for conditional YAML pattern. Confirmed both.
-  - Validation artifacts: `docs/business-os/startup-loop/loop-spec.yaml` (lines 313–349 for ASSESSMENT container; LOGISTICS block for conditional pattern)
+  - Validation artifacts: `docs/business-os/startup-loop/specifications/loop-spec.yaml` (lines 313–349 for ASSESSMENT container; LOGISTICS block for conditional pattern)
   - Unexpected findings: ASSESSMENT-12 is confirmed absent from loop-spec.yaml. This plan does not add it. The ordering constraint currently ends with `ASSESSMENT-11 → ASSESSMENT`; the update replaces this chain to end with `ASSESSMENT-15 → ASSESSMENT`.
 - **Scouts:** If ASSESSMENT-15 is conditional and a non-physical business runs the loop, GATE-ASSESSMENT-01 must not block on the absent packaging brief. The gate comment must explicitly state the conditionality.
 - **Edge Cases & Hardening:**
@@ -532,7 +532,7 @@ The startup loop ASSESSMENT chain (ASSESSMENT-01 through ASSESSMENT-12) produces
 | TASK-02 | `.claude/skills/lp-do-assessment-14-logo-brief/SKILL.md` | VC-01: all 7 output sections present; VC-02: colour spec maps token names from brand dossier |
 | TASK-05 | `.claude/skills/_shared/brand-language-template.md` | VC-01: both new sections (Logo Brief, Packaging Brief) present; VC-02: git diff is additive only — zero modifications to existing sections |
 | TASK-03 | `.claude/skills/lp-do-assessment-15-packaging-brief/SKILL.md` | VC-01: conditionality gate present (skip for non-physical-product); all 7 output sections present; VC-02: regulatory checklist sourced from external reference data file |
-| TASK-06 | `docs/business-os/startup-loop/loop-spec.yaml` | VC-01: YAML validates via python3 yaml.safe_load; VC-02: ASSESSMENT-13/14/15 stage IDs present; VC-03: ASSESSMENT-15 → ASSESSMENT present; old ASSESSMENT-11 → ASSESSMENT final constraint replaced |
+| TASK-06 | `docs/business-os/startup-loop/specifications/loop-spec.yaml` | VC-01: YAML validates via python3 yaml.safe_load; VC-02: ASSESSMENT-13/14/15 stage IDs present; VC-03: ASSESSMENT-15 → ASSESSMENT present; old ASSESSMENT-11 → ASSESSMENT final constraint replaced |
 | TASK-07 | `docs/business-os/startup-loop/artifact-registry.md` | VC-01: product-naming, logo-brief, packaging-brief rows present; VC-02: all 3 canonical paths follow dated-artifact namespace rule |
 
 ## Decision Log

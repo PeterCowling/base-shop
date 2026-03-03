@@ -5,7 +5,7 @@
  * per business at a time. Relaxation requires threshold pass (future).
  *
  * @see docs/plans/lp-skill-system-sequencing-plan.md#LPSP-08
- * @see docs/business-os/startup-loop/autonomy-policy.md
+ * @see docs/business-os/startup-loop/specifications/autonomy-policy.md
  */
 
 import { promises as fs } from "fs";

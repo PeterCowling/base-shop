@@ -80,7 +80,7 @@
       "area_anchor": "Loop CASS retrieval — assessment containers excluded from context scope",
       "location_anchors": [
         "scripts/src/startup-loop/cass-retrieve.ts",
-        "docs/business-os/startup-loop/loop-output-contracts.md"
+        "docs/business-os/startup-loop/contracts/loop-output-contracts.md"
       ],
       "provisional_deliverable_family": "code-change",
       "recommended_route": "lp-do-fact-find",
@@ -129,7 +129,7 @@
       "lineage_depth": 0,
       "area_anchor": "Loop intake packet — static snapshot, not updated post-build",
       "location_anchors": [
-        "docs/business-os/startup-loop/loop-output-contracts.md",
+        "docs/business-os/startup-loop/contracts/loop-output-contracts.md",
         "docs/plans/_templates/results-review.user.md",
         ".claude/skills/lp-do-build/SKILL.md"
       ],
@@ -5213,10 +5213,10 @@
       "lineage_depth": 0,
       "area_anchor": "Startup loop — superseded files with no deprecation markers",
       "location_anchors": [
-        "docs/business-os/startup-loop/process-registry-v1.md",
+        "docs/business-os/startup-loop/_deprecated/process-registry-v1.md",
         "docs/business-os/startup-loop/process-registry-v2.md",
-        "docs/business-os/startup-loop/contract-migration.yaml",
-        "docs/business-os/startup-loop/exception-runbooks-v1.md"
+        "docs/business-os/startup-loop/operations/contract-migration.yaml",
+        "docs/business-os/startup-loop/operations/exception-runbooks-v1.md"
       ],
       "provisional_deliverable_family": "business-artifact",
       "recommended_route": "lp-do-fact-find",

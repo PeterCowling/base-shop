@@ -2,7 +2,7 @@
 # Runtime-authoritative source of truth for the stage graph.
 # All other documents (SKILL.md, workflow guide, prompt index) MUST align to this spec.
 # Version bumps require downstream alignment check (VC-02).
-# See also: docs/business-os/startup-loop/two-layer-model.md (Layer A standing intelligence / Layer B implementation loop contract)
+# See also: docs/business-os/startup-loop/specifications/two-layer-model.md (Layer A standing intelligence / Layer B implementation loop contract)
 
 spec_version: "3.14.0"
 # v3.14.0: Added ASSESSMENT-13 (Product naming, /lp-do-assessment-13-product-naming),
@@ -199,7 +199,7 @@ decision_reference: "docs/plans/lp-skill-system-sequencing-plan.md#DL-01"
 #         Brand refresh path: standalone /lp-brand-refresh skill (outside ASSESSMENT sequence).
 #         Decision: 2026-02-22.
 
-# Capability contract: docs/business-os/startup-loop/marketing-sales-capability-contract.md
+# Capability contract: docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md
 # Defines the 7 canonical marketing/sales capabilities (CAP-01 through CAP-07), their artifact paths,
 # validation rules, and downstream consumers. Use this as the completeness reference for stage outputs.
 
@@ -1181,12 +1181,12 @@ stages:
   #   New Idea Candidates, Standing Expansion decision)
   # - if missing, upsert docs/plans/<feature-slug>/reflection-debt.user.md
   #   with key reflection-debt:{build_id}, lane IMPROVE, SLA 7 days.
-  # See: docs/business-os/startup-loop/loop-output-contracts.md#soft-gate-artifact-reflection-debtusermd
+  # See: docs/business-os/startup-loop/contracts/loop-output-contracts.md#soft-gate-artifact-reflection-debtusermd
   # Pattern reflection step (step 2.5): after results-review.user.md is produced,
   # /lp-do-build reads the New Idea Candidates section and writes
   # docs/plans/<feature-slug>/pattern-reflection.user.md (schema: pattern-reflection.v1).
   # Empty-state (no patterns) is always valid; artifact is always required.
-  # See: docs/business-os/startup-loop/loop-output-contracts.md#soft-gate-artifact-pattern-reflectionusermd
+  # See: docs/business-os/startup-loop/contracts/loop-output-contracts.md#soft-gate-artifact-pattern-reflectionusermd
   - id: DO
     name: Do
     processes:

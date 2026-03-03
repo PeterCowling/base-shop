@@ -9,7 +9,7 @@ Created: 2026-02-18
 Last-updated: 2026-02-18
 Owner: startup-loop maintainers
 Related-plan: docs/plans/startup-loop-orchestrated-os-comparison/plan.md
-Related-capability-contract: docs/business-os/startup-loop/marketing-sales-capability-contract.md
+Related-capability-contract: docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md
 Related-process: GTM-3 (process-registry-v2.md)
 ---
 
@@ -172,9 +172,9 @@ No-decision rule: If any metric is FAIL, pipeline-based Scale and Kill decisions
 | Consumer | How it uses CAP-05 |
 |---|---|
 | `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md` | CAP-05 denominator check section gates pipeline-based Scale/Kill decisions |
-| `docs/business-os/startup-loop/bottleneck-diagnosis-schema.md` | Speed-to-lead SLA breach feeds `S6B/median_response_time` metric (hospitality) or custom constraint signal |
+| `docs/business-os/startup-loop/schemas/bottleneck-diagnosis-schema.md` | Speed-to-lead SLA breach feeds `S6B/median_response_time` metric (hospitality) or custom constraint signal |
 | `docs/business-os/startup-loop/process-registry-v2.md` (GTM-3) | GTM-3 is the primary recurring execution vehicle for this capability |
-| `docs/business-os/startup-loop/exception-runbooks-v1.md` | Pipeline stall (no movement for 2+ weeks) is a Demand Shock exception trigger |
+| `docs/business-os/startup-loop/operations/exception-runbooks-v1.md` | Pipeline stall (no movement for 2+ weeks) is a Demand Shock exception trigger |
 
 ---
 
@@ -224,7 +224,7 @@ Weekly metrics to track once CAP-05 is active:
 
 ## References
 
-- Capability contract: `docs/business-os/startup-loop/marketing-sales-capability-contract.md`
+- Capability contract: `docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md`
 - Process registry: `docs/business-os/startup-loop/process-registry-v2.md` (GTM-3)
 - Boundary decision: `docs/plans/startup-loop-orchestrated-os-comparison/decisions/v1-boundary-decision.md`
 - Research baseline: `docs/briefs/orchestrated-business-startup-loop-operating-system-research.md` (GTM-3 specification)

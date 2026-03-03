@@ -24,8 +24,8 @@ Boundary-decision: docs/plans/startup-loop-orchestrated-os-comparison/decisions/
 **This registry is a process-layer operating contract. It does NOT govern stage ordering.**
 
 Stage sequencing, join barriers, run packet structure, and gate conditions remain exclusively authoritative in:
-- `docs/business-os/startup-loop/loop-spec.yaml` — stage graph and run contract
-- `docs/business-os/startup-loop/manifest-schema.md` — single-writer baseline state
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml` — stage graph and run contract
+- `docs/business-os/startup-loop/schemas/manifest-schema.md` — single-writer baseline state
 
 This registry answers: *"During each startup-loop run and weekly operating cycle, which process activities should be executed, by whom, and with what inputs/outputs?"* It complements the stage engine by specifying the operational substance within and between stages.
 
@@ -603,7 +603,7 @@ All processes active. Cadences as specified per process. Monthly deep audit mand
 | Quality Incident | CX-1, OPS-4, DATA-3, CX-4 | Rating/complaint spike OR OTIF below target |
 | Compliance/Safety Incident | FIN-3, DATA-3 | Compliance trigger OR safety incident OR data breach signal |
 
-*Full runbooks including trigger thresholds, owner SLAs, and closure criteria: `docs/business-os/startup-loop/exception-runbooks-v1.md` (TASK-05)*
+*Full runbooks including trigger thresholds, owner SLAs, and closure criteria: `docs/business-os/startup-loop/operations/exception-runbooks-v1.md` (TASK-05)*
 
 ---
 

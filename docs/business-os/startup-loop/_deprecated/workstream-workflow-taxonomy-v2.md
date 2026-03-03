@@ -5,7 +5,7 @@ Status: Active
 Created: 2026-02-18
 Decision-Record: docs/plans/startup-loop-orchestrated-os-comparison-v2/decisions/v2-scope-boundary-decision.md
 Research-Source: docs/briefs/orchestrated-business-startup-loop-operating-system-research.md
-Machine-Readable-Source: docs/business-os/startup-loop/workstream-workflow-taxonomy-v2.yaml
+Machine-Readable-Source: docs/business-os/startup-loop/specifications/workstream-workflow-taxonomy-v2.yaml
 ---
 
 # Workstream and Workflow Taxonomy v2
@@ -241,4 +241,4 @@ This taxonomy implements the decisions recorded in:
 Key implications:
 - **Option B:** Stage labels are renamed in the v2 wave. This taxonomy defines the canonical workstream long-form names that any stage labels referencing them must align to.
 - **supersede-now:** `process-registry-v1.md` is immediately superseded on merge. This taxonomy governs all v2 contract language from that point.
-- **Stage authority:** Stage ordering, stage IDs, and gate semantics remain authoritative in `docs/business-os/startup-loop/loop-spec.yaml`. This taxonomy governs process-layer vocabulary only.
+- **Stage authority:** Stage ordering, stage IDs, and gate semantics remain authoritative in `docs/business-os/startup-loop/specifications/loop-spec.yaml`. This taxonomy governs process-layer vocabulary only.

@@ -8,7 +8,7 @@ Created: 2026-02-17
 Last-updated: 2026-02-17
 Owner: startup-loop maintainers
 Source: docs/plans/startup-loop-marketing-sales-capability-gap-audit/fact-find.md
-Related-capability: CAP-02 (docs/business-os/startup-loop/marketing-sales-capability-contract.md)
+Related-capability: CAP-02 (docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md)
 Related-plan: docs/plans/startup-loop-marketing-sales-capability-gap-audit/plan.md
 ---
 
@@ -188,7 +188,7 @@ For each selected channel in the channel plan, the following fields are required
 
 ## References
 
-- Marketing/sales capability contract: `docs/business-os/startup-loop/marketing-sales-capability-contract.md` (CAP-02)
+- Marketing/sales capability contract: `docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md` (CAP-02)
 - Capability plan: `docs/plans/startup-loop-marketing-sales-capability-gap-audit/plan.md` (TASK-05)
 - Consumer: `.claude/skills/lp-channels/SKILL.md` (GATE-SELL-ACT-01 enforcement)
 - Consumer: `.claude/skills/lp-readiness/SKILL.md` (capture initiation advisory)

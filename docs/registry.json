@@ -1770,7 +1770,7 @@
     "domain": "Startup-Loop / Prioritization"
   },
   {
-    "path": "docs/business-os/startup-loop/OCTORATE-DATA-STATUS.md",
+    "path": "docs/business-os/startup-loop/operations/OCTORATE-DATA-STATUS.md",
     "type": "Status-Summary",
     "status": "Active",
     "domain": null
@@ -1782,7 +1782,7 @@
     "domain": "Business-OS"
   },
   {
-    "path": "docs/business-os/startup-loop/aggregate-pack-contracts.md",
+    "path": "docs/business-os/startup-loop/contracts/aggregate-pack-contracts.md",
     "type": "Architecture-Contract",
     "status": "Active",
     "domain": null
@@ -1794,61 +1794,61 @@
     "domain": "Venture-Studio"
   },
   {
-    "path": "docs/business-os/startup-loop/audit-cadence-contract-v1.md",
+    "path": "docs/business-os/startup-loop/contracts/audit-cadence-contract-v1.md",
     "type": "Operations-Contract",
     "status": "Active",
     "domain": "Venture-Studio"
   },
   {
-    "path": "docs/business-os/startup-loop/autonomy-policy.md",
+    "path": "docs/business-os/startup-loop/specifications/autonomy-policy.md",
     "type": "Policy",
     "status": "Canonical",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/business-os/startup-loop/baseline-prior-schema.md",
+    "path": "docs/business-os/startup-loop/schemas/baseline-prior-schema.md",
     "type": "Reference",
     "status": "Canonical",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/business-os/startup-loop/bottleneck-diagnosis-schema.md",
+    "path": "docs/business-os/startup-loop/schemas/bottleneck-diagnosis-schema.md",
     "type": "Reference",
     "status": "Canonical",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/business-os/startup-loop/briefing-contract-schema-v1.md",
+    "path": "docs/business-os/startup-loop/schemas/briefing-contract-schema-v1.md",
     "type": "Schema-Contract",
     "status": "Active",
     "domain": "Venture-Studio"
   },
   {
-    "path": "docs/business-os/startup-loop/carry-mode-schema.md",
+    "path": "docs/business-os/startup-loop/schemas/carry-mode-schema.md",
     "type": "Architecture-Contract",
     "status": "Active",
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-loop/demand-evidence-pack-schema.md",
+    "path": "docs/business-os/startup-loop/schemas/demand-evidence-pack-schema.md",
     "type": "Schema-Contract",
     "status": "Active",
     "domain": "Venture-Studio"
   },
   {
-    "path": "docs/business-os/startup-loop/event-state-schema.md",
+    "path": "docs/business-os/startup-loop/schemas/event-state-schema.md",
     "type": "Reference",
     "status": "Canonical",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/business-os/startup-loop/exception-runbooks-v1.md",
+    "path": "docs/business-os/startup-loop/operations/exception-runbooks-v1.md",
     "type": "Operations-Contract",
     "status": "Active",
     "domain": "Venture-Studio"
   },
   {
-    "path": "docs/business-os/startup-loop/hygiene-schema.md",
+    "path": "docs/business-os/startup-loop/schemas/hygiene-schema.md",
     "type": "Reference",
     "status": "Active",
     "domain": "Startup Loop"
@@ -1920,37 +1920,37 @@
     "domain": "Repo"
   },
   {
-    "path": "docs/business-os/startup-loop/learning-ledger-schema.md",
+    "path": "docs/business-os/startup-loop/schemas/learning-ledger-schema.md",
     "type": "Reference",
     "status": "Canonical",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/business-os/startup-loop/loop-output-contracts.md",
+    "path": "docs/business-os/startup-loop/contracts/loop-output-contracts.md",
     "type": "Schema-Contract",
     "status": "Active",
     "domain": "Venture-Studio"
   },
   {
-    "path": "docs/business-os/startup-loop/manifest-schema.md",
+    "path": "docs/business-os/startup-loop/schemas/manifest-schema.md",
     "type": "Reference",
     "status": "Canonical",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/business-os/startup-loop/marketing-sales-capability-contract.md",
+    "path": "docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md",
     "type": "Capability-Contract",
     "status": "Active",
     "domain": "Venture-Studio"
   },
   {
-    "path": "docs/business-os/startup-loop/octorate-data-collection-protocol.md",
+    "path": "docs/business-os/startup-loop/operations/octorate-data-collection-protocol.md",
     "type": "Startup-Loop-Protocol",
     "status": "Active",
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-loop/process-registry-v1.md",
+    "path": "docs/business-os/startup-loop/_deprecated/process-registry-v1.md",
     "type": "Process-Registry",
     "status": "Active",
     "domain": "Venture-Studio"
@@ -1962,25 +1962,25 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-loop/retention-schema.md",
+    "path": "docs/business-os/startup-loop/schemas/retention-schema.md",
     "type": "Capability-Schema",
     "status": "Active",
     "domain": "Venture-Studio"
   },
   {
-    "path": "docs/business-os/startup-loop/s10-weekly-orchestration-contract-v1.md",
+    "path": "docs/business-os/startup-loop/contracts/s10-weekly-orchestration-contract-v1.md",
     "type": "Contract",
     "status": "Active",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/business-os/startup-loop/s10-weekly-packet-schema-v1.md",
+    "path": "docs/business-os/startup-loop/schemas/s10-weekly-packet-schema-v1.md",
     "type": "Schema",
     "status": "Active",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/business-os/startup-loop/sales-ops-schema.md",
+    "path": "docs/business-os/startup-loop/schemas/sales-ops-schema.md",
     "type": "Capability-Schema",
     "status": "Active",
     "domain": "Venture-Studio"
@@ -1992,25 +1992,25 @@
     "domain": "Business-OS / Startup-Loop"
   },
   {
-    "path": "docs/business-os/startup-loop/stage-result-schema.md",
+    "path": "docs/business-os/startup-loop/schemas/stage-result-schema.md",
     "type": "Reference",
     "status": "Canonical",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/business-os/startup-loop/two-layer-model.md",
+    "path": "docs/business-os/startup-loop/specifications/two-layer-model.md",
     "type": "Architecture-Contract",
     "status": "Active",
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-loop/website-iteration-throughput-report-contract.md",
+    "path": "docs/business-os/startup-loop/contracts/website-iteration-throughput-report-contract.md",
     "type": "Contract",
     "status": "Active",
     "domain": "Startup-Loop"
   },
   {
-    "path": "docs/business-os/startup-loop/workstream-workflow-taxonomy-v2.md",
+    "path": "docs/business-os/startup-loop/_deprecated/workstream-workflow-taxonomy-v2.md",
     "type": "Taxonomy Contract",
     "status": "Active",
     "domain": null
@@ -2124,8 +2124,56 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/strategy/BRIK/product/reception/worldclass-benchmark.md",
+    "type": "Worldclass-Benchmark",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/BRIK/product/reception/worldclass-goal.md",
+    "type": "Worldclass-Goal",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/BRIK/product/reception/worldclass-research-prompt.md",
+    "type": "Worldclass-Research-Prompt",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/BRIK/product/reception/worldclass-scan-2026-02-28.md",
+    "type": "Worldclass-Scan",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/strategy/BRIK/product/room-pricing-analysis.md",
     "type": "Analysis-Output",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/BRIK/product/worldclass-benchmark.md",
+    "type": "Worldclass-Benchmark",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/BRIK/product/worldclass-goal.md",
+    "type": "Worldclass-Goal",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/BRIK/product/worldclass-research-prompt.md",
+    "type": "Worldclass-Research-Prompt",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/BRIK/product/worldclass-scan-2026-02-27.md",
+    "type": "Worldclass-Scan",
     "status": "Active",
     "domain": null
   },
@@ -2288,7 +2336,7 @@
   {
     "path": "docs/business-os/strategy/HBAG/assessment/2026-02-27-product-naming-spec.md",
     "type": "Product-Naming-Spec",
-    "status": null,
+    "status": "Draft",
     "domain": null
   },
   {
@@ -2336,7 +2384,7 @@
   {
     "path": "docs/business-os/strategy/HBAG/assessment/product-naming-candidates-2026-02-27.md",
     "type": "Product-Naming-Candidates",
-    "status": null,
+    "status": "Draft",
     "domain": null
   },
   {
@@ -2427,6 +2475,30 @@
     "path": "docs/business-os/strategy/HBAG/product/supplier-spec-confirmed.user.md",
     "type": "Supplier-Spec",
     "status": "Awaiting-Supplier-Response",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HBAG/product/worldclass-benchmark.md",
+    "type": "Worldclass-Benchmark",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HBAG/product/worldclass-goal.md",
+    "type": "Worldclass-Goal",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HBAG/product/worldclass-research-prompt.md",
+    "type": "Worldclass-Research-Prompt",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HBAG/product/worldclass-scan-2026-02-28.md",
+    "type": "Worldclass-Scan",
+    "status": "Active",
     "domain": null
   },
   {
@@ -2878,6 +2950,12 @@
     "type": "Solution-Profile-Results",
     "status": "Active",
     "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/PWRB/assessment/2026-02-26-solution-profiling-prompt.md",
+    "type": "Deep-Research-Prompt",
+    "status": "Draft",
+    "domain": "Repo"
   },
   {
     "path": "docs/business-os/strategy/PWRB/assessment/naming-candidates-2026-02-26.md",
@@ -4024,6 +4102,12 @@
     "type": "Plan",
     "status": "Active",
     "domain": "API"
+  },
+  {
+    "path": "docs/plans/cass-assessment-retrieval/critique-history.md",
+    "type": "Critique-History",
+    "status": "Complete",
+    "domain": "Repo"
   },
   {
     "path": "docs/plans/ci-deploy/ci-and-deploy-roadmap.md",

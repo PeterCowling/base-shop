@@ -90,9 +90,10 @@ Default advisory output:
 - `docs/plans/<feature-slug>/artifacts/cass-context.md`
 
 Configuration:
-- Set `CASS_RETRIEVE_COMMAND` to your CASS invocation.
+- `CASS_RETRIEVE_COMMAND` is optional. If unset, the built-in CASS-compatible session-history provider is used.
+- Set `CASS_RETRIEVE_COMMAND` to your external CASS invocation when available.
 - Runtime env passed to the command: `CASS_QUERY`, `CASS_TOP_K`, `CASS_SOURCE_ROOTS`.
-- If command is unset/fails, script falls back to local `rg` retrieval and the workflow continues (fail-open).
+- If external CASS is unavailable, script falls back to local `rg` retrieval and the workflow continues (fail-open).
 - Detailed setup: `docs/runbooks/startup-loop-cass-pilot.md`
 
 ## Business OS Card Tracking

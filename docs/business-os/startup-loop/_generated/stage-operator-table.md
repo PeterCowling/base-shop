@@ -1,5 +1,5 @@
 <!-- AUTO-GENERATED — do not edit directly. Edit stage-operator-dictionary.yaml and re-run: node --import tsx scripts/src/startup-loop/generate-stage-operator-views.ts -->
-<!-- Source: docs/business-os/startup-loop/stage-operator-dictionary.yaml | loop-spec: 3.12.0 -->
+<!-- Source: docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml | loop-spec: 3.12.0 -->
 ---
 Type: Reference
 Status: Active

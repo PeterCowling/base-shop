@@ -16,7 +16,7 @@ Executes the core weekly sequence: measurement compilation, decisioning handoff,
 ## Global Invariants
 
 - Decision authority for weekly memo content is `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`. This module does not generate or replace that memo — it emits the handoff prompt and records the output path.
-- Stage graph authority is `docs/business-os/startup-loop/loop-spec.yaml`. This module does not modify stage ordering or gate semantics.
+- Stage graph authority is `docs/business-os/startup-loop/specifications/loop-spec.yaml`. This module does not modify stage ordering or gate semantics.
 - Failures in any lane produce a warning + REM entry and a lane status of `incomplete` or `restricted`. They do not block the weekly cycle close.
 
 ---
@@ -166,7 +166,7 @@ Using the KPCS decision artifact (or prior-week reference if current week is pen
 
 #### 4.5 — Monthly deep-audit trigger check
 
-Check `docs/business-os/startup-loop/audit-cadence-contract-v1.md` monthly trigger rule:
+Check `docs/business-os/startup-loop/contracts/audit-cadence-contract-v1.md` monthly trigger rule:
 - If this week is the monthly trigger week (as defined in the contract): emit advisory noting monthly deep-audit is due.
 - Record `monthly_audit_trigger: due | not-due | unknown`.
 - If `due` and no monthly audit artifact found for this month: emit REM task: `REM-<BIZ>-<YYYYMMDD>-3: Monthly deep-audit due. No audit artifact found for <YYYY-MM>. Schedule and complete before next weekly cycle.`

@@ -8,8 +8,8 @@
  * This module enforces the control-plane single-writer contract:
  * only this entry point may write baseline.manifest.json.
  *
- * @see docs/business-os/startup-loop/manifest-schema.md
- * @see docs/business-os/startup-loop/stage-result-schema.md
+ * @see docs/business-os/startup-loop/schemas/manifest-schema.md
+ * @see docs/business-os/startup-loop/schemas/stage-result-schema.md
  */
 
 import { promises as fs } from "fs";

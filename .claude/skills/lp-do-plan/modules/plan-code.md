@@ -47,7 +47,13 @@ Minimum required:
 - Affects, Depends on, Blocks
 - Confidence breakdown (Implementation/Approach/Impact)
 - Acceptance
+- `Expected user-observable behavior` checklist in Acceptance for any UI/user-facing task
 - Validation contract (TC-XX with expected outcomes)
+- For frontend/UI tasks, include scoped post-build QA loop contract in validation notes:
+  - run `lp-design-qa` on changed routes/components
+  - run `tools-ui-contrast-sweep` on changed routes/components
+  - run `tools-ui-breakpoint-sweep` on changed routes/components
+  - auto-fix findings and re-run until no Critical/Major issues remain (Minor findings may be deferred only with explicit rationale and follow-up)
 - Planning validation evidence for M/L
 - Rollout/rollback
 - Documentation impact

@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "docs/business-os/startup-loop/stage-operator-dictionary.schema.json",
+  "$id": "docs/business-os/startup-loop/schemas/stage-operator-dictionary.schema.json",
   "title": "Startup Loop Stage Operator Dictionary",
   "description": "Canonical naming source for operator-facing stage labels, aliases, and display fields. Generated views (stage-operator-map.json, stage-operator-table.md) are derived from this dictionary. List order must match canonical stage order in loop-spec.yaml.",
   "type": "object",

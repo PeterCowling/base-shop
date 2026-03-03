@@ -94,13 +94,13 @@ node octorate-export-final-working.mjs
 ## Documentation Updates (2026-02-14)
 
 ### Created
-1. **`docs/business-os/startup-loop/octorate-data-collection-protocol.md`**
+1. **`docs/business-os/startup-loop/operations/octorate-data-collection-protocol.md`**
    - Comprehensive protocol for both batches
    - Integration points for S0-S10 stages
    - Operational runbook
    - Quality gates and failure recovery
 
-2. **`docs/business-os/startup-loop/OCTORATE-DATA-STATUS.md`** (this file)
+2. **`docs/business-os/startup-loop/operations/OCTORATE-DATA-STATUS.md`** (this file)
    - Quick status summary
    - Gaps and next steps
 
@@ -211,7 +211,7 @@ node octorate-process-bookings.mjs /path/to/export.xls
 
 ## Related Documentation
 
-- Protocol: `docs/business-os/startup-loop/octorate-data-collection-protocol.md`
+- Protocol: `docs/business-os/startup-loop/operations/octorate-data-collection-protocol.md`
 - Batch 2 baseline: `docs/business-os/strategy/BRIK/2026-02-14-octorate-operational-data-baseline.user.md`
 - Batch 1 baseline: `docs/business-os/strategy/BRIK/2026-02-12-historical-performance.user.md`
 - Business plan: `docs/business-os/strategy/BRIK/plan.user.md`

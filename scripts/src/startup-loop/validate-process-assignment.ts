@@ -2,8 +2,8 @@
  * Process assignment validator.
  *
  * Reads:
- *   docs/business-os/startup-loop/process-assignment-v2.yaml
- *   docs/business-os/startup-loop/workstream-workflow-taxonomy-v2.yaml
+ *   docs/business-os/startup-loop/specifications/process-assignment-v2.yaml
+ *   docs/business-os/startup-loop/specifications/workstream-workflow-taxonomy-v2.yaml
  *
  * Validates:
  *   - Coverage: all 28 canonical process IDs present (TC-05-02)
@@ -313,11 +313,11 @@ export function run(opts: { repoRoot: string }): void {
 
   const assignmentPath = path.join(
     repoRoot,
-    "docs/business-os/startup-loop/process-assignment-v2.yaml"
+    "docs/business-os/startup-loop/specifications/process-assignment-v2.yaml"
   );
   const taxonomyPath = path.join(
     repoRoot,
-    "docs/business-os/startup-loop/workstream-workflow-taxonomy-v2.yaml"
+    "docs/business-os/startup-loop/specifications/workstream-workflow-taxonomy-v2.yaml"
   );
   const taxonomyRelPath = path
     .relative(repoRoot, taxonomyPath)

@@ -61,6 +61,7 @@ Ensure these sections in the planning brief are filled (or explicitly marked not
 - `### Dependency & Impact Map`
 - `### Test Landscape`
 - `### Recent Git History (Targeted)`
+- `## Scope Signal` (`constrained | right-sized | limited-thinking`; include 1-3 expansion suggestions only when `limited-thinking`)
 - `## Confidence Inputs`
 - `## Risks`
 

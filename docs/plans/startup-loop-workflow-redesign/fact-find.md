@@ -76,7 +76,7 @@ The redesign separates these concerns by restructuring the document into an oper
 
 - `docs/business-os/startup-loop-workflow.user.md` — source to be rewritten; contains 5 Mermaid diagrams, stage table, open-tasks table, current-gaps tables (sections 2–5)
 - `docs/business-os/startup-loop-workflow.user.html` — HTML companion; must be regenerated post-rewrite
-- `docs/business-os/startup-loop/loop-spec.yaml` (referenced as canonical source for stage definitions at spec_version 1.1.0) — not modified by this task
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml` (referenced as canonical source for stage definitions at spec_version 1.1.0) — not modified by this task
 - `pnpm docs:render-user-html` — render script invoked as `pnpm docs:render-user-html -- <path.user.md>`
 - `docs/briefs/_templates/briefing-note.md` — confirmed to exist; not directly relevant to this rewrite
 
@@ -104,7 +104,7 @@ The redesign separates these concerns by restructuring the document into an oper
 ### Dependency & Impact Map
 
 - Upstream dependencies:
-  - `docs/business-os/startup-loop/loop-spec.yaml` — canonical stage spec; not modified; operator doc must stay consistent with it.
+  - `docs/business-os/startup-loop/specifications/loop-spec.yaml` — canonical stage spec; not modified; operator doc must stay consistent with it.
   - Business state docs for HEAD, PET, BRIK in `docs/business-os/strategy/*/plan.user.md` — referenced for "Today" panel content; not modified.
   - Measurement verification and gap docs — referenced as evidence; not modified.
 - Downstream dependents:

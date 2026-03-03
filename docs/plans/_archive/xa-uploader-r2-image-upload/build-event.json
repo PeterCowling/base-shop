@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "1437506405",
+  "feature_slug": "xa-uploader-r2-image-upload",
+  "emitted_at": "2026-03-03T18:02:42.131Z",
+  "why": "Products cannot go live without images, and there is no way to upload image files — only text path entry exists. This blocks the entire XA catalog publish workflow for any product that does not already have externally-hosted images.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Vendors can upload product images directly to R2 via the xa-uploader console. Products saved with data only remain draft; adding images makes them publish-ready. All within Cloudflare free tier.",
+    "source": "operator"
+  }
+}

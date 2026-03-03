@@ -1,15 +1,15 @@
 {
-  "last_updated": "2026-03-03T17:43:35.995Z",
+  "last_updated": "2026-03-03T18:14:26.782Z",
   "counts": {
-    "enqueued": 15,
-    "processed": 15,
+    "enqueued": 19,
+    "processed": 17,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
-    "completed": 96,
-    "fact_find_ready": 51,
-    "total": 152
+    "completed": 97,
+    "fact_find_ready": 57,
+    "total": 159
   },
   "dispatches": [
     {
@@ -5668,7 +5668,7 @@
       "current_truth": "xa-uploader stores image paths as pipe-delimited text strings (imageFiles field). No <input type='file'> or binary upload exists. Products API is JSON-only (no multipart). Cloud sync publishes catalog JSON referencing image paths but never uploads image binaries. If images aren't already hosted at referenced URLs, xa-b renders broken images. wrangler.toml has stub R2 env vars but no [[r2_buckets]] binding. getCatalogDraftWorkflowReadiness() already gates isPublishReady on hasImages — products without images stay draft.",
       "next_scope_now": "Investigate and build direct R2 upload via Worker route binding (Option A). Add file input to CatalogProductImagesFields, new /api/catalog/images route writing to R2 via binding, R2 bucket config in wrangler.toml, and set NEXT_PUBLIC_XA_IMAGES_BASE_URL for xa-b. Hard constraints: Cloudflare free tier only (R2: 10GB storage, 1M Class A, 10M Class B, zero egress). Data and image uploaded separately — data-only save results in draft, image presence triggers published status.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.9,
       "evidence_refs": [
@@ -5681,7 +5681,7 @@
         "apps/xa-uploader/wrangler.toml (stub env vars NEXT_PUBLIC_XA_UPLOADER_R2_DESTINATION exist but no R2 binding)"
       ],
       "created_at": "2026-03-03T22:00:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "fact_find_slug": "xa-uploader-r2-image-upload",
         "fact_find_path": "docs/plans/xa-uploader-r2-image-upload/fact-find.md",
@@ -5693,6 +5693,11 @@
         "type": "operational",
         "statement": "Vendors can upload product images directly to R2 via the xa-uploader console. Products saved with data only remain draft; adding images makes them publish-ready. All within Cloudflare free tier.",
         "source": "operator"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/xa-uploader-r2-image-upload/plan.md",
+        "completed_at": "2026-03-03T18:14:26.781Z",
+        "outcome": "Vendors can upload product images directly to R2 via xa-uploader console. Upload route with validation, role-based upload UI, and xa-b R2 URL config all complete."
       }
     },
     {
@@ -5833,6 +5838,320 @@
         "fact_find_slug": "reception-staff-accounts-lifecycle-permissions",
         "fact_find_path": "docs/plans/reception-staff-accounts-lifecycle-permissions/fact-find.md"
       }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303233000-0148",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:STRATEGY:reception-statistics-yoy-current-vs-archive-data-contract:20260303",
+      "anchor_key": "reception-statistics-yoy-current-vs-archive-data-contract",
+      "cluster_key": "BRIK:STRATEGY:reception-statistics-yoy-current-vs-archive-data-contract:operator:20260303",
+      "cluster_fingerprint": "2d0f5f69e20abb1de9f8727a82479030d751d7afaf0c3457146448b02f17b91e",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK reception statistics — dual-database YoY contract and metric definitions",
+      "location_anchors": [
+        "apps/reception/src/components/stats/Statistics.tsx",
+        "apps/reception/src/services/useFirebase.ts",
+        "apps/reception/src/schemas/firebaseEnvSchema.ts",
+        "apps/reception/src/hooks/data/useAllFinancialTransactionsData.ts",
+        "apps/reception/src/hooks/mutations/useArchiveCheckedOutGuests.ts"
+      ],
+      "provisional_deliverable_family": "multi",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.9,
+      "current_truth": "Statistics page is a connection-test stub. Reception reads only one RTDB URL today, while management requires year-on-year performance from current-year DB plus archived prior-year DB. Existing in-node /archive paths coexist with a separate archive database concept, so metric source boundaries are not defined.",
+      "next_scope_now": "Fact-find and formalize a YoY data contract: canonical sources for each KPI, handling of current DB vs archive DB vs in-node /archive paths, inclusion rules for voided/corrected transactions, timezone and month-bucketing semantics, and fallback behavior when one source is unavailable.",
+      "adjacent_later": [
+        "Add reconciliation checks that compare aggregate totals across source nodes to detect archive drift before publishing management KPIs."
+      ],
+      "evidence_refs": [
+        "operator-stated: year-on-year performance is the key management interest; current year is in Firebase current DB and past year is in archive DB",
+        "agent-verified: /statistics renders only Google Apps Script connection test UI",
+        "agent-verified: firebase env/config currently supports only NEXT_PUBLIC_FIREBASE_DATABASE_URL",
+        "agent-verified: archive mutation writes to in-node archive/* paths inside current database"
+      ],
+      "why": "Without a hard metric/source contract, YoY figures will be contested and brittle. Establishing source-of-truth and calculation semantics first prevents rework and preserves management trust in reported performance deltas.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Reception has a documented YoY metric contract that unambiguously defines source nodes, date semantics, and inclusion rules for current-year vs prior-year comparisons.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-03T23:30:00.000Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-03T18:03:19.217Z",
+        "fact_find_slug": "reception-statistics-yoy-data-contract",
+        "fact_find_path": "docs/plans/reception-statistics-yoy-data-contract/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303233001-0149",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:STRATEGY:reception-statistics-yoy-aggregation-api:20260303",
+      "anchor_key": "reception-statistics-yoy-aggregation-api",
+      "cluster_key": "BRIK:STRATEGY:reception-statistics-yoy-aggregation-api:operator:20260303",
+      "cluster_fingerprint": "a02b4f7f7f84324678c163c453c39edcc9a9a0f057ed71f8708e0269dd98c9ef",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK reception statistics — server YoY aggregation pipeline",
+      "location_anchors": [
+        "apps/reception/src/app/api/",
+        "apps/reception/src/hooks/data/useAllFinancialTransactionsData.ts",
+        "apps/reception/src/hooks/data/useCheckins.ts",
+        "apps/reception/src/hooks/data/useCheckouts.ts",
+        "apps/reception/src/hooks/data/useFinancialsRoom.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.88,
+      "current_truth": "No server-side statistics API exists for YoY. Current hooks subscribe directly to client-side nodes and cannot safely combine dual-database sources, normalize periods, and produce consistent management aggregates.",
+      "next_scope_now": "Fact-find the implementation contract for a server-side YoY aggregation endpoint (monthly + YTD), including dual-RTDB initialization, query windows, cache strategy, schema-validated response shape, and test matrix for date boundaries and missing-month cases.",
+      "adjacent_later": [
+        "Add persisted daily KPI snapshots to reduce repeated full-node scans for large historical datasets."
+      ],
+      "evidence_refs": [
+        "operator-stated: proceed with switchable management reporting",
+        "agent-verified: statistics route has no data pipeline today",
+        "agent-verified: existing data hooks read single-db nodes directly on client"
+      ],
+      "why": "A robust YoY dashboard depends on deterministic, centralized aggregation logic. Building this in a server API avoids duplicated client math, protects source credentials/boundaries, and allows stable KPI contracts for management reporting.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "A tested server aggregation contract is defined for YoY KPIs across current and archived data sources, ready for build implementation.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-03T23:30:01.000Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-03T18:03:19.218Z",
+        "fact_find_slug": "reception-statistics-yoy-aggregation-api",
+        "fact_find_path": "docs/plans/reception-statistics-yoy-aggregation-api/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303233002-0150",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:STRATEGY:reception-statistics-switchable-management-views:20260303",
+      "anchor_key": "reception-statistics-switchable-management-views",
+      "cluster_key": "BRIK:STRATEGY:reception-statistics-switchable-management-views:operator:20260303",
+      "cluster_fingerprint": "16c1c07e2fa2ad4fcb5607c60f2eb9538f7a4d14f9b2bb9f6dd14a595458848d",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK reception statistics UI — switchable YoY metric views",
+      "location_anchors": [
+        "apps/reception/src/components/stats/Statistics.tsx",
+        "apps/reception/src/components/dashboard/DashboardMetrics.tsx",
+        "apps/reception/src/components/analytics/MenuPerformanceDashboard.tsx",
+        "apps/reception/src/components/common/PageShell.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.89,
+      "current_truth": "Management requested switchable performance views, but statistics UI currently has no KPI controls, no YoY cards/charts, and no standardized management narrative for period-over-period changes.",
+      "next_scope_now": "Fact-find the switchable UX contract for YoY reporting: metric toggles (e.g., room-only revenue vs room+bar, occupancy, ADR, RevPAR), period controls (month/YTD), delta presentation rules, empty/error states, and role-based visibility constraints.",
+      "adjacent_later": [
+        "Add downloadable monthly board-pack export once KPI definitions are stabilized in production."
+      ],
+      "evidence_refs": [
+        "operator-stated: switchable views are required",
+        "agent-verified: statistics screen currently provides only a test button and message text",
+        "agent-verified: existing dashboard metrics are day-over-day only and not year-on-year"
+      ],
+      "why": "Even correct backend aggregates will not drive decisions unless management can switch between agreed KPI lenses and read the YoY deltas quickly in one place. UX contract definition is needed before build.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "A concrete switchable YoY management dashboard scope is defined, including metric toggle behavior and decision-ready visualization requirements.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-03T23:30:02.000Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-03T18:03:19.218Z",
+        "fact_find_slug": "reception-statistics-yoy-switchable-ui",
+        "fact_find_path": "docs/plans/reception-statistics-yoy-switchable-ui/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303235000-0151",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:STRATEGY:standing-registry-non-assessment-domains-missing:20260303",
+      "anchor_key": "standing-registry-non-assessment-domains-missing",
+      "cluster_key": "BOS:STRATEGY:standing-registry-non-assessment-domains-missing:operator:20260303",
+      "cluster_fingerprint": "b4e7c92af1d83560b4e7c92af1d83560b4e7c92af1d83560b4e7c92af1d83560",
+      "lineage_depth": 0,
+      "area_anchor": "Standing registry — MARKET/SELL/PRODUCTS/LOGISTICS domains unregistered",
+      "location_anchors": [
+        "docs/registry.json",
+        "scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts",
+        "docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-standing-registry.schema.json"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "The standing registry has 15 artifacts, all from the ASSESSMENT domain. No artifacts from MARKET, SELL, PRODUCTS, or LOGISTICS are registered. Deltas to measurement profiles, distribution plans, ICP documents, pricing specs, and offer designs never trigger the ideas pipeline.",
+      "next_scope_now": "Fact-find which non-assessment standing artifacts should be registered, define their artifact_class and trigger_policy, and extend the registry with domain-appropriate entries.",
+      "adjacent_later": [
+        "Extend T1_SEMANTIC_KEYWORDS for domain-specific delta detection beyond ASSESSMENT vocabulary."
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: audit found standing registry covers only ASSESSMENT artifacts — zero from MARKET/SELL/PRODUCTS/LOGISTICS",
+        "agent-verified: docs/registry.json contains 15 artifact entries, all ASSESSMENT domain",
+        "agent-verified: lp-do-ideas-standing-registry.schema.json supports source/pack/loop-output classes but no entries exist for non-assessment domains"
+      ],
+      "why": "The ideas pipeline has a structural blind spot covering four of five business domains. Changes to measurement plans, distribution strategies, ICP definitions, and product specs never trigger automated dispatch — the loop cannot detect when operational decisions in these domains change and cannot route follow-on work.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Standing artifacts from MARKET, SELL, PRODUCTS, and LOGISTICS domains are registered with appropriate trigger policies, enabling the ideas pipeline to detect deltas across all five business domains.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-03T23:50:00.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303235001-0152",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:build-time-artifact-delta-hook-not-wired:20260303",
+      "anchor_key": "build-time-artifact-delta-hook-not-wired",
+      "cluster_key": "BOS:BOS:build-time-artifact-delta-hook-not-wired:operator:20260303",
+      "cluster_fingerprint": "c5f8da3b02e94671c5f8da3b02e94671c5f8da3b02e94671c5f8da3b02e94671",
+      "lineage_depth": 0,
+      "area_anchor": "lp-do-build — post-commit artifact delta hook not wired",
+      "location_anchors": [
+        "scripts/src/startup-loop/ideas/lp-do-ideas-live-hook.ts",
+        ".claude/skills/lp-do-build/SKILL.md",
+        "scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "lp-do-ideas-live-hook.ts implements artifact delta detection at build commit time but is never called from the lp-do-build post-task commit sequence. Builds that modify standing artifacts produce no dispatch events. The existing SIGNALS advisory hook runs during weekly orchestration only, not at individual build completion.",
+      "next_scope_now": "Fact-find the integration point in lp-do-build post-task commit where the live hook should fire, determine advisory-vs-autonomous mode semantics for build-time invocation, and define the safety contract (anti-loop, rate limiting, deduplication).",
+      "adjacent_later": [
+        "Evaluate whether build-time hook should also fire for non-plan builds (manual commits, replan outputs)."
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: audit found live hook module exists but is never invoked from lp-do-build",
+        "agent-verified: lp-do-ideas-live-hook.ts exports functions for build-time delta detection",
+        "agent-verified: lp-do-build SKILL.md post-task commit sequence has no call to ideas pipeline",
+        "agent-verified: archived plan lp-do-ideas-live-autonomous-activation completed SIGNALS advisory hook but not build-time integration"
+      ],
+      "why": "Without build-time hook wiring, artifact changes produced by builds never automatically surface follow-on work. The feedback loop between builds and new idea generation is broken — each build's artifact changes are invisible to the ideas pipeline until the next weekly SIGNALS run.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "lp-do-build post-task commit invokes the ideas live hook in advisory mode, so artifact changes from builds automatically surface as dispatch candidates for operator review.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-03T23:50:01.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303235002-0153",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:self-evolving-system-zero-data-flow:20260303",
+      "anchor_key": "self-evolving-system-zero-data-flow",
+      "cluster_key": "BOS:BOS:self-evolving-system-zero-data-flow:operator:20260303",
+      "cluster_fingerprint": "d6g9eb4c13fa5782d6g9eb4c13fa5782d6g9eb4c13fa5782d6g9eb4c13fa5782",
+      "lineage_depth": 0,
+      "area_anchor": "Self-evolving system — 21 modules with zero data flowing",
+      "location_anchors": [
+        "scripts/src/startup-loop/self-evolving/",
+        "scripts/src/startup-loop/self-evolving/bridge/",
+        "data/BRIK/self-evolving/observations.jsonl"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The self-evolving subsystem spans 3,023 lines across 21 modules (pattern detection, evolution proposals, capability scoring, observation bridges) but has zero data flowing through it. BRIK observations.jsonl is empty. No bridge connects build outputs (pattern reflections, results reviews, completed ideas) to the self-evolving layer.",
+      "next_scope_now": "Fact-find the minimum activation path: which build outputs should feed observations, what bridge wiring is needed, and what the first end-to-end data flow looks like (build output to observation to pattern detection to proposal).",
+      "adjacent_later": [
+        "Evaluate whether weekly batch processing or per-build streaming is the right activation cadence for self-evolving observations."
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.82,
+      "evidence_refs": [
+        "operator-stated: audit found 3,023 lines of self-evolving infrastructure with zero data flowing",
+        "agent-verified: scripts/src/startup-loop/self-evolving/ contains 21 modules with pattern detection, proposals, capability scoring",
+        "agent-verified: data/BRIK/self-evolving/observations.jsonl is empty (0 bytes)",
+        "agent-verified: prior plan startup-loop-self-evolving-launch-accelerator completed infrastructure but not data activation"
+      ],
+      "why": "The self-evolving system is the loop's mechanism for learning from its own execution — detecting patterns across builds and proposing process improvements. Without data flowing through it, the loop cannot accumulate institutional knowledge or improve its own processes over time.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Self-evolving observation bridge is wired so build outputs (pattern reflections, completed ideas) flow into the observation layer, enabling the first end-to-end self-evolving data cycle.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-03T23:50:02.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303235003-0154",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:queue-state-format-dual-state-machine:20260303",
+      "anchor_key": "queue-state-format-dual-state-machine",
+      "cluster_key": "BOS:BOS:queue-state-format-dual-state-machine:operator:20260303",
+      "cluster_fingerprint": "e7h0fc5d24gb6893e7h0fc5d24gb6893e7h0fc5d24gb6893e7h0fc5d24gb6893",
+      "lineage_depth": 0,
+      "area_anchor": "Queue-state format — dual state machines between TS and disk",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+        "scripts/src/startup-loop/ideas/lp-do-ideas-trial-queue.ts",
+        "scripts/src/startup-loop/ideas/lp-do-ideas-persistence.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The on-disk queue-state.json uses agent-authored format (queue_version: queue.v1, dispatches array) with states like completed/auto_executed/fact_find_ready that the TS TrialQueue class (schema_version: queue-state.v1, entries array, states: enqueued/processed/skipped/error) does not recognize. The TS persistence layer has never been used to write to the live file.",
+      "next_scope_now": "Fact-find the consolidation path: determine the canonical format, migration strategy for 159 existing dispatches, and how to unify the viewer/persistence without losing historical queue data.",
+      "adjacent_later": [
+        "Once consolidated, evaluate whether the TS persistence layer should become the sole writer to prevent future format divergence."
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: audit found dual state machines between TrialQueue class and on-disk JSON",
+        "agent-verified: queue-state.json uses queue_version/dispatches keys, TS persistence uses schema_version/entries",
+        "agent-verified: on-disk file contains states (completed, auto_executed, fact_find_ready) not in TS TrialQueue enum",
+        "agent-verified: lp-do-ideas SKILL.md documents this as a known issue"
+      ],
+      "why": "The format divergence between the TS persistence layer and the on-disk queue creates a growing reconciliation gap. As the queue grows (currently 159 dispatches), the risk of data loss during any migration increases. Consolidating now while the trial is active prevents a harder migration during live-mode activation.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Queue-state format is consolidated into a single canonical schema with all dispatches migrated, TS persistence and viewer code aligned, and no legacy format branches remaining.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-03T23:50:03.000Z",
+      "queue_state": "enqueued"
     }
   ]
 }

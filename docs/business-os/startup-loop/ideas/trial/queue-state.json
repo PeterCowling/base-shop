@@ -1,15 +1,15 @@
 {
-  "last_updated": "2026-03-03T18:14:26.782Z",
+  "last_updated": "2026-03-03T18:47:46.413Z",
   "counts": {
-    "enqueued": 19,
+    "enqueued": 24,
     "processed": 17,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
-    "completed": 97,
-    "fact_find_ready": 57,
-    "total": 159
+    "completed": 101,
+    "fact_find_ready": 62,
+    "total": 168
   },
   "dispatches": [
     {
@@ -6010,7 +6010,7 @@
         "Extend T1_SEMANTIC_KEYWORDS for domain-specific delta detection beyond ASSESSMENT vocabulary."
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.88,
       "evidence_refs": [
@@ -6025,7 +6025,18 @@
         "source": "operator"
       },
       "created_at": "2026-03-03T23:50:00.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-03T23:58:00.000Z",
+        "fact_find_slug": "bos-ideas-dispatch-20260303-followthrough",
+        "fact_find_path": "docs/plans/bos-ideas-dispatch-20260303-followthrough/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-followthrough/plan.md",
+        "completed_at": "2026-03-03T18:47:46.412Z",
+        "outcome": "Standing registry expanded to 34 entries across 6 domains; post-commit hook, self-evolving bridge, and queue-state canonicalization utilities shipped"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -6051,7 +6062,7 @@
         "Evaluate whether build-time hook should also fire for non-plan builds (manual commits, replan outputs)."
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.85,
       "evidence_refs": [
@@ -6067,7 +6078,18 @@
         "source": "operator"
       },
       "created_at": "2026-03-03T23:50:01.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-03T23:58:00.000Z",
+        "fact_find_slug": "bos-ideas-dispatch-20260303-followthrough",
+        "fact_find_path": "docs/plans/bos-ideas-dispatch-20260303-followthrough/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-followthrough/plan.md",
+        "completed_at": "2026-03-03T18:47:46.413Z",
+        "outcome": "Standing registry expanded to 34 entries across 6 domains; post-commit hook, self-evolving bridge, and queue-state canonicalization utilities shipped"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -6093,7 +6115,7 @@
         "Evaluate whether weekly batch processing or per-build streaming is the right activation cadence for self-evolving observations."
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.82,
       "evidence_refs": [
@@ -6109,7 +6131,18 @@
         "source": "operator"
       },
       "created_at": "2026-03-03T23:50:02.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-03T23:58:00.000Z",
+        "fact_find_slug": "bos-ideas-dispatch-20260303-followthrough",
+        "fact_find_path": "docs/plans/bos-ideas-dispatch-20260303-followthrough/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-followthrough/plan.md",
+        "completed_at": "2026-03-03T18:47:46.413Z",
+        "outcome": "Standing registry expanded to 34 entries across 6 domains; post-commit hook, self-evolving bridge, and queue-state canonicalization utilities shipped"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -6135,7 +6168,7 @@
         "Once consolidated, evaluate whether the TS persistence layer should become the sole writer to prevent future format divergence."
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.85,
       "evidence_refs": [
@@ -6151,6 +6184,395 @@
         "source": "operator"
       },
       "created_at": "2026-03-03T23:50:03.000Z",
+      "queue_state": "completed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-03T23:58:00.000Z",
+        "fact_find_slug": "bos-ideas-dispatch-20260303-followthrough",
+        "fact_find_path": "docs/plans/bos-ideas-dispatch-20260303-followthrough/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-followthrough/plan.md",
+        "completed_at": "2026-03-03T18:47:46.413Z",
+        "outcome": "Standing registry expanded to 34 entries across 6 domains; post-commit hook, self-evolving bridge, and queue-state canonicalization utilities shipped"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303235500-0155",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:bug-scan-findings-not-routed-to-ideas-pipeline:20260303",
+      "anchor_key": "bug-scan-findings-not-routed-to-ideas-pipeline",
+      "cluster_key": "BOS:BOS:bug-scan-findings-not-routed-to-ideas-pipeline:operator:20260303",
+      "cluster_fingerprint": "f8i1gd6e35hc7904f8i1gd6e35hc7904f8i1gd6e35hc7904f8i1gd6e35hc7904",
+      "lineage_depth": 0,
+      "area_anchor": "Bug scan — findings feed process-improvements only, not ideas dispatch",
+      "location_anchors": [
+        "scripts/src/quality/bug-scan.ts",
+        "scripts/src/startup-loop/build/generate-process-improvements.ts",
+        "scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The bug scanner runs at build completion and produces structured BugScanIdeaArtifact JSON (schema v1) with severity, file, line, message, and suggestion per finding. These findings feed only into process-improvements.user.html via generate-process-improvements.ts. The ideas pipeline never sees them — no bridge exists between bug-scan output and dispatch queue. Recurring or high-severity findings that warrant dedicated investigation are lost in the aggregate report.",
+      "next_scope_now": "Fact-find the bridge from bug-scan findings to ideas dispatch: severity threshold for automatic dispatch, grouping strategy (per-finding vs per-file vs per-rule), deduplication against existing dispatches, and integration point (build completion step vs separate CLI).",
+      "adjacent_later": [
+        "Extend to CI test failure signals as a second code-quality dispatch source."
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: codebase is a standing data source the loop should learn from — bug scan is the nearest bridge point",
+        "agent-verified: bug-scan.ts produces BugScanIdeaArtifact JSON with structured findings (ruleId, severity, file, suggestion)",
+        "agent-verified: generate-process-improvements.ts ingests bug-scan findings but only outputs to process-improvements.user.html",
+        "agent-verified: ideas pipeline has zero code-artifact consumption paths"
+      ],
+      "why": "The bug scanner already identifies code-level risks at every build but the findings only appear in an aggregate HTML report. High-severity or recurring findings that deserve their own investigation and plan never enter the ideas pipeline — they are visible but not actionable through the standard workflow.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Bug scan findings above a severity threshold automatically produce dispatch packets in the ideas queue, so recurring code-quality issues get dedicated investigation and resolution through the standard planning workflow.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-03T23:55:00.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303235501-0156",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:codebase-structural-changes-invisible-to-ideas-pipeline:20260303",
+      "anchor_key": "codebase-structural-changes-invisible-to-ideas-pipeline",
+      "cluster_key": "BOS:BOS:codebase-structural-changes-invisible-to-ideas-pipeline:operator:20260303",
+      "cluster_fingerprint": "a9j2he7f46id8015a9j2he7f46id8015a9j2he7f46id8015a9j2he7f46id8015",
+      "lineage_depth": 0,
+      "area_anchor": "Codebase signals — structural changes not detected by ideas pipeline",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-standing-registry.schema.json",
+        "scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts",
+        ".github/workflows/test.yml"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "The ideas pipeline is designed exclusively for markdown-based standing artifacts. Code structural changes — new routes, API endpoint additions, schema modifications, dependency updates, component additions — produce zero signal in the ideas pipeline. The orchestrator expects pre-computed markdown sections and fail-closes on unregistered artifacts. No git diff parsing, no CI signal routing, no code-structure change detection exists. The codebase is the richest and most frequently-changing standing data source but is entirely invisible to the loop.",
+      "next_scope_now": "Fact-find the codebase-as-standing-data model: which code structural changes are meaningful signals (route additions needing measurement, API changes needing documentation, dependency updates needing compatibility checks), what detection mechanism fits (git diff analysis, AST-level parsing, CI output scraping), and what the minimum viable code-signal-to-dispatch bridge looks like.",
+      "adjacent_later": [
+        "Evaluate whether code signals should use the existing standing registry model or a separate lightweight event bus to avoid registry bloat.",
+        "Consider whether test coverage changes (new uncovered code) should be a signal category."
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.78,
+      "evidence_refs": [
+        "operator-stated: the codebase itself is standing data the loop should learn from",
+        "agent-verified: standing registry has zero code artifact entries — all 15 are markdown docs",
+        "agent-verified: ideas orchestrator expects pre-computed markdown changed_sections, fail-closes on unknown artifacts",
+        "agent-verified: no git diff parsing, no CI failure routing, no code-structure change detection in pipeline",
+        "agent-verified: deliverable family 'code-change' exists in dispatch schema but nothing produces it"
+      ],
+      "why": "The codebase changes with every build and those changes contain the richest signal about what's happening in each business — new functionality that needs measurement, API changes that need documentation, dependency updates that need review. Currently the loop only sees document-level changes and is completely blind to the code-level reality of each business.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "A defined model for codebase-as-standing-data with at least one working signal bridge (code structural changes producing dispatch candidates), so the ideas pipeline can detect and route follow-on work from code evolution.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-03T23:55:01.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303235900-0157",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:agent-session-findings-evaporate-no-signal-capture:20260303",
+      "anchor_key": "agent-session-findings-evaporate-no-signal-capture",
+      "cluster_key": "BOS:BOS:agent-session-findings-evaporate-no-signal-capture:operator:20260303",
+      "cluster_fingerprint": "b0k3if8g57je9126b0k3if8g57je9126b0k3if8g57je9126b0k3if8g57je9126",
+      "lineage_depth": 0,
+      "area_anchor": "Agent sessions — walkthrough and testing findings evaporate after session",
+      "location_anchors": [
+        "scripts/src/startup-loop/self-evolving/self-evolving-from-build-output.ts",
+        "scripts/src/startup-loop/self-evolving/self-evolving-from-ideas.ts",
+        "docs/business-os/startup-loop/self-evolving/schemas/meta-observation.schema.json",
+        ".claude/skills/tools-meta-reflect/SKILL.md"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "Signal capture only covers planned work: build-output bridge and ideas-trial bridge both emit MetaObservation records, but only from lp-do-build completions and dispatch events. Agent walkthroughs, manual testing sessions, operator-directed investigations, and 'list any issues' explorations produce concrete findings (bugs, broken flows, UX gaps, missing functionality) that exist only in the conversation window and vanish when the session ends. The tools-meta-reflect skill updates docs but never emits observations or dispatches. The MEMORY.md system captures some learnings but has no bridge to the ideas pipeline. Conversation transcripts in .claude/projects/ are never parsed for signals. The MetaObservation schema has a session_id field but it's auto-generated, not linked to actual Claude Code sessions.",
+      "next_scope_now": "Fact-find the agent-session-to-signal bridge: how to capture findings from unplanned explorations (walkthroughs, testing, audits) and route them into the ideas pipeline. Key design questions: automatic extraction from conversation transcripts vs explicit emission at session end, observation granularity (per-finding vs per-session summary), deduplication against existing dispatches, and whether this integrates via the existing MetaObservation schema or needs a new signal type.",
+      "adjacent_later": [
+        "Evaluate periodic transcript mining for recurring patterns across sessions (e.g., same bug found multiple times, same workaround applied repeatedly).",
+        "Consider whether agent-discovered issues should route directly to dispatch queue or through observations.jsonl first for pattern aggregation."
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: agent walkthroughs like 'step through the uploader app, simulate uploading, track to xa-b, list issues' are a primary issue discovery method — findings are never captured",
+        "agent-verified: only build-output bridge and ideas-trial bridge emit MetaObservation records — both require planned work",
+        "agent-verified: tools-meta-reflect updates docs only, never emits observations or dispatches",
+        "agent-verified: MEMORY.md has no bridge to ideas pipeline or observations.jsonl",
+        "agent-verified: .claude/projects/ conversation transcripts are never parsed by any startup-loop tool",
+        "agent-verified: MetaObservation schema has session_id field but it's auto-generated, not linked to Claude Code sessions"
+      ],
+      "why": "Agent conversations are the most frequent source of issue discovery — operators routinely ask agents to walk through apps, test flows, and list problems. These findings are concrete and actionable but evaporate when the session ends. The loop's self-improvement mechanism is blind to its richest signal source because signal capture only covers structured, plan-based work. Every unplanned walkthrough that finds a bug is a missed dispatch.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Agent session findings (bugs, broken flows, gaps discovered during walkthroughs and testing) are captured and routed into the ideas pipeline, so the loop can learn from its most frequent discovery method rather than losing those signals at session end.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-03T23:59:00.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303183526-0227",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "bootstrap",
+      "after_sha": "04d99c91a320c2c4896919e54ef71ac112f5417d",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:04d99c91a320c2c4896919e54ef71ac112f5417d",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:04d99c91a320c2c4896919e54ef71ac112f5417d",
+      "cluster_fingerprint": "5318b4125b594e6e8cc05d54591c9fc500071564424eca2b701c9577e195f949",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (bootstr → 04d99c9)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:b3165069-f318-4859-9dd9-a21a8e5fd1cb",
+        "session:8c5726e2-9628-42bb-b0f2-58540fedd89b",
+        "session:09feb760-cb39-4294-8a3d-f43413dccdf0",
+        "session:b5b34c6b-49df-4504-a05c-96b196d192c7",
+        "session:7b467507-ee46-4d86-ab98-777680edc77d",
+        "session:1c9ac0e6-690f-4033-b9e6-8340eb1a23bd"
+      ],
+      "created_at": "2026-03-03T18:35:26.226Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304001500-0228",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:XA:PRODUCTS:xa-uploader-image-upload-auto-save:20260304",
+      "anchor_key": "xa-uploader-image-upload-auto-save",
+      "cluster_key": "XA:PRODUCTS:xa-uploader-image-upload-auto-save:operator:20260304",
+      "cluster_fingerprint": "b7c4e1a3f56d890123456789abcdef0123456789abcdef0123456789abcdef01",
+      "lineage_depth": 0,
+      "area_anchor": "XA uploader — no auto-save after image upload",
+      "location_anchors": [
+        "apps/xa-uploader/src/components/catalog/CatalogProductImagesFields.client.tsx",
+        "apps/xa-uploader/src/app/api/catalog/products/route.ts",
+        "packages/lib/src/xa/catalogWorkflow.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "After R2 image upload succeeds, the returned key is appended to React state via onChange() but the product is NOT auto-saved to the server. If the vendor navigates away, the R2 key is lost and the image becomes an orphaned R2 object. The draft→ready transition (derivePublishState) also does not fire until the next manual save.",
+      "next_scope_now": "Add auto-save after successful image upload so the R2 key is persisted and derivePublishState() transitions draft→ready immediately.",
+      "adjacent_later": [
+        "Image deletion from R2 when product is deleted",
+        "Unsaved-changes warning on navigation"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: Post-build simulation found image upload appends R2 key to React state but does not persist to server — key lost on navigation, draft→ready transition delayed",
+        "docs/plans/_archive/xa-uploader-r2-image-upload/post-build-analysis.md#issue-1",
+        "apps/xa-uploader/src/components/catalog/CatalogProductImagesFields.client.tsx:101-106"
+      ],
+      "why": "Image upload completes successfully but the R2 key is only held in React state — not persisted. Vendor loses upload on navigation and the draft→ready publish transition doesn't fire until a separate manual save. This breaks the intended upload-makes-product-publishable workflow.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "After a successful image upload, the product draft is auto-saved so the R2 key is persisted and the draft→ready transition fires immediately without requiring a separate manual save.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-04T00:15:00.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304001500-0229",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:XA:PRODUCTS:xa-sync-image-roles-dropped:20260304",
+      "anchor_key": "xa-sync-image-roles-dropped",
+      "cluster_key": "XA:PRODUCTS:xa-sync-image-roles-dropped:operator:20260304",
+      "cluster_fingerprint": "c8d5f2b4a67e901234567890bcdef1234567890bcdef1234567890bcdef1234",
+      "lineage_depth": 0,
+      "area_anchor": "XA catalog sync — imageRoles dropped during publish",
+      "location_anchors": [
+        "apps/xa-uploader/src/lib/catalogDraftToContract.ts",
+        "apps/xa-b/src/lib/xaTypes.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "buildMediaEntries() in catalogDraftToContract.ts takes imageFiles and imageAltTexts but NOT imageRoles. The CatalogMediaEntry type is { type, path, altText } with no role field. Roles are stored in the draft but dropped when the catalog is published to JSON. xa-b has no semantic image ordering — it renders images in array order.",
+      "next_scope_now": "Investigate adding role field to CatalogMediaEntry and propagating imageRoles through buildMediaEntries() to the published catalog.",
+      "adjacent_later": [
+        "xa-b semantic image ordering by role (hero vs detail vs lifestyle)"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: Pre-existing gap — imageRoles stored in draft but dropped by buildMediaEntries during sync. xa-b has no way to distinguish front from detail images",
+        "docs/plans/_archive/xa-uploader-r2-image-upload/post-build-analysis.md#issue-2",
+        "apps/xa-uploader/src/lib/catalogDraftToContract.ts:215-248"
+      ],
+      "why": "Image roles (front/side/detail/lifestyle) are captured during upload but discarded when the catalog is published. xa-b cannot semantically order images (e.g. hero shot first) because role metadata is lost in the sync pipeline. Pre-existing gap surfaced during R2 image upload post-build analysis.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "imageRoles propagated through buildMediaEntries and published catalog JSON so xa-b can order images semantically by role.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-04T00:15:00.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304001500-0230",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:XA:PRODUCTS:xa-r2-orphaned-objects-cleanup:20260304",
+      "anchor_key": "xa-r2-orphaned-objects-cleanup",
+      "cluster_key": "XA:PRODUCTS:xa-r2-orphaned-objects-cleanup:operator:20260304",
+      "cluster_fingerprint": "d9e6g3c5b78f012345678901cdef2345678901cdef2345678901cdef234567",
+      "lineage_depth": 0,
+      "area_anchor": "XA R2 storage — orphaned objects on re-upload",
+      "location_anchors": [
+        "apps/xa-uploader/src/app/api/catalog/images/route.ts",
+        "apps/xa-uploader/wrangler.toml"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "R2 key format uses timestamp prefix ({storefront}/{slug}/{timestamp}-{role}.{ext}). Re-uploading the same role for a product creates a new R2 object — the old one is orphaned (still stored, still costs 10GB free tier quota, but never referenced). No cleanup mechanism exists.",
+      "next_scope_now": "Investigate adding R2 object deletion when a new image replaces an existing role for the same product, plus periodic orphan scanning.",
+      "adjacent_later": [
+        "R2 storage usage monitoring/alerting approaching 10GB free tier limit"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.8,
+      "evidence_refs": [
+        "operator-stated: Timestamp-prefixed R2 keys mean re-uploads create new objects and orphan old ones. No deletion mechanism. 10GB free tier is the binding storage constraint.",
+        "docs/plans/_archive/xa-uploader-r2-image-upload/post-build-analysis.md#issue-5",
+        "apps/xa-uploader/src/app/api/catalog/images/route.ts:143-145"
+      ],
+      "why": "R2 free tier is 10GB. Each image re-upload orphans the previous object. At scale this wastes storage toward the hard free-tier cap with no way to reclaim it. Low urgency at current catalog size but will compound.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "When a new image replaces an existing role for a product, the previous R2 object is deleted. Orphaned storage is bounded.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-04T00:15:00.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304001500-0231",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:XA:PRODUCTS:xa-upload-preview-and-alt-text:20260304",
+      "anchor_key": "xa-upload-preview-and-alt-text",
+      "cluster_key": "XA:PRODUCTS:xa-upload-preview-and-alt-text:operator:20260304",
+      "cluster_fingerprint": "e0f7h4d6c89g123456789012defg3456789012defg3456789012defg345678",
+      "lineage_depth": 0,
+      "area_anchor": "XA uploader — no image preview + generic alt text",
+      "location_anchors": [
+        "apps/xa-uploader/src/components/catalog/CatalogProductImagesFields.client.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "After uploading an image, the vendor sees 'Upload successful' text but no thumbnail preview of what was uploaded. Alt text is auto-generated as generic '{role} view' (e.g. 'front view') instead of including the product name. Both gaps are in CatalogProductImagesFields.client.tsx.",
+      "next_scope_now": "Add thumbnail grid showing uploaded images with roles, and generate product-specific alt text using draft.title.",
+      "adjacent_later": [
+        "Image reordering drag-and-drop UI",
+        "Image deletion from upload panel"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: No visual confirmation of upload — only text status. Alt text is generic 'front view' instead of '{product name} — front view', which is poor for SEO.",
+        "docs/plans/_archive/xa-uploader-r2-image-upload/post-build-analysis.md#issue-6",
+        "docs/plans/_archive/xa-uploader-r2-image-upload/post-build-analysis.md#issue-7",
+        "apps/xa-uploader/src/components/catalog/CatalogProductImagesFields.client.tsx:98"
+      ],
+      "why": "Vendors have no visual feedback after uploading product images — only a text status message. Combined with generic alt text that omits the product name, this creates both a UX gap (can't verify upload) and an SEO gap (poor image alt text in published catalog).",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Uploaded images shown as thumbnails with role labels in the upload panel. Auto-generated alt text includes product title for SEO.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-04T00:15:00.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304001500-0232",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:XA:PRODUCTS:xa-r2-deployment-config:20260304",
+      "anchor_key": "xa-r2-deployment-config",
+      "cluster_key": "XA:PRODUCTS:xa-r2-deployment-config:operator:20260304",
+      "cluster_fingerprint": "f1g8i5e7d90h234567890123efgh4567890123efgh4567890123efgh456789",
+      "lineage_depth": 0,
+      "area_anchor": "XA R2 deployment — bucket creation and URL config",
+      "location_anchors": [
+        "apps/xa-uploader/wrangler.toml",
+        "apps/xa-b/wrangler.toml"
+      ],
+      "provisional_deliverable_family": "infra",
+      "current_truth": "R2 bucket 'xa-media' does not yet exist. Public URL in xa-b/wrangler.toml is a placeholder (https://pub-xa-media.r2.dev). Image upload code is committed but cannot function until the bucket is created and public access enabled. This is an ops/config task, not a code change.",
+      "next_scope_now": "Create R2 bucket, enable public access, update xa-b wrangler.toml with actual public URL, deploy both apps.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: R2 image upload code is complete but deployment-blocked — bucket doesn't exist and public URL is placeholder. Deployment checklist in post-build-analysis.md.",
+        "docs/plans/_archive/xa-uploader-r2-image-upload/post-build-analysis.md#issue-3",
+        "docs/plans/_archive/xa-uploader-r2-image-upload/post-build-analysis.md#issue-4",
+        "docs/plans/_archive/xa-uploader-r2-image-upload/post-build-analysis.md#deployment-checklist"
+      ],
+      "why": "The R2 image upload feature is code-complete but cannot be used until the R2 bucket is created, public access enabled, and the actual public URL configured. This is the deployment blocker for the entire image upload capability — no product images can be uploaded or served until this is done.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "R2 bucket created, public access enabled, actual public URL set in xa-b wrangler.toml. Both xa-uploader and xa-b deployed with working image upload and display.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-04T00:15:00.000Z",
       "queue_state": "enqueued"
     }
   ]

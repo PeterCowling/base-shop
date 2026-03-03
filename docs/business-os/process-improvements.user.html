@@ -314,7 +314,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-03-03T18:15:08.450Z";
+  var GEN_TS = "2026-03-03T18:48:42.125Z";
 
   var IDEA_ITEMS = [
     {
@@ -519,6 +519,23 @@
       "effort": "M",
       "proximity": null,
       "reason_code": "RULE_P3_MEASUREMENT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Formalize post-commit ideas-hook invocation as a required loop process step — TASK-02 introduced the hook utility but the invocation contract is advisory and the lp-do-build skill doc references it without enforcement",
+      "body": "hook is advisory/fail-open with no gate check on whether it was actually run",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-03-03T18:47:32.941Z",
+      "path": "docs/plans/_archive/bos-ideas-dispatch-20260303-followthrough/results-review.user.md",
+      "idea_key": "3c96eb65f0bf5ec3a3d982a8364650bf1c6578e6",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
     },
     {
       "type": "idea",
@@ -987,6 +1004,23 @@
       "effort": "M",
       "proximity": null,
       "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Post-build results synthesis as a reusable skill — TASK-03 already extracts idea candidates from build artifacts deterministically; wrapping this as a named skill would make it invocable from any build context",
+      "body": "self-evolving bridge parses results-review and pattern-reflection but is only called from lp-do-build completion",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-03-03T18:47:32.941Z",
+      "path": "docs/plans/_archive/bos-ideas-dispatch-20260303-followthrough/results-review.user.md",
+      "idea_key": "9345d636334567c40c784a29affd365229e2d0cb",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -1661,6 +1695,23 @@
       "date": "2026-02-25T22:36:44.667Z",
       "path": "docs/plans/hostel-email-template-expansion/results-review.user.md",
       "idea_key": "19390ebb667f9ecf94a405949128d0acbeb629e5",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Replace manual results-review candidate scan with deterministic gate — category coverage (5 scan categories) could be auto-validated before completion since the extraction pieces now exist in TASK-03",
+      "body": "current review relies on manual synthesis across 5 categories",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-03-03T18:47:32.941Z",
+      "path": "docs/plans/_archive/bos-ideas-dispatch-20260303-followthrough/results-review.user.md",
+      "idea_key": "9cb85a5cce422e7a57c89dbfbb7dcf8c973e715a",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",

@@ -159,6 +159,11 @@ function handleWrongTopLevelRedirect(params: {
   const correctSlug = SLUGS[wrongKey][appLang];
   if (correctSlug.toLowerCase() === normalizedTopSegment) return null;
 
+  if (wrongKey === "apartment" && nextParts[2]?.toLowerCase() === "book") {
+    const trailingSlash = topSegmentSuffix ? "" : "/";
+    return buildRedirectResponse(request, `/${appLang}/book-private-accomodations${trailingSlash}`);
+  }
+
   const correctedSegment = `${correctSlug}${topSegmentSuffix}`;
   const trailingSlash = topSegmentSuffix ? "" : "/";
   const shouldDropRemainingPath =
@@ -191,6 +196,18 @@ export function middleware(request: NextRequest) {
   // Rewrite the first segment (after lang) if it's a localized slug.
   const key = resolveTopLevelKey(appLang, topSegmentCore);
   if (key) {
+    if (key === "apartment" && nextParts[2]?.toLowerCase() === "book") {
+      const trailingSlash = topSegmentSuffix ? "" : "/";
+      return buildRedirectResponse(request, `/${appLang}/book-private-accomodations${trailingSlash}`);
+    }
+    // Booking funnel update: route localized rooms index URLs (e.g. /en/dorms)
+    // to the localized booking page slug (e.g. /en/book-dorm-bed).
+    // Keep nested room detail routes (/:lang/dorms/:id) unchanged.
+    if (key === "rooms" && nextParts.length === 2) {
+      const bookingSlug = `${SLUGS.book[appLang]}${topSegmentSuffix}`;
+      const trailingSlash = topSegmentSuffix ? "" : "/";
+      return buildRedirectResponse(request, `/${appLang}/${bookingSlug}${trailingSlash}`);
+    }
     // RSC probe requests may include a `.txt` suffix (e.g. /en/help.txt?_rsc=...).
     // App Router routes are segment-based, so we must rewrite to the canonical
     // internal segment without the suffix to avoid deterministic 404 noise.

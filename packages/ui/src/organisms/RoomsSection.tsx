@@ -11,10 +11,11 @@ import { roomsData, toFlatImageArray } from "../data/roomsData";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import type { AppLanguage } from "../i18n.config";
 import RoomCard from "../molecules/RoomCard";
-import RoomFilters, { type RoomFilter } from "../molecules/RoomFilters";
+import RoomFilters, { type RoomFiltersState } from "../molecules/RoomFilters";
 import { SLUGS } from "../slug-map";
 import type { RoomCardPrice } from "../types/roomCard";
 import { getDatePlusTwoDays, getTodayIso } from "../utils/dateUtils";
+import { translatePath } from "../utils/translate-path";
 
 export type RoomsSectionBookingQuery = {
   checkIn?: string;
@@ -62,6 +63,36 @@ function parseClientBookingQuery(): RoomsSectionBookingQuery {
   };
 }
 
+type RoomFilterViewValue = "sea" | "courtyard" | "garden" | "none";
+type RoomFilterProfile = {
+  view: RoomFilterViewValue;
+  femaleOnly: boolean;
+  hasEnsuiteBathroom: boolean;
+  bedCount: number;
+};
+
+const FILTER_PROFILE_BY_ROOM_ID: Partial<Record<string, Omit<RoomFilterProfile, "bedCount">>> = {
+  room_10: { view: "none", femaleOnly: false, hasEnsuiteBathroom: true },
+  room_11: { view: "sea", femaleOnly: true, hasEnsuiteBathroom: true },
+  // Room 12 is mixed occupancy with private (next-door) bathroom eligibility.
+  room_12: { view: "sea", femaleOnly: false, hasEnsuiteBathroom: true },
+  room_3: { view: "none", femaleOnly: true, hasEnsuiteBathroom: false },
+  room_4: { view: "none", femaleOnly: false, hasEnsuiteBathroom: false },
+  room_5: { view: "sea", femaleOnly: true, hasEnsuiteBathroom: true },
+  room_6: { view: "sea", femaleOnly: true, hasEnsuiteBathroom: true },
+  room_9: { view: "courtyard", femaleOnly: false, hasEnsuiteBathroom: true },
+  room_8: { view: "garden", femaleOnly: true, hasEnsuiteBathroom: false },
+};
+
+function buildRoomFilterProfile(room: (typeof roomsData)[number]): RoomFilterProfile {
+  const mapped = FILTER_PROFILE_BY_ROOM_ID[room.id];
+  return {
+    view: mapped?.view ?? "none",
+    femaleOnly: mapped?.femaleOnly ?? false,
+    hasEnsuiteBathroom: mapped?.hasEnsuiteBathroom ?? false,
+    bedCount: room.occupancy ?? 0,
+  };
+}
 
 function RoomsSection({
   lang: explicitLang,
@@ -71,6 +102,8 @@ function RoomsSection({
   roomPrices,
   singleCtaMode,
   excludeRoomIds,
+  includeRoomIds,
+  showFilters = true,
 }: {
   lang?: string;
   bookingQuery?: RoomsSectionBookingQuery;
@@ -97,6 +130,13 @@ function RoomsSection({
    * Used by the dorms page to hide rooms that have moved to a different route.
    */
   excludeRoomIds?: string[];
+  /**
+   * Optional allow-list of room IDs to render in the listing.
+   * Applied before filters; useful for segmented booking pages.
+   */
+  includeRoomIds?: string[];
+  /** Toggle visibility of room filters. */
+  showFilters?: boolean;
 }): JSX.Element {
   const fallbackLang = useCurrentLanguage();
   const lang = explicitLang ?? fallbackLang;
@@ -114,20 +154,41 @@ function RoomsSection({
   const _checkOut = resolvedBookingQuery?.checkOut?.trim() || getDatePlusTwoDays(checkIn);
   const _adults = parseInt(resolvedBookingQuery?.pax ?? "1", 10) || 1;
 
-  const [filter, setFilter] = useState<RoomFilter>("all");
+  const [filters, setFilters] = useState<RoomFiltersState>({
+    view: "all",
+    femaleOnly: false,
+    ensuiteBathroom: false,
+    bedCounts: [],
+  });
+
+  const availableBedCounts = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          roomsData
+            .filter((room) => !includeRoomIds || includeRoomIds.includes(room.id))
+            .filter((room) => !excludeRoomIds?.includes(room.id))
+            .map((room) => room.occupancy ?? 0)
+            .filter((count) => count > 0),
+        ),
+      ).sort((a, b) => a - b),
+    [excludeRoomIds, includeRoomIds],
+  );
 
   const filteredRooms = useMemo(
     () =>
       roomsData
+        .filter((room) => !includeRoomIds || includeRoomIds.includes(room.id))
         .filter((r) => !excludeRoomIds?.includes(r.id))
-        .filter((r) =>
-          filter === "all"
-            ? true
-            : filter === "private"
-            ? r.pricingModel === "perRoom"
-            : r.pricingModel === "perBed"
-        ),
-    [filter, excludeRoomIds]
+        .filter((room) => {
+          const profile = buildRoomFilterProfile(room);
+          if (filters.view !== "all" && profile.view !== filters.view) return false;
+          if (filters.femaleOnly && !profile.femaleOnly) return false;
+          if (filters.ensuiteBathroom && !profile.hasEnsuiteBathroom) return false;
+          if (filters.bedCounts.length > 0 && !filters.bedCounts.includes(profile.bedCount)) return false;
+          return true;
+        }),
+    [filters, excludeRoomIds, includeRoomIds]
   );
 
   const sectionClasses = useMemo(
@@ -154,11 +215,23 @@ function RoomsSection({
           <hr className="mt-1 w-12 border-t-2 border-brand-primary" />
         </header>
 
-        <RoomFilters selected={filter} onChange={setFilter} lang={lang} />
+        {showFilters ? (
+          <RoomFilters
+            selected={filters}
+            onChange={setFilters}
+            availableBedCounts={availableBedCounts}
+            lang={lang}
+          />
+        ) : null}
 
         <Grid cols={1} gap={8} className="sm:grid-cols-2">
           {filteredRooms.map((room, index) => {
-            const href = `/${lang}/${roomsSlug}/${getRoomSlug(room.id, lang as AppLanguage)}`;
+            const href =
+              room.id === "double_room"
+                ? `/${lang}/${translatePath("apartment", lang as AppLanguage)}/double-room`
+                : room.id === "apartment"
+                  ? `/${lang}/${translatePath("apartment", lang as AppLanguage)}/private-stay`
+                  : `/${lang}/${roomsSlug}/${getRoomSlug(room.id, lang as AppLanguage)}`;
             const title = resolveTranslatedCopy(
               t(`rooms.${room.id}.title`, {
                 defaultValue: ROOM_DROPDOWN_NAMES[room.id] ?? "Room",

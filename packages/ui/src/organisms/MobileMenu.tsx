@@ -50,8 +50,15 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
 
   useEffect(() => {
     const roomsPath = `/${lang}/${translatePath("rooms", lang)}`;
-    if (pathname.startsWith(roomsPath)) {
+    const bookPath = `/${lang}/${translatePath("book", lang)}`;
+    if (pathname.startsWith(roomsPath) || pathname.startsWith(bookPath)) {
       setExpandedKey("rooms");
+      return;
+    }
+    const apartmentPath = `/${lang}/${translatePath("apartment", lang)}`;
+    const privateBookingPath = `/${lang}/book-private-accomodations`;
+    if (pathname.startsWith(apartmentPath) || pathname.startsWith(privateBookingPath)) {
+      setExpandedKey("apartment");
       return;
     }
     const experiencesPath = `/${lang}/${translatePath("experiences", lang)}`;

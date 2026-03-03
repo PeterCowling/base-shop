@@ -20,6 +20,7 @@ import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { fireViewItem } from "@/utils/ga4-events";
 import { trackApartmentEvent } from "@/utils/trackApartmentEvent";
+import { translatePath } from "@/utils/translate-path";
 
 type Props = {
   lang: AppLanguage;
@@ -30,6 +31,8 @@ const WHATSAPP_URL = "https://wa.me/393287073695";
 function ApartmentPageContent({ lang }: Props) {
   const { t } = useTranslation("apartmentPage", { lng: lang });
   usePagePreload({ lang, namespaces: ["apartmentPage"] });
+  const apartmentPath = `/${lang}/${translatePath("apartment", lang)}`;
+  const privateBookingPath = `/${lang}/book-private-accomodations`;
 
   // Fire view_item once per navigation
   useEffect(() => {
@@ -42,7 +45,7 @@ function ApartmentPageContent({ lang }: Props) {
 
       <Section padding="none" className="mx-auto max-w-6xl p-6 pt-24 sm:pt-10">
         <section className="scroll-mt-24 space-y-16">
-          <HeroSection lang={lang} bookingUrl={`/${lang}/apartment/book/`} />
+          <HeroSection lang={lang} bookingUrl={`${privateBookingPath}/`} />
           <h1 className="sr-only">{t("title")}</h1>
           <Section as="div" padding="none" width="full" className="mx-auto max-w-3xl">
             <p className="text-center text-brand-text md:text-lg">{t("body")}</p>
@@ -52,7 +55,7 @@ function ApartmentPageContent({ lang }: Props) {
           <Section as="div" padding="none" width="full" className="mx-auto max-w-3xl">
             <div className="grid gap-4 sm:grid-cols-2">
               <Link
-                href={`/${lang}/apartment/street-level-arrival/`}
+                href={`${apartmentPath}/street-level-arrival/`}
                 className="group rounded-2xl border border-brand-outline/30 bg-panel/90 p-5 shadow-sm backdrop-blur transition-shadow hover:shadow-md"
               >
                 <div className="flex items-start gap-4">
@@ -74,7 +77,7 @@ function ApartmentPageContent({ lang }: Props) {
               </Link>
 
               <Link
-                href={`/${lang}/apartment/private-stay/`}
+                href={`${apartmentPath}/private-stay/`}
                 className="group rounded-2xl border border-brand-outline/30 bg-panel/90 p-5 shadow-sm backdrop-blur transition-shadow hover:shadow-md"
               >
                 <div className="flex items-start gap-4">
@@ -141,7 +144,7 @@ function ApartmentPageContent({ lang }: Props) {
           <Section as="div" padding="none" width="full" className="mx-auto max-w-3xl pt-2">
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
               <Link
-                href={`/${lang}/apartment/book/`}
+                href={`${privateBookingPath}/`}
                 onClick={() => trackApartmentEvent("click_check_availability", { source: "hub" })}
                 className="inline-flex w-full min-h-11 items-center justify-center rounded-lg bg-brand-primary px-8 py-3 text-base font-semibold text-brand-on-primary shadow-sm transition-colors hover:bg-brand-primary/90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-brand-primary focus-visible:focus:ring-offset-2 sm:w-64"
               >

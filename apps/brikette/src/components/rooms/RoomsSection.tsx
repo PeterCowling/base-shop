@@ -5,12 +5,14 @@ import RoomsSectionBase from "@acme/ui/organisms/RoomsSection";
 import type { RoomCardPrice } from "@acme/ui/types/roomCard";
 
 import { BOOKING_CODE } from "@/context/modal/constants";
-import { roomsData } from "@/data/roomsData";
+import { roomsData, websiteVisibleRoomsData } from "@/data/roomsData";
 import type { OctorateRoom } from "@/hooks/useAvailability";
+import type { AppLanguage } from "@/i18n.config";
 import { aggregateAvailabilityByCategory } from "@/utils/aggregateAvailabilityByCategory";
 import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
 import { createBrikClickId, fireSelectItem, type ItemListId, type RatePlan } from "@/utils/ga4-events";
 import { trackThenNavigate } from "@/utils/trackThenNavigate";
+import { translatePath } from "@/utils/translate-path";
 
 export type RoomsSectionBookingQuery = {
   checkIn?: string;
@@ -40,6 +42,8 @@ type RoomsSectionProps = {
   availabilityRooms?: OctorateRoom[];
   /** Optional override for room-card pricing when live availability is absent. */
   roomPricesOverride?: Record<string, RoomCardPrice>;
+  /** Optional allow-list of room IDs to render in the section. */
+  includeRoomIds?: string[];
 };
 
 type RoomsSectionBaseProps = ComponentProps<typeof RoomsSectionBase>;
@@ -49,14 +53,26 @@ export function RoomsSection({
   deal,
   availabilityRooms,
   roomPricesOverride,
+  includeRoomIds,
   ...props
 }: RoomsSectionProps & Omit<RoomsSectionBaseProps, "itemListId" | "onRoomSelect">) {
+  const effectiveExcludeRoomIds = useMemo(() => {
+    const hiddenRoomIds = roomsData
+      .filter((room) => room.isVisibleOnWebsite === false)
+      .map((room) => room.id);
+    const includedSet = includeRoomIds ? new Set(includeRoomIds) : null;
+    const notIncludedRoomIds = includedSet
+      ? roomsData.filter((room) => !includedSet.has(room.id)).map((room) => room.id)
+      : [];
+    return Array.from(new Set([...(props.excludeRoomIds ?? []), ...hiddenRoomIds, ...notIncludedRoomIds]));
+  }, [includeRoomIds, props.excludeRoomIds]);
+
   // Map availabilityRooms to roomPrices (keyed by room.id) via name-based category matching.
   // Each room's octorateRoomCategory is matched against octorateRoomName in aggregated sections.
   const roomPrices = useMemo<Record<string, RoomCardPrice> | undefined>(() => {
     if (!availabilityRooms || availabilityRooms.length === 0) return roomPricesOverride;
     const prices: Record<string, RoomCardPrice> = {};
-    for (const room of roomsData) {
+    for (const room of websiteVisibleRoomsData) {
       if (!room.octorateRoomCategory) continue;
       const avRoom = aggregateAvailabilityByCategory(availabilityRooms, room.octorateRoomCategory);
       if (!avRoom) continue;
@@ -119,7 +135,7 @@ export function RoomsSection({
     if (queryState === "valid") {
       // Navigate directly to Octorate using the booking query dates.
       // TC-02/TC-03/TC-04: wrap in trackThenNavigate for reliable beacon dispatch.
-      const room = roomsData.find((r) => r.id === ctx.roomSku);
+      const room = websiteVisibleRoomsData.find((r) => r.id === ctx.roomSku);
       if (room) {
         const octorateRateCode =
           ctx.plan === "nr" ? room.rateCodes.direct.nr : room.rateCodes.direct.flex;
@@ -169,14 +185,15 @@ export function RoomsSection({
     }
 
     if (queryState !== "invalid") {
-      const lang = props.lang ?? "en";
-      window.location.href = `/${lang}/book`;
+      const lang = (props.lang ?? "en") as AppLanguage;
+      window.location.href = `/${lang}/${translatePath("book", lang)}`;
     }
   };
 
   return (
     <RoomsSectionBase
       {...props}
+      excludeRoomIds={effectiveExcludeRoomIds}
       singleCtaMode
       itemListId={props.itemListId}
       onRoomSelect={onRoomSelect}

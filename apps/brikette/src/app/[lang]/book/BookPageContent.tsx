@@ -22,7 +22,7 @@ import SocialProofSection from "@/components/landing/SocialProofSection";
 import RoomsSection from "@/components/rooms/RoomsSection";
 import BookPageStructuredData from "@/components/seo/BookPageStructuredData";
 import indicativePricesSeed from "@/data/indicative_prices.json";
-import { roomsData } from "@/data/roomsData";
+import { type RoomId, websiteVisibleRoomsData } from "@/data/roomsData";
 import { useAvailability } from "@/hooks/useAvailability";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import { useRecoveryResumeFallback } from "@/hooks/useRecoveryResumeFallback";
@@ -39,12 +39,14 @@ import {
   readBookingSearchFromStore,
 } from "@/utils/bookingSearch";
 import { formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
-import { fireSearchAvailability, fireViewItemList } from "@/utils/ga4-events";
+import { fireSearchAvailability, fireViewItemList, type ItemListId } from "@/utils/ga4-events";
 import { getIndicativeDisclosure, getIndicativeRoomPrices } from "@/utils/indicativePricing";
 
 type Props = {
   lang: AppLanguage;
   heading: string;
+  includedRoomIds?: RoomId[];
+  itemListId?: ItemListId;
 };
 
 type SearchAvailabilityPayload = {
@@ -161,7 +163,7 @@ function renderRecoverySection(
   );
 }
 
-function BookPageContent({ lang, heading }: Props): JSX.Element {
+function BookPageContent({ lang, heading, includedRoomIds, itemListId = "book_rooms" }: Props): JSX.Element {
   const router = useRouter();
   const { t } = useTranslation("bookPage", { lng: lang, useSuspense: true });
   usePagePreload({
@@ -258,13 +260,19 @@ function BookPageContent({ lang, heading }: Props): JSX.Element {
 
   useEffect(() => scheduleBookingSearchPersistence(checkin, checkout, pax), [checkin, checkout, pax]);
 
+  const displayedRooms = useMemo(() => {
+    if (!includedRoomIds || includedRoomIds.length === 0) return websiteVisibleRoomsData;
+    const included = new Set(includedRoomIds);
+    return websiteVisibleRoomsData.filter((room) => included.has(room.id));
+  }, [includedRoomIds]);
+
   const showConstraintGuidance = roomQueryState === "invalid";
   const indicativeRoomPrices = useMemo(() => {
     return getIndicativeRoomPrices(
       indicativePricesSeed,
-      roomsData.map((room) => room.id),
+      displayedRooms.map((room) => room.id),
     );
-  }, []);
+  }, [displayedRooms]);
   const indicativeDisclosure = useMemo<string | null>(() => {
     if (roomQueryState !== "absent" || !indicativeRoomPrices) return null;
     return getIndicativeDisclosure(indicativePricesSeed);
@@ -277,9 +285,9 @@ function BookPageContent({ lang, heading }: Props): JSX.Element {
   );
 
   useEffect(() => {
-    fireViewItemList({ itemListId: "book_rooms", rooms: roomsData });
+    fireViewItemList({ itemListId, rooms: displayedRooms });
     seedInitialSearchTelemetry(mountedSearchRef.current, initialValuesRef.current, lastSearchKeyRef);
-  }, []); // mount only
+  }, [displayedRooms, itemListId]); // mount only
 
   return (
     <>
@@ -318,11 +326,12 @@ function BookPageContent({ lang, heading }: Props): JSX.Element {
 
       <RoomsSection
         lang={lang}
-        itemListId="book_rooms"
+        itemListId={itemListId}
         queryState={roomQueryState}
         deal={deal ?? undefined}
         availabilityRooms={availabilityRooms}
         roomPricesOverride={indicativeRoomPrices}
+        includeRoomIds={includedRoomIds}
         bookingQuery={{
           checkIn: checkin,
           checkOut: checkout,

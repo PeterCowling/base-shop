@@ -7,7 +7,7 @@
 
 import { ASSISTANCE_GUIDES, GUIDES_INDEX } from "@/data/guides.index";
 import { HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS } from "@/data/how-to-get-here/routeGuides";
-import roomsData from "@/data/roomsData";
+import { websiteVisibleRoomsData } from "@/data/roomsData";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
 import { guidePath } from "@/routes.guides-helpers";
@@ -34,10 +34,11 @@ export function listAppRouterUrls(): string[] {
 
     // Draft dashboard (internal editorial route)
     urls.push(`/${lang}/draft`);
+    urls.push(`/${lang}/book-private-accomodations`);
 
     // Dynamic: Rooms
     const roomsSlug = getSlug("rooms", lang);
-    for (const room of roomsData) {
+    for (const room of websiteVisibleRoomsData) {
       urls.push(`/${lang}/${roomsSlug}/${room.id}`);
     }
 
@@ -80,7 +81,8 @@ export function getUrlCounts(): Record<string, number> {
     home: langCount,
     staticSections: langCount * STATIC_EXPORT_SECTION_KEYS.length,
     draft: langCount,
-    rooms: langCount * roomsData.length,
+    privateBook: langCount,
+    rooms: langCount * websiteVisibleRoomsData.length,
     // NOTE: guides count now includes how-to-get-here routes (via GUIDES_INDEX)
     guides: langCount * GUIDES_INDEX.filter((g) => g.status === "live").length,
     tags: langCount * new Set(GUIDES_INDEX.flatMap((g) => g.tags)).size,

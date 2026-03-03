@@ -48,6 +48,8 @@ export function buildNavLinks(
   }, {} as Record<NavKey, string>);
 
   const roomsSlug = slugs["rooms"];
+  const bookSlug = `/${translatePath("book", lang)}`;
+  const privateBookingSlug = "/book-private-accomodations";
 
   const navLinks = NAV_ITEMS.map((key) => {
     const label =
@@ -59,7 +61,7 @@ export function buildNavLinks(
 
     if (key === "rooms") {
       const children: NavItemChild[] = [
-        { key: "rooms_all", to: roomsSlug, label: "See all rooms" },
+        { key: "rooms_all", to: bookSlug, label: "See all rooms" },
         ...Object.entries(ROOM_DROPDOWN_NAMES).map(([id, name]) => ({
           key: id,
           to: `${roomsSlug}/${getRoomSlug(id, lang)}`,
@@ -68,7 +70,7 @@ export function buildNavLinks(
       ];
       return {
         key,
-        to: slugs[key],
+        to: bookSlug,
         label,
         prefetch: undefined,
         children,
@@ -78,6 +80,7 @@ export function buildNavLinks(
     if (key === "apartment") {
       const apartmentSlug = slugs["apartment"];
       const children: NavItemChild[] = [
+        { key: "apartment_book_private", to: privateBookingSlug, label: "Book private accommodations" },
         { key: "apartment_double_room", to: `${apartmentSlug}/double-room`, label: "Double Room" },
         { key: "apartment_private_stay", to: `${apartmentSlug}/private-stay`, label: "Apartment" },
       ];

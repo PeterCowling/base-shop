@@ -527,8 +527,8 @@
       "produces": [],
       "last_known_sha": null,
       "registered_at": "2026-03-03T23:59:00.000Z",
-      "active": false,
-      "notes": "Synthetic bug-scan signal artifact. Inactive until bug-scan-to-dispatch bridge is built (dispatch 0155). High-severity findings should emit code-quality dispatch packets."
+      "active": true,
+      "notes": "Synthetic bug-scan signal artifact. Bridge built (dispatch 0155). High-severity findings emit code-quality dispatch packets."
     },
     {
       "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
@@ -542,8 +542,8 @@
       "produces": [],
       "last_known_sha": null,
       "registered_at": "2026-03-03T23:59:00.000Z",
-      "active": false,
-      "notes": "Synthetic codebase-structure signal artifact. Inactive until codebase-signals bridge is built (dispatch 0156). Route/API/schema/dependency shifts should emit dispatch candidates."
+      "active": true,
+      "notes": "Synthetic codebase-structure signal artifact. Bridge built (dispatch 0156). Route/API/schema/dependency shifts emit dispatch candidates."
     },
     {
       "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
@@ -557,8 +557,8 @@
       "produces": [],
       "last_known_sha": null,
       "registered_at": "2026-03-03T23:59:00.000Z",
-      "active": false,
-      "notes": "Synthetic agent-session signal artifact. Inactive until session-findings extractor is built (dispatch 0157). Walkthrough/testing findings from agent transcripts should emit dispatch candidates."
+      "active": true,
+      "notes": "Synthetic agent-session signal artifact. Bridge built (dispatch 0157). Walkthrough/testing findings from agent transcripts emit dispatch candidates."
     }
   ]
 }

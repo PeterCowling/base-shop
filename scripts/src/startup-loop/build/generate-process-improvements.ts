@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, statSync, writeFileSync } from "node:fs";
+import os from "node:os";
 import path from "node:path";
 
 import { load as loadYaml } from "js-yaml";
@@ -10,6 +11,8 @@ import {
   validateResultsReviewFile,
 } from "./lp-do-build-reflection-debt.js";
 import { classifyIdea,type IdeaClassificationInput } from "../ideas/lp-do-ideas-classifier.js";
+import { runCodebaseSignalsBridge } from "../ideas/lp-do-ideas-codebase-signals-bridge.js";
+import { runAgentSessionSignalsBridge } from "../ideas/lp-do-ideas-agent-session-bridge.js";
 
 const PROCESS_HTML_RELATIVE_PATH = "docs/business-os/process-improvements.user.html";
 const PROCESS_DATA_RELATIVE_PATH = "docs/business-os/_data/process-improvements.json";
@@ -924,6 +927,49 @@ function runCli(): void {
   process.stdout.write(
     `[generate-process-improvements] wrote ${PROCESS_DATA_RELATIVE_PATH}\n`,
   );
+
+  const latestBugScanArtifactPath =
+    data.ideaItems.find((item) => item.source === "bug-scan-findings.user.json")?.path ?? null;
+  const bridgeResult = runCodebaseSignalsBridge({
+    rootDir: repoRoot,
+    business: "BOS",
+    registryPath: "docs/business-os/startup-loop/ideas/standing-registry.json",
+    queueStatePath: "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+    telemetryPath: "docs/business-os/startup-loop/ideas/trial/telemetry.jsonl",
+    statePath: "docs/business-os/startup-loop/ideas/trial/codebase-signal-bridge-state.json",
+    bugScanArtifactPath: latestBugScanArtifactPath,
+    fromRef: "HEAD~1",
+    toRef: "HEAD",
+    bugSeverityThreshold: "critical",
+  });
+  process.stdout.write(
+    `[generate-process-improvements] signal bridge: ok=${bridgeResult.ok} events=${bridgeResult.events_considered} admitted=${bridgeResult.events_admitted} enqueued=${bridgeResult.dispatches_enqueued}\n`,
+  );
+  if (bridgeResult.warnings.length > 0) {
+    for (const warning of bridgeResult.warnings) {
+      process.stdout.write(`[generate-process-improvements] signal bridge warning: ${warning}\n`);
+    }
+  }
+
+  const sessionBridgeResult = runAgentSessionSignalsBridge({
+    rootDir: repoRoot,
+    business: "BOS",
+    registryPath: "docs/business-os/startup-loop/ideas/standing-registry.json",
+    queueStatePath: "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+    telemetryPath: "docs/business-os/startup-loop/ideas/trial/telemetry.jsonl",
+    statePath: "docs/business-os/startup-loop/ideas/trial/agent-session-signal-bridge-state.json",
+    artifactPath: "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+    transcriptsRoot: path.join(os.homedir(), ".claude", "projects", "-Users-petercowling-base-shop"),
+    sessionLimit: 20,
+  });
+  process.stdout.write(
+    `[generate-process-improvements] agent-session bridge: ok=${sessionBridgeResult.ok} scanned=${sessionBridgeResult.sessions_scanned} with_findings=${sessionBridgeResult.sessions_with_findings} enqueued=${sessionBridgeResult.dispatches_enqueued}\n`,
+  );
+  if (sessionBridgeResult.warnings.length > 0) {
+    for (const warning of sessionBridgeResult.warnings) {
+      process.stdout.write(`[generate-process-improvements] agent-session bridge warning: ${warning}\n`);
+    }
+  }
 }
 
 if (process.argv.includes("--check")) {

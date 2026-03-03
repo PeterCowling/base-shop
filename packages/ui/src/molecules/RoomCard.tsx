@@ -327,7 +327,7 @@ function RoomCardComponent({
       {detailHref && (
         <a
           href={detailHref}
-          className="flex min-h-10 items-center justify-between border-b border-brand-surface px-4 py-2.5 text-sm font-medium text-brand-primary transition-colors hover:bg-brand-primary/5 dark:border-brand-surface/30 dark:text-brand-secondary dark:hover:bg-brand-secondary/5"
+          className="flex min-h-11 min-w-11 items-center justify-between border-b border-brand-surface px-4 py-2.5 text-sm font-medium text-brand-primary transition-colors hover:bg-brand-primary/5 dark:border-brand-surface/30 dark:text-brand-secondary dark:hover:bg-brand-secondary/5"
         >
           <span>{detailLabel ?? "More About This Room"}</span>
           <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

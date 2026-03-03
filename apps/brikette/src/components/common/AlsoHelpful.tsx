@@ -322,7 +322,7 @@ function AlsoHelpful({
               return (
                 <li key="rooms" className="h-full">
                   <AlsoHelpfulCard
-                    href={`/${lang}/${getSlug("rooms", lang)}`}
+                    href={`/${lang}/${getSlug("book", lang)}`}
                     prefetch={false}
                     title={roomsLabel}
                     ctaText={roomsCtaText}

@@ -14,7 +14,6 @@ import { z } from "zod";
 
 import { getProviderOrder, sendCampaignEmail } from "@acme/email/send";
 
-import { CONTACT_EMAIL } from "@/config/hotel";
 import type { RecoveryQuoteContext } from "@/utils/recoveryQuote";
 import { buildQuoteIdempotencyKey, buildRecoveryQuote } from "@/utils/recoveryQuoteCalc";
 
@@ -52,9 +51,7 @@ const requestBodySchema = z.object({
 // ---------------------------------------------------------------------------
 
 type RecoveryEmailBodyInput = {
-  consentVersion: string;
   context: RecoveryQuoteContext;
-  guestEmail: string;
   nights: number;
   pricePerNight: number | null;
   priceSource: string;
@@ -63,38 +60,31 @@ type RecoveryEmailBodyInput = {
 };
 
 function buildEmailBody(input: RecoveryEmailBodyInput): string {
-  const {
-    guestEmail,
-    context,
-    pricePerNight,
-    totalFrom,
-    priceSource,
-    nights,
-    resumeLink,
-    consentVersion,
-  } = input;
+  const { context, pricePerNight, totalFrom, priceSource, nights, resumeLink } = input;
 
   const priceLabel =
     priceSource === "indicative" && totalFrom !== null
-      ? `From €${totalFrom} total (approx. €${pricePerNight}/night × ${nights} nights — indicative)`
-      : "Price not yet calculated — follow up with guest for exact quote"; // i18n-exempt -- BRIK-RQ-1 [ttl=2027-03-02] operational server email body
+      ? `From EUR ${totalFrom} total (approx. EUR ${pricePerNight}/night x ${nights} nights - indicative)`
+      : "Price not yet calculated. Please reply and we will confirm an exact quote."; // i18n-exempt -- BRIK-RQ-1 [ttl=2027-03-02] transactional email body
 
   const lines: string[] = [
-    "Recovery quote lead — new inquiry from booking flow", // i18n-exempt -- BRIK-RQ-1 [ttl=2027-03-02] operational server email body
+    "Thanks for checking rates with Hostel Brikette.", // i18n-exempt -- BRIK-RQ-1 [ttl=2027-03-02] transactional email body
     "",
-    `Guest email: ${guestEmail}`,
-    `Check-in:    ${context.checkin}`,
-    `Check-out:   ${context.checkout}`,
-    `Guests:      ${context.pax}`,
-    `Source:      ${context.source_route}`,
+    "Here is your quote summary:",
+    `Check-in:  ${context.checkin}`,
+    `Check-out: ${context.checkout}`,
+    `Guests:    ${context.pax}`,
   ];
 
-  if (context.room_id) lines.push(`Room:        ${context.room_id}`);
-  if (context.rate_plan) lines.push(`Rate plan:   ${context.rate_plan}`);
-  lines.push(`Quote:       ${priceLabel}`);
-  if (resumeLink) lines.push(`Resume link: ${resumeLink}`);
+  if (context.room_id) lines.push(`Room:      ${context.room_id}`);
+  if (context.rate_plan) lines.push(`Rate plan: ${context.rate_plan}`);
+  lines.push(`Quote:     ${priceLabel}`);
+  if (resumeLink) lines.push(`Resume:    ${resumeLink}`);
   lines.push("");
-  lines.push(`Consent version: ${consentVersion}`);
+  lines.push("This resume link expires after 7 days.");
+  lines.push("Indicative prices are non-binding until confirmed.");
+  lines.push("");
+  lines.push("If you need help, reply to this email.");
 
   return lines.join("\n");
 }
@@ -124,7 +114,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: "invalid_request" }, { status: 400 });
   }
 
-  const { context, guestEmail, consentVersion, leadCaptureId, resumeLink } = parsed.data;
+  const { context, guestEmail, leadCaptureId, resumeLink } = parsed.data;
 
   // Compute deterministic idempotency key
   const idempotencyKey = buildQuoteIdempotencyKey(context);
@@ -139,23 +129,22 @@ export async function POST(request: Request): Promise<NextResponse> {
   const quote = buildRecoveryQuote(context);
 
   // Build email
-  const subject = `Recovery quote inquiry — ${context.checkin} to ${context.checkout} (${context.pax} guest${context.pax !== 1 ? "s" : ""})`;
+  const subject = `Your Brikette quote: ${context.checkin} to ${context.checkout} (${context.pax} guest${context.pax !== 1 ? "s" : ""})`;
   const text = buildEmailBody({
-    guestEmail,
     context,
     pricePerNight: quote.pricePerNight,
     totalFrom: quote.totalFrom,
     priceSource: quote.priceSource,
     nights: quote.nights,
     resumeLink,
-    consentVersion,
   });
 
   // Attempt send
   console.info("[recovery/quote/send] send attempted", { campaignId: idempotencyKey, leadCaptureId, priceSource: quote.priceSource }); // i18n-exempt -- BRIK-RQ-1 [ttl=2027-03-02] operational server log
   try {
     await sendCampaignEmail({
-      to: CONTACT_EMAIL,
+      to: guestEmail,
+      bcc: "hostelpositano@gmail.com",
       subject,
       text,
       campaignId: idempotencyKey,

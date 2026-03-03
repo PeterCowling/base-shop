@@ -13,7 +13,7 @@ import { BookingCalendarPanel } from "@/components/booking/BookingCalendarPanel"
 import BookingNotice from "@/components/booking/BookingNotice";
 import type { DateRange } from "@/components/booking/DateRangePicker";
 import RoomsSection, { type RoomsSectionBookingQuery } from "@/components/rooms/RoomsSection";
-import { roomsData } from "@/data/roomsData";
+import { websiteVisibleRoomsData } from "@/data/roomsData";
 import { useAvailability } from "@/hooks/useAvailability";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
@@ -252,7 +252,7 @@ function RoomsPageContent({ lang, bookingQuery, serverTitle, serverSubtitle }: P
   useEffect(() => {
     fireViewItemList({
       itemListId: "rooms_index",
-      rooms: roomsData,
+      rooms: websiteVisibleRoomsData,
     });
   }, []);
 

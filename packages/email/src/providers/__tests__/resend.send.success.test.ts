@@ -58,5 +58,24 @@ describe("ResendProvider send – success & payload", () => {
       text: options.text,
     });
   });
-});
 
+  it("forwards bcc when provided", async () => {
+    setupEnv();
+    const { send } = require("resend");
+    send.mockResolvedValueOnce(undefined);
+    const { ResendProvider } = await import("../resend");
+    const provider = new ResendProvider();
+    await provider.send({
+      ...options,
+      bcc: "ops@example.com",
+    });
+    expect(send).toHaveBeenCalledWith({
+      from: "campaign@example.com",
+      to: options.to,
+      bcc: "ops@example.com",
+      subject: options.subject,
+      html: options.html,
+      text: options.text,
+    });
+  });
+});

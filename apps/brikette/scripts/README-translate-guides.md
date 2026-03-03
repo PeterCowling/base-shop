@@ -6,8 +6,7 @@ Canonical policy lives in `scripts/TRANSLATION_EXECUTION_POLICY.md`.
 
 `translate-guides.ts` is now a generic runner that supports pluggable providers and token-safety invariants.
 
-- Default provider mode: `fixture` (deterministic, no network).
-- Optional provider mode: `anthropic` (explicit opt-in).
+- Provider mode: `fixture` only (deterministic, no network).
 - Token invariants are enforced for:
   - `%LINK:guideKey|anchor%` (`guideKey` must not change)
   - `%IMAGE:file|alt%` (`file` must not change)
@@ -50,20 +49,9 @@ pnpm exec tsx scripts/translate-guides.ts \
   --write
 ```
 
-To use Anthropic explicitly:
-
-```bash
-export ANTHROPIC_API_KEY=...
-pnpm exec tsx scripts/translate-guides.ts \
-  --provider=anthropic \
-  --guides=historyPositano.json \
-  --locales=it \
-  --write
-```
-
 ## CLI options
 
-- `--provider=fixture|anthropic`
+- `--provider=fixture`
 - `--fixture-file=<absolute-path>` (required for `fixture`)
 - `--guides=a.json,b.json`
 - `--locales=it,fr`

@@ -10,7 +10,7 @@ import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 import { getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
-import roomsData, { type RoomId } from "@/data/roomsData";
+import roomsData, { type RoomId, websiteVisibleRoomsData } from "@/data/roomsData";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { getSlug } from "@/utils/slug";
 
@@ -25,7 +25,7 @@ const PRIVATE_ROOM_IDS = new Set(["double_room"]);
 
 export async function generateStaticParams() {
   const langParams = generateLangParams();
-  const dormRooms = roomsData.filter((room) => !PRIVATE_ROOM_IDS.has(room.id));
+  const dormRooms = websiteVisibleRoomsData.filter((room) => !PRIVATE_ROOM_IDS.has(room.id));
   return langParams.flatMap(({ lang }) => {
     const validLang = toAppLanguage(lang);
     return dormRooms.map((room) => ({ lang, id: getRoomSlug(room.id, validLang) }));
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const roomId = (findRoomIdBySlug(id, validLang) ?? id) as RoomId;
   const room = roomsData.find((r) => r.id === roomId);
 
-  if (!room) {
+  if (!room || room.isVisibleOnWebsite === false) {
     return {};
   }
 
@@ -80,7 +80,7 @@ export default async function RoomDetailPage({ params }: Props) {
   const roomId = (findRoomIdBySlug(id, validLang) ?? id) as RoomId;
   const room = roomsData.find((r) => r.id === roomId);
 
-  if (!room) {
+  if (!room || room.isVisibleOnWebsite === false) {
     redirect(`/${validLang}/${getSlug("rooms", validLang)}`);
   }
 

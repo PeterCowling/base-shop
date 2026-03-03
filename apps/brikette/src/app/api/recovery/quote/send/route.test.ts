@@ -9,9 +9,6 @@ jest.mock("@acme/email/send", () => ({
   sendCampaignEmail: jest.fn(),
   getProviderOrder: jest.fn(() => ["sendgrid"]),
 }));
-jest.mock("@/config/hotel", () => ({
-  CONTACT_EMAIL: "test-operator@example.com",
-}));
 jest.mock("@/utils/recoveryQuoteCalc", () => ({
   buildQuoteIdempotencyKey: jest.fn(() => "rq:2026-06-01|2026-06-03|1|room_10|"),
   buildRecoveryQuote: jest.fn(() => ({
@@ -78,9 +75,6 @@ describe("POST /api/recovery/quote/send", () => {
       sendCampaignEmail: jest.fn(),
       getProviderOrder: jest.fn(() => ["sendgrid"]),
     }));
-    jest.mock("@/config/hotel", () => ({
-      CONTACT_EMAIL: "test-operator@example.com",
-    }));
     jest.mock("@/utils/recoveryQuoteCalc", () => ({
       buildQuoteIdempotencyKey: jest.fn(() => "rq:2026-06-01|2026-06-03|1|room_10|"),
       buildRecoveryQuote: jest.fn(() => ({
@@ -132,7 +126,8 @@ describe("POST /api/recovery/quote/send", () => {
     expect(mockSendCampaignEmail).toHaveBeenCalledTimes(1);
     expect(mockSendCampaignEmail).toHaveBeenCalledWith(
       expect.objectContaining({
-        to: "test-operator@example.com",
+        to: "guest@example.com",
+        bcc: "hostelpositano@gmail.com",
         campaignId: "rq:2026-06-01|2026-06-03|1|room_10|",
         subject: expect.stringContaining("2026-06-01"),
       }),

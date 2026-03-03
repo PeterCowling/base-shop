@@ -47,17 +47,19 @@ export function BookingCalendarPanel({
   const guestsLabelId = useId();
 
   return (
-    <div className="space-y-6 lg:flex lg:items-stretch lg:gap-6 lg:space-y-0">
-      <DateRangePicker
-        selected={range}
-        onRangeChange={onRangeChange}
-        stayHelperText={stayHelperText}
-        clearDatesText={clearDatesText}
-        checkInLabelText={checkInLabelText}
-        checkOutLabelText={checkOutLabelText}
-        lang={lang}
-        className="lg:shrink-0"
-      />
+    <div className="mx-auto w-full space-y-6 lg:flex lg:items-stretch lg:gap-6 lg:space-y-0" style={{ maxWidth: "42rem" }}>
+      <div className="mx-auto w-full lg:mx-0 lg:shrink-0" style={{ maxWidth: "24rem" }}>
+        <DateRangePicker
+          selected={range}
+          onRangeChange={onRangeChange}
+          stayHelperText={stayHelperText}
+          clearDatesText={clearDatesText}
+          checkInLabelText={checkInLabelText}
+          checkOutLabelText={checkOutLabelText}
+          lang={lang}
+          className="w-full"
+        />
+      </div>
       <div className="flex flex-col items-center gap-3 lg:w-52 lg:flex-none">
         <div className="hidden w-full lg:flex lg:flex-col lg:gap-2">
           <div className="flex flex-col gap-1 rounded-xl border border-brand-outline/20 bg-brand-bg px-3 py-2.5">

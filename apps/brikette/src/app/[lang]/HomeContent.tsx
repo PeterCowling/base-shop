@@ -24,7 +24,7 @@ import WhyStaySection from "@/components/landing/WhyStaySection";
 import AboutStructuredData from "@/components/seo/AboutStructuredData";
 import HomeStructuredData from "@/components/seo/HomeStructuredData";
 import SiteSearchStructuredData from "@/components/seo/SiteSearchStructuredData";
-import { type Room, roomsData } from "@/data/roomsData";
+import { type Room, websiteVisibleRoomsData } from "@/data/roomsData";
 import { useAvailability } from "@/hooks/useAvailability";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
@@ -71,7 +71,7 @@ function HomeContent({ lang }: Props) {
   const roomPrices = useMemo<Record<string, RoomCardPrice> | undefined>(() => {
     if (!availabilityRooms.length) return undefined;
     const prices: Record<string, RoomCardPrice> = {};
-    for (const room of roomsData) {
+    for (const room of websiteVisibleRoomsData) {
       if (!room.octorateRoomCategory) continue;
       const availabilityRoom = aggregateAvailabilityByCategory(availabilityRooms, room.octorateRoomCategory);
       if (!availabilityRoom) continue;
@@ -114,7 +114,7 @@ function HomeContent({ lang }: Props) {
   );
 
   // Rooms data for carousel
-  const roomsForCarousel = roomsData.slice(0, 6);
+  const roomsForCarousel = websiteVisibleRoomsData.slice(0, 6);
 
   useEffect(() => {
     if (typeof window === "undefined") return;

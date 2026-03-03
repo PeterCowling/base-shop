@@ -198,7 +198,7 @@ function NotFoundView() {
         </nav>
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
           <Button asChild className="cta-light dark:cta-dark">
-            <Link to={`/${lang}/${getSlug("rooms", lang)}`}>{t("buttonRooms")}</Link>
+            <Link to={`/${lang}/${getSlug("book", lang)}`}>{t("buttonRooms")}</Link>
           </Button>
           <Button onClick={handleReserve} variant="outline" aria-label={reserveAriaLabel}>
             {reserveLabel}

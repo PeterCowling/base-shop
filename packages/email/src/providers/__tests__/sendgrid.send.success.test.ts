@@ -54,4 +54,25 @@ describe("SendgridProvider send – success paths", () => {
       text: options.text,
     });
   });
+
+  it("forwards bcc when provided", async () => {
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+    process.env.SENDGRID_API_KEY = "key";
+    const sgMail = getSgMail();
+    sgMail.send.mockResolvedValueOnce(undefined);
+    const { SendgridProvider } = await import("../sendgrid");
+    const provider = new SendgridProvider();
+    await provider.send({
+      ...options,
+      bcc: "ops@example.com",
+    });
+    expect(sgMail.send).toHaveBeenCalledWith({
+      to: options.to,
+      bcc: "ops@example.com",
+      from: "campaign@example.com",
+      subject: options.subject,
+      html: options.html,
+      text: options.text,
+    });
+  });
 });

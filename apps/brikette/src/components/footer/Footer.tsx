@@ -98,7 +98,7 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
     {
       key: "rooms",
       label: tFooter("rooms", { lng: lang }) as string,
-      href: `/${lang}/${getSlug("rooms", lang)}`,
+      href: `/${lang}/${getSlug("book", lang)}`,
     },
     {
       key: "experiences",
@@ -195,7 +195,7 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
             <p className="text-xl font-semibold tracking-tight">{brandName}</p>
             <p className="text-sm text-brand-bg/80 dark:text-brand-text/80">{brandDescription}</p>
             <Link
-              href={`/${lang}/book`}
+              href={`/${lang}/${getSlug("book", lang)}`}
               className="self-start text-sm font-medium text-brand-secondary hover:underline"
             >
               {bookDirectCtaLabel} →

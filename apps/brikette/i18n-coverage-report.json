@@ -22,7 +22,7 @@
   ],
   "summary": {
     "totalMissingFiles": 0,
-    "totalMissingKeys": 304,
+    "totalMissingKeys": 296,
     "totalUntranslatedKeys": 3556
   },
   "reports": [
@@ -4345,16 +4345,6 @@
         ],
         "guides.json": [
           "search"
-        ],
-        "guides/content/sunriseHike.json": [
-          "essentials",
-          "essentialsTitle",
-          "faqsTitle",
-          "lastUpdated",
-          "steps",
-          "tipsTitle",
-          "warnings",
-          "warningsTitle"
         ],
         "ratingsBar.json": [
           "snapshotAsOf"

@@ -6,12 +6,12 @@
 
 ## Canonical policy
 - Default execution mode is `fixture`/mock-provider for CI and local contract verification.
-- External API-backed translation is optional and non-default.
 - Manual in-house editing remains supported for production copy review and corrections.
+- External API-backed translation is not permitted by policy.
 
-This is intentionally dual-mode with an explicit safe default:
-- Safe default: no network calls, no API keys, deterministic fixtures.
-- Optional external mode: enabled only when a maintainer intentionally configures provider credentials and runtime flags.
+Execution mode is intentionally in-house only:
+- No network calls and no API keys in translation execution.
+- Deterministic fixtures for contract checks.
 
 ## Provider contract
 
@@ -51,13 +51,11 @@ These codes are the required surface for runner logs and CI diagnostics.
 - Do not commit API keys or tokens into repo, scripts, or fixtures.
 - Do not print secrets to stdout/stderr.
 - Keep CI and default local checks on fixture provider mode.
-- If external provider mode is used, run only in explicitly approved environments with least-privilege credentials.
 - Preserve source JSON and token invariants before any write operation.
 
 ## Runtime implications
 - Deterministic spike contract checks (default mode):
   - `cd apps/brikette && pnpm exec jest --ci --runInBand --config jest.config.cjs --runTestsByPath scripts/__tests__/translate-guides-runner.test.ts scripts/__tests__/translate-guides-spike.test.ts`
   - `pnpm --filter @apps/brikette exec tsx scripts/translate-guides-spike.ts`
-- Generic runner supports dual mode:
+- Generic runner supports fixture mode only:
   - Fixture mode (`--provider=fixture`, default, requires `--fixture-file`, dry-run by default)
-  - Anthropic mode (`--provider=anthropic`, explicit opt-in, requires `ANTHROPIC_API_KEY`)

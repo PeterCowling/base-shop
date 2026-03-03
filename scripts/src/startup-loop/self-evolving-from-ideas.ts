@@ -11,12 +11,11 @@ import {
   type SelfEvolvingOrchestratorResult,
 } from "./self-evolving-orchestrator.js";
 
-const BACKBONE_QUEUE_ROOT = path.join(
+const SELF_EVOLVING_ROOT = path.join(
   "docs",
   "business-os",
   "startup-loop",
   "self-evolving",
-  "backbone-queue",
 );
 
 export interface SelfEvolvingBackboneQueueEntry {
@@ -105,7 +104,7 @@ export function dispatchToMetaObservation(
 }
 
 function resolveBackboneQueuePath(rootDir: string, business: string): string {
-  return path.join(rootDir, BACKBONE_QUEUE_ROOT, `${business}.jsonl`);
+  return path.join(rootDir, SELF_EVOLVING_ROOT, business, "backbone-queue.jsonl");
 }
 
 export function writeBackboneQueue(
@@ -252,8 +251,8 @@ function parseArgs(argv: string[]): CliArgs {
         "business-os",
         "startup-loop",
         "self-evolving",
-        "startup-state",
-        "BRIK.json",
+        "BRIK",
+        "startup-state.json",
       ),
     runId,
     sessionId: flags.get("session-id") ?? `${runId}-session`,

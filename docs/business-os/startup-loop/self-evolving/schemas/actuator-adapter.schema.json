@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "docs/business-os/startup-loop/self-evolving/actuator-adapter.schema.json",
+  "$id": "docs/business-os/startup-loop/self-evolving/schemas/actuator-adapter.schema.json",
   "title": "Actuator Adapter Contract",
   "type": "object",
   "required": [

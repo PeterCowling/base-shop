@@ -5,12 +5,11 @@ import type { BackboneRoutingDecision } from "./self-evolving-backbone.js";
 import type { ImprovementCandidate } from "./self-evolving-contracts.js";
 import type { ScoreResult } from "./self-evolving-scoring.js";
 
-const CANDIDATE_ROOT = path.join(
+const SELF_EVOLVING_ROOT = path.join(
   "docs",
   "business-os",
   "startup-loop",
   "self-evolving",
-  "candidates",
 );
 
 export interface RankedCandidate {
@@ -29,7 +28,7 @@ export interface CandidateLedger {
 }
 
 function resolveCandidatePath(rootDir: string, businessId: string): string {
-  return path.join(rootDir, CANDIDATE_ROOT, `${businessId}.json`);
+  return path.join(rootDir, SELF_EVOLVING_ROOT, businessId, "candidates.json");
 }
 
 export function readCandidateLedger(

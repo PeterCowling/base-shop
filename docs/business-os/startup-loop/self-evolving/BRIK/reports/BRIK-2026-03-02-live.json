@@ -1,12 +1,12 @@
 {
   "observations_generated": 0,
-  "backbone_queue_path": "../docs/business-os/startup-loop/self-evolving/backbone-queue/BRIK.jsonl",
+  "backbone_queue_path": "../docs/business-os/startup-loop/self-evolving/BRIK/backbone-queue.jsonl",
   "backbone_queued": 0,
   "orchestrator": {
     "business": "BRIK",
     "generated_at": "2026-03-02T16:00:00.000Z",
-    "startup_state_path": "../docs/business-os/startup-loop/self-evolving/startup-state/BRIK.json",
-    "candidate_path": "../docs/business-os/startup-loop/self-evolving/candidates/BRIK.json",
+    "startup_state_path": "../docs/business-os/startup-loop/self-evolving/BRIK/startup-state.json",
+    "candidate_path": "../docs/business-os/startup-loop/self-evolving/BRIK/candidates.json",
     "observations_count": 0,
     "repeat_candidates_detected": 0,
     "candidates_generated": 0,

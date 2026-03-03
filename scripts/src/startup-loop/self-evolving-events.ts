@@ -58,28 +58,19 @@ export interface SelfEvolvingEvent {
   event_type: SelfEvolvingEventType;
 }
 
-const EVENTS_ROOT = path.join(
+const SELF_EVOLVING_ROOT = path.join(
   "docs",
   "business-os",
   "startup-loop",
   "self-evolving",
-  "events",
-);
-
-const OBSERVATIONS_ROOT = path.join(
-  "docs",
-  "business-os",
-  "startup-loop",
-  "self-evolving",
-  "observations",
 );
 
 function resolveLogPath(rootDir: string, businessId: string): string {
-  return path.join(rootDir, EVENTS_ROOT, `${businessId}.jsonl`);
+  return path.join(rootDir, SELF_EVOLVING_ROOT, businessId, "events.jsonl");
 }
 
 function resolveObservationPath(rootDir: string, businessId: string): string {
-  return path.join(rootDir, OBSERVATIONS_ROOT, `${businessId}.jsonl`);
+  return path.join(rootDir, SELF_EVOLVING_ROOT, businessId, "observations.jsonl");
 }
 
 function readLog(rootDir: string, businessId: string): SelfEvolvingEvent[] {

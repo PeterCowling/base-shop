@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "docs/business-os/startup-loop/self-evolving/startup-state.schema.json",
+  "$id": "docs/business-os/startup-loop/self-evolving/schemas/startup-state.schema.json",
   "title": "Startup State System of Record",
   "type": "object",
   "required": [

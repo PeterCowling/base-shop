@@ -32,8 +32,8 @@ function parseArgs(argv: string[]): CliArgs {
         "business-os",
         "startup-loop",
         "self-evolving",
-        "observations",
-        "BRIK.jsonl",
+        "BRIK",
+        "observations.jsonl",
       ),
     candidatesPath:
       flags.get("candidates") ??
@@ -42,8 +42,8 @@ function parseArgs(argv: string[]): CliArgs {
         "business-os",
         "startup-loop",
         "self-evolving",
-        "candidates",
-        "BRIK.json",
+        "BRIK",
+        "candidates.json",
       ),
     business: flags.get("business") ?? "BRIK",
   };

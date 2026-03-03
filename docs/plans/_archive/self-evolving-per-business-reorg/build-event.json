@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "self-evolving-per-business-reorg-2026-03-03",
+  "feature_slug": "self-evolving-per-business-reorg",
+  "emitted_at": "2026-03-03T09:56:30.629Z",
+  "why": "self-evolving/ organises data by type (events/, observations/, candidates/) not by business. Finding all BRIK data requires checking 6 directories. Schemas mixed with data directories.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "self-evolving/ restructured to per-business directories (BRIK/, SIMC/) with schemas in schemas/. All self-evolving-*.ts path references updated.",
+    "source": "operator"
+  }
+}

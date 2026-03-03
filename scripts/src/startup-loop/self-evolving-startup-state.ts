@@ -7,12 +7,11 @@ import {
   validateStartupState,
 } from "./self-evolving-contracts.js";
 
-const STATE_ROOT = path.join(
+const SELF_EVOLVING_ROOT = path.join(
   "docs",
   "business-os",
   "startup-loop",
   "self-evolving",
-  "startup-state",
 );
 
 export interface StartupStateStore {
@@ -24,7 +23,7 @@ export function createStartupStateStore(rootDir: string): StartupStateStore {
 }
 
 function resolveStatePath(store: StartupStateStore, businessId: string): string {
-  return path.join(store.rootDir, STATE_ROOT, `${businessId}.json`);
+  return path.join(store.rootDir, SELF_EVOLVING_ROOT, businessId, "startup-state.json");
 }
 
 function ensureParentDir(filePath: string): void {

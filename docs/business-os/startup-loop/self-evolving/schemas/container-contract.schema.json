@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "docs/business-os/startup-loop/self-evolving/container-contract.schema.json",
+  "$id": "docs/business-os/startup-loop/self-evolving/schemas/container-contract.schema.json",
   "title": "Startup Motion Container Contract",
   "type": "object",
   "required": [

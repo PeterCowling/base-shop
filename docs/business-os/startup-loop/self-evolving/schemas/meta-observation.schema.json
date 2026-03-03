@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "docs/business-os/startup-loop/self-evolving/meta-observation.schema.json",
+  "$id": "docs/business-os/startup-loop/self-evolving/schemas/meta-observation.schema.json",
   "title": "Self-Evolving Meta Observation",
   "type": "object",
   "required": [

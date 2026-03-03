@@ -1,5 +1,6 @@
 ---
 Type: Worldclass-Goal
+Status: Active
 schema_version: worldclass-goal.v1
 
 # WHEN TO UPDATE goal_version:

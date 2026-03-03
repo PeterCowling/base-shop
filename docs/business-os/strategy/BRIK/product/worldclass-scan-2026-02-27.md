@@ -1,5 +1,6 @@
 ---
 Type: Worldclass-Scan
+Status: Active
 schema_version: worldclass-scan.v1
 business: BRIK
 goal_version: 1

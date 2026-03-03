@@ -1,5 +1,6 @@
 ---
 Type: Worldclass-Research-Prompt
+Status: Active
 schema_version: worldclass-research-prompt.v1
 business: BRIK
 goal_version: 1

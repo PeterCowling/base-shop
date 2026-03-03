@@ -1,5 +1,6 @@
 ---
 Type: Worldclass-Benchmark
+Status: Active
 schema_version: worldclass-benchmark.v1
 business: BRIK
 goal_version: 1

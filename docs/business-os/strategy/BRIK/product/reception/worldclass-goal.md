@@ -1,5 +1,6 @@
 ---
 Type: Worldclass-Goal
+Status: Active
 schema_version: worldclass-goal.v1
 business: BRIK
 app: reception

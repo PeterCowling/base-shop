@@ -69,6 +69,11 @@ export interface Room extends Omit<RoomCategory, "images" | "name" | "descriptio
   features?: RoomFeatures;
   /** Canonical Octobook room category name used for live pricing match (e.g. "Dorm", "Double", "Apartment", "Dorm Room with One Bunkbed"). */
   octorateRoomCategory?: string;
+  /**
+   * Controls whether this room appears on public Brikette web surfaces.
+   * Keep false for temporarily unavailable inventory that must remain in source-of-truth data.
+   */
+  isVisibleOnWebsite?: boolean;
 }
 
 const SEASONAL: SeasonalPrice[] = [
@@ -415,6 +420,7 @@ const roomsData: Room[] = [
       viewSpec: "Garden view",
     },
     octorateRoomCategory: "Dorm Room with One Bunkbed",
+    isVisibleOnWebsite: false, // Temporarily unavailable for 2026 season: keep data, hide public listing.
   },
 
   /* ── Apartment → apartment ───────────────────────────────────────── */
@@ -451,3 +457,6 @@ const roomsData: Room[] = [
 
 export default roomsData;
 export { roomsData }; // ← named export for components that use a named import
+export const websiteVisibleRoomsData: Room[] = roomsData.filter(
+  (room) => room.isVisibleOnWebsite !== false,
+);

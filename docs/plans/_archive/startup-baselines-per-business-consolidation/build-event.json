@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "startup-baselines-per-business-consolidation-2026-03-03",
+  "feature_slug": "startup-baselines-per-business-consolidation",
+  "emitted_at": "2026-03-03T00:00:00.000Z",
+  "why": "startup-baselines/ is split-brained — same businesses have data both as flat files at the root and in per-business subdirectories. Naming conventions vary across files. Every other domain directory uses clean per-business subdirectories. This one should too.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "All flat files in startup-baselines/ moved into per-business subdirectories. BIZ prefix dropped from filenames (now redundant inside subdirectory). All script/skill path references updated. No stale paths remain.",
+    "source": "operator"
+  }
+}

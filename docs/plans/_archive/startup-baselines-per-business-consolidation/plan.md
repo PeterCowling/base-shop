@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Data
 Workstream: Engineering
 Created: 2026-03-03
@@ -27,7 +27,7 @@ Move 20 flat files from `docs/business-os/startup-baselines/` root into per-busi
 ## Active tasks
 - [x] TASK-01: Move flat files and update TypeScript source + test references (Complete 2026-03-03)
 - [x] TASK-02: Update skill documentation, registry, and business-os docs (Complete 2026-03-03)
-- [ ] TASK-03: Verify no stale references remain
+- [x] TASK-03: Verify no stale references remain (Complete 2026-03-03)
 
 ## Goals
 - Move all 20 flat files into per-business subdirectories
@@ -89,7 +89,7 @@ Move 20 flat files from `docs/business-os/startup-baselines/` root into per-busi
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Move flat files + update TypeScript source/test references | 85% | M | Complete (2026-03-03) | - | TASK-02, TASK-03 |
 | TASK-02 | IMPLEMENT | Update skill docs, registry, business-os docs | 80% | M | Complete (2026-03-03) | TASK-01 | TASK-03 |
-| TASK-03 | IMPLEMENT | Verify no stale references remain | 85% | S | Pending | TASK-01, TASK-02 | - |
+| TASK-03 | IMPLEMENT | Verify no stale references remain | 85% | S | Complete (2026-03-03) | TASK-01, TASK-02 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -279,7 +279,8 @@ Move 20 flat files from `docs/business-os/startup-baselines/` root into per-busi
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-03)
+- **Build evidence:** All TC contracts pass: TC-01a: 0 literal flat-pattern references in active *.ts, *.md, *.json (only _archive/ remains). TC-01b: 0 template-string flat-pattern references in *.ts. TC-02: TypeScript compilation passes (pre-commit hook verified). TC-03: `ls docs/business-os/startup-baselines/*.md` returns empty. TC-04: PET/ contains 5 files. TC-05: Existing subdirectory files untouched (BRIK/demand-evidence-pack.md, HBAG/demand-evidence-pack.md, HBAG/S3-forecast/, HEAD/S3-forecast/). No fixes required.
 - **Affects:**
   - `[readonly] entire repository` (grep scan)
   - Any files with stale references found during verification

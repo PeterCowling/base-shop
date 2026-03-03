@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "IDEA-DISPATCH-20260304001500-0228",
+  "feature_slug": "xa-uploader-auto-save-after-image",
+  "emitted_at": "2026-03-03T23:00:00.000Z",
+  "why": "When a user uploads an image via the catalog form, the form data is not auto-saved. Navigating away after upload loses the draft and orphans the R2 object.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "After a successful image upload, the catalog form auto-saves the current draft state so that product data and images stay in sync. No data loss on navigation after image upload.",
+    "source": "operator"
+  }
+}

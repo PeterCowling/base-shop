@@ -9,16 +9,17 @@ import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 import { BTN_PRIMARY_CLASS, INPUT_CLASS, SELECT_CLASS } from "./catalogStyles";
 
-const IMAGE_ROLES = ["front", "side", "top", "detail", "lifestyle", "packaging"] as const;
+const IMAGE_ROLES = ["front", "side", "top", "back", "detail", "interior", "scale"] as const;
 type UploadImageRole = (typeof IMAGE_ROLES)[number];
 
 const ROLE_I18N_KEYS: Record<UploadImageRole, string> = {
   front: "uploadImageRoleFront",
   side: "uploadImageRoleSide",
   top: "uploadImageRoleTop",
+  back: "uploadImageRoleBack",
   detail: "uploadImageRoleDetail",
-  lifestyle: "uploadImageRoleLifestyle",
-  packaging: "uploadImageRolePackaging",
+  interior: "uploadImageRoleInterior",
+  scale: "uploadImageRoleScale",
 } as const;
 
 type UploadStatus = "idle" | "uploading" | "success" | "error";
@@ -29,10 +30,12 @@ export function CatalogProductImagesFields({
   draft,
   fieldErrors,
   onChange,
+  onImageUploaded,
 }: {
   draft: CatalogProductDraftInput;
   fieldErrors: Record<string, string>;
   onChange: (next: CatalogProductDraftInput) => void;
+  onImageUploaded: (nextDraft: CatalogProductDraftInput) => void;
 }) {
   const { t } = useUploaderI18n();
   const minEdge = toPositiveInt(
@@ -98,12 +101,15 @@ export function CatalogProductImagesFields({
       const altText = `${selectedRole} view`;
       const nextAlts = currentAlts ? `${currentAlts}|${altText}` : altText;
 
-      onChange({
+      const nextDraft = {
         ...draft,
         imageFiles: nextFiles,
         imageRoles: nextRoles,
         imageAltTexts: nextAlts,
-      });
+      };
+
+      onChange(nextDraft);
+      onImageUploaded(nextDraft);
 
       setUploadStatus("success");
     } catch {

@@ -320,6 +320,22 @@ function useCatalogDraftHandlers(state: CatalogConsoleState) {
       confirmUnpublish: (message: string) => window.confirm(message),
     });
 
+  const handleSaveWithDraft = async (nextDraft: CatalogProductDraftInput) =>
+    handleSaveImpl({
+      draft: nextDraft,
+      draftRevision: state.draftRevision,
+      storefront: state.storefront,
+      t: state.t,
+      busyLockRef: state.busyLockRef,
+      setBusy: state.setBusy,
+      setActionFeedback: state.setActionFeedback,
+      setFieldErrors: state.setFieldErrors,
+      setDraftRevision: state.setDraftRevision,
+      loadCatalog: state.loadCatalog,
+      handleSelect,
+      confirmUnpublish: (message: string) => window.confirm(message),
+    });
+
   const handleDelete = async () =>
     handleDeleteImpl({
       locale: state.locale,
@@ -333,7 +349,7 @@ function useCatalogDraftHandlers(state: CatalogConsoleState) {
       handleNew,
     });
 
-  return { handleNew, handleStorefrontChange, handleSelect, handleSave, handleDelete };
+  return { handleNew, handleStorefrontChange, handleSelect, handleSave, handleSaveWithDraft, handleDelete };
 }
 
 function useCatalogSyncHandlers(state: CatalogConsoleState) {

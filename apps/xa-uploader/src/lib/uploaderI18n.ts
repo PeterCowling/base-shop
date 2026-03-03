@@ -290,9 +290,10 @@ const messages = {
     uploadImageRoleFront: "Front",
     uploadImageRoleSide: "Side",
     uploadImageRoleTop: "Top",
+    uploadImageRoleBack: "Back",
     uploadImageRoleDetail: "Detail",
-    uploadImageRoleLifestyle: "Lifestyle",
-    uploadImageRolePackaging: "Packaging",
+    uploadImageRoleInterior: "Interior",
+    uploadImageRoleScale: "Scale",
 
     currencyRatesTitle: "Currency rates",
     currencyRatesSubtitle:
@@ -576,9 +577,10 @@ const messages = {
     uploadImageRoleFront: "正面",
     uploadImageRoleSide: "侧面",
     uploadImageRoleTop: "顶部",
+    uploadImageRoleBack: "背面",
     uploadImageRoleDetail: "细节",
-    uploadImageRoleLifestyle: "生活场景",
-    uploadImageRolePackaging: "包装",
+    uploadImageRoleInterior: "内部",
+    uploadImageRoleScale: "比例",
 
     currencyRatesTitle: "汇率设置",
     currencyRatesSubtitle:

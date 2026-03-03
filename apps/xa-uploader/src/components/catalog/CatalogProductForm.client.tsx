@@ -97,6 +97,7 @@ export function CatalogProductForm({
   feedback,
   onChangeDraft,
   onSave: _onSave,
+  onSaveWithDraft,
   onDelete,
 }: {
   selectedSlug: string | null;
@@ -107,6 +108,7 @@ export function CatalogProductForm({
   feedback: ActionFeedback | null;
   onChangeDraft: (draft: CatalogProductDraftInput) => void;
   onSave: () => void;
+  onSaveWithDraft: (nextDraft: CatalogProductDraftInput) => void;
   onDelete: () => void;
 }) {
   const { t } = useUploaderI18n();
@@ -205,6 +207,7 @@ export function CatalogProductForm({
               draft={draft}
               fieldErrors={fieldErrors}
               onChange={onChangeDraft}
+              onImageUploaded={onSaveWithDraft}
             />
           ) : (
             <div className="rounded-md border border-border-2 bg-muted px-4 py-3 text-sm text-gate-muted">

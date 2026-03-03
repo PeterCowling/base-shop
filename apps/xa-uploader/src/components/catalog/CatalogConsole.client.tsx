@@ -138,6 +138,7 @@ function ProductEditor({
       feedback={state.actionFeedback.draft}
       onChangeDraft={state.setDraft}
       onSave={state.handleSave}
+      onSaveWithDraft={state.handleSaveWithDraft}
       onDelete={state.handleDelete}
     />
   );

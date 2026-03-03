@@ -1,15 +1,15 @@
 {
-  "last_updated": "2026-03-02T22:01:45.493Z",
+  "last_updated": "2026-03-03T07:58:46.608Z",
   "counts": {
-    "enqueued": 6,
+    "enqueued": 14,
     "processed": 10,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
-    "auto_executed": 22,
-    "completed": 90,
-    "fact_find_ready": 34,
-    "total": 132
+    "auto_executed": 1,
+    "completed": 87,
+    "fact_find_ready": 42,
+    "total": 140
   },
   "dispatches": [
     {
@@ -4946,6 +4946,302 @@
         "source": "operator"
       },
       "created_at": "2026-03-02T22:10:00.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303120000-0129",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:STRATEGY:startup-loop-root-containers:20260303",
+      "anchor_key": "startup-loop-root-containers",
+      "cluster_key": "BOS:STRATEGY:startup-loop-root-containers:operator:20260303",
+      "cluster_fingerprint": "19200eb7df4668f539c7312c201242d5b1ff88b4ef425b7d7b9b5acc44cb94ec",
+      "lineage_depth": 0,
+      "area_anchor": "Startup loop root directory — 36 files with no structure",
+      "location_anchors": [
+        "docs/business-os/startup-loop/",
+        "scripts/src/startup-loop/contract-lint.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.9,
+      "current_truth": "docs/business-os/startup-loop/ root has 36 files mixing schemas, contracts, operator guides, registries, and specifications in one flat directory. Two process-registry versions (v1, v2) coexist without deprecation markers. Duplicate YAML/MD formats exist for the same content. Navigation requires grep.",
+      "next_scope_now": "Fact-find to: (1) classify all 36 root files by type (contract, schema, operation, specification), (2) identify all code/doc references to these paths, (3) design container structure (contracts/, schemas/, operations/, specifications/), (4) assess migration risk for import paths and skill references.",
+      "adjacent_later": [
+        "Deprecation sweep of superseded files (process-registry-v1, contract-migration.yaml) — separate plan after root reorg completes"
+      ],
+      "evidence_refs": [
+        "agent-verified: 36 files at docs/business-os/startup-loop/ root with no subdirectory organisation",
+        "agent-verified: process-registry-v1.md and process-registry-v2.md coexist — no deprecation marker",
+        "agent-verified: workstream-workflow-taxonomy-v2 exists in both .md and .yaml format",
+        "agent-verified: contract-migration.yaml present with no context on whether still relevant",
+        "operator-stated: better to organise now than later as the system scales"
+      ],
+      "why": "startup-loop/ root has 36 files mixing schemas, contracts, guides, and registries. No structure makes navigation grep-dependent. As more contracts and schemas are added the directory becomes unnavigable.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "startup-loop/ root reorganised into contracts/, schemas/, operations/, specifications/ subdirectories. All code and doc references updated. No stale paths remain.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-03T07:58:46.608Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303120000-0130",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:STRATEGY:self-evolving-per-business-reorg:20260303",
+      "anchor_key": "self-evolving-per-business-reorg",
+      "cluster_key": "BOS:STRATEGY:self-evolving-per-business-reorg:operator:20260303",
+      "cluster_fingerprint": "0a651f8e41d51cfc87f025a80cdab4a80faebb57313bc47bb691554a8209dbb0",
+      "lineage_depth": 0,
+      "area_anchor": "Self-evolving system — per-type directories instead of per-business",
+      "location_anchors": [
+        "docs/business-os/startup-loop/self-evolving/",
+        "scripts/src/startup-loop/self-evolving-events.ts",
+        "scripts/src/startup-loop/self-evolving-index.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.9,
+      "current_truth": "self-evolving/ organises data by type (events/, observations/, candidates/, backbone-queue/, startup-state/, reports/) with per-business files inside each. Finding all BRIK data requires checking 6 directories. 4 schema files sit at root alongside data directories.",
+      "next_scope_now": "Fact-find to: (1) map all code references to self-evolving/ paths across 17 self-evolving-*.ts files, (2) identify test fixtures referencing these paths, (3) design per-business directory structure, (4) plan schema file relocation to schemas/ subdirectory.",
+      "adjacent_later": [
+        "Scripts code reorganisation — moving self-evolving-*.ts files into their own subdirectory depends on data paths being stable first"
+      ],
+      "evidence_refs": [
+        "agent-verified: 6 data directories (events, observations, candidates, backbone-queue, startup-state, reports) each with per-business files",
+        "agent-verified: 4 schema files at self-evolving/ root mixed with data directories",
+        "agent-verified: only BRIK and SIMC have data; schemas define structure for future businesses",
+        "agent-verified: 17 self-evolving-*.ts files in scripts/src/startup-loop/ read/write these paths",
+        "operator-stated: per-business organisation is essential before adding business 3"
+      ],
+      "why": "self-evolving/ organises data by type not by business. Finding all data for one business requires checking 6 directories. This inverted structure makes per-business archival, debugging, and scaling painful.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "self-evolving/ restructured to per-business directories (BRIK/, SIMC/) with schemas in schemas/ subdirectory. All 17 self-evolving-*.ts file references updated. Tests pass.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-03T07:58:46.608Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303120000-0131",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:STRATEGY:assessment-naming-workbench:20260303",
+      "anchor_key": "assessment-naming-workbench",
+      "cluster_key": "BOS:STRATEGY:assessment-naming-workbench:operator:20260303",
+      "cluster_fingerprint": "add4e09a3c4bfbc3baf46ea640322c27fe40ea49ef1881ccdb1e62dd6fd97596",
+      "lineage_depth": 0,
+      "area_anchor": "Assessment directories — naming iterations polluting assessment root",
+      "location_anchors": [
+        "docs/business-os/strategy/HEAD/assessment/",
+        "scripts/src/startup-loop/naming/tm-prescreen-cli.ts",
+        "scripts/src/startup-loop/naming/rdap-cli.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.9,
+      "current_truth": "HEAD assessment/ has 60 files. Most are intermediate naming artifacts — 7 rounds of candidates (r1-r7), RDAP .txt checks, shortlist iterations, TM pre-screens, generation specs, and prompts. These intermediate artifacts bury the actual assessment deliverables (brand identity, solution decision, measurement profile, etc.).",
+      "next_scope_now": "Fact-find to: (1) classify all assessment files across all businesses into 'final deliverable' vs 'naming workbench intermediate', (2) identify naming CLI sidecar path references, (3) design naming-workbench/ subdirectory structure, (4) check if any downstream processes read intermediate naming files.",
+      "adjacent_later": [
+        "Assessment stage sub-grouping — once naming intermediates are separated, remaining assessment files could be grouped by assessment step number"
+      ],
+      "evidence_refs": [
+        "agent-verified: HEAD assessment/ has 60 files, majority are naming intermediates (candidates r1-r7, RDAP, shortlists, TM checks)",
+        "agent-verified: naming-candidates-*.md, naming-rdap-*.txt, naming-shortlist-*.md files exist in 5+ rounds per business",
+        "agent-verified: naming CLI scripts reference sidecar paths under assessment/",
+        "agent-verified: BRIK assessment/ has only 6 files — naming intermediates were already cleaned or never generated at same volume",
+        "operator-stated: intermediate artifacts should not clutter the assessment root"
+      ],
+      "why": "Assessment directories (especially HEAD with 60 files) are cluttered with intermediate naming pipeline artifacts — multiple rounds of candidates, RDAP checks, shortlists, and TM pre-screens. This makes it hard to find the actual assessment deliverables.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Intermediate naming artifacts moved to assessment/naming-workbench/ for all businesses. Only final deliverables remain at assessment/ root. Naming CLI sidecar paths updated.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-03T07:58:46.608Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303120000-0132",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:STRATEGY:startup-loop-scripts-domain-dirs:20260303",
+      "anchor_key": "startup-loop-scripts-domain-dirs",
+      "cluster_key": "BOS:STRATEGY:startup-loop-scripts-domain-dirs:operator:20260303",
+      "cluster_fingerprint": "704fb5e809915793960200fc6954b10bebbce6e0fe960459d172be0ef27786c7",
+      "lineage_depth": 0,
+      "area_anchor": "Scripts startup-loop — 79 .ts files flat with no domain subdirectories",
+      "location_anchors": [
+        "scripts/src/startup-loop/"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.9,
+      "current_truth": "scripts/src/startup-loop/ has 79 .ts files with only naming/ as a subdirectory. Self-evolving (17 files), ideas (14 files), s10 (3 files), diagnostics, and website content all share one flat directory. File prefixes (self-evolving-*, lp-do-ideas-*, s10-*) substitute for directory structure.",
+      "next_scope_now": "Fact-find to: (1) classify all 79 files by domain group, (2) map all cross-file imports and test references, (3) design subdirectory structure (self-evolving/, ideas/, diagnostics/, website/, build/, s10/, s2/, baselines/), (4) assess import path update effort across ~30+ test files.",
+      "adjacent_later": [
+        "TypeScript path aliases — if subdirectories are deep, barrel exports or tsconfig paths could reduce import verbosity"
+      ],
+      "evidence_refs": [
+        "agent-verified: 79 .ts files at scripts/src/startup-loop/ root",
+        "agent-verified: only naming/ subdirectory exists (8 files)",
+        "agent-verified: 17 files prefixed self-evolving-*, 14 prefixed lp-do-ideas-*, 3 prefixed s10-*",
+        "agent-verified: ~30+ test files reference these imports",
+        "operator-stated: code organisation should mirror logical domain structure"
+      ],
+      "why": "79 TypeScript files in one flat directory. Domain groups (self-evolving, ideas, diagnostics, website, build) are only distinguishable by filename prefix. As more files are added, grep becomes the only navigation method.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Domain subdirectories created (self-evolving/, ideas/, diagnostics/, website/, build/, s10/, s2/, baselines/). All import paths and test references updated. TypeScript compilation clean.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-03T07:58:46.608Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303120000-0133",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:STRATEGY:ideas-schema-lifecycle-cleanup:20260303",
+      "anchor_key": "ideas-schema-lifecycle-cleanup",
+      "cluster_key": "BOS:STRATEGY:ideas-schema-lifecycle-cleanup:operator:20260303",
+      "cluster_fingerprint": "6885bc8ecc8ee23fec587bd851060880e669ab25172fd94505b0359bcab7d111",
+      "lineage_depth": 0,
+      "area_anchor": "Ideas directory — dual schema versions and undocumented lifecycle",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/",
+        "docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.schema.json",
+        "docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.v2.schema.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.9,
+      "current_truth": "ideas/ has v1 and v2 dispatch schemas coexisting with no deprecation marker on v1. All current dispatches use v2 format. Trial vs live queue distinction is not documented — no lifecycle document explains the transition process.",
+      "next_scope_now": "Fact-find to: (1) confirm v1 schema is fully superseded (no code references), (2) identify all schema file consumers, (3) document the trial-to-live queue lifecycle, (4) design ideas/schemas/ subdirectory.",
+      "adjacent_later": [],
+      "evidence_refs": [
+        "agent-verified: lp-do-ideas-dispatch.schema.json (v1) and lp-do-ideas-dispatch.v2.schema.json coexist",
+        "agent-verified: all recent dispatches use dispatch.v2 schema_version",
+        "agent-verified: trial/ and live/ subdirectories have identical structure but no documentation explains the transition",
+        "agent-verified: _archive/ subdirectory has 5 old schema files with no deprecation notice"
+      ],
+      "why": "Two dispatch schema versions coexist with no deprecation marker. The trial-to-live queue lifecycle is undocumented, making it unclear how dispatches progress through the system.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "v1 schema deprecated or deleted. Schemas moved to ideas/schemas/. IDEAS-LIFECYCLE.md documents trial to live queue transition clearly.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-03T07:58:46.608Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303120000-0134",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:STRATEGY:plans-archive-consolidation:20260303",
+      "anchor_key": "plans-archive-consolidation",
+      "cluster_key": "BOS:STRATEGY:plans-archive-consolidation:operator:20260303",
+      "cluster_fingerprint": "8ae5518f99e1d4cf45cf2fb92d1a5de8169965387d18d7e92848077cab2898a7",
+      "lineage_depth": 0,
+      "area_anchor": "Plans directory — two archive systems and demo files checked in",
+      "location_anchors": [
+        "docs/plans/",
+        "docs/plans/archive/",
+        "docs/plans/_archive/",
+        "docs/plans/_tmp/"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.9,
+      "current_truth": "docs/plans/ has two archive systems: _archive/ (108 structured plan directories, the real archive) and archive/ (240 loose .md files, legacy backup). _tmp/ has 3 demo files (cass-live-fact-find-demo.md, cass-live-plan-demo.md, cass-sim-demo-context.md) checked into version control.",
+      "next_scope_now": "Fact-find to: (1) audit archive/ contents — are they all superseded by _archive/ entries, (2) check if any code references archive/ paths, (3) decide: delete, rename to _legacy-archive/, or migrate to _archive/, (4) clean _tmp/ or .gitignore it.",
+      "adjacent_later": [
+        "Archive retention policy — auto-prune _archive/ directories older than N days"
+      ],
+      "evidence_refs": [
+        "agent-verified: _archive/ has 108 structured plan directories",
+        "agent-verified: archive/ has 240 loose .md files",
+        "agent-verified: _tmp/ has 3 demo files checked in (cass-live-fact-find-demo.md, cass-live-plan-demo.md, cass-sim-demo-context.md)",
+        "agent-verified: no clear rule distinguishes _archive/ from archive/"
+      ],
+      "why": "Two archive systems create confusion about where completed plans go. 240 legacy loose files in archive/ alongside 108 structured directories in _archive/. Demo files in _tmp/ pollute version control.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Single clear archive system. archive/ contents audited and either deleted or migrated. _tmp/ cleaned or gitignored.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-03T07:58:46.608Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303120000-0135",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:STRATEGY:startup-loop-deprecation-sweep:20260303",
+      "anchor_key": "startup-loop-deprecation-sweep",
+      "cluster_key": "BOS:STRATEGY:startup-loop-deprecation-sweep:operator:20260303",
+      "cluster_fingerprint": "9e7fe532f49722fe0db925f602293132c91084cf79c71e0932669fb42d50b9cb",
+      "lineage_depth": 0,
+      "area_anchor": "Startup loop — superseded files with no deprecation markers",
+      "location_anchors": [
+        "docs/business-os/startup-loop/process-registry-v1.md",
+        "docs/business-os/startup-loop/process-registry-v2.md",
+        "docs/business-os/startup-loop/contract-migration.yaml",
+        "docs/business-os/startup-loop/exception-runbooks-v1.md"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.9,
+      "current_truth": "process-registry-v1.md coexists alongside v2 with no deprecation marker. workstream-workflow-taxonomy-v2 exists in both .md and .yaml formats. contract-migration.yaml and exception-runbooks-v1.md have no context on whether they are still active or superseded.",
+      "next_scope_now": "Fact-find to: (1) determine which version of each duplicate is canonical, (2) check if any code/skill references the superseded versions, (3) create _deprecated/ directory with README documenting replacements and deprecation dates.",
+      "adjacent_later": [
+        "Quarterly deprecation review cadence"
+      ],
+      "evidence_refs": [
+        "agent-verified: process-registry-v1.md and process-registry-v2.md both present",
+        "agent-verified: workstream-workflow-taxonomy-v2.md and workstream-workflow-taxonomy-v2.yaml both present",
+        "agent-verified: contract-migration.yaml present with no context on relevance",
+        "agent-verified: exception-runbooks-v1.md present — unclear if v2 exists",
+        "operator-stated: deprecated files should be clearly marked and separated"
+      ],
+      "why": "Multiple superseded files sit alongside their replacements with no deprecation markers. This creates confusion about which version is canonical and risks agents or operators referencing outdated content.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "_deprecated/ directory created in startup-loop/. Superseded files moved there with README documenting what replaced them and when.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-03T07:58:46.608Z",
       "queue_state": "enqueued"
     }
   ]

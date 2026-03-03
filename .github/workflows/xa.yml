@@ -126,6 +126,7 @@ jobs:
         run: cd apps/xa-b && pnpm build
         env:
           XA_CATALOG_CONTRACT_READ_URL: ${{ vars.XA_CATALOG_CONTRACT_READ_URL }}
+          NEXT_PUBLIC_XA_IMAGES_BASE_URL: ${{ vars.XA_IMAGES_BASE_URL }}
 
       - name: Remove __next.* metadata files (CF Pages 20k file limit)
         run: find apps/xa-b/out -name '__next.*' -type f -delete

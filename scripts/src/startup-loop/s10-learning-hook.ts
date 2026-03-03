@@ -4,7 +4,7 @@
  * Integrates the learning compiler into S10 stage with manifest lifecycle
  * and correction handling (supersede flow).
  *
- * Task: LC-06 from docs/plans/archive/learning-compiler-plan.md
+ * Task: LC-06 from the learning-compiler plan (archived — see git history)
  */
 
 import * as fs from 'node:fs';

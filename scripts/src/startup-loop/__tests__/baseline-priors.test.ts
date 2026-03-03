@@ -4,7 +4,7 @@
  * Tests for the canonical priors extraction/indexing/serialization module.
  * Focus: buildPriorIndex, duplicate detection, qualified refs, narrative isolation.
  *
- * Task: LC-03 from docs/plans/archive/learning-compiler-plan.md
+ * Task: LC-03 from the learning-compiler plan (archived — see git history)
  */
 
 import * as fs from 'node:fs';

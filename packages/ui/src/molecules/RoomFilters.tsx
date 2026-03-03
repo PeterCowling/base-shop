@@ -4,18 +4,27 @@ import { useTranslation } from "react-i18next";
 
 import { Inline } from "../components/atoms/primitives/Inline";
 
-export type RoomFilter = "all" | "private" | "dorms";
+export type RoomFilterView = "all" | "sea" | "courtyard" | "garden" | "none";
+export type RoomFiltersState = {
+  view: RoomFilterView;
+  femaleOnly: boolean;
+  ensuiteBathroom: boolean;
+  bedCounts: number[];
+};
 
 interface RoomFiltersProps {
-  selected: RoomFilter;
-  onChange: (filter: RoomFilter) => void;
+  selected: RoomFiltersState;
+  onChange: (filters: RoomFiltersState) => void;
+  availableBedCounts: number[];
   lang?: string;
 }
 
-const FILTER_FALLBACK_LABELS: Record<RoomFilter, string> = {
-  all: "All",
-  private: "Private",
-  dorms: "Dorms",
+const VIEW_FALLBACK_LABELS: Record<RoomFilterView, string> = {
+  all: "All views",
+  sea: "Sea view",
+  courtyard: "Courtyard",
+  garden: "Garden",
+  none: "No view",
 };
 
 function looksLikeI18nKeyToken(value: string): boolean {
@@ -46,9 +55,9 @@ function resolveTranslatedCopy(value: unknown, fallback: string): string {
   return trimmed;
 }
 
-function RoomFilters({ selected, onChange, lang }: RoomFiltersProps): JSX.Element {
+function RoomFilters({ selected, onChange, availableBedCounts, lang }: RoomFiltersProps): JSX.Element {
   const { t } = useTranslation("roomsPage", { lng: lang });
-  const filters: RoomFilter[] = ["all", "private", "dorms"];
+  const viewFilters: RoomFilterView[] = ["all", "sea", "courtyard", "garden", "none"];
   const activeClass =
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
     "bg-brand-primary text-brand-on-primary border-brand-primary dark:bg-brand-secondary dark:text-brand-on-accent dark:border-brand-secondary";
@@ -57,30 +66,88 @@ function RoomFilters({ selected, onChange, lang }: RoomFiltersProps): JSX.Elemen
     "bg-brand-bg text-brand-primary border-brand-primary hover:bg-brand-primary/10 dark:bg-brand-bg dark:text-brand-text dark:border-brand-secondary/60 dark:hover:bg-brand-secondary/20";
 
   return (
-    <Inline
-      role="radiogroup"
-      aria-label={resolveTranslatedCopy(t("filtersAria", { defaultValue: "Room type filters" }), "Room type filters")}
-      gap={2}
-      className="mb-6 justify-center"
-    >
-      {filters.map((key) => (
+    <div className="mb-6 space-y-3">
+      <Inline
+        role="radiogroup"
+        aria-label={resolveTranslatedCopy(t("filtersAria", { defaultValue: "Room filters" }), "Room filters")}
+        gap={2}
+        className="justify-center"
+      >
+        {viewFilters.map((key) => (
+          <button
+            key={key}
+            type="button"
+            role="radio"
+            aria-checked={selected.view === key}
+            className={`min-h-11 rounded-full px-4 py-2 text-sm border transition-colors duration-200 ${
+              selected.view === key ? activeClass : inactiveClass
+            }`}
+            onClick={() => onChange({ ...selected, view: key })}
+          >
+            {resolveTranslatedCopy(
+              t(`filters.views.${key}`, { defaultValue: VIEW_FALLBACK_LABELS[key] }),
+              VIEW_FALLBACK_LABELS[key]
+            )}
+          </button>
+        ))}
+      </Inline>
+      <Inline role="group" aria-label="Room attributes" gap={2} className="justify-center">
         <button
-          key={key}
           type="button"
-          role="radio"
-          aria-checked={selected === key}
+          aria-pressed={selected.femaleOnly}
           className={`min-h-11 rounded-full px-4 py-2 text-sm border transition-colors duration-200 ${
-            selected === key ? activeClass : inactiveClass
+            selected.femaleOnly ? activeClass : inactiveClass
           }`}
-          onClick={() => onChange(key)}
+          onClick={() => onChange({ ...selected, femaleOnly: !selected.femaleOnly })}
         >
           {resolveTranslatedCopy(
-            t(`filters.${key}`, { defaultValue: FILTER_FALLBACK_LABELS[key] }),
-            FILTER_FALLBACK_LABELS[key]
+            t("filters.femaleOnly", { defaultValue: "Female only" }),
+            "Female only"
           )}
         </button>
-      ))}
-    </Inline>
+        <button
+          type="button"
+          aria-pressed={selected.ensuiteBathroom}
+          className={`min-h-11 rounded-full px-4 py-2 text-sm border transition-colors duration-200 ${
+            selected.ensuiteBathroom ? activeClass : inactiveClass
+          }`}
+          onClick={() => onChange({ ...selected, ensuiteBathroom: !selected.ensuiteBathroom })}
+        >
+          {resolveTranslatedCopy(
+            t("filters.ensuiteBathroom", { defaultValue: "Ensuite / private bathroom" }),
+            "Ensuite / private bathroom"
+          )}
+        </button>
+      </Inline>
+      <Inline role="group" aria-label="Bed count" gap={2} className="justify-center">
+        {availableBedCounts.map((count) => {
+          const isActive = selected.bedCounts.includes(count);
+          return (
+            <button
+              key={count}
+              type="button"
+              aria-pressed={isActive}
+              className={`min-h-11 rounded-full px-4 py-2 text-sm border transition-colors duration-200 ${
+                isActive ? activeClass : inactiveClass
+              }`}
+              onClick={() =>
+                onChange({
+                  ...selected,
+                  bedCounts: isActive
+                    ? selected.bedCounts.filter((value) => value !== count)
+                    : [...selected.bedCounts, count].sort((a, b) => a - b),
+                })
+              }
+            >
+              {resolveTranslatedCopy(
+                t("filters.bedCount", { defaultValue: "{{count}} beds", count }),
+                `${count} beds`
+              )}
+            </button>
+          );
+        })}
+      </Inline>
+    </div>
   );
 }
 

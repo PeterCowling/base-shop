@@ -108,6 +108,7 @@ export function validateTaskConfidence(input: ConfidenceInput): ConfidenceValida
   }
 
   if (normalizedConfidence === config.rules.exact_threshold_flag) {
+    // i18n-exempt -- SKILL-2401 [ttl=2026-12-31] Internal diagnostic string emitted in CLI JSON.
     reasons.push("Exact-threshold red flag at 80: held-back test required.");
   }
 
@@ -181,7 +182,9 @@ export function validatePlanTaskBuildEligibility(
     vcCoverage: inferCoverage(target.raw),
     track: parseTrack(target.fields["execution-track"]),
     redEvidence: hasEvidenceMarker(target.raw, "red evidence"),
+    // i18n-exempt -- SKILL-2401 [ttl=2026-12-31] Non-UI parser marker key in plan markdown.
     greenEvidence: hasEvidenceMarker(target.raw, "green evidence"),
+    // i18n-exempt -- SKILL-2401 [ttl=2026-12-31] Non-UI parser marker key in plan markdown.
     refactorEvidence: hasEvidenceMarker(target.raw, "refactor evidence"),
   });
 

@@ -1,3 +1,9 @@
 name = "xa-b-site"
 pages_build_output_dir = "out"
 compatibility_date = "2025-06-20"
+
+[vars]
+# R2 bucket public URL for product images.
+# Replace with your actual bucket public URL after enabling public access
+# in the Cloudflare dashboard (R2 > bucket > Settings > Public access).
+NEXT_PUBLIC_XA_IMAGES_BASE_URL = "https://pub-xa-media.r2.dev"

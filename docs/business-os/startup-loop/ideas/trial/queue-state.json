@@ -5270,7 +5270,12 @@
         "source": "operator"
       },
       "created_at": "2026-03-03T07:58:46.608Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "completed_at": "2026-03-03T11:32:59.771Z",
+      "completed_by": {
+        "fact_find_slug": "startup-loop-deprecation-sweep",
+        "outcome": "Infeasible — intended outcome already achieved. _deprecated/ directory exists with superseded files properly documented."
+      }
     }
   ]
 }

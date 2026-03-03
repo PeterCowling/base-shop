@@ -15,7 +15,7 @@
  *   head -20 names.txt | npx tsx scripts/src/startup-loop/naming/tm-prescreen-cli.ts > out.txt
  *
  * Sidecar events are written to:
- *   docs/business-os/strategy/HEAD/product-naming-sidecars/
+ *   docs/business-os/strategy/HEAD/assessment/product-naming-sidecars/
  *
  * Environment variable overrides (optional):
  *   TM_SIDECAR_DIR    — override default sidecar directory
@@ -43,7 +43,7 @@ import {
 
 const SIDECAR_DIR =
   process.env['TM_SIDECAR_DIR'] ??
-  '/Users/petercowling/base-shop/docs/business-os/strategy/HEAD/product-naming-sidecars';
+  '/Users/petercowling/base-shop/docs/business-os/strategy/HEAD/assessment/product-naming-sidecars';
 
 const RUN_DATE = process.env['TM_RUN_DATE'] ?? '2026-02-26';
 const ROUND = process.env['TM_ROUND'] != null ? parseInt(process.env['TM_ROUND'], 10) : 1;

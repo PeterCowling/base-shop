@@ -88,24 +88,34 @@ export async function checkSellActGate(
   const reasons: string[] = [];
 
   // ── Check 1: measurement-verification doc with Status: Active ─────────────
+  // After domain-container migration, measurement-verification lives under
+  // <BIZ>/assessment/. Try the new path first, fall back to root for compat.
   let check1Pass = false;
-  try {
-    const entries = await fs.readdir(strategyDir);
-    const measFiles = entries.filter(
-      (e) => e.includes("measurement-verification") && e.endsWith(".user.md"),
-    );
-    for (const filename of measFiles) {
-      const content = await fs.readFile(
-        path.join(strategyDir, filename),
-        "utf8",
+  const searchDirs = [
+    path.join(strategyDir, "assessment"), // new: <BIZ>/assessment/
+    strategyDir,                          // legacy: <BIZ>/
+  ];
+  for (const dir of searchDirs) {
+    if (check1Pass) break;
+    try {
+      const entries = await fs.readdir(dir);
+      const measFiles = entries.filter(
+        (e) =>
+          e.includes("measurement-verification") && e.endsWith(".user.md"),
       );
-      if (/^Status:\s*Active\s*$/m.test(content)) {
-        check1Pass = true;
-        break;
+      for (const filename of measFiles) {
+        const content = await fs.readFile(
+          path.join(dir, filename),
+          "utf8",
+        );
+        if (/^Status:\s*Active\s*$/m.test(content)) {
+          check1Pass = true;
+          break;
+        }
       }
+    } catch {
+      // directory does not exist — continue to next candidate
     }
-  } catch {
-    // strategy directory does not exist — check 1 cannot pass
   }
   if (!check1Pass) {
     reasons.push(

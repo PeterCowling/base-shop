@@ -1,0 +1,768 @@
+{
+  "files": [
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-12-apartment-revenue-architecture.user.html",
+      "to": "docs/business-os/strategy/BRIK/sales/2026-02-12-apartment-revenue-architecture.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-12-apartment-revenue-architecture.user.md",
+      "to": "docs/business-os/strategy/BRIK/sales/2026-02-12-apartment-revenue-architecture.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-12-brand-identity-dossier.user.html",
+      "to": "docs/business-os/strategy/BRIK/assessment/2026-02-12-brand-identity-dossier.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-12-brand-identity-dossier.user.md",
+      "to": "docs/business-os/strategy/BRIK/assessment/2026-02-12-brand-identity-dossier.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-12-ga4-search-console-setup-note.user.html",
+      "to": "docs/business-os/strategy/BRIK/sales/2026-02-12-ga4-search-console-setup-note.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-12-ga4-search-console-setup-note.user.md",
+      "to": "docs/business-os/strategy/BRIK/sales/2026-02-12-ga4-search-console-setup-note.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-12-historical-baseline-prompt.user.html",
+      "to": "docs/business-os/strategy/BRIK/sales/2026-02-12-historical-baseline-prompt.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-12-historical-baseline-prompt.user.md",
+      "to": "docs/business-os/strategy/BRIK/sales/2026-02-12-historical-baseline-prompt.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-12-historical-data-request-prompt.user.html",
+      "to": "docs/business-os/strategy/BRIK/sales/2026-02-12-historical-data-request-prompt.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-12-historical-data-request-prompt.user.md",
+      "to": "docs/business-os/strategy/BRIK/sales/2026-02-12-historical-data-request-prompt.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.html",
+      "to": "docs/business-os/strategy/BRIK/sales/2026-02-12-historical-performance-baseline.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md",
+      "to": "docs/business-os/strategy/BRIK/sales/2026-02-12-historical-performance-baseline.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.html",
+      "to": "docs/business-os/strategy/BRIK/assessment/2026-02-13-measurement-verification.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md",
+      "to": "docs/business-os/strategy/BRIK/assessment/2026-02-13-measurement-verification.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-13-prioritization-scorecard.user.html",
+      "to": "docs/business-os/strategy/BRIK/assessment/2026-02-13-prioritization-scorecard.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-13-prioritization-scorecard.user.md",
+      "to": "docs/business-os/strategy/BRIK/assessment/2026-02-13-prioritization-scorecard.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1-exec-summary.user.html",
+      "to": "docs/business-os/strategy/BRIK/sales/2026-02-13-startup-loop-90-day-forecast-v1-exec-summary.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1-exec-summary.user.md",
+      "to": "docs/business-os/strategy/BRIK/sales/2026-02-13-startup-loop-90-day-forecast-v1-exec-summary.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1.user.html",
+      "to": "docs/business-os/strategy/BRIK/sales/2026-02-13-startup-loop-90-day-forecast-v1.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1.user.md",
+      "to": "docs/business-os/strategy/BRIK/sales/2026-02-13-startup-loop-90-day-forecast-v1.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-13-weekly-kpcs-decision.user.html",
+      "to": "docs/business-os/strategy/BRIK/sales/2026-02-13-weekly-kpcs-decision.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-13-weekly-kpcs-decision.user.md",
+      "to": "docs/business-os/strategy/BRIK/sales/2026-02-13-weekly-kpcs-decision.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-14-octorate-operational-data-baseline.user.md",
+      "to": "docs/business-os/strategy/BRIK/sales/2026-02-14-octorate-operational-data-baseline.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-17-brikette-sales-funnel-external-brief.user.md",
+      "to": "docs/business-os/strategy/BRIK/sales/2026-02-17-brikette-sales-funnel-external-brief.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/2026-02-17-octorate-process-reduction-feasibility.user.md",
+      "to": "docs/business-os/strategy/BRIK/sales/2026-02-17-octorate-process-reduction-feasibility.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/apps/reception/worldclass-benchmark.md",
+      "to": "docs/business-os/strategy/BRIK/product/reception/worldclass-benchmark.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/apps/reception/worldclass-goal.md",
+      "to": "docs/business-os/strategy/BRIK/product/reception/worldclass-goal.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/apps/reception/worldclass-research-prompt.md",
+      "to": "docs/business-os/strategy/BRIK/product/reception/worldclass-research-prompt.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/apps/reception/worldclass-scan-2026-02-28.md",
+      "to": "docs/business-os/strategy/BRIK/product/reception/worldclass-scan-2026-02-28.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/prime-app-design-branding.user.html",
+      "to": "docs/business-os/strategy/BRIK/product/prime-app-design-branding.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/prime-app-design-branding.user.md",
+      "to": "docs/business-os/strategy/BRIK/product/prime-app-design-branding.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/product-spec-sources.md",
+      "to": "docs/business-os/strategy/BRIK/product/product-spec-sources.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/product-spec.user.md",
+      "to": "docs/business-os/strategy/BRIK/product/product-spec.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/room-pricing-analysis.md",
+      "to": "docs/business-os/strategy/BRIK/product/room-pricing-analysis.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/signal-review-20260218-1238-W08.md",
+      "to": "docs/business-os/strategy/BRIK/marketing/signal-review-20260218-1238-W08.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/signal-review-20260226-1641-W09.md",
+      "to": "docs/business-os/strategy/BRIK/marketing/signal-review-20260226-1641-W09.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/worldclass-benchmark.md",
+      "to": "docs/business-os/strategy/BRIK/product/worldclass-benchmark.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/worldclass-goal.md",
+      "to": "docs/business-os/strategy/BRIK/product/worldclass-goal.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/worldclass-research-prompt.md",
+      "to": "docs/business-os/strategy/BRIK/product/worldclass-research-prompt.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BRIK/worldclass-scan-2026-02-27.md",
+      "to": "docs/business-os/strategy/BRIK/product/worldclass-scan-2026-02-27.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/2026-02-17-brand-identity-dossier.user.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/2026-02-17-brand-identity-dossier.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/2026-02-20-candidate-names.user.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/2026-02-20-candidate-names.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/2026-02-20-operator-context.user.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/2026-02-20-operator-context.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/2026-02-20-problem-statement.user.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/2026-02-20-problem-statement.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/2026-02-20-solution-decision.user.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/2026-02-20-solution-decision.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/2026-02-20-solution-profile-results.user.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/2026-02-20-solution-profile-results.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/2026-02-20-solution-profiling-prompt.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/2026-02-20-solution-profiling-prompt.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.html",
+      "to": "docs/business-os/strategy/HBAG/assessment/2026-02-21-brand-identity-dossier.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/2026-02-21-brand-identity-dossier.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/2026-02-21-brand-identity-preview.user.html",
+      "to": "docs/business-os/strategy/HBAG/assessment/2026-02-21-brand-identity-preview.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/2026-02-21-brand-profile.user.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/2026-02-21-brand-profile.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/2026-02-21-candidate-names-r2.user.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/2026-02-21-candidate-names-r2.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/2026-02-21-launch-distribution-plan.user.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/2026-02-21-launch-distribution-plan.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/2026-02-21-measurement-profile.user.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/2026-02-21-measurement-profile.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/2026-02-21-naming-generation-spec.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/2026-02-21-naming-generation-spec.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/2026-02-21-naming-research-summary.user.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/2026-02-21-naming-research-summary.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/2026-02-22-product-from-photo.user.md",
+      "to": "docs/business-os/strategy/HBAG/product/2026-02-22-product-from-photo.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/2026-02-27-logo-brief.user.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/2026-02-27-logo-brief.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/2026-02-27-product-naming-spec.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/2026-02-27-product-naming-spec.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/candidate-names-prompt-r2.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/candidate-names-prompt-r2.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/candidate-names-prompt.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/candidate-names-prompt.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/current-problem-framing.user.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/current-problem-framing.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/latest-candidate-names.user.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/latest-candidate-names.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/name-selection-spec.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/name-selection-spec.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/naming-candidates-2026-02-21.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/naming-candidates-2026-02-21.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/naming-rdap-2026-02-21.txt",
+      "to": "docs/business-os/strategy/HBAG/assessment/naming-rdap-2026-02-21.txt"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/naming-shortlist-2026-02-21.user.html",
+      "to": "docs/business-os/strategy/HBAG/assessment/naming-shortlist-2026-02-21.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/naming-shortlist-2026-02-21.user.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/naming-shortlist-2026-02-21.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/product-from-photo-prompt.md",
+      "to": "docs/business-os/strategy/HBAG/product/product-from-photo-prompt.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/product-naming-candidates-2026-02-27.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/product-naming-candidates-2026-02-27.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/product-naming-shortlist-2026-02-27.user.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/product-naming-shortlist-2026-02-27.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/product-naming-sidecars/2026-02-27-round-1.jsonl",
+      "to": "docs/business-os/strategy/HBAG/assessment/product-naming-sidecars/2026-02-27-round-1.jsonl"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/product-naming-tm-2026-02-27.txt",
+      "to": "docs/business-os/strategy/HBAG/assessment/product-naming-tm-2026-02-27.txt"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/products-bundle-hypotheses.user.md",
+      "to": "docs/business-os/strategy/HBAG/product/products-bundle-hypotheses.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/products-competitor-scan.user.md",
+      "to": "docs/business-os/strategy/HBAG/product/products-competitor-scan.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/products-line-mapping.user.md",
+      "to": "docs/business-os/strategy/HBAG/product/products-line-mapping.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/s0a-research-appendix.user.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/s0a-research-appendix.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/s1-readiness.user.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/s1-readiness.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/site-v1-builder-prompt.user.html",
+      "to": "docs/business-os/strategy/HBAG/marketing/site-v1-builder-prompt.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/site-v1-builder-prompt.user.md",
+      "to": "docs/business-os/strategy/HBAG/marketing/site-v1-builder-prompt.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/supplier-spec-confirmed.user.md",
+      "to": "docs/business-os/strategy/HBAG/product/supplier-spec-confirmed.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/tagline-options.user.md",
+      "to": "docs/business-os/strategy/HBAG/assessment/tagline-options.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/website-iteration-cycles.json",
+      "to": "docs/business-os/strategy/HBAG/marketing/website-iteration-cycles.json"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/website-iteration-seed.json",
+      "to": "docs/business-os/strategy/HBAG/marketing/website-iteration-seed.json"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/website-iteration-throughput-report.user.md",
+      "to": "docs/business-os/strategy/HBAG/marketing/website-iteration-throughput-report.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/worldclass-benchmark.md",
+      "to": "docs/business-os/strategy/HBAG/product/worldclass-benchmark.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/worldclass-goal.md",
+      "to": "docs/business-os/strategy/HBAG/product/worldclass-goal.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/worldclass-research-prompt.md",
+      "to": "docs/business-os/strategy/HBAG/product/worldclass-research-prompt.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HBAG/worldclass-scan-2026-02-28.md",
+      "to": "docs/business-os/strategy/HBAG/product/worldclass-scan-2026-02-28.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/2026-02-11-week2-gate-dry-run.agent.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/2026-02-11-week2-gate-dry-run.agent.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/2026-02-11-week2-gate-dry-run.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/2026-02-11-week2-gate-dry-run.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/2026-02-12-prioritization-scorecard.user.html",
+      "to": "docs/business-os/strategy/HEAD/assessment/2026-02-12-prioritization-scorecard.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/2026-02-12-prioritization-scorecard.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/2026-02-12-prioritization-scorecard.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/2026-02-12-weekly-kpcs-decision.user.html",
+      "to": "docs/business-os/strategy/HEAD/sales/2026-02-12-weekly-kpcs-decision.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/2026-02-12-weekly-kpcs-decision.user.md",
+      "to": "docs/business-os/strategy/HEAD/sales/2026-02-12-weekly-kpcs-decision.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/2026-02-20-candidate-names.user.html",
+      "to": "docs/business-os/strategy/HEAD/assessment/2026-02-20-candidate-names.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/2026-02-20-candidate-names.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/2026-02-20-candidate-names.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/2026-02-20-operator-context.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/2026-02-20-operator-context.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/2026-02-20-problem-statement.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/2026-02-20-problem-statement.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/2026-02-20-solution-decision.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/2026-02-20-solution-decision.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/2026-02-20-solution-profile-results.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/2026-02-20-solution-profile-results.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/2026-02-20-solution-profiling-prompt.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/2026-02-20-solution-profiling-prompt.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/2026-02-21-brand-identity-dossier.user.html",
+      "to": "docs/business-os/strategy/HEAD/assessment/2026-02-21-brand-identity-dossier.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/2026-02-21-brand-identity-dossier.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/2026-02-21-brand-identity-dossier.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/2026-02-21-brand-identity-preview.user.html",
+      "to": "docs/business-os/strategy/HEAD/assessment/2026-02-21-brand-identity-preview.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/2026-02-21-brand-profile.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/2026-02-21-brand-profile.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/2026-02-21-candidate-names-r2.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/2026-02-21-candidate-names-r2.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/2026-02-21-launch-distribution-plan.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/2026-02-21-launch-distribution-plan.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/2026-02-21-measurement-profile.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/2026-02-21-measurement-profile.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/2026-02-22-naming-generation-spec.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/2026-02-22-naming-generation-spec.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/2026-02-26-product-naming-spec.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/2026-02-26-product-naming-spec.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/2026-02-26-product-naming.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/2026-02-26-product-naming.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/adjacent-product-research-prompt.md",
+      "to": "docs/business-os/strategy/HEAD/product/adjacent-product-research-prompt.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/candidate-names-prompt-v2.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/candidate-names-prompt-v2.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/candidate-names-prompt.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/candidate-names-prompt.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/decisions/DEC-HEAD-CH-01.user.html",
+      "to": "docs/business-os/strategy/HEAD/assessment/DEC-HEAD-CH-01.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/decisions/DEC-HEAD-CH-01.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/DEC-HEAD-CH-01.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/decisions/DEC-HEAD-NAME-01.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/DEC-HEAD-NAME-01.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v1-exec-summary.agent.md",
+      "to": "docs/business-os/strategy/HEAD/sales/headband-90-day-launch-forecast-v1-exec-summary.agent.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v1-exec-summary.user.md",
+      "to": "docs/business-os/strategy/HEAD/sales/headband-90-day-launch-forecast-v1-exec-summary.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v1.agent.md",
+      "to": "docs/business-os/strategy/HEAD/sales/headband-90-day-launch-forecast-v1.agent.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v1.user.md",
+      "to": "docs/business-os/strategy/HEAD/sales/headband-90-day-launch-forecast-v1.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2-exec-summary.user.md",
+      "to": "docs/business-os/strategy/HEAD/sales/headband-90-day-launch-forecast-v2-exec-summary.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md",
+      "to": "docs/business-os/strategy/HEAD/sales/headband-90-day-launch-forecast-v2.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/latest-candidate-names.user.html",
+      "to": "docs/business-os/strategy/HEAD/assessment/latest-candidate-names.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/latest-candidate-names.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/latest-candidate-names.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/launch-readiness-action-backlog.agent.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/launch-readiness-action-backlog.agent.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/launch-readiness-action-backlog.user.html",
+      "to": "docs/business-os/strategy/HEAD/assessment/launch-readiness-action-backlog.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/launch-readiness-action-backlog.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/launch-readiness-action-backlog.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/lp-other-products-results.user.html",
+      "to": "docs/business-os/strategy/HEAD/product/lp-other-products-results.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/lp-other-products-results.user.md",
+      "to": "docs/business-os/strategy/HEAD/product/lp-other-products-results.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/messaging-hierarchy.user.html",
+      "to": "docs/business-os/strategy/HEAD/assessment/messaging-hierarchy.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/messaging-hierarchy.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/messaging-hierarchy.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/naming-candidates-2026-02-21-r4.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/naming-candidates-2026-02-21-r4.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/naming-candidates-2026-02-21-r5.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/naming-candidates-2026-02-21-r5.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/naming-candidates-2026-02-21.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/naming-candidates-2026-02-21.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/naming-candidates-2026-02-22-r6.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/naming-candidates-2026-02-22-r6.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/naming-candidates-2026-02-26-r7.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/naming-candidates-2026-02-26-r7.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/naming-rdap-2026-02-21-r4.txt",
+      "to": "docs/business-os/strategy/HEAD/assessment/naming-rdap-2026-02-21-r4.txt"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/naming-rdap-2026-02-21-r5.txt",
+      "to": "docs/business-os/strategy/HEAD/assessment/naming-rdap-2026-02-21-r5.txt"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/naming-rdap-2026-02-21.txt",
+      "to": "docs/business-os/strategy/HEAD/assessment/naming-rdap-2026-02-21.txt"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/naming-rdap-2026-02-22-r6.txt",
+      "to": "docs/business-os/strategy/HEAD/assessment/naming-rdap-2026-02-22-r6.txt"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/naming-rdap-2026-02-26-r7.txt",
+      "to": "docs/business-os/strategy/HEAD/assessment/naming-rdap-2026-02-26-r7.txt"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/naming-shortlist-2026-02-21-extended.user.html",
+      "to": "docs/business-os/strategy/HEAD/assessment/naming-shortlist-2026-02-21-extended.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/naming-shortlist-2026-02-21-r4.user.html",
+      "to": "docs/business-os/strategy/HEAD/assessment/naming-shortlist-2026-02-21-r4.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/naming-shortlist-2026-02-21-r4.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/naming-shortlist-2026-02-21-r4.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/naming-shortlist-2026-02-21-r5.user.html",
+      "to": "docs/business-os/strategy/HEAD/assessment/naming-shortlist-2026-02-21-r5.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/naming-shortlist-2026-02-21-r5.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/naming-shortlist-2026-02-21-r5.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/naming-shortlist-2026-02-21.user.html",
+      "to": "docs/business-os/strategy/HEAD/assessment/naming-shortlist-2026-02-21.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/naming-shortlist-2026-02-21.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/naming-shortlist-2026-02-21.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/naming-shortlist-2026-02-22-r6.user.html",
+      "to": "docs/business-os/strategy/HEAD/assessment/naming-shortlist-2026-02-22-r6.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/naming-shortlist-2026-02-22-r6.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/naming-shortlist-2026-02-22-r6.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/naming-shortlist-2026-02-26-r7.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/naming-shortlist-2026-02-26-r7.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/naming-sidecars/2026-02-26-round-7.jsonl",
+      "to": "docs/business-os/strategy/HEAD/assessment/naming-sidecars/2026-02-26-round-7.jsonl"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/product-naming-candidates-2026-02-26.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/product-naming-candidates-2026-02-26.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/product-naming-shortlist-2026-02-26.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/product-naming-shortlist-2026-02-26.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/product-naming-sidecars/2026-02-26-round-1.jsonl",
+      "to": "docs/business-os/strategy/HEAD/assessment/product-naming-sidecars/2026-02-26-round-1.jsonl"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/product-naming-tm-2026-02-26.txt",
+      "to": "docs/business-os/strategy/HEAD/assessment/product-naming-tm-2026-02-26.txt"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/s1-readiness.user.html",
+      "to": "docs/business-os/strategy/HEAD/assessment/s1-readiness.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/HEAD/s1-readiness.user.md",
+      "to": "docs/business-os/strategy/HEAD/assessment/s1-readiness.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/PET/2026-02-11-week2-gate-dry-run.agent.md",
+      "to": "docs/business-os/strategy/PET/assessment/2026-02-11-week2-gate-dry-run.agent.md"
+    },
+    {
+      "from": "docs/business-os/strategy/PET/2026-02-11-week2-gate-dry-run.user.md",
+      "to": "docs/business-os/strategy/PET/assessment/2026-02-11-week2-gate-dry-run.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/PET/2026-02-12-prioritization-scorecard.user.html",
+      "to": "docs/business-os/strategy/PET/assessment/2026-02-12-prioritization-scorecard.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/PET/2026-02-12-prioritization-scorecard.user.md",
+      "to": "docs/business-os/strategy/PET/assessment/2026-02-12-prioritization-scorecard.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/PET/2026-02-12-weekly-kpcs-decision.user.html",
+      "to": "docs/business-os/strategy/PET/sales/2026-02-12-weekly-kpcs-decision.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/PET/2026-02-12-weekly-kpcs-decision.user.md",
+      "to": "docs/business-os/strategy/PET/sales/2026-02-12-weekly-kpcs-decision.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/PET/2026-02-17-brand-identity-dossier.user.html",
+      "to": "docs/business-os/strategy/PET/assessment/2026-02-17-brand-identity-dossier.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/PET/2026-02-17-brand-identity-dossier.user.md",
+      "to": "docs/business-os/strategy/PET/assessment/2026-02-17-brand-identity-dossier.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/PET/2026-02-18-candidate-names.user.md",
+      "to": "docs/business-os/strategy/PET/assessment/2026-02-18-candidate-names.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/PET/2026-02-18-naming-prompt.user.md",
+      "to": "docs/business-os/strategy/PET/assessment/2026-02-18-naming-prompt.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2-exec-summary.agent.md",
+      "to": "docs/business-os/strategy/PET/sales/italy-90-day-launch-forecast-v2-exec-summary.agent.md"
+    },
+    {
+      "from": "docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2-exec-summary.user.md",
+      "to": "docs/business-os/strategy/PET/sales/italy-90-day-launch-forecast-v2-exec-summary.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.agent.md",
+      "to": "docs/business-os/strategy/PET/sales/italy-90-day-launch-forecast-v2.agent.md"
+    },
+    {
+      "from": "docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.user.md",
+      "to": "docs/business-os/strategy/PET/sales/italy-90-day-launch-forecast-v2.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/PET/launch-readiness-action-backlog.agent.md",
+      "to": "docs/business-os/strategy/PET/assessment/launch-readiness-action-backlog.agent.md"
+    },
+    {
+      "from": "docs/business-os/strategy/PET/launch-readiness-action-backlog.user.md",
+      "to": "docs/business-os/strategy/PET/assessment/launch-readiness-action-backlog.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/PWRB/2026-02-26-naming-generation-spec.md",
+      "to": "docs/business-os/strategy/PWRB/assessment/2026-02-26-naming-generation-spec.md"
+    },
+    {
+      "from": "docs/business-os/strategy/PWRB/2026-02-26-problem-statement.user.md",
+      "to": "docs/business-os/strategy/PWRB/assessment/2026-02-26-problem-statement.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/PWRB/2026-02-26-solution-decision.user.md",
+      "to": "docs/business-os/strategy/PWRB/assessment/2026-02-26-solution-decision.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/PWRB/2026-02-26-solution-profile-results.user.md",
+      "to": "docs/business-os/strategy/PWRB/assessment/2026-02-26-solution-profile-results.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/PWRB/2026-02-26-solution-profiling-prompt.md",
+      "to": "docs/business-os/strategy/PWRB/assessment/2026-02-26-solution-profiling-prompt.md"
+    },
+    {
+      "from": "docs/business-os/strategy/PWRB/2026-03-01-partner-brochure-mobile-first.user.html",
+      "to": "docs/business-os/strategy/PWRB/marketing/2026-03-01-partner-brochure-mobile-first.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/PWRB/assets/powerbank-2025.jpg",
+      "to": "docs/business-os/strategy/PWRB/marketing/assets/powerbank-2025.jpg"
+    },
+    {
+      "from": "docs/business-os/strategy/PWRB/assets/powerbank-portable.jpg",
+      "to": "docs/business-os/strategy/PWRB/marketing/assets/powerbank-portable.jpg"
+    },
+    {
+      "from": "docs/business-os/strategy/PWRB/assets/powerbank-usb.jpg",
+      "to": "docs/business-os/strategy/PWRB/marketing/assets/powerbank-usb.jpg"
+    },
+    {
+      "from": "docs/business-os/strategy/PWRB/naming-candidates-2026-02-26.md",
+      "to": "docs/business-os/strategy/PWRB/assessment/naming-candidates-2026-02-26.md"
+    },
+    {
+      "from": "docs/business-os/strategy/PWRB/naming-rdap-2026-02-26.txt",
+      "to": "docs/business-os/strategy/PWRB/assessment/naming-rdap-2026-02-26.txt"
+    },
+    {
+      "from": "docs/business-os/strategy/PWRB/naming-shortlist-2026-02-26.user.html",
+      "to": "docs/business-os/strategy/PWRB/assessment/naming-shortlist-2026-02-26.user.html"
+    },
+    {
+      "from": "docs/business-os/strategy/PWRB/naming-shortlist-2026-02-26.user.md",
+      "to": "docs/business-os/strategy/PWRB/assessment/naming-shortlist-2026-02-26.user.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BOS/2026-03-02-cass-verification-decision-scorecard.agent.md",
+      "to": "docs/business-os/strategy/BOS/sales/2026-03-02-cass-verification-decision-scorecard.agent.md"
+    },
+    {
+      "from": "docs/business-os/strategy/BOS/2026-03-02-cass-verification-decision-scorecard.user.md",
+      "to": "docs/business-os/strategy/BOS/sales/2026-03-02-cass-verification-decision-scorecard.user.md"
+    }
+  ]
+}

@@ -109,7 +109,7 @@
     },
     {
       "artifact_id": "BRIK-ASSESSMENT-BRAND-IDENTITY",
-      "path": "docs/business-os/strategy/BRIK/2026-02-12-brand-identity-dossier.user.md",
+      "path": "docs/business-os/strategy/BRIK/assessment/2026-02-12-brand-identity-dossier.user.md",
       "domain": "ASSESSMENT",
       "business": "BRIK",
       "artifact_class": "source_reference",
@@ -124,7 +124,7 @@
     },
     {
       "artifact_id": "HBAG-ASSESSMENT-BRAND-IDENTITY",
-      "path": "docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md",
+      "path": "docs/business-os/strategy/HBAG/assessment/2026-02-21-brand-identity-dossier.user.md",
       "domain": "ASSESSMENT",
       "business": "HBAG",
       "artifact_class": "source_reference",
@@ -139,7 +139,7 @@
     },
     {
       "artifact_id": "HEAD-ASSESSMENT-BRAND-IDENTITY",
-      "path": "docs/business-os/strategy/HEAD/2026-02-21-brand-identity-dossier.user.md",
+      "path": "docs/business-os/strategy/HEAD/assessment/2026-02-21-brand-identity-dossier.user.md",
       "domain": "ASSESSMENT",
       "business": "HEAD",
       "artifact_class": "source_reference",
@@ -154,7 +154,7 @@
     },
     {
       "artifact_id": "PET-ASSESSMENT-BRAND-IDENTITY",
-      "path": "docs/business-os/strategy/PET/2026-02-17-brand-identity-dossier.user.md",
+      "path": "docs/business-os/strategy/PET/assessment/2026-02-17-brand-identity-dossier.user.md",
       "domain": "ASSESSMENT",
       "business": "PET",
       "artifact_class": "source_reference",
@@ -169,7 +169,7 @@
     },
     {
       "artifact_id": "HBAG-ASSESSMENT-SOLUTION-DECISION",
-      "path": "docs/business-os/strategy/HBAG/2026-02-20-solution-decision.user.md",
+      "path": "docs/business-os/strategy/HBAG/assessment/2026-02-20-solution-decision.user.md",
       "domain": "ASSESSMENT",
       "business": "HBAG",
       "artifact_class": "source_reference",
@@ -184,7 +184,7 @@
     },
     {
       "artifact_id": "HEAD-ASSESSMENT-SOLUTION-DECISION",
-      "path": "docs/business-os/strategy/HEAD/2026-02-20-solution-decision.user.md",
+      "path": "docs/business-os/strategy/HEAD/assessment/2026-02-20-solution-decision.user.md",
       "domain": "ASSESSMENT",
       "business": "HEAD",
       "artifact_class": "source_reference",
@@ -199,7 +199,7 @@
     },
     {
       "artifact_id": "PWRB-ASSESSMENT-SOLUTION-DECISION",
-      "path": "docs/business-os/strategy/PWRB/2026-02-26-solution-decision.user.md",
+      "path": "docs/business-os/strategy/PWRB/assessment/2026-02-26-solution-decision.user.md",
       "domain": "ASSESSMENT",
       "business": "PWRB",
       "artifact_class": "source_reference",
@@ -214,7 +214,7 @@
     },
     {
       "artifact_id": "HBAG-ASSESSMENT-BRAND-PROFILE",
-      "path": "docs/business-os/strategy/HBAG/2026-02-21-brand-profile.user.md",
+      "path": "docs/business-os/strategy/HBAG/assessment/2026-02-21-brand-profile.user.md",
       "domain": "ASSESSMENT",
       "business": "HBAG",
       "artifact_class": "source_reference",
@@ -229,7 +229,7 @@
     },
     {
       "artifact_id": "HEAD-ASSESSMENT-BRAND-PROFILE",
-      "path": "docs/business-os/strategy/HEAD/2026-02-21-brand-profile.user.md",
+      "path": "docs/business-os/strategy/HEAD/assessment/2026-02-21-brand-profile.user.md",
       "domain": "ASSESSMENT",
       "business": "HEAD",
       "artifact_class": "source_reference",
@@ -244,7 +244,7 @@
     },
     {
       "artifact_id": "HBAG-ASSESSMENT-DISTRIBUTION-PLAN",
-      "path": "docs/business-os/strategy/HBAG/2026-02-21-launch-distribution-plan.user.md",
+      "path": "docs/business-os/strategy/HBAG/assessment/2026-02-21-launch-distribution-plan.user.md",
       "domain": "ASSESSMENT",
       "business": "HBAG",
       "artifact_class": "source_reference",

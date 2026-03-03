@@ -20,7 +20,7 @@ import {
 import { formatRdapLegacyText, rdapBatchCheck } from './rdap-client.js';
 
 const SIDECAR_DIR =
-  '/Users/petercowling/base-shop/docs/business-os/strategy/HEAD/naming-sidecars';
+  '/Users/petercowling/base-shop/docs/business-os/strategy/HEAD/assessment/naming-sidecars';
 
 const RUN_DATE = '2026-02-26';
 const ROUND = 7;

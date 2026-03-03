@@ -133,6 +133,14 @@ describe("lintStartupLoopArtifactPath — measurement-verification (VC-01)", () 
     });
     expect(issues).toHaveLength(0);
   });
+
+  it("VC-01: compliant path with assessment/ container produces no issues", () => {
+    const issues = lintStartupLoopArtifactPath({
+      filePath:
+        "docs/business-os/strategy/BRIK/assessment/2026-02-13-measurement-verification.user.md",
+    });
+    expect(issues).toHaveLength(0);
+  });
 });
 
 // ── TC-01..TC-04: lintBriefingContract ─────────────────────────────────────

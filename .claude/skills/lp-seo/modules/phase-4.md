@@ -2,7 +2,7 @@
 
 **Loads**: `phase-base-contract.md` (output location, common inputs, inter-phase handoff, quality requirements)
 **Prerequisites**: Can run independently; benefits from knowing target keywords (Phase 1) and content strategy (Phase 2)
-**Output**: `docs/business-os/strategy/<BIZ>/seo/<YYYY-MM-DD>-tech-audit-<BIZ>.user.md`
+**Output**: `docs/business-os/strategy/<BIZ>/marketing/seo/<YYYY-MM-DD>-tech-audit-<BIZ>.user.md`
 
 Audit technical SEO foundations to ensure content can rank. Covers crawlability, indexability, site speed, mobile-friendliness, structured data, and core web vitals.
 

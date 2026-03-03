@@ -56,6 +56,13 @@ export function RoomsSection({
   includeRoomIds,
   ...props
 }: RoomsSectionProps & Omit<RoomsSectionBaseProps, "itemListId" | "onRoomSelect">) {
+  const visibleRooms = useMemo(
+    () => (Array.isArray(websiteVisibleRoomsData) && websiteVisibleRoomsData.length > 0
+      ? websiteVisibleRoomsData
+      : roomsData),
+    [],
+  );
+
   const effectiveExcludeRoomIds = useMemo(() => {
     const hiddenRoomIds = roomsData
       .filter((room) => room.isVisibleOnWebsite === false)
@@ -72,7 +79,7 @@ export function RoomsSection({
   const roomPrices = useMemo<Record<string, RoomCardPrice> | undefined>(() => {
     if (!availabilityRooms || availabilityRooms.length === 0) return roomPricesOverride;
     const prices: Record<string, RoomCardPrice> = {};
-    for (const room of websiteVisibleRoomsData) {
+    for (const room of visibleRooms) {
       if (!room.octorateRoomCategory) continue;
       const avRoom = aggregateAvailabilityByCategory(availabilityRooms, room.octorateRoomCategory);
       if (!avRoom) continue;
@@ -88,7 +95,7 @@ export function RoomsSection({
       }
     }
     return Object.keys(prices).length > 0 ? prices : roomPricesOverride;
-  }, [availabilityRooms, roomPricesOverride]);
+  }, [availabilityRooms, roomPricesOverride, visibleRooms]);
 
   // Ref-level guard prevents duplicate begin_checkout events on rapid re-clicks.
   // It must be reset on `pageshow` because back/forward cache can restore a page
@@ -135,7 +142,7 @@ export function RoomsSection({
     if (queryState === "valid") {
       // Navigate directly to Octorate using the booking query dates.
       // TC-02/TC-03/TC-04: wrap in trackThenNavigate for reliable beacon dispatch.
-      const room = websiteVisibleRoomsData.find((r) => r.id === ctx.roomSku);
+      const room = visibleRooms.find((r) => r.id === ctx.roomSku);
       if (room) {
         const octorateRateCode =
           ctx.plan === "nr" ? room.rateCodes.direct.nr : room.rateCodes.direct.flex;

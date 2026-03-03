@@ -56,6 +56,7 @@ export default async function BookPage({ params }: Props) {
   const heading = (t("heading") as string) || "";
   const noscriptMessage = (t("noscript.jsDisabledAssistance") as string) || "";
   const noscriptLinkLabel = (t("noscript.emailAssistedBooking") as string) || "";
+  const octorateLinkLabel = (t("noscript.octorateDirectBooking") as string) || "";
 
   return (
     <>
@@ -68,6 +69,14 @@ export default async function BookPage({ params }: Props) {
       <noscript>
         <div>
           {noscriptMessage}{" "}
+          <a
+            href="https://book.octorate.com/octobook/site/reservation/calendar.xhtml?id=5879"
+            rel="nofollow noopener noreferrer"
+            target="_blank"
+          >
+            {octorateLinkLabel || noscriptLinkLabel}
+          </a>
+          .{" "}
           <a
             href="mailto:hostelpositano@gmail.com?subject=Hostel%20booking%20assistance"
             rel="nofollow noopener noreferrer"

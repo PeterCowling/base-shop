@@ -93,7 +93,7 @@ describe("s2-market-intelligence-handoff", () => {
     await writeTemplates(repoRoot);
 
     await writeFile(
-      path.join(repoRoot, "docs/business-os/startup-baselines/TEST-intake-packet.user.md"),
+      path.join(repoRoot, "docs/business-os/startup-baselines/TEST/intake-packet.user.md"),
       `---
 Type: Startup-Intake-Packet
 Status: Active
@@ -372,7 +372,7 @@ Source-Pack: docs/business-os/market-research/TEST/2026-02-01-market-intelligenc
     await writeTemplates(repoRoot);
 
     await writeFile(
-      path.join(repoRoot, "docs/business-os/startup-baselines/TEST-intake-packet.user.md"),
+      path.join(repoRoot, "docs/business-os/startup-baselines/TEST/intake-packet.user.md"),
       `---
 Type: Startup-Intake-Packet
 Status: Active
@@ -468,7 +468,7 @@ Profile-Id: b2c_dtc_product
     await writeTemplates(repoRoot);
 
     await writeFile(
-      path.join(repoRoot, "docs/business-os/startup-baselines/TEST-intake-packet.user.md"),
+      path.join(repoRoot, "docs/business-os/startup-baselines/TEST/intake-packet.user.md"),
       `---
 Type: Startup-Intake-Packet
 Status: Active
@@ -553,7 +553,7 @@ Owner: Test
     await writeTemplates(repoRoot);
 
     await writeFile(
-      path.join(repoRoot, "docs/business-os/startup-baselines/TEST-intake-packet.user.md"),
+      path.join(repoRoot, "docs/business-os/startup-baselines/TEST/intake-packet.user.md"),
       `---
 Type: Startup-Intake-Packet
 Status: Active

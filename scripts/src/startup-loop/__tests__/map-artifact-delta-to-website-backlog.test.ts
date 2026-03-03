@@ -6,7 +6,7 @@ describe("mapArtifactDeltaToWebsiteBacklog", () => {
   it("TC-06-01: offer-only change emits home/PLP/PDP copy tasks", () => {
     const result = mapArtifactDeltaToWebsiteBacklog({
       business: "TEST",
-      changedPaths: ["docs/business-os/startup-baselines/TEST-offer.md"],
+      changedPaths: ["docs/business-os/startup-baselines/TEST/offer.md"],
       logisticsApplies: false,
     });
 
@@ -36,7 +36,7 @@ describe("mapArtifactDeltaToWebsiteBacklog", () => {
   it("TC-06-03: unchanged artifacts emit no-op output", () => {
     const result = mapArtifactDeltaToWebsiteBacklog({
       business: "TEST",
-      changedPaths: ["docs/business-os/startup-baselines/TEST-intake-packet.user.md"],
+      changedPaths: ["docs/business-os/startup-baselines/TEST/intake-packet.user.md"],
       logisticsApplies: false,
     });
 

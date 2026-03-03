@@ -205,7 +205,7 @@ async function findLatestStartupBaselineDoc(
   business: string,
   suffix: string,
 ): Promise<UserDoc | null> {
-  const absolutePath = path.join(repoRoot, "docs", "business-os", "startup-baselines", `${business}-${suffix}.user.md`);
+  const absolutePath = path.join(repoRoot, "docs", "business-os", "startup-baselines", `${business}/${suffix}.user.md`);
   if (!(await exists(absolutePath))) {
     return null;
   }
@@ -1133,7 +1133,7 @@ export async function buildS2MarketIntelligenceHandoff(
   const octorateRoomsPath = path.join(repoRoot, "data", "octorate", "room-inventory.json");
 
   const missing: string[] = [];
-  if (!intake) missing.push("startup-baselines intake packet missing (docs/business-os/startup-baselines/<BIZ>-intake-packet.user.md)");
+  if (!intake) missing.push("startup-baselines intake packet missing (docs/business-os/startup-baselines/<BIZ>/intake-packet.user.md)");
   if (!(await exists(netValueCsvPath))) missing.push("net_value_by_month.csv missing");
   if (!(await exists(bookingsCsvPath))) missing.push("bookings_by_month.csv missing");
 

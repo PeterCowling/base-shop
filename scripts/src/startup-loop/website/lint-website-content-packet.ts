@@ -85,7 +85,7 @@ export function lintWebsiteContentPacket(
   const repoRoot = path.resolve(options.repoRoot ?? process.cwd());
   const packetPath =
     options.packetPath ??
-    `docs/business-os/startup-baselines/${String(options.business ?? "").trim()}-content-packet.md`;
+    `docs/business-os/startup-baselines/${String(options.business ?? "").trim()}/content-packet.md`;
   const resolvedPath = path.join(repoRoot, packetPath);
 
   const issues: WebsiteContentPacketLintIssue[] = [];

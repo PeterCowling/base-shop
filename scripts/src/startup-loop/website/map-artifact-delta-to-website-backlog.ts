@@ -37,7 +37,7 @@ const RULES: MappingRule[] = [
   {
     id: "offer",
     matches: (relativePath) =>
-      relativePath.endsWith("-offer.md") || relativePath.endsWith("/sell-pack.user.md"),
+      relativePath.endsWith("/offer.md") || relativePath.endsWith("/sell-pack.user.md"),
     seeds: [
       {
         id: "offer-home-copy",
@@ -65,7 +65,7 @@ const RULES: MappingRule[] = [
   {
     id: "channels",
     matches: (relativePath) =>
-      relativePath.endsWith("-channels.md") || relativePath.endsWith("/sell-pack.user.md"),
+      relativePath.endsWith("/channels.md") || relativePath.endsWith("/sell-pack.user.md"),
     seeds: [
       {
         id: "channels-cta",

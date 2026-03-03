@@ -112,19 +112,19 @@ function buildSourceDefinitions(business: string): SourceDefinition[] {
   return [
     {
       domain: "Intake",
-      relativePath: `docs/business-os/startup-baselines/${business}-intake-packet.user.md`,
+      relativePath: `docs/business-os/startup-baselines/${business}/intake-packet.user.md`,
       required: "mandatory",
       note: "Business constraints and launch context",
     },
     {
       domain: "Offer",
-      relativePath: `docs/business-os/startup-baselines/${business}-offer.md`,
+      relativePath: `docs/business-os/startup-baselines/${business}/offer.md`,
       required: "mandatory",
       note: "ICP, positioning, promise, and pricing",
     },
     {
       domain: "Channels",
-      relativePath: `docs/business-os/startup-baselines/${business}-channels.md`,
+      relativePath: `docs/business-os/startup-baselines/${business}/channels.md`,
       required: "mandatory",
       note: "Channel language, CTA path, and GTM framing",
     },
@@ -423,7 +423,7 @@ export function compileWebsiteContentPacket(
     diagnostics.push({
       code: "invalid_markdown_frontmatter",
       severity: "error",
-      sourcePath: `docs/business-os/startup-baselines/${business}-intake-packet.user.md`,
+      sourcePath: `docs/business-os/startup-baselines/${business}/intake-packet.user.md`,
       message: `Intake source has invalid frontmatter: ${intakeParsed.error}`,
     });
   }

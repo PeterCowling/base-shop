@@ -10,8 +10,8 @@ Owner: Pete
 artifact: website-content-packet
 source_of_truth: true
 depends_on:
-  - docs/business-os/startup-baselines/HBAG-offer.md
-  - docs/business-os/startup-baselines/HBAG-channels.md
+  - docs/business-os/startup-baselines/HBAG/offer.md
+  - docs/business-os/startup-baselines/HBAG/channels.md
   - docs/business-os/strategy/HBAG/2026-02-22-product-from-photo.user.md
   - docs/business-os/strategy/HBAG/products-line-mapping.user.md
   - docs/business-os/market-research/HBAG/2026-02-20-market-intelligence.user.md
@@ -44,8 +44,8 @@ Refresh this packet whenever one of the following changes:
 
 | Domain | Source path | Last reviewed | Why it matters |
 |---|---|---|---|
-| Offer and positioning | `docs/business-os/startup-baselines/HBAG-offer.md` | 2026-02-23 | Defines ICP, promise, value framing, risk-reversal |
-| Channels and GTM | `docs/business-os/startup-baselines/HBAG-channels.md` | 2026-02-20 | Defines discovery channels and conversion path language |
+| Offer and positioning | `docs/business-os/startup-baselines/HBAG/offer.md` | 2026-02-23 | Defines ICP, promise, value framing, risk-reversal |
+| Channels and GTM | `docs/business-os/startup-baselines/HBAG/channels.md` | 2026-02-20 | Defines discovery channels and conversion path language |
 | Product evidence | `docs/business-os/strategy/HBAG/2026-02-22-product-from-photo.user.md` | 2026-02-22 | Defines what can and cannot be claimed |
 | Product line map | `docs/business-os/strategy/HBAG/products-line-mapping.user.md` | 2026-02-23 | Defines launch SKU set and naming logic |
 | Market intelligence | `docs/business-os/market-research/HBAG/2026-02-20-market-intelligence.user.md` | 2026-02-20 | Defines market and keyword context for SEO |

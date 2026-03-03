@@ -14,7 +14,7 @@ owner: Pete
 last_updated: 2026-02-20
 source_of_truth: true
 depends_on:
-  - docs/business-os/startup-baselines/HEAD-offer.md
+  - docs/business-os/startup-baselines/HEAD/offer.md
   - docs/business-os/strategy/HEAD/decisions/DEC-HEAD-CH-01.user.md
   - docs/business-os/market-research/HEAD/2026-02-20-market-intelligence.user.md
 decisions:
@@ -174,7 +174,7 @@ Why selected:
 
 ## Evidence Register
 
-- `docs/business-os/startup-baselines/HEAD-offer.md`
+- `docs/business-os/startup-baselines/HEAD/offer.md`
 - `docs/business-os/strategy/HEAD/decisions/DEC-HEAD-CH-01.user.md`
 - `docs/business-os/strategy/HEAD/lp-other-products-results.user.md`
 - `docs/business-os/market-research/HEAD/2026-02-20-market-intelligence.user.md`

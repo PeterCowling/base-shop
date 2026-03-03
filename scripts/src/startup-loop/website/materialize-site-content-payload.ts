@@ -366,7 +366,7 @@ export function materializeSiteContentPayload(
   const shop = options.shop.trim();
   const sourcePacketPath =
     options.sourcePacketPath ??
-    `docs/business-os/startup-baselines/${business}-content-packet.md`;
+    `docs/business-os/startup-baselines/${business}/content-packet.md`;
   const outputPath =
     options.outputPath ?? `data/shops/${shop}/site-content.generated.json`;
   const resolvedSourcePath = path.join(repoRoot, sourcePacketPath);

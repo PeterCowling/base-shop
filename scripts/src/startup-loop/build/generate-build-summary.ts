@@ -211,17 +211,13 @@ function inferBusinessFromStartupBaselines(sourcePath: string): string | null {
   }
 
   const relative = sourcePath.slice(prefix.length);
-  if (!relative || relative.includes("/")) {
+  // Per-business subdirectory pattern: <BIZ>/name.md
+  const slashIndex = relative.indexOf("/");
+  if (slashIndex <= 0) {
     return null;
   }
 
-  const topLevelName = path.basename(relative);
-  const dashIndex = topLevelName.indexOf("-");
-  if (dashIndex <= 0) {
-    return null;
-  }
-
-  const business = topLevelName.slice(0, dashIndex);
+  const business = relative.slice(0, slashIndex);
   return business || null;
 }
 
@@ -342,7 +338,9 @@ function isInAllowedSourcePath(sourcePath: string): boolean {
 
   if (sourcePath.startsWith("docs/business-os/startup-baselines/")) {
     const relative = sourcePath.slice("docs/business-os/startup-baselines/".length);
-    return relative.length > 0 && !relative.includes("/");
+    // Per-business subdirectory pattern: <BIZ>/name.md — one slash expected
+    const parts = relative.split("/");
+    return parts.length === 2 && parts[0]!.length > 0 && parts[1]!.length > 0;
   }
 
   return false;

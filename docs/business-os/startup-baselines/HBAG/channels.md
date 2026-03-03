@@ -14,7 +14,7 @@ owner: Pete
 last_updated: 2026-02-20
 source_of_truth: true
 depends_on:
-  - docs/business-os/startup-baselines/HBAG-offer.md
+  - docs/business-os/startup-baselines/HBAG/offer.md
   - docs/business-os/startup-baselines/HBAG/demand-evidence-pack.md
   - docs/business-os/market-research/HBAG/2026-02-20-market-intelligence.user.md
 decisions:
@@ -215,7 +215,7 @@ Scale: 1–5 per dimension. Total = sum (max 15).
 ## Evidence Register
 
 - Mini-handbag PMF fact-find: `docs/plans/mini-handbag-pmf/fact-find.md` (2026-02-17)
-- HBAG offer design: `docs/business-os/startup-baselines/HBAG-offer.md`
+- HBAG offer design: `docs/business-os/startup-baselines/HBAG/offer.md`
 - HBAG demand evidence pack: `docs/business-os/startup-baselines/HBAG/demand-evidence-pack.md`
 - Market intelligence backfill: `docs/business-os/market-research/HBAG/2026-02-20-market-intelligence.user.md`
 - Outcome contract: `docs/business-os/strategy/HBAG/plan.user.md` §HBAG-OUT-2026Q1-01

@@ -116,36 +116,36 @@ describe("middleware", () => {
   });
 
   describe("redirect legacy apartment slugs to private-rooms slugs", () => {
-    it("redirects /de/wohnungen → /de/privatzimmer/ (old apartment slug in German)", () => {
+    it("redirects /de/wohnungen → /de/privatzimmer/apartment/ (old apartment slug in German)", () => {
       const request = createRequest("/de/wohnungen");
       const response = middleware(request);
 
       expect(response?.status).toBe(301);
-      expect(response?.headers.get("location")).toContain("/de/privatzimmer/");
+      expect(response?.headers.get("location")).toContain("/de/privatzimmer/apartment/");
     });
 
-    it("redirects /fr/appartements → /fr/chambres-privees/ (old apartment slug in French)", () => {
+    it("redirects /fr/appartements → /fr/chambres-privees/apartment/ (old apartment slug in French)", () => {
       const request = createRequest("/fr/appartements");
       const response = middleware(request);
 
       expect(response?.status).toBe(301);
-      expect(response?.headers.get("location")).toContain("/fr/chambres-privees/");
+      expect(response?.headers.get("location")).toContain("/fr/chambres-privees/apartment/");
     });
 
-    it("redirects /it/appartamenti → /it/camere-private/ (old apartment slug in Italian)", () => {
+    it("redirects /it/appartamenti → /it/camere-private/apartment/ (old apartment slug in Italian)", () => {
       const request = createRequest("/it/appartamenti");
       const response = middleware(request);
 
       expect(response?.status).toBe(301);
-      expect(response?.headers.get("location")).toContain("/it/camere-private/");
+      expect(response?.headers.get("location")).toContain("/it/camere-private/apartment/");
     });
 
-    it("redirects /es/apartamentos → /es/habitaciones-privadas/ (old apartment slug in Spanish)", () => {
+    it("redirects /es/apartamentos → /es/habitaciones-privadas/apartment/ (old apartment slug in Spanish)", () => {
       const request = createRequest("/es/apartamentos");
       const response = middleware(request);
 
       expect(response?.status).toBe(301);
-      expect(response?.headers.get("location")).toContain("/es/habitaciones-privadas/");
+      expect(response?.headers.get("location")).toContain("/es/habitaciones-privadas/apartment/");
     });
   });
 

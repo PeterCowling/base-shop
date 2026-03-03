@@ -1,5 +1,5 @@
-// src/app/[lang]/private-rooms/page.tsx
-// Private rooms summary page - App Router version
+// src/app/[lang]/private-rooms/apartment/page.tsx
+// Apartment page under private-rooms - App Router version
 import type { Metadata } from "next";
 
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
@@ -10,7 +10,7 @@ import { generateLangParams } from "@/app/_lib/static-params";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { getSlug } from "@/utils/slug";
 
-import PrivateRoomsSummaryContent from "./PrivateRoomsSummaryContent";
+import ApartmentPageContent from "../ApartmentPageContent";
 
 type Props = {
   params: Promise<{ lang: string }>;
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const imageAlt = (t("heroImageAlt") as string) || "";
 
   const apartmentSlug = getSlug("apartment", validLang);
-  const path = `/${validLang}/${apartmentSlug}`;
+  const path = `/${validLang}/${apartmentSlug}/apartment`;
 
   const image = buildCfImageUrl("/img/facade.avif", {
     width: OG_IMAGE.width,
@@ -49,9 +49,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
-export default async function PrivateRoomsPage({ params }: Props) {
+export default async function ApartmentPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
 
-  return <PrivateRoomsSummaryContent lang={validLang} />;
+  return <ApartmentPageContent lang={validLang} />;
 }

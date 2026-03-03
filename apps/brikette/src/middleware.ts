@@ -159,6 +159,11 @@ function handleWrongTopLevelRedirect(params: {
   const correctSlug = SLUGS[wrongKey][appLang];
   if (correctSlug.toLowerCase() === normalizedTopSegment) return null;
 
+  if (wrongKey === "apartment" && nextParts.length === 2) {
+    const trailingSlash = topSegmentSuffix ? "" : "/";
+    return buildRedirectResponse(request, `/${appLang}/${correctSlug}/apartment${trailingSlash}`);
+  }
+
   if (wrongKey === "apartment" && nextParts[2]?.toLowerCase() === "book") {
     const trailingSlash = topSegmentSuffix ? "" : "/";
     return buildRedirectResponse(request, `/${appLang}/book-private-accomodations${trailingSlash}`);

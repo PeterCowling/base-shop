@@ -230,7 +230,7 @@ function RoomsSection({
               room.id === "double_room"
                 ? `/${lang}/${translatePath("apartment", lang as AppLanguage)}/double-room`
                 : room.id === "apartment"
-                  ? `/${lang}/${translatePath("apartment", lang as AppLanguage)}/private-stay`
+                  ? `/${lang}/${translatePath("apartment", lang as AppLanguage)}/apartment`
                   : `/${lang}/${roomsSlug}/${getRoomSlug(room.id, lang as AppLanguage)}`;
             const title = resolveTranslatedCopy(
               t(`rooms.${room.id}.title`, {

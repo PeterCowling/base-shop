@@ -19,21 +19,12 @@ import {
   errorToMessage,
   getCatalogApiErrorMessage,
   getSyncFailureMessage,
-  type SubmissionAction,
-  type SubmissionStep,
   type SyncResponse,
   tryBeginBusyAction,
   updateActionFeedback,
 } from "./catalogConsoleFeedback";
 import { buildLogBlock, toErrorMap } from "./catalogConsoleUtils";
 import { buildEmptyDraft, withDraftDefaults } from "./catalogDraft";
-import {
-  downloadBlob,
-  enqueueSubmissionJob,
-  parseFilenameFromDisposition,
-  pollJobUntilComplete,
-  SubmissionApiError,
-} from "./catalogSubmissionClient";
 
 type Translator = (key: string, vars?: Record<string, unknown>) => string;
 
@@ -73,7 +64,6 @@ export function handleStorefrontChangeImpl({
   setDraftRevision,
   setFieldErrors,
   setActionFeedback,
-  setSubmissionSlugs,
   setSyncOutput,
 }: {
   nextStorefront: XaCatalogStorefront;
@@ -86,7 +76,6 @@ export function handleStorefrontChangeImpl({
   setDraftRevision: React.Dispatch<React.SetStateAction<string | null>>;
   setFieldErrors: React.Dispatch<React.SetStateAction<Record<string, string>>>;
   setActionFeedback: React.Dispatch<React.SetStateAction<ActionFeedbackState>>;
-  setSubmissionSlugs: React.Dispatch<React.SetStateAction<Set<string>>>;
   setSyncOutput: React.Dispatch<React.SetStateAction<string | null>>;
 }): void {
   if (nextStorefront === currentStorefront) return;
@@ -97,8 +86,7 @@ export function handleStorefrontChangeImpl({
   setDraft(buildEmptyDraft(getStorefrontConfig(nextStorefront).defaultCategory));
   setDraftRevision(null);
   setFieldErrors({});
-  clearActionFeedbackDomains(setActionFeedback, ["draft", "submission", "sync"]);
-  setSubmissionSlugs(new Set());
+  clearActionFeedbackDomains(setActionFeedback, ["draft", "sync"]);
   setSyncOutput(null);
 }
 
@@ -129,80 +117,6 @@ export function handleSelectImpl({
   setFieldErrors({});
   clearActionFeedbackDomains(setActionFeedback, ["draft", "sync"]);
   setSyncOutput(null);
-}
-
-export function toggleSubmissionSlug(
-  previous: Set<string>,
-  slug: string,
-  submissionMax: number,
-): Set<string> {
-  const next = new Set(previous);
-  if (next.has(slug)) next.delete(slug);
-  else if (next.size < submissionMax) next.add(slug);
-  return next;
-}
-
-export function handleClearSubmissionImpl({
-  setSubmissionSlugs,
-  setActionFeedback,
-  setSubmissionStep,
-}: {
-  setSubmissionSlugs: React.Dispatch<React.SetStateAction<Set<string>>>;
-  setActionFeedback: React.Dispatch<React.SetStateAction<ActionFeedbackState>>;
-  setSubmissionStep: React.Dispatch<React.SetStateAction<SubmissionStep>>;
-}): void {
-  setSubmissionSlugs(new Set());
-  clearActionFeedbackDomains(setActionFeedback, ["submission"]);
-  setSubmissionStep(null);
-}
-
-function parseUploadEndpoint(rawUploadUrl: string): {
-  endpointUrl: string;
-  token?: string;
-} {
-  const trimmed = rawUploadUrl.trim();
-  if (!trimmed) {
-    throw new Error("invalid_upload_url");
-  }
-
-  let parsed: URL;
-  try {
-    parsed = new URL(trimmed);
-  } catch {
-    throw new Error("invalid_upload_url");
-  }
-
-  if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
-    throw new Error("invalid_upload_url");
-  }
-
-  const headerToken =
-    parsed.searchParams.get("token")?.trim() || parsed.searchParams.get("uploadToken")?.trim() || "";
-  if (headerToken) {
-    parsed.searchParams.delete("token");
-    parsed.searchParams.delete("uploadToken");
-    return { endpointUrl: parsed.toString(), token: headerToken };
-  }
-
-  const segments = parsed.pathname.split("/").filter(Boolean);
-  if (segments.length === 2 && segments[0] === "upload") {
-    const pathToken = decodeURIComponent(segments[1] ?? "").trim();
-    parsed.pathname = "/upload";
-    if (!pathToken) {
-      throw new Error("invalid_upload_url");
-    }
-    return { endpointUrl: parsed.toString(), token: pathToken };
-  }
-
-  return { endpointUrl: parsed.toString() };
-}
-
-function getSubmissionErrorReason(error: unknown): string | undefined {
-  if (!error || typeof error !== "object" || !("reason" in error)) {
-    return undefined;
-  }
-  const reason = (error as { reason?: unknown }).reason;
-  return typeof reason === "string" ? reason : undefined;
 }
 
 export async function handleLoginImpl({
@@ -258,8 +172,6 @@ export async function handleLogoutImpl({
   setDraft,
   setDraftRevision,
   setFieldErrors,
-  setSubmissionSlugs,
-  setSubmissionAction,
   setSyncOutput,
   defaultCategory,
 }: {
@@ -275,8 +187,6 @@ export async function handleLogoutImpl({
   setDraft: React.Dispatch<React.SetStateAction<CatalogProductDraftInput>>;
   setDraftRevision: React.Dispatch<React.SetStateAction<string | null>>;
   setFieldErrors: React.Dispatch<React.SetStateAction<Record<string, string>>>;
-  setSubmissionSlugs: React.Dispatch<React.SetStateAction<Set<string>>>;
-  setSubmissionAction: React.Dispatch<React.SetStateAction<SubmissionAction>>;
   setSyncOutput: React.Dispatch<React.SetStateAction<string | null>>;
   defaultCategory: CatalogProductDraftInput["taxonomy"]["category"];
 }): Promise<void> {
@@ -292,8 +202,6 @@ export async function handleLogoutImpl({
     setDraft(buildEmptyDraft(defaultCategory));
     setDraftRevision(null);
     setFieldErrors({});
-    setSubmissionSlugs(new Set());
-    setSubmissionAction(null);
     setSyncOutput(null);
     setActionFeedback(createInitialActionFeedbackState());
   } catch (err) {
@@ -318,6 +226,7 @@ export async function handleSaveImpl({
   setDraftRevision,
   loadCatalog,
   handleSelect,
+  confirmUnpublish,
 }: {
   draft: CatalogProductDraftInput;
   draftRevision: string | null;
@@ -330,6 +239,7 @@ export async function handleSaveImpl({
   setDraftRevision: React.Dispatch<React.SetStateAction<string | null>>;
   loadCatalog: () => Promise<void>;
   handleSelect: (product: CatalogProductDraftInput) => void;
+  confirmUnpublish: (message: string) => boolean;
 }): Promise<void> {
   const parsed = catalogProductDraftSchema.safeParse(draft);
   if (!parsed.success) {
@@ -344,13 +254,15 @@ export async function handleSaveImpl({
   if (!tryBeginBusyAction(busyLockRef, setBusy)) return;
   clearActionFeedbackDomains(setActionFeedback, ["draft"]);
   setFieldErrors({});
-  try {
+
+  const doSave = async (confirm?: boolean): Promise<void> => {
     const response = await fetch(`/api/catalog/products?storefront=${encodeURIComponent(storefront)}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         product: draft,
         ifMatch: draftRevision ?? undefined,
+        ...(confirm ? { confirmUnpublish: true } : {}),
       }),
     });
     const data = (await response.json()) as {
@@ -358,7 +270,16 @@ export async function handleSaveImpl({
       product?: CatalogProductDraftInput;
       revision?: string;
       error?: string;
+      requiresConfirmation?: boolean;
     };
+
+    if (response.status === 409 && data.error === "would_unpublish" && data.requiresConfirmation) {
+      const confirmed = confirmUnpublish(t("saveConfirmUnpublish"));
+      if (!confirmed) return;
+      await doSave(true);
+      return;
+    }
+
     if (!response.ok || !data.ok || !data.product) {
       throw new Error(getCatalogApiErrorMessage(data.error, "saveFailed", t));
     }
@@ -369,6 +290,10 @@ export async function handleSaveImpl({
       kind: "success",
       message: t("saveSucceeded"),
     });
+  };
+
+  try {
+    await doSave();
   } catch (err) {
     updateActionFeedback(setActionFeedback, "draft", {
       kind: "error",
@@ -472,12 +397,18 @@ export async function handleSyncImpl({
   try {
     let syncAttempt = await runSyncRequest(false);
 
+    const CONFIRMABLE_SYNC_ERRORS: readonly string[] = ["catalog_input_empty", "no_publishable_products"];
     if (
       syncAttempt.response.status === 409 &&
-      syncAttempt.data.error === "catalog_input_empty" &&
-      syncAttempt.data.requiresConfirmation
+      syncAttempt.data.requiresConfirmation &&
+      syncAttempt.data.error &&
+      CONFIRMABLE_SYNC_ERRORS.includes(syncAttempt.data.error)
     ) {
-      const confirmed = confirmEmptyCatalogSync(t("syncConfirmEmptyCatalogSync"));
+      const confirmMessage =
+        syncAttempt.data.error === "no_publishable_products"
+          ? t("syncConfirmNoPublishableProducts")
+          : t("syncConfirmEmptyCatalogSync");
+      const confirmed = confirmEmptyCatalogSync(confirmMessage);
       if (!confirmed) return;
       syncAttempt = await runSyncRequest(true);
     }
@@ -496,9 +427,13 @@ export async function handleSyncImpl({
       throw new Error(getSyncFailureMessage(syncAttempt.data, t));
     }
     await loadCatalog().catch(() => null);
+    const syncSuccessMessage =
+      syncAttempt.data.display?.requiresXaBBuild === true
+        ? t("syncSucceededRebuildRequired")
+        : t("syncSucceeded");
     updateActionFeedback(setActionFeedback, "sync", {
       kind: "success",
-      message: t("syncSucceeded"),
+      message: syncSuccessMessage,
     });
   } catch (err) {
     updateActionFeedback(setActionFeedback, "sync", {
@@ -510,139 +445,3 @@ export async function handleSyncImpl({
   }
 }
 
-export async function handleExportSubmissionImpl({
-  submissionSlugs,
-  storefront,
-  t,
-  busyLockRef,
-  setBusy,
-  setActionFeedback,
-  setSubmissionAction,
-  setSubmissionStep,
-  handleClearSubmission,
-}: {
-  submissionSlugs: Set<string>;
-  storefront: XaCatalogStorefront;
-  t: Translator;
-  busyLockRef: BusyLockRef;
-  setBusy: React.Dispatch<React.SetStateAction<boolean>>;
-  setActionFeedback: React.Dispatch<React.SetStateAction<ActionFeedbackState>>;
-  setSubmissionAction: React.Dispatch<React.SetStateAction<SubmissionAction>>;
-  setSubmissionStep: React.Dispatch<React.SetStateAction<SubmissionStep>>;
-  handleClearSubmission: () => void;
-}): Promise<void> {
-  if (submissionSlugs.size === 0) return;
-  if (!tryBeginBusyAction(busyLockRef, setBusy)) return;
-  clearActionFeedbackDomains(setActionFeedback, ["submission"]);
-  setSubmissionAction("export");
-  try {
-    const slugs = Array.from(submissionSlugs);
-    const { jobId } = await enqueueSubmissionJob(slugs, storefront);
-    setSubmissionStep("polling");
-    const downloadUrl = await pollJobUntilComplete(jobId);
-    const response = await fetch(downloadUrl);
-    if (!response.ok) {
-      throw new SubmissionApiError("download_failed");
-    }
-    const blob = await response.blob();
-    const filename =
-      parseFilenameFromDisposition(response.headers.get("Content-Disposition")) || "submission.zip";
-    downloadBlob(blob, filename);
-    handleClearSubmission();
-    updateActionFeedback(setActionFeedback, "submission", {
-      kind: "success",
-      message: t("submissionReady", { id: jobId || filename }),
-    });
-  } catch (err) {
-    const reason = getSubmissionErrorReason(err);
-    updateActionFeedback(setActionFeedback, "submission", {
-      kind: "error",
-      message: getCatalogApiErrorMessage(
-        err instanceof Error ? err.message : undefined,
-        "exportFailed",
-        t,
-        reason,
-      ),
-    });
-  } finally {
-    setSubmissionStep(null);
-    setSubmissionAction(null);
-    endBusyAction(busyLockRef, setBusy);
-  }
-}
-
-export async function handleUploadSubmissionToR2Impl({
-  submissionSlugs,
-  submissionUploadUrl,
-  storefront,
-  t,
-  busyLockRef,
-  setBusy,
-  setActionFeedback,
-  setSubmissionAction,
-  setSubmissionStep,
-  handleClearSubmission,
-}: {
-  submissionSlugs: Set<string>;
-  submissionUploadUrl: string;
-  storefront: XaCatalogStorefront;
-  t: Translator;
-  busyLockRef: BusyLockRef;
-  setBusy: React.Dispatch<React.SetStateAction<boolean>>;
-  setActionFeedback: React.Dispatch<React.SetStateAction<ActionFeedbackState>>;
-  setSubmissionAction: React.Dispatch<React.SetStateAction<SubmissionAction>>;
-  setSubmissionStep: React.Dispatch<React.SetStateAction<SubmissionStep>>;
-  handleClearSubmission: () => void;
-}): Promise<void> {
-  if (submissionSlugs.size === 0) return;
-  if (!submissionUploadUrl.trim()) return;
-  if (!tryBeginBusyAction(busyLockRef, setBusy)) return;
-  clearActionFeedbackDomains(setActionFeedback, ["submission"]);
-  setSubmissionAction("upload");
-  try {
-    const slugs = Array.from(submissionSlugs);
-    const { jobId } = await enqueueSubmissionJob(slugs, storefront);
-    setSubmissionStep("polling");
-    const downloadUrl = await pollJobUntilComplete(jobId);
-    setSubmissionStep("uploading-zip");
-    const dlResponse = await fetch(downloadUrl);
-    if (!dlResponse.ok) {
-      throw new SubmissionApiError("download_failed");
-    }
-    const blob = await dlResponse.blob();
-    const filename =
-      parseFilenameFromDisposition(dlResponse.headers.get("Content-Disposition")) || "submission.zip";
-    const uploadTarget = parseUploadEndpoint(submissionUploadUrl);
-    const headers: Record<string, string> = { "Content-Type": "application/zip" };
-    if (jobId) headers["X-XA-Submission-Id"] = jobId;
-    if (uploadTarget.token) headers["X-XA-Upload-Token"] = uploadTarget.token;
-    const res = await fetch(uploadTarget.endpointUrl, {
-      method: "PUT",
-      headers,
-      body: blob,
-    });
-    if (!res.ok) {
-      throw new Error("internal_error");
-    }
-    handleClearSubmission();
-    updateActionFeedback(setActionFeedback, "submission", {
-      kind: "success",
-      message: t("submissionUploaded", { id: jobId || filename }),
-    });
-  } catch (err) {
-    const reason = getSubmissionErrorReason(err);
-    updateActionFeedback(setActionFeedback, "submission", {
-      kind: "error",
-      message: getCatalogApiErrorMessage(
-        err instanceof Error ? err.message : undefined,
-        "exportFailed",
-        t,
-        reason,
-      ),
-    });
-  } finally {
-    setSubmissionStep(null);
-    setSubmissionAction(null);
-    endBusyAction(busyLockRef, setBusy);
-  }
-}

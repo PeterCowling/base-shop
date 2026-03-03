@@ -7,22 +7,7 @@ import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { CatalogProductDraftInput } from "@acme/lib/xa";
 
 import { UploaderI18nProvider } from "../../../lib/uploaderI18n.client";
-import { SubmissionApiError } from "../catalogSubmissionClient";
 import { useCatalogConsole } from "../useCatalogConsole.client";
-
-const enqueueSubmissionJobMock = jest.fn();
-const pollJobUntilCompleteMock = jest.fn();
-const downloadBlobMock = jest.fn();
-
-jest.mock("../catalogSubmissionClient", () => {
-  const actual = jest.requireActual("../catalogSubmissionClient") as Record<string, unknown>;
-  return {
-    ...actual,
-    enqueueSubmissionJob: (...args: unknown[]) => enqueueSubmissionJobMock(...args),
-    pollJobUntilComplete: (...args: unknown[]) => pollJobUntilCompleteMock(...args),
-    downloadBlob: (...args: unknown[]) => downloadBlobMock(...args),
-  };
-});
 
 const VALID_DRAFT: CatalogProductDraftInput = {
   id: "p1",
@@ -56,16 +41,6 @@ function jsonResponse(body: unknown, init: ResponseInit = {}): Response {
   });
 }
 
-function createDeferred<T>() {
-  let resolveFn!: (value: T | PromiseLike<T>) => void;
-  let rejectFn!: (reason?: unknown) => void;
-  const promise = new Promise<T>((resolve, reject) => {
-    resolveFn = resolve;
-    rejectFn = reject;
-  });
-  return { promise, resolve: resolveFn, reject: rejectFn };
-}
-
 function renderHarness() {
   function Harness() {
     const state = useCatalogConsole();
@@ -82,25 +57,11 @@ function renderHarness() {
         <button type="button" onClick={() => state.setDraft(VALID_DRAFT)}>
           seed-draft
         </button>
-        <button type="button" onClick={() => state.handleToggleSubmissionSlug(VALID_DRAFT.slug ?? "p1")}>
-          toggle-submission
-        </button>
         <button type="button" onClick={() => void state.handleSave()}>
           save
         </button>
         <button type="button" onClick={() => void state.handleDelete()}>
           delete
-        </button>
-        <button type="button" onClick={() => void state.handleExportSubmission()}>
-          export
-        </button>
-        <input
-          aria-label="upload-url"
-          value={state.submissionUploadUrl}
-          onChange={(event) => state.setSubmissionUploadUrl(event.target.value)}
-        />
-        <button type="button" onClick={() => void state.handleUploadSubmissionToR2()}>
-          upload
         </button>
         <button type="button" onClick={() => void state.handleSync()}>
           sync
@@ -117,12 +78,6 @@ function renderHarness() {
             ? `${state.actionFeedback.draft.kind}:${state.actionFeedback.draft.message}`
             : ""}
         </div>
-        <div data-cy="submission-feedback">
-          {state.actionFeedback.submission
-            ? `${state.actionFeedback.submission.kind}:${state.actionFeedback.submission.message}`
-            : ""}
-        </div>
-        <div data-cy="submission-step">{state.submissionStep ?? ""}</div>
         <div data-cy="sync-feedback">
           {state.actionFeedback.sync ? `${state.actionFeedback.sync.kind}:${state.actionFeedback.sync.message}` : ""}
         </div>
@@ -150,8 +105,6 @@ describe("useCatalogConsole scoped action feedback", () => {
     jest.clearAllMocks();
     window.localStorage.clear();
     jest.spyOn(window, "confirm").mockReturnValue(true);
-    enqueueSubmissionJobMock.mockResolvedValue({ jobId: "sub-123" });
-    pollJobUntilCompleteMock.mockResolvedValue("/api/catalog/submission/download/sub-123");
   });
 
   afterEach(() => {
@@ -181,7 +134,6 @@ describe("useCatalogConsole scoped action feedback", () => {
       expect(screen.getByTestId("login-feedback")).toHaveTextContent("error:Unauthorized");
     });
     expect(screen.getByTestId("draft-feedback")).toHaveTextContent("");
-    expect(screen.getByTestId("submission-feedback")).toHaveTextContent("");
     expect(screen.getByTestId("sync-feedback")).toHaveTextContent("");
   });
 
@@ -227,7 +179,7 @@ describe("useCatalogConsole scoped action feedback", () => {
     });
   });
 
-  it("TC-03: submission/sync feedback updates do not overwrite draft feedback", async () => {
+  it("TC-03: sync feedback does not overwrite draft feedback", async () => {
     global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input);
       if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
@@ -249,12 +201,6 @@ describe("useCatalogConsole scoped action feedback", () => {
           },
         });
       }
-      if (url === "/api/catalog/submission/download/sub-123") {
-        return new Response(new Blob(["zip"]), {
-          status: 200,
-          headers: { "Content-Disposition": 'attachment; filename="submission.test.zip"' },
-        });
-      }
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
 
@@ -269,14 +215,6 @@ describe("useCatalogConsole scoped action feedback", () => {
       );
     });
 
-    await clickButton("toggle-submission");
-    await clickButton("export");
-
-    await waitFor(() => {
-      expect(screen.getByTestId("submission-feedback")).toHaveTextContent("success:Submission ID: sub-123");
-    });
-    expect(screen.getByTestId("draft-feedback")).toHaveTextContent("success:Saved product details.");
-
     await waitFor(() => {
       expect(screen.getByTestId("sync-ready")).toHaveTextContent("yes");
     });
@@ -286,243 +224,6 @@ describe("useCatalogConsole scoped action feedback", () => {
       expect(screen.getByTestId("sync-feedback")).toHaveTextContent("success:Sync completed.");
     });
     expect(screen.getByTestId("draft-feedback")).toHaveTextContent("success:Saved product details.");
-  });
-
-  describe("TASK-02: per-step progress labels", () => {
-    function mockConsoleBootstrapFetch() {
-      global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
-        const url = String(input);
-        if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
-        if (url.startsWith("/api/catalog/products?storefront=")) {
-          return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
-        }
-        if (url.startsWith("/api/catalog/sync?storefront=")) {
-          return jsonResponse({ ok: true, ready: true, missingScripts: [] });
-        }
-        if (init?.method === "PUT") {
-          return new Response(null, { status: 200 });
-        }
-        if (url === "/api/catalog/submission/download/sub-123") {
-          return new Response(new Blob(["zip"]), {
-            status: 200,
-            headers: { "Content-Disposition": 'attachment; filename="submission.test.zip"' },
-          });
-        }
-        throw new Error(`Unhandled fetch: ${url}`);
-      }) as unknown as typeof fetch;
-    }
-
-    it("TC-01: Export action — step label shown during in-flight export", async () => {
-      const pollDeferred = createDeferred<string>();
-      pollJobUntilCompleteMock.mockReturnValue(pollDeferred.promise);
-      mockConsoleBootstrapFetch();
-
-      renderHarness();
-      await waitFor(() => {
-        expect(screen.getByTestId("sync-ready")).toHaveTextContent("yes");
-      });
-      await clickButton("toggle-submission");
-      await clickButton("export");
-
-      await waitFor(() => {
-        expect(screen.getByTestId("submission-step")).toHaveTextContent("polling");
-      });
-
-      await act(async () => {
-        pollDeferred.resolve("/api/catalog/submission/download/sub-123");
-        await pollDeferred.promise;
-      });
-
-      await waitFor(() => {
-        expect(screen.getByTestId("submission-step")).toHaveTextContent("");
-      });
-      expect(screen.getByTestId("submission-feedback")).toHaveTextContent("success:Submission ID: sub-123");
-    });
-
-    it("TC-02: Upload action — step label transitions during in-flight upload", async () => {
-      const pollDeferred = createDeferred<string>();
-      const uploadDeferred = createDeferred<Response>();
-      pollJobUntilCompleteMock.mockReturnValue(pollDeferred.promise);
-      global.fetch = jest.fn((input: RequestInfo | URL, init?: RequestInit) => {
-        const url = String(input);
-        if (url === "/api/uploader/session") return Promise.resolve(jsonResponse({ authenticated: true }));
-        if (url.startsWith("/api/catalog/products?storefront=")) {
-          return Promise.resolve(
-            jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } }),
-          );
-        }
-        if (url.startsWith("/api/catalog/sync?storefront=")) {
-          return Promise.resolve(jsonResponse({ ok: true, ready: true, missingScripts: [] }));
-        }
-        if (url === "/api/catalog/submission/download/sub-123") {
-          return Promise.resolve(
-            new Response(new Blob(["zip"]), {
-              status: 200,
-              headers: { "Content-Disposition": 'attachment; filename="submission.test.zip"' },
-            }),
-          );
-        }
-        if (init?.method === "PUT") {
-          return uploadDeferred.promise;
-        }
-        throw new Error(`Unhandled fetch: ${url}`);
-      }) as unknown as typeof fetch;
-
-      renderHarness();
-      fireEvent.change(screen.getByLabelText("upload-url"), {
-        target: { value: "https://upload.local/upload/path-token" },
-      });
-      await clickButton("toggle-submission");
-      await clickButton("upload");
-
-      await waitFor(() => {
-        expect(screen.getByTestId("submission-step")).toHaveTextContent("polling");
-      });
-
-      await act(async () => {
-        pollDeferred.resolve("/api/catalog/submission/download/sub-123");
-        await pollDeferred.promise;
-      });
-
-      await waitFor(() => {
-        expect(screen.getByTestId("submission-step")).toHaveTextContent("uploading-zip");
-      });
-
-      await act(async () => {
-        uploadDeferred.resolve(new Response(null, { status: 200 }));
-        await uploadDeferred.promise;
-      });
-
-      await waitFor(() => {
-        expect(screen.getByTestId("submission-step")).toHaveTextContent("");
-      });
-    });
-
-    it("TC-03: Export action fails — step label absent after failure", async () => {
-      enqueueSubmissionJobMock.mockRejectedValue(new Error("internal_error"));
-      mockConsoleBootstrapFetch();
-
-      renderHarness();
-      await clickButton("toggle-submission");
-      await clickButton("export");
-
-      await waitFor(() => {
-        expect(screen.getByTestId("submission-feedback")).toHaveTextContent(
-          "The server could not complete this request. Try again.",
-        );
-      });
-      expect(screen.getByTestId("submission-step")).toHaveTextContent("");
-    });
-
-    it("TC-04: Clear submission — step label cleared", async () => {
-      mockConsoleBootstrapFetch();
-
-      renderHarness();
-      await clickButton("toggle-submission");
-      await clickButton("export");
-
-      await waitFor(() => {
-        expect(screen.getByTestId("submission-feedback")).toHaveTextContent("success:Submission ID: sub-123");
-      });
-      expect(screen.getByTestId("submission-step")).toHaveTextContent("");
-    });
-  });
-
-  describe("TASK-01: submission validation error reason", () => {
-    function mockConsoleBootstrapFetch() {
-      global.fetch = jest.fn(async (input: RequestInfo | URL) => {
-        const url = String(input);
-        if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
-        if (url.startsWith("/api/catalog/products?storefront=")) {
-          return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
-        }
-        if (url.startsWith("/api/catalog/sync?storefront=")) {
-          return jsonResponse({ ok: true, ready: true, missingScripts: [] });
-        }
-        throw new Error(`Unhandled fetch: ${url}`);
-      }) as unknown as typeof fetch;
-    }
-
-    it("TC-01: Export action with validation failure reason", async () => {
-      enqueueSubmissionJobMock.mockRejectedValue(
-        new SubmissionApiError("invalid", "submission_validation_failed"),
-      );
-      mockConsoleBootstrapFetch();
-
-      renderHarness();
-      await clickButton("toggle-submission");
-      await clickButton("export");
-
-      await waitFor(() => {
-        expect(screen.getByTestId("submission-feedback")).toHaveTextContent(
-          "Submission validation failed. Check product count, image sizes, and image files, then retry.",
-        );
-      });
-    });
-
-    it("TC-02: Export action with internal_error reason", async () => {
-      enqueueSubmissionJobMock.mockRejectedValue(new Error("internal_error"));
-      mockConsoleBootstrapFetch();
-
-      renderHarness();
-      await clickButton("toggle-submission");
-      await clickButton("export");
-
-      await waitFor(() => {
-        expect(screen.getByTestId("submission-feedback")).toHaveTextContent(
-          "The server could not complete this request. Try again.",
-        );
-      });
-    });
-
-    it("TC-03: Export action with unknown error code", async () => {
-      enqueueSubmissionJobMock.mockRejectedValue(new Error("unknown_code"));
-      mockConsoleBootstrapFetch();
-
-      renderHarness();
-      await clickButton("toggle-submission");
-      await clickButton("export");
-
-      await waitFor(() => {
-        expect(screen.getByTestId("submission-feedback")).toHaveTextContent("Export failed.");
-      });
-    });
-
-    it("TC-04: Upload action with validation failure reason", async () => {
-      enqueueSubmissionJobMock.mockRejectedValue(
-        new SubmissionApiError("invalid", "submission_validation_failed"),
-      );
-      let uploadPutCalls = 0;
-      global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
-        const url = String(input);
-        if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
-        if (url.startsWith("/api/catalog/products?storefront=")) {
-          return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
-        }
-        if (url.startsWith("/api/catalog/sync?storefront=")) {
-          return jsonResponse({ ok: true, ready: true, missingScripts: [] });
-        }
-        if (init?.method === "PUT") {
-          uploadPutCalls += 1;
-          return new Response(null, { status: 200 });
-        }
-        throw new Error(`Unhandled fetch: ${url}`);
-      }) as unknown as typeof fetch;
-
-      renderHarness();
-      fireEvent.change(screen.getByLabelText("upload-url"), {
-        target: { value: "https://upload.local/upload/path-token" },
-      });
-      await clickButton("toggle-submission");
-      await clickButton("upload");
-
-      await waitFor(() => {
-        expect(screen.getByTestId("submission-feedback")).toHaveTextContent(
-          "Submission validation failed. Check product count, image sizes, and image files, then retry.",
-        );
-      });
-      expect(uploadPutCalls).toBe(0);
-    });
   });
 
   it("TC-04: busy lock prevents duplicate save submissions while in-flight", async () => {

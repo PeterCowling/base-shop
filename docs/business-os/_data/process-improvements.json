@@ -642,6 +642,23 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "XA image upload to R2 still missing — text-only path entry",
+      "body": "Issue 1 (P1) deferred; image entry remains text-only",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-03-03T16:58:03.586Z",
+      "path": "docs/plans/_archive/xa-catalog-workflow-fixes/results-review.user.md",
+      "idea_key": "cfbae331f17dac2f5d543ce177b11fcbb1ea67e3",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "Add ASSESSMENT-12 to loop-spec so GATE-ASSESSMENT-01 enforces dossier promotion before ASSESSMENT-13",
       "body": "TASK-06 acceptance note calls out that ASSESSMENT-12 should run before ASSESSMENT-13 but the gate does not enforce it — documented friction point.",
       "suggested_action": "create card to add ASSESSMENT-12 to loop-spec and update GATE-ASSESSMENT-01.",

@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "xa-catalog-workflow-fixes-2026-03-03",
+  "feature_slug": "xa-catalog-workflow-fixes",
+  "emitted_at": "2026-03-03T16:57:02.930Z",
+  "why": "Post-rebuild audit revealed gaps in the XA catalog workflow. Live product demotion risk means a single accidental incomplete save can silently remove products from the store. Missing session UI blocks multi-storefront operation.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "XA catalog workflow is production-safe — live products cannot be silently unpublished, console has storefront selector and logout, sync error handling covers all confirmation codes, and dead ZIP/submission code is removed.",
+    "source": "operator"
+  }
+}

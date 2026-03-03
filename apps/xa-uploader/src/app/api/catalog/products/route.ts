@@ -3,6 +3,7 @@
 import { NextResponse } from "next/server";
 
 import type { CatalogProductDraftInput } from "@acme/lib/xa";
+import { getCatalogDraftWorkflowReadiness } from "@acme/lib/xa";
 
 import {
   CatalogCsvConflictError,
@@ -28,6 +29,7 @@ type ProductsErrorCode =
   | "invalid"
   | "missing_product"
   | "conflict"
+  | "would_unpublish"
   | "internal_error"
   | "rate_limited"
   | "payload_too_large"
@@ -57,6 +59,17 @@ function isInvalidCatalogUpdateError(error: unknown): boolean {
 
 function buildProductsErrorResponse(error: ProductsErrorCode, status: number, reason: string) {
   return NextResponse.json({ ok: false, error, reason }, { status });
+}
+
+function wouldUnpublish(product: CatalogProductDraftInput): boolean {
+  return product.publishState === "live" && !getCatalogDraftWorkflowReadiness(product).isPublishReady;
+}
+
+function derivePublishState(product: CatalogProductDraftInput): "draft" | "ready" | "live" {
+  const readiness = getCatalogDraftWorkflowReadiness(product);
+  if (!readiness.isPublishReady) return "draft";
+  if (product.publishState === "live") return "live";
+  return "ready";
 }
 
 function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLimit>): NextResponse {
@@ -138,6 +151,7 @@ export async function POST(request: Request) {
 
   const product = payload.product;
   const ifMatch = typeof payload.ifMatch === "string" ? payload.ifMatch : undefined;
+  const confirmUnpublish = payload.confirmUnpublish === true;
   if (!product || typeof product !== "object") {
     return withRateHeaders(
       buildProductsErrorResponse("missing_product", 400, "missing_product_payload"),
@@ -145,10 +159,24 @@ export async function POST(request: Request) {
     );
   }
 
+  if (!confirmUnpublish && wouldUnpublish(product as CatalogProductDraftInput)) {
+    return withRateHeaders(
+      NextResponse.json(
+        { ok: false, error: "would_unpublish", requiresConfirmation: true, currentState: "live" },
+        { status: 409 },
+      ),
+      limit,
+    );
+  }
+
   try {
     const storefront = parseStorefront(new URL(request.url).searchParams.get("storefront"));
+    const productForSave = {
+      ...(product as CatalogProductDraftInput),
+      publishState: derivePublishState(product as CatalogProductDraftInput),
+    };
     if (isLocalFsRuntimeEnabled()) {
-      const result = await upsertCatalogDraft(product as never, { ifMatch, storefront });
+      const result = await upsertCatalogDraft(productForSave as never, { ifMatch, storefront });
       return withRateHeaders(
         NextResponse.json({ ok: true, product: result.product, revision: result.revision }),
         limit,
@@ -157,7 +185,7 @@ export async function POST(request: Request) {
 
     const snapshot = await readCloudDraftSnapshot(storefront);
     const result = upsertProductInCloudSnapshot({
-      product: product as CatalogProductDraftInput,
+      product: productForSave,
       ifMatch,
       snapshot,
     });

@@ -14,9 +14,7 @@ import type { XaCatalogStorefront } from "../../lib/catalogStorefront.types";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 import {
-  handleClearSubmissionImpl,
   handleDeleteImpl,
-  handleExportSubmissionImpl,
   handleLoginImpl,
   handleLogoutImpl,
   handleNewImpl,
@@ -24,8 +22,6 @@ import {
   handleSelectImpl,
   handleStorefrontChangeImpl,
   handleSyncImpl,
-  handleUploadSubmissionToR2Impl,
-  toggleSubmissionSlug,
 } from "./catalogConsoleActions";
 import {
   type ActionFeedback,
@@ -36,8 +32,6 @@ import {
   getCatalogApiErrorMessage,
   getSyncFailureMessage,
   type SessionState,
-  type SubmissionAction,
-  type SubmissionStep,
   type SyncReadinessResponse,
   type SyncScriptId,
   updateActionFeedback,
@@ -46,12 +40,6 @@ import { buildEmptyDraft } from "./catalogDraft";
 
 export type { ActionFeedback, ActionFeedbackState };
 export { createInitialActionFeedbackState, getSyncFailureMessage };
-
-function toPositiveInt(raw: string | undefined, fallback: number, min = 1): number {
-  const parsed = Number.parseInt(String(raw ?? ""), 10);
-  if (!Number.isFinite(parsed)) return fallback;
-  return Math.max(min, parsed);
-}
 
 type SyncReadinessState = {
   checking: boolean;
@@ -84,25 +72,6 @@ function useCatalogConsoleState() {
   const [revisionsById, setRevisionsById] = React.useState<Record<string, string>>({});
   const [query, setQuery] = React.useState("");
   const [selectedSlug, setSelectedSlug] = React.useState<string | null>(null);
-
-  const submissionMax = 10;
-  const submissionMaxMb = toPositiveInt(
-    process.env.NEXT_PUBLIC_XA_UPLOADER_SUBMISSION_MAX_MB ?? "25",
-    25,
-    1,
-  );
-  const submissionMaxBytes = submissionMaxMb * 1024 * 1024;
-  const minImageEdge = toPositiveInt(
-    process.env.NEXT_PUBLIC_XA_UPLOADER_MIN_IMAGE_EDGE ?? "1600",
-    1600,
-    1,
-  );
-  const [submissionSlugs, setSubmissionSlugs] = React.useState<Set<string>>(() => new Set());
-  const [submissionUploadUrl, setSubmissionUploadUrl] = React.useState(
-    process.env.NEXT_PUBLIC_XA_UPLOADER_R2_UPLOAD_URL ?? "",
-  );
-  const [submissionAction, setSubmissionAction] = React.useState<SubmissionAction>(null);
-  const [submissionStep, setSubmissionStep] = React.useState<SubmissionStep>(null);
 
   const [draft, setDraft] = React.useState<CatalogProductDraftInput>(() =>
     buildEmptyDraft(storefrontConfig.defaultCategory),
@@ -238,17 +207,6 @@ function useCatalogConsoleState() {
     setQuery,
     selectedSlug,
     setSelectedSlug,
-    submissionMax,
-    submissionMaxBytes,
-    minImageEdge,
-    submissionSlugs,
-    setSubmissionSlugs,
-    submissionUploadUrl,
-    setSubmissionUploadUrl,
-    submissionAction,
-    setSubmissionAction,
-    submissionStep,
-    setSubmissionStep,
     draft,
     setDraft,
     draftRevision,
@@ -300,8 +258,6 @@ function useCatalogAuthHandlers(state: CatalogConsoleState) {
       setDraft: state.setDraft,
       setDraftRevision: state.setDraftRevision,
       setFieldErrors: state.setFieldErrors,
-      setSubmissionSlugs: state.setSubmissionSlugs,
-      setSubmissionAction: state.setSubmissionAction,
       setSyncOutput: state.setSyncOutput,
       defaultCategory: state.storefrontConfig.defaultCategory,
     });
@@ -333,7 +289,6 @@ function useCatalogDraftHandlers(state: CatalogConsoleState) {
       setDraftRevision: state.setDraftRevision,
       setFieldErrors: state.setFieldErrors,
       setActionFeedback: state.setActionFeedback,
-      setSubmissionSlugs: state.setSubmissionSlugs,
       setSyncOutput: state.setSyncOutput,
     });
 
@@ -362,6 +317,7 @@ function useCatalogDraftHandlers(state: CatalogConsoleState) {
       setDraftRevision: state.setDraftRevision,
       loadCatalog: state.loadCatalog,
       handleSelect,
+      confirmUnpublish: (message: string) => window.confirm(message),
     });
 
   const handleDelete = async () =>
@@ -402,70 +358,11 @@ function useCatalogSyncHandlers(state: CatalogConsoleState) {
   return { handleSync, handleRefreshSyncReadiness };
 }
 
-function useCatalogSubmissionHandlers(state: CatalogConsoleState) {
-  const handleToggleSubmissionSlug = (slug: string) => {
-    state.setSubmissionSlugs((prev) => toggleSubmissionSlug(prev, slug, state.submissionMax));
-  };
-
-  const handleClearSubmission = () =>
-    handleClearSubmissionImpl({
-      setSubmissionSlugs: state.setSubmissionSlugs,
-      setActionFeedback: state.setActionFeedback,
-      setSubmissionStep: state.setSubmissionStep,
-    });
-
-  const handleExportSubmission = async () =>
-    handleExportSubmissionImpl({
-      submissionSlugs: state.submissionSlugs,
-      storefront: state.storefront,
-      t: state.t,
-      busyLockRef: state.busyLockRef,
-      setBusy: state.setBusy,
-      setActionFeedback: state.setActionFeedback,
-      setSubmissionAction: state.setSubmissionAction,
-      setSubmissionStep: state.setSubmissionStep,
-      handleClearSubmission,
-    });
-
-  const handleUploadSubmissionToR2 = async () =>
-    handleUploadSubmissionToR2Impl({
-      submissionSlugs: state.submissionSlugs,
-      submissionUploadUrl: state.submissionUploadUrl,
-      storefront: state.storefront,
-      t: state.t,
-      busyLockRef: state.busyLockRef,
-      setBusy: state.setBusy,
-      setActionFeedback: state.setActionFeedback,
-      setSubmissionAction: state.setSubmissionAction,
-      setSubmissionStep: state.setSubmissionStep,
-      handleClearSubmission,
-    });
-
-  return {
-    handleToggleSubmissionSlug,
-    handleClearSubmission,
-    handleExportSubmission,
-    handleUploadSubmissionToR2,
-  };
-}
-
 export function useCatalogConsole() {
   const state = useCatalogConsoleState();
   const authHandlers = useCatalogAuthHandlers(state);
   const draftHandlers = useCatalogDraftHandlers(state);
   const syncHandlers = useCatalogSyncHandlers(state);
-  const submissionHandlers = useCatalogSubmissionHandlers(state);
-
-  const submissionState = {
-    submissionMax: state.submissionMax,
-    submissionMaxBytes: state.submissionMaxBytes,
-    minImageEdge: state.minImageEdge,
-    submissionSlugs: state.submissionSlugs,
-    submissionUploadUrl: state.submissionUploadUrl,
-    setSubmissionUploadUrl: state.setSubmissionUploadUrl,
-    submissionAction: state.submissionAction,
-    submissionStep: state.submissionStep,
-  };
 
   return {
     uploaderMode: state.uploaderMode,
@@ -491,12 +388,10 @@ export function useCatalogConsole() {
     syncOutput: state.syncOutput,
     syncReadiness: state.syncReadiness,
     refreshSyncReadiness: state.loadSyncReadiness,
-    ...submissionState,
     loadCatalog: state.loadCatalog,
     storefrontConfig: state.storefrontConfig,
     ...authHandlers,
     ...draftHandlers,
     ...syncHandlers,
-    ...submissionHandlers,
   };
 }

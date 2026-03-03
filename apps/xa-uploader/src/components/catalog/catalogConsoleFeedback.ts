@@ -2,13 +2,12 @@ import type * as React from "react";
 
 import type { CatalogProductDraftInput } from "@acme/lib/xa";
 
-import type { SubmissionApiError } from "./catalogSubmissionClient";
-
 export type SyncScriptId = "validate" | "sync";
 type SyncErrorCode =
   | "sync_dependencies_missing"
   | "catalog_input_missing"
   | "catalog_input_empty"
+  | "no_publishable_products"
   | "currency_rates_missing"
   | "currency_rates_invalid"
   | "catalog_publish_unconfigured"
@@ -19,6 +18,7 @@ type SyncRecoveryCode =
   | "restore_sync_scripts"
   | "create_catalog_input"
   | "confirm_empty_catalog_sync"
+  | "mark_products_ready"
   | "save_currency_rates"
   | "configure_catalog_contract"
   | "review_catalog_contract"
@@ -32,7 +32,7 @@ type CatalogApiErrorCode =
   | "internal_error"
   | "service_unavailable"
   | "invalid_upload_url";
-type ActionDomain = "login" | "draft" | "submission" | "sync";
+type ActionDomain = "login" | "draft" | "sync";
 type ActionFeedbackKind = "error" | "success";
 
 export type SessionState = { authenticated: boolean };
@@ -46,13 +46,16 @@ export type CatalogListResponse = {
 
 export type ActionFeedback = { kind: ActionFeedbackKind; message: string };
 export type ActionFeedbackState = Record<ActionDomain, ActionFeedback | null>;
-export type SubmissionAction = "export" | "upload" | null;
-export type SubmissionStep = "building-zip" | "uploading-zip" | "polling" | null;
 
 export type SyncResponse = {
   ok: boolean;
   error?: SyncErrorCode | string;
   recovery?: SyncRecoveryCode | string;
+  display?: {
+    mode?: string;
+    requiresXaBBuild?: boolean;
+    nextAction?: string;
+  };
   missingScripts?: SyncScriptId[];
   requiresConfirmation?: boolean;
   logs?: {
@@ -82,12 +85,8 @@ export function getCatalogApiErrorMessage(
   code: string | undefined,
   fallbackKey: string,
   t: (key: string, vars?: Record<string, unknown>) => string,
-  reason?: SubmissionApiError["reason"],
 ): string {
   const normalized = (code ?? "").trim() as CatalogApiErrorCode | "";
-  if (normalized === "invalid" && reason === "submission_validation_failed") {
-    return t("submissionValidationFailed");
-  }
   if (normalized === "invalid") return t("apiErrorInvalid");
   if (normalized === "missing_product") return t("apiErrorMissingProduct");
   if (normalized === "not_found") return t("apiErrorNotFound");
@@ -99,7 +98,7 @@ export function getCatalogApiErrorMessage(
 }
 
 export function createInitialActionFeedbackState(): ActionFeedbackState {
-  return { login: null, draft: null, submission: null, sync: null };
+  return { login: null, draft: null, sync: null };
 }
 
 export function updateActionFeedback(
@@ -166,12 +165,17 @@ function getSyncRecoveryMessage(
   if (recovery === "restore_sync_scripts") return t("syncRecoveryRestoreScripts");
   if (recovery === "create_catalog_input") return t("syncRecoveryCreateCatalogInput");
   if (recovery === "confirm_empty_catalog_sync") return t("syncRecoveryConfirmEmptyCatalogSync");
+  if (recovery === "mark_products_ready") return t("syncRecoveryMarkProductsReady");
   if (recovery === "save_currency_rates") return t("syncRecoverySaveCurrencyRates");
   if (recovery === "configure_catalog_contract") return t("syncRecoveryConfigureCatalogContract");
   if (recovery === "review_catalog_contract") return t("syncRecoveryReviewCatalogContract");
   if (recovery === "review_validation_logs") return t("syncRecoveryReviewValidationLogs");
   if (recovery === "review_sync_logs") return t("syncRecoveryReviewSyncLogs");
   return "";
+}
+
+function appendRecovery(base: string, recovery: string): string {
+  return recovery ? `${base} ${recovery}` : base;
 }
 
 export function getSyncFailureMessage(
@@ -181,40 +185,23 @@ export function getSyncFailureMessage(
   const recoveryMessage = getSyncRecoveryMessage(data.recovery, t);
   if (data.error === "sync_dependencies_missing") {
     const scripts = formatSyncMissingScripts(data.missingScripts, t);
-    const base = t("syncDependenciesMissing", { scripts });
-    return recoveryMessage ? `${base} ${recoveryMessage}` : base;
+    return appendRecovery(t("syncDependenciesMissing", { scripts }), recoveryMessage);
   }
-  if (data.error === "catalog_input_empty") {
-    const base = t("syncCatalogInputEmptyActionable");
-    return recoveryMessage ? `${base} ${recoveryMessage}` : base;
-  }
-  if (data.error === "catalog_input_missing") {
-    const base = t("syncCatalogInputMissingActionable");
-    return recoveryMessage ? `${base} ${recoveryMessage}` : base;
-  }
-  if (data.error === "currency_rates_missing") {
-    const base = t("syncCurrencyRatesMissingActionable");
-    return recoveryMessage ? `${base} ${recoveryMessage}` : base;
-  }
-  if (data.error === "currency_rates_invalid") {
-    const base = t("syncCurrencyRatesInvalidActionable");
-    return recoveryMessage ? `${base} ${recoveryMessage}` : base;
-  }
-  if (data.error === "catalog_publish_unconfigured") {
-    const base = t("syncPublishContractUnconfigured");
-    return recoveryMessage ? `${base} ${recoveryMessage}` : base;
-  }
-  if (data.error === "catalog_publish_failed") {
-    const base = t("syncPublishContractFailedActionable");
-    return recoveryMessage ? `${base} ${recoveryMessage}` : base;
-  }
-  if (data.error === "validation_failed") {
-    const base = t("syncValidationFailedActionable");
-    return recoveryMessage ? `${base} ${recoveryMessage}` : base;
-  }
-  if (data.error === "sync_failed") {
-    const base = t("syncPipelineFailedActionable");
-    return recoveryMessage ? `${base} ${recoveryMessage}` : base;
+
+  const actionableKeys: Record<string, string> = {
+    catalog_input_empty: "syncCatalogInputEmptyActionable",
+    no_publishable_products: "syncNoPublishableProductsActionable",
+    catalog_input_missing: "syncCatalogInputMissingActionable",
+    currency_rates_missing: "syncCurrencyRatesMissingActionable",
+    currency_rates_invalid: "syncCurrencyRatesInvalidActionable",
+    catalog_publish_unconfigured: "syncPublishContractUnconfigured",
+    catalog_publish_failed: "syncPublishContractFailedActionable",
+    validation_failed: "syncValidationFailedActionable",
+    sync_failed: "syncPipelineFailedActionable",
+  };
+  const key = data.error ? actionableKeys[data.error] : undefined;
+  if (key) {
+    return appendRecovery(t(key), recoveryMessage);
   }
   return t("syncFailed");
 }

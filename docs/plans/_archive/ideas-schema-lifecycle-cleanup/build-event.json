@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "ideas-schema-lifecycle-cleanup-2026-03-03",
+  "feature_slug": "ideas-schema-lifecycle-cleanup",
+  "emitted_at": "2026-03-03T10:57:19.973Z",
+  "why": "Two dispatch schema versions coexist with no deprecation marker. The trial-to-live queue lifecycle is undocumented, making it unclear how dispatches progress through the system.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "v1 schema deprecated or deleted. Schemas moved to ideas/schemas/. IDEAS-LIFECYCLE.md documents trial to live queue transition clearly.",
+    "source": "operator"
+  }
+}

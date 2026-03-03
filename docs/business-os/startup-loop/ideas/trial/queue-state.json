@@ -1,8 +1,8 @@
 {
-  "last_updated": "2026-03-03T10:34:30.196Z",
+  "last_updated": "2026-03-03T10:43:54.573Z",
   "counts": {
-    "enqueued": 13,
-    "processed": 10,
+    "enqueued": 12,
+    "processed": 11,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
@@ -5160,7 +5160,19 @@
         "source": "operator"
       },
       "created_at": "2026-03-03T07:58:46.608Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-03T10:43:54.572Z",
+        "fact_find_slug": "ideas-schema-lifecycle-cleanup",
+        "fact_find_path": "docs/plans/ideas-schema-lifecycle-cleanup/fact-find.md"
+      },
+      "completed_at": "2026-03-03T11:05:14.881Z",
+      "completed_by": {
+        "plan_slug": "ideas-schema-lifecycle-cleanup",
+        "plan_path": "docs/plans/_archive/ideas-schema-lifecycle-cleanup/plan.md",
+        "outcome": "v1 schema deprecated to _deprecated/. Active schemas moved to schemas/. IDEAS-LIFECYCLE.md documents dispatch lifecycle."
+      }
     },
     {
       "schema_version": "dispatch.v2",

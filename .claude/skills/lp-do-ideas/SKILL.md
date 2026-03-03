@@ -221,8 +221,8 @@ fields entirely and route based on the description alone.
 ## Outputs
 
 Each processed delta should produce a `dispatch.v2` packet conforming to
-`docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.v2.schema.json`.
-`dispatch.v1` remains compatibility-only for legacy packets.
+`docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-dispatch.v2.schema.json`.
+`dispatch.v1` remains compatibility-only for legacy packets (schema at `docs/business-os/startup-loop/ideas/_deprecated/lp-do-ideas-dispatch.schema.json`).
 
 Key output fields:
 | Field | Value |
@@ -262,9 +262,9 @@ The `seenDedupeKeys` set is maintained across calls to the queue layer.
 
 ## Contract References
 
-- Dispatch schema (primary): `docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.v2.schema.json`
-- Dispatch schema (compat): `docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.schema.json`
-- Standing registry: `docs/business-os/startup-loop/ideas/lp-do-ideas-standing-registry.schema.json`
+- Dispatch schema (primary): `docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-dispatch.v2.schema.json`
+- Dispatch schema (compat): `docs/business-os/startup-loop/ideas/_deprecated/lp-do-ideas-dispatch.schema.json`
+- Standing registry: `docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-standing-registry.schema.json`
 - Trial contract: `docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md`
 - Policy decision: `docs/plans/lp-do-ideas-startup-loop-integration/artifacts/trial-policy-decision.md`
 - Routing adapter: `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts` (TASK-04)

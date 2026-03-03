@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "lp-do-ideas-dispatch.schema.json",
-  "title": "lp-do-ideas Dispatch Packet (dispatch.v1)",
-  "description": "Dispatch packet emitted by the lp-do-ideas trial orchestrator for each processed standing-artifact delta. All fields labelled required must be present for schema validation to pass.",
+  "title": "[DEPRECATED] lp-do-ideas Dispatch Packet (dispatch.v1)",
+  "description": "DEPRECATED — replaced by dispatch.v2 (see schemas/lp-do-ideas-dispatch.v2.schema.json). Retained as reference for 129 historical v1 packets in trial/queue-state.json. Original: Dispatch packet emitted by the lp-do-ideas trial orchestrator for each processed standing-artifact delta. All fields labelled required must be present for schema validation to pass.",
   "type": "object",
   "properties": {
     "schema_version": {

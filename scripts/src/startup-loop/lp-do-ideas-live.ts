@@ -1,7 +1,7 @@
 /**
  * lp-do-ideas live orchestrator.
  *
- * Ingests standing-artifact delta events and emits dispatch.v1 packets
+ * Ingests standing-artifact delta events and emits dispatch packets
  * with mode="live". Operates in mode="live" only — rejects mode="trial"
  * and all other modes fail-closed.
  *
@@ -13,7 +13,7 @@
  *
  * Contract: docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md
  * Seam:     docs/business-os/startup-loop/ideas/lp-do-ideas-go-live-seam.md
- * Schema:   docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.schema.json
+ * Schema:   docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-dispatch.v2.schema.json (primary), docs/business-os/startup-loop/ideas/_deprecated/lp-do-ideas-dispatch.schema.json (compat)
  */
 
 import {

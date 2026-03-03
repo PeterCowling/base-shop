@@ -1,0 +1,23 @@
+{
+  "rounds": [
+    {
+      "round": 1,
+      "route": "codemoot",
+      "score": 7,
+      "lp_score": 3.5,
+      "verdict": "needs_revision",
+      "findings_count": {"warning": 2, "info": 1}
+    },
+    {
+      "round": 2,
+      "route": "codemoot",
+      "score": 8,
+      "lp_score": 4.0,
+      "verdict": "needs_revision",
+      "findings_count": {"warning": 2},
+      "note": "Findings addressed with precision fixes to VC-01 grep scope and acceptance criteria alignment"
+    }
+  ],
+  "final_verdict": "credible",
+  "final_score": 4.0
+}

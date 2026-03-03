@@ -124,7 +124,7 @@ telemetry to live paths is required or expected.
 ### 2.4 Standing Registry Production Snapshot
 
 Before activation, the operator must:
-1. Review `docs/business-os/startup-loop/ideas/lp-do-ideas-standing-registry.schema.json`
+1. Review `docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-standing-registry.schema.json`
    for artifact coverage.
 2. Create an active production registry at the live path with `mode: live` set.
 3. Capture initial SHAs for all registered artifacts using the SHA snapshot tooling

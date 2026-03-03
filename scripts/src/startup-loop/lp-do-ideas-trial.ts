@@ -7,7 +7,7 @@
  * Does not mutate startup-loop stage state.
  *
  * Contract: docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md
- * Schema:   docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.v2.schema.json (primary), docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.schema.json (compat)
+ * Schema:   docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-dispatch.v2.schema.json (primary), docs/business-os/startup-loop/ideas/_deprecated/lp-do-ideas-dispatch.schema.json (compat)
  */
 
 import { createHash } from "node:crypto";

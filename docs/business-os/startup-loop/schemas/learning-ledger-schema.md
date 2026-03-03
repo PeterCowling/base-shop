@@ -188,7 +188,7 @@ Experiment readout claims PASS (observed $4200).
 Delta A:
 ```json
 {
-  "artifact_path": "docs/business-os/startup-baselines/HEAD-forecast-seed.user.md",
+  "artifact_path": "docs/business-os/startup-baselines/HEAD/forecast-seed.user.md",
   "prior_id": "forecast.target.mrr_month3",
   "old_confidence": 0.6,
   "new_confidence": 0.8,
@@ -213,7 +213,7 @@ Operator discovers data error — actual observed MRR was $3500 (FAIL, not PASS)
 Delta B (new):
 ```json
 {
-  "artifact_path": "docs/business-os/startup-baselines/HEAD-forecast-seed.user.md",
+  "artifact_path": "docs/business-os/startup-baselines/HEAD/forecast-seed.user.md",
   "prior_id": "forecast.target.mrr_month3",
   "old_confidence": 0.6,
   "new_confidence": 0.3,

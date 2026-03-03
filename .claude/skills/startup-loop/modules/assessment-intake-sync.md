@@ -10,7 +10,7 @@ This module is **not operator-invoked directly** — it is called by `cmd-start.
 
 **First-run** (intake does not yet exist):
 - All seven ASSESSMENT completion artifacts are present (see Gate D in `cmd-start.md`)
-- `docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md` does NOT exist
+- `docs/business-os/startup-baselines/<BIZ>/<YYYY-MM-DD>-assessment-intake-packet.user.md` does NOT exist
 
 **Refresh** (intake exists but a precursor has been updated):
 - Intake packet exists with `Precursor-ASSESSMENT-01/02/03/04/06/07/08:` fields in frontmatter
@@ -35,7 +35,7 @@ grep -m1 "^Updated:\|^Created:" docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-mea
 grep -m1 "^Updated:\|^Created:" docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-operator-context.user.md
 
 # Step 2 — read stored precursor dates from intake packet frontmatter
-grep -E "^Precursor-ASSESSMENT-[0-9]+:" docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md 2>/dev/null
+grep -E "^Precursor-ASSESSMENT-[0-9]+:" docs/business-os/startup-baselines/<BIZ>/<YYYY-MM-DD>-assessment-intake-packet.user.md 2>/dev/null
 ```
 
 If any precursor date is newer than the stored value → drift detected → proceed to sync steps.
@@ -98,7 +98,7 @@ If intake exists, extract and preserve:
 
 ### Step 3: Write or refresh intake packet
 
-**Output path:** `docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md`
+**Output path:** `docs/business-os/startup-baselines/<BIZ>/<YYYY-MM-DD>-assessment-intake-packet.user.md`
 
 **Frontmatter fields — always set/update:**
 
@@ -189,7 +189,7 @@ ASSESSMENT intake sync: COMPLETE
   Drift detected: [list changed precursors, or "none (first-run)"]
   Updated:        [list sections updated, e.g. "A, B, C, D (new rows added), F (new gaps added)"]
   Preserved:      [list operator-locked sections, e.g. "D (observed rows), E, G"]
-  Output:         docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md
+  Output:         docs/business-os/startup-baselines/<BIZ>/<YYYY-MM-DD>-assessment-intake-packet.user.md
 ```
 
 ---

@@ -39,7 +39,7 @@ Optional (read if present):
 
 Search paths (scan in order, use what exists):
 - `docs/business-os/strategy/<BIZ>/` — strategy docs, briefs, notes
-- `docs/business-os/startup-baselines/<BIZ>-*` — baseline docs
+- `docs/business-os/startup-baselines/<BIZ>/*` — baseline docs
 
 If no files exist, work from operator-provided description only. Do not block on missing files.
 

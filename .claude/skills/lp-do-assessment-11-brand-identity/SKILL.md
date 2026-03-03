@@ -34,7 +34,7 @@ Does NOT:
 | Source | Path | Required |
 |--------|------|----------|
 | Brand strategy | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-profile.user.md` | Yes — primary input; blocks if absent |
-| ASSESSMENT intake packet | `docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md` | Yes — provides product context, ICP, positioning |
+| ASSESSMENT intake packet | `docs/business-os/startup-baselines/<BIZ>/<YYYY-MM-DD>-assessment-intake-packet.user.md` | Yes — provides product context, ICP, positioning |
 | Brand language template | `.claude/skills/_shared/brand-language-template.md` | Yes — structural reference |
 | Theme tokens | `packages/themes/<theme>/src/tokens.ts` | No — read if a theme package exists for this business |
 | Existing app UI | `apps/<app>/src/app/layout.tsx`, key pages | No — read if an app already exists |

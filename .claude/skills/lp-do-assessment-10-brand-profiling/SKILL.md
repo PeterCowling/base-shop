@@ -39,7 +39,7 @@ Does NOT:
 
 | Source | Path | Required |
 |--------|------|----------|
-| ASSESSMENT intake packet | `docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md` | Yes — primary source for name shortlist, ICP, and product context |
+| ASSESSMENT intake packet | `docs/business-os/startup-baselines/<BIZ>/<YYYY-MM-DD>-assessment-intake-packet.user.md` | Yes — primary source for name shortlist, ICP, and product context |
 | Naming shortlist | `docs/business-os/strategy/<BIZ>/assessment/naming-workbench/latest-naming-shortlist.user.md` | Yes if present — extract `recommended_business_name` and `shortlist` array from YAML front matter |
 | Problem statement | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-problem-statement.user.md` | No — read if present for ICP and pain-point context |
 | Option selection | `docs/business-os/strategy/<BIZ>/s0c-option-select.user.md` | No — read if present for product and positioning context |

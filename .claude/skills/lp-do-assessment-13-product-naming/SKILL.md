@@ -50,7 +50,7 @@ All four parts run sequentially. Each part gates on the output of the prior part
 
 | Source | Path | Required |
 |--------|------|----------|
-| ASSESSMENT intake packet | `docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md` | Yes — primary source for product definition and ICP |
+| ASSESSMENT intake packet | `docs/business-os/startup-baselines/<BIZ>/<YYYY-MM-DD>-assessment-intake-packet.user.md` | Yes — primary source for product definition and ICP |
 | Product option selection | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-option-selection.user.md` | Yes — confirmed product type and product category |
 | Brand profile | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-profile.user.md` | Yes — personality adjective pairs, voice & tone, positioning constraints |
 | Business name shortlist | `docs/business-os/strategy/<BIZ>/assessment/naming-workbench/latest-naming-shortlist.user.md` | Yes if present — confirms the approved business name and expansion-headroom rationale |

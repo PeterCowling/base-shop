@@ -86,7 +86,7 @@ Convert the active WEBSITE-01 first-build contract into a plan-ready build backl
 - Upstream dependencies:
   - `docs/business-os/strategy/HBAG/site-v1-builder-prompt.user.md`
   - `docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md`
-  - `docs/business-os/startup-baselines/HBAG-offer.md`
+  - `docs/business-os/startup-baselines/HBAG/offer.md`
 - Downstream dependents:
   - `docs/plans/hbag-website-v1-first-build/plan.md` (next stage)
   - `apps/caryina/` implementation work

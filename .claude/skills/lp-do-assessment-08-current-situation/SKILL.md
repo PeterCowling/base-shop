@@ -35,7 +35,7 @@ Required:
 
 Optional (read if present, note gap if absent):
 - `docs/business-os/strategy/<BIZ>/plan.user.md` — may contain operational context
-- `docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md` — may contain pre-recorded observed fields
+- `docs/business-os/startup-baselines/<BIZ>/<YYYY-MM-DD>-assessment-intake-packet.user.md` — may contain pre-recorded observed fields
 - `docs/business-os/strategy/<BIZ>/s0c-option-select.user.md` — may contain execution constraints (from ASSESSMENT-03)
 - Any other strategy or brief docs under `docs/business-os/strategy/<BIZ>/`
 

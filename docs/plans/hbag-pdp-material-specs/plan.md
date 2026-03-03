@@ -468,17 +468,17 @@ Caryina's three launch SKUs (Silver, Rose Splash, Peach) have product descriptio
 
 ### TASK-08: Docs sync — update content packet evidence constraints
 - **Type:** IMPLEMENT
-- **Deliverable:** Updated `docs/business-os/startup-baselines/HBAG-content-packet.md` — `## Product Copy Matrix` evidence constraints column updated to reference confirmed material data from `supplier-spec-confirmed.user.md`
+- **Deliverable:** Updated `docs/business-os/startup-baselines/HBAG/content-packet.md` — `## Product Copy Matrix` evidence constraints column updated to reference confirmed material data from `supplier-spec-confirmed.user.md`
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
 - **Status:** Pending
-- **Artifact-Destination:** `docs/business-os/startup-baselines/HBAG-content-packet.md`
+- **Artifact-Destination:** `docs/business-os/startup-baselines/HBAG/content-packet.md`
 - **Reviewer:** Pete (optional review; low-stakes documentation sync)
 - **Approval-Evidence:** None: routine documentation sync; no approval gate required
 - **Measurement-Readiness:** None: documentation task
-- **Affects:** `docs/business-os/startup-baselines/HBAG-content-packet.md`, `[readonly] docs/business-os/strategy/HBAG/supplier-spec-confirmed.user.md`
+- **Affects:** `docs/business-os/startup-baselines/HBAG/content-packet.md`, `[readonly] docs/business-os/strategy/HBAG/supplier-spec-confirmed.user.md`
 - **Depends on:** TASK-01
 - **Blocks:** -
 - **Confidence:** 70% (pre-TASK-01) — documentation-only task. Build execution is blocked until TASK-01 (operator-facing data gathering) completes. 70% is correct for a docs-sync task with no runtime effect; this does not block the plan's build eligibility as higher-confidence tasks (TASK-02, TASK-03, TASK-06) proceed independently.

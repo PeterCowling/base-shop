@@ -73,7 +73,7 @@ This fact-find scopes the work needed to: (1) extend the product data schema wit
 | `packages/types/src/Product.ts` | Read/write (TypeScript type definition) | Verified — file exists |
 | `packages/platform-core/src/repositories/catalogSkus.server.ts` | Read (understand mapping) | Verified — file exists |
 | `apps/caryina/src/app/[lang]/product/[slug]/page.tsx` | Read/write (PDP rendering) | Verified — file exists |
-| `docs/business-os/startup-baselines/HBAG-content-packet.md` | Read/write (content packet source) | Verified — file exists |
+| `docs/business-os/startup-baselines/HBAG/content-packet.md` | Read/write (content packet source) | Verified — file exists |
 | Supplier (Pete's contact) | Operator-only — real-world data | UNVERIFIED — requires operator action |
 
 ## Evidence Audit (Current State)
@@ -90,7 +90,7 @@ This fact-find scopes the work needed to: (1) extend the product data schema wit
 - `packages/types/src/Product.ts` — `skuSchema` (Zod, `.strict()`), `ProductCore`, `ProductPublication` — all three require new optional fields
 - `packages/platform-core/src/repositories/catalogSkus.server.ts` — `skuFromProduct` function that maps to `SKU` — must forward new fields
 - `apps/caryina/src/app/[lang]/product/[slug]/page.tsx` — PDP server component — must render a new spec section
-- `docs/business-os/startup-baselines/HBAG-content-packet.md` — source of truth for copy — needs a `## Material & Spec Data` section documenting the agreed copy (but this is reference, not the live data store)
+- `docs/business-os/startup-baselines/HBAG/content-packet.md` — source of truth for copy — needs a `## Material & Spec Data` section documenting the agreed copy (but this is reference, not the live data store)
 - `docs/business-os/strategy/HBAG/2026-02-22-product-from-photo.user.md` — §2.3 Materials & Finishes, §2.4 Hardware & Closures, §7 Unknowns — establishes which claims are evidenced vs UNKNOWN
 
 ### Patterns & Conventions Observed
@@ -122,7 +122,7 @@ This fact-find scopes the work needed to: (1) extend the product data schema wit
   - `packages/platform-core/src/repositories/catalogSkus.server.ts` — must pass new fields through `skuFromProduct`.
   - `apps/caryina/src/app/[lang]/product/[slug]/page.tsx` — must render new spec section.
   - `data/shops/caryina/products.json` — must be populated with actual values.
-  - `docs/business-os/startup-baselines/HBAG-content-packet.md` — `## Product Copy Matrix` should be updated with new evidence constraints now that spec fields are present.
+  - `docs/business-os/startup-baselines/HBAG/content-packet.md` — `## Product Copy Matrix` should be updated with new evidence constraints now that spec fields are present.
 - Likely blast radius:
   - The `skuSchema.strict()` constraint means any test or code that constructs a `SKU` object directly (e.g. tests in `packages/ui`, `packages/platform-core`) will fail TypeScript compilation if new required fields are added. All new fields must be declared `optional()` to avoid breaking existing tests.
   - Search: the `skuSchema` is used in templates, UI tests, and stories across `packages/ui/`, `packages/platform-core/`, and `packages/template-app/` — existing test mocks do not include material/spec fields, so all new fields must be optional.
@@ -228,7 +228,7 @@ This fact-find scopes the work needed to: (1) extend the product data schema wit
 
 - Q: What provenance claim is allowed?
   - A: "Designed in Positano, Italy" — confirmed in the brand dossier and repeated in the offer design. "Made in Italy" is prohibited under Italian Law 166/2009 because manufacturing is China-based.
-  - Evidence: `docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md` §Brand Claims; `docs/business-os/startup-baselines/HBAG-offer.md` §Objection Map (row 5).
+  - Evidence: `docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md` §Brand Claims; `docs/business-os/startup-baselines/HBAG/offer.md` §Objection Map (row 5).
 
 - Q: Should the spec section be shared across all SKUs (same template) or per-SKU (different values)?
   - A: Per-SKU values, shared rendering template. The three variants have different dimensions (all same architecture but distinct colorways), different hardware finish details (V3 has a mixed silver/gold conflict note). Each SKU record in `products.json` needs its own field values; the PDP renders whatever is present in the SKU.

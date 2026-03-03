@@ -24,7 +24,7 @@ Review-trigger: After each completed build cycle touching this document.
 
 **Status**: PASS
 
-**Evidence**: `docs/business-os/startup-baselines/HEAD-offer.md` Section 1–5. Product is explicitly named: cross-compatible textile CI retention headbands (launch hero) with 90-day MVP extension (multi-pack headbands, organiser pouch, identity patch packs). ICP-A is specifically defined (caregivers of children with external CI processors, 28–45, Italy, school/daycare context). Value proposition is articulated: "Secure wear for busy days. Calmer routines. Made to be worn proudly." (Section 4). Price intent is stated with competitor anchors: EUR 18–32 core single headband, EUR 59–79 school kit bundle (Section 5).
+**Evidence**: `docs/business-os/startup-baselines/HEAD/offer.md` Section 1–5. Product is explicitly named: cross-compatible textile CI retention headbands (launch hero) with 90-day MVP extension (multi-pack headbands, organiser pouch, identity patch packs). ICP-A is specifically defined (caregivers of children with external CI processors, 28–45, Italy, school/daycare context). Value proposition is articulated: "Secure wear for busy days. Calmer routines. Made to be worn proudly." (Section 4). Price intent is stated with competitor anchors: EUR 18–32 core single headband, EUR 59–79 school kit bundle (Section 5).
 
 **Reason**: N/A (PASS)
 
@@ -34,7 +34,7 @@ Review-trigger: After each completed build cycle touching this document.
 
 **Status**: PASS
 
-**Evidence**: `docs/business-os/startup-baselines/HEAD-channels.md` Section 2–3. Three channels selected: (A) Own-site DTC search + retargeting, EUR 900/month, medium cost; (B) Community referrals (caregiver groups), EUR 250/month, low cost; (C) Etsy probe lane, EUR 250/month, low cost. Total Month-1 cap EUR 1,500. No fatal blockers — hard spend caps exist to prevent premature scale. Channel-to-customer fit is plausible: own-site captures high-intent CI-specific search; community referrals match ICP-A trust-heavy caregiver behaviour; Etsy validates marketplace demand signal without replacing own-site primary.
+**Evidence**: `docs/business-os/startup-baselines/HEAD/channels.md` Section 2–3. Three channels selected: (A) Own-site DTC search + retargeting, EUR 900/month, medium cost; (B) Community referrals (caregiver groups), EUR 250/month, low cost; (C) Etsy probe lane, EUR 250/month, low cost. Total Month-1 cap EUR 1,500. No fatal blockers — hard spend caps exist to prevent premature scale. Channel-to-customer fit is plausible: own-site captures high-intent CI-specific search; community referrals match ICP-A trust-heavy caregiver behaviour; Etsy validates marketplace demand signal without replacing own-site primary.
 
 **Reason**: N/A (PASS)
 
@@ -44,7 +44,7 @@ Review-trigger: After each completed build cycle touching this document.
 
 **Status**: PASS
 
-**Evidence**: `docs/business-os/startup-baselines/HEAD-channels.md` Section 2 and 4. Key metrics are named per channel: sessions by source, sitewide CVR and channel CVR, paid CAC and blended CAC, payment success rate, bundle attach rate (Channel A); referral sessions and assisted conversion share (Channel B); marketplace CVR and net contribution per order after fees (Channel C). Baseline approach: outcome-contract CAC/CVR guardrails referenced in Section 3 constraints; Week-2 pass/hold decision gate in GTM timeline (Section 4 critical path). Pre-launch GTM task: "Configure baseline tracking for bundle attach and returns reasons" establishes data collection intent before first spend.
+**Evidence**: `docs/business-os/startup-baselines/HEAD/channels.md` Section 2 and 4. Key metrics are named per channel: sessions by source, sitewide CVR and channel CVR, paid CAC and blended CAC, payment success rate, bundle attach rate (Channel A); referral sessions and assisted conversion share (Channel B); marketplace CVR and net contribution per order after fees (Channel C). Baseline approach: outcome-contract CAC/CVR guardrails referenced in Section 3 constraints; Week-2 pass/hold decision gate in GTM timeline (Section 4 critical path). Pre-launch GTM task: "Configure baseline tracking for bundle attach and returns reasons" establishes data collection intent before first spend.
 
 **Note**: Specific analytics tool (GA4 or equivalent) not yet formally documented — this is the scope of S1B (Measure stage, pre-website path), which is the required next step. Tracking configuration is a pre-launch GTM dependency explicitly in the critical path; S1 readiness is hypothesis-tolerant per loop-spec §S1 scope.
 
@@ -59,7 +59,7 @@ DEP is required before GATE-S6B-ACT-01 (spend authorization). Starting capture a
 To start now:
 - Register at least 1 message hypothesis (channel + audience_slice + asset_ref)
 - Set up source-tagged tracking before any test impressions
-- Schema: `docs/business-os/startup-loop/demand-evidence-pack-schema.md`
+- Schema: `docs/business-os/startup-loop/schemas/demand-evidence-pack-schema.md`
 
 **Current DEP status**: Not started
 
@@ -87,9 +87,9 @@ Run the S1B Measure prompt before advancing to S2.
 ## Context Summary
 
 **Files scanned**:
-- `docs/business-os/startup-baselines/HEAD-offer.md`
-- `docs/business-os/startup-baselines/HEAD-channels.md`
-- `docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md`
+- `docs/business-os/startup-baselines/HEAD/offer.md`
+- `docs/business-os/startup-baselines/HEAD/channels.md`
+- `docs/business-os/startup-baselines/HEAD/2026-02-12-assessment-intake-packet.user.md`
 - `docs/business-os/strategy/HEAD/index.user.md`
 - `docs/business-os/strategy/HEAD/plan.user.md`
 - `docs/business-os/strategy/HEAD/2026-02-20-operator-context.user.md`

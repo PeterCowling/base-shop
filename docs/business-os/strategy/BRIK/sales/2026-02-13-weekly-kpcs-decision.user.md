@@ -54,7 +54,7 @@ Rationale:
 
 Signal:
 - First startup-loop forecast published (`2026-02-13-startup-loop-90-day-forecast-v1.user.md`).
-- Forecast seed created (`docs/business-os/startup-baselines/BRIK-forecast-seed.user.md`).
+- Forecast seed created (`docs/business-os/startup-baselines/BRIK/forecast-seed.user.md`).
 - Prioritization scorecard published (`2026-02-13-prioritization-scorecard.user.md`).
 - Production measurement verification document published and updated with Data API extraction (`2026-02-13-measurement-verification.user.md`).
 - GA4 verification + baseline lock work is tracked in `docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md` (Status: Active). No separate plan file exists for this work stream — the measurement-verification artifact is the canonical checkpoint for P1 GA4 baseline tracking.

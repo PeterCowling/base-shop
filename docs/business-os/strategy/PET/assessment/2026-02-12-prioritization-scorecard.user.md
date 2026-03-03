@@ -4,7 +4,7 @@ Status: Active
 Business: PET
 Date: 2026-02-12
 Owner: Pete
-Seed-Source: docs/business-os/startup-baselines/PET-forecast-seed.user.md
+Seed-Source: docs/business-os/startup-baselines/PET/forecast-seed.user.md
 Review-trigger: After each completed build cycle touching this document.
 ---
 

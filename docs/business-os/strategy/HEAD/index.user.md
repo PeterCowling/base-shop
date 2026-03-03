@@ -41,9 +41,9 @@ Gates read `Status` from this table — not from individual file frontmatters.
 | Stage | Artifact | Path | Status | Last-reviewed |
 |----------|------|--------|--------|---------------|
 | S2 | Market intelligence (latest) | `docs/business-os/market-research/HEAD/latest.user.md` | Active | 2026-02-20 |
-| S2B | Offer | `docs/business-os/startup-baselines/HEAD-offer.md` | Active | 2026-02-20 |
+| S2B | Offer | `docs/business-os/startup-baselines/HEAD/offer.md` | Active | 2026-02-20 |
 | S3 | Forecast | `docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md` | Active | 2026-02-20 |
-| S6B | Channels | `docs/business-os/startup-baselines/HEAD-channels.md` | Active | 2026-02-20 |
+| S6B | Channels | `docs/business-os/startup-baselines/HEAD/channels.md` | Active | 2026-02-20 |
 | S3B | Adjacent product + naming research | `docs/business-os/strategy/HEAD/lp-other-products-results.user.md` | Active | 2026-02-20 |
 | S4 | Prioritization | `docs/business-os/strategy/HEAD/2026-02-12-prioritization-scorecard.user.md` | Active | 2026-02-20 |
 

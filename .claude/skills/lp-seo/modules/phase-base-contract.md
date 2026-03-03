@@ -10,8 +10,8 @@ Canonical path defined in `docs/business-os/startup-loop/artifact-registry.md` (
 
 ## Required Inputs
 
-- **lp-offer artifact**: `docs/business-os/startup-baselines/<BIZ>-offer.md` — ICP, value proposition, target customer language, differentiation, objection map
-- **lp-channels artifact**: `docs/business-os/startup-baselines/<BIZ>-channels.md` — confirms organic search is a prioritized channel
+- **lp-offer artifact**: `docs/business-os/startup-baselines/<BIZ>/offer.md` — ICP, value proposition, target customer language, differentiation, objection map
+- **lp-channels artifact**: `docs/business-os/startup-baselines/<BIZ>/channels.md` — confirms organic search is a prioritized channel
 
 ## Phase Dependency Chain
 

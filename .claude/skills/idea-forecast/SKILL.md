@@ -140,7 +140,7 @@ Write:
 - `docs/business-os/strategy/<BIZ>/<slug>-90-day-launch-forecast-vN.user.md`
 
 If this run is intended to seed SFS-00, also write:
-- `docs/business-os/startup-baselines/<BIZ>-forecast-seed.user.md`
+- `docs/business-os/startup-baselines/<BIZ>/forecast-seed.user.md`
 
 If market research was refreshed in this run, also write:
 - `docs/business-os/market-research/<BIZ>/<YYYY-MM-DD>-market-intelligence.user.md`

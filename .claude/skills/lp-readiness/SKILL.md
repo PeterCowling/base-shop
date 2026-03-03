@@ -49,7 +49,7 @@ This startup readiness skill targets early-stage businesses and lightweight laun
 
 Required files (at least ONE must exist):
 - `docs/business-os/strategy/<BIZ>/*.user.md` — any strategy doc (revenue architecture, business model, etc.)
-- `docs/business-os/startup-baselines/<BIZ>-*.md` — baseline docs (offer, distribution, measurement, research)
+- `docs/business-os/startup-baselines/<BIZ>/*.md` — baseline docs (offer, distribution, measurement, research)
 
 Optional:
 - `docs/business-os/People.md` — team context
@@ -131,7 +131,7 @@ If DEP is already in progress, note its status in the Context Summary. If DEP is
 ### Stage 1: Load Context (READ)
 
 1. Scan `docs/business-os/strategy/<BIZ>/` for strategy docs
-2. Scan `docs/business-os/startup-baselines/<BIZ>-*.md` for baseline docs
+2. Scan `docs/business-os/startup-baselines/<BIZ>/*.md` for baseline docs
 3. Load `docs/business-os/People.md` if it exists
 4. Aggregate offer, distribution, measurement context from all sources
 

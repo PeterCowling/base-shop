@@ -28,7 +28,7 @@ Capture and lock the exact outcome contract needed for the Headband business to 
   - `docs/business-os/strategy/HEAD/plan.user.md`
 - Forecast and intake artifacts align to the same 90-day target window and guardrail logic.
   - `docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md`
-  - `docs/business-os/startup-baselines/HEAD-forecast-seed.user.md`
+  - `docs/business-os/startup-baselines/HEAD/forecast-seed.user.md`
 
 ## Locked Contract Snapshot (HEAD)
 

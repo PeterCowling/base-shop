@@ -154,7 +154,7 @@ These are the 8 questions most directly relevant to confirming the problem is re
 ## Key Sources
 
 - `docs/business-os/market-research/HEAD/2026-02-20-market-intelligence.user.md` (full evidence inventory including Section I addendum)
-- `docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md`
+- `docs/business-os/startup-baselines/HEAD/2026-02-12-assessment-intake-packet.user.md`
 - BCIG lost-processor guidance (bcig.org.uk)
 - MDPI 2024/2025 Italian CI incidence study
 - EURO-CIU European prevalence estimate

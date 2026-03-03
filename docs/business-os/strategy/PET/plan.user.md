@@ -21,7 +21,7 @@ Review-trigger: After each completed build cycle touching this document.
      Same supplier as HBAG. Leash clip confirmed to fit — Pete, 2026-02-17.
    - Brand: TBD — brand name selection pending from `/lp-offer` output
      (Options: **Mio** [recommended], Rue & Hound, Passi).
-   - Offer artifact: `docs/business-os/startup-baselines/PET-offer.md`
+   - Offer artifact: `docs/business-os/startup-baselines/PET/offer.md`
    - Next: Pete selects brand name → TASK-01 closes → TASK-04 (photography) + TASK-05 (social) unblock.
 
 2. **Category Lock** (Priority: Complete)

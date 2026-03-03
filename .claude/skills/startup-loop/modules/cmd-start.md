@@ -76,7 +76,7 @@ When all seven completion artifacts exist:
 → Gate D is satisfied. Run ASSESSMENT intake sync (the intake packet production step) — apply `modules/assessment-intake-sync.md` (first-run or drift check) before continuing to Gate E (ASSESSMENT brand routing).
 
 **ASSESSMENT-09 output (canonical):**
-- `required_output_path`: `docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md`
+- `required_output_path`: `docs/business-os/startup-baselines/<BIZ>/<YYYY-MM-DD>-assessment-intake-packet.user.md`
 - Advance rule: ASSESSMENT-09 completes only when precursor validation passes and the intake sync runs successfully (or is no-op up-to-date), then routing may continue to ASSESSMENT-10.
 
 ---

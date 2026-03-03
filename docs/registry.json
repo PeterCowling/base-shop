@@ -1632,13 +1632,13 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-baselines/BRIK-2026-02-12assessment-intake-packet.user.md",
+    "path": "docs/business-os/startup-baselines/BRIK/2026-02-12-assessment-intake-packet.user.md",
     "type": "Startup-Intake-Packet",
     "status": "Active",
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-baselines/BRIK-forecast-seed.user.md",
+    "path": "docs/business-os/startup-baselines/BRIK/forecast-seed.user.md",
     "type": "Startup-Baseline-Seed",
     "status": "Active",
     "domain": null
@@ -1650,31 +1650,31 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-baselines/HBAG-2026-02-20assessment-intake-packet.user.md",
+    "path": "docs/business-os/startup-baselines/HBAG/2026-02-20-assessment-intake-packet.user.md",
     "type": "Startup-Intake-Packet",
     "status": "Active",
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-baselines/HBAG-channels.md",
+    "path": "docs/business-os/startup-baselines/HBAG/channels.md",
     "type": "Reference",
     "status": "Active",
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-baselines/HBAG-content-packet.md",
+    "path": "docs/business-os/startup-baselines/HBAG/content-packet.md",
     "type": "Startup-Content-Packet",
     "status": "Active",
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-baselines/HBAG-forecast-seed.user.md",
+    "path": "docs/business-os/startup-baselines/HBAG/forecast-seed.user.md",
     "type": "Startup-Baseline-Seed",
     "status": "Active",
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-baselines/HBAG-offer.md",
+    "path": "docs/business-os/startup-baselines/HBAG/offer.md",
     "type": "Reference",
     "status": "Active",
     "domain": null
@@ -1692,25 +1692,25 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md",
+    "path": "docs/business-os/startup-baselines/HEAD/2026-02-12-assessment-intake-packet.user.md",
     "type": "Startup-Intake-Packet",
     "status": "Active",
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-baselines/HEAD-channels.md",
+    "path": "docs/business-os/startup-baselines/HEAD/channels.md",
     "type": "Reference",
     "status": "Active",
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-baselines/HEAD-forecast-seed.user.md",
+    "path": "docs/business-os/startup-baselines/HEAD/forecast-seed.user.md",
     "type": "Startup-Baseline-Seed",
     "status": "Active",
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-baselines/HEAD-offer.md",
+    "path": "docs/business-os/startup-baselines/HEAD/offer.md",
     "type": "Reference",
     "status": "Active",
     "domain": null
@@ -1722,19 +1722,19 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-baselines/PET-2026-02-12assessment-intake-packet.user.md",
+    "path": "docs/business-os/startup-baselines/PET/2026-02-12-assessment-intake-packet.user.md",
     "type": "Startup-Intake-Packet",
     "status": "Active",
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-baselines/PET-forecast-seed.user.md",
+    "path": "docs/business-os/startup-baselines/PET/forecast-seed.user.md",
     "type": "Startup-Baseline-Seed",
     "status": "Draft",
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-baselines/PET-offer.md",
+    "path": "docs/business-os/startup-baselines/PET/offer.md",
     "type": "Offer",
     "status": "Active",
     "domain": null
@@ -1764,14 +1764,14 @@
     "domain": "Venture-Studio"
   },
   {
-    "path": "docs/business-os/startup-loop/2026-02-26-reflection-prioritization-expert-brief.user.md",
-    "type": "Briefing",
+    "path": "docs/business-os/startup-loop/_deprecated/process-registry-v1.md",
+    "type": "Process-Registry",
     "status": "Active",
-    "domain": "Startup-Loop / Prioritization"
+    "domain": "Venture-Studio"
   },
   {
-    "path": "docs/business-os/startup-loop/operations/OCTORATE-DATA-STATUS.md",
-    "type": "Status-Summary",
+    "path": "docs/business-os/startup-loop/_deprecated/workstream-workflow-taxonomy-v2.md",
+    "type": "Taxonomy Contract",
     "status": "Active",
     "domain": null
   },
@@ -1782,16 +1782,16 @@
     "domain": "Business-OS"
   },
   {
-    "path": "docs/business-os/startup-loop/contracts/aggregate-pack-contracts.md",
-    "type": "Architecture-Contract",
-    "status": "Active",
-    "domain": null
-  },
-  {
     "path": "docs/business-os/startup-loop/artifact-registry.md",
     "type": "Schema-Contract",
     "status": "Active",
     "domain": "Venture-Studio"
+  },
+  {
+    "path": "docs/business-os/startup-loop/contracts/aggregate-pack-contracts.md",
+    "type": "Architecture-Contract",
+    "status": "Active",
+    "domain": null
   },
   {
     "path": "docs/business-os/startup-loop/contracts/audit-cadence-contract-v1.md",
@@ -1800,58 +1800,28 @@
     "domain": "Venture-Studio"
   },
   {
-    "path": "docs/business-os/startup-loop/specifications/autonomy-policy.md",
-    "type": "Policy",
-    "status": "Canonical",
-    "domain": "Business-OS"
-  },
-  {
-    "path": "docs/business-os/startup-loop/schemas/baseline-prior-schema.md",
-    "type": "Reference",
-    "status": "Canonical",
-    "domain": "Business-OS"
-  },
-  {
-    "path": "docs/business-os/startup-loop/schemas/bottleneck-diagnosis-schema.md",
-    "type": "Reference",
-    "status": "Canonical",
-    "domain": "Business-OS"
-  },
-  {
-    "path": "docs/business-os/startup-loop/schemas/briefing-contract-schema-v1.md",
+    "path": "docs/business-os/startup-loop/contracts/loop-output-contracts.md",
     "type": "Schema-Contract",
     "status": "Active",
     "domain": "Venture-Studio"
   },
   {
-    "path": "docs/business-os/startup-loop/schemas/carry-mode-schema.md",
-    "type": "Architecture-Contract",
-    "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/startup-loop/schemas/demand-evidence-pack-schema.md",
-    "type": "Schema-Contract",
+    "path": "docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md",
+    "type": "Capability-Contract",
     "status": "Active",
     "domain": "Venture-Studio"
   },
   {
-    "path": "docs/business-os/startup-loop/schemas/event-state-schema.md",
-    "type": "Reference",
-    "status": "Canonical",
+    "path": "docs/business-os/startup-loop/contracts/s10-weekly-orchestration-contract-v1.md",
+    "type": "Contract",
+    "status": "Active",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/business-os/startup-loop/operations/exception-runbooks-v1.md",
-    "type": "Operations-Contract",
+    "path": "docs/business-os/startup-loop/contracts/website-iteration-throughput-report-contract.md",
+    "type": "Contract",
     "status": "Active",
-    "domain": "Venture-Studio"
-  },
-  {
-    "path": "docs/business-os/startup-loop/schemas/hygiene-schema.md",
-    "type": "Reference",
-    "status": "Active",
-    "domain": "Startup Loop"
+    "domain": "Startup-Loop"
   },
   {
     "path": "docs/business-os/startup-loop/ideas/_archive/handoff-to-fact-find.md",
@@ -1920,26 +1890,20 @@
     "domain": "Repo"
   },
   {
-    "path": "docs/business-os/startup-loop/schemas/learning-ledger-schema.md",
-    "type": "Reference",
-    "status": "Canonical",
-    "domain": "Business-OS"
-  },
-  {
-    "path": "docs/business-os/startup-loop/contracts/loop-output-contracts.md",
-    "type": "Schema-Contract",
+    "path": "docs/business-os/startup-loop/operations/2026-02-26-reflection-prioritization-expert-brief.user.md",
+    "type": "Briefing",
     "status": "Active",
-    "domain": "Venture-Studio"
+    "domain": "Startup-Loop / Prioritization"
   },
   {
-    "path": "docs/business-os/startup-loop/schemas/manifest-schema.md",
-    "type": "Reference",
-    "status": "Canonical",
-    "domain": "Business-OS"
+    "path": "docs/business-os/startup-loop/operations/OCTORATE-DATA-STATUS.md",
+    "type": "Status-Summary",
+    "status": "Active",
+    "domain": null
   },
   {
-    "path": "docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md",
-    "type": "Capability-Contract",
+    "path": "docs/business-os/startup-loop/operations/exception-runbooks-v1.md",
+    "type": "Operations-Contract",
     "status": "Active",
     "domain": "Venture-Studio"
   },
@@ -1950,28 +1914,70 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-loop/_deprecated/process-registry-v1.md",
-    "type": "Process-Registry",
-    "status": "Active",
-    "domain": "Venture-Studio"
-  },
-  {
     "path": "docs/business-os/startup-loop/process-registry-v2.md",
     "type": "Process-Registry",
     "status": "Active",
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-loop/schemas/retention-schema.md",
-    "type": "Capability-Schema",
+    "path": "docs/business-os/startup-loop/schemas/baseline-prior-schema.md",
+    "type": "Reference",
+    "status": "Canonical",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/startup-loop/schemas/bottleneck-diagnosis-schema.md",
+    "type": "Reference",
+    "status": "Canonical",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/startup-loop/schemas/briefing-contract-schema-v1.md",
+    "type": "Schema-Contract",
     "status": "Active",
     "domain": "Venture-Studio"
   },
   {
-    "path": "docs/business-os/startup-loop/contracts/s10-weekly-orchestration-contract-v1.md",
-    "type": "Contract",
+    "path": "docs/business-os/startup-loop/schemas/carry-mode-schema.md",
+    "type": "Architecture-Contract",
     "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/startup-loop/schemas/demand-evidence-pack-schema.md",
+    "type": "Schema-Contract",
+    "status": "Active",
+    "domain": "Venture-Studio"
+  },
+  {
+    "path": "docs/business-os/startup-loop/schemas/event-state-schema.md",
+    "type": "Reference",
+    "status": "Canonical",
     "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/startup-loop/schemas/hygiene-schema.md",
+    "type": "Reference",
+    "status": "Active",
+    "domain": "Startup Loop"
+  },
+  {
+    "path": "docs/business-os/startup-loop/schemas/learning-ledger-schema.md",
+    "type": "Reference",
+    "status": "Canonical",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/startup-loop/schemas/manifest-schema.md",
+    "type": "Reference",
+    "status": "Canonical",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/startup-loop/schemas/retention-schema.md",
+    "type": "Capability-Schema",
+    "status": "Active",
+    "domain": "Venture-Studio"
   },
   {
     "path": "docs/business-os/startup-loop/schemas/s10-weekly-packet-schema-v1.md",
@@ -1986,32 +1992,26 @@
     "domain": "Venture-Studio"
   },
   {
-    "path": "docs/business-os/startup-loop/self-evolving/README.md",
-    "type": "Runbook",
-    "status": "Active",
-    "domain": "Business-OS / Startup-Loop"
-  },
-  {
     "path": "docs/business-os/startup-loop/schemas/stage-result-schema.md",
     "type": "Reference",
     "status": "Canonical",
     "domain": "Business-OS"
   },
   {
+    "path": "docs/business-os/startup-loop/self-evolving/README.md",
+    "type": "Runbook",
+    "status": "Active",
+    "domain": "Business-OS / Startup-Loop"
+  },
+  {
+    "path": "docs/business-os/startup-loop/specifications/autonomy-policy.md",
+    "type": "Policy",
+    "status": "Canonical",
+    "domain": "Business-OS"
+  },
+  {
     "path": "docs/business-os/startup-loop/specifications/two-layer-model.md",
     "type": "Architecture-Contract",
-    "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/startup-loop/contracts/website-iteration-throughput-report-contract.md",
-    "type": "Contract",
-    "status": "Active",
-    "domain": "Startup-Loop"
-  },
-  {
-    "path": "docs/business-os/startup-loop/_deprecated/workstream-workflow-taxonomy-v2.md",
-    "type": "Taxonomy Contract",
     "status": "Active",
     "domain": null
   },

@@ -120,7 +120,7 @@ Return blocked run packet:
 **When passes:**
 
 Run ASSESSMENT intake sync (apply `modules/assessment-intake-sync.md`) and produce/refresh:
-- `docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md`
+- `docs/business-os/startup-baselines/<BIZ>/<YYYY-MM-DD>-assessment-intake-packet.user.md`
 
 Then continue to ASSESSMENT-10.
 
@@ -493,7 +493,7 @@ Present output summary to operator alongside the SIGNALS weekly-kpcs prompt — 
 
 For each stage, require appropriate sync actions:
 
-- `ASSESSMENT-09`: validate required ASSESSMENT precursor artifacts, then write/refresh `docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md`.
+- `ASSESSMENT-09`: validate required ASSESSMENT precursor artifacts, then write/refresh `docs/business-os/startup-baselines/<BIZ>/<YYYY-MM-DD>-assessment-intake-packet.user.md`.
 - `MEASURE-01/PRODUCT-01/MARKET-01..MARKET-06/SIGNALS-01/SIGNALS`: persist strategy/readiness artifacts under `docs/business-os/...` and update any `latest.user.md` pointers.
 - `S4`: merge required strategy inputs, write baseline snapshot, and commit manifest pointer as current.
 - `DO`: filesystem-only. Advance is gated on artifact existence and plan status (see GATE-WEBSITE-DO-01). No BOS API calls required for DO stage progression.

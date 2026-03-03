@@ -47,8 +47,8 @@ This skill is NOT a rename or copy of `lp-do-idea-forecast`. Key differences:
 
 Reads from:
 - Business context: `docs/business-os/startup-baselines/<BIZ>/`
-- Offer hypothesis: Output from lp-offer (MARKET-06) — `docs/business-os/startup-baselines/<BIZ>-offer.md`
-- Channel selection (optional if available): Output from lp-channels (SELL-01) — `docs/business-os/startup-baselines/<BIZ>-channels.md`
+- Offer hypothesis: Output from lp-offer (MARKET-06) — `docs/business-os/startup-baselines/<BIZ>/offer.md`
+- Channel selection (optional if available): Output from lp-channels (SELL-01) — `docs/business-os/startup-baselines/<BIZ>/channels.md`
 - Market data: Any available competitor pricing, channel benchmarks, market size signals (opportunistic)
 
 **Artifact registry**: Canonical producer paths are defined in `docs/business-os/startup-loop/artifact-registry.md`.

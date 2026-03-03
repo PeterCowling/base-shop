@@ -164,12 +164,12 @@ See `## Tasks` section for the active task list.
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
 - **Status:** Pending
-- **Artifact-Destination:** `docs/business-os/startup-baselines/PET-offer.md` (canonical);
+- **Artifact-Destination:** `docs/business-os/startup-baselines/PET/offer.md` (canonical);
   pointer at `docs/plans/pets-dog-accessories-pmf/offer.md`
 - **Reviewer:** Pete
 - **Approval-Evidence:** Pete confirms brand name and ICP statement from `/lp-offer` output.
 - **Build evidence (2026-02-18):** Offer artifact written to
-  `docs/business-os/startup-baselines/PET-offer.md` — all 6 sections complete (ICP, pain/promise,
+  `docs/business-os/startup-baselines/PET/offer.md` — all 6 sections complete (ICP, pain/promise,
   offer structure, positioning, pricing, objections). Pricing confidence MEDIUM at €80.
   30-day no-fault exchange policy identified as key competitive weapon vs Pagerie.
   ICP locked: urban millennial female dog owner, 25–40, dog-as-lifestyle extension.

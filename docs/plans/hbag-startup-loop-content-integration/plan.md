@@ -42,7 +42,7 @@ from startup-loop artifacts. This plan establishes a repeatable content system:
 - Market intelligence (`2026-02-20-market-intelligence.user.md`)
 
 2. **Compile packet:**
-- Canonical artifact: `docs/business-os/startup-baselines/HBAG-content-packet.md`
+- Canonical artifact: `docs/business-os/startup-baselines/HBAG/content-packet.md`
 - Include: keyword clusters, page-intent map, message hierarchy, product copy matrix, claim constraints.
 
 3. **Runtime consumption:**
@@ -59,7 +59,7 @@ from startup-loop artifacts. This plan establishes a repeatable content system:
 - [x] Created startup-loop content packet template:
   `docs/business-os/startup-baselines/_templates/content-packet-template.md`
 - [x] Created canonical HBAG content packet:
-  `docs/business-os/startup-baselines/HBAG-content-packet.md`
+  `docs/business-os/startup-baselines/HBAG/content-packet.md`
 - [x] Registered packet in HBAG strategy index and builder source map.
 - [x] Implemented packet-driven app copy module for locale-aware content.
 - [x] Updated homepage, PLP, PDP, support, policy pages, and metadata with startup-loop copy.

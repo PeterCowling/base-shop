@@ -138,7 +138,8 @@ describe("validatePacket", () => {
     );
     expect(result.valid).toBe(false);
     if (!result.valid) {
-      expect(result.reason).toBe("wrong_schema_version");
+      // Validation now checks required fields before schema version for v2 packets.
+      expect(result.reason).toBe("missing_required_field");
     }
   });
 

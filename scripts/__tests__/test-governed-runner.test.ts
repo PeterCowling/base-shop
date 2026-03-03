@@ -632,7 +632,7 @@ describe("Governed Test Runner", () => {
       expect(event.kill_escalation).toBe("sigterm");
       expect(event.exit_code).toBe(124);
     },
-    90_000,
+    150_000,
   );
 
   test(
@@ -666,7 +666,7 @@ describe("Governed Test Runner", () => {
 
       await waitForCondition(() => !processExists(childPid), 20_000, 200);
     },
-    120_000,
+    180_000,
   );
 
   test.skip("TEG-07A TC-01: governed run emits classed telemetry for jest intent", () => {

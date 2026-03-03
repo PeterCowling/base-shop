@@ -22,8 +22,8 @@ import { runDiagnosisPipeline } from "../s10/s10-diagnosis-integration";
 import { WEEKLY_STAGE_CANDIDATES, WEEKLY_STAGE_ID } from "../stage-id-compat";
 
 // Mock the imported modules
-jest.mock("../diagnosis-snapshot");
-jest.mock("../bottleneck-history");
+jest.mock("../diagnostics/diagnosis-snapshot");
+jest.mock("../diagnostics/bottleneck-history");
 jest.mock("../replan-trigger");
 jest.mock("../mcp-preflight");
 

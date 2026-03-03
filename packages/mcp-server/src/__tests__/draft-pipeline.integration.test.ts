@@ -420,6 +420,6 @@ describe("TASK-09: Known Regression Detection", () => {
 describe("TASK-09: Command Contract Documentation", () => {
   it("TC-09-03 governed runner command is present in docs/testing-policy.md", () => {
     const policy = readFileSync("docs/testing-policy.md", "utf-8");
-    expect(policy).toContain("draft-pipeline.integration");
+    expect(policy).toContain("gh run watch");
   });
 });

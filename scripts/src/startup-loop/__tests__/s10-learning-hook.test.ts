@@ -17,7 +17,7 @@ import {
 
 // Mock all imported modules
 jest.mock('node:fs');
-jest.mock('../baseline-priors');
+jest.mock('../baselines/baseline-priors');
 jest.mock('../learning-compiler');
 jest.mock('../learning-ledger');
 jest.mock('../prior-update-writer');
@@ -39,7 +39,7 @@ describe('s10-learning-hook', () => {
   describe('VC-LC-06-01: Happy path', () => {
     it('should successfully compile, append, write artifacts, and update manifest', async () => {
       // Import mocked modules
-      const { buildPriorIndex } = await import('../baseline-priors');
+      const { buildPriorIndex } = await import('../baselines/baseline-priors');
       const { compileExperimentLearning } = await import('../learning-compiler');
       const { appendLearningEntry } = await import('../learning-ledger');
       const { applyPriorDeltas, computeSnapshotPath } = await import('../prior-update-writer');
@@ -217,7 +217,7 @@ describe('s10-learning-hook', () => {
 
   describe('VC-LC-06-03: Supersede flow', () => {
     it('should invert superseded deltas before applying new deltas', async () => {
-      const { buildPriorIndex } = await import('../baseline-priors');
+      const { buildPriorIndex } = await import('../baselines/baseline-priors');
       const { compileExperimentLearning } = await import('../learning-compiler');
       const { appendLearningEntry, queryLearningEntries } = await import('../learning-ledger');
       const { applyPriorDeltas, computeSnapshotPath } = await import('../prior-update-writer');
@@ -353,7 +353,7 @@ describe('s10-learning-hook', () => {
 
   describe('VC-LC-06-04: Rerun idempotency', () => {
     it('should not create new snapshots when ledger returns appended: false', async () => {
-      const { buildPriorIndex } = await import('../baseline-priors');
+      const { buildPriorIndex } = await import('../baselines/baseline-priors');
       const { compileExperimentLearning } = await import('../learning-compiler');
       const { appendLearningEntry } = await import('../learning-ledger');
       const { applyPriorDeltas } = await import('../prior-update-writer');
@@ -424,7 +424,7 @@ describe('s10-learning-hook', () => {
 
   describe('Additional validation tests', () => {
     it('should write prior-delta artifact as valid JSON', async () => {
-      const { buildPriorIndex } = await import('../baseline-priors');
+      const { buildPriorIndex } = await import('../baselines/baseline-priors');
       const { compileExperimentLearning } = await import('../learning-compiler');
       const { appendLearningEntry } = await import('../learning-ledger');
       const { applyPriorDeltas, computeSnapshotPath } = await import('../prior-update-writer');
@@ -500,7 +500,7 @@ describe('s10-learning-hook', () => {
     });
 
     it('should handle INCONCLUSIVE verdict with no snapshots written', async () => {
-      const { buildPriorIndex } = await import('../baseline-priors');
+      const { buildPriorIndex } = await import('../baselines/baseline-priors');
       const { compileExperimentLearning } = await import('../learning-compiler');
       const { appendLearningEntry } = await import('../learning-ledger');
       const { applyPriorDeltas } = await import('../prior-update-writer');
@@ -556,7 +556,7 @@ describe('s10-learning-hook', () => {
     });
 
     it('should continue with ledger append even if snapshot write fails', async () => {
-      const { buildPriorIndex } = await import('../baseline-priors');
+      const { buildPriorIndex } = await import('../baselines/baseline-priors');
       const { compileExperimentLearning } = await import('../learning-compiler');
       const { appendLearningEntry } = await import('../learning-ledger');
       const { applyPriorDeltas, computeSnapshotPath } = await import('../prior-update-writer');

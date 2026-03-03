@@ -43,9 +43,11 @@ jobs:
       build-cmd: >
         pnpm --filter @apps/prime^... build &&
         cd apps/prime &&
+        ([ -d "src/app/g" ] && mv "src/app/g" "src/app/_g-off" || true) &&
         ([ -d "src/app/api" ] && mv "src/app/api" "src/app/_api-off" || true) &&
         (OUTPUT_EXPORT=1 pnpm exec next build; e=$?;
         ([ -d "src/app/_api-off" ] && mv "src/app/_api-off" "src/app/api" || true);
+        ([ -d "src/app/_g-off" ] && mv "src/app/_g-off" "src/app/g" || true);
         exit $e)
       artifact-path: apps/prime/out
       deploy_cmd: >

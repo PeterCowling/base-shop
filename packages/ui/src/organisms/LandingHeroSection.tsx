@@ -272,14 +272,14 @@ const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang })
           className="relative z-20 mx-auto h-full max-w-6xl px-6 pb-8 pt-8 sm:pb-12 sm:pt-10 lg:pb-14"
         >
           <div className="grid w-full items-start gap-8 lg:grid-cols-2 lg:gap-10">
-            <Section as="div" padding="none" width="full" className="max-w-xl px-4 sm:px-0 text-primary-fg motion-safe:animate-fade-up">
-              <span className="block w-full text-xs uppercase tracking-widest text-primary-fg/75 sm:text-sm">
+            <Section as="div" padding="none" width="full" className="max-w-xl px-4 sm:px-0 text-brand-on-primary motion-safe:animate-fade-up">
+              <span className="block w-full text-xs uppercase tracking-widest text-brand-on-primary/75 sm:text-sm">
                 {heroIntro}
               </span>
-              <h1 className="mt-3 text-balance text-4xl font-semibold leading-tight tracking-tight text-primary-fg drop-shadow-lg sm:text-5xl lg:text-5xl xl:text-6xl">
+              <h1 className="mt-3 text-balance text-4xl font-semibold leading-tight tracking-tight text-brand-on-primary drop-shadow-lg sm:text-5xl lg:text-5xl xl:text-6xl">
                 {heroTitle}
               </h1>
-              <p className="mt-4 text-base text-primary-fg/90 sm:text-lg lg:text-xl">{heroSubtitle}</p>
+              <p className="mt-4 text-base text-brand-on-primary/90 sm:text-lg lg:text-xl">{heroSubtitle}</p>
 
               {proofItems.length ? (
                 <div className="mt-4 lg:hidden">
@@ -299,8 +299,8 @@ const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang })
               </div>
 
               {perksLabel ? (
-                <div className="mt-3 inline-flex items-center gap-2 text-xs font-semibold text-primary-fg/80">
-                  <Sparkles className="size-4 text-primary-fg/70" aria-hidden />
+                <div className="mt-3 inline-flex items-center gap-2 text-xs font-semibold text-brand-on-primary/80">
+                  <Sparkles className="size-4 text-brand-on-primary/70" aria-hidden />
                   <button
                     type="button"
                     onClick={handlePerksClick}

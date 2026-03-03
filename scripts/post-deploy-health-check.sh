@@ -78,7 +78,7 @@ check_url() {
 # indicates the route is broken and must be reported as failure.
 check_url_strict() {
     CHECK_URL="$1"
-    STATUS=$(curl -sI --max-redirect 0 -o /dev/null -w "%{http_code}" --max-time 30 "$CHECK_URL" 2>/dev/null || echo "000")
+    STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "$CHECK_URL" 2>/dev/null || echo "000")
     case "$STATUS" in
         200) return 0 ;;  # Only HTTP 200 is success for strict routes
         *)
@@ -96,7 +96,7 @@ retry_check_strict() {
     while [ "$ATTEMPT" -le "$MAX_RETRIES" ]; do
         echo "  Attempt $ATTEMPT/$MAX_RETRIES (strict)..."
         if LAST_STATUS=$(check_url_strict "$CHECK_URL" 2>&1); then
-            FINAL_STATUS=$(curl -sI --max-redirect 0 -o /dev/null -w "%{http_code}" --max-time 30 "$CHECK_URL" 2>/dev/null || echo "???")
+            FINAL_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "$CHECK_URL" 2>/dev/null || echo "???")
             echo "  OK (strict): $CHECK_URL returned $FINAL_STATUS"
             return 0
         else
@@ -107,7 +107,7 @@ retry_check_strict() {
         fi
         ATTEMPT=$((ATTEMPT + 1))
     done
-    FINAL_STATUS=$(curl -sI --max-redirect 0 -o /dev/null -w "%{http_code}" --max-time 30 "$CHECK_URL" 2>/dev/null || echo "000")
+    FINAL_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "$CHECK_URL" 2>/dev/null || echo "000")
     echo "  FAIL (strict): $CHECK_URL returned $FINAL_STATUS after $MAX_RETRIES attempts (expected 200)"
     return 1
 }

@@ -8,7 +8,7 @@
  * It does NOT write `baseline.manifest.json` (control-plane owned).
  *
  * @see .claude/skills/lp-baseline-merge/SKILL.md
- * @see docs/business-os/startup-loop/stage-result-schema.md
+ * @see docs/business-os/startup-loop/schemas/stage-result-schema.md
  */
 
 import { promises as fs } from "fs";

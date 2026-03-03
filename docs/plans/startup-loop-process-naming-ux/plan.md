@@ -143,7 +143,7 @@ Chosen approach: Option B.
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Pending
-- **Affects:** `.claude/skills/startup-loop/SKILL.md`, `docs/business-os/startup-loop/loop-spec.yaml`, `scripts/src/startup-loop/derive-state.ts`, `packages/mcp-server/src/tools/loop.ts`, `packages/mcp-server/src/tools/policy.ts`
+- **Affects:** `.claude/skills/startup-loop/SKILL.md`, `docs/business-os/startup-loop/specifications/loop-spec.yaml`, `scripts/src/startup-loop/derive-state.ts`, `packages/mcp-server/src/tools/loop.ts`, `packages/mcp-server/src/tools/policy.ts`
 - **Depends on:** -
 - **Blocks:** TASK-06
 - **Confidence:** 80%
@@ -163,7 +163,7 @@ Chosen approach: Option B.
   - VC-02: Exactly one recommended enforcement boundary is selected and justified against alternatives.
 - **Planning validation:**
   - Checks run: `rg` scans for `current_stage`, stage names, and startup-loop command contracts.
-  - Validation artifacts: `.claude/skills/startup-loop/SKILL.md`, `docs/business-os/startup-loop/loop-spec.yaml`, `packages/mcp-server/src/tools/loop.ts`.
+  - Validation artifacts: `.claude/skills/startup-loop/SKILL.md`, `docs/business-os/startup-loop/specifications/loop-spec.yaml`, `packages/mcp-server/src/tools/loop.ts`.
   - Unexpected findings: no direct `/startup-loop` executable parser was found in `scripts/src/startup-loop`; current contract is skill-first.
 - **Rollout / rollback:** `None: non-implementation task`
 - **Documentation impact:** new artifact under this plan slug
@@ -173,13 +173,13 @@ Chosen approach: Option B.
 
 ### TASK-02: Create canonical stage dictionary schema and dataset
 - **Type:** IMPLEMENT
-- **Deliverable:** `docs/business-os/startup-loop/stage-operator-dictionary.yaml` + `docs/business-os/startup-loop/stage-operator-dictionary.schema.json`
+- **Deliverable:** `docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml` + `docs/business-os/startup-loop/schemas/stage-operator-dictionary.schema.json`
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Pending
-- **Affects:** `docs/business-os/startup-loop/stage-operator-dictionary.yaml`, `docs/business-os/startup-loop/stage-operator-dictionary.schema.json`, `[readonly] docs/business-os/startup-loop/loop-spec.yaml`
+- **Affects:** `docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml`, `docs/business-os/startup-loop/schemas/stage-operator-dictionary.schema.json`, `[readonly] docs/business-os/startup-loop/specifications/loop-spec.yaml`
 - **Depends on:** -
 - **Blocks:** TASK-03
 - **Confidence:** 85%
@@ -200,8 +200,8 @@ Chosen approach: Option B.
   - TC-03: Stage-order check fails if dictionary order diverges from `loop-spec.yaml`.
 - **Execution plan:** Red -> Green -> Refactor
 - **Planning validation (required for M/L):**
-  - Checks run: reviewed stage IDs/order in `docs/business-os/startup-loop/loop-spec.yaml`.
-  - Validation artifacts: `docs/business-os/startup-loop/loop-spec.yaml`, `docs/plans/startup-loop-process-naming-ux/fact-find.md`.
+  - Checks run: reviewed stage IDs/order in `docs/business-os/startup-loop/specifications/loop-spec.yaml`.
+  - Validation artifacts: `docs/business-os/startup-loop/specifications/loop-spec.yaml`, `docs/plans/startup-loop-process-naming-ux/fact-find.md`.
   - Unexpected findings: `S6B` semantics are composite and require microsteps to avoid ambiguity.
 - **Scouts:** None: field set and ordering rules are already defined.
 - **Edge Cases & Hardening:**
@@ -255,7 +255,7 @@ Chosen approach: Option B.
   - Rollout: add generator + generated outputs.
   - Rollback: remove generator and generated files; restore manual tables.
 - **Documentation impact:** generated table source for workflow/prompt docs.
-- **Notes / references:** `docs/business-os/startup-loop/contract-migration.yaml` generation model
+- **Notes / references:** `docs/business-os/startup-loop/operations/contract-migration.yaml` generation model
 
 ---
 
@@ -267,7 +267,7 @@ Chosen approach: Option B.
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
 - **Status:** Pending
-- **Affects:** `docs/business-os/startup-loop/loop-spec.yaml`, `.claude/skills/startup-loop/SKILL.md`, `docs/business-os/startup-loop-workflow.user.md`, `docs/business-os/workflow-prompts/README.user.md`, `scripts/src/startup-loop/derive-state.ts`, `docs/business-os/startup-loop/event-state-schema.md`
+- **Affects:** `docs/business-os/startup-loop/specifications/loop-spec.yaml`, `.claude/skills/startup-loop/SKILL.md`, `docs/business-os/startup-loop-workflow.user.md`, `docs/business-os/workflow-prompts/README.user.md`, `scripts/src/startup-loop/derive-state.ts`, `docs/business-os/startup-loop/schemas/event-state-schema.md`
 - **Depends on:** TASK-03
 - **Blocks:** TASK-05, TASK-07
 - **Confidence:** 81%
@@ -283,7 +283,7 @@ Chosen approach: Option B.
   - `derive-state.ts` no longer hardcodes stage names independently of the canonical dictionary-generated map.
   - Stage ordering in touched operator docs is canonical and monotonic.
 - **Validation contract (TC-04):**
-  - TC-01: `python3 -c "import yaml; yaml.safe_load(open('docs/business-os/startup-loop/loop-spec.yaml'))"` exits 0.
+  - TC-01: `python3 -c "import yaml; yaml.safe_load(open('docs/business-os/startup-loop/specifications/loop-spec.yaml'))"` exits 0.
   - TC-02: `derive-state` tests pass with stage labels sourced from generated map.
   - TC-03: Rendered operator docs contain no table row where raw `S\d+[A-Z]?` appears without adjacent label text.
   - TC-04: Spec version bump and decision reference are updated when run-packet required fields change.
@@ -342,7 +342,7 @@ Chosen approach: Option B.
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/stage-addressing.ts`, `scripts/src/startup-loop/__tests__/stage-addressing.test.ts`, `.claude/skills/startup-loop/SKILL.md`, `docs/business-os/startup-loop/contract-migration.yaml`
+- **Affects:** `scripts/src/startup-loop/stage-addressing.ts`, `scripts/src/startup-loop/__tests__/stage-addressing.test.ts`, `.claude/skills/startup-loop/SKILL.md`, `docs/business-os/startup-loop/operations/contract-migration.yaml`
 - **Depends on:** TASK-01, TASK-03, TASK-05
 - **Blocks:** TASK-07
 - **Confidence:** 82%
@@ -363,7 +363,7 @@ Chosen approach: Option B.
 - **Execution plan:** Red -> Green -> Refactor
 - **Planning validation (required for M/L):**
   - Checks run: reviewed existing alias migration artifact and policy preflight behavior.
-  - Validation artifacts: `docs/business-os/startup-loop/contract-migration.yaml`, `apps/business-os/src/lib/contract-migration.generated.ts`, `packages/mcp-server/src/tools/policy.ts`.
+  - Validation artifacts: `docs/business-os/startup-loop/operations/contract-migration.yaml`, `apps/business-os/src/lib/contract-migration.generated.ts`, `packages/mcp-server/src/tools/policy.ts`.
   - Unexpected findings: existing alias migration currently targets stage keys, not operator stage labels.
 - **Scouts:** None: resolver behavior is fully specifiable from dictionary data.
 - **Edge Cases & Hardening:**

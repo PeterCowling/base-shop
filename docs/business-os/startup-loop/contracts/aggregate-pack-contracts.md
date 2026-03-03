@@ -7,8 +7,8 @@ Created: 2026-02-22
 Last-updated: 2026-02-22
 Owner: startup-loop maintainers
 Related-plan: docs/plans/startup-loop-standing-info-gap-analysis/plan.md
-Related-contract: docs/business-os/startup-loop/two-layer-model.md
-Related-spec: docs/business-os/startup-loop/loop-spec.yaml
+Related-contract: docs/business-os/startup-loop/specifications/two-layer-model.md
+Related-spec: docs/business-os/startup-loop/specifications/loop-spec.yaml
 Related-registry: docs/business-os/startup-loop/artifact-registry.md
 ---
 
@@ -327,8 +327,8 @@ At S4 join, `/lp-baseline-merge` reads any present pack files and merges their `
 
 ## References
 
-- Design authority: `docs/business-os/startup-loop/two-layer-model.md` (Rule R5, Rule R6)
-- Carry-mode semantics: `docs/business-os/startup-loop/carry-mode-schema.md`
-- Stage topology: `docs/business-os/startup-loop/loop-spec.yaml` (S4 required_inputs block)
+- Design authority: `docs/business-os/startup-loop/specifications/two-layer-model.md` (Rule R5, Rule R6)
+- Carry-mode semantics: `docs/business-os/startup-loop/schemas/carry-mode-schema.md`
+- Stage topology: `docs/business-os/startup-loop/specifications/loop-spec.yaml` (S4 required_inputs block)
 - Artifact registry: `docs/business-os/startup-loop/artifact-registry.md`
 - Related plan: `docs/plans/startup-loop-standing-info-gap-analysis/plan.md` (TASK-07)

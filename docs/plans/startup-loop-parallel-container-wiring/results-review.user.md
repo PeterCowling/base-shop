@@ -17,8 +17,8 @@ artifact: results-review
 
 ## Standing Updates
 
-- `docs/business-os/startup-loop/loop-spec.yaml`: now at v3.10.0 — update any operator-facing spec version references or changelog that track the loop spec version number.
-- `docs/business-os/startup-loop/stage-operator-dictionary.yaml`: nine prompts updated — no further standing change required unless a follow-on spec revision alters the same stages.
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml`: now at v3.10.0 — update any operator-facing spec version references or changelog that track the loop spec version number.
+- `docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml`: nine prompts updated — no further standing change required unless a follow-on spec revision alters the same stages.
 - `docs/business-os/startup-loop-containers-process-map.html`: structural rewrite complete — no further update required unless the loop spec changes again.
 
 ## New Idea Candidates

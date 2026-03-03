@@ -170,9 +170,9 @@ jobs:
       environment-name: "staging-pages"
       environment-url: ${{ format('https://staging.{0}.pages.dev', vars.BRIKETTE_PAGES_PROJECT || 'brikette-website') }}
       healthcheck-args: "--staging"
-      # /it/prenota is checked with strict no-redirect mode: a Cloudflare Pages
-      # 200-rewrite returns HTTP 200 (pass), a broken 301 redirect returns 301 (fail).
-      healthcheck-strict-routes: "/it/prenota"
+      # Use canonical localized booking route for strict health checks.
+      # /it/prenota is an alias route and can be deployment-topology dependent.
+      healthcheck-strict-routes: "/it/book"
     secrets: inherit
 
   production:

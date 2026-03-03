@@ -6,9 +6,8 @@ description: Trial-mode idea orchestrator. Ingests standing-artifact delta event
 # lp-do-ideas Trial Orchestrator
 
 `/lp-do-ideas` generates actionable dispatch packets from standing-artifact deltas.
-It runs in `mode: trial`. When a dispatch resolves to `fact_find_ready`, the agent
-**immediately invokes `/lp-do-fact-find` without stopping for operator approval**.
-`briefing_ready` dispatches are enqueued and presented for review only.
+It runs in `mode: trial` under Option B (queue-with-confirmation). Dispatches are
+enqueued and routed, but **no downstream skill is auto-invoked** in trial mode.
 
 ## Operating Mode
 
@@ -66,7 +65,7 @@ If unclear, ask one question: "Has this already been written into a doc, or is t
 - Domain — `MARKET | SELL | PRODUCTS | LOGISTICS | STRATEGY` (infer from area anchor; confirm only if genuinely ambiguous)
 - Routing — is this something to investigate and plan, or just understand? Apply routing intelligence to decide; only ask the user if the description is genuinely ambiguous between planning and understanding
 
-### Step 4 — Apply routing intelligence, emit, and auto-execute
+### Step 4 — Apply routing intelligence, emit, and enqueue
 
 **Decomposition rule — one event, multiple narrow packets:**
 When one incoming event contains multiple distinct gaps, emit one dispatch packet per gap.
@@ -89,10 +88,11 @@ For operator idea packets:
 - `evidence_refs` — include operator-stated rationale using the format: `"operator-stated: <one-line summary>"`
 - All other required fields apply as normal
 
-**Auto-execution policy:**
-- `fact_find_ready` → immediately invoke `/lp-do-fact-find` with the dispatch packet. Do NOT stop for user approval. Set `queue_state: "auto_executed"` after invocation.
-- `briefing_ready` → enqueue (`queue_state: "enqueued"`) and present a summary to the operator. Wait for confirmation before invoking `/lp-do-briefing`.
+**Queue-with-confirmation policy (trial mode):**
+- `fact_find_ready` → enqueue (`queue_state: "enqueued"`) and present summary to operator. Invoke `/lp-do-fact-find` only after explicit confirmation.
+- `briefing_ready` → enqueue (`queue_state: "enqueued"`) and present summary to operator. Invoke `/lp-do-briefing` only after explicit confirmation.
 - `logged_no_action` → record and report. No downstream invocation.
+- `auto_executed` is reserved and must not be set in trial mode.
 
 ## Required Inputs (Structured Invocation)
 
@@ -220,20 +220,30 @@ fields entirely and route based on the description alone.
 
 ## Outputs
 
-Each processed delta produces a `dispatch.v1` packet conforming to
-`docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.schema.json`.
+Each processed delta should produce a `dispatch.v2` packet conforming to
+`docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.v2.schema.json`.
+`dispatch.v1` remains compatibility-only for legacy packets.
 
 Key output fields:
 | Field | Value |
 |---|---|
-| `schema_version` | `dispatch.v1` |
+| `schema_version` | `dispatch.v2` (preferred), `dispatch.v1` (compat only) |
 | `mode` | `trial` |
-| `status` | `fact_find_ready \| briefing_ready \| logged_no_action` |
+| `status` | `fact_find_ready \| briefing_ready \| logged_no_action` (`auto_executed` reserved in trial mode) |
 | `recommended_route` | `lp-do-fact-find \| lp-do-briefing` |
 | `queue_state` | `enqueued` (initial) |
 
 Results are enqueued in `docs/business-os/startup-loop/ideas/trial/queue-state.json`
 by the queue layer (TASK-05: `lp-do-ideas-trial-queue.ts`).
+
+Canonical queue lifecycle values are:
+- `enqueued`
+- `processed`
+- `skipped`
+- `error`
+
+Legacy states in historical queue snapshots (`auto_executed`, `completed`, `logged_no_action`)
+are compatibility data and must not be emitted as new queue lifecycle values.
 
 ## Idempotency
 
@@ -252,7 +262,8 @@ The `seenDedupeKeys` set is maintained across calls to the queue layer.
 
 ## Contract References
 
-- Dispatch schema: `docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.schema.json`
+- Dispatch schema (primary): `docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.v2.schema.json`
+- Dispatch schema (compat): `docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.schema.json`
 - Standing registry: `docs/business-os/startup-loop/ideas/lp-do-ideas-standing-registry.schema.json`
 - Trial contract: `docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md`
 - Policy decision: `docs/plans/lp-do-ideas-startup-loop-integration/artifacts/trial-policy-decision.md`

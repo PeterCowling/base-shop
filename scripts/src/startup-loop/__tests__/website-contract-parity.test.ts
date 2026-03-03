@@ -27,7 +27,7 @@ function readText(...segments: string[]): string {
 
 function loadLoopSpec(): LoopSpec {
   const yaml = require("js-yaml") as typeof import("js-yaml");
-  return yaml.load(readText("docs/business-os/startup-loop/loop-spec.yaml")) as LoopSpec;
+  return yaml.load(readText("docs/business-os/startup-loop/specifications/loop-spec.yaml")) as LoopSpec;
 }
 
 describe("WEBSITE contract parity guards", () => {

@@ -9,7 +9,7 @@ Created: 2026-02-18
 Last-updated: 2026-02-18
 Owner: startup-loop maintainers
 Related-plan: docs/plans/startup-loop-orchestrated-os-comparison/plan.md
-Related-capability-contract: docs/business-os/startup-loop/marketing-sales-capability-contract.md
+Related-capability-contract: docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md
 Related-processes: CX-3 (retention/loyalty), GTM-4 (lifecycle automation) — see process-registry-v2.md
 ---
 
@@ -187,7 +187,7 @@ No-decision rule: If repeat rate or re-booking rate is below floor and business 
 |---|---|
 | `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md` | CAP-06 denominator check gates retention-based Scale/Kill decisions; pre-PMF deferral documented in Section A |
 | `docs/business-os/startup-loop/process-registry-v2.md` (CX-3, GTM-4) | CX-3 and GTM-4 are the primary recurring execution vehicles; retention.user.md is their shared artifact |
-| `docs/business-os/startup-loop/exception-runbooks-v1.md` | Churn spike triggers Demand Shock exception; repeat-rate collapse triggers Demand Shock exception |
+| `docs/business-os/startup-loop/operations/exception-runbooks-v1.md` | Churn spike triggers Demand Shock exception; repeat-rate collapse triggers Demand Shock exception |
 | Forecast recalibration | LTV estimate from retention.user.md feeds forecast recalibration at Day 14/30 in `lp-forecast` |
 
 ---
@@ -238,8 +238,8 @@ Once CAP-06 is active:
 
 ## References
 
-- Capability contract: `docs/business-os/startup-loop/marketing-sales-capability-contract.md`
+- Capability contract: `docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md`
 - Process registry: `docs/business-os/startup-loop/process-registry-v2.md` (CX-3, GTM-4)
-- Bottleneck diagnosis profiles: `docs/business-os/startup-loop/bottleneck-diagnosis-schema.md` (`repeat_purchase_rate` and `cancellation_rate` profile metrics)
+- Bottleneck diagnosis profiles: `docs/business-os/startup-loop/schemas/bottleneck-diagnosis-schema.md` (`repeat_purchase_rate` and `cancellation_rate` profile metrics)
 - Boundary decision: `docs/plans/startup-loop-orchestrated-os-comparison/decisions/v1-boundary-decision.md`
 - Research baseline: `docs/briefs/orchestrated-business-startup-loop-operating-system-research.md` (CX-3, GTM-4 specifications)

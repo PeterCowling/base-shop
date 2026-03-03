@@ -10,7 +10,7 @@ Last-reviewed: 2026-02-13
 Execution policy for the startup loop stage graph. Classifies every stage action
 into one of three tiers so autonomy can be high without uncontrolled side effects.
 
-**Authority:** `docs/business-os/startup-loop/loop-spec.yaml` v3.1.0
+**Authority:** `docs/business-os/startup-loop/specifications/loop-spec.yaml` v3.1.0
 **Decision reference:** `docs/plans/lp-skill-system-sequencing-plan.md` (LPSP-07)
 
 ## 1) Tier Definitions

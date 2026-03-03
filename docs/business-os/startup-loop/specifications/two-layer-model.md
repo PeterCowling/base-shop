@@ -6,7 +6,7 @@ Created: 2026-02-22
 Last-updated: 2026-02-22
 Owner: startup-loop maintainers
 Related-plan: docs/plans/startup-loop-standing-info-gap-analysis/plan.md
-Related-spec: docs/business-os/startup-loop/loop-spec.yaml
+Related-spec: docs/business-os/startup-loop/specifications/loop-spec.yaml
 Decision-anchor: docs/plans/startup-loop-standing-info-gap-analysis/proposed-target-model.md
 ---
 

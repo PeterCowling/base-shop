@@ -233,7 +233,7 @@ function DesktopHeader({
                         id={dropdownTriggerId}
                         aria-controls={isOpen ? dropdownContentId : undefined}
                       >
-                        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+                        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions -- UI-1245 wrapper handles hover intent and portal transition safety */}
                         <div
                           className="flex items-center"
                           onMouseEnter={() => {
@@ -268,7 +268,7 @@ function DesktopHeader({
                           </Link>
                           <button
                             aria-label={`${label} sub-menu`}
-                            className="inline-flex items-center px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/70"
+                            className="inline-flex min-h-11 min-w-11 items-center justify-center px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/70"
                             onPointerDown={(e) => e.stopPropagation()}
                             onClick={() => setOpenKey(openKey === key ? null : key)}
                           >
@@ -294,7 +294,7 @@ function DesktopHeader({
                         aria-labelledby={dropdownTriggerId}
                         align="start"
                         sideOffset={4}
-                        className="max-h-[80vh] overflow-y-auto"
+                        className="max-h-screen overflow-y-auto"
                         onMouseEnter={() => {
                           if (timerRef.current) {
                             clearTimeout(timerRef.current);

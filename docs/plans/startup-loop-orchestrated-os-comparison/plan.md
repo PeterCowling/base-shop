@@ -24,7 +24,7 @@ Card-ID: none
 
 ## Summary
 
-This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-os-comparison/fact-find.md` by adding a process-layer contract set on top of the existing stage-control startup loop. The plan intentionally avoids rewriting the canonical stage graph in `docs/business-os/startup-loop/loop-spec.yaml` and instead introduces additive contracts for process registry, missing capability schemas (CAP-05 and CAP-06), exception runbooks, and lightweight/deep audit checklists. The approach is phased: establish overlap evidence, lock boundary decisions, implement additive contracts, then run a checkpoint before any potential loop-spec coupling work. This preserves current reliability while closing the largest research-vs-current gaps.
+This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-os-comparison/fact-find.md` by adding a process-layer contract set on top of the existing stage-control startup loop. The plan intentionally avoids rewriting the canonical stage graph in `docs/business-os/startup-loop/specifications/loop-spec.yaml` and instead introduces additive contracts for process registry, missing capability schemas (CAP-05 and CAP-06), exception runbooks, and lightweight/deep audit checklists. The approach is phased: establish overlap evidence, lock boundary decisions, implement additive contracts, then run a checkpoint before any potential loop-spec coupling work. This preserves current reliability while closing the largest research-vs-current gaps.
 
 ## Goals
 - Preserve current stage-orchestration stability while adding process-layer operational clarity.
@@ -34,7 +34,7 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 - Produce a planning-ready pilot packet for one business (BRIK) before broader rollout.
 
 ## Non-goals
-- No direct schema or ordering rewrite of `docs/business-os/startup-loop/loop-spec.yaml` in this plan.
+- No direct schema or ordering rewrite of `docs/business-os/startup-loop/specifications/loop-spec.yaml` in this plan.
 - No full implementation of all 28+ research process IDs as executable skills in v1.
 - No BOS API or runtime code migrations in this planning thread.
 - No reclassification of business stage status outside existing operator docs.
@@ -114,7 +114,7 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
   - Coverage: 1 Covered, 15 Partial, 12 Missing. All 12 Missing rows have candidate destination paths.
   - Identified 1 High collision risk (DATA-4 — do not add competing Weekly Review contract), 5 Medium, 10 Low, 12 None.
   - Confirmed: no loop-spec.yaml changes required in v1; all additions are additive. TASK-01 boundary decision has full evidence.
-- **Affects:** `docs/business-os/startup-loop/loop-spec.yaml`, `docs/business-os/startup-loop/manifest-schema.md`, `docs/business-os/startup-loop/marketing-sales-capability-contract.md`, `docs/briefs/orchestrated-business-startup-loop-operating-system-research.md`
+- **Affects:** `docs/business-os/startup-loop/specifications/loop-spec.yaml`, `docs/business-os/startup-loop/schemas/manifest-schema.md`, `docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md`, `docs/briefs/orchestrated-business-startup-loop-operating-system-research.md`
 - **Depends on:** -
 - **Blocks:** TASK-01
 - **Confidence:** 88%
@@ -154,7 +154,7 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
   - Canonical files permitted: 5 new contract docs under startup-loop/ + targeted updates to capability-contract + KPCs prompt.
   - Explicit out-of-scope: loop-spec.yaml, manifest-schema.md, bottleneck-diagnosis-schema.md, artifact-registry.md.
   - Downstream tasks TASK-02/03/04 unblocked with zero scope ambiguity.
-- **Affects:** `docs/business-os/startup-loop/loop-spec.yaml`, `docs/business-os/startup-loop/manifest-schema.md`, `[readonly] docs/business-os/startup-loop-current-vs-proposed.user.md`
+- **Affects:** `docs/business-os/startup-loop/specifications/loop-spec.yaml`, `docs/business-os/startup-loop/schemas/manifest-schema.md`, `[readonly] docs/business-os/startup-loop-current-vs-proposed.user.md`
 - **Depends on:** TASK-00
 - **Blocks:** TASK-02, TASK-03, TASK-04
 - **Confidence:** 83%
@@ -183,7 +183,7 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 
 ### TASK-02: Create process-registry-v1 contract mapped to existing stages
 - **Type:** IMPLEMENT
-- **Deliverable:** New contract doc `docs/business-os/startup-loop/process-registry-v1.md`
+- **Deliverable:** New contract doc `docs/business-os/startup-loop/_deprecated/process-registry-v1.md`
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
@@ -191,16 +191,16 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 - **Status:** Complete (2026-02-18)
 - **Build-Evidence:**
   - Red: Collision risk identified and documented in overlap matrix (TASK-00). Key risks: DATA-4 (High, do not replace), CAP-01/03 offer artifact path (Medium), DATA-2 vs bottleneck-diagnosis (Medium). All mitigated in contract language.
-  - Green: `docs/business-os/startup-loop/process-registry-v1.md` created with all 28 process IDs across CDI/OFF/GTM/OPS/CX/FIN/DATA. Each entry includes: owner role, inputs, outputs, artifact path, entry/exit criteria, exception linkage, profile/branch conditions, and collision notes where applicable.
+  - Green: `docs/business-os/startup-loop/_deprecated/process-registry-v1.md` created with all 28 process IDs across CDI/OFF/GTM/OPS/CX/FIN/DATA. Each entry includes: owner role, inputs, outputs, artifact path, entry/exit criteria, exception linkage, profile/branch conditions, and collision notes where applicable.
   - Refactor: DATA-4 entry made reference-only (collision prevention); Quick Reference Index added at top for operator usability (VC-02-C); Stage Coverage Map included for VC-02-A compliance; OPS-2/OPS-4 and CDI-3/OFF-3 explicitly distinguished from their one-time stage counterparts (VC-02-B).
   - VC-02-A: All 17 stages S0..S10 mapped. ✓
   - VC-02-B: No canonical stage ownership duplicated; collision notes confirm non-overlap. ✓
   - VC-02-C: Quick Reference Index designed for ≤15-min priority-to-process-ID mapping; pilot validation required. ✓ (designed)
-- **Artifact-Destination:** `docs/business-os/startup-loop/process-registry-v1.md`
+- **Artifact-Destination:** `docs/business-os/startup-loop/_deprecated/process-registry-v1.md`
 - **Reviewer:** startup-loop maintainers
 - **Approval-Evidence:** Decision note in `docs/plans/startup-loop-orchestrated-os-comparison/decisions/v1-boundary-decision.md`
 - **Measurement-Readiness:** Weekly registry adherence sample in BRIK S10 notes for 4 cycles
-- **Affects:** `docs/business-os/startup-loop/process-registry-v1.md`, `[readonly] docs/business-os/startup-loop/loop-spec.yaml`, `[readonly] docs/briefs/orchestrated-business-startup-loop-operating-system-research.md`
+- **Affects:** `docs/business-os/startup-loop/_deprecated/process-registry-v1.md`, `[readonly] docs/business-os/startup-loop/specifications/loop-spec.yaml`, `[readonly] docs/briefs/orchestrated-business-startup-loop-operating-system-research.md`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-05
 - **Confidence:** 82%
@@ -235,7 +235,7 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 - **Documentation impact:**
   - Adds a new startup-loop contract doc and references from operator/engineering guides.
 - **Notes / references:**
-  - `docs/business-os/startup-loop/loop-spec.yaml`
+  - `docs/business-os/startup-loop/specifications/loop-spec.yaml`
   - `docs/briefs/orchestrated-business-startup-loop-operating-system-research.md`
 
 ### TASK-03: Add CAP-05 sales-ops schema contract and artifact template references
@@ -248,16 +248,16 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 - **Status:** Complete (2026-02-18)
 - **Build-Evidence:**
   - Red: CAP-05 confirmed `Missing` with no artifact path or gate. GTM-3 confirmed as Missing in TASK-00 matrix. Extension point in KPCs prompt identified as additive-safe.
-  - Green: `docs/business-os/startup-loop/sales-ops-schema.md` created — pipeline stages, speed-to-lead SLA, follow-up loop, objection scripts, stage conversion denominators, weekly denominator check, N/A policy, VC-03-A/B/C validation rules. CAP-05 row in capability contract updated from `Missing` to `Schema-defined`. Artifact path table updated. KPCs prompt extended with CAP-05 pipeline denominator section.
+  - Green: `docs/business-os/startup-loop/schemas/sales-ops-schema.md` created — pipeline stages, speed-to-lead SLA, follow-up loop, objection scripts, stage conversion denominators, weekly denominator check, N/A policy, VC-03-A/B/C validation rules. CAP-05 row in capability contract updated from `Missing` to `Schema-defined`. Artifact path table updated. KPCs prompt extended with CAP-05 pipeline denominator section.
   - Refactor: Explicit `Not-yet-active` vs `Not-applicable` distinction added to prevent misuse. N/A policy covers pure DTC and hospitality booking profiles. SLA wording hardened ("As soon as possible" explicitly invalid).
   - VC-03-A: All required schema sections with explicit validation rules. ✓
   - VC-03-B: Denominator floors defined per stage; no-decision rule explicit (`pipeline-no-decision`). ✓
   - VC-03-C: Pass/fail criteria unambiguous; example interpretations included. ✓ (designed; reviewer sample needed)
-- **Artifact-Destination:** `docs/business-os/startup-loop/sales-ops-schema.md` + updates to capability contract
+- **Artifact-Destination:** `docs/business-os/startup-loop/schemas/sales-ops-schema.md` + updates to capability contract
 - **Reviewer:** startup-loop maintainers
 - **Approval-Evidence:** Linked decision from TASK-01
 - **Measurement-Readiness:** Weekly lead-response and stage-conversion denominator tracking path defined in schema
-- **Affects:** `docs/business-os/startup-loop/marketing-sales-capability-contract.md`, `docs/business-os/startup-loop/sales-ops-schema.md`, `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`
+- **Affects:** `docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md`, `docs/business-os/startup-loop/schemas/sales-ops-schema.md`, `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-05
 - **Confidence:** 81%
@@ -291,7 +291,7 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 - **Documentation impact:**
   - Updates canonical capability registry and adds new schema contract.
 - **Notes / references:**
-  - `docs/business-os/startup-loop/marketing-sales-capability-contract.md`
+  - `docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md`
   - `docs/business-os/_shared/business-vc-quality-checklist.md`
 
 ### TASK-04: Add CAP-06 lifecycle/retention schema contract and S10 hooks
@@ -304,16 +304,16 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 - **Status:** Complete (2026-02-18)
 - **Build-Evidence:**
   - Red: CAP-06 confirmed `Missing` — no artifact, schema, or S10 enforcement. CX-3 and GTM-4 confirmed Missing in TASK-00. Key constraint validated: retention signals weaker pre-PMF; mandatory fields impossible before first repeat signal must use `Not-yet-active` / `pre-PMF deferral` rather than hard block.
-  - Green: `docs/business-os/startup-loop/retention-schema.md` created — retention segments, repeat/referral drivers, churn log, LTV estimate, denominator hooks, profile mappings (hospitality-direct-booking + dtc-ecommerce), phase-aware N/A policy, VC-04-A/B/C. CAP-06 row in capability contract updated from `Missing` to `Schema-defined`. KPCs prompt extended with CAP-06 retention denominator section and explicit pre-PMF deferral rules.
+  - Green: `docs/business-os/startup-loop/schemas/retention-schema.md` created — retention segments, repeat/referral drivers, churn log, LTV estimate, denominator hooks, profile mappings (hospitality-direct-booking + dtc-ecommerce), phase-aware N/A policy, VC-04-A/B/C. CAP-06 row in capability contract updated from `Missing` to `Schema-defined`. KPCs prompt extended with CAP-06 retention denominator section and explicit pre-PMF deferral rules.
   - Refactor: `cap-06-pre-pmf-deferral` signal distinguished from `retention-no-decision` to prevent blocking pre-PMF businesses. Cancel/refund log made always-required (minimum integrity check). Profile metric tables for both hospitality and DTC added for VC-04-C.
   - VC-04-A: All required sections with pre-PMF pass conditions. ✓
   - VC-04-B: Non-blocking under floor (pre-PMF deferral); blocking for PMF+ Scale. ✓
   - VC-04-C: Hospitality + DTC profile mappings with denominators. ✓
-- **Artifact-Destination:** `docs/business-os/startup-loop/retention-schema.md` + CAP/S10 updates
+- **Artifact-Destination:** `docs/business-os/startup-loop/schemas/retention-schema.md` + CAP/S10 updates
 - **Reviewer:** startup-loop maintainers
 - **Approval-Evidence:** Linked decision from TASK-01
 - **Measurement-Readiness:** Retention/repeat/referral denominator and cadence section added to S10 contract
-- **Affects:** `docs/business-os/startup-loop/marketing-sales-capability-contract.md`, `docs/business-os/startup-loop/retention-schema.md`, `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`
+- **Affects:** `docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md`, `docs/business-os/startup-loop/schemas/retention-schema.md`, `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-05
 - **Confidence:** 80%
@@ -348,12 +348,12 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 - **Documentation impact:**
   - Adds retention schema and updates capability + S10 contract docs.
 - **Notes / references:**
-  - `docs/business-os/startup-loop/marketing-sales-capability-contract.md`
+  - `docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md`
   - `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`
 
 ### TASK-05: Define exception-runbooks-v1 for four canonical exception states
 - **Type:** IMPLEMENT
-- **Deliverable:** `docs/business-os/startup-loop/exception-runbooks-v1.md`
+- **Deliverable:** `docs/business-os/startup-loop/operations/exception-runbooks-v1.md`
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
@@ -361,16 +361,16 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 - **Status:** Complete (2026-02-18)
 - **Build-Evidence:**
   - Red: `bottleneck-diagnosis-schema.md` has 4 trigger codes (`compliance`, `ops_capacity`, `demand_drop`, `cash_burn`) — structural exception handling present but no runbook, no SLA, no owner, no closure criteria. Trigger overlap between Demand Shock + Cash Constraint confirmed as the key edge case (precedence rule required).
-  - Green: `docs/business-os/startup-loop/exception-runbooks-v1.md` created with all four runbooks — Demand Shock (precedence 4), Cash Constraint (precedence 3), Quality Incident (precedence 2), Compliance/Safety Incident (precedence 1). Each runbook includes: objective trigger thresholds with confirmation periods, explicit non-triggers, owner/escalation table, acknowledgement + resolution SLA table, required processes from process-registry-v1.md, mandatory artifacts checklist, closure criteria, and escalation paths.
+  - Green: `docs/business-os/startup-loop/operations/exception-runbooks-v1.md` created with all four runbooks — Demand Shock (precedence 4), Cash Constraint (precedence 3), Quality Incident (precedence 2), Compliance/Safety Incident (precedence 1). Each runbook includes: objective trigger thresholds with confirmation periods, explicit non-triggers, owner/escalation table, acknowledgement + resolution SLA table, required processes from process-registry-v1.md, mandatory artifacts checklist, closure criteria, and escalation paths.
   - Refactor: Trigger overlap decision matrix added (Demand Shock + Cash together → open both, Cash takes control flow priority). Exception ticket format standardized: `EXC-<BIZ>-<YYYYMMDD>-<sequence>`. Integration notes confirm non-modification of `bottleneck-diagnosis-schema.md` blocked-stage key taxonomy.
   - VC-05-A: Each state has ≥1 objective trigger threshold (with confirmation period) and ≥1 explicit non-trigger condition. ✓
   - VC-05-B: All 4 exception states have named owner role, acknowledgement SLA (2h–48h by state), and resolution SLA (24h–14 days by state). ✓
   - VC-05-C: Closure evidence package defined per state (ticket closed, decision log entry, corrective action documented, loop spec compliance check). ✓
-- **Artifact-Destination:** `docs/business-os/startup-loop/exception-runbooks-v1.md`
+- **Artifact-Destination:** `docs/business-os/startup-loop/operations/exception-runbooks-v1.md`
 - **Reviewer:** startup-loop maintainers + operator
 - **Approval-Evidence:** Review note in plan decision log
 - **Measurement-Readiness:** Exception ticket SLA metrics and closure cadence fields included in runbook
-- **Affects:** `docs/business-os/startup-loop/exception-runbooks-v1.md`, `docs/business-os/startup-loop/bottleneck-diagnosis-schema.md`, `docs/business-os/startup-loop-workflow.user.md`
+- **Affects:** `docs/business-os/startup-loop/operations/exception-runbooks-v1.md`, `docs/business-os/startup-loop/schemas/bottleneck-diagnosis-schema.md`, `docs/business-os/startup-loop-workflow.user.md`
 - **Depends on:** TASK-02, TASK-03, TASK-04
 - **Blocks:** TASK-06
 - **Confidence:** 80%
@@ -405,12 +405,12 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 - **Documentation impact:**
   - Adds new exception contract and links from workflow artifacts.
 - **Notes / references:**
-  - `docs/business-os/startup-loop/bottleneck-diagnosis-schema.md`
+  - `docs/business-os/startup-loop/schemas/bottleneck-diagnosis-schema.md`
   - `docs/briefs/orchestrated-business-startup-loop-operating-system-research.md`
 
 ### TASK-06: Add weekly light-audit and monthly deep-audit checklist contracts
 - **Type:** IMPLEMENT
-- **Deliverable:** `docs/business-os/startup-loop/audit-cadence-contract-v1.md` + workflow references
+- **Deliverable:** `docs/business-os/startup-loop/contracts/audit-cadence-contract-v1.md` + workflow references
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
@@ -418,16 +418,16 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 - **Status:** Complete (2026-02-18)
 - **Build-Evidence:**
   - Red: S10 prompt has Section G (data quality) but no process conformance check. No audit cadence contract exists. Gaps identified: no check that prior action items are executed, no periodic CAP contract validation, no exception ticket age gate, no standing audit of data/process freshness at monthly cadence.
-  - Green: `docs/business-os/startup-loop/audit-cadence-contract-v1.md` created with: 8-item weekly light-audit (≤20 min S10 companion) and 21-item monthly deep-audit (≤120 min, 6 categories). REM task format `REM-<BIZ>-<YYYYMMDD>-<n>` defined. Canonical output paths: Section H in KPCs decision doc (weekly); `<YYYY-MM>-monthly-audit.user.md` (monthly). KPCs prompt extended with Section H template. `startup-loop-workflow.user.md` extended with audit reference note and monthly deep-audit row in Quick Actions table.
+  - Green: `docs/business-os/startup-loop/contracts/audit-cadence-contract-v1.md` created with: 8-item weekly light-audit (≤20 min S10 companion) and 21-item monthly deep-audit (≤120 min, 6 categories). REM task format `REM-<BIZ>-<YYYYMMDD>-<n>` defined. Canonical output paths: Section H in KPCs decision doc (weekly); `<YYYY-MM>-monthly-audit.user.md` (monthly). KPCs prompt extended with Section H template. `startup-loop-workflow.user.md` extended with audit reference note and monthly deep-audit row in Quick Actions table.
   - Refactor: N/A policy added (no-open-tickets counts as PASS; CAP-not-yet-active for inactive CAPs; website-live-only items marked for pre-launch businesses). Conditional Pass threshold defined (≤2 non-critical failures) to prevent false-block on healthy businesses. Integration notes clarify separation of concerns with KPCs decision (audit ≠ KPI check).
   - VC-06-A: 29 items (8 weekly + 21 monthly); all have objective pass/fail, owner, if-fail action. ✓
   - VC-06-B: Weekly 8 items × 2 min = 16 min < 20 min. Monthly 6 categories: 25+20+20+25+20+10 = 120 min exactly at target. ✓
   - VC-06-C: REM task format defined; output paths canonical per audit cadence. 100% of FAIL items require REM task with owner and due date. ✓
-- **Artifact-Destination:** `docs/business-os/startup-loop/audit-cadence-contract-v1.md`
+- **Artifact-Destination:** `docs/business-os/startup-loop/contracts/audit-cadence-contract-v1.md`
 - **Reviewer:** startup-loop maintainers + operator
 - **Approval-Evidence:** Review sign-off in decision log
 - **Measurement-Readiness:** Checklist completion rate and unresolved-audit-item age tracked weekly
-- **Affects:** `docs/business-os/startup-loop/audit-cadence-contract-v1.md`, `docs/business-os/startup-loop-workflow.user.md`, `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`
+- **Affects:** `docs/business-os/startup-loop/contracts/audit-cadence-contract-v1.md`, `docs/business-os/startup-loop-workflow.user.md`, `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`
 - **Depends on:** TASK-05
 - **Blocks:** TASK-07
 - **Confidence:** 82%
@@ -534,7 +534,7 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 - 2026-02-18: Chosen approach = additive process-layer contracts (no loop-spec rewrite in v1).
 - 2026-02-18: TASK-00 complete. Overlap matrix confirms 1 Covered / 15 Partial / 12 Missing across 28 process IDs. All missing rows have destination paths. 1 High collision risk (DATA-4) identified — do not create competing Weekly Review contract. See `artifacts/contract-overlap-matrix.md`.
 - 2026-02-18: TASK-01 complete. Option A selected (additive only; no loop-spec edits in v1). Decision artifact: `decisions/v1-boundary-decision.md`. Canonical files permitted listed; loop-spec.yaml, manifest-schema.md, bottleneck-diagnosis-schema.md explicitly out-of-scope.
-- 2026-02-18: TASK-02 complete. process-registry-v1.md created at `docs/business-os/startup-loop/process-registry-v1.md`. All 28 process IDs documented with full operational contracts. VC-02-A/B/C addressed. TASK-03 and TASK-04 now unblocked.
+- 2026-02-18: TASK-02 complete. process-registry-v1.md created at `docs/business-os/startup-loop/_deprecated/process-registry-v1.md`. All 28 process IDs documented with full operational contracts. VC-02-A/B/C addressed. TASK-03 and TASK-04 now unblocked.
 - 2026-02-18: TASK-03 complete. sales-ops-schema.md created; CAP-05 status updated to Schema-defined in capability contract; KPCs prompt extended with CAP-05 pipeline denominator section.
 - 2026-02-18: TASK-04 complete. retention-schema.md created; CAP-06 status updated to Schema-defined in capability contract; KPCs prompt extended with CAP-06 retention denominator section including pre-PMF deferral rules. TASK-05 now unblocked (all Wave 3 deps met).
 - 2026-02-18: TASK-05 complete. exception-runbooks-v1.md created with all four canonical exception state runbooks (Demand Shock, Cash Constraint, Quality Incident, Compliance/Safety Incident). Each includes trigger thresholds, owner/escalation, SLAs, required processes, mandatory artifacts, closure criteria. Precedence ordering established (Compliance=1 highest). Trigger overlap decision matrix included. VC-05-A/B/C addressed. TASK-06 now unblocked.

@@ -16,9 +16,9 @@ artifact: results-review
 - Artifact registry updated with 3 new canonical producer/consumer contracts; dependency graph extended to show the full ASSESSMENT-10 → 11 → 13 → 14 → 15 chain.
 
 ## Standing Updates
-- `docs/business-os/startup-loop/loop-spec.yaml`: Updated (v3.13.0 → v3.14.0). ASSESSMENT container now includes ASSESSMENT-13/14/15. No further standing update needed beyond what was built.
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml`: Updated (v3.13.0 → v3.14.0). ASSESSMENT container now includes ASSESSMENT-13/14/15. No further standing update needed beyond what was built.
 - `docs/business-os/startup-loop/artifact-registry.md`: Updated. Three new artifact types registered. No further standing update needed.
-- `docs/business-os/startup-loop/two-layer-model.md`: No update required. The `physical-product` conditionality pattern referenced by ASSESSMENT-15 was already established there; ASSESSMENT-15 follows the existing pattern without modifying it.
+- `docs/business-os/startup-loop/specifications/two-layer-model.md`: No update required. The `physical-product` conditionality pattern referenced by ASSESSMENT-15 was already established there; ASSESSMENT-15 follows the existing pattern without modifying it.
 
 ## New Idea Candidates
 - Add ASSESSMENT-12 to loop-spec so GATE-ASSESSMENT-01 enforces dossier promotion before ASSESSMENT-13 | Trigger observation: TASK-06 acceptance note calls out that ASSESSMENT-12 should run before ASSESSMENT-13 but the gate does not enforce it — documented friction point. | Suggested next action: create card to add ASSESSMENT-12 to loop-spec and update GATE-ASSESSMENT-01.

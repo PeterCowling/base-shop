@@ -3,7 +3,7 @@
 Join parallel fan-out outputs (MARKET-06 + S3 + SELL-01, with optional PRODUCT-02) into a single baseline snapshot and draft manifest.
 This is the S4 join barrier in the startup loop.
 
-**Loop-spec reference:** `docs/business-os/startup-loop/loop-spec.yaml` — stage `S4`
+**Loop-spec reference:** `docs/business-os/startup-loop/specifications/loop-spec.yaml` — stage `S4`
 
 ## Operating Mode
 
@@ -200,8 +200,8 @@ Per `stage-result-schema.md` section 2:
 
 ## Related Resources
 
-- Stage result schema: `docs/business-os/startup-loop/stage-result-schema.md`
-- Manifest schema: `docs/business-os/startup-loop/manifest-schema.md`
-- Event/state schema: `docs/business-os/startup-loop/event-state-schema.md`
-- Loop spec: `docs/business-os/startup-loop/loop-spec.yaml`
+- Stage result schema: `docs/business-os/startup-loop/schemas/stage-result-schema.md`
+- Manifest schema: `docs/business-os/startup-loop/schemas/manifest-schema.md`
+- Event/state schema: `docs/business-os/startup-loop/schemas/event-state-schema.md`
+- Loop spec: `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 - Workspace paths: `.claude/skills/_shared/workspace-paths.md`

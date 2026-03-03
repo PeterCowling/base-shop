@@ -227,7 +227,7 @@ This contract is designed for forward compatibility with live mode:
 | Go-live activation criteria | `lp-do-ideas-go-live-seam.md` (TASK-07, pending) |
 | Fact-find intake contract | `.claude/skills/lp-do-fact-find/SKILL.md` |
 | Briefing intake contract | `.claude/skills/lp-do-briefing/SKILL.md` |
-| Startup-loop stage spec | `docs/business-os/startup-loop/loop-spec.yaml` |
+| Startup-loop stage spec | `docs/business-os/startup-loop/specifications/loop-spec.yaml` |
 
 
 ## 11. Registry v2 Taxonomy and Cutover Alignment

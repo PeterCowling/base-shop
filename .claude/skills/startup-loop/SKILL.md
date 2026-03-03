@@ -89,7 +89,7 @@ When a stage reference cannot be resolved, return fail-closed with deterministic
 
 ## Stage Model
 
-Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 3.12.0).
+Canonical source: `docs/business-os/startup-loop/specifications/loop-spec.yaml` (spec_version 3.12.0).
 Stage labels: `docs/business-os/startup-loop/_generated/stage-operator-map.json`.
 
 Stages (canonical IDs from loop-spec):

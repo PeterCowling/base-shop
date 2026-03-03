@@ -33,7 +33,7 @@ In trial mode, `lp-do-ideas` is a standalone pipeline:
 ```
 standing-artifact delta
     → runTrialOrchestrator()     ← pure function, no loop integration
-    → dispatch.v1 packet emitted
+    → dispatch.v2 packet emitted (dispatch.v1 compatibility supported)
     → trial queue (enqueued)
     → operator reviews + manually confirms
     → /lp-do-fact-find or /lp-do-briefing invoked by operator
@@ -47,7 +47,7 @@ registered standing artifact:
     → SHA delta computed for each affected registered artifact
     → runLiveHook() invoked with delta events
     → runLiveOrchestrator() processes events
-    → dispatch.v1 packets emitted (mode: live)
+    → dispatch.v2 packets emitted (mode: live; dispatch.v1 compatibility supported)
     → live queue
     → Option B: operator confirmation still required for all routes (unless escalated to Option C)
     → /lp-do-fact-find or /lp-do-briefing invoked

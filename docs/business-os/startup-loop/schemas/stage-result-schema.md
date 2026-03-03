@@ -221,4 +221,4 @@ The single-writer control plane (LPSP-03B) reads stage-result files as follows:
 | Baseline manifest | Control plane (LPSP-03B) | `manifest-schema.md` |
 | Events ledger | Control plane (LPSP-04A) | `event-state-schema.md` |
 | Derived run state | Control plane (LPSP-04A) | `event-state-schema.md` |
-| Loop spec | Plan authority | `docs/business-os/startup-loop/loop-spec.yaml` |
+| Loop spec | Plan authority | `docs/business-os/startup-loop/specifications/loop-spec.yaml` |

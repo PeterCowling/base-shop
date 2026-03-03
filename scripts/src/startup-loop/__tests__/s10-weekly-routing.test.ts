@@ -18,7 +18,7 @@ const REPO_ROOT = path.resolve(__dirname, "../../../../");
 // ── TC-06-01: Stage contract stability ───────────────────────────────────────
 
 describe("TC-06-01: SIGNALS stage contract stability (loop-spec.yaml)", () => {
-  const loopSpecPath = path.join(REPO_ROOT, "docs/business-os/startup-loop/loop-spec.yaml");
+  const loopSpecPath = path.join(REPO_ROOT, "docs/business-os/startup-loop/specifications/loop-spec.yaml");
   const signalsStageBlock = (raw: string): string | null => {
     const lines = raw.split("\n");
     const start = lines.findIndex((line) => line.trim() === "- id: SIGNALS");

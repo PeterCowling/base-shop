@@ -65,8 +65,8 @@ describe("VC-01: determinism", () => {
         aliases: ["readiness", "s1"], display_order: 2 }),
     ]);
 
-    const run1 = serializeMap(buildMap(dict, "docs/business-os/startup-loop/stage-operator-dictionary.yaml"));
-    const run2 = serializeMap(buildMap(dict, "docs/business-os/startup-loop/stage-operator-dictionary.yaml"));
+    const run1 = serializeMap(buildMap(dict, "docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml"));
+    const run2 = serializeMap(buildMap(dict, "docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml"));
 
     expect(sha256(run1)).toBe(sha256(run2));
     expect(run1).toBe(run2);
@@ -77,8 +77,8 @@ describe("VC-01: determinism", () => {
       makeStage({ id: "S0", aliases: ["intake", "s0"], display_order: 1 }),
     ]);
 
-    const run1 = buildTable(dict, "docs/business-os/startup-loop/stage-operator-dictionary.yaml");
-    const run2 = buildTable(dict, "docs/business-os/startup-loop/stage-operator-dictionary.yaml");
+    const run1 = buildTable(dict, "docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml");
+    const run2 = buildTable(dict, "docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml");
 
     expect(sha256(run1)).toBe(sha256(run2));
     expect(run1).toBe(run2);
@@ -208,7 +208,7 @@ describe("canonical dictionary round-trip", () => {
     const { load: loadYaml } = require("js-yaml") as typeof import("js-yaml");
     const dictPath = path.resolve(
       __dirname,
-      "../../../../docs/business-os/startup-loop/stage-operator-dictionary.yaml"
+      "../../../../docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml"
     );
     const raw = fs.readFileSync(dictPath, "utf8");
     const data = loadYaml(raw);
@@ -220,11 +220,11 @@ describe("canonical dictionary round-trip", () => {
     const { load: loadYaml } = require("js-yaml") as typeof import("js-yaml");
     const dictPath = path.resolve(
       __dirname,
-      "../../../../docs/business-os/startup-loop/stage-operator-dictionary.yaml"
+      "../../../../docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml"
     );
     const raw = fs.readFileSync(dictPath, "utf8");
     const dict = loadYaml(raw) as Dictionary;
-    const map = buildMap(dict, "docs/business-os/startup-loop/stage-operator-dictionary.yaml");
+    const map = buildMap(dict, "docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml");
 
     expect(map.stages.length).toBe(71); // canonical stage set + WEBSITE container split (WEBSITE-01, WEBSITE-02)
     expect(Object.keys(map.alias_index).length).toBeGreaterThanOrEqual(29);
@@ -242,7 +242,7 @@ describe("canonical dictionary round-trip", () => {
 describe("VC-05: label naming convention guardrails", () => {
   const dictPath = path.resolve(
     __dirname,
-    "../../../../docs/business-os/startup-loop/stage-operator-dictionary.yaml"
+    "../../../../docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml"
   );
   // Load once for all sub-tests
   const { loadYaml } = (() => {

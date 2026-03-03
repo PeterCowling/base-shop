@@ -144,12 +144,43 @@ Write a `## Simulation Trace` section into the fact-find draft (before persistin
 
 Critical findings block Phase 6 until resolved or waived (`Simulation-Critical-Waiver`). Major/Moderate/Minor findings are advisory and proceed to critique.
 
+## Phase 5.6: Scope Signal (Two-Way)
+
+After simulation, classify scope posture using evidence from the investigation:
+
+- `constrained`: scope is too broad/risky for current evidence or capacity; narrow it.
+- `right-sized`: scope is realistic and appropriately bounded.
+- `limited-thinking`: scope is safely expandable now based on clear evidence.
+
+When `limited-thinking`, add 1-3 concrete expansion suggestions. Each suggestion must include:
+- what to add now,
+- expected upside,
+- added risk/cost.
+
+Do not emit `limited-thinking` without explicit evidence that dependencies, risks, and validation burden remain manageable.
+
 ## Phase 6: Persist Artifact with Shared Templates
 
 - Output path: `docs/plans/<feature-slug>/fact-find.md`
 - Template: `docs/plans/_templates/fact-find-planning.md`
 - Always include the routing header fields in frontmatter.
-- **Canonical artifact name:** `fact-find.md` is the formal loop output artifact for this skill. Required sections and frontmatter fields are defined in `docs/business-os/startup-loop/loop-output-contracts.md` (Artifact 1). The path above is authoritative; do not store this artifact at any other location.
+- **Canonical artifact name:** `fact-find.md` is the formal loop output artifact for this skill. Required sections and frontmatter fields are defined in `docs/business-os/startup-loop/contracts/loop-output-contracts.md` (Artifact 1). The path above is authoritative; do not store this artifact at any other location.
+- Include `## Scope Signal` in the artifact body:
+  - `Signal: <constrained | right-sized | limited-thinking>`
+  - `Rationale: <evidence-based reason>`
+  - `Expansion suggestions` subsection is required only when signal is `limited-thinking`.
+
+## Phase 6.1: Outcome Contract Gate (Non-Omittable)
+
+Before moving to Phase 6.5, enforce outcome-contract continuity:
+
+- `## Outcome Contract` section must exist in `fact-find.md` (non-omittable).
+- Dispatch-routed path: populate `Why` and `Intended Outcome` from dispatch payload fields (`why`, `intended_outcome`) when present.
+- Direct-inject path: populate from frontmatter `Trigger-Why` and `Trigger-Intended-Outcome`.
+- If values are unavailable, set explicit fallback:
+  - `Why: TBD`
+  - `Source: auto`
+- Do not leave outcome fields blank and do not fabricate operator-authored values.
 
 ## Phase 6.5: Open Question Self-Resolve Gate
 
@@ -204,6 +235,8 @@ Status-dependent next action (execute immediately, do not wait for user):
 - [ ] Access declarations listed and verified (or `None` recorded) before investigation begins
 - [ ] Routing header computed and written to frontmatter
 - [ ] Only relevant module(s) loaded
+- [ ] Scope signal classified (`constrained`, `right-sized`, or `limited-thinking`) with evidence-backed rationale
+- [ ] `## Outcome Contract` present and populated (dispatch payload or trigger frontmatter; fallback `Why: TBD`, `Source: auto` when unavailable)
 - [ ] Outcome A evidence gap review completed and recorded
 - [ ] lp-do-factcheck run if fact-find contains codebase claims (file paths, function names, coverage assertions)
 - [ ] Status classified as `Ready-for-planning`, `Needs-input`, or `Infeasible` (not left ambiguous)

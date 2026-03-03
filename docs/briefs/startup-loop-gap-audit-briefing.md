@@ -31,7 +31,7 @@ This briefing is gap-focused (diagnosis + opportunities). It does not implement 
 ## Scope And Definitions
 - Efficiency: user experience friction and/or token burn (extra turns, re-reading context, manual reconciliation).
 - Effectiveness: weak/slow signals, inability to control real risks, silent wrong outputs, or slowed execution.
-- "Startup loop": the end-to-end S0..S10 stage graph defined in `docs/business-os/startup-loop/loop-spec.yaml`.
+- "Startup loop": the end-to-end S0..S10 stage graph defined in `docs/business-os/startup-loop/specifications/loop-spec.yaml`.
 
 ## Severity Rubric
 - P0 Execution blocker: a stage cannot complete (or persistence fails) without manual out-of-band patching.
@@ -55,13 +55,13 @@ Stage identifiers drift in multiple places; this doc uses:
 - Stage doc filename (filesystem): expected by the agent API: `docs/business-os/cards/<CARD-ID>/<stage>.user.md`.
 
 ## Canonical Sources (Authority)
-- `docs/business-os/startup-loop/loop-spec.yaml` (stage graph authority)
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml` (stage graph authority)
 - `docs/business-os/startup-loop-workflow.user.md` (operator workflow contract)
 - `.claude/skills/startup-loop/SKILL.md` (orchestration wrapper)
-- `docs/business-os/startup-loop/stage-result-schema.md`
-- `docs/business-os/startup-loop/manifest-schema.md`
-- `docs/business-os/startup-loop/event-state-schema.md`
-- `docs/business-os/startup-loop/autonomy-policy.md`
+- `docs/business-os/startup-loop/schemas/stage-result-schema.md`
+- `docs/business-os/startup-loop/schemas/manifest-schema.md`
+- `docs/business-os/startup-loop/schemas/event-state-schema.md`
+- `docs/business-os/startup-loop/specifications/autonomy-policy.md`
 - `scripts/src/startup-loop/*` (data-plane stage workers and control-plane kernels)
 - `packages/mcp-server/src/tools/bos.ts` (BOS bridge tools + strict policy metadata)
 - `packages/mcp-server/src/tools/loop.ts` (loop artifact tools + refresh/pack tooling)
@@ -130,7 +130,7 @@ Gaps observed:
 Evidence:
 - `.claude/skills/startup-loop/SKILL.md`
 - `docs/business-os/workflow-prompts/_templates/intake-normalizer-prompt.md`
-- `docs/business-os/startup-loop/loop-spec.yaml`
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 
 ### S1 - Readiness
 Stage type: Type B (Skill stage).
@@ -139,11 +139,11 @@ Intended:
 - `/lp-readiness` runs as S1 and gates progress.
 
 Gaps observed:
-- `docs/business-os/startup-loop/loop-spec.yaml` sets `prompt_required: true` for S1 and expects BOS sync writes to readiness/strategy docs.
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml` sets `prompt_required: true` for S1 and expects BOS sync writes to readiness/strategy docs.
 - `.claude/skills/lp-readiness/SKILL.md` is explicitly non-writing (no persisted readiness artifact described).
 
 Evidence:
-- `docs/business-os/startup-loop/loop-spec.yaml`
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 - `.claude/skills/lp-readiness/SKILL.md`
 
 ### S1B - Measure (conditional)
@@ -157,7 +157,7 @@ Gaps observed:
 - `lp-measure` references legacy/nonexistent companion skills (`lp-channel`, `lp-content`) and does not specify a canonical output path.
 
 Evidence:
-- `docs/business-os/startup-loop/loop-spec.yaml`
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 - `.claude/skills/lp-measure/SKILL.md`
 
 ### S2A - Results (conditional)
@@ -197,7 +197,7 @@ Gaps observed:
 
 Evidence:
 - `.claude/skills/lp-offer/SKILL.md`
-- `docs/business-os/startup-loop/baseline-prior-schema.md`
+- `docs/business-os/startup-loop/schemas/baseline-prior-schema.md`
 
 ### S3 - Forecast
 Stage type: Type B (Skill stage).
@@ -211,7 +211,7 @@ Gaps observed:
 
 Evidence:
 - `.claude/skills/lp-forecast/SKILL.md`
-- `docs/business-os/startup-loop/loop-spec.yaml`
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 
 ### S6B - Channel Strategy + GTM (parallel with S3)
 Stage type: Type B (Skill stage).
@@ -239,7 +239,7 @@ Gaps observed:
 
 Evidence:
 - `.claude/skills/lp-baseline-merge/SKILL.md`
-- `docs/business-os/startup-loop/stage-result-schema.md`
+- `docs/business-os/startup-loop/schemas/stage-result-schema.md`
 
 ### S4 - Prioritize
 Stage type: Type B (Skill stage).
@@ -264,7 +264,7 @@ Gaps observed:
 - There is a stage worker implementation as a script (`scripts/src/startup-loop/bos-sync.ts`), creating doc vs script mismatch.
 
 Evidence:
-- `docs/business-os/startup-loop/loop-spec.yaml`
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 - `.claude/skills/startup-loop/SKILL.md`
 - `scripts/src/startup-loop/bos-sync.ts`
 
@@ -331,11 +331,11 @@ Intended:
 - `/lp-launch-qa` plus `/lp-design-qa`.
 
 Gaps observed:
-- `/lp-launch-qa` references `docs/business-os/startup-baselines/<BIZ>/loop-state.json` and `/lp-launch` (missing skill). `docs/business-os/startup-loop/event-state-schema.md` documents a migration to `state.json`, but the skill doc appears not updated.
+- `/lp-launch-qa` references `docs/business-os/startup-baselines/<BIZ>/loop-state.json` and `/lp-launch` (missing skill). `docs/business-os/startup-loop/schemas/event-state-schema.md` documents a migration to `state.json`, but the skill doc appears not updated.
 
 Evidence:
 - `.claude/skills/lp-launch-qa/SKILL.md`
-- `docs/business-os/startup-loop/event-state-schema.md`
+- `docs/business-os/startup-loop/schemas/event-state-schema.md`
 
 ### S10 - Weekly Readout + Experiments
 Stage type: Type B (Skill stage), with substantial Type A runtime machinery in scripts.
@@ -352,7 +352,7 @@ Evidence:
 - `.claude/skills/lp-experiment/SKILL.md`
 - `scripts/src/startup-loop/s10-growth-accounting.ts`
 - `scripts/src/startup-loop/s10-learning-hook.ts`
-- `docs/business-os/startup-loop/learning-ledger-schema.md`
+- `docs/business-os/startup-loop/schemas/learning-ledger-schema.md`
 
 ## Root Cause Hypotheses (Systemic)
 These are hypotheses suggested by repeated symptoms; they need confirmation:
@@ -374,11 +374,11 @@ This doc does not choose; it flags that a posture must be chosen to prevent oper
 Multiple canonical startup-loop docs reference `docs/plans/lp-skill-system-sequencing-plan.md`, but the repo contains `docs/plans/archive/lp-skill-system-sequencing-plan.md` and `docs/plans/lp-skill-system-sequencing-plan.html`.
 
 Evidence:
-- `docs/business-os/startup-loop/loop-spec.yaml`
-- `docs/business-os/startup-loop/manifest-schema.md`
-- `docs/business-os/startup-loop/stage-result-schema.md`
-- `docs/business-os/startup-loop/event-state-schema.md`
-- `docs/business-os/startup-loop/autonomy-policy.md`
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml`
+- `docs/business-os/startup-loop/schemas/manifest-schema.md`
+- `docs/business-os/startup-loop/schemas/stage-result-schema.md`
+- `docs/business-os/startup-loop/schemas/event-state-schema.md`
+- `docs/business-os/startup-loop/specifications/autonomy-policy.md`
 
 ### B) Stage-doc filename and schema drift across filesystem, docs, and API
 Observed mismatch set:
@@ -435,7 +435,7 @@ Evidence:
 Stage IDs are duplicated across multiple code locations (for example `scripts/src/startup-loop/derive-state.ts`, `packages/mcp-server/src/tools/bos.ts`, `packages/mcp-server/src/tools/loop.ts`) in addition to the canonical loop spec.
 
 Evidence:
-- `docs/business-os/startup-loop/loop-spec.yaml`
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 - `scripts/src/startup-loop/derive-state.ts`
 - `packages/mcp-server/src/tools/bos.ts`
 - `packages/mcp-server/src/tools/loop.ts`

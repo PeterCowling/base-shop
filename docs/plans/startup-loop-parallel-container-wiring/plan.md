@@ -98,13 +98,13 @@ The startup loop spec v3.9.6 models post-MEASURE containers as a strict sequenti
 
 ### TASK-01: Update loop-spec.yaml ordering
 - **Type:** IMPLEMENT
-- **Deliverable:** Updated `docs/business-os/startup-loop/loop-spec.yaml` — spec_version 3.10.0, fan-out-2 parallel group, cross-stream ordering constraints, old sequential chain removed
+- **Deliverable:** Updated `docs/business-os/startup-loop/specifications/loop-spec.yaml` — spec_version 3.10.0, fan-out-2 parallel group, cross-stream ordering constraints, old sequential chain removed
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Pending
-- **Affects:** `docs/business-os/startup-loop/loop-spec.yaml`
+- **Affects:** `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 - **Depends on:** -
 - **Blocks:** TASK-04
 - **Confidence:** 85%
@@ -164,13 +164,13 @@ The startup loop spec v3.9.6 models post-MEASURE containers as a strict sequenti
 
 ### TASK-02: Update stage-operator-dictionary.yaml prompts
 - **Type:** IMPLEMENT
-- **Deliverable:** Updated `docs/business-os/startup-loop/stage-operator-dictionary.yaml` — revised `operator_next_prompt` for MEASURE-02, PRODUCTS-01, and any other affected routing prompts
+- **Deliverable:** Updated `docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml` — revised `operator_next_prompt` for MEASURE-02, PRODUCTS-01, and any other affected routing prompts
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
 - **Status:** Pending
-- **Affects:** `docs/business-os/startup-loop/stage-operator-dictionary.yaml`
+- **Affects:** `docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml`
 - **Depends on:** -
 - **Blocks:** TASK-04
 - **Confidence:** 85%

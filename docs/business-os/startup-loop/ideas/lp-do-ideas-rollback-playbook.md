@@ -59,9 +59,11 @@ git checkout -b rollback-drill-$(date +%Y%m%d)
 # Confirm routing adapter accepts mode: live
 node -e "
 const { routeDispatch } = require('./scripts/src/startup-loop/lp-do-ideas-routing-adapter.js');
-const pkt = { schema_version: 'dispatch.v1', mode: 'live', status: 'fact_find_ready',
+const pkt = { schema_version: 'dispatch.v2', mode: 'live', status: 'fact_find_ready',
   recommended_route: 'lp-do-fact-find', area_anchor: 'test', location_anchors: ['test'],
-  provisional_deliverable_family: 'business-artifact', evidence_refs: ['test'], dispatch_id: 'TEST-001' };
+  provisional_deliverable_family: 'business-artifact', evidence_refs: ['test'], dispatch_id: 'TEST-001',
+  why: 'Validate live routing adapter mode acceptance for rollback drill.',
+  intended_outcome: { type: 'operational', statement: 'Confirm live packet is routable pre-rollback.', source: 'auto' } };
 console.log(routeDispatch(pkt).ok); // must print: true
 "
 ```
@@ -76,9 +78,11 @@ Follow the post-activation rollback procedure (Steps 1–6 in Part 2) on the tes
 # Confirm routing adapter again rejects mode: live
 node -e "
 const { routeDispatch } = require('./scripts/src/startup-loop/lp-do-ideas-routing-adapter.js');
-const pkt = { schema_version: 'dispatch.v1', mode: 'live', status: 'fact_find_ready',
+const pkt = { schema_version: 'dispatch.v2', mode: 'live', status: 'fact_find_ready',
   recommended_route: 'lp-do-fact-find', area_anchor: 'test', location_anchors: ['test'],
-  provisional_deliverable_family: 'business-artifact', evidence_refs: ['test'], dispatch_id: 'TEST-001' };
+  provisional_deliverable_family: 'business-artifact', evidence_refs: ['test'], dispatch_id: 'TEST-001',
+  why: 'Validate trial-only guard rejects live packet after rollback.',
+  intended_outcome: { type: 'operational', statement: 'Expect INVALID_MODE after rollback.', source: 'auto' } };
 const result = routeDispatch(pkt);
 console.log(result.ok === false && result.code === 'INVALID_MODE'); // must print: true
 "

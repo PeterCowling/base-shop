@@ -193,7 +193,7 @@ If none of these markers are present AND the stage artifact exists, log Severity
 
 - `.claude/skills/startup-loop/SKILL.md:L42-L56` — stage table; S10 defined as "Weekly readout + experiments", skill: `/lp-experiment`; weekly prompt: `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`
 - `.claude/skills/startup-loop/modules/cmd-advance.md` — defines GATE-BD-00 through GATE-S6B-ACT-01 and BOS sync contract per stage; S10 has GATE-BD-08 (Brand Dossier freshness, soft warning)
-- `docs/business-os/startup-loop/loop-spec.yaml` — canonical stage graph, spec_version 1.5.0; S10 is the terminal weekly stage
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml` — canonical stage graph, spec_version 1.5.0; S10 is the terminal weekly stage
 
 ### Key Modules / Files
 
@@ -460,7 +460,7 @@ Short anchored excerpts confirming key factual claims. Direct quotes from source
 
 ### S10 stage definition in loop-spec.yaml
 ```yaml
-# docs/business-os/startup-loop/loop-spec.yaml (spec_version: 1.5.0)
+# docs/business-os/startup-loop/specifications/loop-spec.yaml (spec_version: 1.5.0)
 # S10 entry (paraphrased from table structure):
 - id: S10
   name: Weekly readout + experiments

@@ -5,16 +5,16 @@ Version: 2.0.3
 Created: 2026-02-18
 Last-updated: 2026-02-25
 Owner: startup-loop maintainers
-Taxonomy-Ref: docs/business-os/startup-loop/workstream-workflow-taxonomy-v2.yaml
-Assignment-Ref: docs/business-os/startup-loop/process-assignment-v2.yaml
+Taxonomy-Ref: docs/business-os/startup-loop/specifications/workstream-workflow-taxonomy-v2.yaml
+Assignment-Ref: docs/business-os/startup-loop/specifications/process-assignment-v2.yaml
 Decision-Record: docs/plans/startup-loop-orchestrated-os-comparison-v2/decisions/v2-scope-boundary-decision.md
-Supersedes: docs/business-os/startup-loop/process-registry-v1.md
+Supersedes: docs/business-os/startup-loop/_deprecated/process-registry-v1.md
 Related-plan: docs/plans/startup-loop-orchestrated-os-comparison-v2/plan.md
 ---
 
 > **AUTHORITATIVE:** This is the v2 process registry. `process-registry-v1.md` is archived.
 > Process definitions source-of-truth: this file.
-> Assignment source-of-truth: `docs/business-os/startup-loop/process-assignment-v2.yaml`.
+> Assignment source-of-truth: `docs/business-os/startup-loop/specifications/process-assignment-v2.yaml`.
 
 # Startup Loop Process Registry v2
 
@@ -23,14 +23,14 @@ Related-plan: docs/plans/startup-loop-orchestrated-os-comparison-v2/plan.md
 **This registry is a process-layer operating contract. It does NOT govern stage ordering.**
 
 Stage sequencing, join barriers, run packet structure, and gate conditions remain exclusively authoritative in:
-- `docs/business-os/startup-loop/loop-spec.yaml` — stage graph and run contract
-- `docs/business-os/startup-loop/manifest-schema.md` — single-writer baseline state
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml` — stage graph and run contract
+- `docs/business-os/startup-loop/schemas/manifest-schema.md` — single-writer baseline state
 
 This registry answers: *"During each startup-loop run and weekly operating cycle, which process activities should be executed, by whom, and with what inputs/outputs?"* It complements the stage engine by specifying the operational substance within and between stages.
 
 **Canonical artifact paths for `lp-*` skill outputs** remain in `docs/business-os/startup-loop/artifact-registry.md`. This registry references those paths but does not replace them.
 
-**Consolidated operator briefing integrity** is governed by `docs/business-os/startup-loop/briefing-contract-schema-v1.md` (metadata contract, status taxonomy, contradiction keys, and T1 operator-card requirements). This registry references that contract for S10 operations and does not duplicate it.
+**Consolidated operator briefing integrity** is governed by `docs/business-os/startup-loop/schemas/briefing-contract-schema-v1.md` (metadata contract, status taxonomy, contradiction keys, and T1 operator-card requirements). This registry references that contract for S10 operations and does not duplicate it.
 
 ---
 
@@ -699,7 +699,7 @@ Every core startup-loop stage anchor has at least one linked workstream process 
 | **Inputs** | KPI Pack (DATA-1); delivery report (OPS-2); risk register highlights (FIN-3); experiment readouts (CDI-4); reconciliation pack (FIN-2) |
 | **Outputs / artifacts** | Weekly Review Notes; Decision Log; updated plan for next week; improvement backlog updates |
 | **Artifact path** | Governed by `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md` — authoritative S10 contract |
-| **Briefing contract** | Consolidated briefing outputs MUST satisfy `docs/business-os/startup-loop/briefing-contract-schema-v1.md`; lint enforcement responsibility is defined in `artifact-registry.md` |
+| **Briefing contract** | Consolidated briefing outputs MUST satisfy `docs/business-os/startup-loop/schemas/briefing-contract-schema-v1.md`; lint enforcement responsibility is defined in `artifact-registry.md` |
 | **Entry criteria** | Required inputs published ≥24 hours before meeting |
 | **Exit criteria** | Decisions logged with owners; next-week plan drafted; backlog updated |
 | **Exception linkage** | All exception outcomes are recorded in the DATA-4 decision log |
@@ -729,7 +729,7 @@ All processes active. Cadences as specified per process. Monthly deep audit mand
 | Quality Incident | CX-1, OPS-4, DATA-3, CX-4 | Rating/complaint spike OR OTIF below target |
 | Compliance/Safety Incident | FIN-3, DATA-3 | Compliance trigger OR safety incident OR data breach signal |
 
-*Full runbooks including trigger thresholds, owner SLAs, and closure criteria: `docs/business-os/startup-loop/exception-runbooks-v1.md`*
+*Full runbooks including trigger thresholds, owner SLAs, and closure criteria: `docs/business-os/startup-loop/operations/exception-runbooks-v1.md`*
 
 ---
 

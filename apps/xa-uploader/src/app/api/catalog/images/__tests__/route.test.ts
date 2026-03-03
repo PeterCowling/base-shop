@@ -19,6 +19,7 @@ jest.mock("@acme/lib/xa", () => ({
 
 jest.mock("@acme/lib/math/ops", () => ({
   validateMinImageEdge: (...args: unknown[]) => validateMinImageEdgeMock(...args),
+  toPositiveInt: (_value: unknown, fallback: number) => fallback,
 }));
 
 function makePngMagicBytes(): Buffer {

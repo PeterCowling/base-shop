@@ -127,7 +127,7 @@ describe("catalog sync route", () => {
     });
     getCatalogContractReadinessMock.mockReturnValue({ configured: true, errors: [] });
     readCloudDraftSnapshotMock.mockResolvedValue({
-      products: [{ slug: "studio-jacket", title: "Studio Jacket" }],
+      products: [{ slug: "studio-jacket", title: "Studio Jacket", publishState: "ready" }],
       revisionsById: {},
       docRevision: "doc-1",
     });
@@ -613,7 +613,7 @@ describe("TASK-04: catalog sync route — KV mutex (F4+F8)", () => {
     __clearRateLimitStoreForTests();
     hasUploaderSessionMock.mockResolvedValue(true);
     readCloudDraftSnapshotMock.mockResolvedValue({
-      products: [{ slug: "studio-jacket", title: "Studio Jacket" }],
+      products: [{ slug: "studio-jacket", title: "Studio Jacket", publishState: "ready" }],
       revisionsById: {},
       docRevision: "doc-1",
     });

@@ -53,7 +53,7 @@ All four parts run sequentially. Each part gates on the output of the prior part
 | ASSESSMENT intake packet | `docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md` | Yes — primary source for product definition and ICP |
 | Product option selection | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-option-selection.user.md` | Yes — confirmed product type and product category |
 | Brand profile | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-profile.user.md` | Yes — personality adjective pairs, voice & tone, positioning constraints |
-| Business name shortlist | `docs/business-os/strategy/<BIZ>/latest-naming-shortlist.user.md` | Yes if present — confirms the approved business name and expansion-headroom rationale |
+| Business name shortlist | `docs/business-os/strategy/<BIZ>/assessment/naming-workbench/latest-naming-shortlist.user.md` | Yes if present — confirms the approved business name and expansion-headroom rationale |
 | Brand identity dossier | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md` | No — read if present for imagery direction and aesthetic constraints |
 | Distribution plan | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-launch-distribution-plan.user.md` | No — read if present for channel-specific naming constraints (e.g., Etsy character limits) |
 
@@ -63,7 +63,7 @@ All four parts run sequentially. Each part gates on the output of the prior part
 
 ### Part 1 — Spec
 
-Read all available ASSESSMENT artifacts and write `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-product-naming-spec.md`.
+Read all available ASSESSMENT artifacts and write `docs/business-os/strategy/<BIZ>/assessment/naming-workbench/<YYYY-MM-DD>-product-naming-spec.md`.
 
 The spec must contain:
 
@@ -122,9 +122,9 @@ Gate: spec exists and is dated today before proceeding to Part 2.
 
 ### Part 2 — Generate
 
-Spawn a **general-purpose agent** (model: sonnet) with the following prompt, substituting `<BIZ>` and `<SPEC_PATH>`:
+Spawn a **general-purpose agent** (model: opus) with the following prompt, substituting `<BIZ>` and `<SPEC_PATH>`:
 
-> Read `<SPEC_PATH>` in full before doing anything else. Then generate exactly 75 product line name candidates following the spec exactly — §3 DWPEIC scoring rubric, §4 naming territories and morpheme pools, §5 hard blockers and elimination list, §6 output format. Every name must have a territory label, provenance note, and six dimension scores. The Line Name and Full Compound columns are both required for every row. Sort the output table by Score descending. After the table, write the one-paragraph summary required by §6. Save the complete output (table + summary) to `docs/business-os/strategy/<BIZ>/product-naming-candidates-<YYYY-MM-DD>.md`. Do not stop early. Do not skip the provenance notes. Do not reuse any name from §5.3.
+> Read `<SPEC_PATH>` in full before doing anything else. Then generate exactly 75 product line name candidates following the spec exactly — §3 DWPEIC scoring rubric, §4 naming territories and morpheme pools, §5 hard blockers and elimination list, §6 output format. Every name must have a territory label, provenance note, and six dimension scores. The Line Name and Full Compound columns are both required for every row. Sort the output table by Score descending. After the table, write the one-paragraph summary required by §6. Save the complete output (table + summary) to `docs/business-os/strategy/<BIZ>/assessment/naming-workbench/product-naming-candidates-<YYYY-MM-DD>.md`. Do not stop early. Do not skip the provenance notes. Do not reuse any name from §5.3.
 
 Do not proceed to Part 3 until the candidates file exists and contains a table with ≥ 65 rows.
 
@@ -139,8 +139,8 @@ Extract all Line Names from the candidates file and pipe them through `tm-prescr
 ```bash
 DATE=$(date +%Y-%m-%d)
 BIZ="<BIZ>"
-CANDIDATES="docs/business-os/strategy/${BIZ}/product-naming-candidates-${DATE}.md"
-OUT="docs/business-os/strategy/${BIZ}/product-naming-tm-${DATE}.txt"
+CANDIDATES="docs/business-os/strategy/${BIZ}/assessment/naming-workbench/product-naming-candidates-${DATE}.md"
+OUT="docs/business-os/strategy/${BIZ}/assessment/naming-workbench/product-naming-tm-${DATE}.txt"
 
 # Extract Line Name column (col 2) from markdown table, skip header rows
 grep "^|" "$CANDIDATES" \
@@ -150,13 +150,13 @@ grep "^|" "$CANDIDATES" \
   | TM_BUSINESS="${BIZ}" \
     TM_RUN_DATE="${DATE}" \
     TM_ROUND=1 \
-    TM_SIDECAR_DIR="docs/business-os/strategy/${BIZ}/product-naming-sidecars" \
+    TM_SIDECAR_DIR="docs/business-os/strategy/${BIZ}/assessment/naming-workbench/product-naming-sidecars" \
     npx ts-node scripts/src/startup-loop/naming/tm-prescreen-cli.ts \
   | tee "$OUT"
 
 echo ""
 echo "TM pre-screen direction generated for $(wc -l < "$OUT" | tr -d ' ') candidates."
-echo "Sidecar events written to docs/business-os/strategy/${BIZ}/product-naming-sidecars/${DATE}-round-1.jsonl"
+echo "Sidecar events written to docs/business-os/strategy/${BIZ}/assessment/naming-workbench/product-naming-sidecars/${DATE}-round-1.jsonl"
 ```
 
 The TM pre-screen direction file (`product-naming-tm-<date>.txt`) contains EUIPO search URL, WIPO GBD search URL, and UIBM bancadati direction for each candidate. Nice Classification classes default to 25 and 26 — override with `TM_NICE_CLASSES=<classes>` if the product falls in a different class.
@@ -174,7 +174,7 @@ Read the candidates table. Produce the final shortlist:
 3. Take the top 20 as the working shortlist
 4. For each shortlist entry, embed the EUIPO and WIPO GBD search URLs from the TM direction file
 
-Save to `docs/business-os/strategy/<BIZ>/product-naming-shortlist-<YYYY-MM-DD>.user.md` with this structure:
+Save to `docs/business-os/strategy/<BIZ>/assessment/naming-workbench/product-naming-shortlist-<YYYY-MM-DD>.user.md` with this structure:
 
 ```markdown
 ---
@@ -186,9 +186,9 @@ Status: Draft
 Created: <YYYY-MM-DD>
 Updated: <YYYY-MM-DD>
 Owner: Pete
-Source-Candidates: docs/business-os/strategy/<BIZ>/product-naming-candidates-<YYYY-MM-DD>.md
-Source-TM: docs/business-os/strategy/<BIZ>/product-naming-tm-<YYYY-MM-DD>.txt
-Source-Spec: docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-product-naming-spec.md
+Source-Candidates: docs/business-os/strategy/<BIZ>/assessment/naming-workbench/product-naming-candidates-<YYYY-MM-DD>.md
+Source-TM: docs/business-os/strategy/<BIZ>/assessment/naming-workbench/product-naming-tm-<YYYY-MM-DD>.txt
+Source-Spec: docs/business-os/strategy/<BIZ>/assessment/naming-workbench/<YYYY-MM-DD>-product-naming-spec.md
 ---
 
 # <Business Name> Product Naming Shortlist (Round N)
@@ -241,10 +241,10 @@ Source-Spec: docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-product-naming-spec.md
 ## F) TM Pre-Screen Direction Reference
 
 Full TM direction output (EUIPO, WIPO GBD, UIBM for all candidates):
-`docs/business-os/strategy/<BIZ>/product-naming-tm-<YYYY-MM-DD>.txt`
+`docs/business-os/strategy/<BIZ>/assessment/naming-workbench/product-naming-tm-<YYYY-MM-DD>.txt`
 
 Sidecar events:
-`docs/business-os/strategy/<BIZ>/product-naming-sidecars/<YYYY-MM-DD>-round-N.jsonl`
+`docs/business-os/strategy/<BIZ>/assessment/naming-workbench/product-naming-sidecars/<YYYY-MM-DD>-round-N.jsonl`
 
 Recommended Nice Classification classes: <from spec §5>
 ```

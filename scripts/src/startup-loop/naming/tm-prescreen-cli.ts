@@ -15,7 +15,7 @@
  *   head -20 names.txt | npx tsx scripts/src/startup-loop/naming/tm-prescreen-cli.ts > out.txt
  *
  * Sidecar events are written to:
- *   docs/business-os/strategy/HEAD/assessment/product-naming-sidecars/
+ *   docs/business-os/strategy/<BIZ>/assessment/naming-workbench/product-naming-sidecars/
  *
  * Environment variable overrides (optional):
  *   TM_SIDECAR_DIR    — override default sidecar directory
@@ -27,6 +27,7 @@
  *                        product line naming backward compat)
  */
 
+import * as path from 'node:path';
 import * as readline from 'node:readline';
 
 import {
@@ -41,13 +42,17 @@ import {
 // Constants — override via env vars for testing (use a temp dir for dry runs)
 // ---------------------------------------------------------------------------
 
+const BUSINESS = process.env['TM_BUSINESS'] ?? 'HEAD';
 const SIDECAR_DIR =
   process.env['TM_SIDECAR_DIR'] ??
-  '/Users/petercowling/base-shop/docs/business-os/strategy/HEAD/assessment/product-naming-sidecars';
+  path.resolve(
+    'docs/business-os/strategy',
+    BUSINESS,
+    'assessment/naming-workbench/product-naming-sidecars',
+  );
 
 const RUN_DATE = process.env['TM_RUN_DATE'] ?? '2026-02-26';
 const ROUND = process.env['TM_ROUND'] != null ? parseInt(process.env['TM_ROUND'], 10) : 1;
-const BUSINESS = process.env['TM_BUSINESS'] ?? 'HEAD';
 
 /**
  * Nice Classification classes to search. Configurable via TM_NICE_CLASSES env

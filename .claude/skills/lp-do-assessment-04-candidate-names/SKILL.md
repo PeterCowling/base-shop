@@ -37,7 +37,7 @@ All five parts run sequentially. Each part gates on the output of the prior part
 
 ### Part 1 — Spec
 
-Invoke the `lp-do-assessment-05-name-selection` skill for the target business. That skill reads the ASSESSMENT docs and writes `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-generation-spec.md`.
+Invoke the `lp-do-assessment-05-name-selection` skill for the target business. That skill reads the ASSESSMENT docs and writes `docs/business-os/strategy/<BIZ>/assessment/naming-workbench/<YYYY-MM-DD>-naming-generation-spec.md`.
 
 If `<YYYY-MM-DD>-naming-generation-spec.md` already exists and a prior naming round has been run, the shaping skill updates the spec in place (adds newly eliminated names, refreshes ICP if changed). Do not skip Part 1 even if the spec exists — it must be current.
 
@@ -47,9 +47,9 @@ Gate: `<YYYY-MM-DD>-naming-generation-spec.md` exists and is dated today before 
 
 ### Part 2 — Generate
 
-Spawn a **general-purpose agent** (model: sonnet) with the following prompt, substituting `<BIZ>` and `<SPEC_PATH>`:
+Spawn a **general-purpose agent** (model: opus) with the following prompt, substituting `<BIZ>` and `<SPEC_PATH>`:
 
-> Read `<SPEC_PATH>` in full before doing anything else. Then generate exactly 250 brand name candidates following the spec exactly — §3 scoring rubric, §4 generation patterns and morpheme pools, §5 elimination list, §6 output format. Every name must have a pattern label, provenance note, and five dimension scores. Sort the output table by Score descending. After the table, write the one-paragraph summary required by §6. Save the complete output (table + summary) to `docs/business-os/strategy/<BIZ>/naming-candidates-<YYYY-MM-DD>.md`. Do not stop early. Do not skip the provenance notes. Do not reuse any name from §5.
+> Read `<SPEC_PATH>` in full before doing anything else. Then generate exactly 250 brand name candidates following the spec exactly — §3 scoring rubric, §4 generation patterns and morpheme pools, §5 elimination list, §6 output format. Every name must have a pattern label, provenance note, and five dimension scores. Sort the output table by Score descending. After the table, write the one-paragraph summary required by §6. Save the complete output (table + summary) to `docs/business-os/strategy/<BIZ>/assessment/naming-workbench/naming-candidates-<YYYY-MM-DD>.md`. Do not stop early. Do not skip the provenance notes. Do not reuse any name from §5.
 
 Do not proceed to Part 3 until the candidates file exists and contains a table with ≥ 240 rows (allow for minor generation shortfall).
 
@@ -66,8 +66,8 @@ Run the following bash loop:
 ```bash
 DATE=$(date +%Y-%m-%d)
 BIZ="<BIZ>"
-CANDIDATES="docs/business-os/strategy/${BIZ}/naming-candidates-${DATE}.md"
-OUT="docs/business-os/strategy/${BIZ}/naming-rdap-${DATE}.txt"
+CANDIDATES="docs/business-os/strategy/${BIZ}/assessment/naming-workbench/naming-candidates-${DATE}.md"
+OUT="docs/business-os/strategy/${BIZ}/assessment/naming-workbench/naming-rdap-${DATE}.txt"
 
 # Extract names from the # | Name column (col 2) of the markdown table
 # For Pattern D rows, extract domain string from col 5 instead
@@ -114,7 +114,7 @@ Read the candidates table and the RDAP results file. Produce the final shortlist
 3. For ties, sort by I (ICP resonance) descending, then alphabetically
 4. Take the top 20 as the working shortlist
 
-Save to `docs/business-os/strategy/<BIZ>/naming-shortlist-<YYYY-MM-DD>.user.md` with this structure:
+Save to `docs/business-os/strategy/<BIZ>/assessment/naming-workbench/naming-shortlist-<YYYY-MM-DD>.user.md` with this structure:
 
 ```markdown
 ---
@@ -177,7 +177,7 @@ The skill treats this as a **user-triggered new round** — see §New round belo
 
 After Part 4 produces the `.user.md` shortlist, render a polished HTML artifact at the same path with `.user.html` extension:
 
-`docs/business-os/strategy/<BIZ>/naming-shortlist-<YYYY-MM-DD>.user.html`
+`docs/business-os/strategy/<BIZ>/assessment/naming-workbench/naming-shortlist-<YYYY-MM-DD>.user.html`
 
 **Required HTML structure:**
 

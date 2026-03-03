@@ -53,7 +53,7 @@ If any file is missing, note the gap in a preflight comment at the top of the sp
 Save to:
 
 ```
-docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-generation-spec.md
+docs/business-os/strategy/<BIZ>/assessment/naming-workbench/<YYYY-MM-DD>-naming-generation-spec.md
 ```
 
 If the file already exists (a prior naming round was run), **update it in place**: add newly eliminated names to the elimination list, update the ICP section if it has changed, and increment the round note at the top. Do not overwrite a spec from scratch.
@@ -270,13 +270,13 @@ After the table, write a one-paragraph summary: names per pattern, score distrib
 
 ## Completion message
 
-> "Naming generation spec ready: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-generation-spec.md`. Next: spawn a general-purpose agent with this spec as input to generate 250 scored candidates. Then run the RDAP batch check. Then filter and rank."
+> "Naming generation spec ready: `docs/business-os/strategy/<BIZ>/assessment/naming-workbench/<YYYY-MM-DD>-naming-generation-spec.md`. Next: spawn a general-purpose agent with this spec as input to generate 250 scored candidates. Then run the RDAP batch check. Then filter and rank."
 
 ## Integration
 
 **Upstream (ASSESSMENT-03):** Runs after `/lp-do-assessment-03-solution-selection` produces a product decision record.
 
-**Downstream — Part 2:** Spawn a general-purpose agent with the spec. Prompt: "Read `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-generation-spec.md` in full, then generate exactly 250 brand name candidates following the spec exactly. Save to `docs/business-os/strategy/<BIZ>/naming-candidates-<YYYY-MM-DD>.md`."
+**Downstream — Part 2:** Spawn a general-purpose agent with the spec. Prompt: "Read `docs/business-os/strategy/<BIZ>/assessment/naming-workbench/<YYYY-MM-DD>-naming-generation-spec.md` in full, then generate exactly 250 brand name candidates following the spec exactly. Save to `docs/business-os/strategy/<BIZ>/assessment/naming-workbench/naming-candidates-<YYYY-MM-DD>.md`."
 
 **Downstream — Part 3 (RDAP batch):** Extract all names from the candidates file. Run:
 ```bash
@@ -287,6 +287,6 @@ done < names.txt
 ```
 Filter to 404s. For Pattern D names, check the domain string, not the spoken name.
 
-**Downstream — Part 4 (rank):** Filter candidates table to domain-available names only. Sort by Score descending. Present top 20 as the working shortlist for operator review. Save to `docs/business-os/strategy/<BIZ>/naming-shortlist-<YYYY-MM-DD>.user.md`.
+**Downstream — Part 4 (rank):** Filter candidates table to domain-available names only. Sort by Score descending. Present top 20 as the working shortlist for operator review. Save to `docs/business-os/strategy/<BIZ>/assessment/naming-workbench/naming-shortlist-<YYYY-MM-DD>.user.md`.
 
 **Downstream (ASSESSMENT-06):** `/lp-do-assessment-06-distribution-profiling` runs after the operator has confirmed a working name from the shortlist.

@@ -163,6 +163,16 @@ If confidence regresses below task threshold during execution:
 - stop and route to `/lp-do-replan`.
 - If the same task is routed to `/lp-do-replan` three or more times without crossing its threshold: declare the task `Infeasible` in the plan, record a one-line kill rationale, surface to user, and stop the build cycle. Do not route to replan a fourth time.
 
+### Build-Time Ideas Hook (Advisory)
+
+After each task commit, run the build-time ideas hook utility:
+
+`pnpm --filter scripts startup-loop:lp-do-ideas-build-commit-hook -- --business <BUSINESS> --from-ref HEAD~1 --to-ref HEAD`
+
+- This step is advisory/fail-open: hook errors are surfaced as warnings and must not block task progression.
+- The hook only considers changed files that are active entries in `docs/business-os/startup-loop/ideas/standing-registry.json`.
+- If dispatch candidates are emitted, log them in build evidence for operator review.
+
 ## Plan Completion and Archiving
 
 When all executable tasks are complete, execute **every step below in order**. Do not emit the completion message until all steps are done and the Plan Completion Checklist is clear.
@@ -171,7 +181,13 @@ When all executable tasks are complete, execute **every step below in order**. D
    - Enforce `## Outcome Contract` presence and populated fields (`Why`, `Intended Outcome Type`, `Intended Outcome Statement`, `Source`) before proceeding. Use explicit `TBD/auto` fallback only when canonical values are unavailable.
 1.5 Emit canonical `build-event.json` in `docs/plans/<slug>/` using `scripts/src/startup-loop/build/lp-do-build-event-emitter.ts` (`emitBuildEvent()` + `writeBuildEvent()`) with values sourced from `build-record.user.md` `## Outcome Contract`.
    - Verify file exists and is non-empty before continuing.
-2. Produce `results-review.user.md` using the template at `docs/plans/_templates/results-review.user.md`.
+1.7 **Pre-fill results-review scaffold (deterministic).** Run:
+   ```
+   pnpm --filter scripts startup-loop:results-review-prefill -- --slug <slug> --plan-dir docs/plans/<slug>
+   ```
+   - On non-zero exit or missing/empty output file: log warning in build evidence and fall through to Step 2 (codemoot/inline) which generates from scratch. Pre-fill is additive — failure here does not break the existing flow.
+   - On success: `docs/plans/<slug>/results-review.user.md` now contains a deterministic scaffold with standing-updates intersection, 5-category None scan, and auto-verdict. Step 2 refines it.
+2. Refine `results-review.user.md` — the pre-filled scaffold from Step 1.7 (or generate from scratch if Step 1.7 was skipped/failed).
 
    **Codemoot route check:**
    ```
@@ -181,19 +197,32 @@ When all executable tasks are complete, execute **every step below in order**. D
    **If `CODEMOOT_OK=1` (codemoot route — preferred):**
    - Run:
      ```
-     nvm exec 22 codemoot run "Complete docs/plans/<slug>/results-review.user.md. Read the build context from docs/plans/<slug>/plan.md and docs/plans/<slug>/build-record.user.md. Use the template at docs/plans/_templates/results-review.user.md. Fill all agent-fillable sections: Observed Outcomes stub, Standing Updates, New Idea Candidates (scan for: new standing data sources, new open-source packages, new skills, new loop processes, AI-to-mechanistic steps; write None for any category with no evidence), Standing Expansion, Intended Outcome Check." --mode autonomous
+     nvm exec 22 codemoot run "Refine docs/plans/<slug>/results-review.user.md. The file already contains a pre-filled scaffold with deterministic sections (Standing Updates, New Idea Candidates with None categories, Intended Outcome Check with auto-verdict). Read the build context from docs/plans/<slug>/plan.md and docs/plans/<slug>/build-record.user.md. Only populate sections that contain placeholders or are missing substantive content: fill Observed Outcomes with concrete build observations, replace any placeholder comments with real content, and add genuine idea candidates for any of the 5 categories where the build produced relevant signals. Do not overwrite correctly pre-filled None entries unless there is actual evidence. Use the template at docs/plans/_templates/results-review.user.md for structure reference." --mode autonomous
      ```
    - Wait for exit. On non-zero exit or missing/empty file: fall back to inline route with a warning note recorded in the build evidence.
    - Verify `docs/plans/<slug>/results-review.user.md` exists and is non-empty before continuing.
 
    **If `CODEMOOT_OK=0` (inline fallback):**
-   - Auto-draft `results-review.user.md` inline; pre-fill all agent-fillable sections (Observed Outcomes stub, Standing Updates, New Idea Candidates, Standing Expansion, Intended Outcome Check). When pre-filling `## New Idea Candidates`, scan build context for signals in each category below — write `None` if no evidence found for that category:
+   - If pre-filled scaffold exists from Step 1.7: read it and refine only sections with placeholders (Observed Outcomes, any placeholder comments). Preserve correctly pre-filled content (Standing Updates, None categories, auto-verdict).
+   - If no scaffold exists: auto-draft `results-review.user.md` inline; pre-fill all agent-fillable sections (Observed Outcomes stub, Standing Updates, New Idea Candidates, Standing Expansion, Intended Outcome Check). When pre-filling `## New Idea Candidates`, scan build context for signals in each category below — write `None` if no evidence found for that category:
      - New standing data source — external feed, API, or dataset suitable for Layer A standing intelligence
      - New open-source package — library to replace custom code or add capability
      - New skill — recurring agent workflow ready to be codified as a named skill
      - New loop process — missing stage, gate, or feedback path in the startup loop
      - AI-to-mechanistic — LLM reasoning step replaceable with a deterministic script
-2.5. Read the `results-review.user.md` just produced. For each entry in `## New Idea Candidates`, identify whether it describes a pattern that has recurred across recent builds or could recur in future builds. Classify each pattern as one of: repeatable rule (something the loop could do automatically next time), recurring opportunity with context variation (something worth capturing as a reusable agent workflow), or access gap (something that was discovered mid-build rather than verified upfront). Then write `docs/plans/<slug>/pattern-reflection.user.md` using the schema at `docs/plans/startup-loop-build-reflection-gate/task-01-schema-spec.md`. Each entry must include: a plain summary (≤100 characters), the category, the routing result (see schema routing criteria), and how many times the pattern has been observed. If no patterns are present, write the empty-state artifact with `None identified` in both `## Patterns` and `## Access Declarations` sections. The artifact must always be produced — an empty-state is valid and closes any potential gap in the record.
+2.4. **Pre-fill pattern-reflection scaffold (deterministic).** Run:
+   ```
+   pnpm --filter scripts startup-loop:pattern-reflection-prefill -- --slug <slug> --plan-dir docs/plans/<slug> --archive-dir docs/plans/_archive
+   ```
+   - On non-zero exit: log warning in build evidence and fall through to Step 2.5 (LLM generates from scratch). Pre-fill is additive.
+   - On success: `docs/plans/<slug>/pattern-reflection.user.md` now contains a deterministic scaffold with archive recurrence counts, routing targets, and the empty-state when no patterns exist. Step 2.5 refines it.
+2.5. Refine the pattern-reflection artifact from Step 2.4 (or generate from scratch if Step 2.4 was skipped/failed). Read the `results-review.user.md` just produced. For each entry in `## New Idea Candidates`, identify whether it describes a pattern that has recurred across recent builds or could recur in future builds. If a pre-filled scaffold exists from Step 2.4, review and correct category classifications using build context (the pre-fill defaults to `unclassified` when category cannot be determined deterministically). Then write or update `docs/plans/<slug>/pattern-reflection.user.md` using the schema at `docs/plans/startup-loop-build-reflection-gate/task-01-schema-spec.md`. Each entry must include: a plain summary (≤100 characters), the category, the routing result (see schema routing criteria), and how many times the pattern has been observed. If no patterns are present, write the empty-state artifact with `None identified` in both `## Patterns` and `## Access Declarations` sections. The artifact must always be produced — an empty-state is valid and closes any potential gap in the record.
+
+2.6. Run self-evolving build-output bridge (advisory) to feed build artifacts into observation ingestion:
+
+   `pnpm --filter scripts startup-loop:self-evolving-from-build-output -- --business <BUSINESS> --plan-slug <slug>`
+
+   - This step is advisory/fail-open. It must not block completion if startup-state or artifacts are missing; record warnings in build evidence.
 
 3. Run reflection debt emitter; if debt emitted, produce `reflection-debt.user.html` from `docs/templates/visual/loop-output-report-template.html` (operator-readable plain language — see `MEMORY.md` Operator-Facing Content).
 4. Run bug scan and persist findings as a plan artifact: `pnpm bug-scan -- --changed --format=json --fail-on=none --business-scope=<BUSINESS> --idea-artifact=docs/plans/<slug>/bug-scan-findings.user.json`.

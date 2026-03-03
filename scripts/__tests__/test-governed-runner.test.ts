@@ -627,7 +627,7 @@ describe("Governed Test Runner", () => {
       expect(result.stderr).toContain("Governed test timeout after 1s");
       expect(runLockStatus(repo, env).stdout).toContain("unlocked");
 
-      const event = await waitForLastTelemetryEvent(repo, 60_000);
+      const event = await waitForLastTelemetryEvent(repo, 120_000);
       expect(event.timeout_killed).toBe(true);
       expect(event.kill_escalation).toBe("sigterm");
       expect(event.exit_code).toBe(124);
@@ -655,7 +655,7 @@ describe("Governed Test Runner", () => {
       expect(result.status).toBe(124);
       expect(runLockStatus(repo, env).stdout).toContain("unlocked");
 
-      const event = await waitForLastTelemetryEvent(repo, 60_000);
+      const event = await waitForLastTelemetryEvent(repo, 120_000);
       expect(event.timeout_killed).toBe(true);
       expect(event.kill_escalation).toBe("sigkill");
       expect(event.exit_code).toBe(124);

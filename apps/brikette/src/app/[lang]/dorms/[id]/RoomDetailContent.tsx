@@ -37,7 +37,7 @@ import { useRoomDetailBookingState } from "@/hooks/useRoomDetailBookingState";
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
-import { createBrikClickId, fireViewItem } from "@/utils/ga4-events";
+import { buildRoomItem, createBrikClickId, fireViewItem } from "@/utils/ga4-events";
 import { trackThenNavigate } from "@/utils/trackThenNavigate";
 
 type Props = {
@@ -110,6 +110,7 @@ export default function RoomDetailContent({ lang, id }: Props) {
           pax: ctx.pax,
           rate_plan: "nr",
           room_id: room.sku,
+          items: [buildRoomItem({ roomSku: room.sku, itemName: title })],
           source_route: `/${lang}/dorms/${id}`,
           cta_location: "room_detail_sticky_cta",
           brik_click_id: createBrikClickId(),
@@ -117,7 +118,7 @@ export default function RoomDetailContent({ lang, id }: Props) {
         ctx.proceed,
       );
     },
-    [id, lang, room.sku],
+    [id, lang, room.sku, title],
   );
   const stickyOctorateUrlResult = useMemo(
     () =>

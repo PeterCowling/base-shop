@@ -111,6 +111,7 @@ describe("TC-01: BookingWidget → navigates to /book (TASK-27)", () => {
     // BookingWidget writes date state back to window.location.search via useEffect.
     // Clear URL search params between tests to prevent cross-test contamination.
     window.history.replaceState(null, "", window.location.pathname);
+    window.localStorage.clear();
   });
 
   it("navigates to /book with the entered dates and guests", () => {

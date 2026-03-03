@@ -1,5 +1,6 @@
 ---
 Type: Contract
+Domain: Repo
 Schema: lp-do-ideas-trial-contract
 Version: 1.2.0
 Mode: trial
@@ -8,6 +9,7 @@ Created: 2026-02-24
 Updated: 2026-02-26
 Owner: startup-loop maintainers
 Related-plan: docs/plans/lp-do-ideas-startup-loop-integration/plan.md
+Primary code entrypoints: scripts/src/startup-loop/lp-do-ideas-trial.ts, scripts/src/startup-loop/lp-do-ideas-trial-queue.ts
 Related-schema: lp-do-ideas-dispatch.v2.schema.json, lp-do-ideas-dispatch.schema.json (compat), lp-do-ideas-standing-registry.schema.json
 Related-skill: /lp-do-ideas (pending — TASK-03)
 Related-artifacts: docs/plans/lp-do-ideas-startup-loop-integration/artifacts/trial-policy-decision.md

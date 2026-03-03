@@ -89,7 +89,7 @@ export function I18nextProvider({
   };
   children: React.ReactNode;
 }) {
-  return <I18nContext.Provider value={i18n}>{children}</I18nContext.Provider>;
+  return React.createElement(I18nContext.Provider, { value: i18n }, children);
 }
 
 export function useTranslation(ns?: string | string[]) {

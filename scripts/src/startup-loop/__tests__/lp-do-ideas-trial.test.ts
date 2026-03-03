@@ -251,7 +251,7 @@ describe("runTrialOrchestrator — TC-01: opportunity delta class (T1 match)", (
     expect(r1.dispatched[0].dispatch_id).toBe(r2.dispatched[0].dispatch_id);
   });
 
-  it("packet has schema_version=dispatch.v1 and mode=trial", () => {
+  it("packet has schema_version=dispatch.v2 and mode=trial", () => {
     const result = runTrialOrchestrator({
       mode: "trial",
       events: [T1_OPPORTUNITY_EVENT],
@@ -261,7 +261,7 @@ describe("runTrialOrchestrator — TC-01: opportunity delta class (T1 match)", (
     if (!result.ok) return;
 
     const packet = result.dispatched[0];
-    expect(packet.schema_version).toBe("dispatch.v1");
+    expect(packet.schema_version).toBe("dispatch.v2");
     expect(packet.mode).toBe("trial");
   });
 
@@ -839,7 +839,7 @@ const ASSESSMENT_ELIGIBLE_REGISTRY = {
   artifacts: [
     {
       artifact_id: "HBAG-ASSESSMENT-BRAND-IDENTITY",
-      path: "docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md",
+      path: "docs/business-os/strategy/HBAG/assessment/2026-02-21-brand-identity-dossier.user.md",
       domain: "ASSESSMENT" as const,
       business: "HBAG",
       artifact_class: "source_reference" as const,
@@ -851,7 +851,7 @@ const ASSESSMENT_ELIGIBLE_REGISTRY = {
     },
     {
       artifact_id: "HBAG-ASSESSMENT-DISTRIBUTION-PLAN",
-      path: "docs/business-os/strategy/HBAG/2026-02-21-launch-distribution-plan.user.md",
+      path: "docs/business-os/strategy/HBAG/assessment/2026-02-21-launch-distribution-plan.user.md",
       domain: "ASSESSMENT" as const,
       business: "HBAG",
       artifact_class: "source_reference" as const,
@@ -869,7 +869,7 @@ const ASSESSMENT_BRAND_IDENTITY_T1_EVENT: ArtifactDeltaEvent = {
   business: "HBAG",
   before_sha: "aaa1111",
   after_sha: "bbb2222",
-  path: "docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md",
+  path: "docs/business-os/strategy/HBAG/assessment/2026-02-21-brand-identity-dossier.user.md",
   domain: "ASSESSMENT",
   changed_sections: ["Brand Identity"],
 };
@@ -879,7 +879,7 @@ const ASSESSMENT_BRAND_IDENTITY_NON_T1_EVENT: ArtifactDeltaEvent = {
   business: "HBAG",
   before_sha: "ccc3333",
   after_sha: "ddd4444",
-  path: "docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md",
+  path: "docs/business-os/strategy/HBAG/assessment/2026-02-21-brand-identity-dossier.user.md",
   domain: "ASSESSMENT",
   changed_sections: ["Historical Context", "Format notes"],
 };
@@ -889,7 +889,7 @@ const ASSESSMENT_DISTRIBUTION_PLAN_EVENT: ArtifactDeltaEvent = {
   business: "HBAG",
   before_sha: "eee5555",
   after_sha: "fff6666",
-  path: "docs/business-os/strategy/HBAG/2026-02-21-launch-distribution-plan.user.md",
+  path: "docs/business-os/strategy/HBAG/assessment/2026-02-21-launch-distribution-plan.user.md",
   domain: "ASSESSMENT",
   changed_sections: ["Distribution Plan"],
 };

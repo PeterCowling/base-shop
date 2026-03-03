@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "fs";
 import path from "path";
 
+import { checkBaselinesFreshness } from "./baselines/baselines-freshness";
 import type { McpPreflightOptions, McpPreflightProfile } from "./mcp-preflight-config";
 import { isTruthyFlag, resolveMcpPreflightConfig } from "./mcp-preflight-config";
 
@@ -14,6 +15,7 @@ type McpPreflightCode =
   | "MCP_PREFLIGHT_TOOL_REGISTRY_DRIFT"
   | "MCP_PREFLIGHT_ARTIFACTS_MISSING"
   | "MCP_PREFLIGHT_ARTIFACT_STALE"
+  | "MCP_PREFLIGHT_BASELINE_CONTENT_STALE"
   | "MCP_PREFLIGHT_INTERNAL";
 
 export interface McpPreflightIssue {
@@ -24,7 +26,7 @@ export interface McpPreflightIssue {
 }
 
 export interface McpPreflightCheck {
-  id: "registration" | "tool-metadata" | "artifact-freshness";
+  id: "registration" | "tool-metadata" | "artifact-freshness" | "baseline-content-freshness";
   status: "pass" | "warn" | "fail";
   message: string;
 }
@@ -360,6 +362,78 @@ function runArtifactFreshnessCheck(params: {
   return { warnings, checks };
 }
 
+const BASELINE_CONTENT_THRESHOLD_SECONDS = 60 * 60 * 24 * 90; // 90 days
+
+function runBaselineContentFreshnessCheck(params: {
+  startupLoopArtifactRoot: string;
+  nowMs: number;
+  repoRoot: string;
+  gitDateFn?: (filePath: string) => string | null;
+}): { warnings: McpPreflightIssue[]; checks: McpPreflightCheck[] } {
+  const warnings: McpPreflightIssue[] = [];
+
+  const baselinesRoot = path.join(
+    params.startupLoopArtifactRoot,
+    "docs/business-os/startup-baselines"
+  );
+
+  const results = checkBaselinesFreshness({
+    baselinesRoot,
+    thresholdSeconds: BASELINE_CONTENT_THRESHOLD_SECONDS,
+    nowMs: params.nowMs,
+    gitDateFn: params.gitDateFn,
+  });
+
+  if (results.length === 0) {
+    return {
+      warnings,
+      checks: [
+        {
+          id: "baseline-content-freshness",
+          status: "pass",
+          message: "No standing content files found in startup-baselines.",
+        },
+      ],
+    };
+  }
+
+  const staleOrWarning = results.filter(
+    (r) => r.status === "stale" || r.status === "warning"
+  );
+
+  for (const result of staleOrWarning) {
+    const ageLabel =
+      result.ageSeconds !== null
+        ? `${result.ageSeconds}s old`
+        : "unknown age";
+    warnings.push({
+      code: "MCP_PREFLIGHT_BASELINE_CONTENT_STALE",
+      message: `Standing content is ${result.status} (${ageLabel}, threshold ${BASELINE_CONTENT_THRESHOLD_SECONDS}s).`,
+      path: result.file,
+      details: {
+        ageSeconds: result.ageSeconds,
+        thresholdSeconds: BASELINE_CONTENT_THRESHOLD_SECONDS,
+        source: result.source,
+        status: result.status,
+      },
+    });
+  }
+
+  return {
+    warnings,
+    checks: [
+      {
+        id: "baseline-content-freshness",
+        status: warnings.length > 0 ? "warn" : "pass",
+        message:
+          warnings.length > 0
+            ? `Standing content freshness: ${staleOrWarning.length} file(s) need attention.`
+            : "Standing content freshness is within threshold.",
+      },
+    ],
+  };
+}
+
 export function runMcpPreflight(
   options: McpPreflightOptions = {},
   env: NodeJS.ProcessEnv = process.env
@@ -379,10 +453,15 @@ export function runMcpPreflight(
       nowMs: Date.now(),
       repoRoot: config.repoRoot,
     });
+    const baselineContent = runBaselineContentFreshnessCheck({
+      startupLoopArtifactRoot: config.startupLoopArtifactRoot,
+      nowMs: Date.now(),
+      repoRoot: config.repoRoot,
+    });
 
     const errors = [...registration.errors, ...metadata.errors];
-    const warnings = [...freshness.warnings];
-    const checks = [...registration.checks, ...metadata.checks, ...freshness.checks];
+    const warnings = [...freshness.warnings, ...baselineContent.warnings];
+    const checks = [...registration.checks, ...metadata.checks, ...freshness.checks, ...baselineContent.checks];
 
     return {
       ok: errors.length === 0,

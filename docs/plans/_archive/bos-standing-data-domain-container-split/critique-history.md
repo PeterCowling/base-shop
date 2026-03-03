@@ -1,3 +1,9 @@
+---
+Type: Critique-History
+Status: Complete
+Domain: Repo
+---
+
 # Critique History: bos-standing-data-domain-container-split
 
 ## Round 1 — 2026-03-02

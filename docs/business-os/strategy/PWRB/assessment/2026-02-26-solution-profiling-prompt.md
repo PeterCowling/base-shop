@@ -1,4 +1,10 @@
+---
+Type: Deep-Research-Prompt
+Status: Draft
+Domain: Repo
+---
 # Solution-Profiling Research Prompt — PWRB
+Type: Deep-Research-Prompt
 
 **Stage:** ASSESSMENT-02
 **Business:** PWRB

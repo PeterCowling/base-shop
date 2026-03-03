@@ -1,4 +1,5 @@
 ---
+Type: Worldclass-Benchmark
 schema_version: worldclass-benchmark.v1
 business: HBAG
 goal_version: 2

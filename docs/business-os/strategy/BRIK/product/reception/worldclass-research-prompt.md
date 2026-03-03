@@ -1,4 +1,5 @@
 ---
+Type: Worldclass-Research-Prompt
 schema_version: worldclass-research-prompt.v1
 business: BRIK
 app: reception

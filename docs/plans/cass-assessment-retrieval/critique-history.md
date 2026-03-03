@@ -1,4 +1,10 @@
+---
+Type: Critique-History
+Status: Complete
+Domain: Repo
+---
 # Critique History: cass-assessment-retrieval
+Type: Critique-History
 
 ## Round 1 — 2026-03-02
 

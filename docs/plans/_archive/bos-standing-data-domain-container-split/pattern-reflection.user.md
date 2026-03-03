@@ -1,5 +1,6 @@
 ---
 Type: Pattern Reflection
+Status: Complete
 Plan: docs/plans/bos-standing-data-domain-container-split/plan.md
 Feature-Slug: bos-standing-data-domain-container-split
 Build-Date: 2026-03-03

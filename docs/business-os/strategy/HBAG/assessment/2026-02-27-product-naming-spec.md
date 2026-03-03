@@ -1,5 +1,6 @@
 ---
 Type: Product-Naming-Spec
+Status: Draft
 Stage: ASSESSMENT-13
 Business-Unit: HBAG
 Business-Name: Caryina

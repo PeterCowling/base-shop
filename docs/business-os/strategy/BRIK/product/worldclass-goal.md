@@ -1,4 +1,5 @@
 ---
+Type: Worldclass-Goal
 schema_version: worldclass-goal.v1
 business: BRIK
 

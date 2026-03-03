@@ -18,6 +18,8 @@ const publishCatalogPayloadToContractMock = jest.fn();
 const getCatalogContractReadinessMock = jest.fn();
 const readCloudDraftSnapshotMock = jest.fn();
 const buildCatalogArtifactsFromDraftsMock = jest.fn();
+const DEFAULT_CURRENCY_RATES_JSON = '{"EUR":0.92,"GBP":0.78,"AUD":1.5}';
+const DEFAULT_GENERATED_CATALOG_JSON = '{"products":[{"slug":"studio-jacket"}]}';
 
 jest.mock("node:child_process", () => ({
   spawn: (...args: unknown[]) => spawnMock(...args),
@@ -103,7 +105,15 @@ describe("catalog sync route", () => {
     __clearRateLimitStoreForTests();
     hasUploaderSessionMock.mockResolvedValue(true);
     mkdirMock.mockResolvedValue(undefined);
-    readFileMock.mockResolvedValue('{"EUR":0.92,"GBP":0.78,"AUD":1.5}');
+    readFileMock.mockImplementation(async (targetPath: string) => {
+      if (targetPath.endsWith("currency-rates.json")) {
+        return DEFAULT_CURRENCY_RATES_JSON;
+      }
+      if (targetPath.endsWith("catalog.json")) {
+        return DEFAULT_GENERATED_CATALOG_JSON;
+      }
+      throw Object.assign(new Error("not found"), { code: "ENOENT" });
+    });
     writeFileMock.mockResolvedValue(undefined);
     renameMock.mockResolvedValue(undefined);
     getCatalogSyncInputStatusMock.mockResolvedValue({ exists: true, rowCount: 1 });

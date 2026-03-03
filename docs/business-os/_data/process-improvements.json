@@ -410,6 +410,22 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "None. (remaining 4 categories: no new data sources, packages, skills, or loop processes identified; no AI-to-mechanistic step found — scanner is already fully deterministic)",
+      "body": "None. (remaining 4 categories: no new data sources, packages, skills, or loop processes identified; no AI-to-mechanistic step found — scanner is already fully deterministic)",
+      "source": "results-review.user.md",
+      "date": "2026-03-03T17:40:57.636Z",
+      "path": "docs/plans/_archive/assessment-completion-registry/results-review.user.md",
+      "idea_key": "ba364069613cbe036113de81e211e2ce44f67276",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "New loop process — None.",
       "body": "New loop process — None.",
       "source": "results-review.user.md",
@@ -638,6 +654,23 @@
       "effort": "M",
       "proximity": null,
       "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Wire scanner to mcp-preflight for automated visibility",
+      "body": "scanner exists but has no automated consumer yet; mcp-preflight integration was deferred from this plan's scope",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-03-03T17:40:57.636Z",
+      "path": "docs/plans/_archive/assessment-completion-registry/results-review.user.md",
+      "idea_key": "1b57a8cb73c40c9a7b3ad5d82885d2de41bb0424",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",

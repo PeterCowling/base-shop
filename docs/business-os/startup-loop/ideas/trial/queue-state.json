@@ -1,15 +1,15 @@
 {
-  "last_updated": "2026-03-03T16:44:16.172Z",
+  "last_updated": "2026-03-03T17:43:35.995Z",
   "counts": {
     "enqueued": 15,
-    "processed": 11,
+    "processed": 15,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
-    "completed": 95,
-    "fact_find_ready": 47,
-    "total": 147
+    "completed": 96,
+    "fact_find_ready": 51,
+    "total": 152
   },
   "dispatches": [
     {
@@ -5585,6 +5585,253 @@
         "type": "operational",
         "statement": "All ZIP/submission-related code is removed from the codebase, leaving only the cloud sync workflow as the single canonical publish path.",
         "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303210000-0143",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:STRATEGY:assessment-completion-tracking-implicit:20260303",
+      "anchor_key": "assessment-completion-tracking-implicit",
+      "cluster_key": "BOS:STRATEGY:assessment-completion-tracking-implicit:operator:20260303",
+      "cluster_fingerprint": "b7e4c382d5f89a16b7e4c382d5f89a16b7e4c382d5f89a16b7e4c382d5f89a16",
+      "lineage_depth": 0,
+      "area_anchor": "BOS assessment completion — no registry, requires filesystem glob",
+      "location_anchors": [
+        "docs/business-os/strategy/BRIK/assessment/",
+        "docs/business-os/strategy/HBAG/assessment/",
+        "docs/business-os/strategy/HEAD/assessment/",
+        "docs/business-os/strategy/PWRB/assessment/",
+        "docs/business-os/strategy/PET/assessment/",
+        "docs/business-os/startup-loop/ideas/standing-registry.json",
+        "docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml",
+        "docs/business-os/strategy/HBAG/index.user.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "15 assessment skills (ASSESSMENT-01 through -15, minus -08) produce dated artifacts in strategy/<BIZ>/assessment/, but there is no machine-queryable registry of which businesses have completed which stages. Discovery requires globbing strategy/<BIZ>/assessment/*.md and parsing filenames. The standing-registry.json tracks artifact change-detection but not completion dates. The HBAG index.user.md has a manual completion table but it's single-business and not programmatic.",
+      "next_scope_now": "Investigate and build a programmatic assessment completion registry that can answer 'which assessments has BRIK completed and when?' without filesystem traversal. Consider: JSON registry file, deterministic scanner to populate it, integration with startup-loop stage advancement and mcp-preflight.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "completed",
+      "priority": "P2",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: 15 assessment skills produce dated artifacts but no completion registry exists — must glob and parse filenames",
+        "docs/business-os/startup-loop/ideas/standing-registry.json (tracks 15 artifact types for change-detection, no completion dates)",
+        "docs/business-os/strategy/HBAG/index.user.md (manual completion table, single-business, not queryable)",
+        "docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml (defines 15 ASSESSMENT stages, no per-business completion state)",
+        "docs/plans/_archive/bos-loop-assessment-registry/ (addressed change-detection only, not completion tracking)"
+      ],
+      "created_at": "2026-03-03T21:00:00.000Z",
+      "queue_state": "completed",
+      "processed_by": {
+        "fact_find_slug": "assessment-completion-registry",
+        "fact_find_path": "docs/plans/assessment-completion-registry/fact-find.md",
+        "processed_at": "2026-03-03T21:00:00.000Z",
+        "route": "dispatch-routed"
+      },
+      "why": "Assessment completion state is invisible to the loop without manual filesystem traversal. When deciding what stage a business is at, or which assessments remain, there's no single query — you have to glob 5 directories and parse dates from filenames. This makes stage-gating unreliable and blocks automation of assessment-to-measure advancement.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "A programmatic assessment completion registry exists that can answer 'which ASSESSMENT stages has <BIZ> completed and when?' from a single file read, populated by a deterministic scanner or by assessment skill completion hooks.",
+        "source": "operator"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/assessment-completion-registry/plan.md",
+        "completed_at": "2026-03-03T17:43:35.995Z",
+        "outcome": "Deterministic scanner covers all 14 ASSESSMENT stages across 9 businesses with CLI output"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303220000-0144",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:XA:PRODUCTS:xa-uploader-r2-image-upload:20260303",
+      "anchor_key": "xa-uploader-r2-image-upload",
+      "cluster_key": "XA:PRODUCTS:xa-uploader-r2-image-upload:operator:20260303",
+      "cluster_fingerprint": "a1b2c3d4e5f6a1b2a1b2c3d4e5f6a1b2a1b2c3d4e5f6a1b2a1b2c3d4e5f6a1b2",
+      "lineage_depth": 0,
+      "area_anchor": "XA uploader — no image upload to R2",
+      "location_anchors": [
+        "apps/xa-uploader/src/components/catalog/CatalogProductImagesFields.client.tsx",
+        "apps/xa-uploader/src/app/api/catalog/products/route.ts",
+        "apps/xa-uploader/src/app/api/catalog/sync/route.ts",
+        "apps/xa-uploader/wrangler.toml",
+        "packages/lib/src/xa/catalogWorkflow.ts",
+        "apps/xa-b/src/lib/xaImages.ts",
+        "apps/xa-uploader/src/lib/catalogDraftToContract.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "xa-uploader stores image paths as pipe-delimited text strings (imageFiles field). No <input type='file'> or binary upload exists. Products API is JSON-only (no multipart). Cloud sync publishes catalog JSON referencing image paths but never uploads image binaries. If images aren't already hosted at referenced URLs, xa-b renders broken images. wrangler.toml has stub R2 env vars but no [[r2_buckets]] binding. getCatalogDraftWorkflowReadiness() already gates isPublishReady on hasImages — products without images stay draft.",
+      "next_scope_now": "Investigate and build direct R2 upload via Worker route binding (Option A). Add file input to CatalogProductImagesFields, new /api/catalog/images route writing to R2 via binding, R2 bucket config in wrangler.toml, and set NEXT_PUBLIC_XA_IMAGES_BASE_URL for xa-b. Hard constraints: Cloudflare free tier only (R2: 10GB storage, 1M Class A, 10M Class B, zero egress). Data and image uploaded separately — data-only save results in draft, image presence triggers published status.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: image upload to R2 is the missing piece for XA product publishing — data/image separation with draft→published state machine is hard requirement",
+        "operator-stated: Cloudflare free tier is hard constraint (R2 free: 10GB, 1M Class A, 10M Class B, zero egress)",
+        "operator-stated: direct R2 upload via Worker route binding (Option A) is the chosen approach",
+        "docs/plans/_archive/xa-catalog-workflow-fixes/fact-find.md (Issue 1 deferred — image upload gap identified but not built)",
+        "packages/lib/src/xa/catalogWorkflow.ts (getCatalogDraftWorkflowReadiness — hasImages already gates isPublishReady)",
+        "apps/xa-b/src/lib/xaImages.ts (buildXaImageUrl resolves {BASE_URL}/{path} — ready for R2 base URL)",
+        "apps/xa-uploader/wrangler.toml (stub env vars NEXT_PUBLIC_XA_UPLOADER_R2_DESTINATION exist but no R2 binding)"
+      ],
+      "created_at": "2026-03-03T22:00:00.000Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "fact_find_slug": "xa-uploader-r2-image-upload",
+        "fact_find_path": "docs/plans/xa-uploader-r2-image-upload/fact-find.md",
+        "processed_at": "2026-03-03T22:30:00.000Z",
+        "route": "dispatch-routed"
+      },
+      "why": "Products cannot go live without images, and there is no way to upload image files — only text path entry exists. This blocks the entire XA catalog publish workflow for any product that doesn't already have externally-hosted images.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Vendors can upload product images directly to R2 via the xa-uploader console. Products saved with data only remain draft; adding images makes them publish-ready. All within Cloudflare free tier.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303221000-0145",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:STRATEGY:staff-accounts-missing-from-man-modal:20260303",
+      "anchor_key": "staff-accounts-missing-from-man-modal",
+      "cluster_key": "BRIK:STRATEGY:staff-accounts-missing-from-man-modal:operator:20260303",
+      "cluster_fingerprint": "1cfed1a793c99a3b17de6d46c8d98d1d82d92f572aef4d5506abacc9b412afee",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK reception modal — Staff Accounts entry missing",
+      "location_anchors": [
+        "apps/reception/src/components/AppModals.tsx",
+        "apps/reception/src/components/appNav/ManModal.tsx",
+        "apps/reception/src/app/staff-accounts/page.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "queue_state": "processed",
+      "priority": "P2",
+      "confidence": 0.91,
+      "current_truth": "Staff Accounts screen exists and is routable, but it is not reachable from the active MAN modal navigation. Operators must manually navigate by URL.",
+      "next_scope_now": "Fact-find the intended MAN modal information architecture and add Staff Accounts entry with matching permission gating and regression coverage for modal route actions.",
+      "adjacent_later": [
+        "Review parity between legacy modal navigation and unused sidebar navigation definitions to avoid future route drift."
+      ],
+      "evidence_refs": [
+        "operator-stated: add Staff Accounts to the modal",
+        "agent-verified: AppModals renders only Operations/Till/Management/Man modals and ManModal actions exclude /staff-accounts",
+        "agent-verified: staff accounts page route exists at apps/reception/src/app/staff-accounts/page.tsx"
+      ],
+      "why": "User-management actions are operationally important but currently hidden from the primary reception navigation flow, causing friction and discoverability failures for authorized users.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "MAN modal exposes Staff Accounts as a permission-gated action so authorized operators can open the screen without manual URL entry.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-03T22:10:00.000Z",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-03T22:24:00.000Z",
+        "fact_find_slug": "reception-staff-accounts-modal-entry",
+        "fact_find_path": "docs/plans/reception-staff-accounts-modal-entry/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303221001-0146",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:STRATEGY:staff-accounts-pete-only-restriction:20260303",
+      "anchor_key": "staff-accounts-pete-only-restriction",
+      "cluster_key": "BRIK:STRATEGY:staff-accounts-pete-only-restriction:operator:20260303",
+      "cluster_fingerprint": "a0794ab6631d5af05c3b66989f101061471ee3266ac5b55dc5f8742b2c6f777b",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK staff auth — enforce Pete-only access policy",
+      "location_anchors": [
+        "apps/reception/src/components/userManagement/StaffAccountsForm.tsx",
+        "apps/reception/src/lib/roles.ts",
+        "apps/reception/src/context/AuthContext.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "queue_state": "processed",
+      "priority": "P2",
+      "confidence": 0.86,
+      "current_truth": "Staff Accounts access is currently role-based (USER_MANAGEMENT) with no explicit account-identity restriction. The requested Pete-only policy is not encoded.",
+      "next_scope_now": "Fact-find policy design for identity-based gating (Pete account) while preserving safe fallback behavior, and specify implementation contract at UI + server boundary for provisioning actions.",
+      "adjacent_later": [
+        "Document an explicit exception path for owner handover to avoid hard lockout if Pete account changes."
+      ],
+      "evidence_refs": [
+        "operator-stated: limit Pete account to using it",
+        "agent-verified: StaffAccountsForm gate checks Permissions.USER_MANAGEMENT only and has no identity check"
+      ],
+      "why": "User-account provisioning is high-risk; the operator requested strict ownership control to prevent unauthorized account or permission changes.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Staff Accounts actions are restricted to the Pete account under a clear, testable access policy with denied users blocked from executing management operations.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-03T22:10:01.000Z",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-03T22:24:10.000Z",
+        "fact_find_slug": "reception-staff-accounts-pete-only-access",
+        "fact_find_path": "docs/plans/reception-staff-accounts-pete-only-access/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260303221002-0147",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:STRATEGY:staff-accounts-lifecycle-and-permissions-missing:20260303",
+      "anchor_key": "staff-accounts-lifecycle-and-permissions-missing",
+      "cluster_key": "BRIK:STRATEGY:staff-accounts-lifecycle-and-permissions-missing:operator:20260303",
+      "cluster_fingerprint": "0efa4ffb3093a61de7d68e4c3455f01d611cf729ec5b9d7a250cf481abadb3a6",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK staff accounts UI — missing remove and permission editing",
+      "location_anchors": [
+        "apps/reception/src/components/userManagement/StaffAccountsForm.tsx",
+        "apps/reception/src/app/api/users/provision/route.ts",
+        "apps/reception/src/lib/roles.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "queue_state": "processed",
+      "priority": "P2",
+      "confidence": 0.89,
+      "current_truth": "Current Staff Accounts screen supports create + initial role selection only. There is no end-user flow for account removal, deactivation, or updating permissions after creation.",
+      "next_scope_now": "Fact-find required staff-account lifecycle operations (add, remove/deactivate, grant/revoke permissions), data model implications, and safe API surface changes before build planning.",
+      "adjacent_later": [
+        "Add audit logging and confirmation safeguards for permission escalation and account removal actions."
+      ],
+      "evidence_refs": [
+        "operator-stated: screen should allow addition and subtraction of account, and granting of permissions",
+        "agent-verified: StaffAccountsForm currently implements create + reset-email only"
+      ],
+      "why": "Staff access management needs full lifecycle controls; create-only flows leave operational gaps and force manual backend intervention for revocation and permission updates.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Staff Accounts screen supports account create/remove plus permission grant/revoke workflows through validated API paths and clear operator UX.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-03T22:10:02.000Z",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-03T22:24:20.000Z",
+        "fact_find_slug": "reception-staff-accounts-lifecycle-permissions",
+        "fact_find_path": "docs/plans/reception-staff-accounts-lifecycle-permissions/fact-find.md"
       }
     }
   ]

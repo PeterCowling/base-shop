@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Infra / Data
 Workstream: Engineering
 Created: 2026-03-02

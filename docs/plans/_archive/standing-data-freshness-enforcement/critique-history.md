@@ -1,3 +1,10 @@
+---
+Type: Critique-History
+Status: Archived
+Domain: Data
+Last-reviewed: 2026-03-03
+---
+
 # Critique History: standing-data-freshness-enforcement
 
 ## Plan Critique

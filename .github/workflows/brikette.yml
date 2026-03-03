@@ -99,8 +99,9 @@ jobs:
         shell: bash
         run: |
           cd apps/brikette
+          mkdir -p ".tmp"
           [ -d "src/app/[lang]/guides/[...slug]" ] && mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" || true
-          [ -d "src/app/api" ] && mv "src/app/api" "src/app/_api-off" || true
+          [ -d "src/app/api" ] && mv "src/app/api" ".tmp/app-api-off" || true
           build_exit=0
           export OUTPUT_EXPORT=1
           export NEXT_PUBLIC_OUTPUT_EXPORT=1
@@ -113,7 +114,7 @@ jobs:
             rm -rf out/{ar,da,fr,hi,hu,ja,ko,no,pl,pt,ru,sv,vi,zh}
             find out -name "__next.*" -type f -delete
           fi
-          [ -d "src/app/_api-off" ] && mv "src/app/_api-off" "src/app/api" || true
+          [ -d ".tmp/app-api-off" ] && mv ".tmp/app-api-off" "src/app/api" || true
           [ -d "src/app/[lang]/guides/_slug-off" ] && mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]" || true
           exit "$build_exit"
 
@@ -145,13 +146,14 @@ jobs:
       build-cmd: >
         pnpm exec turbo run build --filter=@apps/brikette^... &&
         cd apps/brikette &&
+        mkdir -p ".tmp" &&
         ([ -d "src/app/[lang]/guides/[...slug]" ] && mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" || true) &&
-        ([ -d "src/app/api" ] && mv "src/app/api" "src/app/_api-off" || true) &&
+        ([ -d "src/app/api" ] && mv "src/app/api" ".tmp/app-api-off" || true) &&
         (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_STAGING || vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }} pnpm exec next build --turbopack &&
         OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm --filter @apps/brikette generate:static-redirects &&
         rm -rf out/{ar,da,fr,hi,hu,ja,ko,no,pl,pt,ru,sv,vi,zh} &&
         find out -name "__next.*" -type f -delete; e=$?;
-        ([ -d "src/app/_api-off" ] && mv "src/app/_api-off" "src/app/api" || true);
+        ([ -d ".tmp/app-api-off" ] && mv ".tmp/app-api-off" "src/app/api" || true);
         ([ -d "src/app/[lang]/guides/_slug-off" ] && mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]" || true);
         exit $e)
       artifact-path: "apps/brikette/out"
@@ -187,13 +189,14 @@ jobs:
       build-cmd: >
         pnpm exec turbo run build --filter=@apps/brikette^... &&
         cd apps/brikette &&
+        mkdir -p ".tmp" &&
         ([ -d "src/app/[lang]/guides/[...slug]" ] && mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" || true) &&
-        ([ -d "src/app/api" ] && mv "src/app/api" "src/app/_api-off" || true) &&
+        ([ -d "src/app/api" ] && mv "src/app/api" ".tmp/app-api-off" || true) &&
         (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY=1 NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_PRODUCTION || vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }} pnpm exec next build --turbopack &&
         OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm --filter @apps/brikette generate:static-redirects &&
         rm -rf out/{ar,da,fr,hi,hu,ja,ko,no,pl,pt,ru,sv,vi,zh} &&
         find out -name "__next.*" -type f -delete; e=$?;
-        ([ -d "src/app/_api-off" ] && mv "src/app/_api-off" "src/app/api" || true);
+        ([ -d ".tmp/app-api-off" ] && mv ".tmp/app-api-off" "src/app/api" || true);
         ([ -d "src/app/[lang]/guides/_slug-off" ] && mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]" || true);
         exit $e)
       artifact-path: "apps/brikette/out"

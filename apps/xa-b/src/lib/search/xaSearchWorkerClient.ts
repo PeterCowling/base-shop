@@ -6,6 +6,7 @@ import type {
   XaSearchWorkerRequest,
   XaSearchWorkerResponse,
 } from "./xaSearchProtocol";
+import { createXaSearchWorker } from "./xaSearchWorkerFactory";
 
 type PendingRequest = {
   resolve: (value: XaSearchWorkerResponse) => void;
@@ -24,7 +25,7 @@ function createRequestId() {
 
 function getWorker() {
   if (worker) return worker;
-  worker = new Worker(new URL("./xaSearch.worker.ts", import.meta.url), { type: "module" });
+  worker = createXaSearchWorker();
   worker.addEventListener("message", (event: MessageEvent<XaSearchWorkerResponse>) => {
     const message = event.data;
     if (!message || typeof message !== "object") return;

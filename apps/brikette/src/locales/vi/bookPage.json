@@ -44,13 +44,99 @@
   "backToRooms": "Quay lại phòng",
   "hostel": {
     "directSavings": {
-      "eyebrow": "Book direct and save",
-      "headline": "Up to 25% less than Booking.com"
+      "eyebrow": "Quyển sách thẳng và lưu",
+      "headline": "lên đến 25% ít hơn đặt sách.com"
     }
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2–8 đêm",
+    "clearDates": "Xoá ngày tháng",
+    "nightsSummary": "{{from}}  thể hiện ZXQQOKEN1QXZ (ZXQTOKEN2QZ đêm)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Việc đặt phòng trọ được xử lý với sự hỗ trợ được hỗ trợ khi JavaScript bị tắt.",
+    "emailAssistedBooking": "Gửi email cho chúng tôi để được hỗ trợ đặt phòng"
+  },
+  "bookingConstraints": {
+    "notice": "Việc đặt phòng tại nhà trọ hỗ trợ thời gian lưu trú chỉ dành cho người lớn từ 2 đến 8 đêm với tối đa 8 người lớn cho mỗi lần đặt phòng. Đối với các nhóm lớn hơn hoặc thời gian lưu trú dài hơn, hãy chia yêu cầu của bạn thành nhiều lần đặt phòng hoặc",
+    "assistedLink": "liên hệ với chúng tôi để được hỗ trợ đặt phòng"
+  },
+  "expiredQuote": {
+    "message": "Liên kết trích dẫn này đã hết hạn. Xây dựng lại báo giá của bạn với ngày mới để tiếp tục."
+  },
+  "recovery": {
+    "title": "Cần thêm thời gian? Gửi email cho chính bạn báo giá này và tiếp tục sau.",
+    "privacyNotice": "Chúng tôi chỉ giữ lại siêu dữ liệu về bối cảnh đặt trước và sự đồng ý. Liên kết tiếp tục hết hạn sau 7 ngày.",
+    "emailLabel": "Email của bạn",
+    "emailPlaceholder": "bạn@example.com",
+    "consent": "Tôi đồng ý nhận báo giá này qua email và hiểu rằng nó sẽ hết hạn sau 7 ngày.",
+    "submitted": "Đã mở bản nháp email. Bạn có thể gửi nó để lưu báo giá này.",
+    "submitCta": "Gửi email cho tôi báo giá này",
+    "errors": {
+      "invalidEmail": "Nhập địa chỉ email hợp lệ.",
+      "consentRequired": "Cần có sự đồng ý để gửi email báo giá.",
+      "sendFailed": "Có gì đó không ổn. Xin hãy thử lại hoặc liên lạc trực tiếp với chúng tôi."
+    },
+    "mailto": {
+      "subject": "Yêu cầu khôi phục báo giá",
+      "bodyIntro": "Vui lòng gửi cho tôi báo giá này và lời nhắc nhở tiếp theo.",
+      "labels": {
+        "guestEmail": "Email của khách",
+        "checkIn": "Đăng ký vào",
+        "checkOut": "Trả phòng",
+        "guests": "Khách",
+        "sourceRoute": "Tuyến nguồn",
+        "room": "Phòng",
+        "ratePlan": "Gói giá",
+        "resumeLink": "Liên kết tiếp tục"
+      }
+    },
+    "sending": "Đang gửi..."
+  },
+  "subheading": "Chọn ngày, rồi chọn phòng.",
+  "dealBanner": {
+    "applied": "Thỏa thuận được áp dụng: {{code}}"
+  },
+  "apartment": {
+    "heading": "Đặt phòng riêng",
+    "subheading": "Chọn ngày và số lượng khách, rồi chọn tốc độ.",
+    "guestLabel": "Số lượng khách",
+    "guests": {
+      "2": "2 vị khách",
+      "3": "3 vị khách"
+    },
+    "flex": {
+      "title": "Tốc độ dễ bay",
+      "saving": "Lưu 21% so với OTA",
+      "bullets": [
+        "Free cancellation up to 3 days before arrival.",
+        "Changes subject to availability."
+      ]
+    },
+    "nr": {
+      "title": "Không thể hoàn tất",
+      "saving": "Lưu 26% so với OTA",
+      "bullets": [
+        "Best direct price — paid in full upfront.",
+        "No refunds or changes after booking."
+      ]
+    },
+    "nightsSummary_one": "{{count}} đêm — được xác nhận trong bước kế tiếp.",
+    "nightsSummary_other": "Đêm {{count}} — được xác nhận trong bước kế tiếp.",
+    "rateLabel": "Chọn tốc độ của bạn",
+    "ratePrompt": "Chọn một tỷ lệ trên để tiếp tục",
+    "cta": {
+      "unselected": "Chọn một tốc độ để tiếp tục",
+      "flex": "Dễ lây — Tiếp tục kiểm tra",
+      "nr": "Không thể hoàn tất – Tiếp tục thanh toán"
+    },
+    "policies": {
+      "title": "Chi phí chính sách",
+      "items": [
+        "City/tourist tax: €2.50 per guest per night (added at checkout).",
+        "Cancellation admin fee: typically 15% of booking price.",
+        "Final availability and payment are completed on our official booking engine."
+      ]
+    }
   }
 }

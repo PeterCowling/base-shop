@@ -4,7 +4,7 @@
     "description": "Frukost serveras 08:00–10:30 dagligen. Äggkombinationer, söta val, hälsosamma alternativ, juicer, smoothies och kaffe."
   },
   "header": {
-    "brand": "Hostel Brikette",
+    "brand": "Hotell nära Hostel Brikette",
     "menuTitle": "Frukostmenyn 2025",
     "hours": "Dagligen 08:00–10:30"
   },
@@ -121,7 +121,7 @@
       "name": "Te (svart, grönt eller ört)"
     },
     "espresso": {
-      "name": "Espresso (per shot)"
+      "name": "espresso (per shot)"
     },
     "macchiato": {
       "name": "Macchiato"

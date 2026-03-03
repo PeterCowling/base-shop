@@ -5,16 +5,16 @@
     "description": "온라인으로 예약하고 탐색하며 저희와 연결하세요. 질문이 있나요? 저희의 디지털 어시스턴트는 포지타노에서의 숙박을 향상시키기 위한 맞춤형 추천과 여행 가이드를 제공합니다."
   },
   "heading": "디지털 지원",
-  "heroEyebrow": "Book and Connect",
+  "heroEyebrow": "책과 연결",
   "subheading": "온라인으로 예약하고, 탐험하고, 우리와 연결하세요.",
   "heroIntro": "팀과 디지털 어시스턴트에게 즉시 답변을 받아 더 빠르게 여행을 준비하세요.",
   "otherBookingOptions": "다른 예약 옵션 및 소셜 미디어",
   "addressLabel": "주소:",
-  "addressValue": "Via G. Marconi, 358, 84017, Positano",
+  "addressValue": "Via G. 마르코니, 358, 84017, Positano",
   "bookDirect": "직접 예약하기",
   "bookingOptions": {
     "googleBusiness": "구글 비즈니스",
-    "bookingCom": "Booking.com",
+    "bookingCom": "호텔 예약",
     "hostelWorld": "호스텔월드",
     "instagram": "인스타그램"
   },
@@ -42,7 +42,7 @@
     "cardCta": "“{{guideTitle}}” 계획 가이드를 읽어보세요"
   },
   "crosslinks": {
-    "heading": "{{howToTitle}} · {{experiencesTitle}}",
-    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}"
+    "heading": "{{howtotitle}}",
+    "intro": "{{howtometadescription}} {{experiencesmetadescription}}"
   }
 }

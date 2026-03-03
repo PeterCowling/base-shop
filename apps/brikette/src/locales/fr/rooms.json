@@ -51,6 +51,118 @@
           "body": "Chaque lit comprend prises personnelles, liseuse et casier à carte pour plus de tranquillité."
         }
       ]
+    },
+    "room_3": {
+      "amenities": [
+        {
+          "title": "Bon rapport qualité-prix, excellent emplacement",
+          "body": "L'une de nos options les plus abordables, idéalement placée au cœur de l'auberge — proche de la réception, de la cuisine commune et des autres voyageurs."
+        },
+        {
+          "title": "Étage réservé aux femmes",
+          "body": "La chambre 3 fait partie d'une section réservée aux femmes. La salle de bain commune à proximité est propre, bien équipée et exclusivement réservée aux voyageuses."
+        },
+        {
+          "title": "Intimité intégrée dans chaque lit",
+          "body": "Chaque couchette est équipée de rideaux d'intimité, d'une liseuse personnelle et de prises de charge pour vous installer à toute heure sans déranger les voisins."
+        }
+      ]
+    },
+    "room_4": {
+      "amenities": [
+        {
+          "title": "Espace réservé aux femmes",
+          "body": "Un dortoir réservé aux femmes avec sa propre salle de bain commune — propre, bien entretenu et exclusivement réservé aux voyageuses de cet étage."
+        },
+        {
+          "title": "De la place pour tout le monde",
+          "body": "Huit lits sur quatre couchettes, c'est l'assurance de toujours trouver quelqu'un pour partager un bon plan ou une sortie à la plage, sans le chaos d'un grand dortoir mixte."
+        },
+        {
+          "title": "L'essentiel à chaque couchette",
+          "body": "Chaque lit dispose de rideaux d'intimité, d'une liseuse et de prises USB pour que votre téléphone soit prêt pour les aventures du lendemain."
+        }
+      ]
+    },
+    "room_5": {
+      "amenities": [
+        {
+          "title": "Terrasse avec vue mer incluse",
+          "body": "Sortez sur la terrasse commune pour profiter d'une vue panoramique sur Positano et la mer Tyrrhénienne — un décor dont les voyageurs ne veulent plus partir."
+        },
+        {
+          "title": "Salle de bain privative pour la chambre",
+          "body": "Une salle de bain partagée uniquement entre les colocataires, sans file d'attente le matin et tout l'espace nécessaire pour se préparer à votre rythme."
+        },
+        {
+          "title": "Convivial mais confortable",
+          "body": "Six lits en disposition ouverte avec rideaux, liseuses et prises à chaque couchette — assez proche pour se faire des amis, assez intime pour bien dormir."
+        }
+      ]
+    },
+    "room_6": {
+      "amenities": [
+        {
+          "title": "Terrasse avec vue sur la côte Amalfitaine",
+          "body": "La terrasse partagée avec vue mer est à deux pas de la chambre — idéale pour s'étirer au lever du soleil, prendre un apéritif ou simplement regarder les bateaux dans la baie."
+        },
+        {
+          "title": "Votre propre salle de bain",
+          "body": "La salle de bain attenante appartient à cette chambre uniquement, vous définissez donc votre programme de douche matinale sans jamais faire la queue."
+        },
+        {
+          "title": "Agencement de lits flexible",
+          "body": "Trois lits superposés plus un lit simple s'adaptent naturellement aux voyageurs solos et aux duos, chaque emplacement équipé de rideaux, d'une liseuse et de prises."
+        }
+      ]
+    },
+    "room_8": {
+      "amenities": [
+        {
+          "title": "Retraite avec vue sur le jardin",
+          "body": "Une vue calme sur le jardin de l'auberge fait de la chambre 8 l'un des endroits les plus tranquilles du bâtiment — idéal pour les lève-tôt ou les dormeurs légers."
+        },
+        {
+          "title": "Cadre intime réservé aux femmes",
+          "body": "Avec seulement deux lits dans un environnement réservé aux femmes, c'est l'expérience d'auberge la plus proche d'une chambre privée — sans le prix d'une chambre privée."
+        },
+        {
+          "title": "Salle de bain commune à proximité",
+          "body": "Une salle de bain commune réservée aux femmes et impeccable est à quelques pas, bien approvisionnée et entretenue tout au long de la journée."
+        }
+      ]
+    },
+    "room_9": {
+      "amenities": [
+        {
+          "title": "Salle de bain pour trois",
+          "body": "Une salle de bain privée partagée entre seulement trois voyageurs signifie de vraies files d'attente courtes et une routine matinale détendue — un vrai luxe en auberge."
+        },
+        {
+          "title": "Calme de la cour intérieure",
+          "body": "Donnant sur la cour abritée de l'auberge, la chambre reste plus fraîche et plus calme que les étages côté mer — une escapade bienvenue après une journée d'exploration."
+        },
+        {
+          "title": "Atmosphère de groupe intime",
+          "body": "Trois lits simples plutôt que des superposés donnent à la chambre une disposition plus détendue — idéale pour les voyageurs solos qui apprécient un peu plus d'espace et de lumière."
+        }
+      ]
+    },
+    "room_10": {
+      "amenities": [
+        {
+          "title": "Salle de bain pour tout le dortoir",
+          "body": "Six voyageurs partagent une salle de bain et pas d'autres — les routines matinales sont plus simples quand la salle de bain est à vous et pas à tout l'étage."
+        },
+        {
+          "title": "Atmosphère d'auberge authentique",
+          "body": "Un dortoir mixte animé avec trois lits superposés, parfait pour les voyageurs solos prêts à rencontrer des gens du monde entier dès la première heure."
+        },
+        {
+          "title": "Chargé et prêt",
+          "body": "Chaque couchette dispose d'une liseuse, de prises USB et de rideaux d'intimité pour vous déconnecter à votre rythme même quand la chambre est animée."
+        }
+      ]
     }
   }
 }

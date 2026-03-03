@@ -1,15 +1,28 @@
+import crypto from "node:crypto";
 import type { Readable as NodeReadable } from "node:stream";
 import { Readable } from "node:stream";
 
 import { NextResponse } from "next/server";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 
-import { slugify } from "@acme/lib/xa";
+import type { CatalogProductDraftInput } from "@acme/lib/xa";
+import { catalogProductDraftSchema, slugify } from "@acme/lib/xa";
 
 import { listCatalogDrafts } from "../../../../lib/catalogCsv";
+import { readCloudDraftSnapshot } from "../../../../lib/catalogDraftContractClient";
 import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
+import { isLocalFsRuntimeEnabled } from "../../../../lib/localFsGuard";
 import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
 import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
-import { buildSubmissionZipStream } from "../../../../lib/submissionZip";
+import {
+  enqueueJob,
+  JOB_TTL_SECONDS,
+  type SubmissionKvNamespace,
+  updateJob,
+  zipKey,
+} from "../../../../lib/submissionJobStore";
+import { buildSubmissionZipFromCloudDrafts, buildSubmissionZipStream } from "../../../../lib/submissionZip";
+import { getUploaderKv } from "../../../../lib/syncMutex";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
 
 export const runtime = "nodejs";
@@ -18,6 +31,12 @@ const SUBMISSION_WINDOW_MS = 60 * 1000;
 const SUBMISSION_MAX_REQUESTS = 8;
 const SUBMISSION_PAYLOAD_MAX_BYTES = 32 * 1024;
 const SUBMISSION_MAX_SLUGS = 20;
+const DEFAULT_SUBMISSION_MAX_BYTES = 25 * 1024 * 1024;
+const FREE_TIER_SUBMISSION_MAX_BYTES = 25 * 1024 * 1024;
+
+function shouldExposeSubmissionR2Key(): boolean {
+  return process.env.NODE_ENV !== "production" && process.env.XA_UPLOADER_EXPOSE_SUBMISSION_R2_KEY === "1";
+}
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -38,6 +57,7 @@ const KNOWN_SUBMISSION_INVALID_PATTERNS = [
   /scan limit exceeded/i,
   /match limit exceeded/i,
   /too many images/i,
+  /image exceeds max size/i,
 ];
 
 function isKnownSubmissionValidationError(error: unknown): boolean {
@@ -45,9 +65,94 @@ function isKnownSubmissionValidationError(error: unknown): boolean {
   return KNOWN_SUBMISSION_INVALID_PATTERNS.some((pattern) => pattern.test(error.message));
 }
 
+type SchemaDiagnostic = { slug: string; issues: string[] };
+
+function validateSelectedProducts(products: CatalogProductDraftInput[]): {
+  valid: boolean;
+  diagnostics: SchemaDiagnostic[];
+} {
+  const diagnostics: SchemaDiagnostic[] = [];
+  for (const product of products) {
+    const result = catalogProductDraftSchema.safeParse(product);
+    if (!result.success) {
+      diagnostics.push({
+        slug: typeof product.slug === "string" ? product.slug : "(unknown)",
+        issues: result.error.issues.map((issue) => issue.message),
+      });
+    }
+  }
+  return { valid: diagnostics.length === 0, diagnostics };
+}
+
 function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLimit>): NextResponse {
   applyRateLimitHeaders(response.headers, limit);
   return response;
+}
+
+function getSubmissionMaxBytes(): number {
+  const parsed = Number.parseInt(process.env.XA_UPLOADER_SUBMISSION_MAX_BYTES ?? "", 10);
+  if (!Number.isFinite(parsed) || parsed <= 0) return DEFAULT_SUBMISSION_MAX_BYTES;
+  return Math.min(parsed, FREE_TIER_SUBMISSION_MAX_BYTES);
+}
+
+function buildZipResponse({
+  filename,
+  submissionId,
+  suggestedR2Key,
+  stream,
+  exposeR2Key,
+}: {
+  filename: string;
+  submissionId: string;
+  suggestedR2Key: string;
+  stream: NodeJS.ReadableStream;
+  exposeR2Key: boolean;
+}): Response {
+  return new Response(Readable.toWeb(stream as unknown as NodeReadable), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/zip",
+      "Content-Disposition": `attachment; filename="${filename}"`,
+      "Cache-Control": "no-store",
+      "X-XA-Submission-Id": submissionId,
+      ...(exposeR2Key ? { "X-XA-Submission-R2-Key": suggestedR2Key } : {}),
+    },
+  });
+}
+
+async function streamToBuffer(readable: NodeReadable): Promise<Buffer> {
+  const chunks: Buffer[] = [];
+  for await (const chunk of readable) {
+    chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk as Uint8Array));
+  }
+  return Buffer.concat(chunks);
+}
+
+async function executeSubmissionJob(
+  jobId: string,
+  kv: SubmissionKvNamespace,
+  selected: CatalogProductDraftInput[],
+  maxBytes: number,
+): Promise<void> {
+  try {
+    await updateJob(kv, jobId, { status: "running", error: undefined });
+    const { stream } = await buildSubmissionZipFromCloudDrafts({
+      products: selected,
+      options: { maxProducts: 10, maxBytes },
+    });
+    const zipBuffer = await streamToBuffer(stream as unknown as NodeReadable);
+    await kv.put(zipKey(jobId), zipBuffer, { expirationTtl: JOB_TTL_SECONDS });
+    await updateJob(kv, jobId, {
+      status: "complete",
+      downloadUrl: `/api/catalog/submission/download/${jobId}`,
+      error: undefined,
+    });
+  } catch (error) {
+    await updateJob(kv, jobId, {
+      status: "failed",
+      error: error instanceof Error ? error.message : String(error),
+    }).catch(() => null);
+  }
 }
 
 export async function POST(request: Request) {
@@ -119,31 +224,81 @@ export async function POST(request: Request) {
     ),
   );
 
+  const startedAt = Date.now();
   try {
-    const catalog = await listCatalogDrafts(storefront);
+    const localFsRuntimeEnabled = isLocalFsRuntimeEnabled();
+    const submissionMaxBytes = getSubmissionMaxBytes();
+    const catalog = localFsRuntimeEnabled
+      ? await listCatalogDrafts(storefront)
+      : await readCloudDraftSnapshot(storefront);
     const selected = catalog.products.filter((product) => {
       const slug = slugify(product.slug || product.title);
       return slug && normalizedSlugs.includes(slug);
     });
 
-    const { filename, manifest, stream } = await buildSubmissionZipStream({
-      products: selected,
-      productsCsvPath: catalog.path,
-      options: { maxProducts: 10, maxBytes: 250 * 1024 * 1024, recursiveDirs: true },
-    });
+    const validation = validateSelectedProducts(selected);
+    if (!validation.valid) {
+      return withRateHeaders(
+        NextResponse.json(
+          {
+            ok: false,
+            error: "invalid",
+            reason: "draft_schema_invalid",
+            diagnostics: validation.diagnostics,
+          },
+          { status: 400 },
+        ),
+        limit,
+      ); // i18n-exempt -- XAUP-0001 [ttl=2026-12-31] machine response
+    }
 
-    const response = new Response(Readable.toWeb(stream as unknown as NodeReadable), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/zip",
-        "Content-Disposition": `attachment; filename="${filename}"`,
-        "Cache-Control": "no-store",
-        "X-XA-Submission-Id": manifest.submissionId,
-        "X-XA-Submission-R2-Key": manifest.suggestedR2Key,
-      },
-    });
-    applyRateLimitHeaders(response.headers, limit);
-    return response;
+    if (localFsRuntimeEnabled) {
+      const { filename, manifest, stream } = await buildSubmissionZipStream({
+        products: selected,
+        productsCsvPath: (catalog as Awaited<ReturnType<typeof listCatalogDrafts>>).path,
+        options: { maxProducts: 10, maxBytes: submissionMaxBytes, recursiveDirs: true },
+      });
+
+      const response = buildZipResponse({
+        filename,
+        submissionId: manifest.submissionId,
+        suggestedR2Key: manifest.suggestedR2Key,
+        stream,
+        exposeR2Key: shouldExposeSubmissionR2Key(),
+      });
+      applyRateLimitHeaders(response.headers, limit);
+      return response;
+    }
+
+    const kv = await getUploaderKv();
+    if (!kv) {
+      const { filename, manifest, stream } = await buildSubmissionZipFromCloudDrafts({
+        products: selected,
+        options: { maxProducts: 10, maxBytes: submissionMaxBytes },
+      });
+      const response = buildZipResponse({
+        filename,
+        submissionId: manifest.submissionId,
+        suggestedR2Key: manifest.suggestedR2Key,
+        stream,
+        exposeR2Key: false,
+      });
+      applyRateLimitHeaders(response.headers, limit);
+      return response;
+    }
+
+    const jobId = crypto.randomUUID();
+    await enqueueJob(kv, jobId);
+    const { ctx } = await getCloudflareContext({ async: true });
+    ctx.waitUntil(
+      executeSubmissionJob(
+        jobId,
+        kv as SubmissionKvNamespace,
+        selected,
+        submissionMaxBytes,
+      ),
+    );
+    return withRateHeaders(NextResponse.json({ ok: true, jobId }, { status: 202 }), limit);
   } catch (error) {
     if (isKnownSubmissionValidationError(error)) {
       return withRateHeaders(
@@ -154,6 +309,11 @@ export async function POST(request: Request) {
         limit,
       ); // i18n-exempt -- XAUP-0001 [ttl=2026-12-31] machine response
     }
+    console.error({
+      route: "POST /api/catalog/submission",
+      error: error instanceof Error ? error.message : String(error),
+      durationMs: Date.now() - startedAt,
+    });
     return withRateHeaders(
       NextResponse.json(
         { ok: false, error: "internal_error", reason: "submission_export_failed" },

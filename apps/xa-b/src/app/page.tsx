@@ -8,7 +8,7 @@ import { Section } from "@acme/design-system/atoms/Section";
 
 import { XaFadeImage } from "../components/XaFadeImage";
 import { XaProductCard } from "../components/XaProductCard";
-import { XA_PRODUCTS } from "../lib/demoData";
+import { XA_CATALOG_RUNTIME_FRESHNESS, XA_CATALOG_RUNTIME_META, XA_PRODUCTS } from "../lib/demoData";
 import { siteConfig } from "../lib/siteConfig";
 import { xaI18n } from "../lib/xaI18n";
 
@@ -39,9 +39,17 @@ export default function HomePage() {
   const newInProducts = [...XA_PRODUCTS]
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
     .slice(0, 12);
+  const staleCatalogCopy = "Catalog data may be stale. Last sync:"; // i18n-exempt -- XA-0090 [ttl=2026-12-31] operator status ribbon
 
   return (
     <main className="sf-content">
+      {XA_CATALOG_RUNTIME_FRESHNESS.isStale ? (
+        <Section padding="default" className="pt-6">
+          <div className="border border-warning bg-warning-soft px-4 py-3 text-sm text-warning-fg">
+            {staleCatalogCopy} {XA_CATALOG_RUNTIME_META.syncedAt ?? "unknown"}.
+          </div>
+        </Section>
+      ) : null}
       <Section padding="wide" className="pt-10">
         <div className="xa-grid-home-primary">
           <div className="space-y-6">

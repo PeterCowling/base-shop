@@ -9,12 +9,13 @@
   "lastChecked": "آخر تحقق:",
   "sources": {
     "hostelworld": {
-      "ariaName": "Hostelworld",
-      "label": "Hostelworld"
+      "ariaName": "عالم الرهائن",
+      "label": "عالم الرهائن"
     },
     "booking": {
       "ariaName": "Booking.com",
-      "label": "Booking.com"
+      "label": "الحجز"
     }
-  }
+  },
+  "snapshotAsOf": "حتى"
 }

@@ -52,5 +52,115 @@
         "alt": "Calles del centro de Positano cerca del hostel"
       }
     ]
+  },
+  "directSavings": {
+    "eyebrow": "Reserva directa y ahorra",
+    "heading": "Hasta un 26% menos que Booking.com",
+    "nr": {
+      "label": "No reembolsable",
+      "saving": "Guardar 26%",
+      "detail": "Mejor precio directo"
+    },
+    "flex": {
+      "label": "Tasa flexible",
+      "saving": "Guardar 21%",
+      "detail": "Cancelación gratuita"
+    }
+  },
+  "heroTagline": "Apartamento privado · Positano, Italia",
+  "galleryCaptions": [
+    "Full private bathroom with rain-head shower and designer fittings",
+    "Bright open-plan living space with dining area, TV lounge and mezzanine staircase",
+    "Fully equipped kitchen with dishwasher, washing machine and traditional Positano tilework"
+  ],
+  "fitCheck": {
+    "heading": "¿Este apartamento es adecuado para ti?",
+    "arrival": {
+      "label": "Llegada",
+      "text": "No hay escaleras callejeras desde la carretera hasta la entrada del apartamento."
+    },
+    "inside": {
+      "label": "Dentro",
+      "text": "Interior de dos niveles con escaleras internas entre sala de estar y dormitorio."
+    },
+    "sleeping": {
+      "label": "Dormir",
+      "text": "Sofa cama abajo; cama doble arriba."
+    },
+    "sound": {
+      "label": "Sonido",
+      "text": "Un ambiente de carretera y terraza; terraza horas tranquilas desde la medianoche."
+    },
+    "bestFit": {
+      "label": "Mejor ajuste",
+      "text": "Ideal para parejas. Si alguien en su grupo prefiere evitar escaleras, el sofá cama de abajo es una alternativa cómoda. No se recomienda para los durmientes muy ligeros."
+    }
+  },
+  "hub": {
+    "streetLevelCard": {
+      "title": "Llegada a nivel de calle",
+      "subtitle": "No hay escaleras callejeras de carretera a entrada",
+      "cta": "Más información"
+    },
+    "privateStayCard": {
+      "title": "Estancia privada al servicio",
+      "subtitle": "Con terraza opcional, bar y desayuno al lado",
+      "cta": "Más información"
+    }
+  },
+  "checkAvailability": "Consulta la disponibilidad",
+  "streetLevelArrival": {
+    "meta": {
+      "title": "Llegada libre de paso en Positano — No Street Stairs",
+      "description": "Nuestro apartamento ofrece acceso gratuito desde la carretera hasta la entrada, rara en Positano empinado. Sin escaleras, sin luchar con el equipaje."
+    },
+    "heroTitle": "Llegada sin paso",
+    "heroSubtitle": "No hay escaleras callejeras desde la carretera hasta la entrada del apartamento",
+    "heroBody": "En un pueblo famoso por cientos de pasos, nuestro apartamento es diferente. Camine recto desde el camino hasta la puerta principal — sin escaleras, sin lucha con equipaje o cochecitos.",
+    "videoPlaceholder": "Video de calle a puerta que viene pronto",
+    "clarification": "La entrada del apartamento está libre de paso de la calle. En su interior, el apartamento es de nivel dividido con escaleras internas entre el salón y el dormitorio.",
+    "whatsappCta": "WhatsApp para respuestas rápidas",
+    "checkAvailability": "Consulta la disponibilidad"
+  },
+  "privateStay": {
+    "meta": {
+      "title": "Apartamento privado en Positano",
+      "description": "Apartamento privado de 85m2 con cocina completa, gestionado profesionalmente con acceso opcional a terraza, desayuno y bar al lado."
+    },
+    "heroTitle": "Su apartamento privado en Positano",
+    "heroSubtitle": "Gestionado profesionalmente con apoyo a nivel hospitalario al lado",
+    "sections": {
+      "privacy": {
+        "title": "Independencia completa",
+        "body": "Un apartamento de 85m2 que es totalmente tuyo. Cocina completa, lavadora y secadora, dos baños, y espacio para extenderse. Sin espacios compartidos, sin mostrador de facturación, solo tu propia puerta principal."
+      },
+      "support": {
+        "title": "Soporte profesional cuando lo necesite",
+        "body": "Gestionado por un experimentado equipo de hospitalidad ubicado al lado. ¿Necesita recomendaciones de restaurante, ayuda con direcciones o ayuda con algo? El apoyo profesional está a pocos pasos."
+      },
+      "amenities": {
+        "title": "Extras opcionales al lado",
+        "body": "Si los desea, una terraza con vistas al mar, servicio de desayuno y un bar están disponibles al lado. Disfrute de ellos en su horario, o sálvalos por completo — la elección es suya."
+      }
+    },
+    "whatsappCta": "WhatsApp para respuestas rápidas",
+    "checkAvailability": "Consulta la disponibilidad"
+  },
+  "book": {
+    "meta": {
+      "title": "Reserva nuestro apartamento Positano",
+      "description": "Consulta la disponibilidad y reserva nuestro apartamento privado en Positano. Llegada sin paso, cocina completa, duerme 4."
+    },
+    "heroTitle": "Reserva tu estancia",
+    "heroSubtitle": "Apartamento privado en Positano",
+    "dateLabel": "Seleccionar fechas",
+    "checkinLabel": "check-in",
+    "checkoutLabel": "Salida",
+    "rateNonRefundable": "No reembolsable",
+    "rateFlexible": "Flexible (con cancelación gratuita)",
+    "checkAvailability": "Consulta la disponibilidad",
+    "orBookingCom": "O reservar en Booking.com",
+    "whatsappCta": "WhatsApp para respuestas rápidas",
+    "backLink": "← Volver a detalles del apartamento"
   }
 }

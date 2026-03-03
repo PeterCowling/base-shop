@@ -231,7 +231,7 @@
     "clickToEnlarge": "Klicka för att förstora bilden",
     "prevAria": "Föregående bild",
     "nextAria": "Nästa bild",
-    "pagination": "{{current}}/{{total}}",
+    "pagination": "{{current}}/{{total}}Z",
     "photoAlt": "Foto av {{room}}",
     "noImage": "Ingen bild tillgänglig"
   },
@@ -251,7 +251,7 @@
   "filtersAria": "Filtrera efter rumstyp",
   "checkRatesNonRefundable": "Icke återbetalningsbara priser",
   "checkRatesFlexible": "Flexibla rumspriser",
-  "checkRatesSingle": "Check Rates",
+  "checkRatesSingle": "Check rates",
   "ctaSuffix": {
     "nonRefundable": "Ej återbetalningsbar",
     "flexible": "Flexibelt"
@@ -306,8 +306,34 @@
     "perBed": "bädd"
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2-8 nätter",
+    "clearDates": "Tydliga datum",
+    "nightsSummary": "{{from}} {{to}} (ZZTOK2Z-nätter)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Denna vandrarhemsrutt använder assisterad bokning när JavaScript är inaktiverat.",
+    "contactAssistedBooking": "Kontakta oss för assisterad bokning"
+  },
+  "bookingConstraints": {
+    "notice": "Vandrarhemsbokningar är endast för vuxna och stöder vistelser mellan 2 och 8 nätter med upp till 8 vuxna per bokning. Om din förfrågan ligger utanför dessa gränser, dela upp den i flera bokningar eller",
+    "assistedLink": "kontakta oss för assisterad bokning",
+    "absentWithAnchor": "{{price}} per natt (vägledande). Välj datum för att se livepriser.",
+    "absentNoRates": "Priser är tillfälligt otillgängliga. Välj datum för att kontrollera tillgängligheten live."
+  },
+  "bookingControls": {
+    "decreaseAdults": "Minska vuxna",
+    "increaseAdults": "Öka vuxna"
+  },
+  "recovery": {
+    "roomTitle": "Behöver du bestämma dig senare? Skicka denna rumsoffert till dig själv."
+  },
+  "feature": {
+    "beds": "Sängar",
+    "bathroom": "Badrum",
+    "view": "Se",
+    "terrace": "Terrass",
+    "lockers": "Skåp",
+    "privateTerrace": "Privat terrass",
+    "inRoomLockers": "Skåp på rummet"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "slug": "apartment",
+  "slug": "căn hộ",
   "meta": {
     "title": "Căn hộ lưu trú",
     "description": "Tìm hiểu về căn hộ tự phục vụ của chúng tôi tại Positano."
@@ -52,5 +52,115 @@
         "alt": "Những con phố Positano"
       }
     ]
+  },
+  "directSavings": {
+    "eyebrow": "Quyển sách thẳng và lưu",
+    "heading": "Hơn 26% so với việc đặt sách.com",
+    "nr": {
+      "label": "Không thể hoàn tất",
+      "saving": "Lưu 26%",
+      "detail": "Giá trực tiếp cao nhất"
+    },
+    "flex": {
+      "label": "Tốc độ dễ bay",
+      "saving": "Lưu 21%",
+      "detail": "Tự do"
+    }
+  },
+  "heroTagline": "Căn hộ riêng · Positino, Ý",
+  "galleryCaptions": [
+    "Full private bathroom with rain-head shower and designer fittings",
+    "Bright open-plan living space with dining area, TV lounge and mezzanine staircase",
+    "Fully equipped kitchen with dishwasher, washing machine and traditional Positano tilework"
+  ],
+  "fitCheck": {
+    "heading": "Căn hộ này có hợp với anh không?",
+    "arrival": {
+      "label": "Tới",
+      "text": "Không có cầu thang nào từ đường tới lối vào căn hộ."
+    },
+    "inside": {
+      "label": "Vào trong",
+      "text": "Nội thất phân chia với cầu thang nội bộ giữa khu vực sống và phòng ngủ."
+    },
+    "sleeping": {
+      "label": "Đang ngủ",
+      "text": "Giường Sofa ở tầng dưới, giường đôi ở tầng trên."
+    },
+    "sound": {
+      "label": "Âm thanh",
+      "text": "Một số con đường và ruộng bậc thang; các bậc thang yên tĩnh từ nửa đêm."
+    },
+    "bestFit": {
+      "label": "Hợp nhất",
+      "text": "Lý tưởng cho các cặp đôi. Nếu ai trong nhóm bạn thích tránh cầu thang thì giường sofa dưới nhà là một cách thoải mái. Không đề nghị cho những người ngủ rất nhẹ."
+    }
+  },
+  "hub": {
+    "streetLevelCard": {
+      "title": "Đến cấp đường phố",
+      "subtitle": "Không có cầu thang từ đường này qua lối kia.",
+      "cta": "Học thêm"
+    },
+    "privateStayCard": {
+      "title": "Dịch vụ tư nhân",
+      "subtitle": "Với sân thượng tùy chọn, quầy rượu và bữa sáng kế bên",
+      "cta": "Học thêm"
+    }
+  },
+  "checkAvailability": "Kiểm tra có sẵn",
+  "streetLevelArrival": {
+    "meta": {
+      "title": "Đến Positano — Không có bậc thang đường phố",
+      "description": "Căn hộ của chúng tôi cho phép không có lối vào từ con đường đến lối vào -- hiếm có ở dốc Positino. Không cầu thang, không phải vật lộn với hành lý."
+    },
+    "heroTitle": "Tự do đến",
+    "heroSubtitle": "Không có cầu thang từ đường đến lối vào căn hộ",
+    "heroBody": "Trong một thị trấn nổi tiếng với hàng trăm bậc thang, căn hộ của chúng tôi khác nhau. Đi thẳng từ đường đến cửa trước — không cầu thang, không phải vật lộn với hành lý hoặc xe đẩy.",
+    "videoPlaceholder": "Video từ nhà này sang nhà kia sẽ sớm đến",
+    "clarification": "Lối vào căn hộ không có lối ra. Bên trong, căn hộ được tách ra với cầu thang bên trong giữa khu vực sống và phòng ngủ.",
+    "whatsappCta": "Những gì áp dụng cho câu trả lời nhanh chóng",
+    "checkAvailability": "Kiểm tra có sẵn"
+  },
+  "privateStay": {
+    "meta": {
+      "title": "Căn hộ riêng phục vụ tại Positino",
+      "description": "Một căn hộ tư nhân 85sqm với đầy đủ nhà bếp, được chuyên nghiệp quản lý để có thể vào sân thượng, ăn sáng và quán bar kế bên."
+    },
+    "heroTitle": "Căn hộ riêng của anh ở Positino",
+    "heroSubtitle": "Chuyên nghiệp quản lý với sự hỗ trợ cấp bậc hiếu khách bên cạnh",
+    "sections": {
+      "privacy": {
+        "title": "Hoàn toàn độc lập",
+        "body": "Một căn hộ 85sqm hoàn toàn là của anh. Nhà bếp, máy giặt và máy sấy, hai phòng tắm, và không gian để trải ra. Không có chỗ chung, không bàn đăng ký, chỉ có cửa chính."
+      },
+      "support": {
+        "title": "Sự hỗ trợ chuyên nghiệp khi cần",
+        "body": "Được quản lý bởi một nhóm hiếu khách kinh nghiệm ở ngay kế bên. Có cần lời đề nghị ở nhà hàng, giúp chỉ dẫn, hay giúp gì không? Sự hỗ trợ chuyên nghiệp chỉ là một đoạn ngắn."
+      },
+      "amenities": {
+        "title": "Phần mở rộng tùy chọn bên cạnh",
+        "body": "Nếu bạn muốn có chúng, một ruộng bậc thang có tầm nhìn biển, phục vụ bữa ăn sáng và một quầy bar ở kế bên. Hãy tận hưởng chúng trong thời gian biểu của bạn, hoặc hoàn toàn bỏ qua — sự lựa chọn là của bạn."
+      }
+    },
+    "whatsappCta": "Những gì áp dụng cho câu trả lời nhanh chóng",
+    "checkAvailability": "Kiểm tra có sẵn"
+  },
+  "book": {
+    "meta": {
+      "title": "Cuốn sách giúp chúng tôi xây dựng căn hộ",
+      "description": "Kiểm tra có sẵn và đặt phòng riêng ở Positano. Tự do xuất hiện, làm bếp, ngủ 4."
+    },
+    "heroTitle": "Đặt chỗ ở của bạn",
+    "heroSubtitle": "Căn hộ riêng ở Positano",
+    "dateLabel": "Chọn ngày",
+    "checkinLabel": "In",
+    "checkoutLabel": "Trả phòng",
+    "rateNonRefundable": "Không thể hoàn tất",
+    "rateFlexible": "Dễ dịch (tự hủy)",
+    "checkAvailability": "Kiểm tra có sẵn",
+    "orBookingCom": "Hoặc sách về Booking.com",
+    "whatsappCta": "Những gì áp dụng cho câu trả lời nhanh chóng",
+    "backLink": "▪ Trở lại chi tiết căn hộ"
   }
 }

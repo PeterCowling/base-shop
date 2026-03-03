@@ -3,6 +3,6 @@
   "articleCount_other": "{{count}} artikler",
   "topTagsHeading": "Topp-tagger",
   "robots": {
-    "noindexFollow": "noindex,follow"
+    "noindexFollow": "noindex, følg"
   }
 }

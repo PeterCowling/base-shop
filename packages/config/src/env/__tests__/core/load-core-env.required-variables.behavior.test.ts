@@ -69,4 +69,17 @@ describe("loadCoreEnv required variable validation", () => {
       expect(run).toThrow("Invalid core environment variables");
     }
   });
+
+  it("allows missing CART_COOKIE_SECRET when CART_FEATURE_ENABLED=false in production", async () => {
+    jest.resetModules();
+    Object.assign(process.env, base);
+    const { loadCoreEnv } = await import("../../core.ts");
+    const env = {
+      ...base,
+      CART_FEATURE_ENABLED: "false",
+    } as NodeJS.ProcessEnv;
+    delete env.CART_COOKIE_SECRET;
+
+    expect(() => loadCoreEnv(env)).not.toThrow();
+  });
 });

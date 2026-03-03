@@ -1,7 +1,17 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const path = require("path");
 
+const phaseTwoCoverageThreshold = {
+  global: {
+    lines: 12,
+    branches: 8,
+    functions: 12,
+    statements: 12,
+  },
+};
+
 const config = require("@acme/config/jest.preset.cjs")({
+  coverageThreshold: phaseTwoCoverageThreshold,
   moduleNameMapper: {
     "^@/components/BrandMark/BrandMark$": [
       path.resolve(__dirname, "src/components/BrandMark/BrandMark.tsx"),

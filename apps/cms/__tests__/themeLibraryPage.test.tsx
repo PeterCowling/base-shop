@@ -4,8 +4,8 @@ import { render, screen } from "@testing-library/react";
 
 import ThemeLibraryPage from "../src/app/cms/themes/library/page";
 
-const track = jest.fn();
-const useTranslations = jest.fn();
+const mockTrack = jest.fn();
+const mockUseTranslations = jest.fn();
 const translations = {
   "cms.theme.library": "Mock Theme Library",
   "cms.back": "Mock Back Link",
@@ -14,11 +14,11 @@ const translations = {
 const translator = (key: string) => (translations as Record<string, string>)[key] ?? key;
 
 jest.mock("@acme/telemetry", () => ({
-  track,
+  track: (...args: unknown[]) => mockTrack(...args),
 }));
 
 jest.mock("@acme/i18n/useTranslations.server", () => ({
-  useTranslations,
+  useTranslations: (...args: unknown[]) => mockUseTranslations(...args),
 }));
 
 jest.mock("next/link", () => ({
@@ -34,7 +34,7 @@ describe("ThemeLibraryPage", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     global.fetch = jest.fn() as unknown as typeof fetch;
-    useTranslations.mockResolvedValue(translator);
+    mockUseTranslations.mockResolvedValue(translator);
   });
 
   afterEach(() => {
@@ -58,7 +58,7 @@ describe("ThemeLibraryPage", () => {
 
     render(await ThemeLibraryPage());
 
-    expect(track).toHaveBeenCalledWith("themes:library:view", {});
+    expect(mockTrack).toHaveBeenCalledWith("themes:library:view", {});
     expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining("/api/themes"), {
       cache: "no-store",
     });
@@ -81,7 +81,7 @@ describe("ThemeLibraryPage", () => {
 
     render(await ThemeLibraryPage());
 
-    expect(track).toHaveBeenCalledWith("themes:library:view", {});
+    expect(mockTrack).toHaveBeenCalledWith("themes:library:view", {});
     expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining("/api/themes"), {
       cache: "no-store",
     });

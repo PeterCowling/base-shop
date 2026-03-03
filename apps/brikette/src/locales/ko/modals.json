@@ -159,11 +159,19 @@
     "close": "닫기"
   },
   "loader": {
-    "ariaLabel": "Loading"
+    "ariaLabel": "제품정보"
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2～8박",
+    "clearDates": "자주 묻는 질문",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} 박)"
+  },
+  "directPerks": {
+    "heading": "왜 직접 예약해야 하나요?",
+    "items": [
+      "최대 25% 할인",
+      "무료 조식",
+      "무료 저녁 음료"
+    ]
   }
 }

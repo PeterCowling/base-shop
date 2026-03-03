@@ -106,8 +106,8 @@
         "amalfiPositanoFerry": "Amalfi → Positano færge (sæsonafhængig)"
       },
       "positanoRavello": {
-        "positanoRavelloBus": "Positano → Ravello bus",
-        "ravelloPositanoBus": "Ravello → Positano bus",
+        "positanoRavelloBus": "Positano → Ravello med bus",
+        "ravelloPositanoBus": "Ravello → Positano med bus",
         "positanoRavelloFerryBus": "Positano → Ravello færge + bus"
       },
       "naplesPositano": {
@@ -119,9 +119,9 @@
         "positanoNaplesAirportBus": "Positano → Napoli lufthavn bus"
       },
       "salernoPositano": {
-        "salernoPositanoBus": "Salerno → Positano bus",
+        "salernoPositanoBus": "Salerno → Positano med bus",
         "salernoPositanoFerry": "Salerno → Positano færge (sæsonafhængig)",
-        "positanoSalernoBus": "Positano → Salerno bus",
+        "positanoSalernoBus": "Positano → Salerno med bus",
         "positanoSalernoFerry": "Positano → Salerno færge (sæsonafhængig)"
       }
     },

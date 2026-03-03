@@ -159,11 +159,19 @@
     "close": "Đóng"
   },
   "loader": {
-    "ariaLabel": "Loading"
+    "ariaLabel": "Đang nạp"
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2–8 đêm",
+    "clearDates": "Xoá ngày tháng",
+    "nightsSummary": "{{from}}  thể hiện ZXQQOKEN1QXZ (ZXQTOKEN2QZ đêm)"
+  },
+  "directPerks": {
+    "heading": "Tại sao đặt trực tiếp?",
+    "items": [
+      "Giảm đến 25%",
+      "Bữa sáng miễn phí",
+      "Đồ uống buổi tối miễn phí"
+    ]
   }
 }

@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "bos-standing-data-domain-container-split-2026-03-03",
+  "feature_slug": "bos-standing-data-domain-container-split",
+  "emitted_at": "2026-03-03T07:18:00.000Z",
+  "why": "docs/business-os/strategy/ mixes assessment artifacts, product specs, marketing signals, and sales forecasts in one undifferentiated bucket. As more businesses and processes are added this structure will become unnavigable. Domain containers give each process a clear home, make CASS retrieval more precise, and enforce the .user.md + .user.html endpoint convention.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "docs/business-os/strategy/<BIZ>/ reorganised into 5 domain containers for all active businesses; all existing content migrated; CASS roots and registries updated to new paths; CI passes.",
+    "source": "operator"
+  }
+}

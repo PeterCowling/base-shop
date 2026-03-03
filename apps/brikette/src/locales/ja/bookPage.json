@@ -44,13 +44,99 @@
   "backToRooms": "客室一覧に戻る",
   "hostel": {
     "directSavings": {
-      "eyebrow": "Book direct and save",
-      "headline": "Up to 25% less than Booking.com"
+      "eyebrow": "直接予約して保存",
+      "headline": "Booking.comよりも最大25%未満"
     }
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2～8泊",
+    "clearDates": "明確な日付",
+    "nightsSummary": "{{from}}_ → {{to}}_ ({{nights}}__ 夜)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "JavaScript が無効になっている場合、ホステルの予約はサポート付きで処理されます。",
+    "emailAssistedBooking": "予約サポートについてはメールでお問い合わせください"
+  },
+  "bookingConstraints": {
+    "notice": "ホステルの予約では、2 泊から 8 泊までの大人限定の滞在がサポートされており、1 回の予約につき大人 8 名まで宿泊できます。大人数のグループまたは長期滞在の場合は、リクエストを複数の予約に分割するか、",
+    "assistedLink": "予約サポートについてはお問い合わせください"
+  },
+  "expiredQuote": {
+    "message": "この引用リンクは有効期限が切れています。続行するには、新しい日付を使用して見積もりを再構築してください。"
+  },
+  "recovery": {
+    "title": "もっと時間が必要ですか?この見積書を自分にメールで送信し、後で履歴書を作成します。",
+    "privacyNotice": "予約コンテキストと同意メタデータのみを保持します。再開リンクは 7 日後に期限切れになります。",
+    "emailLabel": "あなたのメールアドレス",
+    "emailPlaceholder": "you@example.com",
+    "consent": "この見積もりを電子メールで受け取ることに同意し、7 日後に有効期限が切れることを理解します。",
+    "submitted": "メールの下書きが開かれました。この見積もりを保存するために送信できます。",
+    "submitCta": "この見積もりをメールで送ってください",
+    "errors": {
+      "invalidEmail": "有効な電子メール アドレスを入力してください。",
+      "consentRequired": "見積メール送信には同意が必要です。",
+      "sendFailed": "何かが間違っていた。 お電話にてお問い合わせください。"
+    },
+    "mailto": {
+      "subject": "見積書の回復リクエスト",
+      "bodyIntro": "この見積書とフォローアップのリマインダーを私に送ってください。",
+      "labels": {
+        "guestEmail": "ゲストのメールアドレス",
+        "checkIn": "チェックイン",
+        "checkOut": "チェックアウト",
+        "guests": "ゲスト",
+        "sourceRoute": "ソースルート",
+        "room": "部屋",
+        "ratePlan": "料金プラン",
+        "resumeLink": "リンクを再開する"
+      }
+    },
+    "sending": "送信..."
+  },
+  "subheading": "ご希望の日付を選択し、部屋を選択します。",
+  "dealBanner": {
+    "applied": "ディール適用:_TOK0___"
+  },
+  "apartment": {
+    "heading": "プライベートアパートメントを予約する",
+    "subheading": "ご希望の日付と人数を選択し、料金を選択します。",
+    "guestLabel": "宿泊人数",
+    "guests": {
+      "2": "2名様",
+      "3": "3名様"
+    },
+    "flex": {
+      "title": "適用範囲が広い率",
+      "saving": "保存 21% と OTA",
+      "bullets": [
+        "Free cancellation up to 3 days before arrival.",
+        "Changes subject to availability."
+      ]
+    },
+    "nr": {
+      "title": "返金不可",
+      "saving": "保存26%対OTA",
+      "bullets": [
+        "Best direct price — paid in full upfront.",
+        "No refunds or changes after booking."
+      ]
+    },
+    "nightsSummary_one": "{{count}}_ 夜 — 空室状況は次のステップで確認済みです。",
+    "nightsSummary_other": "{{count}}_泊 - 空室状況は次のステップで確認しました。",
+    "rateLabel": "レートを選択してください",
+    "ratePrompt": "上記料金を選択し続ける",
+    "cta": {
+      "unselected": "続行するレートを選択 →",
+      "flex": "柔軟 – 引き続きチェックアウト",
+      "nr": "返金不可 – 引き続きチェックアウト"
+    },
+    "policies": {
+      "title": "ポリシーと手数料",
+      "items": [
+        "City/tourist tax: €2.50 per guest per night (added at checkout).",
+        "Cancellation admin fee: typically 15% of booking price.",
+        "Final availability and payment are completed on our official booking engine."
+      ]
+    }
   }
 }

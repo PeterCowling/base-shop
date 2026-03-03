@@ -231,7 +231,7 @@
     "clickToEnlarge": "Klik for at forstørre billedet",
     "prevAria": "Forrige billede",
     "nextAria": "Næste billede",
-    "pagination": "{{current}}/{{total}}",
+    "pagination": "_ _ TOK0 _ _ / _ _ TOK1 _ _",
     "photoAlt": "Foto af {{room}}",
     "noImage": "Intet billede tilgængeligt"
   },
@@ -251,7 +251,7 @@
   "filtersAria": "Filtrer efter værelsestype",
   "checkRatesNonRefundable": "Ikke‑refunderbare priser",
   "checkRatesFlexible": "Fleksible værelsespriser",
-  "checkRatesSingle": "Check Rates",
+  "checkRatesSingle": "Kontrolsatser",
   "ctaSuffix": {
     "nonRefundable": "Ikke‑refunderbar",
     "flexible": "Fleksibel"
@@ -306,8 +306,34 @@
     "perBed": "seng"
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2- 8 nætter",
+    "clearDates": "Ryd datoer",
+    "nightsSummary": "_ _ TOK0 _ _ → _ TOK1 _ _ (_ TOK2 _ _ nætter)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Denne hostelrute bruger assisteret booking, når JavaScript er deaktiveret.",
+    "contactAssistedBooking": "Kontakt os for assisteret booking"
+  },
+  "bookingConstraints": {
+    "notice": "Hostelbookinger er kun for voksne og understøtter ophold mellem 2 og 8 nætter med op til 8 voksne pr. reservation. Hvis din anmodning er uden for disse grænser, opdel den i flere reservationer eller",
+    "assistedLink": "kontakt os for assisteret booking",
+    "absentWithAnchor": "{{price}} pr. nat (vejledende). Vælg datoer for at se livepriser.",
+    "absentNoRates": "Priser midlertidigt utilgængelige. Vælg datoer for at tjekke tilgængeligheden live."
+  },
+  "bookingControls": {
+    "decreaseAdults": "Reducer voksne",
+    "increaseAdults": "Øge voksne"
+  },
+  "recovery": {
+    "roomTitle": "Skal du beslutte dig senere? Send dig selv dette værelsestilbud."
+  },
+  "feature": {
+    "beds": "Senge",
+    "bathroom": "Badeværelse",
+    "view": "Udsigt",
+    "terrace": "Terrasse",
+    "lockers": "Skabe",
+    "privateTerrace": "Privat terrasse",
+    "inRoomLockers": "Skabe på værelset"
   }
 }

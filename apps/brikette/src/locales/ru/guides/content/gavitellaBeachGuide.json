@@ -199,17 +199,17 @@
   "images": {
     "overview": {
       "src": "/img/guides/gavitella-beach/01-beach-layout.webp",
-      "alt": "Aerial view of Gavitella Beach cove and the sun decks",
+      "alt": "Вид с воздуха на бухту Гавителла-Бич и солнечные палубы",
       "caption": "Два пляжных клуба делят узкую платформу, вырубленную в скале."
     },
     "gavitellaClub": {
       "src": "/img/guides/gavitella-beach/02-la-gavitella-club.webp",
-      "alt": "Terrace dinner table overlooking the Amalfi Coast at sunset",
+      "alt": "Ужин на террасе с видом на побережье Амальфи на закате",
       "caption": "Закатные ужины La Gavitella сочетают виды на море с долгими аперитивами."
     },
     "oneFire": {
       "src": "/img/guides/gavitella-beach/03-one-fire-club.webp",
-      "alt": "Bright orange umbrellas and sunbeds at One Fire Beach Club",
+      "alt": "Яркие оранжевые зонтики и шезлонги в One Fire Beach Club",
       "caption": "One Fire известен оживленными днями и сценой заката, возглавляемой диджеем."
     }
   },

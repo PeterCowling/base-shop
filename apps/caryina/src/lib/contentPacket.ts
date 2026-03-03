@@ -64,33 +64,62 @@ interface SiteContentPayload {
   policies: Record<"privacy" | "shipping" | "returns" | "terms", PolicyCopy>;
 }
 
-const GENERATED_PAYLOAD_PATH = path.resolve(
-  process.cwd(),
-  "data/shops/caryina/site-content.generated.json",
-);
+const PAYLOAD_RELATIVE_PATH = "data/shops/caryina/site-content.generated.json";
+const GENERATED_PAYLOAD_CANDIDATES = [
+  path.resolve(process.cwd(), PAYLOAD_RELATIVE_PATH),
+  path.resolve(process.cwd(), "apps/caryina", PAYLOAD_RELATIVE_PATH),
+  path.resolve(process.cwd(), "..", PAYLOAD_RELATIVE_PATH),
+] as const;
 
 let cachedPayload: SiteContentPayload | null = null;
+
+function parsePayloadFromPath(payloadPath: string): SiteContentPayload | null {
+  let parsed: Partial<SiteContentPayload> | null = null;
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const raw = fs.readFileSync(payloadPath, "utf8");
+    try {
+      parsed = JSON.parse(raw) as Partial<SiteContentPayload>;
+      break;
+    } catch (error) {
+      const isUnexpectedEnd =
+        error instanceof SyntaxError &&
+        error.message.includes("Unexpected end of JSON input");
+      if (!isUnexpectedEnd || attempt === 2) {
+        return null;
+      }
+    }
+  }
+
+  if (!parsed) return null;
+  if (!parsed.home || !parsed.shop || !parsed.productPage || !parsed.support || !parsed.policies) {
+    return null;
+  }
+
+  return parsed as SiteContentPayload;
+}
 
 function readPayload(): SiteContentPayload {
   if (cachedPayload) return cachedPayload;
 
-  if (!fs.existsSync(GENERATED_PAYLOAD_PATH)) {
-    throw new Error(
-      `Missing generated site-content payload at ${GENERATED_PAYLOAD_PATH}. Run startup-loop materializer before starting the app.`,
-    );
+  const existingCandidates = GENERATED_PAYLOAD_CANDIDATES.filter((candidate) =>
+    fs.existsSync(candidate),
+  );
+  for (const candidate of existingCandidates) {
+    const parsed = parsePayloadFromPath(candidate);
+    if (parsed) {
+      cachedPayload = parsed;
+      return parsed;
+    }
   }
 
-  const raw = fs.readFileSync(GENERATED_PAYLOAD_PATH, "utf8");
-  const parsed = JSON.parse(raw) as Partial<SiteContentPayload>;
-
-  if (!parsed.home || !parsed.shop || !parsed.productPage || !parsed.support || !parsed.policies) {
+  if (existingCandidates.length === 0) {
     throw new Error(
-      `Invalid generated site-content payload at ${GENERATED_PAYLOAD_PATH}: required top-level blocks are missing.`,
+      `Missing generated site-content payload. Checked: ${GENERATED_PAYLOAD_CANDIDATES.join(", ")}. Run startup-loop materializer before starting the app.`,
     );
   }
-
-  cachedPayload = parsed as SiteContentPayload;
-  return cachedPayload;
+  throw new Error(
+    `Invalid generated site-content payload. Checked: ${existingCandidates.join(", ")}.`,
+  );
 }
 
 function localizedText(value: LocalizedText, locale: Locale): string {

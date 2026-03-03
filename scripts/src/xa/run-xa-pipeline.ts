@@ -16,6 +16,7 @@ import {
   handleToTitle,
   loadCatalogRows,
   parseList,
+  pruneBackups,
   sanitizePathSegment,
   toNonNegativeInt,
   writeJsonFile,
@@ -60,7 +61,7 @@ type CatalogProduct = {
   createdAt: string;
   popularity: number;
   taxonomy: {
-    department: "women" | "men";
+    department: "women" | "men" | "kids";
     category: "clothing" | "bags" | "jewelry";
     subcategory: string;
     color: string[];
@@ -120,6 +121,7 @@ type MediaIndexPayload = {
 };
 
 export type CurrencyRates = { EUR: number; GBP: number; AUD: number };
+const DEFAULT_BACKUP_KEEP = 60;
 
 function printHelp(): void {
   console.log(`XA pipeline runner
@@ -262,6 +264,20 @@ function parseArgs(argv: string[]): PipelineOptions {
     dryRun,
     strict,
   };
+}
+
+function resolveBackupKeepCount(): number {
+  const parsed = Number.parseInt(process.env.XA_UPLOADER_BACKUP_KEEP ?? "", 10);
+  if (!Number.isFinite(parsed) || parsed < 1) return DEFAULT_BACKUP_KEEP;
+  return parsed;
+}
+
+function validateCurrencyRates(value: unknown): value is CurrencyRates {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  const record = value as Record<string, unknown>;
+  return [record.EUR, record.GBP, record.AUD].every(
+    (rate) => typeof rate === "number" && Number.isFinite(rate) && rate > 0,
+  );
 }
 
 function requiredString(value: string | undefined, fallback: string): string {
@@ -421,7 +437,7 @@ async function buildCatalogArtifacts(options: {
         continue;
       }
 
-      const altText = imageAltTexts[specIndex] || draft.title || productSlug;
+      const altText = imageAltTexts[specIndex] || productSlug;
       for (const sourcePath of resolvedPaths) {
         const catalogPath = buildCatalogMediaPath({
           brandHandle,
@@ -565,12 +581,12 @@ async function main() {
   const backupDir = path.resolve(options.backupDir);
   let currencyRates: CurrencyRates | undefined;
   if (options.currencyRatesPath) {
-    try {
-      const ratesRaw = await fs.readFile(path.resolve(options.currencyRatesPath), "utf-8");
-      currencyRates = JSON.parse(ratesRaw) as CurrencyRates;
-    } catch {
-      console.log("[xa-pipeline] [warn] currency-rates.json not found or invalid — all rates default to 1.0");
+    const ratesRaw = await fs.readFile(path.resolve(options.currencyRatesPath), "utf-8");
+    const parsed = JSON.parse(ratesRaw) as unknown;
+    if (!validateCurrencyRates(parsed)) {
+      throw new Error("currency-rates.json is invalid (expected positive numeric EUR/GBP/AUD).");
     }
+    currencyRates = parsed;
   }
 
   const { rows, missing } = await loadCatalogRows(productsPath);
@@ -620,6 +636,9 @@ async function main() {
       backups: backupRecords,
       warnings,
     });
+    if (options.backup) {
+      await pruneBackups(backupDir, resolveBackupKeepCount());
+    }
   }
 
   console.log(

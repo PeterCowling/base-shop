@@ -14,7 +14,7 @@
   "phone": "Điện thoại",
   "noPhoneNotice": "Để nhận phản hồi nhanh nhất, vui lòng liên hệ qua email.",
   "follow": "Theo dõi chúng tôi",
-  "instagram": "Instagram",
+  "instagram": "Page size",
   "facebook": "Facebook",
   "experiences": "Trải nghiệm",
   "howToGetHere": "Cách đến đây",
@@ -30,5 +30,5 @@
   "cancellationPolicy": "Chính sách hủy",
   "privacy": "Chính sách bảo mật",
   "cookies": "Chính sách cookie",
-  "navAriaLabel": "Footer navigation"
+  "navAriaLabel": "Định hướng Chân trang"
 }

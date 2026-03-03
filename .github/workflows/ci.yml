@@ -35,6 +35,7 @@ jobs:
     timeout-minutes: 5
     outputs:
       shop: ${{ steps.filter.outputs.shop }}
+      email_shadow_replay: ${{ steps.filter.outputs.email_shadow_replay }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -325,6 +326,40 @@ jobs:
             TYPECHECK_FILTER="$pkg" node scripts/typecheck-tests.mjs
           done
 
+  email-shadow-replay-gate:
+    name: Email Shadow Replay Gate
+    needs: [changes]
+    if: >-
+      ${{
+        needs.changes.outputs.email_shadow_replay == 'true' &&
+        (
+          github.event_name != 'pull_request' ||
+          github.base_ref != 'main' ||
+          !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+          contains(github.event.pull_request.labels.*.name, 'promote-app:core') ||
+          contains(github.event.pull_request.labels.*.name, 'promote-app:shop')
+        )
+      }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Run email shadow replay acceptance gate
+        run: pnpm --filter @acme/mcp-server shadow-replay:refine:ci
+      - name: Upload email shadow replay artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: email-shadow-replay
+          path: |
+            .tmp/email-shadow-replay-report.md
+            .tmp/email-shadow-replay-summary.json
+          if-no-files-found: warn
+
   test:
     name: Unit tests
     if: >-
@@ -336,7 +371,7 @@ jobs:
         contains(github.event.pull_request.labels.*.name, 'promote-app:shop')
       }}
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 75
     steps:
       - uses: actions/checkout@v4
         with:
@@ -488,7 +523,7 @@ jobs:
       }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    needs: [lint, typecheck, test, storybook-visual]
+    needs: [lint, typecheck, email-shadow-replay-gate, test, storybook-visual]
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-repo

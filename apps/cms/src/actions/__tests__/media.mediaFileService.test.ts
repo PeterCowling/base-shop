@@ -1,5 +1,7 @@
 /** @jest-environment node */
 
+import './media.test.mocks';
+
 import { File as NodeFile } from 'node:buffer';
 
 import path from 'path';

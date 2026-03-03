@@ -6,8 +6,6 @@ import PageHeader from "@/components/PageHeader";
 import LaneDetailClient from "./LaneDetailClient";
 import type { LaneDetailStrings } from "./types";
 
-export const runtime = "edge";
-
 export default async function LaneDetailPage({
   params,
 }: {

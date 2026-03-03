@@ -38,7 +38,7 @@
       ],
       "detail": "ソレントの行を基準に出発時刻を確認し、同じ列のポジターノ（キエーザ・ヌオーヴァ）の行で到着時間を把握しましょう。",
       "outro": "最新の時刻表は<TimetableLink>positano.com</TimetableLink>で確認できます。",
-      "linkLabel": "positano.com"
+      "linkLabel": "positano.com (日本語)"
     },
     "positanoStop": {
       "title": "ポジターノのバス停",

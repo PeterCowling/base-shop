@@ -6,11 +6,31 @@ import UpgradePreviewClient from "../UpgradePreviewClient";
 
 jest.mock("@acme/ui/components/ComponentPreview", () => {
   const MockComponentPreview = ({ component }: any) => (
-    <div data-cy={`preview-${component.componentName}`}>{component.componentName}</div>
+    <div
+      data-cy={`preview-${component.componentName}`}
+      data-testid={`preview-${component.componentName}`}
+    >
+      {component.componentName}
+    </div>
   );
   MockComponentPreview.displayName = "MockComponentPreview";
   return MockComponentPreview;
 });
+
+jest.mock("@acme/i18n", () => ({
+  __esModule: true,
+  useTranslations: () => (key: string) => {
+    const dictionary: Record<string, string> = {
+      "cms.upgrade.publish.success": "Upgrade published successfully.",
+      "cms.upgrade.publish.error": "Unable to publish upgrade.",
+      "cms.upgrade.loadError":
+        "We couldn't load the latest upgrade preview. Try again or refresh the page.",
+      "cms.upgrade.noUpdates":
+        "You're all caught up—no component updates detected.",
+    };
+    return dictionary[key] ?? key;
+  },
+}));
 
 describe("UpgradePreviewClient", () => {
   const shop = "test-shop";

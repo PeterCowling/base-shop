@@ -1,0 +1,34 @@
+{
+  "round": 2,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "`docs/plans/xa-uploader-design-token-migration/plan.md:160`",
+      "line": "?",
+      "message": "The claim that `@utility ring-gate-ink { --tw-ring-color: var(--gate-ink); }` automatically enables `focus:ring-gate-ink/20` is likely incorrect; `/20` is typically generated from theme color utilities, not a one-off custom class, so focus ring styling may silently not apply."
+    },
+    {
+      "severity": "warning",
+      "file": "`docs/plans/xa-uploader-design-token-migration/plan.md:306`",
+      "line": "?",
+      "message": "The plan says inline-disable fallback for ring syntax is \"not needed or permitted,\" but `line 362` explicitly allows that fallback. This internal contradiction makes execution/acceptance ambiguous."
+    },
+    {
+      "severity": "warning",
+      "file": "`docs/plans/xa-uploader-design-token-migration/plan.md:141`",
+      "line": "?",
+      "message": "Acceptance requires `:root` aliases like `--gate-ink: hsl(var(--color-fg))`, but the mitigation at `line 359` switches to fully computed values (`--gate-ink: hsl(0 0% 10%)`) and different utility usage. Acceptance criteria should include this fallback path explicitly."
+    },
+    {
+      "severity": "info",
+      "file": "`docs/plans/xa-uploader-design-token-migration/plan.md:88`",
+      "line": "?",
+      "message": "The previously-missing `tracking-[0.2em]` mapping is now covered via `tracking-label-xs`, which resolves a real migration gap."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 7,
+  "lp_score": 3.5,
+  "post_round_fixes_applied": true
+}

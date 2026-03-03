@@ -4,7 +4,7 @@
     "description": "Spritz 调酒、经典鸡尾酒、葡萄酒、啤酒、调配饮品、烈酒小杯与冰淇淋。"
   },
   "header": {
-    "brand": "Hostel Brikette",
+    "brand": "布里凯特招待所",
     "menuTitle": "酒吧菜单，2025",
     "hours": "每日营业（具体时间请咨询吧台）"
   },
@@ -95,40 +95,40 @@
       "name": "Peroni（660 毫升）"
     },
     "skyy": {
-      "name": "Skyy"
+      "name": "苍白"
     },
     "absolut": {
-      "name": "Absolut"
+      "name": "绝对的"
     },
     "smirnoff": {
-      "name": "Smirnoff"
+      "name": "斯米尔诺夫"
     },
     "greyGoose": {
-      "name": "Grey Goose"
+      "name": "灰鹅"
     },
     "pampero": {
-      "name": "Pampero"
+      "name": "潘佩罗"
     },
     "bacardiSuperior": {
-      "name": "Bacardi Superior"
+      "name": "巴卡迪高级"
     },
     "captainMorgan": {
-      "name": "Captain Morgan"
+      "name": "摩根队长"
     },
     "angosturaReserva": {
-      "name": "Angostura Reserva"
+      "name": "安哥斯图拉保留地"
     },
     "beefeater": {
-      "name": "Beefeater"
+      "name": "食肉动物"
     },
     "bombaySapphire": {
-      "name": "Bombay Sapphire"
+      "name": "孟买蓝宝石"
     },
     "tanqueray": {
-      "name": "Tanqueray"
+      "name": "坦克雷语Name"
     },
     "hendricks": {
-      "name": "Hendrick's"
+      "name": "汉德里克的"
     },
     "jwRed": {
       "name": "Johnnie Walker Red Label（调和苏格兰威士忌）"

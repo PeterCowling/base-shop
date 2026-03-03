@@ -5,7 +5,7 @@
       "title": "Nơi lưu trú"
     },
     "amalfi": {
-      "label": "Amalfi",
+      "label": "Bờ biển Amalfi",
       "title": "Cẩm nang Amalfi"
     },
     "backpackers": {
@@ -35,7 +35,7 @@
       "title": "Cắm trại ven biển"
     },
     "capri": {
-      "label": "Capri",
+      "label": "Đảo Capri",
       "title": "Capri tiết kiệm"
     },
     "car": {
@@ -95,7 +95,7 @@
       "title": "Câu hỏi du lịch thường gặp"
     },
     "ferragosto": {
-      "label": "Ferragosto",
+      "label": "Lễ Ferragosto",
       "title": "Ferragosto ở Positano"
     },
     "ferry": {
@@ -111,7 +111,7 @@
       "title": "Dành cho khách du lịch phổ thông"
     },
     "herculaneum": {
-      "label": "Herculaneum",
+      "label": "Di tích Herculaneum",
       "title": "Chuyến đi Herculaneum"
     },
     "hiking": {
@@ -132,7 +132,7 @@
       "title": "Bảo hiểm du lịch"
     },
     "ischia": {
-      "label": "Ischia",
+      "label": "Đảo Ischia",
       "title": "Cẩm nang Ischia"
     },
     "itinerary": {
@@ -148,8 +148,8 @@
       "title": "Hậu cần & đến nơi"
     },
     "naples": {
-      "label": "Naples",
-      "title": "Naples ↔ Positano"
+      "label": "Thành phố Naples",
+      "title": "Naples"
     },
     "nightlife": {
       "label": "Cuộc sống đêm",
@@ -173,7 +173,7 @@
       "title": "Hướng dẫn lập kế hoạch"
     },
     "pompei": {
-      "label": "Pompeii",
+      "label": "Pompei",
       "title": "Chuyến đi Pompeii"
     },
     "porters": {
@@ -181,19 +181,19 @@
       "title": "Dịch vụ khuân vác & hành lý"
     },
     "positano": {
-      "label": "Positano",
+      "label": "Thị trấn Positano",
       "title": "Cẩm nang Positano"
     },
     "praiano": {
-      "label": "Praiano",
+      "label": "Thị trấn Praiano",
       "title": "Cẩm nang Praiano"
     },
     "procida": {
-      "label": "Procida",
+      "label": "Đảo Procida",
       "title": "Cẩm nang Procida"
     },
     "ravello": {
-      "label": "Ravello",
+      "label": "Name",
       "title": "Cẩm nang Ravello"
     },
     "safety": {
@@ -201,8 +201,8 @@
       "title": "Bản dịch đang được chuẩn bị."
     },
     "salerno": {
-      "label": "Salerno",
-      "title": "Salerno ↔ Positano"
+      "label": "Salleno",
+      "title": "Salerno"
     },
     "shopping": {
       "label": "Mua sắm",
@@ -213,7 +213,7 @@
       "title": "Mẹo mùa giao mùa"
     },
     "sorrento": {
-      "label": "Sorrento",
+      "label": "Sorento",
       "title": "Cẩm nang Sorrento"
     },
     "souvenirs": {
@@ -237,7 +237,7 @@
       "title": "Kết nối tàu hỏa"
     },
     "tramonti": {
-      "label": "Tramonti",
+      "label": "Khu vực Tramonti",
       "title": "Nhà máy rượu Tramonti"
     },
     "transport": {

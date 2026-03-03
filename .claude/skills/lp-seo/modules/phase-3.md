@@ -2,7 +2,7 @@
 
 **Loads**: `phase-base-contract.md` (output location, common inputs, inter-phase handoff, quality requirements)
 **Prerequisites**: Phase 2 content-clusters output
-**Output**: `docs/business-os/strategy/<BIZ>/seo/<YYYY-MM-DD>-serp-briefs-<BIZ>.user.md`
+**Output**: `docs/business-os/strategy/<BIZ>/marketing/seo/<YYYY-MM-DD>-serp-briefs-<BIZ>.user.md`
 
 Analyze top-ranking pages for priority keywords to create content briefs that match search intent.
 

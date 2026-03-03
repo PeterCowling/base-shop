@@ -2,7 +2,7 @@
 
 **Loads**: `phase-base-contract.md` (output location, common inputs, inter-phase handoff, quality requirements)
 **Prerequisites**: Phase 3 serp-briefs + Phase 4 tech-audit
-**Output**: `docs/business-os/strategy/<BIZ>/seo/<YYYY-MM-DD>-snippet-optimization-<BIZ>.user.md`
+**Output**: `docs/business-os/strategy/<BIZ>/marketing/seo/<YYYY-MM-DD>-snippet-optimization-<BIZ>.user.md`
 
 Optimize content to capture featured snippets, People Also Ask boxes, and other SERP features. Builds on Phase 3 SERP briefs and Phase 4 tech audit.
 

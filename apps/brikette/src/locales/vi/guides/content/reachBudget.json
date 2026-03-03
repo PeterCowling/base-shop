@@ -3,7 +3,7 @@
     "title": "Bản dịch đang được chuẩn bị.",
     "description": "Lộ trình rẻ nhất từ sân bay Naples tới Positano bằng shuttle + xe buýt SITA, kèm hướng dẫn từng bước và chi phí."
   },
-  "linkLabel": "How to reach Positano on a budget",
+  "linkLabel": "Làm thế nào để đến được Positano với ngân sách",
   "intro": "Bản dịch đang được chuẩn bị.",
   "sections": [
     {
@@ -31,8 +31,8 @@
       ]
     }
   ],
-  "mapTitle": "Interactive map",
-  "stepByStepTitle": "Step-by-step",
+  "mapTitle": "Sơ đồ tương tác",
+  "stepByStepTitle": "Từng bước một",
   "steps": [
     {
       "name": "Bản dịch đang được chuẩn bị.",
@@ -47,7 +47,7 @@
       "text": "Bản dịch đang được chuẩn bị."
     }
   ],
-  "alternativesTitle": "Alternatives",
+  "alternativesTitle": "Các lựa chọn",
   "trainTitle": "Bản dịch đang được chuẩn bị.",
   "train": [
     "Bản dịch đang được chuẩn bị.",
@@ -58,7 +58,7 @@
     "Bản dịch đang được chuẩn bị.",
     "Bản dịch đang được chuẩn bị."
   ],
-  "costsTitle": "Costs at a glance",
+  "costsTitle": "Giá cả chỉ trong nháy mắt",
   "costs": [
     "Shuttle (NAP → Sorrento): ~€10",
     "Bản dịch đang được chuẩn bị.",
@@ -90,10 +90,10 @@
     }
   },
   "sectionIds": {
-    "map": "reach-budget-map",
-    "steps": "reach-budget-steps",
+    "map": "Name",
+    "steps": "Bước xuống dốc",
     "alternatives": "Bản dịch đang được chuẩn bị.",
-    "costs": "reach-budget-costs",
-    "tips": "reach-budget-tips"
+    "costs": "Giá trị đến",
+    "tips": "to-budget-tips"
   }
 }

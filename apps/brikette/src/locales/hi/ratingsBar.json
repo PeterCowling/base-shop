@@ -9,12 +9,13 @@
   "lastChecked": "अंतिम जाँच:",
   "sources": {
     "hostelworld": {
-      "ariaName": "Hostelworld",
-      "label": "Hostelworld"
+      "ariaName": "छात्रावास",
+      "label": "छात्रावास"
     },
     "booking": {
       "ariaName": "बुकिंग डॉट कॉम",
       "label": "Booking.com"
     }
-  }
+  },
+  "snapshotAsOf": "A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-A-"
 }

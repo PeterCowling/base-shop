@@ -44,13 +44,99 @@
   "backToRooms": "Vissza a szobákhoz",
   "hostel": {
     "directSavings": {
-      "eyebrow": "Book direct and save",
-      "headline": "Up to 25% less than Booking.com"
+      "eyebrow": "Könyv közvetlen és mentés",
+      "headline": "Legfeljebb 25% -kal kevesebb, mint a Booking.com"
     }
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2- 8 éjszaka",
+    "clearDates": "A dátumok törlése",
+    "nightsSummary": "_ _ TOK0 _ _ → _ _ _ TOK1 _ _ (_ _ TOK2 _ _ éjszaka)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "A szállófoglalásokat támogatott támogatással kezeljük, ha a JavaScript le van tiltva.",
+    "emailAssistedBooking": "Segített foglalásért írjon nekünk e-mailt"
+  },
+  "bookingConstraints": {
+    "notice": "A hostel foglalások csak felnőtteknek szóló 2 és 8 éjszakás tartózkodásokat támogatnak, foglalásonként legfeljebb 8 felnőtt elszállásolására. Nagyobb csoportok vagy hosszabb tartózkodás esetén ossza fel kérését több foglalásra vagy",
+    "assistedLink": "vegye fel velünk a kapcsolatot a támogatott foglalásért"
+  },
+  "expiredQuote": {
+    "message": "Ez az idézet linkje lejárt. A folytatáshoz állítsa át árajánlatát új dátumokkal."
+  },
+  "recovery": {
+    "title": "Több időre van szüksége? Küldje el magának ezt az árajánlatot e-mailben, és folytassa később.",
+    "privacyNotice": "Csak a foglalási kontextus és a hozzájárulási metaadatokat őrizzük meg. Az önéletrajzi linkek 7 nap után lejárnak.",
+    "emailLabel": "Az Ön email címe",
+    "emailPlaceholder": "te@example.com",
+    "consent": "Hozzájárulok ahhoz, hogy ezt az árajánlatot e-mailben megkapjam, és megértem, hogy 7 nap elteltével lejár.",
+    "submitted": "E-mail piszkozat megnyitva. Az árajánlat mentéséhez elküldheti.",
+    "submitCta": "Küldje el nekem ezt az árajánlatot",
+    "errors": {
+      "invalidEmail": "Adjon meg egy érvényes e-mail címet.",
+      "consentRequired": "Az árajánlat e-mail küldéséhez hozzájárulás szükséges.",
+      "sendFailed": "Valami rosszul sült el. Kérem, próbálja újra, vagy lépjen kapcsolatba velünk."
+    },
+    "mailto": {
+      "subject": "Árajánlat visszaszerzési kérés",
+      "bodyIntro": "Kérem, küldje el nekem ezt az árajánlatot és egy további emlékeztetőt.",
+      "labels": {
+        "guestEmail": "Vendég email",
+        "checkIn": "Bejelentkezés",
+        "checkOut": "Kijelentkezés",
+        "guests": "Vendégek",
+        "sourceRoute": "Forrás útvonala",
+        "room": "Szoba",
+        "ratePlan": "Díjterv",
+        "resumeLink": "Folytatás link"
+      }
+    },
+    "sending": "Küldés..."
+  },
+  "subheading": "Válassz randit, aztán válassz egy szobát.",
+  "dealBanner": {
+    "applied": "Alkalmazott üzlet: _ _ TOK0 _ _"
+  },
+  "apartment": {
+    "heading": "Foglalja le a privát lakást",
+    "subheading": "Válassza ki a dátumokat és a vendégek számát, majd válassza ki az árat.",
+    "guestLabel": "Vendégek száma",
+    "guests": {
+      "2": "2 vendég",
+      "3": "3 vendég"
+    },
+    "flex": {
+      "title": "Rugalmas arány",
+      "saving": "Mentés 21% vs OTA",
+      "bullets": [
+        "Free cancellation up to 3 days before arrival.",
+        "Changes subject to availability."
+      ]
+    },
+    "nr": {
+      "title": "Nem újrafinanszírozható",
+      "saving": "26% az OTA-hoz képest",
+      "bullets": [
+        "Best direct price — paid in full upfront.",
+        "No refunds or changes after booking."
+      ]
+    },
+    "nightsSummary_one": "_ _ TOK0 _ _ éjszaka - elérhetőség megerősítve a következő lépésben.",
+    "nightsSummary_other": "_ _ TOK0 _ _ éjszaka - elérhetőség megerősítve a következő lépésben.",
+    "rateLabel": "Válassza ki a tarifát",
+    "ratePrompt": "Válassza ki a fenti sebességet a folytatáshoz",
+    "cta": {
+      "unselected": "Válassza ki a folytatandó sebességet →",
+      "flex": "Rugalmas - Folytatás a kijelentkezéshez",
+      "nr": "Nem újrafinanszírozható - Folytatás a kijelentkezéshez"
+    },
+    "policies": {
+      "title": "Politikák és díjak",
+      "items": [
+        "City/tourist tax: €2.50 per guest per night (added at checkout).",
+        "Cancellation admin fee: typically 15% of booking price.",
+        "Final availability and payment are completed on our official booking engine."
+      ]
+    }
   }
 }

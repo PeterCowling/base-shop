@@ -13,8 +13,8 @@
   "addressValue": "Via G. Marconi, 358, 84017, Positano",
   "bookDirect": "Zarezerwuj bezpośrednio",
   "bookingOptions": {
-    "googleBusiness": "Google Business",
-    "bookingCom": "Booking.com",
+    "googleBusiness": "Działalność google",
+    "bookingCom": "BELGIA",
     "hostelWorld": "Hostelworld",
     "instagram": "Instagram"
   },
@@ -42,7 +42,7 @@
     "cardCta": "Przeczytaj przewodnik planowania „{{guideTitle}}”"
   },
   "crosslinks": {
-    "heading": "{{howToTitle}} · {{experiencesTitle}}",
-    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}"
+    "heading": "_ _ TOK0 _ _ _ · _ TOK1 _ _",
+    "intro": "_ _ TOK0 _ _ _ _ TOK1 _ _"
   }
 }

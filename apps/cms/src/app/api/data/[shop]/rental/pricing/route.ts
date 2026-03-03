@@ -21,9 +21,12 @@ export async function POST(
     await writePricing(parsed.data);
     return NextResponse.json({ success: true });
   } catch (err) {
+    const message = err instanceof Error ? err.message : "Unknown error";
+    const status =
+      message === "Forbidden" || message === "Unauthorized" ? 403 : 400;
     return NextResponse.json(
-      { error: (err as Error).message },
-      { status: 400 }
+      { error: message },
+      { status }
     );
   }
 }

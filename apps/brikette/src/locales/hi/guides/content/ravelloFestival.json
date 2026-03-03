@@ -60,11 +60,11 @@
     }
   ],
   "eventSchema": {
-    "name": "Ravello Festival",
+    "name": "रावलो महोत्सव",
     "startDate": "2025-07-01",
     "endDate": "2025-09-15",
     "locationName": "Ravello Festival स्थल",
-    "addressLocality": "Ravello",
+    "addressLocality": "रावल",
     "description": "अमाल्फी कोस्ट के ऊपर होने वाला गर्मियों का क्लासिकल म्यूज़िक फेस्टिवल। तारीखों और टिकटों के लिए ऑफिशियल प्रोग्राम देखें।"
   }
 }

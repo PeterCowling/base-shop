@@ -159,11 +159,19 @@
     "close": "Stäng"
   },
   "loader": {
-    "ariaLabel": "Loading"
+    "ariaLabel": "Lastning"
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2-8 nätter",
+    "clearDates": "Tydliga datum",
+    "nightsSummary": "{{from}} {{to}} (ZZTOK2Z-nätter)"
+  },
+  "directPerks": {
+    "heading": "Varför boka direkt?",
+    "items": [
+      "Upp till 25 % rabatt",
+      "Gratis frukost",
+      "Gratis kvällsdryck"
+    ]
   }
 }

@@ -143,6 +143,7 @@
     "validate:deploy-env": "scripts/validate-deploy-env.sh",
     "preflight:brikette-deploy": "node --import tsx scripts/src/brikette/preflight-deploy.ts",
     "preflight:mcp-startup-loop": "node --import tsx scripts/src/startup-loop/mcp-preflight.ts",
+    "startup-loop:cass-retrieve": "node --import tsx scripts/src/startup-loop/cass-retrieve.ts",
     "startup-loop:s2-market-intel-handoff": "node --import tsx scripts/src/startup-loop/s2-market-intelligence-handoff.ts",
     "startup-loop:lint-market-intel-pack": "node --import tsx scripts/src/startup-loop/market-intelligence-pack-lint.ts",
     "startup-loop:build-summary": "node --import tsx scripts/src/startup-loop/generate-build-summary.ts",

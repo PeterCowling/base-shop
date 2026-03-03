@@ -20,7 +20,10 @@ const body = DM_Sans({
   variable: "--font-dm-sans",
 });
 
+const metadataBase = new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3018");
+
 export const metadata: Metadata = {
+  metadataBase,
   // i18n-exempt -- CARYINA-101 [ttl=2026-12-31]
   title: "Caryina",
   // i18n-exempt -- CARYINA-102 [ttl=2026-12-31]

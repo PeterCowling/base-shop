@@ -266,7 +266,7 @@
     "clickToEnlarge": "单击图片放大",
     "prevAria": "上一张图片",
     "nextAria": "下一张图片",
-    "pagination": "{{current}}/{{total}}",
+    "pagination": "_TOK0_/_TOK1___",
     "photoAlt": "{{room}} 的照片",
     "noImage": "暂无可用图片"
   },
@@ -286,7 +286,7 @@
   "filtersAria": "按房型筛选",
   "checkRatesNonRefundable": "不可退款价格",
   "checkRatesFlexible": "灵活价格",
-  "checkRatesSingle": "Check Rates",
+  "checkRatesSingle": "检查率",
   "ctaSuffix": {
     "nonRefundable": "不可退款",
     "flexible": "灵活"
@@ -306,8 +306,34 @@
     "dorm": "每晚每位客人。一个床位一位住客。"
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2-8个晚上",
+    "clearDates": "清除日期",
+    "nightsSummary": "_TOK0_____(_TOK2_晚间)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "当 JavaScript 被禁用时，此旅舍路线将使用辅助预订。",
+    "contactAssistedBooking": "联系我们获取协助预订"
+  },
+  "bookingConstraints": {
+    "notice": "青年旅舍预订仅限成人入住，支持住宿 2 至 8 晚，每次预订最多可入住 8 名成人。如果您的请求超出了这些限制，请将其分成多个预订或",
+    "assistedLink": "联系我们获取协助预订",
+    "absentWithAnchor": "每晚 {{price}}（指示性）。选择日期查看实时汇率。",
+    "absentNoRates": "价格暂时无法提供。选择日期以检查实时可用性。"
+  },
+  "bookingControls": {
+    "decreaseAdults": "减少成人",
+    "increaseAdults": "增加成人"
+  },
+  "recovery": {
+    "roomTitle": "需要稍后再决定吗？向自己发送此房间报价。"
+  },
+  "feature": {
+    "beds": "床位",
+    "bathroom": "浴室",
+    "view": "看法",
+    "terrace": "阳台",
+    "lockers": "储物柜",
+    "privateTerrace": "私人露台",
+    "inRoomLockers": "室内储物柜"
   }
 }

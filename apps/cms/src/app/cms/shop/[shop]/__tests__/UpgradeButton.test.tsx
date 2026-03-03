@@ -6,6 +6,38 @@ import UpgradeButton from "@/app/cms/shop/[shop]/UpgradeButton";
 
 (globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
 
+const mockToast = {
+  success: jest.fn(),
+  error: jest.fn(),
+  warning: jest.fn(),
+  info: jest.fn(),
+  loading: jest.fn(),
+  dismiss: jest.fn(),
+  update: jest.fn(),
+  promise: async <T,>(value: Promise<T>) => value,
+};
+
+const translations: Record<string, string> = {
+  "cms.upgrade.prepare.title": "Prepare upgrade",
+  "cms.upgrade.prepare.desc": "Upgrade storefront and preview the result.",
+  "cms.upgrade.prepare.success": "Upgrade ready! Redirecting to preview…",
+  "cms.upgrade.prepare.failed": "Upgrade failed",
+  "cms.upgrade.preparing": "Preparing preview…",
+  "cms.upgrade.previewCta": "Upgrade & preview",
+  "cms.upgrade.viewSteps": "View steps",
+  "cms.upgrade.stepsBackground": "Background steps",
+};
+
+jest.mock("@acme/ui/operations", () => ({
+  __esModule: true,
+  useToast: () => mockToast,
+}));
+
+jest.mock("@acme/i18n", () => ({
+  __esModule: true,
+  useTranslations: () => (key: string) => translations[key] ?? key,
+}));
+
 describe("UpgradeButton", () => {
   const shop = "test-shop";
   let originalFetch: typeof fetch;
@@ -57,7 +89,9 @@ describe("UpgradeButton", () => {
     );
     const button = setup();
     await click(button);
-    expect(await screen.findByText(/Upgrade ready! Redirecting to preview…/i)).toBeInTheDocument();
+    expect(mockToast.success).toHaveBeenCalledWith(
+      "Upgrade ready! Redirecting to preview…",
+    );
     await waitFor(() => {
       expect(window.location.href).toBe(`/cms/shop/${shop}/upgrade-preview`);
     });
@@ -72,7 +106,7 @@ describe("UpgradeButton", () => {
     );
     const button = setup();
     await click(button);
-    expect(await screen.findByText("msg")).toBeInTheDocument();
+    expect(mockToast.error).toHaveBeenCalledWith("msg");
   });
 
   it("shows default error when server lacks message", async () => {
@@ -84,7 +118,7 @@ describe("UpgradeButton", () => {
     );
     const button = setup();
     await click(button);
-    expect(await screen.findByText("Upgrade failed")).toBeInTheDocument();
+    expect(mockToast.error).toHaveBeenCalledWith("Upgrade failed");
   });
 
   it("handles network errors", async () => {
@@ -93,7 +127,7 @@ describe("UpgradeButton", () => {
     );
     const button = setup();
     await click(button);
-    expect(await screen.findByText("Network error")).toBeInTheDocument();
+    expect(mockToast.error).toHaveBeenCalledWith("Network error");
   });
 
   it("toggles loading and resets error between attempts", async () => {
@@ -116,7 +150,7 @@ describe("UpgradeButton", () => {
     await waitFor(() => expect(button).toHaveTextContent(/Preparing preview…/i));
     rejectFetch(new Error("fail"));
     await act(async () => {});
-    expect(await screen.findByText("fail")).toBeInTheDocument();
+    expect(mockToast.error).toHaveBeenCalledWith("fail");
     await waitFor(() => expect(button).toHaveTextContent(/Upgrade & preview/i));
 
     // Second click succeeds
@@ -125,7 +159,6 @@ describe("UpgradeButton", () => {
     });
     await waitFor(() => expect(button).toHaveTextContent(/Preparing preview…/i));
     await act(async () => {});
-    await waitFor(() => expect(screen.queryByText("fail")).toBeNull());
     await waitFor(() => {
       expect(window.location.href).toBe(`/cms/shop/${shop}/upgrade-preview`);
     });

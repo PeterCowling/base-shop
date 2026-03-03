@@ -258,7 +258,7 @@ export default memo(function RoomCard({
     room.id.replace(/_/gu, " ")
   );
 
-  const openNonRefundable = useCallback(() => {
+  const handleSelectPlan = useCallback((plan: "nr" | "flex", octorateUrl: string | null) => {
     if (queryState === "invalid") {
       // Button is disabled; scroll to date picker if ref provided
       if (datePickerRef?.current) {
@@ -266,60 +266,31 @@ export default memo(function RoomCard({
       }
       return;
     }
-    if (nrOctorateUrl) {
-      fireEventAndNavigate({
-        event: "select_item",
-        payload: {
-          item_list_id: "room_detail",
-          item_list_name: resolveItemListName("room_detail"),
-          items: [buildRoomItem({ roomSku: room.sku, itemName: title, plan: "nr" })],
-        },
-        onNavigate: () => { window.location.href = nrOctorateUrl; },
-      });
-      return;
-    }
-    // absent or valid-but-url-failed → navigate to /book
     fireEventAndNavigate({
       event: "select_item",
       payload: {
         item_list_id: "room_detail",
         item_list_name: resolveItemListName("room_detail"),
-        items: [buildRoomItem({ roomSku: room.sku, itemName: title, plan: "nr" })],
+        items: [buildRoomItem({ roomSku: room.sku, itemName: title, plan })],
       },
-      onNavigate: () => { router.push(`/${resolvedLang}/book`); },
+      onNavigate: () => {
+        if (octorateUrl) {
+          window.location.href = octorateUrl;
+          return;
+        }
+        // absent or valid-but-url-failed → navigate to /book
+        router.push(`/${resolvedLang}/book`);
+      },
     });
-  }, [queryState, nrOctorateUrl, datePickerRef, router, resolvedLang, title, room]);
+  }, [datePickerRef, queryState, resolvedLang, room.sku, router, title]);
+
+  const openNonRefundable = useCallback(() => {
+    handleSelectPlan("nr", nrOctorateUrl);
+  }, [handleSelectPlan, nrOctorateUrl]);
 
   const openFlexible = useCallback(() => {
-    if (queryState === "invalid") {
-      if (datePickerRef?.current) {
-        datePickerRef.current.scrollIntoView({ behavior: "smooth" });
-      }
-      return;
-    }
-    if (flexOctorateUrl) {
-      fireEventAndNavigate({
-        event: "select_item",
-        payload: {
-          item_list_id: "room_detail",
-          item_list_name: resolveItemListName("room_detail"),
-          items: [buildRoomItem({ roomSku: room.sku, itemName: title, plan: "flex" })],
-        },
-        onNavigate: () => { window.location.href = flexOctorateUrl; },
-      });
-      return;
-    }
-    // absent or valid-but-url-failed → navigate to /book
-    fireEventAndNavigate({
-      event: "select_item",
-      payload: {
-        item_list_id: "room_detail",
-        item_list_name: resolveItemListName("room_detail"),
-        items: [buildRoomItem({ roomSku: room.sku, itemName: title, plan: "flex" })],
-      },
-      onNavigate: () => { router.push(`/${resolvedLang}/book`); },
-    });
-  }, [queryState, flexOctorateUrl, datePickerRef, router, resolvedLang, title, room]);
+    handleSelectPlan("flex", flexOctorateUrl);
+  }, [handleSelectPlan, flexOctorateUrl]);
 
   const resolveToken = useCallback(
     (key: "reserveNow" | "bookNow", lngOverride?: string) => {

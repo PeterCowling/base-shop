@@ -13,6 +13,16 @@ jest.mock("@/components/rooms/FacilityIcon", () => ({
   default: ({ facility }: { facility: string }) => <span data-cy={`facility-icon-${facility}`} aria-hidden />,
 }));
 
+const featureLabels = {
+  bedsLabel: "Beds",
+  bathroomLabel: "Bathroom",
+  viewLabel: "View",
+  terraceLabel: "Terrace",
+  lockersLabel: "Lockers",
+  privateTerraceLabel: "Private terrace",
+  inRoomLockersLabel: "In-room lockers",
+} as const;
+
 describe("FeatureSection", () => {
   it("TC-01: renders bed, bathroom, view, and terrace rows when all present; omits locker row when absent", () => {
     const features: RoomFeatures = {
@@ -22,7 +32,7 @@ describe("FeatureSection", () => {
       terracePresent: true,
       inRoomLockers: false,
     };
-    render(<FeatureSection features={features} />);
+    render(<FeatureSection features={features} {...featureLabels} />);
     expect(screen.getByText("1 double bed")).toBeInTheDocument();
     expect(screen.getByText("Ensuite bathroom")).toBeInTheDocument();
     expect(screen.getByText("Sea view")).toBeInTheDocument();
@@ -35,7 +45,7 @@ describe("FeatureSection", () => {
       bedSpec: "3 bunk beds",
       bathroomSpec: "Shared bathroom",
     };
-    render(<FeatureSection features={features} />);
+    render(<FeatureSection features={features} {...featureLabels} />);
     expect(screen.getByText("3 bunk beds")).toBeInTheDocument();
     expect(screen.getByText("Shared bathroom")).toBeInTheDocument();
     expect(screen.queryByText("Sea view")).not.toBeInTheDocument();
@@ -44,7 +54,7 @@ describe("FeatureSection", () => {
   });
 
   it("TC-03: renders null when features is undefined", () => {
-    const { container } = render(<FeatureSection features={undefined} />);
+    const { container } = render(<FeatureSection features={undefined} {...featureLabels} />);
     expect(container.firstChild).toBeNull();
   });
 
@@ -54,7 +64,7 @@ describe("FeatureSection", () => {
       bathroomSpec: "Ensuite",
       inRoomLockers: true,
     };
-    render(<FeatureSection features={features} />);
+    render(<FeatureSection features={features} {...featureLabels} />);
     expect(screen.getByText("In-room lockers")).toBeInTheDocument();
     // Icon present (mocked as data-cy span)
     expect(document.querySelector("[data-cy='facility-icon-locker']")).toBeTruthy();
@@ -68,7 +78,7 @@ describe("FeatureSection", () => {
       viewSpec: "Sea view",
       terracePresent: true,
     };
-    render(<FeatureSection features={features} />);
+    render(<FeatureSection features={features} {...featureLabels} />);
     expect(screen.getByText("1 double bed")).toBeInTheDocument();
     expect(screen.getByText("Ensuite bathroom")).toBeInTheDocument();
     expect(screen.getByText("Sea view")).toBeInTheDocument();

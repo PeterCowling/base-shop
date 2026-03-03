@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "lp-do-ideas-queue-state-sync-20260302",
+  "feature_slug": "lp-do-ideas-queue-state-sync",
+  "emitted_at": "2026-03-02T17:30:00.000Z",
+  "why": "Build completion was not auto-synced to queue-state.json. After a plan was archived, dispatches that triggered it remained in queue_state: auto_executed indefinitely. The hook closes this gap deterministically.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "After lp-do-build archives any plan, dispatches linked to that plan by processed_by.fact_find_slug are automatically written to queue_state: completed with completed_by populated. The operation is idempotent and does not touch already-completed dispatches.",
+    "source": "operator"
+  }
+}

@@ -4,13 +4,15 @@
  * Main pre-arrival dashboard component shown to guests before check-in.
  * Displays readiness score, checklist progress, and next action card.
  */
+'use client';
 
 import { type FC, memo, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { CalendarDays, MapPin, MessageCircle, Sparkles } from 'lucide-react';
 
-import { ReadinessSignalCard, UtilityActionStrip } from '@acme/ui';
+import { ReadinessSignalCard } from '@acme/ui/components/hospitality/ReadinessSignalCard';
+import { UtilityActionStrip } from '@acme/ui/components/hospitality/UtilityActionStrip';
 
 import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
 import {

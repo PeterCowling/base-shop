@@ -112,6 +112,17 @@ Refresh this packet whenever one of the following changes:
 - Textured finishes across colorways — metallic reptile emboss, croc emboss, pebbled grain. Selected colorways include a stitched building facade applique.
 - 30-day free exchange, 90-day hardware guarantee. Change of mind — exchange within 30 days. Hardware fails within 90 days: replacement, no forms.
 
+## Policies
+
+### Privacy policy bullets
+
+- Only required checkout and fulfillment data are collected.
+- Platform providers process payment and delivery data under their legal terms.
+- Your email address may be used to send a one-time notification about products you expressed interest in. You can withdraw consent at any time by contacting us.
+- We use analytics cookies to understand how visitors use the site. You can accept or decline analytics tracking via the cookie banner. No advertising or third-party tracking cookies are set.
+
+> **Regeneration note:** If you update the bullets above, re-run the site-content materializer (`pnpm --filter scripts startup-loop:compile-website-content-packet -- --business HBAG`) and commit the updated `data/shops/caryina/site-content.generated.json`.
+
 ## Operational Integration
 
 This packet is consumed by:

@@ -4,7 +4,7 @@
     "description": "Наши напитки: пиво, вино, коктейли и безалкогольные напитки."
   },
   "header": {
-    "brand": "Hostel Brikette",
+    "brand": "Хостел Брикетт",
     "menuTitle": "Барное меню, 2025",
     "hours": "Открыто ежедневно (уточняйте часы в баре)"
   },
@@ -47,19 +47,19 @@
   },
   "items": {
     "aperolSpritz": {
-      "name": "Aperol Spritz",
+      "name": "Аперол Спритц",
       "note": "Классический итальянский спритц, на дроблёном льду."
     },
     "limoncelloSpritz": {
-      "name": "Limoncello Spritz",
+      "name": "Лимончелло Спритц",
       "note": "Специалитет Амальфи, на дроблёном льду."
     },
     "hugoSpritz": {
-      "name": "Hugo Spritz",
+      "name": "Хьюго Спритц",
       "note": "Игристое с мятой, лаймом и бузиной. На дроблёном льду."
     },
     "rossiniSpritz": {
-      "name": "Rossini Spritz",
+      "name": "Россини Спритц",
       "note": "Игристое с клубничным соком. На дроблёном льду."
     },
     "lemonStrawberryDaiquiri": {
@@ -70,7 +70,7 @@
       "note": "Сок клубники или лимона с текилой, Cointreau и льдом. Классическая подача."
     },
     "lemonDropMartini": {
-      "name": "Lemon Drop Martini",
+      "name": "Лимонная капля мартини",
       "note": "Свежий лимонный сок, взбитый с Absolut Vodka, Cointreau и льдом."
     },
     "redWhiteGlass": {
@@ -83,52 +83,52 @@
       "name": "Бокал Просекко"
     },
     "nastro330": {
-      "name": "Nastro, 330ml"
+      "name": "Настро, 330 мл"
     },
     "nastro660": {
-      "name": "Nastro, 660ml"
+      "name": "Nastro 660 мл"
     },
     "peroni330": {
-      "name": "Peroni, 330ml"
+      "name": "Перони, 330 мл"
     },
     "peroni660": {
-      "name": "Peroni, 660ml"
+      "name": "Перони, 660 мл"
     },
     "skyy": {
-      "name": "Skyy"
+      "name": "Скай"
     },
     "absolut": {
-      "name": "Absolut"
+      "name": "абсолют"
     },
     "smirnoff": {
-      "name": "Smirnoff"
+      "name": "Смирнофф"
     },
     "greyGoose": {
-      "name": "Grey Goose"
+      "name": "Серый гусь"
     },
     "pampero": {
-      "name": "Pampero"
+      "name": "Памперо"
     },
     "bacardiSuperior": {
-      "name": "Bacardi Superior"
+      "name": "Бакарди превосходит"
     },
     "captainMorgan": {
-      "name": "Captain Morgan"
+      "name": "Капитан Морган"
     },
     "angosturaReserva": {
-      "name": "Angostura Reserva"
+      "name": "Заповедник Ангостура"
     },
     "beefeater": {
-      "name": "Beefeater"
+      "name": "бифитер"
     },
     "bombaySapphire": {
-      "name": "Bombay Sapphire"
+      "name": "Бомбейский сапфир"
     },
     "tanqueray": {
-      "name": "Tanqueray"
+      "name": "Танкер"
     },
     "hendricks": {
-      "name": "Hendrick's"
+      "name": "Хендрика"
     },
     "jwRed": {
       "name": "Johnnie Walker Red Label (купажированный скотч)"

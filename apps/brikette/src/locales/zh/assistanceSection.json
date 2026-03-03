@@ -10,12 +10,12 @@
   "heroIntro": "透过我们的团队与数字礼宾即时获得解答，加快你的行程规划。",
   "otherBookingOptions": "其他预订渠道与社群平台",
   "addressLabel": "地址",
-  "addressValue": "Via G. Marconi, 358, 84017, Positano",
+  "addressValue": "马可尼大街358号 波西塔诺大街84017号",
   "bookDirect": "直接预订",
   "bookingOptions": {
     "googleBusiness": "Google 商家",
-    "bookingCom": "Booking.com",
-    "hostelWorld": "Hostelworld",
+    "bookingCom": "(原始内容存档于2018-09-28). booking.com",
+    "hostelWorld": "招待所世界",
     "instagram": "Instagram"
   },
   "amaHeadingPart1": "我们能如何",
@@ -42,7 +42,7 @@
     "cardCta": "阅读“{{guideTitle}}”规划指南"
   },
   "crosslinks": {
-    "heading": "{{howToTitle}} · {{experiencesTitle}}",
-    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}"
+    "heading": "{\\fn黑体\\fs22\\bord1\\shad0\\3aHBE\\4aH00\\fscx67\\fscy66\\2cHFFFFFF\\3cH808080}这太疯狂了",
+    "intro": "*TOK0__TOK1_腾讯网."
   }
 }

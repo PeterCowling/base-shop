@@ -11,13 +11,13 @@ import { Section } from "@acme/design-system/atoms";
 import { Inline } from "@acme/design-system/primitives";
 
 import FitCheck from "@/components/apartment/FitCheck";
+import { BookingCalendarPanel } from "@/components/booking/BookingCalendarPanel";
 import type { DateRange } from "@/components/booking/DateRangePicker";
-import { DateRangePicker } from "@/components/booking/DateRangePicker";
 import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
-import { fireHandoffToEngine, fireWhatsappClick } from "@/utils/ga4-events";
+import { createBrikClickId, fireHandoffToEngine, fireWhatsappClick } from "@/utils/ga4-events";
 
 type Props = {
   lang: AppLanguage;
@@ -55,7 +55,6 @@ function buildOctorateLink(
   return `${base}?${params.toString()}`;
 }
 
-// eslint-disable-next-line max-lines-per-function -- BRIK-BK-001 [ttl=2026-12-31] apartment booking form; sub-component extraction follow-up
 function ApartmentBookContent({ lang }: Props) {
   const { t } = useTranslation("apartmentPage", { lng: lang });
   const { t: tBook } = useTranslation("bookPage", { lng: lang });
@@ -124,7 +123,11 @@ function ApartmentBookContent({ lang }: Props) {
       checkin: checkinIso,
       checkout: checkoutIso,
       pax,
-      source: `apartment_${plan}`,
+      rate_plan: plan,
+      room_id: "apartment",
+      source_route: `/${lang}/private-rooms/book`,
+      cta_location: `apartment_${plan}_cta`,
+      brik_click_id: createBrikClickId(),
     });
 
     // Store booking state before navigation so we can restore on return (Option A — TASK-09)
@@ -158,47 +161,31 @@ function ApartmentBookContent({ lang }: Props) {
               {tModals("booking2.selectDatesTitle")}
             </h2>
           </div>
-          <DateRangePicker
-            selected={range}
+          <BookingCalendarPanel
+            lang={lang}
+            range={range}
             onRangeChange={(r) => setRange(r ?? { from: undefined, to: undefined })}
+            pax={pax}
+            onPaxChange={(next) => setPax(next === 3 ? 3 : 2)}
+            minPax={2}
+            maxPax={3}
             stayHelperText={tModals("date.stayHelper") as string}
             clearDatesText={tModals("date.clearDates") as string}
+            checkInLabelText={tModals("booking.checkInLabel") as string}
+            checkOutLabelText={tModals("booking.checkOutLabel") as string}
+            guestsLabelText={tBook("apartment.guestLabel") as string}
+            decreaseGuestsAriaLabel={tBook("bookingControls.decreaseGuests") as string}
+            increaseGuestsAriaLabel={tBook("bookingControls.increaseGuests") as string}
           />
           <p className="mt-3 text-sm text-brand-text/60">
             {tBook("apartment.nightsSummary", { count: nights })}
           </p>
         </div>
 
-        {/* Guest Count */}
-        <div className="rounded-xl border border-brand-outline/40 bg-brand-surface p-6 shadow-sm">
-          <div className="mb-4 flex items-center gap-3">
-            <Inline gap={0} wrap={false} className="size-6 shrink-0 justify-center rounded-full bg-brand-primary text-xs font-bold text-brand-on-primary" aria-hidden>2</Inline>
-            <h2 className="text-lg font-semibold text-brand-heading">
-              {tBook("apartment.guestLabel")}
-            </h2>
-          </div>
-          <Inline gap={3} wrap={false}>
-            {([2, 3] as const).map((n) => (
-              <button
-                key={n}
-                type="button"
-                onClick={() => setPax(n)}
-                className={`rounded-lg border px-6 py-3 text-sm font-semibold transition-all ${
-                  pax === n
-                    ? "border-brand-primary bg-brand-primary/10 ring-2 ring-brand-primary text-brand-primary"
-                    : "border-brand-outline/30 bg-brand-bg text-brand-text hover:border-brand-primary/50"
-                }`}
-              >
-                {tBook(`apartment.guests.${n}`)}
-              </button>
-            ))}
-          </Inline>
-        </div>
-
         {/* Rate Options */}
         <div className="rounded-xl border border-brand-outline/40 bg-brand-surface p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-3">
-            <Inline gap={0} wrap={false} className="size-6 shrink-0 justify-center rounded-full bg-brand-primary text-xs font-bold text-brand-on-primary" aria-hidden>3</Inline>
+            <Inline gap={0} wrap={false} className="size-6 shrink-0 justify-center rounded-full bg-brand-primary text-xs font-bold text-brand-on-primary" aria-hidden>2</Inline>
             <h2 className="text-lg font-semibold text-brand-heading">
               {tBook("apartment.rateLabel")}
             </h2>

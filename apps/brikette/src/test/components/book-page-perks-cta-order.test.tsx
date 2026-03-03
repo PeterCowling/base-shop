@@ -43,34 +43,29 @@ const BookPageContent = require("@/app/[lang]/book/BookPageContent")
   .default as typeof import("@/app/[lang]/book/BookPageContent").default;
 
 describe("Book page perks CTA order", () => {
-  it("renders direct-booking perks above the rooms section", () => {
-    render(<BookPageContent lang="en" />);
+  it("renders the rooms section before post-room information panels", () => {
+    render(<BookPageContent lang="en" heading="Book your stay" />);
 
-    const perksBlock = screen.getByText("Why book direct?");
     const roomsSection = screen.getByText("Rooms");
+    const locationInline = screen.getByTestId("location-inline");
+    const policyPanel = screen.getByTestId("policy-panel");
 
-    // perksBlock should come BEFORE roomsSection in document order.
-    // compareDocumentPosition returns a bitmask; DOCUMENT_POSITION_FOLLOWING means
-    // roomsSection follows perksBlock (i.e., perksBlock is rendered first).
-    const order = perksBlock.compareDocumentPosition(roomsSection);
-    expect(order & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(
+      roomsSection.compareDocumentPosition(locationInline) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(
+      roomsSection.compareDocumentPosition(policyPanel) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
   });
 
-  // TC-04-05: savings headline (rendered inside DirectPerksBlock mock) precedes rooms section
-  it("renders savings headline within the perks block before the rooms section", () => {
-    render(<BookPageContent lang="en" />);
+  it("does not render the deprecated direct-perks block in the book-page layout", () => {
+    render(<BookPageContent lang="en" heading="Book your stay" />);
 
-    // The useTranslation mock returns defaultValue strings, so savingsEyebrow receives
-    // "Book direct and save" which the updated DirectPerksBlock mock renders.
-    const savingsEyebrow = screen.getByText("Book direct and save");
-    const roomsSection = screen.getByText("Rooms");
-
-    const order = savingsEyebrow.compareDocumentPosition(roomsSection);
-    expect(order & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(screen.queryByTestId("direct-perks-block")).not.toBeInTheDocument();
   });
 
   it("still renders LocationInline and PolicyFeeClarityPanel after rooms section", () => {
-    render(<BookPageContent lang="en" />);
+    render(<BookPageContent lang="en" heading="Book your stay" />);
 
     const roomsSection = screen.getByText("Rooms");
     const locationInline = screen.getByTestId("location-inline");

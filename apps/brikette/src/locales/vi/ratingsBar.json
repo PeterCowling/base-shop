@@ -9,12 +9,13 @@
   "lastChecked": "Kiểm tra lần cuối:",
   "sources": {
     "hostelworld": {
-      "ariaName": "Hostelworld",
-      "label": "Hostelworld"
+      "ariaName": "Máy chủ",
+      "label": "Máy chủ"
     },
     "booking": {
       "ariaName": "Booking chấm com",
-      "label": "Booking.com"
+      "label": "Điểm từ Booking.com"
     }
-  }
+  },
+  "snapshotAsOf": "Từ {{date}}"
 }

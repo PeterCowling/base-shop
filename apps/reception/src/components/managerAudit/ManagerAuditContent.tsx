@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
 
 import { useAuth } from "../../context/AuthContext";
 import useInventoryItems from "../../hooks/data/inventory/useInventoryItems";
@@ -10,8 +11,8 @@ import useInventoryLedger from "../../hooks/data/inventory/useInventoryLedger";
 import { useTillShiftsData } from "../../hooks/data/till/useTillShiftsData";
 import { useCheckins } from "../../hooks/data/useCheckins";
 import { canAccess, Permissions } from "../../lib/roles";
-
-const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+import { formatDate } from "../../utils/dateUtils";
+import { showToast } from "../../utils/toastUtils";
 
 function toTimestampMs(timestamp: unknown): number {
   if (typeof timestamp === "number") {
@@ -59,11 +60,43 @@ function formatCloseDifference(value?: number): string {
   return formatDelta(value);
 }
 
+function escapeCsvCell(value: string): string {
+  let str = value;
+  if (/^[=+\-@\t\r]/.test(str)) {
+    str = `'${str}`;
+  }
+  return `"${str.replace(/"/g, '""')}"`;
+}
+
+function buildCsv(headers: string[], rows: string[][]): string {
+  return [
+    headers.join(","),
+    ...rows.map((row) => row.map(escapeCsvCell).join(",")),
+  ].join("\n");
+}
+
+function triggerCsvDownload(content: string, filename: string): void {
+  const blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.setAttribute("href", url);
+  link.setAttribute("download", filename);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
 export default function ManagerAuditContent() {
   const { user } = useAuth();
   const canView = canAccess(user, Permissions.MANAGEMENT_ACCESS);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [staffFilter, setStaffFilter] = useState("");
+  const [itemFilter, setItemFilter] = useState("");
 
   const {
+    items,
     itemsById,
     loading: inventoryItemsLoading,
     error: inventoryItemsError,
@@ -84,17 +117,51 @@ export default function ManagerAuditContent() {
   });
 
   const stockVarianceRows = useMemo(() => {
-    const todayMinus7 = Date.now() - SEVEN_DAYS_MS;
+    const effectiveStartMs = startDate
+      ? toTimestampMs(`${startDate}T00:00:00.000+00:00`)
+      : Date.now() - 30 * 24 * 60 * 60 * 1000;
+    const effectiveEndMs = endDate
+      ? toTimestampMs(`${endDate}T23:59:59.999+00:00`)
+      : Date.now();
+    const normalizedStaffFilter = staffFilter.toLowerCase();
 
     return entries
       .filter(
         (entry) =>
-          entry.type === "count" && toTimestampMs(entry.timestamp) >= todayMinus7
+          entry.type === "count" &&
+          toTimestampMs(entry.timestamp) >= effectiveStartMs &&
+          toTimestampMs(entry.timestamp) <= effectiveEndMs &&
+          (!itemFilter || entry.itemId === itemFilter) &&
+          (!staffFilter ||
+            (entry.user ?? "").toLowerCase().includes(normalizedStaffFilter))
       )
       .sort(
         (a, b) => toTimestampMs(b.timestamp) - toTimestampMs(a.timestamp)
       );
-  }, [entries]);
+  }, [endDate, entries, itemFilter, staffFilter, startDate]);
+
+  const handleExportVariance = () => {
+    const effectiveStart = startDate
+      ? formatDate(new Date(toTimestampMs(`${startDate}T00:00:00.000+00:00`)))
+      : formatDate(new Date(Date.now() - 30 * 24 * 60 * 60 * 1000));
+    const effectiveEnd = endDate
+      ? formatDate(new Date(toTimestampMs(`${endDate}T23:59:59.999+00:00`)))
+      : formatDate(new Date());
+    const headers = ["Recorded at", "Item", "Item ID", "Delta", "User", "Reason", "Note"];
+    const rows = stockVarianceRows.map((entry) => [
+      formatDateTime(entry.timestamp),
+      itemsById[entry.itemId]?.name ?? entry.itemId,
+      entry.itemId,
+      String(entry.quantity),
+      entry.user ?? "",
+      entry.reason ?? "",
+      entry.note ?? "",
+    ]);
+    const csv = buildCsv(headers, rows);
+    const filename = `stock-variance-${effectiveStart}-${effectiveEnd}.csv`;
+    triggerCsvDownload(csv, filename);
+    showToast(`Exported ${stockVarianceRows.length} variance record(s)`, "success");
+  };
 
   const lastThreeShifts = useMemo(
     () =>
@@ -130,44 +197,138 @@ export default function ManagerAuditContent() {
         !inventoryLedgerLoading &&
         !inventoryItemsError &&
         !inventoryLedgerError ? (
-          stockVarianceRows.length === 0 ? (
-            <p className="mt-3 text-sm text-muted-foreground">
-              No variance in the last 7 days
-            </p>
-          ) : (
-            <div className="mt-3 overflow-x-auto rounded-lg border border-border-2">
-              <Table className="min-w-full text-sm">
-                <TableHeader className="bg-surface-2">
-                  <TableRow>
-                    <TableHead className="p-2 text-start border-b border-border-2">
-                      Item
-                    </TableHead>
-                    <TableHead className="p-2 text-end border-b border-border-2">
-                      Delta
-                    </TableHead>
-                    <TableHead className="p-2 text-start border-b border-border-2">
-                      Date
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {stockVarianceRows.map((entry) => (
-                    <TableRow key={entry.id ?? `${entry.itemId}-${entry.timestamp}`}>
-                      <TableCell className="p-2 border-b border-border-2">
-                        {itemsById[entry.itemId]?.name ?? entry.itemId}
-                      </TableCell>
-                      <TableCell className="p-2 border-b border-border-2 text-end font-mono">
-                        {formatDelta(entry.quantity)}
-                      </TableCell>
-                      <TableCell className="p-2 border-b border-border-2">
-                        {formatDateTime(entry.timestamp)}
-                      </TableCell>
-                    </TableRow>
+          <>
+            <div className="mt-3 flex flex-wrap gap-4 items-end">
+              <div className="flex flex-col">
+                <label
+                  htmlFor="variance-start-date"
+                  className="text-xs font-semibold text-muted-foreground mb-1"
+                >
+                  From
+                </label>
+                <input
+                  id="variance-start-date"
+                  type="date"
+                  data-cy="variance-start-date"
+                  value={startDate}
+                  onChange={(event) => setStartDate(event.target.value)}
+                  className="border border-border-strong rounded-md px-2 py-1 text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                />
+              </div>
+              <div className="flex flex-col">
+                <label
+                  htmlFor="variance-end-date"
+                  className="text-xs font-semibold text-muted-foreground mb-1"
+                >
+                  To
+                </label>
+                <input
+                  id="variance-end-date"
+                  type="date"
+                  data-cy="variance-end-date"
+                  value={endDate}
+                  onChange={(event) => setEndDate(event.target.value)}
+                  className="border border-border-strong rounded-md px-2 py-1 text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                />
+              </div>
+              <div className="flex flex-col">
+                <label
+                  htmlFor="variance-staff-filter"
+                  className="text-xs font-semibold text-muted-foreground mb-1"
+                >
+                  Staff
+                </label>
+                <input
+                  id="variance-staff-filter"
+                  type="text"
+                  data-cy="variance-staff-filter"
+                  value={staffFilter}
+                  onChange={(event) => setStaffFilter(event.target.value)}
+                  className="border border-border-strong rounded-md px-2 py-1 text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                />
+              </div>
+              <div className="flex flex-col">
+                <label
+                  htmlFor="variance-item-filter"
+                  className="text-xs font-semibold text-muted-foreground mb-1"
+                >
+                  Item
+                </label>
+                <select
+                  id="variance-item-filter"
+                  data-cy="variance-item-filter"
+                  value={itemFilter}
+                  onChange={(event) => setItemFilter(event.target.value)}
+                  className="border border-border-strong rounded-md px-2 py-1 text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                >
+                  <option value="">All items</option>
+                  {items.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
+                    </option>
                   ))}
-                </TableBody>
-              </Table>
+                </select>
+              </div>
             </div>
-          )
+            {stockVarianceRows.length > 0 ? (
+              <div className="mt-3">
+                <Button
+                  type="button"
+                  data-cy="variance-export-btn"
+                  color="default"
+                  tone="outline"
+                  size="sm"
+                  onClick={handleExportVariance}
+                >
+                  Export CSV
+                </Button>
+              </div>
+            ) : null}
+            {stockVarianceRows.length === 0 ? (
+              <p className="mt-3 text-sm text-muted-foreground">
+                No variance in the selected period
+              </p>
+            ) : (
+              <div className="mt-3 overflow-x-auto rounded-lg border border-border-2">
+                <Table className="min-w-full text-sm">
+                  <TableHeader className="bg-surface-2">
+                    <TableRow>
+                      <TableHead className="p-2 text-start border-b border-border-2">
+                        Item
+                      </TableHead>
+                      <TableHead className="p-2 text-end border-b border-border-2">
+                        Delta
+                      </TableHead>
+                      <TableHead className="p-2 text-start border-b border-border-2">
+                        Date
+                      </TableHead>
+                      <TableHead className="p-2 text-start border-b border-border-2">
+                        Counted by
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {stockVarianceRows.map((entry) => (
+                      <TableRow key={entry.id ?? `${entry.itemId}-${entry.timestamp}`}>
+                        <TableCell className="p-2 border-b border-border-2">
+                          {itemsById[entry.itemId]?.name ?? entry.itemId}
+                        </TableCell>
+                        <TableCell className="p-2 border-b border-border-2 text-end font-mono">
+                          {formatDelta(entry.quantity)}
+                        </TableCell>
+                        <TableCell className="p-2 border-b border-border-2">
+                          {formatDateTime(entry.timestamp)}
+                        </TableCell>
+                        <TableCell className="p-2 border-b border-border-2">
+                          {entry.user || "—"}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            )}
+          </>
         ) : null}
       </section>
 

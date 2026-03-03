@@ -1,0 +1,12 @@
+{
+  "title": "환대 테마 미리보기",
+  "guestActivation": {
+    "label": "게스트 활성화",
+    "description": "마지막 7 일"
+  },
+  "signalBridge": {
+    "title": "신호 교량 체크",
+    "etaShared": "ETA 공유",
+    "cashPrepared": "현금 준비"
+  }
+}

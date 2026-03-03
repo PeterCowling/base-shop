@@ -12,13 +12,15 @@ import type { AvailabilityRouteResponse, OctorateRoom } from "./route";
 // HTML Fixtures
 // ---------------------------------------------------------------------------
 
-/** One available room + one sold-out room, 2-night stay */
+/** One available room + one sold-out room, 2-night stay.
+ * data-id is always "3" in live Octobook HTML — it is a JSF animation attribute,
+ * not a room identifier. Fixtures now reflect this reality. */
 const FIXTURE_TWO_ROOMS_HTML = `
 <html>
 <body>
 <div id="reservation-result">
 <section class="room animatedParent animateOnce" id="section-dorm">
-  <h1 class="animated fadeInDownShort" data-id="7">Dorm</h1>
+  <h1 class="animated fadeInDownShort" data-id="3">Dorm</h1>
   <div class="offert">
     Price from €189 ,98 Tourist Tax 5.00 EUR 2 Nights 1 Adult
     <div class="options">
@@ -28,7 +30,7 @@ const FIXTURE_TWO_ROOMS_HTML = `
   </div>
 </section>
 <section class="room animatedParent animateOnce" id="section-double">
-  <h1 class="animated fadeInDownShort" data-id="10">Double</h1>
+  <h1 class="animated fadeInDownShort" data-id="3">Double</h1>
   <div class="offert">
     Not available No availability
   </div>
@@ -36,6 +38,19 @@ const FIXTURE_TWO_ROOMS_HTML = `
 </div>
 </body>
 </html>
+`;
+
+/** Octobook "Dorm Room" variant — should normalise to "Dorm" via OCTOBOOK_ROOM_NAME_NORMALIZATIONS */
+const FIXTURE_DORM_ROOM_VARIANT_HTML = `
+<html><body>
+<section class="room animatedParent animateOnce">
+  <h1 class="animated fadeInDownShort" data-id="3">Dorm Room</h1>
+  <div class="offert">
+    Price from €80,00 Tourist Tax 2.00 EUR 1 Night 1 Adult
+    <div class="options"><div><h4>Non-Refundable</h4></div></div>
+  </div>
+</section>
+</body></html>
 `;
 
 /** Single available room, 1-night stay, &euro; HTML entity price */
@@ -127,7 +142,8 @@ describe("GET /api/availability", () => {
 
       expect(res.status).toBe(200);
       expect(body.rooms.length).toBe(2);
-      expect(doubleRoom!.octorateRoomId).toBe("10");
+      // octorateRoomId is always "3" in live Octobook HTML
+      expect(doubleRoom!.octorateRoomId).toBe("3");
       expect(body.fetchedAt).toBeTruthy();
     });
 
@@ -141,7 +157,8 @@ describe("GET /api/availability", () => {
 
       const dorm = body.rooms.find((r: OctorateRoom) => r.octorateRoomName === "Dorm");
       expect(dorm).toBeDefined();
-      expect(dorm!.octorateRoomId).toBe("7");
+      // octorateRoomId is always "3" in live Octobook HTML
+      expect(dorm!.octorateRoomId).toBe("3");
       expect(dorm!.available).toBe(true);
     });
 
@@ -155,7 +172,8 @@ describe("GET /api/availability", () => {
 
       const doubleRoom = body.rooms.find((r: OctorateRoom) => r.octorateRoomName === "Double");
       expect(doubleRoom).toBeDefined();
-      expect(doubleRoom!.octorateRoomId).toBe("10");
+      // octorateRoomId is always "3" in live Octobook HTML
+      expect(doubleRoom!.octorateRoomId).toBe("3");
       expect(doubleRoom!.available).toBe(false);
       expect(doubleRoom!.priceFrom).toBeNull();
       expect(doubleRoom!.ratePlans).toEqual([]);
@@ -274,6 +292,22 @@ describe("GET /api/availability", () => {
 
       expect(res.status).toBe(200);
       expect(body.rooms).toEqual([]);
+    });
+
+    // TC-02-01: "Dorm Room" h1 text → normalised to octorateRoomName "Dorm"
+    it("TC-02-01: normalises Octobook name variant 'Dorm Room' to canonical 'Dorm'", async () => {
+      fetchSpy.mockImplementation(async () =>
+        new Response(FIXTURE_DORM_ROOM_VARIANT_HTML, { status: 200 })
+      );
+      const req = makeRequest(
+        "https://hostel.test/api/availability?checkin=2026-06-01&checkout=2026-06-02&pax=1"
+      );
+      const res = await GET(req);
+      const body = (await res.json()) as AvailabilityRouteResponse;
+
+      expect(body.rooms.length).toBe(1);
+      expect(body.rooms[0].octorateRoomName).toBe("Dorm");
+      expect(body.rooms[0].available).toBe(true);
     });
 
     // TC-06-05: Sold-out HTML fixture → available=false, priceFrom=null

@@ -31,7 +31,7 @@
       "title": "Guider til buss og SITA"
     },
     "camping": {
-      "label": "Camping",
+      "label": "Campingplasser",
       "title": "Camping langs kysten"
     },
     "capri": {
@@ -173,7 +173,7 @@
       "title": "Planleggingsguider"
     },
     "pompei": {
-      "label": "Pompeii",
+      "label": "Pompei",
       "title": "Dagsturer til Pompeii"
     },
     "porters": {
@@ -202,10 +202,10 @@
     },
     "salerno": {
       "label": "Salerno",
-      "title": "Salerno ↔ Positano"
+      "title": "Salerno ↔ positano"
     },
     "shopping": {
-      "label": "Shopping",
+      "label": "Butikker",
       "title": "Shopping og håndverk"
     },
     "shoulder": {
@@ -229,7 +229,7 @@
       "title": "Sommer i Positano"
     },
     "tips": {
-      "label": "Tips",
+      "label": "Råd",
       "title": "Reisetips"
     },
     "train": {
@@ -241,7 +241,7 @@
       "title": "Tramonti-vinprodusenter"
     },
     "transport": {
-      "label": "Transport",
+      "label": "Transportmuligheter",
       "title": "Transportguider for Amalfikysten",
       "description": "Beslutningsguider for buss, ferje, skyttel og transport med bagasjevennlige tips."
     },

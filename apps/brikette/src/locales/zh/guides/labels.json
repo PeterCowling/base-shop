@@ -4,9 +4,9 @@
   "popularGuides": "热门指南",
   "helpfulGuides": "实用指南",
   "alsoSee": "另请参阅",
-  "backupPlan": "Backup plan",
-  "tipsHeading": "Tips",
-  "warningsHeading": "Warnings",
+  "backupPlan": "备份计划",
+  "tipsHeading": "提示",
+  "warningsHeading": "警告",
   "whereToEatHeading": "哪里用餐",
   "photoGallery": "图片集",
   "homeBreadcrumb": "首页",
@@ -21,5 +21,5 @@
   "backLink": "返回",
   "typicalCostsHeading": "典型费用",
   "essentialsHeading": "必需品",
-  "tocSectionFallback": "Section"
+  "tocSectionFallback": "节次"
 }

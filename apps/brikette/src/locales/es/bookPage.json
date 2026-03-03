@@ -48,13 +48,95 @@
   "backToRooms": "Volver a habitaciones",
   "hostel": {
     "directSavings": {
-      "eyebrow": "Book direct and save",
-      "headline": "Up to 25% less than Booking.com"
+      "eyebrow": "Reserva directa y ahorra",
+      "headline": "Hasta un 25% menos que Booking.com"
     }
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2-8 noches",
+    "clearDates": "Fechas claras",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} noches)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Las reservas de albergue se gestionan con soporte asistido cuando JavaScript está deshabilitado.",
+    "emailAssistedBooking": "Envíenos un correo electrónico para reserva asistida"
+  },
+  "bookingConstraints": {
+    "notice": "Las reservas de albergue admiten estancias solo para adultos de entre 2 y 8 noches con hasta 8 adultos por reserva. Para grupos más grandes o estancias más largas, divida su solicitud en varias reservas o",
+    "assistedLink": "contáctenos para reserva asistida"
+  },
+  "expiredQuote": {
+    "message": "Este enlace de cotización ha caducado. Reconstruya su cotización con nuevas fechas para continuar."
+  },
+  "recovery": {
+    "title": "¿Necesitas más tiempo? Envíe esta cotización por correo electrónico y reanúcela más tarde.",
+    "privacyNotice": "Mantenemos el contexto de reserva y los metadatos de consentimiento únicamente. Los enlaces de currículum caducan después de 7 días.",
+    "emailLabel": "Tu correo electrónico",
+    "emailPlaceholder": "tu@ejemplo.com",
+    "consent": "Doy mi consentimiento para recibir esta cotización por correo electrónico y entiendo que caduca después de 7 días.",
+    "submitted": "Borrador de correo electrónico abierto. Puedes enviarlo para guardar esta cotización.",
+    "submitCta": "Envíeme esta cotización por correo electrónico",
+    "errors": {
+      "invalidEmail": "Ingrese una dirección de correo electrónico válida.",
+      "consentRequired": "Se requiere consentimiento para enviar el correo electrónico de cotización.",
+      "sendFailed": "Algo salió mal. Pruebe de nuevo o contáctenos directamente."
+    },
+    "mailto": {
+      "subject": "Solicitud de recuperación de cotización",
+      "bodyIntro": "Por favor envíeme esta cotización y un recordatorio de seguimiento.",
+      "labels": {
+        "guestEmail": "Correo electrónico de invitado",
+        "checkIn": "Registrarse",
+        "checkOut": "Verificar",
+        "guests": "Huéspedes",
+        "sourceRoute": "Ruta de origen",
+        "room": "Habitación",
+        "ratePlan": "plan tarifario",
+        "resumeLink": "Enlace de currículum"
+      }
+    },
+    "sending": "Enviando..."
+  },
+  "apartment": {
+    "heading": "Reserva el apartamento privado",
+    "subheading": "Seleccione las fechas y el número de invitados, a continuación, seleccione una tarifa.",
+    "guestLabel": "Número de invitados",
+    "guests": {
+      "2": "2 invitados",
+      "3": "3 invitados"
+    },
+    "flex": {
+      "title": "Tasa flexible",
+      "saving": "Guardar 21% vs OTA",
+      "bullets": [
+        "Free cancellation up to 3 days before arrival.",
+        "Changes subject to availability."
+      ]
+    },
+    "nr": {
+      "title": "No reembolsable",
+      "saving": "Guardar 26% vs OTA",
+      "bullets": [
+        "Best direct price — paid in full upfront.",
+        "No refunds or changes after booking."
+      ]
+    },
+    "nightsSummary_one": "{{count}} noche — disponibilidad confirmada en el siguiente paso.",
+    "nightsSummary_other": "{{count}} noches — disponibilidad confirmada en el siguiente paso.",
+    "rateLabel": "Elige tu tarifa",
+    "ratePrompt": "Seleccione una tarifa anterior para continuar",
+    "cta": {
+      "unselected": "Seleccione una tarifa para continuar →",
+      "flex": "Flexible – Continuar con el checkout",
+      "nr": "No reembolsable – Continuar con el checkout"
+    },
+    "policies": {
+      "title": "Políticas y tarifas",
+      "items": [
+        "City/tourist tax: €2.50 per guest per night (added at checkout).",
+        "Cancellation admin fee: typically 15% of booking price.",
+        "Final availability and payment are completed on our official booking engine."
+      ]
+    }
   }
 }

@@ -25,6 +25,8 @@ export function UploaderI18nProvider({ children }: { children: React.ReactNode }
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (stored === "en" || stored === "zh") {
       setLocale(stored);
+    } else if (stored === "xe") {
+      setLocale("zh");
     }
   }, []);
 

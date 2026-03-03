@@ -9,26 +9,30 @@ import AiCatalogSettings from "../AiCatalogSettings";
 expect.extend(toHaveNoViolations as any);
 
 const updateAiCatalog = jest.fn();
+const mockToast = {
+  success: jest.fn(),
+  error: jest.fn(),
+  warning: jest.fn(),
+  info: jest.fn(),
+  loading: jest.fn(),
+  dismiss: jest.fn(),
+  update: jest.fn(),
+  promise: async <T,>(value: Promise<T>) => value,
+};
 
 jest.mock("@cms/actions/shops.server", () => ({
   updateAiCatalog: (...args: any[]) => updateAiCatalog(...args),
 }));
+jest.mock("@acme/ui/operations", () => ({
+  __esModule: true,
+  useToast: () => mockToast,
+}));
 jest.mock("@/lib/datetime", () => ({
   formatTimestamp: (value: string) => `formatted-${value}`,
 }));
-jest.mock(
-  "@/components/atoms",
-  () => ({
-    Toast: ({ open, message }: any) =>
-      open ? (
-        <div role="status" aria-live="polite">
-          {message}
-        </div>
-      ) : null,
-    Tooltip: ({ children }: any) => <span>{children}</span>,
-  }),
-  { virtual: true },
-);
+jest.mock("@/components/atoms", () => ({
+  Tooltip: ({ children }: any) => <span>{children}</span>,
+}));
 jest.mock(
   "@/components/atoms/shadcn",
   () => ({
@@ -52,6 +56,9 @@ jest.mock(
 describe("AiCatalogSettings", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    (global.fetch as unknown) = jest.fn().mockResolvedValue({
+      json: async () => ({ items: [] }),
+    });
   });
 
   const initial = {
@@ -88,13 +95,13 @@ describe("AiCatalogSettings", () => {
     const queueButton = screen.getByRole("button", { name: /queue crawl/i });
     await userEvent.click(queueButton);
     expect(queueButton).toBeDisabled();
-    expect(await screen.findByRole("status")).toHaveTextContent(
-      "AI catalog crawl queued",
+    await waitFor(() =>
+      expect(mockToast.success).toHaveBeenCalledWith("AI catalog crawl queued"),
     );
 
     await userEvent.click(screen.getByRole("button", { name: /view feed/i }));
-    expect(await screen.findByRole("status")).toHaveTextContent(
-      "Catalog feed preview coming soon",
+    await waitFor(() =>
+      expect(global.fetch).toHaveBeenCalledWith("/api/seo/ai-catalog?shop=lux&limit=10"),
     );
   });
 

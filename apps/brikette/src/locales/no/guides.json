@@ -315,7 +315,7 @@
       "status": {
         "draft": "Utkast",
         "review": "Til gjennomgang",
-        "live": "Live"
+        "live": "Direkte"
       },
       "workflow": {
         "draftPreview": "Forhåndsvisning av utkast",
@@ -347,5 +347,10 @@
         "experience": "Opplevelser"
       }
     }
+  },
+  "search": {
+    "noResults": "Ingen guider funnet",
+    "resultsCount_one": "Fant {{count}}guide",
+    "resultsCount_other": "Funnet {{count}}guider"
   }
 }

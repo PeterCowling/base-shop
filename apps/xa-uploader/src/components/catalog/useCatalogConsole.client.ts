@@ -37,6 +37,7 @@ import {
   getSyncFailureMessage,
   type SessionState,
   type SubmissionAction,
+  type SubmissionStep,
   type SyncReadinessResponse,
   type SyncScriptId,
   updateActionFeedback,
@@ -58,6 +59,8 @@ type SyncReadinessState = {
   missingScripts: SyncScriptId[];
   error: string | null;
   checkedAt: string | null;
+  contractConfigured: boolean;
+  contractConfigErrors: string[];
 };
 
 function useCatalogConsoleState() {
@@ -83,7 +86,12 @@ function useCatalogConsoleState() {
   const [selectedSlug, setSelectedSlug] = React.useState<string | null>(null);
 
   const submissionMax = 10;
-  const submissionMaxBytes = 250 * 1024 * 1024;
+  const submissionMaxMb = toPositiveInt(
+    process.env.NEXT_PUBLIC_XA_UPLOADER_SUBMISSION_MAX_MB ?? "25",
+    25,
+    1,
+  );
+  const submissionMaxBytes = submissionMaxMb * 1024 * 1024;
   const minImageEdge = toPositiveInt(
     process.env.NEXT_PUBLIC_XA_UPLOADER_MIN_IMAGE_EDGE ?? "1600",
     1600,
@@ -94,6 +102,7 @@ function useCatalogConsoleState() {
     process.env.NEXT_PUBLIC_XA_UPLOADER_R2_UPLOAD_URL ?? "",
   );
   const [submissionAction, setSubmissionAction] = React.useState<SubmissionAction>(null);
+  const [submissionStep, setSubmissionStep] = React.useState<SubmissionStep>(null);
 
   const [draft, setDraft] = React.useState<CatalogProductDraftInput>(() =>
     buildEmptyDraft(storefrontConfig.defaultCategory),
@@ -118,6 +127,8 @@ function useCatalogConsoleState() {
     missingScripts: [],
     error: null,
     checkedAt: null,
+    contractConfigured: false,
+    contractConfigErrors: [],
   });
 
   const loadSession = React.useCallback(async () => {
@@ -155,6 +166,8 @@ function useCatalogConsoleState() {
         missingScripts: data.missingScripts ?? [],
         error: null,
         checkedAt: data.checkedAt ?? null,
+        contractConfigured: Boolean(data.contractConfigured),
+        contractConfigErrors: data.contractConfigErrors ?? [],
       });
     } catch {
       setSyncReadiness({
@@ -163,6 +176,8 @@ function useCatalogConsoleState() {
         missingScripts: [],
         error: t("syncReadinessCheckFailed"),
         checkedAt: null,
+        contractConfigured: false,
+        contractConfigErrors: [],
       });
     }
   }, [storefront, t, uploaderMode]);
@@ -195,6 +210,8 @@ function useCatalogConsoleState() {
         missingScripts: [],
         error: null,
         checkedAt: null,
+        contractConfigured: false,
+        contractConfigErrors: [],
       });
       return;
     }
@@ -230,6 +247,8 @@ function useCatalogConsoleState() {
     setSubmissionUploadUrl,
     submissionAction,
     setSubmissionAction,
+    submissionStep,
+    setSubmissionStep,
     draft,
     setDraft,
     draftRevision,
@@ -392,18 +411,19 @@ function useCatalogSubmissionHandlers(state: CatalogConsoleState) {
     handleClearSubmissionImpl({
       setSubmissionSlugs: state.setSubmissionSlugs,
       setActionFeedback: state.setActionFeedback,
+      setSubmissionStep: state.setSubmissionStep,
     });
 
   const handleExportSubmission = async () =>
     handleExportSubmissionImpl({
       submissionSlugs: state.submissionSlugs,
       storefront: state.storefront,
-      uploaderMode: state.uploaderMode,
       t: state.t,
       busyLockRef: state.busyLockRef,
       setBusy: state.setBusy,
       setActionFeedback: state.setActionFeedback,
       setSubmissionAction: state.setSubmissionAction,
+      setSubmissionStep: state.setSubmissionStep,
       handleClearSubmission,
     });
 
@@ -412,12 +432,12 @@ function useCatalogSubmissionHandlers(state: CatalogConsoleState) {
       submissionSlugs: state.submissionSlugs,
       submissionUploadUrl: state.submissionUploadUrl,
       storefront: state.storefront,
-      uploaderMode: state.uploaderMode,
       t: state.t,
       busyLockRef: state.busyLockRef,
       setBusy: state.setBusy,
       setActionFeedback: state.setActionFeedback,
       setSubmissionAction: state.setSubmissionAction,
+      setSubmissionStep: state.setSubmissionStep,
       handleClearSubmission,
     });
 
@@ -444,6 +464,7 @@ export function useCatalogConsole() {
     submissionUploadUrl: state.submissionUploadUrl,
     setSubmissionUploadUrl: state.setSubmissionUploadUrl,
     submissionAction: state.submissionAction,
+    submissionStep: state.submissionStep,
   };
 
   return {

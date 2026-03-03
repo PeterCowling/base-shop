@@ -11,6 +11,7 @@ import {
 import { DayPicker } from "react-day-picker";
 
 import { Button } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives";
 
 import { useAuth } from "../../context/AuthContext";
 import { canAccess, isPrivileged, Permissions } from "../../lib/roles";
@@ -192,11 +193,11 @@ export default function DateSelector({
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <Inline gap={2}>
       {privileged && renderButton("Yesterday", yesterday)}
       {renderButton("Today", today)}
       {nextDays.map((day) => renderButton(getWeekdayShortLabel(day), day))}
       {toggleAndCalendar}
-    </div>
+    </Inline>
   );
 }

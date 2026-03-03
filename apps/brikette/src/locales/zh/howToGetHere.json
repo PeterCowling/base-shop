@@ -4,7 +4,7 @@
     "description": "提供从阿马尔菲、卡普里、那不勒斯、萨莱诺、拉韦洛、罗马与索伦托前往 Hostel Brikette 的实用路线说明，并比较各交通方式的优缺点。"
   },
   "header": {
-    "eyebrow": "Hostel Brikette",
+    "eyebrow": "布里凯特招待所",
     "title": "出行路线汇总",
     "description": "使用本指南往返阿马尔菲海岸的目的地和Hostel Brikette.",
     "heroAlt": "九重葛环绕的石阶通向 Hostel Brikette 的入口",
@@ -70,8 +70,8 @@
     "taxi": "若要预约出租车，可使用 WhatsApp 以英语或意大利语联系以下号码：<Strong>{{contact}}</Strong>。",
     "shuttle": "想搭乘接驳车？Sea Horse Car Service 提供多人共乘服务，可透过其 <Link>官方接驳预约页面</Link> 预订座位。",
     "taxiContact": "+39 379 125 6222",
-    "taxiEyebrow": "Hostel Brikette by Taxi",
-    "shuttleEyebrow": "Hostel Brikette by Shuttle",
+    "taxiEyebrow": "出租车的Brikette宿舍",
+    "shuttleEyebrow": "Brikette宿舍 由航天飞机",
     "whatsappTemplate": "你好！我住在 Hostel Brikette。想预订往返波西塔诺的出租车。我的到达时间是：____",
     "emailSubject": "到达协助",
     "emailBody": "Hostel Brikette 团队你好——我今天到达，需要帮助选择最佳到达方式。我的预计到达时间是：____",
@@ -928,5 +928,9 @@
   },
   "galleries": {
     "defaultAlt": "路线照片"
+  },
+  "loadingFallback": {
+    "intro": "正在加载路线规划器副本。同时，请使用以下路线指南：",
+    "routeLabelFallback": "路线指南"
   }
 }

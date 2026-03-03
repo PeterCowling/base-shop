@@ -44,13 +44,99 @@
   "backToRooms": "Tillbaka till rum",
   "hostel": {
     "directSavings": {
-      "eyebrow": "Book direct and save",
-      "headline": "Up to 25% less than Booking.com"
+      "eyebrow": "Boka direkt och spara",
+      "headline": "Upp till 25% mindre än Booking.com"
     }
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2-8 nätter",
+    "clearDates": "Tydliga datum",
+    "nightsSummary": "{{from}} {{to}} (ZZTOK2Z-nätter)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Vandrarhemsbokningar hanteras med assisterad support när JavaScript är inaktiverat.",
+    "emailAssistedBooking": "Maila oss för assisterad bokning"
+  },
+  "bookingConstraints": {
+    "notice": "Vandrarhemsbokningar stöder vistelser endast för vuxna mellan 2 och 8 nätter med upp till 8 vuxna per bokning. För större grupper eller längre vistelser, dela din förfrågan på flera bokningar eller",
+    "assistedLink": "kontakta oss för assisterad bokning"
+  },
+  "expiredQuote": {
+    "message": "Denna offertlänk har upphört att gälla. Bygg om din offert med nya datum för att fortsätta."
+  },
+  "recovery": {
+    "title": "Behöver du mer tid? Maila dig själv detta citat och fortsätt senare.",
+    "privacyNotice": "Vi behåller endast bokningskontext och samtyckesmetadata. Länkar till CV upphör att gälla efter 7 dagar.",
+    "emailLabel": "Din e-post",
+    "emailPlaceholder": "du@exempel.com",
+    "consent": "Jag samtycker till att ta emot denna offert via e-post och förstår att den löper ut efter 7 dagar.",
+    "submitted": "E-postutkast öppnat. Du kan skicka den för att spara den här offerten.",
+    "submitCta": "Maila mig detta citat",
+    "errors": {
+      "invalidEmail": "Ange en giltig e-postadress.",
+      "consentRequired": "Samtycke krävs för att skicka offertmejlet.",
+      "sendFailed": "Något gick fel. Försök igen eller kontakta oss direkt."
+    },
+    "mailto": {
+      "subject": "Begäran om återställning av offert",
+      "bodyIntro": "Skicka mig denna offert och en uppföljningspåminnelse.",
+      "labels": {
+        "guestEmail": "Gästmail",
+        "checkIn": "Incheckning",
+        "checkOut": "Kassa",
+        "guests": "Gäster",
+        "sourceRoute": "Källväg",
+        "room": "Rum",
+        "ratePlan": "Prisplan",
+        "resumeLink": "Återuppta länk"
+      }
+    },
+    "sending": "Skicka..."
+  },
+  "subheading": "Välj dina datum, välj sedan ett rum.",
+  "dealBanner": {
+    "applied": "Deal tillämpad: {{code}}"
+  },
+  "apartment": {
+    "heading": "Boka den privata lägenheten",
+    "subheading": "Välj dina datum och antal gäster, välj sedan en kurs.",
+    "guestLabel": "Antal gäster",
+    "guests": {
+      "2": "2 gäster",
+      "3": "3 gäster"
+    },
+    "flex": {
+      "title": "Flexibelt pris",
+      "saving": "Spara 21% mot OTA",
+      "bullets": [
+        "Free cancellation up to 3 days before arrival.",
+        "Changes subject to availability."
+      ]
+    },
+    "nr": {
+      "title": "Icke-Refundable",
+      "saving": "Spara 26% mot OTA",
+      "bullets": [
+        "Best direct price — paid in full upfront.",
+        "No refunds or changes after booking."
+      ]
+    },
+    "nightsSummary_one": "{{count}} natt - tillgänglighet bekräftas i nästa steg.",
+    "nightsSummary_other": "{{count}} nätter - tillgänglighet bekräftas i nästa steg.",
+    "rateLabel": "Välj din kurs",
+    "ratePrompt": "Välj en ränta ovan för att fortsätta",
+    "cta": {
+      "unselected": "Välj en kurs för att fortsätta",
+      "flex": "Flexibel - Fortsätt att checka ut",
+      "nr": "Icke-Refundable - Fortsätt att checka ut"
+    },
+    "policies": {
+      "title": "Policies & avgifter",
+      "items": [
+        "City/tourist tax: €2.50 per guest per night (added at checkout).",
+        "Cancellation admin fee: typically 15% of booking price.",
+        "Final availability and payment are completed on our official booking engine."
+      ]
+    }
   }
 }

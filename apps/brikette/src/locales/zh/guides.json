@@ -6,7 +6,7 @@
     "viewAll": "查看全部攻略",
     "helpfulGuides": "实用指南",
     "alsoSee": "另见",
-    "sectionFallback": "Section {{position}}"
+    "sectionFallback": "第{{position}}条"
   },
   "meta": {
     "index": {
@@ -347,5 +347,10 @@
         "experience": "体验"
       }
     }
+  },
+  "search": {
+    "noResults": "未找到向导",
+    "resultsCount_one": "找到 _TOK0_指南",
+    "resultsCount_other": "找到 {TOK0} 指南"
   }
 }

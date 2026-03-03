@@ -4,7 +4,7 @@
     "description": "Bữa sáng 08:00–10:30 hằng ngày. Trứng, món ngọt, món tốt cho sức khỏe, nước ép, sinh tố và cà phê."
   },
   "header": {
-    "brand": "Hostel Brikette",
+    "brand": "Name",
     "menuTitle": "Thực Đơn Bữa Sáng, 2025",
     "hours": "Hằng ngày 08:00 – 10:30"
   },
@@ -124,16 +124,16 @@
       "name": "Espresso (mỗi shot)"
     },
     "macchiato": {
-      "name": "Macchiato"
+      "name": "Cà phê macchiato"
     },
     "americano": {
-      "name": "Americano / Long Black"
+      "name": "Mỹ/ Long Black"
     },
     "cappuccino": {
-      "name": "Cappuccino"
+      "name": "Cà phê cappuccino"
     },
     "latte": {
-      "name": "Latte"
+      "name": "Cà phê latte"
     },
     "altMilk": {
       "name": "Sữa đậu nành hoặc gạo — phụ thu"

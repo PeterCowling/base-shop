@@ -4,6 +4,7 @@
     "description": "Trasa przed świtem z hostelu Brikette do cichego punktu widokowego na szczycie klifu z niezakłóconym widokiem na wschód słońca nad Positano."
   },
   "linkLabel": "Hostel Brikette sunrise hike",
+  "lastUpdated": "2026-02-04",
   "intro": [
     "Head out before dawn to catch the first light over the Amalfi Coast from a quiet vantage point above Positano.",
     "This walk starts at Hostel Brikette and takes around 25 minutes including the stair climb to the viewpoint."
@@ -51,6 +52,37 @@
     "Bring a headlamp or phone torch — the stair sections are dark before dawn.",
     "Wear shoes with good grip and pack a layer; sea breezes make early mornings feel cooler."
   ],
+  "essentialsTitle": "Niezbędnik",
+  "essentials": [
+    "Latarka czołowa albo telefon z naładowaną baterią.",
+    "Buty z dobrą przyczepnością i lekka warstwa na chłodny poranek.",
+    "Woda i mała przekąska, jeśli chcesz zostać dłużej na punkcie widokowym."
+  ],
+  "tipsTitle": "Wyczucie czasu",
+  "warningsTitle": "Uwagi dotyczące bezpieczeństwa",
+  "warnings": [
+    "Na schodach idź spokojnie i miej wolne ręce — przy słabym świetle łatwo o potknięcie.",
+    "Jeśli po deszczu szlak jest śliski, bezpieczniej oglądać wschód z tarasu hostelu."
+  ],
+  "steps": [
+    {
+      "name": "Dojdź do schodów",
+      "text": "Od hostelu idź około 350 m w stronę Sorrento główną drogą, aż zobaczysz schody prowadzące pod górę."
+    },
+    {
+      "name": "Wejdź do domu orientacyjnego",
+      "text": "Wejdź schodami do starego białego domu, a następnie skręć w lewo na leśną ścieżkę."
+    },
+    {
+      "name": "Wybierz prawą odnogę",
+      "text": "Gdy leśna ścieżka się rozwidli, trzymaj się prawej i idź dalej, aż zobaczysz morze."
+    },
+    {
+      "name": "Skręć w lewo na punkt widokowy",
+      "text": "Gdy ścieżka się otworzy i widać morze, skręć w lewo, aby dotrzeć na punkt widokowy (na wyższe skały wchodź ostrożnie)."
+    }
+  ],
+  "faqsTitle": "Najczęstsze pytania",
   "faqs": [
     {
       "q": "Can I just watch the sunrise from the hostel?",

@@ -1,0 +1,12 @@
+{
+  "title": "Anteprima tema ospitalità",
+  "guestActivation": {
+    "label": "Attivazione degli ospiti",
+    "description": "Ultimi 7 giorni"
+  },
+  "signalBridge": {
+    "title": "Controllo del ponte segnale",
+    "etaShared": "ETA condivisa",
+    "cashPrepared": "Contanti preparati"
+  }
+}

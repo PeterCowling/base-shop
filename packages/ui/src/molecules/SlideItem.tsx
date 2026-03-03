@@ -7,11 +7,13 @@ import { ArrowRight } from "lucide-react";
 import { CfCardImage } from "../atoms/CfCardImage";
 import { Cluster } from "../components/atoms/primitives/Cluster";
 import { Button } from "../components/atoms/shadcn";
+import { getRoomSlug } from "../config/roomSlugs";
 import type { Room } from "../data/roomsData";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import { useRoomPricing } from "../hooks/useRoomPricing";
 import type { AppLanguage } from "../i18n.config";
 import { resolveSharedToken } from "../shared";
+import type { RoomCardPrice } from "../types/roomCard";
 import { toAppLanguage } from "../utils/lang";
 import { getSlug } from "../utils/slug";
 
@@ -37,6 +39,7 @@ type ViewKey = (typeof VIEW_KEYS)[number];
 export interface SlideItemProps {
   item: Room;
   openModalForRate: (room: Room, rateType: "nonRefundable" | "refundable") => void;
+  price?: RoomCardPrice;
   height?: number;
   lang?: AppLanguage;
 }
@@ -44,7 +47,7 @@ export interface SlideItemProps {
 const DROP_FIRST_SEGMENT = /^\/[^/]+/;
 
 function SlideItemBase(
-  { item, openModalForRate, height, lang }: SlideItemProps,
+  { item, openModalForRate, price, height, lang }: SlideItemProps,
   ref: ForwardedRef<HTMLElement>
 ): JSX.Element {
   const { t, ready } = useTranslation("roomsPage", { lng: lang });
@@ -56,9 +59,15 @@ function SlideItemBase(
     firstSegment === "apartment" ? "apartment" : "rooms",
     toAppLanguage(effectiveLang)
   );
-  const { loading: priceLoading, lowestPrice } = useRoomPricing(item);
+  const { loading: fallbackPriceLoading, lowestPrice } = useRoomPricing(item);
 
-  const restPath = useMemo(() => item.roomsHref.replace(DROP_FIRST_SEGMENT, ""), [item.roomsHref]);
+  const restPath = useMemo(() => {
+    const localizedSlug = getRoomSlug(item.id, toAppLanguage(effectiveLang));
+    // getRoomSlug falls back to the room ID if no slug is registered; only use
+    // it as the path segment when it differs from the raw ID (i.e. a slug exists).
+    if (localizedSlug !== item.id) return `/${localizedSlug}`;
+    return item.roomsHref.replace(DROP_FIRST_SEGMENT, "");
+  }, [item.id, item.roomsHref, effectiveLang]);
   const roomHref = `/${effectiveLang}/${roomsSlug}${restPath}`;
 
   const normaliseLabel = useCallback((value: unknown): string => {
@@ -132,6 +141,9 @@ function SlideItemBase(
   }, [item.id, t, ready]);
 
   const priceLine = useMemo(() => {
+    const externalFormatted = typeof price?.formatted === "string" ? price.formatted.trim() : "";
+    const shouldUseExternalPrice = Boolean(price?.loading || price?.soldOut || externalFormatted);
+    const priceLoading = shouldUseExternalPrice ? Boolean(price?.loading) : fallbackPriceLoading;
     const unitKey = item.pricingModel === "perRoom" ? "perRoom" : "perBed";
     const unitPath = `priceUnits.${unitKey}`;
     const unitTranslation = normaliseLabel(t(unitPath));
@@ -139,13 +151,26 @@ function SlideItemBase(
     if (priceLoading) {
       return t("loadingPrice");
     }
+    if (shouldUseExternalPrice) {
+      if (price?.soldOut) {
+        if (typeof price.soldOutLabel === "string" && price.soldOutLabel.trim().length > 0) {
+          return price.soldOutLabel;
+        }
+        const soldOutKey = "soldOut";
+        const soldOutTranslation = normaliseLabel(t(soldOutKey));
+        return soldOutTranslation && soldOutTranslation !== soldOutKey ? soldOutTranslation : "";
+      }
+      return externalFormatted;
+    }
     if (typeof lowestPrice === "number") {
       const base = normaliseLabel(t("ratesFrom", { price: lowestPrice.toFixed(2) }));
       const prefix = base || `From €${lowestPrice.toFixed(2)}`;
       return unitLabel ? `${prefix} / ${unitLabel}` : prefix;
     }
     return "";
-  }, [item.pricingModel, lowestPrice, priceLoading, t, normaliseLabel]);
+  }, [fallbackPriceLoading, item.pricingModel, lowestPrice, normaliseLabel, price, t]);
+
+  const showPriceLoading = Boolean(price?.loading || (!price && fallbackPriceLoading));
 
   const availabilityLabel = useMemo(() => {
     if (!tokensReady) {
@@ -204,7 +229,7 @@ function SlideItemBase(
 
         <div className="md:mt-auto flex flex-col gap-3">
 
-          {priceLoading ? (
+          {showPriceLoading ? (
             <div
               data-testid={PRICE_LOADING_TEST_ID}
               aria-hidden="true"

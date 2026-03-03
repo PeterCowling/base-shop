@@ -25,7 +25,7 @@ const TURBOPACK_DEV_LOG_LIMIT_LINES = 200;
 const BRIKETTE_NODE_POLYFILL_REQUIRE = `--require ${fileURLToPath(new URL("../ssr-polyfills.cjs", import.meta.url))}`;
 const TURBOPACK_ROUTE_ASSERTIONS = [
   {
-    route: "/en/apartment",
+    route: "/en/private-rooms",
     pattern: /application\/ld\+json/i,
     description: "application/ld+json",
   },
@@ -204,7 +204,7 @@ async function runTurbopackSmoke() {
       appendDevLog(devLogs, "process", error.message);
     });
 
-    let apartmentHtml = "";
+    let privateRoomsHtml = "";
     let ready = false;
     for (let second = 1; second <= TURBOPACK_READINESS_TIMEOUT_SECONDS; second += 1) {
       if (devProcess.exitCode !== null || devProcess.signalCode !== null) {
@@ -212,7 +212,7 @@ async function runTurbopackSmoke() {
       }
 
       try {
-        apartmentHtml = await fetchHtml(`${baseUrl}/en/apartment`, 5);
+        privateRoomsHtml = await fetchHtml(`${baseUrl}/en/private-rooms`, 5);
         ready = true;
         break;
       } catch {
@@ -221,11 +221,15 @@ async function runTurbopackSmoke() {
     }
 
     if (!ready) {
-      throw new Error(`Readiness timeout (${TURBOPACK_READINESS_TIMEOUT_SECONDS}s) waiting for ${baseUrl}/en/apartment`);
+      throw new Error(
+        `Readiness timeout (${TURBOPACK_READINESS_TIMEOUT_SECONDS}s) waiting for ${baseUrl}/en/private-rooms`,
+      );
     }
 
-    if (!TURBOPACK_ROUTE_ASSERTIONS[0].pattern.test(apartmentHtml)) {
-      throw new Error(`Route /en/apartment did not include required text: ${TURBOPACK_ROUTE_ASSERTIONS[0].description}`);
+    if (!TURBOPACK_ROUTE_ASSERTIONS[0].pattern.test(privateRoomsHtml)) {
+      throw new Error(
+        `Route /en/private-rooms did not include required text: ${TURBOPACK_ROUTE_ASSERTIONS[0].description}`,
+      );
     }
 
     for (const assertion of TURBOPACK_ROUTE_ASSERTIONS.slice(1)) {

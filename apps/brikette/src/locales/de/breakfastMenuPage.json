@@ -4,7 +4,7 @@
     "description": "Frühstück täglich 08:00–10:30. Eier-Kombis, süße Varianten, gesunde Bowls, Säfte, Smoothies und Kaffee."
   },
   "header": {
-    "brand": "Hostel Brikette",
+    "brand": "Gästehaus Brikette",
     "menuTitle": "Frühstücksmenü, 2025",
     "hours": "08:00 – 10:30 täglich"
   },
@@ -130,7 +130,7 @@
       "name": "Americano / langes Schwarz"
     },
     "cappuccino": {
-      "name": "Cappuccino"
+      "name": "Capruccino"
     },
     "latte": {
       "name": "Latte"

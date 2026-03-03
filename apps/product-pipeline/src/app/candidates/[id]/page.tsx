@@ -5,8 +5,6 @@ import PageHeader from "@/components/PageHeader";
 
 import CandidateDetailClient from "./CandidateDetailClient";
 
-export const runtime = "edge";
-
 export default async function CandidateDetailPage({
   params,
 }: {

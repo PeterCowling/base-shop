@@ -45,8 +45,10 @@ export async function GET(
 
     return NextResponse.json(result);
   } catch (err) {
-    console.error("[api/pages] GET error:", err);
-    return NextResponse.json({ error: "Failed to fetch pages" }, { status: 400 });
+    const message = err instanceof Error ? err.message : "Unknown error";
+    const status =
+      message === "Forbidden" || message === "Unauthorized" ? 403 : 400;
+    return NextResponse.json({ error: message }, { status });
   }
 }
 

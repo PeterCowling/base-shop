@@ -486,9 +486,9 @@
     "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
     "kneesList": [],
     "kneesDockPrefix": "Parti con i bagagli dal molo dei traghetti? Usa il nostro",
-    "kneesDockLinkLabel": "Ferry dock luggage route",
+    "kneesDockLinkLabel": "Itinerario dei bagagli",
     "kneesPorterPrefix": "Hai bisogno di prezzi o aiuto per prenotare un facchino? Consulta la",
-    "kneesPorterLinkLabel": "porter service guide",
+    "kneesPorterLinkLabel": "Guida al servizio porter",
     "faqs": [
       {
         "q": "Gli autobus si fermano proprio davanti all'ostello?",
@@ -503,6 +503,6 @@
       "Lascia l'Hostel Brikette e segui Viale Pasitea in discesa",
       "Mettiti in fila al Bar Internazionale e convalida il biglietto salendo a bordo"
     ],
-    "faqsTitle": "FAQs"
+    "faqsTitle": "Domande frequenti"
   }
 }

@@ -1,0 +1,85 @@
+name: Caryina Checkout Reconciliation
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+    inputs:
+      stale_minutes:
+        description: "Stale threshold in minutes (positive integer)"
+        required: false
+        default: "15"
+      max_attempts:
+        description: "Maximum stale attempts to process per run (positive integer)"
+        required: false
+        default: "25"
+
+permissions: {}
+
+concurrency:
+  group: caryina-checkout-reconciliation
+  cancel-in-progress: false
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    env:
+      CARYINA_BASE_URL: ${{ vars.CARYINA_BASE_URL }}
+      CARYINA_CRON_SECRET: ${{ secrets.CARYINA_CRON_SECRET }}
+      STALE_MINUTES: ${{ github.event_name == 'workflow_dispatch' && inputs.stale_minutes || '15' }}
+      MAX_ATTEMPTS: ${{ github.event_name == 'workflow_dispatch' && inputs.max_attempts || '25' }}
+    steps:
+      - name: Validate runtime configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${CARYINA_BASE_URL}" ]]; then
+            echo "::error::Missing repository variable CARYINA_BASE_URL (example: https://caryina.com)."
+            exit 1
+          fi
+
+          if [[ -z "${CARYINA_CRON_SECRET}" ]]; then
+            echo "::error::Missing repository secret CARYINA_CRON_SECRET."
+            exit 1
+          fi
+
+          if ! [[ "${STALE_MINUTES}" =~ ^[1-9][0-9]*$ ]]; then
+            echo "::error::stale_minutes must be a positive integer (received: ${STALE_MINUTES})."
+            exit 1
+          fi
+
+          if ! [[ "${MAX_ATTEMPTS}" =~ ^[1-9][0-9]*$ ]]; then
+            echo "::error::max_attempts must be a positive integer (received: ${MAX_ATTEMPTS})."
+            exit 1
+          fi
+
+      - name: Trigger checkout reconciliation
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          endpoint="${CARYINA_BASE_URL%/}/api/cron/checkout-reconciliation?staleMinutes=${STALE_MINUTES}&maxAttempts=${MAX_ATTEMPTS}"
+          response_file="$(mktemp)"
+          http_code="$(
+            curl \
+              --silent \
+              --show-error \
+              --output "${response_file}" \
+              --write-out "%{http_code}" \
+              --connect-timeout 10 \
+              --max-time 60 \
+              --header "authorization: Bearer ${CARYINA_CRON_SECRET}" \
+              "${endpoint}"
+          )"
+
+          echo "Endpoint: ${endpoint}"
+          echo "HTTP status: ${http_code}"
+          echo "Response body:"
+          cat "${response_file}"
+          echo
+
+          if [[ "${http_code}" -lt 200 || "${http_code}" -ge 300 ]]; then
+            echo "::error::Reconciliation call failed with HTTP ${http_code}."
+            exit 1
+          fi

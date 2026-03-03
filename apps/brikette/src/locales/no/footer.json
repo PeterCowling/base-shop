@@ -19,7 +19,7 @@
   "experiences": "Opplevelser",
   "howToGetHere": "Slik kommer du hit",
   "exploreHeading": "Utforsk",
-  "infoHeading": "Info",
+  "infoHeading": "Informasjon",
   "legalHeading": "Juridisk",
   "locationHeading": "Adresse",
   "mapLink": "Åpne i Google Maps",
@@ -30,5 +30,5 @@
   "cancellationPolicy": "Avbestillingspolicy",
   "privacy": "Personvernerklæring",
   "cookies": "Retningslinjer for informasjonskapsler",
-  "navAriaLabel": "Footer navigation"
+  "navAriaLabel": "Footfoot navigation"
 }

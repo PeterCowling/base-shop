@@ -158,6 +158,26 @@ describe("useCashCountsMutations", () => {
     });
   });
 
+  it("addOpeningFloatEntry delegates to addCashCount", async () => {
+    const { result } = renderHook(() => useCashCountsMutations());
+
+    await act(async () => {
+      await result.current.addOpeningFloatEntry(75);
+    });
+
+    expect(setMock).toHaveBeenCalledWith("newRef", {
+      user: "tester",
+      timestamp: "2024-01-01T10:00:00Z",
+      type: "openingFloat",
+      count: 0,
+      difference: 0,
+      amount: 75,
+      denomBreakdown: undefined,
+      keycardCount: undefined,
+      shiftId: undefined,
+    });
+  });
+
   it("addDeposit uses safe transaction helper", async () => {
     const { result } = renderHook(() => useCashCountsMutations());
 

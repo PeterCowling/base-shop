@@ -1,0 +1,40 @@
+{
+  "figures": {
+    "map": {
+      "alt": "Mappa che mostra il percorso a piedi da Hostel Brikette a Positano porto con punti 1-5.",
+      "caption": "Panoramica della rotta: Ostello → Porto (punti 1-5)."
+    },
+    "point1": {
+      "alt": "Intersezione vicino a Viale Pasitea con un percorso marcato e un'etichetta: '1 Turn Right'.",
+      "caption": "Punto 1: gira a destra."
+    },
+    "tabacchi": {
+      "alt": "Tabacchi negozio con un bancomat accanto ad esso.",
+      "caption": "Tabacchi vicino al punto 1 (buon punto di riferimento)."
+    },
+    "point2": {
+      "alt": "Interruttore stradale con una linea marcata verso le scale e un'etichetta: '2 Prendere le scale dritto avanti'.",
+      "caption": "Punto 2: lasciare la strada e prendere le scale dritto avanti."
+    },
+    "point3": {
+      "alt": "Vicolo stretto con gradini e un sentiero segnato, etichettato '3 Prendere le scale dritto avanti'.",
+      "caption": "Punto 3: proseguire dritto lungo le scale."
+    },
+    "point4": {
+      "alt": "Crosswalk e road con un percorso segnato verso le scale sulla destra, etichettato '4'.",
+      "caption": "Punto 4: attraversare la strada, girare a sinistra brevemente, poi prendere le scale giù sulla destra."
+    },
+    "point5": {
+      "alt": "Piccola piazza vicino al porto con un percorso marcato, etichettato '5'.",
+      "caption": "Punto 5: continuare sotto l'arco verso il porto."
+    },
+    "tickets": {
+      "alt": "Traghetti al porto di Positano con orari.",
+      "caption": "Biglietteria: controlla il cartello per la prossima partenza."
+    },
+    "port": {
+      "alt": "Vista del porto di Positano con un traghetto in primo piano e Positano collina dietro.",
+      "caption": "Porto di Positano: attendere vicino alla fine del molo per le chiamate di imbarco."
+    }
+  }
+}

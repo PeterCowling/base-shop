@@ -181,30 +181,30 @@
       ]
     }
   ],
-  "essentialsTitle": "What to expect",
+  "essentialsTitle": "Hva å forvente",
   "essentials": [
     "A tiny pebble beach at the bottom of a steep staircase — not a full-service beach day.",
     "Bus stop on the coastal road above the gorge; the beach is down the stairs.",
     "Almost no facilities: bring water, snacks, sun protection, and a small dry bag."
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "Typiske kostnader",
   "typicalCosts": [
     "SITA bus tickets are inexpensive, but availability is the real constraint in summer (buses can be full).",
     "Emergency taxi from the road above can be pricey — splitting with other guests helps."
   ],
-  "tipsTitle": "Quick tips",
+  "tipsTitle": "Raske tips",
   "tips": [
     "Arrive early if you want photos without crowds under the bridge.",
     "Pack reef-safe sunscreen and water shoes — the rocks are slick when wet.",
     "Pair this stop with a bigger beach day from our %LINK:positanoBeaches|Positano beaches overview% so you’re not relying on one tiny cove for the whole afternoon."
   ],
-  "warningsTitle": "Good to know",
+  "warningsTitle": "Godt å vite",
   "warnings": [
     "Buy round-trip bus tickets in Positano; there is nowhere to purchase or validate them at the fiord.",
     "Buses sometimes skip the stop when full in peak months — allow extra time to get home.",
     "Space on the beach is tight and shade arrives quickly in the afternoon."
   ],
-  "faqsTitle": "Fiordo di Furore FAQs",
+  "faqsTitle": "FAQ om Fiordo di Furore",
   "faqs": [
     {
       "q": "Is Fiordo di Furore a sandy beach?",
@@ -233,7 +233,7 @@
   ],
   "sectionFigure": {
     "src": "/img/guides/fiordo-di-furore/01-beach-and-bridge.jpg",
-    "alt": "Fiordo di Furore bridge above the cove",
-    "caption": "The narrow inlet sits beneath the arched bridge."
+    "alt": "Fiordo di Furore bro over bukta",
+    "caption": "Den smale innløpet ligger under den buede broen."
   }
 }

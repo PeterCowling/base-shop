@@ -25,6 +25,7 @@ jest.mock("@acme/ui/operations", () => ({
 describe("useProductPageData", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    apiRequest.mockResolvedValue({ data: [], error: null });
     mockToastMessages.length = 0;
     const store: Record<string, string> = {};
     const localStorageMock = {
@@ -76,10 +77,17 @@ describe("useProductPageData", () => {
   });
 
   it("handles save success and error", async () => {
-    apiRequest
-      .mockResolvedValueOnce({ data: [], error: null })
-      .mockResolvedValueOnce({ data: { id: "1" }, error: null })
-      .mockResolvedValueOnce({ data: null, error: "save error" });
+    let saveCalls = 0;
+    apiRequest.mockImplementation(async (_url: string, options?: RequestInit) => {
+      if (!options) {
+        return { data: [], error: null };
+      }
+      saveCalls += 1;
+      if (saveCalls === 1) {
+        return { data: { id: "1" }, error: null };
+      }
+      return { data: null, error: "save error" };
+    });
     const setProductPageId = jest.fn();
     const setProductComponents = jest.fn();
     const { result } = renderHook(() =>
@@ -104,10 +112,17 @@ describe("useProductPageData", () => {
   });
 
   it("handles publish success and error", async () => {
-    apiRequest
-      .mockResolvedValueOnce({ data: [], error: null })
-      .mockResolvedValueOnce({ data: { id: "2" }, error: null })
-      .mockResolvedValueOnce({ data: null, error: "publish error" });
+    let publishCalls = 0;
+    apiRequest.mockImplementation(async (_url: string, options?: RequestInit) => {
+      if (!options) {
+        return { data: [], error: null };
+      }
+      publishCalls += 1;
+      if (publishCalls === 1) {
+        return { data: { id: "2" }, error: null };
+      }
+      return { data: null, error: "publish error" };
+    });
     const setProductPageId = jest.fn();
     const setProductComponents = jest.fn();
     const { result } = renderHook(() =>

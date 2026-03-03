@@ -24,10 +24,14 @@
     "reload": "Перезагрузить страницу"
   },
   "meta": {
-    "twitterCard": "summary_large_image",
+    "twitterCard": "Summary_large_image",
     "twitterHandle": "@brikette"
   },
   "internalErrors": {
     "assistanceSlugMissing": "ARTICLE_SLUGS должен определять хотя бы один assistance slug"
+  },
+  "stickyCta": {
+    "directHeadline": "Зафиксируйте лучший доступный тариф менее чем за две минуты.",
+    "directSubcopy": "Избегайте комиссий посредников и получайте приоритетную помощь от нашей команды в Позитано."
   }
 }

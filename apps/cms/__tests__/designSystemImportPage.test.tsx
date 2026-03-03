@@ -10,7 +10,7 @@ const track = jest.fn();
 const push = jest.fn();
 
 jest.mock("@acme/telemetry", () => ({
-  track,
+  track: (...args: unknown[]) => track(...args),
 }));
 
 jest.mock("next/navigation", () => ({

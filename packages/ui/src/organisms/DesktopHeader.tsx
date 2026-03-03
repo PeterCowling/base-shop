@@ -19,7 +19,7 @@ import { LanguageSwitcher } from "../molecules/LanguageSwitcher";
 import { ThemeToggle } from "../molecules/ThemeToggle";
 import { resolvePrimaryCtaLabel } from "../shared";
 import type { SlugMap } from "../slug-map";
-import { buildNavLinks, type TranslateFn } from "../utils/buildNavLinks";
+import { buildNavLinks, type NavItemChild, type TranslateFn } from "../utils/buildNavLinks";
 import { translatePath } from "../utils/translate-path";
 
 /*  Public assets are referenced by absolute URL paths.
@@ -40,9 +40,13 @@ const FALLBACK_LOGO_ALT =
 function DesktopHeader({
   lang: explicitLang,
   onPrimaryCtaClick,
+  experienceNavItems,
+  howToGetHereNavItems,
 }: {
   lang?: AppLanguage;
   onPrimaryCtaClick?: () => boolean | void;
+  experienceNavItems?: NavItemChild[];
+  howToGetHereNavItems?: NavItemChild[];
 }): React.JSX.Element {
   const fallbackLang = useCurrentLanguage();
   const { i18n } = useTranslation();
@@ -114,7 +118,7 @@ function DesktopHeader({
     [headerT, hasHeaderBundle, lang]
   );
 
-  const { navLinks } = buildNavLinks(lang, navTranslate);
+  const { navLinks } = buildNavLinks(lang, navTranslate, experienceNavItems, howToGetHereNavItems);
   const ctaClass = "cta-light";
   const primaryCtaLabel = useMemo(() => {
     if (!tokensReady) return FALLBACK_PRIMARY_CTA_LABEL;
@@ -199,11 +203,14 @@ function DesktopHeader({
                     </li>
                   );
                 }
+                const isOpen = openKey === key;
+                const dropdownTriggerId = "desktop-nav-trigger-" + key;
+                const dropdownContentId = "desktop-nav-content-" + key;
 
                 return (
                   <li key={key}>
                     <DropdownMenu
-                      open={openKey === key}
+                      open={isOpen}
                       modal={false}
                       onOpenChange={(o) => {
                         // Only handle Radix-driven close events (Escape, click outside,
@@ -221,7 +228,11 @@ function DesktopHeader({
                         onOpenToggle from firing — our hover/click state management stays in
                         full control.
                       */}
-                      <DropdownMenuTrigger asChild>
+                      <DropdownMenuTrigger
+                        asChild
+                        id={dropdownTriggerId}
+                        aria-controls={isOpen ? dropdownContentId : undefined}
+                      >
                         {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
                         <div
                           className="flex items-center"
@@ -279,6 +290,8 @@ function DesktopHeader({
                         </div>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent
+                        id={dropdownContentId}
+                        aria-labelledby={dropdownTriggerId}
                         align="start"
                         sideOffset={4}
                         className="max-h-[80vh] overflow-y-auto"

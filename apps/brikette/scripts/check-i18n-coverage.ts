@@ -24,11 +24,15 @@ const args = new Set(
     (arg) =>
       !arg.startsWith("--output=") &&
       !arg.startsWith("--locales-root=") &&
-      !arg.startsWith("--locales="),
+      !arg.startsWith("--locales=") &&
+      !arg.startsWith("--max-missing-files=") &&
+      !arg.startsWith("--max-missing-keys=") &&
+      !arg.startsWith("--max-untranslated-keys="),
   ),
 );
 const verbose = args.has("--verbose");
 const failOnMissing = args.has("--fail-on-missing");
+const failOnUntranslated = args.has("--fail-on-untranslated");
 const jsonOutput = args.has("--json");
 const maxListItems = verbose ? Number.POSITIVE_INFINITY : 10;
 
@@ -50,6 +54,24 @@ const localesOverrideRaw = localesArg
 // Parse --output=<path> argument
 const outputArg = rawArgs.find((arg) => arg.startsWith("--output="));
 const outputPath = outputArg ? outputArg.slice("--output=".length) : undefined;
+
+const parseIntegerOption = (
+  optionName: "--max-missing-files=" | "--max-missing-keys=" | "--max-untranslated-keys=",
+): number | undefined => {
+  const option = rawArgs.find((arg) => arg.startsWith(optionName));
+  if (!option) return undefined;
+
+  const rawValue = option.slice(optionName.length).trim();
+  const parsed = Number.parseInt(rawValue, 10);
+  if (!Number.isFinite(parsed) || parsed < 0) {
+    throw new Error(`${optionName} expects a non-negative integer, received "${rawValue}"`);
+  }
+  return parsed;
+};
+
+const maxMissingFiles = parseIntegerOption("--max-missing-files=");
+const maxMissingKeys = parseIntegerOption("--max-missing-keys=");
+const maxUntranslatedKeys = parseIntegerOption("--max-untranslated-keys=");
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -87,10 +109,170 @@ const formatList = (items: string[], maxItems: number): { shown: string[]; remai
   return { shown: items.slice(0, maxItems), remaining: items.length - maxItems };
 };
 
+const NON_TRANSLATABLE_EXACT_VALUES = new Set([
+  "summary_large_image",
+  "@brikette",
+  "Absolut",
+  "Amalfi",
+  "Beefeater",
+  "Cappuccino",
+  "Capri",
+  "Capri.net – Capri ↔ Positano",
+  "Ferragosto",
+  "Gelato",
+  "Herculaneum",
+  "Hostelworld",
+  "Ischia",
+  "Johnnie Walker Red Label (Blended Scotch)",
+  "Latte",
+  "Limoncello",
+  "Luminaria di San Domenico",
+  "Luminaria di San Domenico (Praiano)",
+  "Macchiato",
+  "Naples",
+  "noindex,follow",
+  "noindex,nofollow",
+  "Pampero",
+  "Piazza San Gennaro, Praiano",
+  "Positano",
+  "Praiano",
+  "Procida",
+  "Ravello",
+  "Salerno",
+  "Skyy",
+  "Smirnoff",
+  "Sorrento",
+  "Tanqueray",
+  "Travelmar",
+  "Tramonti",
+  "Whisky",
+]);
+
+const PLACEHOLDER_TOKEN_REGEX =
+  /\{\{\s*[^{}]+\s*\}\}|%(?:\d+\$)?[+#0\- ]*(?:\d+|\*)?(?:\.(?:\d+|\*))?[sdif]|%\([^)]+\)[sdif]|<\/?[0-9]+>|<[0-9]+\s*\/>|%[A-Z]+:[^%]+%/g;
+
+const isCandidateForTranslationDiff = (value: string): boolean => {
+  const trimmed = value.trim();
+  if (trimmed.length === 0) return false;
+  if (NON_TRANSLATABLE_EXACT_VALUES.has(trimmed)) return false;
+  const withoutPlaceholders = trimmed.replace(PLACEHOLDER_TOKEN_REGEX, "").trim();
+  if (withoutPlaceholders.length === 0) return false;
+  if (/^[:/%\-\s.,()]+$/.test(withoutPlaceholders)) return false;
+
+  // Ignore obvious non-natural-language values.
+  if (/^https?:\/\//i.test(trimmed)) return false;
+  if (/^[a-z0-9.-]+\.[a-z]{2,}(?:\/[^\s]*)?$/i.test(trimmed)) return false;
+  if (/^[^\s]+\.(?:png|jpe?g|webp|gif|svg|ico|avif)$/i.test(trimmed)) return false;
+  if (/^[^\s]+\.(?:json|md|txt|csv)$/i.test(trimmed)) return false;
+  if (/^\/[a-z0-9/_\-]*$/i.test(trimmed)) return false;
+  if (/^[a-z0-9/_\-]+\.(?:png|jpe?g|webp|gif|svg|ico|avif)$/i.test(trimmed)) return false;
+  if (/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/i.test(trimmed)) return false;
+  if (/^\{\{[^}]+\}\}$/.test(trimmed)) return false;
+  if (/^%[sdif]$/i.test(trimmed)) return false;
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/.test(trimmed)) return false;
+  if (/^[\p{P}\p{S}\s]+$/u.test(trimmed)) return false;
+  if (/^[0-9\s.,:%€$£¥+-]+$/.test(trimmed)) return false;
+  if (/^[A-Z0-9_]+$/.test(trimmed)) return false;
+
+  return true;
+};
+
+const isNonTranslatableKeyPath = (pathKey: string): boolean => {
+  const normalized = pathKey.toLowerCase();
+  const terminal = normalized.split(".").at(-1) ?? normalized;
+  if (
+    terminal === "src" ||
+    terminal === "slug" ||
+    terminal === "email" ||
+    terminal === "facebook" ||
+    terminal === "instagram" ||
+    terminal === "twitter" ||
+    terminal === "x" ||
+    terminal === "url" ||
+    terminal === "href" ||
+    terminal === "handle" ||
+    terminal === "username" ||
+    terminal === "filename" ||
+    terminal === "filepath" ||
+    terminal === "lastupdated" ||
+    terminal === "address" ||
+    terminal === "addressvalue" ||
+    terminal === "cityname" ||
+    terminal === "brand" ||
+    terminal === "brandname" ||
+    terminal === "addresslocality" ||
+    terminal === "locationname" ||
+    terminal === "mapreferrerpolicy" ||
+    terminal === "twittercard"
+  ) {
+    return true;
+  }
+
+  return (
+    normalized.endsWith(".src") ||
+    normalized.endsWith(".slug") ||
+    normalized.endsWith(".email") ||
+    normalized.endsWith(".facebook") ||
+    normalized.endsWith(".instagram") ||
+    normalized.endsWith(".twitter") ||
+    normalized.endsWith(".x") ||
+    normalized.endsWith(".url") ||
+    normalized.endsWith(".href") ||
+    normalized.endsWith(".handle") ||
+    normalized.endsWith(".username") ||
+    normalized.endsWith(".filename") ||
+    normalized.endsWith(".filepath") ||
+    normalized.endsWith(".lastupdated") ||
+    normalized.endsWith(".address") ||
+    normalized.endsWith(".addressvalue") ||
+    normalized.endsWith(".cityname") ||
+    normalized.endsWith(".brand") ||
+    normalized.endsWith(".brandname") ||
+    normalized.endsWith(".addresslocality") ||
+    normalized.endsWith(".locationname") ||
+    normalized.endsWith(".mapreferrerpolicy") ||
+    normalized.endsWith(".twittercard")
+  );
+};
+
+const collectUntranslatedKeys = (
+  base: unknown,
+  target: unknown,
+  prefix: string,
+  untranslated: string[],
+): void => {
+  if (!isRecord(base) || !isRecord(target)) return;
+
+  for (const [key, value] of Object.entries(base)) {
+    const pathKey = prefix ? `${prefix}.${key}` : key;
+    if (!(key in target)) {
+      continue;
+    }
+
+    const targetValue = target[key];
+    if (isRecord(value) && isRecord(targetValue)) {
+      collectUntranslatedKeys(value, targetValue, pathKey, untranslated);
+      continue;
+    }
+
+    if (typeof value === "string" && typeof targetValue === "string") {
+      if (isNonTranslatableKeyPath(pathKey)) {
+        continue;
+      }
+      const left = value.trim();
+      const right = targetValue.trim();
+      if (left === right && isCandidateForTranslationDiff(left)) {
+        untranslated.push(pathKey);
+      }
+    }
+  }
+};
+
 type LocaleReport = {
   locale: string;
   missingFiles: string[];
   missingKeys: Record<string, string[]>;
+  untranslatedKeys: Record<string, string[]>;
 };
 
 /**
@@ -98,12 +280,13 @@ type LocaleReport = {
  * @see docs/plans/i18n-missing-key-detection-plan.md
  */
 type CoverageReportJson = {
-  schemaVersion: 1;
+  schemaVersion: 2;
   baselineLocale: string;
   locales: string[];
   summary: {
     totalMissingFiles: number;
     totalMissingKeys: number;
+    totalUntranslatedKeys: number;
   };
   reports: LocaleReport[];
 };
@@ -128,6 +311,7 @@ const main = async (): Promise<void> => {
     const localeDir = path.join(LOCALES_ROOT, locale);
     const missingFiles: string[] = [];
     const missingKeys: Record<string, string[]> = {};
+    const untranslatedKeys: Record<string, string[]> = {};
 
     for (const relativeFile of baselineFiles) {
       const baselinePath = path.join(baselineDir, relativeFile);
@@ -148,6 +332,12 @@ const main = async (): Promise<void> => {
         if (missing.length > 0) {
           missingKeys[relativeFile] = missing.sort();
         }
+
+        const untranslated: string[] = [];
+        collectUntranslatedKeys(baseJson, localeJson, "", untranslated);
+        if (untranslated.length > 0) {
+          untranslatedKeys[relativeFile] = untranslated.sort();
+        }
       } catch (error) {
         missingKeys[relativeFile] = [
           `__parse_error__: ${(error as Error).message}`,
@@ -155,29 +345,34 @@ const main = async (): Promise<void> => {
       }
     }
 
-    reports.push({ locale, missingFiles, missingKeys });
+    reports.push({ locale, missingFiles, missingKeys, untranslatedKeys });
   }
 
   // Calculate totals
   let totalMissingFiles = 0;
   let totalMissingKeys = 0;
+  let totalUntranslatedKeys = 0;
 
   for (const report of reports) {
     const missingKeysEntries = Object.entries(report.missingKeys);
     const missingKeyCount = missingKeysEntries.reduce((sum, [, keys]) => sum + keys.length, 0);
+    const untranslatedEntries = Object.entries(report.untranslatedKeys);
+    const untranslatedCount = untranslatedEntries.reduce((sum, [, keys]) => sum + keys.length, 0);
     totalMissingFiles += report.missingFiles.length;
     totalMissingKeys += missingKeyCount;
+    totalUntranslatedKeys += untranslatedCount;
   }
 
   // Handle JSON output mode
   if (jsonOutput) {
     const jsonReport: CoverageReportJson = {
-      schemaVersion: 1,
+      schemaVersion: 2,
       baselineLocale: BASELINE_LOCALE,
       locales,
       summary: {
         totalMissingFiles,
         totalMissingKeys,
+        totalUntranslatedKeys,
       },
       reports,
     };
@@ -190,7 +385,9 @@ const main = async (): Promise<void> => {
       await mkdir(outputDir, { recursive: true });
       await writeFile(outputPath, jsonString, "utf8");
       console.log(`i18n coverage report written to: ${outputPath}`);
-      console.log(`Summary: ${totalMissingFiles} missing files, ${totalMissingKeys} missing keys`);
+      console.log(
+        `Summary: ${totalMissingFiles} missing files, ${totalMissingKeys} missing keys, ${totalUntranslatedKeys} untranslated keys`,
+      );
     } else {
       // Print JSON to stdout
       console.log(jsonString);
@@ -203,6 +400,8 @@ const main = async (): Promise<void> => {
     for (const report of reports) {
       const missingKeysEntries = Object.entries(report.missingKeys);
       const missingKeyCount = missingKeysEntries.reduce((sum, [, keys]) => sum + keys.length, 0);
+      const untranslatedEntries = Object.entries(report.untranslatedKeys);
+      const untranslatedCount = untranslatedEntries.reduce((sum, [, keys]) => sum + keys.length, 0);
 
       console.log("");
       console.log(`${report.locale}:`);
@@ -235,14 +434,59 @@ const main = async (): Promise<void> => {
           console.log("  (run with --verbose for per-key details)");
         }
       }
+
+      console.log(`  Untranslated keys (same as ${BASELINE_LOCALE}): ${untranslatedCount}`);
+      if (untranslatedEntries.length > 0) {
+        for (const [file, keys] of untranslatedEntries) {
+          console.log(`    - ${file}: ${keys.length}`);
+          if (verbose) {
+            const { shown, remaining } = formatList(keys, maxListItems);
+            for (const key of shown) {
+              console.log(`      - ${key}`);
+            }
+            if (remaining > 0) {
+              console.log(`      ... +${remaining} more`);
+            }
+          }
+        }
+        if (!verbose) {
+          console.log("  (run with --verbose for per-key details)");
+        }
+      }
     }
 
     console.log("");
     console.log(`Total missing files: ${totalMissingFiles}`);
     console.log(`Total missing keys: ${totalMissingKeys}`);
+    console.log(`Total untranslated keys: ${totalUntranslatedKeys}`);
+  }
+
+  const thresholdFailures: string[] = [];
+  if (maxMissingFiles !== undefined && totalMissingFiles > maxMissingFiles) {
+    thresholdFailures.push(
+      `missing files ${totalMissingFiles} exceeds threshold ${maxMissingFiles}`,
+    );
+  }
+  if (maxMissingKeys !== undefined && totalMissingKeys > maxMissingKeys) {
+    thresholdFailures.push(
+      `missing keys ${totalMissingKeys} exceeds threshold ${maxMissingKeys}`,
+    );
+  }
+  if (maxUntranslatedKeys !== undefined && totalUntranslatedKeys > maxUntranslatedKeys) {
+    thresholdFailures.push(
+      `untranslated keys ${totalUntranslatedKeys} exceeds threshold ${maxUntranslatedKeys}`,
+    );
+  }
+
+  if (thresholdFailures.length > 0) {
+    console.error(`Threshold check failed: ${thresholdFailures.join("; ")}`);
+    process.exitCode = 1;
   }
 
   if (failOnMissing && (totalMissingFiles > 0 || totalMissingKeys > 0)) {
+    process.exitCode = 1;
+  }
+  if (failOnUntranslated && totalUntranslatedKeys > 0) {
     process.exitCode = 1;
   }
 };

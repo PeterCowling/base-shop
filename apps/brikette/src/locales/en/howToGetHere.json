@@ -928,5 +928,9 @@
       "pros": "Pros",
       "cons": "Cons"
     }
+  },
+  "loadingFallback": {
+    "intro": "Route planner copy is loading. In the meantime, use these route guides:",
+    "routeLabelFallback": "Route guide"
   }
 }

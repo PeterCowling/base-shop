@@ -8,7 +8,7 @@
     "このルートに従って、SITA バスでホステル ブリケットからフィオルド ディ フローレまで移動すると、停留所に乗り遅れたり、準備ができていない状態で到着したりすることはありません。",
     "フィヨルドにはチケット販売施設やショップがないため、チケット、最寄りのバス停、ビーチに続く階段をこれらの手順でカバーします。"
   ],
-  "warningsTitle": "Before you leave the hostel",
+  "warningsTitle": "ホステルを離れる前に",
   "warnings": [
     "Buy a round-trip SITA ticket in Positano — there is no way to purchase or validate tickets once you reach the beach.",
     "Buses fill quickly in peak months and may skip the stop when full, so allow extra time for your journey."
@@ -75,7 +75,7 @@
     "帰りの際に備えて、%LINK:fiordoDiFuroreBusReturn|フィオルド ディ フローレ → ホステル ブリケットの往復ガイド%を保存してください。",
     "Jump to the %LINK:positanoBeaches|Positano beaches overview% to compare other swim spots for the same day."
   ],
-  "faqsTitle": "Common questions",
+  "faqsTitle": "よくある質問",
   "faqs": [
     {
       "q": "本当に往復の切符を事前に購入する必要があるのでしょうか？",

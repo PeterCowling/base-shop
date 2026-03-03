@@ -81,7 +81,7 @@ function LocationInline({ lang }: { lang?: string }): JSX.Element {
         iconSize="sm"
         className="rounded-full text-xs"
       >
-        {resolveText("getDirections")}
+        {resolveText("location.getDirections")}
       </Button>
     </div>
   );

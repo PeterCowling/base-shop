@@ -5,7 +5,7 @@
       "title": "Dove alloggiare"
     },
     "amalfi": {
-      "label": "Amalfi",
+      "label": "Amalfitana",
       "title": "Guide di Amalfi"
     },
     "backpackers": {
@@ -27,7 +27,7 @@
       "description": "Come risparmiare su trasporti, cibo e attività."
     },
     "bus": {
-      "label": "Bus",
+      "label": "Autobus",
       "title": "Bus & SITA"
     },
     "camping": {
@@ -35,7 +35,7 @@
       "title": "Campeggio in Costiera"
     },
     "capri": {
-      "label": "Capri",
+      "label": "Capriccio capriccioso",
       "title": "Capri low‑cost"
     },
     "car": {
@@ -181,7 +181,7 @@
       "title": "Facchini & bagagli"
     },
     "positano": {
-      "label": "Positano",
+      "label": "Positivo",
       "title": "Guide di Positano"
     },
     "praiano": {
@@ -201,11 +201,11 @@
       "title": "Sicurezza in Costiera"
     },
     "salerno": {
-      "label": "Salerno",
-      "title": "Salerno ↔ Positano"
+      "label": "Venditarno",
+      "title": "Venditarno ↔ positano"
     },
     "shopping": {
-      "label": "Shopping",
+      "label": "Negozi",
       "title": "Shopping e artigiani"
     },
     "shoulder": {
@@ -229,7 +229,7 @@
       "title": "Estate a Positano"
     },
     "tips": {
-      "label": "Tips",
+      "label": "Consigli",
       "title": "Consigli di viaggio"
     },
     "train": {

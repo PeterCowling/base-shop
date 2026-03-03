@@ -18,15 +18,15 @@ describe("buildNavLinks", () => {
       expect(new Set(labels).size).toBe(labels.length);
     });
 
-    it("TC-03: room detail children follow /{rooms-slug}/{id} pattern (no lang prefix)", () => {
+    it("TC-03: room detail children follow /{rooms-slug}/{slug} pattern (no lang prefix)", () => {
       const { navLinks, slugs } = buildNavLinks("en", stub);
       const rooms = navLinks.find((l) => l.key === "rooms")!;
       const roomsSlug = slugs["rooms"]; // "/dorms" in English per slug-map.ts
       const detailChildren = rooms.children!.filter((c) => c.key !== "rooms_all");
       detailChildren.forEach((child) => {
-        // starts with the rooms slug and ends with a valid room id segment
+        // starts with the rooms slug and ends with a valid slug segment (letters, digits, hyphens)
         expect(child.to.startsWith(roomsSlug + "/")).toBe(true);
-        expect(child.to.slice(roomsSlug.length + 1)).toMatch(/^[a-z0-9_]+$/);
+        expect(child.to.slice(roomsSlug.length + 1)).toMatch(/^[a-z0-9-]+$/);
       });
     });
 

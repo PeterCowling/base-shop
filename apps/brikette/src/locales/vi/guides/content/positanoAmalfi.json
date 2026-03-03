@@ -3,7 +3,7 @@
     "title": "Bản dịch đang được chuẩn bị.",
     "description": "Các lựa chọn xe buýt và phà giữa Positano và Amalfi, kèm thời gian và mẹo."
   },
-  "linkLabel": "Positano to Amalfi: how to go",
+  "linkLabel": "Positano đến Amalfi:",
   "intro": [
     "Bản dịch đang được chuẩn bị."
   ],
@@ -85,7 +85,7 @@
         ]
       }
     ],
-    "faqsTitle": "FAQs",
+    "faqsTitle": "Câu hỏi thường gặp",
     "faqs": [
       {
         "q": "Which is faster?",

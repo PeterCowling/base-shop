@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import clsx from "clsx";
 
 import { Section } from "@acme/design-system/atoms";
-import { Button } from "@acme/design-system/primitives";
 
 import DealsStructuredData from "@/components/seo/DealsStructuredData";
 import { Cluster, Inline, InlineItem, Stack } from "@/components/ui/flex";
@@ -21,6 +20,7 @@ import { ChevronDown } from "@/icons";
 import { formatMonthDay, formatPercent, isoDateToLocalStart, shouldIncludeYear } from "@/routes/deals/dates";
 import DealCard from "@/routes/deals/DealCard";
 import { DEALS, PRIMARY_DEAL } from "@/routes/deals/deals";
+import { DealsPerksSection, DealsPrimaryCtaSection } from "@/routes/deals/PerksAndCtaSections";
 import { getDealStatus } from "@/routes/deals/status";
 import { useDealContent } from "@/routes/deals/useDealContent";
 import { fireSelectPromotion, fireViewItemList, fireViewPromotion } from "@/utils/ga4-events";
@@ -413,32 +413,16 @@ function DealsPageContent({ lang }: Props) {
         referenceDate={referenceDate}
       />
 
-      {/* Direct Booking Perks */}
-      <Section id={DIRECT_BOOKING_PERKS_ID} padding="default" className="bg-brand-surface">
-        <h2 className="mb-6 text-center text-2xl font-semibold text-brand-heading">
-          {labels.perksHeading || "Direct booking perks"}
-        </h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {perks.map((perk) => (
-            <div
-              key={perk.title}
-              className="flex flex-col items-center rounded-lg border border-brand-outline/20 bg-brand-bg p-4 text-center"
-            >
-              <h3 className="font-medium text-brand-heading">{perk.title}</h3>
-              {perk.subtitle && (
-                <p className="mt-1 text-sm text-brand-text/70">{perk.subtitle}</p>
-              )}
-            </div>
-          ))}
-        </div>
-      </Section>
+      <DealsPerksSection
+        sectionId={DIRECT_BOOKING_PERKS_ID}
+        heading={labels.perksHeading || "Direct booking perks"}
+        perks={perks}
+      />
 
-      {/* CTA */}
-      <Section padding="default" className="text-center">
-        <Button onClick={() => openBooking({ kind: "standard" })} size="md">
-          {checkAvailabilityCta}
-        </Button>
-      </Section>
+      <DealsPrimaryCtaSection
+        label={checkAvailabilityCta}
+        onClick={() => openBooking({ kind: "standard" })}
+      />
     </Fragment>
   );
 }

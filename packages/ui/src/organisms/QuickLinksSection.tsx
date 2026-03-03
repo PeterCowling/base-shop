@@ -2,11 +2,13 @@
 import type { FC, ReactNode, SVGProps } from "react";
 import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import Link from "next/link";
 import { BedDouble, BookOpen, MapPin, Sparkles } from "lucide-react";
 
 import { Section } from "../atoms/Section";
 import { Grid } from "../components/atoms/primitives/Grid";
 import type { AppLanguage } from "../i18n.config";
+import { translatePath } from "../utils/translate-path";
 
 export interface QuickLink {
   label: string;
@@ -45,13 +47,13 @@ const QuickLinkCard: FC<QuickLink> = memo(({ label, description, Icon, href }): 
     "text-sm leading-snug text-brand-text/70 dark:text-brand-surface/70";
 
   return (
-    <a href={href} className={container}>
+    <Link href={href} prefetch={true} className={container}>
       <span className={iconWrapper} aria-hidden>
         <Icon className={icon} />
       </span>
       <span className={labelStyles}>{label}</span>
       <span className={descriptionStyles}>{description}</span>
-    </a>
+    </Link>
   );
 });
 
@@ -64,33 +66,31 @@ const QuickLinksSection: FC<QuickLinksSectionProps> = ({ lang }) => {
     if (!ready) return [];
     return [
       {
-        label: t("quickLinksSection.rooms", { defaultValue: "Rooms" }) as string,
-        description: t("quickLinksSection.roomsHint", { defaultValue: "Dorms and private rooms" }) as string,
+        label: t("quickLinksSection.rooms", { defaultValue: "Dorms" }) as string,
+        description: t("quickLinksSection.roomsHint", { defaultValue: "Mixed and female dormitories" }) as string,
         Icon: BedDouble,
-        href: "#rooms",
+        href: `/${lang}/${translatePath("rooms", lang)}`,
       },
       {
-        label: t("quickLinksSection.commonAreas", { defaultValue: "Common areas" }) as string,
-        description: t("quickLinksSection.commonAreasHint", { defaultValue: "Terrace, bar, shared spaces" }) as string,
+        label: t("quickLinksSection.commonAreas", { defaultValue: "Experiences" }) as string,
+        description: t("quickLinksSection.commonAreasHint", { defaultValue: "Activities and local adventures" }) as string,
         Icon: Sparkles,
-        href:
-          /* i18n-exempt -- UI-1000 ttl=2026-12-31 anchor id. */
-          "#common-areas",
+        href: `/${lang}/${translatePath("experiences", lang)}`,
       },
       {
-        label: t("quickLinksSection.location", { defaultValue: "Location" }) as string,
+        label: t("quickLinksSection.location", { defaultValue: "How to get here" }) as string,
         description: t("quickLinksSection.locationHint", { defaultValue: "Bus stop and beach tips" }) as string,
         Icon: MapPin,
-        href: "#location",
+        href: `/${lang}/${translatePath("howToGetHere", lang)}`,
       },
       {
         label: t("quickLinksSection.guides", { defaultValue: "Guides" }) as string,
         description: t("quickLinksSection.guidesHint", { defaultValue: "Local tips for your trip" }) as string,
         Icon: BookOpen,
-        href: "#guides",
+        href: `/${lang}/${translatePath("guides", lang)}`,
       },
     ];
-  }, [t, ready]);
+  }, [lang, ready, t]);
 
   return (
     <Section as="section" padding="none" className="max-w-6xl px-6 py-6 sm:py-8 lg:py-10">

@@ -20,7 +20,7 @@
   "howToGetHere": "Cómo llegar",
   "exploreHeading": "Explorar",
   "infoHeading": "Información",
-  "legalHeading": "Legal",
+  "legalHeading": "Legales",
   "locationHeading": "Ubicación",
   "mapLink": "Abrir en Google Maps",
   "addressCountry": "Italia",
@@ -30,5 +30,5 @@
   "cancellationPolicy": "Política de cancelación",
   "privacy": "Política de privacidad",
   "cookies": "Política de cookies",
-  "navAriaLabel": "Footer navigation"
+  "navAriaLabel": "Navegación de pies"
 }

@@ -34,7 +34,7 @@ const BookPageContent = require("@/app/[lang]/book/BookPageContent")
 
 describe("Book page layout order", () => {
   it("renders guests-love social proof above the booking selector", () => {
-    render(<BookPageContent lang="en" />);
+    render(<BookPageContent lang="en" heading="Book your stay" />);
 
     const socialProof = screen.getByText("Guests love Brikette");
     // The booking widget uses date inputs (no submit button); use the check-in input

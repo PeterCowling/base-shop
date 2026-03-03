@@ -19,14 +19,14 @@ const translations = {
 const translator = (key: string) =>
   translations[key as keyof typeof translations] ?? key;
 
-const useTranslations = jest.fn();
+const mockUseTranslations = jest.fn();
 
 jest.mock("next/navigation", () => ({
   useSearchParams: jest.fn(),
 }));
 
 jest.mock("@acme/i18n/useTranslations.server", () => ({
-  useTranslations,
+  useTranslations: (...args: unknown[]) => mockUseTranslations(...args),
 }));
 
 // Stub Zod initializer to avoid top-level await in CommonJS tests
@@ -67,7 +67,7 @@ function createRequest(path: string): MiddlewareRequest {
 
 describe("CMS error pages", () => {
   beforeEach(() => {
-    useTranslations.mockResolvedValue(translator);
+    mockUseTranslations.mockResolvedValue(translator);
   });
 
   it("redirects unauthenticated users to /login", async () => {

@@ -6,7 +6,7 @@
     "viewAll": "すべてのガイドを見る",
     "helpfulGuides": "役立つガイド",
     "alsoSee": "こちらもご覧ください",
-    "sectionFallback": "Section {{position}}"
+    "sectionFallback": "セクション_TOK0___"
   },
   "meta": {
     "index": {
@@ -347,5 +347,10 @@
         "experience": "体験"
       }
     }
+  },
+  "search": {
+    "noResults": "ガイドが見つかりません",
+    "resultsCount_one": "このページの先頭へ",
+    "resultsCount_other": "{{count}} ガイド"
   }
 }

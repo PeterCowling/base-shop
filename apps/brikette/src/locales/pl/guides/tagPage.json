@@ -3,6 +3,6 @@
   "articleCount_other": "{{count}} artykuły",
   "topTagsHeading": "Najpopularniejsze tagi",
   "robots": {
-    "noindexFollow": "noindex,follow"
+    "noindexFollow": "noindex, follow"
   }
 }

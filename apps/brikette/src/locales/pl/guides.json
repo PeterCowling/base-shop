@@ -347,5 +347,10 @@
         "experience": "Doświadczenia"
       }
     }
+  },
+  "search": {
+    "noResults": "Nie znaleziono przewodników",
+    "resultsCount_one": "Znaleziono _ _ TOK0 _ _ przewodnik",
+    "resultsCount_other": "Znaleziono _ _ TOK0 _ _ przewodniki"
   }
 }

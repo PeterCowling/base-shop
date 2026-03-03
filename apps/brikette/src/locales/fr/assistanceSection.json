@@ -14,8 +14,8 @@
   "bookDirect": "Réserver en direct",
   "bookingOptions": {
     "googleBusiness": "Profil d'entreprise Google",
-    "bookingCom": "Booking.com",
-    "hostelWorld": "Hostelworld",
+    "bookingCom": "Réservation.com",
+    "hostelWorld": "C'est incroyable.",
     "instagram": "Instagram"
   },
   "amaHeadingPart1": "Comment pouvons-nous ",
@@ -42,7 +42,7 @@
     "cardCta": "Consultez le guide de planification « {{guideTitle}} »"
   },
   "crosslinks": {
-    "heading": "{{howToTitle}} · {{experiencesTitle}}",
-    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}"
+    "heading": "{{howToTitle}}_{{experiencesTitle}}",
+    "intro": "{{howToMetaDescription}}{{experiencesMetaDescription}}"
   }
 }

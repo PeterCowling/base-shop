@@ -10,7 +10,7 @@
     "description": "Brug denne guide til at rejse fra Capri til Positano helt ad søvejen. Den dækker valg af den rette operatør, køb af billetter i havnen og hvad du skal gøre ved ankomst for den mest problemfri gåtur (eller bus) op til Hostel Brikette."
   },
   "tip": {
-    "eyebrow": "Tip",
+    "eyebrow": "Råd",
     "copy": "Har du brug for andre ruter eller backups når havet er uroligt? Åbn <link>Oversigt over Sådan kommer du hertil</link>.",
     "linkLabel": "Oversigt over Sådan kommer du hertil"
   },
@@ -27,7 +27,7 @@
         "Ankom 20–30 minutter før for at indløse eventuelle vouchers og stå i kø til ombordstigning."
       ],
       "link": "Sammenlign færgetider og book: <capriLink>Capri.net – Capri ↔ Positano</capriLink> · <positanoLink>Positano.com (samlet tidsplan)</positanoLink>.",
-      "linkLabelCapri": "Capri.net – Capri ↔ Positano",
+      "linkLabelCapri": "Capri.net - Capri ↔ Positano",
       "linkLabelPositano": "Positano.com (samlet tidsplan)"
     },
     "arrival": {

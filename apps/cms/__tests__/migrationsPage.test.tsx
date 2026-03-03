@@ -9,10 +9,10 @@ const translations = {
   "cms.migrations.status.automation.tag": "Manual step",
 };
 
-const useTranslations = jest.fn();
+const mockUseTranslations = jest.fn();
 
 jest.mock("@acme/i18n/useTranslations.server", () => ({
-  useTranslations,
+  useTranslations: (...args: unknown[]) => mockUseTranslations(...args),
 }));
 
 jest.mock("@/components/atoms/shadcn", () => {
@@ -37,7 +37,7 @@ jest.mock("@/components/atoms/shadcn", () => {
 beforeEach(() => {
   jest.clearAllMocks();
   const translator = (key: string) => translations[key as keyof typeof translations] ?? key;
-  useTranslations.mockResolvedValue(translator);
+  mockUseTranslations.mockResolvedValue(translator);
 });
 
 describe("MigrationsPage", () => {

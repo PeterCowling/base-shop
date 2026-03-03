@@ -36,7 +36,7 @@
     "timetable": {
       "detail": "Sélectionnez la ligne de départ pour Sorrente afin de trouver votre heure de bus. Vérifiez la ligne Positano (Chiesa Nuova) dans la même colonne pour connaître votre heure d'arrivée.",
       "intro": "L'horaire des bus SITA peut prêter à confusion — voici quelques repères pour trouver le bon service :",
-      "linkLabel": "positano.com",
+      "linkLabel": "Positano.com",
       "outro": "Consultez l'horaire le plus récent sur <TimetableLink>positano.com</TimetableLink>.",
       "tips": [
         "Les lignes de la première colonne représentent les arrêts le long du trajet.",
@@ -64,7 +64,7 @@
       "title": "Marcher depuis l'arrêt de bus"
     }
   },
-  "slug": "naples-center-train-bus",
+  "slug": "naples-centre-train-bus",
   "tip": {
     "copy": "Besoin d'autres itinéraires ? Explorez l'ensemble des directions d'arrivée sur la <GuideLink>page Comment venir</GuideLink>.",
     "eyebrow": "Astuce",

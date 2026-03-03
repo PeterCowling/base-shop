@@ -1,0 +1,66 @@
+{
+  "schema_version": "startup-state.v1",
+  "startup_state_id": "state-brik-1",
+  "business_id": "BRIK",
+  "stage": "traction",
+  "current_website_generation": 3,
+  "offer": {
+    "headline": "Rapid launch storefront"
+  },
+  "icp": {
+    "segment": "small ecommerce operators"
+  },
+  "positioning": {
+    "angle": "launch in days"
+  },
+  "brand": {
+    "voice_tone": "clear",
+    "do_rules": [
+      "Keep legal copy plain-English."
+    ],
+    "dont_rules": [
+      "No unverified guarantees."
+    ]
+  },
+  "stack": {
+    "website_platform": "next",
+    "repo_ref": "base-shop",
+    "deploy_target": "staging"
+  },
+  "analytics_stack": {
+    "provider": "ga4",
+    "workspace_id": "ws-brik",
+    "event_schema_ref": "schema-brik-v1"
+  },
+  "channels_enabled": [
+    {
+      "channel": "seo",
+      "automation_allowed": true
+    }
+  ],
+  "credential_refs": [
+    "cred-brik-gh"
+  ],
+  "kpi_definitions": [
+    {
+      "name": "activation_rate",
+      "unit": "ratio",
+      "aggregation_method": "rate",
+      "kind": "primary"
+    },
+    {
+      "name": "error_rate",
+      "unit": "ratio",
+      "aggregation_method": "rate",
+      "kind": "guardrail"
+    }
+  ],
+  "asset_refs": [
+    "docs/business-os/legal/terms.md"
+  ],
+  "constraints": [
+    "Claims policy applies"
+  ],
+  "updated_at": "2026-03-02T16:00:00.000Z",
+  "updated_by": "operator"
+}

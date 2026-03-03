@@ -3,7 +3,11 @@
   "meta": {
     "title": "Poupe 15 % em estadias de 20 de setembro a 31 de outubro",
     "description": "Oferta por tempo limitado: poupe 15 % em reservas diretas para estadias de 20 de setembro a 31 de outubro.",
-    "ogImageAlt": "Banner de desconto por tempo limitado"
+    "ogImageAlt": "Banner de desconto por tempo limitado",
+    "defaultTitle": "Ofertas & Ofertas □ Hostel Brikette",
+    "defaultDescription": "Vantagens de reserva direta e ofertas sazonais no Hostel Brikette.",
+    "activeTitle": "Salvar {{percent}} em estadias de {{from}} para {{to}}",
+    "activeDescription": "Auto-aplicado na saída. Apenas reservas directas."
   },
   "title": "Poupe {{percent}} % em estadias de {{from}} a {{to}}",
   "promo": "Reserve diretamente e o seu desconto de {{percent}} % é aplicado automaticamente no checkout.",
@@ -119,6 +123,6 @@
     "other": "Ver termos e condições."
   },
   "robots": {
-    "expiredNoindex": "noindex,follow"
+    "expiredNoindex": "noindex,seguir"
   }
 }

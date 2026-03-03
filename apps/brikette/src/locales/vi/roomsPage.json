@@ -266,7 +266,7 @@
     "clickToEnlarge": "Nhấp để phóng to ảnh",
     "prevAria": "Ảnh trước",
     "nextAria": "Ảnh tiếp",
-    "pagination": "{{current}}/{{total}}",
+    "pagination": "ZXQTOKEN0QZZZZTOKEN2QXZ",
     "photoAlt": "Ảnh {{room}}",
     "noImage": "Không có hình ảnh"
   },
@@ -286,10 +286,10 @@
   "filtersAria": "Lọc theo loại phòng",
   "checkRatesNonRefundable": "Giá không hoàn tiền",
   "checkRatesFlexible": "Giá linh hoạt",
-  "checkRatesSingle": "Check Rates",
+  "checkRatesSingle": "Kiểm tra tỷ lệ",
   "ctaSuffix": {
-    "nonRefundable": "Non‑Refundable",
-    "flexible": "Flexible"
+    "nonRefundable": "Không thể thay thế được",
+    "flexible": "Dễ uốn cong"
   },
   "details": "Chi tiết",
   "ratesFrom": "Từ €{{price}}",
@@ -306,8 +306,34 @@
     "dorm": "Mỗi đêm, mỗi khách. Một khách trên một giường tầng."
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2–8 đêm",
+    "clearDates": "Xoá ngày tháng",
+    "nightsSummary": "{{from}}  thể hiện ZXQQOKEN1QXZ (ZXQTOKEN2QZ đêm)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Tuyến đường ký túc xá này sử dụng tính năng đặt phòng được hỗ trợ khi JavaScript bị tắt.",
+    "contactAssistedBooking": "Liên hệ với chúng tôi để được hỗ trợ đặt chỗ"
+  },
+  "bookingConstraints": {
+    "notice": "Đặt phòng tại nhà trọ chỉ dành cho người lớn và hỗ trợ lưu trú từ 2 đến 8 đêm với tối đa 8 người lớn cho mỗi lần đặt phòng. Nếu yêu cầu của bạn nằm ngoài những giới hạn đó, hãy chia nó thành nhiều lần đặt trước hoặc",
+    "assistedLink": "liên hệ với chúng tôi để được hỗ trợ đặt phòng",
+    "absentWithAnchor": "{{price}} mỗi đêm (biểu thị). Chọn ngày để xem tỷ giá trực tiếp.",
+    "absentNoRates": "Giá tạm thời không có sẵn. Chọn ngày để kiểm tra tính khả dụng trực tiếp."
+  },
+  "bookingControls": {
+    "decreaseAdults": "Giảm người lớn",
+    "increaseAdults": "Tăng người lớn"
+  },
+  "recovery": {
+    "roomTitle": "Cần quyết định sau? Gửi cho mình báo giá phòng này."
+  },
+  "feature": {
+    "beds": "Giường",
+    "bathroom": "Phòng tắm",
+    "view": "Xem",
+    "terrace": "sân thượng",
+    "lockers": "Tủ khóa",
+    "privateTerrace": "Sân hiên riêng",
+    "inRoomLockers": "Tủ đựng đồ trong phòng"
   }
 }

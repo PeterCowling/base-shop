@@ -1,10 +1,19 @@
 import { NextResponse } from "next/server";
 
+import { slugify } from "@acme/lib/xa";
+
 import {
   deleteCatalogProduct,
   getCatalogDraftBySlug,
 } from "../../../../../lib/catalogCsv";
+import {
+  CatalogDraftContractError,
+  deleteProductFromCloudSnapshot,
+  readCloudDraftSnapshot,
+  writeCloudDraftSnapshot,
+} from "../../../../../lib/catalogDraftContractClient";
 import { parseStorefront } from "../../../../../lib/catalogStorefront.ts";
+import { isLocalFsRuntimeEnabled, localFsUnavailableResponse } from "../../../../../lib/localFsGuard";
 import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../../lib/rateLimit";
 import { hasUploaderSession } from "../../../../../lib/uploaderAuth";
 
@@ -45,7 +54,11 @@ export async function GET(request: Request, context: { params: Promise<{ slug: s
   try {
     const { slug } = await context.params;
     const storefront = parseStorefront(new URL(request.url).searchParams.get("storefront"));
-    const product = await getCatalogDraftBySlug(slug, storefront);
+    const product = isLocalFsRuntimeEnabled()
+      ? await getCatalogDraftBySlug(slug, storefront)
+      : (await readCloudDraftSnapshot(storefront)).products.find(
+          (entry) => slugify(entry.slug || entry.title) === slugify(slug),
+        ) ?? null;
     if (!product) {
       return withRateHeaders(
         NextResponse.json(
@@ -56,7 +69,10 @@ export async function GET(request: Request, context: { params: Promise<{ slug: s
       );
     }
     return withRateHeaders(NextResponse.json({ ok: true, product }), limit);
-  } catch {
+  } catch (error) {
+    if (error instanceof CatalogDraftContractError && error.code === "unconfigured") {
+      return withRateHeaders(localFsUnavailableResponse(), limit);
+    }
     return withRateHeaders(
       NextResponse.json(
         { ok: false, error: "internal_error", reason: "products_get_failed" },
@@ -95,6 +111,27 @@ export async function DELETE(
   const { slug } = await context.params;
   try {
     const storefront = parseStorefront(new URL(request.url).searchParams.get("storefront"));
+    if (!isLocalFsRuntimeEnabled()) {
+      const snapshot = await readCloudDraftSnapshot(storefront);
+      const removed = deleteProductFromCloudSnapshot({ slug, snapshot });
+      if (!removed.deleted) {
+        return withRateHeaders(
+          NextResponse.json(
+            { ok: false, error: "not_found", reason: "product_not_found" },
+            { status: 404 },
+          ),
+          limit,
+        );
+      }
+      await writeCloudDraftSnapshot({
+        storefront,
+        products: removed.products,
+        revisionsById: removed.revisionsById,
+        ifMatchDocRevision: snapshot.docRevision,
+      });
+      return withRateHeaders(NextResponse.json({ ok: true, deleted: true }), limit);
+    }
+
     const result = await deleteCatalogProduct(slug, storefront);
     if (!result.deleted) {
       return withRateHeaders(
@@ -106,7 +143,19 @@ export async function DELETE(
       ); // i18n-exempt -- XAUP-0001 [ttl=2026-12-31] machine response
     }
     return withRateHeaders(NextResponse.json({ ok: true, deleted: true }), limit);
-  } catch {
+  } catch (error) {
+    if (error instanceof CatalogDraftContractError && error.code === "unconfigured") {
+      return withRateHeaders(localFsUnavailableResponse(), limit);
+    }
+    if (error instanceof CatalogDraftContractError && error.code === "conflict") {
+      return withRateHeaders(
+        NextResponse.json(
+          { ok: false, error: "conflict", reason: "revision_conflict" },
+          { status: 409 },
+        ),
+        limit,
+      );
+    }
     return withRateHeaders(
       NextResponse.json(
         { ok: false, error: "internal_error", reason: "products_delete_failed" },

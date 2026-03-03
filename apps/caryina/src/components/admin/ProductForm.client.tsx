@@ -63,7 +63,7 @@ function MediaSection({ rows, onAdd, onRemove, onUpdate }: MediaSectionProps) {
           <button
             type="button"
             onClick={() => onRemove(i)}
-            className="rounded-lg border border-border px-3 py-2 text-sm"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-border px-3 py-2 text-sm"
             aria-label={`Remove media ${i + 1}`}
           >
             ✕
@@ -73,7 +73,7 @@ function MediaSection({ rows, onAdd, onRemove, onUpdate }: MediaSectionProps) {
       <button
         type="button"
         onClick={onAdd}
-        className="rounded-lg border border-border px-4 py-2 text-sm"
+        className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-border px-4 py-2 text-sm"
       >
         + Add media
       </button>
@@ -93,7 +93,7 @@ function FormActions({ isEdit, pending, onDelete }: FormActionsProps) {
       <button
         type="submit"
         disabled={pending}
-        className="btn-primary min-h-[44px] rounded-full px-6 py-2.5 text-sm disabled:opacity-50"
+        className="btn-primary min-h-11 min-w-11 rounded-full px-6 py-2.5 text-sm disabled:opacity-50"
       >
         {pending ? "Saving…" : isEdit ? "Save changes" : "Create product"}
       </button>
@@ -102,14 +102,14 @@ function FormActions({ isEdit, pending, onDelete }: FormActionsProps) {
           type="button"
           onClick={onDelete}
           disabled={pending}
-          className="min-h-[44px] rounded-full border border-destructive px-6 py-2.5 text-sm text-destructive disabled:opacity-50"
+          className="min-h-11 min-w-11 rounded-full border border-destructive px-6 py-2.5 text-sm text-destructive disabled:opacity-50"
         >
           Delete
         </button>
       ) : null}
       <a
         href="/admin/products"
-        className="flex min-h-[44px] items-center rounded-full border border-border px-6 py-2.5 text-sm"
+        className="flex min-h-11 min-w-11 items-center rounded-full border border-border px-6 py-2.5 text-sm"
       >
         Cancel
       </a>
@@ -229,7 +229,13 @@ export function ProductForm({ product }: ProductFormProps) {
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <input id="pf-for-sale" type="checkbox" checked={forSale} onChange={(e) => setForSale(e.target.checked)} className="h-4 w-4" />
+        <input
+          id="pf-for-sale"
+          type="checkbox"
+          checked={forSale}
+          onChange={(e) => setForSale(e.target.checked)}
+          className="min-h-11 min-w-11"
+        />
         <label htmlFor="pf-for-sale" className="text-sm">Available for sale</label>
       </div>
       <MediaSection rows={mediaRows} onAdd={addMediaRow} onRemove={removeMediaRow} onUpdate={updateMediaRow} />

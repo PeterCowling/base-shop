@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "Hostel Brikette",
+    "title": "Hostel brikette",
     "reserve": "Bestill nå"
   },
   "intro": {
@@ -29,5 +29,9 @@
   },
   "internalErrors": {
     "assistanceSlugMissing": "ARTICLE_SLUGS må definere minst én hjelpeslugg"
+  },
+  "stickyCta": {
+    "directHeadline": "Sikre vår beste tilgjengelige pris på under to minutter.",
+    "directSubcopy": "Unngå tredjepartsgebyrer og få prioritert hjelp fra teamet vårt i Positano."
   }
 }

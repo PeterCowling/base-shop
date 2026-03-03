@@ -250,6 +250,12 @@
   "routes": {
     "arrival": "Arrivo",
     "back": "Indietro",
+    "filters": {
+      "all": "Tutti",
+      "bus": "Bus",
+      "ferry": "Traghetto",
+      "train": "Treno"
+    },
     "cost": "Costo",
     "loadError": "Impossibile caricare i dati del pianificatore di percorso.",
     "fromOrigin": "Da {{origin}}",
@@ -265,6 +271,18 @@
     "title": "Come arrivare",
     "totalTime": "Tempo totale",
     "viewFullGuide": "Vedi la guida completa"
+  },
+  "staffReadiness": {
+    "bagDropActive": "La richiesta di deposito bagagli post check-out è attiva.",
+    "signals": {
+      "cashPrepared": "Contanti pronti",
+      "etaShared": "ETA condiviso",
+      "locationSaved": "Posizione salvata",
+      "routePlanned": "Percorso pianificato",
+      "rulesReviewed": "Regole consultate"
+    },
+    "signalsTitle": "Segnali",
+    "title": "Prontezza arrivo"
   },
   "staffLookup": {
     "back": "Indietro",

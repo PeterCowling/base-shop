@@ -7,8 +7,9 @@ import type { RoomCardPrice } from "@acme/ui/types/roomCard";
 import { BOOKING_CODE } from "@/context/modal/constants";
 import { roomsData } from "@/data/roomsData";
 import type { OctorateRoom } from "@/hooks/useAvailability";
+import { aggregateAvailabilityByCategory } from "@/utils/aggregateAvailabilityByCategory";
 import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
-import { buildRoomItem, fireSelectItem, type ItemListId, type RatePlan } from "@/utils/ga4-events";
+import { createBrikClickId, fireSelectItem, type ItemListId, type RatePlan } from "@/utils/ga4-events";
 import { trackThenNavigate } from "@/utils/trackThenNavigate";
 
 export type RoomsSectionBookingQuery = {
@@ -37,6 +38,8 @@ type RoomsSectionProps = {
    * When present overrides the static basePrice display for each room.
    */
   availabilityRooms?: OctorateRoom[];
+  /** Optional override for room-card pricing when live availability is absent. */
+  roomPricesOverride?: Record<string, RoomCardPrice>;
 };
 
 type RoomsSectionBaseProps = ComponentProps<typeof RoomsSectionBase>;
@@ -45,29 +48,31 @@ export function RoomsSection({
   queryState,
   deal,
   availabilityRooms,
+  roomPricesOverride,
   ...props
 }: RoomsSectionProps & Omit<RoomsSectionBaseProps, "itemListId" | "onRoomSelect">) {
-  // Map availabilityRooms (keyed by octorateRoomId) to roomPrices (keyed by room.id).
-  // Consumers match via room.widgetRoomCode === availabilityRoom.octorateRoomId.
+  // Map availabilityRooms to roomPrices (keyed by room.id) via name-based category matching.
+  // Each room's octorateRoomCategory is matched against octorateRoomName in aggregated sections.
   const roomPrices = useMemo<Record<string, RoomCardPrice> | undefined>(() => {
-    if (!availabilityRooms || availabilityRooms.length === 0) return undefined;
+    if (!availabilityRooms || availabilityRooms.length === 0) return roomPricesOverride;
     const prices: Record<string, RoomCardPrice> = {};
-    for (const avRoom of availabilityRooms) {
-      const match = roomsData.find((r) => r.widgetRoomCode === avRoom.octorateRoomId);
-      if (!match) continue;
+    for (const room of roomsData) {
+      if (!room.octorateRoomCategory) continue;
+      const avRoom = aggregateAvailabilityByCategory(availabilityRooms, room.octorateRoomCategory);
+      if (!avRoom) continue;
       if (!avRoom.available) {
-        prices[match.id] = { soldOut: true };
+        prices[room.id] = { soldOut: true };
       } else if (avRoom.priceFrom !== null) {
         // Format as "From €XX.XX" — consumers can override with t("ratesFrom") if needed.
         // Use raw number; the UI RoomCard accepts pre-formatted string in price.formatted.
-        prices[match.id] = {
+        prices[room.id] = {
           formatted: `From €${avRoom.priceFrom.toFixed(2)}`,
           soldOut: false,
         };
       }
     }
-    return Object.keys(prices).length > 0 ? prices : undefined;
-  }, [availabilityRooms]);
+    return Object.keys(prices).length > 0 ? prices : roomPricesOverride;
+  }, [availabilityRooms, roomPricesOverride]);
 
   // Ref-level guard prevents duplicate begin_checkout events on rapid re-clicks.
   // It must be reset on `pageshow` because back/forward cache can restore a page
@@ -145,14 +150,17 @@ export function RoomsSection({
           trackThenNavigate(
             "begin_checkout",
             {
-              source: "room_card",
+              handoff_mode: "same_tab",
+              engine_endpoint: "result",
               checkin,
               checkout,
               pax,
-              ...(props.itemListId ? { item_list_id: props.itemListId } : null),
-              items: [buildRoomItem({ roomSku: ctx.roomSku, plan: ctx.plan })],
+              rate_plan: ctx.plan,
+              room_id: ctx.roomSku,
+              source_route: `/${props.lang ?? "en"}/dorms`,
+              cta_location: "rooms_section_rate_cta",
+              brik_click_id: createBrikClickId(),
             },
-            // TC-03: navigation via window.location.assign inside navigate callback.
             () => window.location.assign(result.url),
           );
           return;

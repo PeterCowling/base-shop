@@ -19,7 +19,7 @@
   "experiences": "Erlebnisse",
   "howToGetHere": "Anreise",
   "exploreHeading": "Entdecken",
-  "infoHeading": "Info",
+  "infoHeading": "Informationen",
   "legalHeading": "Rechtliches",
   "locationHeading": "Adresse",
   "mapLink": "In Google Maps öffnen",
@@ -30,5 +30,5 @@
   "cancellationPolicy": "Stornierungsbedingungen",
   "privacy": "Datenschutzerklärung",
   "cookies": "Cookie-Richtlinie",
-  "navAriaLabel": "Footer navigation"
+  "navAriaLabel": "Fußnavigation"
 }

@@ -25,7 +25,7 @@
     "title": "巴士时刻表",
     "description": "行程分为 <Strong>Salerno → Amalfi</Strong> 与 <Strong>Amalfi → Positano</Strong> 两段。",
     "link": "请在<ScheduleLink>{{label}}</ScheduleLink> 查看最新 SITA 时刻表。",
-    "scheduleLinkLabel": "Positano.com",
+    "scheduleLinkLabel": "波西塔诺.com",
     "rowsTitle": "如何查看行",
     "columnsTitle": "如何查看列",
     "combineTitle": "行列结合读取",

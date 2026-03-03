@@ -1,0 +1,40 @@
+{
+  "figures": {
+    "map": {
+      "alt": "Mapa que muestra la ruta caminando desde el puerto de Hostel Brikette a Positano con puntos 1–5.",
+      "caption": "Vista general de la ruta: Hostel → Puerto (puntos 1–5)."
+    },
+    "point1": {
+      "alt": "Intersección cerca de Viale Pasitea con una ruta marcada y una etiqueta: '1 Gire a la derecha'.",
+      "caption": "Punto 1: girar a la derecha."
+    },
+    "tabacchi": {
+      "alt": "Tabacchi escaparate con un ATM al lado.",
+      "caption": "Tabacchi cerca del punto 1 (bueno hito)."
+    },
+    "point2": {
+      "alt": "Cambio de carretera con una línea marcada hacia las escaleras y una etiqueta: '2 Tome las escaleras por delante'.",
+      "caption": "Punto 2: deja el camino y toma las escaleras por delante."
+    },
+    "point3": {
+      "alt": "Callejón estrecho con pasos y un camino marcado, etiquetado '3 Tome las escaleras por delante'.",
+      "caption": "Punto 3: continúe recto por las escaleras."
+    },
+    "point4": {
+      "alt": "Caminata y carretera con una ruta marcada hacia las escaleras a la derecha, etiquetada '4'.",
+      "caption": "Punto 4: cruce la carretera, gire a la izquierda brevemente, luego tome las escaleras a la derecha."
+    },
+    "point5": {
+      "alt": "Plaza pequeña cerca del puerto con una ruta marcada, etiquetada '5'.",
+      "caption": "Punto 5: continuar bajo el arco hacia el puerto."
+    },
+    "tickets": {
+      "alt": "Taquillas de ferry en el puerto de Positano con tablas de horario.",
+      "caption": "Botones de entrada: verifique el letrero para la próxima salida."
+    },
+    "port": {
+      "alt": "Vista del puerto de Positano con un ferry en primer plano y ladera Positano detrás.",
+      "caption": "Puerto Positano: espere cerca del final del muelle para las llamadas de embarque."
+    }
+  }
+}

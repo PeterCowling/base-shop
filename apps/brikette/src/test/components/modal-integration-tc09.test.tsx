@@ -98,6 +98,10 @@ function getUseTranslationMock(): jest.Mock {
   return (jest.requireMock("react-i18next") as { useTranslation: jest.Mock }).useTranslation;
 }
 
+function getBookingSubmitButton(): HTMLElement {
+  return screen.getByRole("button", { name: "booking.buttonAvailability" });
+}
+
 // ---------------------------------------------------------------------------
 // TC-01: BookingWidget → navigates to /book (TASK-27)
 // ---------------------------------------------------------------------------
@@ -107,6 +111,7 @@ describe("TC-01: BookingWidget → navigates to /book (TASK-27)", () => {
     // BookingWidget writes date state back to window.location.search via useEffect.
     // Clear URL search params between tests to prevent cross-test contamination.
     window.history.replaceState(null, "", window.location.pathname);
+    window.localStorage.clear();
   });
 
   it("navigates to /book with the entered dates and guests", () => {
@@ -114,15 +119,17 @@ describe("TC-01: BookingWidget → navigates to /book (TASK-27)", () => {
 
     const checkInInput = screen.getByLabelText("booking.checkInLabel");
     const checkOutInput = screen.getByLabelText("booking.checkOutLabel");
-    const guestsInput = screen.getByLabelText("booking.guestsLabel");
+    const increaseGuestsButton = screen.getByRole("button", {
+      name: "bookingControls.increaseGuests",
+    });
 
     // Use ISO format — BookingWidget's parseDateInput handles YYYY-MM-DD.
     fireEvent.change(checkInInput, { target: { value: "2025-06-01" } });
     fireEvent.change(checkOutInput, { target: { value: "2025-06-03" } });
-    fireEvent.change(guestsInput, { target: { value: "2" } });
+    fireEvent.click(increaseGuestsButton);
 
     // Only one button in the widget (the CTA).
-    fireEvent.click(screen.getByRole("button"));
+    fireEvent.click(getBookingSubmitButton());
 
     expect(mockPush).toHaveBeenCalledTimes(1);
     expect(mockPush).toHaveBeenCalledWith("/en/book?checkin=2025-06-01&checkout=2025-06-03&pax=2");
@@ -144,7 +151,7 @@ describe("TC-01: BookingWidget → navigates to /book (TASK-27)", () => {
     render(<BookingWidget />);
 
     // Click without filling any dates — empty fields are omitted from query.
-    fireEvent.click(screen.getByRole("button"));
+    fireEvent.click(getBookingSubmitButton());
 
     expect(mockPush).toHaveBeenCalledTimes(1);
     expect(mockPush).toHaveBeenCalledWith("/en/book?pax=1");
@@ -160,7 +167,7 @@ describe("TC-01: BookingWidget → navigates to /book (TASK-27)", () => {
       target: { value: "2025-06-06" }, // 1-night stay — invalid range
     });
 
-    fireEvent.click(screen.getByRole("button"));
+    fireEvent.click(getBookingSubmitButton());
 
     // Widget shows error and does NOT navigate on invalid range.
     expect(mockPush).not.toHaveBeenCalled();
@@ -169,19 +176,15 @@ describe("TC-01: BookingWidget → navigates to /book (TASK-27)", () => {
   });
 
   it("does not navigate when pax exceeds maximum", () => {
+    window.history.replaceState(
+      null,
+      "",
+      `${window.location.pathname}?checkin=2025-06-05&checkout=2025-06-09&pax=9`,
+    );
+
     render(<BookingWidget />);
 
-    fireEvent.change(screen.getByLabelText("booking.checkInLabel"), {
-      target: { value: "2025-06-05" },
-    });
-    fireEvent.change(screen.getByLabelText("booking.checkOutLabel"), {
-      target: { value: "2025-06-09" },
-    });
-    fireEvent.change(screen.getByLabelText("booking.guestsLabel"), {
-      target: { value: "9" },
-    });
-
-    fireEvent.click(screen.getByRole("button"));
+    fireEvent.click(getBookingSubmitButton());
 
     expect(mockPush).not.toHaveBeenCalled();
     expect(screen.getByRole("alert")).toBeInTheDocument();

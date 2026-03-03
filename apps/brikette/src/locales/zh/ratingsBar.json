@@ -9,12 +9,13 @@
   "lastChecked": "最近核对：",
   "sources": {
     "hostelworld": {
-      "ariaName": "Hostelworld",
-      "label": "Hostelworld"
+      "ariaName": "招待所世界",
+      "label": "招待所世界"
     },
     "booking": {
       "ariaName": "Booking 点 com",
-      "label": "Booking.com"
+      "label": "(原始内容存档于2018-09-28). booking.com"
     }
-  }
+  },
+  "snapshotAsOf": "截止_TOK0_"
 }

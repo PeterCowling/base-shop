@@ -1,0 +1,6 @@
+{
+  "precision_at_k": 1,
+  "false_positive_rate": 0,
+  "labeled_count": 1,
+  "pass": true
+}

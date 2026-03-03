@@ -319,7 +319,7 @@ function RoomCardComponent({
         )}
         {titleOverlay && currentImage && (
           <div className="pointer-events-none absolute right-0 top-0 px-3 pt-3">
-            <h3 className="inline-block rounded bg-blue-600 px-2.5 py-1 text-sm font-semibold tracking-wide text-white">{title}</h3>
+            <h3 className="inline-block rounded bg-brand-primary px-2.5 py-1 text-sm font-semibold tracking-wide text-brand-bg">{title}</h3>
           </div>
         )}
       </div>

@@ -19,6 +19,26 @@ jest.mock("react-i18next", () => ({
   }),
 }));
 
+// Keep this contract suite focused on RoomsSection orchestration logic:
+// GA4 payload shape + navigation behavior. The heavy UI organism rendering
+// is mocked out to keep CI runtime within contract budget.
+jest.mock("@acme/ui/organisms/RoomsSection", () => ({
+  __esModule: true,
+  default: ({
+    onRoomSelect,
+  }: {
+    onRoomSelect?: (ctx: { roomSku: string; plan: "nr" | "flex"; index: number }) => void;
+  }) => (
+    <button
+      type="button"
+      aria-label="checkRatesSingle"
+      onClick={() => onRoomSelect?.({ roomSku: "room_10", plan: "nr", index: 0 })}
+    >
+      checkRatesSingle
+    </button>
+  ),
+}));
+
 const RoomsSection = require("@/components/rooms/RoomsSection").default as typeof import("@/components/rooms/RoomsSection").default;
 
 describe("GA4 select_item on room CTA clicks (GA4-11)", () => {

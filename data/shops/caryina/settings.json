@@ -5,7 +5,8 @@
   "taxRegion": "EU",
   "analytics": {
     "enabled": true,
-    "provider": "console"
+    "provider": "ga",
+    "id": "G-XXXXXXXXXX"
   },
   "seo": {
     "aiCatalog": {

@@ -159,11 +159,19 @@
     "close": "閉じる"
   },
   "loader": {
-    "ariaLabel": "Loading"
+    "ariaLabel": "ログイン"
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2～8泊",
+    "clearDates": "明確な日付",
+    "nightsSummary": "{{from}}_ → {{to}}_ ({{nights}}__ 夜)"
+  },
+  "directPerks": {
+    "heading": "なぜ直接予約するの？",
+    "items": [
+      "最大25%オフ",
+      "無料朝食",
+      "無料イブニングドリンク"
+    ]
   }
 }

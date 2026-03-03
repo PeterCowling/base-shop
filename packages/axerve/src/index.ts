@@ -1,8 +1,8 @@
 import "server-only";
 
-import type { AxervePaymentParams, AxervePaymentResult } from "./types";
+import type { AxervePaymentParams, AxervePaymentResult, AxerveRefundParams, AxerveRefundResult } from "./types";
 
-export type { AxervePaymentParams, AxervePaymentResult } from "./types";
+export type { AxervePaymentParams, AxervePaymentResult, AxerveRefundParams, AxerveRefundResult } from "./types";
 
 const SANDBOX_WSDL =
   "https://sandbox.gestpay.net/gestpay/gestpayws/WSs2s.asmx?WSDL";
@@ -93,4 +93,82 @@ export async function callPayment(
   }
 
   return parseS2SResult(result, params.shopTransactionId);
+}
+
+function parseRefundResult(
+  result: unknown,
+  fallbackTransactionId: string,
+): AxerveRefundResult {
+  const r = result as Record<string, Record<string, string>>;
+  const txn = r?.callRefundS2SResult;
+  return {
+    success: txn?.TransactionResult === "OK",
+    transactionId: txn?.ShopTransactionID ?? fallbackTransactionId,
+    bankTransactionId: txn?.BankTransactionID ?? "",
+    errorCode: txn?.ErrorCode ?? undefined,
+    errorDescription: txn?.ErrorDescription ?? undefined,
+  };
+}
+
+/**
+ * Calls the Axerve/GestPay S2S `callRefundS2S` operation.
+ *
+ * @param params - Refund parameters. At least one of `shopTransactionId` or `bankTransactionId`
+ *   must be supplied. `shopTransactionId` is preferred (present in merchant notification emails).
+ *   When both are provided, Axerve uses `bankTransactionId` (per WSDL docs).
+ * @returns Resolved refund result with success/failure status and transaction IDs.
+ * @throws {AxerveError} When the SOAP call fails at the network or protocol level.
+ *
+ * Environment variables:
+ * - `AXERVE_USE_MOCK=true` — return a hardcoded success result without any SOAP call.
+ * - `AXERVE_SANDBOX=true` — use the sandbox WSDL endpoint URL (default: production).
+ *   Note: `AXERVE_SANDBOX` only controls the endpoint URL; it does NOT trigger mock mode.
+ *
+ * Note: unlike `callPayment`, this function explicitly includes `apikey` in the SOAP payload —
+ * `callRefundS2S` requires it as a top-level parameter (per Axerve WSDL documentation).
+ */
+export async function callRefund(
+  params: AxerveRefundParams,
+): Promise<AxerveRefundResult> {
+  if (process.env.AXERVE_USE_MOCK === "true") {
+    // i18n-exempt: developer debug log
+    console.info("[axerve-mock] callRefund", {
+      shopTransactionId: params.shopTransactionId,
+      bankTransactionId: params.bankTransactionId,
+    });
+    return {
+      success: true,
+      transactionId: params.shopTransactionId ?? "mock-refund-txn",
+      bankTransactionId: "mock-bank-refund-001",
+    };
+  }
+
+  // AXERVE_SANDBOX controls endpoint URL only — never triggers mock mode
+  const wsdlUrl =
+    process.env.AXERVE_SANDBOX === "true" ? SANDBOX_WSDL : PRODUCTION_WSDL;
+
+  const { createClientAsync } = await import("soap");
+  const client = await createClientAsync(wsdlUrl);
+
+  let result: unknown;
+  try {
+    [result] = await (
+      client as unknown as {
+        callRefundS2SAsync: (p: Record<string, string>) => Promise<unknown[]>;
+      }
+    ).callRefundS2SAsync({
+      shopLogin: params.shopLogin,
+      uicCode: params.uicCode,
+      amount: params.amount,
+      shopTransactionID: params.shopTransactionId ?? "",
+      bankTransactionID: params.bankTransactionId ?? "",
+      apikey: params.apiKey,
+    });
+  } catch (err) {
+    throw new AxerveError(
+      `Axerve SOAP refund call failed: ${err instanceof Error ? err.message : String(err)}`,
+    );
+  }
+
+  return parseRefundResult(result, params.shopTransactionId ?? "");
 }

@@ -77,11 +77,12 @@ export function buildCatalogMediaPath(args: {
     index += 1;
   }
   args.usedNames.add(fileName);
+  const encodeSegment = (segment: string) => encodeURIComponent(segment);
   return path.posix.join(
     "/images",
-    sanitizePathSegment(args.brandHandle, "brand"),
-    sanitizePathSegment(args.productSlug, "product"),
-    fileName,
+    encodeSegment(sanitizePathSegment(args.brandHandle, "brand")),
+    encodeSegment(sanitizePathSegment(args.productSlug, "product")),
+    encodeSegment(fileName),
   );
 }
 
@@ -105,4 +106,28 @@ export async function backupFileIfExists(filePath: string, backupDir: string): P
   const backupPath = path.join(backupDir, `${path.basename(filePath)}.${timestamp}.bak`);
   await fs.copyFile(filePath, backupPath);
   return backupPath;
+}
+
+export async function pruneBackups(backupDir: string, keep: number): Promise<void> {
+  if (!Number.isFinite(keep) || keep < 1) return;
+  const entries = await fs
+    .readdir(backupDir, { withFileTypes: true })
+    .catch((error) => {
+      if (isErrnoCode(error, "ENOENT")) return [];
+      throw error;
+    });
+  const files = entries
+    .filter((entry) => entry.isFile() && entry.name.endsWith(".bak"))
+    .map((entry) => path.join(backupDir, entry.name));
+  if (files.length <= keep) return;
+
+  const dated = await Promise.all(
+    files.map(async (filePath) => ({
+      path: filePath,
+      mtime: (await fs.stat(filePath)).mtimeMs,
+    })),
+  );
+  dated.sort((left, right) => right.mtime - left.mtime);
+  const stale = dated.slice(keep);
+  await Promise.all(stale.map((item) => fs.unlink(item.path)));
 }

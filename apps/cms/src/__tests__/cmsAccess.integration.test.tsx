@@ -47,9 +47,13 @@ const rewrite = NextResponse.rewrite as jest.Mock;
 function createRequest(path: string) {
   const url = new URL(`http://localhost${path}`) as URL & { clone(): URL };
   url.clone = () => new URL(url.toString());
-  return { nextUrl: url, url: url.toString() } as unknown as Parameters<
-    typeof middleware
-  >[0];
+  return {
+    nextUrl: url,
+    url: url.toString(),
+    method: "GET",
+    headers: new Headers(),
+    cookies: { get: () => undefined },
+  } as unknown as Parameters<typeof middleware>[0];
 }
 
 afterEach(() => {

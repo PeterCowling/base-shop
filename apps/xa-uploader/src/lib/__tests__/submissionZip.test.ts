@@ -129,8 +129,9 @@ describe("submissionZip", () => {
               color: "black",
               material: "wool",
             },
-            imageFiles: "vendor-images/*.png",
-            imageAltTexts: "Studio jacket images",
+            imageFiles: `${path.join(imagesDir, "one.png")}|${path.join(imagesDir, "two.png")}`,
+            imageAltTexts: "Studio jacket front|Studio jacket side",
+            imageRoles: "front|side",
             details: {},
           },
         ],
@@ -179,7 +180,9 @@ describe("submissionZip", () => {
         "base64",
       );
       const outsideImage = path.join(externalDir, "outside.png");
+      const outsideImageTwo = path.join(externalDir, "outside-2.png");
       await writeFile(outsideImage, tinyPng);
+      await writeFile(outsideImageTwo, tinyPng);
 
       const attempt = buildSubmissionZipStream({
         products: [
@@ -206,8 +209,9 @@ describe("submissionZip", () => {
               color: "black",
               material: "wool",
             },
-            imageFiles: outsideImage,
-            imageAltTexts: "Studio jacket image",
+            imageFiles: `${outsideImage}|${outsideImageTwo}`,
+            imageAltTexts: "Studio jacket front|Studio jacket side",
+            imageRoles: "front|side",
             details: {},
           },
         ],
@@ -266,8 +270,9 @@ describe("submissionZip", () => {
               color: "black",
               material: "wool",
             },
-            imageFiles: "vendor-images/*.png",
-            imageAltTexts: "Studio jacket images",
+            imageFiles: `vendor-images/*.png|${path.join(imagesDir, "one.png")}`,
+            imageAltTexts: "Studio jacket front|Studio jacket side",
+            imageRoles: "front|side",
             details: {},
           },
         ],

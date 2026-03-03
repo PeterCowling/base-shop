@@ -4,6 +4,8 @@
  * Detailed view of a route with segments, times, and actions.
  */
 
+'use client';
+
 import { type FC, memo, type ReactNode, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -32,6 +34,11 @@ interface RouteDetailProps {
   /** Handler to go back */
   onBack?: () => void;
 }
+
+// i18n-exempt -- PRIME-ROUTES-001 [ttl=2026-12-31] Non-UI window open target/features.
+const BRIKETTE_WINDOW_TARGET = '_blank';
+// eslint-disable-next-line ds/no-hardcoded-copy -- BRIK-3 non-UI window.open features.
+const BRIKETTE_WINDOW_FEATURES = 'noopener,noreferrer';
 
 /**
  * Get icon for transport mode.
@@ -93,7 +100,7 @@ export const RouteDetail: FC<RouteDetailProps> = memo(function RouteDetail({
 
   // Open route in Brikette
   const handleOpenBrikette = useCallback(() => {
-    window.open(route.briketteUrl, '_blank', 'noopener,noreferrer');
+    window.open(route.briketteUrl, BRIKETTE_WINDOW_TARGET, BRIKETTE_WINDOW_FEATURES);
   }, [route.briketteUrl]);
 
   return (
@@ -104,7 +111,7 @@ export const RouteDetail: FC<RouteDetailProps> = memo(function RouteDetail({
           <button
             type="button"
             onClick={onBack}
-            className="mt-1 rounded-full p-2 hover:bg-muted"
+            className="mt-1 min-h-11 min-w-11 rounded-full p-2 hover:bg-muted"
             aria-label={t('routes.back')}
           >
             <ArrowLeft className="h-5 w-5" />
@@ -212,7 +219,8 @@ export const RouteDetail: FC<RouteDetailProps> = memo(function RouteDetail({
         <button
           type="button"
           onClick={handleOpenBrikette}
-          className="flex w-full items-center justify-center gap-2 rounded-xl border px-4 py-3 font-medium text-foreground transition-colors hover:bg-muted"
+          // eslint-disable-next-line ds/min-tap-size -- BRIK-3 text+padding control exceeds mobile tap target.
+          className="flex h-11 w-full items-center justify-center gap-2 rounded-xl border px-4 py-3 font-medium text-foreground transition-colors hover:bg-muted"
         >
           <ExternalLink className="h-5 w-5" />
           {t('routes.viewFullGuide')}

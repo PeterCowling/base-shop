@@ -266,7 +266,7 @@
     "clickToEnlarge": "Kattints a nagyításhoz",
     "prevAria": "Előző kép",
     "nextAria": "Következő kép",
-    "pagination": "{{current}}/{{total}}",
+    "pagination": "_ _ TOK0 _ _ / _ _ TOK1 _ _",
     "photoAlt": "{{room}} fényképe",
     "noImage": "Nincs elérhető kép"
   },
@@ -286,7 +286,7 @@
   "filtersAria": "Szűrés szobatípus szerint",
   "checkRatesNonRefundable": "Nem visszatéríthető árak",
   "checkRatesFlexible": "Rugalmas szobaárak",
-  "checkRatesSingle": "Check Rates",
+  "checkRatesSingle": "Az árak ellenőrzése",
   "ctaSuffix": {
     "nonRefundable": "Nem visszatéríthető",
     "flexible": "Rugalmas"
@@ -306,8 +306,34 @@
     "dorm": "Éjszakánként, vendégenként. Egy vendég egy emeletes ágyban."
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2- 8 éjszaka",
+    "clearDates": "A dátumok törlése",
+    "nightsSummary": "_ _ TOK0 _ _ → _ _ _ TOK1 _ _ (_ _ TOK2 _ _ éjszaka)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Ez a hostel útvonal támogatott foglalást használ, ha a JavaScript le van tiltva.",
+    "contactAssistedBooking": "Segített foglalásért vegye fel velünk a kapcsolatot"
+  },
+  "bookingConstraints": {
+    "notice": "A hostel foglalások csak felnőtteknek szólnak, és 2 és 8 éjszakás tartózkodások esetén támogatják foglalásonként legfeljebb 8 felnőttet. Ha kérése kívül esik ezeken a korlátokon, ossza fel több foglalásra vagy",
+    "assistedLink": "vegye fel velünk a kapcsolatot a támogatott foglalásért",
+    "absentWithAnchor": "{{price}} éjszakánként (tájékoztató jellegű). Válassza ki a dátumokat az élő árak megtekintéséhez.",
+    "absentNoRates": "Az árak átmenetileg nem elérhetők. Válassza ki a dátumokat az élő elérhetőség ellenőrzéséhez."
+  },
+  "bookingControls": {
+    "decreaseAdults": "Csökkentse a felnőttek számát",
+    "increaseAdults": "Növelje a felnőttek számát"
+  },
+  "recovery": {
+    "roomTitle": "Később kell dönteni? Küldje el magának ezt a szobaárajánlatot."
+  },
+  "feature": {
+    "beds": "Ágyak",
+    "bathroom": "Fürdőszoba",
+    "view": "Kilátás",
+    "terrace": "Terasz",
+    "lockers": "Zárható szekrények",
+    "privateTerrace": "Saját terasz",
+    "inRoomLockers": "Zárható szekrények a szobában"
   }
 }

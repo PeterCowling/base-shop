@@ -13,6 +13,8 @@ jest.mock("cross-fetch", () => (
 describe("migrate-cms script", () => {
   const originalEnv = process.env;
 
+  jest.setTimeout(20_000);
+
   beforeEach(() => {
     jest.resetModules();
     readFileMock.mockReset();

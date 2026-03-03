@@ -7,14 +7,15 @@
   "countReviews_one": "{{formattedCount}} avis",
   "countReviews_other": "{{formattedCount}} avis",
   "lastChecked": "Dernière vérification :",
+  "snapshotAsOf": "En date de {{date}}",
   "sources": {
     "hostelworld": {
-      "ariaName": "Hostelworld",
-      "label": "Hostelworld"
+      "ariaName": "C'est incroyable.",
+      "label": "C'est incroyable."
     },
     "booking": {
       "ariaName": "Booking point com",
-      "label": "Booking.com"
+      "label": "Réservation.com"
     }
   }
 }

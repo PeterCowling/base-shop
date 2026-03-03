@@ -9,7 +9,8 @@ import type { CatalogProductDraftInput } from "@acme/lib/xa";
 import { UploaderI18nProvider } from "../../../lib/uploaderI18n.client";
 import { useCatalogConsole } from "../useCatalogConsole.client";
 
-const fetchSubmissionZipMock = jest.fn();
+const enqueueSubmissionJobMock = jest.fn();
+const pollJobUntilCompleteMock = jest.fn();
 const downloadBlobMock = jest.fn();
 
 jest.mock("../../../lib/catalogStorefront.ts", () => ({
@@ -25,10 +26,15 @@ jest.mock("../../../lib/catalogStorefront.ts", () => ({
       : { id: "xa-b", appDir: "xa-b", labelKey: "storefrontXAB", defaultCategory: "bags" },
 }));
 
-jest.mock("../catalogSubmissionClient", () => ({
-  fetchSubmissionZip: (...args: unknown[]) => fetchSubmissionZipMock(...args),
-  downloadBlob: (...args: unknown[]) => downloadBlobMock(...args),
-}));
+jest.mock("../catalogSubmissionClient", () => {
+  const actual = jest.requireActual("../catalogSubmissionClient") as Record<string, unknown>;
+  return {
+    ...actual,
+    enqueueSubmissionJob: (...args: unknown[]) => enqueueSubmissionJobMock(...args),
+    pollJobUntilComplete: (...args: unknown[]) => pollJobUntilCompleteMock(...args),
+    downloadBlob: (...args: unknown[]) => downloadBlobMock(...args),
+  };
+});
 
 const VALID_DRAFT: CatalogProductDraftInput = {
   id: "p1",
@@ -107,6 +113,12 @@ function renderHarness() {
         >
           set-upload-url
         </button>
+        <button
+          type="button"
+          onClick={() => state.setSubmissionUploadUrl("ftp://upload.local/path-token")}
+        >
+          set-invalid-upload-url
+        </button>
         <button type="button" onClick={() => void state.handleExportSubmission()}>
           export
         </button>
@@ -171,6 +183,8 @@ describe("useCatalogConsole domain behavior", () => {
     jest.clearAllMocks();
     window.localStorage.clear();
     jest.spyOn(window, "confirm").mockReturnValue(true);
+    enqueueSubmissionJobMock.mockResolvedValue({ jobId: "sub-123" });
+    pollJobUntilCompleteMock.mockResolvedValue("/api/catalog/submission/download/sub-123");
   });
 
   afterEach(() => {
@@ -274,19 +288,12 @@ describe("useCatalogConsole domain behavior", () => {
   });
 
   it("TC-03: submission toggle/export/upload preserve selection invariants", async () => {
-    fetchSubmissionZipMock
-      .mockResolvedValueOnce({
-        blob: new Blob(["zip-1"]),
-        filename: "submission.one.zip",
-        submissionId: "sub-export",
-        r2Key: "submissions/sub-export.zip",
-      })
-      .mockResolvedValueOnce({
-        blob: new Blob(["zip-2"]),
-        filename: "submission.two.zip",
-        submissionId: "sub-upload",
-        r2Key: "submissions/sub-upload.zip",
-      });
+    enqueueSubmissionJobMock
+      .mockResolvedValueOnce({ jobId: "sub-export" })
+      .mockResolvedValueOnce({ jobId: "sub-upload" });
+    pollJobUntilCompleteMock
+      .mockResolvedValueOnce("/api/catalog/submission/download/sub-export")
+      .mockResolvedValueOnce("/api/catalog/submission/download/sub-upload");
 
     let uploadRequest: { url: string; headers: HeadersInit | undefined } | null = null;
     global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
@@ -297,6 +304,18 @@ describe("useCatalogConsole domain behavior", () => {
       }
       if (url.startsWith("/api/catalog/sync?storefront=")) {
         return jsonResponse({ ok: true, ready: true, missingScripts: [] });
+      }
+      if (url === "/api/catalog/submission/download/sub-export") {
+        return new Response(new Blob(["zip-1"]), {
+          status: 200,
+          headers: { "Content-Disposition": 'attachment; filename="submission.one.zip"' },
+        });
+      }
+      if (url === "/api/catalog/submission/download/sub-upload") {
+        return new Response(new Blob(["zip-2"]), {
+          status: 200,
+          headers: { "Content-Disposition": 'attachment; filename="submission.two.zip"' },
+        });
       }
       if (url === "https://upload.local/upload") {
         const requestHeaders =
@@ -427,5 +446,39 @@ describe("useCatalogConsole domain behavior", () => {
     await clickButton("sync");
     expect(syncPostCalls).toBe(0);
     expect(screen.getByTestId("sync-feedback")).toHaveTextContent("");
+  });
+
+  it("TC-06: upload reports invalid_upload_url when upload endpoint format is invalid", async () => {
+    enqueueSubmissionJobMock.mockResolvedValueOnce({ jobId: "sub-invalid-url" });
+    pollJobUntilCompleteMock.mockResolvedValueOnce("/api/catalog/submission/download/sub-invalid-url");
+
+    global.fetch = jest.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
+      if (url.startsWith("/api/catalog/products?storefront=")) {
+        return jsonResponse({ ok: true, products: [], revisionsById: {} });
+      }
+      if (url.startsWith("/api/catalog/sync?storefront=")) {
+        return jsonResponse({ ok: true, ready: true, missingScripts: [] });
+      }
+      if (url === "/api/catalog/submission/download/sub-invalid-url") {
+        return new Response(new Blob(["zip"]), {
+          status: 200,
+          headers: { "Content-Disposition": 'attachment; filename="submission.invalid-url.zip"' },
+        });
+      }
+      throw new Error(`Unhandled fetch: ${url}`);
+    }) as unknown as typeof fetch;
+
+    renderHarness();
+    await clickButton("toggle-slug-1");
+    await clickButton("set-invalid-upload-url");
+    await clickButton("upload");
+
+    await waitFor(() => {
+      expect(screen.getByTestId("submission-feedback")).toHaveTextContent(
+        "error:Upload link format is invalid.",
+      );
+    });
   });
 });

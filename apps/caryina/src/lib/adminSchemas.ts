@@ -41,3 +41,19 @@ export const updateInventorySchema = z.object({
   quantity: z.number().int().min(0),
   variantAttributes: z.record(z.string()).optional().default({}),
 });
+
+/**
+ * Request body schema for initiating an Axerve refund.
+ * At least one of `shopTransactionId` or `bankTransactionId` must be provided.
+ * `shopTransactionId` is preferred — it appears in every merchant notification email.
+ * `amountCents` is in minor units (e.g. 4500 = €45.00); the route converts to decimal string.
+ */
+export const refundRequestSchema = z
+  .object({
+    shopTransactionId: z.string().min(1).optional(),
+    bankTransactionId: z.string().min(1).optional(),
+    amountCents: z.number().int().positive(),
+  })
+  .refine((data) => data.shopTransactionId ?? data.bankTransactionId, {
+    message: "At least one of shopTransactionId or bankTransactionId is required",
+  });

@@ -202,32 +202,32 @@
   "images": {
     "whyGo": {
       "src": "/img/guides/laurito-beach/02-beach-overview.jpg",
-      "alt": "Laurito Beach cove with beach clubs along the shoreline",
+      "alt": "Laurito Spiaggia baia con beach club lungo la costa",
       "caption": "L'insenatura di Laurito sostenuta dalle scogliere è più calma e tranquilla della spiaggia principale."
     },
     "layout": {
       "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
-      "alt": "Beach decks and shoreline layout at Laurito",
+      "alt": "Mazzi di spiaggia e la disposizione della spiaggia a Laurito",
       "caption": "Tre zone condividono l'insenatura: striscia pubblica, piattaforme Villa Tre Ville, e terrazza Da Adolfo."
     },
     "treVille": {
       "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
-      "alt": "Villa Tre Ville beach club loungers and sea views",
+      "alt": "Villa Tre Ville beach club lounge e vista mare",
       "caption": "Villa Tre Ville si concentra su lettini premium e servizio in stile concierge."
     },
     "daAdolfo": {
       "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
-      "alt": "Da Adolfo beach club dock and seating area",
+      "alt": "Da Adolfo beach club dock e area salotto",
       "caption": "La navetta di Da Adolfo lascia gli ospiti accanto alla terrazza del ristorante."
     },
     "positanoView": {
       "src": "/img/guides/laurito-beach/05-positano-view.jpg",
-      "alt": "View over Positano and the sea with boats near the shore",
+      "alt": "Vista su Positano e il mare con barche vicino alla riva",
       "caption": "Spiaggia Grande è il principale punto di partenza per molte navette e barche della spiaggia."
     },
     "sitaBus": {
       "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
-      "alt": "Blue SITA bus driving along the Amalfi Coast road above the sea",
+      "alt": "Blue SITA guida lungo la strada costiera amalfitana sul mare",
       "caption": "Il bus SITA costiero è una riserva utile quando le barche sono ferme."
     }
   },

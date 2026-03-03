@@ -96,7 +96,13 @@ export async function validateUploaderAdminToken(token: string): Promise<boolean
 }
 
 export async function hasUploaderSession(request: Request): Promise<boolean> {
-  const token = getCookieValue(request.headers.get("cookie"), COOKIE_NAME);
+  return hasUploaderSessionFromCookieHeader(request.headers.get("cookie"));
+}
+
+export async function hasUploaderSessionFromCookieHeader(
+  cookieHeader: string | null,
+): Promise<boolean> {
+  const token = getCookieValue(cookieHeader, COOKIE_NAME);
   if (!token) return false;
   return verifySessionToken(token, sessionSecret());
 }

@@ -4,7 +4,7 @@
     "description": "아말피, 카프리, 나폴리, 살레르노, 라벨로, 로마, 소렌토에서 Hostel Brikette까지 이동하는 실용 안내와 각 교통수단의 장단점을 담았습니다."
   },
   "header": {
-    "eyebrow": "Hostel Brikette",
+    "eyebrow": "호스텔 Brikette",
     "title": "이동 경로 안내",
     "description": "이 가이드를 활용해 아말피 해안의 목적지와 호스텔 브리케테 사이를 오가세요.",
     "heroAlt": "부겐빌레아가 둘러싼 계단을 따라 Hostel Brikette 입구로 올라가는 모습",
@@ -928,5 +928,9 @@
     "titleFallback": "이미지",
     "openAria": "이미지 열기",
     "openAriaWithCaption": "이미지 열기: {{caption}}"
+  },
+  "loadingFallback": {
+    "intro": "경로 플래너 사본을 로드하는 중입니다. 그동안 다음 경로 안내를 사용하세요.",
+    "routeLabelFallback": "노선안내"
   }
 }

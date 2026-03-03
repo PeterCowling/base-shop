@@ -90,10 +90,10 @@
     }
   },
   "sectionIds": {
-    "map": "reach-budget-map",
-    "steps": "reach-budget-steps",
-    "alternatives": "reach-budget-alternatives",
-    "costs": "reach-budget-costs",
-    "tips": "reach-budget-tips"
+    "map": "reach-budget-kart",
+    "steps": "rekkevidde-budget-trinn",
+    "alternatives": "rekkevidde-budget-alternativer",
+    "costs": "Access-budget-kostnader",
+    "tips": "rekkevidde-budsjetter"
   }
 }

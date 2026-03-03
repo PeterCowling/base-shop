@@ -52,5 +52,115 @@
         "alt": "Positanos gader"
       }
     ]
+  },
+  "directSavings": {
+    "eyebrow": "Book direkte og gem",
+    "heading": "Op til 26% mindre end Booking.com",
+    "nr": {
+      "label": "Ikke-refunderbar",
+      "saving": "Gem 26%",
+      "detail": "Bedste direkte pris"
+    },
+    "flex": {
+      "label": "Fleksibel sats",
+      "saving": "Gem 21%",
+      "detail": "Gratis afbestilling"
+    }
+  },
+  "heroTagline": "Privat lejlighed · Positano, Italien",
+  "galleryCaptions": [
+    "Full private bathroom with rain-head shower and designer fittings",
+    "Bright open-plan living space with dining area, TV lounge and mezzanine staircase",
+    "Fully equipped kitchen with dishwasher, washing machine and traditional Positano tilework"
+  ],
+  "fitCheck": {
+    "heading": "Er lejligheden rigtig for dig?",
+    "arrival": {
+      "label": "Ankomst",
+      "text": "Ingen trapper fra vejen til indgangen til lejligheden."
+    },
+    "inside": {
+      "label": "Indenfor",
+      "text": "Split-niveau interiør med indre trapper mellem stue og soveværelse."
+    },
+    "sleeping": {
+      "label": "Søvn",
+      "text": "Sovesofa nedenunder; dobbeltseng ovenpå."
+    },
+    "sound": {
+      "label": "Lyd",
+      "text": "Nogle vej og terrasse atmosfære; terrasse stille timer fra midnat."
+    },
+    "bestFit": {
+      "label": "Bedste pasform",
+      "text": "Ideel til par. Hvis nogen i din gruppe foretrækker at undgå trapper, nedenunder sovesofa er et behageligt alternativ. Anbefales ikke til meget lette sovende."
+    }
+  },
+  "hub": {
+    "streetLevelCard": {
+      "title": "Street- niveau ankomst",
+      "subtitle": "Ingen gade trapper fra vej til indgang",
+      "cta": "Læs mere"
+    },
+    "privateStayCard": {
+      "title": "Privat serviceophold",
+      "subtitle": "Med valgfri terrasse, bar og morgenmad ved siden af",
+      "cta": "Læs mere"
+    }
+  },
+  "checkAvailability": "Tjek tilgængeligheden",
+  "streetLevelArrival": {
+    "meta": {
+      "title": "Step-Free Ankomst i Positano - No Street Trapper",
+      "description": "Vores lejlighed tilbyder sted- fri adgang fra vejen til indgangen - sjælden i stejl Positano. Ingen trapper, ingen kamp med bagage."
+    },
+    "heroTitle": "Sted- fri ankomst",
+    "heroSubtitle": "Ingen gade trapper fra vejen til lejligheden indgang",
+    "heroBody": "I en by berømt for hundredvis af trin, vores lejlighed er anderledes. Gå direkte fra vejen til hoveddøren - ingen trapper, ingen kamp med bagage eller klapvogne.",
+    "videoPlaceholder": "Street- to- door video kommer snart",
+    "clarification": "Lejligheden indgang er step-fri fra gaden. Indenfor, lejligheden er split- niveau med indre trapper mellem stuen og soveværelse.",
+    "whatsappCta": "WhatsApp til hurtige svar",
+    "checkAvailability": "Tjek tilgængeligheden"
+  },
+  "privateStay": {
+    "meta": {
+      "title": "Privat lejlighed i Positano",
+      "description": "En privat 85sqm lejlighed med fuldt køkken, professionelt forvaltet med valgfri adgang til terrasse, morgenmad og bar ved siden af."
+    },
+    "heroTitle": "Din private lejlighed i Positano",
+    "heroSubtitle": "Professionelt forvaltet med hospitalsunderstøttelse ved siden af",
+    "sections": {
+      "privacy": {
+        "title": "Fuldstændig uafhængighed",
+        "body": "En 85sqm lejlighed, der er helt din. Fuldt køkken, vaskemaskine og tørretumbler, to badeværelser og plads til at sprede sig. Ingen fælles rum, ingen check-in skrivebord - bare din egen hoveddør."
+      },
+      "support": {
+        "title": "Professionel støtte, når du har brug for det",
+        "body": "Forvaltet af et erfarent gæststeam ved siden af. Har du brug for restaurant anbefalinger, hjælp med retninger, eller hjælp med noget? Professionel støtte er en kort gåtur væk."
+      },
+      "amenities": {
+        "title": "Valgfrie ekstra ved siden af",
+        "body": "Hvis du vil have dem, er der en terrasse med havudsigt, morgenmad og en bar ved siden af. Nyd dem på din tidsplan, eller springe dem helt - valget er dit."
+      }
+    },
+    "whatsappCta": "WhatsApp til hurtige svar",
+    "checkAvailability": "Tjek tilgængeligheden"
+  },
+  "book": {
+    "meta": {
+      "title": "Book vores Positano lejlighed",
+      "description": "Tjek tilgængelighed og book vores private lejlighed i Positano. Step-fri ankomst, fuldt køkken, sover 4."
+    },
+    "heroTitle": "Book dit ophold",
+    "heroSubtitle": "Privat lejlighed i Positano",
+    "dateLabel": "Vælg datoer",
+    "checkinLabel": "check-in",
+    "checkoutLabel": "Check- out",
+    "rateNonRefundable": "Ikke-refunderbar",
+    "rateFlexible": "Fleksibel (gratis afbestilling)",
+    "checkAvailability": "Tjek tilgængeligheden",
+    "orBookingCom": "Eller bog på Booking.com",
+    "whatsappCta": "WhatsApp til hurtige svar",
+    "backLink": "‡ Tilbage til lejlighed detaljer"
   }
 }

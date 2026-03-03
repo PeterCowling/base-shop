@@ -266,7 +266,7 @@
     "clickToEnlarge": "Нажмите на изображение, чтобы увеличить",
     "prevAria": "Предыдущее изображение",
     "nextAria": "Следующее изображение",
-    "pagination": "{{current}}/{{total}}",
+    "pagination": "{{current}}{{total}}",
     "photoAlt": "Фото {{room}}",
     "noImage": "Изображение недоступно"
   },
@@ -286,7 +286,7 @@
   "filtersAria": "Фильтр по типу номера",
   "checkRatesNonRefundable": "Безвозвратные тарифы",
   "checkRatesFlexible": "Гибкие тарифы",
-  "checkRatesSingle": "Check Rates",
+  "checkRatesSingle": "Проверьте ставки",
   "ctaSuffix": {
     "nonRefundable": "Безвозвратный",
     "flexible": "Гибкий"
@@ -306,8 +306,34 @@
     "dorm": "За ночь, за гостя. Один гость на одном спальном месте."
   },
   "date": {
-    "stayHelper": "2–8 nights",
-    "clearDates": "Clear dates",
-    "nightsSummary": "{{from}} → {{to}} ({{nights}} nights)"
+    "stayHelper": "2-8 ночей",
+    "clearDates": "Ясные даты",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} ночи)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Этот маршрут хостела использует помощь при бронировании, когда JavaScript отключен.",
+    "contactAssistedBooking": "Свяжитесь с нами для помощи при бронировании"
+  },
+  "bookingConstraints": {
+    "notice": "Бронирование хостелов предназначено только для взрослых, а вспомогательное пребывание осуществляется на срок от 2 до 8 ночей, при этом в одном бронировании могут разместиться до 8 взрослых. Если ваш запрос выходит за эти пределы, разделите его на несколько бронирований или",
+    "assistedLink": "свяжитесь с нами для помощи при бронировании",
+    "absentWithAnchor": "{{price}} за ночь (ориентировочно). Выберите даты, чтобы увидеть актуальные цены.",
+    "absentNoRates": "Тарифы временно недоступны. Выберите даты, чтобы проверить наличие мест в режиме реального времени."
+  },
+  "bookingControls": {
+    "decreaseAdults": "Уменьшение взрослых",
+    "increaseAdults": "Увеличение взрослых"
+  },
+  "recovery": {
+    "roomTitle": "Нужно принять решение позже? Отправьте себе цену на эту комнату."
+  },
+  "feature": {
+    "beds": "Кровати",
+    "bathroom": "Ванная комната",
+    "view": "Вид",
+    "terrace": "Терраса",
+    "lockers": "Шкафчики",
+    "privateTerrace": "Частная терраса",
+    "inRoomLockers": "Шкафчики в номере"
   }
 }

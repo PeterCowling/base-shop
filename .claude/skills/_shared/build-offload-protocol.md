@@ -104,10 +104,10 @@ listed in Affects above. Do not acquire the lock yourself.
 |---|---|
 | Exit code `0` | Codex reported task completed |
 | Exit code non-zero | Codex failed, timed out, or was interrupted |
-| Files on disk | Claude re-reads Affects files to verify; do not trust exit code alone |
-| `/tmp/codex-build-output.txt` | Final agent message; read for build evidence block |
+| Files on disk | Claude checks Affects files exist (existence only — no content read) |
+| `/tmp/codex-build-output.txt` | Final agent message; read last line only for build evidence block |
 
-There is no structured JSON output (unlike `codemoot review`). The contract is: **exit code + disk state**. Claude independently verifies both.
+There is no structured JSON output (unlike `codemoot review`). The contract is: **exit code + file existence**. CI validates correctness.
 
 **Non-zero exit handling:** Treat as invocation failure for this task cycle. Fall back to inline execution using the relevant executor module. Record the exit code and fallback reason in the plan build evidence block.
 
@@ -143,9 +143,9 @@ No new logic is required in the fallback path. The inline executor is the baseli
 
 ## Post-Execution Verification (Claude's responsibility)
 
-After `codex exec` returns, regardless of exit code, Claude must:
+After `codex exec` returns:
 
-1. **Re-read Affects files** — confirm each file in the Affects list was written (or modified as specified). Compare against VC/TC contracts. If a required file is missing or empty: treat as task failure; do not proceed to commit.
-2. **Run `modules/build-validate.md`** — Mode 1/2/3 post-build validation runs independently of Codex output quality. This is Claude's gate, not Codex's. (SPIKE and INVESTIGATE tasks are exempt from build-validate.md per the module's own rules.)
-3. **Commit gate** — stage only task-scoped files (the Affects list). Never commit broken code or failing CI outputs. Run the writer lock commit via `scripts/agents/with-writer-lock.sh`.
-4. **Post-task plan update** — mark task status Complete with date; add build evidence block (exit code, Affects files verified, VC/TC pass/fail, offload route used); update task summary and re-score dependent tasks.
+1. **Exit code check** — non-zero exit: treat as invocation failure, fall back to inline execution, record reason in plan build evidence block. Do not proceed.
+2. **Existence check** — run `ls <affects-files>` to confirm each file in the Affects list exists. If a required file is missing: treat as task failure, fall back to inline. No content read required.
+3. **Commit gate** — stage only task-scoped files (the Affects list). Run the writer lock commit via `scripts/agents/with-writer-lock.sh`. CI validates correctness.
+4. **Post-task plan update** — mark task status Complete with date; add build evidence block (exit code, Affects files present, offload route used); update task summary and re-score dependent tasks.

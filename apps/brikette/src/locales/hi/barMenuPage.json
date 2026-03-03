@@ -4,7 +4,7 @@
     "description": "स्प्रिट्ज़, कॉकटेल, वाइन, बीयर, मिक्स्ड ड्रिंक, शॉट्स और जेलाटो।"
   },
   "header": {
-    "brand": "Hostel Brikette",
+    "brand": "छात्रावास ब्रिकेट",
     "menuTitle": "बार मेन्यू, 2025",
     "hours": "प्रतिदिन खुला (समय के लिए बार पर देखें)"
   },
@@ -47,19 +47,19 @@
   },
   "items": {
     "aperolSpritz": {
-      "name": "Aperol Spritz",
+      "name": "Aperol spritz",
       "note": "क्लासिक इतालवी स्प्रिट्ज़, बर्फ के चूरे के साथ परोसा जाता है।"
     },
     "limoncelloSpritz": {
-      "name": "Limoncello Spritz",
+      "name": "Limoncello spritz",
       "note": "अमाल्फ़ी कोस्ट की विशेषता, बर्फ के चूरे के साथ परोसी जाती है।"
     },
     "hugoSpritz": {
-      "name": "Hugo Spritz",
+      "name": "ह्यूगो स्प्रिट्ज",
       "note": "स्पार्कलिंग वाइन जिसमें पुदीना, नींबू और एल्डरफ्लावर जूस मिलाया जाता है; बर्फ के चूरे के साथ परोसी जाती है।"
     },
     "rossiniSpritz": {
-      "name": "Rossini Spritz",
+      "name": "रॉसिनी Spritz",
       "note": "स्पार्कलिंग वाइन को स्ट्रॉबेरी जूस पर डाला जाता है और बर्फ के चूरे के साथ परोसा जाता है।"
     },
     "lemonStrawberryDaiquiri": {
@@ -95,52 +95,52 @@
       "name": "Peroni, 660 मि.ली."
     },
     "skyy": {
-      "name": "Skyy"
+      "name": "स्काई"
     },
     "absolut": {
-      "name": "Absolut"
+      "name": "पेटी"
     },
     "smirnoff": {
       "name": "Smirnoff"
     },
     "greyGoose": {
-      "name": "Grey Goose"
+      "name": "ग्रे हंस"
     },
     "pampero": {
-      "name": "Pampero"
+      "name": "पिम्पेरो"
     },
     "bacardiSuperior": {
-      "name": "Bacardi Superior"
+      "name": "Bacardi सुपीरियर"
     },
     "captainMorgan": {
-      "name": "Captain Morgan"
+      "name": "कैप्टन मॉर्गन"
     },
     "angosturaReserva": {
-      "name": "Angostura Reserva"
+      "name": "Angostura जलाशय"
     },
     "beefeater": {
-      "name": "Beefeater"
+      "name": "गोमांस"
     },
     "bombaySapphire": {
-      "name": "Bombay Sapphire"
+      "name": "मुंबई"
     },
     "tanqueray": {
-      "name": "Tanqueray"
+      "name": "टैनक्वायर"
     },
     "hendricks": {
-      "name": "Hendrick's"
+      "name": "हेन्ड्रिक"
     },
     "jwRed": {
       "name": "Johnnie Walker Red Label (ब्लेंडेड स्कॉच)"
     },
     "jameson": {
-      "name": "Jameson (Irish)"
+      "name": "जेम्सन (Irish)"
     },
     "jackDaniels": {
       "name": "Jack Daniel's Old No.07 (सॉर मैश)"
     },
     "wildTurkey": {
-      "name": "Wild Turkey (Bourbon)"
+      "name": "जंगली तुर्की (Bourbon)"
     },
     "chivas12": {
       "name": "Chivas Regal 12 Year Old (ब्लेंडेड स्कॉच)"
@@ -153,7 +153,7 @@
       "note": "नींबू और नमक के साथ सीधे परोसते हैं, या Tequila Sunrise तथा सोडा/स्प्राइट के साथ पेश करते हैं।"
     },
     "limoncelloShot": {
-      "name": "Limoncello",
+      "name": "लिमोनसेलो",
       "note": "दक्षिणी इटली की क्लासिक ड्रिंक, सीधे परोसी जाती है।"
     },
     "oneScoop": {

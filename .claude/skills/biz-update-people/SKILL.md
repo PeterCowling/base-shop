@@ -317,7 +317,7 @@ Every people doc update must include:
 - **After `/lp-do-ideas` dispatch acceptance:** Update responsibilities (new work ownership)
 - **After reflection:** Update capabilities (skills learned) and gaps (discovered needs)
 - **After IDEAS-02 backlog update:** Update availability (workload changes from accepted proposal workload)
-- **After `/idea-generate`:** Sweep reads profiles and flags capacity gaps — use this skill to act on sweep recommendations for profile bootstrapping or updates
+- **After `/lp-do-idea-generate`:** Sweep reads profiles and flags capacity gaps — use this skill to act on sweep recommendations for profile bootstrapping or updates
 - **Monthly review:** Run code analysis to update ownership and contributions
 
 ## Example Session

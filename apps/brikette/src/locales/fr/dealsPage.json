@@ -3,7 +3,11 @@
   "meta": {
     "title": "Économisez 15 % sur les séjours du 20 septembre au 31 octobre",
     "description": "Offre à durée limitée : économisez 15 % sur les réservations directes pour des séjours du 20 septembre au 31 octobre.",
-    "ogImageAlt": "Bannière de remise à durée limitée"
+    "ogImageAlt": "Bannière de remise à durée limitée",
+    "defaultTitle": "Offres & offres",
+    "defaultDescription": "Des avantages de réservation directs et des offres saisonnières à Hostel Brikette.",
+    "activeTitle": "Enregistrer {{percent}} sur les séjours de {{from}} à {{to}}",
+    "activeDescription": "Applique automatiquement à la caisse. Réservations directes seulement."
   },
   "title": "Économisez {{percent}} % sur les séjours du {{from}} au {{to}}",
   "promo": "Réservez en direct et votre remise de {{percent}} % s’applique automatiquement au moment du paiement.",
@@ -42,7 +46,7 @@
     },
     "badge": {
       "upcoming": "Démarre le {{startDate}}",
-      "active": "Active",
+      "active": "Activité",
       "expired": "Expirée"
     },
     "endsOn": "Se termine le {{endDate}}"
@@ -119,6 +123,6 @@
     "other": "Voir les conditions générales."
   },
   "robots": {
-    "expiredNoindex": "noindex,follow"
+    "expiredNoindex": "Pas d'index,suivre"
   }
 }

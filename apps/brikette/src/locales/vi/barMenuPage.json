@@ -4,7 +4,7 @@
     "description": "Khám phá đồ uống: bia, rượu vang, cocktail và nước giải khát."
   },
   "header": {
-    "brand": "Hostel Brikette",
+    "brand": "Name",
     "menuTitle": "Thực Đơn Quầy Bar, 2025",
     "hours": "Mở cửa hằng ngày (giờ cụ thể xem tại quầy bar)"
   },
@@ -35,31 +35,31 @@
       "note": "Phục vụ cùng tonic Schweppes, đá bào và lát chanh Amalfi."
     },
     "whisky": {
-      "title": "Whisky",
+      "title": "Rượu whisky",
       "note": "Chọn trực tiếp tại quầy; cho chúng tôi biết nếu bạn muốn thêm đá, nước hoặc cà phê (đá/nóng, espresso hoặc americano)."
     },
     "shots": {
-      "title": "Shots"
+      "title": "Uống"
     },
     "gelato": {
-      "title": "Gelato"
+      "title": "Kem gelato"
     }
   },
   "items": {
     "aperolSpritz": {
-      "name": "Aperol Spritz",
+      "name": "Cocktail Aperol Spritz",
       "note": "Spritz Ý kinh điển, phục vụ cùng đá bào."
     },
     "limoncelloSpritz": {
-      "name": "Limoncello Spritz",
+      "name": "Name",
       "note": "Đặc sản Amalfi Coast, phục vụ với đá bào."
     },
     "hugoSpritz": {
-      "name": "Hugo Spritz",
+      "name": "Cocktail Hugo Spritz",
       "note": "Rượu vang sủi rót cùng bạc hà, chanh và siro hoa cơm cháy, phục vụ với đá bào."
     },
     "rossiniSpritz": {
-      "name": "Rossini Spritz",
+      "name": "Cocktail Rossini Spritz",
       "note": "Rượu vang sủi hòa với nước dâu tây, phục vụ cùng đá bào."
     },
     "lemonStrawberryDaiquiri": {
@@ -70,7 +70,7 @@
       "note": "Nước dâu hoặc chanh tươi cùng Tequila, Cointreau và đá – lắc theo phong cách cổ điển."
     },
     "lemonDropMartini": {
-      "name": "Lemon Drop Martini",
+      "name": "Name",
       "note": "Nước cốt chanh tươi lắc với Absolut Vodka, Cointreau và đá."
     },
     "redWhiteGlass": {
@@ -83,64 +83,64 @@
       "name": "Prosecco (ly)"
     },
     "nastro330": {
-      "name": "Nastro, 330ml"
+      "name": "Bia Nastro 330ml"
     },
     "nastro660": {
-      "name": "Nastro, 660ml"
+      "name": "Bia Nastro 660ml"
     },
     "peroni330": {
-      "name": "Peroni, 330ml"
+      "name": "Peroni, 330 mml"
     },
     "peroni660": {
-      "name": "Peroni, 660ml"
+      "name": "Peroni, 660 mml"
     },
     "skyy": {
-      "name": "Skyy"
+      "name": "Vodka Skyy"
     },
     "absolut": {
-      "name": "Absolut"
+      "name": "Absolout"
     },
     "smirnoff": {
-      "name": "Smirnoff"
+      "name": "Vodka Smirnoff"
     },
     "greyGoose": {
-      "name": "Grey Goose"
+      "name": "Xám Goose"
     },
     "pampero": {
-      "name": "Pampero"
+      "name": "Rượu rum Pampero"
     },
     "bacardiSuperior": {
-      "name": "Bacardi Superior"
+      "name": "Rượu rum Bacardi Superior"
     },
     "captainMorgan": {
-      "name": "Captain Morgan"
+      "name": "Đại úy Morgan."
     },
     "angosturaReserva": {
-      "name": "Angostura Reserva"
+      "name": "Name"
     },
     "beefeater": {
-      "name": "Beefeater"
+      "name": "Name"
     },
     "bombaySapphire": {
-      "name": "Bombay Sapphire"
+      "name": "Rượu gin Bombay Sapphire"
     },
     "tanqueray": {
-      "name": "Tanqueray"
+      "name": "Name"
     },
     "hendricks": {
-      "name": "Hendrick's"
+      "name": "Hendrick"
     },
     "jwRed": {
       "name": "Bản dịch đang được chuẩn bị."
     },
     "jameson": {
-      "name": "Jameson (Irish)"
+      "name": "Whisky Jameson"
     },
     "jackDaniels": {
       "name": "Bản dịch đang được chuẩn bị."
     },
     "wildTurkey": {
-      "name": "Wild Turkey (Bourbon)"
+      "name": "Thổ Nhĩ Kỳ Hoang dã (Bourbon)"
     },
     "chivas12": {
       "name": "Bản dịch đang được chuẩn bị."
@@ -153,7 +153,7 @@
       "note": "Có thể thưởng thức nguyên chất với chanh và muối, pha kiểu Tequila Sunrise hoặc kèm soda/sprite."
     },
     "limoncelloShot": {
-      "name": "Limoncello",
+      "name": "Shot Limoncello",
       "note": "Thức uống cổ điển miền Nam Ý, phục vụ nguyên chất."
     },
     "oneScoop": {

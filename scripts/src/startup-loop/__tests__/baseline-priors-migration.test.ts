@@ -10,10 +10,10 @@ import { join } from "path";
 
 const BASELINE_DOCS = [
   "docs/business-os/startup-baselines/HEAD-forecast-seed.user.md",
-  "docs/business-os/startup-baselines/HEAD-intake-packet.user.md",
+  "docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md",
   "docs/business-os/startup-baselines/PET-forecast-seed.user.md",
-  "docs/business-os/startup-baselines/PET-intake-packet.user.md",
-  "docs/business-os/startup-baselines/BRIK-intake-packet.user.md",
+  "docs/business-os/startup-baselines/PET-2026-02-12assessment-intake-packet.user.md",
+  "docs/business-os/startup-baselines/BRIK-2026-02-12assessment-intake-packet.user.md",
 ];
 
 interface Prior {

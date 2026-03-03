@@ -33,6 +33,8 @@
     "clean": "rimraf dist *.tsbuildinfo",
     "start": "node ./dist/index.js",
     "dev": "tsx ./src/index.ts",
+    "shadow-replay:refine": "tsx ./scripts/shadow-replay-refinement.ts",
+    "shadow-replay:refine:ci": "pnpm --filter @acme/zod-utils build && tsx ./scripts/shadow-replay-refinement.ts --input packages/mcp-server/scripts/fixtures/shadow-replay-fixture.json --output .tmp/email-shadow-replay-report.md --json-output .tmp/email-shadow-replay-summary.json --limit 50 --max-regressions 0 --max-hard-rule-violations 0 --max-errors 0",
     "test:startup-loop": "pnpm -w run test:governed -- jest -- --config packages/mcp-server/jest.startup-loop.config.cjs --runInBand",
     "gmail:auth": "tsx ./scripts/test-gmail-auth.ts",
     "lint": "NODE_OPTIONS='--max-old-space-size=8192' eslint .",

@@ -28,11 +28,18 @@ jest.mock("@/components/apartment/FitCheck", () => ({
 jest.mock("@/utils/dateUtils", () => ({
   getTodayIso: () => "2026-03-01",
   getDatePlusTwoDays: () => "2026-03-04",
+  formatDisplayDate: (date: Date) => date.toISOString().slice(0, 10),
+  formatDate: (date: Date) => date.toISOString().slice(0, 10),
+  safeParseIso: (iso: string) => {
+    if (!iso) return undefined;
+    const [y, m, d] = iso.split("-").map(Number);
+    return new Date(y, m - 1, d);
+  },
 }));
 
 jest.mock("next/navigation", () => ({
   useRouter: () => ({ push: jest.fn(), replace: jest.fn() }),
-  usePathname: () => "/en/apartment/book",
+  usePathname: () => "/en/private-rooms/book",
   useSearchParams: () => new URLSearchParams(),
 }));
 
@@ -44,7 +51,7 @@ jest.mock("next/link", () => ({
 }));
 
 // eslint-disable-next-line import/first -- mocks must be declared before the import under test
-import ApartmentBookContent from "@/app/[lang]/apartment/book/ApartmentBookContent";
+import ApartmentBookContent from "@/app/[lang]/private-rooms/book/ApartmentBookContent";
 
 jest.mock("@/components/booking/PolicyFeeClarityPanel", () => ({
   __esModule: true,
@@ -130,7 +137,7 @@ const getWhatsappCta = () => document.querySelector('[data-testid="whatsapp-cta"
 // --- TASK-09: WhatsApp prefill, long-stay reroute, sessionStorage redirect-back ---
 
 describe("TASK-09: WhatsApp prefill, long-stay reroute, and sessionStorage redirect-back UX", () => {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
+   
   const { fireWhatsappClick } = require("@/utils/ga4-events") as {
     fireWhatsappClick: jest.Mock;
   };
@@ -196,7 +203,7 @@ describe("TASK-09: WhatsApp prefill, long-stay reroute, and sessionStorage redir
     render(<ApartmentBookContent lang="en" />);
 
     // Set checkout to 19 nights after the mocked checkin (2026-03-01)
-    fireEvent.change(screen.getByLabelText("booking2.checkOutDate"), {
+    fireEvent.change(screen.getByLabelText("booking.checkOutLabel"), {
       target: { value: "2026-03-20" },
     });
 
@@ -207,12 +214,12 @@ describe("TASK-09: WhatsApp prefill, long-stay reroute, and sessionStorage redir
 
   // TC-04: Source contains no disallowed pricing claims (policy: pricing-claim-policy.md)
   it("TC-04: ApartmentBookContent source has no disallowed pricing claims", () => {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
+     
     const fs = require("fs") as typeof import("fs");
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
+     
     const nodePath = require("path") as typeof import("path");
     const src = fs.readFileSync(
-      nodePath.resolve(__dirname, "../../app/[lang]/apartment/book/ApartmentBookContent.tsx"),
+      nodePath.resolve(__dirname, "../../app/[lang]/private-rooms/book/ApartmentBookContent.tsx"),
       "utf8",
     );
     // Per pricing-claim-policy.md — these phrases must never appear in source

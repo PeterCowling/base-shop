@@ -114,7 +114,7 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
                   <button
                     type="button"
                     aria-label={`Remove ${t}`}
-                    className="inline-flex min-h-10 min-w-10 items-center justify-center rounded border px-1"
+                    className="inline-flex min-h-11 min-w-11 items-center justify-center rounded border px-1"
                     onClick={(e) => { e.stopPropagation(); setTags((prev) => prev.filter((x) => x !== t)); }}
                   >
                     ×
@@ -132,7 +132,7 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
                 aria-label="Add tag"
               />
               {/* i18n-exempt: Admin-only CMS tool UI copy. */}
-              <button type="button" className="min-h-10 min-w-10 rounded border px-2 text-xs" onClick={(e) => { e.stopPropagation(); addTag(); }}>Add</button>
+              <button type="button" className="min-h-11 min-w-11 rounded border px-2 text-xs" onClick={(e) => { e.stopPropagation(); addTag(); }}>Add</button>
             </div>
           </div>
         </div>
@@ -152,7 +152,7 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
         <button
           type="button"
           aria-label={t('pb.library.uploadThumbnail') as string}
-          className="min-h-10 min-w-10 rounded border px-2 text-xs"
+          className="min-h-11 min-w-11 rounded border px-2 text-xs"
           onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
           title={t('pb.library.uploadThumbnail') as string}
         >
@@ -165,7 +165,7 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
           <button
             type="button"
             aria-label={t('pb.library.clearThumbnail') as string}
-            className="min-h-10 min-w-10 rounded border px-2 text-xs"
+            className="min-h-11 min-w-11 rounded border px-2 text-xs"
             onClick={(e) => { e.stopPropagation(); onUpdate({ thumbnail: null }); }}
           >
             {t('pb.library.clear')}
@@ -179,7 +179,7 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
             <button
               type="button"
               aria-label={t('pb.library.save') as string}
-              className="min-h-10 min-w-10 rounded border px-2 text-xs"
+              className="min-h-11 min-w-11 rounded border px-2 text-xs"
               onClick={(e) => {
                 e.stopPropagation();
                 const nextTags = tags.map((t) => t.trim()).filter(Boolean);
@@ -195,7 +195,7 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
             <button
               type="button"
               aria-label={t('pb.library.cancel') as string}
-              className="min-h-10 min-w-10 rounded border px-2 text-xs"
+              className="min-h-11 min-w-11 rounded border px-2 text-xs"
               onClick={(e) => {
                 e.stopPropagation();
                 setLabel(item.label);
@@ -213,7 +213,7 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
           <button
             type="button"
             aria-label={t('pb.library.edit') as string}
-            className="min-h-10 min-w-10 rounded border px-2 text-xs"
+            className="min-h-11 min-w-11 rounded border px-2 text-xs"
             onClick={(e) => {
               e.stopPropagation();
               setEditing(true);
@@ -228,7 +228,7 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
         <button
           type="button"
           aria-label={(item.shared ? t('pb.library.unshare') : t('pb.library.share')) as string}
-          className={`min-h-10 min-w-10 rounded border px-2 text-xs ${item.shared ? "bg-primary/10" : ""}`}
+          className={`min-h-11 min-w-11 rounded border px-2 text-xs ${item.shared ? "bg-primary/10" : ""}`}
           onClick={(e) => {
             e.stopPropagation();
             onToggleShare();
@@ -244,7 +244,7 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
         <button
           type="button"
           aria-label={t('pb.library.deleteFromMyLibrary') as string}
-          className="min-h-10 min-w-10 rounded border px-2 text-xs"
+          className="min-h-11 min-w-11 rounded border px-2 text-xs"
           onClick={(e) => {
             e.stopPropagation();
             onDelete();

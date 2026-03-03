@@ -124,7 +124,7 @@ describe("updateManifest", () => {
       expect(manifest.schema_version).toBe(1);
       expect(manifest.run_id).toBe("SFS-TEST-20260213-1200");
       expect(manifest.business).toBe("TEST");
-      expect(manifest.status).toBe("candidate");
+      expect(manifest.status).toBe("current");
 
       // All artifact pointers collected
       expect(manifest.artifacts).toEqual({

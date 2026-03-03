@@ -8,9 +8,16 @@ import { __clearRateLimitStoreForTests } from "../../../../../lib/rateLimit";
 const spawnMock = jest.fn();
 const accessMock = jest.fn();
 const mkdirMock = jest.fn();
+const readFileMock = jest.fn();
+const writeFileMock = jest.fn();
+const renameMock = jest.fn();
 const hasUploaderSessionMock = jest.fn();
 const getCatalogSyncInputStatusMock = jest.fn();
 const publishCatalogArtifactsToContractMock = jest.fn();
+const publishCatalogPayloadToContractMock = jest.fn();
+const getCatalogContractReadinessMock = jest.fn();
+const readCloudDraftSnapshotMock = jest.fn();
+const buildCatalogArtifactsFromDraftsMock = jest.fn();
 
 jest.mock("node:child_process", () => ({
   spawn: (...args: unknown[]) => spawnMock(...args),
@@ -21,6 +28,9 @@ jest.mock("node:fs/promises", () => ({
   default: {
     access: (...args: unknown[]) => accessMock(...args),
     mkdir: (...args: unknown[]) => mkdirMock(...args),
+    readFile: (...args: unknown[]) => readFileMock(...args),
+    writeFile: (...args: unknown[]) => writeFileMock(...args),
+    rename: (...args: unknown[]) => renameMock(...args),
   },
 }));
 
@@ -42,6 +52,26 @@ jest.mock("../../../../../lib/catalogSyncInput", () => ({
 
 jest.mock("../../../../../lib/catalogContractClient", () => ({
   publishCatalogArtifactsToContract: (...args: unknown[]) => publishCatalogArtifactsToContractMock(...args),
+  publishCatalogPayloadToContract: (...args: unknown[]) => publishCatalogPayloadToContractMock(...args),
+  getCatalogContractReadiness: () => getCatalogContractReadinessMock(),
+}));
+
+jest.mock("../../../../../lib/catalogDraftContractClient", () => ({
+  readCloudDraftSnapshot: (...args: unknown[]) => readCloudDraftSnapshotMock(...args),
+}));
+
+jest.mock("../../../../../lib/catalogDraftToContract", () => ({
+  buildCatalogArtifactsFromDrafts: (...args: unknown[]) => buildCatalogArtifactsFromDraftsMock(...args),
+}));
+
+const getUploaderKvMock = jest.fn();
+const acquireSyncMutexMock = jest.fn();
+const releaseSyncMutexMock = jest.fn();
+
+jest.mock("../../../../../lib/syncMutex", () => ({
+  getUploaderKv: (...args: unknown[]) => getUploaderKvMock(...args),
+  acquireSyncMutex: (...args: unknown[]) => acquireSyncMutexMock(...args),
+  releaseSyncMutex: (...args: unknown[]) => releaseSyncMutexMock(...args),
 }));
 
 function createChild(
@@ -73,13 +103,37 @@ describe("catalog sync route", () => {
     __clearRateLimitStoreForTests();
     hasUploaderSessionMock.mockResolvedValue(true);
     mkdirMock.mockResolvedValue(undefined);
+    readFileMock.mockResolvedValue('{"EUR":0.92,"GBP":0.78,"AUD":1.5}');
+    writeFileMock.mockResolvedValue(undefined);
+    renameMock.mockResolvedValue(undefined);
     getCatalogSyncInputStatusMock.mockResolvedValue({ exists: true, rowCount: 1 });
     publishCatalogArtifactsToContractMock.mockResolvedValue({
       version: "v-test",
       publishedAt: "2026-02-24T00:00:00.000Z",
     });
+    publishCatalogPayloadToContractMock.mockResolvedValue({
+      version: "v-cloud",
+      publishedAt: "2026-02-24T00:00:00.000Z",
+    });
+    getCatalogContractReadinessMock.mockReturnValue({ configured: true, errors: [] });
+    readCloudDraftSnapshotMock.mockResolvedValue({
+      products: [{ slug: "studio-jacket", title: "Studio Jacket" }],
+      revisionsById: {},
+      docRevision: "doc-1",
+    });
+    buildCatalogArtifactsFromDraftsMock.mockReturnValue({
+      catalog: { collections: [], brands: [], products: [{ slug: "studio-jacket" }] },
+      mediaIndex: { totals: { products: 1, media: 0, warnings: 0 }, items: [] },
+      warnings: [],
+    });
     delete process.env.XA_UPLOADER_MODE;
     delete process.env.XA_UPLOADER_EXPOSE_SYNC_LOGS;
+    delete process.env.XA_UPLOADER_LOCAL_FS_DISABLED;
+
+    // Default: KV unavailable (null) → mutex skipped, existing tests unaffected
+    getUploaderKvMock.mockResolvedValue(null);
+    acquireSyncMutexMock.mockResolvedValue(true);
+    releaseSyncMutexMock.mockResolvedValue(undefined);
   });
 
   it("TC-00: reports ready=true from GET when scripts exist", async () => {
@@ -127,8 +181,83 @@ describe("catalog sync route", () => {
     );
   });
 
-  it("TC-00c: blocks empty catalog input unless explicitly confirmed", async () => {
+  it("TC-00e: GET reports ready=true with contractConfigured=true when scripts and contract are both configured", async () => {
+    accessMock.mockResolvedValue(undefined);
+    getCatalogContractReadinessMock.mockReturnValue({ configured: true, errors: [] });
+
+    const { GET } = await import("../route");
+    const response = await GET(
+      new Request("http://localhost/api/catalog/sync?storefront=xa-b", {
+        method: "GET",
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({
+        ok: true,
+        ready: true,
+        contractConfigured: true,
+        contractConfigErrors: [],
+      }),
+    );
+  });
+
+  it("TC-00f: GET reports ready=false with contractConfigured=false when contract env vars are missing", async () => {
+    accessMock.mockResolvedValue(undefined);
+    getCatalogContractReadinessMock.mockReturnValue({
+      configured: false,
+      errors: ["XA_CATALOG_CONTRACT_BASE_URL not set"],
+    });
+
+    const { GET } = await import("../route");
+    const response = await GET(
+      new Request("http://localhost/api/catalog/sync?storefront=xa-b", {
+        method: "GET",
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({
+        ok: true,
+        ready: false,
+        contractConfigured: false,
+        contractConfigErrors: ["XA_CATALOG_CONTRACT_BASE_URL not set"],
+        recovery: "configure_catalog_contract",
+      }),
+    );
+  });
+
+
+  it("TC-00c: blocks missing catalog input without confirmation override", async () => {
     getCatalogSyncInputStatusMock.mockResolvedValue({ exists: false, rowCount: 0 });
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          storefront: "xa-b",
+          options: { strict: true, recursive: true },
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({
+        ok: false,
+        error: "catalog_input_missing",
+        recovery: "create_catalog_input",
+      }),
+    );
+    expect(spawnMock).not.toHaveBeenCalled();
+  });
+
+  it("TC-00c2: blocks empty existing CSV unless explicitly confirmed", async () => {
+    getCatalogSyncInputStatusMock.mockResolvedValue({ exists: true, rowCount: 0 });
 
     const { POST } = await import("../route");
     const response = await POST(
@@ -177,6 +306,7 @@ describe("catalog sync route", () => {
     expect(spawnMock).toHaveBeenCalledTimes(2);
     expect(publishCatalogArtifactsToContractMock).toHaveBeenCalledTimes(1);
   });
+
 
   it("TC-01: returns deterministic dependency error when required scripts are missing", async () => {
     accessMock
@@ -322,6 +452,10 @@ describe("catalog sync route", () => {
         ok: true,
         dryRun: false,
         publishedVersion: "v-test",
+        display: expect.objectContaining({
+          requiresXaBBuild: true,
+          nextAction: "rebuild_and_deploy_xa_b",
+        }),
       }),
     );
     expect(publishCatalogArtifactsToContractMock).toHaveBeenCalledWith(
@@ -333,6 +467,7 @@ describe("catalog sync route", () => {
     );
   });
 
+
   it("TC-06: reports catalog_publish_unconfigured when contract settings are missing", async () => {
     accessMock.mockResolvedValue(undefined);
     spawnMock
@@ -342,6 +477,35 @@ describe("catalog sync route", () => {
       code: "unconfigured",
       message: "missing config",
     });
+
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          storefront: "xa-b",
+          options: { strict: true, recursive: true },
+        }),
+      }),
+    );
+    consoleErrorSpy.mockRestore();
+
+    expect(response.status).toBe(503);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({
+        ok: false,
+        error: "catalog_publish_unconfigured",
+        recovery: "configure_catalog_contract",
+      }),
+    );
+  });
+
+
+  it("TC-07: blocks sync when currency rates file is missing", async () => {
+    const missingRates = Object.assign(new Error("missing"), { code: "ENOENT" });
+    readFileMock.mockRejectedValueOnce(missingRates);
 
     const { POST } = await import("../route");
     const response = await POST(
@@ -355,13 +519,225 @@ describe("catalog sync route", () => {
       }),
     );
 
-    expect(response.status).toBe(503);
+    expect(response.status).toBe(409);
     expect(await response.json()).toEqual(
       expect.objectContaining({
         ok: false,
-        error: "catalog_publish_unconfigured",
-        recovery: "configure_catalog_contract",
+        error: "currency_rates_missing",
+        recovery: "save_currency_rates",
       }),
     );
+    expect(spawnMock).not.toHaveBeenCalled();
+  });
+
+  it("TC-08: blocks sync when currency rates file is invalid", async () => {
+    readFileMock.mockResolvedValueOnce('{"EUR":"n/a","GBP":0.78,"AUD":1.5}');
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          storefront: "xa-b",
+          options: { strict: true, recursive: true },
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({
+        ok: false,
+        error: "currency_rates_invalid",
+        recovery: "save_currency_rates",
+      }),
+    );
+    expect(spawnMock).not.toHaveBeenCalled();
+  });
+
+  it("TC-09: executes cloud sync publish path when local fs is disabled", async () => {
+    process.env.XA_UPLOADER_LOCAL_FS_DISABLED = "1";
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          storefront: "xa-b",
+          options: { strict: true, dryRun: false },
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({
+        ok: true,
+        mode: "cloud",
+        display: expect.objectContaining({
+          requiresXaBBuild: true,
+          nextAction: "rebuild_and_deploy_xa_b",
+        }),
+      }),
+    );
+    expect(spawnMock).not.toHaveBeenCalled();
+    expect(publishCatalogPayloadToContractMock).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("TASK-04: catalog sync route — KV mutex (F4+F8)", () => {
+  const kvGetMock = jest.fn();
+  const kvPutMock = jest.fn();
+  const kvDeleteMock = jest.fn();
+
+  const mockKv = {
+    get: (...args: unknown[]) => kvGetMock(...args),
+    put: (...args: unknown[]) => kvPutMock(...args),
+    delete: (...args: unknown[]) => kvDeleteMock(...args),
+  } as import("../../../../../lib/syncMutex").UploaderKvNamespace;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    __clearRateLimitStoreForTests();
+    hasUploaderSessionMock.mockResolvedValue(true);
+    readCloudDraftSnapshotMock.mockResolvedValue({
+      products: [{ slug: "studio-jacket", title: "Studio Jacket" }],
+      revisionsById: {},
+      docRevision: "doc-1",
+    });
+    buildCatalogArtifactsFromDraftsMock.mockReturnValue({
+      catalog: { collections: [], brands: [], products: [{ slug: "studio-jacket" }] },
+      mediaIndex: { totals: { products: 1, media: 0, warnings: 0 }, items: [] },
+      warnings: [],
+    });
+    publishCatalogPayloadToContractMock.mockResolvedValue({
+      version: "v-cloud",
+      publishedAt: "2026-02-24T00:00:00.000Z",
+    });
+    getCatalogContractReadinessMock.mockReturnValue({ configured: true, errors: [] });
+    process.env.XA_UPLOADER_LOCAL_FS_DISABLED = "1";
+    delete process.env.XA_UPLOADER_MODE;
+
+    kvGetMock.mockResolvedValue(null);
+    kvPutMock.mockResolvedValue(undefined);
+    kvDeleteMock.mockResolvedValue(undefined);
+
+    getUploaderKvMock.mockResolvedValue(mockKv);
+    acquireSyncMutexMock.mockImplementation(
+      async (
+        kv: import("../../../../../lib/syncMutex").UploaderKvNamespace,
+        storefrontId: string,
+      ) => {
+        const key = `xa-sync-lock:${storefrontId}`;
+        const existing = await kv.get(key);
+        if (existing !== null) return false;
+        await kv.put(key, "1", { expirationTtl: 300 });
+        return true;
+      },
+    );
+    releaseSyncMutexMock.mockImplementation(
+      async (
+        kv: import("../../../../../lib/syncMutex").UploaderKvNamespace,
+        storefrontId: string,
+      ) => {
+        await kv.delete(`xa-sync-lock:${storefrontId}`);
+      },
+    );
+  });
+
+  it("TC-04a: returns 409 when KV lock key is already held (lock present)", async () => {
+    kvGetMock.mockResolvedValueOnce("1");
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ options: {}, storefront: "xa-b" }),
+      }),
+    );
+
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual({
+      ok: false,
+      error: "conflict",
+      reason: "sync_already_running",
+    });
+    expect(kvPutMock).not.toHaveBeenCalled();
+    expect(kvDeleteMock).not.toHaveBeenCalled();
+    expect(publishCatalogPayloadToContractMock).not.toHaveBeenCalled();
+    expect(spawnMock).not.toHaveBeenCalled();
+  });
+
+  it("TC-04b: fail-open when KV acquire throws — sync proceeds normally", async () => {
+    acquireSyncMutexMock.mockRejectedValue(new Error("KV unavailable"));
+
+    const consoleWarnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ options: {}, storefront: "xa-b" }),
+      }),
+    );
+    consoleWarnSpy.mockRestore();
+
+    // Sync should proceed (fail-open)
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual(expect.objectContaining({ ok: true }));
+  });
+
+  it("TC-04c: writes KV mutex lock with xa-sync-lock key and 300-second TTL", async () => {
+    kvGetMock.mockResolvedValueOnce(null);
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ options: {}, storefront: "xa-b" }),
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(kvPutMock).toHaveBeenCalledWith("xa-sync-lock:xa-b", "1", { expirationTtl: 300 });
+  });
+
+  it("TC-04d: deletes KV mutex key after successful sync", async () => {
+    kvGetMock.mockResolvedValueOnce(null);
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ options: {}, storefront: "xa-b" }),
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(kvDeleteMock).toHaveBeenCalledWith("xa-sync-lock:xa-b");
+  });
+
+  it("TC-04e: mutex skipped when KV unavailable (getUploaderKv returns null)", async () => {
+    getUploaderKvMock.mockResolvedValue(null); // KV not available
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ options: {}, storefront: "xa-b" }),
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(acquireSyncMutexMock).not.toHaveBeenCalled();
+    expect(releaseSyncMutexMock).not.toHaveBeenCalled();
+    expect(kvPutMock).not.toHaveBeenCalled();
+    expect(kvDeleteMock).not.toHaveBeenCalled();
   });
 });

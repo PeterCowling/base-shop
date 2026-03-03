@@ -3,53 +3,57 @@
 // src/app/[lang]/book/BookPageContent.tsx
 // Booking landing page used for direct landings (SEO/sitemap/no-JS fallback).
 
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, type MutableRefObject,useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSearchParams } from "next/navigation";
+import { useRouter , useSearchParams } from "next/navigation";
 
 import { Section } from "@acme/design-system/atoms";
 
-import { DirectPerksBlock } from "@/components/booking/DirectPerksBlock";
+import {
+  BookPageIndicativeDisclosure,
+  BookPageRecoverySection,
+  BookPageSearchPanel,
+} from "@/components/booking/BookPageSections";
+import type { DateRange } from "@/components/booking/DateRangePicker";
 import LocationInline from "@/components/booking/LocationInline";
 import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
 import FaqStrip from "@/components/landing/FaqStrip";
 import SocialProofSection from "@/components/landing/SocialProofSection";
 import RoomsSection from "@/components/rooms/RoomsSection";
 import BookPageStructuredData from "@/components/seo/BookPageStructuredData";
+import indicativePricesSeed from "@/data/indicative_prices.json";
 import { roomsData } from "@/data/roomsData";
+import { useAvailability } from "@/hooks/useAvailability";
 import { usePagePreload } from "@/hooks/usePagePreload";
+import { useRecoveryResumeFallback } from "@/hooks/useRecoveryResumeFallback";
 import type { AppLanguage } from "@/i18n.config";
-import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
+import {
+  isValidPax,
+  isValidStayRange,
+} from "@/utils/bookingDateRules";
+import { buildBookingQueryString } from "@/utils/bookingQuery";
+import {
+  type BookingSearchSource,
+  hydrateBookingSearch,
+  persistBookingSearch,
+  readBookingSearchFromStore,
+} from "@/utils/bookingSearch";
+import { formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
 import { fireSearchAvailability, fireViewItemList } from "@/utils/ga4-events";
+import { getIndicativeDisclosure, getIndicativeRoomPrices } from "@/utils/indicativePricing";
 
 type Props = {
   lang: AppLanguage;
+  heading: string;
 };
 
-function parsePositiveInt(value: string | null, fallback: number): number {
-  if (!value) return fallback;
-  const n = parseInt(value, 10);
-  return Number.isFinite(n) && n > 0 ? n : fallback;
-}
+type SearchAvailabilityPayload = {
+  checkin: string;
+  checkout: string;
+  pax: number;
+};
 
-function readQueryDate(params: URLSearchParams | null, keys: string[], fallback: string): string {
-  if (!params) return fallback;
-  for (const key of keys) {
-    const raw = params.get(key);
-    if (raw && raw.trim()) return raw;
-  }
-  return fallback;
-}
-
-function readQueryNumber(params: URLSearchParams | null, keys: string[], fallback: number): number {
-  if (!params) return fallback;
-  for (const key of keys) {
-    const raw = params.get(key);
-    const n = parsePositiveInt(raw, Number.NaN);
-    if (Number.isFinite(n)) return n;
-  }
-  return fallback;
-}
+type TranslateFn = (key: string, options?: Record<string, unknown>) => string | object;
 
 function writeCanonicalBookingQuery(next: { checkin: string; checkout: string; pax: number }): void {
   if (typeof window === "undefined") return;
@@ -60,11 +64,105 @@ function writeCanonicalBookingQuery(next: { checkin: string; checkout: string; p
   window.history.replaceState(null, "", url.toString());
 }
 
-function isValidSearch(checkIn: string, checkOut: string): boolean {
-  return checkIn.length > 0 && checkOut.length > 0 && checkOut > checkIn;
+function isValidSearch(checkIn: string, checkOut: string, pax: number): boolean {
+  return checkIn.length > 0 && checkOut.length > 0 && isValidStayRange(checkIn, checkOut) && isValidPax(pax);
 }
 
-function BookPageContent({ lang }: Props): JSX.Element {
+function deriveRoomQueryState(checkin: string, checkout: string, pax: number): "valid" | "invalid" | "absent" {
+  if (!checkin || !checkout) return "absent";
+  return isValidSearch(checkin, checkout, pax) ? "valid" : "invalid";
+}
+
+function deriveMountedSearchPayload(
+  source: BookingSearchSource,
+  initialCheckin: string,
+  initialCheckout: string,
+  initialPax: number,
+): SearchAvailabilityPayload | null {
+  if (source !== "url" || !isValidSearch(initialCheckin, initialCheckout, initialPax)) return null;
+  return { checkin: initialCheckin, checkout: initialCheckout, pax: initialPax };
+}
+
+function seedInitialSearchTelemetry(
+  mountedSearch: SearchAvailabilityPayload | null,
+  initialValues: SearchAvailabilityPayload,
+  lastSearchKeyRef: MutableRefObject<string | null>,
+): void {
+  if (mountedSearch) {
+    const key = `${mountedSearch.checkin}|${mountedSearch.checkout}|${mountedSearch.pax}`;
+    lastSearchKeyRef.current = key;
+    fireSearchAvailability({
+      source: "booking_widget",
+      checkin: mountedSearch.checkin,
+      checkout: mountedSearch.checkout,
+      pax: mountedSearch.pax,
+    });
+    return;
+  }
+
+  lastSearchKeyRef.current = `${initialValues.checkin}|${initialValues.checkout}|${initialValues.pax}`;
+}
+
+function scheduleBookingSearchPersistence(
+  checkin: string,
+  checkout: string,
+  pax: number,
+): (() => void) | undefined {
+  if (!checkin || !checkout) return undefined;
+  const timer = window.setTimeout(() => {
+    persistBookingSearch({ checkin, checkout, pax });
+  }, 400);
+  return () => window.clearTimeout(timer);
+}
+
+function scheduleSearchAvailabilityFire(
+  checkin: string,
+  checkout: string,
+  pax: number,
+  lastSearchKeyRef: MutableRefObject<string | null>,
+): (() => void) | undefined {
+  if (!isValidSearch(checkin, checkout, pax)) return undefined;
+  const key = `${checkin}|${checkout}|${pax}`;
+  if (lastSearchKeyRef.current === key) return undefined;
+  const timer = window.setTimeout(() => {
+    if (lastSearchKeyRef.current === key) return;
+    lastSearchKeyRef.current = key;
+    fireSearchAvailability({ source: "booking_widget", checkin, checkout, pax });
+  }, 600);
+  return () => window.clearTimeout(timer);
+}
+
+function renderDealBanner(deal: string | null, t: TranslateFn): JSX.Element | null {
+  if (!deal) return null;
+  return (
+    <div className="sticky top-0 bg-brand-secondary px-4 py-2 text-center text-sm font-semibold text-brand-on-accent">
+      {t("dealBanner.applied", { defaultValue: `Deal applied: ${deal}`, replace: { code: deal } }) as string}
+    </div>
+  );
+}
+
+function renderRecoverySection(
+  availabilityRoomCount: number,
+  lang: AppLanguage,
+  roomQueryState: "valid" | "invalid" | "absent",
+  checkin: string,
+  checkout: string,
+  pax: number,
+): JSX.Element | null {
+  if (availabilityRoomCount <= 0) return null;
+  return (
+    <BookPageRecoverySection
+      lang={lang}
+      roomQueryState={roomQueryState}
+      checkin={checkin}
+      checkout={checkout}
+      pax={pax}
+    />
+  );
+}
+
+function BookPageContent({ lang, heading }: Props): JSX.Element {
+  const router = useRouter();
   const { t } = useTranslation("bookPage", { lng: lang, useSuspense: true });
   usePagePreload({
     lang,
@@ -74,167 +172,169 @@ function BookPageContent({ lang }: Props): JSX.Element {
 
   const params = useSearchParams();
   const deal = params?.get("deal") ?? null;
+  const { showRebuildQuotePrompt } = useRecoveryResumeFallback(params, router.replace);
 
   const todayIso = useMemo(() => getTodayIso(), []);
-
-  const initialCheckin = readQueryDate(params, ["checkin"], todayIso);
-  const initialCheckout = readQueryDate(params, ["checkout"], getDatePlusTwoDays(initialCheckin));
-  const initialPax = readQueryNumber(params, ["pax", "guests", "adults"], 1);
+  const hydrated = useMemo(
+    // Keep initial SSR/client render deterministic by hydrating only from URL params here.
+    // Shared-store hydration runs after mount to avoid hydration mismatches.
+    () =>
+      hydrateBookingSearch(params, {
+        storage: {
+          length: 0,
+          clear: () => undefined,
+          getItem: () => null,
+          key: () => null,
+          removeItem: () => undefined,
+          setItem: () => undefined,
+        },
+      }),
+    [params],
+  );
+  const initialCheckin = hydrated.search?.checkin ?? "";
+  const initialCheckout = hydrated.search?.checkout ?? "";
+  const initialPax = hydrated.search?.pax ?? 1;
 
   // Dedupe ref: tracks the search key of the last fired search_availability event.
   const lastSearchKeyRef = useRef<string | null>(null);
+  // Capture initial values so mount effect can seed dedup and prevent debounce firing on render.
+  const initialValuesRef = useRef({
+    checkin: initialCheckin || todayIso,
+    checkout: initialCheckout || getDatePlusTwoDays(initialCheckin || todayIso),
+    pax: initialPax,
+  });
   // Capture initial URL params at component init time for the mount-only effect.
   // Only fire on mount when the user explicitly provided checkin/checkout in the URL.
   const mountedSearchRef = useRef(
-    params?.has("checkin") && params?.has("checkout") && isValidSearch(initialCheckin, initialCheckout)
-      ? { checkin: initialCheckin, checkout: initialCheckout, pax: initialPax }
-      : null,
+    deriveMountedSearchPayload(hydrated.source, initialCheckin, initialCheckout, initialPax),
   );
 
-  const [checkin, setCheckin] = useState(initialCheckin);
-  const [checkout, setCheckout] = useState(initialCheckout);
+  const [range, setRange] = useState<DateRange>({
+    from: safeParseIso(initialCheckin),
+    to: safeParseIso(initialCheckout),
+  });
   const [pax, setPax] = useState(initialPax);
+  const checkin = range.from ? formatDate(range.from) : "";
+  const checkout = range.to ? formatDate(range.to) : "";
 
   useEffect(() => {
     // Keep state in sync if user lands with different params.
-    setCheckin(initialCheckin);
-    setCheckout(initialCheckout);
+    setRange({
+      from: safeParseIso(initialCheckin),
+      to: safeParseIso(initialCheckout),
+    });
     setPax(initialPax);
   }, [initialCheckin, initialCheckout, initialPax]);
 
-  const minCheckout = useMemo(() => getDatePlusTwoDays(checkin), [checkin]);
+  useEffect(() => {
+    // Only restore from shared store when URL does not provide an explicit range.
+    if (initialCheckin || initialCheckout) return;
+    const fromStore = readBookingSearchFromStore();
+    if (!fromStore) return;
 
-  const applyQuery = useCallback(() => {
-    const normalizedCheckin = checkin || todayIso;
-    const normalizedCheckout = checkout && checkout >= minCheckout ? checkout : minCheckout;
-    const normalizedPax = Math.max(1, pax);
+    const { checkin: storeCheckin, checkout: storeCheckout, pax: storePax } = fromStore.search;
+    if (!isValidSearch(storeCheckin, storeCheckout, storePax)) return;
 
-    if (normalizedCheckout !== checkout) {
-      setCheckout(normalizedCheckout);
-    }
-
-    writeCanonicalBookingQuery({
-      checkin: normalizedCheckin,
-      checkout: normalizedCheckout,
-      pax: normalizedPax,
+    setRange({
+      from: safeParseIso(storeCheckin),
+      to: safeParseIso(storeCheckout),
     });
+    setPax(storePax);
+  }, [initialCheckin, initialCheckout]);
 
-    // TC-01: fire search_availability on submit; dedupe repeated identical queries.
-    if (isValidSearch(normalizedCheckin, normalizedCheckout)) {
-      const key = `${normalizedCheckin}|${normalizedCheckout}|${normalizedPax}`;
-      if (lastSearchKeyRef.current !== key) {
-        lastSearchKeyRef.current = key;
-        fireSearchAvailability({
-          source: "booking_widget",
-          checkin: normalizedCheckin,
-          checkout: normalizedCheckout,
-          pax: normalizedPax,
-        });
-      }
-    }
-  }, [checkin, checkout, minCheckout, pax, todayIso]);
+  const roomQueryState = useMemo<"valid" | "invalid" | "absent">(
+    () => deriveRoomQueryState(checkin, checkout, pax),
+    [checkin, checkout, pax],
+  );
+
+  // TC-03-01: useAvailability called unconditionally (hooks invariant — no conditional calls).
+  const availabilityCheckin = checkin || todayIso;
+  const availabilityCheckout = checkout || getDatePlusTwoDays(availabilityCheckin);
+  const { rooms: availabilityRooms } = useAvailability({
+    checkin: availabilityCheckin,
+    checkout: availabilityCheckout,
+    pax: String(pax),
+  });
+
+  useEffect(() => scheduleBookingSearchPersistence(checkin, checkout, pax), [checkin, checkout, pax]);
+
+  const showConstraintGuidance = roomQueryState === "invalid";
+  const indicativeRoomPrices = useMemo(() => {
+    return getIndicativeRoomPrices(
+      indicativePricesSeed,
+      roomsData.map((room) => room.id),
+    );
+  }, []);
+  const indicativeDisclosure = useMemo<string | null>(() => {
+    if (roomQueryState !== "absent" || !indicativeRoomPrices) return null;
+    return getIndicativeDisclosure(indicativePricesSeed);
+  }, [indicativeRoomPrices, roomQueryState]);
+
+  // TC-01: fire search_availability when dates/pax change; debounced + deduped.
+  useEffect(
+    () => scheduleSearchAvailabilityFire(checkin, checkout, pax, lastSearchKeyRef),
+    [checkin, checkout, pax],
+  );
 
   useEffect(() => {
-    fireViewItemList({
-      itemListId: "book_rooms",
-      rooms: roomsData,
-    });
-    // TC-03: fire search_availability on mount when URL params provide a valid date range.
-    const initial = mountedSearchRef.current;
-    if (initial) {
-      const key = `${initial.checkin}|${initial.checkout}|${initial.pax}`;
-      lastSearchKeyRef.current = key;
-      fireSearchAvailability({
-        source: "booking_widget",
-        checkin: initial.checkin,
-        checkout: initial.checkout,
-        pax: initial.pax,
-      });
-    }
-  }, []); // mount only — initial URL params captured in mountedSearchRef
+    fireViewItemList({ itemListId: "book_rooms", rooms: roomsData });
+    seedInitialSearchTelemetry(mountedSearchRef.current, initialValuesRef.current, lastSearchKeyRef);
+  }, []); // mount only
 
   return (
     <>
       <BookPageStructuredData lang={lang} />
 
-      {deal ? (
-        <div className="sticky top-0 bg-brand-secondary px-4 py-2 text-center text-sm font-semibold text-brand-on-accent">
-          {t("dealBanner.applied", { defaultValue: `Deal applied: ${deal}`, replace: { code: deal } }) as string}
-        </div>
-      ) : null}
+      {renderDealBanner(deal, t as TranslateFn)}
 
-      <SocialProofSection lang={lang} />
+      <SocialProofSection lang={lang} showPerks />
 
       <Section padding="default" className="mx-auto max-w-7xl">
-        <h1 className="text-3xl font-bold tracking-tight text-brand-heading sm:text-4xl">
-          {t("heading")}
+        <h1 className="text-center text-3xl font-bold tracking-tight text-brand-heading sm:text-4xl">
+          {heading}
         </h1>
-        <p className="mt-2 text-sm text-brand-text/80">
+        <p className="mx-auto mt-2 text-center text-sm text-brand-text/80">
           {t("subheading", { defaultValue: "Choose your dates, then pick a room." }) as string}
         </p>
 
-        <div className="mt-6 grid gap-4 rounded-2xl border border-brand-outline/40 bg-brand-surface p-4 shadow-sm sm:grid-cols-4">
-          <label className="flex flex-col gap-1 text-sm font-medium text-brand-heading">
-            {t("date.checkIn", { defaultValue: "Check in" }) as string}
-            <input
-              type="date"
-              value={checkin}
-              min={todayIso}
-              onChange={(e) => setCheckin(e.target.value)}
-              className="min-h-11 rounded-xl border border-brand-outline/40 bg-brand-bg px-3 py-2 text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
-            />
-          </label>
-
-          <label className="flex flex-col gap-1 text-sm font-medium text-brand-heading">
-            {t("date.checkOut", { defaultValue: "Check out" }) as string}
-            <input
-              type="date"
-              value={checkout}
-              min={minCheckout}
-              onChange={(e) => setCheckout(e.target.value)}
-              className="min-h-11 rounded-xl border border-brand-outline/40 bg-brand-bg px-3 py-2 text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
-            />
-          </label>
-
-          <label className="flex flex-col gap-1 text-sm font-medium text-brand-heading">
-            {t("date.guests", { defaultValue: "Guests" }) as string}
-            <input
-              type="number"
-              min={1}
-              max={8}
-              value={pax}
-              onChange={(e) => setPax(parsePositiveInt(e.target.value, 1))}
-              className="min-h-11 rounded-xl border border-brand-outline/40 bg-brand-bg px-3 py-2 text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
-            />
-          </label>
-
-          <div className="flex items-end">
-            <button
-              type="button"
-              onClick={applyQuery}
-              className="min-h-11 min-w-11 w-full rounded-full bg-brand-secondary px-6 py-3 text-sm font-semibold tracking-wide text-brand-on-accent shadow-lg transition-colors duration-200 hover:bg-brand-primary hover:text-brand-on-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:ring-offset-2"
-            >
-              {t("date.apply", { defaultValue: "Update" }) as string}
-            </button>
-          </div>
-        </div>
+        <BookPageSearchPanel
+          lang={lang}
+          range={range}
+          pax={pax}
+          onRangeChange={(newRange) => setRange(newRange ?? { from: undefined, to: undefined })}
+          onPaxChange={setPax}
+          onCanonicalQuery={writeCanonicalBookingQuery}
+          checkin={checkin}
+          checkout={checkout}
+          stayHelperText={t("date.stayHelper", { defaultValue: "2–8 nights" }) as string}
+          clearDatesText={t("date.clearDates", { defaultValue: "Clear dates" }) as string}
+          checkInLabelText={t("date.checkInLabel", { defaultValue: "Check in" }) as string}
+          checkOutLabelText={t("date.checkOutLabel", { defaultValue: "Check out" }) as string}
+          guestsLabelText={t("date.guests", { defaultValue: "Guests" }) as string}
+          showConstraintGuidance={showConstraintGuidance}
+          showRebuildQuotePrompt={showRebuildQuotePrompt}
+        />
       </Section>
 
       <RoomsSection
         lang={lang}
         itemListId="book_rooms"
-        queryState="valid"
+        queryState={roomQueryState}
         deal={deal ?? undefined}
+        availabilityRooms={availabilityRooms}
+        roomPricesOverride={indicativeRoomPrices}
         bookingQuery={{
           checkIn: checkin,
           checkOut: checkout,
           pax: String(pax),
-          queryString: `checkin=${encodeURIComponent(checkin)}&checkout=${encodeURIComponent(checkout)}&pax=${encodeURIComponent(String(pax))}`,
+          queryString: buildBookingQueryString(checkin, checkout, pax),
         }}
       />
+      <BookPageIndicativeDisclosure indicativeDisclosure={indicativeDisclosure} />
+
+      {renderRecoverySection(availabilityRooms?.length ?? 0, lang, roomQueryState, checkin, checkout, pax)}
 
       <Section padding="default" className="mx-auto max-w-7xl">
-        <DirectPerksBlock lang={lang} className="mb-8 rounded-2xl border border-brand-outline/30 bg-brand-surface p-6 shadow-sm" />
         <LocationInline lang={lang} />
         <PolicyFeeClarityPanel lang={lang} variant="hostel" />
       </Section>

@@ -1,0 +1,46 @@
+{
+  "round": 3,
+  "mode": "file",
+  "artifact": "plan",
+  "findings": [
+    {
+      "severity": "info",
+      "file": "docs/plans/brik-eod-day-closed-confirmation/plan.md",
+      "line": "1",
+      "message": "No actionable correctness, security, performance, or code-quality defects found in this revision; previous goal/rules and dependency inconsistencies appear resolved."
+    }
+  ],
+  "verdict": "approved",
+  "score": 9,
+  "lp_score": 4.5,
+  "rounds": [
+    {
+      "round": 1,
+      "score": 8,
+      "lp_score": 4.0,
+      "verdict": "needs_revision",
+      "critical_count": 0,
+      "major_count": 2,
+      "minor_count": 3
+    },
+    {
+      "round": 2,
+      "score": 7,
+      "lp_score": 3.5,
+      "verdict": "needs_revision",
+      "critical_count": 0,
+      "major_count": 2,
+      "minor_count": 1
+    },
+    {
+      "round": 3,
+      "score": 9,
+      "lp_score": 4.5,
+      "verdict": "approved",
+      "critical_count": 0,
+      "major_count": 0,
+      "minor_count": 1
+    }
+  ],
+  "sessionId": "Q1qNA84XAQMYM94_"
+}

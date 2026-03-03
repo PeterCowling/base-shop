@@ -32,11 +32,11 @@ const stepContent = {
       <p className="font-medium">Purchase options</p>
       <div className="grid gap-2 md:grid-cols-2">
         <label className="rounded-md border p-3 shadow-sm">
-          <input type="radio" name="purchase-option" defaultChecked className="me-2" aria-label="One-time" />
+          <input type="radio" name="purchase-option" defaultChecked className="me-2 min-h-11 min-w-11" aria-label="One-time" />
           One-time — €49.00
         </label>
         <label className="rounded-md border p-3 shadow-sm">
-          <input type="radio" name="purchase-option" className="me-2" aria-label="Subscribe" />
+          <input type="radio" name="purchase-option" className="me-2 min-h-11 min-w-11" aria-label="Subscribe" />
           Subscribe — €42.00
         </label>
       </div>
@@ -218,9 +218,9 @@ export const AltPaymentsAnd3DS: Story = makeStateStory(
           <div className="space-y-4">
             <p className="font-medium">Choose a payment method</p>
             <div className="flex flex-wrap gap-3">
-              <button className="rounded-md border px-3 py-2 shadow-sm" type="button">Apple Pay</button>
-              <button className="rounded-md border px-3 py-2 shadow-sm" type="button">PayPal</button>
-              <button className="rounded-md border px-3 py-2 shadow-sm" type="button">Card (3DS)</button>
+              <button className="rounded-md border px-3 py-2 shadow-sm min-h-11 min-w-11" type="button">Apple Pay</button>
+              <button className="rounded-md border px-3 py-2 shadow-sm min-h-11 min-w-11" type="button">PayPal</button>
+              <button className="rounded-md border px-3 py-2 shadow-sm min-h-11 min-w-11" type="button">Card (3DS)</button>
             </div>
             <div className="space-y-2 rounded-md border border-info/40 bg-info-soft p-3 text-sm text-info-foreground">
               <p className="font-medium">3D Secure challenge required</p>
@@ -334,7 +334,7 @@ const FulfillmentChooser: React.FC = () => {
             name="fulfillment"
             checked={mode === 'delivery'}
             onChange={() => setMode('delivery')}
-            className="me-2"
+            className="me-2 min-h-11 min-w-11"
           />
           Home delivery
           <p className="text-sm text-muted">2-4 business days • Calculated at checkout</p>
@@ -345,7 +345,7 @@ const FulfillmentChooser: React.FC = () => {
             name="fulfillment"
             checked={mode === 'pickup'}
             onChange={() => setMode('pickup')}
-            className="me-2"
+            className="me-2 min-h-11 min-w-11"
           />
           Pickup in store
           <p className="text-sm text-muted">Ready today at Store #12</p>
@@ -380,7 +380,7 @@ const SubscriptionToggle: React.FC<{ mode: PurchaseMode; onModeChange: (mode: Pu
             name="purchase-mode"
             checked={mode === 'one-time'}
             onChange={() => onModeChange('one-time')}
-            className="me-2"
+            className="me-2 min-h-11 min-w-11"
           />
           One-time purchase
           <p className="text-sm text-muted">€29.00 • Ships once</p>
@@ -391,7 +391,7 @@ const SubscriptionToggle: React.FC<{ mode: PurchaseMode; onModeChange: (mode: Pu
             name="purchase-mode"
             checked={mode === 'subscribe'}
             onChange={() => onModeChange('subscribe')}
-            className="me-2"
+            className="me-2 min-h-11 min-w-11"
           />
           Subscribe & save
           <p className="text-sm text-muted">€24.65 • Delivers every month</p>
@@ -448,7 +448,7 @@ const PickupAndSubscribeFlowStory: React.FC<CheckoutTemplateProps> = (args) => {
         <div className="space-y-3">
           <p className="font-medium">Choose fulfillment</p>
           <label className="block rounded-md border p-3 shadow-sm">
-            <input type="radio" name="fulfill" checked={fulfillment === 'pickup'} onChange={() => setFulfillment('pickup')} className="me-2" />
+            <input type="radio" name="fulfill" checked={fulfillment === 'pickup'} onChange={() => setFulfillment('pickup')} className="me-2 min-h-11 min-w-11" />
             Pickup
           </label>
         </div>
@@ -461,7 +461,7 @@ const PickupAndSubscribeFlowStory: React.FC<CheckoutTemplateProps> = (args) => {
         <div className="space-y-3">
           <p className="font-medium">Purchase options</p>
           <label className="block rounded-md border p-3 shadow-sm">
-            <input type="radio" name="purchase" checked={purchase === 'subscribe'} onChange={() => setPurchase('subscribe')} className="me-2" />
+            <input type="radio" name="purchase" checked={purchase === 'subscribe'} onChange={() => setPurchase('subscribe')} className="me-2 min-h-11 min-w-11" />
             Subscribe
           </label>
         </div>

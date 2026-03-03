@@ -1,0 +1,40 @@
+{
+  "figures": {
+    "map": {
+      "alt": "Karta som visar vandringsleden från Hostel Brikette till Positano hamn med punkterna 1-5.",
+      "caption": "Ruttöversikt: Hostel → Port (punkterna 1–5)."
+    },
+    "point1": {
+      "alt": "Intersektion nära Viale Pasitea med en markerad rutt och en etikett: \"1 Turn Right\".",
+      "caption": "Punkt 1: sväng höger."
+    },
+    "tabacchi": {
+      "alt": "Tabacchi Storfront med en ATM bredvid den.",
+      "caption": "Tabacchi nära punkt 1 (bra landmärke)."
+    },
+    "point2": {
+      "alt": "Vägbyte med en markerad linje mot trappor och en etikett: \"2 Ta trappan rakt fram.\"",
+      "caption": "Punkt 2: lämna vägen och ta trapporna rakt fram."
+    },
+    "point3": {
+      "alt": "Smal gränd med steg och en markerad väg, märkt \"3 Ta trappan rakt fram\".",
+      "caption": "Punkt 3: fortsätt rakt nerför trappan."
+    },
+    "point4": {
+      "alt": "Crosswalk och väg med en markerad väg mot trappor till höger, märkt \"4\".",
+      "caption": "Punkt 4: korsa vägen, sväng vänster kort, ta sedan trappan ner till höger."
+    },
+    "point5": {
+      "alt": "Liten torg nära hamnen med en markerad rutt, märkt \"5\".",
+      "caption": "Punkt 5: Fortsätt under bågen mot hamnen."
+    },
+    "tickets": {
+      "alt": "Färjebiljettbås på Positano hamn med tidtabeller.",
+      "caption": "Biljettbås: kontrollera skylten för nästa avgång."
+    },
+    "port": {
+      "alt": "Utsikt över Positano hamn med en färja i förgrunden och Positano backsida bakom.",
+      "caption": "Positano hamn: vänta nära slutet av piren för boarding samtal."
+    }
+  }
+}

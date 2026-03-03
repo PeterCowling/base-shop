@@ -3,6 +3,10 @@ import { notFound } from "next/navigation";
 import { XaDepartmentListing } from "../../../../components/XaDepartmentListing";
 import { isCategoryAllowed, isDepartmentAllowed,XA_SUBCATEGORIES } from "../../../../lib/xaCatalog";
 
+export function generateStaticParams() {
+  return XA_SUBCATEGORIES.jewelry.map((t) => ({ type: t }));
+}
+
 export default async function MenJewelryTypePage({
   params,
 }: {

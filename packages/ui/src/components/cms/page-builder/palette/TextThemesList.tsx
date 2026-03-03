@@ -27,7 +27,7 @@ export default function TextThemesList({ textThemes, buildPreviewStyle, onApply 
           <button
             key={theme.id}
             type="button"
-            className="rounded border p-2 text-start text-sm transition hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring min-h-10 min-w-10"
+            className="rounded border p-2 text-start text-sm transition hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring min-h-11 min-w-11"
             onClick={() => onApply(theme)}
           >
             <Stack gap={1}>

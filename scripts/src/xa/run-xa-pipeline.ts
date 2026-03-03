@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import fs from "node:fs/promises";
 import path from "node:path";
 
 import {
@@ -15,6 +16,7 @@ import {
   handleToTitle,
   loadCatalogRows,
   parseList,
+  pruneBackups,
   sanitizePathSegment,
   toNonNegativeInt,
   writeJsonFile,
@@ -25,6 +27,7 @@ type PipelineOptions = {
   outPath: string;
   mediaOutPath: string;
   statePath: string;
+  currencyRatesPath?: string;
   backupDir: string;
   simple: boolean;
   backup: boolean;
@@ -46,6 +49,8 @@ type CatalogProduct = {
   collection: string;
   price: number;
   compareAtPrice?: number;
+  prices: { AUD: number; EUR: number; GBP: number; USD: number };
+  compareAtPrices?: { AUD: number; EUR: number; GBP: number; USD: number };
   deposit: number;
   stock: number;
   forSale: boolean;
@@ -56,7 +61,7 @@ type CatalogProduct = {
   createdAt: string;
   popularity: number;
   taxonomy: {
-    department: "women" | "men";
+    department: "women" | "men" | "kids";
     category: "clothing" | "bags" | "jewelry";
     subcategory: string;
     color: string[];
@@ -115,6 +120,9 @@ type MediaIndexPayload = {
   }>;
 };
 
+export type CurrencyRates = { EUR: number; GBP: number; AUD: number };
+const DEFAULT_BACKUP_KEEP = 60;
+
 function printHelp(): void {
   console.log(`XA pipeline runner
 
@@ -133,7 +141,21 @@ Options:
   --recursive         Expand image directory specs recursively
   --dry-run           Validate + transform but do not write files
   --strict            Fail on missing image specs or unresolved image files
+  --currency-rates <path>  Currency rates JSON path (optional)
 `);
+}
+
+export function applyCurrencyRates(
+  usdPrice: number,
+  rates: CurrencyRates,
+): { AUD: number; EUR: number; GBP: number; USD: number } {
+  const safeRate = (r: number) => (Number.isFinite(r) && r > 0 ? r : 1.0);
+  return {
+    USD: usdPrice,
+    EUR: toNonNegativeInt(usdPrice * safeRate(rates.EUR)),
+    GBP: toNonNegativeInt(usdPrice * safeRate(rates.GBP)),
+    AUD: toNonNegativeInt(usdPrice * safeRate(rates.AUD)),
+  };
 }
 
 function parseArgs(argv: string[]): PipelineOptions {
@@ -141,6 +163,7 @@ function parseArgs(argv: string[]): PipelineOptions {
   let outPath = "";
   let mediaOutPath = "";
   let statePath = "";
+  let currencyRatesPath: string | undefined = undefined;
   let backupDir = "";
   let simple = false;
   let backup = false;
@@ -177,6 +200,13 @@ function parseArgs(argv: string[]): PipelineOptions {
         const value = argv[index + 1];
         if (!value) throw new Error("--state requires a value.");
         statePath = value;
+        index += 1;
+        break;
+      }
+      case "--currency-rates": {
+        const value = argv[index + 1];
+        if (!value) throw new Error("--currency-rates requires a value.");
+        currencyRatesPath = value;
         index += 1;
         break;
       }
@@ -225,6 +255,7 @@ function parseArgs(argv: string[]): PipelineOptions {
     outPath,
     mediaOutPath,
     statePath,
+    currencyRatesPath,
     backupDir,
     simple,
     backup,
@@ -233,6 +264,20 @@ function parseArgs(argv: string[]): PipelineOptions {
     dryRun,
     strict,
   };
+}
+
+function resolveBackupKeepCount(): number {
+  const parsed = Number.parseInt(process.env.XA_UPLOADER_BACKUP_KEEP ?? "", 10);
+  if (!Number.isFinite(parsed) || parsed < 1) return DEFAULT_BACKUP_KEEP;
+  return parsed;
+}
+
+function validateCurrencyRates(value: unknown): value is CurrencyRates {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  const record = value as Record<string, unknown>;
+  return [record.EUR, record.GBP, record.AUD].every(
+    (rate) => typeof rate === "number" && Number.isFinite(rate) && rate > 0,
+  );
 }
 
 function requiredString(value: string | undefined, fallback: string): string {
@@ -305,6 +350,7 @@ async function buildCatalogArtifacts(options: {
   rows: Awaited<ReturnType<typeof loadCatalogRows>>["rows"];
   recursive: boolean;
   strict: boolean;
+  currencyRates?: CurrencyRates;
 }): Promise<{ catalog: CatalogPayload; mediaIndex: MediaIndexPayload; warnings: string[] }> {
   const baseDir = path.dirname(path.resolve(options.productsPath));
   const warnings: string[] = [];
@@ -391,7 +437,7 @@ async function buildCatalogArtifacts(options: {
         continue;
       }
 
-      const altText = imageAltTexts[specIndex] || draft.title || productSlug;
+      const altText = imageAltTexts[specIndex] || productSlug;
       for (const sourcePath of resolvedPaths) {
         const catalogPath = buildCatalogMediaPath({
           brandHandle,
@@ -464,15 +510,24 @@ async function buildCatalogArtifacts(options: {
         : {}),
     };
 
+    const effectiveRates: CurrencyRates = options.currencyRates ?? { EUR: 1.0, GBP: 1.0, AUD: 1.0 };
+    const normalizedPrice = toNonNegativeInt(draft.price);
+    const normalizedCompareAtPrice =
+      typeof draft.compareAtPrice === "number" ? toNonNegativeInt(draft.compareAtPrice) : undefined;
+
     const product: CatalogProduct = {
       id: productId,
       slug: productSlug,
       title: draft.title,
       brand: brandHandle,
       collection: collectionHandle,
-      price: toNonNegativeInt(draft.price),
-      ...(typeof draft.compareAtPrice === "number"
-        ? { compareAtPrice: toNonNegativeInt(draft.compareAtPrice) }
+      price: normalizedPrice,
+      prices: applyCurrencyRates(normalizedPrice, effectiveRates),
+      ...(typeof normalizedCompareAtPrice === "number"
+        ? {
+            compareAtPrice: normalizedCompareAtPrice,
+            compareAtPrices: applyCurrencyRates(normalizedCompareAtPrice, effectiveRates),
+          }
         : {}),
       deposit: toNonNegativeInt(draft.deposit),
       stock: toNonNegativeInt(draft.stock),
@@ -524,6 +579,15 @@ async function main() {
   const mediaOutPath = path.resolve(options.mediaOutPath);
   const statePath = path.resolve(options.statePath);
   const backupDir = path.resolve(options.backupDir);
+  let currencyRates: CurrencyRates | undefined;
+  if (options.currencyRatesPath) {
+    const ratesRaw = await fs.readFile(path.resolve(options.currencyRatesPath), "utf-8");
+    const parsed = JSON.parse(ratesRaw) as unknown;
+    if (!validateCurrencyRates(parsed)) {
+      throw new Error("currency-rates.json is invalid (expected positive numeric EUR/GBP/AUD).");
+    }
+    currencyRates = parsed;
+  }
 
   const { rows, missing } = await loadCatalogRows(productsPath);
   if (missing) {
@@ -535,6 +599,7 @@ async function main() {
     rows,
     recursive: options.recursive,
     strict: options.strict,
+    currencyRates,
   });
 
   if (warnings.length > 0) {
@@ -571,6 +636,9 @@ async function main() {
       backups: backupRecords,
       warnings,
     });
+    if (options.backup) {
+      await pruneBackups(backupDir, resolveBackupKeepCount());
+    }
   }
 
   console.log(
@@ -578,8 +646,17 @@ async function main() {
   );
 }
 
-main().catch((error) => {
-  const message = error instanceof Error ? error.message : String(error);
-  console.error(`[xa-pipeline] fatal: ${message}`);
-  process.exit(1);
-});
+function isDirectRun(): boolean {
+  const entryArg = process.argv[1];
+  if (!entryArg) return false;
+  const entryFile = path.basename(entryArg);
+  return entryFile === "run-xa-pipeline.ts" || entryFile === "run-xa-pipeline.js";
+}
+
+if (isDirectRun()) {
+  main().catch((error) => {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(`[xa-pipeline] fatal: ${message}`);
+    process.exit(1);
+  });
+}

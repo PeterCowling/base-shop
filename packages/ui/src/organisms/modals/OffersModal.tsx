@@ -39,7 +39,7 @@ function OffersModal({
           type="button"
           aria-label={copy.closeLabel}
           onClick={onClose}
-          className="absolute end-3 top-3 inline-flex min-h-10 min-w-10 items-center justify-center rounded border border-brand-primary px-3 text-xs font-medium text-brand-primary transition-colors hover:bg-brand-primary/10"
+          className="absolute end-3 top-3 inline-flex min-h-11 min-w-11 items-center justify-center rounded border border-brand-primary px-3 text-xs font-medium text-brand-primary transition-colors hover:bg-brand-primary/10"
         >
           {copy.closeLabel}
         </button>

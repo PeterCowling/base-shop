@@ -60,11 +60,11 @@
     }
   ],
   "eventSchema": {
-    "name": "Ravello Festival",
+    "name": "Ravello festival",
     "startDate": "2025-07-01",
     "endDate": "2025-09-15",
-    "locationName": "Ravello Festival venues",
-    "addressLocality": "Ravello",
+    "locationName": "Ravello Festival-spillesteder",
+    "addressLocality": "Ravello Formand",
     "description": "Sommerfestival med klassisk musik over Amalfikysten. Tjek det officielle program for datoer og billetter."
   }
 }

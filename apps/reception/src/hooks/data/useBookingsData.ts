@@ -12,9 +12,15 @@ import {
   startAt,
 } from "firebase/database";
 
+import {
+  getCachedData,
+  setCachedData,
+} from "../../lib/offline/receptionDb";
 import { firebaseBookingsSchema } from "../../schemas/bookingsSchema";
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import { type FirebaseBookings } from "../../types/hooks/data/bookingsData";
+
+const BOOKINGS_CACHE_KEY = "bookings";
 
 /**
  * Defines the return structure for the useBookings hook.
@@ -48,6 +54,16 @@ export default function useBookings<T = FirebaseBookings>(
   const [error, setError] = useState<unknown>(null);
 
   useEffect(() => {
+    // Pre-populate from cache unconditionally; Firebase will overwrite with fresh data when online
+    let cancelled = false;
+    void (async () => {
+      const cached = await getCachedData<T>(BOOKINGS_CACHE_KEY);
+      if (!cancelled && cached) {
+        setBookings(cached);
+        setLoading(false);
+      }
+    })();
+
     const baseRef = ref(database, "bookings");
     let q = query(baseRef, orderByKey());
     if (startKey) q = query(q, startAt(startKey));
@@ -62,8 +78,11 @@ export default function useBookings<T = FirebaseBookings>(
       }
       const res = firebaseBookingsSchema.safeParse(snap.val());
       if (res.success) {
-        setBookings(res.data as unknown as T);
+        const parsed = res.data as unknown as T;
+        setBookings(parsed);
         setError(null);
+        // Fire-and-forget cache update
+        void setCachedData(BOOKINGS_CACHE_KEY, parsed);
       } else {
         setBookings({} as T);
         setError(res.error);
@@ -77,7 +96,10 @@ export default function useBookings<T = FirebaseBookings>(
     };
 
     const unsubscribe = onValue(q, handleSnapshot, handleError);
-    return unsubscribe;
+    return () => {
+      cancelled = true;
+      unsubscribe();
+    };
   }, [database, startKey, endKey, limit]);
 
   return { bookings, loading, error };

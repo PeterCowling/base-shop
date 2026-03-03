@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "cass-assessment-retrieval-2026-03-02",
+  "feature_slug": "cass-assessment-retrieval",
+  "emitted_at": "2026-03-02T21:59:07.988Z",
+  "why": "When a fact-find or plan runs for any business, it needs to know what strategic decisions have already been made (brand identity, solution selection, naming). CASS retrieval previously only surfaced prior loop artifacts, not the assessment layer.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "CASS retrieval extended to index assessment containers, so fact-finds and plans for a business automatically receive relevant assessment-layer context (brand decisions, solution evaluations, naming specs) without manual retrieval steps.",
+    "source": "operator"
+  }
+}

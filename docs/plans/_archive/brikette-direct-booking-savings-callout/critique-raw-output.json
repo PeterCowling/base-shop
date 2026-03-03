@@ -1,0 +1,34 @@
+{
+  "round": 1,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/brikette-direct-booking-savings-callout/fact-find.md",
+      "line": "37",
+      "message": "Locale coverage counts are incorrect. Repo currently has 18 supported locales total (`apps/brikette/src/i18n.config.ts:7-27`) and 17 non-English locales, not \"20 locales / 19 non-English\"."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/brikette-direct-booking-savings-callout/fact-find.md",
+      "line": "83",
+      "message": "The listed non-English locale set is 17 entries (`ar,da,de,es,fr,hi,hu,it,ja,ko,no,pl,pt,ru,sv,vi,zh`), but the text claims 19; this propagates to task sizing and translation scope."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/brikette-direct-booking-savings-callout/fact-find.md",
+      "line": "113",
+      "message": "Dependency map is internally contradictory (\"used in two places … search confirms only imported in `BookPageContent.tsx`\"). Current code shows a single consumer import (`apps/brikette/src/app/[lang]/book/BookPageContent.tsx:12`)."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/brikette-direct-booking-savings-callout/fact-find.md",
+      "line": "84",
+      "message": "The statement that `book-page-perks-cta-order.test.tsx` \"must be updated\" is overstated; that test fully mocks `DirectPerksBlock` and can still pass unchanged unless new assertions are intentionally added."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "durationMs": 73150
+}

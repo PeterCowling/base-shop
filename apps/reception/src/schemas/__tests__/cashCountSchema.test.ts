@@ -12,6 +12,7 @@ describe("cashCountSchema", () => {
   it("accepts all valid type values", () => {
     const validTypes = [
       "opening",
+      "openingFloat",
       "close",
       "reconcile",
       "float",

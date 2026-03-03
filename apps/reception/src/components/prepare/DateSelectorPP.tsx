@@ -1,11 +1,13 @@
 /* File: src/components/prepare/DateSelectorPP.tsx */
 import type { ReactElement } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { DayPicker, getDefaultClassNames } from "react-day-picker";
+import { DayPicker } from "react-day-picker";
 
 import { Button } from "@acme/design-system/atoms";
 import { Cluster, Inline } from "@acme/design-system/primitives";
 
+import { useAuth } from "../../context/AuthContext";
+import { isPrivileged } from "../../lib/roles";
 import {
   buildQuickDateRange,
   formatDateForInput,
@@ -26,9 +28,10 @@ interface DateSelectorProps {
 export default function DateSelector({
   selectedDate,
   onDateChange,
-  username,
+  username: _username,
 }: DateSelectorProps): ReactElement {
-  const isPete = username?.toLowerCase() === "pete";
+  const { user } = useAuth();
+  const privileged = isPrivileged(user ?? null);
 
   const { today: todayLocalStr, yesterday: yesterdayLocalStr, nextDays: nextFiveDays } =
     useMemo(() => buildQuickDateRange(5), []);
@@ -80,10 +83,8 @@ export default function DateSelector({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isCalendarOpen]);
 
-  const defaultNames = getDefaultClassNames();
-
   let toggleAndCalendar: ReactElement | null = null;
-  if (isPete) {
+  if (privileged) {
     toggleAndCalendar = (
       <div className="relative">
         <Button
@@ -116,10 +117,26 @@ export default function DateSelector({
                 setIsCalendarOpen(false);
               }}
               classNames={{
-                root: `${defaultNames.root} bg-surface shadow-lg p-5 rounded`,
-                today: "border-warning-border",
-                selected: "bg-warning text-primary-fg",
-                chevron: `${defaultNames.chevron} fill-warning`,
+                root: "bg-surface border border-border-strong rounded-lg shadow-lg p-4 text-foreground",
+                months: "relative",
+                month: "space-y-3",
+                month_caption: "flex items-center justify-center h-9",
+                caption_label: "text-sm font-semibold text-foreground",
+                nav: "absolute top-0 inset-x-0 flex justify-between",
+                button_previous: "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-surface-2 hover:text-foreground transition-colors",
+                button_next: "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-surface-2 hover:text-foreground transition-colors",
+                chevron: "w-4 h-4 fill-current",
+                month_grid: "border-collapse",
+                weekdays: "flex",
+                weekday: "flex h-9 w-9 items-center justify-center text-xs font-medium text-muted-foreground",
+                weeks: "space-y-1 mt-1",
+                week: "flex",
+                day: "p-0",
+                day_button: "flex h-9 w-9 items-center justify-center rounded-lg text-sm font-medium text-foreground hover:bg-surface-2 transition-colors cursor-pointer",
+                today: "font-bold text-warning",
+                selected: "bg-warning text-primary-fg hover:bg-warning",
+                outside: "opacity-30",
+                disabled: "opacity-25 cursor-not-allowed",
               }}
             />
           </div>

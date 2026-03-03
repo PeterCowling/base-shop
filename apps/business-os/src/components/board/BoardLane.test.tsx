@@ -10,6 +10,12 @@ import type { Card } from "@/lib/types";
 
 import { BoardLane, calculateLaneStats, getLaneHeaderColor } from "./BoardLane";
 
+function isoDateFromNow(dayOffset: number): string {
+  const date = new Date();
+  date.setDate(date.getDate() + dayOffset);
+  return date.toISOString().slice(0, 10);
+}
+
 const mockCards: Card[] = [
   {
     Type: "Card",
@@ -18,7 +24,7 @@ const mockCards: Card[] = [
     Lane: "In progress",
     Priority: "P0",
     Owner: "Pete",
-    "Due-Date": "2026-01-20", // Overdue
+    "Due-Date": isoDateFromNow(-10), // Overdue
     content: "Test",
     filePath: "/test",
   },
@@ -29,7 +35,7 @@ const mockCards: Card[] = [
     Lane: "In progress",
     Priority: "P2",
     Owner: "Alice",
-    "Due-Date": "2026-03-01", // Future
+    "Due-Date": isoDateFromNow(10), // Future
     content: "Test",
     filePath: "/test",
   },

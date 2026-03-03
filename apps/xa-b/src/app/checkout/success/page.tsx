@@ -104,21 +104,8 @@ function CheckoutSuccessContent() {
 
       <Section padding="default">
         <div className="flex flex-wrap gap-3">
-          {order ? (
-            <Button asChild>
-              <Link href={`/account/orders/${order.number}`}>View order</Link>
-            </Button>
-          ) : null}
-          {authRequired ? (
-            <Button asChild>
-              <Link href="/account/login">Login</Link>
-            </Button>
-          ) : null}
           <Button variant="outline" asChild>
-            <Link href="/account/orders">{xaI18n.t("xaB.src.app.checkout.success.page.l41c42")}</Link>
-          </Button>
-          <Button variant="outline" asChild>
-            <Link href="/account/trackingorder">Track order</Link>
+            <Link href="/service-center">{xaI18n.t("xaB.src.app.checkout.success.page.l41c42")}</Link>
           </Button>
           <Button variant="outline" asChild>
             <Link href="/collections/all">{xaI18n.t("xaB.src.app.checkout.success.page.l47c43")}</Link>

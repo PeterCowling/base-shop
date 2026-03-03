@@ -7,7 +7,7 @@ import SeoProgressPanel from "../src/app/cms/shop/[shop]/settings/seo/SeoProgres
 
 const readSeoAuditsMock = jest.fn();
 const listEventsMock = jest.fn();
-const useTranslations = jest.fn();
+const mockUseTranslations = jest.fn();
 
 const translations: Record<string, string> = {
   "cms.seo.progress.title": "SEO progress",
@@ -26,7 +26,7 @@ const translations: Record<string, string> = {
 };
 
 jest.mock("@acme/i18n/useTranslations.server", () => ({
-  useTranslations,
+  useTranslations: (...args: unknown[]) => mockUseTranslations(...args),
 }));
 
 jest.mock("@acme/platform-core/repositories/seoAudit.server", () => ({
@@ -53,7 +53,7 @@ beforeEach(() => {
 
   const translator = (key: string) =>
     translations[key as keyof typeof translations] ?? key;
-  useTranslations.mockResolvedValue(translator);
+  mockUseTranslations.mockResolvedValue(translator);
 });
 
 describe("SeoProgressPanel", () => {

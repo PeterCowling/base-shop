@@ -1,0 +1,35 @@
+{
+  "round": 3,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-till-blind-mode/fact-find.md",
+      "line": "116",
+      "message": "Blast-radius statement says KeycardCountForm.tsx is optional, but keycard blind/reveal is explicitly in scope and task seeds require KeycardCountForm prop changes. Internal scope inconsistency."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-till-blind-mode/fact-find.md",
+      "line": "188",
+      "message": "Implementation confidence says only two files change, but tests also require updates. Understates actual change surface."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-till-blind-mode/fact-find.md",
+      "line": "227",
+      "message": "Follow the safe-reconcile reveal pattern exactly conflicts with the proposed broader else if (!showExpected) condition. Wording should be aligned to avoid ambiguity."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/reception-till-blind-mode/fact-find.md",
+      "line": "64",
+      "message": "Outcome contract still has Why: TBD despite Status: Ready-for-planning."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "lp_score": 4.0,
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019ca587-9845-7080-a55d-ee2b7a43ec79"
+}

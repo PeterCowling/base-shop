@@ -1,0 +1,31 @@
+{
+  "artifact": "plan.md",
+  "rounds": [
+    {
+      "round": 1,
+      "score": 7,
+      "lp_score": 3.5,
+      "verdict": "needs_revision",
+      "criticals": 1,
+      "majors": 2,
+      "minors": 1,
+      "findings": [
+        {
+          "severity": "critical",
+          "line": "299",
+          "message": "Plan uses `localStorage.getItem('prime_guest_uuid')` as CF auth token; Prime stores session token separately as `prime_guest_token` — using UUID will fail `validateGuestSessionToken`."
+        },
+        {
+          "severity": "warning",
+          "line": "116",
+          "message": "Blast radius still mentions `wrangler.toml` secret binding conflicts with out-of-band Pages secret model."
+        },
+        {
+          "severity": "warning",
+          "line": "323",
+          "message": "`answerComposer.test.ts` TC-02 incorrectly treated as extinct — `composeAssistantAnswer` still returns `'fallback'` as routing signal."
+        }
+      ]
+    }
+  ]
+}

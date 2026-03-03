@@ -35,6 +35,16 @@ This runbook guides operators through launching a new shop using the `pnpm launc
    gh secret list
    ```
 
+3. **Shop-specific runtime secrets**: If the shop app includes an admin UI gated by an env-var key (e.g. `CARYINA_ADMIN_KEY`), this must be set both locally and in Cloudflare before the admin is usable:
+   ```bash
+   # Local development — add to apps/<shop>/.env.local:
+   CARYINA_ADMIN_KEY=<your-passphrase-32-chars-minimum>
+
+   # Cloudflare Worker (production):
+   wrangler secret put CARYINA_ADMIN_KEY
+   ```
+   See `docs/.env.reference.md` § Shop-specific admin keys for the full list and pattern.
+
 ### Working Tree State
 
 By default, `launch-shop` requires a clean git working tree. Use `--allow-dirty-git` to override (not recommended for production).

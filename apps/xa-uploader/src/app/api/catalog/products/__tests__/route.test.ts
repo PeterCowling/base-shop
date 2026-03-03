@@ -2,8 +2,12 @@ import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 const listCatalogDraftsMock = jest.fn();
 const upsertCatalogDraftMock = jest.fn();
+const readCloudDraftSnapshotMock = jest.fn();
+const upsertProductInCloudSnapshotMock = jest.fn();
+const writeCloudDraftSnapshotMock = jest.fn();
 const hasUploaderSessionMock = jest.fn();
 const parseStorefrontMock = jest.fn();
+const isLocalFsRuntimeEnabledMock = jest.fn();
 
 class MockCatalogCsvConflictError extends Error {
   override name = "CatalogCsvConflictError";
@@ -15,6 +19,20 @@ jest.mock("../../../../../lib/catalogCsv", () => ({
   upsertCatalogDraft: (...args: unknown[]) => upsertCatalogDraftMock(...args),
 }));
 
+jest.mock("../../../../../lib/catalogDraftContractClient", () => ({
+  CatalogDraftConflictError: class extends Error {},
+  CatalogDraftContractError: class extends Error {
+    code: string;
+    constructor(code: string) {
+      super(code);
+      this.code = code;
+    }
+  },
+  readCloudDraftSnapshot: (...args: unknown[]) => readCloudDraftSnapshotMock(...args),
+  upsertProductInCloudSnapshot: (...args: unknown[]) => upsertProductInCloudSnapshotMock(...args),
+  writeCloudDraftSnapshot: (...args: unknown[]) => writeCloudDraftSnapshotMock(...args),
+}));
+
 jest.mock("../../../../../lib/catalogStorefront.ts", () => ({
   parseStorefront: (...args: unknown[]) => parseStorefrontMock(...args),
 }));
@@ -23,16 +41,35 @@ jest.mock("../../../../../lib/uploaderAuth", () => ({
   hasUploaderSession: (...args: unknown[]) => hasUploaderSessionMock(...args),
 }));
 
+jest.mock("../../../../../lib/localFsGuard", () => ({
+  isLocalFsRuntimeEnabled: (...args: unknown[]) => isLocalFsRuntimeEnabledMock(...args),
+  localFsUnavailableResponse: () =>
+    Response.json({ ok: false, error: "service_unavailable", reason: "local_fs_unavailable" }, { status: 503 }),
+}));
+
 describe("catalog products route", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     hasUploaderSessionMock.mockResolvedValue(true);
     parseStorefrontMock.mockReturnValue("xa-b");
+    isLocalFsRuntimeEnabledMock.mockReturnValue(true);
     listCatalogDraftsMock.mockResolvedValue({ products: [], revisionsById: {} });
     upsertCatalogDraftMock.mockResolvedValue({
       product: { title: "Studio jacket", slug: "studio-jacket" },
       revision: "rev-1",
     });
+    readCloudDraftSnapshotMock.mockResolvedValue({
+      products: [],
+      revisionsById: {},
+      docRevision: "doc-rev-1",
+    });
+    upsertProductInCloudSnapshotMock.mockReturnValue({
+      product: { title: "Studio jacket", slug: "studio-jacket", id: "p1" },
+      revision: "rev-2",
+      products: [{ title: "Studio jacket", slug: "studio-jacket", id: "p1" }],
+      revisionsById: { p1: "rev-2" },
+    });
+    writeCloudDraftSnapshotMock.mockResolvedValue({ docRevision: "doc-rev-2" });
   });
 
   it("returns invalid for malformed JSON payload", async () => {
@@ -133,5 +170,18 @@ describe("catalog products route", () => {
     expect(payload.reason).toBe("products_upsert_failed");
     expect(JSON.stringify(payload)).not.toContain("EACCES");
     expect(JSON.stringify(payload)).not.toContain("/Users/petercowling");
+  });
+
+  it("uses cloud draft snapshot when local fs runtime is disabled", async () => {
+    isLocalFsRuntimeEnabledMock.mockReturnValueOnce(false);
+
+    const { GET } = await import("../route");
+    const response = await GET(new Request("http://localhost/api/catalog/products"));
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({ ok: true }),
+    );
+    expect(readCloudDraftSnapshotMock).toHaveBeenCalled();
   });
 });

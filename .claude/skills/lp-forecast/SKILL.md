@@ -29,17 +29,17 @@ READ + RESEARCH + FORECAST
 - Forecast P10/P50/P90 scenario bands with unit economics assumptions
 - Generate first-14-day validation plan (THE primary deliverable)
 
-## Differs from idea-forecast
+## Differs from lp-do-idea-forecast
 
-This skill is NOT a rename or copy of `idea-forecast`. Key differences:
+This skill is NOT a rename or copy of `lp-do-idea-forecast`. Key differences:
 
-1. **Works from zero operational data**: idea-forecast requires historical performance data or existing market intelligence packs. lp-forecast builds forecasts from competitor benchmarks and channel ranges only.
+1. **Works from zero operational data**: lp-do-idea-forecast requires historical performance data or existing market intelligence packs. lp-forecast builds forecasts from competitor benchmarks and channel ranges only.
 
-2. **No market intelligence pack prerequisite**: idea-forecast blocks when `latest.user.md` market research is stale and requires Deep Research prompt. lp-forecast proceeds with available evidence (competitor pricing, channel benchmarks) and marks confidence accordingly.
+2. **No market intelligence pack prerequisite**: lp-do-idea-forecast blocks when `latest.user.md` market research is stale and requires Deep Research prompt. lp-forecast proceeds with available evidence (competitor pricing, channel benchmarks) and marks confidence accordingly.
 
-3. **Simpler output contract**: idea-forecast delivers a full 12-section Output Contract with detailed channel plans and financial models. lp-forecast delivers P10/P50/P90 bands, unit economics assumptions, and a first-14-day validation plan.
+3. **Simpler output contract**: lp-do-idea-forecast delivers a full 12-section Output Contract with detailed channel plans and financial models. lp-forecast delivers P10/P50/P90 bands, unit economics assumptions, and a first-14-day validation plan.
 
-4. **No Deep Research gate**: idea-forecast stops and requires manual Deep Research when data is insufficient. lp-forecast proceeds with available evidence and tags assumptions as low-confidence when data is sparse.
+4. **No Deep Research gate**: lp-do-idea-forecast stops and requires manual Deep Research when data is insufficient. lp-forecast proceeds with available evidence and tags assumptions as low-confidence when data is sparse.
 
 5. **Validation-first mindset**: Both include first-14-day validation plans, but lp-forecast makes this THE central output — the forecast is a hypothesis to validate, not a plan to execute.
 

@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- PRIME-ROUTES-001 [ttl=2026-12-31] Canonical route seed copy for Prime fallback dataset; localized narrative content is maintained in Brikette content pipeline. */
 /**
  * Pre-arrival route data.
  *

@@ -42,7 +42,7 @@ export const WelcomeBanner: FC<WelcomeBannerProps> = memo(function WelcomeBanner
     }, 8000);
 
     return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- PRIME-1: intentional empty dep array; timer fires once on mount
   }, []);
 
   const handleDismiss = useCallback(() => {

@@ -71,7 +71,7 @@ Current startup-loop entry assumes the operator already selected a product befor
 - `.claude/skills/idea-readiness/SKILL.md` - readiness gates with no product-selection gate.
 - `.claude/skills/lp-offer/SKILL.md` - S2B offer design for chosen offer hypothesis.
 - `.claude/skills/lp-other-products/SKILL.md` - adjacent-product expansion after offer exists.
-- `docs/business-os/startup-baselines/HEAD-intake-packet.user.md` - real intake example with chosen product recorded as observed.
+- `docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md` - real intake example with chosen product recorded as observed.
 
 ### Patterns & Conventions Observed
 - Product choice is pre-assumed before S0:
@@ -86,7 +86,7 @@ Current startup-loop entry assumes the operator already selected a product befor
   - Stage ID format is constrained (`docs/business-os/startup-loop/stage-operator-dictionary.schema.json:46`).
   - Resolver/tests and other typed components reference fixed stage universe (`scripts/src/startup-loop/stage-addressing.ts:72`, `scripts/src/startup-loop/__tests__/stage-addressing.test.ts:22`, `scripts/src/startup-loop/bottleneck-detector.ts:13`).
 - In-practice gap example exists:
-  - HEAD intake records product as observed without explicit problem-to-options decision artifact (`docs/business-os/startup-baselines/HEAD-intake-packet.user.md:32`).
+  - HEAD intake records product as observed without explicit problem-to-options decision artifact (`docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md:32`).
 - Stage-spec-to-map pipeline is already drifted (live, pre-existing):
   - `loop-spec.yaml` has local v1.6.0 changes (S3B added, decision: 2026-02-20) but `docs/business-os/startup-loop/_generated/stage-operator-map.json` is stamped `_loop_spec_version: "1.3.0"` and does not include S3B.
   - `CANONICAL_IDS` in `scripts/src/startup-loop/stage-addressing.ts` is built dynamically from the generated map; because the map is stale, S3B is not resolvable as a canonical stage ID.

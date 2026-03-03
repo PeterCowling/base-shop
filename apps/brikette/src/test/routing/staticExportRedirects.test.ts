@@ -20,4 +20,16 @@ describe("buildLocalizedStaticRedirectRules", () => {
       ]),
     );
   });
+
+  it("includes IT locale book redirect rules", () => {
+    const rules = buildLocalizedStaticRedirectRules();
+
+    expect(rules).toEqual(
+      expect.arrayContaining([
+        { from: "/it/prenota", to: "/it/book", status: 200 },
+        { from: "/it/prenota/", to: "/it/book/", status: 200 },
+        { from: "/it/prenota/*", to: "/it/book/:splat", status: 200 },
+      ]),
+    );
+  });
 });

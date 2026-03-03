@@ -50,12 +50,12 @@
       "items": {
         "sita": {
           "href": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result",
-          "label": "Positano.com",
+          "label": "ポジタノ.com",
           "text": "SITA バスの Positano ⇄ Sorrento 時刻表は <Link>Positano.com</Link> で確認"
         },
         "curreri": {
           "href": "https://www.curreriviaggi.it/",
-          "label": "curreriviaggi.it",
+          "label": "カリキュラム",
           "text": "Curreri の Sorrento ⇄ Napoli Aeroporto 時刻表は <Link>curreriviaggi.it</Link> で確認"
         }
       }

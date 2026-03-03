@@ -1,0 +1,117 @@
+[
+  {
+    "id": "C-01",
+    "severity": "S2",
+    "theme": "dark",
+    "breakpoint": "1440x900",
+    "route": "startup-loop-output-registry.user.html",
+    "state": "default",
+    "description": "Secondary/muted text fails WCAG AA across page subtitle, snapshot chip, panel metadata, build summary status line, filter labels, empty table message, fold metadata",
+    "elements": [
+      { "selector": ".page-header p", "fontSize": "13px", "fontWeight": "400" },
+      { "selector": ".snapshot-chip", "fontSize": "11px", "fontFamily": "monospace" },
+      { "selector": ".panel-meta", "fontSize": "12px", "fontFamily": "monospace" },
+      { "selector": ".build-summary-status", "fontSize": "12px", "fontFamily": "monospace" },
+      { "selector": ".build-summary-controls label", "fontSize": "11px", "textTransform": "uppercase" },
+      { "selector": ".build-summary-empty", "fontSize": "12px", "fontStyle": "italic" },
+      { "selector": ".fold-meta", "fontSize": "10px", "fontFamily": "monospace" }
+    ],
+    "foreground": "#5a6b7a",
+    "foregroundVariable": "--muted",
+    "background": "#0e1016",
+    "backgroundNote": "body bg under sl-theme dark; panel gradient composited slightly darker ~#080f1d at mid-point",
+    "measuredRatio": 3.47,
+    "worstCaseRatio": 3.35,
+    "threshold": 4.5,
+    "textCategory": "normal",
+    "pass": false,
+    "fixDirection": "Add --muted: #909db5 to html[data-theme=\"dark\"] block in sl-theme-css. See also U-01."
+  },
+  {
+    "id": "C-02",
+    "severity": "S2",
+    "theme": "dark",
+    "breakpoint": "1440x900",
+    "route": "startup-loop-output-registry.user.html",
+    "state": "default",
+    "description": "Nav brand label 'Startup Loop' is near-invisible — fails both normal-text (4.5:1) and non-text (3.0:1) WCAG AA thresholds",
+    "elements": [
+      { "selector": "#sl-nav .sl-brand", "fontSize": "10px", "fontWeight": "700", "textTransform": "uppercase" }
+    ],
+    "foreground": "#4b5270",
+    "background": "#111318",
+    "measuredRatio": 2.42,
+    "threshold": 4.5,
+    "nonTextThreshold": 3.0,
+    "textCategory": "normal",
+    "pass": false,
+    "fixDirection": "Change .sl-brand color from #4b5270 to #7b82a0 in #sl-nav inline style. Light mode already overrides correctly via sl-theme-registry-light."
+  },
+  {
+    "id": "C-03",
+    "severity": "S3",
+    "theme": "light",
+    "breakpoint": "1440x900",
+    "route": "startup-loop-output-registry.user.html",
+    "state": "default",
+    "description": "Artifact file path text narrowly fails WCAG AA — 4.17:1 against light artifact card background",
+    "elements": [
+      { "selector": ".artifact-path", "fontSize": "11px", "fontWeight": "400" }
+    ],
+    "foreground": "#6b7a96",
+    "background": "#f8f9fd",
+    "measuredRatio": 4.17,
+    "threshold": 4.5,
+    "textCategory": "normal",
+    "pass": false,
+    "fixDirection": "Change .artifact-path light override from #6b7a96 to #506070 (≈4.7:1 on #f8f9fd)."
+  },
+  {
+    "id": "C-04",
+    "severity": "S3",
+    "theme": "dark",
+    "breakpoint": "1440x900",
+    "route": "startup-loop-output-registry.user.html",
+    "state": "default",
+    "description": "Mermaid diagram zoom control buttons (+, −, ↺) fail 4.5:1 as interactive text; pass 3.0:1 as non-text controls",
+    "elements": [
+      { "selector": ".zoom-controls button", "fontSize": "13px", "content": "+/−/↺ Unicode characters" }
+    ],
+    "foreground": "#6b728f",
+    "foregroundVariable": "--text-muted",
+    "background": "#161921",
+    "backgroundVariable": "--surface",
+    "measuredRatio": 3.70,
+    "threshold": 4.5,
+    "nonTextThreshold": 3.0,
+    "nonTextPass": true,
+    "textCategory": "normal",
+    "pass": false,
+    "note": "Buttons have title attributes but no aria-label. Characters are interactive, not decorative.",
+    "fixDirection": "Add aria-label to each button and treat as non-text controls (3.0:1 passes), OR lighten color to var(--text) for full text compliance."
+  },
+  {
+    "id": "C-05",
+    "severity": "S2",
+    "theme": "light",
+    "breakpoint": "1440x900",
+    "route": "startup-loop-output-registry.user.html",
+    "state": "default",
+    "description": "Build summary muted text is near-invisible in light mode — dark semi-transparent gradient composites to a mid-blue-grey background, against which --muted (#5a6b7a) has only 1.68:1",
+    "elements": [
+      { "selector": ".build-summary-status", "fontSize": "12px", "fontFamily": "monospace" },
+      { "selector": ".build-summary-controls label", "fontSize": "11px", "textTransform": "uppercase" },
+      { "selector": ".build-summary-empty", "fontSize": "12px", "fontStyle": "italic" }
+    ],
+    "foreground": "#5a6b7a",
+    "foregroundVariable": "--muted",
+    "background": "#404858",
+    "backgroundNote": "Computed: rgba(12,24,48,0.62) gradient at 50% stop composited on light body bg #f5f6fa",
+    "measuredRatio": 1.68,
+    "threshold": 4.5,
+    "textCategory": "normal",
+    "pass": false,
+    "rootCause": "sl-theme-registry-light has no .build-summary override. The dark gradient persists in light mode, creating a medium-dark background that is similar in luminance to the --muted colour.",
+    "fixDirection": "Add .build-summary { background: #ffffff !important; border-color: #dde0ed !important; } and .build-summary-status, .build-summary-controls label, .build-summary-empty { color: #5a6080 !important; } to sl-theme-registry-light."
+  }
+]

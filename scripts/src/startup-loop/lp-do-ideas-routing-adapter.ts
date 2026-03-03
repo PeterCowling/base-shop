@@ -3,26 +3,41 @@
  *
  * Pure function: routeDispatch(packet) → RouteResult
  *
- * Validates a dispatch.v1 packet for completeness and produces a typed
- * invocation payload for either lp-do-fact-find or lp-do-briefing.
+ * Validates a dispatch.v1 or dispatch.v2 packet for completeness and produces
+ * a typed invocation payload for either lp-do-fact-find or lp-do-briefing.
  *
  * Policy:
  *   - Option B (queue-with-confirmation): adapter produces payloads only.
  *     It does NOT invoke skills. Downstream callers are responsible for
  *     operator confirmation and actual invocation.
- *   - auto_executed status is reserved and MUST be rejected in trial mode.
+ *   - auto_executed status is reserved and MUST be rejected in both trial and live modes.
  *   - Invalid or incomplete packets fail closed with actionable error messages.
+ *
+ * dispatch.v1 compatibility (compat-v1):
+ *   - v1 packets carry `current_truth` and `next_scope_now` as lossy approximations
+ *     of `why` and `intended_outcome` respectively.
+ *   - The adapter maps these into payload fields with `why_source: "compat-v1"` so
+ *     downstream consumers can detect the migration status.
+ *   - v1 support window: 30 days from dispatch.v2 schema merge. After cutover,
+ *     v1 packets fail closed. See migration guide:
+ *     docs/plans/startup-loop-why-intended-outcome-automation/migration-guide.md
  *
  * Contract: docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md
  * Matrix:   docs/business-os/startup-loop/ideas/lp-do-ideas-routing-matrix.md
  */
 
+import type { LiveDispatchPacket } from "./lp-do-ideas-live.js";
 import type {
-  DispatchStatus,
-  RecommendedRoute,
   DeliverableFamily,
+  DispatchStatus,
+  IntendedOutcomeV2,
+  RecommendedRoute,
   TrialDispatchPacket,
+  TrialDispatchPacketV2,
 } from "./lp-do-ideas-trial.js";
+
+/** Union of all accepted dispatch packet types (v1 and v2). */
+export type AnyDispatchPacket = TrialDispatchPacket | TrialDispatchPacketV2 | LiveDispatchPacket;
 
 // ---------------------------------------------------------------------------
 // Invocation payloads
@@ -36,6 +51,11 @@ import type {
  *   - area_anchor (concrete area anchor — feature/component/system)
  *   - location_anchors (≥1 location anchor — path guess, route, endpoint, etc.)
  *   - provisional_deliverable_family
+ *
+ * dispatch.v2 additions (optional, present when source packet is v2):
+ *   - why: operator-authored explanation of why this work is happening now
+ *   - why_source: attribution flag ("operator" | "auto") matching intended_outcome.source
+ *   - intended_outcome: typed intended outcome object from the dispatch.v2 packet
  */
 export interface FactFindInvocationPayload {
   skill: "lp-do-fact-find";
@@ -48,7 +68,29 @@ export interface FactFindInvocationPayload {
   /** ISO-8601 string: when the dispatch packet was created */
   dispatch_created_at: string;
   /** The originating dispatch packet, preserved for traceability */
-  source_packet: TrialDispatchPacket;
+  source_packet: AnyDispatchPacket;
+  /**
+   * Explanation of why this work is happening now.
+   * For dispatch.v2 packets: operator-authored string from `packet.why`.
+   * For dispatch.v1 packets (compat-v1): derived from `packet.current_truth` as a
+   *   lossy approximation. Present when `current_truth` is non-empty; absent otherwise.
+   * Check `why_source` to determine the provenance of this value.
+   */
+  why?: string;
+  /**
+   * Source attribution for the `why` value.
+   * "operator" — authored by the operator at Option B confirmation (dispatch.v2).
+   * "auto" — auto-generated fallback; excluded from quality metrics (dispatch.v2).
+   * "compat-v1" — derived from dispatch.v1 `current_truth` field (lossy approximation).
+   * Absent for packets where neither v2 fields nor v1 compat fields are available.
+   */
+  why_source?: "operator" | "auto" | "compat-v1";
+  /**
+   * Typed intended outcome.
+   * Present for dispatch.v2 packets (typed IntendedOutcomeV2 object).
+   * Absent for dispatch.v1 packets (use `why` derived from `current_truth` instead).
+   */
+  intended_outcome?: IntendedOutcomeV2;
 }
 
 /**
@@ -58,6 +100,14 @@ export interface FactFindInvocationPayload {
  * Per lp-do-briefing SKILL.md Required Inputs:
  *   - topic / area_anchor
  *   - at least one location anchor
+ *
+ * dispatch.v2 additions (optional, present for traceability when source packet is v2):
+ *   - why: operator-authored explanation (not required for briefing execution)
+ *   - why_source: attribution flag
+ *   - intended_outcome: typed intended outcome (not required for briefing execution)
+ *
+ * dispatch.v1 compat additions:
+ *   - why: derived from `current_truth` (lossy); why_source set to "compat-v1"
  */
 export interface BriefingInvocationPayload {
   skill: "lp-do-briefing";
@@ -71,7 +121,25 @@ export interface BriefingInvocationPayload {
   /** ISO-8601 string: when the dispatch packet was created */
   dispatch_created_at: string;
   /** The originating dispatch packet, preserved for traceability */
-  source_packet: TrialDispatchPacket;
+  source_packet: AnyDispatchPacket;
+  /**
+   * Explanation of why this work is happening now.
+   * For dispatch.v2: operator-authored. For dispatch.v1: derived from `current_truth`.
+   * Carried for traceability; not required for briefing execution.
+   */
+  why?: string;
+  /**
+   * Source attribution for the `why` value.
+   * "operator" — authored by operator (dispatch.v2).
+   * "auto" — auto-generated fallback (dispatch.v2).
+   * "compat-v1" — derived from dispatch.v1 `current_truth` (lossy approximation).
+   */
+  why_source?: "operator" | "auto" | "compat-v1";
+  /**
+   * Typed intended outcome (dispatch.v2 only).
+   * Carried for traceability; not required for briefing execution.
+   */
+  intended_outcome?: IntendedOutcomeV2;
 }
 
 export type InvocationPayload = FactFindInvocationPayload | BriefingInvocationPayload;
@@ -153,45 +221,81 @@ function extractDispatchId(packet: unknown): string | null {
 }
 
 // ---------------------------------------------------------------------------
+// Internal: compat-v1 field extraction
+// ---------------------------------------------------------------------------
+
+/**
+ * Extracts the `why` string and `why_source` sentinel for a dispatch.v1 packet.
+ *
+ * Maps `current_truth` → `why` as a lossy approximation of operator intent.
+ * If `current_truth` is absent or empty, `why` is omitted (no fabrication).
+ *
+ * Migration note: This compatibility reader exists for the 30-day v1 support
+ * window. After cutover, v1 packets fail closed. See:
+ * docs/plans/startup-loop-why-intended-outcome-automation/migration-guide.md
+ */
+function extractCompatV1WhyFields(
+  packet: AnyDispatchPacket,
+): { why?: string; why_source: "compat-v1" } | Record<string, never> {
+  if (packet.schema_version !== "dispatch.v1") {
+    return {};
+  }
+  // current_truth is optional in v1 schema — do not fabricate if absent
+  const currentTruth = (packet as { current_truth?: string }).current_truth;
+  if (typeof currentTruth === "string" && currentTruth.trim() !== "") {
+    return { why: currentTruth, why_source: "compat-v1" };
+  }
+  // current_truth absent or empty: omit `why` entirely (no fabrication)
+  return { why_source: "compat-v1" };
+}
+
+// ---------------------------------------------------------------------------
 // Main export: routeDispatch
 // ---------------------------------------------------------------------------
 
 /**
- * Routes a validated dispatch.v1 packet to the appropriate downstream skill.
+ * Routes a validated dispatch.v1 or dispatch.v2 packet to the appropriate
+ * downstream skill.
  *
+ * Accepts both trial (mode="trial") and live (mode="live") packets.
  * Returns a RouteSuccess with an invocation payload, or a RouteError with an
  * actionable error message and machine-readable error code.
+ *
+ * dispatch.v1 compat: maps `current_truth` → payload `why` with
+ * `why_source: "compat-v1"`. `intended_outcome` is not populated for v1 packets.
  *
  * This function is PURE — it performs no file I/O and does not invoke any
  * skills. The returned payload is a data structure describing what to invoke;
  * actual invocation is the caller's responsibility (Option B policy).
  */
-export function routeDispatch(packet: TrialDispatchPacket): RouteResult {
+export function routeDispatch(packet: AnyDispatchPacket): RouteResult {
   const dispatchId = extractDispatchId(packet);
 
   // --- Schema version guard ---
-  if (packet.schema_version !== "dispatch.v1") {
+  // Cast to string for safe access inside the error branch (TypeScript narrows to never after the check).
+  const schemaVersion = (packet as { schema_version: string }).schema_version;
+  if (schemaVersion !== "dispatch.v1" && schemaVersion !== "dispatch.v2") {
     return {
       ok: false,
       code: "INVALID_SCHEMA_VERSION",
       error:
-        `[lp-do-ideas-routing-adapter] Invalid schema_version "${String(packet.schema_version)}". ` +
-        `Only "dispatch.v1" packets are accepted. ` +
-        `Ensure the packet was produced by lp-do-ideas-trial (TASK-03) and has not been mutated.`,
+        `[lp-do-ideas-routing-adapter] Invalid schema_version "${String(schemaVersion)}". ` +
+        `Only "dispatch.v1" and "dispatch.v2" packets are accepted. ` +
+        `Ensure the packet was produced by lp-do-ideas-trial and has not been mutated.`,
       dispatch_id: dispatchId,
     };
   }
 
   // --- Mode guard ---
-  if (packet.mode !== "trial") {
+  if (packet.mode !== "trial" && packet.mode !== "live") {
     return {
       ok: false,
       code: "INVALID_MODE",
       error:
         `[lp-do-ideas-routing-adapter] Packet mode "${packet.mode}" is not permitted. ` +
-        `Only mode="trial" packets are accepted in this tranche. ` +
-        `mode="live" routing is reserved for the go-live integration phase ` +
-        `defined in lp-do-ideas-go-live-seam.md.`,
+        `Only mode="trial" and mode="live" packets are accepted. ` +
+        `Ensure the packet was produced by lp-do-ideas-trial or lp-do-ideas-live ` +
+        `and has not been mutated. See lp-do-ideas-go-live-seam.md.`,
       dispatch_id: dispatchId,
     };
   }
@@ -343,6 +447,12 @@ export function routeDispatch(packet: TrialDispatchPacket): RouteResult {
       };
     }
 
+    // For dispatch.v1 packets: map current_truth → why with compat-v1 sentinel.
+    // For dispatch.v2 packets: v2 fields are populated by routeDispatchV2();
+    // routeDispatch() carries only the compat fields for the v1 path.
+    const compatFields =
+      packet.schema_version === "dispatch.v1" ? extractCompatV1WhyFields(packet) : {};
+
     const payload: FactFindInvocationPayload = {
       skill: "lp-do-fact-find",
       dispatch_id: packet.dispatch_id,
@@ -353,6 +463,7 @@ export function routeDispatch(packet: TrialDispatchPacket): RouteResult {
       evidence_refs: packet.evidence_refs,
       dispatch_created_at: packet.created_at,
       source_packet: packet,
+      ...compatFields,
     };
 
     return {
@@ -373,6 +484,10 @@ export function routeDispatch(packet: TrialDispatchPacket): RouteResult {
       ? packet.location_anchors
       : [];
 
+    // For dispatch.v1 packets: map current_truth → why with compat-v1 sentinel.
+    const compatFieldsBriefing =
+      packet.schema_version === "dispatch.v1" ? extractCompatV1WhyFields(packet) : {};
+
     const payload: BriefingInvocationPayload = {
       skill: "lp-do-briefing",
       dispatch_id: packet.dispatch_id,
@@ -382,6 +497,7 @@ export function routeDispatch(packet: TrialDispatchPacket): RouteResult {
       evidence_refs: packet.evidence_refs,
       dispatch_created_at: packet.created_at,
       source_packet: packet,
+      ...compatFieldsBriefing,
     };
 
     return {
@@ -401,5 +517,59 @@ export function routeDispatch(packet: TrialDispatchPacket): RouteResult {
       `an unhandled recommended_route="${packet.recommended_route}" after status validation. ` +
       `This is a routing adapter bug — please report to startup-loop maintainers.`,
     dispatch_id: dispatchId,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// routeDispatchV2: dispatch.v2-aware routing
+// ---------------------------------------------------------------------------
+
+/**
+ * Routes a dispatch.v2 packet, propagating `why`, `why_source`, and `intended_outcome`
+ * into the invocation payload.
+ *
+ * This function accepts only dispatch.v2 packets (`schema_version: "dispatch.v2"`).
+ * For dispatch.v1 packets, use `routeDispatch()`.
+ *
+ * The v2-specific fields are extracted from the packet and carried into both
+ * `FactFindInvocationPayload` and `BriefingInvocationPayload` as optional fields:
+ *   - `why`: the operator-authored explanation from `packet.why`
+ *   - `why_source`: derived from `packet.intended_outcome.source` ("operator" | "auto")
+ *   - `intended_outcome`: the full `IntendedOutcomeV2` object
+ *
+ * For the briefing path: `why`/`intended_outcome` are carried for traceability only;
+ * they are not required for briefing execution.
+ *
+ * PURE FUNCTION — no file I/O, no skill invocation (Option B policy).
+ *
+ * @param packet - A dispatch.v2 packet. Must have `schema_version: "dispatch.v2"`.
+ * @returns RouteSuccess with fully-populated InvocationPayload, or RouteError.
+ */
+export function routeDispatchV2(packet: TrialDispatchPacketV2): RouteResult {
+  // Delegate core routing logic to routeDispatch (which now accepts v2 packets)
+  const baseResult = routeDispatch(packet);
+
+  if (!baseResult.ok) {
+    return baseResult;
+  }
+
+  // Extract v2 outcome fields for propagation
+  const whySource: "operator" | "auto" = packet.intended_outcome?.source ?? "auto";
+  const v2Fields = {
+    why: packet.why,
+    why_source: whySource,
+    intended_outcome: packet.intended_outcome,
+  };
+
+  // Enrich the payload with v2 fields
+  const enrichedPayload: InvocationPayload = {
+    ...baseResult.payload,
+    ...v2Fields,
+  };
+
+  return {
+    ok: true,
+    route: baseResult.route,
+    payload: enrichedPayload,
   };
 }

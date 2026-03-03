@@ -347,5 +347,10 @@
         "experience": "Erlebnisse"
       }
     }
+  },
+  "search": {
+    "noResults": "Keine Anleitungen gefunden",
+    "resultsCount_one": "{{count}} Führer gefunden",
+    "resultsCount_other": "Gefundene {{count}} Anleitungen"
   }
 }

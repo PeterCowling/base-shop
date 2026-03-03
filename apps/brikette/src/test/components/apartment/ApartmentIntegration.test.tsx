@@ -13,15 +13,15 @@ describe("Navigation integration", () => {
   });
 });
 
-// TC-02: header.json has apartment nav label
+// TC-02: header.json has private-rooms nav label
 describe("Header translations", () => {
-  it("has an apartment translation key", () => {
+  it("has a private-rooms translation key", () => {
     const headerPath = path.resolve(
       __dirname,
       "../../../locales/en/header.json",
     );
     const header = JSON.parse(fs.readFileSync(headerPath, "utf-8"));
-    expect(header.apartment).toBe("Apartment");
+    expect(header.apartment).toBe("Private Rooms");
   });
 });
 

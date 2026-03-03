@@ -52,5 +52,115 @@
         "alt": "波西塔诺街景"
       }
     ]
+  },
+  "directSavings": {
+    "eyebrow": "直接书本并保存",
+    "heading": "比Booking.com少26%",
+    "nr": {
+      "label": "不可退还",
+      "saving": "节省26%",
+      "detail": "最佳直接价格"
+    },
+    "flex": {
+      "label": "灵活费率",
+      "saving": "节省21%",
+      "detail": "免费取消"
+    }
+  },
+  "heroTagline": "意大利波西塔诺私人公寓",
+  "galleryCaptions": [
+    "Full private bathroom with rain-head shower and designer fittings",
+    "Bright open-plan living space with dining area, TV lounge and mezzanine staircase",
+    "Fully equipped kitchen with dishwasher, washing machine and traditional Positano tilework"
+  ],
+  "fitCheck": {
+    "heading": "这个公寓适合你吗?",
+    "arrival": {
+      "label": "抵达",
+      "text": "没有街道楼梯 从道路到公寓入口。"
+    },
+    "inside": {
+      "label": "内部",
+      "text": "平面内部设有生活区和卧室之间的内部楼梯."
+    },
+    "sleeping": {
+      "label": "睡觉",
+      "text": "楼下的沙发床;楼上的双层床."
+    },
+    "sound": {
+      "label": "声音",
+      "text": "一些道路和梯田的氛围;梯田从午夜开始保持安静。"
+    },
+    "bestFit": {
+      "label": "最适合",
+      "text": "夫妇的理想。 楼下沙发床是一个舒适的替代方案 不推荐非常轻的睡眠者。"
+    }
+  },
+  "hub": {
+    "streetLevelCard": {
+      "title": "街道抵达",
+      "subtitle": "没有街道楼梯从道路到入口",
+      "cta": "学更多"
+    },
+    "privateStayCard": {
+      "title": "私人服务逗留",
+      "subtitle": "隔壁有可选的露台、酒吧和早餐",
+      "cta": "学更多"
+    }
+  },
+  "checkAvailability": "检查可用性",
+  "streetLevelArrival": {
+    "meta": {
+      "title": "步行自由抵达波西塔诺——无街道楼梯",
+      "description": "我们的公寓提供从道路到入口的无阶梯通道——在陡峭的波西塔诺罕见. 没有楼梯,没有与行李挣扎。"
+    },
+    "heroTitle": "无步骤到达",
+    "heroSubtitle": "没有街道楼梯 从道路到公寓入口",
+    "heroBody": "在一个以数百步闻名的小镇,我们的公寓是不同的. 从路上直走到你的正门——没有楼梯,没有与行李或散步者挣扎.",
+    "videoPlaceholder": "街对门视频马上就要来了",
+    "clarification": "公寓入口在街上没有台阶. 内部,公寓为分层,在生活区和卧室之间有内部楼梯.",
+    "whatsappCta": "快速回答的答案是什么",
+    "checkAvailability": "检查可用性"
+  },
+  "privateStay": {
+    "meta": {
+      "title": "波西塔诺私人服务公寓",
+      "description": "一个有全厨房的85平方公里的私人公寓,专业管理,可选择进入露台、早餐和隔壁酒吧。"
+    },
+    "heroTitle": "你在波西塔诺的私人公寓",
+    "heroSubtitle": "专业管理,隔壁有招待级支助",
+    "sections": {
+      "privacy": {
+        "title": "完全独立",
+        "body": "一个85平方公里的公寓 完全是你的。 整个厨房,洗衣机和烘干机,两个浴室, 和空间分散。 没有共享空间,没有报到台——只有你自己的门."
+      },
+      "support": {
+        "title": "需要专业支持时",
+        "body": "由隔壁一个经验丰富的接待团队管理 需要餐厅推荐、指导或帮助吗? 专业支持是短暂的。"
+      },
+      "amenities": {
+        "title": "隔壁可选额外项目",
+        "body": "如果你想要的话,隔壁有露台,有海景,早餐服务和酒吧。 享受你们的日程安排,或完全跳过,选择权在你。"
+      }
+    },
+    "whatsappCta": "快速回答的答案是什么",
+    "checkAvailability": "检查可用性"
+  },
+  "book": {
+    "meta": {
+      "title": "我们的波西塔诺公寓",
+      "description": "检查可用性 订下我们在波西塔诺的私人公寓 徒步自由到达,厨房满满,睡眠4。"
+    },
+    "heroTitle": "订下你的住处",
+    "heroSubtitle": "波西塔诺的私人公寓",
+    "dateLabel": "选择日期",
+    "checkinLabel": "报到",
+    "checkoutLabel": "离职",
+    "rateNonRefundable": "不可退款",
+    "rateFlexible": "弹性( 免费取消)",
+    "checkAvailability": "检查可用性",
+    "orBookingCom": "(原始内容存档于2018-09-21). Or book on Booking.com",
+    "whatsappCta": "快速回答的答案是什么",
+    "backLink": "回到公寓细节"
   }
 }

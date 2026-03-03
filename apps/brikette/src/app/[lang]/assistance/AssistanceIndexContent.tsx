@@ -8,13 +8,14 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import clsx from "clsx";
 import type { TFunction } from "i18next";
-import { ArrowUpRight } from "lucide-react";
 
 import { Button } from "@acme/design-system/primitives";
 import type { AssistanceQuickLinkRenderProps } from "@acme/ui/organisms/AssistanceQuickLinksSection";
 import { AssistanceQuickLinksSection as AssistanceQuickLinksSectionUi } from "@acme/ui/organisms/AssistanceQuickLinksSection";
 
+import { BookingOptionsButtons } from "@/components/assistance/BookingOptionsButtons";
 import AssistanceQuickLinksSection from "@/components/assistance/quick-links-section";
+import ContentStickyCta from "@/components/cta/ContentStickyCta";
 import FaqStructuredData from "@/components/seo/FaqStructuredData";
 import { isGuideLive } from "@/data/guides.index";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
@@ -31,21 +32,6 @@ import type { AssistanceIndexI18nSeed } from "./i18n-bundle";
 type Props = {
   lang: AppLanguage;
   serverI18n?: AssistanceIndexI18nSeed;
-};
-
-const BOOKING_LINKS = {
-  googleBusiness: "https://maps.google.com/maps?cid=17733313080460471781",
-  bookingCom: "https://www.booking.com/hotel/it/positano-hostel.en-gb.html",
-  hostelWorld: "https://www.hostelworld.com/hostels/p/7763/hostel-brikette/",
-  instagram: "https://www.instagram.com/brikettepositano",
-} as const;
-type BookingLinkKey = keyof typeof BOOKING_LINKS;
-
-const BOOKING_OPTION_LABEL_FALLBACK: Record<BookingLinkKey, string> = {
-  googleBusiness: "Google Business",
-  bookingCom: "Booking.com",
-  hostelWorld: "Hostelworld",
-  instagram: "Instagram",
 };
 
 type SectionProps = ComponentProps<"section">;
@@ -195,8 +181,8 @@ function AssistanceIndexContent({ lang, serverI18n }: Props): JSX.Element {
             "Message us to plan terrace evenings, hikes, or transfers; we’ll reply with curated tips and confirmations.",
         }) as string);
 
-  const bookingOptions: Partial<Record<BookingLinkKey, string>> = (() => {
-    return (t("bookingOptions", { returnObjects: true }) as Partial<Record<BookingLinkKey, string>>) || {};
+  const bookingOptions = (() => {
+    return (t("bookingOptions", { returnObjects: true }) as Partial<Record<string, string>>) || {};
   })();
 
   const popularGuidesHeadingKey = "popularGuides" as const;
@@ -308,32 +294,24 @@ function AssistanceIndexContent({ lang, serverI18n }: Props): JSX.Element {
                   <dt className="font-semibold text-brand-heading dark:text-brand-text">
                     {t("addressLabel", { defaultValue: "Address" })}
                   </dt>
-                  <dd>{t("addressValue", { defaultValue: "Via Marconi 358, Positano 84017 SA" })}</dd>
+                  <dd>{t("addressValue", { defaultValue: "Via G. Marconi, 358, 84017, Positano" })}</dd>
                 </div>
               </dl>
-              <p className="mt-5 text-sm font-semibold text-brand-heading dark:text-brand-text">
+              <div className="mt-5">
+                <Button asChild size="sm" className="w-full">
+                  <Link href={`/${resolvedLang}/book`}>
+                    {t("bookDirect", { defaultValue: "Book Direct" })}
+                  </Link>
+                </Button>
+              </div>
+              <p className="mt-4 text-sm font-semibold text-brand-heading dark:text-brand-text">
                 {t("otherBookingOptions", { defaultValue: "Other booking options" })}
               </p>
               <Cluster className="mt-3">
-                {(Object.entries(BOOKING_LINKS) as [BookingLinkKey, string][])
-                  .map(([key, href]) => {
-                    const label = bookingOptions[key] ?? BOOKING_OPTION_LABEL_FALLBACK[key];
-                    return (
-                      <Button
-                        key={key}
-                        asChild
-                        tone="outline"
-                        color="primary"
-                        size="sm"
-                        className={BOOKING_BUTTON_CLASSNAME}
-                      >
-                        <a href={href} target="_blank" rel="noopener noreferrer" aria-label={`${label} (opens in new tab)`}>
-                          {label}
-                          <ArrowUpRight aria-hidden className="size-3.5 opacity-60" />
-                        </a>
-                      </Button>
-                    );
-                  })}
+                <BookingOptionsButtons
+                  bookingOptions={bookingOptions}
+                  buttonClassName={BOOKING_BUTTON_CLASSNAME}
+                />
               </Cluster>
             </Container>
           </Stack>
@@ -351,6 +329,7 @@ function AssistanceIndexContent({ lang, serverI18n }: Props): JSX.Element {
         renderLink={renderAssistanceLink}
       />
 
+      <ContentStickyCta lang={resolvedLang} ctaLocation="assistance" />
     </>
   );
 }

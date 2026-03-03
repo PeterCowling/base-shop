@@ -17,7 +17,7 @@ Gates read `Status` from this table — not from individual file frontmatters.
 
 | Artifact | Path | Status | Last-reviewed |
 |----------|------|--------|---------------|
-| Brand Dossier | `docs/business-os/strategy/HBAG/brand-dossier.user.md` | Active | 2026-02-23 |
+| Brand Dossier | `docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md` | Active | 2026-02-23 |
 | Site V1 Builder Prompt | `docs/business-os/strategy/HBAG/site-v1-builder-prompt.user.md` | Active | 2026-02-23 |
 | Competitive Positioning | `docs/business-os/strategy/HBAG/competitive-positioning.user.md` | — | — |
 | Messaging Hierarchy | `docs/business-os/strategy/HBAG/messaging-hierarchy.user.md` | — | — |
@@ -39,10 +39,10 @@ Gates read `Status` from this table — not from individual file frontmatters.
 
 | Stage | Artifact | Path | Status | Last-reviewed |
 |-------|----------|------|--------|---------------|
-| ASSESSMENT-06 | Operator evidence | `docs/business-os/strategy/HBAG/current-situation.user.md` | Active | 2026-02-20 |
-| ASSESSMENT-09 | Intake packet | `docs/business-os/startup-baselines/HBAG-intake-packet.user.md` | Active | 2026-02-20 |
-| ASSESSMENT-10 | Brand profiling | `docs/business-os/strategy/HBAG/brand-strategy.user.md` | Draft | 2026-02-21 |
-| ASSESSMENT-11 | Brand identity | `docs/business-os/strategy/HBAG/brand-dossier.user.md` | Active | 2026-02-23 |
+| ASSESSMENT-06 | Operator evidence | `docs/business-os/strategy/HBAG/2026-02-20-operator-context.user.md` | Active | 2026-02-20 |
+| ASSESSMENT-09 | Intake packet | `docs/business-os/startup-baselines/HBAG-2026-02-20assessment-intake-packet.user.md` | Active | 2026-02-20 |
+| ASSESSMENT-10 | Brand profiling | `docs/business-os/strategy/HBAG/2026-02-21-brand-profile.user.md` | Draft | 2026-02-21 |
+| ASSESSMENT-11 | Brand identity | `docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md` | Active | 2026-02-23 |
 | S1 | Readiness verdict | `docs/business-os/strategy/HBAG/s1-readiness.user.md` | Active | 2026-02-20 |
 | S2 | Market intelligence (latest) | `docs/business-os/market-research/HBAG/latest.user.md` | Active | 2026-02-20 |
 | S2B | Offer | `docs/business-os/startup-baselines/HBAG-offer.md` | Active | 2026-02-20 |
@@ -51,7 +51,7 @@ Gates read `Status` from this table — not from individual file frontmatters.
 | S6B | Channels | `docs/business-os/startup-baselines/HBAG-channels.md` | Active | 2026-02-20 |
 | S6B gate | Demand evidence pack | `docs/business-os/startup-baselines/HBAG/demand-evidence-pack.md` | Active | 2026-02-20 |
 | WEBSITE-CONTENT-01 | Website content packet | `docs/business-os/startup-baselines/HBAG-content-packet.md` | Active | 2026-02-23 |
-| S5A | Prioritization scorecard | — | — | — |
+| S4 | Prioritization scorecard | — | — | — |
 | PRODUCT-01 | Product from photo | `docs/business-os/strategy/HBAG/2026-02-22-product-from-photo.user.md` | Draft | 2026-02-22 |
 
 > S2/S2B/S3/S6B backfill completed 2026-02-20 from `mini-handbag-pmf` fact-find and plan evidence.

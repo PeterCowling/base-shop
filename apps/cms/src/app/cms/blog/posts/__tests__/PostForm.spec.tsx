@@ -61,11 +61,13 @@ describe("PostForm", () => {
 
     render(<PostForm action={async () => ({})} submitLabel="Save" />);
 
-    fireEvent.change(screen.getByLabelText("Title"), {
+    fireEvent.change(screen.getByLabelText(/Title/i), {
       target: { value: "My Post" },
     });
 
-    expect(screen.getByLabelText("Slug")).toHaveValue("my-post");
+    expect(screen.getByRole("textbox", { name: /^Slug/i })).toHaveValue(
+      "my-post",
+    );
 
     await act(async () => {
       jest.advanceTimersByTime(300);
@@ -77,4 +79,3 @@ describe("PostForm", () => {
     expect(screen.getByRole("button", { name: "Save" })).toBeDisabled();
   });
 });
-

@@ -35,6 +35,8 @@ const GASResponseSchema = z.union([
 ]);
 export type GASResponse = z.infer<typeof GASResponseSchema>;
 
+const JSONP_TIMEOUT_MS = 30_000;
+
 /**
  * JSONP function to call the Google Apps Script web app.
  * The server now includes occupantRecord & occupantRecordLength
@@ -53,10 +55,13 @@ export function sendAlloggiatiRecordsToGoogleScript(
       .toString(16)
       .slice(2)}`;
 
+    const timeout = { id: undefined as ReturnType<typeof setTimeout> | undefined };
+
     // Attach a callback on the window
     (window as unknown as Record<string, (data: unknown) => void>)[
       callbackName
     ] = (rawData: unknown) => {
+      clearTimeout(timeout.id);
       delete (window as unknown as Record<string, unknown>)[callbackName];
       if (script.parentNode) {
         script.parentNode.removeChild(script);
@@ -125,6 +130,7 @@ export function sendAlloggiatiRecordsToGoogleScript(
     script.src = `${googleScriptUrl}?${params.toString()}`;
 
     script.onerror = () => {
+      clearTimeout(timeout.id);
       delete (window as unknown as Record<string, unknown>)[callbackName];
       if (script.parentNode) {
         script.parentNode.removeChild(script);
@@ -133,5 +139,13 @@ export function sendAlloggiatiRecordsToGoogleScript(
     };
 
     document.body.appendChild(script);
+
+    timeout.id = setTimeout(() => {
+      delete (window as unknown as Record<string, unknown>)[callbackName];
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+      reject(new Error("Alloggiati submission timed out after 30 seconds."));
+    }, JSONP_TIMEOUT_MS);
   });
 }

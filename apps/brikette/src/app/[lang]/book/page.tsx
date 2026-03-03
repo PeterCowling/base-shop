@@ -45,27 +45,37 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     path,
     image: { src: image, width: OG_IMAGE.width, height: OG_IMAGE.height },
+    isPublished: false,
   });
 }
 
 export default async function BookPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
+  const t = await getTranslations(validLang, ["bookPage"], { optional: true });
+  const heading = (t("heading") as string) || "";
+  const noscriptMessage = (t("noscript.jsDisabledAssistance") as string) || "";
+  const noscriptLinkLabel = (t("noscript.emailAssistedBooking") as string) || "";
 
   return (
     <>
       {/* Wrap in Suspense because BookPageContent uses useSearchParams */}
       <Suspense fallback={null}>
-        <BookPageContent lang={validLang} />
+        <BookPageContent lang={validLang} heading={heading} />
       </Suspense>
       {/* No-JS fallback (TASK-10B): direct Octorate link rendered in RSC layer so it
-          is always present in server HTML, visible only when JavaScript is disabled.
-          Satisfies TASK-10A TC-02 gate (no dead-end pre-hydration for /{lang}/book). */}
+          is always present in server HTML, visible only when JavaScript is disabled. */}
       <noscript>
-        {/* eslint-disable-next-line ds/no-hardcoded-copy -- i18n-exempt: noscript-only technical fallback for no-JS users, not rendered in normal UI. TASK-10B [ttl=2026-12-31] */}
-        <a href="https://book.octorate.com/octobook/site/reservation/result.xhtml?codice=45111">
-          Check availability
-        </a>
+        <div>
+          {noscriptMessage}{" "}
+          <a
+            href="mailto:hostelpositano@gmail.com?subject=Hostel%20booking%20assistance"
+            rel="nofollow noopener noreferrer"
+          >
+            {noscriptLinkLabel}
+          </a>
+          .
+        </div>
       </noscript>
     </>
   );

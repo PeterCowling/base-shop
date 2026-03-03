@@ -1,452 +1,600 @@
-# Modal Migration Guide (TASK-07a)
+# TASK-07a: Modal Migration Audit
 
-Audit date: 2026-02-24
-Auditor: TASK-07a automated read pass
-Scope: 17 custom `fixed inset-0` modal implementations in `apps/reception/src`
+Audit date: 2026-02-27
+Auditor: TASK-07a fresh read pass of all 17 files
+Scope: All files returned by `grep "fixed inset-0"` in `apps/reception/src`
+
+> **Key finding:** All 16 dialog-pattern modals in this list already use `SimpleModal`. The `fixed inset-0` grep over-captured. The one genuine raw backdrop is in `AppNav.tsx`, which is a sidebar drawer, not a modal — it requires a Drawer/Sheet primitive, not `SimpleModal`. There is no outstanding modal migration backlog for these 17 files.
 
 ---
 
 ## SimpleModal API Reference
 
-**Import path:** `@acme/ui/molecules` (exported from `packages/ui/src/molecules/index.ts`)
-**Source:** `packages/ui/src/molecules/SimpleModal.tsx`
+Source: `/Users/petercowling/base-shop/packages/ui/src/molecules/SimpleModal.tsx`
+Import: `import { SimpleModal } from "@acme/ui/molecules";`
 
-```tsx
-import { SimpleModal } from "@acme/ui/molecules";
+`SimpleModal` is **not** exported from `@acme/design-system`. It lives exclusively in `@acme/ui`.
+
+```ts
+export interface SimpleModalProps {
+  isOpen: boolean;            // required — controls open/closed state
+  onClose: () => void;        // required — fires on Esc, backdrop click, or X button
+  title?: string;             // optional — rendered as DialogTitle; if omitted header is hidden
+  children: React.ReactNode;  // required — body content in a px-6 py-4 wrapper
+  maxWidth?: string;          // optional — Tailwind max-w class, default "max-w-lg"
+  footer?: React.ReactNode;   // optional — rendered in footer bar (flex, justify-end, gap-2)
+  showCloseButton?: boolean;  // optional — show X icon in header, default true
+  className?: string;         // optional — extra classes on the dialog content panel
+  backdropClassName?: string; // optional — extra classes on the backdrop overlay
+}
 ```
 
-SimpleModal is NOT exported from `@acme/design-system`. It lives exclusively in `@acme/ui`.
+**Behaviour notes:**
 
-### Props
-
-| Prop | Type | Required | Default | Notes |
-|------|------|----------|---------|-------|
-| `isOpen` | `boolean` | yes | — | Controls visibility |
-| `onClose` | `() => void` | yes | — | Called when Radix Dialog fires `onOpenChange(false)` (Escape key, backdrop click, or close button) |
-| `title` | `string` | no | — | Renders a `<DialogTitle>` in the header; omit to suppress header entirely |
-| `children` | `React.ReactNode` | yes | — | Body content, rendered in a `px-6 py-4` wrapper |
-| `maxWidth` | `string` | no | `"max-w-lg"` | A Tailwind max-width class applied to the content panel |
-| `footer` | `React.ReactNode` | no | — | Rendered in a bottom bar with `flex justify-end gap-2`; use for action buttons |
-| `showCloseButton` | `boolean` | no | `true` | Shows the X icon button in the header |
-| `className` | `string` | no | `""` | Extra classes on the content panel |
-| `backdropClassName` | `string` | no | `""` | Extra classes on the backdrop overlay |
-
-### Behaviour
-
-- Built on Radix `@radix-ui/react-dialog`. Gets focus trapping, scroll locking, and Escape-to-close for free.
-- Backdrop is `bg-black/50 backdrop-blur-sm` by default.
-- Header is only rendered when `title` or `showCloseButton` are present.
-- Footer alignment is `justify-end`; to centre buttons wrap them in a `<Cluster justify="center">` as seen in `AlertModal`.
-- The component returns `null` when `isOpen` is false — callers that conditionally render the modal (e.g. `if (!isOpen) return null`) can keep that guard or remove it; both are safe.
-
-### Reference usage (AlertModal.tsx)
-
-```tsx
-<SimpleModal
-  isOpen={isOpen}
-  onClose={onClose}
-  title={title}
-  maxWidth="max-w-sm"
-  className=""
-  backdropClassName=""
-  footer={
-    <Cluster justify="center" className="w-full">
-      <Button type="button" onClick={onClose} autoFocus color={colors.buttonColor} tone="solid">
-        {buttonLabel}
-      </Button>
-    </Cluster>
-  }
->
-  {/* body content */}
-</SimpleModal>
-```
+- Built on Radix UI `@radix-ui/react-dialog`. Focus trapping, scroll locking, Esc-to-close, and `aria-modal` are provided automatically.
+- Returns `null` when `isOpen` is false — no DOM node rendered.
+- The footer bar applies `flex items-center justify-end gap-2` automatically; do not add an outer wrapper just for alignment.
+- `showCloseButton={false}` suppresses the X button (used during async operations that must not be interrupted).
+- `backdropClassName` is additive on top of the default `bg-surface/50 backdrop-blur-sm`.
 
 ---
 
-## Modal Inventory
+## Per-Modal Analysis
 
-### withIconModal.tsx — Complexity: M
+### 1. `hoc/withIconModal.tsx`
 
 **File:** `apps/reception/src/hoc/withIconModal.tsx`
 
-- **Props (generated component):** `visible: boolean`, `onClose: () => void`, `onLogout: () => void`, `user: { email: string; user_name: string }`, `interactive?: boolean`
-- **Internal State:** none (state lives in consumers — AppNav etc.)
-- **Event Handlers:**
-  - `handleActionClick(route)` — calls `onClose()` then `router.push(route)`
-  - Close button calls `onClose()`
-- **SimpleModal Mapping:**
+- **Pattern:** HOC factory — `withIconModal(config)` returns an `IconModal` component. Already delegates to `SimpleModal`.
+- **Props (generated component):**
+  ```ts
+  interface IconModalProps {
+    visible: boolean;     // isOpen equivalent (non-standard prop name)
+    onClose: () => void;
+    onLogout: () => void; // declared but unused inside the HOC body
+    user: { email: string; user_name: string };
+    interactive?: boolean;
+  }
+  ```
+- **State:** None.
+- **Handlers:** `handleActionClick(route)` — calls `onClose()` then `router.push(route)`. Disabled when `interactive=false`.
+- **SimpleModal mapping:**
   - `isOpen` ← `visible`
   - `onClose` ← `onClose`
-  - `title` ← `config.label` (passed at HOC creation time)
-  - `maxWidth` ← `"max-w-md"`
-  - `footer` — not needed (Close button moves to footer or stays inline)
-- **Migration Notes:** This is a HOC factory, not a single component. Migration requires updating the HOC to wrap the generated `IconModal` component in `<SimpleModal>` instead of the hand-rolled overlay. The `interactive` prop controls button disabled state — that stays internal. The `onLogout` prop is declared in `IconModalProps` but not used inside the HOC body itself (consumers use it directly). The four consumer files (`ManagementModal.tsx`, `ManModal.tsx`, `TillModal.tsx`, `OperationsModal.tsx`) do not need to change their call sites if the HOC signature is preserved. The `Grid` layout inside stays as-is in the body.
+  - `title` ← `config.label`
+  - `maxWidth` ← `"max-w-lg"` (hardcoded in HOC)
+  - `footer` ← Close button (hardcoded in HOC)
+  - `backdropClassName` ← `"bg-surface/80 backdrop-blur-md"` (hardcoded in HOC)
+- **Status:** Already uses `SimpleModal`. No raw backdrop.
+- **Complexity:** S — fully migrated; nothing to do.
+- **Notes:** `onLogout` is declared in `IconModalProps` but never referenced inside the returned `IconModal` component. This is a pre-existing dead prop.
 
 ---
 
-### AppNav.tsx — Complexity: S (not a true modal — sidebar drawer)
-
-**File:** `apps/reception/src/components/appNav/AppNav.tsx`
-
-- **Props:** `user: { user_name: string; roles?: User["roles"] }`, `onLogout: () => void`
-- **Internal State:** `isOpen: boolean` (sidebar open/close toggle, `useState`)
-- **Event Handlers:**
-  - `toggleNav` — toggles `isOpen`
-  - `closeNav` — sets `isOpen` to false
-  - `navigateTo(route)` — pushes route, calls `closeNav`
-  - `canAccessSection(permission)` — permission check helper
-- **SimpleModal Mapping:** N/A — This is a sidebar navigation drawer, not a dialog modal. The `fixed inset-0 bg-black/50` div is a backdrop-only element (the nav slides from the left; it is not centred). SimpleModal is inappropriate here.
-- **Migration Notes:** **Do not migrate to SimpleModal.** This component should be migrated to the DS `Drawer` primitive (`@acme/design-system/primitives/drawer`) which provides slide-in panel semantics, focus trapping, and backdrop. The `isOpen` / `closeNav` / `toggleNav` state maps cleanly to Drawer's `open` / `onOpenChange` API. Mark as separate task (AppNav-Drawer migration).
-
----
-
-### VoidTransactionModal.tsx — Complexity: M
-
-**File:** `apps/reception/src/components/till/VoidTransactionModal.tsx`
-
-- **Props:** `transaction: Transaction`, `onClose: () => void`
-- **Internal State:** `reason: string` (textarea value)
-- **Event Handlers:**
-  - `handleVoid` — validates reason, calls `voidTransaction(txnId, reason)`, then `onClose()`
-- **SimpleModal Mapping:**
-  - `isOpen` — prop not present; caller conditionally renders. Add `isOpen={true}` or lift to caller. Suggested: add `isOpen` prop and gate on it, or keep caller-side conditional.
-  - `onClose` ← `onClose`
-  - `title` ← `"Void Transaction"`
-  - `maxWidth` ← `"max-w-sm"`
-  - `footer` — Cancel button + `<PasswordReauthInline>` block (the reauth submits the void). The footer cannot hold PasswordReauthInline cleanly since it spans the full width with its own button; keep PasswordReauthInline in the body after the Cancel row, or restructure footer to two stacked elements.
-- **Migration Notes:** Contains `<PasswordReauthInline>` which has its own submit button. The current layout puts Cancel in a separate row above PasswordReauthInline. This two-row button arrangement requires thoughtful footer layout — consider keeping PasswordReauthInline in the body and placing only Cancel in the footer, or using a vertical stack in footer. The `error` and warning paragraphs move to the body. Complexity rating M (internal state + reauth sub-component).
-
----
-
-### PreorderButtons.tsx (ConfirmDeleteModal) — Complexity: S
-
-**File:** `apps/reception/src/components/bar/orderTaking/preorder/PreorderButtons.tsx`
-
-- **Props (ConfirmDeleteModal inner component):** `onConfirm: () => void`, `onCancel: () => void`
-- **Internal State:** none (state is in `PreorderButton` parent: `isDeleteModalOpen: boolean`)
-- **Event Handlers:**
-  - `onConfirm` — passed through; parent calls `deletePreorder`
-  - `onCancel` — passed through; parent sets `isDeleteModalOpen(false)`
-- **SimpleModal Mapping:**
-  - `isOpen` ← `isDeleteModalOpen` (from `PreorderButton` state, passed as `{isDeleteModalOpen && <ConfirmDeleteModal .../>}`)
-  - `onClose` ← `onCancel`
-  - `title` ← `"Delete Preorder"` (suggested)
-  - `maxWidth` ← `"max-w-xs"` (currently `w-300px` — narrow confirmation)
-  - `footer` ← Yes/No buttons in a `<Cluster justify="center">` or `justify="between"`
-- **Migration Notes:** The `ConfirmDeleteModal` is a purely presentational confirm dialog with no internal state. It is the simplest possible migration. The unusual `w-300px` custom width should become `max-w-xs`. The render gate `{isDeleteModalOpen && <ConfirmDeleteModal .../>}` can remain as-is since SimpleModal also returns null when `isOpen` is false, or convert to always-mounted with `isOpen={isDeleteModalOpen}`.
-
----
-
-### PettyCashForm.tsx — Complexity: M
-
-**File:** `apps/reception/src/components/safe/PettyCashForm.tsx`
-
-- **Props:** `onConfirm: (amount: number) => void`, `onCancel: () => void`
-- **Internal State:** `amount: string`
-- **Event Handlers:**
-  - `handleCancel` — clears `amount`, calls `onCancel()`
-  - `handleAmountChange` — updates `amount`
-  - `handleReauthSubmit` — validates amount via Zod schema, calls `onConfirm(amt)`, clears amount
-- **SimpleModal Mapping:**
-  - `isOpen` — prop absent; always renders when mounted. Add `isOpen` prop or keep caller-side conditional.
-  - `onClose` ← `onCancel` (maps to `handleCancel` to clear state on close)
-  - `title` ← `"Petty Cash Withdrawal"`
-  - `maxWidth` ← `"max-w-sm"`
-  - `footer` — none needed (PasswordReauthInline provides its own submit; no separate action row)
-- **Migration Notes:** Contains `<PasswordReauthInline>` in the body (same pattern as VoidTransactionModal). The close button is currently a custom X in the top-right corner — SimpleModal's `showCloseButton={true}` replaces this. The amount `<Input>` goes in the body. `handleCancel` must be used as `onClose` (not `onCancel` directly) because it also clears state. Complexity M due to form state + reauth sub-component.
-
----
-
-### ArchiveConfirmationModal.tsx — Complexity: M
+### 2. `checkins/header/ArchiveConfirmationModal.tsx`
 
 **File:** `apps/reception/src/components/checkins/header/ArchiveConfirmationModal.tsx`
 
-- **Props:** `onClose: () => void`, `onArchiveComplete: () => void`
-- **Internal State:** none (async loading states come from hooks: `loading`, `bookingsLoading`, `bookings`, `error`, `bookingsError`)
-- **Event Handlers:**
-  - `handleConfirm` — calls `archiveCheckedOutGuests()`, `refreshBookings()`, `onArchiveComplete()`, `onClose()`
-  - `useEffect` — triggers `refreshBookings()` on mount
-- **SimpleModal Mapping:**
-  - `isOpen` — prop absent; always renders when mounted. Add `isOpen` prop or keep conditional at call site.
+- **Pattern:** Controlled by parent via conditional render. `isOpen={true}` hardcoded (parent mounting controls visibility).
+- **Props:**
+  ```ts
+  interface ArchiveConfirmationModalProps {
+    onClose: () => void;
+    onArchiveComplete: () => void;
+  }
+  ```
+- **State:** None. Loading/error states live in `useArchiveCheckedOutGuests` and `useArchiveEligibleBookings` hooks.
+- **Handlers:** `handleConfirm()` — async; calls archive mutation, refreshes bookings, calls `onArchiveComplete()`, then `onClose()`.
+- **SimpleModal mapping:**
+  - `isOpen` ← `true` (hardcoded; parent controls mounting)
   - `onClose` ← `onClose`
   - `title` ← `"Archive Bookings"`
   - `maxWidth` ← `"max-w-sm"`
-  - `footer` ← Cancel + Archive buttons row
-- **Migration Notes:** The scrollable booking list (`max-h-40 overflow-y-auto`) stays in the body. The footer buttons move to `footer` prop. The `useEffect` for `refreshBookings` stays unchanged. Complexity M because of async hook state and side-effect on mount.
+  - `footer` ← Cancel + Archive buttons
+- **Status:** Already uses `SimpleModal`. No raw backdrop.
+- **Complexity:** S — fully migrated; nothing to do.
 
 ---
 
-### DeleteConfirmationModal.tsx (checkins) — Complexity: S
+### 3. `checkins/header/DeleteConfirmationModal.tsx`
 
 **File:** `apps/reception/src/components/checkins/header/DeleteConfirmationModal.tsx`
 
-- **Props:** `booking: CheckInRow`, `onClose: () => void`
-- **Internal State:** none (async states from `useDeleteGuestFromBooking`: `loading`, `error`)
-- **Event Handlers:**
-  - `handleConfirmDelete` — calls `deleteGuest({ bookingRef, occupantId })`, then `onClose()`
-- **SimpleModal Mapping:**
-  - `isOpen` — prop absent; always renders when mounted. Keep caller-side conditional.
+- **Pattern:** Controlled by parent via conditional render. `isOpen={true}` hardcoded.
+- **Props:**
+  ```ts
+  interface DeleteConfirmationModalProps {
+    booking: CheckInRow;
+    onClose: () => void;
+  }
+  ```
+- **State:** None. Loading/error in `useDeleteGuestFromBooking` hook.
+- **Handlers:** `handleConfirmDelete()` — async; calls `deleteGuest({ bookingRef, occupantId })`, then `onClose()`.
+- **SimpleModal mapping:**
+  - `isOpen` ← `true`
   - `onClose` ← `onClose`
   - `title` ← `"Confirm Deletion"`
   - `maxWidth` ← `"max-w-sm"`
   - `footer` ← Cancel + Delete buttons
-- **Migration Notes:** Pure confirmation dialog with no internal state. The irreversibility warning paragraph stays in the body. Error message paragraph stays in body above footer. This is the cleanest S-complexity migration after ConfirmDeleteModal in PreorderButtons.
+- **Status:** Already uses `SimpleModal`. No raw backdrop.
+- **Complexity:** S — fully migrated; nothing to do.
 
 ---
 
-### DisplayDialogue.tsx (prepayments) — Complexity: S
-
-**File:** `apps/reception/src/components/prepayments/DisplayDialogue.tsx`
-
-- **Props:** `open: boolean`, `details?: PaymentDetails`, `onClose: () => void`, `onEdit: () => void`, `onPaymentStatus: (status) => Promise<void>`, `selectedBooking?: SelectedBooking | null`, `setMessage: (msg: string) => void`, `createPaymentTransaction: (...) => Promise<void>`, `logActivity: (...) => Promise<void>`
-- **Internal State:** none
-- **Event Handlers:**
-  - `handlePaymentSuccess(status)` — calls `onPaymentStatus(status)`
-  - `hasCard` computed check for conditional button display
-  - `onEdit` button passes through directly
-- **SimpleModal Mapping:**
-  - `isOpen` ← `open` (already boolean prop — direct mapping)
-  - `onClose` ← `onClose`
-  - `title` ← `"Existing Payment Details"`
-  - `maxWidth` ← `"max-w-sm"` (currently `w-96` fixed width)
-  - `footer` ← MarkAsFailedButton + MarkAsPaidButton row
-- **Migration Notes:** Already uses `open` as an `isOpen`-equivalent boolean prop with early `return null` guard — the cleanest existing API shape. The header's border-bottom, content section, and actions section are a natural body + footer split. The `font-body` class on the outer div may need to be preserved via `className` prop. Complexity S — no internal state, straightforward prop mapping.
-
----
-
-### BookingDetailsModal.tsx (roomgrid) — Complexity: L
-
-**File:** `apps/reception/src/components/roomgrid/BookingDetailsModal.tsx`
-
-- **Props:** `bookingDetails: BookingDetails`, `onClose: () => void`
-- **Internal State:** `targetRoom: string`, `confirmMoveOpen: boolean`, `pendingGuestCount: number`
-- **Event Handlers:**
-  - `handleClose` — calls `onClose()`
-  - `handleMoveBooking` — validates bookingRef + targetRoom, counts occupants, sets `confirmMoveOpen(true)`
-  - `handleConfirmMoveBooking` — async, iterates occupants, calls `allocateRoomIfAllowed` per occupant, closes confirm dialog, calls `onClose()`
-- **SimpleModal Mapping:**
-  - `isOpen` — prop absent; always renders when mounted. Keep caller-side conditional.
-  - `onClose` ← `handleClose`
-  - `title` ← `"Booking Details"`
-  - `maxWidth` ← `"max-w-sm"`
-  - `footer` ← Move Booking button (or keep inline since it's contextual to the select)
-- **Migration Notes:** Complexity L because: (1) nested `<ConfirmDialog>` (already a DS primitive) is rendered as a sibling — must remain outside SimpleModal or be rendered inside the body; (2) the room move UI (Select + Move button) is a conditional sub-section that only shows when `bookingRef` exists; (3) three pieces of internal state; (4) async multi-step mutation. The `<ConfirmDialog>` sibling cannot be in the SimpleModal footer — render it as a sibling of SimpleModal (or nested inside the body wrapped in a fragment). The X close button in the current overlay (`absolute top-2 right-2`) is replaced by SimpleModal's built-in `showCloseButton`. The Select + Move button can live in the footer or remain in the body.
-
----
-
-### EntryDialogue.tsx (prepayments) — Complexity: L
-
-**File:** `apps/reception/src/components/prepayments/EntryDialogue.tsx`
-
-- **Props:** `open: boolean`, `initialCardNumber?: string`, `initialExpiry?: string`, `amountToCharge?: number`, `bookingRef?: string`, `onClose: () => void`, `onProcessPayment: (status) => Promise<void>`, `onSaveOrUpdate: (paymentInfo) => Promise<void>`
-- **Internal State:** `cardNumber: string`, `expiryDate: string`, `isProcessing: boolean`, `isSaving: boolean`
-- **Event Handlers:**
-  - `handleCreditCardChange` — digit-only filtering + formatting
-  - `handleCreditCardPaste` — paste sanitisation
-  - `handleExpiryChange` — MM/YY auto-formatting
-  - `handleSaveOrUpdate` — Zod validation, sets `isSaving`, calls `onSaveOrUpdate`
-  - `handleProcessClick` — sets `isProcessing`, simulates payment, calls `onProcessPayment`
-- **SimpleModal Mapping:**
-  - `isOpen` ← `open`
-  - `onClose` ← `onClose` (disabled during `isProcessing || isSaving`)
-  - `title` ← dynamic: `"Update or Process Payment"` or `"Enter Payment Details"` + subtitle with bookingRef/amount
-  - `maxWidth` ← `"max-w-md"`
-  - `footer` ← Process Payment (conditional) + Save/Update + Cancel buttons
-- **Migration Notes:** Complexity L because: (1) four pieces of internal state; (2) custom paste handler on credit card input; (3) in-body loading overlay (`absolute inset-0` spinner div) that overlays the form during async operations — this conflicts with SimpleModal's content wrapper padding; the loading overlay must be preserved as a relative-positioned wrapper inside the body; (4) dynamic title based on `hasExistingCard`; (5) `onClose` must be disabled during loading but SimpleModal's built-in close button does not accept a `disabled` prop — use `showCloseButton={false}` during loading or override. The `font-body` outer class can be passed via `className`. The `useEffect` that resets state on `open`/initial-data change stays unchanged.
-
----
-
-### DeleteBookingModal.tsx (prepayments) — Complexity: S
-
-**File:** `apps/reception/src/components/prepayments/DeleteBookingModal.tsx`
-
-- **Props:** `booking: PrepaymentData`, `onClose: () => void`
-- **Internal State:** none (async states from `useDeleteBooking`: `loading`, `error`)
-- **Event Handlers:**
-  - `handleConfirmDelete` — calls `deleteBooking(booking.bookingRef)`, then `onClose()`
-- **SimpleModal Mapping:**
-  - `isOpen` — prop absent; always renders when mounted. Keep caller-side conditional.
-  - `onClose` ← `onClose`
-  - `title` ← `"Confirm Deletion"`
-  - `maxWidth` ← `"max-w-sm"`
-  - `footer` ← Cancel + Delete buttons (already using DS Button `color="danger" tone="solid"`)
-- **Migration Notes:** Nearly identical in shape to `DeleteConfirmationModal.tsx`. No internal state. The danger-copy paragraph ("This will remove all guests") and optional error paragraph go in the body. Footer receives the two buttons. Straightforward S migration.
-
----
-
-### KeycardsModal.tsx — Complexity: M
-
-**File:** `apps/reception/src/components/loans/KeycardsModal.tsx`
-
-- **Props:** `isOpen: boolean`, `occupant?: Occupant`, `onClose: () => void`
-- **Internal State:** `editedTypes: Record<string, LoanMethod>` (tracks per-txn pending deposit type changes)
-- **Event Handlers:**
-  - `handleTypeChange(txnId, val)` — updates `editedTypes`
-  - `handleSave(txnId)` — decides between `convertKeycardDocToCash` and `updateLoanDepositType`, clears that key from `editedTypes` on success
-- **SimpleModal Mapping:**
-  - `isOpen` ← `isOpen` (already the correct prop name — direct mapping)
-  - `onClose` ← `onClose`
-  - `title` ← `"Keycards on Loan"`
-  - `maxWidth` ← `"max-w-md"`
-  - `footer` — no dedicated footer needed; close button in header is sufficient
-- **Migration Notes:** The early `if (!isOpen || !occupant) return null` guard can be replaced with `isOpen={isOpen && !!occupant}`. The occupant info display, loading/error states, and keycard list are all body content. The inline Save button per keycard row stays inside the list. The header X button in the current implementation is a custom Button element — replaced by SimpleModal's `showCloseButton`. Complexity M due to per-item edit state map and async save per row.
-
----
-
-### LoanModal.tsx — Complexity: M
-
-**File:** `apps/reception/src/components/loans/LoanModal.tsx`
-
-- **Props:** `isOpen: boolean`, `mode: "loan" | "return"`, `occupant?: Occupant`, `item?: LoanItem`, `maxCount?: number`, `method?: LoanMethod`, `onClose: () => void`, `onConfirm: (count: number, depositType?: LoanMethod) => void`
-- **Internal State:** `countInput: string`, `depositType: LoanMethod`
-- **Event Handlers:**
-  - `handleCountChange` — updates `countInput`
-  - `handleDepositTypeChange(value)` — updates `depositType`
-  - `handleSubmit` — parses count, calls `onConfirm(count, depositType)`, calls `onClose()`
-  - `useEffect` — resets `countInput` and `depositType` when `isOpen`, `item`, or `method` changes
-- **SimpleModal Mapping:**
-  - `isOpen` ← `isOpen` (direct mapping)
-  - `onClose` ← `onClose`
-  - `title` ← `mode === "loan" ? "Add Loan" : "Return Item"` (dynamic)
-  - `maxWidth` ← `"max-w-lg"` (currently `max-w-lg`, matches default)
-  - `footer` ← Cancel + Confirm buttons
-- **Migration Notes:** The three `bg-surface-2 p-3 rounded` content sections (occupant details, item details, quantity input, deposit method) all become body content. Footer receives Cancel + Confirm. The `useEffect` reset on `isOpen` stays. The `role="dialog"` and `aria-modal="true"` attributes are handled by Radix Dialog internally — remove manual aria attributes. Complexity M due to two state variables + conditional deposit-method section + useEffect reset.
-
----
-
-### EditTransactionModal.tsx — Complexity: M
-
-**File:** `apps/reception/src/components/till/EditTransactionModal.tsx`
-
-- **Props:** `transaction: Transaction`, `onClose: () => void`
-- **Internal State:** `amount: string`, `method: string`, `itemCategory: string`, `description: string`, `reason: string`
-- **Event Handlers:**
-  - `handleSave` — Zod validation of all fields + reason, calls `correctTransaction(txnId, {...}, reason)`, then `onClose()`
-- **SimpleModal Mapping:**
-  - `isOpen` — prop absent; always renders when mounted. Keep caller-side conditional.
-  - `onClose` ← `onClose`
-  - `title` ← `"Record Correction"`
-  - `maxWidth` ← `"max-w-sm"`
-  - `footer` — `<PasswordReauthInline>` provides its own submit button; place Cancel in footer, keep reauth in body. Or reverse: Cancel in footer, reauth wraps the submit action.
-- **Migration Notes:** Five state variables (amount, method, itemCategory, description, reason). Contains `<PasswordReauthInline>` — same layout challenge as VoidTransactionModal and PettyCashForm. The Cancel button currently sits below PasswordReauthInline in a `flex-col gap-3` div. In SimpleModal, putting Cancel in the footer and PasswordReauthInline in the body (bottom of form) preserves this vertical ordering. Complexity M due to multi-field form state + reauth component.
-
----
-
-### ModalPreorderDetails.tsx — Complexity: L
-
-**File:** `apps/reception/src/components/bar/ModalPreorderDetails.tsx`
-
-- **Props:** `occupantCheckIn: string`, `guestName: string`, `preorder: { [nightKey: string]: NightData } | null`, `onClose: () => void`
-- **Internal State:** none (data loading states are in child hooks within `PreorderNightDetails`)
-- **Event Handlers:**
-  - `useEffect` — attaches `keydown` listener for Escape key to call `onClose()` — this is redundant with SimpleModal/Radix Dialog's built-in Escape handling
-  - `onClick` on backdrop — checks `e.target === e.currentTarget` to close on backdrop click only — also redundant with SimpleModal
-  - `onKeyDown` on backdrop — Enter/Space close — accessibility pattern, also handled by Radix
-- **SimpleModal Mapping:**
-  - `isOpen` — prop absent; guarded by `if (!preorder) return null`. Add `isOpen` prop or keep caller-side conditional (preorder null check becomes the isOpen gate).
-  - `onClose` ← `onClose`
-  - `title` ← `"Preorders for {guestName}"` (dynamic)
-  - `maxWidth` ← `"max-w-lg"`
-  - `footer` — no footer needed (no action buttons; read-only display)
-  - `showCloseButton` ← `true` (replaces the absolute-positioned X button)
-- **Migration Notes:** Complexity L because: (1) `preorder` null guard serves as the isOpen gate — must decide on ownership of open/close logic; (2) the `PreorderNightDetails` child calls up to 6 hooks (3x `useCompletedOrder`, 3x `usePlacedPreorder`), producing heavy nested async rendering with many loading states; (3) the `max-h-screen overflow-y-auto` on the content div must be preserved inside the SimpleModal body — use `className` on the body wrapper or constrain height within the children; (4) three manual event listeners/handlers that are superseded by Radix internals (Escape key, backdrop click, keyboard backdrop). Remove manual handlers; trust Radix. The body becomes a scrollable `<div className="max-h-[70vh] overflow-y-auto">` wrapping the night-detail entries.
-
----
-
-### BookingModal.tsx (checkins dates editor) — Complexity: M
+### 4. `checkins/header/BookingModal.tsx`
 
 **File:** `apps/reception/src/components/checkins/header/BookingModal.tsx`
 
-- **Props:** `booking: CheckInRow`, `onClose: () => void`
-- **Internal State:** `checkIn: string`, `checkOut: string`, `extensionPrice: string`, `priceError: string`
-- **Event Handlers:**
-  - `handleKeyDown` — Enter/Space on backdrop closes modal (superseded by SimpleModal/Radix)
-  - `handleCheckInChange` — updates `checkIn`
-  - `handleCheckOutChange` — updates `checkOut`
-  - `handleExtensionPriceChange` — updates `extensionPrice`, clears `priceError`
-  - `handleSave` — validates extension price if needed, calls `updateBookingDates(...)`, then `onClose()`
-  - `useEffect` — clears extensionPrice + priceError when `isExtended` becomes false
-  - `isExtended` — `useMemo` comparing old vs new checkOut dates
-- **SimpleModal Mapping:**
-  - `isOpen` — prop absent; always renders when mounted. Keep caller-side conditional.
+- **Pattern:** Controlled by parent via conditional render. `isOpen={true}` hardcoded.
+- **Props:**
+  ```ts
+  interface BookingModalProps {
+    booking: CheckInRow;
+    onClose: () => void;
+  }
+  ```
+- **State:**
+  ```ts
+  const [checkIn, setCheckIn] = useState<string>(booking.checkInDate);
+  const [checkOut, setCheckOut] = useState<string>(booking.checkOutDate ?? "");
+  const [extensionPrice, setExtensionPrice] = useState<string>("");
+  const [priceError, setPriceError] = useState<string>("");
+  ```
+- **Handlers:** `handleCheckInChange`, `handleCheckOutChange`, `handleExtensionPriceChange` — controlled inputs. `handleSave()` — validates extension price if booking is extended, calls `updateBookingDates`, then `onClose()`. `isExtended` computed via `useMemo` comparing old vs new checkout dates. `useEffect` clears extension price when `isExtended` becomes false.
+- **SimpleModal mapping:**
+  - `isOpen` ← `true`
   - `onClose` ← `onClose`
   - `title` ← `"Booking Details"`
-  - `maxWidth` ← `"max-w-md"` (currently `max-w-md w-11/12`)
+  - `maxWidth` ← `"max-w-md"`
   - `footer` ← Cancel + Save buttons
-- **Migration Notes:** Four state variables. The backdrop `onClick={onClose}` and `onKeyDown` handlers are superseded by SimpleModal/Radix — remove the manual backdrop div entirely. The read-only fields (Booking Ref, Guest Name, Room Booked, Room Allocated) and editable date inputs all become body content. The conditional extension price input stays in body. Save/Cancel go to footer. The `isLoading` state from `useBookingDatesMutator` should disable the Save button in footer. Complexity M due to multi-field date-editing form with conditional extension logic.
+- **Status:** Already uses `SimpleModal`. No raw backdrop.
+- **Complexity:** S — fully migrated; nothing to do.
 
 ---
 
-### BookingNotesModal.tsx — Complexity: M
+### 5. `checkins/notes/BookingNotesModal.tsx`
 
 **File:** `apps/reception/src/components/checkins/notes/BookingNotesModal.tsx`
 
-- **Props:** `bookingRef: string`, `onClose: () => void`
-- **Internal State:** `text: string` (new note draft), `editingId: string | null`, `editText: string`
-- **Event Handlers:**
-  - `handleAdd` — trims text, calls `addNote(bookingRef, text)`, clears `text`
-  - `handleUpdate` — calls `updateNote(bookingRef, editingId, editText)`, clears `editingId`/`editText`
-  - `handleDelete(id)` — calls `deleteNote(bookingRef, id)`, clears edit state if editing that note
-  - `handleKeyDown` — Enter/Space on backdrop closes (superseded by SimpleModal/Radix)
-- **SimpleModal Mapping:**
-  - `isOpen` — prop absent; always renders when mounted. Keep caller-side conditional.
+- **Pattern:** Controlled by parent via conditional render. `isOpen={true}` hardcoded.
+- **Props:**
+  ```ts
+  interface Props {
+    bookingRef: string;
+    onClose: () => void;
+  }
+  ```
+- **State:**
+  ```ts
+  const [text, setText] = useState<string>("");
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editText, setEditText] = useState<string>("");
+  ```
+- **Handlers:** `handleAdd()` — async, adds note, clears `text`. `handleUpdate()` — async, updates note, clears edit state. `handleDelete(id)` — async, deletes note, clears edit state if match. Inline handlers for per-note Edit/Cancel buttons.
+- **SimpleModal mapping:**
+  - `isOpen` ← `true`
   - `onClose` ← `onClose`
   - `title` ← `"Booking Notes"`
-  - `maxWidth` ← `"max-w-md"` (currently `max-w-md w-11/12`)
+  - `maxWidth` ← `"max-w-md"`
   - `footer` ← Close + Add Note buttons
-- **Migration Notes:** Three state variables. The notes list (`max-h-64 overflow-y-auto`) stays in body. The inline edit Textarea + Save/Cancel per note row stays in body. The new note Textarea goes in body above the footer. The `handleKeyDown` backdrop handler is superseded — remove manual backdrop div. The sorted notes derivation (`Object.entries(notes).sort(...)`) is a pure computation that stays. Complexity M due to three state variables and inline CRUD operations per note.
+- **Status:** Already uses `SimpleModal`. No raw backdrop.
+- **Complexity:** S — fully migrated; nothing to do.
 
 ---
 
-## Execution Recommendation
+### 6. `prepayments/DisplayDialogue.tsx`
 
-### Summary counts
+**File:** `apps/reception/src/components/prepayments/DisplayDialogue.tsx`
 
-| Complexity | Count | Files |
-|------------|-------|-------|
-| S (simple swap) | 5 | ConfirmDeleteModal (PreorderButtons), DeleteConfirmationModal, DisplayDialogue, DeleteBookingModal, AppNav* |
-| M (form/state to preserve) | 9 | withIconModal HOC, VoidTransactionModal, PettyCashForm, ArchiveConfirmationModal, KeycardsModal, LoanModal, EditTransactionModal, BookingModal, BookingNotesModal |
-| L (complex/nested) | 3 | BookingDetailsModal, EntryDialogue, ModalPreorderDetails |
-
-*AppNav is an S-effort component but should migrate to Drawer, not SimpleModal.
-
-### Effort distribution
-
-- **S modals (5):** ~15–30 min each. Low risk. Can all be batched into a single pass.
-- **M modals (9):** ~45–90 min each. Moderate risk (form state, reauth sub-component, useEffect). Recommend grouping by sub-system:
-  - **Reauth group (3):** VoidTransactionModal, PettyCashForm, EditTransactionModal — share identical PasswordReauthInline layout challenge; do together.
-  - **Loans group (2):** KeycardsModal, LoanModal — share `isOpen` prop naming, straightforward.
-  - **Checkins group (3):** ArchiveConfirmationModal, BookingModal, BookingNotesModal — share backdrop keydown removal pattern.
-  - **HOC group (1):** withIconModal — isolated, affects 4 consumer files.
-- **L modals (3):** ~2–4 hours each. High risk of regressions. Recommend separate PR per component:
-  - BookingDetailsModal — nested ConfirmDialog coordination
-  - EntryDialogue — in-body loading overlay + disabled close button
-  - ModalPreorderDetails — remove manual event listeners, scrollable body, hook-heavy children
-
-### Recommended TASK-07b sequencing
-
-1. **Batch A — S modals** (one PR): DeleteBookingModal, DeleteConfirmationModal, DisplayDialogue, ConfirmDeleteModal (inside PreorderButtons). Quick wins, test snapshot coverage.
-2. **Batch B — Reauth M modals** (one PR): VoidTransactionModal, PettyCashForm, EditTransactionModal. Establish the PasswordReauthInline + SimpleModal layout pattern once, apply three times.
-3. **Batch C — Loans M modals** (one PR): KeycardsModal, LoanModal. Clean `isOpen` prop naming, no reauth.
-4. **Batch D — Checkins M modals** (one PR): ArchiveConfirmationModal, BookingModal, BookingNotesModal.
-5. **Batch E — withIconModal HOC** (one PR): Migrate HOC; verify ManagementModal, ManModal, TillModal, OperationsModal automatically inherit.
-6. **Batch F — L modals** (one PR each): BookingDetailsModal, EntryDialogue, ModalPreorderDetails.
-7. **Separate task — AppNav Drawer migration**.
-
-Total estimated effort: ~3–5 developer-days for full migration.
+- **Pattern:** Controlled externally via `open: boolean` prop. Returns `null` early if `selectedBooking` is incomplete.
+- **Props:**
+  ```ts
+  interface DisplayDialogProps {
+    open: boolean;              // isOpen equivalent (non-standard name)
+    details?: PaymentDetails;
+    onClose: () => void;
+    onEdit: () => void;
+    onPaymentStatus: (status: PaymentStatus) => Promise<void>;
+    selectedBooking?: SelectedBooking | null;
+    setMessage: (msg: string) => void;  // declared; unused inside component
+    createPaymentTransaction: (bookingRef: string, guestId: string, amount: number) => Promise<void>;
+    logActivity: (bookingRef: string, code: number, description: string) => Promise<void>;
+  }
+  ```
+- **State:** None.
+- **Handlers:** `handlePaymentSuccess(status)` — calls `onPaymentStatus(status)` and logs errors.
+- **SimpleModal mapping:**
+  - `isOpen` ← `open`
+  - `onClose` ← `onClose`
+  - `title` ← `"Existing Payment Details"`
+  - `maxWidth` ← `"max-w-sm"`
+  - `footer` ← MarkAsFailedButton / disabled button + MarkAsPaidButton
+  - `className` ← `"font-body"`
+- **Status:** Already uses `SimpleModal`. No raw backdrop.
+- **Complexity:** S — fully migrated; nothing to do.
+- **Notes:** The `open` prop name (instead of `isOpen`) is a minor interface naming inconsistency relative to SimpleModal's own API. Works correctly at call sites.
 
 ---
 
-## withIconModal.tsx Consumer List
+### 7. `roomgrid/BookingDetailsModal.tsx`
 
-Files that import and use the `withIconModal` HOC:
+**File:** `apps/reception/src/components/roomgrid/BookingDetailsModal.tsx`
 
-| File | Usage |
-|------|-------|
-| `apps/reception/src/components/appNav/ManagementModal.tsx` | `export default withIconModal({ label: ..., actions: [...] })` |
-| `apps/reception/src/components/appNav/ManModal.tsx` | `const BaseManModal = withIconModal({ label: ..., actions: [...] })` — wraps with additional functionality |
-| `apps/reception/src/components/appNav/TillModal.tsx` | `const BaseTillModal = withIconModal({ label: ..., actions: [...] })` — wraps with additional functionality |
-| `apps/reception/src/components/appNav/OperationsModal.tsx` | `export default withIconModal({ label: ..., actions: [...] })` |
-| `apps/reception/src/components/appNav/__tests__/Modals.test.tsx` | Test file — mocks `withIconModal` via `jest.mock` |
+- **Pattern:** Controlled by parent via conditional render. `isOpen={true}` hardcoded. No `footer` prop used — X close button only.
+- **Props:**
+  ```ts
+  interface BookingDetailsModalProps {
+    bookingDetails: BookingDetails; // { roomNumber, id, date, dayType, dayStatus, idSuffix?, titlePrefix?, info?, bookingRef?, occupantId?, firstName?, lastName? }
+    onClose: () => void;
+  }
+  ```
+- **State:**
+  ```ts
+  const [targetRoom, setTargetRoom] = useState<string>("");
+  const [confirmMoveOpen, setConfirmMoveOpen] = useState(false);
+  const [pendingGuestCount, setPendingGuestCount] = useState(0);
+  ```
+- **Handlers:** `handleClose()` — wraps `onClose()`. `handleMoveBooking()` — validates bookingRef + targetRoom, counts occupants, opens `ConfirmDialog`. `handleConfirmMoveBooking()` — async; iterates occupants and calls `allocateRoomIfAllowed` per occupant, then closes confirm dialog and calls `onClose()`.
+- **SimpleModal mapping:**
+  - `isOpen` ← `true`
+  - `onClose` ← `handleClose`
+  - `title` ← `"Booking Details"`
+  - `maxWidth` ← `"max-w-sm"`
+  - `footer` ← not set (X button only)
+- **Status:** Already uses `SimpleModal`. No raw backdrop. Renders a sibling `<ConfirmDialog>` (from `@acme/design-system`) outside the `SimpleModal` for the room-move confirmation step — this is intentional layering.
+- **Complexity:** S — fully migrated; nothing to do.
 
-All four production consumers use the same HOC pattern and will benefit automatically from any HOC-level migration. The test file mocks the HOC at the module boundary and does not need modification for the migration itself.
+---
+
+### 8. `prepayments/EntryDialogue.tsx`
+
+**File:** `apps/reception/src/components/prepayments/EntryDialogue.tsx`
+
+- **Pattern:** Controlled externally via `open: boolean` prop. Dynamic title based on whether card details exist.
+- **Props:**
+  ```ts
+  interface EntryDialogProps {
+    open: boolean;                // isOpen equivalent
+    initialCardNumber?: string;
+    initialExpiry?: string;
+    amountToCharge?: number;
+    bookingRef?: string;
+    onClose: () => void;
+    onProcessPayment: (status: PaymentStatus) => Promise<void>;
+    onSaveOrUpdate: (paymentInfo: PaymentInfo) => Promise<void>;
+  }
+  ```
+- **State:**
+  ```ts
+  const [cardNumber, setCardNumber] = useState<string>("");
+  const [expiryDate, setExpiryDate] = useState<string>("");
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const [isSaving, setIsSaving] = useState<boolean>(false);
+  ```
+- **Handlers:** `handleCreditCardChange` / `handleCreditCardPaste` — digit-only filtering + space formatting. `handleExpiryChange` — MM/YY auto-format. `handleSaveOrUpdate()` — async, Zod validation, calls `onSaveOrUpdate`. `handleProcessClick()` — async, calls `onProcessPayment`. `useEffect` resets card/expiry state when `open` or initial props change.
+- **SimpleModal mapping:**
+  - `isOpen` ← `open`
+  - `onClose` ← `onClose`
+  - `title` ← dynamic (`"Update or Process Payment"` or `"Enter Payment Details"`)
+  - `maxWidth` ← `"max-w-md"`
+  - `footer` ← Process Payment (conditional) + Save/Update + Cancel buttons
+  - `className` ← `"font-body"`
+  - `showCloseButton` ← `{!isProcessing && !isSaving}` (suppresses X during async)
+- **Status:** Already uses `SimpleModal`. No raw backdrop. The loading overlay inside the body (`absolute inset-0 bg-surface/75`) is a form overlay within `children`, not a modal backdrop.
+- **Complexity:** S — fully migrated; nothing to do.
+
+---
+
+### 9. `prepayments/DeleteBookingModal.tsx`
+
+**File:** `apps/reception/src/components/prepayments/DeleteBookingModal.tsx`
+
+- **Pattern:** Controlled by parent via conditional render. `isOpen={true}` hardcoded.
+- **Props:**
+  ```ts
+  interface DeleteBookingModalProps {
+    booking: PrepaymentData;
+    onClose: () => void;
+  }
+  ```
+- **State:** None. Loading/error in `useDeleteBooking` hook.
+- **Handlers:** `handleConfirmDelete()` — async; calls `deleteBooking(booking.bookingRef)`, then `onClose()`.
+- **SimpleModal mapping:**
+  - `isOpen` ← `true`
+  - `onClose` ← `onClose`
+  - `title` ← `"Confirm Deletion"`
+  - `maxWidth` ← `"max-w-sm"`
+  - `footer` ← Cancel + Delete buttons (DS `color="danger" tone="solid"`)
+- **Status:** Already uses `SimpleModal`. No raw backdrop.
+- **Complexity:** S — fully migrated; nothing to do.
+
+---
+
+### 10. `loans/KeycardsModal.tsx`
+
+**File:** `apps/reception/src/components/loans/KeycardsModal.tsx`
+
+- **Pattern:** Fully controlled via `isOpen: boolean` prop. Passed to `SimpleModal` as `isOpen={isOpen && !!occupant}`.
+- **Props:**
+  ```ts
+  interface KeycardsModalProps {
+    isOpen: boolean;
+    occupant?: Occupant; // { guestId, bookingRef, firstName, lastName }
+    onClose: () => void;
+  }
+  ```
+- **State:**
+  ```ts
+  const [editedTypes, setEditedTypes] = useState<Record<string, LoanMethod>>({});
+  ```
+- **Handlers:** `handleTypeChange(txnId, val)` — updates `editedTypes` map. `handleSave(txnId)` — picks between `convertKeycardDocToCash` or `updateLoanDepositType`; clears entry from `editedTypes` on success.
+- **SimpleModal mapping:**
+  - `isOpen` ← `isOpen && !!occupant`
+  - `onClose` ← `onClose`
+  - `title` ← `"Keycards on Loan"`
+  - `maxWidth` ← `"max-w-md"`
+  - `footer` ← not set (X button only)
+- **Status:** Already uses `SimpleModal`. No raw backdrop.
+- **Complexity:** S — fully migrated; nothing to do.
+
+---
+
+### 11. `loans/LoanModal.tsx`
+
+**File:** `apps/reception/src/components/loans/LoanModal.tsx`
+
+- **Pattern:** Fully controlled via `isOpen: boolean` prop. Dynamic title based on `mode`.
+- **Props:**
+  ```ts
+  interface LoanModalProps {
+    isOpen: boolean;
+    mode: "loan" | "return";
+    occupant?: Occupant;
+    item?: LoanItem;
+    maxCount?: number;
+    method?: LoanMethod;
+    onClose: () => void;
+    onConfirm: (count: number, depositType?: LoanMethod) => void;
+  }
+  ```
+- **State:**
+  ```ts
+  const [countInput, setCountInput] = useState<string>("1");
+  const [depositType, setDepositType] = useState<LoanMethod>("CASH");
+  ```
+- **Handlers:** `handleCountChange` — controlled input. `handleDepositTypeChange(value)` — updates `depositType`. `handleSubmit()` — parses count, calls `onConfirm(count, depositType)`, then `onClose()`. `useEffect` — resets `countInput` and `depositType` when `isOpen`, `item`, or `method` changes.
+- **SimpleModal mapping:**
+  - `isOpen` ← `isOpen`
+  - `onClose` ← `onClose`
+  - `title` ← `mode === "loan" ? "Add Loan" : "Return Item"`
+  - `maxWidth` ← `"max-w-lg"`
+  - `footer` ← Cancel + Confirm buttons
+- **Status:** Already uses `SimpleModal`. No raw backdrop.
+- **Complexity:** S — fully migrated; nothing to do.
+
+---
+
+### 12. `till/EditTransactionModal.tsx`
+
+**File:** `apps/reception/src/components/till/EditTransactionModal.tsx`
+
+- **Pattern:** Controlled by parent via conditional render. `isOpen={true}` hardcoded. Submit action handled by `PasswordReauthInline` inside body (not a footer button).
+- **Props:**
+  ```ts
+  interface EditTransactionModalProps {
+    transaction: Transaction;
+    onClose: () => void;
+  }
+  ```
+- **State:**
+  ```ts
+  const [amount, setAmount] = useState<string>(transaction.amount.toString());
+  const [method, setMethod] = useState<string>(transaction.method || "");
+  const [itemCategory, setItemCategory] = useState<string>(transaction.itemCategory || "");
+  const [description, setDescription] = useState<string>(transaction.description || "");
+  const [reason, setReason] = useState<string>("");
+  ```
+- **Handlers:** Per-field `onChange` handlers. `handleSave()` — async; Zod validates all fields + reason, calls `correctTransaction(txnId, {...}, reason)`, then `onClose()`.
+- **SimpleModal mapping:**
+  - `isOpen` ← `true`
+  - `onClose` ← `onClose`
+  - `title` ← `"Record Correction"`
+  - `maxWidth` ← `"max-w-sm"`
+  - `footer` ← Cancel button only; the Save action lives in body via `PasswordReauthInline`
+- **Status:** Already uses `SimpleModal`. No raw backdrop.
+- **Complexity:** S — fully migrated; nothing to do.
+- **Notes:** The footer-has-cancel / body-has-submit split is intentional — `PasswordReauthInline` owns the submit trigger. This layout is working as designed.
+
+---
+
+### 13. `till/VoidTransactionModal.tsx`
+
+**File:** `apps/reception/src/components/till/VoidTransactionModal.tsx`
+
+- **Pattern:** Controlled by parent via conditional render. `isOpen={true}` hardcoded. Submit action via `PasswordReauthInline` inside body.
+- **Props:**
+  ```ts
+  interface VoidTransactionModalProps {
+    transaction: Transaction;
+    onClose: () => void;
+  }
+  ```
+- **State:**
+  ```ts
+  const [reason, setReason] = useState("");
+  ```
+- **Handlers:** `handleVoid()` — async; validates reason non-empty, calls `voidTransaction(txnId, reason)`, then `onClose()`.
+- **SimpleModal mapping:**
+  - `isOpen` ← `true`
+  - `onClose` ← `onClose`
+  - `title` ← `"Void Transaction"`
+  - `maxWidth` ← `"max-w-sm"`
+  - `footer` ← Cancel button only; void confirm inside body via `PasswordReauthInline`
+- **Status:** Already uses `SimpleModal`. No raw backdrop.
+- **Complexity:** S — fully migrated; nothing to do.
+
+---
+
+### 14. `bar/ModalPreorderDetails.tsx`
+
+**File:** `apps/reception/src/components/bar/ModalPreorderDetails.tsx`
+
+- **Pattern:** `isOpen` derived from prop (`!!preorder`). No footer — display-only modal.
+- **Props:**
+  ```ts
+  type ModalPreorderDetailsProps = {
+    occupantCheckIn: string;
+    guestName: string;
+    preorder: { [nightKey: string]: NightData } | null;
+    onClose: () => void;
+  }
+  ```
+- **State:** None in the main component. `PreorderNightDetails` child calls multiple data hooks but holds no local state.
+- **Handlers:** None — display-only.
+- **SimpleModal mapping:**
+  - `isOpen` ← `!!preorder`
+  - `onClose` ← `onClose`
+  - `title` ← `` `Preorders for ${guestName}` ``
+  - `maxWidth` ← `"max-w-lg"`
+  - `footer` ← not set
+- **Status:** Already uses `SimpleModal`. No raw backdrop.
+- **Complexity:** S — fully migrated; nothing to do.
+
+---
+
+### 15. `bar/orderTaking/preorder/PreorderButtons.tsx`
+
+**File:** `apps/reception/src/components/bar/orderTaking/preorder/PreorderButtons.tsx`
+
+- **Pattern:** Contains an inline `ConfirmDeleteModal` sub-component (not exported). The sub-component uses `SimpleModal` with `isOpen={true}` hardcoded. The parent `PreorderButton` controls mounting via `{isDeleteModalOpen && <ConfirmDeleteModal ... />}`.
+- **Props of `ConfirmDeleteModal` (internal):**
+  ```ts
+  interface ConfirmDeleteModalProps {
+    onConfirm: () => void;
+    onCancel: () => void;
+  }
+  ```
+- **State in `PreorderButton`:**
+  ```ts
+  const [isHovered, setIsHovered] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [bleepNumber, setBleepNumber] = useState<string>("");
+  ```
+- **State in `PreorderButtons` (outer container):**
+  ```ts
+  const [snapshotData, setSnapshotData] = useState<PreorderButtonData[]>([]);
+  const [displayData, setDisplayData] = useState<PreorderButtonDataWithRemoval[]>([]);
+  ```
+- **Handlers:** `openDeleteModal()` — sets `isDeleteModalOpen = true`. `handleConfirmDelete()` — async; sets `isDeleteModalOpen = false`, calls `deletePreorder`. `handleClick()` / `handleDoubleClick()` — complimentary order and sale-conversion flows. Firebase live listener in `PreorderButtons` populates `snapshotData`.
+- **SimpleModal mapping (inside `ConfirmDeleteModal`):**
+  - `isOpen` ← `true` (parent controls mounting)
+  - `onClose` ← `onCancel`
+  - `title` ← `"Delete Preorder"`
+  - `maxWidth` ← `"max-w-xs"`
+  - `footer` ← Yes (danger) + No buttons
+- **Status:** `ConfirmDeleteModal` already uses `SimpleModal`. The `fixed inset-0` grep hit in this file was from the tooltip positioning `div` (absolute positioning chain on hover tooltip), not a modal backdrop.
+- **Complexity:** S — fully migrated; nothing to do.
+
+---
+
+### 16. `safe/PettyCashForm.tsx`
+
+**File:** `apps/reception/src/components/safe/PettyCashForm.tsx`
+
+- **Pattern:** Controlled by parent via conditional render. `isOpen={true}` hardcoded. Submit action via `PasswordReauthInline` inside body. No footer prop.
+- **Props:**
+  ```ts
+  export interface PettyCashFormProps {
+    onConfirm: (amount: number) => void;
+    onCancel: () => void;  // onClose equivalent (non-standard name)
+  }
+  ```
+- **State:**
+  ```ts
+  const [amount, setAmount] = useState<string>("");
+  ```
+- **Handlers:** `handleCancel()` — clears `amount`, calls `onCancel()`. `handleAmountChange` — controlled input. `handleReauthSubmit()` — async; Zod validates amount, calls `onConfirm(amt)`, clears amount.
+- **SimpleModal mapping:**
+  - `isOpen` ← `true`
+  - `onClose` ← `handleCancel` (not `onCancel` directly, because `handleCancel` also clears state)
+  - `title` ← `"Petty Cash Withdrawal"`
+  - `maxWidth` ← `"max-w-sm"`
+  - `footer` ← not set; confirm action inside body via `PasswordReauthInline`
+- **Status:** Already uses `SimpleModal`. No raw backdrop.
+- **Complexity:** S — fully migrated; nothing to do.
+- **Notes:** `onCancel` prop name (not `onClose`) is a minor inconsistency. The cancel-clears-state pattern via `handleCancel` wrapping `onCancel` is correct behaviour.
+
+---
+
+### 17. `appNav/AppNav.tsx`
+
+**File:** `apps/reception/src/components/appNav/AppNav.tsx`
+
+- **Pattern:** This is NOT a dialog modal. It is a slide-in sidebar navigation with a hand-rolled `fixed inset-0 bg-surface/80 backdrop-blur-sm` backdrop div. This is the source of the `fixed inset-0` grep match.
+- **Props:**
+  ```ts
+  interface AppNavProps {
+    user: { user_name: string; roles?: User["roles"] };
+    onLogout: () => void;
+  }
+  ```
+- **State:**
+  ```ts
+  const [isOpen, setIsOpen] = useState(false);
+  ```
+- **Handlers:** `toggleNav()` — flips `isOpen`. `closeNav()` — sets `isOpen = false`. `navigateTo(route)` — pushes route and calls `closeNav()`. `canAccessSection(permission)` — RBAC check.
+- **SimpleModal mapping:** Not applicable. This is a sidebar drawer — it slides in from the left edge (`-translate-x-full` / `translate-x-0`), occupies full height, and does not centre content. `SimpleModal` is semantically wrong here.
+- **Status:** The `fixed inset-0` is a genuine raw backdrop, but it belongs to a drawer pattern. No dialog migration applies.
+- **Complexity:** L — not a modal; out of scope for this migration. A dedicated task should evaluate migrating to a `Drawer` or `Sheet` primitive from `@acme/design-system` (which would provide Radix-backed focus trapping and Esc handling for the sidebar).
+
+---
+
+## Summary Table
+
+| # | File | Uses SimpleModal | Complexity | Notes |
+|---|---|:---:|---|---|
+| 1 | `hoc/withIconModal.tsx` | Yes | S | Fully migrated; `visible` prop maps to `isOpen` |
+| 2 | `checkins/header/ArchiveConfirmationModal.tsx` | Yes | S | `isOpen={true}`; parent-mount pattern |
+| 3 | `checkins/header/DeleteConfirmationModal.tsx` | Yes | S | `isOpen={true}`; parent-mount pattern |
+| 4 | `checkins/header/BookingModal.tsx` | Yes | S | `isOpen={true}`; 4 state vars; date edit logic |
+| 5 | `checkins/notes/BookingNotesModal.tsx` | Yes | S | `isOpen={true}`; inline CRUD for notes |
+| 6 | `prepayments/DisplayDialogue.tsx` | Yes | S | `open` prop name (not `isOpen`); no state |
+| 7 | `roomgrid/BookingDetailsModal.tsx` | Yes | S | `isOpen={true}`; sibling `ConfirmDialog` for room move |
+| 8 | `prepayments/EntryDialogue.tsx` | Yes | S | `open` prop name; body loading overlay; `showCloseButton` during async |
+| 9 | `prepayments/DeleteBookingModal.tsx` | Yes | S | `isOpen={true}`; no state |
+| 10 | `loans/KeycardsModal.tsx` | Yes | S | `isOpen` prop; `isOpen && !!occupant` guard |
+| 11 | `loans/LoanModal.tsx` | Yes | S | `isOpen` prop; 2 state vars; `useEffect` reset |
+| 12 | `till/EditTransactionModal.tsx` | Yes | S | `isOpen={true}`; 5 state vars; `PasswordReauthInline` in body |
+| 13 | `till/VoidTransactionModal.tsx` | Yes | S | `isOpen={true}`; 1 state var; `PasswordReauthInline` in body |
+| 14 | `bar/ModalPreorderDetails.tsx` | Yes | S | `isOpen=!!preorder`; display-only |
+| 15 | `bar/orderTaking/preorder/PreorderButtons.tsx` | Yes | S | Inline `ConfirmDeleteModal`; grep hit was tooltip div |
+| 16 | `safe/PettyCashForm.tsx` | Yes | S | `isOpen={true}`; `onCancel` prop name; `PasswordReauthInline` in body |
+| 17 | `appNav/AppNav.tsx` | N/A | L | Sidebar drawer — genuine `fixed inset-0` backdrop; needs Drawer primitive, not SimpleModal |
+
+---
+
+## Recommendation
+
+### No Modal Migration Backlog
+
+All 16 dialog-pattern components in this list already use `SimpleModal` correctly. The `fixed inset-0` grep returned these files, but the analysis of each file shows:
+
+- **14 files** (entries 1–13, 14–16): Already using `SimpleModal`. The grep hit either came from a prior version that has since been migrated, or from a non-backdrop use of `fixed inset-0` (e.g. the tooltip `div` in `PreorderButtons.tsx`).
+- **`PreorderButtons.tsx` (#15):** The `fixed inset-0` class appears in a tooltip positioning chain, not a modal backdrop. The inline `ConfirmDeleteModal` already uses `SimpleModal`.
+- **`AppNav.tsx` (#17):** The only genuine raw `fixed inset-0` backdrop in the list. It belongs to a slide-in sidebar, not a dialog. `SimpleModal` is architecturally wrong for this pattern.
+
+### Open Cosmetic Inconsistencies (non-blocking)
+
+These do not affect correctness and can be deferred to a future polish pass:
+
+1. **`open` vs `isOpen` prop naming** — `DisplayDialogue.tsx` and `EntryDialogue.tsx` expose `open: boolean`. Both map correctly to `SimpleModal`'s `isOpen` internally. The inconsistency is at the component's public interface level only.
+2. **`onCancel` vs `onClose` prop naming** — `PettyCashForm.tsx` uses `onCancel`. It maps to `handleCancel` which wraps `onCancel` and also clears form state. The distinction is intentional and correct.
+3. **`isOpen={true}` hardcoded pattern** — Several components rely on parent-mount-controls-visibility instead of a controlled `isOpen` prop. Both patterns work correctly with `SimpleModal`. The hardcoded-true pattern simplifies components that have no concept of "open state" themselves.
+
+### AppNav Sidebar — Separate Task Required
+
+`AppNav.tsx` contains the only genuine raw `fixed inset-0` backdrop in the audited set. To properly standardise it:
+
+- Evaluate migrating the sidebar to a `Drawer` or `Sheet` primitive (Radix-backed focus trap, Esc key, scroll lock).
+- The `isOpen` / `closeNav` / `toggleNav` state maps cleanly to a Drawer's `open` / `onOpenChange` API.
+- This should be tracked as a separate task (AppNav-Drawer migration), not bundled with modal migration work.

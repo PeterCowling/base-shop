@@ -10,7 +10,7 @@
   },
   "callouts": {
     "cta": "Brauchst du alle Transportoptionen? Öffne die %HOWTO:how-to-get-here|Anreise-Übersicht% für Fähre, Taxi und kombinierte Reiserouten.",
-    "tip": "Reist du im Winter oder in der Nebensaison? Prüfe die %GUIDES:travelHelp|Störungshinweise zum Transport% vor der Abreise – Streiks und Fahrplanänderungen sind von November bis März häufiger."
+    "tip": "Reist du im Winter oder in der Nebensaison? Prüfe die %LINK:travelHelp|Störungshinweise zum Transport% vor der Abreise – Streiks und Fahrplanänderungen sind von November bis März häufiger."
   },
   "sections": [
     {
@@ -130,7 +130,7 @@
     {
       "id": "seasonal",
       "title": "Saisonale und zeitliche Überlegungen",
-      "body": "**Sommer (Juni–September):**\n- SITA-Busse fahren häufiger, füllen sich aber schnell. Komme 10–15 Minuten früh.\n- Circumvesuviana-Züge sind überfüllt, besonders mittags und an Wochenenden.\n- Hitze kann unangenehm sein – sowohl Bus als auch Zug haben begrenzte Klimaanlage.\n\n**Nebensaison (April–Mai, Oktober):**\n- Moderate Menschenmassen; komme 5–10 Minuten früh zum Bus.\n- Angenehme Temperaturen machen die Reise komfortabler.\n\n**Winter (November–März):**\n- SITA reduziert die Frequenz; prüfe Fahrpläne im Voraus.\n- Circumvesuviana-Fahrpläne können sich aufgrund von Wartung oder Streiks ändern – bestätige Abfahrtszeiten am Tag vor der Reise.\n- Weniger Touristen bedeuten einfacheres Einsteigen und mehr Platz, aber Dienste können weniger zuverlässig sein.\n\n**Streiks und Störungen:**\n- Öffentliche Verkehrsstreiks (sciopero) werden mindestens 48 Stunden im Voraus angekündigt. Überprüfe %GUIDES:travelHelp|unsere Transportwarnungsseite% oder frage die Hostelrezeption nach den neuesten Updates.\n- Während Streiks können SITA und Circumvesuviana reduzierten Dienst fahren oder ganz ausfallen. Plane alternativen Transport (Taxi, privater Transfer oder Fähre, falls verfügbar), wenn ein Streik an deinem Reisetag geplant ist."
+      "body": "**Sommer (Juni–September):**\n- SITA-Busse fahren häufiger, füllen sich aber schnell. Komme 10–15 Minuten früh.\n- Circumvesuviana-Züge sind überfüllt, besonders mittags und an Wochenenden.\n- Hitze kann unangenehm sein – sowohl Bus als auch Zug haben begrenzte Klimaanlage.\n\n**Nebensaison (April–Mai, Oktober):**\n- Moderate Menschenmassen; komme 5–10 Minuten früh zum Bus.\n- Angenehme Temperaturen machen die Reise komfortabler.\n\n**Winter (November–März):**\n- SITA reduziert die Frequenz; prüfe Fahrpläne im Voraus.\n- Circumvesuviana-Fahrpläne können sich aufgrund von Wartung oder Streiks ändern – bestätige Abfahrtszeiten am Tag vor der Reise.\n- Weniger Touristen bedeuten einfacheres Einsteigen und mehr Platz, aber Dienste können weniger zuverlässig sein.\n\n**Streiks und Störungen:**\n- Öffentliche Verkehrsstreiks (sciopero) werden mindestens 48 Stunden im Voraus angekündigt. Überprüfe %LINK:travelHelp|unsere Transportwarnungsseite% oder frage die Hostelrezeption nach den neuesten Updates.\n- Während Streiks können SITA und Circumvesuviana reduzierten Dienst fahren oder ganz ausfallen. Plane alternativen Transport (Taxi, privater Transfer oder Fähre, falls verfügbar), wenn ein Streik an deinem Reisetag geplant ist."
     },
     {
       "id": "alternatives",
@@ -168,7 +168,7 @@
     {
       "q": "Was soll ich tun, wenn an meinem Reisetag ein öffentlicher Verkehrsstreik stattfindet?",
       "a": [
-        "Streiks (sciopero) werden mindestens 48 Stunden im Voraus angekündigt. Überprüfe die %GUIDES:travelHelp|Transportwarnungsseite% oder frage die Hostelrezeption nach Updates. Während Streiks können SITA und Circumvesuviana reduzierten Service fahren oder ganz ausfallen. Buche einen privaten Transfer oder ein Taxi als Backup – wenn Fähren fahren (April–Oktober), ist die %HOWTO:positanoNaplesCenterFerry|Positano-Neapel-Fähre% eine zuverlässige Alternative."
+        "Streiks (sciopero) werden mindestens 48 Stunden im Voraus angekündigt. Überprüfe die %LINK:travelHelp|Transportwarnungsseite% oder frage die Hostelrezeption nach Updates. Während Streiks können SITA und Circumvesuviana reduzierten Service fahren oder ganz ausfallen. Buche einen privaten Transfer oder ein Taxi als Backup – wenn Fähren fahren (April–Oktober), ist die %HOWTO:positanoNaplesCenterFerry|Positano-Neapel-Fähre% eine zuverlässige Alternative."
       ]
     }
   ]

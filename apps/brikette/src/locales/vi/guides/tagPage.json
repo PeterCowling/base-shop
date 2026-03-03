@@ -3,6 +3,6 @@
   "articleCount_other": "{{count}} bài viết",
   "topTagsHeading": "Thẻ nổi bật",
   "robots": {
-    "noindexFollow": "noindex,follow"
+    "noindexFollow": "noindex, follow"
   }
 }

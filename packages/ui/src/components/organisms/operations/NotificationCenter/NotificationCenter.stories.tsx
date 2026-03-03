@@ -21,7 +21,7 @@ const meta: Meta<typeof NotificationContainer> = {
   decorators: [
     (Story) => (
       <NotificationProvider>
-        <div className="min-h-[400px] bg-gray-50 p-8 dark:bg-slate-900">
+        <div className="min-h-96 bg-gray-50 p-8 dark:bg-slate-900">
           <Story />
           <NotificationContainer />
         </div>
@@ -47,7 +47,7 @@ function NotificationDemo() {
             description: 'Your changes have been saved successfully.',
           })
         }
-        className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
+        className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-primary-fg hover:bg-green-700 min-h-11 min-w-11"
       >
         Success
       </button>
@@ -59,7 +59,7 @@ function NotificationDemo() {
             description: 'An error occurred while saving your changes.',
           })
         }
-        className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+        className="rounded-lg bg-error-main px-4 py-2 text-sm font-medium text-primary-fg hover:bg-red-700 min-h-11 min-w-11"
       >
         Error
       </button>
@@ -71,7 +71,7 @@ function NotificationDemo() {
             description: 'You have unsaved changes that will be lost.',
           })
         }
-        className="rounded-lg bg-yellow-600 px-4 py-2 text-sm font-medium text-white hover:bg-yellow-700"
+        className="rounded-lg bg-yellow-600 px-4 py-2 text-sm font-medium text-primary-fg hover:bg-yellow-700 min-h-11 min-w-11"
       >
         Warning
       </button>
@@ -83,13 +83,13 @@ function NotificationDemo() {
             description: 'A new version of the application is available.',
           })
         }
-        className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+        className="rounded-lg bg-info-main px-4 py-2 text-sm font-medium text-primary-fg hover:bg-blue-700 min-h-11 min-w-11"
       >
         Info
       </button>
       <button
         onClick={clearAll}
-        className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+        className="rounded-lg border border-border-2 bg-surface px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-gray-50 min-h-11 min-w-11"
       >
         Clear All
       </button>
@@ -110,25 +110,25 @@ function ToastHookDemo() {
     <div className="flex flex-wrap gap-4">
       <button
         onClick={() => toast.success('Changes saved!')}
-        className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
+        className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-primary-fg hover:bg-green-700 min-h-11 min-w-11"
       >
         toast.success()
       </button>
       <button
         onClick={() => toast.error('Something went wrong')}
-        className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+        className="rounded-lg bg-error-main px-4 py-2 text-sm font-medium text-primary-fg hover:bg-red-700 min-h-11 min-w-11"
       >
         toast.error()
       </button>
       <button
         onClick={() => toast.warning('Please review')}
-        className="rounded-lg bg-yellow-600 px-4 py-2 text-sm font-medium text-white hover:bg-yellow-700"
+        className="rounded-lg bg-yellow-600 px-4 py-2 text-sm font-medium text-primary-fg hover:bg-yellow-700 min-h-11 min-w-11"
       >
         toast.warning()
       </button>
       <button
         onClick={() => toast.info('Did you know?')}
-        className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+        className="rounded-lg bg-info-main px-4 py-2 text-sm font-medium text-primary-fg hover:bg-blue-700 min-h-11 min-w-11"
       >
         toast.info()
       </button>
@@ -158,7 +158,7 @@ function WithActionsDemo() {
             },
           })
         }
-        className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+        className="rounded-lg bg-error-main px-4 py-2 text-sm font-medium text-primary-fg hover:bg-red-700 min-h-11 min-w-11"
       >
         With Retry Action
       </button>
@@ -174,7 +174,7 @@ function WithActionsDemo() {
             },
           })
         }
-        className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+        className="rounded-lg bg-info-main px-4 py-2 text-sm font-medium text-primary-fg hover:bg-blue-700 min-h-11 min-w-11"
       >
         With View Action
       </button>
@@ -221,14 +221,14 @@ function PromiseDemo() {
       <button
         onClick={() => simulateAsync(true)}
         disabled={loading}
-        className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50"
+        className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-primary-fg hover:bg-green-700 disabled:opacity-50 min-h-11 min-w-11"
       >
         Simulate Success (2s)
       </button>
       <button
         onClick={() => simulateAsync(false)}
         disabled={loading}
-        className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50"
+        className="rounded-lg bg-error-main px-4 py-2 text-sm font-medium text-primary-fg hover:bg-red-700 disabled:opacity-50 min-h-11 min-w-11"
       >
         Simulate Error (2s)
       </button>
@@ -267,14 +267,14 @@ function LoadingDemo() {
       <button
         onClick={startLoading}
         disabled={!!loadingId}
-        className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+        className="rounded-lg bg-info-main px-4 py-2 text-sm font-medium text-primary-fg hover:bg-blue-700 disabled:opacity-50 min-h-11 min-w-11"
       >
         Start Loading
       </button>
       <button
         onClick={completeLoading}
         disabled={!loadingId}
-        className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50"
+        className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-primary-fg hover:bg-green-700 disabled:opacity-50 min-h-11 min-w-11"
       >
         Complete Loading
       </button>
@@ -304,7 +304,7 @@ function PersistentDemo() {
           },
         })
       }
-      className="rounded-lg bg-yellow-600 px-4 py-2 text-sm font-medium text-white hover:bg-yellow-700"
+      className="rounded-lg bg-yellow-600 px-4 py-2 text-sm font-medium text-primary-fg hover:bg-yellow-700 min-h-11 min-w-11"
     >
       Show Persistent Notification
     </button>
@@ -343,14 +343,14 @@ function NonDismissibleDemo() {
       <button
         onClick={show}
         disabled={!!id}
-        className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+        className="rounded-lg bg-info-main px-4 py-2 text-sm font-medium text-primary-fg hover:bg-blue-700 disabled:opacity-50 min-h-11 min-w-11"
       >
         Show Non-Dismissible
       </button>
       <button
         onClick={dismiss}
         disabled={!id}
-        className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+        className="rounded-lg border border-border-2 bg-surface px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-gray-50 disabled:opacity-50 min-h-11 min-w-11"
       >
         Dismiss Programmatically
       </button>
@@ -374,7 +374,7 @@ function PositionDemo({ position }: NotificationContainerProps) {
           title: `Notification at ${position}`,
         })
       }
-      className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+      className="rounded-lg bg-info-main px-4 py-2 text-sm font-medium text-primary-fg hover:bg-blue-700 min-h-11 min-w-11"
     >
       Show Notification
     </button>
@@ -385,7 +385,7 @@ export const TopLeft: Story = {
   decorators: [
     (Story) => (
       <NotificationProvider>
-        <div className="min-h-[400px] bg-gray-50 p-8">
+        <div className="min-h-96 bg-gray-50 p-8">
           <Story />
           <NotificationContainer position="top-left" />
         </div>
@@ -399,7 +399,7 @@ export const TopCenter: Story = {
   decorators: [
     (Story) => (
       <NotificationProvider>
-        <div className="min-h-[400px] bg-gray-50 p-8">
+        <div className="min-h-96 bg-gray-50 p-8">
           <Story />
           <NotificationContainer position="top-center" />
         </div>
@@ -413,7 +413,7 @@ export const BottomRight: Story = {
   decorators: [
     (Story) => (
       <NotificationProvider>
-        <div className="min-h-[400px] bg-gray-50 p-8">
+        <div className="min-h-96 bg-gray-50 p-8">
           <Story />
           <NotificationContainer position="bottom-right" />
         </div>
@@ -427,7 +427,7 @@ export const BottomCenter: Story = {
   decorators: [
     (Story) => (
       <NotificationProvider>
-        <div className="min-h-[400px] bg-gray-50 p-8">
+        <div className="min-h-96 bg-gray-50 p-8">
           <Story />
           <NotificationContainer position="bottom-center" />
         </div>
@@ -443,13 +443,13 @@ function GlobalToastDemo() {
     <div className="flex flex-wrap gap-4">
       <button
         onClick={() => toast.success('Global success!')}
-        className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
+        className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-primary-fg hover:bg-green-700 min-h-11 min-w-11"
       >
         toast.success()
       </button>
       <button
         onClick={() => toast.error('Global error!')}
-        className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+        className="rounded-lg bg-error-main px-4 py-2 text-sm font-medium text-primary-fg hover:bg-red-700 min-h-11 min-w-11"
       >
         toast.error()
       </button>
@@ -461,7 +461,7 @@ export const GlobalAPI: Story = {
   decorators: [
     (Story) => (
       <NotificationProviderWithGlobal>
-        <div className="min-h-[400px] bg-gray-50 p-8">
+        <div className="min-h-96 bg-gray-50 p-8">
           <Story />
           <NotificationContainer />
         </div>
@@ -477,7 +477,7 @@ export const DarkMode: Story = {
     (Story) => (
       <div className="dark">
         <NotificationProvider>
-          <div className="min-h-[400px] bg-slate-900 p-8">
+          <div className="min-h-96 bg-slate-900 p-8">
             <Story />
             <NotificationContainer />
           </div>

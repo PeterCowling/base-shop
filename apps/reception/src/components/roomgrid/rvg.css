@@ -9,7 +9,7 @@
   --rvg-color-awaiting: hsl(var(--color-info-light));
   --rvg-color-confirmed: hsl(var(--color-info-main));
   --rvg-color-inaccessible: hsl(var(--color-muted));
-  --rvg-color-today: hsl(var(--color-success-light));
+  --rvg-color-today: hsl(var(--color-primary-main) / 0.18);
   --rvg-color-selected: hsl(var(--color-error-light));
   --rvg-color-weekend: hsl(var(--color-surface-2));
   --rvg-width-title: 50%;
@@ -23,7 +23,7 @@
   --rvg-color-awaiting: var(--reception-dark-accent-orange);
   --rvg-color-confirmed: var(--reception-dark-accent-green);
   --rvg-color-inaccessible: var(--reception-dark-surface);
-  --rvg-color-today: var(--reception-dark-accent-green);
+  --rvg-color-today: hsl(var(--color-primary-main) / 0.25);
   --rvg-color-selected: var(--reception-dark-accent-orange);
   --rvg-color-weekend: var(--reception-dark-bg);
 }

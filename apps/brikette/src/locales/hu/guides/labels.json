@@ -17,9 +17,9 @@
   "faqsHeading": "GYIK",
   "costBreakdownTitle": "Napi költségbontás",
   "costBreakdownCurrencySuffix": "{{currency}} értékben",
-  "costBreakdownSliceLabel": "{{label}}: {{value}}%{{suffix}}",
+  "costBreakdownSliceLabel": "_ _ TOK0 _ _: _ _ TOK1 _ _ _% _ _ TOK2 _ _",
   "backLink": "Vissza",
   "typicalCostsHeading": "Tipikus költségek",
   "essentialsHeading": "Alapok",
-  "tocSectionFallback": "Section"
+  "tocSectionFallback": "szakasz"
 }

@@ -1,0 +1,40 @@
+{
+  "figures": {
+    "map": {
+      "alt": "Karte zeigt die Wanderroute von Hostel Brikette nach Positano Hafen mit Punkten 1–5.",
+      "caption": "Routenübersicht: Hostel → Hafen (Punkte 1–5)."
+    },
+    "point1": {
+      "alt": "Intersection in der Nähe von Viale Pasitea mit einer markierten Route und einem Label: '1 Rechts drehen'.",
+      "caption": "Punkt 1: rechts abbiegen."
+    },
+    "tabacchi": {
+      "alt": "Tabacchi Storefront mit einem ATM neben ihm.",
+      "caption": "Tabacchi bei Punkt 1 (gutes Wahrzeichen)."
+    },
+    "point2": {
+      "alt": "Road Switchback mit einer markierten Linie zu Treppen und einem Label: '2 Nehmen Sie die Treppe geradeaus.'",
+      "caption": "Punkt 2: verlassen Sie die Straße und nehmen Sie die Treppe direkt vor."
+    },
+    "point3": {
+      "alt": "Enge Gasse mit Stufen und einem markierten Weg, gekennzeichnet '3 Nehmen Sie die Treppe geradeaus.",
+      "caption": "Punkt 3: Fahren Sie die Treppe entlang."
+    },
+    "point4": {
+      "alt": "Crosswalk und Straße mit einer markierten Route Richtung Treppe auf der rechten Seite, gekennzeichnet '4'.",
+      "caption": "Punkt 4: Überqueren Sie die Straße, biegen Sie kurz links ab, dann nehmen Sie die Treppe auf der rechten Seite."
+    },
+    "point5": {
+      "alt": "Kleiner Platz in der Nähe des Hafens mit einer markierten Route, gekennzeichnet '5'.",
+      "caption": "Punkt 5: Fahren Sie unter dem Bogen zum Hafen."
+    },
+    "tickets": {
+      "alt": "Fährkartenständer am Hafen Positano mit Fahrplänen.",
+      "caption": "Ticketstände: Überprüfen Sie das Schild für die nächste Abfahrt."
+    },
+    "port": {
+      "alt": "Blick auf Positano Hafen mit einer Fähre im Vordergrund und Positano Hügel hinter.",
+      "caption": "Positano Hafen: Warten Sie am Ende des Piers für Bordrufe."
+    }
+  }
+}

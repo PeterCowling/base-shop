@@ -48,12 +48,12 @@
       ]
     }
   ],
-  "tipsTitle": "Tips",
+  "tipsTitle": "Råd",
   "tips": [
     "Ta med vatten och snacks – utbudet runt busstationen i Amalfi är begränsat och dyrt.",
     "Använd bekväma skor med bra grepp för Ravellos backar och promenaden mellan villorna."
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "Faqs",
   "faqs": [
     {
       "q": "Passar rutten för familjer?",
@@ -114,8 +114,8 @@
         ]
       }
     ],
-    "tipsTitle": "Tips",
-    "faqsTitle": "FAQs",
+    "tipsTitle": "Råd",
+    "faqsTitle": "Faqs",
     "faqs": [
       {
         "q": "Hur lång tid bör jag avsätta för Ravello?",

@@ -20,7 +20,7 @@
     "title": "Boka direkt och spara",
     "description": "Tack för att du bokar direkt hos oss! Som tack får du:",
     "perks": {
-      "discount": "Upp till 10 % rabatt på rumspriset",
+      "discount": "Upp till 25 % rabatt på rumspriset",
       "breakfast": "Gratis frukost varje morgon",
       "drinks": "Kostnadsfria välkomstdrycker",
       "upgrades": "Prioriterade rumsuppgraderingar (vid tillgänglighet)"
@@ -159,6 +159,19 @@
     "close": "Stäng"
   },
   "loader": {
-    "ariaLabel": "Loading"
+    "ariaLabel": "Lastning"
+  },
+  "date": {
+    "stayHelper": "2-8 nätter",
+    "clearDates": "Tydliga datum",
+    "nightsSummary": "{{from}} {{to}} (ZZTOK2Z-nätter)"
+  },
+  "directPerks": {
+    "heading": "Varför boka direkt?",
+    "items": [
+      "Upp till 25 % rabatt",
+      "Gratis frukost",
+      "Gratis kvällsdryck"
+    ]
   }
 }

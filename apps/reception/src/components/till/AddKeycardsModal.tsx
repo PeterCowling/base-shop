@@ -55,7 +55,7 @@ function AddKeycardsModalBase({ onConfirm, onCancel }: AddKeycardsModalProps) {
             compatibilityMode="no-wrapper"
             type="number"
             min={1}
-            className="w-60 rounded border mx-6 px-3 py-2 text-sm"
+            className="w-60 rounded-lg border mx-6 px-3 py-2 text-sm"
             value={countInput}
             onChange={(e) => setCountInput(e.target.value)}
           />

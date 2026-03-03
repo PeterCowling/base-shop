@@ -39,24 +39,24 @@
       ]
     }
   ],
-  "essentialsTitle": "Essentials",
+  "essentialsTitle": "要点",
   "essentials": [
     "每人至少2升水加上咸味零食；圣玛丽亚德尔城堡之后没有可靠的补充。",
     "坚固的徒步鞋，具有抓地力——上层步道的部分是岩石、松散且暴露的。",
     "山顶的防晒和分层；即使在温暖的日子里，风也能吹过山脊。"
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "典型费用",
   "typicalCosts": [
     "步道免费；如果您打算在 Santa Maria del Castello 用饮料或小吃奖励自己，预算为 5 欧元至 10 欧元。",
     "如果您决定途经另一个村庄而不是一路徒步返回，请返还 SITA 巴士票或渡轮票价。"
   ],
-  "tipsTitle": "Smart timing",
+  "tipsTitle": "聪明的时机",
   "tips": [
     "夏季黎明时分出发，避免高峰期登山；深秋和春天的午后光线较柔和，没有烈日。",
     "查看暴风雨预报——云层遮蔽了视野，潮湿的岩石使山顶台阶变得湿滑。",
     "在出发前让旅舍的工作人员了解您的计划和预计返回时间。"
   ],
-  "warningsTitle": "When to reconsider",
+  "warningsTitle": "何时重新考虑",
   "warnings": [
     "如果您缺乏登山经验或身体素质不佳，请跳过徒步；持续的海拔上升是一种惩罚，而且几乎没有救援点。",
     "如果高度让您感到不安，请避开这条路线——暴露的壁架和陡峭的山坡即使是自信的徒步旅行者也会感到挑战。",
@@ -88,7 +88,7 @@
       "text": "沿着最后的上升路线到达山顶，欣赏全景，然后返回圣玛丽亚。"
     }
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "问题",
   "faqs": [
     {
       "q": "How long does the full hike take?",
@@ -111,7 +111,7 @@
   ],
   "toc": {
     "labels": {
-      "warnings": "When to reconsider"
+      "warnings": "何时重新考虑"
     }
   }
 }

@@ -1,0 +1,93 @@
+{
+  "schema_version": "completed-ideas.v1",
+  "entries": [
+    {
+      "idea_key": "a8cc677f63b4af7ba37b1b47a163e7f32d62af6c",
+      "title": "~~Add view_item_list assertions to the Playwright smoke test~~",
+      "source_path": "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md",
+      "plan_slug": "brikette-smoke-view-item-list",
+      "completed_at": "2026-02-26",
+      "output_link": "docs/plans/_archive/brikette-smoke-view-item-list/"
+    },
+    {
+      "idea_key": "73feebe70f5a57c10423915e5326cc3a0b6355fc",
+      "title": "Add E2E coverage for sync success path once scripts are restored",
+      "source_path": "docs/plans/xa-uploader-usability-hardening/results-review.user.md",
+      "plan_slug": "xa-e2e-sync-success-path",
+      "completed_at": "2026-02-26",
+      "output_link": "docs/plans/_archive/xa-e2e-sync-success-path/"
+    },
+    {
+      "idea_key": "2c2c1ae29f3909135687df537cc4141b8160852b",
+      "title": "Automate rounded → rounded-lg lint rule to prevent recurrence",
+      "source_path": "docs/plans/_archive/reception-ui-screen-polish-phase4/results-review.user.md",
+      "plan_slug": "reception-rounded-lg-lint-rule",
+      "completed_at": "2026-02-26",
+      "output_link": "docs/plans/_archive/reception-rounded-lg-lint-rule/"
+    },
+    {
+      "idea_key": "16634df2ebefc5651b0a6b7551502d2bbec1b86a",
+      "title": "Restore or port missing XA sync scripts to unblock J2",
+      "source_path": "docs/plans/xa-uploader-usability-hardening/results-review.user.md",
+      "plan_slug": "direct-fix-xa-scripts",
+      "completed_at": "2026-02-24",
+      "output_link": "scripts/src/xa/"
+    },
+    {
+      "idea_key": "3b8a236a10c0f0db3e1fbf72ad851005523c26e2",
+      "title": "Extend UI polish to Phase 4 screens (16 unread screens identified in fact-find) using same pattern",
+      "source_path": "docs/plans/_archive/reception-ui-screen-polish/results-review.user.md",
+      "plan_slug": "reception-ui-screen-polish-phase4",
+      "completed_at": "2026-02-26",
+      "output_link": "docs/plans/_archive/reception-ui-screen-polish-phase4/"
+    },
+    {
+      "idea_key": "0f3141291c45c80af447fafc4ca82ec1887cdd12",
+      "title": "Sweep PaymentsView.test.tsx to use data-cy attribute",
+      "source_path": "docs/plans/_archive/reception-ui-screen-polish-phase4/results-review.user.md",
+      "plan_slug": "direct-fix-paymentsview-data-cy",
+      "completed_at": "2026-02-26",
+      "output_link": "apps/reception/src/components/prepayments/__tests__/PaymentsView.test.tsx"
+    },
+    {
+      "idea_key": "492ebcde914e6d445092688ec0173dbbd5262ac5",
+      "title": "Extension.tsx debug console.log removal",
+      "source_path": "docs/plans/_archive/reception-ui-screen-polish-phase4/results-review.user.md",
+      "plan_slug": "direct-fix-extension-console-logs",
+      "completed_at": "2026-02-26",
+      "output_link": "apps/reception/src/components/man/Extension.tsx"
+    },
+    {
+      "idea_key": "25c8a8824d18b07ac37db9166dcff663b6ed4e3e",
+      "title": "Add IT locale /book route to the static export to stop the redirect to /en",
+      "source_path": "docs/plans/brikette-cta-sales-funnel-ga4/results-review.user.md",
+      "plan_slug": "brikette-it-book-route-static-export",
+      "completed_at": "2026-02-26",
+      "output_link": "docs/plans/_archive/brikette-it-book-route-static-export/"
+    },
+    {
+      "idea_key": "be4c24a746a5caf425cb4ee64fd66eea7732854f",
+      "title": "RSC conversion for RoomsStructuredData + ExperiencesStructuredData",
+      "source_path": "docs/plans/_archive/brikette-deeper-route-funnel-cro/results-review.user.md",
+      "plan_slug": "brikette-rsc-structured-data-conversion",
+      "completed_at": "2026-02-26",
+      "output_link": "docs/plans/_archive/brikette-rsc-structured-data-conversion/"
+    },
+    {
+      "idea_key": "dd4b7b7bd0cc835f9462068cf8867452a1662b24",
+      "title": "AI-to-mechanistic: local Jest pattern detection in plan docs",
+      "source_path": "docs/plans/_archive/ci-only-test-execution/results-review.user.md",
+      "plan_slug": "ci-only-test-execution",
+      "completed_at": "2026-02-27",
+      "output_link": "docs/plans/_archive/ci-only-test-execution/"
+    },
+    {
+      "idea_key": "c3e81fb537fe78b02811b005c9da39423ebeff88",
+      "title": "Automate Codex build trigger (v2)",
+      "source_path": "docs/plans/_archive/codemoot-cross-agent-critique/results-review.user.md",
+      "plan_slug": "n/a — already implemented via lp-do-plan Phase 10 plan+auto mode",
+      "completed_at": "2026-02-27",
+      "output_link": ".claude/skills/lp-do-plan/SKILL.md"
+    }
+  ]
+}

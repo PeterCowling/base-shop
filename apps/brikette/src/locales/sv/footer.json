@@ -1,7 +1,7 @@
 {
   "home": "Hem",
-  "rooms": "Rum",
-  "apartment": "Lägenhet",
+  "rooms": "Dorm",
+  "apartment": "Privata Rum",
   "assistance": "Hjälp",
   "careers": "Karriär",
   "deals": "Erbjudanden",
@@ -14,12 +14,12 @@
   "phone": "Telefon",
   "noPhoneNotice": "För snabbast svar, kontakta oss via e-post.",
   "follow": "Följ oss",
-  "instagram": "Instagram",
-  "facebook": "Facebook",
+  "instagram": "Instagram Instagram Instagram Instagram Instagram",
+  "facebook": "Facebook Facebook Facebook",
   "experiences": "Upplevelser",
   "howToGetHere": "Hitta hit",
   "exploreHeading": "Utforska",
-  "infoHeading": "Info",
+  "infoHeading": "Info info info",
   "legalHeading": "Juridik",
   "locationHeading": "Adress",
   "mapLink": "Öppna i Google Maps",
@@ -30,5 +30,5 @@
   "cancellationPolicy": "Avbokningspolicy",
   "privacy": "Integritetspolicy",
   "cookies": "Cookiepolicy",
-  "navAriaLabel": "Footer navigation"
+  "navAriaLabel": "fot navigation"
 }

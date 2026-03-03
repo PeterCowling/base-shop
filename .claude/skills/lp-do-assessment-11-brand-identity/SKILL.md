@@ -5,7 +5,7 @@ description: Visual brand identity for new startups (ASSESSMENT-11). Reads brand
 
 # lp-do-assessment-11-brand-identity — Brand Identity (ASSESSMENT-11)
 
-Synthesizes brand strategy and product context into concrete visual identity decisions. Reads `brand-strategy.user.md` (ASSESSMENT-10 output) and the ASSESSMENT intake packet, then produces a `brand-dossier.user.md` with colour palette, typography, shape/elevation, imagery direction, and token overrides. Does not re-elicit audience or personality — these are carried forward from ASSESSMENT-10.
+Synthesizes brand strategy and product context into concrete visual identity decisions. Reads `<YYYY-MM-DD>-brand-profile.user.md` (ASSESSMENT-10 output) and the ASSESSMENT intake packet, then produces a `<YYYY-MM-DD>-brand-identity-dossier.user.md` with colour palette, typography, shape/elevation, imagery direction, and token overrides. Does not re-elicit audience or personality — these are carried forward from ASSESSMENT-10.
 
 ## Invocation
 
@@ -33,15 +33,15 @@ Does NOT:
 
 | Source | Path | Required |
 |--------|------|----------|
-| Brand strategy | `docs/business-os/strategy/<BIZ>/brand-strategy.user.md` | Yes — primary input; blocks if absent |
-| ASSESSMENT intake packet | `docs/business-os/startup-baselines/<BIZ>-intake-packet.user.md` | Yes — provides product context, ICP, positioning |
+| Brand strategy | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-profile.user.md` | Yes — primary input; blocks if absent |
+| ASSESSMENT intake packet | `docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md` | Yes — provides product context, ICP, positioning |
 | Brand language template | `.claude/skills/_shared/brand-language-template.md` | Yes — structural reference |
 | Theme tokens | `packages/themes/<theme>/src/tokens.ts` | No — read if a theme package exists for this business |
 | Existing app UI | `apps/<app>/src/app/layout.tsx`, key pages | No — read if an app already exists |
-| BRIK brand dossier (reference) | `docs/business-os/strategy/BRIK/brand-dossier.user.md` | No — reference example of a complete dossier |
+| BRIK brand dossier (reference) | `docs/business-os/strategy/BRIK/<YYYY-MM-DD>-brand-identity-dossier.user.md` | No — reference example of a complete dossier |
 
-If `brand-strategy.user.md` is absent, halt and emit:
-> "ASSESSMENT-10 artifact not found at `docs/business-os/strategy/<BIZ>/brand-strategy.user.md`. Run `/lp-do-assessment-10-brand-profiling --business <BIZ>` first."
+If `<YYYY-MM-DD>-brand-profile.user.md` is absent, halt and emit:
+> "ASSESSMENT-10 artifact not found at `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-profile.user.md`. Run `/lp-do-assessment-10-brand-profiling --business <BIZ>` first."
 
 ---
 
@@ -49,7 +49,7 @@ If `brand-strategy.user.md` is absent, halt and emit:
 
 ### Step 1: Read brand strategy and intake context
 
-1. Read `brand-strategy.user.md`. Extract:
+1. Read `<YYYY-MM-DD>-brand-profile.user.md`. Extract:
    - Confirmed operating name
    - Audience (primary, secondary, device, context)
    - Personality adjective pairs
@@ -69,7 +69,7 @@ If `brand-strategy.user.md` is absent, halt and emit:
 For each visual identity dimension below, reason from the brand strategy inputs and product context to a concrete design decision. Document the rationale briefly.
 
 **Colour palette:**
-- **Imagery prominence check (do this first):** Read `imagery_prominence` from Section E of `brand-strategy.user.md`.
+- **Imagery prominence check (do this first):** Read `imagery_prominence` from Section E of `<YYYY-MM-DD>-brand-profile.user.md`.
   - `high` → Choose a **recessive palette** (muted pastels, low-saturation neutrals). Product images must do the visual work — a saturated or dark primary competes with bright photography and reduces conversion on image-heavy pages.
   - `medium` → Balanced palette acceptable; avoid saturated primaries that fight mid-range product photography.
   - `low` → Expressive palette permitted; brand colour can lead.
@@ -133,7 +133,7 @@ If no theme package exists yet:
 Using the template at `.claude/skills/_shared/brand-language-template.md` as the structural reference:
 
 1. Copy the template structure.
-2. Carry Audience, Personality, and Voice & Tone directly from `brand-strategy.user.md` — do not re-derive.
+2. Carry Audience, Personality, and Voice & Tone directly from `<YYYY-MM-DD>-brand-profile.user.md` — do not re-derive.
 3. Fill Visual Identity and Token Overrides from Steps 2–3.
 4. Set Signature Patterns to `TBD — patterns emerge through lp-design-spec work`.
 5. Fill App Coverage if an app exists; otherwise set to `TBD — app not yet built`.
@@ -142,21 +142,21 @@ Using the template at `.claude/skills/_shared/brand-language-template.md` as the
 
 ### Step 5: Generate HTML brand discovery document
 
-After saving the `.md` dossier, produce a second output: a self-contained HTML brand discovery document at `docs/business-os/strategy/<BIZ>/brand-discovery-document.user.html`.
+After saving the `.md` dossier, produce a second output: a self-contained HTML brand discovery document at `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-preview.user.html`.
 
-**Approach:** Use `docs/business-os/strategy/HBAG/brand-discovery-document.user.html` as the rendering template — copy the JS rendering engine verbatim. Only populate the `CONFIG` object at the top with this business's data. Do not modify the rendering functions.
+**Approach:** Use `docs/business-os/strategy/HBAG/<YYYY-MM-DD>-brand-identity-preview.user.html` as the rendering template — copy the JS rendering engine verbatim. Only populate the `CONFIG` object at the top with this business's data. Do not modify the rendering functions.
 
 **CONFIG field mapping** (derive each from the artifacts you have already read):
 
 ```
 CONFIG.meta
   businessCode    ← <BIZ> code
-  businessName    ← confirmed operating name from brand-strategy.user.md
+  businessName    ← confirmed operating name from <YYYY-MM-DD>-brand-profile.user.md
   tagline         ← first key phrase from Voice & Tone, or "TBD"
   coreClaim       ← top 3 key phrases joined with ". " or "TBD"
   date            ← current month + year
   stage           ← "ASSESSMENT-11 Complete"
-  market          ← primary channel + geography from intake packet or distribution-plan.user.md; "TBD" if not available
+  market          ← primary channel + geography from intake packet or <YYYY-MM-DD>-launch-distribution-plan.user.md; "TBD" if not available
   tamNote         ← market size note from intake packet or "TBD"
   priceRange      ← price range from intake packet or offer
 
@@ -176,7 +176,7 @@ CONFIG.fonts
 
 CONFIG.radius     ← { md: <--radius-md value>, lg: <--radius-lg value or "8px"> }
 
-CONFIG.problem    ← problem statement from intake packet or problem-statement.user.md; "TBD" if not available
+CONFIG.problem    ← problem statement from intake packet or <YYYY-MM-DD>-problem-statement.user.md; "TBD" if not available
 
 CONFIG.solution   ← solution description from intake packet or s0c-option-select.user.md; "TBD" if not available
 
@@ -213,9 +213,9 @@ Report:
 
 ## Output Contract
 
-**Primary path:** `docs/business-os/strategy/<BIZ>/brand-dossier.user.md`
+**Primary path:** `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md`
 
-**Secondary path (auto-produced):** `docs/business-os/strategy/<BIZ>/brand-discovery-document.user.html`
+**Secondary path (auto-produced):** `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-preview.user.html`
 
 **Frontmatter:**
 
@@ -249,7 +249,7 @@ Owner: <operator>
 
 Before saving, verify:
 
-- [ ] `brand-strategy.user.md` was read and Audience + Personality sections are populated directly from it (no re-elicitation)
+- [ ] `<YYYY-MM-DD>-brand-profile.user.md` was read and Audience + Personality sections are populated directly from it (no re-elicitation)
 - [ ] Visual Identity section is complete: Colour Palette has ≥2 rows (light), Typography has ≥1 row
 - [ ] Dark mode palette table is present with ≥6 token rows (bg, fg, fg-muted, border, primary, accent minimum)
 - [ ] Dark mode mood summary present (1 sentence)
@@ -259,7 +259,7 @@ Before saving, verify:
 - [ ] Frontmatter fields all present: Type, Stage, Business-Unit, Business-Name, Status, Created, Updated, Last-reviewed, Owner
 - [ ] Status is `Draft` (not Active — operator review required before promoting)
 - [ ] `.md` dossier saved to correct path before completion message
-- [ ] HTML brand discovery document saved to `docs/business-os/strategy/<BIZ>/brand-discovery-document.user.html`
+- [ ] HTML brand discovery document saved to `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-preview.user.html`
 - [ ] HTML CONFIG populated from dossier + intake packet (TBD for unavailable fields — no invented data)
 - [ ] Colour palette: primary+primary-fg pairing documented (foreground on primary surface must meet WCAG AA)
 - [ ] Dark mode hue family stays consistent with light palette (no switching to unrelated hue)
@@ -268,7 +268,7 @@ Before saving, verify:
 
 Invalid outputs — do not emit:
 
-- Audience or Personality sections derived differently from what is in `brand-strategy.user.md` (ASSESSMENT-10 output)
+- Audience or Personality sections derived differently from what is in `<YYYY-MM-DD>-brand-profile.user.md` (ASSESSMENT-10 output)
 - Visual Identity section missing Colour Palette or Typography
 - Dark mode palette table missing or has fewer than 6 token rows
 - Dark mode palette uses a different hue family from the light palette (e.g., switching to cool grey for a warm-toned brand)
@@ -280,9 +280,9 @@ Invalid outputs — do not emit:
 
 ## Completion Message
 
-> "Brand identity recorded: `docs/business-os/strategy/<BIZ>/brand-dossier.user.md`. Colour palette: <N> tokens. Typography: <font family>. Token overrides: <N rows>."
+> "Brand identity recorded: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md`. Colour palette: <N> tokens. Typography: <font family>. Token overrides: <N rows>."
 >
-> "Brand discovery document produced: `docs/business-os/strategy/<BIZ>/brand-discovery-document.user.html`. Open in a browser to review the visual identity."
+> "Brand discovery document produced: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-preview.user.html`. Open in a browser to review the visual identity."
 >
 > "ASSESSMENT stage complete. Next step: run `/lp-readiness --business <BIZ>` to enter S1."
 
@@ -290,10 +290,10 @@ Invalid outputs — do not emit:
 
 ## Integration
 
-**Upstream (ASSESSMENT-10):** Reads `brand-strategy.user.md` as required input. Audience, Personality, and Voice & Tone sections are carried forward directly.
+**Upstream (ASSESSMENT-10):** Reads `<YYYY-MM-DD>-brand-profile.user.md` as required input. Audience, Personality, and Voice & Tone sections are carried forward directly.
 
 **Downstream (S1):** After ASSESSMENT-11 saves the brand dossier, the operator proceeds to S1 (`/lp-readiness`). There is no ASSESSMENT gate.
 
-**Later consumption:** `/lp-design-spec` reads `brand-dossier.user.md` at DO+ and writes back stable new patterns to the Signature Patterns section. `/lp-do-build` references it for UI implementation guidance.
+**Later consumption:** `/lp-design-spec` reads `<YYYY-MM-DD>-brand-identity-dossier.user.md` at DO+ and writes back stable new patterns to the Signature Patterns section. `/lp-do-build` references it for UI implementation guidance.
 
 **Replaces:** This skill supersedes `/lp-assessment-bootstrap` as the canonical brand identity skill within the startup loop ASSESSMENT stage. `lp-assessment-bootstrap` remains available for standalone use outside the loop.

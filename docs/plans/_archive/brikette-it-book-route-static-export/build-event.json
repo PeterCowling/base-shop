@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "brikette-it-book-route-static-export-2026-02-26",
+  "feature_slug": "brikette-it-book-route-static-export",
+  "emitted_at": "2026-02-26T00:00:00.000Z",
+  "why": "Italian is the primary non-English language for Positano visitors; /it/prenota is the booking entry point distributed through Italian marketing. Redirecting to /en loses conversion and degrades SEO for the IT locale.",
+  "why_source": "auto",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "/it/prenota serves a 200 response with Italian booking content in the Cloudflare Pages static export; a CI test or smoke assertion guards against regression.",
+    "source": "auto"
+  }
+}

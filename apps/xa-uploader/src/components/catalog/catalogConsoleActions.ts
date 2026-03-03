@@ -20,13 +20,20 @@ import {
   getCatalogApiErrorMessage,
   getSyncFailureMessage,
   type SubmissionAction,
+  type SubmissionStep,
   type SyncResponse,
   tryBeginBusyAction,
   updateActionFeedback,
 } from "./catalogConsoleFeedback";
 import { buildLogBlock, toErrorMap } from "./catalogConsoleUtils";
 import { buildEmptyDraft, withDraftDefaults } from "./catalogDraft";
-import { downloadBlob, fetchSubmissionZip } from "./catalogSubmissionClient";
+import {
+  downloadBlob,
+  enqueueSubmissionJob,
+  parseFilenameFromDisposition,
+  pollJobUntilComplete,
+  SubmissionApiError,
+} from "./catalogSubmissionClient";
 
 type Translator = (key: string, vars?: Record<string, unknown>) => string;
 
@@ -138,12 +145,15 @@ export function toggleSubmissionSlug(
 export function handleClearSubmissionImpl({
   setSubmissionSlugs,
   setActionFeedback,
+  setSubmissionStep,
 }: {
   setSubmissionSlugs: React.Dispatch<React.SetStateAction<Set<string>>>;
   setActionFeedback: React.Dispatch<React.SetStateAction<ActionFeedbackState>>;
+  setSubmissionStep: React.Dispatch<React.SetStateAction<SubmissionStep>>;
 }): void {
   setSubmissionSlugs(new Set());
   clearActionFeedbackDomains(setActionFeedback, ["submission"]);
+  setSubmissionStep(null);
 }
 
 function parseUploadEndpoint(rawUploadUrl: string): {
@@ -151,26 +161,48 @@ function parseUploadEndpoint(rawUploadUrl: string): {
   token?: string;
 } {
   const trimmed = rawUploadUrl.trim();
-  try {
-    const parsed = new URL(trimmed);
-    const headerToken =
-      parsed.searchParams.get("token")?.trim() || parsed.searchParams.get("uploadToken")?.trim() || "";
-    if (headerToken) {
-      parsed.searchParams.delete("token");
-      parsed.searchParams.delete("uploadToken");
-      return { endpointUrl: parsed.toString(), token: headerToken };
-    }
-
-    const segments = parsed.pathname.split("/").filter(Boolean);
-    if (segments.length === 2 && segments[0] === "upload") {
-      const pathToken = decodeURIComponent(segments[1] ?? "").trim();
-      parsed.pathname = "/upload";
-      return pathToken ? { endpointUrl: parsed.toString(), token: pathToken } : { endpointUrl: parsed.toString() };
-    }
-    return { endpointUrl: parsed.toString() };
-  } catch {
-    return { endpointUrl: trimmed };
+  if (!trimmed) {
+    throw new Error("invalid_upload_url");
   }
+
+  let parsed: URL;
+  try {
+    parsed = new URL(trimmed);
+  } catch {
+    throw new Error("invalid_upload_url");
+  }
+
+  if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+    throw new Error("invalid_upload_url");
+  }
+
+  const headerToken =
+    parsed.searchParams.get("token")?.trim() || parsed.searchParams.get("uploadToken")?.trim() || "";
+  if (headerToken) {
+    parsed.searchParams.delete("token");
+    parsed.searchParams.delete("uploadToken");
+    return { endpointUrl: parsed.toString(), token: headerToken };
+  }
+
+  const segments = parsed.pathname.split("/").filter(Boolean);
+  if (segments.length === 2 && segments[0] === "upload") {
+    const pathToken = decodeURIComponent(segments[1] ?? "").trim();
+    parsed.pathname = "/upload";
+    if (!pathToken) {
+      throw new Error("invalid_upload_url");
+    }
+    return { endpointUrl: parsed.toString(), token: pathToken };
+  }
+
+  return { endpointUrl: parsed.toString() };
+}
+
+function getSubmissionErrorReason(error: unknown): string | undefined {
+  if (!error || typeof error !== "object" || !("reason" in error)) {
+    return undefined;
+  }
+  const reason = (error as { reason?: unknown }).reason;
+  return typeof reason === "string" ? reason : undefined;
 }
 
 export async function handleLoginImpl({
@@ -481,22 +513,22 @@ export async function handleSyncImpl({
 export async function handleExportSubmissionImpl({
   submissionSlugs,
   storefront,
-  uploaderMode,
   t,
   busyLockRef,
   setBusy,
   setActionFeedback,
   setSubmissionAction,
+  setSubmissionStep,
   handleClearSubmission,
 }: {
   submissionSlugs: Set<string>;
   storefront: XaCatalogStorefront;
-  uploaderMode: "vendor" | "internal";
   t: Translator;
   busyLockRef: BusyLockRef;
   setBusy: React.Dispatch<React.SetStateAction<boolean>>;
   setActionFeedback: React.Dispatch<React.SetStateAction<ActionFeedbackState>>;
   setSubmissionAction: React.Dispatch<React.SetStateAction<SubmissionAction>>;
+  setSubmissionStep: React.Dispatch<React.SetStateAction<SubmissionStep>>;
   handleClearSubmission: () => void;
 }): Promise<void> {
   if (submissionSlugs.size === 0) return;
@@ -505,26 +537,35 @@ export async function handleExportSubmissionImpl({
   setSubmissionAction("export");
   try {
     const slugs = Array.from(submissionSlugs);
-    const { blob, filename, submissionId, r2Key } = await fetchSubmissionZip(
-      slugs,
-      t("exportFailed"),
-      storefront,
-    );
+    const { jobId } = await enqueueSubmissionJob(slugs, storefront);
+    setSubmissionStep("polling");
+    const downloadUrl = await pollJobUntilComplete(jobId);
+    const response = await fetch(downloadUrl);
+    if (!response.ok) {
+      throw new SubmissionApiError("download_failed");
+    }
+    const blob = await response.blob();
+    const filename =
+      parseFilenameFromDisposition(response.headers.get("Content-Disposition")) || "submission.zip";
     downloadBlob(blob, filename);
     handleClearSubmission();
-    const statusParts: string[] = [];
-    statusParts.push(submissionId ? t("submissionReady", { id: submissionId }) : filename);
-    if (uploaderMode === "internal" && r2Key) statusParts.push(r2Key);
     updateActionFeedback(setActionFeedback, "submission", {
       kind: "success",
-      message: statusParts.join(" · "),
+      message: t("submissionReady", { id: jobId || filename }),
     });
   } catch (err) {
+    const reason = getSubmissionErrorReason(err);
     updateActionFeedback(setActionFeedback, "submission", {
       kind: "error",
-      message: getCatalogApiErrorMessage(err instanceof Error ? err.message : undefined, "exportFailed", t),
+      message: getCatalogApiErrorMessage(
+        err instanceof Error ? err.message : undefined,
+        "exportFailed",
+        t,
+        reason,
+      ),
     });
   } finally {
+    setSubmissionStep(null);
     setSubmissionAction(null);
     endBusyAction(busyLockRef, setBusy);
   }
@@ -534,23 +575,23 @@ export async function handleUploadSubmissionToR2Impl({
   submissionSlugs,
   submissionUploadUrl,
   storefront,
-  uploaderMode,
   t,
   busyLockRef,
   setBusy,
   setActionFeedback,
   setSubmissionAction,
+  setSubmissionStep,
   handleClearSubmission,
 }: {
   submissionSlugs: Set<string>;
   submissionUploadUrl: string;
   storefront: XaCatalogStorefront;
-  uploaderMode: "vendor" | "internal";
   t: Translator;
   busyLockRef: BusyLockRef;
   setBusy: React.Dispatch<React.SetStateAction<boolean>>;
   setActionFeedback: React.Dispatch<React.SetStateAction<ActionFeedbackState>>;
   setSubmissionAction: React.Dispatch<React.SetStateAction<SubmissionAction>>;
+  setSubmissionStep: React.Dispatch<React.SetStateAction<SubmissionStep>>;
   handleClearSubmission: () => void;
 }): Promise<void> {
   if (submissionSlugs.size === 0) return;
@@ -560,14 +601,20 @@ export async function handleUploadSubmissionToR2Impl({
   setSubmissionAction("upload");
   try {
     const slugs = Array.from(submissionSlugs);
-    const { blob, filename, submissionId, r2Key } = await fetchSubmissionZip(
-      slugs,
-      t("exportFailed"),
-      storefront,
-    );
+    const { jobId } = await enqueueSubmissionJob(slugs, storefront);
+    setSubmissionStep("polling");
+    const downloadUrl = await pollJobUntilComplete(jobId);
+    setSubmissionStep("uploading-zip");
+    const dlResponse = await fetch(downloadUrl);
+    if (!dlResponse.ok) {
+      throw new SubmissionApiError("download_failed");
+    }
+    const blob = await dlResponse.blob();
+    const filename =
+      parseFilenameFromDisposition(dlResponse.headers.get("Content-Disposition")) || "submission.zip";
     const uploadTarget = parseUploadEndpoint(submissionUploadUrl);
     const headers: Record<string, string> = { "Content-Type": "application/zip" };
-    if (submissionId) headers["X-XA-Submission-Id"] = submissionId;
+    if (jobId) headers["X-XA-Submission-Id"] = jobId;
     if (uploadTarget.token) headers["X-XA-Upload-Token"] = uploadTarget.token;
     const res = await fetch(uploadTarget.endpointUrl, {
       method: "PUT",
@@ -578,19 +625,23 @@ export async function handleUploadSubmissionToR2Impl({
       throw new Error("internal_error");
     }
     handleClearSubmission();
-    const statusParts: string[] = [];
-    statusParts.push(submissionId ? t("submissionUploaded", { id: submissionId }) : filename);
-    if (uploaderMode === "internal" && r2Key) statusParts.push(r2Key);
     updateActionFeedback(setActionFeedback, "submission", {
       kind: "success",
-      message: statusParts.join(" · "),
+      message: t("submissionUploaded", { id: jobId || filename }),
     });
   } catch (err) {
+    const reason = getSubmissionErrorReason(err);
     updateActionFeedback(setActionFeedback, "submission", {
       kind: "error",
-      message: getCatalogApiErrorMessage(err instanceof Error ? err.message : undefined, "exportFailed", t),
+      message: getCatalogApiErrorMessage(
+        err instanceof Error ? err.message : undefined,
+        "exportFailed",
+        t,
+        reason,
+      ),
     });
   } finally {
+    setSubmissionStep(null);
     setSubmissionAction(null);
     endBusyAction(busyLockRef, setBusy);
   }

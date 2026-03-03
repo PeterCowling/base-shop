@@ -1,7 +1,7 @@
 {
   "home": "Pagina iniziale",
-  "rooms": "Camere",
-  "apartment": "Appartamento",
+  "rooms": "Dormitori",
+  "apartment": "Camere Private",
   "assistance": "Assistenza",
   "careers": "Carriere",
   "deals": "Offerte",
@@ -19,7 +19,7 @@
   "experiences": "Esperienze",
   "howToGetHere": "Come arrivare",
   "exploreHeading": "Esplora",
-  "infoHeading": "Info",
+  "infoHeading": "Informazioni",
   "legalHeading": "Legale",
   "locationHeading": "Indirizzo",
   "mapLink": "Apri in Google Maps",
@@ -30,5 +30,5 @@
   "cancellationPolicy": "Politica di cancellazione",
   "privacy": "Informativa sulla privacy",
   "cookies": "Informativa sui cookie",
-  "navAriaLabel": "Footer navigation"
+  "navAriaLabel": "Navigazione dei piedi"
 }

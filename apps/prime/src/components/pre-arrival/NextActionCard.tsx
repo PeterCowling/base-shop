@@ -1,9 +1,11 @@
+/* eslint-disable ds/enforce-layout-primitives -- BRIK-3 prime DS rules deferred */
 /**
  * NextActionCard.tsx
  *
  * Prominent card showing the next recommended action for pre-arrival readiness.
  * Displays contextual messaging based on what's not yet completed.
  */
+'use client';
 
 import { type FC, memo, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -141,6 +143,7 @@ export const NextActionCard: FC<NextActionCardProps> = memo(function NextActionC
   const recentCompletionPrefix = recentlyCompletedItem
     ? `Nice work on ${getChecklistItemLabel(recentlyCompletedItem)}. `
     : '';
+  const actionBtnCls = 'flex w-full items-center justify-center gap-2 rounded-xl bg-background px-4 py-3 font-medium text-foreground transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]';
 
   return (
     <div
@@ -152,7 +155,9 @@ export const NextActionCard: FC<NextActionCardProps> = memo(function NextActionC
       `}
     >
       {/* Background decoration */}
+      {/* eslint-disable-next-line ds/absolute-parent-guard -- PRIME-1: parent div has `relative` in template literal; rule does not parse dynamic classNames */}
       <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-background/10" />
+      {/* eslint-disable-next-line ds/absolute-parent-guard -- PRIME-1: parent div has `relative` in template literal; rule does not parse dynamic classNames */}
       <div className="absolute -bottom-6 -left-6 h-32 w-32 rounded-full bg-background/5" />
 
       {/* Content */}
@@ -180,13 +185,7 @@ export const NextActionCard: FC<NextActionCardProps> = memo(function NextActionC
           <button
             type="button"
             onClick={() => onAction(nextItem)}
-            className="
-              flex w-full items-center justify-center gap-2
-              rounded-xl bg-background px-4 py-3
-              font-medium text-foreground
-              transition-transform duration-200
-              hover:scale-[1.02] active:scale-[0.98]
-            "
+            className={actionBtnCls}
           >
             {content.buttonText}
             <ArrowRight className="h-4 w-4" />

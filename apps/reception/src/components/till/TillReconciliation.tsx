@@ -1,14 +1,18 @@
 // src/components/till/TillReconciliation.tsx
 
 import { memo } from "react";
+import { AlertTriangle, Info } from "lucide-react";
 
 import { useTillReconciliationUI } from "../../hooks/client/till/useTillReconciliationUI";
+import { useCashCountsData } from "../../hooks/data/useCashCountsData";
 import { useTillReconciliationLogic } from "../../hooks/useTillReconciliationLogic";
+import { endOfDayIso, sameItalyDate, startOfDayIso } from "../../utils/dateUtils";
 import { PageShell } from "../common/PageShell";
 
 import ActionButtons from "./ActionButtons";
 import AddKeycardsModal from "./AddKeycardsModal";
 import DrawerLimitWarning from "./DrawerLimitWarning";
+import DrawerOverrideModal from "./DrawerOverrideModal";
 import FormsContainer from "./FormsContainer";
 import ReturnKeycardsModal from "./ReturnKeycardsModal";
 import TillShiftHistory from "./TillShiftHistory";
@@ -29,15 +33,24 @@ function TillReconciliation(): JSX.Element {
   const logic = useTillReconciliationLogic(ui);
   const props = { ...logic, ...ui };
 
+  const { cashCounts } = useCashCountsData({
+    orderByChild: "timestamp",
+    startAt: startOfDayIso(new Date()),
+    endAt: endOfDayIso(new Date()),
+  });
+  const floatDoneToday = cashCounts.some(
+    (c) => c.type === "openingFloat" && sameItalyDate(c.timestamp, new Date())
+  );
+
   if (!props.user) {
     return (
-      <p className="p-5 text-error-main">Not authorized. Please log in.</p>
+      <p className="p-5 text-danger-fg">Not authorized. Please log in.</p>
     );
   }
 
   return (
     <PageShell title="TILL MANAGEMENT">
-      <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-8">
+      <div className="flex-grow bg-surface rounded-lg shadow-lg p-6 space-y-8">
         <DrawerLimitWarning
           show={props.isDrawerOverLimit}
           onLift={props.handleLiftClick}
@@ -59,14 +72,38 @@ function TillReconciliation(): JSX.Element {
           handleReturnKeycard={props.handleReturnKeycard}
           handleLiftClick={props.handleLiftClick}
         />
+        {props.shiftOpenTime === null && !floatDoneToday && (
+          <div
+            className="bg-warning/10 border border-warning rounded-lg px-4 py-3 flex items-center gap-3"
+            data-cy="float-nudge-banner"
+          >
+            <AlertTriangle className="text-warning shrink-0" size={16} aria-hidden="true" />
+            <span className="text-foreground text-sm font-semibold">
+              Opening float not set —{" "}
+              <a
+                href="/eod-checklist/"
+                className="underline hover:opacity-80"
+                data-cy="float-nudge-link"
+              >
+                Go to EOD checklist →
+              </a>
+            </span>
+          </div>
+        )}
         {props.isEditMode && (
-          <div className="text-info-main text-sm font-semibold text-center">
-            Click a row to edit the transaction
+          <div className="bg-primary-soft border border-primary-main/30 rounded-lg px-4 py-3 flex items-center gap-3">
+            <Info className="text-primary-main shrink-0" size={16} aria-hidden="true" />
+            <span className="text-foreground text-sm font-semibold">
+              Click a row to edit the transaction
+            </span>
           </div>
         )}
         {props.isDeleteMode && (
-          <div className="text-error-main text-sm font-semibold text-center">
-            Click a row to delete the transaction
+          <div className="bg-warning/10 border border-warning rounded-lg px-4 py-3 flex items-center gap-3">
+            <AlertTriangle className="text-warning shrink-0" size={16} aria-hidden="true" />
+            <span className="text-foreground text-sm font-semibold">
+              Click a row to void the transaction
+            </span>
           </div>
         )}
         <FormsContainer
@@ -114,6 +151,13 @@ function TillReconciliation(): JSX.Element {
           <ReturnKeycardsModal
             onConfirm={props.confirmReturnKeycard}
             onCancel={props.cancelReturnKeycard}
+          />
+        )}
+        {props.showDrawerOverrideModal && (
+          <DrawerOverrideModal
+            shiftOwnerName={props.shiftOwner ?? ""}
+            onConfirm={props.confirmDrawerOverride}
+            onCancel={props.cancelDrawerOverride}
           />
         )}
       </div>

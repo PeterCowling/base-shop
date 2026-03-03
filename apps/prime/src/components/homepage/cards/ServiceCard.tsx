@@ -1,3 +1,4 @@
+/* eslint-disable ds/container-widths-only-at, ds/enforce-layout-primitives -- BRIK-3 prime DS rules deferred */
 /**
  * ServiceCard.tsx
  *
@@ -6,6 +7,7 @@
  */
 
 import { memo } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { Card } from '@acme/design-system/primitives';
@@ -33,12 +35,12 @@ export const ServiceCard = memo(function ServiceCard({
   return (
     <Card
       className="
-        w-full max-w-[370px]
+        w-full max-w-sm
         overflow-hidden
         transition-transform duration-300
         flex flex-col
-        text-left
-        ml-4
+        text-start
+        ms-4
         hover:-translate-y-1
         hover:shadow-lg
       "
@@ -55,11 +57,13 @@ export const ServiceCard = memo(function ServiceCard({
       <div className="flex flex-row items-center p-4 w-full gap-4">
         {image && (
           <Link href={to}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={image}
               alt={alt || ''}
-              className="max-w-[200px] h-auto object-cover rounded"
+              width={200}
+              height={200}
+              className="max-w-48 object-cover rounded"
+              unoptimized
             />
           </Link>
         )}

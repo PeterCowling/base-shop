@@ -2,9 +2,13 @@ import type { Metadata } from "next";
 
 const getTranslationsMock = jest.fn<Promise<(key: string, options?: Record<string, unknown>) => string>, unknown[]>(async () => {
   return (key: string, options?: Record<string, unknown>) => {
-    if (key === "meta.title") return "Save 15% on stays Sept 20 - Oct 31";
+    if (key === "meta.title") {
+      const pct = typeof options?.percent === "string" ? options.percent : "15%";
+      return `Save ${pct} on stays Sept 20 - Oct 31`;
+    }
     if (key === "meta.description") {
-      return "Limited-time offer: save 15% on direct bookings for stays from Sept 20 to Oct 31.";
+      const pct = typeof options?.percent === "string" ? options.percent : "15%";
+      return `Limited-time offer: save ${pct} on direct bookings for stays from Sept 20 to Oct 31.`;
     }
     if (typeof options?.defaultValue === "string") return options.defaultValue;
     return key;

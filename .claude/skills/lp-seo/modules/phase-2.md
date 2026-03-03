@@ -2,7 +2,7 @@
 
 **Loads**: `phase-base-contract.md` (output location, common inputs, inter-phase handoff, quality requirements)
 **Prerequisites**: Phase 1 keyword-universe output
-**Output**: `docs/business-os/strategy/<BIZ>/seo/<YYYY-MM-DD>-content-clusters-<BIZ>.user.md`
+**Output**: `docs/business-os/strategy/<BIZ>/marketing/seo/<YYYY-MM-DD>-content-clusters-<BIZ>.user.md`
 
 Group keywords into topical clusters for content strategy and internal linking architecture.
 

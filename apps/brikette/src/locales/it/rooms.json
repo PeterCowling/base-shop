@@ -51,6 +51,118 @@
           "body": "Prese elettriche, luci individuali e armadietti a tessera ti aiutano a restare organizzato anche in viaggio."
         }
       ]
+    },
+    "room_3": {
+      "amenities": [
+        {
+          "title": "Ottimo rapporto qualità-prezzo, posizione perfetta",
+          "body": "Una delle nostre opzioni più convenienti si trova nel cuore dell'ostello — vicino alla reception, alla cucina condivisa e agli altri viaggiatori."
+        },
+        {
+          "title": "Piano riservato alle donne",
+          "body": "La camera 3 fa parte di una sezione dell'ostello riservata alle donne. Il bagno condiviso nelle vicinanze è pulito, ben fornito e ad uso esclusivo delle ospiti."
+        },
+        {
+          "title": "Privacy integrata in ogni letto",
+          "body": "Ogni cuccetta è dotata di tende per la privacy, una luce di lettura personale e prese di ricarica per sistemarsi a qualsiasi ora senza disturbare i vicini."
+        }
+      ]
+    },
+    "room_4": {
+      "amenities": [
+        {
+          "title": "Spazio riservato alle donne",
+          "body": "Un dormitorio dedicato solo alle donne con il proprio bagno condiviso — pulito, ben mantenuto e riservato esclusivamente alle ospiti di questo piano."
+        },
+        {
+          "title": "Posto per tutti",
+          "body": "Otto letti su quattro cuccette significa che c'è sempre qualcuno con cui condividere un consiglio o una gita in spiaggia, senza il caos di un dormitorio misto più grande."
+        },
+        {
+          "title": "L'essenziale ad ogni cuccetta",
+          "body": "Ogni letto ha tende per la privacy, una luce di lettura e prese USB in modo che il tuo telefono sia pronto per le avventure di domani."
+        }
+      ]
+    },
+    "room_5": {
+      "amenities": [
+        {
+          "title": "Terrazza con vista mare inclusa",
+          "body": "Esci sulla terrazza condivisa per ammirare le viste panoramiche di Positano e del Mar Tirreno — un panorama che la maggior parte degli ospiti non vuole lasciare."
+        },
+        {
+          "title": "Bagno privato per la camera",
+          "body": "Un bagno privato condiviso solo tra i compagni di camera significa nessuna coda mattutina e tutto lo spazio necessario per prepararsi al proprio ritmo."
+        },
+        {
+          "title": "Sociale ma confortevole",
+          "body": "Sei letti in un layout aperto con tende, luci di lettura e punti di ricarica ad ogni cuccetta — abbastanza vicini per fare amicizie, abbastanza privati per dormire bene."
+        }
+      ]
+    },
+    "room_6": {
+      "amenities": [
+        {
+          "title": "Terrazza con vista sulla Costiera Amalfitana",
+          "body": "La terrazza condivisa con vista mare è a pochi passi dalla camera — perfetta per allungamenti all'alba, aperitivo serale o semplicemente guardare le barche nella baia."
+        },
+        {
+          "title": "Il tuo bagno privato",
+          "body": "Il bagno en-suite appartiene solo a questa camera, così puoi impostare il tuo programma di docce mattutine senza mai fare la fila."
+        },
+        {
+          "title": "Layout dei letti flessibile",
+          "body": "Tre cuccette più un letto singolo si adattano naturalmente ai viaggiatori singoli e alle coppie, ogni posto attrezzato con tende, luci e prese."
+        }
+      ]
+    },
+    "room_8": {
+      "amenities": [
+        {
+          "title": "Rifugio con vista sul giardino",
+          "body": "Una vista tranquilla sul giardino dell'ostello rende la camera 8 uno dei posti più tranquilli dell'edificio — ideale per chi si sveglia presto o dorme leggero."
+        },
+        {
+          "title": "Ambiente intimo solo per donne",
+          "body": "Con solo due letti in un ambiente riservato alle donne, questa è l'esperienza d'ostello più vicina ad avere una camera privata — senza il prezzo di una camera privata."
+        },
+        {
+          "title": "Bagno condiviso nelle vicinanze",
+          "body": "Un bagno condiviso immacolato riservato alle donne è a pochi passi dalla porta, ben fornito e mantenuto per tutto il giorno."
+        }
+      ]
+    },
+    "room_9": {
+      "amenities": [
+        {
+          "title": "Bagno per tre",
+          "body": "Un bagno privato condiviso tra soli tre ospiti significa code davvero brevi e una routine mattutina rilassata — un lusso raro nel viaggio in ostello."
+        },
+        {
+          "title": "Calma del cortile",
+          "body": "Affacciata verso l'interno sul cortile riparato dell'ostello, la camera rimane più fresca e silenziosa dei piani sul mare — una piacevole fuga dopo una giornata piena di esplorazioni."
+        },
+        {
+          "title": "Atmosfera di gruppo intima",
+          "body": "Tre letti singoli invece di cuccette danno alla camera un layout più rilassato — confortevole per i viaggiatori singoli che apprezzano un po' più di spazio e luce."
+        }
+      ]
+    },
+    "room_10": {
+      "amenities": [
+        {
+          "title": "Bagno per tutto il dormitorio",
+          "body": "Sei ospiti condividono un bagno e nessun altro — le routine mattutine scorrono più facilmente quando il bagno è vostro e non di tutto il piano."
+        },
+        {
+          "title": "L'atmosfera classica dell'ostello",
+          "body": "Un vivace dormitorio misto con tre cuccette è perfetto per i viaggiatori singoli pronti a incontrare persone da tutto il mondo nella prima ora di arrivo."
+        },
+        {
+          "title": "Carico e pronto",
+          "body": "Ogni cuccetta include una luce di lettura, prese USB e tende per la privacy in modo da poter spegnersi secondo il proprio programma anche quando la camera è animata."
+        }
+      ]
     }
   }
 }

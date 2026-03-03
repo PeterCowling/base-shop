@@ -1,0 +1,27 @@
+[
+  {
+    "id": "fixture-001",
+    "subject": "Airport transfer options",
+    "body": "Hi, what is the easiest way to get from Naples airport to your hostel, and can you share the late check-in policy?"
+  },
+  {
+    "id": "fixture-002",
+    "subject": "Cancellation question",
+    "body": "Hello, I may need to cancel my booking for next week. Please confirm your cancellation policy and whether any refund applies."
+  },
+  {
+    "id": "fixture-003",
+    "subject": "Payment method",
+    "body": "Can I pay with card when I arrive, or do you require payment in advance?"
+  },
+  {
+    "id": "fixture-004",
+    "subject": "Breakfast details",
+    "body": "Do you provide breakfast, and if yes what are the serving hours?"
+  },
+  {
+    "id": "fixture-005",
+    "subject": "Luggage storage",
+    "body": "Is it possible to leave luggage before check-in and after check-out on the same day?"
+  }
+]

@@ -1,21 +1,17 @@
+"use client";
+
 import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 
 import { XaProductListing } from "../../components/XaProductListing.client";
 import { XA_PRODUCTS } from "../../lib/demoData";
-import { formatLabel,XA_DEPARTMENTS } from "../../lib/xaCatalog";
+import { formatLabel, XA_DEPARTMENTS } from "../../lib/xaCatalog";
 import type { XaDepartment } from "../../lib/xaTypes";
 
-export default async function NewInPage({
-  searchParams,
-}: {
-  searchParams?: Promise<URLSearchParams | { department?: string; window?: string }>;
-}) {
-  const resolvedSearchParams = await searchParams;
+function NewInContent() {
+  const searchParams = useSearchParams();
 
-  const departmentParam =
-    resolvedSearchParams instanceof URLSearchParams
-      ? resolvedSearchParams.get("department") ?? undefined
-      : resolvedSearchParams?.department;
+  const departmentParam = searchParams.get("department") ?? undefined;
   const allowedDepartments = new Set<XaDepartment>(
     XA_DEPARTMENTS.map((item) => item.slug as XaDepartment),
   );
@@ -24,10 +20,7 @@ export default async function NewInPage({
       ? (departmentParam as XaDepartment)
       : undefined;
 
-  const windowParam =
-    resolvedSearchParams instanceof URLSearchParams
-      ? resolvedSearchParams.get("window") ?? undefined
-      : resolvedSearchParams?.window;
+  const windowParam = searchParams.get("window") ?? undefined;
   const windowDays =
     windowParam === "day" ? 1 : windowParam === "week" ? 7 : 30;
   const baseProducts = department
@@ -44,12 +37,18 @@ export default async function NewInPage({
   const title = department ? `New In: ${formatLabel(department)}` : "New In";
 
   return (
+    <XaProductListing
+      title={title}
+      breadcrumbs={[{ label: "Home", href: "/" }, { label: "New In" }]}
+      products={products}
+    />
+  );
+}
+
+export default function NewInPage() {
+  return (
     <Suspense fallback={null}>
-      <XaProductListing
-        title={title}
-        breadcrumbs={[{ label: "Home", href: "/" }, { label: "New In" }]}
-        products={products}
-      />
+      <NewInContent />
     </Suspense>
   );
 }

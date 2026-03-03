@@ -126,11 +126,11 @@ At the bottom of the document, include a table of all S0 stage artifacts that ha
 | Research appendix (if created) | `s0a-research-appendix.user.md` | ASSESSMENT-01 | — |
 | Solution-space prompt | `<YYYY-MM-DD>-solution-profiling-prompt.md` | ASSESSMENT-02 | — |
 | Solution-space results | `<YYYY-MM-DD>-solution-profile-results.user.md` | ASSESSMENT-02 | — |
-| Option selection decision | `solution-select.user.md` | ASSESSMENT-03 | — |
+| Option selection decision | `<YYYY-MM-DD>-solution-decision.user.md` | ASSESSMENT-03 | — |
 | Naming research prompt | `candidate-names-prompt.md` | ASSESSMENT-04 | — |
-| Distribution plan | `distribution-profiling.user.md` | ASSESSMENT-06 | — |
-| Measurement plan | `measurement-profiling.user.md` | ASSESSMENT-07 | — |
-| Current situation | `current-situation.user.md` | ASSESSMENT-08 | — |
+| Distribution plan | `<YYYY-MM-DD>-launch-distribution-plan.user.md` | ASSESSMENT-06 | — |
+| Measurement plan | `<YYYY-MM-DD>-measurement-profile.user.md` | ASSESSMENT-07 | — |
+| Current situation | `<YYYY-MM-DD>-operator-context.user.md` | ASSESSMENT-08 | — |
 
 Mark status as the date created if it exists, or `(pending)` if not yet produced.
 
@@ -140,7 +140,7 @@ Write the artifact to the output path. Verify the quality gate before saving.
 
 ## Output Contract
 
-**Path:** `docs/business-os/strategy/<BIZ>/problem-statement.user.md`
+**Path:** `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-problem-statement.user.md`
 
 **Format:**
 
@@ -260,11 +260,11 @@ These 8 questions require first-party validation before advancing to offer or ch
 | Research appendix | `s0a-research-appendix.user.md` | ASSESSMENT-01 | (pending / date) |
 | Solution-space prompt | `<YYYY-MM-DD>-solution-profiling-prompt.md` | ASSESSMENT-02 | (pending / date) |
 | Solution-space results | `<YYYY-MM-DD>-solution-profile-results.user.md` | ASSESSMENT-02 | (pending / date) |
-| Option selection decision | `solution-select.user.md` | ASSESSMENT-03 | (pending / date) |
+| Option selection decision | `<YYYY-MM-DD>-solution-decision.user.md` | ASSESSMENT-03 | (pending / date) |
 | Naming research prompt | `candidate-names-prompt.md` | ASSESSMENT-04 | (pending / date) |
-| Distribution plan | `distribution-profiling.user.md` | ASSESSMENT-06 | (pending / date) |
-| Measurement plan | `measurement-profiling.user.md` | ASSESSMENT-07 | (pending / date) |
-| Current situation | `current-situation.user.md` | ASSESSMENT-08 | (pending / date) |
+| Distribution plan | `<YYYY-MM-DD>-launch-distribution-plan.user.md` | ASSESSMENT-06 | (pending / date) |
+| Measurement plan | `<YYYY-MM-DD>-measurement-profile.user.md` | ASSESSMENT-07 | (pending / date) |
+| Current situation | `<YYYY-MM-DD>-operator-context.user.md` | ASSESSMENT-08 | (pending / date) |
 
 ## Key Sources
 
@@ -337,10 +337,10 @@ Reference from the main problem statement as: `*Full evidence set in research ap
 
 **Upstream (S0):** `/startup-loop start --start-point problem` triggers this skill before S0 intake begins.
 
-**Downstream:** `/lp-do-assessment-02-solution-profiling --business <BIZ>` reads `docs/business-os/strategy/<BIZ>/problem-statement.user.md` as its primary input. Do not proceed to solution space if a STOP advisory is present without operator acknowledgement.
+**Downstream:** `/lp-do-assessment-02-solution-profiling --business <BIZ>` reads `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-problem-statement.user.md` as its primary input. Do not proceed to solution space if a STOP advisory is present without operator acknowledgement.
 
 ## Reference Artifacts
 
 High-quality examples to consult before writing:
-- `docs/business-os/strategy/HEAD/problem-statement.user.md` — CI accessory retention business; strong on: confidence tagging, problem boundary, user group demographic grounding, structured kill conditions
-- `docs/business-os/strategy/HBAG/problem-statement.user.md` — artisan bag accessories; strong on: forced-choice binary Core Problem framing, workarounds table, documented failure states, "Unblocked by:" kill condition format, research appendix separation
+- `docs/business-os/strategy/HEAD/<YYYY-MM-DD>-problem-statement.user.md` — CI accessory retention business; strong on: confidence tagging, problem boundary, user group demographic grounding, structured kill conditions
+- `docs/business-os/strategy/HBAG/<YYYY-MM-DD>-problem-statement.user.md` — artisan bag accessories; strong on: forced-choice binary Core Problem framing, workarounds table, documented failure states, "Unblocked by:" kill condition format, research appendix separation

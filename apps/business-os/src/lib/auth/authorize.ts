@@ -96,10 +96,11 @@ export function validateBusinessOsPath(
       );
 
     case "strategy":
-      // Allow: strategy/*.json, strategy/*/*.md
+      // Allow: strategy/*.json, strategy/*/*.md, strategy/*/*/*.md (2-level container paths)
       return (
         /^strategy\/[^/]+\.json$/.test(normalized) ||
-        /^strategy\/[^/]+\/[^/]+\.md$/.test(normalized)
+        /^strategy\/[^/]+\/[^/]+\.md$/.test(normalized) ||
+        /^strategy\/[^/]+\/[^/]+\/[^/]+\.md$/.test(normalized)
       );
 
     case "people":

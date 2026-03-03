@@ -110,4 +110,4 @@ These are NOT workspace artifacts and are not affected by this policy.
 
 - Stage doc operations: `.claude/skills/_shared/stage-doc-operations.md`
 - Card operations: `.claude/skills/_shared/card-operations.md`
-- Loop spec: `docs/business-os/startup-loop/loop-spec.yaml`
+- Loop spec: `docs/business-os/startup-loop/specifications/loop-spec.yaml`

@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jest zombie fix — results check needed</title>
+  <style>
+    :root {
+      --bg:#ffffff;--surface:#f5f8fb;--text:#101418;--text-muted:#5a6570;
+      --border:#d9e0e7;--accent:#0b63ce;--link:#0b63ce;
+      --muted:var(--text-muted);--header:var(--surface);
+    }
+    html[data-theme="dark"]{
+      --bg:#0e1016;--surface:#161921;--border:#2a2f45;
+      --text:#e4e7f2;--text-muted:#6b728f;--accent:#5b9cf6;--link:#5b9cf6;
+      --header:#161921;
+    }
+    html[data-theme="dark"] body{background:var(--bg);color:var(--text);}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
+      font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;}
+    main{max-width:720px;margin:0 auto;padding:2.5rem 1.5rem 4rem;}
+    h1{font-size:1.5rem;font-weight:700;margin:0 0 0.4rem;}
+    h2{font-size:1rem;font-weight:700;margin:0 0 0.75rem;}
+    p{line-height:1.7;margin:0 0 0.8rem;}
+    ul,ol{padding-left:1.4rem;margin-bottom:0.8rem;}
+    li{margin-bottom:0.4rem;line-height:1.6;}
+    code{font-family:ui-monospace,"SFMono-Regular",Menlo,monospace;font-size:0.85em;
+      background:var(--header);border:1px solid var(--border);border-radius:3px;padding:0.15em 0.35em;}
+    a{color:var(--link);text-decoration:none;}
+    a:hover{text-decoration:underline;}
+    .status-strip{display:flex;align-items:center;gap:0.75rem;border-radius:8px;
+      padding:0.9rem 1.1rem;margin-bottom:2rem;border:1px solid;}
+    .status-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+    .status-strip p{margin:0;font-size:0.9rem;}
+    .status-amber{background:rgba(245,166,35,0.1);border-color:rgba(245,166,35,0.35);}
+    .status-amber .status-dot{background:#d97706;}
+    .status-amber strong{color:#b45309;}
+    .subtitle{color:var(--text-muted);font-size:0.95rem;margin:0 0 2rem;}
+    .section{margin-bottom:2rem;}
+    .section-label{font-size:0.7rem;font-weight:700;text-transform:uppercase;
+      letter-spacing:0.07em;color:var(--text-muted);margin-bottom:0.6rem;}
+    .action-box{background:var(--surface);border:1px solid var(--border);
+      border-radius:8px;padding:1.25rem 1.4rem;}
+    .action-box ol{padding-left:1.3rem;margin:0;}
+    .action-box li{margin-bottom:0.6rem;font-size:0.9rem;line-height:1.55;}
+    .action-box li:last-child{margin-bottom:0;}
+    .deadline{margin-top:1.25rem;display:flex;align-items:center;gap:0.5rem;
+      font-size:0.85rem;color:var(--text-muted);}
+    .deadline strong{color:#b45309;}
+    .meta{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--border);
+      font-size:0.75rem;color:var(--text-muted);}
+    #sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;
+      background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;
+      overflow-x:auto;white-space:nowrap;}
+    #sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;
+      letter-spacing:.7px;margin-right:16px;flex-shrink:0;}
+    #sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;
+      display:inline-flex;align-items:center;font-weight:500;
+      border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0;}
+    #sl-nav a:hover{color:#e4e7f2;}
+    #sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6;}
+    #sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;
+      font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1;}
+    [data-theme="light"] #sl-nav{background:#eef0f7!important;border-bottom-color:#dde0ed!important;}
+    [data-theme="light"] #sl-nav .sl-brand,[data-theme="light"] #sl-nav a,[data-theme="light"] #sl-theme-btn{color:#5a6080!important;}
+    [data-theme="light"] #sl-nav a:hover,[data-theme="light"] #sl-nav a.sl-on{color:#1a1d2e!important;}
+  </style>
+  <style id="sl-theme-css">html[data-theme="dark"]{--bg:#0e1016;--surface:#161921;--border:#2a2f45;--text:#e4e7f2;--text-muted:#6b728f;--accent:#5b9cf6;--link:#5b9cf6;--header:#161921;}html[data-theme="light"]{--bg:#f5f6fa;--surface:#ffffff;--border:#dde0ed;--text:#1a1d2e;--text-muted:#5a6080;--accent:#3362d0;--link:#3362d0;--header:#f0f1f7;}</style>
+  <script id="sl-theme-init">(function(){try{var t=localStorage.getItem("sl-theme");if(!t)t=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}catch(e){}})()</script>
+</head>
+<body>
+<nav id="sl-nav">
+  <span class="sl-brand">Startup Loop</span>
+  <a href="../../../business-os/startup-loop-workflow.user.html">Workflow</a>
+  <a href="../../../business-os/startup-loop-files.user.html">Loop Files</a>
+  <a href="../../../business-os/startup-loop-output-registry.user.html">Output Registry</a>
+  <a href="../../../business-os/ideas.user.html">Ideas</a>
+  <a href="../../../business-os/process-improvements.user.html">Process</a>
+  <a href="../../../business-os/follow-up.user.html">Follow-up</a>
+  <button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button>
+  <script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script>
+</nav>
+<main>
+
+  <div class="status-strip status-amber">
+    <div class="status-dot"></div>
+    <p><strong>Follow-up needed by 4 Mar 2026</strong> — the zombie fix is live but we haven't yet confirmed it works when a test run is forcibly stopped mid-session.</p>
+  </div>
+
+  <h1>Jest zombie fix — results check needed</h1>
+  <p class="subtitle">Platform · Jest zombie process cleanup (Feb 2026) · Built 25 Feb 2026</p>
+
+  <div class="section">
+    <div class="section-label">What was done</div>
+    <ul>
+      <li>Fixed the way test sessions are shut down: when a build times out or is interrupted, all Jest worker processes now get the stop signal — not just the top-level one. Previously, worker processes were left running in the background consuming CPU.</li>
+      <li>Added clear instructions to the build guide: the only permitted way to run tests is through the managed runner (<code>pnpm -w run test:governed</code>). Direct forms like <code>npx jest</code> are documented as blocked.</li>
+      <li>Added a reminder in the spike executor guide to use the managed runner if a spike includes test execution.</li>
+      <li>Ran a post-fix test session (281 tests) — exited cleanly with no leftover processes.</li>
+    </ul>
+  </div>
+
+  <div class="action-box">
+    <h2>⏳ What you need to do</h2>
+    <ol>
+      <li>After the next time a build session is interrupted or times out (you'll see it in the build log), run: <code>ps aux | grep jest | grep -v grep</code> and check the count is 0.</li>
+      <li>Open <code>docs/plans/_archive/build-subagent-jest-zombie-cleanup/results-review.user.md</code> and fill in the <strong>Observed Outcomes</strong> section with what you found — did it work?</li>
+      <li>Update the <strong>Verdict</strong> in that same file: <em>Met</em>, <em>Partially Met</em>, or <em>Not Met</em>.</li>
+      <li>Set <code>Status: Resolved</code> in this file once the results review is complete.</li>
+    </ol>
+    <div class="deadline">
+      <span>⚠</span>
+      <span>Due: <strong>4 Mar 2026</strong> — new build sessions in the same area are blocked until this is resolved or explicitly overridden.</span>
+    </div>
+  </div>
+
+  <div class="meta">
+    <div>Source: <code>docs/plans/_archive/build-subagent-jest-zombie-cleanup/reflection-debt.user.md</code></div>
+    <div>Generated: 2026-02-25</div>
+  </div>
+
+</main>
+</body>
+</html>

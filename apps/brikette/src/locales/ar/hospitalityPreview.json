@@ -1,0 +1,12 @@
+{
+  "title": "الضيافة",
+  "guestActivation": {
+    "label": "تفعيل الضيوف",
+    "description": "7 أيام الماضية"
+  },
+  "signalBridge": {
+    "title": "شيك جسر الإشارة",
+    "etaShared": "eta shared",
+    "cashPrepared": "النقدية المعدة"
+  }
+}

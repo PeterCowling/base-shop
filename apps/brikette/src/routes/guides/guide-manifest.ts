@@ -1929,9 +1929,9 @@ const manifestSeed: GuideManifestEntry[] = [
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
-    key: "parking",
+    key: "arriveByCar",
     slug: "arriving-by-car",
-    contentKey: "parking",
+    contentKey: "arriveByCar",
     status: "live",
     draftPathSegment: "guides/arriving-by-car",
     areas: ["help"],
@@ -1942,11 +1942,11 @@ const manifestSeed: GuideManifestEntry[] = [
     blocks: [
       {
         type: "genericContent",
-        options: { contentKey: "parking", showToc: true },
+        options: { contentKey: "arriveByCar", showToc: true },
       },
       {
         type: "faq",
-        options: { fallbackKey: "parking", alwaysProvideFallback: true },
+        options: { fallbackKey: "arriveByCar", alwaysProvideFallback: true },
       },
       {
         type: "relatedGuides",
@@ -2390,7 +2390,7 @@ const manifestSeed: GuideManifestEntry[] = [
     areas: ["help"],
     primaryArea: "help",
     structuredData: ["Article", "FAQPage", "BreadcrumbList"],
-    relatedGuides: ["parking", "publicTransportAmalfi", "transportBudget"],
+    relatedGuides: ["arriveByCar", "publicTransportAmalfi", "transportBudget"],
     blocks: [
       {
         type: "genericContent",
@@ -2402,7 +2402,7 @@ const manifestSeed: GuideManifestEntry[] = [
       },
       {
         type: "relatedGuides",
-        options: { guides: ["parking", "publicTransportAmalfi", "transportBudget"] },
+        options: { guides: ["arriveByCar", "publicTransportAmalfi", "transportBudget"] },
       },
     ],
     options: {

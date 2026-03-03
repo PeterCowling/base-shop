@@ -84,8 +84,8 @@ The gate does NOT regenerate the prompt if it already exists — idempotent on s
 
 - `.claude/skills/startup-loop/SKILL.md` — loop orchestrator; defines all stages, gates, and blocking behaviour
 - `docs/business-os/startup-loop/loop-spec.yaml` — machine-readable spec (spec_version 1.0.0); stage definitions and gate identifiers
-- `docs/business-os/startup-baselines/BRIK-intake-packet.user.md` — real S0 intake instance (website-live mode)
-- `docs/business-os/startup-baselines/HEAD-intake-packet.user.md` — real S0 intake instance (pre-website mode)
+- `docs/business-os/startup-baselines/BRIK-2026-02-12assessment-intake-packet.user.md` — real S0 intake instance (website-live mode)
+- `docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md` — real S0 intake instance (pre-website mode)
 
 ### Key Modules / Files
 
@@ -100,7 +100,7 @@ The gate does NOT regenerate the prompt if it already exists — idempotent on s
 
 - **Deep-research handoff pattern** — used at S2 (Market Intelligence) and S6 (Site-Upgrade): loop generates a populated prompt file, blocks advance, user runs research externally, returns artifact to a specified path, loop resumes. Evidence: `.claude/skills/startup-loop/SKILL.md` (S2 gate logic), `docs/business-os/market-research/_templates/`
 - **Gate-BD-XX series** — brand-related gates enforced at specific stage transitions. GATE-BD-01 (brand dossier) blocks S1→S2. GATE-BD-03 (messaging hierarchy) blocks S2B completion. No GATE-BD-00 currently exists — the slot is available. Evidence: `.claude/skills/startup-loop/SKILL.md`
-- **Intake packet field convention** — `business_name_status` does not exist in the current template. All other status fields use `confirmed | unconfirmed | draft` vocabulary. Evidence: `docs/business-os/startup-baselines/HEAD-intake-packet.user.md`, `BRIK-intake-packet.user.md`
+- **Intake packet field convention** — `business_name_status` does not exist in the current template. All other status fields use `confirmed | unconfirmed | draft` vocabulary. Evidence: `docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md`, `BRIK-intake-packet.user.md`
 - **Prompt template location** — deep-research prompt templates live at `docs/business-os/market-research/_templates/`. Required output artifacts live at `docs/business-os/strategy/<BIZ>/`. Evidence: S2 gate config in loop spec.
 - **Artifact naming convention** — `<YYYY-MM-DD>-<artifact-type>.user.md`. E.g. `2026-01-15-market-intelligence.user.md`. Evidence: loop-spec.yaml required_output_path entries.
 - **Stable latest-file convention** — for artifacts returned by users, a stable `latest-<artifact-type>.user.md` file provides a deterministic read target for downstream skills, avoiding date-parse logic. Evidence: market intelligence `latest.user.md` pattern.

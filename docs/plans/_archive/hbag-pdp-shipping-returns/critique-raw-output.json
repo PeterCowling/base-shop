@@ -1,0 +1,22 @@
+{
+  "round": 2,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/hbag-pdp-shipping-returns/fact-find.md",
+      "line": "130",
+      "message": "Recommends `pnpm --filter @apps/caryina test` as a routine command, which conflicts with repo CI-only test policy (`docs/testing-policy.md`:14-17,30-39). This should be rewritten to avoid local test execution guidance."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/hbag-pdp-shipping-returns/fact-find.md",
+      "line": "157",
+      "message": "States accordion open/close is 'client-side behaviour'; with native `<details>/<summary>` this is browser-native and JS-free. Wording should be tightened to avoid implying extra client runtime complexity."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "lp_score": 4.0,
+  "sessionId": "Q1qNA84XAQMYM94_"
+}

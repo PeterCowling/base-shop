@@ -3,7 +3,7 @@ Type: Template
 Status: Reference
 Domain: Business-OS
 Created: 2026-02-12
-Last-reviewed: 2026-02-23 (added GBP API entitlement gate to Phase 0 bootstrap)
+Last-reviewed: 2026-02-25 (added indexing.googleapis.com to P0-01 API enable list)
 Launch-surface: pre-website
 Stage: S1B (conditional: pre-website path)
 ---
@@ -177,7 +177,7 @@ Classification key:
 
 | # | Step | Owner | What it unlocks |
 |---|---|---|---|
-| P0-01 | Create GCP project (`{{GCP_PROJECT_NAME}}`); enable APIs: `analyticsadmin.googleapis.com`, `analyticsdata.googleapis.com`, `searchconsole.googleapis.com` | (H) Google Cloud Console | All GA4 Admin API + GSC API agent calls |
+| P0-01 | Create GCP project (`{{GCP_PROJECT_NAME}}`); enable APIs: `analyticsadmin.googleapis.com`, `analyticsdata.googleapis.com`, `searchconsole.googleapis.com`, `indexing.googleapis.com` | (H) Google Cloud Console | All GA4 Admin API + GSC API agent calls; Indexing API enables programmatic recrawl submission after content deploys |
 | P0-01a | Enable GBP APIs in the same GCP project: `mybusinessaccountmanagement.googleapis.com`, `mybusinessbusinessinformation.googleapis.com`, `businessprofileperformance.googleapis.com` | (H) Google Cloud Console | GBP account/location/performance API surfaces available for automation |
 | P0-01b | Open Google Cloud Console quota pages for GBP APIs; record Requests/minute (QPM) for Account Management, Business Information, and Business Profile Performance APIs. If any required GBP API shows `0` QPM, submit GBP API access request and record support case ID in IDS Glossary | (H) Google Cloud Console + GBP support — Policy-08 | Confirms entitlement state and prevents silent API-blocked automation |
 | P0-02 | Create GCP service account; download JSON key file; note the service account email (`name@{{GCP_PROJECT_NAME}}.iam.gserviceaccount.com`); store key at `.secrets/ga4/{{GCP_PROJECT_NAME}}.json`; confirm `.gitignore` covers `.secrets/ga4/*.json` — no key material in repo docs | (H) | Agent API identity. Do NOT grant property access yet — GA4 properties do not exist yet |
@@ -202,13 +202,13 @@ Complete these AFTER Phase 1 SC-01 completes and DNS propagates (usually within 
 | # | Step | Owner | Notes |
 |---|---|---|---|
 | P0-11a | In GSC UI: click "Verify" if auto-verification has not occurred within 5-10 minutes of SC-01 completing; confirm property shows as Verified | (H) GSC UI | DNS TXT propagates fast on Cloudflare; often auto-verifies. Required before P0-11b |
-| P0-11b | In GSC Settings → Users and permissions: add service account email from P0-02 with `Full` access | (H) GSC UI — no API to grant SA access to GSC | Unlocks SC-02 sitemap submit, SC-03a Search Analytics API, URL Inspection API (SC-03c) |
+| P0-11b | In GSC Settings → Users and permissions: add service account email from P0-02 with **Owner** access (not Full — Owner is required for the Indexing API; Full is sufficient for URL Inspection and Search Analytics but will cause `PERMISSION_DENIED` on Indexing API submissions) | (H) GSC UI — no API to grant SA access to GSC | Unlocks SC-02 sitemap submit, SC-03a Search Analytics API, URL Inspection API (SC-03c), and Indexing API submissions |
 
 ### Phase 0 Blockers Checklist
 
 Before handing over to agent for Phase 1, confirm ALL of the following:
 
-- [ ] P0-01: GCP project created; all three APIs enabled
+- [ ] P0-01: GCP project created; all four APIs enabled (`analyticsadmin`, `analyticsdata`, `searchconsole`, `indexing`)
 - [ ] P0-01a: GBP APIs enabled in same project (Account Management, Business Information, Business Profile Performance)
 - [ ] P0-01b: GBP API quota values recorded; if any are 0 QPM, support case ID logged
 - [ ] P0-02: Service account created; JSON key downloaded and stored at `.secrets/ga4/{{GCP_PROJECT_NAME}}.json`
@@ -380,7 +380,7 @@ Confirm all main Phase 0 steps complete before handing to agent for Phase 1.
 Deferred steps (P0-11a, P0-11b) complete after Phase 1 SC-01 + DNS propagation.
 
 Complete Phase 0 status:
-- [ ] P0-01 GCP project + APIs
+- [ ] P0-01 GCP project + APIs (analyticsadmin, analyticsdata, searchconsole, indexing)
 - [ ] P0-01a GBP APIs enabled
 - [ ] P0-01b GBP quotas checked + case ID logged if pending
 - [ ] P0-02 Service account + key downloaded + stored

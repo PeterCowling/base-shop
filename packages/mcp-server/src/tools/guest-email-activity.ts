@@ -8,7 +8,7 @@ import { createRawEmail } from "../utils/email-mime.js";
 import { stripLegacySignatureBlock } from "../utils/email-signature.js";
 import { generateEmailHtml } from "../utils/email-template.js";
 
-import { appendTelemetryEvent,applyDraftOutcomeLabelsStrict } from "./gmail.js";
+import { appendTelemetryEvent,applyDraftOutcomeLabelsStrict } from "./gmail-shared.js";
 
 function resolveDataRoot(): string {
   const candidates = [
@@ -46,7 +46,7 @@ const guestEmailActivitySchema = z.object({
   dryRun: z.boolean().optional().default(false),
 });
 
-export type GuestEmailActivityInput = z.infer<typeof guestEmailActivitySchema>;
+export type GuestEmailActivityInput = z.input<typeof guestEmailActivitySchema>;
 
 export interface GuestEmailActivityResult {
   success: boolean;

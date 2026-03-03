@@ -33,6 +33,35 @@ describe("catalogCsvMapping", () => {
     expect(row.taxonomy_material).toBe("wool|cotton");
   });
 
+  it("writes media_paths from image roles", () => {
+    const row = buildCsvRowUpdateFromDraft({
+      title: "Studio bag",
+      brandHandle: "atelier-x",
+      collectionHandle: "bags",
+      price: "189",
+      description: "A structured bag.",
+      createdAt: "2025-12-01T12:00:00.000Z",
+      forSale: true,
+      forRental: false,
+      deposit: "0",
+      stock: "0",
+      popularity: "0",
+      imageFiles: "images/a.jpg|images/b.jpg|images/c.jpg",
+      imageAltTexts: "front|side|top",
+      imageRoles: "front|side|top",
+      taxonomy: {
+        department: "women",
+        category: "bags",
+        subcategory: "crossbody",
+        color: "black",
+        material: "leather",
+      },
+      details: {},
+    });
+
+    expect(row.media_paths).toBe("front:images/a.jpg|side:images/b.jpg|top:images/c.jpg");
+  });
+
   it("parses boolean fields when reading a CSV row", () => {
     const draft = rowToDraftInput({
       id: "id-1",
@@ -46,6 +75,7 @@ describe("catalogCsvMapping", () => {
       popularity: "0",
       for_sale: "false",
       for_rental: "true",
+      media_paths: "front:images/a.jpg|side:images/b.jpg",
       taxonomy_department: "women",
       taxonomy_category: "clothing",
       taxonomy_subcategory: "outerwear",
@@ -55,6 +85,6 @@ describe("catalogCsvMapping", () => {
 
     expect(draft.forSale).toBe(false);
     expect(draft.forRental).toBe(true);
+    expect(draft.imageRoles).toBe("front|side");
   });
 });
-

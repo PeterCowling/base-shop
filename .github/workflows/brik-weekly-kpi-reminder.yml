@@ -131,8 +131,8 @@ jobs:
               "- [ ] Record decisions and actions in Business OS (use UI/API flow; avoid manual docs/business-os edits).",
               "",
               "## References",
-              "- `docs/business-os/strategy/BRIK/2026-02-12-ga4-search-console-setup-note.user.md`",
-              "- `docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md`",
+              "- `docs/business-os/strategy/BRIK/sales/2026-02-12-ga4-search-console-setup-note.user.md`",
+              "- `docs/business-os/strategy/BRIK/sales/2026-02-12-historical-performance-baseline.user.md`",
             ].join("\n");
 
             const created = await github.rest.issues.create({

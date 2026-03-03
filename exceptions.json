@@ -81,13 +81,20 @@
       "expires": "2026-12-31",
       "notes": "Internal developer invariant logger and i18n-exempt non-user-facing strings in brikette (console.error, ModalProvider nesting guard)."
     },
+    "BRIK-1": {
+      "allow": [
+        "apps/brikette/playwright.config.ts"
+      ],
+      "expires": "2027-02-27",
+      "notes": "Playwright config test-infrastructure identifiers; non-UI copy exception."
+    },
     "BRK-001": {},
     "BRIK-DS-001": {},
     "BRIK-ENG-0017": {},
     "BRIK-ENG-0020": {},
     "BRIK-BK-001": {
       "allow": [
-        "apps/brikette/src/app/*/apartment/book/ApartmentBookContent.tsx"
+        "apps/brikette/src/app/*/private-rooms/book/ApartmentBookContent.tsx"
       ],
       "expires": "2026-12-31",
       "notes": "max-lines-per-function exception for ApartmentBookContent apartment booking form; sub-component extraction follow-up."
@@ -99,6 +106,20 @@
       "expires": "2026-12-31",
       "notes": "Brikette SEO audit, CTA, guide, routes, and schema lint exceptions (security/detect-non-literal-regexp, max-params, complexity) pending refactor."
     },
+    "BRIK-2": {
+      "allow": [
+        "apps/prime/src/**"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Prime meal-order wizard and bag-storage i18n deferred (ds/no-hardcoded-copy) and intentional hook dependency exceptions (react-hooks/exhaustive-deps) pending i18n extraction."
+    },
+    "BRIK-3": {
+      "allow": [
+        "apps/prime/src/**"
+      ],
+      "expires": "2027-06-30",
+      "notes": "Prime digital-assistant page i18n (ds/no-hardcoded-copy), tap-size (ds/min-tap-size), and layout-primitive (ds/enforce-layout-primitives) exceptions deferred pending i18n extraction and DS migration."
+    },
     "BRIK-821": {
       "allow": [
         "apps/brikette/src/hooks/usePagePreload.ts"
@@ -107,6 +128,36 @@
       "notes": "Brikette i18n preload hook dependency exception for stable namespace arrays used by page components."
     },
     "CAR-1432": {},
+    "CARY-TESTS-001": {
+      "allow": [
+        "apps/caryina/playwright.config.ts"
+      ],
+      "expires": "2027-03-01",
+      "notes": "Caryina Playwright config uses non-UI literals for local test server and admin key wiring."
+    },
+    "CARYINA-104": {
+      "allow": [
+        "apps/caryina/src/components/Header.tsx",
+        "apps/caryina/src/components/HeaderThemeToggle.client.tsx"
+      ],
+      "expires": "2027-01-01",
+      "notes": "Caryina header layering and theme-toggle z-index lint exceptions tracked for later DS-compliant refactor."
+    },
+    "CARYINA-AUTH-01": {
+      "allow": [
+        "apps/caryina/src/app/admin/api/products/route.ts",
+        "apps/caryina/src/lib/adminAuth.ts"
+      ],
+      "expires": "2027-12-31",
+      "notes": "Dynamic require used only in jsdom test environment (no globalThis.crypto.subtle); dead path in Worker/Node 18+."
+    },
+    "CARYINA-CHECKOUT-01": {
+      "allow": [
+        "apps/caryina/src/lib/checkoutIdempotency.server.ts"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Checkout idempotency server path uses scoped lint exceptions while integrity hardening work is underway."
+    },
     "CF-1001": {},
     "CF-1002": {},
     "CF-1003": {},
@@ -137,6 +188,13 @@
     "CMS-2134": {},
     "CMS-2145": {},
     "CMS-2417": {},
+    "CMS-2418": {
+      "allow": [
+        "apps/cms/src/app/cms/wizard/tokenUtils.ts"
+      ],
+      "expires": "2026-12-31",
+      "notes": "CMS wizard token normalization helpers use temporary lint exceptions pending shared utility extraction."
+    },
     "CMS-2617": {},
     "CMS-2651": {},
     "CMS-2652": {},
@@ -343,6 +401,21 @@
     "OPS-3210": {},
     "OPS-4201": {},
     "PAY-101": {},
+    "PRIME-1": {
+      "allow": ["apps/prime/src/**"],
+      "expires": "2027-06-30",
+      "notes": "Prime pre-existing react-hooks/rules-of-hooks and react-hooks/exhaustive-deps suppressions: conditional SDK guard pattern and stable reference dep arrays deferred pending hooks refactor."
+    },
+    "PRIME-DATE-UTILS-001": {
+      "allow": ["apps/prime/src/utils/dateUtils.ts"],
+      "expires": "2026-12-31",
+      "notes": "Prime date utility parser/formatter constants and internal log labels are intentionally non-localized."
+    },
+    "PRIME-ROUTES-001": {
+      "allow": ["apps/prime/src/data/routes.ts"],
+      "expires": "2026-12-31",
+      "notes": "Prime canonical route seed content for fallback dataset pending content pipeline localization."
+    },
     "PUB-05": {},
     "PB-000": {},
     "PB-0001": {},
@@ -492,6 +565,38 @@
     "XA-0041": {},
     "XA-0100": {},
     "XA-123": {},
+    "XAB-315": {
+      "allow": [
+        "apps/xa-b/src/lib/accountStore.ts"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Account store persistence and migration guards rely on scoped lint exceptions pending store refactor."
+    },
+    "XAB-316": {
+      "allow": [
+        "apps/xa-b/src/lib/rateLimit.ts"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Rate limit storage fallback path uses temporary lint exceptions pending adapter cleanup."
+    },
+    "XAUP-118": {
+      "allow": [
+        "apps/xa-uploader/src/lib/catalogContractClient.ts",
+        "apps/xa-uploader/src/app/api/catalog/currency-rates/route.ts"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Catalog contract client request/error helpers carry temporary lint exceptions pending API client split."
+    },
+    "XAUP-0101": {
+      "allow": ["apps/xa-drop-worker/src/index.ts"],
+      "expires": "2026-12-31",
+      "notes": "XA drop-worker cloud contract routing keeps explicit branch mapping; complexity exception tracked for future decomposition."
+    },
+    "XAUP-0102": {
+      "allow": ["apps/xa-drop-worker/__tests__/xaDropWorker.test.ts"],
+      "expires": "2026-12-31",
+      "notes": "XA drop-worker integration-style route/security matrix intentionally stays in one long test flow."
+    },
     "XAUP-0001": {}
   }
 }

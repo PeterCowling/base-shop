@@ -1,5 +1,7 @@
 /** @jest-environment node */
 
+import './media.test.mocks';
+
 import path from 'path';
 
 import {
@@ -130,4 +132,3 @@ describe('mediaMetadataService', () => {
     });
   });
 });
-

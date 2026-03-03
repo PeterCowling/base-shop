@@ -3,8 +3,8 @@ Type: Prompt-Pack-Index
 Status: Active
 Domain: Venture-Studio
 Created: 2026-02-12
-Updated: 2026-02-23
-Last-reviewed: 2026-02-23
+Updated: 2026-02-25
+Last-reviewed: 2026-02-25
 Owner: Pete
 ---
 
@@ -16,7 +16,7 @@ Canonical template directory:
 
 Canonical source:
 
-- `docs/business-os/startup-loop/loop-spec.yaml` (spec_version `3.12.0`)
+- `docs/business-os/startup-loop/loop-spec.yaml` (spec_version `3.13.0`)
 - `docs/business-os/startup-loop/_generated/stage-operator-map.json`
 
 ## Stage prompts
@@ -39,9 +39,7 @@ Canonical source:
 | `PRODUCT-02` | Adjacent product research | no-prompt-required | conditional | Skill-driven: `/lp-other-products` |
 | `SELL-01` | Channel strategy + GTM | no-prompt-required | all | Skill-driven: `/lp-channels` |
 | `SELL-02` | Activation readiness (pre-spend) | no-prompt-required | conditional | Gate-driven readiness checks |
-| `S4` | Baseline merge | no-prompt-required | all | Skill-driven: `/lp-baseline-merge` |
-| `S5A` | Prioritize | `prioritization-scorer-prompt.md` | all | Required prompt stage |
-| `S5B` | BOS sync | no-prompt-required | all | Skill/system-managed |
+| `S4` | Baseline merge + prioritization | no-prompt-required | all | Skill-driven: `/lp-baseline-merge` + `/lp-prioritize` |
 | `WEBSITE-01` | L1 first build framework | `website-first-build-framework-prompt.md` | pre-website | Required prompt stage |
 | `WEBSITE-02` | Site-upgrade synthesis | `docs/business-os/site-upgrades/_templates/deep-research-business-upgrade-prompt.md` | website-live | Required prompt stage. L1 Build 2 auto-mode: image-first merchandising for visual-heavy catalogs. |
 | `DO` | Delivery execution | no-prompt-required | all | Skill-driven: `/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build` |

@@ -53,7 +53,7 @@ Audit startup-loop process naming from an operator UX perspective, focusing on i
 ## Evidence Audit (Current State)
 ### Entry Points
 - `.claude/skills/startup-loop/SKILL.md` - run packet and command contract.
-- `docs/business-os/startup-loop/loop-spec.yaml` - canonical stage IDs and names.
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml` - canonical stage IDs and names.
 - `docs/business-os/startup-loop-workflow.user.md` - operator workflow copy.
 - `docs/business-os/workflow-prompts/README.user.md` - prompt index stage naming.
 

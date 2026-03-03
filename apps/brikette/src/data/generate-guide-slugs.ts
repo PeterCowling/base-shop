@@ -95,7 +95,7 @@ export const GENERATED_GUIDE_SLUGS: Readonly<Record<string, string>> = Object.fr
   offbeatVillagesAmalfi: "offbeat-amalfi-coast-villages",
   offSeasonLongStay: "off-season-long-stay-tips-positano",
   onlyHostel: "only-hostel-in-positano",
-  parking: "arriving-by-car",
+  arriveByCar: "arriving-by-car",
   pathOfTheGods: "path-of-the-gods",
   pathOfTheGodsBus: "path-of-the-gods-via-amalfi-bus",
   pathOfTheGodsFerry: "path-of-the-gods-via-amalfi-ferry",

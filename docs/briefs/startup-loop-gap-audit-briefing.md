@@ -14,7 +14,7 @@ Topic-Slug: startup-loop-gap-audit
 The startup loop has a strong canonical stage graph and data-plane contracts, but there are several high-friction and/or correctness-impacting gaps caused by drift across skills, docs, MCP tooling, and the Business OS agent API.
 
 Highest load-bearing gaps observed:
-- Stage skill coverage drift: `/lp-bos-sync` is referenced as a canonical stage but has no skill doc; several other stage skills reference wrong stage numbers, missing skills, or non-canonical paths.
+- Stage skill coverage drift: `/legacy-bos-sync` is referenced as a canonical stage but has no skill doc; several other stage skills reference wrong stage numbers, missing skills, or non-canonical paths.
 - Stage-doc key/name drift: multiple skills/docs still use `lp-do-fact-find` (and the repo filesystem uses `fact-finding`) while the agent API schema only accepts `fact-find`.
 - Broken decision references: multiple canonical startup-loop docs point at `docs/plans/lp-skill-system-sequencing-plan.md`, which does not exist (only `docs/plans/archive/...` plus `docs/plans/*.html`).
 - Supporting skills (design-spec, design-qa, measure, seo) often assume legacy plan workspace paths and/or nonexistent companion skills, increasing operator overhead and token burn.
@@ -31,7 +31,7 @@ This briefing is gap-focused (diagnosis + opportunities). It does not implement 
 ## Scope And Definitions
 - Efficiency: user experience friction and/or token burn (extra turns, re-reading context, manual reconciliation).
 - Effectiveness: weak/slow signals, inability to control real risks, silent wrong outputs, or slowed execution.
-- "Startup loop": the end-to-end S0..S10 stage graph defined in `docs/business-os/startup-loop/loop-spec.yaml`.
+- "Startup loop": the end-to-end S0..S10 stage graph defined in `docs/business-os/startup-loop/specifications/loop-spec.yaml`.
 
 ## Severity Rubric
 - P0 Execution blocker: a stage cannot complete (or persistence fails) without manual out-of-band patching.
@@ -55,13 +55,13 @@ Stage identifiers drift in multiple places; this doc uses:
 - Stage doc filename (filesystem): expected by the agent API: `docs/business-os/cards/<CARD-ID>/<stage>.user.md`.
 
 ## Canonical Sources (Authority)
-- `docs/business-os/startup-loop/loop-spec.yaml` (stage graph authority)
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml` (stage graph authority)
 - `docs/business-os/startup-loop-workflow.user.md` (operator workflow contract)
 - `.claude/skills/startup-loop/SKILL.md` (orchestration wrapper)
-- `docs/business-os/startup-loop/stage-result-schema.md`
-- `docs/business-os/startup-loop/manifest-schema.md`
-- `docs/business-os/startup-loop/event-state-schema.md`
-- `docs/business-os/startup-loop/autonomy-policy.md`
+- `docs/business-os/startup-loop/schemas/stage-result-schema.md`
+- `docs/business-os/startup-loop/schemas/manifest-schema.md`
+- `docs/business-os/startup-loop/schemas/event-state-schema.md`
+- `docs/business-os/startup-loop/specifications/autonomy-policy.md`
 - `scripts/src/startup-loop/*` (data-plane stage workers and control-plane kernels)
 - `packages/mcp-server/src/tools/bos.ts` (BOS bridge tools + strict policy metadata)
 - `packages/mcp-server/src/tools/loop.ts` (loop artifact tools + refresh/pack tooling)
@@ -73,9 +73,9 @@ The repo has an explicit contract lint script, and it currently fails:
 
 ```
 bash scripts/check-startup-loop-contracts.sh
-FAIL: Skill 'lp-bos-sync' referenced in loop-spec has no SKILL.md at .claude/skills/lp-bos-sync/ (SQ-02)
+FAIL: Skill 'legacy-bos-sync' referenced in loop-spec has no SKILL.md at .claude/skills/legacy-bos-sync/ (SQ-02)
 WARN: lp-seo uses 'docs/business-os/<BIZ>/' — should include subdirectory (strategy/startup-baselines) (SQ-10)
-FAIL: lp-experiment maps lp-prioritize to S3 — should be S5A (SQ-12)
+FAIL: lp-experiment maps lp-prioritize to S3 — should be S4 (SQ-12)
 RESULT: FAIL — contract violations detected
 ```
 
@@ -86,7 +86,7 @@ This is the single deduped register of gaps found. Items are phrased as failure 
 |---|---:|---|---|---|
 | GAP-01 | P0 | Stage-doc key drift: `lp-do-fact-find` (skills) vs `fact-find` (agent API enum); filesystem has `fact-finding.user.md` but API writes `fact-find.user.md`. | BOS stage doc create/filter can fail (400) or create parallel, inconsistent stage-doc histories across cards. | Skills, Agent API, Repo stage-doc repository, Filesystem naming |
 | GAP-02 | P0 | Canonical docs reference missing decision plan: `docs/plans/lp-skill-system-sequencing-plan.md` not present at referenced path. | Undermines trust in loop contracts; forces ad hoc archeology; increases token burn and wrong implementation choices. | Docs (loop contracts), Plan doc topology |
-| GAP-03 | P1 | Sole mutation boundary not documented as a skill: `/lp-bos-sync` missing SKILL.md while `bos-sync.ts` exists. | Governance/control-plane weakness; mutation behavior becomes ad hoc; higher incident risk. | Skills, Scripts, Loop-spec references |
+| GAP-03 | P1 | Sole mutation boundary not documented as a skill: `/legacy-bos-sync` missing SKILL.md while `bos-sync.ts` exists. | Governance/control-plane weakness; mutation behavior becomes ad hoc; higher incident risk. | Skills, Scripts, Loop-spec references |
 | GAP-04 | P1 | Stage semantics drift: `/lp-experiment` stage mapping mismatch (SQ-12), and legacy/nonexistent companion skill references. | Wrong stage ordering; fragile downstream consumption; operator confusion. | Skills, Contract lint |
 | GAP-05 | P1 | Readiness stage contract inconsistency: loop-spec expects persisted readiness outputs, but `/lp-readiness` is non-writing. | Join barrier and BOS state can be incomplete; later stages proceed with missing artifacts. | Loop-spec, Skills, BOS sync expectations |
 | GAP-06 | P1/P2 | Baseline artifact naming/path drift: offer/channels/forecast skills emit non-`.user.md` and/or legacy directory layouts vs baseline schemas expecting `.user.md` artifacts. | Silent schema noncompliance; merge/join stages become brittle; higher token burn from reconciliation. | Skills, Baseline schemas, Baseline merge |
@@ -130,7 +130,7 @@ Gaps observed:
 Evidence:
 - `.claude/skills/startup-loop/SKILL.md`
 - `docs/business-os/workflow-prompts/_templates/intake-normalizer-prompt.md`
-- `docs/business-os/startup-loop/loop-spec.yaml`
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 
 ### S1 - Readiness
 Stage type: Type B (Skill stage).
@@ -139,11 +139,11 @@ Intended:
 - `/lp-readiness` runs as S1 and gates progress.
 
 Gaps observed:
-- `docs/business-os/startup-loop/loop-spec.yaml` sets `prompt_required: true` for S1 and expects BOS sync writes to readiness/strategy docs.
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml` sets `prompt_required: true` for S1 and expects BOS sync writes to readiness/strategy docs.
 - `.claude/skills/lp-readiness/SKILL.md` is explicitly non-writing (no persisted readiness artifact described).
 
 Evidence:
-- `docs/business-os/startup-loop/loop-spec.yaml`
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 - `.claude/skills/lp-readiness/SKILL.md`
 
 ### S1B - Measure (conditional)
@@ -157,7 +157,7 @@ Gaps observed:
 - `lp-measure` references legacy/nonexistent companion skills (`lp-channel`, `lp-content`) and does not specify a canonical output path.
 
 Evidence:
-- `docs/business-os/startup-loop/loop-spec.yaml`
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 - `.claude/skills/lp-measure/SKILL.md`
 
 ### S2A - Results (conditional)
@@ -197,7 +197,7 @@ Gaps observed:
 
 Evidence:
 - `.claude/skills/lp-offer/SKILL.md`
-- `docs/business-os/startup-loop/baseline-prior-schema.md`
+- `docs/business-os/startup-loop/schemas/baseline-prior-schema.md`
 
 ### S3 - Forecast
 Stage type: Type B (Skill stage).
@@ -207,11 +207,11 @@ Intended:
 
 Gaps observed:
 - `.claude/skills/lp-forecast/SKILL.md` appears on an older stage model and path topology (for example references S2-offer-hypothesis/S2-channel-selection and writes under `startup-baselines/<BIZ>/S3-forecast/...`).
-- The skill's own integration notes reference prioritize as S4, conflicting with canonical S5A.
+- The skill's own integration notes reference prioritize as S4, conflicting with canonical S4.
 
 Evidence:
 - `.claude/skills/lp-forecast/SKILL.md`
-- `docs/business-os/startup-loop/loop-spec.yaml`
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 
 ### S6B - Channel Strategy + GTM (parallel with S3)
 Stage type: Type B (Skill stage).
@@ -239,9 +239,9 @@ Gaps observed:
 
 Evidence:
 - `.claude/skills/lp-baseline-merge/SKILL.md`
-- `docs/business-os/startup-loop/stage-result-schema.md`
+- `docs/business-os/startup-loop/schemas/stage-result-schema.md`
 
-### S5A - Prioritize
+### S4 - Prioritize
 Stage type: Type B (Skill stage).
 
 Intended:
@@ -253,18 +253,18 @@ Gaps observed:
 Evidence:
 - `.claude/skills/lp-prioritize/SKILL.md`
 
-### S5B - BOS Sync (sole mutation boundary)
+### S4 - BOS Sync (sole mutation boundary)
 Stage type: Type A (Worker stage) in implementation, but missing the Type B skill wrapper.
 
 Intended:
-- `/lp-bos-sync` performs guarded BOS persistence.
+- `/legacy-bos-sync` performs guarded BOS persistence.
 
 Gaps observed:
-- `/lp-bos-sync` is referenced in the loop spec and wrapper skill but is missing as a skill doc.
+- `/legacy-bos-sync` is referenced in the loop spec and wrapper skill but is missing as a skill doc.
 - There is a stage worker implementation as a script (`scripts/src/startup-loop/bos-sync.ts`), creating doc vs script mismatch.
 
 Evidence:
-- `docs/business-os/startup-loop/loop-spec.yaml`
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 - `.claude/skills/startup-loop/SKILL.md`
 - `scripts/src/startup-loop/bos-sync.ts`
 
@@ -331,11 +331,11 @@ Intended:
 - `/lp-launch-qa` plus `/lp-design-qa`.
 
 Gaps observed:
-- `/lp-launch-qa` references `docs/business-os/startup-baselines/<BIZ>/loop-state.json` and `/lp-launch` (missing skill). `docs/business-os/startup-loop/event-state-schema.md` documents a migration to `state.json`, but the skill doc appears not updated.
+- `/lp-launch-qa` references `docs/business-os/startup-baselines/<BIZ>/loop-state.json` and `/lp-launch` (missing skill). `docs/business-os/startup-loop/schemas/event-state-schema.md` documents a migration to `state.json`, but the skill doc appears not updated.
 
 Evidence:
 - `.claude/skills/lp-launch-qa/SKILL.md`
-- `docs/business-os/startup-loop/event-state-schema.md`
+- `docs/business-os/startup-loop/schemas/event-state-schema.md`
 
 ### S10 - Weekly Readout + Experiments
 Stage type: Type B (Skill stage), with substantial Type A runtime machinery in scripts.
@@ -352,7 +352,7 @@ Evidence:
 - `.claude/skills/lp-experiment/SKILL.md`
 - `scripts/src/startup-loop/s10-growth-accounting.ts`
 - `scripts/src/startup-loop/s10-learning-hook.ts`
-- `docs/business-os/startup-loop/learning-ledger-schema.md`
+- `docs/business-os/startup-loop/schemas/learning-ledger-schema.md`
 
 ## Root Cause Hypotheses (Systemic)
 These are hypotheses suggested by repeated symptoms; they need confirmation:
@@ -374,11 +374,11 @@ This doc does not choose; it flags that a posture must be chosen to prevent oper
 Multiple canonical startup-loop docs reference `docs/plans/lp-skill-system-sequencing-plan.md`, but the repo contains `docs/plans/archive/lp-skill-system-sequencing-plan.md` and `docs/plans/lp-skill-system-sequencing-plan.html`.
 
 Evidence:
-- `docs/business-os/startup-loop/loop-spec.yaml`
-- `docs/business-os/startup-loop/manifest-schema.md`
-- `docs/business-os/startup-loop/stage-result-schema.md`
-- `docs/business-os/startup-loop/event-state-schema.md`
-- `docs/business-os/startup-loop/autonomy-policy.md`
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml`
+- `docs/business-os/startup-loop/schemas/manifest-schema.md`
+- `docs/business-os/startup-loop/schemas/stage-result-schema.md`
+- `docs/business-os/startup-loop/schemas/event-state-schema.md`
+- `docs/business-os/startup-loop/specifications/autonomy-policy.md`
 
 ### B) Stage-doc filename and schema drift across filesystem, docs, and API
 Observed mismatch set:
@@ -403,7 +403,7 @@ Evidence:
 
 ### D) Contract lint exists but misses high-impact drift sites
 `scripts/check-startup-loop-contracts.sh` catches:
-- Missing `/lp-bos-sync` skill doc
+- Missing `/legacy-bos-sync` skill doc
 - `/lp-seo` path drift warning
 - `/lp-experiment` stage semantics drift
 
@@ -435,7 +435,7 @@ Evidence:
 Stage IDs are duplicated across multiple code locations (for example `scripts/src/startup-loop/derive-state.ts`, `packages/mcp-server/src/tools/bos.ts`, `packages/mcp-server/src/tools/loop.ts`) in addition to the canonical loop spec.
 
 Evidence:
-- `docs/business-os/startup-loop/loop-spec.yaml`
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 - `scripts/src/startup-loop/derive-state.ts`
 - `packages/mcp-server/src/tools/bos.ts`
 - `packages/mcp-server/src/tools/loop.ts`
@@ -443,7 +443,7 @@ Evidence:
 ## Candidate Sequencing / Ownership (Hypothesis Only)
 This is an "execution-ready" framing of where fixes would likely land, without designing the fixes:
 1. P0s first: normalize stage keys and canonical references (Docs + Skills + Agent API posture decision) so stage-doc persistence cannot fail.
-2. Governance/control point: document `/lp-bos-sync` (or reconcile how operators invoke `bos-sync.ts`) so mutation boundary is explicit.
+2. Governance/control point: document `/legacy-bos-sync` (or reconcile how operators invoke `bos-sync.ts`) so mutation boundary is explicit.
 3. Stage semantics: align `/lp-experiment` mapping and any stage numbering drift so loop ordering is coherent.
 4. Contract enforcement: expand `scripts/check-startup-loop-contracts.sh` to cover the high-drift surfaces that were missed.
 5. Tooling/signal improvements: MCP tool surface gaps and run-index observability (throughput and speed).

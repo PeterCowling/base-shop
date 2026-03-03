@@ -28,7 +28,7 @@ Status: Active
 
 **First run** — all findings are new-to-HIGH. Planning anchor emitted (see §5).
 
-Compliant skills (no action needed): draft-outreach, lp-bos-sync, lp-design-system,
+Compliant skills (no action needed): draft-outreach, lp-prioritize, lp-design-system,
 lp-launch-qa, lp-prioritize, lp-refactor, lp-seo, startup-loop.
 
 H1-compliant but H2 dispatch-candidate: lp-assessment-bootstrap, lp-do-fact-find, lp-do-replan,

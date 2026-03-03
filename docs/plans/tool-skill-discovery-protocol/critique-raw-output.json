@@ -1,0 +1,15 @@
+{
+  "round": 3,
+  "mode": "file",
+  "artifact": "docs/plans/tool-skill-discovery-protocol/fact-find.md",
+  "findings": [
+    {
+      "severity": "info",
+      "file": "docs/plans/tool-skill-discovery-protocol/fact-find.md",
+      "line": "70",
+      "message": "Factual nuance: `tool-process-audit` does include an Inputs section in the body, so 'no input/output contract table' was imprecise; corrected to note the body has an Inputs table but no output contract table or trigger_conditions frontmatter."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 9
+}

@@ -8,7 +8,7 @@ export const SLUGS = {
   /* ---------- Guest rooms & dorms ---------- */
   rooms: {
     de: "zimmer",
-    en: "rooms",
+    en: "dorms",
     es: "habitaciones",
     fr: "chambres",
     it: "camere",
@@ -160,26 +160,26 @@ export const SLUGS = {
     hu: "hogyan-jutsz-ide",
   },
 
-  /** Apartment details */
+  /** Private rooms (Double Room + Apartment) */
   apartment: {
-    de: "wohnungen", // German
-    en: "apartment", // English
-    es: "apartamentos", // Spanish
-    fr: "appartements", // French
-    it: "appartamenti", // Italian
-    ja: "apaato", // Japanese (アパート)
-    ko: "apateu", // Korean (아파트)
-    pt: "apartamentos", // Portuguese
-    ru: "kvartiry", // Russian (квартиры)
-    zh: "gongyu", // Chinese (公寓)
-    ar: "shuqaq",
-    hi: "awas",
-    vi: "can-ho",
-    pl: "apartamenty",
-    sv: "lagenheter",
-    no: "leiligheter",
-    da: "lejligheder",
-    hu: "apartmanok",
+    de: "privatzimmer", // German
+    en: "private-rooms", // English
+    es: "habitaciones-privadas", // Spanish
+    fr: "chambres-privees", // French
+    it: "camere-private", // Italian
+    ja: "kojin-heya", // Japanese (個室)
+    ko: "gaein-sil", // Korean (개인실)
+    pt: "quartos-privados", // Portuguese
+    ru: "chastnye-nomera", // Russian (частные номера)
+    zh: "siren-kefang", // Chinese (私人客房)
+    ar: "ghuraf-khassa",
+    hi: "niji-kamre",
+    vi: "phong-rieng",
+    pl: "pokoje-prywatne",
+    sv: "privata-rum",
+    no: "private-rom",
+    da: "private-vaerelser",
+    hu: "privat-szobak",
   },
 
   /** Booking landing page */

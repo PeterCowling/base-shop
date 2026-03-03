@@ -1,11 +1,13 @@
 ---
 Type: Plan
-Status: Active
+Status: Superseded
+Superseded-by: docs/plans/ci-only-test-execution/plan.md
+Superseded-date: 2026-02-27
 Domain: Infra
 Workstream: Engineering
 Created: 2026-02-13
-Last-updated: 2026-02-13
-Last-reviewed: 2026-02-14
+Last-updated: 2026-02-27
+Last-reviewed: 2026-02-27
 Relates-to charter: none
 Feature-Slug: test-execution-resource-governor
 Deliverable-Type: code-change
@@ -23,6 +25,18 @@ Audit-Date: 2026-02-14
 ---
 
 # Test Execution Resource Governor Plan
+
+## Supersession Rationale
+
+This plan is superseded by `docs/plans/ci-only-test-execution/plan.md` (effective 2026-02-27).
+
+**What changed:** The CI-only test execution initiative routes all Jest and e2e test execution to GitHub Actions CI, eliminating local test runs via agent-mediated paths. This removes the need for the scheduler (Phase 2) and resource admission (Phase 3) layers defined in this plan — when no tests run locally via the governed runner, there is nothing to schedule or admit.
+
+**What is retained:** Phases 0–1 of this plan (command guard wrappers: `scripts/agent-bin/npx`, `scripts/agent-bin/pnpm`, `scripts/agents/guarded-shell-hooks.sh`) remain in place as the enforcement infrastructure for the CI-only block. The governed runner (`run-governed-test.sh`) itself is retained as the enforcement shim: it now exits immediately with a CI-only redirect message when `BASESHOP_CI_ONLY_TESTS=1` is set in agent shells.
+
+**For the current enforcement model,** see `docs/plans/ci-only-test-execution/plan.md` and `docs/testing-policy.md`.
+
+---
 
 ## Summary
 

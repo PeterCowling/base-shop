@@ -9,12 +9,13 @@
   "lastChecked": "最終確認日:",
   "sources": {
     "hostelworld": {
-      "ariaName": "Hostelworld",
-      "label": "Hostelworld"
+      "ariaName": "ホステルワールド",
+      "label": "ホステルワールド"
     },
     "booking": {
       "ariaName": "ブッキング・ドットコム",
-      "label": "Booking.com"
+      "label": "予約する.com"
     }
-  }
+  },
+  "snapshotAsOf": "として {{date}}_"
 }

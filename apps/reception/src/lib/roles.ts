@@ -53,8 +53,8 @@ export const Permissions = {
   // Management dashboard - privileged roles
   MANAGEMENT_ACCESS: ["owner", "developer", "admin", "manager"] as UserRole[],
 
-  // Room allocation - owners, developers, and designated staff
-  ROOM_ALLOCATION: ["owner", "developer"] as UserRole[],
+  // Room allocation - owners, developers, admins, and managers
+  ROOM_ALLOCATION: ["owner", "developer", "admin", "manager"] as UserRole[],
 
   // Safe operations - staff + management
   SAFE_ACCESS: ["owner", "developer", "admin", "manager", "staff"] as UserRole[],
@@ -64,6 +64,9 @@ export const Permissions = {
 
   // Real-time dashboard - owners and developers only
   REALTIME_DASHBOARD: ["owner", "developer"] as UserRole[],
+
+  // User management - owners and developers only
+  USER_MANAGEMENT: ["owner", "developer"] as UserRole[],
 
   // Alloggiati - owners and developers only
   ALLOGGIATI_ACCESS: ["owner", "developer"] as UserRole[],
@@ -76,6 +79,14 @@ export const Permissions = {
 
   // Bulk actions (cancel, email) - managers and above
   BULK_ACTIONS: ["owner", "developer", "admin", "manager"] as UserRole[],
+
+  // Calendar date-picker access for non-privileged senior staff (restricted to tomorrow window)
+  RESTRICTED_CALENDAR_ACCESS: [
+    "owner",
+    "developer",
+    "admin",
+    "manager",
+  ] as UserRole[],
 } as const;
 
 // Check if user can access a feature

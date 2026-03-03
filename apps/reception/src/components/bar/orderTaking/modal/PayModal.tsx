@@ -1,26 +1,18 @@
 /* File: src/components/bar/orderTaking/modal/PayModal.tsx */
 
 import {
-  type ChangeEvent,
+  type ComponentType,
   memo,
   type MouseEvent,
   type ReactElement,
   useCallback,
   useState,
 } from "react";
+import { Banknote, Check, CreditCard, Nfc } from "lucide-react";
 
-import { Input } from "@acme/design-system";
-import { Button } from "@acme/design-system/atoms";
+import { cn } from "@acme/design-system/utils/style";
+import { SimpleModal } from "@acme/ui/molecules";
 
-import { withModalBackground } from "../../../../hoc/withModalBackground";
-
-import ModalContainer from "./ModalContainer";
-
-/**
- * PayModalProps:
- * - onConfirm(paymentMethod, bleepUsage): pass chosen method & usage to parent.
- * - onCancel(): close the modal without finalizing.
- */
 export interface PayModalProps {
   onConfirm: (
     paymentMethod: "cash" | "card",
@@ -29,12 +21,31 @@ export interface PayModalProps {
   onCancel: () => void;
 }
 
-/**
- * PayModalBase:
- * - User chooses payment method ("Cash"/"Card")
- * - Chooses "Bleep" or "Go"
- * - onConfirm => passes chosen method & usage up.
- */
+interface SelectCardProps {
+  selected: boolean;
+  onClick: () => void;
+  label: string;
+  Icon: ComponentType<{ size?: number; className?: string }>;
+}
+
+function SelectCard({ selected, onClick, label, Icon }: SelectCardProps) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "flex flex-1 flex-col items-center justify-center gap-2 rounded-lg border-2 p-5 min-h-24 transition-all duration-150 active:scale-95",
+        selected
+          ? "border-primary-main/100 bg-primary-soft/100 text-primary-main/100"
+          : "border-border-2 bg-surface-2 text-muted-foreground hover:border-border-strong"
+      )}
+    >
+      <Icon size={28} />
+      <span className="text-sm font-semibold">{label}</span>
+    </button>
+  );
+}
+
 function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
   const [paymentMethod, setPaymentMethod] = useState<"cash" | "card">("card");
   const [bleepUsage, setBleepUsage] = useState<"bleep" | "go">("bleep");
@@ -47,153 +58,79 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
     [onConfirm, paymentMethod, bleepUsage]
   );
 
-  const handleCancelClick = useCallback(
-    (event: MouseEvent<HTMLButtonElement>) => {
-      event.preventDefault();
-      onCancel();
-    },
-    [onCancel]
-  );
-
-  const handlePaymentChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      setPaymentMethod(event.target.value as "cash" | "card");
-    },
-    []
-  );
-
-  const handleBleepChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      setBleepUsage(event.target.value as "bleep" | "go");
-    },
-    []
-  );
-
   return (
-    <ModalContainer widthClasses="w-96">
-      {/* Header with distinct background color */}
-      <div className="bg-info-main rounded-t">
-        <h2 className="text-2xl font-bold text-primary-fg text-center py-4">
-          Complete Payment
-        </h2>
-      </div>
-
-      {/* Body content with spacing */}
-      <div className="p-6 space-y-8">
+    <SimpleModal
+      isOpen
+      onClose={onCancel}
+      title="Complete Payment"
+      maxWidth="max-w-sm"
+    >
+      <div className="space-y-6">
         {/* Payment Method */}
-        <div className="space-y-3">
-          <p className="text-lg font-semibold text-foreground text-center">
+        <section className="space-y-3">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             Payment Method
           </p>
-          <div className="flex justify-center space-x-4">
-            <label
-              className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded w-32 ${
-                paymentMethod === "cash"
-                  ? "border-info-main bg-info-light/20"
-                  : "border-border-2 hover:border-border-2"
-              }`}
-            >
-              <Input
-                compatibilityMode="no-wrapper"
-                type="radio"
-                value="cash"
-                checked={paymentMethod === "cash"}
-                onChange={handlePaymentChange}
-                className="form-radio h-5 w-5 text-info-main"
-              />
-              <span className="text-foreground font-medium">Cash</span>
-            </label>
-
-            <label
-              className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded w-32 ${
-                paymentMethod === "card"
-                  ? "border-info-main bg-info-light/20"
-                  : "border-border-2 hover:border-border-2"
-              }`}
-            >
-              <Input
-                compatibilityMode="no-wrapper"
-                type="radio"
-                value="card"
-                checked={paymentMethod === "card"}
-                onChange={handlePaymentChange}
-                className="form-radio h-5 w-5 text-info-main"
-              />
-              <span className="text-foreground font-medium">Credit Card</span>
-            </label>
+          <div className="flex gap-3">
+            <SelectCard
+              selected={paymentMethod === "cash"}
+              onClick={() => setPaymentMethod("cash")}
+              Icon={Banknote}
+              label="Cash"
+            />
+            <SelectCard
+              selected={paymentMethod === "card"}
+              onClick={() => setPaymentMethod("card")}
+              Icon={CreditCard}
+              label="Credit Card"
+            />
           </div>
-        </div>
+        </section>
 
         {/* Bleep or Go */}
-        <div className="space-y-3">
-          <p className="text-lg font-semibold text-foreground text-center">
+        <section className="space-y-3">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             Bleep or Go
           </p>
-          <div className="flex justify-center space-x-4">
-            <label
-              className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded w-32 ${
-                bleepUsage === "bleep"
-                  ? "border-info-main bg-info-light/20"
-                  : "border-border-2 hover:border-border-2"
-              }`}
-            >
-              <Input
-                compatibilityMode="no-wrapper"
-                type="radio"
-                value="bleep"
-                checked={bleepUsage === "bleep"}
-                onChange={handleBleepChange}
-                className="form-radio h-5 w-5 text-info-main"
-              />
-              <span className="text-foreground font-medium">Bleep</span>
-            </label>
-
-            <label
-              className={`flex flex-col items-center space-y-1 cursor-pointer p-2 border-2 rounded w-32 ${
-                bleepUsage === "go"
-                  ? "border-info-main bg-info-light/20"
-                  : "border-border-2 hover:border-border-2"
-              }`}
-            >
-              <Input
-                compatibilityMode="no-wrapper"
-                type="radio"
-                value="go"
-                checked={bleepUsage === "go"}
-                onChange={handleBleepChange}
-                className="form-radio h-5 w-5 text-info-main"
-              />
-              <span className="text-foreground font-medium">Go</span>
-            </label>
+          <div className="flex gap-3">
+            <SelectCard
+              selected={bleepUsage === "bleep"}
+              onClick={() => setBleepUsage("bleep")}
+              Icon={Nfc}
+              label="Bleep"
+            />
+            <SelectCard
+              selected={bleepUsage === "go"}
+              onClick={() => setBleepUsage("go")}
+              Icon={Check}
+              label="Go"
+            />
           </div>
-        </div>
+        </section>
 
-        {/* Buttons (Centered) */}
-        <div className="flex justify-center space-x-4">
-          <Button
-            onClick={handleCancelClick}
-            color="default"
-            tone="soft"
+        {/* Actions */}
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="min-h-11 rounded-lg border border-border-2 px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-border-strong hover:text-foreground"
           >
             Cancel
-          </Button>
-          <Button
+          </button>
+          <button
+            type="button"
             onClick={handleConfirmClick}
-            color="success"
-            tone="solid"
+            className="flex-1 min-h-11 rounded-lg bg-primary-main/100 px-4 py-2 text-sm font-bold text-primary-fg/100 transition-all duration-150 hover:opacity-90 active:scale-95"
           >
-            Confirm
-          </Button>
+            Confirm Payment
+          </button>
         </div>
       </div>
-    </ModalContainer>
+    </SimpleModal>
   );
 }
 
 PayModalBase.displayName = "PayModalBase";
-const MemoizedPayModalBase = memo(PayModalBase);
 
-// Wrap in HOC for the modal background dimming/styling
-const PayModal = withModalBackground(MemoizedPayModalBase);
-
+const PayModal = memo(PayModalBase);
 export default PayModal;

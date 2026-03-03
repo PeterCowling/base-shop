@@ -49,7 +49,7 @@ This plan adds a new `LEGAL` container to startup-loop immediately after `ASSESS
 
 ## Constraints & Assumptions
 - Constraints:
-  - `docs/business-os/startup-loop/loop-spec.yaml` remains stage-order authority.
+  - `docs/business-os/startup-loop/specifications/loop-spec.yaml` remains stage-order authority.
   - Process authority remains `docs/business-os/startup-loop/process-registry-v2.md` + `process-assignment-v2.yaml`.
   - Existing startup-loop IDs and aliases must remain stable except intentional LEGAL additions.
 - Assumptions:
@@ -173,7 +173,7 @@ LEGAL follows the same "container completion node" pattern as ASSESSMENT. In the
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
 - **Status:** Pending
-- **Affects:** `docs/business-os/startup-loop/loop-spec.yaml`, `scripts/src/startup-loop/stage-addressing.ts`, `scripts/src/startup-loop/derive-state.ts`
+- **Affects:** `docs/business-os/startup-loop/specifications/loop-spec.yaml`, `scripts/src/startup-loop/stage-addressing.ts`, `scripts/src/startup-loop/derive-state.ts`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-05, TASK-06
 - **Confidence:** 80%
@@ -191,7 +191,7 @@ LEGAL follows the same "container completion node" pattern as ASSESSMENT. In the
   - TC-02-04 (spec-lint, first-class deliverable): a deterministic spec-lint check verifies (a) no direct bypass edge `[ASSESSMENT, MEASURE-00]` exists, (b) all gate keys referenced in the spec are defined in the gate registry, (c) container/stage node semantics are internally consistent (LEGAL-01 and LEGAL-02 precede LEGAL in ordering, LEGAL precedes MEASURE-00). This lint must run as part of the TASK-02 build acceptance and must be incorporated into CI.
 - **Execution plan:** Red -> Green -> Refactor
 - **Planning validation (required for M/L):**
-  - Checks run: `rg -n "ASSESSMENT|MEASURE-00|GATE-ASSESSMENT-01|ordering:" docs/business-os/startup-loop/loop-spec.yaml -S`
+  - Checks run: `rg -n "ASSESSMENT|MEASURE-00|GATE-ASSESSMENT-01|ordering:" docs/business-os/startup-loop/specifications/loop-spec.yaml -S`
   - Validation artifacts: existing direct edge and gate comment references confirmed.
   - Unexpected findings: generated stage map coupling requires explicit downstream regen.
 - **Scouts:** validate whether gate can be moved without breaking legacy assumptions in stage consumers.
@@ -247,7 +247,7 @@ LEGAL follows the same "container completion node" pattern as ASSESSMENT. In the
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Pending
-- **Affects:** `docs/business-os/startup-loop/artifact-registry.md`, `docs/business-os/startup-loop/loop-output-contracts.md`
+- **Affects:** `docs/business-os/startup-loop/artifact-registry.md`, `docs/business-os/startup-loop/contracts/loop-output-contracts.md`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-05
 - **Confidence:** 82%
@@ -284,7 +284,7 @@ LEGAL follows the same "container completion node" pattern as ASSESSMENT. In the
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Pending
-- **Affects:** `docs/business-os/startup-loop-workflow.user.md`, `docs/business-os/startup-loop/stage-operator-dictionary.yaml`, `docs/business-os/startup-loop/_generated/stage-operator-map.json`, `docs/business-os/startup-loop/_generated/stage-operator-table.md`
+- **Affects:** `docs/business-os/startup-loop-workflow.user.md`, `docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml`, `docs/business-os/startup-loop/_generated/stage-operator-map.json`, `docs/business-os/startup-loop/_generated/stage-operator-table.md`
 - **Depends on:** TASK-02, TASK-03, TASK-04
 - **Blocks:** TASK-06, TASK-07
 - **Confidence:** 82%

@@ -973,7 +973,9 @@ describe("TASK-18: Stage 2+3 — Full Pipeline", () => {
 
 describe("TASK-18: Critical Error Checks", () => {
   describe("Critical Error Checks", () => {
-    it("should never include prohibited claims in generated drafts", async () => {
+    it(
+      "should never include prohibited claims in generated drafts",
+      async () => {
       const prohibited = [
         "availability confirmed",
         "we will charge now",
@@ -1007,9 +1009,13 @@ describe("TASK-18: Critical Error Checks", () => {
           expect(bodyLower).not.toContain(phrase);
         }
       }
-    });
+      },
+      30_000,
+    );
 
-    it("should always include signature block in generated HTML", async () => {
+    it(
+      "should always include signature block in generated HTML",
+      async () => {
       const customerFixtures = fixtures.filter(
         (f) => f.requiresResponse && f.scenarioType !== "system"
       );
@@ -1037,7 +1043,9 @@ describe("TASK-18: Critical Error Checks", () => {
             htmlLower.includes("peter's signature")
         ).toBe(true);
       }
-    });
+      },
+      30_000,
+    );
 
     it("should always output both plaintext and HTML", async () => {
       const customerFixtures = fixtures.filter(

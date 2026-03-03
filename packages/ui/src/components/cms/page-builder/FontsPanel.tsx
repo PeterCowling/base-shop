@@ -274,7 +274,7 @@ export default function FontsPanel({ open, onOpenChange, variant = "dialog" }: P
                       <div className="truncate text-sm font-medium">{p.name}</div>
                       <button
                         type="button"
-                        className="min-h-10 min-w-10 rounded border border-border-2 bg-surface-3 px-3 py-1 text-xs text-foreground transition-colors hover:bg-surface-2 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary"
+                        className="min-h-11 min-w-11 rounded border border-border-2 bg-surface-3 px-3 py-1 text-xs text-foreground transition-colors hover:bg-surface-2 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary"
                         onClick={() => applyPairing(p)}
                       >
                         {t("Use pairing")}

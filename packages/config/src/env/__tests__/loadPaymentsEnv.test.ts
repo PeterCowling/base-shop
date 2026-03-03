@@ -122,6 +122,7 @@ describe("loadPaymentsEnv", () => {
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
       PAYMENTS_CURRENCY: "USD",
       PAYMENTS_SANDBOX: true,
+      AXERVE_SANDBOX: false,
     });
   });
 });

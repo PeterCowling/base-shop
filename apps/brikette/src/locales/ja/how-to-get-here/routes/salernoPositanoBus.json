@@ -25,7 +25,7 @@
     "title": "バス時刻表",
     "description": "移動は <Strong>サレルノ → アマルフィ</Strong>、続いて <Strong>アマルフィ → ポジターノ</Strong> の順です。",
     "link": "最新の SITA 時刻表は <ScheduleLink>{{label}}</ScheduleLink> で確認してください。",
-    "scheduleLinkLabel": "Positano.com",
+    "scheduleLinkLabel": "ポジタノ.com",
     "rowsTitle": "行（row）の読み方",
     "columnsTitle": "列（column）の読み方",
     "combineTitle": "行と列を組み合わせる",

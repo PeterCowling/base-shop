@@ -1,0 +1,59 @@
+{
+  "round": 2,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/xa-b-user-testing/fact-find.md",
+      "line": "146",
+      "message": "The statement \"stealth mode ... inactive at `xa-b-site.pages.dev` (no env var set)\" is not provable from repository code and can be wrong at runtime; mark this as an operator-confirmed assumption instead of established evidence."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/xa-b-user-testing/fact-find.md",
+      "line": "372",
+      "message": "Evidence line reference is stale (`apps/xa-b/src/app/page.tsx` hero CTA is currently at line 60, not 61); update line refs or use \"around line \u2026\" wording."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019c9a09-f0b4-7291-8993-723d4d4bb701",
+  "timestamp": "2026-02-28",
+  "prior_round": {
+    "round": 1,
+    "score": 7,
+    "findings": [
+      {
+        "severity": "warning",
+        "file": "docs/plans/xa-b-user-testing/fact-find.md",
+        "line": "41",
+        "message": "`XA-V2-01` is a staging setup/deploy task, not production deployment planning; this non-goal mapping is incorrect and can mis-scope follow-up work."
+      },
+      {
+        "severity": "warning",
+        "file": "docs/plans/xa-b-user-testing/fact-find.md",
+        "line": "145",
+        "message": "The statement \u201crobots tags default to indexable when stealth is off\u201d is incorrect for this codebase. `apps/xa-b/src/app/robots.ts` defaults to `disallow: \"/\"` unless `XA_ALLOW_INDEXING === \"true\"`."
+      },
+      {
+        "severity": "warning",
+        "file": "docs/plans/xa-b-user-testing/fact-find.md",
+        "line": "157",
+        "message": "Compliance guidance is based on the same incorrect robots assumption; current default behavior already blocks crawlers."
+      },
+      {
+        "severity": "warning",
+        "file": "docs/plans/xa-b-user-testing/fact-find.md",
+        "line": "90",
+        "message": "The \u201cRoute Map (Complete)\u201d is incomplete: `/collections` exists (`apps/xa-b/src/app/collections/page.tsx`) but is not listed."
+      },
+      {
+        "severity": "info",
+        "file": "docs/plans/xa-b-user-testing/fact-find.md",
+        "line": "324",
+        "message": "It says there are \u201c2 open questions,\u201d but three operator-input questions are listed in the Open section."
+      }
+    ]
+  }
+}

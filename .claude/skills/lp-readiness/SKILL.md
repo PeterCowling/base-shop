@@ -119,7 +119,7 @@ DEP is required before GATE-S6B-ACT-01 (spend authorization). Starting capture a
 To start now:
 - Register at least 1 message hypothesis (channel + audience_slice + asset_ref)
 - Set up source-tagged tracking before any test impressions
-- Schema: docs/business-os/startup-loop/demand-evidence-pack-schema.md
+- Schema: docs/business-os/startup-loop/schemas/demand-evidence-pack-schema.md
 
 Current DEP status: [Not started | In progress | Pass-floor met]
 ```
@@ -218,7 +218,7 @@ Invalid outputs:
 ## Integration
 
 ### Upstream (S0)
-- Preceded by optional `/idea-forecast` or manual strategy doc creation
+- Preceded by optional `/lp-do-idea-forecast` or manual strategy doc creation
 - Does NOT require BOS card/stage-doc setup
 
 ### Downstream (S2)

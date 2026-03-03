@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BRIK Intake Packet</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+
+<style id="sl-theme-css">html[data-theme="dark"]{--bg:#0e1016;--surface:#161921;--surface-2:#1e2230;--surface-raised:#1e2230;--border:#2a2f45;--text:#e4e7f2;--text-muted:#6b728f;--text-dim:#454d6a;--accent:#5b9cf6;--accent-soft:rgba(91,156,246,.15);--code-bg:#161921;--code-border:#2a2f45;--red-bg:rgba(240,92,92,.10);--amber-bg:rgba(245,166,35,.10);--green-bg:rgba(74,222,128,.08);--blue-bg:rgba(91,156,246,.10);--purple-bg:rgba(167,139,250,.10)}html[data-theme="dark"] body{background:var(--bg)!important;color:var(--text)!important}html[data-theme="light"]{--bg:#f5f6fa;--surface:#ffffff;--surface-2:#f0f1f7;--surface-raised:#f0f1f7;--border:#dde0ed;--text:#1a1d2e;--text-muted:#5a6080;--text-dim:#a0a8c0;--accent:#3362d0;--accent-soft:#e8eeff;--code-bg:#f0f1f7;--code-border:#dde0ed;--red-bg:rgba(200,50,50,.08);--amber-bg:rgba(180,120,0,.08);--green-bg:rgba(40,160,80,.06);--blue-bg:rgba(40,100,220,.08);--purple-bg:rgba(120,80,200,.08)}html[data-theme="light"] body{background:var(--bg)!important;color:var(--text)!important}[data-theme="light"] #sl-nav{background:#eef0f7!important;border-bottom-color:#dde0ed!important}[data-theme="light"] #sl-nav .sl-brand,[data-theme="light"] #sl-nav a,[data-theme="light"] #sl-theme-btn{color:#5a6080!important}[data-theme="light"] #sl-nav a:hover,[data-theme="light"] #sl-nav a.sl-on{color:#1a1d2e!important}</style>
+<script id="sl-theme-init">(function(){try{var t=localStorage.getItem("sl-theme");if(!t)t=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}catch(e){}})()</script>
+</head>
+<body>
+<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><span class="sl-brand">Startup Loop</span><a href="../startup-loop-workflow.user.html">Workflow</a><a href="../startup-loop-files.user.html">Loop Files</a><a href="../startup-loop-file-types.user.html">File Types</a><a href="../startup-loop-output-registry.user.html">Output Registry</a><a href="../ideas.user.html">Ideas</a><a href="../process-improvements.user.html">Process</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
+  <main>
+<h1>BRIK Intake Packet</h1>
+<h2>A) Intake Summary</h2>
+<ul>
+<li>Business idea: multilingual e-commerce platform for hostel bookings and travel experiences (<code>observed</code>).</li>
+<li>Business is already operating and has substantial product and content footprint (<code>observed</code>).</li>
+<li>Core current execution lane includes reception infrastructure and dashboard/operations unification (<code>observed</code>).</li>
+<li>Critical gap remains analytics/visibility baseline (GA/Search Console not fully configured) (<code>observed</code>).</li>
+<li>Launch-surface mode: <code>website-live</code> (<code>inferred</code> from existing production/staging footprint).</li>
+<li>Immediate risk is decision-making without measured conversion and traffic data (<code>observed</code>).</li>
+</ul>
+<h2>B) Business and Product Packet</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+<th>Tag</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Business code</td>
+<td>BRIK</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Business name</td>
+<td>Brikette</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Region</td>
+<td>Multi-locale (18 locales in current content footprint)</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Core offer</td>
+<td>Hostel bookings + travel experience commerce</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Current app surfaces</td>
+<td><code>brikette</code>, <code>reception</code>, <code>prime</code>, <code>brikette-scripts</code></td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Launch-surface mode</td>
+<td>website-live</td>
+<td>inferred</td>
+</tr>
+</tbody>
+</table>
+<h2>C) ICP and Channel Packet</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+<th>Tag</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Primary ICP (current)</td>
+<td>Travelers booking hostel stays/experiences</td>
+<td>inferred</td>
+</tr>
+<tr>
+<td>Secondary ICP</td>
+<td>On-site operations and reception staff workflows</td>
+<td>inferred</td>
+</tr>
+<tr>
+<td>Planned channels</td>
+<td>Direct website and content-led acquisition</td>
+<td>observed/inferred</td>
+</tr>
+<tr>
+<td>Support expectation</td>
+<td>Reception and booking operational continuity</td>
+<td>inferred</td>
+</tr>
+</tbody>
+</table>
+<h2>D) Constraints and Assumptions Register</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Type</th>
+<th>Evidence / note</th>
+<th>Confidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Analytics baseline is currently missing</td>
+<td>observed</td>
+<td>BRIK plan calls out no GA measurement baseline and no Search Console setup</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Content footprint is large and cross-locale</td>
+<td>observed</td>
+<td>Plan references 168+ guides across 18 locales</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Reception app stability is an active execution risk</td>
+<td>observed</td>
+<td>Plan risk register includes reception stability concerns</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Growth decisions should be measurement-led</td>
+<td>inferred</td>
+<td>Current risk profile shows visibility/data as critical blocker</td>
+<td>High</td>
+</tr>
+</tbody>
+</table>
+<h2>E) Draft Outcome Contract</h2>
+<ul>
+<li>Outcome statement: Establish measurable BRIK conversion and traffic baseline, then improve booking conversion and operational reliability with weekly decision cadence.</li>
+<li>Baseline:
+<ul>
+<li>MAU: not measured</li>
+<li>booking conversion rate: not measured</li>
+<li>guide pageviews: not measured</li>
+<li>reception reliability incidents: not baselined</li>
+</ul>
+</li>
+<li>Target (90 days):
+<ul>
+<li>analytics stack live and producing reliable weekly KPI reports</li>
+<li>booking conversion baseline established and improving</li>
+<li>reception workflow stability tracked with explicit incident/recovery metrics</li>
+</ul>
+</li>
+<li>By: 2026-05-13</li>
+<li>Owner: Pete</li>
+<li>Leading indicators:
+<ul>
+<li>sessions/pageviews by locale</li>
+<li>booking funnel conversion</li>
+<li>search visibility signals</li>
+<li>reception issue frequency/time-to-recovery</li>
+</ul>
+</li>
+<li>Decision link: <code>DEC-BRIK-01</code> (whether to scale acquisition/content investments vs stabilize operations first)</li>
+</ul>
+<h2>F) Apartment Product Line (StepFree Positano)</h2>
+<p>New for 2026. Owned apartment adjacent to the hostel, operated by hostel reception staff. Tracked as a BRIK product line (not a separate business).</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+<th>Tag</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Product name</td>
+<td>StepFree Chiesa Nuova</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Brand name</td>
+<td>StepFree Positano</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Location</td>
+<td>Chiesa Nuova, Positano, Amalfi Coast</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Property type</td>
+<td>Apartment (whole unit), 100sqm</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Capacity</td>
+<td>4 guests (double bed upstairs + sofa bed downstairs)</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Bathrooms</td>
+<td>2</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Key USP</td>
+<td>Step-free arrival from street to entrance (rare in Positano)</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Secondary USP</td>
+<td>Homeliness — not a hotel, a home</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Interior reality</td>
+<td>Split-level with internal stairs between living area and bedroom</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Noise reality</td>
+<td>Some road + hostel terrace noise; quiet hours from midnight</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Amenities</td>
+<td>Full kitchen, WiFi, AC, TV, hairdryer, washer/dryer, dining area</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Channel manager</td>
+<td>Octorate (shared with hostel)</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Current listing</td>
+<td>Booking.com only</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Pricing: early Mar</td>
+<td>€265 (non-refund) – €450 (flex)</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Pricing: Apr</td>
+<td>€400 (non-refund) – €500 (flex)</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Pricing: May onwards</td>
+<td>€495 (non-refund) – €550 (flex)</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>2026 availability</td>
+<td>Completely open — first season</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Target guest</td>
+<td>Couples (distinct from hostel demographic)</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Content host</td>
+<td>hostel-positano.com/apartment/...</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Redirect domain</td>
+<td>stepfreepositano.com (pending registration)</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Revenue architecture</td>
+<td>Dual-intent landing pages with Fit Check truth layer</td>
+<td>observed</td>
+</tr>
+<tr>
+<td>Strategy doc</td>
+<td>docs/business-os/strategy/BRIK/2026-02-12-apartment-revenue-architecture.user.md</td>
+<td>observed</td>
+</tr>
+</tbody>
+</table>
+<h3>Apartment open items</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Owner</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Register stepfreepositano.com</td>
+<td>Pete</td>
+<td>high</td>
+</tr>
+<tr>
+<td>Add apartment to Octorate; get rate plan IDs (nr + flex)</td>
+<td>Pete</td>
+<td>high</td>
+</tr>
+<tr>
+<td>Film street-to-door proof video</td>
+<td>Pete</td>
+<td>high</td>
+</tr>
+<tr>
+<td>Interior photography</td>
+<td>Pete</td>
+<td>high</td>
+</tr>
+<tr>
+<td>Noise mitigation details (double glazing, shutters?)</td>
+<td>Pete</td>
+<td>high</td>
+</tr>
+<tr>
+<td>Internal stair details (count, handrail, steepness)</td>
+<td>Pete</td>
+<td>high</td>
+</tr>
+<tr>
+<td>Reception hours for apartment guests</td>
+<td>Pete</td>
+<td>medium</td>
+</tr>
+<tr>
+<td>Which hostel amenities available to apartment guests?</td>
+<td>Pete</td>
+<td>medium</td>
+</tr>
+</tbody>
+</table>
+<h2>G) Missing-Data Checklist (to progress S1/S3)</h2>
+<table>
+<thead>
+<tr>
+<th>Missing field</th>
+<th>Why needed</th>
+<th>Owner</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Locked outcome contract fields in canonical plan</td>
+<td>Needed for objective prioritization and gate decisions</td>
+<td>Pete</td>
+<td>critical</td>
+</tr>
+<tr>
+<td>Confirmed analytics instrumentation status (GA/Search Console)</td>
+<td>Needed for baseline and weekly decisioning</td>
+<td>Pete</td>
+<td>critical</td>
+</tr>
+<tr>
+<td>Booking funnel baseline metrics by channel/locale</td>
+<td>Needed to define conversion targets and pivots</td>
+<td>Pete</td>
+<td>high</td>
+</tr>
+<tr>
+<td>Reception reliability baseline and SLA definition</td>
+<td>Needed for ops-risk decisioning</td>
+<td>Pete</td>
+<td>high</td>
+</tr>
+<tr>
+<td>Market intelligence pack for BRIK</td>
+<td>Needed for external benchmark refresh</td>
+<td>Pete</td>
+<td>medium</td>
+</tr>
+<tr>
+<td>Site-upgrade brief for BRIK</td>
+<td>Needed for structured web UX backlog synthesis</td>
+<td>Pete</td>
+<td>medium</td>
+</tr>
+</tbody>
+</table>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/startup-baselines/BRIK-2026-02-12assessment-intake-packet.user.md</code></div>
+      <div>Generated: 2026-02-12T19:11:18.885Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

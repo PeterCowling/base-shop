@@ -39,7 +39,7 @@ const PaymentSection: FC<PaymentSectionProps> = React.memo(
 
     /* ------------------------------ render ------------------------------- */
     return (
-      <section className="space-y-5 border-t border-foreground/10 bg-surface-2/60 p-4 backdrop-blur-md">
+      <section className="space-y-5 border-t border-border-2 bg-surface-2/80 p-4 backdrop-blur-md">
         {/* ─────── Bleep input ─────── */}
         <div className="flex flex-col gap-1">
           <label
@@ -64,7 +64,7 @@ const PaymentSection: FC<PaymentSectionProps> = React.memo(
 
         {/* ─────── Total ─────── */}
         <p
-          className="text-end text-2xl font-extrabold tracking-tight text-foreground tabular-nums"
+          className="text-end text-2xl font-extrabold tracking-tight text-primary-main tabular-nums"
           aria-live="polite"
         >
           Total:&nbsp;{totalPrice.toFixed(2)}&nbsp;€

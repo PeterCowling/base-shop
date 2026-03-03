@@ -1,15 +1,15 @@
 {
   "home": "Accueil",
-  "rooms": "Chambres",
-  "apartment": "Appartement",
+  "rooms": "Dortoirs",
+  "apartment": "Chambres Privées",
   "assistance": "Aide",
   "careers": "Carrières",
   "deals": "Offres",
-  "guides": "Guides",
+  "guides": "Guides pratiques",
   "terms": "Conditions générales de réservation des chambres",
   "copyright": "© 2023–{{year}}, Skylar SRL opérant sous le nom Hostel Brikette",
   "backToTop": "Retour en haut",
-  "contactHeading": "Contact",
+  "contactHeading": "Coordonnées",
   "email": "E-mail",
   "phone": "Téléphone",
   "noPhoneNotice": "Pour une réponse rapide, contactez-nous par e-mail.",
@@ -29,5 +29,6 @@
   "houseRules": "Règlement intérieur",
   "cancellationPolicy": "Politique d’annulation",
   "privacy": "Politique de confidentialité",
-  "cookies": "Politique de cookies"
+  "cookies": "Politique de cookies",
+  "navAriaLabel": "Navigation des pieds de page"
 }

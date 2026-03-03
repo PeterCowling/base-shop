@@ -14,7 +14,8 @@ describe("roomsData catalogue", () => {
       expect(room.occupancy).toBeGreaterThan(0);
       expect(room.basePrice.currency).toBe("EUR");
       expect(room.basePrice.amount).toBeGreaterThan(0);
-      expect(room.imagesRaw.length).toBeGreaterThan(0);
+      expect(room.images.bed).toBeTruthy();
+      expect(room.images.bathroom).toBeTruthy();
       expect(room.landingImage).toBeTruthy();
     }
   });

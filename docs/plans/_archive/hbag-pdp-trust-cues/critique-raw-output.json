@@ -1,0 +1,151 @@
+{
+  "fact_find_critique": {
+    "latest_round": 2,
+    "rounds": [
+      {
+        "round": 1,
+        "score": null,
+        "lp_score_mapped": 3.25,
+        "verdict": "needs_revision",
+        "findings_count": { "critical": 1, "warning": 3, "info": 1 },
+        "summary": "1 Critical (JSON comment invalid), 3 Major (delivery copy inconsistency, CI-only test policy violation, overstated linting protection), 1 Minor (unknown skill). All addressed in revision."
+      },
+      {
+        "round": 2,
+        "score": 8,
+        "lp_score_mapped": 4.0,
+        "verdict": "needs_revision",
+        "findings_count": { "critical": 0, "warning": 2, "info": 1 },
+        "findings": [
+          {
+            "severity": "warning",
+            "file": "docs/plans/hbag-pdp-trust-cues/fact-find.md",
+            "line": "215",
+            "message": "The documented default copy ('Ships in 2-5 business days' without qualifier) contradicts the same doc's safer EU-qualified position. Addressed: default copy updated to EU-qualified throughout."
+          },
+          {
+            "severity": "warning",
+            "file": "docs/plans/hbag-pdp-trust-cues/fact-find.md",
+            "line": "119",
+            "message": "generatedAt free-text recommendation weakens provenance semantics. Addressed: replaced with _manualExtension key approach; generatedAt kept date-formatted; sourceHash provenance drift called out as accepted temporary exception."
+          },
+          {
+            "severity": "info",
+            "file": "docs/plans/hbag-pdp-trust-cues/fact-find.md",
+            "line": "56",
+            "message": "Provenance drift (sourceHash) not explicitly noted as temporary exception. Addressed: explicit call-out added."
+          }
+        ],
+        "summary": "Round 2: 8/10 (lp_score 4.0, credible). No Critical. 2 Major addressed in post-round revision. Round 3 not required (no Critical remaining)."
+      }
+    ]
+  },
+  "plan_critique": {
+    "latest_round": 3,
+    "rounds": [
+      {
+        "round": 1,
+        "score": 7,
+        "lp_score_mapped": 3.5,
+        "verdict": "needs_revision",
+        "findings_count": { "critical": 0, "warning": 3, "info": 2 },
+        "findings": [
+          {
+            "severity": "warning",
+            "file": "docs/plans/hbag-pdp-trust-cues/plan.md",
+            "message": "Payment processor named as Stripe throughout plan; actual processor is Axerve (confirmed via checkout-session route.ts). Addressed: all Stripe references replaced with Axerve/Secure-checkout-only constraint."
+          },
+          {
+            "severity": "warning",
+            "file": "docs/plans/hbag-pdp-trust-cues/plan.md",
+            "message": "TASK-01 edge case specifies returning hardcoded fallback strings when trustStrip absent — contradicts all-copy-from-content-packet constraint. Addressed: return type changed to undefined; callers render nothing when undefined."
+          },
+          {
+            "severity": "warning",
+            "file": "docs/plans/hbag-pdp-trust-cues/plan.md",
+            "message": "sourceHash desync from direct JSON edit acknowledged but mitigation insufficient. Addressed: _manualExtension key and materializer re-run risk documented explicitly."
+          },
+          {
+            "severity": "info",
+            "file": "docs/plans/hbag-pdp-trust-cues/plan.md",
+            "message": "Rollback file count inaccurate ('revert four files' vs 7). Addressed: all 7 files enumerated in Summary."
+          },
+          {
+            "severity": "info",
+            "file": "docs/plans/hbag-pdp-trust-cues/plan.md",
+            "message": "IO mock note says 'consistent with existing patterns' but planning validation confirms no IO mock exists. Addressed: note updated to say IO mock must be written from scratch."
+          }
+        ],
+        "summary": "Round 1: 7/10 (lp_score 3.5). No Critical. 3 Major addressed. All findings resolved in post-round revision."
+      },
+      {
+        "round": 2,
+        "score": 7,
+        "lp_score_mapped": 3.5,
+        "verdict": "needs_revision",
+        "findings_count": { "critical": 0, "warning": 3, "info": 1 },
+        "findings": [
+          {
+            "severity": "warning",
+            "file": "docs/plans/hbag-pdp-trust-cues/plan.md",
+            "line": "45",
+            "message": "Materializer re-run will silently remove trustStrip from JSON; mitigation underdocumented. Addressed: explicit risk note added stating materializer rewrites full payload and does not model trustStrip; _manualExtension as guard documented."
+          },
+          {
+            "severity": "warning",
+            "file": "docs/plans/hbag-pdp-trust-cues/plan.md",
+            "line": "55",
+            "message": "TC-01 hardcodes exact unconfirmed delivery string expectation. Addressed: TC-01 updated to assert structural properties (non-empty, contains 'business days') not exact phrase."
+          },
+          {
+            "severity": "warning",
+            "file": "docs/plans/hbag-pdp-trust-cues/plan.md",
+            "line": "361",
+            "message": "IO mock evidence contradiction ('confirmed' from ProductGallery vs. line 396 says no IO mock). Addressed: line 361 rewritten to state no existing IO mock; standard ecosystem pattern written from scratch."
+          },
+          {
+            "severity": "info",
+            "file": "docs/plans/hbag-pdp-trust-cues/plan.md",
+            "line": "392",
+            "message": "it.todo() placeholders could be committed without full implementation. Addressed: execution plan note added that todo stubs must not be committed; first repo commit must contain passing tests."
+          }
+        ],
+        "summary": "Round 2: 7/10 (lp_score 3.5). No Critical. 3 Major addressed. All findings resolved in post-round revision."
+      },
+      {
+        "round": 3,
+        "score": 7,
+        "lp_score_mapped": 3.5,
+        "verdict": "needs_revision",
+        "findings_count": { "critical": 0, "warning": 3, "info": 1 },
+        "findings": [
+          {
+            "severity": "warning",
+            "file": "docs/plans/hbag-pdp-trust-cues/plan.md",
+            "line": "99",
+            "message": "TASK-04 confidence 85% in Task Summary table but 80% in task detail and overall-confidence math. Addressed: Task Summary table updated to 80%."
+          },
+          {
+            "severity": "warning",
+            "file": "docs/plans/hbag-pdp-trust-cues/plan.md",
+            "line": "106",
+            "message": "DAG under-constrained: TASK-03 and TASK-04 both modify page.tsx with only manual coordination notes. Addressed: TASK-04 Depends-on updated to include TASK-03; Parallelism Guide Wave 2 updated so TASK-04 is in Wave 3 with atomic commit requirement."
+          },
+          {
+            "severity": "warning",
+            "file": "docs/plans/hbag-pdp-trust-cues/plan.md",
+            "line": "393",
+            "message": "IO mock too minimal for TS strict mode (missing unobserve, takeRecords, cast). Addressed: green-phase mock updated with full IntersectionObserver interface fields and 'as unknown as typeof IntersectionObserver' cast."
+          },
+          {
+            "severity": "info",
+            "file": "docs/plans/hbag-pdp-trust-cues/plan.md",
+            "line": "365",
+            "message": "Intermediate 75% score still visible with 'build-eligible' label before rescoring to 80%. Addressed: scoring section collapsed to show final 80% only; intermediate text removed."
+          }
+        ],
+        "summary": "Round 3 (max): 7/10 (lp_score 3.5). No Critical. 3 Major addressed in post-round revision. Round 3 is the maximum; no Critical findings remain. Plan proceeds to build."
+      }
+    ]
+  }
+}

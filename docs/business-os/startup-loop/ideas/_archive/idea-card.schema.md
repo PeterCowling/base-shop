@@ -50,7 +50,7 @@ Promoted-to: <relative path to fact-find.md if promoted, else blank>
 | `Source-Domain` | enum | Yes | Which Layer A domain surfaced this idea. One of: `MARKET`, `SELL`, `PRODUCTS`, `LOGISTICS`. |
 | `Source-Link` | path | Yes | Relative path (from repo root) to the specific Layer A artifact (e.g., pack or stage output) that surfaced this idea. Allows traceability back to the standing intelligence signal. |
 | `Hypothesis` | string | Yes | A falsifiable statement of what we believe this idea will achieve. Must name the expected outcome and the mechanism. Example: "If we bundle the loyalty card with hostel stays, 20% of hostel guests will purchase at checkout because they are already in a buying context." |
-| `ICP-fit` | string | Yes | Brief rationale for how this idea fits the current ICP definition. Reference the ICP from brand-profiling.user.md or intake packet. |
+| `ICP-fit` | string | Yes | Brief rationale for how this idea fits the current ICP definition. Reference the ICP from <YYYY-MM-DD>-brand-profile.user.md or intake packet. |
 | `Evidence-quality` | enum | Yes | Operator assessment of the strength of evidence supporting the hypothesis. `High` = validated demand signal (survey, sales, waitlist); `Medium` = indirect signal (competitor data, analogous markets, operator observation); `Low` = hypothesis only, no external validation. |
 | `Score` | integer | Yes | Operator-assigned priority score 1–5. Used in IDEAS-02 for ranking. 5 = highest priority. See scoring rubric below. |
 | `Status` | enum | Yes | Current lifecycle state: `new` (captured, not reviewed), `scored` (reviewed in IDEAS-02), `promoted` (promoted to fact-find in IDEAS-03), `archived` (de-prioritised). |

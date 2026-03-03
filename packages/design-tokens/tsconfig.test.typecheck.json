@@ -7,6 +7,7 @@
     "declarationMap": false,
     "emitDeclarationOnly": false,
     "noEmit": true,
+    "baseUrl": "../..",
     "rootDir": "../..",
     "types": ["node", "jest"],
     "verbatimModuleSyntax": false,

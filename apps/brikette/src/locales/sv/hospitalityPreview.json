@@ -1,0 +1,12 @@
+{
+  "title": "Hotell nära Hospitality Theme Preview",
+  "guestActivation": {
+    "label": "Gästaktivering",
+    "description": "Sist 7 dagar"
+  },
+  "signalBridge": {
+    "title": "signal bridge check",
+    "etaShared": "ETA delade",
+    "cashPrepared": "Cash förberedd"
+  }
+}

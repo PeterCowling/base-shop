@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "date": "2026-02-28",
+    "standard": "WCAG 2.x AA",
+    "mode": "light",
+    "breakpoints": [375, 768, 1280, 1920],
+    "routes": ["home", "dorms", "book"],
+    "notes": "Dorm detail timed out; gradient backgrounds manually calculated; oklab values composited"
+  },
+  "failures": [
+    {
+      "id": "F-01",
+      "sev": "S1",
+      "title": "BookingWidget 'Guests' label — CSS class conflict renders near-white text on near-white background",
+      "breakpoints": ["375px", "768px", "1280px", "1920px"],
+      "routes": ["home", "dorms", "book"],
+      "element": "label[for='guests'] in BookingWidget.tsx",
+      "file": "apps/brikette/src/components/landing/BookingWidget.tsx",
+      "fg": "rgb(242, 243, 244)",
+      "bg": "~rgb(246, 246, 246)",
+      "ratio": 1.03,
+      "threshold": 4.5,
+      "fontSize": "14px",
+      "fontWeight": "600",
+      "rootCause": "Conflicting Tailwind utilities: text-brand-heading (intended) overridden by text-brand-surface (wins)",
+      "fix": "Remove 'text-brand-surface' from the label className in BookingWidget.tsx"
+    },
+    {
+      "id": "F-02",
+      "sev": "S2",
+      "title": "Footer section labels at 60% opacity — 3.81:1 on blue background",
+      "breakpoints": ["375px", "768px", "1280px", "1920px"],
+      "routes": ["home", "dorms", "book"],
+      "element": "Footer section headers (.text-xs.font-semibold.uppercase) — 'Location', 'Contact', 'Follow'",
+      "file": "apps/brikette/src/components/footer/Footer.tsx",
+      "fg": "rgba(255, 255, 255, 0.60) → effective rgb(153, 188, 207)",
+      "bg": "rgb(0, 88, 135)",
+      "ratio": 3.81,
+      "threshold": 4.5,
+      "fontSize": "12px",
+      "fontWeight": "600",
+      "rootCause": "text-brand-bg/60 on dark blue footer. 60% white opacity on #005887 falls below AA threshold for 12px text.",
+      "fix": "Change text-brand-bg/60 → text-brand-bg/75 (CR 5.03:1) or text-brand-bg/80 (CR 5.52:1, matches description text). Apply same fix to dark:text-brand-text/60."
+    },
+    {
+      "id": "F-03",
+      "sev": "S2",
+      "title": "Mobile menu active nav link — yellow on white — 1.47:1",
+      "breakpoints": ["375px", "768px"],
+      "routes": ["home", "dorms", "book"],
+      "element": "MobileMenu active link (current page indicator)",
+      "file": "packages/ui/src/organisms/MobileMenu.tsx",
+      "fg": "rgb(244, 211, 94)",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 1.47,
+      "threshold": 4.5,
+      "fontSize": "14px",
+      "fontWeight": "500-700",
+      "rootCause": "text-brand-secondary (#f4d35e yellow) used as active indicator on white mobile menu background. Token designed for use on dark gradient; fails on white.",
+      "fix": "Use text-brand-primary (#005887 → 7.65:1 on white) for mobile active state, or apply a background highlight approach (bg-brand-primary/10 text-brand-primary)."
+    }
+  ],
+  "uniformity": [
+    {
+      "id": "U-01",
+      "sev": "S3",
+      "title": "BookingWidget label has conflicting CSS class pair text-brand-heading + text-brand-surface",
+      "file": "apps/brikette/src/components/landing/BookingWidget.tsx",
+      "finding": "Two text-color utilities on the same element. Tailwind v4 last-defined wins. Introduces invisible text (F-01). May indicate stale copy-paste.",
+      "fix": "Remove text-brand-surface from label. Audit BookingWidget for similar class conflicts."
+    },
+    {
+      "id": "U-02",
+      "sev": "S3",
+      "title": "Active nav indicator token applied inconsistently between desktop (passes) and mobile (fails)",
+      "files": ["packages/ui/src/organisms/DesktopHeader.tsx", "packages/ui/src/organisms/MobileMenu.tsx"],
+      "finding": "text-brand-secondary works on dark gradient (7.48:1) but fails on white mobile menu (1.47:1). Same token, different outcome based on background context.",
+      "fix": "Active state in MobileMenu should define its own context-appropriate color rather than inheriting the same token from the desktop nav."
+    }
+  ],
+  "passedSpotChecks": [
+    { "element": "H1/H2/H3 headings", "ratio": "15.5–17.22", "status": "pass" },
+    { "element": "Primary CTAs (white on #005887)", "ratio": 7.65, "status": "pass" },
+    { "element": "Header CTA 'Check availability' (dark on yellow)", "ratio": 11.75, "status": "pass" },
+    { "element": "Footer links (white on #005887)", "ratio": 7.65, "status": "pass" },
+    { "element": "Footer 'Book direct' link (yellow on blue)", "ratio": 5.22, "status": "pass" },
+    { "element": "Footer description text (white/80 on blue)", "ratio": 5.52, "status": "pass" },
+    { "element": "Footer column nav headers (white/90 on blue)", "ratio": 6.52, "status": "pass" },
+    { "element": "Body links brand-primary (#005887 on white)", "ratio": 7.65, "status": "pass" },
+    { "element": "Body links bougainvillea (#9b1b33 on white)", "ratio": 8.08, "status": "pass" },
+    { "element": "Review text (~dark/70 on light bg)", "ratio": "5.25–6.39", "status": "pass" },
+    { "element": "Desktop nav active link (yellow on dark gradient)", "ratio": 7.48, "status": "pass" }
+  ]
+}

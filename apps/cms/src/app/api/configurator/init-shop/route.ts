@@ -70,6 +70,7 @@ export async function POST(req: Request) {
   } catch (error) {
     const key =
       error instanceof Error && error.message ? error.message : "api.common.invalidRequest";
-    return NextResponse.json({ error: key }, { status: 400 });
+    const status = key === "Forbidden" || key === "Unauthorized" ? 403 : 400;
+    return NextResponse.json({ error: key }, { status });
   }
 }

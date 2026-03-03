@@ -35,7 +35,7 @@ Required:
 
 Optional (read if present, note gap if absent):
 - `docs/business-os/strategy/<BIZ>/plan.user.md` — may contain operational context
-- `docs/business-os/startup-baselines/<BIZ>-intake-packet.user.md` — may contain pre-recorded observed fields
+- `docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md` — may contain pre-recorded observed fields
 - `docs/business-os/strategy/<BIZ>/s0c-option-select.user.md` — may contain execution constraints (from ASSESSMENT-03)
 - Any other strategy or brief docs under `docs/business-os/strategy/<BIZ>/`
 
@@ -101,7 +101,7 @@ Assemble confirmed values and open gaps into the output format below. Save to th
 
 ## Output Contract
 
-**Path:** `docs/business-os/strategy/<BIZ>/s0e-operator-evidence.user.md`
+**Path:** `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-operator-context.user.md`
 
 **Format:**
 
@@ -164,7 +164,7 @@ Owner: <operator>
 |---|---|---|
 ```
 
-**Downstream consumer:** `modules/assessment-intake-sync.md` reads `s0e-operator-evidence.user.md` as its seventh precursor (ASSESSMENT-08). Fields from Sections A–D populate operator-context rows in intake Sections A, B, C, and D. Section E gaps populate intake Section F (Missing-Data Checklist).
+**Downstream consumer:** `modules/assessment-intake-sync.md` reads `<YYYY-MM-DD>-operator-context.user.md` as its seventh precursor (ASSESSMENT-08). Fields from Sections A–D populate operator-context rows in intake Sections A, B, C, and D. Section E gaps populate intake Section F (Missing-Data Checklist).
 
 ---
 
@@ -190,7 +190,7 @@ Invalid outputs — do not emit:
 
 ## Completion Message
 
-> "Operator evidence recorded: `docs/business-os/strategy/<BIZ>/s0e-operator-evidence.user.md`. [N] fields confirmed, [M] gaps logged in Section E."
+> "Operator evidence recorded: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-operator-context.user.md`. [N] fields confirmed, [M] gaps logged in Section E."
 >
 > "All eight ASSESSMENT precursors (ASSESSMENT-01–ASSESSMENT-08) now present for <BIZ>. The next `/startup-loop start` or `advance` call will trigger ASSESSMENT intake sync automatically."
 
@@ -198,6 +198,6 @@ Invalid outputs — do not emit:
 
 ## Integration
 
-**Upstream (ASSESSMENT-07):** Runs after `/lp-do-assessment-07-measurement-profiling --business <BIZ>` produces measurement-plan.user.md.
+**Upstream (ASSESSMENT-07):** Runs after `/lp-do-assessment-07-measurement-profiling --business <BIZ>` produces <YYYY-MM-DD>-measurement-profile.user.md.
 
 **Downstream:** `modules/assessment-intake-sync.md` reads this artifact as `Precursor-ASSESSMENT-08`. Section E gaps feed intake Section F (Missing-Data Checklist). Section D channel pre-decisions are preserved as operator-locked rows in intake Section D.

@@ -65,7 +65,7 @@ function LoanableItemSelectorComponent({
   return (
     <div className="flex items-center gap-2">
       <Select value={guestSelectedItem} onValueChange={handleSelect}>
-        <SelectTrigger className="border px-2 py-1 rounded">
+        <SelectTrigger className="border px-2 py-1 rounded-lg">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
@@ -78,7 +78,7 @@ function LoanableItemSelectorComponent({
       </Select>
 
       <Button
-        className="bg-info text-primary-fg px-3 py-1 rounded disabled:opacity-50"
+        className="bg-info text-primary-fg px-3 py-1 rounded-lg disabled:opacity-50"
         disabled={buttonDisabled}
         onClick={handleLoanClick}
       >

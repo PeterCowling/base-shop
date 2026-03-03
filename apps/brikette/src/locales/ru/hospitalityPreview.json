@@ -1,0 +1,12 @@
+{
+  "title": "Гостеприимство Тема Preview",
+  "guestActivation": {
+    "label": "Гостевая активация",
+    "description": "Последние 7 дней"
+  },
+  "signalBridge": {
+    "title": "Проверка моста",
+    "etaShared": "ETA поделилась",
+    "cashPrepared": "Наличные подготовлены"
+  }
+}

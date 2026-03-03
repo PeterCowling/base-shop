@@ -6,7 +6,7 @@ Created: 2026-02-24
 Owner: startup-loop maintainers
 Related-contract: docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md
 Related-policy: docs/plans/lp-do-ideas-startup-loop-integration/artifacts/trial-policy-decision.md
-Related-schema: docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.schema.json
+Related-schema: docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.v2.schema.json, docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.schema.json (compat)
 Related-adapter: scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts
 Related-skills: .claude/skills/lp-do-fact-find/SKILL.md, .claude/skills/lp-do-briefing/SKILL.md
 ---
@@ -55,10 +55,10 @@ explicit operator confirmation per Option B (queue-with-confirmation) policy.
 
 | Condition | Adapter Outcome | Error Code | Actionable Guidance |
 |---|---|---|---|
-| `schema_version` is not `"dispatch.v1"` | `RouteError` | `INVALID_SCHEMA_VERSION` | Packet was not produced by lp-do-ideas-trial or was mutated post-emission. Re-emit from the orchestrator. |
+| `schema_version` is neither `"dispatch.v2"` nor `"dispatch.v1"` | `RouteError` | `INVALID_SCHEMA_VERSION` | Packet was not produced by lp-do-ideas orchestrator or was mutated post-emission. Re-emit from the orchestrator. |
 | `mode` is not `"trial"` | `RouteError` | `INVALID_MODE` | Only trial packets are accepted in this tranche. Live mode routing is reserved for the go-live seam (TASK-07). |
 | `status` and `recommended_route` are inconsistent | `RouteError` | `ROUTE_STATUS_MISMATCH` | The upstream orchestrator set status/route to an invalid combination. Correct classification in lp-do-ideas-trial. |
-| Unrecognised `status` value | `RouteError` | `UNKNOWN_STATUS` | Status is not in `{fact_find_ready, briefing_ready, auto_executed, logged_no_action}`. Check schema version. |
+| Unrecognised `status` value | `RouteError` | `UNKNOWN_STATUS` | Status is not in `{fact_find_ready, briefing_ready, auto_executed, logged_no_action}`. Check schema version and trial policy. |
 | Unrecognised `recommended_route` value | `RouteError` | `UNKNOWN_ROUTE` | Route is not `lp-do-fact-find` or `lp-do-briefing`. Check schema version. |
 | `area_anchor` is empty or whitespace | `RouteError` | `MISSING_AREA_ANCHOR` | area_anchor is required for all routes. Verify deriveAreaAnchor() in lp-do-ideas-trial returns a non-empty value. |
 | `evidence_refs` is empty | `RouteError` | `MISSING_EVIDENCE_REFS` | evidence_refs must contain ≥1 artifact path or anchor for all routes. |
@@ -153,12 +153,12 @@ Normalisation does not modify the input packet — the adapter is a pure functio
 
 | Code | Condition | Recovery Action |
 |---|---|---|
-| `INVALID_SCHEMA_VERSION` | `schema_version` is not `"dispatch.v1"` | Re-emit packet from lp-do-ideas-trial orchestrator |
+| `INVALID_SCHEMA_VERSION` | `schema_version` is neither `"dispatch.v2"` nor `"dispatch.v1"` | Re-emit packet from lp-do-ideas orchestrator (`dispatch.v2` preferred) |
 | `INVALID_MODE` | `mode` is not `"trial"` | Confirm packet source; live mode is reserved for go-live seam |
 | `RESERVED_STATUS` | `status` is `"auto_executed"` | Remove `auto_executed` from packet; review trial-policy-decision.md Option B |
 | `UNKNOWN_STATUS` | Unrecognised or non-routable status | Check upstream classification; `logged_no_action` packets must not be routed |
 | `ROUTE_STATUS_MISMATCH` | `status` and `recommended_route` are inconsistent | Fix classification in lp-do-ideas-trial — run T1 keyword matching again |
-| `UNKNOWN_ROUTE` | Unrecognised `recommended_route` | Verify packet conforms to `lp-do-ideas-dispatch.schema.json` |
+| `UNKNOWN_ROUTE` | Unrecognised `recommended_route` | Verify packet conforms to `lp-do-ideas-dispatch.v2.schema.json` (or compat v1 schema during migration) |
 | `MISSING_AREA_ANCHOR` | `area_anchor` is empty/whitespace | Fix `deriveAreaAnchor()` in lp-do-ideas-trial; check event.domain and artifact_id |
 | `MISSING_EVIDENCE_REFS` | `evidence_refs` is empty | Fix lp-do-ideas-trial: evidence_refs is set from `[event.path]` — check event.path |
 | `MISSING_LOCATION_ANCHORS` | `location_anchors` empty on fact-find path | Fix lp-do-ideas-trial: location_anchors is set from `[event.path]` — check event.path |
@@ -200,11 +200,29 @@ will continue to produce payloads only. See `trial-policy-decision.md` for full 
 
 ---
 
-## 9. Schema Cross-Reference
+## 9. Lane Scheduling Semantics (DO / IMPROVE)
+
+Trial queue governance uses one physical queue with a required lane on every admitted entry.
+
+| Topic | Rule |
+|---|---|
+| Lane values | `DO` or `IMPROVE` |
+| Admission assignment | Lane is assigned at admission in `TrialQueue.enqueue()` |
+| Default assignment | `fact_find_ready -> DO`; other routable statuses default to `IMPROVE` |
+| Explicit admission lane override | Allowed via queue admission options (bounded to `DO`/`IMPROVE`) |
+| Lane reassignment | Requires explicit override and non-empty rationale (`reassignLane(..., { override: true, reason })`) |
+| Scheduler model | One shared queue; scheduler applies per-lane WIP caps and aging-based priority within lane |
+| Aging behavior | Older entries gain score over time, allowing promotion over newer lower-age items in the same lane |
+
+Operational notes:
+- Lane reassignment without explicit override is rejected fail-closed.
+- Scheduler output is non-mutating planning data (`planNextDispatches`); queue state changes remain explicit.
+
+## 10. Schema Cross-Reference
 
 | Concept | Defined in |
 |---|---|
-| Dispatch packet format | `docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.schema.json` |
+| Dispatch packet format | `docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.v2.schema.json` (primary), `docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.schema.json` (compat) |
 | Trial mode contract | `docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md` |
 | Autonomy/threshold policy | `docs/plans/lp-do-ideas-startup-loop-integration/artifacts/trial-policy-decision.md` |
 | Routing adapter implementation | `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts` |

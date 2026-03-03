@@ -7,7 +7,8 @@
     "start": "next start -p 3013",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "bash ../../scripts/tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs"
+    "test": "bash ../../scripts/tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs",
+    "build:worker": "opennextjs-cloudflare build"
   },
   "dependencies": {
     "@acme/config": "workspace:*",
@@ -28,6 +29,7 @@
     "react-dom": "19.2.1"
   },
   "devDependencies": {
+    "@opennextjs/cloudflare": "^1.16.5",
     "next": "^16.1.6",
     "typescript": "5.8.3"
   }

@@ -202,32 +202,32 @@
   "images": {
     "whyGo": {
       "src": "/img/guides/laurito-beach/02-beach-overview.jpg",
-      "alt": "Laurito Beach cove with beach clubs along the shoreline",
+      "alt": "समुद्र तट क्लबों के साथ लॉरीटो बीच कोव",
       "caption": "Laurito की चट्टान-समर्थित कोव Spiaggia Grande से शांत और शांत है।"
     },
     "layout": {
       "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
-      "alt": "Beach decks and shoreline layout at Laurito",
+      "alt": "Laurito में समुद्र तट डेक और तटरेखा लेआउट",
       "caption": "तीन क्षेत्र कोव साझा करते हैं: सार्वजनिक स्ट्रिप, Villa Tre Ville डेक, और Da Adolfo टैरेस।"
     },
     "treVille": {
       "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
-      "alt": "Villa Tre Ville beach club loungers and sea views",
+      "alt": "Villa Tre Ville beach club loungers and sea दृष्टिकोण",
       "caption": "Villa Tre Ville प्रीमियम लाउंजर्स और कंसीयज-स्टाइल सेवा पर केंद्रित है।"
     },
     "daAdolfo": {
       "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
-      "alt": "Da Adolfo beach club dock and seating area",
+      "alt": "Da Adolfo beach club dock and बैठने का क्षेत्र",
       "caption": "Da Adolfo की शटल बोट मेहमानों को रेस्टोरेंट टैरेस के बगल में छोड़ती है।"
     },
     "positanoView": {
       "src": "/img/guides/laurito-beach/05-positano-view.jpg",
-      "alt": "View over Positano and the sea with boats near the shore",
+      "alt": "Positano और समुद्र तट के पास नावों के साथ देखें",
       "caption": "Spiaggia Grande कई बीच शटल और नावों के लिए मुख्य लॉन्च पॉइंट है।"
     },
     "sitaBus": {
       "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
-      "alt": "Blue SITA bus driving along the Amalfi Coast road above the sea",
+      "alt": "सागर के ऊपर अमाल्फी कोस्ट रोड के साथ ब्लू SITA बस ड्राइविंग",
       "caption": "तटीय SITA बस जब नावें रुकी हों तो एक उपयोगी बैकअप है।"
     }
   },

@@ -34,12 +34,14 @@ const BookPageContent = require("@/app/[lang]/book/BookPageContent")
 
 describe("Book page layout order", () => {
   it("renders guests-love social proof above the booking selector", () => {
-    render(<BookPageContent lang="en" />);
+    render(<BookPageContent lang="en" heading="Book your stay" />);
 
     const socialProof = screen.getByText("Guests love Brikette");
-    const updateButton = screen.getByRole("button", { name: /update/i });
+    // The booking widget uses date inputs (no submit button); use the check-in input
+    // as the reference element to verify social proof appears above the booking section.
+    const checkInInput = screen.getByLabelText(/check.?in/i);
 
-    const order = socialProof.compareDocumentPosition(updateButton);
+    const order = socialProof.compareDocumentPosition(checkInInput);
     expect(order & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 });

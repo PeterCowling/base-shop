@@ -6,17 +6,17 @@
   "linkLabel": "Cách đến Positano (cẩm nang quyết định)",
   "intro": "Bản dịch đang được chuẩn bị.",
   "toc": {
-    "onThisPage": "On this page",
-    "naples": "Via Naples",
-    "salerno": "Via Salerno",
-    "ferry": "Ferry (summer)",
-    "private": "Private transfer",
-    "faqs": "FAQs"
+    "onThisPage": "Trên trang này",
+    "naples": "Qua Naples",
+    "salerno": "Name",
+    "ferry": "Thượng lộ bình an!",
+    "private": "Truyền:",
+    "faqs": "Câu hỏi thường gặp"
   },
   "labels": {
-    "whenHeading": "When to choose",
-    "cheapestHeading": "Cheapest route",
-    "seasonalHeading": "Seasonal notes"
+    "whenHeading": "Khi nào nên chọn",
+    "cheapestHeading": "Đường rẻ nhất",
+    "seasonalHeading": "Ghi chú mùa"
   },
   "sections": [
     {

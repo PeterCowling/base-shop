@@ -41,5 +41,102 @@
     ],
     "footer": "Endelig tilgjengelighet og betaling fullføres i vår offisielle bookingsløsning."
   },
-  "backToRooms": "Tilbake til rom"
+  "backToRooms": "Tilbake til rom",
+  "hostel": {
+    "directSavings": {
+      "eyebrow": "Bestill direkte og spar",
+      "headline": "Opptil 25 % mindre enn Booking.com"
+    }
+  },
+  "date": {
+    "stayHelper": "2-8 netter",
+    "clearDates": "Tøm datoer",
+    "nightsSummary": "{{from}} → {{to}}__{{nights}} nights)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Vandrerhjemsbestillinger håndteres med assistert støtte når JavaScript er deaktivert.",
+    "emailAssistedBooking": "Send oss ​​en e-post for assistert bestilling"
+  },
+  "bookingConstraints": {
+    "notice": "Vandrerhjemsbestillinger støtter opphold kun for voksne mellom 2 og 8 netter med opptil 8 voksne per bestilling. For større grupper eller lengre opphold, del forespørselen din på flere bestillinger eller",
+    "assistedLink": "kontakt oss for assistert bestilling"
+  },
+  "expiredQuote": {
+    "message": "Denne sitatlenken er utløpt. Bygg opp tilbudet ditt med nye datoer for å fortsette."
+  },
+  "recovery": {
+    "title": "Trenger du mer tid? Send dette tilbudet på e-post og fortsett senere.",
+    "privacyNotice": "Vi beholder kun bestillingskontekst og samtykkemetadata. CV-koblinger utløper etter 7 dager.",
+    "emailLabel": "Din e-post",
+    "emailPlaceholder": "du@eksempel.com",
+    "consent": "Jeg samtykker i å motta dette tilbudet via e-post og forstår at det utløper etter 7 dager.",
+    "submitted": "E-postutkast åpnet. Du kan sende det for å lagre dette tilbudet.",
+    "submitCta": "Send meg dette sitatet på e-post",
+    "errors": {
+      "invalidEmail": "Skriv inn en gyldig e-postadresse.",
+      "consentRequired": "Det kreves samtykke for å sende e-posttilbudet.",
+      "sendFailed": "Noe gikk galt. Vennligst prøv igjen eller kontakt oss direkte."
+    },
+    "mailto": {
+      "subject": "Forespørsel om gjenoppretting av tilbud",
+      "bodyIntro": "Send meg dette tilbudet og en oppfølgingspåminnelse.",
+      "labels": {
+        "guestEmail": "Gjeste-e-post",
+        "checkIn": "Innsjekking",
+        "checkOut": "Utsjekking",
+        "guests": "Gjester",
+        "sourceRoute": "Kilderute",
+        "room": "Rom",
+        "ratePlan": "Prisplan",
+        "resumeLink": "Fortsett-lenke"
+      }
+    },
+    "sending": "Sender..."
+  },
+  "subheading": "Velg datoer og velg deretter rom.",
+  "dealBanner": {
+    "applied": "Deal brukt: {{code}}_"
+  },
+  "apartment": {
+    "heading": "Bestill den private leiligheten",
+    "subheading": "Velg datoer og antall gjester, og velg deretter en pris.",
+    "guestLabel": "Antall gjester",
+    "guests": {
+      "2": "2 gjester",
+      "3": "3 gjester"
+    },
+    "flex": {
+      "title": "Fleksibel pris",
+      "saving": "Spar 21% vs OTA",
+      "bullets": [
+        "Free cancellation up to 3 days before arrival.",
+        "Changes subject to availability."
+      ]
+    },
+    "nr": {
+      "title": "Ikke-refunderbar",
+      "saving": "Lagre 26% vs OTA",
+      "bullets": [
+        "Best direct price — paid in full upfront.",
+        "No refunds or changes after booking."
+      ]
+    },
+    "nightsSummary_one": "{{count}} night - tilgjengelighet bekreftet i neste trinn.",
+    "nightsSummary_other": "{{count}} nights - tilgjengelighet bekreftet i neste trinn.",
+    "rateLabel": "Velg din sats",
+    "ratePrompt": "Velg en rate over for å fortsette",
+    "cta": {
+      "unselected": "Velg en hastighet å fortsette",
+      "flex": "Fleksibel – Fortsett å sjekke ut",
+      "nr": "Ikke refunderbar – Fortsett å sjekke ut"
+    },
+    "policies": {
+      "title": "Regler og avgifter",
+      "items": [
+        "City/tourist tax: €2.50 per guest per night (added at checkout).",
+        "Cancellation admin fee: typically 15% of booking price.",
+        "Final availability and payment are completed on our official booking engine."
+      ]
+    }
+  }
 }

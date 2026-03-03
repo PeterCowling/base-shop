@@ -5,6 +5,3 @@ export const OCCUPANT_LINK_PREFIX =
 export const FIREBASE_BASE_URL =
   "https://prime-f3652-default-rtdb.europe-west1.firebasedatabase.app/";
 
-export function isMcpBookingEmailEnabled(): boolean {
-  return process.env.NEXT_PUBLIC_MCP_BOOKING_EMAIL_ENABLED === "true";
-}

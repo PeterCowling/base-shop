@@ -10,6 +10,7 @@ import i18n, { type ReadCallback } from "i18next";
 import resourcesToBackend from "i18next-resources-to-backend";
 
 import { i18nConfig } from "./i18n.config";
+import EN_BOOK_PAGE from "./locales/en/bookPage.json";
 import EN_FOOTER from "./locales/en/footer.json";
 import EN_TRANSLATION from "./locales/en/translation.json";
 import { loadLocaleResource } from "./locales/locale-loader";
@@ -201,6 +202,7 @@ i18n.use(
         en: {
           translation: asResourceKey(EN_TRANSLATION),
           footer: asResourceKey(EN_FOOTER),
+          bookPage: asResourceKey(EN_BOOK_PAGE),
           // (legacy article namespaces removed - now served via guides)
           dealsPage: {
             // eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Non-UI seed values for tests; real copy lives in locales JSON

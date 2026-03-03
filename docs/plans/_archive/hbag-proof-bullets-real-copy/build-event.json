@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "f70b4afe2c",
+  "feature_slug": "hbag-proof-bullets-real-copy",
+  "emitted_at": "2026-02-28T00:00:00Z",
+  "why": "The PDP proof bullet section was showing internal system strings to live visitors. This needed to be fixed before Etsy listing or ad traffic was sent to the site.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "The productPage.proofBullets array in data/shops/caryina/site-content.generated.json contains five real, customer-facing proof bullets authored in the content packet. The materializer extracts bullets from the content packet and fail-closes when the section is missing or empty.",
+    "source": "operator"
+  }
+}

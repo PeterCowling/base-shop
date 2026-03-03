@@ -13,7 +13,7 @@ const meta: Meta<typeof SearchBar> = {
   decorators: [
     (Story) => (
       <div className="context-operations min-h-screen bg-gray-50 p-8 dark:bg-darkBg">
-        <div className="w-[600px]">
+        <div className="w-full max-w-2xl">
           <Story />
         </div>
       </div>
@@ -162,15 +162,15 @@ function InteractiveWithResultsStory() {
 
       {/* Search results */}
       {filteredProducts.length > 0 && (
-        <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-darkSurface dark:bg-darkSurface">
-          <p className="mb-2 text-sm font-semibold text-gray-600 dark:text-gray-400">
+        <div className="rounded-lg border border-border-2 bg-surface p-4 shadow-sm dark:border-darkSurface dark:bg-darkSurface">
+          <p className="mb-2 text-sm font-semibold text-muted-foreground dark:text-muted-foreground">
             Results ({filteredProducts.length})
           </p>
           <ul className="space-y-2">
             {filteredProducts.map((product, index) => (
               <li
                 key={index}
-                className="rounded px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-darkAccentGreen dark:hover:bg-darkBg"
+                className="rounded px-3 py-2 text-sm text-muted-foreground hover:bg-gray-50 dark:text-darkAccentGreen dark:hover:bg-darkBg"
               >
                 {product}
               </li>
@@ -180,8 +180,8 @@ function InteractiveWithResultsStory() {
       )}
 
       {value && filteredProducts.length === 0 && (
-        <div className="rounded-lg border border-gray-200 bg-white p-8 text-center shadow-sm dark:border-darkSurface dark:bg-darkSurface">
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+        <div className="rounded-lg border border-border-2 bg-surface p-8 text-center shadow-sm dark:border-darkSurface dark:bg-darkSurface">
+          <p className="text-sm text-muted-foreground dark:text-muted-foreground">
             No results found for "{value}"
           </p>
         </div>

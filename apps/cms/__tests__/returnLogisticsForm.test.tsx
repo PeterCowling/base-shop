@@ -8,7 +8,7 @@ import ReturnLogisticsPage from "../src/app/cms/shop/[shop]/data/return-logistic
 const mockCheckShopExists = jest.fn();
 const mockReadReturnLogistics = jest.fn();
 
-jest.mock("@acme/lib", () => ({
+jest.mock("@acme/platform-core/shops", () => ({
   checkShopExists: (...args: any[]) => mockCheckShopExists(...args),
 }));
 jest.mock("@acme/platform-core/repositories/returnLogistics.server", () => ({
@@ -137,4 +137,3 @@ describe("ReturnLogisticsForm", () => {
     expect(global.fetch).not.toHaveBeenCalled();
   });
 });
-

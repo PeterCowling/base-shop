@@ -1,4 +1,4 @@
-import Providers from "@/components/Providers";
+import Providers from "@/components/ClientProviders";
 import ReconciliationWorkbench from "@/components/till/ReconciliationWorkbench";
 
 // Prevent static prerendering — Firebase RTDB requires runtime env vars

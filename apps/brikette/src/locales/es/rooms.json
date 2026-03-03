@@ -51,6 +51,118 @@
           "body": "Cada cama tiene enchufes propios, luz de lectura y casilleros con tarjeta para tu tranquilidad."
         }
       ]
+    },
+    "room_3": {
+      "amenities": [
+        {
+          "title": "Gran relación calidad-precio, ubicación inmejorable",
+          "body": "Una de nuestras opciones más asequibles se encuentra en el corazón del albergue — cerca de recepción, la cocina compartida y otros viajeros."
+        },
+        {
+          "title": "Planta exclusiva para mujeres",
+          "body": "La habitación 3 forma parte de una sección del albergue exclusiva para mujeres. El baño compartido cercano está limpio, bien equipado y reservado exclusivamente para huéspedes femeninas."
+        },
+        {
+          "title": "Privacidad en cada litera",
+          "body": "Cada litera viene con cortinas de privacidad, una luz de lectura personal y enchufes de carga para que puedas instalarte a cualquier hora sin molestar a los vecinos."
+        }
+      ]
+    },
+    "room_4": {
+      "amenities": [
+        {
+          "title": "Espacio exclusivo para mujeres",
+          "body": "Un dormitorio exclusivo para mujeres con su propio baño compartido — limpio, bien mantenido y reservado exclusivamente para huéspedes femeninas de esta planta."
+        },
+        {
+          "title": "Espacio para todos",
+          "body": "Ocho camas en cuatro literas significa que siempre hay alguien con quien compartir una recomendación o una excursión a la playa, sin el caos de un dormitorio mixto más grande."
+        },
+        {
+          "title": "Lo esencial en cada litera",
+          "body": "Cada cama tiene cortinas de privacidad, una luz de lectura y enchufes USB para que tu teléfono esté listo para las aventuras de mañana."
+        }
+      ]
+    },
+    "room_5": {
+      "amenities": [
+        {
+          "title": "Terraza con vistas al mar incluida",
+          "body": "Sal a la terraza compartida para disfrutar de vistas panorámicas de Positano y el Mar Tirreno — un escenario del que la mayoría de los huéspedes no quiere irse."
+        },
+        {
+          "title": "Baño privado para la habitación",
+          "body": "Un baño privado compartido solo entre los compañeros de habitación significa sin colas por la mañana y todo el espacio que necesitas para prepararte a tu ritmo."
+        },
+        {
+          "title": "Social pero cómodo",
+          "body": "Seis camas en un diseño abierto con cortinas, luces de lectura y puntos de carga en cada litera — lo suficientemente cerca para hacer amigos, lo suficientemente privado para dormir bien."
+        }
+      ]
+    },
+    "room_6": {
+      "amenities": [
+        {
+          "title": "Terraza con vistas a la Costa Amalfitana",
+          "body": "La terraza compartida con vistas al mar está a pocos pasos de la habitación — perfecta para estiramientos al amanecer, aperitivo por la tarde o simplemente ver los barcos en la bahía."
+        },
+        {
+          "title": "Tu propio baño",
+          "body": "El baño privado pertenece solo a esta habitación, así que tú marcas el horario de las duchas matutinas sin esperar jamás en fila."
+        },
+        {
+          "title": "Distribución de camas flexible",
+          "body": "Tres literas más una cama individual encajan naturalmente con los viajeros solos y en pareja, cada plaza equipada con cortinas, luces y enchufes."
+        }
+      ]
+    },
+    "room_8": {
+      "amenities": [
+        {
+          "title": "Refugio con vistas al jardín",
+          "body": "Una vista tranquila al jardín del albergue hace de la habitación 8 uno de los rincones más tranquilos del edificio — ideal para los madrugadores o los que duermen ligero."
+        },
+        {
+          "title": "Entorno íntimo exclusivo para mujeres",
+          "body": "Con solo dos camas en un entorno exclusivo para mujeres, esta es la experiencia de albergue más cercana a tener una habitación privada — sin el precio de una privada."
+        },
+        {
+          "title": "Baño compartido cercano",
+          "body": "Un baño compartido exclusivo para mujeres e impecable está a pocos pasos de la puerta, bien surtido y mantenido durante todo el día."
+        }
+      ]
+    },
+    "room_9": {
+      "amenities": [
+        {
+          "title": "Baño para tres",
+          "body": "Un baño privado compartido entre solo tres huéspedes significa colas realmente cortas y una rutina matutina relajada — un lujo poco común en los viajes de albergue."
+        },
+        {
+          "title": "Calma en el patio",
+          "body": "Orientada hacia el interior sobre el patio resguardado del albergue, la habitación permanece más fresca y tranquila que las plantas con vistas al mar — un escape bienvenido tras un día completo de exploración."
+        },
+        {
+          "title": "Ambiente íntimo de grupo",
+          "body": "Tres camas individuales en lugar de literas dan a la habitación un diseño más relajado — cómodo para los viajeros solos que aprecian un poco más de espacio en el suelo y luz."
+        }
+      ]
+    },
+    "room_10": {
+      "amenities": [
+        {
+          "title": "Baño para todo el dormitorio",
+          "body": "Seis huéspedes comparten un baño y nadie más — las rutinas matutinas son más tranquilas cuando el baño es tuyo y no de todo el piso."
+        },
+        {
+          "title": "Ambiente de albergue clásico",
+          "body": "Un animado dormitorio mixto con tres literas es perfecto para los viajeros solos dispuestos a conocer gente de todo el mundo en su primera hora de llegada."
+        },
+        {
+          "title": "Cargado y listo",
+          "body": "Cada litera incluye una luz de lectura, enchufes USB y cortinas de privacidad para que puedas desconectar a tu ritmo incluso cuando la habitación está animada."
+        }
+      ]
     }
   }
 }

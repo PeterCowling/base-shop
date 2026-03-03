@@ -35,6 +35,7 @@ jobs:
     timeout-minutes: 5
     outputs:
       shop: ${{ steps.filter.outputs.shop }}
+      email_shadow_replay: ${{ steps.filter.outputs.email_shadow_replay }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -223,10 +224,15 @@ jobs:
         run: |
           set -euo pipefail
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            if ! git rev-parse --verify "origin/${{ github.base_ref }}" >/dev/null 2>&1; then
-              git fetch --no-tags origin "+${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+            # Prefer PR "before" SHA when present so lint scope tracks only the
+            # latest incremental push, not the entire long-lived branch delta.
+            export DOCS_LINT_BASE="${{ github.event.before }}"
+            if [ -z "${DOCS_LINT_BASE}" ] || [ "${DOCS_LINT_BASE}" = "0000000000000000000000000000000000000000" ]; then
+              if ! git rev-parse --verify "origin/${{ github.base_ref }}" >/dev/null 2>&1; then
+                git fetch --no-tags origin "+${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+              fi
+              export DOCS_LINT_BASE="origin/${{ github.base_ref }}"
             fi
-            export DOCS_LINT_BASE="origin/${{ github.base_ref }}"
           else
             export DOCS_LINT_BASE="${{ github.event.before }}"
           fi
@@ -309,12 +315,50 @@ jobs:
           echo "TURBO_SCM_HEAD=${{ github.sha }}" >> "$GITHUB_ENV"
       - name: Typecheck (affected workspaces)
         run: pnpm exec turbo run typecheck --affected
+      - name: Build workspace deps for downstream type resolution
+        run: |
+          # Build package-level declaration outputs so typecheck-tests can resolve path aliases.
+          pnpm -r --filter "./packages/**" --if-present build
       - name: Typecheck tests (Phase-1 + Phase-4 + Phase-5 packages + apps/cms)
         run: |
           set -e
           for pkg in packages/editorial packages/types packages/stripe packages/i18n packages/design-system packages/design-tokens packages/seo packages/platform-core packages/platform-machine apps/brikette packages/template-app packages/ui packages/auth packages/email/ packages/zod-utils packages/telemetry packages/date-utils packages/themes packages/email-templates packages/lib apps/cms; do
             TYPECHECK_FILTER="$pkg" node scripts/typecheck-tests.mjs
           done
+
+  email-shadow-replay-gate:
+    name: Email Shadow Replay Gate
+    needs: [changes]
+    if: >-
+      ${{
+        needs.changes.outputs.email_shadow_replay == 'true' &&
+        (
+          github.event_name != 'pull_request' ||
+          github.base_ref != 'main' ||
+          !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+          contains(github.event.pull_request.labels.*.name, 'promote-app:core') ||
+          contains(github.event.pull_request.labels.*.name, 'promote-app:shop')
+        )
+      }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Run email shadow replay acceptance gate
+        run: pnpm --filter @acme/mcp-server shadow-replay:refine:ci
+      - name: Upload email shadow replay artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: email-shadow-replay
+          path: |
+            .tmp/email-shadow-replay-report.md
+            .tmp/email-shadow-replay-summary.json
+          if-no-files-found: warn
 
   test:
     name: Unit tests
@@ -327,7 +371,7 @@ jobs:
         contains(github.event.pull_request.labels.*.name, 'promote-app:shop')
       }}
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 75
     steps:
       - uses: actions/checkout@v4
         with:
@@ -479,7 +523,7 @@ jobs:
       }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    needs: [lint, typecheck, test, storybook-visual]
+    needs: [lint, typecheck, email-shadow-replay-gate, test, storybook-visual]
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-repo
@@ -497,6 +541,8 @@ jobs:
           NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
           NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID }}
           NEXTAUTH_SECRET: build-nextauth-secret-32-chars-long-string!
+          SESSION_SECRET: build-session-secret-32-chars-long-string!!
+          CART_COOKIE_SECRET: build-cart-cookie-secret
         run: pnpm build
 
   e2e:

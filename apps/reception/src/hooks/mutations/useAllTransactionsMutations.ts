@@ -75,22 +75,21 @@ export default function useAllTransactions() {
           });
           await update(ref(database), updatePayload);
           const successMsg = `Updated void fields on allFinancialTransactions/${transactionId}`;
-          console.log(successMsg, updatePayload);
           setSuccess(successMsg);
           return;
         } else {
           // Build a Partial<FinancialTransaction> so optional fields are not strictly required
+          const resolvedShiftId = transactionData.shiftId ?? getStoredShiftId();
           const payload: Partial<FinancialTransaction> = {
             ...transactionData,
             user_name: user.user_name ?? "system",
             timestamp: getItalyIsoString(),
-            shiftId: transactionData.shiftId ?? getStoredShiftId() ?? undefined,
+            ...(resolvedShiftId != null && { shiftId: resolvedShiftId }),
           };
           await update(ref(database), {
             [`allFinancialTransactions/${transactionId}`]: payload,
           });
           const successMsg = `Successfully wrote to allFinancialTransactions/${transactionId}`;
-          console.log(successMsg, payload);
           setSuccess(successMsg);
         }
       } catch (err) {

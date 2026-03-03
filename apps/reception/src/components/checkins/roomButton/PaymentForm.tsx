@@ -67,43 +67,45 @@ function PaymentForm({
     return "Paid";
   }, [outstanding, splitPayments]);
 
-  const activeClass = "bg-primary-main hover:bg-primary-dark text-primary-fg";
+  const activeClass = "bg-primary-main/100 hover:opacity-90 text-primary-fg/100";
   const disabledClass =
-    "bg-success-light text-primary-fg cursor-not-allowed opacity-70";
-  const leftButtonClass = isDisabled
-    ? disabledClass
-    : `${activeClass} border-r border-border/20`;
+    "bg-success-main/100 text-foreground cursor-not-allowed opacity-70";
+  const leftButtonClass = isDisabled ? disabledClass : activeClass;
   const rightButtonClass = isDisabled ? disabledClass : activeClass;
 
   return (
     <Popover open={menuOpen} onOpenChange={handleOpenChange}>
-      <div className="relative flex items-center">
-        <PopoverTrigger asChild>
+      <div className="relative">
+        <div className="flex items-stretch rounded-md overflow-hidden">
+          <PopoverTrigger asChild>
+            <Button
+              compatibilityMode="passthrough"
+              disabled={isDisabled}
+              className={`h-9 px-2.5 flex items-center justify-center focus:outline-none transition-colors rounded-none ${leftButtonClass}`}
+              title={
+                isDisabled
+                  ? "Payment not possible (already paid)"
+                  : "Click to split/change payment"
+              }
+            >
+              <PayTypeIcon size={16} />
+            </Button>
+          </PopoverTrigger>
+          <div className="w-px self-stretch bg-border-1" />
           <Button
+            compatibilityMode="passthrough"
+            onClick={handleImmediatePayment}
             disabled={isDisabled}
-            style={{ height: "55px" }}
-            className={`px-4 flex items-center justify-center focus:outline-none transition-colors rounded-l ${leftButtonClass}`}
+            className={`h-9 px-2.5 flex items-center justify-center focus:outline-none transition-colors rounded-none text-xs font-medium ${rightButtonClass}`}
             title={
               isDisabled
                 ? "Payment not possible (already paid)"
-                : "Click to split/change payment"
+                : "Pay immediately with selected split"
             }
           >
-            <PayTypeIcon size={20} />
+            {getButtonLabel()}
           </Button>
-        </PopoverTrigger>
-        <Button
-          onClick={handleImmediatePayment}
-          disabled={isDisabled}
-          className={`min-h-55px px-[11px] flex items-center justify-center focus:outline-none transition-colors rounded-r ${rightButtonClass}`}
-          title={
-            isDisabled
-              ? "Payment not possible (already paid)"
-              : "Pay immediately with selected split"
-          }
-        >
-          {getButtonLabel()}
-        </Button>
+        </div>
       </div>
 
       <PopoverContent align="start" sideOffset={6} className="p-0">

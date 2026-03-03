@@ -4,7 +4,7 @@
     "description": "Découvrez nos boissons : bières, vins, cocktails et sans alcool."
   },
   "header": {
-    "brand": "Hostel Brikette",
+    "brand": "Auberge Brikette",
     "menuTitle": "Menu du Bar, 2025",
     "hours": "Ouvert tous les jours (voir horaires au bar)"
   },
@@ -47,19 +47,19 @@
   },
   "items": {
     "aperolSpritz": {
-      "name": "Aperol Spritz",
+      "name": "Apérol Spritz",
       "note": "Spritz italien classique, sur glace pilée."
     },
     "limoncelloSpritz": {
-      "name": "Limoncello Spritz",
+      "name": "Sprimz limoncello",
       "note": "Spécialité de la Côte amalfitaine, sur glace pilée."
     },
     "hugoSpritz": {
-      "name": "Hugo Spritz",
+      "name": "Câblo spritz",
       "note": "Vin pétillant versé sur menthe, citron vert et fleur de sureau. Sur glace pilée."
     },
     "rossiniSpritz": {
-      "name": "Rossini Spritz",
+      "name": "Spritz rossini",
       "note": "Vin pétillant et jus de fraise. Sur glace pilée."
     },
     "lemonStrawberryDaiquiri": {
@@ -70,7 +70,7 @@
       "note": "Jus de fraise ou citron avec tequila, Cointreau et glace. Finition classique."
     },
     "lemonDropMartini": {
-      "name": "Lemon Drop Martini",
+      "name": "Martini à goutte de citron",
       "note": "Jus de citron frais, secoué avec Absolut Vodka, Cointreau et glace."
     },
     "redWhiteGlass": {
@@ -83,67 +83,67 @@
       "name": "Verre de Prosecco"
     },
     "nastro330": {
-      "name": "Nastro, 330ml"
+      "name": "Nastro, 330 ml"
     },
     "nastro660": {
-      "name": "Nastro, 660ml"
+      "name": "Nastro, 660 ml"
     },
     "peroni330": {
-      "name": "Peroni, 330ml"
+      "name": "Peroni, 330 ml"
     },
     "peroni660": {
-      "name": "Peroni, 660ml"
+      "name": "peroni, 660ml"
     },
     "skyy": {
-      "name": "Skyy"
+      "name": "Ciel"
     },
     "absolut": {
-      "name": "Absolut"
+      "name": "Absolue"
     },
     "smirnoff": {
       "name": "Smirnoff"
     },
     "greyGoose": {
-      "name": "Grey Goose"
+      "name": "Oie grise"
     },
     "pampero": {
-      "name": "Pampero"
+      "name": "Pampéro"
     },
     "bacardiSuperior": {
-      "name": "Bacardi Superior"
+      "name": "Bacardi Supérieur"
     },
     "captainMorgan": {
-      "name": "Captain Morgan"
+      "name": "Capitaine Morgan"
     },
     "angosturaReserva": {
-      "name": "Angostura Reserva"
+      "name": "Réserve d'Angostura"
     },
     "beefeater": {
-      "name": "Beefeater"
+      "name": "Bovin"
     },
     "bombaySapphire": {
-      "name": "Bombay Sapphire"
+      "name": "Bombay Saphir"
     },
     "tanqueray": {
       "name": "Tanqueray"
     },
     "hendricks": {
-      "name": "Hendrick's"
+      "name": "Chez Hendrick"
     },
     "jwRed": {
-      "name": "Johnnie Walker Red Label (Blended Scotch)"
+      "name": "Étiquette rouge Johnnie Walker (Écossais bleu)"
     },
     "jameson": {
-      "name": "Jameson (Irish)"
+      "name": "Jameson (Irlande)"
     },
     "jackDaniels": {
-      "name": "Jack Daniel's Old No.07 (Sour Mash)"
+      "name": "Whisky Jack Daniel's Old No.07 (Sour Mash)"
     },
     "wildTurkey": {
-      "name": "Wild Turkey (Bourbon)"
+      "name": "Turquie sauvage (Bourbon)"
     },
     "chivas12": {
-      "name": "Chivas Regal 12 Year Old (Blended Scotch)"
+      "name": "Chivas Regal 12 ans (Écossais blond)"
     },
     "glenfiddich12": {
       "name": "Glenfiddich 12 ans (single malt)"

@@ -51,6 +51,118 @@
           "body": "Każde łóżko ma własne gniazdka, lampkę i szafkę na kartę, dzięki czemu naładujesz sprzęt i zachowasz spokój."
         }
       ]
+    },
+    "room_3": {
+      "amenities": [
+        {
+          "title": "Świetna cena, doskonała lokalizacja",
+          "body": "Jedna z naszych najbardziej przystępnych opcji mieści się w samym sercu hostelu — blisko recepcji, wspólnej kuchni i innych podróżnych."
+        },
+        {
+          "title": "Piętro tylko dla kobiet",
+          "body": "Pokój 3 jest częścią sekcji hostelu przeznaczonej tylko dla kobiet. Pobliska wspólna łazienka jest czysta, dobrze wyposażona i przeznaczona wyłącznie dla kobiet."
+        },
+        {
+          "title": "Prywatność wbudowana w każde łóżko",
+          "body": "Każde łóżko piętrowe ma zasłony zapewniające prywatność, osobistą lampkę do czytania i gniazda ładowania, dzięki czemu możesz zadomowić się o każdej porze, nie przeszkadzając sąsiadom."
+        }
+      ]
+    },
+    "room_4": {
+      "amenities": [
+        {
+          "title": "Przestrzeń tylko dla kobiet",
+          "body": "Wydzielony damski dormitorium z własną wspólną łazienką — czysty, dobrze utrzymany i zarezerwowany wyłącznie dla kobiet na tym piętrze."
+        },
+        {
+          "title": "Miejsce dla wszystkich",
+          "body": "Osiem łóżek na czterech pryczach oznacza, że zawsze jest ktoś, z kim można podzielić się rekomendacją lub wypadem na plażę, bez chaosu większego mieszanego dormitorium."
+        },
+        {
+          "title": "Niezbędne przy każdym łóżku",
+          "body": "Każde łóżko ma zasłony zapewniające prywatność, lampkę do czytania i gniazda USB, dzięki czemu Twój telefon jest gotowy na jutrzejsze przygody."
+        }
+      ]
+    },
+    "room_5": {
+      "amenities": [
+        {
+          "title": "Taras z widokiem na morze w cenie",
+          "body": "Wyjdź na wspólny taras, aby podziwiać panoramiczne widoki na Positano i Morze Tyrreńskie — tło, z którego większość gości nie chce odchodzić."
+        },
+        {
+          "title": "Prywatna łazienka dla pokoju",
+          "body": "Prywatna łazienka dzielona tylko z współlokatorami oznacza brak porannych kolejek i całą przestrzeń potrzebną do przygotowania się we własnym tempie."
+        },
+        {
+          "title": "Towarzyskie, ale wygodne",
+          "body": "Sześć łóżek w otwartym układzie z zasłonami, lampkami do czytania i gniazdkami ładowania przy każdym łóżku — wystarczająco blisko, aby nawiązać przyjaźnie, wystarczająco prywatnie, aby dobrze spać."
+        }
+      ]
+    },
+    "room_6": {
+      "amenities": [
+        {
+          "title": "Taras z widokiem na Wybrzeże Amalfitańskie",
+          "body": "Wspólny taras z widokiem na morze jest o kilka kroków od pokoju — idealny do porannych rozciągania, wieczornego aperitivo lub po prostu obserwowania łodzi w zatoce poniżej."
+        },
+        {
+          "title": "Twoja własna łazienka",
+          "body": "Łazienka en-suite należy tylko do tego pokoju, więc Ty ustalasz harmonogram porannych pryszniców, nigdy nie czekając w kolejce."
+        },
+        {
+          "title": "Elastyczny układ łóżek",
+          "body": "Trzy piętrowe łóżka plus pojedyncze łóżko naturalnie pasują do samotnych podróżników i par, każde miejsce wyposażone w zasłony, lampki i gniazda ładowania."
+        }
+      ]
+    },
+    "room_8": {
+      "amenities": [
+        {
+          "title": "Spokojny azyl z widokiem na ogród",
+          "body": "Spokojny widok na ogród hostelu sprawia, że pokój 8 jest jednym z najspokojniejszych miejsc w budynku — idealny dla rannych ptaszków lub osób śpiących lekko."
+        },
+        {
+          "title": "Kameralna atmosfera tylko dla kobiet",
+          "body": "Z zaledwie dwoma łóżkami w damskim otoczeniu jest to najbliższe doświadczenie pokoju prywatnego w hostelu — bez ceny pokoju prywatnego."
+        },
+        {
+          "title": "Wspólna łazienka w pobliżu",
+          "body": "Nieskazitelna wspólna łazienka tylko dla kobiet jest o kilka kroków od drzwi, dobrze zaopatrzona i utrzymywana przez cały dzień."
+        }
+      ]
+    },
+    "room_9": {
+      "amenities": [
+        {
+          "title": "Łazienka dla trojga",
+          "body": "Prywatna łazienka dzielona tylko między trzech gości oznacza naprawdę krótkie kolejki i zrelaksowaną poranną rutynę — rzadki luksus w podróżach hostelowych."
+        },
+        {
+          "title": "Spokój dziedzińca",
+          "body": "Pokój skierowany do wewnątrz na zaciszny dziedziniec hostelu jest chłodniejszy i cichszy niż piętra od strony morza — mile widziany odpoczynek po pełnym dniu zwiedzania."
+        },
+        {
+          "title": "Kameralna atmosfera grupowa",
+          "body": "Trzy pojedyncze łóżka zamiast piętrowych dają pokojowi bardziej zrelaksowany układ — wygodny dla samotnych podróżników, którzy cenią sobie trochę więcej przestrzeni na podłodze i światła."
+        }
+      ]
+    },
+    "room_10": {
+      "amenities": [
+        {
+          "title": "Łazienka dla całego dormitorium",
+          "body": "Sześciu gości dzieli jedną łazienkę i nikt więcej — poranne rutyny przebiegają sprawniej, gdy łazienka należy do Was, a nie do całego piętra."
+        },
+        {
+          "title": "Klasyczna atmosfera hostelu",
+          "body": "Żywy mieszany dormitorium z trzema pryczami jest idealny dla samotnych podróżników gotowych poznać ludzi z całego świata w pierwszej godzinie po przyjeździe."
+        },
+        {
+          "title": "Naładowany i gotowy",
+          "body": "Każde łóżko piętrowe zawiera lampkę do czytania, gniazda USB i zasłony zapewniające prywatność, dzięki czemu możesz odpocząć według własnego harmonogramu, nawet gdy pokój jest zajęty."
+        }
+      ]
     }
   }
 }

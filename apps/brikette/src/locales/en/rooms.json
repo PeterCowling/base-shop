@@ -20,6 +20,118 @@
         }
       ]
     },
+    "room_3": {
+      "amenities": [
+        {
+          "title": "Great value, great location",
+          "body": "One of our most affordable options sits right in the hostel heart — close to reception, the shared kitchen and fellow travellers."
+        },
+        {
+          "title": "Female-only floor",
+          "body": "Room 3 is part of a women-only section of the hostel. The shared bathroom nearby is clean, well-stocked and exclusively for female guests."
+        },
+        {
+          "title": "Bunk privacy built in",
+          "body": "Each bunk comes with privacy curtains, a personal reading light and charging sockets so you can settle in at any hour without disturbing neighbours."
+        }
+      ]
+    },
+    "room_4": {
+      "amenities": [
+        {
+          "title": "Female-only space",
+          "body": "A dedicated women-only dorm with its own shared bathroom — clean, well-maintained and reserved exclusively for female guests on this floor."
+        },
+        {
+          "title": "Room for everyone",
+          "body": "Eight beds across four bunks means there is always someone to share a recommendation or a trip to the beach with, without the chaos of a larger mixed dorm."
+        },
+        {
+          "title": "Essentials at every bunk",
+          "body": "Each bed has privacy curtains, a reading light and USB charging sockets so your phone is ready for tomorrow's adventures."
+        }
+      ]
+    },
+    "room_5": {
+      "amenities": [
+        {
+          "title": "Sea-view terrace included",
+          "body": "Step outside onto the shared terrace to take in panoramic views of Positano and the Tyrrhenian Sea — a backdrop most guests never want to leave."
+        },
+        {
+          "title": "Ensuite bathroom for the room",
+          "body": "A private bathroom shared only among roommates means no morning queues and all the space you need to get ready at your own pace."
+        },
+        {
+          "title": "Social but comfortable",
+          "body": "Six beds in an open layout with curtains, reading lights and charging points at every bunk — close enough to make friends, private enough to sleep well."
+        }
+      ]
+    },
+    "room_6": {
+      "amenities": [
+        {
+          "title": "Terrace with Amalfi views",
+          "body": "The shared sea-view terrace is steps from the room — perfect for sunrise stretches, evening aperitivo or simply watching the boats in the bay below."
+        },
+        {
+          "title": "Your own bathroom",
+          "body": "The ensuite bathroom belongs to this room only, so you set the schedule for morning showers without ever waiting in line."
+        },
+        {
+          "title": "Flexible bed layout",
+          "body": "Three bunk beds plus a single means solo travellers and pairs both fit naturally, each spot equipped with curtains, lights and charging sockets."
+        }
+      ]
+    },
+    "room_8": {
+      "amenities": [
+        {
+          "title": "Garden-view retreat",
+          "body": "A quiet outlook onto the hostel garden makes room 8 one of the calmest spots in the building — ideal for early risers or light sleepers."
+        },
+        {
+          "title": "Intimate female-only setting",
+          "body": "With just two beds in a women-only environment, this is the closest hostel experience to having a private room — without the private-room price tag."
+        },
+        {
+          "title": "Shared bathroom nearby",
+          "body": "A spotless female-only shared bathroom is just steps from the door, kept stocked and well-maintained throughout the day."
+        }
+      ]
+    },
+    "room_9": {
+      "amenities": [
+        {
+          "title": "Ensuite for three",
+          "body": "A private bathroom shared between just three guests means genuinely short queues and a relaxed morning routine — a rare luxury in hostel travel."
+        },
+        {
+          "title": "Courtyard calm",
+          "body": "Facing inward over the hostel's sheltered courtyard, the room stays cooler and quieter than the seafront floors — a welcome escape after a full day of exploring."
+        },
+        {
+          "title": "Intimate group feel",
+          "body": "Three single beds rather than bunks give the room a more relaxed layout — comfortable for solo travellers who appreciate a little extra floor space and light."
+        }
+      ]
+    },
+    "room_10": {
+      "amenities": [
+        {
+          "title": "Ensuite for the whole dorm",
+          "body": "Six guests share one bathroom and no one else — morning routines run smoother when the bathroom is yours and not the whole floor's."
+        },
+        {
+          "title": "Classic hostel atmosphere",
+          "body": "A lively mixed dorm with three bunk beds is perfect for solo travellers ready to meet people from all over the world within their first hour of arriving."
+        },
+        {
+          "title": "Charged and ready",
+          "body": "Each bunk includes a reading light, USB charging sockets and privacy curtains so you can power down on your own schedule even when the room is busy."
+        }
+      ]
+    },
     "room_11": {
       "amenities": [
         {

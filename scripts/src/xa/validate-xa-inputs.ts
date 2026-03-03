@@ -31,7 +31,7 @@ Usage:
 Options:
   --products <path>  Path to uploader products CSV (required)
   --recursive        Expand directory image specs recursively
-  --strict           Fail on missing images or low-resolution images
+  --strict           Fail on missing images and unresolved image specs
 `);
 }
 
@@ -168,7 +168,7 @@ async function main() {
         try {
           const dimensions = await readImageDimensions(resolvedPath);
           const shortestEdge = Math.min(dimensions.width, dimensions.height);
-          if (options.strict && shortestEdge < minEdge) {
+          if (shortestEdge < minEdge) {
             errors.push(
               `[${rowLabel(index)}] "${productSlug}" image "${resolvedPath}" is ${dimensions.width}x${dimensions.height}; minimum shortest edge is ${minEdge}px.`,
             );
@@ -183,9 +183,9 @@ async function main() {
         }
 
         const expectedAlt = imageAltTexts[specIndex];
-        if (!expectedAlt && options.strict) {
-          warnings.push(
-            `[${rowLabel(index)}] "${productSlug}" image "${resolvedPath}" has no explicit alt text (fallback to title will be used).`,
+        if (!expectedAlt) {
+          errors.push(
+            `[${rowLabel(index)}] "${productSlug}" image "${resolvedPath}" is missing alt text.`,
           );
         }
       }

@@ -96,8 +96,8 @@ const MoonIcon = ({ className }: { className?: string }) => (
 );
 
 // Written as full string literals so Tailwind JIT scans and includes them
-const SUN_ACTIVE_CLASS = "text-[hsl(38_85%_52%)]";   // warm amber
-const MOON_ACTIVE_CLASS = "text-[hsl(215_60%_62%)]"; // cool blue-gray
+const SUN_ACTIVE_CLASS = "text-warning-main";
+const MOON_ACTIVE_CLASS = "text-info-main";
 
 // ── Nudge keyframes ───────────────────────────────────────────────────────────
 //
@@ -246,8 +246,14 @@ export function ThemeModeSwitch() {
         {/* Sliding pill — sits behind the buttons via z-index */}
         <div
           aria-hidden="true"
-          className="absolute top-1 h-[calc(100%-8px)] w-[calc(50%-4px)] rounded-full bg-bg shadow-sm"
-          style={{ ...pillStyle, insetInlineStart: "0.25rem" }}
+          className="absolute rounded-full bg-bg shadow-sm"
+          style={{
+            ...pillStyle,
+            insetInlineStart: "0.25rem",
+            insetBlockStart: "0.25rem",
+            inlineSize: "calc(50% - 0.25rem)",
+            blockSize: "calc(100% - 0.5rem)",
+          }}
         />
 
         {/* Light button */}
@@ -258,14 +264,14 @@ export function ThemeModeSwitch() {
           aria-label="Switch to light mode"
           onClick={() => handleModeButton("light")}
           className={[
-            "relative z-10 flex h-full w-10 items-center justify-center rounded-full",
+            "relative z-10 flex h-full w-10 min-h-11 min-w-11 items-center justify-center rounded-full",
             "transition-colors duration-150",
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
             "active:scale-90 motion-reduce:transition-none motion-reduce:active:scale-100",
             resolved === "light" ? SUN_ACTIVE_CLASS : "text-fg-muted hover:text-fg",
           ].join(" ")}
         >
-          <SunIcon className="h-[18px] w-[18px]" />
+          <SunIcon className="h-5 w-5" />
         </button>
 
         {/* Dark button */}
@@ -276,28 +282,26 @@ export function ThemeModeSwitch() {
           aria-label="Switch to dark mode"
           onClick={() => handleModeButton("dark")}
           className={[
-            "relative z-10 flex h-full w-10 items-center justify-center rounded-full",
+            "relative z-10 flex h-full w-10 min-h-11 min-w-11 items-center justify-center rounded-full",
             "transition-colors duration-150",
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
             "active:scale-90 motion-reduce:transition-none motion-reduce:active:scale-100",
             resolved === "dark" ? MOON_ACTIVE_CLASS : "text-fg-muted hover:text-fg",
           ].join(" ")}
         >
-          <MoonIcon className="h-[18px] w-[18px]" />
+          <MoonIcon className="h-5 w-5" />
         </button>
       </div>
 
-      {/* Reset button — sr-only so it has zero visual footprint.
-          Accessible to keyboard/screen-reader users and satisfies test queries.
-          Mouse users discover it via the title tooltip on the track above. */}
+      {/* Reset button shown only when an override is active. */}
       {hasOverride && (
         <button
           type="button"
           aria-label="Return to automatic mode"
           onClick={clearOverride}
-          className="sr-only"
+          className="mt-2 inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-border bg-surface px-3 text-xs text-fg-muted transition-colors hover:text-fg"
         >
-          Return to automatic mode
+          Auto
         </button>
       )}
     </div>

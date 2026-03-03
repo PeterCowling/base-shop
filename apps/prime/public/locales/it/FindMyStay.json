@@ -1,12 +1,38 @@
 {
+  "guestEntry": {
+    "checking": "Verifica in corso…",
+    "confirmSubtitle": "Inserisci il cognome della prenotazione per continuare.",
+    "confirmTitle": "Conferma il tuo soggiorno",
+    "continue": "Continua",
+    "errorTitle": "Problema con il link",
+    "errors": {
+      "lastNameMismatch": "Il cognome non corrisponde alla prenotazione.",
+      "linkExpired": "Questo link è scaduto.",
+      "linkInvalid": "Questo link non è più valido.",
+      "missingLink": "Link mancante o non valido.",
+      "validateFailed": "Impossibile convalidare questo link.",
+      "verifyFailed": "Verifica fallita. Riprova."
+    },
+    "findMyStay": "Trova il mio soggiorno",
+    "guidedSetupNote": "Ora vedrai una breve configurazione guidata per velocizzare la reception.",
+    "lastNameLabel": "Cognome",
+    "lastNamePlaceholder": "Inserisci il tuo cognome",
+    "portalReady": "Il portale è pronto. Ti guideremo nella preparazione all'arrivo.",
+    "privacyNote": "Privacy: utilizziamo queste informazioni solo per il tuo soggiorno attuale.",
+    "welcomeName": "Benvenuto, {{firstName}}",
+    "whyThisHelps": "Perché è utile: questa verifica rapida sblocca gli strumenti ospite e velocizza il check-in.",
+    "youreIn": "Ci sei"
+  },
   "button": {
-    "loading": "Ricerca in corso\u2026",
+    "loading": "Ricerca in corso…",
     "submit": "Trova il mio soggiorno"
   },
   "errors": {
     "fieldsRequired": "Inserisci sia il codice di prenotazione che il cognome.",
+    "generic": "Qualcosa è andato storto. Riprova.",
     "networkError": "Errore di connessione. Controlla la tua connessione e riprova.",
     "notFound": "Non abbiamo trovato una prenotazione con questi dati. Verifica e riprova.",
+    "redirectFailed": "Abbiamo trovato la tua prenotazione, ma non siamo riusciti ad aprire il link ospite. Riprova.",
     "tooManyAttempts": "Troppi tentativi. Attendi qualche minuto e riprova."
   },
   "fields": {

@@ -45,7 +45,7 @@ export default function AlignmentControls({ component, handleInput }: Props) {
             </SelectContent>
           </Select>
           <Tooltip text={t("cms.builder.controls.justifyItems.tooltip.base")}>
-            <span className="inline-flex items-center justify-center size-10">?</span>
+            <span className="inline-flex items-center justify-center size-11">?</span>
           </Tooltip>
         </Inline>
         {viewports.map((vp) => (
@@ -70,7 +70,7 @@ export default function AlignmentControls({ component, handleInput }: Props) {
               </SelectContent>
             </Select>
             <Tooltip text={t("cms.builder.controls.justifyItems.tooltip.vp", { vp: vp.toLowerCase() })}>
-              <span className="inline-flex items-center justify-center size-10">?</span>
+              <span className="inline-flex items-center justify-center size-11">?</span>
             </Tooltip>
           </Inline>
         ))}
@@ -83,7 +83,7 @@ export default function AlignmentControls({ component, handleInput }: Props) {
               <span className="rounded bg-muted px-1 text-primary">{t("cms.builder.override.active")}</span>
               <button
                 type="button"
-                className="underline min-h-10 min-w-10"
+                className="underline min-h-11 min-w-11"
                 onClick={() => setField(`justifyItems${vp}` as keyof ContentComponent, undefined as unknown as ContentComponent["justifyItems"]) }
               >
                 {t("actions.reset")}
@@ -110,7 +110,7 @@ export default function AlignmentControls({ component, handleInput }: Props) {
             </SelectContent>
           </Select>
           <Tooltip text={t("cms.builder.controls.alignItems.tooltip.base")}>
-            <span className="inline-flex items-center justify-center size-10">?</span>
+            <span className="inline-flex items-center justify-center size-11">?</span>
           </Tooltip>
         </Inline>
         {viewports.map((vp) => (
@@ -135,7 +135,7 @@ export default function AlignmentControls({ component, handleInput }: Props) {
               </SelectContent>
             </Select>
             <Tooltip text={t("cms.builder.controls.alignItems.tooltip.vp", { vp: vp.toLowerCase() })}>
-              <span className="inline-flex items-center justify-center size-10">?</span>
+              <span className="inline-flex items-center justify-center size-11">?</span>
             </Tooltip>
           </Inline>
         ))}
@@ -148,7 +148,7 @@ export default function AlignmentControls({ component, handleInput }: Props) {
               <span className="rounded bg-muted px-1 text-primary">{t("cms.builder.override.active")}</span>
               <button
                 type="button"
-                className="underline min-h-10 min-w-10"
+                className="underline min-h-11 min-w-11"
                 onClick={() => setField(`alignItems${vp}` as keyof ContentComponent, undefined as unknown as ContentComponent["alignItems"]) }
               >
                 {t("actions.reset")}

@@ -35,7 +35,7 @@
       "title": "Kemping na wybrzeżu"
     },
     "capri": {
-      "label": "Capri",
+      "label": "Kapri",
       "title": "Capri z niskim budżetem"
     },
     "car": {
@@ -181,11 +181,11 @@
       "title": "Bagaż i tragarze"
     },
     "positano": {
-      "label": "Positano",
+      "label": "Pozytano",
       "title": "Przewodniki po Positano"
     },
     "praiano": {
-      "label": "Praiano",
+      "label": "Praiano Przewodniczący",
       "title": "Przewodniki po Praiano"
     },
     "procida": {
@@ -193,7 +193,7 @@
       "title": "Przewodniki po Procidzie"
     },
     "ravello": {
-      "label": "Ravello",
+      "label": "Ravello Przewodniczący",
       "title": "Przewodniki po Ravello"
     },
     "safety": {
@@ -202,7 +202,7 @@
     },
     "salerno": {
       "label": "Salerno",
-      "title": "Salerno ↔ Positano"
+      "title": "Salerno ↔ positano"
     },
     "shopping": {
       "label": "Zakupy",
@@ -241,7 +241,7 @@
       "title": "Winnice Tramonti"
     },
     "transport": {
-      "label": "Transport",
+      "label": "Dojazd",
       "title": "Przewodniki transportowe po Wybrzeżu Amalfitańskim",
       "description": "Przewodniki decyzyjne dotyczące autobusów, promów, busów i transferów z uwzględnieniem bagażu."
     },

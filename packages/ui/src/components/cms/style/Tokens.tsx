@@ -245,7 +245,7 @@ export default function Tokens({
         <div key={prefix} className="space-y-2">
           <button
             type="button"
-            className="flex w-full items-center justify-between font-medium min-h-10 min-w-10"
+            className="flex w-full items-center justify-between font-medium min-h-11 min-w-11"
             onClick={() => toggleGroup(prefix)}
           >
             <span>{capitalize(prefix)}</span>
@@ -265,7 +265,7 @@ export default function Tokens({
                   />
                   <button
                     type="button"
-                    className="rounded border px-2 py-1 min-h-10 min-w-10"
+                    className="rounded border px-2 py-1 min-h-11 min-w-11"
                     onClick={addCustomFont}
                   >
                     {t("common.add") as string}

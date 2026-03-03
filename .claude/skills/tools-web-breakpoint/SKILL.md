@@ -2,6 +2,8 @@
 name: tools-ui-breakpoint-sweep
 description: Open the app at user-specified viewport widths and systematically detect responsive layout failures (overflow/bleed, clipping, misalignment, broken reflow). Produces a screenshot-backed issue log with repro steps and fix hypotheses.
 operating_mode: AUDIT
+trigger_conditions: responsive layout, breakpoint QA, overflow, reflow failures, mobile layout, viewport testing, horizontal scroll
+related_skills: tools-ui-contrast-sweep, lp-design-qa, lp-launch-qa, lp-do-build
 ---
 
 # UI Breakpoint Sweep
@@ -184,3 +186,11 @@ Return:
 If no issues are found, explicitly state:
 
 `No responsive layout failures detected across tested breakpoint/route matrix.`
+- If issues were found and fixed via `/lp-do-build`: **re-run this sweep** to confirm findings are resolved before routing to `tools-refactor`.
+
+## Integration
+
+- **Upstream:** `lp-design-qa` (optional trigger — breakpoint-sweep is invoked after lp-design-qa flags responsive or layout concerns); `lp-do-build` (direct invocation for pre-launch QA pass).
+- **Downstream:** `tools-refactor` (layout and overflow findings feed the refactor entry criteria); `lp-do-build` (issues returned as structured findings for fix tasks).
+- **Loop position:** S9C (Parallel Sweep) — runs alongside `tools-ui-contrast-sweep` after UI build and static QA, before refactor.
+- **Note:** `lp-responsive-qa` (under construction, see `docs/plans/lp-responsive-qa-skill/`) is a complementary rendered-screenshot skill for browser-based responsive validation. It will sit between `lp-do-build` and `lp-design-qa` once shipped. `tools-ui-breakpoint-sweep` remains the static layout audit tool.

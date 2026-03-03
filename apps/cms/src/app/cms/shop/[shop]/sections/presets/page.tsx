@@ -37,15 +37,15 @@ export default async function PresetsAdminPage(props: { params: Promise<{ shop: 
               <label className="block text-sm">{t("cms.sectionPresets.template.label")}</label>
               <textarea name="template" required rows={8} className="w-full rounded border p-2 font-mono text-xs" placeholder={t("cms.sectionPresets.template.placeholder") as string} />
             </div>
-            <button type="submit" className="rounded border bg-white px-3 py-1 text-sm hover:bg-neutral-50 min-h-11 min-w-11">{t("cms.sectionPresets.save")}</button>
+            <button type="submit" className="rounded border bg-surface px-3 py-1 text-sm hover:bg-surface-2 min-h-11 min-w-11">{t("cms.sectionPresets.save")}</button>
           </form>
-          <p className="text-xs text-neutral-600">{t("cms.sectionPresets.help")}</p>
+          <p className="text-xs text-muted-foreground">{t("cms.sectionPresets.help")}</p>
         </section>
 
         <section className="space-y-2">
           <h2 className="text-lg font-medium">{t("cms.sectionPresets.existing.title")}</h2>
           {presets.length === 0 ? (
-            <p className="text-sm text-neutral-600">{t("cms.sectionPresets.existing.empty")}</p>
+            <p className="text-sm text-muted-foreground">{t("cms.sectionPresets.existing.empty")}</p>
           ) : (
             <ul className="space-y-2">
               {presets.map((p) => (
@@ -53,7 +53,7 @@ export default async function PresetsAdminPage(props: { params: Promise<{ shop: 
                   <div>
                     <div className="font-medium">{p.label}</div>
                     {Array.isArray(p.locked) && p.locked.length > 0 && (
-                      <div className="text-xs text-neutral-600">{t("cms.sectionPresets.lockedPrefix")} {p.locked.join(", ")}</div>
+                      <div className="text-xs text-muted-foreground">{t("cms.sectionPresets.lockedPrefix")} {p.locked.join(", ")}</div>
                     )}
                   </div>
                   <form
@@ -65,7 +65,7 @@ export default async function PresetsAdminPage(props: { params: Promise<{ shop: 
                     }}
                   >
                     <input type="hidden" name="_method" value="DELETE" />
-                    <button type="submit" className="rounded border px-3 py-1 text-sm hover:bg-neutral-50 min-h-11 min-w-11">{t("cms.delete")}</button>
+                    <button type="submit" className="rounded border px-3 py-1 text-sm hover:bg-surface-2 min-h-11 min-w-11">{t("cms.delete")}</button>
                   </form>
                 </li>
               ))}

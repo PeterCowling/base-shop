@@ -226,3 +226,57 @@
   height: 2px;
   background: var(--skylar-en-accent);
 }
+
+/* Caryina linked cell */
+.loket-visual-cell--linked {
+  text-decoration: none;
+  cursor: pointer;
+  justify-content: space-between;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.loket-visual-cell--linked:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 40px hsl(36 100% 3% / 0.13);
+  background: hsl(40 100% 99.5%);
+}
+
+.loket-visual-cell--linked:focus-visible {
+  outline: 2px solid hsl(var(--skylar-en-accent) / 0.7);
+  outline-offset: 3px;
+  transform: translateY(-2px);
+}
+
+.loket-visual-cell__domain {
+  font-size: 0.48rem;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: hsl(0 0% 9% / 0.3);
+  text-align: center;
+  transition: color 0.15s ease;
+}
+
+.loket-visual-cell--linked:hover .loket-visual-cell__domain {
+  color: hsl(var(--skylar-en-accent) / 0.55);
+}
+
+.loket-visual-graphic--logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  overflow: visible;
+  padding: 0.5rem 0.75rem;
+}
+
+.loket-visual-graphic--logo::after,
+.loket-visual-graphic--logo::before {
+  display: none;
+}
+
+.loket-visual-cell__logo {
+  width: 100%;
+  height: auto;
+  max-width: 140px;
+  display: block;
+}

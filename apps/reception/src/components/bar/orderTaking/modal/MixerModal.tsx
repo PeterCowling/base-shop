@@ -44,7 +44,7 @@ const MixerModalBase: FC<MixerModalProps> = ({ onSelect, onCancel }) => {
           <Button
             key={m}
             onClick={createMixerClickHandler(m)}
-            color="info"
+            color="primary"
             tone="solid"
           >
             {m}

@@ -140,8 +140,8 @@ const HelpCentreNav = memo(function HelpCentreNav({
           "focus-visible:outline-none",
           "focus-visible:ring-2",
           "focus-visible:ring-brand-secondary",
-          "min-h-10",
-          "min-w-10",
+          "min-h-11",
+          "min-w-11",
           "z-10",
         )}
       >
@@ -195,7 +195,7 @@ const HelpCentreNav = memo(function HelpCentreNav({
             aria-label={closeLabel}
             className={clsx(
               "inline-flex",
-              "size-10",
+              "size-11",
               "items-center",
               "justify-center",
               "rounded-full",

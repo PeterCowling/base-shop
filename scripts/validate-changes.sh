@@ -4,9 +4,10 @@
 #
 # Usage:
 #   ./scripts/validate-changes.sh                      # Policy + typecheck + lint (default local gate)
-#   VALIDATE_INCLUDE_TESTS=1 ./scripts/validate-changes.sh  # Include targeted tests locally
-#   STRICT=1 VALIDATE_INCLUDE_TESTS=1 ./scripts/validate-changes.sh  # Fail on missing tests
 #   ALLOW_TEST_PROCS=1 ./scripts/validate-changes.sh   # Skip orphan process check
+#
+# NOTE: VALIDATE_INCLUDE_TESTS=1 is blocked under CI-only test policy (BASESHOP_CI_ONLY_TESTS=1).
+#   Tests run in GitHub Actions CI only. Push your changes and monitor CI for test results.
 #
 # Limitations:
 #   - Filenames with spaces are not supported (repo convention forbids them)
@@ -18,6 +19,15 @@ STRICT="${STRICT:-0}"
 ALLOW_TEST_PROCS="${ALLOW_TEST_PROCS:-0}"
 VALIDATE_RANGE="${VALIDATE_RANGE:-}"
 VALIDATE_INCLUDE_TESTS="${VALIDATE_INCLUDE_TESTS:-0}"
+
+# CI-only test execution policy: block VALIDATE_INCLUDE_TESTS=1 when BASESHOP_CI_ONLY_TESTS=1.
+# CI environments (GitHub Actions sets CI=true) are exempt from this block.
+if [ "${BASESHOP_CI_ONLY_TESTS:-0}" = "1" ] && [ "${VALIDATE_INCLUDE_TESTS:-0}" = "1" ] && [ "${CI:-}" != "true" ]; then
+  echo "BLOCKED: VALIDATE_INCLUDE_TESTS=1 is not permitted under CI-only test policy (BASESHOP_CI_ONLY_TESTS=1)." >&2
+  echo "Tests run in GitHub Actions CI only. Push your changes and monitor CI: gh run watch" >&2
+  exit 1
+fi
+
 # Hard cap for batched --findRelatedTests breadth. Above this we run source-adjacent tests.
 RELATED_TEST_LIMIT="${RELATED_TEST_LIMIT:-20}"
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
@@ -25,6 +35,39 @@ REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 echo "========================================"
 echo "  Validation Gate"
 echo "========================================"
+
+# 0. Repository integrity checks (always run, even with no changed files)
+AGENTS_WARN_BYTES="${AGENTS_WARN_BYTES:-22528}"
+AGENTS_HARD_BYTES="${AGENTS_HARD_BYTES:-24576}"
+
+if [ ! -f "$REPO_ROOT/AGENTS.md" ]; then
+    echo "FAIL: AGENTS.md not found at $REPO_ROOT/AGENTS.md"
+    exit 1
+fi
+
+AGENTS_BYTES=$(wc -c < "$REPO_ROOT/AGENTS.md" | tr -d ' ')
+if [ "$AGENTS_BYTES" -gt "$AGENTS_HARD_BYTES" ]; then
+    echo "FAIL: AGENTS.md size $AGENTS_BYTES bytes exceeds hard limit $AGENTS_HARD_BYTES bytes"
+    exit 1
+elif [ "$AGENTS_BYTES" -gt "$AGENTS_WARN_BYTES" ]; then
+    echo "WARN: AGENTS.md size $AGENTS_BYTES bytes exceeds warning threshold $AGENTS_WARN_BYTES bytes"
+else
+    echo "OK: AGENTS.md size $AGENTS_BYTES bytes (<= $AGENTS_WARN_BYTES warning threshold)"
+fi
+
+echo "Checking Codex skills mirror integrity..."
+if ! bash "$REPO_ROOT/scripts/validate-codex-skills.sh"; then
+    echo "FAIL: Codex skills mirror validation failed"
+    exit 1
+fi
+echo "OK: Codex skills mirror validation passed"
+
+echo "Checking skill registry drift..."
+if ! "$REPO_ROOT/scripts/agents/generate-skill-registry" --check; then
+    echo "FAIL: Skill registry drift check failed"
+    exit 1
+fi
+echo "OK: Skill registry drift check passed"
 
 # 0. Check for orphaned test processes (incident 2026-01-16)
 if [ "$VALIDATE_INCLUDE_TESTS" = "1" ] && [ "$ALLOW_TEST_PROCS" != "1" ]; then

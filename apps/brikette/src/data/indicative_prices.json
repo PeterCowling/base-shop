@@ -1,0 +1,14 @@
+{
+  "last_updated": "2026-03-01",
+  "currency": "EUR",
+  "basis": "from_per_night",
+  "stale_after_days": 14,
+  "rooms": {
+    "room_10": { "from": 80 },
+    "room_13": { "from": 82 },
+    "room_14": { "from": 78 },
+    "room_15": { "from": 84 },
+    "room_16": { "from": 86 },
+    "double_room": { "from": 129 }
+  }
+}

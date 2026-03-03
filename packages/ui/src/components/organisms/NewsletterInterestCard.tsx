@@ -33,7 +33,7 @@ export function NewsletterInterestCard({
         <div className="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold text-foreground">
           {channelValue}
         </div>
-        <div className="inline-flex min-w-[120px] items-center justify-center rounded-full border px-4 py-2 text-xs font-semibold text-muted-foreground">
+        <div className="inline-flex min-w-28 items-center justify-center rounded-full border px-4 py-2 text-xs font-semibold text-muted-foreground">
           {ctaLabel}
         </div>
         {legalNote ? <p className="text-xs">{legalNote}</p> : null}

@@ -92,7 +92,7 @@ function Metric({ label, value }: { label: string; value: number }) {
 function Ratio({ label, value }: { label: string; value: number }) {
   return (
     <div className="rounded-md bg-info-soft px-3 py-2">
-      <div className="text-[11px] text-info-foreground">{label}</div>
+      <div className="text-xs text-info-foreground">{label}</div>
       <div className="text-sm font-semibold text-info-foreground">
         {Math.round(value * 100)}%
       </div>

@@ -101,7 +101,7 @@
   },
   "heroSection": {
     "imageAlt": "Panoramisk udsigt over Positano fra Hostel Brikettes terrasse",
-    "brandName": "Hostel Brikette",
+    "brandName": "Hostel Brkette",
     "cityName": "Positano",
     "address": "Via G. Marconi, 358, 84017 Positano SA",
     "locationButton": "Placering",
@@ -130,7 +130,7 @@
     "commonAreas": "Fællesområder",
     "commonAreasHint": "Terrasse, bar og fællesrum",
     "locationHint": "Busstoppested og strandtips",
-    "guides": "Guides",
+    "guides": "Guider",
     "guidesHint": "Lokale tips til din rejse"
   },
   "destinationSlideshow": {

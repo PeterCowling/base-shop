@@ -20,7 +20,7 @@
     "title": "直接预订，立省",
     "description": "感谢您选择直接在我们这里预订！作为答谢，您将享受：",
     "perks": {
-      "discount": "房价最高可享 10% 折扣",
+      "discount": "房价最高可享 25% 折扣",
       "breakfast": "每日免费早餐",
       "drinks": "免费迎宾饮品",
       "upgrades": "优先升级房型（视供应情况而定）"
@@ -159,6 +159,19 @@
     "close": "关闭"
   },
   "loader": {
-    "ariaLabel": "Loading"
+    "ariaLabel": "正在装入"
+  },
+  "date": {
+    "stayHelper": "2-8个晚上",
+    "clearDates": "清除日期",
+    "nightsSummary": "_TOK0_____(_TOK2_晚间)"
+  },
+  "directPerks": {
+    "heading": "为什么直接预订？",
+    "items": [
+      "最高优惠25%",
+      "免费早餐",
+      "免费晚间饮品"
+    ]
   }
 }

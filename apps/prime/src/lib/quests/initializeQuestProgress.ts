@@ -13,7 +13,7 @@ import { DEFAULT_QUEST_PROGRESS } from '../../types/questProgress';
  * Tasks that contribute to quest tier completion.
  * These are the task IDs from completedTasks that matter for quests.
  */
-const QUEST_RELEVANT_TASKS = [
+const _QUEST_RELEVANT_TASKS = [
   'welcome',
   'featuresIntro',
   'mainDoorAccess',

@@ -104,7 +104,7 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
       footer={
         <Button
           onClick={onClose}
-          className="px-4 py-2 rounded bg-surface-3 hover:bg-surface-3 text-foreground"
+          className="px-4 py-2 rounded-lg bg-surface-3 hover:bg-surface-3 text-foreground"
         >
           Cancel
         </Button>
@@ -115,7 +115,7 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
         <Input
           compatibilityMode="no-wrapper"
           type="text"
-          className="w-full border rounded p-1 text-foreground"
+          className="w-full border rounded-lg p-1 text-foreground"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
@@ -126,7 +126,7 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
         <Input
           compatibilityMode="no-wrapper"
           type="text"
-          className="w-full border rounded p-1 text-foreground"
+          className="w-full border rounded-lg p-1 text-foreground"
           value={method}
           onChange={(e) => setMethod(e.target.value)}
         />
@@ -137,7 +137,7 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
         <Input
           compatibilityMode="no-wrapper"
           type="text"
-          className="w-full border rounded p-1 text-foreground"
+          className="w-full border rounded-lg p-1 text-foreground"
           value={itemCategory}
           onChange={(e) => setItemCategory(e.target.value)}
         />
@@ -148,7 +148,7 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
         <Input
           compatibilityMode="no-wrapper"
           type="text"
-          className="w-full border rounded p-1 text-foreground"
+          className="w-full border rounded-lg p-1 text-foreground"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
@@ -158,7 +158,7 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
         <span className="text-sm font-semibold">Correction Reason</span>
         <Textarea
           compatibilityMode="no-wrapper"
-          className="w-full border rounded p-2 text-foreground"
+          className="w-full border rounded-lg p-2 text-foreground"
           value={reason}
           onChange={(e) => setReason(e.target.value)}
           rows={3}

@@ -31,7 +31,7 @@ export const Default: StoryObj<TooltipStoryProps> = {
           : undefined
       }
     >
-      <button className="border p-2 min-h-10 min-w-10">
+      <button className="border p-2 min-h-11 min-w-11">
         <Icon name="heart" width={16} height={16} />
       </button>
     </Tooltip>

@@ -210,7 +210,7 @@ Internal evidence:
 - `docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md`
 - `docs/business-os/strategy/BRIK/data/net_value_by_month.csv`
 - `docs/business-os/strategy/BRIK/data/cloudflare_monthly_proxies.csv`
-- `docs/business-os/startup-baselines/BRIK-intake-packet.user.md`
+- `docs/business-os/startup-baselines/BRIK-2026-02-12assessment-intake-packet.user.md`
 
 External evidence:
 - https://www.istat.it/en/archivio/299062

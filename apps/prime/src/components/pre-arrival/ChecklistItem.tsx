@@ -4,6 +4,7 @@
  * Individual checklist item for pre-arrival readiness.
  * Can be interactive (clickable) or informational.
  */
+'use client';
 
 import { type FC, memo, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -109,7 +110,7 @@ export const ChecklistItem: FC<ChecklistItemProps> = memo(function ChecklistItem
       </div>
 
       {/* Content */}
-      <div className="flex-1 text-left">
+      <div className="flex-1 text-start">
         <h4 className={`font-medium ${titleClasses}`}>
           {t(`checklist.${type}.title`)}
         </h4>

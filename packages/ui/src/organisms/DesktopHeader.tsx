@@ -1,10 +1,16 @@
 // src: packages/ui/src/organisms/DesktopHeader.tsx
-import { memo, type MouseEvent, useCallback, useMemo } from "react";
+import { memo, type MouseEvent, useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { Section } from "../atoms/Section";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../components/atoms/primitives/dropdown-menu";
 import { Inline } from "../components/atoms/primitives/Inline";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import type { AppLanguage } from "../i18n.config";
@@ -13,11 +19,11 @@ import { LanguageSwitcher } from "../molecules/LanguageSwitcher";
 import { ThemeToggle } from "../molecules/ThemeToggle";
 import { resolvePrimaryCtaLabel } from "../shared";
 import type { SlugMap } from "../slug-map";
-import { buildNavLinks, type TranslateFn } from "../utils/buildNavLinks";
+import { buildNavLinks, type NavItemChild, type TranslateFn } from "../utils/buildNavLinks";
 import { translatePath } from "../utils/translate-path";
 
 /*  Public assets are referenced by absolute URL paths.
-    “?url” lets Vite keep the file name stable in development
+    "?url" lets Vite keep the file name stable in development
     while permitting hashing in production. */
 const logoIcon = "/img/hostel_brikette_icon.png"; // original raster – small icon
 const BRAND_NAME = "hostel-brikette";
@@ -34,9 +40,13 @@ const FALLBACK_LOGO_ALT =
 function DesktopHeader({
   lang: explicitLang,
   onPrimaryCtaClick,
+  experienceNavItems,
+  howToGetHereNavItems,
 }: {
   lang?: AppLanguage;
   onPrimaryCtaClick?: () => boolean | void;
+  experienceNavItems?: NavItemChild[];
+  howToGetHereNavItems?: NavItemChild[];
 }): React.JSX.Element {
   const fallbackLang = useCurrentLanguage();
   const { i18n } = useTranslation();
@@ -52,6 +62,8 @@ function DesktopHeader({
   const headerT = useMemo(() => i18n.getFixedT(lang, "header"), [i18n, lang]);
   const hasHeaderBundle = i18n.hasResourceBundle(lang, "header");
   const pathname = usePathname();
+  const [openKey, setOpenKey] = useState<string | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Apartment-aware CTA routing (TASK-07): on apartment routes, link directly to apartment
   // booking page instead of opening the hostel booking modal.
   const apartmentPath = `/${translatePath("apartment", lang)}`;
@@ -106,7 +118,7 @@ function DesktopHeader({
     [headerT, hasHeaderBundle, lang]
   );
 
-  const { navLinks } = buildNavLinks(lang, navTranslate);
+  const { navLinks } = buildNavLinks(lang, navTranslate, experienceNavItems, howToGetHereNavItems);
   const ctaClass = "cta-light";
   const primaryCtaLabel = useMemo(() => {
     if (!tokensReady) return FALLBACK_PRIMARY_CTA_LABEL;
@@ -130,14 +142,14 @@ function DesktopHeader({
                 if (logoAlt && logoAlt !== "logoAlt") return logoAlt;
                 return FALLBACK_LOGO_ALT;
               })()}
-              className="size-10"
+              className="size-11"
               width={40}
               height={40}
               loading="eager"
               decoding="async"
             />
             <span
-              className="text-lg font-bold text-white notranslate"
+              className="text-lg font-bold text-primary-fg notranslate"
               translate="no"
               data-brand-name={BRAND_NAME}
             >
@@ -167,24 +179,147 @@ function DesktopHeader({
         <nav aria-label="Primary navigation" className="header-row-2">
           <Inline asChild gap={8} className="justify-start text-sm font-medium">
             <ul>
-              {navLinks.map(({ key, to, label, prefetch }) => {
-                const current = pathname === `/${lang}${to}`;
+              {navLinks.map(({ key, to, label, prefetch, children }) => {
+                const current = children
+                  ? pathname.startsWith(`/${lang}${to}`)
+                  : pathname === `/${lang}${to}`;
                 const highlight = current
                   ? /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
                     "font-semibold text-brand-secondary underline"
                   : "";
 
+                if (!children) {
+                  return (
+                    <li key={key}>
+                      <Link
+                        href={`/${lang}${to}`}
+                        aria-current={current ? "page" : undefined}
+                        aria-label={label}
+                        prefetch={to === apartmentPath ? true : prefetch}
+                        className={`inline-flex min-h-11 items-center px-2 underline-offset-4 transition hover:underline hover:decoration-brand-bougainvillea focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/70 ${highlight}`}
+                      >
+                        {label}
+                      </Link>
+                    </li>
+                  );
+                }
+                const isOpen = openKey === key;
+                const dropdownTriggerId = "desktop-nav-trigger-" + key;
+                const dropdownContentId = "desktop-nav-content-" + key;
+
                 return (
                   <li key={key}>
-                    <Link
-                      href={`/${lang}${to}`}
-                      aria-current={current ? "page" : undefined}
-                      aria-label={label}
-                      prefetch={to === apartmentPath ? true : prefetch}
-                      className={`inline-flex min-h-11 items-center px-2 underline-offset-4 transition hover:underline hover:decoration-brand-bougainvillea focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/70 ${highlight}`}
+                    <DropdownMenu
+                      open={isOpen}
+                      modal={false}
+                      onOpenChange={(o) => {
+                        // Only handle Radix-driven close events (Escape, click outside,
+                        // item select). Hover open is managed by onMouseEnter/onMouseLeave;
+                        // keyboard/click open is managed by the trigger's onClick below.
+                        // Handling o=true here interferes with hover state and causes flicker.
+                        if (!o) setOpenKey(null);
+                      }}
                     >
-                      {label}
-                    </Link>
+                      {/*
+                        DropdownMenuTrigger wraps the whole row so Radix uses it as the
+                        positioning anchor. align="start" then aligns the dropdown left edge
+                        with the left edge of the nav item (the "Dorms" text), not the chevron.
+                        onPointerDown stopPropagation on both children prevents Radix's internal
+                        onOpenToggle from firing — our hover/click state management stays in
+                        full control.
+                      */}
+                      <DropdownMenuTrigger
+                        asChild
+                        id={dropdownTriggerId}
+                        aria-controls={isOpen ? dropdownContentId : undefined}
+                      >
+                        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions -- UI-1245 wrapper handles hover intent and portal transition safety */}
+                        <div
+                          className="flex items-center"
+                          onMouseEnter={() => {
+                            if (timerRef.current) {
+                              clearTimeout(timerRef.current);
+                              timerRef.current = null;
+                            }
+                            setOpenKey(key);
+                          }}
+                          onMouseLeave={(e) => {
+                            // If the cursor moved into the Radix portal content (which is
+                            // portalled to document.body outside this wrapper), don't start
+                            // the close timer. Without this check, the portal appearing under
+                            // a stationary cursor fires mouseleave here before mouseenter on
+                            // the portal, causing a flicker loop.
+                            const related = e.relatedTarget as Element | null;
+                            if (related?.closest("[data-radix-popper-content-wrapper]")) return;
+                            timerRef.current = setTimeout(() => {
+                              setOpenKey(null);
+                            }, 150);
+                          }}
+                        >
+                          <Link
+                            href={`/${lang}${to}`}
+                            aria-current={current ? "page" : undefined}
+                            aria-label={label}
+                            prefetch={to === apartmentPath ? true : prefetch}
+                            onPointerDown={(e) => e.stopPropagation()}
+                            className={`inline-flex min-h-11 items-center px-2 underline-offset-4 transition hover:underline hover:decoration-brand-bougainvillea focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/70 ${highlight}`}
+                          >
+                            {label}
+                          </Link>
+                          <button
+                            aria-label={`${label} sub-menu`}
+                            className="inline-flex min-h-11 min-w-11 items-center justify-center px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/70"
+                            onPointerDown={(e) => e.stopPropagation()}
+                            onClick={() => setOpenKey(openKey === key ? null : key)}
+                          >
+                            <svg
+                              aria-hidden="true"
+                              className="size-3"
+                              fill="none"
+                              viewBox="0 0 10 6"
+                            >
+                              <path
+                                d="M1 1l4 4 4-4"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent
+                        id={dropdownContentId}
+                        aria-labelledby={dropdownTriggerId}
+                        align="start"
+                        sideOffset={4}
+                        className="max-h-screen overflow-y-auto"
+                        onMouseEnter={() => {
+                          if (timerRef.current) {
+                            clearTimeout(timerRef.current);
+                            timerRef.current = null;
+                          }
+                        }}
+                        onMouseLeave={() => {
+                          timerRef.current = setTimeout(() => {
+                            setOpenKey(null);
+                          }, 150);
+                        }}
+                      >
+                        {children.map((child) => (
+                          <DropdownMenuItem key={child.key} asChild>
+                            <Link
+                              href={`/${lang}${child.to}`}
+                              onClick={() => setOpenKey(null)}
+                              className="cursor-pointer"
+                            >
+                              {child.label}
+                            </Link>
+                          </DropdownMenuItem>
+                        ))}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </li>
                 );
               })}

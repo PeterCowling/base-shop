@@ -1,12 +1,14 @@
 {
-  "generatedAt": "2026-02-24",
-  "sourcePacketPath": "../docs/business-os/startup-baselines/HBAG-content-packet.md",
-  "sourceHash": "87332c2cb42f479077568e00155f394e54fcf0e5cf055706aa996fa9cfff150b",
+  "generatedAt": "2026-02-28",
+  "_manualExtension": "trustStrip added manually 2026-02-28 — materializer update pending. Do not run materializer without porting productPage.trustStrip block first.",
+  "sourcePacketPath": "docs/business-os/startup-baselines/HBAG-content-packet.md",
+  "sourceHash": "05fbd6c15750221375db8edb71215911c9d3386808a7f35a3c2ab33d764f0fb1",
   "sourcePaths": [
     "docs/business-os/market-research/HBAG/2026-02-20-market-intelligence.user.md",
     "docs/business-os/startup-baselines/HBAG-channels.md",
     "docs/business-os/startup-baselines/HBAG-offer.md",
     "docs/business-os/strategy/HBAG/2026-02-22-product-from-photo.user.md",
+    "docs/business-os/strategy/HBAG/logistics-pack.user.md",
     "docs/business-os/strategy/HBAG/products-line-mapping.user.md"
   ],
   "seoKeywords": [
@@ -117,17 +119,37 @@
     },
     "proofBullets": [
       {
-        "en": "Generated from canonical packet and source ledger."
+        "en": "Structured silhouette, top-handle carry. A shaped body with side gussets holds its form — designed to hang from a bag strap, not fold into it."
       },
       {
-        "en": "Claims constrained by packet and lint contracts."
+        "en": "Turn-lock hardware closure. A front strap with a turn-lock clasp closes the bag cleanly. Polished metal hardware on the strap keeper and clasp plate."
       },
       {
-        "en": "Policy and support blocks remain deterministic."
+        "en": "Designed in Positano, Italy. Manufactured to specification; designed in Italy. The Amalfi origin story is in the object, not just the packaging."
+      },
+      {
+        "en": "Textured finishes across colorways — metallic reptile emboss, croc emboss, pebbled grain. Selected colorways include a stitched building facade applique."
+      },
+      {
+        "en": "30-day free exchange, 90-day hardware guarantee. Change of mind — exchange within 30 days. Hardware fails within 90 days: replacement, no forms."
       }
     ],
     "relatedHeading": {
       "en": "You may also like"
+    },
+    "trustStrip": {
+      "delivery": {
+        "en": "Usually ships in 2–5 business days (EU)"
+      },
+      "exchange": {
+        "en": "30-day exchange"
+      },
+      "origin": {
+        "en": "Designed in Positano, Italy"
+      },
+      "securePayment": {
+        "en": "Secure checkout"
+      }
     }
   },
   "support": {
@@ -135,7 +157,7 @@
       "en": "Support"
     },
     "summary": {
-      "en": "Support and policy responses are generated from packet-aligned content blocks."
+      "en": "Support expectations are derived from logistics and fulfillment policy inputs."
     },
     "channels": [
       {
@@ -146,7 +168,7 @@
       }
     ],
     "responseSla": {
-      "en": "Target response time: within 4 hours during active launch hours."
+      "en": "Within 48 hours"
     }
   },
   "policies": {
@@ -163,6 +185,9 @@
         },
         {
           "en": "Platform providers process payment and delivery data under their legal terms."
+        },
+        {
+          "en": "Your email address may be used to send a one-time notification about products you expressed interest in. You can withdraw consent at any time by contacting us."
         }
       ],
       "notice": {
@@ -174,14 +199,14 @@
         "en": "Shipping"
       },
       "summary": {
-        "en": "Shipping windows and tracking availability depend on destination and fulfillment mode."
+        "en": "Dispatch policy: Delivery estimated at checkout"
       },
       "bullets": [
         {
-          "en": "Delivery windows are shown at checkout."
+          "en": "Delivery estimated at checkout"
         },
         {
-          "en": "International customs duties remain buyer-responsible unless explicitly stated otherwise."
+          "en": "International buyers are responsible for applicable customs duties and import taxes"
         }
       ]
     },
@@ -190,14 +215,14 @@
         "en": "Returns & Exchanges"
       },
       "summary": {
-        "en": "Launch orders include exchange-first handling and hardware support coverage."
+        "en": "Returns policy: 30-day free exchange on any order"
       },
       "bullets": [
         {
-          "en": "Request exchange with order reference and product colorway."
+          "en": "30-day free exchange on any order"
         },
         {
-          "en": "Return items should include original accessories where applicable."
+          "en": "Exchange includes all colorways; original accessories should be included where applicable"
         }
       ]
     },

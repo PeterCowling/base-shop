@@ -104,7 +104,7 @@ export function ProductGallery({ productTitle, items }: ProductGalleryProps) {
           type="button"
           onClick={goPrevious}
           disabled={!canNavigate}
-          className="flex h-10 w-10 items-center justify-center rounded-full border text-muted-foreground transition-colors hover:text-foreground disabled:opacity-30"
+          className="flex h-11 w-11 items-center justify-center rounded-full border text-muted-foreground transition-colors hover:text-foreground disabled:opacity-30"
           aria-label="Previous media"
         >
           <span aria-hidden="true">&larr;</span>
@@ -116,7 +116,7 @@ export function ProductGallery({ productTitle, items }: ProductGalleryProps) {
           type="button"
           onClick={goNext}
           disabled={!canNavigate}
-          className="flex h-10 w-10 items-center justify-center rounded-full border text-muted-foreground transition-colors hover:text-foreground disabled:opacity-30"
+          className="flex h-11 w-11 items-center justify-center rounded-full border text-muted-foreground transition-colors hover:text-foreground disabled:opacity-30"
           aria-label="Next media"
         >
           <span aria-hidden="true">&rarr;</span>

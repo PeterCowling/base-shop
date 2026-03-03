@@ -18,8 +18,8 @@ export default function SizeSelector({
   }
 
   // Tailwind utility class tokens
-  const selectedClasses = "bg-gray-900 text-white"; // i18n-exempt -- ABC-123 CSS utility tokens
-  const unselectedClasses = "bg-white hover:bg-gray-100"; // i18n-exempt -- ABC-123 CSS utility tokens
+  const selectedClasses = "bg-foreground text-primary-fg"; // i18n-exempt -- ABC-123 CSS utility tokens
+  const unselectedClasses = "bg-surface hover:bg-surface-2"; // i18n-exempt -- ABC-123 CSS utility tokens
 
   return (
     // eslint-disable-next-line ds/enforce-layout-primitives -- ABC-123 horizontal chip list

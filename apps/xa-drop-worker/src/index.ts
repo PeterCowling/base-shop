@@ -1,3 +1,5 @@
+import { catalogProductDraftSchema } from "@acme/lib/xa";
+
 export interface Env {
   SUBMISSIONS_BUCKET: R2Bucket;
   CATALOG_BUCKET?: R2Bucket;
@@ -9,6 +11,10 @@ export interface Env {
   MAX_BYTES?: string;
   CATALOG_MAX_BYTES?: string;
   UPLOAD_ALLOWED_ORIGINS?: string;
+  UPLOAD_TOKEN_MAX_TTL_SECONDS?: string;
+  UPLOAD_ALLOW_URL_TOKENS?: string;
+  CATALOG_ALLOW_QUERY_TOKEN?: string;
+  ALLOWED_IPS?: string;
 }
 
 type VerifiedToken = {
@@ -16,6 +22,8 @@ type VerifiedToken = {
   exp: number;
   nonce: string;
 };
+
+const DEFAULT_UPLOAD_TOKEN_MAX_TTL_SECONDS = 15 * 60;
 
 type CatalogPayload = {
   storefront?: string;
@@ -25,15 +33,25 @@ type CatalogPayload = {
   mediaIndex?: unknown;
 };
 
+type DraftPayload = {
+  storefront?: string;
+  products?: unknown;
+  revisionsById?: unknown;
+  ifMatchDocRevision?: unknown;
+};
+
 const TOKEN_VERSION = "v1";
 const DEFAULT_PREFIX = "submissions/";
 const DEFAULT_CATALOG_PREFIX = "catalog/";
-const DEFAULT_MAX_BYTES = 250 * 1024 * 1024;
+const DEFAULT_MAX_BYTES = 25 * 1024 * 1024;
 const DEFAULT_CATALOG_MAX_BYTES = 10 * 1024 * 1024;
+const DEFAULT_DRAFTS_MAX_BYTES = 2 * 1024 * 1024;
+// i18n-exempt -- ABC-123 [ttl=2026-12-31]
 const DEFAULT_CATALOG_CACHE_CONTROL = "public, max-age=60, stale-while-revalidate=300";
-// i18n-exempt -- ABC-123 [ttl=2026-01-31] protocol header value
-const CORS_ALLOWED_HEADERS =
-  "Content-Type, X-XA-Submission-Id, X-XA-Upload-Token, X-XA-Catalog-Token, Authorization";
+// i18n-exempt -- ABC-123 [ttl=2026-12-31]
+const CORS_ALLOWED_HEADERS = "Content-Type, X-XA-Submission-Id, X-XA-Upload-Token, X-XA-Catalog-Token, Authorization";
+// i18n-exempt -- ABC-123 [ttl=2026-12-31]
+const CORS_ALLOWED_METHODS = "GET, PUT, DELETE, OPTIONS";
 
 function json(data: unknown, status = 200, extraHeaders?: HeadersInit): Response {
   const headers = new Headers(extraHeaders);
@@ -55,6 +73,37 @@ function parseAllowedOrigins(raw: string | undefined): string[] {
       }
     })
     .filter(Boolean);
+}
+
+function parseAllowedIps(raw: string | undefined): Set<string> {
+  return new Set(
+    (raw ?? "")
+      .split(",")
+      .map((entry) => entry.trim())
+      .filter(Boolean),
+  );
+}
+
+function firstHeaderIp(raw: string | null): string {
+  return (raw ?? "").split(",")[0]?.trim() ?? "";
+}
+
+function requestIp(request: Request): string {
+  const cfConnectingIp = firstHeaderIp(request.headers.get("cf-connecting-ip"));
+  if (cfConnectingIp) return cfConnectingIp;
+
+  const forwarded = firstHeaderIp(request.headers.get("x-forwarded-for"));
+  if (forwarded) return forwarded;
+
+  return firstHeaderIp(request.headers.get("x-real-ip"));
+}
+
+function isIpAllowed(request: Request, env: Env): boolean {
+  const allowlisted = parseAllowedIps(env.ALLOWED_IPS);
+  if (!allowlisted.size) return true;
+  const ip = requestIp(request);
+  if (!ip) return false;
+  return allowlisted.has(ip);
 }
 
 function resolveAllowedCorsOrigin(request: Request, env: Env): string | null {
@@ -82,7 +131,7 @@ function withCors(
   if (allowedOrigin) {
     headers.set("Access-Control-Allow-Origin", allowedOrigin);
     headers.set("Vary", "Origin");
-    headers.set("Access-Control-Allow-Methods", "GET, PUT, OPTIONS");
+    headers.set("Access-Control-Allow-Methods", CORS_ALLOWED_METHODS);
     headers.set("Access-Control-Allow-Headers", CORS_ALLOWED_HEADERS);
     headers.set("Access-Control-Max-Age", "86400");
   }
@@ -100,7 +149,7 @@ function normalizePrefix(prefix: string): string {
   return withoutTrailing ? `${withoutTrailing}/` : "";
 }
 
-// i18n-exempt -- ABC-123 [ttl=2026-01-31] base64 alphabet constant
+// i18n-exempt -- ABC-123 [ttl=2026-12-31]
 const BASE64_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 function toBase64(bytes: Uint8Array): string {
@@ -142,7 +191,7 @@ async function hmacSha256Base64Url(secret: string, payload: string): Promise<str
   return toBase64Url(new Uint8Array(sig));
 }
 
-async function verifyUploadToken(token: string, secret: string): Promise<VerifiedToken> {
+async function verifyUploadToken(token: string, secret: string, maxTtlSeconds: number): Promise<VerifiedToken> {
   const parts = token.split(".");
   if (parts.length !== 5) throw new Error("invalid_token");
   const [version, iatRaw, expRaw, nonce, signature] = parts;
@@ -156,6 +205,7 @@ async function verifyUploadToken(token: string, secret: string): Promise<Verifie
   const now = Math.floor(Date.now() / 1000);
   if (now > exp) throw new Error("expired");
   if (iat > exp || iat < now - 60 * 60 * 24) throw new Error("expired");
+  if (exp - iat > maxTtlSeconds) throw new Error("invalid_token");
 
   const payload = `${TOKEN_VERSION}.${iatRaw}.${expRaw}.${nonce}`;
   const expected = await hmacSha256Base64Url(secret, payload);
@@ -190,12 +240,28 @@ function submissionKeyFor(prefix: string, iat: number, nonce: string): string {
 
 function resolveMaxBytes(env: Env): number {
   const raw = typeof env.MAX_BYTES === "string" ? Number(env.MAX_BYTES) : NaN;
-  return Number.isFinite(raw) && raw > 0 ? raw : DEFAULT_MAX_BYTES;
+  if (!Number.isFinite(raw) || raw <= 0) return DEFAULT_MAX_BYTES;
+  return Math.min(Math.round(raw), DEFAULT_MAX_BYTES);
+}
+
+function resolveUploadTokenMaxTtlSeconds(env: Env): number {
+  const raw = typeof (env as Env & { UPLOAD_TOKEN_MAX_TTL_SECONDS?: string }).UPLOAD_TOKEN_MAX_TTL_SECONDS === "string"
+    ? Number((env as Env & { UPLOAD_TOKEN_MAX_TTL_SECONDS?: string }).UPLOAD_TOKEN_MAX_TTL_SECONDS)
+    : NaN;
+  if (!Number.isFinite(raw) || raw <= 0) return DEFAULT_UPLOAD_TOKEN_MAX_TTL_SECONDS;
+  return Math.min(Math.round(raw), DEFAULT_UPLOAD_TOKEN_MAX_TTL_SECONDS);
 }
 
 function resolveCatalogMaxBytes(env: Env): number {
   const raw = typeof env.CATALOG_MAX_BYTES === "string" ? Number(env.CATALOG_MAX_BYTES) : NaN;
-  return Number.isFinite(raw) && raw > 0 ? raw : DEFAULT_CATALOG_MAX_BYTES;
+  if (!Number.isFinite(raw) || raw <= 0) return DEFAULT_CATALOG_MAX_BYTES;
+  return Math.min(Math.round(raw), DEFAULT_CATALOG_MAX_BYTES);
+}
+
+function resolveDraftsMaxBytes(env: Env): number {
+  const raw = typeof env.CATALOG_MAX_BYTES === "string" ? Number(env.CATALOG_MAX_BYTES) : NaN;
+  if (!Number.isFinite(raw) || raw <= 0) return DEFAULT_DRAFTS_MAX_BYTES;
+  return Math.min(Math.round(raw), DEFAULT_DRAFTS_MAX_BYTES);
 }
 
 function validateContentLength(headers: Headers, maxBytes: number): Response | null {
@@ -227,29 +293,37 @@ function bearerTokenFrom(header: string | null): string {
   return rest.join(" ").trim();
 }
 
-function resolveUploadToken(request: Request, url: URL, pathToken: string): string {
+function resolveUploadToken(request: Request): string {
   const headerToken = request.headers.get("x-xa-upload-token")?.trim();
   if (headerToken) return headerToken;
 
   const authToken = bearerTokenFrom(request.headers.get("authorization"));
   if (authToken) return authToken;
 
-  const queryToken = url.searchParams.get("token")?.trim();
-  if (queryToken) return queryToken;
-
-  const decodedPathToken = decodePathSegment(pathToken).trim();
-  return decodedPathToken;
+  return "";
 }
 
-function resolveCatalogToken(request: Request, url: URL): string {
+function allowUploadUrlTokens(env: Env): boolean {
+  return (env.UPLOAD_ALLOW_URL_TOKENS ?? "").trim() === "1";
+}
+
+function resolveUploadTokenLegacy(url: URL, pathToken: string): string {
+  const queryToken = url.searchParams.get("token")?.trim();
+  if (queryToken) return queryToken;
+  return decodePathSegment(pathToken).trim();
+}
+
+function resolveCatalogToken(request: Request, url: URL, env: Env): string {
   const headerToken = request.headers.get("x-xa-catalog-token")?.trim();
   if (headerToken) return headerToken;
 
   const authToken = bearerTokenFrom(request.headers.get("authorization"));
   if (authToken) return authToken;
 
-  const queryToken = url.searchParams.get("token")?.trim();
-  if (queryToken) return queryToken;
+  if ((env.CATALOG_ALLOW_QUERY_TOKEN ?? "").trim() === "1") {
+    const queryToken = url.searchParams.get("token")?.trim();
+    if (queryToken) return queryToken;
+  }
 
   return "";
 }
@@ -262,8 +336,19 @@ function resolveCatalogPrefix(env: Env): string {
   return normalizePrefix(env.CATALOG_PREFIX || DEFAULT_CATALOG_PREFIX);
 }
 
+function draftsCatalogKey(prefix: string, storefront: string): string {
+  return `${prefix}drafts/${storefront}/latest.json`;
+}
+
 function isValidStorefront(value: string): boolean {
-  return /^[a-z0-9](?:[a-z0-9-]{0,30}[a-z0-9])?$/.test(value);
+  if (value.length < 1 || value.length > 32) return false;
+  if (value[0] === "-" || value[value.length - 1] === "-") return false;
+  for (const char of value) {
+    const isDigit = char >= "0" && char <= "9";
+    const isLowerAlpha = char >= "a" && char <= "z";
+    if (!isDigit && !isLowerAlpha && char !== "-") return false;
+  }
+  return true;
 }
 
 function parseStorefront(pathSegment: string): string | null {
@@ -300,9 +385,84 @@ function isObjectRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
-async function verifyTokenOrRespond(token: string, secret: string): Promise<VerifiedToken | Response> {
+function parseOptionalString(value: unknown): string | undefined {
+  if (typeof value !== "string") return undefined;
+  const trimmed = value.trim();
+  return trimmed ? trimmed : undefined;
+}
+
+async function requireCatalogWriteToken(
+  env: Env,
+  request: Request,
+  url: URL,
+): Promise<Response | string> {
+  const expectedToken = (env.CATALOG_WRITE_TOKEN ?? "").trim();
+  if (!expectedToken || expectedToken.length < 16) {
+    return json({ ok: false }, 503);
+  }
+
+  const providedToken = resolveCatalogToken(request, url, env);
+  if (!providedToken || !constantTimeEqual(providedToken, expectedToken)) {
+    return json({ ok: false }, 401);
+  }
+  return expectedToken;
+}
+
+async function requireCatalogReadToken(
+  env: Env,
+  request: Request,
+  url: URL,
+): Promise<Response | string> {
+  const expectedReadToken = (env.CATALOG_READ_TOKEN ?? "").trim();
+  if (expectedReadToken) {
+    const providedToken = resolveCatalogToken(request, url, env);
+    if (!providedToken || !constantTimeEqual(providedToken, expectedReadToken)) {
+      return json({ ok: false }, 401);
+    }
+    return expectedReadToken;
+  }
+  return await requireCatalogWriteToken(env, request, url);
+}
+
+function validateDraftProducts(value: unknown): unknown[] | null {
+  if (!Array.isArray(value)) return null;
+  const normalized: unknown[] = [];
+  for (const entry of value) {
+    const parsed = catalogProductDraftSchema.safeParse(entry);
+    if (!parsed.success) return null;
+    normalized.push(parsed.data);
+  }
+  return normalized;
+}
+
+async function parseDraftPayload(request: Request, maxBytes: number): Promise<DraftPayload | Response> {
+  const lengthError = validateContentLength(request.headers, maxBytes);
+  if (lengthError) return lengthError;
+
+  let raw = "";
   try {
-    return await verifyUploadToken(token, secret);
+    raw = await request.text();
+  } catch {
+    return json({ ok: false }, 400);
+  }
+
+  if (!raw.trim()) return json({ ok: false }, 400);
+  const bytes = new TextEncoder().encode(raw).byteLength;
+  if (bytes > maxBytes) return json({ ok: false }, 413);
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return json({ ok: false }, 400);
+  }
+  if (!isObjectRecord(parsed)) return json({ ok: false }, 400);
+  return parsed as DraftPayload;
+}
+
+async function verifyTokenOrRespond(token: string, secret: string, maxTtlSeconds: number): Promise<VerifiedToken | Response> {
+  try {
+    return await verifyUploadToken(token, secret, maxTtlSeconds);
   } catch (err) {
     const code = err instanceof Error ? err.message : "invalid_token";
     if (code === "expired") return json({ ok: false }, 410);
@@ -337,7 +497,7 @@ async function handleUpload(request: Request, env: Env, token: string): Promise<
     return json({ ok: false }, 503);
   }
 
-  const verified = await verifyTokenOrRespond(token, secret);
+  const verified = await verifyTokenOrRespond(token, secret, resolveUploadTokenMaxTtlSeconds(env));
   if (verified instanceof Response) return verified;
 
   const maxBytes = resolveMaxBytes(env);
@@ -409,15 +569,8 @@ async function handleCatalogPublish(
   url: URL,
   storefront: string,
 ): Promise<Response> {
-  const expectedToken = (env.CATALOG_WRITE_TOKEN ?? "").trim();
-  if (!expectedToken || expectedToken.length < 16) {
-    return json({ ok: false }, 503);
-  }
-
-  const providedToken = resolveCatalogToken(request, url);
-  if (!providedToken || !constantTimeEqual(providedToken, expectedToken)) {
-    return json({ ok: false }, 401);
-  }
+  const auth = await requireCatalogWriteToken(env, request, url);
+  if (auth instanceof Response) return auth;
 
   const payloadOrError = await parseCatalogPublishPayload(request, resolveCatalogMaxBytes(env));
   if (payloadOrError instanceof Response) return payloadOrError;
@@ -483,6 +636,140 @@ async function handleCatalogPublish(
   );
 }
 
+async function handleDraftRead(request: Request, env: Env, url: URL, storefront: string): Promise<Response> {
+  const auth = await requireCatalogReadToken(env, request, url);
+  if (auth instanceof Response) return auth;
+
+  const bucket = resolveCatalogBucket(env);
+  const prefix = resolveCatalogPrefix(env);
+  const key = draftsCatalogKey(prefix, storefront);
+  const object = await bucket.get(key);
+  if (!object) {
+    return json({
+      ok: true,
+      storefront,
+      products: [],
+      revisionsById: {},
+      docRevision: null,
+      updatedAt: null,
+    });
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(await object.text());
+  } catch {
+    return json({ ok: false }, 502);
+  }
+  if (!isObjectRecord(parsed)) return json({ ok: false }, 502);
+
+  const products = Array.isArray(parsed.products) ? parsed.products : [];
+  const revisionsById = isObjectRecord(parsed.revisionsById) ? parsed.revisionsById : {};
+  const docRevision = parseOptionalString(parsed.docRevision) ?? null;
+  const updatedAt = parseOptionalString(parsed.updatedAt) ?? null;
+
+  return json({
+    ok: true,
+    storefront,
+    products,
+    revisionsById,
+    docRevision,
+    updatedAt,
+  });
+}
+
+async function handleDraftWrite(
+  request: Request,
+  env: Env,
+  url: URL,
+  storefront: string,
+): Promise<Response> {
+  const auth = await requireCatalogWriteToken(env, request, url);
+  if (auth instanceof Response) return auth;
+
+  const payloadOrError = await parseDraftPayload(request, resolveDraftsMaxBytes(env));
+  if (payloadOrError instanceof Response) return payloadOrError;
+  const payload = payloadOrError;
+
+  if (payload.storefront && payload.storefront !== storefront) {
+    return json({ ok: false }, 400);
+  }
+  const normalizedProducts = validateDraftProducts(payload.products);
+  if (!normalizedProducts || !isObjectRecord(payload.revisionsById)) {
+    return json({ ok: false }, 400);
+  }
+
+  const normalizedRevisions = Object.fromEntries(
+    Object.entries(payload.revisionsById).filter(
+      ([key, value]) => typeof key === "string" && typeof value === "string" && key.trim() && value.trim(),
+    ),
+  );
+
+  const bucket = resolveCatalogBucket(env);
+  const prefix = resolveCatalogPrefix(env);
+  const key = draftsCatalogKey(prefix, storefront);
+  const expectedDocRevision = parseOptionalString(payload.ifMatchDocRevision);
+  const existing = await bucket.get(key);
+  let existingDocRevision: string | undefined;
+  if (existing) {
+    try {
+      const existingParsed = JSON.parse(await existing.text()) as unknown;
+      if (isObjectRecord(existingParsed)) {
+        existingDocRevision = parseOptionalString(existingParsed.docRevision);
+      }
+    } catch {
+      return json({ ok: false }, 502);
+    }
+  }
+
+  if (expectedDocRevision) {
+    if (!existingDocRevision || !constantTimeEqual(expectedDocRevision, existingDocRevision)) {
+      return json({ ok: false, error: "conflict" }, 409);
+    }
+  }
+
+  const updatedAt = new Date().toISOString();
+  const docRevision = crypto.randomUUID().replace(/-/g, "");
+  const record = {
+    ok: true,
+    storefront,
+    updatedAt,
+    docRevision,
+    products: normalizedProducts,
+    revisionsById: normalizedRevisions,
+  };
+
+  try {
+    await bucket.put(key, `${JSON.stringify(record)}\n`, {
+      httpMetadata: { contentType: "application/json" },
+      customMetadata: {
+        storefront,
+        updatedAt,
+        docRevision,
+      },
+    });
+  } catch {
+    return json({ ok: false }, 502);
+  }
+
+  return json({ ok: true, storefront, updatedAt, docRevision }, 201);
+}
+
+async function handleDraftDelete(request: Request, env: Env, url: URL, storefront: string): Promise<Response> {
+  const auth = await requireCatalogWriteToken(env, request, url);
+  if (auth instanceof Response) return auth;
+
+  const bucket = resolveCatalogBucket(env);
+  const prefix = resolveCatalogPrefix(env);
+  const key = draftsCatalogKey(prefix, storefront);
+  try {
+    await bucket.delete(key);
+  } catch {
+    return json({ ok: false }, 502);
+  }
+  return json({ ok: true, storefront, deleted: true });
+}
+
 async function handleCatalogRead(
   request: Request,
   env: Env,
@@ -491,7 +778,7 @@ async function handleCatalogRead(
 ): Promise<Response> {
   const expectedReadToken = (env.CATALOG_READ_TOKEN ?? "").trim();
   if (expectedReadToken) {
-    const provided = resolveCatalogToken(request, url);
+    const provided = resolveCatalogToken(request, url, env);
     if (!provided || !constantTimeEqual(provided, expectedReadToken)) {
       return json({ ok: false }, 401);
     }
@@ -523,6 +810,7 @@ async function handleCatalogRead(
 type RouteMatch =
   | { kind: "upload"; pathToken: string }
   | { kind: "catalog"; storefront: string | null }
+  | { kind: "drafts"; storefront: string | null }
   | { kind: "other" };
 
 function matchRoute(pathname: string): RouteMatch {
@@ -539,6 +827,12 @@ function matchRoute(pathname: string): RouteMatch {
       storefront: parseStorefront(segments[1] ?? ""),
     };
   }
+  if (segments.length === 2 && segments[0] === "drafts") {
+    return {
+      kind: "drafts",
+      storefront: parseStorefront(segments[1] ?? ""),
+    };
+  }
   return { kind: "other" };
 }
 
@@ -546,6 +840,7 @@ function isCorsDenied(requestHasOrigin: boolean, allowedCorsOrigin: string | nul
   return requestHasOrigin && !allowedCorsOrigin;
 }
 
+// eslint-disable-next-line complexity -- XAUP-0101 cloud contract routing branches are intentionally explicit
 async function routeRequest(params: {
   request: Request;
   env: Env;
@@ -562,7 +857,7 @@ async function routeRequest(params: {
   const route = matchRoute(url.pathname);
 
   if (request.method === "OPTIONS") {
-    if (route.kind === "upload" || route.kind === "catalog") {
+    if (route.kind === "upload" || route.kind === "catalog" || route.kind === "drafts") {
       if (isCorsDenied(requestHasOrigin, allowedCorsOrigin)) {
         return json({ ok: false }, 403);
       }
@@ -576,7 +871,10 @@ async function routeRequest(params: {
     if (isCorsDenied(requestHasOrigin, allowedCorsOrigin)) {
       return json({ ok: false }, 403);
     }
-    const token = resolveUploadToken(request, url, route.pathToken);
+    let token = resolveUploadToken(request);
+    if (!token && allowUploadUrlTokens(env)) {
+      token = resolveUploadTokenLegacy(url, route.pathToken);
+    }
     if (!token) return json({ ok: false }, 401);
     return await handleUpload(request, env, token);
   }
@@ -596,6 +894,26 @@ async function routeRequest(params: {
     return json({ ok: false }, 404);
   }
 
+  if (route.kind === "drafts") {
+    if (!route.storefront) return json({ ok: false }, 400);
+    if (request.method === "GET") {
+      return await handleDraftRead(request, env, url, route.storefront);
+    }
+    if (request.method === "PUT") {
+      if (isCorsDenied(requestHasOrigin, allowedCorsOrigin)) {
+        return json({ ok: false }, 403);
+      }
+      return await handleDraftWrite(request, env, url, route.storefront);
+    }
+    if (request.method === "DELETE") {
+      if (isCorsDenied(requestHasOrigin, allowedCorsOrigin)) {
+        return json({ ok: false }, 403);
+      }
+      return await handleDraftDelete(request, env, url, route.storefront);
+    }
+    return json({ ok: false }, 404);
+  }
+
   return json({ ok: false }, 404);
 }
 
@@ -604,6 +922,9 @@ const worker = {
     const url = new URL(request.url);
     const requestHasOrigin = Boolean(request.headers.get("origin"));
     const allowedCorsOrigin = resolveAllowedCorsOrigin(request, env);
+    if (!isIpAllowed(request, env)) {
+      return withCors(request, json({ ok: false }, 404), allowedCorsOrigin);
+    }
     const response = await routeRequest({
       request,
       env,

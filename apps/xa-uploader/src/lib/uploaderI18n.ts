@@ -16,7 +16,7 @@ const messages = {
     storefrontXAJ: "XA-J (Jewelry)",
     languageLabel: "Language",
     languageEnglish: "EN",
-    languageChinese: "中文",
+    languageZh: "ZH",
 
     checkingConsoleAccess: "Checking console access...",
     consoleActive: "Console active",
@@ -39,6 +39,10 @@ const messages = {
     apiErrorNotFound: "The product no longer exists. Refresh and retry.",
     apiErrorConflict: "This product changed elsewhere. Refresh and save again.",
     apiErrorInternal: "The server could not complete this request. Try again.",
+    apiErrorServiceUnavailable:
+      "This operation is unavailable in the current runtime. Use the cloud draft mode or local operator runtime.",
+    apiErrorInvalidUploadUrl:
+      "Upload link format is invalid. Use a full https:// URL (or /upload/<token> endpoint) and retry.",
     validationTitleRequired: "Title is required.",
     validationBrandHandleRequired: "Brand handle is required.",
     validationCollectionRequired: "Collection handle or title is required.",
@@ -47,6 +51,9 @@ const messages = {
     validationColorRequired: "Add at least one color.",
     validationMaterialRequired: "Add at least one material.",
     validationImageAltCount: "Image alt text count must match image file count.",
+    validationImageRoleCount: "Image role count must match image file count.",
+    validationImageRoleUnsupported: "Image roles contain unsupported values.",
+    validationImageRoleMissing: "Add required image roles for this category.",
     validationSizesRequired: "Add at least one size for clothing.",
     validationMetalRequired: "Metal is required for jewelry.",
     validationCreatedAt: "Created-at must be a valid date/time.",
@@ -59,12 +66,22 @@ const messages = {
     syncDependencyValidate: "input validator",
     syncDependencyPipeline: "sync pipeline runner",
     syncRecoveryRestoreScripts: "Restore the missing scripts in scripts/src/xa, then retry sync.",
+    syncCatalogInputMissingActionable:
+      "Catalog CSV file is missing. Sync is blocked to prevent accidental storefront wipes.",
+    syncRecoveryCreateCatalogInput:
+      "Create or restore the products CSV in apps/xa-uploader/data, then retry sync.",
     syncCatalogInputEmptyActionable:
-      "Catalog CSV is missing or empty. Sync would publish zero products.",
+      "Catalog CSV is empty. Sync would publish zero products.",
     syncRecoveryConfirmEmptyCatalogSync:
       "Confirm only if an empty storefront publish is intentional.",
+    syncCurrencyRatesMissingActionable:
+      "Currency rates are missing. Sync is blocked to avoid 1:1 fallback conversions.",
+    syncCurrencyRatesInvalidActionable:
+      "Currency rates file is invalid. Sync is blocked until valid rates are saved.",
+    syncRecoverySaveCurrencyRates:
+      "Use Currency rates -> Save before running sync.",
     syncConfirmEmptyCatalogSync:
-      "Catalog CSV is missing or empty. Continuing will publish zero products. Continue sync?",
+      "Catalog CSV is empty. Continuing will publish zero products. Continue sync?",
     syncPublishContractUnconfigured:
       "Catalog publish target is not configured for this environment.",
     syncRecoveryConfigureCatalogContract:
@@ -79,7 +96,11 @@ const messages = {
     syncPipelineFailedActionable: "Sync pipeline failed.",
     syncRecoveryReviewSyncLogs:
       "Review sync log output, fix the pipeline error, then retry.",
+    submissionValidationFailed:
+      "Submission validation failed. Check product count, image sizes, and image files, then retry.",
     exportFailed: "Export failed.",
+    buildingZip: "Building package…",
+    uploadingZip: "Uploading…",
 
     loginIntro: "Admin access requires the console token.",
     loginTokenLabel: "Console token",
@@ -123,12 +144,12 @@ const messages = {
     submissionRuleLocalRun: "Run this console locally so it can read your image files.",
     submissionRuleImageSpec: "Images must be JPG/PNG/WebP and at least {minEdge}px on the shortest edge.",
     submissionRuleNewLink: "Use a new upload link for each submission.",
-    r2UploadTitle: "Submission upload (recommended)",
-    r2DestinationLabel: "Destination (placeholder)",
+    r2UploadTitle: "Submission upload",
+    r2DestinationLabel: "Destination",
     r2UploadUrlLabel: "Upload link",
     r2UploadUrlPlaceholder: "Paste the one-time upload link you were given",
     r2UploadHint:
-      "This uploads directly to the file-drop endpoint (no connection to the storefront). Ask the coordinator for a new link for each submission.",
+      "This uploads directly to the handoff endpoint (no direct storefront connection). Ask the coordinator for a new link for each submission.",
     uploadToR2: "Upload submission",
     uploadingToR2: "Uploading...",
     submissionReady: "Submission ID: {id}",
@@ -161,6 +182,7 @@ const messages = {
 
     departmentWomen: "Women",
     departmentMen: "Men",
+    departmentKids: "Kids",
     categoryClothing: "Clothing",
     categoryBags: "Bags",
     categoryJewelry: "Jewelry",
@@ -205,9 +227,26 @@ const messages = {
     imagesFieldsTitle: "Images for sync",
     imageFiles: "Image files (paths, globs, or directories)",
     imageAltTexts: "Image alt texts (optional)",
+    imageRoles: "Image shot roles",
     imageGuidelines:
       "Recommended: portrait 4:5 or square. Use JPG/PNG/WebP at {minEdge}px+ on the shortest edge.",
     placeholderImageAltTexts: "One per image (pipe, comma, or newline)",
+    placeholderImageRoles: "One per image (front|side|top|back|detail|interior|scale)",
+    currencyRatesTitle: "Currency rates",
+    currencyRatesSubtitle:
+      "Enter USD-base multipliers. AUD, EUR, and GBP prices are computed from the USD price at sync time.",
+    currencyRatesUsdLabel: "USD (base)",
+    currencyRatesEurLabel: "EUR rate",
+    currencyRatesGbpLabel: "GBP rate",
+    currencyRatesAudLabel: "AUD rate",
+    currencyRatesSaveAndSync: "Save & sync",
+    currencyRatesSaving: "Saving...",
+    currencyRatesSaved: "Rates saved.",
+    currencyRatesSaveFailed: "Failed to save rates.",
+    currencyRatesSyncedRebuildNote:
+      "Rates applied. Rebuild xa-b to publish updated prices to the live website.",
+    currencyRatesSavedSyncNotReady: "Rates saved. Run sync manually to apply to catalog.",
+    currencyRatesLoadFailed: "Failed to load currency rates.",
   },
   zh: {
     pageKicker: "目录上传器",
@@ -219,7 +258,7 @@ const messages = {
     storefrontXAJ: "XA-J（珠宝）",
     languageLabel: "语言",
     languageEnglish: "EN",
-    languageChinese: "中文",
+    languageZh: "ZH",
 
     checkingConsoleAccess: "正在检查控制台访问权限…",
     consoleActive: "控制台已启用",
@@ -242,6 +281,10 @@ const messages = {
     apiErrorNotFound: "该商品不存在，请刷新后重试。",
     apiErrorConflict: "该商品已被他人修改，请刷新后重新保存。",
     apiErrorInternal: "服务器暂时无法完成请求，请稍后重试。",
+    apiErrorServiceUnavailable:
+      "当前运行环境暂不支持该操作。请使用云端草稿模式或本地运营环境。",
+    apiErrorInvalidUploadUrl:
+      "上传链接格式无效。请使用完整的 https:// URL（或 /upload/<token> 端点）后重试。",
     validationTitleRequired: "标题不能为空。",
     validationBrandHandleRequired: "品牌标识不能为空。",
     validationCollectionRequired: "系列标识或系列标题至少填写一项。",
@@ -250,6 +293,9 @@ const messages = {
     validationColorRequired: "请至少填写一个颜色。",
     validationMaterialRequired: "请至少填写一种材质。",
     validationImageAltCount: "图片替代文本数量必须与图片数量一致。",
+    validationImageRoleCount: "图片角色数量必须与图片数量一致。",
+    validationImageRoleUnsupported: "图片角色包含不支持的值。",
+    validationImageRoleMissing: "请补齐该类别要求的图片角色。",
     validationSizesRequired: "服装类商品至少填写一个尺码。",
     validationMetalRequired: "珠宝类商品必须填写金属材质。",
     validationCreatedAt: "创建时间必须是有效日期时间。",
@@ -262,9 +308,14 @@ const messages = {
     syncDependencyValidate: "输入校验脚本",
     syncDependencyPipeline: "同步流水线脚本",
     syncRecoveryRestoreScripts: "请恢复 scripts/src/xa 下缺失的脚本后重试同步。",
-    syncCatalogInputEmptyActionable: "目录 CSV 缺失或为空。继续同步将发布 0 个商品。",
+    syncCatalogInputMissingActionable: "目录 CSV 文件不存在。为避免意外清空店铺，已阻止同步。",
+    syncRecoveryCreateCatalogInput: "请先在 apps/xa-uploader/data 中创建或恢复 products CSV，再重试同步。",
+    syncCatalogInputEmptyActionable: "目录 CSV 为空。继续同步将发布 0 个商品。",
     syncRecoveryConfirmEmptyCatalogSync: "仅在确认需要发布空目录时继续。",
-    syncConfirmEmptyCatalogSync: "目录 CSV 缺失或为空。继续将发布 0 个商品，是否继续同步？",
+    syncCurrencyRatesMissingActionable: "汇率文件缺失。为避免 1:1 默认换算，已阻止同步。",
+    syncCurrencyRatesInvalidActionable: "汇率文件格式无效。请保存有效汇率后再同步。",
+    syncRecoverySaveCurrencyRates: "请先在“汇率设置”中保存汇率，再运行同步。",
+    syncConfirmEmptyCatalogSync: "目录 CSV 为空。继续将发布 0 个商品，是否继续同步？",
     syncPublishContractUnconfigured: "当前环境未配置目录发布目标。",
     syncRecoveryConfigureCatalogContract:
       "请先配置 XA_CATALOG_CONTRACT_BASE_URL 与 XA_CATALOG_CONTRACT_WRITE_TOKEN 后重试。",
@@ -274,7 +325,10 @@ const messages = {
     syncRecoveryReviewValidationLogs: "请根据同步日志修复校验错误后重试。",
     syncPipelineFailedActionable: "同步流水线执行失败。",
     syncRecoveryReviewSyncLogs: "请查看同步日志，修复流水线错误后重试。",
+    submissionValidationFailed: "提交验证失败。请检查产品数量、图片尺寸及图片文件，然后重试。",
     exportFailed: "导出失败。",
+    buildingZip: "正在构建压缩包…",
+    uploadingZip: "正在上传…",
 
     loginIntro: "管理员访问需要控制台令牌。",
     loginTokenLabel: "控制台令牌",
@@ -318,12 +372,12 @@ const messages = {
     submissionRuleLocalRun: "请在本机运行此控制台，以便读取本地图片文件。",
     submissionRuleImageSpec: "图片需为 JPG/PNG/WebP，且短边至少 {minEdge}px。",
     submissionRuleNewLink: "每次提交请使用新的上传链接。",
-    r2UploadTitle: "提交上传（推荐）",
-    r2DestinationLabel: "目标（占位）",
+    r2UploadTitle: "提交上传",
+    r2DestinationLabel: "目标",
     r2UploadUrlLabel: "上传链接",
     r2UploadUrlPlaceholder: "粘贴一次性上传链接",
     r2UploadHint:
-      "将直接上传到文件投递端（不连接到店铺站点）。每次提交请向协调方获取新的链接。",
+      "将直接上传到交付端点（不直接连接到店铺站点）。每次提交请向协调方获取新的链接。",
     uploadToR2: "上传提交包",
     uploadingToR2: "上传中…",
     submissionReady: "提交 ID：{id}",
@@ -332,7 +386,7 @@ const messages = {
     selectionLimitReached: "已达到 {max} 个商品上限。",
 
     fieldTitle: "标题",
-    fieldSlug: "Slug",
+    fieldSlug: "Slug（URL 标识）",
     fieldPrice: "价格",
     fieldCompareAtPrice: "划线价",
     fieldBrandHandle: "品牌标识",
@@ -356,6 +410,7 @@ const messages = {
 
     departmentWomen: "女装",
     departmentMen: "男装",
+    departmentKids: "童装",
     categoryClothing: "服装",
     categoryBags: "包袋",
     categoryJewelry: "珠宝",
@@ -400,8 +455,24 @@ const messages = {
     imagesFieldsTitle: "同步用图片",
     imageFiles: "图片文件（路径、glob 或目录）",
     imageAltTexts: "图片替代文本（可选）",
+    imageRoles: "图片镜位角色",
     imageGuidelines: "建议：比例 4:5 竖图或正方形；JPG/PNG/WebP，短边至少 {minEdge}px。",
     placeholderImageAltTexts: "每张图片一条（用 |、逗号或换行分隔）",
+    placeholderImageRoles: "每张图片一条（front|side|top|back|detail|interior|scale）",
+    currencyRatesTitle: "汇率设置",
+    currencyRatesSubtitle:
+      "输入以 USD 为基准的汇率倍数。同步时将根据 USD 价格计算 AUD、EUR 和 GBP 价格。",
+    currencyRatesUsdLabel: "USD（基准）",
+    currencyRatesEurLabel: "EUR 汇率",
+    currencyRatesGbpLabel: "GBP 汇率",
+    currencyRatesAudLabel: "AUD 汇率",
+    currencyRatesSaveAndSync: "保存并同步",
+    currencyRatesSaving: "保存中…",
+    currencyRatesSaved: "汇率已保存。",
+    currencyRatesSaveFailed: "保存汇率失败。",
+    currencyRatesSyncedRebuildNote: "汇率已应用。重新构建 xa-b 以将更新的价格发布到网站。",
+    currencyRatesSavedSyncNotReady: "汇率已保存。请手动运行同步以应用到目录。",
+    currencyRatesLoadFailed: "加载汇率失败。",
   },
 } as const;
 

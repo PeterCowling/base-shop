@@ -59,7 +59,7 @@ export const SafeWithdrawalForm = memo(function SafeWithdrawalForm({
           submitLabel="Confirm withdrawal"
         />
         {error && (
-          <p className="mt-2 text-error-main" role="alert">
+          <p className="mt-2 text-danger-fg" role="alert">
             {error}
           </p>
         )}

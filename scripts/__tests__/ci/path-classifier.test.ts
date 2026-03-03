@@ -22,6 +22,19 @@ describe("classifyPaths", () => {
       const result = classifyPaths(["docs/README.md"], CI_FILTER);
       expect(result.shop).toBe(false);
     });
+
+    it("TC-02A: email_shadow_replay matches draft tool changes", () => {
+      const result = classifyPaths(
+        ["packages/mcp-server/src/tools/draft-refine.ts"],
+        CI_FILTER,
+      );
+      expect(result.email_shadow_replay).toBe(true);
+    });
+
+    it("TC-02B: email_shadow_replay does not match unrelated paths", () => {
+      const result = classifyPaths(["docs/README.md"], CI_FILTER);
+      expect(result.email_shadow_replay).toBe(false);
+    });
   });
 
   describe("ci.yml bos_guarded filter", () => {

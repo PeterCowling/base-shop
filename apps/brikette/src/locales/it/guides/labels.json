@@ -17,9 +17,9 @@
   "faqsHeading": "Domande frequenti",
   "costBreakdownTitle": "Ripartizione dei costi giornalieri",
   "costBreakdownCurrencySuffix": "in {{currency}}",
-  "costBreakdownSliceLabel": "{{label}}: {{value}}%{{suffix}}",
+  "costBreakdownSliceLabel": "Traduzione:",
   "backLink": "Indietro",
   "typicalCostsHeading": "Costi tipici",
   "essentialsHeading": "Essenziali",
-  "tocSectionFallback": "Section"
+  "tocSectionFallback": "Sezione"
 }

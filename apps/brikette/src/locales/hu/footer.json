@@ -1,7 +1,7 @@
 {
   "home": "Főoldal",
-  "rooms": "Szobák",
-  "apartment": "Apartman",
+  "rooms": "Hálótermek",
+  "apartment": "Privát Szobák",
   "assistance": "Súgó",
   "careers": "Karrier",
   "deals": "Ajánlatok",
@@ -30,5 +30,5 @@
   "cancellationPolicy": "Lemondási feltételek",
   "privacy": "Adatvédelmi irányelvek",
   "cookies": "Cookie-szabályzat",
-  "navAriaLabel": "Footer navigation"
+  "navAriaLabel": "lábjegyzetes navigáció"
 }

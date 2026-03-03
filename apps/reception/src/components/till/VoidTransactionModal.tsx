@@ -43,7 +43,7 @@ const VoidTransactionModal: FC<VoidTransactionModalProps> = ({
       footer={
         <Button
           onClick={onClose}
-          className="px-4 py-2 rounded bg-surface-3 hover:bg-surface-2 text-foreground"
+          className="px-4 py-2 rounded-lg bg-surface-3 hover:bg-surface-2 text-foreground"
         >
           Cancel
         </Button>
@@ -57,7 +57,7 @@ const VoidTransactionModal: FC<VoidTransactionModalProps> = ({
         Reason
         <Textarea
           compatibilityMode="no-wrapper"
-          className="mt-1 w-full rounded border p-2 text-sm text-foreground"
+          className="mt-1 w-full rounded-lg border p-2 text-sm text-foreground"
           rows={3}
           value={reason}
           onChange={(e) => setReason(e.target.value)}

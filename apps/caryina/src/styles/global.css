@@ -59,6 +59,10 @@
 
 /* ── Utilities ─────────────────────────────────────────── */
 @layer utilities {
+  .text-accent {
+    color: hsl(var(--color-accent));
+  }
+
   .bg-accent-soft {
     background-color: hsl(var(--color-accent-soft));
   }

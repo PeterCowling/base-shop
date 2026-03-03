@@ -6,7 +6,7 @@
 import { TIMESTAMP_KEY } from "../../constants/fields";
 
 const DB_NAME = "reception-offline";
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 interface CacheEntry<T = unknown> {
   path: string;
@@ -34,26 +34,31 @@ function openDb(): Promise<IDBDatabase> {
 
     request.onupgradeneeded = (event) => {
       const db = (event.target as IDBOpenDBRequest).result;
+      const oldVersion = event.oldVersion;
 
-      // Store for cached Firebase data
-      if (!db.objectStoreNames.contains("firebase-cache")) {
-        const store = db.createObjectStore("firebase-cache", { keyPath: "path" });
-        store.createIndex(TIMESTAMP_KEY, TIMESTAMP_KEY, { unique: false });
-      }
+      // NOTE: future version bumps must handle all intermediate steps (e.g. 1→2→3)
 
-      // Store for pending write operations (offline mutations)
-      if (!db.objectStoreNames.contains("pending-writes")) {
-        const store = db.createObjectStore("pending-writes", {
+      if (oldVersion < 1) {
+        // Store for cached Firebase data
+        const cacheStore = db.createObjectStore("firebase-cache", { keyPath: "path" });
+        cacheStore.createIndex(TIMESTAMP_KEY, TIMESTAMP_KEY, { unique: false });
+
+        // Store for pending write operations (offline mutations)
+        const writesStore = db.createObjectStore("pending-writes", {
           keyPath: "id",
           autoIncrement: true,
         });
-        store.createIndex(TIMESTAMP_KEY, TIMESTAMP_KEY, { unique: false });
-        store.createIndex("path", "path", { unique: false });
+        writesStore.createIndex(TIMESTAMP_KEY, TIMESTAMP_KEY, { unique: false });
+        writesStore.createIndex("path", "path", { unique: false });
+
+        // Store for metadata (version, sync timestamps)
+        db.createObjectStore("meta", { keyPath: "key" });
       }
 
-      // Store for metadata (version, sync timestamps)
-      if (!db.objectStoreNames.contains("meta")) {
-        db.createObjectStore("meta", { keyPath: "key" });
+      if (oldVersion < 2) {
+        // v1→v2: PendingWrite gains optional fields (idempotencyKey, conflictPolicy,
+        // atomic, domain). No structural change to the object store is needed —
+        // existing records survive with the new fields defaulting to undefined.
       }
     };
   });
@@ -151,6 +156,10 @@ export interface PendingWrite {
   operation: "set" | "update" | "remove";
   data?: unknown;
   timestamp: number;
+  idempotencyKey?: string;
+  conflictPolicy?: "last-write-wins" | "fail-on-conflict";
+  atomic?: boolean;
+  domain?: string;
 }
 
 export async function addPendingWrite(

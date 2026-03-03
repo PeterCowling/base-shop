@@ -1,7 +1,7 @@
 Type: Policy
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-02-23
+Last-reviewed: 2026-02-27
 Created: 2026-01-17
 Created-by: Claude Opus 4.5 (extracted from AGENTS.md)
 
@@ -11,290 +11,68 @@ This document defines mandatory testing rules for all agents and developers work
 
 ---
 
+> **CI-ONLY TEST POLICY (effective 2026-02-27)**
+> All Jest and e2e tests run in GitHub Actions CI only. Do not run test commands locally.
+> Push your changes and monitor CI results via `gh run watch`.
+> Linting and typechecking remain local as before.
+
+---
+
 > **INCIDENT REFERENCE: On Jan 16, 2026, orphaned Jest processes consumed 2.5GB+ RAM and caused system slowdown.**
 > Multiple test runs were started but never terminated, accumulating over 2+ hours.
 > The machine had only 93MB free RAM and load average of 7.73.
-> **THESE RULES EXIST TO PREVENT THIS FROM HAPPENING AGAIN.**
+> This policy (CI-only test execution) directly addresses that class of failure.
 
 ---
 
-## Rule 1: NEVER Run Broad Test Suites
+## Rule 1: All Tests Run in CI Only
 
-**PROHIBITED test commands (never run these without explicit user request):**
+**Tests run in GitHub Actions CI. Do not invoke Jest or e2e test runners locally.**
 
 ```bash
-# NEVER run these - they spawn many workers and consume excessive resources
-pnpm test                           # Runs ALL tests in monorepo
-pnpm --filter @acme/ui test         # Runs ALL tests in a large package
-pnpm --filter @apps/cms test        # Runs ALL tests in an app
-jest                                # Runs all tests in current directory
+# DO NOT run these locally
+jest
+pnpm test
+pnpm --filter <pkg> test
+npx jest
+pnpm exec jest
 ```
 
-**Mechanical guardrails (now enforced):**
-- Root `pnpm test` is hard-blocked by `scripts/guard-broad-test-run.cjs`.
-- Agent/integrator shells enforce `scripts/agent-bin/pnpm` and `scripts/agent-bin/turbo`, which block unscoped monorepo test fan-out commands.
-- Agent/integrator shells also block unscoped package test runs (for example, `pnpm --filter @apps/cms test` without file/pattern selectors).
-- Agent/integrator shells hard-block ungoverned Jest entry points by default:
-  - `scripts/agent-bin/npm` blocks `npm exec jest` / `npm x jest`
-  - `scripts/agent-bin/npx` blocks `npx jest`
-  - `scripts/agent-bin/pnpm` blocks `pnpm exec jest`
-  - `scripts/agents/guarded-shell-hooks.sh` blocks raw direct forms (`node ...jest/bin/jest.js`, `./node_modules/.bin/jest`)
-- Split override policy:
-  - `BASESHOP_ALLOW_BYPASS_POLICY=1` reroutes blocked bypass commands through `pnpm -w run test:governed -- jest -- <args>`.
-  - `BASESHOP_ALLOW_OVERLOAD=1` is telemetry-visible but does not bypass command-policy blocking.
-- Governed test entrypoint is `pnpm run test:governed -- <intent> -- <args>`:
-  - `intent=jest` and `intent=changed` inject `--maxWorkers=2` unless overridden.
-  - `intent=turbo` injects `--concurrency=2` unless overridden.
-  - Watch flags are blocked unless using explicit `watch-exclusive` opt-in.
-  - `CI=true` runs in governed compatibility mode (shaping enabled; scheduler/admission bypassed).
-- Governed config path rule:
-  - If a package test script uses `pnpm -w run test:governed`, `--config` must be repo-relative (for example `apps/prime/jest.config.cjs`), not package-relative (`./jest.config.cjs`).
-  - If a package needs `./jest.config.cjs`, invoke `scripts/tests/run-governed-test.sh` from package CWD (for example `bash ../../scripts/tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs`).
-- Migrated package `test` scripts now route through `test:governed` (or documented delegated wrappers).
-- If a full monorepo run is explicitly required, use:
-  - `BASESHOP_ALLOW_BROAD_TESTS=1 pnpm test:all`
+**Instead: push your changes and monitor CI:**
 
-**Why:** Broad test runs spawn multiple Jest workers (4-8 per run), each consuming 200-500MB RAM. Multiple concurrent runs can easily consume 2-5GB and bring the system to a crawl.
+```bash
+gh run watch $(gh run list --limit 1 --json databaseId -q '.[0].databaseId')
+```
 
-**Exception (allowed only when explicitly requested by user):**
-- You may run **all tests sequentially, one test file at a time**.
-- Requirements:
-  - Enumerate test files with `rg --files -g "*.{test,spec}.{ts,tsx,js,jsx,mjs,cjs}"` and run each file path explicitly.
-  - Run each file individually (no parallel runs).
-  - Stop on first failure, fix, then resume.
-  - Use `--maxWorkers=1` (or `--runInBand`) for each file.
-  - Still **never** run `pnpm test` unfiltered.
-  - Check for orphaned Jest processes before starting (Rule 4).
-  - Use the correct runner by location: Jest for unit/integration tests; Cypress for `test/e2e/**` and `apps/**/cypress/e2e/**` (see `docs/cypress.md`).
-  - If Jest reports ESM parsing errors, retry the file with `JEST_FORCE_CJS=1` (some packages/scripts require CJS mode).
-  - Once started, continue through the list without pausing for confirmations; only interrupt for a failure or a special setup requirement.
+**Why:** Running tests locally consumes 2–4 GB RAM per run and destabilises the machine during bursty multi-agent workflows. CI provides isolation, sharding, and consistent pass/fail gating.
 
-**API test notes (apps/api):**
-- The `@apps/api` test script runs with `rootDir` set to `apps/api`, which breaks `setupFilesAfterEnv` paths in `apps/api/jest.config.cjs`.
-- Run API tests from the repo root via the governed runner with an explicit rootDir and config:
-  ```bash
-  pnpm -w run test:governed -- jest -- --ci --runInBand --detectOpenHandles \
-    --config apps/api/jest.config.cjs \
-    --rootDir . \
-    --runTestsByPath apps/api/src/.../__tests__/file.test.ts \
-    --coverage=false
-  ```
-- Use `--coverage=false` for single-file runs to avoid tripping the global coverage thresholds.
+**Technical enforcement (agent-mediated paths):**
+- `run-governed-test.sh` (the governed runner) exits 1 with a redirect message when `BASESHOP_CI_ONLY_TESTS=1` is set and `CI` is not `true`.
+- `integrator-shell.sh` exports `BASESHOP_CI_ONLY_TESTS=1` into all agent shells automatically.
+- `scripts/agent-bin/npx` and `scripts/agent-bin/pnpm` continue to block raw Jest entry points.
+- Direct-shell invocations (e.g., `pnpm test:affected`) are covered by policy only.
 
-### Coverage Tier Source Of Truth
-
-- Coverage tier assignments and per-metric thresholds are defined in `packages/config/coverage-tiers.cjs`.
-- `@acme/types` now uses `SCHEMA_BASELINE` (`lines:70`, `branches:0`, `functions:50`, `statements:70`) instead of `MINIMAL`.
-- `scripts/check-coverage.sh` resolves tier metadata directly from `coverage-tiers.cjs`; do not maintain duplicated threshold tables elsewhere.
+**CI test environments:**
+- `CI=true` is set by GitHub Actions on all runners. The governed runner's compatibility mode respects this and will not block CI execution.
 
 ---
 
-## Rule 2: Always Use Targeted Test Commands
+## Rule 2: Linting and Typechecking Remain Local
 
-**REQUIRED approach - always scope tests to the minimum necessary:**
-
-```bash
-# CORRECT: Run a single test file
-pnpm --filter @acme/ui test -- src/atoms/Button.test.tsx
-
-# CORRECT: Run tests matching a pattern
-pnpm --filter @acme/ui test -- --testPathPattern="Button"
-
-# CORRECT: Run a specific describe block or test
-pnpm --filter @acme/ui test -- --testNamePattern="renders correctly"
-
-# CORRECT: Combine file and test name patterns
-pnpm --filter @acme/ui test -- src/atoms/Button.test.tsx -t "handles click"
-```
-
-### XA Uploader (Targeted)
-
-Use the uploader package scoped governed commands:
+Linting and typechecking are **not** subject to the CI-only policy. Run them locally as always:
 
 ```bash
-# Route-contract suite only (API regressions)
-pnpm --filter @apps/xa-uploader run test:api
-
-# Uploader-local operator surface (API + catalog console tests only)
-pnpm --filter @apps/xa-uploader run test:local
-
-# Uploader-local operator E2E (Playwright; includes app boot + temp fixtures)
-pnpm --filter @apps/xa-uploader run test:e2e
+pnpm --filter <pkg> typecheck
+pnpm --filter <pkg> lint
+# Or combined via validate-changes.sh (no tests):
+bash scripts/validate-changes.sh
 ```
 
-Scope caveat:
-- `test:local` intentionally covers only `src/app/api/**` and `src/components/catalog/**`.
-- It does not run all uploader tests (for example `src/lib/**`), and it is not a monorepo-wide gate.
-- For package-wide coverage, use `pnpm --filter @apps/xa-uploader test` with additional file/pattern scoping where possible.
-- `test:e2e` is intentionally scoped to `apps/xa-uploader/e2e/catalog-console.spec.ts` and spins up an isolated uploader dev server with temp CSV/image fixtures.
-
-### Growth Accounting Kernel (Targeted)
-
-For growth-accounting verification, use these targeted commands:
-
-```bash
-# S10 integration + replay contract
-pnpm run test:governed -- jest -- --config ./jest.config.cjs -- src/startup-loop/__tests__/s10-growth-accounting.test.ts --modulePathIgnorePatterns=\.open-next/ --modulePathIgnorePatterns=\.worktrees/ --modulePathIgnorePatterns=\.ts-jest/
-
-# Business OS growth card rendering
-pnpm --filter @apps/business-os test -- src/components/board/GrowthLedgerCard.test.tsx
-```
-
-### Startup-Loop MCP Data Plane (Targeted)
-
-Use the dedicated startup-loop Jest wrapper config for MCP integration tests. Do not pass ad hoc ignore flags.
-
-```bash
-# Startup-loop MCP integration suite
-pnpm --filter @acme/mcp-server test:startup-loop
-
-# Startup-loop MCP policy + tool contracts (individual suites)
-CI=true pnpm run test:governed -- jest -- --config ./jest.config.cjs --runInBand --runTestsByPath packages/mcp-server/src/__tests__/tool-policy-gates.test.ts
-CI=true pnpm run test:governed -- jest -- --config ./jest.config.cjs --runInBand --runTestsByPath packages/mcp-server/src/__tests__/bos-tools-write.test.ts
-CI=true pnpm run test:governed -- jest -- --config ./jest.config.cjs --runInBand --runTestsByPath packages/mcp-server/src/__tests__/loop-tools.test.ts
-```
-
-### Email Draft Pipeline (Targeted)
-
-Use the governed runner with a testPathPattern to run the email draft pipeline evaluation harness. This suite covers `draft_interpret → draft_generate` end-to-end with coverage metrics and a `passRate >= 0.90` gate.
-
-```bash
-# Full evaluation harness (10 synthetic fixtures, coverage + quality metrics)
-pnpm -w run test:governed -- jest -- --testPathPattern="draft-pipeline.integration" --no-coverage
-
-# Individual draft-tool unit suites (draft-generate, draft-interpret, draft-quality-check)
-pnpm -w run test:governed -- jest -- --testPathPattern="draft-generate|draft-interpret|draft-quality-check" --no-coverage
-```
-
-**Metric interpretation:**
-- `Quality pass rate`: fraction of fixtures that pass `draft_quality_check`. Gate: ≥ 90%.
-- `Avg question coverage`: fraction of detected questions where stemmed keywords appear in the draft body.
-- `Knowledge injections`: count of `sources_used` entries with `injected: true` (TASK-07 gap-fill signal).
-
-### Attestation Refinement Stage (Targeted)
-
-Use the governed runner with `testPathPattern="draft-refine"` to run the `draft_refine` MCP tool test suite. The tool is a **deterministic attestation layer** — Claude (running in the CLI session) performs the refinement and submits `refinedBodyPlain`; the tool validates quality, attests the result, and derives `bodyHtml`. No Anthropic SDK call occurs inside the tool handler (v2, see `docs/plans/email-draft-quality-upgrade-v2/plan.md` TASK-01).
-
-```bash
-# draft_refine tool unit suite (TC-01-01..TC-01-06)
-pnpm -w run test:governed -- jest -- --testPathPattern="draft-refine" --no-coverage
-```
-
-**Metric interpretation:**
-- `refinement_applied: true` + `refinement_source: 'claude-cli'` confirms Claude submitted a refined body (text changed).
-- `refinement_applied: false` + `refinement_source: 'none'` confirms identity check fired (no-op: `refinedBodyPlain === originalBodyPlain`).
-- `quality.passed: true` confirms the attested body passes `draft_quality_check`.
-- `quality.passed: false` with named `failed_checks` is the soft-fail transparency path — caller decides to retry or escalate.
+`scripts/validate-changes.sh` defaults to skipping tests. The test opt-in flag is blocked at runtime under CI-only policy.
 
 ---
 
-## Rule 3: Limit Jest Workers
-
-**When you must run broader tests, always limit workers:**
-
-```bash
-# Limit to 2 workers maximum
-pnpm --filter @acme/ui test -- --maxWorkers=2
-
-# Run sequentially (safest, slowest)
-pnpm --filter @acme/ui test -- --runInBand
-```
-
----
-
-## Rule 4: Never Start Multiple Test Runs
-
-**Before starting ANY test run:**
-
-1. Check for existing Jest processes:
-   ```bash
-   ps aux | grep -E "(jest|vitest)" | grep -v grep
-   ```
-
-2. If processes exist, either:
-   - Wait for them to complete, OR
-   - Kill them first: `pkill -f jest`
-
-3. Only then start your test run
-
-**NEVER start a new test run in a different terminal while one is already running.**
-
-**Editor note:** The repo includes `.vscode/settings.json` to disable VS Code Jest auto-run/watch. Keep it enabled to avoid unintended background runners.
-
-### Test Scheduler and Governed Runner
-
-The repository now includes `scripts/tests/test-lock.sh` as the scheduler primitive for governed test execution.
-
-- Supported commands: `acquire`, `release`, `status`, `cancel`, `clean-stale`.
-- Lock metadata includes holder PID, heartbeat timestamp, and command signature.
-- Scope is configurable with `BASESHOP_TEST_LOCK_SCOPE=repo|machine`:
-  - `repo` (default): lock state under `<repo>/.cache/test-governor/test-lock`
-  - `machine`: lock state under a machine-global root (default under `${TMPDIR:-/tmp}`; override with `BASESHOP_TEST_LOCK_MACHINE_ROOT`)
-
-Use this with `scripts/tests/run-governed-test.sh` (`pnpm run test:governed`) as the canonical entrypoint for local test execution.
-
-Runaway-process safeguards in the governed runner:
-
-- Wall-clock timeout: `BASESHOP_TEST_TIMEOUT_SEC` (default `600`, `0` disables timeout).
-- Admission timeout: `BASESHOP_TEST_ADMISSION_TIMEOUT_SEC` (default `300`, `0` disables timeout).
-- Cleanup behavior: runner terminates child processes first (`pkill -P <pid>`) and parent with `SIGTERM`, waits 5 seconds, then escalates to `SIGKILL` if still alive.
-- Timeout exit contract: when wall-clock timeout fires, runner exits with code `124`.
-- Telemetry fields:
-  - `timeout_killed` (`true|false`)
-  - `kill_escalation` (`none|sigterm|sigkill`)
-
-Jest defaults:
-
-- Shared Jest preset now enforces `forceExit: true` and `detectOpenHandles: true`.
-- Governed `jest`/`changed` intents inject `--forceExit` when absent.
-
-### Resource Admission Defaults (TEG-08)
-
-Governed local runs apply admission before execution (unless `CI=true` compatibility mode is active):
-
-- Memory budget formula:
-  - `memory_budget_mb = floor(total_ram_mb * 0.60)`
-- CPU slot formula:
-  - `cpu_slots_total = max(1, floor(logical_cpu * 0.70))`
-  - Example: `logical_cpu=10` resolves to `cpu_slots_total=7`.
-- Seeded class budgets are used until history has enough samples for a signature-level P90 override.
-- Probe ambiguity fails safe to queue (`reason=probe-unknown`), not admit.
-
-Admission diagnostics:
-
-```bash
-scripts/tests/resource-admission.sh decide \
-  --class governed-jest \
-  --normalized-sig governed-jest \
-  --workers 2
-```
-
-Override policy:
-
-- `BASESHOP_ALLOW_OVERLOAD=1` bypasses admission/scheduling pressure gates for the current run.
-- Overload overrides are telemetry-visible (`override_overload_used=true`) and must be used only for incident/debug scenarios.
-
----
-
-## Rule 5: Clean Up Stuck Tests
-
-**If tests seem stuck (running > 5 minutes for unit tests):**
-
-```bash
-# Check what's running
-ps aux | grep jest | head -10
-
-# Kill all Jest processes
-pkill -f "jest-worker"
-pkill -f "jest.js"
-
-# Then re-run with --detectOpenHandles to find the issue
-pnpm --filter <package> test -- <specific-file> --detectOpenHandles
-```
-
----
-
-## Rule 6: Stable Mock References for React Components
+## Rule 3: Stable Mock References for React Components
 
 When mocking hooks that return objects (for example `useRouter`, `useTranslation`, `useSearchParams`, or custom hooks), define the return object outside the mock factory.
 
@@ -389,75 +167,11 @@ This suite enforces:
 
 ---
 
-## Test Scope Decision Tree
+## Coverage Tier Source Of Truth
 
-| Scenario | Command |
-|----------|---------|
-| Changed one file `Button.tsx` | `pnpm --filter @acme/ui test -- Button.test.tsx` |
-| Changed one function | `pnpm --filter <pkg> test -- -t "function name"` |
-| Changed a component + its tests | `pnpm --filter <pkg> test -- ComponentName` |
-| Changed multiple files in one package | `pnpm --filter <pkg> test -- --maxWorkers=2` |
-| Need to verify CI will pass | Ask user first; use `--maxWorkers=2` |
-| User explicitly asks for full test run | Run **sequential single-file tests** only; no suite runs |
-
----
-
-## Reference Commands
-
-```bash
-# Check for orphaned test processes
-ps aux | grep -E "(jest|vitest)" | grep -v grep
-
-# Kill all Jest processes
-pkill -f "jest-worker" && pkill -f "jest.js"
-
-# Check system resources
-top -l 1 | head -10
-
-# Run single test file (preferred)
-pnpm --filter <package> test -- path/to/file.test.ts
-
-# Run tests matching pattern
-pnpm --filter <package> test -- --testPathPattern="pattern"
-
-# Run with limited workers
-pnpm --filter <package> test -- --maxWorkers=2
-```
-
----
-
-## Why This Matters
-
-**Reference incident (2026-01-16):**
-- 10+ Jest worker processes were running simultaneously
-- Combined RAM usage: 2.5GB+
-- System had only 93MB free RAM (out of 16GB)
-- Load average: 7.73 (should be <4)
-- Some processes had been running since 9:05AM (2+ hours)
-
-**Lesson:** Always run the minimum necessary tests. One targeted test file runs in seconds and uses <100MB. A full package test suite spawns 4-8 workers at 200-500MB each.
-
----
-
-## Automated Validation
-
-Use `scripts/validate-changes.sh` to automatically:
-1. Run policy checks, typecheck, and lint for the changed scope
-2. Run guide/contract validators wired into the gate
-3. Skip targeted local tests by default (CI/merge-gate is the required test gate)
-
-```bash
-# Default local gate (no targeted test execution)
-./scripts/validate-changes.sh
-
-# Optional: include targeted local tests
-VALIDATE_INCLUDE_TESTS=1 ./scripts/validate-changes.sh
-
-# Optional strict mode for local targeted tests (fail on missing test mapping)
-STRICT=1 VALIDATE_INCLUDE_TESTS=1 ./scripts/validate-changes.sh
-```
-
-See the script for full details and options.
+- Coverage tier assignments and per-metric thresholds are defined in `packages/config/coverage-tiers.cjs`.
+- `@acme/types` now uses `SCHEMA_BASELINE` (`lines:70`, `branches:0`, `functions:50`, `statements:70`) instead of `MINIMAL`.
+- `scripts/check-coverage.sh` resolves tier metadata directly from `coverage-tiers.cjs`; do not maintain duplicated threshold tables elsewhere.
 
 ---
 
@@ -517,3 +231,46 @@ it("detects when components diverge", () => {
 - **Error capture:** Hydration errors are captured both via `onRecoverableError` and thrown exceptions (React 19 behavior).
 - **Jest limitations:** In Jest/JSDOM, some `typeof window` checks may not behave exactly like production SSR. The utility does its best to simulate the environment.
 - **Use for regression prevention:** Add hydration tests for components that have had hydration issues in the past.
+
+---
+
+## CI Feedback Loop
+
+After pushing to `dev`, monitor CI with:
+
+```bash
+# Watch the most recent run
+gh run watch $(gh run list --limit 1 --json databaseId -q '.[0].databaseId')
+
+# List recent runs
+gh run list --limit 5
+
+# View a specific run
+gh run view <run-id>
+```
+
+CI pipelines that run on `dev` branch push:
+- **Core Platform CI** (`.github/workflows/ci.yml`): lint, typecheck, test, storybook-visual, build, e2e — triggers on all dev pushes (except `apps/cms/**` and `apps/skylar/**` paths).
+
+App-specific pipelines (`prime.yml`, `brikette.yml`, `caryina.yml`) trigger via `pull_request` events. The `ship-to-staging.sh` script always opens a PR, ensuring these pipelines run before staging merges.
+
+---
+
+## Historical Context: Test Execution Resource Governor
+
+The Test Execution Resource Governor plan (`docs/plans/test-execution-resource-governor-plan.md`) was designed to throttle local Jest execution via scheduling and resource admission. That plan's Phases 2-3 (scheduler, resource admission) are **Superseded** by this CI-only policy — when no tests run locally via agent-mediated paths, there is nothing to schedule or admit.
+
+Phases 0-1 of the governor (command guard wrappers: `agent-bin/npx`, `agent-bin/pnpm`, `guarded-shell-hooks.sh`) remain in place as the enforcement layer for the CI-only block.
+
+---
+
+## Why This Matters
+
+**Reference incident (2026-01-16):**
+- 10+ Jest worker processes were running simultaneously
+- Combined RAM usage: 2.5GB+
+- System had only 93MB free RAM (out of 16GB)
+- Load average: 7.73 (should be <4)
+- Some processes had been running since 9:05AM (2+ hours)
+
+**Lesson:** Tests belong in CI — isolated, parallel, resource-controlled, and with automatic cleanup on timeout. Local testing is a RAM liability under multi-agent workflows.

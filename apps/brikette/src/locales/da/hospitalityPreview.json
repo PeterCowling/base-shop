@@ -1,0 +1,12 @@
+{
+  "title": "Forhåndsvisning af indlæggelse",
+  "guestActivation": {
+    "label": "Gæsteaktivering",
+    "description": "De sidste 7 dage"
+  },
+  "signalBridge": {
+    "title": "Signalbrokontrol",
+    "etaShared": "Delet ETA",
+    "cashPrepared": "Kontanter"
+  }
+}

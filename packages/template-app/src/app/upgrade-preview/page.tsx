@@ -93,7 +93,7 @@ export default function UpgradePreviewPage() {
               <li key={l.id}>
                 <a
                   href={l.url}
-                  className="text-blue-600 underline inline-block min-h-11 min-w-11"
+                  className="text-info-main underline inline-block min-h-11 min-w-11"
                 >
                   {/* i18n-exempt -- ABC-123 [ttl=2025-12-31] path label for preview */}
                   {`/preview/${l.id}`}

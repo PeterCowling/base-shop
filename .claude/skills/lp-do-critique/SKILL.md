@@ -10,28 +10,16 @@ No compliments, no filler, no vibe-based approval.
 
 ## Operating Mode
 
-Default: **CRITIQUE + AUTOFIX**. Use `--no-autofix` to suppress fix application and produce critique output only.
+**CRITIQUE + AUTOFIX** — always. Full critique is produced first (Sections 1–11), then Concrete Fixes are applied to the target document (Autofix Phase), then a post-fix consistency scan runs on every edited section. The issues ledger is read at start and updated at end.
 
-In default (autofix) mode:
-- Full critique is produced first (Sections 1–11 as below)
-- Concrete Fixes are then applied to the target document (Autofix Phase)
-- A post-fix consistency scan is run on every section that received edits
-- The issues ledger is read at start and updated at end
-
-With `--no-autofix`:
-- Critique output produced only (no edits to target document)
-- Issues ledger is still read (if present) and updated at end
-
-Allowed (always):
+Allowed:
 - Read target document and referenced docs/code/tests
 - Search repo for verification
 - Inspect git history for evidence
-
-Allowed (autofix mode only):
 - Edit target document to apply Concrete Fixes
 - Write/update issues ledger (`critique-history.md` adjacent to target doc)
 
-Not allowed (always):
+Not allowed:
 - Code changes to source files
 - Commits
 - Creating new docs other than `critique-history.md`
@@ -51,14 +39,34 @@ Optional:
 - Scope: `full` (default) or `focused`
 - Context: extra constraints to pressure-test
 - Prior critique reference (for delta scoring) — or read automatically from issues ledger if present
-- `--no-autofix`: suppress fix application; produce critique output only
+
+## Preflight Trust Policy
+
+CI-gated linters pre-check some structural fields. Trust linter output rather than re-auditing; re-check only when a specific conflict with a higher-precedence doc is suspected.
+
+**Trust and skip** (hard-fail in `plans-lint.ts` for lp-do-workflow plans at `docs/plans/*/plan.md`):
+- `Domain`, `Last-reviewed`, `## Active tasks` section present
+- `Execution-Track`, `Primary-Execution-Skill`, `Deliverable-Type`, `Feature-Slug`, `Workstream`
+- IMPLEMENT task completeness: Confidence section, Validation contract (TC-/VC- reference), Acceptance criteria
+
+**Still check** (warn-only or scoped — not authoritative gates):
+- `Status` enum — docs-lint warns only, does not hard-fail
+- Relates-to charter target validity — plans-lint warns only
+- `Type` header — docs-lint has explicit exceptions; check if routing looks wrong
+
+**Always check** (not covered by any linter):
+- `Supporting-Skills`, `Overall-confidence`, `Confidence-Method`
+- VC quality (isolated/pre-committed/time-boxed/diagnostic/repeatable/observable) and VC coverage ratio
+- Confidence-gated markers coherence (if Confidence column in Task Summary → `Overall-confidence` must exist)
+
+Note: plans-lint.ts planning-field checks apply only to `docs/plans/*/plan.md` (lp-do-workflow plans). For Fact-Find docs, linter coverage is minimal (Type header, Status warn-only) — all structural checks still apply.
 
 ## Auto-Detection and Schema Mode
 
 Detection order:
 1. If frontmatter `Type` is `Fact-Find` or `Plan` and structure is consistent, use Section A or B.
 2. Else if structure is consistent with planning docs, use Section A or B (filename is supportive, not required).
-3. Else if structure is consistent with offer docs, use Section D (Offer schema mode).
+3. Else if structure is consistent with offer docs, load `modules/offer-lens.md` (Offer schema mode).
 4. Else use Section C (Process schema mode).
 
 If `Type` conflicts with structure:
@@ -126,14 +134,14 @@ Guardrails:
 
 Path: `<plan-dir>/critique-history.md` for plan/fact-find targets (adjacent to the target doc); `<parent-dir>/critique-history.md` for other targets. Create on first critique run.
 
-**At start (always — with or without `--no-autofix`):**
+**At start:**
 - Check if `critique-history.md` exists at the path above.
 - If it does: read it and extract:
   - Confirmed-resolved issues → do not re-score as new findings; if they reappear, label as "regression" not "new".
   - Issues open for >1 round → elevate to priority review and note the round count in Top Issues.
 - If it does not: proceed without prior context.
 
-**At end (always — with or without `--no-autofix`):**
+**At end:**
 - Write or append a new round entry (see format below).
 
 **Ledger format:**
@@ -249,6 +257,16 @@ Check (business-artifact/mixed — additionally):
 - Are approval paths available (reviewer named, process exists)?
 - Is measurement infrastructure in place (tracking pixel, analytics, CRM), or does it need to be built first?
 
+### Step 5a: Forward Simulation Trace
+
+Load and follow: `../_shared/simulation-protocol.md`
+
+After completing the checks above, run a forward simulation trace of the target document. Follow the Forward Simulation Trace Instructions defined in the shared protocol (Step 5a section).
+
+In summary: identify the proposed execution sequence (task order for plans; investigation order for fact-finds; proposed implementation steps for other artifacts), apply the issue taxonomy to each step, classify findings by severity, and record findings inline within Step 5 output using the `[Simulation]` label.
+
+Critical simulation findings must be surfaced in the Top Issues section (Section 2) and in the Fix List (Section 11). They do not trigger a separate hard gate in critique mode — that gate lives in lp-do-plan (Phase 7.5) and lp-do-fact-find (Phase 5.5). Simulation findings here are advisory to the critique score.
+
 ### Step 6 - Contrarian Attacks
 
 Do at least 3:
@@ -266,88 +284,11 @@ Prefer merged, high-leverage fixes over many tiny edits.
 
 ## Section A: Fact-Find Lens
 
-Required checks:
-- Frontmatter fields:
-  - `Type`, `Outcome`, `Status`, `Domain`, `Workstream`, `Created`, `Last-updated`, `Feature-Slug`, `Deliverable-Type`, `Execution-Track`, `Primary-Execution-Skill`, `Supporting-Skills`, `Related-Plan`
-- Sections present and substantive:
-  - Scope (summary/goals/non-goals)
-  - Evidence Audit
-  - Confidence Inputs
-  - Risks (specific to the work, not generic)
-  - Planning Readiness
-  - Test Landscape for code/mixed
-  - Delivery and Channel Landscape for business-artifact/mixed
-  - Hypothesis & Validation Landscape for business-artifact/mixed (key hypotheses, existing signal coverage, falsifiability assessment, recommended validation approach) — this feeds `/lp-do-plan`'s Business VC Quality Checklist. Missing on a business-artifact/mixed brief is Major (downstream VCs will lack grounding).
-
-Fact-Find confidence dimensions:
-- The lp-do-fact-find skill defines **5 dimensions**: Implementation, Approach, Impact, Delivery-Readiness, Testability.
-- Do NOT penalize lp-do-fact-finds for having 5 dimensions instead of 3. The 3-dimension model (Implementation/Approach/Impact) applies to plan tasks, not lp-do-fact-find briefs.
-
-Fact-Find `Related-Plan` field:
-- `Related-Plan` is a **forward pointer** to the plan that will be created by `/lp-do-plan`.
-- It is normal and expected for this file to not exist at lp-do-fact-find time.
-- Do NOT flag a non-existent `Related-Plan` target as an issue.
-
-Open questions checks:
-- Each open question should include `Decision owner` (name or role). Missing decision owner is Moderate, not Critical.
-- **Agent-resolvable deferral** (Major): any question in Open that the agent could have answered by reasoning about available evidence, effectiveness, efficiency, or documented business requirements. The question should appear in Resolved with a reasoned answer — not deferred to the operator. Flag the specific question and state what evidence or reasoning would have resolved it. This is a Major defect because it blocks the pipeline unnecessarily and signals the agent abdicated its core function.
-
-Fact-Find minimum bar:
-- Falsifiable goals
-- Evidence trail for major factual claims
-- Confidence justifications tied to evidence
-- At least one specific risk identified
-- No Ready-for-planning with untested load-bearing assumptions
+For fact-find artifacts, load `modules/fact-find-lens.md`. It contains required frontmatter and section checks, confidence dimension rules, and the fact-find minimum bar.
 
 ## Section B: Plan Lens
 
-Apply checks in order:
-1. Plan-template conformance
-2. Repo metadata policy conformance
-
-Plan frontmatter baseline:
-- `Type`, `Status`, `Domain`, `Workstream`, `Created`, `Last-updated`, `Feature-Slug`, `Deliverable-Type`, `Execution-Track`, `Primary-Execution-Skill`, `Supporting-Skills`
-
-Repo metadata policy check:
-- `Last-reviewed` and `Relates-to charter`
-- Missing repo-required metadata is a decision-quality defect unless explicit higher-precedence exemption applies
-
-Confidence-gated markers:
-- Task Summary includes `Confidence` column
-- One or more tasks include confidence breakdowns (Implementation/Approach/Impact)
-- Frontmatter includes `Overall-confidence` or `Confidence-Method`
-
-Confidence metadata rule:
-- If confidence-gated markers exist, missing `Overall-confidence` and/or `Confidence-Method` is a decision-quality defect.
-- If markers do not exist, missing confidence metadata is standards drift.
-
-Each IMPLEMENT task must include:
-- Type, Deliverable, Execution-Skill, Affects, Depends on, Blocks
-- Confidence (3 dimensions + evidence)
-- Acceptance criteria
-- Validation contract (TC-XX or VC-XX)
-- Execution plan:
-  - Code/mixed: Red -> Green -> Refactor
-  - Business-artifact/mixed: VC-first Red -> Green -> Refactor
-- Rollout/rollback
-- Documentation impact
-
-Business-artifact/mixed VC quality check (apply to each VC-XX):
-- Each VC must be **isolated** (tests one variable), **pre-committed** (pass/fail decision stated before data), **time-boxed** (measurement deadline defined), **minimum viable sample** (smallest signal that constitutes evidence), **diagnostic** (failure indicates *why*), **repeatable** (another operator reaches same conclusion), and **observable** (metric is directly measurable).
-- Anti-patterns to flag: "Validate demand is sufficient" (not isolated, not pre-committed, not observable), "Check market response" (no sample size, no deadline), "Confirm unit economics work" (conflates multiple variables).
-- VCs failing ≥3 quality principles are Major; failing 1-2 is Moderate.
-
-Agent-resolvable deferral checks (apply to every DECISION task and the Proposed Approach section):
-- **Agent-resolvable DECISION task** (Major): a DECISION task whose `**Decision input needed:**` questions the agent could have answered by reasoning about available evidence, effectiveness, efficiency, or documented business requirements. The task should have been folded into an IMPLEMENT task with the chosen approach, or the `**Recommendation:**` should have been decisive and `**Decision input needed:**` left empty. Flag the specific question and what reasoning would have resolved it.
-- **Weak or deferred recommendation** (Major): a DECISION task where `**Recommendation:**` is a hedge ("either A or B would work", "depends on preference", blank, or TBD). If the agent has enough context to list options, it has enough context to recommend. Flag and require a decisive position.
-- **Deferred approach** (Major): `Chosen approach:` in `## Proposed Approach` is blank, TBD, or deferred to a DECISION task that itself fails the self-resolve gate. The agent must choose.
-
-Plan minimum bar:
-- Falsifiable objective
-- Risk-first dependency order
-- Enumerated validation cases
-- Confidence tied to evidence
-- Explicit risks and mitigations
+For plan artifacts, load `modules/plan-lens.md`. It contains plan frontmatter checks, confidence-gated marker rules, IMPLEMENT task structural requirements, VC quality checks, and agent-resolvable deferral checks.
 
 ## Section C: Process/Skill Lens
 
@@ -362,87 +303,7 @@ Required checks:
 
 ## Section D: Offer Lens
 
-Required checks for each of the 6 lp-offer sections:
-
-### 1. ICP Segmentation
-- Demographics are falsifiable and narrow (not "25-45, all income levels")
-- Psychographics tied to observable behaviors (not "likes quality")
-- JTBD is specific and non-generic (not "wants to save time")
-- Buying triggers include external events or internal thresholds
-
-### 2. Pain/Promise Mapping
-- Each pain row includes: pain statement, promise, quantified outcome, evidence source
-- Promise claims are measurable (not "feel better" but "reduce X by Y%")
-- Evidence exists and is cited (customer quotes, usage data, competitive intel)
-- Pain-promise alignment is direct (promise addresses stated pain, not tangential benefit)
-
-### 3. Offer Structure
-- Core offer deliverables are enumerated with format/quantity/timeline
-- Bundles differentiate clearly (not "more of everything" but distinct use cases)
-- Exclusions prevent scope creep (what's explicitly NOT included)
-- Guarantees are specific (refund conditions, performance thresholds, liability caps)
-- Risk reversals shift buyer risk to seller (money-back, trial period, pay-on-results)
-
-### 4. Positioning One-Pager (Geoffrey Moore template)
-- "For [target customer] who [statement of need/opportunity], [product name] is a [product category] that [statement of key benefit]. Unlike [primary competitive alternative], [product name] [statement of primary differentiation]."
-- Each blank filled with concrete, non-hand-wavy text
-- Differentiation is defensible (not "better quality" but specific capability gap)
-
-### 5. Pricing/Packaging Hypothesis
-- Price points anchored to competitor data or willingness-to-pay research
-- Justification includes cost structure, value metric, and margin requirements
-- Confidence assessment includes what's known/unknown and validation plan
-- Competitor comparison table exists with like-for-like feature/price mapping
-
-### 6. Objection Map + Risk Reversal
-- Each objection row includes: objection, response, proof/mechanism
-- Objections cover price, trust, timing, alternatives, and implementation cost
-- Responses are specific (not "we're great" but "here's how we de-risk")
-- Proof is tangible (case study, money-back guarantee, free trial, social proof)
-
-### Offer-Specific Quality Dimensions
-
-For scoring, weight these dimensions for Offer artifacts:
-- **ICP Specificity** (0.20): Demographics/psychographics narrow enough to guide channel and copy decisions
-- **Positioning Distinctiveness** (0.20): Differentiation is defensible and tied to observable capability gaps
-- **Pricing Justification** (0.15): Price anchored to evidence (competitor data, willingness-to-pay, cost structure)
-- **Objection Completeness** (0.15): Covers top 5 objections (price, trust, timing, alternatives, implementation) with specific responses
-- **Risk Reversal Strength** (0.15): Guarantee/trial/reversal mechanisms shift meaningful risk to seller
-- **Evidence Quality** (0.15): Pain, promise, and positioning claims cite sources (not hypothetical)
-
-### Munger Inversion Attacks (Offer-Specific)
-
-Apply "Why would this offer fail?" to each section:
-
-**ICP Inversion:**
-- Is the ICP so broad that channel selection becomes impossible?
-- Are psychographics so generic they could describe any customer?
-- Is JTBD stated at such a high level it offers no differentiation?
-
-**Pain/Promise Inversion:**
-- Are promises unfalsifiable or untestable within a reasonable timeframe?
-- Is the pain stated in the customer's language, or in consultant-speak?
-- Could a competitor make the same promise with equal credibility?
-
-**Offer Structure Inversion:**
-- Are exclusions missing, inviting scope creep and margin erosion?
-- Is the guarantee so weak (or absent) that it signals low confidence?
-- Are risk reversals cosmetic (7-day refund) rather than substantive (pay-on-results)?
-
-**Positioning Inversion:**
-- Is the "primary competitive alternative" a strawman (outdated product, manual process) rather than the real threat?
-- Is differentiation a feature list rather than a single defendable capability?
-- Could this positioning apply to 3+ competitors with minor word swaps?
-
-**Pricing Inversion:**
-- Is price set by gut feel rather than anchored to willingness-to-pay or competitor data?
-- Is the confidence assessment hand-wavy ("we think it's right") rather than evidence-based?
-- Is the validation plan missing or non-falsifiable?
-
-**Objection Inversion:**
-- Are top objections missing (price, trust, timing, alternatives, implementation cost)?
-- Are responses generic reassurances ("we're the best") rather than specific mechanisms?
-- Is proof absent or weak (testimonials without metrics, vague case studies)?
+For offer artifacts (lp-offer output), load `modules/offer-lens.md`. It contains required checks for all 6 lp-offer sections, Offer-Specific Quality Dimensions scoring weights, and Munger Inversion Attacks (Offer-Specific).
 
 ## Cross-Document Consistency (Plan + Fact-Find)
 
@@ -539,30 +400,36 @@ Recommended action: **proceed** / **revise and re-critique** / **return to /lp-d
 - Applied precedence/tie-breaker
 - Residual ambiguity
 
-### 5) Hidden Assumptions
+### 5) Feasibility, Execution Reality, and Simulation Trace
+
+Prose output from Step 5 checks (code/mixed paths, dependency chain realism, failure points, effort honesty) and business-artifact checks (VC executability, falsification cost, approval paths, measurement infrastructure).
+
+Forward simulation trace findings (from Step 5a) are written inline here with the `[Simulation]` label. Critical simulation findings are also surfaced in Section 2 (Top Issues) and Section 11 (Concrete Fixes).
+
+### 6) Hidden Assumptions
 
 | # | Assumption | Type | Fragility | Cheap Test |
 |---|---|---|---|---|
 
-### 6) Logic / Reasoning Faults
+### 7) Logic / Reasoning Faults
 
-### 7) Contrarian Section
+### 8) Contrarian Section
 
 Include at least 3 distinct attacks.
 
-### 8) Risks and Second-Order Effects
+### 9) Risks and Second-Order Effects
 
 | Risk | Likelihood | Impact | Mitigation in Doc | Adequate? |
 |---|---|---|---|---|
 
-### 9) What Is Missing to Make This Decisionable
+### 10) What Is Missing to Make This Decisionable
 
-### 10) Concrete Fixes
+### 11) Concrete Fixes
 
 Format:
 - Fix -> Section -> Action
 
-### 11) Scorecard (skip for `focused`)
+### 12) Scorecard (skip for `focused`)
 
 | Dimension | Score | Justification |
 |---|---|---|
@@ -575,7 +442,7 @@ Include:
 
 ## Autofix Phase
 
-Runs after the critique output (Sections 1–11) is fully produced. Skip entirely when `--no-autofix` is specified; proceed directly to the Issues Ledger update.
+Runs after the critique output (Sections 1–12) is fully produced.
 
 ### Step AF-1: Section Rewrite Gate
 
@@ -656,7 +523,7 @@ Recommended next actions:
 - If score moved >0.5 from prior critique, delta justification is included.
 - No praise, no filler, no motivational language.
 
-**Autofix (when not `--no-autofix`):**
+**Autofix:**
 - Section rewrite gate evaluated for every affected named section — rewrite triggered where threshold is met.
 - Step AF-3 consistency scan run on every section that received edits (rewrite or point fix).
 - Duplicate definitions and orphaned terminology removed, not just new content added.

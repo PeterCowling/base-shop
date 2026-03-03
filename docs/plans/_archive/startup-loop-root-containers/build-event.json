@@ -1,0 +1,5 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-03T09:16:33.845Z",
+  "why": "startup-loop/ root has 36 files mixing schemas, contracts, guides, and registries. No structure makes navigation grep-dependent."
+}

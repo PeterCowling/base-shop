@@ -37,12 +37,12 @@ const PreviewPaneMock = jest.fn(({ onConfirm }: any) => (
 ));
 
 jest.mock("next/navigation", () => ({
-  useParams: mockUseParams,
+  useParams: (...args: any[]) => mockUseParams(...args),
 }));
 
 jest.mock("../actions", () => ({
-  createDraft: mockCreateDraft,
-  finalize: mockFinalize,
+  createDraft: (...args: any[]) => mockCreateDraft(...args),
+  finalize: (...args: any[]) => mockFinalize(...args),
 }));
 
 jest.mock("@acme/i18n", () => ({

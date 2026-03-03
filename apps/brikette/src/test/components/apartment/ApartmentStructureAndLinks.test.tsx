@@ -10,7 +10,7 @@ import path from "path";
 const WHATSAPP_NUMBER = "393287073695";
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
 
-const APP_DIR = path.resolve(__dirname, "../../../app/[lang]/apartment");
+const APP_DIR = path.resolve(__dirname, "../../../app/[lang]/private-rooms");
 
 describe("WhatsApp link validity across apartment pages", () => {
   // TC-02: Hub page has WhatsApp CTA
@@ -85,11 +85,11 @@ describe("TASK-07: apartment-context CTA, legal label, and perks-route behavior"
     expect(footerJson.terms.toLowerCase()).not.toContain("room bookings");
   });
 
-  // TC-04: NotificationBanner is suppressed on apartment routes
-  it("NotificationBanner source contains usePathname guard returning null on apartment routes", () => {
+  // TC-04: NotificationBanner is suppressed on private-rooms routes
+  it("NotificationBanner source contains usePathname guard returning null on private-rooms routes", () => {
     const content = fs.readFileSync(BANNER_FILE, "utf-8");
     expect(content).toContain("usePathname");
-    expect(content).toMatch(/apartment/);
+    expect(content).toMatch(/private-rooms/);
   });
 });
 

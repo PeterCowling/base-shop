@@ -10,7 +10,7 @@
   },
   "callouts": {
     "cta": "Cần mọi lựa chọn di chuyển? Mở %HOWTO:how-to-get-here|tổng quan Cách đến đây% cho phà, taxi và lộ trình kết hợp.",
-    "tip": "Đi du lịch vào mùa đông hoặc mùa vai? Kiểm tra %GUIDES:travelHelp|cảnh báo gián đoạn giao thông% trước khi khởi hành—đình công và thay đổi lịch trình phổ biến hơn từ tháng 11 đến tháng 3."
+    "tip": "Đi du lịch vào mùa đông hoặc mùa vai? Kiểm tra %LINK:travelHelp|cảnh báo gián đoạn giao thông% trước khi khởi hành—đình công và thay đổi lịch trình phổ biến hơn từ tháng 11 đến tháng 3."
   },
   "sections": [
     {
@@ -130,7 +130,7 @@
     {
       "id": "seasonal",
       "title": "Cân nhắc theo mùa và thời gian",
-      "body": "**Mùa hè (tháng 6–9):**\n- Xe buýt SITA chạy thường xuyên hơn nhưng lấp đầy nhanh. Đến sớm 10–15 phút.\n- Tàu Circumvesuviana đông, đặc biệt giữa ngày và cuối tuần.\n- Nóng có thể khó chịu—cả xe buýt và tàu đều có điều hòa hạn chế.\n\n**Mùa vai (tháng 4–5, tháng 10):**\n- Đám đông vừa phải; đến sớm 5–10 phút cho xe buýt.\n- Nhiệt độ dễ chịu làm cho chuyến đi thoải mái hơn.\n\n**Mùa đông (tháng 11–3):**\n- SITA giảm tần suất; kiểm tra lịch trình trước.\n- Lịch Circumvesuviana có thể thay đổi do bảo trì hoặc đình công—xác minh giờ khởi hành ngày trước khi đi.\n- Ít khách du lịch hơn có nghĩa là lên xe dễ hơn và nhiều không gian hơn, nhưng dịch vụ có thể ít đáng tin cậy hơn.\n\n**Đình công và gián đoạn:**\n- Đình công phương tiện công cộng (sciopero) được thông báo ít nhất 48 giờ trước. Kiểm tra %GUIDES:travelHelp|trang cảnh báo giao thông của chúng tôi% hoặc hỏi lễ tân hostel để biết cập nhật mới nhất.\n- Trong đình công, SITA và Circumvesuviana có thể chạy dịch vụ giảm hoặc hủy hoàn toàn. Lên kế hoạch phương tiện thay thế (taxi, đưa đón riêng hoặc phà nếu có) nếu đình công được lên lịch vào ngày đi của bạn."
+      "body": "**Mùa hè (tháng 6–9):**\n- Xe buýt SITA chạy thường xuyên hơn nhưng lấp đầy nhanh. Đến sớm 10–15 phút.\n- Tàu Circumvesuviana đông, đặc biệt giữa ngày và cuối tuần.\n- Nóng có thể khó chịu—cả xe buýt và tàu đều có điều hòa hạn chế.\n\n**Mùa vai (tháng 4–5, tháng 10):**\n- Đám đông vừa phải; đến sớm 5–10 phút cho xe buýt.\n- Nhiệt độ dễ chịu làm cho chuyến đi thoải mái hơn.\n\n**Mùa đông (tháng 11–3):**\n- SITA giảm tần suất; kiểm tra lịch trình trước.\n- Lịch Circumvesuviana có thể thay đổi do bảo trì hoặc đình công—xác minh giờ khởi hành ngày trước khi đi.\n- Ít khách du lịch hơn có nghĩa là lên xe dễ hơn và nhiều không gian hơn, nhưng dịch vụ có thể ít đáng tin cậy hơn.\n\n**Đình công và gián đoạn:**\n- Đình công phương tiện công cộng (sciopero) được thông báo ít nhất 48 giờ trước. Kiểm tra %LINK:travelHelp|trang cảnh báo giao thông của chúng tôi% hoặc hỏi lễ tân hostel để biết cập nhật mới nhất.\n- Trong đình công, SITA và Circumvesuviana có thể chạy dịch vụ giảm hoặc hủy hoàn toàn. Lên kế hoạch phương tiện thay thế (taxi, đưa đón riêng hoặc phà nếu có) nếu đình công được lên lịch vào ngày đi của bạn."
     },
     {
       "id": "alternatives",
@@ -168,7 +168,7 @@
     {
       "q": "Tôi nên làm gì nếu có đình công phương tiện công cộng vào ngày đi của tôi?",
       "a": [
-        "Đình công (sciopero) được thông báo ít nhất 48 giờ trước. Kiểm tra %GUIDES:travelHelp|trang cảnh báo giao thông% hoặc hỏi lễ tân hostel để biết cập nhật. Trong đình công, SITA và Circumvesuviana có thể chạy dịch vụ giảm hoặc hủy hoàn toàn. Đặt dịch vụ đưa đón riêng hoặc taxi làm phương án dự phòng—nếu phà đang chạy (tháng 4–10), %HOWTO:positanoNaplesCenterFerry|phà Positano-Naples% là lựa chọn đáng tin cậy."
+        "Đình công (sciopero) được thông báo ít nhất 48 giờ trước. Kiểm tra %LINK:travelHelp|trang cảnh báo giao thông% hoặc hỏi lễ tân hostel để biết cập nhật. Trong đình công, SITA và Circumvesuviana có thể chạy dịch vụ giảm hoặc hủy hoàn toàn. Đặt dịch vụ đưa đón riêng hoặc taxi làm phương án dự phòng—nếu phà đang chạy (tháng 4–10), %HOWTO:positanoNaplesCenterFerry|phà Positano-Naples% là lựa chọn đáng tin cậy."
       ]
     }
   ]

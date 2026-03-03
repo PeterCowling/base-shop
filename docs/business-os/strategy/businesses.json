@@ -99,11 +99,22 @@
       "created": "2026-02-11",
       "tags": ["fashion", "accessories", "consumer"],
       "apps": ["cover-me-pretty", "handbag-configurator", "handbag-configurator-api", "caryina"]
+    },
+    {
+      "id": "PWRB",
+      "name": "Powerbank Rental",
+      "description": "Tourist powerbank rental station network across the Amalfi Coast — 10-venue dense core pilot (Sorrento/Piano/Sant'Agnello/Meta) with seasonal ring expansion",
+      "owner": "Pete",
+      "category": "operating-business",
+      "status": "active",
+      "created": "2026-01-29",
+      "tags": ["rental", "hardware", "travel", "tourism"],
+      "apps": []
     }
   ],
   "metadata": {
-    "version": "1.4.0",
-    "lastUpdated": "2026-02-23",
+    "version": "1.5.0",
+    "lastUpdated": "2026-02-26",
     "format": "business-catalog-v1"
   }
 }

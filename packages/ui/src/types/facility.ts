@@ -10,6 +10,7 @@ export const FACILITIES = [
   "gardenView",
   "airCon",
   "keycard",
+  "locker",
   "linen",
 ] as const;
 

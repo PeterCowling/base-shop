@@ -3,6 +3,6 @@
   "articleCount_other": "{{count}} 篇文章",
   "topTagsHeading": "热门标签",
   "robots": {
-    "noindexFollow": "noindex,follow"
+    "noindexFollow": "无索引,跟着"
   }
 }

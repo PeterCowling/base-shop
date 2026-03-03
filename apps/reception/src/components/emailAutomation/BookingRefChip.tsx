@@ -1,5 +1,6 @@
 // src/components/emailAutomation/BookingRefChip.tsx
 import { type FC, memo, useCallback } from "react";
+import { Copy } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
 
@@ -55,13 +56,13 @@ const BookingRefChipComponent: FC<BookingRefChipProps> = ({ bookingRef }) => {
     <Button
       type="button"
       onClick={handleCopyBookingRef}
-      color="info"
+      color="primary"
       tone="solid"
       size="sm"
-      className="cursor-pointer min-w-225px"
+      className="cursor-pointer min-w-48"
       aria-label={`Copy booking reference ${bookingRef}`}
     >
-      <i className="fas fa-copy me-2"></i>
+      <Copy size={14} className="shrink-0" />
       <span>{bookingRef}</span>
     </Button>
   );

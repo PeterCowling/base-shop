@@ -1,0 +1,35 @@
+[
+  {
+    "id": "C-001",
+    "severity": "S1",
+    "breakpoint": "token-analysis",
+    "mode": "dark",
+    "route": "/",
+    "state": "error",
+    "element": "error message text (.text-error-main below inputs)",
+    "fgToken": "--color-error-main → hsl(0 63% 31%)",
+    "bgToken": "--surface-2 → hsl(160 8% 8%)",
+    "contrastRatioWorst": 2.0,
+    "threshold": 4.5,
+    "wcagType": "normal-text",
+    "screenshot": null,
+    "fixHypothesis": "Replace text-error-main with dark-mode-safe error text token (e.g. hsl(0 80% 72%) on dark surface = ~4.8:1). Add --color-error-fg dark token to reception theme or use text-error-light if available."
+  },
+  {
+    "id": "C-002",
+    "severity": "S2",
+    "breakpoint": "token-analysis",
+    "mode": "dark",
+    "route": "/",
+    "state": "default",
+    "element": "email and password input borders (.border-border-2)",
+    "fgToken": "--border-2 → var(--color-fg) / 0.22 = hsl(150 10% 92%) at 22% opacity",
+    "bgToken": "--surface-2 → hsl(160 8% 8%)",
+    "blendedColor": "hsl(153 7% 24%) approx",
+    "contrastRatioWorst": 1.8,
+    "threshold": 3.0,
+    "wcagType": "non-text-ui-component",
+    "screenshot": null,
+    "fixHypothesis": "Replace border-border-2 on input fields with border-foreground/40 (~3.4:1) or introduce --color-input-border token at hsl(150 10% 40%) or higher for dark mode."
+  }
+]

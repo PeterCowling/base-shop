@@ -32,7 +32,7 @@
     },
     "timetable": {
       "title": "Lịch chạy và kế hoạch",
-      "linkLabel": "Positano.com",
+      "linkLabel": "Xem thời gian biểu",
       "intro": "Xem giờ chạy mới nhất trên <link>Positano.com</link>. Tra cứu cả hai chặng và chừa thời gian đổi tuyến tại Amalfi.",
       "items": [
         "Các điểm dừng xuất hiện theo hàng; mỗi cột chữ cái là một chuyến đã lên lịch.",

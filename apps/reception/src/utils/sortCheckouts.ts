@@ -79,8 +79,5 @@ export function sortCheckoutsData(guests: Guest[]): Guest[] {
   // Flatten each booking’s occupantRows back into a single array
   const sorted = bookingArray.flatMap((book) => book.occupantRows);
 
-  // Debug log the final result (optional)
-  console.log("Sorted checkouts data (grouped + numeric):", sorted);
-
   return sorted;
 }

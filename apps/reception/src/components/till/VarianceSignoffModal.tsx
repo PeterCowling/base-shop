@@ -137,14 +137,14 @@ function VarianceSignoffModalBase({
           <Button
             type="button"
             onClick={onCancel}
-            className="min-h-11 min-w-11 rounded bg-surface-3 px-4 py-2 text-foreground"
+            className="min-h-11 min-w-11 rounded-lg bg-surface-3 px-4 py-2 text-foreground"
           >
             Cancel
           </Button>
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="min-h-11 min-w-11 rounded bg-primary-main px-4 py-2 text-primary-fg disabled:opacity-50"
+            className="min-h-11 min-w-11 rounded-lg bg-primary-main px-4 py-2 text-primary-fg disabled:opacity-50"
           >
             {isSubmitting ? "Verifying..." : "Sign off"}
           </Button>

@@ -4,7 +4,7 @@
  * Validates events.jsonl entries for schema compliance, required fields,
  * and structural integrity. Detects common corruption patterns.
  *
- * @see docs/business-os/startup-loop/event-state-schema.md
+ * @see docs/business-os/startup-loop/schemas/event-state-schema.md
  */
 
 import type { RunEvent } from "./derive-state";

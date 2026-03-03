@@ -48,6 +48,12 @@ export default async function PeoplePage(props: { params?: Promise<LangRoutePara
           <p className="people-en-hero__eyebrow">{hero.eyebrow}</p>
           <h1 className="people-en-hero__title">{hero.title}</h1>
           <p className="people-en-hero__body">{hero.body}</p>
+          <div className="people-en-hero__tags" aria-label="Areas of focus">
+            <span className="people-en-hero__tag">Products</span>
+            <span className="people-en-hero__tag">Real Estate</span>
+            <span className="people-en-hero__tag">Amalfi Coast</span>
+            <span className="people-en-hero__tag">Milan</span>
+          </div>
         </section>
         <section className="people-en-grid">
           {PEOPLE.map((person) => (

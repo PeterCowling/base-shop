@@ -347,5 +347,10 @@
         "experience": "अनुभव"
       }
     }
+  },
+  "search": {
+    "noResults": "कोई गाइड नहीं मिला",
+    "resultsCount_one": "संस्थापक {{count}}_ गाइड",
+    "resultsCount_other": "संस्थापक"
   }
 }

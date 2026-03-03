@@ -1,12 +1,13 @@
 ---
 Type: Schema
 Schema: lp-do-ideas-telemetry
-Version: 1.0.0
+Version: 1.1.0
 Status: Active
 Created: 2026-02-24
 Owner: startup-loop maintainers
 Related-contract: lp-do-ideas-trial-contract.md
 Related-module: scripts/src/startup-loop/lp-do-ideas-trial-queue.ts
+Related-module-2: scripts/src/startup-loop/lp-do-ideas-metrics-rollup.ts
 Related-artifacts:
   - docs/business-os/startup-loop/ideas/trial/telemetry.jsonl
   - docs/business-os/startup-loop/ideas/trial/queue-state.json
@@ -135,6 +136,79 @@ The `TrialQueue` class itself performs no file I/O. The CLI layer is responsible
 
 The telemetry JSONL file is append-only. The queue state JSON file is overwritten on each update and represents the current snapshot.
 
-## 8. Schema Versioning
+## 8. Metrics Rollup Contract
 
-This schema is at version `1.0.0`. Breaking changes require a version bump and a migration note in this document. Non-breaking additions (new optional fields) require a minor version bump only.
+`lp-do-ideas-metrics-rollup.ts` computes deterministic weekly/cycle metrics from reconciled cutover snapshots and queue state:
+
+### Inputs
+
+1. `cycle_snapshots` (per cycle+phase, source mode = `shadow` or `enforced`)
+   - `cycle_id`
+   - `phase`
+   - `mode`
+   - `root_event_ids[]` (preferred) or `root_event_count`
+   - `candidate_count`
+   - `admitted_cluster_count`
+   - `suppression_reason_counts`
+2. `queue_entries`
+   - `dispatch_id`, `lane`, `queue_state`, `event_timestamp`, `processing_timestamp`
+
+### Reconciliation rule (shadow vs enforced)
+
+For each `(cycle_id, phase)` pair:
+- If both `shadow` and `enforced` exist, `enforced` is selected as canonical.
+- If only one exists, that snapshot is selected.
+- Selected source is recorded in rollup provenance (`selected_mode`, `shadow_present`, `enforced_present`).
+
+This prevents shadow + enforced double counting during cutover.
+
+### Formula definitions
+
+- `root_event_count`: sum of per-cycle root counts where each cycle count is:
+  - unique size of `root_event_ids` when provided, else `root_event_count`.
+- `fan_out_raw = candidate_count / root_event_count`
+- `fan_out_admitted = admitted_cluster_count / root_event_count`
+- `suppressed_by_loop_guards = Σ(same_origin_attach + anti_self_trigger + lineage_cap + cooldown + materiality)`
+- `loop_incidence = suppressed_by_loop_guards / candidate_count`
+- `queue_age_p95_days` (per lane): p95 age of `enqueued` items using `now - event_timestamp`
+- `throughput = processed_dispatch_count / cycle_count`
+- `lane_mix = DO_completed : IMPROVE_completed`
+
+### Suppression grouping by invariant
+
+Reason codes are grouped into invariant buckets:
+- `same_origin_attach`: `duplicate_event`
+- `anti_self_trigger`: `anti_self_trigger_non_material`
+- `lineage_cap`: `lineage_depth_cap_exceeded`
+- `cooldown`: `cooldown_non_material`
+- `materiality`: `non_material_delta`
+- `projection_immunity`: `projection_immunity`
+- `policy_gate`: `unknown_artifact`, `inactive_artifact`, `trigger_policy_blocked`, `missing_registry_for_source_primary`, `pack_without_source_delta`
+
+## 9. Threshold Alert Contract
+
+Action records are emitted when threshold contracts are breached:
+
+- `fan_out_admitted > 1.5` for 2 consecutive cycles
+  - action: investigate clustering quality/boundaries
+- `loop_incidence > 0.25` for 2 consecutive cycles
+  - action: review invariants/materiality tuning
+- `queue_age_p95_days > 21` in lane `DO` or `IMPROVE`
+  - action: rebalance WIP caps or reduce admissions
+
+Action records are deterministic and include:
+- `action_id`
+- `metric`
+- `cycle_ids` (where applicable)
+- `lane` (for queue age alerts)
+- `observed_value`
+- `threshold`
+- `recommended_action`
+
+## 10. Schema Versioning
+
+This schema is at version `1.1.0`.
+
+- `1.1.0` adds rollup/reconciliation formulas, invariant suppression grouping, and threshold action contract.
+- Breaking changes require a major version bump and migration note.
+- Non-breaking additions (new optional fields) require a minor version bump.

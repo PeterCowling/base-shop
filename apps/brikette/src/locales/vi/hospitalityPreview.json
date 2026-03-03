@@ -1,0 +1,12 @@
+{
+  "title": "Xem thử sắc thái khách",
+  "guestActivation": {
+    "label": "Kích hoạt khách",
+    "description": "7 ngày qua"
+  },
+  "signalBridge": {
+    "title": "Kiểm tra cầu tín hiệu",
+    "etaShared": "Được chia sẻ từ xa",
+    "cashPrepared": "Chuẩn bị tiền mặt"
+  }
+}

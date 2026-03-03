@@ -13,10 +13,21 @@ import {
   type Unsubscribe,
 } from "firebase/database";
 
+import {
+  getCachedData,
+  setCachedData,
+} from "../../lib/offline/receptionDb";
 import { roomsByDateSchema } from "../../schemas/roomsByDateSchema";
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import type { RoomsByDate } from "../../types/hooks/data/roomsByDateData";
 import type { MergedOccupancyData, MergedOccupant } from "../../types/roomview";
+
+const ROOMS_CACHE_KEY = "roomsByDate";
+
+interface RoomsByDateCacheEntry {
+  roomsByDate: RoomsByDate;
+  mergedOccupancyData: MergedOccupancyData;
+}
 
 // --- RoomByDateBooking interface remains the same ---
 interface RoomByDateBooking {
@@ -137,6 +148,17 @@ export default function useRoomsByDate(dates?: string[]): UseRoomsByDateResult {
   const activeRangeKeyRef = useRef<string | null>(null);
 
   useEffect(() => {
+    // Pre-populate from cache unconditionally; Firebase will overwrite with fresh data when online
+    let cancelled = false;
+    void (async () => {
+      const cached = await getCachedData<RoomsByDateCacheEntry>(ROOMS_CACHE_KEY);
+      if (!cancelled && cached) {
+        setRoomsByDate(cached.roomsByDate);
+        setMergedOccupancyData(cached.mergedOccupancyData);
+        setLoading(false);
+      }
+    })();
+
     // 1. Determine the desired range key based on current sortedDates
     let desiredRangeKey: string | null = null;
     if (sortedDates.length > 0) {
@@ -155,6 +177,7 @@ export default function useRoomsByDate(dates?: string[]): UseRoomsByDateResult {
         // If dates are present and match, and we weren't loading, stay not loading.
       }
       // If we *were* loading for this range, let the listener set it to false.
+      cancelled = true;
       return;
     }
 
@@ -173,6 +196,7 @@ export default function useRoomsByDate(dates?: string[]): UseRoomsByDateResult {
       setMergedOccupancyData({});
       setLoading(false); // No data to load
       setError(null);
+      cancelled = true;
       return; // Exit effect
     }
 
@@ -214,10 +238,14 @@ export default function useRoomsByDate(dates?: string[]): UseRoomsByDateResult {
         const parseResult = roomsByDateSchema.safeParse(filtered);
         if (parseResult.success) {
           const finalData = parseResult.data;
+          const mergedData = convertRoomsByDateToMergedOccupancyData(finalData);
           setRoomsByDate(finalData);
-          setMergedOccupancyData(
-            convertRoomsByDateToMergedOccupancyData(finalData)
-          );
+          setMergedOccupancyData(mergedData);
+          // Fire-and-forget cache update
+          void setCachedData<RoomsByDateCacheEntry>(ROOMS_CACHE_KEY, {
+            roomsByDate: finalData,
+            mergedOccupancyData: mergedData,
+          });
         } else {
           console.error(
             "[useRoomsByDate] Schema parse error",
@@ -248,10 +276,7 @@ export default function useRoomsByDate(dates?: string[]): UseRoomsByDateResult {
     // Effect cleanup function: Only unsubscribes if the effect re-runs due to dependency changes.
     // The main logic above handles unsubscription when the range *needs* to change.
     return () => {
-      console.log(
-        "[useRoomsByDate] Effect cleanup running for range:",
-        desiredRangeKey
-      );
+      cancelled = true;
       // Unsubscribe logic is handled at the start of the effect if range changes.
     };
     // Added 'loading' to dependency array to satisfy lint and account for its use in the effect.

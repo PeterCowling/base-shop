@@ -38,6 +38,7 @@ const DEFAULT_MAX_FILES_SCANNED = 10_000;
 const DEFAULT_MAX_FILES_PER_SPEC = 500;
 const DEFAULT_MAX_IMAGES_PER_PRODUCT = 100;
 const DEFAULT_MAX_IMAGES_PER_SUBMISSION = 400;
+const DEFAULT_MAX_IMAGE_BYTES = 8 * 1024 * 1024;
 
 function getMaxFilesScanned(): number {
   return toPositiveInt(process.env.XA_UPLOADER_MAX_FILES_SCANNED, DEFAULT_MAX_FILES_SCANNED, 1);
@@ -61,6 +62,10 @@ function getMaxImagesPerSubmission(): number {
     DEFAULT_MAX_IMAGES_PER_SUBMISSION,
     1,
   );
+}
+
+function getMaxImageBytes(): number {
+  return toPositiveInt(process.env.XA_UPLOADER_MAX_IMAGE_BYTES, DEFAULT_MAX_IMAGE_BYTES, 1);
 }
 
 function resolveAllowedImageRoots(baseDir: string): string[] {
@@ -98,6 +103,75 @@ function getMinImageEdgePx(): number {
   return toPositiveInt(raw, fallback, 1);
 }
 
+export async function buildSubmissionZipFromCloudDrafts({
+  products,
+  options,
+}: {
+  products: CatalogProductDraftInput[];
+  options: Pick<BuildSubmissionZipOptions, "maxProducts" | "maxBytes">;
+}): Promise<{
+  filename: string;
+  manifest: SubmissionZipManifest;
+  stream: NodeJS.ReadableStream;
+}> {
+  if (products.length < 1 || products.length > options.maxProducts) {
+    throw new Error(`Select 1–${options.maxProducts} products per submission.`);
+  }
+
+  const zip = new yazl.ZipFile();
+  const submissionId = crypto.randomUUID().replace(/-/g, "");
+  const createdAt = new Date().toISOString();
+  const filename = `submission.${createdAt.slice(0, 10)}.${submissionId}.zip`;
+  const suggestedR2Key = `submissions/${createdAt.slice(0, 10)}/${filename}`;
+
+  const csvRows: XaProductsCsvRow[] = [];
+  const manifestProducts: SubmissionZipManifest["products"] = [];
+
+  for (const draftInput of products) {
+    const draft = catalogProductDraftSchema.parse(draftInput);
+    const productSlug = slugify(draft.slug?.trim() || draft.title);
+    if (!productSlug) throw new Error("Missing product slug/title.");
+    const row = buildCsvRowUpdateFromDraft(draftInput);
+    if (!row.id) row.id = crypto.randomUUID();
+    csvRows.push(row);
+    manifestProducts.push({
+      slug: productSlug,
+      title: draft.title,
+      imageCount: splitList(draft.imageFiles ?? "").length,
+    });
+  }
+
+  const header = buildCsvHeader([]);
+  const productsCsv = buildCsvString(header, csvRows);
+  const manifest: SubmissionZipManifest = {
+    submissionId,
+    createdAt,
+    suggestedR2Key,
+    products: manifestProducts,
+    totals: {
+      products: products.length,
+      images: manifestProducts.reduce((sum, entry) => sum + entry.imageCount, 0),
+      bytes: Buffer.byteLength(productsCsv, "utf8"),
+    },
+    tool: {
+      name: "catalog-packager-cloud",
+      version: process.env.npm_package_version || "unknown",
+    },
+  };
+
+  const manifestJson = `${JSON.stringify(manifest, null, 2)}\n`;
+  const totalBytes = Buffer.byteLength(productsCsv, "utf8") + Buffer.byteLength(manifestJson, "utf8");
+  if (totalBytes > options.maxBytes) {
+    throw new Error("Submission is too large. Reduce products.");
+  }
+
+  zip.addBuffer(Buffer.from(productsCsv, "utf8"), "products.csv");
+  zip.addBuffer(Buffer.from(manifestJson, "utf8"), "manifest.json");
+  zip.end();
+
+  return { filename, manifest, stream: zip.outputStream };
+}
+
 export async function buildSubmissionZipStream({
   products,
   productsCsvPath,
@@ -121,6 +195,7 @@ export async function buildSubmissionZipStream({
   const maxFilesPerSpec = getMaxFilesPerSpec();
   const maxImagesPerProduct = getMaxImagesPerProduct();
   const maxImagesPerSubmission = getMaxImagesPerSubmission();
+  const maxImageBytes = getMaxImageBytes();
 
   const zip = new yazl.ZipFile();
 
@@ -146,11 +221,14 @@ export async function buildSubmissionZipStream({
     }
 
     const altSpecs = splitList(draft.imageAltTexts ?? "");
+    const roleSpecs = splitList(draft.imageRoles ?? "");
     const packagedFiles: string[] = [];
     const packagedAltTexts: string[] = [];
+    const packagedMediaPaths: string[] = [];
 
     for (const [specIndex, fileSpec] of fileSpecs.entries()) {
       const altText = altSpecs[specIndex] || draft.title || productSlug;
+      const role = roleSpecs[specIndex] || "front";
       const resolved = await expandFileSpec(fileSpec, baseDir, {
         recursiveDirs: options.recursiveDirs,
         allowedRoots: allowedImageRoots,
@@ -178,6 +256,10 @@ export async function buildSubmissionZipStream({
         if (info.size <= 0) {
           throw new Error(`"${productSlug}": empty file: ${fileSpec}`);
         }
+        if (info.size > maxImageBytes) {
+          const maxMb = Math.max(1, Math.floor(maxImageBytes / (1024 * 1024)));
+          throw new Error(`"${productSlug}": image exceeds max size of ${maxMb}MB.`);
+        }
 
         const minEdge = getMinImageEdgePx();
         const dims = await readImageDimensions(resolvedPath).catch((err) => {
@@ -203,6 +285,7 @@ export async function buildSubmissionZipStream({
         zip.addFile(resolvedPath, zipPath);
         packagedFiles.push(zipPath);
         packagedAltTexts.push(altText);
+        packagedMediaPaths.push(`${role}:${zipPath}`);
         totalImages += 1;
       }
     }
@@ -211,6 +294,8 @@ export async function buildSubmissionZipStream({
     if (!row.id) row.id = crypto.randomUUID();
     row.image_files = joinList(packagedFiles);
     row.image_alt_texts = joinList(packagedAltTexts);
+    row.media_paths = joinList(packagedMediaPaths);
+    row.media_alt_texts = row.image_alt_texts;
     csvRows.push(row);
 
     manifestProducts.push({ slug: productSlug, title: draft.title, imageCount: packagedFiles.length });

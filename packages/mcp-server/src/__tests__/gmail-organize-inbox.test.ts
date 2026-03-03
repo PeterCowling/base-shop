@@ -6,6 +6,7 @@ import * as path from "node:path";
 
 import { getGmailClient } from "../clients/gmail";
 import { handleGmailTool, setLockStore } from "../tools/gmail";
+import { sendGuestEmailActivity } from "../tools/guest-email-activity";
 import { processCancellationEmail } from "../tools/process-cancellation-email";
 import { createLockStore, type LockStore } from "../utils/lock-store";
 
@@ -58,8 +59,13 @@ jest.mock("../tools/process-cancellation-email", () => ({
   processCancellationEmail: jest.fn(),
 }));
 
+jest.mock("../tools/guest-email-activity", () => ({
+  sendGuestEmailActivity: jest.fn(),
+}));
+
 const getGmailClientMock = getGmailClient as jest.Mock;
 const processCancellationEmailMock = processCancellationEmail as jest.Mock;
+const sendGuestEmailActivityMock = sendGuestEmailActivity as jest.Mock;
 
 // Redirect audit log and lock store writes to a temp directory for isolation.
 let _globalTmpDir: string;
@@ -73,6 +79,9 @@ afterAll(() => {
   setLockStore(createLockStore(fs.mkdtempSync(path.join(os.tmpdir(), "lock-store-restore-"))));
   delete process.env.AUDIT_LOG_PATH;
   fs.rmSync(_globalTmpDir, { recursive: true, force: true });
+});
+beforeEach(() => {
+  sendGuestEmailActivityMock.mockReset();
 });
 
 function createHeader(name: string, value: string): GmailHeader {
@@ -1367,5 +1376,104 @@ describe("gmail_reconcile_in_progress staleHours default (TC-03-06)", () => {
 
     // 3h old message should be routed (not kept fresh), since 3h > 2h default
     expect(payload.counts.keptFresh).toBe(0);
+  });
+});
+
+describe("TC-03: cancellation confirmation email drafting (WEAK-A2)", () => {
+  const cancellationLabels = [
+    { id: "label-cancel-received", name: "Brikette/Workflow/Cancellation-Received" },
+    { id: "label-cancel-processed", name: "Brikette/Workflow/Cancellation-Processed" },
+    { id: "label-cancel-parse-failed", name: "Brikette/Workflow/Cancellation-Parse-Failed" },
+    { id: "label-cancel-not-found", name: "Brikette/Workflow/Cancellation-Booking-Not-Found" },
+    { id: "label-needs", name: "Brikette/Queue/Needs-Processing" },
+  ];
+
+  function makeCancellationThread(id: string): Record<string, GmailThread> {
+    return {
+      [id]: {
+        id,
+        messages: [
+          {
+            id: `msg-${id}`,
+            threadId: id,
+            labelIds: ["INBOX", "UNREAD"],
+            payload: {
+              mimeType: "text/html",
+              headers: [
+                createHeader("From", "Octorate <noreply@smtp.octorate.com>"),
+                createHeader("Subject", "NEW CANCELLATION RES-42_999 Booking 2026-09-01"),
+                createHeader("Date", "Mon, 01 Sep 2026 09:00:00 +0000"),
+              ],
+              body: { data: encodeBase64Url("<html>NEW CANCELLATION RES-42 Booking 2026-09-01</html>") },
+            },
+          },
+        ],
+      },
+    };
+  }
+
+  beforeEach(() => {
+    sendGuestEmailActivityMock.mockReset();
+  });
+
+  it("TC-03a: drafts code 27 email for each occupant returned in guestEmails", async () => {
+    const { gmail } = createGmailStub({ labels: cancellationLabels, threads: makeCancellationThread("t-03a") });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    // processCancellationEmail returns pre-resolved guest emails
+    processCancellationEmailMock.mockResolvedValue({
+      status: "success",
+      reservationCode: "RES-42",
+      activitiesWritten: 2,
+      occupantIds: ["occ1", "occ2"],
+      guestEmails: { occ1: "guest@example.com" }, // occ2 has no email
+    });
+
+    sendGuestEmailActivityMock.mockResolvedValue({ status: "drafted" });
+
+    await handleGmailTool("gmail_organize_inbox", { dryRun: false });
+
+    expect(sendGuestEmailActivityMock).toHaveBeenCalledTimes(1);
+    expect(sendGuestEmailActivityMock).toHaveBeenCalledWith(
+      expect.objectContaining({ bookingRef: "RES-42", activityCode: 27, recipients: ["guest@example.com"] })
+    );
+  });
+
+  it("TC-03b: skips email draft when guestEmails map is empty", async () => {
+    const { gmail } = createGmailStub({ labels: cancellationLabels, threads: makeCancellationThread("t-03b") });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    processCancellationEmailMock.mockResolvedValue({
+      status: "success",
+      reservationCode: "RES-42",
+      activitiesWritten: 1,
+      occupantIds: ["occ1"],
+      guestEmails: {}, // no occupants have email
+    });
+
+    await handleGmailTool("gmail_organize_inbox", { dryRun: false });
+
+    expect(sendGuestEmailActivityMock).not.toHaveBeenCalled();
+  });
+
+  it("TC-03c: cancellation still succeeds when email drafting throws", async () => {
+    const { gmail } = createGmailStub({ labels: cancellationLabels, threads: makeCancellationThread("t-03c") });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    processCancellationEmailMock.mockResolvedValue({
+      status: "success",
+      reservationCode: "RES-42",
+      activitiesWritten: 1,
+      occupantIds: ["occ1"],
+      guestEmails: { occ1: "guest@example.com" },
+    });
+
+    sendGuestEmailActivityMock.mockRejectedValue(new Error("Gmail API unavailable"));
+
+    const result = await handleGmailTool("gmail_organize_inbox", { dryRun: false });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect((result as { isError?: boolean }).isError).not.toBe(true);
+    expect(payload.counts.processedCancellations).toBe(1);
   });
 });

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Startup Loop — Ideas Queue</title>
+  <style>
+    :root {
+      --bg:            #0e1016;
+      --surface:       #161921;
+      --surface-2:     #1e2230;
+      --border:        #2a2f45;
+      --text:          #e4e7f2;
+      --text-muted:    #6b728f;
+      --text-dim:      #454d6a;
+
+      --red:           #f05c5c;
+      --red-bg:        rgba(240,92,92,0.10);
+      --red-border:    rgba(240,92,92,0.28);
+
+      --amber:         #f5a623;
+      --amber-bg:      rgba(245,166,35,0.10);
+      --amber-border:  rgba(245,166,35,0.28);
+
+      --blue:          #5b9cf6;
+      --blue-bg:       rgba(91,156,246,0.10);
+      --blue-border:   rgba(91,156,246,0.28);
+
+      --green:         #4ade80;
+      --green-bg:      rgba(74,222,128,0.08);
+      --green-border:  rgba(74,222,128,0.25);
+
+      --purple:        #a78bfa;
+      --purple-bg:     rgba(167,139,250,0.10);
+      --purple-border: rgba(167,139,250,0.28);
+
+      --radius:        8px;
+      --radius-sm:     5px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .sl-content {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+    }
+
+    .page-header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+      margin-bottom: 28px;
+    }
+    .page-header h1 {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+    }
+    .page-header p {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    /* ── Filter bar ── */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+      align-items: center;
+    }
+    .filter-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-dim);
+      margin-right: 4px;
+    }
+    .filter-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 100px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.12s;
+    }
+    .filter-btn:hover { color: var(--text); border-color: var(--text-dim); }
+    .filter-btn.active {
+      background: var(--blue-bg);
+      border-color: var(--blue-border);
+      color: var(--blue);
+    }
+    .filter-btn.active.biz-HBAG { background: var(--purple-bg); border-color: var(--purple-border); color: var(--purple); }
+    .filter-btn.active.biz-BRIK { background: var(--green-bg);  border-color: var(--green-border);  color: var(--green); }
+    .filter-btn.active.biz-BOS  { background: var(--blue-bg);   border-color: var(--blue-border);   color: var(--blue); }
+    .filter-btn.active.biz-PLAT { background: var(--amber-bg);  border-color: var(--amber-border);  color: var(--amber); }
+
+    .filter-divider {
+      width: 1px;
+      height: 20px;
+      background: var(--border);
+      margin: 0 4px;
+    }
+
+    /* ── Summary bar ── */
+    .summary-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .summary-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid;
+    }
+    .summary-pill .count { font-size: 15px; font-weight: 700; line-height: 1; }
+    .pill-amber { background: var(--amber-bg); border-color: var(--amber-border); color: var(--amber); }
+    .pill-green { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
+    .pill-muted { background: var(--surface-2); border-color: var(--border); color: var(--text-muted); }
+
+    /* ── Dispatch card ── */
+    .dispatch-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      margin-bottom: 10px;
+      border-left: 3px solid transparent;
+    }
+    .dispatch-card.enqueued { border-left-color: var(--amber); }
+    .dispatch-card.processed { border-left-color: var(--green); }
+    .dispatch-card.skipped, .dispatch-card.error { border-left-color: var(--text-dim); }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .card-title { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.4; }
+    .card-id {
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 10px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+    .card-badges { display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0; }
+
+    .badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: var(--radius-sm);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      white-space: nowrap;
+    }
+    .badge-enqueued  { background: var(--amber-bg);  color: var(--amber);  border: 1px solid var(--amber-border); }
+    .badge-processed { background: var(--green-bg);  color: var(--green);  border: 1px solid var(--green-border); }
+    .badge-skipped   { background: var(--surface-2); color: var(--text-muted); border: 1px solid var(--border); }
+    .badge-error     { background: var(--red-bg);    color: var(--red);    border: 1px solid var(--red-border); }
+    .badge-P1        { background: var(--red-bg);    color: var(--red);    border: 1px solid var(--red-border); }
+    .badge-P2        { background: var(--amber-bg);  color: var(--amber);  border: 1px solid var(--amber-border); }
+    .badge-P3        { background: var(--surface-2); color: var(--text-muted); border: 1px solid var(--border); }
+    .badge-HBAG      { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+    .badge-BRIK      { background: var(--green-bg);  color: var(--green);  border: 1px solid var(--green-border); }
+    .badge-BOS       { background: var(--blue-bg);   color: var(--blue);   border: 1px solid var(--blue-border); }
+    .badge-PLAT      { background: var(--amber-bg);  color: var(--amber);  border: 1px solid var(--amber-border); }
+    .badge-generic   { background: var(--surface-2); color: var(--text-muted); border: 1px solid var(--border); }
+    .badge-artifact_delta { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+    .badge-operator_idea  { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+
+    .card-body { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+    .card-body strong { color: var(--text); }
+
+    .card-section { margin-top: 10px; }
+    .card-section-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-dim);
+      margin-bottom: 3px;
+    }
+    .card-section-body { font-size: 13px; color: var(--text); }
+
+    .card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+    .card-meta span { display: flex; align-items: center; gap: 4px; }
+    .card-meta code {
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 10px;
+      background: var(--surface-2);
+      padding: 1px 5px;
+      border-radius: 3px;
+      color: var(--text-muted);
+    }
+    .route-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 1px 8px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--blue-bg);
+      color: var(--blue);
+      border: 1px solid var(--blue-border);
+    }
+    .processed-by-block {
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: var(--green-bg);
+      border: 1px solid var(--green-border);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      color: var(--green);
+    }
+    .processed-by-block a { color: var(--green); }
+
+    /* ── Empty / Error / Loading ── */
+    .state-box {
+      padding: 32px 24px;
+      text-align: center;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+    }
+    .state-box .state-icon { font-size: 28px; margin-bottom: 12px; }
+    .state-box h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+    .state-box p { font-size: 13px; color: var(--text-muted); line-height: 1.7; }
+    .state-box code {
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 12px;
+      background: var(--surface-2);
+      padding: 1px 5px;
+      border-radius: 3px;
+      color: var(--text);
+    }
+    .state-box pre {
+      margin-top: 12px;
+      text-align: left;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      display: inline-block;
+      min-width: 300px;
+    }
+
+    /* ── Footer ── */
+    .page-footer {
+      margin-top: 48px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-dim);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg:         #f5f6fa;
+        --surface:    #ffffff;
+        --surface-2:  #f0f1f7;
+        --border:     #dde0ed;
+        --text:       #1a1d2e;
+        --text-muted: #5a6080;
+        --text-dim:   #a0a8c0;
+      }
+    }
+  </style>
+
+<style id="sl-theme-css">html[data-theme="dark"]{--bg:#0e1016;--surface:#161921;--surface-2:#1e2230;--surface-raised:#1e2230;--border:#2a2f45;--text:#e4e7f2;--text-muted:#6b728f;--text-dim:#454d6a;--accent:#5b9cf6;--accent-soft:rgba(91,156,246,.15);--code-bg:#161921;--code-border:#2a2f45;--red-bg:rgba(240,92,92,.10);--amber-bg:rgba(245,166,35,.10);--green-bg:rgba(74,222,128,.08);--blue-bg:rgba(91,156,246,.10);--purple-bg:rgba(167,139,250,.10)}html[data-theme="dark"] body{background:var(--bg)!important;color:var(--text)!important}html[data-theme="light"]{--bg:#f5f6fa;--surface:#ffffff;--surface-2:#f0f1f7;--surface-raised:#f0f1f7;--border:#dde0ed;--text:#1a1d2e;--text-muted:#5a6080;--text-dim:#a0a8c0;--accent:#3362d0;--accent-soft:#e8eeff;--code-bg:#f0f1f7;--code-border:#dde0ed;--red-bg:rgba(200,50,50,.08);--amber-bg:rgba(180,120,0,.08);--green-bg:rgba(40,160,80,.06);--blue-bg:rgba(40,100,220,.08);--purple-bg:rgba(120,80,200,.08)}html[data-theme="light"] body{background:var(--bg)!important;color:var(--text)!important}[data-theme="light"] #sl-nav{background:#eef0f7!important;border-bottom-color:#dde0ed!important}[data-theme="light"] #sl-nav .sl-brand,[data-theme="light"] #sl-nav a,[data-theme="light"] #sl-theme-btn{color:#5a6080!important}[data-theme="light"] #sl-nav a:hover,[data-theme="light"] #sl-nav a.sl-on{color:#1a1d2e!important}</style>
+<script id="sl-theme-init">(function(){try{var t=localStorage.getItem("sl-theme");if(!t)t=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}catch(e){}})()</script>
+</head>
+<body>
+<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}</style><span class="sl-brand">Startup Loop</span><a href="startup-loop-workflow.user.html">Workflow</a><a href="startup-loop-files.user.html">Loop Files</a><a href="startup-loop-file-types.user.html">File Types</a><a href="startup-loop-output-registry.user.html">Output Registry</a><a href="ideas.user.html">Ideas</a><a href="process-improvements.user.html">Process</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
+
+<div class="sl-content">
+
+  <div class="page-header">
+    <h1>Ideas Queue</h1>
+    <p>Dispatch packets generated by the lp-do-ideas skill. Each packet represents an actionable idea or artifact delta routed for fact-find or briefing. Enqueued items need operator confirmation to proceed.</p>
+  </div>
+
+  <div id="app">
+    <div class="state-box">
+      <div class="state-icon">⏳</div>
+      <h3>Loading…</h3>
+      <p>Fetching queue-state.json</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>docs/business-os/ideas.user.html</span>
+    <span id="footer-updated">Data source: startup-loop/ideas/trial/queue-state.json</span>
+  </div>
+
+</div><!-- /.sl-content -->
+
+<script>
+(function () {
+  'use strict';
+
+  var DATA_PATH = './startup-loop/ideas/trial/queue-state.json';
+  var allPackets = [];
+  var activeBusiness = 'ALL';
+  var activeQueueState = 'all';
+
+  // ── Fetch ──────────────────────────────────────────────────────────────────
+  function loadData() {
+    fetch(DATA_PATH)
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status + ' — file may not exist yet');
+        return r.json();
+      })
+      .then(function (raw) {
+        if (Array.isArray(raw)) {
+          allPackets = raw;
+        } else if (raw && Array.isArray(raw.packets)) {
+          allPackets = raw.packets;
+        } else if (raw && Array.isArray(raw.dispatches)) {
+          allPackets = raw.dispatches;
+        } else {
+          allPackets = [];
+        }
+        render();
+      })
+      .catch(function (err) {
+        renderFetchError(err.message);
+      });
+  }
+
+  // ── Render helpers ─────────────────────────────────────────────────────────
+  function esc(s) {
+    return String(s || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function bizBadge(biz) {
+    var cls = ['HBAG', 'BRIK', 'BOS', 'PLAT'].indexOf(biz) >= 0 ? 'badge-' + biz : 'badge-generic';
+    return '<span class="badge ' + cls + '">' + esc(biz) + '</span>';
+  }
+
+  function qsBadge(qs) {
+    var map = { enqueued: 'badge-enqueued', processed: 'badge-processed', skipped: 'badge-skipped', error: 'badge-error' };
+    var lbl = { enqueued: 'Enqueued', processed: 'Processed', skipped: 'Skipped', error: 'Error' };
+    var cls = map[qs] || 'badge-generic';
+    return '<span class="badge ' + cls + '">' + esc(lbl[qs] || qs) + '</span>';
+  }
+
+  function priBadge(p) {
+    var cls = ['P1','P2','P3'].indexOf(p) >= 0 ? 'badge-' + p : 'badge-generic';
+    return '<span class="badge ' + cls + '">' + esc(p) + '</span>';
+  }
+
+  function triggerBadge(t) {
+    var cls = (t === 'artifact_delta' || t === 'operator_idea') ? 'badge-' + t : 'badge-generic';
+    var lbl = t === 'artifact_delta' ? 'Artifact Delta' : t === 'operator_idea' ? 'Operator Idea' : t;
+    return '<span class="badge ' + cls + '">' + esc(lbl) + '</span>';
+  }
+
+  function fmtDate(iso) {
+    if (!iso) return '—';
+    try { return new Date(iso).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }); } catch (e) { return iso; }
+  }
+
+  // ── Render ─────────────────────────────────────────────────────────────────
+  function render() {
+    if (allPackets.length === 0) { renderEmpty(); return; }
+
+    var businesses = ['ALL'];
+    allPackets.forEach(function (p) { if (p.business && businesses.indexOf(p.business) < 0) businesses.push(p.business); });
+
+    var filtered = allPackets.filter(function (p) {
+      if (activeBusiness !== 'ALL' && p.business !== activeBusiness) return false;
+      if (activeQueueState !== 'all' && p.queue_state !== activeQueueState) return false;
+      return true;
+    });
+
+    var enqCount = allPackets.filter(function (p) { return p.queue_state === 'enqueued'; }).length;
+    var procCount = allPackets.filter(function (p) { return p.queue_state === 'processed'; }).length;
+
+    var html = '';
+
+    // Summary bar
+    html += '<div class="summary-bar">';
+    html += '<div class="summary-pill pill-amber"><span class="count">' + enqCount + '</span> Enqueued</div>';
+    html += '<div class="summary-pill pill-green"><span class="count">' + procCount + '</span> Processed</div>';
+    html += '<div class="summary-pill pill-muted"><span class="count">' + allPackets.length + '</span> Total</div>';
+    html += '</div>';
+
+    // Filter — business
+    html += '<div class="filter-bar">';
+    html += '<span class="filter-label">Business</span>';
+    businesses.forEach(function (b) {
+      var active = activeBusiness === b ? ' active biz-' + b : '';
+      html += '<button class="filter-btn' + active + '" data-filter-biz="' + esc(b) + '">' + esc(b) + '</button>';
+    });
+    html += '<div class="filter-divider"></div>';
+
+    // Filter — queue state
+    html += '<span class="filter-label">Status</span>';
+    [['all','All'],['enqueued','Enqueued'],['processed','Processed']].forEach(function (pair) {
+      var active = activeQueueState === pair[0] ? ' active' : '';
+      html += '<button class="filter-btn' + active + '" data-filter-qs="' + esc(pair[0]) + '">' + esc(pair[1]) + '</button>';
+    });
+    html += '</div>';
+
+    // Count line
+    html += '<p style="font-size:12px;color:var(--text-dim);margin-bottom:16px;">' + filtered.length + ' of ' + allPackets.length + ' dispatch' + (allPackets.length !== 1 ? 'es' : '') + '</p>';
+
+    if (filtered.length === 0) {
+      html += '<div class="state-box"><div class="state-icon">🔍</div><h3>No matches</h3><p>Try changing the business or status filter.</p></div>';
+    } else {
+      filtered.forEach(function (p) {
+        var qs = p.queue_state || 'unknown';
+        html += '<div class="dispatch-card ' + esc(qs) + '">';
+        html += '<div class="card-top">';
+        html += '<div><div class="card-title">' + esc(p.area_anchor || p.dispatch_id || 'Untitled') + '</div>';
+        if (p.dispatch_id) html += '<div class="card-id">' + esc(p.dispatch_id) + '</div>';
+        html += '</div>';
+        html += '<div class="card-badges">';
+        if (p.business) html += bizBadge(p.business);
+        if (p.queue_state) html += qsBadge(p.queue_state);
+        if (p.priority) html += priBadge(p.priority);
+        if (p.trigger) html += triggerBadge(p.trigger);
+        html += '</div></div>';
+
+        if (p.current_truth) {
+          html += '<div class="card-section"><div class="card-section-label">Current Truth</div><div class="card-section-body">' + esc(p.current_truth) + '</div></div>';
+        }
+        if (p.next_scope_now) {
+          html += '<div class="card-section" style="margin-top:8px;"><div class="card-section-label">Next Scope Now</div><div class="card-section-body">' + esc(p.next_scope_now) + '</div></div>';
+        }
+
+        if (p.clarification_needed && p.clarification_needed.questions && p.clarification_needed.questions.length) {
+          html += '<div class="card-section" style="margin-top:10px;padding:8px 12px;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--radius-sm);">';
+          html += '<div class="card-section-label" style="color:var(--amber);">Clarification Needed' + (p.clarification_needed.blocks_invocation ? ' — blocks invocation' : '') + '</div>';
+          p.clarification_needed.questions.forEach(function (q) {
+            html += '<div style="font-size:13px;color:var(--amber);margin-top:3px;">• ' + esc(q) + '</div>';
+          });
+          html += '</div>';
+        }
+
+        if (p.processed_by) {
+          html += '<div class="processed-by-block">';
+          html += 'Processed by <strong>' + esc(p.processed_by.fact_find_slug || '') + '</strong>';
+          if (p.processed_by.processed_at) html += ' on ' + fmtDate(p.processed_by.processed_at);
+          html += '</div>';
+        }
+
+        html += '<div class="card-meta">';
+        if (p.recommended_route) html += '<span>Route: <span class="route-pill">' + esc(p.recommended_route) + '</span></span>';
+        if (p.status) html += '<span>Status: <code>' + esc(p.status) + '</code></span>';
+        if (p.provisional_deliverable_family) html += '<span>Family: <code>' + esc(p.provisional_deliverable_family) + '</code></span>';
+        if (p.created_at) html += '<span>Created: ' + esc(fmtDate(p.created_at)) + '</span>';
+        if (p.artifact_id) html += '<span>Artifact: <code>' + esc(p.artifact_id) + '</code></span>';
+        if (p.evidence_refs && p.evidence_refs.length) {
+          html += '<span>Evidence: ';
+          p.evidence_refs.forEach(function (r, i) { html += (i ? ', ' : '') + '<code>' + esc(r) + '</code>'; });
+          html += '</span>';
+        }
+        html += '</div>';
+
+        html += '</div>';
+      });
+    }
+
+    document.getElementById('app').innerHTML = html;
+    attachFilterHandlers();
+  }
+
+  function renderEmpty() {
+    document.getElementById('app').innerHTML = [
+      '<div class="state-box">',
+      '<div class="state-icon">💡</div>',
+      '<h3>No dispatches in queue yet</h3>',
+      '<p>Ideas will appear here after the <code>lp-do-ideas</code> skill has been run and dispatches have been written to <code>queue-state.json</code>.<br>',
+      'The queue grows as standing artifacts are updated and delta events are processed.</p>',
+      '</div>'
+    ].join('');
+  }
+
+  function renderFetchError(msg) {
+    var isFileProtocol = location.protocol === 'file:';
+    document.getElementById('app').innerHTML = [
+      '<div class="state-box">',
+      '<div class="state-icon">📂</div>',
+      isFileProtocol
+        ? '<h3>Serve locally to load ideas</h3><p>Browsers block <code>fetch()</code> from <code>file://</code> URLs. Serve this docs folder over HTTP to enable live loading:</p><pre>cd ' + (location.pathname.split('/docs/')[0] || '/path/to/repo') + '\npython3 -m http.server 8080\n# then open: http://localhost:8080/docs/business-os/ideas.user.html</pre>'
+        : '<h3>Could not load queue-state.json</h3><p>The ideas queue file was not found or could not be fetched.<br><small style="color:var(--text-dim)">' + esc(msg) + '</small></p><p style="margin-top:10px;">Run the <code>lp-do-ideas</code> skill to generate dispatch packets. The file will be created at:<br><code>docs/business-os/startup-loop/ideas/trial/queue-state.json</code></p>',
+      '</div>'
+    ].join('');
+  }
+
+  function attachFilterHandlers() {
+    document.querySelectorAll('[data-filter-biz]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        activeBusiness = this.getAttribute('data-filter-biz');
+        render();
+      });
+    });
+    document.querySelectorAll('[data-filter-qs]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        activeQueueState = this.getAttribute('data-filter-qs');
+        render();
+      });
+    });
+  }
+
+  loadData();
+})();
+</script>
+</body>
+</html>

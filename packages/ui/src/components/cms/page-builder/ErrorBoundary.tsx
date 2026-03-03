@@ -46,7 +46,7 @@ class ErrorBoundaryImpl extends React.Component<ImplProps, State> {
           <div className="mb-3 text-muted-foreground">{this.props.t("pb.error.editorPaused")}</div>
           <button
             type="button"
-            className="rounded border px-2 py-1 min-h-10 min-w-10"
+            className="rounded border px-2 py-1 min-h-11 min-w-11"
             onClick={this.reset}
             aria-label={String(this.props.t("pb.error.tryAgain"))}
           >

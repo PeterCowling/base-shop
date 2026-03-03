@@ -161,7 +161,7 @@ const BookingDetailsModal: FC<BookingDetailsModalProps> = ({
               Move booking to room:
             </label>
             <Select value={targetRoom} onValueChange={setTargetRoom}>
-              <SelectTrigger id="target-room" className="w-full border rounded p-2 text-foreground">
+              <SelectTrigger id="target-room" className="w-full border rounded-lg p-2 text-foreground">
                 <SelectValue placeholder="Select room" />
               </SelectTrigger>
               <SelectContent>
@@ -175,7 +175,7 @@ const BookingDetailsModal: FC<BookingDetailsModalProps> = ({
             <Button
               type="button"
               onClick={handleMoveBooking}
-              className="w-full px-4 py-2 rounded bg-primary text-primary-fg hover:bg-primary"
+              className="w-full px-4 py-2 rounded-lg bg-primary text-primary-fg hover:bg-primary"
             >
               Move Booking
             </Button>

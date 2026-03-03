@@ -3,7 +3,11 @@
   "meta": {
     "title": "Spar 15 % på ophold fra 20. september til 31. oktober",
     "description": "Tidsbegrænset tilbud: spar 15 % ved direkte booking for ophold fra 20. september til 31. oktober.",
-    "ogImageAlt": "Banner for tidsbegrænset rabat"
+    "ogImageAlt": "Banner for tidsbegrænset rabat",
+    "defaultTitle": "Deals & Tilbud against 124; Hostel Brikette",
+    "defaultDescription": "Direkte booking frynsegoder og sæsontilbud på Hostel Brikette.",
+    "activeTitle": "Gem _ _ TOK0 _ _ på ophold fra _ _ TOK1 _ _ til _ _ TOK2 _ _",
+    "activeDescription": "Påføres automatisk ved udtjekning. Kun direkte bookinger."
   },
   "title": "Spar {{percent}} % på ophold fra {{from}} til {{to}}",
   "promo": "Book direkte – din {{percent}} % rabat trækkes automatisk ved betaling.",
@@ -119,6 +123,6 @@
     "other": "Se vilkår og betingelser."
   },
   "robots": {
-    "expiredNoindex": "noindex,follow"
+    "expiredNoindex": "noindex, følg"
   }
 }

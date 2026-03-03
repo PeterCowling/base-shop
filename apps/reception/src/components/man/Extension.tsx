@@ -25,6 +25,7 @@ import {
 } from "../../utils/dateUtils";
 import { roundDownTo50Cents } from "../../utils/moneyUtils";
 import { PageShell } from "../common/PageShell";
+import ReceptionSkeleton from "../common/ReceptionSkeleton";
 
 import ExtensionPayModal from "./modals/ExtensionPayModal";
 
@@ -189,27 +190,15 @@ function Extension() {
       const bedCount = getBedCount(room);
       const roomKey = room;
 
-      console.log("[Extension] checkAvailability", {
-        room: roomKey,
-        start,
-        nights,
-      });
-
       const startDate = parseLocalDate(start) || new Date(start);
       const checkOut = formatDate(addDays(startDate, nights));
       for (const date of computeNightsRange(start, checkOut)) {
         const occList = occupancyMap[date]?.[roomKey] ?? [];
-        console.log("[Extension] date", date, "occList", occList);
 
         if (occList.length >= bedCount) {
-          console.log(
-            `[Extension] room unavailable - occupant(s) ${occList.join(", ")} on ${date}`
-          );
           return false;
         }
       }
-
-      console.log("[Extension] room available");
 
       return true;
     },
@@ -224,12 +213,6 @@ function Extension() {
         row.checkOutDate,
         nights
       );
-      console.log("[Extension] availability", {
-        occupantId: row.occupantId,
-        room: row.roomNumber,
-        nights,
-        result,
-      });
       map[row.occupantId] = result;
     });
     return map;
@@ -303,13 +286,11 @@ function Extension() {
   return (
     <>
       <PageShell title="EXTENSIONS">
-        <div className="bg-surface rounded-lg shadow p-6">
-          {loading && (
-            <p className="italic text-muted-foreground">Loading extension data...</p>
-          )}
+        <div className="bg-surface rounded-lg shadow-lg p-6">
+          {loading && <ReceptionSkeleton rows={3} />}
 
           {!loading && hasError && (
-            <p className="text-danger-fg">Error loading data: {String(error)}</p>
+            <p className="text-error-main">Error loading data: {String(error)}</p>
           )}
 
           {!loading && !hasError && rows.length === 0 && (
@@ -331,7 +312,7 @@ function Extension() {
                   value={searchQuery}
                   onChange={(event) => setSearchQuery(event.target.value)}
                   placeholder="Search by guest name, booking, or room"
-                  className="w-full sm:w-80 border rounded px-3 py-2"
+                  className="w-full sm:w-80 border rounded-lg px-3 py-2"
                 />
               </div>
 
@@ -342,27 +323,27 @@ function Extension() {
               ) : (
                 <div className="overflow-auto">
                   <Table className="min-w-full border-collapse text-sm">
-                    <TableHeader>
-                      <TableRow className="bg-surface-3">
+                    <TableHeader className="bg-surface-2">
+                      <TableRow>
                         <TableHead
-                          className="p-2 border-b text-start cursor-pointer"
+                          className="p-2 border-b border-border-2 text-start text-muted-foreground cursor-pointer"
                           onClick={() => handleSort("roomNumber")}
                         >
                           Room
                           {sortField === "roomNumber" && (sortAsc ? " ↑" : " ↓")}
                         </TableHead>
                         <TableHead
-                          className="p-2 border-b text-start cursor-pointer"
+                          className="p-2 border-b border-border-2 text-start text-muted-foreground cursor-pointer"
                           onClick={() => handleSort("fullName")}
                         >
                           Guest
                           {sortField === "fullName" && (sortAsc ? " ↑" : " ↓")}
                         </TableHead>
-                        <TableHead className="p-2 border-b text-start">Check-in</TableHead>
-                        <TableHead className="p-2 border-b text-start">Check-out</TableHead>
-                        <TableHead className="p-2 border-b text-end">Price</TableHead>
-                        <TableHead className="p-2 border-b text-end">Nights</TableHead>
-                        <TableHead className="p-2 border-b text-center">Pay</TableHead>
+                        <TableHead className="p-2 border-b border-border-2 text-start text-muted-foreground">Check-in</TableHead>
+                        <TableHead className="p-2 border-b border-border-2 text-start text-muted-foreground">Check-out</TableHead>
+                        <TableHead className="p-2 border-b border-border-2 text-end text-muted-foreground">Price</TableHead>
+                        <TableHead className="p-2 border-b border-border-2 text-end text-muted-foreground">Nights</TableHead>
+                        <TableHead className="p-2 border-b border-border-2 text-center text-muted-foreground">Pay</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -399,7 +380,7 @@ function Extension() {
                                   [r.occupantId]: parseInt(e.target.value, 10),
                                 }))
                               }
-                              className="border rounded px-2 py-1 w-20"
+                              className="border rounded-lg px-2 py-1 w-20"
                             />
                           </TableCell>
                           <TableCell className="p-2 border-b text-center">

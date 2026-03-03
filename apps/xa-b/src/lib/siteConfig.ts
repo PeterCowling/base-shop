@@ -54,7 +54,7 @@ const baseConfig = STEALTH_MODE ? stealthConfig : buildPublicConfig();
 const catalogConfig = {
   category: "bags" as XaCategory,
   categories: ["bags"] as XaCategory[],
-  departments: ["women", "men"] as XaDepartment[],
+  departments: ["women", "men", "kids"] as XaDepartment[],
   defaultDepartment: "women" as XaDepartment,
   label: "Bags",
   labelPlural: "bags",

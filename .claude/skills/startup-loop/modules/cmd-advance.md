@@ -25,14 +25,14 @@ If either fails: return `status: blocked` with exact reason and retry action.
 
 ```bash
 # Check for current situation artifact with Status: Active
-grep -l "Status: Active" docs/business-os/strategy/<BIZ>/current-situation.user.md 2>/dev/null
+grep -l "Status: Active" docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-operator-context.user.md 2>/dev/null
 # Match found  → gate passes
 # No match     → gate blocked
 ```
 
 **Decision table:**
 
-| current-situation.user.md exists? | Status field | Gate result | Action |
+| <YYYY-MM-DD>-operator-context.user.md exists? | Status field | Gate result | Action |
 |---|---|---|---|
 | No | — | `blocked` | Run `/lp-do-assessment-08-current-situation --business <BIZ>` |
 | Yes | `Active` | `pass` | Continue to ASSESSMENT intake sync |
@@ -42,12 +42,12 @@ grep -l "Status: Active" docs/business-os/strategy/<BIZ>/current-situation.user.
 
 Return blocked run packet:
 - `blocking_reason`: `GATE-A08-00: Current situation artifact missing or not Active. Required before ASSESSMENT intake sync can run.`
-- `next_action`: `Run /lp-do-assessment-08-current-situation --business <BIZ>. Artifact required at docs/business-os/strategy/<BIZ>/current-situation.user.md with Status: Active.`
+- `next_action`: `Run /lp-do-assessment-08-current-situation --business <BIZ>. Artifact required at docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-operator-context.user.md with Status: Active.`
 - `prompt_file`: none (skill generates the artifact interactively)
 
 **When passes:**
 
-Proceed to ASSESSMENT intake sync. The sync module reads `current-situation.user.md` as its seventh precursor (`Precursor-ASSESSMENT-08`).
+Proceed to ASSESSMENT intake sync. The sync module reads `<YYYY-MM-DD>-operator-context.user.md` as its seventh precursor (`Precursor-ASSESSMENT-08`).
 
 ---
 
@@ -64,50 +64,50 @@ Validates that all required ASSESSMENT precursor artifacts are present and meet 
 
 ```bash
 # ASSESSMENT-01: Problem Statement (Active + required sections)
-grep -l "Status: Active" docs/business-os/strategy/<BIZ>/problem-statement.user.md 2>/dev/null &&
-grep -Eq "## Problem|## Customer|## Evidence" docs/business-os/strategy/<BIZ>/problem-statement.user.md 2>/dev/null
+grep -l "Status: Active" docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-problem-statement.user.md 2>/dev/null &&
+grep -Eq "## Problem|## Customer|## Evidence" docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-problem-statement.user.md 2>/dev/null
 
 # ASSESSMENT-02: Solution profiling results (any date prefix, >=3 options)
 ls docs/business-os/strategy/<BIZ>/*-solution-profile-results.user.md 2>/dev/null | head -1
 
 # ASSESSMENT-03: Solution select (selected option + rationale present)
-ls docs/business-os/strategy/<BIZ>/solution-select.user.md 2>/dev/null &&
-grep -Eq "Selected|Rationale|Assumption" docs/business-os/strategy/<BIZ>/solution-select.user.md 2>/dev/null
+ls docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-solution-decision.user.md 2>/dev/null &&
+grep -Eq "Selected|Rationale|Assumption" docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-solution-decision.user.md 2>/dev/null
 
 # ASSESSMENT-04: Candidate names (any date prefix, >=3 candidates) — skip check if name confirmed
 ls docs/business-os/strategy/<BIZ>/*-candidate-names.user.md 2>/dev/null | head -1
 
 # ASSESSMENT-06: Distribution profiling — Status + >=2 channel rows + primary channel
-grep -l "Status: Active\|Status: Draft" docs/business-os/strategy/<BIZ>/distribution-profiling.user.md 2>/dev/null &&
-grep -Eq "Primary channel|Chosen channel|Recommended channel" docs/business-os/strategy/<BIZ>/distribution-profiling.user.md 2>/dev/null
+grep -l "Status: Active\|Status: Draft" docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-launch-distribution-plan.user.md 2>/dev/null &&
+grep -Eq "Primary channel|Chosen channel|Recommended channel" docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-launch-distribution-plan.user.md 2>/dev/null
 
 # ASSESSMENT-07: Measurement profiling — Status + tracking method + >=2 metrics + threshold
-grep -l "Status: Active\|Status: Draft" docs/business-os/strategy/<BIZ>/measurement-profiling.user.md 2>/dev/null &&
-grep -Eq "Tracking|Instrumentation|Method" docs/business-os/strategy/<BIZ>/measurement-profiling.user.md 2>/dev/null &&
-grep -Eq "Threshold|Target|Trigger" docs/business-os/strategy/<BIZ>/measurement-profiling.user.md 2>/dev/null
+grep -l "Status: Active\|Status: Draft" docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-measurement-profile.user.md 2>/dev/null &&
+grep -Eq "Tracking|Instrumentation|Method" docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-measurement-profile.user.md 2>/dev/null &&
+grep -Eq "Threshold|Target|Trigger" docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-measurement-profile.user.md 2>/dev/null
 
 # ASSESSMENT-08: Current situation — Active + sections A-E + open gaps section
-grep -l "Status: Active" docs/business-os/strategy/<BIZ>/current-situation.user.md 2>/dev/null &&
-grep -Eq "Section A|Section B|Section C|Section D|Section E|Open gaps|Evidence gaps" docs/business-os/strategy/<BIZ>/current-situation.user.md 2>/dev/null
+grep -l "Status: Active" docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-operator-context.user.md 2>/dev/null &&
+grep -Eq "Section A|Section B|Section C|Section D|Section E|Open gaps|Evidence gaps" docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-operator-context.user.md 2>/dev/null
 ```
 
 **Decision table:**
 
 | Sub-stage | Artifact | Status | Gate result |
 |---|---|---|---|
-| ASSESSMENT-01 | problem-statement.user.md | Active + problem/customer/evidence sections | ✅ pass |
+| ASSESSMENT-01 | <YYYY-MM-DD>-problem-statement.user.md | Active + problem/customer/evidence sections | ✅ pass |
 | ASSESSMENT-01 | missing, not Active, or incomplete structure | — | ❌ blocked |
 | ASSESSMENT-02 | *-solution-profile-results.user.md | exists + >=3 solution options profiled | ✅ pass |
 | ASSESSMENT-02 | missing or thin (<3 options) | — | ❌ blocked |
-| ASSESSMENT-03 | solution-select.user.md | selected option + rationale + assumptions | ✅ pass |
+| ASSESSMENT-03 | <YYYY-MM-DD>-solution-decision.user.md | selected option + rationale + assumptions | ✅ pass |
 | ASSESSMENT-03 | missing or missing rationale/assumptions | — | ❌ blocked |
 | ASSESSMENT-04 | *-candidate-names.user.md | exists + shortlist-quality candidate set | ✅ pass (or skipped if name confirmed) |
 | ASSESSMENT-04 | missing (when required) or low-quality shortlist | — | ❌ blocked |
-| ASSESSMENT-06 | distribution-profiling.user.md | Active/Draft + >=2 channels + primary channel chosen | ✅ pass |
+| ASSESSMENT-06 | <YYYY-MM-DD>-launch-distribution-plan.user.md | Active/Draft + >=2 channels + primary channel chosen | ✅ pass |
 | ASSESSMENT-06 | missing or quality minimum not met | — | ❌ blocked |
-| ASSESSMENT-07 | measurement-profiling.user.md | Active/Draft + tracking method + >=2 metrics + threshold/trigger | ✅ pass |
+| ASSESSMENT-07 | <YYYY-MM-DD>-measurement-profile.user.md | Active/Draft + tracking method + >=2 metrics + threshold/trigger | ✅ pass |
 | ASSESSMENT-07 | missing or quality minimum not met | — | ❌ blocked |
-| ASSESSMENT-08 | current-situation.user.md | Active + sections A-E + gap logging present | ✅ pass |
+| ASSESSMENT-08 | <YYYY-MM-DD>-operator-context.user.md | Active + sections A-E + gap logging present | ✅ pass |
 | ASSESSMENT-08 | missing or quality minimum not met | — | ❌ blocked |
 
 **When blocked:**
@@ -120,7 +120,7 @@ Return blocked run packet:
 **When passes:**
 
 Run ASSESSMENT intake sync (apply `modules/assessment-intake-sync.md`) and produce/refresh:
-- `docs/business-os/startup-baselines/<BIZ>-intake-packet.user.md`
+- `docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md`
 
 Then continue to ASSESSMENT-10.
 
@@ -139,30 +139,30 @@ Validates that both branding sub-stage outputs exist and meet minimum quality be
 
 ```bash
 # ASSESSMENT-10 output: brand profiling quality contract
-ls docs/business-os/strategy/<BIZ>/brand-profiling.user.md 2>/dev/null &&
-grep -Eq "Status: (Draft|Active)" docs/business-os/strategy/<BIZ>/brand-profiling.user.md 2>/dev/null &&
-grep -Eq "Section A|Section B|Section C|Section D|Section E" docs/business-os/strategy/<BIZ>/brand-profiling.user.md 2>/dev/null &&
-grep -Eq "Voice|Tone|Personality|Audience" docs/business-os/strategy/<BIZ>/brand-profiling.user.md 2>/dev/null
+ls docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-profile.user.md 2>/dev/null &&
+grep -Eq "Status: (Draft|Active)" docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-profile.user.md 2>/dev/null &&
+grep -Eq "Section A|Section B|Section C|Section D|Section E" docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-profile.user.md 2>/dev/null &&
+grep -Eq "Voice|Tone|Personality|Audience" docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-profile.user.md 2>/dev/null
 
 # ASSESSMENT-11 output: brand identity quality contract
-ls docs/business-os/strategy/<BIZ>/brand-identity.user.md 2>/dev/null &&
-grep -Eq "Status: (Draft|Active)" docs/business-os/strategy/<BIZ>/brand-identity.user.md 2>/dev/null &&
-grep -Eq "Color|Colour|Typography|Imagery|Token" docs/business-os/strategy/<BIZ>/brand-identity.user.md 2>/dev/null
+ls docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md 2>/dev/null &&
+grep -Eq "Status: (Draft|Active)" docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md 2>/dev/null &&
+grep -Eq "Color|Colour|Typography|Imagery|Token" docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md 2>/dev/null
 ```
 
 **Decision table:**
 
 | Artifact | Completeness + quality | Gate result |
 |---|---|---|
-| brand-profiling.user.md | Exists + Draft/Active + sections A-E + voice/personality content | ✅ pass |
-| brand-profiling.user.md | Missing or quality minimum not met | ❌ blocked |
-| brand-identity.user.md | Exists + Draft/Active + visual identity sections + token guidance | ✅ pass |
-| brand-identity.user.md | Missing or quality minimum not met | ❌ blocked |
+| <YYYY-MM-DD>-brand-profile.user.md | Exists + Draft/Active + sections A-E + voice/personality content | ✅ pass |
+| <YYYY-MM-DD>-brand-profile.user.md | Missing or quality minimum not met | ❌ blocked |
+| <YYYY-MM-DD>-brand-identity-dossier.user.md | Exists + Draft/Active + visual identity sections + token guidance | ✅ pass |
+| <YYYY-MM-DD>-brand-identity-dossier.user.md | Missing or quality minimum not met | ❌ blocked |
 
 **When blocked:**
 
 Return blocked run packet:
-- `blocking_reason`: `GATE-ASSESSMENT-01: ASSESSMENT container blocked — branding completeness/quality contract not met (brand-profiling.user.md + brand-identity.user.md required at quality minimum) before MEASURE entry.`
+- `blocking_reason`: `GATE-ASSESSMENT-01: ASSESSMENT container blocked — branding completeness/quality contract not met (<YYYY-MM-DD>-brand-profile.user.md + <YYYY-MM-DD>-brand-identity-dossier.user.md required at quality minimum) before MEASURE entry.`
 - `next_action`: `Run /lp-do-assessment-10-brand-profiling and/or /lp-do-assessment-11-brand-identity to close listed quality gaps, then re-run /startup-loop advance --business <BIZ>.`
 - `prompt_file`: none (skills generate artifacts interactively)
 
@@ -201,7 +201,7 @@ ls docs/business-os/strategy/<BIZ>/lp-other-products-prompt.md 2>/dev/null
 ```
 
 **When triggered** (MARKET-06 Done + condition met + prompt absent):
-- Advisory: `GATE-PRODUCT-02-01: Growth intent references product range expansion. Run /lp-other-products <BIZ> to generate the adjacent product research prompt, then drop it into a deep research tool (OpenAI Deep Research or equivalent). Save results to docs/business-os/strategy/<BIZ>/lp-other-products-results.user.md for S5A (lp-prioritize) to pick up as additional go-item candidates.`
+- Advisory: `GATE-PRODUCT-02-01: Growth intent references product range expansion. Run /lp-other-products <BIZ> to generate the adjacent product research prompt, then drop it into a deep research tool (OpenAI Deep Research or equivalent). Save results to docs/business-os/strategy/<BIZ>/lp-other-products-results.user.md so S4 baseline merge can include them as optional context.`
 - Does NOT block SIGNALS-01/SELL-01 fan-out or S4 join barrier.
 
 **When skipped**: Condition not met (growth_intent absent or does not reference product range expansion), OR prompt already exists.
@@ -277,7 +277,7 @@ Where:
 **Trigger**: SIGNALS weekly readout review.
 
 **Rule**: Check Brand Dossier `Last-reviewed` date in `docs/business-os/strategy/<BIZ>/index.user.md`. If Last-reviewed > 90 days ago: emit warning (do not block).
-- Warning: `GATE-BD-08: Brand Dossier not reviewed in >90 days. Consider re-running BRAND-DR-01/02 and updating brand-identity.user.md.`
+- Warning: `GATE-BD-08: Brand Dossier not reviewed in >90 days. Consider re-running BRAND-DR-01/02 and updating <YYYY-MM-DD>-brand-identity-dossier.user.md.`
 
 ---
 
@@ -493,13 +493,12 @@ Present output summary to operator alongside the SIGNALS weekly-kpcs prompt — 
 
 For each stage, require appropriate sync actions:
 
-- `ASSESSMENT-09`: validate required ASSESSMENT precursor artifacts, then write/refresh `docs/business-os/startup-baselines/<BIZ>-intake-packet.user.md`.
+- `ASSESSMENT-09`: validate required ASSESSMENT precursor artifacts, then write/refresh `docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md`.
 - `MEASURE-01/PRODUCT-01/MARKET-01..MARKET-06/SIGNALS-01/SIGNALS`: persist strategy/readiness artifacts under `docs/business-os/...` and update any `latest.user.md` pointers.
-- `S5A`: no BOS sync (pure ranking, no side effects).
-- `S5B`: create/update ideas/cards via Business OS API (`/api/agent/ideas`, `/api/agent/cards`); commit manifest pointer.
+- `S4`: merge required strategy inputs, write baseline snapshot, and commit manifest pointer as current.
 - `DO`: filesystem-only. Advance is gated on artifact existence and plan status (see GATE-WEBSITE-DO-01). No BOS API calls required for DO stage progression.
 
-Never allow stage advance when BOS sync has failed (applies to non-DO stages; DO advance is filesystem-only and does not require BOS sync).
+Never allow non-DO advance when required stage persistence has failed (DO advance remains filesystem-only).
 
 ---
 
@@ -526,7 +525,7 @@ Example:
 ## Red Flags (invalid operation)
 
 1. Advancing a stage while required output is missing.
-2. Advancing a non-DO stage while required BOS sync action is incomplete.
+2. Advancing WEBSITE/DO while S4 merge-and-commit outputs are missing or failed.
 3. Skipping MEASURE-01 (Agent-Setup) before downstream stages.
 4. Skipping MEASURE-02 (Results) before PRODUCT-01.
 5. Skipping PRODUCT-01 (Product from photo) before MARKET-01.

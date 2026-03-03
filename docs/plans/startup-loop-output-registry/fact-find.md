@@ -105,10 +105,10 @@ JetBrains Mono data cells, Sora body text, gold accent borders.
 
 | Stage | Artifact | Path | Status | Notes |
 |-------|----------|------|--------|-------|
-| S0 | Intake Packet | `docs/business-os/startup-baselines/HEAD-intake-packet.user.md` | Active | Business context, assumptions, and constraints |
+| S0 | Intake Packet | `docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md` | Active | Business context, assumptions, and constraints |
 | S0 | Forecast Seed | `docs/business-os/startup-baselines/HEAD-forecast-seed.user.md` | Draft | Pre-loop revenue hypothesis |
 | S1 | Market Intelligence | `docs/business-os/market-research/HEAD/latest.user.md` | Active | Pointer → 2026-02-12 research report |
-| S1 | Brand Dossier | `docs/business-os/strategy/HEAD/brand-identity.user.md` | Draft | Visual + voice identity |
+| S1 | Brand Dossier | `docs/business-os/strategy/HEAD/2026-02-21-brand-identity-dossier.user.md` | Draft | Visual + voice identity |
 | S3 | 90-Day Forecast v2 | `docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md` | Draft | P10/P50/P90 scenario model (v1 superseded) |
 | S5 | Prioritization Scorecard | `docs/business-os/strategy/HEAD/2026-02-12-prioritization-scorecard.user.md` | Active | Go-item ranking |
 | S5B | Strategy Plan | `docs/business-os/strategy/HEAD/plan.user.md` | Active | Canonical strategy wrapper |
@@ -129,10 +129,10 @@ JetBrains Mono data cells, Sora body text, gold accent borders.
 
 | Stage | Artifact | Path | Status | Notes |
 |-------|----------|------|--------|-------|
-| S0 | Intake Packet | `docs/business-os/startup-baselines/PET-intake-packet.user.md` | Active | Business context and constraints |
+| S0 | Intake Packet | `docs/business-os/startup-baselines/PET-2026-02-12assessment-intake-packet.user.md` | Active | Business context and constraints |
 | S0 | Forecast Seed | `docs/business-os/startup-baselines/PET-forecast-seed.user.md` | Draft | Pre-loop revenue hypothesis |
 | S1 | Market Intelligence | `docs/business-os/market-research/PET/latest.user.md` | Active | Pointer → current research report |
-| S1 | Brand Dossier | `docs/business-os/strategy/PET/brand-identity.user.md` | Draft | Visual + voice identity |
+| S1 | Brand Dossier | `docs/business-os/strategy/PET/2026-02-17-brand-identity-dossier.user.md` | Draft | Visual + voice identity |
 | S2B | Offer Design | `docs/business-os/startup-baselines/PET-offer.md` | Hypothesis | ICP, positioning, pricing (€80), objection map; 6 sections complete |
 | S3 | 90-Day Forecast v2 | `docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.user.md` | Draft | P10/P50/P90 scenario model |
 | S5 | Prioritization Scorecard | `docs/business-os/strategy/PET/2026-02-12-prioritization-scorecard.user.md` | Active | Go-item ranking |
@@ -154,10 +154,10 @@ JetBrains Mono data cells, Sora body text, gold accent borders.
 
 | Stage | Artifact | Path | Status | Notes |
 |-------|----------|------|--------|-------|
-| S0 | Intake Packet | `docs/business-os/startup-baselines/BRIK-intake-packet.user.md` | Active | Business context and constraints |
+| S0 | Intake Packet | `docs/business-os/startup-baselines/BRIK-2026-02-12assessment-intake-packet.user.md` | Active | Business context and constraints |
 | S0 | Forecast Seed | `docs/business-os/startup-baselines/BRIK-forecast-seed.user.md` | Active | Pre-loop revenue hypothesis (Active + Integrated) |
 | S1 | Market Intelligence | `docs/business-os/market-research/BRIK/latest.user.md` | Active | Pointer → 2026-02-15 research report |
-| S1 | Brand Dossier | `docs/business-os/strategy/BRIK/brand-identity.user.md` | Active | Visual + voice identity (Active, not Draft) |
+| S1 | Brand Dossier | `docs/business-os/strategy/BRIK/2026-02-12-brand-identity-dossier.user.md` | Active | Visual + voice identity (Active, not Draft) |
 | S1B | Historical Performance Baseline | `docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md` | Active | Historical occupancy + revenue data |
 | S1B | Octorate Operational Data Baseline | `docs/business-os/strategy/BRIK/2026-02-14-octorate-operational-data-baseline.user.md` | Active | PMS data snapshot |
 | S2A | GA4 + Search Console Setup Note | `docs/business-os/strategy/BRIK/2026-02-12-ga4-search-console-setup-note.user.md` | Active | Measurement stack configuration record |

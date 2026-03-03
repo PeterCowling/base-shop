@@ -16,8 +16,8 @@ depends_on:
   - docs/business-os/market-research/HBAG/market-03-pricing-benchmarks.user.md
   - docs/business-os/market-research/HBAG/market-04-channel-landscape.user.md
   - docs/business-os/market-research/HBAG/market-05-assumptions-risk-register.user.md
-  - docs/business-os/startup-baselines/HBAG-intake-packet.user.md
-  - docs/business-os/strategy/HBAG/brand-dossier.user.md
+  - docs/business-os/startup-baselines/-<YYYY-MM-DD>intake-packet.user.md
+  - docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md
 decisions:
   - DEC-HBAG-01
 ---
@@ -341,8 +341,8 @@ Practical implication: at €99, after Etsy fees + €25–€35 estimated inter
 | Pricing benchmarks | `docs/business-os/market-research/HBAG/market-03-pricing-benchmarks.user.md` | MARKET-03 | H1 €99 / H2 €89 recommended; photography is real differentiator |
 | Channel landscape | `docs/business-os/market-research/HBAG/market-04-channel-landscape.user.md` | MARKET-04 | Etsy setup; US de minimis; TikTok/Instagram; fee stack |
 | Assumptions and risk register | `docs/business-os/market-research/HBAG/market-05-assumptions-risk-register.user.md` | MARKET-05 | Pre-launch blockers; kill tests; evidence conflicts |
-| Intake packet | `docs/business-os/startup-baselines/HBAG-intake-packet.user.md` | ASSESSMENT | ICP; product specs; constraints register; outcome contract |
-| Brand dossier | `docs/business-os/strategy/HBAG/brand-dossier.user.md` | ASSESSMENT-11 | Voice; words to avoid; origin claim; key phrases; colour/type |
+| Intake packet | `docs/business-os/startup-baselines/-<YYYY-MM-DD>intake-packet.user.md` | ASSESSMENT | ICP; product specs; constraints register; outcome contract |
+| Brand dossier | `docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md` | ASSESSMENT-11 | Voice; words to avoid; origin claim; key phrases; colour/type |
 | Prior market intelligence | `docs/business-os/market-research/HBAG/2026-02-20-market-intelligence.user.md` | Backfill | JOOR 12×; Pinterest +700%; baseline market signals |
 | Mini-handbag PMF fact-find | `docs/plans/mini-handbag-pmf/fact-find.md` | Planning | Variant scoring; AirPod fit confirmation; CE marking result |
 

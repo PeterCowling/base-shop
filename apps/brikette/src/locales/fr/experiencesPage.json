@@ -106,7 +106,7 @@
       "positanoRavello": {
         "positanoRavelloBus": "Positano → Ravello en bus",
         "ravelloPositanoBus": "Ravello → Positano en bus",
-        "positanoRavelloFerryBus": "Positano → Ravello ferry + bus"
+        "positanoRavelloFerryBus": "Positano → Ravello en ferry + bus"
       },
       "naplesPositano": {
         "naplesCenterTrainBus": "Centre de Naples → Positano (train + bus)",

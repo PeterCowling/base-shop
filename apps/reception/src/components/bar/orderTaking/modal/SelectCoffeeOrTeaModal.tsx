@@ -43,7 +43,7 @@ function SelectCoffeeOrTeaModalBase(
           <Button
             key={o.product}
             onClick={createSelectHandler(o.product)}
-            color="success"
+            color="primary"
             tone="solid"
           >
             {o.count > 1 ? `${o.count}x ` : ""}

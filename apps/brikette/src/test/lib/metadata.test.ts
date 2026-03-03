@@ -66,7 +66,7 @@ describe("buildAppMetadata", () => {
       lang: "en",
       title: "Rooms",
       description: "Our rooms",
-      path: "/en/rooms",
+      path: "/en/dorms",
     });
 
     // Verify localized slugs (not naive string replacement)
@@ -136,7 +136,7 @@ describe("buildAppMetadata", () => {
     expect(Array.isArray(metadata.openGraph?.images)).toBe(true);
 
     // Twitter metadata
-    expect((metadata.twitter as any)?.card).toBe("summary_large_image"); // eslint-disable-line @typescript-eslint/no-explicit-any
+    expect((metadata.twitter as any)?.card).toBe("summary_large_image");  
     expect(metadata.twitter?.site).toBe("@hostelbrikette");
     expect(metadata.twitter?.creator).toBe("@hostelbrikette");
     expect(metadata.twitter?.title).toBe("Test Page");

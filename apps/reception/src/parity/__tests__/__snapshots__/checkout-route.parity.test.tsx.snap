@@ -3,72 +3,86 @@
 exports[`/checkout parity matches baseline checkout selectors and DOM snapshot 1`] = `
 <div>
   <div
-    class="min-h-80vh p-4 bg-surface-2 font-sans text-foreground"
+    class="bg-gradient-to-b from-surface-2 to-surface-3 min-h-80vh p-4 font-sans text-foreground"
   >
-    <h1
-      class="w-full mb-6 text-5xl text-center font-heading text-primary-main"
-    >
-      CHECKOUTS
-    </h1>
     <div
-      class="flex-grow p-6 space-y-4 bg-surface rounded-lg shadow"
+      class="mb-6 flex items-center gap-3"
     >
       <div
-        class="relative pb-5 bg-surface-2 rounded border border-border-2"
+        aria-hidden="true"
+        class="h-7 w-1 rounded-full bg-primary-main"
+      />
+      <h1
+        class="text-2xl font-heading font-semibold text-foreground"
+      >
+        CHECKOUTS
+      </h1>
+    </div>
+    <div
+      class="flex-grow p-6 space-y-4 bg-surface rounded-lg shadow-lg"
+    >
+      <div
+        class="flex flex-col gap-3 px-4 py-3 bg-surface-2 rounded-lg border border-border-strong"
       >
         <div
-          class="flex flex-nowrap gap-2 items-center"
+          class="flex items-center justify-between gap-4"
         >
           <div
             class="flex flex-wrap gap-2 items-center justify-start"
           >
             <button
-              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2"
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded-lg text-sm font-medium text-center transition-colors bg-surface text-foreground border-border-strong hover:bg-surface-2"
               data-token="--color-primary"
             >
               Yesterday
             </button>
             <button
-              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 hover:bg-primary/90 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-primary-main text-primary-fg border-primary-main"
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 hover:bg-primary/90 px-4 py-2 border rounded-lg text-sm font-medium text-center transition-colors bg-primary-main text-primary-fg border-primary-main"
               data-token="--color-primary"
             >
               Today
             </button>
             <button
-              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2"
-              data-token="--color-primary"
-            >
-              Wed
-            </button>
-            <button
-              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2"
-              data-token="--color-primary"
-            >
-              Thu
-            </button>
-            <button
-              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2"
-              data-token="--color-primary"
-            >
-              Fri
-            </button>
-            <button
-              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2"
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded-lg text-sm font-medium text-center transition-colors bg-surface text-foreground border-border-strong hover:bg-surface-2"
               data-token="--color-primary"
             >
               Sat
             </button>
             <button
-              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded text-sm font-medium w-100px text-center transition-colors bg-surface text-foreground border-border-2 hover:bg-surface-2"
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded-lg text-sm font-medium text-center transition-colors bg-surface text-foreground border-border-strong hover:bg-surface-2"
               data-token="--color-primary"
             >
               Sun
             </button>
+            <button
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded-lg text-sm font-medium text-center transition-colors bg-surface text-foreground border-border-strong hover:bg-surface-2"
+              data-token="--color-primary"
+            >
+              Mon
+            </button>
+            <button
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded-lg text-sm font-medium text-center transition-colors bg-surface text-foreground border-border-strong hover:bg-surface-2"
+              data-token="--color-primary"
+            >
+              Tue
+            </button>
+            <button
+              class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border rounded-lg text-sm font-medium text-center transition-colors bg-surface text-foreground border-border-strong hover:bg-surface-2"
+              data-token="--color-primary"
+            >
+              Wed
+            </button>
           </div>
+          <button
+            class="inline-flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 shrink-0 px-3 py-2 border rounded-lg text-sm font-medium transition-colors bg-surface text-foreground border-border-strong hover:bg-surface-2"
+            data-token="--color-primary"
+          >
+            2026-02-27
+          </button>
         </div>
       </div>
       <div
-        class="bg-surface border border-border-2 rounded shadow overflow-x-auto"
+        class="bg-surface border border-border-2 rounded-lg shadow-md overflow-x-auto"
       >
         <div
           class="w-full overflow-x-auto"
@@ -78,48 +92,48 @@ exports[`/checkout parity matches baseline checkout selectors and DOM snapshot 1
             class="text-foreground text-left text-sm w-full border-collapse"
           >
             <thead
-              class="text-foreground border-b border-border-2 bg-surface-2"
+              class="text-foreground border-b border-border-2 sticky top-0 z-10 backdrop-blur-sm bg-surface-2/80"
             >
               <tr
                 class="border-b border-border-1 transition-colors hover:bg-surface-2 data-[state=selected]:bg-surface-3"
               >
                 <th
-                  class="text-foreground font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2"
+                  class="font-semibold break-words text-center p-3 border-b border-border-2 text-muted-foreground"
                 >
                   DATE
                 </th>
                 <th
-                  class="text-foreground font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2"
+                  class="font-semibold break-words text-center p-3 border-b border-border-2 text-muted-foreground"
                 >
                   REF
                 </th>
                 <th
-                  class="text-foreground font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2"
+                  class="font-semibold break-words text-center p-3 border-b border-border-2 text-muted-foreground"
                 >
                   NAME
                 </th>
                 <th
-                  class="text-foreground font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2"
+                  class="font-semibold break-words text-center p-3 border-b border-border-2 text-muted-foreground"
                 >
                   ROOM
                 </th>
                 <th
-                  class="text-foreground font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2 w-48"
+                  class="font-semibold break-words text-center p-3 border-b border-border-2 text-muted-foreground w-48"
                 >
                   LOANS
                 </th>
                 <th
-                  class="text-foreground font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2"
+                  class="font-semibold break-words text-center p-3 border-b border-border-2 text-muted-foreground"
                 >
                   BAG STORAGE
                 </th>
                 <th
-                  class="text-foreground font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2"
+                  class="font-semibold break-words text-center p-3 border-b border-border-2 text-muted-foreground"
                 >
                   FRIDGE
                 </th>
                 <th
-                  class="text-foreground font-semibold break-words sticky top-0 z-10 text-center p-3 border-b border-border-2 w-32"
+                  class="font-semibold break-words text-center p-3 border-b border-border-2 text-muted-foreground w-32"
                 >
                   COMPLETE
                 </th>
@@ -162,20 +176,71 @@ exports[`/checkout parity matches baseline checkout selectors and DOM snapshot 1
                     data-token="--color-primary"
                     title="Umbrella"
                   >
-                    <i
+                    <svg
                       aria-hidden="true"
-                      class="fas fa-umbrella fa-lg text-info-main"
-                    />
+                      class="lucide lucide-umbrella text-primary-main"
+                      fill="none"
+                      height="18"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                      width="18"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M12 13v7a2 2 0 0 0 4 0"
+                      />
+                      <path
+                        d="M12 2v2"
+                      />
+                      <path
+                        d="M20.992 13a1 1 0 0 0 .97-1.274 10.284 10.284 0 0 0-19.923 0A1 1 0 0 0 3 13z"
+                      />
+                    </svg>
                   </button>
                 </td>
                 <td
                   class="align-middle min-w-0 break-words p-3 border-b border-border-2 text-center"
                 >
-                  <i
-                    aria-hidden="true"
-                    class="fas fa-suitcase fa-lg text-info-main"
+                  <span
                     title="Bag Storage"
-                  />
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="lucide lucide-luggage text-primary-main inline-block"
+                      fill="none"
+                      height="18"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                      width="18"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6 20a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2"
+                      />
+                      <path
+                        d="M8 18V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v14"
+                      />
+                      <path
+                        d="M10 20h4"
+                      />
+                      <circle
+                        cx="16"
+                        cy="20"
+                        r="2"
+                      />
+                      <circle
+                        cx="8"
+                        cy="20"
+                        r="2"
+                      />
+                    </svg>
+                  </span>
                 </td>
                 <td
                   class="align-middle min-w-0 break-words p-3 border-b border-border-2"
@@ -185,7 +250,7 @@ exports[`/checkout parity matches baseline checkout selectors and DOM snapshot 1
                 >
                   <button
                     aria-label="Complete checkout"
-                    class="inline-flex items-center justify-center font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 rounded text-primary-fg transition-colors duration-200 bg-info-main hover:bg-info-main"
+                    class="inline-flex items-center justify-center font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 text-sm px-4 py-2 rounded-lg text-primary-fg transition-colors duration-200 bg-primary-main hover:bg-primary-dark"
                     data-token="--color-primary"
                     title="Complete checkout"
                   >

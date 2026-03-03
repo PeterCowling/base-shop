@@ -51,6 +51,118 @@
           "body": "Hver seng har egne stikkontakter, læselamper og nøglekortskabe, så du kan slappe af."
         }
       ]
+    },
+    "room_3": {
+      "amenities": [
+        {
+          "title": "Fremragende prisværdi, perfekt beliggenhed",
+          "body": "En af vores mest overkommelige muligheder ligger midt i vandrerhjemmets hjerte — tæt på receptionen, det fælles køkken og medrejsende."
+        },
+        {
+          "title": "Etage kun for kvinder",
+          "body": "Rum 3 er en del af vandrerhjemmets kvindeopdelte sektion. Det nærliggende fællesbad er rent, velforsynet og udelukkende for kvindelige gæster."
+        },
+        {
+          "title": "Privatliv indbygget i hver seng",
+          "body": "Hvert køjeseng har privatlivsgardiner, en personlig læselampe og ladeudtag, så du kan slå dig ned på et vilkårligt tidspunkt uden at forstyrre naboerne."
+        }
+      ]
+    },
+    "room_4": {
+      "amenities": [
+        {
+          "title": "Plads kun for kvinder",
+          "body": "Et dedikeret kvindesoverum med eget fælles badeværelse — rent, velvedligeholdt og reserveret udelukkende til kvindelige gæster på denne etage."
+        },
+        {
+          "title": "Plads til alle",
+          "body": "Otte senge på fire køjesenge betyder, at der altid er nogen at dele en anbefaling eller en strandtur med, uden kaos i et større blandet soverum."
+        },
+        {
+          "title": "Det nødvendige ved hvert seng",
+          "body": "Hvert seng har privatlivsgardiner, en læselampe og USB-ladeudtag, så din telefon er klar til morgendagens eventyr."
+        }
+      ]
+    },
+    "room_5": {
+      "amenities": [
+        {
+          "title": "Terrasse med havudsigt inkluderet",
+          "body": "Gå ud på den fælles terrasse for at nyde panoramaudsigten over Positano og Det Tyrrhenske Hav — en baggrund de fleste gæster aldrig vil forlade."
+        },
+        {
+          "title": "Privat badeværelse til rummet",
+          "body": "Et privat badeværelse, der kun deles med roommates, betyder ingen morgenkøer og al den plads du behøver for at gøre dig klar i dit eget tempo."
+        },
+        {
+          "title": "Socialt men behageligt",
+          "body": "Seks senge i en åben opsætning med gardiner, læselamper og ladepunkter ved hvert seng — tæt nok til at gøre venner, privat nok til at sove godt."
+        }
+      ]
+    },
+    "room_6": {
+      "amenities": [
+        {
+          "title": "Terrasse med udsigt over Amalfikysten",
+          "body": "Den delte terrasse med havudsigt er et stenkast fra rummet — perfekt til morgenstræk, aftenaperitivit eller blot at se på bådene i bugten nedenfor."
+        },
+        {
+          "title": "Dit eget badeværelse",
+          "body": "Ensuitebadet tilhører kun dette rum, så du sætter planen for morgenbrusere uden nogensinde at stå i kø."
+        },
+        {
+          "title": "Fleksibelt sengelayout",
+          "body": "Tre køjesenge plus en enkelt seng passer naturligt til solofejsere og par, hvert sted udstyret med gardiner, lamper og ladeudtag."
+        }
+      ]
+    },
+    "room_8": {
+      "amenities": [
+        {
+          "title": "Haveretreat",
+          "body": "Et roligt udsyn over vandrerhjemmets have gør rum 8 til et af de roligste steder i bygningen — ideelt for tidlige fugle eller lette sovere."
+        },
+        {
+          "title": "Intimt kvindeopdelt miljø",
+          "body": "Med kun to senge i et kvindeopdelt miljø er dette den nærmeste vandrerhjemoplevelse til at have et privatrum — uden prisen for et privatrum."
+        },
+        {
+          "title": "Fællesbad i nærheden",
+          "body": "Et pletfrit kvindeopdelt fællesbad er kun et stenkast fra døren, velforsynet og velvedligeholdt hele dagen."
+        }
+      ]
+    },
+    "room_9": {
+      "amenities": [
+        {
+          "title": "Badeværelse til tre",
+          "body": "Et privat badeværelse, der kun deles af tre gæster, betyder virkelig korte køer og en afslappet morgenrutine — en sjælden luksus i vandrerhjemreserne."
+        },
+        {
+          "title": "Gårdens ro",
+          "body": "Vendende indad over vandrerhjemmets beskyttede gård, forbliver rummet køligere og mere stille end havsidefloret — en velkommen flugt efter en fuld dag med udforskning."
+        },
+        {
+          "title": "Intim gruppefornemmel",
+          "body": "Tre enkelsenge i stedet for køjesenge giver rummet et mere afslappet layout — behageligt for solofejsere, der sætter pris på lidt ekstra gulvplads og lys."
+        }
+      ]
+    },
+    "room_10": {
+      "amenities": [
+        {
+          "title": "Badeværelse til hele sovesal",
+          "body": "Seks gæster deler ét badeværelse og ingen andre — morgenrutiner forløber mere glat, når badeværelset er dit og ikke hele etagenes."
+        },
+        {
+          "title": "Klassisk vandrerhjemsmiljø",
+          "body": "Et livligt blandet soverum med tre køjesenge er perfekt til solofejsere klar til at møde folk fra hele verden inden for den første time efter ankomsten."
+        },
+        {
+          "title": "Opladet og klar",
+          "body": "Hvert køjeseng inkluderer en læselampe, USB-ladeudtag og privatlivsgardiner, så du kan slukke efter din egen tidsplan, selv når rummet er travlt."
+        }
+      ]
     }
   }
 }

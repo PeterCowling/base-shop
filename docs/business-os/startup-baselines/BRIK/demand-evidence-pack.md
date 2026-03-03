@@ -167,4 +167,4 @@ site), not demand generation.
 - Market intelligence: `docs/business-os/market-research/BRIK/2026-02-15-market-intelligence.user.md`
 - Reviews (observed 2026-02-15): Hostelworld 9.3/10 (2,757 reviews); Booking.com 9.0/10 (579 reviews)
 - GATE-S6B-STRAT-01 definition: `docs/business-os/../.claude/skills/startup-loop/modules/cmd-advance.md`
-- DEP schema: `docs/business-os/startup-loop/demand-evidence-pack-schema.md`
+- DEP schema: `docs/business-os/startup-loop/schemas/demand-evidence-pack-schema.md`

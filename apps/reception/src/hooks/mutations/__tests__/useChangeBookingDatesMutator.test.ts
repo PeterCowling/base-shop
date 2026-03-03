@@ -39,6 +39,11 @@ jest.mock("../useFinancialsRoomMutations", () => ({
   default: () => ({ saveFinancialsRoom: saveFinancialsRoomMock }),
 }));
 
+let useOnlineStatusMock: jest.Mock;
+jest.mock("../../../lib/offline/useOnlineStatus", () => ({
+  useOnlineStatus: () => useOnlineStatusMock(),
+}));
+
 beforeEach(() => {
   refMock = jest.fn((_db: unknown, path?: string) => path ?? "");
   updateMock = jest.fn();
@@ -50,6 +55,7 @@ beforeEach(() => {
     .mockReturnValueOnce("txnA")
     .mockReturnValueOnce("txnB");
   saveFinancialsRoomMock = jest.fn();
+  useOnlineStatusMock = jest.fn().mockReturnValue(true);
 });
 
 describe("useBookingDatesMutator", () => {
@@ -132,5 +138,25 @@ describe("useBookingDatesMutator", () => {
 
     expect(result.current.isError).toBe(true);
     expect(result.current.error).toBe(err);
+  });
+
+  it("returns early with isError when offline", async () => {
+    useOnlineStatusMock.mockReturnValue(false);
+    const { result } = renderHook(() => useBookingDatesMutator());
+
+    await act(async () => {
+      await result.current.updateBookingDates({
+        bookingRef: "BR1",
+        occupantId: "occ1",
+        oldCheckIn: "2024-01-01",
+        oldCheckOut: "2024-01-05",
+        newCheckIn: "2024-01-01",
+        newCheckOut: "2024-01-05",
+      });
+    });
+
+    expect(result.current.isError).toBe(true);
+    expect(result.current.error).toBeInstanceOf(Error);
+    expect(updateMock).not.toHaveBeenCalled();
   });
 });

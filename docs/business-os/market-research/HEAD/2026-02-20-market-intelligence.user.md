@@ -114,7 +114,7 @@ This market-intelligence refresh is consumed by:
 - `docs/business-os/startup-baselines/HEAD-offer.md` (S2B)
 - `docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md` (S3)
 - `docs/business-os/startup-baselines/HEAD-channels.md` (S6B)
-- `docs/business-os/strategy/HEAD/2026-02-20-prioritization-scorecard.user.md` (S5A)
+- `docs/business-os/strategy/HEAD/2026-02-20-prioritization-scorecard.user.md` (S4)
 
 Canonical outcome contract remains:
 - `docs/business-os/contracts/HEAD/outcome-contract.user.md`
@@ -235,4 +235,3 @@ Time-sensitive regulatory milestones relevant to HEAD's 2026 launch year:
 | EN 14682 | Standard | Governs cords/drawstrings in children's clothing. Applies to any tether-class or corded component around children's neck/head region. Reinforces tether deferral gate. |
 | Textile labelling (Reg. (EU) 1007/2011) | In force | Italy-facing products must display fibre composition in Italian, in descending proportion order, without abbreviations. |
 | REACH (SVHCs) | In force | Duty to communicate if candidate-list substances exceed thresholds in articles. Standard baseline for any EU textile accessory brand. |
-

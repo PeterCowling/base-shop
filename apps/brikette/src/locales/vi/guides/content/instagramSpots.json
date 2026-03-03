@@ -101,7 +101,7 @@
       ]
     },
     "alternatives": {
-      "heading": "Underrated alternatives",
+      "heading": "Đánh giá",
       "items": [
         {
           "title": "Chiesa Nuova terraces",
@@ -122,14 +122,14 @@
       ]
     },
     "sunset": {
-      "heading": "Sunset choices",
+      "heading": "Name",
       "paragraphs": [
         "Bản dịch đang được chuẩn bị.",
         "Bản dịch đang được chuẩn bị."
       ]
     },
     "etiquette": {
-      "heading": "Etiquette & local tips",
+      "heading": "Lời khuyên Etiquette và cục bộ",
       "items": [
         "Bản dịch đang được chuẩn bị.",
         "Bản dịch đang được chuẩn bị.",
@@ -137,7 +137,7 @@
       ]
     },
     "faqs": {
-      "heading": "FAQs",
+      "heading": "Câu hỏi thường gặp",
       "items": [
         {
           "summary": "Bản dịch đang được chuẩn bị.",
@@ -146,13 +146,13 @@
       ]
     },
     "drone": {
-      "summary": "Do I need a drone permit?",
+      "summary": "Tôi có cần giấy phép lái máy bay không?",
       "body": "Bản dịch đang được chuẩn bị."
     },
     "galleryAlt": [
       "Positano from above",
       "Coastal panorama"
     ],
-    "galleryFallbackAlt": "Scenic view of Positano coastline"
+    "galleryFallbackAlt": "Hình chữ nhật của bờ biển Positano"
   }
 }

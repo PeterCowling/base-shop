@@ -51,7 +51,7 @@ Improve S10 with a dedicated weekly orchestrator contract and coordinated weekly
 ### Constraints & Assumptions
 - Constraints:
   - S10 decision authority remains `weekly-kpcs-decision-prompt.md`.
-  - Stage graph authority remains `docs/business-os/startup-loop/loop-spec.yaml`.
+  - Stage graph authority remains `docs/business-os/startup-loop/specifications/loop-spec.yaml`.
   - Any new orchestrator must preserve existing S10 outputs and compatibility aliases.
 - Assumptions:
   - `/lp-weekly` is an orchestration wrapper, not a replacement for `/lp-experiment` internals.
@@ -60,7 +60,7 @@ Improve S10 with a dedicated weekly orchestrator contract and coordinated weekly
 ## Authority Stack
 | Surface | Authority | Non-authority |
 |---|---|---|
-| `docs/business-os/startup-loop/loop-spec.yaml` | Stage graph, stage mapping, stage ordering constraints | Not weekly memo content authority |
+| `docs/business-os/startup-loop/specifications/loop-spec.yaml` | Stage graph, stage mapping, stage ordering constraints | Not weekly memo content authority |
 | `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md` | Weekly decision content authority (Sections A-H) | Not stage graph authority |
 | S10 orchestrator skill (`/lp-weekly`, proposed) | Execution order, preflight checks, packetization, cross-artifact linking | Does not replace prompt authority or stage graph authority |
 
@@ -69,19 +69,19 @@ Improve S10 with a dedicated weekly orchestrator contract and coordinated weekly
 | Surface | What it controls |
 |---|---|
 | `.claude/skills/startup-loop/SKILL.md` | Stage-to-skill mapping summary (S10 -> `/lp-experiment`) |
-| `docs/business-os/startup-loop/loop-spec.yaml` | Canonical S10 stage contract and prompt template pointer |
+| `docs/business-os/startup-loop/specifications/loop-spec.yaml` | Canonical S10 stage contract and prompt template pointer |
 | `.claude/skills/startup-loop/modules/cmd-advance.md` | S10 dispatch/gates behavior (`/lp-signal-review`, feedback gap-fill dispatch) |
 | `.claude/skills/lp-experiment/SKILL.md` | Experiment lifecycle (design/readout) |
 | `.claude/skills/lp-signal-review/SKILL.md` | Weekly signal-strengthening audit flow |
 | `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md` | KPCS memo output format and Section H weekly audit |
-| `docs/business-os/startup-loop/audit-cadence-contract-v1.md` | Weekly light-audit + monthly deep-audit rules |
+| `docs/business-os/startup-loop/contracts/audit-cadence-contract-v1.md` | Weekly light-audit + monthly deep-audit rules |
 | `docs/business-os/startup-loop-workflow.user.md` | Operator cadence and standing workflow contracts |
 | `docs/plans/startup-loop-orchestrated-os-comparison-v2/plan.md` | Active v2 scope boundaries and acceptance criteria |
 
 ### Key Modules / Files
 - `.claude/skills/startup-loop/SKILL.md`
   - S10 currently mapped to `/lp-experiment`.
-- `docs/business-os/startup-loop/loop-spec.yaml`
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml`
   - S10 skill is `/lp-experiment`; prompt is `weekly-kpcs-decision-prompt.md`.
 - `.claude/skills/startup-loop/modules/cmd-advance.md`
   - S10 includes GATE-BD-08 warning.
@@ -91,7 +91,7 @@ Improve S10 with a dedicated weekly orchestrator contract and coordinated weekly
   - Defines experiment `design` and per-experiment `readout`.
 - `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`
   - Defines KPCS output A-G plus Section H weekly audit.
-- `docs/business-os/startup-loop/audit-cadence-contract-v1.md`
+- `docs/business-os/startup-loop/contracts/audit-cadence-contract-v1.md`
   - Defines weekly light-audit and monthly deep-audit contracts.
 
 ### Patterns & Conventions Observed
@@ -122,7 +122,7 @@ Search surfaces:
 - `.claude/skills/startup-loop/SKILL.md`
 - `.claude/skills/startup-loop/modules/cmd-advance.md`
 - `.claude/skills/lp-experiment/SKILL.md`
-- `docs/business-os/startup-loop/audit-cadence-contract-v1.md`
+- `docs/business-os/startup-loop/contracts/audit-cadence-contract-v1.md`
 - `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`
 
 ### Dependency & Impact Map

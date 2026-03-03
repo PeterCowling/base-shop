@@ -51,6 +51,118 @@
           "body": "Mỗi giường có đèn đọc sách, ổ cắm riêng và tủ khóa sử dụng thẻ từ để bạn sạc thiết bị an toàn."
         }
       ]
+    },
+    "room_3": {
+      "amenities": [
+        {
+          "title": "Tuyệt vời về giá trị, vị trí hoàn hảo",
+          "body": "Một trong những lựa chọn phải chăng nhất của chúng tôi nằm ngay trung tâm nhà nghỉ — gần quầy lễ tân, bếp chung và những du khách khác."
+        },
+        {
+          "title": "Tầng dành riêng cho phụ nữ",
+          "body": "Phòng 3 là một phần của khu dành riêng cho phụ nữ trong nhà nghỉ. Nhà tắm chung gần đó sạch sẽ, được trang bị tốt và dành riêng cho khách nữ."
+        },
+        {
+          "title": "Quyền riêng tư trong mỗi giường",
+          "body": "Mỗi giường tầng đều có rèm riêng tư, đèn đọc sách cá nhân và ổ cắm sạc để bạn có thể ổn định bất cứ lúc nào mà không làm phiền hàng xóm."
+        }
+      ]
+    },
+    "room_4": {
+      "amenities": [
+        {
+          "title": "Không gian dành riêng cho phụ nữ",
+          "body": "Phòng ngủ tập thể dành riêng cho phụ nữ với nhà tắm chung riêng — sạch sẽ, được bảo dưỡng tốt và dành riêng cho khách nữ ở tầng này."
+        },
+        {
+          "title": "Chỗ cho tất cả mọi người",
+          "body": "Tám giường trên bốn giường tầng có nghĩa là luôn có người để chia sẻ lời khuyên hoặc đi biển cùng, không có sự hỗn loạn của phòng ngủ tập thể hỗn hợp lớn hơn."
+        },
+        {
+          "title": "Tiện ích tại mỗi giường",
+          "body": "Mỗi giường có rèm riêng tư, đèn đọc sách và ổ cắm USB để điện thoại của bạn sẵn sàng cho những cuộc phiêu lưu ngày mai."
+        }
+      ]
+    },
+    "room_5": {
+      "amenities": [
+        {
+          "title": "Sân thượng có view biển",
+          "body": "Bước ra sân thượng chung để tận hưởng tầm nhìn toàn cảnh Positano và Biển Tyrrhenian — một khung cảnh mà hầu hết khách không muốn rời đi."
+        },
+        {
+          "title": "Phòng tắm riêng cho phòng",
+          "body": "Phòng tắm riêng chỉ chia sẻ với bạn cùng phòng có nghĩa là không có hàng đợi buổi sáng và đủ không gian để chuẩn bị theo nhịp độ của riêng bạn."
+        },
+        {
+          "title": "Xã hội nhưng thoải mái",
+          "body": "Sáu giường theo bố cục mở với rèm, đèn đọc sách và điểm sạc ở mỗi giường — đủ gần để kết bạn, đủ riêng tư để ngủ ngon."
+        }
+      ]
+    },
+    "room_6": {
+      "amenities": [
+        {
+          "title": "Sân thượng view bờ biển Amalfi",
+          "body": "Sân thượng chung có view biển cách phòng vài bước chân — hoàn hảo để giãn cơ lúc bình minh, uống aperitivo buổi tối hoặc chỉ đơn giản là ngắm thuyền trong vịnh bên dưới."
+        },
+        {
+          "title": "Phòng tắm riêng của bạn",
+          "body": "Phòng tắm ensuite chỉ thuộc về phòng này, vì vậy bạn tự lên lịch tắm buổi sáng mà không bao giờ phải xếp hàng."
+        },
+        {
+          "title": "Bố cục giường linh hoạt",
+          "body": "Ba giường tầng cộng một giường đơn phù hợp tự nhiên với khách một mình và cặp đôi, mỗi chỗ được trang bị rèm, đèn và ổ cắm sạc."
+        }
+      ]
+    },
+    "room_8": {
+      "amenities": [
+        {
+          "title": "Ốc đảo view vườn",
+          "body": "Góc nhìn yên tĩnh ra khu vườn nhà nghỉ khiến phòng 8 là một trong những nơi yên tĩnh nhất trong tòa nhà — lý tưởng cho người dậy sớm hoặc ngủ nhẹ."
+        },
+        {
+          "title": "Không gian riêng tư dành cho phụ nữ",
+          "body": "Chỉ với hai giường trong môi trường dành riêng cho phụ nữ, đây là trải nghiệm nhà nghỉ gần nhất với phòng riêng — mà không có giá phòng riêng."
+        },
+        {
+          "title": "Nhà tắm chung gần đó",
+          "body": "Nhà tắm chung tinh tươm dành riêng cho phụ nữ chỉ cách cửa vài bước, được cung cấp đầy đủ và duy trì tốt suốt cả ngày."
+        }
+      ]
+    },
+    "room_9": {
+      "amenities": [
+        {
+          "title": "Phòng tắm cho ba người",
+          "body": "Phòng tắm riêng chỉ chia sẻ với ba khách có nghĩa là hàng đợi thực sự ngắn và thói quen buổi sáng thư giãn — một sự xa xỉ hiếm có trong du lịch nhà nghỉ."
+        },
+        {
+          "title": "Sự yên tĩnh của sân trong",
+          "body": "Nhìn vào bên trong qua sân trong được che chắn của nhà nghỉ, phòng mát mẻ và yên tĩnh hơn các tầng hướng biển — nơi trốn tránh được chào đón sau một ngày khám phá đầy đủ."
+        },
+        {
+          "title": "Cảm giác nhóm thân mật",
+          "body": "Ba giường đơn thay vì giường tầng mang lại bố cục thư giãn hơn cho phòng — thoải mái cho khách một mình thích thêm không gian sàn và ánh sáng."
+        }
+      ]
+    },
+    "room_10": {
+      "amenities": [
+        {
+          "title": "Phòng tắm cho cả ký túc xá",
+          "body": "Sáu khách chia sẻ một phòng tắm và không ai khác — thói quen buổi sáng diễn ra suôn sẻ hơn khi phòng tắm là của bạn chứ không phải của cả tầng."
+        },
+        {
+          "title": "Không khí nhà nghỉ truyền thống",
+          "body": "Ký túc xá hỗn hợp sôi động với ba giường tầng hoàn hảo cho khách một mình sẵn sàng gặp gỡ người từ khắp nơi trên thế giới trong giờ đầu tiên đến."
+        },
+        {
+          "title": "Đã sạc và sẵn sàng",
+          "body": "Mỗi giường tầng bao gồm đèn đọc sách, ổ cắm USB và rèm riêng tư để bạn có thể nghỉ ngơi theo lịch trình của mình ngay cả khi phòng bận rộn."
+        }
+      ]
     }
   }
 }

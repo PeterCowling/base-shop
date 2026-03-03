@@ -1,9 +1,5 @@
 "use client";
 
-/* eslint-disable ds/no-raw-color, ds/no-arbitrary-tailwind, ds/container-widths-only-at -- XAUP-0001 [ttl=2026-12-31] Gate UI pending design token refactor */
-
-import type { CSSProperties } from "react";
-
 import CatalogConsole from "../components/catalog/CatalogConsole.client";
 import { LanguageToggle } from "../components/LanguageToggle.client";
 import { UploaderI18nProvider, useUploaderI18n } from "../lib/uploaderI18n.client";
@@ -35,20 +31,13 @@ function UploaderHomeInner({
 
   return (
     <main
-      className={`${displayClassName} relative min-h-dvh overflow-hidden bg-[color:var(--gate-bg)] text-[color:var(--gate-ink)]`}
-      style={
-        {
-          "--gate-bg": "#ffffff",
-          "--gate-ink": "#111111",
-          "--gate-muted": "#6b6b6b",
-          "--gate-accent": "#111111",
-        } as CSSProperties
-      }
+      className={`${displayClassName} relative min-h-dvh overflow-hidden bg-gate-bg text-gate-ink`}
     >
+      {/* eslint-disable-next-line ds/container-widths-only-at -- XAUP-0001 operator-tool page layout */}
       <div className="relative mx-auto flex min-h-dvh max-w-6xl flex-col justify-center px-6 py-16">
         <div className={`space-y-3 ${styles.uploaderFade}`}>
           <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className={`text-xs uppercase tracking-[0.45em] ${monoClassName}`}>
+            <div className={`text-xs uppercase tracking-label-xl ${monoClassName}`}>
               {t("pageKicker")}
             </div>
             <LanguageToggle monoClassName={monoClassName} />
@@ -56,7 +45,8 @@ function UploaderHomeInner({
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h1 className="text-3xl font-semibold md:text-4xl">{t("pageTitle")}</h1>
           </div>
-          <p className="max-w-2xl text-sm text-[color:var(--gate-muted)]">
+          {/* eslint-disable-next-line ds/container-widths-only-at -- XAUP-0001 operator-tool prose width */}
+          <p className="max-w-2xl text-sm text-gate-muted">
             {t("pageSubtitle")}
           </p>
         </div>

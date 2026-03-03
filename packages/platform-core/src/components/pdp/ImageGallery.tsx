@@ -15,7 +15,7 @@ export default function ImageGallery({ items }: { items: MediaItem[] }) {
   // Tailwind utility tokens used in template classes
   const zoomOut = "cursor-zoom-out"; // i18n-exempt -- ABC-123 CSS utility token
   const zoomIn = "cursor-zoom-in"; // i18n-exempt -- ABC-123 CSS utility token
-  const selectedRing = " ring-2 ring-black"; // i18n-exempt -- ABC-123 CSS utility token
+  const selectedRing = " ring-2 ring-foreground"; // i18n-exempt -- ABC-123 CSS utility token
   const responsiveSizes = "(min-width: 1024px) 50vw, 100vw"; // i18n-exempt -- ABC-123 responsive sizes attribute value
 
   return (

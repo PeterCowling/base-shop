@@ -1,0 +1,43 @@
+name: Brikette Booking Funnel Contracts
+
+on:
+  pull_request:
+    paths:
+      - "apps/brikette/**"
+      - "packages/ui/**"
+      - ".github/workflows/brikette-booking-funnel-contracts.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: brikette-booking-funnel-contracts-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  booking-funnel-contracts:
+    name: Booking funnel contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+
+      - name: Run targeted booking-funnel contract suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          start_epoch="$(date +%s)"
+          pnpm --filter @apps/brikette test:booking-funnel-contracts
+          end_epoch="$(date +%s)"
+          elapsed="$((end_epoch - start_epoch))"
+          echo "Booking funnel contract runtime: ${elapsed}s"
+          if [ "$elapsed" -gt 120 ]; then
+            echo "Runtime exceeded 120s target."
+            exit 1
+          fi

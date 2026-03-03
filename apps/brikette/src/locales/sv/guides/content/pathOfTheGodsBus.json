@@ -76,25 +76,25 @@
       ]
     }
   ],
-  "essentialsTitle": "Essentials",
+  "essentialsTitle": "Väsentliga",
   "essentials": [
     "Tre SITA-biljetter per person (Positano → Amalfi, Amalfi → Bomerano, Nocelle → Positano) plus en extra.",
     "Vatten, snacks, solskyddsmedel och lager för en exponerad åsvandring.",
     "Bekväma skor med grepp och en laddad telefon med offlinekartor."
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "Typiska kostnader",
   "typicalCosts": [
     "SITA bussbiljetter: €2–4 € per etapp beroende på carnet eller integrerade priser.",
     "Kaffe eller snacks under Amalfi-förbindelsen: €2–6€.",
     "Trail access: free."
   ],
-  "tipsTitle": "Route tips",
+  "tipsTitle": "Route Tips",
   "tips": [
     "Kom 10–15 minuter tidigt vid varje hållplats – bussarna kan fyllas före högsäsongsavgångar.",
     "Sitt på höger sida och lämna Positano för en vidsträckt utsikt över kusten och till vänster när du återvänder från Amalfi.",
     "Ta med småpengar om du behöver validera en extra biljett ombord."
   ],
-  "warningsTitle": "Watch-outs",
+  "warningsTitle": "Varningar",
   "warnings": [
     "Följ inte den 1 700 stegiga trappan från Nocelle om du inte är beredd på en ansträngande, knä-intensiv nedstigning.",
     "Helgtjänster kan vara försenade; ha snacks och vatten till hands om du väntar längre än planerat.",
@@ -126,7 +126,7 @@
       "text": "Ta bussen Nocelle/Montepertuso tillbaka till Bar Internazionale eller Chiesa Nuova."
     }
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "Faqs",
   "faqs": [
     {
       "q": "How crowded are the buses?",
@@ -156,11 +156,11 @@
     }
   ],
   "toc": {
-    "onThisPage": "On this page",
-    "essentials": "Essentials",
-    "costs": "Typical costs",
-    "tips": "Route tips",
-    "warnings": "Watch-outs",
-    "faqs": "FAQs"
+    "onThisPage": "På denna sida",
+    "essentials": "Väsentliga",
+    "costs": "Typiska kostnader",
+    "tips": "Route Tips",
+    "warnings": "Varningar",
+    "faqs": "Faqs"
   }
 }

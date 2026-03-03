@@ -59,7 +59,7 @@ function FloatEntryModalBase({ onConfirm, onClose }: FloatEntryModalProps) {
               compatibilityMode="no-wrapper"
               type="number"
               inputMode="decimal"
-              className="w-60 rounded border px-3 py-2 text-sm"
+              className="w-60 rounded-lg border px-3 py-2 text-sm"
               placeholder="Amount"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}

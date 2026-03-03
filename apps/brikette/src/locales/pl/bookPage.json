@@ -41,5 +41,102 @@
     ],
     "footer": "Ostateczna dostępność i płatność realizowane są w naszym oficjalnym systemie rezerwacji."
   },
-  "backToRooms": "Powrót do pokoi"
+  "backToRooms": "Powrót do pokoi",
+  "hostel": {
+    "directSavings": {
+      "eyebrow": "Zarezerwuj bezpośrednio i zapisz",
+      "headline": "Do 25% mniej niż"
+    }
+  },
+  "date": {
+    "stayHelper": "2- 8 nocy",
+    "clearDates": "Wyczyść daty",
+    "nightsSummary": "_ _ TOK0 _ _ → _ _ TOK1 _ _ (_ _ TOK2 _ _ noce)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Rezerwacje hosteli są obsługiwane ze wsparciem, gdy JavaScript jest wyłączony.",
+    "emailAssistedBooking": "Napisz do nas, aby uzyskać pomoc w rezerwacji"
+  },
+  "bookingConstraints": {
+    "notice": "Rezerwacje w hostelach obejmują pobyty wyłącznie dla dorosłych na okres od 2 do 8 nocy z maksymalnie 8 osobami dorosłymi na rezerwację. W przypadku większych grup lub dłuższych pobytów podziel swoją prośbę na wiele rezerwacji lub",
+    "assistedLink": "skontaktuj się z nami, aby uzyskać pomoc w rezerwacji"
+  },
+  "expiredQuote": {
+    "message": "Ten link do wyceny wygasł. Aby kontynuować, przebuduj ofertę, dodając nowe daty."
+  },
+  "recovery": {
+    "title": "Potrzebujesz więcej czasu? Wyślij do siebie tę wycenę e-mailem i wznów ją później.",
+    "privacyNotice": "Przechowujemy wyłącznie kontekst rezerwacji i metadane zgody. Linki do CV wygasają po 7 dniach.",
+    "emailLabel": "Twój e-mail",
+    "emailPlaceholder": "ty@example.com",
+    "consent": "Wyrażam zgodę na otrzymanie tej wyceny pocztą elektroniczną i przyjmuję do wiadomości, że wygasa ona po 7 dniach.",
+    "submitted": "Wersja robocza e-maila została otwarta. Możesz go wysłać, aby zapisać ten cytat.",
+    "submitCta": "Wyślij mi ten cytat na e-mail",
+    "errors": {
+      "invalidEmail": "Wpisz prawidłowy adres e-mail.",
+      "consentRequired": "Na przesłanie oferty e-mailem wymagana jest zgoda.",
+      "sendFailed": "Coś poszło nie tak. Proszę spróbować ponownie lub skontaktować się z nami bezpośrednio."
+    },
+    "mailto": {
+      "subject": "Prośba o odzyskanie wyceny",
+      "bodyIntro": "Proszę o przesłanie tego cytatu i kolejnego przypomnienia.",
+      "labels": {
+        "guestEmail": "E-mail gościa",
+        "checkIn": "Zameldować się",
+        "checkOut": "Wymeldować się",
+        "guests": "Goście",
+        "sourceRoute": "Trasa źródłowa",
+        "room": "Pokój",
+        "ratePlan": "Plan cenowy",
+        "resumeLink": "Wznów link"
+      }
+    },
+    "sending": "Wysyłam..."
+  },
+  "subheading": "Wybierz daty, a następnie wybierz pokój.",
+  "dealBanner": {
+    "applied": "Deal applicated: _ _ TOK0 _ _"
+  },
+  "apartment": {
+    "heading": "Zarezerwuj prywatny apartament",
+    "subheading": "Wybierz daty i liczbę gości, a następnie wybierz stawkę.",
+    "guestLabel": "Liczba gości",
+    "guests": {
+      "2": "2 gości",
+      "3": "3 gości"
+    },
+    "flex": {
+      "title": "Elastyczna szybkość",
+      "saving": "Zaoszczędź 21% vs OTA",
+      "bullets": [
+        "Free cancellation up to 3 days before arrival.",
+        "Changes subject to availability."
+      ]
+    },
+    "nr": {
+      "title": "Niepodlegające zwrotowi",
+      "saving": "Zapisz 26% vs OTA",
+      "bullets": [
+        "Best direct price — paid in full upfront.",
+        "No refunds or changes after booking."
+      ]
+    },
+    "nightsSummary_one": "_ _ TOK0 _ _ night - dostępność potwierdzona w następnym kroku.",
+    "nightsSummary_other": "_ _ TOK0 _ _ noce - dostępność potwierdzona w następnym kroku.",
+    "rateLabel": "Wybierz stawkę",
+    "ratePrompt": "Wybierz stopę powyżej, aby kontynuować",
+    "cta": {
+      "unselected": "Wybierz stawkę, aby kontynuować →",
+      "flex": "Elastyczne - Dalej do wymeldowania",
+      "nr": "Nie - Refundowalne - Dalej do wymeldowania"
+    },
+    "policies": {
+      "title": "Polityka i opłaty",
+      "items": [
+        "City/tourist tax: €2.50 per guest per night (added at checkout).",
+        "Cancellation admin fee: typically 15% of booking price.",
+        "Final availability and payment are completed on our official booking engine."
+      ]
+    }
+  }
 }

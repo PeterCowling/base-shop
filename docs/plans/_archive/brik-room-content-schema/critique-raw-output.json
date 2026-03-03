@@ -1,0 +1,26 @@
+{
+  "round": 3,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/brik-room-content-schema/fact-find.md",
+      "message": "The claim that `imagesRaw` has no consumers outside app `RoomCard.tsx` and `RoomStructuredData.tsx` is incomplete. There is an additional consumer at `apps/brikette/src/utils/schema/builders.ts` (`room.imagesRaw.slice(0, 4)`)."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/brik-room-content-schema/fact-find.md",
+      "message": "The 'Direct' impact list omits `apps/brikette/src/utils/schema/builders.ts`, which will break when `imagesRaw` is removed unless updated in the same PR."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/brik-room-content-schema/fact-find.md",
+      "message": "Apartment scope ambiguity: 'out of scope' should be clarified as 'out of scope for content population, in scope for type migration'."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "lp_score": 4.0,
+  "durationMs": 35107,
+  "note": "Score 8/10 = lp_score 4.0 — credible threshold met. All Major findings addressed in autofix before final persist."
+}

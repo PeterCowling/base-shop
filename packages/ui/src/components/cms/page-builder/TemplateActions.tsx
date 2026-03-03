@@ -79,7 +79,7 @@ export default function TemplateActions({
   const slotFragmentKind = "slot-fragment" as TemplateDescriptor["kind"]; // i18n-exempt -- DS-3472 template kind identifier, not UI copy [ttl=2026-12-31]
   const templateActionsTriggerCy = "template-actions-trigger"; // i18n-exempt -- DS-3472 test id hook, not user copy [ttl=2026-12-31]
   const templateCardBase =
-    "relative flex flex-col rounded-lg border border-border/60 bg-surface-1 text-start shadow-sm transition hover:shadow-md min-h-10 min-w-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"; // i18n-exempt -- DS-3472 style tokens for card layout, not user copy [ttl=2026-12-31]
+    "relative flex flex-col rounded-lg border border-border/60 bg-surface-1 text-start shadow-sm transition hover:shadow-md min-h-11 min-w-11 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"; // i18n-exempt -- DS-3472 style tokens for card layout, not user copy [ttl=2026-12-31]
   const templateCardSelected = "border-primary shadow-md"; // i18n-exempt -- DS-3472 selected card styling, not user copy [ttl=2026-12-31]
 
   useEffect(() => {

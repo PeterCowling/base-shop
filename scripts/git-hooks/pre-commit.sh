@@ -8,4 +8,5 @@ node scripts/check-next-webpack-flag.mjs --staged
 bash scripts/git-hooks/run-lint-staged.sh
 bash scripts/git-hooks/typecheck-staged.sh
 bash scripts/git-hooks/lint-staged-packages.sh
+bash scripts/git-hooks/generate-process-improvements.sh
 pnpm validate:agent-context

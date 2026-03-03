@@ -48,9 +48,9 @@ export default function CertificateCheck({ productId, placeholder, locale = "en"
           value={serial}
           onChange={(e) => setSerial(e.target.value)}
           placeholder={effectivePlaceholder}
-          className="w-60 rounded border px-2 py-1 text-sm min-h-10"
+          className="w-60 rounded border px-2 py-1 text-sm min-h-11"
         />
-        <button type="button" onClick={check} disabled={!adapter || !serial} className="rounded border px-3 py-1 text-sm min-h-10 min-w-10 disabled:opacity-50">
+        <button type="button" onClick={check} disabled={!adapter || !serial} className="rounded border px-3 py-1 text-sm min-h-11 min-w-11 disabled:opacity-50">
           {t("actions.verify")}
         </button>
       </div>

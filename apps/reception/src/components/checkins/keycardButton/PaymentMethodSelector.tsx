@@ -77,7 +77,7 @@ const RadioButton = memo(function RadioButton({
   const isActive = currentValue === value;
   return (
     <label
-      className={`flex items-center gap-2 p-2 rounded hover:bg-surface-2 ${
+      className={`flex items-center gap-2 p-2 rounded-lg hover:bg-surface-2 ${
         isActive ? "bg-surface-3 font-semibold" : ""
       }`}
     >

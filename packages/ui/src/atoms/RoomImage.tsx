@@ -68,6 +68,7 @@ function RoomImageBase({
             src={src}
             preset="gallery"
             alt={alt}
+            style={{ height: "100%" }}
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
         </button>
@@ -76,6 +77,7 @@ function RoomImageBase({
           src={src}
           preset="gallery"
           alt={alt}
+          style={{ height: "100%" }}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
       )}

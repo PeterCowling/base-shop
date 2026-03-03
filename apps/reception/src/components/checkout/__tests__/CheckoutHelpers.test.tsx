@@ -1,6 +1,6 @@
 
 import { formatDdMm } from "../../../utils/dateUtils";
-import { getLoanIconClass, getLoanTitle } from "../CheckoutTable";
+import { getLoanIcon, getLoanTitle } from "../CheckoutTable";
 
 describe("formatDdMm", () => {
   it("formats ISO date to DD/MM", () => {
@@ -12,32 +12,33 @@ describe("formatDdMm", () => {
   });
 });
 
-describe("getLoanIconClass", () => {
-  it("returns correct icon for Umbrella", () => {
-    expect(getLoanIconClass("Umbrella")).toBe(
-      "fas fa-umbrella fa-lg text-info-main"
-    );
+describe("getLoanIcon", () => {
+  it("returns correct color class for Umbrella", () => {
+    const { colorClass } = getLoanIcon("Umbrella");
+    expect(colorClass).toBe("text-primary-main");
   });
 
-  it("returns keycard cash icon", () => {
-    expect(getLoanIconClass("Keycard", "cash")).toBe(
-      "fas fa-id-card fa-lg text-success-main"
-    );
+  it("returns correct color class for keycard with cash deposit", () => {
+    const { colorClass } = getLoanIcon("Keycard", "cash");
+    expect(colorClass).toBe("text-success-main");
   });
 
-  it("returns keycard document icon", () => {
-    expect(getLoanIconClass("Keycard", "passport")).toBe(
-      "fas fa-id-card fa-lg text-warning-main"
-    );
+  it("returns correct color class for keycard with document deposit", () => {
+    const { colorClass } = getLoanIcon("Keycard", "passport");
+    expect(colorClass).toBe("text-warning-main");
   });
 
-  it("warns on unknown keycard deposit", () => {
+  it("warns and returns fallback for unknown keycard deposit", () => {
     const warn = jest.spyOn(console, "warn").mockImplementation(() => undefined);
-    expect(getLoanIconClass("Keycard")).toBe(
-      "fas fa-id-card fa-lg text-foreground"
-    );
+    const { colorClass } = getLoanIcon("Keycard");
+    expect(colorClass).toBe("text-foreground");
     expect(warn).toHaveBeenCalled();
     warn.mockRestore();
+  });
+
+  it("returns a valid Icon component", () => {
+    const { Icon } = getLoanIcon("Umbrella");
+    expect(typeof Icon).toBe("function");
   });
 });
 

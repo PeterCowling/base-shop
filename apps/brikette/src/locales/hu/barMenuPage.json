@@ -4,7 +4,7 @@
     "description": "Fedezze fel italainkat: sörök, borok, koktélok és üdítők."
   },
   "header": {
-    "brand": "Hostel Brikette",
+    "brand": "Brikette Hostel",
     "menuTitle": "Bármenü, 2025",
     "hours": "Minden nap nyitva (nyitvatartás a bárban)"
   },
@@ -42,24 +42,24 @@
       "title": "Shotok"
     },
     "gelato": {
-      "title": "Gelato"
+      "title": "Zselatin"
     }
   },
   "items": {
     "aperolSpritz": {
-      "name": "Aperol Spritz",
+      "name": "Aperol-spritz",
       "note": "A klasszikus olasz spritz, tört jéggel felszolgálva."
     },
     "limoncelloSpritz": {
-      "name": "Limoncello Spritz",
+      "name": "Limoncello-spritz",
       "note": "Az Amalfi-part különlegessége, tört jéggel felszolgálva."
     },
     "hugoSpritz": {
-      "name": "Hugo Spritz",
+      "name": "Hugo spritz",
       "note": "Pezsgőt töltünk friss mentára, lime-ra és bodzára, majd tört jéggel tálaljuk."
     },
     "rossiniSpritz": {
-      "name": "Rossini Spritz",
+      "name": "Rossini spritz",
       "note": "Pezsgő eperlé fölött, tört jéggel tálalva."
     },
     "lemonStrawberryDaiquiri": {
@@ -70,7 +70,7 @@
       "note": "Eper- vagy citromlé tequilával, Cointreau-val és jéggel, klasszikus margarita stílusban készítve."
     },
     "lemonDropMartini": {
-      "name": "Lemon Drop Martini",
+      "name": "Citromcsepp martini",
       "note": "Frissen facsart citromlé, Absolut vodkával, Cointreau-val és jéggel összerázva."
     },
     "redWhiteGlass": {
@@ -95,40 +95,40 @@
       "name": "Peroni, 660 ml"
     },
     "skyy": {
-      "name": "Skyy"
+      "name": "Égbolt"
     },
     "absolut": {
       "name": "Absolut"
     },
     "smirnoff": {
-      "name": "Smirnoff"
+      "name": "Kipirulás"
     },
     "greyGoose": {
-      "name": "Grey Goose"
+      "name": "Szürke liba"
     },
     "pampero": {
       "name": "Pampero"
     },
     "bacardiSuperior": {
-      "name": "Bacardi Superior"
+      "name": "Bacardi superior"
     },
     "captainMorgan": {
-      "name": "Captain Morgan"
+      "name": "Morgan kapitány"
     },
     "angosturaReserva": {
-      "name": "Angostura Reserva"
+      "name": "Angosztura reserva"
     },
     "beefeater": {
       "name": "Beefeater"
     },
     "bombaySapphire": {
-      "name": "Bombay Sapphire"
+      "name": "Bombay zafír"
     },
     "tanqueray": {
       "name": "Tanqueray"
     },
     "hendricks": {
-      "name": "Hendrick's"
+      "name": "Hendrick 's"
     },
     "jwRed": {
       "name": "Johnnie Walker Red Label (kevert skót whisky)"
@@ -149,7 +149,7 @@
       "name": "Glenfiddich 12 éves (single malt skót whisky)"
     },
     "joseCuervoSilver": {
-      "name": "Jose Cuervo Tequila, Silver",
+      "name": "Jose Cuervo tequila, ezüst",
       "note": "Tálalás tisztán citrommal és sóval, vagy Tequila Sunrise-ként, esetleg szóda/Sprite kíséretében."
     },
     "limoncelloShot": {

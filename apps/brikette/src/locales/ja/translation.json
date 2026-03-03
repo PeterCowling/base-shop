@@ -24,10 +24,14 @@
     "reload": "ページを再読み込み"
   },
   "meta": {
-    "twitterCard": "summary_large_image",
-    "twitterHandle": "@brikette"
+    "twitterCard": "概要_large_image",
+    "twitterHandle": "@ブリケット"
   },
   "internalErrors": {
     "assistanceSlugMissing": "ARTICLE_SLUGSには少なくとも1つのアシスタンススラッグが定義されている必要があります"
+  },
+  "stickyCta": {
+    "directHeadline": "2分以内に最良の料金を確保しましょう。",
+    "directSubcopy": "仲介手数料なしで、ポジターノチームから優先サポートを受けられます。"
   }
 }

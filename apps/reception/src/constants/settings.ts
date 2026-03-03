@@ -9,4 +9,6 @@ export const settings = {
   /** Maximum allowed cash before safe drop required */
   tillMaxLimit:
     parseFloat(process.env["NEXT_PUBLIC_TILL_MAX_LIMIT"] || "2000") || 2000,
+  standardFloat:
+    parseFloat(process.env["NEXT_PUBLIC_STANDARD_FLOAT"] || "0") || 0,
 };

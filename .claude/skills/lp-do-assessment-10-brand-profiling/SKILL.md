@@ -39,11 +39,11 @@ Does NOT:
 
 | Source | Path | Required |
 |--------|------|----------|
-| ASSESSMENT intake packet | `docs/business-os/startup-baselines/<BIZ>-intake-packet.user.md` | Yes — primary source for name shortlist, ICP, and product context |
+| ASSESSMENT intake packet | `docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md` | Yes — primary source for name shortlist, ICP, and product context |
 | Naming shortlist | `docs/business-os/strategy/<BIZ>/latest-naming-shortlist.user.md` | Yes if present — extract `recommended_business_name` and `shortlist` array from YAML front matter |
-| Problem statement | `docs/business-os/strategy/<BIZ>/problem-statement.user.md` | No — read if present for ICP and pain-point context |
+| Problem statement | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-problem-statement.user.md` | No — read if present for ICP and pain-point context |
 | Option selection | `docs/business-os/strategy/<BIZ>/s0c-option-select.user.md` | No — read if present for product and positioning context |
-| Operator evidence | `docs/business-os/strategy/<BIZ>/s0e-operator-evidence.user.md` | No — read if present for any pre-confirmed brand notes |
+| Operator evidence | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-operator-context.user.md` | No — read if present for any pre-confirmed brand notes |
 
 If any upstream ASSESSMENT artifacts are absent, note the gap but proceed — ASSESSMENT-10 captures operator-confirmed brand decisions and does not depend on all research outputs being complete.
 
@@ -85,7 +85,7 @@ Do NOT re-ask about fields already filled with confirmed or well-evidenced provi
 
 ## Output Contract
 
-**Path:** `docs/business-os/strategy/<BIZ>/brand-strategy.user.md`
+**Path:** `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-profile.user.md`
 
 **Format:**
 
@@ -190,7 +190,7 @@ Invalid outputs — do not emit:
 
 ## Completion Message
 
-> "Brand strategy recorded: `docs/business-os/strategy/<BIZ>/brand-strategy.user.md`. Name: <name> (<confirmed|provisional>). [N] personality pairs. Voice: <formality>."
+> "Brand strategy recorded: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-profile.user.md`. Name: <name> (<confirmed|provisional>). [N] personality pairs. Voice: <formality>."
 >
 > "Next step: run `/lp-do-assessment-11-brand-identity --business <BIZ>` to produce the visual brand identity and brand dossier."
 
@@ -200,6 +200,6 @@ Invalid outputs — do not emit:
 
 **Upstream (ASSESSMENT-08):** Runs after `/lp-do-assessment-08-current-situation` and the ASSESSMENT gate are complete.
 
-**Downstream (ASSESSMENT-11):** `brand-strategy.user.md` is the primary required input for `/lp-do-assessment-11-brand-identity`. The Audience, Personality, and Voice & Tone sections are read directly into the brand dossier — they are not re-elicited at ASSESSMENT-11.
+**Downstream (ASSESSMENT-11):** `<YYYY-MM-DD>-brand-profile.user.md` is the primary required input for `/lp-do-assessment-11-brand-identity`. The Audience, Personality, and Voice & Tone sections are read directly into the brand dossier — they are not re-elicited at ASSESSMENT-11.
 
 **No gate:** ASSESSMENT has no gate. After ASSESSMENT-11 completes, the operator proceeds directly to S1 (`/lp-readiness`).

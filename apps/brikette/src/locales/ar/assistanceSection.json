@@ -5,16 +5,17 @@
     "description": "احجز واستكشف وتواصل معنا عبر الإنترنت. هل لديك أسئلة؟ يقدّم مساعدنا الرقمي توصيات مخصّصة وأدلة سفر لتعزيز إقامتك في بوسيتانو."
   },
   "heading": "المساعدة الرقمية",
-  "heroEyebrow": "Book and Connect",
+  "heroEyebrow": "الكتاب والربط",
   "subheading": "احجز واستكشف وتواصل معنا عبر الإنترنت.",
   "heroIntro": "احصل على إجابات فورية من فريقنا ومساعدنا الرقمي حتى تتمكن من التخطيط لإقامتك بشكل أسرع.",
   "otherBookingOptions": "خيارات حجز أخرى ووسائل التواصل الاجتماعي",
   "addressLabel": "العنوان:",
   "addressValue": "Via G. Marconi, 358, 84017, Positano",
+  "bookDirect": "احجز مباشرة",
   "bookingOptions": {
     "googleBusiness": "جوجل للأعمال",
-    "bookingCom": "Booking.com",
-    "hostelWorld": "Hostelworld",
+    "bookingCom": "الحجز",
+    "hostelWorld": "عالم الرهائن",
     "instagram": "Instagram"
   },
   "amaHeadingPart1": "كيف يمكننا ",
@@ -41,7 +42,7 @@
     "cardCta": "اقرأ دليل التخطيط «{{guideTitle}}»"
   },
   "crosslinks": {
-    "heading": "{{howToTitle}} · {{experiencesTitle}}",
-    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}"
+    "heading": "_",
+    "intro": "_"
   }
 }

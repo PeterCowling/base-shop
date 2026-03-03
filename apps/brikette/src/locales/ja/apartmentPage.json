@@ -52,5 +52,115 @@
         "alt": "ポジターノの街並み"
       }
     ]
+  },
+  "directSavings": {
+    "eyebrow": "直接予約して保存",
+    "heading": "Booking.comよりも最大26%未満",
+    "nr": {
+      "label": "返金不可",
+      "saving": "保存 26%",
+      "detail": "最高の直接価格"
+    },
+    "flex": {
+      "label": "適用範囲が広い率",
+      "saving": "保存 21%",
+      "detail": "キャンセル料無料"
+    }
+  },
+  "heroTagline": "プライベートアパートメント・ポジターノ, イタリア",
+  "galleryCaptions": [
+    "Full private bathroom with rain-head shower and designer fittings",
+    "Bright open-plan living space with dining area, TV lounge and mezzanine staircase",
+    "Fully equipped kitchen with dishwasher, washing machine and traditional Positano tilework"
+  ],
+  "fitCheck": {
+    "heading": "このアパートはあなたにぴったりですか?",
+    "arrival": {
+      "label": "到着予定",
+      "text": "道路からアパートの入り口までの道の階段はありません。"
+    },
+    "inside": {
+      "label": "インスタグラム",
+      "text": "リビングエリアとベッドルームの間に内部階段を備えたスプリットレベルのインテリア。"
+    },
+    "sleeping": {
+      "label": "睡眠 睡眠",
+      "text": "ソファーベッドの downstairs; ダブルベッドの upstairs。"
+    },
+    "sound": {
+      "label": "サウンド",
+      "text": "一部道路とテラスの周囲; 深夜からテラスの静かな時間。"
+    },
+    "bestFit": {
+      "label": "ベストフィット",
+      "text": "カップルに最適です。 あなたのグループで誰が階段を避けることを好むならば、階下のソファーベッドは快適な選択肢です。 非常に軽い眠る人のために推薦されません。"
+    }
+  },
+  "hub": {
+    "streetLevelCard": {
+      "title": "ストリートレベルの到着",
+      "subtitle": "道路からエントランスまでの階段なし",
+      "cta": "もっと詳しく"
+    },
+    "privateStayCard": {
+      "title": "プライベートサービス",
+      "subtitle": "オプションのテラス、バー、朝食付き次のドア",
+      "cta": "もっと詳しく"
+    }
+  },
+  "checkAvailability": "空室状況をチェック",
+  "streetLevelArrival": {
+    "meta": {
+      "title": "ポジターノのステップフリー到着 - ストリート階段なし",
+      "description": "当アパートメントでは、道路から入り口までのバリアフリーアクセスを提供しています。 階段なし、荷物のトラブルなし。"
+    },
+    "heroTitle": "ステップフリー到着",
+    "heroSubtitle": "道路からアパート入口までの路上階段なし",
+    "heroBody": "何百ものステップで有名な町では、私たちのアパートは異なります。 道から正面玄関へ直進し、階段もなく、荷物やベビーカーとの闘いはありません。",
+    "videoPlaceholder": "ストリート・ツー・ドア・ビデオが近日公開",
+    "clarification": "路上階からお部屋入口まで徒歩圏内です。 インサイドでは、リビングエリアとベッドルームの間にある内部階段でアパートを分割しています。",
+    "whatsappCta": "迅速な回答のためのWhatsApp",
+    "checkAvailability": "空室状況をチェック"
+  },
+  "privateStay": {
+    "meta": {
+      "title": "Positanoのプライベートサービスアパートメント",
+      "description": "テラス、朝食、バーの次のドアへのオプションアクセスを専門的に管理、フルキッチン付きのプライベート85m2アパートメント。"
+    },
+    "heroTitle": "Positanoのプライベートアパートメント",
+    "heroSubtitle": "ホスピタリティ・グレード・サポートの次のドアを専門的に管理",
+    "sections": {
+      "privacy": {
+        "title": "完全な独立性",
+        "body": "85m2のアパートメント。 全室キッチン、洗濯機、乾燥機、バスルーム2台、広めるスペース 共有スペースなし、チェックインデスクなし、フロントのみ。"
+      },
+      "support": {
+        "title": "必要なとき専門のサポート",
+        "body": "経験豊富なホスピタリティチームが、次のドアを拠点とする。 レストランの推奨事項、指示、または何かの援助が必要ですか? プロフェッショナルなサポートは徒歩圏内です。"
+      },
+      "amenities": {
+        "title": "任意余分次のドア",
+        "body": "海の景色を望むテラス、朝食サービス、バーが隣接しています。 あなたのスケジュールでそれらを楽しむか、それらを完全にスキップする - 選択はあなたのものです。"
+      }
+    },
+    "whatsappCta": "迅速な回答のためのWhatsApp",
+    "checkAvailability": "空室状況をチェック"
+  },
+  "book": {
+    "meta": {
+      "title": "Positanoアパートメント",
+      "description": "Positanoのアパートメントを空室状況を確認し、予約してください。 ステップフリーの到着、フルキッチン、睡眠4。"
+    },
+    "heroTitle": "ご滞在のご予約",
+    "heroSubtitle": "Positanoのプライベートアパートメント",
+    "dateLabel": "日付を選択",
+    "checkinLabel": "チェックイン",
+    "checkoutLabel": "チェックアウト",
+    "rateNonRefundable": "返金不可",
+    "rateFlexible": "フレキシブル(無料キャンセル)",
+    "checkAvailability": "空室状況をチェック",
+    "orBookingCom": "またはBooking.comで予約する",
+    "whatsappCta": "迅速な回答のためのWhatsApp",
+    "backLink": "← アパート情報に戻る"
   }
 }

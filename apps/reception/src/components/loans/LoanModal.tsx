@@ -157,7 +157,7 @@ function LoanModalComponent({
       <div className="space-y-6">
         {/* Occupant Details */}
         {occupant && (
-          <div className="text-sm text-foreground bg-surface-2 p-3 rounded">
+          <div className="text-sm text-foreground bg-surface-2 p-3 rounded-lg">
             <div className="font-semibold">Occupant:</div>
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mt-1">
               <span>
@@ -171,7 +171,7 @@ function LoanModalComponent({
         )}
 
         {/* Item Details */}
-        <div className="bg-surface-2 p-3 rounded">
+        <div className="bg-surface-2 p-3 rounded-lg">
           <label className="block font-semibold mb-1 text-foreground">
             {mode === "loan" ? "Loan Item:" : "Return Item:"}
           </label>
@@ -184,7 +184,7 @@ function LoanModalComponent({
         </div>
 
         {/* Quantity Input */}
-        <div className="bg-surface-2 p-3 rounded">
+        <div className="bg-surface-2 p-3 rounded-lg">
           <label
             htmlFor="countInput"
             className="block font-semibold mb-1 text-foreground"
@@ -199,7 +199,7 @@ function LoanModalComponent({
               min={1}
               max={maxCount || 99}
               onChange={handleCountChange}
-              className="border rounded px-2 py-1 w-20 me-2"
+              className="border rounded-lg px-2 py-1 w-20 me-2"
             />
             {maxCount !== undefined && mode === "return" && (
               <span className="text-sm text-muted-foreground">(Max: {maxCount})</span>
@@ -209,7 +209,7 @@ function LoanModalComponent({
 
         {/* Deposit Method (only visible if mode === "loan" && item === "Keycard") */}
         {mode === "loan" && item === "Keycard" && (
-          <div className="bg-surface-2 p-3 rounded">
+          <div className="bg-surface-2 p-3 rounded-lg">
             <label
               htmlFor="depositMethod"
               className="block font-semibold mb-1 text-foreground flex items-center gap-2"
@@ -221,7 +221,7 @@ function LoanModalComponent({
               />
             </label>
             <Select value={depositType} onValueChange={handleDepositTypeChange}>
-              <SelectTrigger id="depositMethod" className="border rounded px-2 py-1 w-full">
+              <SelectTrigger id="depositMethod" className="border rounded-lg px-2 py-1 w-full">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

@@ -1,7 +1,7 @@
 {
   "home": "Главная",
-  "rooms": "Номера",
-  "apartment": "Апартаменты",
+  "rooms": "Дормитории",
+  "apartment": "Частные номера",
   "assistance": "Помощь",
   "careers": "Карьера",
   "deals": "Скидки",
@@ -30,5 +30,5 @@
   "cancellationPolicy": "Политика отмены",
   "privacy": "Политика конфиденциальности",
   "cookies": "Политика файлов cookie",
-  "navAriaLabel": "Footer navigation"
+  "navAriaLabel": "Навигация с помощью двигателя"
 }

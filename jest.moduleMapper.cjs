@@ -110,6 +110,7 @@ const moduleMapper = {
   "^@acme/lib/shop$": " /packages/lib/src/shop/index.ts",
   "^@acme/lib/logger$": " /packages/lib/src/logger/index.server.ts",
   "^@acme/lib/(.*)$": " /packages/lib/src/$1",
+  "^@acme/axerve$": " /packages/axerve/src/index.ts",
   "^@acme/sanity$": " /packages/sanity/src/index.ts",
   "^@acme/sanity/(.*)$": " /packages/sanity/src/$1",
   "^@acme/seo$": " /packages/seo/src/index.ts",

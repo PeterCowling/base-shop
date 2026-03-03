@@ -39,12 +39,12 @@ Evidence from TASK-00 contract-overlap matrix (`artifacts/contract-overlap-matri
 
 | File | Permitted edit type | Rationale |
 |---|---|---|
-| `docs/business-os/startup-loop/process-registry-v1.md` | Create (new additive contract) | TASK-02 primary deliverable |
-| `docs/business-os/startup-loop/sales-ops-schema.md` | Create (new additive schema) | TASK-03 primary deliverable |
-| `docs/business-os/startup-loop/retention-schema.md` | Create (new additive schema) | TASK-04 primary deliverable |
-| `docs/business-os/startup-loop/exception-runbooks-v1.md` | Create (new additive runbook) | TASK-05 primary deliverable |
-| `docs/business-os/startup-loop/audit-cadence-contract-v1.md` | Create (new additive checklist) | TASK-06 primary deliverable |
-| `docs/business-os/startup-loop/marketing-sales-capability-contract.md` | Update CAP-05 and CAP-06 status fields | TASK-03/TASK-04 scope |
+| `docs/business-os/startup-loop/_deprecated/process-registry-v1.md` | Create (new additive contract) | TASK-02 primary deliverable |
+| `docs/business-os/startup-loop/schemas/sales-ops-schema.md` | Create (new additive schema) | TASK-03 primary deliverable |
+| `docs/business-os/startup-loop/schemas/retention-schema.md` | Create (new additive schema) | TASK-04 primary deliverable |
+| `docs/business-os/startup-loop/operations/exception-runbooks-v1.md` | Create (new additive runbook) | TASK-05 primary deliverable |
+| `docs/business-os/startup-loop/contracts/audit-cadence-contract-v1.md` | Create (new additive checklist) | TASK-06 primary deliverable |
+| `docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md` | Update CAP-05 and CAP-06 status fields | TASK-03/TASK-04 scope |
 | `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md` | Extend only — add CAP-05/CAP-06 denominator hooks | TASK-03/TASK-04 scope; must not modify existing decision rules |
 | `docs/business-os/startup-loop-workflow.user.md` | Reference additions only — link to new contracts | TASK-05/TASK-06 scope |
 
@@ -52,11 +52,11 @@ Evidence from TASK-00 contract-overlap matrix (`artifacts/contract-overlap-matri
 
 | File | Why out-of-scope |
 |---|---|
-| `docs/business-os/startup-loop/loop-spec.yaml` | **No edits.** Stage graph, run packet, and gate contracts are stable. Process IDs are additive overlays only. |
-| `docs/business-os/startup-loop/manifest-schema.md` | **No edits.** Single-writer baseline semantics are unchanged. |
-| `docs/business-os/startup-loop/bottleneck-diagnosis-schema.md` | **No edits.** Constraint key taxonomy and ranking logic are stable. Exception runbooks reference (but do not modify) blocked-stage keys. |
+| `docs/business-os/startup-loop/specifications/loop-spec.yaml` | **No edits.** Stage graph, run packet, and gate contracts are stable. Process IDs are additive overlays only. |
+| `docs/business-os/startup-loop/schemas/manifest-schema.md` | **No edits.** Single-writer baseline semantics are unchanged. |
+| `docs/business-os/startup-loop/schemas/bottleneck-diagnosis-schema.md` | **No edits.** Constraint key taxonomy and ranking logic are stable. Exception runbooks reference (but do not modify) blocked-stage keys. |
 | `docs/business-os/startup-loop/artifact-registry.md` | **No edits.** Canonical artifact paths are stable. Process registry may reference them but must not duplicate or override. |
-| `docs/business-os/startup-loop/stage-operator-dictionary.yaml` | **No edits.** Stage labels and display strings are stable. |
+| `docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml` | **No edits.** Stage labels and display strings are stable. |
 | `docs/business-os/startup-loop-current-vs-proposed.user.md` | **Read-only reference.** Already documented as `[readonly]` in TASK-01 Affects. |
 
 ## Downstream Unblocking

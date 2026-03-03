@@ -61,9 +61,13 @@ export async function GET(
     const json = items.map((i: typeof items[number]) => flattenInventoryItem(i));
     return NextResponse.json(json);
   } catch (err) {
-    console.error("Inventory export failed", err); // i18n-exempt -- non-UX log
-    const message = (err as Error).message;
-    const status = /delegate is unavailable/i.test(message) ? 503 : 400;
+    const message = err instanceof Error ? err.message : "Unknown error";
+    const status =
+      message === "Forbidden" || message === "Unauthorized"
+        ? 403
+        : /delegate is unavailable/i.test(message)
+          ? 503
+          : 400;
     return NextResponse.json(
       { error: message },
       { status }

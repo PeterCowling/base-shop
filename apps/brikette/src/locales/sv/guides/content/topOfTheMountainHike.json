@@ -39,24 +39,24 @@
       ]
     }
   ],
-  "essentialsTitle": "Essentials",
+  "essentialsTitle": "Väsentliga",
   "essentials": [
     "Minst 2 liter vatten per person plus salta snacks; det finns inga pålitliga påfyllningar efter Santa Maria del Castello.",
     "Rejäla vandringsskor med grepp – delar av den övre leden är steniga, lösa och exponerade.",
     "Solskydd och lager för toppen; vinden kan piska över åsen även under varma dagar."
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "Typiska kostnader",
   "typicalCosts": [
     "Tillgång till stigarna är gratis; budgetera €5–€10 om du planerar att belöna dig själv med en drink eller mellanmål i Santa Maria del Castello.",
     "Returnera SITA-bussbiljetter eller färjepriser om du bestämmer dig för att gå ner via en annan by istället för att vandra hela vägen tillbaka."
   ],
-  "tipsTitle": "Smart timing",
+  "tipsTitle": "Bra timing",
   "tips": [
     "Börja i gryningen på sommaren för att undvika att klättra under hög värme; senhöstens och våreftermiddagarna bjuder på mjukare ljus utan den gassande solen.",
     "Kontrollera prognosen för stormar – molntäcke kan radera vyerna och blöta stenar gör toppstegen hala.",
     "Låt någon på vandrarhemmet veta din plan och förväntade återkomsttid innan du ger dig av."
   ],
-  "warningsTitle": "When to reconsider",
+  "warningsTitle": "När att ompröva",
   "warnings": [
     "Hoppa över vandringen om du saknar bergserfarenhet eller stark kondition; den ihållande höjdökningen är straffbar och det finns få räddningspunkter.",
     "Undvik rutten om höjder gör dig orolig – exponerade avsatser och branta fall utmanar även självsäkra vandrare.",
@@ -88,7 +88,7 @@
       "text": "Följ den sista uppstigningen till toppen och njut av panoramautsikten innan du går tillbaka till Santa Maria."
     }
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "Faqs",
   "faqs": [
     {
       "q": "How long does the full hike take?",
@@ -111,7 +111,7 @@
   ],
   "toc": {
     "labels": {
-      "warnings": "When to reconsider"
+      "warnings": "När att ompröva"
     }
   }
 }

@@ -124,20 +124,29 @@ const RoomGrid: FC<RoomGridProps> = memo(
     return (
       <>
         <div
-          className={`border border-border-1 rounded-md mb-8 overflow-x-auto p-4 bg-surface-2 shadow-sm ${styles.roomGridWrapper} ${styles.hideInfoColumn}`}
+          className={`rounded-lg overflow-hidden border border-border-2 shadow-md ${styles.roomGridWrapper} ${styles.hideInfoColumn}`}
         >
-          <h2 className="text-xl font-semibold mb-2 mt-0">Room {roomNumber}</h2>
+          {/* Panel header */}
+          <div className="flex items-center gap-2.5 px-4 py-2.5 bg-surface-3 border-b border-border-2">
+            <div className="h-4 w-0.5 rounded-full bg-primary-main" aria-hidden="true" />
+            <span className="text-xs font-semibold font-mono tracking-widest uppercase text-foreground">
+              Room {roomNumber}
+            </span>
+          </div>
 
-          <ReservationGrid<MyLocalStatus>
-            highlightToday
-            locale="en"
-            start={startDate}
-            end={endDate}
-            title="Bed #"
-            data={data}
-            theme={theme}
-            onClickCell={onClickCell}
-          />
+          {/* Scrollable grid area */}
+          <div className="overflow-x-auto bg-surface-2">
+            <ReservationGrid<MyLocalStatus>
+              highlightToday
+              locale="en"
+              start={startDate}
+              end={endDate}
+              title="Bed #"
+              data={data}
+              theme={theme}
+              onClickCell={onClickCell}
+            />
+          </div>
         </div>
 
         {modalData && (

@@ -1,3 +1,5 @@
+/* eslint-disable ds/min-tap-size -- STYLING-0001 [ttl=2026-12-31] DS tap-size rule misestimates actual cell size */
+
 import Image from "next/image";
 
 import PageShell from "@/components/PageShell";
@@ -11,12 +13,7 @@ export function EnglishProductsPage({ lang, translator }: ProductsPageComponentP
     eyebrow: translator("products.en.hero.eyebrow"),
     title: translator("products.en.hero.title"),
     body: translator("products.en.hero.body"),
-    imageAlt: translator("products.en.hero.imageAlt"),
-    imageSrc: translator("products.en.hero.imageSrc"),
-    secondaryImageAlt: translator("products.en.hero.secondaryImageAlt"),
   };
-  const heroImageSrc = hero.imageSrc || "/transparent-led.webp";
-  const heroImageAlt = hero.imageAlt || hero.secondaryImageAlt;
   const heroTitleWords = hero.title.split(" ");
   const heroTitleFirstLine = heroTitleWords.slice(0, 2).join(" ");
   const heroTitleSecondLine = heroTitleWords.slice(2).join(" ");
@@ -91,15 +88,39 @@ export function EnglishProductsPage({ lang, translator }: ProductsPageComponentP
           <p className="loket-hero__subtitle">{hero.body}</p>
         </div>
         <div className="realestate-hero__media">
-          <div className="products-hero__image-stack">
-            <Image
-              src={heroImageSrc}
-              alt={heroImageAlt}
-              width={320}
-              height={220}
-              className="products-hero__secondary-image"
-              priority
-            />
+          <div className="loket-visual-grid">
+            <div className="loket-visual-cell loket-visual-cell--cable" aria-hidden="true">
+              <span className="loket-visual-cell__label">Electronics</span>
+              <span className="loket-visual-graphic" />
+              <span className="loket-visual__tagline">CABLE</span>
+            </div>
+            <div className="loket-visual-cell loket-visual-cell--home" aria-hidden="true">
+              <span className="loket-visual-cell__label">Home</span>
+              <span className="loket-visual-graphic" />
+            </div>
+            <a
+              href={translator("links.caryina")}
+              target="_blank"
+              rel="noreferrer"
+              className="loket-visual-cell loket-visual-cell--bag loket-visual-cell--linked"
+              aria-label={translator("products.en.hero.caryinaLabel")}
+            >
+              <span className="loket-visual-cell__label" aria-hidden="true">Bags</span>
+              <span className="loket-visual-graphic loket-visual-graphic--logo">
+                <Image
+                  src="/caryina-logo-wordmark.png" /* i18n-exempt -- STYLING-0001 image asset path [ttl=2026-12-31] */
+                  alt=""
+                  width={160}
+                  height={50}
+                  className="loket-visual-cell__logo"
+                />
+              </span>
+              <span className="loket-visual-cell__domain" aria-hidden="true">caryina.com</span>
+            </a>
+            <div className="loket-visual-cell loket-visual-cell--pet" aria-hidden="true">
+              <span className="loket-visual-cell__label">Pets</span>
+              <span className="loket-visual-graphic" />
+            </div>
           </div>
         </div>
       </section>
@@ -148,3 +169,5 @@ export function EnglishProductsPage({ lang, translator }: ProductsPageComponentP
     </PageShell>
   );
 }
+
+/* eslint-enable ds/min-tap-size */

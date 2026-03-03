@@ -10,7 +10,7 @@
   },
   "callouts": {
     "cta": "Need every transport option? Open the %HOWTO:how-to-get-here|How to Get Here overview% for ferry, taxi, and mixed itineraries.",
-    "tip": "Travelling during winter or shoulder season? Check the %GUIDES:travelHelp|transport disruption alerts% before you depart—strikes and schedule changes are more common November through March."
+    "tip": "Travelling during winter or shoulder season? Check the %LINK:travelHelp|transport disruption alerts% before you depart—strikes and schedule changes are more common November through March."
   },
   "sections": [
     {
@@ -130,7 +130,7 @@
     {
       "id": "seasonal",
       "title": "Seasonal and timing considerations",
-      "body": "**Summer (June–September):**\n- SITA buses run more frequently but fill quickly. Arrive 10–15 minutes early.\n- Circumvesuviana trains are crowded, especially midday and weekends.\n- Heat can be uncomfortable—both bus and train have limited air conditioning.\n\n**Shoulder season (April–May, October):**\n- Moderate crowds; arrive 5–10 minutes early for the bus.\n- Pleasant temperatures make the journey more comfortable.\n\n**Winter (November–March):**\n- SITA reduces frequency; check timetables in advance.\n- Circumvesuviana schedules may change due to maintenance or strikes—verify departure times the day before travel.\n- Fewer tourists mean easier boarding and more space, but services can be less reliable.\n\n**Strikes and disruptions:**\n- Public transport strikes (sciopero) are announced at least 48 hours in advance. Check %GUIDES:travelHelp|our transport alerts page% or ask hostel reception for the latest updates.\n- During strikes, SITA and Circumvesuviana may run reduced services or cancel entirely. Plan alternative transport (taxi, private transfer, or ferry if available) if a strike is scheduled on your travel day."
+      "body": "**Summer (June–September):**\n- SITA buses run more frequently but fill quickly. Arrive 10–15 minutes early.\n- Circumvesuviana trains are crowded, especially midday and weekends.\n- Heat can be uncomfortable—both bus and train have limited air conditioning.\n\n**Shoulder season (April–May, October):**\n- Moderate crowds; arrive 5–10 minutes early for the bus.\n- Pleasant temperatures make the journey more comfortable.\n\n**Winter (November–March):**\n- SITA reduces frequency; check timetables in advance.\n- Circumvesuviana schedules may change due to maintenance or strikes—verify departure times the day before travel.\n- Fewer tourists mean easier boarding and more space, but services can be less reliable.\n\n**Strikes and disruptions:**\n- Public transport strikes (sciopero) are announced at least 48 hours in advance. Check %LINK:travelHelp|our transport alerts page% or ask hostel reception for the latest updates.\n- During strikes, SITA and Circumvesuviana may run reduced services or cancel entirely. Plan alternative transport (taxi, private transfer, or ferry if available) if a strike is scheduled on your travel day."
     },
     {
       "id": "alternatives",
@@ -168,7 +168,7 @@
     {
       "q": "What should I do if there's a public transport strike on my travel day?",
       "a": [
-        "Strikes (sciopero) are announced at least 48 hours in advance. Check the %GUIDES:travelHelp|transport alerts page% or ask hostel reception for updates. During strikes, SITA and Circumvesuviana may run reduced services or cancel entirely. Book a private transfer or taxi as a backup—if ferries are running (April–October), the %HOWTO:positanoNaplesCenterFerry|Positano-Naples ferry% is a reliable alternative."
+        "Strikes (sciopero) are announced at least 48 hours in advance. Check the %LINK:travelHelp|transport alerts page% or ask hostel reception for updates. During strikes, SITA and Circumvesuviana may run reduced services or cancel entirely. Book a private transfer or taxi as a backup—if ferries are running (April–October), the %HOWTO:positanoNaplesCenterFerry|Positano-Naples ferry% is a reliable alternative."
       ]
     }
   ]

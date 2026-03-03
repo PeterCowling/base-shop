@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- PRIME-DATE-UTILS-001 [ttl=2026-12-31] Internal date parsing/formatting constants and log labels; non-UI strings by design. */
 // src/utils/dateUtils.ts
 
 import logger from '@/utils/logger';

@@ -1,0 +1,27 @@
+{
+  "round": 1,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-alloggiati-jsonp-timeout/fact-find.md",
+      "line": "29",
+      "message": "States there are only "two rejection paths" (`onerror` and Zod invalid payload), but `alloggiatiService.ts` also rejects on GAS error payload (`\"error\" in response && response.error`) and on missing `resultDetails`; this is a correctness gap that can mislead timeout/cleanup reasoning."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-alloggiati-jsonp-timeout/fact-find.md",
+      "line": "105",
+      "message": "The proposed local Jest command conflicts with repo policy in `AGENTS.md` ("Tests run in CI only. Do not run Jest locally"); execution guidance should point to CI validation flow instead."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/reception-alloggiati-jsonp-timeout/fact-find.md",
+      "line": "157",
+      "message": ""run the test suite post-implementation" repeats the same policy mismatch and should be reworded to CI-based verification."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "lp_score": 4.0
+}

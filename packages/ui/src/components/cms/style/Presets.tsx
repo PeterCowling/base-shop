@@ -113,7 +113,7 @@ export default function Presets({
       <button
         type="button"
         data-cy="preset-reset"
-        className="rounded border px-2 py-1 min-h-10 min-w-10"
+        className="rounded border px-2 py-1 min-h-11 min-w-11"
         onClick={resetTokens}
       >
         {t("common.default") as string}

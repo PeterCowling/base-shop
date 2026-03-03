@@ -27,11 +27,11 @@
       "description": "Smarte måder at bruge mindre på transport, mad og aktiviteter."
     },
     "bus": {
-      "label": "Bus",
+      "label": "Busrute",
       "title": "Bus- og SITA-guider"
     },
     "camping": {
-      "label": "Camping",
+      "label": "Campingplads",
       "title": "Camping langs kysten"
     },
     "capri": {
@@ -95,7 +95,7 @@
       "title": "Rejse-FAQ"
     },
     "ferragosto": {
-      "label": "Ferragosto",
+      "label": "Ferragosto Formand",
       "title": "Ferragosto i Positano"
     },
     "ferry": {
@@ -132,7 +132,7 @@
       "title": "Rejseforsikring"
     },
     "ischia": {
-      "label": "Ischia",
+      "label": "IschiaCity in Italy",
       "title": "Guider til Ischia"
     },
     "itinerary": {
@@ -189,11 +189,11 @@
       "title": "Guider til Praiano"
     },
     "procida": {
-      "label": "Procida",
+      "label": "Procida Formand",
       "title": "Guider til Procida"
     },
     "ravello": {
-      "label": "Ravello",
+      "label": "Ravello Formand",
       "title": "Guider til Ravello"
     },
     "safety": {
@@ -202,10 +202,10 @@
     },
     "salerno": {
       "label": "Salerno",
-      "title": "Salerno ↔ Positano"
+      "title": "Salerno ↔ positano"
     },
     "shopping": {
-      "label": "Shopping",
+      "label": "Indkøb",
       "title": "Shopping og kunsthåndværk"
     },
     "shoulder": {
@@ -217,7 +217,7 @@
       "title": "Guider til Sorrento"
     },
     "souvenirs": {
-      "label": "Souvenirs",
+      "label": "Minder",
       "title": "Souvenirs og shopping"
     },
     "stairs": {
@@ -229,7 +229,7 @@
       "title": "Sommer i Positano"
     },
     "tips": {
-      "label": "Tips",
+      "label": "Råd",
       "title": "Rejsetips"
     },
     "train": {
@@ -241,7 +241,7 @@
       "title": "Tramonti-vin"
     },
     "transport": {
-      "label": "Transport",
+      "label": "Transportmuligheder",
       "title": "Transportguider til Amalfikysten",
       "description": "Beslutningsguider til bus, færge, shuttle og transfers med fokus på bagage."
     },

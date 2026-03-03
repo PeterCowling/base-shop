@@ -39,7 +39,7 @@ const WEEKLY_STAGE_ID = stageOperatorMap.stages.some((stage) => stage.id === "S1
   : "SIGNALS";
 
 const HAPPY_PATH_EVENTS: RunEvent[] = [
-  // ASSESSMENT-09 → MARKET-06 → forecast (parallel) → SELL-01 (parallel) → S4 → S5A → S5B
+  // ASSESSMENT-09 → MARKET-06 → forecast (parallel) → SELL-01 (parallel) → S4 → WEBSITE
   // Forecast stage ID is sourced from the generated operator map for compatibility.
   // Some map versions model forecast as SIGNALS-01 instead of S3.
   makeEvent({ event: "stage_started", stage: "ASSESSMENT-09", timestamp: "2026-02-13T12:00:00Z" }),
@@ -67,10 +67,8 @@ const HAPPY_PATH_EVENTS: RunEvent[] = [
   }),
   makeEvent({ event: "stage_started", stage: "S4", timestamp: "2026-02-13T12:05:30Z" }),
   makeEvent({ event: "stage_completed", stage: "S4", timestamp: "2026-02-13T12:06:00Z", artifacts: { baseline_snapshot: "stages/S4/baseline.snapshot.md" } }),
-  makeEvent({ event: "stage_started", stage: "S5A", timestamp: "2026-02-13T12:06:30Z" }),
-  makeEvent({ event: "stage_completed", stage: "S5A", timestamp: "2026-02-13T12:07:00Z", artifacts: { prioritized_items: "stages/S5A/prioritized-items.md" } }),
-  makeEvent({ event: "stage_started", stage: "S5B", timestamp: "2026-02-13T12:07:30Z" }),
-  makeEvent({ event: "stage_completed", stage: "S5B", timestamp: "2026-02-13T12:08:00Z", artifacts: {} }),
+  makeEvent({ event: "stage_started", stage: "WEBSITE", timestamp: "2026-02-13T12:06:30Z" }),
+  makeEvent({ event: "stage_completed", stage: "WEBSITE", timestamp: "2026-02-13T12:07:00Z", artifacts: {} }),
 ];
 
 const STATE_OPTIONS = {
@@ -81,7 +79,7 @@ const STATE_OPTIONS = {
 
 describe("deriveState", () => {
   // VC-04A-01: Happy-path derivation — given a valid event stream
-  // (ASSESSMENT-09→MARKET-06→S3→SELL-01→S4→S5A→S5B) → derivation produces expected stage statuses.
+  // (ASSESSMENT-09→MARKET-06→S3→SELL-01→S4→WEBSITE) → derivation produces expected stage statuses.
   describe("VC-04A-01: happy-path derivation", () => {
     it("derives correct statuses from a multi-stage event stream", () => {
       const state = deriveState(HAPPY_PATH_EVENTS, STATE_OPTIONS);
@@ -91,19 +89,17 @@ describe("deriveState", () => {
       expect(state.stages[FORECAST_STAGE_ID].status).toBe("Done");
       expect(state.stages["SELL-01"].status).toBe("Done");
       expect(state.stages.S4.status).toBe("Done");
-      expect(state.stages.S5A.status).toBe("Done");
-      expect(state.stages.S5B.status).toBe("Done");
+      expect(state.stages.WEBSITE.status).toBe("Done");
 
       // Stages not in the event stream remain Pending
-      expect(state.stages.WEBSITE.status).toBe("Pending");
       expect(state.stages.DO.status).toBe("Pending");
       expect(state.stages[WEEKLY_STAGE_ID].status).toBe("Pending");
     });
 
     it("sets active_stage to the most recently started stage", () => {
       const state = deriveState(HAPPY_PATH_EVENTS, STATE_OPTIONS);
-      // S5B was the last stage_started event
-      expect(state.active_stage).toBe("S5B");
+      // WEBSITE was the last stage_started event
+      expect(state.active_stage).toBe("WEBSITE");
     });
 
     it("records artifact paths on completed stages", () => {
@@ -200,8 +196,7 @@ describe("deriveState", () => {
       expect(stageIds).toContain("SELL-01");
       expect(stageIds).toContain(WEEKLY_STAGE_ID);
       expect(stageIds).toContain("S4");
-      expect(stageIds).toContain("S5A");
-      expect(stageIds).toContain("S5B");
+      expect(stageIds).toContain("WEBSITE");
     });
   });
 

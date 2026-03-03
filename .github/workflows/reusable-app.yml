@@ -52,16 +52,37 @@ on:
         type: string
         default: ""
       # Extra routes to check after deploy (space-separated, e.g. "/api/health /shop")
+      # Uses redirect-following curl (2xx and 3xx = pass).
       healthcheck-extra-routes:
         required: false
         type: string
         default: "/api/health"
+      # Strict routes that must return HTTP 200 with no redirect following
+      # (space-separated, e.g. "/it/prenota"). Use for Cloudflare Pages
+      # 200-rewrite routes where a 301 redirect indicates a broken route.
+      healthcheck-strict-routes:
+        required: false
+        type: string
+        default: ""
       # Number of Jest test shards. Set >1 to enable sharded parallel tests
       # with changed-file detection. Default 1 = single test job, full suite.
       test-shard-count:
         required: false
         type: number
         default: 1
+
+      # Force Jest coverage collection for this app pipeline's test jobs.
+      # Enables per-app coverage threshold enforcement in jest config.
+      jest-force-coverage:
+        required: false
+        type: boolean
+        default: false
+      # Optional smoke e2e command for this app pipeline.
+      # Example: "pnpm --filter @apps/caryina e2e:smoke"
+      e2e-smoke-cmd:
+        required: false
+        type: string
+        default: ""
 
     secrets:
       CLOUDFLARE_API_TOKEN:
@@ -417,6 +438,7 @@ jobs:
           APP_FILTER: ${{ inputs.app-filter }}
           TEST_SCOPE: ${{ needs.validate.outputs.test_scope }}
           RELATED_TEST_PATHS_JSON: ${{ needs.validate.outputs.related_test_paths_json }}
+          JEST_FORCE_COVERAGE: ${{ inputs.jest-force-coverage && '1' || '0' }}
         run: |
           set -euo pipefail
 
@@ -506,6 +528,7 @@ jobs:
           APP_FILTER: ${{ inputs.app-filter }}
           TEST_SCOPE: ${{ needs.validate.outputs.test_scope }}
           RELATED_TEST_PATHS_JSON: ${{ needs.validate.outputs.related_test_paths_json }}
+          JEST_FORCE_COVERAGE: ${{ inputs.jest-force-coverage && '1' || '0' }}
         run: |
           set -euo pipefail
 
@@ -552,15 +575,57 @@ jobs:
           pnpm --filter "$APP_FILTER" exec jest --ci --runInBand --passWithNoTests --shard="$shard"
         shell: bash
 
+  e2e-smoke:
+    name: E2E Smoke
+    needs: [validate, test, test-sharded]
+    if: >-
+      ${{
+        always() &&
+        inputs.e2e-smoke-cmd != '' &&
+        needs.validate.outputs.run_validation == 'true' &&
+        needs.validate.result == 'success' &&
+        !contains(fromJSON('["failure","cancelled"]'), needs.test.result) &&
+        !contains(fromJSON('["failure","cancelled"]'), needs['test-sharded'].result)
+      }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout repository
+        id: checkout_e2e_primary
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Wait before checkout retry
+        if: ${{ steps.checkout_e2e_primary.outcome == 'failure' }}
+        run: sleep 15
+        shell: bash
+      - name: Checkout repository (retry)
+        if: ${{ steps.checkout_e2e_primary.outcome == 'failure' }}
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Install Playwright browser
+        run: pnpm exec playwright install chromium --with-deps
+        shell: bash
+      - name: Run smoke e2e
+        run: ${{ inputs.e2e-smoke-cmd }}
+        shell: bash
+
   build:
     name: Build
-    needs: [validate, test, test-sharded]
+    needs: [validate, test, test-sharded, e2e-smoke]
     if: >-
       ${{
         always() &&
         needs.validate.result == 'success' &&
         !contains(fromJSON('["failure","cancelled"]'), needs.test.result) &&
-        !contains(fromJSON('["failure","cancelled"]'), needs['test-sharded'].result)
+        !contains(fromJSON('["failure","cancelled"]'), needs['test-sharded'].result) &&
+        !contains(fromJSON('["failure","cancelled"]'), needs['e2e-smoke'].result)
       }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -710,6 +775,7 @@ jobs:
         env:
           BASE_URL: ${{ inputs.healthcheck-base-url }}
           EXTRA_ROUTES: ${{ inputs.healthcheck-extra-routes }}
+          STRICT_ROUTES: ${{ inputs.healthcheck-strict-routes }}
           MAX_RETRIES: "10"
           RETRY_DELAY: "6"
 

@@ -17,9 +17,9 @@
   "faqsHeading": "الأسئلة الشائعة",
   "costBreakdownTitle": "تفصيل التكلفة اليومية",
   "costBreakdownCurrencySuffix": "بعملة {{currency}}",
-  "costBreakdownSliceLabel": "{{label}}: {{value}}%{{suffix}}",
+  "costBreakdownSliceLabel": "_",
   "backLink": "رجوع",
   "typicalCostsHeading": "التكاليف النموذجية",
   "essentialsHeading": "الأساسيات",
-  "tocSectionFallback": "Section"
+  "tocSectionFallback": "الباب"
 }

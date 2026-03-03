@@ -2,6 +2,39 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import FindMyStayPage from '../page';
 
+// Mock react-i18next using actual FindMyStay locale so translation strings match test expectations
+jest.mock('react-i18next', () => {
+  const en = require('../../../../public/locales/en/FindMyStay.json');
+  function flatten(obj: Record<string, unknown>, prefix?: string): Record<string, string> {
+    const result: Record<string, string> = {};
+    for (const [k, v] of Object.entries(obj)) {
+      const full = prefix ? `${prefix}.${k}` : k;
+      if (v !== null && typeof v === 'object') {
+        Object.assign(result, flatten(v as Record<string, unknown>, full));
+      } else {
+        result[full] = String(v);
+      }
+    }
+    return result;
+  }
+  const lookup = flatten(en);
+  return {
+    useTranslation: () => ({
+      t: (key: string, opts?: Record<string, unknown>) => {
+        let value = lookup[key] ?? key;
+        if (opts) {
+          for (const [k, v] of Object.entries(opts)) {
+            value = value.replace(`{{${k}}}`, String(v));
+          }
+        }
+        return value;
+      },
+      i18n: { language: 'en', changeLanguage: jest.fn() },
+    }),
+    initReactI18next: { type: '3rdParty', init: jest.fn() },
+  };
+});
+
 describe('FindMyStayPage', () => {
   const fetchMock = jest.fn();
   const assignMock = jest.fn();
@@ -17,9 +50,9 @@ describe('FindMyStayPage', () => {
   });
 
   function fillFormAndSubmit() {
-    fireEvent.change(screen.getByLabelText('Surname'), { target: { value: 'Doe' } });
-    fireEvent.change(screen.getByLabelText('Booking Reference'), { target: { value: 'BDC-123456' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Find Booking' }));
+    fireEvent.change(screen.getByLabelText('Last name'), { target: { value: 'Doe' } });
+    fireEvent.change(screen.getByLabelText('Booking code'), { target: { value: 'BDC-123456' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Find my stay' }));
   }
 
   it('TC-01: redirects guest to API-provided redirectUrl', async () => {

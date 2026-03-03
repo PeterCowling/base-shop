@@ -1,7 +1,5 @@
 "use client";
 
-/* eslint-disable ds/no-raw-typography, ds/no-arbitrary-tailwind, ds/min-tap-size -- XAUP-0001 [ttl=2026-12-31] Gate UI pending design token refactor */
-
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 import { CatalogLoginForm } from "./CatalogLoginForm.client";
@@ -9,6 +7,7 @@ import { CatalogProductForm } from "./CatalogProductForm.client";
 import { CatalogProductsList } from "./CatalogProductsList.client";
 import { CatalogSubmissionPanel } from "./CatalogSubmissionPanel.client";
 import { CatalogSyncPanel } from "./CatalogSyncPanel.client";
+import { CurrencyRatesPanel } from "./CurrencyRatesPanel.client";
 import { useCatalogConsole } from "./useCatalogConsole.client";
 
 type CatalogConsoleProps = {
@@ -21,7 +20,7 @@ export default function CatalogConsole({ monoClassName }: CatalogConsoleProps) {
 
   if (consoleState.session === null) {
     return (
-      <div className="text-sm text-[color:var(--gate-muted)]">
+      <div className="text-sm text-gate-muted">
         {t("checkingConsoleAccess")}
       </div>
     );
@@ -43,10 +42,10 @@ export default function CatalogConsole({ monoClassName }: CatalogConsoleProps) {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="space-y-1">
-          <div className="text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+          <div className="text-xs uppercase tracking-label text-gate-muted">
             {t("consoleActive")}
           </div>
-          <label className="block text-[10px] uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
+          <label className="block text-2xs uppercase tracking-label text-gate-muted">
             {t("storefrontLabel")}
           </label>
           <select
@@ -57,7 +56,7 @@ export default function CatalogConsole({ monoClassName }: CatalogConsoleProps) {
               )
             }
             disabled={consoleState.busy}
-            className="rounded-md border border-border-2 bg-transparent px-3 py-2 text-xs uppercase tracking-[0.2em] text-[color:var(--gate-ink)]"
+            className="rounded-md border border-border-2 bg-transparent px-3 py-2 text-xs uppercase tracking-label-xs text-gate-ink"
           >
             {consoleState.storefronts.map((storefront) => (
               <option key={storefront.id} value={storefront.id}>
@@ -70,7 +69,8 @@ export default function CatalogConsole({ monoClassName }: CatalogConsoleProps) {
           <button
             type="button"
             onClick={() => consoleState.loadCatalog().catch(() => null)}
-            className="rounded-md border border-border-2 px-4 py-2 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-ink)] transition hover:underline"
+            // eslint-disable-next-line ds/min-tap-size -- XAUP-0001 operator-desktop-tool
+            className="rounded-md border border-border-2 px-4 py-2 text-xs uppercase tracking-label text-gate-ink transition hover:underline"
           >
             {t("refresh")}
           </button>
@@ -78,7 +78,8 @@ export default function CatalogConsole({ monoClassName }: CatalogConsoleProps) {
             <button
               type="button"
               onClick={consoleState.handleLogout}
-              className="rounded-md border border-border-2 px-4 py-2 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-ink)] transition hover:underline"
+              // eslint-disable-next-line ds/min-tap-size -- XAUP-0001 operator-desktop-tool
+              className="rounded-md border border-border-2 px-4 py-2 text-xs uppercase tracking-label text-gate-ink transition hover:underline"
             >
               {t("exitConsole")}
             </button>
@@ -99,6 +100,7 @@ export default function CatalogConsole({ monoClassName }: CatalogConsoleProps) {
         </p>
       ) : null}
 
+      {/* eslint-disable-next-line ds/no-arbitrary-tailwind -- XAUP-0001 operator-tool layout */}
       <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
         <CatalogProductsList
           products={consoleState.products}
@@ -153,6 +155,14 @@ export default function CatalogConsole({ monoClassName }: CatalogConsoleProps) {
               onSync={consoleState.handleSync}
               onRefreshReadiness={consoleState.refreshSyncReadiness}
               onChangeSyncOptions={consoleState.setSyncOptions}
+            />
+          ) : null}
+
+          {consoleState.uploaderMode === "internal" ? (
+            <CurrencyRatesPanel
+              busy={consoleState.busy}
+              syncReadiness={consoleState.syncReadiness}
+              onSync={() => void consoleState.handleSync()}
             />
           ) : null}
         </div>

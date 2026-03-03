@@ -66,14 +66,14 @@
         "label": "FAQs"
       }
     ],
-    "faqLabel": "FAQs",
+    "faqLabel": "Câu hỏi thường gặp",
     "sections": {
       "overview": {
-        "heading": "Overview",
+        "heading": "Toàn cảnh",
         "body": "Bản dịch đang được chuẩn bị."
       },
       "when": {
-        "heading": "When it’s good value",
+        "heading": "Khi nó có giá trị",
         "body": "Bản dịch đang được chuẩn bị."
       }
     },

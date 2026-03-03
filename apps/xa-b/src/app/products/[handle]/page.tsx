@@ -16,6 +16,10 @@ import { toWhatsappHref } from "../../../lib/support";
 import { formatLabel, getDesignerName } from "../../../lib/xaCatalog";
 import { xaI18n } from "../../../lib/xaI18n";
 
+export function generateStaticParams() {
+  return XA_PRODUCTS.map((p) => ({ handle: p.slug }));
+}
+
 export default async function ProductPage({
   params,
 }: {

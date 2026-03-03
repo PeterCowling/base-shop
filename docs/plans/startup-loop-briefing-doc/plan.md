@@ -239,10 +239,10 @@ No parallel waves — all panel tasks edit the same single HTML file.
   `[readonly] docs/business-os/strategy/HEAD/launch-readiness-action-backlog.user.md`;
   `[readonly] docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md`;
   `[readonly] docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md`;
-  `[readonly] docs/business-os/startup-baselines/HEAD-intake-packet.user.md`;
+  `[readonly] docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md`;
   `[readonly] docs/business-os/strategy/HEAD/2026-02-12-prioritization-scorecard.user.md`;
   `[readonly] docs/business-os/site-upgrades/HEAD/2026-02-12-upgrade-brief.user.md`;
-  `[readonly] docs/business-os/strategy/HEAD/brand-identity.user.md`;
+  `[readonly] docs/business-os/strategy/HEAD/2026-02-21-brand-identity-dossier.user.md`;
   `[readonly] docs/business-os/startup-baselines/HEAD-forecast-seed.user.md`;
   `[readonly] docs/business-os/strategy/HEAD/2026-02-11-week2-gate-dry-run.user.md`
 - **Depends on:** TASK-01
@@ -341,10 +341,10 @@ No parallel waves — all panel tasks edit the same single HTML file.
   `[readonly] docs/business-os/strategy/PET/2026-02-18-candidate-names.user.md`;
   `[readonly] docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.user.md`;
   `[readonly] docs/business-os/market-research/PET/2026-02-12-market-intelligence.user.md`;
-  `[readonly] docs/business-os/startup-baselines/PET-intake-packet.user.md`;
+  `[readonly] docs/business-os/startup-baselines/PET-2026-02-12assessment-intake-packet.user.md`;
   `[readonly] docs/business-os/strategy/PET/2026-02-12-prioritization-scorecard.user.md`;
   `[readonly] docs/business-os/site-upgrades/PET/2026-02-12-upgrade-brief.user.md`;
-  `[readonly] docs/business-os/strategy/PET/brand-identity.user.md`;
+  `[readonly] docs/business-os/strategy/PET/2026-02-17-brand-identity-dossier.user.md`;
   `[readonly] docs/business-os/startup-baselines/PET-forecast-seed.user.md`;
   `[readonly] docs/business-os/strategy/PET/2026-02-11-week2-gate-dry-run.user.md`
 - **Depends on:** TASK-02
@@ -440,13 +440,13 @@ No parallel waves — all panel tasks edit the same single HTML file.
   `[readonly] docs/business-os/strategy/BRIK/signal-review-20260218-1238-W08.md`;
   `[readonly] docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1.user.md`;
   `[readonly] docs/business-os/market-research/BRIK/2026-02-15-market-intelligence.user.md`;
-  `[readonly] docs/business-os/startup-baselines/BRIK-intake-packet.user.md`;
+  `[readonly] docs/business-os/startup-baselines/BRIK-2026-02-12assessment-intake-packet.user.md`;
   `[readonly] docs/business-os/strategy/BRIK/2026-02-13-prioritization-scorecard.user.md`;
   `[readonly] docs/business-os/site-upgrades/BRIK/2026-02-12-upgrade-brief.user.md`;
   `[readonly] docs/business-os/strategy/BRIK/2026-02-17-brikette-sales-funnel-external-brief.user.md`;
   `[readonly] docs/business-os/strategy/BRIK/2026-02-17-octorate-process-reduction-feasibility.user.md`;
   `[readonly] docs/business-os/strategy/BRIK/product-spec.user.md`;
-  `[readonly] docs/business-os/strategy/BRIK/brand-identity.user.md`;
+  `[readonly] docs/business-os/strategy/BRIK/2026-02-12-brand-identity-dossier.user.md`;
   `[readonly] docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md`;
   `[readonly] docs/business-os/strategy/BRIK/2026-02-14-octorate-operational-data-baseline.user.md`;
   `[readonly] docs/business-os/strategy/BRIK/2026-02-12-ga4-search-console-setup-note.user.md`;

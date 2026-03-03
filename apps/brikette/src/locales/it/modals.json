@@ -20,7 +20,7 @@
     "title": "Prenota direttamente e risparmia",
     "description": "Grazie per aver prenotato direttamente con noi! Come ringraziamento riceverai:",
     "perks": {
-      "discount": "Fino al 10% di sconto sulla tariffa della camera",
+      "discount": "Fino al 25% di sconto sulla tariffa della camera",
       "breakfast": "Colazione gratuita ogni mattina",
       "drinks": "Drink di benvenuto offerti",
       "upgrades": "Upgrade di camera prioritari (soggetti a disponibilità)"
@@ -159,6 +159,19 @@
     "close": "Chiudi"
   },
   "loader": {
-    "ariaLabel": "Loading"
+    "ariaLabel": "Caricamento"
+  },
+  "date": {
+    "stayHelper": "2-8 notti",
+    "clearDates": "Date chiare",
+    "nightsSummary": "{{from}} → {{to}} (_TOK2__ notti)"
+  },
+  "directPerks": {
+    "heading": "Perché prenotare direttamente?",
+    "items": [
+      "Fino al 25% di sconto",
+      "Colazione in omaggio",
+      "Drink serale in omaggio"
+    ]
   }
 }

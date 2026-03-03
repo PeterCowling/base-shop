@@ -5,16 +5,17 @@
     "description": "オンラインで予約、探索、接続できます。質問がありますか？私たちのデジタルアシスタントは、Positanoでの滞在を充実させるために、パーソナライズされたおすすめや旅行ガイドを提供します。"
   },
   "heading": "デジタルアシスタンス",
-  "heroEyebrow": "Book and Connect",
+  "heroEyebrow": "ブック・アンド・コネクト",
   "subheading": "オンラインで予約、探索、交流しましょう。",
   "heroIntro": "チームとデジタルアシスタントが即時に回答し、滞在計画をスムーズに進められます。",
   "otherBookingOptions": "その他の予約オプションとソーシャルメディア",
   "addressLabel": "住所：",
-  "addressValue": "Via G. Marconi, 358, 84017, Positano",
+  "addressValue": "Via G. Marconi, 358, 84017, ポジタノ",
+  "bookDirect": "直接予約する",
   "bookingOptions": {
     "googleBusiness": "Googleビジネス",
-    "bookingCom": "Booking.com",
-    "hostelWorld": "Hostelworld",
+    "bookingCom": "予約する.com",
+    "hostelWorld": "ホステルワールド",
     "instagram": "Instagram"
   },
   "amaHeadingPart1": "私たちはどのように",
@@ -41,7 +42,7 @@
     "cardCta": "「{{guideTitle}}」の計画ガイドを読む"
   },
   "crosslinks": {
-    "heading": "{{howToTitle}} · {{experiencesTitle}}",
-    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}"
+    "heading": "{{howToTitle}}____________________________________________________________________________________________________________________________________________",
+    "intro": "{{howToMetaDescription}}_____________________________________________________________________________________________________________________________________"
   }
 }

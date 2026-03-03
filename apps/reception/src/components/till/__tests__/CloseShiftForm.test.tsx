@@ -59,9 +59,17 @@ jest.mock("../../../hooks/mutations/useCCReceiptConfirmations", () => ({
 }));
 
 let blindClose = false;
+let mockUserRoles: string[] | undefined = undefined;
 
 jest.mock("../../../context/AuthContext", () => ({
-  useAuth: () => ({ user: { user_name: "alice", email: "a@test" } }),
+  useAuth: () => ({
+    user: {
+      user_name: "alice",
+      email: "a@test",
+      // roles set per-test via mockUserRoles
+      ...(mockUserRoles !== undefined ? { roles: mockUserRoles } : {}),
+    },
+  }),
 }));
 
 jest.mock("../../../constants/settings", () => ({
@@ -83,6 +91,7 @@ jest.mock("../../../hooks/data/useVarianceThresholds", () => ({
 beforeEach(() => {
   localStorage.clear();
   blindClose = false;
+  mockUserRoles = undefined;
   mockUseVarianceThresholds.mockReturnValue({
     thresholds: { cash: 1000, keycards: undefined },
     loading: false,
@@ -276,5 +285,40 @@ describe("CloseShiftForm", () => {
     const container = heading.closest("div.relative") as HTMLElement;
     expect(container).toHaveClass("relative");
     document.documentElement.classList.remove("dark");
+  });
+
+  it("shows expected cash immediately for manager role when blindClose is false (TC-09)", () => {
+    blindClose = false;
+    mockUserRoles = ["manager"];
+    render(
+      <CloseShiftForm
+        ccTransactionsFromThisShift={[]}
+        expectedCashAtClose={100}
+        expectedKeycardsAtClose={0}
+        variant="close"
+        onConfirm={jest.fn()}
+        onCancel={jest.fn()}
+      />
+    );
+    expect(screen.getByText(/Expected cash: €100\.00/)).toBeInTheDocument();
+  });
+
+  it("hides expected cash for staff role initially, reveals after denomination input when blindClose is false (TC-10)", async () => {
+    blindClose = false;
+    mockUserRoles = ["staff"];
+    render(
+      <CloseShiftForm
+        ccTransactionsFromThisShift={[]}
+        expectedCashAtClose={100}
+        expectedKeycardsAtClose={0}
+        variant="close"
+        onConfirm={jest.fn()}
+        onCancel={jest.fn()}
+      />
+    );
+    expect(screen.queryByText(/Expected cash:/)).not.toBeInTheDocument();
+    const input = screen.getByLabelText(/€50 notes/);
+    await userEvent.type(input, "1");
+    expect(screen.getByText(/Expected cash: €100\.00/)).toBeInTheDocument();
   });
 });

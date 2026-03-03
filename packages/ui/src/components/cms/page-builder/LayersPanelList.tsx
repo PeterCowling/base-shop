@@ -33,7 +33,7 @@ export function LayerList({ nodes, parentId, selectedIds, onSelect, onToggleHidd
                 {hasChildren && (
                   <button
                     type="button"
-                    className="min-h-10 min-w-10 rounded border px-1 text-xs"
+                    className="min-h-11 min-w-11 rounded border px-1 text-xs"
                     onClick={(e) => {
                       e.stopPropagation();
                       setCollapsed((prev) => {

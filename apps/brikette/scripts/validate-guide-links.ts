@@ -15,6 +15,8 @@ import {
   readJson,
 } from "@acme/guides-core";
 
+import { resolveGuideKeyFromSlug } from "../src/guides/slugs";
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -71,7 +73,7 @@ const guideFilter = guideFilterArg
 const TOKEN_PATTERN = /%([A-Z]+):([^|%]+)\|([^%]+)%/g;
 
 type TokenMatch = {
-  type: "LINK" | "HOWTO" | "URL" | "UNKNOWN";
+  type: "LINK" | "HOWTO" | "URL" | "IMAGE" | "GUIDES" | "UNKNOWN";
   target: string;
   label: string;
   line: number;
@@ -92,6 +94,10 @@ type LinkViolation = {
   error: string;
   suggestion?: string;
 };
+
+const LEGACY_HOWTO_TOKEN_ALIASES: Readonly<Record<string, string>> = Object.freeze({
+  "positano-naples-ferry": "positanoToNaplesDirectionsByFerry",
+});
 
 /**
  * Extract all link tokens from content string
@@ -163,16 +169,83 @@ function validateLinkToken(
  */
 function validateHowtoToken(
   target: string,
-  validSlugs: Set<string>
+  validSlugs: Set<string>,
+  validGuideKeys: Set<string>,
 ): ValidationResult {
-  if (validSlugs.has(target)) {
+  const trimmed = target.trim();
+
+  if (validSlugs.has(trimmed)) {
+    return { valid: true };
+  }
+
+  if (validGuideKeys.has(trimmed)) {
+    return { valid: true };
+  }
+
+  const resolvedFromSlug = resolveGuideKeyFromSlug(trimmed);
+  if (resolvedFromSlug && validGuideKeys.has(resolvedFromSlug)) {
+    return { valid: true };
+  }
+
+  const alias = LEGACY_HOWTO_TOKEN_ALIASES[trimmed.toLowerCase()];
+  if (alias && validGuideKeys.has(alias)) {
+    return { valid: true };
+  }
+
+  const camelCandidate = toCamelCaseToken(trimmed);
+  if (camelCandidate && validGuideKeys.has(camelCandidate)) {
+    return { valid: true };
+  }
+
+  const resolvedFromCamel = camelCandidate ? resolveGuideKeyFromSlug(camelCandidate) : undefined;
+  if (resolvedFromCamel && validGuideKeys.has(resolvedFromCamel)) {
     return { valid: true };
   }
 
   return {
     valid: false,
-    error: `HOWTO slug "${target}" not found in route definitions or guide slugs`,
+    error: `HOWTO target "${target}" not found in route definitions, guide keys, or guide slugs`,
   };
+}
+
+function validateImageToken(target: string): ValidationResult {
+  const trimmed = target.trim();
+  if (!trimmed) {
+    return {
+      valid: false,
+      error: "IMAGE token target must not be empty",
+    };
+  }
+
+  const lower = trimmed.toLowerCase();
+  if (lower.startsWith("javascript:") || lower.startsWith("data:")) {
+    return {
+      valid: false,
+      error: `Unsafe IMAGE protocol detected: ${lower.split(":")[0]}:`,
+    };
+  }
+
+  return { valid: true };
+}
+
+function toCamelCaseToken(value: string): string {
+  const normalized = value.trim();
+  if (!normalized) return "";
+  if (!/[-_\s]/u.test(normalized)) return normalized;
+
+  const parts = normalized
+    .split(/[-_\s]+/u)
+    .map((part) => part.trim())
+    .filter(Boolean);
+
+  if (parts.length === 0) return "";
+  return parts
+    .map((part, index) =>
+      index === 0
+        ? `${part.charAt(0).toLowerCase()}${part.slice(1)}`
+        : `${part.charAt(0).toUpperCase()}${part.slice(1)}`,
+    )
+    .join("");
 }
 
 /**
@@ -300,10 +373,16 @@ const main = async (): Promise<void> => {
               result = validateLinkToken(token.target, validGuideKeys);
               break;
             case "HOWTO":
-              result = validateHowtoToken(token.target, validHowToSlugs);
+              result = validateHowtoToken(token.target, validHowToSlugs, validGuideKeys);
               break;
             case "URL":
               result = validateUrlToken(token.target);
+              break;
+            case "GUIDES":
+              result = validateLinkToken(token.target, validGuideKeys);
+              break;
+            case "IMAGE":
+              result = validateImageToken(token.target);
               break;
             default:
               result = {

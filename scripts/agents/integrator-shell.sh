@@ -108,6 +108,12 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+# CI-only test execution policy: export BASESHOP_CI_ONLY_TESTS=1 so all child
+# processes (agents, commands) receive the block automatically. The governed runner
+# checks this variable and exits 1 with a redirect message when CI is not set.
+# GitHub Actions sets CI=true, so the block does not fire in CI environments.
+export BASESHOP_CI_ONLY_TESTS=1
+
 if [[ "$mode" == "read-only" ]]; then
   if [[ "$command_mode" == "0" ]]; then
     if [[ ! -t 0 ]]; then

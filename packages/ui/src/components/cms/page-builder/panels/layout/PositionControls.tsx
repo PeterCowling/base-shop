@@ -20,7 +20,7 @@ interface Props {
 export default function PositionControls({ component, locked, handleInput, handleResize, errorKeys }: Props) {
   const t = useLocalStrings();
   // CSS utility class list for error ring
-  const ERROR_RING_CLASS = "ring-1 ring-red-500"; // i18n-exempt -- INTL-204 CSS utility classes only [ttl=2026-12-31]
+  const ERROR_RING_CLASS = "ring-1 ring-error-main"; // i18n-exempt -- INTL-204 CSS utility classes only [ttl=2026-12-31]
   return (
     <>
       <Select

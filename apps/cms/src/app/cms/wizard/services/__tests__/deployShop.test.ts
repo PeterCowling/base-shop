@@ -1,6 +1,6 @@
-import { validateShopName } from "@acme/platform-core/shops";
+import { validateShopName } from "@acme/platform-core/shops/client";
 
-jest.mock("@acme/platform-core/shops", () => ({
+jest.mock("@acme/platform-core/shops/client", () => ({
   validateShopName: jest.fn(),
 }));
 

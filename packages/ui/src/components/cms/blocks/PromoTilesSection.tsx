@@ -55,7 +55,7 @@ export default function PromoTilesSection({ tiles = [], density = "editorial", c
           <a
             key={`${tile.imageSrc ?? "no-img"}-${tile.ctaHref ?? "#"}-${typeof tile.caption === "string" ? tile.caption : ""}`}
             href={tile.ctaHref ?? "#"}
-            className="group relative block overflow-hidden rounded border min-h-10 min-w-10"
+            className="group relative block overflow-hidden rounded border min-h-11 min-w-11"
           >{/* i18n-exempt: class names */}
             {/* Image */}
             <div className="aspect-video w-full bg-muted">

@@ -9,96 +9,14 @@ import { Inline } from "@acme/design-system/primitives";
 import { type CategoryType } from "../../../types/bar/BarTypes";
 
 /* ──────────────────────────────────────────────────────────────────────
- * Category Palette
- *
- * • `bg`    – base background
- * • `hover` – hover/active background tint
- * • `text`  – text colour (light/dark variants)
- *
- *   → All class tokens map to colours defined in tailwind.config.ts.
- *   → Keep all colour knowledge centralised; no raw HEX values here.
+ * Tab styling — unified green-primary theme.
+ * Selected tab is always bg-primary-main (forest green).
+ * Unselected tabs use the dark surface palette for contrast.
  * ──────────────────────────────────────────────────────────────────── */
-const CATEGORY_STYLES: Record<
-  CategoryType,
-  { bg: string; hover: string; text: string }
-> = {
-  Sweet: {
-    bg: "bg-pinkShades-row1",
-    hover: "hover:bg-pinkShades-row2",
-    text: "text-foreground",
-  },
-  Savory: {
-    bg: "bg-greenShades-row1",
-    hover: "hover:bg-greenShades-row2",
-    text: "text-foreground",
-  },
-  Gelato: {
-    bg: "bg-pinkShades-row3",
-    hover: "hover:bg-pinkShades-row4",
-    text: "text-foreground",
-  },
-
-  Coffee: {
-    bg: "bg-coffeeShades-row1",
-    hover: "hover:bg-coffeeShades-row2",
-    text: "text-foreground",
-  },
-  Tea: {
-    bg: "bg-teaShades-row1",
-    hover: "hover:bg-teaShades-row2",
-    text: "text-foreground",
-  },
-
-  Beer: {
-    bg: "bg-beerShades-row1",
-    hover: "hover:bg-beerShades-row2",
-    text: "text-primary-fg",
-  },
-  Wine: {
-    bg: "bg-wineShades-row1",
-    hover: "hover:bg-wineShades-row2",
-    text: "text-primary-fg",
-  },
-
-  Spritz: {
-    bg: "bg-spritzShades-row1",
-    hover: "hover:bg-spritzShades-row2",
-    text: "text-primary-fg",
-  },
-
-  "Mixed Drinks": {
-    bg: "bg-blueShades-row1",
-    hover: "hover:bg-blueShades-row2",
-    text: "text-foreground",
-  },
-  Cocktails: {
-    bg: "bg-purpleShades-row1",
-    hover: "hover:bg-purpleShades-row2",
-    text: "text-primary-fg",
-  },
-
-  Other: {
-    bg: "bg-grayishShades-row1",
-    hover: "hover:bg-grayishShades-row2",
-    text: "text-foreground",
-  },
-
-  Juices: {
-    bg: "bg-orangeShades-row1",
-    hover: "hover:bg-orangeShades-row2",
-    text: "text-foreground",
-  },
-  Smoothies: {
-    bg: "bg-orangeShades-row3",
-    hover: "hover:bg-orangeShades-row4",
-    text: "text-foreground",
-  },
-  Soda: {
-    bg: "bg-orangeShades-row5",
-    hover: "hover:bg-orangeShades-row1",
-    text: "text-foreground",
-  },
-};
+const TAB_SELECTED =
+  "bg-primary-main text-primary-fg shadow-sm";
+const TAB_UNSELECTED =
+  "bg-surface-3 text-muted-foreground border border-border-1/40 hover:bg-surface-2 hover:text-foreground hover:border-border-2";
 
 /* ──────────────────────────────────────────────────────────────────────
  * Component Props
@@ -127,29 +45,19 @@ const CategoryHeader: FC<CategoryHeaderProps> = React.memo(
     const buttons = useMemo(
       () =>
         categories.map((cat) => {
-          const { bg, hover, text } = CATEGORY_STYLES[cat] ?? {
-            bg: "bg-muted",
-            hover: "hover:bg-muted/70",
-            text: "text-foreground",
-          };
-
+          const isSelected = selectedCategory === cat;
           return (
             <Button
-              /* a11y -------------------------------------------------------- */
               key={cat}
               role="tab"
-              aria-selected={selectedCategory === cat}
+              aria-selected={isSelected}
               onClick={handleSelect(cat)}
-              /* styling ----------------------------------------------------- */
               compatibilityMode="passthrough"
-              data-selected={selectedCategory === cat}
-              className={`relative flex-shrink-0 snap-start whitespace-nowrap rounded-lg px-4 py-2 min-h-11 text-sm font-semibold uppercase tracking-wide transition
-                          ${bg} ${hover} ${text}
-                          opacity-[0.85] hover:opacity-100
-                          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80
-                          /* selected variant */
-                          data-[selected=true]:ring-2 data-[selected=true]:ring-white data-[selected=true]:ring-offset-2 data-[selected=true]:ring-offset-surface
-                          data-[selected=true]:opacity-100`}
+              className={[
+                "relative flex-shrink-0 snap-start whitespace-nowrap rounded-lg px-4 py-2 min-h-11 text-sm font-semibold uppercase tracking-wide transition-all duration-150",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-main focus-visible:ring-offset-1 focus-visible:ring-offset-surface",
+                isSelected ? TAB_SELECTED : TAB_UNSELECTED,
+              ].join(" ")}
             >
               {cat}
             </Button>
@@ -163,7 +71,7 @@ const CategoryHeader: FC<CategoryHeaderProps> = React.memo(
       <Inline
         wrap={false}
         gap={2}
-        className="w-full overflow-x-auto overflow-y-hidden border-b border-foreground/10 bg-gradient-to-b from-surface via-surface-2 to-surface-3 px-2 py-1 scrollbar-none scroll-smooth snap-x snap-mandatory shadow-md"
+        className="w-full overflow-x-auto overflow-y-hidden border-b border-border-1/50 bg-surface-3 px-2 py-2 scrollbar-none scroll-smooth snap-x snap-mandatory"
         role="tablist"
         aria-label="Menu categories"
       >

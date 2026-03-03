@@ -347,5 +347,10 @@
         "experience": "Опыт"
       }
     }
+  },
+  "search": {
+    "noResults": "Путеводителей не найдено",
+    "resultsCount_one": "Найдено руководство {{count}}",
+    "resultsCount_other": "Найдено руководство {{count}}"
   }
 }

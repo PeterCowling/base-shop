@@ -19,6 +19,7 @@ Business-OS-Integration: on
 Business-Unit: BOS
 Card-ID:
 ---
+<!-- LINT-EXEMPT: local-jest-pattern -->
 
 # Startup Loop S2 Market Intelligence Prompt Quality — Plan
 
@@ -215,7 +216,7 @@ See `## Tasks` section for the active task list.
 - **Affects:**
   - Primary: `scripts/src/startup-loop/s2-market-intelligence-handoff.ts`
   - Primary: `docs/business-os/market-research/_templates/` (new hospitality template referenced)
-  - Secondary: `[readonly] docs/business-os/startup-loop/loop-spec.yaml` (should remain unchanged)
+  - Secondary: `[readonly] docs/business-os/startup-loop/specifications/loop-spec.yaml` (should remain unchanged)
   - Secondary: `docs/business-os/startup-loop-workflow.user.md` (optional: mention profiles + override)
   - Tests: `scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts`
 - **Depends on:** TASK-01, TASK-02

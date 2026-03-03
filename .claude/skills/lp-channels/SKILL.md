@@ -32,7 +32,7 @@ Required:
 
 **Demand Evidence Pack (DEP) — strategy eligibility gate (GATE-SELL-STRAT-01):**
 
-Before SELL-01 starts, a valid DEP record must pass the floor defined in `docs/business-os/startup-loop/demand-evidence-pack-schema.md`. Full gate logic is in startup-loop advance gate docs. Summary:
+Before SELL-01 starts, a valid DEP record must pass the floor defined in `docs/business-os/startup-loop/schemas/demand-evidence-pack-schema.md`. Full gate logic is in startup-loop advance gate docs. Summary:
 - DEP passes → SELL-01 strategy design is eligible.
 - DEP missing or fails → SELL-01 is blocked.
 
@@ -42,7 +42,7 @@ Paid spend authorization is evaluated separately at SELL-08 after strategy outpu
 
 Optional (enhances quality):
 - Competitor channel analysis, budget/resource constraints, existing audiences, market research
-- `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` — channel voice and tone alignment
+- `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md` — channel voice and tone alignment
 - `docs/business-os/strategy/<BIZ>/messaging-hierarchy.user.md` — channel-specific messaging
 
 ## Workflow

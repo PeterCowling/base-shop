@@ -275,7 +275,7 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
                   type="checkbox"
                   checked={allSelected}
                   onChange={toggleSelectAll}
-                  className="h-4 w-4 rounded border-border-2 text-info-main focus-visible:focus:ring-ring"
+                  className="h-4 w-4 rounded-lg border-border-2 text-info-main focus-visible:focus:ring-ring"
                   aria-label="Select all rows"
                 />
               </TableHead>
@@ -352,7 +352,7 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
                         type="checkbox"
                         checked={isSelected}
                         onChange={() => toggleRowSelection(guest.bookingRef)}
-                        className="h-4 w-4 rounded border-border-2 text-info-main focus-visible:focus:ring-ring"
+                        className="h-4 w-4 rounded-lg border-border-2 text-info-main focus-visible:focus:ring-ring"
                         aria-label={`Select booking ${guest.bookingRef}`}
                       />
                     </TableCell>

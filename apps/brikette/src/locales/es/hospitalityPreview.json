@@ -1,0 +1,12 @@
+{
+  "title": "Tema de hospitalidad Vista previa",
+  "guestActivation": {
+    "label": "Activación invitada",
+    "description": "Últimos 7 días"
+  },
+  "signalBridge": {
+    "title": "Control de puente de señalización",
+    "etaShared": "eta compartido",
+    "cashPrepared": "En efectivo preparado"
+  }
+}

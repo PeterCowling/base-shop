@@ -47,9 +47,9 @@ const Loader = memo(function Loader(): React.JSX.Element {
     <div
       role="status"
       aria-label="loading"
-      className="fixed inset-0 layer-modal-backdrop grid place-items-center bg-black/20 dark:bg-black/40 backdrop-blur-sm motion-safe:animate-in motion-safe:fade-in pointer-coarse:p-4"
+      className="fixed inset-0 layer-modal-backdrop grid place-items-center bg-surface/20 dark:bg-surface/40 backdrop-blur-sm motion-safe:animate-in motion-safe:fade-in pointer-coarse:p-4"
     >
-      <div className="size-10 animate-spin rounded-full border-4 border-brand-primary/50 border-t-transparent" />
+      <div className="size-11 animate-spin rounded-full border-4 border-brand-primary/50 border-t-transparent" />
     </div>
   );
 });

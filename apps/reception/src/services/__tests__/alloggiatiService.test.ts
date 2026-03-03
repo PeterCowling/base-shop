@@ -115,14 +115,42 @@ describe("sendAlloggiatiRecordsToGoogleScript", () => {
     ).searchParams.get("callback") as string;
 
     const invalid = { foo: "bar" };
-     
+
     (window as any)[cbName](invalid);
 
     await expect(promise).rejects.toThrow(/Invalid response format/);
 
     // Callback removed and script detached
-     
+
     expect((window as any)[cbName]).toBeUndefined();
     expect((scriptEl as HTMLScriptElement).parentNode).toBeNull();
+  });
+
+  it("rejects after timeout when callback never fires", async () => {
+    jest.useFakeTimers();
+    try {
+      const promise = sendAlloggiatiRecordsToGoogleScript(["A"], false);
+
+      expect(appendSpy).toHaveBeenCalled();
+      expect(scriptEl).not.toBeNull();
+
+      const cbName = new URL(
+        (scriptEl as HTMLScriptElement).src
+      ).searchParams.get("callback") as string;
+
+      // Advance time past the 30-second timeout without firing the callback
+      jest.advanceTimersByTime(30001);
+
+      await expect(promise).rejects.toThrow(
+        "Alloggiati submission timed out after 30 seconds."
+      );
+
+      // Callback removed and script detached
+
+      expect((window as any)[cbName]).toBeUndefined();
+      expect((scriptEl as HTMLScriptElement).parentNode).toBeNull();
+    } finally {
+      jest.useRealTimers();
+    }
   });
 });

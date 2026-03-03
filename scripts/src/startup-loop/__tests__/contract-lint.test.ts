@@ -133,6 +133,14 @@ describe("lintStartupLoopArtifactPath — measurement-verification (VC-01)", () 
     });
     expect(issues).toHaveLength(0);
   });
+
+  it("VC-01: compliant path with assessment/ container produces no issues", () => {
+    const issues = lintStartupLoopArtifactPath({
+      filePath:
+        "docs/business-os/strategy/BRIK/assessment/2026-02-13-measurement-verification.user.md",
+    });
+    expect(issues).toHaveLength(0);
+  });
 });
 
 // ── TC-01..TC-04: lintBriefingContract ─────────────────────────────────────
@@ -180,7 +188,7 @@ describe("lintBriefingContract — briefing schema checks (TC-01..TC-04)", () =>
     const issues = lintBriefingContract({
       artifacts: [
         {
-          artifactPath: "docs/business-os/startup-baselines/HEAD-intake-packet.user.md",
+          artifactPath: "docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md",
           expectedBusiness: "HEAD",
           fields: missingDependsOn,
         },
@@ -190,7 +198,7 @@ describe("lintBriefingContract — briefing schema checks (TC-01..TC-04)", () =>
     const missing = issues.find((issue) => issue.code === "missing_required_field");
     expect(missing).toBeDefined();
     if (missing) {
-      expect(missing.message).toContain("HEAD-intake-packet.user.md");
+      expect(missing.message).toContain("assessment-intake-packet.user.md");
       expect(missing.message).toContain("depends_on");
       expect(missing.severity).toBe("error");
     }

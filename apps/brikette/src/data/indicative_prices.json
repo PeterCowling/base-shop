@@ -4,11 +4,14 @@
   "basis": "from_per_night",
   "stale_after_days": 14,
   "rooms": {
+    "room_3": { "from": 55 },
+    "room_4": { "from": 55 },
+    "room_5": { "from": 66.5 },
+    "room_6": { "from": 66.5 },
+    "room_9": { "from": 66.5 },
     "room_10": { "from": 80 },
-    "room_13": { "from": 82 },
-    "room_14": { "from": 78 },
-    "room_15": { "from": 84 },
-    "room_16": { "from": 86 },
+    "room_11": { "from": 82 },
+    "room_12": { "from": 84 },
     "double_room": { "from": 129 }
   }
 }

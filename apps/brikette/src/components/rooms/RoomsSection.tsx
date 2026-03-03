@@ -78,7 +78,7 @@ export function RoomsSection({
   // Each room's octorateRoomCategory is matched against octorateRoomName in aggregated sections.
   const roomPrices = useMemo<Record<string, RoomCardPrice> | undefined>(() => {
     if (!availabilityRooms || availabilityRooms.length === 0) return roomPricesOverride;
-    const prices: Record<string, RoomCardPrice> = {};
+    const prices: Record<string, RoomCardPrice> = { ...(roomPricesOverride ?? {}) };
     for (const room of visibleRooms) {
       if (!room.octorateRoomCategory) continue;
       const avRoom = aggregateAvailabilityByCategory(availabilityRooms, room.octorateRoomCategory);
@@ -94,7 +94,7 @@ export function RoomsSection({
         };
       }
     }
-    return Object.keys(prices).length > 0 ? prices : roomPricesOverride;
+    return Object.keys(prices).length > 0 ? prices : undefined;
   }, [availabilityRooms, roomPricesOverride, visibleRooms]);
 
   // Ref-level guard prevents duplicate begin_checkout events on rapid re-clicks.

@@ -1,9 +1,9 @@
 /* eslint-disable ds/no-hardcoded-copy -- XAUP-0001 [ttl=2026-12-31] machine-token route guards and reason codes */
 
-import { NextResponse } from "next/server";
+import { mkdir, writeFile } from "node:fs/promises";
+import { join } from "node:path";
 
-import { validateMinImageEdge } from "@acme/lib/math/ops";
-import { parseImageDimensionsFromBuffer } from "@acme/lib/xa";
+import { NextResponse } from "next/server";
 
 import { getMediaBucket } from "../../../../lib/r2Media";
 import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
@@ -16,7 +16,6 @@ type ImageUploadErrorCode =
   | "missing_params"
   | "invalid_file_type"
   | "file_too_large"
-  | "image_too_small"
   | "upload_failed"
   | "rate_limited"
   | "r2_unavailable";
@@ -24,7 +23,6 @@ type ImageUploadErrorCode =
 const UPLOAD_WINDOW_MS = 60 * 1000;
 const UPLOAD_MAX_REQUESTS = 10;
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024; // 8MB
-const MIN_IMAGE_EDGE_PX = 1600;
 
 const ALLOWED_TYPES: ReadonlyMap<string, string> = new Map([
   ["jpeg", "image/jpeg"],
@@ -83,14 +81,8 @@ export async function POST(request: Request) {
     );
   }
 
-  // Get R2 bucket
+  // Get R2 bucket (null in local dev)
   const bucket = await getMediaBucket();
-  if (!bucket) {
-    return withRateHeaders(
-      buildErrorResponse("r2_unavailable", 503, "R2 media bucket is not available"),
-      limit,
-    );
-  }
 
   // Parse multipart form data
   let formData: FormData;
@@ -126,33 +118,41 @@ export async function POST(request: Request) {
     );
   }
 
-  // Dimension validation
-  const dims = parseImageDimensionsFromBuffer(buf);
-  if (!dims || !validateMinImageEdge(dims.width, dims.height, MIN_IMAGE_EDGE_PX)) {
-    return withRateHeaders(
-      buildErrorResponse(
-        "image_too_small",
-        400,
-        `image shortest edge must be at least ${MIN_IMAGE_EDGE_PX}px`,
-      ),
-      limit,
-    );
-  }
 
-  // Build R2 key: {storefront}/{slug}/{timestamp}-{role}.{ext}
+  // Build filename: {timestamp}-{role}.{ext}
   const timestamp = Math.floor(Date.now() / 1000);
   const ext = fileExtForFormat(format);
-  const r2Key = `${storefront}/${slug}/${timestamp}-${role}.${ext}`;
+  const filename = `${timestamp}-${role}.${ext}`;
 
-  // Upload to R2
+  // Upload to R2 (production) or write into xa-b's public/images/ (dev).
+  // In dev the file lands where xa-b serves static assets, so the image is
+  // immediately visible on the storefront without an extra copy step.
   const contentType = ALLOWED_TYPES.get(format) ?? "application/octet-stream";
-  try {
-    await bucket.put(r2Key, arrayBuffer, {
-      httpMetadata: { contentType },
-    });
-  } catch {
-    return withRateHeaders(buildErrorResponse("upload_failed", 500, "R2 upload failed"), limit);
+
+  // Path relative to public/ that both apps use: images/{slug}/{file}
+  const catalogPath = `images/${slug}/${filename}`;
+
+  if (bucket) {
+    const r2Key = `${storefront}/${slug}/${filename}`;
+    try {
+      await bucket.put(r2Key, arrayBuffer, {
+        httpMetadata: { contentType },
+      });
+    } catch {
+      return withRateHeaders(buildErrorResponse("upload_failed", 500, "R2 upload failed"), limit);
+    }
+    return withRateHeaders(NextResponse.json({ ok: true, key: r2Key }), limit);
   }
 
-  return withRateHeaders(NextResponse.json({ ok: true, key: r2Key }), limit);
+  // Local filesystem fallback — write directly into xa-b/public/images/{slug}/
+  // so that both xa-uploader (via symlink) and xa-b serve the same file.
+  try {
+    const xaBPublicImages = join(process.cwd(), "..", "xa-b", "public", "images", slug);
+    await mkdir(xaBPublicImages, { recursive: true });
+    await writeFile(join(xaBPublicImages, filename), Buffer.from(arrayBuffer));
+  } catch {
+    return withRateHeaders(buildErrorResponse("upload_failed", 500, "local file write failed"), limit);
+  }
+
+  return withRateHeaders(NextResponse.json({ ok: true, key: catalogPath }), limit);
 }

@@ -35,6 +35,12 @@ function isValidEmail(value) {
   return typeof value === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
+function normalizeEmail(value) {
+  if (typeof value !== "string") return "";
+  const normalized = value.trim().toLowerCase();
+  return isValidEmail(normalized) ? normalized : "";
+}
+
 function countNights(checkin, checkout) {
   const msPerDay = 24 * 60 * 60 * 1000;
   return Math.round(
@@ -71,8 +77,21 @@ function buildIdempotencyKey(context) {
 }
 
 function getSender(env) {
-  const sender = (env.CAMPAIGN_FROM || env.GMAIL_USER || "").trim().toLowerCase();
-  return isValidEmail(sender) ? sender : "";
+  const candidates = [
+    env.CAMPAIGN_FROM,
+    env.EMAIL_FROM,
+    env.EMAIL_FROM_ADDRESS,
+    env.GMAIL_USER,
+  ];
+  for (const candidate of candidates) {
+    const sender = normalizeEmail(candidate);
+    if (sender) return sender;
+  }
+  return "";
+}
+
+function hasConfiguredApiProvider(env) {
+  return isNonEmptyString(env.RESEND_API_KEY) || isNonEmptyString(env.SENDGRID_API_KEY);
 }
 
 function buildEmailBody({ context, quote, resumeLink }) {
@@ -223,6 +242,10 @@ export async function onRequestPost(context) {
   const idempotencyKey = buildIdempotencyKey(body.context);
   if (seenIdempotencyKeys.has(idempotencyKey)) {
     return jsonResponse({ status: "duplicate", idempotencyKey }, 200);
+  }
+
+  if (!hasConfiguredApiProvider(context.env)) {
+    return jsonResponse({ error: "provider_not_configured" }, 503);
   }
 
   const sender = getSender(context.env);

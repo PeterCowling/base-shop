@@ -9,6 +9,7 @@ import {
   collectProcessImprovements,
   deriveIdeaKey,
   loadCompletedIdeasRegistry,
+  QUEUE_STATE_RELATIVE_PATH,
   runCheck,
   updateProcessImprovementsHtml,
 } from "../build/generate-process-improvements";
@@ -457,5 +458,216 @@ Review-date: 2026-02-26
     const raw = await fs.readFile(registryPath, "utf8");
     const registry = JSON.parse(raw) as { entries: unknown[] };
     expect(registry.entries).toHaveLength(1);
+  });
+});
+
+describe("dispatch queue collection", () => {
+  let tmpDir: string;
+
+  beforeEach(async () => {
+    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "dispatch-queue-"));
+  });
+
+  afterEach(async () => {
+    await fs.rm(tmpDir, { recursive: true, force: true });
+  });
+
+  it("TC-01: collects only enqueued dispatches, excludes completed", async () => {
+    const queueState = {
+      dispatches: [
+        {
+          dispatch_id: "DISPATCH-001",
+          business: "BOS",
+          area_anchor: "Enqueued idea one",
+          why: "Reason one",
+          queue_state: "enqueued",
+          created_at: "2026-03-04T10:00:00.000Z",
+        },
+        {
+          dispatch_id: "DISPATCH-002",
+          business: "BOS",
+          area_anchor: "Enqueued idea two",
+          why: "Reason two",
+          queue_state: "enqueued",
+          created_at: "2026-03-04T11:00:00.000Z",
+        },
+        {
+          dispatch_id: "DISPATCH-003",
+          business: "BRIK",
+          area_anchor: "Enqueued idea three",
+          why: "Reason three",
+          queue_state: "enqueued",
+          created_at: "2026-03-04T12:00:00.000Z",
+        },
+        {
+          dispatch_id: "DISPATCH-004",
+          business: "BOS",
+          area_anchor: "Completed idea",
+          why: "Already done",
+          queue_state: "completed",
+          created_at: "2026-03-03T10:00:00.000Z",
+        },
+        {
+          dispatch_id: "DISPATCH-005",
+          business: "BOS",
+          area_anchor: "Processed idea",
+          why: "Already processed",
+          queue_state: "processed",
+          created_at: "2026-03-03T11:00:00.000Z",
+        },
+      ],
+    };
+    await writeFile(tmpDir, QUEUE_STATE_RELATIVE_PATH, JSON.stringify(queueState, null, 2));
+
+    const data = collectProcessImprovements(tmpDir);
+    const dispatchItems = data.ideaItems.filter((item) => item.source === "queue-state.json");
+    expect(dispatchItems).toHaveLength(3);
+    expect(dispatchItems.map((i) => i.title)).toEqual(
+      expect.arrayContaining(["Enqueued idea one", "Enqueued idea two", "Enqueued idea three"]),
+    );
+  });
+
+  it("TC-02: missing queue-state.json produces zero dispatch items with no error", async () => {
+    // No queue-state.json written — should still work
+    const data = collectProcessImprovements(tmpDir);
+    const dispatchItems = data.ideaItems.filter((item) => item.source === "queue-state.json");
+    expect(dispatchItems).toHaveLength(0);
+  });
+
+  it("TC-03: dispatch items carry classifier fields when classifier succeeds (fail-open)", async () => {
+    const queueState = {
+      dispatches: [
+        {
+          dispatch_id: "DISPATCH-CLF-001",
+          business: "BOS",
+          area_anchor: "Add caching layer to API responses",
+          why: "API response times are slow for repeated queries",
+          queue_state: "enqueued",
+          created_at: "2026-03-04T10:00:00.000Z",
+        },
+      ],
+    };
+    await writeFile(tmpDir, QUEUE_STATE_RELATIVE_PATH, JSON.stringify(queueState, null, 2));
+
+    const data = collectProcessImprovements(tmpDir);
+    const dispatchItems = data.ideaItems.filter((item) => item.source === "queue-state.json");
+    expect(dispatchItems).toHaveLength(1);
+    const item = dispatchItems[0]!;
+
+    // Classifier fields should be present (fail-open: if classifier errors, fields are unset)
+    expect(typeof item.priority_tier).toBe("string");
+    expect(typeof item.own_priority_rank).toBe("number");
+    expect(typeof item.urgency).toBe("string");
+    expect(typeof item.effort).toBe("string");
+    expect(typeof item.reason_code).toBe("string");
+  });
+
+  it("TC-04: dispatches with identical area_anchor but different dispatch_id get distinct idea_keys", async () => {
+    const queueState = {
+      dispatches: [
+        {
+          dispatch_id: "DISPATCH-DUP-001",
+          business: "BOS",
+          area_anchor: "bos-agent-session-findings",
+          why: "First finding",
+          queue_state: "enqueued",
+          created_at: "2026-03-04T10:00:00.000Z",
+        },
+        {
+          dispatch_id: "DISPATCH-DUP-002",
+          business: "BOS",
+          area_anchor: "bos-agent-session-findings",
+          why: "Second finding",
+          queue_state: "enqueued",
+          created_at: "2026-03-04T11:00:00.000Z",
+        },
+      ],
+    };
+    await writeFile(tmpDir, QUEUE_STATE_RELATIVE_PATH, JSON.stringify(queueState, null, 2));
+
+    const data = collectProcessImprovements(tmpDir);
+    const dispatchItems = data.ideaItems.filter((item) => item.source === "queue-state.json");
+    expect(dispatchItems).toHaveLength(2);
+    const keys = dispatchItems.map((i) => i.idea_key);
+    expect(keys[0]).not.toBe(keys[1]);
+  });
+
+  it("TC-05: dispatch items sort correctly alongside results-review items", async () => {
+    await writeFile(
+      tmpDir,
+      "docs/plans/mixed-test/results-review.user.md",
+      `---
+Business-Unit: BRIK
+Review-date: 2026-03-04
+---
+# Results Review
+
+## New Idea Candidates
+- Results review idea
+`,
+    );
+
+    const queueState = {
+      dispatches: [
+        {
+          dispatch_id: "DISPATCH-SORT-001",
+          business: "BOS",
+          area_anchor: "Dispatch queue idea",
+          why: "Testing sort order",
+          queue_state: "enqueued",
+          created_at: "2026-03-04T10:00:00.000Z",
+        },
+      ],
+    };
+    await writeFile(tmpDir, QUEUE_STATE_RELATIVE_PATH, JSON.stringify(queueState, null, 2));
+
+    const data = collectProcessImprovements(tmpDir);
+    // Both sources should be present in the same sorted ideaItems array
+    const sources = new Set(data.ideaItems.map((i) => i.source));
+    expect(sources.has("results-review.user.md")).toBe(true);
+    expect(sources.has("queue-state.json")).toBe(true);
+    // All items should be sorted (own_priority_rank ascending)
+    for (let i = 1; i < data.ideaItems.length; i++) {
+      const prevRank = data.ideaItems[i - 1]!.own_priority_rank ?? 999;
+      const currRank = data.ideaItems[i]!.own_priority_rank ?? 999;
+      expect(prevRank).toBeLessThanOrEqual(currRank);
+    }
+  });
+
+  it("TC-06: malformed queue-state.json (missing dispatches array) returns empty", async () => {
+    await writeFile(tmpDir, QUEUE_STATE_RELATIVE_PATH, '{"counts": {}}');
+
+    const data = collectProcessImprovements(tmpDir);
+    const dispatchItems = data.ideaItems.filter((item) => item.source === "queue-state.json");
+    expect(dispatchItems).toHaveLength(0);
+  });
+
+  it("TC-07: dispatch with empty area_anchor is skipped", async () => {
+    const queueState = {
+      dispatches: [
+        {
+          dispatch_id: "DISPATCH-EMPTY-001",
+          business: "BOS",
+          area_anchor: "",
+          why: "No title",
+          queue_state: "enqueued",
+          created_at: "2026-03-04T10:00:00.000Z",
+        },
+        {
+          dispatch_id: "DISPATCH-GOOD-001",
+          business: "BOS",
+          area_anchor: "Valid idea",
+          why: "Has a title",
+          queue_state: "enqueued",
+          created_at: "2026-03-04T11:00:00.000Z",
+        },
+      ],
+    };
+    await writeFile(tmpDir, QUEUE_STATE_RELATIVE_PATH, JSON.stringify(queueState, null, 2));
+
+    const data = collectProcessImprovements(tmpDir);
+    const dispatchItems = data.ideaItems.filter((item) => item.source === "queue-state.json");
+    expect(dispatchItems).toHaveLength(1);
+    expect(dispatchItems[0]?.title).toBe("Valid idea");
   });
 });

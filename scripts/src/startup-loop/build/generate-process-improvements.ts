@@ -18,6 +18,7 @@ const PROCESS_HTML_RELATIVE_PATH = "docs/business-os/process-improvements.user.h
 const PROCESS_DATA_RELATIVE_PATH = "docs/business-os/_data/process-improvements.json";
 export const COMPLETED_IDEAS_RELATIVE_PATH = "docs/business-os/_data/completed-ideas.json";
 const PLANS_ROOT = "docs/plans";
+export const QUEUE_STATE_RELATIVE_PATH = "docs/business-os/startup-loop/ideas/trial/queue-state.json";
 const MISSING_VALUE = "—";
 
 export type ProcessImprovementType = "idea" | "risk" | "pending-review";
@@ -76,6 +77,20 @@ interface ReflectionDebtLedgerItem {
 
 interface ReflectionDebtLedger {
   items?: ReflectionDebtLedgerItem[];
+}
+
+interface DispatchPacket {
+  dispatch_id?: string;
+  business?: string;
+  area_anchor?: string;
+  why?: string;
+  priority?: string;
+  queue_state?: string;
+  created_at?: string;
+}
+
+interface QueueStateFile {
+  dispatches?: DispatchPacket[];
 }
 
 interface BugScanFindingItem {
@@ -564,15 +579,24 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
         const raw = item.trim();
         // Suppress exact "none" and "none." (legacy form)
         if (/^none\.?$/i.test(raw)) return false;
-        // Suppress items where the value after an optional "Category: " prefix starts with "none".
-        // This catches "New open-source package: None identified.", "None for the other four categories.", etc.
-        const colonIdx = raw.indexOf(":");
-        const valueAfterPrefix = colonIdx >= 0 ? raw.slice(colonIdx + 1).trim() : raw;
-        if (/^none\b/i.test(valueAfterPrefix)) {
+        // Suppress items that start with "None" (e.g. "None for: ...", "None (new skill: ...)")
+        if (/^none\b/i.test(raw)) {
           process.stderr.write(
             `[generate-process-improvements] info: suppressing none-placeholder idea in ${sourcePath}: "${raw.slice(0, 80)}"\n`,
           );
           return false;
+        }
+        // Suppress items where the value after a separator (: or — or –) starts with "none".
+        // This catches "New open-source package: None identified.", "New loop process — None.", etc.
+        const separatorMatch = raw.match(/[:—–]\s*/);
+        if (separatorMatch) {
+          const valueAfterSep = raw.slice((separatorMatch.index ?? 0) + separatorMatch[0].length).trim();
+          if (/^none\b/i.test(valueAfterSep)) {
+            process.stderr.write(
+              `[generate-process-improvements] info: suppressing none-placeholder idea in ${sourcePath}: "${raw.slice(0, 80)}"\n`,
+            );
+            return false;
+          }
         }
         return true;
       });
@@ -669,6 +693,57 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
       classifyIdeaItem(ideaItem);
       ideaItems.push(ideaItem);
     }
+  }
+
+  // --- Dispatch queue collection (queue-state.json) ---
+  const queueStatePath = path.join(repoRoot, QUEUE_STATE_RELATIVE_PATH);
+  try {
+    if (existsSync(queueStatePath)) {
+      const raw = readFileSync(queueStatePath, "utf8");
+      const parsed = JSON.parse(raw) as QueueStateFile;
+      if (Array.isArray(parsed.dispatches)) {
+        for (const dispatch of parsed.dispatches) {
+          if (dispatch.queue_state !== "enqueued") {
+            continue;
+          }
+          const title = sanitizeText(dispatch.area_anchor ?? "");
+          if (!title) {
+            continue;
+          }
+          const dispatchId = dispatch.dispatch_id ?? "";
+          if (!dispatchId) {
+            continue;
+          }
+          const ideaKey = deriveIdeaKey(QUEUE_STATE_RELATIVE_PATH, dispatchId);
+          if (completedKeys.has(ideaKey)) {
+            continue;
+          }
+          const business = sanitizeText(dispatch.business ?? "BOS").toUpperCase() || "BOS";
+          const body = sanitizeText(dispatch.why ?? "") || MISSING_VALUE;
+          const date = toIsoDate(dispatch.created_at ?? new Date().toISOString());
+
+          if (title.length > 100) {
+            process.stderr.write(
+              `[generate-process-improvements] warn: dispatch title exceeds 100 chars — shorten at source: "${title.slice(0, 60)}..."\n`,
+            );
+          }
+          const ideaItem: ProcessImprovementItem = {
+            type: "idea",
+            business,
+            title,
+            body,
+            source: "queue-state.json",
+            date,
+            path: QUEUE_STATE_RELATIVE_PATH,
+            idea_key: ideaKey,
+          };
+          classifyIdeaItem(ideaItem);
+          ideaItems.push(ideaItem);
+        }
+      }
+    }
+  } catch {
+    // Missing or unparseable queue-state.json — no dispatch items, no error.
   }
 
   for (const sourcePath of reflectionDebtPaths) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode, useId } from "react";
+import { type ReactNode, useEffect, useId, useState } from "react";
 
 import type { AppLanguage } from "@/i18n.config";
 import { Minus, Plus } from "@/icons";
@@ -45,9 +45,20 @@ export function BookingCalendarPanel({
   actionSlot,
 }: BookingCalendarPanelProps): JSX.Element {
   const guestsLabelId = useId();
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  const stableFrom = hasMounted ? range.from : undefined;
+  const stableTo = hasMounted ? range.to : undefined;
 
   return (
-    <div className="mx-auto w-full space-y-6 lg:flex lg:items-stretch lg:gap-6 lg:space-y-0" style={{ maxWidth: "42rem" }}>
+    <div
+      className="mx-auto w-full rounded-2xl border border-brand-outline/40 bg-brand-surface p-4 shadow-sm sm:p-5 lg:flex lg:items-start lg:gap-5"
+      style={{ maxWidth: "42rem" }}
+    >
       <div className="mx-auto w-full lg:mx-0 lg:shrink-0" style={{ maxWidth: "24rem" }}>
         <DateRangePicker
           selected={range}
@@ -60,29 +71,27 @@ export function BookingCalendarPanel({
           className="w-full"
         />
       </div>
-      <div className="flex flex-col items-center gap-3 lg:w-52 lg:flex-none">
+      <div className="mt-4 flex flex-col gap-3 lg:mt-0 lg:w-56 lg:flex-none">
         <div className="hidden w-full lg:flex lg:flex-col lg:gap-2">
-          <div className="flex flex-col gap-1 rounded-xl border border-brand-outline/20 bg-brand-bg px-3 py-2.5">
+          <div className="flex flex-col gap-1 rounded-xl border border-brand-outline/30 bg-brand-bg px-3 py-2.5">
             <span className="text-xs font-semibold uppercase tracking-widest text-brand-text/70">
               {checkInLabelText}
             </span>
             <span className="text-sm font-semibold tabular-nums text-brand-heading">
-              {range.from ? formatDisplayDate(range.from) : <span className="text-brand-text/30">—</span>}
+              {stableFrom ? formatDisplayDate(stableFrom) : <span className="text-brand-text/30">—</span>}
             </span>
           </div>
-          <div className="flex flex-col gap-1 rounded-xl border border-brand-outline/20 bg-brand-bg px-3 py-2.5">
+          <div className="flex flex-col gap-1 rounded-xl border border-brand-outline/30 bg-brand-bg px-3 py-2.5">
             <span className="text-xs font-semibold uppercase tracking-widest text-brand-text/70">
               {checkOutLabelText}
             </span>
             <span className="text-sm font-semibold tabular-nums text-brand-heading">
-              {range.to ? formatDisplayDate(range.to) : <span className="text-brand-text/30">—</span>}
+              {stableTo ? formatDisplayDate(stableTo) : <span className="text-brand-text/30">—</span>}
             </span>
           </div>
         </div>
 
-        <div className="hidden lg:block lg:flex-1" />
-
-        <div className="flex w-full flex-col gap-1.5">
+        <div className="flex w-full flex-col gap-1.5 rounded-xl border border-brand-outline/30 bg-brand-bg p-3">
           <span id={guestsLabelId} className="text-sm font-semibold text-brand-heading">
             {guestsLabelText}
           </span>

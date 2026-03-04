@@ -27,6 +27,7 @@ const MOBILE_NAV_HEIGHT = 64;
 const FALLBACK_SITE_MENU_LABEL =
   /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback heading copy. */
   "Site menu";
+const IS_STATIC_EXPORT = process.env.NEXT_PUBLIC_OUTPUT_EXPORT === "1";
 
 function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 0, experienceNavItems, howToGetHereNavItems }: Props): JSX.Element {
   const fallbackLang = useCurrentLanguage();
@@ -160,6 +161,7 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
                           <li key={child.key}>
                             <Link
                               href={`/${lang}${child.to}`}
+                              prefetch={IS_STATIC_EXPORT ? false : undefined}
                               tabIndex={menuOpen ? 0 : -1}
                               className="flex w-full min-h-10 items-center px-4 py-2.5 text-base text-brand-heading/75 hover:text-brand-heading hover:bg-brand-heading/5 focus-visible:outline-none focus-visible:ring-inset focus-visible:ring-2 focus-visible:ring-brand-secondary/50 font-medium transition-colors"
                               onClick={close}
@@ -175,7 +177,7 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
                   <Link
                     ref={idx === 0 ? firstLinkRef : undefined}
                     href={`/${lang}${to}`}
-                    prefetch={prefetch}
+                    prefetch={IS_STATIC_EXPORT ? false : prefetch}
                     tabIndex={menuOpen ? 0 : -1}
                     aria-current={isCurrent ? "page" : undefined}
                     className={clsx(

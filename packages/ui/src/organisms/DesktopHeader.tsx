@@ -36,6 +36,7 @@ const FALLBACK_BRAND_TITLE =
 const FALLBACK_LOGO_ALT =
   /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback logo alt text. */
   "Hostel Brikette logo";
+const IS_STATIC_EXPORT = process.env.NEXT_PUBLIC_OUTPUT_EXPORT === "1";
 
 function DesktopHeader({
   lang: explicitLang,
@@ -134,6 +135,7 @@ function DesktopHeader({
         <div className="header-row-1 flex items-center justify-between">
           <Link
             href={`/${lang}`}
+            prefetch={IS_STATIC_EXPORT ? false : undefined}
             className="flex min-h-11 min-w-48 items-center gap-3 whitespace-nowrap rounded transition hover:text-brand-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/70"
           >
             {/* eslint-disable-next-line @next/next/no-img-element -- UI-1000 [ttl=2026-12-31] UI package is not Next-only; icon is a local static asset */}
@@ -166,6 +168,7 @@ function DesktopHeader({
           <div className="flex items-center gap-6">
             <Link
               href={bookHref}
+              prefetch={IS_STATIC_EXPORT ? false : undefined}
               onClick={onBookClick}
               className={`inline-flex min-h-11 min-w-11 items-center justify-center rounded-md px-6 py-2.5 text-sm font-semibold tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 cta ${ctaClass}`}
             >
@@ -197,7 +200,7 @@ function DesktopHeader({
                         href={`/${lang}${to}`}
                         aria-current={current ? "page" : undefined}
                         aria-label={label}
-                        prefetch={to === apartmentPath ? true : prefetch}
+                        prefetch={IS_STATIC_EXPORT ? false : (to === apartmentPath ? true : prefetch)}
                         className={`inline-flex min-h-11 items-center px-2 underline-offset-4 transition hover:underline hover:decoration-brand-bougainvillea focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/70 ${highlight}`}
                       >
                         {label}
@@ -262,7 +265,7 @@ function DesktopHeader({
                             href={`/${lang}${to}`}
                             aria-current={current ? "page" : undefined}
                             aria-label={label}
-                            prefetch={to === apartmentPath ? true : prefetch}
+                            prefetch={IS_STATIC_EXPORT ? false : (to === apartmentPath ? true : prefetch)}
                             onPointerDown={(e) => e.stopPropagation()}
                             className={`inline-flex min-h-11 items-center px-2 underline-offset-4 transition hover:underline hover:decoration-brand-bougainvillea focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/70 ${highlight}`}
                           >
@@ -313,6 +316,7 @@ function DesktopHeader({
                           <DropdownMenuItem key={child.key} asChild>
                             <Link
                               href={`/${lang}${child.to}`}
+                              prefetch={IS_STATIC_EXPORT ? false : undefined}
                               onClick={() => setOpenKey(null)}
                               className="cursor-pointer"
                             >

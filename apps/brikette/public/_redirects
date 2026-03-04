@@ -5,6 +5,12 @@
 # Root URL -> English homepage (permanent, slashless target)
 /  /en  301
 
+# No-locale booking slugs -> English localized booking routes
+/book-dorm-bed  /en/book-dorm-bed  301
+/book-dorm-bed/  /en/book-dorm-bed/  301
+/book-private-accomodations  /en/book-private-accomodations  301
+/book-private-accomodations/  /en/book-private-accomodations/  301
+
 # Health check endpoint -> homepage (no API routes on static deploy)
 /api/health  /en/  302
 

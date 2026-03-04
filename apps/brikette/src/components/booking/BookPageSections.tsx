@@ -48,7 +48,7 @@ export function BookPageSearchPanel({
   const { t } = useTranslation("bookPage");
 
   return (
-    <div className="mt-6 mx-auto rounded-2xl border border-brand-outline/40 bg-brand-surface p-4 shadow-sm">
+    <div className="mt-6 mx-auto">
       <BookingCalendarPanel
         lang={lang}
         range={range}

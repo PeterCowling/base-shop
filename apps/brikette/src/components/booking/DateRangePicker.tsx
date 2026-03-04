@@ -96,6 +96,11 @@ function buildSummary(selected: DateRange | undefined): string | null {
   return `${fromStr} \u2192 ${toStr} (${nights} night${nights === 1 ? "" : "s"})`;
 }
 
+function isSameCalendarDay(a: Date | undefined, b: Date | undefined): boolean {
+  if (!a || !b) return false;
+  return formatDate(a) === formatDate(b);
+}
+
 /**
  * `DateRangePicker` — a single-interaction range calendar for Brikette booking surfaces.
  *
@@ -158,6 +163,15 @@ export function DateRangePicker({
   const minCheckout = selectedFromIso ? getMinCheckoutForStay(selectedFromIso) ?? "" : "";
 
   function handleSelect(range: DateRange | undefined): void {
+    // Enforce deterministic 2-click semantics:
+    // 1st click starts a new stay (check-in), 2nd click sets check-out.
+    if (stableSelected?.from && stableSelected?.to && range?.from && range?.to) {
+      const fromChanged = !isSameCalendarDay(range.from, stableSelected.from);
+      const toChanged = !isSameCalendarDay(range.to, stableSelected.to);
+      const nextFrom = fromChanged && !toChanged ? range.from : toChanged ? range.to : range.from;
+      onRangeChange({ from: nextFrom, to: undefined });
+      return;
+    }
     onRangeChange(range);
   }
 
@@ -221,24 +235,27 @@ export function DateRangePicker({
           onChange={(event) => handleCheckOutInputChange(event.target.value)}
         />
       </label>
-      <DayPicker
-        mode="range"
-        selected={stableSelected}
-        onSelect={handleSelect}
-        disabled={disabledMatcher}
-        locale={dayPickerLocale}
-        classNames={styles}
-        styles={{
-          root: {
-            "--rdp-accent-color": "var(--color-brand-primary)",
-            "--rdp-accent-background-color": "rgba(var(--rgb-brand-primary), 0.08)",
-            "--rdp-day-height": `${cellSize}px`,
-            "--rdp-day-width": `${cellSize}px`,
-            "--rdp-day_button-height": `${cellSize - 2}px`,
-            "--rdp-day_button-width": `${cellSize - 2}px`,
-          } as React.CSSProperties,
-        }}
-      />
+      <div className="rounded-2xl border border-brand-outline/30 bg-brand-bg px-2 py-3 sm:px-3 sm:py-4">
+        <DayPicker
+          mode="range"
+          selected={stableSelected}
+          onSelect={handleSelect}
+          disabled={disabledMatcher}
+          locale={dayPickerLocale}
+          classNames={styles}
+          className="mx-auto"
+          styles={{
+            root: {
+              "--rdp-accent-color": "var(--color-brand-primary)",
+              "--rdp-accent-background-color": "rgba(var(--rgb-brand-primary), 0.08)",
+              "--rdp-day-height": `${cellSize}px`,
+              "--rdp-day-width": `${cellSize}px`,
+              "--rdp-day_button-height": `${cellSize - 2}px`,
+              "--rdp-day_button-width": `${cellSize - 2}px`,
+            } as React.CSSProperties,
+          }}
+        />
+      </div>
 
       {/* Hidden helper text for tests / screen readers */}
       <span data-cy={TEST_IDS.helper} className="sr-only">
@@ -249,13 +266,13 @@ export function DateRangePicker({
         )}
       </span>
 
-      {/* Clear dates — centred under the calendar */}
-      <div className="mt-1 mb-3 flex justify-center">
+      {/* Clear dates — secondary action tied to the calendar card */}
+      <div className="mt-3 mb-1 flex justify-center">
         <button
           type="button"
           data-cy={TEST_IDS.clear}
           onClick={handleClear}
-          className="min-h-11 min-w-11 text-sm font-medium text-brand-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-1"
+          className="min-h-11 rounded-full border border-brand-outline/40 bg-brand-bg px-4 text-sm font-medium text-brand-primary transition-colors hover:bg-brand-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-1"
         >
           {clearDatesText}
         </button>

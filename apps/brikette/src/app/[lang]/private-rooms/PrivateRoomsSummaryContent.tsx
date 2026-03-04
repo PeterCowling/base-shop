@@ -23,8 +23,20 @@ function PrivateRoomsSummaryContent({ lang }: Props) {
   usePagePreload({ lang, namespaces: ["roomsPage", "apartmentPage"] });
 
   const privateRoomsPath = `/${lang}/${translatePath("apartment", lang)}`;
+  const privateBookingPath = `/${lang}/book-private-accomodations`;
   const apartmentRoom = roomsData.find((room) => room.id === "apartment");
   const doubleRoom = roomsData.find((room) => room.id === "double_room");
+  const apartmentDetailsRaw = tApartment("detailsList", { returnObjects: true }) as unknown;
+  const apartmentDetails = Array.isArray(apartmentDetailsRaw)
+    ? apartmentDetailsRaw.filter((item): item is string => typeof item === "string")
+    : [];
+  const doubleFacilities = [
+    tRooms("facilities.privateRoom") as string,
+    tRooms("facilities.doubleBedForTwo") as string,
+    tRooms("facilities.bathroomEnsuite") as string,
+    tRooms("facilities.seaViewTerrace") as string,
+    tRooms("facilities.airCon") as string,
+  ];
 
   const cards = [
     {
@@ -32,44 +44,69 @@ function PrivateRoomsSummaryContent({ lang }: Props) {
       image: apartmentRoom?.landingImage ?? "/img/facade.avif",
       title: tApartment("title") as string,
       description: tApartment("body") as string,
+      highlights: apartmentDetails,
     },
     {
       href: `${privateRoomsPath}/double-room`,
       image: doubleRoom?.landingImage ?? "/img/7/landing.webp",
       title: tRooms("rooms.double_room.title") as string,
-      description: tRooms("rooms.double_room.bed_intro") as string,
+      description: tRooms("rooms.double_room.bed_description") as string,
+      highlights: doubleFacilities,
     },
   ];
 
   return (
     <Section padding="none" className="mx-auto max-w-6xl p-6 pt-24 sm:pt-10">
-      <div className="space-y-6">
+      <div className="space-y-10">
         <h1 className="text-center text-3xl font-bold text-brand-heading sm:text-4xl">
           {tRooms("filters.private") as string}
         </h1>
+        <p className="mx-auto text-center text-base text-brand-text/85 sm:text-lg">
+          {tApartment("heroIntro") as string}
+        </p>
+
         <Grid cols={1} gap={6} className="md:grid-cols-2">
           {cards.map((card) => (
             <article
               key={card.href}
               className="overflow-hidden rounded-2xl border border-brand-outline/30 bg-brand-surface shadow-sm"
             >
-              <Link href={card.href} className="block h-full">
-                <Image
-                  src={card.image}
-                  alt={card.title}
-                  width={1200}
-                  height={800}
-                  className="h-56 w-full object-cover"
-                  data-aspect="3/2"
-                />
-                <div className="space-y-3 p-6">
-                  <h2 className="text-2xl font-semibold text-brand-heading">{card.title}</h2>
-                  <p className="text-sm text-brand-text/85">{card.description}</p>
-                  <p className="text-sm font-semibold text-brand-primary">
-                    {tRooms("moreAboutThisRoom") as string}
-                  </p>
+              <Image
+                src={card.image}
+                alt={card.title}
+                width={1200}
+                height={800}
+                className="h-56 w-full object-cover"
+                data-aspect="3/2"
+              />
+              <div className="space-y-4 p-6">
+                <h2 className="text-2xl font-semibold text-brand-heading">{card.title}</h2>
+                <p className="text-sm text-brand-text/85">{card.description}</p>
+                <div className="space-y-2">
+                  <h3 className="text-sm font-semibold text-brand-heading">
+                    {tRooms("details") as string}
+                  </h3>
+                  <ul className="list-disc space-y-1 pl-5 text-sm text-brand-text/80">
+                    {card.highlights.map((item) => (
+                      <li key={`${card.href}-${item}`}>{item}</li>
+                    ))}
+                  </ul>
                 </div>
-              </Link>
+                <div className="flex flex-wrap gap-3 pt-2">
+                  <Link
+                    href={card.href}
+                    className="inline-flex min-h-11 items-center rounded-xl border border-brand-primary px-4 py-2 text-sm font-semibold text-brand-primary transition-colors hover:bg-brand-primary/10"
+                  >
+                    {tRooms("moreAboutThisRoom") as string}
+                  </Link>
+                  <Link
+                    href={privateBookingPath}
+                    className="inline-flex min-h-11 items-center rounded-xl bg-brand-primary px-4 py-2 text-sm font-semibold text-brand-on-primary transition-opacity hover:opacity-90"
+                  >
+                    {tApartment("checkAvailability") as string}
+                  </Link>
+                </div>
+              </div>
             </article>
           ))}
         </Grid>

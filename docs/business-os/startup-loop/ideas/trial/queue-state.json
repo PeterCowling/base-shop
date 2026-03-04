@@ -1,15 +1,15 @@
 {
-  "last_updated": "2026-03-04T21:28:43.136Z",
+  "last_updated": "2026-03-04T21:28:59.804Z",
   "counts": {
-    "enqueued": 86,
+    "enqueued": 87,
     "processed": 18,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
     "completed": 108,
-    "fact_find_ready": 125,
-    "total": 238
+    "fact_find_ready": 126,
+    "total": 239
   },
   "dispatches": [
     {
@@ -9545,6 +9545,52 @@
       "intended_outcome": {
         "type": "operational",
         "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304212859-0802",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+      "before_sha": "fa7aaf70511c44dceb94fb6c84d46a1cf512ede3",
+      "after_sha": "a84d7754bd1c7ddf175422847b22416adc52b4ea",
+      "root_event_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:a84d7754bd1c7ddf175422847b22416adc52b4ea",
+      "anchor_key": "bos-codebase-structural-signals",
+      "cluster_key": "bos:unknown:bos-codebase-structural-signals:BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:a84d7754bd1c7ddf175422847b22416adc52b4ea",
+      "cluster_fingerprint": "60e803ee361f533931041cfb25672fe7c2ccc81be237a06ae5f6f6f6f97edd2c",
+      "lineage_depth": 0,
+      "area_anchor": "bos-codebase-structural-signals",
+      "location_anchors": [
+        "git-diff:HEAD~1..HEAD"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS changed (fa7aaf7 → a84d775)",
+      "next_scope_now": "Investigate implications of bos-codebase-structural-signals delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "git-diff-range:HEAD~1..HEAD",
+        "git-diff:M:.claude/settings.json",
+        "git-diff:M:.claude/skills/_shared/auto-continue-policy.md",
+        "git-diff:M:.claude/skills/_shared/critique-loop-protocol.md",
+        "git-diff:M:.claude/skills/lp-do-build/modules/build-validate.md",
+        "git-diff:M:.claude/skills/meta-loop-efficiency/SKILL.md",
+        "git-diff:M:.claude/skills/tools-index.md",
+        "git-diff:M:.github/workflows/brikette.yml",
+        "git-diff:M:.github/workflows/test.yml"
+      ],
+      "created_at": "2026-03-04T21:28:59.801Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-codebase-structural-signals implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-codebase-structural-signals.",
         "source": "auto"
       }
     }

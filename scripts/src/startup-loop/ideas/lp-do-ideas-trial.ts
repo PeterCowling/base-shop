@@ -11,6 +11,8 @@
  */
 
 import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+import path from "node:path";
 
 import {
   classifyIdea,
@@ -18,6 +20,7 @@ import {
   type IdeaClassificationInput,
 } from "./lp-do-ideas-classifier.js";
 import { computeClusterFingerprint } from "./lp-do-ideas-fingerprint.js";
+import type { KeywordCalibrationPriors } from "./lp-do-ideas-keyword-calibrate.js";
 import type { RegistryV2ArtifactEntry } from "./lp-do-ideas-registry-migrate-v1-v2.js";
 
 // ---------------------------------------------------------------------------
@@ -66,6 +69,60 @@ export const T1_SEMANTIC_KEYWORDS: readonly string[] = [
   "broken flow",
   "missing functionality",
 ];
+
+// ---------------------------------------------------------------------------
+// Keyword scoring configuration
+// ---------------------------------------------------------------------------
+
+/** Minimum score for a T1 keyword match to route as fact_find_ready */
+export const T1_ROUTING_THRESHOLD = 0.6;
+
+/** Base score when a keyword matches (before calibration adjustment) */
+const T1_BASE_MATCH_SCORE = 0.75;
+
+const DEFAULT_PRIORS_PATH = path.join(
+  "docs",
+  "business-os",
+  "startup-loop",
+  "ideas",
+  "trial",
+  "keyword-calibration-priors.json",
+);
+
+// Module-level priors cache
+let _priorsCache: KeywordCalibrationPriors | null | undefined;
+let _priorsCachePath: string | undefined;
+
+/**
+ * Load keyword calibration priors from disk. Returns null if file is missing
+ * or invalid (graceful degradation — base scores used).
+ */
+export function loadKeywordPriors(priorsPath?: string): KeywordCalibrationPriors | null {
+  const resolvedPath = priorsPath ?? DEFAULT_PRIORS_PATH;
+  if (_priorsCache !== undefined && _priorsCachePath === resolvedPath) {
+    return _priorsCache;
+  }
+  try {
+    const raw = readFileSync(resolvedPath, "utf-8");
+    const parsed = JSON.parse(raw) as KeywordCalibrationPriors;
+    if (parsed && typeof parsed.priors === "object") {
+      _priorsCache = parsed;
+      _priorsCachePath = resolvedPath;
+      return parsed;
+    }
+  } catch {
+    // Missing or corrupt priors file — graceful degradation
+  }
+  _priorsCache = null;
+  _priorsCachePath = resolvedPath;
+  return null;
+}
+
+/** Invalidate the in-process priors cache (for testing or after recalibration). */
+export function invalidateKeywordPriorsCache(): void {
+  _priorsCache = undefined;
+  _priorsCachePath = undefined;
+}
 
 // ---------------------------------------------------------------------------
 // Types
@@ -600,11 +657,37 @@ function deriveAreaAnchor(event: ArtifactDeltaEvent): string {
     .replace(/^[a-z0-9]+-/, "");
 }
 
-function matchesT1(changedSections: string[]): boolean {
+/**
+ * Score T1 keyword match. Returns 0-1 score incorporating calibration priors.
+ * Base score = 0.75 for any keyword match, adjusted by calibration delta/100.
+ * No match = 0.0. Multiple matches: highest-scoring keyword wins.
+ */
+export function scoreT1Match(changedSections: string[], priorsPath?: string): number {
   const lowered = changedSections.map((section) => section.toLowerCase());
-  return T1_SEMANTIC_KEYWORDS.some((keyword) =>
-    lowered.some((section) => section.includes(keyword)),
-  );
+  const priors = loadKeywordPriors(priorsPath);
+
+  let bestScore = 0.0;
+
+  for (const keyword of T1_SEMANTIC_KEYWORDS) {
+    const matches = lowered.some((section) => section.includes(keyword));
+    if (!matches) continue;
+
+    let score = T1_BASE_MATCH_SCORE;
+
+    // Apply calibration prior if available
+    if (priors?.priors[keyword] !== undefined) {
+      score += priors.priors[keyword] / 100;
+    }
+
+    // Clamp to [0, 1]
+    score = Math.max(0.0, Math.min(1.0, score));
+
+    if (score > bestScore) {
+      bestScore = score;
+    }
+  }
+
+  return bestScore;
 }
 
 function sectionsAreMetadataOnly(changedSections: readonly string[]): boolean {
@@ -926,7 +1009,8 @@ export function runTrialOrchestrator(
       }
     }
 
-    const t1Match = matchesT1(sections);
+    const t1Score = scoreT1Match(sections);
+    const t1Match = t1Score >= T1_ROUTING_THRESHOLD;
     const status: DispatchStatus = t1Match ? "fact_find_ready" : "briefing_ready";
     const recommendedRoute: RecommendedRoute = t1Match
       ? "lp-do-fact-find"
@@ -959,7 +1043,7 @@ export function runTrialOrchestrator(
       recommended_route: recommendedRoute,
       status,
       priority: "P2",
-      confidence: t1Match ? 0.75 : 0.5,
+      confidence: t1Score > 0 ? t1Score : 0.5,
       evidence_refs: evidenceRefs,
       created_at: now.toISOString(),
       queue_state: "enqueued",

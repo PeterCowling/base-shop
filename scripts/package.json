@@ -26,6 +26,7 @@
     "startup-loop:lp-do-ideas-codebase-signals-bridge": "node --import tsx src/startup-loop/ideas/lp-do-ideas-codebase-signals-bridge.ts",
     "startup-loop:lp-do-ideas-agent-session-bridge": "node --import tsx src/startup-loop/ideas/lp-do-ideas-agent-session-bridge.ts",
     "startup-loop:self-evolving-from-build-output": "node --import tsx src/startup-loop/self-evolving/self-evolving-from-build-output.ts",
+    "startup-loop:self-evolving-from-build-failure": "node --import tsx src/startup-loop/self-evolving/self-evolving-from-build-failure.ts",
     "startup-loop:queue-state-canonicalize": "node --import tsx src/startup-loop/ideas/lp-do-ideas-queue-state-canonicalize.ts",
     "startup-loop:results-review-prefill": "node --import tsx src/startup-loop/build/lp-do-build-results-review-prefill.ts",
     "startup-loop:pattern-reflection-prefill": "node --import tsx src/startup-loop/build/lp-do-build-pattern-reflection-prefill.ts",

@@ -461,6 +461,7 @@ const SELF_TRIGGER_PROCESSES = new Set([
   "standing-write-back",
   "pattern-promote-loop-update",
   "pattern-promote-skill-proposal",
+  "self-evolving-from-build-failure",
 ]);
 
 const METADATA_ONLY_SECTION_PATTERNS: ReadonlyArray<RegExp> = [

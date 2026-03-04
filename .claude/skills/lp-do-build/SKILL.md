@@ -160,8 +160,12 @@ After each completed task:
 - Update task summary status/dependencies if changed.
 
 If confidence regresses below task threshold during execution:
+- Run the build-failure bridge (advisory/fail-open) before routing to replan:
+  `pnpm --filter scripts startup-loop:self-evolving-from-build-failure -- --business <BUSINESS> --plan-slug <slug> --failure-type confidence_regression --task-id <TASK-ID>`
+  This is a single invocation per failure event. If the build is retried and confidence regresses again, that retry is a new failure event warranting a new observation.
 - stop and route to `/lp-do-replan`.
-- If the same task is routed to `/lp-do-replan` three or more times without crossing its threshold: declare the task `Infeasible` in the plan, record a one-line kill rationale, surface to user, and stop the build cycle. Do not route to replan a fourth time.
+- If the same task is routed to `/lp-do-replan` three or more times without crossing its threshold: declare the task `Infeasible` in the plan, record a one-line kill rationale, surface to user, and stop the build cycle. Do not route to replan a fourth time. Run the failure bridge for the infeasible declaration:
+  `pnpm --filter scripts startup-loop:self-evolving-from-build-failure -- --business <BUSINESS> --plan-slug <slug> --failure-type infeasible_declaration --task-id <TASK-ID>`
 
 ### Build-Time Ideas Hook (Advisory)
 
@@ -273,6 +277,10 @@ Partial completion:
 
 Stopped by gate:
 > Build stopped by gate (`Eligibility` | `Scope` | `Validation` | `Commit` | `Post-task`). See plan updates for required next action.
+
+When a build stops due to a gate failure, run the build-failure bridge (advisory/fail-open):
+`pnpm --filter scripts startup-loop:self-evolving-from-build-failure -- --business <BUSINESS> --plan-slug <slug> --failure-type gate_block --task-id <TASK-ID>`
+This is a single invocation per gate-block event. If the build is retried after fixing the gate issue and fails at a different gate, that is a separate failure event.
 
 ## Quick Checklist
 

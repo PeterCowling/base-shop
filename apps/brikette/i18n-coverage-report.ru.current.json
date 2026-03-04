@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 2,
+  "baselineLocale": "en",
+  "locales": [
+    "ru"
+  ],
+  "summary": {
+    "totalMissingFiles": 0,
+    "totalMissingKeys": 0,
+    "totalUntranslatedKeys": 1
+  },
+  "reports": [
+    {
+      "locale": "ru",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {
+        "guides/labels.json": [
+          "costBreakdownSliceLabel"
+        ]
+      }
+    }
+  ]
+}

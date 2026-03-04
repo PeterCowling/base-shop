@@ -38,6 +38,7 @@ import {
 import { Button } from "@acme/design-system/atoms";
 
 import { canAccess, isPrivileged, Permissions } from "../../lib/roles";
+import { isStaffAccountsPeteIdentity } from "../../lib/staffAccountsAccess";
 import type { User } from "../../types/domains/userDomain";
 
 interface NavItem {
@@ -111,7 +112,7 @@ const navSections: NavSection[] = [
 ];
 
 interface AppNavProps {
-  user: { user_name: string; roles?: User["roles"] };
+  user: { user_name: string; email?: string; roles?: User["roles"]; uid?: string };
   onLogout: () => void;
 }
 
@@ -210,6 +211,12 @@ function AppNav({ user, onLogout }: AppNavProps) {
                 <ul className="space-y-1">
                   {section.items.map((item) => {
                     if (!canAccessSection(item.permission)) return null;
+                    if (
+                      item.route === "/staff-accounts" &&
+                      !isStaffAccountsPeteIdentity(user)
+                    ) {
+                      return null;
+                    }
 
                     const isActive = pathname === item.route;
 

@@ -19,7 +19,7 @@ artifact: results-review
 ## Standing Updates
 - `docs/agents/feature-workflow-guide.md`: Confirm the "Business OS Card Tracking" section reads correctly in live use. No further updates required — already rewritten during this plan.
 - `docs/business-os/agent-workflows.md`: Already updated during this plan (automation table, card lifecycle diagram, footnote). No further updates required.
-- `docs/business-os/startup-loop/loop-output-contracts.md`: Already updated — `Business-Unit` and `Card-ID` removed from all four artifact frontmatter specs. No further updates required.
+- `docs/business-os/startup-loop/contracts/loop-output-contracts.md`: Already updated — `Business-Unit` and `Card-ID` removed from all four artifact frontmatter specs. No further updates required.
 - `docs/plans/_templates/fact-find-planning.md` and `docs/plans/_templates/plan.md`: Already cleaned. Confirm any in-flight plans started before 2026-02-24 remove the stale BOS fields on their next update.
 
 ## New Idea Candidates

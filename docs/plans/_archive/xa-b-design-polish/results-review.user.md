@@ -9,11 +9,9 @@ artifact: results-review
 # Results Review
 
 ## Observed Outcomes
-- Cart line items now show 64×64 product thumbnail images with a fallback to the product's initial letter when no media exists. Cart table wrapper and empty state use `rounded-sm` instead of `rounded-lg`, matching the site-wide sharp-edge aesthetic. Styled empty cart state includes centered layout with uppercase label and CTA link.
-- Department landing pages now display visual category cards with representative product imagery (first product with valid media per category), `aspect-[4/3]` image area, hover zoom effect, and fallback placeholder for categories without images.
-- Product cards display a "New In" badge for items added within the last 30 days, mutually exclusive with the existing "Sold out" badge. The `isNewIn` utility is unit-tested with 6 cases covering boundary conditions, invalid dates, and future dates.
-- Wishlist and listing filter empty states now have consistent achromatic styling — uppercase labels, muted foreground text, `rounded-sm` borders, and clear CTA links — matching the cart empty state treatment.
-- All changes pass typecheck and lint with zero errors and zero warnings. No scope deviations.
+- All 4 empty state locations (product listing, cart, wishlist, designers) now use the design-system EmptyState component with identical xa-b achromatic styling: bordered card, uppercase heading, muted description, contextual CTAs.
+- Cart line item meta text (size and price) aligned to `xa-pdp-meta` class for consistency with XaBuyBox and PDP patterns.
+- Typecheck and lint pass with no new issues.
 
 ## Standing Updates
 - No standing updates: no registered artifacts changed
@@ -43,7 +41,7 @@ This section is non-blocking during the warn window. After one loop cycle (~14 d
 will be promoted to a hard gate. A valid verdict keyword is required to clear the warn.
 -->
 
-- **Intended:** All 4 design gaps resolved — cart thumbnails with sharp-edge styling, department landing visual cards, New In badge on product cards, styled empty states — using xa-b achromatic design language.
-- **Observed:** All four gaps addressed with passing validation contracts (TC-01 through TC-04). Cart shows thumbnails with sharp corners, department landing has visual category cards, product cards show New In badge, and empty states have consistent styled treatment.
+- **Intended:** Empty states use a unified pattern with consistent borders, spacing, typography, and CTAs. Cart meta text uses `xa-pdp-meta` class.
+- **Observed:** All 4 empty states now share identical EmptyState component usage with `rounded-sm border border-border-1` and xa-b uppercase headings. Cart meta text uses `xa-pdp-meta text-muted-foreground`. Visual verification via code review confirms structural consistency.
 - **Verdict:** Met
 - **Notes:** n/a

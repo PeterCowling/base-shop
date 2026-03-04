@@ -44,6 +44,12 @@ type RoomsSectionProps = {
   roomPricesOverride?: Record<string, RoomCardPrice>;
   /** Optional allow-list of room IDs to render in the section. */
   includeRoomIds?: string[];
+  /**
+   * Optional callback fired when a room CTA is clicked without a complete
+   * booking query (queryState === "absent"). Allows the page to guide users
+   * to the booking search UI instead of navigating away.
+   */
+  onRequireSearchInput?: () => void;
 };
 
 type RoomsSectionBaseProps = ComponentProps<typeof RoomsSectionBase>;
@@ -122,6 +128,58 @@ export function RoomsSection({
     };
   }, []);
 
+  const resolveValidBookingUrl = (ctx: { roomSku: string; plan: RatePlan }): string | null => {
+    const room = visibleRooms.find((r) => r.id === ctx.roomSku);
+    if (!room) return null;
+    const result = buildOctorateUrl({
+      checkin: props.bookingQuery?.checkIn ?? "",
+      checkout: props.bookingQuery?.checkOut ?? "",
+      pax: parseInt(props.bookingQuery?.pax ?? "1", 10) || 1,
+      plan: ctx.plan,
+      roomSku: ctx.roomSku,
+      octorateRateCode: ctx.plan === "nr" ? room.rateCodes.direct.nr : room.rateCodes.direct.flex,
+      bookingCode: BOOKING_CODE,
+      ...(deal ? { deal } : {}),
+    });
+    return result.ok ? result.url : null;
+  };
+
+  const startTrackedCheckoutNavigation = (ctx: {
+    roomSku: string;
+    plan: RatePlan;
+    targetUrl: string;
+  }): void => {
+    const checkin = props.bookingQuery?.checkIn ?? "";
+    const checkout = props.bookingQuery?.checkOut ?? "";
+    const pax = parseInt(props.bookingQuery?.pax ?? "1", 10) || 1;
+    // Set guard before async beacon dispatch to block re-entrant calls.
+    isNavigatingRef.current = true;
+    // Auto-release guard if navigation is blocked/canceled and no unload occurs.
+    if (unlockTimerRef.current !== null) {
+      window.clearTimeout(unlockTimerRef.current);
+    }
+    unlockTimerRef.current = window.setTimeout(() => {
+      isNavigatingRef.current = false;
+      unlockTimerRef.current = null;
+    }, 2000);
+    trackThenNavigate(
+      "begin_checkout",
+      {
+        handoff_mode: "same_tab",
+        engine_endpoint: "result",
+        checkin,
+        checkout,
+        pax,
+        rate_plan: ctx.plan,
+        room_id: ctx.roomSku,
+        source_route: `/${props.lang ?? "en"}/dorms`,
+        cta_location: "rooms_section_rate_cta",
+        brik_click_id: createBrikClickId(),
+      },
+      () => window.location.assign(ctx.targetUrl),
+    );
+  };
+
   const onRoomSelect = (ctx: { roomSku: string; plan: RatePlan; index: number }): void => {
     // Double-click / multi-tap deduplication guard (TC-05)
     if (isNavigatingRef.current) return;
@@ -137,58 +195,19 @@ export function RoomsSection({
       });
     }
 
-    if (typeof window === "undefined") return;
-
     if (queryState === "valid") {
-      // Navigate directly to Octorate using the booking query dates.
-      // TC-02/TC-03/TC-04: wrap in trackThenNavigate for reliable beacon dispatch.
-      const room = visibleRooms.find((r) => r.id === ctx.roomSku);
-      if (room) {
-        const octorateRateCode =
-          ctx.plan === "nr" ? room.rateCodes.direct.nr : room.rateCodes.direct.flex;
-        const checkin = props.bookingQuery?.checkIn ?? "";
-        const checkout = props.bookingQuery?.checkOut ?? "";
-        const pax = parseInt(props.bookingQuery?.pax ?? "1", 10) || 1;
-        const result = buildOctorateUrl({
-          checkin,
-          checkout,
-          pax,
-          plan: ctx.plan,
-          roomSku: ctx.roomSku,
-          octorateRateCode,
-          bookingCode: BOOKING_CODE,
-          ...(deal ? { deal } : {}),
-        });
-        if (result.ok) {
-          // Set guard before async beacon dispatch to block re-entrant calls.
-          isNavigatingRef.current = true;
-          // Auto-release guard if navigation is blocked/canceled and no unload occurs.
-          if (unlockTimerRef.current !== null) {
-            window.clearTimeout(unlockTimerRef.current);
-          }
-          unlockTimerRef.current = window.setTimeout(() => {
-            isNavigatingRef.current = false;
-            unlockTimerRef.current = null;
-          }, 2000);
-          trackThenNavigate(
-            "begin_checkout",
-            {
-              handoff_mode: "same_tab",
-              engine_endpoint: "result",
-              checkin,
-              checkout,
-              pax,
-              rate_plan: ctx.plan,
-              room_id: ctx.roomSku,
-              source_route: `/${props.lang ?? "en"}/dorms`,
-              cta_location: "rooms_section_rate_cta",
-              brik_click_id: createBrikClickId(),
-            },
-            () => window.location.assign(result.url),
-          );
-          return;
-        }
+      const targetUrl = resolveValidBookingUrl(ctx);
+      if (targetUrl) {
+        // Navigate directly to Octorate using the booking query dates.
+        // TC-02/TC-03/TC-04: wrap in trackThenNavigate for reliable beacon dispatch.
+        startTrackedCheckoutNavigation({ roomSku: ctx.roomSku, plan: ctx.plan, targetUrl });
+        return;
       }
+    }
+
+    if (queryState === "absent" && props.onRequireSearchInput) {
+      props.onRequireSearchInput();
+      return;
     }
 
     if (queryState !== "invalid") {

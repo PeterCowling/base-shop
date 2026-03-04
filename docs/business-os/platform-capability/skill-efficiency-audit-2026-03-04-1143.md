@@ -1,9 +1,9 @@
-scan_timestamp: 2026-03-04 11:43
+scan_timestamp: 2026-03-04 12:55
 threshold: 200 lines
 scope: lp-*, startup-loop, draft-outreach
-git_sha: 67cbec2
+git_sha: 8f62dc7
 previous_artifact: skill-efficiency-audit-2026-02-18-1357.md
-skills_scanned: 47
+skills_scanned: 48
 
 # Skill Efficiency Audit
 
@@ -11,18 +11,18 @@ skills_scanned: 47
 
 | Metric | Count |
 |---|---:|
-| Skills scanned | 47 |
-| Compliant | 21 (45%) |
+| Skills scanned | 48 |
+| Compliant | 23 (48%) |
 | H1 monolith | 21 |
-| H1 bloated-orchestrator | 5 |
+| H1 bloated-orchestrator | 4 |
 | H1 module-monolith (advisory) | 1 |
-| H2 dispatch-candidate | 28 |
+| H2 dispatch-candidate | 29 |
 | H3 wave-candidate | 13 |
 | H0 duplicate groups | 0 |
 
 ## Possible Duplicates (H0)
 
-None. All 47 SHA256 hashes are unique.
+None. All 48 SHA256 hashes are unique.
 
 ## List 1 — Modularization Opportunities (H1)
 
@@ -62,7 +62,6 @@ None. All 47 SHA256 hashes are unique.
 | lp-do-plan | 309 | 76 | known (was 214, +95) |
 | lp-do-build | 308 | 151 | known (was 222, +86) |
 | lp-do-fact-find | 243 | 147 | known (was 201, +42) |
-| lp-do-worldclass | 200 | 328 | NEW |
 
 **Module-monolith advisory:**
 
@@ -84,7 +83,7 @@ No low-tier skills exceed the threshold (draft-outreach at 128L is compliant).
 
 | Skill | Phases | Dispatch Refs | Wave Ref | Signal |
 |---|---:|---:|---:|---|
-| lp-do-worldclass | 19 | 0 | 0 | dispatch-candidate + wave-candidate |
+| lp-do-worldclass | 19 | 0 | 0 | dispatch-candidate |
 | lp-do-plan | 14 | 0 | 0 | dispatch-candidate + wave-candidate |
 | lp-do-fact-find | 13 | 0 | 0 | dispatch-candidate + wave-candidate |
 | lp-weekly | 13 | 0 | 0 | dispatch-candidate |
@@ -104,25 +103,26 @@ No low-tier skills exceed the threshold (draft-outreach at 128L is compliant).
 | lp-signal-review | 6 | 0 | 0 | dispatch-candidate + wave-candidate |
 | lp-measure | 7 | 0 | 0 | dispatch-candidate |
 | lp-site-upgrade | 4 | 0 | 0 | dispatch-candidate |
+| lp-design-qa | 4 | 1 | 0 | wave-candidate |
 
 ### low tier
 
 | Skill | Phases | Signal |
 |---|---:|---|
 | lp-coverage-scan | 13 | dispatch-candidate |
-| lp-do-assessment-14 | 15 | dispatch-candidate |
-| lp-do-assessment-01 | 11 | dispatch-candidate |
-| lp-do-assessment-15 | 8 | dispatch-candidate |
-| lp-do-assessment-03 | 6 | dispatch-candidate |
-| lp-do-assessment-11 | 6 | dispatch-candidate |
-| lp-onboarding-audit | 6 | dispatch-candidate |
-| lp-do-assessment-08 | 5 | dispatch-candidate |
+| lp-do-assessment-14-logo-brief | 15 | dispatch-candidate |
+| lp-do-assessment-01-problem-statement | 11 | dispatch-candidate |
+| lp-do-assessment-15-packaging-brief | 8 | dispatch-candidate |
+| lp-do-assessment-03-solution-selection | 6 | dispatch-candidate |
+| lp-do-assessment-11-brand-identity | 6 | dispatch-candidate + wave-candidate |
+| lp-onboarding-audit | 6 | dispatch-candidate + wave-candidate |
+| lp-do-assessment-08-current-situation | 5 | dispatch-candidate |
 | lp-do-briefing | 5 | dispatch-candidate |
-| lp-assessment-bootstrap | 4 | dispatch-candidate |
+| lp-assessment-bootstrap | 4 | dispatch-candidate + wave-candidate |
 | lp-brand-refresh | 4 | dispatch-candidate |
-| lp-do-assessment-10 | 4 | dispatch-candidate |
+| lp-do-assessment-10-brand-profiling | 4 | dispatch-candidate |
 | lp-do-ideas | 4 | dispatch-candidate |
-| lp-do-assessment-12 | 3 | dispatch-candidate |
+| lp-do-assessment-12-promote | 3 | dispatch-candidate |
 | lp-guide-improve | 3 | dispatch-candidate |
 | lp-readiness | 3 | dispatch-candidate |
 
@@ -132,11 +132,11 @@ Previous artifact: `skill-efficiency-audit-2026-02-18-1357.md` (28 skills, git S
 
 ### Growth since last audit
 
-- Skills scanned: 28 → 47 (+19, mostly assessment series)
-- H1 opportunities: 13 → 26 (+13)
-- H2 dispatch-candidates: 14 → 28 (+14)
+- Skills scanned: 28 → 48 (+20, mostly assessment series)
+- H1 opportunities: 13 → 25 (+12)
+- H2 dispatch-candidates: 14 → 29 (+15)
 - H3 wave adoption: 0% → 0% (unchanged)
-- Dispatch adoption: 6/47 = 13% (was ~14%)
+- Dispatch adoption: 6/48 = 12% (was ~14%)
 
 ### Regressions (known skills that grew)
 
@@ -150,13 +150,37 @@ Previous artifact: `skill-efficiency-audit-2026-02-18-1357.md` (28 skills, git S
 
 lp-do-assessment-14-logo-brief (643), lp-do-factcheck (438), lp-do-assessment-01-problem-statement (346), lp-do-assessment-15-packaging-brief (342), lp-do-assessment-13-product-naming (336), lp-do-assessment-11-brand-identity (299), lp-do-ideas (294), lp-do-assessment-05-name-selection (292), lp-do-assessment-04-candidate-names (280), lp-do-assessment-10-brand-profiling (205), lp-do-assessment-08-current-situation (203)
 
-Plus 2 new bloated-orchestrators: lp-do-critique (535), lp-do-worldclass (200)
+Plus 1 new bloated-orchestrator: lp-do-critique (535)
 
 ## Planning Anchor
 
-13 new-to-HIGH items and 3 regressions detected since `skill-efficiency-audit-2026-02-18-1357.md`.
+12 new-to-HIGH items and 3 regressions detected since `skill-efficiency-audit-2026-02-18-1357.md`.
 
-The assessment skill family (13 skills, 10 monoliths) is the primary driver of new opportunities.
-The core workflow triad (fact-find → plan → build) regressed by 42–95 lines each — feature accretion without corresponding modularization.
+The assessment skill family (13 skills, 9 monoliths) is the primary driver of new opportunities.
+The core workflow triad (fact-find → plan → build) regressed by 42-95 lines each - feature accretion without corresponding modularization.
 
 Suggested: `/lp-do-fact-find startup-loop-token-efficiency-v2` to scope modularization of assessment monoliths and workflow skill growth.
+
+## Deterministic Extraction Coverage
+
+Current audit coverage is primarily structural (H0-H3). Deterministic extraction is only indirectly represented.
+
+- Included now: line-size pressure, module size advisory, dispatch/wave adoption heuristics.
+- Not yet scored in this artifact: deterministic logic extraction into `.ts` / `.json` / `.yaml`.
+- Not yet scored in this artifact: anti-gaming checks where `SKILL.md` shrinks but total markdown complexity grows.
+
+Quality risk: a strict `<200L` target alone can be gamed by moving prose into modules without reducing deterministic ambiguity.
+
+Next-audit contract:
+
+1. Add `H4 deterministic-extraction-candidate` to identify skills that should move rule-like logic into typed artifacts.
+2. Add `H5 shrink-without-simplification` to flag line-budget compliance that does not actually simplify the system.
+3. Treat `<200L` as a secondary signal; primary success is deterministic extraction + behavior-preserving simplification.
+
+## Critique Notes (Applied)
+
+- Fixed header and summary count mismatches (`skills_scanned`, compliance %, H1/H2 totals).
+- Removed a threshold inconsistency (`lp-do-worldclass` was listed as bloated at exactly 200L despite a `>200L` rule).
+- Corrected abbreviated low-tier skill IDs to canonical names for traceability.
+- Reconciled wave-candidate reporting by adding missing entries already present in repo evidence.
+- Logged structural coverage gap and anti-gaming risk for line-based targets.

@@ -38,14 +38,14 @@ Primary input note (Outcome B): `docs/briefs/startup-loop-gap-audit-briefing.md`
 ### Non-goals
 - Implementing new measurement connectors (`measure_*`) beyond contract-level scaffolding (can be a separate scope unless needed to unblock).
 - Shipping product/venture-facing features; this is startup-loop infrastructure hardening.
-- Changing the startup-loop stage graph in `docs/business-os/startup-loop/loop-spec.yaml` unless required to resolve an inconsistency.
+- Changing the startup-loop stage graph in `docs/business-os/startup-loop/specifications/loop-spec.yaml` unless required to resolve an inconsistency.
 
 ### Constraints & Assumptions
 - Constraints:
   - Must support a multi-agent environment; contract changes must be migration-safe and verifiable.
   - No destructive git/history rewrites; prefer additive migrations and explicit compatibility windows.
 - Assumptions (to verify during planning):
-  - `docs/business-os/startup-loop/loop-spec.yaml` is canonical for the startup-loop stage graph (nodes, ordering, transitions, skill references, required artifacts).
+  - `docs/business-os/startup-loop/specifications/loop-spec.yaml` is canonical for the startup-loop stage graph (nodes, ordering, transitions, skill references, required artifacts).
   - The agent API `StageTypeSchema` (`fact-find|plan|build|reflect`) is canonical for stage-doc API keys and on-disk stage-doc filenames.
   - Mutation boundary policy: `/lp-bos-sync` is the sole mutation boundary for board/state mutations (lane transitions, board status), not for stage-doc writes.
 
@@ -68,7 +68,7 @@ Primary input note (Outcome B): `docs/briefs/startup-loop-gap-audit-briefing.md`
 
 | Contract Surface | Canonical Authority | Derived / Validated Against | Drift Detection |
 | --- | --- | --- | --- |
-| Stage graph (nodes, ordering, transitions, skill references, required artifacts per stage) | `docs/business-os/startup-loop/loop-spec.yaml` | None | Startup-loop contract lint + drift tests |
+| Stage graph (nodes, ordering, transitions, skill references, required artifacts per stage) | `docs/business-os/startup-loop/specifications/loop-spec.yaml` | None | Startup-loop contract lint + drift tests |
 | Stage-doc types (API accepted keys + on-disk stage-doc filenames) | `StageTypeSchema` in `packages/platform-core/src/repositories/businessOsStageDocs.server.ts` | Must be consistent with `loop-spec.yaml` stage nodes that produce stage docs | Contract tests + lint |
 | Stage-doc filePath template | Agent API routes in `apps/business-os/src/app/api/agent/stage-docs/**/route.ts` | Must match StageTypeSchema keys and repo-reader expectations | API tests + integration test |
 
@@ -140,7 +140,7 @@ Notes:
 ## Evidence Audit (Current State)
 
 ### Entry Points
-- `docs/business-os/startup-loop/loop-spec.yaml` — canonical stage graph and stage references (including `/lp-bos-sync`).
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml` — canonical stage graph and stage references (including `/lp-bos-sync`).
 - `apps/business-os/src/app/api/agent/stage-docs/route.ts` — stage-doc list/create; strict `StageTypeSchema` validation.
 - `apps/business-os/src/app/api/agent/stage-docs/[cardId]/[stage]/route.ts` — stage-doc get/patch; strict `StageTypeSchema` validation and canonical file path template.
 - `packages/platform-core/src/repositories/businessOsStageDocs.server.ts` — `StageTypeSchema = ["fact-find","plan","build","reflect"]`.
@@ -246,7 +246,7 @@ Notes:
 **Failure mode:** canonical startup-loop docs reference `docs/plans/lp-skill-system-sequencing-plan.md` which does not exist at that path, forcing archeology and reducing trust in “authority” docs.
 
 **Evidence:**
-- Multiple loop docs reference: `docs/business-os/startup-loop/loop-spec.yaml`, `docs/business-os/startup-loop/manifest-schema.md`, `docs/business-os/startup-loop/stage-result-schema.md`, `docs/business-os/startup-loop/event-state-schema.md`, `docs/business-os/startup-loop/autonomy-policy.md`.
+- Multiple loop docs reference: `docs/business-os/startup-loop/specifications/loop-spec.yaml`, `docs/business-os/startup-loop/schemas/manifest-schema.md`, `docs/business-os/startup-loop/schemas/stage-result-schema.md`, `docs/business-os/startup-loop/schemas/event-state-schema.md`, `docs/business-os/startup-loop/specifications/autonomy-policy.md`.
 - Existing artifacts appear under:
   - `docs/plans/archive/lp-skill-system-sequencing-plan.md`
   - `docs/plans/lp-skill-system-sequencing-plan.html`
@@ -305,7 +305,7 @@ Rationale:
 
 Telemetry expectation: log alias usage with caller identification where available (skill name, user agent, or MCP tool name).
 
-Implementation switch (recommended): `docs/business-os/startup-loop/contract-migration.yaml` with explicit cutoffs (for example `alias_accept_until`, `lint_warn_until`). API + lint read this config.
+Implementation switch (recommended): `docs/business-os/startup-loop/operations/contract-migration.yaml` with explicit cutoffs (for example `alias_accept_until`, `lint_warn_until`). API + lint read this config.
 Telemetry surface (recommended): structured server log event `bos.stage_alias_used` including `{ cardId, rawStage, normalizedStage, endpoint }` (no doc content). Optionally also return response header `x-bos-stage-normalized: lp-do-fact-find->fact-find` when normalization occurs.
 Lint allowlist (temporary, migration fixtures only): lives in `scripts/check-startup-loop-contracts.sh` as `MIGRATION_ALLOWLIST=(...)` and is removed at window end.
 

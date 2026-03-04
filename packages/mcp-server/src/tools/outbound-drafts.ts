@@ -39,21 +39,23 @@ const processOutboundDraftsSchema = z.object({
 // Firebase outbound draft record (mirrors Prime's OutboundDraftRecord)
 // ---------------------------------------------------------------------------
 
-interface OutboundDraftRecord {
-  to: string;
-  subject: string;
-  bodyText: string;
-  category: "pre-arrival" | "extension-ops";
-  guestName?: string;
-  bookingCode?: string;
-  eventId?: string;
-  status: "pending" | "drafted" | "sent" | "failed";
-  createdAt: string;
-  draftId?: string;
-  gmailMessageId?: string;
-  draftedAt?: string;
-  error?: string;
-}
+const outboundDraftRecordSchema = z.object({
+  to: z.string().email(),
+  subject: z.string().min(1),
+  bodyText: z.string().min(1),
+  category: z.enum(["pre-arrival", "extension-ops"]),
+  guestName: z.string().optional(),
+  bookingCode: z.string().optional(),
+  eventId: z.string().optional(),
+  status: z.enum(["pending", "drafted", "sent", "failed"]),
+  createdAt: z.string().datetime(),
+  draftId: z.string().optional(),
+  gmailMessageId: z.string().optional(),
+  draftedAt: z.string().optional(),
+  error: z.string().optional(),
+});
+
+type OutboundDraftRecord = z.infer<typeof outboundDraftRecordSchema>;
 
 interface FirebaseOptions {
   url: string;
@@ -69,6 +71,11 @@ interface ProcessedDraftResult {
   gmailMessageId?: string;
   status: "drafted" | "failed";
   error?: string;
+}
+
+interface InvalidOutboundRecord {
+  id: string;
+  error: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -296,7 +303,7 @@ async function handleProcessOutboundDrafts(args: unknown) {
     processOutboundDraftsSchema.parse(args);
 
   // Fetch all outbound drafts from Firebase
-  const allDrafts = await firebaseGet<Record<string, OutboundDraftRecord>>(
+  const allDrafts = await firebaseGet<Record<string, unknown>>(
     firebaseUrl,
     "outboundDrafts",
     firebaseApiKey,
@@ -306,16 +313,55 @@ async function handleProcessOutboundDrafts(args: unknown) {
     return jsonResult({ processed: 0, message: "No outbound drafts found." });
   }
 
-  // Filter to pending only
-  const pendingEntries = Object.entries(allDrafts).filter(
-    ([, record]) => record.status === "pending",
-  );
+  // Validate each record and filter to pending only.
+  const invalidRecords: InvalidOutboundRecord[] = [];
+  const pendingEntries: Array<[string, OutboundDraftRecord]> = [];
+  for (const [id, rawRecord] of Object.entries(allDrafts)) {
+    const parsed = outboundDraftRecordSchema.safeParse(rawRecord);
+    if (!parsed.success) {
+      const validationError = parsed.error.issues
+        .map((issue) => `${issue.path.join(".") || "record"}: ${issue.message}`)
+        .join("; ");
+      invalidRecords.push({
+        id,
+        error: validationError,
+      });
+
+      // Non-dry runs should transition invalid records out of pending to avoid
+      // repeated retries on every execution.
+      if (!dryRun) {
+        try {
+          await firebasePatch(
+            firebaseUrl,
+            `outboundDrafts/${id}`,
+            {
+              status: "failed",
+              error: `Invalid outbound draft record: ${validationError}`,
+            },
+            firebaseApiKey,
+          );
+        } catch {
+          // Best-effort status update
+        }
+      }
+
+      continue;
+    }
+
+    if (parsed.data.status === "pending") {
+      pendingEntries.push([id, parsed.data]);
+    }
+  }
 
   if (pendingEntries.length === 0) {
     return jsonResult({
       processed: 0,
       total: Object.keys(allDrafts).length,
-      message: "No pending outbound drafts.",
+      invalidRecords,
+      message:
+        invalidRecords.length > 0
+          ? "No pending outbound drafts after filtering invalid records."
+          : "No pending outbound drafts.",
     });
   }
 
@@ -330,6 +376,7 @@ async function handleProcessOutboundDrafts(args: unknown) {
         createdAt: record.createdAt,
       })),
       total: Object.keys(allDrafts).length,
+      invalidRecords,
     });
   }
 
@@ -372,6 +419,7 @@ async function handleProcessOutboundDrafts(args: unknown) {
     processed: results.length,
     drafted,
     failed,
+    invalidRecords,
     results,
   });
 }

@@ -76,6 +76,12 @@ export type EmailActionPlan = {
    * - NONE tier → false
    */
   escalation_required: boolean;
+  intent_routing?: {
+    selected: "deterministic" | "legacy";
+    fallback_reason?: string;
+    deterministic_confidence: number;
+    legacy_confidence: number;
+  };
   thread_summary?: ThreadSummary;
 };
 
@@ -283,7 +289,7 @@ function summarizeThreadContext(
 
 const SIGN_OFF_PATTERN = /^(thank|thanks|cheers|regards|kind regards|best|sincerely|looking forward)/i;
 
-function extractQuestions(text: string): IntentItem[] {
+function extractQuestionsLegacy(text: string): IntentItem[] {
   const parts = text.split("?");
   // Only segments followed by ? are questions; the last segment has no trailing ?
   return parts
@@ -296,7 +302,7 @@ function extractQuestions(text: string): IntentItem[] {
     }));
 }
 
-function extractRequests(text: string): IntentItem[] {
+function extractRequestsLegacy(text: string): IntentItem[] {
   // TASK-08: expanded from 3 → 9 patterns; matchAll + dedup guard.
   const patterns = [
     /please\s+([^\.\n\r\?]+)[\.\n\r\?]?/gi,
@@ -322,6 +328,111 @@ function extractRequests(text: string): IntentItem[] {
     }
   }
   return requests;
+}
+
+function extractQuestionsDeterministic(text: string): IntentItem[] {
+  const segments = text
+    .replace(/\r\n/g, "\n")
+    .split(/(?<=[?.!])\s+|\n+/)
+    .map((segment) => segment.trim())
+    .filter(Boolean);
+
+  const items: IntentItem[] = [];
+  for (const segment of segments) {
+    if (!segment.endsWith("?")) {
+      continue;
+    }
+    if (SIGN_OFF_PATTERN.test(segment)) {
+      continue;
+    }
+    const tokens = segment.split(/\s+/).filter(Boolean);
+    if (tokens.length < 2) {
+      // Keep deterministic extractor high-precision; router will fall back to legacy when needed.
+      continue;
+    }
+    items.push({ text: segment, evidence: segment.replace(/\?$/, "") });
+  }
+
+  return items;
+}
+
+function extractRequestsDeterministic(text: string): IntentItem[] {
+  const patterns = [
+    /\bplease\s+([^.\n\r?]+)/gi,
+    /\b(can|could|would) you\s+([^.\n\r?]+)/gi,
+    /\bwe need\s+([^.\n\r?]+)/gi,
+    /\bi need\s+([^.\n\r?]+)/gi,
+  ];
+  const seen = new Set<string>();
+  const requests: IntentItem[] = [];
+
+  for (const pattern of patterns) {
+    for (const match of text.matchAll(pattern)) {
+      const textMatch = match[0].trim();
+      const key = textMatch.toLowerCase();
+      if (seen.has(key)) {
+        continue;
+      }
+      seen.add(key);
+      requests.push({ text: textMatch, evidence: textMatch });
+    }
+  }
+
+  return requests;
+}
+
+function scoreIntentConfidence(
+  text: string,
+  questions: IntentItem[],
+  requests: IntentItem[],
+): number {
+  const cueCount = (text.match(/\?/g) ?? []).length;
+  const politeCount = (text.match(/\b(please|can you|could you|would you|i need|we need)\b/gi) ?? [])
+    .length;
+  const signal = questions.length * 0.45 + requests.length * 0.35 + cueCount * 0.1 + politeCount * 0.1;
+  return Number(Math.max(0, Math.min(1, signal / 4)).toFixed(2));
+}
+
+function routeIntents(text: string): {
+  questions: IntentItem[];
+  requests: IntentItem[];
+  selected: "deterministic" | "legacy";
+  fallback_reason?: string;
+  deterministic_confidence: number;
+  legacy_confidence: number;
+} {
+  const legacyQuestions = extractQuestionsLegacy(text);
+  const legacyRequests = extractRequestsLegacy(text);
+  const deterministicQuestions = extractQuestionsDeterministic(text);
+  const deterministicRequests = extractRequestsDeterministic(text);
+
+  const deterministicConfidence = scoreIntentConfidence(
+    text,
+    deterministicQuestions,
+    deterministicRequests,
+  );
+  const legacyConfidence = scoreIntentConfidence(text, legacyQuestions, legacyRequests);
+
+  const deterministicTotal = deterministicQuestions.length + deterministicRequests.length;
+  const legacyTotal = legacyQuestions.length + legacyRequests.length;
+  if (deterministicTotal < legacyTotal) {
+    return {
+      questions: legacyQuestions,
+      requests: legacyRequests,
+      selected: "legacy",
+      fallback_reason: "deterministic_under_extract",
+      deterministic_confidence: deterministicConfidence,
+      legacy_confidence: legacyConfidence,
+    };
+  }
+
+  return {
+    questions: deterministicQuestions,
+    requests: deterministicRequests,
+    selected: "deterministic",
+    deterministic_confidence: deterministicConfidence,
+    legacy_confidence: legacyConfidence,
+  };
 }
 
 function extractConfirmations(text: string): IntentItem[] {
@@ -723,8 +834,9 @@ export async function handleDraftInterpretTool(name: string, args: unknown) {
     const { body, subject, threadContext } = draftInterpretSchema.parse(args);
     const normalized = normalizeThread(body);
     const language = detectLanguage(normalized);
-    const questions = extractQuestions(normalized);
-    const requests = extractRequests(normalized);
+    const routedIntents = routeIntents(normalized);
+    const questions = routedIntents.questions;
+    const requests = routedIntents.requests;
     const confirmations = extractConfirmations(normalized);
     const agreement = detectAgreement(normalized, language);
     const threadSummary = summarizeThreadContext(threadContext, normalized);
@@ -749,6 +861,12 @@ export async function handleDraftInterpretTool(name: string, args: unknown) {
       actionPlanVersion: "1.1.0",
       escalation,
       escalation_required,
+      intent_routing: {
+        selected: routedIntents.selected,
+        fallback_reason: routedIntents.fallback_reason,
+        deterministic_confidence: routedIntents.deterministic_confidence,
+        legacy_confidence: routedIntents.legacy_confidence,
+      },
     };
 
     if (threadSummary) {

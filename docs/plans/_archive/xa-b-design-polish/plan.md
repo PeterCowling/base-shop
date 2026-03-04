@@ -1,82 +1,69 @@
 ---
 Type: Plan
 Status: Archived
-Domain: UI
-Workstream: Engineering
+Domain: PRODUCTS
+Workstream: XA
 Created: 2026-03-04
 Last-reviewed: 2026-03-04
-Last-updated: 2026-03-05
+Last-updated: 2026-03-04T2
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: xa-b-design-polish
-Deliverable-Type: code-change
+Deliverable-Type: frontend-ui-enhancement
 Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: lp-do-build
-Supporting-Skills: frontend-design
-Overall-confidence: 82%
+Supporting-Skills: frontend-design, tools-ui-contrast-sweep
+Overall-confidence: 85%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
 Auto-Build-Intent: plan+auto
 ---
 
-# XA-B Design Polish Plan
+# xa-b Design Polish Plan
 
 ## Summary
 
-Four focused UI improvements to the xa-b luxury fashion storefront that resolve design gaps identified during a `/frontend-design` audit. (1) Cart page gets product thumbnail images and sharp-edge styling. (2) Department landing pages get visual category cards with representative product images. (3) Product cards get a "New In" badge for recently added items. (4) Empty states on wishlist and filter-no-results pages get consistent styled treatment. All changes use existing xa-b achromatic design tokens, existing design system components, and existing product data — no new APIs, dependencies, or data model changes.
+Unify empty state styling across the xa-b storefront (product listing, cart, wishlist, designers) and align cart meta text with the established `xa-pdp-meta` class. Investigation reduced original scope from 4 gaps to 2 — New In badges and department landing pages were already implemented. Single IMPLEMENT task touching 4 files with clear patterns and an available design-system component.
 
 ## Active tasks
-- [x] TASK-01: Cart page thumbnails + sharp-edge styling
-- [x] TASK-02: Department landing visual category cards
-- [x] TASK-03: Product card New In badge
-- [x] TASK-04: Styled empty states (wishlist + listing)
+- [x] TASK-01: Unify empty states and align cart styling — Complete (2026-03-04)
 
 ## Goals
-- Add product thumbnail images to cart line items with sharp-edge styling consistent with xa-b aesthetic
-- Add visual category cards to department landing pages with representative product images
-- Add "New In" badge to product cards for items added within the last 30 days
-- Style empty states on wishlist page and listing filter-no-results with consistent achromatic treatment and CTAs
+- Consistent empty state appearance across all xa-b pages using the design-system `EmptyState` component with xa-b achromatic overrides.
+- Cart meta text uses `xa-pdp-meta` class for consistency with XaBuyBox and PDP.
 
 ## Non-goals
-- New API routes or server-side features
-- Changes outside `apps/xa-b/` scope
-- Adding color to the achromatic palette
-- Product data model changes
-- Visual regression test infrastructure
-- Changing the "New In" filter algorithm (badge uses wall-clock time independently)
+- New In badge (already implemented)
+- Department landing redesign (already functional with image cards)
+- New test files for empty states (visual verification via contrast sweep sufficient for S-effort visual polish)
 
 ## Constraints & Assumptions
 - Constraints:
-  - Cloudflare free tier only (static export, no SSR)
-  - All changes within `apps/xa-b/` scope
-  - Must use xa-b achromatic design language (monochrome `0 0% X%`, sharp corners 1-4px, wide letter-spacing)
-  - Static export to Cloudflare Pages — no route handlers
+  - All changes within `apps/xa-b/` scope.
+  - Must use xa-b achromatic design language (monochrome, sharp corners, wide letter-spacing).
+  - Static export — no SSR, no route handlers.
 - Assumptions:
-  - `XaProduct.media` array typically has at least one image entry; fallback required when absent
-  - `XaProduct.createdAt` is reliably populated for New In badge logic
-  - 30-day "New In" threshold (matching filter logic) is appropriate for badge display
+  - EmptyState component's `className` prop allows full style override (verified: `cn()` merges passed className).
+  - Existing i18n keys for empty state messages can be reused.
 
 ## Inherited Outcome Contract
 
-- **Why:** The xa-b storefront has a strong luxury-editorial design language but 4 pages/components break the brand immersion: cart page (no product images, rounded corners), department landing (text-only, no visual engagement), product cards (no "New In" badge), and empty states (plain text). These weaken the conversion funnel and brand perception.
-- **Intended Outcome Type:** operational
-- **Intended Outcome Statement:** All 4 design gaps resolved — cart thumbnails with sharp-edge styling, department landing visual cards, New In badge on product cards, styled empty states — using xa-b achromatic design language.
+- **Why:** A design audit identified visual inconsistency in empty states (3 different styling patterns) and minor cart styling drift from the established `xa-pdp-*` class system. These weaken the cohesive brand experience.
+- **Intended Outcome Type:** UI polish
+- **Intended Outcome Statement:** Empty states use a unified pattern with consistent borders, spacing, typography, and CTAs. Cart meta text uses `xa-pdp-meta` class.
 - **Source:** operator
 
 ## Fact-Find Reference
 - Related brief: `docs/plans/xa-b-design-polish/fact-find.md`
 - Key findings used:
-  - Cart state carries full `XaProduct` with `media` array — thumbnails available via `sku.media[0]`
-  - `XaDepartmentLanding.tsx` is a server component — can import client components but cannot use hooks
-  - "New In" filter uses 30-day threshold via `resolveNewInDays()` — badge uses the same 30-day window but with wall-clock reference time (intentional divergence from filter's catalog-relative reference; see TASK-03 execution plan)
-  - No `isNewIn` utility exists — must be extracted as a pure function
-  - `ProductBadge` already used for "Sold out" in `XaProductCard` — reuse for "New In"
-  - Sharp-to-minimal radius convention: `rounded-none` on interactive elements, `rounded-sm` on cards, `rounded-full` on chips
-  - `rounded-lg` on cart page (lines 40, 48) and wishlist (line 49) are outliers that need fixing
+  - 4 empty state locations with 3 different styling patterns (fact-find Patterns table)
+  - EmptyState component available at `packages/design-system/src/atoms/EmptyState.tsx` with `className`, `icon`, `title`, `description`, `action` props
+  - Cart uses raw `text-xs text-muted-foreground` instead of `xa-pdp-meta` for meta text
+  - Gap 2 (department landing) and Gap 3 (New In badges) were already resolved
 
 ## Proposed Approach
-- Option A: Four independent tasks, one per gap — maximizes parallelism (all tasks touch different primary files)
-- Option B: Two tasks — one for "visual additions" (thumbnails, cards, badge) and one for "styling fixes" (empty states, radius) — couples unrelated changes
-- Chosen approach: Option A — four independent S-effort tasks. Cart empty state is included in TASK-01 (same file, same concern: fixing `rounded-lg` and adding visual treatment). This keeps all tasks independent for parallel execution.
+- Option A: Use the design-system `EmptyState` component directly with className overrides for xa-b styling.
+- Option B: Create an xa-b-specific empty state wrapper component.
+- Chosen approach: **Option A** — direct usage with className overrides is simpler, avoids a new component, and the EmptyState already accepts all needed props. The xa-b styling (border, radius, uppercase heading) can be applied via className and child element styling within the `action` slot.
 
 ## Plan Gates
 - Foundation Gate: Pass
@@ -86,274 +73,108 @@ Four focused UI improvements to the xa-b luxury fashion storefront that resolve 
 
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
-|---|---|---:|---:|---|---|---|---|
-| TASK-01 | IMPLEMENT | Cart page thumbnails + sharp-edge styling | 85% | S | Complete (2026-03-04) | - | - |
-| TASK-02 | IMPLEMENT | Department landing visual category cards | 85% | S | Complete (2026-03-04) | - | - |
-| TASK-03 | IMPLEMENT | Product card New In badge + utility | 80% | S | Complete (2026-03-04) | - | - |
-| TASK-04 | IMPLEMENT | Styled empty states (wishlist + listing) | 80% | S | Complete (2026-03-04) | - | - |
+|---|---|---|---:|---:|---|---|---|
+| TASK-01 | IMPLEMENT | Unify empty states and align cart styling | 85% | S | Complete (2026-03-04) | - | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
 |---|---|---|---|
-| 1 | TASK-01, TASK-02, TASK-03, TASK-04 | - | All tasks touch different primary files; fully parallelizable |
+| 1 | TASK-01 | - | Single task, no parallelism needed |
 
 ## Tasks
 
-### TASK-01: Cart page thumbnails + sharp-edge styling
+### TASK-01: Unify empty states and align cart styling
 - **Type:** IMPLEMENT
-- **Deliverable:** code-change in `apps/xa-b/src/app/cart/page.tsx`
+- **Deliverable:** Code changes across 4 files in `apps/xa-b/`
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
 - **Status:** Complete (2026-03-04)
-- **Build evidence:** Typecheck pass, lint pass (0 errors, 0 warnings). Cart line items now show 64×64 XaFadeImage thumbnail with fallback to product initial letter. Table wrapper and empty state both use `rounded-sm border-border-1`. Empty state centered with uppercase label and styled CTA.
-- **Affects:** `apps/xa-b/src/app/cart/page.tsx`, `[readonly] apps/xa-b/src/components/XaFadeImage.tsx`, `[readonly] apps/xa-b/src/lib/demoData.ts`
+- **Affects:** `apps/xa-b/src/components/XaProductListing.client.tsx`, `apps/xa-b/src/app/cart/page.tsx`, `apps/xa-b/src/app/wishlist/page.tsx`, `apps/xa-b/src/app/designers/page.tsx`, `[readonly] packages/design-system/src/atoms/EmptyState.tsx`, `[readonly] apps/xa-b/src/app/xa-cyber-atelier.css`
 - **Depends on:** -
 - **Blocks:** -
 - **Confidence:** 85%
-  - Implementation: 90% - Cart state carries full `XaProduct` with `media` array; `sku.media[0]` gives direct access to image URL. `XaFadeImage` component available. Straightforward table cell addition.
-  - Approach: 85% - Follows PDP image patterns from `XaBuyBox.client.tsx`; fix `rounded-lg` → `rounded-sm` on both table wrapper and empty state div.
-  - Impact: 85% - Cart is a key conversion page; product thumbnails improve purchase confidence and visual consistency.
+  - Implementation: 90% - All 4 target files identified with specific line numbers. EmptyState component verified (accepts className, icon, title, description, action). Styling patterns documented in fact-find.
+  - Approach: 95% - Straightforward: import EmptyState, replace inline markup, apply xa-b classes. No architectural decisions.
+  - Impact: 85% - High confidence the change achieves visual consistency. Empty states are infrequent user paths but will be visually cohesive when encountered.
 - **Acceptance:**
-  - Cart line items show a product thumbnail (64×64px) to the left of the product title/price
-  - When `sku.media[0]` is absent, a muted placeholder (product initial or text fallback) renders instead — no broken image
-  - Table wrapper uses `rounded-sm` instead of `rounded-lg`
-  - Empty state div uses `rounded-sm` instead of `rounded-lg`; includes a centered layout with muted icon/text and CTA link styled with xa-b uppercase tracking
+  - [ ] All 4 empty state locations use a consistent visual pattern: centered layout, `rounded-sm` border, `border-border-1`, uppercase heading text with wide letter-spacing, muted description, and a CTA (button or link).
+  - [ ] Cart meta text (size/price on cart line items) uses `xa-pdp-meta text-muted-foreground` instead of raw `text-xs text-muted-foreground`.
+  - [ ] No new TypeScript errors introduced (`pnpm typecheck` passes for xa-b).
+  - [ ] No new lint errors.
   - **Expected user-observable behavior:**
-    - [ ] User sees a small product image next to each item in their cart
-    - [ ] Products without images show a clean placeholder, not a broken image icon
-    - [ ] Cart corners are sharp/minimal, matching the rest of the site
-    - [ ] Empty cart message has a styled appearance with a clear "Browse products" CTA
+    - [ ] Empty cart page shows a bordered card with "Your cart is empty" heading and "Continue shopping" CTA.
+    - [ ] Empty wishlist page shows a bordered card with "Your wishlist is empty" heading and "Discover new arrivals" CTA.
+    - [ ] Product listing with no filter matches shows a bordered card with "No matches" heading and "Clear filters" button.
+    - [ ] Designers page with no search results shows a bordered card with "No designers found" heading and descriptive text.
+    - [ ] Cart line item size and price text renders at consistent size with PDP meta text.
 - **Validation contract (TC-01):**
-  - TC-01: Cart with products → each line shows thumbnail image from `sku.media[0]`
-  - TC-02: Cart product with no media → fallback placeholder renders (no broken image)
-  - TC-03: Table wrapper and empty state div → use `rounded-sm` (not `rounded-lg`)
-  - TC-04: Empty cart → styled empty state with CTA link to `/collections/all`
-  - Post-build QA: run `lp-design-qa`, `tools-ui-contrast-sweep`, `tools-ui-breakpoint-sweep` on `/cart` route
+  - TC-01: Empty cart state → renders bordered card with heading, description, and CTA link to `/collections/all`
+  - TC-02: Empty wishlist state → renders bordered card with heading, description, and CTA link to `/new-in`
+  - TC-03: Product listing with zero filter matches → renders bordered card with heading, description, and "Clear filters" button
+  - TC-04: Designers search with no results → renders bordered card with heading and description
+  - TC-05: Cart line items → size/price meta text uses `xa-pdp-meta` class
+  - TC-06: `pnpm typecheck` passes for xa-b app
 - **Execution plan:**
-  1. Import `XaFadeImage` component
-  2. Add a thumbnail cell to the table — 64×64px `XaFadeImage` with `rounded-sm`, `object-cover`, `aspect-square`
-  3. Add fallback: when `line.sku.media[0]` is absent, render a muted `div` with product title initial
-  4. Replace `rounded-lg` with `rounded-sm` on the table wrapper div (line 48) and empty state div (line 40)
-  5. Style the empty state: center content, add `.xa-pdp-label`-style uppercase text, underline CTA link
-- **Planning validation (required for M/L):** None: S effort
-- **Scouts:** None: straightforward table cell addition; `sku.media` availability confirmed in fact-find
+  1. Import `EmptyState` from `@acme/design-system/atoms` in each of the 4 files.
+  2. Replace inline empty state markup in `XaProductListing.client.tsx` (lines 148-160) with `EmptyState` using: `className="rounded-sm border border-border-1"`, `title` with xa-b uppercase styling, `description` from existing i18n key, `action` slot with the existing "Clear filters" button.
+  3. Replace inline empty state markup in `cart/page.tsx` (lines 74-85) with `EmptyState` using: same className pattern, title from existing i18n key, `action` slot with "Continue shopping" link.
+  4. Replace inline empty state markup in `wishlist/page.tsx` (lines 118-130) with `EmptyState` using: same className pattern, title from existing i18n key, `action` slot with "Discover new arrivals" link.
+  5. Replace inline empty state markup in `designers/page.tsx` (lines 88-93) with `EmptyState` using: same className pattern, `rounded-sm` (not `rounded-lg`), title and description from existing i18n keys.
+  6. In `cart/page.tsx`, change cart line item meta text classes from `text-xs text-muted-foreground` to `xa-pdp-meta text-muted-foreground` (lines 126-136).
+  7. Run `pnpm typecheck` to verify no type errors.
+- **Scouts:** None: S-effort with well-understood patterns.
 - **Edge Cases & Hardening:**
-  - Product with empty `media` array → show text fallback (product title initial in muted box)
-  - Very long product titles → truncate with `line-clamp-1` on the title in the existing cell
-  - Image load failure → `XaFadeImage` already handles this with its `onError` fallback display
+  - EmptyState title element is `<h3>` — verify this doesn't conflict with page-level heading hierarchy. For product listing (inside a section with no h2/h3), this is acceptable. For cart/wishlist/designers (where h1 exists), h3 is appropriate.
+  - The `action` prop accepts `React.ReactNode` — existing Button and Link elements pass through without issues.
+  - i18n: Existing keys reused. No new keys needed since messaging stays the same.
 - **What would make this >=90%:**
-  - Component test verifying thumbnail renders with and without media
+  - Verified via running dev server and visually confirming all 4 empty states render identically.
 - **Rollout / rollback:**
-  - Rollout: Atomic Cloudflare Pages deploy
-  - Rollback: Redeploy previous commit
-- **Documentation impact:** None
+  - Rollout: Static export rebuild, deploy to Cloudflare Pages.
+  - Rollback: Revert commit — purely visual change, no data impact.
+- **Documentation impact:** None.
+- **Build Evidence (2026-03-04):**
+  - All 4 empty states now use `EmptyState` from `@acme/design-system/atoms` with consistent `className="rounded-sm border border-border-1 [&_h3]:text-xs [&_h3]:uppercase [&_h3]:tracking-wide [&_h3]:text-muted-foreground"`.
+  - Cart meta text changed from `text-xs text-muted-foreground` to `xa-pdp-meta text-muted-foreground` for size and price fields.
+  - TC-06: `pnpm --filter xa-b typecheck` — PASS (0 errors).
+  - Lint: PASS (0 new warnings; 36 pre-existing warnings unchanged).
+  - Adaptation note: EmptyState `title` prop is `string` (not ReactNode), so xa-b uppercase heading style applied via `[&_h3]:` Tailwind arbitrary variant selectors on the parent className. This overrides the component's default `text-lg font-semibold` with xa-b's `text-xs uppercase tracking-wide`. Specificity: descendant selector beats direct class.
 - **Notes / references:**
-  - Cart state shape: `Record<string, { sku: XaProduct; qty: number; size?: string }>`
-  - XaFadeImage handles load errors with a muted text fallback automatically
-
-### TASK-02: Department landing visual category cards
-- **Type:** IMPLEMENT
-- **Deliverable:** code-change in `apps/xa-b/src/components/XaDepartmentLanding.tsx`
-- **Execution-Skill:** lp-do-build
-- **Execution-Track:** code
-- **Startup-Deliverable-Alias:** none
-- **Effort:** S
-- **Status:** Complete (2026-03-04)
-- **Build evidence:** Typecheck pass, lint pass. Category cards now show representative product image (first product with valid media per category), `rounded-sm border-border-1`, xa-panel hover, uppercase label, muted subcategories. Fallback placeholder for categories without product images. Image selection uses `find()` to prefer first product WITH a valid image.
-- **Affects:** `apps/xa-b/src/components/XaDepartmentLanding.tsx`, `[readonly] apps/xa-b/src/components/XaFadeImage.tsx`, `[readonly] apps/xa-b/src/lib/demoData.ts`, `[readonly] apps/xa-b/src/lib/xaCatalog.ts`
-- **Depends on:** -
-- **Blocks:** -
-- **Confidence:** 85%
-  - Implementation: 85% - Products are already filtered by department; need to further filter by category to get a representative image. `XaDepartmentLanding` is a server component but can import `XaFadeImage` (client component). Image data is available at build time.
-  - Approach: 85% - Card layout follows existing patterns (product card structure with image + text). Replace `rounded-lg` with `rounded-sm`.
-  - Impact: 85% - Department landing is the browse entry point; visual cards dramatically improve engagement vs text-only links.
-- **Acceptance:**
-  - Each category card shows a representative product image (first valid image from the first product with media in that category for this department)
-  - Card layout: image on top (aspect 4:3 or 3:2), category label + subcategories text below
-  - Cards use `rounded-sm` instead of `rounded-lg`
-  - Cards have hover effect consistent with `.xa-panel` pattern
-  - When no products exist for a category, a muted placeholder renders instead of a broken image
-  - **Expected user-observable behavior:**
-    - [ ] User sees visually engaging category cards with product images on department pages
-    - [ ] Hovering a card shows a subtle lift/shadow effect
-    - [ ] Categories without products show a clean placeholder, not a broken layout
-    - [ ] Card corners are sharp/minimal, matching the site aesthetic
-- **Validation contract (TC-02):**
-  - TC-01: Department page with products in all categories → each card shows representative product image
-  - TC-02: Category with no products for this department → card shows muted text placeholder
-  - TC-03: Cards use `rounded-sm` and hover shadow
-  - TC-04: Image with load error → `XaFadeImage` fallback renders cleanly
-  - Post-build QA: run `lp-design-qa`, `tools-ui-contrast-sweep`, `tools-ui-breakpoint-sweep` on `/women`, `/men`, `/kids` routes
-- **Execution plan:**
-  1. Import `XaFadeImage` from `./XaFadeImage`
-  2. Extend `categoryCards` mapping to include `imageUrl` and `imageAlt` — filter `products` by `taxonomy.category`, find the first product that has a valid image URL (not just the first product), take that product's first image
-  3. Replace the text-only `<Link>` card with a visual card: `<Link className="group rounded-sm border border-border-1 overflow-hidden xa-panel">` containing an image div (aspect-[4/3]) + text div (p-4)
-  4. Add fallback div when `imageUrl` is absent: `bg-surface text-muted-foreground` centered text
-  5. Replace `rounded-lg` with `rounded-sm` on category cards
-- **Planning validation (required for M/L):** None: S effort
-- **Scouts:** None: product data shape confirmed; server component can import client components
-- **Edge Cases & Hardening:**
-  - Department with no products in a category → muted placeholder with category label text
-  - Image aspect ratio mismatch → `object-cover` on the image ensures consistent card layout
-- **What would make this >=90%:**
-  - Component test verifying card renders with image when products exist
-- **Rollout / rollback:**
-  - Rollout: Atomic Cloudflare Pages deploy
-  - Rollback: Redeploy previous commit
-- **Documentation impact:** None
-- **Notes / references:**
-  - `XaDepartmentLanding` is a server component — no `"use client"` directive
-  - `XaFadeImage` is a client component — safe to import in server components (Next.js handles the boundary)
-  - Products available at build time via `XA_PRODUCTS` and `filterByDepartment()`
-
-### TASK-03: Product card New In badge + utility
-- **Type:** IMPLEMENT
-- **Deliverable:** code-change in `apps/xa-b/src/components/XaProductCard.tsx` + `apps/xa-b/src/lib/xaListingUtils.ts`
-- **Execution-Skill:** lp-do-build
-- **Execution-Track:** code
-- **Startup-Deliverable-Alias:** none
-- **Effort:** S
-- **Status:** Complete (2026-03-04)
-- **Build evidence:** Typecheck pass, lint pass. `isNewIn(product, referenceDate?)` exported from `xaListingUtils.ts` with 30-day wall-clock threshold. 6 unit test cases added (within/outside/exact-boundary/missing/invalid/future). ProductBadge with `color="default" tone="soft"` shows on non-sold-out products within 30 days. Mutually exclusive with "Sold out" badge via ternary chain.
-- **Affects:** `apps/xa-b/src/components/XaProductCard.tsx`, `apps/xa-b/src/lib/xaListingUtils.ts`, `apps/xa-b/src/lib/__tests__/xaListingUtils.test.ts`, `[readonly] apps/xa-b/src/lib/useXaListingFilters.ts`
-- **Depends on:** -
-- **Blocks:** -
-- **Confidence:** 80%
-  - Implementation: 90% - Date comparison is trivial; `ProductBadge` already imported and used for "Sold out" in the same component. Additive-only change.
-  - Approach: 90% - 30-day threshold matches existing filter logic (`resolveNewInDays`). Badge positioning follows "Sold out" pattern. `isNewIn` extracted as a pure testable function.
-  - Impact: 80% - Held-back test: no single unresolved unknown would drop below 80; the badge is purely additive and reinforces the existing New In section. It is visual polish, not a conversion driver.
-- **Acceptance:**
-  - `isNewIn(product, referenceDate?)` function exported from `xaListingUtils.ts` — returns `true` when `createdAt` is within 30 days of reference date
-  - Unit test for `isNewIn`: products within 30 days return `true`; older products return `false`; products with missing `createdAt` return `false`
-  - `XaProductCard` shows "New In" `ProductBadge` when `isNewIn(product)` is `true` and product is NOT sold out
-  - Badge positioned at `start-2 top-2` (same position as "Sold out" badge — they are mutually exclusive)
-  - Badge uses `color="default"` `tone="soft"` `size="sm"` for subtle achromatic appearance
-  - **Expected user-observable behavior:**
-    - [ ] User sees a "New In" badge on recently added products across all product grids
-    - [ ] Badge does not appear on sold-out products (only "Sold out" badge shows)
-    - [ ] Badge is visually subtle and consistent with the achromatic palette
-- **Validation contract (TC-03):**
-  - TC-01: Product with `createdAt` within 30 days and in stock → "New In" badge visible
-  - TC-02: Product with `createdAt` older than 30 days → no badge
-  - TC-03: Product with `createdAt` within 30 days but sold out → only "Sold Out" badge, no "New In"
-  - TC-04: Product with missing/empty `createdAt` → no badge (graceful fallback)
-  - TC-05: `isNewIn` unit test — 3+ test cases covering within/outside/missing threshold
-  - Post-build QA: run `lp-design-qa`, `tools-ui-contrast-sweep`, `tools-ui-breakpoint-sweep` on `/collections/all` route
-- **Execution plan:**
-  1. Add `isNewIn(product: XaProduct, referenceDate?: Date): boolean` to `xaListingUtils.ts` — compare `product.createdAt` against 30-day window relative to `referenceDate` (defaults to `new Date()` = wall-clock time)
-  2. Design note: the "New In" filter in `useXaListingFilters` uses a catalog-relative reference timestamp (`max(createdAt)` across all products) as an optimization for static data. The badge intentionally uses wall-clock time (`Date.now()`) because it should reflect current reality — if a product was added 35 days ago, it is no longer "New In" regardless of catalog staleness. This means badge and filter may disagree near the 30-day boundary for stale catalogs; this is correct behavior.
-  3. Add unit tests in `xaListingUtils.test.ts` for `isNewIn` (within 30 days, outside 30 days, missing createdAt, with explicit referenceDate override)
-  4. Import `isNewIn` in `XaProductCard.tsx`
-  5. Add `ProductBadge` with `label="New In"` inside the existing badge position area, guarded by `!soldOut && isNewIn(product)`
-- **Planning validation (required for M/L):** None: S effort
-- **Scouts:** None: `ProductBadge` API confirmed (label, color, tone, size); 30-day threshold confirmed from filter logic
-- **Edge Cases & Hardening:**
-  - Product with `createdAt` exactly 30 days ago → treat as "New In" (inclusive threshold: `<= 30`)
-  - Product with invalid `createdAt` string → `new Date(invalid)` produces `NaN` → `isNewIn` returns `false`
-  - Timezone edge cases → use UTC comparison for consistency
-- **What would make this >=90%:**
-  - Component test verifying badge renders/hides based on `createdAt`
-- **Rollout / rollback:**
-  - Rollout: Atomic Cloudflare Pages deploy
-  - Rollback: Redeploy previous commit
-- **Documentation impact:** None
-- **Notes / references:**
-  - `resolveNewInDays()` in `useXaListingFilters.ts:74-76` uses 30 days — badge uses the same 30-day window but evaluates against wall-clock time (not the filter's catalog-relative max `createdAt` reference)
-  - `ProductBadge` is already imported in `XaProductCard.tsx` for "Sold out" — no new import needed
-  - Consumer tracing: `isNewIn` is new; only consumer is `XaProductCard.tsx`
-
-### TASK-04: Styled empty states (wishlist + listing)
-- **Type:** IMPLEMENT
-- **Deliverable:** code-change in `apps/xa-b/src/app/wishlist/page.tsx` + `apps/xa-b/src/components/XaProductListing.client.tsx`
-- **Execution-Skill:** lp-do-build
-- **Execution-Track:** code
-- **Startup-Deliverable-Alias:** none
-- **Effort:** S
-- **Status:** Complete (2026-03-04)
-- **Build evidence:** Typecheck pass, lint pass. Wishlist empty state: `rounded-sm border-border-1`, centered layout, uppercase label, styled CTA to `/new-in`. Listing filter empty state: uppercase "No matches" heading added, tightened gap, consistent achromatic treatment. Both use `text-muted-foreground` for secondary text.
-- **Affects:** `apps/xa-b/src/app/wishlist/page.tsx`, `apps/xa-b/src/components/XaProductListing.client.tsx`
-- **Depends on:** -
-- **Blocks:** -
-- **Confidence:** 80%
-  - Implementation: 85% - Simple conditional render changes; fix `rounded-lg` → `rounded-sm` on wishlist; enhance filter no-results with consistent styling.
-  - Approach: 85% - Follows achromatic patterns established throughout the app (muted text, uppercase tracking, subtle borders).
-  - Impact: 80% - Held-back test: no single unresolved unknown would drop below 80; empty states affect few users, but those who see them get a polished experience consistent with brand standards.
-- **Acceptance:**
-  - Wishlist empty state: `rounded-sm` border, centered layout, uppercase label text with wide tracking, CTA link to `/new-in` styled as underlined text with muted color
-  - Listing filter empty state: consistent styling with wishlist empty state — uppercase heading, muted description text, "Clear all filters" button retains existing `rounded-none` sharp styling
-  - Both empty states use `text-muted-foreground` for secondary text
-  - **Expected user-observable behavior:**
-    - [ ] User sees a styled empty wishlist message with a clear "Browse new arrivals" CTA
-    - [ ] User sees a styled filter-no-results message with "Clear all filters" button
-    - [ ] Empty state corners are sharp/minimal, matching the rest of the site
-- **Validation contract (TC-04):**
-  - TC-01: Empty wishlist → styled empty state with `rounded-sm`, uppercase label, CTA to `/new-in`
-  - TC-02: Filter producing zero results → styled empty state with muted text and clear CTA
-  - TC-03: Wishlist with products → empty state not rendered (normal product grid)
-  - TC-04: Filter with results → empty state not rendered (normal product grid)
-  - Post-build QA: run `lp-design-qa`, `tools-ui-contrast-sweep`, `tools-ui-breakpoint-sweep` on `/wishlist` and listing routes
-- **Execution plan:**
-  1. Wishlist page (`wishlist/page.tsx` line 49): Replace `rounded-lg` with `rounded-sm`; restructure content to centered layout with uppercase heading (`.xa-pdp-label`-style), muted body text, and styled CTA link
-  2. Listing filter empty state (`XaProductListing.client.tsx` lines 149-158): Add uppercase heading above the existing muted text; ensure consistent spacing and visual hierarchy
-  3. Verify both empty states use `text-muted-foreground` and achromatic border tokens
-- **Planning validation (required for M/L):** None: S effort
-- **Scouts:** None: straightforward styling changes to existing conditional renders
-- **Edge Cases & Hardening:**
-  - Screen readers: empty state messages remain accessible (text content + link/button targets)
-  - Mobile layout: centered layout works across breakpoints (no grid dependencies)
-- **What would make this >=90%:**
-  - Component tests verifying empty state renders when list is empty
-- **Rollout / rollback:**
-  - Rollout: Atomic Cloudflare Pages deploy
-  - Rollback: Redeploy previous commit
-- **Documentation impact:** None
-- **Notes / references:**
-  - Cart empty state is handled by TASK-01 (same file, same concern)
-  - Listing filter empty state already has `rounded-none` on the button and centered layout — needs enhancement, not replacement
+  - EmptyState component: `packages/design-system/src/atoms/EmptyState.tsx` — uses `cn()` for className merging (line 30-31)
+  - xa-b heading pattern for labels: `text-xs font-semibold uppercase tracking-wide` (matches existing cart/wishlist headings)
+  - Product listing currently has `py-16` while cart/wishlist have `py-12` — unify to `py-12` via EmptyState default
 
 ## Risks & Mitigations
-| Risk | Likelihood | Impact | Mitigation |
-|---|---|---|---|
-| Product card badge breaks existing grid layout | Low | Medium | Badge positioned absolutely within existing card structure; `!soldOut` guard prevents overlap with "Sold out" badge |
-| Cart thumbnail images missing for some products | Low | Low | Fallback to muted placeholder when `media[0]` is absent |
-| Department landing category images are poor quality | Low | Low | Using product thumbnails from existing data; quality is consistent with product grid |
-| Uncommitted changes on dev branch conflict | Medium | Low | Changes target different primary files; badge addition is additive to XaProductCard |
-| `XaFadeImage` in server component causes hydration issues | Low | Medium | `XaFadeImage` is a client component — Next.js handles the serialization boundary automatically; this pattern is standard in App Router |
+| # | Risk | Likelihood | Impact | Mitigation |
+|---|------|-----------|--------|------------|
+| 1 | EmptyState `<h3>` title conflicts with heading hierarchy | Low | Low | Verified: h3 is appropriate under h1 on all 4 pages |
+| 2 | `xa-pdp-meta` font-size (0.82rem) vs `text-xs` (0.75rem) causes layout shift in cart table | Low | Low | 0.07rem difference is sub-pixel; table cells are flexible |
 
 ## Observability
-- Logging: None — static site, no runtime logging
-- Metrics: None — visual changes, no measurable runtime metrics
-- Alerts/Dashboards: None — visual QA on staging URL
+None: visual polish, no runtime metrics or logging needed.
 
 ## Acceptance Criteria (overall)
-- [ ] All 4 gaps visually resolved on staging
-- [ ] `isNewIn` predicate unit-tested (TASK-03)
-- [ ] No `rounded-lg` remaining in cart page or wishlist empty state
-- [ ] Typecheck and lint pass
-- [ ] No visual regressions in existing product grid layout (verified via QA sweeps)
+- [ ] All 4 empty states visually consistent (same border, radius, typography pattern)
+- [ ] Cart meta text uses `xa-pdp-meta` class
+- [ ] TypeScript and lint pass
+- [ ] No regression in existing functionality
 
 ## Decision Log
-- 2026-03-04: All questions resolved from evidence — no DECISION tasks needed
-- 2026-03-04: Cart empty state included in TASK-01 (same file, same concern) rather than TASK-04 — avoids file conflict and enables full parallelism
-- 2026-03-04: (Critique R1 fix) `isNewIn` badge uses wall-clock time (`Date.now()`) intentionally, not catalog-relative timestamp — badge should reflect current reality
-- 2026-03-04: (Critique R1 fix) Category card image selection prefers first product WITH a valid image, not just first product
-- 2026-03-04: (Critique R1 fix) Removed contradictory non-goal about cart empty state (TASK-01 explicitly styles it)
+- 2026-03-04: Merged TASK-02 (cart meta text) into TASK-01 to avoid file conflict on `cart/page.tsx`. Both changes are S-effort and touch the same file.
+- 2026-03-04: Chose EmptyState component direct usage over xa-b wrapper (simpler, no new component file).
 
 ## Overall-confidence Calculation
-- S=1, M=2, L=3
-- TASK-01: 85% × 1 = 85
-- TASK-02: 85% × 1 = 85
-- TASK-03: 80% × 1 = 80
-- TASK-04: 80% × 1 = 80
-- Overall-confidence = (85 + 85 + 80 + 80) / 4 = 82%
+- TASK-01: S=1, confidence=85%
+- Overall = (85 * 1) / 1 = 85%
 
 ## Simulation Trace
 
 | Step | Preconditions Met | Issues Found | Resolution Required |
 |---|---|---|---|
-| TASK-01: Cart thumbnails + sharp-edge styling | Yes — `XaFadeImage` exists, cart state carries `sku.media`, `rounded-sm` is a valid token | None | No |
-| TASK-02: Department landing visual cards | Yes — `products` available via `filterByDepartment()`, `XaFadeImage` importable in server component, `XA_ALLOWED_CATEGORIES` provides category list | None | No |
-| TASK-03: Product card New In badge | Yes — `ProductBadge` already imported in `XaProductCard.tsx`, `xaListingUtils.ts` exists for utility, test file exists for unit tests | None | No |
-| TASK-04: Styled empty states | Yes — wishlist and listing files identified, conditional render branches exist, achromatic tokens available | None | No |
+| TASK-01: Unify empty states and align cart styling | Yes — all 4 target files exist, EmptyState component available and exported, className prop verified, i18n keys exist | None | No |
+
+## Section Omission Rule
+
+Sections not relevant to this plan have been omitted or marked `None`.

@@ -1,0 +1,72 @@
+[
+  {
+    "id": "C-01",
+    "severity": "S2",
+    "breakpoint": "all",
+    "mode": "light+dark",
+    "route": "/products/*",
+    "state": "default",
+    "element": "Quantity selector wrapper (border-border-2)",
+    "file": "apps/xa-b/src/components/XaBuyBox.client.tsx:121",
+    "contrastRatioWorst": 1.32,
+    "threshold": 3.0,
+    "wcagType": "non-text-ui-component",
+    "fixHypothesis": "Introduce border-control semantic token at ~55% gray for interactive boundaries"
+  },
+  {
+    "id": "C-02",
+    "severity": "S2",
+    "breakpoint": "all",
+    "mode": "light+dark",
+    "route": "/products/*",
+    "state": "default",
+    "element": "Inactive color/material swatch border (border-border-2)",
+    "file": "apps/xa-b/src/components/XaBuyBox.client.tsx:204,236",
+    "contrastRatioWorst": 1.32,
+    "threshold": 3.0,
+    "wcagType": "non-text-ui-component",
+    "fixHypothesis": "Apply border-control token to inactive swatch borders"
+  },
+  {
+    "id": "C-03",
+    "severity": "S2",
+    "breakpoint": "all",
+    "mode": "light+dark",
+    "route": "/products/*",
+    "state": "disabled",
+    "element": "Gallery prev/next IconButton (disabled:opacity-30)",
+    "file": "apps/xa-b/src/components/XaImageGallery.client.tsx:117",
+    "contrastRatioWorst": 1.98,
+    "threshold": 3.0,
+    "wcagType": "non-text-icon",
+    "fixHypothesis": "Increase disabled opacity to 0.50 or hide disabled navigation entirely"
+  },
+  {
+    "id": "C-04",
+    "severity": "S2",
+    "breakpoint": "all",
+    "mode": "light+dark",
+    "route": "/products/*",
+    "state": "default",
+    "element": "Image gallery container border (border-border-1)",
+    "file": "apps/xa-b/src/components/XaImageGallery.client.tsx:129",
+    "contrastRatioWorst": 1.19,
+    "threshold": 3.0,
+    "wcagType": "non-text-ui-component",
+    "fixHypothesis": "Swap to border-control token or rely on image content for boundary"
+  },
+  {
+    "id": "C-05",
+    "severity": "S3",
+    "breakpoint": "all",
+    "mode": "light",
+    "route": "other routes (not directly on PDP)",
+    "state": "default",
+    "element": "text-muted-foreground on bg-surface-3",
+    "file": "apps/xa-b/src/app/xa-cyber-atelier.css (fg-muted token)",
+    "contrastRatioWorst": 4.24,
+    "threshold": 4.5,
+    "wcagType": "normal-text",
+    "fixHypothesis": "Darken fg-muted from 45% to 42% lightness"
+  }
+]

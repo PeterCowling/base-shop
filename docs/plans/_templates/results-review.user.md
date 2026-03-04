@@ -13,6 +13,7 @@ artifact: results-review
 
 ## Standing Updates
 - <Layer A standing artifact path>: <required update summary>
+- If a standing KPI feed exists, include latest metric values and window (for example: `view_item_count`, `begin_checkout_count`, `begin_checkout_rate` from `docs/business-os/startup-baselines/HBAG/pdp-funnel-feed.user.md`)
 - OR `No standing updates: <reason>`
 
 ## New Idea Candidates

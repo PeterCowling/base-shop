@@ -11,7 +11,8 @@ import { roomsData, toFlatImageArray } from "../data/roomsData";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import type { AppLanguage } from "../i18n.config";
 import RoomCard from "../molecules/RoomCard";
-import RoomFilters, { type RoomFiltersState } from "../molecules/RoomFilters";
+import type { FilterAvailability, RoomFiltersState,RoomFilterView } from "../molecules/RoomFilters";
+import RoomFilters from "../molecules/RoomFilters";
 import { SLUGS } from "../slug-map";
 import type { RoomCardPrice } from "../types/roomCard";
 import { getDatePlusTwoDays, getTodayIso } from "../utils/dateUtils";
@@ -175,21 +176,83 @@ function RoomsSection({
     [excludeRoomIds, includeRoomIds],
   );
 
-  const filteredRooms = useMemo(
+  const visibleRooms = useMemo(
     () =>
       roomsData
         .filter((room) => !includeRoomIds || includeRoomIds.includes(room.id))
-        .filter((r) => !excludeRoomIds?.includes(r.id))
-        .filter((room) => {
-          const profile = buildRoomFilterProfile(room);
-          if (filters.view !== "all" && profile.view !== filters.view) return false;
-          if (filters.femaleOnly && !profile.femaleOnly) return false;
-          if (filters.ensuiteBathroom && !profile.hasEnsuiteBathroom) return false;
-          if (filters.bedCounts.length > 0 && !filters.bedCounts.includes(profile.bedCount)) return false;
-          return true;
-        }),
-    [filters, excludeRoomIds, includeRoomIds]
+        .filter((r) => !excludeRoomIds?.includes(r.id)),
+    [excludeRoomIds, includeRoomIds],
   );
+
+  const visibleProfiles = useMemo(
+    () => visibleRooms.map((room) => ({ room, profile: buildRoomFilterProfile(room) })),
+    [visibleRooms],
+  );
+
+  function matchesFilters(
+    profile: RoomFilterProfile,
+    f: { view: RoomFilterView | "all"; femaleOnly: boolean; ensuiteBathroom: boolean; bedCounts: number[] },
+  ): boolean {
+    if (f.view !== "all" && profile.view !== f.view) return false;
+    if (f.femaleOnly && !profile.femaleOnly) return false;
+    if (f.ensuiteBathroom && !profile.hasEnsuiteBathroom) return false;
+    if (f.bedCounts.length > 0 && !f.bedCounts.includes(profile.bedCount)) return false;
+    return true;
+  }
+
+  const filteredRooms = useMemo(
+    () => visibleProfiles.filter(({ profile }) => matchesFilters(profile, filters)).map(({ room }) => room),
+    [filters, visibleProfiles],
+  );
+
+  const filterAvailability = useMemo((): FilterAvailability => {
+    const viewOptions: RoomFilterView[] = ["all", "sea", "courtyard", "garden", "none"];
+    const views = {} as Record<RoomFilterView, boolean>;
+    for (const v of viewOptions) {
+      views[v] =
+        v === "all" ||
+        visibleProfiles.some(({ profile }) =>
+          matchesFilters(profile, { ...filters, view: v }),
+        );
+    }
+    const femaleOnly = visibleProfiles.some(({ profile }) =>
+      matchesFilters(profile, { ...filters, femaleOnly: true }),
+    );
+    const ensuiteBathroom = visibleProfiles.some(({ profile }) =>
+      matchesFilters(profile, { ...filters, ensuiteBathroom: true }),
+    );
+    const bedCountsAvail = {} as Record<number, boolean>;
+    for (const count of availableBedCounts) {
+      bedCountsAvail[count] = visibleProfiles.some(({ profile }) =>
+        matchesFilters(profile, { ...filters, bedCounts: [count] }),
+      );
+    }
+    return { views, femaleOnly, ensuiteBathroom, bedCounts: bedCountsAvail };
+  }, [filters, visibleProfiles, availableBedCounts]);
+
+  // Auto-deselect filters that have become unavailable
+  useEffect(() => {
+    let changed = false;
+    const next = { ...filters };
+    if (filters.femaleOnly && !filterAvailability.femaleOnly) {
+      next.femaleOnly = false;
+      changed = true;
+    }
+    if (filters.ensuiteBathroom && !filterAvailability.ensuiteBathroom) {
+      next.ensuiteBathroom = false;
+      changed = true;
+    }
+    if (filters.view !== "all" && !filterAvailability.views[filters.view]) {
+      next.view = "all";
+      changed = true;
+    }
+    const validBedCounts = filters.bedCounts.filter((c) => filterAvailability.bedCounts[c] !== false);
+    if (validBedCounts.length !== filters.bedCounts.length) {
+      next.bedCounts = validBedCounts;
+      changed = true;
+    }
+    if (changed) setFilters(next);
+  }, [filterAvailability, filters]);
 
   const sectionClasses = useMemo(
     () =>
@@ -220,6 +283,7 @@ function RoomsSection({
             selected={filters}
             onChange={setFilters}
             availableBedCounts={availableBedCounts}
+            availability={filterAvailability}
             lang={lang}
           />
         ) : null}

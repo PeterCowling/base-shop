@@ -1,58 +1,213 @@
-// src/components/Statistics.tsx
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Button } from "@acme/design-system/atoms";
 
+import { getFirebaseAuth } from "../../services/firebaseAuth";
+import { useFirebaseApp } from "../../services/useFirebase";
 import { PageShell } from "../common/PageShell";
 
-/**
- * Statistics component provides a button to test connection
- * to the Google Apps Script endpoint with a fixed booking reference.
- *
- * @returns {JSX.Element} The Statistics component.
- */
-const Statistics: React.FC = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
+type RevenueMode = "room-only" | "room-plus-bar";
 
-  const handleTestConnection = useCallback(async () => {
+type MonthlyRow = {
+  month: string;
+  currentValue: number;
+  previousValue: number;
+  delta: number;
+  deltaPct: number | null;
+};
+
+type YoYResponse = {
+  success: boolean;
+  year: number;
+  previousYear: number;
+  mode: RevenueMode;
+  monthly: MonthlyRow[];
+  summary: {
+    currentYtd: number;
+    previousYtd: number;
+    ytdDelta: number;
+    ytdDeltaPct: number | null;
+  };
+  source: {
+    current: string;
+    previous: string;
+  };
+  error?: string;
+};
+
+function formatEuro(value: number): string {
+  return new Intl.NumberFormat("it-IT", {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 2,
+  }).format(value);
+}
+
+function formatPct(value: number | null): string {
+  if (value === null) {
+    return "n/a";
+  }
+  return `${value > 0 ? "+" : ""}${value.toFixed(2)}%`;
+}
+
+function modeLabel(mode: RevenueMode): string {
+  return mode === "room-only" ? "Room only" : "Room + Bar";
+}
+
+const Statistics: React.FC = () => {
+  const app = useFirebaseApp();
+  const currentYear = new Date().getUTCFullYear();
+
+  const [year, setYear] = useState(currentYear);
+  const [mode, setMode] = useState<RevenueMode>("room-plus-bar");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [data, setData] = useState<YoYResponse | null>(null);
+
+  const fetchYoY = useCallback(async () => {
     setLoading(true);
-    try {
-      // The deployed Google Apps Script URL with a valid booking reference.
-      const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbwzKYZ0FxoAgSlt98OruRKSaW8OAe4Ug3e1VZ2YGEttgWrRZyAWX8VRHG3Abf_OrXGM/exec?bookingRef=7763-566257509"
-      );
-      const text = await response.text();
-      setMessage(text);
-    } catch (error) {
-      if (error instanceof Error && error.message) {
-        setMessage(`Test Connection Failed: ${error.message}`);
-      } else {
-        setMessage("Test Connection Failed. Please try again later.");
-      }
-    } finally {
+    setError(null);
+
+    const auth = getFirebaseAuth(app);
+    const token = await auth.currentUser?.getIdToken(true);
+
+    if (!token) {
+      setError("Session expired — please sign in again.");
       setLoading(false);
+      return;
     }
-  }, []);
+
+    const response = await fetch(
+      `/api/statistics/yoy?year=${year}&mode=${mode}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    const payload = (await response.json()) as YoYResponse;
+
+    if (!response.ok || !payload.success) {
+      setError(payload.error ?? "Failed to load year-on-year statistics");
+      setLoading(false);
+      return;
+    }
+
+    setData(payload);
+    setLoading(false);
+  }, [app, mode, year]);
+
+  useEffect(() => {
+    void fetchYoY();
+  }, [fetchYoY]);
+
+  const months = useMemo(() => {
+    return data?.monthly ?? [];
+  }, [data]);
 
   return (
-    <PageShell title="Connection Test">
-      <div className="bg-surface rounded-lg shadow-lg p-6 text-center">
-        <p className="text-foreground mb-4">
-          {message ||
-            "Press the button to test connection to the Google Apps Script endpoint with bookingRef 4382244000."}
-        </p>
-        <Button
-          type="button"
-          color="primary"
-          tone="solid"
-          onClick={handleTestConnection}
-          disabled={loading}
-        >
-          {loading ? "Testing..." : "Test Connection"}
-        </Button>
+    <PageShell title="Year-on-Year Performance">
+      <div className="space-y-6">
+        <div className="rounded-lg border border-border bg-surface p-4">
+          <div className="mb-3 flex flex-wrap gap-2">
+            <Button
+              type="button"
+              color={mode === "room-plus-bar" ? "primary" : "default"}
+              tone={mode === "room-plus-bar" ? "solid" : "outline"}
+              onClick={() => setMode("room-plus-bar")}
+            >
+              Room + Bar
+            </Button>
+            <Button
+              type="button"
+              color={mode === "room-only" ? "primary" : "default"}
+              tone={mode === "room-only" ? "solid" : "outline"}
+              onClick={() => setMode("room-only")}
+            >
+              Room only
+            </Button>
+            <Button
+              type="button"
+              color="default"
+              tone="outline"
+              onClick={() => setYear((prev) => prev - 1)}
+            >
+              Previous year
+            </Button>
+            <Button
+              type="button"
+              color="default"
+              tone="outline"
+              onClick={() => setYear((prev) => Math.min(currentYear, prev + 1))}
+            >
+              Next year
+            </Button>
+          </div>
+
+          <p className="text-sm text-muted-foreground">
+            Mode: <strong>{modeLabel(mode)}</strong> | Period: <strong>{year}</strong> vs <strong>{year - 1}</strong>
+          </p>
+        </div>
+
+        {loading ? (
+          <div className="rounded-lg border border-border bg-surface p-6 text-sm text-muted-foreground">
+            Loading statistics...
+          </div>
+        ) : error ? (
+          <div className="rounded-lg border border-danger/40 bg-danger/10 p-6 text-sm text-danger">
+            {error}
+          </div>
+        ) : data ? (
+          <>
+            <div className="grid gap-4 md:grid-cols-3">
+              <div className="rounded-lg border border-border bg-surface p-4">
+                <p className="text-xs uppercase tracking-wide text-muted-foreground">{data.year} YTD</p>
+                <p className="mt-1 text-xl font-semibold text-foreground">{formatEuro(data.summary.currentYtd)}</p>
+              </div>
+              <div className="rounded-lg border border-border bg-surface p-4">
+                <p className="text-xs uppercase tracking-wide text-muted-foreground">{data.previousYear} YTD</p>
+                <p className="mt-1 text-xl font-semibold text-foreground">{formatEuro(data.summary.previousYtd)}</p>
+              </div>
+              <div className="rounded-lg border border-border bg-surface p-4">
+                <p className="text-xs uppercase tracking-wide text-muted-foreground">YTD Delta</p>
+                <p className="mt-1 text-xl font-semibold text-foreground">{formatEuro(data.summary.ytdDelta)}</p>
+                <p className="text-sm text-muted-foreground">{formatPct(data.summary.ytdDeltaPct)}</p>
+              </div>
+            </div>
+
+            <div className="overflow-x-auto rounded-lg border border-border bg-surface">
+              <table className="min-w-full text-sm">
+                <thead className="bg-surface-2 text-left">
+                  <tr>
+                    <th className="px-3 py-2">Month</th>
+                    <th className="px-3 py-2">{data.year}</th>
+                    <th className="px-3 py-2">{data.previousYear}</th>
+                    <th className="px-3 py-2">Delta</th>
+                    <th className="px-3 py-2">Delta %</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {months.map((row) => (
+                    <tr key={row.month} className="border-t border-border">
+                      <td className="px-3 py-2">{row.month}</td>
+                      <td className="px-3 py-2">{formatEuro(row.currentValue)}</td>
+                      <td className="px-3 py-2">{formatEuro(row.previousValue)}</td>
+                      <td className="px-3 py-2">{formatEuro(row.delta)}</td>
+                      <td className="px-3 py-2">{formatPct(row.deltaPct)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <p className="text-xs text-muted-foreground">
+              Source: {data.source.current} (current) / {data.source.previous} (comparison).
+            </p>
+          </>
+        ) : null}
       </div>
     </PageShell>
   );

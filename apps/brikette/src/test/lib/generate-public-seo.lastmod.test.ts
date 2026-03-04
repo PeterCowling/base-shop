@@ -1,5 +1,5 @@
 import { BASE_URL } from "@/config/site";
-import { listAppRouterUrls } from "@/routing/routeInventory";
+import { listLocalizedPublicUrls } from "@/routing/routeInventory";
 
 import {
   assertNoBulkTodayLastmod,
@@ -30,7 +30,7 @@ const parseSitemapEntries = (xml: string): ParsedSitemapEntry[] => {
 describe("generate-public-seo lastmod contracts", () => {
   test("TC-12: emits lastmod only for eligible guide-detail URLs and values are ISO UTC", async () => {
     const { lastmodByPath } = await buildGuideLastmodByPath();
-    const sitemapXml = buildSitemapXml(["/", ...listDirectionPaths(), ...listAppRouterUrls()], lastmodByPath);
+    const sitemapXml = buildSitemapXml(["/", ...listDirectionPaths(), ...listLocalizedPublicUrls()], lastmodByPath);
     const entries = parseSitemapEntries(sitemapXml);
 
     expect(lastmodByPath.size).toBeGreaterThan(0);

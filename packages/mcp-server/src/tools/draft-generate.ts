@@ -1066,6 +1066,52 @@ function uniqueStrings(values: string[]): string[] {
   );
 }
 
+function resolveSlotsDeterministic(
+  body: string,
+  slots: Record<string, string>,
+): { body: string; unresolvedSlots: string[] } {
+  const unresolved = new Set<string>();
+  const resolvedBody = body.replace(/\{\{SLOT:([A-Z_]+)\}\}/g, (_match, key: string) => {
+    const value = slots[key];
+    if (typeof value !== "string" || value.length === 0) {
+      unresolved.add(key);
+      return `{{SLOT:${key}}}`;
+    }
+    return value;
+  });
+
+  return {
+    body: resolvedBody,
+    unresolvedSlots: Array.from(unresolved),
+  };
+}
+
+function resolveSlotsWithParity(
+  body: string,
+  slots: Record<string, string>,
+): {
+  body: string;
+  selected: "deterministic" | "legacy";
+  fallback_reason?: string;
+  unresolved_slots: string[];
+} {
+  const deterministic = resolveSlotsDeterministic(body, slots);
+  if (deterministic.unresolvedSlots.length > 0) {
+    return {
+      body: resolveSlots(body, slots),
+      selected: "legacy",
+      fallback_reason: "unresolved_slot_markers",
+      unresolved_slots: deterministic.unresolvedSlots,
+    };
+  }
+
+  return {
+    body: deterministic.body,
+    selected: "deterministic",
+    unresolved_slots: [],
+  };
+}
+
 const DEFAULT_COMPOSITE_LIMIT = 3;
 
 /**
@@ -1284,7 +1330,8 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
       .filter((entry) => entry.status === "missing")
       .map((entry) => entry.question);
     bodyPlain = appendCoverageFallbacks(bodyPlain, uncoveredAfterRefinement);
-    bodyPlain = resolveSlots(bodyPlain, greetingSlots);
+    const slotResolution = resolveSlotsWithParity(bodyPlain, greetingSlots);
+    bodyPlain = slotResolution.body;
 
     const includeBookingLink = actionPlan.workflow_triggers.booking_monitor && !agreementTemplate;
     const bodyHtml = generateEmailHtml({
@@ -1400,6 +1447,11 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
       knowledge_sources: knowledgeSummaries.map((summary) => summary.uri),
       knowledge_summaries: knowledgeSummaries,
       sources_used: sourcesUsed,
+      slot_resolution: {
+        selected: slotResolution.selected,
+        fallback_reason: slotResolution.fallback_reason,
+        unresolved_slots: slotResolution.unresolved_slots,
+      },
       policy: policyDecision,
       quality,
       learning_ledger: learningLedger,

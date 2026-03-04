@@ -418,7 +418,7 @@ Infra setup (Phases 0-2) is a prerequisite for measurement, but demand signal ca
 
 3. Log objections from any early outreach, discovery calls, or landing page visits
 
-**Schema and pass floor:** `docs/business-os/startup-loop/demand-evidence-pack-schema.md`
+**Schema and pass floor:** `docs/business-os/startup-loop/schemas/demand-evidence-pack-schema.md`
 
 **Why this matters:** Demand Evidence Pack (DEP) is required before GATE-S6B-ACT-01 (spend authorization). DEP capture cannot be retroactively reconstructed from infra data alone — it requires active logging of variants, denominators, and objections from the start.
 

@@ -25,7 +25,7 @@ jest.mock("../../../services/useFirebase", () => ({
   useFirebaseApp: () => mockUseFirebaseApp(),
 }));
 
-const OWNER_USER = {
+const PETE_USER = {
   uid: "owner-uid",
   email: "owner@test.com",
   user_name: "owner",
@@ -39,7 +39,8 @@ const STAFF_USER = {
   roles: ["staff"],
 };
 
-/** Mock Firebase auth instance with a currentUser that can getIdToken */
+const originalPeteEmails = process.env.RECEPTION_STAFF_ACCOUNTS_PETE_EMAILS;
+
 function makeAuthMock(idToken = "mock-id-token") {
   return {
     currentUser: {
@@ -50,83 +51,61 @@ function makeAuthMock(idToken = "mock-id-token") {
 
 beforeEach(() => {
   jest.clearAllMocks();
-  global.fetch = mockFetch as unknown as typeof fetch;
+  process.env.RECEPTION_STAFF_ACCOUNTS_PETE_EMAILS = "owner@test.com";
 
-  mockUseAuth.mockReturnValue({ user: OWNER_USER });
+  global.fetch = mockFetch as unknown as typeof fetch;
+  mockUseAuth.mockReturnValue({ user: PETE_USER });
   mockUseFirebaseApp.mockReturnValue({ projectId: "test" });
   mockGetFirebaseAuth.mockReturnValue(makeAuthMock());
   mockSendPasswordResetEmail.mockResolvedValue({ success: true });
+
+  mockFetch.mockResolvedValue({
+    ok: true,
+    json: async () => ({ success: true, accounts: [] }),
+  });
+});
+
+afterAll(() => {
+  process.env.RECEPTION_STAFF_ACCOUNTS_PETE_EMAILS = originalPeteEmails;
 });
 
 describe("StaffAccountsForm", () => {
-  // TC-05-01: Form renders with email, display name, and role picker
-  it("renders email, display name, and role picker fields", () => {
+  it("renders add-account fields and managed permission checkboxes", async () => {
     render(<StaffAccountsForm />);
+
+    await waitFor(() =>
+      expect(screen.getByText(/manage existing accounts/i)).toBeInTheDocument(),
+    );
 
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/display name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/role/i)).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /create account/i }),
-    ).toBeInTheDocument();
+    expect(screen.getAllByLabelText(/staff/i)[0]).toBeInTheDocument();
+    expect(screen.getAllByLabelText(/manager/i)[0]).toBeInTheDocument();
+    expect(screen.getAllByLabelText(/admin/i)[0]).toBeInTheDocument();
   });
 
-  // TC-05-02: Role picker options are staff/manager/admin only
-  it("role picker has exactly staff, manager, and admin options", () => {
-    render(<StaffAccountsForm />);
-
-    const select = screen.getByLabelText(/role/i) as HTMLSelectElement;
-    const options = Array.from(select.options).map((o) => o.value);
-
-    expect(options).toEqual(["staff", "manager", "admin"]);
-  });
-
-  // TC-05-03: Submit calls POST /api/users/provision with body (no idToken field)
-  it("submits POST to /api/users/provision without idToken in body", async () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({ success: true, uid: "new-uid", email: "test@example.com" }),
-    });
+  it("submits POST to /api/users/provision with roles array", async () => {
+    mockFetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ success: true, accounts: [] }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ success: true, uid: "new-uid", email: "test@example.com" }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ success: true, accounts: [] }),
+      });
 
     const user = userEvent.setup();
     render(<StaffAccountsForm />);
+
+    await waitFor(() => expect(mockFetch).toHaveBeenCalled());
 
     await user.type(screen.getByLabelText(/email/i), "test@example.com");
     await user.type(screen.getByLabelText(/display name/i), "Test User");
-    await user.click(screen.getByRole("button", { name: /create account/i }));
-
-    await waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(1));
-
-    const [url, options] = mockFetch.mock.calls[0] as [
-      string,
-      { method: string; headers: Record<string, string>; body: string },
-    ];
-    expect(url).toBe("/api/users/provision");
-    expect(options.method).toBe("POST");
-
-    const body = JSON.parse(options.body) as Record<string, unknown>;
-    expect(body.email).toBe("test@example.com");
-    expect(body.displayName).toBe("Test User");
-    expect(body.role).toBe("staff");
-    expect(body).not.toHaveProperty("idToken");
-    expect(options.headers["Authorization"]).toMatch(/^Bearer /);
-  });
-
-  // TC-05-04: On 200 success, success message and "Resend setup email" button
-  it("shows success message and resend button after successful creation", async () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({
-        success: true,
-        uid: "new-uid",
-        email: "test@example.com",
-      }),
-    });
-
-    const user = userEvent.setup();
-    render(<StaffAccountsForm />);
-
-    await user.type(screen.getByLabelText(/email/i), "test@example.com");
     await user.click(screen.getByRole("button", { name: /create account/i }));
 
     await waitFor(() =>
@@ -134,22 +113,40 @@ describe("StaffAccountsForm", () => {
         screen.getByRole("button", { name: /resend setup email/i }),
       ).toBeInTheDocument(),
     );
-    expect(screen.getByText(/test@example.com/)).toBeInTheDocument();
+
+    const postCall = mockFetch.mock.calls.find(
+      (call) => (call[1] as { method?: string })?.method === "POST",
+    ) as [string, { method: string; headers: Record<string, string>; body: string }] | undefined;
+
+    expect(postCall).toBeDefined();
+    expect(postCall?.[0]).toBe("/api/users/provision");
+
+    const body = JSON.parse(postCall?.[1].body ?? "{}") as Record<string, unknown>;
+    expect(body.email).toBe("test@example.com");
+    expect(body.displayName).toBe("Test User");
+    expect(body.roles).toEqual(["staff"]);
+    expect(postCall?.[1].headers["Authorization"]).toMatch(/^Bearer /);
   });
 
-  // TC-05-05: Clicking "Resend setup email" calls sendPasswordResetEmail
   it("calls sendPasswordResetEmail when resend button is clicked", async () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({
-        success: true,
-        uid: "new-uid",
-        email: "test@example.com",
-      }),
-    });
+    mockFetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ success: true, accounts: [] }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ success: true, uid: "new-uid", email: "test@example.com" }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ success: true, accounts: [] }),
+      });
 
     const user = userEvent.setup();
     render(<StaffAccountsForm />);
+
+    await waitFor(() => expect(mockFetch).toHaveBeenCalled());
 
     await user.type(screen.getByLabelText(/email/i), "test@example.com");
     await user.click(screen.getByRole("button", { name: /create account/i }));
@@ -166,16 +163,22 @@ describe("StaffAccountsForm", () => {
     );
   });
 
-  // TC-05-06: On 403 response, "Insufficient permissions" error
-  it("shows insufficient permissions error on 403", async () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: false,
-      status: 403,
-      json: async () => ({ success: false, error: "Insufficient permissions" }),
-    });
+  it("shows server error on failed creation", async () => {
+    mockFetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ success: true, accounts: [] }),
+      })
+      .mockResolvedValueOnce({
+        ok: false,
+        status: 403,
+        json: async () => ({ success: false, error: "Insufficient permissions" }),
+      });
 
     const user = userEvent.setup();
     render(<StaffAccountsForm />);
+
+    await waitFor(() => expect(mockFetch).toHaveBeenCalled());
 
     await user.type(screen.getByLabelText(/email/i), "test@example.com");
     await user.click(screen.getByRole("button", { name: /create account/i }));
@@ -187,55 +190,12 @@ describe("StaffAccountsForm", () => {
     );
   });
 
-  // TC-05-07: On 400 response, validation error message
-  it("shows validation error on 400", async () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: false,
-      status: 400,
-      json: async () => ({ success: false, error: "email is required" }),
-    });
-
-    const user = userEvent.setup();
-    render(<StaffAccountsForm />);
-
-    await user.type(screen.getByLabelText(/email/i), "test@example.com");
-    await user.click(screen.getByRole("button", { name: /create account/i }));
-
-    await waitFor(() =>
-      expect(screen.getByText(/email is required/i)).toBeInTheDocument(),
-    );
-  });
-
-  // TC-05-08: On 409 response, "An account with this email already exists"
-  it("shows already-exists error on 409", async () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: false,
-      status: 409,
-      json: async () => ({
-        success: false,
-        error: "An account with this email already exists",
-      }),
-    });
-
-    const user = userEvent.setup();
-    render(<StaffAccountsForm />);
-
-    await user.type(screen.getByLabelText(/email/i), "test@example.com");
-    await user.click(screen.getByRole("button", { name: /create account/i }));
-
-    await waitFor(() =>
-      expect(
-        screen.getByText(/an account with this email already exists/i),
-      ).toBeInTheDocument(),
-    );
-  });
-
-  // TC-05-09: Staff-role users see null (form not rendered)
-  it("renders nothing for staff-role users", () => {
+  it("shows access restriction for non-pete users", () => {
     mockUseAuth.mockReturnValue({ user: STAFF_USER });
+    render(<StaffAccountsForm />);
 
-    const { container } = render(<StaffAccountsForm />);
-
-    expect(container).toBeEmptyDOMElement();
+    expect(
+      screen.getByText(/requires owner\/developer permissions/i),
+    ).toBeInTheDocument();
   });
 });

@@ -132,6 +132,9 @@
     "notice": "Hostel bookings are adults-only, 2–8 nights, up to 8 guests. Staying longer than 8 nights? Just make a second booking for the extra nights, or",
     "assistedLink": "get in touch if you need help"
   },
+  "searchPrompt": {
+    "selectDatesAndGuests": "Select check-in, check-out, and guests above to check rates."
+  },
   "expiredQuote": {
     "message": "This quote link has expired. Rebuild your quote with new dates to continue."
   },

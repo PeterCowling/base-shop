@@ -342,7 +342,7 @@ describe("draft_quality_check TASK-05 reference applicability", () => {
       },
     });
     const payload = parseResult(result);
-    expect(payload.warnings).toContain("reference_not_applicable");
+    expect(payload.failed_checks).toContain("reference_not_applicable");
   });
 });
 

@@ -1,0 +1,116 @@
+{
+  "schema_version": "naming-round-analytics.v1",
+  "generated_at": "2026-03-04T20:15:40.373Z",
+  "source_root": "/Users/petercowling/base-shop/docs/business-os/strategy",
+  "source_files": [
+    "HBAG/assessment/naming-workbench/product-naming-sidecars/2026-02-27-round-1.jsonl",
+    "HEAD/assessment/naming-workbench/naming-sidecars/2026-02-26-round-7.jsonl",
+    "HEAD/assessment/naming-workbench/product-naming-sidecars/2026-02-26-round-1.jsonl"
+  ],
+  "records": [
+    {
+      "business": "HBAG",
+      "pipeline_type": "product",
+      "run_date": "2026-02-27",
+      "round": 1,
+      "source_file": "HBAG/assessment/naming-workbench/product-naming-sidecars/2026-02-27-round-1.jsonl",
+      "event_count": 330,
+      "unique_candidates": 165,
+      "stage_counts": {
+        "generated": 165,
+        "i_gate_eliminated": 0,
+        "rdap_checked": 0,
+        "shortlisted": 0,
+        "finalist": 0,
+        "tm_prescreened": 165
+      },
+      "rdap": null,
+      "tm_operator": {
+        "total": 165,
+        "clear": 0,
+        "conflict": 0,
+        "pending": 0,
+        "null_result": 165,
+        "labeled": 0,
+        "label_coverage_pct": 0
+      }
+    },
+    {
+      "business": "HEAD",
+      "pipeline_type": "company",
+      "run_date": "2026-02-26",
+      "round": 7,
+      "source_file": "HEAD/assessment/naming-workbench/naming-sidecars/2026-02-26-round-7.jsonl",
+      "event_count": 501,
+      "unique_candidates": 238,
+      "stage_counts": {
+        "generated": 250,
+        "i_gate_eliminated": 0,
+        "rdap_checked": 250,
+        "shortlisted": 0,
+        "finalist": 1,
+        "tm_prescreened": 0
+      },
+      "rdap": {
+        "available": 125,
+        "taken": 125,
+        "unknown": 0,
+        "post_i_gate": 250,
+        "yield_pct": 50
+      },
+      "tm_operator": null
+    },
+    {
+      "business": "HEAD",
+      "pipeline_type": "product",
+      "run_date": "2026-02-26",
+      "round": 1,
+      "source_file": "HEAD/assessment/naming-workbench/product-naming-sidecars/2026-02-26-round-1.jsonl",
+      "event_count": 40,
+      "unique_candidates": 20,
+      "stage_counts": {
+        "generated": 20,
+        "i_gate_eliminated": 0,
+        "rdap_checked": 0,
+        "shortlisted": 0,
+        "finalist": 0,
+        "tm_prescreened": 20
+      },
+      "rdap": null,
+      "tm_operator": {
+        "total": 20,
+        "clear": 0,
+        "conflict": 0,
+        "pending": 0,
+        "null_result": 20,
+        "labeled": 0,
+        "label_coverage_pct": 0
+      }
+    }
+  ],
+  "totals": {
+    "total_events": 871,
+    "total_rounds": 3,
+    "total_source_files": 3,
+    "by_pipeline": {
+      "company": {
+        "rounds": 1,
+        "events": 501
+      },
+      "product": {
+        "rounds": 2,
+        "events": 370
+      }
+    },
+    "by_business": {
+      "HBAG": {
+        "rounds": 1,
+        "events": 330
+      },
+      "HEAD": {
+        "rounds": 2,
+        "events": 541
+      }
+    }
+  }
+}

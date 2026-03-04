@@ -69,7 +69,7 @@ const QuickLinksSection: FC<QuickLinksSectionProps> = ({ lang }) => {
         label: t("quickLinksSection.rooms", { defaultValue: "Dorms" }) as string,
         description: t("quickLinksSection.roomsHint", { defaultValue: "Mixed and female dormitories" }) as string,
         Icon: BedDouble,
-        href: `/${lang}/${translatePath("rooms", lang)}`,
+        href: `/${lang}/${translatePath("book", lang)}`,
       },
       {
         label: t("quickLinksSection.commonAreas", { defaultValue: "Experiences" }) as string,
@@ -87,7 +87,7 @@ const QuickLinksSection: FC<QuickLinksSectionProps> = ({ lang }) => {
         label: t("quickLinksSection.guides", { defaultValue: "Guides" }) as string,
         description: t("quickLinksSection.guidesHint", { defaultValue: "Local tips for your trip" }) as string,
         Icon: BookOpen,
-        href: `/${lang}/${translatePath("guides", lang)}`,
+        href: `/${lang}/${translatePath("assistance", lang)}`,
       },
     ];
   }, [lang, ready, t]);

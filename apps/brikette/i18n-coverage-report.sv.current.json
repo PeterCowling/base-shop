@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 2,
+  "baselineLocale": "en",
+  "locales": [
+    "sv"
+  ],
+  "summary": {
+    "totalMissingFiles": 0,
+    "totalMissingKeys": 0,
+    "totalUntranslatedKeys": 20
+  },
+  "reports": [
+    {
+      "locale": "sv",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {
+        "barMenuPage.json": [
+          "items.joseCuervoSilver.name",
+          "items.limoncelloSpritz.name",
+          "sections.whisky.title"
+        ],
+        "guides.tags.json": [
+          "tags.camping.label",
+          "tags.tips.label"
+        ],
+        "guides/content/digitalConcierge.json": [
+          "linkLabel"
+        ],
+        "guides/content/fiordoDiFuroreBeachGuide.json": [
+          "faqsTitle"
+        ],
+        "guides/content/lauritoBeachGuide.json": [
+          "seo.title"
+        ],
+        "guides/content/pathOfTheGods.json": [
+          "tipsTitle",
+          "toc.tips"
+        ],
+        "guides/content/pathOfTheGodsBus.json": [
+          "toc.warnings",
+          "warningsTitle"
+        ],
+        "guides/content/positanoRavello.json": [
+          "fallback.tipsTitle",
+          "tipsTitle"
+        ],
+        "guides/content/sunriseHike.json": [
+          "tipsTitle"
+        ],
+        "guides/content/topOfTheMountainHike.json": [
+          "tipsTitle"
+        ],
+        "guides/labels.json": [
+          "tipsHeading"
+        ],
+        "guides/tags.json": [
+          "labels.camping",
+          "labels.tips"
+        ],
+        "guidesFallback.json": [
+          "amalfiTownGuide.headings.tips"
+        ]
+      }
+    }
+  ]
+}

@@ -42,6 +42,12 @@ export interface RefinementEvent {
   rewrite_reason: RewriteReason;
   refinement_applied: boolean;
   refinement_source: string;
+  refinement_mode?: "external" | "deterministic_only";
+  refinement_strategy?: "external" | "deterministic_only" | "auto_best";
+  deterministic_attempted?: boolean;
+  quality_passed?: boolean;
+  quality_failed_checks_count?: number;
+  parity_fallback?: boolean;
   edit_distance_pct: number;
   // TASK-04: PII-redacted body of the refined draft (present when refinement_applied = true).
   // Used by draft_template_review to generate proposal bodies without operator re-entry.
@@ -80,6 +86,14 @@ const RefinementEventSchema = z.object({
   ]),
   refinement_applied: z.boolean(),
   refinement_source: z.string(),
+  refinement_mode: z.enum(["external", "deterministic_only"]).optional(),
+  refinement_strategy: z
+    .enum(["external", "deterministic_only", "auto_best"])
+    .optional(),
+  deterministic_attempted: z.boolean().optional(),
+  quality_passed: z.boolean().optional(),
+  quality_failed_checks_count: z.number().int().min(0).optional(),
+  parity_fallback: z.boolean().optional(),
   edit_distance_pct: z.number(),
   refined_body_redacted: z.string().optional(),
 }).passthrough();
@@ -94,6 +108,15 @@ export interface SignalCounts {
   refinement_count: number;
   joined_count: number;
   events_since_last_calibration: number;
+  deterministic_refinement: {
+    total: number;
+    applied: number;
+    selected: number;
+    fallback: number;
+    quality_observed: number;
+    quality_passed: number;
+    quality_pass_rate: number | null;
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -533,10 +556,44 @@ export async function countSignalEvents(
     ? joined.filter(({ selection }) => selection.ts > calibratedAt!).length
     : joined.length;
 
+  const deterministicRefinements = refinementEvents.filter((event) => {
+    if (event.deterministic_attempted === true) {
+      return true;
+    }
+    return event.refinement_mode === "deterministic_only";
+  });
+  const deterministicApplied = deterministicRefinements.filter(
+    (event) => event.refinement_applied,
+  ).length;
+  const deterministicSelected = deterministicRefinements.filter(
+    (event) => event.refinement_source === "codex",
+  ).length;
+  const deterministicFallback = deterministicRefinements.filter(
+    (event) => event.parity_fallback === true,
+  ).length;
+  const qualityObserved = deterministicRefinements.filter(
+    (event) => typeof event.quality_passed === "boolean",
+  ).length;
+  const qualityPassed = deterministicRefinements.filter(
+    (event) => event.quality_passed === true,
+  ).length;
+
   return {
     selection_count: selectionEvents.length,
     refinement_count: refinementEvents.length,
     joined_count: joined.length,
     events_since_last_calibration: eventsSinceCalibration,
+    deterministic_refinement: {
+      total: deterministicRefinements.length,
+      applied: deterministicApplied,
+      selected: deterministicSelected,
+      fallback: deterministicFallback,
+      quality_observed: qualityObserved,
+      quality_passed: qualityPassed,
+      quality_pass_rate:
+        qualityObserved > 0
+          ? Math.round((qualityPassed / qualityObserved) * 10000) / 10000
+          : null,
+    },
   };
 }

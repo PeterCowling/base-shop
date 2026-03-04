@@ -20,6 +20,7 @@ export const firebaseEnvSchema = z.object({
   NEXT_PUBLIC_FIREBASE_DATABASE_URL: requiredString(
     "NEXT_PUBLIC_FIREBASE_DATABASE_URL is required"
   ),
+  NEXT_PUBLIC_FIREBASE_ARCHIVE_DATABASE_URL: z.string().optional(),
   NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: requiredString(
     "NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID is required"
   ),

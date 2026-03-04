@@ -31,8 +31,8 @@
   --color-fg-dark: 150 10% 92%;
   --color-fg-muted: 0 0% 40%;
   --color-fg-muted-dark: 150 5% 65%;
-  --color-panel: hsl(150 4% 97%);
-  --color-panel-dark: hsl(160 6% 10%);
+  --color-panel: 150 4% 97%;
+  --color-panel-dark: 160 6% 10%;
   --color-inset: 150 4% 98%;
   --color-inset-dark: 160 8% 6%;
   --color-border: 0 0% 80%;
@@ -53,9 +53,6 @@
   --color-muted-fg-dark: 150 5% 85%;
   --font-sans: var(--font-inter);
   --font-mono: var(--font-jetbrains-mono);
-  /* ── Category shade families (bar/POS product grid) ────────────── */
-  /* Stored as full hsl() values so CSS var resolves to a valid color directly */
-  /* Pink shades (Sweet, Gelato) */
   --color-pinkShades-row1: hsl(330 55% 66%);
   --color-pinkShades-row1-dark: hsl(330 25% 22%);
   --color-pinkShades-row2: hsl(330 55% 60%);
@@ -64,44 +61,32 @@
   --color-pinkShades-row3-dark: hsl(330 22% 30%);
   --color-pinkShades-row4: hsl(330 45% 48%);
   --color-pinkShades-row4-dark: hsl(330 20% 34%);
-
-  /* Coffee shades */
   --color-coffeeShades-row1: hsl(25 40% 60%);
   --color-coffeeShades-row1-dark: hsl(25 22% 22%);
   --color-coffeeShades-row2: hsl(25 40% 52%);
   --color-coffeeShades-row2-dark: hsl(25 22% 28%);
   --color-coffeeShades-row3: hsl(25 35% 44%);
   --color-coffeeShades-row3-dark: hsl(25 20% 34%);
-
-  /* Beer shades */
   --color-beerShades-row1: hsl(42 65% 50%);
   --color-beerShades-row1-dark: hsl(42 30% 22%);
   --color-beerShades-row2: hsl(42 60% 42%);
   --color-beerShades-row2-dark: hsl(42 28% 28%);
-
-  /* Wine shades */
   --color-wineShades-row1: hsl(350 45% 43%);
   --color-wineShades-row1-dark: hsl(350 25% 24%);
   --color-wineShades-row2: hsl(350 40% 34%);
   --color-wineShades-row2-dark: hsl(350 22% 30%);
   --color-wineShades-row3: hsl(350 35% 26%);
   --color-wineShades-row3-dark: hsl(350 20% 36%);
-
-  /* Tea shades */
   --color-teaShades-row1: hsl(80 40% 60%);
   --color-teaShades-row1-dark: hsl(80 22% 22%);
   --color-teaShades-row2: hsl(80 38% 52%);
   --color-teaShades-row2-dark: hsl(80 20% 28%);
-
-  /* Green shades (Savory) */
   --color-greenShades-row1: hsl(140 40% 60%);
   --color-greenShades-row1-dark: hsl(140 22% 22%);
   --color-greenShades-row2: hsl(140 38% 52%);
   --color-greenShades-row2-dark: hsl(140 20% 26%);
   --color-greenShades-row3: hsl(140 35% 44%);
   --color-greenShades-row3-dark: hsl(140 18% 30%);
-
-  /* Blue shades (Mixed Drinks) */
   --color-blueShades-row1: hsl(210 45% 60%);
   --color-blueShades-row1-dark: hsl(210 25% 22%);
   --color-blueShades-row2: hsl(210 42% 52%);
@@ -112,20 +97,14 @@
   --color-blueShades-row4-dark: hsl(210 18% 34%);
   --color-blueShades-row5: hsl(210 35% 28%);
   --color-blueShades-row5-dark: hsl(210 16% 38%);
-
-  /* Purple shades (Cocktails) */
   --color-purpleShades-row1: hsl(270 40% 56%);
   --color-purpleShades-row1-dark: hsl(270 22% 24%);
   --color-purpleShades-row2: hsl(270 38% 48%);
   --color-purpleShades-row2-dark: hsl(270 20% 30%);
-
-  /* Spritz shades */
   --color-spritzShades-row1: hsl(20 70% 53%);
   --color-spritzShades-row1-dark: hsl(20 30% 24%);
   --color-spritzShades-row2: hsl(20 65% 45%);
   --color-spritzShades-row2-dark: hsl(20 28% 30%);
-
-  /* Orange shades (Juices/Smoothies/Soda) */
   --color-orangeShades-row1: hsl(30 65% 60%);
   --color-orangeShades-row1-dark: hsl(30 28% 22%);
   --color-orangeShades-row2: hsl(30 60% 54%);
@@ -136,8 +115,6 @@
   --color-orangeShades-row4-dark: hsl(30 22% 34%);
   --color-orangeShades-row5: hsl(30 45% 36%);
   --color-orangeShades-row5-dark: hsl(30 20% 38%);
-
-  /* Grayish shades (Other, Gelato) */
   --color-grayishShades-row1: hsl(220 10% 60%);
   --color-grayishShades-row1-dark: hsl(220 6% 22%);
   --color-grayishShades-row2: hsl(220 8% 52%);
@@ -146,7 +123,6 @@
   --color-grayishShades-row3-dark: hsl(220 4% 34%);
   --color-grayishShades-row4: hsl(220 5% 36%);
   --color-grayishShades-row4-dark: hsl(220 3% 40%);
-
   --chart-1: 240 60% 44%;
   --chart-1-dark: 240 60% 70%;
   --chart-2: 142 71% 45%;
@@ -190,14 +166,6 @@
     --color-link: var(--color-link-dark);
     --color-muted: var(--color-muted-dark);
     --color-muted-fg: var(--color-muted-fg-dark);
-    --chart-1: var(--chart-1-dark);
-    --chart-2: var(--chart-2-dark);
-    --chart-3: var(--chart-3-dark);
-    --chart-4: var(--chart-4-dark);
-    --chart-5: var(--chart-5-dark);
-    --chart-6: var(--chart-6-dark);
-    --chart-7: var(--chart-7-dark);
-    /* Category shade families */
     --color-pinkShades-row1: var(--color-pinkShades-row1-dark);
     --color-pinkShades-row2: var(--color-pinkShades-row2-dark);
     --color-pinkShades-row3: var(--color-pinkShades-row3-dark);
@@ -233,11 +201,17 @@
     --color-grayishShades-row2: var(--color-grayishShades-row2-dark);
     --color-grayishShades-row3: var(--color-grayishShades-row3-dark);
     --color-grayishShades-row4: var(--color-grayishShades-row4-dark);
+    --chart-1: var(--chart-1-dark);
+    --chart-2: var(--chart-2-dark);
+    --chart-3: var(--chart-3-dark);
+    --chart-4: var(--chart-4-dark);
+    --chart-5: var(--chart-5-dark);
+    --chart-6: var(--chart-6-dark);
+    --chart-7: var(--chart-7-dark);
   }
 }
 
-html.theme-dark,
-html.dark {
+html.theme-dark {
   --color-primary: var(--color-primary-dark);
   --color-primary-fg: var(--color-primary-fg-dark);
   --color-primary-soft: var(--color-primary-soft-dark);
@@ -263,14 +237,6 @@ html.dark {
   --color-link: var(--color-link-dark);
   --color-muted: var(--color-muted-dark);
   --color-muted-fg: var(--color-muted-fg-dark);
-  --chart-1: var(--chart-1-dark);
-  --chart-2: var(--chart-2-dark);
-  --chart-3: var(--chart-3-dark);
-  --chart-4: var(--chart-4-dark);
-  --chart-5: var(--chart-5-dark);
-  --chart-6: var(--chart-6-dark);
-  --chart-7: var(--chart-7-dark);
-  /* Category shade families */
   --color-pinkShades-row1: var(--color-pinkShades-row1-dark);
   --color-pinkShades-row2: var(--color-pinkShades-row2-dark);
   --color-pinkShades-row3: var(--color-pinkShades-row3-dark);
@@ -306,4 +272,11 @@ html.dark {
   --color-grayishShades-row2: var(--color-grayishShades-row2-dark);
   --color-grayishShades-row3: var(--color-grayishShades-row3-dark);
   --color-grayishShades-row4: var(--color-grayishShades-row4-dark);
+  --chart-1: var(--chart-1-dark);
+  --chart-2: var(--chart-2-dark);
+  --chart-3: var(--chart-3-dark);
+  --chart-4: var(--chart-4-dark);
+  --chart-5: var(--chart-5-dark);
+  --chart-6: var(--chart-6-dark);
+  --chart-7: var(--chart-7-dark);
 }

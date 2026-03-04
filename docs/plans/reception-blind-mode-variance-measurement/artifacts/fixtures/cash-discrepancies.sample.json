@@ -1,0 +1,6 @@
+{
+  "c1": { "user": "alice", "timestamp": "2026-02-01T10:00:00.000Z", "amount": 20 },
+  "c2": { "user": "alice", "timestamp": "2026-02-02T10:00:00.000Z", "amount": -10 },
+  "c3": { "user": "bob", "timestamp": "2026-03-01T10:00:00.000Z", "amount": 5 },
+  "c4": { "user": "bob", "timestamp": "2026-03-02T10:00:00.000Z", "amount": -3 }
+}

@@ -289,7 +289,7 @@ const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang })
 
               <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <Link
-                  href={`/${lang}/${translatePath("rooms", lang)}`}
+                  href={`/${lang}/${translatePath("book", lang)}`}
                   prefetch={true}
                   className="inline-flex min-h-12 min-w-11 items-center gap-2 rounded-full bg-brand-secondary px-9 py-3 text-base font-semibold tracking-wide text-brand-on-accent shadow-lg transition-colors duration-200 hover:bg-brand-primary hover:text-brand-on-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:ring-offset-2"
                 >

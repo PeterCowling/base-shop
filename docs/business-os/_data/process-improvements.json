@@ -4289,6 +4289,16 @@
     {
       "type": "pending-review",
       "business": "BOS",
+      "title": "Pending results review: hbag-pdp-ga4-funnel-feed",
+      "body": "Build is complete but no results review has been written yet.",
+      "suggested_action": "Write docs/plans/hbag-pdp-ga4-funnel-feed/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
+      "source": "build-record.user.md",
+      "date": "2026-03-04T20:19:07.355Z",
+      "path": "docs/plans/hbag-pdp-ga4-funnel-feed/build-record.user.md"
+    },
+    {
+      "type": "pending-review",
+      "business": "BOS",
       "title": "Pending results review: brik-octorate-live-availability",
       "body": "Build is complete but no results review has been written yet.",
       "suggested_action": "Write docs/plans/_archive/brik-octorate-live-availability/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",

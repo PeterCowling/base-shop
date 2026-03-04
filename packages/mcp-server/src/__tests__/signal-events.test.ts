@@ -229,6 +229,15 @@ describe("TASK-02: TC-09 countSignalEvents returns correct counts", () => {
     expect(counts.refinement_count).toBe(2);
     expect(counts.joined_count).toBe(2);
     expect(counts.events_since_last_calibration).toBe(2);
+    expect(counts.deterministic_refinement).toEqual({
+      total: 0,
+      applied: 0,
+      selected: 0,
+      fallback: 0,
+      quality_observed: 0,
+      quality_passed: 0,
+      quality_pass_rate: null,
+    });
   });
 });
 
@@ -245,6 +254,74 @@ describe("TASK-02: TC-10 countSignalEvents returns zeros when file is absent", (
       refinement_count: 0,
       joined_count: 0,
       events_since_last_calibration: 0,
+      deterministic_refinement: {
+        total: 0,
+        applied: 0,
+        selected: 0,
+        fallback: 0,
+        quality_observed: 0,
+        quality_passed: 0,
+        quality_pass_rate: null,
+      },
+    });
+  });
+});
+
+describe("TASK-05: deterministic refinement telemetry slice", () => {
+  let tmpPath: string;
+
+  beforeEach(() => {
+    tmpPath = join(tmpdir(), `signal-events-deterministic-${randomUUID()}.jsonl`);
+  });
+
+  afterEach(async () => {
+    try {
+      await unlink(tmpPath);
+    } catch {
+      // ignore
+    }
+  });
+
+  it("counts deterministic applied/fallback and quality pass rate", async () => {
+    const events = [
+      JSON.stringify({ event: "selection", draft_id: "d1", ts: "2026-01-01T10:00:00.000Z", template_subject: "A", template_category: "faq", selection: "auto", scenario_category: "faq", scenario_category_raw: "faq" }),
+      JSON.stringify({ event: "selection", draft_id: "d2", ts: "2026-01-01T10:01:00.000Z", template_subject: "B", template_category: "faq", selection: "auto", scenario_category: "faq", scenario_category_raw: "faq" }),
+      JSON.stringify({ event: "refinement", draft_id: "d1", ts: "2026-01-01T10:00:30.000Z", rewrite_reason: "style", refinement_applied: true, refinement_source: "codex", refinement_mode: "deterministic_only", quality_passed: true, quality_failed_checks_count: 0, parity_fallback: false, edit_distance_pct: 0.1 }),
+      JSON.stringify({ event: "refinement", draft_id: "d2", ts: "2026-01-01T10:01:30.000Z", rewrite_reason: "none", refinement_applied: false, refinement_source: "none", refinement_mode: "deterministic_only", quality_passed: true, quality_failed_checks_count: 0, parity_fallback: true, edit_distance_pct: 0 }),
+      JSON.stringify({ event: "refinement", draft_id: "d3", ts: "2026-01-01T10:02:30.000Z", rewrite_reason: "none", refinement_applied: false, refinement_source: "none", edit_distance_pct: 0 }),
+    ].join("\n") + "\n";
+
+    await writeFile(tmpPath, events, "utf-8");
+
+    const counts = await countSignalEvents(tmpPath);
+    expect(counts.deterministic_refinement).toEqual({
+      total: 2,
+      applied: 1,
+      selected: 1,
+      fallback: 1,
+      quality_observed: 2,
+      quality_passed: 2,
+      quality_pass_rate: 1,
+    });
+  });
+
+  it("counts auto_best deterministic attempts even when emitted mode is external", async () => {
+    const events = [
+      JSON.stringify({ event: "selection", draft_id: "d1", ts: "2026-01-01T10:00:00.000Z", template_subject: "A", template_category: "faq", selection: "auto", scenario_category: "faq", scenario_category_raw: "faq" }),
+      JSON.stringify({ event: "refinement", draft_id: "d1", ts: "2026-01-01T10:00:30.000Z", rewrite_reason: "style", refinement_applied: false, refinement_source: "none", refinement_mode: "external", refinement_strategy: "auto_best", deterministic_attempted: true, quality_passed: true, quality_failed_checks_count: 0, parity_fallback: true, edit_distance_pct: 0 }),
+    ].join("\n") + "\n";
+
+    await writeFile(tmpPath, events, "utf-8");
+
+    const counts = await countSignalEvents(tmpPath);
+    expect(counts.deterministic_refinement).toEqual({
+      total: 1,
+      applied: 0,
+      selected: 0,
+      fallback: 1,
+      quality_observed: 1,
+      quality_passed: 1,
+      quality_pass_rate: 1,
     });
   });
 });

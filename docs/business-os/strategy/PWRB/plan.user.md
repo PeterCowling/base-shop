@@ -3,8 +3,8 @@ Type: Business-Plan
 Status: Draft
 Business: PWRB
 Created: 2026-01-29
-Updated: 2026-01-29
-Last-reviewed: 2026-01-29
+Updated: 2026-03-02
+Last-reviewed: 2026-03-02
 Owner: Pete
 Review-trigger: After each completed build cycle or PSP validation milestone touching this document.
 ---
@@ -75,19 +75,16 @@ Review-trigger: After each completed build cycle or PSP validation milestone tou
    - Data: Hardware posture 70/30; pilot 10 venues
    - Date: 2026-01-29
 
-6. **IPEI Access + Staff Usage Agreement (No Revenue Share)** (Priority: High)
-   - Status: Not drafted
-   - Outcome: Founder (IPEI director) sells into existing customer base; staff available on-demand; NewCo remains sole revenue owner
-   - Next: Draft services/access agreement:
-     - scope (install, swap, troubleshooting)
-     - scheduling rules and escalation
-     - cost-basis accounting (even if internal)
-     - liability boundary
-   - Impact: Prevents operational ambiguity; reduces dependency risk
-   - Source: PWRB-DEC-2026-01-29-06
-   - Evidence type: manual decision reference
-   - Data: "no revenue share with IPEI"; staff use allowed
-   - Date: 2026-01-29
+6. **IPEI Access + Operational Relationship** (Priority: High)
+   - Status: Resolved — formal services agreement superseded
+   - Outcome: IPEI director will become a director of PWRB NewCo. Formal B2B services/access agreement is not required; the directorship relationship covers operational access, staff usage, and liability boundary by default.
+   - Next: Confirm directorship structure when NewCo is formally incorporated. No standalone agreement needed.
+   - Impact: Simpler formation; operational access secured by structure not contract
+   - Source: PWRB-DEC-2026-01-29-06; updated 2026-03-02
+   - Evidence type: operator decision
+   - Data: IPEI director → NewCo co-director; staff use allowed; no revenue share with IPEI
+   - Date: 2026-03-02
+   - Pattern note: When a key operational partner is a co-founder or co-director of the NewCo, a formal B2B services agreement is systematically unnecessary. The directorship relationship covers access, liability, and operational scope. Do not generate a "draft services agreement" task in this configuration.
 
 7. **Purchase Grace + Warning Cadence + Late Return Handling** (Priority: Medium)
    - Status: Draft policy
@@ -145,13 +142,13 @@ Review-trigger: After each completed build cycle or PSP validation milestone tou
   - Data: Tier 1 30–35%; Tier 2 20–25%; pricing ladder
   - Date: 2026-01-29
 
-- **IPEI Staff Availability / Priority Conflicts** (Severity: Medium, Added: 2026-01-29)
+- **IPEI Staff Availability / Priority Conflicts** (Severity: Medium, Added: 2026-01-29, Updated: 2026-03-02)
   - Source: PWRB-RISK-005
   - Impact: Slow repairs → downtime → disputes + venue dissatisfaction
-  - Mitigation: Services/access agreement with scheduling rules; maintain backup contractor option
-  - Evidence type: assumption
-  - Data: "use staff when needed"; no revenue share
-  - Date: 2026-01-29
+  - Mitigation: Managed via co-directorship (formal services agreement no longer the mechanism); scheduling expectations to be set at board level; maintain backup contractor option as fallback
+  - Evidence type: operator decision
+  - Data: IPEI director = NewCo co-director; staff use allowed; no revenue share
+  - Date: 2026-03-02
 
 - **Accidental Purchase / Late Return Disputes** (Severity: Medium, Added: 2026-01-29)
   - Source: PWRB-RISK-006
@@ -222,6 +219,20 @@ Review-trigger: After each completed build cycle or PSP validation milestone tou
   - Date: 2026-01-29
 
 ## Learnings
+
+### 2026-03-02: IPEI Relationship Structure + Brand Name
+
+- **What worked:**
+  - Resolving the IPEI services agreement question by clarifying the ownership structure rather than drafting a contract. Directorship covers what the agreement would have.
+
+- **Pattern (reusable):**
+  - When a key operational partner is a co-founder or co-director of the NewCo, a formal B2B services agreement is not needed and should not be generated as a task. The directorship relationship governs operational access, staff usage, scheduling, and liability boundary by default. Apply this suppression to any future business where the same configuration applies.
+
+- **Brand name decided:** Amalfi Coast Charge
+  - Domain `amalficoastcharge.com` available (RDAP 404)
+  - No trademark conflicts found for the name in powerbank/electronics rental class
+  - Geographic descriptor risk (EU trademark registrability) is a deferred concern, not a launch blocker
+  - Name is intentionally geo-anchored to Amalfi Coast; expansion to other Italian coasts would require a rebrand — accepted tradeoff
 
 ### 2026-01-29: Plan Formation & Parameter Lock-in
 

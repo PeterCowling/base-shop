@@ -1,3 +1,4 @@
+import type { RefObject } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Section } from "@acme/design-system/atoms";
@@ -26,6 +27,9 @@ type BookPageSearchPanelProps = {
   guestsLabelText: string;
   showConstraintGuidance: boolean;
   showRebuildQuotePrompt: boolean;
+  calendarAnchorRef?: RefObject<HTMLDivElement | null>;
+  showSelectDatesPrompt?: boolean;
+  selectDatesPromptText?: string;
 };
 
 export function BookPageSearchPanel({
@@ -44,11 +48,14 @@ export function BookPageSearchPanel({
   guestsLabelText,
   showConstraintGuidance,
   showRebuildQuotePrompt,
+  calendarAnchorRef,
+  showSelectDatesPrompt = false,
+  selectDatesPromptText = "",
 }: BookPageSearchPanelProps): JSX.Element {
   const { t } = useTranslation("bookPage");
 
   return (
-    <div className="mt-6 mx-auto">
+    <div ref={calendarAnchorRef} className="mt-6 mx-auto scroll-mt-24" tabIndex={-1}>
       <BookingCalendarPanel
         lang={lang}
         range={range}
@@ -86,6 +93,11 @@ export function BookPageSearchPanel({
             </a>
             .
           </BookingNotice>
+        </div>
+      ) : null}
+      {showSelectDatesPrompt && selectDatesPromptText ? (
+        <div className="mt-4">
+          <BookingNotice>{selectDatesPromptText}</BookingNotice>
         </div>
       ) : null}
       {showRebuildQuotePrompt ? <div className="mt-4"><ExpiredQuoteNotice /></div> : null}

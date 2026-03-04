@@ -1,13 +1,5 @@
 {
   "schema_version": "build-event.v1",
-  "build_id": "xa-b-design-polish-2026-03-04",
-  "feature_slug": "xa-b-design-polish",
-  "emitted_at": "2026-03-04T09:23:31.953Z",
-  "why": "The xa-b storefront has a strong luxury-editorial design language but 4 pages/components break the brand immersion: cart page (no product images, rounded corners), department landing (text-only, no visual engagement), product cards (no New In badge), and empty states (plain text). These weaken the conversion funnel and brand perception.",
-  "why_source": "operator",
-  "intended_outcome": {
-    "type": "operational",
-    "statement": "All 4 design gaps resolved — cart thumbnails with sharp-edge styling, department landing visual cards, New In badge on product cards, styled empty states — using xa-b achromatic design language.",
-    "source": "operator"
-  }
+  "emitted_at": "2026-03-04T13:11:19.084Z",
+  "why": "A design audit identified visual inconsistency in empty states and minor cart styling drift from the established xa-pdp-* class system."
 }

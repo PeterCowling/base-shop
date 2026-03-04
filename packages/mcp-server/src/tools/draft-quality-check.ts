@@ -493,7 +493,7 @@ function runChecks(
         actionPlan.workflow_triggers.booking_monitor
       )
     ) {
-      warnings.push("reference_not_applicable");
+      failed_checks.push("reference_not_applicable");
     }
   }
 

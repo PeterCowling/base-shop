@@ -1519,3 +1519,56 @@ describe("draft_generate tool TASK-04 template normalization", () => {
     expect(bodyLower).not.toContain("we will charge now");
   });
 });
+
+describe("draft_generate tool TASK-03 slot resolution parity", () => {
+  beforeEach(setupDraftGenerateMocks);
+
+  it("TASK-03 TC-01: deterministic slot resolver selected when all markers are resolvable", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Arrival greeting",
+          body: "Dear Guest,\r\n\r\nCheck-in starts at 2:30 pm.\r\n\r\nBest regards,\r\n\r\nPeter",
+          category: "faq",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: baseActionPlan,
+      subject: "Check-in",
+      recipientName: "Dedra",
+    });
+    if ("isError" in result && result.isError) throw new Error(result.content[0].text);
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.slot_resolution.selected).toBe("deterministic");
+    expect(payload.slot_resolution.unresolved_slots).toEqual([]);
+    expect(payload.draft.bodyPlain).toContain("Dear Dedra,");
+  });
+
+  it("TASK-03 TC-02: unresolved slot marker triggers legacy fallback and removes marker", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Booking reference request",
+          body: "Dear Guest,\r\n\r\nPlease confirm {{SLOT:BOOKING_REF}} before arrival.\r\n\r\nBest regards,\r\n\r\nPeter",
+          category: "faq",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: baseActionPlan,
+      subject: "Booking ref",
+      recipientName: "Dedra",
+    });
+    if ("isError" in result && result.isError) throw new Error(result.content[0].text);
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.slot_resolution.selected).toBe("legacy");
+    expect(payload.slot_resolution.fallback_reason).toBe("unresolved_slot_markers");
+    expect(payload.slot_resolution.unresolved_slots).toContain("BOOKING_REF");
+    expect(payload.draft.bodyPlain).not.toContain("{{SLOT:BOOKING_REF}}");
+  });
+});

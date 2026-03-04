@@ -1080,6 +1080,24 @@ function formatGmailQueryDate(date: Date): string {
   return `${year}/${month}/${day}`;
 }
 
+function parseSpecificStartDate(value: string): Date | null {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (!match) return null;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const parsed = new Date(year, month - 1, day);
+  if (
+    Number.isNaN(parsed.getTime()) ||
+    parsed.getFullYear() !== year ||
+    parsed.getMonth() !== month - 1 ||
+    parsed.getDate() !== day
+  ) {
+    return null;
+  }
+  return parsed;
+}
+
 function parseMessageTimestamp(
   dateHeader: string | undefined,
   internalDate: string | null | undefined
@@ -2005,9 +2023,9 @@ async function _handleOrganizeInbox(
   let tomorrowDateString: string | null = null;
 
   if (specificStartDate) {
-    const parsed = new Date(specificStartDate);
-    if (Number.isNaN(parsed.getTime())) {
-      return errorResult(`Invalid specificStartDate: ${specificStartDate}`);
+    const parsed = parseSpecificStartDate(specificStartDate);
+    if (!parsed) {
+      return errorResult(`Invalid specificStartDate: ${specificStartDate}. Expected YYYY-MM-DD calendar date.`);
     }
     startDateString = formatGmailQueryDate(parsed);
     tomorrowDateString = formatGmailQueryDate(new Date(Date.now() + 24 * 60 * 60 * 1000));

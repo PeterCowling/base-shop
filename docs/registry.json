@@ -36,6 +36,18 @@
     "domain": null
   },
   {
+    "path": "docs/audits/contrast-sweeps/2026-03-02-xa-uploader-authenticated/contrast-uniformity-report.md",
+    "type": "Contrast-Uniformity-Report",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/audits/contrast-sweeps/2026-03-02-xa-uploader/contrast-uniformity-report.md",
+    "type": "Contrast-Uniformity-Report",
+    "status": "Complete",
+    "domain": null
+  },
+  {
     "path": "docs/audits/design-system-audit-2026-01.md",
     "type": "Audit",
     "status": "Historical",
@@ -1638,14 +1650,14 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-baselines/BRIK/forecast-seed.user.md",
-    "type": "Startup-Baseline-Seed",
+    "path": "docs/business-os/startup-baselines/BRIK/demand-evidence-pack.md",
+    "type": "Demand-Evidence-Pack",
     "status": "Active",
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-baselines/BRIK/demand-evidence-pack.md",
-    "type": "Demand-Evidence-Pack",
+    "path": "docs/business-os/startup-baselines/BRIK/forecast-seed.user.md",
+    "type": "Startup-Baseline-Seed",
     "status": "Active",
     "domain": null
   },
@@ -1653,6 +1665,12 @@
     "path": "docs/business-os/startup-baselines/HBAG/2026-02-20-assessment-intake-packet.user.md",
     "type": "Startup-Intake-Packet",
     "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/startup-baselines/HBAG/S3-forecast/2026-02-20-lp-forecast.user.md",
+    "type": "Forecast",
+    "status": "Draft",
     "domain": null
   },
   {
@@ -1664,6 +1682,12 @@
   {
     "path": "docs/business-os/startup-baselines/HBAG/content-packet.md",
     "type": "Startup-Content-Packet",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/startup-baselines/HBAG/demand-evidence-pack.md",
+    "type": "Demand-Evidence-Pack",
     "status": "Active",
     "domain": null
   },
@@ -1680,20 +1704,14 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-baselines/HBAG/S3-forecast/2026-02-20-lp-forecast.user.md",
-    "type": "Forecast",
-    "status": "Draft",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/startup-baselines/HBAG/demand-evidence-pack.md",
-    "type": "Demand-Evidence-Pack",
+    "path": "docs/business-os/startup-baselines/HEAD/2026-02-12-assessment-intake-packet.user.md",
+    "type": "Startup-Intake-Packet",
     "status": "Active",
     "domain": null
   },
   {
-    "path": "docs/business-os/startup-baselines/HEAD/2026-02-12-assessment-intake-packet.user.md",
-    "type": "Startup-Intake-Packet",
+    "path": "docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md",
+    "type": "Forecast",
     "status": "Active",
     "domain": null
   },
@@ -1712,12 +1730,6 @@
   {
     "path": "docs/business-os/startup-baselines/HEAD/offer.md",
     "type": "Reference",
-    "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md",
-    "type": "Forecast",
     "status": "Active",
     "domain": null
   },
@@ -2250,12 +2262,6 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HBAG/assessment/2026-02-20-candidate-names.user.md",
-    "type": "Reference",
-    "status": "Active",
-    "domain": null
-  },
-  {
     "path": "docs/business-os/strategy/HBAG/assessment/2026-02-20-operator-context.user.md",
     "type": "Operator-Evidence",
     "status": "Active",
@@ -2298,12 +2304,6 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HBAG/assessment/2026-02-21-candidate-names-r2.user.md",
-    "type": "Reference",
-    "status": "Active",
-    "domain": null
-  },
-  {
     "path": "docs/business-os/strategy/HBAG/assessment/2026-02-21-launch-distribution-plan.user.md",
     "type": "Distribution-Plan",
     "status": "Draft",
@@ -2316,50 +2316,14 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HBAG/assessment/2026-02-21-naming-generation-spec.md",
-    "type": "Generation-Spec",
-    "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HBAG/assessment/2026-02-21-naming-research-summary.user.md",
-    "type": "Research-Summary",
-    "status": "Active",
-    "domain": null
-  },
-  {
     "path": "docs/business-os/strategy/HBAG/assessment/2026-02-27-logo-brief.user.md",
     "type": "Logo-Brief",
     "status": "Draft",
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HBAG/assessment/2026-02-27-product-naming-spec.md",
-    "type": "Product-Naming-Spec",
-    "status": "Draft",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HBAG/assessment/candidate-names-prompt-r2.md",
-    "type": "Reference",
-    "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HBAG/assessment/candidate-names-prompt.md",
-    "type": "Reference",
-    "status": "Active",
-    "domain": null
-  },
-  {
     "path": "docs/business-os/strategy/HBAG/assessment/current-problem-framing.user.md",
     "type": "Current-Problem-Framing",
-    "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HBAG/assessment/latest-candidate-names.user.md",
-    "type": "Reference",
     "status": "Active",
     "domain": null
   },
@@ -2370,25 +2334,73 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HBAG/assessment/naming-candidates-2026-02-21.md",
+    "path": "docs/business-os/strategy/HBAG/assessment/naming-workbench/2026-02-20-candidate-names.user.md",
+    "type": "Reference",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HBAG/assessment/naming-workbench/2026-02-21-candidate-names-r2.user.md",
+    "type": "Reference",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HBAG/assessment/naming-workbench/2026-02-21-naming-generation-spec.md",
+    "type": "Generation-Spec",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HBAG/assessment/naming-workbench/2026-02-21-naming-research-summary.user.md",
+    "type": "Research-Summary",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HBAG/assessment/naming-workbench/2026-02-27-product-naming-spec.md",
+    "type": "Product-Naming-Spec",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HBAG/assessment/naming-workbench/candidate-names-prompt-r2.md",
+    "type": "Reference",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HBAG/assessment/naming-workbench/candidate-names-prompt.md",
+    "type": "Reference",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HBAG/assessment/naming-workbench/latest-candidate-names.user.md",
+    "type": "Reference",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HBAG/assessment/naming-workbench/naming-candidates-2026-02-21.md",
     "type": "Naming-Candidates",
     "status": "Draft",
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HBAG/assessment/naming-shortlist-2026-02-21.user.md",
+    "path": "docs/business-os/strategy/HBAG/assessment/naming-workbench/naming-shortlist-2026-02-21.user.md",
     "type": "Naming-Shortlist",
     "status": "Draft",
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HBAG/assessment/product-naming-candidates-2026-02-27.md",
+    "path": "docs/business-os/strategy/HBAG/assessment/naming-workbench/product-naming-candidates-2026-02-27.md",
     "type": "Product-Naming-Candidates",
     "status": "Draft",
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HBAG/assessment/product-naming-shortlist-2026-02-27.user.md",
+    "path": "docs/business-os/strategy/HBAG/assessment/naming-workbench/product-naming-shortlist-2026-02-27.user.md",
     "type": "Product-Naming-Shortlist",
     "status": "Draft",
     "domain": null
@@ -2526,12 +2538,6 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HEAD/assessment/2026-02-20-candidate-names.user.md",
-    "type": "Deep-Research-Output",
-    "status": "Awaiting-Decision",
-    "domain": null
-  },
-  {
     "path": "docs/business-os/strategy/HEAD/assessment/2026-02-20-operator-context.user.md",
     "type": "Operator-Evidence",
     "status": "Active",
@@ -2574,12 +2580,6 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HEAD/assessment/2026-02-21-candidate-names-r2.user.md",
-    "type": "Deep-Research-Output",
-    "status": "Awaiting-Decision",
-    "domain": null
-  },
-  {
     "path": "docs/business-os/strategy/HEAD/assessment/2026-02-21-launch-distribution-plan.user.md",
     "type": "Distribution-Plan",
     "status": "Draft",
@@ -2588,24 +2588,6 @@
   {
     "path": "docs/business-os/strategy/HEAD/assessment/2026-02-21-measurement-profile.user.md",
     "type": "Measurement-Plan",
-    "status": "Draft",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HEAD/assessment/2026-02-22-naming-generation-spec.md",
-    "type": "Naming-Generation-Spec",
-    "status": "Complete",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HEAD/assessment/2026-02-26-product-naming-spec.md",
-    "type": "Product-Naming-Spec",
-    "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HEAD/assessment/2026-02-26-product-naming.user.md",
-    "type": "Product-Naming",
     "status": "Draft",
     "domain": null
   },
@@ -2619,24 +2601,6 @@
     "path": "docs/business-os/strategy/HEAD/assessment/DEC-HEAD-NAME-01.user.md",
     "type": "Decision-Record",
     "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HEAD/assessment/candidate-names-prompt-v2.md",
-    "type": "Candidate-Names-Prompt",
-    "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HEAD/assessment/candidate-names-prompt.md",
-    "type": "Candidate-Names-Prompt",
-    "status": "Active",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/HEAD/assessment/latest-candidate-names.user.md",
-    "type": "Deep-Research-Output",
-    "status": "Domain-Screened-Partially-Blocked",
     "domain": null
   },
   {
@@ -2658,73 +2622,121 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HEAD/assessment/naming-candidates-2026-02-21-r4.md",
+    "path": "docs/business-os/strategy/HEAD/assessment/naming-workbench/2026-02-20-candidate-names.user.md",
+    "type": "Deep-Research-Output",
+    "status": "Awaiting-Decision",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HEAD/assessment/naming-workbench/2026-02-21-candidate-names-r2.user.md",
+    "type": "Deep-Research-Output",
+    "status": "Awaiting-Decision",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HEAD/assessment/naming-workbench/2026-02-22-naming-generation-spec.md",
+    "type": "Naming-Generation-Spec",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HEAD/assessment/naming-workbench/2026-02-26-product-naming-spec.md",
+    "type": "Product-Naming-Spec",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HEAD/assessment/naming-workbench/2026-02-26-product-naming.user.md",
+    "type": "Product-Naming",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HEAD/assessment/naming-workbench/candidate-names-prompt-v2.md",
+    "type": "Candidate-Names-Prompt",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HEAD/assessment/naming-workbench/candidate-names-prompt.md",
+    "type": "Candidate-Names-Prompt",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HEAD/assessment/naming-workbench/latest-candidate-names.user.md",
+    "type": "Deep-Research-Output",
+    "status": "Domain-Screened-Partially-Blocked",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HEAD/assessment/naming-workbench/naming-candidates-2026-02-21-r4.md",
     "type": "Naming-Candidates",
     "status": "Draft",
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HEAD/assessment/naming-candidates-2026-02-21-r5.md",
+    "path": "docs/business-os/strategy/HEAD/assessment/naming-workbench/naming-candidates-2026-02-21-r5.md",
     "type": "Naming-Candidates",
     "status": "Draft",
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HEAD/assessment/naming-candidates-2026-02-21.md",
+    "path": "docs/business-os/strategy/HEAD/assessment/naming-workbench/naming-candidates-2026-02-21.md",
     "type": "Naming-Candidates",
     "status": "Draft",
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HEAD/assessment/naming-candidates-2026-02-22-r6.md",
+    "path": "docs/business-os/strategy/HEAD/assessment/naming-workbench/naming-candidates-2026-02-22-r6.md",
     "type": "Naming-Candidates",
     "status": "Draft",
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HEAD/assessment/naming-candidates-2026-02-26-r7.md",
+    "path": "docs/business-os/strategy/HEAD/assessment/naming-workbench/naming-candidates-2026-02-26-r7.md",
     "type": "Naming-Candidates",
     "status": "Draft",
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HEAD/assessment/naming-shortlist-2026-02-21-r4.user.md",
+    "path": "docs/business-os/strategy/HEAD/assessment/naming-workbench/naming-shortlist-2026-02-21-r4.user.md",
     "type": "Naming-Shortlist",
     "status": "Draft",
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HEAD/assessment/naming-shortlist-2026-02-21-r5.user.md",
+    "path": "docs/business-os/strategy/HEAD/assessment/naming-workbench/naming-shortlist-2026-02-21-r5.user.md",
     "type": "Naming-Shortlist",
     "status": "Draft",
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HEAD/assessment/naming-shortlist-2026-02-21.user.md",
+    "path": "docs/business-os/strategy/HEAD/assessment/naming-workbench/naming-shortlist-2026-02-21.user.md",
     "type": "Naming-Shortlist",
     "status": "Draft",
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HEAD/assessment/naming-shortlist-2026-02-22-r6.user.md",
+    "path": "docs/business-os/strategy/HEAD/assessment/naming-workbench/naming-shortlist-2026-02-22-r6.user.md",
     "type": "Naming-Shortlist",
     "status": "Draft",
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HEAD/assessment/naming-shortlist-2026-02-26-r7.user.md",
+    "path": "docs/business-os/strategy/HEAD/assessment/naming-workbench/naming-shortlist-2026-02-26-r7.user.md",
     "type": "Naming-Shortlist",
     "status": "Complete",
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HEAD/assessment/product-naming-candidates-2026-02-26.md",
+    "path": "docs/business-os/strategy/HEAD/assessment/naming-workbench/product-naming-candidates-2026-02-26.md",
     "type": "Product-Naming-Candidates",
     "status": "Draft",
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/HEAD/assessment/product-naming-shortlist-2026-02-26.user.md",
+    "path": "docs/business-os/strategy/HEAD/assessment/naming-workbench/product-naming-shortlist-2026-02-26.user.md",
     "type": "Product-Naming-Shortlist",
     "status": "Draft",
     "domain": null
@@ -2832,18 +2844,6 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/PET/assessment/2026-02-18-candidate-names.user.md",
-    "type": "Deep-Research-Output",
-    "status": "Awaiting-Decision",
-    "domain": null
-  },
-  {
-    "path": "docs/business-os/strategy/PET/assessment/2026-02-18-naming-prompt.user.md",
-    "type": "Deep-Research-Prompt",
-    "status": "Ready",
-    "domain": null
-  },
-  {
     "path": "docs/business-os/strategy/PET/assessment/launch-readiness-action-backlog.agent.md",
     "type": "Action-Backlog",
     "status": "Active",
@@ -2853,6 +2853,18 @@
     "path": "docs/business-os/strategy/PET/assessment/launch-readiness-action-backlog.user.md",
     "type": "Action-Backlog",
     "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/PET/assessment/naming-workbench/2026-02-18-candidate-names.user.md",
+    "type": "Deep-Research-Output",
+    "status": "Awaiting-Decision",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/PET/assessment/naming-workbench/2026-02-18-naming-prompt.user.md",
+    "type": "Deep-Research-Prompt",
+    "status": "Ready",
     "domain": null
   },
   {
@@ -2928,12 +2940,6 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/PWRB/assessment/2026-02-26-naming-generation-spec.md",
-    "type": "Naming-Generation-Spec",
-    "status": "Active",
-    "domain": null
-  },
-  {
     "path": "docs/business-os/strategy/PWRB/assessment/2026-02-26-problem-statement.user.md",
     "type": "Problem-Statement",
     "status": "Active",
@@ -2958,13 +2964,19 @@
     "domain": "Repo"
   },
   {
-    "path": "docs/business-os/strategy/PWRB/assessment/naming-candidates-2026-02-26.md",
+    "path": "docs/business-os/strategy/PWRB/assessment/naming-workbench/2026-02-26-naming-generation-spec.md",
+    "type": "Naming-Generation-Spec",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/PWRB/assessment/naming-workbench/naming-candidates-2026-02-26.md",
     "type": "Naming-Candidates",
     "status": "Draft",
     "domain": null
   },
   {
-    "path": "docs/business-os/strategy/PWRB/assessment/naming-shortlist-2026-02-26.user.md",
+    "path": "docs/business-os/strategy/PWRB/assessment/naming-workbench/naming-shortlist-2026-02-26.user.md",
     "type": "Naming-Shortlist",
     "status": "Active",
     "domain": null
@@ -5034,6 +5046,12 @@
     "domain": null
   },
   {
+    "path": "docs/plans/startup-loop-deprecation-sweep/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Infeasible",
+    "domain": "Infra"
+  },
+  {
     "path": "docs/plans/startup-loop-ideas-pipeline-redesign/critique-history.md",
     "type": "Critique-History",
     "status": "Reference",
@@ -5586,6 +5604,12 @@
     "domain": "Platform"
   },
   {
+    "path": "docs/plans/xa-uploader-media-path-and-publish-flow-hardening/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Platform"
+  },
+  {
     "path": "docs/plans/xa-uploader-usability-hardening/artifacts/scope-decision.md",
     "type": "Artifact",
     "status": "Complete",
@@ -5632,6 +5656,18 @@
     "type": "Results-Review",
     "status": "Draft",
     "domain": null
+  },
+  {
+    "path": "docs/plans/xa-uploader-workflow-rebuild/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Products"
+  },
+  {
+    "path": "docs/plans/xa-uploader-workflow-rebuild/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Products"
   },
   {
     "path": "docs/plans/xa-v2-plan.md",

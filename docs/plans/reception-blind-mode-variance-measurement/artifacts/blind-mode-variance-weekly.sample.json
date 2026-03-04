@@ -1,0 +1,79 @@
+{
+  "schema_version": "blind-mode-variance-report.v1",
+  "generated_at": "2026-03-04T20:30:00.000Z",
+  "activation_date": "2026-03-01",
+  "report_end_date": "2026-03-03",
+  "window_days": 28,
+  "baseline": {
+    "start": "2026-02-01",
+    "end": "2026-02-28",
+    "days": 28,
+    "cash_abs_mean": 1.0714285714285714,
+    "keycard_abs_mean": 0.10714285714285714,
+    "combined_abs_mean": 1.1785714285714286,
+    "cash_signed_mean": 0.35714285714285715,
+    "keycard_signed_mean": 0.03571428571428571,
+    "combined_signed_mean": 0.39285714285714285,
+    "included_dates": [
+      "2026-02-01",
+      "2026-02-02",
+      "2026-02-03",
+      "2026-02-04",
+      "2026-02-05",
+      "2026-02-06",
+      "2026-02-07",
+      "2026-02-08",
+      "2026-02-09",
+      "2026-02-10",
+      "2026-02-11",
+      "2026-02-12",
+      "2026-02-13",
+      "2026-02-14",
+      "2026-02-15",
+      "2026-02-16",
+      "2026-02-17",
+      "2026-02-18",
+      "2026-02-19",
+      "2026-02-20",
+      "2026-02-21",
+      "2026-02-22",
+      "2026-02-23",
+      "2026-02-24",
+      "2026-02-25",
+      "2026-02-26",
+      "2026-02-27",
+      "2026-02-28"
+    ]
+  },
+  "post": {
+    "start": "2026-03-01",
+    "end": "2026-03-03",
+    "days": 3,
+    "cash_abs_mean": 2.6666666666666665,
+    "keycard_abs_mean": 1,
+    "combined_abs_mean": 3.6666666666666665,
+    "cash_signed_mean": 0.6666666666666666,
+    "keycard_signed_mean": -0.3333333333333333,
+    "combined_signed_mean": 0.3333333333333333,
+    "included_dates": [
+      "2026-03-01",
+      "2026-03-02",
+      "2026-03-03"
+    ]
+  },
+  "deltas": {
+    "cash_abs_mean_change": 1.5952380952380951,
+    "keycard_abs_mean_change": 0.8928571428571429,
+    "combined_abs_mean_change": 2.488095238095238,
+    "cash_abs_improvement_percent": -148.88888888888889,
+    "keycard_abs_improvement_percent": -833.3333333333334,
+    "combined_abs_improvement_percent": -211.11111111111111
+  },
+  "warnings": [
+    "Post window truncated because activation date is inside requested window. using 2026-03-01 -> 2026-03-03"
+  ],
+  "assumptions": {
+    "missing_day_treated_as_zero_discrepancy": true,
+    "timezone_for_date_grouping": "Europe/Rome"
+  }
+}

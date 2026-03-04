@@ -11,6 +11,7 @@ export type StaticRedirectRule = {
 };
 
 const LOCALIZED_ALIAS_REWRITE = 200 as const;
+const INTERNAL_TO_LOCALIZED_REDIRECT = 301 as const;
 
 function withTrailingSlash(path: string): string {
   return path.endsWith("/") ? path : `${path}/`;
@@ -21,8 +22,9 @@ function addRule(
   seen: Set<string>,
   from: string,
   to: string,
+  status: 200 | 301,
 ): void {
-  const rule: StaticRedirectRule = { from, to, status: LOCALIZED_ALIAS_REWRITE };
+  const rule: StaticRedirectRule = { from, to, status };
   const key = formatRedirectRule(rule);
   if (seen.has(key)) return;
   seen.add(key);
@@ -34,10 +36,11 @@ function addBaseAndNestedRules(
   seen: Set<string>,
   sourceBase: string,
   targetBase: string,
+  status: 200 | 301,
 ): void {
-  addRule(rules, seen, sourceBase, targetBase);
-  addRule(rules, seen, withTrailingSlash(sourceBase), withTrailingSlash(targetBase));
-  addRule(rules, seen, `${sourceBase}/*`, `${targetBase}/:splat`);
+  addRule(rules, seen, sourceBase, targetBase, status);
+  addRule(rules, seen, withTrailingSlash(sourceBase), withTrailingSlash(targetBase), status);
+  addRule(rules, seen, `${sourceBase}/*`, `${targetBase}/:splat`, status);
 }
 
 function addLocalizedTagsRules(
@@ -50,11 +53,15 @@ function addLocalizedTagsRules(
   const internalExperiences = INTERNAL_SEGMENT_BY_KEY.experiences;
   const internalGuidesTags = INTERNAL_SEGMENT_BY_KEY.guidesTags;
 
-  const sourceBase = `/${lang}/${localizedExperiences}/${localizedGuidesTags}`;
-  const targetBase = `/${lang}/${internalExperiences}/${internalGuidesTags}`;
+  const localizedBase = `/${lang}/${localizedExperiences}/${localizedGuidesTags}`;
+  const internalBase = `/${lang}/${internalExperiences}/${internalGuidesTags}`;
 
-  if (sourceBase === targetBase) return;
-  addBaseAndNestedRules(rules, seen, sourceBase, targetBase);
+  if (localizedBase === internalBase) return;
+
+  // Canonical contract: internal paths permanently redirect to localized URLs.
+  addBaseAndNestedRules(rules, seen, internalBase, localizedBase, INTERNAL_TO_LOCALIZED_REDIRECT);
+  // Rendering contract: localized paths still resolve the internal App Router tree.
+  addBaseAndNestedRules(rules, seen, localizedBase, internalBase, LOCALIZED_ALIAS_REWRITE);
 }
 
 function addLocalizedSectionRules(
@@ -67,9 +74,14 @@ function addLocalizedSectionRules(
     const internalSection = INTERNAL_SEGMENT_BY_KEY[key];
     if (localizedSection === internalSection) continue;
 
-    const sourceBase = `/${lang}/${localizedSection}`;
-    const targetBase = `/${lang}/${internalSection}`;
-    addBaseAndNestedRules(rules, seen, sourceBase, targetBase);
+    const localizedBase = `/${lang}/${localizedSection}`;
+    const internalBase = `/${lang}/${internalSection}`;
+
+    addBaseAndNestedRules(rules, seen, internalBase, localizedBase, INTERNAL_TO_LOCALIZED_REDIRECT);
+
+    // /en/book-dorm-bed is an explicit route; avoid rewriting it back to /en/book.
+    if (key === "book" && lang === "en") continue;
+    addBaseAndNestedRules(rules, seen, localizedBase, internalBase, LOCALIZED_ALIAS_REWRITE);
   }
 }
 
@@ -79,7 +91,7 @@ export function buildLocalizedStaticRedirectRules(
   const rules: StaticRedirectRule[] = [];
   const seen = new Set<string>();
 
-  // Place tags redirects before section wildcards to avoid unnecessary redirect hops.
+  // Keep tags rules before generic section wildcards to avoid extra hops.
   for (const lang of languages) {
     addLocalizedTagsRules(lang, rules, seen);
   }

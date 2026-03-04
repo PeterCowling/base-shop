@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 2,
+  "baselineLocale": "en",
+  "locales": [
+    "pt"
+  ],
+  "summary": {
+    "totalMissingFiles": 0,
+    "totalMissingKeys": 0,
+    "totalUntranslatedKeys": 8
+  },
+  "reports": [
+    {
+      "locale": "pt",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {
+        "barMenuPage.json": [
+          "items.hendricks.name"
+        ],
+        "guides.tags.json": [
+          "tags.ferry.label"
+        ],
+        "guides/content/lauritoBeachBusBack.json": [
+          "articleLead.stopCaption"
+        ],
+        "guides/tags.json": [
+          "labels.ferry"
+        ],
+        "howToGetHere.json": [
+          "filters.transportModes.ferry",
+          "romePlanner.route.salerno.ferry.steps.from.2",
+          "romePlanner.route.salerno.ferry.steps.to.3",
+          "romePlanner.tag.ferry"
+        ]
+      }
+    }
+  ]
+}

@@ -7,6 +7,9 @@ import { Grid } from "@acme/design-system/primitives";
 import { cn } from "@acme/design-system/utils/style";
 import { SimpleModal } from "@acme/ui/molecules";
 
+import { useAuth } from "../context/AuthContext";
+import { canAccess } from "../lib/roles";
+import { isStaffAccountsPeteIdentity } from "../lib/staffAccountsAccess";
 import { type ModalAction } from "../types/component/ModalAction";
 
 interface WithIconModalConfig {
@@ -25,6 +28,17 @@ export interface IconModalProps {
 export function withIconModal(config: WithIconModalConfig) {
   return function IconModal({ visible, onClose, interactive = true }: IconModalProps) {
     const router = useRouter();
+    const { user: authUser } = useAuth();
+
+    const visibleActions = config.actions.filter((action) => {
+      if (action.permission && !canAccess(authUser, action.permission)) {
+        return false;
+      }
+      if (action.peteOnly && !isStaffAccountsPeteIdentity(authUser)) {
+        return false;
+      }
+      return true;
+    });
 
     const handleActionClick = (route: string) => {
       if (!interactive) return;
@@ -46,7 +60,7 @@ export function withIconModal(config: WithIconModalConfig) {
         }
       >
         <Grid cols={3} gap={3}>
-          {config.actions.map((action) => {
+          {visibleActions.map((action) => {
             const Icon = action.icon;
             return (
               <button

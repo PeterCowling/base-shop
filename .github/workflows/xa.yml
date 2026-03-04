@@ -166,6 +166,13 @@ jobs:
       - name: Build workspace package dependencies
         run: pnpm exec turbo run build --filter=@apps/xa-uploader^...
 
+      - name: Preflight xa-uploader deploy secrets
+        run: cd apps/xa-uploader && pnpm run preflight:deploy -- --env preview --sync-deploy-hook-from-env
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          XA_B_DEPLOY_HOOK_URL: ${{ secrets.XA_B_DEPLOY_HOOK_URL_PREVIEW }}
+
       - name: Build xa-uploader (OpenNext)
         run: cd apps/xa-uploader && pnpm exec opennextjs-cloudflare build
 

@@ -216,6 +216,8 @@ function BookPageContent({ lang, heading, includedRoomIds, itemListId = "book_ro
     to: safeParseIso(initialCheckout),
   });
   const [pax, setPax] = useState(initialPax);
+  const [showSelectDatesPrompt, setShowSelectDatesPrompt] = useState(false);
+  const calendarAnchorRef = useRef<HTMLDivElement | null>(null);
   const checkin = range.from ? formatDate(range.from) : "";
   const checkout = range.to ? formatDate(range.to) : "";
 
@@ -249,6 +251,12 @@ function BookPageContent({ lang, heading, includedRoomIds, itemListId = "book_ro
     [checkin, checkout, pax],
   );
 
+  useEffect(() => {
+    if (roomQueryState !== "absent" && showSelectDatesPrompt) {
+      setShowSelectDatesPrompt(false);
+    }
+  }, [roomQueryState, showSelectDatesPrompt]);
+
   // TC-03-01: useAvailability called unconditionally (hooks invariant — no conditional calls).
   const availabilityCheckin = checkin || todayIso;
   const availabilityCheckout = checkout || getDatePlusTwoDays(availabilityCheckin);
@@ -277,6 +285,7 @@ function BookPageContent({ lang, heading, includedRoomIds, itemListId = "book_ro
     if (roomQueryState !== "absent" || !indicativeRoomPrices) return null;
     return getIndicativeDisclosure(indicativePricesSeed);
   }, [indicativeRoomPrices, roomQueryState]);
+  const selectDatesPromptText = t("searchPrompt.selectDatesAndGuests") as string;
 
   // TC-01: fire search_availability when dates/pax change; debounced + deduped.
   useEffect(
@@ -288,6 +297,12 @@ function BookPageContent({ lang, heading, includedRoomIds, itemListId = "book_ro
     fireViewItemList({ itemListId, rooms: displayedRooms });
     seedInitialSearchTelemetry(mountedSearchRef.current, initialValuesRef.current, lastSearchKeyRef);
   }, [displayedRooms, itemListId]); // mount only
+
+  const handleRequireSearchInput = (): void => {
+    setShowSelectDatesPrompt(true);
+    calendarAnchorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    calendarAnchorRef.current?.focus({ preventScroll: true });
+  };
 
   return (
     <>
@@ -307,6 +322,7 @@ function BookPageContent({ lang, heading, includedRoomIds, itemListId = "book_ro
 
         <BookPageSearchPanel
           lang={lang}
+          calendarAnchorRef={calendarAnchorRef}
           range={range}
           pax={pax}
           onRangeChange={(newRange) => setRange(newRange ?? { from: undefined, to: undefined })}
@@ -320,6 +336,8 @@ function BookPageContent({ lang, heading, includedRoomIds, itemListId = "book_ro
           checkOutLabelText={t("date.checkOutLabel", { defaultValue: "Check out" }) as string}
           guestsLabelText={t("date.guests", { defaultValue: "Guests" }) as string}
           showConstraintGuidance={showConstraintGuidance}
+          showSelectDatesPrompt={showSelectDatesPrompt}
+          selectDatesPromptText={selectDatesPromptText}
           showRebuildQuotePrompt={showRebuildQuotePrompt}
         />
       </Section>
@@ -332,6 +350,7 @@ function BookPageContent({ lang, heading, includedRoomIds, itemListId = "book_ro
         availabilityRooms={availabilityRooms}
         roomPricesOverride={indicativeRoomPrices}
         includeRoomIds={includedRoomIds}
+        onRequireSearchInput={handleRequireSearchInput}
         bookingQuery={{
           checkIn: checkin,
           checkOut: checkout,

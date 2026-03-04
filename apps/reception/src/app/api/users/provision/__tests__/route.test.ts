@@ -9,12 +9,14 @@ jest.mock("../../../mcp/_shared/staff-auth", () => ({
 const requireStaffAuthMock = requireStaffAuth as jest.Mock;
 
 const OWNER_AUTH = {
+  ok: true as const,
   uid: "owner-uid",
   roles: ["owner"],
   email: "owner@test.com",
 };
 
 const STAFF_AUTH = {
+  ok: true as const,
   uid: "staff-uid",
   roles: ["staff"],
   email: "staff@test.com",
@@ -23,6 +25,7 @@ const STAFF_AUTH = {
 const originalFetch = global.fetch;
 const originalApiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
 const originalDbUrl = process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL;
+const originalPeteEmails = process.env.RECEPTION_STAFF_ACCOUNTS_PETE_EMAILS;
 
 function makeRequest(body: unknown, bearer = "valid-owner-token"): Request {
   return new Request("http://localhost/api/users/provision", {
@@ -58,6 +61,7 @@ beforeEach(() => {
   process.env.NEXT_PUBLIC_FIREBASE_API_KEY = "test-api-key";
   process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL =
     "https://example.firebaseio.com";
+  process.env.RECEPTION_STAFF_ACCOUNTS_PETE_EMAILS = "owner@test.com";
   requireStaffAuthMock.mockResolvedValue(OWNER_AUTH);
 });
 
@@ -65,6 +69,7 @@ afterEach(() => {
   global.fetch = originalFetch;
   process.env.NEXT_PUBLIC_FIREBASE_API_KEY = originalApiKey;
   process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL = originalDbUrl;
+  process.env.RECEPTION_STAFF_ACCOUNTS_PETE_EMAILS = originalPeteEmails;
 });
 
 describe("POST /api/users/provision", () => {
@@ -209,13 +214,13 @@ describe("POST /api/users/provision", () => {
     const auditBody = JSON.parse(auditCall[1].body as string) as {
       action: string;
       targetEmail: string;
-      targetRole: string;
+      targetRoles: string[];
       createdBy: string;
     };
 
     expect(auditBody.action).toBe("user_provisioned");
     expect(auditBody.targetEmail).toBe("audit@example.com");
-    expect(auditBody.targetRole).toBe("staff");
+    expect(auditBody.targetRoles).toEqual(["staff"]);
     expect(auditBody.createdBy).toBe("owner-uid");
     expect(auditCall[0]).toContain("/audit/settingChanges/");
   });

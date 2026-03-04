@@ -262,4 +262,85 @@ describe("prime_process_outbound_drafts — label attribution (TC-07)", () => {
       );
     }
   });
+
+  it("TC-07-05: invalid Firebase records are skipped and reported", async () => {
+    mockFetch.mockImplementation(async (url: string, opts?: RequestInit) => {
+      if (!opts || opts.method === undefined || opts.method === "GET") {
+        return makeFirebaseResponse({
+          "record-valid": makePendingRecord("pre-arrival"),
+          "record-invalid": {
+            to: "not-an-email",
+            subject: "",
+            bodyText: "",
+            category: "pre-arrival",
+            status: "pending",
+            createdAt: "not-a-date",
+          },
+        });
+      }
+      return makeFirebasePatchResponse();
+    });
+
+    const result = await handleOutboundDraftTool("prime_process_outbound_drafts", {
+      firebaseUrl: BASE_FIREBASE_URL,
+    });
+
+    const payload = JSON.parse(result.content[0].text) as {
+      processed: number;
+      drafted: number;
+      invalidRecords: Array<{ id: string; error: string }>;
+    };
+
+    expect(payload.processed).toBe(1);
+    expect(payload.drafted).toBe(1);
+    expect(payload.invalidRecords).toHaveLength(1);
+    expect(payload.invalidRecords[0]?.id).toBe("record-invalid");
+    expect(gmailStub.users.drafts.create).toHaveBeenCalledTimes(1);
+    const invalidPatchCall = mockFetch.mock.calls.find(
+      ([url, opts]) =>
+        String(url).includes("/outboundDrafts/record-invalid.json") &&
+        opts?.method === "PATCH",
+    );
+    expect(invalidPatchCall).toBeDefined();
+    expect(String(invalidPatchCall?.[1]?.body)).toContain('"status":"failed"');
+  });
+
+  it("TC-07-06: only invalid Firebase records return no-pending summary", async () => {
+    mockFetch.mockImplementation(async (url: string, opts?: RequestInit) => {
+      if (!opts || opts.method === undefined || opts.method === "GET") {
+        return makeFirebaseResponse({
+          "record-invalid": {
+            to: "broken",
+            subject: "",
+            bodyText: "",
+            category: "pre-arrival",
+            status: "pending",
+            createdAt: "also-broken",
+          },
+        });
+      }
+      return makeFirebasePatchResponse();
+    });
+
+    const result = await handleOutboundDraftTool("prime_process_outbound_drafts", {
+      firebaseUrl: BASE_FIREBASE_URL,
+    });
+    const payload = JSON.parse(result.content[0].text) as {
+      processed: number;
+      invalidRecords: Array<{ id: string; error: string }>;
+      message: string;
+    };
+
+    expect(payload.processed).toBe(0);
+    expect(payload.invalidRecords).toHaveLength(1);
+    expect(payload.message).toContain("filtering invalid records");
+    expect(gmailStub.users.drafts.create).not.toHaveBeenCalled();
+    const invalidPatchCall = mockFetch.mock.calls.find(
+      ([url, opts]) =>
+        String(url).includes("/outboundDrafts/record-invalid.json") &&
+        opts?.method === "PATCH",
+    );
+    expect(invalidPatchCall).toBeDefined();
+    expect(String(invalidPatchCall?.[1]?.body)).toContain("Invalid outbound draft record");
+  });
 });

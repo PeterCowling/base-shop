@@ -96,7 +96,6 @@ const COUNT_BADGE_CLASSES = [
   "uppercase",
   "tracking-wider",
   "text-fg-inverse",
-  "backdrop-blur-sm",
   "lg:mb-3",
 ] as const;
 
@@ -189,7 +188,7 @@ function GroupedGuideSection({
 
         {/* Content */}
         <div className={clsx(CONTENT_CLASSES)}>
-          <div className="inline-flex flex-col rounded-2xl bg-overlay-scrim-1 px-4 py-3 shadow-lg backdrop-blur-sm sm:px-5 sm:py-4">
+          <div className="inline-flex flex-col rounded-2xl bg-overlay-scrim-1 px-4 py-3 shadow-lg sm:px-5 sm:py-4">
             <span className={clsx(COUNT_BADGE_CLASSES)}>
               <svg
                 className="size-3.5"

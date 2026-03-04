@@ -1,0 +1,13 @@
+{
+  "totalRowsLoaded": 30,
+  "rowsProcessed": 30,
+  "processingErrors": 0,
+  "baselineQualityPassCount": 18,
+  "deterministicQualityPassCount": 18,
+  "regressions": 0,
+  "hardRuleProtectedCategoryViolations": 0,
+  "startedAt": "2026-03-02T15:55:54.517Z",
+  "finishedAt": "2026-03-02T15:55:55.050Z",
+  "inputPath": "/Users/petercowling/base-shop/.agents/private/email-sample-stage-1.txt",
+  "limit": 30
+}

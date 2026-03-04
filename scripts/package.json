@@ -33,7 +33,10 @@
     "startup-loop:self-evolving-write-back": "node --import tsx src/startup-loop/self-evolving/self-evolving-write-back.ts",
     "startup-loop:pattern-promote-loop-update": "node --import tsx src/startup-loop/build/lp-do-pattern-promote-loop-update.ts",
     "startup-loop:pattern-promote-skill-proposal": "node --import tsx src/startup-loop/build/lp-do-pattern-promote-skill-proposal.ts",
-    "startup-loop:ideas-keyword-calibrate": "node --import tsx src/startup-loop/ideas/lp-do-ideas-keyword-calibrate.ts"
+    "startup-loop:ideas-keyword-calibrate": "node --import tsx src/startup-loop/ideas/lp-do-ideas-keyword-calibrate.ts",
+    "startup-loop:naming-round-analytics": "node --import tsx src/startup-loop/naming/round-analytics.ts",
+    "startup-loop:hbag-pdp-funnel-feed": "node --import tsx src/startup-loop/diagnostics/hbag-pdp-funnel-feed.ts",
+    "reception:blind-mode-variance-report": "node --import tsx src/reception/blind-mode-variance-report.ts"
   },
   "dependencies": {
     "@acme/lib": "workspace:*",

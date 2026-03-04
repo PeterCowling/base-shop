@@ -7,7 +7,7 @@ Workstream: Mixed
 Created: 2026-02-24
 Last-updated: 2026-02-24
 Last-reviewed: 2026-02-24
-Relates-to: docs/business-os/startup-loop/loop-spec.yaml
+Relates-to: docs/business-os/startup-loop/specifications/loop-spec.yaml
 Feature-Slug: startup-loop-launch-acceleration-gap-fill
 Execution-Track: mixed
 Deliverable-Family: multi
@@ -56,13 +56,13 @@ Audit the startup-loop system for near-term acceleration leverage: specifically 
 ## Evidence Audit (Current State)
 ### Entry Points
 - `docs/business-os/startup-loop-workflow.user.md` - operator workflow, manual handoff requirements, and current stage-status snapshots.
-- `docs/business-os/startup-loop/loop-spec.yaml` - canonical stage graph and `prompt_required` distribution.
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml` - canonical stage graph and `prompt_required` distribution.
 - `.claude/skills/startup-loop/SKILL.md` - orchestrator wrapper and stage routing model.
 - `.claude/skills/startup-loop/modules/cmd-advance.md` - advance-time gate logic and manual action requirements.
-- `docs/business-os/startup-loop/marketing-sales-capability-contract.md` - capability completeness and current status.
-- `docs/business-os/startup-loop/demand-evidence-pack-schema.md` - required demand signal structure.
-- `docs/business-os/startup-loop/s10-weekly-orchestration-contract-v1.md` - weekly decision orchestration and failure posture.
-- `docs/business-os/startup-loop/loop-output-contracts.md` - Layer B -> Layer A signal handoff contract.
+- `docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md` - capability completeness and current status.
+- `docs/business-os/startup-loop/schemas/demand-evidence-pack-schema.md` - required demand signal structure.
+- `docs/business-os/startup-loop/contracts/s10-weekly-orchestration-contract-v1.md` - weekly decision orchestration and failure posture.
+- `docs/business-os/startup-loop/contracts/loop-output-contracts.md` - Layer B -> Layer A signal handoff contract.
 - `packages/mcp-server/src/tools/loop.ts` - available loop/metering tooling surface.
 - `packages/mcp-server/src/tools/bos.ts` - BOS sync tooling surface.
 - `https://github.com/Dicklesworthstone/coding_agent_session_search` - CASS session indexing/search patterns.
@@ -74,12 +74,12 @@ Audit the startup-loop system for near-term acceleration leverage: specifically 
 - `docs/business-os/startup-loop-workflow.user.md:501` - required operator handoff message includes manual save/pointer/render steps.
 - `docs/business-os/startup-loop-workflow.user.md:562` - prompt handoff map spans ASSESSMENT, MEASURE, MARKET, WEBSITE, SIGNALS.
 - `docs/business-os/startup-loop-workflow.user.md:584` - explicit output hygiene steps required on every prompt run.
-- `docs/business-os/startup-loop/loop-spec.yaml` - local parse shows 15 `prompt_required: true` stage definitions (command-backed; see Reproducible Evidence Commands below).
-- `docs/business-os/startup-loop/marketing-sales-capability-contract.md:39` - CAP-02 marked missing first-class enforcement [stale as-of 2026-02-17 table baseline].
-- `docs/business-os/startup-loop/marketing-sales-capability-contract.md:53` - `message-variants.user.md` still recorded as proposed/deferred [stale as-of 2026-02-17 table baseline].
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml` - local parse shows 15 `prompt_required: true` stage definitions (command-backed; see Reproducible Evidence Commands below).
+- `docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md:39` - CAP-02 marked missing first-class enforcement [stale as-of 2026-02-17 table baseline].
+- `docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md:53` - `message-variants.user.md` still recorded as proposed/deferred [stale as-of 2026-02-17 table baseline].
 - `packages/mcp-server/src/tools/loop.ts:115` - measurement connector list includes `stripe`, `d1_prisma`, `cloudflare`, `ga4_search_console`, `email_support`.
 - `packages/mcp-server/src/tools/loop.ts:560` - `loop_content_sources_collect` exists for source artifact ingestion.
-- `docs/business-os/startup-loop/s10-weekly-orchestration-contract-v1.md:183` - first-iteration no-block policy for failures.
+- `docs/business-os/startup-loop/contracts/s10-weekly-orchestration-contract-v1.md:183` - first-iteration no-block policy for failures.
 - startup-loop docs/skills currently expose no canonical transcript input path for agent-session mining.
   - Evidence: targeted scan on `docs/business-os/startup-loop*` and `.claude/skills/startup-loop*` for `.claude/projects`, `.claude/sessions`, `.codex`, `session transcript`, `conversation transcript` returned no matches (2026-02-24).
 
@@ -87,7 +87,7 @@ Audit the startup-loop system for near-term acceleration leverage: specifically 
 1. `prompt_required` stage count and IDs:
 
 ```bash
-awk '/^[[:space:]]*- id:/{id=$3}/prompt_required: true/{print id}' docs/business-os/startup-loop/loop-spec.yaml | tee /tmp/prompt_required_ids.txt && wc -l /tmp/prompt_required_ids.txt
+awk '/^[[:space:]]*- id:/{id=$3}/prompt_required: true/{print id}' docs/business-os/startup-loop/specifications/loop-spec.yaml | tee /tmp/prompt_required_ids.txt && wc -l /tmp/prompt_required_ids.txt
 ```
 
 Output:
@@ -184,7 +184,7 @@ RESULT: PASS — all contract checks passed
 - Prompt-heavy stages still depend on operator-run external workflows and manual artifact hygiene.
   - Evidence: `docs/business-os/startup-loop-workflow.user.md:476`, `:501`, `:562`, `:584`.
 - Capability contracts exist, but high-value revenue primitives are still weakly captured in practice (message variants/sales ops/retention artifacts absent for HEAD/PET/BRIK in repo scan).
-  - Evidence: `docs/business-os/startup-loop/marketing-sales-capability-contract.md:39`, `:53`; file presence check on `docs/business-os/strategy/{HEAD,PET,BRIK}/{message-variants.user.md,sales-ops.user.md,retention.user.md}`.
+  - Evidence: `docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md:39`, `:53`; file presence check on `docs/business-os/strategy/{HEAD,PET,BRIK}/{message-variants.user.md,sales-ops.user.md,retention.user.md}`.
 - Structural tooling is ahead of operational adoption: loop/bos tooling surfaces are broad, but launch-ops ingestion remains partial.
   - Evidence: `packages/mcp-server/src/tools/loop.ts:560`, `packages/mcp-server/src/tools/bos.ts:289`.
 - Weekly orchestration is contract-defined, but repo artifact footprint indicates sparse adoption (`s10-weekly-packet-*` absent in HEAD/PET/BRIK directories; weekly decision files present only at 2026-02-12 for HEAD/PET and 2026-02-13 for BRIK in current tree).
@@ -192,11 +192,11 @@ RESULT: PASS — all contract checks passed
 
 ### Data & Contracts
 - Existing closed-loop contract is explicit: `results-review.user.md` feeds Layer A standing updates.
-  - Evidence: `docs/business-os/startup-loop/loop-output-contracts.md:20`, `:150`, `:157`, `:177`.
+  - Evidence: `docs/business-os/startup-loop/contracts/loop-output-contracts.md:20`, `:150`, `:157`, `:177`.
 - Weekly operations intentionally tolerate restricted/noisy conditions without blocking stage close in phase 1.
-  - Evidence: `docs/business-os/startup-loop/s10-weekly-orchestration-contract-v1.md:178`, `:183`, `:192`.
+  - Evidence: `docs/business-os/startup-loop/contracts/s10-weekly-orchestration-contract-v1.md:178`, `:183`, `:192`.
 - Demand Evidence Pack already defines pass-floor fields usable as a signal schema.
-  - Evidence: `docs/business-os/startup-loop/demand-evidence-pack-schema.md`.
+  - Evidence: `docs/business-os/startup-loop/schemas/demand-evidence-pack-schema.md`.
 
 ### External Research (CASS/CASS Memory/Meta Skill)
 - CASS (`coding_agent_session_search`) provides a local index over multi-agent coding session history and explicit non-interactive robot/json interfaces (`cass search/view/expand --robot|--json`).
@@ -291,9 +291,9 @@ For every new capture/automation workload, planning must produce:
 | Conversation gap observations | `docs/business-os/startup-loop/discovery/<YYYY-MM-DD>-conversation-gap-observations.json` | `v1`; `work_unit`, `outside_loop_step`, `proposed_stage`, `proposed_skill`, `signal_artifact`, `confidence`, `source_session_ref_hash`, `captured_at` | `lp-discover-loop-gaps-from-sessions` | Proposed ACC-01 check in `scripts/check-startup-loop-contracts.sh` extension | `/lp-do-fact-find`, `/lp-do-plan`, loop maintainers | weekly | add sample block in planned `conversation-gap-observations-schema-v1.md` |
 | Research run log | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-research-run-log.user.md` | `v1`; target artifact path, source citations, checklist status, render status, duration fields | `lp-research-handoff-runner` | Proposed ACC-02 check (required checklist + rendered companion) | MARKET/WEBSITE stages, fact-find | per run (same day) | add sample in planned `research-run-log-schema-v1.md` |
 | Message variants (CAP-02) | `docs/business-os/strategy/<BIZ>/message-variants.user.md` | `v1` (new schema to define); variant text, channel, numerator, denominator, outcome, timestamp, source tag | `lp-capture-demand-signals` | Proposed ACC-03 check + CAP-02 schema validator | SELL/SIGNALS, weekly decision, bottleneck diagnosis | weekly | add sample in planned `message-variants-schema-v1.md` |
-| Sales ops (CAP-05) | `docs/business-os/strategy/<BIZ>/sales-ops.user.md` | Existing canonical schema: `docs/business-os/startup-loop/sales-ops-schema.md` | `lp-capture-sales-ops` | existing schema review + proposed ACC-04 recency check | SIGNALS, forecast, prioritize | weekly while active | `docs/business-os/startup-loop/sales-ops-schema.md` examples |
-| Retention (CAP-06) | `docs/business-os/strategy/<BIZ>/retention.user.md` | Existing canonical schema: `docs/business-os/startup-loop/retention-schema.md` | `lp-capture-retention` | existing schema review + proposed ACC-05 recency check | SIGNALS, forecast recalibration | weekly once activated | `docs/business-os/startup-loop/retention-schema.md` examples |
-| Weekly packet | `docs/business-os/strategy/<BIZ>/s10-weekly-packet-<YYYY-Www>.md` + latest pointer file | Existing canonical schema: `docs/business-os/startup-loop/s10-weekly-packet-schema-v1.md` | `lp-weekly` | existing weekly packet preflight + proposed ACC-06 freshness scan | S10 operator decisions, signal review | weekly | `docs/business-os/startup-loop/s10-weekly-packet-schema-v1.md` sample packet |
+| Sales ops (CAP-05) | `docs/business-os/strategy/<BIZ>/sales-ops.user.md` | Existing canonical schema: `docs/business-os/startup-loop/schemas/sales-ops-schema.md` | `lp-capture-sales-ops` | existing schema review + proposed ACC-04 recency check | SIGNALS, forecast, prioritize | weekly while active | `docs/business-os/startup-loop/schemas/sales-ops-schema.md` examples |
+| Retention (CAP-06) | `docs/business-os/strategy/<BIZ>/retention.user.md` | Existing canonical schema: `docs/business-os/startup-loop/schemas/retention-schema.md` | `lp-capture-retention` | existing schema review + proposed ACC-05 recency check | SIGNALS, forecast recalibration | weekly once activated | `docs/business-os/startup-loop/schemas/retention-schema.md` examples |
+| Weekly packet | `docs/business-os/strategy/<BIZ>/s10-weekly-packet-<YYYY-Www>.md` + latest pointer file | Existing canonical schema: `docs/business-os/startup-loop/schemas/s10-weekly-packet-schema-v1.md` | `lp-weekly` | existing weekly packet preflight + proposed ACC-06 freshness scan | S10 operator decisions, signal review | weekly | `docs/business-os/startup-loop/schemas/s10-weekly-packet-schema-v1.md` sample packet |
 | Source index | `docs/business-os/strategy/<BIZ>/sources.index.json` | `v1`; `source_id`, `url`, `captured_at`, `freshness_days`, `coverage_score`, `provenance` | source collector wrapper | Proposed ACC-07 source-index validator | standing refresh prompts, MARKET/SEO updates | monthly or on major shift | add sample in planned `sources-index-schema-v1.md` |
 | Measure snapshot extensions | run-scoped measure snapshot artifact (via `measure_snapshot_get`) | `v1`; metric, numerator, denominator, source, window_start/end, attribution_confidence | connector collectors + measure normalizer | existing measure pipeline validation + proposed ACC-08 denominator checks | weekly KPCS, forecast, anomalies | weekly | add sample in planned `measure-snapshot-extension-schema-v1.md` |
 
@@ -419,7 +419,7 @@ For every new capture/automation workload, planning must produce:
   - Evidence: `scripts/check-startup-loop-contracts.sh` pass, plus manual handoff burden in workflow docs.
 - Q: Is there already a schema foundation for demand signal capture?
   - A: Yes; DEP schema exists and can be used as a direct automation substrate.
-  - Evidence: `docs/business-os/startup-loop/demand-evidence-pack-schema.md`.
+  - Evidence: `docs/business-os/startup-loop/schemas/demand-evidence-pack-schema.md`.
 - Q: Does loop tooling already support source collection and anomaly checks?
   - A: Yes, partially; source collection and anomaly tools exist, but flow-level coupling is incomplete.
   - Evidence: `packages/mcp-server/src/tools/loop.ts:560`, `:601`, `:616`, `:631`.

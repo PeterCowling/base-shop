@@ -1,17 +1,108 @@
 {
-  "last_updated": "2026-03-04T11:47:59.091Z",
+  "last_updated": "2026-03-04T21:25:00.000Z",
   "counts": {
-    "enqueued": 66,
-    "processed": 17,
+    "enqueued": 85,
+    "processed": 18,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
     "completed": 108,
-    "fact_find_ready": 104,
-    "total": 217
+    "fact_find_ready": 124,
+    "total": 237
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304201100-0990",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:reception-till-blind-mode-variance-measurement-gap:20260304",
+      "anchor_key": "reception-till-blind-mode-variance-measurement-gap",
+      "cluster_key": "BOS:BOS:reception-till-blind-mode-variance-measurement-gap:operator:20260304",
+      "cluster_fingerprint": "b364442c885e5aacd7a1d733b72a74dfecba284a3afaca33c2b0be52d4784076",
+      "lineage_depth": 0,
+      "area_anchor": "Reception blind-mode variance — no post-deployment measurement path",
+      "location_anchors": [
+        "docs/plans/_archive/reception-till-blind-mode/results-review.user.md",
+        "apps/reception/src/components/till/CloseShiftForm.tsx",
+        "apps/reception/src/hooks/client/till/useTillShifts.ts"
+      ],
+      "provisional_deliverable_family": "multi",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "domain": "BOS",
+      "priority": "P3",
+      "confidence": 0.86,
+      "current_truth": "Blind close was introduced to reduce anchoring bias during till/keycard counting, but the loop has no wired post-deployment KPI path to verify discrepancy variance improvement from existing Firebase discrepancy records.",
+      "next_scope_now": "Run fact-find to define variance KPI contract, baseline vs post-launch windows, extraction/reporting mechanism from Firebase discrepancy records, and weekly review thresholds.",
+      "adjacent_later": [
+        "Segment variance trends by role and shift to isolate where blind mode has strongest effect.",
+        "Add automated regression alert when post-launch variance deteriorates versus baseline."
+      ],
+      "evidence_refs": [
+        "operator-stated: self-improvement path needs measurable blind-mode variance tracking",
+        "docs/plans/_archive/reception-till-blind-mode/results-review.user.md — New Idea Candidates"
+      ],
+      "why": "The feature intent is bias reduction, but without a standing measurement loop the team cannot confirm impact or decide whether to iterate the workflow.",
+      "intended_outcome": {
+        "type": "measurable",
+        "statement": "A reproducible weekly blind-mode variance report exists from Firebase discrepancy records, with baseline-vs-post-launch percent change and explicit threshold-based follow-up rules.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-04T20:11:00.522Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304211000-0235",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:HBAG:SELL:hbag-pdp-ga4-pdp-funnel-feed-view-item-begin-checkout:20260304",
+      "anchor_key": "hbag-pdp-ga4-pdp-funnel-feed-view-item-begin-checkout",
+      "cluster_key": "HBAG:SELL:hbag-pdp-ga4-pdp-funnel-feed-view-item-begin-checkout:operator:20260304",
+      "cluster_fingerprint": "e2f2837763801faf66fa4d1c447cade61c33ba228f561c27641c12fcfaadbb51",
+      "lineage_depth": 0,
+      "area_anchor": "HBAG PDP funnel measurement — GA4 view_item and begin_checkout feed missing",
+      "location_anchors": [
+        "docs/plans/_archive/hbag-pdp-trust-cues/results-review.user.md",
+        "apps/caryina/src/app/[lang]/product/[slug]/page.tsx",
+        "docs/business-os/_data/process-improvements.json"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "domain": "SELL",
+      "priority": "P3",
+      "confidence": 0.86,
+      "current_truth": "HBAG PDP trust-cues build outcome depends on conversion funnel movement, but no standing GA4 measurement feed currently tracks PDP-level view_item to begin_checkout progression for ongoing review cycles.",
+      "next_scope_now": "Fact-find the lowest-friction standing feed for HBAG PDP funnel KPI coverage: define event capture source, segmentation keys, extraction cadence, and artifact location for recurring view_item/begin_checkout reporting.",
+      "adjacent_later": [
+        "Extend feed to include add_to_cart and purchase once baseline collection is stable.",
+        "Add alert thresholds when begin_checkout rate falls below baseline week-over-week."
+      ],
+      "evidence_refs": [
+        "operator-stated: intended outcome depends on this KPI but GA4-based measurement is not yet available in this cycle",
+        "docs/plans/_archive/hbag-pdp-trust-cues/results-review.user.md — New Idea Candidates",
+        "docs/business-os/_data/process-improvements.json — idea_key 6e24749aace5ab6c2f9a2cf5338c7c969bcf85bd"
+      ],
+      "why": "The trust-cues improvement can only be validated if we can repeatedly observe whether PDP visitors progress from view_item to begin_checkout. Without a standing feed, each cycle remains evidence-light and cannot close the KPI loop.",
+      "intended_outcome": {
+        "type": "measurable",
+        "statement": "A standing HBAG PDP funnel artifact is produced weekly with GA4 counts/rates for view_item and begin_checkout so outcome reviews can compare trend direction and detect regression within one cycle.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-04T21:10:00.000Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-04T21:25:00.000Z",
+        "fact_find_slug": "hbag-pdp-ga4-funnel-feed",
+        "fact_find_path": "docs/plans/hbag-pdp-ga4-funnel-feed/fact-find.md"
+      }
+    },
     {
       "schema_version": "dispatch.v2",
       "dispatch_id": "IDEA-DISPATCH-20260304103000-0001",
@@ -8700,6 +8791,716 @@
       "intended_outcome": {
         "type": "operational",
         "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304114835-0189",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "804b1790ddb586058c2638a5fd56cc4dda97a70c",
+      "after_sha": "0ad81b3ad780ef345daf014dd49b330fbeeaa420",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:0ad81b3ad780ef345daf014dd49b330fbeeaa420",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:0ad81b3ad780ef345daf014dd49b330fbeeaa420",
+      "cluster_fingerprint": "a67dce5fc5d5a5dabb562598d9ffca8f8c4fb3bb2985637e9ff5c3d18113d3ec",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (804b179 → 0ad81b3)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:e2754215-15ad-450e-a951-7e49351a9a42",
+        "session:8c5726e2-9628-42bb-b0f2-58540fedd89b",
+        "session:b3165069-f318-4859-9dd9-a21a8e5fd1cb",
+        "session:823eb8ae-c77f-4232-b6b2-a243054d538a",
+        "session:f28055f8-db32-47a7-802f-2107b6d685e6",
+        "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
+      ],
+      "created_at": "2026-03-04T11:48:35.188Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304122500-0001",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "skill-efficiency-audit-2026-03-04-batch",
+      "anchor_key": "bos:assessment-skills:modularization",
+      "cluster_key": "skill-efficiency:assessment-modularization",
+      "cluster_fingerprint": "sha256:assessment-monolith-wave-2026-03-04",
+      "lineage_depth": 0,
+      "area_anchor": "BOS assessment skills — monolith modularization wave",
+      "location_anchors": [
+        ".claude/skills/lp-do-assessment-14-logo-brief/SKILL.md",
+        ".claude/skills/lp-do-assessment-01-problem-statement/SKILL.md",
+        ".claude/skills/lp-do-assessment-13-product-naming/SKILL.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "9 assessment skills exceed the 200-line SKILL.md threshold with no modules directory. The largest is lp-do-assessment-14-logo-brief at 643 lines.",
+      "next_scope_now": "Investigate shared assessment backbone module extraction to bring priority assessment orchestrators under 200 lines.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: Assessment skills are now the largest concentration of new monolith growth; optimization here gives highest immediate benefit.",
+        "docs/business-os/platform-capability/skill-efficiency-audit-2026-03-04-1143.md",
+        "docs/business-os/platform-capability/skill-efficiency-ideas-2026-03-04.md"
+      ],
+      "created_at": "2026-03-04T12:25:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Assessment skills are now the largest concentration of new monolith growth, so optimization here gives the highest immediate benefit.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Create and execute a phased modularization plan that brings priority assessment skill orchestrators under 200 lines while preserving behavior.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304122500-0002",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "skill-efficiency-audit-2026-03-04-batch",
+      "anchor_key": "bos:core-triad:size-budget-guardrails",
+      "cluster_key": "skill-efficiency:triad-size-budget",
+      "cluster_fingerprint": "sha256:triad-budget-guardrails-2026-03-04",
+      "lineage_depth": 0,
+      "area_anchor": "BOS core workflow skills — enforce size budgets",
+      "location_anchors": [
+        ".claude/skills/lp-do-fact-find/SKILL.md",
+        ".claude/skills/lp-do-plan/SKILL.md",
+        ".claude/skills/lp-do-build/SKILL.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The core triad regressed by +42 to +95 lines since last audit. lp-do-plan grew from 214 to 309 lines, lp-do-build from 222 to 308, lp-do-fact-find from 201 to 243.",
+      "next_scope_now": "Define and implement enforceable size-budget checks and exception policy for the three core workflow skills.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: The triad that every build cycle depends on has already regressed significantly; without guardrails it will drift back into monolith state.",
+        "docs/business-os/platform-capability/skill-efficiency-audit-2026-03-04-1143.md"
+      ],
+      "created_at": "2026-03-04T12:25:00.000Z",
+      "queue_state": "enqueued",
+      "why": "The triad that every build cycle depends on has already regressed significantly; without guardrails it will drift back into monolith state.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Define and implement enforceable size-budget checks and exception policy for lp-do-fact-find, lp-do-plan, and lp-do-build.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304122500-0003",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "skill-efficiency-audit-2026-03-04-batch",
+      "anchor_key": "bos:startup-loop:cmd-advance-split",
+      "cluster_key": "skill-efficiency:cmd-advance-monolith",
+      "cluster_fingerprint": "sha256:cmd-advance-split-2026-03-04",
+      "lineage_depth": 0,
+      "area_anchor": "startup-loop module — cmd-advance monolith split",
+      "location_anchors": [
+        ".claude/skills/startup-loop/modules/cmd-advance.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "cmd-advance.md is 532 lines — the only module exceeding the 400-line advisory threshold. It contains per-stage advancement logic in a single wall of text.",
+      "next_scope_now": "Split cmd-advance.md into focused per-stage modules with unchanged external behavior.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: A single 532-line module in the startup-loop command path concentrates complexity and raises edit risk.",
+        "docs/business-os/platform-capability/skill-efficiency-audit-2026-03-04-1143.md"
+      ],
+      "created_at": "2026-03-04T12:25:00.000Z",
+      "queue_state": "enqueued",
+      "why": "A single 532-line module in the startup-loop command path concentrates complexity and raises edit risk.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Split cmd-advance.md into focused modules with unchanged external behavior and clearer maintenance boundaries.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304122500-0004",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "skill-efficiency-audit-2026-03-04-batch",
+      "anchor_key": "bos:skill-logic:deterministic-extraction",
+      "cluster_key": "skill-efficiency:deterministic-extraction-program",
+      "cluster_fingerprint": "sha256:deterministic-extraction-2026-03-04",
+      "lineage_depth": 0,
+      "area_anchor": "skill logic layer — deterministic extraction program",
+      "location_anchors": [
+        ".claude/skills/meta-loop-efficiency/SKILL.md",
+        "docs/business-os/platform-capability/skill-efficiency-audit-2026-03-04-1143.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Current audit heuristics (H0-H3) are structural only. No scoring for deterministic logic extraction into TS/JSON/YAML, and no anti-gaming check for line-count compliance without simplification.",
+      "next_scope_now": "Define and implement H4 (deterministic-extraction-candidate) and H5 (shrink-without-simplification) heuristics with validation tests.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.8,
+      "evidence_refs": [
+        "operator-stated: Without explicit extraction goals, line reductions can be satisfied by moving prose around rather than moving deterministic rules into executable/data artifacts.",
+        "docs/business-os/platform-capability/skill-efficiency-audit-2026-03-04-1143.md",
+        ".claude/skills/meta-loop-efficiency/SKILL.md"
+      ],
+      "created_at": "2026-03-04T12:25:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Without explicit extraction goals, line reductions can be satisfied by moving prose around rather than moving deterministic rules into executable/data artifacts.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Define and execute extraction of deterministic rules, decision tables, and contracts into typed .ts or data (.json/.yaml) artifacts with validation tests.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304131311-0564",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "0ad81b3ad780ef345daf014dd49b330fbeeaa420",
+      "after_sha": "80ae053033e0e7c44a78b26d714314792ac4e2cf",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:80ae053033e0e7c44a78b26d714314792ac4e2cf",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:80ae053033e0e7c44a78b26d714314792ac4e2cf",
+      "cluster_fingerprint": "2ee5c1a4adb32ac3468c49cbefe690fd121b8fdf006195458d54ddcd2f2f4a3c",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (0ad81b3 → 80ae053)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:8c5726e2-9628-42bb-b0f2-58540fedd89b",
+        "session:b3165069-f318-4859-9dd9-a21a8e5fd1cb",
+        "session:e2754215-15ad-450e-a951-7e49351a9a42",
+        "session:823eb8ae-c77f-4232-b6b2-a243054d538a",
+        "session:f28055f8-db32-47a7-802f-2107b6d685e6",
+        "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
+      ],
+      "created_at": "2026-03-04T13:13:11.563Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304131449-0181",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "80ae053033e0e7c44a78b26d714314792ac4e2cf",
+      "after_sha": "0ebcd179f166a234f076500e62011053899dcbd4",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:0ebcd179f166a234f076500e62011053899dcbd4",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:0ebcd179f166a234f076500e62011053899dcbd4",
+      "cluster_fingerprint": "995ac43d64c89a057b0207e43dc90e28de17659ffb247b3032a49036b95576a6",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (80ae053 → 0ebcd17)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:b3165069-f318-4859-9dd9-a21a8e5fd1cb",
+        "session:8c5726e2-9628-42bb-b0f2-58540fedd89b",
+        "session:e2754215-15ad-450e-a951-7e49351a9a42",
+        "session:823eb8ae-c77f-4232-b6b2-a243054d538a",
+        "session:f28055f8-db32-47a7-802f-2107b6d685e6",
+        "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
+      ],
+      "created_at": "2026-03-04T13:14:49.180Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304131603-0270",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "0ebcd179f166a234f076500e62011053899dcbd4",
+      "after_sha": "530df16c01e7ce9af8da2a9a26fe11552a182dad",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:530df16c01e7ce9af8da2a9a26fe11552a182dad",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:530df16c01e7ce9af8da2a9a26fe11552a182dad",
+      "cluster_fingerprint": "167ad8767e345915f2484ef5e27be8d179ebbcdbad4df6a1ed878cf06e352d9b",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (0ebcd17 → 530df16)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:8c5726e2-9628-42bb-b0f2-58540fedd89b",
+        "session:b3165069-f318-4859-9dd9-a21a8e5fd1cb",
+        "session:e2754215-15ad-450e-a951-7e49351a9a42",
+        "session:823eb8ae-c77f-4232-b6b2-a243054d538a",
+        "session:f28055f8-db32-47a7-802f-2107b6d685e6",
+        "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
+      ],
+      "created_at": "2026-03-04T13:16:03.269Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304140000-0001",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "area_anchor": "XA local catalog pipeline — sync/build broken without cloud",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "recommended_slug": "xa-local-catalog-pipeline",
+      "evidence_refs": [
+        "operator-stated: System walkthrough revealed xa-uploader sync fails 503 when contract unconfigured, xa-b build cannot read local sync output, no products CSV exists. Data formats identical at every stage — no cloud needed for local pipeline."
+      ],
+      "created_at": "2026-03-04T13:53:23.637Z",
+      "queue_state": "enqueued",
+      "why": "The xa-uploader to xa-b data pipeline is broken locally — sync errors on missing contract, build has no local fallback, CSV is empty. Decoupling data from images enables local dev workflow.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "xa-uploader sync generates catalog artifacts locally, xa-b build consumes them directly, products flow from uploader to storefront without cloud dependencies.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304142045-0564",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "530df16c01e7ce9af8da2a9a26fe11552a182dad",
+      "after_sha": "f753551530f9d5b41313770ccef79a6d4f93ea7d",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:f753551530f9d5b41313770ccef79a6d4f93ea7d",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:f753551530f9d5b41313770ccef79a6d4f93ea7d",
+      "cluster_fingerprint": "2a88e7019c697b9f8d8238ef85246c44e5ca5212f816dcfc2e8bfa1948c83bbe",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (530df16 → f753551)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:b3165069-f318-4859-9dd9-a21a8e5fd1cb",
+        "session:8c5726e2-9628-42bb-b0f2-58540fedd89b",
+        "session:e2754215-15ad-450e-a951-7e49351a9a42",
+        "session:823eb8ae-c77f-4232-b6b2-a243054d538a",
+        "session:f28055f8-db32-47a7-802f-2107b6d685e6",
+        "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
+      ],
+      "created_at": "2026-03-04T14:20:45.563Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304142620-0311",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "f753551530f9d5b41313770ccef79a6d4f93ea7d",
+      "after_sha": "3a987a890234a9f365681f835d6777809290111c",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:3a987a890234a9f365681f835d6777809290111c",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:3a987a890234a9f365681f835d6777809290111c",
+      "cluster_fingerprint": "c79e80e596ec8d90b6e9312f620859851b8836e556d1a3d7548a3b4cd66d1e2c",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (f753551 → 3a987a8)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:b3165069-f318-4859-9dd9-a21a8e5fd1cb",
+        "session:8c5726e2-9628-42bb-b0f2-58540fedd89b",
+        "session:e2754215-15ad-450e-a951-7e49351a9a42",
+        "session:823eb8ae-c77f-4232-b6b2-a243054d538a",
+        "session:f28055f8-db32-47a7-802f-2107b6d685e6",
+        "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
+      ],
+      "created_at": "2026-03-04T14:26:20.310Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304150000-0001",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "root_event_id": "XA-xa-uploader-edit-add-parity-operator-20260304",
+      "anchor_key": "xa-uploader-edit-add-data-parity",
+      "cluster_key": "XA:PRODUCTS:xa-uploader-edit-add-data-parity:operator:20260304",
+      "cluster_fingerprint": "xa-uploader-edit-add-data-parity-8-issues-20260304",
+      "lineage_depth": 0,
+      "area_anchor": "XA xa-uploader — Edit mode data parity with Add flow",
+      "location_anchors": [
+        "apps/xa-uploader/src/components/catalog/CatalogProductBaseFields.client.tsx",
+        "apps/xa-uploader/src/components/catalog/catalogDraft.ts",
+        "packages/lib/src/xa/catalogWorkflow.ts",
+        "apps/xa-uploader/src/components/catalog/CatalogProductForm.client.tsx",
+        "apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: Edit mode has 8 data-field discrepancies vs Add/Save-as-Draft — stale brand/collection selectors, auto-derivation overwrites, createdAt reset, taxonomy merge resets, default brand bleed, read-only bag fields, stale cross-category fields, forced forSale/forRental"
+      ],
+      "created_at": "2026-03-04T15:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "The catalog editor's Edit mode doesn't faithfully round-trip product data — fields get overwritten, reset, or stuck after save/reload, making the editor unreliable for revising existing products.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Fix all 8 identified data-field discrepancies so Edit mode is a faithful editor of what Add/Save-as-Draft produces: brand/collection selectors sync on product switch, auto-derivation respects existing edits, timestamps preserved, taxonomy merge is non-destructive, defaults don't bleed, bag fields are editable, category changes clear stale fields, and commercial flags respect operator input.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304154537-0884",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+      "before_sha": "0ca58133c27bd69ffad9f87170a60404c2b8c9c3",
+      "after_sha": "adf5a4764f0eb863d90d3a07b52a54eb77d636e3",
+      "root_event_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:adf5a4764f0eb863d90d3a07b52a54eb77d636e3",
+      "anchor_key": "bos-codebase-structural-signals",
+      "cluster_key": "bos:unknown:bos-codebase-structural-signals:BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:adf5a4764f0eb863d90d3a07b52a54eb77d636e3",
+      "cluster_fingerprint": "f7116cc753425e487bd2b245e61cf79aa29ea2610b8fef029869ab1ae094411a",
+      "lineage_depth": 0,
+      "area_anchor": "bos-codebase-structural-signals",
+      "location_anchors": [
+        "git-diff:HEAD~1..HEAD"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS changed (0ca5813 → adf5a47)",
+      "next_scope_now": "Investigate implications of bos-codebase-structural-signals delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "git-diff-range:HEAD~1..HEAD",
+        "git-diff:M:apps/xa-b/scripts/build-xa.mjs",
+        "git-diff:A:apps/xa-uploader/data/products-xa-b.csv",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/sync/route.ts",
+        "git-diff:M:docs/business-os/_data/process-improvements.json",
+        "git-diff:M:docs/business-os/process-improvements.user.html",
+        "git-diff:A:scripts/src/xa/seed-xa-csv.ts"
+      ],
+      "created_at": "2026-03-04T15:45:37.883Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-codebase-structural-signals implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-codebase-structural-signals.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304154539-0288",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "3a987a890234a9f365681f835d6777809290111c",
+      "after_sha": "9bca565a4aca4694339b08b1f6d4f5b507e75dbe",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:9bca565a4aca4694339b08b1f6d4f5b507e75dbe",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:9bca565a4aca4694339b08b1f6d4f5b507e75dbe",
+      "cluster_fingerprint": "c2db6eb3539a320db087f503bbdef14ff5656719e2f8477d2c1e5311e7c9d9a7",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (3a987a8 → 9bca565)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:b3165069-f318-4859-9dd9-a21a8e5fd1cb",
+        "session:8c5726e2-9628-42bb-b0f2-58540fedd89b",
+        "session:e2754215-15ad-450e-a951-7e49351a9a42",
+        "session:823eb8ae-c77f-4232-b6b2-a243054d538a",
+        "session:f28055f8-db32-47a7-802f-2107b6d685e6",
+        "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
+      ],
+      "created_at": "2026-03-04T15:45:39.287Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304154827-0041",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "9bca565a4aca4694339b08b1f6d4f5b507e75dbe",
+      "after_sha": "0f593232f57181f112e8931ab2536b296099c846",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:0f593232f57181f112e8931ab2536b296099c846",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:0f593232f57181f112e8931ab2536b296099c846",
+      "cluster_fingerprint": "fff4be89ac7c39c0b7cd4ce5b131d467db5a0b72990bd48cfd58cdc03afaaaee",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (9bca565 → 0f59323)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:b3165069-f318-4859-9dd9-a21a8e5fd1cb",
+        "session:8c5726e2-9628-42bb-b0f2-58540fedd89b",
+        "session:e2754215-15ad-450e-a951-7e49351a9a42",
+        "session:823eb8ae-c77f-4232-b6b2-a243054d538a",
+        "session:f28055f8-db32-47a7-802f-2107b6d685e6",
+        "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
+      ],
+      "created_at": "2026-03-04T15:48:27.040Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304160000-0001",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "area_anchor": "XA xa-uploader — Edit mode needs progressive filter-down product selection",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "enqueued",
+      "why": "Edit mode product selection requires browsing a flat list — should use the same progressive brand/collection/size cascade as Add mode, auto-selecting when filter narrows to one product.",
+      "intended_outcome": "Replace CatalogProductsList in Edit mode with progressive filter-down selectors that match Add mode UX; auto-populate form when single product matches.",
+      "evidence_refs": [
+        "operator-stated: Edit mode should filter products using brand/collection/size cascade, auto-select on single match"
+      ],
+      "created_at": "2026-03-04T16:02:53.928Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304194219-0390",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "0f593232f57181f112e8931ab2536b296099c846",
+      "after_sha": "6a6489ce0cb9297ef873207eb40d7795232a6315",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:6a6489ce0cb9297ef873207eb40d7795232a6315",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:6a6489ce0cb9297ef873207eb40d7795232a6315",
+      "cluster_fingerprint": "e368cdf1fbea87e97ca6c210b0a77cf4ece26470632d47676efb675987fbd5dd",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (0f59323 → 6a6489c)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:e2754215-15ad-450e-a951-7e49351a9a42",
+        "session:b3165069-f318-4859-9dd9-a21a8e5fd1cb",
+        "session:8c5726e2-9628-42bb-b0f2-58540fedd89b",
+        "session:823eb8ae-c77f-4232-b6b2-a243054d538a",
+        "session:f28055f8-db32-47a7-802f-2107b6d685e6",
+        "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
+      ],
+      "created_at": "2026-03-04T19:42:19.389Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260304201138-0630",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+      "before_sha": "adf5a4764f0eb863d90d3a07b52a54eb77d636e3",
+      "after_sha": "fa7aaf70511c44dceb94fb6c84d46a1cf512ede3",
+      "root_event_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:fa7aaf70511c44dceb94fb6c84d46a1cf512ede3",
+      "anchor_key": "bos-codebase-structural-signals",
+      "cluster_key": "bos:unknown:bos-codebase-structural-signals:BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:fa7aaf70511c44dceb94fb6c84d46a1cf512ede3",
+      "cluster_fingerprint": "0d3a870a74c01fa76b110b1de9e42703462b783961b8b1fb8d68cb0cb3243d17",
+      "lineage_depth": 0,
+      "area_anchor": "bos-codebase-structural-signals",
+      "location_anchors": [
+        "git-diff:HEAD~1..HEAD"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS changed (adf5a47 → fa7aaf7)",
+      "next_scope_now": "Investigate implications of bos-codebase-structural-signals delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "git-diff-range:HEAD~1..HEAD",
+        "git-diff:A:apps/xa-uploader/src/app/UploaderShell.client.tsx",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/products/route.ts",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/sync/__tests__/route.branches.test.ts",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/sync/__tests__/route.test.ts",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/sync/route.ts",
+        "git-diff:A:apps/xa-uploader/src/app/instructions/UploaderInstructions.client.tsx",
+        "git-diff:A:apps/xa-uploader/src/app/instructions/assets/add-product-screen.png",
+        "git-diff:A:apps/xa-uploader/src/app/instructions/assets/currency-screen.png"
+      ],
+      "created_at": "2026-03-04T20:11:38.629Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-codebase-structural-signals implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-codebase-structural-signals.",
         "source": "auto"
       }
     }

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 2,
+  "baselineLocale": "en",
+  "locales": [
+    "pl"
+  ],
+  "summary": {
+    "totalMissingFiles": 0,
+    "totalMissingKeys": 0,
+    "totalUntranslatedKeys": 5
+  },
+  "reports": [
+    {
+      "locale": "pl",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {
+        "apartmentPage.json": [
+          "privateStay.meta.title"
+        ],
+        "barMenuPage.json": [
+          "sections.whisky.title"
+        ],
+        "guides.tags.json": [
+          "tags.transport.label"
+        ],
+        "guides/content/fiordoDiFuroreBeachGuide.json": [
+          "faqsTitle"
+        ],
+        "guides/tags.json": [
+          "labels.transport"
+        ]
+      }
+    }
+  ]
+}

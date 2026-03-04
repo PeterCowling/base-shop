@@ -1,66 +1,41 @@
 ---
+Type: Build-Record
 Status: Complete
 Feature-Slug: xa-b-design-polish
 Completed-date: 2026-03-04
 artifact: build-record
-Build-Event-Ref: docs/plans/xa-b-design-polish/build-event.json
 ---
 
-# Build Record: XA-B Design Polish
-
-## Build Summary
-
-Four focused UI improvements to the xa-b luxury fashion storefront, resolving design gaps identified during a `/frontend-design` audit. All changes use existing xa-b achromatic design tokens, existing design system components, and existing product data.
-
-## What Was Built
-
-**Cart page thumbnails + sharp-edge styling (TASK-01):** Added 64×64 product thumbnail images to cart line items using `XaFadeImage` with a fallback to the product's initial letter for products without images. Fixed `rounded-lg` → `rounded-sm` on the table wrapper. Styled the empty cart state with centered layout, uppercase label, and a styled CTA link to `/collections/all`.
-
-**Department landing visual category cards (TASK-02):** Replaced text-only category links with visual cards showing representative product images. Each card selects the first product with a valid image per category, renders it in an `aspect-[4/3]` image area with `group-hover:scale-105` zoom effect, and shows the category label with subcategories below. Fallback placeholder renders when no product images exist.
-
-**Product card New In badge (TASK-03):** Extracted `isNewIn(product, referenceDate?)` utility into `xaListingUtils.ts` with a 30-day wall-clock threshold. Added `ProductBadge` with `label="New In" color="default" tone="soft"` to `XaProductCard`, mutually exclusive with the existing "Sold out" badge via ternary chain. Added 6 unit tests covering within/outside/boundary/missing/invalid/future scenarios.
-
-**Styled empty states (TASK-04):** Wishlist empty state updated with `rounded-sm border-border-1`, centered layout, uppercase label, and styled CTA to `/new-in`. Listing filter empty state enhanced with uppercase "No matches" heading, tightened gap, and consistent achromatic treatment.
-
-## Tests Run
-
-- `isNewIn` unit tests: 6 test cases added to `xaListingUtils.test.ts` — all pass (CI-only; validated via typecheck + lint locally)
-- TypeScript typecheck (`pnpm typecheck`): pass (zero output)
-- Lint (`pnpm lint`): pass (0 errors, 0 warnings after eslint-disable comments for intentional DS exemptions)
-
-## Validation Evidence
-
-**TASK-01 (TC-01):**
-- TC-01: Cart with products → each line shows 64×64 XaFadeImage thumbnail ✓
-- TC-02: Cart product with no media → fallback initial letter in muted box ✓
-- TC-03: Table wrapper uses `rounded-sm` (not `rounded-lg`) ✓
-- TC-04: Empty cart → styled empty state with CTA to `/collections/all` ✓
-
-**TASK-02 (TC-02):**
-- TC-01: Department page → each category card shows representative product image ✓
-- TC-02: Category with no valid images → muted text placeholder ✓
-- TC-03: Cards use `rounded-sm`, `xa-panel` hover, `border-border-1` ✓
-- TC-04: Image load error → XaFadeImage built-in fallback ✓
-
-**TASK-03 (TC-03):**
-- TC-01: Product within 30 days + in stock → "New In" badge visible ✓
-- TC-02: Product older than 30 days → no badge ✓
-- TC-03: Product within 30 days but sold out → only "Sold Out" badge ✓
-- TC-04: Product with missing/invalid createdAt → no badge ✓
-- TC-05: 6 unit tests for `isNewIn` pass ✓
-
-**TASK-04 (TC-04):**
-- TC-01: Empty wishlist → styled with `rounded-sm`, uppercase label, CTA to `/new-in` ✓
-- TC-02: Filter producing zero results → uppercase heading + muted text + styled CTA ✓
-- TC-03/04: Non-empty states render normally ✓
-
-## Scope Deviations
-
-None — all changes stayed within the planned file scope. Three eslint-disable comments added for intentional design system exemptions (aspect ratio, layout primitive fallbacks) under existing XA-0022 exemption codes.
+# Build Record: xa-b Design Polish
 
 ## Outcome Contract
 
-- **Why:** The xa-b storefront has a strong luxury-editorial design language but 4 pages/components break the brand immersion: cart page (no product images, rounded corners), department landing (text-only, no visual engagement), product cards (no "New In" badge), and empty states (plain text). These weaken the conversion funnel and brand perception.
-- **Intended Outcome Type:** operational
-- **Intended Outcome Statement:** All 4 design gaps resolved — cart thumbnails with sharp-edge styling, department landing visual cards, New In badge on product cards, styled empty states — using xa-b achromatic design language.
+- **Why:** A design audit identified visual inconsistency in empty states (3 different styling patterns) and minor cart styling drift from the established `xa-pdp-*` class system. These weaken the cohesive brand experience.
+- **Intended Outcome Type:** UI polish
+- **Intended Outcome Statement:** Empty states use a unified pattern with consistent borders, spacing, typography, and CTAs. Cart meta text uses `xa-pdp-meta` class.
 - **Source:** operator
+
+## What Was Built
+
+All 4 empty state locations in the xa-b storefront (product listing, cart, wishlist, designers) now use the design-system `EmptyState` component with consistent xa-b achromatic styling: `rounded-sm` border, `border-border-1`, uppercase heading with wide letter-spacing, muted description text, and contextual CTAs. The xa-b heading style is applied via `[&_h3]:` Tailwind arbitrary variant selectors since EmptyState's `title` prop is a string with fixed internal styling. Cart line item meta text (size and price) was changed from raw `text-xs text-muted-foreground` to `xa-pdp-meta text-muted-foreground` for consistency with XaBuyBox and PDP patterns.
+
+## Tests Run
+
+| Command | Result | Notes |
+|---|---|---|
+| `pnpm --filter xa-b typecheck` | Pass | 0 errors |
+| `pnpm --filter xa-b lint` | Pass | 0 new warnings; 36 pre-existing warnings unchanged |
+
+## Validation Evidence
+
+### TASK-01: Unify empty states and align cart styling
+- TC-01: Cart empty state → EmptyState with `title={xaI18n.t("...cart...")}`, `action` slot containing Link to `/collections/all`. Bordered card present.
+- TC-02: Wishlist empty state → EmptyState with `title={xaI18n.t("...wishlist...")}`, `action` slot containing Link to `/new-in`. Bordered card present.
+- TC-03: Product listing zero matches → EmptyState with `title="No matches"`, `description` from i18n, `action` slot with "Clear filters" Button calling `clearAppliedFilters`. Bordered card present.
+- TC-04: Designers no results → EmptyState with `title` and `description` from i18n. Bordered card present (no CTA by design).
+- TC-05: Cart line items → size meta uses `xa-pdp-meta text-muted-foreground`, price meta uses `xa-pdp-meta text-muted-foreground`.
+- TC-06: `pnpm --filter xa-b typecheck` → PASS.
+
+## Scope Deviations
+
+None. All changes within `apps/xa-b/` scope as planned. EmptyState component used from design-system (read-only) as specified.

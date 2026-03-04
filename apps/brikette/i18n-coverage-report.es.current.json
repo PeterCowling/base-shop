@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 2,
+  "baselineLocale": "en",
+  "locales": [
+    "es"
+  ],
+  "summary": {
+    "totalMissingFiles": 0,
+    "totalMissingKeys": 0,
+    "totalUntranslatedKeys": 7
+  },
+  "reports": [
+    {
+      "locale": "es",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {
+        "barMenuPage.json": [
+          "sections.whisky.title"
+        ],
+        "guides.tags.json": [
+          "tags.camping.label"
+        ],
+        "guides/tags.json": [
+          "labels.camping"
+        ],
+        "howToGetHere.json": [
+          "romePlanner.route.salerno.ferry.steps.from.2",
+          "romePlanner.route.salerno.ferry.steps.to.3"
+        ],
+        "roomsPage.json": [
+          "ctaSuffix.flexible"
+        ],
+        "translation.json": [
+          "meta.twitterCard"
+        ]
+      }
+    }
+  ]
+}

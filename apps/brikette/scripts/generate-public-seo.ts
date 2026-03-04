@@ -10,7 +10,7 @@ import howToGetHereRoutes from "@/data/how-to-get-here/routes.json";
 import { type AppLanguage, i18nConfig } from "@/i18n.config";
 import { getGuideManifestEntry } from "@/routes/guides/guide-manifest";
 import { guidePath } from "@/routes.guides-helpers";
-import { listAppRouterUrls } from "@/routing/routeInventory";
+import { listLocalizedPublicUrls } from "@/routing/routeInventory";
 import { buildRobotsTxt } from "@/seo/robots";
 import type { SlugKey } from "@/types/slugs";
 import { getSlug } from "@/utils/slug";
@@ -231,8 +231,8 @@ export const main = async (): Promise<void> => {
   const { conflictCount, lastmodByPath } = await buildGuideLastmodByPath();
   assertNoBulkTodayLastmod(lastmodByPath.values());
 
-  // Use App Router URL inventory as source of truth for sitemap
-  const sitemapXml = buildSitemapXml(["/", ...listDirectionPaths(), ...listAppRouterUrls()], lastmodByPath);
+  // Use localized public URL inventory as source of truth for sitemap.
+  const sitemapXml = buildSitemapXml(["/", ...listDirectionPaths(), ...listLocalizedPublicUrls()], lastmodByPath);
   await writeFile(path.join(PUBLIC_DIR, "sitemap.xml"), sitemapXml, "utf8");
 
   const sitemapIndexXml = buildSitemapIndexXml();

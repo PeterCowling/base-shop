@@ -12,8 +12,9 @@ import { HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS } from "@/data/how-to-get-here/routeGu
 import { websiteVisibleRoomsData } from "@/data/roomsData";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
-import { guideNamespace, guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
+import { guideNamespace, guidePath, guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
 import { INTERNAL_SEGMENT_BY_KEY, STATIC_EXPORT_SECTION_KEYS } from "@/routing/sectionSegments";
+import { getSlug } from "@/utils/slug";
 
 const NON_DORM_ROOM_IDS = new Set(["double_room", "apartment"]);
 
@@ -30,7 +31,7 @@ export function listAppRouterUrls(): string[] {
     // Home page
     urls.push(`/${lang}`);
 
-    // Static sections (with localized slugs)
+    // Static sections (with internal App Router segments)
     for (const key of STATIC_EXPORT_SECTION_KEYS) {
       urls.push(`/${lang}/${INTERNAL_SEGMENT_BY_KEY[key]}`);
     }
@@ -75,6 +76,50 @@ export function listAppRouterUrls(): string[] {
   }
 
   // Keep ordering stable while guaranteeing uniqueness (coverage tests depend on this).
+  return Array.from(new Set(urls));
+}
+
+/**
+ * Lists canonical public URLs (localized slug contract) for sitemap emission.
+ */
+export function listLocalizedPublicUrls(): string[] {
+  const langs = i18nConfig.supportedLngs as AppLanguage[];
+  const urls: string[] = [];
+
+  for (const lang of langs) {
+    urls.push(`/${lang}`);
+
+    for (const key of STATIC_EXPORT_SECTION_KEYS) {
+      urls.push(`/${lang}/${getSlug(key, lang)}`);
+    }
+
+    urls.push(`/${lang}/book-private-accommodations`);
+
+    const roomsSlug = getSlug("rooms", lang);
+    for (const room of websiteVisibleRoomsData.filter((candidate) => !NON_DORM_ROOM_IDS.has(candidate.id))) {
+      urls.push(`/${lang}/${roomsSlug}/${getRoomSlug(room.id, lang)}`);
+    }
+
+    const publishedGuides = GUIDES_INDEX.filter((g) => g.status === "live");
+    for (const guide of publishedGuides) {
+      const slug = guideSlug(lang, guide.key);
+      if (resolveGuideKeyFromSlug(slug, lang) !== guide.key) continue;
+      urls.push(guidePath(lang, guide.key));
+    }
+
+    const allTags = new Set<string>();
+    for (const guide of publishedGuides) {
+      for (const tag of guide.tags) {
+        allTags.add(tag);
+      }
+    }
+    const experiencesSlug = getSlug("experiences", lang);
+    const tagsSlug = getSlug("guidesTags", lang);
+    for (const tag of allTags) {
+      urls.push(`/${lang}/${experiencesSlug}/${tagsSlug}/${encodeURIComponent(tag)}`);
+    }
+  }
+
   return Array.from(new Set(urls));
 }
 

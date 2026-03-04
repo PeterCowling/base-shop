@@ -36,7 +36,7 @@ describe("buildNavLinks", () => {
       const first = rooms.children![0];
       expect(first.key).toBe("rooms_all");
       expect(first.label).toBe("See all rooms");
-      expect(first.to).toBe("/book-dorm-bed");
+      expect(first.to).toBe("/book");
     });
   });
 

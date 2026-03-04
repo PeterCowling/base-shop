@@ -1,0 +1,10 @@
+{
+  "severity_overrides": {
+    "parseint-missing-radix": "critical",
+    "nan-direct-comparison": "critical"
+  },
+  "skip_rules": [
+    "no-angle-any"
+  ],
+  "only_rules": []
+}

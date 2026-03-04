@@ -1,41 +1,15 @@
 {
   "schema_version": "agent-session-findings.v1",
-  "generated_at": "2026-03-04T20:12:03.757Z",
+  "generated_at": "2026-03-04T21:28:43.129Z",
   "business": "BOS",
   "transcript_root": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop",
   "sessions_scanned": 20,
   "sessions_with_findings": 15,
   "findings": [
     {
-      "session_id": "e2754215-15ad-450e-a951-7e49351a9a42",
-      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/e2754215-15ad-450e-a951-7e49351a9a42.jsonl",
-      "updated_at": "2026-03-04T19:35:29.925Z",
-      "findings": [
-        "Here are the issues and opportunities: ### Issues 1.",
-        "Missing: one dimension weak (single cap), two dimensions weak (stacking), all dimensions strong (no cap).",
-        "New cap reasons appearing between runs are invisible as regressions — they don't trigger dispatches or get flagged.",
-        "A regression in the formula wouldn't be caught.",
-        "Regression detection for strictness is one-directional.** `computeRepoMaturityRegression()` tracks `worsening_strictness_dimensions` but doesn't track *improving* dimensions.",
-        "The `changed_sections` mapping determines how findings are categorized for routing: security_depth gaps → \"critical finding\", ci_velocity → \"testing issue\", structure/indexing/caps → \"code quality\".",
-        "bug-scan-findings.user.json`** files — bug scanner findings",
-        "Phase 7: Evidence Gap Review** — completed inline above.",
-        "TASK-01**: Adding dispatch queue collection after the bug-scan loop (line 681).",
-        "Now add the dispatch queue interface and collection loop after the bug-scan loop:",
-        "Now add the collection loop after the bug-scan loop (after line 681, which is now shifted).",
-        "Those are pre-existing lint failures in other packages, not related to my changes.",
-        "The drift check failed — this is expected because the agent-session bridge ran and enqueued 1 new dispatch between the two runs, changing the queue-state.json.",
-        "Let me wait for tests, then check the lint failure:",
-        "CI was cancelled (likely because unit tests are still running and lint failure + timeout).",
-        "The lint failure is from \"exceptions governance\" — not related to my changes.",
-        "No results — the lint failure is unrelated to our changes.",
-        "Now run reflection debt emitter, bug scan, and generate process improvements:",
-        "TASK-02** — Added 7 unit tests (TC-01 through TC-07) covering: enqueued filtering, missing file handling, classifier integration, key uniqueness with identical area_anchors, mixed-source sorting, malformed input, and empty title skipping."
-      ]
-    },
-    {
       "session_id": "b3165069-f318-4859-9dd9-a21a8e5fd1cb",
       "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/b3165069-f318-4859-9dd9-a21a8e5fd1cb.jsonl",
-      "updated_at": "2026-03-04T19:27:19.247Z",
+      "updated_at": "2026-03-04T20:46:40.791Z",
       "findings": [
         "I'll process these 5 issues through the intake flow.",
         "All are **operator ideas** (issues found, not artifact deltas).",
@@ -210,7 +184,39 @@
         "Also remove the `image_too_small` error code since it's no longer used:",
         "Right now there's a gap: **uploaded images stay in xa-uploader and don't automatically reach xa-b**.",
         "Let me trace both flows through the actual code to find gaps.",
-        "Here's the end-to-end walkthrough with issues: ## Add New Product Flow 1."
+        "Here's the end-to-end walkthrough with issues: ## Add New Product Flow 1.",
+        "Minor — Missing `## Inherited Outcome Contract` section.** Required by plan template for downstream traceability.",
+        "The Tasks section (lines 88-150) qualifies for a full section rewrite (AF-1: ≥2 Major issues targeting it).",
+        "Now apply **AF-2: Point fixes** for the remaining issues.",
+        "Now add the missing `## Inherited Outcome Contract` section:",
+        "AF-4: Issues ledger update.** Creating `critique-history.md`.",
+        "Issues ledger updated at `docs/plans/xa-uploader-image-autosave-reliability/critique-history.md`."
+      ]
+    },
+    {
+      "session_id": "e2754215-15ad-450e-a951-7e49351a9a42",
+      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/e2754215-15ad-450e-a951-7e49351a9a42.jsonl",
+      "updated_at": "2026-03-04T19:35:29.925Z",
+      "findings": [
+        "Here are the issues and opportunities: ### Issues 1.",
+        "Missing: one dimension weak (single cap), two dimensions weak (stacking), all dimensions strong (no cap).",
+        "New cap reasons appearing between runs are invisible as regressions — they don't trigger dispatches or get flagged.",
+        "A regression in the formula wouldn't be caught.",
+        "Regression detection for strictness is one-directional.** `computeRepoMaturityRegression()` tracks `worsening_strictness_dimensions` but doesn't track *improving* dimensions.",
+        "The `changed_sections` mapping determines how findings are categorized for routing: security_depth gaps → \"critical finding\", ci_velocity → \"testing issue\", structure/indexing/caps → \"code quality\".",
+        "bug-scan-findings.user.json`** files — bug scanner findings",
+        "Phase 7: Evidence Gap Review** — completed inline above.",
+        "TASK-01**: Adding dispatch queue collection after the bug-scan loop (line 681).",
+        "Now add the dispatch queue interface and collection loop after the bug-scan loop:",
+        "Now add the collection loop after the bug-scan loop (after line 681, which is now shifted).",
+        "Those are pre-existing lint failures in other packages, not related to my changes.",
+        "The drift check failed — this is expected because the agent-session bridge ran and enqueued 1 new dispatch between the two runs, changing the queue-state.json.",
+        "Let me wait for tests, then check the lint failure:",
+        "CI was cancelled (likely because unit tests are still running and lint failure + timeout).",
+        "The lint failure is from \"exceptions governance\" — not related to my changes.",
+        "No results — the lint failure is unrelated to our changes.",
+        "Now run reflection debt emitter, bug scan, and generate process improvements:",
+        "TASK-02** — Added 7 unit tests (TC-01 through TC-07) covering: enqueued filtering, missing file handling, classifier integration, key uniqueness with identical area_anchors, mixed-source sorting, malformed input, and empty title skipping."
       ]
     },
     {

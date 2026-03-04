@@ -92,3 +92,5 @@
 
 
 {"recorded_at":"2026-03-04T20:11:38.632Z","dispatch_id":"IDEA-DISPATCH-20260304201138-0630","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"codebase_signal_bridge"}
+
+{"recorded_at":"2026-03-04T21:28:43.136Z","dispatch_id":"IDEA-DISPATCH-20260304212843-0134","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}

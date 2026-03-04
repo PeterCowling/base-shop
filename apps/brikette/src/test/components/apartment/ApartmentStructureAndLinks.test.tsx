@@ -66,14 +66,14 @@ describe("TASK-07: apartment-context CTA, legal label, and perks-route behavior"
   it("DesktopHeader has apartment-aware bookHref that routes to private booking route", () => {
     const content = fs.readFileSync(path.join(UI_DIR, "DesktopHeader.tsx"), "utf-8");
     expect(content).toMatch(/isApartmentRoute/);
-    expect(content).toContain("/book-private-accomodations");
+    expect(content).toContain("/book-private-accommodations");
   });
 
   // TC-02: MobileNav uses apartment-aware CTA routing
   it("MobileNav has apartment-aware bookHref that routes to private booking route", () => {
     const content = fs.readFileSync(path.join(UI_DIR, "MobileNav.tsx"), "utf-8");
     expect(content).toMatch(/isApartmentRoute/);
-    expect(content).toContain("/book-private-accomodations");
+    expect(content).toContain("/book-private-accommodations");
   });
 
   // TC-03: footer.json terms label is accommodation-neutral

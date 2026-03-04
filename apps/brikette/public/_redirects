@@ -8,8 +8,14 @@
 # No-locale booking slugs -> English localized booking routes
 /book-dorm-bed  /en/book-dorm-bed  301
 /book-dorm-bed/  /en/book-dorm-bed/  301
-/book-private-accomodations  /en/book-private-accomodations  301
-/book-private-accomodations/  /en/book-private-accomodations/  301
+/book-private-accommodations  /en/book-private-accommodations  301
+/book-private-accommodations/  /en/book-private-accommodations/  301
+
+# Legacy misspelled URL -> corrected spelling (SEO rename)
+/book-private-accomodations  /en/book-private-accommodations  301
+/book-private-accomodations/  /en/book-private-accommodations/  301
+/en/book-private-accomodations  /en/book-private-accommodations  301
+/en/book-private-accomodations/  /en/book-private-accommodations/  301
 
 # Health check endpoint -> homepage (no API routes on static deploy)
 /api/health  /en/  302
@@ -39,11 +45,11 @@ https://www.stepfreepositano.com/*  /en/private-rooms/:splat  301
 /en/dorms  /en/book-dorm-bed  301
 /en/dorms/  /en/book-dorm-bed/  301
 
-# Legacy private booking routes -> /en/book-private-accomodations
-/en/private-rooms/book  /en/book-private-accomodations  301
-/en/private-rooms/book/  /en/book-private-accomodations/  301
-/en/apartment/book  /en/book-private-accomodations  301
-/en/apartment/book/  /en/book-private-accomodations/  301
+# Legacy private booking routes -> /en/book-private-accommodations
+/en/private-rooms/book  /en/book-private-accommodations  301
+/en/private-rooms/book/  /en/book-private-accommodations/  301
+/en/apartment/book  /en/book-private-accommodations  301
+/en/apartment/book/  /en/book-private-accommodations/  301
 
 # Legacy /en/apartment/* -> /en/private-rooms/* (route renamed for SEO)
 /en/apartment  /en/private-rooms  301
@@ -162,9 +168,6 @@ https://www.stepfreepositano.com/*  /en/private-rooms/:splat  301
 /en/help  /en/assistance  200
 /en/help/  /en/assistance/  200
 /en/help/*  /en/assistance/:splat  200
-/en/book-dorm-bed  /en/book  200
-/en/book-dorm-bed/  /en/book/  200
-/en/book-dorm-bed/*  /en/book/:splat  200
 /es/sobre-nosotros  /es/about  200
 /es/sobre-nosotros/  /es/about/  200
 /es/sobre-nosotros/*  /es/about/:splat  200

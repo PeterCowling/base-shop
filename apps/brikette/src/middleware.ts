@@ -166,7 +166,7 @@ function handleWrongTopLevelRedirect(params: {
 
   if (wrongKey === "apartment" && nextParts[2]?.toLowerCase() === "book") {
     const trailingSlash = topSegmentSuffix ? "" : "/";
-    return buildRedirectResponse(request, `/${appLang}/book-private-accomodations${trailingSlash}`);
+    return buildRedirectResponse(request, `/${appLang}/book-private-accommodations${trailingSlash}`);
   }
 
   const correctedSegment = `${correctSlug}${topSegmentSuffix}`;
@@ -203,7 +203,7 @@ export function middleware(request: NextRequest) {
   if (key) {
     if (key === "apartment" && nextParts[2]?.toLowerCase() === "book") {
       const trailingSlash = topSegmentSuffix ? "" : "/";
-      return buildRedirectResponse(request, `/${appLang}/book-private-accomodations${trailingSlash}`);
+      return buildRedirectResponse(request, `/${appLang}/book-private-accommodations${trailingSlash}`);
     }
     // Booking funnel update: route localized rooms index URLs (e.g. /en/dorms)
     // to the localized booking page slug (e.g. /en/book-dorm-bed).

@@ -34,7 +34,7 @@ export function listAppRouterUrls(): string[] {
 
     // Draft dashboard (internal editorial route)
     urls.push(`/${lang}/draft`);
-    urls.push(`/${lang}/book-private-accomodations`);
+    urls.push(`/${lang}/book-private-accommodations`);
 
     // Dynamic: Rooms
     const roomsSlug = getSlug("rooms", lang);

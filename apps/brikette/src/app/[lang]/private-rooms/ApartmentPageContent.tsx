@@ -32,7 +32,7 @@ function ApartmentPageContent({ lang }: Props) {
   const { t } = useTranslation("apartmentPage", { lng: lang });
   usePagePreload({ lang, namespaces: ["apartmentPage"] });
   const privateRoomsPath = `/${lang}/${translatePath("apartment", lang)}`;
-  const privateBookingPath = `/${lang}/book-private-accomodations`;
+  const privateBookingPath = `/${lang}/book-private-accommodations`;
 
   // Fire view_item once per navigation
   useEffect(() => {

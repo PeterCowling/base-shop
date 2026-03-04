@@ -56,11 +56,11 @@ function MobileNav({
   // Apartment-aware CTA routing (TASK-07): on apartment routes, link directly to apartment
   // booking page instead of opening the hostel booking modal.
   const apartmentPath = `/${translatePath("apartment", lang)}`;
-  const privateBookingPath = `/${lang}/book-private-accomodations`;
+  const privateBookingPath = `/${lang}/book-private-accommodations`;
   const isApartmentRoute =
     pathname.startsWith(`/${lang}${apartmentPath}`) || pathname.startsWith(privateBookingPath);
   const bookHref = isApartmentRoute
-    ? `/${lang}/book-private-accomodations`
+    ? `/${lang}/book-private-accommodations`
     : `/${lang}/${translatePath("book", lang)}`;
 
   const toggleMenu = useCallback(() => setMenuOpen((prev) => !prev), [setMenuOpen]);

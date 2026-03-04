@@ -49,5 +49,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ApartmentBookPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
-  redirect(`/${validLang}/book-private-accomodations`);
+  redirect(`/${validLang}/book-private-accommodations`);
 }

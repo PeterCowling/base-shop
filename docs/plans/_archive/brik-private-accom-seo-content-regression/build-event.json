@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "brik-private-accom-seo-content-regression-2026-03-04",
+  "feature_slug": "brik-private-accom-seo-content-regression",
+  "emitted_at": "2026-03-04T00:00:00Z",
+  "why": "The private accommodation booking page is invisible to search engines due to broken meta tags and noindex directive. This is the highest-margin conversion path — its landing page needs to rank and convert organic traffic.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "measurable",
+    "statement": "Page serves correct meta title/description, is indexable, has SSR heading hierarchy and descriptive content, and includes JSON-LD structured data — enabling organic discovery and improving landing page conversion.",
+    "source": "operator"
+  }
+}

@@ -1,5 +1,5 @@
-// src/app/[lang]/book/page.tsx
-// Book page - App Router version
+// src/app/[lang]/book-dorm-bed/page.tsx
+// Static-export-safe booking route for the renamed public URL.
 import { Suspense } from "react";
 import type { Metadata } from "next";
 
@@ -9,10 +9,9 @@ import { getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
 import { OG_IMAGE } from "@/utils/headConstants";
-import { getSlug } from "@/utils/slug";
 import { resolveLabel } from "@/utils/translation-fallback";
 
-import BookPageContent from "./BookPageContent";
+import BookPageContent from "../book/BookPageContent";
 
 type Props = {
   params: Promise<{ lang: string }>;
@@ -27,11 +26,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const validLang = toAppLanguage(lang);
   const t = await getTranslations(validLang, ["bookPage"], { optional: true });
 
-  const title = (t("meta.title") as string) ?? "";
-  const description = (t("meta.description") as string) ?? "";
-
-  const bookSlug = getSlug("book", validLang);
-  const path = `/${validLang}/${bookSlug}`;
+  const title = resolveLabel(t, "meta.title", "");
+  const description = resolveLabel(t, "meta.description", "");
+  const path = `/${validLang}/book-dorm-bed`;
 
   const image = buildCfImageUrl("/img/hostel-communal-terrace-lush-view.webp", {
     width: OG_IMAGE.width,
@@ -50,10 +47,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
-export default async function BookPage({ params }: Props) {
+export default async function BookDormBedPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
   const t = await getTranslations(validLang, ["bookPage"], { optional: true });
+
   const heading = resolveLabel(t, "heading", "");
   /* eslint-disable ds/no-hardcoded-copy -- TASK-08 [ttl=2026-12-31] i18n-exempt: noscript-only fallback strings, not rendered in normal UI */
   const noscriptMessage = resolveLabel(
@@ -75,12 +73,9 @@ export default async function BookPage({ params }: Props) {
 
   return (
     <>
-      {/* Wrap in Suspense because BookPageContent uses useSearchParams */}
       <Suspense fallback={null}>
         <BookPageContent lang={validLang} heading={heading} />
       </Suspense>
-      {/* No-JS fallback (TASK-10B): direct Octorate link rendered in RSC layer so it
-          is always present in server HTML, visible only when JavaScript is disabled. */}
       <noscript>
         <div>
           {noscriptMessage}{" "}

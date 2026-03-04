@@ -53,7 +53,7 @@ describe("buildNavLinks", () => {
     expect(apartment.to).toBe(slugs["apartment"]);
     expect(apartment.children?.[0]).toEqual({
       key: "apartment_book_private",
-      to: "/book-private-accomodations",
+      to: "/book-private-accommodations",
       label: "Book private accommodations",
     });
   });

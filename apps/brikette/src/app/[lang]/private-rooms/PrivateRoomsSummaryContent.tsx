@@ -23,7 +23,7 @@ function PrivateRoomsSummaryContent({ lang }: Props) {
   usePagePreload({ lang, namespaces: ["roomsPage", "apartmentPage"] });
 
   const privateRoomsPath = `/${lang}/${translatePath("apartment", lang)}`;
-  const privateBookingPath = `/${lang}/book-private-accomodations`;
+  const privateBookingPath = `/${lang}/book-private-accommodations`;
   const apartmentRoom = roomsData.find((room) => room.id === "apartment");
   const doubleRoom = roomsData.find((room) => room.id === "double_room");
   const apartmentDetailsRaw = tApartment("detailsList", { returnObjects: true }) as unknown;

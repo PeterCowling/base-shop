@@ -69,12 +69,12 @@ const BOOKING_ROUTE_SOURCE_FILES = [
 ] as const;
 
 /**
- * RSC entry point for the /{lang}/book-private-accomodations route.
+ * RSC entry point for the /{lang}/book-private-accommodations route.
  * The no-JS fallback link must live in the RSC layer, not in ApartmentBookContent (client).
  * Path is relative to SOURCE_ROOT (apps/brikette/src/).
  */
 const APARTMENT_BOOKING_ROUTE_SOURCE_FILE =
-  "app/[lang]/book-private-accomodations/page.tsx" as const;
+  "app/[lang]/book-private-accommodations/page.tsx" as const;
 
 /** Pattern that indicates a static, non-JS-dependent Octorate booking link. */
 const OCTORATE_STATIC_LINK_PATTERN = /book\.octorate\.com/;

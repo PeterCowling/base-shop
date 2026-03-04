@@ -2,8 +2,8 @@
 
 import Image, { type StaticImageData } from "next/image";
 
-import type { UploaderLocale, UploaderMessageKey } from "../../lib/uploaderI18n";
-import { getUploaderMessage } from "../../lib/uploaderI18n";
+import type { UploaderMessageKey } from "../../lib/uploaderI18n";
+import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 import UploaderShell from "../UploaderShell.client";
 
 import addProductScreen from "./assets/add-product-screen.png";
@@ -19,8 +19,6 @@ type InstructionSection = {
     captionKey: UploaderMessageKey;
   };
 };
-
-const INSTRUCTION_LOCALES: readonly UploaderLocale[] = ["en", "zh"];
 
 const INSTRUCTION_SECTIONS: readonly InstructionSection[] = [
   {
@@ -113,37 +111,6 @@ const INSTRUCTION_SECTIONS: readonly InstructionSection[] = [
   },
 ];
 
-function text(locale: UploaderLocale, key: UploaderMessageKey): string {
-  return getUploaderMessage(locale, key);
-}
-
-function LanguagePanel({
-  locale,
-  titleKey,
-  stepKeys,
-}: {
-  locale: UploaderLocale;
-  titleKey: UploaderMessageKey;
-  stepKeys: readonly UploaderMessageKey[];
-}) {
-  const labelKey =
-    locale === "en" ? "instructionsLanguageEnglish" : "instructionsLanguageChinese";
-
-  return (
-    <section className="rounded-lg border border-gate-border bg-gate-surface p-4">
-      <h3 className="text-xs font-semibold uppercase tracking-label text-gate-muted">
-        {text(locale, labelKey)}
-      </h3>
-      <p className="mt-2 text-sm font-semibold text-gate-ink">{text(locale, titleKey)}</p>
-      <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm text-gate-ink">
-        {stepKeys.map((stepKey) => (
-          <li key={stepKey}>{text(locale, stepKey)}</li>
-        ))}
-      </ol>
-    </section>
-  );
-}
-
 export default function UploaderInstructionsClient({
   displayClassName,
   monoClassName,
@@ -151,18 +118,17 @@ export default function UploaderInstructionsClient({
   displayClassName: string;
   monoClassName: string;
 }) {
+  const { t } = useUploaderI18n();
+
   return (
     <UploaderShell displayClassName={displayClassName} monoClassName={monoClassName} page="instructions">
       <div className="space-y-6">
         <section className="rounded-xl border border-gate-border bg-gate-surface p-6 shadow-elevation-1">
           <p className="text-2xs uppercase tracking-label-lg text-gate-muted">
-            {text("en", "instructionsPageKicker")}
+            {t("instructionsPageKicker")}
           </p>
-          <h1 className="mt-2 text-2xl font-semibold text-gate-ink">
-            {text("en", "instructionsPageTitle")} / {text("zh", "instructionsPageTitle")}
-          </h1>
-          <p className="mt-3 text-sm text-gate-muted">{text("en", "instructionsPageIntro")}</p>
-          <p className="mt-2 text-sm text-gate-muted">{text("zh", "instructionsPageIntro")}</p>
+          <h1 className="mt-2 text-2xl font-semibold text-gate-ink">{t("instructionsPageTitle")}</h1>
+          <p className="mt-3 text-sm text-gate-muted">{t("instructionsPageIntro")}</p>
         </section>
 
         {INSTRUCTION_SECTIONS.map((section, index) => (
@@ -171,31 +137,24 @@ export default function UploaderInstructionsClient({
             className="rounded-xl border border-gate-border bg-gate-bg p-6 shadow-elevation-1"
           >
             <h2 className="text-lg font-semibold text-gate-ink">
-              {index + 1}. {text("en", section.titleKey)}
+              {index + 1}. {t(section.titleKey)}
             </h2>
-            <p className="mt-1 text-sm text-gate-muted">{text("zh", section.titleKey)}</p>
-
-            <div className="mt-4 space-y-4">
-              {INSTRUCTION_LOCALES.map((locale) => (
-                <LanguagePanel
-                  key={`${section.titleKey}-${locale}`}
-                  locale={locale}
-                  titleKey={section.titleKey}
-                  stepKeys={section.stepKeys}
-                />
+            <ol className="mt-4 list-decimal space-y-2 ps-5 text-sm text-gate-ink">
+              {section.stepKeys.map((stepKey) => (
+                <li key={stepKey}>{t(stepKey)}</li>
               ))}
-            </div>
+            </ol>
 
             {section.screenshot ? (
               <figure className="mt-5 overflow-hidden rounded-lg border border-gate-border bg-gate-surface p-3">
                 <Image
                   src={section.screenshot.src}
-                  alt={`${text("en", section.screenshot.captionKey)} ${text("zh", section.screenshot.captionKey)}`}
+                  alt={t(section.screenshot.captionKey)}
                   className="h-auto w-full rounded-md border border-gate-border"
                   priority={index < 2}
                 />
                 <figcaption className="mt-2 text-xs text-gate-muted">
-                  {text("en", section.screenshot.captionKey)} {text("zh", section.screenshot.captionKey)}
+                  {t(section.screenshot.captionKey)}
                 </figcaption>
               </figure>
             ) : null}

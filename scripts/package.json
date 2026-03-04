@@ -28,7 +28,8 @@
     "startup-loop:self-evolving-from-build-output": "node --import tsx src/startup-loop/self-evolving/self-evolving-from-build-output.ts",
     "startup-loop:queue-state-canonicalize": "node --import tsx src/startup-loop/ideas/lp-do-ideas-queue-state-canonicalize.ts",
     "startup-loop:results-review-prefill": "node --import tsx src/startup-loop/build/lp-do-build-results-review-prefill.ts",
-    "startup-loop:pattern-reflection-prefill": "node --import tsx src/startup-loop/build/lp-do-build-pattern-reflection-prefill.ts"
+    "startup-loop:pattern-reflection-prefill": "node --import tsx src/startup-loop/build/lp-do-build-pattern-reflection-prefill.ts",
+    "startup-loop:self-evolving-write-back": "node --import tsx src/startup-loop/self-evolving/self-evolving-write-back.ts"
   },
   "dependencies": {
     "@acme/lib": "workspace:*",

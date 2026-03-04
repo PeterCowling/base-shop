@@ -52,6 +52,19 @@ export const T1_SEMANTIC_KEYWORDS: readonly string[] = [
   "solution decision",
   "naming",
   "distribution plan",
+  // Codebase/quality signal bridge keywords
+  "critical finding",
+  "code quality",
+  "api endpoint",
+  "route change",
+  "schema change",
+  "dependency update",
+  "component addition",
+  "walkthrough finding",
+  "testing issue",
+  "ux gap",
+  "broken flow",
+  "missing functionality",
 ];
 
 // ---------------------------------------------------------------------------
@@ -445,6 +458,7 @@ const SELF_TRIGGER_PROCESSES = new Set([
   "projection_auto",
   "reflection_emit",
   "reflection_emit_minimum",
+  "standing-write-back",
 ]);
 
 const METADATA_ONLY_SECTION_PATTERNS: ReadonlyArray<RegExp> = [

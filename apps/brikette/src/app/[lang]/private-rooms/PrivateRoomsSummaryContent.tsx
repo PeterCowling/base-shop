@@ -19,9 +19,8 @@ type Props = {
 
 function PrivateRoomsSummaryContent({ lang }: Props) {
   const { t: tRoomsPage } = useTranslation("roomsPage", { lng: lang });
-  const { t: tRooms } = useTranslation("rooms", { lng: lang });
   const { t: tApartment } = useTranslation("apartmentPage", { lng: lang });
-  usePagePreload({ lang, namespaces: ["roomsPage", "rooms", "apartmentPage"] });
+  usePagePreload({ lang, namespaces: ["roomsPage", "apartmentPage"] });
 
   const privateRoomsPath = `/${lang}/${translatePath("apartment", lang)}`;
   const privateBookingPath = `/${lang}/book-private-accommodations`;
@@ -50,8 +49,8 @@ function PrivateRoomsSummaryContent({ lang }: Props) {
     {
       href: `${privateRoomsPath}/double-room`,
       image: doubleRoom?.landingImage ?? "/img/7/landing.webp",
-      title: tRooms("rooms.double_room.title") as string,
-      description: tRooms("rooms.double_room.bed_description") as string,
+      title: tRoomsPage("rooms.double_room.title") as string,
+      description: tRoomsPage("rooms.double_room.bed_description") as string,
       highlights: doubleFacilities,
     },
   ];

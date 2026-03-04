@@ -15,6 +15,8 @@ import { i18nConfig } from "@/i18n.config";
 import { guideNamespace, guideSlug } from "@/routes.guides-helpers";
 import { INTERNAL_SEGMENT_BY_KEY, STATIC_EXPORT_SECTION_KEYS } from "@/routing/sectionSegments";
 
+const NON_DORM_ROOM_IDS = new Set(["double_room", "apartment"]);
+
 /**
  * Lists all valid App Router URLs for the brikette app.
  * This replaces the compat shim's `listLocalizedPaths()` for testing
@@ -39,7 +41,7 @@ export function listAppRouterUrls(): string[] {
 
     // Dynamic: Rooms
     const roomsSlug = INTERNAL_SEGMENT_BY_KEY.rooms;
-    for (const room of websiteVisibleRoomsData) {
+    for (const room of websiteVisibleRoomsData.filter((candidate) => !NON_DORM_ROOM_IDS.has(candidate.id))) {
       urls.push(`/${lang}/${roomsSlug}/${getRoomSlug(room.id, lang)}`);
     }
 
@@ -78,13 +80,14 @@ export function listAppRouterUrls(): string[] {
 export function getUrlCounts(): Record<string, number> {
   const langs = i18nConfig.supportedLngs as AppLanguage[];
   const langCount = langs.length;
+  const dormRoomCount = websiteVisibleRoomsData.filter((room) => !NON_DORM_ROOM_IDS.has(room.id)).length;
 
   return {
     home: langCount,
     staticSections: langCount * STATIC_EXPORT_SECTION_KEYS.length,
     draft: langCount,
     privateBook: langCount,
-    rooms: langCount * websiteVisibleRoomsData.length,
+    rooms: langCount * dormRoomCount,
     // NOTE: guides count now includes how-to-get-here routes (via GUIDES_INDEX)
     guides: langCount * GUIDES_INDEX.filter((g) => g.status === "live").length,
     tags: langCount * new Set(GUIDES_INDEX.flatMap((g) => g.tags)).size,

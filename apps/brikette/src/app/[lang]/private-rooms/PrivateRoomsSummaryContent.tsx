@@ -1,15 +1,11 @@
-"use client";
-
-import { memo } from "react";
-import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import Link from "next/link";
 
 import { Section } from "@acme/design-system/atoms";
 import { Grid } from "@acme/design-system/primitives";
 
+import { getTranslations } from "@/app/_lib/i18n-server";
 import roomsData from "@/data/roomsData";
-import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { translatePath } from "@/utils/translate-path";
 
@@ -17,10 +13,9 @@ type Props = {
   lang: AppLanguage;
 };
 
-function PrivateRoomsSummaryContent({ lang }: Props) {
-  const { t: tRoomsPage } = useTranslation("roomsPage", { lng: lang });
-  const { t: tApartment } = useTranslation("apartmentPage", { lng: lang });
-  usePagePreload({ lang, namespaces: ["roomsPage", "apartmentPage"] });
+export default async function PrivateRoomsSummaryContent({ lang }: Props) {
+  const tRoomsPage = await getTranslations(lang, "roomsPage");
+  const tApartment = await getTranslations(lang, "apartmentPage");
 
   const privateRoomsPath = `/${lang}/${translatePath("apartment", lang)}`;
   const privateBookingPath = `/${lang}/book-private-accommodations`;
@@ -114,5 +109,3 @@ function PrivateRoomsSummaryContent({ lang }: Props) {
     </Section>
   );
 }
-
-export default memo(PrivateRoomsSummaryContent);

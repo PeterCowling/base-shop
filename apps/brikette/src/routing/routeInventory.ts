@@ -12,7 +12,7 @@ import { HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS } from "@/data/how-to-get-here/routeGu
 import { websiteVisibleRoomsData } from "@/data/roomsData";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
-import { guideNamespace, guideSlug } from "@/routes.guides-helpers";
+import { guideNamespace, guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
 import { INTERNAL_SEGMENT_BY_KEY, STATIC_EXPORT_SECTION_KEYS } from "@/routing/sectionSegments";
 
 const NON_DORM_ROOM_IDS = new Set(["double_room", "apartment"]);
@@ -49,7 +49,11 @@ export function listAppRouterUrls(): string[] {
     const publishedGuides = GUIDES_INDEX.filter((g) => g.status === "live");
     for (const guide of publishedGuides) {
       const base = guideNamespace(lang, guide.key);
-      urls.push(`/${lang}/${INTERNAL_SEGMENT_BY_KEY[base.baseKey]}/${guideSlug(lang, guide.key)}`);
+      const slug = guideSlug(lang, guide.key);
+      // Keep only guide slugs that resolve back to the same key.
+      // This avoids sitemap entries for non-roundtrip slugs that render notFound.
+      if (resolveGuideKeyFromSlug(slug, lang) !== guide.key) continue;
+      urls.push(`/${lang}/${INTERNAL_SEGMENT_BY_KEY[base.baseKey]}/${slug}`);
     }
 
     // Dynamic: Guide tags

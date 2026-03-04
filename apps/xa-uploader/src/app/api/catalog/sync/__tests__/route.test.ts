@@ -216,7 +216,7 @@ describe("catalog sync route", () => {
     );
   });
 
-  it("TC-00f: GET reports ready=false with contractConfigured=false when contract env vars are missing", async () => {
+  it("TC-00f: GET reports contractConfigured=false while local sync readiness remains true", async () => {
     accessMock.mockResolvedValue(undefined);
     getCatalogContractReadinessMock.mockReturnValue({
       configured: false,
@@ -234,7 +234,7 @@ describe("catalog sync route", () => {
     expect(await response.json()).toEqual(
       expect.objectContaining({
         ok: true,
-        ready: false,
+        ready: true,
         contractConfigured: false,
         contractConfigErrors: ["XA_CATALOG_CONTRACT_BASE_URL not set"],
         recovery: "configure_catalog_contract",

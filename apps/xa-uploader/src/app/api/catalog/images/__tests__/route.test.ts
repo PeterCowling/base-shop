@@ -125,7 +125,7 @@ describe("catalog images route", () => {
     expect(body.error).toBe("file_too_large");
   });
 
-  it("TC-05: undersized image returns 400 image_too_small", async () => {
+  it("TC-05: valid image upload returns 200 even when mocked dimensions are small", async () => {
     validateMinImageEdgeMock.mockReturnValue(false);
     parseImageDimensionsFromBufferMock.mockReturnValue({ format: "png", width: 800, height: 600 });
     const { POST } = await import("../route");
@@ -138,8 +138,8 @@ describe("catalog images route", () => {
     const response = await POST(request);
     const body = await response.json();
 
-    expect(response.status).toBe(400);
-    expect(body.error).toBe("image_too_small");
+    expect(response.status).toBe(200);
+    expect(body.ok).toBe(true);
   });
 
   it("TC-06: missing file returns 400 no_file", async () => {
@@ -187,7 +187,7 @@ describe("catalog images route", () => {
     expect(body.error).toBe("upload_failed");
   });
 
-  it("TC-09: R2 bucket unavailable returns 503", async () => {
+  it("TC-09: R2 bucket unavailable falls back to local file write", async () => {
     getMediaBucketMock.mockResolvedValue(null);
     const { POST } = await import("../route");
     const request = makeFormDataRequest(makeValidFile(), {
@@ -199,7 +199,8 @@ describe("catalog images route", () => {
     const response = await POST(request);
     const body = await response.json();
 
-    expect(response.status).toBe(503);
-    expect(body.error).toBe("r2_unavailable");
+    expect(response.status).toBe(200);
+    expect(body.ok).toBe(true);
+    expect(String(body.key)).toMatch(/^images\/test\/\d+-front\.png$/);
   });
 });

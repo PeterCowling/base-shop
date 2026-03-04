@@ -78,6 +78,43 @@ async function syncCatalogFromContract() {
     if (requireCatalogReadSuccess()) {
       throw new Error("[xa-build] catalog contract read URL not configured.");
     }
+
+    // Try local sync artifacts from xa-uploader before falling back to committed catalog.json
+    const localArtifactPath = path.resolve(scriptDir, "../../xa-uploader/data/sync-artifacts/xa-b/catalog.json");
+    const localMediaArtifactPath = path.resolve(scriptDir, "../../xa-uploader/data/sync-artifacts/xa-b/catalog.media.json");
+    try {
+      const localRaw = await fs.readFile(localArtifactPath, "utf8");
+      const localCatalog = JSON.parse(localRaw);
+      if (isRecord(localCatalog) && Array.isArray(localCatalog.products)) {
+        const next = `${JSON.stringify(localCatalog, null, 2)}\n`;
+        const tempPath = `${runtimeCatalogPath}.tmp`;
+        await fs.writeFile(tempPath, next, "utf8");
+        await fs.rename(tempPath, runtimeCatalogPath);
+
+        // Also copy media index if present
+        try {
+          const localMediaRaw = await fs.readFile(localMediaArtifactPath, "utf8");
+          const mediaIndexTempPath = `${runtimeMediaIndexPath}.tmp`;
+          await fs.writeFile(mediaIndexTempPath, `${localMediaRaw.trim()}\n`, "utf8");
+          await fs.rename(mediaIndexTempPath, runtimeMediaIndexPath);
+        } catch {
+          // Media index is optional — proceed without it.
+        }
+
+        console.log(`[xa-build] using local sync artifacts from ${localArtifactPath} (${localCatalog.products.length} products).`);
+        await writeRuntimeMeta({
+          source: "local-artifacts",
+          artifactPath: localArtifactPath,
+          productCount: localCatalog.products.length,
+          syncedAt: new Date().toISOString(),
+          required: false,
+        });
+        return;
+      }
+    } catch {
+      // Local artifacts not available — fall through to committed catalog.json seed.
+    }
+
     console.log("[xa-build] catalog contract read URL not configured; using local runtime catalog seed.");
     await writeRuntimeMeta({
       source: "fallback",

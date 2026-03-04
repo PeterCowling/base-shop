@@ -1,0 +1,5 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-04T10:15:24.389Z",
+  "why": "Build failures don't propagate to Layer A standing data, risking re-attempts of previously failed approaches."
+}

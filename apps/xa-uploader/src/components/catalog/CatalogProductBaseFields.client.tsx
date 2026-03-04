@@ -24,6 +24,7 @@ import { INPUT_CLASS, SECTION_HEADER_CLASS, SELECT_CLASS } from "./catalogStyles
 import { RegistryCheckboxGrid } from "./RegistryCheckboxGrid.client";
 
 type BaseFieldsProps = {
+  selectedSlug?: string | null;
   draft: CatalogProductDraftInput;
   fieldErrors: Record<string, string>;
   monoClassName?: string;
@@ -95,12 +96,14 @@ function SizeSelector({
   draft,
   brandHandle,
   collectionHandle,
+  selectedSlug,
   onChange,
 }: {
   t: Translate;
   draft: CatalogProductDraftInput;
   brandHandle: string;
   collectionHandle: string;
+  selectedSlug?: string | null;
   onChange: (next: CatalogProductDraftInput) => void;
 }) {
   const [selectedSize, setSelectedSize] = React.useState(() => draft.sizes ?? "");
@@ -123,26 +126,37 @@ function SizeSelector({
       const brand = findBrand(brandHandle);
       const coll = findCollection(brandHandle, collectionHandle);
       if (brand && coll) {
-        const input: DescriptionInput = {
-          brandName: brand.name,
-          collectionTitle: coll.title,
-          sizeLabel: match.label,
-          dimensions: match.dimensions,
-          colors: draft.taxonomy.color ?? "",
-          material: draft.taxonomy.material ?? "",
-          promo: coll.promo,
-        };
-        const title = generateTitle(input);
         const pop = computePopularity(brandHandle, collectionHandle, match.label, draft.taxonomy.color ?? "");
-        onChange({
-          ...draft,
-          sizes: match.label,
-          title,
-          slug: slugify(title),
-          details: { ...draft.details, dimensions: match.dimensions, ...(match.whatFits ? { whatFits: match.whatFits } : {}), ...(match.strapDrop ? { strapDrop: match.strapDrop } : {}) },
-          description: generateDescription(input),
-          ...(pop != null ? { popularity: String(pop) } : {}),
-        });
+        if (selectedSlug == null) {
+          // New product: auto-derive title, slug, description, popularity
+          const input: DescriptionInput = {
+            brandName: brand.name,
+            collectionTitle: coll.title,
+            sizeLabel: match.label,
+            dimensions: match.dimensions,
+            colors: draft.taxonomy.color ?? "",
+            material: draft.taxonomy.material ?? "",
+            promo: coll.promo,
+          };
+          const title = generateTitle(input);
+          onChange({
+            ...draft,
+            sizes: match.label,
+            title,
+            slug: slugify(title),
+            details: { ...draft.details, dimensions: match.dimensions, ...(match.whatFits ? { whatFits: match.whatFits } : {}), ...(match.strapDrop ? { strapDrop: match.strapDrop } : {}) },
+            description: generateDescription(input),
+            ...(pop != null ? { popularity: String(pop) } : {}),
+          });
+        } else {
+          // Edit mode: update size-specific fields only, preserve title/slug/description
+          onChange({
+            ...draft,
+            sizes: match.label,
+            details: { ...draft.details, dimensions: match.dimensions, ...(match.whatFits ? { whatFits: match.whatFits } : {}), ...(match.strapDrop ? { strapDrop: match.strapDrop } : {}) },
+            ...(pop != null ? { popularity: String(pop) } : {}),
+          });
+        }
       } else {
         const pop = computePopularity(brandHandle, collectionHandle, match.label, draft.taxonomy.color ?? "");
         onChange({
@@ -153,7 +167,7 @@ function SizeSelector({
         });
       }
     },
-    [draft, onChange, brandHandle, collectionHandle, sizes],
+    [draft, onChange, brandHandle, collectionHandle, sizes, selectedSlug],
   );
 
   if (!sizes || sizes.length === 0) return null;
@@ -183,6 +197,7 @@ function BrandCollectionSelectors({
   t,
   draft,
   fieldErrors,
+  selectedSlug,
   onChange,
 }: BaseFieldsProps & { t: Translate }) {
   const [selectedBrand, setSelectedBrand] = React.useState(() =>
@@ -360,6 +375,7 @@ function BrandCollectionSelectors({
           draft={draft}
           brandHandle={selectedBrand}
           collectionHandle={selectedCollection}
+          selectedSlug={selectedSlug}
           onChange={onChange}
         />
       ) : null}
@@ -506,6 +522,7 @@ function PriceInput({ t, draft, fieldErrors, onChange }: BaseFieldsProps & { t: 
 
 function IdentityFields({
   t,
+  selectedSlug,
   draft,
   fieldErrors,
   onChange,
@@ -514,7 +531,7 @@ function IdentityFields({
 
   return (
     <>
-      <BrandCollectionSelectors t={t} draft={draft} fieldErrors={fieldErrors} onChange={onChange} />
+      <BrandCollectionSelectors t={t} selectedSlug={selectedSlug} draft={draft} fieldErrors={fieldErrors} onChange={onChange} />
 
       {hasCollection ? (
         <>
@@ -594,47 +611,71 @@ function TaxonomyFields({ t, draft, fieldErrors, onChange }: BaseFieldsProps & {
         <FieldError message={fieldErrors["taxonomy.subcategory"]} />
       </label>
 
-      {draft.details?.dimensions ? (
-        <div className="block text-xs uppercase tracking-label text-gate-muted">
-          {t("placeholderDimensions")}
-          <div className={`${INPUT_CLASS} opacity-60`}>{draft.details.dimensions}</div>
-        </div>
-      ) : null}
+      <label className="block text-xs uppercase tracking-label text-gate-muted">
+        {t("placeholderDimensions")}
+        <input
+          value={draft.details?.dimensions ?? ""}
+          onChange={(event) =>
+            onChange({ ...draft, details: { ...draft.details, dimensions: event.target.value } })
+          }
+          className={INPUT_CLASS}
+        />
+      </label>
 
-      {draft.taxonomy.strapStyle ? (
-        <div className="block text-xs uppercase tracking-label text-gate-muted">
-          {t("bagStrapStyle")}
-          <div className={`${INPUT_CLASS} opacity-60`}>{draft.taxonomy.strapStyle}</div>
-        </div>
-      ) : null}
+      <label className="block text-xs uppercase tracking-label text-gate-muted">
+        {t("bagStrapStyle")}
+        <input
+          value={draft.taxonomy.strapStyle ?? ""}
+          onChange={(event) =>
+            onChange({ ...draft, taxonomy: { ...draft.taxonomy, strapStyle: event.target.value } })
+          }
+          className={INPUT_CLASS}
+        />
+      </label>
 
-      {draft.details?.strapDrop ? (
-        <div className="block text-xs uppercase tracking-label text-gate-muted">
-          {t("placeholderStrapDrop")}
-          <div className={`${INPUT_CLASS} opacity-60`}>{draft.details.strapDrop}</div>
-        </div>
-      ) : null}
+      <label className="block text-xs uppercase tracking-label text-gate-muted">
+        {t("placeholderStrapDrop")}
+        <input
+          value={draft.details?.strapDrop ?? ""}
+          onChange={(event) =>
+            onChange({ ...draft, details: { ...draft.details, strapDrop: event.target.value } })
+          }
+          className={INPUT_CLASS}
+        />
+      </label>
 
-      {draft.taxonomy.closureType ? (
-        <div className="block text-xs uppercase tracking-label text-gate-muted">
-          {t("bagClosureType")}
-          <div className={`${INPUT_CLASS} opacity-60`}>{draft.taxonomy.closureType}</div>
-        </div>
-      ) : null}
+      <label className="block text-xs uppercase tracking-label text-gate-muted">
+        {t("bagClosureType")}
+        <input
+          value={draft.taxonomy.closureType ?? ""}
+          onChange={(event) =>
+            onChange({ ...draft, taxonomy: { ...draft.taxonomy, closureType: event.target.value } })
+          }
+          className={INPUT_CLASS}
+        />
+      </label>
 
-      {draft.details?.interior ? (
-        <div className="block text-xs uppercase tracking-label text-gate-muted">
-          {t("bagInterior")}
-          <div className={`${INPUT_CLASS} opacity-60`}>{draft.details.interior}</div>
-        </div>
-      ) : null}
+      <label className="block text-xs uppercase tracking-label text-gate-muted">
+        {t("bagInterior")}
+        <input
+          value={draft.details?.interior ?? ""}
+          onChange={(event) =>
+            onChange({ ...draft, details: { ...draft.details, interior: event.target.value } })
+          }
+          className={INPUT_CLASS}
+        />
+      </label>
 
-      {draft.details?.whatFits ? (
-        <div className="block text-xs uppercase tracking-label text-gate-muted">
-          {t("bagDetailsTitle")}
-          <div className={`${INPUT_CLASS} opacity-60`}>{draft.details.whatFits}</div>
-        </div>
-      ) : null}
+      <label className="block text-xs uppercase tracking-label text-gate-muted">
+        {t("bagDetailsTitle")}
+        <input
+          value={draft.details?.whatFits ?? ""}
+          onChange={(event) =>
+            onChange({ ...draft, details: { ...draft.details, whatFits: event.target.value } })
+          }
+          className={INPUT_CLASS}
+        />
+      </label>
     </>
   );
 }

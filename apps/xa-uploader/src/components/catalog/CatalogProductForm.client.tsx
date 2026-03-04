@@ -177,6 +177,7 @@ export function CatalogProductForm({
         {step === "product" ? (
           <div className="space-y-4">
             <CatalogProductBaseFields
+              selectedSlug={selectedSlug}
               draft={draft}
               fieldErrors={fieldErrors}
               monoClassName={monoClassName}

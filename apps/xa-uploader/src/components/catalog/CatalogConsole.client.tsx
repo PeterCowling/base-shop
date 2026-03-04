@@ -114,7 +114,7 @@ function ScreenTabs({
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="catalog-save-details"
         >
-          {busy ? t("saving") : t("saveDetails")}
+          {busy ? t("saving") : t("saveAsDraft")}
         </button>
       )}
     </div>
@@ -130,6 +130,7 @@ function ProductEditor({
 }) {
   return (
     <CatalogProductForm
+      key={state.selectedSlug ?? "new"}
       selectedSlug={state.selectedSlug}
       draft={state.draft}
       fieldErrors={state.fieldErrors}

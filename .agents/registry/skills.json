@@ -133,7 +133,7 @@
     },
     {
       "name": "lp-do-assessment-08-current-situation",
-      "description": "Elicits and records what the operator directly knows about the business before ASSESSMENT intake runs. Captures launch surface, inventory/product readiness, commercial architecture, and pre-locked cha",
+      "description": "Current situation elicitation for new startups (ASSESSMENT-08). Captures launch surface, inventory/product readiness, commercial architecture, and pre-locked channel decisions. Produces operator-context artifact for intake sync.",
       "path": ".claude/skills/lp-do-assessment-08-current-situation/SKILL.md"
     },
     {

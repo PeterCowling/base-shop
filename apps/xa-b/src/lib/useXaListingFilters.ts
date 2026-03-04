@@ -41,7 +41,6 @@ type AppliedChip = { label: string; onRemove: () => void };
 type AppliedFilterState = {
   appliedValues: FilterValues;
   appliedInStock: boolean;
-  appliedSale: boolean;
   appliedWindow: string | null;
   appliedNewIn: boolean;
   appliedMin: number | null;
@@ -52,7 +51,6 @@ type AppliedFilterState = {
 type DraftFilterState = {
   draftValues: FilterValues;
   draftInStock: boolean;
-  draftSale: boolean;
   draftNewIn: boolean;
   draftMin: string;
   draftMax: string;
@@ -86,7 +84,6 @@ function deriveAppliedFilterState(query: URLSearchParams): AppliedFilterState {
   return {
     appliedValues,
     appliedInStock: appliedAvailability === "in-stock",
-    appliedSale: query.get("sale") === "1",
     appliedWindow,
     appliedNewIn: query.get("new-in") === "1" || Boolean(appliedWindow),
     appliedMin: toNumber(query.get("price[min]")),
@@ -99,7 +96,6 @@ function toDraftFilterState(applied: AppliedFilterState): DraftFilterState {
   return {
     draftValues: cloneFilterValues(applied.appliedValues),
     draftInStock: applied.appliedInStock,
-    draftSale: applied.appliedSale,
     draftNewIn: applied.appliedNewIn,
     draftMin: applied.appliedMin?.toString() ?? "",
     draftMax: applied.appliedMax?.toString() ?? "",
@@ -133,10 +129,6 @@ function useDraftFilterState({
     setState((prev) => ({ ...prev, draftInStock: next }));
   }, []);
 
-  const setDraftSale = React.useCallback((next: boolean) => {
-    setState((prev) => ({ ...prev, draftSale: next }));
-  }, []);
-
   const setDraftNewIn = React.useCallback((next: boolean) => {
     setState((prev) => ({ ...prev, draftNewIn: next }));
   }, []);
@@ -153,7 +145,6 @@ function useDraftFilterState({
     setState({
       draftValues: createEmptyFilterValues(),
       draftInStock: false,
-      draftSale: false,
       draftNewIn: false,
       draftMin: "",
       draftMax: "",
@@ -164,7 +155,6 @@ function useDraftFilterState({
     ...state,
     setDraftValues,
     setDraftInStock,
-    setDraftSale,
     setDraftNewIn,
     setDraftMin,
     setDraftMax,
@@ -178,7 +168,6 @@ function filterAndSortProducts({
   filterConfigs,
   appliedValues,
   appliedInStock,
-  appliedSale,
   appliedWindow,
   appliedNewIn,
   appliedMin,
@@ -192,7 +181,6 @@ function filterAndSortProducts({
   filterConfigs: ReturnType<typeof getFilterConfigs>;
   appliedValues: FilterValues;
   appliedInStock: boolean;
-  appliedSale: boolean;
   appliedWindow: string | null;
   appliedNewIn: boolean;
   appliedMin: number | null;
@@ -205,7 +193,6 @@ function filterAndSortProducts({
 
   const out = products.filter((product) => {
     if (appliedInStock && getAvailableStock(product, cart) <= 0) return false;
-    if (appliedSale && (!product.compareAtPrice || product.compareAtPrice <= product.price)) return false;
 
     if (newInDays) {
       const productTime = new Date(product.createdAt).getTime();
@@ -234,7 +221,6 @@ function applyDraftFiltersToQuery({
   searchParamsString,
   draftValues,
   draftInStock,
-  draftSale,
   draftNewIn,
   draftMin,
   draftMax,
@@ -242,7 +228,6 @@ function applyDraftFiltersToQuery({
   searchParamsString: string;
   draftValues: FilterValues;
   draftInStock: boolean;
-  draftSale: boolean;
   draftNewIn: boolean;
   draftMin: string;
   draftMax: string;
@@ -259,9 +244,6 @@ function applyDraftFiltersToQuery({
 
   if (draftInStock) next.set("availability", "in-stock");
   else next.delete("availability");
-
-  if (draftSale) next.set("sale", "1");
-  else next.delete("sale");
 
   if (draftNewIn) next.set("new-in", "1");
   else next.delete("new-in");
@@ -283,7 +265,6 @@ function clearAppliedFiltersFromQuery(searchParamsString: string) {
     next.delete(getFilterParam(key));
   }
   next.delete("availability");
-  next.delete("sale");
   next.delete("new-in");
   next.delete("window");
   next.delete("price[min]");
@@ -317,7 +298,6 @@ function buildAppliedChips({
   filterConfigs,
   appliedValues,
   appliedInStock,
-  appliedSale,
   appliedNewIn,
   appliedWindow,
   appliedMin,
@@ -328,7 +308,6 @@ function buildAppliedChips({
   filterConfigs: ReturnType<typeof getFilterConfigs>;
   appliedValues: FilterValues;
   appliedInStock: boolean;
-  appliedSale: boolean;
   appliedNewIn: boolean;
   appliedWindow: string | null;
   appliedMin: number | null;
@@ -352,13 +331,6 @@ function buildAppliedChips({
     chips.push({
       label: "In stock",
       onRemove: () => setQuery(removeQueryKey(searchParamsString, "availability")),
-    });
-  }
-
-  if (appliedSale) {
-    chips.push({
-      label: "Sale",
-      onRemove: () => setQuery(removeQueryKey(searchParamsString, "sale")),
     });
   }
 
@@ -405,13 +377,11 @@ export function useXaListingFilters({
   const {
     draftValues,
     draftInStock,
-    draftSale,
     draftNewIn,
     draftMin,
     draftMax,
     setDraftValues,
     setDraftInStock,
-    setDraftSale,
     setDraftNewIn,
     setDraftMin,
     setDraftMax,
@@ -420,7 +390,6 @@ export function useXaListingFilters({
   const {
     appliedValues,
     appliedInStock,
-    appliedSale,
     appliedWindow,
     appliedNewIn,
     appliedMin,
@@ -449,7 +418,6 @@ export function useXaListingFilters({
       filterConfigs,
       appliedValues,
       appliedInStock,
-      appliedSale,
       appliedWindow,
       appliedNewIn,
       appliedMin,
@@ -460,7 +428,6 @@ export function useXaListingFilters({
     });
   }, [
     appliedInStock,
-    appliedSale,
     appliedNewIn,
     appliedWindow,
     appliedMin,
@@ -509,7 +476,6 @@ export function useXaListingFilters({
         searchParamsString: queryKey,
         draftValues,
         draftInStock,
-        draftSale,
         draftNewIn,
         draftMin,
         draftMax,
@@ -524,7 +490,6 @@ export function useXaListingFilters({
       filterConfigs,
       appliedValues,
       appliedInStock,
-      appliedSale,
       appliedNewIn,
       appliedWindow,
       appliedMin,
@@ -535,7 +500,6 @@ export function useXaListingFilters({
   }, [
     appliedInStock,
     appliedNewIn,
-    appliedSale,
     appliedWindow,
     appliedMin,
     appliedMax,
@@ -555,12 +519,10 @@ export function useXaListingFilters({
     hasAppliedFilters: appliedChips.length > 0,
     draftValues,
     draftInStock,
-    draftSale,
     draftNewIn,
     draftMin,
     draftMax,
     setDraftInStock,
-    setDraftSale,
     setDraftNewIn,
     setDraftMin,
     setDraftMax,

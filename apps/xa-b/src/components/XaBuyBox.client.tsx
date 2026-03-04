@@ -5,7 +5,7 @@ import * as React from "react";
 import Link from "next/link";
 import { HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
 
-import { Button, Price, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/atoms";
+import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/atoms";
 import { PriceCluster } from "@acme/design-system/molecules";
 import { Cluster } from "@acme/design-system/primitives/Cluster";
 import { Inline } from "@acme/design-system/primitives/Inline";
@@ -37,7 +37,6 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
   const [wishlist, wishlistDispatch] = useWishlist();
   const [currency] = useCurrency();
   const effectivePrice = product.prices?.[currency] ?? product.price;
-  const effectiveCompareAtPrice = product.compareAtPrices?.[currency] ?? product.compareAtPrice;
 
   const [size, setSize] = React.useState<string>(product.sizes[0] ?? "");
   const [qty, setQty] = React.useState(1);
@@ -85,20 +84,9 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
       <div className="space-y-2">
         <PriceCluster
           price={effectivePrice}
-          compare={effectiveCompareAtPrice}
           currency={currency}
           className="xa-pdp-price"
         />
-        {effectiveCompareAtPrice && effectiveCompareAtPrice > effectivePrice ? (
-          <div className="text-sm text-muted-foreground">
-            Save{" "}
-            <Price
-              amount={Math.max(0, effectiveCompareAtPrice - effectivePrice)}
-              currency={currency}
-              className="font-medium"
-            />
-          </div>
-        ) : null}
       </div>
 
       {showSizeSelect ? (

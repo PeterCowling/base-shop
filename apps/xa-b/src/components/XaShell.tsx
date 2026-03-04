@@ -39,7 +39,6 @@ import { XaSupportDock } from "./XaSupportDock.client";
 
 const NAV_LABELS = {
   newIn: "New In",
-  sale: "Sale",
   brands: "Brands",
 } as const;
 
@@ -148,12 +147,6 @@ export function XaShell({ children }: { children: ReactNode }) {
                     className="inline-flex min-h-11 min-w-11 items-center text-sm font-medium hover:underline"
                   >
                     {NAV_LABELS.newIn}
-                  </Link>
-                  <Link
-                    href="/sale"
-                    className="inline-flex min-h-11 min-w-11 items-center text-sm font-medium hover:underline"
-                  >
-                    {NAV_LABELS.sale}
                   </Link>
                   <Link
                     href="/designers"

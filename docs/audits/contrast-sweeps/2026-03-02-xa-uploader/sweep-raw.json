@@ -1,0 +1,734 @@
+[
+  {
+    "breakpoint": 320,
+    "mode": "light",
+    "route": "/login",
+    "screenshot": "./screenshots/320-light-login.png",
+    "text": [
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Console tokenShow token",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 12,
+        "fontWeight": 400,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 10,
+        "fontWeight": 400,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 4.5,
+        "pass": false,
+        "fontSize": 14,
+        "fontWeight": 600,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ],
+    "focus": [
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ]
+  },
+  {
+    "breakpoint": 320,
+    "mode": "light",
+    "route": "/",
+    "screenshot": "./screenshots/320-light-root.png",
+    "text": [
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Console tokenShow token",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 12,
+        "fontWeight": 400,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 10,
+        "fontWeight": 400,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 4.5,
+        "pass": false,
+        "fontSize": 14,
+        "fontWeight": 600,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ],
+    "focus": [
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ]
+  },
+  {
+    "breakpoint": 375,
+    "mode": "light",
+    "route": "/login",
+    "screenshot": "./screenshots/375-light-login.png",
+    "text": [
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Console tokenShow token",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 12,
+        "fontWeight": 400,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 10,
+        "fontWeight": 400,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 4.5,
+        "pass": false,
+        "fontSize": 14,
+        "fontWeight": 600,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ],
+    "focus": [
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ]
+  },
+  {
+    "breakpoint": 375,
+    "mode": "light",
+    "route": "/",
+    "screenshot": "./screenshots/375-light-root.png",
+    "text": [
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Console tokenShow token",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 12,
+        "fontWeight": 400,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 10,
+        "fontWeight": 400,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 4.5,
+        "pass": false,
+        "fontSize": 14,
+        "fontWeight": 600,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ],
+    "focus": [
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ]
+  },
+  {
+    "breakpoint": 430,
+    "mode": "light",
+    "route": "/login",
+    "screenshot": "./screenshots/430-light-login.png",
+    "text": [
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Console tokenShow token",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 12,
+        "fontWeight": 400,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 10,
+        "fontWeight": 400,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 4.5,
+        "pass": false,
+        "fontSize": 14,
+        "fontWeight": 600,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ],
+    "focus": [
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ]
+  },
+  {
+    "breakpoint": 430,
+    "mode": "light",
+    "route": "/",
+    "screenshot": "./screenshots/430-light-root.png",
+    "text": [
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Console tokenShow token",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 12,
+        "fontWeight": 400,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 10,
+        "fontWeight": 400,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 4.5,
+        "pass": false,
+        "fontSize": 14,
+        "fontWeight": 600,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ],
+    "focus": [
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ]
+  },
+  {
+    "breakpoint": 768,
+    "mode": "light",
+    "route": "/login",
+    "screenshot": "./screenshots/768-light-login.png",
+    "text": [
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Console tokenShow token",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 12,
+        "fontWeight": 400,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 10,
+        "fontWeight": 400,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 4.5,
+        "pass": false,
+        "fontSize": 14,
+        "fontWeight": 600,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ],
+    "focus": [
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ]
+  },
+  {
+    "breakpoint": 768,
+    "mode": "light",
+    "route": "/",
+    "screenshot": "./screenshots/768-light-root.png",
+    "text": [
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Console tokenShow token",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 12,
+        "fontWeight": 400,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 10,
+        "fontWeight": 400,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 4.5,
+        "pass": false,
+        "fontSize": 14,
+        "fontWeight": 600,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ],
+    "focus": [
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ]
+  },
+  {
+    "breakpoint": 1024,
+    "mode": "light",
+    "route": "/login",
+    "screenshot": "./screenshots/1024-light-login.png",
+    "text": [
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Console tokenShow token",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 12,
+        "fontWeight": 400,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 10,
+        "fontWeight": 400,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 4.5,
+        "pass": false,
+        "fontSize": 14,
+        "fontWeight": 600,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ],
+    "focus": [
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ]
+  },
+  {
+    "breakpoint": 1024,
+    "mode": "light",
+    "route": "/",
+    "screenshot": "./screenshots/1024-light-root.png",
+    "text": [
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Console tokenShow token",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 12,
+        "fontWeight": 400,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 10,
+        "fontWeight": 400,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 4.5,
+        "pass": false,
+        "fontSize": 14,
+        "fontWeight": 600,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ],
+    "focus": [
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ]
+  },
+  {
+    "breakpoint": 1280,
+    "mode": "light",
+    "route": "/login",
+    "screenshot": "./screenshots/1280-light-login.png",
+    "text": [
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Console tokenShow token",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 12,
+        "fontWeight": 400,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 10,
+        "fontWeight": 400,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 4.5,
+        "pass": false,
+        "fontSize": 14,
+        "fontWeight": 600,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ],
+    "focus": [
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ]
+  },
+  {
+    "breakpoint": 1280,
+    "mode": "light",
+    "route": "/",
+    "screenshot": "./screenshots/1280-light-root.png",
+    "text": [
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Console tokenShow token",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 12,
+        "fontWeight": 400,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "fontSize": 10,
+        "fontWeight": 400,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 4.5,
+        "pass": false,
+        "fontSize": 14,
+        "fontWeight": 600,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ],
+    "focus": [
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Show token",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Enter console",
+        "ratio": 1,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.inline-flex.items-center"
+      }
+    ]
+  }
+]

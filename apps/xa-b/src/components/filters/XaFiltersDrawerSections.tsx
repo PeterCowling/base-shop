@@ -20,17 +20,13 @@ import { PRICE_PRESETS } from "./XaFiltersDrawer.helpers";
 
 export function RefineSection({
   draftInStock,
-  draftSale,
   draftNewIn,
   onChangeInStock,
-  onChangeSale,
   onChangeNewIn,
 }: {
   draftInStock: boolean;
-  draftSale: boolean;
   draftNewIn: boolean;
   onChangeInStock: (value: boolean) => void;
-  onChangeSale: (value: boolean) => void;
   onChangeNewIn: (value: boolean) => void;
 }) {
   return (
@@ -39,10 +35,6 @@ export function RefineSection({
       <label className="flex min-h-11 items-center gap-3 text-sm">
         <Checkbox checked={draftNewIn} onCheckedChange={(checked) => onChangeNewIn(checked === true)} />
         <span>New in</span>
-      </label>
-      <label className="flex min-h-11 items-center gap-3 text-sm">
-        <Checkbox checked={draftSale} onCheckedChange={(checked) => onChangeSale(checked === true)} />
-        <span>Sale</span>
       </label>
       <label className="flex min-h-11 items-center gap-3 text-sm">
         <Checkbox checked={draftInStock} onCheckedChange={(checked) => onChangeInStock(checked === true)} />

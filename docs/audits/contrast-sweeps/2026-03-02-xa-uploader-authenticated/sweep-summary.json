@@ -1,0 +1,53 @@
+{
+  "authenticatedAll": true,
+  "matrix": [
+    {
+      "breakpoint": 320,
+      "mode": "light",
+      "route": "/",
+      "authenticated": true,
+      "screenshot": "./screenshots/320-light-root-auth.png"
+    },
+    {
+      "breakpoint": 375,
+      "mode": "light",
+      "route": "/",
+      "authenticated": true,
+      "screenshot": "./screenshots/375-light-root-auth.png"
+    },
+    {
+      "breakpoint": 430,
+      "mode": "light",
+      "route": "/",
+      "authenticated": true,
+      "screenshot": "./screenshots/430-light-root-auth.png"
+    },
+    {
+      "breakpoint": 768,
+      "mode": "light",
+      "route": "/",
+      "authenticated": true,
+      "screenshot": "./screenshots/768-light-root-auth.png"
+    },
+    {
+      "breakpoint": 1024,
+      "mode": "light",
+      "route": "/",
+      "authenticated": true,
+      "screenshot": "./screenshots/1024-light-root-auth.png"
+    },
+    {
+      "breakpoint": 1280,
+      "mode": "light",
+      "route": "/",
+      "authenticated": true,
+      "screenshot": "./screenshots/1280-light-root-auth.png"
+    }
+  ],
+  "totals": {
+    "issues": 18,
+    "S1": 12,
+    "S2": 0,
+    "S3": 6
+  }
+}

@@ -32,14 +32,12 @@ export function buildSections(filterConfigs: FilterConfig[]): DrawerSection[] {
 export function computeAppliedCount({
   draftValues,
   draftInStock,
-  draftSale,
   draftNewIn,
   draftMin,
   draftMax,
 }: {
   draftValues: Record<FilterKey, Set<string>>;
   draftInStock: boolean;
-  draftSale: boolean;
   draftNewIn: boolean;
   draftMin: string;
   draftMax: string;
@@ -49,7 +47,6 @@ export function computeAppliedCount({
     count += set.size;
   }
   if (draftInStock) count += 1;
-  if (draftSale) count += 1;
   if (draftNewIn) count += 1;
   if (draftMin !== "") count += 1;
   if (draftMax !== "") count += 1;

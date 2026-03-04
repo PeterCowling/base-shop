@@ -11,9 +11,7 @@ import type { XaProductDetails, XaProductTaxonomy } from "./xaTypes";
 export type XaProduct = SKU & {
   brand: string;
   collection: string;
-  compareAtPrice?: number;
   prices?: Partial<Record<Currency, number>>;
-  compareAtPrices?: Partial<Record<Currency, number>>;
   createdAt: string;
   popularity: number;
   variantGroup?: string;

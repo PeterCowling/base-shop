@@ -13,7 +13,6 @@ export type XaProductTaxonomy = {
   sleeveLength?: string;
   pattern?: string;
   occasion?: string[];
-  sizeClass?: string;
   strapStyle?: string;
   hardwareColor?: string;
   closureType?: string;

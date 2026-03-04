@@ -459,6 +459,8 @@ const SELF_TRIGGER_PROCESSES = new Set([
   "reflection_emit",
   "reflection_emit_minimum",
   "standing-write-back",
+  "pattern-promote-loop-update",
+  "pattern-promote-skill-proposal",
 ]);
 
 const METADATA_ONLY_SECTION_PATTERNS: ReadonlyArray<RegExp> = [

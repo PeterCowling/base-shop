@@ -17,6 +17,7 @@ import type { XaProduct } from "../lib/demoData";
 import { getAvailableStock } from "../lib/inventoryStore";
 import { formatLabel, getDesignerName } from "../lib/xaCatalog";
 import { xaI18n } from "../lib/xaI18n";
+import { isNewIn } from "../lib/xaListingUtils";
 
 import { XaFadeImage } from "./XaFadeImage";
 
@@ -33,15 +34,6 @@ export function XaProductCard({ product }: { product: XaProduct }) {
   const category = product.taxonomy.category;
   const isWishlisted = wishlist.includes(product.id);
   const effectivePrice = product.prices?.[currency] ?? product.price;
-  const effectiveCompareAtPrice = product.compareAtPrices?.[currency] ?? product.compareAtPrice;
-
-  const hasDiscount =
-    typeof effectiveCompareAtPrice === "number" &&
-    effectiveCompareAtPrice > effectivePrice;
-  const discountPct = hasDiscount
-    ? Math.round(100 - (effectivePrice / effectiveCompareAtPrice!) * 100)
-    : 0;
-  const saving = hasDiscount ? effectiveCompareAtPrice! - effectivePrice : 0;
 
   const jewelryDetail = (() => {
     if (category !== "jewelry") return null;
@@ -98,11 +90,12 @@ export function XaProductCard({ product }: { product: XaProduct }) {
                   size="sm"
                 />
               </div>
-            ) : hasDiscount ? (
+            ) : isNewIn(product) ? (
               <div className="absolute start-2 top-2">
                 <ProductBadge
-                  label={`${discountPct}% OFF`} // i18n-exempt -- XA-0005: demo badge label
-                  variant="sale"
+                  label="New In" // i18n-exempt -- XA-0022: demo badge label
+                  color="default"
+                  tone="soft"
                   size="sm"
                 />
               </div>
@@ -136,28 +129,8 @@ export function XaProductCard({ product }: { product: XaProduct }) {
             {designerName}
           </div>
           <div className="text-sm text-muted-foreground">{product.title}</div>
-          <Inline gap={2} alignY="baseline" wrap={false}>
-            <Price amount={effectivePrice} className="font-semibold" />
-            {hasDiscount ? (
-              <Price
-                amount={effectiveCompareAtPrice!}
-                className="text-sm text-muted-foreground line-through"
-              />
-            ) : null}
-          </Inline>
+          <Price amount={effectivePrice} className="font-semibold" />
         </Link>
-
-        {hasDiscount ? (
-          <div className="text-xs text-muted-foreground">
-            Save <Price amount={saving} className="font-medium" />
-          </div>
-        ) : null}
-
-        {category === "bags" && product.taxonomy.sizeClass ? (
-          <div className="text-xs text-muted-foreground">
-            Size class: {formatLabel(product.taxonomy.sizeClass)}
-          </div>
-        ) : null}
 
         {category === "jewelry" && jewelryDetail ? (
           <div className="text-xs text-muted-foreground">{jewelryDetail}</div>

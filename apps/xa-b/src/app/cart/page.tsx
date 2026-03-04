@@ -17,6 +17,7 @@ import { Section } from "@acme/design-system/atoms/Section";
 import { QuantityInput } from "@acme/design-system/molecules";
 import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 
+import { XaFadeImage } from "../../components/XaFadeImage";
 import { useCart } from "../../contexts/XaCartContext";
 import { xaI18n } from "../../lib/xaI18n";
 
@@ -37,18 +38,24 @@ export default function CartPage() {
 
       <Section padding="default">
         {lines.length === 0 ? (
-          <div className="rounded-lg border p-6">
-            <div className="font-medium">{xaI18n.t("xaB.src.app.cart.page.l38c42")}</div>
-            <div className="mt-2 text-sm text-muted-foreground">
-              <Link href="/collections/all" className="underline">{xaI18n.t("xaB.src.app.cart.page.l40c67")}</Link>
+          <div className="flex flex-col items-center rounded-sm border border-border-1 px-6 py-12 text-center">
+            <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              {xaI18n.t("xaB.src.app.cart.page.l38c42")}
             </div>
+            <Link
+              href="/collections/all"
+              className="mt-4 text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
+            >
+              {xaI18n.t("xaB.src.app.cart.page.l40c67")}
+            </Link>
           </div>
         ) : (
           <div className="space-y-6">
-            <div className="overflow-x-auto rounded-lg border">
+            <div className="overflow-x-auto rounded-sm border border-border-1">
               <Table>
                 <TableHeader>
                   <TableRow>
+                    <TableHead className="w-16" />
                     <TableHead>Item</TableHead>
                     <TableHead>Qty</TableHead>
                     <TableHead className="text-end">Total</TableHead>
@@ -56,8 +63,28 @@ export default function CartPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {lines.map(([id, line]) => (
+                  {lines.map(([id, line]) => {
+                    const image = line.sku.media?.filter((m) => m.type === "image" && m.url.trim())[0];
+                    return (
                     <TableRow key={id}>
+                      <TableCell className="w-16 p-2">
+                        <div className="relative aspect-square w-16 overflow-hidden rounded-sm bg-surface">
+                          {image ? (
+                            <XaFadeImage
+                              src={image.url}
+                              alt={image.altText ?? line.sku.title}
+                              fill
+                              sizes="64px"
+                              className="object-cover"
+                            />
+                          ) : (
+                            // eslint-disable-next-line ds/enforce-layout-primitives -- XA-0022: thumbnail fallback leaf
+                            <div className="flex h-full w-full items-center justify-center text-sm font-medium text-muted-foreground">
+                              {line.sku.title.charAt(0).toUpperCase()}
+                            </div>
+                          )}
+                        </div>
+                      </TableCell>
                       <TableCell>
                         <div className="space-y-1">
                           <div className="font-medium">{line.sku.title}</div>
@@ -101,7 +128,8 @@ export default function CartPage() {
                         </Button>
                       </TableCell>
                     </TableRow>
-                  ))}
+                    );
+                  })}
                 </TableBody>
               </Table>
             </div>

@@ -34,7 +34,6 @@ const SORT_LABELS: Record<string, string> = {
   "price-asc": "Price (low to high)",
   "price-desc": "Price (high to low)",
   "best-sellers": "Best sellers",
-  "biggest-discount": xaI18n.t("xaB.src.components.xaproductlisting.client.l35c23"),
 };
 
 export function XaProductListing({
@@ -63,12 +62,10 @@ export function XaProductListing({
     appliedChips,
     draftValues,
     draftInStock,
-    draftSale,
     draftNewIn,
     draftMin,
     draftMax,
     setDraftInStock,
-    setDraftSale,
     setDraftNewIn,
     setDraftMin,
     setDraftMax,
@@ -106,13 +103,11 @@ export function XaProductListing({
                 facetValues={facetValues}
                 draftValues={draftValues}
                 draftInStock={draftInStock}
-                draftSale={draftSale}
                 draftNewIn={draftNewIn}
                 draftMin={draftMin}
                 draftMax={draftMax}
                 onToggleValue={toggleDraftValue}
                 onChangeInStock={setDraftInStock}
-                onChangeSale={setDraftSale}
                 onChangeNewIn={setDraftNewIn}
                 onChangeMin={setDraftMin}
                 onChangeMax={setDraftMax}
@@ -133,7 +128,6 @@ export function XaProductListing({
                     <SelectItem value="price-asc">{xaI18n.t("xaB.src.components.xaproductlisting.client.l144c51")}</SelectItem>
                     <SelectItem value="price-desc">{xaI18n.t("xaB.src.components.xaproductlisting.client.l145c52")}</SelectItem>
                     <SelectItem value="best-sellers">Best sellers</SelectItem>
-                    <SelectItem value={xaI18n.t("xaB.src.components.xaproductlisting.client.l147c39")}>{xaI18n.t("xaB.src.components.xaproductlisting.client.l147c58")}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -152,14 +146,16 @@ export function XaProductListing({
 
       <Section padding="default">
         {filteredProducts.length === 0 ? (
-          <div className="col-span-full flex flex-col items-center gap-4 py-16 text-center">
+          <div className="col-span-full flex flex-col items-center gap-3 py-16 text-center">
+            {/* i18n-exempt -- XA-0022: demo empty state heading */}
+            <div className="text-xs font-semibold uppercase tracking-wide">No matches</div>
             <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.components.xaproductlisting.client.l167c58")}</p>
             <Button
               type="button"
               onClick={clearAppliedFilters}
               variant="outline"
               size="sm"
-              className="h-auto min-h-0 rounded-none border border-border-2 px-4 py-2 text-xs uppercase tracking-widest hover:bg-muted"
+              className="mt-1 h-auto min-h-0 rounded-none border border-border-2 px-4 py-2 text-xs uppercase tracking-widest hover:bg-muted"
             >{xaI18n.t("xaB.src.components.xaproductlisting.client.l174c14")}</Button>
           </div>
         ) : (

@@ -46,11 +46,16 @@ export default function WishlistPage() {
             ))}
           </LayoutGrid>
         ) : (
-          <div className="rounded-lg border p-6">
-            <div className="font-medium">{xaI18n.t("xaB.src.app.wishlist.page.l51c42")}</div>
-            <div className="mt-2 text-sm text-muted-foreground">
-              <Link href="/new-in" className="underline">{xaI18n.t("xaB.src.app.wishlist.page.l53c58")}</Link>
+          <div className="flex flex-col items-center rounded-sm border border-border-1 px-6 py-12 text-center">
+            <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              {xaI18n.t("xaB.src.app.wishlist.page.l51c42")}
             </div>
+            <Link
+              href="/new-in"
+              className="mt-4 text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
+            >
+              {xaI18n.t("xaB.src.app.wishlist.page.l53c58")}
+            </Link>
           </div>
         )}
       </Section>

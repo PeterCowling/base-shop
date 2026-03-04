@@ -15,7 +15,9 @@ import {
   backupFileIfExists,
   buildCatalogMediaPath,
   handleToTitle,
+  isCatalogMediaPathSpec,
   loadCatalogRows,
+  normalizeCatalogMediaPath,
   parseList,
   pruneBackups,
   sanitizePathSegment,
@@ -428,6 +430,26 @@ async function buildCatalogArtifacts(options: {
     const usedMediaNames = new Set<string>();
 
     for (const [specIndex, imageSpec] of imageSpecs.entries()) {
+      const altText = imageAltTexts[specIndex] || productSlug;
+      if (isCatalogMediaPathSpec(imageSpec)) {
+        const catalogPath = normalizeCatalogMediaPath(imageSpec);
+        if (!catalogPath) {
+          if (options.strict) {
+            throw new Error(`[${rowLabel(index)}] "${productSlug}" has an empty catalog media path.`);
+          }
+          warnings.push(`[${rowLabel(index)}] "${productSlug}" has an empty catalog media path.`);
+          continue;
+        }
+        media.push({ type: "image", path: catalogPath, altText });
+        mediaItems.push({
+          productSlug,
+          sourcePath: catalogPath,
+          catalogPath,
+          altText,
+        });
+        continue;
+      }
+
       let resolvedPaths: string[];
       try {
         resolvedPaths = await expandFileSpec(imageSpec, baseDir, {
@@ -442,7 +464,6 @@ async function buildCatalogArtifacts(options: {
         continue;
       }
 
-      const altText = imageAltTexts[specIndex] || productSlug;
       for (const sourcePath of resolvedPaths) {
         const catalogPath = buildCatalogMediaPath({
           brandHandle,

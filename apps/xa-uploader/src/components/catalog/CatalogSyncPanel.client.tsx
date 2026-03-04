@@ -15,6 +15,7 @@ export function CatalogSyncPanel({
   monoClassName,
   feedback,
   syncOutput,
+  publishReadiness,
   onSync,
   onRefreshReadiness,
   onChangeSyncOptions,
@@ -32,6 +33,7 @@ export function CatalogSyncPanel({
   monoClassName?: string;
   feedback: ActionFeedback | null;
   syncOutput: string | null;
+  publishReadiness?: { total: number; publishable: number; draft: number };
   onSync: () => void;
   onRefreshReadiness: () => void;
   onChangeSyncOptions: (next: { strict: boolean; dryRun: boolean; replace: boolean; recursive: boolean }) => void;
@@ -116,6 +118,17 @@ export function CatalogSyncPanel({
         {readinessMessage}
       </p>
 
+      {publishReadiness ? (
+        <p className="mt-2 text-xs text-gate-muted">
+          {t("syncPublishReadinessSummary", {
+            publishable: publishReadiness.publishable,
+            draft: publishReadiness.draft,
+            total: publishReadiness.total,
+          })}
+          {publishReadiness.publishable === 0 ? ` ${t("syncPublishReadinessZero")}` : ""}
+        </p>
+      ) : null}
+
       {/* eslint-disable-next-line ds/enforce-layout-primitives -- XAUP-0001 operator-tool checkbox group */}
       <div className="mt-4 flex flex-wrap gap-4 text-sm">
         {(["strict", "recursive", "replace", "dryRun"] as const).map((key) => (
@@ -149,7 +162,7 @@ export function CatalogSyncPanel({
 
       {syncOutput ? (
         <pre
-          className={`mt-4 max-h-80 overflow-auto rounded-md border border-border-2 bg-muted p-3 text-xs text-gate-ink ${monoClassName}`}
+          className={`mt-4 max-h-80 overflow-auto rounded-md border border-gate-border bg-muted p-3 text-xs text-gate-ink ${monoClassName}`}
         >
           {syncOutput}
         </pre>

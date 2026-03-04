@@ -1,6 +1,6 @@
 import type * as React from "react";
 
-import type { CatalogProductDraftInput } from "@acme/lib/xa";
+import type { CatalogProductDraftInput } from "@acme/lib/xa/catalogAdminSchema";
 
 export type SyncScriptId = "validate" | "sync";
 type SyncErrorCode =
@@ -34,6 +34,7 @@ type CatalogApiErrorCode =
   | "invalid_upload_url";
 type ActionDomain = "login" | "draft" | "sync";
 type ActionFeedbackKind = "error" | "success";
+type SyncDeployStatus = "triggered" | "skipped_unconfigured" | "skipped_cooldown" | "failed";
 
 export type SessionState = { authenticated: boolean };
 
@@ -51,10 +52,18 @@ export type SyncResponse = {
   ok: boolean;
   error?: SyncErrorCode | string;
   recovery?: SyncRecoveryCode | string;
+  deploy?: {
+    status?: SyncDeployStatus | string;
+    nextEligibleAt?: string;
+    reason?: string;
+    httpStatus?: number;
+  };
   display?: {
     mode?: string;
     requiresXaBBuild?: boolean;
     nextAction?: string;
+    deployStatus?: SyncDeployStatus | string;
+    nextEligibleAt?: string;
   };
   missingScripts?: SyncScriptId[];
   requiresConfirmation?: boolean;

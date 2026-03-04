@@ -139,6 +139,9 @@ describe("catalog sync route", () => {
     delete process.env.XA_UPLOADER_MODE;
     delete process.env.XA_UPLOADER_EXPOSE_SYNC_LOGS;
     delete process.env.XA_UPLOADER_LOCAL_FS_DISABLED;
+    delete process.env.XA_B_DEPLOY_HOOK_URL;
+    delete process.env.XA_B_DEPLOY_HOOK_COOLDOWN_SECONDS;
+    delete process.env.XA_B_DEPLOY_HOOK_TIMEOUT_MS;
 
     // Default: KV unavailable (null) → mutex skipped, existing tests unaffected
     getUploaderKvMock.mockResolvedValue(null);
@@ -595,6 +598,7 @@ describe("catalog sync route", () => {
     expect(spawnMock).not.toHaveBeenCalled();
     expect(publishCatalogPayloadToContractMock).toHaveBeenCalledTimes(1);
   });
+
 });
 
 describe("TASK-04: catalog sync route — KV mutex (F4+F8)", () => {

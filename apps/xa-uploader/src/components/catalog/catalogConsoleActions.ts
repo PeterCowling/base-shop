@@ -356,6 +356,29 @@ export async function handleDeleteImpl({
   }
 }
 
+function getSyncSuccessMessage(
+  syncData: SyncResponse,
+  t: Translator,
+): string {
+  const deployStatus = syncData.deploy?.status ?? syncData.display?.deployStatus;
+  const nextEligibleAt = syncData.deploy?.nextEligibleAt ?? syncData.display?.nextEligibleAt;
+  if (deployStatus === "triggered") {
+    return t("syncSucceededDeployTriggered");
+  }
+  if (deployStatus === "skipped_cooldown") {
+    return t("syncSucceededDeployCooldown", {
+      nextEligibleAt: nextEligibleAt ?? t("syncCooldownUnknown"),
+    });
+  }
+  if (deployStatus === "failed") {
+    return t("syncSucceededDeployFailed");
+  }
+  if (syncData.display?.requiresXaBBuild === true) {
+    return t("syncSucceededRebuildRequired");
+  }
+  return t("syncSucceeded");
+}
+
 export async function handleSyncImpl({
   storefront,
   syncOptions,
@@ -427,10 +450,7 @@ export async function handleSyncImpl({
       throw new Error(getSyncFailureMessage(syncAttempt.data, t));
     }
     await loadCatalog().catch(() => null);
-    const syncSuccessMessage =
-      syncAttempt.data.display?.requiresXaBBuild === true
-        ? t("syncSucceededRebuildRequired")
-        : t("syncSucceeded");
+    const syncSuccessMessage = getSyncSuccessMessage(syncAttempt.data, t);
     updateActionFeedback(setActionFeedback, "sync", {
       kind: "success",
       message: syncSuccessMessage,
@@ -444,4 +464,3 @@ export async function handleSyncImpl({
     endBusyAction(busyLockRef, setBusy);
   }
 }
-

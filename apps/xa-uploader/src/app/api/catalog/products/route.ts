@@ -3,7 +3,7 @@
 import { NextResponse } from "next/server";
 
 import type { CatalogProductDraftInput } from "@acme/lib/xa";
-import { getCatalogDraftWorkflowReadiness } from "@acme/lib/xa";
+import { getCatalogDraftWorkflowReadiness, splitList } from "@acme/lib/xa";
 
 import {
   CatalogCsvConflictError,
@@ -59,6 +59,19 @@ function isInvalidCatalogUpdateError(error: unknown): boolean {
 
 function buildProductsErrorResponse(error: ProductsErrorCode, status: number, reason: string) {
   return NextResponse.json({ ok: false, error, reason }, { status });
+}
+
+function normalizeCatalogPath(pathValue: string): string {
+  const trimmed = pathValue.trim();
+  if (!trimmed) return "";
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  return trimmed.replace(/^\/+/, "");
+}
+
+function normalizePipePaths(rawValue: string | undefined): string {
+  const values = splitList(rawValue ?? "");
+  if (values.length === 0) return "";
+  return values.map((value) => normalizeCatalogPath(value)).filter(Boolean).join("|");
 }
 
 function wouldUnpublish(product: CatalogProductDraftInput): boolean {
@@ -171,9 +184,11 @@ export async function POST(request: Request) {
 
   try {
     const storefront = parseStorefront(new URL(request.url).searchParams.get("storefront"));
+    const productInput = product as CatalogProductDraftInput;
     const productForSave = {
-      ...(product as CatalogProductDraftInput),
-      publishState: derivePublishState(product as CatalogProductDraftInput),
+      ...productInput,
+      imageFiles: normalizePipePaths(productInput.imageFiles),
+      publishState: derivePublishState(productInput),
     };
     if (isLocalFsRuntimeEnabled()) {
       const result = await upsertCatalogDraft(productForSave as never, { ifMatch, storefront });

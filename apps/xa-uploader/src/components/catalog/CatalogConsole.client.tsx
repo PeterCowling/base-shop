@@ -6,73 +6,26 @@ import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 import { CatalogLoginForm } from "./CatalogLoginForm.client";
 import { CatalogProductForm } from "./CatalogProductForm.client";
-import { CatalogProductsList } from "./CatalogProductsList.client";
 import { BTN_PRIMARY_CLASS } from "./catalogStyles";
 import { CatalogSyncPanel } from "./CatalogSyncPanel.client";
+import { getCatalogDraftWorkflowReadiness } from "./catalogWorkflow";
 import { CurrencyRatesPanel } from "./CurrencyRatesPanel.client";
+import { EditProductFilterSelector } from "./EditProductFilterSelector.client";
 import { useCatalogConsole } from "./useCatalogConsole.client";
 
 type CatalogConsoleProps = {
   monoClassName?: string;
+  onHeaderExtra?: (node: React.ReactNode) => void;
 };
 
 type ConsoleScreen = "new" | "revise" | "currency";
 type ConsoleState = ReturnType<typeof useCatalogConsole>;
 type Translator = ReturnType<typeof useUploaderI18n>["t"];
 
-function ConsoleHeader({
-  storefront,
-  storefronts,
-  onStorefrontChange,
-  onLogout,
-  busy,
-  t,
-}: {
-  storefront: string;
-  storefronts: ConsoleState["storefronts"];
-  onStorefrontChange: ConsoleState["handleStorefrontChange"];
-  onLogout: () => void;
-  busy: boolean;
-  t: Translator;
-}) {
-  return (
-    <div className="flex items-center justify-between border-b border-border-2 px-4 py-2">
-      <div className="flex items-center gap-3 text-sm">
-        <span className="text-gate-muted">{t("storefrontLabel")}:</span>
-        {storefronts.length > 1 ? (
-          <select
-            value={storefront}
-            onChange={(e) => onStorefrontChange(e.target.value as Parameters<typeof onStorefrontChange>[0])}
-            className="rounded border border-border-2 bg-transparent px-2 py-1 text-sm text-gate-ink"
-          >
-            {storefronts.map((sf) => (
-              <option key={sf.id} value={sf.id}>
-                {t(sf.labelKey)}
-              </option>
-            ))}
-          </select>
-        ) : (
-          <span className="font-medium text-gate-ink">{t(storefronts[0]?.labelKey ?? "")}</span>
-        )}
-      </div>
-      <button
-        type="button"
-        onClick={onLogout}
-        disabled={busy}
-        className="size-10 rounded border border-border-2 px-3 py-1.5 text-xs text-gate-muted transition-colors hover:border-gate-ink hover:text-gate-ink"
-      >
-        {t("exitConsole")}
-      </button>
-    </div>
-  );
-}
-
 function ScreenTabs({
   screen,
   onNew,
   onRevise,
-  onCurrency,
-  showCurrency,
   busy,
   onSave,
   t,
@@ -80,8 +33,6 @@ function ScreenTabs({
   screen: ConsoleScreen;
   onNew: () => void;
   onRevise: () => void;
-  onCurrency: () => void;
-  showCurrency: boolean;
   busy: boolean;
   onSave: () => void;
   t: Translator;
@@ -93,18 +44,13 @@ function ScreenTabs({
         : "border-transparent text-gate-muted hover:text-gate-ink hover:border-gate-ink/20"
     }`;
   return (
-    <div className="flex items-center border-b border-border-2">
+    <div className="flex items-center border-b border-gate-border">
       <button type="button" onClick={onNew} className={tabClass(screen === "new")}>
         {t("screenNewProduct")}
       </button>
       <button type="button" onClick={onRevise} className={tabClass(screen === "revise")}>
         {t("screenReviseExisting")}
       </button>
-      {showCurrency ? (
-        <button type="button" onClick={onCurrency} className={tabClass(screen === "currency")}>
-          {t("screenCurrencyRates")}
-        </button>
-      ) : null}
       {screen === "currency" ? null : (
         <button
           type="button"
@@ -155,13 +101,9 @@ function ReviseScreen({
   return (
     <>
       {/* eslint-disable-next-line ds/no-arbitrary-tailwind -- XAUP-0001 operator-tool layout */}
-      <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
-        <CatalogProductsList
+      <div className="grid gap-6 sm:grid-cols-[240px_1fr]">
+        <EditProductFilterSelector
           products={state.products}
-          query={state.query}
-          selectedSlug={state.selectedSlug}
-          monoClassName={monoClassName}
-          onQueryChange={state.setQuery}
           onSelect={state.handleSelect}
           onNew={state.handleNew}
         />
@@ -183,6 +125,23 @@ function CurrencyScreen({
   monoClassName?: string;
   t: Translator;
 }) {
+  const publishReadiness = React.useMemo(() => {
+    const total = state.products.length;
+    let publishable = 0;
+    for (const product of state.products) {
+      const readiness = getCatalogDraftWorkflowReadiness(product);
+      const publishState = product.publishState ?? "draft";
+      if (publishState === "ready" || publishState === "live" || readiness.isPublishReady) {
+        publishable += 1;
+      }
+    }
+    return {
+      total,
+      publishable,
+      draft: Math.max(0, total - publishable),
+    };
+  }, [state.products]);
+
   if (state.uploaderMode !== "internal") return null;
   return (
     <div className="space-y-6">
@@ -199,6 +158,7 @@ function CurrencyScreen({
         monoClassName={monoClassName}
         feedback={state.actionFeedback.sync}
         syncOutput={state.syncOutput}
+        publishReadiness={publishReadiness}
         onSync={state.handleSync}
         onRefreshReadiness={state.refreshSyncReadiness}
         onChangeSyncOptions={state.setSyncOptions}
@@ -227,7 +187,7 @@ function ConsoleBody({
   );
 }
 
-export default function CatalogConsole({ monoClassName }: CatalogConsoleProps) {
+export default function CatalogConsole({ monoClassName, onHeaderExtra }: CatalogConsoleProps) {
   const { t } = useUploaderI18n();
   const state = useCatalogConsole();
   const [screen, setScreen] = React.useState<ConsoleScreen>("new");
@@ -243,6 +203,29 @@ export default function CatalogConsole({ monoClassName }: CatalogConsoleProps) {
   const openCurrencyScreen = React.useCallback(() => {
     setScreen("currency");
   }, []);
+
+  // Push currency button into the header when authenticated + internal mode
+  const showCurrency = state.session?.authenticated && state.uploaderMode === "internal";
+  React.useEffect(() => {
+    if (!onHeaderExtra) return;
+    if (!showCurrency) {
+      onHeaderExtra(null);
+      return;
+    }
+    onHeaderExtra(
+      <button
+        type="button"
+        onClick={openCurrencyScreen}
+        className={`rounded-md border px-3 py-2 text-2xs uppercase tracking-label-lg transition ${
+          screen === "currency"
+            ? "border-gate-accent text-gate-accent"
+            : "border-gate-header-border text-gate-header-muted hover:text-gate-header-fg"
+        }`}
+      >
+        {t("screenCurrencyRates")}
+      </button>,
+    );
+  }, [onHeaderExtra, showCurrency, screen, openCurrencyScreen, t]);
 
   if (state.session === null) {
     return <div className="text-sm text-gate-muted">{t("checkingConsoleAccess")}</div>;
@@ -261,22 +244,12 @@ export default function CatalogConsole({ monoClassName }: CatalogConsoleProps) {
 
   return (
     <div className="space-y-6">
-      {/* Console chrome: header + tabs */}
+      {/* Console chrome: tabs */}
       <div className="space-y-0">
-        <ConsoleHeader
-          storefront={state.storefront}
-          storefronts={state.storefronts}
-          onStorefrontChange={state.handleStorefrontChange}
-          onLogout={() => void state.handleLogout()}
-          busy={state.busy}
-          t={t}
-        />
         <ScreenTabs
           screen={screen}
           onNew={openNewScreen}
           onRevise={openReviseScreen}
-          onCurrency={openCurrencyScreen}
-          showCurrency={state.uploaderMode === "internal"}
           busy={state.busy}
           onSave={state.handleSave}
           t={t}

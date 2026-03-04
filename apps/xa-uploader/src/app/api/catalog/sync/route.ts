@@ -32,7 +32,12 @@ import { isLocalFsRuntimeEnabled } from "../../../../lib/localFsGuard";
 import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
 import { resolveRepoRoot } from "../../../../lib/repoRoot";
 import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
-import { acquireSyncMutex, getUploaderKv, releaseSyncMutex } from "../../../../lib/syncMutex";
+import {
+  acquireSyncMutex,
+  getUploaderKv,
+  releaseSyncMutex,
+  type UploaderKvNamespace,
+} from "../../../../lib/syncMutex";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
 
 export const runtime = "nodejs";
@@ -60,6 +65,15 @@ type ScriptRunResult = {
   timedOut: boolean;
 };
 
+type DeployTriggerStatus = "triggered" | "skipped_unconfigured" | "skipped_cooldown" | "failed";
+
+type DeployTriggerResult = {
+  status: DeployTriggerStatus;
+  nextEligibleAt?: string;
+  reason?: string;
+  httpStatus?: number;
+};
+
 const SYNC_WINDOW_MS = 60 * 1000;
 const SYNC_MAX_REQUESTS = 3;
 const SYNC_READINESS_WINDOW_MS = 60 * 1000;
@@ -67,12 +81,44 @@ const SYNC_READINESS_MAX_REQUESTS = 30;
 const SYNC_PAYLOAD_MAX_BYTES = 24 * 1024;
 const SYNC_LOG_MAX_BYTES_DEFAULT = 128 * 1024;
 const SYNC_PUBLISH_HISTORY_MAX = 100;
+const DEPLOY_HOOK_TIMEOUT_MS_DEFAULT = 15_000;
+const DEPLOY_HOOK_COOLDOWN_SECONDS_DEFAULT = 900;
 
-function buildDisplaySyncGuidance() {
+function buildDisplaySyncGuidance(deploy?: DeployTriggerResult) {
+  if (deploy?.status === "triggered") {
+    return {
+      mode: "build_time_runtime_catalog",
+      requiresXaBBuild: false,
+      nextAction: "await_xa_b_deploy",
+      deployStatus: deploy.status,
+      nextEligibleAt: deploy.nextEligibleAt,
+    };
+  }
+  if (deploy?.status === "skipped_cooldown") {
+    return {
+      mode: "build_time_runtime_catalog",
+      requiresXaBBuild: true,
+      nextAction: "wait_or_manual_deploy_xa_b",
+      deployStatus: deploy.status,
+      nextEligibleAt: deploy.nextEligibleAt,
+    };
+  }
+  if (deploy?.status === "failed") {
+    return {
+      mode: "build_time_runtime_catalog",
+      requiresXaBBuild: true,
+      nextAction: "manual_rebuild_and_deploy_xa_b",
+      deployStatus: deploy.status,
+      nextEligibleAt: deploy.nextEligibleAt,
+      deployReason: deploy.reason,
+    };
+  }
   return {
     mode: "build_time_runtime_catalog",
     requiresXaBBuild: true,
     nextAction: "rebuild_and_deploy_xa_b",
+    ...(deploy ? { deployStatus: deploy.status } : {}),
+    ...(deploy?.nextEligibleAt ? { nextEligibleAt: deploy.nextEligibleAt } : {}),
   };
 }
 
@@ -86,6 +132,26 @@ function getSyncTimeoutMs(): number {
 
 function getSyncLogMaxBytes(): number {
   return toPositiveInt(process.env.XA_UPLOADER_SYNC_LOG_MAX_BYTES, SYNC_LOG_MAX_BYTES_DEFAULT, 1);
+}
+
+function getDeployHookUrl(): string {
+  return (process.env.XA_B_DEPLOY_HOOK_URL ?? "").trim();
+}
+
+function getDeployHookTimeoutMs(): number {
+  return toPositiveInt(
+    process.env.XA_B_DEPLOY_HOOK_TIMEOUT_MS,
+    DEPLOY_HOOK_TIMEOUT_MS_DEFAULT,
+    1,
+  );
+}
+
+function getDeployHookCooldownSeconds(): number {
+  return toPositiveInt(
+    process.env.XA_B_DEPLOY_HOOK_COOLDOWN_SECONDS,
+    DEPLOY_HOOK_COOLDOWN_SECONDS_DEFAULT,
+    1,
+  );
 }
 
 function shouldExposeSyncLogs(): boolean {
@@ -380,6 +446,143 @@ function buildCatalogInputGuardResponse(params: {
   return null;
 }
 
+function getDeployCooldownKey(storefrontId: XaCatalogStorefront): string {
+  return `xa-deploy-cooldown:${storefrontId}`;
+}
+
+function getDeployCooldownStatePath(uploaderDataDir: string, storefrontId: XaCatalogStorefront): string {
+  return path.join(uploaderDataDir, "deploy-cooldown", `${storefrontId}.json`);
+}
+
+function parseNextEligibleAt(raw: string | null): number | null {
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw) as { nextEligibleAt?: string };
+    if (typeof parsed.nextEligibleAt !== "string") return null;
+    const epochMs = Date.parse(parsed.nextEligibleAt);
+    if (!Number.isFinite(epochMs)) return null;
+    return epochMs;
+  } catch {
+    return null;
+  }
+}
+
+async function readDeployCooldownEpochMs(params: {
+  storefrontId: XaCatalogStorefront;
+  kv: UploaderKvNamespace | null;
+  statePath?: string;
+}): Promise<number | null> {
+  if (params.kv) {
+    const raw = await params.kv.get(getDeployCooldownKey(params.storefrontId));
+    return parseNextEligibleAt(raw);
+  }
+  if (!params.statePath) return null;
+  try {
+    const raw = await fs.readFile(params.statePath, "utf8");
+    return parseNextEligibleAt(raw);
+  } catch {
+    return null;
+  }
+}
+
+async function writeDeployCooldown(params: {
+  storefrontId: XaCatalogStorefront;
+  kv: UploaderKvNamespace | null;
+  cooldownSeconds: number;
+  nextEligibleAtMs: number;
+  statePath?: string;
+}): Promise<void> {
+  const payload = JSON.stringify(
+    {
+      storefront: params.storefrontId,
+      nextEligibleAt: new Date(params.nextEligibleAtMs).toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+    null,
+    2,
+  );
+  if (params.kv) {
+    await params.kv.put(getDeployCooldownKey(params.storefrontId), payload, {
+      expirationTtl: params.cooldownSeconds,
+    });
+    return;
+  }
+  if (!params.statePath) return;
+  await fs.mkdir(path.dirname(params.statePath), { recursive: true });
+  await fs.writeFile(`${params.statePath}.tmp`, `${payload}\n`, "utf8");
+  await fs.rename(`${params.statePath}.tmp`, params.statePath);
+}
+
+async function maybeTriggerXaBDeploy(params: {
+  storefrontId: XaCatalogStorefront;
+  kv: UploaderKvNamespace | null;
+  statePath?: string;
+}): Promise<DeployTriggerResult> {
+  const hookUrl = getDeployHookUrl();
+  if (!hookUrl) {
+    return { status: "skipped_unconfigured" };
+  }
+
+  const cooldownSeconds = getDeployHookCooldownSeconds();
+  const nowMs = Date.now();
+  const nextEligibleAtMs = await readDeployCooldownEpochMs({
+    storefrontId: params.storefrontId,
+    kv: params.kv,
+    statePath: params.statePath,
+  }).catch(() => null);
+  if (nextEligibleAtMs !== null && nextEligibleAtMs > nowMs) {
+    return {
+      status: "skipped_cooldown",
+      nextEligibleAt: new Date(nextEligibleAtMs).toISOString(),
+    };
+  }
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), getDeployHookTimeoutMs());
+  let response: Response;
+  try {
+    response = await fetch(hookUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        storefront: params.storefrontId,
+        triggeredBy: "xa-uploader-sync",
+        triggeredAt: new Date().toISOString(),
+      }),
+      signal: controller.signal,
+    });
+  } catch (error) {
+    clearTimeout(timeout);
+    const message = error instanceof Error ? error.message : String(error);
+    return { status: "failed", reason: message };
+  }
+  clearTimeout(timeout);
+
+  if (!response.ok) {
+    const bodyText = await response.text().catch(() => "");
+    const details = bodyText.trim().slice(0, 160);
+    return {
+      status: "failed",
+      reason: details ? `http_${response.status}:${details}` : `http_${response.status}`,
+      httpStatus: response.status,
+    };
+  }
+
+  const cooldownUntilMs = nowMs + cooldownSeconds * 1000;
+  await writeDeployCooldown({
+    storefrontId: params.storefrontId,
+    kv: params.kv,
+    statePath: params.statePath,
+    cooldownSeconds,
+    nextEligibleAtMs: cooldownUntilMs,
+  }).catch(() => undefined);
+
+  return {
+    status: "triggered",
+    nextEligibleAt: new Date(cooldownUntilMs).toISOString(),
+  };
+}
+
 async function recordPublishHistory(params: {
   historyPath: string;
   storefrontId: XaCatalogStorefront;
@@ -539,14 +742,16 @@ async function runSyncPipeline(params: {
   storefrontId: XaCatalogStorefront;
   payload: SyncPayload;
   startedAt: number;
+  kv: UploaderKvNamespace | null;
 }): Promise<NextResponse> {
-  const { repoRoot, storefrontId, payload, startedAt } = params;
+  const { repoRoot, storefrontId, payload, startedAt, kv } = params;
   const productsCsvPath = resolveXaUploaderProductsCsvPath(storefrontId);
   const uploaderDataDir = path.join(repoRoot, "apps", "xa-uploader", "data");
   const currencyRatesPath = path.join(uploaderDataDir, "currency-rates.json");
   const statePath = path.join(uploaderDataDir, `.xa-upload-state.${storefrontId}.json`);
   const backupDir = path.join(uploaderDataDir, "backups", storefrontId);
   const publishHistoryPath = getPublishHistoryPath(uploaderDataDir, storefrontId);
+  const deployCooldownStatePath = getDeployCooldownStatePath(uploaderDataDir, storefrontId);
   await fs.mkdir(uploaderDataDir, { recursive: true });
   await fs.mkdir(backupDir, { recursive: true });
 
@@ -659,6 +864,7 @@ async function runSyncPipeline(params: {
 
   let publishResult: Awaited<ReturnType<typeof publishCatalogArtifactsToContract>> | null = null;
   let publishSkipped = false;
+  let deployResult: DeployTriggerResult | undefined;
   if (!payload.options.dryRun) {
     const outcome = await tryPublishArtifactsToContract({
       storefrontId,
@@ -676,6 +882,14 @@ async function runSyncPipeline(params: {
     } else {
       publishSkipped = true;
     }
+
+    if (publishResult) {
+      deployResult = await maybeTriggerXaBDeploy({
+        storefrontId,
+        kv,
+        statePath: deployCooldownStatePath,
+      });
+    }
   }
 
   return NextResponse.json(
@@ -687,7 +901,8 @@ async function runSyncPipeline(params: {
         publishSkipped: publishSkipped || undefined,
         publishedVersion: publishResult?.version,
         publishedAt: publishResult?.publishedAt,
-        display: buildDisplaySyncGuidance(),
+        deploy: deployResult,
+        display: buildDisplaySyncGuidance(deployResult),
       },
       { validate: validateResult, sync: syncResult },
     ),
@@ -698,8 +913,9 @@ async function runCloudSyncPipeline(params: {
   storefrontId: XaCatalogStorefront;
   payload: SyncPayload;
   startedAt: number;
+  kv: UploaderKvNamespace | null;
 }): Promise<NextResponse> {
-  const { storefrontId, payload, startedAt } = params;
+  const { storefrontId, payload, startedAt, kv } = params;
   const snapshot = await readCloudDraftSnapshot(storefrontId);
   const publishableProducts = snapshot.products.filter((product) => {
     const state = normalizePublishState(product);
@@ -749,6 +965,7 @@ async function runCloudSyncPipeline(params: {
 
   let publishResult: { version?: string; publishedAt?: string } | null = null;
   let publishSkipped = false;
+  let deployResult: DeployTriggerResult | undefined;
   if (!payload.options.dryRun) {
     const contractReadiness = getCatalogContractReadiness();
     if (!contractReadiness.configured) {
@@ -804,6 +1021,11 @@ async function runCloudSyncPipeline(params: {
       } catch {
         warnings.push("publish_state_promotion_failed");
       }
+
+      deployResult = await maybeTriggerXaBDeploy({
+        storefrontId,
+        kv,
+      });
     }
   }
 
@@ -815,12 +1037,13 @@ async function runCloudSyncPipeline(params: {
     publishSkipped: publishSkipped || undefined,
     publishedVersion: publishResult?.version,
     publishedAt: publishResult?.publishedAt,
+    deploy: deployResult,
     warnings,
     counts: {
       products: catalog.products.length,
       media: mediaIndex.totals.media,
     },
-    display: buildDisplaySyncGuidance(),
+    display: buildDisplaySyncGuidance(deployResult),
   });
 }
 
@@ -895,11 +1118,13 @@ export async function POST(request: Request) {
           storefrontId,
           payload,
           startedAt,
+          kv,
         })
       : await runCloudSyncPipeline({
           storefrontId,
           payload,
           startedAt,
+          kv,
         });
   } finally {
     if (kv && mutexAcquired) {

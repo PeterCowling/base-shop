@@ -128,6 +128,9 @@ describe("catalog sync route branch coverage", () => {
     releaseSyncMutexMock.mockResolvedValue(undefined);
     delete process.env.XA_UPLOADER_MODE;
     delete process.env.XA_UPLOADER_LOCAL_FS_DISABLED;
+    delete process.env.XA_B_DEPLOY_HOOK_URL;
+    delete process.env.XA_B_DEPLOY_HOOK_COOLDOWN_SECONDS;
+    delete process.env.XA_B_DEPLOY_HOOK_TIMEOUT_MS;
   });
 
   it("GET returns 404 in vendor mode", async () => {
@@ -291,5 +294,88 @@ describe("catalog sync route branch coverage", () => {
         contractConfigErrors: ["missing contract"],
       }),
     );
+  });
+
+  it("triggers xa-b deploy hook after successful publish when configured", async () => {
+    spawnMock.mockImplementation(() => createChild(0));
+    process.env.XA_B_DEPLOY_HOOK_URL = "https://deploy.example/hook";
+
+    const fetchSpy = jest.spyOn(global, "fetch").mockResolvedValue(
+      new Response("", { status: 200 }),
+    );
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          storefront: "xa-b",
+          options: { strict: true, recursive: true },
+        }),
+      }),
+    );
+
+    const payload = await response.json();
+    expect(response.status).toBe(200);
+    expect(payload.deploy).toEqual(expect.objectContaining({ status: "triggered" }));
+    expect(payload.display).toEqual(
+      expect.objectContaining({
+        requiresXaBBuild: false,
+        nextAction: "await_xa_b_deploy",
+      }),
+    );
+    expect(fetchSpy).toHaveBeenCalledWith(
+      "https://deploy.example/hook",
+      expect.objectContaining({ method: "POST" }),
+    );
+    fetchSpy.mockRestore();
+  });
+
+  it("skips deploy hook when cooldown is active", async () => {
+    process.env.XA_UPLOADER_LOCAL_FS_DISABLED = "1";
+    process.env.XA_B_DEPLOY_HOOK_URL = "https://deploy.example/hook";
+    process.env.XA_B_DEPLOY_HOOK_COOLDOWN_SECONDS = "900";
+
+    const kvStore = new Map<string, string>();
+    const kv = {
+      get: jest.fn(async (key: string) => kvStore.get(key) ?? null),
+      put: jest.fn(async (key: string, value: string) => {
+        kvStore.set(key, value);
+      }),
+      delete: jest.fn(async () => undefined),
+    };
+    getUploaderKvMock.mockResolvedValue(kv as unknown as import("../../../../../lib/syncMutex").UploaderKvNamespace);
+    acquireSyncMutexMock.mockResolvedValue(true);
+    releaseSyncMutexMock.mockResolvedValue(undefined);
+
+    const fetchSpy = jest.spyOn(global, "fetch").mockResolvedValue(
+      new Response("", { status: 200 }),
+    );
+
+    const { POST } = await import("../route");
+    const request = () =>
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ storefront: "xa-b", options: { strict: true, dryRun: false } }),
+      });
+
+    const first = await POST(request());
+    expect(first.status).toBe(200);
+    expect((await first.json()).deploy).toEqual(expect.objectContaining({ status: "triggered" }));
+
+    const second = await POST(request());
+    expect(second.status).toBe(200);
+    const secondPayload = await second.json();
+    expect(secondPayload.deploy).toEqual(expect.objectContaining({ status: "skipped_cooldown" }));
+    expect(secondPayload.display).toEqual(
+      expect.objectContaining({
+        requiresXaBBuild: true,
+        nextAction: "wait_or_manual_deploy_xa_b",
+      }),
+    );
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    fetchSpy.mockRestore();
   });
 });

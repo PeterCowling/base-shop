@@ -32,7 +32,8 @@
     "startup-loop:pattern-reflection-prefill": "node --import tsx src/startup-loop/build/lp-do-build-pattern-reflection-prefill.ts",
     "startup-loop:self-evolving-write-back": "node --import tsx src/startup-loop/self-evolving/self-evolving-write-back.ts",
     "startup-loop:pattern-promote-loop-update": "node --import tsx src/startup-loop/build/lp-do-pattern-promote-loop-update.ts",
-    "startup-loop:pattern-promote-skill-proposal": "node --import tsx src/startup-loop/build/lp-do-pattern-promote-skill-proposal.ts"
+    "startup-loop:pattern-promote-skill-proposal": "node --import tsx src/startup-loop/build/lp-do-pattern-promote-skill-proposal.ts",
+    "startup-loop:ideas-keyword-calibrate": "node --import tsx src/startup-loop/ideas/lp-do-ideas-keyword-calibrate.ts"
   },
   "dependencies": {
     "@acme/lib": "workspace:*",

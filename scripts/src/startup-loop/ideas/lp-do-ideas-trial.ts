@@ -519,6 +519,7 @@ const SELF_TRIGGER_PROCESSES = new Set([
   "pattern-promote-loop-update",
   "pattern-promote-skill-proposal",
   "self-evolving-from-build-failure",
+  "ideas-keyword-calibrate",
 ]);
 
 const METADATA_ONLY_SECTION_PATTERNS: ReadonlyArray<RegExp> = [

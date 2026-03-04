@@ -46,7 +46,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const t = await getTranslations(validLang, "roomsPage");
   const meta = {
     title: (t(`rooms.${roomId}.title`, { defaultValue: roomId }) as string) || roomId,
-    description: (t(`rooms.${roomId}.bed_intro`, { defaultValue: "" }) as string) || "",
+    description:
+      (t(`rooms.${roomId}.bed_intro`, { defaultValue: "" }) as string) ||
+      `Details and photos for ${roomId.replace(/_/g, " ")} at Hostel Brikette in Positano.`,
   };
 
   const roomsSlug = getSlug("rooms", validLang);

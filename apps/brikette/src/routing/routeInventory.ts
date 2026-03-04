@@ -5,14 +5,15 @@
 // IMPORTANT: Keep imports minimal to avoid env config dependencies in tests.
 // Prefer direct JSON imports and simple data files over complex modules.
 
+import { getRoomSlug } from "@acme/ui/config/roomSlugs";
+
 import { ASSISTANCE_GUIDES, GUIDES_INDEX } from "@/data/guides.index";
 import { HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS } from "@/data/how-to-get-here/routeGuides";
 import { websiteVisibleRoomsData } from "@/data/roomsData";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
-import { guidePath } from "@/routes.guides-helpers";
-import { STATIC_EXPORT_SECTION_KEYS } from "@/routing/sectionSegments";
-import { getSlug } from "@/utils/slug";
+import { guideNamespace, guideSlug } from "@/routes.guides-helpers";
+import { INTERNAL_SEGMENT_BY_KEY, STATIC_EXPORT_SECTION_KEYS } from "@/routing/sectionSegments";
 
 /**
  * Lists all valid App Router URLs for the brikette app.
@@ -29,7 +30,7 @@ export function listAppRouterUrls(): string[] {
 
     // Static sections (with localized slugs)
     for (const key of STATIC_EXPORT_SECTION_KEYS) {
-      urls.push(`/${lang}/${getSlug(key, lang)}`);
+      urls.push(`/${lang}/${INTERNAL_SEGMENT_BY_KEY[key]}`);
     }
 
     // Draft dashboard (internal editorial route)
@@ -37,26 +38,27 @@ export function listAppRouterUrls(): string[] {
     urls.push(`/${lang}/book-private-accommodations`);
 
     // Dynamic: Rooms
-    const roomsSlug = getSlug("rooms", lang);
+    const roomsSlug = INTERNAL_SEGMENT_BY_KEY.rooms;
     for (const room of websiteVisibleRoomsData) {
-      urls.push(`/${lang}/${roomsSlug}/${room.id}`);
+      urls.push(`/${lang}/${roomsSlug}/${getRoomSlug(room.id, lang)}`);
     }
 
     // Dynamic: Guides (namespace-aware)
-    const experiencesSlug = getSlug("experiences", lang);
     const publishedGuides = GUIDES_INDEX.filter((g) => g.status === "live");
     for (const guide of publishedGuides) {
-      urls.push(guidePath(lang, guide.key));
+      const base = guideNamespace(lang, guide.key);
+      urls.push(`/${lang}/${INTERNAL_SEGMENT_BY_KEY[base.baseKey]}/${guideSlug(lang, guide.key)}`);
     }
 
     // Dynamic: Guide tags
     const allTags = new Set<string>();
-    for (const guide of GUIDES_INDEX) {
+    for (const guide of publishedGuides) {
       for (const tag of guide.tags) {
         allTags.add(tag);
       }
     }
-    const tagsSlug = getSlug("guidesTags", lang);
+    const experiencesSlug = INTERNAL_SEGMENT_BY_KEY.experiences;
+    const tagsSlug = INTERNAL_SEGMENT_BY_KEY.guidesTags;
     for (const tag of allTags) {
       urls.push(`/${lang}/${experiencesSlug}/${tagsSlug}/${encodeURIComponent(tag)}`);
     }

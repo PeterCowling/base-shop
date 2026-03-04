@@ -18,9 +18,10 @@ type Props = {
 };
 
 function PrivateRoomsSummaryContent({ lang }: Props) {
-  const { t: tRooms } = useTranslation("roomsPage", { lng: lang });
+  const { t: tRoomsPage } = useTranslation("roomsPage", { lng: lang });
+  const { t: tRooms } = useTranslation("rooms", { lng: lang });
   const { t: tApartment } = useTranslation("apartmentPage", { lng: lang });
-  usePagePreload({ lang, namespaces: ["roomsPage", "apartmentPage"] });
+  usePagePreload({ lang, namespaces: ["roomsPage", "rooms", "apartmentPage"] });
 
   const privateRoomsPath = `/${lang}/${translatePath("apartment", lang)}`;
   const privateBookingPath = `/${lang}/book-private-accommodations`;
@@ -31,11 +32,11 @@ function PrivateRoomsSummaryContent({ lang }: Props) {
     ? apartmentDetailsRaw.filter((item): item is string => typeof item === "string")
     : [];
   const doubleFacilities = [
-    tRooms("facilities.privateRoom") as string,
-    tRooms("facilities.doubleBedForTwo") as string,
-    tRooms("facilities.bathroomEnsuite") as string,
-    tRooms("facilities.seaViewTerrace") as string,
-    tRooms("facilities.airCon") as string,
+    tRoomsPage("facilities.privateRoom") as string,
+    tRoomsPage("facilities.doubleBedForTwo") as string,
+    tRoomsPage("facilities.bathroomEnsuite") as string,
+    tRoomsPage("facilities.seaViewTerrace") as string,
+    tRoomsPage("facilities.airCon") as string,
   ];
 
   const cards = [
@@ -59,7 +60,7 @@ function PrivateRoomsSummaryContent({ lang }: Props) {
     <Section padding="none" className="mx-auto max-w-6xl p-6 pt-24 sm:pt-10">
       <div className="space-y-10">
         <h1 className="text-center text-3xl font-bold text-brand-heading sm:text-4xl">
-          {tRooms("filters.private") as string}
+          {tRoomsPage("filters.private") as string}
         </h1>
         <p className="mx-auto text-center text-base text-brand-text/85 sm:text-lg">
           {tApartment("heroIntro") as string}
@@ -84,7 +85,7 @@ function PrivateRoomsSummaryContent({ lang }: Props) {
                 <p className="text-sm text-brand-text/85">{card.description}</p>
                 <div className="space-y-2">
                   <h3 className="text-sm font-semibold text-brand-heading">
-                    {tRooms("details") as string}
+                    {tRoomsPage("details") as string}
                   </h3>
                   <ul className="list-disc space-y-1 pl-5 text-sm text-brand-text/80">
                     {card.highlights.map((item) => (
@@ -97,7 +98,7 @@ function PrivateRoomsSummaryContent({ lang }: Props) {
                     href={card.href}
                     className="inline-flex min-h-11 items-center rounded-xl border border-brand-primary px-4 py-2 text-sm font-semibold text-brand-primary transition-colors hover:bg-brand-primary/10"
                   >
-                    {tRooms("moreAboutThisRoom") as string}
+                    {tRoomsPage("moreAboutThisRoom") as string}
                   </Link>
                   <Link
                     href={privateBookingPath}

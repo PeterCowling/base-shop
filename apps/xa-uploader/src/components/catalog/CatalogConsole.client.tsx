@@ -59,7 +59,6 @@ function ProductEditor({
 }) {
   return (
     <CatalogProductForm
-      key={state.selectedSlug ?? "new"}
       selectedSlug={state.selectedSlug}
       draft={state.draft}
       storefront={state.storefront}

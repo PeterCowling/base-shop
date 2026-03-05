@@ -7,6 +7,7 @@ export interface Env {
   CATALOG_WRITE_TOKEN?: string;
   CATALOG_READ_TOKEN?: string;
   XA_DEPLOY_TRIGGER_TOKEN?: string;
+  XA_B_PAGES_DEPLOY_HOOK_URL?: string;
   XA_GITHUB_ACTIONS_TOKEN?: string;
   XA_GITHUB_REPO_OWNER?: string;
   XA_GITHUB_REPO_NAME?: string;
@@ -872,6 +873,18 @@ function requireDeployTriggerToken(
   return expectedToken;
 }
 
+function resolveXaBPagesDeployHookUrl(env: Env): string | null {
+  const raw = (env.XA_B_PAGES_DEPLOY_HOOK_URL ?? "").trim();
+  if (!raw) return null;
+  try {
+    const url = new URL(raw);
+    if (url.protocol !== "https:") return null;
+    return url.toString();
+  } catch {
+    return null;
+  }
+}
+
 function resolveXaBDeployConfig(env: Env): {
   token: string;
   owner: string;
@@ -977,6 +990,36 @@ function normalizeDispatchFailureStatus(status: number): number {
   return 502;
 }
 
+type HookRequestResult =
+  | { ok: true; status: number }
+  | { ok: false; status: number };
+
+async function triggerPagesDeployHook(url: string): Promise<HookRequestResult> {
+  const response = await fetch(url, { method: "POST" }).catch(() => null);
+  if (!response) return { ok: false, status: 502 };
+  if (!response.ok) return { ok: false, status: response.status || 502 };
+  return { ok: true, status: response.status };
+}
+
+function buildPagesHookFailureResponse(result: HookRequestResult & { ok: false }): Response {
+  if (result.status >= 400 && result.status < 500) {
+    return json({ ok: false, error: { message: "pages_hook_rejected" } }, 503);
+  }
+  return json({ ok: false, error: { message: "pages_hook_failed" } }, 502);
+}
+
+function successPayloadFromPagesHook(params: { storefront: string }): {
+  ok: true;
+  storefront: string;
+  provider: "cloudflare_pages_deploy_hook";
+} {
+  return {
+    ok: true,
+    storefront: params.storefront,
+    provider: "cloudflare_pages_deploy_hook",
+  };
+}
+
 function normalizeDispatchFailureError(
   result: JsonRequestResult & { ok: false },
 ): { code?: number; message?: string } {
@@ -1014,6 +1057,13 @@ async function handleXaBDeployTrigger(request: Request, env: Env, storefront: st
   const requestUrl = new URL(request.url);
   const auth = requireDeployTriggerToken(env, request, requestUrl);
   if (auth instanceof Response) return auth;
+
+  const pagesHookUrl = resolveXaBPagesDeployHookUrl(env);
+  if (pagesHookUrl) {
+    const hook = await triggerPagesDeployHook(pagesHookUrl);
+    if (!hook.ok) return buildPagesHookFailureResponse(hook);
+    return json(successPayloadFromPagesHook({ storefront }), 202);
+  }
 
   const config = resolveXaBDeployConfig(env);
   if (!config) return json({ ok: false }, 503);

@@ -7,8 +7,8 @@ import "@testing-library/jest-dom";
 import type { ComponentPropsWithoutRef } from "react";
 import { render, screen } from "@testing-library/react";
 
-import type { OctorateRoom } from "@/app/api/availability/route";
 import type { Room } from "@/data/roomsData";
+import type { OctorateRoom } from "@/types/octorate-availability";
 
 // ---------------------------------------------------------------------------
 // Static import — must come AFTER all jest.mock declarations

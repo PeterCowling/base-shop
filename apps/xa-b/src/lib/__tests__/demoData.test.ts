@@ -1,7 +1,5 @@
 import { afterEach, describe, expect, it, jest } from "@jest/globals";
 
-import catalogRuntime from "../../data/catalog.runtime.json";
-
 const BASE_KEY = "NEXT_PUBLIC_XA_IMAGES_BASE_URL";
 const VARIANT_KEY = "NEXT_PUBLIC_XA_IMAGES_VARIANT";
 const MAX_AGE_KEY = "NEXT_PUBLIC_XA_CATALOG_MAX_AGE_HOURS";
@@ -18,6 +16,22 @@ function restoreEnv() {
 
 async function loadDemoData(env: { base?: string; variant?: string; maxAgeHours?: string }) {
   jest.resetModules();
+  jest.unmock("../../data/catalog.runtime.json");
+  if (env.base === undefined) delete process.env[BASE_KEY];
+  else process.env[BASE_KEY] = env.base;
+  if (env.variant === undefined) delete process.env[VARIANT_KEY];
+  else process.env[VARIANT_KEY] = env.variant;
+  if (env.maxAgeHours === undefined) delete process.env[MAX_AGE_KEY];
+  else process.env[MAX_AGE_KEY] = env.maxAgeHours;
+  return await import("../demoData");
+}
+
+async function loadDemoDataWithCatalogMock(
+  env: { base?: string; variant?: string; maxAgeHours?: string },
+  catalogMock: unknown,
+) {
+  jest.resetModules();
+  jest.doMock("../../data/catalog.runtime.json", () => catalogMock);
   if (env.base === undefined) delete process.env[BASE_KEY];
   else process.env[BASE_KEY] = env.base;
   if (env.variant === undefined) delete process.env[VARIANT_KEY];
@@ -62,30 +76,106 @@ describe("XA catalog data", () => {
   });
 
   it("does not assign inferred/fallback roles to legacy media without explicit roles", async () => {
-    const { XA_PRODUCTS } = await loadDemoData({
-      base: "https://imagedelivery.net/hash",
-      variant: "public",
-    });
-
-    const productsBySlug = new Map(XA_PRODUCTS.map((product) => [product.slug, product]));
-    const seed = catalogRuntime as {
-      products?: Array<{ slug: string; media?: Array<{ type?: string; role?: string | null }> }>;
+    const catalogMock = {
+      collections: [],
+      brands: [],
+      products: [
+        {
+          id: "legacy-roleless-1",
+          slug: "legacy-roleless-1",
+          title: "Legacy Roleless Product",
+          brand: "legacy-brand",
+          collection: "legacy-collection",
+          price: 100,
+          prices: { USD: 100 },
+          stock: 1,
+          sizes: ["OS"],
+          description: "legacy",
+          createdAt: "2026-03-05T00:00:00.000Z",
+          popularity: 1,
+          taxonomy: {
+            department: "women",
+            category: "bags",
+            subcategory: "crossbody",
+          },
+          media: [
+            {
+              type: "image",
+              path: "xa-b/legacy-roleless-1/front.jpg",
+              altText: "front view",
+            },
+            {
+              type: "image",
+              path: "xa-b/legacy-roleless-1/side.jpg",
+              altText: "side view",
+            },
+          ],
+        },
+      ],
     };
 
-    const allRolelessSeedProducts = (seed.products ?? []).filter((product) => {
-      const imageMedia = (product.media ?? []).filter((item) => item.type === "image");
-      if (imageMedia.length === 0) return false;
-      return imageMedia.every((item) => !(item.role ?? "").trim());
-    });
+    const { XA_PRODUCTS } = await loadDemoDataWithCatalogMock(
+      {
+        base: "https://imagedelivery.net/hash",
+        variant: "public",
+      },
+      catalogMock,
+    );
 
-    expect(allRolelessSeedProducts.length).toBeGreaterThan(0);
+    expect(XA_PRODUCTS.length).toBe(1);
+    const hydrated = XA_PRODUCTS[0];
+    expect(hydrated).toBeTruthy();
+    const hydratedImageMedia = (hydrated?.media ?? []).filter((item) => item.type === "image");
+    expect(hydratedImageMedia.length).toBeGreaterThan(0);
+    expect(hydratedImageMedia.every((item) => !item.role)).toBe(true);
+  });
 
-    for (const seedProduct of allRolelessSeedProducts) {
-      const hydrated = productsBySlug.get(seedProduct.slug);
-      expect(hydrated).toBeTruthy();
-      const hydratedImageMedia = (hydrated?.media ?? []).filter((item) => item.type === "image");
-      expect(hydratedImageMedia.length).toBeGreaterThan(0);
-      expect(hydratedImageMedia.every((item) => !item.role)).toBe(true);
-    }
+  it("retains explicit media roles from catalog seed", async () => {
+    const catalogMock = {
+      collections: [],
+      brands: [],
+      products: [
+        {
+          id: "explicit-role-1",
+          slug: "explicit-role-1",
+          title: "Explicit Role Product",
+          brand: "legacy-brand",
+          collection: "legacy-collection",
+          price: 100,
+          prices: { USD: 100 },
+          stock: 1,
+          sizes: ["OS"],
+          description: "explicit-role",
+          createdAt: "2026-03-05T00:00:00.000Z",
+          popularity: 1,
+          taxonomy: {
+            department: "women",
+            category: "bags",
+            subcategory: "crossbody",
+          },
+          media: [
+            {
+              type: "image",
+              path: "xa-b/explicit-role-1/front.jpg",
+              altText: "front",
+              role: "front",
+            },
+          ],
+        },
+      ],
+    };
+
+    const { XA_PRODUCTS } = await loadDemoDataWithCatalogMock(
+      {
+        base: "https://imagedelivery.net/hash",
+        variant: "public",
+      },
+      catalogMock,
+    );
+
+    expect(XA_PRODUCTS.length).toBe(1);
+    const imageMedia = XA_PRODUCTS[0]?.media.filter((item) => item.type === "image") ?? [];
+    expect(imageMedia.length).toBe(1);
+    expect(imageMedia[0]?.role).toBe("front");
   });
 });

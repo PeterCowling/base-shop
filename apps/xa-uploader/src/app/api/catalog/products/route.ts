@@ -115,6 +115,7 @@ function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLi
 
 function logContractFailure(operation: "list" | "upsert", error: CatalogDraftContractError): void {
   if (error.code !== "request_failed" && error.code !== "invalid_response") return;
+  if (process.env.NODE_ENV === "test") return;
   console.warn("[xa-uploader] catalog contract request failed", {
     operation,
     code: error.code,

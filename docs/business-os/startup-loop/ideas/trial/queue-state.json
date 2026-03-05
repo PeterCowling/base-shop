@@ -1,15 +1,17 @@
 {
-  "last_updated": "2026-03-04T21:28:59.804Z",
+  "last_updated": "2026-03-05T16:47:55.413Z",
   "counts": {
     "enqueued": 87,
-    "processed": 18,
+    "processed": 32,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
-    "auto_executed": 22,
-    "completed": 108,
-    "fact_find_ready": 126,
-    "total": 239
+    "auto_executed": 23,
+    "completed": 210,
+    "fact_find_ready": 140,
+    "briefing_ready": 7,
+    "logged_no_action": 6,
+    "total": 253
   },
   "dispatches": [
     {
@@ -9592,6 +9594,622 @@
         "type": "operational",
         "statement": "Produce a validated routing outcome and scoped next action for bos-codebase-structural-signals.",
         "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260305164000-2201",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:BOS:reception-booking-email-false-success-activity-drift:20260305",
+      "anchor_key": "reception-booking-email-false-success-activity-drift",
+      "cluster_key": "BRIK:BOS:reception-booking-email-false-success-activity-drift:operator:20260305",
+      "cluster_fingerprint": "8f1d7b803e6ebca03b630fdbca2c6c2e6bc22ee9ea58fcabafdc64ebf1bc9d01",
+      "lineage_depth": 0,
+      "area_anchor": "Reception booking email flow — false success and activity drift",
+      "location_anchors": [
+        "docs/plans/reception-process-integrity-hardening/fact-find.md",
+        "docs/plans/reception-process-integrity-hardening/plan.md",
+        "apps/reception/src"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "domain": "BOS",
+      "priority": "P2",
+      "confidence": 0.9,
+      "current_truth": "Booking email failures are swallowed while UI reports success and logs activity 26.",
+      "next_scope_now": "Harden hook return contract and caller handling so success is only reported after confirmed draft creation.",
+      "adjacent_later": [],
+      "evidence_refs": [
+        "operator-stated: process audit issue 2"
+      ],
+      "why": "Operators currently get false positive success signals for a guest-facing communication workflow.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Booking email draft success state is truthful and activity logging only occurs on confirmed success.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-05T16:40:00.000Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-05T16:41:00.000Z",
+        "fact_find_slug": "reception-process-integrity-hardening",
+        "fact_find_path": "docs/plans/reception-process-integrity-hardening/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260305164000-2202",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:BOS:reception-cancellation-flow-activity-outcomes-not-verified:20260305",
+      "anchor_key": "reception-cancellation-flow-activity-outcomes-not-verified",
+      "cluster_key": "BRIK:BOS:reception-cancellation-flow-activity-outcomes-not-verified:operator:20260305",
+      "cluster_fingerprint": "8f1d7b803e6ebca03b630fdbca2c6c2e6bc22ee9ea58fcabafdc64ebf1bc9d01",
+      "lineage_depth": 0,
+      "area_anchor": "Reception cancellation flow — activity outcomes not verified",
+      "location_anchors": [
+        "docs/plans/reception-process-integrity-hardening/fact-find.md",
+        "docs/plans/reception-process-integrity-hardening/plan.md",
+        "apps/reception/src"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "domain": "BOS",
+      "priority": "P2",
+      "confidence": 0.85,
+      "current_truth": "Cancellation currently accepts partial activity/email failures without explicit surfaced outcome.",
+      "next_scope_now": "Require occupant-level activity result verification and explicit failure reporting.",
+      "adjacent_later": [],
+      "evidence_refs": [
+        "operator-stated: process audit issue 3"
+      ],
+      "why": "Booking cancellation status should not silently hide failed downstream activity/email operations.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Cancellation flow surfaces partial failures deterministically and cannot silently pass.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-05T16:40:00.000Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-05T16:41:00.000Z",
+        "fact_find_slug": "reception-process-integrity-hardening",
+        "fact_find_path": "docs/plans/reception-process-integrity-hardening/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260305164000-2203",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:BOS:prime-extension-resolution-status-advance-after-failed-write:20260305",
+      "anchor_key": "prime-extension-resolution-status-advance-after-failed-write",
+      "cluster_key": "BRIK:BOS:prime-extension-resolution-status-advance-after-failed-write:operator:20260305",
+      "cluster_fingerprint": "8f1d7b803e6ebca03b630fdbca2c6c2e6bc22ee9ea58fcabafdc64ebf1bc9d01",
+      "lineage_depth": 0,
+      "area_anchor": "Prime extension resolution — status can advance after failed write",
+      "location_anchors": [
+        "docs/plans/reception-process-integrity-hardening/fact-find.md",
+        "docs/plans/reception-process-integrity-hardening/plan.md",
+        "apps/reception/src"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "domain": "BOS",
+      "priority": "P2",
+      "confidence": 0.86,
+      "current_truth": "Prime request resolver can mark extension approved after booking-date mutation fails internally.",
+      "next_scope_now": "Make booking-date mutation fail-closed and gate status transition on mutation success.",
+      "adjacent_later": [],
+      "evidence_refs": [
+        "operator-stated: process audit issue 4"
+      ],
+      "why": "Prime request status must remain consistent with actual booking state.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Prime extension status only advances when booking-date mutation succeeds.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-05T16:40:00.000Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-05T16:41:00.000Z",
+        "fact_find_slug": "reception-process-integrity-hardening",
+        "fact_find_path": "docs/plans/reception-process-integrity-hardening/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260305164000-2204",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:BOS:booking-date-mutation-sequential-writes-partial-state-risk:20260305",
+      "anchor_key": "booking-date-mutation-sequential-writes-partial-state-risk",
+      "cluster_key": "BRIK:BOS:booking-date-mutation-sequential-writes-partial-state-risk:operator:20260305",
+      "cluster_fingerprint": "8f1d7b803e6ebca03b630fdbca2c6c2e6bc22ee9ea58fcabafdc64ebf1bc9d01",
+      "lineage_depth": 0,
+      "area_anchor": "Booking date mutation — sequential writes create partial state risk",
+      "location_anchors": [
+        "docs/plans/reception-process-integrity-hardening/fact-find.md",
+        "docs/plans/reception-process-integrity-hardening/plan.md",
+        "apps/reception/src"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "domain": "BOS",
+      "priority": "P2",
+      "confidence": 0.82,
+      "current_truth": "Booking date mutation performs dependent writes in sequence across multiple paths.",
+      "next_scope_now": "Consolidate dependent non-financial node writes into atomic multi-path update.",
+      "adjacent_later": [],
+      "evidence_refs": [
+        "operator-stated: process audit issue 5"
+      ],
+      "why": "Partial writes can leave booking/checkin/checkout/activity nodes inconsistent.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Booking date changes are written atomically across core dependent nodes.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-05T16:40:00.000Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-05T16:41:00.000Z",
+        "fact_find_slug": "reception-process-integrity-hardening",
+        "fact_find_path": "docs/plans/reception-process-integrity-hardening/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260305164000-2205",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:BOS:financial-room-mutation-read-merge-write-race:20260305",
+      "anchor_key": "financial-room-mutation-read-merge-write-race",
+      "cluster_key": "BRIK:BOS:financial-room-mutation-read-merge-write-race:operator:20260305",
+      "cluster_fingerprint": "8f1d7b803e6ebca03b630fdbca2c6c2e6bc22ee9ea58fcabafdc64ebf1bc9d01",
+      "lineage_depth": 0,
+      "area_anchor": "Financial room mutation — read-merge-write race under concurrency",
+      "location_anchors": [
+        "docs/plans/reception-process-integrity-hardening/fact-find.md",
+        "docs/plans/reception-process-integrity-hardening/plan.md",
+        "apps/reception/src"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "domain": "BOS",
+      "priority": "P2",
+      "confidence": 0.8,
+      "current_truth": "Financial room updater uses get+set merge path vulnerable to concurrent overwrite.",
+      "next_scope_now": "Adopt transaction-based write semantics for financial room mutation path.",
+      "adjacent_later": [],
+      "evidence_refs": [
+        "operator-stated: process audit issue 6"
+      ],
+      "why": "Financial integrity requires concurrency-safe updates.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Concurrent financial writes no longer lose transactions via stale overwrite.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-05T16:40:00.000Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-05T16:41:00.000Z",
+        "fact_find_slug": "reception-process-integrity-hardening",
+        "fact_find_path": "docs/plans/reception-process-integrity-hardening/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260305164000-2206",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:BOS:booking-email-api-payload-semantic-validation-insufficient:20260305",
+      "anchor_key": "booking-email-api-payload-semantic-validation-insufficient",
+      "cluster_key": "BRIK:BOS:booking-email-api-payload-semantic-validation-insufficient:operator:20260305",
+      "cluster_fingerprint": "8f1d7b803e6ebca03b630fdbca2c6c2e6bc22ee9ea58fcabafdc64ebf1bc9d01",
+      "lineage_depth": 0,
+      "area_anchor": "Booking email API payload — semantic validation insufficient",
+      "location_anchors": [
+        "docs/plans/reception-process-integrity-hardening/fact-find.md",
+        "docs/plans/reception-process-integrity-hardening/plan.md",
+        "apps/reception/src"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "domain": "BOS",
+      "priority": "P2",
+      "confidence": 0.88,
+      "current_truth": "Booking email payload currently allows non-URL occupantLinks.",
+      "next_scope_now": "Harden route + MCP tool schema to enforce URL semantics for occupant links.",
+      "adjacent_later": [],
+      "evidence_refs": [
+        "operator-stated: process audit issue 7"
+      ],
+      "why": "Weak semantic validation permits malformed outbound guest link payloads.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Booking email payload contract enforces URL-valid occupant links end-to-end.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-05T16:40:00.000Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-05T16:41:00.000Z",
+        "fact_find_slug": "reception-process-integrity-hardening",
+        "fact_find_path": "docs/plans/reception-process-integrity-hardening/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260305164000-2207",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:BOS:reception-integrity-paths-verification-coverage-gaps:20260305",
+      "anchor_key": "reception-integrity-paths-verification-coverage-gaps",
+      "cluster_key": "BRIK:BOS:reception-integrity-paths-verification-coverage-gaps:operator:20260305",
+      "cluster_fingerprint": "8f1d7b803e6ebca03b630fdbca2c6c2e6bc22ee9ea58fcabafdc64ebf1bc9d01",
+      "lineage_depth": 0,
+      "area_anchor": "Reception integrity paths — verification coverage gaps",
+      "location_anchors": [
+        "docs/plans/reception-process-integrity-hardening/fact-find.md",
+        "docs/plans/reception-process-integrity-hardening/plan.md",
+        "apps/reception/src"
+      ],
+      "provisional_deliverable_family": "multi",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "domain": "BOS",
+      "priority": "P2",
+      "confidence": 0.84,
+      "current_truth": "Critical integrity paths lack targeted regression assertions for silent-failure behavior.",
+      "next_scope_now": "Add focused tests across modified reception hooks/routes for issues 2-7.",
+      "adjacent_later": [],
+      "evidence_refs": [
+        "operator-stated: process audit issue 8"
+      ],
+      "why": "Without regression coverage these high-risk integrity bugs can return silently.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Targeted regression suite covers all hardened risk paths from issues 2-7.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-05T16:40:00.000Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-05T16:41:00.000Z",
+        "fact_find_slug": "reception-process-integrity-hardening",
+        "fact_find_path": "docs/plans/reception-process-integrity-hardening/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "cluster_fingerprint": "3abb2ebc11c3e4ffdd3d94be1e0960c0dfdfc5394a52ae0df664ad557aff95d7",
+      "lineage_depth": 0,
+      "location_anchors": [
+        "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md",
+        "docs/plans/reception-process-integrity-reaudit-followup/plan.md",
+        "apps/reception/src"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "domain": "BOS",
+      "priority": "P2",
+      "created_at": "2026-03-05T20:40:00.000Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-05T20:41:00.000Z",
+        "fact_find_slug": "reception-process-integrity-reaudit-followup",
+        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md"
+      },
+      "dispatch_id": "IDEA-DISPATCH-20260305204000-2301",
+      "root_event_id": "operator:BRIK:BOS:booking-modal-early-close-on-failed-save:20260305",
+      "anchor_key": "booking-modal-early-close-on-failed-save",
+      "cluster_key": "BRIK:BOS:booking-modal-early-close-on-failed-save:operator:20260305",
+      "area_anchor": "Booking modal save flow — closes before mutation confirmation",
+      "provisional_deliverable_family": "code-change",
+      "confidence": 0.9,
+      "current_truth": "Booking modal closes immediately after firing updateBookingDates without awaiting outcome.",
+      "next_scope_now": "Await mutation in modal and keep dialog open on errors with explicit operator feedback.",
+      "adjacent_later": [],
+      "evidence_refs": [
+        "re-audit finding: booking modal fail-closed gap"
+      ],
+      "why": "UI currently allows false-success perception when save fails asynchronously.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Booking modal save is fail-closed and only closes after confirmed mutation success.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "cluster_fingerprint": "3abb2ebc11c3e4ffdd3d94be1e0960c0dfdfc5394a52ae0df664ad557aff95d7",
+      "lineage_depth": 0,
+      "location_anchors": [
+        "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md",
+        "docs/plans/reception-process-integrity-reaudit-followup/plan.md",
+        "apps/reception/src"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "domain": "BOS",
+      "priority": "P2",
+      "created_at": "2026-03-05T20:40:00.000Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-05T20:41:00.000Z",
+        "fact_find_slug": "reception-process-integrity-reaudit-followup",
+        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md"
+      },
+      "dispatch_id": "IDEA-DISPATCH-20260305204000-2302",
+      "root_event_id": "operator:BRIK:BOS:booking-modal-unknown-occupant-fallback-write-risk:20260305",
+      "anchor_key": "booking-modal-unknown-occupant-fallback-write-risk",
+      "cluster_key": "BRIK:BOS:booking-modal-unknown-occupant-fallback-write-risk:operator:20260305",
+      "area_anchor": "Booking modal occupant validation — sentinel fallback write risk",
+      "provisional_deliverable_family": "code-change",
+      "confidence": 0.87,
+      "current_truth": "Missing occupant id falls back to unknown_occupant and can write to invalid data paths.",
+      "next_scope_now": "Block save when occupant id is absent and surface validation error to operator.",
+      "adjacent_later": [],
+      "evidence_refs": [
+        "re-audit finding: occupant id validation gap"
+      ],
+      "why": "Invalid fallback writes create silent data pollution.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Booking save path enforces valid occupant id and refuses invalid writes.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "cluster_fingerprint": "3abb2ebc11c3e4ffdd3d94be1e0960c0dfdfc5394a52ae0df664ad557aff95d7",
+      "lineage_depth": 0,
+      "location_anchors": [
+        "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md",
+        "docs/plans/reception-process-integrity-reaudit-followup/plan.md",
+        "apps/reception/src"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "domain": "BOS",
+      "priority": "P2",
+      "created_at": "2026-03-05T20:40:00.000Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-05T20:41:00.000Z",
+        "fact_find_slug": "reception-process-integrity-reaudit-followup",
+        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md"
+      },
+      "dispatch_id": "IDEA-DISPATCH-20260305204000-2303",
+      "root_event_id": "operator:BRIK:BOS:extension-date-financial-split-consistency-risk:20260305",
+      "anchor_key": "extension-date-financial-split-consistency-risk",
+      "cluster_key": "BRIK:BOS:extension-date-financial-split-consistency-risk:operator:20260305",
+      "area_anchor": "Extension mutation consistency — date/financial split operation risk",
+      "provisional_deliverable_family": "code-change",
+      "confidence": 0.8,
+      "current_truth": "Extension booking-date update and financial recording remain split operations with divergence risk.",
+      "next_scope_now": "Add compensation control so financial writes are neutralized if downstream booking mutation fails.",
+      "adjacent_later": [],
+      "evidence_refs": [
+        "re-audit finding: high-stakes financial consistency risk"
+      ],
+      "why": "Financial consistency is high-stakes and requires explicit recovery behavior.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Extension flow has compensating control to avoid unresolved financial/date divergence.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "cluster_fingerprint": "3abb2ebc11c3e4ffdd3d94be1e0960c0dfdfc5394a52ae0df664ad557aff95d7",
+      "lineage_depth": 0,
+      "location_anchors": [
+        "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md",
+        "docs/plans/reception-process-integrity-reaudit-followup/plan.md",
+        "apps/reception/src"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "domain": "BOS",
+      "priority": "P2",
+      "created_at": "2026-03-05T20:40:00.000Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-05T20:41:00.000Z",
+        "fact_find_slug": "reception-process-integrity-reaudit-followup",
+        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md"
+      },
+      "dispatch_id": "IDEA-DISPATCH-20260305204000-2304",
+      "root_event_id": "operator:BRIK:BOS:multi-occupant-extension-partial-commit-ambiguity:20260305",
+      "anchor_key": "multi-occupant-extension-partial-commit-ambiguity",
+      "cluster_key": "BRIK:BOS:multi-occupant-extension-partial-commit-ambiguity:operator:20260305",
+      "area_anchor": "Extension modal multi-occupant flow — partial commit ambiguity",
+      "provisional_deliverable_family": "code-change",
+      "confidence": 0.84,
+      "current_truth": "Multi-occupant extension can partially apply before failure without explicit partial-outcome messaging.",
+      "next_scope_now": "Serialize updates and provide explicit partial-failure reporting while suppressing downstream side effects.",
+      "adjacent_later": [],
+      "evidence_refs": [
+        "re-audit finding: extension partial-failure handling gap"
+      ],
+      "why": "Operators need deterministic recovery signals when multi-occupant updates fail.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Multi-occupant extension flow surfaces partial outcomes explicitly and avoids silent drift.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "cluster_fingerprint": "3abb2ebc11c3e4ffdd3d94be1e0960c0dfdfc5394a52ae0df664ad557aff95d7",
+      "lineage_depth": 0,
+      "location_anchors": [
+        "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md",
+        "docs/plans/reception-process-integrity-reaudit-followup/plan.md",
+        "apps/reception/src"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "domain": "BOS",
+      "priority": "P2",
+      "created_at": "2026-03-05T20:40:00.000Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-05T20:41:00.000Z",
+        "fact_find_slug": "reception-process-integrity-reaudit-followup",
+        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md"
+      },
+      "dispatch_id": "IDEA-DISPATCH-20260305204000-2305",
+      "root_event_id": "operator:BRIK:BOS:booking-email-activity-scope-non-authoritative:20260305",
+      "anchor_key": "booking-email-activity-scope-non-authoritative",
+      "cluster_key": "BRIK:BOS:booking-email-activity-scope-non-authoritative:operator:20260305",
+      "area_anchor": "Booking email activity logging — non-authoritative scope source",
+      "provisional_deliverable_family": "code-change",
+      "confidence": 0.88,
+      "current_truth": "Activity logging currently uses local email-map scope rather than authoritative send result scope.",
+      "next_scope_now": "Return occupant ids from send hook and log activity using that authoritative list.",
+      "adjacent_later": [],
+      "evidence_refs": [
+        "re-audit finding: activity scope drift"
+      ],
+      "why": "Audit trail should reflect confirmed draft occupant scope.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Email draft activity logging uses authoritative occupant set returned by booking-email hook.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "cluster_fingerprint": "3abb2ebc11c3e4ffdd3d94be1e0960c0dfdfc5394a52ae0df664ad557aff95d7",
+      "lineage_depth": 0,
+      "location_anchors": [
+        "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md",
+        "docs/plans/reception-process-integrity-reaudit-followup/plan.md",
+        "apps/reception/src"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "domain": "BOS",
+      "priority": "P2",
+      "created_at": "2026-03-05T20:40:00.000Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-05T20:41:00.000Z",
+        "fact_find_slug": "reception-process-integrity-reaudit-followup",
+        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md"
+      },
+      "dispatch_id": "IDEA-DISPATCH-20260305204000-2306",
+      "root_event_id": "operator:BRIK:BOS:cancellation-partial-failure-contract-easy-ignore:20260305",
+      "anchor_key": "cancellation-partial-failure-contract-easy-ignore",
+      "cluster_key": "BRIK:BOS:cancellation-partial-failure-contract-easy-ignore:operator:20260305",
+      "area_anchor": "Cancellation contract — partial failure can be ignored by callers",
+      "provisional_deliverable_family": "code-change",
+      "confidence": 0.82,
+      "current_truth": "Cancellation partial failures are returned as data and can be accidentally ignored by future callers.",
+      "next_scope_now": "Promote partial-failure path to thrown error contract with details for fail-closed handling.",
+      "adjacent_later": [],
+      "evidence_refs": [
+        "re-audit finding: cancellation contract hardening"
+      ],
+      "why": "Critical cancellation side effects should not silently pass due unchecked return value.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Cancellation partial failure becomes fail-closed error contract.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "cluster_fingerprint": "3abb2ebc11c3e4ffdd3d94be1e0960c0dfdfc5394a52ae0df664ad557aff95d7",
+      "lineage_depth": 0,
+      "location_anchors": [
+        "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md",
+        "docs/plans/reception-process-integrity-reaudit-followup/plan.md",
+        "apps/reception/src"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "domain": "BOS",
+      "priority": "P2",
+      "created_at": "2026-03-05T20:40:00.000Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-05T20:41:00.000Z",
+        "fact_find_slug": "reception-process-integrity-reaudit-followup",
+        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md"
+      },
+      "dispatch_id": "IDEA-DISPATCH-20260305204000-2307",
+      "root_event_id": "operator:BRIK:BOS:reception-reaudit-failure-path-coverage-gaps:20260305",
+      "anchor_key": "reception-reaudit-failure-path-coverage-gaps",
+      "cluster_key": "BRIK:BOS:reception-reaudit-failure-path-coverage-gaps:operator:20260305",
+      "area_anchor": "Reception re-audit verification — failure-path coverage gaps",
+      "provisional_deliverable_family": "multi",
+      "confidence": 0.86,
+      "current_truth": "Failure-path tests still miss booking modal reject flow, extension partial failure messaging, and email button scope behavior.",
+      "next_scope_now": "Add targeted test cases for each remaining failure-path contract.",
+      "adjacent_later": [],
+      "evidence_refs": [
+        "re-audit finding: verification coverage gap"
+      ],
+      "why": "Without coverage, silent-failure regressions can reappear.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Failure-path regression coverage is closed for re-audit follow-up hardening.",
+        "source": "operator"
       }
     }
   ]

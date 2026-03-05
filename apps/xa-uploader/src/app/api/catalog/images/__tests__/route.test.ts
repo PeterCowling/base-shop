@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 
+import { __clearRateLimitStoreForTests } from "../../../../../lib/rateLimit";
+
 const hasUploaderSessionMock = jest.fn();
 const getMediaBucketMock = jest.fn();
 const parseImageDimensionsFromBufferMock = jest.fn();
@@ -38,10 +40,14 @@ function makeFormDataRequest(
   const formData = new FormData();
   if (file) formData.append("file", file);
 
-  return new Request(url.toString(), {
+  const request = new Request(url.toString(), {
     method: "POST",
-    body: formData,
   });
+  Object.defineProperty(request, "formData", {
+    configurable: true,
+    value: async () => formData,
+  });
+  return request;
 }
 
 function makeValidFile(sizeBytes = 1024): File {
@@ -56,6 +62,7 @@ const mockBucket = { put: mockBucketPut, get: jest.fn(), head: jest.fn() };
 describe("catalog images route", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    __clearRateLimitStoreForTests();
     hasUploaderSessionMock.mockResolvedValue(true);
     getMediaBucketMock.mockResolvedValue(mockBucket);
     parseImageDimensionsFromBufferMock.mockReturnValue({ format: "png", width: 2000, height: 1800 });

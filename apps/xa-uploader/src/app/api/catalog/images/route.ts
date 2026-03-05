@@ -6,7 +6,8 @@ import { join, resolve, sep } from "node:path";
 
 import { NextResponse } from "next/server";
 
-import { normalizeXaImageRole, slugify, splitList } from "@acme/lib/xa";
+import { slugify, splitList } from "@acme/lib/xa/catalogAdminSchema";
+import { normalizeXaImageRole } from "@acme/lib/xa/catalogImageRoles";
 
 import { listCatalogDrafts } from "../../../../lib/catalogCsv";
 import { readCloudDraftSnapshot } from "../../../../lib/catalogDraftContractClient";
@@ -87,6 +88,22 @@ async function writeLocalImageWithRetry(params: {
 
 function buildErrorResponse(error: ImageUploadErrorCode, status: number, reason: string) {
   return NextResponse.json({ ok: false, error, reason }, { status });
+}
+
+type UploadFileLike = {
+  size: number;
+  type?: string;
+  arrayBuffer(): Promise<ArrayBuffer>;
+};
+
+function isUploadFileLike(value: unknown): value is UploadFileLike {
+  if (!value || typeof value !== "object") return false;
+  return (
+    "size" in value &&
+    typeof (value as { size?: unknown }).size === "number" &&
+    "arrayBuffer" in value &&
+    typeof (value as { arrayBuffer?: unknown }).arrayBuffer === "function"
+  );
 }
 
 function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLimit>): NextResponse {
@@ -288,7 +305,7 @@ export async function POST(request: Request) {
   }
 
   const file = formData.get("file");
-  if (!file || !(file instanceof File)) {
+  if (!isUploadFileLike(file)) {
     return withRateHeaders(buildErrorResponse("no_file", 400, "no file field in form data"), limit);
   }
 

@@ -309,6 +309,8 @@ export function CatalogProductForm({
                 className={saveButtonClass}
                 // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
                 data-testid="catalog-save-details"
+                // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 e2e selector
+                data-cy="catalog-save-details"
               >
                 {saveButtonLabel}
               </button>

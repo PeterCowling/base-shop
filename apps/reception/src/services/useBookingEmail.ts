@@ -34,6 +34,24 @@ import { buildMcpAuthHeaders } from "./mcpAuthHeaders";
  * --------------------------------------------------------------------- */
 type EmailMap = Record<string, string>;
 
+interface BookingEmailRouteResponse {
+  success?: boolean;
+  draftId?: string;
+  messageId?: string;
+  error?: string;
+}
+
+export interface SendBookingEmailResult {
+  success: boolean;
+  bookingRef: string;
+  occupantIds: string[];
+  recipients: string[];
+  occupantLinks: string[];
+  draftId?: string;
+  messageId?: string;
+  error?: string;
+}
+
 const isTestEnvironment = process.env.NODE_ENV === "test";
 
 /**
@@ -71,8 +89,19 @@ export default function useBookingEmail() {
    * emails fetched from Firebase (caller values win on conflict).
    */
   const sendBookingEmail = useCallback(
-    async (bookingRef: string, occupantEmails: EmailMap = {}) => {
+    async (
+      bookingRef: string,
+      occupantEmails: EmailMap = {}
+    ): Promise<SendBookingEmailResult> => {
       setLoading(true);
+
+      const emptyResult: SendBookingEmailResult = {
+        success: false,
+        bookingRef,
+        occupantIds: [],
+        recipients: [],
+        occupantLinks: [],
+      };
 
       try {
         /* -------------------------------------------------- */
@@ -107,12 +136,19 @@ export default function useBookingEmail() {
         /* -------------------------------------------------- */
         /* 3️⃣  Build recipients + links                      */
         /* -------------------------------------------------- */
-        const emailTestMode = EMAIL_TEST_MODE ||
+        const emailTestMode =
+          EMAIL_TEST_MODE ||
           process.env.NEXT_PUBLIC_BOOKING_EMAIL_TEST_MODE === "true";
 
         const recipients = emailTestMode
           ? [EMAIL_TEST_ADDRESS]
-          : Object.values(mergedEmails).filter(Boolean);
+          : Array.from(new Set(Object.values(mergedEmails).filter(Boolean)));
+
+        if (recipients.length === 0) {
+          throw new Error(
+            "No recipient email addresses found for this booking"
+          );
+        }
 
         const links = guestIds.map((id) => `${OCCUPANT_LINK_PREFIX}${id}`);
         const headers = await buildMcpAuthHeaders();
@@ -126,14 +162,31 @@ export default function useBookingEmail() {
             occupantLinks: links,
           }),
         });
-        const json = await resp.json();
+        const json = (await resp.json()) as BookingEmailRouteResponse;
         if (!resp.ok || !json?.success) {
           throw new Error(json?.error || "Failed to create booking email draft");
         }
+
+        const successResult: SendBookingEmailResult = {
+          success: true,
+          bookingRef,
+          occupantIds: guestIds,
+          recipients,
+          occupantLinks: links,
+          draftId: json?.draftId,
+          messageId: json?.messageId,
+        };
+
         setMessage(json?.draftId ?? json?.messageId ?? "draft-created");
+        return successResult;
       } catch (err) {
-        console.error("❌ sendBookingEmail failed", err);
-        setMessage((err as Error).message || "Failed to create email draft");
+        const error = err as Error;
+        console.error("❌ sendBookingEmail failed", error);
+        setMessage(error.message || "Failed to create email draft");
+        return {
+          ...emptyResult,
+          error: error.message || "Failed to create email draft",
+        };
       } finally {
         setLoading(false);
       }

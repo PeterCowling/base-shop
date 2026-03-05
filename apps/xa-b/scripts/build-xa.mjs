@@ -194,11 +194,29 @@ function resolveCatalogReadTimeoutMs() {
   return Math.round(raw);
 }
 
+function parseBooleanEnv(value) {
+  const normalized = (value ?? "").trim().toLowerCase();
+  return ["1", "true", "yes", "on"].includes(normalized);
+}
+
+function isCiOrPagesBuild() {
+  return Boolean((process.env.CI ?? "").trim() || (process.env.CF_PAGES ?? "").trim());
+}
+
+function allowLocalArtifactFallback() {
+  if (isCiOrPagesBuild()) return false;
+  return parseBooleanEnv(process.env.ALLOW_LOCAL_ARTIFACT_FALLBACK);
+}
+
 function requireCatalogReadSuccess() {
+  // Contract-read is strict by default. The only non-strict mode is explicit
+  // local-dev fallback (never enabled in CI/CF Pages builds).
+  if (allowLocalArtifactFallback()) return false;
+
   const raw = (process.env.XA_CATALOG_CONTRACT_READ_REQUIRED ?? "").trim().toLowerCase();
   if (["1", "true", "yes"].includes(raw)) return true;
-  if (["0", "false", "no"].includes(raw)) return false;
-  return process.env.NODE_ENV === "production";
+  if (["0", "false", "no"].includes(raw) && !isCiOrPagesBuild()) return false;
+  return true;
 }
 
 async function ensureRuntimeCatalogSeed() {
@@ -250,7 +268,9 @@ async function syncCatalogFromContract() {
   const readUrl = resolveCatalogReadUrl();
   if (!readUrl) {
     if (requireCatalogReadSuccess()) {
-      throw new Error("[xa-build] catalog contract read URL not configured.");
+      throw new Error(
+        "[xa-build] catalog contract read URL not configured. Set XA_CATALOG_CONTRACT_READ_URL (or XA_CATALOG_CONTRACT_BASE_URL), or enable ALLOW_LOCAL_ARTIFACT_FALLBACK=1 for local development only.",
+      );
     }
 
     // Try local sync artifacts from xa-uploader before falling back to committed catalog.json

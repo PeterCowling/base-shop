@@ -7,7 +7,7 @@ import type { CatalogProductDraftInput } from "@acme/lib/xa";
 
 import { CatalogProductForm } from "../CatalogProductForm.client";
 
-const catalogProductBaseFieldsMock = jest.fn(() => <div data-testid="base-fields" />);
+const catalogProductBaseFieldsMock = jest.fn(() => <div data-cy="base-fields" />);
 
 jest.mock("../../../lib/uploaderI18n.client", () => ({
   useUploaderI18n: () => ({ t: (key: string) => key }),
@@ -27,15 +27,15 @@ jest.mock("../CatalogProductBaseFields.client", () => ({
 }));
 
 jest.mock("../CatalogProductClothingFields.client", () => ({
-  CatalogProductClothingFields: () => <div data-testid="clothing-fields" />,
+  CatalogProductClothingFields: () => <div data-cy="clothing-fields" />,
 }));
 
 jest.mock("../CatalogProductJewelryFields.client", () => ({
-  CatalogProductJewelryFields: () => <div data-testid="jewelry-fields" />,
+  CatalogProductJewelryFields: () => <div data-cy="jewelry-fields" />,
 }));
 
 jest.mock("../CatalogProductImagesFields.client", () => ({
-  CatalogProductImagesFields: () => <div data-testid="images-fields" />,
+  CatalogProductImagesFields: () => <div data-cy="images-fields" />,
 }));
 
 const VALID_DRAFT: CatalogProductDraftInput = {
@@ -117,7 +117,7 @@ describe("CatalogProductForm", () => {
     renderForm();
     expect(screen.getByTestId("catalog-save-details")).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "workflowStepImages" }));
+    fireEvent.click(screen.getByRole("button", { name: /workflowStepImages/ }));
 
     expect(screen.queryByTestId("catalog-save-details")).not.toBeInTheDocument();
     expect(screen.getByTestId("images-fields")).toBeInTheDocument();

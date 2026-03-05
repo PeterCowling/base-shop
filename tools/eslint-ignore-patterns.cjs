@@ -52,8 +52,6 @@ module.exports = [
   "**/public/ktx2/basis_transcoder.js",
   // OpenNext build config (outside tsconfig project scope)
   "**/open-next.config.ts",
-  // Prime Cloudflare Functions (excluded from main tsconfig, separate deploy)
-  "apps/prime/functions/**",
   // Documentation reference source snapshots are not part of the executable monorepo projects
   "docs/reference/**",
 ];

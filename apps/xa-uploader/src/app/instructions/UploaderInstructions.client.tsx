@@ -18,6 +18,7 @@ import loginScreenZh from "./assets/login-screen-zh.png";
 type InstructionSection = {
   titleKey: UploaderMessageKey;
   stepKeys: readonly UploaderMessageKey[];
+  expectationKeys?: readonly UploaderMessageKey[];
   screenshot?: {
     srcByLocale: Record<UploaderLocale, StaticImageData>;
     captionKey: UploaderMessageKey;
@@ -33,6 +34,7 @@ const INSTRUCTION_SECTIONS: readonly InstructionSection[] = [
       "instructionsSection1Step3",
       "instructionsSection1Step4",
     ],
+    expectationKeys: ["instructionsSection1Expectation1"],
     screenshot: {
       srcByLocale: { en: loginScreenEn, zh: loginScreenZh },
       captionKey: "instructionsSection1ScreenshotCaption",
@@ -46,6 +48,7 @@ const INSTRUCTION_SECTIONS: readonly InstructionSection[] = [
       "instructionsSection2Step3",
       "instructionsSection2Step4",
     ],
+    expectationKeys: ["instructionsSection2Expectation1"],
     screenshot: {
       srcByLocale: { en: addProductScreenEn, zh: addProductScreenZh },
       captionKey: "instructionsSection2ScreenshotCaption",
@@ -59,6 +62,7 @@ const INSTRUCTION_SECTIONS: readonly InstructionSection[] = [
       "instructionsSection3Step3",
       "instructionsSection3Step4",
     ],
+    expectationKeys: ["instructionsSection3Expectation1"],
   },
   {
     titleKey: "instructionsSection4Title",
@@ -68,6 +72,7 @@ const INSTRUCTION_SECTIONS: readonly InstructionSection[] = [
       "instructionsSection4Step3",
       "instructionsSection4Step4",
     ],
+    expectationKeys: ["instructionsSection4Expectation1"],
   },
   {
     titleKey: "instructionsSection5Title",
@@ -77,6 +82,7 @@ const INSTRUCTION_SECTIONS: readonly InstructionSection[] = [
       "instructionsSection5Step3",
       "instructionsSection5Step4",
     ],
+    expectationKeys: ["instructionsSection5Expectation1"],
     screenshot: {
       srcByLocale: { en: editScreenEn, zh: editScreenZh },
       captionKey: "instructionsSection5ScreenshotCaption",
@@ -90,6 +96,7 @@ const INSTRUCTION_SECTIONS: readonly InstructionSection[] = [
       "instructionsSection6Step3",
       "instructionsSection6Step4",
     ],
+    expectationKeys: ["instructionsSection6Expectation1"],
     screenshot: {
       srcByLocale: { en: currencyScreenEn, zh: currencyScreenZh },
       captionKey: "instructionsSection6ScreenshotCaption",
@@ -103,6 +110,7 @@ const INSTRUCTION_SECTIONS: readonly InstructionSection[] = [
       "instructionsSection7Step3",
       "instructionsSection7Step4",
     ],
+    expectationKeys: ["instructionsSection7Expectation1"],
   },
   {
     titleKey: "instructionsSection8Title",
@@ -112,6 +120,7 @@ const INSTRUCTION_SECTIONS: readonly InstructionSection[] = [
       "instructionsSection8Step3",
       "instructionsSection8Step4",
     ],
+    expectationKeys: ["instructionsSection8Expectation1"],
   },
   {
     titleKey: "instructionsSection9Title",
@@ -121,6 +130,7 @@ const INSTRUCTION_SECTIONS: readonly InstructionSection[] = [
       "instructionsSection9Step3",
       "instructionsSection9Step4",
     ],
+    expectationKeys: ["instructionsSection9Expectation1"],
   },
   {
     titleKey: "instructionsSection10Title",
@@ -130,6 +140,7 @@ const INSTRUCTION_SECTIONS: readonly InstructionSection[] = [
       "instructionsSection10Step3",
       "instructionsSection10Step4",
     ],
+    expectationKeys: ["instructionsSection10Expectation1"],
   },
 ];
 
@@ -155,7 +166,7 @@ function InstructionsContent() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <section className="rounded-xl border border-gate-border bg-gate-surface p-6 shadow-elevation-1">
         <p className="text-2xs uppercase tracking-label-lg text-gate-muted">
           {t("instructionsPageKicker")}
@@ -171,22 +182,38 @@ function InstructionsContent() {
             key={section.titleKey}
             className="rounded-xl border border-gate-border bg-gate-bg p-6 shadow-elevation-1"
           >
-            <h2 className="text-lg font-semibold text-gate-ink">
-              {index + 1}. {t(section.titleKey)}
-            </h2>
-            <ol className="mt-4 list-decimal space-y-2 ps-5 text-sm text-gate-ink">
+            <div className="flex items-start gap-3">
+              <span className="inline-block h-7 w-7 shrink-0 rounded-full bg-gate-accent text-center text-sm font-semibold leading-7 text-gate-on-accent">
+                {index + 1}
+              </span>
+              <h2 className="pt-0.5 text-lg font-semibold text-gate-ink">{t(section.titleKey)}</h2>
+            </div>
+
+            <ol className="mt-4 list-decimal space-y-2 ps-12 text-sm text-gate-ink">
               {section.stepKeys.map((stepKey) => (
                 <li key={stepKey}>{t(stepKey)}</li>
               ))}
             </ol>
+
+            {section.expectationKeys?.length ? (
+              <div className="mt-4 rounded-lg border border-gate-accent/30 bg-gate-accent-soft px-4 py-3">
+                <p className="text-2xs uppercase tracking-label-lg text-gate-accent">
+                  {t("instructionsExpectedResult")}
+                </p>
+                <ul className="mt-2 list-disc space-y-1 ps-5 text-sm text-gate-ink">
+                  {section.expectationKeys.map((expectationKey) => (
+                    <li key={expectationKey}>{t(expectationKey)}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
 
             {section.screenshot && screenshotSrc ? (
               <figure className="mt-5 overflow-hidden rounded-lg border border-gate-border bg-gate-surface p-3">
                 <Image
                   src={screenshotSrc}
                   alt={t(section.screenshot.captionKey)}
-                  className="mx-auto h-auto w-auto rounded-md border border-gate-border"
-                  style={{ maxWidth: "100%" }}
+                  className="mx-auto h-auto w-full rounded-md border border-gate-border"
                   priority={index < 2}
                 />
                 <figcaption className="mt-2 text-xs text-gate-muted">

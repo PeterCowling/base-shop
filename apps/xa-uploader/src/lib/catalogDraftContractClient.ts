@@ -1,7 +1,5 @@
 import crypto from "node:crypto";
 
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-
 import {
   type CatalogProductDraftInput,
   catalogProductDraftSchema,
@@ -163,7 +161,12 @@ function asServiceBindingRequestUrl(value: string): string {
 }
 
 async function getCatalogContractServiceBinding(): Promise<CatalogContractServiceBinding | null> {
+  const allowCloudflareContextInTests = process.env.XA_TEST_ENABLE_CLOUDFLARE_CONTEXT === "1";
+  if (process.env.JEST_WORKER_ID && !allowCloudflareContextInTests) {
+    return null;
+  }
   try {
+    const { getCloudflareContext } = await import("@opennextjs/cloudflare");
     const { env } = await getCloudflareContext({ async: true });
     return env.XA_CATALOG_CONTRACT_SERVICE ?? null;
   } catch {

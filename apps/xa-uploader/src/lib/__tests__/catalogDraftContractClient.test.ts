@@ -4,6 +4,7 @@ const ENV_KEYS = [
   "XA_CATALOG_CONTRACT_BASE_URL",
   "XA_CATALOG_CONTRACT_READ_TOKEN",
   "XA_CATALOG_CONTRACT_WRITE_TOKEN",
+  "XA_TEST_ENABLE_CLOUDFLARE_CONTEXT",
 ] as const;
 const ORIGINAL_ENV = Object.fromEntries(ENV_KEYS.map((key) => [key, process.env[key]]));
 const getCloudflareContextMock = jest.fn();
@@ -21,6 +22,7 @@ describe("catalogDraftContractClient", () => {
     process.env.XA_CATALOG_CONTRACT_BASE_URL = "https://drop.example/catalog/";
     delete process.env.XA_CATALOG_CONTRACT_READ_TOKEN;
     process.env.XA_CATALOG_CONTRACT_WRITE_TOKEN = "catalog-write-token-1234567890";
+    process.env.XA_TEST_ENABLE_CLOUDFLARE_CONTEXT = "1";
   });
 
   afterEach(() => {

@@ -491,6 +491,13 @@
     "SHOP-3205": {},
     "SHOP-3206": {},
     "SHOP-3207": {},
+    "SKILL-2401": {
+      "allow": [
+        "packages/skill-runner/src/**"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Skill-runner CLI/path guards and parser marker strings use scoped lint/i18n exceptions pending follow-up hardening."
+    },
     "STYLING-0001": {},
     "TASK-09": {
       "allow": [

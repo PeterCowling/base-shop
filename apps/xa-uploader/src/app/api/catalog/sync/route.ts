@@ -971,6 +971,46 @@ async function finalizeCloudPublishStateAndDeploy(params: {
   return { deployResult, deployPending };
 }
 
+async function tryPublishCloudCatalogPayload(params: {
+  storefrontId: XaCatalogStorefront;
+  startedAt: number;
+  payload: Parameters<typeof publishCatalogPayloadToContract>[0]["payload"];
+}): Promise<
+  | { ok: true; result: Awaited<ReturnType<typeof publishCatalogPayloadToContract>> }
+  | { ok: false; errorResponse: NextResponse }
+> {
+  try {
+    const result = await publishCatalogPayloadToContract({
+      storefrontId: params.storefrontId,
+      payload: params.payload,
+    });
+    return { ok: true, result };
+  } catch (error) {
+    const publishError = getPublishErrorDetails(error);
+    const isUnconfigured = publishError.code === "unconfigured";
+    if (process.env.NODE_ENV !== "test") {
+      console.error({
+        route: "POST /api/catalog/sync",
+        error: error instanceof Error ? error.message : String(error),
+        durationMs: Date.now() - params.startedAt,
+      });
+    }
+    return {
+      ok: false,
+      errorResponse: NextResponse.json(
+        {
+          ok: false,
+          error: isUnconfigured ? "catalog_publish_unconfigured" : "catalog_publish_failed",
+          recovery: isUnconfigured ? "configure_catalog_contract" : "review_catalog_contract",
+          durationMs: Date.now() - params.startedAt,
+          publishStatus: publishError.status,
+        },
+        { status: isUnconfigured ? 503 : 502 },
+      ),
+    };
+  }
+}
+
 async function runCloudSyncPipeline(params: {
   storefrontId: XaCatalogStorefront;
   payload: SyncPayload;
@@ -1058,35 +1098,20 @@ async function runCloudSyncPipeline(params: {
       if (isDeployHookRequired() && !isDeployHookConfigured()) {
         return buildDeployHookUnconfiguredResponse(startedAt);
       }
-      try {
-        publishResult = await publishCatalogPayloadToContract({
-          storefrontId,
-          payload: {
-            storefront: storefrontId,
-            publishedAt: new Date().toISOString(),
-            catalog,
-            mediaIndex,
-          },
-        });
-      } catch (error) {
-        const publishError = getPublishErrorDetails(error);
-        const isUnconfigured = publishError.code === "unconfigured";
-        console.error({
-          route: "POST /api/catalog/sync",
-          error: error instanceof Error ? error.message : String(error),
-          durationMs: Date.now() - startedAt,
-        });
-        return NextResponse.json(
-          {
-            ok: false,
-            error: isUnconfigured ? "catalog_publish_unconfigured" : "catalog_publish_failed",
-            recovery: isUnconfigured ? "configure_catalog_contract" : "review_catalog_contract",
-            durationMs: Date.now() - startedAt,
-            publishStatus: publishError.status,
-          },
-          { status: isUnconfigured ? 503 : 502 },
-        );
+      const publishOutcome = await tryPublishCloudCatalogPayload({
+        storefrontId,
+        startedAt,
+        payload: {
+          storefront: storefrontId,
+          publishedAt: new Date().toISOString(),
+          catalog,
+          mediaIndex,
+        },
+      });
+      if ("errorResponse" in publishOutcome) {
+        return publishOutcome.errorResponse;
       }
+      publishResult = publishOutcome.result;
     }
 
     if (!publishSkipped) {

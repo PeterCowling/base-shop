@@ -12,7 +12,7 @@ const bookingEmailPayloadSchema = z
   .object({
     bookingRef: z.string().min(1),
     recipients: z.array(z.string().email()).min(1),
-    occupantLinks: z.array(z.string().min(1)).min(1),
+    occupantLinks: z.array(z.string().url()).min(1),
     subject: z.string().min(1).optional(),
   })
   .strict();

@@ -46,8 +46,11 @@ describe("useBookingEmail", () => {
 
     const { result } = renderHook(() => useBookingEmail());
 
+    let sendResult:
+      | Awaited<ReturnType<typeof result.current.sendBookingEmail>>
+      | undefined;
     await act(async () => {
-      await result.current.sendBookingEmail("BOOK123", {
+      sendResult = await result.current.sendBookingEmail("BOOK123", {
         guestA: "override@example.com",
       });
     });
@@ -56,6 +59,14 @@ describe("useBookingEmail", () => {
     const links = ["guestA", "guestB"].map(
       (id) => `${OCCUPANT_LINK_PREFIX}${id}`
     );
+    expect(sendResult).toMatchObject({
+      success: true,
+      bookingRef: "BOOK123",
+      occupantIds: ["guestA", "guestB"],
+      recipients,
+      occupantLinks: links,
+      draftId: "draft-1",
+    });
     expect(fetchMock).toHaveBeenNthCalledWith(
       3,
       "/api/mcp/booking-email",
@@ -93,12 +104,23 @@ describe("useBookingEmail", () => {
 
     const { result } = renderHook(() => useBookingEmail());
 
+    let sendResult:
+      | Awaited<ReturnType<typeof result.current.sendBookingEmail>>
+      | undefined;
     await act(async () => {
-      await result.current.sendBookingEmail("BOOK123", {
+      sendResult = await result.current.sendBookingEmail("BOOK123", {
         guestA: "override@example.com",
       });
     });
 
+    expect(sendResult).toMatchObject({
+      success: false,
+      bookingRef: "BOOK123",
+      error: "MCP unavailable",
+      occupantIds: [],
+      recipients: [],
+      occupantLinks: [],
+    });
     expect(result.current.message).toContain("MCP unavailable");
     expect(fetchMock).toHaveBeenCalledTimes(3);
     expect(fetchMock).toHaveBeenNthCalledWith(

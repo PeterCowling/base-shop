@@ -7,15 +7,11 @@ import { useBookingDatesMutator } from "../useChangeBookingDatesMutator";
 // mock firebase
 let refMock: jest.Mock;
 let updateMock: jest.Mock;
-let removeMock: jest.Mock;
-let setMock: jest.Mock;
 
 jest.mock("firebase/database", () => ({
   getDatabase: () => ({}),
   ref: (...args: unknown[]) => refMock(...args),
   update: (...args: unknown[]) => updateMock(...args),
-  remove: (...args: unknown[]) => removeMock(...args),
-  set: (...args: unknown[]) => setMock(...args),
 }));
 
 // auth context
@@ -47,22 +43,26 @@ jest.mock("../../../lib/offline/useOnlineStatus", () => ({
 beforeEach(() => {
   refMock = jest.fn((_db: unknown, path?: string) => path ?? "");
   updateMock = jest.fn();
-  removeMock = jest.fn();
-  setMock = jest.fn();
   isoMock = jest.fn().mockReturnValue("2024-06-01T00:00:00.000Z");
-  txnIdMock = vi
+  txnIdMock = jest
     .fn()
     .mockReturnValueOnce("txnA")
     .mockReturnValueOnce("txnB");
   saveFinancialsRoomMock = jest.fn();
   useOnlineStatusMock = jest.fn().mockReturnValue(true);
+  jest
+    .spyOn(globalThis.crypto, "randomUUID")
+    .mockReturnValueOnce("uuid-1")
+    .mockReturnValueOnce("uuid-2");
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
 });
 
 describe("useBookingDatesMutator", () => {
-  it("updates dates and records extension transactions", async () => {
+  it("updates dates with one atomic multipath write and records extension transactions", async () => {
     updateMock.mockResolvedValue(undefined);
-    removeMock.mockResolvedValue(undefined);
-    setMock.mockResolvedValue(undefined);
     saveFinancialsRoomMock.mockResolvedValue(undefined);
 
     const { result } = renderHook(() => useBookingDatesMutator());
@@ -79,20 +79,42 @@ describe("useBookingDatesMutator", () => {
       });
     });
 
-    expect(updateMock).toHaveBeenCalledWith("bookings/BR1/occ1", {
-      checkInDate: "2024-01-02",
-      checkOutDate: "2024-01-07",
-    });
-    expect(removeMock).toHaveBeenCalledWith("checkins/2024-01-01/occ1");
-    expect(removeMock).toHaveBeenCalledWith("checkouts/2024-01-05/occ1");
-    expect(setMock).toHaveBeenCalledWith("checkins/2024-01-02/occ1", {
-      reservationCode: "BR1",
-      timestamp: "2024-06-01T00:00:00.000Z",
-    });
-    expect(setMock).toHaveBeenCalledWith("checkouts/2024-01-07/occ1", {
-      reservationCode: "BR1",
-      timestamp: "2024-06-01T00:00:00.000Z",
-    });
+    expect(updateMock).toHaveBeenCalledTimes(1);
+    expect(updateMock).toHaveBeenCalledWith(
+      "",
+      expect.objectContaining({
+        "bookings/BR1/occ1/checkInDate": "2024-01-02",
+        "bookings/BR1/occ1/checkOutDate": "2024-01-07",
+        "checkins/2024-01-01/occ1": null,
+        "checkins/2024-01-02/occ1": {
+          reservationCode: "BR1",
+          timestamp: "2024-06-01T00:00:00.000Z",
+        },
+        "checkouts/2024-01-05/occ1": null,
+        "checkouts/2024-01-07/occ1": {
+          reservationCode: "BR1",
+          timestamp: "2024-06-01T00:00:00.000Z",
+        },
+        "activities/occ1/act_uuid-1": {
+          code: 19,
+          timestamp: "2024-06-01T00:00:00.000Z",
+          who: "Tester",
+        },
+        "activitiesByCode/19/occ1/act_uuid-1": {
+          timestamp: "2024-06-01T00:00:00.000Z",
+          who: "Tester",
+        },
+        "activities/occ1/act_uuid-2": {
+          code: 24,
+          timestamp: "2024-06-01T00:00:00.000Z",
+          who: "Tester",
+        },
+        "activitiesByCode/24/occ1/act_uuid-2": {
+          timestamp: "2024-06-01T00:00:00.000Z",
+          who: "Tester",
+        },
+      })
+    );
     expect(saveFinancialsRoomMock).toHaveBeenCalledWith("BR1", {
       transactions: {
         txnA: {
@@ -113,19 +135,69 @@ describe("useBookingDatesMutator", () => {
         },
       },
     });
+    expect(
+      saveFinancialsRoomMock.mock.invocationCallOrder[0]
+    ).toBeLessThan(updateMock.mock.invocationCallOrder[0]);
     expect(result.current.isError).toBe(false);
     expect(result.current.error).toBeNull();
   });
 
-  it("sets error when update fails", async () => {
+  it("voids extension financial transactions if booking mutation fails after financial write", async () => {
+    isoMock = jest
+      .fn()
+      .mockReturnValueOnce("2024-06-01T00:00:00.000Z")
+      .mockReturnValueOnce("2024-06-01T00:01:00.000Z");
+    saveFinancialsRoomMock.mockResolvedValue(undefined);
+    updateMock.mockRejectedValue(new Error("core update failed"));
+
+    const { result } = renderHook(() => useBookingDatesMutator());
+
+    await act(async () => {
+      await expect(
+        result.current.updateBookingDates({
+          bookingRef: "BR1",
+          occupantId: "occ1",
+          oldCheckIn: "2024-01-01",
+          oldCheckOut: "2024-01-05",
+          newCheckIn: "2024-01-02",
+          newCheckOut: "2024-01-07",
+          extendedPrice: "15",
+        })
+      ).rejects.toThrow("core update failed");
+    });
+
+    expect(saveFinancialsRoomMock).toHaveBeenCalledTimes(2);
+    expect(saveFinancialsRoomMock).toHaveBeenNthCalledWith(1, "BR1", {
+      transactions: {
+        txnA: expect.objectContaining({ type: "charge", amount: 15 }),
+        txnB: expect.objectContaining({ type: "payment", amount: 15 }),
+      },
+    });
+    expect(saveFinancialsRoomMock).toHaveBeenNthCalledWith(2, "BR1", {
+      transactions: {
+        txnA: expect.objectContaining({
+          voidedAt: "2024-06-01T00:01:00.000Z",
+          voidedBy: "Tester",
+          voidReason: "booking-date-update-failed",
+        }),
+        txnB: expect.objectContaining({
+          voidedAt: "2024-06-01T00:01:00.000Z",
+          voidedBy: "Tester",
+          voidReason: "booking-date-update-failed",
+        }),
+      },
+    });
+  });
+
+  it("throws and sets error when multipath update fails", async () => {
     const err = new Error("fail");
     updateMock.mockRejectedValue(err);
 
     const { result } = renderHook(() => useBookingDatesMutator());
 
     await act(async () => {
-      await result.current
-        .updateBookingDates({
+      await expect(
+        result.current.updateBookingDates({
           bookingRef: "BR1",
           occupantId: "occ1",
           oldCheckIn: "2024-01-01",
@@ -133,26 +205,28 @@ describe("useBookingDatesMutator", () => {
           newCheckIn: "2024-01-01",
           newCheckOut: "2024-01-05",
         })
-        .catch(() => null);
+      ).rejects.toThrow("fail");
     });
 
     expect(result.current.isError).toBe(true);
     expect(result.current.error).toBe(err);
   });
 
-  it("returns early with isError when offline", async () => {
+  it("fails closed when offline and does not write", async () => {
     useOnlineStatusMock.mockReturnValue(false);
     const { result } = renderHook(() => useBookingDatesMutator());
 
     await act(async () => {
-      await result.current.updateBookingDates({
-        bookingRef: "BR1",
-        occupantId: "occ1",
-        oldCheckIn: "2024-01-01",
-        oldCheckOut: "2024-01-05",
-        newCheckIn: "2024-01-01",
-        newCheckOut: "2024-01-05",
-      });
+      await expect(
+        result.current.updateBookingDates({
+          bookingRef: "BR1",
+          occupantId: "occ1",
+          oldCheckIn: "2024-01-01",
+          oldCheckOut: "2024-01-05",
+          newCheckIn: "2024-01-01",
+          newCheckOut: "2024-01-05",
+        })
+      ).rejects.toThrow(/network connection/i);
     });
 
     expect(result.current.isError).toBe(true);

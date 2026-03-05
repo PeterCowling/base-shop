@@ -2,8 +2,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-
 import { toPositiveInt } from "@acme/lib";
 
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
@@ -64,6 +62,8 @@ const DEPLOY_HOOK_MAX_RETRIES_LIMIT = 5;
 const DEPLOY_HOOK_RETRY_BASE_DELAY_MS_DEFAULT = 800;
 const DEPLOY_HOOK_RETRY_BASE_DELAY_MS_MAX = 5_000;
 const WORKERS_DEV_HOST_SUFFIX = ".workers.dev";
+const CLOUDFLARE_API_HOST = "api.cloudflare.com";
+const CLOUDFLARE_PAGES_HOOK_PATH_SEGMENT = "/pages/webhooks/";
 
 function parseBooleanFlag(rawValue: string | undefined): boolean | null {
   const value = rawValue?.trim().toLowerCase();
@@ -234,7 +234,13 @@ function asServiceBindingDeployUrl(hookUrl: string): string {
 }
 
 async function getDeployServiceBinding(): Promise<DeployHookServiceBinding | null> {
+  const allowCloudflareContextInTests =
+    parseBooleanFlag(process.env.XA_TEST_ENABLE_CLOUDFLARE_CONTEXT) === true;
+  if (process.env.JEST_WORKER_ID && !allowCloudflareContextInTests) {
+    return null;
+  }
   try {
+    const { getCloudflareContext } = await import("@opennextjs/cloudflare");
     const { env } = await getCloudflareContext({ async: true });
     return env.XA_CATALOG_CONTRACT_SERVICE ?? null;
   } catch {
@@ -262,6 +268,81 @@ async function sleep(ms: number): Promise<void> {
 
 function isTransientHttpStatus(status: number): boolean {
   return status === 408 || status === 425 || status === 429 || status >= 500;
+}
+
+function isObjectRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function responseDetails(text: string): string {
+  return text.replace(/\s+/g, " ").trim().slice(0, 160);
+}
+
+function parseJsonRecord(rawBodyText: string): Record<string, unknown> | null {
+  const normalized = rawBodyText.trim();
+  if (!normalized) return null;
+  try {
+    const parsed = JSON.parse(normalized) as unknown;
+    return isObjectRecord(parsed) ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+type DeployHookValidationMode = "xa_drop_worker" | "cloudflare_pages_hook" | "generic";
+
+function resolveDeployHookValidationMode(hookUrl: string): DeployHookValidationMode {
+  try {
+    const parsed = new URL(hookUrl);
+    if (
+      parsed.protocol === "https:" &&
+      parsed.hostname.endsWith(WORKERS_DEV_HOST_SUFFIX) &&
+      parsed.pathname.startsWith("/deploy/")
+    ) {
+      return "xa_drop_worker";
+    }
+    if (
+      parsed.protocol === "https:" &&
+      parsed.hostname === CLOUDFLARE_API_HOST &&
+      parsed.pathname.includes(CLOUDFLARE_PAGES_HOOK_PATH_SEGMENT)
+    ) {
+      return "cloudflare_pages_hook";
+    }
+    return "generic";
+  } catch {
+    return "generic";
+  }
+}
+
+function validateDeployHookSuccess(params: {
+  hookUrl: string;
+  storefrontId: XaCatalogStorefront;
+  responseBodyText: string;
+}): { ok: true } | { ok: false; reason: string } {
+  const mode = resolveDeployHookValidationMode(params.hookUrl);
+  const payload = parseJsonRecord(params.responseBodyText);
+
+  if (mode === "xa_drop_worker") {
+    if (!payload) {
+      return { ok: false, reason: "deploy_ack_missing" };
+    }
+    if (payload.ok !== true) {
+      return { ok: false, reason: "deploy_ack_not_ok" };
+    }
+    if (typeof payload.provider !== "string" || !payload.provider.trim()) {
+      return { ok: false, reason: "deploy_ack_provider_missing" };
+    }
+    if (payload.storefront !== params.storefrontId) {
+      return { ok: false, reason: "deploy_ack_storefront_mismatch" };
+    }
+    return { ok: true };
+  }
+
+  if (payload?.ok === false || payload?.success === false) {
+    return { ok: false, reason: "deploy_ack_rejected" };
+  }
+
+  return { ok: true };
 }
 
 async function triggerDeployHookOnce(params: {
@@ -298,13 +379,30 @@ async function triggerDeployHookOnce(params: {
     };
   }
   clearTimeout(timeout);
+  const bodyText = await response.text().catch(() => "");
+  const details = responseDetails(bodyText);
 
   if (response.ok) {
+    const validation = validateDeployHookSuccess({
+      hookUrl: params.hookUrl,
+      storefrontId: params.storefrontId,
+      responseBodyText: bodyText,
+    });
+    if (!validation.ok) {
+      const failedValidation = validation as Extract<
+        ReturnType<typeof validateDeployHookSuccess>,
+        { ok: false }
+      >;
+      return {
+        ok: false,
+        transient: false,
+        reason: details ? `${failedValidation.reason}:${details}` : failedValidation.reason,
+        httpStatus: response.status,
+      };
+    }
     return { ok: true };
   }
 
-  const bodyText = await response.text().catch(() => "");
-  const details = bodyText.replace(/\s+/g, " ").trim().slice(0, 160);
   return {
     ok: false,
     transient: isTransientHttpStatus(response.status),

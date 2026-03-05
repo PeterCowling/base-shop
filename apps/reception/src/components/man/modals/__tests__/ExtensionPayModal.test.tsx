@@ -158,4 +158,24 @@ describe("ExtensionPayModal", () => {
     });
     expect(onClose).toHaveBeenCalled();
   });
+
+  it("surfaces partial failure for multi-occupant extension and keeps modal open", async () => {
+    const onClose = jest.fn();
+    updateMock
+      .mockResolvedValueOnce(undefined)
+      .mockRejectedValueOnce(new Error("second occupant failed"));
+
+    render(<ExtensionPayModal {...defaultProps} onClose={onClose} />);
+    await userEvent.click(screen.getByLabelText(/extend all guests/i));
+    await userEvent.click(screen.getByRole("button", { name: /extend/i }));
+
+    expect(updateMock).toHaveBeenCalledTimes(2);
+    expect(saveCityTaxMock).not.toHaveBeenCalled();
+    expect(saveActivityMock).not.toHaveBeenCalled();
+    expect(onClose).not.toHaveBeenCalled();
+    expect(toastMock).toHaveBeenCalledWith(
+      "Extension partially applied (1/2). second occupant failed",
+      "error"
+    );
+  });
 });

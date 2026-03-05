@@ -92,6 +92,39 @@ describe("booking-email route auth + payload validation", () => {
     expect(sendBookingEmailMock).not.toHaveBeenCalled();
   });
 
+  it("returns 422 when occupantLinks contains non-URL values", async () => {
+    requireStaffAuthMock.mockResolvedValue({
+      ok: true,
+      uid: "uid-1",
+      roles: ["staff"],
+    });
+
+    const response = await POST(
+      buildRequest({
+        bookingRef: "BOOK1",
+        recipients: ["a@example.com"],
+        occupantLinks: ["not-a-url"],
+      })
+    );
+    const payload = (await response.json()) as {
+      success: boolean;
+      code: string;
+      details: Array<{ path: string; message: string }>;
+    };
+
+    expect(response.status).toBe(422);
+    expect(payload.success).toBe(false);
+    expect(payload.code).toBe("INVALID_PAYLOAD");
+    expect(
+      payload.details.some(
+        (detail) =>
+          detail.path === "occupantLinks.0" &&
+          /url/i.test(detail.message)
+      )
+    ).toBe(true);
+    expect(sendBookingEmailMock).not.toHaveBeenCalled();
+  });
+
   it("returns 400 for invalid JSON", async () => {
     requireStaffAuthMock.mockResolvedValue({
       ok: true,

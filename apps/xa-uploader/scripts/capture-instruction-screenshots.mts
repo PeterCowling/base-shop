@@ -9,7 +9,7 @@ import type { UploaderLocale } from "../src/lib/uploaderI18n";
 const REPO_ROOT = "/Users/petercowling/base-shop";
 const APP_ROOT = path.join(REPO_ROOT, "apps/xa-uploader");
 const OUTPUT_DIR = path.join(APP_ROOT, "src/app/instructions/assets");
-const VIEWPORT = { width: 1280, height: 1800 };
+const VIEWPORT = { width: 1280, height: 1024 };
 const CURRENCY_LABEL: Record<UploaderLocale, string> = {
   en: "Currency",
   zh: "汇率设置",
@@ -26,9 +26,20 @@ async function waitForLogin(page: import("@playwright/test").Page): Promise<void
 }
 
 async function waitForAuthenticated(page: import("@playwright/test").Page): Promise<void> {
-  await page.waitForSelector('[data-testid="catalog-save-details"]', {
-    timeout: 120_000,
-  });
+  await Promise.race([
+    page.waitForSelector('[data-testid="catalog-save-details"]', {
+      timeout: 300_000,
+    }),
+    page.waitForSelector('[data-testid="catalog-login-feedback"]', {
+      timeout: 300_000,
+    }),
+  ]);
+
+  const feedback = page.locator('[data-testid="catalog-login-feedback"]');
+  if (await feedback.isVisible()) {
+    const message = (await feedback.textContent())?.trim() || "Unknown login failure";
+    throw new Error(`Login failed while capturing instruction screenshots: ${message}`);
+  }
 }
 
 async function login(
@@ -36,11 +47,27 @@ async function login(
   baseUrl: string,
   adminToken: string,
 ): Promise<void> {
-  await page.goto(`${baseUrl}/login`, { waitUntil: "networkidle" });
-  await waitForLogin(page);
-  await page.fill('[data-testid="catalog-login-token"]', adminToken);
-  await page.click('[data-testid="catalog-login-submit"]');
+  const response = await page.request.post(`${baseUrl}/api/uploader/login`, {
+    data: { token: adminToken },
+  });
+  if (!response.ok()) {
+    const body = await response.text();
+    throw new Error(`Login API failed (${response.status()}): ${body}`);
+  }
+  await page.goto(`${baseUrl}/`, { waitUntil: "networkidle" });
   await waitForAuthenticated(page);
+}
+
+async function captureViewportScreenshot(
+  page: import("@playwright/test").Page,
+  fileName: string,
+): Promise<void> {
+  await page.evaluate(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  });
+  await page.screenshot({
+    path: path.join(OUTPUT_DIR, fileName),
+  });
 }
 
 async function captureLocaleScreens(
@@ -57,16 +84,10 @@ async function captureLocaleScreens(
 
   await page.goto(`${baseUrl}/login`, { waitUntil: "networkidle" });
   await waitForLogin(page);
-  await page.screenshot({
-    path: path.join(OUTPUT_DIR, `login-screen-${locale}.png`),
-    fullPage: true,
-  });
+  await captureViewportScreenshot(page, `login-screen-${locale}.png`);
 
   await login(page, baseUrl, adminToken);
-  await page.screenshot({
-    path: path.join(OUTPUT_DIR, `add-product-screen-${locale}.png`),
-    fullPage: true,
-  });
+  await captureViewportScreenshot(page, `add-product-screen-${locale}.png`);
 
   const screenTabs = page.locator("div.flex.items-center.border-b.border-gate-border").first();
   await screenTabs.locator("button").nth(1).click();
@@ -74,17 +95,11 @@ async function captureLocaleScreens(
     page.waitForSelector('[data-testid="catalog-search"]', { timeout: 60_000 }),
     page.getByText(EDIT_EMPTY_MESSAGE[locale]).waitFor({ state: "visible", timeout: 60_000 }),
   ]);
-  await page.screenshot({
-    path: path.join(OUTPUT_DIR, `edit-screen-${locale}.png`),
-    fullPage: true,
-  });
+  await captureViewportScreenshot(page, `edit-screen-${locale}.png`);
 
   await page.getByRole("button", { name: CURRENCY_LABEL[locale] }).first().click();
   await page.waitForSelector('[data-testid="catalog-run-sync"]', { timeout: 60_000 });
-  await page.screenshot({
-    path: path.join(OUTPUT_DIR, `currency-screen-${locale}.png`),
-    fullPage: true,
-  });
+  await captureViewportScreenshot(page, `currency-screen-${locale}.png`);
 
   await context.close();
 }

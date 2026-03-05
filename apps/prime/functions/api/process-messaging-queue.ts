@@ -1,4 +1,4 @@
-import { FirebaseRest, errorResponse, jsonResponse } from '../lib/firebase-rest';
+import { errorResponse, FirebaseRest, jsonResponse } from '../lib/firebase-rest';
 import { createGuestDeepLink } from '../lib/guest-token';
 import { dispatchQueuedArrival48HoursEvent } from '../lib/messaging-dispatcher';
 import { writeOutboundDraft } from '../lib/outbound-draft';
@@ -25,7 +25,7 @@ function unauthorizedResponse(): Response {
 }
 
 function missingProviderConfigResponse(): Response {
-  return errorResponse('Prime email provider is not configured', 503);
+  return errorResponse('Prime email provider is not configured', 503); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
 }
 
 function currentMinuteBucket(nowMs: number): number {
@@ -153,7 +153,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   try {
     rawBody = await request.text();
   } catch {
-    return errorResponse('Invalid request body', 400);
+    return errorResponse('Invalid request body', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   const signatureValid = await verifyQueueRequestSignature(request, queueToken, rawBody);
@@ -165,12 +165,12 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   try {
     body = JSON.parse(rawBody) as ProcessQueueRequestBody;
   } catch {
-    return errorResponse('Invalid JSON body', 400);
+    return errorResponse('Invalid JSON body', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   const eventId = (body.eventId ?? '').trim();
   if (!eventId) {
-    return errorResponse('eventId is required', 400);
+    return errorResponse('eventId is required', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   const queueStore = new FirebaseRest(env);
@@ -208,11 +208,11 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
         '',
         'Please DO NOT arrive by ferry and walk up to the hostel with luggage!',
         '',
-        'Ignore any Google Maps advice that says "15 minute walk" — it will be 30 minutes of carrying your luggage up stairs.',
+        'Ignore any Google Maps advice that says "15 minute walk" — it will be 30 minutes of carrying your luggage up stairs.', // i18n-exempt -- PRIME-101 transactional email copy [ttl=2026-12-31]
         '',
-        'Your options:',
+        'Your options:', // i18n-exempt -- PRIME-101 transactional email copy [ttl=2026-12-31]
         '',
-        '1. Give your bags to the porters at the ferry dock and have them bring them up. They are reliable — best EUR 15 you could spend.',
+        '1. Give your bags to the porters at the ferry dock and have them bring them up. They are reliable — best EUR 15 you could spend.', // i18n-exempt -- PRIME-101 transactional email copy [ttl=2026-12-31]
         '',
         `2. Take the interno bus from Piazza dei Mulini to Chiesa Nuova (just a few euros, gets you within 100m of the hostel). Full guide: ${guideUrl}`,
         '',
@@ -223,7 +223,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
         '',
         'See you soon!',
         '',
-        'Hostel Brikette',
+        'Hostel Brikette', // i18n-exempt -- PRIME-101 brand signature in transactional email [ttl=2026-12-31]
       ].join('\n');
 
       await writeOutboundDraft(queueStore, record.eventId, {

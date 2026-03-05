@@ -15,6 +15,7 @@ import { SimpleModal } from "@acme/ui/molecules";
 import { useBookingDatesMutator } from "../../../hooks/mutations/useChangeBookingDatesMutator";
 import { type CheckInRow } from "../../../types/component/CheckinRow";
 import { parseYMD } from "../../../utils/dateUtils";
+import { showToast } from "../../../utils/toastUtils";
 
 /**
  * BookingModalProps:
@@ -97,7 +98,7 @@ const BookingModal: FC<BookingModalProps> = React.memo(
     );
 
     // Save the updated dates to the database.
-    const handleSave = useCallback(() => {
+    const handleSave = useCallback(async () => {
       // If there's an extension, require a valid price
       if (isExtended) {
         // Basic numeric check
@@ -108,21 +109,32 @@ const BookingModal: FC<BookingModalProps> = React.memo(
         }
       }
 
-      // Use booking.occupantId or fallback if not available.
-      const occupantId = booking.occupantId || "unknown_occupant";
+      const occupantId = booking.occupantId?.trim();
+      if (!occupantId) {
+        showToast("Missing occupant id. Save cancelled.", "error");
+        return;
+      }
 
-      // Pass extensionPrice only if it's an actual extension
-      updateBookingDates({
-        bookingRef: booking.bookingRef,
-        occupantId,
-        oldCheckIn: booking.checkInDate ?? "",
-        oldCheckOut: booking.checkOutDate ?? "",
-        newCheckIn: checkIn,
-        newCheckOut: checkOut,
-        extendedPrice: isExtended ? extensionPrice : "0",
-      });
+      try {
+        // Pass extensionPrice only if it's an actual extension
+        await updateBookingDates({
+          bookingRef: booking.bookingRef,
+          occupantId,
+          oldCheckIn: booking.checkInDate ?? "",
+          oldCheckOut: booking.checkOutDate ?? "",
+          newCheckIn: checkIn,
+          newCheckOut: checkOut,
+          extendedPrice: isExtended ? extensionPrice : "0",
+        });
 
-      onClose();
+        onClose();
+      } catch (err) {
+        const message =
+          err instanceof Error
+            ? err.message
+            : "Failed to update booking dates. Please retry.";
+        showToast(message, "error");
+      }
     }, [
       booking.bookingRef,
       booking.checkInDate,

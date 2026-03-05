@@ -12,6 +12,7 @@ const ORIGINAL_ENV = {
   XA_B_DEPLOY_HOOK_COOLDOWN_SECONDS: process.env.XA_B_DEPLOY_HOOK_COOLDOWN_SECONDS,
   XA_B_DEPLOY_HOOK_MAX_RETRIES: process.env.XA_B_DEPLOY_HOOK_MAX_RETRIES,
   XA_B_DEPLOY_HOOK_RETRY_BASE_DELAY_MS: process.env.XA_B_DEPLOY_HOOK_RETRY_BASE_DELAY_MS,
+  XA_TEST_ENABLE_CLOUDFLARE_CONTEXT: process.env.XA_TEST_ENABLE_CLOUDFLARE_CONTEXT,
 };
 
 describe("deployHook", () => {
@@ -21,6 +22,7 @@ describe("deployHook", () => {
     jest.clearAllMocks();
     getCloudflareContextMock.mockRejectedValue(new Error("no_cloudflare_context"));
     process.env.XA_B_DEPLOY_HOOK_TOKEN = "deploy-token-1234567890";
+    process.env.XA_TEST_ENABLE_CLOUDFLARE_CONTEXT = "1";
   });
 
   afterEach(() => {
@@ -44,13 +46,28 @@ describe("deployHook", () => {
     } else {
       process.env.XA_B_DEPLOY_HOOK_RETRY_BASE_DELAY_MS = ORIGINAL_ENV.XA_B_DEPLOY_HOOK_RETRY_BASE_DELAY_MS;
     }
+    if (ORIGINAL_ENV.XA_TEST_ENABLE_CLOUDFLARE_CONTEXT === undefined) {
+      delete process.env.XA_TEST_ENABLE_CLOUDFLARE_CONTEXT;
+    } else {
+      process.env.XA_TEST_ENABLE_CLOUDFLARE_CONTEXT = ORIGINAL_ENV.XA_TEST_ENABLE_CLOUDFLARE_CONTEXT;
+    }
   });
 
   it("uses service binding for workers.dev deploy hook URLs", async () => {
     process.env.XA_B_DEPLOY_HOOK_URL =
       "https://xa-drop-worker-preview.example-account.workers.dev/deploy/xa-b";
 
-    const bindingFetchMock = jest.fn(async () => new Response(null, { status: 202 }));
+    const bindingFetchMock = jest.fn(
+      async () =>
+        new Response(
+          JSON.stringify({
+            ok: true,
+            storefront: "xa-b",
+            provider: "cloudflare_pages_deploy_hook",
+          }),
+          { status: 202, headers: { "Content-Type": "application/json" } },
+        ),
+    );
     getCloudflareContextMock.mockResolvedValueOnce({
       env: {
         XA_CATALOG_CONTRACT_SERVICE: {
@@ -110,7 +127,17 @@ describe("deployHook", () => {
       }),
     };
 
-    const bindingFetchMock = jest.fn(async () => new Response(null, { status: 202 }));
+    const bindingFetchMock = jest.fn(
+      async () =>
+        new Response(
+          JSON.stringify({
+            ok: true,
+            storefront: "xa-b",
+            provider: "cloudflare_pages_deploy_hook",
+          }),
+          { status: 202, headers: { "Content-Type": "application/json" } },
+        ),
+    );
     getCloudflareContextMock.mockResolvedValue({
       env: {
         XA_CATALOG_CONTRACT_SERVICE: {
@@ -193,5 +220,40 @@ describe("deployHook", () => {
     );
     expect(result.reason).toContain("after 3 attempts");
     expect(global.fetch).toHaveBeenCalledTimes(3);
+  });
+
+  it("fails workers.dev deploy hooks that do not return an acknowledgement payload", async () => {
+    process.env.XA_B_DEPLOY_HOOK_URL =
+      "https://xa-drop-worker-preview.example-account.workers.dev/deploy/xa-b";
+
+    const bindingFetchMock = jest.fn(async () => new Response("", { status: 202 }));
+    getCloudflareContextMock.mockResolvedValueOnce({
+      env: {
+        XA_CATALOG_CONTRACT_SERVICE: {
+          fetch: bindingFetchMock,
+        },
+      },
+    });
+
+    const { maybeTriggerXaBDeploy } = await import("../deployHook");
+    const result = await maybeTriggerXaBDeploy({ storefrontId: "xa-b", kv: null });
+
+    expect(result.status).toBe("failed");
+    expect(result.attempts).toBe(1);
+    expect(result.reason).toContain("deploy_ack_missing");
+    expect(bindingFetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("fails non-workers deploy hooks that explicitly report rejection in a 2xx body", async () => {
+    process.env.XA_B_DEPLOY_HOOK_URL = "https://deploy.example/hook";
+    global.fetch = jest.fn(async () => new Response('{"ok":false}', { status: 200 })) as unknown as typeof fetch;
+
+    const { maybeTriggerXaBDeploy } = await import("../deployHook");
+    const result = await maybeTriggerXaBDeploy({ storefrontId: "xa-b", kv: null });
+
+    expect(result.status).toBe("failed");
+    expect(result.attempts).toBe(1);
+    expect(result.reason).toContain("deploy_ack_rejected");
+    expect(global.fetch).toHaveBeenCalledTimes(1);
   });
 });

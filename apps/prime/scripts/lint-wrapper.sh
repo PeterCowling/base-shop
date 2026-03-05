@@ -47,4 +47,4 @@ fi
 FILE_COUNT="$(echo "$ALL_FILES" | wc -l | tr -d ' ')"
 echo "[Prime lint] Linting $FILE_COUNT changed file(s)..."
 
-echo "$ALL_FILES" | xargs pnpm exec eslint --no-error-on-unmatched-pattern
+echo "$ALL_FILES" | xargs env NODE_OPTIONS='--max-old-space-size=8192' pnpm exec eslint --no-error-on-unmatched-pattern

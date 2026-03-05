@@ -14,3 +14,6 @@ compatibility_date = "2025-06-20"
 # variable with the R2 public URL (e.g. https://pub-{hash}.r2.dev)
 # after enabling public access in Cloudflare dashboard.
 NEXT_PUBLIC_XA_IMAGES_BASE_URL = ""
+# Staging Pages (git-connected) can run strict preflight before staged
+# business profile variables are configured. Keep staging deployable.
+XA_SITE_CONFIG_PREFLIGHT_MODE = "off"

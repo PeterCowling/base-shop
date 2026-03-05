@@ -2,7 +2,7 @@ import {
   normalizeXaImageRole,
   sortXaMediaByRole,
   type XaImageRole,
-} from "@acme/lib/xa";
+} from "@acme/lib/xa/catalogImageRoles";
 import type { Currency } from "@acme/platform-core/contexts/CurrencyContext";
 import type { SKU } from "@acme/types";
 

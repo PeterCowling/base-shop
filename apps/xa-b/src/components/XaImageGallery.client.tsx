@@ -13,7 +13,7 @@ import {
 } from "@acme/design-system/atoms";
 import { Grid as LayoutGrid } from "@acme/design-system/atoms/Grid";
 import { Cluster } from "@acme/design-system/primitives/Cluster";
-import { sortXaMediaByRole } from "@acme/lib/xa";
+import { sortXaMediaByRole } from "@acme/lib/xa/catalogImageRoles";
 
 import type { XaProduct } from "../lib/demoData";
 import { xaI18n } from "../lib/xaI18n";

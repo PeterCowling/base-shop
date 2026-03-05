@@ -1,15 +1,15 @@
 {
-  "last_updated": "2026-03-05T17:12:54.512Z",
+  "last_updated": "2026-03-05T17:18:17.906Z",
   "counts": {
-    "enqueued": 88,
+    "enqueued": 89,
     "processed": 32,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
     "completed": 108,
-    "fact_find_ready": 141,
-    "total": 254
+    "fact_find_ready": 142,
+    "total": 255
   },
   "dispatches": [
     {
@@ -10251,6 +10251,52 @@
       "intended_outcome": {
         "type": "operational",
         "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260305171817-0904",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+      "before_sha": "a84d7754bd1c7ddf175422847b22416adc52b4ea",
+      "after_sha": "d0520b87c3353a85fd0cd8b480f04c1fe7f62f7c",
+      "root_event_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:d0520b87c3353a85fd0cd8b480f04c1fe7f62f7c",
+      "anchor_key": "bos-codebase-structural-signals",
+      "cluster_key": "bos:unknown:bos-codebase-structural-signals:BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:d0520b87c3353a85fd0cd8b480f04c1fe7f62f7c",
+      "cluster_fingerprint": "c2cbdaf33dfce03fc05acb2536a67081096c736e7fd2de1fd49c125ad192c8d1",
+      "lineage_depth": 0,
+      "area_anchor": "bos-codebase-structural-signals",
+      "location_anchors": [
+        "git-diff:HEAD~1..HEAD"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS changed (a84d775 → d0520b8)",
+      "next_scope_now": "Investigate implications of bos-codebase-structural-signals delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "git-diff-range:HEAD~1..HEAD",
+        "git-diff:M:apps/prime/functions/api/process-messaging-queue.ts",
+        "git-diff:M:apps/prime/scripts/lint-wrapper.sh",
+        "git-diff:M:apps/reception/src/app/api/mcp/__tests__/booking-email.route.test.ts",
+        "git-diff:M:apps/reception/src/app/api/mcp/booking-email/route.ts",
+        "git-diff:M:apps/reception/src/components/checkins/EmailBookingButton.tsx",
+        "git-diff:A:apps/reception/src/components/checkins/__tests__/EmailBookingButton.test.tsx",
+        "git-diff:M:apps/reception/src/components/checkins/header/BookingModal.tsx",
+        "git-diff:M:apps/reception/src/components/checkins/header/__tests__/ReservationModal.test.tsx"
+      ],
+      "created_at": "2026-03-05T17:18:17.903Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-codebase-structural-signals implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-codebase-structural-signals.",
         "source": "auto"
       }
     }

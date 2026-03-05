@@ -1,8 +1,13 @@
 import { xaI18n } from "./xaI18n";
 import type { XaCategory, XaDepartment } from "./xaTypes";
 
-const STEALTH_MODE = ["1", "true"].includes(
-  (process.env.NEXT_PUBLIC_STEALTH_MODE ?? "").toLowerCase(),
+const STEALTH_MODE = ["1", "true", "yes", "on"].includes(
+  (
+    process.env.XA_STEALTH_MODE ??
+    process.env.STEALTH_MODE ??
+    process.env.NEXT_PUBLIC_STEALTH_MODE ??
+    ""
+  ).toLowerCase(),
 );
 const STEALTH_BRAND_NAME =
   process.env.NEXT_PUBLIC_STEALTH_BRAND_NAME ??

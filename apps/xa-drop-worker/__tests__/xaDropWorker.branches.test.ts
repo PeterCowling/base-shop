@@ -309,10 +309,6 @@ describe("xa-drop-worker edge branches", () => {
     expect(dispatchInit.body).toBe(
       JSON.stringify({
         ref: "dev",
-        inputs: {
-          storefront: "xa-b",
-          reason: "xa-uploader-sync",
-        },
       }),
     );
 

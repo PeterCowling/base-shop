@@ -946,12 +946,9 @@ function successPayloadFromDispatch(params: {
 }
 
 function buildDispatchBody(params: { storefront: string; ref: string }): string {
+  void params.storefront;
   return JSON.stringify({
     ref: params.ref,
-    inputs: {
-      storefront: params.storefront,
-      reason: "xa-uploader-sync",
-    },
   });
 }
 

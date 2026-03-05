@@ -79,6 +79,12 @@ function renderHarness() {
         <button type="button" onClick={() => state.handleSelect(VALID_DRAFT)}>
           select-draft
         </button>
+        <button
+          type="button"
+          onClick={() => state.setDraft({ ...state.draft, slug: "edited-after-select", title: "Edited title" })}
+        >
+          mutate-slug
+        </button>
         <button type="button" onClick={() => state.handleStorefrontChange("xa-c" as unknown as typeof state.storefront)}>
           switch-storefront
         </button>
@@ -256,6 +262,50 @@ describe("useCatalogConsole domain behavior", () => {
     expect(screen.getByTestId("storefront")).toHaveTextContent("xa-c");
     expect(screen.getByTestId("draft-feedback")).toHaveTextContent("");
     expect(screen.getByTestId("draft-category")).toHaveTextContent("clothing");
+  });
+
+  it("TC-03b: delete uses selected slug even if draft slug/title were edited", async () => {
+    let deleted = false;
+    const deleteCalls: string[] = [];
+    global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
+      if (url.startsWith("/api/catalog/products?storefront=")) {
+        if (init?.method === "POST") return jsonResponse({ ok: true, product: VALID_DRAFT, revision: "rev-2" });
+        return jsonResponse({
+          ok: true,
+          products: deleted ? [] : [VALID_DRAFT],
+          revisionsById: deleted ? {} : { p1: "rev-2" },
+        });
+      }
+      if (url.startsWith("/api/catalog/sync?storefront=")) {
+        return jsonResponse({ ok: true, ready: true, missingScripts: [] });
+      }
+      if (url.startsWith("/api/catalog/products/")) {
+        if (init?.method === "DELETE") {
+          deleteCalls.push(url);
+          deleted = true;
+          return jsonResponse({ ok: true });
+        }
+      }
+      throw new Error(`Unhandled fetch: ${url}`);
+    }) as unknown as typeof fetch;
+
+    renderHarness();
+
+    await clickButton("seed-draft");
+    await clickButton("save");
+    await waitFor(() => {
+      expect(screen.getByTestId("selected-slug")).toHaveTextContent("studio-jacket");
+    });
+
+    await clickButton("mutate-slug");
+    await clickButton("delete");
+
+    await waitFor(() => {
+      expect(deleteCalls).toContain("/api/catalog/products/studio-jacket?storefront=xa-b");
+    });
+    expect(deleteCalls).not.toContain("/api/catalog/products/edited-after-select?storefront=xa-b");
   });
 
   it("TC-04: sync action is gated when readiness check reports missing dependencies", async () => {

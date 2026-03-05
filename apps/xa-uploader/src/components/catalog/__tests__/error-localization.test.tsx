@@ -46,6 +46,9 @@ function renderHarness() {
         <button type="button" onClick={() => state.setDraft(VALID_DRAFT)}>
           seed-draft
         </button>
+        <button type="button" onClick={() => state.handleSelect(VALID_DRAFT)}>
+          select-draft
+        </button>
         <button type="button" onClick={() => void state.handleSave()}>
           save
         </button>
@@ -166,6 +169,7 @@ describe("catalog console localized error surfaces", () => {
       );
     });
 
+    await clickButton("select-draft");
     await clickButton("delete");
     await waitFor(() => {
       expect(screen.getByTestId("draft-feedback")).toHaveTextContent(

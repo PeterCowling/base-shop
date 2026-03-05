@@ -423,11 +423,19 @@ async function requireCatalogReadToken(
 ): Promise<Response | string> {
   const expectedReadToken = (env.CATALOG_READ_TOKEN ?? "").trim();
   if (expectedReadToken) {
+    const expectedWriteToken = (env.CATALOG_WRITE_TOKEN ?? "").trim();
     const providedToken = resolveCatalogToken(request, url, env);
-    if (!providedToken || !constantTimeEqual(providedToken, expectedReadToken)) {
+    const matchesReadToken = providedToken
+      ? constantTimeEqual(providedToken, expectedReadToken)
+      : false;
+    const matchesWriteToken =
+      providedToken && expectedWriteToken
+        ? constantTimeEqual(providedToken, expectedWriteToken)
+        : false;
+    if (!matchesReadToken && !matchesWriteToken) {
       return json({ ok: false }, 401);
     }
-    return expectedReadToken;
+    return matchesReadToken ? expectedReadToken : expectedWriteToken;
   }
   return await requireCatalogWriteToken(env, request, url);
 }
@@ -784,13 +792,8 @@ async function handleCatalogRead(
   url: URL,
   storefront: string,
 ): Promise<Response> {
-  const expectedReadToken = (env.CATALOG_READ_TOKEN ?? "").trim();
-  if (expectedReadToken) {
-    const provided = resolveCatalogToken(request, url, env);
-    if (!provided || !constantTimeEqual(provided, expectedReadToken)) {
-      return json({ ok: false }, 401);
-    }
-  }
+  const auth = await requireCatalogReadToken(env, request, url);
+  if (auth instanceof Response) return auth;
 
   const bucket = resolveCatalogBucket(env);
   const prefix = resolveCatalogPrefix(env);
@@ -924,17 +927,45 @@ type JsonRequestResult =
   | { ok: false; status: number; error: { code?: number; message?: string } };
 
 async function requestJson(url: string, init: RequestInit): Promise<JsonRequestResult> {
-  const response = await fetch(url, init).catch(() => null);
+  const response = await fetch(url, init).catch((error: unknown) => {
+    const message = error instanceof Error ? error.message : String(error);
+    return { __fetchError: message } as const;
+  });
   if (!response) {
-    return { ok: false, status: 502, error: {} };
+    return { ok: false, status: 502, error: { message: "request_failed" } };
+  }
+  if ("__fetchError" in response) {
+    return {
+      ok: false,
+      status: 502,
+      error: {
+        message: response.__fetchError || "request_failed",
+      },
+    };
   }
 
-  const payload = await response.json().catch(() => null);
+  const responseBodyText = await response.text().catch(() => "");
+  let payload: Record<string, unknown> | null = null;
+  if (responseBodyText) {
+    try {
+      const parsed = JSON.parse(responseBodyText) as unknown;
+      payload = isRecordStringUnknown(parsed) ? parsed : null;
+    } catch {
+      payload = null;
+    }
+  }
   if (!response.ok) {
+    const parsedError = parseApiErrorDetails(payload);
+    const fallbackMessage = responseBodyText.trim().slice(0, 160);
     return {
       ok: false,
       status: response.status || 502,
-      error: parseApiErrorDetails(payload),
+      error:
+        parsedError.code || parsedError.message
+          ? parsedError
+          : fallbackMessage
+            ? { message: fallbackMessage }
+            : {},
     };
   }
   return { ok: true, status: response.status, payload: isRecordStringUnknown(payload) ? payload : null };
@@ -975,6 +1006,7 @@ function dispatchHeaders(config: XaBDeployConfig): HeadersInit {
     Accept: "application/vnd.github+json",
     "X-GitHub-Api-Version": "2022-11-28",
     "Content-Type": "application/json",
+    "User-Agent": "xa-drop-worker",
   };
 }
 

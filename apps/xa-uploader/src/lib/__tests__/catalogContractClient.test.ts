@@ -1,6 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 const readFileMock = jest.fn();
+const getCloudflareContextMock = jest.fn();
+
+jest.mock("@opennextjs/cloudflare", () => ({
+  getCloudflareContext: (...args: unknown[]) => getCloudflareContextMock(...args),
+}));
 
 jest.mock("node:fs/promises", () => ({
   __esModule: true,
@@ -21,6 +26,7 @@ describe("catalogContractClient", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    getCloudflareContextMock.mockRejectedValue(new Error("no_cloudflare_context"));
     process.env.XA_CATALOG_CONTRACT_BASE_URL = "https://drop.example/catalog/";
     process.env.XA_CATALOG_CONTRACT_WRITE_TOKEN = "catalog-write-token-1234567890";
     delete process.env.XA_CATALOG_CONTRACT_TIMEOUT_MS;
@@ -148,5 +154,55 @@ describe("catalogContractClient", () => {
       "https://drop.example/catalog/xa-b",
       expect.objectContaining({ method: "PUT" }),
     );
+  });
+
+  it("normalizes storefront-scoped base URL for publish route", async () => {
+    process.env.XA_CATALOG_CONTRACT_BASE_URL = "https://drop.example/catalog/xa-b";
+    global.fetch = jest.fn(async () => Response.json({ ok: true })) as unknown as typeof fetch;
+
+    const { publishCatalogPayloadToContract } = await import("../catalogContractClient");
+    await publishCatalogPayloadToContract({
+      storefrontId: "xa-b",
+      payload: {
+        storefront: "xa-b",
+        publishedAt: "2026-03-02T00:00:00.000Z",
+        catalog: { products: [] },
+        mediaIndex: { items: [] },
+      },
+    });
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "https://drop.example/catalog/xa-b",
+      expect.objectContaining({ method: "PUT" }),
+    );
+  });
+
+  it("uses cloudflare service binding when available", async () => {
+    const bindingFetchMock = jest.fn(async () => Response.json({ ok: true }));
+    getCloudflareContextMock.mockResolvedValueOnce({
+      env: {
+        XA_CATALOG_CONTRACT_SERVICE: {
+          fetch: bindingFetchMock,
+        },
+      },
+    });
+    global.fetch = jest.fn(async () => Response.json({ ok: false })) as unknown as typeof fetch;
+
+    const { publishCatalogPayloadToContract } = await import("../catalogContractClient");
+    await publishCatalogPayloadToContract({
+      storefrontId: "xa-b",
+      payload: {
+        storefront: "xa-b",
+        publishedAt: "2026-03-02T00:00:00.000Z",
+        catalog: { products: [] },
+        mediaIndex: { items: [] },
+      },
+    });
+
+    expect(bindingFetchMock).toHaveBeenCalledWith(
+      "https://catalog-contract.internal/catalog/xa-b",
+      expect.objectContaining({ method: "PUT" }),
+    );
+    expect(global.fetch).not.toHaveBeenCalled();
   });
 });

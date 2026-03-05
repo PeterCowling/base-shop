@@ -63,6 +63,27 @@ function buildProductsErrorResponse(error: ProductsErrorCode, status: number, re
   return NextResponse.json({ ok: false, error, reason }, { status });
 }
 
+type ContractFailureReasonBase = "products_list_failed" | "products_upsert_failed";
+
+function buildContractFailureReason(
+  baseReason: ContractFailureReasonBase,
+  error: CatalogDraftContractError,
+): string {
+  if (error.code === "invalid_response") {
+    return `${baseReason}_contract_invalid_response`;
+  }
+  if (error.code === "request_failed") {
+    const status =
+      typeof error.status === "number" && Number.isInteger(error.status) && error.status >= 100 && error.status <= 599
+        ? error.status
+        : null;
+    return status === null
+      ? `${baseReason}_contract_request_failed`
+      : `${baseReason}_contract_request_failed_status_${status}`;
+  }
+  return baseReason;
+}
+
 function normalizeCatalogPath(pathValue: string): string {
   const trimmed = pathValue.trim();
   if (!trimmed) return "";
@@ -90,6 +111,16 @@ function derivePublishState(product: CatalogProductDraftInput): "draft" | "ready
 function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLimit>): NextResponse {
   applyRateLimitHeaders(response.headers, limit);
   return response;
+}
+
+function logContractFailure(operation: "list" | "upsert", error: CatalogDraftContractError): void {
+  if (error.code !== "request_failed" && error.code !== "invalid_response") return;
+  console.warn("[xa-uploader] catalog contract request failed", {
+    operation,
+    code: error.code,
+    status: error.status ?? null,
+    endpoint: error.endpoint ?? null,
+  });
 }
 
 type ParsedProductsUpsertPayload =
@@ -155,6 +186,15 @@ function buildProductsUpsertErrorResponse(
         limit,
       );
     }
+    logContractFailure("upsert", error);
+    return withRateHeaders(
+      buildProductsErrorResponse(
+        "internal_error",
+        500,
+        buildContractFailureReason("products_upsert_failed", error),
+      ),
+      limit,
+    );
   }
   if (isInvalidCatalogUpdateError(error)) {
     return withRateHeaders(
@@ -170,6 +210,17 @@ function buildProductsUpsertErrorResponse(
 
 export async function GET(request: Request) {
   const requestIp = getRequestIp(request) || "unknown";
+  const authenticated = await hasUploaderSession(request);
+  if (!authenticated) {
+    // Consume unauthenticated probe budget without leaking endpoint shape via rate-limit headers.
+    rateLimit({
+      key: `xa-uploader-products-get-unauth:${requestIp}`,
+      windowMs: PRODUCTS_LIST_WINDOW_MS,
+      max: PRODUCTS_LIST_MAX_REQUESTS,
+    });
+    return NextResponse.json({ ok: false }, { status: 404 });
+  }
+
   const limit = rateLimit({
     key: `xa-uploader-products-get:${requestIp}`,
     windowMs: PRODUCTS_LIST_WINDOW_MS,
@@ -182,10 +233,6 @@ export async function GET(request: Request) {
     );
   }
 
-  const authenticated = await hasUploaderSession(request);
-  if (!authenticated) {
-    return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
-  }
   try {
     const storefront = parseStorefront(new URL(request.url).searchParams.get("storefront"));
     const { products, revisionsById } = isLocalFsRuntimeEnabled()
@@ -193,8 +240,19 @@ export async function GET(request: Request) {
       : await readCloudDraftSnapshot(storefront);
     return withRateHeaders(NextResponse.json({ ok: true, products, revisionsById }), limit);
   } catch (error) {
-    if (error instanceof CatalogDraftContractError && error.code === "unconfigured") {
-      return withRateHeaders(localFsUnavailableResponse(), limit);
+    if (error instanceof CatalogDraftContractError) {
+      if (error.code === "unconfigured") {
+        return withRateHeaders(localFsUnavailableResponse(), limit);
+      }
+      logContractFailure("list", error);
+      return withRateHeaders(
+        buildProductsErrorResponse(
+          "internal_error",
+          500,
+          buildContractFailureReason("products_list_failed", error),
+        ),
+        limit,
+      );
     }
     return withRateHeaders(
       buildProductsErrorResponse("internal_error", 500, "products_list_failed"),
@@ -205,6 +263,17 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const requestIp = getRequestIp(request) || "unknown";
+  const authenticated = await hasUploaderSession(request);
+  if (!authenticated) {
+    // Consume unauthenticated probe budget without leaking endpoint shape via rate-limit headers.
+    rateLimit({
+      key: `xa-uploader-products-post-unauth:${requestIp}`,
+      windowMs: PRODUCTS_UPSERT_WINDOW_MS,
+      max: PRODUCTS_UPSERT_MAX_REQUESTS,
+    });
+    return NextResponse.json({ ok: false }, { status: 404 });
+  }
+
   const limit = rateLimit({
     key: `xa-uploader-products-post:${requestIp}`,
     windowMs: PRODUCTS_UPSERT_WINDOW_MS,
@@ -217,10 +286,6 @@ export async function POST(request: Request) {
     );
   }
 
-  const authenticated = await hasUploaderSession(request);
-  if (!authenticated) {
-    return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
-  }
   const payloadResult = await parseProductsUpsertPayload(request, limit);
   if ("response" in payloadResult) return payloadResult.response;
   const payload = payloadResult.payload;

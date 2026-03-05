@@ -563,7 +563,7 @@ function useCatalogDraftHandlers(state: CatalogConsoleState) {
     }
   }
 
-  const handleSave = async () => {
+  const handleSave = async (): Promise<SaveResult> => {
     state.pendingAutosaveDraftRef.current = null;
     state.setIsAutosaveDirty(false);
     state.setAutosaveInlineMessage(null);
@@ -593,7 +593,7 @@ function useCatalogDraftHandlers(state: CatalogConsoleState) {
       state.draftImageBaselineRef.current = result.product;
       state.setAutosaveInlineMessage(null);
       state.setLastAutosaveSavedAt(Date.now());
-      return;
+      return result;
     }
 
     if (result.status === "conflict") {
@@ -602,6 +602,8 @@ function useCatalogDraftHandlers(state: CatalogConsoleState) {
         message: state.t("apiErrorConflict"),
       });
     }
+
+    return result;
   };
 
   const handleSaveWithDraft = async (nextDraft: CatalogProductDraftInput) => {
@@ -615,8 +617,8 @@ function useCatalogDraftHandlers(state: CatalogConsoleState) {
     (() => {
       resetAutosaveAndBaseline(state);
       return handleDeleteImpl({
+        selectedSlug: state.selectedSlug,
         locale: state.locale,
-        draft: state.draft,
         storefront: state.storefront,
         t: state.t,
         busyLockRef: state.busyLockRef,

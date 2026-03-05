@@ -2,6 +2,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
+import { getCloudflareContext } from "@opennextjs/cloudflare";
+
 import { toPositiveInt } from "@acme/lib";
 
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
@@ -45,12 +47,23 @@ type DeployHookAttemptResult =
   | { ok: true }
   | { ok: false; transient: boolean; reason: string; httpStatus?: number };
 
+export interface DeployHookServiceBinding {
+  fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response>;
+}
+
+declare global {
+  interface CloudflareEnv {
+    XA_CATALOG_CONTRACT_SERVICE?: DeployHookServiceBinding;
+  }
+}
+
 const DEPLOY_HOOK_TIMEOUT_MS_DEFAULT = 15_000;
 const DEPLOY_HOOK_COOLDOWN_SECONDS_DEFAULT = 900;
 const DEPLOY_HOOK_MAX_RETRIES_DEFAULT = 2;
 const DEPLOY_HOOK_MAX_RETRIES_LIMIT = 5;
 const DEPLOY_HOOK_RETRY_BASE_DELAY_MS_DEFAULT = 800;
 const DEPLOY_HOOK_RETRY_BASE_DELAY_MS_MAX = 5_000;
+const WORKERS_DEV_HOST_SUFFIX = ".workers.dev";
 
 function parseBooleanFlag(rawValue: string | undefined): boolean | null {
   const value = rawValue?.trim().toLowerCase();
@@ -206,6 +219,37 @@ function getDeployHookToken(): string {
   return (process.env[XA_B_DEPLOY_HOOK_TOKEN_ENV] ?? "").trim();
 }
 
+function shouldUseDeployServiceBinding(hookUrl: string): boolean {
+  try {
+    const parsed = new URL(hookUrl);
+    return parsed.protocol === "https:" && parsed.hostname.endsWith(WORKERS_DEV_HOST_SUFFIX);
+  } catch {
+    return false;
+  }
+}
+
+function asServiceBindingDeployUrl(hookUrl: string): string {
+  const parsed = new URL(hookUrl);
+  return `https://catalog-contract.internal${parsed.pathname}${parsed.search}`;
+}
+
+async function getDeployServiceBinding(): Promise<DeployHookServiceBinding | null> {
+  try {
+    const { env } = await getCloudflareContext({ async: true });
+    return env.XA_CATALOG_CONTRACT_SERVICE ?? null;
+  } catch {
+    return null;
+  }
+}
+
+async function requestDeployHook(hookUrl: string, init: RequestInit): Promise<Response> {
+  const serviceBinding = await getDeployServiceBinding();
+  if (serviceBinding && shouldUseDeployServiceBinding(hookUrl)) {
+    return serviceBinding.fetch(asServiceBindingDeployUrl(hookUrl), init);
+  }
+  return fetch(hookUrl, init);
+}
+
 function buildRetryDelayMs(attemptNumber: number): number {
   const baseDelayMs = getDeployHookRetryBaseDelayMs();
   const exponent = Math.max(0, attemptNumber - 1);
@@ -234,7 +278,7 @@ async function triggerDeployHookOnce(params: {
       headers["X-XA-Deploy-Token"] = token;
     }
 
-    response = await fetch(params.hookUrl, {
+    response = await requestDeployHook(params.hookUrl, {
       method: "POST",
       headers,
       body: JSON.stringify({

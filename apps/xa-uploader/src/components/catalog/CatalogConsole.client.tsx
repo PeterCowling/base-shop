@@ -6,7 +6,6 @@ import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 import { CatalogLoginForm } from "./CatalogLoginForm.client";
 import { CatalogProductForm } from "./CatalogProductForm.client";
-import { BTN_PRIMARY_CLASS } from "./catalogStyles";
 import { CatalogSyncPanel } from "./CatalogSyncPanel.client";
 import { getCatalogDraftWorkflowReadiness } from "./catalogWorkflow";
 import { CurrencyRatesPanel } from "./CurrencyRatesPanel.client";
@@ -26,15 +25,11 @@ function ScreenTabs({
   screen,
   onNew,
   onRevise,
-  busy,
-  onSave,
   t,
 }: {
   screen: ConsoleScreen;
   onNew: () => void;
   onRevise: () => void;
-  busy: boolean;
-  onSave: () => void;
   t: Translator;
 }) {
   const tabClass = (active: boolean) =>
@@ -51,18 +46,6 @@ function ScreenTabs({
       <button type="button" onClick={onRevise} className={tabClass(screen === "revise")}>
         {t("screenReviseExisting")}
       </button>
-      {screen === "currency" ? null : (
-        <button
-          type="button"
-          onClick={onSave}
-          disabled={busy}
-          className={`${BTN_PRIMARY_CLASS} ms-auto`}
-          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-          data-testid="catalog-save-details"
-        >
-          {busy ? t("saving") : t("saveAsDraft")}
-        </button>
-      )}
     </div>
   );
 }
@@ -255,8 +238,6 @@ export default function CatalogConsole({ monoClassName, onHeaderExtra }: Catalog
           screen={screen}
           onNew={openNewScreen}
           onRevise={openReviseScreen}
-          busy={state.busy}
-          onSave={state.handleSave}
           t={t}
         />
       </div>

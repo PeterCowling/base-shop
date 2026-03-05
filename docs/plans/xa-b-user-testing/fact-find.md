@@ -26,7 +26,7 @@ Trigger-Intended-Outcome: type: operational | statement: A concrete user testing
 
 ### Summary
 
-The xa-b member-rewards storefront (an exclusive-access bag-and-accessories shop with invitation-only registration) is deployed to Cloudflare Pages at `https://xa-b-site.pages.dev` (dev branch: `https://dev--xa-b-site.pages.dev`). The app is a fully static Next.js 16 export. The operator has confirmed the app is ready for user testing but no testing logistics have been planned. This fact-find investigates what the app does, who the audience is for the review session, what routes and flows exist, and what form the user-testing plan should take.
+The xa-b member-rewards storefront (an exclusive-access bag-and-accessories shop with invitation-only registration) is deployed to Cloudflare Pages at `https://xa-b-site.pages.dev` (dev branch: `https://dev.xa-b-site.pages.dev`). The app is a fully static Next.js 16 export. The operator has confirmed the app is ready for user testing but no testing logistics have been planned. This fact-find investigates what the app does, who the audience is for the review session, what routes and flows exist, and what form the user-testing plan should take.
 
 ### Goals
 
@@ -211,7 +211,7 @@ The user testing plan itself does not change any code. The downstream effects of
 ### Resolved
 
 - **Q: What is the staging URL pattern?**
-  - A: `https://xa-b-site.pages.dev` (main branch) or `https://dev--xa-b-site.pages.dev` (dev branch). CI deploys via `wrangler pages deploy out/ --project-name xa-b-site`.
+  - A: `https://xa-b-site.pages.dev` (main branch) or `https://dev.xa-b-site.pages.dev` (dev branch). CI deploys via `wrangler pages deploy out/ --project-name xa-b-site`.
   - Evidence: `.github/workflows/xa.yml` L134; `docs/plans/xa-v2-plan.md` open questions section (resolved 2026-02-28).
 
 - **Q: Is Cloudflare Access needed to protect the staging URL?**
@@ -293,7 +293,7 @@ The user testing plan itself does not change any code. The downstream effects of
 
 1. **Write demo walkthrough script** — A one-page doc that specifies the 6–8 screens to show in order, what to say at each, how to handle dead-ends (especially "Join Us"), and what questions to ask the client. Output: `docs/plans/xa-b-user-testing/demo-script.md`.
 2. **Write feedback rubric** — A structured one-page form the client fills in (or the operator fills in based on client responses) covering: visual identity, product presentation, pricing clarity, membership concept, overall confidence. Output: `docs/plans/xa-b-user-testing/feedback-rubric.md`.
-3. **Confirm staging URL is live** — Verify `https://xa-b-site.pages.dev/` returns 200 and core routes render. If not, XA-V2-01 must complete first.
+3. **Confirm staging URL is live** — Verify `https://dev.xa-b-site.pages.dev/` returns 200 and core routes render. If not, XA-V2-01 must complete first.
 4. **Optional: set real brand name env var** — If the operator wants the real brand name to appear, set `NEXT_PUBLIC_BRAND_NAME` (and optionally other contact env vars) on the Cloudflare Pages project and trigger a new deploy.
 5. **Schedule the review session** — Operator contacts the client with the staging URL and a proposed time slot.
 6. **Record session notes** — After the session, save structured notes to `docs/plans/xa-b-user-testing/session-notes.md` and triage feedback against a go/no-go decision.

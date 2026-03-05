@@ -1122,6 +1122,18 @@ async function runCloudSyncPipeline(params: {
 }
 
 export async function POST(request: Request) {
+  if (process.env.XA_UPLOADER_MODE === "vendor") {
+    return NextResponse.json({ ok: false }, { status: 404 });
+  }
+
+  const payloadRequest = request.clone();
+  const authenticated = await hasUploaderSession(request);
+  if (!authenticated) {
+    // Intentionally do not attach rate-limit headers on unauthenticated 404
+    // responses to reduce endpoint-shape leakage.
+    return NextResponse.json({ ok: false }, { status: 404 });
+  }
+
   const requestIp = getRequestIp(request) || "unknown";
   const limit = rateLimit({
     key: `xa-uploader-sync:${requestIp}`,
@@ -1133,16 +1145,6 @@ export async function POST(request: Request) {
       NextResponse.json({ ok: false, error: "rate_limited", reason: "sync_rate_limited" }, { status: 429 }),
       limit,
     );
-  }
-
-  if (process.env.XA_UPLOADER_MODE === "vendor") {
-    return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
-  }
-
-  const payloadRequest = request.clone();
-  const authenticated = await hasUploaderSession(request);
-  if (!authenticated) {
-    return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
   }
 
   let payload: SyncPayload = { options: {}, storefront: null };
@@ -1213,6 +1215,15 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
+  if (process.env.XA_UPLOADER_MODE === "vendor") {
+    return NextResponse.json({ ok: false }, { status: 404 });
+  }
+
+  const authenticated = await hasUploaderSession(request);
+  if (!authenticated) {
+    return NextResponse.json({ ok: false }, { status: 404 });
+  }
+
   const requestIp = getRequestIp(request) || "unknown";
   const limit = rateLimit({
     key: `xa-uploader-sync-readiness:${requestIp}`,
@@ -1226,14 +1237,6 @@ export async function GET(request: Request) {
     );
   }
 
-  if (process.env.XA_UPLOADER_MODE === "vendor") {
-    return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
-  }
-
-  const authenticated = await hasUploaderSession(request);
-  if (!authenticated) {
-    return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
-  }
   if (!isLocalFsRuntimeEnabled()) {
     const contractReadiness = getCatalogContractReadiness();
     return withRateHeaders(

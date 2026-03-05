@@ -63,6 +63,26 @@ function buildDeployHookUnconfiguredResponse(storefrontId: string): NextResponse
 
 export async function POST(request: Request) {
   const requestIp = getRequestIp(request) || "unknown";
+  if (process.env.XA_UPLOADER_MODE === "vendor") {
+    rateLimit({
+      key: `xa-uploader-deploy-drain-vendor:${requestIp}`,
+      windowMs: DEPLOY_DRAIN_WINDOW_MS,
+      max: DEPLOY_DRAIN_MAX_REQUESTS,
+    });
+    return NextResponse.json({ ok: false }, { status: 404 });
+  }
+
+  const authenticated = await hasUploaderSession(request).catch(() => false);
+  if (!authenticated && !hasDeployDrainToken(request)) {
+    // Consume unauthenticated probe budget without leaking endpoint shape via rate-limit headers.
+    rateLimit({
+      key: `xa-uploader-deploy-drain-unauth:${requestIp}`,
+      windowMs: DEPLOY_DRAIN_WINDOW_MS,
+      max: DEPLOY_DRAIN_MAX_REQUESTS,
+    });
+    return NextResponse.json({ ok: false }, { status: 404 });
+  }
+
   const limit = rateLimit({
     key: `xa-uploader-deploy-drain:${requestIp}`,
     windowMs: DEPLOY_DRAIN_WINDOW_MS,
@@ -76,15 +96,6 @@ export async function POST(request: Request) {
       ),
       limit,
     );
-  }
-
-  if (process.env.XA_UPLOADER_MODE === "vendor") {
-    return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
-  }
-
-  const authenticated = await hasUploaderSession(request).catch(() => false);
-  if (!authenticated && !hasDeployDrainToken(request)) {
-    return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
   }
 
   const storefront = new URL(request.url).searchParams.get("storefront");

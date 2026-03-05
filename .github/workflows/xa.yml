@@ -126,7 +126,9 @@ jobs:
         run: cd apps/xa-b && pnpm build
         env:
           XA_CATALOG_CONTRACT_READ_URL: ${{ vars.XA_CATALOG_CONTRACT_READ_URL }}
-          NEXT_PUBLIC_XA_IMAGES_BASE_URL: ${{ vars.XA_IMAGES_BASE_URL }}
+          XA_CATALOG_CONTRACT_READ_TOKEN: ${{ secrets.XA_CATALOG_CONTRACT_READ_TOKEN }}
+          XA_CATALOG_CONTRACT_READ_REQUIRED: "1"
+          NEXT_PUBLIC_XA_IMAGES_BASE_URL: ${{ vars.XA_IMAGES_BASE_URL_PREVIEW || vars.XA_IMAGES_BASE_URL }}
 
       - name: Remove __next.* metadata files (CF Pages 20k file limit)
         run: find apps/xa-b/out -name '__next.*' -type f -delete
@@ -145,6 +147,25 @@ jobs:
             echo "FAIL: out/ missing or empty"
             exit 1
           fi
+
+      - name: Verify xa-b URL is reachable
+        run: |
+          if [[ "${GITHUB_REF_NAME}" == "dev" ]]; then
+            URL="https://dev.xa-b-site.pages.dev/"
+          else
+            URL="https://xa-b-site.pages.dev/"
+          fi
+          for attempt in $(seq 1 18); do
+            response=$(curl -s -o /dev/null -w "%{http_code}" "${URL}")
+            echo "Attempt ${attempt}: ${URL} -> HTTP ${response}"
+            if [[ "${response}" == "200" ]]; then
+              echo "xa-b URL is reachable"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "FAIL: xa-b URL did not return HTTP 200 within retry window"
+          exit 1
 
   deploy-xa-uploader:
     name: Deploy xa-uploader (staging)

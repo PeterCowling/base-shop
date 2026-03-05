@@ -3,7 +3,6 @@ import type * as React from "react";
 import {
   type CatalogProductDraftInput,
   catalogProductDraftSchema,
-  slugify,
   splitList,
 } from "@acme/lib/xa/catalogAdminSchema";
 
@@ -402,8 +401,8 @@ export async function handleSaveImpl({
 }
 
 export async function handleDeleteImpl({
+  selectedSlug,
   locale,
-  draft,
   storefront,
   t,
   busyLockRef,
@@ -412,8 +411,8 @@ export async function handleDeleteImpl({
   loadCatalog,
   handleNew,
 }: {
+  selectedSlug: string | null;
   locale: UploaderLocale;
-  draft: CatalogProductDraftInput;
   storefront: XaCatalogStorefront;
   t: Translator;
   busyLockRef: BusyLockRef;
@@ -422,15 +421,15 @@ export async function handleDeleteImpl({
   loadCatalog: () => Promise<void>;
   handleNew: () => void;
 }): Promise<void> {
-  const slug = slugify(draft.slug || draft.title);
-  if (!slug) return;
-  if (!confirm(getUploaderConfirmDelete(locale, slug))) return;
+  if (!selectedSlug) return;
+  const targetSlug = selectedSlug;
+  if (!confirm(getUploaderConfirmDelete(locale, targetSlug))) return;
 
   if (!tryBeginBusyAction(busyLockRef, setBusy)) return;
   clearActionFeedbackDomains(setActionFeedback, ["draft"]);
   try {
     const response = await fetch(
-      `/api/catalog/products/${encodeURIComponent(slug)}?storefront=${encodeURIComponent(storefront)}`,
+      `/api/catalog/products/${encodeURIComponent(targetSlug)}?storefront=${encodeURIComponent(storefront)}`,
       { method: "DELETE" },
     );
     const data = (await response.json()) as { ok: boolean; error?: string };
@@ -441,7 +440,7 @@ export async function handleDeleteImpl({
     handleNew();
     updateActionFeedback(setActionFeedback, "draft", {
       kind: "success",
-      message: t("deleteSucceeded", { slug }),
+      message: t("deleteSucceeded", { slug: targetSlug }),
     });
   } catch (err) {
     updateActionFeedback(setActionFeedback, "draft", {

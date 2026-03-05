@@ -7,15 +7,17 @@ import type { CatalogProductDraftInput } from "@acme/lib/xa/catalogAdminSchema";
 import type { XaCatalogStorefront } from "../../lib/catalogStorefront.types";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
+import type { SaveResult } from "./catalogConsoleActions";
 import { CatalogProductBaseFields } from "./CatalogProductBaseFields.client";
 import { CatalogProductClothingFields } from "./CatalogProductClothingFields.client";
 import { CatalogProductImagesFields } from "./CatalogProductImagesFields.client";
 import { CatalogProductJewelryFields } from "./CatalogProductJewelryFields.client";
-import { BTN_DANGER_CLASS, PANEL_CLASS } from "./catalogStyles";
+import { BTN_DANGER_CLASS, BTN_PRIMARY_CLASS, PANEL_CLASS } from "./catalogStyles";
 import { getCatalogDraftWorkflowReadiness } from "./catalogWorkflow";
 import type { ActionFeedback } from "./useCatalogConsole.client";
 
 type FormStepId = "product" | "images";
+type SaveButtonState = "idle" | "saving" | "saved";
 
 function StepIndicator({
   stepNumber,
@@ -89,6 +91,67 @@ function StatusDot({
   );
 }
 
+function useSaveButtonTransition(params: {
+  busy: boolean;
+  canOpenImageStep: boolean;
+  onAdvanceToImages: () => void;
+  onSave: () => Promise<SaveResult>;
+  t: ReturnType<typeof useUploaderI18n>["t"];
+}) {
+  const { busy, canOpenImageStep, onAdvanceToImages, onSave, t } = params;
+  const [saveButtonState, setSaveButtonState] = React.useState<SaveButtonState>("idle");
+  const saveAdvanceTimerRef = React.useRef<number | null>(null);
+  const clearSaveAdvanceTimer = React.useCallback(() => {
+    if (saveAdvanceTimerRef.current !== null) {
+      window.clearTimeout(saveAdvanceTimerRef.current);
+      saveAdvanceTimerRef.current = null;
+    }
+  }, []);
+
+  React.useEffect(() => {
+    return () => {
+      clearSaveAdvanceTimer();
+    };
+  }, [clearSaveAdvanceTimer]);
+
+  const handleSaveClick = React.useCallback(async () => {
+    if (saveButtonState === "saving" || saveButtonState === "saved" || busy) return;
+    setSaveButtonState("saving");
+    const result = await onSave();
+    if (result.status !== "saved") {
+      setSaveButtonState("idle");
+      return;
+    }
+
+    setSaveButtonState("saved");
+    clearSaveAdvanceTimer();
+    saveAdvanceTimerRef.current = window.setTimeout(() => {
+      saveAdvanceTimerRef.current = null;
+      setSaveButtonState("idle");
+      if (canOpenImageStep) onAdvanceToImages();
+    }, 2000);
+  }, [busy, canOpenImageStep, clearSaveAdvanceTimer, onAdvanceToImages, onSave, saveButtonState]);
+
+  const cancelPendingSaveAdvance = React.useCallback(() => {
+    clearSaveAdvanceTimer();
+    setSaveButtonState((current) => (current === "saved" ? "idle" : current));
+  }, [clearSaveAdvanceTimer]);
+
+  const saveButtonClass =
+    saveButtonState === "saved"
+      ? "rounded-md border border-success-fg bg-success-bg px-4 py-2 text-xs font-semibold uppercase tracking-label text-success-fg transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-success-fg focus-visible:ring-offset-2"
+      : BTN_PRIMARY_CLASS;
+  const saveButtonLabel =
+    saveButtonState === "saved"
+      ? t("saveButtonSaved")
+      : saveButtonState === "saving"
+        ? t("saving")
+        : t("saveAsDraft");
+  const saveButtonDisabled = busy || saveButtonState === "saving" || saveButtonState === "saved";
+
+  return { handleSaveClick, saveButtonClass, saveButtonLabel, saveButtonDisabled, cancelPendingSaveAdvance };
+}
+
 export function CatalogProductForm({
   selectedSlug,
   draft,
@@ -101,7 +164,7 @@ export function CatalogProductForm({
   lastAutosaveSavedAt,
   feedback,
   onChangeDraft,
-  onSave: _onSave,
+  onSave,
   onSaveWithDraft,
   onDelete,
 }: {
@@ -116,7 +179,7 @@ export function CatalogProductForm({
   lastAutosaveSavedAt: number | null;
   feedback: ActionFeedback | null;
   onChangeDraft: (draft: CatalogProductDraftInput) => void;
-  onSave: () => void;
+  onSave: () => Promise<SaveResult>;
   onSaveWithDraft: (nextDraft: CatalogProductDraftInput) => void;
   onDelete: () => void;
 }) {
@@ -135,6 +198,18 @@ export function CatalogProductForm({
   React.useEffect(() => {
     setStep("product");
   }, [selectedSlug]);
+  const { handleSaveClick, saveButtonClass, saveButtonLabel, saveButtonDisabled, cancelPendingSaveAdvance } =
+    useSaveButtonTransition({
+      busy,
+      canOpenImageStep,
+      onAdvanceToImages: () => setStep("images"),
+      onSave,
+      t,
+    });
+  const handleDeleteClick = React.useCallback(() => {
+    cancelPendingSaveAdvance();
+    onDelete();
+  }, [cancelPendingSaveAdvance, onDelete]);
 
   return (
     <section className={PANEL_CLASS}>
@@ -142,7 +217,7 @@ export function CatalogProductForm({
         <div className="flex items-center justify-end">
           <button
             type="button"
-            onClick={onDelete}
+            onClick={handleDeleteClick}
             disabled={busy}
             className={BTN_DANGER_CLASS}
           >
@@ -208,7 +283,7 @@ export function CatalogProductForm({
               draft={draft}
               fieldErrors={fieldErrors}
               monoClassName={monoClassName}
-              sections={["identity", "taxonomy", "commercial"]}
+              sections={["identity", "taxonomy"]}
               onChange={onChangeDraft}
             />
             {category === "clothing" ? (
@@ -226,6 +301,18 @@ export function CatalogProductForm({
                 onChange={onChangeDraft}
               />
             ) : null}
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={() => void handleSaveClick()}
+                disabled={saveButtonDisabled}
+                className={saveButtonClass}
+                // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+                data-testid="catalog-save-details"
+              >
+                {saveButtonLabel}
+              </button>
+            </div>
           </div>
         ) : null}
 

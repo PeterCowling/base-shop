@@ -1,5 +1,7 @@
 import crypto from "node:crypto";
 
+import { getCloudflareContext } from "@opennextjs/cloudflare";
+
 import {
   type CatalogProductDraftInput,
   catalogProductDraftSchema,
@@ -8,19 +10,31 @@ import {
 
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
 
+export interface CatalogContractServiceBinding {
+  fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response>;
+}
+
+declare global {
+  interface CloudflareEnv {
+    XA_CATALOG_CONTRACT_SERVICE?: CatalogContractServiceBinding;
+  }
+}
+
 export class CatalogDraftContractError extends Error {
   readonly code: "unconfigured" | "request_failed" | "invalid_response" | "conflict";
   readonly status?: number;
+  readonly endpoint?: string;
 
   constructor(
     code: "unconfigured" | "request_failed" | "invalid_response" | "conflict",
     message: string,
-    options?: { status?: number },
+    options?: { status?: number; endpoint?: string },
   ) {
     super(message);
     this.name = "CatalogDraftContractError";
     this.code = code;
     this.status = options?.status;
+    this.endpoint = options?.endpoint;
   }
 }
 
@@ -42,17 +56,24 @@ function getCatalogContractWriteToken(): string {
   return (process.env.XA_CATALOG_CONTRACT_WRITE_TOKEN ?? "").trim();
 }
 
+function getCatalogContractReadToken(): string {
+  return (process.env.XA_CATALOG_CONTRACT_READ_TOKEN ?? "").trim();
+}
+
 function ensureTrailingSlash(value: string): string {
   return value.endsWith("/") ? value : `${value}/`;
 }
 
+const CONTRACT_ROUTE_ROOT_SEGMENTS = new Set(["catalog", "drafts", "deploy", "upload"]);
+
 function resolveContractRoot(baseUrl: string): URL {
   const base = new URL(ensureTrailingSlash(baseUrl));
-  if (base.pathname.endsWith("/catalog/")) {
-    base.pathname = base.pathname.slice(0, -"catalog/".length);
-  } else if (base.pathname.endsWith("/catalog")) {
-    base.pathname = `${base.pathname.slice(0, -"catalog".length)}/`;
-  }
+  const segments = base.pathname.split("/").filter(Boolean);
+  const routeRootIndex = segments.findIndex((segment) => CONTRACT_ROUTE_ROOT_SEGMENTS.has(segment));
+  const rootSegments = routeRootIndex < 0 ? segments : segments.slice(0, routeRootIndex);
+  base.pathname = rootSegments.length > 0 ? `/${rootSegments.join("/")}/` : "/";
+  base.search = "";
+  base.hash = "";
   return base;
 }
 
@@ -77,6 +98,23 @@ function getWriteTokenHeader(): Record<string, string> {
     throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_WRITE_TOKEN is not configured.");
   }
   return { "X-XA-Catalog-Token": writeToken };
+}
+
+function getReadTokenHeader(): Record<string, string> {
+  const readToken = getCatalogContractReadToken();
+  if (readToken) {
+    return { "X-XA-Catalog-Token": readToken };
+  }
+
+  const writeToken = getCatalogContractWriteToken();
+  if (writeToken) {
+    return { "X-XA-Catalog-Token": writeToken };
+  }
+
+  throw new CatalogDraftContractError(
+    "unconfigured",
+    "XA_CATALOG_CONTRACT_READ_TOKEN or XA_CATALOG_CONTRACT_WRITE_TOKEN is not configured.",
+  );
 }
 
 function parseSnapshotPayload(payload: unknown): CloudDraftSnapshot {
@@ -110,20 +148,52 @@ function createRevision(): string {
   return crypto.randomUUID().replace(/-/g, "");
 }
 
+function sanitizeContractEndpoint(value: string): string {
+  try {
+    const url = new URL(value);
+    return `${url.origin}${url.pathname}`;
+  } catch {
+    return "invalid_contract_url";
+  }
+}
+
+function asServiceBindingRequestUrl(value: string): string {
+  const parsed = new URL(value);
+  return `https://catalog-contract.internal${parsed.pathname}${parsed.search}`;
+}
+
+async function getCatalogContractServiceBinding(): Promise<CatalogContractServiceBinding | null> {
+  try {
+    const { env } = await getCloudflareContext({ async: true });
+    return env.XA_CATALOG_CONTRACT_SERVICE ?? null;
+  } catch {
+    return null;
+  }
+}
+
+async function requestCatalogContract(url: string, init: RequestInit): Promise<Response> {
+  const serviceBinding = await getCatalogContractServiceBinding();
+  if (serviceBinding) {
+    return serviceBinding.fetch(asServiceBindingRequestUrl(url), init);
+  }
+  return fetch(url, init);
+}
+
 export async function readCloudDraftSnapshot(
   storefront: XaCatalogStorefront,
 ): Promise<CloudDraftSnapshot> {
   const url = resolveDraftUrl(storefront);
-  const response = await fetch(url, {
+  const response = await requestCatalogContract(url, {
     method: "GET",
     headers: {
-      ...getWriteTokenHeader(),
+      ...getReadTokenHeader(),
     },
   });
 
   if (!response.ok) {
     throw new CatalogDraftContractError("request_failed", "Failed to read draft contract snapshot.", {
       status: response.status,
+      endpoint: sanitizeContractEndpoint(url),
     });
   }
 
@@ -138,7 +208,7 @@ export async function writeCloudDraftSnapshot(params: {
   ifMatchDocRevision?: string | null;
 }): Promise<{ docRevision: string | null }> {
   const url = resolveDraftUrl(params.storefront);
-  const response = await fetch(url, {
+  const response = await requestCatalogContract(url, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -155,11 +225,13 @@ export async function writeCloudDraftSnapshot(params: {
   if (response.status === 409) {
     throw new CatalogDraftContractError("conflict", "Draft snapshot revision conflict.", {
       status: 409,
+      endpoint: sanitizeContractEndpoint(url),
     });
   }
   if (!response.ok) {
     throw new CatalogDraftContractError("request_failed", "Failed to write draft contract snapshot.", {
       status: response.status,
+      endpoint: sanitizeContractEndpoint(url),
     });
   }
 
@@ -179,7 +251,7 @@ export async function deleteCloudDraftSnapshot(
   storefront: XaCatalogStorefront,
 ): Promise<void> {
   const url = resolveDraftUrl(storefront);
-  const response = await fetch(url, {
+  const response = await requestCatalogContract(url, {
     method: "DELETE",
     headers: {
       ...getWriteTokenHeader(),
@@ -189,6 +261,7 @@ export async function deleteCloudDraftSnapshot(
   if (!response.ok) {
     throw new CatalogDraftContractError("request_failed", "Failed to delete draft contract snapshot.", {
       status: response.status,
+      endpoint: sanitizeContractEndpoint(url),
     });
   }
 }

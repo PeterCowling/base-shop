@@ -17,6 +17,7 @@ const publishCatalogArtifactsToContractMock = jest.fn();
 const publishCatalogPayloadToContractMock = jest.fn();
 const getCatalogContractReadinessMock = jest.fn();
 const readCloudDraftSnapshotMock = jest.fn();
+const writeCloudDraftSnapshotMock = jest.fn();
 const buildCatalogArtifactsFromDraftsMock = jest.fn();
 const getMediaBucketMock = jest.fn();
 const DEFAULT_CURRENCY_RATES_JSON = '{"EUR":0.92,"GBP":0.78,"AUD":1.5}';
@@ -61,6 +62,7 @@ jest.mock("../../../../../lib/catalogContractClient", () => ({
 
 jest.mock("../../../../../lib/catalogDraftContractClient", () => ({
   readCloudDraftSnapshot: (...args: unknown[]) => readCloudDraftSnapshotMock(...args),
+  writeCloudDraftSnapshot: (...args: unknown[]) => writeCloudDraftSnapshotMock(...args),
 }));
 
 jest.mock("../../../../../lib/catalogDraftToContract", () => ({
@@ -123,6 +125,7 @@ describe("catalog sync route branch coverage", () => {
       revisionsById: {},
       docRevision: "doc-1",
     });
+    writeCloudDraftSnapshotMock.mockResolvedValue({ docRevision: "doc-2" });
     buildCatalogArtifactsFromDraftsMock.mockReturnValue({
       catalog: { collections: [], brands: [], products: [{ slug: "studio-jacket" }] },
       mediaIndex: { totals: { products: 1, media: 0, warnings: 0 }, items: [] },
@@ -146,6 +149,7 @@ describe("catalog sync route branch coverage", () => {
     const { GET } = await import("../route");
     const response = await GET(new Request("http://localhost/api/catalog/sync?storefront=xa-b"));
     expect(response.status).toBe(404);
+    expect(response.headers.get("X-RateLimit-Limit")).toBeNull();
   });
 
   it("GET returns 404 when unauthenticated", async () => {
@@ -153,6 +157,7 @@ describe("catalog sync route branch coverage", () => {
     const { GET } = await import("../route");
     const response = await GET(new Request("http://localhost/api/catalog/sync?storefront=xa-b"));
     expect(response.status).toBe(404);
+    expect(response.headers.get("X-RateLimit-Limit")).toBeNull();
   });
 
   it("POST returns 404 in vendor mode", async () => {
@@ -166,6 +171,7 @@ describe("catalog sync route branch coverage", () => {
       }),
     );
     expect(response.status).toBe(404);
+    expect(response.headers.get("X-RateLimit-Limit")).toBeNull();
   });
 
   it("POST returns 404 when unauthenticated", async () => {
@@ -179,6 +185,7 @@ describe("catalog sync route branch coverage", () => {
       }),
     );
     expect(response.status).toBe(404);
+    expect(response.headers.get("X-RateLimit-Limit")).toBeNull();
   });
 
   it("POST returns invalid_json for malformed payload", async () => {
@@ -280,6 +287,7 @@ describe("catalog sync route branch coverage", () => {
     expect((await POST(req())).status).toBe(200);
     const fourth = await POST(req());
     expect(fourth.status).toBe(429);
+    expect(fourth.headers.get("X-RateLimit-Limit")).toBe("3");
     expect(await fourth.json()).toEqual(
       expect.objectContaining({ ok: false, error: "rate_limited", reason: "sync_rate_limited" }),
     );

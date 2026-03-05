@@ -192,10 +192,14 @@ describe("xa-drop-worker edge branches", () => {
   });
 
   it("returns 304 when If-None-Match matches normalized unquoted etag", async () => {
+    const token = "catalog-write-token-1234567890";
     const res = await handler.fetch(
       new Request("https://drop.example/catalog/xa-b", {
         method: "GET",
-        headers: { "If-None-Match": "\"etag123\"" },
+        headers: {
+          "If-None-Match": "\"etag123\"",
+          "X-XA-Catalog-Token": token,
+        },
       }),
       {
         SUBMISSIONS_BUCKET: {
@@ -205,6 +209,7 @@ describe("xa-drop-worker edge branches", () => {
               text: async () => "{\"ok\":true}\n",
             }) as unknown,
         } as unknown as R2Bucket,
+        CATALOG_WRITE_TOKEN: token,
       },
     );
 

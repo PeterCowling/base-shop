@@ -11,6 +11,8 @@ const fallbackMediaIndexPath = path.join(appRoot, "src", "data", "catalog.media.
 const runtimeCatalogPath = path.join(appRoot, "src", "data", "catalog.runtime.json");
 const runtimeMediaIndexPath = path.join(appRoot, "src", "data", "catalog.media.runtime.json");
 const runtimeMetaPath = path.join(appRoot, "src", "data", "catalog.runtime.meta.json");
+const pagesWorkerTemplatePath = path.join(scriptDir, "pages-worker.js");
+const pagesWorkerOutputPath = path.join(appRoot, "out", "_worker.js");
 
 function resolveStealthMode() {
   const raw = (process.env.NEXT_PUBLIC_STEALTH_MODE ?? "").trim().toLowerCase();
@@ -372,6 +374,15 @@ function resolveFromGit() {
   }
 }
 
+async function syncPagesWorkerScript() {
+  const source = await fs.readFile(pagesWorkerTemplatePath, "utf8");
+  await fs.mkdir(path.dirname(pagesWorkerOutputPath), { recursive: true });
+  const temp = `${pagesWorkerOutputPath}.tmp`;
+  await fs.writeFile(temp, source, "utf8");
+  await fs.rename(temp, pagesWorkerOutputPath);
+  console.log("[xa-build] synced Pages advanced-mode worker to out/_worker.js.");
+}
+
 async function main() {
   runSiteConfigPreflight();
   await syncCatalogFromContract();
@@ -394,7 +405,12 @@ async function main() {
     env,
   });
 
-  process.exit(result.status ?? 1);
+  const exitCode = result.status ?? 1;
+  if (exitCode !== 0) {
+    process.exit(exitCode);
+  }
+
+  await syncPagesWorkerScript();
 }
 
 main().catch((error) => {

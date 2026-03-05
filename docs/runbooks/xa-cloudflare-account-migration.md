@@ -60,6 +60,8 @@ Staging URL convention for `xa-b-site`:
     - `preflight:deploy -- --env preview --sync-kv-id-from-env --sync-deploy-hook-from-env`
 - `.github/workflows/xa-b-redeploy.yml`
   - manual/on-demand XA-B build + deploy path
+- `.github/workflows/xa-deploy-drain-staging.yml`
+  - scheduled (every 5 minutes) deploy-drain trigger for `xa-uploader-preview` pending deploys
 
 ### Security hardening wiring (must preserve)
 
@@ -87,12 +89,14 @@ Secrets:
 - `CLOUDFLARE_ACCOUNT_ID`
 - `XA_B_DEPLOY_HOOK_URL_PREVIEW` (used by uploader preflight sync)
 - `XA_CATALOG_CONTRACT_READ_TOKEN` (used by xa-b build to read protected catalog contract)
+- `XA_UPLOADER_DEPLOY_DRAIN_TOKEN` (used by scheduled deploy-drain workflow; must match the uploader Worker secret value)
 
 Variables:
 - `XA_CATALOG_CONTRACT_READ_URL`
 - `XA_IMAGES_BASE_URL_PREVIEW` (staging image host)
 - optional fallback `XA_IMAGES_BASE_URL`
 - `XA_UPLOADER_KV_NAMESPACE_ID_PREVIEW`
+- optional `XA_UPLOADER_PREVIEW_BASE_URL` (override for deploy-drain workflow target URL)
 
 ### Required Worker secrets/vars
 
@@ -256,6 +260,8 @@ Important config invariant:
 - Confirm deploy cooldown behavior:
   - first publish triggers deploy,
   - immediate second publish reports cooldown skip (`skipped_cooldown`) instead of triggering another deploy.
+- Confirm automatic deploy-drain behavior:
+  - after a cooldown-skipped publish, wait up to 15 minutes and verify `.github/workflows/xa-deploy-drain-staging.yml` triggers deploy and xa-b receives the update without a manual republish.
 - Confirm catalog read auth:
   - unauthenticated `GET <drop-worker>/catalog/xa-b` returns `401`,
   - authenticated read with `X-XA-Catalog-Token: <CATALOG_READ_TOKEN>` returns `200`.

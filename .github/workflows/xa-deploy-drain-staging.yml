@@ -1,0 +1,80 @@
+name: XA Deploy Drain (staging)
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+    inputs:
+      storefront:
+        description: "Storefront to drain"
+        required: false
+        default: "xa-b"
+
+permissions: {}
+
+concurrency:
+  group: xa-deploy-drain-staging
+  cancel-in-progress: false
+
+jobs:
+  deploy-drain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      XA_UPLOADER_PREVIEW_BASE_URL_DEFAULT: https://xa-uploader-preview.peter-cowling1976.workers.dev
+      XA_UPLOADER_PREVIEW_BASE_URL_OVERRIDE: ${{ vars.XA_UPLOADER_PREVIEW_BASE_URL }}
+      XA_UPLOADER_DEPLOY_DRAIN_TOKEN: ${{ secrets.XA_UPLOADER_DEPLOY_DRAIN_TOKEN }}
+      STOREFRONT: ${{ inputs.storefront }}
+    steps:
+      - name: Validate runtime configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${XA_UPLOADER_DEPLOY_DRAIN_TOKEN}" ]]; then
+            echo "::error::Missing XA_UPLOADER_DEPLOY_DRAIN_TOKEN repository secret."
+            exit 1
+          fi
+
+          storefront="${STOREFRONT:-xa-b}"
+          if ! [[ "${storefront}" =~ ^[a-z0-9-]+$ ]]; then
+            echo "::error::Invalid storefront ${storefront}."
+            exit 1
+          fi
+
+      - name: Trigger deploy drain
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          storefront="${STOREFRONT:-xa-b}"
+          base_url="${XA_UPLOADER_PREVIEW_BASE_URL_DEFAULT}"
+          if [[ -n "${XA_UPLOADER_PREVIEW_BASE_URL_OVERRIDE}" ]]; then
+            base_url="${XA_UPLOADER_PREVIEW_BASE_URL_OVERRIDE}"
+          fi
+
+          endpoint="${base_url%/}/api/catalog/deploy-drain?storefront=${storefront}"
+          response_file="$(mktemp)"
+          http_code="$(
+            curl \
+              --silent \
+              --show-error \
+              --output "${response_file}" \
+              --write-out "%{http_code}" \
+              --connect-timeout 10 \
+              --max-time 60 \
+              --request POST \
+              --header "authorization: Bearer ${XA_UPLOADER_DEPLOY_DRAIN_TOKEN}" \
+              "${endpoint}"
+          )"
+
+          echo "Endpoint: ${endpoint}"
+          echo "HTTP status: ${http_code}"
+          echo "Response body:"
+          cat "${response_file}"
+          echo
+
+          if [[ "${http_code}" -lt 200 || "${http_code}" -ge 300 ]]; then
+            echo "::error::Deploy drain call failed with HTTP ${http_code}."
+            exit 1
+          fi

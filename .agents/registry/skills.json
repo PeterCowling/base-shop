@@ -352,6 +352,11 @@
       "path": ".claude/skills/tools-bug-scan/SKILL.md"
     },
     {
+      "name": "tools-bug-triad-review",
+      "description": "Run a weekly adversarial bug triad (finder, skeptic, arbiter) to maximize bug discovery coverage and emit a scored verified bug list.",
+      "path": ".claude/skills/tools-bug-triad-review/SKILL.md"
+    },
+    {
       "name": "tools-design-system",
       "description": "Apply design tokens and system patterns correctly. Reference for semantic colors, spacing, typography, borders, and shadows. Never use arbitrary values.",
       "path": ".claude/skills/tools-design-system/SKILL.md"

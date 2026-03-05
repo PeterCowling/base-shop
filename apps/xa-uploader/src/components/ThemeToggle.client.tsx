@@ -7,14 +7,14 @@ import { useUploaderI18n } from "../lib/uploaderI18n.client";
 type Theme = "light" | "dark";
 
 function getInitialTheme(): Theme {
-  if (typeof window === "undefined") return "light";
+  if (typeof window === "undefined") return "dark";
   try {
     const stored = localStorage.getItem("xa-uploader-theme");
-    if (stored === "dark") return "dark";
+    if (stored === "light") return "light";
   } catch {
     /* noop */
   }
-  return "light";
+  return "dark";
 }
 
 export function ThemeToggle({ variant = "dark" }: { variant?: "light" | "dark" }) {
@@ -25,12 +25,14 @@ export function ThemeToggle({ variant = "dark" }: { variant?: "light" | "dark" }
     const initial = getInitialTheme();
     setTheme(initial);
     document.documentElement.setAttribute("data-theme", initial);
+    document.documentElement.classList.toggle("theme-dark", initial === "dark");
   }, []);
 
   const toggle = React.useCallback(() => {
     setTheme((prev) => {
       const next: Theme = prev === "light" ? "dark" : "light";
       document.documentElement.setAttribute("data-theme", next);
+      document.documentElement.classList.toggle("theme-dark", next === "dark");
       try {
         localStorage.setItem("xa-uploader-theme", next);
       } catch {
@@ -50,7 +52,7 @@ export function ThemeToggle({ variant = "dark" }: { variant?: "light" | "dark" }
       className={`rounded-md border px-3 py-2 text-2xs uppercase tracking-label-lg transition ${
         isDark
           ? "border-gate-header-border text-gate-header-muted hover:text-gate-header-fg"
-          : "border-border-2 text-gate-muted hover:text-gate-ink"
+          : "border-gate-border text-gate-muted hover:text-gate-ink"
       }`}
     >
       {theme === "light" ? t("themeDarkLabel") : t("themeLightLabel")}

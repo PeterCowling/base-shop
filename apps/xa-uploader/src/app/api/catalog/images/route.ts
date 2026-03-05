@@ -1,10 +1,18 @@
 /* eslint-disable ds/no-hardcoded-copy -- XAUP-0001 [ttl=2026-12-31] machine-token route guards and reason codes */
 
-import { mkdir, writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import { randomUUID } from "node:crypto";
+import { mkdir, unlink, writeFile } from "node:fs/promises";
+import { join, resolve, sep } from "node:path";
 
 import { NextResponse } from "next/server";
 
+import { normalizeXaImageRole, slugify, splitList } from "@acme/lib/xa";
+
+import { listCatalogDrafts } from "../../../../lib/catalogCsv";
+import { readCloudDraftSnapshot } from "../../../../lib/catalogDraftContractClient";
+import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
+import type { XaCatalogStorefront } from "../../../../lib/catalogStorefront.types";
+import { isLocalFsRuntimeEnabled } from "../../../../lib/localFsGuard";
 import { getMediaBucket } from "../../../../lib/r2Media";
 import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
@@ -22,7 +30,10 @@ type ImageUploadErrorCode =
 
 const UPLOAD_WINDOW_MS = 60 * 1000;
 const UPLOAD_MAX_REQUESTS = 10;
+const DELETE_WINDOW_MS = 60 * 1000;
+const DELETE_MAX_REQUESTS = 30;
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024; // 8MB
+const LOCAL_WRITE_MAX_ATTEMPTS = 4;
 
 const ALLOWED_TYPES: ReadonlyMap<string, string> = new Map([
   ["jpeg", "image/jpeg"],
@@ -43,6 +54,37 @@ function fileExtForFormat(format: string): string {
   return format;
 }
 
+function buildUniqueFilename(role: string, ext: string): string {
+  const nowMs = Date.now();
+  const nonce = randomUUID().replace(/-/g, "").slice(0, 12);
+  return `${nowMs}-${role}-${nonce}.${ext}`;
+}
+
+function isErrnoCode(error: unknown, code: string): boolean {
+  if (!error || typeof error !== "object") return false;
+  return (error as NodeJS.ErrnoException).code === code;
+}
+
+async function writeLocalImageWithRetry(params: {
+  dirPath: string;
+  role: string;
+  ext: string;
+  buf: Buffer;
+}): Promise<string> {
+  for (let attempt = 0; attempt < LOCAL_WRITE_MAX_ATTEMPTS; attempt += 1) {
+    const filename = buildUniqueFilename(params.role, params.ext);
+    const fullPath = join(params.dirPath, filename);
+    try {
+      await writeFile(fullPath, params.buf, { flag: "wx" });
+      return filename;
+    } catch (error) {
+      if (isErrnoCode(error, "EEXIST")) continue;
+      throw error;
+    }
+  }
+  throw new Error("local filename collision retry limit reached");
+}
+
 function buildErrorResponse(error: ImageUploadErrorCode, status: number, reason: string) {
   return NextResponse.json({ ok: false, error, reason }, { status });
 }
@@ -50,6 +92,162 @@ function buildErrorResponse(error: ImageUploadErrorCode, status: number, reason:
 function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLimit>): NextResponse {
   applyRateLimitHeaders(response.headers, limit);
   return response;
+}
+
+function parseUploadQueryParams(requestUrl: string): {
+  ok: true;
+  storefront: string;
+  slug: string;
+  role: string;
+} | {
+  ok: false;
+  reason: string;
+} {
+  const url = new URL(requestUrl);
+  const rawStorefront = (url.searchParams.get("storefront") ?? "").trim();
+  const rawSlug = (url.searchParams.get("slug") ?? "").trim();
+  const rawRole = (url.searchParams.get("role") ?? "").trim();
+  if (!rawStorefront || !rawSlug || !rawRole) {
+    return { ok: false, reason: "storefront, slug, and role query params are required" };
+  }
+
+  const storefront = parseStorefront(rawStorefront);
+  if (storefront !== rawStorefront) {
+    return { ok: false, reason: "invalid storefront query param" };
+  }
+
+  const slug = slugify(rawSlug);
+  if (!slug) {
+    return { ok: false, reason: "invalid slug query param" };
+  }
+
+  const role = normalizeXaImageRole(rawRole);
+  if (!role) {
+    return { ok: false, reason: "invalid role query param" };
+  }
+
+  return { ok: true, storefront, slug, role };
+}
+
+function normalizeCatalogPath(pathValue: string): string {
+  const trimmed = pathValue.trim();
+  if (!trimmed) return "";
+  if (/^https?:\/\//i.test(trimmed)) return "";
+  return trimmed.replace(/^\/+/, "");
+}
+
+function parseDeleteQueryParams(requestUrl: string): {
+  ok: true;
+  storefront: XaCatalogStorefront;
+  key: string;
+} | {
+  ok: false;
+  reason: string;
+} {
+  const url = new URL(requestUrl);
+  const rawStorefront = (url.searchParams.get("storefront") ?? "").trim();
+  const rawKey = (url.searchParams.get("key") ?? "").trim();
+  if (!rawStorefront || !rawKey) {
+    return { ok: false, reason: "storefront and key query params are required" };
+  }
+
+  const storefront = parseStorefront(rawStorefront);
+  if (storefront !== rawStorefront) {
+    return { ok: false, reason: "invalid storefront query param" };
+  }
+
+  const key = normalizeCatalogPath(rawKey);
+  if (!key || key.includes("\\") || key.includes("..")) {
+    return { ok: false, reason: "invalid image key query param" };
+  }
+  if (!key.startsWith("images/") && !key.startsWith(`${storefront}/`)) {
+    return { ok: false, reason: "image key must be images/<slug>/<file> or <storefront>/<slug>/<file>" };
+  }
+  if (key.split("/").filter(Boolean).length < 3) {
+    return { ok: false, reason: "image key must include storefront-or-images, slug, and filename segments" };
+  }
+
+  return { ok: true, storefront, key };
+}
+
+function buildKeyAliases(params: {
+  storefront: XaCatalogStorefront;
+  key: string;
+}): Set<string> {
+  const aliases = new Set<string>([params.key]);
+  if (params.key.startsWith("images/")) {
+    aliases.add(`${params.storefront}/${params.key.slice("images/".length)}`);
+  } else if (params.key.startsWith(`${params.storefront}/`)) {
+    aliases.add(`images/${params.key.slice(params.storefront.length + 1)}`);
+  }
+  return aliases;
+}
+
+async function keyIsStillReferenced(params: {
+  storefront: XaCatalogStorefront;
+  key: string;
+}): Promise<boolean> {
+  const drafts = isLocalFsRuntimeEnabled()
+    ? (await listCatalogDrafts(params.storefront)).products
+    : (await readCloudDraftSnapshot(params.storefront)).products;
+  const aliases = buildKeyAliases(params);
+  for (const product of drafts) {
+    const imageFiles = splitList(product.imageFiles ?? "")
+      .map((value) => normalizeCatalogPath(value))
+      .filter(Boolean);
+    if (imageFiles.some((pathValue) => aliases.has(pathValue))) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function resolveLocalImageFilePath(catalogKey: string): string | null {
+  if (!catalogKey.startsWith("images/")) return null;
+  const localPublicRoot = resolve(process.cwd(), "..", "xa-b", "public");
+  const filePath = resolve(localPublicRoot, catalogKey);
+  const rootPrefix = `${localPublicRoot}${sep}`;
+  if (filePath !== localPublicRoot && !filePath.startsWith(rootPrefix)) {
+    return null;
+  }
+  return filePath;
+}
+
+async function deletePersistedImageKey(params: {
+  storefront: XaCatalogStorefront;
+  key: string;
+}): Promise<void> {
+  if (params.key.startsWith("images/")) {
+    const localFilePath = resolveLocalImageFilePath(params.key);
+    if (!localFilePath) {
+      throw new Error("invalid local image path");
+    }
+    try {
+      await unlink(localFilePath);
+    } catch (error) {
+      if (isErrnoCode(error, "ENOENT")) return;
+      throw error;
+    }
+    return;
+  }
+
+  const bucket = await getMediaBucket();
+  if (bucket) {
+    await bucket.delete(params.key);
+    return;
+  }
+
+  const localAlias = `images/${params.key.slice(params.storefront.length + 1)}`;
+  const localFilePath = resolveLocalImageFilePath(localAlias);
+  if (!localFilePath) {
+    throw new Error("media bucket unavailable");
+  }
+  try {
+    await unlink(localFilePath);
+  } catch (error) {
+    if (isErrnoCode(error, "ENOENT")) return;
+    throw error;
+  }
 }
 
 export async function POST(request: Request) {
@@ -69,17 +267,14 @@ export async function POST(request: Request) {
     return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
   }
 
-  // Parse query params
-  const url = new URL(request.url);
-  const storefront = url.searchParams.get("storefront");
-  const slug = url.searchParams.get("slug");
-  const role = url.searchParams.get("role");
-  if (!storefront || !slug || !role) {
+  const uploadParams = parseUploadQueryParams(request.url);
+  if ("reason" in uploadParams) {
     return withRateHeaders(
-      buildErrorResponse("missing_params", 400, "storefront, slug, and role query params are required"),
+      buildErrorResponse("missing_params", 400, uploadParams.reason),
       limit,
     );
   }
+  const { storefront, slug, role } = uploadParams;
 
   // Get R2 bucket (null in local dev)
   const bucket = await getMediaBucket();
@@ -118,19 +313,13 @@ export async function POST(request: Request) {
     );
   }
 
-
-  // Build filename: {timestamp}-{role}.{ext}
-  const timestamp = Math.floor(Date.now() / 1000);
   const ext = fileExtForFormat(format);
-  const filename = `${timestamp}-${role}.${ext}`;
+  const filename = buildUniqueFilename(role, ext);
 
   // Upload to R2 (production) or write into xa-b's public/images/ (dev).
   // In dev the file lands where xa-b serves static assets, so the image is
   // immediately visible on the storefront without an extra copy step.
   const contentType = ALLOWED_TYPES.get(format) ?? "application/octet-stream";
-
-  // Path relative to public/ that both apps use: images/{slug}/{file}
-  const catalogPath = `images/${slug}/${filename}`;
 
   if (bucket) {
     const r2Key = `${storefront}/${slug}/${filename}`;
@@ -149,10 +338,63 @@ export async function POST(request: Request) {
   try {
     const xaBPublicImages = join(process.cwd(), "..", "xa-b", "public", "images", slug);
     await mkdir(xaBPublicImages, { recursive: true });
-    await writeFile(join(xaBPublicImages, filename), Buffer.from(arrayBuffer));
+    const persistedFilename = await writeLocalImageWithRetry({
+      dirPath: xaBPublicImages,
+      role,
+      ext,
+      buf,
+    });
+    const localCatalogPath = `images/${slug}/${persistedFilename}`;
+    return withRateHeaders(NextResponse.json({ ok: true, key: localCatalogPath }), limit);
   } catch {
     return withRateHeaders(buildErrorResponse("upload_failed", 500, "local file write failed"), limit);
   }
+}
 
-  return withRateHeaders(NextResponse.json({ ok: true, key: catalogPath }), limit);
+export async function DELETE(request: Request) {
+  const requestIp = getRequestIp(request) || "unknown";
+  const limit = rateLimit({
+    key: `xa-uploader-images-delete:${requestIp}`,
+    windowMs: DELETE_WINDOW_MS,
+    max: DELETE_MAX_REQUESTS,
+  });
+  if (!limit.allowed) {
+    return withRateHeaders(buildErrorResponse("rate_limited", 429, "delete_rate_limited"), limit);
+  }
+
+  const authenticated = await hasUploaderSession(request);
+  if (!authenticated) {
+    return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
+  }
+
+  const deleteParams = parseDeleteQueryParams(request.url);
+  if ("reason" in deleteParams) {
+    return withRateHeaders(
+      buildErrorResponse("missing_params", 400, deleteParams.reason),
+      limit,
+    );
+  }
+
+  const { storefront, key } = deleteParams;
+  try {
+    const stillReferenced = await keyIsStillReferenced({ storefront, key });
+    if (stillReferenced) {
+      return withRateHeaders(
+        NextResponse.json({ ok: true, deleted: false, skipped: "still_referenced" }),
+        limit,
+      );
+    }
+  } catch {
+    return withRateHeaders(buildErrorResponse("upload_failed", 500, "reference_check_failed"), limit);
+  }
+
+  try {
+    await deletePersistedImageKey({ storefront, key });
+    return withRateHeaders(NextResponse.json({ ok: true, deleted: true }), limit);
+  } catch (error) {
+    if (error instanceof Error && error.message === "media bucket unavailable") {
+      return withRateHeaders(buildErrorResponse("r2_unavailable", 503, "media_bucket_unavailable"), limit);
+    }
+    return withRateHeaders(buildErrorResponse("upload_failed", 500, "image_delete_failed"), limit);
+  }
 }

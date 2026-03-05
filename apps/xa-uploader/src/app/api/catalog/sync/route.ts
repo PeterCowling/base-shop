@@ -28,7 +28,18 @@ import { buildCatalogArtifactsFromDrafts } from "../../../../lib/catalogDraftToC
 import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
 import type { XaCatalogStorefront } from "../../../../lib/catalogStorefront.types";
 import { getCatalogSyncInputStatus } from "../../../../lib/catalogSyncInput";
+import {
+  buildDisplaySyncGuidance,
+  type DeployPendingState,
+  type DeployTriggerResult,
+  isDeployHookConfigured,
+  isDeployHookRequired,
+  maybeTriggerXaBDeploy,
+  reconcileDeployPendingState,
+  resolveDeployStatePaths,
+} from "../../../../lib/deployHook";
 import { isLocalFsRuntimeEnabled } from "../../../../lib/localFsGuard";
+import { getMediaBucket } from "../../../../lib/r2Media";
 import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
 import { resolveRepoRoot } from "../../../../lib/repoRoot";
 import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
@@ -48,7 +59,10 @@ type SyncOptions = {
   replace?: boolean;
   recursive?: boolean;
   confirmEmptyInput?: boolean;
+  mediaValidationPolicy?: MediaValidationPolicy;
 };
+
+type MediaValidationPolicy = "warn" | "strict";
 
 type SyncPayload = {
   options: SyncOptions;
@@ -65,15 +79,6 @@ type ScriptRunResult = {
   timedOut: boolean;
 };
 
-type DeployTriggerStatus = "triggered" | "skipped_unconfigured" | "skipped_cooldown" | "failed";
-
-type DeployTriggerResult = {
-  status: DeployTriggerStatus;
-  nextEligibleAt?: string;
-  reason?: string;
-  httpStatus?: number;
-};
-
 const SYNC_WINDOW_MS = 60 * 1000;
 const SYNC_MAX_REQUESTS = 3;
 const SYNC_READINESS_WINDOW_MS = 60 * 1000;
@@ -81,46 +86,7 @@ const SYNC_READINESS_MAX_REQUESTS = 30;
 const SYNC_PAYLOAD_MAX_BYTES = 24 * 1024;
 const SYNC_LOG_MAX_BYTES_DEFAULT = 128 * 1024;
 const SYNC_PUBLISH_HISTORY_MAX = 100;
-const DEPLOY_HOOK_TIMEOUT_MS_DEFAULT = 15_000;
-const DEPLOY_HOOK_COOLDOWN_SECONDS_DEFAULT = 900;
-
-function buildDisplaySyncGuidance(deploy?: DeployTriggerResult) {
-  if (deploy?.status === "triggered") {
-    return {
-      mode: "build_time_runtime_catalog",
-      requiresXaBBuild: false,
-      nextAction: "await_xa_b_deploy",
-      deployStatus: deploy.status,
-      nextEligibleAt: deploy.nextEligibleAt,
-    };
-  }
-  if (deploy?.status === "skipped_cooldown") {
-    return {
-      mode: "build_time_runtime_catalog",
-      requiresXaBBuild: true,
-      nextAction: "wait_or_manual_deploy_xa_b",
-      deployStatus: deploy.status,
-      nextEligibleAt: deploy.nextEligibleAt,
-    };
-  }
-  if (deploy?.status === "failed") {
-    return {
-      mode: "build_time_runtime_catalog",
-      requiresXaBBuild: true,
-      nextAction: "manual_rebuild_and_deploy_xa_b",
-      deployStatus: deploy.status,
-      nextEligibleAt: deploy.nextEligibleAt,
-      deployReason: deploy.reason,
-    };
-  }
-  return {
-    mode: "build_time_runtime_catalog",
-    requiresXaBBuild: true,
-    nextAction: "rebuild_and_deploy_xa_b",
-    ...(deploy ? { deployStatus: deploy.status } : {}),
-    ...(deploy?.nextEligibleAt ? { nextEligibleAt: deploy.nextEligibleAt } : {}),
-  };
-}
+const CLOUD_MEDIA_HEAD_MAX_KEYS_DEFAULT = 300;
 
 function getValidateTimeoutMs(): number {
   return toPositiveInt(process.env.XA_UPLOADER_SYNC_VALIDATE_TIMEOUT_MS, 45_000, 1);
@@ -134,26 +100,6 @@ function getSyncLogMaxBytes(): number {
   return toPositiveInt(process.env.XA_UPLOADER_SYNC_LOG_MAX_BYTES, SYNC_LOG_MAX_BYTES_DEFAULT, 1);
 }
 
-function getDeployHookUrl(): string {
-  return (process.env.XA_B_DEPLOY_HOOK_URL ?? "").trim();
-}
-
-function getDeployHookTimeoutMs(): number {
-  return toPositiveInt(
-    process.env.XA_B_DEPLOY_HOOK_TIMEOUT_MS,
-    DEPLOY_HOOK_TIMEOUT_MS_DEFAULT,
-    1,
-  );
-}
-
-function getDeployHookCooldownSeconds(): number {
-  return toPositiveInt(
-    process.env.XA_B_DEPLOY_HOOK_COOLDOWN_SECONDS,
-    DEPLOY_HOOK_COOLDOWN_SECONDS_DEFAULT,
-    1,
-  );
-}
-
 function shouldExposeSyncLogs(): boolean {
   return process.env.NODE_ENV !== "production" && process.env.XA_UPLOADER_EXPOSE_SYNC_LOGS === "1";
 }
@@ -165,13 +111,45 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 function parseSyncOptions(input: unknown): SyncOptions {
   if (!isRecord(input)) return {};
 
+  const mediaValidationPolicyRaw =
+    typeof input.mediaValidationPolicy === "string"
+      ? input.mediaValidationPolicy.trim().toLowerCase()
+      : "";
+  const mediaValidationPolicy: MediaValidationPolicy | undefined =
+    mediaValidationPolicyRaw === "strict" || mediaValidationPolicyRaw === "warn"
+      ? mediaValidationPolicyRaw
+      : undefined;
+
   return {
     strict: input.strict === true,
     dryRun: input.dryRun === true,
     replace: input.replace === true,
     recursive: input.recursive === true,
     confirmEmptyInput: input.confirmEmptyInput === true,
+    mediaValidationPolicy,
   };
+}
+
+function getDefaultCloudMediaValidationPolicy(): MediaValidationPolicy {
+  const raw = (process.env.XA_UPLOADER_CLOUD_MEDIA_VALIDATION_POLICY ?? "warn")
+    .trim()
+    .toLowerCase();
+  return raw === "strict" ? "strict" : "warn";
+}
+
+function resolveCloudMediaValidationPolicy(options: SyncOptions): MediaValidationPolicy {
+  return options.mediaValidationPolicy ?? getDefaultCloudMediaValidationPolicy();
+}
+
+function getCloudMediaHeadMaxKeys(): number {
+  return toPositiveInt(process.env.XA_UPLOADER_CLOUD_MEDIA_HEAD_MAX_KEYS, CLOUD_MEDIA_HEAD_MAX_KEYS_DEFAULT, 1);
+}
+
+function getCloudAllowedExternalImageHosts(): string[] {
+  return (process.env.XA_UPLOADER_CLOUD_MEDIA_ALLOWED_HOSTS ?? "")
+    .split(",")
+    .map((entry) => entry.trim())
+    .filter(Boolean);
 }
 
 async function parseSyncPayload(request: Request): Promise<SyncPayload> {
@@ -381,6 +359,163 @@ function productIdentity(product: CatalogProductDraftInput): string {
   return `slug:${slugify(product.slug || product.title)}`;
 }
 
+type CloudBuiltArtifacts = Awaited<ReturnType<typeof buildCatalogArtifactsFromDrafts>>;
+
+function isAbsoluteHttpUrl(pathValue: string): boolean {
+  return /^https?:\/\//i.test(pathValue);
+}
+
+function summarizePathsForError(paths: string[]): string {
+  const MAX = 10;
+  const listed = paths.slice(0, MAX).join(", ");
+  if (paths.length <= MAX) return listed;
+  return `${listed} (+${paths.length - MAX} more)`;
+}
+
+function pruneArtifactsByMissingKeys(params: {
+  artifacts: CloudBuiltArtifacts;
+  missingKeys: Set<string>;
+}): CloudBuiltArtifacts {
+  if (params.missingKeys.size === 0) return params.artifacts;
+
+  const filteredProducts = params.artifacts.catalog.products.map((product) => ({
+    ...product,
+    media: product.media.filter((item) => {
+      if (item.type !== "image") return true;
+      return !params.missingKeys.has(item.path);
+    }),
+  }));
+
+  const filteredMediaItems = params.artifacts.mediaIndex.items.filter(
+    (item) => !params.missingKeys.has(item.catalogPath),
+  );
+
+  return {
+    ...params.artifacts,
+    catalog: {
+      ...params.artifacts.catalog,
+      products: filteredProducts,
+    },
+    mediaIndex: {
+      ...params.artifacts.mediaIndex,
+      totals: {
+        ...params.artifacts.mediaIndex.totals,
+        media: filteredMediaItems.length,
+      },
+      items: filteredMediaItems,
+    },
+  };
+}
+
+async function applyCloudMediaExistenceValidation(params: {
+  artifacts: CloudBuiltArtifacts;
+  policy: MediaValidationPolicy;
+}): Promise<
+  | { ok: true; artifacts: CloudBuiltArtifacts; warnings: string[] }
+  | { ok: false; errorResponse: NextResponse }
+> {
+  const mediaKeys = Array.from(
+    new Set(
+      params.artifacts.mediaIndex.items
+        .map((item) => item.catalogPath)
+        .filter((catalogPath) => Boolean(catalogPath) && !isAbsoluteHttpUrl(catalogPath)),
+    ),
+  );
+
+  if (mediaKeys.length === 0) {
+    return { ok: true, artifacts: params.artifacts, warnings: [] };
+  }
+
+  const maxKeys = getCloudMediaHeadMaxKeys();
+  const keysToCheck = mediaKeys.slice(0, maxKeys);
+  const skippedCount = mediaKeys.length - keysToCheck.length;
+  if (params.policy === "strict" && skippedCount > 0) {
+    return {
+      ok: false,
+      errorResponse: NextResponse.json(
+        {
+          ok: false,
+          error: "validation_failed",
+          recovery: "review_validation_logs",
+          details: `cloud media validation limit exceeded (${mediaKeys.length} keys > ${maxKeys})`,
+        },
+        { status: 400 },
+      ),
+    };
+  }
+
+  const bucket = await getMediaBucket();
+  if (!bucket) {
+    if (params.policy === "strict") {
+      return {
+        ok: false,
+        errorResponse: NextResponse.json(
+          {
+            ok: false,
+            error: "validation_failed",
+            recovery: "review_validation_logs",
+            // i18n-exempt -- XAUP-0001 [ttl=2026-12-31] machine validation details for operator logs
+            details: "cloud media bucket is unavailable for strict existence validation",
+          },
+          { status: 400 },
+        ),
+      };
+    }
+    return {
+      ok: true,
+      artifacts: params.artifacts,
+      warnings: skippedCount > 0 ? [`cloud_media_validation_limit_skipped:${skippedCount}`] : [],
+    };
+  }
+
+  const missingKeys = new Set<string>();
+  for (const key of keysToCheck) {
+    try {
+      const head = await bucket.head(key);
+      if (!head) {
+        missingKeys.add(key);
+      }
+    } catch {
+      missingKeys.add(key);
+    }
+  }
+
+  if (params.policy === "strict" && missingKeys.size > 0) {
+    const sortedMissing = Array.from(missingKeys).sort((left, right) => left.localeCompare(right));
+    return {
+      ok: false,
+      errorResponse: NextResponse.json(
+        {
+          ok: false,
+          error: "validation_failed",
+          recovery: "review_validation_logs",
+          details: `cloud media keys are missing: ${summarizePathsForError(sortedMissing)}`,
+        },
+        { status: 400 },
+      ),
+    };
+  }
+
+  const warnings: string[] = [];
+  if (missingKeys.size > 0) {
+    warnings.push(`cloud_media_missing_pruned:${missingKeys.size}`);
+  }
+  if (skippedCount > 0) {
+    warnings.push(`cloud_media_validation_limit_skipped:${skippedCount}`);
+  }
+
+  const prunedArtifacts = pruneArtifactsByMissingKeys({
+    artifacts: params.artifacts,
+    missingKeys,
+  });
+
+  return {
+    ok: true,
+    artifacts: prunedArtifacts,
+    warnings,
+  };
+}
+
 async function getCurrencyRatesStatus(currencyRatesPath: string): Promise<{
   ok: true;
 } | {
@@ -444,143 +579,6 @@ function buildCatalogInputGuardResponse(params: {
   }
 
   return null;
-}
-
-function getDeployCooldownKey(storefrontId: XaCatalogStorefront): string {
-  return `xa-deploy-cooldown:${storefrontId}`;
-}
-
-function getDeployCooldownStatePath(uploaderDataDir: string, storefrontId: XaCatalogStorefront): string {
-  return path.join(uploaderDataDir, "deploy-cooldown", `${storefrontId}.json`);
-}
-
-function parseNextEligibleAt(raw: string | null): number | null {
-  if (!raw) return null;
-  try {
-    const parsed = JSON.parse(raw) as { nextEligibleAt?: string };
-    if (typeof parsed.nextEligibleAt !== "string") return null;
-    const epochMs = Date.parse(parsed.nextEligibleAt);
-    if (!Number.isFinite(epochMs)) return null;
-    return epochMs;
-  } catch {
-    return null;
-  }
-}
-
-async function readDeployCooldownEpochMs(params: {
-  storefrontId: XaCatalogStorefront;
-  kv: UploaderKvNamespace | null;
-  statePath?: string;
-}): Promise<number | null> {
-  if (params.kv) {
-    const raw = await params.kv.get(getDeployCooldownKey(params.storefrontId));
-    return parseNextEligibleAt(raw);
-  }
-  if (!params.statePath) return null;
-  try {
-    const raw = await fs.readFile(params.statePath, "utf8");
-    return parseNextEligibleAt(raw);
-  } catch {
-    return null;
-  }
-}
-
-async function writeDeployCooldown(params: {
-  storefrontId: XaCatalogStorefront;
-  kv: UploaderKvNamespace | null;
-  cooldownSeconds: number;
-  nextEligibleAtMs: number;
-  statePath?: string;
-}): Promise<void> {
-  const payload = JSON.stringify(
-    {
-      storefront: params.storefrontId,
-      nextEligibleAt: new Date(params.nextEligibleAtMs).toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-    null,
-    2,
-  );
-  if (params.kv) {
-    await params.kv.put(getDeployCooldownKey(params.storefrontId), payload, {
-      expirationTtl: params.cooldownSeconds,
-    });
-    return;
-  }
-  if (!params.statePath) return;
-  await fs.mkdir(path.dirname(params.statePath), { recursive: true });
-  await fs.writeFile(`${params.statePath}.tmp`, `${payload}\n`, "utf8");
-  await fs.rename(`${params.statePath}.tmp`, params.statePath);
-}
-
-async function maybeTriggerXaBDeploy(params: {
-  storefrontId: XaCatalogStorefront;
-  kv: UploaderKvNamespace | null;
-  statePath?: string;
-}): Promise<DeployTriggerResult> {
-  const hookUrl = getDeployHookUrl();
-  if (!hookUrl) {
-    return { status: "skipped_unconfigured" };
-  }
-
-  const cooldownSeconds = getDeployHookCooldownSeconds();
-  const nowMs = Date.now();
-  const nextEligibleAtMs = await readDeployCooldownEpochMs({
-    storefrontId: params.storefrontId,
-    kv: params.kv,
-    statePath: params.statePath,
-  }).catch(() => null);
-  if (nextEligibleAtMs !== null && nextEligibleAtMs > nowMs) {
-    return {
-      status: "skipped_cooldown",
-      nextEligibleAt: new Date(nextEligibleAtMs).toISOString(),
-    };
-  }
-
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), getDeployHookTimeoutMs());
-  let response: Response;
-  try {
-    response = await fetch(hookUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        storefront: params.storefrontId,
-        triggeredBy: "xa-uploader-sync",
-        triggeredAt: new Date().toISOString(),
-      }),
-      signal: controller.signal,
-    });
-  } catch (error) {
-    clearTimeout(timeout);
-    const message = error instanceof Error ? error.message : String(error);
-    return { status: "failed", reason: message };
-  }
-  clearTimeout(timeout);
-
-  if (!response.ok) {
-    const bodyText = await response.text().catch(() => "");
-    const details = bodyText.trim().slice(0, 160);
-    return {
-      status: "failed",
-      reason: details ? `http_${response.status}:${details}` : `http_${response.status}`,
-      httpStatus: response.status,
-    };
-  }
-
-  const cooldownUntilMs = nowMs + cooldownSeconds * 1000;
-  await writeDeployCooldown({
-    storefrontId: params.storefrontId,
-    kv: params.kv,
-    statePath: params.statePath,
-    cooldownSeconds,
-    nextEligibleAtMs: cooldownUntilMs,
-  }).catch(() => undefined);
-
-  return {
-    status: "triggered",
-    nextEligibleAt: new Date(cooldownUntilMs).toISOString(),
-  };
 }
 
 async function recordPublishHistory(params: {
@@ -679,6 +677,18 @@ function buildNoPublishableProductsResponse(params: {
   );
 }
 
+function buildDeployHookUnconfiguredResponse(startedAt: number): NextResponse {
+  return NextResponse.json(
+    {
+      ok: false,
+      error: "deploy_hook_unconfigured",
+      recovery: "configure_deploy_hook",
+      durationMs: Date.now() - startedAt,
+    },
+    { status: 503 },
+  );
+}
+
 async function tryPublishArtifactsToContract(params: {
   storefrontId: XaCatalogStorefront;
   catalogOutPath: string;
@@ -751,7 +761,7 @@ async function runSyncPipeline(params: {
   const statePath = path.join(uploaderDataDir, `.xa-upload-state.${storefrontId}.json`);
   const backupDir = path.join(uploaderDataDir, "backups", storefrontId);
   const publishHistoryPath = getPublishHistoryPath(uploaderDataDir, storefrontId);
-  const deployCooldownStatePath = getDeployCooldownStatePath(uploaderDataDir, storefrontId);
+  const deployStatePaths = resolveDeployStatePaths(uploaderDataDir, storefrontId);
   await fs.mkdir(uploaderDataDir, { recursive: true });
   await fs.mkdir(backupDir, { recursive: true });
 
@@ -865,7 +875,13 @@ async function runSyncPipeline(params: {
   let publishResult: Awaited<ReturnType<typeof publishCatalogArtifactsToContract>> | null = null;
   let publishSkipped = false;
   let deployResult: DeployTriggerResult | undefined;
+  let deployPending: DeployPendingState | null = null;
   if (!payload.options.dryRun) {
+    const contractReadiness = getCatalogContractReadiness();
+    if (contractReadiness.configured && isDeployHookRequired() && !isDeployHookConfigured()) {
+      return buildDeployHookUnconfiguredResponse(startedAt);
+    }
+
     const outcome = await tryPublishArtifactsToContract({
       storefrontId,
       catalogOutPath,
@@ -887,8 +903,14 @@ async function runSyncPipeline(params: {
       deployResult = await maybeTriggerXaBDeploy({
         storefrontId,
         kv,
-        statePath: deployCooldownStatePath,
+        statePaths: deployStatePaths,
       });
+      deployPending = await reconcileDeployPendingState({
+        storefrontId,
+        kv,
+        result: deployResult,
+        statePaths: deployStatePaths,
+      }).catch(() => null);
     }
   }
 
@@ -902,11 +924,51 @@ async function runSyncPipeline(params: {
         publishedVersion: publishResult?.version,
         publishedAt: publishResult?.publishedAt,
         deploy: deployResult,
-        display: buildDisplaySyncGuidance(deployResult),
+        deployPending: deployPending ?? undefined,
+        display: buildDisplaySyncGuidance(deployResult, deployPending),
       },
       { validate: validateResult, sync: syncResult },
     ),
   );
+}
+
+async function finalizeCloudPublishStateAndDeploy(params: {
+  storefrontId: XaCatalogStorefront;
+  snapshot: Awaited<ReturnType<typeof readCloudDraftSnapshot>>;
+  publishableProducts: CatalogProductDraftInput[];
+  kv: UploaderKvNamespace | null;
+  warnings: string[];
+}): Promise<{ deployResult: DeployTriggerResult; deployPending: DeployPendingState | null }> {
+  const promotedIds = new Set(params.publishableProducts.map(productIdentity));
+  const promotedProducts = params.snapshot.products.map((product) => {
+    if (promotedIds.has(productIdentity(product))) {
+      return { ...product, publishState: "live" as const };
+    }
+    return { ...product, publishState: normalizePublishState(product) };
+  });
+
+  try {
+    await writeCloudDraftSnapshot({
+      storefront: params.storefrontId,
+      products: promotedProducts,
+      revisionsById: params.snapshot.revisionsById,
+      ifMatchDocRevision: params.snapshot.docRevision,
+    });
+  } catch {
+    params.warnings.push("publish_state_promotion_failed");
+  }
+
+  const deployResult = await maybeTriggerXaBDeploy({
+    storefrontId: params.storefrontId,
+    kv: params.kv,
+  });
+  const deployPending = await reconcileDeployPendingState({
+    storefrontId: params.storefrontId,
+    kv: params.kv,
+    result: deployResult,
+  }).catch(() => null);
+
+  return { deployResult, deployPending };
 }
 
 async function runCloudSyncPipeline(params: {
@@ -942,11 +1004,14 @@ async function runCloudSyncPipeline(params: {
   }
 
   let builtArtifacts: Awaited<ReturnType<typeof buildCatalogArtifactsFromDrafts>>;
+  const mediaValidationPolicy = resolveCloudMediaValidationPolicy(payload.options);
   try {
     builtArtifacts = await buildCatalogArtifactsFromDrafts({
       storefront: storefrontId,
       products: publishableProducts,
       strict: payload.options.strict === true,
+      mediaValidationPolicy,
+      allowedExternalImageHosts: getCloudAllowedExternalImageHosts(),
     });
   } catch (error) {
     return NextResponse.json(
@@ -960,17 +1025,39 @@ async function runCloudSyncPipeline(params: {
       { status: 400 },
     );
   }
-  const { catalog, mediaIndex } = builtArtifacts;
-  const warnings = [...builtArtifacts.warnings];
+
+  const cloudMediaValidation = await applyCloudMediaExistenceValidation({
+    artifacts: builtArtifacts,
+    policy: mediaValidationPolicy,
+  });
+  if (cloudMediaValidation.ok === false) {
+    return cloudMediaValidation.errorResponse;
+  }
+  builtArtifacts = cloudMediaValidation.artifacts;
+
+  const warnings = [...builtArtifacts.warnings, ...cloudMediaValidation.warnings];
+  const catalog = builtArtifacts.catalog;
+  const mediaIndex = {
+    ...builtArtifacts.mediaIndex,
+    totals: {
+      ...builtArtifacts.mediaIndex.totals,
+      warnings: warnings.length,
+      media: builtArtifacts.mediaIndex.items.length,
+    },
+  };
 
   let publishResult: { version?: string; publishedAt?: string } | null = null;
   let publishSkipped = false;
   let deployResult: DeployTriggerResult | undefined;
+  let deployPending: DeployPendingState | null = null;
   if (!payload.options.dryRun) {
     const contractReadiness = getCatalogContractReadiness();
     if (!contractReadiness.configured) {
       publishSkipped = true;
     } else {
+      if (isDeployHookRequired() && !isDeployHookConfigured()) {
+        return buildDeployHookUnconfiguredResponse(startedAt);
+      }
       try {
         publishResult = await publishCatalogPayloadToContract({
           storefrontId,
@@ -1003,29 +1090,15 @@ async function runCloudSyncPipeline(params: {
     }
 
     if (!publishSkipped) {
-      const promotedIds = new Set(publishableProducts.map(productIdentity));
-      const promotedProducts = snapshot.products.map((product) => {
-        if (promotedIds.has(productIdentity(product))) {
-          return { ...product, publishState: "live" as const };
-        }
-        return { ...product, publishState: normalizePublishState(product) };
-      });
-
-      try {
-        await writeCloudDraftSnapshot({
-          storefront: storefrontId,
-          products: promotedProducts,
-          revisionsById: snapshot.revisionsById,
-          ifMatchDocRevision: snapshot.docRevision,
-        });
-      } catch {
-        warnings.push("publish_state_promotion_failed");
-      }
-
-      deployResult = await maybeTriggerXaBDeploy({
+      const publishFinalize = await finalizeCloudPublishStateAndDeploy({
         storefrontId,
+        snapshot,
+        publishableProducts,
         kv,
+        warnings,
       });
+      deployResult = publishFinalize.deployResult;
+      deployPending = publishFinalize.deployPending;
     }
   }
 
@@ -1038,12 +1111,13 @@ async function runCloudSyncPipeline(params: {
     publishedVersion: publishResult?.version,
     publishedAt: publishResult?.publishedAt,
     deploy: deployResult,
+    deployPending: deployPending ?? undefined,
     warnings,
     counts: {
       products: catalog.products.length,
       media: mediaIndex.totals.media,
     },
-    display: buildDisplaySyncGuidance(deployResult),
+    display: buildDisplaySyncGuidance(deployResult, deployPending),
   });
 }
 

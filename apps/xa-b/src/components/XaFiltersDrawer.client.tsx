@@ -64,7 +64,7 @@ export function XaFiltersDrawer({
         <Button>
           All filters
           {appliedCount > 0 && (
-            <span className="ms-1.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-foreground px-1 xa-text-10 font-semibold text-primary-fg">
+            <span className="ms-1.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-foreground px-1 xa-text-10 font-semibold text-primary-foreground">
               {appliedCount}
             </span>
           )}

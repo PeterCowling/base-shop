@@ -12,6 +12,7 @@ export function CatalogSyncPanel({
   busy,
   syncOptions,
   syncReadiness,
+  isAutosaveDirty,
   monoClassName,
   feedback,
   syncOutput,
@@ -30,6 +31,7 @@ export function CatalogSyncPanel({
     contractConfigured?: boolean;
     contractConfigErrors?: string[];
   };
+  isAutosaveDirty?: boolean;
   monoClassName?: string;
   feedback: ActionFeedback | null;
   syncOutput: string | null;
@@ -48,12 +50,15 @@ export function CatalogSyncPanel({
     dryRun: t("syncOptionDryRun"),
   };
 
-  const syncDisabled = busy || syncReadiness.checking || !syncReadiness.ready;
+  const syncDisabled = busy || Boolean(isAutosaveDirty) || syncReadiness.checking || !syncReadiness.ready;
 
   let readinessMessage = t("syncReadinessChecking");
   let readinessClassName = "text-sm text-gate-muted";
   if (syncReadiness.error) {
     readinessMessage = syncReadiness.error;
+    readinessClassName = "text-sm text-danger-fg";
+  } else if (isAutosaveDirty) {
+    readinessMessage = t("syncReadinessAutosavePending");
     readinessClassName = "text-sm text-danger-fg";
   } else if (syncReadiness.ready) {
     readinessMessage = t("syncReadinessReady");

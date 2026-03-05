@@ -2,11 +2,46 @@
  * @jest-environment node
  */
 
+import { createHmac } from 'node:crypto';
+
 import { MessagingEventType } from '../../src/lib/messaging/triggers';
 import { onRequestPost } from '../api/process-messaging-queue';
 import { FirebaseRest } from '../lib/firebase-rest';
 
 import { createMockEnv, createPagesContext } from './helpers';
+
+const QUEUE_TOKEN = 'queue-token-123';
+
+function signQueueBody(
+  body: Record<string, unknown>,
+  token: string,
+  timestampSeconds: number,
+): string {
+  const payload = `${timestampSeconds}.${JSON.stringify(body)}`;
+  return createHmac('sha256', token).update(payload).digest('hex');
+}
+
+function createQueueAuthHeaders(
+  body: Record<string, unknown>,
+  options: {
+    authToken?: string;
+    signatureToken?: string;
+    timestampSeconds?: number;
+    extra?: Record<string, string>;
+  } = {},
+): Record<string, string> {
+  const authToken = options.authToken ?? QUEUE_TOKEN;
+  const signatureToken = options.signatureToken ?? QUEUE_TOKEN;
+  const timestampSeconds = options.timestampSeconds ?? Math.floor(Date.now() / 1000);
+  const signature = signQueueBody(body, signatureToken, timestampSeconds);
+
+  return {
+    Authorization: `Bearer ${authToken}`,
+    'X-Prime-Queue-Timestamp': String(timestampSeconds),
+    'X-Prime-Queue-Signature': signature,
+    ...options.extra,
+  };
+}
 
 function createArrival48HoursQueueRecord() {
   return {
@@ -63,14 +98,16 @@ describe('email provider smoke spike', () => {
   });
 
   it('TC-01: valid config writes outbound draft to Firebase outbox', async () => {
+    const body = {
+      eventId: 'msg_smoke_123',
+    };
     const response = await onRequestPost(
       createPagesContext({
         url: 'https://prime.example.com/api/process-messaging-queue',
         method: 'POST',
-        body: {
-          eventId: 'msg_smoke_123',
-        },
-        env: createMockEnv(),
+        body,
+        headers: createQueueAuthHeaders(body),
+        env: createMockEnv({ PRIME_EMAIL_WEBHOOK_TOKEN: QUEUE_TOKEN }),
       }),
     );
 
@@ -105,14 +142,16 @@ describe('email provider smoke spike', () => {
   });
 
   it('TC-02: outbound draft body includes luggage warning and deep link', async () => {
+    const body = {
+      eventId: 'msg_smoke_123',
+    };
     await onRequestPost(
       createPagesContext({
         url: 'https://prime.example.com/api/process-messaging-queue',
         method: 'POST',
-        body: {
-          eventId: 'msg_smoke_123',
-        },
-        env: createMockEnv(),
+        body,
+        headers: createQueueAuthHeaders(body),
+        env: createMockEnv({ PRIME_EMAIL_WEBHOOK_TOKEN: QUEUE_TOKEN }),
       }),
     );
 
@@ -136,20 +175,159 @@ describe('email provider smoke spike', () => {
       return null;
     });
 
+    const body = {
+      eventId: 'msg_smoke_123',
+    };
     const response = await onRequestPost(
       createPagesContext({
         url: 'https://prime.example.com/api/process-messaging-queue',
         method: 'POST',
-        body: {
-          eventId: 'msg_smoke_123',
-        },
-        env: createMockEnv(),
+        body,
+        headers: createQueueAuthHeaders(body),
+        env: createMockEnv({ PRIME_EMAIL_WEBHOOK_TOKEN: QUEUE_TOKEN }),
       }),
     );
 
     const payload = await response.json() as { outcome: string };
     expect(response.status).toBe(200);
     expect(payload.outcome).toBe('idempotent');
+    expect(setSpy).not.toHaveBeenCalledWith(
+      expect.stringContaining('outboundDrafts/'),
+      expect.anything(),
+    );
+  });
+
+  it('TC-04: missing queue token config fails closed', async () => {
+    const body = {
+      eventId: 'msg_smoke_123',
+    };
+    const response = await onRequestPost(
+      createPagesContext({
+        url: 'https://prime.example.com/api/process-messaging-queue',
+        method: 'POST',
+        body,
+        headers: createQueueAuthHeaders(body),
+        env: createMockEnv(),
+      }),
+    );
+
+    const payload = await response.json() as { error: string };
+    expect(response.status).toBe(503);
+    expect(payload.error).toBe('Prime email provider is not configured');
+  });
+
+  it('TC-05: invalid authorization token is rejected', async () => {
+    const body = {
+      eventId: 'msg_smoke_123',
+    };
+    const response = await onRequestPost(
+      createPagesContext({
+        url: 'https://prime.example.com/api/process-messaging-queue',
+        method: 'POST',
+        body,
+        headers: createQueueAuthHeaders(body, { authToken: 'wrong-token' }),
+        env: createMockEnv({ PRIME_EMAIL_WEBHOOK_TOKEN: QUEUE_TOKEN }),
+      }),
+    );
+
+    const payload = await response.json() as { error: string };
+    expect(response.status).toBe(401);
+    expect(payload.error).toBe('Unauthorized');
+  });
+
+  it('TC-06: invalid queue signature is rejected', async () => {
+    const body = {
+      eventId: 'msg_smoke_123',
+    };
+    const response = await onRequestPost(
+      createPagesContext({
+        url: 'https://prime.example.com/api/process-messaging-queue',
+        method: 'POST',
+        body,
+        headers: createQueueAuthHeaders(body, { signatureToken: 'wrong-signature-token' }),
+        env: createMockEnv({ PRIME_EMAIL_WEBHOOK_TOKEN: QUEUE_TOKEN }),
+      }),
+    );
+
+    const payload = await response.json() as { error: string };
+    expect(response.status).toBe(401);
+    expect(payload.error).toBe('Unauthorized');
+  });
+
+  it('TC-07: stale queue signature timestamp is rejected', async () => {
+    const body = {
+      eventId: 'msg_smoke_123',
+    };
+    const staleTimestamp = Math.floor(Date.now() / 1000) - (10 * 60);
+    const response = await onRequestPost(
+      createPagesContext({
+        url: 'https://prime.example.com/api/process-messaging-queue',
+        method: 'POST',
+        body,
+        headers: createQueueAuthHeaders(body, { timestampSeconds: staleTimestamp }),
+        env: createMockEnv({ PRIME_EMAIL_WEBHOOK_TOKEN: QUEUE_TOKEN }),
+      }),
+    );
+
+    const payload = await response.json() as { error: string };
+    expect(response.status).toBe(401);
+    expect(payload.error).toBe('Unauthorized');
+  });
+
+  it('TC-08: missing signature headers are rejected', async () => {
+    const body = {
+      eventId: 'msg_smoke_123',
+    };
+    const response = await onRequestPost(
+      createPagesContext({
+        url: 'https://prime.example.com/api/process-messaging-queue',
+        method: 'POST',
+        body,
+        headers: {
+          Authorization: `Bearer ${QUEUE_TOKEN}`,
+        },
+        env: createMockEnv({ PRIME_EMAIL_WEBHOOK_TOKEN: QUEUE_TOKEN }),
+      }),
+    );
+
+    const payload = await response.json() as { error: string };
+    expect(response.status).toBe(401);
+    expect(payload.error).toBe('Unauthorized');
+  });
+
+  it('TC-09: missing checkout date fails permanent and does not enqueue outbound draft', async () => {
+    getSpy.mockImplementation(async (path: string) => {
+      if (path.startsWith('messagingQueue/')) {
+        return createArrival48HoursQueueRecord();
+      }
+      if (path.startsWith('bookings/')) {
+        return {};
+      }
+      return null;
+    });
+
+    const body = {
+      eventId: 'msg_smoke_123',
+    };
+    const response = await onRequestPost(
+      createPagesContext({
+        url: 'https://prime.example.com/api/process-messaging-queue',
+        method: 'POST',
+        body,
+        headers: createQueueAuthHeaders(body),
+        env: createMockEnv({ PRIME_EMAIL_WEBHOOK_TOKEN: QUEUE_TOKEN }),
+      }),
+    );
+
+    const payload = await response.json() as {
+      outcome: string;
+      transition?: { status: string; lastError: string };
+    };
+
+    expect(response.status).toBe(200);
+    expect(payload.outcome).toBe('failed');
+    expect(payload.transition?.status).toBe('failed');
+    expect(payload.transition?.lastError).toContain('Invalid or missing checkout date');
     expect(setSpy).not.toHaveBeenCalledWith(
       expect.stringContaining('outboundDrafts/'),
       expect.anything(),

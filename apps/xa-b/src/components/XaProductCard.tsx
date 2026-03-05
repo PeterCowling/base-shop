@@ -1,7 +1,7 @@
 "use client";
 
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
 
@@ -21,8 +21,15 @@ import { isNewIn } from "../lib/xaListingUtils";
 
 import { XaFadeImage } from "./XaFadeImage";
 
+const CART_ERROR_OUT_OF_STOCK = "Out of stock"; // i18n-exempt -- XA-0143 [ttl=2026-12-31] internal cart error code
+const CART_ERROR_SIZE_REQUIRED = "Size is required"; // i18n-exempt -- XA-0143 [ttl=2026-12-31] internal cart error code
+
 export function XaProductCard({ product }: { product: XaProduct }) {
   const [touched, setTouched] = useState(false);
+  const [quickAddFeedback, setQuickAddFeedback] = useState<{
+    tone: "error" | "success";
+    message: string;
+  } | null>(null);
   const [cart, dispatch] = useCart();
   const [wishlist, wishlistDispatch] = useWishlist();
   const [currency] = useCurrency();
@@ -44,6 +51,44 @@ export function XaProductCard({ product }: { product: XaProduct }) {
     const size = product.taxonomy.jewelrySize ? formatLabel(product.taxonomy.jewelrySize) : null;
     return [metal, gemstone ?? size].filter(Boolean).join(" / ");
   })();
+
+  useEffect(() => {
+    if (!quickAddFeedback) return;
+    const timer = window.setTimeout(() => setQuickAddFeedback(null), 3500);
+    return () => window.clearTimeout(timer);
+  }, [quickAddFeedback]);
+
+  const toQuickAddErrorMessage = (error: unknown) => {
+    const message = error instanceof Error ? error.message : "";
+    if (message === CART_ERROR_OUT_OF_STOCK) {
+      return xaI18n.t("xaB.src.components.xaproductcard.quickadd.outofstock");
+    }
+    if (message === CART_ERROR_SIZE_REQUIRED) {
+      return xaI18n.t("xaB.src.components.xaproductcard.quickadd.sizerequired");
+    }
+    return xaI18n.t("xaB.src.components.xaproductcard.quickadd.failed");
+  };
+
+  const handleQuickAdd = async (size: string) => {
+    setQuickAddFeedback(null);
+    try {
+      await dispatch({
+        type: "add",
+        sku: product,
+        size,
+        qty: 1,
+      });
+      setQuickAddFeedback({
+        tone: "success",
+        message: xaI18n.t("xaB.src.components.xaproductcard.quickadd.added"),
+      });
+    } catch (error) {
+      setQuickAddFeedback({
+        tone: "error",
+        message: toQuickAddErrorMessage(error),
+      });
+    }
+  };
 
   return (
     <div className="xa-panel rounded-sm border border-border-1 bg-surface-2 p-4 shadow-elevation-1">
@@ -139,7 +184,7 @@ export function XaProductCard({ product }: { product: XaProduct }) {
         {category === "clothing" && product.sizes.length ? (
           <div className="space-y-2">
             <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              Quick add
+              {xaI18n.t("xaB.src.components.xaproductcard.quickadd.label")}
             </div>
             <Inline gap={2} wrap>
               {product.sizes.map((size) => (
@@ -151,18 +196,27 @@ export function XaProductCard({ product }: { product: XaProduct }) {
                   className="h-auto min-h-0 rounded-full border px-2 py-1 xa-text-11 font-medium hover:bg-muted"
                   onClick={(event) => {
                     event.preventDefault();
-                    void dispatch({
-                      type: "add",
-                      sku: product,
-                      size,
-                      qty: 1,
-                    }).catch(() => {});
+                    void handleQuickAdd(size);
                   }}
                 >
                   {size}
                 </Button>
               ))}
             </Inline>
+            {quickAddFeedback ? (
+              <p
+                role={quickAddFeedback.tone === "error" ? "alert" : "status"}
+                aria-live="polite"
+                className={cn(
+                  "text-xs",
+                  quickAddFeedback.tone === "error"
+                    ? "text-destructive"
+                    : "text-muted-foreground",
+                )}
+              >
+                {quickAddFeedback.message}
+              </p>
+            ) : null}
           </div>
         ) : null}
 

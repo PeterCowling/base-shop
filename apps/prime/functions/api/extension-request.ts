@@ -10,8 +10,7 @@
 
 import { FirebaseRest, errorResponse, jsonResponse } from '../lib/firebase-rest';
 import { validateGuestSessionToken } from '../lib/guest-session';
-import { writeOutboundDraft } from '../lib/outbound-draft';
-import { buildPrimeRequestId, createPrimeRequestRecord, createPrimeRequestWritePayload } from '../lib/prime-requests';
+import { createPrimeRequestRecord, createPrimeRequestWritePayload } from '../lib/prime-requests';
 
 interface Env {
   CF_FIREBASE_DATABASE_URL: string;
@@ -42,6 +41,25 @@ function isIsoDate(value: string): boolean {
 
 function compareIsoDates(a: string, b: string): number {
   return a.localeCompare(b);
+}
+
+function normalizeRequestIdPart(value: string): string {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9_]+/g, '_')
+    .replace(/^_+|_+$/g, '');
+}
+
+function buildDeterministicExtensionRequestId(input: {
+  bookingId: string;
+  guestUuid: string;
+  requestedCheckOutDate: string;
+}): string {
+  const bookingPart = normalizeRequestIdPart(input.bookingId);
+  const guestPart = normalizeRequestIdPart(input.guestUuid);
+  const datePart = input.requestedCheckOutDate.replace(/-/g, '');
+  return `extension_${bookingPart}_${guestPart}_${datePart}`;
 }
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
@@ -113,7 +131,11 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     }
 
     const guestName = `${occupant.firstName ?? ''} ${occupant.lastName ?? ''}`.trim() || 'Guest';
-    const requestId = buildPrimeRequestId('extension');
+    const requestId = buildDeterministicExtensionRequestId({
+      bookingId: authResult.session.bookingId,
+      guestUuid,
+      requestedCheckOutDate,
+    });
     const requestRecord = createPrimeRequestRecord({
       requestId,
       type: 'extension',
@@ -127,8 +149,6 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       },
     });
 
-    await firebase.update('/', createPrimeRequestWritePayload(requestRecord));
-
     const emailText = [
       'Prime extension request received.',
       `Booking: ${authResult.session.bookingId}`,
@@ -140,16 +160,22 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       `Request ID: ${requestId}`,
     ].join('\n');
 
-    await writeOutboundDraft(firebase, requestId, {
-      to: TARGET_EMAIL,
-      subject: `[Prime] Extension request ${authResult.session.bookingId}`,
-      bodyText: emailText,
-      category: 'extension-ops',
-      guestName,
-      bookingCode: authResult.session.bookingId,
-      status: 'pending',
-      createdAt: new Date().toISOString(),
-    });
+    const writePayload = {
+      ...createPrimeRequestWritePayload(requestRecord),
+      [`outboundDrafts/${requestId}`]: {
+        to: TARGET_EMAIL,
+        subject: `[Prime] Extension request ${authResult.session.bookingId}`,
+        bodyText: emailText,
+        category: 'extension-ops',
+        guestName,
+        bookingCode: authResult.session.bookingId,
+        eventId: requestId,
+        status: 'pending',
+        createdAt: new Date().toISOString(),
+      },
+    };
+
+    await firebase.update('/', writePayload);
 
     if (env.RATE_LIMIT) {
       const dedupeKey = `extension-dedupe:${guestUuid}:${requestedCheckOutDate}`;

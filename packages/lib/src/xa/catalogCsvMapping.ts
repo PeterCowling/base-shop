@@ -5,7 +5,7 @@ import {
   slugify,
   splitList,
 } from "./catalogAdminSchema.js";
-import { parseBoolean, type XaProductsCsvRow } from "./catalogCsvFormat.js";
+import { type XaProductsCsvRow } from "./catalogCsvFormat.js";
 import { withAutoCatalogDraftFields } from "./catalogWorkflow.js";
 
 function trimOrEmpty(value: string | null | undefined): string {
@@ -20,11 +20,6 @@ function trimOrUndefined(value: string | null | undefined): string | undefined {
 function stringifyNumberOrEmpty(value: unknown): string {
   if (value === undefined) return "";
   return String(value);
-}
-
-function stringifyBooleanOrEmpty(value: unknown): string {
-  if (value === undefined) return "";
-  return String(Boolean(value));
 }
 
 function normalizeCsvList(value: string | null | undefined): string {
@@ -114,11 +109,7 @@ export function buildCsvRowUpdateFromDraft(input: CatalogProductDraftInput): XaP
     collection_title: trimOrEmpty(value.collectionTitle),
     collection_description: trimOrEmpty(value.collectionDescription),
     price: String(value.price),
-    compare_at_price: stringifyNumberOrEmpty(value.compareAtPrice),
-    deposit: stringifyNumberOrEmpty(value.deposit),
     stock: stringifyNumberOrEmpty(value.stock),
-    for_sale: stringifyBooleanOrEmpty(value.forSale),
-    for_rental: stringifyBooleanOrEmpty(value.forRental),
     publish_state: value.publishState ?? "draft",
     sizes,
     description: trimOrEmpty(value.description),
@@ -177,11 +168,7 @@ export function rowToDraftInput(row: XaProductsCsvRow): CatalogProductDraftInput
     collectionTitle: trimOrUndefined(row.collection_title),
     collectionDescription: trimOrUndefined(row.collection_description),
     price: trimOrEmpty(row.price) || "0",
-    compareAtPrice: trimOrUndefined(row.compare_at_price),
-    deposit: trimOrUndefined(row.deposit),
     stock: trimOrUndefined(row.stock),
-    forSale: parseBoolean(row.for_sale || "", true),
-    forRental: parseBoolean(row.for_rental || "", false),
     publishState: parseDraftPublishState(row.publish_state),
     sizes: trimOrUndefined(row.sizes),
     description: trimOrEmpty(row.description),

@@ -79,9 +79,13 @@ function ProductEditor({
       key={state.selectedSlug ?? "new"}
       selectedSlug={state.selectedSlug}
       draft={state.draft}
+      storefront={state.storefront}
       fieldErrors={state.fieldErrors}
       monoClassName={monoClassName}
       busy={state.busy}
+      autosaveInlineMessage={state.autosaveInlineMessage}
+      autosaveStatus={state.autosaveStatus}
+      lastAutosaveSavedAt={state.lastAutosaveSavedAt}
       feedback={state.actionFeedback.draft}
       onChangeDraft={state.setDraft}
       onSave={state.handleSave}
@@ -155,6 +159,7 @@ function CurrencyScreen({
         busy={state.busy}
         syncOptions={state.syncOptions}
         syncReadiness={state.syncReadiness}
+        isAutosaveDirty={state.isAutosaveDirty || state.isAutosaveSaving}
         monoClassName={monoClassName}
         feedback={state.actionFeedback.sync}
         syncOutput={state.syncOutput}

@@ -18,6 +18,7 @@ const publishCatalogPayloadToContractMock = jest.fn();
 const getCatalogContractReadinessMock = jest.fn();
 const readCloudDraftSnapshotMock = jest.fn();
 const buildCatalogArtifactsFromDraftsMock = jest.fn();
+const getMediaBucketMock = jest.fn();
 const DEFAULT_CURRENCY_RATES_JSON = '{"EUR":0.92,"GBP":0.78,"AUD":1.5}';
 const DEFAULT_GENERATED_CATALOG_JSON = '{"products":[{"slug":"studio-jacket"}]}';
 
@@ -64,6 +65,10 @@ jest.mock("../../../../../lib/catalogDraftContractClient", () => ({
 
 jest.mock("../../../../../lib/catalogDraftToContract", () => ({
   buildCatalogArtifactsFromDrafts: (...args: unknown[]) => buildCatalogArtifactsFromDraftsMock(...args),
+}));
+
+jest.mock("../../../../../lib/r2Media", () => ({
+  getMediaBucket: (...args: unknown[]) => getMediaBucketMock(...args),
 }));
 
 const getUploaderKvMock = jest.fn();
@@ -123,6 +128,7 @@ describe("catalog sync route branch coverage", () => {
       mediaIndex: { totals: { products: 1, media: 0, warnings: 0 }, items: [] },
       warnings: [],
     });
+    getMediaBucketMock.mockResolvedValue(null);
     getUploaderKvMock.mockResolvedValue(null);
     acquireSyncMutexMock.mockResolvedValue(true);
     releaseSyncMutexMock.mockResolvedValue(undefined);
@@ -131,6 +137,8 @@ describe("catalog sync route branch coverage", () => {
     delete process.env.XA_B_DEPLOY_HOOK_URL;
     delete process.env.XA_B_DEPLOY_HOOK_COOLDOWN_SECONDS;
     delete process.env.XA_B_DEPLOY_HOOK_TIMEOUT_MS;
+    delete process.env.XA_B_DEPLOY_HOOK_MAX_RETRIES;
+    delete process.env.XA_B_DEPLOY_HOOK_REQUIRED;
   });
 
   it("GET returns 404 in vendor mode", async () => {
@@ -332,6 +340,33 @@ describe("catalog sync route branch coverage", () => {
     fetchSpy.mockRestore();
   });
 
+  it("blocks publish when deploy hook is required but unconfigured", async () => {
+    spawnMock.mockImplementation(() => createChild(0));
+    process.env.XA_B_DEPLOY_HOOK_REQUIRED = "1";
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          storefront: "xa-b",
+          options: { strict: true, recursive: true },
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(503);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({
+        ok: false,
+        error: "deploy_hook_unconfigured",
+        recovery: "configure_deploy_hook",
+      }),
+    );
+    expect(publishCatalogArtifactsToContractMock).not.toHaveBeenCalled();
+  });
+
   it("skips deploy hook when cooldown is active", async () => {
     process.env.XA_UPLOADER_LOCAL_FS_DISABLED = "1";
     process.env.XA_B_DEPLOY_HOOK_URL = "https://deploy.example/hook";
@@ -369,13 +404,199 @@ describe("catalog sync route branch coverage", () => {
     expect(second.status).toBe(200);
     const secondPayload = await second.json();
     expect(secondPayload.deploy).toEqual(expect.objectContaining({ status: "skipped_cooldown" }));
+    expect(secondPayload.deployPending).toEqual(
+      expect.objectContaining({ pending: true, reasonCode: "cooldown" }),
+    );
     expect(secondPayload.display).toEqual(
       expect.objectContaining({
         requiresXaBBuild: true,
         nextAction: "wait_or_manual_deploy_xa_b",
       }),
     );
+    expect(kv.put).toHaveBeenCalledWith(
+      "xa-deploy-pending:xa-b",
+      expect.any(String),
+      undefined,
+    );
     expect(fetchSpy).toHaveBeenCalledTimes(1);
     fetchSpy.mockRestore();
+  });
+
+  it("records pending deploy when hook trigger fails", async () => {
+    process.env.XA_UPLOADER_LOCAL_FS_DISABLED = "1";
+    process.env.XA_B_DEPLOY_HOOK_URL = "https://deploy.example/hook";
+    process.env.XA_B_DEPLOY_HOOK_MAX_RETRIES = "0";
+
+    const kvStore = new Map<string, string>();
+    const kv = {
+      get: jest.fn(async (key: string) => kvStore.get(key) ?? null),
+      put: jest.fn(async (key: string, value: string) => {
+        kvStore.set(key, value);
+      }),
+      delete: jest.fn(async () => undefined),
+    };
+    getUploaderKvMock.mockResolvedValue(kv as unknown as import("../../../../../lib/syncMutex").UploaderKvNamespace);
+    acquireSyncMutexMock.mockResolvedValue(true);
+    releaseSyncMutexMock.mockResolvedValue(undefined);
+
+    const fetchSpy = jest.spyOn(global, "fetch").mockResolvedValue(
+      new Response("unavailable", { status: 503 }),
+    );
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ storefront: "xa-b", options: { strict: true, dryRun: false } }),
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    const payload = await response.json();
+    expect(payload.deploy).toEqual(expect.objectContaining({ status: "failed" }));
+    expect(payload.deployPending).toEqual(
+      expect.objectContaining({ pending: true, reasonCode: "failed" }),
+    );
+    expect(kv.put).toHaveBeenCalledWith(
+      "xa-deploy-pending:xa-b",
+      expect.any(String),
+      undefined,
+    );
+    fetchSpy.mockRestore();
+  });
+
+  it("cloud warn mode prunes missing R2 keys before publish", async () => {
+    process.env.XA_UPLOADER_LOCAL_FS_DISABLED = "1";
+
+    buildCatalogArtifactsFromDraftsMock.mockReturnValue({
+      catalog: {
+        collections: [],
+        brands: [],
+        products: [
+          {
+            slug: "studio-jacket",
+            media: [
+              { type: "image", path: "xa-b/studio-jacket/ok.jpg", altText: "ok" },
+              { type: "image", path: "xa-b/studio-jacket/missing.jpg", altText: "missing" },
+            ],
+          },
+        ],
+      },
+      mediaIndex: {
+        totals: { products: 1, media: 2, warnings: 0 },
+        items: [
+          {
+            productSlug: "studio-jacket",
+            sourcePath: "xa-b/studio-jacket/ok.jpg",
+            catalogPath: "xa-b/studio-jacket/ok.jpg",
+            altText: "ok",
+          },
+          {
+            productSlug: "studio-jacket",
+            sourcePath: "xa-b/studio-jacket/missing.jpg",
+            catalogPath: "xa-b/studio-jacket/missing.jpg",
+            altText: "missing",
+          },
+        ],
+      },
+      warnings: [],
+    });
+
+    getMediaBucketMock.mockResolvedValue({
+      head: jest.fn(async (key: string) => {
+        if (key.includes("missing")) return null;
+        return { key };
+      }),
+    });
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          storefront: "xa-b",
+          options: { mediaValidationPolicy: "warn" },
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    const payload = await response.json();
+    expect(payload.warnings).toContain("cloud_media_missing_pruned:1");
+    expect(payload.counts).toEqual(expect.objectContaining({ media: 1 }));
+
+    expect(publishCatalogPayloadToContractMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        payload: expect.objectContaining({
+          catalog: expect.objectContaining({
+            products: [
+              expect.objectContaining({
+                media: [expect.objectContaining({ path: "xa-b/studio-jacket/ok.jpg" })],
+              }),
+            ],
+          }),
+          mediaIndex: expect.objectContaining({
+            items: [expect.objectContaining({ catalogPath: "xa-b/studio-jacket/ok.jpg" })],
+          }),
+        }),
+      }),
+    );
+  });
+
+  it("cloud strict mode blocks sync when R2 keys are missing", async () => {
+    process.env.XA_UPLOADER_LOCAL_FS_DISABLED = "1";
+
+    buildCatalogArtifactsFromDraftsMock.mockReturnValue({
+      catalog: {
+        collections: [],
+        brands: [],
+        products: [
+          {
+            slug: "studio-jacket",
+            media: [{ type: "image", path: "xa-b/studio-jacket/missing.jpg", altText: "missing" }],
+          },
+        ],
+      },
+      mediaIndex: {
+        totals: { products: 1, media: 1, warnings: 0 },
+        items: [
+          {
+            productSlug: "studio-jacket",
+            sourcePath: "xa-b/studio-jacket/missing.jpg",
+            catalogPath: "xa-b/studio-jacket/missing.jpg",
+            altText: "missing",
+          },
+        ],
+      },
+      warnings: [],
+    });
+
+    getMediaBucketMock.mockResolvedValue({
+      head: jest.fn(async () => null),
+    });
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          storefront: "xa-b",
+          options: { mediaValidationPolicy: "strict" },
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({
+        ok: false,
+        error: "validation_failed",
+        recovery: "review_validation_logs",
+      }),
+    );
+    expect(publishCatalogPayloadToContractMock).not.toHaveBeenCalled();
   });
 });

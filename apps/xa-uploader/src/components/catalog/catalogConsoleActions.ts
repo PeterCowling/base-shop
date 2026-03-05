@@ -4,6 +4,7 @@ import {
   type CatalogProductDraftInput,
   catalogProductDraftSchema,
   slugify,
+  splitList,
 } from "@acme/lib/xa/catalogAdminSchema";
 
 import { getStorefrontConfig } from "../../lib/catalogStorefront.ts";
@@ -27,6 +28,88 @@ import { buildLogBlock, toErrorMap } from "./catalogConsoleUtils";
 import { buildEmptyDraft, withDraftDefaults } from "./catalogDraft";
 
 type Translator = (key: string, vars?: Record<string, unknown>) => string;
+
+type ImageTuple = {
+  file: string;
+  role: string;
+  alt: string;
+};
+
+export type SaveResult =
+  | { status: "saved"; product: CatalogProductDraftInput; revision: string | null }
+  | { status: "busy" }
+  | { status: "validation_error" }
+  | { status: "conflict" }
+  | { status: "cancelled" }
+  | { status: "error" };
+
+function normalizeCatalogPath(value: string): string {
+  const trimmed = value.trim();
+  if (!trimmed) return "";
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  return trimmed.replace(/^\/+/, "");
+}
+
+function parseImageTuples(draft: CatalogProductDraftInput): ImageTuple[] {
+  const files = splitList(draft.imageFiles ?? "").map((entry) => normalizeCatalogPath(entry));
+  const roles = splitList(draft.imageRoles ?? "");
+  const alts = splitList(draft.imageAltTexts ?? "");
+  const tuples: ImageTuple[] = [];
+  for (const [index, file] of files.entries()) {
+    if (!file) continue;
+    tuples.push({
+      file,
+      role: roles[index] ?? "",
+      alt: alts[index] ?? "",
+    });
+  }
+  return tuples;
+}
+
+export function mergeAutosaveImageTuples(params: {
+  serverDraft: CatalogProductDraftInput;
+  localDraft: CatalogProductDraftInput;
+  baselineDraft?: CatalogProductDraftInput | null;
+}): CatalogProductDraftInput {
+  const serverTuples = parseImageTuples(params.serverDraft);
+  const localTuples = parseImageTuples(params.localDraft);
+  const baselineTuples = params.baselineDraft
+    ? parseImageTuples(params.baselineDraft)
+    : [];
+  const localFiles = new Set(localTuples.map((tuple) => tuple.file));
+  const removedFromBaseline = new Set(
+    baselineTuples
+      .map((tuple) => tuple.file)
+      .filter((file) => !localFiles.has(file)),
+  );
+  const merged = serverTuples.filter((tuple) => !removedFromBaseline.has(tuple.file));
+  const indexByFile = new Map<string, number>();
+
+  for (const [index, tuple] of merged.entries()) {
+    indexByFile.set(tuple.file, index);
+  }
+
+  for (const tuple of localTuples) {
+    const existingIndex = indexByFile.get(tuple.file);
+    if (existingIndex === undefined) {
+      indexByFile.set(tuple.file, merged.length);
+      merged.push(tuple);
+      continue;
+    }
+    merged[existingIndex] = tuple;
+  }
+
+  const imageFiles = merged.map((tuple) => tuple.file).join("|");
+  const imageRoles = merged.map((tuple) => tuple.role).join("|");
+  const imageAltTexts = merged.map((tuple) => tuple.alt).join("|");
+
+  return {
+    ...params.localDraft,
+    imageFiles,
+    imageRoles,
+    imageAltTexts,
+  };
+}
 
 export function handleNewImpl({
   defaultCategory,
@@ -227,6 +310,7 @@ export async function handleSaveImpl({
   loadCatalog,
   handleSelect,
   confirmUnpublish,
+  suppressSuccessFeedback = false,
 }: {
   draft: CatalogProductDraftInput;
   draftRevision: string | null;
@@ -240,7 +324,8 @@ export async function handleSaveImpl({
   loadCatalog: () => Promise<void>;
   handleSelect: (product: CatalogProductDraftInput) => void;
   confirmUnpublish: (message: string) => boolean;
-}): Promise<void> {
+  suppressSuccessFeedback?: boolean;
+}): Promise<SaveResult> {
   const parsed = catalogProductDraftSchema.safeParse(draft);
   if (!parsed.success) {
     setFieldErrors(toErrorMap(parsed.error, t));
@@ -248,14 +333,14 @@ export async function handleSaveImpl({
       kind: "error",
       message: t("fixValidationErrorsBeforeSaving"),
     });
-    return;
+    return { status: "validation_error" };
   }
 
-  if (!tryBeginBusyAction(busyLockRef, setBusy)) return;
+  if (!tryBeginBusyAction(busyLockRef, setBusy)) return { status: "busy" };
   clearActionFeedbackDomains(setActionFeedback, ["draft"]);
   setFieldErrors({});
 
-  const doSave = async (confirm?: boolean): Promise<void> => {
+  const doSave = async (confirm?: boolean): Promise<SaveResult> => {
     const response = await fetch(`/api/catalog/products?storefront=${encodeURIComponent(storefront)}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -270,14 +355,18 @@ export async function handleSaveImpl({
       product?: CatalogProductDraftInput;
       revision?: string;
       error?: string;
+      reason?: string;
       requiresConfirmation?: boolean;
     };
 
     if (response.status === 409 && data.error === "would_unpublish" && data.requiresConfirmation) {
       const confirmed = confirmUnpublish(t("saveConfirmUnpublish"));
-      if (!confirmed) return;
-      await doSave(true);
-      return;
+      if (!confirmed) return { status: "cancelled" };
+      return await doSave(true);
+    }
+
+    if (response.status === 409 && data.error === "conflict" && data.reason === "revision_conflict") {
+      return { status: "conflict" };
     }
 
     if (!response.ok || !data.ok || !data.product) {
@@ -286,19 +375,27 @@ export async function handleSaveImpl({
     await loadCatalog();
     handleSelect(data.product);
     setDraftRevision(data.revision ?? null);
-    updateActionFeedback(setActionFeedback, "draft", {
-      kind: "success",
-      message: t("saveSucceeded"),
-    });
+    if (!suppressSuccessFeedback) {
+      updateActionFeedback(setActionFeedback, "draft", {
+        kind: "success",
+        message: t("saveSucceeded"),
+      });
+    }
+    return {
+      status: "saved",
+      product: data.product,
+      revision: data.revision ?? null,
+    };
   };
 
   try {
-    await doSave();
+    return await doSave();
   } catch (err) {
     updateActionFeedback(setActionFeedback, "draft", {
       kind: "error",
       message: errorToMessage(err, t("saveFailed")),
     });
+    return { status: "error" };
   } finally {
     endBusyAction(busyLockRef, setBusy);
   }
@@ -360,23 +457,82 @@ function getSyncSuccessMessage(
   syncData: SyncResponse,
   t: Translator,
 ): string {
+  const getCloudPathReasonMessage = (reason: string): string => {
+    if (reason === "external_host_not_allowed") {
+      return t("syncWarningReasonExternalHostNotAllowed");
+    }
+    if (reason === "invalid_cloud_key") {
+      return t("syncWarningReasonInvalidCloudKey");
+    }
+    if (reason === "empty_path") {
+      return t("syncWarningReasonEmptyPath");
+    }
+    return t("syncWarningReasonUnknown");
+  };
+
+  const getWarningMessage = (warning: string): string => {
+    if (warning === "publish_state_promotion_failed") {
+      return t("syncWarningPublishStatePromotionFailed");
+    }
+
+    const missingPrunedMatch = /^cloud_media_missing_pruned:(\d+)$/.exec(warning);
+    if (missingPrunedMatch) {
+      return t("syncWarningCloudMediaMissingPruned", {
+        count: Number.parseInt(missingPrunedMatch[1] ?? "0", 10),
+      });
+    }
+
+    const validationLimitMatch = /^cloud_media_validation_limit_skipped:(\d+)$/.exec(warning);
+    if (validationLimitMatch) {
+      return t("syncWarningCloudMediaValidationLimitSkipped", {
+        count: Number.parseInt(validationLimitMatch[1] ?? "0", 10),
+      });
+    }
+
+    const emptyImagePathMatch = /^\[row (\d+)\] "([^"]+)" has an empty image path entry\.$/.exec(warning);
+    if (emptyImagePathMatch) {
+      return t("syncWarningRowEmptyImagePath", {
+        row: Number.parseInt(emptyImagePathMatch[1] ?? "0", 10),
+        slug: emptyImagePathMatch[2] ?? "",
+      });
+    }
+
+    const unsupportedCloudPathMatch =
+      /^\[row (\d+)\] "([^"]+)" has unsupported cloud image path "([^"]+)" \(([^)]+)\)\.$/.exec(warning);
+    if (unsupportedCloudPathMatch) {
+      return t("syncWarningRowUnsupportedCloudPath", {
+        row: Number.parseInt(unsupportedCloudPathMatch[1] ?? "0", 10),
+        slug: unsupportedCloudPathMatch[2] ?? "",
+        path: unsupportedCloudPathMatch[3] ?? "",
+        reason: getCloudPathReasonMessage(unsupportedCloudPathMatch[4] ?? ""),
+      });
+    }
+
+    return t("syncWarningUnknownGeneric");
+  };
+
+  const appendWarnings = (base: string): string => {
+    const warnings = (syncData.warnings ?? []).map((warning) => warning.trim()).filter(Boolean);
+    if (warnings.length === 0) return base;
+    const localizedWarnings = warnings.map((warning) => getWarningMessage(warning)).join(" ");
+    return `${base} ${t("syncWarningsSummary", { warnings: localizedWarnings })}`;
+  };
+
+  let baseMessage = t("syncSucceeded");
   const deployStatus = syncData.deploy?.status ?? syncData.display?.deployStatus;
   const nextEligibleAt = syncData.deploy?.nextEligibleAt ?? syncData.display?.nextEligibleAt;
   if (deployStatus === "triggered") {
-    return t("syncSucceededDeployTriggered");
-  }
-  if (deployStatus === "skipped_cooldown") {
-    return t("syncSucceededDeployCooldown", {
+    baseMessage = t("syncSucceededDeployTriggered");
+  } else if (deployStatus === "skipped_cooldown") {
+    baseMessage = t("syncSucceededDeployCooldown", {
       nextEligibleAt: nextEligibleAt ?? t("syncCooldownUnknown"),
     });
+  } else if (deployStatus === "failed") {
+    baseMessage = t("syncSucceededDeployFailed");
+  } else if (syncData.display?.requiresXaBBuild === true) {
+    baseMessage = t("syncSucceededRebuildRequired");
   }
-  if (deployStatus === "failed") {
-    return t("syncSucceededDeployFailed");
-  }
-  if (syncData.display?.requiresXaBBuild === true) {
-    return t("syncSucceededRebuildRequired");
-  }
-  return t("syncSucceeded");
+  return appendWarnings(baseMessage);
 }
 
 export async function handleSyncImpl({

@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 
-import { Input } from "@acme/design-system/atoms";
+import { EmptyState, Input } from "@acme/design-system/atoms";
 import { Grid } from "@acme/design-system/atoms/Grid";
 import { Section } from "@acme/design-system/atoms/Section";
 import { Breadcrumbs } from "@acme/design-system/molecules";
@@ -86,10 +86,11 @@ export default function DesignersIndexPage() {
             ))}
           </div>
         ) : (
-          <div className="rounded-lg border p-6">
-            <div className="font-medium">{xaI18n.t("xaB.src.app.designers.page.l91c42")}</div>
-            <div className="mt-2 text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.designers.page.l92c65")}</div>
-          </div>
+          <EmptyState
+            className="rounded-sm border border-border-1 [&_h3]:text-xs [&_h3]:uppercase [&_h3]:tracking-wide [&_h3]:text-muted-foreground"
+            title={xaI18n.t("xaB.src.app.designers.page.l91c42")}
+            description={xaI18n.t("xaB.src.app.designers.page.l92c65")}
+          />
         )}
       </Section>
     </main>

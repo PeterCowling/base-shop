@@ -2,13 +2,17 @@
 
 import fs from "node:fs/promises";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import {
   catalogProductDraftSchema,
   expandFileSpec,
   getCatalogDraftWorkflowReadiness,
+  normalizeXaImageRole,
   rowToDraftInput,
   slugify,
+  sortXaMediaByRole,
+  type XaImageRole,
 } from "@acme/lib/xa";
 
 import {
@@ -16,6 +20,7 @@ import {
   buildCatalogMediaPath,
   handleToTitle,
   isCatalogMediaPathSpec,
+  isErrnoCode,
   loadCatalogRows,
   normalizeCatalogMediaPath,
   parseList,
@@ -42,7 +47,12 @@ type PipelineOptions = {
 
 type CatalogBrand = { handle: string; name: string };
 type CatalogCollection = { handle: string; title: string; description?: string };
-type CatalogMediaEntry = { type: "image"; path: string; altText: string };
+type CatalogMediaEntry = {
+  type: "image";
+  path: string;
+  altText: string;
+  role?: XaImageRole;
+};
 
 type CatalogProduct = {
   id: string;
@@ -115,11 +125,51 @@ type MediaIndexPayload = {
     sourcePath: string;
     catalogPath: string;
     altText: string;
+    role?: XaImageRole;
   }>;
 };
 
 export type CurrencyRates = { EUR: number; GBP: number; AUD: number };
 const DEFAULT_BACKUP_KEEP = 60;
+const scriptDir = path.dirname(fileURLToPath(import.meta.url));
+const repoRoot = path.resolve(scriptDir, "../../..");
+const xaBPublicDir = path.join(repoRoot, "apps", "xa-b", "public");
+
+function isHttpUrl(pathValue: string): boolean {
+  return /^https?:\/\//i.test(pathValue);
+}
+
+function resolveLocalCatalogMediaPath(pathValue: string): string | null {
+  if (!pathValue.startsWith("images/")) return null;
+  if (pathValue.includes("\\") || pathValue.includes("..")) return null;
+  const resolved = path.resolve(xaBPublicDir, pathValue);
+  const rootPrefix = `${xaBPublicDir}${path.sep}`;
+  if (resolved !== xaBPublicDir && !resolved.startsWith(rootPrefix)) return null;
+  return resolved;
+}
+
+async function validateLocalCatalogMediaPath(pathValue: string): Promise<string | null> {
+  if (isHttpUrl(pathValue)) return null;
+  if (!pathValue.startsWith("images/")) {
+    return `has unsupported local catalog media path "${pathValue}".`;
+  }
+  const localPath = resolveLocalCatalogMediaPath(pathValue);
+  if (!localPath) {
+    return `has invalid local catalog media path "${pathValue}".`;
+  }
+  try {
+    const stats = await fs.stat(localPath);
+    if (!stats.isFile()) {
+      return `references non-file local media path "${pathValue}".`;
+    }
+  } catch (error) {
+    if (isErrnoCode(error, "ENOENT")) {
+      return `references missing local media path "${pathValue}".`;
+    }
+    throw error;
+  }
+  return null;
+}
 
 function printHelp(): void {
   console.log(`XA pipeline runner
@@ -422,6 +472,7 @@ async function buildCatalogArtifacts(options: {
 
     const imageSpecs = parseList(draft.imageFiles);
     const imageAltTexts = parseList(draft.imageAltTexts);
+    const imageRoles = parseList(draft.imageRoles);
     if (options.strict && imageSpecs.length === 0) {
       throw new Error(`[${rowLabel(index)}] "${productSlug}" has no image_files entries.`);
     }
@@ -431,6 +482,7 @@ async function buildCatalogArtifacts(options: {
 
     for (const [specIndex, imageSpec] of imageSpecs.entries()) {
       const altText = imageAltTexts[specIndex] || productSlug;
+      const role = normalizeXaImageRole(imageRoles[specIndex]);
       if (isCatalogMediaPathSpec(imageSpec)) {
         const catalogPath = normalizeCatalogMediaPath(imageSpec);
         if (!catalogPath) {
@@ -440,12 +492,21 @@ async function buildCatalogArtifacts(options: {
           warnings.push(`[${rowLabel(index)}] "${productSlug}" has an empty catalog media path.`);
           continue;
         }
-        media.push({ type: "image", path: catalogPath, altText });
+        const pathValidationError = await validateLocalCatalogMediaPath(catalogPath);
+        if (pathValidationError) {
+          if (options.strict) {
+            throw new Error(`[${rowLabel(index)}] "${productSlug}" ${pathValidationError}`);
+          }
+          warnings.push(`[${rowLabel(index)}] "${productSlug}" ${pathValidationError}`);
+          continue;
+        }
+        media.push({ type: "image", path: catalogPath, altText, ...(role ? { role } : {}) });
         mediaItems.push({
           productSlug,
           sourcePath: catalogPath,
           catalogPath,
           altText,
+          ...(role ? { role } : {}),
         });
         continue;
       }
@@ -471,12 +532,13 @@ async function buildCatalogArtifacts(options: {
           sourcePath,
           usedNames: usedMediaNames,
         });
-        media.push({ type: "image", path: catalogPath, altText });
+        media.push({ type: "image", path: catalogPath, altText, ...(role ? { role } : {}) });
         mediaItems.push({
           productSlug,
           sourcePath,
           catalogPath,
           altText,
+          ...(role ? { role } : {}),
         });
       }
     }
@@ -551,7 +613,7 @@ async function buildCatalogArtifacts(options: {
       price: normalizedPrice,
       prices: applyCurrencyRates(normalizedPrice, effectiveRates),
       stock: toNonNegativeInt(draft.stock),
-      media,
+      media: sortXaMediaByRole(media),
       sizes: parseList(draft.sizes),
       description: draft.description,
       createdAt: requiredString(draft.createdAt, new Date().toISOString()),

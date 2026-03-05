@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { slugify } from "@acme/lib/xa";
 
 import {
+  CatalogCsvStorageBusyError,
   deleteCatalogProduct,
   getCatalogDraftBySlug,
 } from "../../../../../lib/catalogCsv";
@@ -70,6 +71,15 @@ export async function GET(request: Request, context: { params: Promise<{ slug: s
     }
     return withRateHeaders(NextResponse.json({ ok: true, product }), limit);
   } catch (error) {
+    if (error instanceof CatalogCsvStorageBusyError) {
+      return withRateHeaders(
+        NextResponse.json(
+          { ok: false, error: "storage_busy", reason: "products_csv_locked" },
+          { status: 503 },
+        ),
+        limit,
+      );
+    }
     if (error instanceof CatalogDraftContractError && error.code === "unconfigured") {
       return withRateHeaders(localFsUnavailableResponse(), limit);
     }
@@ -144,6 +154,15 @@ export async function DELETE(
     }
     return withRateHeaders(NextResponse.json({ ok: true, deleted: true }), limit);
   } catch (error) {
+    if (error instanceof CatalogCsvStorageBusyError) {
+      return withRateHeaders(
+        NextResponse.json(
+          { ok: false, error: "storage_busy", reason: "products_csv_locked" },
+          { status: 503 },
+        ),
+        limit,
+      );
+    }
     if (error instanceof CatalogDraftContractError && error.code === "unconfigured") {
       return withRateHeaders(localFsUnavailableResponse(), limit);
     }

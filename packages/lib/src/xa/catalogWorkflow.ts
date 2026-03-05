@@ -4,6 +4,11 @@ import {
   slugify,
   splitList,
 } from "./catalogAdminSchema.js";
+import {
+  normalizeXaImageRole,
+  requiredImageRolesByCategory,
+  type XaImageRole,
+} from "./catalogImageRoles.js";
 
 export type CatalogDraftWorkflowReadiness = {
   isDataReady: boolean;
@@ -13,6 +18,13 @@ export type CatalogDraftWorkflowReadiness = {
   missingFieldPaths: string[];
 };
 
+type CatalogImageRoleReadiness = {
+  hasRoleCountMatch: boolean;
+  hasSupportedRoles: boolean;
+  hasRequiredRoles: boolean;
+  isReadyForPublish: boolean;
+};
+
 function normalizeForDataValidation(draft: CatalogProductDraftInput): CatalogProductDraftInput {
   return {
     ...draft,
@@ -20,6 +32,34 @@ function normalizeForDataValidation(draft: CatalogProductDraftInput): CatalogPro
     imageAltTexts: "",
     imageRoles: "",
     createdAt: typeof draft.createdAt === "string" ? draft.createdAt : "",
+  };
+}
+
+function buildImageRoleReadiness(draft: CatalogProductDraftInput): CatalogImageRoleReadiness {
+  const imageFiles = splitList(draft.imageFiles ?? "");
+  if (!imageFiles.length) {
+    return {
+      hasRoleCountMatch: false,
+      hasSupportedRoles: false,
+      hasRequiredRoles: false,
+      isReadyForPublish: false,
+    };
+  }
+
+  const rawRoles = splitList(draft.imageRoles ?? "");
+  const normalizedRoles = rawRoles
+    .map((value) => normalizeXaImageRole(value))
+    .filter((value): value is XaImageRole => value !== undefined);
+  const hasRoleCountMatch = rawRoles.length === imageFiles.length;
+  const hasSupportedRoles = normalizedRoles.length === rawRoles.length;
+  const requiredRoles = requiredImageRolesByCategory(draft.taxonomy.category);
+  const roleSet = new Set(normalizedRoles);
+  const hasRequiredRoles = requiredRoles.every((role) => roleSet.has(role));
+  return {
+    hasRoleCountMatch,
+    hasSupportedRoles,
+    hasRequiredRoles,
+    isReadyForPublish: hasRoleCountMatch && hasSupportedRoles && hasRequiredRoles,
   };
 }
 
@@ -37,8 +77,6 @@ export function withAutoCatalogDraftFields(
     ...draft,
     slug: slugify(slugSource || title),
     createdAt: normalizedCreatedAt,
-    forSale: true,
-    forRental: false,
     publishState: draft.publishState ?? "draft",
   };
 }
@@ -47,7 +85,9 @@ export function getCatalogDraftWorkflowReadiness(
   draft: CatalogProductDraftInput,
 ): CatalogDraftWorkflowReadiness {
   const dataValidation = catalogProductDraftSchema.safeParse(normalizeForDataValidation(draft));
+  const imageRoleReadiness = buildImageRoleReadiness(draft);
   const hasImages = splitList(draft.imageFiles ?? "").length > 0;
+  const hasPublishableImages = hasImages && imageRoleReadiness.isReadyForPublish;
   const missingFieldPaths = dataValidation.success
     ? []
     : Array.from(
@@ -57,11 +97,14 @@ export function getCatalogDraftWorkflowReadiness(
             .filter(Boolean),
         ),
       );
+  if (hasImages && !imageRoleReadiness.isReadyForPublish) {
+    missingFieldPaths.push("imageRoles");
+  }
   return {
     isDataReady: dataValidation.success,
     hasImages,
-    isSubmissionReady: dataValidation.success && hasImages,
-    isPublishReady: dataValidation.success && hasImages,
-    missingFieldPaths,
+    isSubmissionReady: dataValidation.success && hasPublishableImages,
+    isPublishReady: dataValidation.success && hasPublishableImages,
+    missingFieldPaths: Array.from(new Set(missingFieldPaths)),
   };
 }

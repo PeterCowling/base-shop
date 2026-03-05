@@ -48,7 +48,7 @@ export function CatalogLoginForm({
               ref={tokenInputRef}
               value={token}
               onChange={(event) => onTokenChange(event.target.value)}
-              className="w-full rounded-md border border-border-2 bg-gate-input px-3 py-3 text-sm text-gate-ink placeholder:text-gate-muted transition-colors focus:border-gate-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-accent/30 focus-visible:ring-offset-1"
+              className="w-full rounded-md border border-gate-border bg-gate-input px-3 py-3 text-sm text-gate-ink placeholder:text-gate-muted transition-colors focus:border-gate-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-accent focus-visible:ring-offset-1"
               type={tokenVisible ? "text" : "password"}
               autoComplete="off"
               autoFocus

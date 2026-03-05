@@ -20,6 +20,7 @@ export interface UploaderR2Bucket {
   put(key: string, value: ArrayBuffer | ReadableStream | string, options?: { httpMetadata?: { contentType?: string } }): Promise<{ key: string } | null>;
   get(key: string): Promise<{ body: ReadableStream; key: string } | null>;
   head(key: string): Promise<{ key: string } | null>;
+  delete(key: string): Promise<void>;
 }
 
 // Extend the CloudflareEnv global interface to include our KV and R2 bindings.

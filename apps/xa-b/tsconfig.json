@@ -4,6 +4,7 @@
     "allowJs": false,
     "baseUrl": ".",
     "rootDir": "../..",
+    "types": ["@cloudflare/workers-types"],
     "paths": {
       "@ui": [
         "../../packages/ui/dist",
@@ -49,6 +50,7 @@
     "next-env.d.ts",
     "src/**/*",
     "src/**/*.json",
+    "functions/**/*.ts",
     ".next/types/**/*.ts"
   ],
   "exclude": [

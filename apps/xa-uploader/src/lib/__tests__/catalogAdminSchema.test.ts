@@ -10,10 +10,7 @@ function baseDraft() {
     price: "189",
     description: "A structured layer.",
     createdAt: "2025-12-01T12:00:00.000Z",
-    forSale: true,
-    forRental: false,
     popularity: "0",
-    deposit: "0",
     stock: "0",
     taxonomy: {
       department: "women",
@@ -146,7 +143,7 @@ describe("catalogProductDraftSchema", () => {
     expect(result.success).toBe(false);
   });
 
-  it("requires category-specific image roles when images are present", () => {
+  it("allows incomplete category role coverage for draft saves", () => {
     const draft = {
       ...baseDraft(),
       sizes: "S|M|L",
@@ -159,7 +156,7 @@ describe("catalogProductDraftSchema", () => {
       },
     };
     const result = catalogProductDraftSchema.safeParse(draft);
-    expect(result.success).toBe(false);
+    expect(result.success).toBe(true);
   });
 
   it("accepts valid image roles for bag products", () => {

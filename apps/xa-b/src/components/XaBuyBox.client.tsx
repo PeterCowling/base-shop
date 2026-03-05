@@ -118,7 +118,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
         <span className="xa-pdp-label text-xs uppercase tracking-widest text-muted-foreground">
           Quantity
         </span>
-        <div className="flex items-center gap-0 border border-border-2">
+        <div className="flex items-center gap-0 border xa-border-control">
           <Button
             type="button"
             variant="ghost"
@@ -126,7 +126,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
             aria-label="Decrease quantity"
             disabled={qty <= 1}
             onClick={() => setQty((q) => Math.max(1, q - 1))}
-            className="h-8 w-8 rounded-none px-0 py-0 text-sm hover:bg-muted disabled:opacity-40"
+            className="h-8 w-8 rounded-none px-0 py-0 text-sm hover:bg-muted disabled:opacity-50"
           >
             −
           </Button>
@@ -154,7 +154,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
 
       <Inline gap={2} className="flex-wrap">
         <Button
-          className="xa-pdp-action xa-flex-2 h-11 rounded-none bg-foreground text-primary-fg hover:bg-foreground/90"
+          className="xa-pdp-action xa-flex-2 h-11 rounded-none bg-foreground text-primary-foreground hover:bg-foreground/90"
           disabled={soldOut}
           onClick={() => void addToCart()}
         >
@@ -162,7 +162,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
         </Button>
         <Button
           variant="outline"
-          className="xa-pdp-action h-11 w-11 min-w-11 rounded-none border-foreground text-foreground hover:bg-foreground hover:text-primary-fg"
+          className="xa-pdp-action h-11 w-11 min-w-11 rounded-none border-foreground text-foreground hover:bg-foreground hover:text-primary-foreground"
           aria-pressed={isWishlisted}
           aria-label={isWishlisted ? xaI18n.t("xaB.src.components.xabuybox.client.l176c38") : xaI18n.t("xaB.src.components.xabuybox.client.l176c63")}
           onClick={() => wishlistDispatch({ type: "toggle", sku: product })}
@@ -201,7 +201,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
                   <Link
                     key={`${variant.slug}-variant`}
                     href={`/products/${variant.slug}`}
-                    className={`relative h-12 w-12 overflow-hidden rounded-none border bg-surface ${isCurrent ? "border-foreground" : "border-border-2"}`}
+                    className={`relative h-12 w-12 overflow-hidden rounded-none border bg-surface ${isCurrent ? "border-foreground" : "xa-border-control"}`}
                     title={label}
                     aria-label={label}
                     aria-current={isCurrent ? "page" : undefined}
@@ -233,7 +233,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
                 return (
                   <div
                     key={`${product.slug}-color-${color}`}
-                    className="relative h-12 w-12 overflow-hidden rounded-none border border-border-2 bg-surface"
+                    className="relative h-12 w-12 overflow-hidden rounded-none border xa-border-control bg-surface"
                     title={formatLabel(color)}
                   >
                     {media ? (

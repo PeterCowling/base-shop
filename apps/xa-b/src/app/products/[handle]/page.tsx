@@ -13,7 +13,12 @@ import { XaSizeGuideDialog } from "../../../components/XaSizeGuideDialog.client"
 import { getXaProductByHandle, XA_PRODUCTS } from "../../../lib/demoData";
 import { siteConfig } from "../../../lib/siteConfig";
 import { toWhatsappHref } from "../../../lib/support";
-import { formatLabel, getDesignerName } from "../../../lib/xaCatalog";
+import {
+  formatLabel,
+  getDepartmentCategoryHref,
+  getDepartmentCategorySubcategoryHref,
+  getDesignerName,
+} from "../../../lib/xaCatalog";
 import { xaI18n } from "../../../lib/xaI18n";
 
 export function generateStaticParams() {
@@ -30,8 +35,17 @@ export default async function ProductPage({
   if (!product) notFound();
 
   const designerName = getDesignerName(product.brand);
-  const categoryLabel = formatLabel(product.taxonomy.subcategory);
-  const categoryHref = `/${product.taxonomy.department}/${product.taxonomy.category}/${product.taxonomy.subcategory}`;
+  const categoryLabel = formatLabel(product.taxonomy.category);
+  const categoryHref = getDepartmentCategoryHref(
+    product.taxonomy.department,
+    product.taxonomy.category,
+  );
+  const subcategoryLabel = formatLabel(product.taxonomy.subcategory);
+  const subcategoryHref = getDepartmentCategorySubcategoryHref(
+    product.taxonomy.department,
+    product.taxonomy.category,
+    product.taxonomy.subcategory,
+  );
   const canonicalUrl = siteConfig.domain
     ? `https://${siteConfig.domain}/products/${product.slug}`
     : "";
@@ -46,6 +60,42 @@ export default async function ProductPage({
   const isClothing = product.taxonomy.category === "clothing";
   const isBags = product.taxonomy.category === "bags";
   const isJewelry = product.taxonomy.category === "jewelry";
+  const copy = {
+    home: xaI18n.t("xaB.src.app.products.handle.page.copy.home"),
+    sizeFit: xaI18n.t("xaB.src.app.products.handle.page.copy.sizeFit"),
+    modelIs: xaI18n.t("xaB.src.app.products.handle.page.copy.modelIs", {
+      height: product.details?.modelHeight ?? "",
+    }),
+    wearsSize: xaI18n.t("xaB.src.app.products.handle.page.copy.wearsSize", {
+      size: product.details?.modelSize ?? "",
+    }),
+    sizeGuideFallback: xaI18n.t("xaB.src.app.products.handle.page.copy.sizeGuideFallback"),
+    bagDetails: xaI18n.t("xaB.src.app.products.handle.page.copy.bagDetails"),
+    dimensions: xaI18n.t("xaB.src.app.products.handle.page.copy.dimensions", {
+      value: product.details?.dimensions ?? "",
+    }),
+    strapDrop: xaI18n.t("xaB.src.app.products.handle.page.copy.strapDrop", {
+      value: product.details?.strapDrop ?? "",
+    }),
+    whatFits: xaI18n.t("xaB.src.app.products.handle.page.copy.whatFits"),
+    interior: xaI18n.t("xaB.src.app.products.handle.page.copy.interior"),
+    metal: xaI18n.t("xaB.src.app.products.handle.page.copy.metal"),
+    stone: xaI18n.t("xaB.src.app.products.handle.page.copy.stone"),
+    size: xaI18n.t("xaB.src.app.products.handle.page.copy.size"),
+    share: xaI18n.t("xaB.src.app.products.handle.page.copy.share"),
+    contact: xaI18n.t("xaB.src.app.products.handle.page.copy.contact"),
+    facebook: xaI18n.t("xaB.src.app.products.handle.page.copy.facebook"),
+    twitter: xaI18n.t("xaB.src.app.products.handle.page.copy.twitter"),
+    pinterest: xaI18n.t("xaB.src.app.products.handle.page.copy.pinterest"),
+    linkedIn: xaI18n.t("xaB.src.app.products.handle.page.copy.linkedIn"),
+    whatsapp: xaI18n.t("xaB.src.app.products.handle.page.copy.whatsapp"),
+    email: xaI18n.t("xaB.src.app.products.handle.page.copy.email"),
+    instagram: xaI18n.t("xaB.src.app.products.handle.page.copy.instagram"),
+    wechat: xaI18n.t("xaB.src.app.products.handle.page.copy.wechat"),
+    moreFromDesigner: xaI18n.t("xaB.src.app.products.handle.page.copy.moreFromDesigner", {
+      designerName,
+    }),
+  };
 
   const completeLook = XA_PRODUCTS.filter(
     (item) =>
@@ -67,9 +117,10 @@ export default async function ProductPage({
             <Breadcrumbs
               className="xa-pdp-breadcrumbs text-muted-foreground"
               items={[
-                { label: "Home", href: "/" },
+                { label: copy.home, href: "/" },
                 { label: designerName, href: `/designer/${product.brand}` },
                 { label: categoryLabel, href: categoryHref },
+                { label: subcategoryLabel, href: subcategoryHref ?? undefined },
                 { label: product.title },
               ]}
             />
@@ -84,13 +135,13 @@ export default async function ProductPage({
               {isClothing ? (
                 <div className="space-y-6">
                   <div className="space-y-2">
-                    <div className="text-sm font-semibold">Size & fit</div>
+                    <div className="text-sm font-semibold">{copy.sizeFit}</div>
                     <div className="space-y-1 text-sm text-muted-foreground">
                       {product.details?.modelHeight ? (
-                        <div>Model is {product.details.modelHeight}.</div>
+                        <div>{copy.modelIs}</div>
                       ) : null}
                       {product.details?.modelSize ? (
-                        <div>Wears size {product.details.modelSize}.</div>
+                        <div>{copy.wearsSize}</div>
                       ) : null}
                       {product.details?.fitNote ? <div>{product.details.fitNote}</div> : null}
                     </div>
@@ -98,7 +149,7 @@ export default async function ProductPage({
                       <XaSizeGuideDialog
                         copy={
                           product.details?.sizeGuide ??
-                          "Standard sizing. Compare against your best-fitting garment."
+                          copy.sizeGuideFallback
                         }
                       />
                     </div>
@@ -119,20 +170,20 @@ export default async function ProductPage({
               {isBags ? (
                 <div className="space-y-6">
                   <div className="space-y-2">
-                    <div className="text-sm font-semibold">Bag details</div>
+                    <div className="text-sm font-semibold">{copy.bagDetails}</div>
                     <div className="space-y-1 text-sm text-muted-foreground">
                       {product.details?.dimensions ? (
-                        <div>Dimensions: {product.details.dimensions}</div>
+                        <div>{copy.dimensions}</div>
                       ) : null}
                       {product.details?.strapDrop ? (
-                        <div>Strap drop: {product.details.strapDrop}</div>
+                        <div>{copy.strapDrop}</div>
                       ) : null}
                     </div>
                   </div>
 
                   {product.details?.whatFits?.length ? (
                     <div className="space-y-2">
-                      <div className="text-sm font-semibold">What fits</div>
+                      <div className="text-sm font-semibold">{copy.whatFits}</div>
                       <div className="text-sm text-muted-foreground">
                         {product.details.whatFits.map(formatLabel).join(" / ")}
                       </div>
@@ -141,7 +192,7 @@ export default async function ProductPage({
 
                   {product.details?.interior?.length ? (
                     <div className="space-y-2">
-                      <div className="text-sm font-semibold">Interior</div>
+                      <div className="text-sm font-semibold">{copy.interior}</div>
                       <div className="text-sm text-muted-foreground">
                         {product.details.interior.map(formatLabel).join(" / ")}
                       </div>
@@ -156,13 +207,13 @@ export default async function ProductPage({
                     <div className="text-sm font-semibold">{xaI18n.t("xaB.src.app.products.handle.page.l151c60")}</div>
                     <div className="space-y-1 text-sm text-muted-foreground">
                       {product.taxonomy.metal ? (
-                        <div>Metal: {formatLabel(product.taxonomy.metal)}</div>
+                        <div>{copy.metal}: {formatLabel(product.taxonomy.metal)}</div>
                       ) : null}
                       {product.taxonomy.gemstone && product.taxonomy.gemstone !== "none" ? (
-                        <div>Stone: {formatLabel(product.taxonomy.gemstone)}</div>
+                        <div>{copy.stone}: {formatLabel(product.taxonomy.gemstone)}</div>
                       ) : null}
                       {product.taxonomy.jewelrySize ? (
-                        <div>Size: {formatLabel(product.taxonomy.jewelrySize)}</div>
+                        <div>{copy.size}: {formatLabel(product.taxonomy.jewelrySize)}</div>
                       ) : null}
                       {product.details?.sizeGuide ? (
                         <div>{xaI18n.t("xaB.src.app.products.handle.page.l163c30")}{product.details.sizeGuide}</div>
@@ -182,7 +233,7 @@ export default async function ProductPage({
 
               {showShare ? (
                 <div className="space-y-3">
-                  <div className="text-sm font-semibold">Share</div>
+                  <div className="text-sm font-semibold">{copy.share}</div>
                   <div className="flex flex-wrap gap-3">
                     <Button variant="outline" size="sm" asChild>
                       <a
@@ -190,7 +241,7 @@ export default async function ProductPage({
                         target="_blank"
                         rel="noreferrer noopener"
                       >
-                        Facebook
+                        {copy.facebook}
                       </a>
                     </Button>
                     <Button variant="outline" size="sm" asChild>
@@ -199,7 +250,7 @@ export default async function ProductPage({
                         target="_blank"
                         rel="noreferrer noopener"
                       >
-                        Twitter
+                        {copy.twitter}
                       </a>
                     </Button>
                     <Button variant="outline" size="sm" asChild>
@@ -208,7 +259,7 @@ export default async function ProductPage({
                         target="_blank"
                         rel="noreferrer noopener"
                       >
-                        Pinterest
+                        {copy.pinterest}
                       </a>
                     </Button>
                     <Button variant="outline" size="sm" asChild>
@@ -217,7 +268,7 @@ export default async function ProductPage({
                         target="_blank"
                         rel="noreferrer noopener"
                       >
-                        LinkedIn
+                        {copy.linkedIn}
                       </a>
                     </Button>
                     {showSocialLinks ? (
@@ -227,7 +278,7 @@ export default async function ProductPage({
                           target="_blank"
                           rel="noreferrer noopener"
                         >
-                          WhatsApp
+                          {copy.whatsapp}
                         </a>
                       </Button>
                     ) : null}
@@ -237,18 +288,18 @@ export default async function ProductPage({
 
               {showContactInfo || showSocialLinks ? (
                 <div className="space-y-3">
-                  <div className="text-sm font-semibold">Contact</div>
+                  <div className="text-sm font-semibold">{copy.contact}</div>
                   <Inline gap={3} className="flex-wrap">
                     {whatsappHref ? (
                       <Button variant="outline" size="sm" asChild>
                         <a href={whatsappHref} target="_blank" rel="noreferrer noopener">
-                          WhatsApp
+                          {copy.whatsapp}
                         </a>
                       </Button>
                     ) : null}
                     {showContactInfo && siteConfig.supportEmail ? (
                       <Button variant="outline" size="sm" asChild>
-                        <a href={`mailto:${siteConfig.supportEmail}`}>Email</a>
+                        <a href={`mailto:${siteConfig.supportEmail}`}>{copy.email}</a>
                       </Button>
                     ) : null}
                     {showSocialLinks && siteConfig.instagramUrl ? (
@@ -258,14 +309,14 @@ export default async function ProductPage({
                           target="_blank"
                           rel="noreferrer noopener"
                         >
-                          Instagram
+                          {copy.instagram}
                         </a>
                       </Button>
                     ) : null}
                   </Inline>
                   {showContactInfo && (siteConfig.wechatId || siteConfig.businessHours) ? (
                     <div className="space-y-1 text-sm text-muted-foreground">
-                      {siteConfig.wechatId ? <div>WeChat: {siteConfig.wechatId}</div> : null}
+                      {siteConfig.wechatId ? <div>{copy.wechat}: {siteConfig.wechatId}</div> : null}
                       {siteConfig.businessHours ? (
                         <div>{xaI18n.t("xaB.src.app.products.handle.page.l265c30")}{siteConfig.businessHours}</div>
                       ) : null}
@@ -302,7 +353,7 @@ export default async function ProductPage({
 
       {moreFromDesigner.length ? (
         <Section padding="default">
-          <h2 className="text-xl font-semibold">More from {designerName}</h2>
+          <h2 className="text-xl font-semibold">{copy.moreFromDesigner}</h2>
           <div className="mt-6">
             <Grid columns={{ base: 2, md: 3, lg: 4 }} gap={6}>
               {moreFromDesigner.map((item) => (

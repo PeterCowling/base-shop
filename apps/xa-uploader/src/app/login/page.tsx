@@ -29,7 +29,7 @@ export default async function XaUploaderLoginPage() {
       <main className={`${display.className} relative min-h-dvh overflow-hidden bg-gate-bg text-gate-ink`}>
         {/* eslint-disable-next-line ds/container-widths-only-at -- XAUP-0001 operator-tool page layout */}
         <div className="relative mx-auto flex min-h-dvh max-w-md flex-col items-center justify-center px-6 py-16">
-          <div className={`w-full rounded-xl border border-border-2 bg-gate-surface p-8 shadow-elevation-2 ${styles.uploaderFade}`}>
+          <div className={`w-full rounded-xl border border-gate-border bg-gate-surface p-8 shadow-elevation-2 ${styles.uploaderFade}`}>
             <div className="mb-6 space-y-1 text-center">
               <div className={`text-2xs uppercase tracking-label-xl text-gate-muted ${mono.className}`}>
                 XA Catalog

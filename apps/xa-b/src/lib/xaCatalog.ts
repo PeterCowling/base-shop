@@ -67,6 +67,24 @@ export function getCategoryHref(category: XaCategory, department?: XaDepartment)
   return `/${category}`;
 }
 
+export function getDepartmentCategoryHref(
+  department: XaDepartment,
+  category: XaCategory,
+): string {
+  return `/${department}/${category}`;
+}
+
+export function getDepartmentCategorySubcategoryHref(
+  department: XaDepartment,
+  category: XaCategory,
+  subcategory?: string,
+): string | null {
+  const normalized = (subcategory ?? "").trim();
+  if (!normalized) return null;
+  if (!XA_SUBCATEGORIES[category].includes(normalized)) return null;
+  return `/${department}/${category}/${normalized}`;
+}
+
 export function getDesignerName(handle: string): string {
   return XA_BRANDS.find((designer) => designer.handle === handle)?.name ??
     formatLabel(handle);

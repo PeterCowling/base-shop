@@ -11,6 +11,7 @@ const refMock = jest.fn();
 const updateMock = jest.fn();
 const useOnlineStatusMock = jest.fn();
 const queueOfflineWriteMock = jest.fn();
+const queueGuestEmailDraftRetryMock = jest.fn();
 
 jest.mock("../../../services/useEmailGuest", () => ({
   __esModule: true,
@@ -37,6 +38,8 @@ jest.mock("../../../lib/offline/useOnlineStatus", () => ({
 
 jest.mock("../../../lib/offline/syncManager", () => ({
   queueOfflineWrite: (...args: unknown[]) => queueOfflineWriteMock(...args),
+  queueGuestEmailDraftRetry: (...args: unknown[]) =>
+    queueGuestEmailDraftRetryMock(...args),
 }));
 
 describe("useActivitiesMutations", () => {
@@ -63,6 +66,7 @@ describe("useActivitiesMutations", () => {
 
     useOnlineStatusMock.mockReturnValue(true);
     queueOfflineWriteMock.mockResolvedValue(1);
+    queueGuestEmailDraftRetryMock.mockResolvedValue(1);
   });
 
   it("sends guest email with bookingRef + activityCode for relevant codes", async () => {
@@ -135,9 +139,37 @@ describe("useActivitiesMutations", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       expect.stringContaining("Guest email draft failed")
     );
-    expect(result.current.error).toBe("Email draft not sent — guest notification failed. Please send manually.");
+    expect(queueGuestEmailDraftRetryMock).toHaveBeenCalledWith({
+      bookingRef: "REF123",
+      activityCode: 21,
+    });
+    expect(result.current.error).toBe(
+      "Email draft queued for retry — will send when MCP/auth/Gmail is available."
+    );
 
     errorSpy.mockRestore();
+  });
+
+  it("falls back to manual-send error when retry queue is unavailable", async () => {
+    queueGuestEmailDraftRetryMock.mockResolvedValue(null);
+    sendEmailGuestMock.mockResolvedValue({
+      success: false,
+      status: "error",
+      bookingRef: "REF123",
+      activityCode: 21,
+      recipients: [],
+      error: "MCP unavailable",
+    });
+
+    const { result } = renderHook(() => useActivitiesMutations());
+
+    await act(async () => {
+      await result.current.addActivity("occ1", 21);
+    });
+
+    expect(result.current.error).toBe(
+      "Email draft not sent — guest notification failed. Please send manually."
+    );
   });
 
   it("sets error when email is deferred with no-recipient-email reason", async () => {

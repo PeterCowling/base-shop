@@ -4,7 +4,10 @@ import { useCallback, useMemo, useState } from "react";
 import { get, ref, update } from "firebase/database";
 
 import { useAuth } from "../../context/AuthContext";
-import { queueOfflineWrite } from "../../lib/offline/syncManager";
+import {
+  queueGuestEmailDraftRetry,
+  queueOfflineWrite,
+} from "../../lib/offline/syncManager";
 import { useOnlineStatus } from "../../lib/offline/useOnlineStatus";
 import useEmailGuest from "../../services/useEmailGuest";
 import { useFirebaseDatabase } from "../../services/useFirebase";
@@ -76,7 +79,20 @@ export default function useActivitiesMutations() {
               console.error(
                 `[useActivitiesMutations] Guest email draft failed for reservation ${reservationCode} (code ${code}): ${emailResult.error ?? "unknown"}`
               );
-              setError("Email draft not sent — guest notification failed. Please send manually.");
+              const queuedRetryId = await queueGuestEmailDraftRetry({
+                bookingRef: reservationCode,
+                activityCode: code,
+              });
+
+              if (queuedRetryId !== null) {
+                setError(
+                  "Email draft queued for retry — will send when MCP/auth/Gmail is available."
+                );
+              } else {
+                setError(
+                  "Email draft not sent — guest notification failed. Please send manually."
+                );
+              }
             }
           } else {
             console.warn(

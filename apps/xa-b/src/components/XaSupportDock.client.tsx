@@ -32,6 +32,11 @@ const XaFaqOverlayContent = dynamic(
   },
 );
 
+const DOCK_ACTION_BUTTON_CLASS =
+  "xa-support-dock-action border border-border-2 shadow-sm";
+const DOCK_TOGGLE_BUTTON_CLASS =
+  "xa-support-dock-toggle h-12 w-12 shadow-elevation-3";
+
 function openExternal(href: string) {
   window.open(href, "_blank", xaI18n.t("xaB.src.components.xasupportdock.client.l35c31"));
 }
@@ -187,7 +192,7 @@ export function XaSupportDock() {
             type="button"
             size="md"
             variant="secondary"
-            className="border border-border-2 bg-surface text-foreground shadow-sm hover:bg-surface"
+            className={DOCK_ACTION_BUTTON_CLASS}
             aria-label="WhatsApp" // i18n-exempt -- XA-0014 [ttl=2026-12-31] channel label
             onClick={() => {
               if (!whatsappWithText) return;
@@ -203,7 +208,7 @@ export function XaSupportDock() {
             type="button"
             size="md"
             variant="secondary"
-            className="border border-border-2 bg-surface text-foreground shadow-sm hover:bg-surface"
+            className={DOCK_ACTION_BUTTON_CLASS}
             aria-label="Instagram" // i18n-exempt -- XA-0014 [ttl=2026-12-31] channel label
             onClick={() => openExternal(siteConfig.instagramUrl)}
           >
@@ -216,7 +221,7 @@ export function XaSupportDock() {
             type="button"
             size="md"
             variant="secondary"
-            className="border border-border-2 bg-surface text-foreground shadow-sm hover:bg-surface"
+            className={DOCK_ACTION_BUTTON_CLASS}
             aria-label="Email" // i18n-exempt -- XA-0014 [ttl=2026-12-31] channel label
             onClick={() => {
               if (!mailtoHref) return;
@@ -234,7 +239,7 @@ export function XaSupportDock() {
                 type="button"
                 size="md"
                 variant="secondary"
-                className="border border-border-2 bg-surface text-foreground shadow-sm hover:bg-surface"
+                className={DOCK_ACTION_BUTTON_CLASS}
                 aria-label="Help" // i18n-exempt -- XA-0014 [ttl=2026-12-31] channel label
               >
                 <ChatIcon className="h-5 w-5" aria-hidden />
@@ -281,7 +286,7 @@ export function XaSupportDock() {
         onClick={() => setDockOpen(!dockOpen)}
         variant="primary"
         size="md"
-        className="h-12 w-12 bg-foreground text-primary-fg shadow-elevation-3 hover:bg-foreground/90"
+        className={DOCK_TOGGLE_BUTTON_CLASS}
       >
         <svg aria-hidden viewBox="0 0 20 20" fill="currentColor" className="h-5 w-5">
           <path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v7a2 2 0 01-2 2H6l-4 4V5z"/>

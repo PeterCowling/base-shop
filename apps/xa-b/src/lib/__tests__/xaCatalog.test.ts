@@ -7,6 +7,8 @@ import {
   filterBySubcategory,
   formatLabel,
   getCategoryHref,
+  getDepartmentCategoryHref,
+  getDepartmentCategorySubcategoryHref,
   getTrendingDesigners,
   isCategoryAllowed,
   isDepartmentAllowed,
@@ -17,6 +19,11 @@ describe("xaCatalog", () => {
     expect(formatLabel("cross_body-bag")).toBe("Cross Body Bag");
     expect(getCategoryHref("clothing", "women")).toBe("/women/clothing");
     expect(getCategoryHref("bags")).toBe("/bags");
+    expect(getDepartmentCategoryHref("women", "bags")).toBe("/women/bags");
+    expect(getDepartmentCategorySubcategoryHref("women", "bags", "tote")).toBe(
+      "/women/bags/tote",
+    );
+    expect(getDepartmentCategorySubcategoryHref("women", "bags", "unknown")).toBeNull();
   });
 
   it("checks configured category/department allow-lists", () => {

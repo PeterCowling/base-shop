@@ -1,9 +1,12 @@
 import {
   type CatalogProductDraftInput,
   catalogProductDraftSchema,
+  normalizeXaImageRole,
   slugify,
+  sortXaMediaByRole,
   splitList,
   withAutoCatalogDraftFields,
+  type XaImageRole,
 } from "@acme/lib/xa";
 
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
@@ -12,7 +15,12 @@ type CurrencyRates = { EUR: number; GBP: number; AUD: number };
 
 type CatalogBrand = { handle: string; name: string };
 type CatalogCollection = { handle: string; title: string; description?: string };
-type CatalogMediaEntry = { type: "image"; path: string; altText: string };
+type CatalogMediaEntry = {
+  type: "image";
+  path: string;
+  altText: string;
+  role?: XaImageRole;
+};
 
 type CatalogProduct = {
   id: string;
@@ -85,8 +93,11 @@ type MediaIndexPayload = {
     sourcePath: string;
     catalogPath: string;
     altText: string;
+    role?: XaImageRole;
   }>;
 };
+
+type MediaValidationPolicy = "warn" | "strict";
 
 function normalizeNumber(input: unknown): number {
   const parsed = Number(input);
@@ -179,6 +190,60 @@ function normalizeCatalogPath(rawPath: string): string {
   return rawPath.trim().replace(/^\/+/, "");
 }
 
+function isHttpsUrl(value: string): boolean {
+  return /^https:\/\//i.test(value);
+}
+
+function parseAllowedExternalHosts(hosts: string[] | undefined): Set<string> {
+  const out = new Set<string>();
+  for (const host of hosts ?? []) {
+    const normalized = host.trim().toLowerCase();
+    if (!normalized) continue;
+    out.add(normalized);
+  }
+  return out;
+}
+
+function isAllowedExternalImageUrl(url: string, allowedHosts: Set<string>): boolean {
+  if (allowedHosts.size === 0) return false;
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return false;
+  }
+  if (parsed.protocol !== "https:") return false;
+  return allowedHosts.has(parsed.hostname.trim().toLowerCase());
+}
+
+function isValidCloudR2KeyPath(pathValue: string, storefront: XaCatalogStorefront): boolean {
+  if (!pathValue || pathValue.includes("\\")) return false;
+  const segments = pathValue.split("/").filter(Boolean);
+  if (segments.length < 3) return false;
+  if (segments[0] !== storefront) return false;
+  return segments.every((segment) => segment.trim().length > 0);
+}
+
+function validateCloudCatalogPath(params: {
+  catalogPath: string;
+  storefront: XaCatalogStorefront;
+  allowedExternalHosts: Set<string>;
+}): { valid: true } | { valid: false; reason: string } {
+  if (!params.catalogPath) {
+    return { valid: false, reason: "empty_path" };
+  }
+  if (isHttpsUrl(params.catalogPath)) {
+    if (isAllowedExternalImageUrl(params.catalogPath, params.allowedExternalHosts)) {
+      return { valid: true };
+    }
+    return { valid: false, reason: "external_host_not_allowed" };
+  }
+  if (isValidCloudR2KeyPath(params.catalogPath, params.storefront)) {
+    return { valid: true };
+  }
+  return { valid: false, reason: "invalid_cloud_key" };
+}
+
 function buildTaxonomy(draft: ReturnType<typeof catalogProductDraftSchema.parse>) {
   const taxonomy: Record<string, unknown> = {
     department: draft.taxonomy.department,
@@ -217,8 +282,12 @@ function buildMediaEntries(params: {
   productSlug: string;
   title: string;
   imageFiles: string[];
+  imageRoles: string[];
   imageAltTexts: string[];
   strict: boolean;
+  mediaValidationPolicy: MediaValidationPolicy;
+  storefront: XaCatalogStorefront;
+  allowedExternalHosts: Set<string>;
   warnings: string[];
   mediaItems: MediaIndexPayload["items"];
 }): CatalogMediaEntry[] {
@@ -232,19 +301,37 @@ function buildMediaEntries(params: {
       params.warnings.push(`[row ${params.rowNumber}] "${params.productSlug}" has an empty image path entry.`);
       continue;
     }
+
+    const cloudPathValidation = validateCloudCatalogPath({
+      catalogPath,
+      storefront: params.storefront,
+      allowedExternalHosts: params.allowedExternalHosts,
+    });
+    if ("reason" in cloudPathValidation) {
+      const reason = cloudPathValidation.reason;
+      const message = `[row ${params.rowNumber}] "${params.productSlug}" has unsupported cloud image path "${catalogPath}" (${reason}).`;
+      if (params.mediaValidationPolicy === "strict") {
+        throw new Error(message);
+      }
+      params.warnings.push(message);
+      continue;
+    }
+
     const altText = params.imageAltTexts[index] || params.title || params.productSlug;
-    media.push({ type: "image", path: catalogPath, altText });
+    const role = normalizeXaImageRole(params.imageRoles[index]);
+    media.push({ type: "image", path: catalogPath, altText, ...(role ? { role } : {}) });
     params.mediaItems.push({
       productSlug: params.productSlug,
       sourcePath: catalogPath,
       catalogPath,
       altText,
+      ...(role ? { role } : {}),
     });
   }
   if (params.strict && media.length === 0) {
     throw new Error(`[row ${params.rowNumber}] "${params.productSlug}" produced no media entries.`);
   }
-  return media;
+  return sortXaMediaByRole(media);
 }
 
 function assertUniqueRowValue(params: {
@@ -275,7 +362,11 @@ export function buildCatalogArtifactsFromDrafts(params: {
   storefront: XaCatalogStorefront;
   products: CatalogProductDraftInput[];
   strict: boolean;
+  mediaValidationPolicy?: MediaValidationPolicy;
+  allowedExternalImageHosts?: string[];
 }): { catalog: CatalogPayload; mediaIndex: MediaIndexPayload; warnings: string[] } {
+  const mediaValidationPolicy = params.mediaValidationPolicy === "strict" ? "strict" : "warn";
+  const allowedExternalHosts = parseAllowedExternalHosts(params.allowedExternalImageHosts);
   const warnings: string[] = [];
   const rates = parseCloudCurrencyRates();
   const seenSlugs = new Set<string>();
@@ -327,14 +418,19 @@ export function buildCatalogArtifactsFromDrafts(params: {
     }
 
     const imageFiles = splitList(parsed.imageFiles ?? "");
+    const imageRoles = splitList(parsed.imageRoles ?? "");
     const imageAltTexts = splitList(parsed.imageAltTexts ?? "");
     const media = buildMediaEntries({
       rowNumber,
       productSlug,
       title: parsed.title,
       imageFiles,
+      imageRoles,
       imageAltTexts,
       strict: params.strict === true,
+      mediaValidationPolicy,
+      storefront: params.storefront,
+      allowedExternalHosts,
       warnings,
       mediaItems,
     });

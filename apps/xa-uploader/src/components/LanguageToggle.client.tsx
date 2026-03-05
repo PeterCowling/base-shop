@@ -17,7 +17,7 @@ export function LanguageToggle({
   const isDark = variant === "dark";
   const wrapperClass = isDark
     ? "inline-flex overflow-hidden rounded-md border border-gate-header-border text-2xs uppercase tracking-label-lg text-gate-header-muted"
-    : "inline-flex overflow-hidden rounded-md border border-border-2 bg-surface text-2xs uppercase tracking-label-lg text-gate-muted";
+    : "inline-flex overflow-hidden rounded-md border border-gate-border bg-surface text-2xs uppercase tracking-label-lg text-gate-muted";
 
   const buttonClass = (active: boolean) => {
     if (isDark) {

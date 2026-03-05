@@ -4,6 +4,7 @@ import * as React from "react";
 
 import type { CatalogProductDraftInput } from "@acme/lib/xa/catalogAdminSchema";
 
+import type { XaCatalogStorefront } from "../../lib/catalogStorefront.types";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 import { CatalogProductBaseFields } from "./CatalogProductBaseFields.client";
@@ -32,7 +33,7 @@ function StepIndicator({
   const circleClass = active
     ? "flex h-7 w-7 items-center justify-center rounded-full bg-gate-accent text-xs font-semibold text-gate-on-accent"
     : disabled
-      ? "flex h-7 w-7 items-center justify-center rounded-full border border-border-2 text-xs text-gate-muted"
+      ? "flex h-7 w-7 items-center justify-center rounded-full border border-gate-border text-xs text-gate-muted"
       : "flex h-7 w-7 items-center justify-center rounded-full border border-gate-ink text-xs text-gate-ink";
 
   return (
@@ -91,9 +92,13 @@ function StatusDot({
 export function CatalogProductForm({
   selectedSlug,
   draft,
+  storefront,
   fieldErrors,
   monoClassName,
   busy,
+  autosaveInlineMessage,
+  autosaveStatus,
+  lastAutosaveSavedAt,
   feedback,
   onChangeDraft,
   onSave: _onSave,
@@ -102,9 +107,13 @@ export function CatalogProductForm({
 }: {
   selectedSlug: string | null;
   draft: CatalogProductDraftInput;
+  storefront: XaCatalogStorefront;
   fieldErrors: Record<string, string>;
   monoClassName?: string;
   busy: boolean;
+  autosaveInlineMessage: string | null;
+  autosaveStatus: "saving" | "saved" | "unsaved";
+  lastAutosaveSavedAt: number | null;
   feedback: ActionFeedback | null;
   onChangeDraft: (draft: CatalogProductDraftInput) => void;
   onSave: () => void;
@@ -116,6 +125,12 @@ export function CatalogProductForm({
   const readiness = React.useMemo(() => getCatalogDraftWorkflowReadiness(draft), [draft]);
   const [step, setStep] = React.useState<FormStepId>("product");
   const canOpenImageStep = readiness.isDataReady;
+  const autosaveCopy =
+    autosaveStatus === "saving"
+      ? t("autosaveStatusSaving")
+      : autosaveStatus === "unsaved"
+        ? `${t("autosaveStatusUnsaved")} ${t("autosaveStatusManualSaveHint")}`
+        : t("autosaveStatusSaved");
 
   React.useEffect(() => {
     setStep("product");
@@ -147,6 +162,18 @@ export function CatalogProductForm({
           {feedback.message}
         </div>
       ) : null}
+
+      <p
+        className={`mt-3 text-xs ${
+          autosaveStatus === "unsaved"
+            ? "text-danger-fg"
+            : autosaveStatus === "saving"
+              ? "text-gate-accent"
+              : "text-success-fg"
+        }`}
+      >
+        {autosaveCopy}
+      </p>
 
       <div className="mt-6 space-y-4">
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
@@ -206,12 +233,16 @@ export function CatalogProductForm({
           canOpenImageStep ? (
             <CatalogProductImagesFields
               draft={draft}
+              storefront={storefront}
               fieldErrors={fieldErrors}
+              autosaveInlineMessage={autosaveInlineMessage}
+              autosaveStatus={autosaveStatus}
+              lastAutosaveSavedAt={lastAutosaveSavedAt}
               onChange={onChangeDraft}
               onImageUploaded={onSaveWithDraft}
             />
           ) : (
-            <div className="rounded-md border border-border-2 bg-muted px-4 py-3 text-sm text-gate-muted">
+            <div className="rounded-md border border-gate-border bg-muted px-4 py-3 text-sm text-gate-muted">
               {t("workflowImageBlocked")}
             </div>
           )

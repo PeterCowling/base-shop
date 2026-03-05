@@ -12,6 +12,115 @@ const runtimeCatalogPath = path.join(appRoot, "src", "data", "catalog.runtime.js
 const runtimeMediaIndexPath = path.join(appRoot, "src", "data", "catalog.media.runtime.json");
 const runtimeMetaPath = path.join(appRoot, "src", "data", "catalog.runtime.meta.json");
 
+function resolveStealthMode() {
+  const raw = (process.env.NEXT_PUBLIC_STEALTH_MODE ?? "").trim().toLowerCase();
+  return ["1", "true", "yes"].includes(raw);
+}
+
+function resolveSiteConfigPreflightMode() {
+  const raw = (process.env.XA_SITE_CONFIG_PREFLIGHT_MODE ?? "").trim().toLowerCase();
+  if (raw === "off") return "off";
+  if (raw === "strict") return "strict";
+  if (raw === "warn") return "warn";
+  if (process.env.CI || process.env.CF_PAGES) return "strict";
+  return "warn";
+}
+
+function isPlaceholderValue(value) {
+  const normalized = value.trim().toLowerCase();
+  if (!normalized) return true;
+  if (
+    normalized.includes("example.com") ||
+    normalized.includes("your legal entity") ||
+    normalized.includes("your registered address") ||
+    normalized.includes("your jurisdiction") ||
+    normalized.includes("placeholder") ||
+    normalized.includes("changeme") ||
+    normalized.includes("replace")
+  ) {
+    return true;
+  }
+  return false;
+}
+
+function resolvePublicConfigSnapshot() {
+  return {
+    brandName: (process.env.NEXT_PUBLIC_BRAND_NAME ?? "XA-B").trim(),
+    domain:
+      (process.env.NEXT_PUBLIC_SITE_DOMAIN ?? process.env.NEXT_PUBLIC_DOMAIN ?? "example.com")
+        .trim()
+        .replace(/^https?:\/\//i, ""),
+    legalEntityName: (process.env.NEXT_PUBLIC_LEGAL_ENTITY_NAME ?? "Your Legal Entity Name").trim(),
+    legalAddress: (process.env.NEXT_PUBLIC_LEGAL_ADDRESS ?? "Your registered address").trim(),
+    supportEmail: (process.env.NEXT_PUBLIC_SUPPORT_EMAIL ?? "support@example.com").trim(),
+    whatsappNumber: (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "+00 000 000 000").trim(),
+    instagramUrl: (process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? "https://instagram.com/xa").trim(),
+    jurisdiction: (process.env.NEXT_PUBLIC_JURISDICTION ?? "Your jurisdiction").trim(),
+  };
+}
+
+function runSiteConfigPreflight() {
+  const mode = resolveSiteConfigPreflightMode();
+  if (mode === "off") return;
+  if (resolveStealthMode()) {
+    console.log("[xa-build] site config preflight skipped (stealth mode enabled).");
+    return;
+  }
+
+  const snapshot = resolvePublicConfigSnapshot();
+  const failures = [];
+  const notes = [];
+
+  if (isPlaceholderValue(snapshot.brandName) || snapshot.brandName === "XA-B") {
+    failures.push("NEXT_PUBLIC_BRAND_NAME must be set to your production brand name.");
+  }
+
+  if (isPlaceholderValue(snapshot.domain) || !snapshot.domain.includes(".")) {
+    failures.push("NEXT_PUBLIC_SITE_DOMAIN (or NEXT_PUBLIC_DOMAIN) must be a real public domain.");
+  }
+
+  if (isPlaceholderValue(snapshot.legalEntityName)) {
+    failures.push("NEXT_PUBLIC_LEGAL_ENTITY_NAME must be set.");
+  }
+
+  if (isPlaceholderValue(snapshot.legalAddress)) {
+    failures.push("NEXT_PUBLIC_LEGAL_ADDRESS must be set.");
+  }
+
+  if (isPlaceholderValue(snapshot.supportEmail) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(snapshot.supportEmail)) {
+    failures.push("NEXT_PUBLIC_SUPPORT_EMAIL must be a valid support inbox.");
+  }
+
+  if (
+    isPlaceholderValue(snapshot.whatsappNumber) ||
+    snapshot.whatsappNumber === "+00 000 000 000"
+  ) {
+    failures.push("NEXT_PUBLIC_WHATSAPP_NUMBER must be set to a real support number.");
+  }
+
+  if (isPlaceholderValue(snapshot.instagramUrl) || !/^https?:\/\//i.test(snapshot.instagramUrl)) {
+    notes.push("NEXT_PUBLIC_INSTAGRAM_URL is not configured with a production profile URL.");
+  }
+
+  if (isPlaceholderValue(snapshot.jurisdiction)) {
+    notes.push("NEXT_PUBLIC_JURISDICTION should be set before legal pages go live.");
+  }
+
+  if (failures.length === 0 && notes.length === 0) return;
+
+  const lines = [
+    "[xa-build] site config preflight findings:",
+    ...failures.map((message) => `  - FAIL: ${message}`),
+    ...notes.map((message) => `  - WARN: ${message}`),
+  ];
+
+  if (mode === "strict" && failures.length > 0) {
+    throw new Error(lines.join("\n"));
+  }
+
+  console.warn(lines.join("\n"));
+}
+
 function resolveCatalogReadUrl() {
   const explicit = (process.env.XA_CATALOG_CONTRACT_READ_URL ?? "").trim();
   if (explicit) return explicit;
@@ -61,8 +170,20 @@ async function ensureRuntimeCatalogSeed() {
 }
 
 async function writeRuntimeMeta(meta) {
+  const sanitized = {};
+  if (typeof meta?.source === "string") sanitized.source = meta.source;
+  if (typeof meta?.reason === "string") sanitized.reason = meta.reason;
+  if (typeof meta?.syncedAt === "string") sanitized.syncedAt = meta.syncedAt;
+  if (typeof meta?.version === "string") sanitized.version = meta.version;
+  if (typeof meta?.publishedAt === "string") sanitized.publishedAt = meta.publishedAt;
+  if (typeof meta?.artifactId === "string") sanitized.artifactId = meta.artifactId;
+  if (typeof meta?.required === "boolean") sanitized.required = meta.required;
+  if (typeof meta?.hasMediaIndex === "boolean") sanitized.hasMediaIndex = meta.hasMediaIndex;
+  if (Number.isFinite(meta?.productCount)) sanitized.productCount = Math.max(0, Math.trunc(meta.productCount));
+  if (Number.isFinite(meta?.status)) sanitized.status = Math.max(100, Math.trunc(meta.status));
+
   const tempPath = `${runtimeMetaPath}.tmp`;
-  await fs.writeFile(tempPath, `${JSON.stringify(meta, null, 2)}\n`, "utf8");
+  await fs.writeFile(tempPath, `${JSON.stringify(sanitized, null, 2)}\n`, "utf8");
   await fs.rename(tempPath, runtimeMetaPath);
 }
 
@@ -101,10 +222,10 @@ async function syncCatalogFromContract() {
           // Media index is optional — proceed without it.
         }
 
-        console.log(`[xa-build] using local sync artifacts from ${localArtifactPath} (${localCatalog.products.length} products).`);
+        console.log(`[xa-build] using local sync artifacts (${localCatalog.products.length} products).`);
         await writeRuntimeMeta({
           source: "local-artifacts",
-          artifactPath: localArtifactPath,
+          artifactId: "xa-uploader/sync-artifacts/xa-b/catalog.json",
           productCount: localCatalog.products.length,
           syncedAt: new Date().toISOString(),
           required: false,
@@ -137,17 +258,15 @@ async function syncCatalogFromContract() {
       headers,
       signal: controller.signal,
     });
-  } catch (error) {
+  } catch {
     clearTimeout(timeout);
-    const message = error instanceof Error ? error.message : String(error);
     if (requireCatalogReadSuccess()) {
-      throw new Error(`[xa-build] failed to fetch catalog contract: ${message}`);
+      throw new Error("[xa-build] failed to fetch catalog contract.");
     }
-    console.warn(`[xa-build] failed to fetch catalog contract: ${message}; using existing runtime catalog.`);
+    console.warn("[xa-build] failed to fetch catalog contract; using existing runtime catalog.");
     await writeRuntimeMeta({
       source: "fallback",
       reason: "fetch_failed",
-      details: message,
       syncedAt: new Date().toISOString(),
       required: false,
     });
@@ -156,9 +275,7 @@ async function syncCatalogFromContract() {
   clearTimeout(timeout);
 
   if (!response.ok) {
-    const details = await response.text().catch(() => "");
-    const trimmed = details.trim();
-    const message = `[xa-build] catalog contract returned ${response.status}${trimmed ? `: ${trimmed.slice(0, 256)}` : ""}`;
+    const message = `[xa-build] catalog contract returned HTTP ${response.status}.`;
     if (requireCatalogReadSuccess()) {
       throw new Error(message);
     }
@@ -225,7 +342,7 @@ async function syncCatalogFromContract() {
       isRecord(payload) && typeof payload.publishedAt === "string" ? payload.publishedAt : undefined,
     hasMediaIndex: Boolean(mediaIndex),
   });
-  console.log(`[xa-build] synced runtime catalog from contract: ${readUrl}`);
+  console.log("[xa-build] synced runtime catalog from contract.");
 }
 
 function resolveFromEnv() {
@@ -256,6 +373,7 @@ function resolveFromGit() {
 }
 
 async function main() {
+  runSiteConfigPreflight();
   await syncCatalogFromContract();
 
   const existing = (process.env.NEXT_PUBLIC_XA_SW_VERSION ?? "").trim();

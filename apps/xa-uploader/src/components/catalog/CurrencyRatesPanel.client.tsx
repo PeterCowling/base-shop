@@ -19,10 +19,10 @@ type CurrencyRatesResponse = {
 type EditableCurrencyCode = "EUR" | "GBP" | "AUD";
 type EditableCurrencyRates = Record<EditableCurrencyCode, string>;
 
-const EMPTY_RATES: EditableCurrencyRates = {
-  EUR: "",
-  GBP: "",
-  AUD: "",
+const DEFAULT_RATES: EditableCurrencyRates = {
+  EUR: "0.9200",
+  GBP: "0.7800",
+  AUD: "1.5000",
 };
 
 function formatLoadedRates(rates: CurrencyRatesResponse["rates"]): EditableCurrencyRates {
@@ -87,7 +87,7 @@ export function CurrencyRatesPanel({
   onSync: () => void;
 }) {
   const { t } = useUploaderI18n();
-  const [rates, setRates] = React.useState<EditableCurrencyRates>(EMPTY_RATES);
+  const [rates, setRates] = React.useState<EditableCurrencyRates>(DEFAULT_RATES);
   const [saving, setSaving] = React.useState(false);
   const [feedback, setFeedback] = React.useState<ActionFeedback | null>(null);
 
@@ -195,10 +195,10 @@ export function CurrencyRatesPanel({
           {t("currencyRatesUsdLabel")}
           <input
             type="number"
-            value="1.0000"
+            value="1.00"
             disabled
             readOnly
-            className="mt-2 w-full rounded-md border border-border-2 bg-muted px-3 py-2 text-sm text-gate-ink"
+            className="mt-2 w-full rounded-md border border-gate-border bg-muted px-3 py-2 text-sm text-gate-ink"
             // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
             data-testid="currency-rates-usd"
             // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id

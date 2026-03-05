@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import {
   Button,
+  EmptyState,
   Price,
   Table,
   TableBody,
@@ -18,17 +19,55 @@ import { QuantityInput } from "@acme/design-system/molecules";
 import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 
 import { XaFadeImage } from "../../components/XaFadeImage";
+import { XaWhatsappEnquiryPanel } from "../../components/XaWhatsappEnquiryPanel";
 import { useCart } from "../../contexts/XaCartContext";
+import { siteConfig } from "../../lib/siteConfig";
+import { toWhatsappTextHref } from "../../lib/support";
 import { xaI18n } from "../../lib/xaI18n";
+
+function formatAmount(amount: number, currency: string): string {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency,
+    minimumFractionDigits: 2,
+  }).format(amount);
+}
 
 export default function CartPage() {
   const [currency] = useCurrency();
   const [cart, dispatch] = useCart();
   const lines = React.useMemo(() => Object.entries(cart), [cart]);
+  const [phone, setPhone] = React.useState("");
 
   const subtotal = React.useMemo(() => {
     return lines.reduce((sum, [, line]) => sum + line.qty * (line.sku.prices?.[currency] ?? line.sku.price ?? 0), 0);
   }, [lines, currency]);
+
+  const whatsappHref = React.useMemo(() => {
+    if (!lines.length) return null;
+    const itemLines = lines.map(([, line], i) => {
+      const unitPrice = line.sku.prices?.[currency] ?? line.sku.price ?? 0;
+      const total = unitPrice * line.qty;
+      const size = line.size
+        ? ` — ${xaI18n.t("xaB.src.app.cart.page.whatsapp.sizeLabel")}: ${line.size}`
+        : "";
+      return `${i + 1}. ${line.sku.title}${size} — ${xaI18n.t("xaB.src.app.cart.page.whatsapp.qtyLabel")}: ${line.qty} — ${formatAmount(total, currency)}`;
+    });
+    const text = [
+      xaI18n.t("xaB.src.app.cart.page.whatsapp.opening"),
+      "",
+      ...itemLines,
+      "",
+      `${xaI18n.t("xaB.src.app.cart.page.whatsapp.subtotalLabel")}: ${formatAmount(subtotal, currency)}`,
+      "",
+      phone.trim()
+        ? `${xaI18n.t("xaB.src.app.cart.page.whatsapp.contactLabel")}: ${phone.trim()}`
+        : "",
+    ]
+      .filter(Boolean)
+      .join("\n");
+    return toWhatsappTextHref(siteConfig.whatsappNumber, text);
+  }, [lines, currency, subtotal, phone]);
 
   return (
     <main className="sf-content">
@@ -38,17 +77,18 @@ export default function CartPage() {
 
       <Section padding="default">
         {lines.length === 0 ? (
-          <div className="flex flex-col items-center rounded-sm border border-border-1 px-6 py-12 text-center">
-            <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              {xaI18n.t("xaB.src.app.cart.page.l38c42")}
-            </div>
-            <Link
-              href="/collections/all"
-              className="mt-4 text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
-            >
-              {xaI18n.t("xaB.src.app.cart.page.l40c67")}
-            </Link>
-          </div>
+          <EmptyState
+            className="rounded-sm border border-border-1 [&_h3]:text-xs [&_h3]:uppercase [&_h3]:tracking-wide [&_h3]:text-muted-foreground"
+            title={xaI18n.t("xaB.src.app.cart.page.l38c42")}
+            action={
+              <Link
+                href="/collections/all"
+                className="text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
+              >
+                {xaI18n.t("xaB.src.app.cart.page.l40c67")}
+              </Link>
+            }
+          />
         ) : (
           <div className="space-y-6">
             <div className="overflow-x-auto rounded-sm border border-border-1">
@@ -89,11 +129,11 @@ export default function CartPage() {
                         <div className="space-y-1">
                           <div className="font-medium">{line.sku.title}</div>
                           {line.size ? (
-                            <div className="text-xs text-muted-foreground">
+                            <div className="xa-pdp-meta text-muted-foreground">
                               Size: {line.size}
                             </div>
                           ) : null}
-                          <div className="text-xs text-muted-foreground">
+                          <div className="xa-pdp-meta text-muted-foreground">
                             <Price
                               amount={line.sku.prices?.[currency] ?? line.sku.price}
                               currency={currency}
@@ -138,15 +178,20 @@ export default function CartPage() {
               <div className="text-lg font-semibold">
                 Subtotal: <Price amount={subtotal} currency={currency} />
               </div>
-              <div className="flex flex-wrap gap-3">
-                <Button variant="outline" onClick={() => void dispatch({ type: "clear" })}>
-                  Clear cart
-                </Button>
-                <Button asChild>
-                  <Link href="/checkout">Checkout</Link>
-                </Button>
-              </div>
+              <Button variant="outline" onClick={() => void dispatch({ type: "clear" })}>
+                Clear cart
+              </Button>
             </div>
+
+            <XaWhatsappEnquiryPanel
+              title={xaI18n.t("xaB.src.app.cart.page.whatsapp.title")}
+              description={xaI18n.t("xaB.src.app.cart.page.whatsapp.description")}
+              phone={phone}
+              phonePlaceholder={xaI18n.t("xaB.src.app.cart.page.whatsapp.phonePlaceholder")}
+              buttonLabel={xaI18n.t("xaB.src.app.cart.page.whatsapp.button")}
+              href={whatsappHref}
+              onPhoneChange={setPhone}
+            />
           </div>
         )}
       </Section>

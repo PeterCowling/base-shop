@@ -1,6 +1,6 @@
 "use client";
 
-import type { CatalogProductDraftInput } from "@acme/lib/xa";
+import type { CatalogProductDraftInput } from "@acme/lib/xa/catalogAdminSchema";
 
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 

@@ -1,3 +1,8 @@
+import {
+  normalizeXaImageRole,
+  sortXaMediaByRole,
+  type XaImageRole,
+} from "@acme/lib/xa";
 import type { Currency } from "@acme/platform-core/contexts/CurrencyContext";
 import type { SKU } from "@acme/types";
 
@@ -8,7 +13,10 @@ import runtimeMeta from "../data/catalog.runtime.meta.json";
 import { buildXaImageUrl } from "./xaImages";
 import type { XaProductDetails, XaProductTaxonomy } from "./xaTypes";
 
-export type XaProduct = SKU & {
+type XaMediaItem = SKU["media"][number] & { role?: XaImageRole };
+
+export type XaProduct = Omit<SKU, "media"> & {
+  media: XaMediaItem[];
   brand: string;
   collection: string;
   prices?: Partial<Record<Currency, number>>;
@@ -22,6 +30,7 @@ export type XaProduct = SKU & {
 type XaMediaSeed = Omit<SKU["media"][number], "url"> & {
   // Cloudflare Images id (optionally with "/variant").
   path: string;
+  role?: string;
 };
 
 type XaProductSeed = Omit<XaProduct, "media"> & { media: XaMediaSeed[] };
@@ -70,21 +79,34 @@ for (const item of xaMediaIndex.items ?? []) {
   altTextByPath.set(item.catalogPath, item.altText.trim());
 }
 
-function toMediaItem(item: XaMediaSeed, fallbackAlt: string): SKU["media"][number] {
+function toMediaItem(item: XaMediaSeed, fallbackAlt: string, role: XaImageRole | undefined): XaMediaItem {
   const indexedAlt = altTextByPath.get(item.path);
   return {
     type: item.type,
     url: buildXaImageUrl(item.path),
     title: item.title,
     altText: item.altText ?? indexedAlt ?? fallbackAlt,
+    ...(role ? { role } : {}),
   };
+}
+
+function resolveProductMediaRole(item: XaMediaSeed): XaImageRole | undefined {
+  return normalizeXaImageRole(item.role);
+}
+
+function buildProductMedia(product: XaProductSeed): XaMediaItem[] {
+  const hydrated = product.media.map((item) => {
+    const role = resolveProductMediaRole(item);
+    return toMediaItem(item, product.title, role);
+  });
+  return sortXaMediaByRole(hydrated);
 }
 
 export const XA_COLLECTIONS = xaCatalog.collections;
 export const XA_BRANDS = xaCatalog.brands;
 export const XA_PRODUCTS: XaProduct[] = xaCatalog.products.map((product) => ({
   ...product,
-  media: product.media.map((item) => toMediaItem(item, product.title)),
+  media: buildProductMedia(product),
 }));
 
 export function getXaProductByHandle(handle: string): XaProduct | null {

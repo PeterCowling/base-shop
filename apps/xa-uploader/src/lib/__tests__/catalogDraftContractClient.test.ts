@@ -34,7 +34,7 @@ describe("catalogDraftContractClient", () => {
     global.fetch = jest.fn(async () =>
       Response.json({
         ok: true,
-        products: [{ title: "Studio jacket", slug: "studio-jacket", brandHandle: "a", collectionHandle: "b", price: "1", description: "x", createdAt: "2026-03-02T00:00:00.000Z", forSale: true, forRental: false, popularity: "0", deposit: "0", stock: "0", taxonomy: { department: "women", category: "bags", subcategory: "tote", color: "black", material: "leather" } }],
+        products: [{ title: "Studio jacket", slug: "studio-jacket", brandHandle: "a", collectionHandle: "b", price: "1", description: "x", createdAt: "2026-03-02T00:00:00.000Z", popularity: "0", stock: "0", taxonomy: { department: "women", category: "bags", subcategory: "tote", color: "black", material: "leather" } }],
         revisionsById: { p1: "rev-1" },
         docRevision: "doc-rev-1",
       }),
@@ -84,10 +84,7 @@ describe("catalogDraftContractClient", () => {
           price: "189",
           description: "desc",
           createdAt: "2026-03-02T00:00:00.000Z",
-          forSale: true,
-          forRental: false,
           popularity: "0",
-          deposit: "0",
           stock: "1",
           taxonomy: {
             department: "women",
@@ -108,10 +105,7 @@ describe("catalogDraftContractClient", () => {
               price: "189",
               description: "desc",
               createdAt: "2026-03-01T00:00:00.000Z",
-              forSale: true,
-              forRental: false,
               popularity: "0",
-              deposit: "0",
               stock: "1",
               taxonomy: {
                 department: "women",

@@ -7,6 +7,7 @@ export interface MockKvNamespace {
 export interface MockEnv {
   CF_FIREBASE_DATABASE_URL: string;
   CF_FIREBASE_API_KEY: string;
+  PRIME_EMAIL_WEBHOOK_TOKEN?: string;
   RATE_LIMIT?: MockKvNamespace;
   NODE_ENV?: string;
   PRIME_ENABLE_STAFF_OWNER_ROUTES?: string;

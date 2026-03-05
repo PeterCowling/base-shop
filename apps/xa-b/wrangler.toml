@@ -13,4 +13,4 @@ compatibility_date = "2025-06-20"
 # To configure: set XA_IMAGES_BASE_URL as a GitHub Actions repository
 # variable with the R2 public URL (e.g. https://pub-{hash}.r2.dev)
 # after enabling public access in Cloudflare dashboard.
-NEXT_PUBLIC_XA_IMAGES_BASE_URL = "https://pub-xa-media.r2.dev"
+NEXT_PUBLIC_XA_IMAGES_BASE_URL = ""

@@ -6,6 +6,13 @@ const config = [
   },
   ...rootConfig,
   {
+    files: ["functions/**/*.ts"],
+    rules: {
+      // Non-UI edge/function files contain protocol literals and should not be i18n-keyed.
+      "ds/no-hardcoded-copy": "off",
+    },
+  },
+  {
     files: ["src/**/*.{ts,tsx}"],
     rules: {
       // XA-B is in active migration; keep these as non-blocking while refactors land.

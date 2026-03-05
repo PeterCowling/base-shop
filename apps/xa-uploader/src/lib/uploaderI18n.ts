@@ -41,6 +41,12 @@ const messages = {
     fixValidationErrorsBeforeSaving: "Fix validation errors before saving.",
     saveFailed: "Save failed.",
     saveSucceeded: "Saved product details.",
+    autosaveStatusSaving: "Saving image changes...",
+    autosaveStatusSaved: "All image changes saved.",
+    autosaveStatusUnsaved: "Unsaved image changes.",
+    autosaveStatusManualSaveHint: "Use Save as draft to persist now.",
+    autosaveNeedsManualSave:
+      "Image autosave could not finish. Use Save as draft to persist the latest image changes.",
     deleteFailed: "Delete failed.",
     deleteSucceeded: "Deleted product {slug}.",
     syncFailed: "Sync failed.",
@@ -52,12 +58,33 @@ const messages = {
       "Sync completed, but automatic xa-b deploy failed. Run a manual rebuild/deploy.",
     syncSucceededRebuildRequired:
       "Sync completed. Rebuild and deploy xa-b to publish catalog updates to the live site.",
+    syncWarningsSummary: "Warnings: {warnings}",
+    syncWarningPublishStatePromotionFailed:
+      "Some product publish states could not be updated to live in uploader records. Storefront publish still completed.",
+    syncWarningCloudMediaMissingPruned:
+      "{count} image path(s) were missing in cloud media storage and were excluded from this publish.",
+    syncWarningCloudMediaValidationLimitSkipped:
+      "Cloud media validation skipped {count} image path(s) after hitting the per-sync check limit.",
+    syncWarningRowEmptyImagePath:
+      "Row {row}: product \"{slug}\" has an empty image path entry.",
+    syncWarningRowUnsupportedCloudPath:
+      "Row {row}: product \"{slug}\" has unsupported cloud image path \"{path}\" ({reason}).",
+    syncWarningReasonExternalHostNotAllowed: "external host is not allowlisted",
+    syncWarningReasonInvalidCloudKey: "cloud key must match storefront/slug/file format",
+    syncWarningReasonEmptyPath: "path is empty",
+    syncWarningReasonUnknown: "unknown reason",
+    syncWarningUnknownGeneric: "Additional sync warnings were reported. Review sync output for details.",
+    syncWarningUnknown: "{warning}",
     syncCooldownUnknown: "cooldown window active",
     apiErrorInvalid: "The request data is invalid. Check the form and retry.",
     apiErrorMissingProduct: "Product data is missing from this request.",
     apiErrorNotFound: "The product no longer exists. Refresh and retry.",
     apiErrorConflict: "This product changed elsewhere. Refresh and save again.",
     apiErrorInternal: "The server could not complete this request. Try again.",
+    apiErrorStorageBusy:
+      "Catalog file is in use by another app (often Excel). Close it, then retry.",
+    apiErrorRateLimited: "Too many requests. Wait about one minute and retry.",
+    apiErrorPayloadTooLarge: "Request payload is too large. Reduce content size and retry.",
     apiErrorServiceUnavailable:
       "This operation is unavailable in the current runtime. Use the cloud draft mode or local operator runtime.",
     apiErrorInvalidUploadUrl:
@@ -109,6 +136,10 @@ const messages = {
       "No products are ready to publish. Mark products as ready first, or continue with empty catalog?",
     saveConfirmUnpublish:
       "This product is currently live. Saving with incomplete data will remove it from the storefront. Continue?",
+    syncDeployHookUnconfiguredActionable:
+      "Auto deploy is required in this environment, but the deploy hook is not configured.",
+    syncRecoveryConfigureDeployHook:
+      "Set XA_B_DEPLOY_HOOK_URL and XA_UPLOADER_DEPLOY_DRAIN_TOKEN, then retry.",
     syncPublishContractUnconfigured:
       "Catalog publish target is not configured for this environment.",
     syncRecoveryConfigureCatalogContract:
@@ -121,6 +152,7 @@ const messages = {
     syncRecoveryReviewValidationLogs:
       "Fix validation errors from the sync log output, then retry.",
     syncPipelineFailedActionable: "Sync pipeline failed.",
+    syncRateLimitedActionable: "Sync is rate limited. Wait about one minute before retrying.",
     syncRecoveryReviewSyncLogs:
       "Review sync log output, fix the pipeline error, then retry.",
     submissionValidationFailed:
@@ -162,8 +194,12 @@ const messages = {
     running: "Running...",
     syncReadinessChecking: "Checking sync readiness...",
     syncReadinessReady: "Sync dependencies are ready.",
+    syncReadinessAutosavePending:
+      "Image autosave is still pending. Wait for save completion before running sync.",
     syncReadinessCheckFailed: "Unable to verify sync readiness. Retry the readiness check.",
     syncReadinessRefresh: "Recheck",
+    syncBlockedAutosavePending:
+      "Sync is blocked while image autosave is pending. Wait until image changes are saved.",
     syncPublishReadinessSummary:
       "{publishable} publishable / {draft} draft ({total} total).",
     syncPublishReadinessZero:
@@ -234,6 +270,7 @@ const messages = {
     fieldForRental: "For rental",
     fieldDeposit: "Deposit",
     fieldStock: "Stock",
+    fieldStockHint: "0 means sold out on the storefront.",
     fieldPopularity: "Popularity",
     fieldCreatedAt: "Created at",
     fieldSectionIdentity: "Identity",
@@ -297,11 +334,20 @@ const messages = {
     uploadImageLabel: "Upload image",
     uploadImageUploading: "Uploading...",
     uploadImageSuccess: "Image uploaded.",
+    uploadImagePersisting: "Image uploaded. Saving draft...",
+    uploadImagePersistPending: "Image uploaded. Waiting for draft save.",
+    uploadImagePersisted: "Image uploaded and saved.",
     uploadImageErrorTooLarge: "File exceeds 8 MB limit.",
     uploadImageErrorNoSlug: "Save the product first to enable image upload.",
     uploadImageErrorFailed: "Image upload failed.",
     uploadImageErrorType: "Only JPG, PNG, and WebP files are accepted.",
+    uploadImageErrorInvalidRequest: "Upload request is incomplete. Refresh and retry.",
+    uploadImageErrorStorageUnavailable: "Image storage is unavailable right now. Retry shortly.",
+    uploadImageErrorRateLimited: "Too many uploads. Wait about one minute and retry.",
     uploadImageRoleLabel: "Shot role",
+    uploadRequiredRolesTitle: "Required shot roles for this category",
+    uploadRequiredRoleDone: "added",
+    uploadRequiredRoleMissing: "missing",
     uploadImageCount: "{count} image(s) uploaded",
     uploadImageRemove: "Remove",
     uploadRoleHintFront: "Straight-on view showing the front face of the product",
@@ -406,6 +452,24 @@ const messages = {
     instructionsSection8Step2: "Use the theme toggle to switch between light and dark views.",
     instructionsSection8Step3: "Use EN/ZH to switch interface language.",
     instructionsSection8Step4: "Keep this guide open as your checklist during catalog updates.",
+    instructionsSection9Title: "Provide XA-B shop information (second batch)",
+    instructionsSection9Step1:
+      "Add the customer WhatsApp number in full international format (for example +44...), and confirm the team that replies plus target response hours.",
+    instructionsSection9Step2:
+      "Provide Terms of sale content (or a final URL) covering pricing currency, payment methods, order acceptance, cancellations, and limitation clauses.",
+    instructionsSection9Step3:
+      "Provide legal/support policy links used by XA-B: return/refund policy, shipping policy, privacy policy, and customer support contact email.",
+    instructionsSection9Step4:
+      "Before go-live, verify these details are complete, current, and consistent across footer links, contact page, checkout/legal copy, and WhatsApp CTA text.",
+    instructionsSection10Title: "What customers can do on XA-B",
+    instructionsSection10Step1:
+      "On product pages, customers can add/remove items from Wishlist using the heart button and review saved items on the Wishlist page.",
+    instructionsSection10Step2:
+      "Customers can add products to Cart (including size/quantity where relevant), adjust quantities, and remove lines from the Cart page.",
+    instructionsSection10Step3:
+      "From Wishlist or Cart, customers can open the WhatsApp enquiry panel, enter their contact number, and launch a prefilled WhatsApp message.",
+    instructionsSection10Step4:
+      "The WhatsApp message includes selected item details (and cart quantity/subtotal where applicable), so the team can continue purchase support in chat.",
   },
   zh: {
     pageKicker: "",
@@ -442,6 +506,12 @@ const messages = {
     fixValidationErrorsBeforeSaving: "保存前请先修复校验错误。",
     saveFailed: "保存失败。",
     saveSucceeded: "商品详情已保存。",
+    autosaveStatusSaving: "正在保存图片变更…",
+    autosaveStatusSaved: "图片变更已全部保存。",
+    autosaveStatusUnsaved: "存在未保存的图片变更。",
+    autosaveStatusManualSaveHint: "如需立即落盘，请点击“保存为草稿”。",
+    autosaveNeedsManualSave:
+      "图片自动保存未完成。请点击“保存为草稿”以保存最新图片变更。",
     deleteFailed: "删除失败。",
     deleteSucceeded: "已删除商品 {slug}。",
     syncFailed: "同步失败。",
@@ -451,12 +521,32 @@ const messages = {
       "同步已完成。由于冷却时间限制，已跳过自动部署（下次可触发时间：{nextEligibleAt}）。",
     syncSucceededDeployFailed: "同步已完成，但 xa-b 自动部署触发失败。请手动重新构建并部署。",
     syncSucceededRebuildRequired: "同步完成。请重新构建并部署 xa-b，目录更新才会发布到线上站点。",
+    syncWarningsSummary: "警告：{warnings}",
+    syncWarningPublishStatePromotionFailed:
+      "部分商品的发布状态未能在上传器记录中更新为 live。店铺发布已完成。",
+    syncWarningCloudMediaMissingPruned:
+      "有 {count} 个图片路径在云端媒体存储中不存在，已从本次发布中排除。",
+    syncWarningCloudMediaValidationLimitSkipped:
+      "云端媒体校验达到单次上限后，已跳过 {count} 个图片路径的校验。",
+    syncWarningRowEmptyImagePath:
+      "第 {row} 行：商品“{slug}”存在空的图片路径条目。",
+    syncWarningRowUnsupportedCloudPath:
+      "第 {row} 行：商品“{slug}”包含不支持的云端图片路径“{path}”（{reason}）。",
+    syncWarningReasonExternalHostNotAllowed: "外部主机不在允许列表中",
+    syncWarningReasonInvalidCloudKey: "云端键必须符合 storefront/slug/file 格式",
+    syncWarningReasonEmptyPath: "路径为空",
+    syncWarningReasonUnknown: "未知原因",
+    syncWarningUnknownGeneric: "同步返回了额外警告。请查看同步输出获取详情。",
+    syncWarningUnknown: "{warning}",
     syncCooldownUnknown: "冷却窗口生效中",
     apiErrorInvalid: "请求数据无效，请检查表单后重试。",
     apiErrorMissingProduct: "请求中缺少商品数据。",
     apiErrorNotFound: "该商品不存在，请刷新后重试。",
     apiErrorConflict: "该商品已被他人修改，请刷新后重新保存。",
     apiErrorInternal: "服务器暂时无法完成请求，请稍后重试。",
+    apiErrorStorageBusy: "目录文件正被其他程序占用（常见于 Excel）。请关闭后重试。",
+    apiErrorRateLimited: "请求过于频繁。请等待约 1 分钟后重试。",
+    apiErrorPayloadTooLarge: "请求体过大。请缩减内容后重试。",
     apiErrorServiceUnavailable:
       "当前运行环境暂不支持该操作。请使用云端草稿模式或本地运营环境。",
     apiErrorInvalidUploadUrl:
@@ -498,6 +588,10 @@ const messages = {
     syncConfirmEmptyCatalogSync: "目录 CSV 为空。继续将发布 0 个商品，是否继续同步？",
     syncConfirmNoPublishableProducts: "没有可发布的商品。请先将商品标记为已就绪，或继续发布空目录？",
     saveConfirmUnpublish: "该商品目前为上架状态。保存不完整数据将把它从店面移除。确定继续吗？",
+    syncDeployHookUnconfiguredActionable:
+      "当前环境要求自动部署，但尚未配置部署 Hook。",
+    syncRecoveryConfigureDeployHook:
+      "请先配置 XA_B_DEPLOY_HOOK_URL 与 XA_UPLOADER_DEPLOY_DRAIN_TOKEN 后重试。",
     syncPublishContractUnconfigured: "当前环境未配置目录发布目标。",
     syncRecoveryConfigureCatalogContract:
       "请先配置 XA_CATALOG_CONTRACT_BASE_URL 与 XA_CATALOG_CONTRACT_WRITE_TOKEN 后重试。",
@@ -506,6 +600,7 @@ const messages = {
     syncValidationFailedActionable: "同步前校验失败。",
     syncRecoveryReviewValidationLogs: "请根据同步日志修复校验错误后重试。",
     syncPipelineFailedActionable: "同步流水线执行失败。",
+    syncRateLimitedActionable: "同步请求过于频繁。请等待约 1 分钟后重试。",
     syncRecoveryReviewSyncLogs: "请查看同步日志，修复流水线错误后重试。",
     submissionValidationFailed: "提交验证失败。请检查产品数量、图片尺寸及图片文件，然后重试。",
     exportFailed: "导出失败。",
@@ -545,8 +640,10 @@ const messages = {
     running: "运行中…",
     syncReadinessChecking: "正在检查同步就绪状态…",
     syncReadinessReady: "同步依赖已就绪。",
+    syncReadinessAutosavePending: "图片自动保存尚未完成。请等待保存完成后再运行同步。",
     syncReadinessCheckFailed: "无法确认同步就绪状态，请重试就绪检查。",
     syncReadinessRefresh: "重新检查",
+    syncBlockedAutosavePending: "图片自动保存进行中，已阻止同步。请等待图片变更保存完成。",
     syncPublishReadinessSummary: "{publishable} 个可发布 / {draft} 个草稿（共 {total} 个）。",
     syncPublishReadinessZero: "当前没有可发布商品。商品需达到 ready 或 live 状态后才会出现在 xa-b。",
     syncOptionStrict: "严格模式",
@@ -615,6 +712,7 @@ const messages = {
     fieldForRental: "可租",
     fieldDeposit: "押金",
     fieldStock: "库存",
+    fieldStockHint: "库存为 0 时，前台会显示售罄。",
     fieldPopularity: "人气",
     fieldCreatedAt: "创建时间",
     fieldSectionIdentity: "基本信息",
@@ -678,11 +776,20 @@ const messages = {
     uploadImageLabel: "上传图片",
     uploadImageUploading: "上传中…",
     uploadImageSuccess: "图片已上传。",
+    uploadImagePersisting: "图片已上传，正在保存草稿…",
+    uploadImagePersistPending: "图片已上传，等待草稿保存。",
+    uploadImagePersisted: "图片已上传并保存。",
     uploadImageErrorTooLarge: "文件超过 8 MB 限制。",
     uploadImageErrorNoSlug: "请先保存产品后再上传图片。",
     uploadImageErrorFailed: "图片上传失败。",
     uploadImageErrorType: "仅支持 JPG、PNG 和 WebP 格式。",
+    uploadImageErrorInvalidRequest: "上传请求不完整。请刷新后重试。",
+    uploadImageErrorStorageUnavailable: "图片存储暂不可用，请稍后重试。",
+    uploadImageErrorRateLimited: "上传过于频繁。请等待约 1 分钟后重试。",
     uploadImageRoleLabel: "拍摄角色",
+    uploadRequiredRolesTitle: "该类别所需镜位",
+    uploadRequiredRoleDone: "已添加",
+    uploadRequiredRoleMissing: "缺少",
     uploadImageCount: "已上传 {count} 张图片",
     uploadImageRemove: "移除",
     uploadRoleHintFront: "正面直拍，展示产品正面",
@@ -777,6 +884,24 @@ const messages = {
     instructionsSection8Step2: "使用主题按钮切换浅色/深色显示。",
     instructionsSection8Step3: "使用 EN/ZH 切换界面语言。",
     instructionsSection8Step4: "在更新目录时可保持本指南页面作为操作清单。",
+    instructionsSection9Title: "Provide XA-B shop information (second batch)",
+    instructionsSection9Step1:
+      "Add the customer WhatsApp number in full international format (for example +44...), and confirm the team that replies plus target response hours.",
+    instructionsSection9Step2:
+      "Provide Terms of sale content (or a final URL) covering pricing currency, payment methods, order acceptance, cancellations, and limitation clauses.",
+    instructionsSection9Step3:
+      "Provide legal/support policy links used by XA-B: return/refund policy, shipping policy, privacy policy, and customer support contact email.",
+    instructionsSection9Step4:
+      "Before go-live, verify these details are complete, current, and consistent across footer links, contact page, checkout/legal copy, and WhatsApp CTA text.",
+    instructionsSection10Title: "What customers can do on XA-B",
+    instructionsSection10Step1:
+      "On product pages, customers can add/remove items from Wishlist using the heart button and review saved items on the Wishlist page.",
+    instructionsSection10Step2:
+      "Customers can add products to Cart (including size/quantity where relevant), adjust quantities, and remove lines from the Cart page.",
+    instructionsSection10Step3:
+      "From Wishlist or Cart, customers can open the WhatsApp enquiry panel, enter their contact number, and launch a prefilled WhatsApp message.",
+    instructionsSection10Step4:
+      "The WhatsApp message includes selected item details (and cart quantity/subtotal where applicable), so the team can continue purchase support in chat.",
   },
 } as const;
 

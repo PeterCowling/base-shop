@@ -18,6 +18,7 @@ const publishCatalogPayloadToContractMock = jest.fn();
 const getCatalogContractReadinessMock = jest.fn();
 const readCloudDraftSnapshotMock = jest.fn();
 const buildCatalogArtifactsFromDraftsMock = jest.fn();
+const getMediaBucketMock = jest.fn();
 const DEFAULT_CURRENCY_RATES_JSON = '{"EUR":0.92,"GBP":0.78,"AUD":1.5}';
 const DEFAULT_GENERATED_CATALOG_JSON = '{"products":[{"slug":"studio-jacket"}]}';
 
@@ -64,6 +65,10 @@ jest.mock("../../../../../lib/catalogDraftContractClient", () => ({
 
 jest.mock("../../../../../lib/catalogDraftToContract", () => ({
   buildCatalogArtifactsFromDrafts: (...args: unknown[]) => buildCatalogArtifactsFromDraftsMock(...args),
+}));
+
+jest.mock("../../../../../lib/r2Media", () => ({
+  getMediaBucket: (...args: unknown[]) => getMediaBucketMock(...args),
 }));
 
 const getUploaderKvMock = jest.fn();
@@ -136,6 +141,7 @@ describe("catalog sync route", () => {
       mediaIndex: { totals: { products: 1, media: 0, warnings: 0 }, items: [] },
       warnings: [],
     });
+    getMediaBucketMock.mockResolvedValue(null);
     delete process.env.XA_UPLOADER_MODE;
     delete process.env.XA_UPLOADER_EXPOSE_SYNC_LOGS;
     delete process.env.XA_UPLOADER_LOCAL_FS_DISABLED;

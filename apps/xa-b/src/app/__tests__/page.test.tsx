@@ -10,8 +10,6 @@ jest.mock("next/link", () => ({
 function mockHomeData(options: {
   isStale: boolean;
   syncedAt?: string;
-  source?: string;
-  readUrl?: string;
 }) {
   jest.doMock("../../lib/demoData", () => ({
     XA_PRODUCTS: [
@@ -30,8 +28,7 @@ function mockHomeData(options: {
     },
     XA_CATALOG_RUNTIME_META: {
       syncedAt: options.syncedAt ?? null,
-      source: options.source ?? "contract",
-      readUrl: options.readUrl,
+      source: "contract",
     },
   }));
   jest.doMock("../../components/XaProductCard", () => ({
@@ -47,15 +44,13 @@ describe("xa-b home page freshness banner", () => {
     mockHomeData({
       isStale: true,
       syncedAt: "2026-03-01T10:00:00.000Z",
-      readUrl: "https://internal.example/catalog/xa-b",
     });
     const { renderToStaticMarkup } = await import("react-dom/server");
     const { default: HomePage } = await import("../page");
     const html = renderToStaticMarkup(<HomePage />);
 
-    expect(html).toContain("Catalog data may be stale. Last sync:");
-    expect(html).toContain("2026-03-01T10:00:00.000Z");
-    expect(html).not.toContain("internal.example");
+    expect(html).toContain("Catalog data may be stale.");
+    expect(html).not.toContain("2026-03-01T10:00:00.000Z");
   });
 
   it("does not render stale banner when runtime catalog is fresh", async () => {
@@ -68,6 +63,6 @@ describe("xa-b home page freshness banner", () => {
     const { default: HomePage } = await import("../page");
     const html = renderToStaticMarkup(<HomePage />);
 
-    expect(html).not.toContain("Catalog data may be stale. Last sync:");
+    expect(html).not.toContain("Catalog data may be stale.");
   });
 });

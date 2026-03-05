@@ -13,8 +13,13 @@ class MockCatalogCsvConflictError extends Error {
   override name = "CatalogCsvConflictError";
 }
 
+class MockCatalogCsvStorageBusyError extends Error {
+  override name = "CatalogCsvStorageBusyError";
+}
+
 jest.mock("../../../../../lib/catalogCsv", () => ({
   CatalogCsvConflictError: MockCatalogCsvConflictError,
+  CatalogCsvStorageBusyError: MockCatalogCsvStorageBusyError,
   listCatalogDrafts: (...args: unknown[]) => listCatalogDraftsMock(...args),
   upsertCatalogDraft: (...args: unknown[]) => upsertCatalogDraftMock(...args),
 }));
@@ -170,6 +175,30 @@ describe("catalog products route", () => {
     expect(payload.reason).toBe("products_upsert_failed");
     expect(JSON.stringify(payload)).not.toContain("EACCES");
     expect(JSON.stringify(payload)).not.toContain("/Users/petercowling");
+  });
+
+  it("returns storage_busy when CSV file is locked by another process", async () => {
+    upsertCatalogDraftMock.mockRejectedValueOnce(
+      new MockCatalogCsvStorageBusyError("locked"),
+    );
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ product: { title: "x", slug: "x" } }),
+      }),
+    );
+
+    expect(response.status).toBe(503);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({
+        ok: false,
+        error: "storage_busy",
+        reason: "products_csv_locked",
+      }),
+    );
   });
 
   it("uses cloud draft snapshot when local fs runtime is disabled", async () => {

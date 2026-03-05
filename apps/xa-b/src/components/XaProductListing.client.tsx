@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import {
   Button,
+  EmptyState,
   Select,
   SelectContent,
   SelectItem,
@@ -146,18 +147,20 @@ export function XaProductListing({
 
       <Section padding="default">
         {filteredProducts.length === 0 ? (
-          <div className="col-span-full flex flex-col items-center gap-3 py-16 text-center">
-            {/* i18n-exempt -- XA-0022: demo empty state heading */}
-            <div className="text-xs font-semibold uppercase tracking-wide">No matches</div>
-            <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.components.xaproductlisting.client.l167c58")}</p>
-            <Button
-              type="button"
-              onClick={clearAppliedFilters}
-              variant="outline"
-              size="sm"
-              className="mt-1 h-auto min-h-0 rounded-none border border-border-2 px-4 py-2 text-xs uppercase tracking-widest hover:bg-muted"
-            >{xaI18n.t("xaB.src.components.xaproductlisting.client.l174c14")}</Button>
-          </div>
+          <EmptyState
+            className="rounded-sm border border-border-1 [&_h3]:text-xs [&_h3]:uppercase [&_h3]:tracking-wide [&_h3]:text-muted-foreground"
+            title="No matches" // i18n-exempt -- XA-0022: demo empty state heading
+            description={xaI18n.t("xaB.src.components.xaproductlisting.client.l167c58")}
+            action={
+              <Button
+                type="button"
+                onClick={clearAppliedFilters}
+                variant="outline"
+                size="sm"
+                className="h-auto min-h-0 rounded-none border border-border-2 px-4 py-2 text-xs uppercase tracking-widest hover:bg-muted"
+              >{xaI18n.t("xaB.src.components.xaproductlisting.client.l174c14")}</Button>
+            }
+          />
         ) : (
           <LayoutGrid columns={{ base: 2, md: 3, lg: 4 }} gap={6}>
             {filteredProducts.map((product) => (

@@ -10,6 +10,7 @@ type SyncErrorCode =
   | "no_publishable_products"
   | "currency_rates_missing"
   | "currency_rates_invalid"
+  | "deploy_hook_unconfigured"
   | "catalog_publish_unconfigured"
   | "catalog_publish_failed"
   | "validation_failed"
@@ -20,6 +21,7 @@ type SyncRecoveryCode =
   | "confirm_empty_catalog_sync"
   | "mark_products_ready"
   | "save_currency_rates"
+  | "configure_deploy_hook"
   | "configure_catalog_contract"
   | "review_catalog_contract"
   | "review_validation_logs"
@@ -31,7 +33,16 @@ type CatalogApiErrorCode =
   | "conflict"
   | "internal_error"
   | "service_unavailable"
-  | "invalid_upload_url";
+  | "invalid_upload_url"
+  | "storage_busy"
+  | "rate_limited"
+  | "payload_too_large"
+  | "invalid_file_type"
+  | "file_too_large"
+  | "missing_params"
+  | "no_file"
+  | "upload_failed"
+  | "r2_unavailable";
 type ActionDomain = "login" | "draft" | "sync";
 type ActionFeedbackKind = "error" | "success";
 type SyncDeployStatus = "triggered" | "skipped_unconfigured" | "skipped_cooldown" | "failed";
@@ -52,11 +63,20 @@ export type SyncResponse = {
   ok: boolean;
   error?: SyncErrorCode | string;
   recovery?: SyncRecoveryCode | string;
+  warnings?: string[];
   deploy?: {
     status?: SyncDeployStatus | string;
     nextEligibleAt?: string;
     reason?: string;
     httpStatus?: number;
+  };
+  deployPending?: {
+    pending?: boolean;
+    reasonCode?: string;
+    reason?: string;
+    nextEligibleAt?: string;
+    firstDetectedAt?: string;
+    lastUpdatedAt?: string;
   };
   display?: {
     mode?: string;
@@ -101,8 +121,18 @@ export function getCatalogApiErrorMessage(
   if (normalized === "not_found") return t("apiErrorNotFound");
   if (normalized === "conflict") return t("apiErrorConflict");
   if (normalized === "internal_error") return t("apiErrorInternal");
+  if (normalized === "storage_busy") return t("apiErrorStorageBusy");
   if (normalized === "service_unavailable") return t("apiErrorServiceUnavailable");
   if (normalized === "invalid_upload_url") return t("apiErrorInvalidUploadUrl");
+  if (normalized === "rate_limited") return t("apiErrorRateLimited");
+  if (normalized === "payload_too_large") return t("apiErrorPayloadTooLarge");
+  if (normalized === "invalid_file_type") return t("uploadImageErrorType");
+  if (normalized === "file_too_large") return t("uploadImageErrorTooLarge");
+  if (normalized === "missing_params" || normalized === "no_file") {
+    return t("uploadImageErrorInvalidRequest");
+  }
+  if (normalized === "upload_failed") return t("uploadImageErrorFailed");
+  if (normalized === "r2_unavailable") return t("uploadImageErrorStorageUnavailable");
   return t(fallbackKey);
 }
 
@@ -176,6 +206,7 @@ function getSyncRecoveryMessage(
   if (recovery === "confirm_empty_catalog_sync") return t("syncRecoveryConfirmEmptyCatalogSync");
   if (recovery === "mark_products_ready") return t("syncRecoveryMarkProductsReady");
   if (recovery === "save_currency_rates") return t("syncRecoverySaveCurrencyRates");
+  if (recovery === "configure_deploy_hook") return t("syncRecoveryConfigureDeployHook");
   if (recovery === "configure_catalog_contract") return t("syncRecoveryConfigureCatalogContract");
   if (recovery === "review_catalog_contract") return t("syncRecoveryReviewCatalogContract");
   if (recovery === "review_validation_logs") return t("syncRecoveryReviewValidationLogs");
@@ -203,10 +234,12 @@ export function getSyncFailureMessage(
     catalog_input_missing: "syncCatalogInputMissingActionable",
     currency_rates_missing: "syncCurrencyRatesMissingActionable",
     currency_rates_invalid: "syncCurrencyRatesInvalidActionable",
+    deploy_hook_unconfigured: "syncDeployHookUnconfiguredActionable",
     catalog_publish_unconfigured: "syncPublishContractUnconfigured",
     catalog_publish_failed: "syncPublishContractFailedActionable",
     validation_failed: "syncValidationFailedActionable",
     sync_failed: "syncPipelineFailedActionable",
+    rate_limited: "syncRateLimitedActionable",
   };
   const key = data.error ? actionableKeys[data.error] : undefined;
   if (key) {

@@ -13,6 +13,7 @@ import {
 } from "@acme/design-system/atoms";
 import { Grid as LayoutGrid } from "@acme/design-system/atoms/Grid";
 import { Cluster } from "@acme/design-system/primitives/Cluster";
+import { sortXaMediaByRole } from "@acme/lib/xa";
 
 import type { XaProduct } from "../lib/demoData";
 import { xaI18n } from "../lib/xaI18n";
@@ -21,8 +22,25 @@ import { XaFadeImage } from "./XaFadeImage";
 
 type MediaItem = XaProduct["media"][number];
 
+const IMAGE_ROLE_LABEL_KEYS = {
+  front: "xaB.src.components.xaimagegallery.client.role.front",
+  side: "xaB.src.components.xaimagegallery.client.role.side",
+  top: "xaB.src.components.xaimagegallery.client.role.top",
+  back: "xaB.src.components.xaimagegallery.client.role.back",
+  detail: "xaB.src.components.xaimagegallery.client.role.detail",
+  interior: "xaB.src.components.xaimagegallery.client.role.interior",
+  scale: "xaB.src.components.xaimagegallery.client.role.scale",
+} as const;
+
 function isImage(item: MediaItem): item is MediaItem & { type: "image" } {
   return item.type === "image" && item.url.trim().length > 0;
+}
+
+function getImageRoleLabel(role: MediaItem["role"]): string | null {
+  if (!role) return null;
+  const key = IMAGE_ROLE_LABEL_KEYS[role];
+  if (!key) return null;
+  return xaI18n.t(key);
 }
 
 export function XaImageGallery({
@@ -32,7 +50,7 @@ export function XaImageGallery({
   title: string;
   media: MediaItem[];
 }) {
-  const images = React.useMemo(() => media.filter(isImage), [media]);
+  const images = React.useMemo(() => sortXaMediaByRole(media.filter(isImage)), [media]);
   const [activeIndex, setActiveIndex] = React.useState(0);
 
   React.useEffect(() => setActiveIndex(0), [title]);
@@ -41,6 +59,7 @@ export function XaImageGallery({
 
   const handlePrev = () => setActiveIndex((i) => Math.max(0, i - 1));
   const handleNext = () => setActiveIndex((i) => Math.min(images.length - 1, i + 1));
+  const activeRoleLabel = getImageRoleLabel(active?.role);
 
   return (
     <div className="space-y-4">
@@ -49,6 +68,7 @@ export function XaImageGallery({
           <LayoutGrid columns={{ base: 1, sm: 2 }} gap={6}>
             {images.map((img, idx) => {
               const shouldSpan = images.length > 2 && idx === 0;
+              const roleLabel = getImageRoleLabel(img.role);
               return (
               <DialogTrigger asChild key={img.url}>
                 <Button
@@ -69,6 +89,11 @@ export function XaImageGallery({
                     className="object-contain"
                     priority={idx < 2}
                   />
+                  {roleLabel ? (
+                    <span className="absolute start-2 top-2 rounded-none bg-surface-1/90 px-2 py-1 text-xs font-semibold uppercase tracking-wide text-foreground">
+                      {roleLabel}
+                    </span>
+                  ) : null}
                 </Button>
               </DialogTrigger>
               );
@@ -101,7 +126,7 @@ export function XaImageGallery({
               disabled={activeIndex === 0}
               variant="secondary"
               size="sm"
-              className="absolute start-3 top-1/2 h-8 w-8 -translate-y-1/2 rounded-none border border-border-2 bg-surface-1 text-foreground hover:bg-muted disabled:opacity-30"
+              className="absolute start-3 top-1/2 h-8 w-8 -translate-y-1/2 rounded-none border xa-border-control bg-surface-1 text-foreground hover:bg-muted disabled:opacity-50"
             >
               <svg aria-hidden viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-4 w-4">
                 <path d="M10 4L6 8l4 4"/>
@@ -114,7 +139,7 @@ export function XaImageGallery({
               disabled={activeIndex === images.length - 1}
               variant="secondary"
               size="sm"
-              className="absolute end-3 top-1/2 h-8 w-8 -translate-y-1/2 rounded-none border border-border-2 bg-surface-1 text-foreground hover:bg-muted disabled:opacity-30"
+              className="absolute end-3 top-1/2 h-8 w-8 -translate-y-1/2 rounded-none border xa-border-control bg-surface-1 text-foreground hover:bg-muted disabled:opacity-50"
             >
               <svg aria-hidden viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-4 w-4">
                 <path d="M6 4l4 4-4 4"/>
@@ -123,10 +148,17 @@ export function XaImageGallery({
             <div className="mt-2 text-center text-xs text-muted-foreground tabular-nums">
               {activeIndex + 1} / {images.length}
             </div>
+            {activeRoleLabel ? (
+              <div className="text-center text-xs uppercase tracking-wide text-muted-foreground">
+                {xaI18n.t("xaB.src.components.xaimagegallery.client.role.caption", {
+                  role: activeRoleLabel,
+                })}
+              </div>
+            ) : null}
           </DialogContent>
         </Dialog>
       ) : (
-        <div className="relative xa-aspect-4-5 w-full overflow-hidden rounded-none border border-border-1 bg-surface">
+        <div className="relative xa-aspect-4-5 w-full overflow-hidden rounded-none border xa-border-control bg-surface">
           <Cluster
             alignY="center"
             justify="center"

@@ -2,20 +2,24 @@
 
 import Image, { type StaticImageData } from "next/image";
 
-import type { UploaderMessageKey } from "../../lib/uploaderI18n";
+import type { UploaderLocale, UploaderMessageKey } from "../../lib/uploaderI18n";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 import UploaderShell from "../UploaderShell.client";
 
-import addProductScreen from "./assets/add-product-screen.png";
-import currencyScreen from "./assets/currency-screen.png";
-import editScreen from "./assets/edit-screen.png";
-import loginScreen from "./assets/login-screen.png";
+import addProductScreenEn from "./assets/add-product-screen-en.png";
+import addProductScreenZh from "./assets/add-product-screen-zh.png";
+import currencyScreenEn from "./assets/currency-screen-en.png";
+import currencyScreenZh from "./assets/currency-screen-zh.png";
+import editScreenEn from "./assets/edit-screen-en.png";
+import editScreenZh from "./assets/edit-screen-zh.png";
+import loginScreenEn from "./assets/login-screen-en.png";
+import loginScreenZh from "./assets/login-screen-zh.png";
 
 type InstructionSection = {
   titleKey: UploaderMessageKey;
   stepKeys: readonly UploaderMessageKey[];
   screenshot?: {
-    src: StaticImageData;
+    srcByLocale: Record<UploaderLocale, StaticImageData>;
     captionKey: UploaderMessageKey;
   };
 };
@@ -30,7 +34,7 @@ const INSTRUCTION_SECTIONS: readonly InstructionSection[] = [
       "instructionsSection1Step4",
     ],
     screenshot: {
-      src: loginScreen,
+      srcByLocale: { en: loginScreenEn, zh: loginScreenZh },
       captionKey: "instructionsSection1ScreenshotCaption",
     },
   },
@@ -43,7 +47,7 @@ const INSTRUCTION_SECTIONS: readonly InstructionSection[] = [
       "instructionsSection2Step4",
     ],
     screenshot: {
-      src: addProductScreen,
+      srcByLocale: { en: addProductScreenEn, zh: addProductScreenZh },
       captionKey: "instructionsSection2ScreenshotCaption",
     },
   },
@@ -74,7 +78,7 @@ const INSTRUCTION_SECTIONS: readonly InstructionSection[] = [
       "instructionsSection5Step4",
     ],
     screenshot: {
-      src: editScreen,
+      srcByLocale: { en: editScreenEn, zh: editScreenZh },
       captionKey: "instructionsSection5ScreenshotCaption",
     },
   },
@@ -87,7 +91,7 @@ const INSTRUCTION_SECTIONS: readonly InstructionSection[] = [
       "instructionsSection6Step4",
     ],
     screenshot: {
-      src: currencyScreen,
+      srcByLocale: { en: currencyScreenEn, zh: currencyScreenZh },
       captionKey: "instructionsSection6ScreenshotCaption",
     },
   },
@@ -109,6 +113,24 @@ const INSTRUCTION_SECTIONS: readonly InstructionSection[] = [
       "instructionsSection8Step4",
     ],
   },
+  {
+    titleKey: "instructionsSection9Title",
+    stepKeys: [
+      "instructionsSection9Step1",
+      "instructionsSection9Step2",
+      "instructionsSection9Step3",
+      "instructionsSection9Step4",
+    ],
+  },
+  {
+    titleKey: "instructionsSection10Title",
+    stepKeys: [
+      "instructionsSection10Step1",
+      "instructionsSection10Step2",
+      "instructionsSection10Step3",
+      "instructionsSection10Step4",
+    ],
+  },
 ];
 
 export default function UploaderInstructionsClient({
@@ -118,20 +140,33 @@ export default function UploaderInstructionsClient({
   displayClassName: string;
   monoClassName: string;
 }) {
-  const { t } = useUploaderI18n();
-
   return (
     <UploaderShell displayClassName={displayClassName} monoClassName={monoClassName} page="instructions">
-      <div className="space-y-6">
-        <section className="rounded-xl border border-gate-border bg-gate-surface p-6 shadow-elevation-1">
-          <p className="text-2xs uppercase tracking-label-lg text-gate-muted">
-            {t("instructionsPageKicker")}
-          </p>
-          <h1 className="mt-2 text-2xl font-semibold text-gate-ink">{t("instructionsPageTitle")}</h1>
-          <p className="mt-3 text-sm text-gate-muted">{t("instructionsPageIntro")}</p>
-        </section>
+      <InstructionsContent />
+    </UploaderShell>
+  );
+}
 
-        {INSTRUCTION_SECTIONS.map((section, index) => (
+function InstructionsContent() {
+  const { t, locale } = useUploaderI18n();
+  const getScreenshotSrc = (section: InstructionSection): StaticImageData | null => {
+    if (!section.screenshot) return null;
+    return section.screenshot.srcByLocale[locale] ?? section.screenshot.srcByLocale.en;
+  };
+
+  return (
+    <div className="space-y-6">
+      <section className="rounded-xl border border-gate-border bg-gate-surface p-6 shadow-elevation-1">
+        <p className="text-2xs uppercase tracking-label-lg text-gate-muted">
+          {t("instructionsPageKicker")}
+        </p>
+        <h1 className="mt-2 text-2xl font-semibold text-gate-ink">{t("instructionsPageTitle")}</h1>
+        <p className="mt-3 text-sm text-gate-muted">{t("instructionsPageIntro")}</p>
+      </section>
+
+      {INSTRUCTION_SECTIONS.map((section, index) => {
+        const screenshotSrc = getScreenshotSrc(section);
+        return (
           <section
             key={section.titleKey}
             className="rounded-xl border border-gate-border bg-gate-bg p-6 shadow-elevation-1"
@@ -145,12 +180,13 @@ export default function UploaderInstructionsClient({
               ))}
             </ol>
 
-            {section.screenshot ? (
+            {section.screenshot && screenshotSrc ? (
               <figure className="mt-5 overflow-hidden rounded-lg border border-gate-border bg-gate-surface p-3">
                 <Image
-                  src={section.screenshot.src}
+                  src={screenshotSrc}
                   alt={t(section.screenshot.captionKey)}
-                  className="h-auto w-full rounded-md border border-gate-border"
+                  className="mx-auto h-auto w-auto rounded-md border border-gate-border"
+                  style={{ maxWidth: "100%" }}
                   priority={index < 2}
                 />
                 <figcaption className="mt-2 text-xs text-gate-muted">
@@ -159,8 +195,8 @@ export default function UploaderInstructionsClient({
               </figure>
             ) : null}
           </section>
-        ))}
-      </div>
-    </UploaderShell>
+        );
+      })}
+    </div>
   );
 }

@@ -11,8 +11,7 @@ import { fileURLToPath } from "node:url";
 // Inlined from apps/xa-uploader/src/lib/catalogCsvColumns.ts to avoid cross-rootDir import.
 const XA_PRODUCTS_CSV_COLUMN_ORDER = [
   "id", "slug", "title", "brand_handle", "brand_name", "collection_handle",
-  "collection_title", "collection_description", "price", "compare_at_price",
-  "deposit", "stock", "for_sale", "for_rental", "publish_state", "sizes",
+  "collection_title", "collection_description", "price", "stock", "publish_state", "sizes",
   "description", "created_at", "popularity", "image_files", "image_alt_texts",
   "media_paths", "media_alt_texts", "taxonomy_department", "taxonomy_category",
   "taxonomy_subcategory", "taxonomy_color", "taxonomy_material", "taxonomy_fit",
@@ -29,7 +28,7 @@ const XA_PRODUCTS_CSV_COLUMN_ORDER = [
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(__dirname, "../../..");
 const CATALOG_PATH = path.join(REPO_ROOT, "apps/xa-b/src/data/catalog.runtime.json");
-const OUTPUT_PATH = path.join(REPO_ROOT, "apps/xa-uploader/data/products-xa-b.csv");
+const OUTPUT_PATH = path.join(REPO_ROOT, "apps/xa-uploader/data/products.xa-b.csv");
 
 interface CatalogMedia {
   type: string;
@@ -45,11 +44,7 @@ interface CatalogProduct {
   collection: string;
   price: number;
   prices?: Record<string, number>;
-  compareAtPrice?: number;
-  deposit?: number;
   stock: number;
-  forSale: boolean;
-  forRental: boolean;
   media: CatalogMedia[];
   sizes: string[];
   description: string;
@@ -97,11 +92,7 @@ function productToRow(
     collection_title: collection?.title ?? "",
     collection_description: collection?.description ?? "",
     price: String(product.price),
-    compare_at_price: String(product.compareAtPrice ?? ""),
-    deposit: String(product.deposit ?? 0),
     stock: String(product.stock),
-    for_sale: String(product.forSale),
-    for_rental: String(product.forRental),
     publish_state: "ready",
     sizes: joinPipe(product.sizes),
     description: product.description,

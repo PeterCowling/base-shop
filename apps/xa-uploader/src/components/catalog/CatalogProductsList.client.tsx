@@ -38,7 +38,7 @@ export function CatalogProductsList({
   }, [products, query]);
 
   return (
-    <aside className="rounded-xl border border-border-2 bg-gate-surface p-4 shadow-elevation-2">
+    <aside className="rounded-xl border border-gate-border bg-gate-surface p-4 shadow-elevation-2">
       <div className="flex items-center justify-between gap-3">
         <div className="text-xs uppercase tracking-label-lg text-gate-muted">
           {t("products")}
@@ -95,8 +95,8 @@ export function CatalogProductsList({
               key={slug || product.title}
               className={`rounded-md border-l-2 border px-3 py-2 transition ${
                 selected
-                  ? "border-l-gate-accent border-border-2 bg-gate-accent-soft"
-                  : "border-l-transparent border-border-2 bg-gate-input hover:bg-muted hover:border-l-gate-accent/40"
+                  ? "border-l-gate-accent border-gate-border bg-gate-accent-soft"
+                  : "border-l-transparent border-gate-border bg-gate-input hover:bg-muted hover:border-l-gate-accent/40"
               }`}
             >
               <button

@@ -32,10 +32,7 @@ const VALID_DRAFT: CatalogProductDraftInput = {
   price: "189",
   description: "A structured layer.",
   createdAt: "2025-12-01T12:00:00.000Z",
-  forSale: true,
-  forRental: false,
   popularity: "0",
-  deposit: "0",
   stock: "1",
   sizes: "S|M|L",
   taxonomy: {

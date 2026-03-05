@@ -681,28 +681,28 @@ function TaxonomyFields({ t, draft, fieldErrors, onChange }: BaseFieldsProps & {
 }
 
 function StockInput({ t, draft, onChange }: { t: Translate; draft: CatalogProductDraftInput; onChange: (next: CatalogProductDraftInput) => void }) {
-  const raw = draft.stock ? String(draft.stock) : "";
-  const isInfinite = raw === "" || raw === "0";
+  const raw = draft.stock == null ? "" : String(draft.stock);
 
   return (
     <label className="block text-xs uppercase tracking-label text-gate-muted">
       {t("fieldStock")}
       <input
-        value={isInfinite ? "" : raw}
+        value={raw}
         onChange={(event) => {
-          const v = event.target.value;
-          if (v === "" || v === "0") {
-            onChange({ ...draft, stock: "" });
-          } else {
-            onChange({ ...draft, stock: v });
+          onChange({ ...draft, stock: event.target.value });
+        }}
+        onBlur={(event) => {
+          if (event.target.value.trim() === "") {
+            onChange({ ...draft, stock: "0" });
           }
         }}
         type="number"
         min="0"
         step="1"
-        placeholder="∞"
+        placeholder="0"
         className={INPUT_CLASS}
       />
+      <div className="mt-1 text-2xs text-gate-muted">{t("fieldStockHint")}</div>
     </label>
   );
 }

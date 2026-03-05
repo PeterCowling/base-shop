@@ -86,7 +86,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <CartProvider>
           <WishlistProvider>
           <ShopThemeProvider>
-              <CurrencyProvider>
+              <CurrencyProvider defaultCurrency="USD">
                 <XaServiceWorkerRegistration />
                 <XaShell>{children}</XaShell>
               </CurrencyProvider>

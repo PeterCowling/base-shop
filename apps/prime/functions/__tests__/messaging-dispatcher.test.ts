@@ -90,6 +90,57 @@ describe('messaging dispatcher spike', () => {
     expect(store.queueStore.update).not.toHaveBeenCalled();
   });
 
+  it('TC-02b: fresh processing lease is idempotently ignored', async () => {
+    const store = createQueueStore(
+      createQueueRecord({
+        status: 'processing',
+        processedAt: 1700000000000,
+      }),
+    );
+    const dispatchArrival48Hours = jest.fn(async () => undefined);
+    const now = jest.fn(() => 1700000000000 + 60_000);
+
+    const result = await dispatchQueuedArrival48HoursEvent('msg_test_123', {
+      queueStore: store.queueStore,
+      dispatchArrival48Hours,
+      now,
+    });
+
+    expect(result).toMatchObject({
+      outcome: 'idempotent',
+      reason: 'already_processing',
+    });
+    expect(dispatchArrival48Hours).not.toHaveBeenCalled();
+    expect(store.queueStore.update).not.toHaveBeenCalled();
+  });
+
+  it('TC-02c: stale processing lease is recovered and processed', async () => {
+    const staleStartedAt = 1700000000000;
+    const store = createQueueStore(
+      createQueueRecord({
+        status: 'processing',
+        processedAt: staleStartedAt,
+      }),
+    );
+    const dispatchArrival48Hours = jest.fn(async () => undefined);
+    const now = jest.fn(() => staleStartedAt + 16 * 60 * 1000);
+
+    const result = await dispatchQueuedArrival48HoursEvent('msg_test_123', {
+      queueStore: store.queueStore,
+      dispatchArrival48Hours,
+      now,
+    });
+
+    expect(result.outcome).toBe('sent');
+    expect(dispatchArrival48Hours).toHaveBeenCalledTimes(1);
+    expect(store.queueStore.update).toHaveBeenCalledTimes(3);
+    expect(store.read()).toMatchObject({
+      status: 'sent',
+      retryCount: 0,
+      lastError: null,
+    });
+  });
+
   it('TC-03: provider transient failure increments retry count and preserves event', async () => {
     const store = createQueueStore(createQueueRecord());
     const dispatchArrival48Hours = jest.fn(async () => {
@@ -132,4 +183,3 @@ describe('messaging dispatcher spike', () => {
     });
   });
 });
-

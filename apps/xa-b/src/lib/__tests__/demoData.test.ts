@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it, jest } from "@jest/globals";
 
+import catalogRuntime from "../../data/catalog.runtime.json";
+
 const BASE_KEY = "NEXT_PUBLIC_XA_IMAGES_BASE_URL";
 const VARIANT_KEY = "NEXT_PUBLIC_XA_IMAGES_VARIANT";
 const MAX_AGE_KEY = "NEXT_PUBLIC_XA_CATALOG_MAX_AGE_HOURS";
@@ -55,5 +57,35 @@ describe("XA catalog data", () => {
     expect(typeof XA_CATALOG_RUNTIME_FRESHNESS.isStale).toBe("boolean");
     expect("readUrl" in XA_CATALOG_RUNTIME_META).toBe(false);
     expect("runtimeMetaPath" in XA_CATALOG_RUNTIME_META).toBe(false);
+    expect("artifactPath" in XA_CATALOG_RUNTIME_META).toBe(false);
+    expect("details" in XA_CATALOG_RUNTIME_META).toBe(false);
+  });
+
+  it("does not assign inferred/fallback roles to legacy media without explicit roles", async () => {
+    const { XA_PRODUCTS } = await loadDemoData({
+      base: "https://imagedelivery.net/hash",
+      variant: "public",
+    });
+
+    const productsBySlug = new Map(XA_PRODUCTS.map((product) => [product.slug, product]));
+    const seed = catalogRuntime as {
+      products?: Array<{ slug: string; media?: Array<{ type?: string; role?: string | null }> }>;
+    };
+
+    const allRolelessSeedProducts = (seed.products ?? []).filter((product) => {
+      const imageMedia = (product.media ?? []).filter((item) => item.type === "image");
+      if (imageMedia.length === 0) return false;
+      return imageMedia.every((item) => !(item.role ?? "").trim());
+    });
+
+    expect(allRolelessSeedProducts.length).toBeGreaterThan(0);
+
+    for (const seedProduct of allRolelessSeedProducts) {
+      const hydrated = productsBySlug.get(seedProduct.slug);
+      expect(hydrated).toBeTruthy();
+      const hydratedImageMedia = (hydrated?.media ?? []).filter((item) => item.type === "image");
+      expect(hydratedImageMedia.length).toBeGreaterThan(0);
+      expect(hydratedImageMedia.every((item) => !item.role)).toBe(true);
+    }
   });
 });

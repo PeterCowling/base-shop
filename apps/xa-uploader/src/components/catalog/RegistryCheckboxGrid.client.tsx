@@ -15,7 +15,7 @@ type Props = {
 };
 
 const CHECKBOX_CLASSNAME =
-  "rounded border-border-2 text-gate-accent accent-gate-accent focus:ring-gate-accent";
+  "rounded border-gate-border text-gate-accent accent-gate-accent focus:ring-gate-accent";
 
 export function RegistryCheckboxGrid({
   label,

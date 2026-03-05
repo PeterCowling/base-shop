@@ -19,6 +19,7 @@ jest.mock("../../../../../lib/catalogCsv", () => ({
   listCatalogDrafts: (...args: unknown[]) => listCatalogDraftsMock(...args),
   upsertCatalogDraft: (...args: unknown[]) => upsertCatalogDraftMock(...args),
   CatalogCsvConflictError: class extends Error {},
+  CatalogCsvStorageBusyError: class extends Error {},
 }));
 
 jest.mock("../../../../../lib/catalogDraftContractClient", () => ({

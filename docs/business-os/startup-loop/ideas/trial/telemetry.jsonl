@@ -96,3 +96,5 @@
 {"recorded_at":"2026-03-04T21:28:43.136Z","dispatch_id":"IDEA-DISPATCH-20260304212843-0134","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}
 
 {"recorded_at":"2026-03-04T21:28:59.804Z","dispatch_id":"IDEA-DISPATCH-20260304212859-0802","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"codebase_signal_bridge"}
+
+{"recorded_at":"2026-03-04T21:38:10.376Z","dispatch_id":"IDEA-DISPATCH-20260304213810-0373","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}

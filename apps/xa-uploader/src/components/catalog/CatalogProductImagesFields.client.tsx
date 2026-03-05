@@ -3,16 +3,25 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 
+import {
+  normalizeXaImageRole,
+  requiredImageRolesByCategory,
+  type XaImageRole,
+} from "@acme/lib/xa";
 import type { CatalogProductDraftInput } from "@acme/lib/xa/catalogAdminSchema";
 
+import type { XaCatalogStorefront } from "../../lib/catalogStorefront.types";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
+import { getCatalogApiErrorMessage } from "./catalogConsoleFeedback";
 import { SELECT_CLASS } from "./catalogStyles";
 
 const IMAGE_ROLES = ["front", "side", "top", "back", "detail", "interior", "scale"] as const;
 type UploadImageRole = (typeof IMAGE_ROLES)[number];
-type UploadStatus = "idle" | "uploading" | "success" | "error";
+type AutosaveStatus = "saving" | "saved" | "unsaved";
+type UploadStatus = "idle" | "uploading" | "persisting" | "persisted" | "error";
 type ImageEntry = { path: string; role: string; filename: string };
+type RequiredRoleStatus = { role: XaImageRole; isPresent: boolean };
 
 const ROLE_I18N_KEYS: Record<UploadImageRole, string> = {
   front: "uploadImageRoleFront",
@@ -36,6 +45,8 @@ const ROLE_HINTS: Record<UploadImageRole, string> = {
 
 const MAX_FILE_SIZE = 8_388_608; // 8 MB
 const ACCEPTED_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
+const AUTOSAVE_PERSIST_TIMEOUT_MS = 20_000;
+const AUTOSAVE_PERSIST_POLL_MS = 120;
 
 /** Simple bag outline viewed from the selected angle. */
 function RoleIllustration({ role }: { role: UploadImageRole }) {
@@ -209,6 +220,95 @@ function appendImageDraftEntry(
   };
 }
 
+function isDeletableCatalogPath(pathValue: string): boolean {
+  const normalized = pathValue.trim().replace(/^\/+/, "");
+  if (!normalized) return false;
+  if (/^https?:\/\//i.test(normalized)) return false;
+  return true;
+}
+
+function usePersistedImageCleanup(params: {
+  lastAutosaveSavedAt: number | null;
+  storefront: XaCatalogStorefront;
+}) {
+  const lastAutosaveSavedAtRef = useRef<number | null>(params.lastAutosaveSavedAt);
+
+  useEffect(() => {
+    lastAutosaveSavedAtRef.current = params.lastAutosaveSavedAt;
+  }, [params.lastAutosaveSavedAt]);
+
+  return useCallback(async (pathValue: string, queuedAt: number) => {
+    const key = pathValue.trim().replace(/^\/+/, "");
+    if (!isDeletableCatalogPath(key)) return;
+
+    const persistedAlready = typeof lastAutosaveSavedAtRef.current === "number" &&
+      lastAutosaveSavedAtRef.current >= queuedAt;
+    if (!persistedAlready) {
+      const deadline = Date.now() + AUTOSAVE_PERSIST_TIMEOUT_MS;
+      let persisted = false;
+      while (Date.now() < deadline) {
+        await new Promise<void>((resolve) => {
+          setTimeout(resolve, AUTOSAVE_PERSIST_POLL_MS);
+        });
+        persisted = typeof lastAutosaveSavedAtRef.current === "number" &&
+          lastAutosaveSavedAtRef.current >= queuedAt;
+        if (persisted) break;
+      }
+      if (!persisted) return;
+    }
+
+    const requestParams = new URLSearchParams({ storefront: params.storefront, key });
+    try {
+      const response = await fetch(`/api/catalog/images?${requestParams.toString()}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        console.warn({
+          scope: "catalog-image-delete",
+          status: response.status,
+          key,
+        });
+      }
+    } catch {
+      console.warn({
+        scope: "catalog-image-delete",
+        status: "network_error",
+        key,
+      });
+    }
+  }, [params.storefront]);
+}
+
+function useDropZoneDragHandlers(setDragOver: React.Dispatch<React.SetStateAction<boolean>>) {
+  const handleDragOver = useCallback((event: React.DragEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setDragOver(true);
+  }, [setDragOver]);
+
+  const handleDragLeave = useCallback((event: React.DragEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setDragOver(false);
+  }, [setDragOver]);
+
+  return { handleDragOver, handleDragLeave };
+}
+
+function buildRequiredRoleStatus(draft: CatalogProductDraftInput): RequiredRoleStatus[] {
+  const requiredRoles = requiredImageRolesByCategory(draft.taxonomy.category);
+  const existingRoles = new Set(
+    (draft.imageRoles ?? "")
+      .split("|")
+      .map((value) => normalizeXaImageRole(value))
+      .filter((value): value is XaImageRole => value !== undefined),
+  );
+  return requiredRoles.map((role) => ({
+    role,
+    isPresent: existingRoles.has(role),
+  }));
+}
+
 function RoleSelector({
   selectedRole,
   onRoleChange,
@@ -233,6 +333,39 @@ function RoleSelector({
         ))}
       </select>
     </label>
+  );
+}
+
+function RequiredRolesChecklist({
+  requiredRoleStatus,
+  t,
+}: {
+  requiredRoleStatus: RequiredRoleStatus[];
+  t: ReturnType<typeof useUploaderI18n>["t"];
+}) {
+  return (
+    <div className="rounded-md border border-gate-border bg-gate-surface px-3 py-2">
+      <div className="text-2xs uppercase tracking-label text-gate-muted">
+        {t("uploadRequiredRolesTitle")}
+      </div>
+      {/* eslint-disable-next-line ds/enforce-layout-primitives -- XAUP-0001 operator-tool compact checklist layout */}
+      <ul className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
+        {requiredRoleStatus.map(({ role, isPresent }) => (
+          <li
+            key={role}
+            className={`rounded px-2 py-1 text-2xs ${
+              isPresent
+                ? "bg-success-bg text-success-fg"
+                : "bg-gate-accent-soft text-gate-accent"
+            }`}
+          >
+            {t(ROLE_I18N_KEYS[role] as Parameters<typeof t>[0])}
+            {": "}
+            {isPresent ? t("uploadRequiredRoleDone") : t("uploadRequiredRoleMissing")}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
@@ -374,27 +507,38 @@ function ImageGallery({
 
 function useImageUploadController({
   draft,
+  storefront,
   selectedRole,
   hasSlug,
   imageEntries,
+  autosaveStatus,
+  lastAutosaveSavedAt,
   onChange,
   onImageUploaded,
   t,
 }: {
   draft: CatalogProductDraftInput;
+  storefront: XaCatalogStorefront;
   selectedRole: UploadImageRole;
   hasSlug: boolean;
   imageEntries: ImageEntry[];
+  autosaveStatus: AutosaveStatus;
+  lastAutosaveSavedAt: number | null;
   onChange: (next: CatalogProductDraftInput) => void;
   onImageUploaded: (nextDraft: CatalogProductDraftInput) => void;
   t: ReturnType<typeof useUploaderI18n>["t"];
 }) {
   const [uploadStatus, setUploadStatus] = useState<UploadStatus>("idle");
   const [uploadError, setUploadError] = useState("");
+  const [pendingAutosaveStartedAt, setPendingAutosaveStartedAt] = useState<number | null>(null);
   const [dragOver, setDragOver] = useState(false);
   const [previews, setPreviews] = useState<Map<string, string>>(new Map());
   const fileInputRef = useRef<HTMLInputElement>(null);
-
+  const cleanupRemovedImage = usePersistedImageCleanup({
+    lastAutosaveSavedAt,
+    storefront,
+  });
+  const { handleDragOver, handleDragLeave } = useDropZoneDragHandlers(setDragOver);
   useEffect(() => {
     return () => {
       for (const url of previews.values()) {
@@ -404,6 +548,17 @@ function useImageUploadController({
     // eslint-disable-next-line react-hooks/exhaustive-deps -- XAUP-0001 cleanup on unmount only
   }, []);
 
+  useEffect(() => {
+    if (uploadStatus !== "persisting") return;
+    if (!pendingAutosaveStartedAt) return;
+    if (
+      typeof lastAutosaveSavedAt === "number" &&
+      lastAutosaveSavedAt >= pendingAutosaveStartedAt
+    ) {
+      setUploadStatus("persisted");
+      setPendingAutosaveStartedAt(null);
+    }
+  }, [lastAutosaveSavedAt, pendingAutosaveStartedAt, uploadStatus]);
   const handleUpload = useCallback(
     async (file: File) => {
       if (!ACCEPTED_TYPES.has(file.type)) {
@@ -434,7 +589,7 @@ function useImageUploadController({
         formData.append("file", file);
 
         const params = new URLSearchParams({
-          storefront: "xa-b",
+          storefront,
           slug: (draft.slug ?? "").trim(),
           role: selectedRole,
         });
@@ -443,12 +598,26 @@ function useImageUploadController({
           method: "POST",
           body: formData,
         });
-        const json = (await response.json()) as { ok?: boolean; key?: string; error?: string };
+        const json = (await response.json()) as {
+          ok?: boolean;
+          key?: string;
+          error?: string;
+        };
 
         if (!response.ok || !json.ok || !json.key) {
           URL.revokeObjectURL(previewUrl);
           setUploadStatus("error");
-          setUploadError(json.error ?? t("uploadImageErrorFailed"));
+          const errorCode =
+            typeof json.error === "string" && json.error.trim().length > 0
+              ? json.error
+              : response.status === 429
+                ? "rate_limited"
+                : undefined;
+          const message =
+            errorCode === "rate_limited"
+              ? t("uploadImageErrorRateLimited")
+              : getCatalogApiErrorMessage(errorCode, "uploadImageErrorFailed", t);
+          setUploadError(message);
           return;
         }
 
@@ -461,14 +630,16 @@ function useImageUploadController({
         const nextDraft = appendImageDraftEntry(draft, json.key, selectedRole);
         onChange(nextDraft);
         onImageUploaded(nextDraft);
-        setUploadStatus("success");
+        setPendingAutosaveStartedAt(Date.now());
+        setUploadStatus("persisting");
       } catch {
         URL.revokeObjectURL(previewUrl);
+        setPendingAutosaveStartedAt(null);
         setUploadStatus("error");
         setUploadError(t("uploadImageErrorFailed"));
       }
     },
-    [draft, hasSlug, onChange, onImageUploaded, selectedRole, t],
+    [draft, hasSlug, onChange, onImageUploaded, selectedRole, storefront, t],
   );
 
   const handleFileInput = useCallback(
@@ -481,18 +652,6 @@ function useImageUploadController({
     },
     [handleUpload],
   );
-
-  const handleDragOver = useCallback((event: React.DragEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-    setDragOver(true);
-  }, []);
-
-  const handleDragLeave = useCallback((event: React.DragEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-    setDragOver(false);
-  }, []);
 
   const handleDrop = useCallback(
     (event: React.DragEvent) => {
@@ -510,6 +669,7 @@ function useImageUploadController({
   const handleRemoveImage = useCallback(
     (index: number) => {
       const entry = imageEntries[index];
+      const removedPath = entry?.path ?? "";
       if (entry) {
         const blobUrl = previews.get(entry.path);
         if (blobUrl) {
@@ -522,14 +682,20 @@ function useImageUploadController({
         }
       }
 
-      onChange({
+      const nextDraft = {
         ...draft,
         imageFiles: removePipeEntry(draft.imageFiles ?? "", index),
         imageRoles: removePipeEntry(draft.imageRoles ?? "", index),
         imageAltTexts: removePipeEntry(draft.imageAltTexts ?? "", index),
-      });
+      };
+      const queuedAt = Date.now();
+      onChange(nextDraft);
+      onImageUploaded(nextDraft);
+      if (removedPath) {
+        void cleanupRemovedImage(removedPath, queuedAt);
+      }
     },
-    [draft, imageEntries, onChange, previews],
+    [cleanupRemovedImage, draft, imageEntries, onChange, onImageUploaded, previews],
   );
 
   return {
@@ -538,6 +704,7 @@ function useImageUploadController({
     dragOver,
     uploadStatus,
     uploadError,
+    autosaveStatus,
     canUpload: hasSlug && uploadStatus !== "uploading",
     isUploading: uploadStatus === "uploading",
     handleDragOver,
@@ -550,12 +717,20 @@ function useImageUploadController({
 
 export function CatalogProductImagesFields({
   draft,
+  storefront,
   fieldErrors,
+  autosaveInlineMessage,
+  autosaveStatus,
+  lastAutosaveSavedAt,
   onChange,
   onImageUploaded,
 }: {
   draft: CatalogProductDraftInput;
+  storefront: XaCatalogStorefront;
   fieldErrors: Record<string, string>;
+  autosaveInlineMessage: string | null;
+  autosaveStatus: AutosaveStatus;
+  lastAutosaveSavedAt: number | null;
   onChange: (next: CatalogProductDraftInput) => void;
   onImageUploaded: (nextDraft: CatalogProductDraftInput) => void;
 }) {
@@ -567,6 +742,7 @@ export function CatalogProductImagesFields({
     () => parseImageEntries(draft.imageFiles ?? "", draft.imageRoles ?? ""),
     [draft.imageFiles, draft.imageRoles],
   );
+  const requiredRoleStatus = useMemo(() => buildRequiredRoleStatus(draft), [draft]);
 
   const {
     fileInputRef,
@@ -574,6 +750,7 @@ export function CatalogProductImagesFields({
     dragOver,
     uploadStatus,
     uploadError,
+    autosaveStatus: uploadAutosaveStatus,
     canUpload,
     isUploading,
     handleDragOver,
@@ -583,9 +760,12 @@ export function CatalogProductImagesFields({
     handleRemoveImage,
   } = useImageUploadController({
     draft,
+    storefront,
     selectedRole,
     hasSlug,
     imageEntries,
+    autosaveStatus,
+    lastAutosaveSavedAt,
     onChange,
     onImageUploaded,
     t,
@@ -597,6 +777,7 @@ export function CatalogProductImagesFields({
       <div className="text-xs uppercase tracking-label-lg text-gate-muted">{t("imagesFieldsTitle")}</div>
 
       <RoleSelector selectedRole={selectedRole} onRoleChange={setSelectedRole} t={t} />
+      <RequiredRolesChecklist requiredRoleStatus={requiredRoleStatus} t={t} />
 
       <ImageDropZone
         canUpload={canUpload}
@@ -612,11 +793,24 @@ export function CatalogProductImagesFields({
       />
 
       {!hasSlug ? <div className="text-xs text-gate-muted">{t("uploadImageErrorNoSlug")}</div> : null}
-      {uploadStatus === "success" ? <div className="text-xs text-success-fg">{t("uploadImageSuccess")}</div> : null}
+      {uploadStatus === "persisting" ? (
+        <div className="text-xs text-gate-accent">
+          {uploadAutosaveStatus === "saving"
+            ? t("uploadImagePersisting")
+            : t("uploadImagePersistPending")}
+        </div>
+      ) : null}
+      {uploadStatus === "persisted" ? (
+        <div className="text-xs text-success-fg">{t("uploadImagePersisted")}</div>
+      ) : null}
       {uploadStatus === "error" && uploadError ? (
         <div className="text-xs text-danger-fg">{uploadError}</div>
       ) : null}
+      {autosaveInlineMessage ? (
+        <div className="text-xs text-danger-fg">{autosaveInlineMessage}</div>
+      ) : null}
       {fieldErrors.imageFiles ? <div className="text-xs text-danger-fg">{fieldErrors.imageFiles}</div> : null}
+      {fieldErrors.imageRoles ? <div className="text-xs text-danger-fg">{fieldErrors.imageRoles}</div> : null}
 
       <ImageGallery entries={imageEntries} previews={previews} onRemove={handleRemoveImage} t={t} />
     </div>

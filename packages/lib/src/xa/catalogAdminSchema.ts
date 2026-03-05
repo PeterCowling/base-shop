@@ -1,5 +1,9 @@
 import { z } from "zod";
 
+import {
+  type XaImageRole,
+  xaImageRoles,
+} from "./catalogImageRoles.js";
 import type { XaCategory, XaDepartment } from "./types.js";
 
 export function splitList(input: string): string[] {
@@ -30,17 +34,8 @@ const departmentSchema = z.enum(["women", "men", "kids"]) satisfies z.ZodType<Xa
 const categorySchema = z.enum(["clothing", "bags", "jewelry"]) satisfies z.ZodType<XaCategory>;
 const publishStateSchema = z.enum(["draft", "ready", "live"]);
 
-const allowedImageRoles = ["front", "side", "top", "back", "detail", "interior", "scale"] as const;
-type ImageRole = (typeof allowedImageRoles)[number];
-
-function requiredImageRolesByCategory(category: XaCategory): ImageRole[] {
-  if (category === "clothing") return ["front", "side"];
-  if (category === "bags") return ["front", "side", "top"];
-  return ["front", "side", "detail"];
-}
-
-function parseImageRoles(input: string | null | undefined): ImageRole[] {
-  return splitList(input ?? "") as ImageRole[];
+function parseImageRoles(input: string | null | undefined): XaImageRole[] {
+  return splitList(input ?? "") as XaImageRole[];
 }
 
 const numberField = (label: string, options?: { min?: number; integer?: boolean }) => {
@@ -109,11 +104,7 @@ export const catalogProductDraftSchema = z
     collectionTitle: z.string().trim().optional(),
     collectionDescription: z.string().trim().optional(),
     price: numberField("Price", { min: 0 }),
-    compareAtPrice: optionalNumberField("Compare-at price", { min: 0 }),
-    deposit: optionalNumberField("Deposit", { min: 0 }),
     stock: optionalNumberField("Stock", { min: 0, integer: true }),
-    forSale: z.boolean().optional(),
-    forRental: z.boolean().optional(),
     publishState: publishStateSchema.optional(),
     sizes: z.string().optional(),
     description: z.string().trim().min(1, "Description is required"),
@@ -210,26 +201,13 @@ export const catalogProductDraftSchema = z
       });
     }
 
-    const invalidImageRole = imageRoles.find((role) => !allowedImageRoles.includes(role));
+    const invalidImageRole = imageRoles.find((role) => !xaImageRoles.includes(role));
     if (invalidImageRole) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["imageRoles"],
         message: "Image roles contain unsupported values",
       });
-    }
-
-    if (imageFiles.length) {
-      const requiredRoles = requiredImageRolesByCategory(value.taxonomy.category);
-      for (const role of requiredRoles) {
-        if (!imageRoles.includes(role)) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            path: ["imageRoles"],
-            message: `Missing required image role: ${role}`,
-          });
-        }
-      }
     }
 
     if (value.taxonomy.category === "clothing") {

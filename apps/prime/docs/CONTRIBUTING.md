@@ -71,8 +71,15 @@ See the main project testing policy in `docs/testing-policy.md`.
 
 `/api/process-messaging-queue` requires the following staging configuration:
 
-- `PRIME_EMAIL_WEBHOOK_URL` (Cloudflare Pages env var)
 - `PRIME_EMAIL_WEBHOOK_TOKEN` (Cloudflare secret)
+
+Every request to `/api/process-messaging-queue` must send:
+
+- `Authorization: Bearer <PRIME_EMAIL_WEBHOOK_TOKEN>`
+- `X-Prime-Queue-Timestamp: <unix-seconds>` (must be within +/-5 minutes)
+- `X-Prime-Queue-Signature: <hex-hmac-sha256>` where the signature payload is:
+  - `<timestamp>.<raw-json-body>`
+  - HMAC key: `PRIME_EMAIL_WEBHOOK_TOKEN`
 
 Recommended smoke contract before promoting messaging automation:
 
@@ -84,7 +91,8 @@ Expected contract outcomes:
 
 - Valid config sends one deterministic `arrival.48hours` message (`sent` outcome).
 - Missing config fails closed with `Prime email provider is not configured`.
-- Invalid webhook token/key fails closed with explicit webhook error in `lastError`.
+- Invalid/missing Authorization token or signature headers fail closed with `Unauthorized`.
+- Missing or invalid booking checkout date fails permanent with explicit `lastError`.
 
 ## Prime Staff Auth Contract
 

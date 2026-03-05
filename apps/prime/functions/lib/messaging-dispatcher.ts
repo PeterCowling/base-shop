@@ -24,6 +24,8 @@ export interface MessagingDispatcherResult {
   transition?: QueueProcessorTransition;
 }
 
+const PROCESSING_LEASE_TIMEOUT_MS = 15 * 60 * 1000;
+
 function buildQueuePath(eventId: string): string {
   return `messagingQueue/${eventId}`;
 }
@@ -32,6 +34,7 @@ export async function dispatchQueuedArrival48HoursEvent(
   eventId: string,
   dependencies: MessagingDispatcherDependencies,
 ): Promise<MessagingDispatcherResult> {
+  const now = dependencies.now ?? Date.now;
   const queuePath = buildQueuePath(eventId);
   const rawRecord = await dependencies.queueStore.get(queuePath);
 
@@ -45,7 +48,6 @@ export async function dispatchQueuedArrival48HoursEvent(
 
   const parsedRecord = messagingQueueRecordSchema.safeParse(rawRecord);
   if (!parsedRecord.success) {
-    const now = dependencies.now ?? Date.now;
     await dependencies.queueStore.update(queuePath, {
       status: 'failed',
       retryCount: 1,
@@ -60,12 +62,37 @@ export async function dispatchQueuedArrival48HoursEvent(
     };
   }
 
-  const record = parsedRecord.data;
+  let record = parsedRecord.data;
   if (record.eventType !== MessagingEventType.ARRIVAL_48_HOURS) {
     return {
       eventId,
       outcome: 'unsupported',
       reason: `unsupported_event_type:${record.eventType}`,
+    };
+  }
+
+  if (record.status === 'processing') {
+    const processingStartedAt =
+      typeof record.processedAt === 'number' ? record.processedAt : record.createdAt;
+    const leaseAgeMs = now() - processingStartedAt;
+    if (leaseAgeMs < PROCESSING_LEASE_TIMEOUT_MS) {
+      return {
+        eventId,
+        outcome: 'idempotent',
+        reason: 'already_processing',
+      };
+    }
+
+    await dependencies.queueStore.update(queuePath, {
+      status: 'pending',
+      lastError: 'Recovered stale processing lease',
+      processedAt: null,
+    });
+    record = {
+      ...record,
+      status: 'pending',
+      lastError: 'Recovered stale processing lease',
+      processedAt: null,
     };
   }
 
@@ -80,6 +107,7 @@ export async function dispatchQueuedArrival48HoursEvent(
   await dependencies.queueStore.update(queuePath, {
     status: 'processing',
     lastError: null,
+    processedAt: now(),
   });
 
   const processorResult = await processArrival48HoursQueueRecord(record, dependencies);
@@ -95,4 +123,3 @@ export async function dispatchQueuedArrival48HoursEvent(
     transition: processorResult.transition ?? undefined,
   };
 }
-

@@ -8,31 +8,41 @@ const STEALTH_BRAND_NAME =
   process.env.NEXT_PUBLIC_STEALTH_BRAND_NAME ??
   "Private preview"; // i18n-exempt -- XA-0001 [ttl=2026-12-31] stealth placeholder
 
+function readPublicEnv(name: string): string {
+  return (process.env[name] ?? "").trim();
+}
+
 function buildPublicConfig() {
+  const brandName = readPublicEnv("NEXT_PUBLIC_BRAND_NAME") || "XA-B";
+  const domain =
+    readPublicEnv("NEXT_PUBLIC_SITE_DOMAIN") || readPublicEnv("NEXT_PUBLIC_DOMAIN");
+  const legalEntityName = readPublicEnv("NEXT_PUBLIC_LEGAL_ENTITY_NAME");
+  const legalAddress = readPublicEnv("NEXT_PUBLIC_LEGAL_ADDRESS");
+  const supportEmail = readPublicEnv("NEXT_PUBLIC_SUPPORT_EMAIL");
+  const whatsappNumber = readPublicEnv("NEXT_PUBLIC_WHATSAPP_NUMBER");
+  const instagramUrl = readPublicEnv("NEXT_PUBLIC_INSTAGRAM_URL");
+  const wechatId = readPublicEnv("NEXT_PUBLIC_WECHAT_ID");
+  const businessHours = readPublicEnv("NEXT_PUBLIC_BUSINESS_HOURS");
+  const jurisdiction = readPublicEnv("NEXT_PUBLIC_JURISDICTION");
+
+  const hasContactInfo = Boolean(supportEmail || whatsappNumber || wechatId || businessHours);
+  const hasSocialLinks = Boolean(whatsappNumber || instagramUrl);
+  const hasLegalInfo = Boolean(legalEntityName || legalAddress || jurisdiction || domain);
+
   return {
-    brandName:
-      process.env.NEXT_PUBLIC_BRAND_NAME ??
-      "XA-B", // i18n-exempt -- XA-0001 [ttl=2026-12-31] placeholder brand name
-    domain:
-      process.env.NEXT_PUBLIC_SITE_DOMAIN ??
-      process.env.NEXT_PUBLIC_DOMAIN ??
-      "example.com", // i18n-exempt -- XA-0012: placeholder domain
-    legalEntityName:
-      process.env.NEXT_PUBLIC_LEGAL_ENTITY_NAME ?? "Your Legal Entity Name", // i18n-exempt -- XA-0012: placeholder legal entity
-    legalAddress:
-      process.env.NEXT_PUBLIC_LEGAL_ADDRESS ?? "Your registered address", // i18n-exempt -- XA-0012: placeholder legal address
-    supportEmail:
-      process.env.NEXT_PUBLIC_SUPPORT_EMAIL ?? "support@example.com", // i18n-exempt -- XA-0012: placeholder email
-    whatsappNumber:
-      process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "+00 000 000 000", // i18n-exempt -- XA-0012: placeholder number
-    instagramUrl:
-      process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? "https://instagram.com/xa", // i18n-exempt -- XA-0012: placeholder instagram
-    wechatId:
-      process.env.NEXT_PUBLIC_WECHAT_ID ?? "xa-support", // i18n-exempt -- XA-0012: placeholder WeChat
-    businessHours:
-      process.env.NEXT_PUBLIC_BUSINESS_HOURS ?? "Mon–Fri 09:00–18:00", // i18n-exempt -- XA-0012: placeholder hours
-    jurisdiction:
-      process.env.NEXT_PUBLIC_JURISDICTION ?? "Your jurisdiction", // i18n-exempt -- XA-0012: placeholder jurisdiction
+    brandName,
+    domain,
+    legalEntityName,
+    legalAddress,
+    supportEmail,
+    whatsappNumber,
+    instagramUrl,
+    wechatId,
+    businessHours,
+    jurisdiction,
+    showContactInfo: hasContactInfo,
+    showLegalInfo: hasLegalInfo,
+    showSocialLinks: hasSocialLinks,
   } as const;
 }
 
@@ -47,6 +57,9 @@ const stealthConfig = {
   wechatId: "",
   businessHours: "",
   jurisdiction: "",
+  showContactInfo: false,
+  showLegalInfo: false,
+  showSocialLinks: false,
 } as const;
 
 const baseConfig = STEALTH_MODE ? stealthConfig : buildPublicConfig();
@@ -68,9 +81,6 @@ export const siteConfig = {
   ...baseConfig,
   catalog: catalogConfig,
   stealthMode: STEALTH_MODE,
-  showContactInfo: !STEALTH_MODE,
-  showLegalInfo: !STEALTH_MODE,
-  showSocialLinks: !STEALTH_MODE,
   heroHeadline: "The finest carry goods. By invitation.",
   heroSubheadline: "Exclusive access to curated bags from established designers.",
 } as const;

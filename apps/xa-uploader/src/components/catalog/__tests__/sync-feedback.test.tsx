@@ -117,6 +117,19 @@ describe("sync failure feedback", () => {
     expect(message).toContain("Fix validation errors");
   });
 
+  it("builds actionable localized message for sync rate limiting", () => {
+    const message = getSyncFailureMessage(
+      {
+        ok: false,
+        error: "rate_limited",
+      },
+      translate,
+    );
+
+    expect(message).toContain("rate limited");
+    expect(message).toContain("one minute");
+  });
+
   it("renders scoped sync feedback in the sync panel", () => {
     render(
       <UploaderI18nProvider>

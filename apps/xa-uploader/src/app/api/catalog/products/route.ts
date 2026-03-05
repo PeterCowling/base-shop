@@ -7,6 +7,7 @@ import { getCatalogDraftWorkflowReadiness, splitList } from "@acme/lib/xa";
 
 import {
   CatalogCsvConflictError,
+  CatalogCsvStorageBusyError,
   listCatalogDrafts,
   upsertCatalogDraft,
 } from "../../../../lib/catalogCsv";
@@ -33,7 +34,8 @@ type ProductsErrorCode =
   | "internal_error"
   | "rate_limited"
   | "payload_too_large"
-  | "service_unavailable";
+  | "service_unavailable"
+  | "storage_busy";
 
 const PRODUCTS_LIST_WINDOW_MS = 60 * 1000;
 const PRODUCTS_LIST_MAX_REQUESTS = 120;
@@ -90,6 +92,82 @@ function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLi
   return response;
 }
 
+type ParsedProductsUpsertPayload =
+  | { ok: true; payload: Record<string, unknown> }
+  | { ok: false; response: NextResponse };
+
+async function parseProductsUpsertPayload(
+  request: Request,
+  limit: ReturnType<typeof rateLimit>,
+): Promise<ParsedProductsUpsertPayload> {
+  try {
+    const payload = (await readJsonBodyWithLimit(
+      request,
+      PRODUCTS_UPSERT_MAX_BYTES,
+    )) as Record<string, unknown>;
+    return { ok: true, payload };
+  } catch (error) {
+    if (error instanceof PayloadTooLargeError) {
+      return {
+        ok: false,
+        response: withRateHeaders(
+          buildProductsErrorResponse("payload_too_large", 413, "payload_too_large"),
+          limit,
+        ),
+      };
+    }
+    if (error instanceof InvalidJsonError) {
+      return {
+        ok: false,
+        response: withRateHeaders(buildProductsErrorResponse("invalid", 400, "invalid_json"), limit),
+      };
+    }
+    return {
+      ok: false,
+      response: withRateHeaders(buildProductsErrorResponse("invalid", 400, "invalid_json"), limit),
+    };
+  }
+}
+
+function buildProductsUpsertErrorResponse(
+  error: unknown,
+  limit: ReturnType<typeof rateLimit>,
+): NextResponse {
+  if (error instanceof CatalogCsvStorageBusyError) {
+    return withRateHeaders(
+      buildProductsErrorResponse("storage_busy", 503, "products_csv_locked"),
+      limit,
+    );
+  }
+  if (error instanceof CatalogCsvConflictError || error instanceof CatalogDraftConflictError) {
+    return withRateHeaders(
+      buildProductsErrorResponse("conflict", 409, "revision_conflict"),
+      limit,
+    );
+  }
+  if (error instanceof CatalogDraftContractError) {
+    if (error.code === "unconfigured") {
+      return withRateHeaders(localFsUnavailableResponse(), limit);
+    }
+    if (error.code === "conflict") {
+      return withRateHeaders(
+        buildProductsErrorResponse("conflict", 409, "revision_conflict"),
+        limit,
+      );
+    }
+  }
+  if (isInvalidCatalogUpdateError(error)) {
+    return withRateHeaders(
+      buildProductsErrorResponse("invalid", 400, "catalog_validation_failed"),
+      limit,
+    );
+  }
+  return withRateHeaders(
+    buildProductsErrorResponse("internal_error", 500, "products_upsert_failed"),
+    limit,
+  );
+}
+
 export async function GET(request: Request) {
   const requestIp = getRequestIp(request) || "unknown";
   const limit = rateLimit({
@@ -143,24 +221,9 @@ export async function POST(request: Request) {
   if (!authenticated) {
     return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
   }
-  let payload: Record<string, unknown>;
-  try {
-    payload = (await readJsonBodyWithLimit(request, PRODUCTS_UPSERT_MAX_BYTES)) as Record<string, unknown>;
-  } catch (error) {
-    if (error instanceof PayloadTooLargeError) {
-      return withRateHeaders(
-        buildProductsErrorResponse("payload_too_large", 413, "payload_too_large"),
-        limit,
-      );
-    }
-    if (error instanceof InvalidJsonError) {
-      return withRateHeaders(
-        buildProductsErrorResponse("invalid", 400, "invalid_json"),
-        limit,
-      );
-    }
-    return withRateHeaders(buildProductsErrorResponse("invalid", 400, "invalid_json"), limit);
-  }
+  const payloadResult = await parseProductsUpsertPayload(request, limit);
+  if ("response" in payloadResult) return payloadResult.response;
+  const payload = payloadResult.payload;
 
   const product = payload.product;
   const ifMatch = typeof payload.ifMatch === "string" ? payload.ifMatch : undefined;
@@ -220,32 +283,6 @@ export async function POST(request: Request) {
       limit,
     );
   } catch (error) {
-    if (error instanceof CatalogCsvConflictError || error instanceof CatalogDraftConflictError) {
-      return withRateHeaders(
-        buildProductsErrorResponse("conflict", 409, "revision_conflict"),
-        limit,
-      );
-    }
-    if (error instanceof CatalogDraftContractError) {
-      if (error.code === "unconfigured") {
-        return withRateHeaders(localFsUnavailableResponse(), limit);
-      }
-      if (error.code === "conflict") {
-        return withRateHeaders(
-          buildProductsErrorResponse("conflict", 409, "revision_conflict"),
-          limit,
-        );
-      }
-    }
-    if (isInvalidCatalogUpdateError(error)) {
-      return withRateHeaders(
-        buildProductsErrorResponse("invalid", 400, "catalog_validation_failed"),
-        limit,
-      );
-    }
-    return withRateHeaders(
-      buildProductsErrorResponse("internal_error", 500, "products_upsert_failed"),
-      limit,
-    );
+    return buildProductsUpsertErrorResponse(error, limit);
   }
 }

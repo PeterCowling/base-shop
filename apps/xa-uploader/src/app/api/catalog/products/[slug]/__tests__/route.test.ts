@@ -21,9 +21,14 @@ class CatalogDraftContractErrorMock extends Error {
   }
 }
 
+class CatalogCsvStorageBusyErrorMock extends Error {
+  override name = "CatalogCsvStorageBusyError";
+}
+
 jest.mock("../../../../../../lib/catalogCsv", () => ({
   getCatalogDraftBySlug: (...args: unknown[]) => getCatalogDraftBySlugMock(...args),
   deleteCatalogProduct: (...args: unknown[]) => deleteCatalogProductMock(...args),
+  CatalogCsvStorageBusyError: CatalogCsvStorageBusyErrorMock,
 }));
 
 jest.mock("../../../../../../lib/catalogDraftContractClient", () => ({
@@ -155,6 +160,21 @@ describe("catalog products/[slug] route", () => {
     expect(response.status).toBe(409);
     expect(await response.json()).toEqual(
       expect.objectContaining({ ok: false, error: "conflict", reason: "revision_conflict" }),
+    );
+  });
+
+  it("DELETE returns storage_busy when CSV is locked", async () => {
+    deleteCatalogProductMock.mockRejectedValueOnce(new CatalogCsvStorageBusyErrorMock("locked"));
+
+    const { DELETE } = await import("../route");
+    const response = await DELETE(
+      new Request("http://localhost/api/catalog/products/studio-jacket?storefront=xa-b", { method: "DELETE" }),
+      { params },
+    );
+
+    expect(response.status).toBe(503);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({ ok: false, error: "storage_busy", reason: "products_csv_locked" }),
     );
   });
 });

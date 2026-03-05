@@ -3,12 +3,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 
+import type { CatalogProductDraftInput } from "@acme/lib/xa/catalogAdminSchema";
 import {
   normalizeXaImageRole,
   requiredImageRolesByCategory,
   type XaImageRole,
-} from "@acme/lib/xa";
-import type { CatalogProductDraftInput } from "@acme/lib/xa/catalogAdminSchema";
+} from "@acme/lib/xa/catalogImageRoles";
 
 import type { XaCatalogStorefront } from "../../lib/catalogStorefront.types";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";

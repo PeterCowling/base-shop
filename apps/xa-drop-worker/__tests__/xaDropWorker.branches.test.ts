@@ -252,4 +252,101 @@ describe("xa-drop-worker edge branches", () => {
 
     expect(res.status).toBe(400);
   });
+
+  it("returns 401 for deploy trigger without valid token", async () => {
+    const res = await handler.fetch(
+      new Request("https://drop.example/deploy/xa-b", { method: "POST" }),
+      {
+        SUBMISSIONS_BUCKET: { get: async () => null } as unknown as R2Bucket,
+        XA_DEPLOY_TRIGGER_TOKEN: "deploy-trigger-token-1234567890",
+        XA_PAGES_DEPLOY_API_TOKEN: "cf-pages-api-token",
+        CLOUDFLARE_ACCOUNT_ID: "account-id",
+        XA_B_PAGES_PROJECT: "xa-b-site",
+      },
+    );
+
+    expect(res.status).toBe(401);
+  });
+
+  it("creates a new pages deployment from latest manifest on deploy trigger", async () => {
+    const fetchMock = jest
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            success: true,
+            result: [
+              {
+                id: "source-deploy-id",
+                deployment_trigger: { metadata: { branch: "dev" } },
+              },
+            ],
+          }),
+          { status: 200, headers: { "Content-Type": "application/json" } },
+        ),
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            success: true,
+            result: {
+              id: "source-deploy-id",
+              files: {
+                "/index.html": "hash-1",
+                "/_next/static/chunk.js": "hash-2",
+              },
+            },
+          }),
+          { status: 200, headers: { "Content-Type": "application/json" } },
+        ),
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            success: true,
+            result: {
+              id: "new-deploy-id",
+              url: "https://new-deploy-id.xa-b-site.pages.dev",
+              environment: "preview",
+            },
+          }),
+          { status: 200, headers: { "Content-Type": "application/json" } },
+        ),
+      );
+
+    const res = await handler.fetch(
+      new Request("https://drop.example/deploy/xa-b", {
+        method: "POST",
+        headers: { "X-XA-Deploy-Token": "deploy-trigger-token-1234567890" },
+      }),
+      {
+        SUBMISSIONS_BUCKET: { get: async () => null } as unknown as R2Bucket,
+        XA_DEPLOY_TRIGGER_TOKEN: "deploy-trigger-token-1234567890",
+        XA_PAGES_DEPLOY_API_TOKEN: "cf-pages-api-token",
+        CLOUDFLARE_ACCOUNT_ID: "account-id",
+        XA_B_PAGES_PROJECT: "xa-b-site",
+        XA_B_PAGES_BRANCH: "dev",
+        XA_B_PAGES_ENV: "preview",
+      },
+    );
+
+    expect(res.status).toBe(202);
+    await expect(res.json()).resolves.toEqual(
+      expect.objectContaining({
+        ok: true,
+        deploymentId: "new-deploy-id",
+        sourceDeploymentId: "source-deploy-id",
+      }),
+    );
+
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+    const createCall = fetchMock.mock.calls[2];
+    expect(createCall?.[0]).toContain("/pages/projects/xa-b-site/deployments");
+    const createInit = createCall?.[1] as RequestInit;
+    const form = createInit.body as FormData;
+    expect(form.get("branch")).toBe("dev");
+    expect(typeof form.get("manifest")).toBe("string");
+
+    fetchMock.mockRestore();
+  });
 });

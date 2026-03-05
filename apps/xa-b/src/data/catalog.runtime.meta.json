@@ -1,6 +1,7 @@
 {
-  "source": "seed",
-  "syncedAt": null,
-  "version": null,
-  "publishedAt": null
+  "source": "local-artifacts",
+  "syncedAt": "2026-03-05T06:32:44.043Z",
+  "artifactId": "xa-uploader/sync-artifacts/xa-b/catalog.json",
+  "required": false,
+  "productCount": 12
 }

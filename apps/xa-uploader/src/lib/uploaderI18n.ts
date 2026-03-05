@@ -139,7 +139,7 @@ const messages = {
     syncDeployHookUnconfiguredActionable:
       "Auto deploy is required in this environment, but the deploy hook is not configured.",
     syncRecoveryConfigureDeployHook:
-      "Set XA_B_DEPLOY_HOOK_URL and XA_UPLOADER_DEPLOY_DRAIN_TOKEN, then retry.",
+      "Set XA_B_DEPLOY_HOOK_URL, XA_B_DEPLOY_HOOK_TOKEN, and XA_UPLOADER_DEPLOY_DRAIN_TOKEN, then retry.",
     syncPublishContractUnconfigured:
       "Catalog publish target is not configured for this environment.",
     syncRecoveryConfigureCatalogContract:
@@ -591,7 +591,7 @@ const messages = {
     syncDeployHookUnconfiguredActionable:
       "当前环境要求自动部署，但尚未配置部署 Hook。",
     syncRecoveryConfigureDeployHook:
-      "请先配置 XA_B_DEPLOY_HOOK_URL 与 XA_UPLOADER_DEPLOY_DRAIN_TOKEN 后重试。",
+      "请先配置 XA_B_DEPLOY_HOOK_URL、XA_B_DEPLOY_HOOK_TOKEN 与 XA_UPLOADER_DEPLOY_DRAIN_TOKEN 后重试。",
     syncPublishContractUnconfigured: "当前环境未配置目录发布目标。",
     syncRecoveryConfigureCatalogContract:
       "请先配置 XA_CATALOG_CONTRACT_BASE_URL 与 XA_CATALOG_CONTRACT_WRITE_TOKEN 后重试。",

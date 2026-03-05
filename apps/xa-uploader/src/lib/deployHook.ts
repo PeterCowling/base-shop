@@ -8,6 +8,7 @@ import type { XaCatalogStorefront } from "./catalogStorefront.types";
 import type { UploaderKvNamespace } from "./syncMutex";
 import {
   XA_B_DEPLOY_HOOK_REQUIRED_ENV,
+  XA_B_DEPLOY_HOOK_TOKEN_ENV,
   XA_B_DEPLOY_HOOK_URL_ENV,
 } from "./uploaderRuntimeConfig";
 
@@ -201,6 +202,10 @@ function getDeployHookUrl(): string {
   return (process.env[XA_B_DEPLOY_HOOK_URL_ENV] ?? "").trim();
 }
 
+function getDeployHookToken(): string {
+  return (process.env[XA_B_DEPLOY_HOOK_TOKEN_ENV] ?? "").trim();
+}
+
 function buildRetryDelayMs(attemptNumber: number): number {
   const baseDelayMs = getDeployHookRetryBaseDelayMs();
   const exponent = Math.max(0, attemptNumber - 1);
@@ -223,9 +228,15 @@ async function triggerDeployHookOnce(params: {
   const timeout = setTimeout(() => controller.abort(), getDeployHookTimeoutMs());
   let response: Response;
   try {
+    const headers: Record<string, string> = { "Content-Type": "application/json" };
+    const token = getDeployHookToken();
+    if (token) {
+      headers["X-XA-Deploy-Token"] = token;
+    }
+
     response = await fetch(params.hookUrl, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers,
       body: JSON.stringify({
         storefront: params.storefrontId,
         triggeredBy: "xa-uploader-sync",

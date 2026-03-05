@@ -106,7 +106,7 @@ name = "xa-uploader-preview"
 
 [[env.preview.kv_namespaces]]
 binding = "XA_UPLOADER_KV"
-id = "REPLACE_WITH_PREVIEW_NS_ID"
+id = "3b9e3f04a9de4762902e6091274bd494"
 
 [[env.preview.r2_buckets]]
 binding = "XA_MEDIA_BUCKET"

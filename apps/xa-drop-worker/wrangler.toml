@@ -38,6 +38,18 @@ CATALOG_MAX_BYTES = "10485760"
 #   wrangler secret put CATALOG_WRITE_TOKEN
 #   wrangler secret put CATALOG_READ_TOKEN   (optional)
 
+# Deploy-trigger endpoint secrets (for POST /deploy/xa-b):
+#   wrangler secret put XA_DEPLOY_TRIGGER_TOKEN
+#   wrangler secret put XA_PAGES_DEPLOY_API_TOKEN
+#   wrangler secret put CLOUDFLARE_ACCOUNT_ID
+# XA_DEPLOY_TRIGGER_TOKEN authenticates the caller (xa-uploader).
+# XA_PAGES_DEPLOY_API_TOKEN must have Cloudflare Pages write permission.
+
+# Deploy target defaults for xa-b auto-redeploy.
+XA_B_PAGES_PROJECT = "xa-b-site"
+XA_B_PAGES_BRANCH = "dev"
+XA_B_PAGES_ENV = "preview"
+
 [[r2_buckets]]
 binding = "SUBMISSIONS_BUCKET"
 bucket_name = "xa-submissions"
@@ -52,6 +64,9 @@ MAX_BYTES = "26214400"
 UPLOAD_TOKEN_MAX_TTL_SECONDS = "900"
 CATALOG_PREFIX = "catalog/"
 CATALOG_MAX_BYTES = "10485760"
+XA_B_PAGES_PROJECT = "xa-b-site"
+XA_B_PAGES_BRANCH = "dev"
+XA_B_PAGES_ENV = "preview"
 
 [[env.preview.r2_buckets]]
 binding = "SUBMISSIONS_BUCKET"

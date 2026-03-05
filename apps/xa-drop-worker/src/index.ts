@@ -6,6 +6,12 @@ export interface Env {
   UPLOAD_TOKEN_SECRET?: string;
   CATALOG_WRITE_TOKEN?: string;
   CATALOG_READ_TOKEN?: string;
+  XA_DEPLOY_TRIGGER_TOKEN?: string;
+  XA_PAGES_DEPLOY_API_TOKEN?: string;
+  CLOUDFLARE_ACCOUNT_ID?: string;
+  XA_B_PAGES_PROJECT?: string;
+  XA_B_PAGES_BRANCH?: string;
+  XA_B_PAGES_ENV?: string;
   R2_PREFIX?: string;
   CATALOG_PREFIX?: string;
   MAX_BYTES?: string;
@@ -49,7 +55,8 @@ const DEFAULT_DRAFTS_MAX_BYTES = 2 * 1024 * 1024;
 // i18n-exempt -- ABC-123 [ttl=2026-12-31]
 const DEFAULT_CATALOG_CACHE_CONTROL = "public, max-age=60, stale-while-revalidate=300";
 // i18n-exempt -- ABC-123 [ttl=2026-12-31]
-const CORS_ALLOWED_HEADERS = "Content-Type, X-XA-Submission-Id, X-XA-Upload-Token, X-XA-Catalog-Token, Authorization";
+const CORS_ALLOWED_HEADERS =
+  "Content-Type, X-XA-Submission-Id, X-XA-Upload-Token, X-XA-Catalog-Token, X-XA-Deploy-Token, Authorization"; // i18n-exempt -- ABC-123 [ttl=2026-12-31]
 // i18n-exempt -- ABC-123 [ttl=2026-12-31]
 const CORS_ALLOWED_METHODS = "GET, PUT, DELETE, OPTIONS";
 
@@ -811,6 +818,7 @@ type RouteMatch =
   | { kind: "upload"; pathToken: string }
   | { kind: "catalog"; storefront: string | null }
   | { kind: "drafts"; storefront: string | null }
+  | { kind: "deploy"; storefront: string | null }
   | { kind: "other" };
 
 function matchRoute(pathname: string): RouteMatch {
@@ -833,7 +841,225 @@ function matchRoute(pathname: string): RouteMatch {
       storefront: parseStorefront(segments[1] ?? ""),
     };
   }
+  if (segments.length === 2 && segments[0] === "deploy") {
+    return {
+      kind: "deploy",
+      storefront: parseStorefront(segments[1] ?? ""),
+    };
+  }
   return { kind: "other" };
+}
+
+function requireDeployTriggerToken(
+  env: Env,
+  request: Request,
+  url: URL,
+): Response | string {
+  const expectedToken = (env.XA_DEPLOY_TRIGGER_TOKEN ?? "").trim();
+  if (!expectedToken || expectedToken.length < 16) {
+    return json({ ok: false }, 503);
+  }
+
+  const providedToken =
+    request.headers.get("x-xa-deploy-token")?.trim() ||
+    bearerTokenFrom(request.headers.get("authorization")) ||
+    url.searchParams.get("token")?.trim() ||
+    "";
+  if (!providedToken || !constantTimeEqual(providedToken, expectedToken)) {
+    return json({ ok: false }, 401);
+  }
+
+  return expectedToken;
+}
+
+function resolveXaBDeployConfig(env: Env): {
+  apiToken: string;
+  accountId: string;
+  projectName: string;
+  branch: string;
+  targetEnv: "preview" | "production";
+} | null {
+  const apiToken = (env.XA_PAGES_DEPLOY_API_TOKEN ?? "").trim();
+  const accountId = (env.CLOUDFLARE_ACCOUNT_ID ?? "").trim();
+  const projectName = (env.XA_B_PAGES_PROJECT ?? "").trim();
+  const branch = (env.XA_B_PAGES_BRANCH ?? "dev").trim() || "dev";
+  const rawTargetEnv = (env.XA_B_PAGES_ENV ?? "preview").trim().toLowerCase();
+  const targetEnv = rawTargetEnv === "production" ? "production" : "preview";
+  if (!apiToken || !accountId || !projectName) return null;
+  return { apiToken, accountId, projectName, branch, targetEnv };
+}
+
+type XaBDeployConfig = NonNullable<ReturnType<typeof resolveXaBDeployConfig>>;
+
+function isRecordStringUnknown(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function parseApiErrorDetails(payload: unknown): { code?: number; message?: string } {
+  if (!isRecordStringUnknown(payload)) return {};
+  const errors = payload.errors;
+  if (!Array.isArray(errors) || errors.length < 1) return {};
+  const first = errors[0];
+  if (!isRecordStringUnknown(first)) return {};
+  const code = typeof first.code === "number" ? first.code : undefined;
+  const message = typeof first.message === "string" ? first.message : undefined;
+  return { code, message };
+}
+
+type CfRequestResult =
+  | { ok: true; payload: Record<string, unknown> }
+  | { ok: false; status: number; error: { code?: number; message?: string } };
+
+async function requestCloudflareJson(url: string, init: RequestInit): Promise<CfRequestResult> {
+  const response = await fetch(url, init).catch(() => null);
+  if (!response) {
+    return { ok: false, status: 502, error: {} };
+  }
+
+  const payload = await response.json().catch(() => null);
+  if (!response.ok || !isRecordStringUnknown(payload)) {
+    return {
+      ok: false,
+      status: response.status || 502,
+      error: parseApiErrorDetails(payload),
+    };
+  }
+  return { ok: true, payload };
+}
+
+function cloudflareApiBase(config: XaBDeployConfig): string {
+  return `https://api.cloudflare.com/client/v4/accounts/${encodeURIComponent(config.accountId)}/pages/projects/${encodeURIComponent(config.projectName)}`;
+}
+
+function pickSourceDeploymentId(listPayload: Record<string, unknown>, branch: string): string | null {
+  const candidatesRaw = listPayload.result;
+  if (!Array.isArray(candidatesRaw) || candidatesRaw.length < 1) return null;
+
+  const branchMatch = candidatesRaw.find((entry) => {
+    if (!isRecordStringUnknown(entry)) return false;
+    const trigger = entry.deployment_trigger;
+    if (!isRecordStringUnknown(trigger)) return false;
+    const metadata = trigger.metadata;
+    if (!isRecordStringUnknown(metadata)) return false;
+    return metadata.branch === branch;
+  });
+  const selected = isRecordStringUnknown(branchMatch)
+    ? branchMatch
+    : isRecordStringUnknown(candidatesRaw[0])
+      ? candidatesRaw[0]
+      : null;
+  if (!selected) return null;
+
+  if (typeof selected.id === "string") return selected.id;
+  if (typeof selected.short_id === "string") return selected.short_id;
+  return null;
+}
+
+function parseManifestFromDeployment(detailPayload: Record<string, unknown>): Record<string, string> | null {
+  const result = detailPayload.result;
+  if (!isRecordStringUnknown(result) || !isRecordStringUnknown(result.files)) return null;
+
+  const manifest: Record<string, string> = {};
+  for (const [key, value] of Object.entries(result.files)) {
+    if (typeof value === "string" && key.startsWith("/")) {
+      manifest[key] = value;
+    }
+  }
+  return Object.keys(manifest).length > 0 ? manifest : null;
+}
+
+function buildCreateDeployForm(params: {
+  manifest: Record<string, string>;
+  branch: string;
+  storefront: string;
+}): FormData {
+  const form = new FormData();
+  form.append("manifest", JSON.stringify(params.manifest));
+  form.append("branch", params.branch);
+  form.append(
+    "commit_message",
+    `xa-catalog-autoredeploy:${params.storefront}:${new Date().toISOString()}`,
+  );
+  return form;
+}
+
+function successPayloadFromCreate(params: {
+  payload: Record<string, unknown>;
+  storefront: string;
+  sourceDeploymentId: string;
+  targetEnv: "preview" | "production";
+}) {
+  const result = isRecordStringUnknown(params.payload.result) ? params.payload.result : {};
+  return {
+    ok: true,
+    storefront: params.storefront,
+    sourceDeploymentId: params.sourceDeploymentId,
+    deploymentId: typeof result.id === "string" ? result.id : null,
+    deploymentUrl: typeof result.url === "string" ? result.url : null,
+    environment:
+      typeof result.environment === "string" ? result.environment : params.targetEnv,
+  };
+}
+
+async function handleXaBDeployTrigger(request: Request, env: Env, storefront: string): Promise<Response> {
+  if (storefront !== "xa-b") return json({ ok: false }, 400);
+
+  const requestUrl = new URL(request.url);
+  const auth = requireDeployTriggerToken(env, request, requestUrl);
+  if (auth instanceof Response) return auth;
+
+  const config = resolveXaBDeployConfig(env);
+  if (!config) return json({ ok: false }, 503);
+
+  const listUrl = new URL(`${cloudflareApiBase(config)}/deployments`);
+  listUrl.searchParams.set("env", config.targetEnv);
+  listUrl.searchParams.set("per_page", "10");
+  const apiHeaders = {
+    Authorization: `Bearer ${config.apiToken}`,
+  };
+
+  const list = await requestCloudflareJson(listUrl.toString(), {
+    method: "GET",
+    headers: apiHeaders,
+  });
+  if (!list.ok) return json({ ok: false, error: list.error }, 502);
+
+  const sourceDeploymentId = pickSourceDeploymentId(list.payload, config.branch);
+  if (!sourceDeploymentId) return json({ ok: false }, 502);
+
+  const detail = await requestCloudflareJson(
+    `${cloudflareApiBase(config)}/deployments/${encodeURIComponent(sourceDeploymentId)}`,
+    { method: "GET", headers: apiHeaders },
+  );
+  if (!detail.ok) return json({ ok: false, error: detail.error }, 502);
+
+  const manifest = parseManifestFromDeployment(detail.payload);
+  if (!manifest) return json({ ok: false }, 502);
+
+  const create = await requestCloudflareJson(`${cloudflareApiBase(config)}/deployments`, {
+    method: "POST",
+    headers: apiHeaders,
+    body: buildCreateDeployForm({ manifest, branch: config.branch, storefront }),
+  });
+  if (!create.ok) {
+    const status = create.error.code === 8000055 ? 409 : 502;
+    return json({ ok: false, error: create.error }, status);
+  }
+  if (create.payload.success !== true) {
+    const error = parseApiErrorDetails(create.payload);
+    const status = error.code === 8000055 ? 409 : 502;
+    return json({ ok: false, error }, status);
+  }
+
+  return json(
+    successPayloadFromCreate({
+      payload: create.payload,
+      storefront,
+      sourceDeploymentId,
+      targetEnv: config.targetEnv,
+    }),
+    202,
+  );
 }
 
 function isCorsDenied(requestHasOrigin: boolean, allowedCorsOrigin: string | null): boolean {
@@ -857,7 +1083,12 @@ async function routeRequest(params: {
   const route = matchRoute(url.pathname);
 
   if (request.method === "OPTIONS") {
-    if (route.kind === "upload" || route.kind === "catalog" || route.kind === "drafts") {
+    if (
+      route.kind === "upload" ||
+      route.kind === "catalog" ||
+      route.kind === "drafts" ||
+      route.kind === "deploy"
+    ) {
       if (isCorsDenied(requestHasOrigin, allowedCorsOrigin)) {
         return json({ ok: false }, 403);
       }
@@ -912,6 +1143,12 @@ async function routeRequest(params: {
       return await handleDraftDelete(request, env, url, route.storefront);
     }
     return json({ ok: false }, 404);
+  }
+
+  if (route.kind === "deploy") {
+    if (!route.storefront) return json({ ok: false }, 400);
+    if (request.method !== "POST") return json({ ok: false }, 404);
+    return await handleXaBDeployTrigger(request, env, route.storefront);
   }
 
   return json({ ok: false }, 404);

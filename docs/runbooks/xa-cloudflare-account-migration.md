@@ -33,6 +33,27 @@ Staging URL convention for `xa-b-site`:
 - branch `dev` preview URL is `https://dev.xa-b-site.pages.dev/`.
 - do not use `https://dev--xa-b-site.pages.dev/` (wrong hostname pattern for this Pages setup).
 
+## Catalog Sync Behavior (Staging)
+
+| Operation | Immediate effect in `xa-uploader` | Contract publish effect | XA-B storefront effect |
+|---|---|---|---|
+| Add product data | Creates/updates draft record | Included on next non-dry-run sync publish | Visible after next xa-b deploy |
+| Edit product data | Updates existing draft record | Updated fields included on next publish | Updated content visible after next xa-b deploy |
+| Delete product data | Removes draft record by slug | Removed from next published catalog payload | Product/listing disappears after next xa-b deploy |
+| Add image | Uploads binary to R2 (`xa-media-preview`) and stores key in draft image fields | Image reference included on next publish | Image renders on xa-b after next deploy |
+| Edit image metadata (role/order/alt/path refs) | Updates draft image fields | Updated media mapping included on next publish | Gallery/order/alt updates visible after next deploy |
+| Delete image reference | Removes image key from draft; delete API attempts physical object deletion if no other draft references key | Removed from next published media mapping | Image disappears from storefront product after next deploy |
+
+Deploy cadence semantics:
+- `POST /api/catalog/sync` triggers deploy hook when publish succeeds.
+- Deploy hook cooldown is 900 seconds (15 minutes) by default (`XA_B_DEPLOY_HOOK_COOLDOWN_SECONDS`).
+- Cooldown-skipped deploys are marked pending and drained via `.github/workflows/xa-deploy-drain-staging.yml`.
+- That workflow runs every 5 minutes, so a cooldown-skipped update is expected to reach xa-b without manual republish once the cooldown window passes.
+
+Important GitHub Actions limitation:
+- Scheduled workflows run from the repository default branch (`main`).
+- For automatic deploy-drain to run continuously, this workflow must be present on `main` (not only on `dev`).
+
 ## What We Configured
 
 ### Cloudflare resources
@@ -303,6 +324,7 @@ Important config invariant:
 - `.github/workflows/xa.yml`
 - `.github/workflows/xa-b-redeploy.yml`
 - `apps/xa-uploader/wrangler.toml`
+- `.github/workflows/xa-deploy-drain-staging.yml`
 - `apps/xa-drop-worker/wrangler.toml`
 - `apps/xa-b/wrangler.toml`
 - `apps/xa-b/scripts/pages-worker.js`

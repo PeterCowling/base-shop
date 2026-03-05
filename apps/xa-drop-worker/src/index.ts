@@ -7,11 +7,11 @@ export interface Env {
   CATALOG_WRITE_TOKEN?: string;
   CATALOG_READ_TOKEN?: string;
   XA_DEPLOY_TRIGGER_TOKEN?: string;
-  XA_PAGES_DEPLOY_API_TOKEN?: string;
-  CLOUDFLARE_ACCOUNT_ID?: string;
-  XA_B_PAGES_PROJECT?: string;
-  XA_B_PAGES_BRANCH?: string;
-  XA_B_PAGES_ENV?: string;
+  XA_GITHUB_ACTIONS_TOKEN?: string;
+  XA_GITHUB_REPO_OWNER?: string;
+  XA_GITHUB_REPO_NAME?: string;
+  XA_GITHUB_WORKFLOW_FILE?: string;
+  XA_GITHUB_WORKFLOW_REF?: string;
   R2_PREFIX?: string;
   CATALOG_PREFIX?: string;
   MAX_BYTES?: string;
@@ -873,20 +873,19 @@ function requireDeployTriggerToken(
 }
 
 function resolveXaBDeployConfig(env: Env): {
-  apiToken: string;
-  accountId: string;
-  projectName: string;
-  branch: string;
-  targetEnv: "preview" | "production";
+  token: string;
+  owner: string;
+  repo: string;
+  workflow: string;
+  ref: string;
 } | null {
-  const apiToken = (env.XA_PAGES_DEPLOY_API_TOKEN ?? "").trim();
-  const accountId = (env.CLOUDFLARE_ACCOUNT_ID ?? "").trim();
-  const projectName = (env.XA_B_PAGES_PROJECT ?? "").trim();
-  const branch = (env.XA_B_PAGES_BRANCH ?? "dev").trim() || "dev";
-  const rawTargetEnv = (env.XA_B_PAGES_ENV ?? "preview").trim().toLowerCase();
-  const targetEnv = rawTargetEnv === "production" ? "production" : "preview";
-  if (!apiToken || !accountId || !projectName) return null;
-  return { apiToken, accountId, projectName, branch, targetEnv };
+  const token = (env.XA_GITHUB_ACTIONS_TOKEN ?? "").trim();
+  const owner = (env.XA_GITHUB_REPO_OWNER ?? "petercowling").trim();
+  const repo = (env.XA_GITHUB_REPO_NAME ?? "base-shop").trim();
+  const workflow = (env.XA_GITHUB_WORKFLOW_FILE ?? "xa-b-redeploy.yml").trim();
+  const ref = (env.XA_GITHUB_WORKFLOW_REF ?? "dev").trim() || "dev";
+  if (!token || !owner || !repo || !workflow || !ref) return null;
+  return { token, owner, repo, workflow, ref };
 }
 
 type XaBDeployConfig = NonNullable<ReturnType<typeof resolveXaBDeployConfig>>;
@@ -897,108 +896,119 @@ function isRecordStringUnknown(value: unknown): value is Record<string, unknown>
 
 function parseApiErrorDetails(payload: unknown): { code?: number; message?: string } {
   if (!isRecordStringUnknown(payload)) return {};
+  const directMessage = typeof payload.message === "string" ? payload.message : undefined;
   const errors = payload.errors;
-  if (!Array.isArray(errors) || errors.length < 1) return {};
+  if (!Array.isArray(errors) || errors.length < 1) return { message: directMessage };
   const first = errors[0];
-  if (!isRecordStringUnknown(first)) return {};
+  if (!isRecordStringUnknown(first)) return { message: directMessage };
   const code = typeof first.code === "number" ? first.code : undefined;
-  const message = typeof first.message === "string" ? first.message : undefined;
+  const message = typeof first.message === "string" ? first.message : directMessage;
   return { code, message };
 }
 
-type CfRequestResult =
-  | { ok: true; payload: Record<string, unknown> }
+type JsonRequestResult =
+  | { ok: true; status: number; payload: Record<string, unknown> | null }
   | { ok: false; status: number; error: { code?: number; message?: string } };
 
-async function requestCloudflareJson(url: string, init: RequestInit): Promise<CfRequestResult> {
+async function requestJson(url: string, init: RequestInit): Promise<JsonRequestResult> {
   const response = await fetch(url, init).catch(() => null);
   if (!response) {
     return { ok: false, status: 502, error: {} };
   }
 
   const payload = await response.json().catch(() => null);
-  if (!response.ok || !isRecordStringUnknown(payload)) {
+  if (!response.ok) {
     return {
       ok: false,
       status: response.status || 502,
       error: parseApiErrorDetails(payload),
     };
   }
-  return { ok: true, payload };
+  return { ok: true, status: response.status, payload: isRecordStringUnknown(payload) ? payload : null };
 }
 
-function cloudflareApiBase(config: XaBDeployConfig): string {
-  return `https://api.cloudflare.com/client/v4/accounts/${encodeURIComponent(config.accountId)}/pages/projects/${encodeURIComponent(config.projectName)}`;
-}
-
-function pickSourceDeploymentId(listPayload: Record<string, unknown>, branch: string): string | null {
-  const candidatesRaw = listPayload.result;
-  if (!Array.isArray(candidatesRaw) || candidatesRaw.length < 1) return null;
-
-  const branchMatch = candidatesRaw.find((entry) => {
-    if (!isRecordStringUnknown(entry)) return false;
-    const trigger = entry.deployment_trigger;
-    if (!isRecordStringUnknown(trigger)) return false;
-    const metadata = trigger.metadata;
-    if (!isRecordStringUnknown(metadata)) return false;
-    return metadata.branch === branch;
-  });
-  const selected = isRecordStringUnknown(branchMatch)
-    ? branchMatch
-    : isRecordStringUnknown(candidatesRaw[0])
-      ? candidatesRaw[0]
-      : null;
-  if (!selected) return null;
-
-  if (typeof selected.id === "string") return selected.id;
-  if (typeof selected.short_id === "string") return selected.short_id;
-  return null;
-}
-
-function parseManifestFromDeployment(detailPayload: Record<string, unknown>): Record<string, string> | null {
-  const result = detailPayload.result;
-  if (!isRecordStringUnknown(result) || !isRecordStringUnknown(result.files)) return null;
-
-  const manifest: Record<string, string> = {};
-  for (const [key, value] of Object.entries(result.files)) {
-    if (typeof value === "string" && key.startsWith("/")) {
-      manifest[key] = value;
-    }
-  }
-  return Object.keys(manifest).length > 0 ? manifest : null;
-}
-
-function buildCreateDeployForm(params: {
-  manifest: Record<string, string>;
-  branch: string;
+function successPayloadFromDispatch(params: {
   storefront: string;
-}): FormData {
-  const form = new FormData();
-  form.append("manifest", JSON.stringify(params.manifest));
-  form.append("branch", params.branch);
-  form.append(
-    "commit_message",
-    `xa-catalog-autoredeploy:${params.storefront}:${new Date().toISOString()}`,
-  );
-  return form;
-}
-
-function successPayloadFromCreate(params: {
-  payload: Record<string, unknown>;
-  storefront: string;
-  sourceDeploymentId: string;
-  targetEnv: "preview" | "production";
+  workflow: string;
+  owner: string;
+  repo: string;
+  ref: string;
 }) {
-  const result = isRecordStringUnknown(params.payload.result) ? params.payload.result : {};
+  const workflowUrl = `https://github.com/${encodeURIComponent(params.owner)}/${encodeURIComponent(params.repo)}/actions/workflows/${encodeURIComponent(params.workflow)}`;
   return {
     ok: true,
     storefront: params.storefront,
-    sourceDeploymentId: params.sourceDeploymentId,
-    deploymentId: typeof result.id === "string" ? result.id : null,
-    deploymentUrl: typeof result.url === "string" ? result.url : null,
-    environment:
-      typeof result.environment === "string" ? result.environment : params.targetEnv,
+    provider: "github_actions",
+    workflow: params.workflow,
+    workflowUrl,
+    ref: params.ref,
   };
+}
+
+function buildDispatchBody(params: { storefront: string; ref: string }): string {
+  return JSON.stringify({
+    ref: params.ref,
+    inputs: {
+      storefront: params.storefront,
+      reason: "xa-uploader-sync",
+    },
+  });
+}
+
+function githubDispatchUrl(config: XaBDeployConfig): string {
+  return `https://api.github.com/repos/${encodeURIComponent(config.owner)}/${encodeURIComponent(config.repo)}/actions/workflows/${encodeURIComponent(config.workflow)}/dispatches`;
+}
+
+function dispatchHeaders(config: XaBDeployConfig): HeadersInit {
+  return {
+    Authorization: `Bearer ${config.token}`,
+    Accept: "application/vnd.github+json",
+    "X-GitHub-Api-Version": "2022-11-28",
+    "Content-Type": "application/json",
+  };
+}
+
+function parseGitHubError(payload: Record<string, unknown> | null): { code?: number; message?: string } {
+  if (!payload) return {};
+  const message = typeof payload.message === "string" ? payload.message : undefined;
+  return { message };
+}
+
+function normalizeDispatchFailureStatus(status: number): number {
+  if (status === 401 || status === 403) return 502;
+  if (status >= 400 && status < 500) return 503;
+  return 502;
+}
+
+function normalizeDispatchFailureError(
+  result: JsonRequestResult & { ok: false },
+): { code?: number; message?: string } {
+  if (result.error.message || result.error.code) return result.error;
+  return { message: "dispatch_failed" };
+}
+
+function buildDispatchFailureResponse(result: JsonRequestResult & { ok: false }): Response {
+  const status = normalizeDispatchFailureStatus(result.status);
+  return json({ ok: false, error: normalizeDispatchFailureError(result) }, status);
+}
+
+function successPayloadFromDispatchResult(params: {
+  payload: Record<string, unknown>;
+  storefront: string;
+  workflow: string;
+  owner: string;
+  repo: string;
+  ref: string;
+}) {
+  const result = isRecordStringUnknown(params.payload.result) ? params.payload.result : {};
+  void result;
+  return successPayloadFromDispatch({
+    storefront: params.storefront,
+    workflow: params.workflow,
+    owner: params.owner,
+    repo: params.repo,
+    ref: params.ref,
+  });
 }
 
 async function handleXaBDeployTrigger(request: Request, env: Env, storefront: string): Promise<Response> {
@@ -1010,53 +1020,24 @@ async function handleXaBDeployTrigger(request: Request, env: Env, storefront: st
 
   const config = resolveXaBDeployConfig(env);
   if (!config) return json({ ok: false }, 503);
-
-  const listUrl = new URL(`${cloudflareApiBase(config)}/deployments`);
-  listUrl.searchParams.set("env", config.targetEnv);
-  listUrl.searchParams.set("per_page", "10");
-  const apiHeaders = {
-    Authorization: `Bearer ${config.apiToken}`,
-  };
-
-  const list = await requestCloudflareJson(listUrl.toString(), {
-    method: "GET",
-    headers: apiHeaders,
-  });
-  if (!list.ok) return json({ ok: false, error: list.error }, 502);
-
-  const sourceDeploymentId = pickSourceDeploymentId(list.payload, config.branch);
-  if (!sourceDeploymentId) return json({ ok: false }, 502);
-
-  const detail = await requestCloudflareJson(
-    `${cloudflareApiBase(config)}/deployments/${encodeURIComponent(sourceDeploymentId)}`,
-    { method: "GET", headers: apiHeaders },
-  );
-  if (!detail.ok) return json({ ok: false, error: detail.error }, 502);
-
-  const manifest = parseManifestFromDeployment(detail.payload);
-  if (!manifest) return json({ ok: false }, 502);
-
-  const create = await requestCloudflareJson(`${cloudflareApiBase(config)}/deployments`, {
+  const dispatch = await requestJson(githubDispatchUrl(config), {
     method: "POST",
-    headers: apiHeaders,
-    body: buildCreateDeployForm({ manifest, branch: config.branch, storefront }),
+    headers: dispatchHeaders(config),
+    body: buildDispatchBody({ storefront, ref: config.ref }),
   });
-  if (!create.ok) {
-    const status = create.error.code === 8000055 ? 409 : 502;
-    return json({ ok: false, error: create.error }, status);
+  if (!dispatch.ok) return buildDispatchFailureResponse(dispatch);
+  if (dispatch.status !== 204) {
+    const error = parseGitHubError(dispatch.payload);
+    return json({ ok: false, error: error.message ? error : { message: "dispatch_unexpected_status" } }, 502);
   }
-  if (create.payload.success !== true) {
-    const error = parseApiErrorDetails(create.payload);
-    const status = error.code === 8000055 ? 409 : 502;
-    return json({ ok: false, error }, status);
-  }
-
   return json(
-    successPayloadFromCreate({
-      payload: create.payload,
+    successPayloadFromDispatchResult({
+      payload: dispatch.payload ?? {},
       storefront,
-      sourceDeploymentId,
-      targetEnv: config.targetEnv,
+      workflow: config.workflow,
+      owner: config.owner,
+      repo: config.repo,
+      ref: config.ref,
     }),
     202,
   );

@@ -259,59 +259,18 @@ describe("xa-drop-worker edge branches", () => {
       {
         SUBMISSIONS_BUCKET: { get: async () => null } as unknown as R2Bucket,
         XA_DEPLOY_TRIGGER_TOKEN: "deploy-trigger-token-1234567890",
-        XA_PAGES_DEPLOY_API_TOKEN: "cf-pages-api-token",
-        CLOUDFLARE_ACCOUNT_ID: "account-id",
-        XA_B_PAGES_PROJECT: "xa-b-site",
+        XA_GITHUB_ACTIONS_TOKEN: "gh-actions-token",
       },
     );
 
     expect(res.status).toBe(401);
   });
 
-  it("creates a new pages deployment from latest manifest on deploy trigger", async () => {
+  it("dispatches xa-b redeploy workflow on deploy trigger", async () => {
     const fetchMock = jest
       .spyOn(globalThis, "fetch")
       .mockResolvedValueOnce(
-        new Response(
-          JSON.stringify({
-            success: true,
-            result: [
-              {
-                id: "source-deploy-id",
-                deployment_trigger: { metadata: { branch: "dev" } },
-              },
-            ],
-          }),
-          { status: 200, headers: { "Content-Type": "application/json" } },
-        ),
-      )
-      .mockResolvedValueOnce(
-        new Response(
-          JSON.stringify({
-            success: true,
-            result: {
-              id: "source-deploy-id",
-              files: {
-                "/index.html": "hash-1",
-                "/_next/static/chunk.js": "hash-2",
-              },
-            },
-          }),
-          { status: 200, headers: { "Content-Type": "application/json" } },
-        ),
-      )
-      .mockResolvedValueOnce(
-        new Response(
-          JSON.stringify({
-            success: true,
-            result: {
-              id: "new-deploy-id",
-              url: "https://new-deploy-id.xa-b-site.pages.dev",
-              environment: "preview",
-            },
-          }),
-          { status: 200, headers: { "Content-Type": "application/json" } },
-        ),
+        new Response(null, { status: 204 }),
       );
 
     const res = await handler.fetch(
@@ -322,11 +281,11 @@ describe("xa-drop-worker edge branches", () => {
       {
         SUBMISSIONS_BUCKET: { get: async () => null } as unknown as R2Bucket,
         XA_DEPLOY_TRIGGER_TOKEN: "deploy-trigger-token-1234567890",
-        XA_PAGES_DEPLOY_API_TOKEN: "cf-pages-api-token",
-        CLOUDFLARE_ACCOUNT_ID: "account-id",
-        XA_B_PAGES_PROJECT: "xa-b-site",
-        XA_B_PAGES_BRANCH: "dev",
-        XA_B_PAGES_ENV: "preview",
+        XA_GITHUB_ACTIONS_TOKEN: "gh-actions-token",
+        XA_GITHUB_REPO_OWNER: "petercowling",
+        XA_GITHUB_REPO_NAME: "base-shop",
+        XA_GITHUB_WORKFLOW_FILE: "xa-b-redeploy.yml",
+        XA_GITHUB_WORKFLOW_REF: "dev",
       },
     );
 
@@ -334,18 +293,28 @@ describe("xa-drop-worker edge branches", () => {
     await expect(res.json()).resolves.toEqual(
       expect.objectContaining({
         ok: true,
-        deploymentId: "new-deploy-id",
-        sourceDeploymentId: "source-deploy-id",
+        provider: "github_actions",
+        workflow: "xa-b-redeploy.yml",
+        ref: "dev",
       }),
     );
 
-    expect(fetchMock).toHaveBeenCalledTimes(3);
-    const createCall = fetchMock.mock.calls[2];
-    expect(createCall?.[0]).toContain("/pages/projects/xa-b-site/deployments");
-    const createInit = createCall?.[1] as RequestInit;
-    const form = createInit.body as FormData;
-    expect(form.get("branch")).toBe("dev");
-    expect(typeof form.get("manifest")).toBe("string");
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const dispatchCall = fetchMock.mock.calls[0];
+    expect(dispatchCall?.[0]).toBe(
+      "https://api.github.com/repos/petercowling/base-shop/actions/workflows/xa-b-redeploy.yml/dispatches",
+    );
+    const dispatchInit = dispatchCall?.[1] as RequestInit;
+    expect(dispatchInit.method).toBe("POST");
+    expect(dispatchInit.body).toBe(
+      JSON.stringify({
+        ref: "dev",
+        inputs: {
+          storefront: "xa-b",
+          reason: "xa-uploader-sync",
+        },
+      }),
+    );
 
     fetchMock.mockRestore();
   });

@@ -1,19 +1,13 @@
 import * as React from "react";
 import { act, render, waitFor } from "@testing-library/react";
 
-const getSoldQtyMock = jest.fn();
-
-jest.mock("../../lib/inventoryStore", () => ({
-  getSoldQty: (...args: unknown[]) => getSoldQtyMock(...args),
-}));
-
 const CART_STORAGE_KEY = "XA_CART_V1";
 
 const baseProduct = {
   id: "sku-1",
   slug: "studio-jacket",
   title: "Studio Jacket",
-  stock: 5,
+  status: "live",
   sizes: ["S", "M", "L"],
 } as const;
 
@@ -21,7 +15,6 @@ describe("XaCartContext", () => {
   beforeEach(() => {
     localStorage.clear();
     jest.clearAllMocks();
-    getSoldQtyMock.mockReturnValue(0);
   });
 
   it("throws when useCart is used outside provider", async () => {
@@ -68,12 +61,12 @@ describe("XaCartContext", () => {
 
     await waitFor(() => {
       expect(Object.keys(latestCart)).toEqual(["sku-1:M"]);
-      expect(latestCart["sku-1:M"]?.qty).toBe(2);
+      expect(latestCart["sku-1:M"]?.qty).toBe(1);
       expect(latestCart["sku-1:M"]?.size).toBe("M");
     });
   });
 
-  it("enforces size requirement and stock guardrails", async () => {
+  it("enforces size requirement and status-based availability guardrails", async () => {
     const { CartProvider, useCart } = await import("../XaCartContext");
 
     let dispatch:
@@ -102,12 +95,24 @@ describe("XaCartContext", () => {
 
     await expect(dispatch!({ type: "add", sku: baseProduct, qty: 1 })).rejects.toThrow("Size is required");
 
-    getSoldQtyMock.mockReturnValue(5);
+    await act(async () => {
+      await dispatch!({ type: "add", sku: baseProduct, size: "M", qty: 2 });
+    });
     await expect(dispatch!({ type: "add", sku: baseProduct, size: "M", qty: 2 })).rejects.toThrow(
       "Out of stock",
     );
+    await expect(
+      dispatch!({
+        type: "add",
+        sku: { ...baseProduct, id: "sku-2", slug: "studio-jacket-2", status: "out_of_stock" },
+        size: "M",
+        qty: 1,
+      }),
+    ).rejects.toThrow(
+      "Out of stock",
+    );
 
-    expect(totalQty).toBe(0);
+    expect(totalQty).toBe(1);
   });
 
   it("adds, updates, removes, and clears lines and persists state", async () => {
@@ -149,8 +154,8 @@ describe("XaCartContext", () => {
       await dispatch!({ type: "add", sku: baseProduct, size: "M", qty: 2 });
     });
     await waitFor(() => {
-      expect(totalQty).toBe(2);
-      expect(lineQty).toBe(2);
+      expect(totalQty).toBe(1);
+      expect(lineQty).toBe(1);
     });
 
     const afterAdd = localStorage.getItem(CART_STORAGE_KEY) ?? "";
@@ -174,7 +179,7 @@ describe("XaCartContext", () => {
       await dispatch!({ type: "add", sku: baseProduct, size: "M", qty: 2 });
     });
     await waitFor(() => {
-      expect(totalQty).toBe(2);
+      expect(totalQty).toBe(1);
     });
 
     await act(async () => {
@@ -188,7 +193,7 @@ describe("XaCartContext", () => {
       await dispatch!({ type: "add", sku: baseProduct, size: "M", qty: 2 });
     });
     await waitFor(() => {
-      expect(totalQty).toBe(2);
+      expect(totalQty).toBe(1);
     });
 
     await act(async () => {

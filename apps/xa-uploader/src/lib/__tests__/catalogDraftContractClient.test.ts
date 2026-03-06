@@ -47,7 +47,7 @@ describe("catalogDraftContractClient", () => {
     global.fetch = jest.fn(async () =>
       Response.json({
         ok: true,
-        products: [{ title: "Studio jacket", slug: "studio-jacket", brandHandle: "a", collectionHandle: "b", price: "1", description: "x", createdAt: "2026-03-02T00:00:00.000Z", popularity: "0", stock: "0", taxonomy: { department: "women", category: "bags", subcategory: "tote", color: "black", material: "leather" } }],
+        products: [{ title: "Studio jacket", slug: "studio-jacket", brandHandle: "a", collectionHandle: "b", price: "1", description: "x", createdAt: "2026-03-02T00:00:00.000Z", popularity: "0", publishState: "live", taxonomy: { department: "women", category: "bags", subcategory: "tote", color: "black", material: "leather" } }],
         revisionsById: { p1: "rev-1" },
         docRevision: "doc-rev-1",
       }),
@@ -158,7 +158,7 @@ describe("catalogDraftContractClient", () => {
     );
   });
 
-  it("rejects malformed product payloads from snapshot reads", async () => {
+  it("ignores malformed product payloads from snapshot reads", async () => {
     global.fetch = jest.fn(async () =>
       Response.json({
         ok: true,
@@ -169,9 +169,13 @@ describe("catalogDraftContractClient", () => {
     ) as unknown as typeof fetch;
 
     const { readCloudDraftSnapshot } = await import("../catalogDraftContractClient");
-    await expect(readCloudDraftSnapshot("xa-b")).rejects.toMatchObject({
-      code: "invalid_response",
-    });
+    await expect(readCloudDraftSnapshot("xa-b")).resolves.toEqual(
+      expect.objectContaining({
+        products: [],
+        revisionsById: {},
+        docRevision: "doc-rev-1",
+      }),
+    );
   });
 
   it("rejects malformed revisionsById payloads from snapshot reads", async () => {
@@ -281,7 +285,7 @@ describe("catalogDraftContractClient", () => {
           description: "desc",
           createdAt: "2026-03-02T00:00:00.000Z",
           popularity: "0",
-          stock: "1",
+          publishState: "live",
           taxonomy: {
             department: "women",
             category: "bags",
@@ -302,7 +306,7 @@ describe("catalogDraftContractClient", () => {
               description: "desc",
               createdAt: "2026-03-01T00:00:00.000Z",
               popularity: "0",
-              stock: "1",
+              publishState: "live",
               taxonomy: {
                 department: "women",
                 category: "bags",

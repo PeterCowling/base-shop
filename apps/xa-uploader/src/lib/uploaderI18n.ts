@@ -131,7 +131,7 @@ const messages = {
     syncRecoveryConfirmEmptyCatalogSync:
       "Confirm only if an empty storefront publish is intentional.",
     syncRecoveryMarkProductsReady:
-      "Open draft products, add image paths where missing, save, then run sync again.",
+      "Open draft products, add missing image paths, then set status to live or out of stock before running sync again.",
     syncCurrencyRatesMissingActionable:
       "Currency rates are missing. Sync is blocked to avoid 1:1 fallback conversions.",
     syncCurrencyRatesInvalidActionable:
@@ -141,7 +141,7 @@ const messages = {
     syncConfirmEmptyCatalogSync:
       "Catalog CSV is empty. Continuing will publish zero products. Continue sync?",
     syncConfirmNoPublishableProducts:
-      "No products are ready to publish. Mark products as ready first, or continue with empty catalog?",
+      "No products are publishable yet. Set publish-ready products to live or out of stock first, or continue with an empty catalog?",
     saveConfirmUnpublish:
       "This product is currently live. Saving with incomplete data will remove it from the storefront. Continue?",
     syncDeployHookUnconfiguredActionable:
@@ -196,6 +196,7 @@ const messages = {
     workflowDraftOnly: "Draft ready",
     workflowReadyForLive: "Ready to publish",
     workflowLive: "Published to catalog",
+    workflowOutOfStock: "Published as out of stock",
     workflowMissingRoles: "Missing: {roles}",
     workflowReadyForSubmission: "Ready to submit",
     workflowImageBlocked: "Complete the product details first, then add images.",
@@ -214,7 +215,7 @@ const messages = {
     syncPublishReadinessSummary:
       "{publishable} publishable / {draft} draft ({total} total).",
     syncPublishReadinessZero:
-      "No publishable products yet. Products must be ready or live before they appear on xa-b.",
+      "No publishable products yet. Products must be publish-ready and set to live or out of stock before they appear on xa-b.",
     syncOptionGroupValidation: "Validation",
     syncOptionGroupRunModifiers: "Run modifiers",
     syncOptionStrict: "full validation",
@@ -282,8 +283,8 @@ const messages = {
     fieldForSale: "For sale",
     fieldForRental: "For rental",
     fieldDeposit: "Deposit",
-    fieldStock: "Stock",
-    fieldStockHint: "0 means sold out on the storefront.",
+    fieldStatus: "Status",
+    fieldStatusHint: "Draft stays off xa-b. Live publishes to xa-b. Out of stock stays visible but cannot be added to cart.",
     fieldPopularity: "Popularity",
     fieldCreatedAt: "Created at",
     fieldSectionIdentity: "Identity",
@@ -296,6 +297,9 @@ const messages = {
     categoryClothing: "Clothing",
     categoryBags: "Bags",
     categoryJewelry: "Jewelry",
+    statusDraft: "Draft",
+    statusLive: "Live",
+    statusOutOfStock: "Out of stock",
 
     clothingFieldsTitle: "Clothing fields",
     clothingSizes: "Sizes (pipe, comma, or newline)",
@@ -471,7 +475,7 @@ const messages = {
     instructionsSection7Title: "Handle sync feedback and retries",
     instructionsSection7Step1: "Read feedback after every save, readiness check, and sync run.",
     instructionsSection7Step2:
-      "If no products are publishable, complete missing fields/images and save until products become ready or live.",
+      "If no products are publishable, complete missing fields/images and save until products can be set to live or out of stock.",
     instructionsSection7Step3: "Use Recheck to refresh readiness after you fix an issue.",
     instructionsSection7Step4: "Run sync again only when readiness is clear.",
     instructionsSection7Expectation1: "Before rerun, readiness should show “Sync dependencies are ready.”",
@@ -620,12 +624,12 @@ const messages = {
       "当前没有可发布商品。请先保存商品数据并至少填写一条图片路径，再次保存后重试。",
     syncRecoveryConfirmEmptyCatalogSync: "仅在确认需要发布空目录时继续。",
     syncRecoveryMarkProductsReady:
-      "请打开草稿商品，补齐图片路径后保存，再重新运行同步。",
+      "请打开草稿商品，补齐图片路径，再把状态改为 live 或 out_of_stock，然后重新运行同步。",
     syncCurrencyRatesMissingActionable: "汇率文件缺失。为避免 1:1 默认换算，已阻止同步。",
     syncCurrencyRatesInvalidActionable: "汇率文件格式无效。请保存有效汇率后再同步。",
     syncRecoverySaveCurrencyRates: "请先在“汇率设置”中保存汇率，再运行同步。",
     syncConfirmEmptyCatalogSync: "目录 CSV 为空。继续将发布 0 个商品，是否继续同步？",
-    syncConfirmNoPublishableProducts: "没有可发布的商品。请先将商品标记为已就绪，或继续发布空目录？",
+    syncConfirmNoPublishableProducts: "没有可发布的商品。请先把满足发布条件的商品设为 live 或 out_of_stock，或继续发布空目录？",
     saveConfirmUnpublish: "该商品目前为上架状态。保存不完整数据将把它从店面移除。确定继续吗？",
     syncDeployHookUnconfiguredActionable:
       "当前环境要求自动部署，但尚未配置部署 Hook。",
@@ -673,6 +677,7 @@ const messages = {
     workflowDraftOnly: "草稿就绪",
     workflowReadyForLive: "可发布",
     workflowLive: "已发布至目录",
+    workflowOutOfStock: "已发布为缺货",
     workflowMissingRoles: "缺少：{roles}",
     workflowReadyForSubmission: "可提交",
     workflowImageBlocked: "请先完成产品信息，再添加图片。",
@@ -687,7 +692,7 @@ const messages = {
     syncReadinessRefresh: "重新检查",
     syncBlockedAutosavePending: "图片自动保存进行中，已阻止同步。请等待图片变更保存完成。",
     syncPublishReadinessSummary: "{publishable} 个可发布 / {draft} 个草稿（共 {total} 个）。",
-    syncPublishReadinessZero: "当前没有可发布商品。商品需达到 ready 或 live 状态后才会出现在 xa-b。",
+    syncPublishReadinessZero: "当前没有可发布商品。商品需先满足发布条件，并设置为 live 或 out_of_stock，才会出现在 xa-b。",
     syncOptionGroupValidation: "校验选项",
     syncOptionGroupRunModifiers: "执行参数",
     syncOptionStrict: "完整校验",
@@ -755,8 +760,8 @@ const messages = {
     fieldForSale: "可售",
     fieldForRental: "可租",
     fieldDeposit: "押金",
-    fieldStock: "库存",
-    fieldStockHint: "库存为 0 时，前台会显示售罄。",
+    fieldStatus: "状态",
+    fieldStatusHint: "Draft 不会出现在 xa-b。Live 会发布到 xa-b。缺货状态会保留展示，但无法加入购物车。",
     fieldPopularity: "人气",
     fieldCreatedAt: "创建时间",
     fieldSectionIdentity: "基本信息",
@@ -769,6 +774,9 @@ const messages = {
     categoryClothing: "服装",
     categoryBags: "包袋",
     categoryJewelry: "珠宝",
+    statusDraft: "草稿",
+    statusLive: "Live",
+    statusOutOfStock: "缺货",
 
     clothingFieldsTitle: "服装字段",
     clothingSizes: "尺码（用 |、逗号或换行分隔）",
@@ -933,7 +941,7 @@ const messages = {
     instructionsSection6ScreenshotCaption: "汇率与同步页面：汇率输入、就绪状态文本和运行同步控件。",
     instructionsSection7Title: "处理同步反馈并重试",
     instructionsSection7Step1: "每次保存、就绪检查和同步后都查看反馈。",
-    instructionsSection7Step2: "若无可发布商品，请补齐字段/图片并保存，直到商品变为 ready 或 live。",
+    instructionsSection7Step2: "若无可发布商品，请补齐字段/图片并保存，直到商品可设为 live 或 out_of_stock。",
     instructionsSection7Step3: "修复问题后点击“重新检查”刷新就绪状态。",
     instructionsSection7Step4: "仅在就绪状态正常后再次运行同步。",
     instructionsSection7Expectation1: "重试前，就绪状态应显示“同步依赖已就绪。”",

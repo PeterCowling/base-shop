@@ -33,7 +33,6 @@ const VALID_DRAFT: CatalogProductDraftInput = {
   description: "A structured layer.",
   createdAt: "2025-12-01T12:00:00.000Z",
   popularity: "0",
-  stock: "1",
   sizes: "S|M|L",
   taxonomy: {
     department: "women",

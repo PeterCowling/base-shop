@@ -4,6 +4,7 @@ import {
   type CatalogProductDraftInput,
   catalogProductDraftSchema,
   slugify,
+  withAutoCatalogDraftFields,
 } from "@acme/lib/xa";
 
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
@@ -156,14 +157,10 @@ function parseSnapshotPayload(payload: unknown): CloudDraftSnapshot {
     }
 
     for (const entry of record.products) {
-      const parsed = catalogProductDraftSchema.safeParse(entry);
-      if (!parsed.success) {
-        throw new CatalogDraftContractError(
-          "invalid_response",
-          "Draft contract returned invalid product entry.",
-        );
+      const parsed = catalogProductDraftSchema.safeParse(withAutoCatalogDraftFields(entry as CatalogProductDraftInput));
+      if (parsed.success) {
+        products.push(parsed.data);
       }
-      products.push(parsed.data);
     }
   }
 

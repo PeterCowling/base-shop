@@ -1,6 +1,7 @@
 import {
   type CatalogProductDraftInput,
   catalogProductDraftSchema,
+  type CatalogPublishState,
   slugify,
   splitList,
 } from "./catalogAdminSchema.js";
@@ -18,6 +19,15 @@ export type CatalogDraftWorkflowReadiness = {
   missingFieldPaths: string[];
   missingRoles: string[];
 };
+
+function normalizeSelectedPublishState(
+  publishState: CatalogProductDraftInput["publishState"],
+): CatalogPublishState {
+  if (publishState === "live" || publishState === "out_of_stock") {
+    return publishState;
+  }
+  return "draft";
+}
 
 type CatalogImageRoleReadiness = {
   hasRoleCountMatch: boolean;
@@ -82,7 +92,7 @@ export function withAutoCatalogDraftFields(
     ...draft,
     slug: slugify(slugSource || title),
     createdAt: normalizedCreatedAt,
-    publishState: draft.publishState ?? "draft",
+    publishState: normalizeSelectedPublishState(draft.publishState),
   };
 }
 
@@ -113,4 +123,17 @@ export function getCatalogDraftWorkflowReadiness(
     missingFieldPaths: Array.from(new Set(missingFieldPaths)),
     missingRoles: imageRoleReadiness.missingRoles,
   };
+}
+
+export function deriveCatalogPublishState(
+  draft: CatalogProductDraftInput,
+): CatalogPublishState {
+  if (!getCatalogDraftWorkflowReadiness(draft).isPublishReady) {
+    return "draft";
+  }
+  return normalizeSelectedPublishState(draft.publishState);
+}
+
+export function isCatalogPublishableState(state: CatalogPublishState): boolean {
+  return state === "live" || state === "out_of_stock";
 }

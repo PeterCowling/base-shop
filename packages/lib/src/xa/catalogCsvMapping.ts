@@ -54,7 +54,7 @@ function parseDraftCategory(
 function parseDraftPublishState(
   value: string | null | undefined,
 ): CatalogProductDraftInput["publishState"] {
-  if (value === "draft" || value === "ready" || value === "live") return value;
+  if (value === "draft" || value === "live" || value === "out_of_stock") return value;
   return undefined;
 }
 
@@ -109,7 +109,6 @@ export function buildCsvRowUpdateFromDraft(input: CatalogProductDraftInput): XaP
     collection_title: trimOrEmpty(value.collectionTitle),
     collection_description: trimOrEmpty(value.collectionDescription),
     price: String(value.price),
-    stock: stringifyNumberOrEmpty(value.stock),
     publish_state: value.publishState ?? "draft",
     sizes,
     description: trimOrEmpty(value.description),
@@ -155,10 +154,10 @@ export function buildCsvRowUpdateFromDraft(input: CatalogProductDraftInput): XaP
   };
 }
 
-export function rowToDraftInput(row: XaProductsCsvRow): CatalogProductDraftInput {
+export function rowToDraftInput(row: XaProductsCsvRow): CatalogProductDraftInput | null {
   const department = parseDraftDepartment(row.taxonomy_department);
   const category = parseDraftCategory(row.taxonomy_category);
-  return {
+  const candidate: CatalogProductDraftInput = {
     id: trimOrUndefined(row.id),
     slug: trimOrUndefined(row.slug),
     title: trimOrEmpty(row.title),
@@ -168,7 +167,6 @@ export function rowToDraftInput(row: XaProductsCsvRow): CatalogProductDraftInput
     collectionTitle: trimOrUndefined(row.collection_title),
     collectionDescription: trimOrUndefined(row.collection_description),
     price: trimOrEmpty(row.price) || "0",
-    stock: trimOrUndefined(row.stock),
     publishState: parseDraftPublishState(row.publish_state),
     sizes: trimOrUndefined(row.sizes),
     description: trimOrEmpty(row.description),
@@ -215,4 +213,6 @@ export function rowToDraftInput(row: XaProductsCsvRow): CatalogProductDraftInput
       warranty: trimOrUndefined(row.details_warranty),
     },
   };
+  const parsed = catalogProductDraftSchema.safeParse(withAutoCatalogDraftFields(candidate));
+  return parsed.success ? parsed.data : null;
 }

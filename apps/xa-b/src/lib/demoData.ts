@@ -1,3 +1,4 @@
+import type { CatalogPublishState } from "@acme/lib/xa/catalogAdminSchema";
 import {
   normalizeXaImageRole,
   sortXaMediaByRole,
@@ -21,10 +22,11 @@ import type {
 type XaMediaItem = SKU["media"][number] & { role?: XaImageRole };
 type XaStringListSeed = string | string[] | null | undefined;
 
-export type XaProduct = Omit<SKU, "media"> & {
+export type XaProduct = Omit<SKU, "media" | "stock"> & {
   media: XaMediaItem[];
   brand: string;
   collection: string;
+  status: CatalogPublishState;
   prices?: Partial<Record<Currency, number>>;
   createdAt: string;
   popularity: number;
@@ -211,6 +213,13 @@ function resolveCatalogMaxAgeMs(): number {
   return safeHours * 60 * 60 * 1000;
 }
 
+function normalizeProductStatus(value: unknown): CatalogPublishState | null {
+  if (value === "draft" || value === "live" || value === "out_of_stock") {
+    return value;
+  }
+  return null;
+}
+
 function parseTimestamp(value: unknown): number | null {
   if (typeof value !== "string" || !value.trim()) return null;
   const parsed = Date.parse(value);
@@ -259,12 +268,21 @@ function buildProductMedia(product: XaProductSeed): XaMediaItem[] {
 
 export const XA_COLLECTIONS = xaCatalog.collections;
 export const XA_BRANDS = xaCatalog.brands;
-export const XA_PRODUCTS: XaProduct[] = xaCatalog.products.map((product) => ({
-  ...product,
-  taxonomy: normalizeProductTaxonomy(product.taxonomy),
-  details: normalizeProductDetails(product.details),
-  media: buildProductMedia(product),
-}));
+export const XA_PRODUCTS: XaProduct[] = xaCatalog.products.reduce<XaProduct[]>(
+  (products, product) => {
+    const status = normalizeProductStatus(product.status);
+    if (status === null) return products;
+    products.push({
+      ...product,
+      status,
+      taxonomy: normalizeProductTaxonomy(product.taxonomy),
+      details: normalizeProductDetails(product.details),
+      media: buildProductMedia(product),
+    });
+    return products;
+  },
+  [],
+);
 
 export function getXaProductByHandle(handle: string): XaProduct | null {
   return XA_PRODUCTS.find((p) => p.slug === handle) ?? null;

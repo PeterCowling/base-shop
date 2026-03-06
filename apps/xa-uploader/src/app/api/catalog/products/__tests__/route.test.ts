@@ -205,6 +205,46 @@ describe("catalog products route", () => {
     );
   });
 
+  it("persists out_of_stock when the product is publish-ready", async () => {
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          product: {
+            id: "p1",
+            slug: "studio-jacket",
+            title: "Studio jacket",
+            brandHandle: "atelier-x",
+            collectionHandle: "outerwear",
+            price: "189",
+            description: "Structured layer",
+            createdAt: "2026-03-02T00:00:00.000Z",
+            popularity: "0",
+            publishState: "out_of_stock",
+            imageFiles: "xa-b/studio-jacket/front.jpg|xa-b/studio-jacket/side.jpg|xa-b/studio-jacket/top.jpg",
+            imageAltTexts: "front|side|top",
+            imageRoles: "front|side|top",
+            taxonomy: {
+              department: "women",
+              category: "bags",
+              subcategory: "tote",
+              color: "black",
+              material: "leather",
+            },
+          },
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(upsertCatalogDraftMock).toHaveBeenCalledWith(
+      expect.objectContaining({ publishState: "out_of_stock" }),
+      expect.anything(),
+    );
+  });
+
   it("uses cloud draft snapshot when local fs runtime is disabled", async () => {
     isLocalFsRuntimeEnabledMock.mockReturnValueOnce(false);
 

@@ -125,7 +125,7 @@ describe("catalog sync route branch coverage", () => {
     });
     getCatalogContractReadinessMock.mockReturnValue({ configured: true, errors: [] });
     readCloudDraftSnapshotMock.mockResolvedValue({
-      products: [{ slug: "studio-jacket", title: "Studio Jacket", publishState: "ready" }],
+      products: [{ slug: "studio-jacket", title: "Studio Jacket", publishState: "live" }],
       revisionsById: {},
       docRevision: "doc-1",
     });

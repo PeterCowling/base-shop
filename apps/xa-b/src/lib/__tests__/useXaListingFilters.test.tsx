@@ -27,7 +27,7 @@ const productOne = {
   price: 200,
   createdAt: "2026-03-01T00:00:00.000Z",
   popularity: 20,
-  stock: 5,
+  status: "live",
   sizes: ["S", "M"],
   taxonomy: {
     department: "women",
@@ -47,7 +47,7 @@ const productTwo = {
   price: 340,
   createdAt: "2026-03-01T00:00:00.000Z",
   popularity: 10,
-  stock: 3,
+  status: "live",
   sizes: ["M"],
   taxonomy: {
     department: "women",
@@ -67,7 +67,7 @@ const productThree = {
   price: 180,
   createdAt: "2025-12-01T00:00:00.000Z",
   popularity: 5,
-  stock: 1,
+  status: "out_of_stock",
   sizes: ["S"],
   taxonomy: {
     department: "women",

@@ -32,7 +32,8 @@ export function slugify(input: string): string {
 
 const departmentSchema = z.enum(["women", "men", "kids"]) satisfies z.ZodType<XaDepartment>;
 const categorySchema = z.enum(["clothing", "bags", "jewelry"]) satisfies z.ZodType<XaCategory>;
-const publishStateSchema = z.enum(["draft", "ready", "live"]);
+export const catalogPublishStateSchema = z.enum(["draft", "live", "out_of_stock"]);
+export type CatalogPublishState = z.infer<typeof catalogPublishStateSchema>;
 
 function parseImageRoles(input: string | null | undefined): XaImageRole[] {
   return splitList(input ?? "") as XaImageRole[];
@@ -104,8 +105,7 @@ export const catalogProductDraftSchema = z
     collectionTitle: z.string().trim().optional(),
     collectionDescription: z.string().trim().optional(),
     price: numberField("Price", { min: 0 }),
-    stock: optionalNumberField("Stock", { min: 0, integer: true }),
-    publishState: publishStateSchema.optional(),
+    publishState: catalogPublishStateSchema.optional(),
     sizes: z.string().optional(),
     description: z.string().trim().min(1, "Description is required"),
     createdAt: z.string().trim().optional(),

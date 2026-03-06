@@ -9,7 +9,9 @@ import { NextResponse } from "next/server";
 import { toPositiveInt } from "@acme/lib";
 import {
   type CatalogProductDraftInput,
-  getCatalogDraftWorkflowReadiness,
+  type CatalogPublishState,
+  deriveCatalogPublishState,
+  isCatalogPublishableState,
   slugify,
 } from "@acme/lib/xa";
 
@@ -399,12 +401,8 @@ function validateCurrencyRates(value: unknown): value is CurrencyRates {
   return rates.every((rate) => typeof rate === "number" && Number.isFinite(rate) && rate > 0);
 }
 
-function normalizePublishState(product: CatalogProductDraftInput): "draft" | "ready" | "live" {
-  if (product.publishState === "draft" || product.publishState === "ready" || product.publishState === "live") {
-    return product.publishState;
-  }
-  const readiness = getCatalogDraftWorkflowReadiness(product);
-  return readiness.isPublishReady ? "live" : "draft";
+function normalizePublishState(product: CatalogProductDraftInput): CatalogPublishState {
+  return deriveCatalogPublishState(product);
 }
 
 function productIdentity(product: CatalogProductDraftInput): string {
@@ -1004,7 +1002,7 @@ async function finalizeCloudPublishStateAndDeploy(params: {
   const promotedIds = new Set(params.publishableProducts.map(productIdentity));
   const promotedProducts = params.snapshot.products.map((product) => {
     if (promotedIds.has(productIdentity(product))) {
-      return { ...product, publishState: "live" as const };
+      return { ...product, publishState: normalizePublishState(product) };
     }
     return { ...product, publishState: normalizePublishState(product) };
   });
@@ -1083,7 +1081,7 @@ async function runCloudSyncPipeline(params: {
   const snapshot = await readCloudDraftSnapshot(storefrontId);
   const publishableProducts = snapshot.products.filter((product) => {
     const state = normalizePublishState(product);
-    return state === "ready" || state === "live";
+    return isCatalogPublishableState(state);
   });
 
   if (publishableProducts.length === 0 && !payload.options.confirmEmptyInput) {

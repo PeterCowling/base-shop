@@ -1,7 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
 
 import type { CatalogProductDraftInput } from "../catalogAdminSchema";
-import { getCatalogDraftWorkflowReadiness } from "../catalogWorkflow";
+import { deriveCatalogPublishState, getCatalogDraftWorkflowReadiness } from "../catalogWorkflow";
 
 function baseDraft(): CatalogProductDraftInput {
   return {
@@ -11,7 +11,6 @@ function baseDraft(): CatalogProductDraftInput {
     price: "12000",
     description: "Structured top-handle bag.",
     createdAt: "2026-01-01T00:00:00.000Z",
-    stock: "1",
     taxonomy: {
       department: "women",
       category: "bags",
@@ -97,5 +96,16 @@ describe("catalogWorkflow", () => {
     expect(readiness.missingRoles).toContain("front");
     expect(readiness.missingRoles).toContain("side");
     expect(readiness.missingRoles).toContain("top");
+  });
+
+  it("preserves out_of_stock once the draft is publish-ready", () => {
+    const state = deriveCatalogPublishState({
+      ...baseDraft(),
+      publishState: "out_of_stock",
+      imageFiles: "images/kelly/front.jpg|images/kelly/side.jpg|images/kelly/top.jpg",
+      imageRoles: "front|side|top",
+      imageAltTexts: "front view|side view|top view",
+    });
+    expect(state).toBe("out_of_stock");
   });
 });

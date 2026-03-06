@@ -26,7 +26,6 @@
         "GBP": 400,
         "AUD": 400
       },
-      "stock": 1,
       "media": [
         {
           "type": "image",
@@ -74,7 +73,8 @@
         "interior": [
           "Multiple card slots and one flat pocket"
         ]
-      }
+      },
+      "status": "live"
     }
   ]
 }

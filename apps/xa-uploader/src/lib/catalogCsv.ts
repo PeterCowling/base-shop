@@ -61,7 +61,10 @@ export async function listCatalogDrafts(storefront?: XaCatalogStorefront): Promi
     if (!id) continue;
     revisionsById[id] = computeRowRevision(revisionHeader, row);
   }
-  return { path: csvPath, products: rows.map(rowToDraftInput), revisionsById };
+  const products = rows
+    .map(rowToDraftInput)
+    .filter((product): product is CatalogProductDraftInput => product !== null);
+  return { path: csvPath, products, revisionsById };
 }
 
 export async function getCatalogDraftBySlug(
@@ -139,7 +142,7 @@ export async function upsertCatalogDraft(
 
   return {
     path: csvPath,
-    product: rowToDraftInput(nextRow),
+    product: rowToDraftInput(nextRow) ?? input,
     revision: computeRowRevision(nextHeader, nextRow),
   };
 }

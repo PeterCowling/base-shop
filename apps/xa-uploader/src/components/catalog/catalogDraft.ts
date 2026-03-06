@@ -49,7 +49,6 @@ export const EMPTY_DRAFT: CatalogProductDraftInput = {
   collectionTitle: "",
   collectionDescription: "",
   price: "0",
-  stock: "0",
   publishState: "draft",
   sizes: "",
   description: "",

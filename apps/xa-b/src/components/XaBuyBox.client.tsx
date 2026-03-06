@@ -7,7 +7,6 @@ import { HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
 
 import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/atoms";
 import { PriceCluster } from "@acme/design-system/molecules";
-import { Cluster } from "@acme/design-system/primitives/Cluster";
 import { Inline } from "@acme/design-system/primitives/Inline";
 import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 
@@ -39,7 +38,6 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
   const effectivePrice = product.prices?.[currency] ?? product.price;
 
   const [size, setSize] = React.useState<string>(product.sizes[0] ?? "");
-  const [qty, setQty] = React.useState(1);
   const [error, setError] = React.useState<string | null>(null);
   const isWishlisted = wishlist.includes(product.id);
   const sizeCount = product.sizes.length;
@@ -72,7 +70,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
         type: "add",
         sku: product,
         size: product.sizes.length ? size : undefined,
-        qty,
+        qty: 1,
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Cart update failed"); // i18n-exempt -- XA-0009: demo fallback error message
@@ -114,37 +112,9 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
         sizeNote ? <div className="xa-pdp-meta text-muted-foreground">{sizeNote}</div> : null
       )}
 
-      <Inline gap={2} alignY="center" className="justify-between">
-        <span className="xa-pdp-label text-xs uppercase tracking-widest text-muted-foreground">
-          Quantity
-        </span>
-        <div className="flex items-center gap-0 border xa-border-control">
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            aria-label="Decrease quantity"
-            disabled={qty <= 1}
-            onClick={() => setQty((q) => Math.max(1, q - 1))}
-            className="h-8 w-8 rounded-none px-0 py-0 text-sm hover:bg-muted disabled:opacity-50"
-          >
-            −
-          </Button>
-          <Cluster asChild alignY="center" justify="center" wrap={false}>
-            <span className="h-8 w-8 text-sm tabular-nums">{qty}</span>
-          </Cluster>
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            aria-label="Increase quantity"
-            onClick={() => setQty((q) => q + 1)}
-            className="h-8 w-8 rounded-none px-0 py-0 text-sm hover:bg-muted"
-          >
-            +
-          </Button>
-        </div>
-      </Inline>
+      <div className="xa-pdp-meta text-muted-foreground">
+        {xaI18n.t("xaB.src.components.xabuybox.client.quantityFixed")}
+      </div>
 
       {error ? (
         <div className="rounded-md border border-danger/30 bg-danger/5 p-3 text-sm">

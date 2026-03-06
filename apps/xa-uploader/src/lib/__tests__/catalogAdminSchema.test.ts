@@ -11,7 +11,6 @@ function baseDraft() {
     description: "A structured layer.",
     createdAt: "2025-12-01T12:00:00.000Z",
     popularity: "0",
-    stock: "0",
     taxonomy: {
       department: "women",
       category: "clothing",
@@ -34,6 +33,26 @@ describe("catalogProductDraftSchema", () => {
     };
     const result = catalogProductDraftSchema.safeParse(draft);
     expect(result.success).toBe(true);
+  });
+
+  it("accepts out_of_stock as a valid publish state", () => {
+    const draft = {
+      ...baseDraft(),
+      publishState: "out_of_stock" as const,
+      sizes: "S|M|L",
+    };
+    const result = catalogProductDraftSchema.safeParse(draft);
+    expect(result.success).toBe(true);
+  });
+
+  it("rejects legacy ready publish state", () => {
+    const draft = {
+      ...baseDraft(),
+      publishState: "ready",
+      sizes: "S|M|L",
+    };
+    const result = catalogProductDraftSchema.safeParse(draft);
+    expect(result.success).toBe(false);
   });
 
   it("accepts kids as a valid department", () => {

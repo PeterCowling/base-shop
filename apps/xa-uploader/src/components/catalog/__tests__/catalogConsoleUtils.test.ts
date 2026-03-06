@@ -29,7 +29,6 @@ describe("catalogConsoleUtils schema localization", () => {
       description: "Structured layer",
       createdAt: "2025-12-01T12:00:00.000Z",
       popularity: "0",
-      stock: "1",
       sizes: "S|M",
       taxonomy: {
         department: "women",

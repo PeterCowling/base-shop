@@ -2,8 +2,11 @@
 
 import { NextResponse } from "next/server";
 
-import type { CatalogProductDraftInput } from "@acme/lib/xa";
-import { getCatalogDraftWorkflowReadiness, splitList } from "@acme/lib/xa";
+import type { CatalogProductDraftInput, CatalogPublishState } from "@acme/lib/xa";
+import {
+  deriveCatalogPublishState,
+  splitList,
+} from "@acme/lib/xa";
 
 import {
   CatalogCsvConflictError,
@@ -98,14 +101,11 @@ function normalizePipePaths(rawValue: string | undefined): string {
 }
 
 function wouldUnpublish(product: CatalogProductDraftInput): boolean {
-  return product.publishState === "live" && !getCatalogDraftWorkflowReadiness(product).isPublishReady;
+  return product.publishState === "live" && deriveCatalogPublishState(product) === "draft";
 }
 
-function derivePublishState(product: CatalogProductDraftInput): "draft" | "ready" | "live" {
-  const readiness = getCatalogDraftWorkflowReadiness(product);
-  if (!readiness.isPublishReady) return "draft";
-  if (product.publishState === "live") return "live";
-  return "ready";
+function derivePublishState(product: CatalogProductDraftInput): CatalogPublishState {
+  return deriveCatalogPublishState(product);
 }
 
 function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLimit>): NextResponse {

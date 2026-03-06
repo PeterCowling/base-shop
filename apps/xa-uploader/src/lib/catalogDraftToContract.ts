@@ -1,6 +1,8 @@
 import {
   type CatalogProductDraftInput,
   catalogProductDraftSchema,
+  type CatalogPublishState,
+  deriveCatalogPublishState,
   normalizeXaImageRole,
   slugify,
   sortXaMediaByRole,
@@ -30,7 +32,7 @@ type CatalogProduct = {
   collection: string;
   price: number;
   prices: { AUD: number; EUR: number; GBP: number; USD: number };
-  stock: number;
+  status: CatalogPublishState;
   media: CatalogMediaEntry[];
   sizes: string[];
   description: string;
@@ -447,7 +449,7 @@ export function buildCatalogArtifactsFromDrafts(params: {
       collection: collectionHandle,
       price: normalizedPrice,
       prices: applyCurrencyRates(normalizedPrice, rates),
-      stock: normalizeNumber(parsed.stock),
+      status: deriveCatalogPublishState(parsed),
       media,
       sizes: splitList(parsed.sizes ?? ""),
       description: parsed.description,

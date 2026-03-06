@@ -15,7 +15,6 @@ import {
   TableRow,
 } from "@acme/design-system/atoms";
 import { Section } from "@acme/design-system/atoms/Section";
-import { QuantityInput } from "@acme/design-system/molecules";
 import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 
 import { XaFadeImage } from "../../components/XaFadeImage";
@@ -133,6 +132,11 @@ export default function CartPage() {
                               Size: {line.size}
                             </div>
                           ) : null}
+                          {line.sku.status === "out_of_stock" ? (
+                            <div className="xa-pdp-meta text-warning-fg">
+                              {xaI18n.t("xaB.src.app.cart.page.unavailable")}
+                            </div>
+                          ) : null}
                           <div className="xa-pdp-meta text-muted-foreground">
                             <Price
                               amount={line.sku.prices?.[currency] ?? line.sku.price}
@@ -143,14 +147,7 @@ export default function CartPage() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <QuantityInput
-                          value={line.qty}
-                          min={1}
-                          max={line.sku.stock}
-                          onChange={(value) => {
-                            void dispatch({ type: "setQty", id, qty: value });
-                          }}
-                        />
+                        <span className="text-sm tabular-nums">{line.qty}</span>
                       </TableCell>
                       <TableCell className="text-end">
                         <Price

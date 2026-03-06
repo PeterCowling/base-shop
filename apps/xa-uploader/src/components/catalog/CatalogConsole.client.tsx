@@ -2,13 +2,14 @@
 
 import * as React from "react";
 
+import { deriveCatalogPublishState, isCatalogPublishableState } from "@acme/lib/xa";
+
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 import { CatalogLoginForm } from "./CatalogLoginForm.client";
 import { CatalogProductForm } from "./CatalogProductForm.client";
 import { SKELETON_BLOCK_CLASS } from "./catalogStyles";
 import { CatalogSyncPanel } from "./CatalogSyncPanel.client";
-import { getCatalogDraftWorkflowReadiness } from "./catalogWorkflow";
 import { CurrencyRatesPanel } from "./CurrencyRatesPanel.client";
 import { EditProductFilterSelector } from "./EditProductFilterSelector.client";
 import { useCatalogConsole } from "./useCatalogConsole.client";
@@ -86,9 +87,7 @@ function CurrencyScreen({
     const total = state.products.length;
     let publishable = 0;
     for (const product of state.products) {
-      const readiness = getCatalogDraftWorkflowReadiness(product);
-      const publishState = product.publishState ?? "draft";
-      if (publishState === "ready" || publishState === "live" || readiness.isPublishReady) {
+      if (isCatalogPublishableState(deriveCatalogPublishState(product))) {
         publishable += 1;
       }
     }

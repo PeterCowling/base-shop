@@ -71,20 +71,22 @@ function StatusDot({
   missingRoles: string[];
   t: ReturnType<typeof useUploaderI18n>["t"];
 }) {
-  const label = publishState === "live"
-    ? t("workflowLive")
-    : publishReady
-      ? t("workflowReadyForLive")
-      : dataReady
-        ? t("workflowDraftOnly")
-        : t("workflowDataRequired");
-  const dotClass = publishState === "live"
-    ? "bg-gate-status-ready"
-    : publishReady
-      ? "bg-gate-status-ready"
-      : dataReady
-        ? "bg-gate-status-draft"
-        : "bg-gate-status-incomplete";
+  const label = !dataReady
+    ? t("workflowDataRequired")
+    : !publishReady
+      ? t("workflowDraftOnly")
+      : publishState === "out_of_stock"
+        ? t("workflowOutOfStock")
+        : publishState === "live"
+          ? t("workflowLive")
+          : t("workflowReadyForLive");
+  const dotClass = !dataReady
+    ? "bg-gate-status-incomplete"
+    : !publishReady
+      ? "bg-gate-status-draft"
+      : publishState === "out_of_stock"
+        ? "bg-warning"
+        : "bg-gate-status-ready";
   return (
     <div className="flex items-center gap-2 text-xs text-gate-muted">
       <span className={`inline-block h-2 w-2 rounded-full animate-pulse-slow ${dotClass}`} />

@@ -138,7 +138,7 @@ describe("catalog sync route", () => {
     });
     getCatalogContractReadinessMock.mockReturnValue({ configured: true, errors: [] });
     readCloudDraftSnapshotMock.mockResolvedValue({
-      products: [{ slug: "studio-jacket", title: "Studio Jacket", publishState: "ready" }],
+      products: [{ slug: "studio-jacket", title: "Studio Jacket", publishState: "live" }],
       revisionsById: {},
       docRevision: "doc-1",
     });
@@ -629,7 +629,7 @@ describe("TASK-04: catalog sync route — cloud sync lock", () => {
     __clearRateLimitStoreForTests();
     hasUploaderSessionMock.mockResolvedValue(true);
     readCloudDraftSnapshotMock.mockResolvedValue({
-      products: [{ slug: "studio-jacket", title: "Studio Jacket", publishState: "ready" }],
+      products: [{ slug: "studio-jacket", title: "Studio Jacket", publishState: "live" }],
       revisionsById: {},
       docRevision: "doc-1",
     });

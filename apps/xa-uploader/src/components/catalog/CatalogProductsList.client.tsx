@@ -75,21 +75,23 @@ export function CatalogProductsList({
           const publishState = product.publishState ?? "draft";
           const selected = selectedSlug === slug;
           const statusLabel =
-            publishState === "live"
-              ? t("workflowLive")
-              : readiness.isPublishReady
-                ? t("workflowReadyForLive")
-                : readiness.isDataReady
-                  ? t("workflowDraftOnly")
-                  : t("workflowDataRequired");
+            !readiness.isDataReady
+              ? t("workflowDataRequired")
+              : !readiness.isPublishReady
+                ? t("workflowDraftOnly")
+                : publishState === "out_of_stock"
+                  ? t("workflowOutOfStock")
+                  : publishState === "live"
+                    ? t("workflowLive")
+                    : t("workflowReadyForLive");
           const dotClass =
-            publishState === "live"
-              ? "bg-gate-status-ready"
-              : readiness.isPublishReady
-                ? "bg-gate-status-ready"
-                : readiness.isDataReady
-                  ? "bg-gate-status-draft"
-                  : "bg-gate-status-incomplete";
+            !readiness.isDataReady
+              ? "bg-gate-status-incomplete"
+              : !readiness.isPublishReady
+                ? "bg-gate-status-draft"
+                : publishState === "out_of_stock"
+                  ? "bg-warning"
+                  : "bg-gate-status-ready";
           return (
             <div
               key={slug || product.title}

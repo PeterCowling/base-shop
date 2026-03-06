@@ -71,7 +71,7 @@ describe("catalog sync cloud publish/finalize behavior", () => {
     });
 
     readCloudDraftSnapshotMock.mockResolvedValue({
-      products: [{ id: "p1", slug: "studio-jacket", title: "Studio Jacket", publishState: "ready" }],
+      products: [{ id: "p1", slug: "studio-jacket", title: "Studio Jacket", publishState: "live" }],
       revisionsById: { p1: "rev-1" },
       docRevision: "doc-1",
     });
@@ -155,6 +155,46 @@ describe("catalog sync cloud publish/finalize behavior", () => {
     } finally {
       fetchSpy.mockRestore();
     }
+  });
+
+  it("builds and finalizes live plus out_of_stock products, excluding drafts", async () => {
+    readCloudDraftSnapshotMock.mockResolvedValueOnce({
+      products: [
+        { id: "p1", slug: "live-product", title: "Live Product", publishState: "live" },
+        { id: "p2", slug: "oos-product", title: "OOS Product", publishState: "out_of_stock" },
+        { id: "p3", slug: "draft-product", title: "Draft Product", publishState: "draft" },
+      ],
+      revisionsById: { p1: "rev-1", p2: "rev-2", p3: "rev-3" },
+      docRevision: "doc-1",
+    });
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ storefront: "xa-b", options: { strict: true, dryRun: false } }),
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(buildCatalogArtifactsFromDraftsMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        products: [
+          expect.objectContaining({ id: "p1", publishState: "live" }),
+          expect.objectContaining({ id: "p2", publishState: "out_of_stock" }),
+        ],
+      }),
+    );
+    expect(writeCloudDraftSnapshotMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        products: expect.arrayContaining([
+          expect.objectContaining({ id: "p1", publishState: "live" }),
+          expect.objectContaining({ id: "p2", publishState: "out_of_stock" }),
+          expect.objectContaining({ id: "p3", publishState: "draft" }),
+        ]),
+      }),
+    );
   });
 
   it("continues with deploy when finalize draft-write fails and records warning", async () => {

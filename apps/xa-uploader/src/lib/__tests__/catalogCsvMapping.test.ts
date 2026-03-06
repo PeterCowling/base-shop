@@ -12,7 +12,6 @@ describe("catalogCsvMapping", () => {
       price: "189",
       description: "A structured layer.",
       createdAt: "2025-12-01T12:00:00.000Z",
-      stock: "0",
       popularity: "0",
       sizes: "S|M|L",
       taxonomy: {
@@ -38,7 +37,6 @@ describe("catalogCsvMapping", () => {
       price: "189",
       description: "A structured bag.",
       createdAt: "2025-12-01T12:00:00.000Z",
-      stock: "0",
       popularity: "0",
       imageFiles: "images/a.jpg|images/b.jpg|images/c.jpg",
       imageAltTexts: "front|side|top",

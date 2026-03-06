@@ -1,7 +1,6 @@
 import type { XaProduct } from "./demoData";
 import { readJson, writeJson } from "./storage";
 import type { XaCartState } from "./xaCart";
-import { cartReservedQtyForSku } from "./xaCart";
 
 const SOLD_KEY = "XA_INVENTORY_SOLD_V1";
 
@@ -34,9 +33,6 @@ export function recordSale(productId: string, qty: number) {
   writeJson(SOLD_KEY, sold);
 }
 
-export function getAvailableStock(product: XaProduct, cart: XaCartState): number {
-  const sold = getSoldQty(product.id);
-  const reserved = cartReservedQtyForSku(cart, product.id);
-  return Math.max(0, (product.stock ?? 0) - sold - reserved);
+export function getAvailableStock(product: XaProduct, _cart: XaCartState): number {
+  return product.status === "out_of_stock" ? 0 : 1;
 }
-

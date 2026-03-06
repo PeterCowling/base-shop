@@ -1493,6 +1493,15 @@ function applyKnowledgeToDraftBody(params: {
   };
 }
 
+function computeDeliveryStatus(
+  quality: { passed: boolean; warnings?: string[] } | null | undefined
+): "ready" | "needs_patch" | "blocked" {
+  if (!quality) return "needs_patch";
+  if (!quality.passed) return "blocked";
+  if (quality.warnings && quality.warnings.length > 0) return "needs_patch";
+  return "ready";
+}
+
 export async function handleDraftGenerateTool(name: string, args: unknown) {
   if (name !== "draft_generate") {
     return errorResult(`Unknown draft generate tool: ${name}`);
@@ -1814,6 +1823,7 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
       },
       policy: policyDecision,
       quality,
+      delivery_status: computeDeliveryStatus(quality),
       learning_ledger: learningLedger,
       ranker: {
         selection: isComposite ? "composite" : rankResult.selection,

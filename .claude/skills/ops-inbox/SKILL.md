@@ -238,15 +238,17 @@ When user selects an email to process:
    - Note: `refinement_source: 'codex'` is reserved for future CLI-based LLMs; it is
      not an active path in this workflow.
 
-7. **Mandatory second quality gate** — always run before creating the Gmail draft:
-   ```typescript
-   draft_quality_check({ actionPlan, draft: { bodyPlain: refinedBodyPlain, bodyHtml: refinedBodyHtml } })
-   ```
-   - If `passed=true` and no `question_coverage` entries remain `missing`: proceed
-     to creating the draft.
-   - If `passed=false` after patching: surface the remaining `failed_checks` and
-     `question_coverage` entries to the user and ask how to proceed (manual edit,
-     defer, or flag for owner review). Do **not** silently skip this gate.
+7. **Mandatory delivery_status gate** — always check before creating the Gmail draft.
+
+   `draft_generate` returns a `delivery_status` field: `"ready" | "needs_patch" | "blocked"`.
+
+   - `"ready"` — quality passed with no warnings: proceed to `gmail_create_draft`.
+   - `"needs_patch"` — quality passed but warnings exist (e.g. partial coverage): review
+     warnings, apply any needed patches via `draft_refine`, then proceed.
+   - `"blocked"` — quality failed (`quality.passed: false`): inspect `quality.failed_checks`,
+     patch and call `draft_refine` (max one retry). If still `"blocked"`, escalate to the
+     user with `failed_checks` listed and ask how to proceed. Do **not** call `gmail_create_draft`
+     while `delivery_status === "blocked"`. This is a hard gate, not advisory.
    - `partial_question_coverage` warnings after patching are acceptable to proceed
      if the escalation sentence has been inserted; note them in the session summary.
 

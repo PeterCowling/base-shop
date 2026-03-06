@@ -39,6 +39,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
 
   const [size, setSize] = React.useState<string>(product.sizes[0] ?? "");
   const [error, setError] = React.useState<string | null>(null);
+  const [deliveryWindow, setDeliveryWindow] = React.useState<string | null>(null);
   const isWishlisted = wishlist.includes(product.id);
   const sizeCount = product.sizes.length;
   const showSizeSelect = sizeCount > 1;
@@ -62,6 +63,10 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
     [cart, product],
   );
   const soldOut = availableToAdd <= 0;
+
+  React.useEffect(() => {
+    setDeliveryWindow(getDeliveryWindow());
+  }, []);
 
   const addToCart = async () => {
     setError(null);
@@ -151,7 +156,9 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
 
       <div className="space-y-2">
         <div className="xa-pdp-label text-muted-foreground">{xaI18n.t("xaB.src.components.xabuybox.client.l192c61")}</div>
-        <div className="xa-pdp-meta">{getDeliveryWindow()}</div>
+        <div className="xa-pdp-meta">
+          {deliveryWindow ?? "Calculating delivery estimate"} {/* i18n-exempt -- XA-0091 [ttl=2026-12-31] hydration-safe transitional copy */}
+        </div>
       </div>
 
       {showVariantStrip || showColorStrip ? (

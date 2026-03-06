@@ -8,6 +8,13 @@ process.env.SANITY_API_VERSION ??= "2021-10-21";
 process.env.EMAIL_PROVIDER ??= "noop";
 
 const XA_IMAGES_BASE_URL = process.env.NEXT_PUBLIC_XA_IMAGES_BASE_URL ?? "";
+const XA_STEALTH_MODE =
+  process.env.NEXT_PUBLIC_STEALTH_MODE ??
+  process.env.XA_STEALTH_MODE ??
+  process.env.STEALTH_MODE ??
+  "";
+const XA_STEALTH_BRAND_NAME =
+  process.env.NEXT_PUBLIC_STEALTH_BRAND_NAME ?? "Private preview";
 const XA_IMAGES_HOSTNAME = (() => {
   try {
     return new URL(XA_IMAGES_BASE_URL).hostname;
@@ -19,6 +26,11 @@ const XA_IMAGES_HOSTNAME = (() => {
 export default {
   ...sharedConfig,
   poweredByHeader: false,
+  env: {
+    ...(sharedConfig.env ?? {}),
+    NEXT_PUBLIC_STEALTH_MODE: XA_STEALTH_MODE,
+    NEXT_PUBLIC_STEALTH_BRAND_NAME: XA_STEALTH_BRAND_NAME,
+  },
   images: {
     ...sharedConfig.images,
     unoptimized: true,

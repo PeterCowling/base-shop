@@ -5,8 +5,8 @@ import {
   DEFAULT_MATURE_BOUNDARY_THRESHOLDS,
   evaluateMatureBoundary,
 } from "./self-evolving-boundary.js";
+import type { RankedCandidate } from "./self-evolving-candidates.js";
 import type {
-  ImprovementCandidate,
   MetaObservation,
   StartupState,
 } from "./self-evolving-contracts.js";
@@ -84,15 +84,12 @@ function readObservations(filePath: string): MetaObservation[] {
   }
 }
 
-function readCandidates(filePath: string): ImprovementCandidate[] {
+function readRankedCandidates(filePath: string): RankedCandidate[] {
   try {
     const raw = readFileSync(filePath, "utf-8");
-    const parsed = JSON.parse(raw) as
-      | ImprovementCandidate[]
-      | { candidates?: Array<{ candidate: ImprovementCandidate }> };
-    if (Array.isArray(parsed)) return parsed;
+    const parsed = JSON.parse(raw) as { candidates?: RankedCandidate[] };
     if (Array.isArray(parsed.candidates)) {
-      return parsed.candidates.map((entry) => entry.candidate);
+      return parsed.candidates;
     }
     return [];
   } catch (error) {
@@ -128,13 +125,13 @@ function collectWarnings(args: CliArgs): string[] {
 function main(): void {
   const args = parseArgs(process.argv.slice(2));
   const observations = readObservations(args.observationsPath);
-  const candidates = readCandidates(args.candidatesPath);
+  const rankedCandidates = readRankedCandidates(args.candidatesPath);
   const startupState = readStartupState(args.startupStatePath);
   const warnings = collectWarnings(args);
 
   const dashboard = buildDashboardSnapshot({
     observations,
-    candidates,
+    ranked_candidates: rankedCandidates,
     wipCap: 10,
   });
 

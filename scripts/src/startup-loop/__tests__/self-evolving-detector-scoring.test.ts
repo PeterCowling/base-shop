@@ -1,6 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
 
 import type { ImprovementCandidate, MetaObservation } from "../self-evolving/self-evolving-contracts.js";
+import { buildDashboardSnapshot } from "../self-evolving/self-evolving-dashboard.js";
 import {
   buildHardSignature,
   computeCooldownUntil,
@@ -171,8 +172,103 @@ describe("self-evolving detector + scoring", () => {
       data_quality_status: "ok",
       sample_size: 300,
       minimum_sample_size: 200,
+      observation_count: 3,
+      quality_annotation_count: 2,
+      ok_quality_count: 2,
+      measurement_ready_observation_count: 0,
     })).toBe(false);
     expect(score.priority_score_v2).toBeNull();
     expect(score.autonomy_cap).toBe(2);
+    expect(score.evidence.classification).toBe("structural_only");
+    expect(score.evidence.missing_requirements).toContain("kpi_baseline");
+  });
+
+  it("TASK-08 TC-02 emits interval-based evidence metrics instead of fake zeros", () => {
+    const candidate: ImprovementCandidate = {
+      schema_version: "candidate.v1",
+      candidate_id: "c-2",
+      candidate_type: "container_update",
+      candidate_state: "validated",
+      problem_statement: "test",
+      trigger_observations: ["o1"],
+      executor_path: "lp-do-build",
+      change_scope: "business_only",
+      applicability_predicates: ["business=BRIK"],
+      expected_benefit: "benefit",
+      risk_level: "low",
+      blast_radius_tag: "small",
+      autonomy_level_required: 2,
+      estimated_effort: "M",
+      recommended_action: "build",
+      owners: ["ops"],
+      approvers: ["lead"],
+      test_plan: "tests",
+      validation_contract: "v",
+      rollout_plan: "r",
+      rollback_contract: "rb",
+      kill_switch: "k",
+      blocked_reason_code: null,
+      unblock_requirements: [],
+      blocked_since: null,
+      expiry_at: "2026-04-01T00:00:00.000Z",
+    };
+
+    const dashboard = buildDashboardSnapshot({
+      observations: [buildObservation("o1", "2026-03-01T00:00:00.000Z")],
+      ranked_candidates: [
+        {
+          candidate,
+          score: computeScoreResult(
+            candidate,
+            {
+              frequency_score: 5,
+              operator_time_score: 4,
+              quality_risk_reduction_score: 3,
+              token_savings_score: 2,
+              implementation_effort_score: 2,
+              blast_radius_risk_score: 1,
+              outcome_impact_score: 5,
+              time_to_impact_score: 4,
+            },
+            {
+              w1: 1,
+              w2: 1,
+              w3: 1,
+              w4: 1,
+              w5: 1,
+              w6: 1,
+              w7: 1,
+              w8: 1,
+            },
+            {
+              has_kpi_baseline: false,
+              has_impact_mechanism: true,
+              has_measurement_plan: false,
+              has_canary_path: true,
+              data_quality_status: null,
+              sample_size: null,
+              minimum_sample_size: 30,
+              observation_count: 1,
+              quality_annotation_count: 0,
+              ok_quality_count: 0,
+              measurement_ready_observation_count: 0,
+            },
+          ),
+          route: {
+            route: "lp-do-fact-find",
+            reason: "evidence_structural_only_requires_fact_find",
+          },
+          source_hard_signature: "sig-1",
+          generated_at: "2026-03-01T00:00:00.000Z",
+        },
+      ],
+      wipCap: 10,
+    });
+
+    expect(dashboard.quality.observation_annotation_coverage.observed_rate).toBe(0);
+    expect(dashboard.quality.annotated_data_quality_ok_rate.status).toBe(
+      "insufficient_data",
+    );
+    expect(dashboard.quality.measured_evidence_candidate_rate.observed_rate).toBe(0);
   });
 });

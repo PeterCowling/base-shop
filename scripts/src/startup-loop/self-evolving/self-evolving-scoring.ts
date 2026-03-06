@@ -1,3 +1,5 @@
+import { betaBinomialPosterior } from "../../../../packages/lib/src/math/experimentation/bayesian.js";
+
 import type { DataQualityStatus, ImprovementCandidate } from "./self-evolving-contracts.js";
 
 export interface ScoreDimensionsV1 {
@@ -33,6 +35,38 @@ export interface CandidateEvidenceGate {
   data_quality_status: DataQualityStatus | null;
   sample_size: number | null;
   minimum_sample_size: number;
+  observation_count: number;
+  quality_annotation_count: number;
+  ok_quality_count: number;
+  measurement_ready_observation_count: number;
+}
+
+export interface EvidenceRateSummary {
+  sample_size: number;
+  successes: number;
+  observed_rate: number | null;
+  posterior_mean: number | null;
+  lower_credible_bound: number | null;
+  upper_credible_bound: number | null;
+  confidence_level: number;
+  method: "beta_binomial_jeffreys";
+  status: "measured" | "insufficient_data";
+}
+
+export type CandidateEvidenceClassification =
+  | "measured"
+  | "instrumented"
+  | "structural_only"
+  | "insufficient";
+
+export interface CandidateEvidenceProfile {
+  classification: CandidateEvidenceClassification;
+  requirements_met: number;
+  requirements_total: number;
+  readiness_ratio: number;
+  missing_requirements: string[];
+  data_quality_ok_rate: EvidenceRateSummary;
+  measurement_ready_observation_rate: EvidenceRateSummary;
 }
 
 export interface ScoreResult {
@@ -40,6 +74,7 @@ export interface ScoreResult {
   priority_score_v2: number | null;
   autonomy_cap: 1 | 2 | 3 | 4;
   reasons: string[];
+  evidence: CandidateEvidenceProfile;
 }
 
 function clampScore(score: number): number {
@@ -86,6 +121,105 @@ export function canUseScoringV2(evidence: CandidateEvidenceGate): boolean {
   );
 }
 
+function buildEvidenceRateSummary(successes: number, sampleSize: number): EvidenceRateSummary {
+  if (sampleSize <= 0) {
+    return {
+      sample_size: 0,
+      successes: 0,
+      observed_rate: null,
+      posterior_mean: null,
+      lower_credible_bound: null,
+      upper_credible_bound: null,
+      confidence_level: 0.95,
+      method: "beta_binomial_jeffreys",
+      status: "insufficient_data",
+    };
+  }
+
+  const posterior = betaBinomialPosterior({
+    successes,
+    total: sampleSize,
+  });
+
+  return {
+    sample_size: sampleSize,
+    successes,
+    observed_rate: successes / sampleSize,
+    posterior_mean: posterior.mean,
+    lower_credible_bound: posterior.credibleInterval.lower,
+    upper_credible_bound: posterior.credibleInterval.upper,
+    confidence_level: 0.95,
+    method: "beta_binomial_jeffreys",
+    status: "measured",
+  };
+}
+
+export function assessEvidenceProfile(
+  evidence: CandidateEvidenceGate,
+): CandidateEvidenceProfile {
+  const missingRequirements: string[] = [];
+
+  if (!evidence.has_kpi_baseline) {
+    missingRequirements.push("kpi_baseline");
+  }
+  if (!evidence.has_impact_mechanism) {
+    missingRequirements.push("impact_mechanism");
+  }
+  if (!evidence.has_measurement_plan) {
+    missingRequirements.push("measurement_plan");
+  }
+  if (!evidence.has_canary_path) {
+    missingRequirements.push("canary_path");
+  }
+  if (evidence.data_quality_status !== "ok") {
+    missingRequirements.push("data_quality_ok");
+  }
+  if (
+    typeof evidence.sample_size !== "number" ||
+    evidence.sample_size < evidence.minimum_sample_size
+  ) {
+    missingRequirements.push("minimum_sample_size");
+  }
+
+  let classification: CandidateEvidenceClassification;
+  if (missingRequirements.length === 0) {
+    classification = "measured";
+  } else if (
+    evidence.has_kpi_baseline &&
+    evidence.has_measurement_plan &&
+    evidence.has_canary_path
+  ) {
+    classification = "instrumented";
+  } else if (
+    evidence.has_impact_mechanism ||
+    evidence.has_kpi_baseline ||
+    evidence.has_measurement_plan
+  ) {
+    classification = "structural_only";
+  } else {
+    classification = "insufficient";
+  }
+
+  const requirementsTotal = 6;
+  const requirementsMet = requirementsTotal - missingRequirements.length;
+
+  return {
+    classification,
+    requirements_met: requirementsMet,
+    requirements_total: requirementsTotal,
+    readiness_ratio: requirementsMet / requirementsTotal,
+    missing_requirements: missingRequirements,
+    data_quality_ok_rate: buildEvidenceRateSummary(
+      evidence.ok_quality_count,
+      evidence.quality_annotation_count,
+    ),
+    measurement_ready_observation_rate: buildEvidenceRateSummary(
+      evidence.measurement_ready_observation_count,
+      evidence.observation_count,
+    ),
+  };
+}
+
 export function computeScoreResult(
   candidate: ImprovementCandidate,
   dimensions: ScoreDimensionsV2,
@@ -96,6 +230,7 @@ export function computeScoreResult(
   const v1 = computePriorityScoreV1(dimensions, weights);
   let v2: number | null = null;
   let autonomyCap: 1 | 2 | 3 | 4 = candidate.autonomy_level_required;
+  const evidenceProfile = assessEvidenceProfile(evidence);
 
   if (canUseScoringV2(evidence)) {
     const outcomeScore = clampScore(dimensions.outcome_impact_score);
@@ -103,6 +238,7 @@ export function computeScoreResult(
     v2 = v1 + weights.w7 * outcomeScore + weights.w8 * timeScore;
   } else {
     reasons.push("v2_evidence_missing_or_low_quality");
+    reasons.push(`evidence_class:${evidenceProfile.classification}`);
     if (autonomyCap > 2) {
       autonomyCap = 2;
       reasons.push("autonomy_capped_at_level_2_without_v2_evidence");
@@ -124,5 +260,6 @@ export function computeScoreResult(
     priority_score_v2: v2,
     autonomy_cap: autonomyCap,
     reasons,
+    evidence: evidenceProfile,
   };
 }

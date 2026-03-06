@@ -112,6 +112,20 @@ function buildEvidenceGate(observations: MetaObservation[]): CandidateEvidenceGa
       ?.data_quality_status ??
     observations[0]?.data_quality_status ??
     null;
+  const qualityAnnotationCount = observations.filter(
+    (observation) => observation.data_quality_status !== null,
+  ).length;
+  const okQualityCount = observations.filter(
+    (observation) => observation.data_quality_status === "ok",
+  ).length;
+  const measurementReadyObservationCount = observations.filter(
+    (observation) =>
+      observation.baseline_ref != null &&
+      observation.measurement_window != null &&
+      observation.data_quality_status === "ok" &&
+      typeof observation.sample_size === "number" &&
+      observation.sample_size >= 30,
+  ).length;
 
   return {
     has_kpi_baseline: observations.some((observation) => observation.baseline_ref != null),
@@ -125,6 +139,26 @@ function buildEvidenceGate(observations: MetaObservation[]): CandidateEvidenceGa
     data_quality_status: dataQualityStatus,
     sample_size: sampleSize,
     minimum_sample_size: 30,
+    observation_count: observations.length,
+    quality_annotation_count: qualityAnnotationCount,
+    ok_quality_count: okQualityCount,
+    measurement_ready_observation_count: measurementReadyObservationCount,
+  };
+}
+
+function applyEvidenceAwareRoute(
+  route: ReturnType<typeof mapCandidateToBackboneRoute>,
+  evidenceClassification: ReturnType<typeof computeScoreResult>["evidence"]["classification"],
+): ReturnType<typeof mapCandidateToBackboneRoute> {
+  if (route.route === "reject" || route.route === "lp-do-fact-find") {
+    return route;
+  }
+  if (evidenceClassification === "measured") {
+    return route;
+  }
+  return {
+    route: "lp-do-fact-find",
+    reason: `evidence_${evidenceClassification}_requires_fact_find`,
   };
 }
 
@@ -300,10 +334,15 @@ export function runSelfEvolvingOrchestrator(
       validateImprovementCandidate(validatedCandidate),
     );
 
+    const route = applyEvidenceAwareRoute(
+      mapCandidateToBackboneRoute(validatedCandidate),
+      score.evidence.classification,
+    );
+
     generated.push({
       candidate: validatedCandidate,
       score,
-      route: mapCandidateToBackboneRoute(validatedCandidate),
+      route,
       source_hard_signature: repeat.hard_signature,
       generated_at: now.toISOString(),
     });
@@ -315,7 +354,7 @@ export function runSelfEvolvingOrchestrator(
 
   const dashboard = buildDashboardSnapshot({
     observations: allObservations,
-    candidates: mergedCandidates.map((item) => item.candidate),
+    ranked_candidates: mergedCandidates,
     wipCap: budgetPolicy.max_active_candidates,
   });
 

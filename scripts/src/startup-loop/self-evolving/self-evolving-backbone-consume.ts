@@ -214,7 +214,9 @@ function buildFollowupDispatch(
     },
   };
 
-  const validation = validateDispatchV2(packet);
+  const validation = validateDispatchV2(
+    packet as Partial<TrialDispatchPacketV2> & Record<string, unknown>,
+  );
   if (!validation.valid) {
     throw new Error(validation.errors.join("; "));
   }

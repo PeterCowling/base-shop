@@ -252,7 +252,7 @@ export function extractPatternReflectionSeeds(markdown: string | null): Observat
   }
 
   return entries
-    .map((entry) => {
+    .map((entry): ObservationSeed | null => {
       const summary = entry.pattern_summary?.trim();
       if (!summary) {
         return null;
@@ -267,7 +267,7 @@ export function extractPatternReflectionSeeds(markdown: string | null): Observat
       const occurrenceCount =
         typeof entry.occurrence_count === "number" ? entry.occurrence_count : null;
 
-      return {
+      const seed: ObservationSeed = {
         label: `pattern:${summary.slice(0, 80)}`,
         refs: uniqueRefs([
           ...(entry.evidence_refs ?? []),
@@ -280,7 +280,8 @@ export function extractPatternReflectionSeeds(markdown: string | null): Observat
             ? `${summary} Observed ${occurrenceCount} times in pattern reflection output.`
             : `${summary} Observed in pattern reflection output.`,
         candidateTypeHint: mapPatternRoutingToCandidateType(entry.routing_target),
-      } satisfies ObservationSeed;
+      };
+      return seed;
     })
     .filter((seed): seed is ObservationSeed => seed != null);
 }

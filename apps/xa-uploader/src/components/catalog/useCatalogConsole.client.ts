@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { type CatalogProductDraftInput,slugify } from "@acme/lib/xa/catalogAdminSchema";
+import { type CatalogProductDraftInput, slugify } from "@acme/lib/xa/catalogAdminSchema";
 
 import {
   DEFAULT_STOREFRONT,
@@ -24,6 +24,7 @@ import {
   handleSyncImpl,
   mergeAutosaveImageTuples,
   type SaveResult,
+  type SyncActionResult,
 } from "./catalogConsoleActions";
 import {
   type ActionFeedback,
@@ -46,6 +47,7 @@ export { createInitialActionFeedbackState, getSyncFailureMessage };
 type SyncReadinessState = {
   checking: boolean;
   ready: boolean;
+  mode: "unknown" | "local" | "cloud";
   missingScripts: SyncScriptId[];
   error: string | null;
   checkedAt: string | null;
@@ -54,6 +56,38 @@ type SyncReadinessState = {
 };
 
 type AutosaveStatus = "saving" | "saved" | "unsaved";
+
+function getUploaderRuntimeConfig(): {
+  uploaderMode: "vendor" | "internal";
+  r2Destination: string;
+} {
+  return {
+    uploaderMode:
+      process.env.NEXT_PUBLIC_XA_UPLOADER_MODE === "vendor" ? "vendor" : "internal",
+    r2Destination:
+      process.env.NEXT_PUBLIC_XA_UPLOADER_R2_DESTINATION ??
+      "https://<upload-domain>/upload/<one-time-link>",
+  };
+}
+
+function getInitialStorefront(): XaCatalogStorefront {
+  if (typeof window === "undefined") return DEFAULT_STOREFRONT;
+  const stored = window.localStorage.getItem("xa_uploader_storefront");
+  return parseStorefront(stored);
+}
+
+function createInitialSyncReadinessState(): SyncReadinessState {
+  return {
+    checking: false,
+    ready: false,
+    mode: "unknown",
+    missingScripts: [],
+    error: null,
+    checkedAt: null,
+    contractConfigured: false,
+    contractConfigErrors: [],
+  };
+}
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => {
@@ -73,18 +107,10 @@ async function waitForBusyToClear(
 
 function useCatalogConsoleState() {
   const { locale, t } = useUploaderI18n();
-  const uploaderMode: "vendor" | "internal" =
-    process.env.NEXT_PUBLIC_XA_UPLOADER_MODE === "vendor" ? "vendor" : "internal";
-  const r2Destination =
-    process.env.NEXT_PUBLIC_XA_UPLOADER_R2_DESTINATION ??
-    "https://<upload-domain>/upload/<one-time-link>";
+  const { uploaderMode, r2Destination } = getUploaderRuntimeConfig();
 
   const [session, setSession] = React.useState<SessionState | null>(null);
-  const [storefront, setStorefront] = React.useState<XaCatalogStorefront>(() => {
-    if (typeof window === "undefined") return DEFAULT_STOREFRONT;
-    const stored = window.localStorage.getItem("xa_uploader_storefront");
-    return parseStorefront(stored);
-  });
+  const [storefront, setStorefront] = React.useState<XaCatalogStorefront>(getInitialStorefront);
   const storefrontConfig = getStorefrontConfig(storefront);
 
   const [token, setToken] = React.useState("");
@@ -111,21 +137,15 @@ function useCatalogConsoleState() {
   );
   const [fieldErrors, setFieldErrors] = React.useState<Record<string, string>>({});
   const [syncOptions, setSyncOptions] = React.useState({
-    strict: true,
+    strict: false,
     dryRun: false,
     replace: false,
     recursive: true,
   });
   const [syncOutput, setSyncOutput] = React.useState<string | null>(null);
-  const [syncReadiness, setSyncReadiness] = React.useState<SyncReadinessState>({
-    checking: false,
-    ready: false,
-    missingScripts: [],
-    error: null,
-    checkedAt: null,
-    contractConfigured: false,
-    contractConfigErrors: [],
-  });
+  const [syncReadiness, setSyncReadiness] = React.useState<SyncReadinessState>(
+    createInitialSyncReadinessState,
+  );
 
   const loadSession = React.useCallback(async () => {
     const response = await fetch("/api/uploader/session");
@@ -159,6 +179,7 @@ function useCatalogConsoleState() {
       setSyncReadiness({
         checking: false,
         ready: Boolean(data.ready),
+        mode: data.mode ?? "local",
         missingScripts: data.missingScripts ?? [],
         error: null,
         checkedAt: data.checkedAt ?? null,
@@ -169,6 +190,7 @@ function useCatalogConsoleState() {
       setSyncReadiness({
         checking: false,
         ready: false,
+        mode: "unknown",
         missingScripts: [],
         error: t("syncReadinessCheckFailed"),
         checkedAt: null,
@@ -200,15 +222,7 @@ function useCatalogConsoleState() {
   React.useEffect(() => {
     if (uploaderMode !== "internal") return;
     if (!session?.authenticated) {
-      setSyncReadiness({
-        checking: false,
-        ready: false,
-        missingScripts: [],
-        error: null,
-        checkedAt: null,
-        contractConfigured: false,
-        contractConfigErrors: [],
-      });
+      setSyncReadiness(createInitialSyncReadinessState());
       return;
     }
     loadSyncReadiness().catch(() => null);
@@ -633,16 +647,16 @@ function useCatalogDraftHandlers(state: CatalogConsoleState) {
 }
 
 function useCatalogSyncHandlers(state: CatalogConsoleState) {
-  const handleSync = async () => {
+  const handleSync = async (): Promise<SyncActionResult> => {
     if (state.isAutosaveDirty || state.isAutosaveSaving) {
       updateActionFeedback(state.setActionFeedback, "sync", {
         kind: "error",
         message: state.t("syncBlockedAutosavePending"),
       });
-      return;
+      return { ok: false };
     }
-    if (!state.syncReadiness.ready || state.syncReadiness.checking) return;
-    await handleSyncImpl({
+    if (!state.syncReadiness.ready || state.syncReadiness.checking) return { ok: false };
+    return await handleSyncImpl({
       storefront: state.storefront,
       syncOptions: state.syncOptions,
       t: state.t,

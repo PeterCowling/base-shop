@@ -492,7 +492,7 @@ function ImageGallery({
               <button
                 type="button"
                 onClick={() => onRemove(index)}
-                className="absolute top-1.5 me-1.5 rounded-md bg-gate-bg/80 px-2 py-1 text-2xs text-gate-muted opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100 hover:text-danger-fg"
+                className="absolute top-1.5 me-1.5 inline-flex min-h-11 min-w-11 items-center justify-center rounded-md bg-gate-bg/80 px-2 py-1 text-2xs text-gate-muted opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100 hover:text-danger-fg"
                 data-testid={`image-remove-${index}`}
               >
                 {t("uploadImageRemove")}

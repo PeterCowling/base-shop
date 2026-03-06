@@ -54,6 +54,16 @@ const AUTOSAVE_DRAFT_SERVER_CONCURRENT: CatalogProductDraftInput = {
   imageAltTexts: "front view|side view|detail view|interior view",
 };
 
+const AUTOSAVE_DRAFT_SERVER_NON_IMAGE_CONCURRENT: CatalogProductDraftInput = {
+  ...AUTOSAVE_DRAFT_A,
+  title: "Studio jacket remote edit",
+  price: "249",
+  taxonomy: {
+    ...AUTOSAVE_DRAFT_A.taxonomy,
+    color: "navy",
+  },
+};
+
 function jsonResponse(body: unknown, init: ResponseInit = {}): Response {
   return new Response(JSON.stringify(body), {
     status: init.status ?? 200,
@@ -502,6 +512,8 @@ describe("useCatalogConsole scoped action feedback", () => {
     let savePostCalls = 0;
     let retryIfMatch: string | undefined;
     let retryImageFiles: string | undefined;
+    let retryTitle: string | undefined;
+    let retryPrice: string | undefined;
 
     global.fetch = jest.fn((input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input);
@@ -520,10 +532,16 @@ describe("useCatalogConsole scoped action feedback", () => {
           }
           retryIfMatch = payload.ifMatch;
           retryImageFiles = payload.product?.imageFiles;
+          retryTitle = payload.product?.title;
+          retryPrice = payload.product?.price;
           return Promise.resolve(jsonResponse({ ok: true, product: AUTOSAVE_DRAFT_B, revision: "rev-2" }));
         }
         return Promise.resolve(
-          jsonResponse({ ok: true, products: [AUTOSAVE_DRAFT_A], revisionsById: { p1: "rev-server" } }),
+          jsonResponse({
+            ok: true,
+            products: [AUTOSAVE_DRAFT_SERVER_NON_IMAGE_CONCURRENT],
+            revisionsById: { p1: "rev-server" },
+          }),
         );
       }
       if (url.startsWith("/api/catalog/sync?storefront=")) {
@@ -541,6 +559,8 @@ describe("useCatalogConsole scoped action feedback", () => {
     });
     expect(retryIfMatch).toBe("rev-server");
     expect(retryImageFiles).toContain("images/studio-jacket/detail.jpg");
+    expect(retryTitle).toBe("Studio jacket remote edit");
+    expect(retryPrice).toBe("249");
     await waitFor(() => {
       expect(screen.getByTestId("autosave-dirty")).toHaveTextContent("no");
     });

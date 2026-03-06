@@ -42,6 +42,8 @@ export type SaveResult =
   | { status: "cancelled" }
   | { status: "error" };
 
+export type SyncActionResult = { ok: boolean; data?: SyncResponse };
+
 function normalizeCatalogPath(value: string): string {
   const trimmed = value.trim();
   if (!trimmed) return "";
@@ -103,7 +105,7 @@ export function mergeAutosaveImageTuples(params: {
   const imageAltTexts = merged.map((tuple) => tuple.alt).join("|");
 
   return {
-    ...params.localDraft,
+    ...params.serverDraft,
     imageFiles,
     imageRoles,
     imageAltTexts,
@@ -554,8 +556,8 @@ export async function handleSyncImpl({
   setSyncOutput: React.Dispatch<React.SetStateAction<string | null>>;
   loadCatalog: () => Promise<void>;
   confirmEmptyCatalogSync: (message: string) => boolean;
-}): Promise<void> {
-  if (!tryBeginBusyAction(busyLockRef, setBusy)) return;
+}): Promise<SyncActionResult> {
+  if (!tryBeginBusyAction(busyLockRef, setBusy)) return { ok: false };
   clearActionFeedbackDomains(setActionFeedback, ["sync"]);
   setSyncOutput(null);
 
@@ -587,7 +589,7 @@ export async function handleSyncImpl({
           ? t("syncConfirmNoPublishableProducts")
           : t("syncConfirmEmptyCatalogSync");
       const confirmed = confirmEmptyCatalogSync(confirmMessage);
-      if (!confirmed) return;
+      if (!confirmed) return { ok: false, data: syncAttempt.data };
       syncAttempt = await runSyncRequest(true);
     }
 
@@ -610,11 +612,13 @@ export async function handleSyncImpl({
       kind: "success",
       message: syncSuccessMessage,
     });
+    return { ok: true, data: syncAttempt.data };
   } catch (err) {
     updateActionFeedback(setActionFeedback, "sync", {
       kind: "error",
       message: errorToMessage(err, t("syncFailed")),
     });
+    return { ok: false };
   } finally {
     endBusyAction(busyLockRef, setBusy);
   }

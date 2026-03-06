@@ -82,6 +82,7 @@ export type SyncResponse = {
     mode?: string;
     requiresXaBBuild?: boolean;
     nextAction?: string;
+    deployVerificationPending?: boolean;
     deployStatus?: SyncDeployStatus | string;
     nextEligibleAt?: string;
   };
@@ -96,6 +97,7 @@ export type SyncResponse = {
 export type SyncReadinessResponse = {
   ok: boolean;
   ready?: boolean;
+  mode?: "local" | "cloud";
   error?: string;
   recovery?: SyncRecoveryCode | string;
   missingScripts?: SyncScriptId[];

@@ -1,15 +1,15 @@
 {
-  "last_updated": "2026-03-06T12:29:47.103Z",
+  "last_updated": "2026-03-06T12:34:22.536Z",
   "counts": {
-    "enqueued": 113,
+    "enqueued": 115,
     "processed": 34,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
     "completed": 114,
-    "fact_find_ready": 169,
-    "total": 287
+    "fact_find_ready": 171,
+    "total": 289
   },
   "dispatches": [
     {
@@ -20,6 +20,7 @@
       "trigger": "operator_idea",
       "domain": "BOS",
       "root_event_id": "operator:BRIK:BOS:email-audit-log-reconcile-recovery-not-persisted:20260306",
+      "processed_by": { "route": "dispatch-routed", "processed_at": "2026-03-06T17:30:00.000Z", "queue_state": "processed", "fact_find_slug": "email-logging-observability", "fact_find_path": "docs/plans/email-logging-observability/fact-find.md" },
       "anchor_key": "email-audit-log-reconcile-recovery-not-persisted",
       "cluster_key": "BRIK:BOS:email-audit-log-reconcile-recovery-not-persisted:operator:20260306",
       "cluster_fingerprint": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
@@ -51,6 +52,7 @@
       "trigger": "operator_idea",
       "domain": "BOS",
       "root_event_id": "operator:BRIK:BOS:email-processing-error-reason-missing-lock-released:20260306",
+      "processed_by": { "route": "dispatch-routed", "processed_at": "2026-03-06T17:30:00.000Z", "queue_state": "processed", "fact_find_slug": "email-logging-observability", "fact_find_path": "docs/plans/email-logging-observability/fact-find.md" },
       "anchor_key": "email-processing-error-reason-missing-lock-released",
       "cluster_key": "BRIK:BOS:email-processing-error-reason-missing-lock-released:operator:20260306",
       "cluster_fingerprint": "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
@@ -84,6 +86,7 @@
       "trigger": "operator_idea",
       "domain": "BOS",
       "root_event_id": "operator:BRIK:BOS:gmail-label-setup-creation-failures-silently-swallowed:20260306",
+      "processed_by": { "route": "dispatch-routed", "processed_at": "2026-03-06T17:30:00.000Z", "queue_state": "processed", "fact_find_slug": "email-logging-observability", "fact_find_path": "docs/plans/email-logging-observability/fact-find.md" },
       "anchor_key": "gmail-label-setup-creation-failures-silently-swallowed",
       "cluster_key": "BRIK:BOS:gmail-label-setup-creation-failures-silently-swallowed:operator:20260306",
       "cluster_fingerprint": "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
@@ -246,7 +249,7 @@
       "current_truth": "CatalogProductImagesFields has no drag-and-drop or manual reorder UI — image order is locked to upload order, forcing operators to delete and re-upload to change sequence. The image gallery is wrapped in a max-w-prose container that artificially constrains the gallery width on wider viewports, inappropriate for an internal operator tool.",
       "next_scope_now": "Fact-find the xa-uploader image management UX: (1) audit how image tuples are stored and whether order is persisted in the draft schema; (2) determine whether drag-to-reorder (e.g. @dnd-kit) or explicit up/down buttons is the right approach for an operator-desktop tool; (3) identify the max-w-prose constraint and define a full-width layout replacement; (4) produce a planning brief scoped to image reorder and gallery width.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.89,
       "evidence_refs": [
@@ -261,7 +264,15 @@
         "source": "operator"
       },
       "created_at": "2026-03-06T15:00:00.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "fact_find_slug": "xa-uploader-image-reorder-gallery-width"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/xa-uploader-image-reorder-gallery-width/plan.md",
+        "completed_at": "2026-03-06T12:35:30.000Z",
+        "outcome": "Image reorder up/down controls and full-width gallery layout delivered; operators can now reorder images with autosave."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -11674,6 +11685,94 @@
         "session:8781939f-edea-451b-a9fa-1fa24c8cb292"
       ],
       "created_at": "2026-03-06T12:29:47.099Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306123349-0209",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "da562ddf48cb0c3a34c9bd33b334006859e7d927",
+      "after_sha": "29bb6daed7a327bbc9fb43761633006e0d9d67ef",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:29bb6daed7a327bbc9fb43761633006e0d9d67ef",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:29bb6daed7a327bbc9fb43761633006e0d9d67ef",
+      "cluster_fingerprint": "daf24d1af730ae0aef4800e41a8373a67a5a06c9d96fd9fa031744269aa0ab74",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (da562dd → 29bb6da)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:934d1ed9-f97a-4dc1-98e9-2bd8b2a916fb",
+        "session:00654e03-9371-4567-a764-5f1c336012e5",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739",
+        "session:659732df-cc97-43d8-9a2a-5c5622f48f8d",
+        "session:74db1618-e518-4834-bae9-f02ea22c3f59",
+        "session:8781939f-edea-451b-a9fa-1fa24c8cb292"
+      ],
+      "created_at": "2026-03-06T12:33:49.208Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306123422-0534",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "29bb6daed7a327bbc9fb43761633006e0d9d67ef",
+      "after_sha": "5298542f2a851ed2692dff562ec72a687d8e3a43",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:5298542f2a851ed2692dff562ec72a687d8e3a43",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:5298542f2a851ed2692dff562ec72a687d8e3a43",
+      "cluster_fingerprint": "a8d2d9ff0c7a38a624e0371eed308e66f662bd5e2d579e3c3e8de8cf71d838b5",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (29bb6da → 5298542)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:00654e03-9371-4567-a764-5f1c336012e5",
+        "session:934d1ed9-f97a-4dc1-98e9-2bd8b2a916fb",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739",
+        "session:659732df-cc97-43d8-9a2a-5c5622f48f8d",
+        "session:74db1618-e518-4834-bae9-f02ea22c3f59",
+        "session:8781939f-edea-451b-a9fa-1fa24c8cb292"
+      ],
+      "created_at": "2026-03-06T12:34:22.533Z",
       "queue_state": "enqueued",
       "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
       "intended_outcome": {

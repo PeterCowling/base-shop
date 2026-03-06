@@ -46,6 +46,11 @@
 
   /* DS primitive tokens (needed for bg-input, bg-panel, ring-ring, etc.) */
   --color-input: hsl(var(--surface-input, var(--color-bg)));
+  /* FIXME: --color-panel uses bare var() but its source token is a raw HSL triplet (not a
+     pre-wrapped hsl() value). This is structurally unsafe — if any component uses bg-panel
+     or text-panel, the resolved value will be a raw triplet, producing invalid CSS. No
+     confirmed consumer found at time of writing, but this should be migrated to
+     hsl(var(--color-panel)) once the source token format is confirmed. */
   --color-panel: var(--color-panel);
   --color-inset: hsl(var(--color-inset));
   --color-ring: hsl(var(--ring));
@@ -70,8 +75,44 @@
   --font-heading: var(--font-sans);
   --font-body: var(--font-sans);
 
-  /* Category shade families (bar/POS product grid) */
-  /* Shade vars store full hsl() in tokens.css, so @theme just references var() directly */
+  /* Z-index scale (exposes CSS tokens as Tailwind utilities) */
+  --z-modal-backdrop: 9998;
+  --z-modal: 9999;
+  --z-popover: 600;
+  --z-tooltip: 700;
+
+  /* Chart palette (dark-mode-aware) */
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+  --color-chart-6: hsl(var(--chart-6));
+  --color-chart-7: hsl(var(--chart-7));
+
+  /* Status -main/-dark/-light (mapped to base tokens) */
+  --color-primary-main: hsl(var(--color-primary));
+  --color-primary-dark: hsl(var(--color-primary-dark, var(--color-primary)));
+  --color-primary-light: hsl(var(--color-primary-light, var(--color-primary)));
+  --color-info-main: hsl(var(--color-info));
+  --color-info-dark: hsl(var(--color-info-dark, var(--color-info)));
+  --color-info-light: hsl(var(--color-info-light, var(--color-info)));
+  --color-success-main: hsl(var(--color-success));
+  --color-success-dark: hsl(var(--color-success-dark, var(--color-success)));
+  --color-warning-main: hsl(var(--color-warning));
+  --color-warning-dark: hsl(var(--color-warning-dark, var(--color-warning)));
+  --color-error-main: hsl(var(--color-danger));
+  --color-error-dark: hsl(var(--color-danger-dark, var(--color-danger)));
+}
+
+/* -------- TW v4 @theme inline — shade families (bar/POS product grid) ---
+   These tokens are safe for @theme inline because their source values in
+   tokens.css are already full hsl() literals (e.g. hsl(330 55% 66%)).
+   Tailwind reads the resolved value as-is without adding an hsl() wrapper.
+   Semantic tokens above use raw HSL triplets and must remain in @theme {}.
+   See packages/themes/reception/src/tokens.ts for the source of truth.
+   ----------------------------------------------------------------------- */
+@theme inline {
   --color-pinkShades-row1: var(--color-pinkShades-row1);
   --color-pinkShades-row2: var(--color-pinkShades-row2);
   --color-pinkShades-row3: var(--color-pinkShades-row3);
@@ -107,35 +148,6 @@
   --color-grayishShades-row2: var(--color-grayishShades-row2);
   --color-grayishShades-row3: var(--color-grayishShades-row3);
   --color-grayishShades-row4: var(--color-grayishShades-row4);
-
-  /* Z-index scale (exposes CSS tokens as Tailwind utilities) */
-  --z-modal-backdrop: 9998;
-  --z-modal: 9999;
-  --z-popover: 600;
-  --z-tooltip: 700;
-
-  /* Chart palette (dark-mode-aware) */
-  --color-chart-1: hsl(var(--chart-1));
-  --color-chart-2: hsl(var(--chart-2));
-  --color-chart-3: hsl(var(--chart-3));
-  --color-chart-4: hsl(var(--chart-4));
-  --color-chart-5: hsl(var(--chart-5));
-  --color-chart-6: hsl(var(--chart-6));
-  --color-chart-7: hsl(var(--chart-7));
-
-  /* Status -main/-dark/-light (mapped to base tokens) */
-  --color-primary-main: hsl(var(--color-primary));
-  --color-primary-dark: hsl(var(--color-primary-dark, var(--color-primary)));
-  --color-primary-light: hsl(var(--color-primary-light, var(--color-primary)));
-  --color-info-main: hsl(var(--color-info));
-  --color-info-dark: hsl(var(--color-info-dark, var(--color-info)));
-  --color-info-light: hsl(var(--color-info-light, var(--color-info)));
-  --color-success-main: hsl(var(--color-success));
-  --color-success-dark: hsl(var(--color-success-dark, var(--color-success)));
-  --color-warning-main: hsl(var(--color-warning));
-  --color-warning-dark: hsl(var(--color-warning-dark, var(--color-warning)));
-  --color-error-main: hsl(var(--color-danger));
-  --color-error-dark: hsl(var(--color-danger-dark, var(--color-danger)));
 }
 
 :root {

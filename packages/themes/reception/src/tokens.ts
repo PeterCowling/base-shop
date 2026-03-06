@@ -59,8 +59,11 @@ export const tokens: TokenMap = {
   '--font-mono': { light: 'var(--font-jetbrains-mono)' },
 
   // ── Category shade families (bar/POS product grid) ──────────────────
-  // Stored as full hsl() values so CSS var resolves to a valid color directly
-  // (avoids Tailwind v4 @layer theme cascade conflict with raw HSL triplets)
+  // Stored as full hsl() values so CSS var resolves to a valid color directly.
+  // This makes them safe for `@theme inline {}` in globals.css — Tailwind reads
+  // the resolved value as-is without adding an hsl() wrapper.
+  // Contrast: semantic tokens above use raw HSL triplets consumed via hsl(var(...))
+  // in `@theme {}` and must NOT use @theme inline.
   // Pink shades (Sweet, Gelato)
   '--color-pinkShades-row1': { light: 'hsl(330 55% 66%)', dark: 'hsl(330 25% 22%)' },
   '--color-pinkShades-row2': { light: 'hsl(330 55% 60%)', dark: 'hsl(330 25% 26%)' },

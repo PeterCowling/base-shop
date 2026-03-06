@@ -35,16 +35,23 @@ export interface PrefillResultsReviewOptions {
   standingRegistryPath: string;
   featureSlug: string;
   reviewDate?: string;
+  gitDiffWithStatus?: DiffEntry[];
 }
 
 export interface TaskStatus {
   taskId: string;
   status: string;
+  description?: string;
 }
 
 export interface StandingUpdateMatch {
   filePath: string;
   artifactId: string;
+}
+
+export interface DiffEntry {
+  status: "A" | "M" | "D";
+  path: string;
 }
 
 export type Verdict = "Met" | "Partially Met" | null;
@@ -73,18 +80,23 @@ export function parseStandingRegistry(registryPath: string): StandingRegistryArt
   }
 }
 
-/** Extracts task statuses from the Task Summary table in plan.md. */
+/** Extracts task statuses (and optional descriptions) from the Task Summary table in plan.md. */
 export function parsePlanTaskStatuses(planDir: string): TaskStatus[] {
   const planPath = path.join(planDir, "plan.md");
   try {
     const content = fs.readFileSync(planPath, "utf-8");
     const tasks: TaskStatus[] = [];
     for (const line of content.split("\n")) {
+      // Group 1: taskId, Group 2: description (column 3), Group 3: status (column 6)
       const match = line.match(
-        /^\|\s*(TASK-\d+)\s*\|[^|]*\|[^|]*\|[^|]*\|[^|]*\|\s*([^|]+?)\s*\|/,
+        /^\|\s*(TASK-\d+)\s*\|\s*[^|]*\s*\|\s*([^|]+?)\s*\|\s*[^|]*\s*\|\s*[^|]*\s*\|\s*([^|]+?)\s*\|/,
       );
       if (match) {
-        tasks.push({ taskId: match[1].trim(), status: match[2].trim() });
+        tasks.push({
+          taskId: match[1].trim(),
+          status: match[3].trim(),
+          description: match[2].trim(),
+        });
       }
     }
     return tasks;
@@ -94,18 +106,20 @@ export function parsePlanTaskStatuses(planDir: string): TaskStatus[] {
   }
 }
 
-/** 5-category idea scan. Returns "None." for each — LLM refines in Step 2. */
+/**
+ * Returns the HTML comment preamble for the ## New Idea Candidates section.
+ * Category lines are now constructed individually in prefillResultsReview().
+ */
 export function scanIdeaCategories(): string[] {
-  const categories = [
-    "New standing data source",
-    "New open-source package",
-    "New skill",
-    "New loop process",
-    "AI-to-mechanistic",
+  return [
+    "<!-- Scan for signals in these five categories. For each, cite a \"Trigger observation\" from this build. Use \"None.\" if no evidence found for any category.",
+    "  1. New standing data source — external feed, API, or dataset suitable for Layer A standing intelligence",
+    "  2. New open-source package — library to replace custom code or add capability",
+    "  3. New skill — recurring agent workflow ready to be codified as a named skill",
+    "  4. New loop process — missing stage, gate, or feedback path in the startup loop",
+    "  5. AI-to-mechanistic — LLM reasoning step replaceable with a deterministic script",
+    "-->",
   ];
-  const lines = categories.map((c) => `- ${c} — None.`);
-  log(`idea-scan: ${categories.length}/5 categories None`);
-  return lines;
 }
 
 /** Intersects gitDiffFiles with standing-registry artifact paths. */
@@ -188,6 +202,218 @@ export function renderObservedOutcomesStub(): string {
   return "- <!-- Pre-filled: LLM should populate observed outcomes from build context -->";
 }
 
+// --- TASK-01: detectChangedPackages ---
+
+/**
+ * Returns one bullet per unique top-level package/app root that appears in
+ * gitDiffFiles.  Only paths under `packages/` or `apps/` are considered.
+ */
+export function detectChangedPackages(gitDiffFiles: string[]): string[] {
+  const fallback = ["- No package changes detected"];
+  if (gitDiffFiles.length === 0) {
+    log("changed-packages: 0 packages changed");
+    return fallback;
+  }
+
+  const normalize = (f: string) => f.replace(/^\/+/, "").replace(/\\/g, "/");
+  const seen = new Set<string>();
+
+  for (const raw of gitDiffFiles) {
+    const f = normalize(raw);
+    const segments = f.split("/");
+    if (
+      segments.length >= 2 &&
+      (segments[0] === "packages" || segments[0] === "apps")
+    ) {
+      seen.add(`${segments[0]}/${segments[1]}`);
+    }
+  }
+
+  if (seen.size === 0) {
+    log("changed-packages: 0 packages changed");
+    return fallback;
+  }
+
+  const sorted = [...seen].sort();
+  log(`changed-packages: ${sorted.length} packages changed`);
+  return sorted.map((pkg) => `- ${pkg}: changed`);
+}
+
+// --- TASK-02: getGitDiffWithStatus + detectNewSkills ---
+
+/**
+ * Returns git diff --name-status entries for HEAD~1..HEAD.
+ * Skips rename lines (split length !== 2) and falls back to [] on error.
+ */
+export function getGitDiffWithStatus(): DiffEntry[] {
+  try {
+    const { execSync } = require("node:child_process") as typeof import("node:child_process");
+    const output = execSync("git diff --name-status HEAD~1 HEAD", {
+      encoding: "utf-8",
+      stdio: ["pipe", "pipe", "pipe"],
+    });
+    const entries: DiffEntry[] = [];
+    for (const line of output.split("\n")) {
+      const trimmed = line.trim();
+      if (!trimmed) continue;
+      const parts = trimmed.split("\t");
+      if (parts.length !== 2) continue; // skip renames and other multi-field lines
+      const rawStatus = parts[0].trim();
+      const filePath = parts[1].trim();
+      if (!filePath) continue;
+      const statusChar = rawStatus[0] as string;
+      if (statusChar !== "A" && statusChar !== "M" && statusChar !== "D") continue;
+      entries.push({ status: statusChar as "A" | "M" | "D", path: filePath });
+    }
+    return entries;
+  } catch {
+    log("git-diff-status: failed to read git diff --name-status, using empty list");
+    return [];
+  }
+}
+
+/**
+ * Returns category-3 bullet(s) for newly added SKILL.md files.
+ * Only `status === 'A'` entries matching `.claude/skills/<name>/SKILL.md` are reported.
+ */
+export function detectNewSkills(diffWithStatus: DiffEntry[]): string[] {
+  const fallback = ["- New skill — None."];
+  if (diffWithStatus.length === 0) {
+    log("new-skills: 0 new SKILL.md files");
+    return fallback;
+  }
+
+  const matches: string[] = [];
+  for (const entry of diffWithStatus) {
+    if (entry.status !== "A") continue;
+    const normalized = entry.path.replace(/\\/g, "/");
+    // Pattern: .claude/skills/<skill-name>/SKILL.md (exactly one level deep)
+    if (/^\.claude\/skills\/[^/]+\/SKILL\.md$/.test(normalized)) {
+      matches.push(normalized);
+    }
+  }
+
+  if (matches.length === 0) {
+    log("new-skills: 0 new SKILL.md files");
+    return fallback;
+  }
+
+  log(`new-skills: ${matches.length} new SKILL.md file(s) added`);
+  return matches.map((p) => `- New skill — ${p} added`);
+}
+
+// --- TASK-03: detectStartupLoopContractChanges ---
+
+/**
+ * Returns category-4 bullet(s) for changes to startup-loop contracts/specs
+ * and lp-do-* skill SKILL.md files.
+ */
+export function detectStartupLoopContractChanges(gitDiffFiles: string[]): string[] {
+  const fallback = ["- New loop process — None."];
+  if (gitDiffFiles.length === 0) {
+    log("contract-changes: 0 contract/spec files changed");
+    return fallback;
+  }
+
+  const matches: string[] = [];
+  for (const raw of gitDiffFiles) {
+    const f = raw.replace(/^\/+/, "").replace(/\\/g, "/");
+    if (
+      f.startsWith("docs/business-os/startup-loop/contracts/") ||
+      f.startsWith("docs/business-os/startup-loop/specifications/") ||
+      f.startsWith(".claude/skills/lp-do-")
+    ) {
+      matches.push(f);
+    }
+  }
+
+  if (matches.length === 0) {
+    log("contract-changes: 0 contract/spec files changed");
+    return fallback;
+  }
+
+  log(`contract-changes: ${matches.length} contract/spec file(s) changed`);
+  return matches.map((p) => `- New loop process — ${p} changed`);
+}
+
+// --- TASK-04: detectSchemaValidatorAdditions ---
+
+const SCHEMA_VALIDATOR_SUFFIXES = [
+  "-validator.ts",
+  "-lint.ts",
+  "-lint.cjs",
+  "-linter.ts",
+  ".schema.md",
+  ".schema.json",
+  ".schema.ts",
+];
+
+/**
+ * Returns category-5 bullet(s) for new schema/validator files in scripts/src/startup-loop/.
+ */
+export function detectSchemaValidatorAdditions(gitDiffFiles: string[]): string[] {
+  const fallback = ["- AI-to-mechanistic — None."];
+  if (gitDiffFiles.length === 0) {
+    log("schema-validators: 0 schema/validator files detected");
+    return fallback;
+  }
+
+  const matches: string[] = [];
+  for (const raw of gitDiffFiles) {
+    const f = raw.replace(/^\/+/, "").replace(/\\/g, "/");
+    if (!f.startsWith("scripts/src/startup-loop/")) continue;
+    const base = f.split("/").pop() ?? "";
+    if (SCHEMA_VALIDATOR_SUFFIXES.some((suffix) => base.endsWith(suffix))) {
+      matches.push(f);
+    }
+  }
+
+  if (matches.length === 0) {
+    log("schema-validators: 0 schema/validator files detected");
+    return fallback;
+  }
+
+  log(`schema-validators: ${matches.length} schema/validator file(s) detected`);
+  return matches.map((p) => `- AI-to-mechanistic — ${p} added`);
+}
+
+// --- TASK-05 helpers: sanitiseDescription + renderObservedOutcomes ---
+
+function sanitiseDescription(description: string): string {
+  // Strip markdown bold (**text** → text), inline code (`text` → text)
+  return description
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/`([^`]+)`/g, "$1")
+    .trim();
+}
+
+/**
+ * Renders task-completion bullets for ## Observed Outcomes.
+ * Falls back to the LLM stub when no tasks are provided.
+ */
+export function renderObservedOutcomes(taskStatuses: TaskStatus[]): string {
+  if (taskStatuses.length === 0) {
+    return renderObservedOutcomesStub();
+  }
+
+  const complete = taskStatuses.filter((t) =>
+    t.status.toLowerCase().startsWith("complete"),
+  );
+
+  if (complete.length === 0) {
+    return renderObservedOutcomesStub();
+  }
+
+  const bullets = complete.map((t) => {
+    const desc = t.description ? ` — ${sanitiseDescription(t.description)}` : "";
+    return `- ${t.taskId}: ${t.status}${desc}`;
+  });
+
+  const total = taskStatuses.length;
+  const summary = `- ${complete.length} of ${total} tasks completed.`;
+  return [...bullets, summary].join("\n");
+}
+
 export function renderStandingExpansion(): string {
   return "- No standing expansion: no new external data sources or artifacts identified";
 }
@@ -202,15 +428,42 @@ export function prefillResultsReview(options: PrefillResultsReviewOptions): stri
     standingRegistryPath,
     featureSlug,
     reviewDate = new Date().toISOString().slice(0, 10),
+    gitDiffWithStatus = [],
   } = options;
 
   const registryArtifacts = parseStandingRegistry(standingRegistryPath);
   const buildEvent = readBuildEvent(planDir);
   const taskStatuses = parsePlanTaskStatuses(planDir);
 
-  const observedOutcomes = renderObservedOutcomesStub();
+  // --- Observed Outcomes: changed packages (static context) + task-completion bullets ---
+  const changedPackageLines = detectChangedPackages(gitDiffFiles);
+  const taskCompletionLines = renderObservedOutcomes(taskStatuses);
+  // Combine: packages first (static context), then completions, separated by blank if both present
+  const observedOutcomesLines: string[] = [];
+  const hasPackages = !(changedPackageLines.length === 1 && changedPackageLines[0] === "- No package changes detected");
+  const hasCompletions = taskCompletionLines !== renderObservedOutcomesStub();
+  if (hasPackages) {
+    observedOutcomesLines.push(...changedPackageLines);
+  }
+  if (hasCompletions) {
+    if (observedOutcomesLines.length > 0) observedOutcomesLines.push("");
+    observedOutcomesLines.push(taskCompletionLines);
+  }
+  if (observedOutcomesLines.length === 0) {
+    observedOutcomesLines.push(renderObservedOutcomesStub());
+  }
+
   const { lines: standingUpdateLines } = detectStandingUpdates(gitDiffFiles, registryArtifacts);
-  const ideaCategoryLines = scanIdeaCategories();
+
+  // --- New Idea Candidates: categories 1+2 always None; 3/4/5 from extractors ---
+  const cat1Lines = ["- New standing data source — None."];
+  const cat2Lines = ["- New open-source package — None."];
+  const cat3Lines = detectNewSkills(gitDiffWithStatus);
+  const cat4Lines = detectStartupLoopContractChanges(gitDiffFiles);
+  const cat5Lines = detectSchemaValidatorAdditions(gitDiffFiles);
+
+  const ideaCommentLines = scanIdeaCategories();
+
   const standingExpansion = renderStandingExpansion();
   const { verdict, intendedStatement, rationale } = computeVerdict(buildEvent, taskStatuses);
 
@@ -235,20 +488,18 @@ export function prefillResultsReview(options: PrefillResultsReviewOptions): stri
     "# Results Review",
     "",
     "## Observed Outcomes",
-    observedOutcomes,
+    ...observedOutcomesLines,
     "",
     "## Standing Updates",
     ...standingUpdateLines,
     "",
     "## New Idea Candidates",
-    "<!-- Scan for signals in these five categories. For each, cite a \"Trigger observation\" from this build. Use \"None.\" if no evidence found for any category.",
-    "  1. New standing data source — external feed, API, or dataset suitable for Layer A standing intelligence",
-    "  2. New open-source package — library to replace custom code or add capability",
-    "  3. New skill — recurring agent workflow ready to be codified as a named skill",
-    "  4. New loop process — missing stage, gate, or feedback path in the startup loop",
-    "  5. AI-to-mechanistic — LLM reasoning step replaceable with a deterministic script",
-    "-->",
-    ...ideaCategoryLines,
+    ...ideaCommentLines,
+    ...cat1Lines,
+    ...cat2Lines,
+    ...cat3Lines,
+    ...cat4Lines,
+    ...cat5Lines,
     "",
     "## Standing Expansion",
     standingExpansion,
@@ -327,12 +578,16 @@ export async function main(): Promise<void> {
   const gitDiffFiles = getGitDiffFiles();
   log(`git-diff: ${gitDiffFiles.length} files changed`);
 
+  const gitDiffWithStatus = getGitDiffWithStatus();
+  log(`git-diff-status: ${gitDiffWithStatus.length} entries`);
+
   const resolvedPlanDir = path.resolve(repoRoot, planDir);
   const markdown = prefillResultsReview({
     planDir: resolvedPlanDir,
     gitDiffFiles,
     standingRegistryPath,
     featureSlug: slug,
+    gitDiffWithStatus,
   });
 
   const outputPath = path.join(resolvedPlanDir, "results-review.user.md");

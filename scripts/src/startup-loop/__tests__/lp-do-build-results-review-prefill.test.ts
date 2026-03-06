@@ -14,13 +14,21 @@ import { afterEach, beforeEach, describe, expect, it } from "@jest/globals";
 import type { BuildEvent } from "../build/lp-do-build-event-emitter.js";
 import { emitBuildEvent, writeBuildEvent } from "../build/lp-do-build-event-emitter.js";
 import { validateResultsReviewContent } from "../build/lp-do-build-reflection-debt.js";
-import type { StandingRegistryArtifact } from "../build/lp-do-build-results-review-prefill.js";
+import type {
+  DiffEntry,
+  StandingRegistryArtifact,
+} from "../build/lp-do-build-results-review-prefill.js";
 import {
   computeVerdict,
+  detectChangedPackages,
+  detectNewSkills,
+  detectSchemaValidatorAdditions,
   detectStandingUpdates,
+  detectStartupLoopContractChanges,
   parsePlanTaskStatuses,
   parseStandingRegistry,
   prefillResultsReview,
+  renderObservedOutcomes,
   renderObservedOutcomesStub,
   renderStandingExpansion,
   scanIdeaCategories,
@@ -107,9 +115,13 @@ describe("TC-01: all tasks complete with build-event", () => {
     expect(output).toContain("a/file1.ts: art-1 changed");
     expect(output).toContain("b/file2.ts: art-2 changed");
     expect(output).not.toContain("c/file3.ts");
-    // All 5 idea categories are None
-    const noneCount = (output.match(/— None\./g) || []).length;
-    expect(noneCount).toBe(5);
+    // Categories 1 and 2 are always None; categories 3/4/5 depend on signals
+    // With these gitDiffFiles (a/file1.ts, b/file2.ts), no SKILL.md/contract/schema signals fire
+    expect(output).toContain("New standing data source — None.");
+    expect(output).toContain("New open-source package — None.");
+    expect(output).toContain("New skill — None.");
+    expect(output).toContain("New loop process — None.");
+    expect(output).toContain("AI-to-mechanistic — None.");
   });
 });
 
@@ -385,11 +397,14 @@ describe("computeVerdict", () => {
 });
 
 describe("scanIdeaCategories", () => {
-  it("returns 5 None lines", () => {
+  it("returns the HTML comment preamble block (7 lines, no category data lines)", () => {
     const lines = scanIdeaCategories();
-    expect(lines.length).toBe(5);
+    expect(lines.length).toBe(7);
+    expect(lines[0]).toContain("<!--");
+    expect(lines[lines.length - 1]).toBe("-->");
+    // The comment block must not contain any category bullet lines
     for (const line of lines) {
-      expect(line).toContain("None.");
+      expect(line).not.toMatch(/^- /);
     }
   });
 });
@@ -432,5 +447,429 @@ describe("prefillResultsReview frontmatter", () => {
     expect(output).toContain("Review-date: 2026-03-04");
     expect(output).toContain("Status: Draft");
     expect(output).toContain("artifact: results-review");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TC-01a–e: detectChangedPackages
+// ---------------------------------------------------------------------------
+describe("detectChangedPackages", () => {
+  it("TC-01a: packages and apps paths produce one bullet each", () => {
+    const result = detectChangedPackages(["packages/email/src/send.ts", "apps/brikette/page.tsx"]);
+    expect(result).toContain("- packages/email: changed");
+    expect(result).toContain("- apps/brikette: changed");
+    expect(result.length).toBe(2);
+  });
+
+  it("TC-01b: duplicate paths under same package deduplicate to one bullet", () => {
+    const result = detectChangedPackages(["packages/email/a.ts", "packages/email/b.ts"]);
+    expect(result).toEqual(["- packages/email: changed"]);
+  });
+
+  it("TC-01c: root-level files produce the fallback line", () => {
+    const result = detectChangedPackages(["package.json", "turbo.json"]);
+    expect(result).toEqual(["- No package changes detected"]);
+  });
+
+  it("TC-01d: empty array returns fallback", () => {
+    const result = detectChangedPackages([]);
+    expect(result).toEqual(["- No package changes detected"]);
+  });
+
+  it("TC-01e: leading slash stripped and package root extracted correctly", () => {
+    const result = detectChangedPackages(["/packages/email/foo.ts"]);
+    expect(result).toEqual(["- packages/email: changed"]);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TC-02a–f: detectNewSkills
+// ---------------------------------------------------------------------------
+describe("detectNewSkills", () => {
+  it("TC-02a: status A + SKILL.md path produces populated bullet", () => {
+    const diff: DiffEntry[] = [
+      { status: "A", path: ".claude/skills/lp-do-new/SKILL.md" },
+    ];
+    const result = detectNewSkills(diff);
+    expect(result.length).toBe(1);
+    expect(result[0]).toContain("New skill");
+    expect(result[0]).toContain("SKILL.md");
+    expect(result[0]).not.toContain("None.");
+  });
+
+  it("TC-02b: status M + SKILL.md path returns None (modification not new)", () => {
+    const diff: DiffEntry[] = [
+      { status: "M", path: ".claude/skills/lp-do-existing/SKILL.md" },
+    ];
+    const result = detectNewSkills(diff);
+    expect(result).toEqual(["- New skill — None."]);
+  });
+
+  it("TC-02c: status D + SKILL.md path returns None", () => {
+    const diff: DiffEntry[] = [
+      { status: "D", path: ".claude/skills/lp-do-old/SKILL.md" },
+    ];
+    const result = detectNewSkills(diff);
+    expect(result).toEqual(["- New skill — None."]);
+  });
+
+  it("TC-02d: empty input returns None", () => {
+    const result = detectNewSkills([]);
+    expect(result).toEqual(["- New skill — None."]);
+  });
+
+  it("TC-02e: path under .claude/skills/ but not SKILL.md returns None", () => {
+    const diff: DiffEntry[] = [
+      { status: "A", path: ".claude/skills/lp-do-build/modules/build-code.md" },
+    ];
+    const result = detectNewSkills(diff);
+    expect(result).toEqual(["- New skill — None."]);
+  });
+
+  it("TC-02f: prefillResultsReview without gitDiffWithStatus uses [] and returns None for cat3", () => {
+    const planDir = path.join(tmpDir, "plan-02f");
+    fs.mkdirSync(planDir, { recursive: true });
+    writePlanMd(planDir, [{ id: "TASK-01", status: "Complete" }]);
+    const registryPath = path.join(tmpDir, "registry-02f.json");
+    writeStandingRegistry(registryPath, []);
+
+    const output = prefillResultsReview({
+      planDir,
+      gitDiffFiles: [],
+      standingRegistryPath: registryPath,
+      featureSlug: "slug",
+      reviewDate: "2026-03-06",
+      // gitDiffWithStatus omitted intentionally
+    });
+    expect(output).toContain("New skill — None.");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TC-03a–f: detectStartupLoopContractChanges
+// ---------------------------------------------------------------------------
+describe("detectStartupLoopContractChanges", () => {
+  it("TC-03a: contracts/ path produces populated bullet", () => {
+    const result = detectStartupLoopContractChanges([
+      "docs/business-os/startup-loop/contracts/loop-output-contracts.md",
+    ]);
+    expect(result.length).toBe(1);
+    expect(result[0]).toContain("New loop process");
+    expect(result[0]).not.toContain("None.");
+  });
+
+  it("TC-03b: specifications/ path produces populated bullet", () => {
+    const result = detectStartupLoopContractChanges([
+      "docs/business-os/startup-loop/specifications/dispatch-schema.md",
+    ]);
+    expect(result.length).toBe(1);
+    expect(result[0]).toContain("New loop process");
+    expect(result[0]).not.toContain("None.");
+  });
+
+  it("TC-03c: .claude/skills/lp-do-build/SKILL.md produces populated bullet", () => {
+    const result = detectStartupLoopContractChanges([".claude/skills/lp-do-build/SKILL.md"]);
+    expect(result.length).toBe(1);
+    expect(result[0]).toContain("New loop process");
+    expect(result[0]).not.toContain("None.");
+  });
+
+  it("TC-03d: ideas/trial/queue-state.json returns None", () => {
+    const result = detectStartupLoopContractChanges([
+      "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+    ]);
+    expect(result).toEqual(["- New loop process — None."]);
+  });
+
+  it("TC-03e: non-lp-do skill SKILL.md returns None", () => {
+    const result = detectStartupLoopContractChanges([".claude/skills/idea-scan/SKILL.md"]);
+    expect(result).toEqual(["- New loop process — None."]);
+  });
+
+  it("TC-03f: empty input returns None", () => {
+    const result = detectStartupLoopContractChanges([]);
+    expect(result).toEqual(["- New loop process — None."]);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TC-04a–f: detectSchemaValidatorAdditions
+// ---------------------------------------------------------------------------
+describe("detectSchemaValidatorAdditions", () => {
+  it("TC-04a: -validator.ts suffix inside startup-loop produces populated bullet", () => {
+    const result = detectSchemaValidatorAdditions([
+      "scripts/src/startup-loop/build/lp-do-build-reflection-debt-validator.ts",
+    ]);
+    expect(result.length).toBe(1);
+    expect(result[0]).toContain("AI-to-mechanistic");
+    expect(result[0]).not.toContain("None.");
+  });
+
+  it("TC-04b: .schema.md suffix inside startup-loop produces populated bullet", () => {
+    const result = detectSchemaValidatorAdditions([
+      "scripts/src/startup-loop/ideas/scan-proposals.schema.md",
+    ]);
+    expect(result.length).toBe(1);
+    expect(result[0]).toContain("AI-to-mechanistic");
+    expect(result[0]).not.toContain("None.");
+  });
+
+  it("TC-04c: .schema.json suffix inside startup-loop produces populated bullet", () => {
+    const result = detectSchemaValidatorAdditions([
+      "scripts/src/startup-loop/build/output.schema.json",
+    ]);
+    expect(result.length).toBe(1);
+    expect(result[0]).toContain("AI-to-mechanistic");
+    expect(result[0]).not.toContain("None.");
+  });
+
+  it("TC-04d: -validator.ts outside startup-loop returns None", () => {
+    const result = detectSchemaValidatorAdditions(["apps/brikette/src/lib/password-validator.ts"]);
+    expect(result).toEqual(["- AI-to-mechanistic — None."]);
+  });
+
+  it("TC-04e: regular .ts file inside startup-loop returns None", () => {
+    const result = detectSchemaValidatorAdditions([
+      "scripts/src/startup-loop/build/lp-do-build-event-emitter.ts",
+    ]);
+    expect(result).toEqual(["- AI-to-mechanistic — None."]);
+  });
+
+  it("TC-04f: empty input returns None", () => {
+    const result = detectSchemaValidatorAdditions([]);
+    expect(result).toEqual(["- AI-to-mechanistic — None."]);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TC-05a–e: parsePlanTaskStatuses (description capture) + renderObservedOutcomes
+// ---------------------------------------------------------------------------
+describe("parsePlanTaskStatuses — description capture (TC-05)", () => {
+  it("TC-05a: plan with 3 Complete tasks returns descriptions", () => {
+    const planDir = path.join(tmpDir, "plan-05a");
+    fs.mkdirSync(planDir, { recursive: true });
+    writePlanMd(planDir, [
+      { id: "TASK-01", status: "Complete" },
+      { id: "TASK-02", status: "Complete" },
+      { id: "TASK-03", status: "Complete" },
+    ]);
+    const result = parsePlanTaskStatuses(planDir);
+    expect(result.length).toBe(3);
+    for (const t of result) {
+      expect(typeof t.description).toBe("string");
+      expect(t.description!.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("TC-05b: renderObservedOutcomes emits only Complete tasks + summary", () => {
+    const tasks = [
+      { taskId: "TASK-01", status: "Complete", description: "First task" },
+      { taskId: "TASK-02", status: "Pending", description: "Second task" },
+      { taskId: "TASK-03", status: "Complete (2026-03-06)", description: "Third task" },
+    ];
+    const result = renderObservedOutcomes(tasks);
+    expect(result).toContain("TASK-01");
+    expect(result).toContain("TASK-03");
+    expect(result).not.toContain("TASK-02");
+    expect(result).toContain("2 of 3");
+  });
+
+  it("TC-05c: renderObservedOutcomes with empty list returns stub placeholder", () => {
+    const result = renderObservedOutcomes([]);
+    expect(result).toContain("Pre-filled");
+  });
+
+  it("TC-05d: description with **bold** markdown is sanitised", () => {
+    const tasks = [
+      { taskId: "TASK-01", status: "Complete", description: "**Bold title** with `code`" },
+    ];
+    const result = renderObservedOutcomes(tasks);
+    expect(result).toContain("Bold title");
+    expect(result).toContain("with code");
+    expect(result).not.toContain("**Bold title**");
+    expect(result).not.toContain("`code`");
+  });
+
+  it("TC-05e: existing parsePlanTaskStatuses tests still pass (no regression)", () => {
+    const planDir = path.join(tmpDir, "plan-05e");
+    fs.mkdirSync(planDir, { recursive: true });
+    writePlanMd(planDir, [
+      { id: "TASK-01", status: "Complete" },
+      { id: "TASK-02", status: "Pending" },
+    ]);
+    const result = parsePlanTaskStatuses(planDir);
+    expect(result.length).toBe(2);
+    expect(result[0].taskId).toBe("TASK-01");
+    expect(result[0].status).toBe("Complete");
+    expect(result[1].taskId).toBe("TASK-02");
+    expect(result[1].status).toBe("Pending");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TC-06a–g: prefillResultsReview wiring integration
+// ---------------------------------------------------------------------------
+describe("prefillResultsReview wiring (TC-06)", () => {
+  it("TC-06a: packages change signal → Observed Outcomes contains changed-package bullet", () => {
+    const planDir = path.join(tmpDir, "plan-06a");
+    fs.mkdirSync(planDir, { recursive: true });
+    writePlanMd(planDir, [{ id: "TASK-01", status: "Complete" }]);
+    makeBuildEvent(planDir, "Test outcome");
+    const registryPath = path.join(tmpDir, "registry-06a.json");
+    writeStandingRegistry(registryPath, []);
+
+    const output = prefillResultsReview({
+      planDir,
+      gitDiffFiles: ["packages/email/src/send.ts"],
+      standingRegistryPath: registryPath,
+      featureSlug: "slug",
+      reviewDate: "2026-03-06",
+    });
+
+    expect(output).toContain("## Observed Outcomes");
+    expect(output).toContain("packages/email: changed");
+  });
+
+  it("TC-06b: new SKILL.md signal → category-3 bullet (not None)", () => {
+    const planDir = path.join(tmpDir, "plan-06b");
+    fs.mkdirSync(planDir, { recursive: true });
+    writePlanMd(planDir, [{ id: "TASK-01", status: "Complete" }]);
+    makeBuildEvent(planDir, "Test outcome");
+    const registryPath = path.join(tmpDir, "registry-06b.json");
+    writeStandingRegistry(registryPath, []);
+
+    const diffWithStatus: DiffEntry[] = [
+      { status: "A", path: ".claude/skills/lp-do-brand/SKILL.md" },
+    ];
+
+    const output = prefillResultsReview({
+      planDir,
+      gitDiffFiles: [],
+      standingRegistryPath: registryPath,
+      featureSlug: "slug",
+      reviewDate: "2026-03-06",
+      gitDiffWithStatus: diffWithStatus,
+    });
+
+    expect(output).toContain("lp-do-brand/SKILL.md");
+    expect(output).not.toMatch(/New skill — None\./);
+  });
+
+  it("TC-06c: startup-loop contract change → category-4 bullet", () => {
+    const planDir = path.join(tmpDir, "plan-06c");
+    fs.mkdirSync(planDir, { recursive: true });
+    writePlanMd(planDir, [{ id: "TASK-01", status: "Complete" }]);
+    makeBuildEvent(planDir, "Test outcome");
+    const registryPath = path.join(tmpDir, "registry-06c.json");
+    writeStandingRegistry(registryPath, []);
+
+    const output = prefillResultsReview({
+      planDir,
+      gitDiffFiles: ["docs/business-os/startup-loop/contracts/loop-output-contracts.md"],
+      standingRegistryPath: registryPath,
+      featureSlug: "slug",
+      reviewDate: "2026-03-06",
+    });
+
+    expect(output).toContain("loop-output-contracts.md");
+    expect(output).not.toMatch(/New loop process — None\./);
+  });
+
+  it("TC-06d: schema/validator addition → category-5 bullet", () => {
+    const planDir = path.join(tmpDir, "plan-06d");
+    fs.mkdirSync(planDir, { recursive: true });
+    writePlanMd(planDir, [{ id: "TASK-01", status: "Complete" }]);
+    makeBuildEvent(planDir, "Test outcome");
+    const registryPath = path.join(tmpDir, "registry-06d.json");
+    writeStandingRegistry(registryPath, []);
+
+    const output = prefillResultsReview({
+      planDir,
+      gitDiffFiles: ["scripts/src/startup-loop/build/new-output-validator.ts"],
+      standingRegistryPath: registryPath,
+      featureSlug: "slug",
+      reviewDate: "2026-03-06",
+    });
+
+    expect(output).toContain("new-output-validator.ts");
+    expect(output).not.toMatch(/AI-to-mechanistic — None\./);
+  });
+
+  it("TC-06e: task completion → Observed Outcomes contains completion bullets", () => {
+    const planDir = path.join(tmpDir, "plan-06e");
+    fs.mkdirSync(planDir, { recursive: true });
+    writePlanMd(planDir, [
+      { id: "TASK-01", status: "Complete" },
+      { id: "TASK-02", status: "Complete" },
+    ]);
+    makeBuildEvent(planDir, "Test outcome");
+    const registryPath = path.join(tmpDir, "registry-06e.json");
+    writeStandingRegistry(registryPath, []);
+
+    const output = prefillResultsReview({
+      planDir,
+      gitDiffFiles: [],
+      standingRegistryPath: registryPath,
+      featureSlug: "slug",
+      reviewDate: "2026-03-06",
+    });
+
+    expect(output).toContain("TASK-01: Complete");
+    expect(output).toContain("TASK-02: Complete");
+    expect(output).toContain("2 of 2 tasks completed");
+  });
+
+  it("TC-06f: all signals absent → all categories None, validateResultsReviewContent passes", () => {
+    const planDir = path.join(tmpDir, "plan-06f");
+    fs.mkdirSync(planDir, { recursive: true });
+    writePlanMd(planDir, [{ id: "TASK-01", status: "Complete" }]);
+    makeBuildEvent(planDir, "Test outcome");
+    const registryPath = path.join(tmpDir, "registry-06f.json");
+    writeStandingRegistry(registryPath, []);
+
+    const output = prefillResultsReview({
+      planDir,
+      gitDiffFiles: [],
+      standingRegistryPath: registryPath,
+      featureSlug: "slug",
+      reviewDate: "2026-03-06",
+    });
+
+    expect(output).toContain("New standing data source — None.");
+    expect(output).toContain("New open-source package — None.");
+    expect(output).toContain("New skill — None.");
+    expect(output).toContain("New loop process — None.");
+    expect(output).toContain("AI-to-mechanistic — None.");
+
+    const validation = validateResultsReviewContent(output);
+    expect(validation.valid).toBe(true);
+  });
+
+  it("TC-06g: existing TC-01 verdict/standing-updates path still works (no regression)", () => {
+    const planDir = path.join(tmpDir, "plan-06g");
+    fs.mkdirSync(planDir, { recursive: true });
+    writePlanMd(planDir, [
+      { id: "TASK-01", status: "Complete" },
+      { id: "TASK-02", status: "Complete" },
+      { id: "TASK-03", status: "Complete" },
+    ]);
+    makeBuildEvent(planDir, "Reduce token usage by 55%");
+    const registryPath = path.join(tmpDir, "registry-06g.json");
+    writeStandingRegistry(registryPath, [
+      { artifact_id: "art-1", path: "a/file1.ts", active: true },
+      { artifact_id: "art-2", path: "b/file2.ts", active: true },
+    ]);
+
+    const output = prefillResultsReview({
+      planDir,
+      gitDiffFiles: ["a/file1.ts", "b/file2.ts"],
+      standingRegistryPath: registryPath,
+      featureSlug: "test-slug",
+      reviewDate: "2026-03-04",
+    });
+
+    expect(output).toContain("**Verdict:** Met");
+    expect(output).toContain("a/file1.ts: art-1 changed");
+    expect(output).toContain("b/file2.ts: art-2 changed");
   });
 });

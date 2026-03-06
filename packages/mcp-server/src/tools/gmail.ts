@@ -766,6 +766,14 @@ export const gmailTools = [
       },
     },
   },
+  {
+    name: "gmail_audit_labels",
+    description: "Audit Gmail labels under the Brikette/* namespace. Returns three lists: known (expected required labels), legacy (old taxonomy labels pending migration), and orphaned (unrecognised Brikette/* labels). Silent if all clean.",
+    inputSchema: {
+      type: "object",
+      properties: {},
+    },
+  },
 ] as const;
 
 // =============================================================================
@@ -2622,6 +2630,32 @@ async function handleCreateDraft(
     ? `${existingRefs} ${messageId}`
     : messageId;
 
+  // Thread-level dedup: skip if a draft already exists for this thread (fail-open).
+  const threadId = original.data.threadId;
+  try {
+    const existingDraftsRes = await gmail.users.drafts.list({
+      userId: "me",
+      q: `in:drafts thread:${threadId}`,
+    });
+    const existingDrafts = existingDraftsRes.data.drafts ?? [];
+    if (existingDrafts.length > 0) {
+      appendAuditEntry({
+        ts: new Date().toISOString(),
+        messageId: emailId,
+        action: "outcome",
+        actor: "system",
+        result: `inquiry-draft-dedup-skipped:thread-${threadId}-already-has-draft`,
+      });
+      return jsonResult({
+        success: false,
+        already_exists: true,
+        message: "Draft already exists for this thread — skipping to prevent duplicate.",
+      });
+    }
+  } catch {
+    // Fail-open: drafts.list error → proceed with draft creation normally
+  }
+
   const raw = createRawEmail(
     from,
     subject,
@@ -2636,7 +2670,7 @@ async function handleCreateDraft(
     requestBody: {
       message: {
         raw,
-        threadId: original.data.threadId,
+        threadId,
       },
     },
   });
@@ -2670,7 +2704,7 @@ async function handleCreateDraft(
   return jsonResult({
     success: true,
     draftId: draft.data.id,
-    threadId: original.data.threadId,
+    threadId,
     message: "Draft created successfully. Review and send from Gmail.",
   });
 }
@@ -3346,6 +3380,47 @@ async function handleReconcileInProgress(
 }
 
 // =============================================================================
+// Audit Labels
+// =============================================================================
+
+async function handleAuditLabels(gmail: gmail_v1.Gmail) {
+  try {
+    const res = await gmail.users.labels.list({ userId: "me" });
+    const allLabels = res.data.labels ?? [];
+
+    const briketteLabels = allLabels
+      .map((l) => l.name ?? "")
+      .filter((name) => name === "Brikette" || name.startsWith("Brikette/"));
+
+    const legacyValues = new Set<string>(Object.values(LEGACY_LABELS));
+    const requiredSet = new Set<string>(REQUIRED_LABELS);
+
+    const known: string[] = [];
+    const legacy: string[] = [];
+    const orphaned: string[] = [];
+
+    for (const name of briketteLabels) {
+      if (requiredSet.has(name)) {
+        known.push(name);
+      } else if (legacyValues.has(name)) {
+        legacy.push(name);
+      } else {
+        orphaned.push(name);
+      }
+    }
+
+    return jsonResult({
+      known,
+      legacy,
+      orphaned,
+      total_brikette: briketteLabels.length,
+    });
+  } catch (error) {
+    return errorResult(formatError(error));
+  }
+}
+
+// =============================================================================
 // Tool Handler
 // =============================================================================
 
@@ -3407,6 +3482,10 @@ export async function handleGmailTool(name: string, args: unknown) {
 
       case "gmail_reconcile_in_progress": {
         return await handleReconcileInProgress(gmail, args);
+      }
+
+      case "gmail_audit_labels": {
+        return await handleAuditLabels(gmail);
       }
 
       default:

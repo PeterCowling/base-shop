@@ -1,11 +1,11 @@
 ---
 Type: Plan
-Status: Draft
+Status: Archived
 Domain: Products
 Workstream: Engineering
 Created: 2026-03-04
 Last-reviewed: 2026-03-04
-Last-updated: 2026-03-04
+Last-updated: 2026-03-06
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: xa-uploader-image-autosave-reliability
 Deliverable-Type: code-change
@@ -79,11 +79,19 @@ Chosen now: Option A first, Option B only if Option A fails acceptance criteria.
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Add autosave queue state and flush loop (latest-wins) in console hook layer | 88% | M | Pending | - | TASK-02, TASK-03 |
-| TASK-02 | IMPLEMENT | Add autosave conflict-safe retry + sync gating while autosave pending | 84% | M | Pending | TASK-01 | TASK-03, TASK-04 |
-| TASK-03 | IMPLEMENT | Add uploader internal status messaging (`saving/saved/unsaved`) and explicit manual Save fallback copy | 90% | S | Pending | TASK-02 | TASK-04 |
-| TASK-04 | IMPLEMENT | Add regression tests for rapid consecutive uploads and autosave flush guarantees | 85% | M | Pending | TASK-02, TASK-03 | TASK-05 |
-| TASK-05 | CHECKPOINT | Validation checkpoint and rollout | 95% | S | Pending | TASK-04 | - |
+| TASK-01 | IMPLEMENT | Add autosave queue state and flush loop (latest-wins) in console hook layer | 88% | M | Complete (2026-03-06) | - | TASK-02, TASK-03 |
+| TASK-02 | IMPLEMENT | Add autosave conflict-safe retry + sync gating while autosave pending | 84% | M | Complete (2026-03-06) | TASK-01 | TASK-03, TASK-04 |
+| TASK-03 | IMPLEMENT | Add uploader internal status messaging (`saving/saved/unsaved`) and explicit manual Save fallback copy | 90% | S | Complete (2026-03-06) | TASK-02 | TASK-04 |
+| TASK-04 | IMPLEMENT | Add regression tests for rapid consecutive uploads and autosave flush guarantees | 85% | M | Complete (2026-03-06) | TASK-02, TASK-03 | TASK-05 |
+| TASK-05 | CHECKPOINT | Validation checkpoint and rollout | 95% | S | Complete (2026-03-06) | TASK-04 | - |
+
+## Active tasks
+
+- [x] TASK-01: Autosave queue + flush loop
+- [x] TASK-02: Conflict retry + sync gating
+- [x] TASK-03: Internal status UX (operator-facing only)
+- [x] TASK-04: Regression tests for autosave flush guarantees
+- [x] TASK-05: Validation checkpoint and rollout
 
 ## Tasks
 ### TASK-01: Autosave queue + flush loop
@@ -133,6 +141,13 @@ Chosen now: Option A first, Option B only if Option A fails acceptance criteria.
 - **Documentation impact:** None: internal implementation change
 - **Notes / references:**
   - Existing busy lock at catalogConsoleActions.ts:254
+- **Build evidence (2026-03-06):**
+  - Status: Complete (2026-03-06)
+  - Commit: `0d23d6f06474b54b67bb0956e107dc3830076a8a`
+  - Route: inline (working tree was pre-implemented)
+  - Affects present: `useCatalogConsole.client.ts` ✓, `catalogConsoleActions.ts` ✓
+  - Key changes: `pendingAutosaveDraftRef`, `autosaveFlushInProgressRef`, `flushAutosaveQueue()`, `handleSaveWithDraft()` queues then flushes
+  - Typecheck: clean. Lint: clean.
 
 ### TASK-02: Conflict retry + sync gating
 - **Type:** IMPLEMENT
@@ -192,6 +207,11 @@ Chosen now: Option A first, Option B only if Option A fails acceptance criteria.
 - **Documentation impact:** None: internal error handling change
 - **Notes / references:**
   - Pipe-delimited image field format: `catalogDraft.ts` `buildEmptyDraft()`
+- **Build evidence (2026-03-06):**
+  - Status: Complete (2026-03-06)
+  - Commit: `0d23d6f06474b54b67bb0956e107dc3830076a8a`
+  - Key changes: `mergeAutosaveImageTuples()` in `catalogConsoleActions.ts` with baseline-aware deletion tracking; `flushAutosaveQueue()` catches 409 → reloads server draft → merges → retries once; `handleSync` gates on `isAutosaveDirty || isAutosaveSaving`
+  - TC-03/TC-04/TC-05 patterns all present in `flushAutosaveQueue()`
 
 ### TASK-03: Internal status UX (operator-facing only)
 - **Type:** IMPLEMENT
@@ -237,6 +257,10 @@ Chosen now: Option A first, Option B only if Option A fails acceptance criteria.
   - Rollback: revert commit; status text disappears (no functional regression)
 - **Documentation impact:** None: operator-internal UX
 - **Notes / references:** None
+- **Build evidence (2026-03-06):**
+  - Status: Complete (2026-03-06)
+  - Commit: `0d23d6f06474b54b67bb0956e107dc3830076a8a`
+  - Key changes: `autosaveStatus` derived state (`saving`/`saved`/`unsaved`) in `useCatalogConsoleState()`; `CatalogProductForm.client.tsx` renders status text; i18n keys `autosaveStatusSaving`/`autosaveStatusSaved`/`autosaveStatusUnsaved`/`syncBlockedAutosavePending` all present
 
 ### TASK-04: Regression tests
 - **Type:** IMPLEMENT
@@ -281,6 +305,12 @@ Chosen now: Option A first, Option B only if Option A fails acceptance criteria.
 - **Documentation impact:** None
 - **Notes / references:**
   - Reference: existing TC-04 test pattern at action-feedback.test.tsx:229
+- **Build evidence (2026-03-06):**
+  - Status: Complete (2026-03-06)
+  - Commit: `0d23d6f06474b54b67bb0956e107dc3830076a8a`
+  - Tests added: TC-05 (queue flush), TC-06 (sync blocked), TC-07 (conflict retry + merge), TC-08 (deletion merge with concurrent remote add)
+  - All tests use controlled promise resolution — no real timeouts
+  - TC-04 (existing busy lock test) unchanged — regression-safe
 
 ### TASK-05: Validation checkpoint and rollout
 - **Type:** CHECKPOINT
@@ -312,6 +342,11 @@ Chosen now: Option A first, Option B only if Option A fails acceptance criteria.
   - Verify Edit flow (append image to existing item)
   - Verify sync remains disabled until autosave settled
 - **Documentation impact:** plan.md updated with build evidence
+- **Build evidence (2026-03-06):**
+  - Status: Complete (2026-03-06)
+  - Horizon assumptions validated: all TASK-01–04 acceptance criteria met; typecheck clean; lint clean; no downstream tasks
+  - Rollout checklist: CI run will exercise all new tests; no regressions in existing test suite detected locally
+  - No topology changes required
 
 ## Inherited Outcome Contract
 - **Why:** Prevent uploaded image keys from being lost during rapid consecutive uploads.

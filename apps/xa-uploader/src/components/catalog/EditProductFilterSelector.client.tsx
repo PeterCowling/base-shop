@@ -7,7 +7,7 @@ import type { CatalogProductDraftInput } from "@acme/lib/xa";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 import { type EditFilterCriteria, type EditFilterOptions, extractFilterOptions, filterCatalogProducts } from "./catalogEditFilter";
-import { FIELD_LABEL_CLASS, SELECT_CLASS } from "./catalogStyles";
+import { BTN_SECONDARY_CLASS, FIELD_LABEL_CLASS, SELECT_CLASS, SKELETON_BLOCK_CLASS } from "./catalogStyles";
 
 /** True when the compact product list should render (filters exhausted but multiple matches remain). */
 function shouldShowProductList(
@@ -25,6 +25,7 @@ function shouldShowProductList(
 
 type EditProductFilterSelectorProps = {
   products: CatalogProductDraftInput[];
+  isLoading?: boolean;
   onSelect: (product: CatalogProductDraftInput) => void;
   onNew: () => void;
 };
@@ -66,10 +67,202 @@ function ProductCompactList({
   );
 }
 
-export function EditProductFilterSelector({ products, onSelect, onNew }: EditProductFilterSelectorProps) {
+function FilterLoadingSkeleton() {
+  return (
+    <div className="space-y-3" aria-busy="true">
+      <div className={`h-9 w-full ${SKELETON_BLOCK_CLASS}`} />
+      <div className={`h-4 w-3/4 ${SKELETON_BLOCK_CLASS}`} />
+      <div className={`h-9 w-full ${SKELETON_BLOCK_CLASS}`} />
+      <div className={`h-9 w-full ${SKELETON_BLOCK_CLASS}`} />
+    </div>
+  );
+}
+
+type FilterSelectPanelProps = {
+  criteria: EditFilterCriteria;
+  options: ReturnType<typeof extractFilterOptions>;
+  filtered: CatalogProductDraftInput[];
+  onSelect: (product: CatalogProductDraftInput) => void;
+  onReset: () => void;
+  onBrandChange: (value: string) => void;
+  onCollectionChange: (value: string) => void;
+  onSizeChange: (value: string) => void;
+  onColorChange: (value: string) => void;
+  t: ReturnType<typeof useUploaderI18n>["t"];
+};
+
+function FilterSelectPanel({
+  criteria,
+  options,
+  filtered,
+  onSelect,
+  onReset,
+  onBrandChange,
+  onCollectionChange,
+  onSizeChange,
+  onColorChange,
+  t,
+}: FilterSelectPanelProps) {
+  const showCollection = !!criteria.brand && options.collections.length > 1;
+  const showSize = !!criteria.collection && options.sizes.length > 1;
+  const showColor = !!criteria.size && options.colors.length > 1;
+  const showProductList = shouldShowProductList(criteria, options, filtered.length);
+
+  return (
+    <>
+      <div className="flex items-center justify-between">
+        <div className="text-xs font-semibold uppercase tracking-label-lg text-gate-accent">
+          {t("editFilterTitle")}
+        </div>
+        {criteria.brand ? (
+          <button
+            type="button"
+            onClick={onReset}
+            className="inline-flex min-h-11 min-w-11 items-center justify-center px-2 text-xs text-gate-muted transition-colors hover:text-gate-ink"
+          >
+            {t("editFilterReset")}
+          </button>
+        ) : null}
+      </div>
+
+      <label className={FIELD_LABEL_CLASS}>
+        {t("fieldBrandSelect")}
+        <select
+          value={criteria.brand ?? ""}
+          onChange={(e) => onBrandChange(e.target.value)}
+          className={SELECT_CLASS}
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+          data-testid="edit-filter-brand"
+        >
+          <option value="">{t("editFilterAllBrands")}</option>
+          {options.brands.map((b) => (
+            <option key={b} value={b}>
+              {b === "__custom__" ? t("fieldBrandSelectCustom") : b}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      {showCollection ? (
+        <label className={FIELD_LABEL_CLASS}>
+          {t("fieldCollectionSelect")}
+          <select
+            value={criteria.collection ?? ""}
+            onChange={(e) => onCollectionChange(e.target.value)}
+            className={SELECT_CLASS}
+            // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+            data-testid="edit-filter-collection"
+          >
+            <option value="">{t("editFilterAllCollections")}</option>
+            {options.collections.map((c) => (
+              <option key={c} value={c}>
+                {c === "__custom__" ? t("fieldCollectionSelectCustom") : c}
+              </option>
+            ))}
+          </select>
+        </label>
+      ) : null}
+
+      {showSize ? (
+        <label className={FIELD_LABEL_CLASS}>
+          {t("fieldSizeSelect")}
+          <select
+            value={criteria.size ?? ""}
+            onChange={(e) => onSizeChange(e.target.value)}
+            className={SELECT_CLASS}
+            // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+            data-testid="edit-filter-size"
+          >
+            <option value="">{t("editFilterAllSizes")}</option>
+            {options.sizes.map((s) => (
+              <option key={s} value={s}>{s}</option>
+            ))}
+          </select>
+        </label>
+      ) : null}
+
+      {showColor ? (
+        <label className={FIELD_LABEL_CLASS}>
+          {t("editFilterColor")}
+          <select
+            value={criteria.color ?? ""}
+            onChange={(e) => onColorChange(e.target.value)}
+            className={SELECT_CLASS}
+            // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+            data-testid="edit-filter-color"
+          >
+            <option value="">{t("editFilterAllColors")}</option>
+            {options.colors.map((c) => (
+              <option key={c} value={c}>{c}</option>
+            ))}
+          </select>
+        </label>
+      ) : null}
+
+      {showProductList ? (
+        <ProductCompactList products={filtered} onSelect={onSelect} t={t} />
+      ) : null}
+
+      {criteria.brand && filtered.length === 0 ? (
+        <div className="text-sm text-gate-muted">{t("editFilterNoMatches")}</div>
+      ) : null}
+    </>
+  );
+}
+
+function BrowseAllProductList({
+  products,
+  onSelect,
+  onHide,
+  t,
+}: {
+  products: CatalogProductDraftInput[];
+  onSelect: (product: CatalogProductDraftInput) => void;
+  onHide: () => void;
+  t: ReturnType<typeof useUploaderI18n>["t"];
+}) {
+  return (
+    <div className="space-y-2">
+      <button
+        type="button"
+        onClick={onHide}
+        className={`w-full min-h-11 min-w-11 ${BTN_SECONDARY_CLASS}`}
+        // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+        data-testid="edit-filter-hide-all"
+      >
+        {t("editFilterHideAll")}
+      </button>
+      {/* eslint-disable-next-line ds/no-arbitrary-tailwind -- XAUP-0001 operator-tool max height */}
+      <ul className="max-h-[320px] space-y-1 overflow-y-auto">
+        {products.map((p) => (
+          <li key={p.slug ?? p.title}>
+            <button
+              type="button"
+              onClick={() => {
+                onSelect(p);
+                onHide();
+              }}
+              className="w-full min-h-11 min-w-11 rounded-md border border-gate-border px-3 py-2 text-start text-sm text-gate-ink transition-colors hover:border-gate-accent hover:bg-gate-accent-soft"
+              data-testid={`edit-filter-product-all-${p.slug}`}
+            >
+              <span className="block font-medium">{p.title || p.slug}</span>
+              {/* i18n-exempt -- XAUP-0001 [ttl=2027-03-06] placeholder glyph for missing taxonomy handles */}
+              <span className="block text-xs text-gate-muted">
+                {p.brandHandle || "—"}/{p.collectionHandle || "—"}
+              </span>
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export function EditProductFilterSelector({ products, isLoading, onSelect, onNew }: EditProductFilterSelectorProps) {
   const { t } = useUploaderI18n();
 
   const [criteria, setCriteria] = React.useState<EditFilterCriteria>({});
+  const [showAll, setShowAll] = React.useState(false);
 
   const filtered = React.useMemo(
     () => filterCatalogProducts(products, criteria),
@@ -138,6 +331,7 @@ export function EditProductFilterSelector({ products, onSelect, onNew }: EditPro
 
   const handleReset = React.useCallback(() => {
     setCriteria({});
+    setShowAll(false);
     onNew();
   }, [onNew]);
 
@@ -151,6 +345,8 @@ export function EditProductFilterSelector({ products, onSelect, onNew }: EditPro
       handleColorChange(options.colors[0]);
     }
   }, [criteria, options, handleCollectionChange, handleSizeChange, handleColorChange]);
+
+  if (isLoading) return <FilterLoadingSkeleton />;
 
   if (products.length === 0) {
     return (
@@ -167,11 +363,6 @@ export function EditProductFilterSelector({ products, onSelect, onNew }: EditPro
     );
   }
 
-  const showCollection = !!criteria.brand && options.collections.length > 1;
-  const showSize = !!criteria.collection && options.sizes.length > 1;
-  const showColor = !!criteria.size && options.colors.length > 1;
-  const showProductList = shouldShowProductList(criteria, options, filtered.length);
-
   return (
     <div className="space-y-3">
       <button
@@ -182,108 +373,39 @@ export function EditProductFilterSelector({ products, onSelect, onNew }: EditPro
         {t("sidebarNewProduct")}
       </button>
 
-      <div className="flex items-center justify-between">
-        <div className="text-xs font-semibold uppercase tracking-label-lg text-gate-accent">
-          {t("editFilterTitle")}
-        </div>
-        {criteria.brand ? (
-          <button
-            type="button"
-            onClick={handleReset}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center px-2 text-xs text-gate-muted transition-colors hover:text-gate-ink"
-          >
-            {t("editFilterReset")}
-          </button>
-        ) : null}
-      </div>
-
-      {/* Brand select */}
-      <label className={FIELD_LABEL_CLASS}>
-        {t("fieldBrandSelect")}
-        <select
-          value={criteria.brand ?? ""}
-          onChange={(e) => handleBrandChange(e.target.value)}
-          className={SELECT_CLASS}
+      {!showAll ? (
+        <button
+          type="button"
+          onClick={() => setShowAll(true)}
+          className={`w-full min-h-11 min-w-11 ${BTN_SECONDARY_CLASS}`}
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-          data-testid="edit-filter-brand"
+          data-testid="edit-filter-show-all"
         >
-          <option value="">{t("editFilterAllBrands")}</option>
-          {options.brands.map((b) => (
-            <option key={b} value={b}>
-              {b === "__custom__" ? t("fieldBrandSelectCustom") : b}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      {/* Collection select */}
-      {showCollection ? (
-        <label className={FIELD_LABEL_CLASS}>
-          {t("fieldCollectionSelect")}
-          <select
-            value={criteria.collection ?? ""}
-            onChange={(e) => handleCollectionChange(e.target.value)}
-            className={SELECT_CLASS}
-            // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-            data-testid="edit-filter-collection"
-          >
-            <option value="">{t("editFilterAllCollections")}</option>
-            {options.collections.map((c) => (
-              <option key={c} value={c}>
-                {c === "__custom__" ? t("fieldCollectionSelectCustom") : c}
-              </option>
-            ))}
-          </select>
-        </label>
+          {t("editFilterShowAll")}
+        </button>
       ) : null}
 
-      {/* Size select */}
-      {showSize ? (
-        <label className={FIELD_LABEL_CLASS}>
-          {t("fieldSizeSelect")}
-          <select
-            value={criteria.size ?? ""}
-            onChange={(e) => handleSizeChange(e.target.value)}
-            className={SELECT_CLASS}
-            // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-            data-testid="edit-filter-size"
-          >
-            <option value="">{t("editFilterAllSizes")}</option>
-            {options.sizes.map((s) => (
-              <option key={s} value={s}>{s}</option>
-            ))}
-          </select>
-        </label>
-      ) : null}
-
-      {/* Color select */}
-      {showColor ? (
-        <label className={FIELD_LABEL_CLASS}>
-          {t("editFilterColor")}
-          <select
-            value={criteria.color ?? ""}
-            onChange={(e) => handleColorChange(e.target.value)}
-            className={SELECT_CLASS}
-            // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-            data-testid="edit-filter-color"
-          >
-            <option value="">{t("editFilterAllColors")}</option>
-            {options.colors.map((c) => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
-        </label>
-      ) : null}
-
-      {/* Compact product list for remaining matches */}
-      {showProductList ? (
-        <ProductCompactList products={filtered} onSelect={onSelect} t={t} />
-      ) : null}
-
-      {/* Status line */}
-      {criteria.brand && filtered.length === 0 ? (
-        <div className="text-sm text-gate-muted">{t("editFilterNoMatches")}</div>
-      ) : null}
+      {showAll ? (
+        <BrowseAllProductList
+          products={products}
+          onSelect={onSelect}
+          onHide={() => setShowAll(false)}
+          t={t}
+        />
+      ) : (
+        <FilterSelectPanel
+          criteria={criteria}
+          options={options}
+          filtered={filtered}
+          onSelect={onSelect}
+          onReset={handleReset}
+          onBrandChange={handleBrandChange}
+          onCollectionChange={handleCollectionChange}
+          onSizeChange={handleSizeChange}
+          onColorChange={handleColorChange}
+          t={t}
+        />
+      )}
     </div>
   );
 }

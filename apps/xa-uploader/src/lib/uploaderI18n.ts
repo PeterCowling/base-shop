@@ -380,6 +380,9 @@ const messages = {
     editFilterNoMatches: "No products match these filters.",
     editFilterMatchCount: "{count} products match",
     editFilterSelectProduct: "Select a product to edit",
+    editFilterShowAll: "Show all products",
+    editFilterHideAll: "Back to filter",
+    screenCatalog: "Catalog",
 
     currencyRatesTitle: "Currency rates",
     currencyRatesSubtitle:
@@ -841,6 +844,9 @@ const messages = {
     editFilterNoMatches: "没有商品匹配这些筛选条件。",
     editFilterMatchCount: "{count} 个商品匹配",
     editFilterSelectProduct: "选择要编辑的商品",
+    editFilterShowAll: "显示全部商品",
+    editFilterHideAll: "返回筛选",
+    screenCatalog: "商品目录",
 
     currencyRatesTitle: "汇率设置",
     currencyRatesSubtitle:

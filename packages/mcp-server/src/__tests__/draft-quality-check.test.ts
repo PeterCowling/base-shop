@@ -52,10 +52,29 @@ describe("draft_quality_check", () => {
       questions: [{ text: "What time is check-in?" }],
     },
     workflow_triggers: {
-      booking_monitor: true,
+      booking_action_required: false,
+      booking_context: false,
     },
     scenario: {
       category: "faq",
+    },
+    thread_summary: {
+      prior_commitments: ["Breakfast is included"],
+    },
+  };
+
+  const bookingActionPlan = {
+    language: "EN" as const,
+    intents: {
+      questions: [{ text: "Can you confirm my booking?" }],
+      requests: [{ text: "Please confirm my booking" }],
+    },
+    workflow_triggers: {
+      booking_action_required: true,
+      booking_context: true,
+    },
+    scenario: {
+      category: "booking-issues",
     },
     thread_summary: {
       prior_commitments: ["Breakfast is included"],
@@ -88,7 +107,7 @@ describe("draft_quality_check", () => {
 
   it("TC-03: missing required link triggers failed check", async () => {
     const result = await handleDraftQualityTool("draft_quality_check", {
-      actionPlan: baseActionPlan,
+      actionPlan: bookingActionPlan,
       draft: {
         bodyPlain: "Check-in is at 3pm. Best regards, Hostel Brikette",
         bodyHtml: "<p>Check-in is at 3pm</p>",
@@ -100,7 +119,7 @@ describe("draft_quality_check", () => {
 
   it("TC-04: missing signature triggers failed check", async () => {
     const result = await handleDraftQualityTool("draft_quality_check", {
-      actionPlan: baseActionPlan,
+      actionPlan: bookingActionPlan,
       draft: {
         bodyPlain: `Check-in is at 3pm. ${CANONICAL_REFERENCE_URL}`,
         bodyHtml: "<p>Check-in is at 3pm</p>",
@@ -112,7 +131,7 @@ describe("draft_quality_check", () => {
 
   it("TC-04b: HTML signature block satisfies signature check", async () => {
     const result = await handleDraftQualityTool("draft_quality_check", {
-      actionPlan: baseActionPlan,
+      actionPlan: bookingActionPlan,
       draft: {
         bodyPlain: `Check-in is at 3pm. ${CANONICAL_REFERENCE_URL}`,
         bodyHtml:
@@ -125,7 +144,7 @@ describe("draft_quality_check", () => {
 
   it("TC-05: missing html/plaintext triggers failed check", async () => {
     const result = await handleDraftQualityTool("draft_quality_check", {
-      actionPlan: baseActionPlan,
+      actionPlan: bookingActionPlan,
       draft: {
         bodyPlain: `Check-in is at 3pm. ${CANONICAL_REFERENCE_URL} Best regards, Hostel Brikette`,
       },
@@ -136,7 +155,7 @@ describe("draft_quality_check", () => {
 
   it("TC-06: length rule yields warning", async () => {
     const result = await handleDraftQualityTool("draft_quality_check", {
-      actionPlan: baseActionPlan,
+      actionPlan: bookingActionPlan,
       draft: {
         bodyPlain: `Short. Best regards, Hostel Brikette ${CANONICAL_REFERENCE_URL}`,
         bodyHtml: "<p>Short</p>",
@@ -154,7 +173,10 @@ describe("draft_quality_check", () => {
           questions: [],
           requests: [{ text: "Please let us know if 3 guests are allowed in the room" }],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "faq" },
       },
       draft: {
@@ -176,7 +198,10 @@ describe("draft_quality_check", () => {
           questions: [],
           requests: [{ text: "Please confirm the room capacity for 3 guests" }],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "faq" },
       },
       draft: {
@@ -198,7 +223,10 @@ describe("draft_quality_check", () => {
           questions: [],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "faq" },
       },
       draft: {
@@ -268,7 +296,10 @@ describe("draft_quality_check TASK-05 reference applicability", () => {
           questions: [{ text: "What time is check-in?" }],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "check-in" },
       },
       draft: {
@@ -288,7 +319,10 @@ describe("draft_quality_check TASK-05 reference applicability", () => {
           questions: [{ text: "What time is check-in?" }],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "check-in" },
       },
       draft: {
@@ -309,7 +343,10 @@ describe("draft_quality_check TASK-05 reference applicability", () => {
           questions: [{ text: "Can you confirm prepayment attempt status?" }],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "prepayment" },
       },
       draft: {
@@ -332,7 +369,10 @@ describe("draft_quality_check TASK-05 reference applicability", () => {
           questions: [{ text: "What time is check-in?" }],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "check-in" },
       },
       draft: {
@@ -358,7 +398,10 @@ describe("draft_quality_check TASK-05", () => {
           ],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "check-in" },
       },
       draft: {
@@ -385,7 +428,10 @@ describe("draft_quality_check TASK-05", () => {
           ],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "faq" },
       },
       draft: {
@@ -412,7 +458,10 @@ describe("draft_quality_check TASK-05", () => {
           questions: [{ text: "Can you confirm airport transfer service availability?" }],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "transportation" },
       },
       draft: {
@@ -435,7 +484,10 @@ describe("draft_quality_check TASK-05", () => {
           questions: [{ text: "Can we check in early?" }],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "check-in" },
         thread_summary: {
           prior_commitments: ["We will arrange early check-in for your stay."],
@@ -460,7 +512,10 @@ describe("draft_quality_check TASK-05", () => {
           questions: [{ text: "Is breakfast available?" }],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "breakfast" },
         thread_summary: {
           prior_commitments: ["Breakfast is available every morning."],
@@ -485,7 +540,10 @@ describe("draft_quality_check TASK-05", () => {
           questions: [{ text: "Can we get luggage storage?" }],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "luggage" },
         thread_summary: {
           prior_commitments: ["We can provide luggage storage before check-in."],
@@ -517,7 +575,10 @@ describe("draft_quality_check TASK-05", () => {
       actionPlan: {
         language: "EN" as const,
         intents: { questions, requests: [] },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "faq" },
       },
       draft: {
@@ -552,7 +613,10 @@ describe("draft_quality_check TASK-05", () => {
           questions: [{ text: "What time is check-in?" }],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "check-in" },
       },
       draft: {

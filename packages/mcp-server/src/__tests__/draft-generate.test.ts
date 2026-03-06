@@ -124,7 +124,8 @@ const baseActionPlan = {
     additional_content: false,
   },
   workflow_triggers: {
-    booking_monitor: true,
+    booking_action_required: false,
+    booking_context: false,
     prepayment: false,
     terms_and_conditions: false,
   },
@@ -1000,7 +1001,7 @@ describe("draft_generate tool TASK-02", () => {
 describe("draft_generate tool TASK-06 — per-question composite ranking", () => {
   beforeEach(setupDraftGenerateMocks);
 
-  it("TC-06-01: two questions mapping to same template deduplicate to composite: false", async () => {
+  it("TC-06-01: two questions mapping to the same template still produce atomic multipart blocks", async () => {
     readFileMock.mockResolvedValue(
       JSON.stringify([
         {
@@ -1031,7 +1032,16 @@ describe("draft_generate tool TASK-06 — per-question composite ranking", () =>
     }
 
     const payload = JSON.parse(result.content[0].text);
-    expect(payload.composite).toBe(false);
+    expect(payload.composite).toBe(true);
+    expect(payload.question_blocks).toHaveLength(2);
+    expect(payload.question_blocks[0].template_subject).toBe(
+      "Luggage Storage — Before Check-in"
+    );
+    expect(payload.question_blocks[1].template_subject).toBe(
+      "Luggage Storage — Before Check-in"
+    );
+    expect(payload.draft.bodyPlain).toContain("1.");
+    expect(payload.draft.bodyPlain).toContain("2.");
   });
 
   it("TC-06-02: two questions mapping to distinct templates produce composite: true", async () => {
@@ -1071,9 +1081,12 @@ describe("draft_generate tool TASK-06 — per-question composite ranking", () =>
 
     const payload = JSON.parse(result.content[0].text);
     expect(payload.composite).toBe(true);
+    expect(payload.question_blocks).toHaveLength(2);
     const body = payload.draft.bodyPlain.toLowerCase();
     expect(body).toContain("breakfast");
     expect(body).toContain("wifi");
+    expect(body).toContain("1.");
+    expect(body).toContain("2.");
   });
 
   it("TC-06-03: composite body has exactly one greeting and no trailing signature", async () => {
@@ -1117,6 +1130,45 @@ describe("draft_generate tool TASK-06 — per-question composite ranking", () =>
     const signatureCount = (body.match(/\bBest regards\b/gi) ?? []).length;
     expect(dearCount).toBe(1);
     expect(signatureCount).toBe(0);
+  });
+
+  it("TC-06-04: multipart draft records per-question follow-up when a block remains unresolved", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Breakfast — Eligibility and Hours",
+          body: "Dear Guest,\r\n\r\nBreakfast is served daily from 8:00 AM to 10:30 AM.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "breakfast",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Is breakfast included? Do you have a rooftop pool?",
+        intents: {
+          questions: [
+            { text: "Is breakfast included?" },
+            { text: "Do you have a rooftop pool?" },
+          ],
+          requests: [],
+          confirmations: [],
+        },
+      },
+      subject: "Questions",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.composite).toBe(true);
+    expect(payload.question_blocks).toHaveLength(2);
+    expect(payload.question_blocks[1].follow_up_required).toBe(true);
+    expect(payload.draft.bodyPlain).toContain(
+      "Pete or Cristiana will follow up with you directly"
+    );
   });
 });
 

@@ -24,7 +24,8 @@ const testPlan = {
   workflow_triggers: {
     prepayment: false,
     terms_and_conditions: false,
-    booking_monitor: false
+    booking_action_required: false,
+    booking_context: false
   },
   scenario: {
     category: "faq",

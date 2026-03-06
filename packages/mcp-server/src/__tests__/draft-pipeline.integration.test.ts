@@ -395,7 +395,10 @@ describe("TASK-09: Known Regression Detection", () => {
       actionPlan: {
         language: "EN",
         intents: { questions: [] },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "faq" },
         thread_summary: { prior_commitments: [] },
       },

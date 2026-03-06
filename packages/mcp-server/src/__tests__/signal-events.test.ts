@@ -43,7 +43,10 @@ describe("TASK-02: TC-04 draft_refine without draft_id returns validation error"
     language: "EN" as const,
     intents: { questions: [], requests: [] },
     scenario: { category: "faq" },
-    workflow_triggers: { booking_monitor: false },
+    workflow_triggers: {
+      booking_action_required: false,
+      booking_context: false,
+    },
   };
 
   it("returns error when draft_id is missing", async () => {

@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: API | Infra | UI
 Workstream: Engineering
 Created: 2026-03-06
@@ -26,11 +26,11 @@ Four confirmed security findings in the Prime guest portal require fixing before
 
 ## Active tasks
 
-- [ ] TASK-01: Fix fail-open network_error → fail-closed in portal and guarded layout
-- [ ] TASK-02: Add session token validation, rate limit, and crypto fix to /api/check-in-code
-- [ ] TASK-03: Firebase Security Rules audit for checkInCodes/ and guestSessionsByToken/
-- [ ] CHECKPOINT-04: Verify Wave 1 before cookie migration
-- [ ] TASK-05: Migrate guest session token from localStorage to HttpOnly cookie
+- [x] TASK-01: Fix fail-open network_error → fail-closed in portal and guarded layout
+- [x] TASK-02: Add session token validation, rate limit, and crypto fix to /api/check-in-code
+- [x] TASK-03: Firebase Security Rules audit for checkInCodes/ and guestSessionsByToken/
+- [x] CHECKPOINT-04: Verify Wave 1 before cookie migration
+- [x] TASK-05: Migrate guest session token from localStorage to HttpOnly cookie
 
 ## Goals
 
@@ -94,11 +94,11 @@ Four confirmed security findings in the Prime guest portal require fixing before
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Fix fail-open network_error → fail-closed in portal + guarded layout | 90% | S | Pending | - | CHECKPOINT-04 |
-| TASK-02 | IMPLEMENT | Add auth validation + rate limit + crypto fix to /api/check-in-code | 85% | M | Pending | - | CHECKPOINT-04 |
-| TASK-03 | INVESTIGATE | Firebase Security Rules audit for checkInCodes/ + guestSessionsByToken/ | 80% | S | Pending | - | CHECKPOINT-04 |
-| CHECKPOINT-04 | CHECKPOINT | Verify Wave 1 before cookie migration | — | — | Pending | TASK-01, TASK-02, TASK-03 | TASK-05 |
-| TASK-05 | IMPLEMENT | Migrate guest session token from localStorage to HttpOnly cookie | 75% | L | Pending | CHECKPOINT-04 | - |
+| TASK-01 | IMPLEMENT | Fix fail-open network_error → fail-closed in portal + guarded layout | 90% | S | Complete (2026-03-06) | - | CHECKPOINT-04 |
+| TASK-02 | IMPLEMENT | Add auth validation + rate limit + crypto fix to /api/check-in-code | 85% | M | Complete (2026-03-06) | - | CHECKPOINT-04 |
+| TASK-03 | INVESTIGATE | Firebase Security Rules audit for checkInCodes/ + guestSessionsByToken/ | 80% | S | Complete (2026-03-06) | - | CHECKPOINT-04 |
+| CHECKPOINT-04 | CHECKPOINT | Verify Wave 1 before cookie migration | — | — | Complete (2026-03-06) | TASK-01, TASK-02, TASK-03 | TASK-05 |
+| TASK-05 | IMPLEMENT | Migrate guest session token from localStorage to HttpOnly cookie | 75% | L | Complete (2026-03-06) | CHECKPOINT-04 | - |
 
 ## Parallelism Guide
 
@@ -126,7 +126,8 @@ Four confirmed security findings in the Prime guest portal require fixing before
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-06)
+- **Build evidence:** Committed in `e9108519a5` (Wave 1). `network_error` branch removed from `portal/page.tsx` and `(guarded)/layout.tsx`; `status === 'network_error'` now shows retry UI (fail-closed). Lint 0 errors, typecheck clean.
 - **Affects:** `apps/prime/src/app/portal/page.tsx`, `apps/prime/src/app/(guarded)/layout.tsx`, `[readonly] apps/prime/src/lib/auth/guestSessionGuard.ts`
 - **Depends on:** -
 - **Blocks:** CHECKPOINT-04
@@ -180,7 +181,8 @@ Four confirmed security findings in the Prime guest portal require fixing before
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-06)
+- **Build evidence:** Committed in `e9108519a5` (Wave 1). Bearer token auth + KV rate limit added to `/api/check-in-code` GET and POST; `generateCode()` replaced with `crypto.getRandomValues()`; `useCheckInCode.ts` forwards Authorization header. Lint 0 errors, typecheck clean.
 - **Affects:** `apps/prime/functions/api/check-in-code.ts`, `apps/prime/src/hooks/useCheckInCode.ts`, `[readonly] apps/prime/functions/api/guest-session.ts`, `[readonly] apps/prime/wrangler.toml`
 - **Depends on:** -
 - **Blocks:** CHECKPOINT-04
@@ -245,7 +247,8 @@ Four confirmed security findings in the Prime guest portal require fixing before
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-06)
+- **Build evidence:** Committed in `e9108519a5` (Wave 1). Firebase rules audit artifact written to `task-03-firebase-rules-audit.md`. Rules state documented: `checkInCodes/` and `guestSessionsByToken/` confirmed permissive (open to all authenticated Firebase users); recommended tightened rules recorded in artifact. TASK-05 can proceed independently.
 - **Affects:** `docs/plans/prime-guest-access-hardening/task-03-firebase-rules-audit.md`, `[readonly] apps/prime/src/hooks/pureData/useFetchCheckInCode.ts`
 - **Depends on:** -
 - **Blocks:** CHECKPOINT-04
@@ -275,7 +278,8 @@ Four confirmed security findings in the Prime guest portal require fixing before
 ### CHECKPOINT-04: Verify Wave 1 before cookie migration
 
 - **Type:** CHECKPOINT
-- **Status:** Pending
+- **Status:** Complete (2026-03-06)
+- **Build evidence:** Wave 1 (TASK-01, TASK-02, TASK-03) shipped in `e9108519a5`. Offline UX (fail-closed + retry) confirmed acceptable. Bearer token auth pattern verified in code. Firebase rules state known (permissive). TASK-05 confidence confirmed sufficient (≥75%) to proceed. `/lp-do-replan TASK-05` raised Implementation confidence from 75% → confirmed path clear.
 - **Depends on:** TASK-01, TASK-02, TASK-03
 - **Blocks:** TASK-05
 - **Purpose:** Reassess TASK-05 confidence after TASK-01/02/03 complete. Specifically:
@@ -294,7 +298,8 @@ Four confirmed security findings in the Prime guest portal require fixing before
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
-- **Status:** Pending
+- **Status:** Complete (2026-03-06)
+- **Build evidence:** Committed in `0e8cd553d4`. 22 files changed (185 insertions, 164 deletions). `prime_session` HttpOnly cookie set by `guest-session.ts` POST; all CF Functions read cookie via `parseCookie()` helper; `prime_guest_token` removed from localStorage writes and reads; `guestSessionGuard.ts` updated to omit token; `validateGuestToken()` calls `/api/guest-session` with no token param (cookie auto-sent); `useCheckInCode.ts` Authorization header removed (cookie takes over). Lint 0 errors, typecheck clean.
 - **Affects:**
   - `apps/prime/functions/api/guest-session.ts`
   - `apps/prime/functions/api/find-booking.ts`

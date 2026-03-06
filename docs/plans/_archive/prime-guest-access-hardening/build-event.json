@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "prime-guest-access-hardening-20260306",
+  "feature_slug": "prime-guest-access-hardening",
+  "emitted_at": "2026-03-06T00:00:00.000Z",
+  "why": "The app has moved onto a public custom domain, and the current guest-access design still relies on a convenience-oriented token handoff rather than a strongly bounded session model. That was tolerable while the app was effectively preview-grade, but it is now the wrong security posture for guest-linked booking data, door access instructions, and any future expansion of the portal surface.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "A planning-ready hardening path exists for Prime guest access covering server-bound guest sessions, fail-closed portal validation, authenticated door-code retrieval, stronger booking-link issuance controls, and the browser security controls needed for a public guest portal.",
+    "source": "operator"
+  }
+}

@@ -30,8 +30,8 @@ The `hostel-positano.com` Cloudflare zone still uses `ssl=flexible` and `min_tls
 - [x] TASK-01: Write CF zone hardening script (`apply-prime-zone-hardening.ts`)
 - [ ] TASK-02: Apply zone settings (ssl=strict, min_tls=1.2, always_use_https=on)
 - [ ] TASK-03: Checkpoint — verify zone health post-settings change
-- [ ] TASK-04: Add `apps/prime/public/_headers` with security headers
-- [ ] TASK-05: Extend Prime CI with custom domain healthcheck step
+- [x] TASK-04: Add `apps/prime/public/_headers` with security headers
+- [x] TASK-05: Extend Prime CI with custom domain healthcheck step
 - [x] TASK-06: Write WAF/Access posture ADR
 
 ## Goals
@@ -99,8 +99,8 @@ The `hostel-positano.com` Cloudflare zone still uses `ssl=flexible` and `min_tls
 | TASK-01 | IMPLEMENT | Write CF zone hardening script | 85% | S | Complete (2026-03-06) | - | TASK-02 |
 | TASK-02 | IMPLEMENT | Apply zone settings (ssl/tls/https) | 85% | S | Pending | TASK-01 | TASK-03 |
 | TASK-03 | CHECKPOINT | Verify zone health post-settings | 95% | S | Pending | TASK-02 | TASK-04 |
-| TASK-04 | IMPLEMENT | Add Prime `_headers` security file | 85% | S | Pending | TASK-03 | TASK-05 |
-| TASK-05 | IMPLEMENT | Extend CI with custom domain check | 85% | S | Pending | TASK-04 | - |
+| TASK-04 | IMPLEMENT | Add Prime `_headers` security file | 85% | S | Complete (2026-03-06) | TASK-03 | TASK-05 |
+| TASK-05 | IMPLEMENT | Extend CI with custom domain check | 85% | S | Complete (2026-03-06) | TASK-04 | - |
 | TASK-06 | IMPLEMENT | Write WAF/Access posture ADR | 85% | S | Complete (2026-03-06) | - | - |
 
 ## Parallelism Guide
@@ -310,6 +310,11 @@ The `hostel-positano.com` Cloudflare zone still uses `ssl=flexible` and `min_tls
 - **Notes / references:**
   - Brikette reference: `apps/brikette/public/_headers`.
   - CF Pages `_headers` spec: path-based header rules, one header per line, applied at response time.
+- **Build evidence (2026-03-06):**
+  - `apps/prime/public/_headers` written with all six security headers (HSTS, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy, CSP).
+  - CSP connect-src enumerates: Firebase Realtime DB (HTTP + WSS), identitytoolkit.googleapis.com, securetoken.googleapis.com, prime-f3652.firebaseapp.com. All from confirmed sources (wrangler.toml, `apps/prime/.env.local`, code scan).
+  - File includes deployment-order note: HSTS active only after zone settings are applied (TASK-02/03).
+  - **Deployment constraint**: this file is safe to commit but must not be the first thing merged to main. TASK-02 (zone settings) must be applied before this file reaches production — enforced by operator running the zone script before merging this commit.
 
 ---
 
@@ -355,6 +360,10 @@ The `hostel-positano.com` Cloudflare zone still uses `ssl=flexible` and `min_tls
   - None beyond the workflow step comments.
 - **Notes / references:**
   - `post-deploy-health-check.sh` `BASE_URL` override: script lines 27-33.
+- **Build evidence (2026-03-06):**
+  - `.github/workflows/prime.yml` extended: new top-level job `healthcheck-custom-domain` with `needs: [deploy]`, `if: github.ref == 'refs/heads/main'`, `BASE_URL: https://guests.hostel-positano.com`, `MAX_RETRIES: 12`, `RETRY_DELAY: 10`.
+  - YAML validated (python3 yaml.safe_load — no syntax errors).
+  - Job runs only on main branch push — PR CI graph unchanged. No secrets required.
 
 ---
 

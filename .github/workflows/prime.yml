@@ -64,3 +64,16 @@ jobs:
       healthcheck-extra-routes: ""
       healthcheck-args: "${{ github.ref_name == 'staging' && '--staging' || '' }}"
     secrets: inherit
+
+  healthcheck-custom-domain:
+    needs: [deploy]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Healthcheck guests.hostel-positano.com
+        env:
+          BASE_URL: https://guests.hostel-positano.com
+          MAX_RETRIES: "12"
+          RETRY_DELAY: "10"
+        run: bash scripts/post-deploy-health-check.sh prime

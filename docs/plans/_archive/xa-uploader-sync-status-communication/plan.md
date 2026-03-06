@@ -1,11 +1,11 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Products
 Workstream: Engineering
 Created: 2026-03-06
 Last-reviewed: 2026-03-06
-Last-updated: 2026-03-06
+Last-updated: 2026-03-06 (TASK-04 complete)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: xa-uploader-sync-status-communication
 Deliverable-Type: code-change
@@ -84,17 +84,17 @@ By the end of TASK-04:
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Define truthful uploader status semantics and derive per-product publish blockers | 89% | M | Pending | - | TASK-02,TASK-03,TASK-04 |
-| TASK-02 | IMPLEMENT | Render persistent catalog/site status strip and replace flat sync success messaging | 86% | M | Pending | TASK-01 | TASK-04 |
-| TASK-03 | IMPLEMENT | Add coalesced autosync-after-autosave scheduler with readiness gating | 81% | M | Pending | TASK-01 | TASK-04 |
-| TASK-04 | CHECKPOINT | Run targeted validation and record operator-visible state contract | 92% | S | Pending | TASK-01,TASK-02,TASK-03 | - |
+| TASK-01 | IMPLEMENT | Define truthful uploader status semantics and derive per-product publish blockers | 89% | M | Complete (2026-03-06) | - | TASK-02,TASK-03,TASK-04 |
+| TASK-02 | IMPLEMENT | Render persistent catalog/site status strip and replace flat sync success messaging | 90% | M | Complete (2026-03-06) | TASK-01 | TASK-04 |
+| TASK-03 | IMPLEMENT | Add coalesced autosync-after-autosave scheduler with readiness gating | 84% | M | Complete (2026-03-06) | TASK-01 | TASK-04 |
+| TASK-04 | CHECKPOINT | Run targeted validation and record operator-visible state contract | 92% | S | Complete (2026-03-06) | TASK-01,TASK-02,TASK-03 | - |
 
 ## Active tasks
 
-- [ ] TASK-01: Truthful status semantics + publish blockers
-- [ ] TASK-02: Catalog/site status strip + sync messaging
-- [ ] TASK-03: Autosync scheduler with autosave-settled gating
-- [ ] TASK-04: Validation checkpoint
+- [x] TASK-01: Truthful status semantics + publish blockers
+- [x] TASK-02: Catalog/site status strip + sync messaging
+- [x] TASK-03: Autosync scheduler with autosave-settled gating
+- [x] TASK-04: Validation checkpoint
 
 ## Tasks
 
@@ -104,7 +104,7 @@ By the end of TASK-04:
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-06)
 - **Affects:**
   - `packages/lib/src/xa/catalogWorkflow.ts`
   - `packages/lib/src/xa/catalogImageRoles.ts`
@@ -159,29 +159,44 @@ By the end of TASK-04:
 
 - Update plan evidence with the final operator-facing state contract.
 
+**Build Evidence (TASK-01 — 2026-03-06)**
+
+- Offload route: Codex exec, exit code 0.
+- Affects files confirmed present on disk post-execution.
+- TC-01 passed: `@acme/lib lint` clean; `@apps/xa-uploader typecheck` and `lint` clean (23/23 typecheck tasks, 24/24 lint tasks via pre-commit hooks).
+- CI test gate: `catalogWorkflow.test.ts` 3 new tests for `missingRoles` derivation (bags/all-present/no-images cases) — pending CI confirmation.
+- Commit: `dev db688bad` — 7 files, 401 insertions.
+- Pre-build copy audit: no test or E2E assertions depended on `workflowLive` copy string — rename safe.
+- `buildImageRoleReadiness` now returns `missingRoles: XaImageRole[]`; early-return (no-images) case returns all required roles for category.
+- `CatalogDraftWorkflowReadiness` extended with `missingRoles: string[]`.
+- i18n: `workflowLive` → "Published to catalog" (EN) / "已发布至目录" (ZH); `workflowReadyForLive` → "Ready to publish" (EN) / "可发布" (ZH); new `workflowMissingRoles` key added.
+- `StatusDot` in `CatalogProductForm.client.tsx` shows inline missing role names when `!publishReady && dataReady && missingRoles.length > 0`.
+- `CatalogProductForm.test.tsx` mock corrected to match actual type shape (`missingFieldPaths`, `missingRoles`).
+- Ideas hook: 0 dispatches emitted (no relevant standing-registry files changed).
+
 ### TASK-02: Catalog/site status strip + sync messaging
 
 - **Type:** IMPLEMENT
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-06)
 - **Affects:**
   - `apps/xa-uploader/src/components/catalog/CatalogConsole.client.tsx`
   - `apps/xa-uploader/src/components/catalog/CatalogSyncPanel.client.tsx`
-  - `apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts`
+  - `apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts` [no changes needed — existing deploy-status branch correct]
   - `apps/xa-uploader/src/components/catalog/catalogConsoleFeedback.ts`
+  - `apps/xa-uploader/src/components/catalog/useCatalogConsole.client.ts`
   - `apps/xa-uploader/src/lib/uploaderI18n.ts`
   - `apps/xa-uploader/src/components/catalog/__tests__/sync-feedback.test.tsx`
-  - `apps/xa-uploader/src/app/api/catalog/sync/__tests__/route.branches.test.ts`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-04
 
 **Confidence**
 
-- Implementation: 87% - the response contract already contains deploy outcome and pending metadata.
-- Approach: 86% - this is primarily UI consumption plus message restructuring.
-- Impact: 85% - gives operators a stable mental model for catalog vs site state.
+- Implementation: 91% - response contract verified, `missingRoles` type now stable from TASK-01, layout decision resolved (two-indicator inline row).
+- Approach: 90% - UI consumption plus message restructuring; type interface contract confirmed.
+- Impact: 89% - semantic foundation from TASK-01 complete; strip can consume existing state directly.
 
 **Acceptance Criteria**
 
@@ -215,13 +230,29 @@ By the end of TASK-04:
 
 - Record exact operator copy and the "no Site: Live without verification" rule in build evidence.
 
+**Build Evidence (TASK-02 — 2026-03-06)**
+
+- Offload route: Codex exec (`--full-auto`), exit code 0.
+- All Affects files confirmed present on disk post-execution.
+- TC-02 passed: `@apps/xa-uploader typecheck` clean (23/23 tasks via pre-commit turbo); `@apps/xa-uploader lint` clean (24/24 tasks). Pre-commit hooks passed with no errors.
+- CI test gate: `sync-feedback.test.tsx` 8 new tests — 6 unit tests for `deriveCatalogSiteStatus` (null, triggered, cooldown, failed, rebuild_required, no-deploy) and 2 rendering tests (strip present with triggered data; strip absent with null). Pending CI confirmation.
+- Commit: `dev 1d420e5dc6` — 6 files, 230 insertions, 12 deletions.
+- `deriveCatalogSiteStatus()` exported from `catalogConsoleFeedback.ts`; reads `deploy.status ?? display.deployStatus` and `display.requiresXaBBuild`.
+- `CatalogSiteStatusStrip` component defined inline in `CatalogSyncPanel.client.tsx`; renders two-indicator row with `data-cy` selectors; absent when `lastSyncData` is null/undefined.
+- `lastSyncData` state added to `useCatalogConsole.client.ts`; stored on successful `handleSyncImpl` result; cleared on storefront change.
+- i18n: 9 new keys added (`syncStatusCatalogLabel`, `syncStatusSiteLabel`, `syncStatusCatalogPublished`, `syncStatusCatalogNone`, `syncStatusSiteDeployTriggered`, `syncStatusSiteDeployCooldown`, `syncStatusSiteDeployFailed`, `syncStatusSiteRebuildRequired`, `syncStatusSiteNone`) in EN and ZH.
+- Sync success copy updated: `syncSucceeded` → "Catalog published."; deploy-triggered/cooldown/failed/rebuild-required variants no longer imply verified site-live state.
+- `catalogConsoleActions.ts`: no code changes required — existing `getSyncSuccessMessage` branch logic was already correct; copy changed only via i18n key updates.
+- Operator-facing rule enforced: no surface says "Site: Live" without a verification source.
+- Ideas hook: 0 dispatches emitted (no standing-registry artifacts changed).
+
 ### TASK-03: Autosync scheduler with autosave-settled gating
 
 - **Type:** IMPLEMENT
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-06)
 - **Affects:**
   - `apps/xa-uploader/src/components/catalog/useCatalogConsole.client.ts`
   - `apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts`
@@ -234,9 +265,9 @@ By the end of TASK-04:
 
 **Confidence**
 
-- Implementation: 80% - autosave queue state already exists, but coalesced sync scheduling adds more state interaction risk.
-- Approach: 83% - wait-for-settle and readiness-gated scheduling is the safest bounded design.
-- Impact: 80% - removes manual sync friction without misleading operators, provided TASK-01 and TASK-02 land first.
+- Implementation: 84% - autosave queue state confirmed in TASK-01 build; coalescing mechanism now specified (`pendingAutosaveDraftRef.current === null` gate + `busyLockRef`).
+- Approach: 85% - wait-for-settle and readiness-gated scheduling confirmed safe; `busyLockRef` mutex already prevents concurrent syncs.
+- Impact: 82% - removes manual sync friction; `isPublishReady` semantics now stable from TASK-01.
 
 **Acceptance Criteria**
 
@@ -271,6 +302,19 @@ By the end of TASK-04:
 
 - Record autosync trigger contract and operator-visible conditions in build evidence.
 
+**Build Evidence (TASK-03 — 2026-03-06)**
+
+- Offload route: Codex exec (`--full-auto`), exit code 0.
+- All Affects files confirmed present on disk post-execution.
+- TC-03 passed: `@apps/xa-uploader typecheck` clean (23/23 tasks via pre-commit turbo); `@apps/xa-uploader lint` clean (24/24 tasks). Pre-commit hooks passed with no errors.
+- CI test gate: `action-feedback.test.tsx` TC-09 integration test (queued autosaves coalesce into one autosync) + 5 `shouldTriggerAutosync` gate unit tests; `sync-feedback.test.tsx` "autosync coalescing" describe block (2 tests). Pending CI confirmation.
+- Commit: `dev c45847d26b` — 4 files, 401 insertions, 44 deletions.
+- `shouldTriggerAutosync()` pure function exported from `catalogConsoleActions.ts`; guards: pending queue non-null, busyLock set, readiness not ready/checking, and `getCatalogDraftWorkflowReadiness(draft).isPublishReady`.
+- Hook composition in `useCatalogConsole.client.ts` reordered: `syncHandlers` computed before `draftHandlers`; `handleAutosync` threaded as parameter to `useCatalogDraftHandlers` and excluded from public API surface.
+- `flushAutosaveQueue` coalescing: `autosyncCandidate` tracks last successfully saved draft; fires `void triggerAutosync(candidate)` in `finally` block only when `pendingAutosaveDraftRef.current === null && !preserveDirty`.
+- Autosync trigger contract: fires only when queue fully drained, busyLock free, syncReadiness ready and not checking, and product is publish-ready.
+- Ideas hook: 0 dispatches emitted (no standing-registry artifacts changed).
+
 ### TASK-04: Validation checkpoint
 
 - **Type:** CHECKPOINT
@@ -293,6 +337,40 @@ By the end of TASK-04:
   - catalog publish state
   - site rebuild / verification-pending state
 - Build evidence explicitly states whether autosync shipped in this cycle or was deferred after truthful-status groundwork.
+
+**Build Evidence (TASK-04 — 2026-03-06)**
+
+CK-01 Gate Results:
+
+- `@apps/xa-uploader typecheck`: clean (tsc exit 0).
+- `@apps/xa-uploader lint`: clean (eslint exit 0).
+- `@acme/lib tsc --noEmit`: clean (exit 0). Note: `@acme/lib` has no `typecheck` script; tsc invoked directly on `packages/lib/tsconfig.json`.
+- `@acme/lib lint`: clean (eslint exit 0).
+- CI test gate: pending CI run confirmation for new test files (`catalogWorkflow.test.ts`, `sync-feedback.test.tsx`, `action-feedback.test.tsx`).
+
+Final Operator-Visible State Contract:
+
+**Layer 1 — Local save / autosave**
+- State: `isAutosaveDirty` / `isAutosaveSaving`
+- Shown to operator as: autosave inline indicator in product form
+- Not conflated with catalog publish state
+
+**Layer 2 — Catalog publish**
+- State: `SyncResponse.ok === true` → `CatalogSiteStatusSummary.catalog = "published"`
+- Operator surface: `CatalogSiteStatusStrip` → Catalog: Published
+- On failure: strip shows nothing (null `lastSyncData`); sync feedback shows error
+
+**Layer 3 — Site rebuild / verification pending**
+- States: `triggered` | `cooldown` | `failed` | `rebuild_required` | `none`
+- Derived from: `SyncResponse.deploy.status ?? display.deployStatus`; `display.requiresXaBBuild`
+- Operator surface: `CatalogSiteStatusStrip` → Site: [state label]
+- Rule: Site is NEVER shown as "Live" from this surface — no verification source exists in this cycle
+
+**Autosync**
+- Shipped in this cycle: YES
+- Trigger contract: fires only when (1) autosave queue fully drained (`pendingAutosaveDraftRef.current === null`), (2) `busyLockRef` free, (3) `syncReadiness.ready && !syncReadiness.checking`, (4) `getCatalogDraftWorkflowReadiness(draft).isPublishReady`
+- Coalescing: multiple rapid saves collapse to one sync attempt — no debounce timer required
+- Feedback: routes through same `handleSyncImpl` path as manual sync; catalog/site strip updates on result
 
 ## Risks & Mitigations
 

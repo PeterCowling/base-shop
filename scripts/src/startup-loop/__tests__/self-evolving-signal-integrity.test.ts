@@ -1,10 +1,15 @@
-import { describe, expect, it } from "@jest/globals";
+import * as fs from "node:fs";
+import * as os from "node:os";
+import * as path from "node:path";
+
+import { afterEach, beforeEach, describe, expect, it } from "@jest/globals";
 
 import type { TrialDispatchPacket } from "../ideas/lp-do-ideas-trial.js";
 import type { StartupState } from "../self-evolving/self-evolving-contracts.js";
 import {
   extractBulletCandidates,
   extractPatternReflectionSeeds,
+  runSelfEvolvingFromBuildOutput,
 } from "../self-evolving/self-evolving-from-build-output.js";
 import { dispatchToMetaObservation } from "../self-evolving/self-evolving-from-ideas.js";
 import {
@@ -189,5 +194,244 @@ None identified.
     expect(snapshot.sources.headcount).toBe("unknown");
     expect(snapshot.sources.operational_complexity_score).toBe("inferred");
     expect(snapshot.signals.operational_complexity_score).toBeGreaterThanOrEqual(5);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TASK-05: sidecar-prefer branch TCs for runSelfEvolvingFromBuildOutput
+// ---------------------------------------------------------------------------
+
+describe("self-evolving sidecar-prefer branches", () => {
+  let tmpDir: string;
+
+  function writeTmpFile(relPath: string, content: string): void {
+    const abs = path.join(tmpDir, relPath);
+    fs.mkdirSync(path.dirname(abs), { recursive: true });
+    fs.writeFileSync(abs, content, "utf-8");
+  }
+
+  function writeStartupState(): void {
+    const state: StartupState = buildStartupState();
+    writeTmpFile(
+      "docs/business-os/startup-loop/self-evolving/BRIK/startup-state.json",
+      JSON.stringify(state, null, 2),
+    );
+  }
+
+  function baseBridgeOptions(overrides: Partial<{
+    resultsReviewPath: string;
+    patternReflectionPath: string;
+    buildRecordPath: string;
+  }> = {}) {
+    const planSlug = "test-sidecar-plan";
+    return {
+      rootDir: tmpDir,
+      business: "BRIK",
+      planSlug,
+      buildRecordPath:
+        overrides.buildRecordPath ??
+        path.join("docs", "plans", planSlug, "build-record.user.md"),
+      resultsReviewPath:
+        overrides.resultsReviewPath ??
+        path.join("docs", "plans", planSlug, "results-review.user.md"),
+      patternReflectionPath:
+        overrides.patternReflectionPath ??
+        path.join("docs", "plans", planSlug, "pattern-reflection.user.md"),
+      followupQueueStatePath: path.join(
+        "docs",
+        "business-os",
+        "startup-loop",
+        "ideas",
+        "trial",
+        "queue-state.json",
+      ),
+      followupTelemetryPath: path.join(
+        "docs",
+        "business-os",
+        "startup-loop",
+        "ideas",
+        "trial",
+        "telemetry.jsonl",
+      ),
+      runId: "run-test-01",
+      sessionId: "session-test-01",
+    };
+  }
+
+  beforeEach(() => {
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "self-evolving-sidecar-"));
+  });
+
+  afterEach(() => {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  });
+
+  it("TC-05-01: results-review sidecar present → observations_generated reflects sidecar item count", () => {
+    writeStartupState();
+
+    const planSlug = "test-sidecar-plan";
+    // Write results-review.user.md with no ideas (proves sidecar was used instead)
+    writeTmpFile(
+      `docs/plans/${planSlug}/results-review.user.md`,
+      `---\nBusiness-Unit: BRIK\n---\n## New Idea Candidates\n- None\n`,
+    );
+    // Write sidecar with one real idea
+    const sidecar = {
+      schema_version: "results-review.signals.v1",
+      generated_at: new Date().toISOString(),
+      plan_slug: planSlug,
+      source_path: `docs/plans/${planSlug}/results-review.user.md`,
+      items: [
+        {
+          type: "idea",
+          business: "BRIK",
+          title: "Sidecar-sourced idea",
+          body: "",
+          source: "results-review.user.md",
+          date: "2026-03-06",
+          path: `docs/plans/${planSlug}/results-review.user.md`,
+          idea_key: "cccccccccccccccccccccccccccccccccccccccc",
+        },
+      ],
+    };
+    writeTmpFile(
+      `docs/plans/${planSlug}/results-review.signals.json`,
+      JSON.stringify(sidecar, null, 2),
+    );
+    // Empty pattern reflection
+    writeTmpFile(
+      `docs/plans/${planSlug}/pattern-reflection.user.md`,
+      "## Patterns\nNone identified.\n",
+    );
+    writeTmpFile(`docs/plans/${planSlug}/build-record.user.md`, "# Build Record\n");
+
+    const result = runSelfEvolvingFromBuildOutput(baseBridgeOptions());
+    expect(result.ok).toBe(true);
+    // One idea from sidecar + build-record seed = 2 observations
+    expect(result.observations_generated).toBeGreaterThanOrEqual(1);
+  });
+
+  it("TC-05-02: no sidecar present → existing markdown parse path taken (no warnings about sidecar)", () => {
+    writeStartupState();
+
+    const planSlug = "test-sidecar-plan";
+    writeTmpFile(
+      `docs/plans/${planSlug}/results-review.user.md`,
+      `---\nBusiness-Unit: BRIK\n---\n## New Idea Candidates\n- Markdown idea\n`,
+    );
+    writeTmpFile(
+      `docs/plans/${planSlug}/pattern-reflection.user.md`,
+      "## Patterns\nNone identified.\n",
+    );
+    writeTmpFile(`docs/plans/${planSlug}/build-record.user.md`, "# Build Record\n");
+
+    const result = runSelfEvolvingFromBuildOutput(baseBridgeOptions());
+    expect(result.ok).toBe(true);
+    // No sidecar-related warnings
+    expect(result.warnings.some((w) => w.includes("sidecar parse failed"))).toBe(false);
+  });
+
+  it("TC-05-03: malformed results-review sidecar → fallback to markdown; warning in result.warnings", () => {
+    writeStartupState();
+
+    const planSlug = "test-sidecar-plan";
+    writeTmpFile(
+      `docs/plans/${planSlug}/results-review.user.md`,
+      `---\nBusiness-Unit: BRIK\n---\n## New Idea Candidates\n- Fallback idea\n`,
+    );
+    writeTmpFile(
+      `docs/plans/${planSlug}/results-review.signals.json`,
+      "not valid json {{{",
+    );
+    writeTmpFile(
+      `docs/plans/${planSlug}/pattern-reflection.user.md`,
+      "## Patterns\nNone identified.\n",
+    );
+    writeTmpFile(`docs/plans/${planSlug}/build-record.user.md`, "# Build Record\n");
+
+    const result = runSelfEvolvingFromBuildOutput(baseBridgeOptions());
+    expect(result.ok).toBe(true);
+    expect(result.warnings.some((w) => w.includes("sidecar parse failed"))).toBe(true);
+  });
+
+  it("TC-05-04: pattern-reflection sidecar present with 2 entries → observations include pattern seeds", () => {
+    writeStartupState();
+
+    const planSlug = "test-sidecar-plan";
+    writeTmpFile(
+      `docs/plans/${planSlug}/results-review.user.md`,
+      `---\nBusiness-Unit: BRIK\n---\n## New Idea Candidates\n- None\n`,
+    );
+    writeTmpFile(
+      `docs/plans/${planSlug}/pattern-reflection.user.md`,
+      "## Patterns\nNone identified.\n",
+    );
+    const patternSidecar = {
+      schema_version: "pattern-reflection.entries.v1",
+      generated_at: new Date().toISOString(),
+      plan_slug: planSlug,
+      source_path: `docs/plans/${planSlug}/pattern-reflection.user.md`,
+      entries: [
+        {
+          pattern_summary: "Post-authoring extraction pattern",
+          category: "ai-to-mechanistic",
+          routing_target: "loop_update",
+          occurrence_count: 2,
+          evidence_refs: [],
+        },
+        {
+          pattern_summary: "Shared parse module reuse",
+          category: "new-loop-process",
+          routing_target: "skill_proposal",
+          occurrence_count: 1,
+          evidence_refs: [],
+        },
+      ],
+    };
+    writeTmpFile(
+      `docs/plans/${planSlug}/pattern-reflection.entries.json`,
+      JSON.stringify(patternSidecar, null, 2),
+    );
+    writeTmpFile(`docs/plans/${planSlug}/build-record.user.md`, "# Build Record\n");
+
+    const result = runSelfEvolvingFromBuildOutput(baseBridgeOptions());
+    expect(result.ok).toBe(true);
+    // build-record (1) + 2 pattern seeds = 3 observations at minimum
+    expect(result.observations_generated).toBeGreaterThanOrEqual(2);
+  });
+
+  it("TC-05-05: pattern-reflection sidecar absent → fallback to extractPatternReflectionSeeds from markdown", () => {
+    writeStartupState();
+
+    const planSlug = "test-sidecar-plan";
+    writeTmpFile(
+      `docs/plans/${planSlug}/results-review.user.md`,
+      `---\nBusiness-Unit: BRIK\n---\n## New Idea Candidates\n- None\n`,
+    );
+    // Pattern reflection with one YAML entry (no sidecar)
+    writeTmpFile(
+      `docs/plans/${planSlug}/pattern-reflection.user.md`,
+      [
+        "---",
+        "entries:",
+        "  - pattern_summary: Markdown-only pattern",
+        "    category: unclassified",
+        "    routing_target: defer",
+        "    occurrence_count: 1",
+        "    evidence_refs: []",
+        "---",
+        "",
+        "## Patterns",
+        "See frontmatter.",
+      ].join("\n"),
+    );
+    writeTmpFile(`docs/plans/${planSlug}/build-record.user.md`, "# Build Record\n");
+
+    const result = runSelfEvolvingFromBuildOutput(baseBridgeOptions());
+    expect(result.ok).toBe(true);
+    // build-record + 1 pattern seed from markdown = 2 observations
+    expect(result.observations_generated).toBeGreaterThanOrEqual(1);
+    // No sidecar-related warnings
+    expect(result.warnings.some((w) => w.includes("sidecar parse failed"))).toBe(false);
   });
 });

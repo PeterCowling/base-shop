@@ -398,6 +398,53 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
       continue;
     }
     const absPath = path.join(repoRoot, sourcePath);
+
+    // Sidecar-prefer branch: if results-review.signals.json exists, read items from it directly.
+    const sidecarPath = path.join(path.dirname(absPath), "results-review.signals.json");
+    if (existsSync(sidecarPath)) {
+      process.stderr.write(
+        `[generate-process-improvements] info: reading sidecar for ${sourcePath}\n`,
+      );
+      let sidecarItems: ProcessImprovementItem[] | null = null;
+      let sidecarSchemaVersion: string | null = null;
+      try {
+        const sidecarRaw = readFileSync(sidecarPath, "utf8");
+        const sidecarJson = JSON.parse(sidecarRaw) as {
+          schema_version?: unknown;
+          items?: unknown;
+        };
+        sidecarSchemaVersion = typeof sidecarJson.schema_version === "string"
+          ? sidecarJson.schema_version
+          : null;
+        if (
+          sidecarSchemaVersion !== "results-review.signals.v1" ||
+          !Array.isArray(sidecarJson.items)
+        ) {
+          throw new Error(
+            `unrecognized schema_version "${String(sidecarSchemaVersion)}" or missing items array`,
+          );
+        }
+        sidecarItems = sidecarJson.items as ProcessImprovementItem[];
+      } catch (err) {
+        process.stderr.write(
+          `[generate-process-improvements] warn: sidecar parse failed for ${sidecarPath}, falling back to markdown: ${String(err)}\n`,
+        );
+        sidecarItems = null;
+      }
+
+      if (sidecarItems !== null) {
+        for (const item of sidecarItems) {
+          const ideaKey = item.idea_key;
+          if (ideaKey && completedKeys.has(ideaKey)) {
+            continue;
+          }
+          ideaItems.push(item);
+        }
+        continue;
+      }
+      // Fall through to markdown parse if sidecar was malformed.
+    }
+
     const raw = readFileSync(absPath, "utf8");
     const parsed = parseFrontmatter(raw);
     const sections = parseSections(parsed.body);

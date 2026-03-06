@@ -408,8 +408,89 @@ export function runSelfEvolvingFromBuildOutput(options: BridgeOptions): BridgeRe
     warnings.push(`Missing pattern-reflection artifact: ${options.patternReflectionPath}`);
   if (!buildRecord) warnings.push(`Missing build-record artifact: ${options.buildRecordPath}`);
 
-  const candidateBullets = extractBulletCandidates(resultsReview);
-  const patternSeeds = extractPatternReflectionSeeds(patternReflection);
+  // Sidecar-prefer: if results-review.signals.json exists, read candidates from JSON items.
+  let candidateBullets: string[];
+  const resultsSidecarAbs = path.join(path.dirname(resultsReviewAbs), "results-review.signals.json");
+  if (existsSync(resultsSidecarAbs)) {
+    try {
+      const sidecarRaw = readFileSync(resultsSidecarAbs, "utf-8");
+      const sidecarJson = JSON.parse(sidecarRaw) as { schema_version?: unknown; items?: unknown };
+      if (
+        sidecarJson.schema_version !== "results-review.signals.v1" ||
+        !Array.isArray(sidecarJson.items)
+      ) {
+        throw new Error(
+          `unrecognized schema_version "${String(sidecarJson.schema_version)}" or missing items`,
+        );
+      }
+      const items = sidecarJson.items as Array<{ title?: string }>;
+      candidateBullets = items
+        .map((item) => (typeof item.title === "string" ? item.title.trim() : ""))
+        .filter((title) => title.length > 0);
+    } catch (err) {
+      warnings.push(
+        `results-review sidecar parse failed (falling back to markdown): ${String(err)}`,
+      );
+      candidateBullets = extractBulletCandidates(resultsReview);
+    }
+  } else {
+    candidateBullets = extractBulletCandidates(resultsReview);
+  }
+
+  // Sidecar-prefer: if pattern-reflection.entries.json exists, build seeds from JSON entries.
+  let patternSeeds: ReturnType<typeof extractPatternReflectionSeeds>;
+  const patternSidecarAbs = path.join(
+    path.dirname(patternReflectionAbs),
+    "pattern-reflection.entries.json",
+  );
+  if (existsSync(patternSidecarAbs)) {
+    try {
+      const sidecarRaw = readFileSync(patternSidecarAbs, "utf-8");
+      const sidecarJson = JSON.parse(sidecarRaw) as {
+        schema_version?: unknown;
+        entries?: unknown;
+      };
+      if (
+        sidecarJson.schema_version !== "pattern-reflection.entries.v1" ||
+        !Array.isArray(sidecarJson.entries)
+      ) {
+        throw new Error(
+          `unrecognized schema_version "${String(sidecarJson.schema_version)}" or missing entries`,
+        );
+      }
+      // Reconstruct minimal markdown from entries so extractPatternReflectionSeeds can parse it.
+      // This avoids duplicating the entry→seed mapping logic.
+      const entriesYaml = (sidecarJson.entries as PatternReflectionFrontmatterEntry[])
+        .map((entry) => {
+          const lines: string[] = [];
+          lines.push(
+            `  - pattern_summary: ${String(entry.pattern_summary ?? "")}`,
+          );
+          if (entry.category) lines.push(`    category: ${entry.category}`);
+          if (entry.routing_target) lines.push(`    routing_target: ${entry.routing_target}`);
+          if (typeof entry.occurrence_count === "number") {
+            lines.push(`    occurrence_count: ${entry.occurrence_count}`);
+          }
+          if (Array.isArray(entry.evidence_refs) && entry.evidence_refs.length > 0) {
+            lines.push(`    evidence_refs:`);
+            for (const ref of entry.evidence_refs) {
+              lines.push(`      - ${ref}`);
+            }
+          }
+          return lines.join("\n");
+        })
+        .join("\n");
+      const reconstructedMarkdown = `---\nentries:\n${entriesYaml}\n---\n`;
+      patternSeeds = extractPatternReflectionSeeds(reconstructedMarkdown);
+    } catch (err) {
+      warnings.push(
+        `pattern-reflection sidecar parse failed (falling back to markdown): ${String(err)}`,
+      );
+      patternSeeds = extractPatternReflectionSeeds(patternReflection);
+    }
+  } else {
+    patternSeeds = extractPatternReflectionSeeds(patternReflection);
+  }
   const observationSeeds: ObservationSeed[] = [];
   if (buildRecord) {
     observationSeeds.push({

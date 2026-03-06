@@ -443,6 +443,209 @@ Review-date: 2026-02-26
     expect(data.ideaItems[0]?.path).toBe("docs/plans/bug-scan-flow/bug-scan-findings.user.json");
   });
 
+  // ---------------------------------------------------------------------------
+  // TASK-04: Sidecar-prefer branch TCs
+  // ---------------------------------------------------------------------------
+
+  it("TC-04-01: markdown-parse path taken when no sidecar exists", async () => {
+    await writeFile(
+      tmpDir,
+      "docs/plans/sidecar-test/results-review.user.md",
+      `---
+Business-Unit: BRIK
+Review-date: 2026-03-06
+---
+## New Idea Candidates
+- Markdown only idea
+`,
+    );
+
+    const data = collectProcessImprovements(tmpDir);
+    expect(data.ideaItems).toHaveLength(1);
+    expect(data.ideaItems[0]?.title).toBe("Markdown only idea");
+  });
+
+  it("TC-04-02: sidecar-prefer path taken when valid sidecar exists alongside .user.md", async () => {
+    // Different idea in each file — confirms which source was read.
+    await writeFile(
+      tmpDir,
+      "docs/plans/sidecar-test/results-review.user.md",
+      `---
+Business-Unit: BRIK
+Review-date: 2026-03-06
+---
+## New Idea Candidates
+- Markdown idea (should be bypassed)
+`,
+    );
+
+    const sidecar = {
+      schema_version: "results-review.signals.v1",
+      generated_at: new Date().toISOString(),
+      plan_slug: "sidecar-test",
+      source_path: "docs/plans/sidecar-test/results-review.user.md",
+      items: [
+        {
+          type: "idea",
+          business: "BRIK",
+          title: "Sidecar idea (should win)",
+          body: "",
+          source: "results-review.user.md",
+          date: "2026-03-06",
+          path: "docs/plans/sidecar-test/results-review.user.md",
+          idea_key: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          priority_tier: "P3",
+          own_priority_rank: 7,
+          urgency: "U2",
+          effort: "M",
+          proximity: null,
+          reason_code: "test_idea",
+        },
+      ],
+    };
+    await writeFile(
+      tmpDir,
+      "docs/plans/sidecar-test/results-review.signals.json",
+      `${JSON.stringify(sidecar, null, 2)}\n`,
+    );
+
+    const data = collectProcessImprovements(tmpDir);
+    expect(data.ideaItems).toHaveLength(1);
+    expect(data.ideaItems[0]?.title).toBe("Sidecar idea (should win)");
+  });
+
+  it("TC-04-03: malformed sidecar falls back to markdown parse with warning", async () => {
+    await writeFile(
+      tmpDir,
+      "docs/plans/sidecar-test/results-review.user.md",
+      `---
+Business-Unit: BRIK
+Review-date: 2026-03-06
+---
+## New Idea Candidates
+- Markdown fallback idea
+`,
+    );
+
+    // Write a malformed sidecar (not JSON)
+    await writeFile(
+      tmpDir,
+      "docs/plans/sidecar-test/results-review.signals.json",
+      "not valid json {{{",
+    );
+
+    const stderrOutput: string[] = [];
+    const stderrSpy = jest
+      .spyOn(process.stderr, "write")
+      .mockImplementation((chunk: string | Uint8Array) => {
+        stderrOutput.push(typeof chunk === "string" ? chunk : "");
+        return true;
+      });
+
+    try {
+      const data = collectProcessImprovements(tmpDir);
+      // Should fall back to markdown parse
+      expect(data.ideaItems).toHaveLength(1);
+      expect(data.ideaItems[0]?.title).toBe("Markdown fallback idea");
+      // Should have logged a warning
+      expect(stderrOutput.some((line) => line.includes("falling back to markdown"))).toBe(true);
+    } finally {
+      stderrSpy.mockRestore();
+    }
+  });
+
+  it("TC-04-04: sidecar with zero items produces zero idea items for that plan", async () => {
+    await writeFile(
+      tmpDir,
+      "docs/plans/sidecar-test/results-review.user.md",
+      `---
+Business-Unit: BRIK
+Review-date: 2026-03-06
+---
+## New Idea Candidates
+- This idea should be bypassed by empty sidecar
+`,
+    );
+
+    const sidecar = {
+      schema_version: "results-review.signals.v1",
+      generated_at: new Date().toISOString(),
+      plan_slug: "sidecar-test",
+      source_path: "docs/plans/sidecar-test/results-review.user.md",
+      items: [],
+    };
+    await writeFile(
+      tmpDir,
+      "docs/plans/sidecar-test/results-review.signals.json",
+      `${JSON.stringify(sidecar, null, 2)}\n`,
+    );
+
+    const data = collectProcessImprovements(tmpDir);
+    expect(data.ideaItems).toHaveLength(0);
+  });
+
+  it("TC-04-05: sidecar item with completed idea_key is suppressed by completed-ideas filter", async () => {
+    const ideaKey = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+
+    await writeFile(
+      tmpDir,
+      "docs/plans/sidecar-test/results-review.user.md",
+      `---
+Business-Unit: BRIK
+Review-date: 2026-03-06
+---
+## New Idea Candidates
+- Fallback idea
+`,
+    );
+
+    const sidecar = {
+      schema_version: "results-review.signals.v1",
+      generated_at: new Date().toISOString(),
+      plan_slug: "sidecar-test",
+      source_path: "docs/plans/sidecar-test/results-review.user.md",
+      items: [
+        {
+          type: "idea",
+          business: "BRIK",
+          title: "Already completed idea",
+          body: "",
+          source: "results-review.user.md",
+          date: "2026-03-06",
+          path: "docs/plans/sidecar-test/results-review.user.md",
+          idea_key: ideaKey,
+          priority_tier: "P3",
+        },
+      ],
+    };
+    await writeFile(
+      tmpDir,
+      "docs/plans/sidecar-test/results-review.signals.json",
+      `${JSON.stringify(sidecar, null, 2)}\n`,
+    );
+
+    const registry = {
+      schema_version: "completed-ideas.v1",
+      entries: [
+        {
+          idea_key: ideaKey,
+          title: "Already completed idea",
+          source_path: "docs/plans/sidecar-test/results-review.user.md",
+          plan_slug: "sidecar-test",
+          completed_at: "2026-03-05",
+        },
+      ],
+    };
+    await writeFile(
+      tmpDir,
+      "docs/business-os/_data/completed-ideas.json",
+      `${JSON.stringify(registry, null, 2)}\n`,
+    );
+
+    const data = collectProcessImprovements(tmpDir);
+    expect(data.ideaItems).toHaveLength(0);
+  });
+
   it("appendCompletedIdea is idempotent — calling twice yields one entry", async () => {
     const entry = {
       title: "My idea",

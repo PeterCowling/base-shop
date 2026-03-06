@@ -27,7 +27,7 @@ The workflow's pre-build dry runs are currently described using "simulation" lan
 ## Active tasks
 - [x] TASK-01: Rehearsal terminology bridge — compatibility policy spike
 - [x] TASK-02: Update shared protocol and upstream skill docs with rehearsal language
-- [ ] TASK-03: Add post-critique delivery rehearsal stage to lp-do-plan
+- [x] TASK-03: Add post-critique delivery rehearsal stage to lp-do-plan
 - [x] TASK-04: Make post-build artifacts explicitly reflection-only in lp-do-build and loop-output-contracts
 - [ ] TASK-05: Pilot checkpoint — archived plan rehearsal validation
 
@@ -88,7 +88,7 @@ The workflow's pre-build dry runs are currently described using "simulation" lan
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | SPIKE | Rehearsal terminology bridge: define compatibility policy for shared protocol, headings, and waiver names | 85% | S | Complete (2026-03-06) | - | TASK-02, TASK-04 |
 | TASK-02 | IMPLEMENT | Update shared protocol + lp-do-fact-find, lp-do-plan, lp-do-critique SKILL docs with rehearsal language | 80% | M | Complete (2026-03-06) | TASK-01 | TASK-03, TASK-05 |
-| TASK-03 | IMPLEMENT | Add post-critique delivery rehearsal stage to lp-do-plan (four lenses, same-outcome rule, rerun triggers) | 75% | M | Pending | TASK-02 | TASK-05 |
+| TASK-03 | IMPLEMENT | Add post-critique delivery rehearsal stage to lp-do-plan (four lenses, same-outcome rule, rerun triggers) | 80% | M | Complete (2026-03-06) | TASK-02 | TASK-05 |
 | TASK-04 | IMPLEMENT | Update lp-do-build and loop-output-contracts.md so post-build artifacts are explicitly reflection-only | 80% | S | Complete (2026-03-06) | TASK-01 | TASK-05 |
 | TASK-05 | CHECKPOINT | Pilot revised contract on 2–3 archived plans; record whether delivery rehearsal adds same-outcome signal | 95% | S | Pending | TASK-02, TASK-03, TASK-04 | - |
 
@@ -239,10 +239,10 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Affects:** `.claude/skills/lp-do-plan/SKILL.md`
 - **Depends on:** TASK-02
 - **Blocks:** TASK-05
-- **Confidence:** 80%
-  - Implementation: 85% - insertion point (between Phase 9 and Phase 10) is verified in fact-find and critique; lp-do-plan/SKILL.md Phase structure is known; TASK-02 will have made terminology consistent before this task runs.
+- **Confidence:** 80% (raised from 75% — Round 1 replan; see replan-notes.md)
+  - Implementation: 85% - insertion point (between Phase 9 and Phase 10) is verified in fact-find and critique; lp-do-plan/SKILL.md Phase structure is known; TASK-02 has made terminology consistent before this task runs.
   - Approach: 85% - four lenses are defined in fact-find (data, process/UX, security, UI); same-outcome-only rule is documented; rerun triggers are defined in fact-find Questions → Resolved.
-  - Impact: 75% - whether the delivery rehearsal produces genuinely different findings from the existing structural simulation trace is the core H2 uncertainty. Evidence shows the current trace is structural-only (verified) and build-validate.md covers runtime validation (verified), but whether four-lens pre-build dry walk adds meaningful signal is tested by TASK-05, not TASK-03. Held-back test: "What would push Impact to <75%?" — if delivery rehearsal proves entirely redundant with existing Phase 7.5 structural trace, Impact is near zero. This risk is explicitly named as a competing hypothesis in the critique, rated Medium likelihood. Conservative scoring at 75%.
+  - Impact: 80% (raised from 75%) - E1 evidence from updated simulation-protocol.md: Phase 7.5 covers 8 code-structural categories (ordering, config keys, type contracts, API shapes); proposed Phase 9.5 covers 4 semantic/runtime/UX categories (data existence, user flow, auth boundaries, rendering path) — zero overlap. Worst-case (null findings) is neutral; no regression possible. Held-back redundancy risk assumed overlap; file evidence eliminates it. See replan-notes.md Round 1.
 - **Acceptance:**
   - lp-do-plan/SKILL.md contains a new numbered phase between Phase 9 and Phase 10 titled "Delivery Rehearsal."
   - New phase defines all four lenses: (1) data — does the task data actually exist or need creation? (2) process/UX — will users encounter this flow correctly? (3) security — are auth/permission boundaries clear? (4) UI — is the rendering/component path specified?
@@ -277,6 +277,17 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Notes / references:**
   - Critique issue 1-04 (Moderate): scope-creep risk for delivery rehearsal. The task execution plan must record one sentence per rehearsal finding justifying it as same-outcome before including it.
   - Fact-find constraint: "If added, delivery rehearsal belongs after critique and before auto-build handoff."
+- **Build evidence (2026-03-06):**
+  - Execution route: inline (Wave 3 single task; CODEX_OK=0); promoted to 80% via Round 1 replan before execution
+  - Red: Phase 9 immediately followed by Phase 10 — no intermediate phase existed ✓ (VC-01 failed pre-edit confirmed by read)
+  - Green: Phase 9.5 "Delivery Rehearsal" inserted between Phase 9 and Phase 10 with all four lenses, same-outcome rule, rerun triggers, adjacent-idea routing, and Critical finding policy
+  - VC-01: "Phase 9.5: Delivery Rehearsal" present with all four lenses named (line 273) ✓
+  - VC-02: "same-outcome" appears in new phase (line 287) ✓
+  - VC-03: "rerun Phase 7 (sequence) and Phase 9 (targeted critique)" present (line 289) ✓
+  - VC-04: Quick Checklist contains "Phase 9.5 Delivery Rehearsal run" entry (line 330) ✓
+  - Refactor: Phase 9 and Phase 10 content confirmed unchanged; Phase 10 auto-continue logic intact ✓
+  - Tiebreaker rule added (same-outcome vs adjacent-scope decision): "if a new task would directly unblock an existing IMPLEMENT task in the current plan, it may be treated as same-outcome; otherwise it is adjacent scope" ✓
+  - Critical finding policy added: triggers targeted replan, not waivable ✓
 
 ---
 
@@ -397,13 +408,14 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 ## Overall-confidence Calculation
 - TASK-01: S=1, 85% × 1 = 85
-- TASK-02: M=2, 75% × 2 = 150
-- TASK-03: M=2, 75% × 2 = 150
+- TASK-02: M=2, 80% × 2 = 160
+- TASK-03: M=2, 80% × 2 = 160
 - TASK-04: S=1, 80% × 1 = 80
 - TASK-05: S=1, 95% × 1 = 95
-- Sum weighted scores: 560
+- Sum weighted scores: 580
 - Sum weights: 7
-- Overall-confidence = 560 / 7 = 80.0% → **80%**
+- Overall-confidence = 580 / 7 = 82.9% → **83%**
+- Note: TASK-02 and TASK-03 both re-scored to 80% (TASK-02 via post-TASK-01 precursor propagation; TASK-03 via Round 1 replan E1 evidence)
 
 ## Simulation Trace
 

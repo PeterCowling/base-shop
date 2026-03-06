@@ -270,6 +270,28 @@ After the plan is persisted (Phase 8) and before any build handoff (Phase 10), r
 
 Load and follow: `../_shared/critique-loop-protocol.md`
 
+## Phase 9.5: Delivery Rehearsal
+
+After the plan has passed the critique loop (Phase 9), run a delivery rehearsal before build handoff. This phase checks whether the plan is ready for successful delivery — four lenses that the Phase 7.5 structural rehearsal trace does not cover.
+
+**Four lenses:**
+
+1. **Data** — For each IMPLEMENT task that reads or depends on data (database records, fixtures, seed data, uploaded files), confirm that the data exists or that a prior task creates it. If required data does not exist and no task creates it, record a finding.
+
+2. **Process/UX** — For each task that changes a user-visible flow, confirm the flow is specified: entry point, happy path, and error/empty state. If a flow has undefined states, record a finding.
+
+3. **Security** — For each task that introduces or modifies an auth boundary, permission check, or data access rule, confirm the boundary is explicitly stated in the task's acceptance criteria. If auth requirements are implicit or absent, record a finding.
+
+4. **UI** — For each task that modifies or introduces UI, confirm the rendering path is specified (component name, route, page, or section). If the rendering context is unspecified, record a finding.
+
+**Same-outcome-only rule:** A delivery rehearsal finding is in scope if addressing it produces the same outcome already targeted by an existing IMPLEMENT task in this plan. If a finding would require adding a new task, it is adjacent scope — route it to post-build reflection or a future fact-find, not this plan. Record one sentence justifying each finding as same-outcome before including it. Tiebreaker: if a new task would directly unblock an existing IMPLEMENT task in the current plan, it may be treated as same-outcome; otherwise it is adjacent scope.
+
+**Rerun triggers:** If delivery rehearsal changes task order, dependencies, or validation burden, rerun Phase 7 (sequence) and Phase 9 (targeted critique) before Phase 10 handoff.
+
+**Adjacent-idea routing:** Delivery rehearsal findings that are adjacent scope must not be added to the plan. Record them in the plan's `## Decision Log` with tag `[Adjacent: delivery-rehearsal]` for routing to post-build reflection or a future fact-find.
+
+**Critical finding policy:** A Critical delivery rehearsal finding (e.g., no task creates required data that a downstream task depends on; an auth boundary is entirely unspecified) triggers a targeted `/lp-do-replan` before Phase 10 handoff. A Critical finding is not waivable — resolve it or add a same-outcome task.
+
 ## Phase 10: Optional Handoff to Build
 
 Evaluate shared auto-continue policy:
@@ -305,5 +327,6 @@ Plan+auto:
 - [ ] Phase 7.5 Rehearsal Trace run — trace table present in plan draft; Critical findings resolved or waived before Phase 8 persist
 - [ ] lp-do-factcheck run if plan contains codebase claims (file paths, function signatures, coverage assertions)
 - [ ] Phase 9 critique loop run (1–3 rounds, mandatory): round count and final verdict recorded
+- [ ] Phase 9.5 Delivery Rehearsal run — four lenses checked (data, process/UX, security, UI); same-outcome findings folded into plan; adjacent ideas logged with `[Adjacent: delivery-rehearsal]` tag; Critical findings resolved or replanned before Phase 10
 - [ ] Auto-build blocked if critique score ≤ 3.5 (`partially credible` or worse)
 - [ ] Auto-build allowed only when mode is `plan+auto` and critique verdict is `credible`

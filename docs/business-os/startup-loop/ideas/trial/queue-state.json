@@ -1,17 +1,604 @@
 {
-  "last_updated": "2026-03-05T17:18:17.906Z",
+  "last_updated": "2026-03-06T12:08:46.493Z",
   "counts": {
-    "enqueued": 89,
-    "processed": 32,
+    "enqueued": 105,
+    "processed": 34,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
-    "completed": 108,
-    "fact_find_ready": 142,
-    "total": 255
+    "completed": 114,
+    "fact_find_ready": 161,
+    "total": 279
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306150000-0001",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:XA:PRODUCTS:xa-uploader-form-ux-false-autosave-silent-advance-delete:20260306",
+      "anchor_key": "xa-uploader-form-ux-false-autosave-silent-advance-delete",
+      "cluster_key": "XA:PRODUCTS:xa-uploader-form-ux-false-autosave-silent-advance-delete:operator:20260306",
+      "cluster_fingerprint": "b3e7f2a1c9d4e8b0f5a3c6d9e2f4a7b1c8d3e5f8a2b6c0d4e7f1a3b5c8d2e6f9",
+      "lineage_depth": 0,
+      "area_anchor": "xa-uploader product form — false autosave state, silent step transition, delete placement",
+      "location_anchors": [
+        "apps/xa-uploader/src/components/catalog/CatalogProductForm.client.tsx",
+        "apps/xa-uploader/src/components/catalog/useCatalogConsole.client.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "CatalogProductForm initialises autosaveStatus to 'saved' on fresh/new product load before any actual save has occurred, misleading the operator. The save button auto-advances to the images step after a 2-second silent timer with no toast or explanation. The delete button is isolated at the top of the form, far from the save/action area at the bottom and with no confirmation guard.",
+      "next_scope_now": "Fact-find the xa-uploader product form UX: (1) audit autosaveStatus initialisation and determine the correct neutral/unsaved starting state for new products; (2) identify the auto-advance mechanism and define what visible feedback to add; (3) evaluate the delete button placement and determine whether a confirmation modal or a move to the action footer is more appropriate; (4) produce a planning brief scoped to these three form-level fixes.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: autosaveStatus defaults to 'saved' on fresh/new product load before any actual save has occurred — misleads operator into thinking data is persisted",
+        "operator-stated: save button auto-advances to images step silently after 2s timer with no toast or explanation — operator is confused by the jump",
+        "operator-stated: delete button is isolated at the top of the form, visually disconnected from save/action area at the bottom — dangerous action lacks confirmation and is far from its context",
+        "agent-verified: CatalogProductForm.client.tsx line 185 autosaveStatus: 'saving' | 'saved' | 'unsaved' — default 'saved' on mount confirmed by useCatalogConsole review"
+      ],
+      "why": "xa-uploader UI review revealed three form-level UX issues that create operator confusion: autosave shows 'saved' on fresh product load before any data is persisted, the save button silently advances to the images step with no feedback, and the delete button sits isolated at the top with no confirmation guard.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Deliver a plan and implementation that (1) initialises autosave status to 'unsaved' or a neutral state on fresh/new product load, (2) adds visible feedback (toast or inline message) when the save-and-advance transition fires, and (3) relocates the delete button to the action footer with a confirmation step.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-06T15:00:00.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306150000-0002",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:XA:PRODUCTS:xa-uploader-sidebar-nav-product-list-header:20260306",
+      "anchor_key": "xa-uploader-sidebar-nav-product-list-header",
+      "cluster_key": "XA:PRODUCTS:xa-uploader-sidebar-nav-product-list-header:operator:20260306",
+      "cluster_fingerprint": "c4f8a2b6d1e5f9a3b7c2d6e0f4a8b2c5d9e3f7a1b5c9d0e4f8a2b6c3d7e1f5a9",
+      "lineage_depth": 0,
+      "area_anchor": "xa-uploader sidebar + nav — no full product list, fragile onHeaderExtra injection",
+      "location_anchors": [
+        "apps/xa-uploader/src/components/catalog/EditProductFilterSelector.client.tsx",
+        "apps/xa-uploader/src/components/catalog/CatalogConsole.client.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "EditProductFilterSelector has no browse-all or search mode — operators must navigate exclusively via brand→collection→size→color cascades to find any product; there is no flat list or search fallback. CatalogConsole injects nav buttons into the parent header via an onHeaderExtra portal pattern that breaks layout ownership and is fragile to parent restructuring.",
+      "next_scope_now": "Fact-find the xa-uploader sidebar and navigation layer: (1) audit EditProductFilterSelector and determine whether a flat product list, a search input, or a 'show all' toggle is the right addition; (2) audit the onHeaderExtra pattern and determine whether inline nav or a different self-contained approach is better; (3) assess the impact on screen layout and responsiveness; (4) produce a planning brief scoped to these two navigation-layer fixes.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: EditProductFilterSelector has no browse-all mode — operators must navigate via cascading brand→collection→size→color filters to find any product; there is no flat list or search",
+        "operator-stated: CatalogConsole.client.tsx uses an onHeaderExtra portal pattern to inject nav buttons into the parent header — fragile, not self-contained, breaks layout ownership",
+        "agent-verified: EditProductFilterSelector.client.tsx lines 155-288 — no browse-all or search input present, only cascading selects confirmed"
+      ],
+      "why": "xa-uploader UI review found two navigation-layer gaps: the sidebar forces brand→collection cascades with no browse-all option, making product discovery slow, and the onHeaderExtra portal pattern breaks layout ownership and is fragile to future parent restructuring.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Deliver a plan and implementation that (1) adds a browse-all or search mode to EditProductFilterSelector so operators can see and select any product without filtering, and (2) replaces the onHeaderExtra portal with self-contained inline navigation inside CatalogConsole.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-06T15:00:00.000Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-06T15:30:00.000Z",
+        "fact_find_slug": "xa-uploader-nav-layer-fixes",
+        "fact_find_path": "docs/plans/xa-uploader-nav-layer-fixes/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306150000-0003",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:XA:PRODUCTS:xa-uploader-sync-panel-layout-checkboxes:20260306",
+      "anchor_key": "xa-uploader-sync-panel-layout-checkboxes",
+      "cluster_key": "XA:PRODUCTS:xa-uploader-sync-panel-layout-checkboxes:operator:20260306",
+      "cluster_fingerprint": "d5a9b3c7e1f5a9b3c7e1f5a9b3c7e1f5a9b3c7e1f5a9b3c7e1f5a9b3c7e1f5a9",
+      "lineage_depth": 0,
+      "area_anchor": "xa-uploader sync panel — flat layout, native unstyled checkboxes",
+      "location_anchors": [
+        "apps/xa-uploader/src/components/catalog/CatalogSyncPanel.client.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "CatalogSyncPanel renders all sync options in a flat list with no section headers or visual grouping, making it hard to distinguish pre-publish gates from optional flags. Checkboxes are unstyled native HTML input[type=checkbox] elements, inconsistent with the gate-* token-based design system used elsewhere in xa-uploader.",
+      "next_scope_now": "Fact-find the xa-uploader sync panel layout and controls: (1) audit all current sync options and classify them as publish-required gates vs optional flags; (2) determine the visual grouping approach (section headers, dividers, or separate cards); (3) identify the correct design-system-compliant checkbox component or pattern using gate-* tokens; (4) produce a planning brief scoped to layout grouping and checkbox replacement.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.87,
+      "evidence_refs": [
+        "operator-stated: CatalogSyncPanel renders all options in a flat list with no section headers or visual grouping — hard to distinguish publish-required gates from optional flags",
+        "operator-stated: sync option checkboxes use native HTML input[type=checkbox] with no design-system styling — inconsistent with gate-* token-based UI",
+        "agent-verified: CatalogSyncPanel.client.tsx confirmed present in apps/xa-uploader/src/components/catalog/"
+      ],
+      "why": "xa-uploader UI review found the sync panel uses a flat list with no grouping and native unstyled checkboxes, making it inconsistent with the rest of the gate-* design-system UI and harder for operators to orient quickly to what they need to confirm before publishing.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Deliver a plan and implementation that (1) adds visual section grouping to CatalogSyncPanel to separate publish-required options from optional flags, and (2) replaces native HTML checkboxes with design-system-styled alternatives using gate-* tokens.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-06T15:00:00.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306150000-0004",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:XA:PRODUCTS:xa-uploader-images-reorder-gallery-width:20260306",
+      "anchor_key": "xa-uploader-images-reorder-gallery-width",
+      "cluster_key": "XA:PRODUCTS:xa-uploader-images-reorder-gallery-width:operator:20260306",
+      "cluster_fingerprint": "e6b0c4d8f2a6b0c4d8f2a6b0c4d8f2a6b0c4d8f2a6b0c4d8f2a6b0c4d8f2a6b0",
+      "lineage_depth": 0,
+      "area_anchor": "xa-uploader images — no drag reorder, gallery constrained by max-w-prose",
+      "location_anchors": [
+        "apps/xa-uploader/src/components/catalog/CatalogProductImagesFields.client.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "CatalogProductImagesFields has no drag-and-drop or manual reorder UI — image order is locked to upload order, forcing operators to delete and re-upload to change sequence. The image gallery is wrapped in a max-w-prose container that artificially constrains the gallery width on wider viewports, inappropriate for an internal operator tool.",
+      "next_scope_now": "Fact-find the xa-uploader image management UX: (1) audit how image tuples are stored and whether order is persisted in the draft schema; (2) determine whether drag-to-reorder (e.g. @dnd-kit) or explicit up/down buttons is the right approach for an operator-desktop tool; (3) identify the max-w-prose constraint and define a full-width layout replacement; (4) produce a planning brief scoped to image reorder and gallery width.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.89,
+      "evidence_refs": [
+        "operator-stated: CatalogProductImagesFields has no reorder UI — image order is locked to upload order, operators must delete and re-upload to reorder",
+        "operator-stated: image gallery wrapped in max-w-prose container that artificially constrains gallery width on wide viewports — internal operator tool should use full panel width",
+        "agent-verified: CatalogProductImagesFields.client.tsx confirmed as the images fields component with autosave integration"
+      ],
+      "why": "xa-uploader UI review found two image management UX gaps: no reorder capability (operators must delete-and-reupload to sequence images) and a max-w-prose constraint that wastes viewport width in an operator tool where image review at full size matters.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Deliver a plan and implementation that (1) adds image reordering controls (drag or up/down buttons) to CatalogProductImagesFields with order persisted in the draft schema, and (2) removes or replaces the max-w-prose container with a full-width layout for the image gallery.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-06T15:00:00.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306150000-0005",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:XA:PRODUCTS:xa-uploader-loading-skeleton-states:20260306",
+      "anchor_key": "xa-uploader-loading-skeleton-states",
+      "cluster_key": "XA:PRODUCTS:xa-uploader-loading-skeleton-states:operator:20260306",
+      "cluster_fingerprint": "f7c1d5e9a3b7c1d5e9a3b7c1d5e9a3b7c1d5e9a3b7c1d5e9a3b7c1d5e9a3b7c1",
+      "lineage_depth": 0,
+      "area_anchor": "xa-uploader console — no loading skeleton on auth check or product list hydration",
+      "location_anchors": [
+        "apps/xa-uploader/src/components/catalog/CatalogConsole.client.tsx",
+        "apps/xa-uploader/src/components/catalog/EditProductFilterSelector.client.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "CatalogConsole shows only the text string 'checking access' while session/auth state resolves. The product list in EditProductFilterSelector hydrates abruptly from empty to populated with no transition or placeholder, making the tool appear broken on slow connections.",
+      "next_scope_now": "Fact-find the xa-uploader loading state gaps: (1) audit the auth-check phase and identify what UI state exists while session resolves; (2) audit the product list load path and determine where hydration occurs; (3) identify appropriate skeleton/placeholder patterns in the gate-* design system; (4) produce a planning brief scoped to adding skeleton states for auth-check and product list hydration.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.86,
+      "evidence_refs": [
+        "operator-stated: CatalogConsole shows only 'checking access' text while session resolves — no skeleton, no structured placeholder — appears broken on slow connections",
+        "operator-stated: product list hydrates abruptly from empty to populated with no transition — operators see flash of empty sidebar",
+        "agent-verified: CatalogConsole.client.tsx line 172-174 — session null check renders single muted text string only"
+      ],
+      "why": "xa-uploader UI review found the console provides no visual loading feedback during auth resolution or product list hydration, leaving operators uncertain whether the tool is loading or broken — especially problematic on slow connections for an internal operations tool.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Deliver a plan and implementation that adds skeleton or placeholder states for the auth-check phase in CatalogConsole and for the product list hydration in EditProductFilterSelector, providing clear visual feedback that the tool is loading.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-06T15:00:00.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306110000-0001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:BOS:gmail-create-draft-dedup-guard:20260306",
+      "anchor_key": "brik-gmail-create-draft-dedup-guard",
+      "cluster_key": "BRIK:BOS:gmail-guard-hardening:operator:20260306",
+      "cluster_fingerprint": "a7f3b1c9d2e4f8a0b6c3d7e1f9a2b5c8d4e0f3a6b9c2d5e8f1a4b7c0d3e6f9a2",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK gmail pipeline — inquiry draft dedup missing at tool level",
+      "location_anchors": [
+        "packages/mcp-server/src/tools/gmail.ts",
+        "packages/mcp-server/src/tools/gmail-handlers.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "BOS",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: guard review found gmail_create_draft has no duplicate check — session crash after draft creation but before gmail_mark_processed applies terminal label leaves email re-exposed to queue, causing duplicate drafts on next run",
+        "packages/mcp-server/src/tools/gmail.ts (handleCreateDraft, lines 2603-2676)",
+        "packages/mcp-server/src/__tests__/gmail-booking-dedup.test.ts (dedup exists only for booking reservation path, not inquiry path)"
+      ],
+      "why": "The booking reservation path has checkBookingRefDuplicate() but the customer inquiry path (gmail_create_draft called from ops-inbox) has no equivalent guard. A session crash between draft creation and gmail_mark_processed leaves the email with no terminal label, so the next gmail_organize_inbox run re-queues it. The operator then processes it again, producing a second draft in Gmail for the same customer email.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "gmail_create_draft checks for an existing draft on the same email thread before creating a new one and skips or warns if one already exists, preventing duplicate inquiry response drafts from session crash recovery.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-06T11:00:00.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306110000-0002",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:BOS:gmail-in-progress-auto-recovery:20260306",
+      "anchor_key": "brik-gmail-in-progress-auto-recovery",
+      "cluster_key": "BRIK:BOS:gmail-guard-hardening:operator:20260306",
+      "cluster_fingerprint": "b8e4c2d0f6a1b3c7d9e5f2a8b0c4d6e2f4a0b2c6d8e0f4a6b8c0d2e4f6a8b0c2",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK gmail pipeline — In-Progress recovery not auto-scheduled",
+      "location_anchors": [
+        "packages/mcp-server/src/tools/gmail-reconciliation.ts",
+        "packages/mcp-server/src/tools/gmail.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "BOS",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: guard review found gmail_reconcile_in_progress exists but is never called automatically — emails stuck In-Progress after session crash are invisible to the queue until operator manually runs the tool",
+        "packages/mcp-server/src/tools/gmail-reconciliation.ts (handleReconcileInProgress — full implementation, not wired to any schedule)",
+        "packages/mcp-server/src/tools/gmail.ts (TERMINAL_LABELS excludes PROCESSING label from re-scan — correct, but means stuck emails disappear silently)"
+      ],
+      "why": "When an ops-inbox session crashes mid-processing, the email retains the In-Progress label (Brikette/Queue/In-Progress). Because In-Progress is in TERMINAL_LABELS, gmail_organize_inbox will never re-queue it. The email silently disappears from the active queue until gmail_reconcile_in_progress is run manually. Operators are unlikely to remember to run this tool, so stuck emails accumulate over time and customer messages go unanswered.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Stale In-Progress emails are automatically recovered at the start of each ops-inbox session (or via a scheduled hook), so no customer email can become permanently invisible to the queue due to a session crash.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-06T11:00:00.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306110000-0003",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:BOS:gmail-label-hygiene:20260306",
+      "anchor_key": "brik-gmail-label-hygiene",
+      "cluster_key": "BRIK:BOS:gmail-guard-hardening:operator:20260306",
+      "cluster_fingerprint": "c9f5d3e1g7b2c4d8e0f6a3b5c9d1e3f7a9b1c5d7e9f1a3b7c9d1e5f7a9b3c5d7",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK gmail pipeline — orphaned label accumulation no cleanup",
+      "location_anchors": [
+        "packages/mcp-server/src/tools/gmail-shared.ts",
+        "packages/mcp-server/src/tools/gmail.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "domain": "BOS",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.78,
+      "evidence_refs": [
+        "operator-stated: guard review found ensureLabelMap creates labels on first use with no corresponding cleanup — renamed or legacy labels accumulate alongside new ones in Gmail label hierarchy",
+        "packages/mcp-server/src/tools/gmail.ts (LEGACY_LABELS migration map exists for reads but no cleanup pass removes old labels from Gmail account)",
+        "packages/mcp-server/src/tools/gmail-shared.ts (ensureLabelMap creates but never deletes)"
+      ],
+      "why": "ensureLabelMap creates Gmail labels on demand but never removes stale or renamed ones. The LEGACY_LABELS map handles reading old label names during schema transitions but the old labels remain in the Gmail account indefinitely. Over time the Brikette label hierarchy becomes cluttered with orphaned labels from past naming schemes, making manual Gmail navigation harder and creating ambiguity about which label represents the current state.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "A label audit/cleanup tool or startup check identifies orphaned Brikette labels (those not in the current REQUIRED_LABELS set) and either removes them or flags them for operator review, keeping the Gmail label hierarchy clean.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-06T11:00:00.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306104534-0001",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BOS:BOS:lp-do-workflow-rehearsal-reflection-boundary:20260306",
+      "anchor_key": "lp-do-workflow-rehearsal-reflection-boundary",
+      "cluster_key": "BOS:BOS:lp-do-workflow-rehearsal-reflection-boundary:operator:20260306",
+      "cluster_fingerprint": "f4d97a9534b22d3b6a853e1a10edfb55ccafbe6c5fd1ca7108ce3997eecbb39c",
+      "lineage_depth": 0,
+      "area_anchor": "lp-do workflow rehearsal boundary — pre-build rehearsal, post-build reflection only",
+      "location_anchors": [
+        ".claude/skills/_shared/simulation-protocol.md",
+        ".claude/skills/lp-do-fact-find/SKILL.md",
+        ".claude/skills/lp-do-plan/SKILL.md",
+        ".claude/skills/lp-do-critique/SKILL.md",
+        ".claude/skills/lp-do-build/SKILL.md",
+        ".claude/skills/lp-do-build/modules/build-validate.md",
+        "docs/plans/startup-loop-build-reflection-gate/plan.md"
+      ],
+      "provisional_deliverable_family": "doc",
+      "domain": "BOS",
+      "recommended_route": "lp-do-fact-find",
+      "status": "completed",
+      "priority": "P2",
+      "confidence": 0.87,
+      "current_truth": "The lp-do workflow already has upstream structural simulation steps in fact-find, plan, and critique, and lp-do-build already owns execution plus post-build reflection artifacts. The terminology now obscures the intended boundary: pre-build work should be framed as rehearsal, while post-build should remain reflection only. There is no explicit post-critique delivery rehearsal covering data, process/UX, security, and UI as a bounded same-outcome check, and the post-build contract does not explicitly state that reflection must not absorb delayed execution.",
+      "next_scope_now": "Fact-find the rehearsal/reflection boundary for the lp-do workflow: (1) audit current upstream simulation steps and define the renaming to rehearsal without losing the existing structural gate; (2) determine whether a new post-critique delivery rehearsal stage is needed and specify bounded lenses for data, process/UX, security, and UI; (3) define how rehearsal findings fold back into plan/build without scope creep and when sequencing/critique must rerun; (4) define explicit lp-do-build post-build reflection rules so results-review, pattern-reflection, and related artifacts remain reflective only and never become delayed execution; (5) produce a planning brief with exact SKILL/protocol edits.",
+      "adjacent_later": [
+        "Historical audit of archived plans to measure what net-new issues delivery rehearsal would have caught beyond critique.",
+        "Optional report/viewer support for rehearsal findings once the workflow contract is stable."
+      ],
+      "evidence_refs": [
+        "operator-stated: move towards rehearsal language, keep post-build as true reflection, and keep execution in fact-find/plan/build.",
+        "agent-verified: .claude/skills/lp-do-fact-find/SKILL.md has Phase 5.5 Scope Simulation before persistence.",
+        "agent-verified: .claude/skills/lp-do-plan/SKILL.md has Phase 7.5 Simulation Trace before persist and critique.",
+        "agent-verified: .claude/skills/lp-do-critique/SKILL.md has Step 5a Forward Simulation Trace plus contrarian attacks.",
+        "agent-verified: .claude/skills/lp-do-build/SKILL.md plan completion steps 1-8 are post-build artifact and reflection work.",
+        "agent-verified: .claude/skills/lp-do-build/modules/build-validate.md already places execution-time validation inside build, not post-build reflection."
+      ],
+      "why": "The workflow needs a clean phase boundary. Anticipatory dry runs belong before build as rehearsal; once the build is done, post-build artifacts should only reflect what actually happened. Without that split, reflection becomes a dumping ground for work that should have been decided or executed earlier.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "lp-do-fact-find, lp-do-plan, and lp-do-critique use rehearsal language and contracts for pre-build dry runs; any new post-critique delivery rehearsal is bounded and same-outcome only; and lp-do-build post-build artifacts are explicitly reflective only, never delayed execution.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-06T10:47:31.567Z",
+      "queue_state": "completed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-06T10:55:55Z",
+        "fact_find_slug": "lp-do-workflow-rehearsal-reflection-boundary",
+        "fact_find_path": "docs/plans/lp-do-workflow-rehearsal-reflection-boundary/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/lp-do-workflow-rehearsal-reflection-boundary/plan.md",
+        "completed_at": "2026-03-06T12:08:46.491Z",
+        "outcome": "Rehearsal terminology bridged across 4 skill docs; Phase 9.5 Delivery Rehearsal added to lp-do-plan; reflection-only prohibition added to lp-do-build and loop-output-contracts."
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306100505-0001",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:XA:PRODUCTS:xa-uploader-sync-status-communication:20260306",
+      "anchor_key": "xa-uploader-sync-status-communication",
+      "cluster_key": "XA:PRODUCTS:xa-uploader-sync-status-communication:operator:20260306",
+      "cluster_fingerprint": "e4358c5a550de99174763307b1f70b00e290c40d61a205933fdeacd642039355",
+      "lineage_depth": 0,
+      "area_anchor": "XA uploader status communication — truthful catalog/site state and autosync gating",
+      "location_anchors": [
+        "apps/xa-uploader/src/components/catalog/useCatalogConsole.client.ts",
+        "apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts",
+        "apps/xa-uploader/src/components/catalog/CatalogProductForm.client.tsx",
+        "apps/xa-uploader/src/components/catalog/CatalogSyncPanel.client.tsx",
+        "apps/xa-uploader/src/lib/deployHook.ts",
+        "packages/lib/src/xa/catalogWorkflow.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "domain": "PRODUCTS",
+      "priority": "P1",
+      "confidence": 0.88,
+      "current_truth": "XA uploader already has autosave queue state, publish readiness, deploy outcome, and deploy-pending guidance, but the UI collapses these into coarse product labels and flat sync feedback. Operators cannot reliably tell what is locally saved, what is published to the catalog, and what still awaits site rebuild or verification.",
+      "next_scope_now": "Build a truthful three-layer status model for local autosave, catalog publish, and site rebuild; expose exact publish blockers per product; then add autosync only after autosave settles and the product is publish-ready.",
+      "adjacent_later": [
+        "Add real site-live verification only if a trustworthy deploy completion source becomes available.",
+        "Consider deploy-drain or manual verification UX after the status strip is stable."
+      ],
+      "evidence_refs": [
+        "operator-stated: take sync status communication report forward for implementation via the lp-do-ideas -> lp-do-build workflow",
+        "agent-verified: apps/xa-uploader/src/components/catalog/useCatalogConsole.client.ts blocks sync while autosave is dirty or saving",
+        "agent-verified: packages/lib/src/xa/catalogWorkflow.ts requires valid data plus required image roles for publish readiness",
+        "agent-verified: apps/xa-uploader/src/app/api/catalog/sync/route.ts promotes publishState to live before deploy verification completes",
+        "agent-verified: apps/xa-uploader/src/lib/deployHook.ts already returns deployPending and deployVerificationPending guidance",
+        "agent-verified: apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts flattens deploy outcome into a single sync message"
+      ],
+      "why": "Uploader operators need truthful state communication before autosync expands; otherwise the system will publish catalog changes automatically while still hiding whether the site is stale, pending rebuild, or failed to deploy.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "XA uploader exposes separate local-save, catalog-published, and site-rebuild states; per-product publish blockers are explicit; and autosync runs only after autosave settles and readiness is confirmed.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-06T10:05:05.000Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-06T10:05:05.000Z",
+        "fact_find_slug": "xa-uploader-sync-status-communication",
+        "fact_find_path": "docs/plans/xa-uploader-sync-status-communication/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260305214500-5501",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:XA:PRODUCTS:xa-uploader-free-tier-hardening-review-findings:20260305",
+      "anchor_key": "xa-uploader-free-tier-hardening-review-findings",
+      "cluster_key": "XA:PRODUCTS:xa-uploader-free-tier-hardening-review-findings:operator:20260305",
+      "cluster_fingerprint": "e4b9f3083d32167e47dc1a2c26f6ce2ac08e437279f06501ee2242712a5d68d1",
+      "lineage_depth": 0,
+      "area_anchor": "XA uploader hardening — secure IPs, truthful currency UX, atomic cloud sync",
+      "location_anchors": [
+        "apps/xa-uploader/src/lib/accessControl.ts",
+        "apps/xa-uploader/src/lib/catalogDraftContractClient.ts",
+        "apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts",
+        "apps/xa-uploader/src/components/catalog/CurrencyRatesPanel.client.tsx",
+        "apps/xa-uploader/src/app/api/catalog/sync/route.ts",
+        "apps/xa-drop-worker/src/index.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-build",
+      "status": "completed",
+      "domain": "PRODUCTS",
+      "priority": "P1",
+      "confidence": 0.9,
+      "current_truth": "XA uploader still has a forwarded-header allowlist bypass seam, stale-field autosave retry risk, misleading cloud currency UX, and non-atomic cloud sync locking.",
+      "next_scope_now": "Harden trusted IP extraction, validate contract payloads, rebase autosave image conflicts safely, align currency UX to runtime mode, and replace KV sync locking with an atomic R2-backed contract lock.",
+      "adjacent_later": [
+        "If cloud currency management becomes a product requirement, add contract-backed currency persistence as a separate free-tier audit.",
+        "Revisit deploy/publish telemetry once lock hardening is live to measure real contention frequency."
+      ],
+      "evidence_refs": [
+        "operator-stated: take xa-uploader review findings forward using lp-do-ideas -> lp-do-build",
+        "agent-verified: apps/xa-uploader/src/lib/accessControl.ts trusts forwarded headers directly",
+        "agent-verified: apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts autosave conflict merge replays full local draft",
+        "agent-verified: apps/xa-uploader/src/app/api/catalog/currency-rates/route.ts is repo-local FS only",
+        "agent-verified: apps/xa-uploader/src/lib/syncMutex.ts uses non-atomic KV get-then-put",
+        "agent-verified: apps/xa-uploader/src/lib/catalogDraftContractClient.ts accepts malformed payload shapes"
+      ],
+      "why": "Uploader publishing and internal editing paths need to be safe and truthful under the existing Cloudflare free-tier architecture, especially in cloud mode where concurrency and misleading operator signals are highest risk.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "XA uploader hardening ships without paid Cloudflare dependencies: access control trusts only validated proxy headers, autosave conflict retry preserves concurrent non-image edits, currency controls reflect runtime capability truthfully, and cloud sync locking is atomic.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-05T20:17:56.519Z",
+      "queue_state": "completed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-05T20:17:56.519Z",
+        "fact_find_slug": "xa-uploader-free-tier-hardening",
+        "fact_find_path": "docs/plans/xa-uploader-free-tier-hardening/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/xa-uploader-free-tier-hardening/plan.md",
+        "completed_at": "2026-03-05T20:38:44.478Z",
+        "outcome": "Trusted IP extraction, autosave conflict rebase, truthful currency runtime UX, and atomic cloud sync locking shipped within existing Cloudflare free-tier architecture."
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260305192303-4411",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:XA:PRODUCTS:xa-content-deploy-lane-hardening-no-xa-yml-fallback:20260305",
+      "anchor_key": "xa-content-deploy-lane-hardening-no-xa-yml-fallback",
+      "cluster_key": "XA:PRODUCTS:xa-content-deploy-lane-hardening-no-xa-yml-fallback:operator:20260305",
+      "cluster_fingerprint": "7d777f0ee17f9ca0e4b8661711f4ed64b39f825a70cb1de1c8dbcbb6b9f96a66",
+      "lineage_depth": 0,
+      "area_anchor": "XA uploader deploy lane hardening — block xa.yml fallback and add hook-failure fallback",
+      "location_anchors": [
+        "apps/xa-drop-worker/wrangler.toml",
+        "apps/xa-drop-worker/src/index.ts",
+        "apps/xa-uploader/src/lib/deployHook.ts",
+        "apps/xa-uploader/src/lib/uploaderI18n.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-build",
+      "status": "completed",
+      "domain": "PRODUCTS",
+      "priority": "P1",
+      "confidence": 0.9,
+      "current_truth": "Uploader-triggered deploy routing could still hit xa.yml in preview fallback and hard-fail on Pages hook errors.",
+      "next_scope_now": "Enforce fast-lane-only routing, add dispatch guardrails, and make deploy outcome messaging explicit about verification pending.",
+      "adjacent_later": [
+        "Promote xa-b-redeploy.yml to default branch visibility at first main promotion.",
+        "Execute TASK-04 publish-to-live checkpoint trials and record p50/p90."
+      ],
+      "evidence_refs": [
+        "agent-verified: apps/xa-drop-worker/wrangler.toml preview fallback previously set XA_GITHUB_WORKFLOW_FILE=xa.yml",
+        "agent-verified: apps/xa-drop-worker/src/index.ts returned pages hook failure without dispatch fallback",
+        "operator-confirmed: default-branch workflow visibility issue is acceptable pre-main"
+      ],
+      "why": "Content updates from xa-uploader must avoid the full code-change CI lane and degrade gracefully when Pages hook transport fails.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Uploader-triggered deploys use fast lanes only (Pages hook or xa-b-redeploy dispatch), and operator messaging reflects trigger-accepted-but-not-yet-verified semantics.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-05T19:23:03.831Z",
+      "queue_state": "completed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-05T19:23:03.831Z",
+        "fact_find_slug": "xa-content-deploy-lane",
+        "fact_find_path": "docs/plans/xa-content-deploy-lane/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/xa-content-deploy-lane/plan.md",
+        "completed_at": "2026-03-05T19:23:03.831Z",
+        "outcome": "Fast-lane hardening shipped: preview fallback now targets xa-b-redeploy, xa.yml dispatch blocked, Pages hook failure falls back to GitHub dispatch, and deploy-trigger messaging now indicates verification pending."
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260305184919-9026",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:XA:PRODUCTS:xa-uploader-sync-fast-path-skip-code-quality-gates-during-operator-sync:20260305",
+      "anchor_key": "xa-uploader-sync-fast-path-skip-code-quality-gates-during-operator-sync",
+      "cluster_key": "XA:PRODUCTS:xa-uploader-sync-fast-path-skip-code-quality-gates-during-operator-sync:operator:20260305",
+      "cluster_fingerprint": "46d1aa51e98a58cb6c9e0d1fc1c4e10de6fb87d55de23fb11db81a94bf7f8daf",
+      "lineage_depth": 0,
+      "area_anchor": "XA uploader sync path — skip code-quality gates at publish",
+      "location_anchors": [
+        "apps/xa-uploader/src/app/api/catalog/sync/route.ts",
+        "apps/xa-uploader/src/components/catalog/useCatalogConsole.client.ts",
+        ".github/workflows/xa.yml"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "completed",
+      "domain": "PRODUCTS",
+      "priority": "P2",
+      "confidence": 0.9,
+      "current_truth": "Operator sync in xa-uploader must stay focused on catalog/image validation and publish execution; code-quality gates should remain CI-only for code changes.",
+      "next_scope_now": "Implement fast-path sync defaults and conditional validation execution so operator publish runs minimum required steps only, while preserving GitHub lint/typecheck/test gates.",
+      "adjacent_later": [
+        "Add explicit full-validation advanced toggle copy in the sync panel.",
+        "Track operator sync duration before and after fast-path enablement."
+      ],
+      "evidence_refs": [
+        "operator-stated: streamline xa-uploader publish path to minimum required steps",
+        "agent-verified: /api/catalog/sync runs validate + pipeline scripts; CI xa.yml owns lint/typecheck/test"
+      ],
+      "why": "The publish flow should optimize for operator throughput and reliability during product/image uploads, while keeping code-quality checks in GitHub CI where code changes are validated.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "xa-uploader operator sync runs only required catalog/media processing by default, and GitHub CI continues enforcing lint, typecheck, and tests for code changes.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-05T18:49:19.007Z",
+      "queue_state": "completed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-05T18:52:13.912Z",
+        "fact_find_slug": "xa-uploader-sync-fast-path",
+        "fact_find_path": "docs/plans/xa-uploader-sync-fast-path/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/xa-uploader-sync-fast-path/plan.md",
+        "completed_at": "2026-03-05T18:52:13.912Z",
+        "outcome": "Fast-path sync shipped: strict validation now opt-in; CI lint/typecheck/test gates unchanged."
+      }
+    },
     {
       "schema_version": "dispatch.v2",
       "dispatch_id": "IDEA-DISPATCH-20260304201100-0990",
@@ -10297,6 +10884,492 @@
       "intended_outcome": {
         "type": "operational",
         "statement": "Produce a validated routing outcome and scoped next action for bos-codebase-structural-signals.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260305181029-2308",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:BOS:reception-process-silent-failure-hardening-gaps:20260305",
+      "anchor_key": "reception-process-silent-failure-hardening-gaps",
+      "cluster_key": "BRIK:BOS:reception-process-silent-failure-hardening-gaps:operator:20260305",
+      "cluster_fingerprint": "ce254ca0dbeefa091e8deab250ec9cf9e8009e854795455d8893d8cb7636dc10",
+      "lineage_depth": 0,
+      "area_anchor": "Reception process integrity — silent failure hardening gaps",
+      "location_anchors": [
+        "docs/plans/reception-process-integrity-silent-failure-hardening/fact-find.md",
+        "docs/plans/reception-process-integrity-silent-failure-hardening/plan.md",
+        "apps/reception/src/components/prepayments",
+        "apps/reception/src/components/checkins/StatusButton.tsx",
+        "apps/reception/src/components/checkout/Checkout.tsx",
+        "apps/reception/src/services/useBookingEmail.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "completed",
+      "domain": "BOS",
+      "priority": "P2",
+      "confidence": 0.85,
+      "current_truth": "Reception flows still allowed duplicate activity logging, non-throwing mutation failures, split-write drift, and recipient-fetch failure misclassification.",
+      "next_scope_now": "Harden prepayment/status/checkout/email contracts to fail closed and add behavior-level verification.",
+      "adjacent_later": [
+        "Add Alloggiati result-cardinality guard before persistence writes.",
+        "Harden YOY API and auth cache fallback residual integrity gaps."
+      ],
+      "evidence_refs": [
+        "operator-stated: reception process audit identified silent-failure risks",
+        "apps/reception/src/components/checkins/__tests__/StatusButton.test.tsx",
+        "apps/reception/src/components/checkout/__tests__/Checkout.test.tsx"
+      ],
+      "why": "Silent failures in operator-critical reception workflows can desynchronize UI decisions from persisted state and hide delivery failures.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Reception mutation paths fail closed with compensation where needed and behavior tests cover the hardened contracts.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-05T18:10:29.650Z",
+      "queue_state": "completed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-05T18:10:29.650Z",
+        "fact_find_slug": "reception-process-integrity-silent-failure-hardening",
+        "fact_find_path": "docs/plans/reception-process-integrity-silent-failure-hardening/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/reception-process-integrity-silent-failure-hardening/plan.md",
+        "completed_at": "2026-03-05T18:31:40.148Z",
+        "outcome": "Reception silent-failure hardening implemented for prepayment/status/checkout/email + residual integrity guards"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260305184751-2401",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:BOS:reception-reaudit-opportunities-20260305",
+      "anchor_key": "reception-reaudit-opportunities",
+      "cluster_key": "BRIK:BOS:reception-reaudit-opportunities:operator:20260305",
+      "cluster_fingerprint": "95dd87dad5632a41136c4ef8cfa131e4d1e4ce8f832aa4971eaa99f85da9c756",
+      "lineage_depth": 0,
+      "area_anchor": "Reception re-audit opportunities — fail-closed activity and async integrity gaps",
+      "location_anchors": [
+        "apps/reception/src/hooks/mutations/useActivitiesMutations.ts",
+        "apps/reception/src/components/checkins/keycardButton/KeycardDepositButton.tsx",
+        "apps/reception/src/components/loans/LoansContainer.tsx",
+        "apps/reception/src/hooks/mutations/useLoansMutations.ts",
+        "apps/reception/src/components/man/modals/ExtensionPayModal.tsx",
+        "apps/reception/src/components/prepayments/PrepaymentsContainer.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "domain": "BOS",
+      "priority": "P1",
+      "confidence": 0.89,
+      "current_truth": "Reception re-audit still shows fail-open activity wrappers, unchecked mutation success results, and async fire-and-forget writes that can silently lose audit/financial side effects.",
+      "next_scope_now": "Harden activity mutation result handling to fail closed, remove fire-and-forget critical writes, and close coverage gaps for non-throwing failure paths.",
+      "adjacent_later": [
+        "Consolidate multi-write financial mutations under shared fail-closed transactional helpers.",
+        "Add component-level regression tests for keycard and loans mutation orchestration."
+      ],
+      "evidence_refs": [
+        "operator-stated: re-audit reception process and take opportunities forward",
+        "apps/reception/src/hooks/mutations/useActivitiesMutations.ts",
+        "apps/reception/src/components/checkins/keycardButton/KeycardDepositButton.tsx",
+        "apps/reception/src/components/loans/LoansContainer.tsx",
+        "apps/reception/src/hooks/mutations/useLoansMutations.ts"
+      ],
+      "why": "Critical front-desk flows can report success while activity or financial side effects fail silently, which undermines operator trust and data integrity.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Reception mutation flows fail closed on non-throwing mutation failures and async side effects are either confirmed or surfaced as explicit errors with regression coverage.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-05T18:47:51.000Z",
+      "queue_state": "completed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-05T18:53:21.425Z",
+        "fact_find_slug": "reception-process-integrity-reaudit-opportunities",
+        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-opportunities/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/reception-process-integrity-reaudit-opportunities/plan.md",
+        "completed_at": "2026-03-05T19:03:58.250Z",
+        "outcome": "Fail-closed activity handling and loans/keycard async integrity hardening completed with targeted regression coverage"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306090000-0001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:BOS:email-pipeline-intent-extraction-clause-atomization:20260306",
+      "anchor_key": "brik-email-pipeline-intent-extraction-clause-atomization",
+      "cluster_key": "BRIK:BOS:email-pipeline-intent-extraction:operator:20260306",
+      "cluster_fingerprint": "a1c3e7f209d84b62e3fc1a0287d6b3a94c15e6f207a8d3b1e4c2f09687a3d5e1",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK email pipeline — intent extraction collapses clause-level questions, double-counts intents",
+      "location_anchors": [
+        "packages/mcp-server/src/tools/draft-interpret.ts",
+        "packages/mcp-server/src/tools/coverage.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "operator-stated: simulation audit — four representative email threads revealed punctuation-based question extraction merges clause-level intents into one, and request extractors double-count question stems",
+        "packages/mcp-server/src/tools/draft-interpret.ts"
+      ],
+      "why": "Mixed-intent guest emails (e.g. availability + cancellation policy in one message) currently collapse to a single dominant answer path, leaving one sub-question unaddressed. The extraction layer must atomize compound clauses before scenario ranking to prevent routine pre-booking emails from dropping a question.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Clause-level intent atomization and span-based deduplication are implemented in draft-interpret so that compound questions produce one intent object per clause, and interrogative requests are deduplicated by source span rather than counted twice.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-06T09:00:00.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306090000-0002",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:BOS:email-pipeline-template-confidence-threshold:20260306",
+      "anchor_key": "brik-email-pipeline-template-confidence-threshold",
+      "cluster_key": "BRIK:BOS:email-pipeline-template-selection:operator:20260306",
+      "cluster_fingerprint": "b2d4f8e310a95c73f4gd2b1398e7c4b05d26f7g308b9e4c2g5d3a10798b4e6f2",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK email pipeline — template ranker accepts weak matches, booking_monitor triggers too broadly",
+      "location_anchors": [
+        "packages/mcp-server/src/tools/template-ranker.ts",
+        "packages/mcp-server/src/tools/draft-generate.ts",
+        "packages/mcp-server/src/tools/draft-interpret.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: simulation audit — unknown-facility question (rooftop pool) received a fluent but unrelated policy template; any mention of 'booking' enables booking_monitor path causing false reference-link failures on plain FAQ drafts",
+        "packages/mcp-server/src/tools/template-ranker.ts",
+        "packages/mcp-server/src/tools/draft-interpret.ts"
+      ],
+      "why": "Template-ranker always selects candidate 0 from BM25 results even when the match is below any useful similarity threshold, producing confident-sounding but wrong answers for unknown topics. Separately, booking_monitor activates on any mention of 'booking' rather than only on operational booking actions, causing quality checks to demand reference links on ordinary FAQ drafts and generating false failures.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Per-question confidence floor and category-compatibility checks gate template block acceptance in template-ranker and draft-generate; below-threshold questions emit follow_up_required with no template text. booking_monitor is scoped to operational booking actions (not informational mentions), removing false reference-link quality failures from FAQ drafts.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-06T09:00:00.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306090000-0003",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:BOS:email-pipeline-quality-gate-enforcement:20260306",
+      "anchor_key": "brik-email-pipeline-quality-gate-enforcement",
+      "cluster_key": "BRIK:BOS:email-pipeline-quality-enforcement:operator:20260306",
+      "cluster_fingerprint": "c3e5g9f421b06d84g5he3c2409f8d5c16e37g8h419c0f5d3h6e4b21809c5f7g3",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK email pipeline — quality gate advisory-only; coverage scoring lexical-only",
+      "location_anchors": [
+        "packages/mcp-server/src/tools/draft-generate.ts",
+        "packages/mcp-server/src/tools/draft-quality-check.ts",
+        "packages/mcp-server/src/tools/coverage.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: simulation audit — draft_generate returns a full draft even when quality.passed is false; the hard stop exists only in the ops-inbox workflow doc, not in the tool boundary; coverage scoring is keyword-overlap only and marks valid answers partial",
+        "packages/mcp-server/src/tools/draft-generate.ts",
+        "packages/mcp-server/src/tools/coverage.ts"
+      ],
+      "why": "The quality gate being advisory at the tool boundary means a failed draft can still be submitted as a Gmail draft if the operator misses the quality.passed flag — the safety guarantee only exists in a workflow doc, not enforced in code. Separately, the lexical-only coverage scorer generates false negatives on valid answers that paraphrase rather than echo question keywords, creating unnecessary operator patch churn.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "draft_generate exposes a machine-enforced delivery_status field (ready | needs_patch | blocked) and refuses Gmail draft creation when blocked. Coverage scoring incorporates category-aware synonym packs and topic-label checks so that paraphrased correct answers are not marked partial.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-06T09:00:00.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306085831-0673",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "039ed81ee6a61490d6dae20af860e90e8dacea0b",
+      "after_sha": "bf5134a6df0719ec9287ec76a3ad146f175ddb8c",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:bf5134a6df0719ec9287ec76a3ad146f175ddb8c",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:bf5134a6df0719ec9287ec76a3ad146f175ddb8c",
+      "cluster_fingerprint": "7dc135d9c7b02d413f0e2da4f8136a424f042319a7eeeadcad0dd4be5a17207c",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (039ed81 → bf5134a)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:659732df-cc97-43d8-9a2a-5c5622f48f8d",
+        "session:74db1618-e518-4834-bae9-f02ea22c3f59",
+        "session:8781939f-edea-451b-a9fa-1fa24c8cb292",
+        "session:b2abcfb3-3232-4889-bcf7-7a39bc86c96c",
+        "session:b3165069-f318-4859-9dd9-a21a8e5fd1cb",
+        "session:e2754215-15ad-450e-a951-7e49351a9a42"
+      ],
+      "created_at": "2026-03-06T08:58:31.672Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306090244-0707",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "bf5134a6df0719ec9287ec76a3ad146f175ddb8c",
+      "after_sha": "c5e3082a5eed1d077d9ff6f4e10e3e7c56aeb31b",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:c5e3082a5eed1d077d9ff6f4e10e3e7c56aeb31b",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:c5e3082a5eed1d077d9ff6f4e10e3e7c56aeb31b",
+      "cluster_fingerprint": "77c3d18e41047467fa56f73d7fa08fc4c78422e02896c46a6fb3ba8043ab1153",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (bf5134a → c5e3082)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:b986c4e2-907f-402c-b168-f7b5f89f377a",
+        "session:74db1618-e518-4834-bae9-f02ea22c3f59",
+        "session:659732df-cc97-43d8-9a2a-5c5622f48f8d",
+        "session:8781939f-edea-451b-a9fa-1fa24c8cb292",
+        "session:b2abcfb3-3232-4889-bcf7-7a39bc86c96c",
+        "session:b3165069-f318-4859-9dd9-a21a8e5fd1cb"
+      ],
+      "created_at": "2026-03-06T09:02:44.706Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306095910-0381",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "c5e3082a5eed1d077d9ff6f4e10e3e7c56aeb31b",
+      "after_sha": "2bb288c40594777271e6f27431ba1d97cee1ed0c",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:2bb288c40594777271e6f27431ba1d97cee1ed0c",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:2bb288c40594777271e6f27431ba1d97cee1ed0c",
+      "cluster_fingerprint": "87f8ba56441175d9aa7b70fe9a938d4ec57f3f6370c4e2cd17ac212592c0cc87",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (c5e3082 → 2bb288c)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:b986c4e2-907f-402c-b168-f7b5f89f377a",
+        "session:659732df-cc97-43d8-9a2a-5c5622f48f8d",
+        "session:74db1618-e518-4834-bae9-f02ea22c3f59",
+        "session:8781939f-edea-451b-a9fa-1fa24c8cb292",
+        "session:b2abcfb3-3232-4889-bcf7-7a39bc86c96c",
+        "session:b3165069-f318-4859-9dd9-a21a8e5fd1cb"
+      ],
+      "created_at": "2026-03-06T09:59:10.380Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306100054-0119",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "2bb288c40594777271e6f27431ba1d97cee1ed0c",
+      "after_sha": "14e3c90019d33680958832f8778490b0a5aa790f",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:14e3c90019d33680958832f8778490b0a5aa790f",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:14e3c90019d33680958832f8778490b0a5aa790f",
+      "cluster_fingerprint": "164d9dff3cc8e7d2bf3828f1be9d8c7fba31d923e56fb071329278f311b39c90",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (2bb288c → 14e3c90)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:659732df-cc97-43d8-9a2a-5c5622f48f8d",
+        "session:b986c4e2-907f-402c-b168-f7b5f89f377a",
+        "session:74db1618-e518-4834-bae9-f02ea22c3f59",
+        "session:8781939f-edea-451b-a9fa-1fa24c8cb292",
+        "session:b2abcfb3-3232-4889-bcf7-7a39bc86c96c",
+        "session:b3165069-f318-4859-9dd9-a21a8e5fd1cb"
+      ],
+      "created_at": "2026-03-06T10:00:54.118Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306110736-0879",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "14e3c90019d33680958832f8778490b0a5aa790f",
+      "after_sha": "da0e33fd2a5027ab85d3e274758170970739ab51",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:da0e33fd2a5027ab85d3e274758170970739ab51",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:da0e33fd2a5027ab85d3e274758170970739ab51",
+      "cluster_fingerprint": "7f36b7ce8afad60191a6b608d58c2b74e98d03cc624f0b0c01a77537e5ac0f87",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (14e3c90 → da0e33f)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739",
+        "session:659732df-cc97-43d8-9a2a-5c5622f48f8d",
+        "session:74db1618-e518-4834-bae9-f02ea22c3f59",
+        "session:8781939f-edea-451b-a9fa-1fa24c8cb292",
+        "session:b986c4e2-907f-402c-b168-f7b5f89f377a",
+        "session:b2abcfb3-3232-4889-bcf7-7a39bc86c96c"
+      ],
+      "created_at": "2026-03-06T11:07:36.878Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306120834-0988",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "da0e33fd2a5027ab85d3e274758170970739ab51",
+      "after_sha": "acb7df019e6a356a92e43758bd93777d696fdc37",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:acb7df019e6a356a92e43758bd93777d696fdc37",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:acb7df019e6a356a92e43758bd93777d696fdc37",
+      "cluster_fingerprint": "36137211d156156df59b03606286101e0d64016ddc47f399b7a0d406884c0d8b",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (da0e33f → acb7df0)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739",
+        "session:934d1ed9-f97a-4dc1-98e9-2bd8b2a916fb",
+        "session:659732df-cc97-43d8-9a2a-5c5622f48f8d",
+        "session:74db1618-e518-4834-bae9-f02ea22c3f59",
+        "session:8781939f-edea-451b-a9fa-1fa24c8cb292",
+        "session:b986c4e2-907f-402c-b168-f7b5f89f377a"
+      ],
+      "created_at": "2026-03-06T12:08:34.987Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
         "source": "auto"
       }
     }

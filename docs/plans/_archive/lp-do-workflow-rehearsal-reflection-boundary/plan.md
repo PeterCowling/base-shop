@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: BOS
 Workstream: Mixed
 Created: 2026-03-06
@@ -29,7 +29,7 @@ The workflow's pre-build dry runs are currently described using "simulation" lan
 - [x] TASK-02: Update shared protocol and upstream skill docs with rehearsal language
 - [x] TASK-03: Add post-critique delivery rehearsal stage to lp-do-plan
 - [x] TASK-04: Make post-build artifacts explicitly reflection-only in lp-do-build and loop-output-contracts
-- [ ] TASK-05: Pilot checkpoint — archived plan rehearsal validation
+- [x] TASK-05: Pilot checkpoint — archived plan rehearsal validation
 
 ## Goals
 - Replace "simulation" terminology with "rehearsal" for pre-build dry runs across shared protocol and three workflow skills, without weakening existing hard/advisory gate behavior.
@@ -90,7 +90,7 @@ The workflow's pre-build dry runs are currently described using "simulation" lan
 | TASK-02 | IMPLEMENT | Update shared protocol + lp-do-fact-find, lp-do-plan, lp-do-critique SKILL docs with rehearsal language | 80% | M | Complete (2026-03-06) | TASK-01 | TASK-03, TASK-05 |
 | TASK-03 | IMPLEMENT | Add post-critique delivery rehearsal stage to lp-do-plan (four lenses, same-outcome rule, rerun triggers) | 80% | M | Complete (2026-03-06) | TASK-02 | TASK-05 |
 | TASK-04 | IMPLEMENT | Update lp-do-build and loop-output-contracts.md so post-build artifacts are explicitly reflection-only | 80% | S | Complete (2026-03-06) | TASK-01 | TASK-05 |
-| TASK-05 | CHECKPOINT | Pilot revised contract on 2–3 archived plans; record whether delivery rehearsal adds same-outcome signal | 95% | S | Pending | TASK-02, TASK-03, TASK-04 | - |
+| TASK-05 | CHECKPOINT | Pilot revised contract on 2–3 archived plans; record whether delivery rehearsal adds same-outcome signal | 95% | S | Complete (2026-03-06) | TASK-02, TASK-03, TASK-04 | - |
 
 ## Parallelism Guide
 

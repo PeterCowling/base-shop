@@ -10,7 +10,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { cacheCheckInCode, getCachedCheckInCode } from '../lib/arrival/codeCache';
-import { readGuestSession } from '../lib/auth/guestSessionGuard';
 import { useOnlineStatus } from '../lib/pwa/useOnlineStatus';
 
 import { useFetchCheckInCode } from './pureData/useFetchCheckInCode';
@@ -108,15 +107,10 @@ export function useCheckInCode(options: UseCheckInCodeOptions): UseCheckInCodeRe
     setGenerateError(null);
 
     try {
-      const session = readGuestSession();
-      const guestToken = session?.token ?? '';
-
+      // prime_session HttpOnly cookie is sent automatically on this same-origin request
       const response = await fetch('/api/check-in-code', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${guestToken}`,
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ uuid, checkOutDate }),
       });
 

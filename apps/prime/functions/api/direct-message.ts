@@ -12,11 +12,20 @@
 import { buildDirectMessageChannelId } from '../../src/lib/chat/directMessageChannel';
 import { canSendDirectMessage } from '../../src/lib/chat/messagingPolicy';
 import type { GuestProfile } from '../../src/types/guestProfile';
-
-import { FirebaseRest, errorResponse, jsonResponse } from '../lib/firebase-rest';
 import { recordDirectTelemetry } from '../lib/direct-telemetry';
+import { errorResponse, FirebaseRest, jsonResponse } from '../lib/firebase-rest';
 import { validateGuestSessionToken } from '../lib/guest-session';
 import { enforceKvRateLimit } from '../lib/kv-rate-limit';
+
+function parseCookie(cookieHeader: string, name: string): string | null {
+  for (const part of cookieHeader.split(';')) {
+    const [key, ...rest] = part.trim().split('=');
+    if (key.trim() === name) {
+      return rest.join('=').trim() || null;
+    }
+  }
+  return null;
+}
 
 interface Env {
   CF_FIREBASE_DATABASE_URL: string;
@@ -58,7 +67,9 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return errorResponse('Invalid JSON body', 400);
   }
 
-  const token = request.headers.get('X-Prime-Guest-Token')?.trim() ?? '';
+  const token = parseCookie(request.headers.get('Cookie') ?? '', 'prime_session')
+    ?? request.headers.get('X-Prime-Guest-Token')?.trim()
+    ?? '';
   const requestedBookingId = request.headers.get('X-Prime-Guest-Booking-Id')?.trim() ?? '';
   const bookingId = (body.bookingId ?? '').trim();
   const peerUuid = (body.peerUuid ?? '').trim();
@@ -66,7 +77,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const content = (body.content ?? '').trim();
 
   if (!token) {
-    return errorResponse('X-Prime-Guest-Token header is required', 400);
+    return errorResponse('Unauthorized', 401);
   }
   if (!bookingId || !peerUuid || !channelId || !content) {
     return errorResponse('bookingId, peerUuid, channelId, and content are required', 400);

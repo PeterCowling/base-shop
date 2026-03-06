@@ -5,7 +5,17 @@
  * POST - Verifies guest last name for a token and returns minimal session data
  */
 
-import { FirebaseRest, jsonResponse, errorResponse } from '../lib/firebase-rest';
+import { errorResponse, FirebaseRest, jsonResponse } from '../lib/firebase-rest';
+
+function parseCookie(cookieHeader: string, name: string): string | null {
+  for (const part of cookieHeader.split(';')) {
+    const [key, ...rest] = part.trim().split('=');
+    if (key.trim() === name) {
+      return rest.join('=').trim() || null;
+    }
+  }
+  return null;
+}
 
 interface Env {
   CF_FIREBASE_DATABASE_URL: string;
@@ -41,10 +51,13 @@ function isExpired(expiresAt: string): boolean {
 
 export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
   const url = new URL(request.url);
-  const token = url.searchParams.get('token');
+  // Accept prime_session cookie (post-TASK-05) OR ?token= query param (legacy)
+  const token =
+    parseCookie(request.headers.get('Cookie') ?? '', 'prime_session') ??
+    url.searchParams.get('token');
 
   if (!token) {
-    return errorResponse('token parameter is required', 400);
+    return errorResponse('Unauthorized', 401);
   }
 
   try {
@@ -74,7 +87,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     const body = await request.json() as { token?: string; lastName?: string };
     token = body.token || '';
     lastName = body.lastName || '';
-  } catch (error) {
+  } catch {
     return errorResponse('Invalid JSON body', 400);
   }
 
@@ -153,10 +166,19 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       await env.RATE_LIMIT.delete(rateLimitKey);
     }
 
-    return jsonResponse({
+    const maxAge = Math.max(0, Math.floor((new Date(session.expiresAt).getTime() - Date.now()) / 1000));
+    const cookieValue = `prime_session=${token}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${maxAge}`;
+
+    return new Response(JSON.stringify({
       bookingId: session.bookingId,
       guestUuid: targetOccupantId,
       guestFirstName: guestDetails.firstName || '',
+    }), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Set-Cookie': cookieValue,
+      },
     });
   } catch (error) {
     console.error('Error verifying guest session:', error);

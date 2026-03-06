@@ -34,7 +34,7 @@ function formatDate(value: string, fallback: string): string {
 
 export default function BookingDetailsPage() {
   const { t } = useTranslation('BookingDetails');
-  const { snapshot, isLoading, token } = useGuestBookingSnapshot();
+  const { snapshot, isLoading } = useGuestBookingSnapshot();
   const [requestedCheckOutDate, setRequestedCheckOutDate] = useState('');
   const [note, setNote] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -54,7 +54,7 @@ export default function BookingDetailsPage() {
 
   async function submitExtensionRequest(event: React.FormEvent) {
     event.preventDefault();
-    if (!token || !requestedCheckOutDate) {
+    if (!snapshot || !requestedCheckOutDate) {
       return;
     }
 
@@ -63,11 +63,11 @@ export default function BookingDetailsPage() {
     setExtensionMessage(null);
 
     try {
+      // prime_session HttpOnly cookie is sent automatically on this same-origin request
       const response = await fetch(GUEST_CRITICAL_FLOW_ENDPOINTS.extension_request, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          token,
           requestedCheckOutDate,
           note,
         }),

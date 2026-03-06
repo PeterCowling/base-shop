@@ -69,12 +69,25 @@ function calculateExpiry(checkOutDate: string): number | null {
   return checkOutTimestamp + CODE_EXPIRY_HOURS_AFTER_CHECKOUT * 60 * 60 * 1000;
 }
 
-/** Extracts the bearer token from the Authorization header. Returns null if absent or malformed. */
-function extractBearerToken(request: Request): string | null {
-  const authHeader = request.headers.get('Authorization');
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return null;
+function parseCookie(cookieHeader: string, name: string): string | null {
+  for (const part of cookieHeader.split(';')) {
+    const [key, ...rest] = part.trim().split('=');
+    if (key.trim() === name) {
+      return rest.join('=').trim() || null;
+    }
   }
+  return null;
+}
+
+/**
+ * Extracts the session token from cookie (primary) or Authorization: Bearer header (transition period).
+ * Returns null if absent or malformed.
+ */
+function extractSessionToken(request: Request): string | null {
+  const cookie = parseCookie(request.headers.get('Cookie') ?? '', 'prime_session');
+  if (cookie) return cookie;
+  const authHeader = request.headers.get('Authorization');
+  if (!authHeader || !authHeader.startsWith('Bearer ')) return null;
   const token = authHeader.slice('Bearer '.length).trim();
   return token.length > 0 ? token : null;
 }
@@ -106,7 +119,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
     return errorResponse(t('errors.uuidQueryRequired'), 400);
   }
 
-  const token = extractBearerToken(request);
+  const token = extractSessionToken(request);
   if (!token) {
     return errorResponse('Unauthorized', 401);
   }
@@ -144,7 +157,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const { t } = createFunctionTranslator(request, 'CheckInCodeApi');
 
-  const token = extractBearerToken(request);
+  const token = extractSessionToken(request);
   if (!token) {
     return errorResponse('Unauthorized', 401);
   }

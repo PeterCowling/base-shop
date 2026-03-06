@@ -363,7 +363,6 @@ export function ChatProvider({ children }: ChatProviderProps) {
       const session = readGuestSession();
       if (
         !session.uuid
-        || !session.token
         || !session.bookingId
         || !directMessageChannelIncludesGuest(activeChannelId, session.uuid)
       ) {
@@ -380,12 +379,12 @@ export function ChatProvider({ children }: ChatProviderProps) {
         }
 
         try {
+          // prime_session HttpOnly cookie is sent automatically on this same-origin request
           const response = await fetch(
             buildDirectMessagesRequestUrl(activeChannelId, { limit: PAGE_SIZE }),
             {
               method: 'GET',
               headers: {
-                'X-Prime-Guest-Token': session.token,
                 'X-Prime-Guest-Booking-Id': session.bookingId,
               },
               cache: 'no-store',
@@ -515,7 +514,6 @@ export function ChatProvider({ children }: ChatProviderProps) {
         const session = readGuestSession();
         if (
           !session.uuid
-          || !session.token
           || !session.bookingId
           || !directMessageChannelIncludesGuest(channelId, session.uuid)
         ) {
@@ -533,6 +531,7 @@ export function ChatProvider({ children }: ChatProviderProps) {
         }
 
         try {
+          // prime_session HttpOnly cookie is sent automatically on this same-origin request
           const response = await fetch(
             buildDirectMessagesRequestUrl(channelId, {
               before: oldest.createdAt,
@@ -541,7 +540,6 @@ export function ChatProvider({ children }: ChatProviderProps) {
             {
               method: 'GET',
               headers: {
-                'X-Prime-Guest-Token': session.token,
                 'X-Prime-Guest-Booking-Id': session.bookingId,
               },
               cache: 'no-store',
@@ -610,7 +608,7 @@ export function ChatProvider({ children }: ChatProviderProps) {
       if (options?.directMessage) {
         const { bookingId, peerUuid } = options.directMessage;
 
-        if (!bookingId || !peerUuid || !session.bookingId || !session.token) {
+        if (!bookingId || !peerUuid || !session.bookingId) {
           throw new Error('Direct message context is incomplete.');
         }
 
@@ -632,11 +630,11 @@ export function ChatProvider({ children }: ChatProviderProps) {
           throw new Error(buildDirectRateLimitMessage(activeWriteBackoff));
         }
 
+        // prime_session HttpOnly cookie is sent automatically on this same-origin request
         const directResponse = await fetch('/api/direct-message', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Prime-Guest-Token': session.token,
             'X-Prime-Guest-Booking-Id': bookingId,
           },
           body: JSON.stringify({

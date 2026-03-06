@@ -8,9 +8,8 @@
  */
 
 import type { Message } from '../../src/types/messenger/chat';
-
-import { FirebaseRest, errorResponse, jsonResponse } from '../lib/firebase-rest';
 import { recordDirectTelemetry } from '../lib/direct-telemetry';
+import { errorResponse, FirebaseRest, jsonResponse } from '../lib/firebase-rest';
 import { validateGuestSessionToken } from '../lib/guest-session';
 import { enforceKvRateLimit } from '../lib/kv-rate-limit';
 
@@ -91,12 +90,24 @@ function normalizeMessageRecord(
   };
 }
 
+function parseCookie(cookieHeader: string, name: string): string | null {
+  for (const part of cookieHeader.split(';')) {
+    const [key, ...rest] = part.trim().split('=');
+    if (key.trim() === name) {
+      return rest.join('=').trim() || null;
+    }
+  }
+  return null;
+}
+
 export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
   const url = new URL(request.url);
   const channelId = url.searchParams.get('channelId')?.trim() ?? '';
   const rawLimit = url.searchParams.get('limit');
   const rawBefore = url.searchParams.get('before');
-  const token = request.headers.get('X-Prime-Guest-Token')?.trim() ?? '';
+  const token = parseCookie(request.headers.get('Cookie') ?? '', 'prime_session')
+    ?? request.headers.get('X-Prime-Guest-Token')?.trim()
+    ?? '';
   const requestedBookingId = request.headers.get('X-Prime-Guest-Booking-Id')?.trim() ?? '';
   const limit = parseLimit(rawLimit);
   const before = parseBefore(rawBefore);
@@ -111,7 +122,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
     return errorResponse('before must be a non-negative integer timestamp', 400);
   }
   if (!token) {
-    return errorResponse('X-Prime-Guest-Token header is required', 400);
+    return errorResponse('Unauthorized', 401);
   }
 
   const authResult = await validateGuestSessionToken(token, env);

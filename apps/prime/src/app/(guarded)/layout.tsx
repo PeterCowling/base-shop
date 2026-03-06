@@ -8,7 +8,6 @@ import { PinAuthProvider, usePinAuth } from '../../contexts/messaging/PinAuthPro
 import { useSessionValidation } from '../../hooks/useSessionValidation';
 import {
   clearGuestSession,
-  readGuestSession,
   validateGuestToken,
 } from '../../lib/auth/guestSessionGuard';
 
@@ -18,18 +17,14 @@ function GuardedGate({ children }: { children: ReactNode }) {
   const { isAuthenticated } = usePinAuth();
   const router = useRouter();
   const [gateState, setGateState] = useState<GateState>('checking');
-  const [guestToken, setGuestToken] = useState<string | null>(null);
-
   const invalidateGuestSession = useCallback(() => {
     clearGuestSession();
-    setGuestToken(null);
     setGateState('denied');
     router.replace('/find-my-stay');
   }, [router]);
 
   useSessionValidation({
-    token: guestToken,
-    enabled: gateState === 'allowed' && !isAuthenticated && !!guestToken,
+    enabled: gateState === 'allowed' && !isAuthenticated,
     onInvalidOrExpired: invalidateGuestSession,
   });
 
@@ -44,18 +39,8 @@ function GuardedGate({ children }: { children: ReactNode }) {
         return;
       }
 
-      const session = readGuestSession();
-      setGuestToken(session.token);
-
-      if (!session.token) {
-        if (isMounted) {
-          setGateState('denied');
-          router.replace('/');
-        }
-        return;
-      }
-
-      const validation = await validateGuestToken(session.token);
+      // prime_session HttpOnly cookie is sent automatically on this same-origin request
+      const validation = await validateGuestToken();
       if (!isMounted) {
         return;
       }

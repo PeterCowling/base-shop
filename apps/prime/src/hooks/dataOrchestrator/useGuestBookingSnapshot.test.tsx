@@ -51,8 +51,7 @@ describe('useGuestBookingSnapshot', () => {
 
   it('returns null snapshot and isLoading=true while fetching', async () => {
     mockReadGuestSession.mockReturnValue({
-      token: 'guest-token-abc',
-      bookingId: null,
+      bookingId: 'booking-123',
       uuid: null,
       firstName: null,
       verifiedAt: null,
@@ -70,8 +69,7 @@ describe('useGuestBookingSnapshot', () => {
 
   it('returns snapshot data on successful fetch', async () => {
     mockReadGuestSession.mockReturnValue({
-      token: 'guest-token-abc',
-      bookingId: null,
+      bookingId: 'booking-123',
       uuid: null,
       firstName: null,
       verifiedAt: null,
@@ -90,13 +88,11 @@ describe('useGuestBookingSnapshot', () => {
 
     expect(result.current.snapshot).toEqual(mockSnapshot);
     expect(result.current.error).toBeNull();
-    expect(result.current.token).toBe('guest-token-abc');
   });
 
   it('returns error on 500 response', async () => {
     mockReadGuestSession.mockReturnValue({
-      token: 'guest-token-abc',
-      bookingId: null,
+      bookingId: 'booking-123',
       uuid: null,
       firstName: null,
       verifiedAt: null,
@@ -120,8 +116,7 @@ describe('useGuestBookingSnapshot', () => {
 
   it('returns session_expired error on 410 response', async () => {
     mockReadGuestSession.mockReturnValue({
-      token: 'guest-token-abc',
-      bookingId: null,
+      bookingId: 'booking-123',
       uuid: null,
       firstName: null,
       verifiedAt: null,
@@ -141,9 +136,8 @@ describe('useGuestBookingSnapshot', () => {
     expect((result.current.error as Error).message).toBe('session_expired');
   });
 
-  it('does not fire query when token is null', () => {
+  it('does not fire query when bookingId is null', () => {
     mockReadGuestSession.mockReturnValue({
-      token: null,
       bookingId: null,
       uuid: null,
       firstName: null,

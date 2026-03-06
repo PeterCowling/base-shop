@@ -5,9 +5,19 @@
  * Writes a Prime request record and syncs bagStorage node for staff surfaces.
  */
 
-import { FirebaseRest, errorResponse, jsonResponse } from '../lib/firebase-rest';
+import { errorResponse, FirebaseRest, jsonResponse } from '../lib/firebase-rest';
 import { validateGuestSessionToken } from '../lib/guest-session';
 import { buildPrimeRequestId, createPrimeRequestRecord, createPrimeRequestWritePayload } from '../lib/prime-requests';
+
+function parseCookie(cookieHeader: string, name: string): string | null {
+  for (const part of cookieHeader.split(';')) {
+    const [key, ...rest] = part.trim().split('=');
+    if (key.trim() === name) {
+      return rest.join('=').trim() || null;
+    }
+  }
+  return null;
+}
 
 interface Env {
   CF_FIREBASE_DATABASE_URL: string;
@@ -64,7 +74,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   }
 
   try {
-    const authResult = await validateGuestSessionToken(body.token ?? null, env);
+    const sessionToken = parseCookie(request.headers.get('Cookie') ?? '', 'prime_session') ?? body.token ?? null;
+    const authResult = await validateGuestSessionToken(sessionToken, env);
     if (authResult instanceof Response) {
       return authResult;
     }

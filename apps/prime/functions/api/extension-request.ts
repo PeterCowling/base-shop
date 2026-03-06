@@ -13,6 +13,16 @@ import { createFunctionTranslator } from '../lib/function-i18n';
 import { validateGuestSessionToken } from '../lib/guest-session';
 import { createPrimeRequestRecord, createPrimeRequestWritePayload } from '../lib/prime-requests';
 
+function parseCookie(cookieHeader: string, name: string): string | null {
+  for (const part of cookieHeader.split(';')) {
+    const [key, ...rest] = part.trim().split('=');
+    if (key.trim() === name) {
+      return rest.join('=').trim() || null;
+    }
+  }
+  return null;
+}
+
 interface Env {
   CF_FIREBASE_DATABASE_URL: string;
   CF_FIREBASE_API_KEY?: string;
@@ -73,7 +83,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return errorResponse(t('errors.invalidJsonBody'), 400);
   }
 
-  const token = body.token ?? null;
+  const token = parseCookie(request.headers.get('Cookie') ?? '', 'prime_session') ?? body.token ?? null;
   const requestedCheckOutDate = (body.requestedCheckOutDate ?? '').trim();
   const note = (body.note ?? '').trim();
   const targetEmail = env.PRIME_EXTENSION_TARGET_EMAIL?.trim() ?? '';

@@ -1,5 +1,4 @@
 export const PRIME_GUEST_SESSION_KEYS = [
-  'prime_guest_token',
   'prime_guest_booking_id',
   'prime_guest_uuid',
   'prime_guest_first_name',
@@ -9,7 +8,6 @@ export const PRIME_GUEST_SESSION_KEYS = [
 export type GuestSessionStorageKey = (typeof PRIME_GUEST_SESSION_KEYS)[number];
 
 export interface GuestSessionSnapshot {
-  token: string | null;
   bookingId: string | null;
   uuid: string | null;
   firstName: string | null;
@@ -25,7 +23,6 @@ function toTrimmed(value: string | null): string | null {
 
 export function readGuestSession(storage: Pick<Storage, 'getItem'> = localStorage): GuestSessionSnapshot {
   return {
-    token: toTrimmed(storage.getItem('prime_guest_token')),
     bookingId: toTrimmed(storage.getItem('prime_guest_booking_id')),
     uuid: toTrimmed(storage.getItem('prime_guest_uuid')),
     firstName: toTrimmed(storage.getItem('prime_guest_first_name')),
@@ -48,11 +45,11 @@ export function buildGuestHomeUrl(session: GuestSessionSnapshot): string {
 }
 
 export async function validateGuestToken(
-  token: string,
   fetchImpl: typeof fetch = fetch,
 ): Promise<TokenValidationResult> {
   try {
-    const response = await fetchImpl(`/api/guest-session?token=${encodeURIComponent(token)}`);
+    // prime_session HttpOnly cookie is sent automatically on this same-origin request
+    const response = await fetchImpl('/api/guest-session');
 
     if (response.ok) {
       return 'valid';
@@ -62,7 +59,7 @@ export async function validateGuestToken(
       return 'expired';
     }
 
-    if (response.status === 400 || response.status === 403 || response.status === 404) {
+    if (response.status === 400 || response.status === 401 || response.status === 403 || response.status === 404) {
       return 'invalid';
     }
 

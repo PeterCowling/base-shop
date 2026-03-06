@@ -5,9 +5,19 @@
  * Data path: preorder/{guestUuid}/{nightKey}
  */
 
-import { FirebaseRest, errorResponse, jsonResponse } from '../../lib/firebase-rest';
+import { errorResponse, FirebaseRest, jsonResponse } from '../../lib/firebase-rest';
 import { validateGuestSessionToken } from '../../lib/guest-session';
 import { buildPrimeRequestId, createPrimeRequestRecord, createPrimeRequestWritePayload } from '../../lib/prime-requests';
+
+function parseCookie(cookieHeader: string, name: string): string | null {
+  for (const part of cookieHeader.split(';')) {
+    const [key, ...rest] = part.trim().split('=');
+    if (key.trim() === name) {
+      return rest.join('=').trim() || null;
+    }
+  }
+  return null;
+}
 
 interface Env {
   CF_FIREBASE_DATABASE_URL: string;
@@ -85,7 +95,9 @@ function hasServiceEntitlement(
 }
 
 export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
-  const token = new URL(request.url).searchParams.get('token');
+  const url = new URL(request.url);
+  const token = parseCookie(request.headers.get('Cookie') ?? '', 'prime_session')
+    ?? url.searchParams.get('token');
 
   try {
     const authResult = await validateGuestSessionToken(token, env);
@@ -133,7 +145,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   }
 
   try {
-    const authResult = await validateGuestSessionToken(body.token ?? null, env);
+    const sessionToken = parseCookie(request.headers.get('Cookie') ?? '', 'prime_session') ?? body.token ?? null;
+    const authResult = await validateGuestSessionToken(sessionToken, env);
     if (authResult instanceof Response) {
       return authResult;
     }

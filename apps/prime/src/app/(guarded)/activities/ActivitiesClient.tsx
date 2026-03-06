@@ -201,7 +201,7 @@ export default function ActivitiesClient() {
   const session = readGuestSession();
 
   const sdkDecision = evaluateSdkAccess('activities_presence', {
-    hasGuestToken: Boolean(session.token),
+    hasGuestToken: Boolean(session.verifiedAt),
     isGuestAuthReady: Boolean(uuid),
     flowFlagEnabled:
       process.env.NODE_ENV !== 'production' || isSdkFlowFeatureEnabled('activities_presence'),

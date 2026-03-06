@@ -118,6 +118,20 @@ export function reorderPipeEntry(pipeStr: string, fromIndex: number, direction: 
   return next.join("|");
 }
 
+function movePipeEntryToFront(pipeStr: string, index: number): string {
+  const parts = splitPipeEntries(pipeStr);
+  if (index <= 0 || index >= parts.length) {
+    return parts.join("|");
+  }
+  const next = [...parts];
+  const [selected] = next.splice(index, 1);
+  if (!selected) {
+    return parts.join("|");
+  }
+  next.unshift(selected);
+  return next.join("|");
+}
+
 function resolveImageSrc(entryPath: string, previews: Map<string, string>): string | undefined {
   const blob = previews.get(entryPath);
   if (blob) return blob;
@@ -160,6 +174,17 @@ function reorderImageDraft(
     ...draft,
     imageFiles: reorderPipeEntry(draft.imageFiles ?? "", index, direction),
     imageAltTexts: reorderPipeEntry(draft.imageAltTexts ?? "", index, direction),
+  };
+}
+
+function promoteImageDraftToMain(
+  draft: CatalogProductDraftInput,
+  index: number,
+): CatalogProductDraftInput {
+  return {
+    ...draft,
+    imageFiles: movePipeEntryToFront(draft.imageFiles ?? "", index),
+    imageAltTexts: movePipeEntryToFront(draft.imageAltTexts ?? "", index),
   };
 }
 
@@ -323,12 +348,14 @@ function ImageGallery({
   entries,
   previews,
   onRemove,
+  onMakeMain,
   onReorder,
   t,
 }: {
   entries: ImageEntry[];
   previews: Map<string, string>;
   onRemove: (index: number) => void;
+  onMakeMain: (index: number) => void;
   onReorder: (index: number, direction: "up" | "down") => void;
   t: ReturnType<typeof useUploaderI18n>["t"];
 }) {
@@ -373,7 +400,17 @@ function ImageGallery({
                     {badge}
                   </span>
                 </div>
-                <div className="flex items-center gap-1">
+                <div className="flex flex-wrap items-center gap-1">
+                  {!entry.isMain ? (
+                    <button
+                      type="button"
+                      onClick={() => onMakeMain(index)}
+                      className={`${BTN_SECONDARY_CLASS} px-3 text-2xs`}
+                      data-testid={`image-make-main-${index}`}
+                    >
+                      {t("uploadImageMakeMain")}
+                    </button>
+                  ) : null}
                   <button
                     type="button"
                     onClick={() => onReorder(index, "up")}
@@ -392,17 +429,16 @@ function ImageGallery({
                   >
                     ↓
                   </button>
+                  <button
+                    type="button"
+                    onClick={() => onRemove(index)}
+                    className={`${BTN_SECONDARY_CLASS} px-3 text-2xs text-danger-fg hover:text-danger-fg`}
+                    data-testid={`image-remove-${index}`}
+                  >
+                    {t("uploadImageRemove")}
+                  </button>
                 </div>
               </div>
-
-              <button
-                type="button"
-                onClick={() => onRemove(index)}
-                className="absolute top-1.5 me-1.5 inline-flex min-h-11 min-w-11 items-center justify-center rounded-md bg-gate-bg/80 px-2 py-1 text-2xs text-gate-muted opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100 hover:text-danger-fg"
-                data-testid={`image-remove-${index}`}
-              >
-                {t("uploadImageRemove")}
-              </button>
             </li>
           );
         })}
@@ -601,6 +637,14 @@ function useImageUploadController({
     },
     [draft, onChange, onImageUploaded],
   );
+  const handleMakeMainImage = useCallback(
+    (index: number) => {
+      if (index <= 0) return;
+      const nextDraft = promoteImageDraftToMain(draft, index);
+      notifyImageDraftChange(nextDraft, onChange, onImageUploaded);
+    },
+    [draft, onChange, onImageUploaded],
+  );
   return {
     fileInputRef,
     previews,
@@ -614,6 +658,7 @@ function useImageUploadController({
     handleDrop,
     handleFileInput,
     handleRemoveImage,
+    handleMakeMainImage,
     handleReorderImage,
   };
 }
@@ -658,6 +703,7 @@ export function CatalogProductImagesFields({
     handleDrop,
     handleFileInput,
     handleRemoveImage,
+    handleMakeMainImage,
     handleReorderImage,
   } = useImageUploadController({
     draft,
@@ -706,13 +752,14 @@ export function CatalogProductImagesFields({
       ) : null}
       {fieldErrors.imageFiles ? <div className="text-xs text-danger-fg">{fieldErrors.imageFiles}</div> : null}
 
-      <ImageGallery
-        entries={imageEntries}
-        previews={previews}
-        onRemove={handleRemoveImage}
-        onReorder={handleReorderImage}
-        t={t}
-      />
+        <ImageGallery
+          entries={imageEntries}
+          previews={previews}
+          onRemove={handleRemoveImage}
+          onMakeMain={handleMakeMainImage}
+          onReorder={handleReorderImage}
+          t={t}
+        />
     </div>
   );
 }

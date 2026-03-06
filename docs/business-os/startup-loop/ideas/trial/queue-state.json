@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-06T14:30:04.198Z",
+  "last_updated": "2026-03-06T15:01:05.365Z",
   "counts": {
-    "enqueued": 126,
-    "processed": 35,
+    "enqueued": 125,
+    "processed": 36,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
-    "completed": 118,
+    "completed": 119,
     "fact_find_ready": 182,
     "micro_build_ready": 1,
-    "total": 305
+    "total": 306
   },
   "dispatches": [
     {
@@ -46,13 +46,23 @@
         "code-ref: scripts/src/startup-loop/generate-process-improvements.ts:426 — markdown re-parse to reconstruct title/body pairs",
         "code-ref: scripts/src/startup-loop/generate-process-improvements.ts:568 — deterministic classification run on parsed markdown"
       ],
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "created_at": "2026-03-06T15:30:00.000Z",
       "why": "Using markdown as the machine-readable interface between the loop's build phase and its reporting layer means the model pays to author prose that code then strips and re-parses. A canonical JSON sidecar emitted alongside the human-readable artifact removes this round-trip, reduces prompt context size, and eliminates parser fragility without changing the operator-facing output.",
       "intended_outcome": {
         "type": "operational",
         "statement": "results-review.signals.json and pattern-reflection.entries.json sidecars are defined with a canonical schema; generate-process-improvements.ts reads from the sidecar when present and falls back to markdown parsing; existing .user.md artifacts remain unchanged for operator review.",
         "source": "operator"
+      },
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "startup-loop-structured-sidecar-introduction",
+        "target_path": "docs/plans/startup-loop-structured-sidecar-introduction/fact-find.md",
+        "processed_at": "2026-03-06T14:46:09.276Z",
+        "fact_find_slug": "startup-loop-structured-sidecar-introduction",
+        "fact_find_path": "docs/plans/startup-loop-structured-sidecar-introduction/fact-find.md"
       }
     },
     {
@@ -80,7 +90,7 @@
         "Reduce codemoot prompt size once deterministic signals are pre-populated"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.9,
       "evidence_refs": [
@@ -89,13 +99,28 @@
         "code-ref: scripts/src/startup-loop/lp-do-build-results-review-prefill.ts:187 — Observed Outcomes left as stub for model to populate",
         "code-ref: .claude/skills/lp-do-build/SKILL.md:206 — preferred path invokes codemoot to scan and fill categories"
       ],
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "created_at": "2026-03-06T15:30:00.000Z",
       "why": "The model is being used as a first-pass file scanner for signals that a short TypeScript routine could extract faster, more reliably, and at zero token cost. Lifting deterministic signals into code keeps the model step focused on ambiguous synthesis — the one task that actually requires judgment.",
       "intended_outcome": {
         "type": "operational",
         "statement": "A deterministic pre-extraction step in lp-do-build-results-review-prefill.ts populates changed-package, new-SKILL.md, contract/spec change, registry-intersection, schema/validator, and task-completion signals before any model call; the model step receives only unresolved ambiguous items for synthesis.",
         "source": "operator"
+      },
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "startup-loop-results-review-deterministic-extraction",
+        "target_path": "docs/plans/startup-loop-results-review-deterministic-extraction/fact-find.md",
+        "processed_at": "2026-03-06T14:36:11.971Z",
+        "fact_find_slug": "startup-loop-results-review-deterministic-extraction",
+        "fact_find_path": "docs/plans/startup-loop-results-review-deterministic-extraction/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "/Users/petercowling/base-shop/docs/plans/startup-loop-results-review-deterministic-extraction/plan.md",
+        "completed_at": "2026-03-06T15:01:05.364Z",
+        "outcome": "Five deterministic signal extractors added to lp-do-build-results-review-prefill.ts; prefill now emits task completions, changed packages, and idea categories 3/4/5 without model involvement."
       }
     },
     {
@@ -12523,6 +12548,50 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-06T14:30:04.194Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306145853-0137",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "9cbeede8582242543e18aeb4c5a4c2a8fb5aa6a3",
+      "after_sha": "d70cefdceb8e9deb617448252c34adc6af55865d",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:d70cefdceb8e9deb617448252c34adc6af55865d",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:d70cefdceb8e9deb617448252c34adc6af55865d",
+      "cluster_fingerprint": "d8c2adb245824c72a3eb48320f5d4d17cfdc225110ad61b8178d1b3f3af3238d",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (9cbeede → d70cefd)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:00654e03-9371-4567-a764-5f1c336012e5",
+        "session:7e5ee3c7-48c8-4634-abfa-bb48c7d6671e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:8781939f-edea-451b-a9fa-1fa24c8cb292",
+        "session:934d1ed9-f97a-4dc1-98e9-2bd8b2a916fb",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-06T14:58:53.136Z",
       "queue_state": "enqueued",
       "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
       "intended_outcome": {

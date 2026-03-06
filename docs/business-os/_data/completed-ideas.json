@@ -184,6 +184,14 @@
       "completed_at": "2026-03-04",
       "output_link": "docs/plans/xa-uploader-media-path-and-publish-flow-hardening/",
       "idea_key": "4c9bd88cb18191a3936f5d53336725caed36b807"
+    },
+    {
+      "title": "AI-to-mechanistic — lift 5 deterministic signal extractions from model to TypeScript in lp-do-build-results-review-prefill.ts",
+      "source_path": "docs/plans/startup-loop-results-review-deterministic-extraction/results-review.user.md",
+      "plan_slug": "startup-loop-results-review-deterministic-extraction",
+      "completed_at": "2026-03-06",
+      "output_link": "docs/plans/_archive/startup-loop-results-review-deterministic-extraction/",
+      "idea_key": "572757fdd0bba34405fd93224e9550770c6e264c"
     }
   ]
 }

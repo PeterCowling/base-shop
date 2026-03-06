@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-06T18:30:42.601Z",
+  "last_updated": "2026-03-06T19:27:44.235Z",
   "counts": {
-    "enqueued": 127,
-    "processed": 38,
+    "enqueued": 130,
+    "processed": 37,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
-    "completed": 120,
-    "fact_find_ready": 186,
+    "completed": 121,
+    "fact_find_ready": 188,
     "micro_build_ready": 1,
-    "total": 311
+    "total": 314
   },
   "dispatches": [
     {
@@ -38,7 +38,7 @@
         "Decide whether staff/admin paths should move behind Cloudflare Access"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.95,
       "evidence_refs": [
@@ -48,7 +48,7 @@
         "live-audit: Cloudflare Access API reports access.api.error.not_enabled for hostel-positano.com",
         "infra-ref: guests.hostel-positano.com is the newly activated Prime custom domain"
       ],
-      "queue_state": "processed",
+      "queue_state": "completed",
       "created_at": "2026-03-06T19:10:00Z",
       "why": "The Prime guest portal has just been promoted onto a public custom domain, so the Cloudflare edge posture is now part of the real production attack surface rather than an internal preview detail. Leaving the zone on flexible SSL and TLS 1.0 materially weakens transport security and creates ambiguity about what other edge protections are actually in force.",
       "intended_outcome": {
@@ -65,6 +65,11 @@
         "processed_at": "2026-03-06T18:30:42.600Z",
         "fact_find_slug": "prime-edge-tls-hardening",
         "fact_find_path": "docs/plans/prime-edge-tls-hardening/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/prime-edge-tls-hardening/plan.md",
+        "completed_at": "2026-03-06T19:27:44.230Z",
+        "outcome": "hostel-positano.com zone hardened: ssl=strict, min_tls_version=1.2. Security headers and CI custom domain healthcheck added."
       }
     },
     {
@@ -12856,6 +12861,147 @@
         "session:de364e8d-fdd8-4860-8c35-b00389f9b19b"
       ],
       "created_at": "2026-03-06T15:59:23.099Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306185359-0136",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+      "before_sha": "369a2a4a0b7cdc8f5bb63fe1f4d7f9f1399082ec",
+      "after_sha": "52edfdf2152f69820250b8ac3606e26153795df5",
+      "root_event_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:52edfdf2152f69820250b8ac3606e26153795df5",
+      "anchor_key": "scripts-startup-loop-tests-lp-do",
+      "cluster_key": "bos:unknown:scripts-startup-loop-tests-lp-do:BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:52edfdf2152f69820250b8ac3606e26153795df5",
+      "cluster_fingerprint": "12a38973b6d1e6c2c27677fcc6db447e5763371b4c8c2ff55cf2f5793c01a63b",
+      "lineage_depth": 0,
+      "area_anchor": "scripts startup loop tests lp do",
+      "location_anchors": [
+        "docs/business-os/startup-loop/self-evolving/BRIK/backbone-queue.jsonl",
+        "docs/business-os/startup-loop/self-evolving/BRIK/candidates.json",
+        "docs/business-os/startup-loop/self-evolving/BRIK/events.jsonl",
+        "docs/business-os/startup-loop/self-evolving/BRIK/observations.jsonl",
+        "scripts/package.json",
+        "scripts/src/startup-loop/__tests__/lp-do-build-results-review-extract.test.ts",
+        "scripts/src/startup-loop/__tests__/self-evolving-signal-integrity.test.ts",
+        "scripts/src/startup-loop/build/generate-process-improvements.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS changed (369a2a4 → 52edfdf)",
+      "next_scope_now": "Investigate implications of scripts startup loop tests lp do delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "git-diff-range:HEAD~1..HEAD",
+        "git-diff:M:docs/business-os/startup-loop/self-evolving/BRIK/backbone-queue.jsonl",
+        "git-diff:M:docs/business-os/startup-loop/self-evolving/BRIK/candidates.json",
+        "git-diff:M:docs/business-os/startup-loop/self-evolving/BRIK/events.jsonl",
+        "git-diff:M:docs/business-os/startup-loop/self-evolving/BRIK/observations.jsonl",
+        "git-diff:M:scripts/package.json",
+        "git-diff:M:scripts/src/startup-loop/__tests__/lp-do-build-results-review-extract.test.ts",
+        "git-diff:M:scripts/src/startup-loop/__tests__/self-evolving-signal-integrity.test.ts",
+        "git-diff:M:scripts/src/startup-loop/build/generate-process-improvements.ts"
+      ],
+      "created_at": "2026-03-06T18:53:59.135Z",
+      "queue_state": "enqueued",
+      "why": "Assess scripts startup loop tests lp do implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for scripts startup loop tests lp do.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306185400-0051",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "ade5c43b742dd5b8c39f6993cc38e7d68c2aa112",
+      "after_sha": "1f26ffb1fdb7043d188048b5d78802a01b96d932",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:1f26ffb1fdb7043d188048b5d78802a01b96d932",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:1f26ffb1fdb7043d188048b5d78802a01b96d932",
+      "cluster_fingerprint": "37444f958b2a292c36c7ad7314a2e8db89c32de8b6c7dc6c8dc3a5272dca9380",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (ade5c43 → 1f26ffb)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739",
+        "session:10ac4a80-1de3-4ec1-b5bd-f0df2e78e8e6",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:00654e03-9371-4567-a764-5f1c336012e5"
+      ],
+      "created_at": "2026-03-06T18:54:00.050Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306192650-0868",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "1f26ffb1fdb7043d188048b5d78802a01b96d932",
+      "after_sha": "99dc1163b00a58ee0125ac3fb5d64687bbd15706",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:99dc1163b00a58ee0125ac3fb5d64687bbd15706",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:99dc1163b00a58ee0125ac3fb5d64687bbd15706",
+      "cluster_fingerprint": "ffe853db932dee6619d73d865854b35263798ce0364396a278e46bdade328d9c",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (1f26ffb → 99dc116)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739",
+        "session:10ac4a80-1de3-4ec1-b5bd-f0df2e78e8e6",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:00654e03-9371-4567-a764-5f1c336012e5"
+      ],
+      "created_at": "2026-03-06T19:26:50.867Z",
       "queue_state": "enqueued",
       "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
       "intended_outcome": {

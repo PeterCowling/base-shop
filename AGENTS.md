@@ -89,6 +89,59 @@ Only run full-repo `pnpm typecheck` / `pnpm lint` when:
 
 If one of these commands seems necessary, STOP and ask for help. Full guide: [docs/git-safety.md](docs/git-safety.md)
 
+## Agent Failure Message Contract
+
+Every agent-facing failure message in this repo must satisfy this contract. Apply it to all guard scripts, hook outputs, and structured preflight errors.
+
+### Required fields (minimum contract)
+
+| Field | Description |
+|---|---|
+| **Failure reason** | What failed, in plain terms — not just an error code. |
+| **Retry posture** | One of: `retry-allowed` (after the stated fix), `retry-forbidden` (this path will not work), or `escalate-now` (stop local retries, surface to operator). |
+| **Exact next step** | One concrete command or action — not a category or description. Must be a command the agent can run or a file the agent can read. |
+| **Anti-retry list** | Explicit list of commands, flags, or env-var bypasses that will NOT work for this failure. Prevents adjacent retry loops. |
+| **Escalation/stop condition** | When to stop local retries and surface to the operator. Required even in `retry-allowed` cases (e.g. "after 2 retries with same error"). |
+
+### Message classes
+
+Three classes are required. Each must appear in guard/preflight output with all five fields satisfied.
+
+**hard-block** — policy denies the command. Retry with the same command is forbidden regardless of state.
+- Retry posture: `retry-forbidden`
+- Exact next step: the only valid alternative command
+- Anti-retry list: the exact flags/invocations that triggered the block
+- Reference implementation: `.claude/hooks/pre-tool-use-git-safety.sh` → `block_with_guidance()` function (lines 57–72)
+
+**recoverable-fallback** — a prerequisite is missing or the wrong path was used. Retry is allowed after the stated fix.
+- Retry posture: `retry-allowed`
+- Exact next step: the command that acquires/restores the prerequisite
+- Anti-retry list: env-var bypasses and flags that skip enforcement
+- Reference implementation: `scripts/git-hooks/require-writer-lock.sh` → lock-not-held block (lines 38–57)
+
+**fail-closed-infrastructure** — internal or environment failure (missing binary, missing policy file, eval error). Retry may be possible after repair, but local retry without repair is not the right next step.
+- Retry posture: `escalate-now` (or `retry-allowed` only if the repair command is stated)
+- Exact next step: the command to repair the broken environment
+- Anti-retry list: retrying the original command without repair
+- Current weak examples (first-wave targets): `scripts/agent-bin/git` lines 32–46 (`ERROR: unable to locate real git binary`, `ERROR: missing evaluator`, `ERROR: missing policy`) — these lack exact next-step guidance and are being hardened by this plan.
+
+### First-wave adoption checklist
+
+These surfaces must be brought into full contract compliance. All five required fields must be satisfied for every failure path.
+
+**Wave 1 (shell/guard surfaces — TASK-02):**
+- `scripts/agent-bin/git` — infrastructure failure paths (missing binary, evaluator, policy)
+- `.claude/hooks/pre-tool-use-git-safety.sh` — already largely compliant; verify all rule branches satisfy anti-retry list
+- `scripts/git-hooks/require-writer-lock.sh` — already largely compliant; verify escalation/stop condition is explicit
+
+**Wave 2 (structured preflight/tool-guidance — TASK-03):**
+- `scripts/src/startup-loop/mcp-preflight.ts` → `printHumanResult()` — add per-code recovery guidance for each `MCP_PREFLIGHT_*` failure
+- `docs/ide/agent-language-intelligence-guide.md` — already largely compliant; verify fallback and "do not retry until" conditions are explicit for all paths
+
+### Compliance rule
+
+A surface is compliant when: for every distinct failure path it handles, an agent reading the output can identify all five fields without any additional discovery. If any field is absent or requires inference, the surface is non-compliant.
+
 ## Testing Rules
 
 - **Tests run in CI only.** Do not run Jest or e2e commands locally. Push to `dev` and watch CI for results.

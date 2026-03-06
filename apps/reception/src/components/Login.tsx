@@ -305,7 +305,7 @@ function Login({ onLoginSuccess }: LoginProps) {
               tone="solid"
               size="lg"
               disabled={resetStatus === "sending"}
-              className="w-full bg-primary-main text-white hover:opacity-90"
+              className="w-full bg-primary-main text-primary-fg hover:opacity-90"
             >
               {resetStatus === "sending" ? "Sending..." : "Send reset link"}
             </Button>
@@ -530,7 +530,7 @@ function Login({ onLoginSuccess }: LoginProps) {
           tone="solid"
           size="lg"
           disabled={isSubmitting || status === "loading"}
-          className="w-full bg-primary-main text-white hover:opacity-90"
+          className="w-full bg-primary-main text-primary-fg hover:opacity-90"
         >
           {isSubmitting ? "Signing in..." : "Sign in"}
         </Button>

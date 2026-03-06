@@ -18,17 +18,21 @@ const STORAGE_KEY = "xa_uploader_locale";
 
 const UploaderI18nContext = React.createContext<UploaderI18nContextValue | null>(null);
 
-export function UploaderI18nProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocale] = React.useState<UploaderLocale>(UPLOADER_DEFAULT_LOCALE);
+function normalizeStoredLocale(value: string | null): UploaderLocale | null {
+  if (value === "en" || value === "zh") return value;
+  if (value === "EN") return "en";
+  if (value === "ZH" || value === "xe" || value === "中文" || value === "中国人") return "zh";
+  return null;
+}
 
-  React.useEffect(() => {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored === "en" || stored === "zh") {
-      setLocale(stored);
-    } else if (stored === "xe") {
-      setLocale("zh");
-    }
-  }, []);
+function getInitialLocale(): UploaderLocale {
+  if (typeof window === "undefined") return UPLOADER_DEFAULT_LOCALE;
+  const normalized = normalizeStoredLocale(window.localStorage.getItem(STORAGE_KEY));
+  return normalized ?? UPLOADER_DEFAULT_LOCALE;
+}
+
+export function UploaderI18nProvider({ children }: { children: React.ReactNode }) {
+  const [locale, setLocale] = React.useState<UploaderLocale>(getInitialLocale);
 
   React.useEffect(() => {
     window.localStorage.setItem(STORAGE_KEY, locale);

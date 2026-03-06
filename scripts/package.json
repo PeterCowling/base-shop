@@ -38,6 +38,8 @@
     "startup-loop:ideas-keyword-calibrate": "node --import tsx src/startup-loop/ideas/lp-do-ideas-keyword-calibrate.ts",
     "startup-loop:naming-round-analytics": "node --import tsx src/startup-loop/naming/round-analytics.ts",
     "startup-loop:hbag-pdp-funnel-feed": "node --import tsx src/startup-loop/diagnostics/hbag-pdp-funnel-feed.ts",
+    "startup-loop:results-review-extract": "node --import tsx src/startup-loop/build/lp-do-build-results-review-extract.ts",
+    "startup-loop:pattern-reflection-extract": "node --import tsx src/startup-loop/build/lp-do-build-pattern-reflection-extract.ts",
     "reception:blind-mode-variance-report": "node --import tsx src/reception/blind-mode-variance-report.ts"
   },
   "dependencies": {

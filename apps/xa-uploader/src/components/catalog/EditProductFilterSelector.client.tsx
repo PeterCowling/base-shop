@@ -51,8 +51,7 @@ function ProductCompactList({
             <button
               type="button"
               onClick={() => onSelect(p)}
-              className="w-full rounded-md border border-gate-border px-3 py-2 text-start text-sm text-gate-ink transition-colors hover:border-gate-accent hover:bg-gate-accent-soft"
-               
+              className="w-full min-h-11 min-w-11 rounded-md border border-gate-border px-3 py-2 text-start text-sm text-gate-ink transition-colors hover:border-gate-accent hover:bg-gate-accent-soft"
               data-testid={`edit-filter-product-${p.slug}`}
             >
               <span className="font-medium">{p.title || p.slug}</span>
@@ -154,7 +153,18 @@ export function EditProductFilterSelector({ products, onSelect, onNew }: EditPro
   }, [criteria, options, handleCollectionChange, handleSizeChange, handleColorChange]);
 
   if (products.length === 0) {
-    return <div className="text-sm text-gate-muted">{t("editFilterNoProducts")}</div>;
+    return (
+      <div className="space-y-3">
+        <button
+          type="button"
+          onClick={onNew}
+          className="w-full min-h-11 min-w-11 rounded-md border border-gate-accent px-3 py-2 text-xs font-semibold uppercase tracking-label-lg text-gate-accent transition-colors hover:bg-gate-accent-soft"
+        >
+          {t("sidebarNewProduct")}
+        </button>
+        <div className="text-sm text-gate-muted">{t("editFilterNoProducts")}</div>
+      </div>
+    );
   }
 
   const showCollection = !!criteria.brand && options.collections.length > 1;
@@ -164,6 +174,14 @@ export function EditProductFilterSelector({ products, onSelect, onNew }: EditPro
 
   return (
     <div className="space-y-3">
+      <button
+        type="button"
+        onClick={handleReset}
+        className="w-full min-h-11 min-w-11 rounded-md border border-gate-accent px-3 py-2 text-xs font-semibold uppercase tracking-label-lg text-gate-accent transition-colors hover:bg-gate-accent-soft"
+      >
+        {t("sidebarNewProduct")}
+      </button>
+
       <div className="flex items-center justify-between">
         <div className="text-xs font-semibold uppercase tracking-label-lg text-gate-accent">
           {t("editFilterTitle")}
@@ -172,7 +190,7 @@ export function EditProductFilterSelector({ products, onSelect, onNew }: EditPro
           <button
             type="button"
             onClick={handleReset}
-            className="text-xs text-gate-muted transition-colors hover:text-gate-ink"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center px-2 text-xs text-gate-muted transition-colors hover:text-gate-ink"
           >
             {t("editFilterReset")}
           </button>

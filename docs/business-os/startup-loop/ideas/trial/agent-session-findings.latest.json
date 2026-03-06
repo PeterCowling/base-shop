@@ -1,6 +1,6 @@
 {
   "schema_version": "agent-session-findings.v1",
-  "generated_at": "2026-03-06T21:26:56.673Z",
+  "generated_at": "2026-03-06T22:31:14.296Z",
   "business": "BOS",
   "transcript_root": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop",
   "sessions_scanned": 20,
@@ -9,7 +9,7 @@
     {
       "session_id": "35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
       "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/35b5bcde-4097-4c38-adaa-0cbe5e0a1619.jsonl",
-      "updated_at": "2026-03-06T21:26:55.814Z",
+      "updated_at": "2026-03-06T21:27:38.218Z",
       "findings": [
         "Phase 7: Evidence Gap Review** — complete (embedded in artifact).",
         "The review narrative flagged concrete issues to investigate.",
@@ -42,13 +42,14 @@
         "Two TypeScript errors: my sed to fix `catch (error)` → `catch` also hit catch blocks that DO use `error`.",
         "Lines 76 and 183 use `error` in `console.error`.",
         "Lint: 0 errors, 53 warnings (all pre-existing).",
-        "Now self-evolving bridge, then reflection debt, bug scan, process improvements — all in parallel where possible:"
+        "Now self-evolving bridge, then reflection debt, bug scan, process improvements — all in parallel where possible:",
+        "e9108519a5` — Wave 1: fail-closed auth (TASK-01), check-in-code auth + rate limit + crypto hardening (TASK-02), Firebase rules audit (TASK-03)"
       ]
     },
     {
       "session_id": "914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
       "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/914cd8a3-f399-4e87-bafb-ae405a9f9b6f.jsonl",
-      "updated_at": "2026-03-06T21:26:55.134Z",
+      "updated_at": "2026-03-06T21:27:24.737Z",
       "findings": [
         "OKLCH colors are perceptually better for the multi-brand theming system.** The `@themes/` token packages currently use raw HSL triplets and `hsl()` wrappers (as noted in MEMORY — this caused the reception shade token bug).",
         "OKLCH eliminates the gamut-clamping and lightness-uniformity issues inherent in HSL, which matters as brikette, reception, and future apps each have distinct palettes.",
@@ -58,7 +59,8 @@
         "One snag: the push is blocked — there are staged uncommitted changes with lint errors in `apps/prime` from other agent activity.",
         "Import sort errors in two files — autofix will handle them:",
         "apps/prime` has 2 import-sort lint errors from the prime hardening agent (in `functions/api/direct-message.ts` and `direct-messages.ts`) — autofix ran but I hadn't confirmed before you interrupted",
-        "apps/prime/functions/api/direct-message.ts` — unsorted imports (lint error)"
+        "apps/prime/functions/api/direct-message.ts` — unsorted imports (lint error)",
+        "Push failed — reception lint is breaking the pre-push hook."
       ]
     },
     {

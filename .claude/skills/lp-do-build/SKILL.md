@@ -175,11 +175,13 @@ After each task commit, run the build-time ideas hook utility:
 
 - This step is advisory/fail-open: hook errors are surfaced as warnings and must not block task progression.
 - The hook only considers changed files that are active entries in `docs/business-os/startup-loop/ideas/standing-registry.json`.
-- If dispatch candidates are emitted, log them in build evidence for operator review.
+- The hook persists emitted live dispatches into the configured live queue/telemetry targets. If dispatch candidates are emitted, log the persisted queue result in build evidence for operator review.
 
 ## Plan Completion and Archiving
 
 When all executable tasks are complete, execute **every step below in order**. Do not emit the completion message until all steps are done and the Plan Completion Checklist is clear.
+
+Post-build artifacts are reflective only — they must not contain unexecuted work items that the plan or build already knew were required.
 
 1. Produce `build-record.user.md` per `docs/business-os/startup-loop/contracts/loop-output-contracts.md`.
    - Enforce `## Outcome Contract` presence and populated fields (`Why`, `Intended Outcome Type`, `Intended Outcome Statement`, `Source`) before proceeding. Use explicit `TBD/auto` fallback only when canonical values are unavailable.
@@ -227,6 +229,7 @@ When all executable tasks are complete, execute **every step below in order**. D
    `pnpm --filter scripts startup-loop:self-evolving-from-build-output -- --business <BUSINESS> --plan-slug <slug>`
 
    - This step is advisory/fail-open. It must not block completion if startup-state or artifacts are missing; record warnings in build evidence.
+   - When validated repeat-work candidates are detected, the bridge now enqueues them in the self-evolving backbone queue and emits canonical follow-up `dispatch.v2` packets back into the startup-loop ideas trial queue for normal `lp-do-ideas -> lp-do-fact-find -> lp-do-plan -> lp-do-build` handling.
 
 3. Run reflection debt emitter; if debt emitted, produce `reflection-debt.user.html` from `docs/templates/visual/loop-output-report-template.html` (operator-readable plain language — see `MEMORY.md` Operator-Facing Content).
 4. Run bug scan and persist findings as a plan artifact: `pnpm bug-scan -- --changed --format=json --fail-on=none --business-scope=<BUSINESS> --idea-artifact=docs/plans/<slug>/bug-scan-findings.user.json`.

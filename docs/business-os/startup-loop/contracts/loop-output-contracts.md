@@ -166,6 +166,8 @@ Build-Event-Ref: docs/plans/<feature-slug>/build-event.json
 **Stored at:** `docs/plans/<feature-slug>/results-review.user.md`
 **Consumers:** startup-loop Layer A (standing-information refresh), future plan sessions for the same business unit
 
+results-review.user.md captures observations after build; it must not carry unexecuted work items from the plan.
+
 ### Required Sections
 
 | Section | Purpose |

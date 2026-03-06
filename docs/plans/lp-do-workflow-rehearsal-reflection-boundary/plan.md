@@ -5,7 +5,7 @@ Domain: BOS
 Workstream: Mixed
 Created: 2026-03-06
 Last-reviewed: 2026-03-06
-Last-updated: 2026-03-06
+Last-updated: 2026-03-06 (Wave 2 complete)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: lp-do-workflow-rehearsal-reflection-boundary
 Deliverable-Type: multi-deliverable
@@ -25,10 +25,10 @@ Auto-Build-Intent: plan+auto
 The workflow's pre-build dry runs are currently described using "simulation" language, while post-build artifacts use "reflection" language, creating terminology ambiguity that blurs the rehearsal/reflection phase boundary. This plan renames the pre-build dry run concept to "rehearsal" (content-first, no file rename in this cycle), adds a bounded four-lens delivery rehearsal stage in lp-do-plan between critique and build handoff, and makes post-build artifact contracts explicitly reflection-only. A checkpoint pilot on 2–3 archived plans validates that delivery rehearsal adds same-outcome signal without duplicating build validation.
 
 ## Active tasks
-- [ ] TASK-01: Rehearsal terminology bridge — compatibility policy spike
-- [ ] TASK-02: Update shared protocol and upstream skill docs with rehearsal language
+- [x] TASK-01: Rehearsal terminology bridge — compatibility policy spike
+- [x] TASK-02: Update shared protocol and upstream skill docs with rehearsal language
 - [ ] TASK-03: Add post-critique delivery rehearsal stage to lp-do-plan
-- [ ] TASK-04: Make post-build artifacts explicitly reflection-only in lp-do-build and loop-output-contracts
+- [x] TASK-04: Make post-build artifacts explicitly reflection-only in lp-do-build and loop-output-contracts
 - [ ] TASK-05: Pilot checkpoint — archived plan rehearsal validation
 
 ## Goals
@@ -87,9 +87,9 @@ The workflow's pre-build dry runs are currently described using "simulation" lan
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | SPIKE | Rehearsal terminology bridge: define compatibility policy for shared protocol, headings, and waiver names | 85% | S | Complete (2026-03-06) | - | TASK-02, TASK-04 |
-| TASK-02 | IMPLEMENT | Update shared protocol + lp-do-fact-find, lp-do-plan, lp-do-critique SKILL docs with rehearsal language | 75% | M | Pending | TASK-01 | TASK-03, TASK-05 |
+| TASK-02 | IMPLEMENT | Update shared protocol + lp-do-fact-find, lp-do-plan, lp-do-critique SKILL docs with rehearsal language | 80% | M | Complete (2026-03-06) | TASK-01 | TASK-03, TASK-05 |
 | TASK-03 | IMPLEMENT | Add post-critique delivery rehearsal stage to lp-do-plan (four lenses, same-outcome rule, rerun triggers) | 75% | M | Pending | TASK-02 | TASK-05 |
-| TASK-04 | IMPLEMENT | Update lp-do-build and loop-output-contracts.md so post-build artifacts are explicitly reflection-only | 80% | S | Pending | TASK-01 | TASK-05 |
+| TASK-04 | IMPLEMENT | Update lp-do-build and loop-output-contracts.md so post-build artifacts are explicitly reflection-only | 80% | S | Complete (2026-03-06) | TASK-01 | TASK-05 |
 | TASK-05 | CHECKPOINT | Pilot revised contract on 2–3 archived plans; record whether delivery rehearsal adds same-outcome signal | 95% | S | Pending | TASK-02, TASK-03, TASK-04 | - |
 
 ## Parallelism Guide
@@ -169,7 +169,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-06)
 - **Artifact-Destination:** In-place updates to four SKILL/protocol files.
 - **Reviewer:** operator
 - **Approval-Evidence:** None: lp-do-factcheck run as part of build validates claims.
@@ -212,6 +212,15 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Notes / references:**
   - Critique issue 1-05 (Minor): four files in one task with no parallelism note. Parallelism within this task is safe (files are independent) — agent should update the shared protocol first to ensure downstream skill doc edits reference stable content.
   - Critique issue 1-04 (Moderate): scope-creep risk mitigation. Each edit to lp-do-plan/SKILL.md in this task is limited to terminology-only; no structural insertion (that is TASK-03). If any "simulation" replacement naturally leads to inserting new content, stop and flag for TASK-03.
+- **Build evidence (2026-03-06):**
+  - Execution route: parallel Wave 2 subagent (inline; CODEX_OK=0)
+  - Pre-task grep: "simulation" appeared in human-facing headings across all four files ✓ (VC-01 Red confirmed)
+  - Files updated: simulation-protocol.md (8 headings + waiver block + body text), lp-do-fact-find/SKILL.md (Phase 5.5 + waiver ref + body), lp-do-plan/SKILL.md (Phase 7.5 + checklist + body), lp-do-critique/SKILL.md (Step 5a + Section 5 heading + [Simulation] → [Rehearsal] label + body)
+  - VC-01: post-edit grep — only file-path references remain; all exempt per TASK-01 policy ✓
+  - VC-02: hard-gate text ("Critical findings block") semantically preserved in shared protocol ✓
+  - VC-03: all three skill docs still reference `../_shared/simulation-protocol.md` exactly ✓
+  - Waiver rename applied: `Simulation-Critical-Waiver` → `Rehearsal-Critical-Waiver` in shared protocol and skill docs ✓
+  - Refactor: holistic re-read confirmed no inter-file inconsistency ✓
 
 ---
 
@@ -278,7 +287,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-06)
 - **Artifact-Destination:** In-place updates to two files.
 - **Reviewer:** operator
 - **Approval-Evidence:** None: content verified by factcheck.
@@ -319,6 +328,17 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Notes / references:**
   - Critique issue 1-04 (Moderate): risk mitigation strengthened — "after TASK-04, review 3 existing results-review.user.md files for unexecuted work and record the baseline count." This is the VC-03 validation contract.
   - Critique issue 1-06 (Minor): measurability threshold undefined. The baseline check establishes a count; future builds can compare against it.
+- **Build evidence (2026-03-06):**
+  - Execution route: parallel Wave 2 subagent (inline; CODEX_OK=0)
+  - VC-01 Red: lp-do-build/SKILL.md had no "reflective only" / "never delayed execution" language before edit ✓
+  - VC-02 Red: loop-output-contracts.md results-review section had no prohibition language before edit ✓
+  - lp-do-build/SKILL.md: sentence added in "## Plan Completion and Archiving" section ✓
+  - loop-output-contracts.md: sentence added in "## Artifact 4: results-review.user.md" section ✓
+  - task-04-baseline-check.md: 3 results-review.user.md files reviewed; 3 unexecuted-work items found across 2 files (xa-uploader-usability-hardening: 1 item; brik-gbp-api-rejection-remediation: 2 items) ✓
+  - VC-01: grep confirms "reflective only" present in lp-do-build/SKILL.md ✓
+  - VC-02: grep confirms prohibition text present in loop-output-contracts.md ✓
+  - VC-03: task-04-baseline-check.md exists with data from 3 files ✓
+  - Refactor: added language is additive; no conflict with surrounding minimum-payload requirements ✓
 
 ---
 

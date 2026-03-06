@@ -5,6 +5,7 @@ import { render, screen } from "@testing-library/react";
 
 import { getUploaderMessage, type UploaderMessageKey } from "../../../lib/uploaderI18n";
 import { UploaderI18nProvider } from "../../../lib/uploaderI18n.client";
+import { deriveCatalogSiteStatus } from "../catalogConsoleFeedback";
 import { CatalogSyncPanel } from "../CatalogSyncPanel.client";
 import { getSyncFailureMessage } from "../useCatalogConsole.client";
 
@@ -179,5 +180,112 @@ describe("sync failure feedback", () => {
       "required scripts are missing",
     );
     expect(screen.getByTestId("catalog-run-sync")).toBeDisabled();
+  });
+});
+
+describe("catalog site status derivation", () => {
+  it("returns none states when no sync data exists", () => {
+    expect(deriveCatalogSiteStatus(null)).toEqual({ catalog: "none", site: "none" });
+  });
+
+  it("marks triggered deploys as awaiting verification", () => {
+    expect(
+      deriveCatalogSiteStatus({
+        ok: true,
+        deploy: { status: "triggered" },
+      }),
+    ).toEqual({ catalog: "published", site: "triggered" });
+  });
+
+  it("marks cooldown deploys as pending", () => {
+    expect(
+      deriveCatalogSiteStatus({
+        ok: true,
+        deploy: { status: "skipped_cooldown" },
+      }),
+    ).toEqual({ catalog: "published", site: "cooldown" });
+  });
+
+  it("marks failed deploy triggers as failed", () => {
+    expect(
+      deriveCatalogSiteStatus({
+        ok: true,
+        deploy: { status: "failed" },
+      }),
+    ).toEqual({ catalog: "published", site: "failed" });
+  });
+
+  it("marks xa-b rebuild requirements when no deploy was triggered", () => {
+    expect(
+      deriveCatalogSiteStatus({
+        ok: true,
+        display: { requiresXaBBuild: true },
+      }),
+    ).toEqual({ catalog: "published", site: "rebuild_required" });
+  });
+
+  it("marks successful syncs without deploy metadata as site none", () => {
+    expect(
+      deriveCatalogSiteStatus({
+        ok: true,
+      }),
+    ).toEqual({ catalog: "published", site: "none" });
+  });
+});
+
+describe("catalog sync panel status strip", () => {
+  it("renders catalog and site status indicators from the last successful sync", () => {
+    const { container } = render(
+      <UploaderI18nProvider>
+        <CatalogSyncPanel
+          busy={false}
+          syncOptions={{ strict: true, recursive: true, replace: false, dryRun: false }}
+          syncReadiness={{
+            checking: false,
+            ready: true,
+            missingScripts: [],
+            error: null,
+          }}
+          syncOutput={null}
+          lastSyncData={{ ok: true, deploy: { status: "triggered" } }}
+          feedback={null}
+          onSync={() => undefined}
+          onRefreshReadiness={() => undefined}
+          onChangeSyncOptions={() => undefined}
+        />
+      </UploaderI18nProvider>,
+    );
+
+    const catalogStatus = container.querySelector('[data-cy="catalog-status-strip-catalog"]');
+    const siteStatus = container.querySelector('[data-cy="catalog-status-strip-site"]');
+
+    expect(catalogStatus).toHaveTextContent("Catalog: Published");
+    expect(siteStatus).toHaveTextContent("Site: Rebuild triggered");
+  });
+
+  it("does not render the status strip before any successful sync data exists", () => {
+    const { container } = render(
+      <UploaderI18nProvider>
+        <CatalogSyncPanel
+          busy={false}
+          syncOptions={{ strict: true, recursive: true, replace: false, dryRun: false }}
+          syncReadiness={{
+            checking: false,
+            ready: true,
+            missingScripts: [],
+            error: null,
+          }}
+          syncOutput={null}
+          lastSyncData={null}
+          feedback={null}
+          onSync={() => undefined}
+          onRefreshReadiness={() => undefined}
+          onChangeSyncOptions={() => undefined}
+        />
+      </UploaderI18nProvider>,
+    );
+
+    expect(container.querySelector('[data-cy="catalog-status-strip-catalog"]')).toBeNull();
+    expect(container.querySelector('[data-cy="catalog-status-strip-site"]')).toBeNull();
   });
 });

@@ -94,6 +94,13 @@ export type SyncResponse = {
   };
 };
 
+export type CatalogPublishState = "published" | "none";
+export type SiteDeployState = "triggered" | "cooldown" | "failed" | "rebuild_required" | "none";
+export type CatalogSiteStatusSummary = {
+  catalog: CatalogPublishState;
+  site: SiteDeployState;
+};
+
 export type SyncReadinessResponse = {
   ok: boolean;
   ready?: boolean;
@@ -110,6 +117,26 @@ export type BusyLockRef = React.MutableRefObject<boolean>;
 
 export function errorToMessage(err: unknown, fallback: string): string {
   return err instanceof Error ? err.message : fallback;
+}
+
+export function deriveCatalogSiteStatus(data: SyncResponse | null): CatalogSiteStatusSummary {
+  if (!data || !data.ok) return { catalog: "none", site: "none" };
+
+  const catalog: CatalogPublishState = "published";
+  const deployStatus = data.deploy?.status ?? data.display?.deployStatus;
+
+  let site: SiteDeployState = "none";
+  if (deployStatus === "triggered") {
+    site = "triggered";
+  } else if (deployStatus === "skipped_cooldown") {
+    site = "cooldown";
+  } else if (deployStatus === "failed") {
+    site = "failed";
+  } else if (data.display?.requiresXaBBuild === true) {
+    site = "rebuild_required";
+  }
+
+  return { catalog, site };
 }
 
 export function getCatalogApiErrorMessage(

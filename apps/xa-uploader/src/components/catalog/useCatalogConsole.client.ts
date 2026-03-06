@@ -36,6 +36,7 @@ import {
   getSyncFailureMessage,
   type SessionState,
   type SyncReadinessResponse,
+  type SyncResponse,
   type SyncScriptId,
   updateActionFeedback,
 } from "./catalogConsoleFeedback";
@@ -143,6 +144,7 @@ function useCatalogConsoleState() {
     recursive: true,
   });
   const [syncOutput, setSyncOutput] = React.useState<string | null>(null);
+  const [lastSyncData, setLastSyncData] = React.useState<SyncResponse | null>(null);
   const [syncReadiness, setSyncReadiness] = React.useState<SyncReadinessState>(
     createInitialSyncReadinessState,
   );
@@ -301,6 +303,8 @@ function useCatalogConsoleState() {
     setSyncOptions,
     syncOutput,
     setSyncOutput,
+    lastSyncData,
+    setLastSyncData,
     syncReadiness,
     setSyncReadiness,
     isCatalogLoading: isCatalogHydrating,
@@ -496,6 +500,7 @@ function useCatalogDraftHandlers(state: CatalogConsoleState) {
   const handleStorefrontChange = (next: XaCatalogStorefront) =>
     (() => {
       resetAutosaveAndBaseline(state);
+      state.setLastSyncData(null);
       handleStorefrontChangeImpl({
         nextStorefront: next,
         currentStorefront: state.storefront,
@@ -691,7 +696,7 @@ function useCatalogSyncHandlers(state: CatalogConsoleState) {
       return { ok: false };
     }
     if (!state.syncReadiness.ready || state.syncReadiness.checking) return { ok: false };
-    return await handleSyncImpl({
+    const result = await handleSyncImpl({
       storefront: state.storefront,
       syncOptions: state.syncOptions,
       t: state.t,
@@ -702,6 +707,10 @@ function useCatalogSyncHandlers(state: CatalogConsoleState) {
       loadCatalog: state.loadCatalog,
       confirmEmptyCatalogSync: (message: string) => window.confirm(message),
     });
+    if (result.ok) {
+      state.setLastSyncData(result.data ?? null);
+    }
+    return result;
   };
 
   const handleRefreshSyncReadiness = async () =>
@@ -743,6 +752,7 @@ export function useCatalogConsole() {
     syncOptions: state.syncOptions,
     setSyncOptions: state.setSyncOptions,
     syncOutput: state.syncOutput,
+    lastSyncData: state.lastSyncData,
     syncReadiness: state.syncReadiness,
     isCatalogLoading: state.isCatalogLoading,
     refreshSyncReadiness: state.loadSyncReadiness,

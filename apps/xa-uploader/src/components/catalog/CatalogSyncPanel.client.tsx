@@ -4,9 +4,60 @@ import * as React from "react";
 
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
-import { formatSyncMissingScripts, type SyncScriptId } from "./catalogConsoleFeedback";
+import {
+  deriveCatalogSiteStatus,
+  formatSyncMissingScripts,
+  type SyncResponse,
+  type SyncScriptId,
+} from "./catalogConsoleFeedback";
 import { BTN_PRIMARY_CLASS, BTN_SECONDARY_CLASS, CHECKBOX_CLASS, PANEL_CLASS, SECTION_HEADER_CLASS } from "./catalogStyles";
 import type { ActionFeedback } from "./useCatalogConsole.client";
+
+type Translator = ReturnType<typeof useUploaderI18n>["t"];
+
+function CatalogSiteStatusStrip({
+  t,
+  lastSyncData,
+}: {
+  t: Translator;
+  lastSyncData: SyncResponse | null | undefined;
+}) {
+  if (!lastSyncData) return null;
+
+  const status = deriveCatalogSiteStatus(lastSyncData);
+  const catalogLabel =
+    status.catalog === "published" ? t("syncStatusCatalogPublished") : t("syncStatusCatalogNone");
+  const siteLabel = (() => {
+    if (status.site === "triggered") return t("syncStatusSiteDeployTriggered");
+    if (status.site === "cooldown") return t("syncStatusSiteDeployCooldown");
+    if (status.site === "failed") return t("syncStatusSiteDeployFailed");
+    if (status.site === "rebuild_required") return t("syncStatusSiteRebuildRequired");
+    return t("syncStatusSiteNone");
+  })();
+  const siteClassName =
+    status.site === "none"
+      ? "text-gate-muted"
+      : status.site === "triggered"
+        ? "text-gate-muted"
+        : "text-warning-fg";
+
+  return (
+    <div className="mb-3 flex flex-wrap gap-x-6 gap-y-1 text-xs text-gate-muted">
+      <span
+        // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+        data-cy="catalog-status-strip-catalog"
+      >
+        {t("syncStatusCatalogLabel")}: <span className="text-success-fg">{catalogLabel}</span>
+      </span>
+      <span
+        // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+        data-cy="catalog-status-strip-site"
+      >
+        {t("syncStatusSiteLabel")}: <span className={siteClassName}>{siteLabel}</span>
+      </span>
+    </div>
+  );
+}
 
 export function CatalogSyncPanel({
   busy,
@@ -16,6 +67,7 @@ export function CatalogSyncPanel({
   monoClassName,
   feedback,
   syncOutput,
+  lastSyncData,
   publishReadiness,
   onSync,
   onRefreshReadiness,
@@ -35,6 +87,7 @@ export function CatalogSyncPanel({
   monoClassName?: string;
   feedback: ActionFeedback | null;
   syncOutput: string | null;
+  lastSyncData?: SyncResponse | null;
   publishReadiness?: { total: number; publishable: number; draft: number };
   onSync: () => void;
   onRefreshReadiness: () => void;
@@ -80,6 +133,7 @@ export function CatalogSyncPanel({
 
   return (
     <section className={PANEL_CLASS}>
+      <CatalogSiteStatusStrip t={t} lastSyncData={lastSyncData} />
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="text-xs uppercase tracking-label-lg text-gate-muted">
           {t("validateAndSync")}

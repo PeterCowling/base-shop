@@ -121,6 +121,7 @@ function CurrencyScreen({
         monoClassName={monoClassName}
         feedback={state.actionFeedback.sync}
         syncOutput={state.syncOutput}
+        lastSyncData={state.lastSyncData}
         publishReadiness={publishReadiness}
         onSync={state.handleSync}
         onRefreshReadiness={state.refreshSyncReadiness}

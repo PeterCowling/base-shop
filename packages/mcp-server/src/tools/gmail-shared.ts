@@ -151,9 +151,10 @@ export type AgentActor = "codex" | "claude" | "human";
 export interface AuditEntry {
   ts: string;           // ISO 8601 UTC timestamp
   messageId: string;
-  action: "lock-acquired" | "lock-released" | "outcome" | "booking-dedup-skipped";
+  action: "lock-acquired" | "lock-released" | "outcome" | "booking-dedup-skipped" | "inquiry-draft-dedup-skipped";
   actor: string;
-  result?: string;      // only present for action === "outcome" or "booking-dedup-skipped"
+  result?: string;      // only present for action === "outcome", "booking-dedup-skipped", or "inquiry-draft-dedup-skipped"
+  error_reason?: string; // only present on error-path "lock-released" entries
 }
 
 export type EmailSourcePath = "queue" | "reception" | "outbound" | "unknown";
@@ -163,7 +164,8 @@ export type TelemetryEventKey =
   | "email_draft_deferred"
   | "email_outcome_labeled"
   | "email_queue_transition"
-  | "email_fallback_detected";
+  | "email_fallback_detected"
+  | "email_reconcile_recovery";
 
 export interface TelemetryEvent {
   ts: string;
@@ -178,6 +180,7 @@ export interface TelemetryEvent {
   classification?: string;
   queue_from?: string | null;
   queue_to?: string | null;
+  age_hours?: number;
 }
 
 // TASK-04: Zod schema for TelemetryEvent validation on read.
@@ -189,6 +192,7 @@ export const TelemetryEventSchema = z.object({
     "email_outcome_labeled",
     "email_queue_transition",
     "email_fallback_detected",
+    "email_reconcile_recovery",
   ]),
   source_path: z.enum(["queue", "reception", "outbound", "unknown"]),
   actor: z.string(),
@@ -256,6 +260,7 @@ export interface DailyRollupBucket {
   deferred: number;
   requeued: number;
   fallback: number;
+  recovered: number;
 }
 
 export type PrepaymentAction = "prepayment_chase_1" | "prepayment_chase_2" | "prepayment_chase_3";
@@ -382,6 +387,7 @@ export function computeDailyTelemetryRollup(
       deferred: 0,
       requeued: 0,
       fallback: 0,
+      recovered: 0,
     };
     buckets.set(day, created);
     return created;
@@ -404,6 +410,10 @@ export function computeDailyTelemetryRollup(
     }
     if (event.event_key === "email_fallback_detected") {
       bucket.fallback += 1;
+      continue;
+    }
+    if (event.event_key === "email_reconcile_recovery") {
+      bucket.recovered += 1;
       continue;
     }
     if (event.event_key === "email_queue_transition" && event.queue_to === LABELS.NEEDS_PROCESSING) {
@@ -560,8 +570,9 @@ export async function ensureLabelMap(
       if (created.data?.id) {
         labelMap.set(labelName, created.data.id);
       }
-    } catch {
+    } catch (err) {
       // If creation fails (permissions, etc.), leave missing labels unresolved.
+      process.stderr.write(`[ensureLabelMap] Failed to create label "${labelName}": ${String(err)}\n`);
     }
   }
 
@@ -734,8 +745,8 @@ export async function cleanupInProgress(emailId: string, gmail: gmail_v1.Gmail):
     return "cleanup succeeded";
   } catch (cleanupError) {
     lockStoreRef.release(emailId);
-    appendAuditEntry({ ts: new Date().toISOString(), messageId: emailId, action: "lock-released", actor: "system" });
     const msg = cleanupError instanceof Error ? cleanupError.message : String(cleanupError);
+    appendAuditEntry({ ts: new Date().toISOString(), messageId: emailId, action: "lock-released", actor: "system", error_reason: msg });
     return `cleanup failed: ${msg}`;
   }
 }

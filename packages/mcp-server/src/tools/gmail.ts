@@ -180,9 +180,10 @@ export function setLockStore(store: LockStore): void {
 export interface AuditEntry {
   ts: string;           // ISO 8601 UTC timestamp
   messageId: string;
-  action: "lock-acquired" | "lock-released" | "outcome";
+  action: "lock-acquired" | "lock-released" | "outcome" | "booking-dedup-skipped" | "inquiry-draft-dedup-skipped";
   actor: string;
   result?: string;      // only present for action === "outcome"
+  error_reason?: string; // only present on error-path "lock-released" entries
 }
 
 export type EmailSourcePath = "queue" | "reception" | "outbound" | "unknown";
@@ -192,7 +193,8 @@ export type TelemetryEventKey =
   | "email_draft_deferred"
   | "email_outcome_labeled"
   | "email_queue_transition"
-  | "email_fallback_detected";
+  | "email_fallback_detected"
+  | "email_reconcile_recovery";
 
 export interface TelemetryEvent {
   ts: string;
@@ -207,6 +209,7 @@ export interface TelemetryEvent {
   classification?: string;
   queue_from?: string | null;
   queue_to?: string | null;
+  age_hours?: number;
 }
 
 // TASK-04: Zod schema for TelemetryEvent validation on read.
@@ -218,6 +221,7 @@ const TelemetryEventSchema = z.object({
     "email_outcome_labeled",
     "email_queue_transition",
     "email_fallback_detected",
+    "email_reconcile_recovery",
   ]),
   source_path: z.enum(["queue", "reception", "outbound", "unknown"]),
   actor: z.string(),
@@ -332,6 +336,7 @@ interface DailyRollupBucket {
   deferred: number;
   requeued: number;
   fallback: number;
+  recovered: number;
 }
 
 function computeDailyTelemetryRollup(
@@ -349,6 +354,7 @@ function computeDailyTelemetryRollup(
       deferred: 0,
       requeued: 0,
       fallback: 0,
+      recovered: 0,
     };
     buckets.set(day, created);
     return created;
@@ -371,6 +377,10 @@ function computeDailyTelemetryRollup(
     }
     if (event.event_key === "email_fallback_detected") {
       bucket.fallback += 1;
+      continue;
+    }
+    if (event.event_key === "email_reconcile_recovery") {
+      bucket.recovered += 1;
       continue;
     }
     if (event.event_key === "email_queue_transition" && event.queue_to === LABELS.NEEDS_PROCESSING) {
@@ -964,8 +974,9 @@ export async function ensureLabelMap(
       if (created.data?.id) {
         labelMap.set(labelName, created.data.id);
       }
-    } catch {
+    } catch (err) {
       // If creation fails (permissions, etc.), leave missing labels unresolved.
+      process.stderr.write(`[ensureLabelMap] Failed to create label "${labelName}": ${String(err)}\n`);
     }
   }
 
@@ -2737,8 +2748,8 @@ async function cleanupInProgress(emailId: string, gmail: gmail_v1.Gmail): Promis
     return "cleanup succeeded";
   } catch (cleanupError) {
     lockStoreRef.release(emailId);
-    appendAuditEntry({ ts: new Date().toISOString(), messageId: emailId, action: "lock-released", actor: "system" });
     const msg = cleanupError instanceof Error ? cleanupError.message : String(cleanupError);
+    appendAuditEntry({ ts: new Date().toISOString(), messageId: emailId, action: "lock-released", actor: "system", error_reason: msg });
     return `cleanup failed: ${msg}`;
   }
 }
@@ -3076,9 +3087,10 @@ async function handleTelemetryDailyRollup(
       acc.deferred += bucket.deferred;
       acc.requeued += bucket.requeued;
       acc.fallback += bucket.fallback;
+      acc.recovered += bucket.recovered;
       return acc;
     },
-    { drafted: 0, deferred: 0, requeued: 0, fallback: 0 },
+    { drafted: 0, deferred: 0, requeued: 0, fallback: 0, recovered: 0 },
   );
 
   return jsonResult({
@@ -3329,6 +3341,15 @@ async function handleReconcileInProgress(
     }
 
     if (!dryRun) {
+      appendTelemetryEvent({
+        ts: new Date().toISOString(),
+        event_key: "email_reconcile_recovery",
+        source_path: "queue",
+        actor,
+        message_id: msg.id,
+        reason,
+        age_hours: ageHours !== null ? ageHours : undefined,
+      });
       await handleMarkProcessed(gmail, {
         emailId: msg.id,
         action,

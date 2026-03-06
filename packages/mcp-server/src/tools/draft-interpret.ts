@@ -393,6 +393,201 @@ function scoreIntentConfidence(
   return Number(Math.max(0, Math.min(1, signal / 4)).toFixed(2));
 }
 
+type ClauseSplitPattern = {
+  regex: RegExp;
+  rightOffset: (matchText: string) => number;
+};
+
+const CLAUSE_SPLIT_PATTERNS: ClauseSplitPattern[] = [
+  { regex: /^,\s*and also\b\s*/i, rightOffset: (matchText) => matchText.length },
+  { regex: /^and also\b\s*/i, rightOffset: (matchText) => matchText.length },
+  { regex: /^and what\b\s*/i, rightOffset: () => "and ".length },
+  { regex: /^and whether\b\s*/i, rightOffset: () => "and ".length },
+  { regex: /^and how\b\s*/i, rightOffset: () => "and ".length },
+  { regex: /^and when\b\s*/i, rightOffset: () => "and ".length },
+  { regex: /^and where\b\s*/i, rightOffset: () => "and ".length },
+  { regex: /^also,\s*/i, rightOffset: (matchText) => matchText.length },
+  { regex: /^,\s*and\s+/i, rightOffset: (matchText) => matchText.length },
+  { regex: /^but also\b\s*/i, rightOffset: (matchText) => matchText.length },
+  { regex: /^as well as\b\s*/i, rightOffset: (matchText) => matchText.length },
+  { regex: /^plus\b\s+/i, rightOffset: (matchText) => matchText.length },
+];
+
+const LEADING_POLITE_STEM_PATTERNS = [
+  /^can you\b\s*/i,
+  /^could you\b\s*/i,
+  /^would you\b\s*/i,
+  /^please\b[\s,]*/i,
+  /^i would like\b\s*/i,
+];
+
+function cleanAtomizedFragment(text: string): string {
+  return text.trim().replace(/^[,;:\-\s]+/u, "").replace(/[,;:\-\s]+$/u, "").trim();
+}
+
+function countFragmentWords(text: string): number {
+  const matches = cleanAtomizedFragment(text).match(/[\p{L}\p{N}]+(?:['-][\p{L}\p{N}]+)*/gu);
+  return matches?.length ?? 0;
+}
+
+function isStandaloneSingleQuote(text: string, index: number): boolean {
+  const previous = text[index - 1] ?? "";
+  const next = text[index + 1] ?? "";
+  return !/[A-Za-z0-9]/.test(previous) || !/[A-Za-z0-9]/.test(next);
+}
+
+function findCompoundClauseSplit(text: string): { left: string; right: string } | undefined {
+  let inDoubleQuotes = false;
+  let inSingleQuotes = false;
+  let parenthesisDepth = 0;
+
+  for (let index = 0; index < text.length; index += 1) {
+    const character = text[index];
+
+    if (!inDoubleQuotes && !inSingleQuotes) {
+      if (character === "(") {
+        parenthesisDepth += 1;
+        continue;
+      }
+      if (character === ")" && parenthesisDepth > 0) {
+        parenthesisDepth -= 1;
+        continue;
+      }
+    }
+
+    if (character === "\"" && !inSingleQuotes) {
+      inDoubleQuotes = !inDoubleQuotes;
+      continue;
+    }
+    if (character === "'" && !inDoubleQuotes && isStandaloneSingleQuote(text, index)) {
+      inSingleQuotes = !inSingleQuotes;
+      continue;
+    }
+
+    if (inDoubleQuotes || inSingleQuotes || parenthesisDepth > 0) {
+      continue;
+    }
+
+    const slice = text.slice(index);
+    for (const pattern of CLAUSE_SPLIT_PATTERNS) {
+      const match = slice.match(pattern.regex);
+      if (!match) {
+        continue;
+      }
+      const left = cleanAtomizedFragment(text.slice(0, index));
+      const right = cleanAtomizedFragment(text.slice(index + pattern.rightOffset(match[0])));
+      if (countFragmentWords(left) < 3 || countFragmentWords(right) < 3) {
+        continue;
+      }
+      return { left, right };
+    }
+  }
+
+  return undefined;
+}
+
+function splitCompoundClauses(text: string): string[] {
+  const split = findCompoundClauseSplit(text);
+  if (!split) {
+    return [text];
+  }
+  return [...splitCompoundClauses(split.left), ...splitCompoundClauses(split.right)];
+}
+
+function shouldMarkAtomizedFragmentsAsQuestions(text: string): boolean {
+  return (
+    text.includes("?") ||
+    /\b(i would like to know|i want to know|would like to know|want to know|i was wondering if|can you tell me|could you tell me|would you tell me|tell me about)\b/i.test(
+      text
+    )
+  );
+}
+
+function trimEdgePunctuation(text: string): string {
+  return text.replace(/^[\s"'`“”‘’.,!?;:()[\]{}-]+/u, "").replace(/[\s"'`“”‘’.,!?;:()[\]{}-]+$/u, "").trim();
+}
+
+function normalizeIntentOverlapText(text: string): string {
+  let normalized = trimEdgePunctuation(text.toLowerCase());
+
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const pattern of LEADING_POLITE_STEM_PATTERNS) {
+      const stripped = normalized.replace(pattern, "");
+      if (stripped !== normalized) {
+        normalized = trimEdgePunctuation(stripped);
+        changed = true;
+      }
+    }
+  }
+
+  return normalized.replace(/\s+/g, " ");
+}
+
+function longestCommonSubstringLength(left: string, right: string): number {
+  if (left.length === 0 || right.length === 0) {
+    return 0;
+  }
+
+  const previous = new Array<number>(right.length + 1).fill(0);
+  const current = new Array<number>(right.length + 1).fill(0);
+  let maxLength = 0;
+
+  for (let leftIndex = 1; leftIndex <= left.length; leftIndex += 1) {
+    for (let rightIndex = 1; rightIndex <= right.length; rightIndex += 1) {
+      if (left[leftIndex - 1] === right[rightIndex - 1]) {
+        current[rightIndex] = previous[rightIndex - 1] + 1;
+        maxLength = Math.max(maxLength, current[rightIndex]);
+      } else {
+        current[rightIndex] = 0;
+      }
+    }
+
+    previous.splice(0, previous.length, ...current);
+    current.fill(0);
+  }
+
+  return maxLength;
+}
+
+function shouldDropRequestForQuestionOverlap(request: IntentItem, question: IntentItem): boolean {
+  const normalizedRequest = normalizeIntentOverlapText(request.text);
+  const normalizedQuestion = normalizeIntentOverlapText(question.text);
+  if (normalizedRequest.length === 0 || normalizedQuestion.length === 0) {
+    return false;
+  }
+
+  const shorterLength = Math.min(normalizedRequest.length, normalizedQuestion.length);
+  const overlapLength = longestCommonSubstringLength(normalizedRequest, normalizedQuestion);
+  return overlapLength / shorterLength >= 0.7;
+}
+
+function dedupRequestsAgainstQuestions(
+  questions: IntentItem[],
+  requests: IntentItem[],
+): IntentItem[] {
+  return requests.filter(
+    (request) => !questions.some((question) => shouldDropRequestForQuestionOverlap(request, question))
+  );
+}
+
+export function atomizeCompoundClauses(text: string): string[] {
+  const fragments = splitCompoundClauses(text);
+  if (fragments.length === 1) {
+    return [text];
+  }
+
+  const questionLike = shouldMarkAtomizedFragmentsAsQuestions(text);
+  return fragments.map((fragment) => {
+    const cleaned = cleanAtomizedFragment(fragment);
+    if (!questionLike || /[?.!]$/.test(cleaned)) {
+      return cleaned;
+    }
+    return `${cleaned}?`;
+  });
+}
+
 function routeIntents(text: string): {
   questions: IntentItem[];
   requests: IntentItem[];
@@ -401,10 +596,18 @@ function routeIntents(text: string): {
   deterministic_confidence: number;
   legacy_confidence: number;
 } {
-  const legacyQuestions = extractQuestionsLegacy(text);
-  const legacyRequests = extractRequestsLegacy(text);
-  const deterministicQuestions = extractQuestionsDeterministic(text);
-  const deterministicRequests = extractRequestsDeterministic(text);
+  const fragments = atomizeCompoundClauses(text);
+
+  const legacyQuestions = fragments.flatMap((fragment) => extractQuestionsLegacy(fragment));
+  const legacyRequests = dedupRequestsAgainstQuestions(
+    legacyQuestions,
+    fragments.flatMap((fragment) => extractRequestsLegacy(fragment))
+  );
+  const deterministicQuestions = fragments.flatMap((fragment) => extractQuestionsDeterministic(fragment));
+  const deterministicRequests = dedupRequestsAgainstQuestions(
+    deterministicQuestions,
+    fragments.flatMap((fragment) => extractRequestsDeterministic(fragment))
+  );
 
   const deterministicConfidence = scoreIntentConfidence(
     text,

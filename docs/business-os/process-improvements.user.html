@@ -314,7 +314,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-03-06T12:44:42.548Z";
+  var GEN_TS = "2026-03-06T13:54:30.593Z";
 
   var IDEA_ITEMS = [
     {
@@ -725,16 +725,16 @@
     },
     {
       "type": "idea",
-      "business": "BRIK",
-      "title": "BRIK email processing — error reason missing from lock-released entries",
-      "body": "—",
+      "business": "PLAT",
+      "title": "PLAT Claude Bash permissions - surface too broad for lock use",
+      "body": "Broad shell access increases failure modes and policy drift. Claude should only use shell when a real process must run or a guarded writer path is required.",
       "source": "queue-state.json",
-      "date": "2026-03-06T17:00:00.000Z",
+      "date": "2026-03-06T12:33:14.000Z",
       "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "ad14699ae7f47556ea708a85f55e7014ee803b17",
+      "idea_key": "c683a2b0ca583a7d16384e8b9f6b7a0c63f61be5",
       "priority_tier": "P4",
       "own_priority_rank": 9,
-      "urgency": "U3",
+      "urgency": "U2",
       "effort": "M",
       "proximity": null,
       "reason_code": "RULE_P4_PROCESS_QUALITY"
@@ -2358,38 +2358,6 @@
     },
     {
       "type": "idea",
-      "business": "BRIK",
-      "title": "BRIK email audit log — reconcile recovery events not persisted",
-      "body": "—",
-      "source": "queue-state.json",
-      "date": "2026-03-06T17:00:00.000Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "e2bb316fc2fc301d0f78216bbcecc977a4b00339",
-      "priority_tier": "P5",
-      "own_priority_rank": 10,
-      "urgency": "U3",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P5_DEFAULT"
-    },
-    {
-      "type": "idea",
-      "business": "BRIK",
-      "title": "BRIK Gmail label setup — creation failures silently swallowed",
-      "body": "—",
-      "source": "queue-state.json",
-      "date": "2026-03-06T17:00:00.000Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "30f23fc195a24ab6f26a637166b2e68fdb227638",
-      "priority_tier": "P5",
-      "own_priority_rank": 10,
-      "urgency": "U3",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P5_DEFAULT"
-    },
-    {
-      "type": "idea",
       "business": "XA",
       "title": "xa-uploader console — no loading skeleton on auth check or product list hydration",
       "body": "xa-uploader UI review found the console provides no visual loading feedback during auth resolution or product list hydration, leaving operators uncertain whether the tool is loading or broken — especially problematic on slow connections for an internal operations tool.",
@@ -2442,6 +2410,38 @@
       "title": "bos-agent-session-findings",
       "body": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
       "source": "queue-state.json",
+      "date": "2026-03-06T13:46:03.712Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "12c26b68a7c43cba4efb5408e598c9ca5a9715b4",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "bos-agent-session-findings",
+      "body": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "source": "queue-state.json",
+      "date": "2026-03-06T12:44:43.748Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "670b242afd4cde942fd99246872deafb58db889d",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "bos-agent-session-findings",
+      "body": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "source": "queue-state.json",
       "date": "2026-03-06T12:34:22.533Z",
       "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
       "idea_key": "ec58351d4fd0010de10f2d4c7acf78d21779142d",
@@ -2461,6 +2461,22 @@
       "date": "2026-03-06T12:33:49.208Z",
       "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
       "idea_key": "e1bb4373d799987af9d4522ed873186ce12f4569",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "PLAT",
+      "title": "PLAT Claude tool selection - no explicit read-first protocol",
+      "body": "The tool policy is currently underspecified, so Claude falls back to Bash too often. A clear tool ladder should reduce errors and make sessions more deterministic.",
+      "source": "queue-state.json",
+      "date": "2026-03-06T12:33:14.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "35b1433a19558319d3b488edc0e28865d240aa72",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",

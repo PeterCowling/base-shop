@@ -707,21 +707,11 @@ function StockInput({ t, draft, onChange }: { t: Translate; draft: CatalogProduc
   );
 }
 
-function CommercialFields({ t, draft, fieldErrors, onChange }: BaseFieldsProps & { t: Translate }) {
+function CommercialFields({ t, draft, fieldErrors: _fieldErrors, onChange: _onChange }: BaseFieldsProps & { t: Translate }) {
   return (
     <>
-      <label className="block text-xs uppercase tracking-label text-gate-muted">
-        {t("fieldDescription")}
-        <textarea
-          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-          data-testid="catalog-field-description"
-          value={draft.description ?? ""}
-          onChange={(event) => onChange({ ...draft, description: event.target.value })}
-          rows={10}
-          className={INPUT_CLASS}
-        />
-        <FieldError message={fieldErrors.description} />
-      </label>
+      {/* description is auto-derived from brand/collection/size/color data and stored in the draft;
+          it is not shown here because the operator cannot meaningfully edit it */}
 
       {draft.popularity ? (
         <div className="block text-xs uppercase tracking-label text-gate-muted">

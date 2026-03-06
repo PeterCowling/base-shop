@@ -192,6 +192,158 @@ describe("Git Safety Policy — Git guard (allow)", () => {
 });
 
 // ==========================================================================
+// TESTS: Infrastructure failure messages (agent-bin/git)
+// ==========================================================================
+
+describe("Git Safety Policy — Infrastructure failure messages", () => {
+  const GIT_GUARD_PATH = path.join(REPO_ROOT, "scripts/agent-bin/git");
+
+  function invokeGuardWithEnv(
+    args: string[],
+    envOverride: NodeJS.ProcessEnv,
+  ): { status: number | null; stderr: string } {
+    const result = spawnSync("bash", [GIT_GUARD_PATH, ...args], {
+      timeout: 5000,
+      env: { ...envOverride },
+    });
+    return {
+      status: result.status,
+      stderr: result.stderr?.toString() ?? "",
+    };
+  }
+
+  test("missing real git binary: emits escalate-now posture", () => {
+    const result = invokeGuardWithEnv(["status"], {
+      PATH: "",
+      BASESHOP_GUARD_REPO_ROOT: REPO_ROOT,
+    });
+    expect(result.status).toBe(127);
+    expect(result.stderr).toMatch(/escalate-now/i);
+  });
+
+  test("missing real git binary: emits anti-retry note about PATH", () => {
+    const result = invokeGuardWithEnv(["status"], {
+      PATH: "",
+      BASESHOP_GUARD_REPO_ROOT: REPO_ROOT,
+    });
+    expect(result.stderr).toMatch(/retrying this command will fail/i);
+  });
+
+  test("missing evaluator: emits escalate-now posture", () => {
+    const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), "guard-test-"));
+    try {
+      const safetyDir = path.join(tmpRoot, ".agents", "safety", "generated");
+      fs.mkdirSync(safetyDir, { recursive: true });
+      fs.writeFileSync(path.join(safetyDir, "git-safety-policy.json"), "{}");
+
+      const result = invokeGuardWithEnv(["status"], {
+        PATH: process.env.PATH ?? "",
+        BASESHOP_GUARD_REPO_ROOT: tmpRoot,
+      });
+      expect(result.status).toBe(1);
+      expect(result.stderr).toMatch(/escalate-now/i);
+    } finally {
+      fs.rmSync(tmpRoot, { recursive: true, force: true });
+    }
+  });
+
+  test("missing evaluator: emits generate-git-safety-policy --write as next step", () => {
+    const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), "guard-test-"));
+    try {
+      const safetyDir = path.join(tmpRoot, ".agents", "safety", "generated");
+      fs.mkdirSync(safetyDir, { recursive: true });
+      fs.writeFileSync(path.join(safetyDir, "git-safety-policy.json"), "{}");
+
+      const result = invokeGuardWithEnv(["status"], {
+        PATH: process.env.PATH ?? "",
+        BASESHOP_GUARD_REPO_ROOT: tmpRoot,
+      });
+      expect(result.stderr).toContain("generate-git-safety-policy --write");
+    } finally {
+      fs.rmSync(tmpRoot, { recursive: true, force: true });
+    }
+  });
+
+  test("missing evaluator: emits anti-retry note", () => {
+    const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), "guard-test-"));
+    try {
+      const safetyDir = path.join(tmpRoot, ".agents", "safety", "generated");
+      fs.mkdirSync(safetyDir, { recursive: true });
+      fs.writeFileSync(path.join(safetyDir, "git-safety-policy.json"), "{}");
+
+      const result = invokeGuardWithEnv(["status"], {
+        PATH: process.env.PATH ?? "",
+        BASESHOP_GUARD_REPO_ROOT: tmpRoot,
+      });
+      expect(result.stderr).toMatch(/retrying the git command without regenerating/i);
+    } finally {
+      fs.rmSync(tmpRoot, { recursive: true, force: true });
+    }
+  });
+
+  test("missing policy JSON: emits escalate-now posture", () => {
+    const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), "guard-test-"));
+    try {
+      const agentsDir = path.join(tmpRoot, "scripts", "agents");
+      fs.mkdirSync(agentsDir, { recursive: true });
+      fs.writeFileSync(
+        path.join(agentsDir, "evaluate-git-safety.mjs"),
+        "// stub\n",
+      );
+
+      const result = invokeGuardWithEnv(["status"], {
+        PATH: process.env.PATH ?? "",
+        BASESHOP_GUARD_REPO_ROOT: tmpRoot,
+      });
+      expect(result.status).toBe(1);
+      expect(result.stderr).toMatch(/escalate-now/i);
+    } finally {
+      fs.rmSync(tmpRoot, { recursive: true, force: true });
+    }
+  });
+
+  test("missing policy JSON: emits generate-git-safety-policy --write as next step", () => {
+    const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), "guard-test-"));
+    try {
+      const agentsDir = path.join(tmpRoot, "scripts", "agents");
+      fs.mkdirSync(agentsDir, { recursive: true });
+      fs.writeFileSync(
+        path.join(agentsDir, "evaluate-git-safety.mjs"),
+        "// stub\n",
+      );
+
+      const result = invokeGuardWithEnv(["status"], {
+        PATH: process.env.PATH ?? "",
+        BASESHOP_GUARD_REPO_ROOT: tmpRoot,
+      });
+      expect(result.stderr).toContain("generate-git-safety-policy --write");
+    } finally {
+      fs.rmSync(tmpRoot, { recursive: true, force: true });
+    }
+  });
+
+  test("missing policy JSON: emits anti-retry note", () => {
+    const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), "guard-test-"));
+    try {
+      const agentsDir = path.join(tmpRoot, "scripts", "agents");
+      fs.mkdirSync(agentsDir, { recursive: true });
+      fs.writeFileSync(
+        path.join(agentsDir, "evaluate-git-safety.mjs"),
+        "// stub\n",
+      );
+
+      const result = invokeGuardWithEnv(["status"], {
+        PATH: process.env.PATH ?? "",
+        BASESHOP_GUARD_REPO_ROOT: tmpRoot,
+      });
+      expect(result.stderr).toMatch(/retrying the git command without regenerating/i);
+    } finally {
+      fs.rmSync(tmpRoot, { recursive: true, force: true });
+    }
+  });
+});
+
+// ==========================================================================
 // META: Policy table coverage
 // ==========================================================================
 

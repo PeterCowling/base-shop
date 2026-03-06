@@ -54,6 +54,8 @@ if [[ ! -d "$lock_dir" || ! -f "$lock_meta" ]]; then
   echo "Status:" >&2
   echo "  scripts/git/writer-lock.sh status" >&2
   echo "" >&2
+  echo "Escalation: stop retrying and surface to operator if no agent holds the lock and the allowed path above still fails." >&2
+  echo "" >&2
   exit 1
 fi
 
@@ -80,6 +82,8 @@ if [[ -z "$token_actual" || "$token_actual" != "$token_expected" ]]; then
   echo "  SKIP_WRITER_LOCK=1" >&2
   echo "  --no-verify / -n" >&2
   echo "  --force / -f, rebase, --amend, stash pop/apply/drop/clear" >&2
+  echo "" >&2
+  echo "Escalation: stop retrying if the holder PID is still alive; surface to operator — do not attempt to forcibly release a live lock." >&2
   echo "" >&2
   exit 1
 fi

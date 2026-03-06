@@ -25,7 +25,7 @@ artifact: plan
 This plan hardens agent-facing failure messages so blocked paths end ambiguity instead of creating retry loops. The first wave stays deliberately narrow: define a shared failure-message contract, apply it to the shell/guard surfaces where agents are currently blocked most often, then extend the same contract to structured preflight errors where the next action is currently underspecified. The plan avoids changing enforcement semantics; it upgrades the guidance layer and adds tests so the messaging stays aligned with the actual valid recovery path.
 
 ## Active tasks
-- [ ] TASK-01: Define the shared failure-instruction contract and first-wave adoption rules
+- [x] TASK-01: Define the shared failure-instruction contract and first-wave adoption rules
 - [ ] TASK-02: Apply the contract to shell and git/writer-lock guard surfaces
 - [ ] TASK-03: Apply the contract to TypeScript preflight and tool-guidance surfaces
 
@@ -78,7 +78,7 @@ This plan hardens agent-facing failure messages so blocked paths end ambiguity i
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Define the shared failure-instruction contract and first-wave adoption checklist | 88% | S | Pending | - | TASK-02, TASK-03 |
+| TASK-01 | IMPLEMENT | Define the shared failure-instruction contract and first-wave adoption checklist | 88% | S | Complete (2026-03-06) | - | TASK-02, TASK-03 |
 | TASK-02 | IMPLEMENT | Apply the contract to shell/guard surfaces and lock tests to exact-next-step behavior | 84% | M | Pending | TASK-01 | - |
 | TASK-03 | IMPLEMENT | Apply the contract to structured preflight/tool-guidance surfaces and add regression checks | 83% | M | Pending | TASK-01 | - |
 
@@ -97,7 +97,8 @@ This plan hardens agent-facing failure messages so blocked paths end ambiguity i
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-06)
+- **Build evidence:** Commit `36b85704de`. New section `## Agent Failure Message Contract` added to `AGENTS.md` (lines 92–158). All five required fields defined. Three message classes documented with reference implementations. First-wave adoption checklist names TASK-02 and TASK-03 target files explicitly. VC-01 ✓ (required fields + one real example per class). VC-02 ✓ (TASK-02 and TASK-03 targets derivable from checklist without discovery). Inline execution (Codex offload blocked by lock contention from concurrent session).
 - **Artifact-Destination:** `AGENTS.md` new section `## Agent Failure Message Contract` (default target; exact section name confirmed in Red step). Only move to a standalone file if AGENTS.md insertion is blocked by size or scope constraints.
 - **Reviewer:** repo/platform maintainer
 - **Approval-Evidence:** `None: plan-only phase`

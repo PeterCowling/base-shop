@@ -52,6 +52,20 @@ Always produce:
 
 ## Workflow
 
+### 0) Write QA Inventory (Required Gate)
+
+Before opening any browser or running any script, write a QA inventory. **Do not begin Layer A or Layer B until this inventory is complete.**
+
+Build the inventory from three sources:
+
+1. **Operator requirements** — what was explicitly requested or described as the audit scope.
+2. **Features / flows being tested** — every meaningful user-visible flow, booking path, navigation pattern, or interactive behaviour on the site under test.
+3. **Claims to make in the final response** — every user-visible claim you intend to assert in the chat summary (e.g. "booking CTA handoff passes", "mobile menu is accessible").
+
+Add **at least 2 exploratory / off-happy-path scenarios** to cover in the Layer B focused run — interactions not on the scripted path that could expose fragile behaviour (e.g. navigating directly to a deep URL, submitting an empty booking form, tapping outside a modal).
+
+The inventory is the shared coverage list for both Layer A and Layer B. Reference it when deciding which routes to prioritise in the focused audit.
+
 ### 1) Resolve a fresh immutable staging URL first (required for staging audits)
 
 Never reuse an old `https://<hash>.brikette-website.pages.dev` URL. Those are immutable and can mask whether a fix was deployed.
@@ -91,7 +105,7 @@ Notes:
 ### 3) Run focused JS-on audit (booking/hydration/mobile/a11y)
 
 ```bash
-node .claude/skills/meta-user-test/scripts/run-meta-user-test.mjs \
+node .claude/skills/meta-user-test/scripts/run-user-testing-audit.mjs \
   --url <TARGET_URL> \
   --slug <DEPLOYMENT-OR-BRANCH-SLUG> \
   --max-crawl-pages 140 \
@@ -126,6 +140,8 @@ Do targeted repro checks for high-severity findings from the generated report:
 - Suspected i18n key leakage and booking CTA fallback failures
 - JS-on booking handoff failures and mobile menu/focus issues
 - Contrast failures on key conversion CTAs
+
+After targeted repro checks, perform an unscripted exploratory pass (~30–90 seconds of free-form navigation on the live site) covering user journeys not in the scripted checks — e.g. navigating directly to a deep URL, submitting an empty booking form, tapping outside a modal, switching locale mid-session. If new issues are discovered, add them to the QA inventory before finalizing the backlog.
 
 ### 6) Review generated sections/artifacts (required)
 
@@ -162,7 +178,8 @@ In chat, provide:
 - path to full-crawl report/json,
 - path to focused report/json + SEO summary artifact,
 - deployment source (immutable URL + workflow run URL + commit SHA when available),
-- immediate next fix batch recommendation.
+- immediate next fix batch recommendation,
+- **negative confirmation** — explicitly state which issue categories were checked and not found (broken links/images, JS-on hydration failures, mobile menu state, unexpected horizontal overflow, contrast failures on CTAs, booking CTA handoff failures). If a category produced no issues, state that directly. Do not omit this block.
 
 ## Prioritization Rules
 

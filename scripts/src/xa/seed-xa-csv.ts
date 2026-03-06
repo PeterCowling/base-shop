@@ -11,7 +11,7 @@ import { fileURLToPath } from "node:url";
 // Inlined from apps/xa-uploader/src/lib/catalogCsvColumns.ts to avoid cross-rootDir import.
 const XA_PRODUCTS_CSV_COLUMN_ORDER = [
   "id", "slug", "title", "brand_handle", "brand_name", "collection_handle",
-  "collection_title", "collection_description", "price", "stock", "publish_state", "sizes",
+  "collection_title", "collection_description", "price", "publish_state", "sizes",
   "description", "created_at", "popularity", "image_files", "image_alt_texts",
   "media_paths", "media_alt_texts", "taxonomy_department", "taxonomy_category",
   "taxonomy_subcategory", "taxonomy_color", "taxonomy_material", "taxonomy_fit",
@@ -44,7 +44,7 @@ interface CatalogProduct {
   collection: string;
   price: number;
   prices?: Record<string, number>;
-  stock: number;
+  status: "draft" | "live" | "out_of_stock";
   media: CatalogMedia[];
   sizes: string[];
   description: string;
@@ -92,8 +92,7 @@ function productToRow(
     collection_title: collection?.title ?? "",
     collection_description: collection?.description ?? "",
     price: String(product.price),
-    stock: String(product.stock),
-    publish_state: "ready",
+    publish_state: product.status,
     sizes: joinPipe(product.sizes),
     description: product.description,
     created_at: product.createdAt,
@@ -106,8 +105,14 @@ function productToRow(
       .filter((m) => m.type === "image")
       .map((m) => m.altText)
       .join("|"),
-    media_paths: "",
-    media_alt_texts: "",
+    media_paths: product.media
+      .filter((m) => m.type === "image")
+      .map((m) => m.path)
+      .join("|"),
+    media_alt_texts: product.media
+      .filter((m) => m.type === "image")
+      .map((m) => m.altText)
+      .join("|"),
     taxonomy_department: String(tax.department ?? ""),
     taxonomy_category: String(tax.category ?? ""),
     taxonomy_subcategory: String(tax.subcategory ?? ""),

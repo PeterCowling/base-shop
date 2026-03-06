@@ -75,7 +75,7 @@ describe("XA catalog data", () => {
     expect("details" in XA_CATALOG_RUNTIME_META).toBe(false);
   });
 
-  it("does not assign inferred/fallback roles to legacy media without explicit roles", async () => {
+  it("hydrates media in source order without adding role metadata", async () => {
     const catalogMock = {
       collections: [],
       brands: [],
@@ -101,13 +101,13 @@ describe("XA catalog data", () => {
           media: [
             {
               type: "image",
-              path: "xa-b/legacy-roleless-1/front.jpg",
-              altText: "front view",
+              path: "xa-b/legacy-roleless-1/detail.jpg",
+              altText: "detail view",
             },
             {
               type: "image",
-              path: "xa-b/legacy-roleless-1/side.jpg",
-              altText: "side view",
+              path: "xa-b/legacy-roleless-1/main.jpg",
+              altText: "main view",
             },
           ],
         },
@@ -126,11 +126,11 @@ describe("XA catalog data", () => {
     const hydrated = XA_PRODUCTS[0];
     expect(hydrated).toBeTruthy();
     const hydratedImageMedia = (hydrated?.media ?? []).filter((item) => item.type === "image");
-    expect(hydratedImageMedia.length).toBeGreaterThan(0);
-    expect(hydratedImageMedia.every((item) => !item.role)).toBe(true);
+    expect(hydratedImageMedia.map((item) => item.altText)).toEqual(["detail view", "main view"]);
+    expect(hydratedImageMedia.every((item) => !("role" in item))).toBe(true);
   });
 
-  it("retains explicit media roles from catalog seed", async () => {
+  it("keeps catalog-provided media ordering exactly as seeded", async () => {
     const catalogMock = {
       collections: [],
       brands: [],
@@ -156,9 +156,13 @@ describe("XA catalog data", () => {
           media: [
             {
               type: "image",
-              path: "xa-b/explicit-role-1/front.jpg",
-              altText: "front",
-              role: "front",
+              path: "xa-b/explicit-role-1/second.jpg",
+              altText: "second",
+            },
+            {
+              type: "image",
+              path: "xa-b/explicit-role-1/first.jpg",
+              altText: "first",
             },
           ],
         },
@@ -175,7 +179,6 @@ describe("XA catalog data", () => {
 
     expect(XA_PRODUCTS.length).toBe(1);
     const imageMedia = XA_PRODUCTS[0]?.media.filter((item) => item.type === "image") ?? [];
-    expect(imageMedia.length).toBe(1);
-    expect(imageMedia[0]?.role).toBe("front");
+    expect(imageMedia.map((item) => item.altText)).toEqual(["second", "first"]);
   });
 });

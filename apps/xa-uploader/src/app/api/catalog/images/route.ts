@@ -7,7 +7,6 @@ import { join, resolve, sep } from "node:path";
 import { NextResponse } from "next/server";
 
 import { slugify, splitList } from "@acme/lib/xa/catalogAdminSchema";
-import { normalizeXaImageRole } from "@acme/lib/xa/catalogImageRoles";
 
 import { listCatalogDrafts } from "../../../../lib/catalogCsv";
 import { readCloudDraftSnapshot } from "../../../../lib/catalogDraftContractClient";
@@ -55,10 +54,10 @@ function fileExtForFormat(format: string): string {
   return format;
 }
 
-function buildUniqueFilename(role: string, ext: string): string {
+function buildUniqueFilename(ext: string): string {
   const nowMs = Date.now();
   const nonce = randomUUID().replace(/-/g, "").slice(0, 12);
-  return `${nowMs}-${role}-${nonce}.${ext}`;
+  return `${nowMs}-${nonce}.${ext}`;
 }
 
 function isErrnoCode(error: unknown, code: string): boolean {
@@ -68,12 +67,11 @@ function isErrnoCode(error: unknown, code: string): boolean {
 
 async function writeLocalImageWithRetry(params: {
   dirPath: string;
-  role: string;
   ext: string;
   buf: Buffer;
 }): Promise<string> {
   for (let attempt = 0; attempt < LOCAL_WRITE_MAX_ATTEMPTS; attempt += 1) {
-    const filename = buildUniqueFilename(params.role, params.ext);
+    const filename = buildUniqueFilename(params.ext);
     const fullPath = join(params.dirPath, filename);
     try {
       // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-0001 fullPath is bounded under params.dirPath and filename is generated [ttl=2026-12-31]
@@ -116,7 +114,6 @@ function parseUploadQueryParams(requestUrl: string): {
   ok: true;
   storefront: string;
   slug: string;
-  role: string;
 } | {
   ok: false;
   reason: string;
@@ -124,9 +121,8 @@ function parseUploadQueryParams(requestUrl: string): {
   const url = new URL(requestUrl);
   const rawStorefront = (url.searchParams.get("storefront") ?? "").trim();
   const rawSlug = (url.searchParams.get("slug") ?? "").trim();
-  const rawRole = (url.searchParams.get("role") ?? "").trim();
-  if (!rawStorefront || !rawSlug || !rawRole) {
-    return { ok: false, reason: "storefront, slug, and role query params are required" };
+  if (!rawStorefront || !rawSlug) {
+    return { ok: false, reason: "storefront and slug query params are required" };
   }
 
   const storefront = parseStorefront(rawStorefront);
@@ -139,12 +135,7 @@ function parseUploadQueryParams(requestUrl: string): {
     return { ok: false, reason: "invalid slug query param" };
   }
 
-  const role = normalizeXaImageRole(rawRole);
-  if (!role) {
-    return { ok: false, reason: "invalid role query param" };
-  }
-
-  return { ok: true, storefront, slug, role };
+  return { ok: true, storefront, slug };
 }
 
 function normalizeCatalogPath(pathValue: string): string {
@@ -294,7 +285,7 @@ export async function POST(request: Request) {
       limit,
     );
   }
-  const { storefront, slug, role } = uploadParams;
+  const { storefront, slug } = uploadParams;
 
   // Get R2 bucket (null in local dev)
   const bucket = await getMediaBucket();
@@ -334,7 +325,7 @@ export async function POST(request: Request) {
   }
 
   const ext = fileExtForFormat(format);
-  const filename = buildUniqueFilename(role, ext);
+  const filename = buildUniqueFilename(ext);
 
   // Upload to R2 (production) or write into xa-b's public/images/ (dev).
   // In dev the file lands where xa-b serves static assets, so the image is
@@ -361,7 +352,6 @@ export async function POST(request: Request) {
     await mkdir(xaBPublicImages, { recursive: true });
     const persistedFilename = await writeLocalImageWithRetry({
       dirPath: xaBPublicImages,
-      role,
       ext,
       buf,
     });

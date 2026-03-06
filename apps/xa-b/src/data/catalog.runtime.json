@@ -26,12 +26,22 @@
         "GBP": 400,
         "AUD": 400
       },
+      "status": "live",
       "media": [
         {
           "type": "image",
-          "path": "xa-b/hermes-constance-18-noir-epsom/1772724351887-front-f318208c52e0.jpg|xa-b/hermes-constance-18-noir-epsom/1772724361047-side-d6a79ece3f70.jpg|xa-b/hermes-constance-18-noir-epsom/1772724370048-top-c33e66cb1ae9.jpg",
-          "altText": "front view|side view|top view",
-          "role": "front|side|top"
+          "path": "xa-b/hermes-constance-18-noir-epsom/1772724351887-front-f318208c52e0.jpg",
+          "altText": "front view"
+        },
+        {
+          "type": "image",
+          "path": "xa-b/hermes-constance-18-noir-epsom/1772724361047-side-d6a79ece3f70.jpg",
+          "altText": "side view"
+        },
+        {
+          "type": "image",
+          "path": "xa-b/hermes-constance-18-noir-epsom/1772724370048-top-c33e66cb1ae9.jpg",
+          "altText": "top view"
         }
       ],
       "sizes": [
@@ -50,17 +60,20 @@
         "material": [
           "Epsom"
         ],
-        "strapStyle": "Adjustable crossbody strap",
-        "hardwareColor": "Palladium",
         "interiorColor": [
           "Gold",
           "Etoupe"
         ],
-        "closureType": "H-buckle clasp"
+        "strapStyle": "Adjustable crossbody strap",
+        "hardwareColor": "Palladium",
+        "closureType": "H-buckle clasp",
+        "fits": [
+          "Phone",
+          "cards",
+          "keys",
+          "lipstick"
+        ]
       },
-      "deposit": 0,
-      "forSale": true,
-      "forRental": false,
       "details": {
         "dimensions": "18 x 15 x 5 cm",
         "strapDrop": "46 cm",
@@ -73,8 +86,7 @@
         "interior": [
           "Multiple card slots and one flat pocket"
         ]
-      },
-      "status": "live"
+      }
     }
   ]
 }

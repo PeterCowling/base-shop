@@ -144,31 +144,28 @@ describe("catalogProductDraftSchema", () => {
       sizes: "S|M|L",
       imageFiles: "a|b",
       imageAltTexts: "one",
-      imageRoles: "front|side",
     };
     const result = catalogProductDraftSchema.safeParse(draft);
     expect(result.success).toBe(false);
   });
 
-  it("rejects image role count mismatches", () => {
+  it("allows images without explicit alt text entries", () => {
     const draft = {
       ...baseDraft(),
       sizes: "S|M|L",
       imageFiles: "a|b",
-      imageAltTexts: "one|two",
-      imageRoles: "front",
+      imageAltTexts: "",
     };
     const result = catalogProductDraftSchema.safeParse(draft);
-    expect(result.success).toBe(false);
+    expect(result.success).toBe(true);
   });
 
-  it("allows incomplete category role coverage for draft saves", () => {
+  it("allows a single main image for draft saves", () => {
     const draft = {
       ...baseDraft(),
       sizes: "S|M|L",
-      imageFiles: "a|b",
-      imageAltTexts: "one|two",
-      imageRoles: "front|detail",
+      imageFiles: "a",
+      imageAltTexts: "one",
       taxonomy: {
         ...baseDraft().taxonomy,
         category: "clothing",
@@ -178,13 +175,12 @@ describe("catalogProductDraftSchema", () => {
     expect(result.success).toBe(true);
   });
 
-  it("accepts valid image roles for bag products", () => {
+  it("accepts ordered image files for bag products", () => {
     const draft = {
       ...baseDraft(),
       sizes: "",
       imageFiles: "a|b|c",
       imageAltTexts: "one|two|three",
-      imageRoles: "front|side|top",
       taxonomy: {
         ...baseDraft().taxonomy,
         category: "bags",

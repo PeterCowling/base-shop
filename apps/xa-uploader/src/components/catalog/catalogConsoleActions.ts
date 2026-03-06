@@ -31,7 +31,6 @@ type Translator = (key: string, vars?: Record<string, unknown>) => string;
 
 type ImageTuple = {
   file: string;
-  role: string;
   alt: string;
 };
 
@@ -54,14 +53,12 @@ function normalizeCatalogPath(value: string): string {
 
 function parseImageTuples(draft: CatalogProductDraftInput): ImageTuple[] {
   const files = splitList(draft.imageFiles ?? "").map((entry) => normalizeCatalogPath(entry));
-  const roles = splitList(draft.imageRoles ?? "");
   const alts = splitList(draft.imageAltTexts ?? "");
   const tuples: ImageTuple[] = [];
   for (const [index, file] of files.entries()) {
     if (!file) continue;
     tuples.push({
       file,
-      role: roles[index] ?? "",
       alt: alts[index] ?? "",
     });
   }
@@ -102,13 +99,11 @@ export function mergeAutosaveImageTuples(params: {
   }
 
   const imageFiles = merged.map((tuple) => tuple.file).join("|");
-  const imageRoles = merged.map((tuple) => tuple.role).join("|");
   const imageAltTexts = merged.map((tuple) => tuple.alt).join("|");
 
   return {
     ...params.serverDraft,
     imageFiles,
-    imageRoles,
     imageAltTexts,
   };
 }

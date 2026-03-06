@@ -1,125 +1,55 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  type ChangeEvent,
+  type Dispatch,
+  type DragEvent,
+  type RefObject,
+  type SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import Image from "next/image";
 
-import type { CatalogProductDraftInput } from "@acme/lib/xa/catalogAdminSchema";
 import {
-  normalizeXaImageRole,
-  requiredImageRolesByCategory,
-  type XaImageRole,
-} from "@acme/lib/xa/catalogImageRoles";
+  type CatalogProductDraftInput,
+  splitList,
+} from "@acme/lib/xa/catalogAdminSchema";
 
 import type { XaCatalogStorefront } from "../../lib/catalogStorefront.types";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 import { getCatalogApiErrorMessage } from "./catalogConsoleFeedback";
-import { BTN_SECONDARY_CLASS, SELECT_CLASS } from "./catalogStyles";
+import { BTN_SECONDARY_CLASS } from "./catalogStyles";
 
-const IMAGE_ROLES = ["front", "side", "top", "back", "detail", "interior", "scale"] as const;
-type UploadImageRole = (typeof IMAGE_ROLES)[number];
 type AutosaveStatus = "saving" | "saved" | "unsaved";
 type UploadStatus = "idle" | "uploading" | "persisting" | "persisted" | "error";
-type ImageEntry = { path: string; role: string; filename: string };
-type RequiredRoleStatus = { role: XaImageRole; isPresent: boolean };
-
-const ROLE_I18N_KEYS: Record<UploadImageRole, string> = {
-  front: "uploadImageRoleFront",
-  side: "uploadImageRoleSide",
-  top: "uploadImageRoleTop",
-  back: "uploadImageRoleBack",
-  detail: "uploadImageRoleDetail",
-  interior: "uploadImageRoleInterior",
-  scale: "uploadImageRoleScale",
-} as const;
-
-const ROLE_HINTS: Record<UploadImageRole, string> = {
-  front: "uploadRoleHintFront",
-  side: "uploadRoleHintSide",
-  top: "uploadRoleHintTop",
-  back: "uploadRoleHintBack",
-  detail: "uploadRoleHintDetail",
-  interior: "uploadRoleHintInterior",
-  scale: "uploadRoleHintScale",
-};
+type ImageEntry = { path: string; filename: string; isMain: boolean };
 
 const MAX_FILE_SIZE = 8_388_608; // 8 MB
 const ACCEPTED_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 const AUTOSAVE_PERSIST_TIMEOUT_MS = 20_000;
 const AUTOSAVE_PERSIST_POLL_MS = 120;
 
-/** Simple bag outline viewed from the selected angle. */
-function RoleIllustration({ role }: { role: UploadImageRole }) {
-  const cls = "size-16 text-gate-muted/50";
-  switch (role) {
-    case "front":
-      return (
-        <svg className={cls} viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth={1.5}>
-          <rect x="14" y="24" width="36" height="30" rx="3" />
-          <path d="M24 24V18a8 8 0 0 1 16 0v6" />
-          <circle cx="32" cy="36" r="2.5" />
-          <path d="M32 60 L32 56" strokeWidth={1} strokeDasharray="2 2" />
-        </svg>
-      );
-    case "side":
-      return (
-        <svg className={cls} viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth={1.5}>
-          <rect x="22" y="24" width="14" height="30" rx="3" />
-          <path d="M26 24V18a3 3 0 0 1 6 0v6" />
-          <line x1="29" y1="28" x2="29" y2="50" strokeDasharray="3 3" strokeWidth={1} />
-          <path d="M46 39 L40 39" strokeWidth={1.5} />
-          <path d="M44 36 L46 39 L44 42" strokeWidth={1.5} />
-        </svg>
-      );
-    case "top":
-      return (
-        <svg className={cls} viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth={1.5}>
-          <rect x="14" y="20" width="36" height="20" rx="3" />
-          <line x1="18" y1="30" x2="46" y2="30" strokeDasharray="4 3" strokeWidth={1} />
-          <path d="M32 8 L32 16" strokeWidth={1.5} />
-          <path d="M29 14 L32 17 L35 14" strokeWidth={1.5} />
-        </svg>
-      );
-    case "back":
-      return (
-        <svg className={cls} viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth={1.5}>
-          <rect x="14" y="24" width="36" height="30" rx="3" />
-          <path d="M24 24V18a8 8 0 0 1 16 0v6" />
-          <rect x="20" y="32" width="24" height="14" rx="2" strokeDasharray="3 3" strokeWidth={1} />
-        </svg>
-      );
-    case "detail":
-      return (
-        <svg className={cls} viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth={1.5}>
-          <circle cx="28" cy="28" r="12" />
-          <line x1="36.5" y1="36.5" x2="48" y2="48" strokeWidth={2.5} strokeLinecap="round" />
-          <path d="M22 26 L34 26" strokeWidth={1} />
-          <path d="M22 30 L30 30" strokeWidth={1} />
-        </svg>
-      );
-    case "interior":
-      return (
-        <svg className={cls} viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth={1.5}>
-          <path d="M14 22 L14 54 Q14 57 17 57 L47 57 Q50 57 50 54 L50 22" />
-          <path d="M14 22 Q14 16 20 14 L44 14 Q50 16 50 22" strokeDasharray="3 3" />
-          <rect x="20" y="34" width="10" height="16" rx="1.5" strokeWidth={1} />
-          <rect x="34" y="38" width="10" height="12" rx="1.5" strokeWidth={1} />
-        </svg>
-      );
-    case "scale":
-      return (
-        <svg className={cls} viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth={1.5}>
-          <rect x="8" y="28" width="24" height="20" rx="2" />
-          <path d="M14 28V24a6 6 0 0 1 12 0v4" />
-          <line x1="42" y1="20" x2="42" y2="52" strokeWidth={1.5} />
-          <line x1="39" y1="20" x2="45" y2="20" strokeWidth={1.5} />
-          <line x1="39" y1="52" x2="45" y2="52" strokeWidth={1.5} />
-          <line x1="40" y1="28" x2="44" y2="28" strokeWidth={1} />
-          <line x1="40" y1="36" x2="44" y2="36" strokeWidth={1} />
-          <line x1="40" y1="44" x2="44" y2="44" strokeWidth={1} />
-        </svg>
-      );
-  }
+function UploadIllustration() {
+  return (
+    <svg
+      className="size-16 text-gate-muted/50"
+      viewBox="0 0 64 64"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+    >
+      <rect x="10" y="16" width="44" height="32" rx="4" />
+      <path d="m18 40 10-10 8 8 6-6 8 8" />
+      <circle cx="24" cy="24" r="3" />
+      <path d="M32 8v8" />
+      <path d="m28 12 4 4 4-4" />
+    </svg>
+  );
 }
 
 function ImagePlaceholder() {
@@ -142,7 +72,6 @@ function ImagePlaceholder() {
   );
 }
 
-/** Renders an <img> that falls back to the placeholder on load error or invalid image data. */
 function ImageWithFallback({ src, alt }: { src: string; alt: string }) {
   const [failed, setFailed] = useState(false);
   if (failed) return <ImagePlaceholder />;
@@ -160,44 +89,29 @@ function ImageWithFallback({ src, alt }: { src: string; alt: string }) {
   );
 }
 
-function parseImageEntries(files: string, roles: string): ImageEntry[] {
-  const fileParts = files
-    .split("|")
-    .map((value) => value.trim())
-    .filter(Boolean);
-  const roleParts = roles
-    .split("|")
-    .map((value) => value.trim())
-    .filter(Boolean);
+function splitPipeEntries(pipeStr: string): string[] {
+  return splitList(pipeStr);
+}
 
-  return fileParts.map((path, index) => ({
+function parseImageEntries(files: string): ImageEntry[] {
+  return splitPipeEntries(files).map((path, index) => ({
     path,
-    role: roleParts[index] ?? "",
     filename: path.split("/").pop() ?? path,
+    isMain: index === 0,
   }));
 }
 
 function removePipeEntry(pipeStr: string, index: number): string {
-  return pipeStr
-    .split("|")
-    .map((value) => value.trim())
-    .filter(Boolean)
+  return splitPipeEntries(pipeStr)
     .filter((_, itemIndex) => itemIndex !== index)
     .join("|");
 }
 
 export function reorderPipeEntry(pipeStr: string, fromIndex: number, direction: "up" | "down"): string {
-  const parts = pipeStr
-    .split("|")
-    .map((value) => value.trim())
-    .filter(Boolean);
+  const parts = splitPipeEntries(pipeStr);
   const toIndex = direction === "up" ? fromIndex - 1 : fromIndex + 1;
   if (toIndex < 0 || toIndex >= parts.length || fromIndex < 0 || fromIndex >= parts.length) {
-    return pipeStr
-      .split("|")
-      .map((value) => value.trim())
-      .filter(Boolean)
-      .join("|");
+    return parts.join("|");
   }
   const next = [...parts];
   [next[fromIndex], next[toIndex]] = [next[toIndex]!, next[fromIndex]!];
@@ -216,25 +130,24 @@ function resolveImageSrc(entryPath: string, previews: Map<string, string>): stri
   return `/${normalized}`;
 }
 
+function buildDefaultImageAltText(draft: CatalogProductDraftInput, imageIndex: number): string {
+  const baseTitle = (draft.title ?? "").trim() || "Product";
+  if (imageIndex === 0) return `${baseTitle} main image`;
+  return `${baseTitle} photo ${imageIndex + 1}`;
+}
+
 function appendImageDraftEntry(
   draft: CatalogProductDraftInput,
   imageKey: string,
-  selectedRole: UploadImageRole,
 ): CatalogProductDraftInput {
-  const currentFiles = (draft.imageFiles ?? "").trim();
-  const currentRoles = (draft.imageRoles ?? "").trim();
-  const currentAlts = (draft.imageAltTexts ?? "").trim();
-
-  const nextFiles = currentFiles ? `${currentFiles}|${imageKey}` : imageKey;
-  const nextRoles = currentRoles ? `${currentRoles}|${selectedRole}` : selectedRole;
-  const altText = `${selectedRole} view`;
-  const nextAlts = currentAlts ? `${currentAlts}|${altText}` : altText;
+  const currentFiles = splitPipeEntries(draft.imageFiles ?? "");
+  const currentAlts = splitPipeEntries(draft.imageAltTexts ?? "");
+  const nextIndex = currentFiles.length;
 
   return {
     ...draft,
-    imageFiles: nextFiles,
-    imageRoles: nextRoles,
-    imageAltTexts: nextAlts,
+    imageFiles: [...currentFiles, imageKey].join("|"),
+    imageAltTexts: [...currentAlts, buildDefaultImageAltText(draft, nextIndex)].join("|"),
   };
 }
 
@@ -246,7 +159,6 @@ function reorderImageDraft(
   return {
     ...draft,
     imageFiles: reorderPipeEntry(draft.imageFiles ?? "", index, direction),
-    imageRoles: reorderPipeEntry(draft.imageRoles ?? "", index, direction),
     imageAltTexts: reorderPipeEntry(draft.imageAltTexts ?? "", index, direction),
   };
 }
@@ -319,14 +231,14 @@ function usePersistedImageCleanup(params: {
   }, [params.storefront]);
 }
 
-function useDropZoneDragHandlers(setDragOver: React.Dispatch<React.SetStateAction<boolean>>) {
-  const handleDragOver = useCallback((event: React.DragEvent) => {
+function useDropZoneDragHandlers(setDragOver: Dispatch<SetStateAction<boolean>>) {
+  const handleDragOver = useCallback((event: DragEvent) => {
     event.preventDefault();
     event.stopPropagation();
     setDragOver(true);
   }, [setDragOver]);
 
-  const handleDragLeave = useCallback((event: React.DragEvent) => {
+  const handleDragLeave = useCallback((event: DragEvent) => {
     event.preventDefault();
     event.stopPropagation();
     setDragOver(false);
@@ -335,85 +247,11 @@ function useDropZoneDragHandlers(setDragOver: React.Dispatch<React.SetStateActio
   return { handleDragOver, handleDragLeave };
 }
 
-function buildRequiredRoleStatus(draft: CatalogProductDraftInput): RequiredRoleStatus[] {
-  const requiredRoles = requiredImageRolesByCategory(draft.taxonomy.category);
-  const existingRoles = new Set(
-    (draft.imageRoles ?? "")
-      .split("|")
-      .map((value) => normalizeXaImageRole(value))
-      .filter((value): value is XaImageRole => value !== undefined),
-  );
-  return requiredRoles.map((role) => ({
-    role,
-    isPresent: existingRoles.has(role),
-  }));
-}
-
-function RoleSelector({
-  selectedRole,
-  onRoleChange,
-  t,
-}: {
-  selectedRole: UploadImageRole;
-  onRoleChange: (role: UploadImageRole) => void;
-  t: ReturnType<typeof useUploaderI18n>["t"];
-}) {
-  return (
-    <label className="block text-xs uppercase tracking-label text-gate-muted">
-      {t("uploadImageRoleLabel")}
-      <select
-        value={selectedRole}
-        onChange={(event) => onRoleChange(event.target.value as UploadImageRole)}
-        className={SELECT_CLASS}
-      >
-        {IMAGE_ROLES.map((role) => (
-          <option key={role} value={role}>
-            {t(ROLE_I18N_KEYS[role] as Parameters<typeof t>[0])}
-          </option>
-        ))}
-      </select>
-    </label>
-  );
-}
-
-function RequiredRolesChecklist({
-  requiredRoleStatus,
-  t,
-}: {
-  requiredRoleStatus: RequiredRoleStatus[];
-  t: ReturnType<typeof useUploaderI18n>["t"];
-}) {
-  return (
-    <div className="rounded-md border border-gate-border bg-gate-surface px-3 py-2">
-      <div className="text-2xs uppercase tracking-label text-gate-muted">
-        {t("uploadRequiredRolesTitle")}
-      </div>
-      {/* eslint-disable-next-line ds/enforce-layout-primitives -- XAUP-0001 operator-tool compact checklist layout */}
-      <ul className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
-        {requiredRoleStatus.map(({ role, isPresent }) => (
-          <li
-            key={role}
-            className={`rounded px-2 py-1 text-2xs ${
-              isPresent
-                ? "bg-success-bg text-success-fg"
-                : "bg-gate-accent-soft text-gate-accent"
-            }`}
-          >
-            {t(ROLE_I18N_KEYS[role] as Parameters<typeof t>[0])}
-            {": "}
-            {isPresent ? t("uploadRequiredRoleDone") : t("uploadRequiredRoleMissing")}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
 function ImageDropZone({
   canUpload,
   isUploading,
   dragOver,
-  selectedRole,
+  hasImages,
   fileInputRef,
   onDragOver,
   onDragLeave,
@@ -424,14 +262,22 @@ function ImageDropZone({
   canUpload: boolean;
   isUploading: boolean;
   dragOver: boolean;
-  selectedRole: UploadImageRole;
-  fileInputRef: React.RefObject<HTMLInputElement | null>;
-  onDragOver: (event: React.DragEvent) => void;
-  onDragLeave: (event: React.DragEvent) => void;
-  onDrop: (event: React.DragEvent) => void;
-  onFileInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  hasImages: boolean;
+  fileInputRef: RefObject<HTMLInputElement | null>;
+  onDragOver: (event: DragEvent) => void;
+  onDragLeave: (event: DragEvent) => void;
+  onDrop: (event: DragEvent) => void;
+  onFileInput: (event: ChangeEvent<HTMLInputElement>) => void;
   t: ReturnType<typeof useUploaderI18n>["t"];
 }) {
+  const primaryCopy = isUploading
+    ? t("uploadImageUploading")
+    : dragOver
+      ? t("uploadDropZoneActive")
+      : hasImages
+        ? t("uploadAddPhoto")
+        : t("uploadAddMainImage");
+
   return (
     <button
       type="button"
@@ -452,20 +298,12 @@ function ImageDropZone({
       // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
       data-testid="image-drop-zone"
     >
-      <RoleIllustration role={selectedRole} />
+      <UploadIllustration />
 
-      <span className="text-sm text-gate-muted">
-        {isUploading
-          ? t("uploadImageUploading")
-          : dragOver
-            ? t("uploadDropZoneActive")
-            : t("uploadDropZone")}
-      </span>
-
+      <span className="text-sm text-gate-muted">{primaryCopy}</span>
       <span className="text-2xs text-gate-accent">
-        {t(ROLE_HINTS[selectedRole] as Parameters<typeof t>[0])}
+        {hasImages ? t("uploadAdditionalPhotosHint") : t("uploadMainImageHint")}
       </span>
-
       <span className="text-2xs text-gate-muted">{t("imageGuidelines")}</span>
 
       <input
@@ -498,13 +336,19 @@ function ImageGallery({
 
   return (
     <div className="space-y-2">
-      <div className="text-xs text-gate-muted">
-        {t("uploadImageCount").replace("{count}", String(entries.length))}
+      <div className="flex items-center justify-between gap-3">
+        <div className="text-xs text-gate-muted">
+          {t("uploadImageCount", { count: entries.length })}
+        </div>
+        <div className="text-2xs text-gate-muted">{t("uploadImageOrderHelp")}</div>
       </div>
       {/* eslint-disable-next-line ds/enforce-layout-primitives -- XAUP-0001 operator-tool thumbnail grid */}
       <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
         {entries.map((entry, index) => {
           const src = resolveImageSrc(entry.path, previews);
+          const badge = entry.isMain
+            ? t("uploadImagePrimaryBadge")
+            : t("uploadImageAdditionalBadge", { count: index });
           return (
             <li
               key={`${entry.path}-${index}`}
@@ -515,38 +359,40 @@ function ImageGallery({
                 {src ? (
                   <ImageWithFallback
                     src={src}
-                    alt={entry.role ? `${entry.role} view` : entry.filename}
+                    alt={badge}
                   />
                 ) : (
                   <ImagePlaceholder />
                 )}
               </div>
 
-              <div className="flex items-center gap-1 px-2 py-1.5">
-                <span className="min-w-0 flex-1 truncate text-2xs text-gate-ink">{entry.filename}</span>
-                {entry.role ? (
+              <div className="space-y-2 px-2 py-1.5">
+                <div className="flex items-center gap-2">
+                  <span className="min-w-0 flex-1 truncate text-2xs text-gate-ink">{entry.filename}</span>
                   <span className="shrink-0 rounded bg-gate-accent-soft px-1 py-0.5 text-2xs text-gate-accent">
-                    {entry.role}
+                    {badge}
                   </span>
-                ) : null}
-                <button
-                  type="button"
-                  onClick={() => onReorder(index, "up")}
-                  disabled={index === 0}
-                  className={`${BTN_SECONDARY_CLASS} inline-flex min-h-11 min-w-11 items-center justify-center`}
-                  data-testid={`image-move-up-${index}`}
-                >
-                  ↑
-                </button>
-                <button
-                  type="button"
-                  onClick={() => onReorder(index, "down")}
-                  disabled={index === entries.length - 1}
-                  className={`${BTN_SECONDARY_CLASS} inline-flex min-h-11 min-w-11 items-center justify-center`}
-                  data-testid={`image-move-down-${index}`}
-                >
-                  ↓
-                </button>
+                </div>
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => onReorder(index, "up")}
+                    disabled={index === 0}
+                    className={`${BTN_SECONDARY_CLASS} inline-flex min-h-11 min-w-11 items-center justify-center`}
+                    data-testid={`image-move-up-${index}`}
+                  >
+                    ↑
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onReorder(index, "down")}
+                    disabled={index === entries.length - 1}
+                    className={`${BTN_SECONDARY_CLASS} inline-flex min-h-11 min-w-11 items-center justify-center`}
+                    data-testid={`image-move-down-${index}`}
+                  >
+                    ↓
+                  </button>
+                </div>
               </div>
 
               <button
@@ -568,10 +414,8 @@ function ImageGallery({
 function useImageUploadController({
   draft,
   storefront,
-  selectedRole,
   hasSlug,
   imageEntries,
-  autosaveStatus,
   lastAutosaveSavedAt,
   onChange,
   onImageUploaded,
@@ -579,10 +423,8 @@ function useImageUploadController({
 }: {
   draft: CatalogProductDraftInput;
   storefront: XaCatalogStorefront;
-  selectedRole: UploadImageRole;
   hasSlug: boolean;
   imageEntries: ImageEntry[];
-  autosaveStatus: AutosaveStatus;
   lastAutosaveSavedAt: number | null;
   onChange: (next: CatalogProductDraftInput) => void;
   onImageUploaded: (nextDraft: CatalogProductDraftInput) => void;
@@ -653,7 +495,6 @@ function useImageUploadController({
         const params = new URLSearchParams({
           storefront,
           slug: (draft.slug ?? "").trim(),
-          role: selectedRole,
         });
 
         const response = await fetch(`/api/catalog/images?${params.toString()}`, {
@@ -689,7 +530,7 @@ function useImageUploadController({
           return next;
         });
 
-        const nextDraft = appendImageDraftEntry(draft, json.key, selectedRole);
+        const nextDraft = appendImageDraftEntry(draft, json.key);
         notifyImageDraftChange(nextDraft, onChange, onImageUploaded);
         setPendingAutosaveStartedAt(Date.now());
         setUploadStatus("persisting");
@@ -700,10 +541,10 @@ function useImageUploadController({
         setUploadError(t("uploadImageErrorFailed"));
       }
     },
-    [draft, hasSlug, onChange, onImageUploaded, selectedRole, storefront, t],
+    [draft, hasSlug, onChange, onImageUploaded, storefront, t],
   );
   const handleFileInput = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    (event: ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
       if (file) {
         void handleUpload(file);
@@ -713,7 +554,7 @@ function useImageUploadController({
     [handleUpload],
   );
   const handleDrop = useCallback(
-    (event: React.DragEvent) => {
+    (event: DragEvent) => {
       event.preventDefault();
       event.stopPropagation();
       setDragOver(false);
@@ -743,7 +584,6 @@ function useImageUploadController({
       const nextDraft = {
         ...draft,
         imageFiles: removePipeEntry(draft.imageFiles ?? "", index),
-        imageRoles: removePipeEntry(draft.imageRoles ?? "", index),
         imageAltTexts: removePipeEntry(draft.imageAltTexts ?? "", index),
       };
       const queuedAt = Date.now();
@@ -767,7 +607,6 @@ function useImageUploadController({
     dragOver,
     uploadStatus,
     uploadError,
-    autosaveStatus,
     canUpload: hasSlug && uploadStatus !== "uploading",
     isUploading: uploadStatus === "uploading",
     handleDragOver,
@@ -799,14 +638,12 @@ export function CatalogProductImagesFields({
   onImageUploaded: (nextDraft: CatalogProductDraftInput) => void;
 }) {
   const { t } = useUploaderI18n();
-  const [selectedRole, setSelectedRole] = useState<UploadImageRole>("front");
 
   const hasSlug = (draft.slug ?? "").trim().length > 0;
   const imageEntries = useMemo(
-    () => parseImageEntries(draft.imageFiles ?? "", draft.imageRoles ?? ""),
-    [draft.imageFiles, draft.imageRoles],
+    () => parseImageEntries(draft.imageFiles ?? ""),
+    [draft.imageFiles],
   );
-  const requiredRoleStatus = useMemo(() => buildRequiredRoleStatus(draft), [draft]);
 
   const {
     fileInputRef,
@@ -814,7 +651,6 @@ export function CatalogProductImagesFields({
     dragOver,
     uploadStatus,
     uploadError,
-    autosaveStatus: uploadAutosaveStatus,
     canUpload,
     isUploading,
     handleDragOver,
@@ -826,10 +662,8 @@ export function CatalogProductImagesFields({
   } = useImageUploadController({
     draft,
     storefront,
-    selectedRole,
     hasSlug,
     imageEntries,
-    autosaveStatus,
     lastAutosaveSavedAt,
     onChange,
     onImageUploaded,
@@ -840,14 +674,11 @@ export function CatalogProductImagesFields({
     <div className="mt-8 w-full space-y-4">
       <div className="text-xs uppercase tracking-label-lg text-gate-muted">{t("imagesFieldsTitle")}</div>
 
-      <RoleSelector selectedRole={selectedRole} onRoleChange={setSelectedRole} t={t} />
-      <RequiredRolesChecklist requiredRoleStatus={requiredRoleStatus} t={t} />
-
       <ImageDropZone
         canUpload={canUpload}
         isUploading={isUploading}
         dragOver={dragOver}
-        selectedRole={selectedRole}
+        hasImages={imageEntries.length > 0}
         fileInputRef={fileInputRef}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -859,7 +690,7 @@ export function CatalogProductImagesFields({
       {!hasSlug ? <div className="text-xs text-gate-muted">{t("uploadImageErrorNoSlug")}</div> : null}
       {uploadStatus === "persisting" ? (
         <div className="text-xs text-gate-accent">
-          {uploadAutosaveStatus === "saving"
+          {autosaveStatus === "saving"
             ? t("uploadImagePersisting")
             : t("uploadImagePersistPending")}
         </div>
@@ -874,7 +705,6 @@ export function CatalogProductImagesFields({
         <div className="text-xs text-danger-fg">{autosaveInlineMessage}</div>
       ) : null}
       {fieldErrors.imageFiles ? <div className="text-xs text-danger-fg">{fieldErrors.imageFiles}</div> : null}
-      {fieldErrors.imageRoles ? <div className="text-xs text-danger-fg">{fieldErrors.imageRoles}</div> : null}
 
       <ImageGallery
         entries={imageEntries}

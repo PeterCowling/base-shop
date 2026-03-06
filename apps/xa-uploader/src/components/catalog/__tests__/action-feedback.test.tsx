@@ -35,7 +35,6 @@ const VALID_DRAFT: CatalogProductDraftInput = {
 const AUTOSAVE_DRAFT_A: CatalogProductDraftInput = {
   ...VALID_DRAFT,
   imageFiles: "images/studio-jacket/front.jpg|images/studio-jacket/side.jpg",
-  imageRoles: "front|side",
   imageAltTexts: "front view|side view",
 };
 
@@ -43,7 +42,6 @@ const AUTOSAVE_DRAFT_B: CatalogProductDraftInput = {
   ...AUTOSAVE_DRAFT_A,
   imageFiles:
     "images/studio-jacket/front.jpg|images/studio-jacket/side.jpg|images/studio-jacket/detail.jpg",
-  imageRoles: "front|side|detail",
   imageAltTexts: "front view|side view|detail view",
 };
 
@@ -51,7 +49,6 @@ const AUTOSAVE_DRAFT_SERVER_CONCURRENT: CatalogProductDraftInput = {
   ...AUTOSAVE_DRAFT_B,
   imageFiles:
     "images/studio-jacket/front.jpg|images/studio-jacket/side.jpg|images/studio-jacket/detail.jpg|images/studio-jacket/interior.jpg",
-  imageRoles: "front|side|detail|interior",
   imageAltTexts: "front view|side view|detail view|interior view",
 };
 
@@ -597,7 +594,6 @@ describe("useCatalogConsole scoped action feedback", () => {
     let savePostCalls = 0;
     let retryIfMatch: string | undefined;
     let retryImageFiles: string | undefined;
-    let retryImageRoles: string | undefined;
 
     global.fetch = jest.fn((input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input);
@@ -607,7 +603,7 @@ describe("useCatalogConsole scoped action feedback", () => {
           savePostCalls += 1;
           const payload = JSON.parse(String(init.body ?? "{}")) as {
             ifMatch?: string;
-            product?: { imageFiles?: string; imageRoles?: string };
+            product?: { imageFiles?: string };
           };
           if (savePostCalls === 1) {
             return Promise.resolve(
@@ -616,7 +612,6 @@ describe("useCatalogConsole scoped action feedback", () => {
           }
           retryIfMatch = payload.ifMatch;
           retryImageFiles = payload.product?.imageFiles;
-          retryImageRoles = payload.product?.imageRoles;
           return Promise.resolve(jsonResponse({ ok: true, product: AUTOSAVE_DRAFT_A, revision: "rev-2" }));
         }
         return Promise.resolve(
@@ -646,8 +641,6 @@ describe("useCatalogConsole scoped action feedback", () => {
     expect(retryImageFiles).toContain("images/studio-jacket/side.jpg");
     expect(retryImageFiles).toContain("images/studio-jacket/interior.jpg");
     expect(retryImageFiles).not.toContain("images/studio-jacket/detail.jpg");
-    expect(retryImageRoles).toContain("interior");
-    expect(retryImageRoles).not.toContain("detail");
   });
 
   it("TC-09: queued autosaves coalesce into one autosync after the queue drains", async () => {

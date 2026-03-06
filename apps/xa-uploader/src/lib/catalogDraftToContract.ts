@@ -3,12 +3,9 @@ import {
   catalogProductDraftSchema,
   type CatalogPublishState,
   deriveCatalogPublishState,
-  normalizeXaImageRole,
   slugify,
-  sortXaMediaByRole,
   splitList,
   withAutoCatalogDraftFields,
-  type XaImageRole,
 } from "@acme/lib/xa";
 
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
@@ -21,7 +18,6 @@ type CatalogMediaEntry = {
   type: "image";
   path: string;
   altText: string;
-  role?: XaImageRole;
 };
 
 type CatalogProduct = {
@@ -95,7 +91,6 @@ type MediaIndexPayload = {
     sourcePath: string;
     catalogPath: string;
     altText: string;
-    role?: XaImageRole;
   }>;
 };
 
@@ -284,7 +279,6 @@ function buildMediaEntries(params: {
   productSlug: string;
   title: string;
   imageFiles: string[];
-  imageRoles: string[];
   imageAltTexts: string[];
   strict: boolean;
   mediaValidationPolicy: MediaValidationPolicy;
@@ -320,20 +314,18 @@ function buildMediaEntries(params: {
     }
 
     const altText = params.imageAltTexts[index] || params.title || params.productSlug;
-    const role = normalizeXaImageRole(params.imageRoles[index]);
-    media.push({ type: "image", path: catalogPath, altText, ...(role ? { role } : {}) });
+    media.push({ type: "image", path: catalogPath, altText });
     params.mediaItems.push({
       productSlug: params.productSlug,
       sourcePath: catalogPath,
       catalogPath,
       altText,
-      ...(role ? { role } : {}),
     });
   }
   if (params.strict && media.length === 0) {
     throw new Error(`[row ${params.rowNumber}] "${params.productSlug}" produced no media entries.`);
   }
-  return sortXaMediaByRole(media);
+  return media;
 }
 
 function assertUniqueRowValue(params: {
@@ -420,14 +412,12 @@ export function buildCatalogArtifactsFromDrafts(params: {
     }
 
     const imageFiles = splitList(parsed.imageFiles ?? "");
-    const imageRoles = splitList(parsed.imageRoles ?? "");
     const imageAltTexts = splitList(parsed.imageAltTexts ?? "");
     const media = buildMediaEntries({
       rowNumber,
       productSlug,
       title: parsed.title,
       imageFiles,
-      imageRoles,
       imageAltTexts,
       strict: params.strict === true,
       mediaValidationPolicy,

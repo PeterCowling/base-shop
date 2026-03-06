@@ -223,9 +223,8 @@ describe("catalog products route", () => {
             createdAt: "2026-03-02T00:00:00.000Z",
             popularity: "0",
             publishState: "out_of_stock",
-            imageFiles: "xa-b/studio-jacket/front.jpg|xa-b/studio-jacket/side.jpg|xa-b/studio-jacket/top.jpg",
-            imageAltTexts: "front|side|top",
-            imageRoles: "front|side|top",
+            imageFiles: "xa-b/studio-jacket/main.jpg",
+            imageAltTexts: "main",
             taxonomy: {
               department: "women",
               category: "bags",

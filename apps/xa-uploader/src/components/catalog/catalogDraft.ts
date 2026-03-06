@@ -56,7 +56,6 @@ export const EMPTY_DRAFT: CatalogProductDraftInput = {
   popularity: "0",
   imageFiles: "",
   imageAltTexts: "",
-  imageRoles: "",
   taxonomy: { ...EMPTY_TAXONOMY },
   details: { ...EMPTY_DETAILS },
 };

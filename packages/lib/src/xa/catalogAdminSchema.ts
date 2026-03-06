@@ -1,9 +1,5 @@
 import { z } from "zod";
 
-import {
-  type XaImageRole,
-  xaImageRoles,
-} from "./catalogImageRoles.js";
 import type { XaCategory, XaDepartment } from "./types.js";
 
 export function splitList(input: string): string[] {
@@ -34,10 +30,6 @@ const departmentSchema = z.enum(["women", "men", "kids"]) satisfies z.ZodType<Xa
 const categorySchema = z.enum(["clothing", "bags", "jewelry"]) satisfies z.ZodType<XaCategory>;
 export const catalogPublishStateSchema = z.enum(["draft", "live", "out_of_stock"]);
 export type CatalogPublishState = z.infer<typeof catalogPublishStateSchema>;
-
-function parseImageRoles(input: string | null | undefined): XaImageRole[] {
-  return splitList(input ?? "") as XaImageRole[];
-}
 
 const numberField = (label: string, options?: { min?: number; integer?: boolean }) => {
   const min = options?.min ?? 0;
@@ -112,7 +104,6 @@ export const catalogProductDraftSchema = z
     popularity: optionalNumberField("Popularity", { min: 0, integer: true }),
     imageFiles: z.string().optional(),
     imageAltTexts: z.string().optional(),
-    imageRoles: z.string().optional(),
     taxonomy: z.object({
       department: departmentSchema,
       category: categorySchema,
@@ -189,24 +180,6 @@ export const catalogProductDraftSchema = z
         code: z.ZodIssueCode.custom,
         path: ["imageAltTexts"],
         message: "Image alt texts must match the number of images",
-      });
-    }
-
-    const imageRoles = parseImageRoles(value.imageRoles);
-    if (imageFiles.length && imageRoles.length !== imageFiles.length) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["imageRoles"],
-        message: "Image roles must match the number of images",
-      });
-    }
-
-    const invalidImageRole = imageRoles.find((role) => !xaImageRoles.includes(role));
-    if (invalidImageRole) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["imageRoles"],
-        message: "Image roles contain unsupported values",
       });
     }
 

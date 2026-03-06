@@ -1,9 +1,4 @@
 import type { CatalogPublishState } from "@acme/lib/xa/catalogAdminSchema";
-import {
-  normalizeXaImageRole,
-  sortXaMediaByRole,
-  type XaImageRole,
-} from "@acme/lib/xa/catalogImageRoles";
 import type { Currency } from "@acme/platform-core/contexts/CurrencyContext";
 import type { SKU } from "@acme/types";
 
@@ -19,7 +14,7 @@ import type {
   XaProductTaxonomy,
 } from "./xaTypes";
 
-type XaMediaItem = SKU["media"][number] & { role?: XaImageRole };
+type XaMediaItem = SKU["media"][number];
 type XaStringListSeed = string | string[] | null | undefined;
 
 export type XaProduct = Omit<SKU, "media" | "stock"> & {
@@ -38,7 +33,6 @@ export type XaProduct = Omit<SKU, "media" | "stock"> & {
 type XaMediaSeed = Omit<SKU["media"][number], "url"> & {
   // Cloudflare Images id (optionally with "/variant").
   path: string;
-  role?: string;
 };
 
 type XaProductTaxonomySeed = {
@@ -192,21 +186,6 @@ function normalizeProductDetails(
     : undefined;
 }
 
-function expandMediaSeed(item: XaMediaSeed): XaMediaSeed[] {
-  const paths = splitPipeSegments(item.path);
-  if (paths.length <= 1) return [item];
-
-  const altTexts = splitPipeSegments(item.altText);
-  const roles = splitPipeSegments(item.role);
-
-  return paths.map((path, index) => ({
-    ...item,
-    path,
-    altText: altTexts[index] ?? altTexts.at(-1) ?? item.altText,
-    role: roles[index] ?? roles.at(-1) ?? item.role,
-  }));
-}
-
 function resolveCatalogMaxAgeMs(): number {
   const raw = Number.parseInt(process.env.NEXT_PUBLIC_XA_CATALOG_MAX_AGE_HOURS ?? "48", 10);
   const safeHours = Number.isFinite(raw) && raw > 0 ? raw : 48;
@@ -241,29 +220,18 @@ for (const item of xaMediaIndex.items ?? []) {
   altTextByPath.set(item.catalogPath, item.altText.trim());
 }
 
-function toMediaItem(item: XaMediaSeed, fallbackAlt: string, role: XaImageRole | undefined): XaMediaItem {
+function toMediaItem(item: XaMediaSeed, fallbackAlt: string): XaMediaItem {
   const indexedAlt = altTextByPath.get(item.path);
   return {
     type: item.type,
     url: buildXaImageUrl(item.path),
     title: item.title,
     altText: item.altText ?? indexedAlt ?? fallbackAlt,
-    ...(role ? { role } : {}),
   };
 }
 
-function resolveProductMediaRole(item: XaMediaSeed): XaImageRole | undefined {
-  return normalizeXaImageRole(item.role);
-}
-
 function buildProductMedia(product: XaProductSeed): XaMediaItem[] {
-  const hydrated = product.media
-    .flatMap((item) => expandMediaSeed(item))
-    .map((item) => {
-      const role = resolveProductMediaRole(item);
-      return toMediaItem(item, product.title, role);
-    });
-  return sortXaMediaByRole(hydrated);
+  return product.media.map((item) => toMediaItem(item, product.title));
 }
 
 export const XA_COLLECTIONS = xaCatalog.collections;

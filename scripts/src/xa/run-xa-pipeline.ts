@@ -6,13 +6,13 @@ import { fileURLToPath } from "node:url";
 
 import {
   catalogProductDraftSchema,
+  type CatalogPublishState,
+  deriveCatalogPublishState,
   expandFileSpec,
   getCatalogDraftWorkflowReadiness,
-  normalizeXaImageRole,
+  isCatalogPublishableState,
   rowToDraftInput,
   slugify,
-  sortXaMediaByRole,
-  type XaImageRole,
 } from "@acme/lib/xa";
 
 import {
@@ -51,7 +51,6 @@ type CatalogMediaEntry = {
   type: "image";
   path: string;
   altText: string;
-  role?: XaImageRole;
 };
 
 type CatalogProduct = {
@@ -62,7 +61,7 @@ type CatalogProduct = {
   collection: string;
   price: number;
   prices: { AUD: number; EUR: number; GBP: number; USD: number };
-  stock: number;
+  status: CatalogPublishState;
   media: CatalogMediaEntry[];
   sizes: string[];
   description: string;
@@ -125,7 +124,6 @@ type MediaIndexPayload = {
     sourcePath: string;
     catalogPath: string;
     altText: string;
-    role?: XaImageRole;
   }>;
 };
 
@@ -150,6 +148,10 @@ function resolveLocalCatalogMediaPath(pathValue: string): string | null {
 
 async function validateLocalCatalogMediaPath(pathValue: string): Promise<string | null> {
   if (isHttpUrl(pathValue)) return null;
+  const canonicalSegments = pathValue.split("/").filter(Boolean);
+  if (canonicalSegments.length >= 3 && canonicalSegments[0]?.trim() === "xa-b") {
+    return null;
+  }
   if (!pathValue.startsWith("images/")) {
     return `has unsupported local catalog media path "${pathValue}".`;
   }
@@ -348,9 +350,8 @@ function rowLabel(index: number): string {
 }
 
 function isPublishableDraft(draft: ReturnType<typeof catalogProductDraftSchema.parse>): boolean {
-  if (draft.publishState === "ready" || draft.publishState === "live") return true;
-  if (draft.publishState === "draft") return false;
-  return getCatalogDraftWorkflowReadiness(draft).isPublishReady;
+  if (!getCatalogDraftWorkflowReadiness(draft).isPublishReady) return false;
+  return isCatalogPublishableState(deriveCatalogPublishState(draft));
 }
 
 function buildDetails(draft: ReturnType<typeof catalogProductDraftSchema.parse>) {
@@ -472,7 +473,6 @@ async function buildCatalogArtifacts(options: {
 
     const imageSpecs = parseList(draft.imageFiles);
     const imageAltTexts = parseList(draft.imageAltTexts);
-    const imageRoles = parseList(draft.imageRoles);
     if (options.strict && imageSpecs.length === 0) {
       throw new Error(`[${rowLabel(index)}] "${productSlug}" has no image_files entries.`);
     }
@@ -482,7 +482,6 @@ async function buildCatalogArtifacts(options: {
 
     for (const [specIndex, imageSpec] of imageSpecs.entries()) {
       const altText = imageAltTexts[specIndex] || productSlug;
-      const role = normalizeXaImageRole(imageRoles[specIndex]);
       if (isCatalogMediaPathSpec(imageSpec)) {
         const catalogPath = normalizeCatalogMediaPath(imageSpec);
         if (!catalogPath) {
@@ -500,13 +499,12 @@ async function buildCatalogArtifacts(options: {
           warnings.push(`[${rowLabel(index)}] "${productSlug}" ${pathValidationError}`);
           continue;
         }
-        media.push({ type: "image", path: catalogPath, altText, ...(role ? { role } : {}) });
+        media.push({ type: "image", path: catalogPath, altText });
         mediaItems.push({
           productSlug,
           sourcePath: catalogPath,
           catalogPath,
           altText,
-          ...(role ? { role } : {}),
         });
         continue;
       }
@@ -532,13 +530,12 @@ async function buildCatalogArtifacts(options: {
           sourcePath,
           usedNames: usedMediaNames,
         });
-        media.push({ type: "image", path: catalogPath, altText, ...(role ? { role } : {}) });
+        media.push({ type: "image", path: catalogPath, altText });
         mediaItems.push({
           productSlug,
           sourcePath,
           catalogPath,
           altText,
-          ...(role ? { role } : {}),
         });
       }
     }
@@ -612,8 +609,8 @@ async function buildCatalogArtifacts(options: {
       collection: collectionHandle,
       price: normalizedPrice,
       prices: applyCurrencyRates(normalizedPrice, effectiveRates),
-      stock: toNonNegativeInt(draft.stock),
-      media: sortXaMediaByRole(media),
+      status: deriveCatalogPublishState(draft),
+      media,
       sizes: parseList(draft.sizes),
       description: draft.description,
       createdAt: requiredString(draft.createdAt, new Date().toISOString()),

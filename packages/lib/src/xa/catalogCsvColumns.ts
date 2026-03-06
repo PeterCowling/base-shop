@@ -69,6 +69,8 @@ export const XA_PRODUCTS_CSV_MUTABLE_COLUMNS = new Set([
   "popularity",
   "image_files",
   "image_alt_texts",
+  "media_paths",
+  "media_alt_texts",
   "taxonomy_department",
   "taxonomy_category",
   "taxonomy_subcategory",

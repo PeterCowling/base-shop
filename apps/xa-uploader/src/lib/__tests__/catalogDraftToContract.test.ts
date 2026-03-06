@@ -20,7 +20,6 @@ function baseBagDraft() {
     popularity: "1",
     imageFiles: "",
     imageAltTexts: "",
-    imageRoles: "",
     taxonomy: {
       department: "women" as const,
       category: "bags" as const,
@@ -62,12 +61,11 @@ function baseBagDraft() {
 }
 
 describe("buildCatalogArtifactsFromDrafts", () => {
-  it("propagates image roles and orders media as front/back/top first", () => {
+  it("preserves main-image-first media order without role metadata", () => {
     const draft = {
       ...baseBagDraft(),
       imageFiles:
         "xa-b/hermes-kelly-28-black/500-detail.jpg|xa-b/hermes-kelly-28-black/400-top.jpg|xa-b/hermes-kelly-28-black/100-front.jpg|xa-b/hermes-kelly-28-black/300-back.jpg|xa-b/hermes-kelly-28-black/200-side.jpg",
-      imageRoles: "detail|top|front|back|side",
       imageAltTexts: "detail|top|front|back|side",
     };
 
@@ -79,34 +77,21 @@ describe("buildCatalogArtifactsFromDrafts", () => {
 
     expect(catalog.products).toHaveLength(1);
     const media = catalog.products[0]?.media ?? [];
-    expect(media.map((item) => item.role)).toEqual([
-      "front",
-      "back",
-      "top",
-      "side",
-      "detail",
-    ]);
     expect(media.map((item) => item.path)).toEqual([
+      "xa-b/hermes-kelly-28-black/500-detail.jpg",
+      "xa-b/hermes-kelly-28-black/400-top.jpg",
       "xa-b/hermes-kelly-28-black/100-front.jpg",
       "xa-b/hermes-kelly-28-black/300-back.jpg",
-      "xa-b/hermes-kelly-28-black/400-top.jpg",
       "xa-b/hermes-kelly-28-black/200-side.jpg",
-      "xa-b/hermes-kelly-28-black/500-detail.jpg",
     ]);
-
-    expect(
-      mediaIndex.items.find((item) => item.catalogPath.endsWith("100-front.jpg"))?.role,
-    ).toBe("front");
-    expect(
-      mediaIndex.items.find((item) => item.catalogPath.endsWith("300-back.jpg"))?.role,
-    ).toBe("back");
+    expect(media.every((item) => !("role" in item))).toBe(true);
+    expect(mediaIndex.items.every((item) => !("role" in item))).toBe(true);
   });
 
   it("warn mode prunes unsupported cloud image paths", () => {
     const draft = {
       ...baseBagDraft(),
       imageFiles: "images/legacy/1.jpg|xa-b/hermes-kelly-28-black/100-front.jpg",
-      imageRoles: "front|front",
       imageAltTexts: "legacy|front",
     };
 
@@ -127,7 +112,6 @@ describe("buildCatalogArtifactsFromDrafts", () => {
     const draft = {
       ...baseBagDraft(),
       imageFiles: "images/legacy/1.jpg",
-      imageRoles: "front",
       imageAltTexts: "legacy",
     };
 

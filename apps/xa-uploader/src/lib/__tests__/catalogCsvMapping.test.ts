@@ -29,7 +29,7 @@ describe("catalogCsvMapping", () => {
     expect(row.taxonomy_material).toBe("wool|cotton");
   });
 
-  it("writes media_paths from image roles", () => {
+  it("writes media_paths in the same order as image_files", () => {
     const row = buildCsvRowUpdateFromDraft({
       title: "Studio bag",
       brandHandle: "atelier-x",
@@ -40,7 +40,6 @@ describe("catalogCsvMapping", () => {
       popularity: "0",
       imageFiles: "images/a.jpg|images/b.jpg|images/c.jpg",
       imageAltTexts: "front|side|top",
-      imageRoles: "front|side|top",
       taxonomy: {
         department: "women",
         category: "bags",
@@ -51,10 +50,10 @@ describe("catalogCsvMapping", () => {
       details: {},
     });
 
-    expect(row.media_paths).toBe("front:images/a.jpg|side:images/b.jpg|top:images/c.jpg");
+    expect(row.media_paths).toBe("images/a.jpg|images/b.jpg|images/c.jpg");
   });
 
-  it("reads imageRoles from media_paths when reading a CSV row", () => {
+  it("reads canonical media_paths as ordered image files when image_files is empty", () => {
     const draft = rowToDraftInput({
       id: "id-1",
       slug: "studio-jacket",
@@ -73,6 +72,28 @@ describe("catalogCsvMapping", () => {
       taxonomy_material: "wool|cotton",
     });
 
-    expect(draft.imageRoles).toBe("front|side");
+    expect(draft?.imageFiles).toBe("images/a.jpg|images/b.jpg");
+  });
+
+  it("discards legacy role-prefixed media_paths rows", () => {
+    const draft = rowToDraftInput({
+      id: "id-1",
+      slug: "studio-jacket",
+      title: "Studio jacket",
+      brand_handle: "atelier-x",
+      collection_handle: "outerwear",
+      price: "189",
+      description: "A structured layer.",
+      created_at: "2025-12-01T12:00:00.000Z",
+      popularity: "0",
+      media_paths: "front:images/a.jpg|side:images/b.jpg",
+      taxonomy_department: "women",
+      taxonomy_category: "clothing",
+      taxonomy_subcategory: "outerwear",
+      taxonomy_color: "black|cream",
+      taxonomy_material: "wool|cotton",
+    });
+
+    expect(draft).toBeNull();
   });
 });

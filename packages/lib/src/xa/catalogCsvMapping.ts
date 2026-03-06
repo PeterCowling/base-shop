@@ -58,24 +58,15 @@ function parseDraftPublishState(
   return undefined;
 }
 
-function buildMediaPaths(imageFiles: string, imageRoles: string): string {
-  const files = splitList(imageFiles);
-  const roles = splitList(imageRoles);
-  if (!files.length || files.length !== roles.length) return "";
-  return joinList(files.map((file, index) => `${roles[index]}:${file}`));
+function buildMediaPaths(imageFiles: string): string {
+  return joinList(splitList(imageFiles));
 }
 
-function parseImageRolesFromMediaPaths(mediaPaths: string | null | undefined): string | undefined {
+function parseImageFilesFromMediaPaths(mediaPaths: string | null | undefined): string | null | undefined {
   const entries = splitList(mediaPaths ?? "");
   if (!entries.length) return undefined;
-  const roles = entries
-    .map((entry) => {
-      const idx = entry.indexOf(":");
-      if (idx <= 0) return "";
-      return entry.slice(0, idx).trim();
-    })
-    .filter(Boolean);
-  return roles.length ? joinList(roles) : undefined;
+  if (entries.some((entry) => entry.includes(":"))) return null;
+  return joinList(entries);
 }
 
 export function buildCsvRowUpdateFromDraft(input: CatalogProductDraftInput): XaProductsCsvRow {
@@ -87,7 +78,6 @@ export function buildCsvRowUpdateFromDraft(input: CatalogProductDraftInput): XaP
   const sizes = normalizeCsvList(value.sizes);
   const imageFiles = normalizeCsvList(value.imageFiles);
   const imageAltTexts = normalizeCsvList(value.imageAltTexts);
-  const imageRoles = normalizeCsvList(value.imageRoles);
 
   const color = normalizeCsvList(value.taxonomy.color);
   const material = normalizeCsvList(value.taxonomy.material);
@@ -116,7 +106,7 @@ export function buildCsvRowUpdateFromDraft(input: CatalogProductDraftInput): XaP
     popularity: stringifyNumberOrEmpty(value.popularity),
     image_files: imageFiles,
     image_alt_texts: imageAltTexts,
-    media_paths: buildMediaPaths(imageFiles, imageRoles),
+    media_paths: buildMediaPaths(imageFiles),
     media_alt_texts: imageAltTexts,
     taxonomy_department: value.taxonomy.department,
     taxonomy_category: value.taxonomy.category,
@@ -157,6 +147,8 @@ export function buildCsvRowUpdateFromDraft(input: CatalogProductDraftInput): XaP
 export function rowToDraftInput(row: XaProductsCsvRow): CatalogProductDraftInput | null {
   const department = parseDraftDepartment(row.taxonomy_department);
   const category = parseDraftCategory(row.taxonomy_category);
+  const mediaPathsImageFiles = parseImageFilesFromMediaPaths(row.media_paths);
+  if (mediaPathsImageFiles === null) return null;
   const candidate: CatalogProductDraftInput = {
     id: trimOrUndefined(row.id),
     slug: trimOrUndefined(row.slug),
@@ -172,9 +164,8 @@ export function rowToDraftInput(row: XaProductsCsvRow): CatalogProductDraftInput
     description: trimOrEmpty(row.description),
     createdAt: trimOrEmpty(row.created_at),
     popularity: trimOrUndefined(row.popularity),
-    imageFiles: trimOrUndefined(row.image_files),
-    imageAltTexts: trimOrUndefined(row.image_alt_texts),
-    imageRoles: parseImageRolesFromMediaPaths(row.media_paths),
+    imageFiles: trimOrUndefined(row.image_files) ?? mediaPathsImageFiles,
+    imageAltTexts: trimOrUndefined(row.image_alt_texts) ?? trimOrUndefined(row.media_alt_texts),
     taxonomy: {
       department,
       category,

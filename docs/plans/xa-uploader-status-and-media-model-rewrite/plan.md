@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Draft
+Status: Complete
 Domain: UI
 Workstream: Engineering
 Created: 2026-03-06
@@ -13,7 +13,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-design-qa, tools-ui-contrast-sweep, tools-ui-breakpoint-sweep
-Overall-confidence: 87%
+Overall-confidence: 92%
 Confidence-Method: effort-weighted average of task confidence (S=1, M=2, L=3)
 Auto-Build-Intent: plan-only
 ---
@@ -21,16 +21,16 @@ Auto-Build-Intent: plan-only
 # XA Uploader Status and Media Model Rewrite Plan
 
 ## Summary
-Rewrite the XA uploader catalog contract around two operator-facing simplifications: `draft | live | out_of_stock` status semantics and `main image + ordered additional photos` media semantics. The implementation is not uploader-only: the save route, sync publish route, CSV/draft persistence, published catalog payload, and xa-b storefront consumers all depend on the old `ready`, `stock`, and `role` model. Replanning after the operator's legacy-data decision exposed two hidden seams that were depressing task confidence: fail-closed cleanup for legacy CSV/cloud/runtime rows, and status-only cart quantity semantics after `stock` removal. `TASK-06` and `TASK-07` closed those seams, and `TASK-02` has now landed the status rewrite across shared libs, uploader routes/UI, storefront availability, and canonical seed artifacts. The next runnable work is `TASK-03`, which removes the remaining role-based media contract.
+Rewrite the XA uploader catalog contract around two operator-facing simplifications: `draft | live | out_of_stock` status semantics and `main image + ordered additional photos` media semantics. The implementation landed across shared libs, xa-uploader routes/UI, canonical CSV/runtime fixtures, xa-b gallery/cart consumers, and the legacy helper pipeline scripts that still regenerated the old contract. The final canonical repo state is now fail-closed on incompatible legacy rows, status-only for availability, and ordered-media-first without any remaining role dependency in the active uploader/storefront contract surfaces.
 
 ## Active tasks
 - [x] TASK-01: Confirm legacy draft migration mode
 - [x] TASK-06: Codify fail-closed legacy cleanup contract
 - [x] TASK-07: Define status-only cart quantity contract
 - [x] TASK-02: Rewrite status contract and stock-based availability
-- [ ] TASK-03: Rewrite media contract to main image plus ordered photos
-- [ ] TASK-04: Harden regression coverage, fixtures, and UI verification
-- [ ] TASK-05: Horizon checkpoint - reassess downstream build readiness
+- [x] TASK-03: Rewrite media contract to main image plus ordered photos
+- [x] TASK-04: Harden regression coverage, fixtures, and UI verification
+- [x] TASK-05: Horizon checkpoint - reassess downstream build readiness
 
 ## Goals
 - Replace `draft | ready | live` plus numeric stock with `draft | live | out_of_stock`.
@@ -89,11 +89,11 @@ Rewrite the XA uploader catalog contract around two operator-facing simplificati
 
 ## Re-plan Status
 - Invocation: standard
-- Targeted tasks: TASK-02, TASK-03, TASK-04
-- Outcome: Ready
+- Targeted tasks: TASK-02, TASK-03, TASK-04, TASK-05
+- Outcome: Complete
 - Build-first precursor chain: completed (`TASK-06`, `TASK-07`)
-- Next runnable task: TASK-03
-- Notes: stable task IDs preserved; `TASK-02` absorbed the status-bearing fixture/runtime cleanup required to keep the canonical repo state fail-closed.
+- Next runnable task: none
+- Notes: stable task IDs preserved; `TASK-03` and `TASK-04` landed with canonical fixture regeneration, and `TASK-05` closed without requiring a follow-up replan.
 
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
@@ -102,9 +102,9 @@ Rewrite the XA uploader catalog contract around two operator-facing simplificati
 | TASK-06 | INVESTIGATE | Codify fail-closed cleanup behavior for incompatible legacy CSV/cloud/runtime rows before contract rewrite | 85% | S | Complete (2026-03-06) | - | TASK-02,TASK-03 |
 | TASK-07 | INVESTIGATE | Define status-only cart quantity and stale-cart behavior after `stock` removal | 85% | S | Complete (2026-03-06) | - | TASK-02 |
 | TASK-02 | IMPLEMENT | Rewrite status semantics, remove numeric stock, and switch xa-b availability to status-based behavior | 85% | L | Complete (2026-03-06) | TASK-06,TASK-07 | TASK-03,TASK-04 |
-| TASK-03 | IMPLEMENT | Rewrite media semantics to main image plus ordered additional photos across uploader and xa-b | 85% | L | Pending | TASK-06,TASK-02 | TASK-04 |
-| TASK-04 | IMPLEMENT | Update regression coverage, fixtures, copy, and UI verification for the rewritten contract | 82% | M | Pending | TASK-02,TASK-03 | TASK-05 |
-| TASK-05 | CHECKPOINT | Reassess build-readiness after contract rewrite and regression hardening | 95% | S | Pending | TASK-04 | - |
+| TASK-03 | IMPLEMENT | Rewrite media semantics to main image plus ordered additional photos across uploader and xa-b | 85% | L | Complete (2026-03-06) | TASK-06,TASK-02 | TASK-04 |
+| TASK-04 | IMPLEMENT | Update regression coverage, fixtures, copy, and UI verification for the rewritten contract | 82% | M | Complete (2026-03-06) | TASK-02,TASK-03 | TASK-05 |
+| TASK-05 | CHECKPOINT | Reassess build-readiness after contract rewrite and regression hardening | 95% | S | Complete (2026-03-06) | TASK-04 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -301,7 +301,7 @@ Rewrite the XA uploader catalog contract around two operator-facing simplificati
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
-- **Status:** Pending
+- **Status:** Complete (2026-03-06)
 - **Affects:** `packages/lib/src/xa/catalogAdminSchema.ts`, `packages/lib/src/xa/catalogCsvMapping.ts`, `apps/xa-uploader/src/components/catalog/CatalogProductImagesFields.client.tsx`, `apps/xa-uploader/src/app/api/catalog/images/route.ts`, `apps/xa-uploader/src/lib/catalogDraftToContract.ts`, `apps/xa-b/src/lib/demoData.ts`, `apps/xa-b/src/components/XaImageGallery.client.tsx`, `apps/xa-b/src/i18n/en.json`, `apps/xa-uploader/src/components/catalog/__tests__/CatalogProductImagesFields.test.ts`, `apps/xa-uploader/src/lib/__tests__/catalogDraftToContract.test.ts`, `apps/xa-b/src/lib/__tests__/demoData.test.ts`
 - **Depends on:** TASK-06, TASK-02
 - **Blocks:** TASK-04
@@ -366,6 +366,9 @@ Rewrite the XA uploader catalog contract around two operator-facing simplificati
   - Consumer tracing:
     - removed value `role` currently feeds upload query params, export sorting, `demoData.ts`, `XaImageGallery.client.tsx`, role i18n keys, and related tests.
     - new behavior `main-first ordered media` is consumed by uploader preview/reorder logic, export serialization, xa-b hydration, and gallery rendering.
+#### Implementation Update (2026-03-06)
+- Landed across shared validation/CSV mapping, uploader image UI + upload route, contract export, xa-b hydration/gallery rendering, and the legacy helper pipeline scripts that previously regenerated role-shaped payloads.
+- Canonical fixture/runtime outputs were regenerated so checked-in CSV/runtime/media artifacts now encode one ordered image list with no `role` metadata.
 
 ### TASK-04: Harden regression coverage, fixtures, and UI verification
 - **Type:** IMPLEMENT
@@ -374,7 +377,7 @@ Rewrite the XA uploader catalog contract around two operator-facing simplificati
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-06)
 - **Affects:** `apps/xa-uploader/src/components/catalog/CatalogProductImagesFields.client.tsx`, `apps/xa-uploader/src/components/catalog/__tests__/CatalogProductImagesFields.test.ts`, `apps/xa-uploader/src/app/api/catalog/images/route.ts`, `apps/xa-uploader/src/app/api/catalog/images/__tests__/route.test.ts`, `apps/xa-uploader/src/lib/__tests__/catalogDraftToContract.test.ts`, `apps/xa-uploader/src/lib/__tests__/catalogCsvMapping.test.ts`, `apps/xa-uploader/src/lib/__tests__/catalogDraftContractClient.test.ts`, `apps/xa-uploader/src/app/api/catalog/sync/__tests__/route.test.ts`, `apps/xa-uploader/src/lib/uploaderI18n.ts`, `apps/xa-b/src/lib/__tests__/demoData.test.ts`, `apps/xa-b/src/data/catalog.media.runtime.json`, `apps/xa-b/src/i18n/en.json`
 - **Depends on:** TASK-02, TASK-03
 - **Blocks:** TASK-05
@@ -429,6 +432,10 @@ Rewrite the XA uploader catalog contract around two operator-facing simplificati
   - update plan validation evidence and log any deferred Minor UI findings with rationale.
 - **Notes / references:**
   - Delivery rehearsal same-outcome finding folded here: fixture data and test seeds are part of the same outcome and must be updated in the same lane, not later.
+#### Implementation Update (2026-03-06)
+- Updated regression fixtures/tests/copy for the new main-image-first contract in shared lib, xa-uploader, and xa-b.
+- Regenerated `apps/xa-uploader/data/products.xa-b.csv`, `apps/xa-b/src/data/catalog.runtime.json`, and `apps/xa-b/src/data/catalog.media.runtime.json` so the repo no longer ships mixed status/media assumptions.
+- Scoped package validation passed for `@acme/lib`, `@apps/xa-uploader`, and `@apps/xa-b`. The broad `scripts/validate-changes.sh` run expanded into unrelated dirty-worktree packages and was not used as the task gate.
 
 ### TASK-05: Horizon checkpoint - reassess downstream build readiness
 - **Type:** CHECKPOINT
@@ -436,7 +443,7 @@ Rewrite the XA uploader catalog contract around two operator-facing simplificati
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-06)
 - **Affects:** `docs/plans/xa-uploader-status-and-media-model-rewrite/plan.md`
 - **Depends on:** TASK-04
 - **Blocks:** -
@@ -457,6 +464,9 @@ Rewrite the XA uploader catalog contract around two operator-facing simplificati
 - **Planning validation:** checkpoint added because TASK-02..TASK-04 form one long dependency chain touching shared contract, uploader UI, and storefront consumers
 - **Rollout / rollback:** `None: planning control task`
 - **Documentation impact:** update `docs/plans/xa-uploader-status-and-media-model-rewrite/plan.md`
+#### Checkpoint Result (2026-03-06)
+- No downstream replan was required after TASK-03/TASK-04. The active XA contract surfaces now agree on status-only availability and ordered main/additional-photo media semantics.
+- Remaining repo-wide validation noise came from unrelated modified packages already present in the shared working tree, not from the XA task surface.
 
 ## Rehearsal Trace
 | Step | Preconditions Met | Issues Found | Resolution Required |

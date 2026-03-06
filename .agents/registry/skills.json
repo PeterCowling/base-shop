@@ -203,7 +203,7 @@
     },
     {
       "name": "lp-do-ideas",
-      "description": "Trial-mode idea orchestrator. Ingests standing-artifact delta events and emits schema-valid dispatch packets routed to lp-do-fact-find or lp-do-briefing. Trial mode only — does not mutate startup-loop stage state.",
+      "description": "Trial-mode idea orchestrator. Ingests standing-artifact delta events and emits schema-valid dispatch packets routed to lp-do-fact-find, lp-do-build, or lp-do-briefing. Trial mode only — does not mutate startup-loop stage state.",
       "path": ".claude/skills/lp-do-ideas/SKILL.md"
     },
     {

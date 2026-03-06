@@ -36,7 +36,7 @@ function markGuidedOnboardingComplete(session: GuestSessionSnapshot): void {
 
 export default function GuestPortalPage() {
   const router = useRouter();
-  const [status, setStatus] = useState<'loading' | 'unavailable' | 'guided'>('loading');
+  const [status, setStatus] = useState<'loading' | 'unavailable' | 'network_error' | 'guided'>('loading');
   const [session, setSession] = useState<GuestSessionSnapshot | null>(null);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export default function GuestPortalPage() {
         return;
       }
 
-      if (result === 'valid' || result === 'network_error') {
+      if (result === 'valid') {
         if (!forcePersonalizationEdit && hasCompletedGuidedOnboarding(currentSession)) {
           router.replace(buildGuestHomeUrl(currentSession));
           return;
@@ -66,6 +66,11 @@ export default function GuestPortalPage() {
 
         setSession(currentSession);
         setStatus('guided');
+        return;
+      }
+
+      if (result === 'network_error') {
+        setStatus('network_error');
         return;
       }
 
@@ -102,6 +107,27 @@ export default function GuestPortalPage() {
           >
             Find my stay
           </Link>
+        </div>
+      </main>
+    );
+  }
+
+  if (status === 'network_error') {
+    return (
+      <main className="min-h-svh bg-muted p-4">
+        <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
+          <h1 className="mb-2 text-2xl font-bold text-foreground">Cannot verify your session</h1>
+          <p className="mb-6 text-muted-foreground">
+            We couldn&apos;t reach the server to confirm your session. Please check your
+            connection and try again.
+          </p>
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="inline-flex items-center justify-center rounded-lg bg-primary px-5 py-3 text-primary-foreground hover:bg-primary/90"
+          >
+            Try again
+          </button>
         </div>
       </main>
     );

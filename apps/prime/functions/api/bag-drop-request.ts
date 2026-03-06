@@ -60,17 +60,17 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   try {
     body = await request.json() as BagDropRequestBody;
   } catch {
-    return errorResponse('Invalid JSON body', 400);
+    return errorResponse('Invalid JSON body', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   const pickupWindow = (body.pickupWindow ?? '').trim();
   const note = (body.note ?? '').trim();
 
   if (!pickupWindow) {
-    return errorResponse('pickupWindow is required', 400);
+    return errorResponse('pickupWindow is required', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
   if (note.length > 500) {
-    return errorResponse('note must be 500 characters or fewer', 400);
+    return errorResponse('note must be 500 characters or fewer', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   try {
@@ -82,7 +82,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
     const guestUuid = authResult.session.guestUuid;
     if (!guestUuid) {
-      return errorResponse('guestUuid missing for session', 422);
+      return errorResponse('guestUuid missing for session', 422); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     if (env.RATE_LIMIT) {
@@ -90,7 +90,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       const rawCount = await env.RATE_LIMIT.get(key);
       const count = parseInt(rawCount ?? '0', 10);
       if (count >= MAX_REQUESTS_PER_HOUR) {
-        return errorResponse('Too many bag-drop requests. Please wait before retrying.', 429);
+        return errorResponse('Too many bag-drop requests. Please wait before retrying.', 429); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
       }
       await env.RATE_LIMIT.put(key, String(count + 1), {
         expirationTtl: RATE_LIMIT_WINDOW_SECONDS,
@@ -102,11 +102,11 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       `bookings/${authResult.session.bookingId}/${guestUuid}`,
     );
     if (!occupant?.checkOutDate) {
-      return errorResponse('Current checkout date unavailable for this booking', 422);
+      return errorResponse('Current checkout date unavailable for this booking', 422); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     if (occupant.checkOutDate > todayInRome()) {
-      return errorResponse('Bag drop is only available after checkout', 403);
+      return errorResponse('Bag drop is only available after checkout', 403); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     const bagStorage = await firebase.get<BagStorageRecord>(`bagStorage/${guestUuid}`);
@@ -151,7 +151,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       message: 'Bag-drop request submitted. Reception will confirm shortly.',
     });
   } catch (error) {
-    console.error('Failed to create bag-drop request:', error);
-    return errorResponse('Failed to submit bag-drop request', 500);
+    console.error('Failed to create bag-drop request:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
+    return errorResponse('Failed to submit bag-drop request', 500); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 };

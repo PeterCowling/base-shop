@@ -2,6 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/navigation';
 
 import GuidedOnboardingFlow from '../../components/portal/GuidedOnboardingFlow';
@@ -35,6 +36,7 @@ function markGuidedOnboardingComplete(session: GuestSessionSnapshot): void {
 
 export default function GuestPortalPage() {
   const router = useRouter();
+  const { t } = useTranslation('Homepage');
   const [status, setStatus] = useState<'loading' | 'network_error' | 'guided'>('loading');
   const [session, setSession] = useState<GuestSessionSnapshot | null>(null);
 
@@ -90,17 +92,16 @@ export default function GuestPortalPage() {
     return (
       <main className="min-h-svh bg-muted p-4">
         <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
-          <h1 className="mb-2 text-2xl font-bold text-foreground">Cannot verify your session</h1>
+          <h1 className="mb-2 text-2xl font-bold text-foreground">{t('errorPage.title')}</h1>
           <p className="mb-6 text-muted-foreground">
-            We couldn&apos;t reach the server to confirm your session. Please check your
-            connection and try again.
+            {t('errorPage.message')}
           </p>
           <button
             type="button"
             onClick={() => window.location.reload()}
-            className="inline-flex items-center justify-center rounded-lg bg-primary px-5 py-3 text-primary-foreground hover:bg-primary/90"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg bg-primary px-5 py-3 text-primary-foreground hover:bg-primary/90"
           >
-            Try again
+            {t('offline.tryAgain')}
           </button>
         </div>
       </main>

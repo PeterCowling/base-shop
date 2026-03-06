@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-06T22:31:14.303Z",
+  "last_updated": "2026-03-06T22:38:27.379Z",
   "counts": {
-    "enqueued": 137,
+    "enqueued": 138,
     "processed": 37,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
     "completed": 121,
-    "fact_find_ready": 195,
+    "fact_find_ready": 196,
     "micro_build_ready": 1,
-    "total": 321
+    "total": 322
   },
   "dispatches": [
     {
@@ -13315,6 +13315,59 @@
       "intended_outcome": {
         "type": "operational",
         "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306223827-0375",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+      "before_sha": "392c686a9462bb21a6f740987866b11aa97bdd87",
+      "after_sha": "f3afb9c0ca544e408bbbb41cf08756882b9c2c2b",
+      "root_event_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:f3afb9c0ca544e408bbbb41cf08756882b9c2c2b",
+      "anchor_key": "brikette-scripts-generate-static-export-redirects",
+      "cluster_key": "bos:unknown:brikette-scripts-generate-static-export-redirects:BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:f3afb9c0ca544e408bbbb41cf08756882b9c2c2b",
+      "cluster_fingerprint": "12a2bd3369705121b5afbf81844cbb1d02a8a9e5d5fc0ff8edf90dd2d99697c4",
+      "lineage_depth": 0,
+      "area_anchor": "brikette scripts generate static export redirects",
+      "location_anchors": [
+        "apps/brikette/config/_headers",
+        "apps/brikette/missing-urls.txt",
+        "apps/brikette/package.json",
+        "apps/brikette/public/_redirects",
+        "apps/brikette/public/sitemap.xml",
+        "apps/brikette/scripts/generate-static-export-redirects.ts",
+        "apps/brikette/scripts/verify-route-localization.ts",
+        "apps/brikette/scripts/verify-url-coverage.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS changed (392c686 → f3afb9c)",
+      "next_scope_now": "Investigate implications of brikette scripts generate static export redirects delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "git-diff-range:HEAD~1..HEAD",
+        "git-diff:M:apps/brikette/config/_headers",
+        "git-diff:A:apps/brikette/missing-urls.txt",
+        "git-diff:M:apps/brikette/package.json",
+        "git-diff:M:apps/brikette/public/_redirects",
+        "git-diff:M:apps/brikette/public/sitemap.xml",
+        "git-diff:M:apps/brikette/scripts/generate-static-export-redirects.ts",
+        "git-diff:A:apps/brikette/scripts/verify-route-localization.ts",
+        "git-diff:M:apps/brikette/scripts/verify-url-coverage.ts"
+      ],
+      "created_at": "2026-03-06T22:38:27.374Z",
+      "queue_state": "enqueued",
+      "why": "Assess brikette scripts generate static export redirects implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for brikette scripts generate static export redirects.",
         "source": "auto"
       }
     }

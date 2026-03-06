@@ -57,7 +57,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
     url.searchParams.get('token');
 
   if (!token) {
-    return errorResponse('Unauthorized', 401);
+    return errorResponse('Unauthorized', 401); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   try {
@@ -65,17 +65,17 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
     const session = await firebase.get<GuestSessionToken>(`guestSessionsByToken/${token}`);
 
     if (!session) {
-      return errorResponse('Token not found', 404);
+      return errorResponse('Token not found', 404); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     if (isExpired(session.expiresAt)) {
-      return errorResponse('Token expired', 410);
+      return errorResponse('Token expired', 410); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
-    return jsonResponse({ status: 'ok', expiresAt: session.expiresAt });
+    return jsonResponse({ status: 'ok', expiresAt: session.expiresAt }); // i18n-exempt -- PRIME-101 machine-readable API status [ttl=2026-12-31]
   } catch (error) {
-    console.error('Error validating guest token:', error);
-    return errorResponse('Failed to validate token', 500);
+    console.error('Error validating guest token:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
+    return errorResponse('Failed to validate token', 500); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 };
 
@@ -88,11 +88,11 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     token = body.token || '';
     lastName = body.lastName || '';
   } catch {
-    return errorResponse('Invalid JSON body', 400);
+    return errorResponse('Invalid JSON body', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   if (!token || !lastName) {
-    return errorResponse('token and lastName are required', 400);
+    return errorResponse('token and lastName are required', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   const clientIP = request.headers.get('CF-Connecting-IP') || 'unknown';
@@ -101,7 +101,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (env.RATE_LIMIT) {
     const attempts = await env.RATE_LIMIT.get(rateLimitKey);
     if (attempts && parseInt(attempts, 10) >= MAX_ATTEMPTS) {
-      return errorResponse('Too many attempts. Please try again later.', 429);
+      return errorResponse('Too many attempts. Please try again later.', 429); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
   }
 
@@ -110,18 +110,18 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     const session = await firebase.get<GuestSessionToken>(`guestSessionsByToken/${token}`);
 
     if (!session) {
-      return errorResponse('Token not found', 404);
+      return errorResponse('Token not found', 404); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     if (isExpired(session.expiresAt)) {
-      return errorResponse('Token expired', 410);
+      return errorResponse('Token expired', 410); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     const booking = await firebase.get<Record<string, BookingOccupant>>(
       `bookings/${session.bookingId}`,
     );
     if (!booking) {
-      return errorResponse('Booking not found', 404);
+      return errorResponse('Booking not found', 404); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     // Resolve target occupant from session or fallback to lead guest
@@ -134,7 +134,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     }
 
     if (!targetOccupantId) {
-      return errorResponse('Booking not found', 404);
+      return errorResponse('Booking not found', 404); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     // Fetch guest details for the target occupant
@@ -143,7 +143,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     );
 
     if (!guestDetails) {
-      return errorResponse('Booking not found', 404);
+      return errorResponse('Booking not found', 404); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     // Compare last name
@@ -159,7 +159,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
         });
       }
 
-      return errorResponse('Verification failed', 403);
+      return errorResponse('Verification failed', 403); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     if (env.RATE_LIMIT) {
@@ -181,7 +181,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       },
     });
   } catch (error) {
-    console.error('Error verifying guest session:', error);
-    return errorResponse('Failed to verify guest session', 500);
+    console.error('Error verifying guest session:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
+    return errorResponse('Failed to verify guest session', 500); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 };

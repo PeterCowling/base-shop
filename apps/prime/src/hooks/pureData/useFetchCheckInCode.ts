@@ -51,7 +51,7 @@ async function fetchCheckInCodeViaApi(uuid: string): Promise<CheckInCodeRecord |
       expiresAt: data.expiresAt ?? 0,
     };
   } catch (error) {
-    logger.error('[useFetchCheckInCode] Error fetching check-in code via API:', error);
+    logger.error('[useFetchCheckInCode] Error fetching check-in code via API:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
     throw error;
   }
 }

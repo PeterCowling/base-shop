@@ -113,16 +113,16 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
   const before = parseBefore(rawBefore);
 
   if (!channelId) {
-    return errorResponse('channelId parameter is required', 400);
+    return errorResponse('channelId parameter is required', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
   if (limit === null) {
-    return errorResponse(`limit must be an integer between 1 and ${MAX_MESSAGES_LIMIT}`, 400);
+    return errorResponse(`limit must be an integer between 1 and ${MAX_MESSAGES_LIMIT}`, 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
   if (rawBefore && before === null) {
-    return errorResponse('before must be a non-negative integer timestamp', 400);
+    return errorResponse('before must be a non-negative integer timestamp', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
   if (!token) {
-    return errorResponse('Unauthorized', 401);
+    return errorResponse('Unauthorized', 401); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   const authResult = await validateGuestSessionToken(token, env);
@@ -134,7 +134,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
   const sessionGuestUuid = authResult.session.guestUuid;
 
   if (!sessionBookingId || !sessionGuestUuid) {
-    return errorResponse('guestUuid missing for session', 422);
+    return errorResponse('guestUuid missing for session', 422); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   const rateLimitResponse = await enforceKvRateLimit({
@@ -151,7 +151,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
 
   if (requestedBookingId && requestedBookingId !== sessionBookingId) {
     await recordDirectTelemetry(env, 'read.denied_booking_mismatch');
-    return errorResponse('Booking mismatch for guest session', 403);
+    return errorResponse('Booking mismatch for guest session', 403); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   try {
@@ -172,7 +172,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
       || members[sessionGuestUuid] !== true
     ) {
       await recordDirectTelemetry(env, 'read.denied_membership');
-      return errorResponse('Direct channel access denied for this guest session', 403);
+      return errorResponse('Direct channel access denied for this guest session', 403); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     const rawMessages = await firebase.get<Record<string, unknown>>(
@@ -198,7 +198,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
     return jsonResponse<DirectMessagesResponse>({ messages });
   } catch (error) {
     await recordDirectTelemetry(env, 'read.error');
-    console.error('Failed to read direct messages:', error);
-    return errorResponse('Failed to read direct messages', 500);
+    console.error('Failed to read direct messages:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
+    return errorResponse('Failed to read direct messages', 500); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 };

@@ -106,7 +106,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
     }
 
     if (!authResult.session.guestUuid) {
-      return errorResponse('guestUuid missing for session', 422);
+      return errorResponse('guestUuid missing for session', 422); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     const firebase = new FirebaseRest(env);
@@ -116,8 +116,8 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
 
     return jsonResponse({ preorder: preorder ?? {} });
   } catch (error) {
-    console.error('Error fetching preorder:', error);
-    return errorResponse('Failed to fetch preorder', 500);
+    console.error('Error fetching preorder:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
+    return errorResponse('Failed to fetch preorder', 500); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 };
 
@@ -126,7 +126,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   try {
     body = await request.json() as PreorderRequestBody;
   } catch {
-    return errorResponse('Invalid JSON body', 400);
+    return errorResponse('Invalid JSON body', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   const service = body.service;
@@ -135,13 +135,13 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const requestChangeException = body.requestChangeException === true;
 
   if (!service || (service !== 'breakfast' && service !== 'drink')) {
-    return errorResponse('service must be breakfast or drink', 400);
+    return errorResponse('service must be breakfast or drink', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
   if (!serviceDate || !isIsoDate(serviceDate)) {
-    return errorResponse('serviceDate must be ISO YYYY-MM-DD', 400);
+    return errorResponse('serviceDate must be ISO YYYY-MM-DD', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
   if (!value) {
-    return errorResponse('value is required', 400);
+    return errorResponse('value is required', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   try {
@@ -153,14 +153,14 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
     const guestUuid = authResult.session.guestUuid;
     if (!guestUuid) {
-      return errorResponse('guestUuid missing for session', 422);
+      return errorResponse('guestUuid missing for session', 422); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     const firebase = new FirebaseRest(env);
     const preorders = (await firebase.get<Record<string, PreorderNight>>(`preorder/${guestUuid}`)) ?? {};
 
     if (!hasServiceEntitlement(preorders, service)) {
-      return errorResponse('This booking is not eligible for that service', 403);
+      return errorResponse('This booking is not eligible for that service', 403); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     const today = todayInRome();
@@ -170,7 +170,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
     if (isEditingExisting && isSameDayOrPast) {
       if (!requestChangeException) {
-        return errorResponse('Same-day order changes are not allowed', 409);
+        return errorResponse('Same-day order changes are not allowed', 409); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
       }
 
       const occupant = await firebase.get<BookingOccupantRecord>(
@@ -232,7 +232,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       updated: isEditingExisting,
     });
   } catch (error) {
-    console.error('Error saving preorder:', error);
-    return errorResponse('Failed to save preorder', 500);
+    console.error('Error saving preorder:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
+    return errorResponse('Failed to save preorder', 500); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 };

@@ -186,6 +186,10 @@
       "types": "./dist/components/organisms/*.d.ts",
       "import": "./dist/components/organisms/*.js"
     },
+    "./components/atoms/shadcn": {
+      "types": "./dist/components/atoms/shadcn/index.d.ts",
+      "import": "./dist/components/atoms/shadcn/index.js"
+    },
     "./components/atoms/*": {
       "types": "./dist/components/atoms/*.d.ts",
       "import": "./dist/components/atoms/*.js"

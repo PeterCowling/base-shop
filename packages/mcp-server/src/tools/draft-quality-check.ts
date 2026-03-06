@@ -29,7 +29,8 @@ type EmailActionPlanInput = {
     requests?: Array<{ text: string }>;
   };
   workflow_triggers: {
-    booking_monitor: boolean;
+    booking_action_required: boolean;
+    booking_context: boolean;
   };
   scenario: {
     category: ScenarioCategory | string;
@@ -76,7 +77,7 @@ const TEMPLATE_DATA_PATH = join(
   "email-templates.json"
 );
 
-const BOOKING_MONITOR_REFERENCE_HOSTS = new Set<string>([
+const BOOKING_ACTION_REFERENCE_HOSTS = new Set<string>([
   "hostelworld.com",
   "www.hostelworld.com",
 ]);
@@ -91,7 +92,8 @@ const qualityCheckSchema = z.object({
       requests: z.array(z.object({ text: z.string().min(1) })).default([]),
     }),
     workflow_triggers: z.object({
-      booking_monitor: z.boolean().optional().default(false),
+      booking_action_required: z.boolean().optional().default(false),
+      booking_context: z.boolean().optional().default(false),
     }),
     scenario: z.object({
       category: z.string().min(1),
@@ -369,7 +371,7 @@ function hasApplicableReference(
 
     if (allowBookingMonitorLinks) {
       const hostname = parseHostname(normalizedLink);
-      if (hostname && BOOKING_MONITOR_REFERENCE_HOSTS.has(hostname)) {
+      if (hostname && BOOKING_ACTION_REFERENCE_HOSTS.has(hostname)) {
         return true;
       }
     }
@@ -478,7 +480,7 @@ function runChecks(
   const draftLinks = extractLinks(draftText);
   const containsAnyLink = hasLink(draftText);
 
-  if (actionPlan.workflow_triggers.booking_monitor && !containsAnyLink) {
+  if (actionPlan.workflow_triggers.booking_action_required && !containsAnyLink) {
     failed_checks.push("missing_required_link");
   }
 
@@ -490,7 +492,7 @@ function runChecks(
       !hasApplicableReference(
         draftLinks,
         referencePolicy.canonicalUrls,
-        actionPlan.workflow_triggers.booking_monitor
+        actionPlan.workflow_triggers.booking_action_required
       )
     ) {
       failed_checks.push("reference_not_applicable");

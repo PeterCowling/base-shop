@@ -81,7 +81,8 @@ const draftRefineSchema = z.object({
       category: z.string().min(1),
     }),
     workflow_triggers: z.object({
-      booking_monitor: z.boolean().optional().default(false),
+      booking_action_required: z.boolean().optional().default(false),
+      booking_context: z.boolean().optional().default(false),
     }),
   }),
   // TASK-02: required; links this refinement event to the selection event from draft_generate.

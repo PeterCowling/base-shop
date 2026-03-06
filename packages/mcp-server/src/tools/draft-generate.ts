@@ -6,7 +6,10 @@ import { z } from "zod";
 import { handleBriketteResourceRead } from "../resources/brikette-knowledge.js";
 import { handleDraftGuideRead } from "../resources/draft-guide.js";
 import { handleVoiceExamplesRead } from "../resources/voice-examples.js";
-import { evaluateQuestionCoverage } from "../utils/coverage.js";
+import {
+  evaluateQuestionCoverage,
+  extractQuestionKeywords,
+} from "../utils/coverage.js";
 import { stripLegacySignatureBlock } from "../utils/email-signature.js";
 import { generateEmailHtml } from "../utils/email-template.js";
 import {
@@ -74,7 +77,8 @@ const draftGenerateSchema = z.object({
       additional_content: z.boolean(),
     }),
     workflow_triggers: z.object({
-      booking_monitor: z.boolean().optional().default(false),
+      booking_action_required: z.boolean().optional().default(false),
+      booking_context: z.boolean().optional().default(false),
       prepayment: z.boolean().optional().default(false),
       terms_and_conditions: z.boolean().optional().default(false),
     }),
@@ -245,6 +249,24 @@ type SourcesUsedEntry = { uri: string; citation: string; text: string; score: nu
 type KnowledgeData = {
   summaries: KnowledgeSummary[];
   injectionCandidates: Array<{ uri: string; snippet: KnowledgeSnippet }>;
+};
+
+type QuestionAnswerSource =
+  | "template"
+  | "knowledge"
+  | "promoted"
+  | "template+knowledge"
+  | "follow_up";
+
+type QuestionAnswerBlock = {
+  question: string;
+  label: string;
+  answer: string;
+  answerSource: QuestionAnswerSource;
+  templateSubject: string | null;
+  templateCategory: string | null;
+  knowledgeCitation: string | null;
+  followUpRequired: boolean;
 };
 
 function resolveKnowledgeSources(_category: string): string[] {
@@ -894,6 +916,122 @@ function buildGapFillResult(
 const ESCALATION_FALLBACK_SENTENCE =
   "For this specific question we want to give you the most accurate answer — Pete or Cristiana will follow up with you directly.";
 
+const QUESTION_LABEL_STOP_WORDS = new Set([
+  "a",
+  "about",
+  "also",
+  "an",
+  "and",
+  "are",
+  "be",
+  "can",
+  "could",
+  "details",
+  "do",
+  "does",
+  "for",
+  "have",
+  "how",
+  "i",
+  "if",
+  "in",
+  "is",
+  "it",
+  "know",
+  "let",
+  "me",
+  "my",
+  "of",
+  "on",
+  "or",
+  "our",
+  "please",
+  "tell",
+  "the",
+  "there",
+  "to",
+  "us",
+  "we",
+  "what",
+  "when",
+  "where",
+  "which",
+  "would",
+  "you",
+  "your",
+]);
+
+function formatQuestionLabelToken(token: string): string {
+  const lower = token.toLowerCase();
+  if (lower === "wifi" || lower === "wi-fi") {
+    return "WiFi";
+  }
+  if (lower === "iban") {
+    return "IBAN";
+  }
+  if (lower === "t&c") {
+    return "T&C";
+  }
+  return token.charAt(0).toUpperCase() + token.slice(1).toLowerCase();
+}
+
+function buildQuestionLabel(question: string): string {
+  const tokens = question
+    .replace(/\r?\n/g, " ")
+    .replace(/[?!.]/g, " ")
+    .split(/\s+/)
+    .map((token) => token.replace(/^[^a-z0-9]+|[^a-z0-9-]+$/gi, ""))
+    .filter(Boolean)
+    .filter((token) => !QUESTION_LABEL_STOP_WORDS.has(token.toLowerCase()))
+    .slice(0, 4);
+
+  if (tokens.length === 0) {
+    return "Follow-up";
+  }
+
+  return tokens.map(formatQuestionLabelToken).join(" ");
+}
+
+function scoreKnowledgeCandidateForQuestion(
+  question: string,
+  candidate: { uri: string; snippet: KnowledgeSnippet },
+): number {
+  const keywords = extractQuestionKeywords(question);
+  const candidateText = candidate.snippet.text.toLowerCase();
+  let score = candidate.snippet.score;
+
+  for (const keyword of keywords) {
+    if (candidateText.includes(keyword.toLowerCase())) {
+      score += 10;
+    }
+  }
+
+  return score;
+}
+
+function selectKnowledgeCandidateForQuestion(
+  question: string,
+  candidates: Array<{ uri: string; snippet: KnowledgeSnippet }>,
+  usedCitations: Set<string>,
+): { uri: string; snippet: KnowledgeSnippet } | null {
+  let bestMatch: { uri: string; snippet: KnowledgeSnippet } | null = null;
+  let bestScore = 0;
+
+  for (const candidate of candidates) {
+    if (usedCitations.has(candidate.snippet.citation)) {
+      continue;
+    }
+
+    const score = scoreKnowledgeCandidateForQuestion(question, candidate);
+    if (score > bestScore) {
+      bestScore = score;
+      bestMatch = candidate;
+    }
+  }
+
+  return bestScore > 0 ? bestMatch : null;
+}
+
 function appendCoverageFallbacks(
   body: string,
   uncoveredQuestions: string[],
@@ -902,7 +1040,11 @@ function appendCoverageFallbacks(
     return body;
   }
 
-  return normalizeParagraphs(`${body}\n\n${ESCALATION_FALLBACK_SENTENCE}`);
+  const followUpBlocks = uncoveredQuestions.map((question) =>
+    `${buildQuestionLabel(question)}\n${ESCALATION_FALLBACK_SENTENCE}`
+  );
+
+  return normalizeParagraphs(`${body}\n\n${followUpBlocks.join("\n\n")}`);
 }
 
 function applyAlwaysRules(
@@ -1114,44 +1256,241 @@ function resolveSlotsWithParity(
 
 const DEFAULT_COMPOSITE_LIMIT = 3;
 
-/**
- * TASK-06: Greedily select one best-fit template per question.
- * Deduplicates by template subject so the same template is not assembled twice.
- * Caps the result at DEFAULT_COMPOSITE_LIMIT to keep composite emails focused.
- */
-function selectTemplatesPerQuestion(
+function buildQuestionAnswerBlocks(
   perQuestionRanks: PerQuestionRankEntry[],
-): EmailTemplate[] {
-  const seen = new Set<string>();
-  const selected: EmailTemplate[] = [];
-  for (const entry of perQuestionRanks) {
-    const top = entry.candidates[0];
-    if (!top) continue;
-    if (seen.has(top.template.subject)) continue;
-    seen.add(top.template.subject);
-    selected.push(top.template);
-    if (selected.length >= DEFAULT_COMPOSITE_LIMIT) break;
-  }
-  return selected;
+): QuestionAnswerBlock[] {
+  return perQuestionRanks.slice(0, DEFAULT_COMPOSITE_LIMIT).map((entry) => {
+    const topCandidate = entry.candidates[0];
+    const template = topCandidate?.template;
+    return {
+      question: entry.question,
+      label: buildQuestionLabel(entry.question),
+      answer: template ? extractContentBody(template.body) : "",
+      answerSource: template ? "template" : "follow_up",
+      templateSubject: template?.subject ?? null,
+      templateCategory: template?.category ?? null,
+      knowledgeCitation: null,
+      followUpRequired: !template,
+    };
+  });
 }
 
-function assembleCompositeBody(
-  templates: EmailTemplate[],
+function hydrateQuestionAnswerBlocks(
+  blocks: QuestionAnswerBlock[],
+  candidates: Array<{ uri: string; snippet: KnowledgeSnippet }>,
+  activePromotions: ReviewedFaqPromotionRecord[] = [],
+): { blocks: QuestionAnswerBlock[]; sourcesUsed: SourcesUsedEntry[] } {
+  const sourcesUsed: SourcesUsedEntry[] = [];
+  const usedCitations = new Set<string>();
+
+  const nextBlocks = blocks.map((block) => {
+    const nextBlock = { ...block };
+    let coverage = evaluateQuestionCoverage(nextBlock.answer, [{ text: block.question }])[0];
+
+    if (coverage.status !== "covered") {
+      const questionHash = hashQuestion(block.question);
+      const promotionMatch = activePromotions.find(
+        (promotion) =>
+          promotion.question_hash === questionHash &&
+          promotion.status === "active" &&
+          promotion.answer,
+      );
+
+      if (promotionMatch) {
+        const citation = `promoted:${promotionMatch.key}`;
+        if (!usedCitations.has(citation)) {
+          usedCitations.add(citation);
+          nextBlock.answer = nextBlock.answer
+            ? normalizeParagraphs(`${nextBlock.answer}\n\n${promotionMatch.answer}`)
+            : promotionMatch.answer;
+          nextBlock.answerSource =
+            nextBlock.templateSubject === null ? "promoted" : "template+knowledge";
+          nextBlock.knowledgeCitation = citation;
+          sourcesUsed.push({
+            uri: "promoted",
+            citation,
+            text: promotionMatch.answer,
+            score: 10,
+            injected: true,
+          });
+          coverage = evaluateQuestionCoverage(nextBlock.answer, [{ text: block.question }])[0];
+        }
+      }
+    }
+
+    if (coverage.status !== "covered") {
+      const knowledgeMatch = selectKnowledgeCandidateForQuestion(
+        block.question,
+        candidates,
+        usedCitations,
+      );
+
+      if (knowledgeMatch) {
+        usedCitations.add(knowledgeMatch.snippet.citation);
+        const cleanText = stripCitationMarkers(knowledgeMatch.snippet.text);
+        nextBlock.answer = nextBlock.answer
+          ? normalizeParagraphs(`${nextBlock.answer}\n\n${cleanText}`)
+          : cleanText;
+        nextBlock.answerSource =
+          nextBlock.templateSubject === null ? "knowledge" : "template+knowledge";
+        nextBlock.knowledgeCitation = knowledgeMatch.snippet.citation;
+        sourcesUsed.push({
+          uri: knowledgeMatch.uri,
+          citation: knowledgeMatch.snippet.citation,
+          text: cleanText,
+          score: knowledgeMatch.snippet.score,
+          injected: true,
+        });
+        coverage = evaluateQuestionCoverage(nextBlock.answer, [{ text: block.question }])[0];
+      }
+    }
+
+    if (coverage.status !== "covered") {
+      nextBlock.answer = nextBlock.answer
+        ? normalizeParagraphs(`${nextBlock.answer}\n\n${ESCALATION_FALLBACK_SENTENCE}`)
+        : ESCALATION_FALLBACK_SENTENCE;
+      nextBlock.followUpRequired = true;
+      if (!nextBlock.templateSubject && !nextBlock.knowledgeCitation) {
+        nextBlock.answerSource = "follow_up";
+      }
+    }
+
+    return nextBlock;
+  });
+
+  for (const { uri, snippet } of candidates) {
+    if (!usedCitations.has(snippet.citation)) {
+      sourcesUsed.push({
+        uri,
+        citation: snippet.citation,
+        text: stripCitationMarkers(snippet.text),
+        score: snippet.score,
+        injected: false,
+      });
+    }
+  }
+
+  return {
+    blocks: nextBlocks,
+    sourcesUsed,
+  };
+}
+
+function assembleAtomicQuestionBody(
+  blocks: QuestionAnswerBlock[],
 ): string {
-  if (templates.length === 0) {
+  if (blocks.length === 0) {
     return "";
   }
 
-  // Use the first template's greeting
-  const firstBody = templates[0].body;
-  const greetingMatch = firstBody.match(/^(Dear\s+\w+[\s\S]*?\r?\n\r?\n)/i);
-  const greeting = greetingMatch?.[1] ?? "Dear Guest,\r\n\r\n";
+  const renderedBlocks = blocks.map(
+    (block, index) => `${index + 1}. ${block.label}\n${normalizeParagraphs(block.answer)}`,
+  );
 
-  // Extract content from each template
-  const contentParts = templates.map((t) => extractContentBody(t.body));
+  return [
+    "Dear Guest,",
+    "Thank you for your email. Please find our answers below.",
+    renderedBlocks.join("\n\n"),
+  ].join("\n\n");
+}
 
-  // Combine with the first template's greeting; HTML template handles sign-off visuals.
-  return `${greeting.trimEnd()}\n\nThank you for your email.\n\n${contentParts.join("\n\n")}`;
+function expandLengthBoundsForMultipart(
+  bounds: LengthBounds,
+  questionCount: number,
+): LengthBounds {
+  if (questionCount < 2) {
+    return bounds;
+  }
+
+  return {
+    min: Math.max(bounds.min, questionCount * 30),
+    max:
+      typeof bounds.max === "number"
+        ? Math.max(bounds.max, questionCount * 55)
+        : undefined,
+  };
+}
+
+function buildInitialDraftBody(
+  selectedTemplate: EmailTemplate | undefined,
+  questionBlocks: QuestionAnswerBlock[],
+): {
+  bodyPlain: string;
+  usedTemplateFallback: boolean;
+  missingTemplateQuestions: string[];
+} {
+  const isComposite = questionBlocks.length >= 2;
+  const missingTemplateQuestions = isComposite
+    ? questionBlocks
+        .filter((block) => block.templateSubject === null)
+        .map((block) => block.question)
+    : [];
+
+  if (isComposite) {
+    return {
+      bodyPlain: assembleAtomicQuestionBody(questionBlocks),
+      usedTemplateFallback: missingTemplateQuestions.length > 0,
+      missingTemplateQuestions,
+    };
+  }
+
+  return {
+    bodyPlain:
+      selectedTemplate?.body ??
+      "Thanks for your email. We will review your request and respond shortly.",
+    usedTemplateFallback: !selectedTemplate,
+    missingTemplateQuestions: [],
+  };
+}
+
+function applyKnowledgeToDraftBody(params: {
+  bodyPlain: string;
+  questionBlocks: QuestionAnswerBlock[];
+  injectionCandidates: Array<{ uri: string; snippet: KnowledgeSnippet }>;
+  activePromotions: ReviewedFaqPromotionRecord[];
+  allIntents: Array<{ text: string }>;
+}): {
+  bodyPlain: string;
+  questionBlocks: QuestionAnswerBlock[];
+  sourcesUsed: SourcesUsedEntry[];
+} {
+  const {
+    bodyPlain,
+    questionBlocks,
+    injectionCandidates,
+    activePromotions,
+    allIntents,
+  } = params;
+
+  if (questionBlocks.length >= 2) {
+    const hydratedBlocks = hydrateQuestionAnswerBlocks(
+      questionBlocks,
+      injectionCandidates,
+      activePromotions,
+    );
+    return {
+      bodyPlain: assembleAtomicQuestionBody(hydratedBlocks.blocks),
+      questionBlocks: hydratedBlocks.blocks,
+      sourcesUsed: hydratedBlocks.sourcesUsed,
+    };
+  }
+
+  const postAssemblyCoverage = evaluateQuestionCoverage(bodyPlain, allIntents);
+  const uncoveredAfterAssembly = postAssemblyCoverage
+    .filter((entry) => entry.status === "missing")
+    .map((entry) => entry.question);
+  const gapFillResult = buildGapFillResult(
+    bodyPlain,
+    uncoveredAfterAssembly,
+    injectionCandidates,
+    activePromotions,
+  );
+
+  return {
+    bodyPlain: gapFillResult.body,
+    questionBlocks,
+    sourcesUsed: gapFillResult.sourcesUsed,
+  };
 }
 
 export async function handleDraftGenerateTool(name: string, args: unknown) {
@@ -1213,17 +1552,18 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
       ?? availabilityTemplate
       ?? (rankResult.selection !== "none" ? policyCandidates[0]?.template : undefined);
 
-    // TASK-06: per-question template ranking for composite assembly.
-    let uniqueTemplatesForComposite: EmailTemplate[] = [];
+    // TASK-06: build deterministic per-question answer blocks for multipart emails.
+    let questionBlocks: QuestionAnswerBlock[] = [];
     if (actionPlan.intents.questions.length >= 2) {
       const perQuestionRanks = rankTemplatesPerQuestion(
         actionPlan.intents.questions,
         templates,
+        DEFAULT_COMPOSITE_LIMIT,
       );
-      uniqueTemplatesForComposite = selectTemplatesPerQuestion(perQuestionRanks);
+      questionBlocks = buildQuestionAnswerBlocks(perQuestionRanks);
     }
 
-    const isComposite = uniqueTemplatesForComposite.length >= 2;
+    const isComposite = questionBlocks.length >= 2;
 
     // TASK-02: write selection event — best-effort, never fails the draft.
     const { scenario_category: signalCategory, scenario_category_raw: signalCategoryRaw } =
@@ -1234,21 +1574,16 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
       ts: new Date().toISOString(),
       template_subject: selectedTemplate?.subject ?? null,
       template_category: selectedTemplate?.category ?? null,
-      selection: rankResult.selection,
+      selection: isComposite ? "composite" : rankResult.selection,
       scenario_category: signalCategory,
       scenario_category_raw: signalCategoryRaw,
     }).catch(() => {});
 
-    let bodyPlain: string;
-    let usedTemplateFallback = false;
-    if (isComposite) {
-      bodyPlain = assembleCompositeBody(uniqueTemplatesForComposite);
-    } else {
-      usedTemplateFallback = !selectedTemplate;
-      bodyPlain =
-        selectedTemplate?.body ??
-        "Thanks for your email. We will review your request and respond shortly.";
-    }
+    const initialDraft = buildInitialDraftBody(selectedTemplate, questionBlocks);
+    let bodyPlain = initialDraft.bodyPlain;
+    const usedTemplateFallback = initialDraft.usedTemplateFallback;
+    const missingTemplateQuestions = initialDraft.missingTemplateQuestions;
+    let sourcesUsed: SourcesUsedEntry[] = [];
 
     if (usedTemplateFallback) {
       appendTelemetryEvent({
@@ -1274,20 +1609,18 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
       },
     );
 
-    const postAssemblyCoverage = evaluateQuestionCoverage(bodyPlain, allIntents);
-    const uncoveredAfterAssembly = postAssemblyCoverage
-      .filter((entry) => entry.status === "missing")
-      .map((entry) => entry.question);
-
     // TASK-01 (Bug 3): pass active FAQ promotions for exact-match fast-path.
     const activePromotions = await readActiveFaqPromotions();
-    const { body: bodyWithGapFills, sourcesUsed } = buildGapFillResult(
+    const knowledgeAppliedDraft = applyKnowledgeToDraftBody({
       bodyPlain,
-      uncoveredAfterAssembly,
+      questionBlocks,
       injectionCandidates,
       activePromotions,
-    );
-    bodyPlain = bodyWithGapFills;
+      allIntents,
+    });
+    bodyPlain = knowledgeAppliedDraft.bodyPlain;
+    questionBlocks = knowledgeAppliedDraft.questionBlocks;
+    sourcesUsed = knowledgeAppliedDraft.sourcesUsed;
 
     const draftGuideResult = await handleDraftGuideRead();
     const voiceExamplesResult = await handleVoiceExamplesRead();
@@ -1317,7 +1650,10 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
     );
     contentBody = applyVoicePreferences(contentBody, voiceScenario);
 
-    const contentBounds = resolveLengthBounds(draftGuide, primaryScenarioCategory);
+    const contentBounds = expandLengthBoundsForMultipart(
+      resolveLengthBounds(draftGuide, primaryScenarioCategory),
+      questionBlocks.length,
+    );
     contentBody = enforceLengthBounds(contentBody, contentBounds);
     contentBody = applyPolicyDecisionContent(contentBody, policyDecision);
     bodyPlain = stripSignature(contentBody).trim();
@@ -1333,7 +1669,8 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
     const slotResolution = resolveSlotsWithParity(bodyPlain, greetingSlots);
     bodyPlain = slotResolution.body;
 
-    const includeBookingLink = actionPlan.workflow_triggers.booking_monitor && !agreementTemplate;
+    const includeBookingLink =
+      actionPlan.workflow_triggers.booking_action_required && !agreementTemplate;
     const bodyHtml = generateEmailHtml({
       recipientName,
       bodyText: bodyPlain,
@@ -1348,7 +1685,10 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
           questions: actionPlan.intents.questions,
           requests: actionPlan.intents.requests,
         },
-        workflow_triggers: { booking_monitor: includeBookingLink },
+        workflow_triggers: {
+          booking_action_required: includeBookingLink,
+          booking_context: actionPlan.workflow_triggers.booking_context,
+        },
         scenario: { category: primaryScenarioCategory },
         thread_summary: actionPlan.thread_summary,
       },
@@ -1360,10 +1700,21 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
       qualityResponse as { content: Array<{ text: string }> }
     );
 
-    const shouldCaptureUnknownAnswers = usedTemplateFallback || quality.failed_checks.includes("unanswered_questions");
+    const followUpQuestions = questionBlocks
+      .filter((block) => block.followUpRequired)
+      .map((block) => block.question);
+    const shouldCaptureUnknownAnswers =
+      usedTemplateFallback ||
+      followUpQuestions.length > 0 ||
+      quality.failed_checks.includes("unanswered_questions");
     const unknownQuestions = uniqueStrings([
       ...uncoveredAfterRefinement,
-      ...(usedTemplateFallback ? actionPlan.intents.questions.map((question) => question.text) : []),
+      ...followUpQuestions,
+      ...(isComposite
+        ? missingTemplateQuestions
+        : usedTemplateFallback
+          ? actionPlan.intents.questions.map((question) => question.text)
+          : []),
     ]);
 
     let learningLedger:
@@ -1431,18 +1782,27 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
         bodyHtml,
       },
       answered_questions: actionPlan.intents.questions.map((question) => question.text),
+      question_blocks: questionBlocks.map((block) => ({
+        question: block.question,
+        label: block.label,
+        answer_source: block.answerSource,
+        template_subject: block.templateSubject,
+        template_category: block.templateCategory,
+        knowledge_citation: block.knowledgeCitation,
+        follow_up_required: block.followUpRequired,
+      })),
       template_used: selectedTemplate
         ? {
             subject: selectedTemplate.subject,
             category: selectedTemplate.category,
             confidence: rankResult.confidence,
-            selection: rankResult.selection,
+            selection: isComposite ? "composite" : rankResult.selection,
           }
         : {
             subject: null,
             category: null,
             confidence: rankResult.confidence,
-            selection: rankResult.selection,
+            selection: isComposite ? "composite" : rankResult.selection,
           },
       knowledge_sources: knowledgeSummaries.map((summary) => summary.uri),
       knowledge_summaries: knowledgeSummaries,
@@ -1456,7 +1816,7 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
       quality,
       learning_ledger: learningLedger,
       ranker: {
-        selection: rankResult.selection,
+        selection: isComposite ? "composite" : rankResult.selection,
         candidates: policyCandidates.map((candidate) => ({
           subject: candidate.template.subject,
           category: candidate.template.category,

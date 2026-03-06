@@ -20,7 +20,8 @@ type AgreementDetection = {
 type WorkflowTriggers = {
   prepayment: boolean;
   terms_and_conditions: boolean;
-  booking_monitor: boolean;
+  booking_action_required: boolean;
+  booking_context: boolean;
 };
 
 type ScenarioClassification = {
@@ -762,10 +763,15 @@ function detectAgreement(text: string, language: string): AgreementDetection {
 
 function detectWorkflowTriggers(text: string): WorkflowTriggers {
   const lower = text.toLowerCase();
+  const bookingActionRequired =
+    /(cancel|modify|change|update|extend|shorten)\s+(my\s+)?(booking|reservation|stay)|(new\s+booking|new\s+reservation|make\s+a\s+(booking|reservation)|book\s+a\s+(room|bed|dorm|hostel)|i\s+would\s+like\s+to\s+book|please\s+reserve|i\s+want\s+to\s+book|confirm\s+my\s+(booking|reservation))/.test(
+      lower
+    );
   return {
     prepayment: /(payment|card|prepayment|bank transfer)/.test(lower),
     terms_and_conditions: /(terms|t&c|non[-\s]?refundable|conditions)/.test(lower),
-    booking_monitor: /(reservation|booking)/.test(lower),
+    booking_action_required: bookingActionRequired,
+    booking_context: /(reservation|booking)/.test(lower),
   };
 }
 

@@ -2075,6 +2075,22 @@
     },
     {
       "type": "idea",
+      "business": "BRIK",
+      "title": "BRIK Prime guest access — token/session and door-code boundary weak",
+      "body": "The app has moved onto a public custom domain, and the current guest-access design still relies on a convenience-oriented token handoff rather than a strongly bounded session model. That was tolerable while the app was effectively preview-grade, but it is now the wrong security posture for guest-linked booking data, door access instructions, and any future expansion of the portal surface.",
+      "source": "queue-state.json",
+      "date": "2026-03-06T19:10:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "aaf9db00ace820fffc4f6179595ce123effad462",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
       "business": "BOS",
       "title": "bos-agent-session-findings",
       "body": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",

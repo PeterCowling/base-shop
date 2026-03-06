@@ -1,18 +1,177 @@
 {
-  "last_updated": "2026-03-06T15:59:50.759Z",
+  "last_updated": "2026-03-06T18:30:42.601Z",
   "counts": {
-    "enqueued": 126,
-    "processed": 36,
+    "enqueued": 127,
+    "processed": 38,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
     "completed": 120,
-    "fact_find_ready": 183,
+    "fact_find_ready": 186,
     "micro_build_ready": 1,
-    "total": 308
+    "total": 311
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306191000-9029",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "LOGISTICS",
+      "root_event_id": "operator:BRIK:LOGISTICS:prime-edge-security-hardening:20260306",
+      "anchor_key": "prime-edge-security-hardening",
+      "cluster_key": "BRIK:LOGISTICS:prime-edge-security-hardening:operator:20260306",
+      "cluster_fingerprint": "791f742161393d9a511f7c00b5b3599b256e75d3491a39b9d5c1467e9b5dc4ec",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK Prime edge security — TLS/SSL posture weak",
+      "location_anchors": [
+        "guests.hostel-positano.com",
+        "hostel-positano.com Cloudflare zone"
+      ],
+      "provisional_deliverable_family": "infra",
+      "current_truth": "Prime is now attached to guests.hostel-positano.com, but the live Cloudflare zone still uses ssl=flexible and min_tls_version=1.0. Cloudflare Access is not enabled, and there is no visible managed-firewall entrypoint in the zone audit. That is not an acceptable edge posture for a public-facing guest app handling booking-linked access flows.",
+      "next_scope_now": "Fact-find the production hardening changes for the Prime edge surface: move the zone to Full (strict), raise minimum TLS to 1.2 or higher, confirm certificate/origin behavior for Pages, and define the right WAF/Access posture for public guest routes versus staff-only surfaces.",
+      "adjacent_later": [
+        "Review managed WAF and bot controls after TLS posture is corrected",
+        "Decide whether staff/admin paths should move behind Cloudflare Access"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: Prime is public facing and must be extremely secure",
+        "live-audit: Cloudflare zone hostel-positano.com checked 2026-03-06 shows ssl=flexible",
+        "live-audit: Cloudflare zone hostel-positano.com checked 2026-03-06 shows min_tls_version=1.0",
+        "live-audit: Cloudflare Access API reports access.api.error.not_enabled for hostel-positano.com",
+        "infra-ref: guests.hostel-positano.com is the newly activated Prime custom domain"
+      ],
+      "queue_state": "processed",
+      "created_at": "2026-03-06T19:10:00Z",
+      "why": "The Prime guest portal has just been promoted onto a public custom domain, so the Cloudflare edge posture is now part of the real production attack surface rather than an internal preview detail. Leaving the zone on flexible SSL and TLS 1.0 materially weakens transport security and creates ambiguity about what other edge protections are actually in force.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "A planning-ready hardening path exists for the Prime public edge surface covering Full (strict) TLS, modern minimum TLS version, certificate/origin implications for Pages, and the correct WAF or Access boundaries for public guest routes versus staff-only routes.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "prime-edge-tls-hardening",
+        "target_path": "docs/plans/prime-edge-tls-hardening/fact-find.md",
+        "processed_at": "2026-03-06T18:30:42.600Z",
+        "fact_find_slug": "prime-edge-tls-hardening",
+        "fact_find_path": "docs/plans/prime-edge-tls-hardening/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306191000-9028",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:BRIK:PRODUCTS:prime-guest-access-hardening:20260306",
+      "anchor_key": "prime-guest-access-hardening",
+      "cluster_key": "BRIK:PRODUCTS:prime-guest-access-hardening:operator:20260306",
+      "cluster_fingerprint": "8ef99da7e4b0e620a2f80f89f4ab379cc5d74d412e6a9399657d95e16da27d43",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK Prime guest access — token/session and door-code boundary weak",
+      "location_anchors": [
+        "apps/prime/functions/api/find-booking.ts",
+        "apps/prime/functions/api/guest-session.ts",
+        "apps/prime/functions/api/check-in-code.ts",
+        "apps/prime/src/app/g/page.tsx",
+        "apps/prime/src/app/portal/page.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Prime guest access is currently based on a URL token that is verified with surname and then stored in localStorage. The portal treats network_error as good enough to continue. The check-in-code endpoint still exposes and generates door codes by raw uuid and checkout date without requiring a validated guest session. Those choices make the public guest surface materially weaker than the repo's staff-side security posture.",
+      "next_scope_now": "Fact-find the correct hardening design for guest access: replace browser-stored guest auth with a fail-closed server session, require session-bound authorization for door-code flows, tighten booking lookup and token issuance, and define the browser/header controls needed for a public guest portal.",
+      "adjacent_later": [
+        "Review direct-message and assistant endpoints after the guest session contract is hardened",
+        "Revisit CORS and response-header policy once the session model is defined"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.96,
+      "evidence_refs": [
+        "operator-stated: Prime is public facing and must be extremely secure",
+        "code-ref: apps/prime/src/app/g/page.tsx stores prime_guest_token and related identity fields in localStorage after surname verification",
+        "code-ref: apps/prime/src/app/portal/page.tsx treats validateGuestToken() network_error as allowed for portal continuation",
+        "code-ref: apps/prime/functions/api/check-in-code.ts exposes GET and POST door-code flows by uuid without validateGuestSessionToken()",
+        "code-ref: apps/prime/functions/api/find-booking.ts issues guest deep links from bookingRef plus surname with only per-IP KV throttling"
+      ],
+      "queue_state": "enqueued",
+      "created_at": "2026-03-06T19:10:00Z",
+      "why": "The app has moved onto a public custom domain, and the current guest-access design still relies on a convenience-oriented token handoff rather than a strongly bounded session model. That was tolerable while the app was effectively preview-grade, but it is now the wrong security posture for guest-linked booking data, door access instructions, and any future expansion of the portal surface.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "A planning-ready hardening path exists for Prime guest access covering server-bound guest sessions, fail-closed portal validation, authenticated door-code retrieval, stronger booking-link issuance controls, and the browser security controls needed for a public guest portal.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306172218-9027",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:PLAT:PRODUCTS:xa-uploader-status-and-media-model-rewrite:20260306",
+      "anchor_key": "xa-uploader-status-and-media-model-rewrite",
+      "cluster_key": "PLAT:PRODUCTS:xa-uploader-status-and-media-model-rewrite:operator:20260306",
+      "cluster_fingerprint": "bc1a6e954de78faf0e2d7d5401e17e25f4ffa31b0928920934983b889f7aa519",
+      "lineage_depth": 0,
+      "area_anchor": "XA uploader catalog — status and media rewrite",
+      "location_anchors": [
+        "apps/xa-uploader/src/components/catalog",
+        "packages/lib/src/xa/catalogAdminSchema.ts",
+        "apps/xa-uploader/src/app/api/catalog/products/route.ts",
+        "apps/xa-uploader/src/lib/catalogDraftToContract.ts",
+        "docs/briefs/xa-uploader-hard-blockers-briefing.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The xa-uploader shell already matches the requested one-page sidebar workflow, but the underlying contract still uses draft/ready/live plus numeric stock and role-based image capture. Operator decisions in this session have now fixed the target model: predetermined registry-backed entry remains, status becomes draft/live/out_of_stock, numeric stock is removed, and media becomes main-image plus ordered additional photos.",
+      "next_scope_now": "Produce a planning-ready implementation path for rewriting xa-uploader schema, readiness helpers, image upload flow, persistence mapping, and contract export to match the chosen status and media model while preserving the existing one-page shell and derived internal fields.",
+      "adjacent_later": [
+        "Update operator instructions and UX copy after the contract rewrite lands",
+        "Review legacy draft/media migration handling after the new contract is in place"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "operator-stated: live should mean published and in stock, out of stock should be first-class, numeric stock should be removed",
+        "operator-stated: main product image plus ordered additional photos replaces semantic image roles; publish with main image only is acceptable",
+        "operator-stated: predetermined registry-backed entry remains; no free-form custom product entry is required",
+        "doc-ref: docs/briefs/xa-uploader-hard-blockers-briefing.md - session decisions and evidence audit",
+        "code-ref: apps/xa-uploader/src/app/api/catalog/products/route.ts - current publishState derivation still assumes draft/ready/live",
+        "code-ref: apps/xa-uploader/src/lib/catalogDraftToContract.ts - current export still emits numeric stock and role-sorted media"
+      ],
+      "queue_state": "processed",
+      "created_at": "2026-03-06T17:22:18Z",
+      "why": "The xa-uploader UI shell is already close to the requested operator workflow, but the underlying status and image contracts are still built around concepts the operator has explicitly rejected: ready state, numeric stock, and semantic shot roles. Capturing the now-confirmed target model in a planning-ready fact-find allows the rewrite to be sequenced cleanly instead of mixing contract changes into ad hoc UI tweaks.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "A planning-ready implementation path exists for xa-uploader to use draft/live/out-of-stock status semantics, main-image-plus-gallery media semantics, predetermined registry-backed entry, and the existing one-page sidebar/editor shell.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-uploader-status-and-media-model-rewrite",
+        "target_path": "docs/plans/xa-uploader-status-and-media-model-rewrite/fact-find.md",
+        "processed_at": "2026-03-06T17:24:34.438Z",
+        "fact_find_slug": "xa-uploader-status-and-media-model-rewrite",
+        "fact_find_path": "docs/plans/xa-uploader-status-and-media-model-rewrite/fact-find.md"
+      }
+    },
     {
       "schema_version": "dispatch.v2",
       "dispatch_id": "IDEA-DISPATCH-20260306153703-0994",

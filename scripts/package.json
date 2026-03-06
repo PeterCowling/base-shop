@@ -41,7 +41,8 @@
     "startup-loop:hbag-pdp-funnel-feed": "node --import tsx src/startup-loop/diagnostics/hbag-pdp-funnel-feed.ts",
     "startup-loop:results-review-extract": "node --import tsx src/startup-loop/build/lp-do-build-results-review-extract.ts",
     "startup-loop:pattern-reflection-extract": "node --import tsx src/startup-loop/build/lp-do-build-pattern-reflection-extract.ts",
-    "reception:blind-mode-variance-report": "node --import tsx src/reception/blind-mode-variance-report.ts"
+    "reception:blind-mode-variance-report": "node --import tsx src/reception/blind-mode-variance-report.ts",
+    "prime:apply-zone-hardening": "node --import tsx src/ops/apply-prime-zone-hardening.ts"
   },
   "dependencies": {
     "@acme/lib": "workspace:*",

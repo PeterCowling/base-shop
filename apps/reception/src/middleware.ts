@@ -1,33 +1,90 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-export function middleware(_request: NextRequest) {
-  const response = NextResponse.next();
+const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
+const PERMISSIONS_POLICY = "camera=(), microphone=(), geolocation=()";
+const FIREBASE_CONNECT_SOURCES = [
+  "https://*.googleapis.com",
+  "https://*.firebaseio.com",
+  "wss://*.firebaseio.com",
+  "https://*.firebase.com",
+  "https://*.firebasedatabase.app",
+  "wss://*.firebasedatabase.app",
+] as const;
 
-  // Override Next.js strict default CSP to allow Firebase and inline scripts
-  response.headers.set(
-    "Content-Security-Policy",
-    [
-      "default-src 'self'",
-      // Firebase Auth loads scripts from gstatic.com and apis.google.com
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com https://www.gstatic.com https://apis.google.com https://*.googleapis.com",
-      "style-src 'self' 'unsafe-inline' https://www.gstatic.com",
-      // Firebase Realtime DB uses *.firebasedatabase.app (not *.firebaseio.com)
-      "connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebase.com https://*.firebasedatabase.app wss://*.firebasedatabase.app https://cloudflareinsights.com",
-      "img-src 'self' data: blob: https://www.gstatic.com",
-      "font-src 'self' data: https://www.gstatic.com",
-      "worker-src 'self' blob:",
-      // Firebase Auth uses a popup/iframe from accounts.google.com
-      "frame-src https://accounts.google.com https://*.firebaseapp.com",
-      "object-src 'none'",
-      "base-uri 'self'",
-    ].join("; ")
-  );
+function getAlloggiatiScriptSources(): string[] {
+  const configuredUrl = process.env.NEXT_PUBLIC_ALLOGGIATI_SCRIPT_URL?.trim();
+  if (!configuredUrl) {
+    return [];
+  }
 
-  // Remove COEP — Firebase resources don't send CORP headers
+  try {
+    const parsedUrl = new URL(configuredUrl);
+    if (!["http:", "https:"].includes(parsedUrl.protocol)) {
+      return [];
+    }
+
+    const allowedSources = new Set([parsedUrl.origin]);
+    if (parsedUrl.hostname === "script.google.com") {
+      allowedSources.add("https://script.googleusercontent.com");
+    }
+
+    return [...allowedSources];
+  } catch {
+    return [];
+  }
+}
+
+function buildContentSecurityPolicy(): string {
+  const scriptElementSources = ["'self'", "'unsafe-inline'", ...getAlloggiatiScriptSources()];
+
+  return [
+    "default-src 'self'",
+    "base-uri 'self'",
+    "object-src 'none'",
+    "frame-ancestors 'none'",
+    "form-action 'self'",
+    "manifest-src 'self'",
+    "img-src 'self' data: blob:",
+    "font-src 'self' data:",
+    "style-src 'self' 'unsafe-inline'",
+    "script-src 'self' 'unsafe-inline'",
+    `script-src-elem ${scriptElementSources.join(" ")}`,
+    `connect-src 'self' ${FIREBASE_CONNECT_SOURCES.join(" ")}`,
+    "worker-src 'self' blob:",
+    "frame-src https://accounts.google.com https://*.firebaseapp.com",
+  ].join("; ");
+}
+
+function isLocalDevelopmentHost(hostname: string): boolean {
+  return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1";
+}
+
+function applySecurityHeaders(response: NextResponse, request: NextRequest): NextResponse {
+  response.headers.set("Content-Security-Policy", buildContentSecurityPolicy());
+  response.headers.set("Cross-Origin-Opener-Policy", "same-origin");
+  // Firebase Auth popup/iframe flows do not work under require-corp.
   response.headers.set("Cross-Origin-Embedder-Policy", "unsafe-none");
+  response.headers.set("Permissions-Policy", PERMISSIONS_POLICY);
+  response.headers.set("Referrer-Policy", "no-referrer");
+  response.headers.set("X-Frame-Options", "DENY");
+  response.headers.set("X-Content-Type-Options", "nosniff");
+  response.headers.set("X-Download-Options", "noopen");
+  response.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
+
+  if (!isLocalDevelopmentHost(request.nextUrl.hostname)) {
+    response.headers.set(
+      "Strict-Transport-Security",
+      `max-age=${ONE_YEAR_IN_SECONDS}; includeSubDomains; preload`
+    );
+  }
 
   return response;
+}
+
+export function middleware(request: NextRequest) {
+  const response = NextResponse.next();
+  return applySecurityHeaders(response, request);
 }
 
 export const config = {

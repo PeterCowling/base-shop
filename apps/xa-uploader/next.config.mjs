@@ -54,6 +54,11 @@ const nextConfig = {
   poweredByHeader: false,
   // This is an internal uploader console; do not static-export it.
   output: sharedConfig.output === "export" ? undefined : sharedConfig.output,
+  experimental: {
+    ...sharedConfig.experimental,
+    // Next 16.1.6 crashes in the webpack build-worker path for this app.
+    webpackBuildWorker: false,
+  },
 };
 
 const distDirOverride = process.env.XA_UPLOADER_NEXT_DIST_DIR?.trim();

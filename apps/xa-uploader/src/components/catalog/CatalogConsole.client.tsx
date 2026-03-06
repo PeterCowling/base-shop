@@ -2,7 +2,10 @@
 
 import * as React from "react";
 
-import { deriveCatalogPublishState, isCatalogPublishableState } from "@acme/lib/xa";
+import {
+  deriveCatalogPublishState,
+  isCatalogPublishableState,
+} from "@acme/lib/xa/catalogWorkflow";
 
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 

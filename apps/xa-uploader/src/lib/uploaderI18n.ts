@@ -2,7 +2,7 @@
 
 export type UploaderLocale = "en" | "zh";
 
-export const UPLOADER_DEFAULT_LOCALE: UploaderLocale = "en";
+export const UPLOADER_DEFAULT_LOCALE: UploaderLocale = "zh";
 
 const messages = {
   en: {
@@ -16,7 +16,7 @@ const messages = {
     storefrontXAJ: "XA-J (Jewelry)",
     languageLabel: "Language",
     languageEnglish: "EN",
-    languageZh: "ZH",
+    languageZh: "中文",
     headerGoToInstructions: "Instructions",
     headerGoToConsole: "Console",
 
@@ -26,6 +26,7 @@ const messages = {
     screenNewProduct: "Add",
     screenReviseExisting: "Edit",
     screenCurrencyRates: "Currency",
+    screenSync: "Sync",
     screenNewHint: "",
     screenReviseHint: "",
     screenCurrencyHint:
@@ -51,7 +52,8 @@ const messages = {
     deleteSucceeded: "Deleted product {slug}.",
     syncFailed: "Sync failed.",
     syncSucceeded: "Sync completed.",
-    syncSucceededDeployTriggered: "Sync completed. xa-b deploy was triggered automatically.",
+    syncSucceededDeployTriggered:
+      "Sync completed. xa-b deploy trigger accepted; wait for deploy completion, then verify the product page is live.",
     syncSucceededDeployCooldown:
       "Sync completed. Auto deploy skipped due to cooldown (next eligible: {nextEligibleAt}).",
     syncSucceededDeployFailed:
@@ -205,7 +207,7 @@ const messages = {
       "{publishable} publishable / {draft} draft ({total} total).",
     syncPublishReadinessZero:
       "No publishable products yet. Products must be ready or live before they appear on xa-b.",
-    syncOptionStrict: "strict",
+    syncOptionStrict: "full validation",
     syncOptionRecursive: "recursive",
     syncOptionReplace: "replace",
     syncOptionDryRun: "dry run",
@@ -392,6 +394,7 @@ const messages = {
     currencyRatesSyncedRebuildNote:
       "Rates applied. Rebuild xa-b to publish updated prices to the live website.",
     currencyRatesSavedSyncNotReady: "Rates saved. Run sync manually to apply to catalog.",
+    currencyRatesSavedSyncFailed: "Rates saved, but sync failed. Fix sync before publishing.",
     currencyRatesLoadFailed: "Failed to load currency rates.",
     instructionsPageKicker: "XA uploader",
     instructionsPageTitle: "User instructions",
@@ -498,7 +501,7 @@ const messages = {
     storefrontXAJ: "XA-J（珠宝）",
     languageLabel: "语言",
     languageEnglish: "EN",
-    languageZh: "ZH",
+    languageZh: "中文",
     headerGoToInstructions: "操作指南",
     headerGoToConsole: "控制台",
 
@@ -508,6 +511,7 @@ const messages = {
     screenNewProduct: "添加",
     screenReviseExisting: "编辑",
     screenCurrencyRates: "汇率设置",
+    screenSync: "同步",
     screenNewHint: "",
     screenReviseHint: "",
     screenCurrencyHint: "在此设置店铺全局汇率。同步时将对全部商品统一应用这些汇率。",
@@ -532,7 +536,7 @@ const messages = {
     deleteSucceeded: "已删除商品 {slug}。",
     syncFailed: "同步失败。",
     syncSucceeded: "同步已完成。",
-    syncSucceededDeployTriggered: "同步已完成。已自动触发 xa-b 部署。",
+    syncSucceededDeployTriggered: "同步已完成。xa-b 部署触发已受理；请等待部署完成后再确认商品页已上线。",
     syncSucceededDeployCooldown:
       "同步已完成。由于冷却时间限制，已跳过自动部署（下次可触发时间：{nextEligibleAt}）。",
     syncSucceededDeployFailed: "同步已完成，但 xa-b 自动部署触发失败。请手动重新构建并部署。",
@@ -663,7 +667,7 @@ const messages = {
     syncBlockedAutosavePending: "图片自动保存进行中，已阻止同步。请等待图片变更保存完成。",
     syncPublishReadinessSummary: "{publishable} 个可发布 / {draft} 个草稿（共 {total} 个）。",
     syncPublishReadinessZero: "当前没有可发布商品。商品需达到 ready 或 live 状态后才会出现在 xa-b。",
-    syncOptionStrict: "严格模式",
+    syncOptionStrict: "完整校验",
     syncOptionRecursive: "递归扫描",
     syncOptionReplace: "替换图片",
     syncOptionDryRun: "演练（不写入）",
@@ -849,6 +853,7 @@ const messages = {
     currencyRatesSaveFailed: "保存汇率失败。",
     currencyRatesSyncedRebuildNote: "汇率已应用。重新构建 xa-b 以将更新的价格发布到网站。",
     currencyRatesSavedSyncNotReady: "汇率已保存。请手动运行同步以应用到目录。",
+    currencyRatesSavedSyncFailed: "汇率已保存，但同步失败。请先修复同步再发布。",
     currencyRatesLoadFailed: "加载汇率失败。",
     instructionsPageKicker: "XA uploader",
     instructionsPageTitle: "用户操作指南",

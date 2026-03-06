@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="zh" suppressHydrationWarning>
       <head>
         {/* Inline theme init — runs before paint to prevent FOUC on dark-mode pages */}
         <script
@@ -36,4 +36,3 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     </html>
   );
 }
-

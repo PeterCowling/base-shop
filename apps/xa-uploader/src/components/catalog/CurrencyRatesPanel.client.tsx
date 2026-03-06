@@ -14,15 +14,17 @@ type CurrencyRatesResponse = {
     GBP: number;
     AUD: number;
   } | null;
+  error?: string;
+  reason?: string;
 };
 
 type EditableCurrencyCode = "EUR" | "GBP" | "AUD";
 type EditableCurrencyRates = Record<EditableCurrencyCode, string>;
 
-const DEFAULT_RATES: EditableCurrencyRates = {
-  EUR: "0.9200",
-  GBP: "0.7800",
-  AUD: "1.5000",
+const EMPTY_RATES: EditableCurrencyRates = {
+  EUR: "",
+  GBP: "",
+  AUD: "",
 };
 
 function formatLoadedRates(rates: CurrencyRatesResponse["rates"]): EditableCurrencyRates {
@@ -49,11 +51,13 @@ function EditableRateField({
   label,
   value,
   onChange,
+  disabled,
   testId,
 }: {
   label: string;
   value: string;
   onChange: (nextValue: string) => void;
+  disabled: boolean;
   testId: string;
 }) {
   return (
@@ -63,6 +67,7 @@ function EditableRateField({
         type="number"
         value={value}
         onChange={(event) => onChange(event.target.value)}
+        disabled={disabled}
         step="0.0001"
         min="0.0001"
         placeholder="e.g. 0.9300"
@@ -84,10 +89,11 @@ export function CurrencyRatesPanel({
     checking: boolean;
     ready: boolean;
   };
-  onSync: () => void;
+  onSync: () => Promise<{ ok: boolean }>;
 }) {
   const { t } = useUploaderI18n();
-  const [rates, setRates] = React.useState<EditableCurrencyRates>(DEFAULT_RATES);
+  const [rates, setRates] = React.useState<EditableCurrencyRates>(EMPTY_RATES);
+  const [loadState, setLoadState] = React.useState<"loading" | "ready" | "error">("loading");
   const [saving, setSaving] = React.useState(false);
   const [feedback, setFeedback] = React.useState<ActionFeedback | null>(null);
 
@@ -102,15 +108,26 @@ export function CurrencyRatesPanel({
         });
         const data = (await response.json()) as CurrencyRatesResponse;
         if (!response.ok || !data.ok) {
-          throw new Error("currency_rates_load_failed");
+          const feedbackMessage =
+            data.error === "invalid_rates" && data.reason === "currency_rates_invalid"
+              ? t("syncCurrencyRatesInvalidActionable")
+              : t("currencyRatesLoadFailed");
+          throw new Error(feedbackMessage);
         }
 
         if (!active) return;
         setRates(formatLoadedRates(data.rates));
+        setLoadState("ready");
+        setFeedback(null);
       } catch (error) {
         if (!active) return;
         if (isAbortError(error)) return;
-        setFeedback({ kind: "error", message: t("currencyRatesLoadFailed") });
+        setRates(EMPTY_RATES);
+        setLoadState("error");
+        setFeedback({
+          kind: "error",
+          message: error instanceof Error ? error.message : t("currencyRatesLoadFailed"),
+        });
       }
     };
 
@@ -123,7 +140,7 @@ export function CurrencyRatesPanel({
   }, [t]);
 
   const handleSaveAndSync = async () => {
-    if (busy || saving) return;
+    if (busy || saving || loadState !== "ready") return;
 
     setSaving(true);
     setFeedback(null);
@@ -145,8 +162,13 @@ export function CurrencyRatesPanel({
       }
 
       if (syncReadiness.ready && !syncReadiness.checking) {
-        onSync();
-        setFeedback({ kind: "success", message: t("currencyRatesSyncedRebuildNote") });
+        const syncResult = await onSync();
+        setFeedback({
+          kind: syncResult.ok ? "success" : "error",
+          message: syncResult.ok
+            ? t("currencyRatesSyncedRebuildNote")
+            : t("currencyRatesSavedSyncFailed"),
+        });
         return;
       }
 
@@ -158,7 +180,8 @@ export function CurrencyRatesPanel({
     }
   };
 
-  const saveDisabled = busy || saving;
+  const inputsDisabled = busy || saving || loadState !== "ready";
+  const saveDisabled = inputsDisabled;
   const setRate = React.useCallback((code: EditableCurrencyCode, nextValue: string) => {
     setRates((prev) => ({
       ...prev,
@@ -210,6 +233,7 @@ export function CurrencyRatesPanel({
           label={t("currencyRatesEurLabel")}
           value={rates.EUR}
           onChange={(nextValue) => setRate("EUR", nextValue)}
+          disabled={inputsDisabled}
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           testId="currency-rates-eur"
         />
@@ -218,6 +242,7 @@ export function CurrencyRatesPanel({
           label={t("currencyRatesGbpLabel")}
           value={rates.GBP}
           onChange={(nextValue) => setRate("GBP", nextValue)}
+          disabled={inputsDisabled}
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           testId="currency-rates-gbp"
         />
@@ -226,6 +251,7 @@ export function CurrencyRatesPanel({
           label={t("currencyRatesAudLabel")}
           value={rates.AUD}
           onChange={(nextValue) => setRate("AUD", nextValue)}
+          disabled={inputsDisabled}
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           testId="currency-rates-aud"
         />

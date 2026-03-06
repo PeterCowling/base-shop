@@ -205,6 +205,8 @@ const messages = {
       "{publishable} publishable / {draft} draft ({total} total).",
     syncPublishReadinessZero:
       "No publishable products yet. Products must be ready or live before they appear on xa-b.",
+    syncOptionGroupValidation: "Validation",
+    syncOptionGroupRunModifiers: "Run modifiers",
     syncOptionStrict: "full validation",
     syncOptionRecursive: "recursive",
     syncOptionReplace: "replace",
@@ -663,6 +665,8 @@ const messages = {
     syncBlockedAutosavePending: "图片自动保存进行中，已阻止同步。请等待图片变更保存完成。",
     syncPublishReadinessSummary: "{publishable} 个可发布 / {draft} 个草稿（共 {total} 个）。",
     syncPublishReadinessZero: "当前没有可发布商品。商品需达到 ready 或 live 状态后才会出现在 xa-b。",
+    syncOptionGroupValidation: "校验选项",
+    syncOptionGroupRunModifiers: "执行参数",
     syncOptionStrict: "完整校验",
     syncOptionRecursive: "递归扫描",
     syncOptionReplace: "替换图片",

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { INPUT_CLASS } from "./catalogStyles";
+import { CHECKBOX_CLASS, INPUT_CLASS } from "./catalogStyles";
 
 type Props = {
   label: string;
@@ -13,9 +13,6 @@ type Props = {
   testId?: string;
   onChange: (next: string[]) => void;
 };
-
-const CHECKBOX_CLASSNAME =
-  "rounded border-gate-border text-gate-accent accent-gate-accent focus:ring-gate-accent";
 
 export function RegistryCheckboxGrid({
   label,
@@ -63,7 +60,7 @@ export function RegistryCheckboxGrid({
               type="checkbox"
               checked={registrySelected.includes(opt)}
               onChange={() => toggle(opt)}
-              className={CHECKBOX_CLASSNAME}
+              className={CHECKBOX_CLASS}
             />
             {opt}
           </label>

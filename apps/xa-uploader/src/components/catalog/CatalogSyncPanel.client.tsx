@@ -5,7 +5,7 @@ import * as React from "react";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 import { formatSyncMissingScripts, type SyncScriptId } from "./catalogConsoleFeedback";
-import { BTN_PRIMARY_CLASS, BTN_SECONDARY_CLASS, PANEL_CLASS } from "./catalogStyles";
+import { BTN_PRIMARY_CLASS, BTN_SECONDARY_CLASS, CHECKBOX_CLASS, PANEL_CLASS, SECTION_HEADER_CLASS } from "./catalogStyles";
 import type { ActionFeedback } from "./useCatalogConsole.client";
 
 export function CatalogSyncPanel({
@@ -134,21 +134,41 @@ export function CatalogSyncPanel({
         </p>
       ) : null}
 
-      {/* eslint-disable-next-line ds/enforce-layout-primitives -- XAUP-0001 operator-tool checkbox group */}
-      <div className="mt-4 flex flex-wrap gap-4 text-sm">
-        {(["strict", "recursive", "replace", "dryRun"] as const).map((key) => (
-          <label
-            key={key}
-            className="inline-flex items-center gap-2 text-xs text-gate-muted"
-          >
-            <input
-              type="checkbox"
-              checked={syncOptions[key]}
-              onChange={(event) => onChangeSyncOptions({ ...syncOptions, [key]: event.target.checked })}
-            />
-            {optionLabels[key]}
-          </label>
-        ))}
+      <div className="mt-4 space-y-4">
+        <div>
+          <div className={SECTION_HEADER_CLASS}>{t("syncOptionGroupValidation")}</div>
+          {/* eslint-disable-next-line ds/enforce-layout-primitives -- XAUP-0001 operator-tool checkbox group */}
+          <div className="mt-2 flex flex-wrap gap-4">
+            {(["strict", "recursive"] as const).map((key) => (
+              <label key={key} className="flex items-center gap-2 text-xs text-gate-muted cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={syncOptions[key]}
+                  onChange={(event) => onChangeSyncOptions({ ...syncOptions, [key]: event.target.checked })}
+                  className={CHECKBOX_CLASS}
+                />
+                {optionLabels[key]}
+              </label>
+            ))}
+          </div>
+        </div>
+        <div>
+          <div className={SECTION_HEADER_CLASS}>{t("syncOptionGroupRunModifiers")}</div>
+          {/* eslint-disable-next-line ds/enforce-layout-primitives -- XAUP-0001 operator-tool checkbox group */}
+          <div className="mt-2 flex flex-wrap gap-4">
+            {(["replace", "dryRun"] as const).map((key) => (
+              <label key={key} className="flex items-center gap-2 text-xs text-gate-muted cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={syncOptions[key]}
+                  onChange={(event) => onChangeSyncOptions({ ...syncOptions, [key]: event.target.checked })}
+                  className={CHECKBOX_CLASS}
+                />
+                {optionLabels[key]}
+              </label>
+            ))}
+          </div>
+        </div>
       </div>
 
       {feedback ? (

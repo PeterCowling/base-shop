@@ -14,7 +14,7 @@ import type { XaCatalogStorefront } from "../../lib/catalogStorefront.types";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 import { getCatalogApiErrorMessage } from "./catalogConsoleFeedback";
-import { SELECT_CLASS } from "./catalogStyles";
+import { BTN_SECONDARY_CLASS, SELECT_CLASS } from "./catalogStyles";
 
 const IMAGE_ROLES = ["front", "side", "top", "back", "detail", "interior", "scale"] as const;
 type UploadImageRole = (typeof IMAGE_ROLES)[number];
@@ -186,6 +186,24 @@ function removePipeEntry(pipeStr: string, index: number): string {
     .join("|");
 }
 
+export function reorderPipeEntry(pipeStr: string, fromIndex: number, direction: "up" | "down"): string {
+  const parts = pipeStr
+    .split("|")
+    .map((value) => value.trim())
+    .filter(Boolean);
+  const toIndex = direction === "up" ? fromIndex - 1 : fromIndex + 1;
+  if (toIndex < 0 || toIndex >= parts.length || fromIndex < 0 || fromIndex >= parts.length) {
+    return pipeStr
+      .split("|")
+      .map((value) => value.trim())
+      .filter(Boolean)
+      .join("|");
+  }
+  const next = [...parts];
+  [next[fromIndex], next[toIndex]] = [next[toIndex]!, next[fromIndex]!];
+  return next.join("|");
+}
+
 function resolveImageSrc(entryPath: string, previews: Map<string, string>): string | undefined {
   const blob = previews.get(entryPath);
   if (blob) return blob;
@@ -218,6 +236,28 @@ function appendImageDraftEntry(
     imageRoles: nextRoles,
     imageAltTexts: nextAlts,
   };
+}
+
+function reorderImageDraft(
+  draft: CatalogProductDraftInput,
+  index: number,
+  direction: "up" | "down",
+): CatalogProductDraftInput {
+  return {
+    ...draft,
+    imageFiles: reorderPipeEntry(draft.imageFiles ?? "", index, direction),
+    imageRoles: reorderPipeEntry(draft.imageRoles ?? "", index, direction),
+    imageAltTexts: reorderPipeEntry(draft.imageAltTexts ?? "", index, direction),
+  };
+}
+
+function notifyImageDraftChange(
+  nextDraft: CatalogProductDraftInput,
+  onChange: (next: CatalogProductDraftInput) => void,
+  onImageUploaded: (nextDraft: CatalogProductDraftInput) => void,
+) {
+  onChange(nextDraft);
+  onImageUploaded(nextDraft);
 }
 
 function isDeletableCatalogPath(pathValue: string): boolean {
@@ -445,11 +485,13 @@ function ImageGallery({
   entries,
   previews,
   onRemove,
+  onReorder,
   t,
 }: {
   entries: ImageEntry[];
   previews: Map<string, string>;
   onRemove: (index: number) => void;
+  onReorder: (index: number, direction: "up" | "down") => void;
   t: ReturnType<typeof useUploaderI18n>["t"];
 }) {
   if (entries.length === 0) return null;
@@ -460,7 +502,7 @@ function ImageGallery({
         {t("uploadImageCount").replace("{count}", String(entries.length))}
       </div>
       {/* eslint-disable-next-line ds/enforce-layout-primitives -- XAUP-0001 operator-tool thumbnail grid */}
-      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
         {entries.map((entry, index) => {
           const src = resolveImageSrc(entry.path, previews);
           return (
@@ -480,13 +522,31 @@ function ImageGallery({
                 )}
               </div>
 
-              <div className="flex items-center gap-2 px-2 py-1.5">
+              <div className="flex items-center gap-1 px-2 py-1.5">
                 <span className="min-w-0 flex-1 truncate text-2xs text-gate-ink">{entry.filename}</span>
                 {entry.role ? (
                   <span className="shrink-0 rounded bg-gate-accent-soft px-1 py-0.5 text-2xs text-gate-accent">
                     {entry.role}
                   </span>
                 ) : null}
+                <button
+                  type="button"
+                  onClick={() => onReorder(index, "up")}
+                  disabled={index === 0}
+                  className={`${BTN_SECONDARY_CLASS} inline-flex min-h-11 min-w-11 items-center justify-center`}
+                  data-testid={`image-move-up-${index}`}
+                >
+                  ↑
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onReorder(index, "down")}
+                  disabled={index === entries.length - 1}
+                  className={`${BTN_SECONDARY_CLASS} inline-flex min-h-11 min-w-11 items-center justify-center`}
+                  data-testid={`image-move-down-${index}`}
+                >
+                  ↓
+                </button>
               </div>
 
               <button
@@ -539,6 +599,7 @@ function useImageUploadController({
     storefront,
   });
   const { handleDragOver, handleDragLeave } = useDropZoneDragHandlers(setDragOver);
+
   useEffect(() => {
     return () => {
       for (const url of previews.values()) {
@@ -559,6 +620,7 @@ function useImageUploadController({
       setPendingAutosaveStartedAt(null);
     }
   }, [lastAutosaveSavedAt, pendingAutosaveStartedAt, uploadStatus]);
+
   const handleUpload = useCallback(
     async (file: File) => {
       if (!ACCEPTED_TYPES.has(file.type)) {
@@ -628,8 +690,7 @@ function useImageUploadController({
         });
 
         const nextDraft = appendImageDraftEntry(draft, json.key, selectedRole);
-        onChange(nextDraft);
-        onImageUploaded(nextDraft);
+        notifyImageDraftChange(nextDraft, onChange, onImageUploaded);
         setPendingAutosaveStartedAt(Date.now());
         setUploadStatus("persisting");
       } catch {
@@ -641,7 +702,6 @@ function useImageUploadController({
     },
     [draft, hasSlug, onChange, onImageUploaded, selectedRole, storefront, t],
   );
-
   const handleFileInput = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
@@ -652,7 +712,6 @@ function useImageUploadController({
     },
     [handleUpload],
   );
-
   const handleDrop = useCallback(
     (event: React.DragEvent) => {
       event.preventDefault();
@@ -665,7 +724,6 @@ function useImageUploadController({
     },
     [handleUpload],
   );
-
   const handleRemoveImage = useCallback(
     (index: number) => {
       const entry = imageEntries[index];
@@ -689,15 +747,20 @@ function useImageUploadController({
         imageAltTexts: removePipeEntry(draft.imageAltTexts ?? "", index),
       };
       const queuedAt = Date.now();
-      onChange(nextDraft);
-      onImageUploaded(nextDraft);
+      notifyImageDraftChange(nextDraft, onChange, onImageUploaded);
       if (removedPath) {
         void cleanupRemovedImage(removedPath, queuedAt);
       }
     },
     [cleanupRemovedImage, draft, imageEntries, onChange, onImageUploaded, previews],
   );
-
+  const handleReorderImage = useCallback(
+    (index: number, direction: "up" | "down") => {
+      const nextDraft = reorderImageDraft(draft, index, direction);
+      notifyImageDraftChange(nextDraft, onChange, onImageUploaded);
+    },
+    [draft, onChange, onImageUploaded],
+  );
   return {
     fileInputRef,
     previews,
@@ -712,6 +775,7 @@ function useImageUploadController({
     handleDrop,
     handleFileInput,
     handleRemoveImage,
+    handleReorderImage,
   };
 }
 
@@ -758,6 +822,7 @@ export function CatalogProductImagesFields({
     handleDrop,
     handleFileInput,
     handleRemoveImage,
+    handleReorderImage,
   } = useImageUploadController({
     draft,
     storefront,
@@ -772,8 +837,7 @@ export function CatalogProductImagesFields({
   });
 
   return (
-    // eslint-disable-next-line ds/container-widths-only-at -- XAUP-0001 operator-tool constrained form
-    <div className="mx-auto mt-8 max-w-prose space-y-4">
+    <div className="mt-8 w-full space-y-4">
       <div className="text-xs uppercase tracking-label-lg text-gate-muted">{t("imagesFieldsTitle")}</div>
 
       <RoleSelector selectedRole={selectedRole} onRoleChange={setSelectedRole} t={t} />
@@ -812,7 +876,13 @@ export function CatalogProductImagesFields({
       {fieldErrors.imageFiles ? <div className="text-xs text-danger-fg">{fieldErrors.imageFiles}</div> : null}
       {fieldErrors.imageRoles ? <div className="text-xs text-danger-fg">{fieldErrors.imageRoles}</div> : null}
 
-      <ImageGallery entries={imageEntries} previews={previews} onRemove={handleRemoveImage} t={t} />
+      <ImageGallery
+        entries={imageEntries}
+        previews={previews}
+        onRemove={handleRemoveImage}
+        onReorder={handleReorderImage}
+        t={t}
+      />
     </div>
   );
 }

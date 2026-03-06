@@ -35,6 +35,12 @@ export const BTN_ACCENT_OUTLINE_CLASS =
 export const BTN_DANGER_CLASS =
   "rounded-md border border-danger px-3 py-1 text-xs uppercase tracking-label text-danger-fg transition hover:bg-danger-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60";
 
+// ─── Checkboxes ────────────────────────────────────────────────────
+
+/** Design-system-compliant checkbox (gate-* tokens, matches RegistryCheckboxGrid) */
+export const CHECKBOX_CLASS =
+  "rounded border-gate-border text-gate-accent accent-gate-accent focus:ring-gate-accent";
+
 // ─── Labels & Headers ──────────────────────────────────────────────
 
 /** Standard field label (uppercase, muted) */

@@ -1,0 +1,25 @@
+{
+  "id": "SGL-04",
+  "class": "single-topic",
+  "description": "Cancellation policy request",
+  "source_refs": [
+    "packages/mcp-server/src/__tests__/draft-pipeline.integration.test.ts"
+  ],
+  "input": {
+    "from": "David Ellis",
+    "subject": "Cancellation inquiry",
+    "body": "Hello, I need to understand the cancellation policy for our booking. What happens if we need to cancel our reservation?"
+  },
+  "expected": {
+    "dominant_scenario_category": "cancellation",
+    "comparison_fields": [
+      "interpreted_language",
+      "dominant_scenario_category",
+      "selected_template_subject",
+      "selected_template_category",
+      "answered_question_set",
+      "quality_result",
+      "branded_html_present"
+    ]
+  }
+}

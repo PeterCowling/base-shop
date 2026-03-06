@@ -30,6 +30,7 @@
     "check-i18n-coverage": "pnpm exec tsx ./scripts/check-i18n-coverage.ts",
     "scaffold-guide-block": "pnpm exec tsx ./scripts/scaffold-guide-block.ts",
     "generate:guide-link-labels": "pnpm exec tsx --tsconfig tsconfig.scripts.json scripts/generate-guide-link-labels.ts",
+    "verify-route-localization": "pnpm exec tsx --tsconfig tsconfig.scripts.json scripts/verify-route-localization.ts",
     "translate-guides": "pnpm exec tsx ./scripts/translate-guides.ts",
     "translate-guides:spike": "pnpm exec tsx ./scripts/translate-guides-spike.ts",
     "generate-translation-drift-manifest": "pnpm exec tsx ./scripts/generate-translation-drift-manifest.ts",

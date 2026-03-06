@@ -4,8 +4,8 @@ Status: Active
 Domain: UI | SEO | Analytics | Integration
 Workstream: Mixed
 Created: 2026-03-01
-Last-reviewed: 2026-03-01
-Last-updated: 2026-03-01
+Last-reviewed: 2026-03-06
+Last-updated: 2026-03-06
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: brikette-sales-funnel-analysis
 Deliverable-Type: multi-deliverable
@@ -27,7 +27,7 @@ The plan intentionally separates internal delivery from external unknowns. Two b
 
 Live production routing on Cloudflare currently shows canonical/alias drift (duplicate `200` aliases and canonical targets returning `404`), so redirect/canonical convergence is treated as explicit implementation scope, not implicit SEO cleanup.
 
-This run has progressed through `/lp-do-build` cycles; remaining work is constrained by external production redirect convergence.
+This run has progressed through `/lp-do-build` cycles, but a route-localization audit on 2026-03-06 showed that several public non-English routes still expose English slugs. A new route-localization tranche is therefore inserted ahead of live Cloudflare convergence so production redirects target the final localized public contract once, not an intermediate state. `/lp-do-replan` on 2026-03-06 then added explicit precursor tasks for top-level slug policy and guide-fallback mapping so the remaining route-localization tasks are runnable at higher confidence instead of carrying unresolved scout notes.
 
 ## Active tasks
 - [x] TASK-01: Validate Octobook post-handoff enforcement boundary (GV-01)
@@ -39,12 +39,22 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
 - [x] TASK-06B: Implement no-JS hostel assisted-booking policy and boundary-aware copy
 - [x] TASK-07A: Canonicalize handoff analytics schema and `brik_click_id` event payload
 - [x] TASK-07B: Apply click-id handoff URL and reconciliation policy based on export evidence
-- [~] TASK-08: Apply booking-surface SEO/indexation contract + production redirect convergence — Blocked (live canonical targets still 404)
+- [x] TASK-08A: Verify app-owned booking-surface SEO/indexation contract closure
+- [x] TASK-08B: Freeze live redirect inventory and canonical target map
+- [x] TASK-13A: Implement route-localization inventory and regression audit gate
+- [x] TASK-13F: Freeze top-level slug policy, allowlist, and apartment-route consumer map
+- [x] TASK-13B: Localize top-level public route slugs and apartment booking route
+- [x] TASK-13C: Localize dorm room detail slugs for non-English locales still using English
+- [x] TASK-13G: Map guide-slug fallback causes and alias-preservation contract
+- [ ] TASK-13D: Localize live guide/article slugs still falling back to English
+- [ ] TASK-13E: Route-localization checkpoint and final canonical target refresh
+- [~] TASK-08C: Apply live Cloudflare redirect convergence at the production source of truth — Blocked (external routing change pending)
+- [~] TASK-08D: Verify live one-hop redirects and canonical `200` targets — Blocked (depends on TASK-08C)
 - [x] TASK-09A: Ship indicative pricing fallback with auto-seed removal
 - [x] TASK-09B: Implement indicative pricing governance and stale-data ops controls
 - [x] TASK-10: Validate recovery compliance and technical channel readiness
 - [x] TASK-11: Ship recovery MVP (email-only) with resume-link flow and proxy audiences
-- [~] TASK-12: Horizon checkpoint and confidence recalibration — Blocked (depends on TASK-08 external convergence)
+- [~] TASK-12: Horizon checkpoint and confidence recalibration — Blocked (depends on TASK-08D live verification)
 
 ## Goals
 - Deliver a dead-end-free booking funnel with room-detail fast lane and `/book` comparison role.
@@ -52,6 +62,7 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
 - Establish one canonical booking state contract with explicit precedence and continuity behavior.
 - Canonicalize handoff analytics for no-API operational reconciliation and recovery targeting.
 - Preserve conversion anchoring when search is absent through governed indicative pricing.
+- Ensure non-English canonical public routes do not leak unintended English slugs outside an explicit allowlist.
 - Converge live production route aliases to one-hop permanent redirect policy with valid canonical targets.
 
 ## Non-goals
@@ -64,11 +75,14 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
   - Hostel contracts are strict: `2..8` nights, max `8` adults, adults-only.
   - Over-limit demand must route to split-booking guidance or assisted path; never silent dead-end.
   - URL continuity must avoid per-change churn; only explicit action writes are allowed.
+  - Public route changes require redirect-compatible rollout; no localized slug may change without preserving deep-link and SEO continuity from the prior URL.
+  - Internal App Router folder segments may remain English; only public canonical URLs must be localized.
   - Production redirect source-of-truth must be Worker/middleware/edge rules on live Cloudflare target; `_redirects` alone is insufficient for production parity.
   - Local Jest/e2e execution is not used in this workflow; CI remains the pass/fail source of truth.
 - Assumptions:
   - Cross-tab continuity is best-effort via shared storage with TTL; cold-state behavior must still convert safely.
   - Existing Brikette route architecture can consume a canonical booking state service without platform migration.
+  - Guide slug localization is coupled to guide label completeness and may require explicit overrides where locale content still falls back to English.
 
 ## Inherited Outcome Contract
 - **Why:** Brikette needs an ideal, low-friction funnel where room-intent users can book fast, comparison users can browse clearly, and no route traps users in invalid or ambiguous state.
@@ -78,12 +92,14 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
 
 ## Fact-Find Reference
 - Related brief: `docs/plans/brikette-sales-funnel-analysis/fact-find.md`
+- Related briefing: `docs/briefs/brikette-route-localization-briefing.md`
 - Key findings used:
   - Booking continuity is currently fragmented across URL and route-local state.
   - Hard hostel constraints already exist in core validators and handoff URL builder.
   - Route CTA behavior still over-relies on `/book` fallback.
   - Analytics contract is not fully canonicalized.
   - Live production routing currently has canonical/alias mismatch (`200` duplicates + `404` canonical targets) and needs explicit redirect convergence.
+  - Public route-localization audit (2026-03-06) found real non-English English-slug leakage in the apartment booking route, legal-policy slugs, `hi`/`da` booking slug variants, `ja`/`ko` house-rules variants, `it` tag slug, room slugs in several non-Latin locales, and ~29-30 live guide slugs per locale still matching English.
   - Post-handoff recovery and indicative pricing must be first-class to maximize impact under no-API constraints.
 
 ## Proposed Approach
@@ -108,31 +124,45 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
 | TASK-01 | INVESTIGATE | Validate Octobook post-handoff enforcement boundary | 70% | M | Complete (2026-03-01) | - | TASK-06B, TASK-12 |
 | TASK-02 | INVESTIGATE | Validate click-id persistence in Octorate exports | 70% | M | Complete (2026-03-01) | - | TASK-07B, TASK-12 |
 | TASK-03 | IMPLEMENT | CI-first fast feedback target for booking contracts | 85% | M | Complete (2026-03-01) | - | TASK-04, TASK-05, TASK-07A |
-| TASK-04 | IMPLEMENT | Canonical `BookingSearch` + best-effort cross-tab continuity | 80% | L | Complete (2026-03-01) | TASK-03 | TASK-05, TASK-06A, TASK-07A, TASK-08, TASK-09A |
-| TASK-05 | IMPLEMENT | Route/CTA realignment to ideal funnel roles | 85% | L | Complete (2026-03-01) | TASK-03, TASK-04 | TASK-08, TASK-09A, TASK-12 |
+| TASK-04 | IMPLEMENT | Canonical `BookingSearch` + best-effort cross-tab continuity | 80% | L | Complete (2026-03-01) | TASK-03 | TASK-05, TASK-06A, TASK-07A, TASK-08A, TASK-09A |
+| TASK-05 | IMPLEMENT | Route/CTA realignment to ideal funnel roles | 85% | L | Complete (2026-03-01) | TASK-03, TASK-04 | TASK-08A, TASK-09A |
 | TASK-06A | IMPLEMENT | Hostel pre-handoff validation UX + split-booking guidance | 85% | M | Complete (2026-03-01) | TASK-04 | TASK-06B, TASK-11, TASK-12 |
 | TASK-06B | IMPLEMENT | Hostel no-JS assisted policy + copy finalization | 75% | M | Complete (2026-03-01) | TASK-01, TASK-06A | TASK-12 |
 | TASK-07A | IMPLEMENT | Canonical handoff analytics schema + click-id event payload | 85% | M | Complete (2026-03-01) | TASK-03, TASK-04 | TASK-07B, TASK-11, TASK-12 |
 | TASK-07B | IMPLEMENT | Click-id handoff URL + reconciliation join policy | 75% | S | Complete (2026-03-01) | TASK-02, TASK-07A | TASK-12 |
-| TASK-08 | IMPLEMENT | Booking-surface SEO/indexation + live Cloudflare redirect/canonical convergence | 85% | M | Blocked (2026-03-01) | TASK-04 | TASK-12 |
+| TASK-08A | IMPLEMENT | Verify app-owned booking-surface SEO/indexation contract closure | 90% | S | Complete (2026-03-01) | TASK-04, TASK-05 | TASK-08B |
+| TASK-08B | IMPLEMENT | Freeze live redirect inventory and canonical target map | 85% | S | Complete (2026-03-01) | TASK-08A | TASK-13A |
+| TASK-13A | IMPLEMENT | Route-localization inventory + regression audit gate | 85% | M | Complete (2026-03-06) | TASK-08B | TASK-13F, TASK-13C, TASK-13G |
+| TASK-13F | INVESTIGATE | Freeze top-level slug policy, allowlist, and apartment-route consumer map | 70% | S | Complete (2026-03-06) | TASK-13A | TASK-13B |
+| TASK-13B | IMPLEMENT | Localize top-level public route slugs + apartment booking route | 85% | M | Complete (2026-03-06) | TASK-13A, TASK-13F | TASK-13E |
+| TASK-13C | IMPLEMENT | Localize dorm room detail slugs for locales still using English | 80% | M | Complete (2026-03-06) | TASK-13A | TASK-13E |
+| TASK-13G | INVESTIGATE | Map guide-slug fallback causes and alias-preservation contract | 70% | M | Complete (2026-03-06) | TASK-13A | TASK-13D |
+| TASK-13D | IMPLEMENT | Localize live guide/article slugs still falling back to English | 80% | L | Pending | TASK-13A, TASK-13G | TASK-13E |
+| TASK-13E | CHECKPOINT | Route-localization checkpoint + final canonical target refresh | 95% | S | Pending | TASK-13B, TASK-13C, TASK-13D | TASK-08C |
+| TASK-08C | IMPLEMENT | Apply live Cloudflare redirect convergence at production source of truth | 80% | M | Blocked (2026-03-06) | TASK-13E | TASK-08D, TASK-12 |
+| TASK-08D | INVESTIGATE | Verify live one-hop redirects and canonical `200` targets | 85% | S | Blocked (2026-03-06) | TASK-08C | TASK-12 |
 | TASK-09A | IMPLEMENT | Indicative pricing fallback coupled with auto-seed removal | 85% | M | Complete (2026-03-01) | TASK-04, TASK-05 | TASK-09B, TASK-12 |
 | TASK-09B | IMPLEMENT | Indicative pricing governance/staleness controls | 75% | S | Complete (2026-03-01) | TASK-09A | TASK-12 |
 | TASK-10 | INVESTIGATE | Recovery compliance + technical channel readiness | 70% | M | Complete (2026-03-01) | - | TASK-11 |
-| TASK-11 | IMPLEMENT | Recovery MVP (email-only) + resume-link + proxy audiences | 80% | L | Complete (2026-03-01) | TASK-06A, TASK-07A, TASK-10 | TASK-12 |
-| TASK-12 | CHECKPOINT | Horizon checkpoint + `/lp-do-replan` for next tranche | 95% | S | Blocked (2026-03-01) | TASK-01, TASK-02, TASK-05, TASK-06A, TASK-06B, TASK-07A, TASK-07B, TASK-08, TASK-09A, TASK-09B, TASK-11 | - |
+| TASK-11 | IMPLEMENT | Recovery MVP (email-only) + resume-link + proxy audiences | 80% | L | Complete (2026-03-01) | TASK-06A, TASK-07A, TASK-10 | - |
+| TASK-12 | CHECKPOINT | Horizon checkpoint + `/lp-do-replan` for next tranche | 95% | S | Blocked (2026-03-06) | TASK-08D | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
 |---|---|---|---|
 | 1 | TASK-01, TASK-02, TASK-03, TASK-10 | - | Boundary and channel discovery + CI feedback harness |
 | 2 | TASK-04, TASK-07A | TASK-03 (TASK-04), TASK-03,TASK-04 (TASK-07A) | State foundation then early analytics normalization |
-| 3 | TASK-05, TASK-06A, TASK-08 | TASK-04 (and TASK-03 for TASK-05) | Funnel behavior, hostel enforcement, SEO + production redirect convergence |
+| 3 | TASK-05, TASK-06A, TASK-08A | TASK-04 (and TASK-03 for TASK-05) | Funnel behavior, hostel enforcement, and app-owned SEO/indexation closure |
 | 4 | TASK-09A, TASK-06B, TASK-07B | TASK-04,TASK-05 (TASK-09A), TASK-01,TASK-06A (TASK-06B), TASK-02,TASK-07A (TASK-07B) | Indicative fallback ships with auto-seed removal and boundary-dependent contracts |
 | 5 | TASK-09B, TASK-11 | TASK-09A (TASK-09B), TASK-06A,TASK-07A,TASK-10 (TASK-11) | Governance closure + recovery MVP delivery |
-| 6 | TASK-12 | All blocking tasks complete | Mandatory confidence recalibration |
+| 6 | TASK-08B, TASK-13A | TASK-08A (TASK-08B), TASK-08B (TASK-13A) | Freeze current live map, then implement route-localization audit and final-contract inventory |
+| 7 | TASK-13F, TASK-13C, TASK-13G | TASK-13A | Resolve top-level policy unknowns, room-slug implementation, and guide-fallback cause map in parallel |
+| 8 | TASK-13B, TASK-13D | TASK-13A,TASK-13F (TASK-13B), TASK-13A,TASK-13G (TASK-13D) | Execute top-level and guide-slug localization once precursor evidence is frozen |
+| 9 | TASK-13E, TASK-08C | TASK-13B,TASK-13C,TASK-13D (TASK-13E), TASK-13E (TASK-08C) | Refresh final canonical targets, then apply Cloudflare source-of-truth routing changes once |
+| 10 | TASK-08D, TASK-12 | TASK-08C (TASK-08D), TASK-08D (TASK-12) | Live curl verification gate, then checkpoint |
 
 - Max parallelism: 4 tasks (Wave 1)
-- Critical path: TASK-03 -> TASK-04 -> TASK-07A -> TASK-05 -> TASK-09A -> TASK-11 -> TASK-12
+- Critical path: TASK-03 -> TASK-04 -> TASK-05 -> TASK-08A -> TASK-08B -> TASK-13A -> TASK-13G -> TASK-13D -> TASK-13E -> TASK-08C -> TASK-08D -> TASK-12
 
 ## Simulation Trace
 | Step | Preconditions Met | Issues Found | Resolution Required |
@@ -146,12 +176,22 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
 | TASK-06B: Hostel no-JS policy | Partial | [Missing precondition][Moderate]: copy and claims depend on TASK-01 boundary output | Yes |
 | TASK-07A: Canonical analytics schema | Partial | [Type contract gap][Major]: payload schema change requires synchronized emitters and downstream consumers | Yes |
 | TASK-07B: Handoff URL click-id policy | Partial | [Missing data dependency][Moderate]: export persistence evidence from TASK-02 controls deterministic join claims | Yes |
-| TASK-08: SEO/indexation + production redirects | Partial | [Ordering inversion][Major]: live aliases currently include duplicate `200` paths and canonical targets that return `404`; one-hop redirect convergence required before policy can be considered complete | Yes |
+| TASK-08A: App SEO/indexation closure | Yes | None | No |
+| TASK-08B: Redirect inventory + canonical map | Yes | None | No |
+| TASK-13A: Route-localization audit gate | Yes | None | No |
+| TASK-13F: Top-level policy + consumer map | Yes | None | No |
+| TASK-13B: Top-level localized route closure | Partial | [Missing precondition][Moderate]: waits on TASK-13F to freeze legal-route policy and explicit shared-spelling allowlist | Yes |
+| TASK-13C: Dorm room slug localization | Partial | [Backward compatibility][Major]: reverse lookup and old slug deep links must survive locale-by-locale changes | Yes |
+| TASK-13G: Guide fallback cause map | Yes | None | No |
+| TASK-13D: Guide slug localization closure | Partial | [Missing precondition][Moderate]: waits on TASK-13G to freeze fallback causes and alias-preservation strategy | Yes |
+| TASK-13E: Route-localization checkpoint | Partial | [Ordering dependency][Moderate]: must refresh canonical target map before external redirect rollout | Yes |
+| TASK-08C: Live Cloudflare redirect convergence | Partial | [External dependency][Major]: production source-of-truth routing change is outside local app code and must wait for the refreshed localized target contract | Yes |
+| TASK-08D: Live redirect verification | Partial | [Ordering dependency][Major]: cannot prove one-hop redirect behavior or canonical `200` targets until TASK-08C is applied live | Yes |
 | TASK-09A: Indicative fallback + auto-seed removal | Yes | None | No |
 | TASK-09B: Indicative governance | Partial | [Missing data dependency][Moderate]: owner/cadence process must be documented to avoid stale anchors | Yes |
 | TASK-10: Recovery readiness | Yes | None | No |
 | TASK-11: Recovery MVP email-only | Yes | None | No |
-| TASK-12: Checkpoint | Partial | [Missing precondition][Major]: depends on TASK-08 live redirect/canonical convergence | Yes |
+| TASK-12: Checkpoint | Partial | [Missing precondition][Major]: depends on TASK-08D live redirect verification | Yes |
 
 ## Tasks
 
@@ -164,7 +204,7 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
 - **Status:** Complete (2026-03-01)
 - **Affects:** `docs/plans/brikette-sales-funnel-analysis/artifacts/octobook-enforcement-matrix.md`, `[readonly] apps/brikette/src/utils/buildOctorateUrl.ts`
 - **Depends on:** -
-- **Blocks:** TASK-06B, TASK-12
+- **Blocks:** TASK-06B
 - **Confidence:** 70%
   - Implementation: 75% - bounded evidence capture once access is granted.
   - Approach: 70% - depends on available Octobook controls.
@@ -197,7 +237,7 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
 - **Status:** Complete (2026-03-01)
 - **Affects:** `docs/plans/brikette-sales-funnel-analysis/artifacts/click-id-export-persistence.md`, `[readonly] apps/brikette/src/utils/ga4-events.ts`
 - **Depends on:** -
-- **Blocks:** TASK-07B, TASK-12
+- **Blocks:** TASK-07B
 - **Confidence:** 70%
   - Implementation: 75% - sampling and field audit are bounded.
   - Approach: 70% - export variability may limit certainty.
@@ -276,7 +316,7 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
 - **Status:** Complete (2026-03-01)
 - **Affects:** `apps/brikette/src/app/[lang]/HomeContent.tsx`, `apps/brikette/src/app/[lang]/dorms/RoomsPageContent.tsx`, `apps/brikette/src/app/[lang]/dorms/[id]/RoomDetailContent.tsx`, `apps/brikette/src/app/[lang]/book/BookPageContent.tsx`, `apps/brikette/src/components/landing/BookingWidget.tsx`, `apps/brikette/src/utils/*booking*`
 - **Depends on:** TASK-03
-- **Blocks:** TASK-05, TASK-06A, TASK-07A, TASK-08, TASK-09A
+- **Blocks:** TASK-05, TASK-06A, TASK-07A, TASK-08A, TASK-09A
 - **Confidence:** 80%
   - Implementation: 80% - CI harness from TASK-03 now isolates and accelerates migration feedback.
   - Approach: 80% - contract is explicit and validation loop is now scoped for rapid iteration.
@@ -339,7 +379,7 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
 - **Status:** Complete (2026-03-01)
 - **Affects:** `apps/brikette/src/app/[lang]/HomeContent.tsx`, `apps/brikette/src/app/[lang]/dorms/RoomsPageContent.tsx`, `apps/brikette/src/app/[lang]/dorms/[id]/RoomDetailContent.tsx`, `apps/brikette/src/app/[lang]/book/BookPageContent.tsx`, `packages/ui/src/organisms/RoomsSection.tsx`, `packages/ui/src/organisms/StickyBookNow.tsx`
 - **Depends on:** TASK-03, TASK-04
-- **Blocks:** TASK-08, TASK-09A, TASK-12
+- **Blocks:** TASK-08A, TASK-09A
 - **Confidence:** 85%
   - Implementation: 85% - route ownership and CTA seams are known.
   - Approach: 85% - role contract is explicit per route.
@@ -389,7 +429,7 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
 - **Status:** Complete (2026-03-01)
 - **Affects:** `apps/brikette/src/utils/bookingDateRules.ts`, `apps/brikette/src/utils/buildOctorateUrl.ts`, `apps/brikette/src/app/[lang]/book/*`, `apps/brikette/src/app/[lang]/dorms/*`
 - **Depends on:** TASK-04
-- **Blocks:** TASK-06B, TASK-11, TASK-12
+- **Blocks:** TASK-06B, TASK-11
 - **Confidence:** 85%
   - Implementation: 85% - core constraints already exist in canonical utilities.
   - Approach: 85% - policy is fixed and unambiguous.
@@ -434,7 +474,7 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
 - **Status:** Complete (2026-03-01)
 - **Affects:** `apps/brikette/src/app/[lang]/book/page.tsx`, `apps/brikette/src/app/[lang]/dorms/[id]/*`, `docs/plans/brikette-sales-funnel-analysis/artifacts/no-js-policy-copy.md`
 - **Depends on:** TASK-01, TASK-06A
-- **Blocks:** TASK-12
+- **Blocks:** -
 - **Confidence:** 75%
   - Implementation: 75% - implementation is bounded but boundary/copy depends on GV-01.
   - Approach: 75% - final wording depends on proven Octobook enforcement capability.
@@ -480,7 +520,7 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
 - **Status:** Complete (2026-03-01)
 - **Affects:** `apps/brikette/src/utils/ga4-events.ts`, `apps/brikette/src/components/*booking*`, `apps/brikette/src/app/[lang]/**/Book*`
 - **Depends on:** TASK-03, TASK-04
-- **Blocks:** TASK-07B, TASK-11, TASK-12
+- **Blocks:** TASK-07B, TASK-11
 - **Confidence:** 85%
   - Implementation: 85% - event seams are known and already partially consolidated.
   - Approach: 85% - schema contract is explicit.
@@ -533,7 +573,7 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
 - **Status:** Complete (2026-03-01)
 - **Affects:** `apps/brikette/src/utils/buildOctorateUrl.ts`, `docs/plans/brikette-sales-funnel-analysis/artifacts/reconciliation-policy.md`
 - **Depends on:** TASK-02, TASK-07A
-- **Blocks:** TASK-12
+- **Blocks:** -
 - **Confidence:** 75%
   - Implementation: 75% - small implementation, but policy branch depends on TASK-02 evidence.
   - Approach: 75% - deterministic/proxy mode must match export reality.
@@ -564,57 +604,501 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
   - Validation:
     - `pnpm --filter @apps/brikette typecheck` (pass)
 
-### TASK-08: Apply booking-surface SEO/indexation contract and production redirect convergence
+### TASK-08A: Verify app-owned booking-surface SEO/indexation contract closure
 - **Type:** IMPLEMENT
-- **Deliverable:** route indexation/canonical matrix plus metadata/link updates and production redirect convergence matrix
+- **Deliverable:** verified route indexation/canonical matrix plus app-owned metadata/link updates aligned to the matrix
 - **Execution-Skill:** lp-seo
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
-- **Effort:** M
-- **Status:** Blocked (2026-03-01)
-- **Affects:** `apps/brikette/src/app/[lang]/book/page.tsx`, `apps/brikette/src/app/_lib/metadata.ts`, `apps/brikette/src/components/*booking*`, `docs/plans/brikette-sales-funnel-analysis/artifacts/seo-indexation-matrix.md`, `docs/plans/brikette-sales-funnel-analysis/artifacts/production-redirect-matrix.md`, `[external] live Cloudflare Worker/middleware redirect rules`
-- **Depends on:** TASK-04
-- **Blocks:** TASK-12
-- **Confidence:** 85%
-  - Implementation: 85% - metadata and link points are known.
-  - Approach: 85% - policy matrix makes decisions explicit and stable.
-  - Impact: 85% - prevents crawl/index drift from booking-state changes.
+- **Effort:** S
+- **Status:** Complete (2026-03-01)
+- **Affects:** `apps/brikette/src/app/[lang]/book/page.tsx`, `apps/brikette/src/app/_lib/metadata.ts`, `apps/brikette/src/components/*booking*`, `docs/plans/brikette-sales-funnel-analysis/artifacts/seo-indexation-matrix.md`
+- **Depends on:** TASK-04, TASK-05
+- **Blocks:** TASK-08B
+- **Confidence:** 90%
+  - Implementation: 90% - app-owned metadata and link points were already known and were updated in-repo.
+  - Approach: 90% - isolating app-owned SEO closure from live edge routing removes the previous blended blocker.
+  - Impact: 85% - keeps crawl/index behavior inside the app aligned even before external redirect convergence lands.
 - **Acceptance:**
   - Matrix defines route policy for `/dorms`, `/dorms/[slug]`, `/book`, and param variants.
   - Param variants canonicalize to clean routes.
   - Internal link generation does not propagate booking params as crawl paths.
   - `/book` defaults to `noindex,follow`.
   - Outbound handoff links apply `rel="nofollow noopener noreferrer"`.
-  - Production alias families have one canonical target each with one-hop permanent redirects on live Cloudflare source-of-truth.
-  - Canonical targets verified as `200` and never `404` for booking-surface route families.
-- **Validation contract (TC-08):**
+- **Validation contract (TC-08A):**
   - TC-01: metadata and canonical tags match matrix.
-  - TC-02: handoff links include required rel attributes.
-  - TC-03: live curl matrix confirms one-hop permanent redirects for alias sources and `200` on canonical targets.
+  - TC-02: handoff links include required `rel` attributes.
 - **Execution plan:** Red -> Green -> Refactor
 - **Planning validation (required for M/L):**
   - Checks run: metadata/canonical/robots references across booking surfaces.
-  - Validation artifacts: fact-find SEO contract section.
-- **Scouts:** confirm sitemap generation excludes booking engine destinations and excludes redirect-source aliases.
-- **Edge Cases & Hardening:** locale parity for metadata policy and mixed-trailing-slash alias behavior.
-- **What would make this >=90%:** Search Console verification cycle confirming policy adherence plus live redirect matrix stable across two checks.
+  - Validation artifacts: fact-find SEO contract section and `seo-indexation-matrix.md`.
+- **Scouts:** confirm sitemap generation excludes booking engine destinations and redirect-source aliases.
+- **Edge Cases & Hardening:** locale parity for metadata policy and param-stripping consistency.
+- **What would make this >=90%:** post-deploy metadata spot checks across 3-5 locale variants.
 - **Rollout / rollback:**
-  - Rollout: ship metadata policy and live redirect convergence together as one SEO contract change.
+  - Rollout: ship app-owned metadata and link contract changes together.
   - Rollback: revert route-specific metadata overrides.
-- **Documentation impact:** retain matrix as ongoing policy source.
+- **Documentation impact:** retain app-owned SEO matrix as the source of truth for route policy.
 - **Build evidence (2026-03-01):**
-  - Implemented SEO/indexation code updates:
-    - `/book` now emits `noindex,follow` via `buildAppMetadata(... isPublished: false)` in `apps/brikette/src/app/[lang]/book/page.tsx`
-    - outbound handoff anchors include `rel="nofollow noopener noreferrer"` in:
-      - `apps/brikette/src/app/[lang]/book/page.tsx` (noscript fallback)
-      - `packages/ui/src/organisms/StickyBookNow.tsx`
-    - internal room detail links remain clean (no booking-param propagation) in `packages/ui/src/organisms/RoomsSection.tsx`
-  - Produced artifacts:
+  - `/book` now emits `noindex,follow` via `buildAppMetadata(... isPublished: false)` in `apps/brikette/src/app/[lang]/book/page.tsx`.
+  - Outbound handoff anchors include `rel="nofollow noopener noreferrer"` in:
+    - `apps/brikette/src/app/[lang]/book/page.tsx` (noscript fallback)
+    - `packages/ui/src/organisms/StickyBookNow.tsx`
+  - Internal room detail links remain clean (no booking-param propagation) in `packages/ui/src/organisms/RoomsSection.tsx`.
+  - Produced artifact:
     - `docs/plans/brikette-sales-funnel-analysis/artifacts/seo-indexation-matrix.md`
+
+### TASK-08B: Freeze live redirect inventory and canonical target map
+- **Type:** IMPLEMENT
+- **Deliverable:** precise production redirect matrix naming every booking-surface alias family, canonical target, expected status, and verification path
+- **Execution-Skill:** lp-seo
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Complete (2026-03-01)
+- **Affects:** `docs/plans/brikette-sales-funnel-analysis/artifacts/production-redirect-matrix.md`
+- **Depends on:** TASK-08A
+- **Blocks:** TASK-13A
+- **Confidence:** 85%
+  - Implementation: 85% - the live routing evidence was already captured and written into the redirect matrix artifact.
+  - Approach: 85% - separating inventory from implementation makes the remaining external change set concrete.
+  - Impact: 85% - removes ambiguity about what Cloudflare must change.
+- **Acceptance:**
+  - Every booking-surface alias family has one named canonical target.
+  - Matrix records expected live status for alias source and canonical target.
+  - Broken canonical targets and duplicate-`200` alias families are explicitly listed.
+- **Validation contract (TC-08B):**
+  - TC-01: `production-redirect-matrix.md` covers booking-surface alias families observed in fact-find evidence.
+  - TC-02: matrix differentiates app-owned canonical policy from external edge-routing fixes.
+- **Execution plan:** Red -> Green -> Refactor
+- **Planning validation:** tied directly to fact-find production evidence and live curl snapshots.
+- **Scouts:** `None: artifact already produced`
+- **Edge Cases & Hardening:** mixed trailing slash behavior and locale-specific alias families remain explicit in the matrix.
+- **What would make this >=90%:** second live inventory sample showing the same redirect failures before implementation.
+- **Rollout / rollback:** `None: artifact/spec task`
+- **Documentation impact:** redirect matrix becomes the implementation handoff for Cloudflare changes.
+- **Build evidence (2026-03-01):**
+  - Produced artifact:
     - `docs/plans/brikette-sales-funnel-analysis/artifacts/production-redirect-matrix.md`
-  - Blocker:
-    - live redirect convergence is not complete; current curl matrix shows canonical booking-surface targets returning `404` (`/book`, `/it/prenota`, `/en/dorms`, `/it/camere-condivise`).
-  - Gate result: task remains blocked pending Cloudflare route-rule convergence to `200` canonical targets.
+  - Captured blocker evidence showing canonical booking-surface targets returning `404` (`/book`, `/it/prenota`, `/en/dorms`, `/it/camere-condivise`) and duplicate-live alias families that still return `200`.
+  - Repo-side redirect source-of-truth hardening (2026-03-06):
+    - `apps/brikette/scripts/generate-static-export-redirects.ts` now appends the full localized static-export rule set from `src/routing/staticExportRedirects.ts` instead of emitting only the old hand-maintained subset.
+    - Regenerated `apps/brikette/public/_redirects` now contains the localized Cloudflare Pages redirect/rewrite rules expected by the route inventory.
+    - `apps/brikette/scripts/verify-url-coverage.ts` now counts localized public URLs and parses actual `_redirects` source patterns, eliminating false-negative coverage failures from localized public paths and non-`/directions/*` redirect sources.
+    - Local validation now reports `Cloudflare _redirects: verified (1407 localized rules)` and `All legacy URLs are covered!`; remaining TASK-08 work is therefore no longer blocked by in-repo redirect drift.
+
+### TASK-08C: Apply live Cloudflare redirect convergence at production source of truth
+- **Type:** IMPLEMENT
+- **Deliverable:** production Cloudflare Worker/middleware/edge routing rules updated so each booking-surface alias family resolves to one canonical live target via one-hop permanent redirects
+- **Execution-Skill:** lp-seo
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Blocked (2026-03-06)
+- **Affects:** `[external] live Cloudflare Worker/middleware redirect rules`, `docs/plans/brikette-sales-funnel-analysis/artifacts/production-redirect-matrix.md`
+- **Depends on:** TASK-13E
+- **Blocks:** TASK-08D, TASK-12
+- **Confidence:** 80%
+  - Implementation: 75% - rule edits are straightforward once the production source of truth is available.
+  - Approach: 85% - exact alias families are already known and TASK-13E refreshes the final localized canonical targets before rollout.
+  - Impact: 90% - this is the actual blocker preventing the booking-surface SEO contract from being complete.
+- **Acceptance:**
+  - Every alias in the production redirect matrix returns one-hop `301` or `308` to its named canonical target.
+  - No booking-surface canonical target returns `404`.
+  - Cloudflare routing behavior matches the redirect matrix exactly.
+- **Validation contract (TC-08C):**
+  - TC-01: production rule changes are applied at the actual source of truth, not only in-repo mirrors or `_redirects`.
+  - TC-02: the changed rule set covers every alias family named in `production-redirect-matrix.md`.
+- **Execution plan:** Red -> Green -> Refactor
+- **Planning validation (required for M/L):**
+  - Checks run: compare app-owned canonical policy, route-localization contract, and live Cloudflare drift evidence.
+  - Validation artifacts: `production-redirect-matrix.md`, `docs/briefs/brikette-route-localization-briefing.md`, refreshed route-localization checkpoint evidence.
+- **Scouts:** confirm whether the production source of truth is Worker code, middleware, or dashboard-managed route rules before editing.
+- **Edge Cases & Hardening:** preserve locale parity, avoid multi-hop redirects, and ensure redirect sources do not remain indexable `200` pages.
+- **What would make this >=90%:** direct access to the production routing source plus one successful staged rule update.
+- **Rollout / rollback:**
+  - Rollout: apply route-family changes in the production source of truth, then immediately run TASK-08D.
+  - Rollback: restore prior route rules only if canonical targets regress or misroute.
+- **Documentation impact:** apply the refreshed canonical target map from TASK-13E to the redirect matrix if any target choice changes during implementation.
+- **Blocker:** external production routing change is still pending, and rollout must wait until the localized route contract is finalized by TASK-13E.
+  - Repo-side route inventory, generated `_redirects`, and coverage verification are aligned locally as of 2026-03-06, but the final localized target contract is not yet frozen for production rollout.
+
+### TASK-08D: Verify live one-hop redirects and canonical `200` targets
+- **Type:** INVESTIGATE
+- **Deliverable:** dated live curl verification proving redirect families resolve in one hop and canonical booking-surface targets return `200`
+- **Execution-Skill:** lp-seo
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Blocked (2026-03-06)
+- **Affects:** `docs/plans/brikette-sales-funnel-analysis/artifacts/production-redirect-matrix.md`
+- **Depends on:** TASK-08C
+- **Blocks:** TASK-12
+- **Confidence:** 85%
+  - Implementation: 85% - verification is straightforward once live routing changes exist.
+  - Approach: 85% - the matrix already names the exact alias/canonical pairs to test.
+  - Impact: 85% - provides the objective completion gate for the remaining external work.
+- **Acceptance:**
+  - Live curl matrix confirms one-hop permanent redirects for every alias source.
+  - Every canonical target in the matrix returns `200`.
+  - No canonical tag points to a non-resolving URL in the booking-surface family.
+- **Validation contract (TC-08D):**
+  - TC-01: dated live curl matrix recorded after TASK-08C implementation.
+  - TC-02: verification output shows one-hop redirects and canonical `200` targets for all named route families.
+- **Execution plan:** Red -> Green -> Refactor
+- **Planning validation:** uses the refreshed target map from TASK-13E as the authoritative checklist.
+- **Scouts:** `None: pure verification gate`
+- **Edge Cases & Hardening:** verify locale variants and mixed trailing slash entries where they appear in the matrix.
+- **What would make this >=90%:** two separate live verification passes returning identical results.
+- **Rollout / rollback:** `None: verification task`
+- **Documentation impact:** append dated verification results to the redirect matrix artifact.
+- **Blocker:** cannot run until TASK-08C updates live routing behavior.
+
+### TASK-13A: Implement route-localization inventory and regression audit gate
+- **Type:** IMPLEMENT
+- **Deliverable:** route-localization audit command plus artifact enumerating public route families, non-English English-slug leakage, and explicit allowlisted shared-spelling exceptions
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Complete (2026-03-06)
+- **Affects:** `apps/brikette/scripts/verify-route-localization.ts`, `docs/plans/brikette-sales-funnel-analysis/artifacts/route-localization-contract.md`, `[readonly] apps/brikette/src/routing/routeInventory.ts`, `[readonly] apps/brikette/src/slug-map.ts`, `[readonly] packages/ui/src/config/roomSlugs.ts`, `[readonly] apps/brikette/src/guides/slugs/slugs.ts`
+- **Depends on:** TASK-08B
+- **Blocks:** TASK-13F, TASK-13C, TASK-13G
+- **Confidence:** 85%
+  - Implementation: 85% - the route sources are already known and centrally enumerable.
+  - Approach: 85% - a deterministic audit gate is the cleanest way to prevent slug regressions before mutating public URLs.
+  - Impact: 90% - gives the operator a route-family inventory and enforces the exact standard that non-English slugs should not silently remain English.
+- **Acceptance:**
+  - Script emits the canonical public route families by locale from repo-owned sources of truth.
+  - Script flags top-level, room, and guide slugs that match English in non-English locales.
+  - Output distinguishes approved shared spellings from true localization debt.
+  - Artifact records the exact current exception list that downstream tasks must eliminate or explicitly preserve.
+  - Expected user-observable behavior:
+    - None: this is an audit/tooling task, but it directly protects future public URL behavior.
+- **Validation contract (TC-13A):**
+  - TC-01: audit command completes and produces a reproducible route-family inventory artifact.
+  - TC-02: current known leaks from the 2026-03-06 briefing are detected by the audit output.
+  - TC-03: approved shared-spelling cases are separated from true English fallback debt.
+- **Execution plan:** Red -> Green -> Refactor
+- **Planning validation (required for M/L):**
+  - Checks run: verified route sources in `slug-map.ts`, `routeInventory.ts`, `roomSlugs.ts`, and guide slug generation.
+  - Validation artifacts: `docs/briefs/brikette-route-localization-briefing.md`
+  - Unexpected findings: apartment booking route is hardcoded outside the top-level slug map and must be treated as its own consumer set.
+- **Scouts:** identify whether an existing route/SEO audit script can host this logic instead of adding a new standalone script.
+- **Edge Cases & Hardening:** normalize ASCII transliterations, locale words that legitimately match English, and legal-route freezes without suppressing real debt.
+- **What would make this >=90%:**
+  - One dry-run implementation sketch proving the audit can enumerate every public route family without false positives.
+- **Rollout / rollback:**
+  - Rollout: add the audit script and artifact, then use it as the contract for all downstream slug changes.
+  - Rollback: remove the new audit entry point only if it duplicates an existing stronger gate.
+- **Documentation impact:**
+  - Adds `route-localization-contract.md` as the canonical briefing-to-build handoff artifact.
+- **Notes / references:**
+  - Route-localization findings are documented in `docs/briefs/brikette-route-localization-briefing.md`.
+- **Build evidence (2026-03-06):**
+  - Added audit command: `apps/brikette/scripts/verify-route-localization.ts`
+  - Added package script: `apps/brikette/package.json` -> `verify-route-localization`
+  - Produced artifact: `docs/plans/brikette-sales-funnel-analysis/artifacts/route-localization-contract.md`
+  - Detection counts from current route contract:
+    - `top-level`: `38`
+    - `nested-segment`: `1`
+    - `special-route`: `17`
+    - `room`: `40`
+    - `guide`: `495`
+  - Approved shared-spelling allowlist is enforced separately from debt:
+    - `fr:experiences:experiences`
+    - `fr:guides:guides`
+  - Acceptance: pass (the audit writes the artifact and fails closed while debt remains).
+
+### TASK-13F: Freeze top-level slug policy, allowlist, and apartment-route consumer map
+- **Type:** INVESTIGATE
+- **Deliverable:** `docs/plans/brikette-sales-funnel-analysis/artifacts/top-level-route-policy.md`
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Effort:** S
+- **Status:** Complete (2026-03-06)
+- **Affects:** `[readonly] apps/brikette/src/slug-map.ts`, `[readonly] apps/brikette/src/middleware.ts`, `[readonly] apps/brikette/src/app/[lang]/book-private-accommodations/page.tsx`, `[readonly] apps/brikette/scripts/generate-static-export-redirects.ts`
+- **Depends on:** TASK-13A
+- **Blocks:** TASK-13B
+- **Confidence:** 70%
+  - Implementation: 75% - the consumer set is finite and grep-traceable.
+  - Approach: 70% - the remaining uncertainty is policy intent, not route mechanics.
+  - Impact: 80% - removes the main unresolved ambiguity inside top-level slug localization.
+- **Questions to answer:**
+  - Are `privacy-policy` and `cookie-policy` intentionally frozen, or should they join the localized slug contract?
+  - Which top-level shared-spelling cases are explicitly allowlisted rather than treated as debt?
+  - What is the complete consumer map for `book-private-accommodations` across links, redirects, metadata, and route generation?
+- **Acceptance:**
+  - Artifact names the approved top-level allowlist and legal-route policy.
+  - Apartment booking route consumer map is complete enough to drive a safe rename/localization.
+  - `TASK-13B` no longer carries unresolved policy questions in scout notes.
+- **Validation contract:** artifact cites repo paths for legal slugs, shared-spelling exceptions, and apartment-route consumers.
+- **Planning validation:** derived from route-localization briefing plus targeted consumer tracing.
+- **Rollout / rollback:** `None: non-implementation task`
+- **Documentation impact:** records the approved top-level route policy that `TASK-13B` must implement.
+- **Notes / references:**
+  - This task formalizes the open issue from `critique-history.md` instead of leaving it as an inline scout note.
+- **Build evidence (2026-03-06):**
+  - Produced artifact: `docs/plans/brikette-sales-funnel-analysis/artifacts/top-level-route-policy.md`
+  - Consumer map for `book-private-accommodations` frozen from repo traces across:
+    - page entry points
+    - middleware/routing
+    - static redirect generation
+    - private-room CTA surfaces
+    - route/readiness tests
+  - Policy decision recorded:
+    - Approved shared spellings: `fr/experiences`, `fr/guides`
+    - Not approved as canonicals: non-English `privacy-policy`, `cookie-policy`, `/hi/book`, `/da/book`, `/ja/house-rules`, `/ko/house-rules`, and Italian `tags`
+  - Acceptance: pass (`TASK-13B` no longer carries unresolved top-level policy ambiguity).
+
+### TASK-13B: Localize top-level public route slugs and apartment booking route
+- **Type:** IMPLEMENT
+- **Deliverable:** top-level public slug closure including localized apartment booking route, non-English legal/page slugs, and legacy redirect compatibility
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Complete (2026-03-06)
+- **Affects:** `apps/brikette/src/slug-map.ts`, `apps/brikette/src/routing/routeInventory.ts`, `apps/brikette/src/routing/sectionSegments.ts`, `apps/brikette/src/middleware.ts`, `apps/brikette/src/app/[lang]/book-private-accommodations/page.tsx`, `apps/brikette/scripts/generate-static-export-redirects.ts`, `apps/brikette/public/_redirects`
+- **Depends on:** TASK-13A, TASK-13F
+- **Blocks:** TASK-13E
+- **Confidence:** 85%
+  - Implementation: 80% - the change is broad but centralized in the top-level route contract.
+  - Approach: 85% - moving top-level public URLs onto localized slugs before Cloudflare rollout avoids converging twice.
+  - Impact: 90% - these are the most visible and commercially important route leaks.
+- **Acceptance:**
+  - Apartment booking route is represented by a locale-aware public slug contract rather than a hardcoded English path.
+  - `privacy-policy` and `cookie-policy` are localized or explicitly replaced by approved locale-safe slugs.
+  - `/hi/book`, `/da/book`, `/ja/house-rules`, `/ko/house-rules`, and `/it/.../tags/...` no longer remain unintended English public canonicals.
+  - Legacy top-level URLs permanently redirect in one hop to the new localized canonical targets.
+  - Expected user-observable behavior:
+    - Non-English booking/legal/tag routes show locale-appropriate slugs in the address bar.
+    - Existing bookmarked English aliases continue to land on the correct localized destination.
+- **Validation contract (TC-13B):**
+  - TC-01: route-localization audit passes for top-level route families outside the explicit allowlist.
+  - TC-02: middleware redirects wrong-locale and legacy top-level aliases to the new localized slugs.
+  - TC-03: generated redirect coverage includes the new top-level canonical and legacy routes.
+- **Execution plan:** Red -> Green -> Refactor
+- **Planning validation (required for M/L):**
+  - Checks run: consumer trace for `book-private-accommodations`, legal slugs, booking slug, house-rules slug, and guide tag slug.
+  - Validation artifacts: route-localization contract artifact from TASK-13A, existing `_redirects` coverage verification, middleware redirect tests.
+  - Unexpected findings: apartment booking path is consumed across page generation, metadata, redirects, and private-room CTA entry points.
+- **Scouts:** `None: TASK-13F freezes legal-route policy, allowlist, and apartment-route consumers first`
+- **Edge Cases & Hardening:** preserve deep links, mixed trailing slash behavior, and locale switching behavior after public slug changes.
+- **What would make this >=90%:**
+  - Verified consumer map for every existing `book-private-accommodations` reference plus one successful redirect compatibility proof for a renamed top-level slug.
+- **Rollout / rollback:**
+  - Rollout: ship localized top-level slugs and redirect aliases together in the same release boundary.
+  - Rollback: restore previous public slug aliases only if locale switching or canonical routing misresolves.
+- **Documentation impact:**
+  - Refresh route-localization contract artifact and redirect matrix with the final top-level canonical targets.
+- **Notes / references:**
+  - Requires scoped post-build QA loop on affected routes: targeted `lp-design-qa`, `tools-ui-contrast-sweep`, and `tools-ui-breakpoint-sweep` for `/book`, apartment booking, legal pages, and guide tag pages after the build.
+- **Build evidence (2026-03-06):**
+  - Added `privateBooking` as a first-class localized route key in `apps/brikette/src/slug-map.ts`, `apps/brikette/src/types/slugs.ts`, and `apps/brikette/src/routing/sectionSegments.ts`, removing the hardcoded English apartment-booking route from the public contract.
+  - Localized remaining top-level slug debt in `apps/brikette/src/slug-map.ts`:
+    - booking: `/hi/aarakshan`, `/da/bestil`
+    - legal: localized `privacyPolicy` / `cookiePolicy` slugs per non-English locale
+    - house rules: localized `ja` + `ko`
+    - guide tags: localized `it`
+  - Centralized canonical top-level path generation via `apps/brikette/src/utils/localizedRoutes.ts` and replaced hardcoded booking/private-booking route emitters across app entry points and structured-data components.
+  - Brought shared UI consumers and headers config into parity for the route contract:
+    - `packages/ui/src/utils/buildNavLinks.ts`
+    - `packages/ui/src/organisms/DesktopHeader.tsx`
+    - `packages/ui/src/organisms/MobileNav.tsx`
+    - `packages/ui/src/organisms/MobileMenu.tsx`
+    - `apps/brikette/config/_headers`
+  - Regenerated `apps/brikette/public/_redirects`; `pnpm --filter @apps/brikette exec tsx scripts/verify-url-coverage.ts` now reports:
+    - `Cloudflare _redirects: verified (2553 localized rules)`
+    - `Missing: 0`
+    - `All legacy URLs are covered!`
+  - Refreshed route-localization artifact via `verify-route-localization`; current route-family debt is:
+    - top-level: `0`
+    - nested segment: `0`
+    - special route: `0`
+    - room: `0`
+    - guide: `495`
+  - Validation:
+    - `pnpm --filter @acme/ui typecheck`
+    - `pnpm --filter @acme/ui lint`
+    - `pnpm --filter @apps/brikette typecheck`
+    - `pnpm --filter @apps/brikette lint` (`128 warnings / 0 errors`, existing baseline)
+
+### TASK-13C: Localize dorm room detail slugs for non-English locales still using English
+- **Type:** IMPLEMENT
+- **Deliverable:** locale-appropriate dorm room detail slugs for currently English-fallback locales with reverse-lookup and legacy alias preservation
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Complete (2026-03-06)
+- **Affects:** `packages/ui/src/config/roomSlugs.ts`, `apps/brikette/src/app/[lang]/dorms/[id]/page.tsx`, `apps/brikette/src/routing/routeInventory.ts`, `apps/brikette/scripts/generate-static-export-redirects.ts`, `apps/brikette/public/_redirects`
+- **Depends on:** TASK-13A
+- **Blocks:** TASK-13E
+- **Confidence:** 80%
+  - Implementation: 75% - room slugs are centralized, but reverse lookup and redirect compatibility need careful handling.
+  - Approach: 80% - this closes a visible public URL debt across high-intent room detail pages.
+  - Impact: 85% - room-detail URLs are commercially important and indexable.
+- **Acceptance:**
+  - `ja`, `ko`, `zh`, `ar`, and `hi` no longer expose English dorm detail slugs for live room pages unless explicitly allowlisted.
+  - `findRoomIdBySlug()` and static params continue to roundtrip correctly for localized slugs.
+  - Old English room-detail aliases permanently redirect to the new localized URLs.
+  - Expected user-observable behavior:
+    - Non-English room detail pages show locale-appropriate room slugs in the browser URL.
+    - Existing English room-detail links still resolve without dead ends.
+- **Validation contract (TC-13C):**
+  - TC-01: route-localization audit passes for room slugs in targeted locales.
+  - TC-02: room slug forward and reverse lookup tests pass for old and new aliases.
+  - TC-03: redirect coverage includes legacy English room-detail URLs for affected locales.
+- **Execution plan:** Red -> Green -> Refactor
+- **Planning validation (required for M/L):**
+  - Checks run: consumer trace for `getRoomSlug()` and `findRoomIdBySlug()` across route generation, language switching, and room detail resolution.
+  - Validation artifacts: route-localization contract artifact, room slug config, dorm route page.
+  - Unexpected findings: some locales already rely on ASCII transliterations rather than native script, so the standard is locale-appropriate transliteration, not native-character slugs.
+- **Scouts:** verify whether any room slugs are embedded in structured-data or sitemap outputs beyond route inventory.
+- **Edge Cases & Hardening:** prevent slug collisions across room types and preserve canonical room resolution when language switching from old links.
+- **What would make this >=90%:**
+  - Collision scan and redirect compatibility proof for one targeted locale.
+- **Rollout / rollback:**
+  - Rollout: update room slugs and redirects atomically for all affected locales.
+  - Rollback: restore previous room slugs only if reverse lookup or route resolution becomes ambiguous.
+- **Documentation impact:**
+  - Refresh route-localization contract artifact with final room-slug mappings.
+- **Notes / references:**
+  - Requires scoped post-build QA loop on room detail pages: targeted `lp-design-qa`, `tools-ui-contrast-sweep`, and `tools-ui-breakpoint-sweep` for representative mobile and desktop room URLs.
+- **Build evidence (2026-03-06):**
+  - Localized all previously English-fallback dorm-room slugs in `packages/ui/src/config/roomSlugs.ts` for `ja`, `ko`, `zh`, `ar`, and `hi`.
+  - Added generic legacy-English alias preservation in `packages/ui/src/config/roomSlugs.ts` via `getRoomSlugAliases()`, and updated `findRoomIdBySlug()` to resolve both canonical localized slugs and preserved English aliases.
+  - Added canonical room-url enforcement in `apps/brikette/src/app/[lang]/dorms/[id]/page.tsx` using `permanentRedirect()` when a request resolves through a legacy alias instead of the localized canonical slug.
+  - Added one-hop room-alias redirects in `apps/brikette/src/middleware.ts` for:
+    - localized room alias paths
+    - internal `/dorms/...` paths
+    - legacy `/rooms/...` paths
+  - Extended `apps/brikette/src/routing/staticExportRedirects.ts` to emit explicit room-alias redirects in `_redirects`; representative generated rules:
+    - `/ja/heya/mixed-ensuite-dorm  /ja/heya/danjo-kongo-basu-tsuki-domitori  301`
+    - `/ja/dorms/mixed-ensuite-dorm  /ja/heya/danjo-kongo-basu-tsuki-domitori  301`
+    - `/ja/rooms/mixed-ensuite-dorm  /ja/heya/danjo-kongo-basu-tsuki-domitori  301`
+  - Added regression coverage:
+    - `packages/ui/src/config/__tests__/roomSlugs.test.ts`
+    - `apps/brikette/src/test/middleware.test.ts`
+  - Collision scan passed for the targeted locales:
+    - `pnpm --filter @acme/ui exec tsx -e '...room-slug collision scan...'`
+  - Route-localization artifact refreshed via `verify-route-localization`; `Unexpected room matches: 0`.
+  - Validation:
+    - `pnpm --filter @acme/ui typecheck`
+    - `pnpm --filter @acme/ui lint`
+    - `pnpm --filter @apps/brikette typecheck`
+    - `pnpm --filter @apps/brikette lint` (`128 warnings / 0 errors`, existing baseline)
+
+### TASK-13G: Map guide-slug fallback causes and alias-preservation contract
+- **Type:** INVESTIGATE
+- **Deliverable:** `docs/plans/brikette-sales-funnel-analysis/artifacts/guide-slug-localization-map.md`
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Effort:** M
+- **Status:** Pending
+- **Affects:** `[readonly] apps/brikette/src/guides/slugs/slugs.ts`, `[readonly] apps/brikette/src/guides/slugs/labels.ts`, `[readonly] apps/brikette/src/guides/slugs/overrides.ts`, `[readonly] apps/brikette/src/routes.guides-helpers.ts`
+- **Depends on:** TASK-13A
+- **Blocks:** TASK-13D
+- **Confidence:** 70%
+  - Implementation: 75% - the current fallback logic and live guide set are enumerable.
+  - Approach: 70% - the remaining uncertainty is cause classification and alias strategy, not whether the debt exists.
+  - Impact: 85% - converts the lowest-confidence route-localization task into a bounded implementation contract.
+- **Questions to answer:**
+  - Which live non-English English-matching guide slugs are caused by placeholder labels versus intentional overrides versus transport terminology that should remain shared?
+  - What alias-preservation strategy keeps existing indexed English-style guide URLs valid after localization?
+  - Are there any slug collisions or resolver roundtrip risks in the target localized set?
+- **Acceptance:**
+  - Artifact classifies the remaining live English-matching guide slugs by cause.
+  - Alias-preservation strategy is explicit enough for `TASK-13D` to implement without open-ended discovery.
+  - `TASK-13D` rises to runnable confidence with scout uncertainty removed.
+- **Validation contract:** artifact includes cause counts, representative examples, and the chosen alias-preservation contract with repo evidence.
+- **Planning validation:** built from `guideSlug()`, `resolveGuideKeyFromSlug()`, and current live guide inventory counts.
+- **Rollout / rollback:** `None: non-implementation task`
+- **Documentation impact:** records the guide-specific implementation contract that `TASK-13D` must follow.
+- **Notes / references:**
+  - This task converts the guide-slug content dependency into a formal precursor chain.
+- **Build evidence (2026-03-06):**
+  - Produced artifact: `docs/plans/brikette-sales-funnel-analysis/artifacts/guide-slug-localization-map.md`
+  - Cause classification for current live debt:
+    - `explicit-override`: `495`
+    - placeholder-label fallback: `0`
+    - missing-label fallback: `0`
+    - approved shared terminology: `0`
+  - Concentration confirmed in transport/how-to-get-here guide families, plus small locale-specific assistance cases.
+  - Alias risk recorded: `resolveGuideKeyFromSlug()` does not generically preserve historic slug aliases once canonical guide slugs change.
+  - Acceptance: pass (`TASK-13D` now has a frozen cause map and alias-preservation contract).
+
+### TASK-13D: Localize live guide/article slugs still falling back to English
+- **Type:** IMPLEMENT
+- **Deliverable:** live guide slug closure for non-English locales plus legacy alias/roundtrip preservation
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** L
+- **Status:** Pending
+- **Affects:** `apps/brikette/src/guides/slugs/slugs.ts`, `apps/brikette/src/guides/slugs/labels.ts`, `apps/brikette/src/guides/slugs/overrides.ts`, `apps/brikette/src/routes.guides-helpers.ts`, `apps/brikette/src/app/[lang]/assistance/[article]/page.tsx`, `apps/brikette/src/app/[lang]/experiences/[slug]/page.tsx`, `apps/brikette/src/app/[lang]/how-to-get-here/[slug]/page.tsx`, `apps/brikette/scripts/generate-static-export-redirects.ts`, `apps/brikette/public/_redirects`
+- **Depends on:** TASK-13A, TASK-13G
+- **Blocks:** TASK-13E
+- **Confidence:** 80%
+  - Implementation: 75% - the surface area is large and content-linked, but the precursor map removes the open-ended discovery burden.
+  - Approach: 80% - a targeted closure of remaining live English fallbacks is tractable once causes and alias strategy are frozen in TASK-13G.
+  - Impact: 85% - guide URLs are a major share of localized organic surface area.
+- **Acceptance:**
+  - Non-English live guide slugs stop falling back to English except for an explicit, justified allowlist.
+  - `resolveGuideKeyFromSlug()` continues to roundtrip localized canonical slugs.
+  - Existing indexed English guide aliases remain reachable through permanent redirect or resolver compatibility.
+  - Expected user-observable behavior:
+    - Non-English help, experiences, and how-to-get-here guide URLs use locale-appropriate slugs.
+    - Existing shared links to old English-style guide URLs still resolve cleanly.
+- **Validation contract (TC-13D):**
+  - TC-01: route-localization audit reports no unexpected English guide slug fallbacks for live guides.
+  - TC-02: guide slug resolver tests pass for localized canonical slugs and legacy aliases.
+  - TC-03: route inventory and redirect coverage continue to roundtrip for live guides after slug localization.
+- **Execution plan:** Red -> Green -> Refactor
+- **Planning validation (required for M/L):**
+  - Checks run: consumer trace for `guideSlug()`, `guidePath()`, `resolveGuideKeyFromSlug()`, and guide navigation builders.
+  - Validation artifacts: route-localization briefing, current guide slug generator, live guide inventory counts by locale.
+  - Unexpected findings: roughly `29-30/119` live guide slugs per non-English locale still match English, concentrated in transport and logistics content.
+- **Scouts:** `None: TASK-13G freezes fallback causes and alias-preservation strategy first`
+- **Edge Cases & Hardening:** preserve roundtrip resolver behavior, avoid slug collisions, and keep already-indexed aliases valid.
+- **What would make this >=90%:**
+  - A per-locale cause breakdown of the remaining English-matching guide slugs plus a proven alias-preservation strategy.
+- **Rollout / rollback:**
+  - Rollout: localize guide slugs in one bounded tranche with alias preservation and refreshed route inventory.
+  - Rollback: keep old alias-resolution support in place even if any localized slug set must be reverted.
+- **Documentation impact:**
+  - Refresh route-localization contract artifact with final guide-slug exceptions and removals.
+- **Notes / references:**
+  - Requires scoped post-build QA loop on representative `/assistance`, `/experiences`, and `/how-to-get-here` guide pages via targeted `lp-design-qa`, `tools-ui-contrast-sweep`, and `tools-ui-breakpoint-sweep`.
+
+### TASK-13E: Route-localization checkpoint + final canonical target refresh
+- **Type:** CHECKPOINT
+- **Deliverable:** updated plan confidence, refreshed localized canonical target map, and resequenced live redirect verification via `/lp-do-replan`
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Effort:** S
+- **Status:** Pending
+- **Affects:** `docs/plans/brikette-sales-funnel-analysis/plan.md`, `docs/plans/brikette-sales-funnel-analysis/artifacts/production-redirect-matrix.md`, `docs/plans/brikette-sales-funnel-analysis/artifacts/route-localization-contract.md`
+- **Depends on:** TASK-13B, TASK-13C, TASK-13D
+- **Blocks:** TASK-08C
+- **Confidence:** 95%
+  - Implementation: 95% - checkpoint process is defined.
+  - Approach: 95% - prevents external redirect rollout against stale canonical targets.
+  - Impact: 95% - ensures route-localization and Cloudflare convergence are joined cleanly.
+- **Acceptance:**
+  - `/lp-do-build` checkpoint executor run
+  - `/lp-do-replan` run on downstream redirect verification tasks
+  - final localized canonical target map recorded in `production-redirect-matrix.md`
+  - `TASK-08C` and `TASK-08D` references updated against the final localized contract
+- **Horizon assumptions to validate:**
+  - Route-localization implementation did not introduce unresolved redirect or resolver collisions.
+  - The final canonical public route contract is stable enough to roll into external Cloudflare routing once.
+- **Validation contract:** checkpoint note includes confidence deltas, refreshed canonical targets, and any remaining explicit allowlist exceptions.
+- **Planning validation:** references TASK-13A through TASK-13D outputs.
+- **Rollout / rollback:** `None: planning control task`
+- **Documentation impact:** refreshes the redirect matrix and final route-localization contract before live rollout.
 
 ### TASK-09A: Ship indicative pricing fallback with auto-seed removal
 - **Type:** IMPLEMENT
@@ -626,7 +1110,7 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
 - **Status:** Complete (2026-03-01)
 - **Affects:** `apps/brikette/src/app/[lang]/dorms/[id]/RoomDetailContent.tsx`, `apps/brikette/src/app/[lang]/book/BookPageContent.tsx`, `packages/ui/src/organisms/RoomsSection.tsx`, `apps/brikette/src/data/indicative_prices.json`
 - **Depends on:** TASK-04, TASK-05
-- **Blocks:** TASK-09B, TASK-12
+- **Blocks:** TASK-09B
 - **Confidence:** 85%
   - Implementation: 85% - display behavior is bounded and route-scoped.
   - Approach: 85% - directly mitigates conversion-anchor risk from auto-seed removal.
@@ -677,7 +1161,7 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
 - **Status:** Complete (2026-03-01)
 - **Affects:** `docs/plans/brikette-sales-funnel-analysis/artifacts/indicative-pricing-governance.md`, `apps/brikette/src/data/indicative_prices.json`
 - **Depends on:** TASK-09A
-- **Blocks:** TASK-12
+- **Blocks:** -
 - **Confidence:** 75%
   - Implementation: 75% - small scope but operational owner/cadence must be explicit.
   - Approach: 75% - governance quality determines anchor reliability.
@@ -748,7 +1232,7 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
 - **Status:** Complete (2026-03-01)
 - **Affects:** `apps/brikette/src/app/[lang]/book/*`, `apps/brikette/src/app/[lang]/dorms/[id]/*`, `apps/brikette/src/utils/ga4-events.ts`, `docs/plans/brikette-sales-funnel-analysis/artifacts/recovery-runbook.md`
 - **Depends on:** TASK-06A, TASK-07A, TASK-10
-- **Blocks:** TASK-12
+- **Blocks:** -
 - **Confidence:** 80%
   - Implementation: 80% - email-only MVP and local payload storage remove provider coupling for first release.
   - Approach: 80% - scope fixed to bounded resume-link + consent metadata contract.
@@ -803,9 +1287,9 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Blocked (2026-03-01)
+- **Status:** Blocked (2026-03-06)
 - **Affects:** `docs/plans/brikette-sales-funnel-analysis/plan.md`
-- **Depends on:** TASK-01, TASK-02, TASK-05, TASK-06A, TASK-06B, TASK-07A, TASK-07B, TASK-08, TASK-09A, TASK-09B, TASK-11
+- **Depends on:** TASK-08D
 - **Blocks:** -
 - **Confidence:** 95%
   - Implementation: 95% - checkpoint process is explicit.
@@ -823,8 +1307,10 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
 - **Rollout / rollback:** `None: planning control task`
 - **Documentation impact:** updates plan for next build slice.
 - **Build evidence (2026-03-01):**
-  - CHECKPOINT gate not runnable because dependency `TASK-08` remains blocked by live Cloudflare redirect/canonical convergence.
-  - `/lp-do-replan` was executed for low-confidence `TASK-11` and succeeded; no additional in-repo precursors can unblock `TASK-08`.
+  - CHECKPOINT gate not runnable because dependency `TASK-08D` remains blocked pending TASK-08C live Cloudflare redirect convergence.
+  - `/lp-do-replan` round 2 split the previous blended `TASK-08` into `TASK-08A/TASK-08B/TASK-08C/TASK-08D`, isolating the remaining blocker to external routing implementation plus live verification.
+  - `/lp-do-plan` on 2026-03-06 inserted `TASK-13A/TASK-13B/TASK-13C/TASK-13D/TASK-13E` ahead of `TASK-08C` after the route-localization briefing showed the public canonical route contract is not yet fully localized.
+  - `/lp-do-replan` on 2026-03-06 added `TASK-13F` and `TASK-13G` as formal precursors so top-level route policy ambiguity and guide-fallback ambiguity are no longer carried as inline scout notes.
 
 ## Risks & Mitigations
 - Legacy URL consumers silently bypass canonical booking state.
@@ -838,7 +1324,9 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
 - Recovery dispatch not technically feasible in current stack.
   - Mitigation: TASK-10 explicit technical readiness gate before TASK-11.
 - Live production route aliases and canonical targets diverge from intended policy.
-  - Mitigation: TASK-08 production redirect matrix + live curl verification before completion.
+  - Mitigation: TASK-08B freezes the current redirect matrix, TASK-13E refreshes it against the final localized contract, TASK-08C applies the live Cloudflare change, and TASK-08D verifies one-hop redirects plus canonical `200` targets before completion.
+- Non-English canonical routes remain partially English and normalize the wrong public contract into production.
+  - Mitigation: TASK-13A adds a deterministic audit gate, TASK-13B/TASK-13C/TASK-13D remove known route-family leaks, and TASK-13E refreshes final canonical targets before external rollout.
 
 ## Observability
 - Logging:
@@ -862,6 +1350,7 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
 - [ ] Hostel no-JS path follows assisted policy unless post-handoff enforcement is proven.
 - [ ] Canonical analytics schema is emitted consistently across handoff CTAs.
 - [ ] SEO/indexation policy matrix is implemented and route metadata aligns with it.
+- [ ] Non-English canonical public routes no longer expose unintended English slugs outside an explicit allowlist.
 - [ ] Live production alias routes converge to one-hop permanent redirects with canonical targets returning `200`.
 - [ ] Parseable but invalid user inputs are preserved and routed to correction/split-booking guidance (not cleared to empty state).
 - [ ] Indicative pricing fallback ships with auto-seed removal and stale-data controls.
@@ -877,12 +1366,15 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
 - 2026-03-01: Hydration contract clarified to parse-then-validate so policy-invalid intent is preserved for corrective UX.
 - 2026-03-01: `brik_click_id` lifecycle constrained to per-attempt handoff state, not shared continuity state.
 - 2026-03-01: TASK-08 expanded to include live Cloudflare redirect/canonical convergence based on production evidence (`200` alias duplicates and `404` canonical targets).
+- 2026-03-06: `/lp-do-replan` round 2 split blended `TASK-08` into `TASK-08A` (app SEO closure), `TASK-08B` (redirect inventory), `TASK-08C` (external Cloudflare implementation), and `TASK-08D` (live verification gate) so the remaining blocker is operationally precise.
+- 2026-03-06: `/lp-do-plan` inserted a route-localization tranche (`TASK-13A` through `TASK-13E`) before `TASK-08C` so production redirect convergence targets the final localized public route contract rather than the pre-audit URL set.
+- 2026-03-06: `/lp-do-replan` added `TASK-13F` (top-level policy/allowlist + apartment consumer map) and `TASK-13G` (guide fallback cause map + alias strategy) so `TASK-13B` and `TASK-13D` have explicit precursor chains instead of unresolved scout ambiguity.
 
 ## Overall-confidence Calculation
 - Effort weights: S=1, M=2, L=3
-- Sum(confidence * weight) = 2390
-- Sum(weight) = 30
-- Overall-confidence = 2390 / 30 = 79.7% -> 80%
+- Sum(confidence * weight) = 3740
+- Sum(weight) = 47
+- Overall-confidence = 3740 / 47 = 79.6% -> 80%
 
 ## Critique Loop
 - Input source: operator critique (2026-03-01) applied as hardening pass.
@@ -893,9 +1385,12 @@ This run has progressed through `/lp-do-build` cycles; remaining work is constra
   - Added SEO indexation matrix artifact deliverable.
   - Moved indicative fallback to ship with auto-seed removal.
   - Scoped recovery MVP to email-only pending channel readiness.
+  - Inserted a route-localization audit-and-fix tranche before live Cloudflare convergence so public non-English canonical URLs are finalized before production redirect rollout.
+  - Converted unresolved route-localization scout ambiguity into formal precursor tasks (`TASK-13F`, `TASK-13G`) to satisfy replan gates.
 - Remaining known unknowns:
   - Octobook post-handoff constraint enforcement capability (TASK-01).
   - Click-id export persistence (TASK-02).
+  - Any final shared-spelling exceptions accepted after `TASK-13F` and `TASK-13G` evidence is gathered.
 
 ## Section Omission Rule
 None: all plan template sections are applicable.

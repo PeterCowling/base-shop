@@ -19,6 +19,7 @@ import ApartmentStructuredData from "@/components/seo/ApartmentStructuredData";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { fireViewItem } from "@/utils/ga4-events";
+import { getPrivateBookingPath } from "@/utils/localizedRoutes";
 import { trackApartmentEvent } from "@/utils/trackApartmentEvent";
 import { translatePath } from "@/utils/translate-path";
 
@@ -32,7 +33,7 @@ function ApartmentPageContent({ lang }: Props) {
   const { t } = useTranslation("apartmentPage", { lng: lang });
   usePagePreload({ lang, namespaces: ["apartmentPage"] });
   const privateRoomsPath = `/${lang}/${translatePath("apartment", lang)}`;
-  const privateBookingPath = `/${lang}/book-private-accommodations`;
+  const privateBookingPath = getPrivateBookingPath(lang);
 
   // Fire view_item once per navigation
   useEffect(() => {

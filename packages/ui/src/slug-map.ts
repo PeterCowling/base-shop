@@ -204,6 +204,28 @@ export const SLUGS = {
     hu: "foglalas",
   },
 
+  /** Private accommodations booking landing page */
+  privateBooking: {
+    de: "book-private-accommodations",
+    en: "book-private-accommodations",
+    es: "book-private-accommodations",
+    fr: "book-private-accommodations",
+    it: "book-private-accommodations",
+    ja: "book-private-accommodations",
+    ko: "book-private-accommodations",
+    pt: "book-private-accommodations",
+    ru: "book-private-accommodations",
+    zh: "book-private-accommodations",
+    ar: "book-private-accommodations",
+    hi: "book-private-accommodations",
+    vi: "book-private-accommodations",
+    pl: "book-private-accommodations",
+    sv: "book-private-accommodations",
+    no: "book-private-accommodations",
+    da: "book-private-accommodations",
+    hu: "book-private-accommodations",
+  },
+
   /* (blog removed) */
 
   /* ---------- Travel guides ---------- */

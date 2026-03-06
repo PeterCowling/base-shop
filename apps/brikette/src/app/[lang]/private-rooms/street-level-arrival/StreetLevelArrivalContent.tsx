@@ -11,6 +11,7 @@ import { Section } from "@acme/design-system/atoms";
 import FitCheck from "@/components/apartment/FitCheck";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
+import { getPrivateBookingPath } from "@/utils/localizedRoutes";
 import { trackApartmentEvent } from "@/utils/trackApartmentEvent";
 
 type Props = {
@@ -65,7 +66,7 @@ function StreetLevelArrivalContent({ lang }: Props) {
         {/* CTAs */}
         <section className="flex flex-col gap-4 sm:flex-row sm:justify-center">
           <Link
-            href={`/${lang}/apartment/book/`}
+            href={`${getPrivateBookingPath(lang)}/`}
             onClick={() => trackApartmentEvent("click_check_availability", { source: "street-level-arrival" })}
             className="min-h-11 min-w-11 rounded-lg bg-brand-primary px-8 py-3 text-center font-semibold text-fg-inverse transition-colors hover:bg-brand-primary/90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-brand-primary focus-visible:focus:ring-offset-2"
           >

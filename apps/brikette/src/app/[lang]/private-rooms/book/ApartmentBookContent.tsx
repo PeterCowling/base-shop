@@ -18,6 +18,7 @@ import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
 import { createBrikClickId, fireHandoffToEngine, fireWhatsappClick } from "@/utils/ga4-events";
+import { getPrivateBookingPath } from "@/utils/localizedRoutes";
 
 type Props = {
   lang: AppLanguage;
@@ -125,7 +126,7 @@ function ApartmentBookContent({ lang }: Props) {
       pax,
       rate_plan: plan,
       room_id: "apartment",
-      source_route: `/${lang}/private-rooms/book`,
+      source_route: getPrivateBookingPath(lang),
       cta_location: `apartment_${plan}_cta`,
       brik_click_id: createBrikClickId(),
     });

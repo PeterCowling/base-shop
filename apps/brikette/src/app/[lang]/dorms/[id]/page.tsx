@@ -2,7 +2,7 @@
 // Room detail page - App Router version
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
+import { permanentRedirect, redirect } from "next/navigation";
 
 import { findRoomIdBySlug, getRoomSlug } from "@acme/ui/config/roomSlugs";
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 
   const roomsSlug = getSlug("rooms", validLang);
-  const path = `/${validLang}/${roomsSlug}/${id}`;
+  const path = `/${validLang}/${roomsSlug}/${getRoomSlug(roomId, validLang)}`;
   const image = buildCfImageUrl(room.landingImage || "/img/og-rooms.jpg", {
     width: OG_IMAGE.width,
     height: OG_IMAGE.height,
@@ -84,6 +84,11 @@ export default async function RoomDetailPage({ params }: Props) {
 
   if (!room || room.isVisibleOnWebsite === false) {
     redirect(`/${validLang}/${getSlug("rooms", validLang)}`);
+  }
+
+  const canonicalSlug = getRoomSlug(roomId, validLang);
+  if (id !== canonicalSlug) {
+    permanentRedirect(`/${validLang}/${getSlug("rooms", validLang)}/${canonicalSlug}`);
   }
 
   const t = await getTranslations(validLang, "roomsPage");

@@ -13,6 +13,7 @@ export const INTERNAL_SEGMENT_BY_KEY: Readonly<Record<SlugKey, string>> = {
   experiences: "experiences",
   howToGetHere: "how-to-get-here",
   apartment: "private-rooms",
+  privateBooking: "book-private-accommodations",
   book: "book",
   guides: "guides",
   guidesTags: "tags",
@@ -36,6 +37,7 @@ export const TOP_LEVEL_SEGMENT_KEYS: readonly SlugKey[] = [
   "experiences",
   "howToGetHere",
   "apartment",
+  "privateBooking",
   "book",
   "guides",
   "terms",
@@ -63,6 +65,7 @@ export const STATIC_EXPORT_SECTION_KEYS: readonly SlugKey[] = [
   "assistance",
   "experiences",
   "howToGetHere",
+  "privateBooking",
   "book",
   "apartment",
 ];

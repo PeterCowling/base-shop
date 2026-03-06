@@ -9,14 +9,14 @@ import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
 import PrivateAccomStructuredDataRsc from "@/components/seo/PrivateAccomStructuredDataRsc";
 import { OG_IMAGE } from "@/utils/headConstants";
+import { getLocalizedSectionPath } from "@/utils/localizedRoutes";
+import { getSlug } from "@/utils/slug";
 
 import BookPageContent from "../book/BookPageContent";
 
 type Props = {
   params: Promise<{ lang: string }>;
 };
-
-const PRIVATE_BOOKING_SLUG = "book-private-accommodations";
 
 export async function generateStaticParams() {
   return generateLangParams();
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = t("apartment.meta.title", { defaultValue: "" }) as string;
   const description = t("apartment.meta.description", { defaultValue: "" }) as string;
-  const path = `/${validLang}/${PRIVATE_BOOKING_SLUG}`;
+  const path = getLocalizedSectionPath(validLang, "privateBooking");
 
   const image = buildCfImageUrl("/img/apt1.jpg", {
     width: OG_IMAGE.width,
@@ -65,7 +65,7 @@ export default async function BookPrivateAccomodationsPage({ params }: Props) {
   return (
     <>
       {/* Server-rendered structured data (TASK-03) */}
-      <PrivateAccomStructuredDataRsc lang={validLang} slug={PRIVATE_BOOKING_SLUG} />
+      <PrivateAccomStructuredDataRsc lang={validLang} slug={getSlug("privateBooking", validLang)} />
 
       {/* Server-rendered landing content (TASK-02) — visible to crawlers */}
       <Section padding="default" className="mx-auto max-w-4xl">
@@ -112,17 +112,17 @@ export default async function BookPrivateAccomodationsPage({ params }: Props) {
           style={{ maxWidth: "42rem", display: "flex", flexWrap: "wrap" }}
         >
           {exploreDorms && (
-            <a href={`/${validLang}/book-dorm-bed`} className="text-brand-primary underline hover:text-brand-primary/80">
+            <a href={getLocalizedSectionPath(validLang, "book")} className="text-brand-primary underline hover:text-brand-primary/80">
               {exploreDorms}
             </a>
           )}
           {exploreExperiences && (
-            <a href={`/${validLang}/experiences`} className="text-brand-primary underline hover:text-brand-primary/80">
+            <a href={getLocalizedSectionPath(validLang, "experiences")} className="text-brand-primary underline hover:text-brand-primary/80">
               {exploreExperiences}
             </a>
           )}
           {exploreLocation && (
-            <a href={`/${validLang}/how-to-get-here`} className="text-brand-primary underline hover:text-brand-primary/80">
+            <a href={getLocalizedSectionPath(validLang, "howToGetHere")} className="text-brand-primary underline hover:text-brand-primary/80">
               {exploreLocation}
             </a>
           )}

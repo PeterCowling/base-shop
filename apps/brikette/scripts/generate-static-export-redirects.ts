@@ -2,12 +2,19 @@ import { writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import {
+  buildLocalizedStaticRedirectRules,
+  formatRedirectRules,
+} from "../src/routing/staticExportRedirects";
+import { getSlug } from "../src/utils/slug";
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const APP_ROOT = path.resolve(__dirname, "..");
 const REDIRECTS_PATH = path.join(APP_ROOT, "public", "_redirects");
 
 async function main(): Promise<void> {
+  const englishPrivateBooking = `/en/${getSlug("privateBooking", "en")}`;
   const fileLines = [
     "# Cloudflare Pages redirects",
     "# https://developers.cloudflare.com/pages/configuration/redirects/",
@@ -19,14 +26,14 @@ async function main(): Promise<void> {
     "# No-locale booking slugs -> English localized booking routes",
     "/book-dorm-bed  /en/book-dorm-bed  301",
     "/book-dorm-bed/  /en/book-dorm-bed/  301",
-    "/book-private-accommodations  /en/book-private-accommodations  301",
-    "/book-private-accommodations/  /en/book-private-accommodations/  301",
+    `/book-private-accommodations  ${englishPrivateBooking}  301`,
+    `/book-private-accommodations/  ${englishPrivateBooking}/  301`,
     "",
     "# Legacy misspelled URL -> corrected spelling (SEO rename)",
-    "/book-private-accomodations  /en/book-private-accommodations  301",
-    "/book-private-accomodations/  /en/book-private-accommodations/  301",
-    "/en/book-private-accomodations  /en/book-private-accommodations  301",
-    "/en/book-private-accomodations/  /en/book-private-accommodations/  301",
+    `/book-private-accomodations  ${englishPrivateBooking}  301`,
+    `/book-private-accomodations/  ${englishPrivateBooking}/  301`,
+    `/en/book-private-accomodations  ${englishPrivateBooking}  301`,
+    `/en/book-private-accomodations/  ${englishPrivateBooking}/  301`,
     "",
     "# Health check endpoint -> homepage (no API routes on static deploy)",
     "/api/health  /en/  302",
@@ -56,11 +63,11 @@ async function main(): Promise<void> {
     "/en/dorms  /en/book-dorm-bed  301",
     "/en/dorms/  /en/book-dorm-bed/  301",
     "",
-    "# Legacy private booking routes -> /en/book-private-accommodations",
-    "/en/private-rooms/book  /en/book-private-accommodations  301",
-    "/en/private-rooms/book/  /en/book-private-accommodations/  301",
-    "/en/apartment/book  /en/book-private-accommodations  301",
-    "/en/apartment/book/  /en/book-private-accommodations/  301",
+    `# Legacy private booking routes -> ${englishPrivateBooking}`,
+    `/en/private-rooms/book  ${englishPrivateBooking}  301`,
+    `/en/private-rooms/book/  ${englishPrivateBooking}/  301`,
+    `/en/apartment/book  ${englishPrivateBooking}  301`,
+    `/en/apartment/book/  ${englishPrivateBooking}/  301`,
     "",
     "# Legacy /en/apartment/* -> /en/private-rooms/* (route renamed for SEO)",
     "/en/apartment  /en/private-rooms  301",
@@ -123,6 +130,9 @@ async function main(): Promise<void> {
     "/hu/apartmanok  /hu/privat-szobak  301",
     "/hu/apartmanok/  /hu/privat-szobak/  301",
     "/hu/apartmanok/:splat  /hu/privat-szobak/:splat  301",
+    "",
+    "# Generated localized static-export rules",
+    ...formatRedirectRules(buildLocalizedStaticRedirectRules()),
     "",
   ];
 

@@ -25,6 +25,7 @@ import type { AppLanguage } from "@/i18n.config";
 import { resolveGuideCardImage } from "@/lib/guides/guideCardImage";
 import { guideHref, type GuideKey } from "@/routes.guides-helpers";
 import { getGuideManifestEntry } from "@/routes/guides/guide-manifest";
+import { getBookPath } from "@/utils/localizedRoutes";
 import { getGuideLinkLabel } from "@/utils/translationFallbacks";
 
 import type { AssistanceIndexI18nSeed } from "./i18n-bundle";
@@ -299,7 +300,7 @@ function AssistanceIndexContent({ lang, serverI18n }: Props): JSX.Element {
               </dl>
               <div className="mt-5">
                 <Button asChild size="sm" className="w-full">
-                  <Link href={`/${resolvedLang}/book`}>
+                  <Link href={getBookPath(resolvedLang)}>
                     {t("bookDirect", { defaultValue: "Book Direct" })}
                   </Link>
                 </Button>

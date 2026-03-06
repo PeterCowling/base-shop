@@ -1,3 +1,6 @@
+import { getRoomSlug, getRoomSlugAliases } from "@acme/ui/config/roomSlugs";
+
+import { websiteVisibleRoomsData } from "@/data/roomsData";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
 import { getSlug } from "@/utils/slug";
@@ -12,6 +15,7 @@ export type StaticRedirectRule = {
 
 const LOCALIZED_ALIAS_REWRITE = 200 as const;
 const INTERNAL_TO_LOCALIZED_REDIRECT = 301 as const;
+const NON_DORM_ROOM_IDS = new Set(["double_room", "apartment"]);
 
 function withTrailingSlash(path: string): string {
   return path.endsWith("/") ? path : `${path}/`;
@@ -85,6 +89,36 @@ function addLocalizedSectionRules(
   }
 }
 
+function addDirectRedirectRules(
+  rules: StaticRedirectRule[],
+  seen: Set<string>,
+  from: string,
+  to: string,
+): void {
+  addRule(rules, seen, from, to, INTERNAL_TO_LOCALIZED_REDIRECT);
+  addRule(rules, seen, withTrailingSlash(from), withTrailingSlash(to), INTERNAL_TO_LOCALIZED_REDIRECT);
+}
+
+function addLocalizedRoomAliasRules(
+  lang: AppLanguage,
+  rules: StaticRedirectRule[],
+  seen: Set<string>,
+): void {
+  const localizedRooms = getSlug("rooms", lang);
+  const internalRooms = INTERNAL_SEGMENT_BY_KEY.rooms;
+  const legacyRooms = "rooms";
+
+  for (const room of websiteVisibleRoomsData.filter((candidate) => !NON_DORM_ROOM_IDS.has(candidate.id))) {
+    const canonicalRoomSlug = getRoomSlug(room.id, lang);
+    const localizedTarget = `/${lang}/${localizedRooms}/${canonicalRoomSlug}`;
+    for (const alias of getRoomSlugAliases(room.id, lang)) {
+      addDirectRedirectRules(rules, seen, `/${lang}/${localizedRooms}/${alias}`, localizedTarget);
+      addDirectRedirectRules(rules, seen, `/${lang}/${internalRooms}/${alias}`, localizedTarget);
+      addDirectRedirectRules(rules, seen, `/${lang}/${legacyRooms}/${alias}`, localizedTarget);
+    }
+  }
+}
+
 export function buildLocalizedStaticRedirectRules(
   languages: readonly AppLanguage[] = i18nConfig.supportedLngs as AppLanguage[],
 ): StaticRedirectRule[] {
@@ -97,6 +131,9 @@ export function buildLocalizedStaticRedirectRules(
   }
   for (const lang of languages) {
     addLocalizedSectionRules(lang, rules, seen);
+  }
+  for (const lang of languages) {
+    addLocalizedRoomAliasRules(lang, rules, seen);
   }
 
   return rules;

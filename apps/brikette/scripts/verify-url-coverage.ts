@@ -5,7 +5,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import { listAppRouterUrls } from "../src/routing/routeInventory";
+import { listAppRouterUrls, listLocalizedPublicUrls } from "../src/routing/routeInventory";
 import {
   buildLocalizedStaticRedirectRules,
   formatRedirectRule,
@@ -14,24 +14,63 @@ import {
 // Script runs from apps/brikette directory
 const rootDir = process.cwd();
 
-// Patterns for URLs that are handled by Cloudflare _redirects (not served by App Router)
-const REDIRECT_PATTERNS = [
-  /^\/directions\//, // /directions/:slug → /en/how-to-get-here/:slug
-];
-
 // URLs that are intentionally excluded from App Router (internal, deprecated, or special)
 const EXCLUDED_URLS = new Set([
   "/404", // Next.js handles this via app/not-found.tsx
   "/app-router-test", // Test-only route, not needed in production
 ]);
 
-const isRedirectSourceUrl = (url: string): boolean =>
-  REDIRECT_PATTERNS.some((pattern) => pattern.test(url));
-
 const isExcludedUrl = (url: string): boolean => EXCLUDED_URLS.has(url);
 
+function normalizeRedirectSourcePath(source: string): string | null {
+  if (source.startsWith("http://") || source.startsWith("https://")) {
+    try {
+      return new URL(source).pathname || "/";
+    } catch {
+      return null;
+    }
+  }
+  return source.startsWith("/") ? source : null;
+}
+
+function parseRedirectSources(redirectsContent: string): string[] {
+  const sources: string[] = [];
+
+  for (const rawLine of redirectsContent.split(/\r?\n/)) {
+    const line = rawLine.trim();
+    if (!line || line.startsWith("#")) continue;
+
+    const [source] = line.split(/\s+/);
+    if (!source) continue;
+
+    const normalized = normalizeRedirectSourcePath(source);
+    if (!normalized) continue;
+    sources.push(normalized);
+  }
+
+  return sources;
+}
+
+function escapeRegex(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function redirectSourceToRegex(source: string): RegExp {
+  const pattern = escapeRegex(source)
+    .replace(/\\:([A-Za-z_][A-Za-z0-9_]*)/g, "[^/]+")
+    .replace(/\\\*/g, ".*");
+  return new RegExp(`^${pattern}$`);
+}
+
+function buildRedirectMatchers(redirectSources: readonly string[]): RegExp[] {
+  return redirectSources.map(redirectSourceToRegex);
+}
+
+const isRedirectSourceUrl = (url: string, redirectMatchers: readonly RegExp[]): boolean =>
+  redirectMatchers.some((pattern) => pattern.test(url));
+
 async function main() {
-  console.log("Verifying URL coverage...\n");
+  console.info("Verifying URL coverage...\n");
 
   // Load legacy URLs
   const fixturesPath = path.join(rootDir, "src/test/fixtures/legacy-urls.txt");
@@ -40,11 +79,15 @@ async function main() {
     .split("\n")
     .filter(Boolean);
 
-  console.log(`Legacy URLs: ${legacyUrls.length}`);
+  console.info(`Legacy URLs: ${legacyUrls.length}`);
 
   // Load App Router URLs
   const appRouterUrls = new Set(listAppRouterUrls());
-  console.log(`App Router URLs: ${appRouterUrls.size}`);
+  console.info(`App Router URLs: ${appRouterUrls.size}`);
+
+  // Load canonical public URLs that are served via middleware rewrite / redirects.
+  const localizedPublicUrls = new Set(listLocalizedPublicUrls());
+  console.info(`Localized public URLs: ${localizedPublicUrls.size}`);
 
   // Check _redirects file exists
   const redirectsPath = path.join(rootDir, "public/_redirects");
@@ -54,6 +97,9 @@ async function main() {
   }
 
   const redirectsContent = fs.readFileSync(redirectsPath, "utf8");
+  const redirectSources = parseRedirectSources(redirectsContent);
+  const redirectMatchers = buildRedirectMatchers(redirectSources);
+
   if (!redirectsContent.includes("/directions/:slug")) {
     console.error("\nERROR: _redirects missing /directions/:slug rule");
     process.exit(1);
@@ -71,13 +117,14 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(
+  console.info(
     `Cloudflare _redirects: verified (${expectedLocalizedRules.length} localized rules)\n`,
   );
 
   // Find missing URLs
   const missing: string[] = [];
-  const served: string[] = [];
+  const servedByAppRouter: string[] = [];
+  const servedByLocalizedPublicUrl: string[] = [];
   const redirected: string[] = [];
   const excluded: string[] = [];
 
@@ -88,11 +135,16 @@ async function main() {
     }
 
     if (appRouterUrls.has(url)) {
-      served.push(url);
+      servedByAppRouter.push(url);
       continue;
     }
 
-    if (isRedirectSourceUrl(url)) {
+    if (localizedPublicUrls.has(url)) {
+      servedByLocalizedPublicUrl.push(url);
+      continue;
+    }
+
+    if (isRedirectSourceUrl(url, redirectMatchers)) {
       redirected.push(url);
       continue;
     }
@@ -100,23 +152,24 @@ async function main() {
     missing.push(url);
   }
 
-  console.log("Coverage Summary:");
-  console.log(`  Served by App Router: ${served.length}`);
-  console.log(`  Redirected: ${redirected.length}`);
-  console.log(`  Excluded: ${excluded.length}`);
-  console.log(`  Missing: ${missing.length}`);
+  console.info("Coverage Summary:");
+  console.info(`  Served by App Router: ${servedByAppRouter.length}`);
+  console.info(`  Served by localized public URL: ${servedByLocalizedPublicUrl.length}`);
+  console.info(`  Redirected: ${redirected.length}`);
+  console.info(`  Excluded: ${excluded.length}`);
+  console.info(`  Missing: ${missing.length}`);
 
   if (missing.length > 0) {
-    console.log("\nMissing URLs (first 30):");
-    missing.slice(0, 30).forEach((url) => console.log(`  ${url}`));
+    console.info("\nMissing URLs (first 30):");
+    missing.slice(0, 30).forEach((url) => console.info(`  ${url}`));
     if (missing.length > 30) {
-      console.log(`  ... and ${missing.length - 30} more`);
+      console.info(`  ... and ${missing.length - 30} more`);
     }
 
     // Write full list to file for analysis
     const missingPath = path.join(rootDir, "missing-urls.txt");
     fs.writeFileSync(missingPath, missing.join("\n"));
-    console.log(`\nFull list written to: ${missingPath}`);
+    console.info(`\nFull list written to: ${missingPath}`);
 
     process.exit(1);
   }
@@ -140,7 +193,7 @@ async function main() {
     process.exit(1);
   }
 
-  console.log("\n✓ All legacy URLs are covered!");
+  console.info("\n✓ All legacy URLs are covered!");
   process.exit(0);
 }
 

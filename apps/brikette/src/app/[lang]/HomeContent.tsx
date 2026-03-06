@@ -32,6 +32,7 @@ import { aggregateAvailabilityByCategory } from "@/utils/aggregateAvailabilityBy
 import { hydrateBookingSearch, persistBookingSearch } from "@/utils/bookingSearch";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 import { fireCtaClick, fireViewItemList } from "@/utils/ga4-events";
+import { getBookPath } from "@/utils/localizedRoutes";
 
 type Props = {
   lang: AppLanguage;
@@ -56,7 +57,7 @@ function HomeContent({ lang }: Props) {
     if (bookingQuery.checkOut) params.set("checkout", bookingQuery.checkOut);
     if (bookingQuery.pax) params.set("pax", bookingQuery.pax);
     const queryString = params.toString();
-    return `/${lang}/book${queryString ? `?${queryString}` : ""}`;
+    return `${getBookPath(lang)}${queryString ? `?${queryString}` : ""}`;
   }, [bookingQuery.checkIn, bookingQuery.checkOut, bookingQuery.pax, lang]);
 
   const availabilityCheckin = bookingQuery.checkIn || getTodayIso();

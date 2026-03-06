@@ -221,6 +221,26 @@ describe("middleware", () => {
       expect(response?.status).not.toBe(301);
       expect(response?.status).not.toBe(302);
     });
+
+    it("redirects localized room alias /ja/heya/mixed-ensuite-dorm to the canonical Japanese room slug", () => {
+      const request = createRequest("/ja/heya/mixed-ensuite-dorm");
+      const response = middleware(request);
+
+      expect(response?.status).toBe(301);
+      expect(response?.headers.get("location")).toContain(
+        "/ja/heya/danjo-kongo-basu-tsuki-domitori/",
+      );
+    });
+
+    it("redirects internal room alias /ja/dorms/mixed-ensuite-dorm to the canonical Japanese room slug", () => {
+      const request = createRequest("/ja/dorms/mixed-ensuite-dorm");
+      const response = middleware(request);
+
+      expect(response?.status).toBe(301);
+      expect(response?.headers.get("location")).toContain(
+        "/ja/heya/danjo-kongo-basu-tsuki-domitori/",
+      );
+    });
   });
 
   describe("preserve query params and trailing segments", () => {

@@ -142,3 +142,15 @@
 {"recorded_at":"2026-03-06T14:02:24.889Z","dispatch_id":"IDEA-DISPATCH-20260306140224-0885","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}
 
 {"recorded_at":"2026-03-06T14:03:07.401Z","dispatch_id":"IDEA-DISPATCH-20260306140307-0399","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}
+
+{"recorded_at":"2026-03-06T20:49:55.724Z","dispatch_id":"IDEA-DISPATCH-20260306204955-0720","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}
+
+{"recorded_at":"2026-03-06T20:55:54.822Z","dispatch_id":"IDEA-DISPATCH-20260306205554-0818","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}
+
+{"recorded_at":"2026-03-06T20:57:54.890Z","dispatch_id":"IDEA-DISPATCH-20260306205754-0886","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}
+
+{"recorded_at":"2026-03-06T20:58:26.853Z","dispatch_id":"IDEA-DISPATCH-20260306205826-0848","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}
+
+{"recorded_at":"2026-03-06T21:24:30.034Z","dispatch_id":"IDEA-DISPATCH-20260306212430-0030","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}
+
+{"recorded_at":"2026-03-06T21:26:56.680Z","dispatch_id":"IDEA-DISPATCH-20260306212656-0676","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}

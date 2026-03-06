@@ -7,6 +7,7 @@ import { BASE_URL } from "@/config/site";
 import type { AppLanguage } from "@/i18n.config";
 import apartment from "@/schema/apartment";
 import { buildBreadcrumbList, serializeJsonLdValue } from "@/utils/seo/jsonld";
+import { getSlug } from "@/utils/slug";
 
 interface Props {
   lang: AppLanguage;
@@ -20,7 +21,7 @@ export default function PrivateAccomStructuredDataRsc({ lang, slug }: Props): JS
     lang,
     items: [
       { name: "Hostel Brikette", item: `${BASE_URL}/${lang}` },
-      { name: "Private Rooms", item: `${BASE_URL}/${lang}/private-rooms` },
+      { name: "Private Rooms", item: `${BASE_URL}/${lang}/${getSlug("apartment", lang)}` },
       { name: "Book", item: pageUrl },
     ],
   });

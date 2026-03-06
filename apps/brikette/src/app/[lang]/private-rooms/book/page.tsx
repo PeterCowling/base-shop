@@ -9,7 +9,7 @@ import { getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
 import { OG_IMAGE } from "@/utils/headConstants";
-import { getSlug } from "@/utils/slug";
+import { getPrivateBookingPath } from "@/utils/localizedRoutes";
 
 type Props = {
   params: Promise<{ lang: string }>;
@@ -27,8 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = (t("book.meta.title") as string) || "";
   const description = (t("book.meta.description") as string) || "";
 
-  const apartmentSlug = getSlug("apartment", validLang);
-  const path = `/${validLang}/${apartmentSlug}/book`;
+  const path = getPrivateBookingPath(validLang);
 
   const image = buildCfImageUrl("/img/facade.avif", {
     width: OG_IMAGE.width,
@@ -49,5 +48,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ApartmentBookPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
-  redirect(`/${validLang}/book-private-accommodations`);
+  redirect(getPrivateBookingPath(validLang));
 }

@@ -57,7 +57,7 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
       return;
     }
     const apartmentPath = `/${lang}/${translatePath("apartment", lang)}`;
-    const privateBookingPath = `/${lang}/book-private-accommodations`;
+    const privateBookingPath = `/${lang}/${translatePath("privateBooking", lang)}`;
     if (pathname.startsWith(apartmentPath) || pathname.startsWith(privateBookingPath)) {
       setExpandedKey("apartment");
       return;

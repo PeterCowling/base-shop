@@ -38,8 +38,6 @@ export function listAppRouterUrls(): string[] {
 
     // Draft dashboard (internal editorial route)
     urls.push(`/${lang}/draft`);
-    urls.push(`/${lang}/book-private-accommodations`);
-
     // Dynamic: Rooms
     const roomsSlug = INTERNAL_SEGMENT_BY_KEY.rooms;
     for (const room of websiteVisibleRoomsData.filter((candidate) => !NON_DORM_ROOM_IDS.has(candidate.id))) {
@@ -92,8 +90,6 @@ export function listLocalizedPublicUrls(): string[] {
     for (const key of STATIC_EXPORT_SECTION_KEYS) {
       urls.push(`/${lang}/${getSlug(key, lang)}`);
     }
-
-    urls.push(`/${lang}/book-private-accommodations`);
 
     const roomsSlug = getSlug("rooms", lang);
     for (const room of websiteVisibleRoomsData.filter((candidate) => !NON_DORM_ROOM_IDS.has(candidate.id))) {

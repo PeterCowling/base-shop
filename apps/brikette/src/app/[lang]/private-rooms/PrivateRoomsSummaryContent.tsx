@@ -7,6 +7,7 @@ import { Grid } from "@acme/design-system/primitives";
 import { getTranslations } from "@/app/_lib/i18n-server";
 import roomsData from "@/data/roomsData";
 import type { AppLanguage } from "@/i18n.config";
+import { getPrivateBookingPath } from "@/utils/localizedRoutes";
 import { translatePath } from "@/utils/translate-path";
 
 type Props = {
@@ -18,7 +19,7 @@ export default async function PrivateRoomsSummaryContent({ lang }: Props) {
   const tApartment = await getTranslations(lang, "apartmentPage");
 
   const privateRoomsPath = `/${lang}/${translatePath("apartment", lang)}`;
-  const privateBookingPath = `/${lang}/book-private-accommodations`;
+  const privateBookingPath = getPrivateBookingPath(lang);
   const apartmentRoom = roomsData.find((room) => room.id === "apartment");
   const doubleRoom = roomsData.find((room) => room.id === "double_room");
   const apartmentDetailsRaw = tApartment("detailsList", { returnObjects: true }) as unknown;

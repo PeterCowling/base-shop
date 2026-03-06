@@ -15,6 +15,7 @@ import { resolveBookingCtaLabel } from "@acme/ui/shared";
 
 import type { AppLanguage } from "@/i18n.config";
 import { type CtaLocation, fireCtaClick } from "@/utils/ga4-events";
+import { getBookPath } from "@/utils/localizedRoutes";
 
 type ContentStickyCtaProps = {
   lang: AppLanguage;
@@ -127,7 +128,7 @@ function ContentStickyCta({ lang, ctaLocation }: ContentStickyCtaProps): JSX.Ele
       ctaLocation,
     });
 
-    router.push(`/${lang}/book`);
+    router.push(getBookPath(lang));
   }, [ctaLocation, router, lang]);
 
   if (isDismissed) {
@@ -170,7 +171,7 @@ function ContentStickyCta({ lang, ctaLocation }: ContentStickyCtaProps): JSX.Ele
             <p className="mt-1 text-sm text-brand-text/80 sm:text-base">{highlightSubcopy}</p>
           </div>
           <a
-            href={`/${lang}/book`}
+            href={getBookPath(lang)}
             onClick={onCtaClick}
             className="group relative inline-flex min-h-11 min-w-11 w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-brand-secondary px-6 py-3 text-base font-semibold text-brand-on-accent shadow-lg transition-transform focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-primary hover:scale-105 hover:bg-brand-secondary/90 sm:px-5 sm:py-3 sm:text-sm"
             aria-label={ctaLabel}

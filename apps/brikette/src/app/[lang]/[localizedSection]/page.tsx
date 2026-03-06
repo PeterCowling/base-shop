@@ -11,6 +11,7 @@ import AboutPage, { generateMetadata as generateAboutMetadata } from "../about/p
 import AssistancePage, { generateMetadata as generateAssistanceMetadata } from "../assistance/page";
 import BarMenuPage, { generateMetadata as generateBarMenuMetadata } from "../bar-menu/page";
 import BookPage, { generateMetadata as generateBookMetadata } from "../book/page";
+import BookPrivateAccomodationsPage, { generateMetadata as generatePrivateBookingMetadata } from "../book-private-accommodations/page";
 import BreakfastMenuPage, { generateMetadata as generateBreakfastMenuMetadata } from "../breakfast-menu/page";
 import CareersPage, { generateMetadata as generateCareersMetadata } from "../careers/page";
 import CookiePolicyPage, { generateMetadata as generateCookiePolicyMetadata } from "../cookie-policy/page";
@@ -37,6 +38,7 @@ const LOCALIZED_SECTION_KEYS = [
   "assistance",
   "experiences",
   "howToGetHere",
+  "privateBooking",
   "book",
   "apartment",
 ] as const;
@@ -66,6 +68,7 @@ const CANONICAL_ROUTE_BY_KEY: Record<AliasSectionKey, CanonicalRouteModule> = {
   assistance: { page: AssistancePage, metadata: generateAssistanceMetadata },
   experiences: { page: ExperiencesPage, metadata: generateExperiencesMetadata },
   howToGetHere: { page: HowToGetHerePage, metadata: generateHowToGetHereMetadata },
+  privateBooking: { page: BookPrivateAccomodationsPage, metadata: generatePrivateBookingMetadata },
   book: { page: BookPage, metadata: generateBookMetadata },
   apartment: { page: PrivateRoomsPage, metadata: generatePrivateRoomsMetadata },
 };
@@ -99,8 +102,8 @@ export async function generateStaticParams(): Promise<Array<{ lang: string; loca
     const appLang = toAppLanguage(lang);
 
     return LOCALIZED_SECTION_KEYS.flatMap((key) => {
-      // /en/book-dorm-bed is an explicit route; skip duplicate path generation here.
-      if (key === "book" && appLang === "en") return [];
+      // Explicit route folders own English canonicals; skip duplicate alias generation here.
+      if ((key === "book" || key === "privateBooking") && appLang === "en") return [];
 
       const localizedSection = getSlug(key, appLang);
       const internalSection = INTERNAL_SEGMENT_BY_KEY[key];

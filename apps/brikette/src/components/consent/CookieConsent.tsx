@@ -5,6 +5,8 @@ import { useEffect } from "react";
 import * as CookieConsent from "vanilla-cookieconsent";
 
 import { CONSENT_BANNER } from "@/config/env";
+import { toAppLanguage } from "@/utils/lang";
+import { getSlug } from "@/utils/slug";
 
 /**
  * Update Google Consent Mode v2 based on accepted cookie categories.
@@ -50,6 +52,9 @@ export function CookieConsentBanner({ enabledOverride }: CookieConsentBannerProp
 
   useEffect(() => {
     if (!enabled) return;
+
+    const lang = toAppLanguage(document.documentElement.lang);
+    const cookiePolicyHref = `/${lang}/${getSlug("cookiePolicy", lang)}`;
 
     CookieConsent.run({
       categories: {
@@ -127,7 +132,7 @@ export function CookieConsentBanner({ enabledOverride }: CookieConsentBannerProp
                 {
                   title: "More information",
                   description:
-                    'For more details about our use of cookies, please visit our <a href="/en/cookie-policy">Cookie Policy</a>.',
+                    `For more details about our use of cookies, please visit our <a href="${cookiePolicyHref}">Cookie Policy</a>.`,
                 },
               ],
             },

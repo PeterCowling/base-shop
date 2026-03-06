@@ -19,6 +19,7 @@ import {
 import { hydrateBookingSearch, persistBookingSearch } from "@/utils/bookingSearch";
 import { formatDate, safeParseIso } from "@/utils/dateUtils";
 import { fireCtaClick } from "@/utils/ga4-events";
+import { getBookPath } from "@/utils/localizedRoutes";
 
 
 type BookingWidgetProps = {
@@ -103,7 +104,7 @@ const BookingWidget = memo(function BookingWidget({
       persistBookingSearch({ checkin: checkIn, checkout: checkOut, pax: guests });
     }
     const qs = params.toString();
-    router.push(`/${effectiveLang}/book${qs ? `?${qs}` : ""}`);
+    router.push(`${getBookPath(effectiveLang)}${qs ? `?${qs}` : ""}`);
   }, [checkIn, checkOut, guests, invalidRange, lang, router]);
 
   const errorMessage = tLanding("bookingWidget.invalidDateRange") as string;

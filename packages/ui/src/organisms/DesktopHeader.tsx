@@ -68,11 +68,11 @@ function DesktopHeader({
   // Apartment-aware CTA routing (TASK-07): on apartment routes, link directly to apartment
   // booking page instead of opening the hostel booking modal.
   const apartmentPath = `/${translatePath("apartment", lang)}`;
-  const privateBookingPath = `/${lang}/book-private-accommodations`;
+  const privateBookingPath = `/${lang}/${translatePath("privateBooking", lang)}`;
   const isApartmentRoute =
     pathname.startsWith(`/${lang}${apartmentPath}`) || pathname.startsWith(privateBookingPath);
   const bookHref = isApartmentRoute
-    ? `/${lang}/book-private-accommodations`
+    ? privateBookingPath
     : `/${lang}/${translatePath("book", lang)}`;
   const onBookClick = useCallback(
     (event: MouseEvent<HTMLAnchorElement>) => {

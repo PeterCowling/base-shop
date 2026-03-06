@@ -6,6 +6,7 @@ import {
   Inbox,
   Lock,
   LogIn,
+  Mail,
 } from "lucide-react";
 
 import { withIconModal } from "../../hoc/withIconModal";
@@ -18,6 +19,7 @@ const actions: ModalAction[] = [
   { label: "Check-out",      icon: DoorOpen,     route: "/checkout" },
   { label: "Loans",          icon: Lock,         route: "/loan-items" },
   { label: "Extension",      icon: CalendarPlus, route: "/extension" },
+  { label: "Inbox",          icon: Mail,         route: "/inbox" },
   { label: "Prime Requests", icon: Inbox,        route: "/prime-requests" },
 ];
 

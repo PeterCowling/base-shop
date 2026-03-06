@@ -20,6 +20,7 @@ import { matchesGuideTopic, resolveGuideTopicId } from "@/data/guideTopics";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { fireCtaClick } from "@/utils/ga4-events";
+import { getBookPath } from "@/utils/localizedRoutes";
 import { getSlug } from "@/utils/slug";
 import { getTagMeta } from "@/utils/tags";
 import { resolveLabel, useEnglishFallback } from "@/utils/translation-fallback";
@@ -125,7 +126,7 @@ function ExperiencesPageContent({ lang, topicParam = "", tagParam = "", queryStr
 
   const handleOpenBooking = useCallback(() => {
     fireCtaClick({ ctaId: "experiences_book_cta", ctaLocation: "experiences_page" });
-    router.push(`/${lang}/book`);
+    router.push(getBookPath(lang));
   }, [router, lang]);
   const handleOpenConcierge = useCallback(() => openModal("contact"), [openModal]);
 
@@ -281,7 +282,7 @@ function ExperiencesPageContent({ lang, topicParam = "", tagParam = "", queryStr
             subtitle={ctaSubtitle || undefined}
             bookLabel={ctaBook || undefined}
             onBookClick={handleOpenBooking}
-            bookHref={`/${lang}/book`}
+            bookHref={getBookPath(lang)}
             eventsLabel={ctaEvents || undefined}
             eventsHref={barMenuHref}
             breakfastLabel={ctaBreakfast || undefined}

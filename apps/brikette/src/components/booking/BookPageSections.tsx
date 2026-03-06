@@ -10,6 +10,7 @@ import ExpiredQuoteNotice from "@/components/booking/ExpiredQuoteNotice";
 import RecoveryQuoteCapture from "@/components/booking/RecoveryQuoteCapture";
 import type { AppLanguage } from "@/i18n.config";
 import { formatDate } from "@/utils/dateUtils";
+import { getBookPath } from "@/utils/localizedRoutes";
 
 type BookPageSearchPanelProps = {
   lang?: AppLanguage;
@@ -137,12 +138,12 @@ export function BookPageRecoverySection({
     <Section padding="default" className="mx-auto max-w-7xl">
       <RecoveryQuoteCapture
         isValidSearch={roomQueryState === "valid"}
-        resumePathname={`/${lang}/book`}
+        resumePathname={getBookPath(lang)}
         context={{
           checkin,
           checkout,
           pax,
-          source_route: `/${lang}/book`,
+          source_route: getBookPath(lang),
         }}
       />
     </Section>

@@ -160,7 +160,7 @@ Tailwind v4's `@theme inline` modifier is the recommended pattern for tokens who
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Blocked (push pending — other agents' in-progress work is blocking the pre-push lint gate; commit f463fe63b5 is ready locally)
 - **Affects:** `docs/plans/reception-theme-inline-cascade/plan.md`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-03

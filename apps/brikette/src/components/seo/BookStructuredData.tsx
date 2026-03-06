@@ -14,13 +14,14 @@ import { BASE_URL } from "@/config/site";
 import type { AppLanguage } from "@/i18n.config";
 import { buildHotelNode, HOTEL_ID } from "@/utils/schema";
 import { serializeJsonLdValue } from "@/utils/seo/jsonld";
+import { getSlug } from "@/utils/slug";
 
 interface BookStructuredDataProps {
   lang: AppLanguage;
 }
 
 function BookStructuredData({ lang }: BookStructuredDataProps): JSX.Element {
-  const pageUrl = `${BASE_URL}/${lang}/book`;
+  const pageUrl = `${BASE_URL}/${lang}/${getSlug("book", lang)}`;
   const base = buildHotelNode({ pageUrl, lang });
 
   // Clone and strip third-party ratings + related metadata

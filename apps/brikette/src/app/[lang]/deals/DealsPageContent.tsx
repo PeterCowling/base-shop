@@ -24,6 +24,7 @@ import { DealsPerksSection, DealsPrimaryCtaSection } from "@/routes/deals/PerksA
 import { getDealStatus } from "@/routes/deals/status";
 import { useDealContent } from "@/routes/deals/useDealContent";
 import { fireSelectPromotion, fireViewItemList, fireViewPromotion } from "@/utils/ga4-events";
+import { getBookPath } from "@/utils/localizedRoutes";
 
 type Props = {
   lang: AppLanguage;
@@ -313,10 +314,10 @@ function DealsPageContent({ lang }: Props) {
             promotion_name: deal ? `${deal.discountPct}% off` : dealId,
           },
         });
-        router.push(`/${lang}/book?deal=${encodeURIComponent(dealId)}`);
+        router.push(`${getBookPath(lang)}?deal=${encodeURIComponent(dealId)}`);
         return;
       }
-      router.push(`/${lang}/book`);
+      router.push(getBookPath(lang));
     },
     [router, lang]
   );

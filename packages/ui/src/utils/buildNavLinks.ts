@@ -49,7 +49,7 @@ export function buildNavLinks(
 
   const roomsSlug = slugs["rooms"];
   const bookSlug = `/${translatePath("book", lang)}`;
-  const privateBookingSlug = "/book-private-accommodations";
+  const privateBookingSlug = `/${translatePath("privateBooking", lang)}`;
 
   const navLinks = NAV_ITEMS.map((key) => {
     const label =

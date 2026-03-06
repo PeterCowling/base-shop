@@ -22,9 +22,9 @@
       "price": 400,
       "prices": {
         "USD": 400,
-        "EUR": 400,
-        "GBP": 400,
-        "AUD": 400
+        "EUR": 368,
+        "GBP": 312,
+        "AUD": 600
       },
       "status": "live",
       "media": [

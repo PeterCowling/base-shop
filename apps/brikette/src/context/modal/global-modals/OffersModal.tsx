@@ -12,6 +12,7 @@ import { resolveBookingCtaLabel } from "@acme/ui/shared";
 
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { fireCtaClick } from "@/utils/ga4-events";
+import { getBookPath } from "@/utils/localizedRoutes";
 
 import { i18nConfig } from "../constants";
 import { useModal } from "../hooks";
@@ -57,7 +58,7 @@ export function OffersGlobalModal(): JSX.Element | null {
     // TC-01: fire cta_click before navigating to /book
     fireCtaClick({ ctaId: "offers_modal_reserve", ctaLocation: "offers_modal" });
     closeModal();
-    router.push(`/${lang}/book`);
+    router.push(getBookPath(lang));
   }, [closeModal, router, lang]);
 
   return <OffersModal isOpen onClose={closeModal} onReserve={handleReserve} copy={offersCopy} />;

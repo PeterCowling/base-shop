@@ -14,6 +14,7 @@ const CANONICAL_SEGMENT_BY_KEY: Readonly<Record<keyof SlugMap, string>> = {
   experiences: "experiences",
   howToGetHere: "how-to-get-here",
   apartment: "private-rooms",
+  privateBooking: "book-private-accommodations",
   book: "book",
   guides: "guides",
   guidesTags: "tags",

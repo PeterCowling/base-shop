@@ -128,7 +128,7 @@ function useCatalogConsoleState() {
   const busyLockRef = React.useRef(false);
   const pendingAutosaveDraftRef = React.useRef<CatalogProductDraftInput | null>(null);
   const autosaveFlushInProgressRef = React.useRef(false);
-  const [isAutosaveDirty, setIsAutosaveDirty] = React.useState(false);
+  const [isAutosaveDirty, setIsAutosaveDirty] = React.useState(true);
   const [isAutosaveSaving, setIsAutosaveSaving] = React.useState(false);
   const [lastAutosaveSavedAt, setLastAutosaveSavedAt] = React.useState<number | null>(null);
   const [autosaveInlineMessage, setAutosaveInlineMessage] = React.useState<string | null>(null);
@@ -230,7 +230,7 @@ function useCatalogConsoleState() {
 
   const resetAutosaveState = React.useCallback(() => {
     pendingAutosaveDraftRef.current = null;
-    setIsAutosaveDirty(false);
+    setIsAutosaveDirty(true);
     setIsAutosaveSaving(false);
     setLastAutosaveSavedAt(null);
     setAutosaveInlineMessage(null);
@@ -421,7 +421,36 @@ function useCatalogAuthHandlers(state: CatalogConsoleState) {
   return { handleLogin, handleLogout };
 }
 
+function createSaveAdvanceFeedbackHandler(state: CatalogConsoleState) {
+  return () => {
+    updateActionFeedback(state.setActionFeedback, "draft", {
+      kind: "success",
+      message: state.t("saveAndAdvanceFeedback"),
+    });
+  };
+}
+
+function createDeleteHandler(state: CatalogConsoleState, handleNew: () => void) {
+  return async () =>
+    (() => {
+      resetAutosaveAndBaseline(state);
+      return handleDeleteImpl({
+        selectedSlug: state.selectedSlug,
+        locale: state.locale,
+        storefront: state.storefront,
+        t: state.t,
+        busyLockRef: state.busyLockRef,
+        setBusy: state.setBusy,
+        setActionFeedback: state.setActionFeedback,
+        loadCatalog: state.loadCatalog,
+        handleNew,
+      });
+    })();
+}
+
 function useCatalogDraftHandlers(state: CatalogConsoleState) {
+  const handleSaveAdvanceFeedback = createSaveAdvanceFeedbackHandler(state);
+
   const handleSelect = (product: CatalogProductDraftInput) => {
     state.resetAutosaveState();
     const normalizedProduct = withDraftDefaults(product);
@@ -627,23 +656,17 @@ function useCatalogDraftHandlers(state: CatalogConsoleState) {
     void flushAutosaveQueue();
   };
 
-  const handleDelete = async () =>
-    (() => {
-      resetAutosaveAndBaseline(state);
-      return handleDeleteImpl({
-        selectedSlug: state.selectedSlug,
-        locale: state.locale,
-        storefront: state.storefront,
-        t: state.t,
-        busyLockRef: state.busyLockRef,
-        setBusy: state.setBusy,
-        setActionFeedback: state.setActionFeedback,
-        loadCatalog: state.loadCatalog,
-        handleNew,
-      });
-    })();
+  const handleDelete = createDeleteHandler(state, handleNew);
 
-  return { handleNew, handleStorefrontChange, handleSelect, handleSave, handleSaveWithDraft, handleDelete };
+  return {
+    handleNew,
+    handleStorefrontChange,
+    handleSelect,
+    handleSave,
+    handleSaveWithDraft,
+    handleSaveAdvanceFeedback,
+    handleDelete,
+  };
 }
 
 function useCatalogSyncHandlers(state: CatalogConsoleState) {

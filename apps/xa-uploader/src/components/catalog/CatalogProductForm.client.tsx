@@ -102,10 +102,11 @@ function useSaveButtonTransition(params: {
   busy: boolean;
   canOpenImageStep: boolean;
   onAdvanceToImages: () => void;
+  onSavedFeedback?: () => void;
   onSave: () => Promise<SaveResult>;
   t: ReturnType<typeof useUploaderI18n>["t"];
 }) {
-  const { busy, canOpenImageStep, onAdvanceToImages, onSave, t } = params;
+  const { busy, canOpenImageStep, onAdvanceToImages, onSavedFeedback, onSave, t } = params;
   const [saveButtonState, setSaveButtonState] = React.useState<SaveButtonState>("idle");
   const saveAdvanceTimerRef = React.useRef<number | null>(null);
   const clearSaveAdvanceTimer = React.useCallback(() => {
@@ -135,9 +136,18 @@ function useSaveButtonTransition(params: {
     saveAdvanceTimerRef.current = window.setTimeout(() => {
       saveAdvanceTimerRef.current = null;
       setSaveButtonState("idle");
+      onSavedFeedback?.();
       if (canOpenImageStep) onAdvanceToImages();
     }, 2000);
-  }, [busy, canOpenImageStep, clearSaveAdvanceTimer, onAdvanceToImages, onSave, saveButtonState]);
+  }, [
+    busy,
+    canOpenImageStep,
+    clearSaveAdvanceTimer,
+    onAdvanceToImages,
+    onSave,
+    onSavedFeedback,
+    saveButtonState,
+  ]);
 
   const cancelPendingSaveAdvance = React.useCallback(() => {
     clearSaveAdvanceTimer();
@@ -172,6 +182,7 @@ export function CatalogProductForm({
   feedback,
   onChangeDraft,
   onSave,
+  onSavedFeedback,
   onSaveWithDraft,
   onDelete,
 }: {
@@ -187,6 +198,7 @@ export function CatalogProductForm({
   feedback: ActionFeedback | null;
   onChangeDraft: (draft: CatalogProductDraftInput) => void;
   onSave: () => Promise<SaveResult>;
+  onSavedFeedback?: () => void;
   onSaveWithDraft: (nextDraft: CatalogProductDraftInput) => void;
   onDelete: () => void;
 }) {
@@ -216,6 +228,7 @@ export function CatalogProductForm({
       canOpenImageStep,
       onAdvanceToImages: () => setStep("images"),
       onSave,
+      onSavedFeedback,
       t,
     });
   const handleDeleteClick = React.useCallback(() => {
@@ -225,19 +238,6 @@ export function CatalogProductForm({
 
   return (
     <section className={PANEL_CLASS}>
-      {selectedSlug ? (
-        <div className="flex items-center justify-end">
-          <button
-            type="button"
-            onClick={handleDeleteClick}
-            disabled={busy}
-            className={BTN_DANGER_CLASS}
-          >
-            {t("delete")}
-          </button>
-        </div>
-      ) : null}
-
       {feedback ? (
         <div
           role={feedback.kind === "error" ? "alert" : "status"}
@@ -314,7 +314,19 @@ export function CatalogProductForm({
                 onChange={onChangeDraft}
               />
             ) : null}
-            <div className="flex justify-end">
+            <div className="flex items-center justify-between">
+              <div>
+                {selectedSlug ? (
+                  <button
+                    type="button"
+                    onClick={handleDeleteClick}
+                    disabled={busy}
+                    className={BTN_DANGER_CLASS}
+                  >
+                    {t("delete")}
+                  </button>
+                ) : null}
+              </div>
               <button
                 type="button"
                 onClick={() => void handleSaveClick()}

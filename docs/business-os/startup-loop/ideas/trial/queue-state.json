@@ -1,17 +1,111 @@
 {
-  "last_updated": "2026-03-06T12:08:46.493Z",
+  "last_updated": "2026-03-06T12:29:47.103Z",
   "counts": {
-    "enqueued": 105,
+    "enqueued": 113,
     "processed": 34,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
     "completed": 114,
-    "fact_find_ready": 161,
-    "total": 279
+    "fact_find_ready": 169,
+    "total": 287
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306170000-0001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "root_event_id": "operator:BRIK:BOS:email-audit-log-reconcile-recovery-not-persisted:20260306",
+      "anchor_key": "email-audit-log-reconcile-recovery-not-persisted",
+      "cluster_key": "BRIK:BOS:email-audit-log-reconcile-recovery-not-persisted:operator:20260306",
+      "cluster_fingerprint": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK email audit log — reconcile recovery events not persisted",
+      "location_anchors": [
+        "packages/mcp-server/src/tools/gmail-reconciliation.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "handleReconcileInProgress recovers stuck In-Progress emails and re-queues them, but writes zero audit or telemetry entries. Only the total count is surfaced in the ops-inbox preflight output. Which emails were recovered, when they got stuck, and the computed reason field (e.g. stale-requeue-inquiry) are all lost after each session.",
+      "next_scope_now": "Fact-find the reconcile recovery logging gap: identify what audit/telemetry events should be emitted per recovered email (messageId, reason, recovered_at timestamp), determine whether to use appendAuditEntry (new action type) or appendTelemetryEvent (email_queue_transition), and produce a minimal targeted implementation plan scoped to gmail-reconciliation.ts.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: handleReconcileInProgress returns counts but writes no audit entries — which emails were recovered is invisible after session ends",
+        "agent-verified: gmail-reconciliation.ts has no appendAuditEntry or appendTelemetryEvent calls (grep confirms zero matches)",
+        "agent-verified: reason field (stale-requeue-inquiry etc.) computed at gmail-reconciliation.ts:155-170 but never persisted"
+      ],
+      "queue_state": "enqueued",
+      "created_at": "2026-03-06T17:00:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306170000-0002",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "root_event_id": "operator:BRIK:BOS:email-processing-error-reason-missing-lock-released:20260306",
+      "anchor_key": "email-processing-error-reason-missing-lock-released",
+      "cluster_key": "BRIK:BOS:email-processing-error-reason-missing-lock-released:operator:20260306",
+      "cluster_fingerprint": "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK email processing — error reason missing from lock-released entries",
+      "location_anchors": [
+        "packages/mcp-server/src/tools/gmail.ts",
+        "packages/mcp-server/src/tools/gmail-shared.ts",
+        "packages/mcp-server/src/tools/gmail-handlers.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "When email processing crashes or throws mid-session, a lock-released entry is written with actor:\"system\" but no error reason. The gap between lock-acquired and lock-released with no outcome entry indicates a failure, but the cause is invisible in the audit log. The error is only visible in Claude Code terminal stderr, which is not persisted.",
+      "next_scope_now": "Fact-find the lock-release error logging gap: enumerate all lock-release-on-error code paths in gmail.ts and gmail-handlers.ts, determine the right mechanism (optional error field on AuditEntry, a new action type, or a TelemetryEvent), and produce a minimal targeted implementation plan that surfaces the failure reason without breaking the fail-open guarantee.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: lock-released written on error path with no reason field — can see something failed but not what",
+        "agent-verified: gmail.ts:2532, 2736, 2740 and gmail-handlers.ts:297, 605 all write lock-released with no error context",
+        "agent-verified: AuditEntry interface has no error or reason field (gmail-shared.ts:151-157)"
+      ],
+      "queue_state": "enqueued",
+      "created_at": "2026-03-06T17:00:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306170000-0003",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "root_event_id": "operator:BRIK:BOS:gmail-label-setup-creation-failures-silently-swallowed:20260306",
+      "anchor_key": "gmail-label-setup-creation-failures-silently-swallowed",
+      "cluster_key": "BRIK:BOS:gmail-label-setup-creation-failures-silently-swallowed:operator:20260306",
+      "cluster_fingerprint": "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK Gmail label setup — creation failures silently swallowed",
+      "location_anchors": [
+        "packages/mcp-server/src/tools/gmail.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "ensureLabelMap catches label creation errors and silently continues (gmail.ts ~line 967). If a required Brikette/* label fails to create due to permissions, quota, or network issues, the pipeline may route emails incorrectly with no record in the audit log and no operator-visible warning.",
+      "next_scope_now": "Fact-find the ensureLabelMap silent failure gap: determine which failure modes are realistic (permissions vs. transient network), decide the correct behavior (warn-and-continue vs. surface to operator), and produce a minimal fix that writes a telemetry event or stderr warning on label creation failure without blocking the pipeline.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.82,
+      "evidence_refs": [
+        "operator-stated: ensureLabelMap silently swallows label creation failures — no audit trail if a required label is missing",
+        "agent-verified: gmail.ts:967-969 catch block is empty — no log, no audit entry, no telemetry on label creation failure"
+      ],
+      "queue_state": "enqueued",
+      "created_at": "2026-03-06T17:00:00.000Z"
+    },
     {
       "schema_version": "dispatch.v2",
       "dispatch_id": "IDEA-DISPATCH-20260306150000-0001",
@@ -11365,6 +11459,221 @@
         "session:b986c4e2-907f-402c-b168-f7b5f89f377a"
       ],
       "created_at": "2026-03-06T12:08:34.987Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306121125-0582",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "acb7df019e6a356a92e43758bd93777d696fdc37",
+      "after_sha": "6451b6e026849090cf3dcb6e0666f548e60d3097",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:6451b6e026849090cf3dcb6e0666f548e60d3097",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:6451b6e026849090cf3dcb6e0666f548e60d3097",
+      "cluster_fingerprint": "9a21589ec33bd2f56bab2f7a77386480bd94547b661a534e49cc0a3a6e1f79a6",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (acb7df0 → 6451b6e)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739",
+        "session:934d1ed9-f97a-4dc1-98e9-2bd8b2a916fb",
+        "session:659732df-cc97-43d8-9a2a-5c5622f48f8d",
+        "session:74db1618-e518-4834-bae9-f02ea22c3f59",
+        "session:8781939f-edea-451b-a9fa-1fa24c8cb292",
+        "session:b986c4e2-907f-402c-b168-f7b5f89f377a"
+      ],
+      "created_at": "2026-03-06T12:11:25.581Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306122143-0655",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+      "before_sha": "d0520b87c3353a85fd0cd8b480f04c1fe7f62f7c",
+      "after_sha": "392c686a9462bb21a6f740987866b11aa97bdd87",
+      "root_event_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:392c686a9462bb21a6f740987866b11aa97bdd87",
+      "anchor_key": "bos-codebase-structural-signals",
+      "cluster_key": "bos:unknown:bos-codebase-structural-signals:BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:392c686a9462bb21a6f740987866b11aa97bdd87",
+      "cluster_fingerprint": "d60a7dda19172df39fb707bd047bd6524fa8174ac09020bbe2504289f79156b3",
+      "lineage_depth": 0,
+      "area_anchor": "bos-codebase-structural-signals",
+      "location_anchors": [
+        "git-diff:HEAD~1..HEAD"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS changed (d0520b8 → 392c686)",
+      "next_scope_now": "Investigate implications of bos-codebase-structural-signals delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "git-diff-range:HEAD~1..HEAD",
+        "git-diff:A:apps/xa-uploader/src/components/catalog/__tests__/CatalogProductImagesFields.test.ts"
+      ],
+      "created_at": "2026-03-06T12:21:43.654Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-codebase-structural-signals implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-codebase-structural-signals.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306122144-0655",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "6451b6e026849090cf3dcb6e0666f548e60d3097",
+      "after_sha": "0aff3b3945a884936ec8d360b5022c9cf6bc257b",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:0aff3b3945a884936ec8d360b5022c9cf6bc257b",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:0aff3b3945a884936ec8d360b5022c9cf6bc257b",
+      "cluster_fingerprint": "c87a64923182936fa6c7b64331e3b74871d4a11a3430fbf73420e36d5d9e642b",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (6451b6e → 0aff3b3)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:00654e03-9371-4567-a764-5f1c336012e5",
+        "session:934d1ed9-f97a-4dc1-98e9-2bd8b2a916fb",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739",
+        "session:659732df-cc97-43d8-9a2a-5c5622f48f8d",
+        "session:74db1618-e518-4834-bae9-f02ea22c3f59",
+        "session:8781939f-edea-451b-a9fa-1fa24c8cb292"
+      ],
+      "created_at": "2026-03-06T12:21:44.654Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306122939-0588",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "0aff3b3945a884936ec8d360b5022c9cf6bc257b",
+      "after_sha": "edd57414c3d6a895bfd515422f2fa1462361bbe1",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:edd57414c3d6a895bfd515422f2fa1462361bbe1",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:edd57414c3d6a895bfd515422f2fa1462361bbe1",
+      "cluster_fingerprint": "7cb3cd34b6bd8b5113aecfc001f067c29a3d907bcc416be702b47ad7dd12ef09",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (0aff3b3 → edd5741)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:00654e03-9371-4567-a764-5f1c336012e5",
+        "session:934d1ed9-f97a-4dc1-98e9-2bd8b2a916fb",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739",
+        "session:659732df-cc97-43d8-9a2a-5c5622f48f8d",
+        "session:74db1618-e518-4834-bae9-f02ea22c3f59",
+        "session:8781939f-edea-451b-a9fa-1fa24c8cb292"
+      ],
+      "created_at": "2026-03-06T12:29:39.587Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306122947-0100",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "edd57414c3d6a895bfd515422f2fa1462361bbe1",
+      "after_sha": "da562ddf48cb0c3a34c9bd33b334006859e7d927",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:da562ddf48cb0c3a34c9bd33b334006859e7d927",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:da562ddf48cb0c3a34c9bd33b334006859e7d927",
+      "cluster_fingerprint": "941ae8bb9c408d1313b8a74c1c369174a21972a4e1e7de44c1f25218735e86a8",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (edd5741 → da562dd)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:00654e03-9371-4567-a764-5f1c336012e5",
+        "session:934d1ed9-f97a-4dc1-98e9-2bd8b2a916fb",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739",
+        "session:659732df-cc97-43d8-9a2a-5c5622f48f8d",
+        "session:74db1618-e518-4834-bae9-f02ea22c3f59",
+        "session:8781939f-edea-451b-a9fa-1fa24c8cb292"
+      ],
+      "created_at": "2026-03-06T12:29:47.099Z",
       "queue_state": "enqueued",
       "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
       "intended_outcome": {

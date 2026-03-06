@@ -25,6 +25,7 @@ import {
 } from "./catalogConsoleFeedback";
 import { buildLogBlock, toErrorMap } from "./catalogConsoleUtils";
 import { buildEmptyDraft, withDraftDefaults } from "./catalogDraft";
+import { getCatalogDraftWorkflowReadiness } from "./catalogWorkflow";
 
 type Translator = (key: string, vars?: Record<string, unknown>) => string;
 
@@ -110,6 +111,19 @@ export function mergeAutosaveImageTuples(params: {
     imageRoles,
     imageAltTexts,
   };
+}
+
+export function shouldTriggerAutosync(params: {
+  pendingAutosaveDraftRef: { current: unknown };
+  busyLockRef: { current: boolean };
+  syncReadinessReady: boolean;
+  syncReadinessChecking: boolean;
+  draft: CatalogProductDraftInput;
+}): boolean {
+  if (params.pendingAutosaveDraftRef.current !== null) return false;
+  if (params.busyLockRef.current) return false;
+  if (!params.syncReadinessReady || params.syncReadinessChecking) return false;
+  return getCatalogDraftWorkflowReadiness(params.draft).isPublishReady;
 }
 
 export function handleNewImpl({

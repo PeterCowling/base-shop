@@ -24,6 +24,7 @@ import {
   handleSyncImpl,
   mergeAutosaveImageTuples,
   type SaveResult,
+  shouldTriggerAutosync,
   type SyncActionResult,
 } from "./catalogConsoleActions";
 import {
@@ -401,6 +402,120 @@ function applyAutosaveQueueSaveSuccess(
   state.setLastAutosaveSavedAt(Date.now());
 }
 
+function finalizeAutosaveSuccess(
+  state: CatalogConsoleState,
+  result: Extract<SaveResult, { status: "saved" }>,
+): CatalogProductDraftInput | null {
+  applyAutosaveQueueSaveSuccess(state, result);
+  return state.pendingAutosaveDraftRef.current === null ? result.product : null;
+}
+
+function createAutosyncTrigger(
+  state: CatalogConsoleState,
+  handleAutosync?: () => Promise<SyncActionResult>,
+) {
+  return async (currentDraft: CatalogProductDraftInput): Promise<void> => {
+    if (!handleAutosync) return;
+    if (
+      !shouldTriggerAutosync({
+        pendingAutosaveDraftRef: state.pendingAutosaveDraftRef,
+        busyLockRef: state.busyLockRef,
+        syncReadinessReady: state.syncReadiness.ready,
+        syncReadinessChecking: state.syncReadiness.checking,
+        draft: currentDraft,
+      })
+    ) {
+      return;
+    }
+    try {
+      await handleAutosync();
+    } catch {
+      // Autosync feedback is surfaced through the shared sync action state.
+    }
+  };
+}
+
+type AutosaveConflictRetryResult =
+  | {
+      status: "saved";
+      revision: string | null;
+      autosyncCandidate: CatalogProductDraftInput | null;
+    }
+  | {
+      status: "busy";
+      requeuedDraft: CatalogProductDraftInput;
+    }
+  | {
+      status: "failed";
+      preserveDirty: true;
+    };
+
+async function retryAutosaveAfterConflict(params: {
+  state: CatalogConsoleState;
+  pendingDraft: CatalogProductDraftInput;
+  handleSelect: (product: CatalogProductDraftInput) => void;
+}): Promise<AutosaveConflictRetryResult> {
+  const latest = await loadLatestDraftForConflict({ state: params.state, draft: params.pendingDraft });
+  if (!latest) {
+    return {
+      status: "failed",
+      preserveDirty: markAutosaveFailure(params.state, params.state.t("apiErrorConflict")),
+    };
+  }
+
+  const mergedDraft = mergeAutosaveImageTuples({
+    serverDraft: latest.product,
+    localDraft: params.pendingDraft,
+    baselineDraft: params.state.draftImageBaselineRef.current,
+  });
+
+  const retryAttempt = await runCatalogSave({
+    state: params.state,
+    draft: mergedDraft,
+    draftRevision: latest.revision,
+    suppressSuccessFeedback: true,
+    confirmUnpublish: () => false,
+    handleSelect: params.handleSelect,
+  });
+
+  if (retryAttempt.status === "saved") {
+    return {
+      status: "saved",
+      revision: retryAttempt.revision,
+      autosyncCandidate: finalizeAutosaveSuccess(params.state, retryAttempt),
+    };
+  }
+
+  if (retryAttempt.status === "busy") {
+    return {
+      status: "busy",
+      requeuedDraft: mergedDraft,
+    };
+  }
+
+  if (retryAttempt.status === "validation_error") {
+    return {
+      status: "failed",
+      preserveDirty: markAutosaveFailure(
+        params.state,
+        getAutosaveValidationInlineMessage(params.state),
+      ),
+    };
+  }
+
+  if (retryAttempt.status === "conflict") {
+    return {
+      status: "failed",
+      preserveDirty: markAutosaveFailure(params.state, params.state.t("apiErrorConflict")),
+    };
+  }
+
+  return {
+    status: "failed",
+    preserveDirty: markAutosaveFailure(params.state, params.state.t("autosaveNeedsManualSave")),
+  };
+}
+
 function useCatalogAuthHandlers(state: CatalogConsoleState) {
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) =>
     handleLoginImpl({
@@ -464,8 +579,12 @@ function createDeleteHandler(state: CatalogConsoleState, handleNew: () => void) 
     })();
 }
 
-function useCatalogDraftHandlers(state: CatalogConsoleState) {
+function useCatalogDraftHandlers(
+  state: CatalogConsoleState,
+  handleAutosync?: () => Promise<SyncActionResult>,
+) {
   const handleSaveAdvanceFeedback = createSaveAdvanceFeedbackHandler(state);
+  const triggerAutosync = createAutosyncTrigger(state, handleAutosync);
 
   const handleSelect = (product: CatalogProductDraftInput) => {
     state.resetAutosaveState();
@@ -522,6 +641,7 @@ function useCatalogDraftHandlers(state: CatalogConsoleState) {
 
     let workingRevision = state.draftRevision;
     let preserveDirty = false;
+    let autosyncCandidate: CatalogProductDraftInput | null = null;
 
     try {
       while (state.pendingAutosaveDraftRef.current) {
@@ -545,7 +665,7 @@ function useCatalogDraftHandlers(state: CatalogConsoleState) {
 
         if (firstAttempt.status === "saved") {
           workingRevision = firstAttempt.revision;
-          applyAutosaveQueueSaveSuccess(state, firstAttempt);
+          autosyncCandidate = finalizeAutosaveSuccess(state, firstAttempt);
           continue;
         }
 
@@ -557,47 +677,26 @@ function useCatalogDraftHandlers(state: CatalogConsoleState) {
         }
 
         if (firstAttempt.status === "conflict") {
-          const latest = await loadLatestDraftForConflict({ state, draft: pendingDraft });
-          if (!latest) {
-            preserveDirty = markAutosaveFailure(state, state.t("apiErrorConflict"));
-            break;
-          }
-
-          const mergedDraft = mergeAutosaveImageTuples({
-            serverDraft: latest.product,
-            localDraft: pendingDraft,
-            baselineDraft: state.draftImageBaselineRef.current,
-          });
-
-          const retryAttempt = await runCatalogSave({
+          const retryResult = await retryAutosaveAfterConflict({
             state,
-            draft: mergedDraft,
-            draftRevision: latest.revision,
-            suppressSuccessFeedback: true,
-            confirmUnpublish: () => false,
+            pendingDraft,
             handleSelect,
           });
 
-          if (retryAttempt.status === "saved") {
-            workingRevision = retryAttempt.revision;
-            applyAutosaveQueueSaveSuccess(state, retryAttempt);
+          if (retryResult.status === "saved") {
+            workingRevision = retryResult.revision;
+            autosyncCandidate = retryResult.autosyncCandidate;
             continue;
           }
 
-          if (retryAttempt.status === "busy") {
-            state.pendingAutosaveDraftRef.current = mergedDraft;
+          if (retryResult.status === "busy") {
+            state.pendingAutosaveDraftRef.current = retryResult.requeuedDraft;
             state.setIsAutosaveDirty(true);
             await waitForBusyToClear(state.busyLockRef);
             continue;
           }
 
-          if (retryAttempt.status === "validation_error") {
-            preserveDirty = markAutosaveFailure(state, getAutosaveValidationInlineMessage(state));
-          } else if (retryAttempt.status === "conflict") {
-            preserveDirty = markAutosaveFailure(state, state.t("apiErrorConflict"));
-          } else {
-            preserveDirty = markAutosaveFailure(state, state.t("autosaveNeedsManualSave"));
-          }
+          preserveDirty = retryResult.preserveDirty;
           break;
         }
 
@@ -617,6 +716,9 @@ function useCatalogDraftHandlers(state: CatalogConsoleState) {
         state.setIsAutosaveDirty(false);
       }
       state.autosaveFlushInProgressRef.current = false;
+      if (autosyncCandidate && !preserveDirty && state.pendingAutosaveDraftRef.current === null) {
+        void triggerAutosync(autosyncCandidate);
+      }
       if (state.pendingAutosaveDraftRef.current && !state.busyLockRef.current) {
         void flushAutosaveQueue();
       }
@@ -687,15 +789,7 @@ function useCatalogDraftHandlers(state: CatalogConsoleState) {
 }
 
 function useCatalogSyncHandlers(state: CatalogConsoleState) {
-  const handleSync = async (): Promise<SyncActionResult> => {
-    if (state.isAutosaveDirty || state.isAutosaveSaving) {
-      updateActionFeedback(state.setActionFeedback, "sync", {
-        kind: "error",
-        message: state.t("syncBlockedAutosavePending"),
-      });
-      return { ok: false };
-    }
-    if (!state.syncReadiness.ready || state.syncReadiness.checking) return { ok: false };
+  const runSync = async (): Promise<SyncActionResult> => {
     const result = await handleSyncImpl({
       storefront: state.storefront,
       syncOptions: state.syncOptions,
@@ -713,17 +807,35 @@ function useCatalogSyncHandlers(state: CatalogConsoleState) {
     return result;
   };
 
+  const handleSync = async (): Promise<SyncActionResult> => {
+    if (state.isAutosaveDirty || state.isAutosaveSaving) {
+      updateActionFeedback(state.setActionFeedback, "sync", {
+        kind: "error",
+        message: state.t("syncBlockedAutosavePending"),
+      });
+      return { ok: false };
+    }
+    if (!state.syncReadiness.ready || state.syncReadiness.checking) return { ok: false };
+    return await runSync();
+  };
+
+  const handleAutosync = async (): Promise<SyncActionResult> => {
+    if (!state.syncReadiness.ready || state.syncReadiness.checking) return { ok: false };
+    return await runSync();
+  };
+
   const handleRefreshSyncReadiness = async () =>
     await state.loadSyncReadiness().catch(() => null);
 
-  return { handleSync, handleRefreshSyncReadiness };
+  return { handleSync, handleAutosync, handleRefreshSyncReadiness };
 }
 
 export function useCatalogConsole() {
   const state = useCatalogConsoleState();
   const authHandlers = useCatalogAuthHandlers(state);
-  const draftHandlers = useCatalogDraftHandlers(state);
   const syncHandlers = useCatalogSyncHandlers(state);
+  const draftHandlers = useCatalogDraftHandlers(state, syncHandlers.handleAutosync);
+  const { handleAutosync: _handleAutosync, ...publicSyncHandlers } = syncHandlers;
 
   return {
     uploaderMode: state.uploaderMode,
@@ -760,6 +872,6 @@ export function useCatalogConsole() {
     storefrontConfig: state.storefrontConfig,
     ...authHandlers,
     ...draftHandlers,
-    ...syncHandlers,
+    ...publicSyncHandlers,
   };
 }

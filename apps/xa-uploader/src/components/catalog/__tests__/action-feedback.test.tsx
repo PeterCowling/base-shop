@@ -7,6 +7,8 @@ import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import type { CatalogProductDraftInput } from "@acme/lib/xa";
 
 import { UploaderI18nProvider } from "../../../lib/uploaderI18n.client";
+import { shouldTriggerAutosync } from "../catalogConsoleActions";
+import * as catalogWorkflowModule from "../catalogWorkflow";
 import { useCatalogConsole } from "../useCatalogConsole.client";
 
 const VALID_DRAFT: CatalogProductDraftInput = {
@@ -62,6 +64,20 @@ const AUTOSAVE_DRAFT_SERVER_NON_IMAGE_CONCURRENT: CatalogProductDraftInput = {
     ...AUTOSAVE_DRAFT_A.taxonomy,
     color: "navy",
   },
+};
+
+const PUBLISH_READY_WORKFLOW = {
+  isDataReady: true,
+  isPublishReady: true,
+  missingFieldPaths: [],
+  missingRoles: [],
+};
+
+const NOT_PUBLISH_READY_WORKFLOW = {
+  isDataReady: true,
+  isPublishReady: false,
+  missingFieldPaths: [],
+  missingRoles: ["front"],
 };
 
 function jsonResponse(body: unknown, init: ResponseInit = {}): Response {
@@ -154,6 +170,18 @@ describe("useCatalogConsole scoped action feedback", () => {
   afterEach(() => {
     global.fetch = originalFetch;
     jest.restoreAllMocks();
+  });
+
+  it("TC-00: initial autosave status is unsaved before any action", () => {
+    global.fetch = jest.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url === "/api/uploader/session") return jsonResponse({ authenticated: false });
+      throw new Error(`Unhandled fetch: ${url}`);
+    }) as unknown as typeof fetch;
+
+    renderHarness();
+
+    expect(screen.getByTestId("autosave-status")).toHaveTextContent("unsaved");
   });
 
   it("TC-01: failed login updates only login feedback", async () => {
@@ -621,5 +649,157 @@ describe("useCatalogConsole scoped action feedback", () => {
     expect(retryImageFiles).not.toContain("images/studio-jacket/detail.jpg");
     expect(retryImageRoles).toContain("interior");
     expect(retryImageRoles).not.toContain("detail");
+  });
+
+  it("TC-09: queued autosaves coalesce into one autosync after the queue drains", async () => {
+    jest
+      .spyOn(catalogWorkflowModule, "getCatalogDraftWorkflowReadiness")
+      .mockReturnValue(PUBLISH_READY_WORKFLOW);
+
+    let savePostCalls = 0;
+    let syncPostCalls = 0;
+    let resolveFirstAutosave: ((response: Response) => void) | null = null;
+
+    global.fetch = jest.fn((input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (url === "/api/uploader/session") return Promise.resolve(jsonResponse({ authenticated: true }));
+      if (url.startsWith("/api/catalog/products?storefront=")) {
+        if (init?.method === "POST") {
+          savePostCalls += 1;
+          if (savePostCalls === 1) {
+            return new Promise<Response>((resolve) => {
+              resolveFirstAutosave = resolve;
+            });
+          }
+          return Promise.resolve(jsonResponse({ ok: true, product: AUTOSAVE_DRAFT_B, revision: "rev-2" }));
+        }
+        return Promise.resolve(
+          jsonResponse({ ok: true, products: [AUTOSAVE_DRAFT_A], revisionsById: { p1: "rev-1" } }),
+        );
+      }
+      if (url.startsWith("/api/catalog/sync?storefront=")) {
+        return Promise.resolve(jsonResponse({ ok: true, ready: true, missingScripts: [] }));
+      }
+      if (url === "/api/catalog/sync" && init?.method === "POST") {
+        syncPostCalls += 1;
+        return Promise.resolve(jsonResponse({ ok: true, logs: {} }));
+      }
+      throw new Error(`Unhandled fetch: ${url}`);
+    }) as unknown as typeof fetch;
+
+    renderHarness();
+    await waitFor(() => {
+      expect(screen.getByTestId("sync-ready")).toHaveTextContent("yes");
+    });
+
+    await clickButton("autosave-a");
+    await clickButton("autosave-b");
+
+    expect(syncPostCalls).toBe(0);
+
+    await act(async () => {
+      resolveFirstAutosave?.(jsonResponse({ ok: true, product: AUTOSAVE_DRAFT_A, revision: "rev-1" }));
+    });
+
+    await waitFor(() => {
+      expect(savePostCalls).toBe(2);
+      expect(syncPostCalls).toBe(1);
+    });
+  });
+});
+
+describe("shouldTriggerAutosync", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it("returns false while another autosave draft is still queued", () => {
+    jest
+      .spyOn(catalogWorkflowModule, "getCatalogDraftWorkflowReadiness")
+      .mockReturnValue(PUBLISH_READY_WORKFLOW);
+
+    expect(
+      shouldTriggerAutosync({
+        pendingAutosaveDraftRef: { current: AUTOSAVE_DRAFT_A },
+        busyLockRef: { current: false },
+        syncReadinessReady: true,
+        syncReadinessChecking: false,
+        draft: AUTOSAVE_DRAFT_A,
+      }),
+    ).toBe(false);
+  });
+
+  it("returns false while the busy lock is held", () => {
+    jest
+      .spyOn(catalogWorkflowModule, "getCatalogDraftWorkflowReadiness")
+      .mockReturnValue(PUBLISH_READY_WORKFLOW);
+
+    expect(
+      shouldTriggerAutosync({
+        pendingAutosaveDraftRef: { current: null },
+        busyLockRef: { current: true },
+        syncReadinessReady: true,
+        syncReadinessChecking: false,
+        draft: AUTOSAVE_DRAFT_A,
+      }),
+    ).toBe(false);
+  });
+
+  it("returns false when sync readiness is not confirmed", () => {
+    jest
+      .spyOn(catalogWorkflowModule, "getCatalogDraftWorkflowReadiness")
+      .mockReturnValue(PUBLISH_READY_WORKFLOW);
+
+    expect(
+      shouldTriggerAutosync({
+        pendingAutosaveDraftRef: { current: null },
+        busyLockRef: { current: false },
+        syncReadinessReady: false,
+        syncReadinessChecking: false,
+        draft: AUTOSAVE_DRAFT_A,
+      }),
+    ).toBe(false);
+
+    expect(
+      shouldTriggerAutosync({
+        pendingAutosaveDraftRef: { current: null },
+        busyLockRef: { current: false },
+        syncReadinessReady: true,
+        syncReadinessChecking: true,
+        draft: AUTOSAVE_DRAFT_A,
+      }),
+    ).toBe(false);
+  });
+
+  it("returns false when the product is not publish-ready", () => {
+    jest
+      .spyOn(catalogWorkflowModule, "getCatalogDraftWorkflowReadiness")
+      .mockReturnValue(NOT_PUBLISH_READY_WORKFLOW);
+
+    expect(
+      shouldTriggerAutosync({
+        pendingAutosaveDraftRef: { current: null },
+        busyLockRef: { current: false },
+        syncReadinessReady: true,
+        syncReadinessChecking: false,
+        draft: AUTOSAVE_DRAFT_A,
+      }),
+    ).toBe(false);
+  });
+
+  it("returns true when the queue is drained, sync is ready, and the product is publish-ready", () => {
+    jest
+      .spyOn(catalogWorkflowModule, "getCatalogDraftWorkflowReadiness")
+      .mockReturnValue(PUBLISH_READY_WORKFLOW);
+
+    expect(
+      shouldTriggerAutosync({
+        pendingAutosaveDraftRef: { current: null },
+        busyLockRef: { current: false },
+        syncReadinessReady: true,
+        syncReadinessChecking: false,
+        draft: AUTOSAVE_DRAFT_A,
+      }),
+    ).toBe(true);
   });
 });

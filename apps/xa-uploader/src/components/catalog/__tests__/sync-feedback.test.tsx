@@ -1,12 +1,16 @@
 /** @jest-environment jsdom */
 
-import { describe, expect, it } from "@jest/globals";
+import { afterEach, describe, expect, it, jest } from "@jest/globals";
 import { render, screen } from "@testing-library/react";
+
+import type { CatalogProductDraftInput } from "@acme/lib/xa";
 
 import { getUploaderMessage, type UploaderMessageKey } from "../../../lib/uploaderI18n";
 import { UploaderI18nProvider } from "../../../lib/uploaderI18n.client";
+import { shouldTriggerAutosync } from "../catalogConsoleActions";
 import { deriveCatalogSiteStatus } from "../catalogConsoleFeedback";
 import { CatalogSyncPanel } from "../CatalogSyncPanel.client";
+import * as catalogWorkflowModule from "../catalogWorkflow";
 import { getSyncFailureMessage } from "../useCatalogConsole.client";
 
 function translate(
@@ -20,6 +24,15 @@ function translate(
   }
   return message;
 }
+
+const PUBLISH_READY_WORKFLOW = {
+  isDataReady: true,
+  isPublishReady: true,
+  missingFieldPaths: [],
+  missingRoles: [],
+};
+
+const MINIMAL_DRAFT = { slug: "studio-jacket" } as CatalogProductDraftInput;
 
 describe("sync failure feedback", () => {
   it("builds actionable localized message for missing sync dependencies", () => {
@@ -287,5 +300,43 @@ describe("catalog sync panel status strip", () => {
 
     expect(container.querySelector('[data-cy="catalog-status-strip-catalog"]')).toBeNull();
     expect(container.querySelector('[data-cy="catalog-status-strip-site"]')).toBeNull();
+  });
+});
+
+describe("autosync coalescing", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it("does not fire while the autosave queue still has a pending draft", () => {
+    jest
+      .spyOn(catalogWorkflowModule, "getCatalogDraftWorkflowReadiness")
+      .mockReturnValue(PUBLISH_READY_WORKFLOW);
+
+    expect(
+      shouldTriggerAutosync({
+        pendingAutosaveDraftRef: { current: { slug: "queued-draft" } },
+        busyLockRef: { current: false },
+        syncReadinessReady: true,
+        syncReadinessChecking: false,
+        draft: MINIMAL_DRAFT,
+      }),
+    ).toBe(false);
+  });
+
+  it("fires once the queue drains and the product is publish-ready", () => {
+    jest
+      .spyOn(catalogWorkflowModule, "getCatalogDraftWorkflowReadiness")
+      .mockReturnValue(PUBLISH_READY_WORKFLOW);
+
+    expect(
+      shouldTriggerAutosync({
+        pendingAutosaveDraftRef: { current: null },
+        busyLockRef: { current: false },
+        syncReadinessReady: true,
+        syncReadinessChecking: false,
+        draft: MINIMAL_DRAFT,
+      }),
+    ).toBe(true);
   });
 });

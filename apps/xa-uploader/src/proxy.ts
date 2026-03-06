@@ -31,7 +31,7 @@ function deniedResponseFor(request: NextRequest): Response {
   return applySecurityHeaders(new NextResponse(null, { status: 404 }));
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   if (!isUploaderIpAllowedByHeaders(request.headers)) {
     return deniedResponseFor(request);
   }

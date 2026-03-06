@@ -146,6 +146,7 @@ export interface PerQuestionRankEntry {
 const DEFAULT_LIMIT = 3;
 const AUTO_THRESHOLD = 80;
 const SUGGEST_THRESHOLD = 25;
+export const PER_QUESTION_FLOOR = 25;
 
 export const SYNONYMS: Record<string, string[]> = {
   arrival: ["check-in", "check in", "arrive"],
@@ -173,6 +174,25 @@ export const SYNONYMS: Record<string, string[]> = {
   age: ["restriction", "policy", "limit", "years old"],
   restriction: ["age", "policy", "limit"],
   allowed: ["permitted", "possible", "available", "can"],
+  availability: ["available", "open", "free", "vacancy", "vacancies", "beds", "rooms"],
+  available: ["availability", "open", "free", "vacancy", "beds"],
+  pool: ["swimming", "swim", "rooftop", "facility", "amenity"],
+  facility: ["facilities", "amenity", "amenities", "pool", "gym", "sauna", "services"],
+  amenity: ["amenities", "facilities", "pool", "gym", "services", "feature"],
+  parking: ["car", "garage", "vehicle", "park", "spot"],
+  pet: ["dog", "cat", "animal", "pets"],
+  towel: ["linen", "linens", "bedding", "sheets", "towels"],
+  accessible: ["wheelchair", "disability", "accessible", "mobility"],
+  tour: ["excursion", "trip", "visit", "activity", "activities"],
+  activity: ["activities", "tour", "excursion", "trip", "experience"],
+  noise: ["quiet", "loud", "sound", "curfew", "rules"],
+  private: ["solo", "individual", "single", "own"],
+  shared: ["dorm", "dormitory", "bunk", "hostel"],
+  kitchen: ["cooking", "self-catering", "cook", "fridge", "microwave"],
+  locker: ["safe", "storage", "secure", "valuables"],
+  deposit: ["security deposit", "keycard", "card hold", "hold"],
+  early: ["early check-in", "early arrival", "before", "ahead"],
+  late: ["late check-out", "late arrival", "after", "overtime"],
 };
 
 const PHRASE_EXPANSIONS = [
@@ -426,7 +446,11 @@ export function rankTemplatesPerQuestion(
         if (!template) return null;
         return buildCandidate(template, result, queryTerms);
       })
-      .filter((candidate): candidate is TemplateCandidate => candidate !== null);
+      .filter((candidate): candidate is TemplateCandidate => candidate !== null)
+      .filter((candidate) => {
+        const score = candidate.adjustedConfidence ?? candidate.confidence;
+        return score >= PER_QUESTION_FLOOR;
+      });
 
     return { question: question.text, candidates };
   });

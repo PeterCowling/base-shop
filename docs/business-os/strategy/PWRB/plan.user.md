@@ -3,8 +3,8 @@ Type: Business-Plan
 Status: Draft
 Business: PWRB
 Created: 2026-01-29
-Updated: 2026-03-02
-Last-reviewed: 2026-03-02
+Updated: 2026-03-06
+Last-reviewed: 2026-03-06
 Owner: Pete
 Review-trigger: After each completed build cycle or PSP validation milestone touching this document.
 ---
@@ -219,6 +219,27 @@ Review-trigger: After each completed build cycle or PSP validation milestone tou
   - Date: 2026-01-29
 
 ## Learnings
+
+### 2026-03-06: Partner Brochure — Design Language Decisions
+
+- **Audience insight (critical):**
+  - Amalfi Coast venue owners (bars, restaurants, hotels, shops) are not impressed by Mediterranean visual cues — lemons, terracotta, sea blue, warm sand. They live surrounded by it. It reads as cheap tourist-facing design to them.
+  - They aspire upward toward northern Italian and northern European luxury signals. The reference point is Milan, not Napoli. Brands like Brunello Cucinelli, Bottega Veneta, and premium European hospitality groups carry credibility with this audience.
+  - They are impressed by technology and by design that signals "this came from somewhere serious." A brochure that looks like it could be from a Milanese design studio or a refined European tech company reads as credible and worth their time.
+
+- **Design direction confirmed: dark, confident, premium — not Mediterranean-rustic:**
+  - The dark navy hero palette is correct. Do not soften it toward warmth or regional colour.
+  - The electric blue accent (`#0066ff`) is slightly too loud and startup-generic. A more restrained, deeper blue would carry more authority.
+  - The overall direction should feel closer to a premium European B2B product than a consumer tourist-facing brand.
+
+- **What to improve (refinement, not palette change):**
+  - **Whitespace and air:** Current card layout is slightly dense. More generous spacing reads as expensive.
+  - **Typography weight:** Heavy/bold everywhere is blunt. A considered mix — lighter body weight against strong headings — reads as more refined.
+  - **CTA tone:** "Register interest" with a lightning bolt is functional but slightly loud for this audience. Quieter, more confident CTA language and styling would land better.
+  - **Premium materials feel:** Current borders and shadows are competent but undistinguished. The goal is to feel like considered design, not a template.
+
+- **Pattern (reusable):**
+  - When targeting aspirational local business owners in a heavily touristed Italian region, do NOT anchor the design to the regional aesthetic. Anchor it to what they aspire to — premium northern Italian / northern European luxury and tech credibility. This likely applies across all Campania and Sicilian coastal markets.
 
 ### 2026-03-02: IPEI Relationship Structure + Brand Name
 

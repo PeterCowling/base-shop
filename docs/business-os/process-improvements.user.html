@@ -314,7 +314,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-03-06T14:10:14.375Z";
+  var GEN_TS = "2026-03-06T14:30:52.124Z";
 
   var IDEA_ITEMS = [
     {
@@ -716,6 +716,22 @@
       "date": "2026-02-26T07:27:53.087Z",
       "path": "docs/plans/_archive/post-build-reflection-prompting/results-review.user.md",
       "idea_key": "a8bd43e491362bb28adf381f0d335f9b08dccbfe",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "PLAT",
+      "title": "PLAT startup loop — markdown used as machine input, downstream code reverse-parses structure",
+      "body": "Using markdown as the machine-readable interface between the loop's build phase and its reporting layer means the model pays to author prose that code then strips and re-parses. A canonical JSON sidecar emitted alongside the human-readable artifact removes this round-trip, reduces prompt context size, and eliminates parser fragility without changing the operator-facing output.",
+      "source": "queue-state.json",
+      "date": "2026-03-06T15:30:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "efde04367fd75b2db40638c762e11fc864de16ee",
       "priority_tier": "P4",
       "own_priority_rank": 9,
       "urgency": "U2",
@@ -2358,6 +2374,38 @@
     },
     {
       "type": "idea",
+      "business": "PLAT",
+      "title": "PLAT pattern-reflection — category/evidence lost at handoff, noop refinement not skipped",
+      "body": "Every build cycle wastes model tokens reclassifying ideas that already have categories and refining artifacts that are already complete. Both are fixable with deterministic code changes to the prefill — no model judgment is needed for either path. The fix preserves all existing parity because refinement is only skipped when the artifact is provably complete.",
+      "source": "queue-state.json",
+      "date": "2026-03-06T15:30:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "52d30696da74728d787126f3284a553c998c99dc",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "PLAT",
+      "title": "PLAT results-review prefill — model pays for signal extraction that code could do deterministically",
+      "body": "The model is being used as a first-pass file scanner for signals that a short TypeScript routine could extract faster, more reliably, and at zero token cost. Lifting deterministic signals into code keeps the model step focused on ambiguous synthesis — the one task that actually requires judgment.",
+      "source": "queue-state.json",
+      "date": "2026-03-06T15:30:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "22a6e4320337473c5f726f88cdb4631108cb28ad",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
       "business": "XA",
       "title": "xa-uploader console — no loading skeleton on auth check or product list hydration",
       "body": "xa-uploader UI review found the console provides no visual loading feedback during auth resolution or product list hydration, leaving operators uncertain whether the tool is loading or broken — especially problematic on slow connections for an internal operations tool.",
@@ -2397,6 +2445,54 @@
       "date": "2026-03-06T15:00:00.000Z",
       "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
       "idea_key": "dde58c6d9cf2be2946edea02595973279664baac",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "bos-agent-session-findings",
+      "body": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "source": "queue-state.json",
+      "date": "2026-03-06T14:30:04.194Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "790772c7f83e5e43e29d81856a73ee2befbe3127",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "bos-agent-session-findings",
+      "body": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "source": "queue-state.json",
+      "date": "2026-03-06T14:10:19.910Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "42c2fa500b31d5d58dfb54e9e02f01cd57dfa83e",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "bos-codebase-structural-signals",
+      "body": "Assess bos-codebase-structural-signals implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
+      "source": "queue-state.json",
+      "date": "2026-03-06T14:10:19.036Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "af8b8b40e81fb0b39acc82947dc128ca6c310eae",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",

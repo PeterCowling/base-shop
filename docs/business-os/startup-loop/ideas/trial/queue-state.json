@@ -1,18 +1,152 @@
 {
-  "last_updated": "2026-03-06T14:03:07.401Z",
+  "last_updated": "2026-03-06T14:30:04.198Z",
   "counts": {
-    "enqueued": 118,
+    "enqueued": 126,
     "processed": 35,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
     "completed": 118,
-    "fact_find_ready": 175,
-    "micro_build_ready": 0,
-    "total": 297
+    "fact_find_ready": 182,
+    "micro_build_ready": 1,
+    "total": 305
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306153000-0993",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "root_event_id": "operator:PLAT:BOS:startup-loop-markdown-machine-input:20260306",
+      "anchor_key": "startup-loop-markdown-machine-input",
+      "cluster_key": "PLAT:BOS:startup-loop-markdown-machine-input:operator:20260306",
+      "cluster_fingerprint": "c5da4e1f36d890274f43a0e5d6f1294a7c8d3e0a1b5f619c4d7e8f9a0b3c4d5e",
+      "lineage_depth": 0,
+      "area_anchor": "PLAT startup loop — markdown used as machine input, downstream code reverse-parses structure",
+      "location_anchors": [
+        "scripts/src/startup-loop/generate-process-improvements.ts",
+        "docs/plans/_archive"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "generate-process-improvements.ts re-parses results-review.user.md to reconstruct title/body pairs and run deterministic classification. The model pays tokens authoring prose that downstream code immediately reverse-parses back into structure. This creates parser fragility and unnecessarily inflates prompt context.",
+      "next_scope_now": "Fact-find the right sidecar schema for results-review.signals.json and pattern-reflection.entries.json. Design how generate-process-improvements.ts and other consumers would prefer the structured sidecar over markdown parsing, while keeping current human-readable .user.md artifacts unchanged for operator review.",
+      "adjacent_later": [
+        "Extend lp-do-build to emit .signals.json and .entries.json sidecars alongside existing .user.md artifacts",
+        "Audit other downstream consumers of results-review.user.md for similar reverse-parse patterns"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: model authors prose that downstream code immediately parses back into structure — invert to emit machine data first, render markdown for humans from that",
+        "code-ref: scripts/src/startup-loop/generate-process-improvements.ts:426 — markdown re-parse to reconstruct title/body pairs",
+        "code-ref: scripts/src/startup-loop/generate-process-improvements.ts:568 — deterministic classification run on parsed markdown"
+      ],
+      "queue_state": "enqueued",
+      "created_at": "2026-03-06T15:30:00.000Z",
+      "why": "Using markdown as the machine-readable interface between the loop's build phase and its reporting layer means the model pays to author prose that code then strips and re-parses. A canonical JSON sidecar emitted alongside the human-readable artifact removes this round-trip, reduces prompt context size, and eliminates parser fragility without changing the operator-facing output.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "results-review.signals.json and pattern-reflection.entries.json sidecars are defined with a canonical schema; generate-process-improvements.ts reads from the sidecar when present and falls back to markdown parsing; existing .user.md artifacts remain unchanged for operator review.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306153000-0992",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "root_event_id": "operator:PLAT:BOS:results-review-deterministic-extraction:20260306",
+      "anchor_key": "results-review-deterministic-extraction",
+      "cluster_key": "PLAT:BOS:results-review-deterministic-extraction:operator:20260306",
+      "cluster_fingerprint": "b4c93d0e25c78f16e32b9d4c5f0e183f6b7c2d9e0f4a508b3c6d7e8f9a0b2c3d",
+      "lineage_depth": 0,
+      "area_anchor": "PLAT results-review prefill — model pays for signal extraction that code could do deterministically",
+      "location_anchors": [
+        "scripts/src/startup-loop/lp-do-build-results-review-prefill.ts",
+        ".claude/skills/lp-do-build/SKILL.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The results-review prefill hardcodes all five idea categories to None and leaves Observed Outcomes as a stub, then asks the model (via codemoot) to scan build context and fill them. Most of that first-pass evidence collection is deterministic: changed package detection, new SKILL.md detection, startup-loop contract/spec changes, standing-registry intersections, schema/lint/validator additions, and build/task completion bullets — none of which requires model judgment.",
+      "next_scope_now": "Fact-find which signal types can be lifted into deterministic pre-extraction code in lp-do-build-results-review-prefill.ts, and how to structure the residue-only model step that handles genuinely ambiguous synthesis after deterministic signals are populated.",
+      "adjacent_later": [
+        "Wire deterministic signal output into results-review.signals.json sidecar (dependent on packet 0993)",
+        "Reduce codemoot prompt size once deterministic signals are pre-populated"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: results-review spends model tokens on deterministic extraction rather than judgment — changed package detection, SKILL.md detection, contract changes, registry intersections are all code-extractable",
+        "code-ref: scripts/src/startup-loop/lp-do-build-results-review-prefill.ts:97 — all five idea categories hardcoded to None",
+        "code-ref: scripts/src/startup-loop/lp-do-build-results-review-prefill.ts:187 — Observed Outcomes left as stub for model to populate",
+        "code-ref: .claude/skills/lp-do-build/SKILL.md:206 — preferred path invokes codemoot to scan and fill categories"
+      ],
+      "queue_state": "enqueued",
+      "created_at": "2026-03-06T15:30:00.000Z",
+      "why": "The model is being used as a first-pass file scanner for signals that a short TypeScript routine could extract faster, more reliably, and at zero token cost. Lifting deterministic signals into code keeps the model step focused on ambiguous synthesis — the one task that actually requires judgment.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "A deterministic pre-extraction step in lp-do-build-results-review-prefill.ts populates changed-package, new-SKILL.md, contract/spec change, registry-intersection, schema/validator, and task-completion signals before any model call; the model step receives only unresolved ambiguous items for synthesis.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306153000-0991",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "root_event_id": "operator:PLAT:BOS:pattern-reflection-category-handoff-loss:20260306",
+      "anchor_key": "pattern-reflection-category-handoff-loss",
+      "cluster_key": "PLAT:BOS:pattern-reflection-category-handoff-loss:operator:20260306",
+      "cluster_fingerprint": "a3f82c9e14b67d05f21a8c3b4e9d072f5a6b1c8d9e3f407a2b5c6d7e8f9a0b1c",
+      "lineage_depth": 0,
+      "area_anchor": "PLAT pattern-reflection — category/evidence lost at handoff, noop refinement not skipped",
+      "location_anchors": [
+        "scripts/src/startup-loop/lp-do-build-pattern-reflection-prefill.ts",
+        ".claude/skills/lp-do-build/SKILL.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "extractCurrentIdeas() returns each idea with category: undefined, so the pattern-reflection prefill falls back to unclassified for every idea and the build skill asks the model to correct category classifications. Additionally, the refinement step runs unconditionally even when the prefill has already produced a complete valid empty artifact (zero ideas), paying model tokens for a noop pass.",
+      "next_scope_now": "In lp-do-build-pattern-reflection-prefill.ts: (1) preserve category, reason, and evidence_refs from extractCurrentIdeas() through to the prefill payload; (2) add a deterministic needs_refinement gate — check for placeholder markers, unclassified entries, or missing required fields; if false, skip the model refinement step entirely and emit the prefill as-is.",
+      "adjacent_later": [
+        "Once results-review.signals.json sidecar exists, source category from structured data rather than re-parsing markdown"
+      ],
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P2",
+      "confidence": 0.93,
+      "evidence_refs": [
+        "operator-stated: direct token leak — model reclassifies ideas that already have categories and runs refinement on complete empty artifacts",
+        "code-ref: scripts/src/startup-loop/lp-do-build-pattern-reflection-prefill.ts:174 — extractCurrentIdeas returns category: undefined",
+        "code-ref: scripts/src/startup-loop/lp-do-build-pattern-reflection-prefill.ts:180 — refinement step runs unconditionally",
+        "code-ref: scripts/src/startup-loop/lp-do-build-pattern-reflection-prefill.ts:210 — prefill falls back to unclassified",
+        "code-ref: .claude/skills/lp-do-build/SKILL.md:235 — build skill asks model to correct category classifications",
+        "code-ref: .claude/skills/lp-do-build/SKILL.md:239 — no skip gate before refinement step"
+      ],
+      "queue_state": "enqueued",
+      "created_at": "2026-03-06T15:30:00.000Z",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "micro_build_path": "docs/plans/startup-loop-pattern-reflection-category-handoff-fix/micro-build.md",
+        "processed_at": "2026-03-06T15:30:00.000Z"
+      },
+      "why": "Every build cycle wastes model tokens reclassifying ideas that already have categories and refining artifacts that are already complete. Both are fixable with deterministic code changes to the prefill — no model judgment is needed for either path. The fix preserves all existing parity because refinement is only skipped when the artifact is provably complete.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "category, reason, and evidence_refs pass through extractCurrentIdeas() unmodified; a needs_refinement gate in lp-do-build-pattern-reflection-prefill.ts skips model execution when the artifact is already complete; reclassification and noop-refinement model calls are eliminated from every build cycle.",
+        "source": "operator"
+      }
+    },
     {
       "schema_version": "dispatch.v2",
       "dispatch_id": "IDEA-DISPATCH-20260306133314-0989",
@@ -12160,6 +12294,235 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-06T14:03:07.398Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306140900-0833",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "0cf70b9863e0ed978b52e0bf9f92c985554b2a09",
+      "after_sha": "378b63b0aeb5e693b27c96895e15ecfee7295e2e",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:378b63b0aeb5e693b27c96895e15ecfee7295e2e",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:378b63b0aeb5e693b27c96895e15ecfee7295e2e",
+      "cluster_fingerprint": "f8e8f4032c952638b6aaad7c77f93ddb5ef99fa7566561198105b189bf7f64f5",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (0cf70b9 → 378b63b)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:7e5ee3c7-48c8-4634-abfa-bb48c7d6671e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:00654e03-9371-4567-a764-5f1c336012e5",
+        "session:8781939f-edea-451b-a9fa-1fa24c8cb292",
+        "session:934d1ed9-f97a-4dc1-98e9-2bd8b2a916fb",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-06T14:09:00.832Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306140907-0683",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "378b63b0aeb5e693b27c96895e15ecfee7295e2e",
+      "after_sha": "811b18b887c7e71fbc44f88947e55d99a8c23a70",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:811b18b887c7e71fbc44f88947e55d99a8c23a70",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:811b18b887c7e71fbc44f88947e55d99a8c23a70",
+      "cluster_fingerprint": "d091abb8fc6ad04c3d9cc00914e00000b00b0cd92b842df79ecfaaa309e956fe",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (378b63b → 811b18b)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:7e5ee3c7-48c8-4634-abfa-bb48c7d6671e",
+        "session:00654e03-9371-4567-a764-5f1c336012e5",
+        "session:8781939f-edea-451b-a9fa-1fa24c8cb292",
+        "session:934d1ed9-f97a-4dc1-98e9-2bd8b2a916fb",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-06T14:09:07.682Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306141019-0037",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+      "before_sha": "392c686a9462bb21a6f740987866b11aa97bdd87",
+      "after_sha": "369a2a4a0b7cdc8f5bb63fe1f4d7f9f1399082ec",
+      "root_event_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:369a2a4a0b7cdc8f5bb63fe1f4d7f9f1399082ec",
+      "anchor_key": "bos-codebase-structural-signals",
+      "cluster_key": "bos:unknown:bos-codebase-structural-signals:BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:369a2a4a0b7cdc8f5bb63fe1f4d7f9f1399082ec",
+      "cluster_fingerprint": "f6b45b5d4551de0490de3164130fe32eb96e3f502af22ffc44fbf5f3f56f8003",
+      "lineage_depth": 0,
+      "area_anchor": "bos-codebase-structural-signals",
+      "location_anchors": [
+        ".claude/settings.json",
+        ".claude/skills/_shared/queue-check-gate.md",
+        ".claude/skills/lp-do-assessment-04-candidate-names/modules/part-1-3.md",
+        ".claude/skills/lp-do-assessment-13-product-naming/modules/part-1-2.md",
+        ".claude/skills/lp-do-build/SKILL.md",
+        ".claude/skills/lp-do-fact-find/SKILL.md",
+        ".claude/skills/lp-do-ideas/SKILL.md",
+        ".claude/skills/lp-seo/modules/phase-base-contract.md"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS changed (392c686 → 369a2a4)",
+      "next_scope_now": "Investigate implications of bos-codebase-structural-signals delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "git-diff-range:HEAD~1..HEAD",
+        "git-diff:M:.claude/settings.json",
+        "git-diff:M:.claude/skills/_shared/queue-check-gate.md",
+        "git-diff:M:.claude/skills/lp-do-assessment-04-candidate-names/modules/part-1-3.md",
+        "git-diff:M:.claude/skills/lp-do-assessment-13-product-naming/modules/part-1-2.md",
+        "git-diff:M:.claude/skills/lp-do-build/SKILL.md",
+        "git-diff:M:.claude/skills/lp-do-fact-find/SKILL.md",
+        "git-diff:M:.claude/skills/lp-do-ideas/SKILL.md",
+        "git-diff:M:.claude/skills/lp-seo/modules/phase-base-contract.md"
+      ],
+      "created_at": "2026-03-06T14:10:19.036Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-codebase-structural-signals implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-codebase-structural-signals.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306141019-0911",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "811b18b887c7e71fbc44f88947e55d99a8c23a70",
+      "after_sha": "a87f5e113fdeab27a02b6745dc348e3f1b5f1aa2",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:a87f5e113fdeab27a02b6745dc348e3f1b5f1aa2",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:a87f5e113fdeab27a02b6745dc348e3f1b5f1aa2",
+      "cluster_fingerprint": "146395120e1281f77d9c70b5a4de55e5f8d09f35d3f594ee52abb88e029bd202",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (811b18b → a87f5e1)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:7e5ee3c7-48c8-4634-abfa-bb48c7d6671e",
+        "session:00654e03-9371-4567-a764-5f1c336012e5",
+        "session:8781939f-edea-451b-a9fa-1fa24c8cb292",
+        "session:934d1ed9-f97a-4dc1-98e9-2bd8b2a916fb",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-06T14:10:19.910Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306143004-0195",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "a87f5e113fdeab27a02b6745dc348e3f1b5f1aa2",
+      "after_sha": "9cbeede8582242543e18aeb4c5a4c2a8fb5aa6a3",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:9cbeede8582242543e18aeb4c5a4c2a8fb5aa6a3",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:9cbeede8582242543e18aeb4c5a4c2a8fb5aa6a3",
+      "cluster_fingerprint": "3fae801933f61c133301350dd33708453d7ecce02114c01ab226ad09cc963357",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (a87f5e1 → 9cbeede)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:7e5ee3c7-48c8-4634-abfa-bb48c7d6671e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:00654e03-9371-4567-a764-5f1c336012e5",
+        "session:8781939f-edea-451b-a9fa-1fa24c8cb292",
+        "session:934d1ed9-f97a-4dc1-98e9-2bd8b2a916fb",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-06T14:30:04.194Z",
       "queue_state": "enqueued",
       "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
       "intended_outcome": {

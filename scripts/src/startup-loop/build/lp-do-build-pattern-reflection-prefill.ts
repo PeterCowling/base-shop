@@ -16,7 +16,7 @@ import { createHash } from "node:crypto";
 
 export interface PatternReflectionInput {
   featureSlug: string;
-  currentIdeas: Array<{ title: string; category?: string }>;
+  currentIdeas: Array<{ title: string; category?: string; reason?: string; evidence_refs?: string[] }>;
   archiveDir: string;
   generatedAt?: string;
 }
@@ -87,6 +87,25 @@ function stripHtmlComments(text: string): string {
   return text.replace(/<!--[\s\S]*?-->/g, "");
 }
 
+/**
+ * Maps human-readable results-review category prefixes to PatternCategory values.
+ * Keys are lowercased prefix fragments matched against the bullet content start.
+ */
+const CATEGORY_PREFIX_MAP: Array<[RegExp, PatternCategory]> = [
+  [/^ai[-\s]to[-\s]mechanistic\b/i, "deterministic"],
+  [/^new\s+loop\s+process\b/i, "deterministic"],
+  [/^new\s+skill\b/i, "ad_hoc"],
+  [/^new\s+open[-\s]source\s+package\b/i, "ad_hoc"],
+  [/^new\s+standing\s+data\s+source\b/i, "ad_hoc"],
+];
+
+function extractCategoryFromPrefix(raw: string): PatternCategory | undefined {
+  for (const [pattern, category] of CATEGORY_PREFIX_MAP) {
+    if (pattern.test(raw.trim())) return category;
+  }
+  return undefined;
+}
+
 function extractBulletTitles(sectionBody: string): string[] {
   const titles: string[] = [];
   for (const line of stripHtmlComments(sectionBody).replace(/\r\n?/g, "\n").split("\n")) {
@@ -98,6 +117,26 @@ function extractBulletTitles(sectionBody: string): string[] {
     if (cleaned.length > 0) titles.push(cleaned);
   }
   return titles;
+}
+
+interface BulletEntry {
+  title: string;
+  category?: PatternCategory;
+}
+
+function extractBulletEntries(sectionBody: string): BulletEntry[] {
+  const entries: BulletEntry[] = [];
+  for (const line of stripHtmlComments(sectionBody).replace(/\r\n?/g, "\n").split("\n")) {
+    const bm = line.trim().match(/^(?:[-*]|\d+\.)\s+(.+)/);
+    if (!bm) continue;
+    const content = bm[1].trim();
+    if (isNonePlaceholder(content)) continue;
+    const rawForCategory = content.split("|")[0].trim();
+    const category = extractCategoryFromPrefix(rawForCategory);
+    const cleaned = cleanTitle(rawForCategory);
+    if (cleaned.length > 0) entries.push({ title: cleaned, category });
+  }
+  return entries;
 }
 
 export function scanArchiveForRecurrences(
@@ -207,12 +246,45 @@ export function prefillPatternReflection(input: PatternReflectionInput): string 
   return `${renderFrontmatter(input.featureSlug, generatedAt, entries)}\n\n# Pattern Reflection\n\n## Patterns\n\n${patternLines.join("\n")}\n\n## Access Declarations\n\nNone identified.\n`;
 }
 
-function extractCurrentIdeas(reviewPath: string): Array<{ title: string; category?: string }> {
+const PLACEHOLDER_PATTERN = /<FILL>|<TBD>|\[FILL\]|\[TBD\]/;
+
+/**
+ * Returns true when the LLM refinement step should run for a pattern-reflection artifact.
+ * Returns false (skip model) when the artifact is already deterministically complete:
+ *   - no placeholder markers present,
+ *   - no unclassified entries in the YAML frontmatter,
+ *   - all required fields are present (schema_version, feature_slug, generated_at, entries).
+ */
+export function computeNeedsRefinement(
+  prefillOutput: string,
+  currentIdeas: Array<{ category?: string }>,
+): boolean {
+  // Gate 1: placeholder markers
+  if (PLACEHOLDER_PATTERN.test(prefillOutput)) return true;
+
+  // Gate 2: any unclassified entry
+  if (currentIdeas.some((i) => !i.category || i.category === "unclassified")) return true;
+  // Also check the rendered YAML for unclassified category lines
+  if (/^\s+category:\s+unclassified\s*$/m.test(prefillOutput)) return true;
+
+  // Gate 3: required YAML fields present
+  const requiredFields = ["schema_version:", "feature_slug:", "generated_at:", "entries"];
+  if (!requiredFields.every((f) => prefillOutput.includes(f))) return true;
+
+  return false;
+}
+
+function extractCurrentIdeas(reviewPath: string): Array<{ title: string; category?: string; reason?: string; evidence_refs?: string[] }> {
   let raw: string;
   try { raw = fs.readFileSync(reviewPath, "utf-8"); } catch { return []; }
   const section = extractIdeasSection(raw);
   if (!section) return [];
-  return extractBulletTitles(section).map((title) => ({ title, category: undefined }));
+  return extractBulletEntries(section).map((entry) => ({
+    title: entry.title,
+    category: entry.category,
+    reason: undefined,
+    evidence_refs: [],
+  }));
 }
 
 function parseArgs(argv: string[]): { slug: string; planDir: string; archiveDir: string } {
@@ -250,10 +322,12 @@ export function main(): void {
   const resolvedArchiveDir = path.resolve(repoRoot, archiveDir);
   const currentIdeas = extractCurrentIdeas(path.join(resolvedPlanDir, "results-review.user.md"));
   const output = prefillPatternReflection({ featureSlug: slug, currentIdeas, archiveDir: resolvedArchiveDir });
+  const needsRefinement = computeNeedsRefinement(output, currentIdeas);
   const outputPath = path.join(resolvedPlanDir, "pattern-reflection.user.md");
   fs.mkdirSync(resolvedPlanDir, { recursive: true });
   fs.writeFileSync(outputPath, output, "utf-8");
   process.stderr.write(`[pre-fill] wrote ${outputPath}\n`);
+  process.stderr.write(`[pre-fill] needs_refinement: ${needsRefinement}\n`);
 }
 
 if (process.argv[1]?.includes("lp-do-build-pattern-reflection-prefill")) {

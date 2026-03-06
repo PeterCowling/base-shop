@@ -2,6 +2,7 @@
  * Tests for lp-do-build-pattern-reflection-prefill.ts
  *
  * Covers TASK-02 TC-01 through TC-06 from plan build-completion-deterministic-lifts.
+ * Covers TC-07 through TC-11 from startup-loop-pattern-reflection-category-handoff-fix.
  */
 
 import * as fs from "node:fs";
@@ -13,6 +14,7 @@ import { afterEach, beforeEach, describe, expect, it } from "@jest/globals";
 
 import {
   applyRoutingDecisionTree,
+  computeNeedsRefinement,
   deriveRecurrenceKey,
   prefillPatternReflection,
   scanArchiveForRecurrences,
@@ -344,5 +346,122 @@ describe("applyRoutingDecisionTree edge cases", () => {
     expect(applyRoutingDecisionTree("unclassified", 1)).toBe("defer");
     expect(applyRoutingDecisionTree("unclassified", 5)).toBe("defer");
     expect(applyRoutingDecisionTree("unclassified", 100)).toBe("defer");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TC-07: category extracted from bullet prefix in prefillPatternReflection
+// ---------------------------------------------------------------------------
+describe("TC-07: category preserved from results-review bullet prefix", () => {
+  it("extracts deterministic for AI-to-mechanistic prefix", () => {
+    const output = prefillPatternReflection({
+      featureSlug: "test-slug",
+      currentIdeas: [{ title: "AI-to-mechanistic replace pattern classifier", category: "deterministic" }],
+      archiveDir: "/nonexistent-archive",
+      generatedAt: "2026-03-06T00:00:00Z",
+    });
+    expect(output).toContain("category: deterministic");
+    expect(output).not.toContain("category: unclassified");
+  });
+
+  it("extracts ad_hoc for New skill prefix", () => {
+    const output = prefillPatternReflection({
+      featureSlug: "test-slug",
+      currentIdeas: [{ title: "New skill codify results-review workflow", category: "ad_hoc" }],
+      archiveDir: "/nonexistent-archive",
+      generatedAt: "2026-03-06T00:00:00Z",
+    });
+    expect(output).toContain("category: ad_hoc");
+    expect(output).not.toContain("category: unclassified");
+  });
+
+  it("falls back to unclassified when no category provided", () => {
+    const output = prefillPatternReflection({
+      featureSlug: "test-slug",
+      currentIdeas: [{ title: "Some unrecognised idea" }],
+      archiveDir: "/nonexistent-archive",
+      generatedAt: "2026-03-06T00:00:00Z",
+    });
+    expect(output).toContain("category: unclassified");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TC-08: computeNeedsRefinement — false for complete valid empty artifact
+// ---------------------------------------------------------------------------
+describe("TC-08: computeNeedsRefinement false for zero-idea complete artifact", () => {
+  it("returns false when no ideas and all required fields present", () => {
+    const output = prefillPatternReflection({
+      featureSlug: "test-slug",
+      currentIdeas: [],
+      archiveDir: "/nonexistent-archive",
+      generatedAt: "2026-03-06T00:00:00Z",
+    });
+    expect(computeNeedsRefinement(output, [])).toBe(false);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TC-09: computeNeedsRefinement — true when any idea is unclassified
+// ---------------------------------------------------------------------------
+describe("TC-09: computeNeedsRefinement true when unclassified entry exists", () => {
+  it("returns true when currentIdeas has an idea with no category", () => {
+    const output = prefillPatternReflection({
+      featureSlug: "test-slug",
+      currentIdeas: [{ title: "Unknown category idea" }],
+      archiveDir: "/nonexistent-archive",
+      generatedAt: "2026-03-06T00:00:00Z",
+    });
+    expect(computeNeedsRefinement(output, [{ title: "Unknown category idea" }])).toBe(true);
+  });
+
+  it("returns true when currentIdeas explicitly has unclassified category", () => {
+    const ideas = [{ title: "Some idea", category: "unclassified" as const }];
+    const output = prefillPatternReflection({
+      featureSlug: "test-slug",
+      currentIdeas: ideas,
+      archiveDir: "/nonexistent-archive",
+      generatedAt: "2026-03-06T00:00:00Z",
+    });
+    expect(computeNeedsRefinement(output, ideas)).toBe(true);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TC-10: computeNeedsRefinement — true when placeholder marker present
+// ---------------------------------------------------------------------------
+describe("TC-10: computeNeedsRefinement true when placeholder marker present", () => {
+  it("returns true for <FILL> marker", () => {
+    const output = "---\nschema_version: pattern-reflection.v1\nfeature_slug: x\ngenerated_at: 2026-03-06\nentries: []\n---\n\n<FILL>";
+    expect(computeNeedsRefinement(output, [])).toBe(true);
+  });
+
+  it("returns true for <TBD> marker", () => {
+    const output = "---\nschema_version: pattern-reflection.v1\nfeature_slug: x\ngenerated_at: 2026-03-06\nentries: []\n---\n\n<TBD>";
+    expect(computeNeedsRefinement(output, [])).toBe(true);
+  });
+
+  it("returns true for [FILL] marker", () => {
+    const output = "---\nschema_version: pattern-reflection.v1\nfeature_slug: x\ngenerated_at: 2026-03-06\nentries: []\n---\n\n[FILL]";
+    expect(computeNeedsRefinement(output, [])).toBe(true);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TC-11: computeNeedsRefinement — false for non-empty fully-classified artifact
+// ---------------------------------------------------------------------------
+describe("TC-11: computeNeedsRefinement false when all ideas have known categories", () => {
+  it("returns false when all ideas are classified and output has no placeholders", () => {
+    const ideas = [
+      { title: "AI-to-mechanistic replace step", category: "deterministic" as const },
+      { title: "New skill for result review", category: "ad_hoc" as const },
+    ];
+    const output = prefillPatternReflection({
+      featureSlug: "test-slug",
+      currentIdeas: ideas,
+      archiveDir: "/nonexistent-archive",
+      generatedAt: "2026-03-06T00:00:00Z",
+    });
+    expect(computeNeedsRefinement(output, ideas)).toBe(false);
   });
 });

@@ -28,6 +28,7 @@ export const PopoverContent = React.forwardRef<
     return (
       <PopoverPrimitive.Portal container={container}>
         <PopoverPrimitive.Content
+          data-slot="popover-content"
           ref={ref}
           sideOffset={sideOffset}
           align={align}
@@ -46,6 +47,7 @@ export const PopoverContent = React.forwardRef<
   // Default: render Content directly (Radix will handle its own portal).
   return (
     <PopoverPrimitive.Content
+      data-slot="popover-content"
       ref={ref}
       sideOffset={sideOffset}
       align={align}

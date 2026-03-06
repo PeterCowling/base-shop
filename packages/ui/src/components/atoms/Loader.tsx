@@ -14,6 +14,7 @@ export const Loader = React.forwardRef<HTMLDivElement, LoaderProps>(
     const dimension = Number.isFinite(size) ? Number(size) : 20;
     return (
       <div
+        data-slot="loader"
         ref={ref}
         className={cn(
           "animate-spin motion-reduce:animate-none rounded-full border-2 border-current border-t-transparent",

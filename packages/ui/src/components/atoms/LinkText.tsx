@@ -46,6 +46,7 @@ export const LinkText = React.forwardRef<HTMLAnchorElement, LinkTextProps>(
     const Comp: React.ElementType = asChild ? Slot : "a";
     return (
       <Comp
+        data-slot="link-text"
         ref={ref}
         className={cn(
           "inline-flex items-center", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — class names

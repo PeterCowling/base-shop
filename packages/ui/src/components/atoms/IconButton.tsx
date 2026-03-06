@@ -66,6 +66,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
 
     return (
       <button
+        data-slot="icon-button"
         ref={ref}
         type={type}
         data-token={tokenByVariant[variant]}

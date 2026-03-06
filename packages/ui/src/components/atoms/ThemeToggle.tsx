@@ -112,6 +112,7 @@ export const ThemeToggle = React.forwardRef<HTMLDivElement, ThemeToggleProps>(
 
     return (
       <div
+        data-slot="theme-toggle"
         ref={ref}
         role="radiogroup"
         aria-label="Theme selection"

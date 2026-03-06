@@ -35,6 +35,7 @@ export const DrawerContent = React.forwardRef<
 
   return (
     <DialogPrimitive.Content
+      data-slot="drawer-content"
       ref={ref}
       className={cn("bg-panel text-foreground", common, sideClass, widthClass, className)} // i18n-exempt -- DS-1234 [ttl=2025-11-30]
       style={{ ...inlineStyle, ...style }}

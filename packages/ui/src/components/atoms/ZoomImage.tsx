@@ -27,6 +27,7 @@ export const ZoomImage = React.forwardRef<HTMLDivElement, ZoomImageProps>(
       ariaLabel ?? (zoom ? "Zoomed image, press to zoom out" : "Zoom image, press to zoom in");
     return (
       <figure
+        data-slot="zoom-image"
         ref={ref}
         role="button"
         tabIndex={0}

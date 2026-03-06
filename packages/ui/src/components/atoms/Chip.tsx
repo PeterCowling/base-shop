@@ -17,6 +17,7 @@ export const Chip = React.forwardRef<HTMLSpanElement, ChipProps>(
     const t = useTranslations();
     return (
       <Tag
+        data-slot="chip"
         ref={ref}
         className={cn(
           "inline-flex items-center gap-1", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names

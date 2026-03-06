@@ -52,6 +52,7 @@ export const ColorSwatch = React.forwardRef<
 
     return (
       <button
+        data-slot="color-swatch"
         ref={ref}
         type={type}
         className={cn(

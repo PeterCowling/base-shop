@@ -80,6 +80,7 @@ export const ProductBadge = React.forwardRef<HTMLSpanElement, ProductBadgeProps>
 
     return (
       <span
+        data-slot="product-badge"
         ref={ref}
         data-token={bgToken[resolvedColor]}
         className={cn(

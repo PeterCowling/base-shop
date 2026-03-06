@@ -69,6 +69,7 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
     if (!src) {
       return (
         <div
+          data-slot="avatar"
           ref={ref as unknown as React.RefObject<HTMLDivElement>}
           className={cn(
             "bg-muted flex items-center justify-center rounded-full text-sm", // i18n-exempt -- DEV-000 CSS utility class names
@@ -86,6 +87,7 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
     // ─── With src: render Next <Image> ──────────────────────────────────────
     return (
       <Image
+        data-slot="avatar"
         ref={ref}
         src={src}
         alt={alt}

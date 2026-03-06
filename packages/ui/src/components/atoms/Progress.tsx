@@ -19,6 +19,7 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
 
     return (
       <div
+        data-slot="progress"
         ref={ref}
         className={cn("space-y-1", className)}
         role="progressbar"

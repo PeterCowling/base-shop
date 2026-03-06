@@ -20,7 +20,7 @@ export const Price = React.forwardRef<HTMLSpanElement, PriceProps>(
     const formatted = formatPrice(amount, cur);
 
     return (
-      <span ref={ref} className={cn(className)} {...props}>
+      <span data-slot="price" ref={ref} className={cn(className)} {...props}>
         {formatted}
       </span>
     );

@@ -4,6 +4,7 @@
 
 @import "@themes/base/tokens.css";
 @import "../../../../packages/themes/reception/tokens.css";
+@import "tw-animate-css";
 @import "tailwindcss";
 
 /* -------- TW v4 @theme — register custom colors as utility classes ------- */

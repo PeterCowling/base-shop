@@ -28,6 +28,7 @@ export const OptionTile = React.forwardRef<HTMLButtonElement, OptionTileProps>(
   ) => {
     return (
       <button
+        data-slot="option-tile"
         ref={ref}
         type={type}
         className={cn(

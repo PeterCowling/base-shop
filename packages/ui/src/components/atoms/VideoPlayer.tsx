@@ -43,7 +43,7 @@ export const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
     const warningId = React.useId();
 
     return (
-      <div className="flex w-full flex-col gap-2">
+      <div data-slot="video-player" className="flex w-full flex-col gap-2">
         <video
           ref={ref}
           className={cn("w-full rounded-lg", className)} // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]

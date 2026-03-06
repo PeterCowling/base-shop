@@ -65,6 +65,7 @@ export const Tooltip = ({ text, children, className }: TooltipProps) => {
 
   return (
     <span
+      data-slot="tooltip"
       className={cn(
         // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
         "relative inline-flex max-w-full",

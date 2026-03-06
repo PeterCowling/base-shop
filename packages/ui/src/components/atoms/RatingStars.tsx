@@ -56,6 +56,7 @@ export const RatingStars = React.forwardRef<HTMLDivElement, RatingStarsProps>(
 
     return (
       <div
+        data-slot="rating-stars"
         ref={ref}
         className={cn("flex items-center gap-0.5", className)} // i18n-exempt -- UI-2610: layout utility classes
         role="img"

@@ -24,6 +24,7 @@ export const StockStatus = React.forwardRef<HTMLSpanElement, StockStatusProps>(
     const baseClass = "text-sm font-medium"; // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility classes, not user copy
     return (
       <span
+        data-slot="stock-status"
         ref={ref}
         className={cn(baseClass, color, className)}
         // i18n-exempt -- DS-1234 [ttl=2025-11-30] — design token attribute, not user copy

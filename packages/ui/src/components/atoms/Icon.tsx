@@ -14,5 +14,5 @@ export type IconProps = React.ComponentPropsWithoutRef<typeof StarIcon> & {
 
 export function Icon({ name, ...props }: IconProps) {
   const Component = icons[name];
-  return <Component {...props} />;
+  return <Component data-slot="icon" {...props} />;
 }

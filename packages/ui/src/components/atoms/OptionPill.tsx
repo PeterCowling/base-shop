@@ -13,6 +13,7 @@ export const OptionPill = React.forwardRef<HTMLButtonElement, OptionPillProps>(
   ({ selected = false, className, type = "button", ...props }, ref) => {
     return (
       <button
+        data-slot="option-pill"
         ref={ref}
         type={type}
         className={cn(

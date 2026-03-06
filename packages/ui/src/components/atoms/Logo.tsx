@@ -57,7 +57,7 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
     const altText = alt ?? fallbackText;
 
     if (!imageSrc) {
-      return <span className={cn("font-bold", className)}>{fallbackText}</span>;
+      return <span data-slot="logo" className={cn("font-bold", className)}>{fallbackText}</span>;
     }
 
     // Avoid arbitrary Tailwind values; rely on width/height props instead
@@ -114,7 +114,7 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
       ...(computedSrcSet ? { srcSet: computedSrcSet } : {}),
     };
 
-    return <Image ref={ref} alt={altText} {...imageProps} />;
+    return <Image data-slot="logo" ref={ref} alt={altText} {...imageProps} />;
   },
 );
 Logo.displayName = "Logo";

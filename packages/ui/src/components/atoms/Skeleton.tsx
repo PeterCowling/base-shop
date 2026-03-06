@@ -7,6 +7,7 @@ export type SkeletonProps = React.HTMLAttributes<HTMLDivElement>;
 export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
   ({ className, ...props }, ref) => (
     <div
+      data-slot="skeleton"
       ref={ref}
       className={cn(
         "bg-muted animate-pulse motion-reduce:animate-none rounded-md",

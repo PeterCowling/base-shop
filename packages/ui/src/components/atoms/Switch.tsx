@@ -7,6 +7,7 @@ export type SwitchProps = React.InputHTMLAttributes<HTMLInputElement>;
 export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
   ({ className, ...props }, ref) => (
     <label
+      data-slot="switch"
       className={cn(
         // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
         "relative inline-flex cursor-pointer items-center",

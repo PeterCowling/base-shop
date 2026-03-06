@@ -10,6 +10,7 @@ export interface RadioProps
 export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
   ({ className, label, children, ...props }, ref) => (
     <label
+      data-slot="radio"
       className={cn(
         "inline-flex items-center gap-2",
         className,

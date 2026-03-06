@@ -45,6 +45,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       } = props as Omit<ButtonProps, "variant">;
       return (
         <Comp
+          data-slot="button"
           ref={ref}
           className={cn(base, sizeClass, styles, className)}
           {...(restProps as unknown as React.ButtonHTMLAttributes<HTMLButtonElement>)}
@@ -53,6 +54,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     }
     return (
       <BaseButton
+        data-slot="button"
         ref={ref}
         variant={variant as BaseButtonProps["variant"]}
         asChild={asChild}

@@ -14,6 +14,7 @@ export const PaginationDot = React.forwardRef<
   PaginationDotProps
 >(({ active = false, size = "2", className, ...props }, ref) => (
   <button
+    data-slot="pagination-dot"
     ref={ref}
     className={cn(
       `h-${size} w-${size} rounded-full`,

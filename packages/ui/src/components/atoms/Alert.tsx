@@ -59,6 +59,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
     const fgClass = tone === "solid" ? FG[variant] : "text-fg";
     return (
       <div
+        data-slot="alert"
         ref={ref}
         data-token={TOKEN_BG[variant]}
         role="status"

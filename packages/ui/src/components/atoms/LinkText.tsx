@@ -23,8 +23,7 @@ export interface LinkTextProps
   asChild?: boolean;
 }
 
-export const LinkText = React.forwardRef<HTMLAnchorElement, LinkTextProps>(
-  ({ className, color = "primary", tone = "default", asChild = false, children, ...props }, ref) => {
+export function LinkText({ className, color = "primary", tone = "default", asChild = false, children, ref, ...props }: LinkTextProps & { ref?: React.Ref<HTMLAnchorElement> }) {
     const textByColor: Record<LinkColor, string> = {
       default: "text-link",
       primary: "text-primary",
@@ -59,6 +58,4 @@ export const LinkText = React.forwardRef<HTMLAnchorElement, LinkTextProps>(
         {children}
       </Comp>
     );
-  }
-);
-LinkText.displayName = "LinkText";
+}

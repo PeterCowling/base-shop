@@ -32,22 +32,19 @@ export interface LogoProps
   srcSet?: string;
 }
 
-export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
-  (
-    {
-      className,
-      src,
-      sources,
-      alt,
-      fallbackText,
-      width: defaultWidth = 32,
-      height: defaultHeight = 32,
-      sizes,
-      srcSet: providedSrcSet,
-      ...props
-    },
-    ref,
-  ) => {
+export function Logo({
+  className,
+  src,
+  sources,
+  alt,
+  fallbackText,
+  width: defaultWidth = 32,
+  height: defaultHeight = 32,
+  sizes,
+  srcSet: providedSrcSet,
+  ref,
+  ...props
+}: LogoProps & { ref?: React.Ref<HTMLImageElement> }) {
     const viewport = useViewport();
     const responsive = sources?.[viewport];
     const imageSrc = responsive?.src ?? src;
@@ -115,6 +112,4 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
     };
 
     return <Image data-slot="logo" ref={ref} alt={altText} {...imageProps} />;
-  },
-);
-Logo.displayName = "Logo";
+}

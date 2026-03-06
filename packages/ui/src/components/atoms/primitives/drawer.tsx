@@ -17,10 +17,7 @@ export {
   DrawerTrigger,
 } from "@acme/design-system/primitives/drawer";
 
-export const DrawerContent = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Content>,
-  DrawerContentProps
->(({ className, side = "right", width, style, ...props }, ref) => {
+export function DrawerContent({ className, side = "right", width, style, ref, ...props }: DrawerContentProps & { ref?: React.Ref<React.ComponentRef<typeof DialogPrimitive.Content>> }) {
   const widthClass = typeof width === "string" ? width : undefined;
   const inlineStyle =
     typeof width === "number" ? ({ width, maxWidth: "100%" } as React.CSSProperties) : ({} as React.CSSProperties);
@@ -42,5 +39,4 @@ export const DrawerContent = React.forwardRef<
       {...props}
     />
   );
-});
-DrawerContent.displayName = DialogPrimitive.Content.displayName;
+}

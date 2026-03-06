@@ -40,17 +40,17 @@ const sizeClasses: Record<IconButtonSize, string> = {
   md: "h-10 w-10 text-lg shrink-0", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — utility classes, not user copy
 };
 
-export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
-  ({
-    className,
-    variant = "ghost",
-    size = "sm",
-    type = "button",
-    children,
-    "aria-label": ariaLabel,
-    "aria-labelledby": ariaLabelledby,
-    ...props
-  }, ref) => {
+export function IconButton({
+  className,
+  variant = "ghost",
+  size = "sm",
+  type = "button",
+  children,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledby,
+  ref,
+  ...props
+}: IconButtonProps & { ref?: React.Ref<HTMLButtonElement> }) {
     const hasTextChild = React.Children.toArray(children).some(
       (child) => typeof child === "string" && child.trim().length > 0,
     );
@@ -79,9 +79,6 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
         {children}
       </button>
     );
-  },
-);
-
-IconButton.displayName = "IconButton";
+}
 
 export default IconButton;

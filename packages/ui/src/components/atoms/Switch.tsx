@@ -4,8 +4,8 @@ import { cn } from "../../utils/style";
 
 export type SwitchProps = React.InputHTMLAttributes<HTMLInputElement>;
 
-export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
-  ({ className, ...props }, ref) => (
+export function Switch({ className, ref, ...props }: SwitchProps & { ref?: React.Ref<HTMLInputElement> }) {
+  return (
     <label
       data-slot="switch"
       className={cn(
@@ -37,6 +37,5 @@ export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
         />
       </span>
     </label>
-  )
-);
-Switch.displayName = "Switch";
+  );
+}

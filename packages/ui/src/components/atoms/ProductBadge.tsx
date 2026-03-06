@@ -14,8 +14,7 @@ export interface ProductBadgeProps extends React.HTMLAttributes<HTMLSpanElement>
   size?: "sm" | "md" | "lg";
 }
 
-export const ProductBadge = React.forwardRef<HTMLSpanElement, ProductBadgeProps>(
-  ({ label, variant = "default", color, tone, size = "md", className, ...props }, ref) => {
+export function ProductBadge({ label, variant = "default", color, tone, size = "md", className, ref, ...props }: ProductBadgeProps & { ref?: React.Ref<HTMLSpanElement> }) {
     const resolvedColor: NonNullable<ProductBadgeProps["color"]> = color ??
       (variant === "sale" ? "danger" : variant === "new" ? "success" : "default");
     const resolvedTone: NonNullable<ProductBadgeProps["tone"]> =
@@ -96,6 +95,4 @@ export const ProductBadge = React.forwardRef<HTMLSpanElement, ProductBadgeProps>
         </span>
       </span>
     );
-  }
-);
-ProductBadge.displayName = "ProductBadge";
+}

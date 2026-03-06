@@ -16,8 +16,7 @@ export interface ButtonProps
   size?: BaseButtonProps["size"] | "icon";
 }
 
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant = "default", size, className, asChild = false, ...props }, ref) => {
+export function Button({ variant = "default", size, className, asChild = false, ref, ...props }: ButtonProps & { ref?: React.Ref<HTMLButtonElement> }) {
     const Comp = asChild ? Slot : "button";
     // Default to the primitive's base sizing (h-10 px-4 py-2) for text buttons.
     // Only override when rendering icon-only buttons for consistent square touch targets.
@@ -62,6 +61,4 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       />
     );
-  }
-);
-Button.displayName = "Button";
+}

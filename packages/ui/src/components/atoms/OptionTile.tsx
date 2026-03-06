@@ -13,23 +13,20 @@ export interface OptionTileProps
   showCheck?: boolean;
 }
 
-export const OptionTile = React.forwardRef<HTMLButtonElement, OptionTileProps>(
-  (
-    {
-      selected = false,
-      selectedLabel,
-      showCheck = true,
-      className,
-      type = "button",
-      children,
-      ...props
-    },
-    ref,
-  ) => {
-    return (
-      <button
-        data-slot="option-tile"
-        ref={ref}
+export function OptionTile({
+  selected = false,
+  selectedLabel,
+  showCheck = true,
+  className,
+  type = "button",
+  children,
+  ref,
+  ...props
+}: OptionTileProps & { ref?: React.Ref<HTMLButtonElement> }) {
+  return (
+    <button
+      data-slot="option-tile"
+      ref={ref}
         type={type}
         className={cn(
           // i18n-exempt -- DS-1234 [ttl=2025-11-30] — utility class names only
@@ -77,7 +74,4 @@ export const OptionTile = React.forwardRef<HTMLButtonElement, OptionTileProps>(
         ) : null}
       </button>
     );
-  },
-);
-
-OptionTile.displayName = "OptionTile";
+}

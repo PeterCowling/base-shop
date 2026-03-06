@@ -13,17 +13,14 @@ export interface PriceProps extends React.HTMLAttributes<HTMLSpanElement> {
 /**
  * Display formatted price. Uses selected currency from context when none is provided.
  */
-export const Price = React.forwardRef<HTMLSpanElement, PriceProps>(
-  ({ amount, currency, className, ...props }, ref) => {
-    const [ctxCurrency] = useCurrency();
-    const cur = currency ?? ctxCurrency ?? "EUR";
-    const formatted = formatPrice(amount, cur);
+export function Price({ amount, currency, className, ref, ...props }: PriceProps & { ref?: React.Ref<HTMLSpanElement> }) {
+  const [ctxCurrency] = useCurrency();
+  const cur = currency ?? ctxCurrency ?? "EUR";
+  const formatted = formatPrice(amount, cur);
 
-    return (
-      <span data-slot="price" ref={ref} className={cn(className)} {...props}>
-        {formatted}
-      </span>
-    );
-  }
-);
-Price.displayName = "Price";
+  return (
+    <span data-slot="price" ref={ref} className={cn(className)} {...props}>
+      {formatted}
+    </span>
+  );
+}

@@ -7,12 +7,10 @@ export const Popover = PopoverPrimitive.Root;
 export const PopoverTrigger = PopoverPrimitive.Trigger;
 export const PopoverAnchor = PopoverPrimitive.Anchor;
 
-export const PopoverContent = React.forwardRef<
-  React.ElementRef<typeof PopoverPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content> & {
-    container?: HTMLElement | null;
-  }
->(({ className, sideOffset = 4, align = "center", container, ...props }, ref) => {
+export function PopoverContent({ className, sideOffset = 4, align = "center", container, ref, ...props }: React.ComponentProps<typeof PopoverPrimitive.Content> & {
+  container?: HTMLElement | null;
+  ref?: React.Ref<React.ComponentRef<typeof PopoverPrimitive.Content>>;
+}) {
   // Ensure a non-transparent background even if theme vars are missing by
   // providing robust CSS variable fallbacks like other primitives do.
   const { style: styleFromProps, ...restProps } = props;
@@ -60,5 +58,4 @@ export const PopoverContent = React.forwardRef<
       {...restProps}
     />
   );
-});
-PopoverContent.displayName = PopoverPrimitive.Content.displayName;
+}

@@ -21,25 +21,28 @@ const UploaderI18nContext = React.createContext<UploaderI18nContextValue | null>
 function normalizeStoredLocale(value: string | null): UploaderLocale | null {
   if (value === "en" || value === "zh") return value;
   if (value === "EN") return "en";
-  if (value === "ZH" || value === "xe" || value === "中文" || value === "中国人") return "zh";
+  if (value === "ZH" || value === "xe") return "zh";
   return null;
 }
 
-function getInitialLocale(): UploaderLocale {
-  if (typeof window === "undefined") return UPLOADER_DEFAULT_LOCALE;
-  const normalized = normalizeStoredLocale(window.localStorage.getItem(STORAGE_KEY));
-  return normalized ?? UPLOADER_DEFAULT_LOCALE;
-}
-
 export function UploaderI18nProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocale] = React.useState<UploaderLocale>(getInitialLocale);
+  const [locale, setLocaleState] = React.useState<UploaderLocale>(UPLOADER_DEFAULT_LOCALE);
+
+  const setLocale = React.useCallback((nextLocale: UploaderLocale) => {
+    setLocaleState(nextLocale);
+    window.localStorage.setItem(STORAGE_KEY, nextLocale);
+    document.documentElement.lang = nextLocale === "zh" ? "zh" : "en";
+  }, []);
 
   React.useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEY, locale);
-    document.documentElement.lang = locale === "zh" ? "zh" : "en";
-  }, [locale]);
+    const normalized = normalizeStoredLocale(window.localStorage.getItem(STORAGE_KEY));
+    const nextLocale = normalized ?? UPLOADER_DEFAULT_LOCALE;
+    setLocaleState(nextLocale);
+    window.localStorage.setItem(STORAGE_KEY, nextLocale);
+    document.documentElement.lang = nextLocale === "zh" ? "zh" : "en";
+  }, []);
 
-  const value = React.useMemo(() => ({ locale, setLocale }), [locale]);
+  const value = React.useMemo(() => ({ locale, setLocale }), [locale, setLocale]);
 
   return <UploaderI18nContext.Provider value={value}>{children}</UploaderI18nContext.Provider>;
 }

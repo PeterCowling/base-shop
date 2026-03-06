@@ -16,6 +16,7 @@ export type CatalogDraftWorkflowReadiness = {
   isPublishReady: boolean;
   hasImages: boolean;
   missingFieldPaths: string[];
+  missingRoles: string[];
 };
 
 type CatalogImageRoleReadiness = {
@@ -23,6 +24,7 @@ type CatalogImageRoleReadiness = {
   hasSupportedRoles: boolean;
   hasRequiredRoles: boolean;
   isReadyForPublish: boolean;
+  missingRoles: XaImageRole[];
 };
 
 function normalizeForDataValidation(draft: CatalogProductDraftInput): CatalogProductDraftInput {
@@ -37,12 +39,14 @@ function normalizeForDataValidation(draft: CatalogProductDraftInput): CatalogPro
 
 function buildImageRoleReadiness(draft: CatalogProductDraftInput): CatalogImageRoleReadiness {
   const imageFiles = splitList(draft.imageFiles ?? "");
+  const requiredRoles = requiredImageRolesByCategory(draft.taxonomy.category);
   if (!imageFiles.length) {
     return {
       hasRoleCountMatch: false,
       hasSupportedRoles: false,
       hasRequiredRoles: false,
       isReadyForPublish: false,
+      missingRoles: requiredRoles,
     };
   }
 
@@ -52,14 +56,15 @@ function buildImageRoleReadiness(draft: CatalogProductDraftInput): CatalogImageR
     .filter((value): value is XaImageRole => value !== undefined);
   const hasRoleCountMatch = rawRoles.length === imageFiles.length;
   const hasSupportedRoles = normalizedRoles.length === rawRoles.length;
-  const requiredRoles = requiredImageRolesByCategory(draft.taxonomy.category);
   const roleSet = new Set(normalizedRoles);
   const hasRequiredRoles = requiredRoles.every((role) => roleSet.has(role));
+  const missingRoles = requiredRoles.filter((role) => !roleSet.has(role));
   return {
     hasRoleCountMatch,
     hasSupportedRoles,
     hasRequiredRoles,
     isReadyForPublish: hasRoleCountMatch && hasSupportedRoles && hasRequiredRoles,
+    missingRoles,
   };
 }
 
@@ -106,5 +111,6 @@ export function getCatalogDraftWorkflowReadiness(
     isSubmissionReady: dataValidation.success && hasPublishableImages,
     isPublishReady: dataValidation.success && hasPublishableImages,
     missingFieldPaths: Array.from(new Set(missingFieldPaths)),
+    missingRoles: imageRoleReadiness.missingRoles,
   };
 }

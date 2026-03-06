@@ -62,11 +62,13 @@ function StatusDot({
   publishState,
   dataReady,
   publishReady,
+  missingRoles,
   t,
 }: {
   publishState: CatalogProductDraftInput["publishState"];
   dataReady: boolean;
   publishReady: boolean;
+  missingRoles: string[];
   t: ReturnType<typeof useUploaderI18n>["t"];
 }) {
   const label = publishState === "live"
@@ -86,7 +88,12 @@ function StatusDot({
   return (
     <div className="flex items-center gap-2 text-xs text-gate-muted">
       <span className={`inline-block h-2 w-2 rounded-full animate-pulse-slow ${dotClass}`} />
-      {label}
+      <span>{label}</span>
+      {!publishReady && dataReady && missingRoles.length > 0 ? (
+        <span className="text-2xs text-gate-muted">
+          {t("workflowMissingRoles", { roles: missingRoles.join(", ") })}
+        </span>
+      ) : null}
     </div>
   );
 }
@@ -186,6 +193,11 @@ export function CatalogProductForm({
   const { t } = useUploaderI18n();
   const category = draft.taxonomy.category;
   const readiness = React.useMemo(() => getCatalogDraftWorkflowReadiness(draft), [draft]);
+  const missingRoles = React.useMemo(() => {
+    if (!("missingRoles" in readiness)) return [];
+    if (!Array.isArray(readiness.missingRoles)) return [];
+    return readiness.missingRoles.map(String);
+  }, [readiness]);
   const [step, setStep] = React.useState<FormStepId>("product");
   const canOpenImageStep = readiness.isDataReady;
   const autosaveCopy =
@@ -271,6 +283,7 @@ export function CatalogProductForm({
               publishState={draft.publishState}
               dataReady={readiness.isDataReady}
               publishReady={readiness.isPublishReady}
+              missingRoles={missingRoles}
               t={t}
             />
           </div>

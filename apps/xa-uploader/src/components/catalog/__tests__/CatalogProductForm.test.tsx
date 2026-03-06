@@ -16,9 +16,11 @@ jest.mock("../../../lib/uploaderI18n.client", () => ({
 jest.mock("../catalogWorkflow", () => ({
   getCatalogDraftWorkflowReadiness: () => ({
     isDataReady: true,
+    isSubmissionReady: false,
     isPublishReady: false,
-    missingDataFields: [],
-    missingImageRoles: [],
+    hasImages: false,
+    missingFieldPaths: [],
+    missingRoles: [],
   }),
 }));
 

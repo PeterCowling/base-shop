@@ -184,8 +184,9 @@ const messages = {
     workflowStepImages: "Images",
     workflowDataRequired: "Incomplete",
     workflowDraftOnly: "Draft ready",
-    workflowReadyForLive: "Ready to go live",
-    workflowLive: "Live",
+    workflowReadyForLive: "Ready to publish",
+    workflowLive: "Published to catalog",
+    workflowMissingRoles: "Missing: {roles}",
     workflowReadyForSubmission: "Ready to submit",
     workflowImageBlocked: "Complete the product details first, then add images.",
 
@@ -645,8 +646,9 @@ const messages = {
     workflowStepImages: "图片",
     workflowDataRequired: "未完成",
     workflowDraftOnly: "草稿就绪",
-    workflowReadyForLive: "可上线",
-    workflowLive: "已上线",
+    workflowReadyForLive: "可发布",
+    workflowLive: "已发布至目录",
+    workflowMissingRoles: "缺少：{roles}",
     workflowReadyForSubmission: "可提交",
     workflowImageBlocked: "请先完成产品信息，再添加图片。",
 

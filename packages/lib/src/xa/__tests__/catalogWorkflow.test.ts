@@ -67,4 +67,35 @@ describe("catalogWorkflow", () => {
     expect(readiness.isPublishReady).toBe(false);
     expect(readiness.missingFieldPaths).toContain("imageRoles");
   });
+
+  it("returns specific missing roles when required roles are absent (bags)", () => {
+    const readiness = getCatalogDraftWorkflowReadiness({
+      ...baseDraft(),
+      imageFiles: "images/kelly/front.jpg",
+      imageRoles: "front",
+      imageAltTexts: "front view",
+    });
+    expect(readiness.missingRoles).toContain("side");
+    expect(readiness.missingRoles).toContain("top");
+    expect(readiness.missingRoles).not.toContain("front");
+    expect(readiness.isPublishReady).toBe(false);
+  });
+
+  it("returns empty missingRoles when all required roles are present", () => {
+    const readiness = getCatalogDraftWorkflowReadiness({
+      ...baseDraft(),
+      imageFiles: "images/kelly/front.jpg|images/kelly/side.jpg|images/kelly/top.jpg",
+      imageRoles: "front|side|top",
+      imageAltTexts: "front view|side view|top view",
+    });
+    expect(readiness.missingRoles).toHaveLength(0);
+    expect(readiness.isPublishReady).toBe(true);
+  });
+
+  it("returns all required roles as missing when no images exist", () => {
+    const readiness = getCatalogDraftWorkflowReadiness(baseDraft());
+    expect(readiness.missingRoles).toContain("front");
+    expect(readiness.missingRoles).toContain("side");
+    expect(readiness.missingRoles).toContain("top");
+  });
 });

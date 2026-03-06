@@ -23,7 +23,10 @@ const BASE_ACTION_PLAN = {
     requests: [],
   },
   scenario: { category: "faq" },
-  workflow_triggers: { booking_monitor: false },
+  workflow_triggers: {
+    booking_action_required: false,
+    booking_context: false,
+  },
 };
 
 describe("draft_refine semantic/policy fail-safe fallback", () => {

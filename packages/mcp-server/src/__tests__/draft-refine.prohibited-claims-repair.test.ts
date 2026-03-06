@@ -57,7 +57,10 @@ describe("draft_refine deterministic prohibited-claims repair", () => {
         language: "EN",
         intents: { questions: [{ text: "Can I pay now?" }], requests: [] },
         scenario: { category: "payment" },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
       },
       draft_id: "prohibited-repair-01",
       refinement_mode: "external",

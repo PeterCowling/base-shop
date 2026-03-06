@@ -47,7 +47,10 @@ describe("draft_refine deterministic signature repair", () => {
         language: "EN",
         intents: { questions: [{ text: "What time is check-in?" }], requests: [] },
         scenario: { category: "faq" },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
       },
       draft_id: "signature-repair-01",
       refinement_mode: "external",

@@ -55,7 +55,10 @@ describe("draft_refine deterministic link repair", () => {
         language: "EN",
         intents: { questions: [{ text: "How do I check booking status?" }], requests: [] },
         scenario: { category: "booking-issues" },
-        workflow_triggers: { booking_monitor: true },
+        workflow_triggers: {
+          booking_action_required: true,
+          booking_context: true,
+        },
       },
       draft_id: "link-repair-01",
       refinement_mode: "external",

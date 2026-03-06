@@ -27,7 +27,10 @@ describe("draft_refine deterministic rewrite_reason inference", () => {
         language: "EN",
         intents: { questions: [{ text: "What time is check-in?" }], requests: [] },
         scenario: { category: "faq" },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
       },
       draft_id: "rewrite-reason-infer",
       refinement_mode: "external",
@@ -62,7 +65,10 @@ describe("draft_refine deterministic rewrite_reason inference", () => {
         language: "EN",
         intents: { questions: [{ text: "What time is check-in?" }], requests: [] },
         scenario: { category: "faq" },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
       },
       draft_id: "rewrite-reason-preserve",
       refinement_mode: "external",

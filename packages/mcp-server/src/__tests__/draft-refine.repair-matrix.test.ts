@@ -23,7 +23,10 @@ const ACTION_PLAN = {
     requests: [],
   },
   scenario: { category: "booking-issues" },
-  workflow_triggers: { booking_monitor: true },
+  workflow_triggers: {
+    booking_action_required: true,
+    booking_context: true,
+  },
 };
 
 describe("draft_refine deterministic repair matrix and idempotency", () => {

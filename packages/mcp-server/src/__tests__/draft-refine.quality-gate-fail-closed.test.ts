@@ -16,7 +16,10 @@ const BASE_ARGS = {
       requests: [],
     },
     scenario: { category: "faq" },
-    workflow_triggers: { booking_monitor: false },
+    workflow_triggers: {
+      booking_action_required: false,
+      booking_context: false,
+    },
   },
   draft_id: "test-draft-id-fail-closed",
   originalBodyPlain: "Check-in is from 2:30pm. Best regards, Hostel Brikette",

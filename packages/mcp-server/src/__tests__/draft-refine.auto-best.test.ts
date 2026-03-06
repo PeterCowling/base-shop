@@ -19,7 +19,10 @@ const BASE_ARGS = {
       requests: [],
     },
     scenario: { category: "faq" },
-    workflow_triggers: { booking_monitor: false },
+    workflow_triggers: {
+      booking_action_required: false,
+      booking_context: false,
+    },
   },
   draft_id: "test-draft-id-auto-best",
   refinement_mode: "auto_best" as const,

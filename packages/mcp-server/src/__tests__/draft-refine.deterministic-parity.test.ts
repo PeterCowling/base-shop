@@ -21,7 +21,10 @@ const BASE_ARGS = {
       requests: [],
     },
     scenario: { category: "faq" },
-    workflow_triggers: { booking_monitor: false },
+    workflow_triggers: {
+      booking_action_required: false,
+      booking_context: false,
+    },
   },
   draft_id: "test-draft-id-deterministic-parity",
   refinement_mode: "deterministic_only" as const,

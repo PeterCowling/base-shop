@@ -71,7 +71,10 @@ const BASE_ACTION_PLAN = {
     requests: [],
   },
   scenario: { category: "faq" },
-  workflow_triggers: { booking_monitor: false },
+  workflow_triggers: {
+    booking_action_required: false,
+    booking_context: false,
+  },
 };
 
 const ORIGINAL_BODY =
@@ -263,7 +266,10 @@ describe("TASK-04: TC-04-01 Prepayment category blocks text modification", () =>
         language: "EN" as const,
         intents: { questions: [], requests: [] },
         scenario: { category: "prepayment" },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
       },
       draft_id: "test-draft-id-04",
       originalBodyPlain: originalBody,
@@ -293,7 +299,10 @@ describe("TASK-04: TC-04-02 Cancellation category blocks text modification", () 
         language: "EN" as const,
         intents: { questions: [], requests: [] },
         scenario: { category: "cancellation" },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
       },
       draft_id: "test-draft-id-05",
       originalBodyPlain: originalBody,
@@ -324,7 +333,10 @@ describe("TASK-04: TC-04-03 Prepayment category with identical text passes", () 
         language: "EN" as const,
         intents: { questions: [], requests: [] },
         scenario: { category: "prepayment" },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
       },
       draft_id: "test-draft-id-06",
       originalBodyPlain: prepaymentBody,
@@ -353,7 +365,10 @@ describe("TASK-04: TC-04-04 Non-protected category allows text modification", ()
           requests: [],
         },
         scenario: { category: "faq" },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
       },
       draft_id: "test-draft-id-07",
       originalBodyPlain: "Check-in is from 2:30pm. Best regards, Hostel Brikette",

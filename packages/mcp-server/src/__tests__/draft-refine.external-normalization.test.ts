@@ -37,7 +37,10 @@ describe("draft_refine external deterministic normalization", () => {
         language: "EN",
         intents: { questions: [{ text: "What time is check-in?" }], requests: [] },
         scenario: { category: "faq" },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
       },
       draft_id: "external-normalization-01",
       refinement_mode: "external",

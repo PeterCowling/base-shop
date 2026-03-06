@@ -26,7 +26,10 @@ const ACTION_PLAN = {
     requests: [],
   },
   scenario: { category: "faq" },
-  workflow_triggers: { booking_monitor: false },
+  workflow_triggers: {
+    booking_action_required: false,
+    booking_context: false,
+  },
 };
 
 const CORPUS: string[] = [

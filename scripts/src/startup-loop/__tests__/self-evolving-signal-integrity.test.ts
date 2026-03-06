@@ -311,6 +311,57 @@ describe("self-evolving sidecar-prefer branches", () => {
     expect(result.observations_generated).toBeGreaterThanOrEqual(1);
   });
 
+  it("TC-05-01b: results-review sidecar placeholders are ignored before observation generation", () => {
+    writeStartupState();
+
+    const planSlug = "test-sidecar-plan";
+    writeTmpFile(
+      `docs/plans/${planSlug}/results-review.user.md`,
+      `---\nBusiness-Unit: BRIK\n---\n## New Idea Candidates\n- None\n`,
+    );
+    const sidecar = {
+      schema_version: "results-review.signals.v1",
+      generated_at: new Date().toISOString(),
+      plan_slug: planSlug,
+      source_path: `docs/plans/${planSlug}/results-review.user.md`,
+      items: [
+        {
+          type: "idea",
+          business: "BRIK",
+          title: "New open-source package — None.",
+          body: "None.",
+          source: "results-review.user.md",
+          date: "2026-03-06",
+          path: `docs/plans/${planSlug}/results-review.user.md`,
+          idea_key: "placeholder-idea-1",
+        },
+        {
+          type: "idea",
+          business: "BRIK",
+          title: "New loop process — add a hygiene pass",
+          body: "Follow runtime cleanup with deterministic report verification.",
+          source: "results-review.user.md",
+          date: "2026-03-06",
+          path: `docs/plans/${planSlug}/results-review.user.md`,
+          idea_key: "real-idea-1",
+        },
+      ],
+    };
+    writeTmpFile(
+      `docs/plans/${planSlug}/results-review.signals.json`,
+      JSON.stringify(sidecar, null, 2),
+    );
+    writeTmpFile(
+      `docs/plans/${planSlug}/pattern-reflection.user.md`,
+      "## Patterns\nNone identified.\n",
+    );
+    writeTmpFile(`docs/plans/${planSlug}/build-record.user.md`, "# Build Record\n");
+
+    const result = runSelfEvolvingFromBuildOutput(baseBridgeOptions());
+    expect(result.ok).toBe(true);
+    expect(result.observations_generated).toBe(2);
+  });
+
   it("TC-05-02: no sidecar present → existing markdown parse path taken (no warnings about sidecar)", () => {
     writeStartupState();
 

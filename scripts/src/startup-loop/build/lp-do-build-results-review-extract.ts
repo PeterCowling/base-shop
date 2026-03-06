@@ -22,6 +22,7 @@ import * as path from "node:path";
 import {
   classifyIdeaItem,
   extractBulletItems,
+  isNonePlaceholderIdeaCandidate,
   parseIdeaCandidate,
   parseSections,
   sanitizeText,
@@ -86,17 +87,6 @@ function inferBusiness(frontmatter: Record<string, unknown>): string {
   if (!biz) return "BOS";
   const norm = sanitizeText(biz).toUpperCase();
   return norm.length > 0 ? norm : "BOS";
-}
-
-function isNonePlaceholder(raw: string): boolean {
-  if (/^none\.?$/i.test(raw.trim())) return true;
-  if (/^none\b/i.test(raw.trim())) return true;
-  const sepMatch = raw.trim().match(/[:—–]\s*/);
-  if (sepMatch) {
-    const after = raw.trim().slice((sepMatch.index ?? 0) + sepMatch[0].length).trim();
-    if (/^none\b/i.test(after)) return true;
-  }
-  return false;
 }
 
 function isStruckThrough(item: string): boolean {
@@ -187,7 +177,7 @@ export async function extractResultsReviewSignals(
 
     const ideasRaw = extractBulletItems(stripHtmlComments(ideasSection))
       .filter((item) => !isStruckThrough(item))
-      .filter((item) => !isNonePlaceholder(item));
+      .filter((item) => !isNonePlaceholderIdeaCandidate(item));
 
     for (const ideaRaw of ideasRaw) {
       const idea = parseIdeaCandidate(ideaRaw);

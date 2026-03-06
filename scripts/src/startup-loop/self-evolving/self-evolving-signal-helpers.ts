@@ -1,3 +1,5 @@
+import { isNonePlaceholderIdeaCandidate } from "../build/lp-do-build-results-review-parse.js";
+
 import { DEFAULT_MATURE_BOUNDARY_SIGNALS } from "./self-evolving-boundary.js";
 import type {
   BoundarySignalSource,
@@ -31,21 +33,51 @@ export function normalizeSignalText(value: string): string {
 }
 
 export function isNonePlaceholderSignal(value: string): boolean {
-  const raw = value.trim();
-  if (/^none\.?$/i.test(raw)) {
+  return isNonePlaceholderIdeaCandidate(value);
+}
+
+function extractBuildOutputIdeaLabel(contextPath: string): string | null {
+  const marker = "/idea:";
+  const index = contextPath.indexOf(marker);
+  if (index < 0) {
+    return null;
+  }
+  const label = contextPath.slice(index + marker.length).trim();
+  return label.length > 0 ? label : null;
+}
+
+function extractBuildOutputProblemSubject(problemStatement: string): string | null {
+  const match = problemStatement.match(
+    /^Reduce recurring build-output idea work for\s+(.+?)\.\s*$/i,
+  );
+  if (!match?.[1]) {
+    return null;
+  }
+  const subject = match[1].trim();
+  return subject.length > 0 ? subject : null;
+}
+
+export function isNonePlaceholderMetaObservation(
+  observation: MetaObservation,
+): boolean {
+  const contextLabel = extractBuildOutputIdeaLabel(observation.context_path);
+  if (contextLabel && isNonePlaceholderIdeaCandidate(contextLabel)) {
     return true;
   }
-  if (/^none\b/i.test(raw)) {
+
+  const problemSubject = extractBuildOutputProblemSubject(
+    observation.signal_hints?.problem_statement ?? "",
+  );
+  if (problemSubject && isNonePlaceholderIdeaCandidate(problemSubject)) {
     return true;
   }
-  const separatorMatch = raw.match(/[:-]\s*|[—–]\s*/);
-  if (!separatorMatch) {
-    return false;
+
+  const recurrenceKey = observation.signal_hints?.recurrence_key;
+  if (recurrenceKey && isNonePlaceholderIdeaCandidate(recurrenceKey.replace(/\|/g, " "))) {
+    return true;
   }
-  const valueAfterSeparator = raw
-    .slice((separatorMatch.index ?? 0) + separatorMatch[0].length)
-    .trim();
-  return /^none\b/i.test(valueAfterSeparator);
+
+  return false;
 }
 
 function matchesAny(texts: readonly string[], patterns: readonly RegExp[]): boolean {

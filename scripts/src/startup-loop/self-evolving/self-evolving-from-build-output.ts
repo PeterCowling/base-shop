@@ -3,6 +3,8 @@ import path from "node:path";
 
 import yaml from "js-yaml";
 
+import { isNonePlaceholderIdeaCandidate } from "../build/lp-do-build-results-review-parse.js";
+
 import {
   consumeBackboneQueueToIdeasWorkflow,
 } from "./self-evolving-backbone-consume.js";
@@ -23,7 +25,7 @@ import {
 } from "./self-evolving-orchestrator.js";
 import {
   buildObservationSignalHints,
-  isNonePlaceholderSignal,
+  isNonePlaceholderMetaObservation,
 } from "./self-evolving-signal-helpers.js";
 
 interface BridgeOptions {
@@ -133,7 +135,7 @@ export function extractBulletCandidates(markdown: string | null): string[] {
     if (
       match &&
       match[1].trim().length > 0 &&
-      !isNonePlaceholderSignal(match[1].trim())
+      !isNonePlaceholderIdeaCandidate(match[1].trim())
     ) {
       candidates.push(match[1].trim());
     }
@@ -426,7 +428,9 @@ export function runSelfEvolvingFromBuildOutput(options: BridgeOptions): BridgeRe
       const items = sidecarJson.items as Array<{ title?: string }>;
       candidateBullets = items
         .map((item) => (typeof item.title === "string" ? item.title.trim() : ""))
-        .filter((title) => title.length > 0);
+        .filter(
+          (title) => title.length > 0 && !isNonePlaceholderIdeaCandidate(title),
+        );
     } catch (err) {
       warnings.push(
         `results-review sidecar parse failed (falling back to markdown): ${String(err)}`,
@@ -509,6 +513,9 @@ export function runSelfEvolvingFromBuildOutput(options: BridgeOptions): BridgeRe
     })),
   );
   for (const bullet of candidateBullets) {
+    if (isNonePlaceholderIdeaCandidate(bullet)) {
+      continue;
+    }
     observationSeeds.push({
       label: `idea:${bullet.slice(0, 80)}`,
       refs: [options.resultsReviewPath],
@@ -527,7 +534,9 @@ export function runSelfEvolvingFromBuildOutput(options: BridgeOptions): BridgeRe
     };
   }
 
-  const observations = observationSeeds.map((seed) => buildObservation(options, seed));
+  const observations = observationSeeds
+    .map((seed) => buildObservation(options, seed))
+    .filter((observation) => !isNonePlaceholderMetaObservation(observation));
 
   const orchestrator = runSelfEvolvingOrchestrator({
     rootDir: options.rootDir,

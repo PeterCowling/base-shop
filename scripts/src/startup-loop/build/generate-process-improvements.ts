@@ -14,6 +14,7 @@ import {
   MISSING_VALUE,
   classifyIdeaItem,
   extractBulletItems,
+  isNonePlaceholderIdeaCandidate,
   normalizeNewlines,
   parseIdeaCandidate,
   parseSections,
@@ -465,26 +466,11 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
       })
       .filter((item) => {
         const raw = item.trim();
-        // Suppress exact "none" and "none." (legacy form)
-        if (/^none\.?$/i.test(raw)) return false;
-        // Suppress items that start with "None" (e.g. "None for: ...", "None (new skill: ...)")
-        if (/^none\b/i.test(raw)) {
+        if (isNonePlaceholderIdeaCandidate(raw)) {
           process.stderr.write(
             `[generate-process-improvements] info: suppressing none-placeholder idea in ${sourcePath}: "${raw.slice(0, 80)}"\n`,
           );
           return false;
-        }
-        // Suppress items where the value after a separator (: or — or –) starts with "none".
-        // This catches "New open-source package: None identified.", "New loop process — None.", etc.
-        const separatorMatch = raw.match(/[:—–]\s*/);
-        if (separatorMatch) {
-          const valueAfterSep = raw.slice((separatorMatch.index ?? 0) + separatorMatch[0].length).trim();
-          if (/^none\b/i.test(valueAfterSep)) {
-            process.stderr.write(
-              `[generate-process-improvements] info: suppressing none-placeholder idea in ${sourcePath}: "${raw.slice(0, 80)}"\n`,
-            );
-            return false;
-          }
         }
         return true;
       });

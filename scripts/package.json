@@ -20,6 +20,7 @@
     "startup-loop:self-evolving-report": "node --import tsx src/startup-loop/self-evolving/self-evolving-report.ts",
     "startup-loop:self-evolving-from-ideas": "node --import tsx src/startup-loop/self-evolving/self-evolving-from-ideas.ts",
     "startup-loop:self-evolving-backbone-consume": "node --import tsx src/startup-loop/self-evolving/self-evolving-backbone-consume.ts",
+    "startup-loop:self-evolving-placeholder-hygiene": "node --import tsx src/startup-loop/self-evolving/self-evolving-placeholder-hygiene.ts",
     "check-process-improvements": "node --import tsx src/startup-loop/build/generate-process-improvements.ts --check",
     "startup-loop:lp-do-ideas-live-run": "node --import tsx src/startup-loop/ideas/lp-do-ideas-live-hook.ts -- --registry-path docs/business-os/startup-loop/ideas/standing-registry.json --queue-state-path docs/business-os/startup-loop/ideas/live/queue-state.json --telemetry-path docs/business-os/startup-loop/ideas/live/telemetry.jsonl",
     "startup-loop:lp-do-ideas-trial-run": "node --import tsx src/startup-loop/ideas/lp-do-ideas-live-hook.ts -- --registry-path docs/business-os/startup-loop/ideas/standing-registry.json --queue-state-path docs/business-os/startup-loop/ideas/trial/queue-state.json --telemetry-path docs/business-os/startup-loop/ideas/trial/telemetry.jsonl",

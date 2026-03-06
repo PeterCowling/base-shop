@@ -27,6 +27,45 @@ export function sanitizeText(input: string): string {
     .trim();
 }
 
+function normalizePlaceholderValue(input: string): string {
+  return sanitizeText(input)
+    .toLowerCase()
+    .replace(/[.!?]+$/g, "")
+    .trim();
+}
+
+const RESULTS_REVIEW_PLACEHOLDER_CATEGORY_PREFIX =
+  /^(new standing data source|new open(?:-|\s)source package|new skill|new loop process|ai-to-mechanistic)\b(?:\s*[—–:-]\s*|\s+)/i;
+
+export function isNonePlaceholderIdeaCandidate(input: string): boolean {
+  const normalized = normalizePlaceholderValue(input).replace(/^idea:\s*/i, "");
+  if (normalized.length === 0) {
+    return false;
+  }
+
+  if (/^none(?: identified(?: yet)?)?(?:\b|$)/i.test(normalized)) {
+    return true;
+  }
+
+  const genericSeparatorIndex = normalized.search(/\s*[—–:-]\s*/);
+  if (genericSeparatorIndex >= 0) {
+    const trailing = normalizePlaceholderValue(
+      normalized.slice(genericSeparatorIndex).replace(/^\s*[—–:-]\s*/, ""),
+    );
+    if (/^none(?: identified(?: yet)?)?(?:\b|$)/i.test(trailing)) {
+      return true;
+    }
+  }
+
+  const withoutCategoryPrefix = normalized
+    .replace(RESULTS_REVIEW_PLACEHOLDER_CATEGORY_PREFIX, "")
+    .trim();
+  return (
+    withoutCategoryPrefix !== normalized &&
+    /^none(?: identified(?: yet)?)?(?:\b|$)/i.test(withoutCategoryPrefix)
+  );
+}
+
 export function capitalizeFirst(s: string): string {
   if (!s) return s;
   return s.charAt(0).toUpperCase() + s.slice(1);

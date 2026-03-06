@@ -97,6 +97,31 @@ describe("lp-do-build-results-review-extract", () => {
     expect(sidecar.items).toEqual([]);
   });
 
+  it("TC-02b: category-labelled None placeholders are suppressed in sidecar output", async () => {
+    writeMd(
+      [
+        "---",
+        "Business-Unit: BOS",
+        "---",
+        "",
+        "## New Idea Candidates",
+        "- New open-source package — None.",
+        "- AI-to-mechanistic — None.",
+        "- New loop process — add a post-build hygiene pass",
+        "",
+      ].join("\n"),
+    );
+
+    await extractResultsReviewSignals(tmpDir);
+
+    expect(sidecarExists()).toBe(true);
+    const sidecar = readSidecar();
+    expect(sidecar.items).toHaveLength(1);
+    expect(sidecar.items[0]?.title).toBe(
+      "New loop process — add a post-build hygiene pass",
+    );
+  });
+
   // TC-03: Missing .user.md exits 0 cleanly, no sidecar.
   it("TC-03: missing results-review.user.md exits cleanly with no sidecar written", async () => {
     await expect(extractResultsReviewSignals(tmpDir)).resolves.toBeUndefined();

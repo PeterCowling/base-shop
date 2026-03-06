@@ -46,6 +46,7 @@ import {
   deriveBoundarySignalSnapshotFromStartupState,
   inferCandidateTypeFromObservations,
   inferExecutorPathFromObservations,
+  isNonePlaceholderMetaObservation,
 } from "./self-evolving-signal-helpers.js";
 import {
   createStartupStateStore,
@@ -219,7 +220,11 @@ export function runSelfEvolvingOrchestrator(
   const store = createStartupStateStore(input.rootDir);
   const startupStatePath = writeStartupState(store, input.startup_state);
 
-  for (const observation of input.observations) {
+  const freshObservations = input.observations.filter(
+    (observation) => !isNonePlaceholderMetaObservation(observation),
+  );
+
+  for (const observation of freshObservations) {
     appendObservationAsEvent(input.rootDir, input.business, {
       ...observation,
       business: input.business,
@@ -228,7 +233,9 @@ export function runSelfEvolvingOrchestrator(
     });
   }
 
-  const allObservations = readMetaObservations(input.rootDir, input.business);
+  const allObservations = readMetaObservations(input.rootDir, input.business).filter(
+    (observation) => !isNonePlaceholderMetaObservation(observation),
+  );
   const detectedRepeats = detectRepeatWorkCandidates(
     allObservations,
     detectorConfig,

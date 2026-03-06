@@ -234,3 +234,23 @@ export function readMetaObservations(
 ): MetaObservation[] {
   return readObservations(rootDir, businessId);
 }
+
+export function replaceSelfEvolvingEvents(
+  rootDir: string,
+  businessId: string,
+  events: SelfEvolvingEvent[],
+): string {
+  return writeLog(rootDir, businessId, events);
+}
+
+export function replaceMetaObservations(
+  rootDir: string,
+  businessId: string,
+  observations: MetaObservation[],
+): string {
+  for (const observation of observations) {
+    const errors = validateMetaObservation(observation);
+    throwOnContractErrors("meta_observation", errors);
+  }
+  return writeObservations(rootDir, businessId, observations);
+}

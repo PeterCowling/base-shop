@@ -147,6 +147,9 @@ function useCatalogConsoleState() {
     createInitialSyncReadinessState,
   );
 
+  const [isCatalogHydrating, setIsCatalogHydrating] = React.useState(false);
+  const catalogHydrationCounterRef = React.useRef(0);
+
   const loadSession = React.useCallback(async () => {
     const response = await fetch("/api/uploader/session");
     const data = (await response.json()) as SessionState & { ok?: boolean };
@@ -206,12 +209,20 @@ function useCatalogConsoleState() {
 
   React.useEffect(() => {
     if (!session?.authenticated) return;
-    loadCatalog().catch((err) =>
-      updateActionFeedback(setActionFeedback, "draft", {
-        kind: "error",
-        message: errorToMessage(err, t("loadFailed")),
-      }),
-    );
+    const requestId = ++catalogHydrationCounterRef.current;
+    setIsCatalogHydrating(true);
+    loadCatalog()
+      .catch((err) =>
+        updateActionFeedback(setActionFeedback, "draft", {
+          kind: "error",
+          message: errorToMessage(err, t("loadFailed")),
+        }),
+      )
+      .finally(() => {
+        if (catalogHydrationCounterRef.current === requestId) {
+          setIsCatalogHydrating(false);
+        }
+      });
   }, [loadCatalog, session, t, setActionFeedback]);
 
   React.useEffect(() => {
@@ -292,6 +303,7 @@ function useCatalogConsoleState() {
     setSyncOutput,
     syncReadiness,
     setSyncReadiness,
+    isCatalogLoading: isCatalogHydrating,
     loadSession,
     loadCatalog,
     loadSyncReadiness,
@@ -732,6 +744,7 @@ export function useCatalogConsole() {
     setSyncOptions: state.setSyncOptions,
     syncOutput: state.syncOutput,
     syncReadiness: state.syncReadiness,
+    isCatalogLoading: state.isCatalogLoading,
     refreshSyncReadiness: state.loadSyncReadiness,
     loadCatalog: state.loadCatalog,
     storefrontConfig: state.storefrontConfig,

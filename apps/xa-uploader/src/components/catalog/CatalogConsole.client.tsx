@@ -6,6 +6,7 @@ import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 import { CatalogLoginForm } from "./CatalogLoginForm.client";
 import { CatalogProductForm } from "./CatalogProductForm.client";
+import { SKELETON_BLOCK_CLASS } from "./catalogStyles";
 import { CatalogSyncPanel } from "./CatalogSyncPanel.client";
 import { getCatalogDraftWorkflowReadiness } from "./catalogWorkflow";
 import { CurrencyRatesPanel } from "./CurrencyRatesPanel.client";
@@ -16,6 +17,29 @@ type CatalogConsoleProps = {
   monoClassName?: string;
   onHeaderExtra?: (node: React.ReactNode) => void;
 };
+
+function ConsoleSkeletonPlaceholder({ srText }: { srText: string }) {
+  return (
+    /* eslint-disable-next-line ds/no-arbitrary-tailwind -- XAUP-0001 operator-tool layout */
+    <div className="grid gap-6 sm:grid-cols-[240px_1fr]" aria-busy="true">
+      <span className="sr-only">{srText}</span>
+      {/* Sidebar skeleton */}
+      <div className="space-y-3">
+        <div className={`h-9 w-full ${SKELETON_BLOCK_CLASS}`} />
+        <div className={`h-4 w-3/4 ${SKELETON_BLOCK_CLASS}`} />
+        <div className={`h-9 w-full ${SKELETON_BLOCK_CLASS}`} />
+        <div className={`h-9 w-full ${SKELETON_BLOCK_CLASS}`} />
+      </div>
+      {/* Form panel skeleton */}
+      <div className="space-y-4">
+        <div className={`h-6 w-1/3 ${SKELETON_BLOCK_CLASS}`} />
+        <div className={`h-9 w-full ${SKELETON_BLOCK_CLASS}`} />
+        <div className={`h-9 w-full ${SKELETON_BLOCK_CLASS}`} />
+        <div className={`h-24 w-full ${SKELETON_BLOCK_CLASS}`} />
+      </div>
+    </div>
+  );
+}
 
 type ConsoleScreen = "catalog" | "currency";
 type ConsoleState = ReturnType<typeof useCatalogConsole>;
@@ -123,6 +147,7 @@ function ConsoleBody({
     <div className="grid gap-6 sm:grid-cols-[240px_1fr]">
       <EditProductFilterSelector
         products={state.products}
+        isLoading={state.isCatalogLoading}
         onSelect={state.handleSelect}
         onNew={state.handleNew}
       />
@@ -171,7 +196,7 @@ export default function CatalogConsole({ monoClassName, onHeaderExtra }: Catalog
   }, [currencyHeaderLabel, onHeaderExtra, showCurrency, screen, openCurrencyScreen, openCatalogScreen, t]);
 
   if (state.session === null) {
-    return <div className="text-sm text-gate-muted">{t("checkingConsoleAccess")}</div>;
+    return <ConsoleSkeletonPlaceholder srText={t("checkingConsoleAccess")} />;
   }
   if (!state.session.authenticated) {
     return (

@@ -54,3 +54,9 @@ export const SECTION_HEADER_CLASS =
 
 /** Card/panel container */
 export const PANEL_CLASS = "rounded-xl border border-gate-border bg-gate-surface p-6 shadow-elevation-2";
+
+// ─── Skeletons ─────────────────────────────────────────────────────
+
+/** Inline skeleton block: surface fill + visible border + reduced-motion-safe pulse */
+export const SKELETON_BLOCK_CLASS =
+  "bg-gate-surface border border-gate-border rounded-md animate-pulse motion-reduce:animate-none";

@@ -19,6 +19,21 @@ export interface BoundaryDecision {
   reasons: string[];
 }
 
+export const DEFAULT_MATURE_BOUNDARY_SIGNALS: MatureBoundarySignals = {
+  monthly_revenue: 0,
+  headcount: 1,
+  support_ticket_volume_per_week: 0,
+  multi_region_compliance_flag: false,
+  operational_complexity_score: 1,
+};
+
+export const DEFAULT_MATURE_BOUNDARY_THRESHOLDS: MatureBoundaryThresholds = {
+  monthly_revenue: 10000,
+  headcount: 5,
+  support_ticket_volume_per_week: 100,
+  operational_complexity_score: 6,
+};
+
 export function evaluateMatureBoundary(
   signals: MatureBoundarySignals,
   thresholds: MatureBoundaryThresholds,

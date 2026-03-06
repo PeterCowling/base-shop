@@ -42,6 +42,12 @@ export type CloudDraftSnapshot = {
   docRevision: string | null;
 };
 
+export type CloudSyncLockLease = {
+  storefront: XaCatalogStorefront;
+  ownerToken: string;
+  expiresAt: string | null;
+};
+
 export class CatalogDraftConflictError extends Error {
   override name = "CatalogDraftConflictError";
 }
@@ -90,6 +96,21 @@ function resolveDraftUrl(storefront: XaCatalogStorefront): string {
   return new URL(`drafts/${encodeURIComponent(storefront)}`, root).toString();
 }
 
+function resolveDraftSyncLockUrl(storefront: XaCatalogStorefront): string {
+  const baseUrl = getCatalogContractBaseUrl();
+  if (!baseUrl) {
+    throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_BASE_URL is not configured.");
+  }
+
+  let root: URL;
+  try {
+    root = resolveContractRoot(baseUrl);
+  } catch {
+    throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_BASE_URL is not a valid URL.");
+  }
+  return new URL(`drafts/${encodeURIComponent(storefront)}/sync-lock`, root).toString();
+}
+
 function getWriteTokenHeader(): Record<string, string> {
   const writeToken = getCatalogContractWriteToken();
   if (!writeToken) {
@@ -125,14 +146,52 @@ function parseSnapshotPayload(payload: unknown): CloudDraftSnapshot {
     docRevision?: unknown;
   };
 
-  const products = Array.isArray(record.products)
-    ? (record.products as CatalogProductDraftInput[])
-    : [];
+  const products: CatalogProductDraftInput[] = [];
+  if (record.products !== undefined) {
+    if (!Array.isArray(record.products)) {
+      throw new CatalogDraftContractError(
+        "invalid_response",
+        "Draft contract returned invalid products payload.",
+      );
+    }
 
-  const revisionsById =
-    record.revisionsById && typeof record.revisionsById === "object" && !Array.isArray(record.revisionsById)
-      ? (record.revisionsById as Record<string, string>)
-      : {};
+    for (const entry of record.products) {
+      const parsed = catalogProductDraftSchema.safeParse(entry);
+      if (!parsed.success) {
+        throw new CatalogDraftContractError(
+          "invalid_response",
+          "Draft contract returned invalid product entry.",
+        );
+      }
+      products.push(parsed.data);
+    }
+  }
+
+  const revisionsById: Record<string, string> = {};
+  if (record.revisionsById !== undefined) {
+    if (
+      !record.revisionsById ||
+      typeof record.revisionsById !== "object" ||
+      Array.isArray(record.revisionsById)
+    ) {
+      throw new CatalogDraftContractError(
+        "invalid_response",
+        "Draft contract returned invalid revisionsById payload.",
+      );
+    }
+
+    for (const [key, value] of Object.entries(record.revisionsById)) {
+      const normalizedKey = key.trim();
+      const normalizedValue = typeof value === "string" ? value.trim() : "";
+      if (!normalizedKey || !normalizedValue) {
+        throw new CatalogDraftContractError(
+          "invalid_response",
+          "Draft contract returned invalid revision entry.",
+        );
+      }
+      revisionsById[normalizedKey] = normalizedValue;
+    }
+  }
 
   const docRevision =
     typeof record.docRevision === "string" && record.docRevision.trim()
@@ -140,6 +199,10 @@ function parseSnapshotPayload(payload: unknown): CloudDraftSnapshot {
       : null;
 
   return { products, revisionsById, docRevision };
+}
+
+function parseOptionalString(value: unknown): string | null {
+  return typeof value === "string" && value.trim() ? value.trim() : null;
 }
 
 function createRevision(): string {
@@ -166,6 +229,7 @@ async function getCatalogContractServiceBinding(): Promise<CatalogContractServic
     return null;
   }
   try {
+    // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 [ttl=2026-12-31] module specifier
     const { getCloudflareContext } = await import("@opennextjs/cloudflare");
     const { env } = await getCloudflareContext({ async: true });
     return env.XA_CATALOG_CONTRACT_SERVICE ?? null;
@@ -248,6 +312,86 @@ export async function writeCloudDraftSnapshot(params: {
       : null;
 
   return { docRevision };
+}
+
+export async function acquireCloudSyncLock(
+  storefront: XaCatalogStorefront,
+): Promise<
+  | { status: "acquired"; lock: CloudSyncLockLease }
+  | { status: "busy"; expiresAt: string | null }
+> {
+  const url = resolveDraftSyncLockUrl(storefront);
+  const response = await requestCatalogContract(url, {
+    method: "POST",
+    headers: {
+      ...getWriteTokenHeader(),
+    },
+  });
+
+  const payload = (await response.json().catch(() => null)) as
+    | {
+        ownerToken?: unknown;
+        expiresAt?: unknown;
+      }
+    | null;
+
+  if (response.status === 409) {
+    return {
+      status: "busy",
+      expiresAt: parseOptionalString(payload?.expiresAt),
+    };
+  }
+
+  if (!response.ok) {
+    throw new CatalogDraftContractError(
+      response.status === 503 ? "unconfigured" : "request_failed",
+      "Failed to acquire sync lock.",
+      {
+        status: response.status,
+        endpoint: sanitizeContractEndpoint(url),
+      },
+    );
+  }
+
+  const ownerToken = parseOptionalString(payload?.ownerToken);
+  if (!ownerToken) {
+    throw new CatalogDraftContractError(
+      "invalid_response",
+      "Sync lock endpoint returned invalid owner token.",
+      { endpoint: sanitizeContractEndpoint(url) },
+    );
+  }
+
+  return {
+    status: "acquired",
+    lock: {
+      storefront,
+      ownerToken,
+      expiresAt: parseOptionalString(payload?.expiresAt),
+    },
+  };
+}
+
+export async function releaseCloudSyncLock(lock: CloudSyncLockLease): Promise<void> {
+  const url = resolveDraftSyncLockUrl(lock.storefront);
+  const response = await requestCatalogContract(url, {
+    method: "DELETE",
+    headers: {
+      ...getWriteTokenHeader(),
+      "X-XA-Sync-Lock-Owner": lock.ownerToken,
+    },
+  });
+
+  if (response.status === 404 || response.status === 409) {
+    return;
+  }
+
+  if (!response.ok) {
+    throw new CatalogDraftContractError("request_failed", "Failed to release sync lock.", {
+      status: response.status,
+      endpoint: sanitizeContractEndpoint(url),
+    });
+  }
 }
 
 export async function deleteCloudDraftSnapshot(

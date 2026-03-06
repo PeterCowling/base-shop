@@ -109,12 +109,12 @@
     },
     "recommended_route": {
       "type": "string",
-      "enum": ["lp-do-fact-find", "lp-do-briefing"],
-      "description": "Downstream routing recommendation. 'lp-do-fact-find' for planning work; 'lp-do-briefing' for understanding-only work. No other values are valid."
+      "enum": ["lp-do-fact-find", "lp-do-build", "lp-do-briefing"],
+      "description": "Downstream routing recommendation. 'lp-do-fact-find' for planning work, 'lp-do-build' for trivially bounded direct execution, 'lp-do-briefing' for understanding-only work."
     },
     "status": {
       "type": "string",
-      "enum": ["fact_find_ready", "briefing_ready", "auto_executed", "logged_no_action"],
+      "enum": ["fact_find_ready", "micro_build_ready", "briefing_ready", "auto_executed", "logged_no_action"],
       "description": "Dispatch lifecycle status. Transitions are monotonic: dispatches move forward only."
     },
     "priority": {
@@ -150,6 +150,26 @@
     "processed_by": {
       "type": "object",
       "properties": {
+        "target_route": {
+          "type": "string",
+          "enum": ["lp-do-fact-find", "lp-do-build", "lp-do-briefing"],
+          "description": "Downstream route that claimed this dispatch."
+        },
+        "target_kind": {
+          "type": "string",
+          "enum": ["fact-find", "build", "briefing"],
+          "description": "Artifact kind opened against this dispatch."
+        },
+        "target_slug": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Feature slug of the artifact that consumed this dispatch."
+        },
+        "target_path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Canonical path to the artifact that consumed this dispatch."
+        },
         "fact_find_slug": {
           "type": "string",
           "minLength": 1,
@@ -171,9 +191,9 @@
           "description": "How the fact-find was opened. 'dispatch-routed' = opened via queue confirmation with Dispatch-ID in frontmatter. 'direct-inject' = operator invoked directly; Trigger-Source cited instead."
         }
       },
-      "required": ["fact_find_slug", "fact_find_path", "processed_at", "route"],
+      "required": ["processed_at", "route"],
       "additionalProperties": false,
-      "description": "Populated when a fact-find or briefing has been opened against this dispatch. Presence sets queue_state to 'processed'. Absence means the dispatch is still pending."
+      "description": "Populated when a fact-find, micro-build, or briefing has been opened against this dispatch. Presence sets queue_state to 'processed'. Absence means the dispatch is still pending."
     },
     "triggered_by": {
       "type": "string",

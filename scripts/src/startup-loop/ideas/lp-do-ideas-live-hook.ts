@@ -27,6 +27,7 @@
  */
 
 import { readFileSync } from "node:fs";
+import path from "node:path";
 
 import type { LiveDispatchPacket, LiveOrchestratorOptions } from "./lp-do-ideas-live.js";
 import { runLiveOrchestrator } from "./lp-do-ideas-live.js";
@@ -87,6 +88,47 @@ export interface LiveHookResult {
 
 interface RegistryJson {
   artifacts: RegistryV2ArtifactEntry[];
+}
+
+function loadEventsFromDisk(
+  eventsPath: string,
+): ArtifactDeltaEvent[] | { error: string } {
+  let raw: string;
+  try {
+    raw = readFileSync(eventsPath, "utf-8");
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    return {
+      error: `[live-hook] Failed to read events at "${eventsPath}": ${message}`,
+    };
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    return {
+      error: `[live-hook] Events at "${eventsPath}" are not valid JSON: ${message}`,
+    };
+  }
+
+  const events = Array.isArray(parsed)
+    ? parsed
+    : parsed != null &&
+        typeof parsed === "object" &&
+        Array.isArray((parsed as { events?: unknown[] }).events)
+      ? (parsed as { events: unknown[] }).events
+      : null;
+
+  if (events == null) {
+    return {
+      error:
+        `[live-hook] Events at "${eventsPath}" must be a JSON array or { "events": [...] } payload.`,
+    };
+  }
+
+  return events as ArtifactDeltaEvent[];
 }
 
 /**
@@ -215,15 +257,26 @@ function parseCliArgs(argv: string[]): Record<string, string> {
   const args: Record<string, string> = {};
   for (let i = 0; i < argv.length; i++) {
     const current = argv[i];
-    if (current.startsWith("--") && i + 1 < argv.length) {
-      const key = current.slice(2).replace(/-([a-z])/g, (_, c: string) =>
-        c.toUpperCase(),
-      );
-      args[key] = argv[i + 1];
-      i++;
-    }
+    const next = argv[i + 1];
+    if (current === "--" || !current.startsWith("--")) continue;
+    if (next == null || next.startsWith("--")) continue;
+    const key = current.slice(2).replace(/-([a-z])/g, (_, c: string) =>
+      c.toUpperCase(),
+    );
+    args[key] = next;
+    i++;
   }
   return args;
+}
+
+function defaultRootDir(): string {
+  return process.cwd().endsWith(`${path.sep}scripts`)
+    ? path.resolve(process.cwd(), "..")
+    : process.cwd();
+}
+
+function resolveCliPath(rootDir: string, filePath: string): string {
+  return path.isAbsolute(filePath) ? filePath : path.join(rootDir, filePath);
 }
 
 const isMain =
@@ -233,12 +286,14 @@ const isMain =
 
 if (isMain) {
   const args = parseCliArgs(process.argv.slice(2));
-  const { business, registryPath, queueStatePath, telemetryPath } = args;
+  const { business, registryPath, queueStatePath, telemetryPath, eventsPath } = args;
+  const rootDir = defaultRootDir();
 
   if (!business || !registryPath || !queueStatePath || !telemetryPath) {
     process.stderr.write(
       JSON.stringify({
         ok: false,
+        persistence_mode: "read_only",
         error:
           "Missing required args: --business, --registry-path, --queue-state-path, --telemetry-path",
       }) + "\n",
@@ -246,12 +301,45 @@ if (isMain) {
     process.exit(0); // advisory: always exit 0
   }
 
-  runLiveHook({ business, registryPath, queueStatePath, telemetryPath })
+  const resolvedRegistryPath = resolveCliPath(rootDir, registryPath);
+  const resolvedQueueStatePath = resolveCliPath(rootDir, queueStatePath);
+  const resolvedTelemetryPath = resolveCliPath(rootDir, telemetryPath);
+  const resolvedEventsPath =
+    typeof eventsPath === "string" ? resolveCliPath(rootDir, eventsPath) : null;
+  const eventsResult =
+    resolvedEventsPath != null ? loadEventsFromDisk(resolvedEventsPath) : [];
+
+  if (!Array.isArray(eventsResult)) {
+    process.stderr.write(
+      JSON.stringify({
+        ok: false,
+        persistence_mode: "read_only",
+        queue_state_target: resolvedQueueStatePath,
+        telemetry_target: resolvedTelemetryPath,
+        events_path: resolvedEventsPath,
+        error: eventsResult.error,
+      }) + "\n",
+    );
+    process.exit(0);
+  }
+
+  runLiveHook({
+    business,
+    registryPath: resolvedRegistryPath,
+    queueStatePath: resolvedQueueStatePath,
+    telemetryPath: resolvedTelemetryPath,
+    events: eventsResult,
+  })
     .then((result) => {
       process.stderr.write(
         JSON.stringify({
           ok: result.ok,
           business,
+          persistence_mode: "read_only",
+          queue_state_target: resolvedQueueStatePath,
+          telemetry_target: resolvedTelemetryPath,
+          ...(resolvedEventsPath != null ? { events_path: resolvedEventsPath } : {}),
+          event_count: eventsResult.length,
           dispatched_count: result.dispatched.length,
           suppressed: result.suppressed,
           noop: result.noop,
@@ -266,7 +354,13 @@ if (isMain) {
       const message =
         err instanceof Error ? err.message : `non-Error: ${String(err)}`;
       process.stderr.write(
-        JSON.stringify({ ok: false, error: `fatal: ${message}` }) + "\n",
+        JSON.stringify({
+          ok: false,
+          persistence_mode: "read_only",
+          queue_state_target: resolvedQueueStatePath,
+          telemetry_target: resolvedTelemetryPath,
+          error: `fatal: ${message}`,
+        }) + "\n",
       );
       process.exit(0); // advisory: always exit 0
     });

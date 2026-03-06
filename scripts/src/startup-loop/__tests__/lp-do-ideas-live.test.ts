@@ -39,6 +39,23 @@ function makeValidEvent(overrides: Partial<ArtifactDeltaEvent> = {}): ArtifactDe
   };
 }
 
+function makeMicroBuildEvent(
+  overrides: Partial<ArtifactDeltaEvent> = {},
+): ArtifactDeltaEvent {
+  return {
+    artifact_id: "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+    business: "BOS",
+    before_sha: "abc0001",
+    after_sha: "def0002",
+    path: "git-diff:HEAD~1..HEAD",
+    location_anchors: ["apps/reception/src/components/catalog/CatalogConsole.client.tsx"],
+    domain: "BOS",
+    changed_sections: ["ux gap", "route change"],
+    evidence_refs: ["git-diff:M:apps/reception/src/components/catalog/CatalogConsole.client.tsx"],
+    ...overrides,
+  };
+}
+
 function makeLivePacketFromResult(result: LiveOrchestratorResult): LiveDispatchPacket {
   if (!result.ok || result.dispatched.length === 0) {
     throw new Error("Expected at least one dispatched packet");
@@ -109,6 +126,21 @@ describe("TC-02-A: mode=live orchestrator happy path", () => {
       const packet = result.dispatched[0];
       expect(packet.business).toBe("BRIK");
       expect(packet.artifact_id).toBe("BRIK-SELL-PACK");
+    }
+  });
+
+  it("emits live micro-build packets for bounded UI code signals", () => {
+    const result = runLiveOrchestrator({
+      mode: "live",
+      events: [makeMicroBuildEvent()],
+      clock: () => FIXED_DATE,
+    });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.dispatched[0]?.status).toBe("micro_build_ready");
+      expect(result.dispatched[0]?.recommended_route).toBe("lp-do-build");
+      expect(result.dispatched[0]?.provisional_deliverable_family).toBe("code-change");
     }
   });
 

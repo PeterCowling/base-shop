@@ -3,7 +3,7 @@ import { join } from "node:path";
 
 export type MissingArtifactEntry = {
   dispatch_id: string;
-  fact_find_path: string;
+  target_path: string;
   queue_state: string | undefined;
 };
 
@@ -77,12 +77,15 @@ export function detectMissingArtifacts(options: {
     }
 
     const processedBy = dispatch.processed_by as Record<string, unknown>;
-    const factFindPathRaw = processedBy.fact_find_path;
-    if (typeof factFindPathRaw !== "string" || factFindPathRaw.trim() === "") {
+    const targetPathRaw =
+      typeof processedBy.target_path === "string" && processedBy.target_path.trim() !== ""
+        ? processedBy.target_path
+        : processedBy.fact_find_path;
+    if (typeof targetPathRaw !== "string" || targetPathRaw.trim() === "") {
       continue;
     }
 
-    const resolvedFactFindPath = join(basedir, factFindPathRaw);
+    const resolvedFactFindPath = join(basedir, targetPathRaw);
     if (existsSyncFn(resolvedFactFindPath)) {
       continue;
     }
@@ -90,7 +93,7 @@ export function detectMissingArtifacts(options: {
     missing.push({
       dispatch_id:
         typeof dispatch.dispatch_id === "string" ? dispatch.dispatch_id : "",
-      fact_find_path: factFindPathRaw,
+      target_path: targetPathRaw,
       queue_state:
         typeof dispatch.queue_state === "string" ? dispatch.queue_state : undefined,
     });

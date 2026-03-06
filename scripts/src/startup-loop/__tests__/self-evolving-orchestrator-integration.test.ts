@@ -120,6 +120,7 @@ describe("self-evolving orchestrator integration", () => {
     expect(result.observations_generated).toBe(3);
     expect(result.orchestrator.candidates_generated).toBeGreaterThan(0);
     expect(result.backbone_queued).toBeGreaterThan(0);
+    expect(result.followup_dispatches_emitted).toBeGreaterThan(0);
     expect(result.orchestrator.ranked_candidates[0]?.route.route).toBe("lp-do-build");
     expect(result.orchestrator.ranked_candidates[0]?.candidate.executor_path).toBe(
       "lp-do-build:container:website-v3",
@@ -127,6 +128,17 @@ describe("self-evolving orchestrator integration", () => {
 
     const queueRaw = readFileSync(result.backbone_queue_path, "utf-8").trim();
     expect(queueRaw.length).toBeGreaterThan(0);
+    const ideasQueuePath = path.join(
+      tempRoot,
+      "docs",
+      "business-os",
+      "startup-loop",
+      "ideas",
+      "trial",
+      "queue-state.json",
+    );
+    const ideasQueueRaw = readFileSync(ideasQueuePath, "utf-8");
+    expect(ideasQueueRaw).toContain("self-evolving-candidate:");
     rmSync(tempRoot, { recursive: true, force: true });
   });
 });

@@ -326,6 +326,7 @@ function deriveBugScanEvent(
   const evidenceRefs = normalized
     .slice(0, 5)
     .map((item) => `bug-scan:${item.ruleId}:${item.file}:${item.line}`);
+  const locationAnchors = Array.from(new Set(normalized.map((item) => item.file))).slice(0, 5);
 
   return {
     event: {
@@ -334,6 +335,7 @@ function deriveBugScanEvent(
       before_sha: state.bug_scan_hash ?? "bootstrap",
       after_sha: nextHash,
       path: options.bugScanArtifactPath,
+      location_anchors: locationAnchors,
       changed_sections: changedSections,
       updated_by_process: "bug-scan-signal-bridge",
       material_delta: true,
@@ -449,6 +451,7 @@ function deriveCodebaseEvent(
   }
 
   const evidenceRefs = relevant.slice(0, 8).map((entry) => `git-diff:${entry.status}:${entry.file}`);
+  const locationAnchors = Array.from(new Set(relevant.map((entry) => entry.file))).slice(0, 8);
 
   return {
     event: {
@@ -457,6 +460,7 @@ function deriveCodebaseEvent(
       before_sha: state.codebase_hash ?? "bootstrap",
       after_sha: nextHash,
       path: `git-diff:${options.fromRef}..${options.toRef}`,
+      location_anchors: locationAnchors,
       changed_sections: tags,
       updated_by_process: "codebase-signal-bridge",
       material_delta: true,
@@ -672,6 +676,7 @@ function buildCounts(dispatches: TrialDispatchPacket[]): Record<string, number> 
     auto_executed: 0,
     completed: 0,
     fact_find_ready: 0,
+    micro_build_ready: 0,
     total: dispatches.length,
   };
 
@@ -682,6 +687,9 @@ function buildCounts(dispatches: TrialDispatchPacket[]): Record<string, number> 
     }
     if (dispatch.status === "fact_find_ready") {
       counts.fact_find_ready += 1;
+    }
+    if (dispatch.status === "micro_build_ready") {
+      counts.micro_build_ready += 1;
     }
   }
 

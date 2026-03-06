@@ -288,46 +288,46 @@ describe("draft_quality_check TASK-04 template normalization", () => {
 });
 
 describe("draft_quality_check TASK-05 reference applicability", () => {
-  it("TC-05-01: in-scope factual response without reference fails", async () => {
+  it("TC-05-01: booking-action-required response without reference fails", async () => {
     const result = await handleDraftQualityTool("draft_quality_check", {
       actionPlan: {
         language: "EN" as const,
         intents: {
-          questions: [{ text: "What time is check-in?" }],
+          questions: [{ text: "Can you modify my booking?" }],
           requests: [],
         },
         workflow_triggers: {
-          booking_action_required: false,
-          booking_context: false,
+          booking_action_required: true,
+          booking_context: true,
         },
-        scenario: { category: "check-in" },
+        scenario: { category: "booking-issues" },
       },
       draft: {
-        bodyPlain: "Check-in starts at 15:00. Best regards, Hostel Brikette",
-        bodyHtml: "<!DOCTYPE html><html><body><p>Check-in starts at 15:00.</p></body></html>",
+        bodyPlain: "Please confirm your request details. Best regards, Hostel Brikette",
+        bodyHtml: "<!DOCTYPE html><html><body><p>Please confirm your request details.</p></body></html>",
       },
     });
     const payload = parseResult(result);
     expect(payload.failed_checks).toContain("missing_required_reference");
   });
 
-  it("TC-05-02: in-scope factual response with canonical reference passes", async () => {
+  it("TC-05-02: booking-action-required response with approved booking host passes", async () => {
     const result = await handleDraftQualityTool("draft_quality_check", {
       actionPlan: {
         language: "EN" as const,
         intents: {
-          questions: [{ text: "What time is check-in?" }],
+          questions: [{ text: "Can you modify my booking?" }],
           requests: [],
         },
         workflow_triggers: {
-          booking_action_required: false,
-          booking_context: false,
+          booking_action_required: true,
+          booking_context: true,
         },
-        scenario: { category: "check-in" },
+        scenario: { category: "booking-issues" },
       },
       draft: {
-        bodyPlain: `Check-in starts at 15:00. See ${CANONICAL_REFERENCE_URL}. Best regards, Hostel Brikette`,
-        bodyHtml: "<!DOCTYPE html><html><body><p>Check-in starts at 15:00.</p></body></html>",
+        bodyPlain: "Please complete your booking update here: https://www.hostelworld.com . Best regards, Hostel Brikette",
+        bodyHtml: "<!DOCTYPE html><html><body><p>Please complete your booking update here.</p></body></html>",
       },
     });
     const payload = parseResult(result);
@@ -361,28 +361,55 @@ describe("draft_quality_check TASK-05 reference applicability", () => {
     expect(payload.failed_checks).not.toContain("reference_not_applicable");
   });
 
-  it("TC-05-04: in-scope response with unrelated link fails applicability check", async () => {
+  it("TC-05-04: booking-action-required response with unrelated link fails applicability check", async () => {
     const result = await handleDraftQualityTool("draft_quality_check", {
       actionPlan: {
         language: "EN" as const,
         intents: {
-          questions: [{ text: "What time is check-in?" }],
+          questions: [{ text: "Can you modify my booking?" }],
           requests: [],
         },
         workflow_triggers: {
-          booking_action_required: false,
-          booking_context: false,
+          booking_action_required: true,
+          booking_context: true,
         },
-        scenario: { category: "check-in" },
+        scenario: { category: "booking-issues" },
       },
       draft: {
         bodyPlain:
-          "Check-in starts at 15:00. See https://unrelated.example.org/guide. Best regards, Hostel Brikette",
-        bodyHtml: "<!DOCTYPE html><html><body><p>Check-in starts at 15:00.</p></body></html>",
+          "Use this link for updates: https://unrelated.example.org/guide. Best regards, Hostel Brikette",
+        bodyHtml: "<!DOCTYPE html><html><body><p>Use this link for updates.</p></body></html>",
       },
     });
     const payload = parseResult(result);
     expect(payload.failed_checks).toContain("reference_not_applicable");
+  });
+
+  it("TC-05-05: non-booking informational categories do not require references", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "Is breakfast included?" }],
+          requests: [],
+        },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: true,
+        },
+        scenario: { category: "breakfast" },
+      },
+      draft: {
+        bodyPlain:
+          "Breakfast is included only for direct bookings. Best regards, Hostel Brikette",
+        bodyHtml:
+          "<!DOCTYPE html><html><body><p>Breakfast is included only for direct bookings.</p></body></html>",
+      },
+    });
+
+    const payload = parseResult(result);
+    expect(payload.failed_checks).not.toContain("missing_required_reference");
+    expect(payload.failed_checks).not.toContain("reference_not_applicable");
   });
 });
 

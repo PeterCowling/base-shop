@@ -53,9 +53,17 @@ Feature-Slug: <slug>
 artifact: fact-find
 # Optional — present when opened via a queued dispatch packet:
 Dispatch-ID: <IDEA-DISPATCH-YYYYMMDDHHmmss-NNNN | omit if direct inject>
-# Required when Dispatch-ID is absent:
+# Optional — use when one fact-find promotes multiple queued dispatches as a single work package:
+Dispatch-IDs: <comma-separated dispatch IDs>
+# Required when Dispatch-IDs contains 2+ dispatches:
+Work-Package-Reason: <why these dispatches belong in one fact-find / one plan>
+# Required when neither Dispatch-ID nor Dispatch-IDs is present:
 Trigger-Source: <path to standing artifact that motivated this cycle, or "direct-operator-decision: <rationale>">
 ```
+
+Rules:
+- `Dispatch-ID` and `Dispatch-IDs` are mutually exclusive in canonical output. Use `Dispatch-ID` for one dispatch, `Dispatch-IDs` for a bundled promotion.
+- `Dispatch-IDs` is a traceability field, not a relaxation of scope discipline. Bundling is appropriate only when one fact-find and one downstream plan are genuinely more coherent than separate cycles.
 
 ### Lifecycle
 
@@ -99,6 +107,44 @@ artifact: plan
 - Updated in-place by `/lp-do-build` after each task completion (status, evidence, `Last-updated`).
 - Set to `Status: Archived` when all executable tasks are complete.
 - Archived to `docs/plans/_archive/<feature-slug>/plan.md`; see `_shared/plan-archiving.md`.
+
+---
+
+## Artifact 2A: `micro-build.md`
+
+**Artifact ID:** `micro-build`
+**Produced by:** `/lp-do-build` direct-dispatch intake
+**Stored at:** `docs/plans/<feature-slug>/micro-build.md`
+**Consumers:** `/lp-do-build`
+
+### Purpose
+
+Canonical minimal execution contract for trivially bounded direct-build work routed from `lp-do-ideas` without a full fact-find or plan. This artifact exists to preserve queue accuracy, scope discipline, and build validation while cutting ceremony for genuinely tiny changes.
+
+### Required Sections
+
+| Section | Purpose |
+|---|---|
+| `## Scope` | Exact change being made and what is explicitly out of scope. |
+| `## Execution Contract` | Affects, acceptance checks, validation commands, and rollback note. |
+| `## Outcome Contract` | Why, intended outcome type, statement, and source carried from the dispatch. |
+
+### Required Frontmatter Fields
+
+```yaml
+Status: <Active | Complete | Archived>
+Feature-Slug: <slug>
+artifact: micro-build
+Dispatch-ID: <IDEA-DISPATCH-YYYYMMDDHHmmss-NNNN>
+Execution-Track: <code | business-artifact | mixed>
+Deliverable-Type: <canonical type>
+```
+
+### Lifecycle
+
+- Created by `/lp-do-build` when a confirmed `micro_build_ready` dispatch is taken directly from the ideas queue.
+- Treated as a single implicit IMPLEMENT task contract.
+- Archived alongside build outputs when the direct build completes.
 
 ---
 

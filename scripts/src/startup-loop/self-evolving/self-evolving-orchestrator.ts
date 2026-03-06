@@ -1,5 +1,6 @@
 import { mapCandidateToBackboneRoute } from "./self-evolving-backbone.js";
 import {
+  DEFAULT_MATURE_BOUNDARY_THRESHOLDS,
   evaluateMatureBoundary,
   type MatureBoundarySignals,
   type MatureBoundaryThresholds,
@@ -41,6 +42,12 @@ import {
   type ScoreWeights,
 } from "./self-evolving-scoring.js";
 import {
+  buildRepeatProblemStatement,
+  deriveBoundarySignalSnapshotFromStartupState,
+  inferCandidateTypeFromObservations,
+  inferExecutorPathFromObservations,
+} from "./self-evolving-signal-helpers.js";
+import {
   createStartupStateStore,
   writeStartupState,
 } from "./self-evolving-startup-state.js";
@@ -68,65 +75,6 @@ const DEFAULT_BUDGET_POLICY: CandidateBudgetPolicy = {
   max_candidates_created_per_day: 20,
   blocked_sla_days: 14,
 };
-
-const DEFAULT_BOUNDARY_SIGNALS: MatureBoundarySignals = {
-  monthly_revenue: 0,
-  headcount: 1,
-  support_ticket_volume_per_week: 0,
-  multi_region_compliance_flag: false,
-  operational_complexity_score: 1,
-};
-
-const DEFAULT_BOUNDARY_THRESHOLDS: MatureBoundaryThresholds = {
-  monthly_revenue: 10000,
-  headcount: 5,
-  support_ticket_volume_per_week: 100,
-  operational_complexity_score: 6,
-};
-
-function classifyCandidateType(observations: MetaObservation[]): ImprovementCandidate["candidate_type"] {
-  const contexts = observations.map((observation) => observation.context_path.toLowerCase());
-  if (contexts.some((context) => context.includes("token") || context.includes("deterministic"))) {
-    return "deterministic_extraction";
-  }
-  if (contexts.some((context) => context.includes("skill_refactor") || context.includes("refactor"))) {
-    return "skill_refactor";
-  }
-  if (contexts.some((context) => context.includes("new_skill") || context.includes("new-skill"))) {
-    return "new_skill";
-  }
-  return "container_update";
-}
-
-function inferWebsiteExecutorPath(startupState: StartupState): string {
-  const generation =
-    Number.isInteger(startupState.current_website_generation) &&
-    startupState.current_website_generation > 0
-      ? startupState.current_website_generation
-      : startupState.stage === "prelaunch"
-        ? 1
-        : startupState.stage === "launched"
-          ? 2
-          : 3;
-
-  if (generation >= 3) return "lp-do-build:container:website-v3";
-  if (generation === 2) return "lp-do-build:container:website-v2";
-  return "lp-do-build:container:website-v1";
-}
-
-function inferExecutorPath(
-  observations: MetaObservation[],
-  startupState: StartupState,
-): string {
-  const context = observations[0]?.context_path.toLowerCase() ?? "";
-  if (context.includes("website")) return inferWebsiteExecutorPath(startupState);
-  if (context.includes("offer")) return "lp-do-build:container:offer-v1";
-  if (context.includes("distribution")) return "lp-do-build:container:distribution-sprint-v1";
-  if (context.includes("activation")) return "lp-do-build:container:activation-loop-v1";
-  if (context.includes("feedback")) return "lp-do-build:container:feedback-intel-v1";
-  if (context.includes("experiment")) return "lp-do-build:container:experiment-cycle-v1";
-  return "lp-do-build:container:analytics-v1";
-}
 
 function buildScoreDimensions(observations: MetaObservation[]): ScoreDimensionsV2 {
   const count = observations.length;
@@ -181,20 +129,17 @@ function buildEvidenceGate(observations: MetaObservation[]): CandidateEvidenceGa
 
 function buildCandidateFromRepeat(input: {
   business: string;
-  runId: string;
   repeat: RepeatWorkCandidate;
   observations: MetaObservation[];
   startupState: StartupState;
   now: Date;
 }): ImprovementCandidate {
-  const candidateType = classifyCandidateType(input.observations);
+  const candidateType = inferCandidateTypeFromObservations(input.observations);
   const riskLevel: ImprovementCandidate["risk_level"] =
     candidateType === "container_update" ? "medium" : "low";
   const blastRadius: ImprovementCandidate["blast_radius_tag"] =
     candidateType === "container_update" ? "medium" : "small";
-  const candidateId = stableHash(
-    `${input.business}|${input.repeat.hard_signature}|${input.runId}`,
-  ).slice(0, 16);
+  const candidateId = stableHash(`${input.business}|${input.repeat.hard_signature}`).slice(0, 16);
   const expiryAt = new Date(input.now.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString();
 
   return {
@@ -202,9 +147,16 @@ function buildCandidateFromRepeat(input: {
     candidate_id: candidateId,
     candidate_type: candidateType,
     candidate_state: "draft",
-    problem_statement: `Repeated work signature ${input.repeat.hard_signature.slice(0, 8)} detected ${input.repeat.recurrence_count} times in ${input.business}.`,
+    problem_statement: buildRepeatProblemStatement(
+      input.observations,
+      input.repeat.recurrence_count,
+      input.repeat.hard_signature,
+    ),
     trigger_observations: input.repeat.observation_ids,
-    executor_path: inferExecutorPath(input.observations, input.startupState),
+    executor_path: inferExecutorPathFromObservations(
+      input.observations,
+      input.startupState,
+    ),
     change_scope: "business_only",
     applicability_predicates: [`business=${input.business}`],
     expected_benefit: "Reduce repetitive operator/manual workflow load.",
@@ -301,7 +253,6 @@ export function runSelfEvolvingOrchestrator(
 
     const candidate = buildCandidateFromRepeat({
       business: input.business,
-      runId: input.run_id,
       repeat,
       observations: repeatObservations,
       startupState: input.startup_state,
@@ -361,9 +312,12 @@ export function runSelfEvolvingOrchestrator(
     wipCap: budgetPolicy.max_active_candidates,
   });
 
+  const boundarySignals =
+    input.boundary_signals ??
+    deriveBoundarySignalSnapshotFromStartupState(input.startup_state).signals;
   const boundary = evaluateMatureBoundary(
-    input.boundary_signals ?? DEFAULT_BOUNDARY_SIGNALS,
-    input.boundary_thresholds ?? DEFAULT_BOUNDARY_THRESHOLDS,
+    boundarySignals,
+    input.boundary_thresholds ?? DEFAULT_MATURE_BOUNDARY_THRESHOLDS,
   );
 
   return {

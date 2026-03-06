@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-06T13:46:41.932Z",
+  "last_updated": "2026-03-06T14:03:07.401Z",
   "counts": {
-    "enqueued": 115,
+    "enqueued": 118,
     "processed": 35,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
     "completed": 118,
-    "fact_find_ready": 172,
+    "fact_find_ready": 175,
     "micro_build_ready": 0,
-    "total": 294
+    "total": 297
   },
   "dispatches": [
     {
@@ -12028,6 +12028,138 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-06T13:46:03.712Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306135437-0810",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "9f4677a7a3dc8b32338b3a7aa3fde05adbe857ff",
+      "after_sha": "df9d1183169eb423e9d4be4fa5e1fcf677009049",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:df9d1183169eb423e9d4be4fa5e1fcf677009049",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:df9d1183169eb423e9d4be4fa5e1fcf677009049",
+      "cluster_fingerprint": "74833ea6d511d937dc76226a375882fe4cbc58f20c86bf9b271659f451533388",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (9f4677a → df9d118)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:00654e03-9371-4567-a764-5f1c336012e5",
+        "session:7e5ee3c7-48c8-4634-abfa-bb48c7d6671e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:8781939f-edea-451b-a9fa-1fa24c8cb292",
+        "session:934d1ed9-f97a-4dc1-98e9-2bd8b2a916fb",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-06T13:54:37.809Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306140224-0885",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "df9d1183169eb423e9d4be4fa5e1fcf677009049",
+      "after_sha": "7e68eb8e91a51361de55380fb38d9186907cc15f",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:7e68eb8e91a51361de55380fb38d9186907cc15f",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:7e68eb8e91a51361de55380fb38d9186907cc15f",
+      "cluster_fingerprint": "7d8c63e0182e2015b61fa5371bf47e6688f1b2cf2838ec8e7c3005c7f1e907cc",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (df9d118 → 7e68eb8)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:7e5ee3c7-48c8-4634-abfa-bb48c7d6671e",
+        "session:00654e03-9371-4567-a764-5f1c336012e5",
+        "session:8781939f-edea-451b-a9fa-1fa24c8cb292",
+        "session:934d1ed9-f97a-4dc1-98e9-2bd8b2a916fb",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-06T14:02:24.884Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306140307-0399",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "7e68eb8e91a51361de55380fb38d9186907cc15f",
+      "after_sha": "0cf70b9863e0ed978b52e0bf9f92c985554b2a09",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:0cf70b9863e0ed978b52e0bf9f92c985554b2a09",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:0cf70b9863e0ed978b52e0bf9f92c985554b2a09",
+      "cluster_fingerprint": "8cb21709ecab607adf1ad989366ff5ce25822fad1ed7637dcbd737ef528591d9",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (7e68eb8 → 0cf70b9)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:7e5ee3c7-48c8-4634-abfa-bb48c7d6671e",
+        "session:00654e03-9371-4567-a764-5f1c336012e5",
+        "session:8781939f-edea-451b-a9fa-1fa24c8cb292",
+        "session:934d1ed9-f97a-4dc1-98e9-2bd8b2a916fb",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-06T14:03:07.398Z",
       "queue_state": "enqueued",
       "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
       "intended_outcome": {

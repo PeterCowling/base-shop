@@ -1,5 +1,7 @@
 import { catalogProductDraftSchema } from "@acme/lib/xa";
 
+import { acquireDraftSyncLock, releaseDraftSyncLock } from "./draftSyncLock";
+
 export interface Env {
   SUBMISSIONS_BUCKET: R2Bucket;
   CATALOG_BUCKET?: R2Bucket;
@@ -57,7 +59,7 @@ const DEFAULT_DRAFTS_MAX_BYTES = 2 * 1024 * 1024;
 const DEFAULT_CATALOG_CACHE_CONTROL = "public, max-age=60, stale-while-revalidate=300";
 // i18n-exempt -- ABC-123 [ttl=2026-12-31]
 const CORS_ALLOWED_HEADERS =
-  "Content-Type, X-XA-Submission-Id, X-XA-Upload-Token, X-XA-Catalog-Token, X-XA-Deploy-Token, Authorization"; // i18n-exempt -- ABC-123 [ttl=2026-12-31]
+  "Content-Type, X-XA-Submission-Id, X-XA-Upload-Token, X-XA-Catalog-Token, X-XA-Deploy-Token, X-XA-Sync-Lock-Owner, Authorization"; // i18n-exempt -- ABC-123 [ttl=2026-12-31]
 // i18n-exempt -- ABC-123 [ttl=2026-12-31]
 const CORS_ALLOWED_METHODS = "GET, PUT, DELETE, OPTIONS";
 
@@ -786,6 +788,71 @@ async function handleDraftDelete(request: Request, env: Env, url: URL, storefron
   return json({ ok: true, storefront, deleted: true });
 }
 
+async function handleDraftSyncLockAcquire(
+  request: Request,
+  env: Env,
+  url: URL,
+  storefront: string,
+): Promise<Response> {
+  const auth = await requireCatalogWriteToken(env, request, url);
+  if (auth instanceof Response) return auth;
+
+  const bucket = resolveCatalogBucket(env);
+  const prefix = resolveCatalogPrefix(env);
+  const result = await acquireDraftSyncLock({ bucket, prefix, storefront });
+
+  if (result.status === "busy") {
+    return json(
+      { ok: false, error: "conflict", reason: "sync_lock_held", expiresAt: result.expiresAt },
+      409,
+    );
+  }
+  if (result.status === "error") {
+    return json({ ok: false, reason: result.reason }, 502);
+  }
+
+  return json(
+    {
+      ok: true,
+      storefront,
+      ownerToken: result.ownerToken,
+      expiresAt: result.expiresAt,
+    },
+    201,
+  );
+}
+
+async function handleDraftSyncLockRelease(
+  request: Request,
+  env: Env,
+  url: URL,
+  storefront: string,
+): Promise<Response> {
+  const auth = await requireCatalogWriteToken(env, request, url);
+  if (auth instanceof Response) return auth;
+
+  const ownerToken = request.headers.get("x-xa-sync-lock-owner")?.trim() ?? "";
+  if (!ownerToken) {
+    return json({ ok: false, reason: "sync_lock_owner_missing" }, 400);
+  }
+
+  const bucket = resolveCatalogBucket(env);
+  const prefix = resolveCatalogPrefix(env);
+  const result = await releaseDraftSyncLock({ bucket, prefix, storefront, ownerToken });
+
+  if (result.status === "missing") {
+    return json({ ok: false, reason: "sync_lock_missing" }, 404);
+  }
+  if (result.status === "stale_owner") {
+    return json({ ok: false, error: "conflict", reason: "sync_lock_stale_owner" }, 409);
+  }
+  if (result.status === "error") {
+    return json({ ok: false, reason: result.reason }, 502);
+  }
+
+  return json({ ok: true, storefront, released: true });
+}
+
 async function handleCatalogRead(
   request: Request,
   env: Env,
@@ -822,6 +889,7 @@ type RouteMatch =
   | { kind: "upload"; pathToken: string }
   | { kind: "catalog"; storefront: string | null }
   | { kind: "drafts"; storefront: string | null }
+  | { kind: "draftSyncLock"; storefront: string | null }
   | { kind: "deploy"; storefront: string | null }
   | { kind: "other" };
 
@@ -836,6 +904,12 @@ function matchRoute(pathname: string): RouteMatch {
   if (segments.length === 2 && segments[0] === "catalog") {
     return {
       kind: "catalog",
+      storefront: parseStorefront(segments[1] ?? ""),
+    };
+  }
+  if (segments.length === 3 && segments[0] === "drafts" && segments[2] === "sync-lock") {
+    return {
+      kind: "draftSyncLock",
       storefront: parseStorefront(segments[1] ?? ""),
     };
   }
@@ -905,6 +979,27 @@ function resolveXaBDeployConfig(env: Env): {
 }
 
 type XaBDeployConfig = NonNullable<ReturnType<typeof resolveXaBDeployConfig>>;
+
+function resolveAllowedUploaderDeployWorkflowId(workflow: string): string | null {
+  const normalized = workflow.trim().replace(/\\/g, "/").toLowerCase();
+  if (!normalized) return null;
+  if (normalized === "xa-b-redeploy.yml") return "xa-b-redeploy.yml";
+  if (normalized === ".github/workflows/xa-b-redeploy.yml") return "xa-b-redeploy.yml";
+  return null;
+}
+
+function buildDisallowedWorkflowResponse(workflow: string): Response {
+  return json(
+    {
+      ok: false,
+      error: {
+        message: "deploy_workflow_not_allowed",
+        workflow,
+      },
+    },
+    503,
+  );
+}
 
 function isRecordStringUnknown(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -1083,6 +1178,49 @@ function successPayloadFromDispatchResult(params: {
   });
 }
 
+type WorkflowDispatchResult =
+  | { ok: true; payload: ReturnType<typeof successPayloadFromDispatchResult> }
+  | { ok: false; response: Response };
+
+async function dispatchXaBRedeployWorkflow(params: {
+  config: XaBDeployConfig;
+  storefront: string;
+}): Promise<WorkflowDispatchResult> {
+  const allowedWorkflowId = resolveAllowedUploaderDeployWorkflowId(params.config.workflow);
+  if (!allowedWorkflowId) {
+    return { ok: false, response: buildDisallowedWorkflowResponse(params.config.workflow) };
+  }
+
+  const config = { ...params.config, workflow: allowedWorkflowId };
+  const dispatch = await requestJson(githubDispatchUrl(config), {
+    method: "POST",
+    headers: dispatchHeaders(config),
+    body: buildDispatchBody({ storefront: params.storefront, ref: config.ref }),
+  });
+  if (!dispatch.ok) return { ok: false, response: buildDispatchFailureResponse(dispatch) };
+  if (dispatch.status !== 204) {
+    const error = parseGitHubError(dispatch.payload);
+    return {
+      ok: false,
+      response: json(
+        { ok: false, error: error.message ? error : { message: "dispatch_unexpected_status" } },
+        502,
+      ),
+    };
+  }
+  return {
+    ok: true,
+    payload: successPayloadFromDispatchResult({
+      payload: dispatch.payload ?? {},
+      storefront: params.storefront,
+      workflow: config.workflow,
+      owner: config.owner,
+      repo: config.repo,
+      ref: config.ref,
+    }),
+  };
+}
+
 async function handleXaBDeployTrigger(request: Request, env: Env, storefront: string): Promise<Response> {
   if (storefront !== "xa-b") return json({ ok: false }, 400);
 
@@ -1090,36 +1228,31 @@ async function handleXaBDeployTrigger(request: Request, env: Env, storefront: st
   const auth = requireDeployTriggerToken(env, request, requestUrl);
   if (auth instanceof Response) return auth;
 
+  const config = resolveXaBDeployConfig(env);
   const pagesHookUrl = resolveXaBPagesDeployHookUrl(env);
   if (pagesHookUrl) {
     const hook = await triggerPagesDeployHook(pagesHookUrl);
-    if (!hook.ok) return buildPagesHookFailureResponse(hook);
+    if (!hook.ok) {
+      if (!config) return buildPagesHookFailureResponse(hook);
+      const fallbackDispatch = await dispatchXaBRedeployWorkflow({ config, storefront });
+      if (!fallbackDispatch.ok) return fallbackDispatch.response;
+      return json(
+        {
+          ...fallbackDispatch.payload,
+          fallbackFrom: "cloudflare_pages_deploy_hook",
+          fallbackReason:
+            hook.status >= 400 && hook.status < 500 ? "pages_hook_rejected" : "pages_hook_failed",
+        },
+        202,
+      );
+    }
     return json(successPayloadFromPagesHook({ storefront }), 202);
   }
 
-  const config = resolveXaBDeployConfig(env);
   if (!config) return json({ ok: false }, 503);
-  const dispatch = await requestJson(githubDispatchUrl(config), {
-    method: "POST",
-    headers: dispatchHeaders(config),
-    body: buildDispatchBody({ storefront, ref: config.ref }),
-  });
-  if (!dispatch.ok) return buildDispatchFailureResponse(dispatch);
-  if (dispatch.status !== 204) {
-    const error = parseGitHubError(dispatch.payload);
-    return json({ ok: false, error: error.message ? error : { message: "dispatch_unexpected_status" } }, 502);
-  }
-  return json(
-    successPayloadFromDispatchResult({
-      payload: dispatch.payload ?? {},
-      storefront,
-      workflow: config.workflow,
-      owner: config.owner,
-      repo: config.repo,
-      ref: config.ref,
-    }),
-    202,
-  );
+  const dispatchResult = await dispatchXaBRedeployWorkflow({ config, storefront });
+  if (!dispatchResult.ok) return dispatchResult.response;
+  return json(dispatchResult.payload, 202);
 }
 
 function isCorsDenied(requestHasOrigin: boolean, allowedCorsOrigin: string | null): boolean {
@@ -1201,6 +1334,17 @@ async function routeRequest(params: {
         return json({ ok: false }, 403);
       }
       return await handleDraftDelete(request, env, url, route.storefront);
+    }
+    return json({ ok: false }, 404);
+  }
+
+  if (route.kind === "draftSyncLock") {
+    if (!route.storefront) return json({ ok: false }, 400);
+    if (request.method === "POST") {
+      return await handleDraftSyncLockAcquire(request, env, url, route.storefront);
+    }
+    if (request.method === "DELETE") {
+      return await handleDraftSyncLockRelease(request, env, url, route.storefront);
     }
     return json({ ok: false }, 404);
   }

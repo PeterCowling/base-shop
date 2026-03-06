@@ -310,11 +310,19 @@ describe("lp-do-ideas codebase signals bridge", () => {
       path.join(repoRoot, "docs/business-os/startup-loop/ideas/trial/queue-state.json"),
       "utf8",
     );
-    const queueState = JSON.parse(queueStateRaw) as { dispatches: Array<{ artifact_id: string }> };
+    const queueState = JSON.parse(queueStateRaw) as {
+      dispatches: Array<{ artifact_id: string; location_anchors?: string[] }>;
+    };
     const artifactIds = new Set(queueState.dispatches.map((dispatch) => dispatch.artifact_id));
     expect(artifactIds.has("BOS-BOS-BUG_SCAN_FINDINGS")).toBe(true);
     expect(artifactIds.has("BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS")).toBe(true);
     expect(artifactIds.has("BOS-BOS-REPO_MATURITY_SIGNALS")).toBe(true);
+    const structuralDispatch = queueState.dispatches.find(
+      (dispatch) => dispatch.artifact_id === "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+    );
+    expect(structuralDispatch?.location_anchors).toContain(
+      "apps/reception/src/app/api/users/route.ts",
+    );
 
     const maturityRaw = await fs.readFile(
       path.join(repoRoot, "docs/business-os/startup-loop/ideas/trial/repo-maturity-signals.latest.json"),

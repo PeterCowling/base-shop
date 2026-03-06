@@ -7,6 +7,8 @@ const getCatalogContractReadinessMock = jest.fn();
 const publishCatalogPayloadToContractMock = jest.fn();
 const readCloudDraftSnapshotMock = jest.fn();
 const writeCloudDraftSnapshotMock = jest.fn();
+const acquireCloudSyncLockMock = jest.fn();
+const releaseCloudSyncLockMock = jest.fn();
 const buildCatalogArtifactsFromDraftsMock = jest.fn();
 const getMediaBucketMock = jest.fn();
 
@@ -38,6 +40,8 @@ jest.mock("../../../../../lib/catalogContractClient", () => ({
 jest.mock("../../../../../lib/catalogDraftContractClient", () => ({
   readCloudDraftSnapshot: (...args: unknown[]) => readCloudDraftSnapshotMock(...args),
   writeCloudDraftSnapshot: (...args: unknown[]) => writeCloudDraftSnapshotMock(...args),
+  acquireCloudSyncLock: (...args: unknown[]) => acquireCloudSyncLockMock(...args),
+  releaseCloudSyncLock: (...args: unknown[]) => releaseCloudSyncLockMock(...args),
 }));
 
 jest.mock("../../../../../lib/catalogDraftToContract", () => ({
@@ -72,6 +76,11 @@ describe("catalog sync cloud publish/finalize behavior", () => {
       docRevision: "doc-1",
     });
     writeCloudDraftSnapshotMock.mockResolvedValue({ docRevision: "doc-2" });
+    acquireCloudSyncLockMock.mockResolvedValue({
+      status: "acquired",
+      lock: { storefront: "xa-b", ownerToken: "lock-owner-1", expiresAt: "2999-01-01T00:00:00.000Z" },
+    });
+    releaseCloudSyncLockMock.mockResolvedValue(undefined);
 
     buildCatalogArtifactsFromDraftsMock.mockReturnValue({
       catalog: { collections: [], brands: [], products: [{ slug: "studio-jacket", media: [] }] },

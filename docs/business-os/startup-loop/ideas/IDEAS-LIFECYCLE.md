@@ -8,7 +8,7 @@ Standing-artifact deltas (changes to registered artifacts like ICP, pricing, bra
 
 1. Detects which registered artifact changed (via SHA comparison against the standing registry)
 2. Classifies the change against the T1 trigger threshold (semantic keywords: ICP, positioning, pricing, channels, brand, solution, naming, distribution)
-3. Emits a `dispatch.v2` packet with routing recommendation (`lp-do-fact-find` or `lp-do-briefing`)
+3. Emits a `dispatch.v2` packet with routing recommendation (`lp-do-fact-find`, `lp-do-build`, or `lp-do-briefing`)
 
 Each dispatch carries required fields: `dispatch_id`, `schema_version`, `mode`, `anchor_key`, `cluster_key`, `evidence_refs`, and intake fields needed by the downstream skill.
 
@@ -54,12 +54,13 @@ When the operator confirms a dispatch, the routing adapter determines the downst
 | Dispatch Status | Route | Lane |
 |---|---|---|
 | `fact_find_ready` | `/lp-do-fact-find` | DO (default) |
+| `micro_build_ready` | `/lp-do-build` | DO (default) |
 | `briefing_ready` | `/lp-do-briefing` | IMPROVE (default) |
 | `logged_no_action` | No route | Terminal no-op |
 
 The adapter validates all required intake fields before producing a payload. Missing fields produce a `RouteError` with a specific error code (e.g., `MISSING_AREA_ANCHOR`, `MISSING_EVIDENCE_REFS`).
 
-Once invoked, the standard feature pipeline runs: fact-find produces a brief, which feeds `/lp-do-plan`, which feeds `/lp-do-build`.
+Once invoked, the downstream pipeline depends on the route: `fact_find_ready` follows `fact-find -> plan -> build`, `micro_build_ready` follows the direct-build fast lane, and `briefing_ready` stays understanding-only.
 
 **Detail:** `lp-do-ideas-routing-matrix.md` Section 2 (Route Matrix)
 

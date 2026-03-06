@@ -457,15 +457,15 @@ describe("TASK-01: Simulation Defect Corpus", () => {
     expect(extractedClauseCount).toBeGreaterThanOrEqual(2);
   });
 
-  it("SIM-02 routes unknown facility questions to follow-up instead of confident template answer", async () => {
-    const body = "Hi, do you have a rooftop pool at the hostel?";
+  it("SIM-02 routes unknown facility sub-questions to follow-up in multipart replies", async () => {
+    const body = "Hi, is breakfast included? Do you have a rooftop pool at the hostel?";
 
     const interpretResult = await handleDraftInterpretTool("draft_interpret", {
       body,
       subject: "Facility question",
     });
     const actionPlan = parseResult<InterpretResult>(interpretResult);
-    expect(actionPlan.intents.questions.length).toBeGreaterThanOrEqual(1);
+    expect(actionPlan.intents.questions.length).toBeGreaterThanOrEqual(2);
 
     const generateResult = await handleDraftGenerateTool("draft_generate", {
       actionPlan,
@@ -477,6 +477,7 @@ describe("TASK-01: Simulation Defect Corpus", () => {
     );
 
     const questionBlocks = generated.question_blocks ?? [];
+    expect(generated.composite).toBe(true);
     expect(questionBlocks.length).toBeGreaterThan(0);
     const hasFollowUpDisposition = questionBlocks.some(
       (block) =>

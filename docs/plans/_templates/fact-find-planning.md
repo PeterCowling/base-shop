@@ -16,6 +16,12 @@ Startup-Deliverable-Alias: <none | startup-budget-envelope | startup-channel-pla
 Primary-Execution-Skill: <lp-do-build | draft-email | biz-product-brief | draft-marketing | biz-spreadsheet | draft-whatsapp>
 Supporting-Skills: <comma-separated or none>
 Related-Plan: docs/plans/<feature-slug>/plan.md
+# Optional — present when opened via one queued dispatch packet:
+Dispatch-ID: <IDEA-DISPATCH-YYYYMMDDHHmmss-NNNN>
+# Optional — present when one fact-find promotes multiple related dispatches:
+Dispatch-IDs: <comma-separated dispatch IDs>
+# Required when Dispatch-IDs contains 2+ values:
+Work-Package-Reason: <why these dispatches belong in one fact-find / one plan>
 Trigger-Why: <leave blank for dispatch-routed — populated from FactFindInvocationPayload.why; fill here for direct-inject path to supply the outcome contract source>
 Trigger-Intended-Outcome: <leave blank for dispatch-routed — populated from FactFindInvocationPayload.intended_outcome; fill here for direct-inject path; format: "type: measurable|operational | statement: <text> | source: operator|auto">
 ---

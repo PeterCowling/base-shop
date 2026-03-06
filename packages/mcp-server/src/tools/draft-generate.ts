@@ -19,6 +19,7 @@ import {
 import { resolveSlots } from "../utils/slot-resolver.js";
 import {
   type EmailTemplate,
+  normalizeScenarioCategory,
   type PerQuestionRankEntry,
   rankTemplates,
   rankTemplatesPerQuestion,
@@ -996,18 +997,43 @@ function scoreKnowledgeCandidateForQuestion(
   question: string,
   candidate: { uri: string; snippet: KnowledgeSnippet },
 ): number {
-  const keywords = extractQuestionKeywords(question);
+  const keywords = extractQuestionKeywords(question).filter(
+    (keyword) => !LOW_SIGNAL_KNOWLEDGE_MATCH_TERMS.has(keyword.toLowerCase()),
+  );
   const candidateText = candidate.snippet.text.toLowerCase();
   let score = candidate.snippet.score;
+  let matchedKeywords = 0;
 
   for (const keyword of keywords) {
     if (candidateText.includes(keyword.toLowerCase())) {
       score += 10;
+      matchedKeywords += 1;
     }
+  }
+
+  if (keywords.length > 0 && matchedKeywords === 0) {
+    return 0;
   }
 
   return score;
 }
+
+const LOW_SIGNAL_KNOWLEDGE_MATCH_TERMS = new Set([
+  "you",
+  "your",
+  "our",
+  "can",
+  "could",
+  "would",
+  "does",
+  "have",
+  "what",
+  "when",
+  "where",
+  "which",
+  "is",
+  "are",
+]);
 
 function selectKnowledgeCandidateForQuestion(
   question: string,
@@ -1255,13 +1281,60 @@ function resolveSlotsWithParity(
 }
 
 const DEFAULT_COMPOSITE_LIMIT = 3;
+const UNHINTED_TEMPLATE_CONFIDENCE_FLOOR = 70;
+
+function resolveScenarioCategoryHints(
+  actionPlan: z.infer<typeof draftGenerateSchema>["actionPlan"],
+): Set<string> {
+  const rawCategories =
+    actionPlan.actionPlanVersion === "1.1.0" &&
+    actionPlan.scenarios &&
+    actionPlan.scenarios.length > 0
+      ? actionPlan.scenarios.map((scenario) => scenario.category)
+      : [actionPlan.scenario.category];
+
+  return new Set(
+    rawCategories
+      .map((category) => normalizeScenarioCategory(category) ?? category.toLowerCase())
+      .filter((category) => category.length > 0),
+  );
+}
+
+function candidateConfidence(candidate: TemplateCandidate): number {
+  return candidate.adjustedConfidence ?? candidate.confidence;
+}
+
+function selectQuestionTemplateCandidate(
+  entry: PerQuestionRankEntry,
+  categoryHints: Set<string>,
+): TemplateCandidate | undefined {
+  const hintedCandidates = entry.candidates.filter((candidate) =>
+    categoryHints.has(candidate.template.category),
+  );
+
+  if (hintedCandidates.length > 0) {
+    return hintedCandidates.reduce((best, current) =>
+      candidateConfidence(current) > candidateConfidence(best) ? current : best,
+    );
+  }
+
+  const topCandidate = entry.candidates[0];
+  if (!topCandidate) {
+    return undefined;
+  }
+
+  return candidateConfidence(topCandidate) >= UNHINTED_TEMPLATE_CONFIDENCE_FLOOR
+    ? topCandidate
+    : undefined;
+}
 
 function buildQuestionAnswerBlocks(
   perQuestionRanks: PerQuestionRankEntry[],
+  categoryHints: Set<string>,
 ): QuestionAnswerBlock[] {
   return perQuestionRanks.slice(0, DEFAULT_COMPOSITE_LIMIT).map((entry) => {
-    const topCandidate = entry.candidates[0];
-    const template = topCandidate?.template;
+    const selectedCandidate = selectQuestionTemplateCandidate(entry, categoryHints);
+    const template = selectedCandidate?.template;
     return {
       question: entry.question,
       label: buildQuestionLabel(entry.question),
@@ -1273,6 +1346,23 @@ function buildQuestionAnswerBlocks(
       followUpRequired: !template,
     };
   });
+}
+
+function buildCompositeQuestionBlocks(
+  actionPlan: z.infer<typeof draftGenerateSchema>["actionPlan"],
+  templates: EmailTemplate[],
+): QuestionAnswerBlock[] {
+  if (actionPlan.intents.questions.length < 2) {
+    return [];
+  }
+
+  const scenarioCategoryHints = resolveScenarioCategoryHints(actionPlan);
+  const perQuestionRanks = rankTemplatesPerQuestion(
+    actionPlan.intents.questions,
+    templates,
+    DEFAULT_COMPOSITE_LIMIT,
+  );
+  return buildQuestionAnswerBlocks(perQuestionRanks, scenarioCategoryHints);
 }
 
 function hydrateQuestionAnswerBlocks(
@@ -1404,10 +1494,8 @@ function expandLengthBoundsForMultipart(
 
   return {
     min: Math.max(bounds.min, questionCount * 30),
-    max:
-      typeof bounds.max === "number"
-        ? Math.max(bounds.max, questionCount * 55)
-        : undefined,
+    // Preserve all atomic question blocks; avoid truncating the tail block(s).
+    max: undefined,
   };
 }
 
@@ -1560,18 +1648,8 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
     const selectedTemplate = agreementTemplate
       ?? availabilityTemplate
       ?? (rankResult.selection !== "none" ? policyCandidates[0]?.template : undefined);
-
     // TASK-06: build deterministic per-question answer blocks for multipart emails.
-    let questionBlocks: QuestionAnswerBlock[] = [];
-    if (actionPlan.intents.questions.length >= 2) {
-      const perQuestionRanks = rankTemplatesPerQuestion(
-        actionPlan.intents.questions,
-        templates,
-        DEFAULT_COMPOSITE_LIMIT,
-      );
-      questionBlocks = buildQuestionAnswerBlocks(perQuestionRanks);
-    }
-
+    let questionBlocks = buildCompositeQuestionBlocks(actionPlan, templates);
     const isComposite = questionBlocks.length >= 2;
 
     // TASK-02: write selection event — best-effort, never fails the draft.

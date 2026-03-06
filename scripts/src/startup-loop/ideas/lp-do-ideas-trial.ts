@@ -74,7 +74,7 @@ export const T1_SEMANTIC_KEYWORDS: readonly string[] = [
 // Keyword scoring configuration
 // ---------------------------------------------------------------------------
 
-/** Minimum score for a T1 keyword match to route as fact_find_ready */
+/** Minimum score for a T1 keyword match to route as actionable work rather than briefing_ready. */
 export const T1_ROUTING_THRESHOLD = 0.6;
 
 /** Base score when a keyword matches (before calibration adjustment) */
@@ -88,6 +88,85 @@ const DEFAULT_PRIORS_PATH = path.join(
   "trial",
   "keyword-calibration-priors.json",
 );
+
+const MICRO_BUILD_TRIGGER_SECTIONS = new Set([
+  "ux-gap",
+  "broken-flow",
+  "missing-functionality",
+  "component-addition",
+  "route-change",
+]);
+
+const MICRO_BUILD_BLOCKER_SECTIONS = new Set([
+  "api-endpoint",
+  "brand-identity",
+  "brand-name",
+  "bundle",
+  "channel-mix",
+  "channel-priorities",
+  "channel-selection",
+  "channel-strategy",
+  "code-quality",
+  "critical-finding",
+  "dependency-update",
+  "differentiation",
+  "distribution-plan",
+  "icp",
+  "job-to-be-done",
+  "jtbd",
+  "key-message",
+  "launch-channel",
+  "naming",
+  "offer",
+  "persona",
+  "positioning",
+  "price-point",
+  "pricing",
+  "promotional",
+  "schema-change",
+  "segment",
+  "solution-decision",
+  "target-customer",
+  "unique",
+  "value-proposition",
+]);
+
+const CODE_LOCATION_ROOT_PATTERN = /^(apps|packages|scripts)\//i;
+const CODE_LOCATION_EXTENSION_PATTERN = /\.(c|m)?[jt]sx?$|\.css$|\.s[ac]ss$|\.less$/i;
+const UI_SURFACE_PATH_PATTERNS = [
+  /\/components?\//i,
+  /\/app\//i,
+  /\/pages?\//i,
+  /\/styles?\//i,
+  /\/layout\.(c|m)?[jt]sx?$/i,
+  /\/page\.(c|m)?[jt]sx?$/i,
+];
+const MICRO_BUILD_BLOCKER_PATH_PATTERNS = [
+  /\/app\/api\//i,
+  /\/api\//i,
+  /\/route\.(c|m)?[jt]s$/i,
+  /\/route\.(c|m)?tsx$/i,
+  /(^|\/)package\.json$/i,
+  /(^|\/)pnpm-lock\.yaml$/i,
+  /\/prisma\//i,
+  /migration/i,
+  /\.sql$/i,
+];
+const GENERIC_AREA_SEGMENTS = new Set([
+  "src",
+  "app",
+  "apps",
+  "components",
+  "component",
+  "lib",
+  "client",
+  "server",
+  "ui",
+  "shared",
+  "feature",
+  "features",
+  "index",
+]);
 
 // Module-level priors cache
 let _priorsCache: KeywordCalibrationPriors | null | undefined;
@@ -140,11 +219,15 @@ export type DeliverableFamily =
 
 export type DispatchStatus =
   | "fact_find_ready"
+  | "micro_build_ready"
   | "briefing_ready"
   | "auto_executed"
   | "logged_no_action";
 
-export type RecommendedRoute = "lp-do-fact-find" | "lp-do-briefing";
+export type RecommendedRoute =
+  | "lp-do-fact-find"
+  | "lp-do-build"
+  | "lp-do-briefing";
 
 export type QueueState = "enqueued" | "processed" | "skipped" | "error";
 
@@ -182,6 +265,7 @@ export interface ArtifactDeltaEvent {
   before_sha: string | null;
   after_sha: string;
   path: string;
+  location_anchors?: string[];
   domain?: ArtifactDomain;
   changed_sections?: string[];
   updated_by_process?: string;
@@ -616,6 +700,52 @@ function buildEvidenceRefs(event: ArtifactDeltaEvent): [string, ...string[]] {
   return refs as [string, ...string[]];
 }
 
+function normalizeLocationAnchor(value: string): string {
+  return value.trim().replaceAll("\\", "/");
+}
+
+function extractLocationAnchorsFromEvidenceRefs(
+  evidenceRefs: readonly string[],
+): string[] {
+  const anchors = new Set<string>();
+
+  for (const ref of evidenceRefs) {
+    const trimmed = ref.trim();
+    const gitDiffMatch = /^git-diff:[A-Z?]+:(.+)$/i.exec(trimmed);
+    if (gitDiffMatch?.[1]) {
+      anchors.add(normalizeLocationAnchor(gitDiffMatch[1]));
+      continue;
+    }
+
+    const bugScanMatch = /^bug-scan:[^:]+:(.+):\d+$/i.exec(trimmed);
+    if (bugScanMatch?.[1]) {
+      anchors.add(normalizeLocationAnchor(bugScanMatch[1]));
+    }
+  }
+
+  return Array.from(anchors);
+}
+
+function buildLocationAnchors(
+  event: ArtifactDeltaEvent,
+  evidenceRefs: readonly string[],
+): [string, ...string[]] {
+  const preferredAnchors = [
+    ...(event.location_anchors ?? []),
+    ...extractLocationAnchorsFromEvidenceRefs(evidenceRefs),
+  ]
+    .map(normalizeLocationAnchor)
+    .filter((entry) => entry.length > 0);
+
+  const uniquePreferred = Array.from(new Set(preferredAnchors));
+  if (uniquePreferred.length > 0) {
+    return uniquePreferred.slice(0, 8) as [string, ...string[]];
+  }
+
+  const fallback = normalizeLocationAnchor(event.path);
+  return [fallback.length > 0 ? fallback : event.artifact_id];
+}
+
 function buildSuppressionCounter(): Record<SuppressionReason, number> {
   return {
     empty_after_sha: 0,
@@ -648,7 +778,69 @@ function phaseBehavior(phase: CutoverPhase): PhaseBehavior {
   };
 }
 
-function deriveAreaAnchor(event: ArtifactDeltaEvent): string {
+function isCodeLocationAnchor(value: string): boolean {
+  const normalized = normalizeLocationAnchor(value);
+  return (
+    CODE_LOCATION_ROOT_PATTERN.test(normalized) &&
+    CODE_LOCATION_EXTENSION_PATTERN.test(normalized)
+  );
+}
+
+function deriveAreaAnchorFromLocationAnchor(locationAnchor: string): string | null {
+  const normalized = normalizeLocationAnchor(locationAnchor);
+  if (!isCodeLocationAnchor(normalized)) {
+    return null;
+  }
+
+  const segments = normalized
+    .split("/")
+    .map((segment) => segment.trim())
+    .filter((segment) => segment.length > 0);
+  if (segments.length === 0) {
+    return null;
+  }
+
+  const stem = segments.at(-1)?.replace(/\.(c|m)?[jt]sx?$|\.css$|\.s[ac]ss$|\.less$/i, "") ?? "";
+  const stemTokens = stem
+    .split(/[^a-zA-Z0-9]+|(?=[A-Z])/)
+    .map((token) => token.trim().toLowerCase())
+    .filter(
+      (token) =>
+        token.length > 0 &&
+        token !== "page" &&
+        token !== "layout" &&
+        token !== "route" &&
+        token !== "client" &&
+        token !== "server",
+    );
+
+  const contextTokens = segments
+    .slice(0, -1)
+    .filter((segment) => !GENERIC_AREA_SEGMENTS.has(segment.toLowerCase()))
+    .slice(-3)
+    .flatMap((segment) => segment.split(/[^a-zA-Z0-9]+/))
+    .map((token) => token.trim().toLowerCase())
+    .filter((token) => token.length > 0);
+
+  const combined = Array.from(new Set([...contextTokens, ...stemTokens])).slice(0, 6);
+  if (combined.length === 0) {
+    return null;
+  }
+
+  return combined.join(" ");
+}
+
+function deriveAreaAnchor(
+  event: ArtifactDeltaEvent,
+  locationAnchors: readonly string[],
+): string {
+  for (const anchor of locationAnchors) {
+    const fromLocation = deriveAreaAnchorFromLocationAnchor(anchor);
+    if (fromLocation) {
+      return fromLocation;
+    }
+  }
+
   if (event.domain && event.domain in DOMAIN_TO_AREA) {
     return DOMAIN_TO_AREA[event.domain];
   }
@@ -689,6 +881,60 @@ export function scoreT1Match(changedSections: string[], priorsPath?: string): nu
   }
 
   return bestScore;
+}
+
+function deriveDeliverableFamily(
+  event: ArtifactDeltaEvent,
+  locationAnchors: readonly string[],
+): DeliverableFamily {
+  if (locationAnchors.some((anchor) => isCodeLocationAnchor(anchor))) {
+    return "code-change";
+  }
+  if (event.path.startsWith("docs/")) {
+    return "business-artifact";
+  }
+  return "business-artifact";
+}
+
+function isMicroBuildCandidate(
+  changedSections: readonly string[],
+  locationAnchors: readonly string[],
+  deliverableFamily: DeliverableFamily,
+): boolean {
+  if (deliverableFamily !== "code-change") {
+    return false;
+  }
+
+  if (locationAnchors.length === 0 || locationAnchors.length > 6) {
+    return false;
+  }
+
+  const normalizedSections = changedSections.map((section) => normalizeKeyToken(section));
+  const hasTriggerSignal = normalizedSections.some((section) =>
+    MICRO_BUILD_TRIGGER_SECTIONS.has(section),
+  );
+  const hasBlockingSignal = normalizedSections.some((section) =>
+    MICRO_BUILD_BLOCKER_SECTIONS.has(section),
+  );
+
+  if (!hasTriggerSignal || hasBlockingSignal) {
+    return false;
+  }
+
+  const uiAnchors = locationAnchors.filter((anchor) => {
+    const normalized = normalizeLocationAnchor(anchor);
+    return (
+      isCodeLocationAnchor(normalized) &&
+      UI_SURFACE_PATH_PATTERNS.some((pattern) => pattern.test(normalized))
+    );
+  });
+  if (uiAnchors.length === 0) {
+    return false;
+  }
+
+  return !uiAnchors.some((anchor) =>
+    MICRO_BUILD_BLOCKER_PATH_PATTERNS.some((pattern) => pattern.test(anchor)),
+  );
 }
 
 function sectionsAreMetadataOnly(changedSections: readonly string[]): boolean {
@@ -890,7 +1136,9 @@ export function runTrialOrchestrator(
     }
     candidateCount += 1;
 
-    const areaAnchor = deriveAreaAnchor(event);
+    const evidenceRefs = buildEvidenceRefs(event);
+    const locationAnchors = buildLocationAnchors(event, evidenceRefs);
+    const areaAnchor = deriveAreaAnchor(event, locationAnchors);
     const anchorKey = buildAnchorKey(event, areaAnchor);
     const clusterKey = buildClusterKey(event, rootEventId, anchorKey);
     const normalizedSemanticDiffHash =
@@ -898,7 +1146,6 @@ export function runTrialOrchestrator(
       event.normalized_semantic_diff_hash.trim().length > 0
         ? event.normalized_semantic_diff_hash.trim()
         : buildFallbackNormalizedSemanticDiffHash(event, sections);
-    const evidenceRefs = buildEvidenceRefs(event);
     const clusterFingerprint =
       event.cluster_fingerprint && event.cluster_fingerprint.trim().length > 0
         ? event.cluster_fingerprint.trim()
@@ -1012,10 +1259,20 @@ export function runTrialOrchestrator(
 
     const t1Score = scoreT1Match(sections);
     const t1Match = t1Score >= T1_ROUTING_THRESHOLD;
-    const status: DispatchStatus = t1Match ? "fact_find_ready" : "briefing_ready";
-    const recommendedRoute: RecommendedRoute = t1Match
-      ? "lp-do-fact-find"
-      : "lp-do-briefing";
+    const provisionalDeliverableFamily = deriveDeliverableFamily(event, locationAnchors);
+    const directBuildReady =
+      t1Match &&
+      isMicroBuildCandidate(sections, locationAnchors, provisionalDeliverableFamily);
+    const status: DispatchStatus = !t1Match
+      ? "briefing_ready"
+      : directBuildReady
+        ? "micro_build_ready"
+        : "fact_find_ready";
+    const recommendedRoute: RecommendedRoute = !t1Match
+      ? "lp-do-briefing"
+      : directBuildReady
+        ? "lp-do-build"
+        : "lp-do-fact-find";
 
     const dispatchId = buildDispatchId(now, sequence++);
     const beforeShort = event.before_sha.slice(0, 7);
@@ -1036,22 +1293,28 @@ export function runTrialOrchestrator(
       cluster_fingerprint: clusterFingerprint,
       lineage_depth: lineageDepth,
       area_anchor: areaAnchor,
-      location_anchors: [event.path],
-      provisional_deliverable_family: "business-artifact",
+      location_anchors: locationAnchors,
+      provisional_deliverable_family: provisionalDeliverableFamily,
       current_truth: `${event.artifact_id} changed (${beforeShort} → ${afterShort})`,
-      next_scope_now: `Investigate implications of ${areaAnchor} delta for ${event.business}`,
+      next_scope_now: directBuildReady
+        ? `Implement the bounded ${areaAnchor} change for ${event.business} and validate it locally`
+        : `Investigate implications of ${areaAnchor} delta for ${event.business}`,
       adjacent_later: [],
       recommended_route: recommendedRoute,
       status,
       priority: "P2",
-      confidence: t1Score > 0 ? t1Score : 0.5,
+      confidence: directBuildReady ? Math.max(t1Score, 0.85) : t1Score > 0 ? t1Score : 0.5,
       evidence_refs: evidenceRefs,
       created_at: now.toISOString(),
       queue_state: "enqueued",
-      why: `Assess ${areaAnchor} implications from ${event.artifact_id} delta for ${event.business}.`,
+      why: directBuildReady
+        ? `Implement the bounded ${areaAnchor} change signalled by ${event.artifact_id} for ${event.business}.`
+        : `Assess ${areaAnchor} implications from ${event.artifact_id} delta for ${event.business}.`,
       intended_outcome: {
         type: "operational",
-        statement: `Produce a validated routing outcome and scoped next action for ${areaAnchor}.`,
+        statement: directBuildReady
+          ? `Ship a validated micro-build for ${areaAnchor} through direct lp-do-build intake.`
+          : `Produce a validated routing outcome and scoped next action for ${areaAnchor}.`,
         source: "auto",
       },
     };

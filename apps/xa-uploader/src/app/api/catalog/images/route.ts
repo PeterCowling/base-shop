@@ -76,6 +76,7 @@ async function writeLocalImageWithRetry(params: {
     const filename = buildUniqueFilename(params.role, params.ext);
     const fullPath = join(params.dirPath, filename);
     try {
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-0001 fullPath is bounded under params.dirPath and filename is generated [ttl=2026-12-31]
       await writeFile(fullPath, params.buf, { flag: "wx" });
       return filename;
     } catch (error) {
@@ -240,6 +241,7 @@ async function deletePersistedImageKey(params: {
       throw new Error("invalid local image path");
     }
     try {
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-0001 resolveLocalImageFilePath() constrains path to xa-b/public root [ttl=2026-12-31]
       await unlink(localFilePath);
     } catch (error) {
       if (isErrnoCode(error, "ENOENT")) return;
@@ -260,6 +262,7 @@ async function deletePersistedImageKey(params: {
     throw new Error("media bucket unavailable");
   }
   try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-0001 resolveLocalImageFilePath() constrains path to xa-b/public root [ttl=2026-12-31]
     await unlink(localFilePath);
   } catch (error) {
     if (isErrnoCode(error, "ENOENT")) return;
@@ -354,6 +357,7 @@ export async function POST(request: Request) {
   // so that both xa-uploader (via symlink) and xa-b serve the same file.
   try {
     const xaBPublicImages = join(process.cwd(), "..", "xa-b", "public", "images", slug);
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-0001 slug is slugified and path is fixed to repo-local xa-b/public/images [ttl=2026-12-31]
     await mkdir(xaBPublicImages, { recursive: true });
     const persistedFilename = await writeLocalImageWithRetry({
       dirPath: xaBPublicImages,

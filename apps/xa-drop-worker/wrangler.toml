@@ -71,8 +71,8 @@ CATALOG_MAX_BYTES = "10485760"
 ALLOWED_IPS = ""
 XA_GITHUB_REPO_OWNER = "petercowling"
 XA_GITHUB_REPO_NAME = "base-shop"
-# Preview uses xa.yml until xa-b-redeploy.yml exists on default branch (main).
-XA_GITHUB_WORKFLOW_FILE = "xa.yml"
+# Keep uploader-triggered preview deploys on the fast content lane only.
+XA_GITHUB_WORKFLOW_FILE = "xa-b-redeploy.yml"
 XA_GITHUB_WORKFLOW_REF = "dev"
 
 [[env.preview.r2_buckets]]

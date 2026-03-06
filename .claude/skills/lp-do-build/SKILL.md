@@ -5,7 +5,7 @@ description: Thin build orchestrator. Executes one runnable unit per cycle from 
 
 # Build Orchestrator
 
-`/lp-do-build` executes plan tasks safely, one runnable unit per cycle (single task or eligible wave), with gate enforcement and explicit handoffs.
+`/lp-do-build` executes plan tasks safely, one runnable unit per cycle (single task or eligible wave), with gate enforcement and explicit handoffs. It also supports a direct-dispatch micro-build fast lane for trivially bounded `lp-do-ideas` packets.
 
 ## Global Invariants
 
@@ -40,7 +40,7 @@ Even in fully autonomous / `-a never` mode, **stop and ask the user explicitly**
 
 ## Inputs
 
-- Plan doc: `docs/plans/<feature-slug>/plan.md` (legacy fallback allowed)
+- Plan doc: `docs/plans/<feature-slug>/plan.md` (legacy fallback allowed), or `docs/plans/<feature-slug>/micro-build.md` for direct-dispatch micro-builds
 - Optional task IDs
 - Optional fact-find brief for context
 
@@ -48,6 +48,22 @@ Even in fully autonomous / `-a never` mode, **stop and ask the user explicitly**
 
 - Fast path: slug/card ID provided → resolve plan directly.
 - Discovery path: scan `docs/plans/*/plan.md` for `Status: Active` entries and show as build-ready candidates.
+
+## Direct-Dispatch Micro-Build Lane
+
+Use this lane only for `lp-do-ideas` packets classified `micro_build_ready`. Criteria:
+- one bounded surface,
+- no architecture or product decision,
+- no external research,
+- no meaningful planning branch,
+- clear validation path already known.
+
+Before any edits:
+1. Confirm the queued micro-build dispatch.
+2. Create `docs/plans/<feature-slug>/micro-build.md` from `docs/plans/_templates/micro-build.md`.
+3. Stamp queue-state `processed_by` with `target_route: "lp-do-build"` and the new micro-build path.
+
+This lane skips `fact-find.md` and `plan.md`, but it does not skip build controls, validation, build outputs, or queue completion.
 
 ## Confidence Threshold Policy
 

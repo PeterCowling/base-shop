@@ -21,7 +21,10 @@ import {
 } from "../../../../lib/catalogContractClient";
 import { resolveXaUploaderProductsCsvPath } from "../../../../lib/catalogCsv";
 import {
+  acquireCloudSyncLock,
+  type CloudSyncLockLease,
   readCloudDraftSnapshot,
+  releaseCloudSyncLock,
   writeCloudDraftSnapshot,
 } from "../../../../lib/catalogDraftContractClient";
 import { buildCatalogArtifactsFromDrafts } from "../../../../lib/catalogDraftToContract";
@@ -304,6 +307,57 @@ async function runNodeTsx(
       });
     });
   });
+}
+
+async function runOptionalPreValidation(params: {
+  strict: boolean;
+  repoRoot: string;
+  validateScriptPath: string;
+  validateArgs: string[];
+  startedAt: number;
+}): Promise<{ validateResult: ScriptRunResult; errorResponse: NextResponse | null }> {
+  if (!params.strict) {
+    return {
+      validateResult: {
+        code: 0,
+        // i18n-exempt -- XAUP-0001 [ttl=2026-12-31] non-UI diagnostic marker in sync logs
+        stdout: "[xa-validate] skipped (strict=false)",
+        stderr: "",
+        timedOut: false,
+      },
+      errorResponse: null,
+    };
+  }
+
+  const validateResult = await runNodeTsx(
+    params.repoRoot,
+    params.validateScriptPath,
+    params.validateArgs,
+    getValidateTimeoutMs(),
+  );
+  if (validateResult.code !== 0) {
+    return {
+      validateResult,
+      errorResponse: NextResponse.json(
+        maybeAttachLogs(
+          {
+            ok: false,
+            error: "validation_failed",
+            recovery: "review_validation_logs",
+            durationMs: Date.now() - params.startedAt,
+            timedOut: validateResult.timedOut,
+          },
+          { validate: validateResult },
+        ),
+        { status: 400 },
+      ),
+    };
+  }
+
+  return {
+    validateResult,
+    errorResponse: null,
+  };
 }
 
 function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLimit>): NextResponse {
@@ -639,6 +693,24 @@ function getPublishErrorDetails(error: unknown): {
   };
 }
 
+function buildContractLockFailureResponse(params: {
+  error: unknown;
+  startedAt: number;
+}): NextResponse {
+  const publishError = getPublishErrorDetails(params.error);
+  const isUnconfigured = publishError.code === "unconfigured";
+  return NextResponse.json(
+    {
+      ok: false,
+      error: isUnconfigured ? "catalog_publish_unconfigured" : "catalog_publish_failed",
+      recovery: isUnconfigured ? "configure_catalog_contract" : "review_catalog_contract",
+      durationMs: Date.now() - params.startedAt,
+      publishStatus: publishError.status,
+    },
+    { status: isUnconfigured ? 503 : 502 },
+  );
+}
+
 async function readGeneratedCatalogProductCount(catalogOutPath: string): Promise<number> {
   try {
     const catalogRaw = await fs.readFile(catalogOutPath, "utf8");
@@ -822,27 +894,17 @@ async function runSyncPipeline(params: {
     currencyRatesPath,
   });
 
-  const validateResult = await runNodeTsx(
+  const preValidation = await runOptionalPreValidation({
+    strict: payload.options.strict === true,
     repoRoot,
-    scriptPaths.validate,
+    validateScriptPath: scriptPaths.validate,
     validateArgs,
-    getValidateTimeoutMs(),
-  );
-  if (validateResult.code !== 0) {
-    return NextResponse.json(
-      maybeAttachLogs(
-        {
-          ok: false,
-          error: "validation_failed",
-          recovery: "review_validation_logs",
-          durationMs: Date.now() - startedAt,
-          timedOut: validateResult.timedOut,
-        },
-        { validate: validateResult },
-      ),
-      { status: 400 },
-    );
+    startedAt,
+  });
+  if (preValidation.errorResponse) {
+    return preValidation.errorResponse;
   }
+  const { validateResult } = preValidation;
 
   const syncResult = await runNodeTsx(repoRoot, scriptPaths.sync, syncArgs, getSyncTimeoutMs());
   if (syncResult.code !== 0) {
@@ -1183,37 +1245,55 @@ export async function POST(request: Request) {
   const repoRoot = resolveRepoRoot();
 
   const storefrontId = parseStorefront(payload.storefront);
+  const localFsRuntimeEnabled = isLocalFsRuntimeEnabled();
 
-  // Best-effort concurrency guard: concurrent sync invocations for the same storefront
-  // return 409 when the KV lock key is present. KV unavailability is fail-open — a KV
-  // outage must not block all sync operations. See syncMutex.ts for full rationale.
   const kv = await getUploaderKv();
   let mutexAcquired = false;
-  if (kv) {
+  let cloudSyncLock: CloudSyncLockLease | null = null;
+
+  if (localFsRuntimeEnabled) {
+    if (kv) {
+      try {
+        const acquired = await acquireSyncMutex(kv, storefrontId);
+        if (!acquired) {
+          return withRateHeaders(
+            NextResponse.json(
+              { ok: false, error: "conflict", reason: "sync_already_running" },
+              { status: 409 },
+            ),
+            limit,
+          ); // i18n-exempt -- XAUP-0001 [ttl=2026-12-31] machine response
+        }
+        mutexAcquired = true;
+      } catch {
+        // KV acquire failed — fail open. Log warning; sync proceeds without mutex.
+        console.warn({
+          route: "POST /api/catalog/sync",
+          warning: "mutex_acquire_failed_kv_unavailable",
+        });
+      }
+    }
+  } else {
     try {
-      const acquired = await acquireSyncMutex(kv, storefrontId);
-      if (!acquired) {
+      const acquired = await acquireCloudSyncLock(storefrontId);
+      if (acquired.status === "busy") {
         return withRateHeaders(
           NextResponse.json(
             { ok: false, error: "conflict", reason: "sync_already_running" },
             { status: 409 },
           ),
           limit,
-        ); // i18n-exempt -- XAUP-0001 [ttl=2026-12-31] machine response
+        );
       }
-      mutexAcquired = true;
-    } catch {
-      // KV acquire failed — fail open. Log warning; sync proceeds without mutex.
-      console.warn({
-        route: "POST /api/catalog/sync",
-        warning: "mutex_acquire_failed_kv_unavailable",
-      });
+      cloudSyncLock = acquired.lock;
+    } catch (error) {
+      return withRateHeaders(buildContractLockFailureResponse({ error, startedAt }), limit);
     }
   }
 
   let response: NextResponse;
   try {
-    response = isLocalFsRuntimeEnabled()
+    response = localFsRuntimeEnabled
       ? await runSyncPipeline({
           repoRoot,
           storefrontId,
@@ -1228,12 +1308,15 @@ export async function POST(request: Request) {
           kv,
         });
   } finally {
-    if (kv && mutexAcquired) {
+    if (localFsRuntimeEnabled && kv && mutexAcquired) {
       try {
         await releaseSyncMutex(kv, storefrontId);
       } catch {
         // Release failure is non-fatal — TTL will self-expire in 5 minutes.
       }
+    }
+    if (!localFsRuntimeEnabled && cloudSyncLock) {
+      await releaseCloudSyncLock(cloudSyncLock).catch(() => null);
     }
   }
   return withRateHeaders(response, limit);
@@ -1293,6 +1376,7 @@ export async function GET(request: Request) {
       missingScripts: syncReadiness.missingScripts,
       contractConfigured: contractReadiness.configured,
       contractConfigErrors: contractReadiness.errors,
+      mode: "local",
       recovery: !syncReadiness.ready
         ? "restore_sync_scripts"
         : !contractReadiness.configured

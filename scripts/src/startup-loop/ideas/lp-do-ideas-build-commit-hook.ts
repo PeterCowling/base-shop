@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 
 import { runLiveHook } from "./lp-do-ideas-live-hook.js";
+import { persistOrchestratorResult } from "./lp-do-ideas-persistence.js";
 import type { ArtifactDeltaEvent } from "./lp-do-ideas-trial.js";
 
 interface RegistryArtifact {
@@ -29,10 +30,15 @@ interface BuildCommitHookOptions {
 
 interface BuildCommitHookResult {
   ok: boolean;
+  persistence_mode: "live_queue";
+  queue_state_target: string;
+  telemetry_target: string;
   event_count: number;
   matched_artifacts: string[];
   warnings: string[];
   dispatched_count: number;
+  queue_entries_written: number;
+  telemetry_records_written: number;
   suppressed: number;
   noop: number;
   error?: string;
@@ -61,10 +67,10 @@ function parseArgs(argv: string[]): BuildCommitHookOptions {
       path.join("docs", "business-os", "startup-loop", "ideas", "standing-registry.json"),
     queueStatePath:
       flags.get("queue-state-path") ??
-      path.join("docs", "business-os", "startup-loop", "ideas", "trial", "queue-state.json"),
+      path.join("docs", "business-os", "startup-loop", "ideas", "live", "queue-state.json"),
     telemetryPath:
       flags.get("telemetry-path") ??
-      path.join("docs", "business-os", "startup-loop", "ideas", "trial", "telemetry.jsonl"),
+      path.join("docs", "business-os", "startup-loop", "ideas", "live", "telemetry.jsonl"),
     fromRef: flags.get("from-ref") ?? "HEAD~1",
     toRef: flags.get("to-ref") ?? "HEAD",
   };
@@ -181,15 +187,30 @@ export async function runBuildCommitIdeasHook(
   if (events.length === 0) {
     return {
       ok: true,
+      persistence_mode: "live_queue",
+      queue_state_target: path.isAbsolute(options.queueStatePath)
+        ? options.queueStatePath
+        : path.join(options.rootDir, options.queueStatePath),
+      telemetry_target: path.isAbsolute(options.telemetryPath)
+        ? options.telemetryPath
+        : path.join(options.rootDir, options.telemetryPath),
       event_count: 0,
       matched_artifacts: [],
       warnings: ["No changed registered artifacts detected in commit range."],
       dispatched_count: 0,
+      queue_entries_written: 0,
+      telemetry_records_written: 0,
       suppressed: 0,
       noop: 0,
     };
   }
 
+  const resolvedQueueStatePath = path.isAbsolute(options.queueStatePath)
+    ? options.queueStatePath
+    : path.join(options.rootDir, options.queueStatePath);
+  const resolvedTelemetryPath = path.isAbsolute(options.telemetryPath)
+    ? options.telemetryPath
+    : path.join(options.rootDir, options.telemetryPath);
   const hookResult = await runLiveHook({
     business: options.business,
     registryPath: path.isAbsolute(options.registryPath)
@@ -199,16 +220,41 @@ export async function runBuildCommitIdeasHook(
     telemetryPath: options.telemetryPath,
     events,
   });
+  const persistence = hookResult.ok
+    ? persistOrchestratorResult({
+        queueStatePath: resolvedQueueStatePath,
+        telemetryPath: resolvedTelemetryPath,
+        mode: "live",
+        business: options.business,
+        dispatched: hookResult.dispatched,
+      })
+    : {
+        ok: false,
+        new_entries_written: 0,
+        telemetry_records_written: 0,
+        error: hookResult.error ?? "live_hook_failed",
+      };
+  const warnings = [...hookResult.warnings];
+  if (persistence.error) {
+    warnings.push(persistence.error);
+  }
 
   return {
-    ok: hookResult.ok,
+    ok: hookResult.ok && persistence.ok,
+    persistence_mode: "live_queue",
+    queue_state_target: resolvedQueueStatePath,
+    telemetry_target: resolvedTelemetryPath,
     event_count: events.length,
     matched_artifacts: matchedArtifactIds,
-    warnings: hookResult.warnings,
+    warnings,
     dispatched_count: hookResult.dispatched.length,
+    queue_entries_written: persistence.new_entries_written,
+    telemetry_records_written: persistence.telemetry_records_written,
     suppressed: hookResult.suppressed,
     noop: hookResult.noop,
-    ...(hookResult.error ? { error: hookResult.error } : {}),
+    ...((hookResult.error ?? persistence.error)
+      ? { error: hookResult.error ?? persistence.error }
+      : {}),
   };
 }
 
@@ -222,7 +268,18 @@ if (process.argv[1]?.includes("lp-do-ideas-build-commit-hook")) {
   main().catch((error: unknown) => {
     const message = error instanceof Error ? error.message : String(error);
     process.stdout.write(
-      `${JSON.stringify({ ok: false, error: message, event_count: 0 }, null, 2)}\n`,
+      `${JSON.stringify(
+        {
+          ok: false,
+          persistence_mode: "live_queue",
+          error: message,
+          event_count: 0,
+          queue_entries_written: 0,
+          telemetry_records_written: 0,
+        },
+        null,
+        2,
+      )}\n`,
     );
     process.exit(0);
   });

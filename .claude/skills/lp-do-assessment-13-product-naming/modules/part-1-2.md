@@ -61,7 +61,7 @@ Gate: spec exists and is dated today before proceeding to Part 2.
 
 ### Part 2 — Generate
 
-Spawn a **general-purpose agent** (model: opus) with the following prompt, substituting `<BIZ>` and `<SPEC_PATH>`:
+Spawn a **general-purpose agent** (model: sonnet) with the following prompt, substituting `<BIZ>` and `<SPEC_PATH>`:
 
 > Read `<SPEC_PATH>` in full before doing anything else. Then generate exactly 75 product line name candidates following the spec exactly — §3 DWPEIC scoring rubric, §4 naming territories and morpheme pools, §5 hard blockers and elimination list, §6 output format. Every name must have a territory label, provenance note, and six dimension scores. The Line Name and Full Compound columns are both required for every row. Sort the output table by Score descending. After the table, write the one-paragraph summary required by §6. Save the complete output (table + summary) to `docs/business-os/strategy/<BIZ>/assessment/naming-workbench/product-naming-candidates-<YYYY-MM-DD>.md`. Do not stop early. Do not skip the provenance notes. Do not reuse any name from §5.3.
 

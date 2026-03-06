@@ -25,6 +25,10 @@ interface TestDispatch {
   evidence_refs: string[];
   created_at: string;
   processed_by?: {
+    target_route?: string;
+    target_kind?: string;
+    target_slug?: string;
+    target_path?: string;
     fact_find_slug: string;
     fact_find_path: string;
     processed_at: string;
@@ -206,6 +210,40 @@ describe("markDispatchesCompleted", () => {
 
     expect(result).toEqual({ ok: false, reason: "no_match" });
     expect(readFixture(queueStatePath)).toEqual(fixture);
+  });
+
+  it("TC-03B: matches direct-build processed_by target_slug without fact-find aliases", () => {
+    const dir = makeTmpDir();
+    const queueStatePath = join(dir, "queue-state.json");
+    writeFixture(
+      queueStatePath,
+      makeQueueFixture([
+        makeDispatch({
+          status: "micro_build_ready",
+          recommended_route: "lp-do-build",
+          processed_by: {
+            target_route: "lp-do-build",
+            target_kind: "build",
+            target_slug: "my-slug",
+            target_path: "docs/plans/my-slug/micro-build.md",
+            fact_find_slug: "legacy-unused",
+            fact_find_path: "docs/plans/legacy-unused/fact-find.md",
+            processed_at: BASE_TIME,
+            route: "dispatch-routed",
+          },
+        }),
+      ]),
+    );
+
+    const result = markDispatchesCompleted({
+      queueStatePath,
+      featureSlug: "my-slug",
+      planPath: "docs/plans/_archive/my-slug/plan.md",
+      outcome: "Micro-build delivered",
+      clock: () => new Date("2026-02-26T12:34:56.000Z"),
+    });
+
+    expect(result).toEqual({ ok: true, mutated: 1, skipped: 0 });
   });
 
   it("TC-04: mutates all matching dispatches", () => {

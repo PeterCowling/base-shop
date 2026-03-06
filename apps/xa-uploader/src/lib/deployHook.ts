@@ -240,6 +240,7 @@ async function getDeployServiceBinding(): Promise<DeployHookServiceBinding | nul
     return null;
   }
   try {
+    // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 [ttl=2026-12-31] module specifier
     const { getCloudflareContext } = await import("@opennextjs/cloudflare");
     const { env } = await getCloudflareContext({ async: true });
     return env.XA_CATALOG_CONTRACT_SERVICE ?? null;
@@ -684,7 +685,8 @@ export function buildDisplaySyncGuidance(
     return {
       mode: "build_time_runtime_catalog",
       requiresXaBBuild: false,
-      nextAction: "await_xa_b_deploy",
+      nextAction: "await_xa_b_deploy_and_verify_live",
+      deployVerificationPending: true,
       deployStatus: deploy.status,
       nextEligibleAt: deploy.nextEligibleAt,
       ...pendingPayload,

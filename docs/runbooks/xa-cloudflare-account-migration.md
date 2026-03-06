@@ -15,6 +15,11 @@ Scope:
 - GitHub Actions deployment wiring
 - runtime security headers/CSP posture for staging
 
+Superseded statements from earlier revisions:
+- Earlier text allowed uploader-triggered GitHub fallback to `xa.yml`; this is superseded. Fallback is now constrained to `xa-b-redeploy.yml` only.
+- Earlier behavior hard-failed when Pages hook calls failed; this is superseded. The deploy endpoint now attempts GitHub dispatch fallback when configured.
+- Earlier operator messaging could be read as deploy complete on trigger acceptance; this is superseded. Uploader now reports trigger acceptance with explicit "verify live" semantics.
+
 ## Current Working Architecture (Staging)
 
 1. `xa-uploader-preview` publishes catalog + draft payloads to `xa-drop-worker-preview` via:
@@ -24,7 +29,8 @@ Scope:
 3. `xa-uploader-preview` triggers `POST /deploy/xa-b` on `xa-drop-worker-preview` after successful publish.
 4. `xa-drop-worker-preview` triggers XA-B rebuild using:
    - preferred: `XA_B_PAGES_DEPLOY_HOOK_URL` (Cloudflare Pages deploy hook),
-   - fallback: GitHub workflow dispatch (`xa.yml` / `xa-b-redeploy.yml`) via `XA_GITHUB_ACTIONS_TOKEN`.
+   - fallback: GitHub workflow dispatch (`xa-b-redeploy.yml`) via `XA_GITHUB_ACTIONS_TOKEN` when hook path fails or is absent,
+   - guardrail: uploader deploy dispatch rejects non-allowed workflow targets with `deploy_workflow_not_allowed` (for example `xa.yml`, `.github/workflows/xa.yml`).
 5. XA-B build pulls latest contract catalog at build-time via `XA_CATALOG_CONTRACT_READ_URL` and emits static `out/` deployed by CI (`wrangler pages deploy`).
 6. XA-B runtime security headers/CSP are enforced by a Pages advanced-mode worker generated at build-time (`apps/xa-b/scripts/pages-worker.js` -> `apps/xa-b/out/_worker.js`) with per-response nonce CSP for inline script/style tags.
 7. xa-uploader middleware applies baseline browser security headers on all responses; unauthenticated/vendored sync routes return 404 without rate-limit headers.
@@ -83,6 +89,8 @@ Important GitHub Actions limitation:
   - manual/on-demand XA-B build + deploy path
 - `.github/workflows/xa-deploy-drain-staging.yml`
   - scheduled (every 5 minutes) deploy-drain trigger for `xa-uploader-preview` pending deploys
+- `apps/xa-drop-worker/wrangler.toml`
+  - preview fallback workflow is `XA_GITHUB_WORKFLOW_FILE = "xa-b-redeploy.yml"` (not `xa.yml`)
 
 ### Security hardening wiring (must preserve)
 
@@ -147,7 +155,7 @@ Variables:
 Important vars:
 - `XA_GITHUB_REPO_OWNER`
 - `XA_GITHUB_REPO_NAME`
-- `XA_GITHUB_WORKFLOW_FILE`
+- `XA_GITHUB_WORKFLOW_FILE` (must resolve to `xa-b-redeploy.yml`; supported forms are `xa-b-redeploy.yml` and `.github/workflows/xa-b-redeploy.yml`)
 - `XA_GITHUB_WORKFLOW_REF`
 - `CATALOG_PREFIX`
 - `ALLOWED_IPS` (empty for preview unless explicitly managed)
@@ -230,6 +238,8 @@ Important config invariant:
   - intermittent 5xx/network failures from deploy target caused catalog publish success without storefront rebuild.
 - Fix:
   - retry + backoff in deploy trigger logic (`XA_B_DEPLOY_HOOK_MAX_RETRIES`, `XA_B_DEPLOY_HOOK_RETRY_BASE_DELAY_MS`) with bounded attempts.
+  - deploy endpoint fallback to GitHub dispatch (`xa-b-redeploy.yml`) when Pages hook call fails and dispatch credentials are configured.
+  - strict workflow allowlist for uploader-triggered dispatch (`xa-b-redeploy.yml` only) to prevent accidental routing to full CI lanes.
 - Migration requirement:
   - preserve default retry settings unless a stricter SLO requires tuning.
 
@@ -274,6 +284,7 @@ Important config invariant:
 - Save/edit product draft.
 - Run sync publish (non-dry-run).
 - Confirm deploy trigger accepted (202).
+- Confirm uploader sync success guidance indicates trigger accepted and live verification pending (`await_xa_b_deploy_and_verify_live`).
 - Confirm latest xa-b Pages deployment includes new catalog/image.
 - Confirm unauthenticated sync probe (`POST /api/catalog/sync` without session) returns 404 and does not include `X-RateLimit-*` headers.
 - Confirm xa-uploader endpoints include baseline browser security headers.
@@ -305,6 +316,8 @@ Important config invariant:
 - `GET /api/catalog/sync?storefront=xa-b` returns `ready: true` and `contractConfigured: true`
 - `POST /api/catalog/sync` returns `ok: true` (no `catalog_publish_failed`)
 - deploy trigger response is `ok: true` from hook or dispatch provider
+- deploy trigger fallback behavior works: hook failure with dispatch credentials returns `202` with `provider: github_actions` and fallback metadata.
+- deploy workflow guard works: disallowed workflow target (for example `.github/workflows/xa.yml`) returns `503` with `deploy_workflow_not_allowed`.
 - repeated immediate sync publish does not spam deploys (cooldown skip is reported)
 - xa-b staging URL renders newly published product edits and uploaded images
 - unauthenticated `POST /api/catalog/sync` 404 does not expose `X-RateLimit-*`

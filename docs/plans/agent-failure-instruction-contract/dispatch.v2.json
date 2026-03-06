@@ -1,0 +1,42 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260306135044-0991",
+  "mode": "trial",
+  "business": "PLAT",
+  "trigger": "operator_idea",
+  "domain": "STRATEGY",
+  "root_event_id": "operator:PLAT:STRATEGY:agent-failure-instruction-contract:20260306",
+  "anchor_key": "agent-failure-instruction-contract",
+  "cluster_key": "PLAT:STRATEGY:agent-failure-instruction-contract:operator:20260306",
+  "cluster_fingerprint": "bf7ef563354990deba5bbbf469f3d95a633c863051413bae36c8cb6e3a192e54",
+  "lineage_depth": 0,
+  "area_anchor": "PLAT agent failure contract - precise next-step instructions",
+  "location_anchors": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".claude/settings.json",
+    ".claude/hooks/pre-tool-use-git-safety.sh",
+    "scripts/agent-bin/git"
+  ],
+  "provisional_deliverable_family": "multi",
+  "current_truth": "Many blocked or failed agent paths surface the prohibition or error but do not always state exactly what to do next. That leaves room for reattempt loops, alternative commands that will fail for the same reason, and wasted tool fan-out.",
+  "next_scope_now": "Fact-find a repo-wide failure-instruction contract for agent-facing errors and guards: define the minimum required fields for every blocked message, identify the highest-leverage guard surfaces to update first, and map exact next-step guidance that prevents retry loops and adjacent impossible actions.",
+  "adjacent_later": [],
+  "recommended_route": "lp-do-fact-find",
+  "status": "fact_find_ready",
+  "priority": "P1",
+  "confidence": 0.94,
+  "evidence_refs": [
+    "operator-stated: fail messages must include very precise instructions so agents do not get stuck in doom-loop retries or fan out to other non-working approaches",
+    "agent-verified: AGENTS.md already enforces explicit IF BLOCKED sections for procedural guidance, proving the repo values prescriptive fallback instructions",
+    "agent-verified: repo plans already use actionable failure contract language for sync/status and retry-loop prevention, but the pattern is not yet a universal agent-failure standard"
+  ],
+  "created_at": "2026-03-06T12:50:44.000Z",
+  "queue_state": "enqueued",
+  "why": "A blocked or failed path should terminate ambiguity, not create more of it. Precise next-step instructions are an efficiency control that prevents retry loops and wasted tool exploration.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Agent-facing failure messages across guards and blocked operations follow a precise contract that says whether retry is valid, what exact next step to take, and when to stop escalating locally.",
+    "source": "operator"
+  }
+}

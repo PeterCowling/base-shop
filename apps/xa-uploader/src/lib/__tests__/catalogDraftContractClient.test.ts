@@ -158,6 +158,95 @@ describe("catalogDraftContractClient", () => {
     );
   });
 
+  it("rejects malformed product payloads from snapshot reads", async () => {
+    global.fetch = jest.fn(async () =>
+      Response.json({
+        ok: true,
+        products: [{ bad: true }],
+        revisionsById: {},
+        docRevision: "doc-rev-1",
+      }),
+    ) as unknown as typeof fetch;
+
+    const { readCloudDraftSnapshot } = await import("../catalogDraftContractClient");
+    await expect(readCloudDraftSnapshot("xa-b")).rejects.toMatchObject({
+      code: "invalid_response",
+    });
+  });
+
+  it("rejects malformed revisionsById payloads from snapshot reads", async () => {
+    global.fetch = jest.fn(async () =>
+      Response.json({
+        ok: true,
+        products: [],
+        revisionsById: { p1: 42 },
+        docRevision: "doc-rev-1",
+      }),
+    ) as unknown as typeof fetch;
+
+    const { readCloudDraftSnapshot } = await import("../catalogDraftContractClient");
+    await expect(readCloudDraftSnapshot("xa-b")).rejects.toMatchObject({
+      code: "invalid_response",
+    });
+  });
+
+  it("acquires sync locks from the contract worker", async () => {
+    global.fetch = jest.fn(async () =>
+      Response.json({ ok: true, ownerToken: "lock-owner-1", expiresAt: "2026-03-05T21:50:00.000Z" }, { status: 201 }),
+    ) as unknown as typeof fetch;
+
+    const { acquireCloudSyncLock } = await import("../catalogDraftContractClient");
+    await expect(acquireCloudSyncLock("xa-b")).resolves.toEqual({
+      status: "acquired",
+      lock: {
+        storefront: "xa-b",
+        ownerToken: "lock-owner-1",
+        expiresAt: "2026-03-05T21:50:00.000Z",
+      },
+    });
+    expect(global.fetch).toHaveBeenCalledWith(
+      "https://drop.example/drafts/xa-b/sync-lock",
+      expect.objectContaining({
+        method: "POST",
+        headers: { "X-XA-Catalog-Token": "catalog-write-token-1234567890" },
+      }),
+    );
+  });
+
+  it("maps sync-lock 409 responses to busy without throwing", async () => {
+    global.fetch = jest.fn(async () =>
+      Response.json({ ok: false, expiresAt: "2026-03-05T21:50:00.000Z" }, { status: 409 }),
+    ) as unknown as typeof fetch;
+
+    const { acquireCloudSyncLock } = await import("../catalogDraftContractClient");
+    await expect(acquireCloudSyncLock("xa-b")).resolves.toEqual({
+      status: "busy",
+      expiresAt: "2026-03-05T21:50:00.000Z",
+    });
+  });
+
+  it("sends the lock owner header when releasing sync locks", async () => {
+    global.fetch = jest.fn(async () => Response.json({ ok: true })) as unknown as typeof fetch;
+
+    const { releaseCloudSyncLock } = await import("../catalogDraftContractClient");
+    await releaseCloudSyncLock({
+      storefront: "xa-b",
+      ownerToken: "lock-owner-1",
+      expiresAt: "2026-03-05T21:50:00.000Z",
+    });
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "https://drop.example/drafts/xa-b/sync-lock",
+      expect.objectContaining({
+        method: "DELETE",
+        headers: {
+          "X-XA-Catalog-Token": "catalog-write-token-1234567890",
+          "X-XA-Sync-Lock-Owner": "lock-owner-1",
+        },
+      }),
+    );
+  });
+
   it("throws conflict on 409 write response", async () => {
     global.fetch = jest.fn(async () => new Response(null, { status: 409 })) as unknown as typeof fetch;
 

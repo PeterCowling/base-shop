@@ -164,6 +164,9 @@ Do not emit `limited-thinking` without explicit evidence that dependencies, risk
 - Output path: `docs/plans/<feature-slug>/fact-find.md`
 - Template: `docs/plans/_templates/fact-find-planning.md`
 - Always include the routing header fields in frontmatter.
+- Dispatch-routed path:
+  - single packet -> write `Dispatch-ID`
+  - bundled work package -> write `Dispatch-IDs` and `Work-Package-Reason`
 - **Canonical artifact name:** `fact-find.md` is the formal loop output artifact for this skill. Required sections and frontmatter fields are defined in `docs/business-os/startup-loop/contracts/loop-output-contracts.md` (Artifact 1). The path above is authoritative; do not store this artifact at any other location.
 - Include `## Scope Signal` in the artifact body:
   - `Signal: <constrained | right-sized | limited-thinking>`
@@ -234,6 +237,7 @@ Status-dependent next action (execute immediately, do not wait for user):
 - [ ] Phase 0 queue check run — matching queued packet confirmed or direct-inject path taken
 - [ ] Access declarations listed and verified (or `None` recorded) before investigation begins
 - [ ] Routing header computed and written to frontmatter
+- [ ] Dispatch-routed metadata written correctly (`Dispatch-ID` for single packet, `Dispatch-IDs` + `Work-Package-Reason` for bundled packet sets)
 - [ ] Only relevant module(s) loaded
 - [ ] Scope signal classified (`constrained`, `right-sized`, or `limited-thinking`) with evidence-backed rationale
 - [ ] `## Outcome Contract` present and populated (dispatch payload or trigger frontmatter; fallback `Why: TBD`, `Source: auto` when unavailable)

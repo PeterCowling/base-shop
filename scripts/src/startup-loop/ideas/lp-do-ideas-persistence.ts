@@ -31,14 +31,18 @@ import { basename, dirname, join } from "node:path";
 // ---------------------------------------------------------------------------
 import type { IdeaClassification } from "./lp-do-ideas-classifier.js";
 import type { LiveDispatchPacket } from "./lp-do-ideas-live.js";
-import type { QueueState, TrialDispatchPacket } from "./lp-do-ideas-trial.js";
+import type {
+  QueueState,
+  TrialDispatchPacket,
+  TrialDispatchPacketV2,
+} from "./lp-do-ideas-trial.js";
 
 // ---------------------------------------------------------------------------
 // Public types
 // ---------------------------------------------------------------------------
 
 /** Union of all persisted packet types. */
-export type PersistedPacket = TrialDispatchPacket | LiveDispatchPacket;
+export type PersistedPacket = TrialDispatchPacket | TrialDispatchPacketV2 | LiveDispatchPacket;
 
 /** A single entry in the persisted queue state. */
 export interface PersistedQueueEntry {

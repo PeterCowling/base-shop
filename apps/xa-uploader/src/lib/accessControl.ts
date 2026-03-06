@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+import { getTrustedRequestIpFromHeaders } from "./requestIp";
+
 function parseAllowlistedIps(raw: string | undefined): Set<string> {
   if (!raw) return new Set();
   return new Set(
@@ -10,18 +12,8 @@ function parseAllowlistedIps(raw: string | undefined): Set<string> {
   );
 }
 
-function firstForwardedValue(raw: string | null): string {
-  return (raw ?? "").split(",")[0]?.trim() ?? "";
-}
-
 export function getRequesterIpFromHeaders(headers: Headers): string {
-  const cfConnectingIp = firstForwardedValue(headers.get("cf-connecting-ip"));
-  if (cfConnectingIp) return cfConnectingIp;
-
-  const forwarded = firstForwardedValue(headers.get("x-forwarded-for"));
-  if (forwarded) return forwarded;
-
-  return firstForwardedValue(headers.get("x-real-ip"));
+  return getTrustedRequestIpFromHeaders(headers);
 }
 
 export function isUploaderIpAllowedByHeaders(headers: Headers): boolean {

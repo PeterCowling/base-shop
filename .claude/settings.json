@@ -1,5 +1,5 @@
 {
-  "model": "opus",
+  "model": "sonnet",
   "mcpServers": {
     "base-shop": {
       "command": "node",
@@ -120,7 +120,8 @@
       "Bash(git check-ignore:*)",
       "Bash(git fsck:*)",
       "Bash(git read-tree:*)",
-      "Bash(git mv:*)"
+      "Bash(git mv:*)",
+      "Bash(bash scripts/agents/with-writer-lock.sh:*)"
     ]
   }
 }

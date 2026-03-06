@@ -51,7 +51,7 @@ defined in `lp-do-ideas-go-live-seam.md` (TASK-07 deliverable).
 Escalation requires ALL of the following conditions met:
 - Trial review period ≥ 14 days
 - Sample size ≥ 40 dispatches
-- Dispatch precision ≥ 80% (correct route: `lp-do-fact-find` vs `lp-do-briefing`)
+- Dispatch precision ≥ 80% (correct route: `lp-do-fact-find` vs `lp-do-build` vs `lp-do-briefing`)
 
 When conditions are met, the operator may update the policy decision artifact
 and bump `Version` to `1.1.0` to activate Option C: auto-invoke P1 dispatches,
@@ -97,10 +97,11 @@ All dispatches emitted in trial mode must:
 | Route | Required fields beyond base schema |
 |---|---|
 | `lp-do-fact-find` | `area_anchor` (non-empty), `location_anchors` (≥1 item), `provisional_deliverable_family` |
+| `lp-do-build` | `area_anchor` (non-empty), `location_anchors` (≥1 item), `provisional_deliverable_family` |
 | `lp-do-briefing` | `area_anchor` (non-empty) |
 
 4. Carry non-empty `evidence_refs` (at least one artifact path or anchor)
-5. Include a valid `recommended_route` value: `lp-do-fact-find` or `lp-do-briefing`
+5. Include a valid `recommended_route` value: `lp-do-fact-find`, `lp-do-build`, or `lp-do-briefing`
 6. Include cluster identity fields on every emitted packet:
    - `root_event_id`
    - `anchor_key`
@@ -361,3 +362,4 @@ The wired static args are:
 - The `t1_semantic_sections` field in `standing-registry.json` mirrors this list for documentation/schema compliance
 - The runtime does not read `t1_semantic_sections` from the registry at runtime; the TS constant is authoritative
 - To add new keywords, update both the TS constant and the registry file's `t1_semantic_sections` field
+- Direct `micro_build_ready` routing for artifact deltas is additionally gated by the concrete-surface helper logic in `lp-do-ideas-trial.ts`; T1 match alone is not sufficient

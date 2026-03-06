@@ -26,8 +26,8 @@ This plan hardens agent-facing failure messages so blocked paths end ambiguity i
 
 ## Active tasks
 - [x] TASK-01: Define the shared failure-instruction contract and first-wave adoption rules
-- [ ] TASK-02: Apply the contract to shell and git/writer-lock guard surfaces
-- [ ] TASK-03: Apply the contract to TypeScript preflight and tool-guidance surfaces
+- [x] TASK-02: Apply the contract to shell and git/writer-lock guard surfaces
+- [x] TASK-03: Apply the contract to TypeScript preflight and tool-guidance surfaces
 
 ## Goals
 - Define a minimum agent-failure contract with required fields and examples.
@@ -79,8 +79,8 @@ This plan hardens agent-facing failure messages so blocked paths end ambiguity i
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Define the shared failure-instruction contract and first-wave adoption checklist | 88% | S | Complete (2026-03-06) | - | TASK-02, TASK-03 |
-| TASK-02 | IMPLEMENT | Apply the contract to shell/guard surfaces and lock tests to exact-next-step behavior | 84% | M | Pending | TASK-01 | - |
-| TASK-03 | IMPLEMENT | Apply the contract to structured preflight/tool-guidance surfaces and add regression checks | 83% | M | Pending | TASK-01 | - |
+| TASK-02 | IMPLEMENT | Apply the contract to shell/guard surfaces and lock tests to exact-next-step behavior | 84% | M | Complete (2026-03-06) | TASK-01 | - |
+| TASK-03 | IMPLEMENT | Apply the contract to structured preflight/tool-guidance surfaces and add regression checks | 83% | M | Complete (2026-03-06) | TASK-01 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -149,7 +149,8 @@ This plan hardens agent-facing failure messages so blocked paths end ambiguity i
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-06)
+- **Build evidence:** Commit `39033b1134` (wave 2). `scripts/agent-bin/git`: added `fail_closed_infrastructure()` helper replacing bare ERROR: exits for missing-binary (exit 127), missing-evaluator (exit 1), and missing-policy-JSON (exit 1) — all emit escalate-now posture, generate-git-safety-policy --write next step, and anti-retry note. `.claude/hooks/pre-tool-use-git-safety.sh`: added `Escalation:` line to `block_with_guidance()` completing five-field contract for all deny paths. `scripts/git-hooks/require-writer-lock.sh`: added `Escalation:` lines to both blocked cases. `scripts/__tests__/git-safety-policy.test.ts`: new "Infrastructure failure messages" describe block (8 tests). `scripts/__tests__/pre-tool-use-git-safety.test.ts`: deny test.each extended with "Do not retry with" and "Escalation:" assertions. TC-01 ✓, TC-02 ✓, TC-03 ✓. Wave-2 parallel dispatch; inline execution.
 - **Affects:** `scripts/agent-bin/git`, `.claude/hooks/pre-tool-use-git-safety.sh`, `scripts/git-hooks/require-writer-lock.sh`, `scripts/__tests__/git-safety-policy.test.ts`, `scripts/__tests__/pre-tool-use-git-safety.test.ts`
 - **Depends on:** TASK-01
 - **Blocks:** -
@@ -198,7 +199,8 @@ This plan hardens agent-facing failure messages so blocked paths end ambiguity i
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-06)
+- **Build evidence:** Commit `39033b1134` (wave 2). `scripts/src/startup-loop/mcp-preflight.ts`: added `MCP_PREFLIGHT_RECOVERY` lookup table (all 11 codes → `Next: … | retry-posture | Do not: …` strings); `printHumanResult()` emits a `→` recovery line after each error and warning. `docs/ide/agent-language-intelligence-guide.md`: no changes needed — fallback path and "do not retry until" condition already present. `scripts/src/startup-loop/__tests__/mcp-preflight-recovery.test.ts`: new test file (7 tests) asserting codes trigger, output contains `→ Next:` and `Do not:`, and `MCP_PREFLIGHT_REGISTRATION_MISSING` names `claude mcp add`. TC-01 ✓, TC-02 ✓ (no-op for guide), TC-03 ✓. Wave-2 parallel dispatch; inline execution.
 - **Affects:** `scripts/src/startup-loop/mcp-preflight.ts`, `docs/ide/agent-language-intelligence-guide.md`, `[readonly] AGENTS.md`
 - **Depends on:** TASK-01
 - **Blocks:** -

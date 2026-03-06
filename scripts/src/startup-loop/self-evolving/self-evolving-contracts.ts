@@ -32,6 +32,15 @@ export type ObservationType =
 export type KpiUnit = "ratio" | "count" | "currency" | "seconds" | "score";
 export type KpiAggregation = "mean" | "median" | "sum" | "rate";
 export type StartupStage = "prelaunch" | "launched" | "traction";
+export type BoundarySignalSource = "measured" | "inferred" | "unknown";
+export type ExecutorDomainHint =
+  | "website"
+  | "offer"
+  | "distribution"
+  | "activation"
+  | "feedback"
+  | "experiment"
+  | "analytics";
 export type ContainerMaturity = "M0" | "M1" | "M2" | "M3";
 export type ContainerStepType =
   | "skill_call"
@@ -48,6 +57,14 @@ export type EffectReversibility =
   | "reversible"
   | "compensatable"
   | "irreversible";
+
+export interface ObservationSignalHints {
+  recurrence_key?: string | null;
+  problem_statement?: string | null;
+  candidate_type_hint?: CandidateType | null;
+  executor_domain_hint?: ExecutorDomainHint | null;
+  executor_path_hint?: string | null;
+}
 
 export interface MetaObservation {
   schema_version: string;
@@ -85,6 +102,7 @@ export interface MetaObservation {
   measurement_window: string | null;
   traffic_segment: string | null;
   evidence_refs: string[];
+  signal_hints?: ObservationSignalHints | null;
 }
 
 export interface ImprovementCandidate {
@@ -169,6 +187,20 @@ export interface StartupState {
   }>;
   asset_refs: string[];
   constraints: string[];
+  mature_boundary_signals?: Partial<{
+    monthly_revenue: number;
+    headcount: number;
+    support_ticket_volume_per_week: number;
+    multi_region_compliance_flag: boolean;
+    operational_complexity_score: number;
+  }>;
+  mature_boundary_signal_sources?: Partial<{
+    monthly_revenue: BoundarySignalSource;
+    headcount: BoundarySignalSource;
+    support_ticket_volume_per_week: BoundarySignalSource;
+    multi_region_compliance_flag: BoundarySignalSource;
+    operational_complexity_score: BoundarySignalSource;
+  }>;
   updated_at: string;
   updated_by: string;
 }

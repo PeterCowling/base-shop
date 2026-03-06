@@ -82,6 +82,15 @@ const BOOKING_ACTION_REFERENCE_HOSTS = new Set<string>([
   "www.hostelworld.com",
 ]);
 
+const STRICT_REFERENCE_CATEGORIES = new Set<string>([
+  "cancellation",
+  "prepayment",
+  "payment",
+  "policies",
+  "booking-changes",
+  "booking-issues",
+]);
+
 let categoryReferencePolicyCache: Map<string, CategoryReferencePolicy> | null = null;
 
 const qualityCheckSchema = z.object({
@@ -321,6 +330,7 @@ function requiresReferenceForActionPlan(actionPlan: EmailActionPlanInput): {
 } {
   const policyByCategory = loadCategoryReferencePolicy();
   const categories = resolveScenarioCategories(actionPlan);
+  const bookingActionRequired = actionPlan.workflow_triggers.booking_action_required;
 
   let requiresReference = false;
   const canonicalUrls = new Set<string>();
@@ -329,6 +339,9 @@ function requiresReferenceForActionPlan(actionPlan: EmailActionPlanInput): {
     // Broad buckets (`faq`, `general`) mix link-required and link-optional intents.
     // Keep strict enforcement for specific scenario categories to avoid false fails.
     if (category === "faq" || category === "general") {
+      continue;
+    }
+    if (!bookingActionRequired && !STRICT_REFERENCE_CATEGORIES.has(category)) {
       continue;
     }
 

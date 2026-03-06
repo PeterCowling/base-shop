@@ -32,7 +32,7 @@ Convert the current single-screen product authoring form into a step-based workf
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Step workflow + draft/submission readiness + image/data decoupling | 87% | M | Complete (2026-03-03) | - | - |
 
-## Active Tasks
+## Active tasks
 
 ### TASK-01: Step workflow + draft/submission readiness + image/data decoupling
 

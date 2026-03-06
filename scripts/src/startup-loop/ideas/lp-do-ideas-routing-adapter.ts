@@ -4,7 +4,7 @@
  * Pure function: routeDispatch(packet) → RouteResult
  *
  * Validates a dispatch.v1 or dispatch.v2 packet for completeness and produces
- * a typed invocation payload for either lp-do-fact-find or lp-do-briefing.
+ * a typed invocation payload for lp-do-fact-find, lp-do-build, or lp-do-briefing.
  *
  * Policy:
  *   - Option B (queue-with-confirmation): adapter produces payloads only.
@@ -142,7 +142,26 @@ export interface BriefingInvocationPayload {
   intended_outcome?: IntendedOutcomeV2;
 }
 
-export type InvocationPayload = FactFindInvocationPayload | BriefingInvocationPayload;
+export interface MicroBuildInvocationPayload {
+  skill: "lp-do-build";
+  dispatch_id: string;
+  business: string;
+  area_anchor: string;
+  location_anchors: [string, ...string[]];
+  provisional_deliverable_family: DeliverableFamily;
+  evidence_refs: [string, ...string[]];
+  dispatch_created_at: string;
+  source_packet: AnyDispatchPacket;
+  feature_slug_hint: string;
+  why?: string;
+  why_source?: "operator" | "auto" | "compat-v1";
+  intended_outcome?: IntendedOutcomeV2;
+}
+
+export type InvocationPayload =
+  | FactFindInvocationPayload
+  | BriefingInvocationPayload
+  | MicroBuildInvocationPayload;
 
 // ---------------------------------------------------------------------------
 // RouteResult
@@ -192,6 +211,7 @@ function normalise(value: string): string {
 
 const VALID_STATUSES: ReadonlySet<string> = new Set<DispatchStatus>([
   "fact_find_ready",
+  "micro_build_ready",
   "briefing_ready",
   "auto_executed",
   "logged_no_action",
@@ -199,12 +219,14 @@ const VALID_STATUSES: ReadonlySet<string> = new Set<DispatchStatus>([
 
 const VALID_ROUTES: ReadonlySet<string> = new Set<RecommendedRoute>([
   "lp-do-fact-find",
+  "lp-do-build",
   "lp-do-briefing",
 ]);
 
 /** Canonical status→route mapping per the trial contract. */
 const STATUS_TO_ROUTE: Readonly<Record<string, RecommendedRoute>> = {
   fact_find_ready: "lp-do-fact-find",
+  micro_build_ready: "lp-do-build",
   briefing_ready: "lp-do-briefing",
 };
 
@@ -247,6 +269,28 @@ function extractCompatV1WhyFields(
   }
   // current_truth absent or empty: omit `why` entirely (no fabrication)
   return { why_source: "compat-v1" };
+}
+
+function normalizeSlugToken(value: string): string {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function deriveMicroBuildSlugHint(packet: AnyDispatchPacket): string {
+  const areaPart = normalizeSlugToken(packet.area_anchor).split("-").slice(0, 5);
+  const locationPart = Array.isArray(packet.location_anchors)
+    ? packet.location_anchors
+        .flatMap((anchor) => anchor.split("/"))
+        .map((part) => normalizeSlugToken(part))
+        .filter((part) => part.length > 0)
+        .slice(-2)
+    : [];
+  const parts = [...areaPart, ...locationPart].filter(Boolean);
+  return parts.join("-").slice(0, 80) || normalizeSlugToken(packet.dispatch_id);
 }
 
 // ---------------------------------------------------------------------------
@@ -313,7 +357,7 @@ export function routeDispatch(packet: AnyDispatchPacket): RouteResult {
         `[lp-do-ideas-routing-adapter] Dispatch ${dispatchId ?? "(unknown)"} has ` +
         `status="auto_executed", which is reserved and must not be set in trial mode ` +
         `under Option B (queue-with-confirmation). ` +
-        `Only "fact_find_ready" and "briefing_ready" statuses are routable. ` +
+        `Only "fact_find_ready", "micro_build_ready", and "briefing_ready" statuses are routable. ` +
         `See trial-policy-decision.md for the escalation path to Option C.`,
       dispatch_id: dispatchId,
     };
@@ -341,7 +385,7 @@ export function routeDispatch(packet: AnyDispatchPacket): RouteResult {
       error:
         `[lp-do-ideas-routing-adapter] Dispatch ${dispatchId ?? "(unknown)"} has ` +
         `unrecognised status="${packet.status}". ` +
-        `Valid routable statuses are: "fact_find_ready", "briefing_ready". ` +
+        `Valid routable statuses are: "fact_find_ready", "micro_build_ready", "briefing_ready". ` +
         `Normalised value received: "${normStatus}".`,
       dispatch_id: dispatchId,
     };
@@ -355,7 +399,7 @@ export function routeDispatch(packet: AnyDispatchPacket): RouteResult {
       error:
         `[lp-do-ideas-routing-adapter] Dispatch ${dispatchId ?? "(unknown)"} has ` +
         `unrecognised recommended_route="${packet.recommended_route}". ` +
-        `Valid routes are: "lp-do-fact-find", "lp-do-briefing". ` +
+        `Valid routes are: "lp-do-fact-find", "lp-do-build", "lp-do-briefing". ` +
         `Normalised value received: "${normRoute}".`,
       dispatch_id: dispatchId,
     };
@@ -469,6 +513,62 @@ export function routeDispatch(packet: AnyDispatchPacket): RouteResult {
     return {
       ok: true,
       route: "lp-do-fact-find",
+      payload,
+    };
+  }
+
+  // ---------------------------------------------------------------------------
+  // Route: lp-do-build (micro-build fast lane)
+  // ---------------------------------------------------------------------------
+
+  if (normRoute === "lp-do-build") {
+    if (!Array.isArray(packet.location_anchors) || packet.location_anchors.length === 0) {
+      return {
+        ok: false,
+        code: "MISSING_LOCATION_ANCHORS",
+        error:
+          `[lp-do-ideas-routing-adapter] Dispatch ${dispatchId ?? "(unknown)"} is missing ` +
+          `location_anchors (must have ≥1 item) for the lp-do-build micro-build path. ` +
+          `Direct build still requires bounded code/document anchors for safe execution.`,
+        dispatch_id: dispatchId,
+      };
+    }
+
+    if (
+      typeof packet.provisional_deliverable_family !== "string" ||
+      packet.provisional_deliverable_family.trim() === ""
+    ) {
+      return {
+        ok: false,
+        code: "MISSING_DELIVERABLE_FAMILY",
+        error:
+          `[lp-do-ideas-routing-adapter] Dispatch ${dispatchId ?? "(unknown)"} is missing ` +
+          `provisional_deliverable_family for the lp-do-build micro-build path. ` +
+          `Direct build still requires a bounded deliverable family for validation and post-build routing.`,
+        dispatch_id: dispatchId,
+      };
+    }
+
+    const compatFields =
+      packet.schema_version === "dispatch.v1" ? extractCompatV1WhyFields(packet) : {};
+
+    const payload: MicroBuildInvocationPayload = {
+      skill: "lp-do-build",
+      dispatch_id: packet.dispatch_id,
+      business: packet.business,
+      area_anchor: packet.area_anchor,
+      location_anchors: packet.location_anchors,
+      provisional_deliverable_family: packet.provisional_deliverable_family,
+      evidence_refs: packet.evidence_refs,
+      dispatch_created_at: packet.created_at,
+      source_packet: packet,
+      feature_slug_hint: deriveMicroBuildSlugHint(packet),
+      ...compatFields,
+    };
+
+    return {
+      ok: true,
+      route: "lp-do-build",
       payload,
     };
   }

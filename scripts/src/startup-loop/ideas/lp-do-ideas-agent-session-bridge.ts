@@ -420,6 +420,7 @@ function buildCounts(dispatches: TrialDispatchPacket[]): Record<string, number> 
     auto_executed: 0,
     completed: 0,
     fact_find_ready: 0,
+    micro_build_ready: 0,
     total: dispatches.length,
   };
 
@@ -430,6 +431,9 @@ function buildCounts(dispatches: TrialDispatchPacket[]): Record<string, number> 
     }
     if (dispatch.status === "fact_find_ready") {
       counts.fact_find_ready += 1;
+    }
+    if (dispatch.status === "micro_build_ready") {
+      counts.micro_build_ready += 1;
     }
   }
 

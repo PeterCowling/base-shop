@@ -7,6 +7,7 @@ interface Env {
   CF_FIREBASE_DATABASE_URL: string;
   CF_FIREBASE_API_KEY?: string;
   PRIME_EMAIL_WEBHOOK_TOKEN?: string;
+  PRIME_EMAIL_WEBHOOK_SIGNATURE_SECRET?: string;
   RATE_LIMIT?: KVNamespace;
 }
 
@@ -72,7 +73,7 @@ async function computeQueueRequestSignature(
 
 async function verifyQueueRequestSignature(
   request: Request,
-  queueToken: string,
+  signatureSecret: string,
   rawBody: string,
 ): Promise<boolean> {
   const timestampHeader = request.headers.get(QUEUE_SIGNATURE_TIMESTAMP_HEADER)?.trim() ?? '';
@@ -93,11 +94,37 @@ async function verifyQueueRequestSignature(
   }
 
   const expectedSignature = await computeQueueRequestSignature(
-    queueToken,
+    signatureSecret,
     timestampHeader,
     rawBody,
   );
   return constantTimeEqual(providedSignature, expectedSignature);
+}
+
+async function enforceQueueReplayGuard(
+  request: Request,
+  env: Env,
+): Promise<Response | null> {
+  if (!env.RATE_LIMIT) {
+    return null;
+  }
+  const timestampHeader = request.headers.get(QUEUE_SIGNATURE_TIMESTAMP_HEADER)?.trim() ?? '';
+  const providedSignature = request.headers.get(QUEUE_SIGNATURE_HEADER)?.trim() ?? '';
+  if (!timestampHeader || !providedSignature) {
+    return unauthorizedResponse();
+  }
+
+  const signatureKey = normalizeHex(providedSignature);
+  const replayKey = `process-messaging-queue:replay:${timestampHeader}:${signatureKey}`;
+  const alreadySeen = await env.RATE_LIMIT.get(replayKey);
+  if (alreadySeen) {
+    return unauthorizedResponse();
+  }
+
+  await env.RATE_LIMIT.put(replayKey, '1', {
+    expirationTtl: QUEUE_SIGNATURE_MAX_AGE_SECONDS,
+  });
+  return null;
 }
 
 async function enforceQueueRequestRateLimit(
@@ -138,6 +165,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (!queueToken) {
     return missingProviderConfigResponse();
   }
+  const signatureSecret = env.PRIME_EMAIL_WEBHOOK_SIGNATURE_SECRET?.trim() || queueToken;
 
   const authHeader = request.headers.get('Authorization')?.trim() ?? '';
   if (authHeader !== `Bearer ${queueToken}`) {
@@ -156,9 +184,18 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return errorResponse('Invalid request body', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
-  const signatureValid = await verifyQueueRequestSignature(request, queueToken, rawBody);
+  const signatureValid = await verifyQueueRequestSignature(
+    request,
+    signatureSecret,
+    rawBody,
+  );
   if (!signatureValid) {
     return unauthorizedResponse();
+  }
+
+  const replayResponse = await enforceQueueReplayGuard(request, env);
+  if (replayResponse) {
+    return replayResponse;
   }
 
   let body: ProcessQueueRequestBody;
@@ -180,7 +217,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     queueStore,
     dispatchArrival48Hours: async (payload, record) => {
       // Look up checkout date from booking for token expiry
-      const booking = await queueStore.get<Record<string, { checkOutDate?: string }>>(
+      const booking = await queueStore.get<{ checkOutDate?: string }>(
         `bookings/${payload.bookingCode}/${payload.uuid}`,
       );
       const checkOutDate = booking?.checkOutDate ?? '';

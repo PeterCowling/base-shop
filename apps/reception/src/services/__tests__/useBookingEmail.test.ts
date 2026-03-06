@@ -82,6 +82,43 @@ describe("useBookingEmail", () => {
     );
   });
 
+  it("ignores __notes when deriving occupant IDs for links and activity payloads", async () => {
+    const fetchMock = jest.fn();
+    (global as unknown as { fetch: typeof fetch }).fetch =
+      fetchMock as unknown as typeof fetch;
+
+    fetchMock.mockResolvedValueOnce(
+      jsonResponse({
+        __notes: { n1: { text: "hello", timestamp: "t", user: "u" } },
+        guestA: { checkInDate: "2024-01-01" },
+      })
+    );
+    fetchMock.mockResolvedValueOnce(
+      jsonResponse({
+        guestA: { email: "a@example.com" },
+      })
+    );
+    fetchMock.mockResolvedValueOnce(jsonOkResponse({ success: true, draftId: "draft-1" }));
+
+    const { result } = renderHook(() => useBookingEmail());
+
+    await act(async () => {
+      await result.current.sendBookingEmail("BOOK123");
+    });
+
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      3,
+      "/api/mcp/booking-email",
+      expect.objectContaining({
+        body: JSON.stringify({
+          bookingRef: "BOOK123",
+          recipients: ["a@example.com"],
+          occupantLinks: [`${OCCUPANT_LINK_PREFIX}guestA`],
+        }),
+      }),
+    );
+  });
+
   it("TASK-10 TC-02: MCP errors are surfaced without fallback", async () => {
     const fetchMock = jest.fn();
     (global as unknown as { fetch: typeof fetch }).fetch =
@@ -156,16 +193,16 @@ describe("useBookingEmail", () => {
     expect(result).toEqual({ g1: "one@example.com", g2: "two@example.com" });
   });
 
-  it("fetchGuestEmails returns empty object for malformed data", async () => {
+  it("fetchGuestEmails throws for malformed data", async () => {
     const fetchMock = jest.fn();
     (global as unknown as { fetch: typeof fetch }).fetch =
       fetchMock as unknown as typeof fetch;
 
     fetchMock.mockResolvedValueOnce(jsonResponse({ bad: { mail: "x" } }));
 
-    const result = await fetchGuestEmails("BR");
-
-    expect(result).toEqual({});
+    await expect(fetchGuestEmails("BR")).rejects.toThrow(
+      "Invalid guest email data"
+    );
   });
 
   it("sendBookingEmail surfaces validation errors", async () => {

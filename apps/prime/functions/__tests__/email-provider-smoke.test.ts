@@ -8,7 +8,7 @@ import { MessagingEventType } from '../../src/lib/messaging/triggers';
 import { onRequestPost } from '../api/process-messaging-queue';
 import { FirebaseRest } from '../lib/firebase-rest';
 
-import { createMockEnv, createPagesContext } from './helpers';
+import { createMockEnv, createMockKv, createPagesContext } from './helpers';
 
 const QUEUE_TOKEN = 'queue-token-123';
 
@@ -332,5 +332,69 @@ describe('email provider smoke spike', () => {
       expect.stringContaining('outboundDrafts/'),
       expect.anything(),
     );
+  });
+
+  it('TC-10: dedicated signature secret is accepted when bearer token differs', async () => {
+    const body = {
+      eventId: 'msg_smoke_123',
+    };
+    const response = await onRequestPost(
+      createPagesContext({
+        url: 'https://prime.example.com/api/process-messaging-queue',
+        method: 'POST',
+        body,
+        headers: createQueueAuthHeaders(body, { signatureToken: 'sig-secret-123' }),
+        env: createMockEnv({
+          PRIME_EMAIL_WEBHOOK_TOKEN: QUEUE_TOKEN,
+          PRIME_EMAIL_WEBHOOK_SIGNATURE_SECRET: 'sig-secret-123',
+        }),
+      }),
+    );
+
+    const payload = await response.json() as { outcome: string };
+    expect(response.status).toBe(200);
+    expect(payload.outcome).toBe('sent');
+  });
+
+  it('TC-11: replayed valid signature is rejected when replay guard is enabled', async () => {
+    const body = {
+      eventId: 'msg_smoke_123',
+    };
+    const timestampSeconds = Math.floor(Date.now() / 1000);
+    const headers = createQueueAuthHeaders(body, {
+      timestampSeconds,
+      signatureToken: 'sig-secret-123',
+    });
+    const env = createMockEnv({
+      PRIME_EMAIL_WEBHOOK_TOKEN: QUEUE_TOKEN,
+      PRIME_EMAIL_WEBHOOK_SIGNATURE_SECRET: 'sig-secret-123',
+      RATE_LIMIT: createMockKv(),
+    });
+
+    const firstResponse = await onRequestPost(
+      createPagesContext({
+        url: 'https://prime.example.com/api/process-messaging-queue',
+        method: 'POST',
+        body,
+        headers,
+        env,
+      }),
+    );
+    const secondResponse = await onRequestPost(
+      createPagesContext({
+        url: 'https://prime.example.com/api/process-messaging-queue',
+        method: 'POST',
+        body,
+        headers,
+        env,
+      }),
+    );
+
+    const firstPayload = await firstResponse.json() as { outcome: string };
+    const secondPayload = await secondResponse.json() as { error: string };
+    expect(firstResponse.status).toBe(200);
+    expect(firstPayload.outcome).toBe('sent');
+    expect(secondResponse.status).toBe(401);
+    expect(secondPayload.error).toBe('Unauthorized');
   });
 });

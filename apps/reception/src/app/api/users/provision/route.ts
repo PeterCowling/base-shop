@@ -12,6 +12,7 @@ import { requireStaffAuth } from "../../mcp/_shared/staff-auth";
 
 const ALLOWED_PROVISION_ROLES = ["staff", "manager", "admin"] as const;
 type AllowedProvisionRole = (typeof ALLOWED_PROVISION_ROLES)[number];
+const MANAGED_ROLE_SET = new Set<string>(ALLOWED_PROVISION_ROLES);
 
 type ProvisionRequestBody = {
   email: string;
@@ -23,6 +24,7 @@ type ProvisionRequestBody = {
 
 type SignUpPayload = {
   localId?: string;
+  idToken?: string;
   error?: {
     message?: string;
   };
@@ -40,8 +42,12 @@ type UserProfileRecord = {
 type UserProfileCollection = Record<string, UserProfileRecord | null>;
 
 function readRequiredEnv(): { apiKey: string; dbUrl: string } | null {
-  const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY?.trim();
-  const dbUrl = process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL?.trim();
+  const apiKey =
+    process.env.RECEPTION_FIREBASE_API_KEY?.trim() ??
+    process.env.NEXT_PUBLIC_FIREBASE_API_KEY?.trim();
+  const dbUrl =
+    process.env.RECEPTION_FIREBASE_DATABASE_URL?.trim() ??
+    process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL?.trim();
   if (!apiKey || !dbUrl) return null;
   return { apiKey, dbUrl: dbUrl.replace(/\/+$/, "") };
 }
@@ -96,7 +102,10 @@ function validateProvisionInput(body: ProvisionRequestBody): string | null {
 async function createFirebaseAuthAccount(
   email: string,
   apiKey: string,
-): Promise<{ localId: string } | { error: string; status: number }> {
+): Promise<
+  | { localId: string; idToken: string }
+  | { error: string; status: number }
+> {
   const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${encodeURIComponent(apiKey)}`;
   const response = await fetch(url, {
     method: "POST",
@@ -104,7 +113,7 @@ async function createFirebaseAuthAccount(
     body: JSON.stringify({
       email,
       password: crypto.randomUUID(),
-      returnSecureToken: false,
+      returnSecureToken: true,
     }),
   });
 
@@ -117,11 +126,28 @@ async function createFirebaseAuthAccount(
     return { error: "Failed to create auth account", status: 502 };
   }
 
-  if (!payload.localId) {
+  if (!payload.localId || !payload.idToken) {
     return { error: "Unexpected response from auth provider", status: 502 };
   }
 
-  return { localId: payload.localId };
+  return { localId: payload.localId, idToken: payload.idToken };
+}
+
+async function rollbackFirebaseAuthAccount(
+  idToken: string,
+  apiKey: string,
+): Promise<boolean> {
+  const deleteUrl = `https://identitytoolkit.googleapis.com/v1/accounts:delete?key=${encodeURIComponent(apiKey)}`;
+  try {
+    const response = await fetch(deleteUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ idToken }),
+    });
+    return response.ok;
+  } catch {
+    return false;
+  }
 }
 
 async function writeAudit(
@@ -240,6 +266,7 @@ export async function GET(request: Request): Promise<Response> {
         updatedAt: safeProfile.updatedAt ?? null,
       };
     })
+    .filter((account) => account.roles.some((role) => MANAGED_ROLE_SET.has(role)))
     .sort((a, b) => a.email.localeCompare(b.email));
 
   return NextResponse.json({ success: true, accounts });
@@ -297,10 +324,16 @@ export async function POST(request: Request): Promise<Response> {
   });
 
   if (!profileResponse.ok) {
+    const rollbackOk = await rollbackFirebaseAuthAccount(
+      signUpResult.idToken,
+      authz.apiKey,
+    );
     return NextResponse.json(
       {
         success: false,
-        error: "Auth account created but profile write failed",
+        error: rollbackOk
+          ? "Auth account rolled back after profile write failed"
+          : "Auth account created but profile write failed; automatic rollback failed",
         uid: signUpResult.localId,
       },
       { status: 502 },
@@ -464,18 +497,32 @@ export async function DELETE(request: Request): Promise<Response> {
     );
   }
 
-  const deleteResponse = await fetch(profileUrl, { method: "DELETE" });
-  if (!deleteResponse.ok) {
+  const currentRoles = normalizeRoles(currentProfile.roles) ?? [];
+  const preservedRoles = currentRoles.filter((role) => !MANAGED_ROLE_SET.has(role));
+  const nextRoles = preservedRoles.length > 0 ? preservedRoles : (["viewer"] as UserRole[]);
+
+  const revokeResponse = await fetch(profileUrl, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      roles: toRoleMap(Array.from(new Set(nextRoles))),
+      deactivatedAt: Date.now(),
+      deactivatedBy: authz.uid,
+      updatedAt: Date.now(),
+    }),
+  });
+  if (!revokeResponse.ok) {
     return NextResponse.json(
-      { success: false, error: "Failed to remove account" },
+      { success: false, error: "Failed to remove staff access" },
       { status: 502 },
     );
   }
 
   await writeAudit(authz.dbUrl, authz.bearerToken, {
-    action: "user_profile_removed",
+    action: "user_staff_access_removed",
     targetUid: uid,
     targetEmail: currentProfile.email,
+    targetRoles: nextRoles,
     createdBy: authz.uid,
     timestamp: Date.now(),
   });

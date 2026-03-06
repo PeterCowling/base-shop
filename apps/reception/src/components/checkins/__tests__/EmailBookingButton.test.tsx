@@ -113,4 +113,37 @@ describe("EmailBookingButton", () => {
     });
     expect(logActivityMock).not.toHaveBeenCalled();
   });
+
+  it("shows error when draft succeeds but activity logging fails", async () => {
+    sendBookingEmailMock.mockResolvedValue({
+      success: true,
+      bookingRef: "BOOK1",
+      occupantIds: ["occ1", "occ2"],
+      recipients: ["one@example.com", "two@example.com"],
+      occupantLinks: ["https://example.com/occ1", "https://example.com/occ2"],
+      draftId: "draft-1",
+    });
+    logActivityMock.mockRejectedValue(new Error("activity write failed"));
+
+    render(
+      <EmailBookingButton
+        bookingRef="BOOK1"
+        isFirstForBooking={true}
+        activities={[]}
+      />,
+    );
+
+    await userEvent.click(screen.getByTitle("Create booking email draft"));
+
+    await waitFor(() => {
+      expect(showToastMock).toHaveBeenCalledWith(
+        "Email draft created, but activity logging failed. Please check history.",
+        "error"
+      );
+    });
+    expect(showToastMock).not.toHaveBeenCalledWith(
+      "Email draft created",
+      "success"
+    );
+  });
 });

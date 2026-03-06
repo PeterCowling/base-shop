@@ -72,6 +72,7 @@ See the main project testing policy in `docs/testing-policy.md`.
 `/api/process-messaging-queue` requires the following staging configuration:
 
 - `PRIME_EMAIL_WEBHOOK_TOKEN` (Cloudflare secret)
+- `PRIME_EMAIL_WEBHOOK_SIGNATURE_SECRET` (Cloudflare secret, recommended; falls back to webhook token when unset)
 
 Every request to `/api/process-messaging-queue` must send:
 
@@ -79,7 +80,8 @@ Every request to `/api/process-messaging-queue` must send:
 - `X-Prime-Queue-Timestamp: <unix-seconds>` (must be within +/-5 minutes)
 - `X-Prime-Queue-Signature: <hex-hmac-sha256>` where the signature payload is:
   - `<timestamp>.<raw-json-body>`
-  - HMAC key: `PRIME_EMAIL_WEBHOOK_TOKEN`
+  - HMAC key: `PRIME_EMAIL_WEBHOOK_SIGNATURE_SECRET` (or `PRIME_EMAIL_WEBHOOK_TOKEN` fallback)
+- Replay guard: identical `<timestamp,signature>` pairs are rejected when `RATE_LIMIT` KV is configured.
 
 Recommended smoke contract before promoting messaging automation:
 

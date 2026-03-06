@@ -1,10 +1,10 @@
 import { z } from "zod";
 
-// In CI, allow optional values since we only need runtime secrets at deploy time, not build time
-const isCI = process.env.CI === "true";
+// Tests may parse synthetic fixture objects that intentionally omit env values.
+const isTest = process.env.NODE_ENV === "test";
 
 const requiredString = (message: string) =>
-  isCI ? z.string().optional().default("") : z.string().min(1, message);
+  isTest ? z.string().optional().default("") : z.string().min(1, message);
 
 export const firebaseEnvSchema = z.object({
   NEXT_PUBLIC_FIREBASE_API_KEY: requiredString("NEXT_PUBLIC_FIREBASE_API_KEY is required"),

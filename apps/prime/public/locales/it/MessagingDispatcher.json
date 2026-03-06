@@ -1,0 +1,14 @@
+{
+  "errors": {
+    "recoveredStaleProcessingLease": "Lease di elaborazione scaduto recuperato",
+    "invalidQueueRecord": "Record della coda messaggi non valido"
+  },
+  "reasons": {
+    "queueRecordMissing": "queue_record_missing",
+    "invalidQueueRecord": "invalid_queue_record",
+    "unsupportedEventTypePrefix": "unsupported_event_type:",
+    "alreadyProcessing": "already_processing",
+    "alreadyStatusPrefix": "already_",
+    "claimConflictRetryExhausted": "claim_conflict_retry_exhausted"
+  }
+}

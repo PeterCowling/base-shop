@@ -36,6 +36,23 @@ const GASResponseSchema = z.union([
 export type GASResponse = z.infer<typeof GASResponseSchema>;
 
 const JSONP_TIMEOUT_MS = 30_000;
+const isTestEnvironment = process.env.NODE_ENV === "test";
+const ALLOGGIATI_URL_ENV_KEY = "NEXT_PUBLIC_ALLOGGIATI_SCRIPT_URL";
+const TEST_FALLBACK_GOOGLE_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbxemYj6vv2k8qDyF3QieAfCujnlUeHMMKriYV8lkhLiHVvb7FnjTpwRTtF-Uo9-VT9UVQ/exec";
+
+function resolveGoogleScriptUrl(): string {
+  const configuredUrl = process.env.NEXT_PUBLIC_ALLOGGIATI_SCRIPT_URL?.trim();
+  if (configuredUrl && configuredUrl.length > 0) {
+    return configuredUrl;
+  }
+
+  if (isTestEnvironment) {
+    return TEST_FALLBACK_GOOGLE_SCRIPT_URL;
+  }
+
+  throw new Error(`Missing ${ALLOGGIATI_URL_ENV_KEY} configuration`);
+}
 
 /**
  * JSONP function to call the Google Apps Script web app.
@@ -46,8 +63,7 @@ export function sendAlloggiatiRecordsToGoogleScript(
   occupantRecords: string[],
   testMode: boolean
 ): Promise<AlloggiatiResultDetail[]> {
-  const googleScriptUrl =
-    "https://script.google.com/macros/s/AKfycbxemYj6vv2k8qDyF3QieAfCujnlUeHMMKriYV8lkhLiHVvb7FnjTpwRTtF-Uo9-VT9UVQ/exec";
+  const googleScriptUrl = resolveGoogleScriptUrl();
 
   return new Promise((resolve, reject) => {
     const occupantRecordParam = occupantRecords.join("||");

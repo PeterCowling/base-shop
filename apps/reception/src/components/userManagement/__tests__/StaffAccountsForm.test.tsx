@@ -163,6 +163,40 @@ describe("StaffAccountsForm", () => {
     );
   });
 
+  it("surfaces setup email delivery failure after successful account creation", async () => {
+    mockSendPasswordResetEmail.mockResolvedValueOnce({
+      success: false,
+      error: "SMTP temporarily unavailable",
+    });
+
+    mockFetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ success: true, accounts: [] }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ success: true, uid: "new-uid", email: "test@example.com" }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ success: true, accounts: [] }),
+      });
+
+    const user = userEvent.setup();
+    render(<StaffAccountsForm />);
+
+    await waitFor(() => expect(mockFetch).toHaveBeenCalled());
+
+    await user.type(screen.getByLabelText(/email/i), "test@example.com");
+    await user.click(screen.getByRole("button", { name: /create account/i }));
+
+    await waitFor(() =>
+      expect(screen.getByText(/setup email delivery failed/i)).toBeInTheDocument(),
+    );
+    expect(screen.getByText(/smtp temporarily unavailable/i)).toBeInTheDocument();
+  });
+
   it("shows server error on failed creation", async () => {
     mockFetch
       .mockResolvedValueOnce({

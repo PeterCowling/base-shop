@@ -16,12 +16,15 @@ type FinancialTransaction = {
 type FinancialTransactionMap = Record<string, FinancialTransaction>;
 
 function readDbUrls(): { currentDbUrl: string; archiveDbUrl?: string } | null {
-  const currentDbUrl = process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL?.trim();
+  const currentDbUrl =
+    process.env.RECEPTION_FIREBASE_DATABASE_URL?.trim() ??
+    process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL?.trim();
   if (!currentDbUrl) {
     return null;
   }
 
   const archiveDbUrl =
+    process.env.RECEPTION_FIREBASE_ARCHIVE_DATABASE_URL?.trim() ||
     process.env.NEXT_PUBLIC_FIREBASE_ARCHIVE_DATABASE_URL?.trim() || undefined;
 
   return {
@@ -128,13 +131,26 @@ async function fetchNode<T>(
   dbUrl: string,
   token: string,
   path: string,
-): Promise<T | null> {
+): Promise<{ ok: true; data: T | null } | { ok: false; error: string }> {
   const url = `${dbUrl}/${path}.json?auth=${encodeURIComponent(token)}`;
-  const response = await fetch(url);
-  if (!response.ok) {
-    return null;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      return {
+        ok: false,
+        error: `Upstream fetch failed for ${path} (${response.status})`,
+      };
+    }
+    return { ok: true, data: (await response.json()) as T | null };
+  } catch (error) {
+    return {
+      ok: false,
+      error:
+        error instanceof Error
+          ? `Upstream fetch threw for ${path}: ${error.message}`
+          : `Upstream fetch threw for ${path}`,
+    };
   }
-  return (await response.json()) as T | null;
 }
 
 function sanitizeMode(rawMode: string | null): RevenueMode {
@@ -185,13 +201,19 @@ export async function GET(request: Request): Promise<Response> {
   const year = sanitizeYear(searchParams.get("year"));
   const previousYear = year - 1;
 
-  const currentTransactions = await fetchNode<FinancialTransactionMap>(
+  const currentResult = await fetchNode<FinancialTransactionMap>(
     urls.currentDbUrl,
     token,
     "allFinancialTransactions",
   );
+  if (currentResult.ok === false) {
+    return NextResponse.json(
+      { success: false, error: currentResult.error },
+      { status: 502 },
+    );
+  }
 
-  const previousTransactions = urls.archiveDbUrl
+  const previousResult = urls.archiveDbUrl
     ? await fetchNode<FinancialTransactionMap>(
         urls.archiveDbUrl,
         token,
@@ -202,10 +224,16 @@ export async function GET(request: Request): Promise<Response> {
         token,
         "archive/allFinancialTransactions",
       );
+  if (previousResult.ok === false) {
+    return NextResponse.json(
+      { success: false, error: previousResult.error },
+      { status: 502 },
+    );
+  }
 
-  const currentMonthly = aggregateMonthlyRevenue(currentTransactions, year, mode);
+  const currentMonthly = aggregateMonthlyRevenue(currentResult.data, year, mode);
   const previousMonthly = aggregateMonthlyRevenue(
-    previousTransactions,
+    previousResult.data,
     previousYear,
     mode,
   );

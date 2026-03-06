@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import Checkout from "../Checkout";
@@ -275,6 +275,27 @@ describe("Checkout component", () => {
       expect.any(String),
       expect.objectContaining({ isKeycard: true })
     );
+  });
+
+  it("rolls back code 14 when checkout record write fails", async () => {
+    saveCheckoutMock.mockRejectedValueOnce(new Error("write failed"));
+    setAllHooks();
+    render(<Checkout />);
+
+    const completeBtn = screen.getByRole("button", {
+      name: /complete checkout/i,
+    });
+    await userEvent.click(completeBtn);
+
+    await waitFor(() => {
+      expect(saveActivityMock).toHaveBeenCalledWith("G1", {
+        code: 14,
+        description: "Manually completed checkout",
+      });
+    });
+    await waitFor(() => {
+      expect(removeLastActivityMock).toHaveBeenCalledWith("G1", 14);
+    });
   });
 
   it("applies dark mode classes when html has dark", () => {

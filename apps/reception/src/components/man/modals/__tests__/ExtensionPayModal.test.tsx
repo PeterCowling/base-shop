@@ -67,7 +67,7 @@ describe("ExtensionPayModal", () => {
     jest.clearAllMocks();
     updateMock.mockResolvedValue(undefined);
     saveCityTaxMock.mockResolvedValue(undefined);
-    saveActivityMock.mockResolvedValue(undefined);
+    saveActivityMock.mockResolvedValue({ success: true });
   });
 
   it("renders options and amounts", () => {
@@ -177,5 +177,22 @@ describe("ExtensionPayModal", () => {
       "Extension partially applied (1/2). second occupant failed",
       "error"
     );
+  });
+
+  it("fails closed when saveActivity returns success:false", async () => {
+    const onClose = jest.fn();
+    saveActivityMock.mockResolvedValueOnce({
+      success: false,
+      error: "activity save failed",
+    });
+
+    render(<ExtensionPayModal {...defaultProps} onClose={onClose} />);
+    await userEvent.click(
+      screen.getByLabelText(/mark city tax as paid/i)
+    );
+    await userEvent.click(screen.getByRole("button", { name: /extend/i }));
+
+    expect(onClose).not.toHaveBeenCalled();
+    expect(toastMock).toHaveBeenCalledWith("activity save failed", "error");
   });
 });

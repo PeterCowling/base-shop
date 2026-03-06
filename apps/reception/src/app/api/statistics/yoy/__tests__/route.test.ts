@@ -86,4 +86,21 @@ describe("GET /api/statistics/yoy", () => {
     expect(payload.success).toBe(false);
     expect(payload.error).toMatch(/insufficient permissions/i);
   });
+
+  it("fails closed when upstream transactions fetch is non-OK", async () => {
+    global.fetch = jest
+      .fn()
+      .mockResolvedValueOnce({
+        ok: false,
+        status: 503,
+        json: async () => ({}),
+      } as Response) as unknown as typeof fetch;
+
+    const response = await GET(makeRequest());
+    const payload = (await response.json()) as { success: boolean; error: string };
+
+    expect(response.status).toBe(502);
+    expect(payload.success).toBe(false);
+    expect(payload.error).toMatch(/Upstream fetch failed/i);
+  });
 });

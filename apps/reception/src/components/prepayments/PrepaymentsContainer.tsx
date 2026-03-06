@@ -84,7 +84,13 @@ function PrepaymentsContainer({
       });
 
       // Log successful payment activity
-      await addActivity(occupantId, 8);
+      const paymentActivityResult = await addActivity(occupantId, 8);
+      if (!paymentActivityResult.success) {
+        throw new Error(
+          paymentActivityResult.error ??
+            "Failed to log prepayment activity for paid reservation."
+        );
+      }
     },
     [addToAllTransactions, saveFinancialsRoom, addActivity]
   );
@@ -285,7 +291,13 @@ function PrepaymentsContainer({
           } else if (codes.includes(6)) {
             codeToLog = 7;
           }
-          await addActivity(occupantId, codeToLog);
+          const failedActivityResult = await addActivity(occupantId, codeToLog);
+          if (!failedActivityResult.success) {
+            throw new Error(
+              failedActivityResult.error ??
+                "Failed to log failed-payment activity."
+            );
+          }
           setMessage(`Payment failed for ${bookingRef}. Status code updated.`);
         }
 

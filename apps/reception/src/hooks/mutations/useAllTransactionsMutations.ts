@@ -38,8 +38,9 @@ export default function useAllTransactions() {
         const errMsg =
           "User is not logged in; cannot write to allFinancialTransactions.";
         console.error(errMsg);
-        setError(errMsg);
-        return;
+        const err = new Error(errMsg);
+        setError(err);
+        throw err;
       }
 
       try {
@@ -62,8 +63,9 @@ export default function useAllTransactions() {
             const errMsg =
               "Refusing to overwrite existing transaction. Use void/correction flows.";
             console.error(errMsg);
-            setError(errMsg);
-            return;
+            const err = new Error(errMsg);
+            setError(err);
+            throw err;
           }
           if (payloadEntries.length === 0) {
             return;

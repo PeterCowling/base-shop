@@ -130,16 +130,32 @@ function ExtensionPayModalBase({
                   totalPaid: record.totalDue,
                 });
               }
-              await saveActivity(id, { code: CITY_TAX_ACTIVITY_CODE });
+              const cityTaxActivityResult = await saveActivity(id, {
+                code: CITY_TAX_ACTIVITY_CODE,
+              });
+              if (!cityTaxActivityResult.success) {
+                throw new Error(
+                  cityTaxActivityResult.error ??
+                    `Failed to save city tax activity for occupant ${id}.`
+                );
+              }
             }
           })
         );
       }
       if (markKeyExtended) {
         await Promise.all(
-          cityTaxTargets.map((id) =>
-            saveActivity(id, { code: KEY_EXTENSION_ACTIVITY_CODE })
-          )
+          cityTaxTargets.map(async (id) => {
+            const keyActivityResult = await saveActivity(id, {
+              code: KEY_EXTENSION_ACTIVITY_CODE,
+            });
+            if (!keyActivityResult.success) {
+              throw new Error(
+                keyActivityResult.error ??
+                  `Failed to save key extension activity for occupant ${id}.`
+              );
+            }
+          })
         );
       }
       showToast("Extension saved", "success");

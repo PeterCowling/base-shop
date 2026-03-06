@@ -313,12 +313,18 @@ export default function useActivitiesMutations() {
   const logActivity = useCallback(
     async (occupantId: string, code: number): Promise<void> => {
       if (!user) {
-        console.error(
-          "[useActivitiesMutations] logActivity error: No user is logged in"
-        );
-        return;
+        const noUserError =
+          "[useActivitiesMutations] logActivity error: No user is logged in";
+        console.error(noUserError);
+        throw new Error(noUserError);
       }
-      await addActivity(occupantId, code);
+      const result = await addActivity(occupantId, code);
+      if (!result.success) {
+        throw new Error(
+          result.error ??
+            `[useActivitiesMutations] logActivity failed for occupant=${occupantId}, code=${code}`
+        );
+      }
     },
     [addActivity, user]
   );

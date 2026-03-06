@@ -28,7 +28,7 @@ cd "$REPO_ROOT"
 
 if [[ "$FULL_LINT" == "true" ]]; then
   echo "[Prime lint] Running full ESLint on entire Prime codebase..."
-  pnpm exec eslint "apps/prime/" || true
+  pnpm exec eslint "apps/prime/"
   exit 0
 fi
 

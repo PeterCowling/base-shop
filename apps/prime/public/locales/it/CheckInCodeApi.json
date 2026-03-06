@@ -1,0 +1,11 @@
+{
+  "errors": {
+    "uuidQueryRequired": "il parametro uuid e obbligatorio",
+    "fetchFailed": "Impossibile recuperare il codice di check-in",
+    "uuidRequired": "uuid e obbligatorio",
+    "checkOutDateRequired": "checkOutDate e obbligatoria",
+    "checkOutDateInvalid": "checkOutDate deve essere una data valida",
+    "uniqueCodeGenerationFailed": "Impossibile generare un codice univoco",
+    "generateFailed": "Impossibile generare il codice di check-in"
+  }
+}

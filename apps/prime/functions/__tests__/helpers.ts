@@ -8,6 +8,8 @@ export interface MockEnv {
   CF_FIREBASE_DATABASE_URL: string;
   CF_FIREBASE_API_KEY: string;
   PRIME_EMAIL_WEBHOOK_TOKEN?: string;
+  PRIME_EMAIL_WEBHOOK_SIGNATURE_SECRET?: string;
+  PRIME_EXTENSION_TARGET_EMAIL?: string;
   RATE_LIMIT?: MockKvNamespace;
   NODE_ENV?: string;
   PRIME_ENABLE_STAFF_OWNER_ROUTES?: string;
@@ -39,6 +41,7 @@ export function createMockEnv(overrides: Partial<MockEnv> = {}): MockEnv {
   return {
     CF_FIREBASE_DATABASE_URL: 'https://example.firebaseio.com',
     CF_FIREBASE_API_KEY: 'test-api-key',
+    PRIME_EXTENSION_TARGET_EMAIL: 'hostelbrikette@gmail.com',
     ...overrides,
   };
 }

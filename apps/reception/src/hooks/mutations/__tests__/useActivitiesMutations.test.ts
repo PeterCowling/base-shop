@@ -84,6 +84,29 @@ describe("useActivitiesMutations", () => {
     });
   });
 
+  it("logActivity throws when addActivity returns success:false", async () => {
+    updateMock.mockRejectedValueOnce(new Error("write failed"));
+    const { result } = renderHook(() => useActivitiesMutations());
+
+    await act(async () => {
+      await expect(result.current.logActivity("occ1", 21)).rejects.toThrow(
+        "write failed"
+      );
+    });
+  });
+
+  it("logActivity throws when no user is authenticated", async () => {
+    useAuthMock.mockReturnValue({ user: null });
+    const { result } = renderHook(() => useActivitiesMutations());
+
+    await act(async () => {
+      await expect(result.current.logActivity("occ1", 21)).rejects.toThrow(
+        "No user is logged in"
+      );
+    });
+    expect(updateMock).not.toHaveBeenCalled();
+  });
+
   it("does not call sendEmailGuest for non-relevant codes", async () => {
     const { result } = renderHook(() => useActivitiesMutations());
 

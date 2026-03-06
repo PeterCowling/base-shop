@@ -230,86 +230,87 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
    * Creates a **Loan** transaction, records financials,
    * and logs activity code 10.
    */
-  const handleConfirm = useCallback((): Promise<void> => {
+  const handleConfirm = useCallback(async (): Promise<void> => {
     if (isDisabled) return Promise.resolve();
 
     setButtonDisabled(true);
-    return new Promise<void>((resolve) => {
-      setTrackedTimeout(resolve, 800);
-    })
-      .then(() => {
-        const transactionId = generateTransactionId();
-        const createdAt = getItalyIsoString();
-        const depositAmount = payType === KeycardPayType.CASH ? 10 : 0;
-        const item = payType === KeycardPayType.NO_CARD ? "No_card" : "Keycard";
+    try {
+      await new Promise<void>((resolve) => {
+        setTrackedTimeout(resolve, 800);
+      });
 
-        const depositType: LoanMethod = selectionToLoanMethod(payType, docType);
+      const transactionId = generateTransactionId();
+      const createdAt = getItalyIsoString();
+      const depositAmount = payType === KeycardPayType.CASH ? 10 : 0;
+      const item = payType === KeycardPayType.NO_CARD ? "No_card" : "Keycard";
 
-        console.log("[KeycardDepositButton] issue keycard", {
-          bookingRef,
+      const depositType: LoanMethod = selectionToLoanMethod(payType, docType);
+
+      console.log("[KeycardDepositButton] issue keycard", {
+        bookingRef,
+        occupantId,
+        payType,
+        docType,
+        depositType,
+        depositAmount,
+        item,
+      });
+
+      await saveLoan(bookingRef, occupantId, transactionId, {
+        count: cardCount,
+        createdAt,
+        depositType,
+        deposit: depositAmount,
+        item,
+        type: "Loan",
+      });
+
+      if (item === "Keycard") {
+        await addToAllTransactions(transactionId, {
           occupantId,
-          payType,
-          docType,
-          depositType,
-          depositAmount,
-          item,
-        });
-
-        saveLoan(bookingRef, occupantId, transactionId, {
+          bookingRef,
+          amount: depositAmount,
           count: cardCount,
-          createdAt,
-          depositType,
-          deposit: depositAmount,
-          item,
+          description: "Keycard loan",
+          method: depositType,
           type: "Loan",
+          isKeycard: true,
+          itemCategory: "keycard",
         });
 
-        if (item === "Keycard") {
-          addToAllTransactions(transactionId, {
+        if (keycardNumber.trim()) {
+          const roomNumber = booking.roomAllocated ?? booking.roomBooked ?? "";
+          await assignGuestKeycard({
+            keycardNumber: keycardNumber.trim(),
             occupantId,
             bookingRef,
-            amount: depositAmount,
-            count: cardCount,
-            description: "Keycard loan",
-            method: depositType,
-            type: "Loan",
-            isKeycard: true,
-            itemCategory: "keycard",
+            roomNumber,
+            depositMethod: depositType,
+            depositAmount,
+            loanTxnId: transactionId,
           });
-
-          if (keycardNumber.trim()) {
-            const roomNumber =
-              booking.roomAllocated ?? booking.roomBooked ?? "";
-            assignGuestKeycard({
-              keycardNumber: keycardNumber.trim(),
-              occupantId,
-              bookingRef,
-              roomNumber,
-              depositMethod: depositType,
-              depositAmount,
-              loanTxnId: transactionId,
-            });
-          }
         }
+      }
 
-        addActivity(occupantId, 10);
+      const activityResult = await addActivity(occupantId, 10);
+      if (!activityResult.success) {
+        throw new Error(activityResult.error ?? "Failed to log keycard activity.");
+      }
 
-        showToast(
-          payType === KeycardPayType.NO_CARD
-            ? "Guest declined a keycard (No_card logged)."
-            : `Issued 1 keycard (#${keycardNumber || "?"}) with deposit €${depositAmount}.`,
-          payType === KeycardPayType.NO_CARD ? "info" : "success"
-        );
-        setKeycardNumber("");
-      })
-      .catch(() => {
-        showToast("Error issuing keycard.", "error");
-      })
-      .finally(() => {
-        setButtonDisabled(false);
-        setMenuOpen(false);
-        setTrackedTimeout(() => setMenuPosition(null), 200);
-      });
+      showToast(
+        payType === KeycardPayType.NO_CARD
+          ? "Guest declined a keycard (No_card logged)."
+          : `Issued 1 keycard (#${keycardNumber || "?"}) with deposit €${depositAmount}.`,
+        payType === KeycardPayType.NO_CARD ? "info" : "success"
+      );
+      setKeycardNumber("");
+    } catch {
+      showToast("Error issuing keycard.", "error");
+    } finally {
+      setButtonDisabled(false);
+      setMenuOpen(false);
+      setTrackedTimeout(() => setMenuPosition(null), 200);
+    }
   }, [
     isDisabled,
     booking,

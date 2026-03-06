@@ -17,7 +17,12 @@ const MANAGED_ROLES: UserRole[] = ["staff", "manager", "admin"];
 type FormState =
   | { status: "idle" }
   | { status: "submitting" }
-  | { status: "success"; email: string }
+  | {
+      status: "success";
+      email: string;
+      setupEmailSent: boolean;
+      setupEmailError?: string;
+    }
   | { status: "error"; message: string };
 
 type StaffAccount = {
@@ -124,7 +129,7 @@ async function updateAccountRoles(
   return { success: true };
 }
 
-async function removeAccount(
+async function removeStaffAccess(
   idToken: string,
   uid: string,
 ): Promise<{ success: true } | { success: false; error: string }> {
@@ -140,7 +145,7 @@ async function removeAccount(
   if (!response.ok || !data.success) {
     return {
       success: false,
-      error: "error" in data ? data.error : "Failed to remove account",
+      error: "error" in data ? data.error : "Failed to remove staff access",
     };
   }
 
@@ -273,11 +278,19 @@ export default function StaffAccountsForm() {
     }
 
     const auth = getFirebaseAuth(app);
-    await sendPasswordResetEmail(auth, normalizedEmail).catch(() => {
-      // Non-fatal: resend button remains available.
+    const resetResult = await sendPasswordResetEmail(auth, normalizedEmail);
+    setFormState({
+      status: "success",
+      email: normalizedEmail,
+      setupEmailSent: resetResult.success,
+      ...(resetResult.success
+        ? {}
+        : {
+            setupEmailError:
+              resetResult.error ??
+              "Account created, but the setup email could not be sent automatically.",
+          }),
     });
-
-    setFormState({ status: "success", email: normalizedEmail });
     setEmail("");
     setDisplayName("");
     setNewRoles(["staff"]);
@@ -287,7 +300,22 @@ export default function StaffAccountsForm() {
   async function handleResend() {
     if (formState.status !== "success") return;
     const auth = getFirebaseAuth(app);
-    await sendPasswordResetEmail(auth, formState.email);
+    const resendResult = await sendPasswordResetEmail(auth, formState.email);
+    if (!resendResult.success) {
+      setFormState({
+        ...formState,
+        setupEmailSent: false,
+        setupEmailError:
+          resendResult.error ??
+          "Could not resend the setup email. Please verify the address and try again.",
+      });
+      return;
+    }
+    setFormState({
+      ...formState,
+      setupEmailSent: true,
+      setupEmailError: undefined,
+    });
   }
 
   function toggleRole(
@@ -357,11 +385,11 @@ export default function StaffAccountsForm() {
     setRemovingUid(account.uid);
     setAccountsError(null);
 
-    const result = await removeAccount(idToken, account.uid);
+    const result = await removeStaffAccess(idToken, account.uid);
     setRemovingUid(null);
 
     if (!result.success) {
-      setAccountsError("error" in result ? result.error : "Failed to remove account");
+      setAccountsError("error" in result ? result.error : "Failed to remove staff access");
       return;
     }
 
@@ -383,9 +411,16 @@ export default function StaffAccountsForm() {
         {formState.status === "success" ? (
           <div className="rounded-lg border border-border bg-surface-2 p-4">
             <p className="mb-3 text-sm text-foreground">
-              Account created for <strong>{formState.email}</strong>. A password setup
-              email has been sent.
+              Account created for <strong>{formState.email}</strong>.{" "}
+              {formState.setupEmailSent
+                ? "A password setup email has been sent."
+                : "Setup email delivery failed."}
             </p>
+            {!formState.setupEmailSent && formState.setupEmailError ? (
+              <p className="mb-3 rounded-md bg-danger/10 p-3 text-sm text-danger">
+                {formState.setupEmailError}
+              </p>
+            ) : null}
             <div className="flex gap-3">
               <button
                 type="button"
@@ -514,7 +549,9 @@ export default function StaffAccountsForm() {
                       disabled={removingUid === account.uid}
                       className="rounded-md border border-danger px-3 py-1.5 text-xs font-medium text-danger disabled:opacity-60"
                     >
-                      {removingUid === account.uid ? "Removing..." : "Remove account"}
+                      {removingUid === account.uid
+                        ? "Removing access..."
+                        : "Remove staff access"}
                     </button>
                   </div>
 

@@ -315,5 +315,10 @@ describe("/api/extension-request", () => {
     expect(payload.deduplicated).toBe(true);
     expect(payload.requestId).toBe("extension_abc");
     expect(updateSpy).not.toHaveBeenCalled();
+    expect(kv.put).not.toHaveBeenCalledWith(
+      expect.stringMatching(/^extension-rate:/),
+      expect.any(String),
+      expect.any(Object),
+    );
   });
 });

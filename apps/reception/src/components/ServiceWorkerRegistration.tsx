@@ -15,15 +15,26 @@ export function ServiceWorkerRegistration() {
     if (process.env.NODE_ENV !== "production") return;
     if (!("serviceWorker" in navigator)) return;
 
+    let intervalId: ReturnType<typeof setInterval> | undefined;
     navigator.serviceWorker
       .register(SW_URL, { updateViaCache: "none" })
       .then((registration) => {
         // Check for updates periodically (every 30 minutes)
-        setInterval(() => {
-          registration.update().catch(() => undefined);
+        intervalId = setInterval(() => {
+          registration.update().catch((error) => {
+            console.error("[ServiceWorkerRegistration] update failed", error);
+          });
         }, 30 * 60 * 1000);
       })
-      .catch(() => undefined);
+      .catch((error) => {
+        console.error("[ServiceWorkerRegistration] registration failed", error);
+      });
+
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
   }, []);
 
   return null;

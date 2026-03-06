@@ -59,8 +59,12 @@ function extractBearerToken(request: Request): string | null {
 }
 
 function readRequiredEnv(): { apiKey: string; dbUrl: string } | null {
-  const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY?.trim();
-  const dbUrl = process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL?.trim();
+  const apiKey =
+    process.env.RECEPTION_FIREBASE_API_KEY?.trim() ??
+    process.env.NEXT_PUBLIC_FIREBASE_API_KEY?.trim();
+  const dbUrl =
+    process.env.RECEPTION_FIREBASE_DATABASE_URL?.trim() ??
+    process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL?.trim();
   if (!apiKey || !dbUrl) return null;
   return { apiKey, dbUrl: dbUrl.replace(/\/+$/, "") };
 }

@@ -138,17 +138,18 @@ export default function DigitalAssistantPage() {
         return;
       }
 
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-
       const data = (await response.json()) as {
         answer: string;
         answerType: 'llm' | 'llm-safety-fallback';
         links: Array<{ label: string; href: string }>;
         category: string;
         durationMs: number;
+        errorCode?: string;
       };
+
+      if (!response.ok && data.answerType !== 'llm-safety-fallback') {
+        throw new Error(`HTTP ${response.status}`);
+      }
 
       setExchanges((prev) => [
         ...prev,
@@ -165,13 +166,14 @@ export default function DigitalAssistantPage() {
         type: 'utility_action_used',
         route: '/digital-assistant',
         sessionKey: localStorage.getItem('prime_guest_uuid') || 'assistant-anon',
-        context: {
-          utilityAction: 'assistant_query',
-          answerType: data.answerType,
-          answerCategory: data.category ?? 'general',
-          llmDurationMs,
-        },
-      });
+          context: {
+            utilityAction: 'assistant_query',
+            answerType: data.answerType,
+            answerCategory: data.category ?? 'general',
+            llmDurationMs,
+            llmFallbackReason: data.errorCode,
+          },
+        });
     } catch {
       const llmDurationMs = Date.now() - startMs;
       setExchanges((prev) => [

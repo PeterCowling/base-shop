@@ -8,13 +8,15 @@
  * - dispatches a structured email payload to operations
  */
 
-import { FirebaseRest, errorResponse, jsonResponse } from '../lib/firebase-rest';
+import { errorResponse, FirebaseRest, jsonResponse } from '../lib/firebase-rest';
+import { createFunctionTranslator } from '../lib/function-i18n';
 import { validateGuestSessionToken } from '../lib/guest-session';
 import { createPrimeRequestRecord, createPrimeRequestWritePayload } from '../lib/prime-requests';
 
 interface Env {
   CF_FIREBASE_DATABASE_URL: string;
   CF_FIREBASE_API_KEY?: string;
+  PRIME_EXTENSION_TARGET_EMAIL?: string;
   RATE_LIMIT?: KVNamespace;
 }
 
@@ -30,7 +32,6 @@ interface BookingOccupantRecord {
   lastName?: string;
 }
 
-const TARGET_EMAIL = 'hostelbrikette@gmail.com';
 const MAX_REQUESTS_PER_HOUR = 3;
 const REQUEST_WINDOW_SECONDS = 60 * 60;
 const DEDUPE_WINDOW_SECONDS = 10 * 60;
@@ -63,22 +64,28 @@ function buildDeterministicExtensionRequestId(input: {
 }
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
+  const { t } = createFunctionTranslator(request, 'ExtensionRequestApi');
+
   let body: ExtensionRequestBody;
   try {
     body = await request.json() as ExtensionRequestBody;
   } catch {
-    return errorResponse('Invalid JSON body', 400);
+    return errorResponse(t('errors.invalidJsonBody'), 400);
   }
 
   const token = body.token ?? null;
   const requestedCheckOutDate = (body.requestedCheckOutDate ?? '').trim();
   const note = (body.note ?? '').trim();
+  const targetEmail = env.PRIME_EXTENSION_TARGET_EMAIL?.trim() ?? '';
 
   if (!requestedCheckOutDate || !isIsoDate(requestedCheckOutDate)) {
-    return errorResponse('requestedCheckOutDate must be ISO YYYY-MM-DD', 400);
+    return errorResponse(t('errors.requestedCheckOutDateIso'), 400);
   }
   if (note.length > 500) {
-    return errorResponse('note must be 500 characters or fewer', 400);
+    return errorResponse(t('errors.noteTooLong'), 400);
+  }
+  if (!targetEmail) {
+    return errorResponse(t('errors.targetEmailNotConfigured'), 500);
   }
 
   try {
@@ -89,19 +96,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
     const guestUuid = authResult.session.guestUuid;
     if (!guestUuid) {
-      return errorResponse('guestUuid missing for session', 422);
-    }
-
-    if (env.RATE_LIMIT) {
-      const rateLimitKey = `extension-rate:${guestUuid}`;
-      const rawCount = await env.RATE_LIMIT.get(rateLimitKey);
-      const count = parseInt(rawCount ?? '0', 10);
-      if (count >= MAX_REQUESTS_PER_HOUR) {
-        return errorResponse('Too many extension requests. Please wait before retrying.', 429);
-      }
-      await env.RATE_LIMIT.put(rateLimitKey, String(count + 1), {
-        expirationTtl: REQUEST_WINDOW_SECONDS,
-      });
+      return errorResponse(t('errors.guestUuidMissing'), 422);
     }
 
     if (env.RATE_LIMIT) {
@@ -112,9 +107,21 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
           success: true,
           deduplicated: true,
           requestId: existing,
-          message: 'Extension request already submitted recently.',
+          message: t('messages.deduplicated'),
         });
       }
+    }
+
+    if (env.RATE_LIMIT) {
+      const rateLimitKey = `extension-rate:${guestUuid}`;
+      const rawCount = await env.RATE_LIMIT.get(rateLimitKey);
+      const count = parseInt(rawCount ?? '0', 10);
+      if (count >= MAX_REQUESTS_PER_HOUR) {
+        return errorResponse(t('errors.rateLimitExceeded'), 429);
+      }
+      await env.RATE_LIMIT.put(rateLimitKey, String(count + 1), {
+        expirationTtl: REQUEST_WINDOW_SECONDS,
+      });
     }
 
     const firebase = new FirebaseRest(env);
@@ -123,14 +130,16 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     );
 
     if (!occupant?.checkOutDate) {
-      return errorResponse('Current checkout date unavailable for this booking', 422);
+      return errorResponse(t('errors.currentCheckoutUnavailable'), 422);
     }
 
     if (compareIsoDates(requestedCheckOutDate, occupant.checkOutDate) <= 0) {
-      return errorResponse('requestedCheckOutDate must be after current checkout date', 400);
+      return errorResponse(t('errors.requestedCheckoutAfterCurrent'), 400);
     }
 
-    const guestName = `${occupant.firstName ?? ''} ${occupant.lastName ?? ''}`.trim() || 'Guest';
+    const guestName =
+      `${occupant.firstName ?? ''} ${occupant.lastName ?? ''}`.trim()
+      || t('requestRecord.defaultGuestName');
     const requestId = buildDeterministicExtensionRequestId({
       bookingId: authResult.session.bookingId,
       guestUuid,
@@ -150,21 +159,23 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     });
 
     const emailText = [
-      'Prime extension request received.',
-      `Booking: ${authResult.session.bookingId}`,
-      `Guest UUID: ${guestUuid}`,
-      `Guest name: ${guestName}`,
-      `Current checkout: ${occupant.checkOutDate}`,
-      `Requested checkout: ${requestedCheckOutDate}`,
-      `Note: ${note || '(none)'}`,
-      `Request ID: ${requestId}`,
+      t('outboundDraft.body.intro'),
+      t('outboundDraft.body.booking', { bookingId: authResult.session.bookingId }),
+      t('outboundDraft.body.guestUuid', { guestUuid }),
+      t('outboundDraft.body.guestName', { guestName }),
+      t('outboundDraft.body.currentCheckout', { currentCheckOutDate: occupant.checkOutDate }),
+      t('outboundDraft.body.requestedCheckout', { requestedCheckOutDate }),
+      t('outboundDraft.body.note', {
+        note: note || t('outboundDraft.body.none'),
+      }),
+      t('outboundDraft.body.requestId', { requestId }),
     ].join('\n');
 
     const writePayload = {
       ...createPrimeRequestWritePayload(requestRecord),
       [`outboundDrafts/${requestId}`]: {
-        to: TARGET_EMAIL,
-        subject: `[Prime] Extension request ${authResult.session.bookingId}`,
+        to: targetEmail,
+        subject: t('outboundDraft.subject', { bookingId: authResult.session.bookingId }),
         bodyText: emailText,
         category: 'extension-ops',
         guestName,
@@ -188,10 +199,10 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       success: true,
       requestId,
       deliveryMode: 'outbox',
-      message: 'Extension request sent. Reception usually replies by email within one business day.',
+      message: t('messages.submitted'),
     });
   } catch (error) {
     console.error('Failed to create extension request:', error);
-    return errorResponse('Failed to submit extension request', 500);
+    return errorResponse(t('errors.submitFailed'), 500);
   }
 };

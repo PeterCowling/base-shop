@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "1600413945f830c4",
+  "feature_slug": "startup-loop-structured-sidecar-introduction",
+  "emitted_at": "2026-03-06T15:57:20.430Z",
+  "why": "The markdown re-parse in generate-process-improvements.ts is fragile — regex/bullet-parse bugs silently drop ideas from the operator dashboard. Emitting structured sidecars closes this gap and reduces prompt context for the model.",
+  "why_source": "auto",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "generate-process-improvements.ts reads idea candidates from results-review.signals.json when present (falling back to markdown parse when absent), and self-evolving-from-build-output.ts reads from both sidecars at the file-loading layer. Zero regressions in existing behaviour.",
+    "source": "auto"
+  }
+}

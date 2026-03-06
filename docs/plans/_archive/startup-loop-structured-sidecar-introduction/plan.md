@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: BOS
 Workstream: Engineering
 Created: 2026-03-06
@@ -8,6 +8,7 @@ Last-reviewed: 2026-03-06
 Last-updated: 2026-03-06
 Wave-1-complete: 2026-03-06
 Wave-3-complete: 2026-03-06
+Wave-4-complete: 2026-03-06
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: startup-loop-structured-sidecar-introduction
 Deliverable-Type: code-change
@@ -33,7 +34,7 @@ The startup loop currently re-parses `results-review.user.md` markdown prose pro
 - [x] TASK-03: Implement pattern-reflection post-authoring extractor
 - [x] TASK-04: Add sidecar-prefer branch to generate-process-improvements
 - [x] TASK-05: Add sidecar-prefer branch to self-evolving-from-build-output
-- [ ] TASK-06: Wire extractor steps into SKILL.md and update loop-output-contracts
+- [x] TASK-06: Wire extractor steps into SKILL.md and update loop-output-contracts
 
 ## Goals
 
@@ -101,7 +102,7 @@ The startup loop currently re-parses `results-review.user.md` markdown prose pro
 | TASK-03 | IMPLEMENT | Implement pattern-reflection post-authoring extractor | 88% | S | Complete (2026-03-06) | - | TASK-05, TASK-06 |
 | TASK-04 | IMPLEMENT | Add sidecar-prefer branch to generate-process-improvements | 85% | M | Complete (2026-03-06) | TASK-01, TASK-02 | TASK-06 |
 | TASK-05 | IMPLEMENT | Add sidecar-prefer branch to self-evolving-from-build-output | 85% | S | Complete (2026-03-06) | TASK-02, TASK-03 | TASK-06 |
-| TASK-06 | IMPLEMENT | Wire extractor steps into SKILL.md + update loop-output-contracts | 95% | S | Pending | TASK-02, TASK-03, TASK-04, TASK-05 | - |
+| TASK-06 | IMPLEMENT | Wire extractor steps into SKILL.md + update loop-output-contracts | 95% | S | Complete (2026-03-06) | TASK-02, TASK-03, TASK-04, TASK-05 | - |
 
 ## Parallelism Guide
 
@@ -425,7 +426,7 @@ The startup loop currently re-parses `results-review.user.md` markdown prose pro
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-06)
 - **Affects:**
   - `.claude/skills/lp-do-build/SKILL.md`
   - `docs/business-os/startup-loop/contracts/loop-output-contracts.md`
@@ -464,6 +465,16 @@ The startup loop currently re-parses `results-review.user.md` markdown prose pro
   - Rollback: remove step 2.1 and step 2.55 from SKILL.md; remove sidecar section from loop-output-contracts.
 - **Documentation impact:** This task is itself a documentation task.
 - **Notes / references:** SKILL.md insertion points: after `2. Refine results-review...` block (step 2 ends ~L234), before `2.4. Pre-fill pattern-reflection...` (L235). After `2.5. Refine pattern-reflection...` block (L241), before `2.6. Run self-evolving build-output bridge` (L243).
+
+**Build evidence (2026-03-06):**
+- Status: Complete (2026-03-06)
+- Route: inline
+- Files modified: `.claude/skills/lp-do-build/SKILL.md` (step 2.1 and step 2.55 inserted at confirmed positions), `docs/business-os/startup-loop/contracts/loop-output-contracts.md` (sidecar rows added to artifact table; new sidecar artifact section added documenting both sidecars: producer, consumers, schema version, fallback policy)
+- TC-01 PASS: SKILL.md contains `startup-loop:results-review-extract` at step 2.1
+- TC-02 PASS: SKILL.md contains `startup-loop:pattern-reflection-extract` at step 2.55
+- TC-03 PASS: step 2.1 contains `git add docs/plans/<slug>/results-review.signals.json` instruction
+- TC-04 PASS: both steps marked advisory/fail-open with continue on non-zero exit
+- TC-05 PASS: loop-output-contracts.md contains both `results-review.signals.v1` and `pattern-reflection.entries.v1` schema version strings
 
 ---
 

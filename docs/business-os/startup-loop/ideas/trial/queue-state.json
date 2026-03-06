@@ -1,18 +1,74 @@
 {
-  "last_updated": "2026-03-06T15:01:05.365Z",
+  "last_updated": "2026-03-06T15:59:50.759Z",
   "counts": {
-    "enqueued": 125,
+    "enqueued": 126,
     "processed": 36,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
-    "completed": 119,
-    "fact_find_ready": 182,
+    "completed": 120,
+    "fact_find_ready": 183,
     "micro_build_ready": 1,
-    "total": 306
+    "total": 308
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306153703-0994",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:BRIK:PRODUCTS:reception-app-native-inbox:20260306",
+      "anchor_key": "reception-app-native-inbox",
+      "cluster_key": "BRIK:PRODUCTS:reception-app-native-inbox:operator:20260306",
+      "cluster_fingerprint": "48c6640d21ffc784e30812b7141e8afdc52d719524ef8dfa39cf44bc675db7e8",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK reception inbox — app-native draft-first email desk",
+      "location_anchors": [
+        "apps/reception",
+        "packages/mcp-server/src/tools/gmail.ts",
+        "packages/mcp-server/src/clients/gmail.ts",
+        "docs/plans/reception-guest-email-cutover-fact-find.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Brikette email handling is still centered on Gmail labels, local MCP tooling, and narrow reception draft routes. There is no app-native inbox in reception, the hosted app has no canonical thread state, and the current Gmail auth/audit model assumes local filesystem tokens and logs rather than a hosted staff workflow.",
+      "next_scope_now": "Fact-find the minimum hosted architecture for a reception-native inbox: D1-backed canonical thread state, admission rules that keep spam and no-response mail out of the working inbox, draft-review-send lifecycle through Gmail backend delivery, and a low-volume polling/manual-refresh sync model that avoids Google admin dependencies.",
+      "adjacent_later": [
+        "Add richer multi-user ownership and collision handling after single-user-first workflow is stable",
+        "Evaluate push sync and attachment handling only after v1 proves operational value"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.89,
+      "evidence_refs": [
+        "operator-stated: email volume usually stays under 100 and drops sharply during five closed months",
+        "operator-stated: attachments are out of scope, replies must stay draft-first, and no Google admin access is available",
+        "code-ref: packages/mcp-server/src/clients/gmail.ts - current Gmail client relies on credentials.json and token.json on local filesystem",
+        "code-ref: packages/mcp-server/src/tools/gmail-shared.ts - audit and lock persistence are file-backed and local-process oriented",
+        "code-ref: apps/reception/wrangler.toml - reception is deployed as a Cloudflare Worker"
+      ],
+      "queue_state": "processed",
+      "created_at": "2026-03-06T15:37:03Z",
+      "why": "The current Brikette email workflow is workable for ad hoc operator use, but it is not a clean staff-facing inbox: queue state lives in Gmail labels, the hosted reception app only exposes narrow draft routes, and the Gmail backend assumptions are still local-process oriented. Because volume is low and the workflow is explicitly draft-first, there is now a realistic path to replace Gmail as the day-to-day UI without buying a third-party help desk, provided the hosted design avoids the current local-filesystem assumptions.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "A planning-ready architecture exists for a reception-native inbox that admits only actionable emails, stores thread state in app-native records, supports draft-review-send flow through Gmail backend delivery, and fits the current Cloudflare-hosted setup without requiring attachments or Google admin features.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-app-native-inbox",
+        "target_path": "docs/plans/reception-app-native-inbox/fact-find.md",
+        "fact_find_slug": "reception-app-native-inbox",
+        "fact_find_path": "docs/plans/reception-app-native-inbox/fact-find.md",
+        "processed_at": "2026-03-06T15:39:46.875Z"
+      }
+    },
     {
       "schema_version": "dispatch.v2",
       "dispatch_id": "IDEA-DISPATCH-20260306153000-0993",
@@ -38,7 +94,7 @@
         "Audit other downstream consumers of results-review.user.md for similar reverse-parse patterns"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.88,
       "evidence_refs": [
@@ -46,7 +102,7 @@
         "code-ref: scripts/src/startup-loop/generate-process-improvements.ts:426 — markdown re-parse to reconstruct title/body pairs",
         "code-ref: scripts/src/startup-loop/generate-process-improvements.ts:568 — deterministic classification run on parsed markdown"
       ],
-      "queue_state": "processed",
+      "queue_state": "completed",
       "created_at": "2026-03-06T15:30:00.000Z",
       "why": "Using markdown as the machine-readable interface between the loop's build phase and its reporting layer means the model pays to author prose that code then strips and re-parses. A canonical JSON sidecar emitted alongside the human-readable artifact removes this round-trip, reduces prompt context size, and eliminates parser fragility without changing the operator-facing output.",
       "intended_outcome": {
@@ -63,6 +119,11 @@
         "processed_at": "2026-03-06T14:46:09.276Z",
         "fact_find_slug": "startup-loop-structured-sidecar-introduction",
         "fact_find_path": "docs/plans/startup-loop-structured-sidecar-introduction/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/startup-loop-structured-sidecar-introduction/plan.md",
+        "completed_at": "2026-03-06T15:59:50.758Z",
+        "outcome": "generate-process-improvements.ts and self-evolving-from-build-output.ts now read from structured JSON sidecars when present, with markdown fallback for historical plans"
       }
     },
     {
@@ -12592,6 +12653,50 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-06T14:58:53.136Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260306155923-0100",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "d70cefdceb8e9deb617448252c34adc6af55865d",
+      "after_sha": "ade5c43b742dd5b8c39f6993cc38e7d68c2aa112",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:ade5c43b742dd5b8c39f6993cc38e7d68c2aa112",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:ade5c43b742dd5b8c39f6993cc38e7d68c2aa112",
+      "cluster_fingerprint": "8783e8f9dba19dabc0c2d69194504c333a5718f38207ecf60d58a3d1fe1c0140",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (d70cefd → ade5c43)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:10ac4a80-1de3-4ec1-b5bd-f0df2e78e8e6",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:5d8a9aff-c946-4f3d-b343-f7878199615b",
+        "session:00654e03-9371-4567-a764-5f1c336012e5",
+        "session:7e5ee3c7-48c8-4634-abfa-bb48c7d6671e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b"
+      ],
+      "created_at": "2026-03-06T15:59:23.099Z",
       "queue_state": "enqueued",
       "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
       "intended_outcome": {

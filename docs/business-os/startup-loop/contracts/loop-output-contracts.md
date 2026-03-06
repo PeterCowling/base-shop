@@ -341,10 +341,14 @@ All artifacts in this contract share the `docs/plans/<feature-slug>/` namespace:
 | `build-record.user.md` | `docs/plans/<feature-slug>/build-record.user.md` | `/lp-do-build` |
 | `build-event.json` | `docs/plans/<feature-slug>/build-event.json` | `/lp-do-build` emitter (`lp-do-build-event-emitter.ts`) |
 | `results-review.user.md` | `docs/plans/<feature-slug>/results-review.user.md` | Operator |
+| `results-review.signals.json` | `docs/plans/<feature-slug>/results-review.signals.json` | `/lp-do-build` (step 2.1) |
 | `reflection-debt.user.md` | `docs/plans/<feature-slug>/reflection-debt.user.md` | `/lp-do-build` emitter |
 | `pattern-reflection.user.md` | `docs/plans/<feature-slug>/pattern-reflection.user.md` | `/lp-do-build` (step 2.5) |
+| `pattern-reflection.entries.json` | `docs/plans/<feature-slug>/pattern-reflection.entries.json` | `/lp-do-build` (step 2.55) |
 
 The `.user.md` suffix marks operator-facing loop artifacts. Only `results-review.user.md` requires human-authored observation content; `build-record.user.md`, `reflection-debt.user.md`, and `pattern-reflection.user.md` are produced by `/lp-do-build`.
+
+The `.json` sidecar artifacts are machine-readable companions that let downstream tooling read structured data without re-parsing markdown prose.
 
 ---
 
@@ -366,6 +370,63 @@ The `.user.md` suffix marks operator-facing loop artifacts. Only `results-review
                                             └── Operator completes results-review.user.md
                                                     └── debt resolves + Layer A standing-information refresh (§ Standing Updates)
 ```
+
+---
+
+## Sidecar Artifacts: `results-review.signals.json` and `pattern-reflection.entries.json`
+
+These machine-readable sidecars are emitted by `/lp-do-build` immediately after the LLM finalizes the corresponding `.user.md`. They allow downstream consumers to read structured data without re-parsing markdown prose.
+
+### `results-review.signals.json`
+
+**Schema version:** `results-review.signals.v1`
+
+**Stored at:** `docs/plans/<feature-slug>/results-review.signals.json`
+
+**Produced by:** `/lp-do-build` step 2.1 (`pnpm --filter scripts startup-loop:results-review-extract`), after Step 2 LLM refinement of `results-review.user.md`.
+
+**Schema:**
+```json
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "<ISO timestamp>",
+  "plan_slug": "<feature-slug>",
+  "source_path": "<relative path to results-review.user.md>",
+  "items": [ /* ProcessImprovementItem[] — classified idea candidates */ ]
+}
+```
+
+**Consumers:**
+- `generate-process-improvements.ts` — prefers this sidecar over markdown parse; falls back to markdown if absent or malformed.
+- `self-evolving-from-build-output.ts` — reads candidate titles from sidecar items; falls back to `extractBulletCandidates(markdown)` if absent or malformed.
+
+**Fallback policy:** If `results-review.signals.json` is absent (historical plans without sidecar), all consumers fall back to the existing markdown parse path with no change in behaviour.
+
+---
+
+### `pattern-reflection.entries.json`
+
+**Schema version:** `pattern-reflection.entries.v1`
+
+**Stored at:** `docs/plans/<feature-slug>/pattern-reflection.entries.json`
+
+**Produced by:** `/lp-do-build` step 2.55 (`pnpm --filter scripts startup-loop:pattern-reflection-extract`), after Step 2.5 LLM refinement of `pattern-reflection.user.md`.
+
+**Schema:**
+```json
+{
+  "schema_version": "pattern-reflection.entries.v1",
+  "generated_at": "<ISO timestamp>",
+  "plan_slug": "<feature-slug>",
+  "source_path": "<relative path to pattern-reflection.user.md>",
+  "entries": [ /* PatternEntry[] — parsed pattern entries */ ]
+}
+```
+
+**Consumers:**
+- `self-evolving-from-build-output.ts` — builds observation seeds from sidecar entries; falls back to `extractPatternReflectionSeeds(markdown)` if absent or malformed.
+
+**Fallback policy:** If `pattern-reflection.entries.json` is absent, consumers fall back to the existing markdown parse path.
 
 ---
 

@@ -232,6 +232,16 @@ Post-build artifacts are reflective only — they must not contain unexecuted wo
      - New skill — recurring agent workflow ready to be codified as a named skill
      - New loop process — missing stage, gate, or feedback path in the startup loop
      - AI-to-mechanistic — LLM reasoning step replaceable with a deterministic script
+2.1. **Emit results-review sidecar (post-authoring).** After the LLM has finalized `results-review.user.md` in Step 2, run:
+   ```
+   pnpm --filter scripts startup-loop:results-review-extract -- --plan-dir docs/plans/<slug>
+   ```
+   - This step is advisory/fail-open: on non-zero exit or if the sidecar is not written, log a warning in build evidence and continue.
+   - On success: `docs/plans/<slug>/results-review.signals.json` is written atomically alongside the `.user.md`. Stage it for the post-build commit:
+     ```
+     git add docs/plans/<slug>/results-review.signals.json
+     ```
+   - The sidecar enables `generate-process-improvements` and `self-evolving-from-build-output` to read structured idea candidates without re-parsing markdown prose.
 2.4. **Pre-fill pattern-reflection scaffold (deterministic).** Run:
    ```
    pnpm --filter scripts startup-loop:pattern-reflection-prefill -- --slug <slug> --plan-dir docs/plans/<slug> --archive-dir docs/plans/_archive
@@ -240,6 +250,13 @@ Post-build artifacts are reflective only — they must not contain unexecuted wo
    - On success: `docs/plans/<slug>/pattern-reflection.user.md` now contains a deterministic scaffold with archive recurrence counts, routing targets, and the empty-state when no patterns exist. The pre-fill also emits `[pre-fill] needs_refinement: true/false` to stderr — capture this value.
 2.5. Refine the pattern-reflection artifact from Step 2.4 (or generate from scratch if Step 2.4 was skipped/failed). **Skip this step entirely and emit the pre-fill as-is if Step 2.4 succeeded and `needs_refinement: false` was emitted** (gate is false when no placeholder markers are present, no unclassified entries exist, and all required fields are populated — this covers the complete valid empty-state and any build where all idea categories were preserved at handoff). Otherwise: read the `results-review.user.md` just produced. For each entry in `## New Idea Candidates`, identify whether it describes a pattern that has recurred across recent builds or could recur in future builds. If a pre-filled scaffold exists from Step 2.4, fill in any remaining gaps using build context — category is already preserved from the results-review bullet prefixes, so correction is only needed for entries the pre-fill could not classify. Then write or update `docs/plans/<slug>/pattern-reflection.user.md` using the schema at `docs/plans/startup-loop-build-reflection-gate/task-01-schema-spec.md`. Each entry must include: a plain summary (≤100 characters), the category, the routing result (see schema routing criteria), and how many times the pattern has been observed. If no patterns are present, write the empty-state artifact with `None identified` in both `## Patterns` and `## Access Declarations` sections. The artifact must always be produced — an empty-state is valid and closes any potential gap in the record.
 
+2.55. **Emit pattern-reflection sidecar (post-authoring).** After the LLM has finalized `pattern-reflection.user.md` in Step 2.5, run:
+   ```
+   pnpm --filter scripts startup-loop:pattern-reflection-extract -- --plan-dir docs/plans/<slug>
+   ```
+   - This step is advisory/fail-open: on non-zero exit or if the sidecar is not written, log a warning in build evidence and continue.
+   - On success: `docs/plans/<slug>/pattern-reflection.entries.json` is written atomically alongside the `.user.md`. The sidecar is committed in the post-build artifacts commit (Step 8) — no separate `git add` is needed here unless a partial commit precedes Step 8.
+   - The sidecar enables `self-evolving-from-build-output` to read structured pattern entries without re-parsing markdown prose.
 2.6. Run self-evolving build-output bridge (advisory) to feed build artifacts into observation ingestion:
 
    `pnpm --filter scripts startup-loop:self-evolving-from-build-output -- --business <BUSINESS> --plan-slug <slug>`

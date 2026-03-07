@@ -314,7 +314,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-03-07T10:25:01.316Z";
+  var GEN_TS = "2026-03-07T11:44:19.251Z";
 
   var IDEA_ITEMS = [
     {
@@ -2399,6 +2399,102 @@
       "date": "2026-02-25T22:32:11.291Z",
       "path": "docs/plans/_archive/brikette-seo-api-optimization-loop/results-review.user.md",
       "idea_key": "2a9895c0b987426e79f26ab0ad5d09a70a53152e",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "bos-agent-session-findings",
+      "body": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "source": "queue-state.json",
+      "date": "2026-03-07T11:43:24.797Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "715907c064af171ab6d27960513475e066f61a98",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "mcp inbox threadid",
+      "body": "Assess mcp inbox threadid implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
+      "source": "queue-state.json",
+      "date": "2026-03-07T11:43:23.979Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "6b92ec939a015d82ef9107bc6325fc2942110d5f",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BRIK",
+      "title": "BRIK reception inbox — Gmail API blocks thread detail render",
+      "body": "getGmailThread() with format=full runs synchronously before thread detail renders, adding 100-500ms+ per click. DB-cached messages could display immediately.",
+      "source": "queue-state.json",
+      "date": "2026-03-07T11:20:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "675886bc57af9d3d52e80ad88993d831cb128ee4",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BRIK",
+      "title": "BRIK reception inbox — N+1 query in thread list endpoint",
+      "body": "Thread list endpoint calls getThread() per visible thread, causing ~200 DB queries for 50 threads. Staff experience multi-second load times.",
+      "source": "queue-state.json",
+      "date": "2026-03-07T11:20:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "a1f2a67cd0d49fa34289562ebbf21c1a6095608f",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BRIK",
+      "title": "BRIK reception inbox — no client cache, full re-fetch after actions",
+      "body": "useInbox hook re-fetches entire thread list (with N+1) after every action (save, regenerate, send, resolve, dismiss). No client-side cache or optimistic updates. Rapid thread clicks fire overlapping requests.",
+      "source": "queue-state.json",
+      "date": "2026-03-07T11:20:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "e00f0e824da36662753416dd525efee0bdc05117",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "bos-agent-session-findings",
+      "body": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "source": "queue-state.json",
+      "date": "2026-03-07T10:25:02.111Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "ebcc3642456e6f9624766da87524be23bf3b4bc3",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",

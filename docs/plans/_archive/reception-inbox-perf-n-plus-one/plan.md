@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Platform
 Workstream: Engineering
 Created: 2026-03-07
@@ -25,9 +25,9 @@ Auto-Build-Intent: plan+auto
 The reception inbox suffers from multi-second load times caused by three compounding issues: (1) an N+1 query pattern in the list endpoint that runs ~200 DB queries for 50 threads, (2) a synchronous Gmail API call blocking the detail endpoint by 100-500ms, and (3) a client-side hook that re-fetches the entire thread list after every action with no caching. This plan addresses all three with a lean list query using LEFT JOIN, removing the Gmail API call from the detail endpoint (D1-synced data is sufficient for the review workflow), and client-side caching with optimistic updates in `useInbox`.
 
 ## Active tasks
-- [ ] TASK-01: Lean list query with LEFT JOIN for latest draft
-- [ ] TASK-02: Non-blocking Gmail fetch in detail endpoint
-- [ ] TASK-03: Client-side thread detail cache and optimistic updates
+- [x] TASK-01: Lean list query with LEFT JOIN for latest draft
+- [x] TASK-02: Non-blocking Gmail fetch in detail endpoint
+- [x] TASK-03: Client-side thread detail cache and optimistic updates
 
 ## Goals
 - Thread list endpoint responds from 1-2 DB queries instead of ~200
@@ -79,9 +79,9 @@ The reception inbox suffers from multi-second load times caused by three compoun
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Lean list query with LEFT JOIN | 85% | M | Pending | - | - |
-| TASK-02 | IMPLEMENT | Non-blocking Gmail fetch in detail endpoint | 85% | S | Pending | - | - |
-| TASK-03 | IMPLEMENT | Client cache + optimistic updates in useInbox | 85% | M | Pending | - | - |
+| TASK-01 | IMPLEMENT | Lean list query with LEFT JOIN | 85% | M | Complete (2026-03-07) | - | - |
+| TASK-02 | IMPLEMENT | Non-blocking Gmail fetch in detail endpoint | 85% | S | Complete (2026-03-07) | - | - |
+| TASK-03 | IMPLEMENT | Client cache + optimistic updates in useInbox | 85% | M | Complete (2026-03-07) | - | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |

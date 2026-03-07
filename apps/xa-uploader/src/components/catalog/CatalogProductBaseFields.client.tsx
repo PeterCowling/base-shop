@@ -502,7 +502,8 @@ function MaterialColorSelectors({
   );
 }
 
-const PRICE_PATTERN = /^\d{1,4}\.\d{2}$/;
+// eslint-disable-next-line security/detect-unsafe-regex -- XAUP-0001 anchored pattern, no catastrophic backtracking
+const PRICE_PATTERN = /^\d{1,6}(\.\d{1,2})?$/;
 
 function PriceInput({ t, draft, fieldErrors, onChange }: BaseFieldsProps & { t: Translate }) {
   const raw = String(draft.price ?? "");
@@ -516,7 +517,7 @@ function PriceInput({ t, draft, fieldErrors, onChange }: BaseFieldsProps & { t: 
         onChange={(event) => onChange({ ...draft, price: event.target.value })}
         type="text"
         inputMode="decimal"
-        placeholder="0000.00"
+        placeholder="0000"
         className={INPUT_CLASS}
       />
       {showFormatError ? (
@@ -541,10 +542,7 @@ function IdentityFields({
       <BrandCollectionSelectors t={t} selectedSlug={selectedSlug} draft={draft} fieldErrors={fieldErrors} onChange={onChange} />
 
       {hasCollection ? (
-        <>
-          <StatusSelect t={t} draft={draft} onChange={onChange} />
-          <PriceInput t={t} draft={draft} fieldErrors={fieldErrors} onChange={onChange} />
-        </>
+        <PriceInput t={t} draft={draft} fieldErrors={fieldErrors} onChange={onChange} />
       ) : null}
     </>
   );
@@ -684,28 +682,6 @@ function TaxonomyFields({ t, draft, fieldErrors, onChange }: BaseFieldsProps & {
         />
       </label>
     </>
-  );
-}
-
-function StatusSelect({ t, draft, onChange }: { t: Translate; draft: CatalogProductDraftInput; onChange: (next: CatalogProductDraftInput) => void }) {
-  return (
-    <label className="block text-xs uppercase tracking-label text-gate-muted">
-      {t("fieldStatus")}
-      <select
-        value={draft.publishState ?? "draft"}
-        onChange={(event) =>
-          onChange({
-            ...draft,
-            publishState: event.target.value as CatalogProductDraftInput["publishState"],
-          })
-        }
-        className={INPUT_CLASS}
-      >
-        <option value="draft">{t("statusDraft")}</option>
-        <option value="out_of_stock">{t("statusOutOfStock")}</option>
-      </select>
-      <div className="mt-1 text-2xs text-gate-muted">{t("fieldStatusHint")}</div>
-    </label>
   );
 }
 

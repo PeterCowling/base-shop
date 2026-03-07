@@ -7,7 +7,7 @@ import type { CatalogProductDraftInput } from "@acme/lib/xa";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 import { type EditFilterCriteria, type EditFilterOptions, extractFilterOptions, filterCatalogProducts } from "./catalogEditFilter";
-import { BTN_SECONDARY_CLASS, FIELD_LABEL_CLASS, SELECT_CLASS, SKELETON_BLOCK_CLASS } from "./catalogStyles";
+import { BTN_SECONDARY_CLASS, FIELD_LABEL_CLASS, SKELETON_BLOCK_CLASS } from "./catalogStyles";
 
 /** True when the compact product list should render (filters exhausted but multiple matches remain). */
 function shouldShowProductList(
@@ -77,6 +77,80 @@ function FilterLoadingSkeleton() {
   );
 }
 
+function FilterSelect({
+  value,
+  onChange,
+  options,
+  placeholder,
+  testId,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  options: { value: string; label: string }[];
+  placeholder: string;
+  testId?: string;
+}) {
+  const [open, setOpen] = React.useState(false);
+  const ref = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (!open) return;
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [open]);
+
+  const allOptions = [{ value: "", label: placeholder }, ...options];
+  const selectedLabel = allOptions.find((o) => o.value === value)?.label ?? placeholder;
+
+  return (
+    <div ref={ref} className="relative mt-2">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="flex min-h-11 w-full items-center justify-between rounded-md border border-gate-border bg-gate-input px-3 py-2 text-sm transition-colors focus:border-gate-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-accent focus-visible:ring-offset-1"
+        data-testid={testId}
+      >
+        <span className={value ? "text-gate-ink" : "text-gate-muted"}>{selectedLabel}</span>
+        {/* i18n-exempt -- XAUP-0001 [ttl=2027-12-31] chevron glyph for custom select */}
+        <span className="text-xs text-gate-muted">{open ? "▴" : "▾"}</span>
+      </button>
+      {open ? (
+        <ul className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md border border-gate-border bg-gate-surface py-1 shadow-elevation-2">
+          {allOptions.map((opt) => (
+            <li key={opt.value}>
+              <button
+                type="button"
+                onClick={() => {
+                  onChange(opt.value);
+                  setOpen(false);
+                }}
+                className={`w-full px-3 py-2 text-start text-sm transition-colors hover:bg-gate-accent-soft ${
+                  opt.value === value ? "text-gate-accent" : "text-gate-ink"
+                }`}
+              >
+                {opt.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </div>
+  );
+}
+
+// XAUP-0001: automation test IDs — not user-visible copy
+const FILTER_TEST_IDS = {
+  brand: "edit-filter-brand",
+  collection: "edit-filter-collection",
+  size: "edit-filter-size",
+  color: "edit-filter-color",
+} as const;
+
 type FilterSelectPanelProps = {
   criteria: EditFilterCriteria;
   options: ReturnType<typeof extractFilterOptions>;
@@ -126,75 +200,51 @@ function FilterSelectPanel({
 
       <label className={FIELD_LABEL_CLASS}>
         {t("fieldBrandSelect")}
-        <select
+        <FilterSelect
           value={criteria.brand ?? ""}
-          onChange={(e) => onBrandChange(e.target.value)}
-          className={SELECT_CLASS}
-          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-          data-testid="edit-filter-brand"
-        >
-          <option value="">{t("editFilterAllBrands")}</option>
-          {options.brands.map((b) => (
-            <option key={b} value={b}>
-              {b === "__custom__" ? t("fieldBrandSelectCustom") : b}
-            </option>
-          ))}
-        </select>
+          onChange={onBrandChange}
+          options={options.brands.map((b) => ({ value: b, label: b === "__custom__" ? t("fieldBrandSelectCustom") : b }))}
+          placeholder={t("editFilterAllBrands")}
+          testId={FILTER_TEST_IDS.brand}
+        />
       </label>
 
       {showCollection ? (
         <label className={FIELD_LABEL_CLASS}>
           {t("fieldCollectionSelect")}
-          <select
+          <FilterSelect
             value={criteria.collection ?? ""}
-            onChange={(e) => onCollectionChange(e.target.value)}
-            className={SELECT_CLASS}
-            // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-            data-testid="edit-filter-collection"
-          >
-            <option value="">{t("editFilterAllCollections")}</option>
-            {options.collections.map((c) => (
-              <option key={c} value={c}>
-                {c === "__custom__" ? t("fieldCollectionSelectCustom") : c}
-              </option>
-            ))}
-          </select>
+            onChange={onCollectionChange}
+            options={options.collections.map((c) => ({ value: c, label: c === "__custom__" ? t("fieldCollectionSelectCustom") : c }))}
+            placeholder={t("editFilterAllCollections")}
+            testId={FILTER_TEST_IDS.collection}
+          />
         </label>
       ) : null}
 
       {showSize ? (
         <label className={FIELD_LABEL_CLASS}>
           {t("fieldSizeSelect")}
-          <select
+          <FilterSelect
             value={criteria.size ?? ""}
-            onChange={(e) => onSizeChange(e.target.value)}
-            className={SELECT_CLASS}
-            // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-            data-testid="edit-filter-size"
-          >
-            <option value="">{t("editFilterAllSizes")}</option>
-            {options.sizes.map((s) => (
-              <option key={s} value={s}>{s}</option>
-            ))}
-          </select>
+            onChange={onSizeChange}
+            options={options.sizes.map((s) => ({ value: s, label: s }))}
+            placeholder={t("editFilterAllSizes")}
+            testId={FILTER_TEST_IDS.size}
+          />
         </label>
       ) : null}
 
       {showColor ? (
         <label className={FIELD_LABEL_CLASS}>
           {t("editFilterColor")}
-          <select
+          <FilterSelect
             value={criteria.color ?? ""}
-            onChange={(e) => onColorChange(e.target.value)}
-            className={SELECT_CLASS}
-            // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-            data-testid="edit-filter-color"
-          >
-            <option value="">{t("editFilterAllColors")}</option>
-            {options.colors.map((c) => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
+            onChange={onColorChange}
+            options={options.colors.map((c) => ({ value: c, label: c }))}
+            placeholder={t("editFilterAllColors")}
+            testId={FILTER_TEST_IDS.color}
+          />
         </label>
       ) : null}
 

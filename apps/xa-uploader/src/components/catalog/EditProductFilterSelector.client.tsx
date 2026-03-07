@@ -45,8 +45,7 @@ function ProductCompactList({
       <div className="text-xs text-gate-muted">
         {t("editFilterMatchCount").replace("{count}", String(products.length))}
       </div>
-      {/* eslint-disable-next-line ds/no-arbitrary-tailwind -- XAUP-0001 operator-tool max height */}
-      <ul className="max-h-[280px] space-y-1 overflow-y-auto">
+      <ul className="space-y-1">
         {products.map((p) => (
           <li key={p.slug ?? p.title}>
             <button
@@ -232,8 +231,7 @@ function BrowseAllProductList({
       >
         {t("editFilterHideAll")}
       </button>
-      {/* eslint-disable-next-line ds/no-arbitrary-tailwind -- XAUP-0001 operator-tool max height */}
-      <ul className="max-h-[320px] space-y-1 overflow-y-auto">
+      <ul className="space-y-1">
         {products.map((p) => (
           <li key={p.slug ?? p.title}>
             <button

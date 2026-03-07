@@ -1,18 +1,71 @@
 {
-  "last_updated": "2026-03-06T22:38:27.379Z",
+  "last_updated": "2026-03-07T08:09:33.094Z",
   "counts": {
-    "enqueued": 138,
+    "enqueued": 140,
     "processed": 37,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
-    "completed": 121,
-    "fact_find_ready": 196,
+    "completed": 122,
+    "fact_find_ready": 198,
     "micro_build_ready": 1,
-    "total": 322
+    "total": 325
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307080000-0001",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:XA:PRODUCTS:xa-uploader-single-page-layout:20260307",
+      "anchor_key": "xa-uploader-single-page-layout",
+      "cluster_key": "XA:PRODUCTS:xa-uploader-single-page-layout:operator:20260307",
+      "cluster_fingerprint": "a3f7c9d2e48b615f3a2c9e7b8d4f1a6c2e9f3b7d5a1c8e4f2b6d9a3e7c5f8b2",
+      "lineage_depth": 0,
+      "area_anchor": "xa-uploader CatalogProductForm — step tabs replaced by single-page layout",
+      "location_anchors": [
+        "apps/xa-uploader/src/components/catalog/CatalogProductForm.client.tsx",
+        "apps/xa-uploader/src/components/catalog/CatalogProductImagesFields.client.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "CatalogProductForm uses FormStepId='product'|'images' with mutually exclusive step rendering — product fields and images are never shown simultaneously",
+      "next_scope_now": "Extract MainImagePanel and AdditionalImagesPanel from CatalogProductImagesFields; remove step state from CatalogProductForm; interleave main image, data selectors, additional images as single scrollable page",
+      "recommended_route": "lp-do-fact-find",
+      "status": "completed",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: xa-uploader should show main image, data selectors, and other images on one page simultaneously",
+        "apps/xa-uploader/src/components/catalog/CatalogProductForm.client.tsx",
+        "docs/plans/_archive/xa-uploader-status-and-media-model-rewrite/plan.md"
+      ],
+      "created_at": "2026-03-07T08:00:00.000Z",
+      "queue_state": "completed",
+      "why": "The status/media contract rewrite (xa-uploader-status-and-media-model-rewrite) is complete and archived. The step-based tab navigation is now the only barrier to operator efficiency — requiring a tab switch between editing product data and managing images. Removing it makes the catalog entry flow continuous.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "CatalogProductForm renders main image, data selectors, and additional images in a single scrollable page without step navigation. MainImagePanel and AdditionalImagesPanel extracted from CatalogProductImagesFields and interleaved in CatalogProductForm.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-uploader-single-page-layout",
+        "target_path": "docs/plans/xa-uploader-single-page-layout/fact-find.md",
+        "processed_at": "2026-03-07T07:18:06.056Z",
+        "fact_find_slug": "xa-uploader-single-page-layout",
+        "fact_find_path": "docs/plans/xa-uploader-single-page-layout/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/xa-uploader-single-page-layout/plan.md",
+        "completed_at": "2026-03-07T08:09:33.093Z",
+        "outcome": "CatalogProductForm renders single-page layout: MainImagePanel + CatalogProductBaseFields + AdditionalImagesPanel simultaneously without step navigation."
+      }
+    },
     {
       "schema_version": "dispatch.v2",
       "dispatch_id": "IDEA-DISPATCH-20260306191000-9029",
@@ -13368,6 +13421,95 @@
       "intended_outcome": {
         "type": "operational",
         "statement": "Produce a validated routing outcome and scoped next action for brikette scripts generate static export redirects.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307120000-0001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:PRODUCTS:reception-inbox-guest-context:20260307",
+      "anchor_key": "reception-inbox-guest-context",
+      "cluster_key": "BRIK:PRODUCTS:reception-inbox-guest-context:operator:20260307",
+      "cluster_fingerprint": "b8c4e2f7a1d9365c7f2b4a8e6d3c1f5a9b7e4d2c6f8a3b5e1d7c9a4f6b2e8d3",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK reception inbox — guest context linking for email threads",
+      "location_anchors": [
+        "apps/reception/src/lib/inbox/sync.server.ts",
+        "apps/reception/src/lib/inbox/draft-pipeline.server.ts",
+        "apps/reception/src/lib/inbox/repositories.server.ts",
+        "apps/reception/src/components/inbox/ThreadDetailPane.tsx",
+        "apps/reception/src/components/inbox/DraftReviewPanel.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The reception inbox (reception-app-native-inbox, complete) stores email threads in D1 and generates agent drafts, but has no awareness of guest profiles or bookings in Firebase RTDB. Staff must mentally match email senders to guests.",
+      "next_scope_now": "Investigate email-to-guest matching bridge between D1 inbox and Firebase RTDB bookings; determine how to enrich draft pipeline with booking context; assess surfacing email status on guest views.",
+      "adjacent_later": [
+        "LLM-assisted draft personalization using guest history",
+        "Automatic task creation from email content (e.g. maintenance requests)"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: inbox should link emails to guest profiles/bookings and enrich agent drafts with booking context",
+        "docs/plans/reception-app-native-inbox/plan.md (Status: Complete)",
+        "apps/reception/src/lib/inbox/draft-pipeline.server.ts",
+        "apps/reception/src/lib/inbox/sync.server.ts"
+      ],
+      "created_at": "2026-03-07T12:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "The reception inbox build is complete but emails exist in isolation from guest context. Staff must mentally match email senders to bookings — the system has both datasets (D1 inbox threads, Firebase RTDB bookings) but no bridge between them. Connecting them would make agent-generated drafts contextually specific and surface email status alongside guest information.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Email threads in the reception inbox are automatically linked to guest profiles when the sender address matches a booking. Agent-generated draft replies include guest-specific context (booking dates, room, stay history). Unresolved email threads are visible on guest booking views.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307080626-0075",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "45a92a4929d593c78929a76e015174c8a6fe3e61",
+      "after_sha": "abc56210de01855f49fce8373677d97a100b5f02",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:abc56210de01855f49fce8373677d97a100b5f02",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:abc56210de01855f49fce8373677d97a100b5f02",
+      "cluster_fingerprint": "1e7ae1954c4eda21bd7dec7aa761de6ae00ea94c55686e961a15140b10f50e2b",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (45a92a4 → abc5621)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
+        "session:69d199f6-bf3f-4837-a680-8fa673ae6207",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-07T08:06:26.074Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
         "source": "auto"
       }
     }

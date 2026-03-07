@@ -333,7 +333,12 @@ export function CatalogProductForm({
             t={t}
           />
 
-          <MainImagePanel entry={imageEntries[0]} pendingPreviewUrl={pendingPreviewUrl} onRemove={handleRemoveImage} />
+          <MainImagePanel
+            entry={imageEntries[0]}
+            pendingPreviewUrl={pendingPreviewUrl}
+            onRemove={handleRemoveImage}
+            onChangeClick={canUpload ? () => fileInputRef.current?.click() : undefined}
+          />
 
           <CatalogProductBaseFields
             selectedSlug={selectedSlug}

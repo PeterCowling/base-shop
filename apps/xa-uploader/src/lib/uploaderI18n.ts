@@ -370,6 +370,7 @@ const messages = {
     uploadImageAdditionalBadge: "Photo {count}",
     uploadImageOrderHelp: "The first image is the main image. Reorder to change it.",
     uploadImageMakeMain: "Make main image",
+    uploadImageChange: "Change",
     uploadImageRemove: "Remove",
 
     editFilterTitle: "Find product",
@@ -837,6 +838,7 @@ const messages = {
     uploadImageAdditionalBadge: "附加图 {count}",
     uploadImageOrderHelp: "第一张图就是主图。调整顺序即可更换主图。",
     uploadImageMakeMain: "设为主图",
+    uploadImageChange: "更换",
     uploadImageRemove: "移除",
 
     editFilterTitle: "查找商品",

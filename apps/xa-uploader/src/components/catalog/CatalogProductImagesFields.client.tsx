@@ -531,10 +531,12 @@ export function MainImagePanel({
   entry,
   pendingPreviewUrl,
   onRemove,
+  onChangeClick,
 }: {
   entry: ReturnType<typeof parseImageEntries>[number] | undefined;
   pendingPreviewUrl?: string | null;
   onRemove: (index: number) => void;
+  onChangeClick?: () => void;
 }) {
   const { t } = useUploaderI18n();
   const badge = t("uploadImagePrimaryBadge");
@@ -568,6 +570,17 @@ export function MainImagePanel({
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test selector, not user-visible copy
           removeTestId="image-remove-0"
           removeLabel={t("uploadImageRemove")}
+          makeMainButton={onChangeClick ? (
+            <button
+              type="button"
+              onClick={onChangeClick}
+              className={`${BTN_SECONDARY_CLASS} px-3 text-2xs`}
+              // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test selector, not user-visible copy
+              data-testid="image-change-0"
+            >
+              {t("uploadImageChange")}
+            </button>
+          ) : undefined}
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test selector, not user-visible copy
           itemTestId="main-image-card"
         />

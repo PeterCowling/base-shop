@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-07T21:53:49.551Z",
+  "last_updated": "2026-03-07T21:54:21.336Z",
   "counts": {
-    "enqueued": 184,
+    "enqueued": 185,
     "processed": 46,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
     "completed": 126,
-    "fact_find_ready": 244,
+    "fact_find_ready": 245,
     "micro_build_ready": 8,
-    "total": 382
+    "total": 383
   },
   "dispatches": [
     {
@@ -15913,6 +15913,59 @@
       "intended_outcome": {
         "type": "operational",
         "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307215421-0332",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+      "before_sha": "dce2e978d105b26c7a410a931b2deb21d76b76e3",
+      "after_sha": "da7393052235f567d5be8803b21d5b69c3824c67",
+      "root_event_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:da7393052235f567d5be8803b21d5b69c3824c67",
+      "anchor_key": "brikette-functions-lang-section",
+      "cluster_key": "bos:unknown:brikette-functions-lang-section:BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:da7393052235f567d5be8803b21d5b69c3824c67",
+      "cluster_fingerprint": "8de571783aabd16b93b4d93913b528c5619d121e6875ae791f14e11650e42fb7",
+      "lineage_depth": 0,
+      "area_anchor": "brikette functions lang section",
+      "location_anchors": [
+        ".github/workflows/brikette.yml",
+        ".github/workflows/reusable-app.yml",
+        "apps/brikette/functions/[lang]/[section].js",
+        "apps/brikette/functions/[lang]/[section]/[slug].js",
+        "apps/brikette/functions/[lang]/[section]/[slug]/[leaf].js",
+        "apps/brikette/functions/_shared/legacy-redirect.js",
+        "apps/brikette/functions/api/availability.js",
+        "apps/brikette/functions/api/health.js"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS changed (dce2e97 → da73930)",
+      "next_scope_now": "Investigate implications of brikette functions lang section delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "git-diff-range:HEAD~1..HEAD",
+        "git-diff:M:.github/workflows/brikette.yml",
+        "git-diff:M:.github/workflows/reusable-app.yml",
+        "git-diff:A:apps/brikette/functions/[lang]/[section].js",
+        "git-diff:A:apps/brikette/functions/[lang]/[section]/[slug].js",
+        "git-diff:A:apps/brikette/functions/[lang]/[section]/[slug]/[leaf].js",
+        "git-diff:A:apps/brikette/functions/_shared/legacy-redirect.js",
+        "git-diff:M:apps/brikette/functions/api/availability.js",
+        "git-diff:A:apps/brikette/functions/api/health.js"
+      ],
+      "created_at": "2026-03-07T21:54:21.331Z",
+      "queue_state": "enqueued",
+      "why": "Assess brikette functions lang section implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for brikette functions lang section.",
         "source": "auto"
       }
     }

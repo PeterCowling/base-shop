@@ -120,6 +120,21 @@
       "expires": "2027-06-30",
       "notes": "Prime digital-assistant page i18n (ds/no-hardcoded-copy), tap-size (ds/min-tap-size), and layout-primitive (ds/enforce-layout-primitives) exceptions deferred pending i18n extraction and DS migration."
     },
+    "IDEA-DISPATCH-20260307130300-9040": {
+      "allow": [
+        "apps/reception/src/services/useInbox.ts",
+        "apps/reception/src/components/inbox/ThreadDetailPane.tsx"
+      ],
+      "expires": "2026-06-30",
+      "notes": "Reception inbox UI polish follow-up: mount-only inbox refresh effect and viewport-relative thread detail containment."
+    },
+    "IDEA-DISPATCH-20260307130300-9043": {
+      "allow": [
+        "apps/reception/src/components/inbox/ThreadList.tsx"
+      ],
+      "expires": "2026-06-30",
+      "notes": "Reception inbox UI polish follow-up: viewport-relative thread list scroll containment."
+    },
     "BRIK-821": {
       "allow": [
         "apps/brikette/src/hooks/usePagePreload.ts"

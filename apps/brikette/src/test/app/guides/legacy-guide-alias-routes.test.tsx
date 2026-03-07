@@ -65,7 +65,7 @@ describe("legacy guide alias routes", () => {
     });
     mockGuidePath.mockReturnValue("/en/assistance/what-to-pack-amalfi-coast");
 
-    const module = await import("@/app/[lang]/help/[slug]/page");
+    const module = await import("@/app/[lang]/help/_slug-off/page");
     await expect(
       module.default({
         params: Promise.resolve({ lang: "en", slug: "what-to-pack-amalfi-coast" }),
@@ -84,7 +84,7 @@ describe("legacy guide alias routes", () => {
     });
     mockGuidePath.mockReturnValue("/fr/assistance/que-mettre-dans-sa-valise-pour-la-cote-amalfitaine");
 
-    const module = await import("@/app/[lang]/guides/[slug]/page");
+    const module = await import("@/app/[lang]/guides/_single-off/page");
     await expect(
       module.default({
         params: Promise.resolve({ lang: "fr", slug: "what-to-pack-amalfi-coast" }),
@@ -99,7 +99,7 @@ describe("legacy guide alias routes", () => {
   it("returns notFound when legacy slug does not resolve", async () => {
     mockResolveGuideKeyFromSlug.mockReturnValue(undefined);
 
-    const module = await import("@/app/[lang]/help/[slug]/page");
+    const module = await import("@/app/[lang]/help/_slug-off/page");
     await expect(
       module.default({
         params: Promise.resolve({ lang: "en", slug: "unknown-guide" }),
@@ -111,7 +111,7 @@ describe("legacy guide alias routes", () => {
     mockResolveGuideKeyFromSlug.mockReturnValue("whatToPack");
     mockIsGuideLive.mockReturnValue(false);
 
-    const module = await import("@/app/[lang]/guides/[slug]/page");
+    const module = await import("@/app/[lang]/guides/_single-off/page");
     await expect(
       module.default({
         params: Promise.resolve({ lang: "en", slug: "what-to-pack-amalfi-coast" }),
@@ -120,7 +120,7 @@ describe("legacy guide alias routes", () => {
   });
 
   it("includes EN + localized slugs in static params for alias routes", async () => {
-    const module = await import("@/app/[lang]/guides/[slug]/page");
+    const module = await import("@/app/[lang]/guides/_single-off/page");
     const params = await module.generateStaticParams();
 
     expect(params).toContainEqual({ lang: "en", slug: "what-to-pack-amalfi-coast" });

@@ -16,6 +16,18 @@ type Props = {
   onChange: (next: string[]) => void;
 };
 
+/** Renders a label, splitting a trailing " (English)" parenthetical onto its own line. */
+function LabelText({ label }: { label: string }) {
+  const match = label.match(/^(.*?)\s+\(([^)]+)\)$/);
+  if (!match) return <span className="leading-snug">{label}</span>;
+  return (
+    <span className="leading-snug">
+      {match[1]}
+      <span className="block text-gate-muted">{match[2]}</span>
+    </span>
+  );
+}
+
 export function RegistryCheckboxGrid({
   label,
   options,
@@ -74,7 +86,7 @@ export function RegistryCheckboxGrid({
                 onChange={() => toggle(opt)}
                 className={`mt-0.5 shrink-0 ${CHECKBOX_CLASS}`}
               />
-              <span className="leading-snug">{getLabel ? getLabel(opt) : opt}</span>
+              <LabelText label={getLabel ? getLabel(opt) : opt} />
             </label>
           );
         })}

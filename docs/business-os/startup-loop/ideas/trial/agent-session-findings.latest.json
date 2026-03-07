@@ -1,6 +1,6 @@
 {
   "schema_version": "agent-session-findings.v1",
-  "generated_at": "2026-03-07T13:54:01.693Z",
+  "generated_at": "2026-03-07T17:01:39.495Z",
   "business": "BOS",
   "transcript_root": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop",
   "sessions_scanned": 20,
@@ -9,7 +9,7 @@
     {
       "session_id": "11259565-4f98-4328-9d78-c886e61f8c7e",
       "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/11259565-4f98-4328-9d78-c886e61f8c7e.jsonl",
-      "updated_at": "2026-03-07T13:53:58.166Z",
+      "updated_at": "2026-03-07T17:01:23.087Z",
       "findings": [
         "Let me read the target document and check for an existing issues ledger.",
         "Gmail auth is filesystem-dependent and cannot run in a hosted Worker.** This is the central justification for a new hosted Gmail adapter layer. If there were a simple workaround, the entire project scope shrinks.",
@@ -116,13 +116,27 @@
         "Both are material and open planning gaps (no existing plans cover inbox learning/feedback)",
         "The migration can't be applied without Cloudflare auth in non-interactive mode.",
         "The commit failed because lint-staged picked up pre-staged xa-uploader files that have pre-existing errors.",
-        "Now run reflection debt, bug scan, and process improvements."
+        "Now run reflection debt, bug scan, and process improvements.",
+        "This is an acceptable continue-on-failure.",
+        "Email processing error reason missing on lock-released** — Error context lost when lock is released on processing failures.",
+        "email-system-design-gaps` (v1 + v2)",
+        "Inquiry draft dedup missing at tool level** — if `draft_generate` is called twice for the same thread before the first draft is acted on, both drafts persist; no dedup at the MCP tool boundary",
+        "gmail-guard-hardening` is complete, `reception-app-native-inbox` is in-flight but that's about the native inbox UI — not about these specific pipeline gaps.",
+        "But commits are blocked by a stuck wrangler deploy (pid 70112) holding the writer lock for 24+ minutes.",
+        "Bug fix: `gmail_audit_labels` now correctly excludes bare `Brikette` parent label",
+        "That one stays deferred — the Gmail API direct sending is fine for current volume, and the threading complexity isn't worth it without a concrete bounce problem.",
+        "Expose why drafts fail** — right now \"needs manual draft\" gives no reason. Store the error (quality gate failed? template not found?) in metadata and show it in the UI so staff can act without guessing.",
+        "Also fixed a missing `guestName` pass-through in the manual regeneration route.",
+        "Context history bound complete** — implementation done, but commit blocked by the same stuck wrangler deploy.",
+        "Quality check debug complete** — `failed_check_details` field added to `QualityCheckResult` in both reception and MCP server.",
+        "Per-thread error isolation with `thread_sync_error` telemetry.",
+        "Guest match observability complete** — `buildGuestEmailMap()` now returns a structured result with status/error/duration instead of throwing."
       ]
     },
     {
       "session_id": "de364e8d-fdd8-4860-8c35-b00389f9b19b",
       "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/de364e8d-fdd8-4860-8c35-b00389f9b19b.jsonl",
-      "updated_at": "2026-03-07T13:53:57.648Z",
+      "updated_at": "2026-03-07T15:47:15.579Z",
       "findings": [
         "TASK-01** Complete — truthful status semantics + per-product publish blockers with `missingRoles[]` exposed; `workflowLive` relabeled to \"Published to catalog\"",
         "TASK-04 depends on TASK-01+02+03, still blocked on TASK-03.",
@@ -176,7 +190,14 @@
         "Also add a catch on the outer try block to surface internal errors instead of raw 500s:",
         "Now press Make Live and open the browser's Network tab — the `/api/catalog/publish` response body will now have `error` and `reason` fields telling us exactly what's failing instead of just a raw 500.",
         "It will now show something like `{\"ok\":false,\"error\":\"lock_failed\",\"reason\":\"...\"}` which will tell us exactly what's failing.",
-        "503 = hitting our new `lock_failed` catch."
+        "503 = hitting our new `lock_failed` catch.",
+        "The build script (`build-xa.mjs`) fetches the fresh catalog from xa-drop-worker ← **this fails**",
+        "But there's one more issue I found: **The xa-b-site Pages project is a direct-upload project** (`source: {}`, no git integration, no build command).",
+        "Now add test ID constants before `FilterSelectPanel` to avoid the hardcoded-copy lint errors:",
+        "Now I'll fix both issues in CatalogProductBaseFields:",
+        "maybeTriggerXaBDeploy({ storefrontId: \"xa-b\", kv: null })` ← **Issue A**",
+        "One minor note: there's a lint warning (not error) on the chevron `<span>` in `FilterSelect` at line 115 — `ds/min-tap-size` flags it, but the enclosing `<button>` already has `min-h-11`.",
+        "Code path: Pages hook tried first → GH Actions only on hook failure"
       ]
     },
     {

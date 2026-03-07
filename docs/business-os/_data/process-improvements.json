@@ -2143,6 +2143,38 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "bos-agent-session-findings",
+      "body": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "source": "queue-state.json",
+      "date": "2026-03-07T17:01:39.498Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "f11fd24cb8f904426f7f524a8f4580da6332bbe8",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "bos-agent-session-findings",
+      "body": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "source": "queue-state.json",
+      "date": "2026-03-07T17:00:08.524Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "4950cc7a084ef6f814471cbaacc724daa5f02eff",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "threadid draft regenerate",
       "body": "Assess threadid draft regenerate implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
       "source": "queue-state.json",
@@ -5875,16 +5907,6 @@
   ],
   "riskItems": [],
   "pendingReviewItems": [
-    {
-      "type": "pending-review",
-      "business": "BOS",
-      "title": "Pending results review: reception-inbox-draft-failure-reasons",
-      "body": "Build is complete but no results review has been written yet.",
-      "suggested_action": "Write docs/plans/reception-inbox-draft-failure-reasons/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
-      "source": "build-record.user.md",
-      "date": "2026-03-07T16:59:52.566Z",
-      "path": "docs/plans/reception-inbox-draft-failure-reasons/build-record.user.md"
-    },
     {
       "type": "pending-review",
       "business": "BOS",

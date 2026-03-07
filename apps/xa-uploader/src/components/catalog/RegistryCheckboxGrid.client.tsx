@@ -56,18 +56,28 @@ export function RegistryCheckboxGrid({
     <fieldset data-testid={testId}>
       <legend className="text-xs uppercase tracking-label text-gate-muted">{label}</legend>
       {/* eslint-disable-next-line ds/enforce-layout-primitives -- XAUP-0001 operator-tool checkbox grid */}
-      <div className="mt-2 grid grid-cols-2 gap-x-4 gap-y-2 md:grid-cols-3 lg:grid-cols-4">
-        {options.map((opt) => (
-          <label key={opt} className="flex items-center gap-2 text-sm text-gate-ink cursor-pointer">
-            <input
-              type="checkbox"
-              checked={registrySelected.includes(opt)}
-              onChange={() => toggle(opt)}
-              className={CHECKBOX_CLASS}
-            />
-            {getLabel ? getLabel(opt) : opt}
-          </label>
-        ))}
+      <div className="mt-2 grid grid-cols-2 gap-2 lg:grid-cols-3">
+        {options.map((opt) => {
+          const isSelected = registrySelected.includes(opt);
+          return (
+            <label
+              key={opt}
+              className={`flex cursor-pointer items-start gap-2 rounded-md border px-3 py-2.5 text-sm transition-colors ${
+                isSelected
+                  ? "border-gate-accent bg-gate-accent-soft text-gate-ink"
+                  : "border-gate-border bg-gate-input text-gate-ink hover:border-gate-accent hover:bg-gate-accent-soft"
+              }`}
+            >
+              <input
+                type="checkbox"
+                checked={isSelected}
+                onChange={() => toggle(opt)}
+                className={`mt-0.5 shrink-0 ${CHECKBOX_CLASS}`}
+              />
+              <span className="leading-snug">{getLabel ? getLabel(opt) : opt}</span>
+            </label>
+          );
+        })}
       </div>
       {customPlaceholder ? (
         <input

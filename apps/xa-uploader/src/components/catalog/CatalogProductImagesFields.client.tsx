@@ -353,6 +353,7 @@ export function ImageDropZone({
 
 function ImageCard({
   entry,
+  previews,
   badge,
   alt,
   onRemove,
@@ -363,6 +364,7 @@ function ImageCard({
   itemTestId,
 }: {
   entry: ImageEntry | undefined;
+  previews?: Map<string, string>;
   badge: string;
   alt: string;
   onRemove?: () => void;
@@ -372,7 +374,7 @@ function ImageCard({
   reorderButtons?: ReactNode;
   itemTestId?: string;
 }) {
-  const src = entry ? resolveImageSrc(entry.path, new Map<string, string>()) : undefined;
+  const src = entry ? resolveImageSrc(entry.path, previews ?? new Map<string, string>()) : undefined;
 
   return (
     <li
@@ -529,11 +531,13 @@ function ImageGallery({
 
 export function MainImagePanel({
   entry,
+  previews,
   pendingPreviewUrl,
   onRemove,
   onChangeClick,
 }: {
   entry: ReturnType<typeof parseImageEntries>[number] | undefined;
+  previews?: Map<string, string>;
   pendingPreviewUrl?: string | null;
   onRemove: (index: number) => void;
   onChangeClick?: () => void;
@@ -564,6 +568,7 @@ export function MainImagePanel({
       <ul className="grid grid-cols-1 gap-3 sm:max-w-xs">
         <ImageCard
           entry={displayEntry}
+          previews={previews}
           badge={displayBadge}
           alt={t("uploadAddMainImage")}
           onRemove={entry ? () => onRemove(0) : undefined}

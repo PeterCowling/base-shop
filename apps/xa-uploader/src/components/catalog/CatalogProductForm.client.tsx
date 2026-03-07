@@ -239,6 +239,7 @@ export function CatalogProductForm({
     });
   const {
     fileInputRef,
+    previews,
     dragOver,
     uploadStatus,
     uploadError,
@@ -337,6 +338,7 @@ export function CatalogProductForm({
 
           <MainImagePanel
             entry={imageEntries[0]}
+            previews={previews}
             pendingPreviewUrl={pendingPreviewUrl}
             onRemove={handleRemoveImage}
             onChangeClick={canUpload ? () => fileInputRef.current?.click() : undefined}

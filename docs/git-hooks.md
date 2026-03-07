@@ -115,6 +115,12 @@ scripts/git/writer-lock.sh clean-stale   # only if holder PID is dead on this ho
 scripts/git/writer-lock.sh acquire --wait
 ```
 
+Writer-lock scope rule:
+- Hold the lock for actual git writes and other serialized repo mutations only.
+- Use `scripts/agents/integrator-shell.sh --read-only -- <command>` for long read-only work.
+- Run `pnpm build`, verification reads, and `wrangler` deploy outside the lock after the artifact or write phase is ready.
+- If `status` shows a live holder running a long external command, let the owner end it cleanly so the normal release path runs. Do not force-release a live holder before that.
+
 ## Related Files
 
 - `scripts/git-hooks/pre-commit.sh`

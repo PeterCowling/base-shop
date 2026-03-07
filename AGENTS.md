@@ -68,12 +68,16 @@ Only run full-repo `pnpm typecheck` / `pnpm lint` when:
   - If you are running in a non-interactive environment (no TTY; e.g. CI or API-driven agents), you cannot open a subshell. Wrap each write-related command instead:
     - `scripts/agents/integrator-shell.sh -- <command> [args...]`
     - Wait mode is FIFO queue-ordered (first-come, first-served). In non-interactive agent runs, waiting is **poll-based** (**30s** checks) and **hard-stops after 5 minutes** with an error so the agent can report the issue (stale locks are auto-cleaned only when PID is dead on this host).
+  - **Lock scope rule:** hold the writer lock only for actual git writes and other serialized repo mutations that must not overlap (for example staged commits, queue-state writes, or a short-lived temporary tree mutation that must be restored before another writer enters).
+  - **Do not hold the lock across long non-writing work** once the required repo mutation is complete. `pnpm build`, validation reads, artifact verification, and `wrangler` deploys should run outside the lock after the artifact or write phase is prepared.
+  - **Read-only default:** discovery, planning, audits, dry-runs, and other non-writing shell work should stay in `scripts/agents/integrator-shell.sh --read-only -- <command>` unless they are about to perform a serialized repo mutation.
   - Check status: `scripts/git/writer-lock.sh status` (token is redacted by default)
   - Show full token (human only): `scripts/git/writer-lock.sh status --print-token`
   - If lock handling blocks your git write:
     - `scripts/git/writer-lock.sh status`
     - `scripts/git/writer-lock.sh clean-stale` (only if holder PID is dead on this host)
     - `scripts/agents/with-writer-lock.sh -- <git-write-command>` (or `scripts/agents/integrator-shell.sh -- <command>`)
+    - If the holder PID is live and running a long external command (for example a deploy), have the owner end that command cleanly and let the lock release normally. Do not force-release a live holder first.
   - Agents must not use `SKIP_WRITER_LOCK=1`; fix lock state instead
 - **Branch flow:** `dev` → `staging` → `main`
   - Commit locally on `dev`

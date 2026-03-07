@@ -51,6 +51,7 @@ export async function GET(
   return new Response(object.body, {
     headers: {
       "Content-Type": contentType,
+      // i18n-exempt -- XAUP-0001 [ttl=2026-12-31] HTTP cache-control header value, not user-facing copy
       "Cache-Control": "public, max-age=31536000, immutable",
     },
   });

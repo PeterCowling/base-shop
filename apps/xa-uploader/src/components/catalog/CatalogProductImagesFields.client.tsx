@@ -139,7 +139,12 @@ function resolveImageSrc(entryPath: string, previews: Map<string, string>): stri
 
   const normalized = entryPath.trim();
   if (!normalized) return undefined;
-  if (normalized.startsWith("http://") || normalized.startsWith("https://") || normalized.startsWith("/")) {
+  if (
+    normalized.startsWith("http://") ||
+    normalized.startsWith("https://") ||
+    normalized.startsWith("/") ||
+    normalized.startsWith("blob:")
+  ) {
     return normalized;
   }
   return `/${normalized}`;
@@ -523,13 +528,23 @@ function ImageGallery({
 
 export function MainImagePanel({
   entry,
+  pendingPreviewUrl,
   onRemove,
 }: {
   entry: ReturnType<typeof parseImageEntries>[number] | undefined;
+  pendingPreviewUrl?: string | null;
   onRemove: (index: number) => void;
 }) {
   const { t } = useUploaderI18n();
   const badge = t("uploadImagePrimaryBadge");
+  const pendingBadge = t("uploadImagePendingBadge");
+
+  // Synthesize a display entry from the pending blob URL when no real entry exists yet
+  const pendingEntry = !entry && pendingPreviewUrl
+    ? { path: pendingPreviewUrl, filename: t("uploadImagePendingBadge"), isMain: false }
+    : undefined;
+  const displayEntry = entry ?? pendingEntry;
+  const displayBadge = entry ? badge : pendingBadge;
 
   return (
     <div
@@ -538,13 +553,13 @@ export function MainImagePanel({
       data-cy="main-image-panel"
     >
       <div className="flex items-center justify-between gap-3">
-        <div className="text-xs text-gate-muted">{t("uploadImageCount", { count: entry ? 1 : 0 })}</div>
+        <div className="text-xs text-gate-muted">{t("uploadImageCount", { count: displayEntry ? 1 : 0 })}</div>
       </div>
       {/* eslint-disable-next-line ds/container-widths-only-at -- XAUP-0001 operator-tool single-image display constrained width */}
       <ul className="grid grid-cols-1 gap-3 sm:max-w-xs">
         <ImageCard
-          entry={entry}
-          badge={badge}
+          entry={displayEntry}
+          badge={displayBadge}
           alt={t("uploadAddMainImage")}
           onRemove={entry ? () => onRemove(0) : undefined}
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test selector, not user-visible copy
@@ -640,6 +655,7 @@ export function AdditionalImagesPanel({
   );
 }
 
+// eslint-disable-next-line max-lines-per-function -- XAUP-0001 image upload state machine; extracting would fragment tightly coupled reactive state
 export function useImageUploadController({
   draft,
   storefront,
@@ -664,6 +680,8 @@ export function useImageUploadController({
   const [pendingAutosaveStartedAt, setPendingAutosaveStartedAt] = useState<number | null>(null);
   const [dragOver, setDragOver] = useState(false);
   const [previews, setPreviews] = useState<Map<string, string>>(new Map());
+  const [pendingPreview, setPendingPreview] = useState<{ file: File; previewUrl: string } | null>(null);
+  const pendingPreviewRef = useRef<{ file: File; previewUrl: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cleanupRemovedImage = usePersistedImageCleanup({
     lastAutosaveSavedAt,
@@ -692,6 +710,11 @@ export function useImageUploadController({
     }
   }, [lastAutosaveSavedAt, pendingAutosaveStartedAt, uploadStatus]);
 
+  // Keep ref in sync for auto-upload effect below
+  useEffect(() => {
+    pendingPreviewRef.current = pendingPreview;
+  }, [pendingPreview]);
+
   const handleUpload = useCallback(
     async (file: File) => {
       if (!ACCEPTED_TYPES.has(file.type)) {
@@ -707,10 +730,21 @@ export function useImageUploadController({
       }
 
       if (!hasSlug) {
-        setUploadStatus("error");
-        setUploadError(t("uploadImageErrorNoSlug"));
+        const previewUrl = URL.createObjectURL(file);
+        setPendingPreview((prev) => {
+          if (prev) URL.revokeObjectURL(prev.previewUrl);
+          return { file, previewUrl };
+        });
+        setUploadStatus("idle");
+        setUploadError("");
         return;
       }
+
+      // Clear any pending preview before uploading (slug now available)
+      setPendingPreview((prev) => {
+        if (prev) URL.revokeObjectURL(prev.previewUrl);
+        return null;
+      });
 
       setUploadStatus("uploading");
       setUploadError("");
@@ -772,6 +806,19 @@ export function useImageUploadController({
     },
     [draft, hasSlug, onChange, onImageUploaded, storefront, t],
   );
+  // Auto-upload buffered file when slug becomes available
+  const handleUploadRef = useRef(handleUpload);
+  useEffect(() => { handleUploadRef.current = handleUpload; }, [handleUpload]);
+  useEffect(() => {
+    if (!hasSlug || !pendingPreviewRef.current) return;
+    const { file } = pendingPreviewRef.current;
+    setPendingPreview((prev) => {
+      if (prev) URL.revokeObjectURL(prev.previewUrl);
+      return null;
+    });
+    void handleUploadRef.current(file);
+  }, [hasSlug]);
+
   const handleFileInput = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
@@ -844,7 +891,8 @@ export function useImageUploadController({
     dragOver,
     uploadStatus,
     uploadError,
-    canUpload: hasSlug && uploadStatus !== "uploading",
+    pendingPreviewUrl: pendingPreview?.previewUrl ?? null,
+    canUpload: uploadStatus !== "uploading",
     isUploading: uploadStatus === "uploading",
     handleDragOver,
     handleDragLeave,

@@ -140,6 +140,7 @@ function useSaveButtonTransition(params: {
 
 function UploadStatusMessages({
   hasSlug,
+  pendingPreviewUrl,
   uploadStatus,
   uploadError,
   autosaveInlineMessage,
@@ -148,6 +149,7 @@ function UploadStatusMessages({
   t,
 }: {
   hasSlug: boolean;
+  pendingPreviewUrl: string | null;
   uploadStatus: string;
   uploadError: string;
   autosaveInlineMessage: string | null;
@@ -157,7 +159,11 @@ function UploadStatusMessages({
 }) {
   return (
     <>
-      {!hasSlug ? <div className="text-xs text-gate-muted">{t("uploadImageErrorNoSlug")}</div> : null}
+      {pendingPreviewUrl ? (
+        <div className="text-xs text-gate-accent">{t("uploadImagePending")}</div>
+      ) : !hasSlug ? (
+        <div className="text-xs text-gate-muted">{t("uploadImageErrorNoSlug")}</div>
+      ) : null}
       {uploadStatus === "persisting" ? (
         <div className="text-xs text-gate-accent">
           {autosaveStatus === "saving" ? t("uploadImagePersisting") : t("uploadImagePersistPending")}
@@ -233,6 +239,7 @@ export function CatalogProductForm({
     dragOver,
     uploadStatus,
     uploadError,
+    pendingPreviewUrl,
     canUpload,
     isUploading,
     handleDragOver,
@@ -311,6 +318,7 @@ export function CatalogProductForm({
 
           <UploadStatusMessages
             hasSlug={hasSlug}
+            pendingPreviewUrl={pendingPreviewUrl}
             uploadStatus={uploadStatus}
             uploadError={uploadError}
             autosaveInlineMessage={autosaveInlineMessage}
@@ -319,7 +327,7 @@ export function CatalogProductForm({
             t={t}
           />
 
-          <MainImagePanel entry={imageEntries[0]} onRemove={handleRemoveImage} />
+          <MainImagePanel entry={imageEntries[0]} pendingPreviewUrl={pendingPreviewUrl} onRemove={handleRemoveImage} />
 
           <CatalogProductBaseFields
             selectedSlug={selectedSlug}

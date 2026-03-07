@@ -2,7 +2,10 @@
 
 import * as React from "react";
 
-import type { CatalogProductDraftInput } from "@acme/lib/xa/catalogAdminSchema";
+import {
+  type CatalogProductDraftInput,
+  splitList,
+} from "@acme/lib/xa/catalogAdminSchema";
 
 import type { XaCatalogStorefront } from "../../lib/catalogStorefront.types";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
@@ -10,52 +13,27 @@ import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 import type { SaveResult } from "./catalogConsoleActions";
 import { CatalogProductBaseFields } from "./CatalogProductBaseFields.client";
 import { CatalogProductClothingFields } from "./CatalogProductClothingFields.client";
-import { CatalogProductImagesFields } from "./CatalogProductImagesFields.client";
+import {
+  AdditionalImagesPanel,
+  ImageDropZone,
+  MainImagePanel,
+  useImageUploadController,
+} from "./CatalogProductImagesFields.client";
 import { CatalogProductJewelryFields } from "./CatalogProductJewelryFields.client";
 import { BTN_DANGER_CLASS, BTN_PRIMARY_CLASS, PANEL_CLASS } from "./catalogStyles";
 import { getCatalogDraftWorkflowReadiness } from "./catalogWorkflow";
 import type { ActionFeedback } from "./useCatalogConsole.client";
 
-type FormStepId = "product" | "images";
 type SaveButtonState = "idle" | "saving" | "saved";
 
-function StepIndicator({
-  stepNumber,
-  label,
-  active,
-  disabled,
-  onClick,
-}: {
-  stepNumber: number;
-  label: string;
-  active: boolean;
-  disabled?: boolean;
-  onClick: () => void;
-}) {
-  const circleClass = active
-    ? "flex h-7 w-7 items-center justify-center rounded-full bg-gate-accent text-xs font-semibold text-gate-on-accent"
-    : disabled
-      ? "flex h-7 w-7 items-center justify-center rounded-full border border-gate-border text-xs text-gate-muted"
-      : "flex h-7 w-7 items-center justify-center rounded-full border border-gate-ink text-xs text-gate-ink";
+type ImageEntry = { path: string; filename: string; isMain: boolean };
 
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      // eslint-disable-next-line ds/min-tap-size -- XAUP-0001 operator-desktop-tool stepper
-      className="group flex items-center gap-2 disabled:cursor-default"
-    >
-      <span className={circleClass}>{stepNumber}</span>
-      <span
-        className={`text-xs uppercase tracking-label transition-colors ${
-          active ? "font-semibold text-gate-accent" : disabled ? "text-gate-muted" : "text-gate-ink group-hover:text-gate-accent"
-        }`}
-      >
-        {label}
-      </span>
-    </button>
-  );
+function parseImageEntries(files: string): ImageEntry[] {
+  return splitList(files).map((path, index) => ({
+    path,
+    filename: path.split("/").pop() ?? path,
+    isMain: index === 0,
+  }));
 }
 
 function StatusDot({
@@ -102,13 +80,11 @@ function StatusDot({
 
 function useSaveButtonTransition(params: {
   busy: boolean;
-  canOpenImageStep: boolean;
-  onAdvanceToImages: () => void;
   onSavedFeedback?: () => void;
   onSave: () => Promise<SaveResult>;
   t: ReturnType<typeof useUploaderI18n>["t"];
 }) {
-  const { busy, canOpenImageStep, onAdvanceToImages, onSavedFeedback, onSave, t } = params;
+  const { busy, onSavedFeedback, onSave, t } = params;
   const [saveButtonState, setSaveButtonState] = React.useState<SaveButtonState>("idle");
   const saveAdvanceTimerRef = React.useRef<number | null>(null);
   const clearSaveAdvanceTimer = React.useCallback(() => {
@@ -139,17 +115,8 @@ function useSaveButtonTransition(params: {
       saveAdvanceTimerRef.current = null;
       setSaveButtonState("idle");
       onSavedFeedback?.();
-      if (canOpenImageStep) onAdvanceToImages();
     }, 2000);
-  }, [
-    busy,
-    canOpenImageStep,
-    clearSaveAdvanceTimer,
-    onAdvanceToImages,
-    onSave,
-    onSavedFeedback,
-    saveButtonState,
-  ]);
+  }, [busy, clearSaveAdvanceTimer, onSave, onSavedFeedback, saveButtonState]);
 
   const cancelPendingSaveAdvance = React.useCallback(() => {
     clearSaveAdvanceTimer();
@@ -169,6 +136,45 @@ function useSaveButtonTransition(params: {
   const saveButtonDisabled = busy || saveButtonState === "saving" || saveButtonState === "saved";
 
   return { handleSaveClick, saveButtonClass, saveButtonLabel, saveButtonDisabled, cancelPendingSaveAdvance };
+}
+
+function UploadStatusMessages({
+  hasSlug,
+  uploadStatus,
+  uploadError,
+  autosaveInlineMessage,
+  autosaveStatus,
+  fieldErrors,
+  t,
+}: {
+  hasSlug: boolean;
+  uploadStatus: string;
+  uploadError: string;
+  autosaveInlineMessage: string | null;
+  autosaveStatus: "saving" | "saved" | "unsaved";
+  fieldErrors: Record<string, string>;
+  t: ReturnType<typeof useUploaderI18n>["t"];
+}) {
+  return (
+    <>
+      {!hasSlug ? <div className="text-xs text-gate-muted">{t("uploadImageErrorNoSlug")}</div> : null}
+      {uploadStatus === "persisting" ? (
+        <div className="text-xs text-gate-accent">
+          {autosaveStatus === "saving" ? t("uploadImagePersisting") : t("uploadImagePersistPending")}
+        </div>
+      ) : null}
+      {uploadStatus === "persisted" ? (
+        <div className="text-xs text-success-fg">{t("uploadImagePersisted")}</div>
+      ) : null}
+      {uploadStatus === "error" && uploadError ? (
+        <div className="text-xs text-danger-fg">{uploadError}</div>
+      ) : null}
+      {autosaveInlineMessage ? (
+        <div className="text-xs text-danger-fg">{autosaveInlineMessage}</div>
+      ) : null}
+      {fieldErrors.imageFiles ? <div className="text-xs text-danger-fg">{fieldErrors.imageFiles}</div> : null}
+    </>
+  );
 }
 
 export function CatalogProductForm({
@@ -207,27 +213,45 @@ export function CatalogProductForm({
   const { t } = useUploaderI18n();
   const category = draft.taxonomy.category;
   const readiness = React.useMemo(() => getCatalogDraftWorkflowReadiness(draft), [draft]);
-  const [step, setStep] = React.useState<FormStepId>("product");
-  const canOpenImageStep = readiness.isDataReady;
+  const hasSlug = (draft.slug ?? "").trim().length > 0;
+  const imageEntries = React.useMemo(() => parseImageEntries(draft.imageFiles ?? ""), [draft.imageFiles]);
   const autosaveCopy =
     autosaveStatus === "saving"
       ? t("autosaveStatusSaving")
       : autosaveStatus === "unsaved"
         ? `${t("autosaveStatusUnsaved")} ${t("autosaveStatusManualSaveHint")}`
         : t("autosaveStatusSaved");
-
-  React.useEffect(() => {
-    setStep("product");
-  }, [selectedSlug]);
   const { handleSaveClick, saveButtonClass, saveButtonLabel, saveButtonDisabled, cancelPendingSaveAdvance } =
     useSaveButtonTransition({
       busy,
-      canOpenImageStep,
-      onAdvanceToImages: () => setStep("images"),
       onSave,
       onSavedFeedback,
       t,
     });
+  const {
+    fileInputRef,
+    dragOver,
+    uploadStatus,
+    uploadError,
+    canUpload,
+    isUploading,
+    handleDragOver,
+    handleDragLeave,
+    handleDrop,
+    handleFileInput,
+    handleRemoveImage,
+    handleMakeMainImage,
+    handleReorderImage,
+  } = useImageUploadController({
+    draft,
+    storefront,
+    hasSlug,
+    imageEntries,
+    lastAutosaveSavedAt,
+    onChange: onChangeDraft,
+    onImageUploaded: onSaveWithDraft,
+    t,
+  });
   const handleDeleteClick = React.useCallback(() => {
     cancelPendingSaveAdvance();
     onDelete();
@@ -260,104 +284,101 @@ export function CatalogProductForm({
       </p>
 
       <div className="mt-6 space-y-4">
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-          <StepIndicator
-            stepNumber={1}
-            label={t("workflowStepProduct")}
-            active={step === "product"}
-            onClick={() => setStep("product")}
+        <div className="flex justify-end">
+          <StatusDot
+            publishState={draft.publishState}
+            dataReady={readiness.isDataReady}
+            publishReady={readiness.isPublishReady}
+            hasImages={readiness.hasImages}
+            t={t}
           />
-          <div className="hidden h-px w-8 bg-border-2 sm:block" />
-          <StepIndicator
-            stepNumber={2}
-            label={t("workflowStepImages")}
-            active={step === "images"}
-            disabled={!canOpenImageStep}
-            onClick={() => canOpenImageStep && setStep("images")}
+        </div>
+        <div className="space-y-4">
+          <div className="text-xs uppercase tracking-label-lg text-gate-muted">{t("imagesFieldsTitle")}</div>
+
+          <ImageDropZone
+            canUpload={canUpload}
+            isUploading={isUploading}
+            dragOver={dragOver}
+            hasImages={imageEntries.length > 0}
+            fileInputRef={fileInputRef}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            onFileInput={handleFileInput}
+            t={t}
           />
-          <div className="ms-auto">
-            <StatusDot
-              publishState={draft.publishState}
-              dataReady={readiness.isDataReady}
-              publishReady={readiness.isPublishReady}
-              hasImages={readiness.hasImages}
-              t={t}
+
+          <UploadStatusMessages
+            hasSlug={hasSlug}
+            uploadStatus={uploadStatus}
+            uploadError={uploadError}
+            autosaveInlineMessage={autosaveInlineMessage}
+            autosaveStatus={autosaveStatus}
+            fieldErrors={fieldErrors}
+            t={t}
+          />
+
+          <MainImagePanel entry={imageEntries[0]} onRemove={handleRemoveImage} />
+
+          <CatalogProductBaseFields
+            selectedSlug={selectedSlug}
+            draft={draft}
+            fieldErrors={fieldErrors}
+            monoClassName={monoClassName}
+            sections={["identity", "taxonomy"]}
+            onChange={onChangeDraft}
+          />
+          {category === "clothing" ? (
+            <CatalogProductClothingFields
+              draft={draft}
+              fieldErrors={fieldErrors}
+              onChange={onChangeDraft}
             />
+          ) : null}
+          {/* Bag-specific derived fields (closure type, interior, fits) now rendered in TaxonomyFields */}
+          {category === "jewelry" ? (
+            <CatalogProductJewelryFields
+              draft={draft}
+              fieldErrors={fieldErrors}
+              onChange={onChangeDraft}
+            />
+          ) : null}
+
+          <AdditionalImagesPanel
+            entries={imageEntries.slice(1)}
+            onRemove={handleRemoveImage}
+            onMakeMain={handleMakeMainImage}
+            onReorder={handleReorderImage}
+          />
+
+          <div className="flex items-center justify-between">
+            <div>
+              {selectedSlug ? (
+                <button
+                  type="button"
+                  onClick={handleDeleteClick}
+                  disabled={busy}
+                  className={BTN_DANGER_CLASS}
+                >
+                  {t("delete")}
+                </button>
+              ) : null}
+            </div>
+            <button
+              type="button"
+              onClick={() => void handleSaveClick()}
+              disabled={saveButtonDisabled}
+              className={saveButtonClass}
+              // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+              data-testid="catalog-save-details"
+              // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 e2e selector
+              data-cy="catalog-save-details"
+            >
+              {saveButtonLabel}
+            </button>
           </div>
         </div>
-
-        {step === "product" ? (
-          <div className="space-y-4">
-            <CatalogProductBaseFields
-              selectedSlug={selectedSlug}
-              draft={draft}
-              fieldErrors={fieldErrors}
-              monoClassName={monoClassName}
-              sections={["identity", "taxonomy"]}
-              onChange={onChangeDraft}
-            />
-            {category === "clothing" ? (
-              <CatalogProductClothingFields
-                draft={draft}
-                fieldErrors={fieldErrors}
-                onChange={onChangeDraft}
-              />
-            ) : null}
-            {/* Bag-specific derived fields (closure type, interior, fits) now rendered in TaxonomyFields */}
-            {category === "jewelry" ? (
-              <CatalogProductJewelryFields
-                draft={draft}
-                fieldErrors={fieldErrors}
-                onChange={onChangeDraft}
-              />
-            ) : null}
-            <div className="flex items-center justify-between">
-              <div>
-                {selectedSlug ? (
-                  <button
-                    type="button"
-                    onClick={handleDeleteClick}
-                    disabled={busy}
-                    className={BTN_DANGER_CLASS}
-                  >
-                    {t("delete")}
-                  </button>
-                ) : null}
-              </div>
-              <button
-                type="button"
-                onClick={() => void handleSaveClick()}
-                disabled={saveButtonDisabled}
-                className={saveButtonClass}
-                // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-                data-testid="catalog-save-details"
-                // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 e2e selector
-                data-cy="catalog-save-details"
-              >
-                {saveButtonLabel}
-              </button>
-            </div>
-          </div>
-        ) : null}
-
-        {step === "images" ? (
-          canOpenImageStep ? (
-            <CatalogProductImagesFields
-              draft={draft}
-              storefront={storefront}
-              fieldErrors={fieldErrors}
-              autosaveInlineMessage={autosaveInlineMessage}
-              autosaveStatus={autosaveStatus}
-              lastAutosaveSavedAt={lastAutosaveSavedAt}
-              onChange={onChangeDraft}
-              onImageUploaded={onSaveWithDraft}
-            />
-          ) : (
-            <div className="rounded-md border border-gate-border bg-muted px-4 py-3 text-sm text-gate-muted">
-              {t("workflowImageBlocked")}
-            </div>
-          )
-        ) : null}
       </div>
     </section>
   );

@@ -17,8 +17,6 @@ const messages = {
     languageLabel: "Language",
     languageEnglish: "EN",
     languageZh: "中国人",
-    headerGoToInstructions: "Instructions",
-    headerGoToConsole: "Console",
 
     checkingConsoleAccess: "Checking console access...",
     consoleActive: "Console active",
@@ -510,8 +508,6 @@ const messages = {
     languageLabel: "语言",
     languageEnglish: "EN",
     languageZh: "中国人",
-    headerGoToInstructions: "操作指南",
-    headerGoToConsole: "控制台",
 
     checkingConsoleAccess: "正在检查控制台访问权限…",
     consoleActive: "控制台已启用",

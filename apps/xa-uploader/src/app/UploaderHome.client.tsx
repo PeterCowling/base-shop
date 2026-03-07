@@ -19,7 +19,6 @@ export default function UploaderHomeClient({
     <UploaderShell
       displayClassName={displayClassName}
       monoClassName={monoClassName}
-      page="console"
       headerExtra={headerExtra}
     >
       <CatalogConsole monoClassName={monoClassName} onHeaderExtra={setHeaderExtra} />

@@ -1,7 +1,6 @@
 "use client";
 
 import type { ReactNode } from "react";
-import Link from "next/link";
 
 import { LanguageToggle } from "../components/LanguageToggle.client";
 import { ThemeToggle } from "../components/ThemeToggle.client";
@@ -9,12 +8,9 @@ import { UploaderI18nProvider, useUploaderI18n } from "../lib/uploaderI18n.clien
 
 import styles from "./uploader.module.css";
 
-type UploaderPageKind = "console" | "instructions";
-
 type UploaderShellProps = {
   displayClassName: string;
   monoClassName: string;
-  page: UploaderPageKind;
   headerExtra?: ReactNode;
   children: ReactNode;
 };
@@ -22,7 +18,6 @@ type UploaderShellProps = {
 export default function UploaderShell({
   displayClassName,
   monoClassName,
-  page,
   headerExtra,
   children,
 }: UploaderShellProps) {
@@ -31,7 +26,6 @@ export default function UploaderShell({
       <UploaderShellInner
         displayClassName={displayClassName}
         monoClassName={monoClassName}
-        page={page}
         headerExtra={headerExtra}
       >
         {children}
@@ -43,17 +37,10 @@ export default function UploaderShell({
 function UploaderShellInner({
   displayClassName,
   monoClassName,
-  page,
   headerExtra,
   children,
 }: UploaderShellProps) {
   const { t } = useUploaderI18n();
-  const navTarget = page === "console" ? "/instructions" : "/";
-  const navLabel = page === "console" ? t("headerGoToInstructions") : t("headerGoToConsole");
-  const navClassName =
-    page === "instructions"
-      ? "border-gate-accent text-gate-accent hover:bg-gate-accent/10"
-      : "border-gate-header-border text-gate-header-muted hover:text-gate-header-fg";
 
   return (
     <main className={`${displayClassName} relative min-h-dvh overflow-hidden bg-gate-bg text-gate-ink`}>
@@ -65,12 +52,6 @@ function UploaderShellInner({
           <span className="hidden text-2xs text-gate-header-muted sm:inline">{t("headerExpansionHint")}</span>
           <div className="ms-auto flex items-center gap-3">
             {headerExtra}
-            <Link
-              href={navTarget}
-              className={`rounded-md border px-3 py-2 text-2xs uppercase tracking-label-lg transition ${navClassName}`}
-            >
-              {navLabel}
-            </Link>
             <ThemeToggle variant="dark" />
             <LanguageToggle monoClassName={monoClassName} variant="dark" />
           </div>

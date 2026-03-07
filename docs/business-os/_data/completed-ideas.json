@@ -192,6 +192,30 @@
       "completed_at": "2026-03-06",
       "output_link": "docs/plans/_archive/startup-loop-results-review-deterministic-extraction/",
       "idea_key": "572757fdd0bba34405fd93224e9550770c6e264c"
+    },
+    {
+      "title": "BRIK email pipeline — intent extraction collapses clause-level questions, double-counts intents",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "email-pipeline-simulation-hardening",
+      "completed_at": "2026-03-07",
+      "output_link": "docs/plans/_archive/email-pipeline-simulation-hardening/",
+      "idea_key": "d43413db46f90885adb8d4dc6bb5412de1461a69"
+    },
+    {
+      "title": "BRIK email pipeline — quality gate advisory-only; coverage scoring lexical-only",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "email-pipeline-simulation-hardening",
+      "completed_at": "2026-03-07",
+      "output_link": "docs/plans/_archive/email-pipeline-simulation-hardening/",
+      "idea_key": "aec822c528962f09e44d8e7c344cb7dbcb032826"
+    },
+    {
+      "title": "BRIK email pipeline — template ranker accepts weak matches, booking_monitor triggers too broadly",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "email-pipeline-simulation-hardening",
+      "completed_at": "2026-03-07",
+      "output_link": "docs/plans/_archive/email-pipeline-simulation-hardening/",
+      "idea_key": "3ef11aab144ca4886b477bb50a313590a6f4abfe"
     }
   ]
 }

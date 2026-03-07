@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: UI
 Workstream: Engineering
 Created: 2026-03-07
@@ -28,7 +28,7 @@ Replace the xa-uploader sync panel with a per-product "Make Live" / "Save as Dra
 - [x] TASK-01: Extract cloud media helpers + create `POST /api/catalog/publish` route
 - [x] TASK-02: Client publish handler in catalogConsoleActions + useCatalogConsole
 - [x] TASK-03: Make Live button in CatalogProductForm; simplify StatusSelect
-- [ ] TASK-04: Remove CatalogSyncPanel and sync screen toggle from CatalogConsole
+- [x] TASK-04: Remove CatalogSyncPanel and sync screen toggle from CatalogConsole
 - [x] TASK-05: i18n — add Make Live keys, remove orphaned sync keys
 
 ## Goals
@@ -307,7 +307,8 @@ Replace the xa-uploader sync panel with a per-product "Make Live" / "Save as Dra
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-07)
+- **Build evidence:** Committed `077c08d02f`. `CatalogSyncPanel.client.tsx` deleted. `CatalogConsole.client.tsx`: CurrencyScreen renders `CurrencyRatesPanel` unconditionally (mode guard removed); header label always `screenCurrencyRates`; `onPublish` wired from `state.handlePublish` into `ProductEditor`. `CatalogProductForm`: `onPublish` broadened to `() => Promise<unknown>` for type compat. `useCatalogConsole` public return: `syncOptions`, `setSyncOptions`, `syncOutput`, `lastSyncData`, `refreshSyncReadiness` removed; `syncReadiness` and `handleSync` kept (required by CurrencyRatesPanel). Extinct `sync-feedback` tests removed. `uploaderI18n.ts`: 10 orphaned sync-panel keys removed from EN + ZH. TypeScript + lint clean.
 - **Affects:**
   - `apps/xa-uploader/src/components/catalog/CatalogConsole.client.tsx`
   - `apps/xa-uploader/src/components/catalog/CatalogSyncPanel.client.tsx` (delete)

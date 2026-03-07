@@ -42,6 +42,11 @@ export type SaveResult =
   | { status: "cancelled" }
   | { status: "error" };
 
+export type PublishResult =
+  | { status: "published"; deployStatus: string; warnings: string[] }
+  | { status: "busy" }
+  | { status: "error"; error?: string };
+
 export type SyncActionResult = { ok: boolean; data?: SyncResponse };
 
 function normalizeCatalogPath(value: string): string {
@@ -543,6 +548,66 @@ function getSyncSuccessMessage(
     baseMessage = t("syncSucceededRebuildRequired");
   }
   return appendWarnings(baseMessage);
+}
+
+export async function handlePublishImpl({
+  draft,
+  storefront,
+  t,
+  busyLockRef,
+  setBusy,
+  setActionFeedback,
+  loadCatalog,
+}: {
+  draft: CatalogProductDraftInput;
+  storefront: XaCatalogStorefront;
+  t: Translator;
+  busyLockRef: BusyLockRef;
+  setBusy: React.Dispatch<React.SetStateAction<boolean>>;
+  setActionFeedback: React.Dispatch<React.SetStateAction<ActionFeedbackState>>;
+  loadCatalog: () => Promise<void>;
+}): Promise<PublishResult> {
+  if (!tryBeginBusyAction(busyLockRef, setBusy)) return { status: "busy" };
+  clearActionFeedbackDomains(setActionFeedback, ["draft"]);
+  try {
+    const response = await fetch("/api/catalog/publish", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ storefront, draft }),
+    });
+    const data = (await response.json()) as {
+      ok: boolean;
+      deployStatus?: string;
+      warnings?: string[];
+      error?: string;
+    };
+    if (!response.ok || !data.ok) {
+      throw new Error(getCatalogApiErrorMessage(data.error, "makeLiveFailed", t));
+    }
+    await loadCatalog().catch(() => null);
+    const deployStatus = data.deployStatus ?? "skipped_unconfigured";
+    let message: string;
+    if (deployStatus === "triggered") {
+      message = t("makeLiveSuccess");
+    } else if (deployStatus === "skipped_cooldown") {
+      message = t("makeLiveSuccessCooldown");
+    } else {
+      message = t("makeLiveSuccessUnconfigured");
+    }
+    updateActionFeedback(setActionFeedback, "draft", {
+      kind: "success",
+      message,
+    });
+    return { status: "published", deployStatus, warnings: data.warnings ?? [] };
+  } catch (err) {
+    updateActionFeedback(setActionFeedback, "draft", {
+      kind: "error",
+      message: errorToMessage(err, t("makeLiveFailed")),
+    });
+    return { status: "error", error: errorToMessage(err, t("makeLiveFailed")) };
+  } finally {
+    endBusyAction(busyLockRef, setBusy);
+  }
 }
 
 export async function handleSyncImpl({

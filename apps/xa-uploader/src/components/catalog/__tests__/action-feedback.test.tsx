@@ -120,6 +120,9 @@ async function renderHarness() {
         <button type="button" onClick={() => void state.handleSync()}>
           sync
         </button>
+        <button type="button" onClick={() => void state.handlePublish()}>
+          publish
+        </button>
         <div data-cy="busy">{state.busy ? "busy" : "idle"}</div>
         <div data-cy="autosave-dirty">{state.isAutosaveDirty ? "yes" : "no"}</div>
         <div data-cy="autosave-status">{state.autosaveStatus}</div>
@@ -800,5 +803,97 @@ describe("shouldTriggerAutosync", () => {
         draft: AUTOSAVE_DRAFT_A,
       }),
     ).toBe(true);
+  });
+});
+
+describe("handlePublishImpl — publish action feedback", () => {
+  const originalFetch = global.fetch;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    window.localStorage.clear();
+  });
+
+  afterEach(() => {
+    global.fetch = originalFetch;
+    jest.restoreAllMocks();
+  });
+
+  it("TC-01: successful publish with deploy triggered shows success feedback and refreshes catalog", async () => {
+    global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
+      if (url.startsWith("/api/catalog/products?storefront=") && !init?.method) {
+        return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
+      }
+      if (url.startsWith("/api/catalog/sync?storefront=")) {
+        return jsonResponse({ ok: true, ready: true, mode: "cloud", missingScripts: [], contractConfigured: true });
+      }
+      if (url === "/api/catalog/publish" && init?.method === "POST") {
+        return jsonResponse({ ok: true, deployStatus: "triggered", warnings: [] });
+      }
+      throw new Error(`Unhandled fetch: ${url}`);
+    }) as unknown as typeof fetch;
+
+    await renderHarness();
+    await act(async () => { fireEvent.click(screen.getByRole("button", { name: "seed-draft" })); });
+    await clickButton("publish");
+
+    await waitFor(() => {
+      expect(screen.getByTestId("draft-feedback")).toHaveTextContent("success:Published. Site rebuild triggered.");
+    });
+    expect(screen.getByTestId("busy")).toHaveTextContent("idle");
+  });
+
+  it("TC-02: publish with cooldown shows cooldown message", async () => {
+    global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
+      if (url.startsWith("/api/catalog/products?storefront=") && !init?.method) {
+        return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
+      }
+      if (url.startsWith("/api/catalog/sync?storefront=")) {
+        return jsonResponse({ ok: true, ready: true, mode: "cloud", missingScripts: [], contractConfigured: true });
+      }
+      if (url === "/api/catalog/publish" && init?.method === "POST") {
+        return jsonResponse({ ok: true, deployStatus: "skipped_cooldown", warnings: [] });
+      }
+      throw new Error(`Unhandled fetch: ${url}`);
+    }) as unknown as typeof fetch;
+
+    await renderHarness();
+    await act(async () => { fireEvent.click(screen.getByRole("button", { name: "seed-draft" })); });
+    await clickButton("publish");
+
+    await waitFor(() => {
+      expect(screen.getByTestId("draft-feedback")).toHaveTextContent("success:Published. Site rebuild pending (cooldown).");
+    });
+    expect(screen.getByTestId("busy")).toHaveTextContent("idle");
+  });
+
+  it("TC-03: publish failure shows error feedback and busy lock is released", async () => {
+    global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
+      if (url.startsWith("/api/catalog/products?storefront=") && !init?.method) {
+        return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
+      }
+      if (url.startsWith("/api/catalog/sync?storefront=")) {
+        return jsonResponse({ ok: true, ready: true, mode: "cloud", missingScripts: [], contractConfigured: true });
+      }
+      if (url === "/api/catalog/publish" && init?.method === "POST") {
+        return jsonResponse({ ok: false, error: "catalog_publish_failed" }, { status: 502 });
+      }
+      throw new Error(`Unhandled fetch: ${url}`);
+    }) as unknown as typeof fetch;
+
+    await renderHarness();
+    await act(async () => { fireEvent.click(screen.getByRole("button", { name: "seed-draft" })); });
+    await clickButton("publish");
+
+    await waitFor(() => {
+      expect(screen.getByTestId("draft-feedback")).toHaveTextContent("error:");
+    });
+    expect(screen.getByTestId("busy")).toHaveTextContent("idle");
   });
 });

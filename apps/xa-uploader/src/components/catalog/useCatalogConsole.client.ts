@@ -18,11 +18,13 @@ import {
   handleLoginImpl,
   handleLogoutImpl,
   handleNewImpl,
+  handlePublishImpl,
   handleSaveImpl,
   handleSelectImpl,
   handleStorefrontChangeImpl,
   handleSyncImpl,
   mergeAutosaveImageTuples,
+  type PublishResult,
   type SaveResult,
   shouldTriggerAutosync,
   type SyncActionResult,
@@ -788,6 +790,21 @@ function useCatalogDraftHandlers(
   };
 }
 
+function useCatalogPublishHandlers(state: CatalogConsoleState) {
+  const handlePublish = async (): Promise<PublishResult> =>
+    handlePublishImpl({
+      draft: state.draft,
+      storefront: state.storefront,
+      t: state.t,
+      busyLockRef: state.busyLockRef,
+      setBusy: state.setBusy,
+      setActionFeedback: state.setActionFeedback,
+      loadCatalog: state.loadCatalog,
+    });
+
+  return { handlePublish };
+}
+
 function useCatalogSyncHandlers(state: CatalogConsoleState) {
   const runSync = async (): Promise<SyncActionResult> => {
     const result = await handleSyncImpl({
@@ -834,6 +851,7 @@ export function useCatalogConsole() {
   const state = useCatalogConsoleState();
   const authHandlers = useCatalogAuthHandlers(state);
   const syncHandlers = useCatalogSyncHandlers(state);
+  const publishHandlers = useCatalogPublishHandlers(state);
   const draftHandlers = useCatalogDraftHandlers(state, syncHandlers.handleAutosync);
   const { handleAutosync: _handleAutosync, ...publicSyncHandlers } = syncHandlers;
 
@@ -872,6 +890,7 @@ export function useCatalogConsole() {
     storefrontConfig: state.storefrontConfig,
     ...authHandlers,
     ...draftHandlers,
+    ...publishHandlers,
     ...publicSyncHandlers,
   };
 }

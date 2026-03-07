@@ -5,7 +5,7 @@ import { AlertTriangle, Calendar, MapPin, MessageSquareText, User } from "lucide
 import type { InboxThreadDetail } from "@/services/useInbox";
 
 import DraftReviewPanel from "./DraftReviewPanel";
-import { formatInboxTimestamp } from "./presentation";
+import { formatInboxTimestamp, stripQuotedContent } from "./presentation";
 
 interface ThreadDetailPaneProps {
   threadDetail: InboxThreadDetail | null;
@@ -173,7 +173,7 @@ export default function ThreadDetailPane({
                   </p>
                 </div>
                 <div className="mt-2 break-words whitespace-pre-wrap text-sm leading-relaxed text-foreground/90">
-                  {message.bodyPlain ?? message.snippet ?? "No body available."}
+                  {message.bodyPlain ? stripQuotedContent(message.bodyPlain) : (message.snippet ?? "No body available.")}
                 </div>
               </article>
             );

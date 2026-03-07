@@ -97,6 +97,32 @@ export function inferReplySubject(subject: string | null | undefined): string {
   return /^re:/i.test(trimmed) ? trimmed : `Re: ${trimmed}`;
 }
 
+/**
+ * Strip quoted reply content from a plain-text email body so each message
+ * in the conversation view shows only its own content.
+ */
+export function stripQuotedContent(body: string): string {
+  const lines = body.split("\n");
+  const result: string[] = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // Gmail / generic "On <date>, <name> wrote:" delimiter
+    if (/^On .{10,80} wrote:\s*$/.test(line)) break;
+
+    // Outlook-style separator
+    if (/^-{2,}\s*(?:Original Message|Forwarded message)/i.test(line)) break;
+
+    // Line starting with ">" that follows a blank line (quoted block start)
+    if (line.startsWith(">") && (i === 0 || lines[i - 1].trim() === "")) break;
+
+    result.push(line);
+  }
+
+  return result.join("\n").trimEnd();
+}
+
 export function findLatestInboundSender(messages: InboxMessage[]): string | null {
   const latestInbound = [...messages]
     .reverse()

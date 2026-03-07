@@ -19,7 +19,20 @@ hostname = "reception.hostel-positano.com"
 #   wrangler secret put RECEPTION_FIREBASE_API_KEY
 #   wrangler secret put RECEPTION_FIREBASE_DATABASE_URL
 #   wrangler secret put RECEPTION_FIREBASE_ARCHIVE_DATABASE_URL
+#
+# Gmail inbox sync (OAuth credentials for hostel inbox email):
+#   wrangler secret put GMAIL_CLIENT_ID
+#   wrangler secret put GMAIL_CLIENT_SECRET
+#   wrangler secret put GMAIL_REFRESH_TOKEN
+#
+# Guest matching (optional — only if Firebase RTDB blocks unauthenticated reads):
+#   wrangler secret put FIREBASE_DB_SECRET
 # ============================================================================
+
+[[d1_databases]]
+binding = "RECEPTION_INBOX_DB"
+database_name = "reception-inbox"
+database_id = "f3ed1b8f-cb6a-4950-9bfa-8f85a0913db9"
 
 [vars]
 # Server-side runtime vars. NEXT_PUBLIC_ vars must be set at build time.

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeft, Inbox, RefreshCw, Send, TriangleAlert } from "lucide-react";
+import { ArrowLeft, Inbox, RefreshCw } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
 
@@ -178,31 +178,6 @@ export default function InboxWorkspace() {
                 {syncing ? "Syncing..." : "Refresh"}
               </span>
             </Button>
-          </div>
-
-          {/* Compact stat strip — desktop only */}
-          <div className="hidden gap-3 md:grid md:grid-cols-3">
-            <div className="flex items-center gap-3 rounded-xl border border-border-1 bg-surface px-4 py-3">
-              <Inbox className="h-4 w-4 text-muted-foreground" />
-              <div>
-                <p className="text-2xl font-semibold text-foreground">{threads.length}</p>
-                <p className="text-xs text-muted-foreground">Active threads</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 rounded-xl border border-border-1 bg-surface px-4 py-3">
-              <TriangleAlert className="h-4 w-4 text-warning-main" />
-              <div>
-                <p className="text-2xl font-semibold text-foreground">{manualDraftCount}</p>
-                <p className="text-xs text-muted-foreground">Need draft</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 rounded-xl border border-border-1 bg-surface px-4 py-3">
-              <Send className="h-4 w-4 text-success-main" />
-              <div>
-                <p className="text-2xl font-semibold text-foreground">{readyToSendCount}</p>
-                <p className="text-xs text-muted-foreground">Ready to send</p>
-              </div>
-            </div>
           </div>
         </div>
       )}

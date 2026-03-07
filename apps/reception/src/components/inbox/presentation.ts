@@ -10,6 +10,18 @@ export function formatInboxTimestamp(value: string | null | undefined): string {
     return "Unknown";
   }
 
+  const diffMs = Date.now() - new Date(value).getTime();
+  const diffSec = Math.floor(diffMs / 1000);
+  const diffMin = Math.floor(diffSec / 60);
+  const diffHr = Math.floor(diffMin / 60);
+  const diffDay = Math.floor(diffHr / 24);
+
+  if (diffSec < 60) return "just now";
+  if (diffMin < 60) return `${diffMin}m ago`;
+  if (diffHr < 24) return `${diffHr}h ago`;
+  if (diffHr < 48) return "yesterday";
+  if (diffDay < 7) return `${diffDay}d ago`;
+
   return new Date(value).toLocaleString("en-GB", {
     dateStyle: "short",
     timeStyle: "short",
@@ -19,21 +31,21 @@ export function formatInboxTimestamp(value: string | null | undefined): string {
 export function buildInboxThreadBadge(thread: InboxThreadSummary): InboxBadge {
   if (thread.needsManualDraft) {
     return {
-      label: "Needs manual draft",
+      label: "Manual",
       className: "bg-warning-light text-warning-main",
     };
   }
 
   if (thread.currentDraft?.status === "edited") {
     return {
-      label: "Staff edited draft",
+      label: "Edited",
       className: "bg-info-light text-info-main",
     };
   }
 
   if (thread.currentDraft?.status === "generated") {
     return {
-      label: "Agent draft ready",
+      label: "Draft ready",
       className: "bg-success-light text-success-main",
     };
   }
@@ -47,7 +59,7 @@ export function buildInboxThreadBadge(thread: InboxThreadSummary): InboxBadge {
 
   if (thread.status === "review_later") {
     return {
-      label: "Review later",
+      label: "Review",
       className: "bg-surface-3 text-muted-foreground",
     };
   }

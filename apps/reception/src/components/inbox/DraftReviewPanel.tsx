@@ -301,7 +301,7 @@ export default function DraftReviewPanel({
             </Button>
           </Cluster>
 
-          <Cluster gap={2}>
+          <Cluster gap={3} className="ml-auto">
             <Button
               type="button"
               onClick={() => setShowDismissConfirm(true)}
@@ -314,13 +314,15 @@ export default function DraftReviewPanel({
               {dismissingThread ? "Dismissing..." : "Not relevant"}
             </Button>
 
+            <div className="h-8 border-l border-border-1" />
+
             <Button
               type="button"
               onClick={() => setShowSendConfirm(true)}
               disabled={actionsDisabled || parsedRecipients.length === 0 || !plainText.trim()}
               color="success"
               tone="solid"
-              className="min-h-10 rounded-lg px-5"
+              className="min-h-10 rounded-lg px-8"
             >
               <Send className="mr-1.5 h-4 w-4" />
               {sendingDraft ? "Sending..." : "Send"}

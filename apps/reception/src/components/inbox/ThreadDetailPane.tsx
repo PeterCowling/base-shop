@@ -97,8 +97,6 @@ export default function ThreadDetailPane({
               </p>
               <p className="mt-1 text-xs text-muted-foreground">
                 {threadDetail.messages.length} message{threadDetail.messages.length !== 1 ? "s" : ""}
-                {" · "}
-                Source: {threadDetail.messageBodiesSource.toUpperCase()}
               </p>
             </div>
           </div>
@@ -153,7 +151,8 @@ export default function ThreadDetailPane({
             Conversation
           </h3>
         </div>
-        <div className="space-y-3 p-3">
+        {/* eslint-disable-next-line ds/no-arbitrary-tailwind -- IDEA-DISPATCH-20260307130300-9040 viewport-relative scroll containment */}
+        <div className="max-h-[50vh] space-y-3 overflow-y-auto p-3">
           {threadDetail.messages.map((message) => {
             const isOutbound = message.direction === "outbound";
             return (
@@ -161,7 +160,7 @@ export default function ThreadDetailPane({
                 key={message.id}
                 className={`rounded-xl px-4 py-3 ${
                   isOutbound
-                    ? "ml-6 border border-primary-main/20 bg-primary-soft/50"
+                    ? "ml-6 border border-primary-main/20 bg-primary-soft/50 border-l-2 border-l-primary-main"
                     : "mr-6 border border-border-1 bg-surface-2"
                 }`}
               >
@@ -173,7 +172,7 @@ export default function ThreadDetailPane({
                     {formatInboxTimestamp(message.sentAt)}
                   </p>
                 </div>
-                <div className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-foreground/90">
+                <div className="mt-2 break-words whitespace-pre-wrap text-sm leading-relaxed text-foreground/90">
                   {message.bodyPlain ?? message.snippet ?? "No body available."}
                 </div>
               </article>

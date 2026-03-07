@@ -216,6 +216,8 @@ export default function useInbox() {
 
   const detailCacheRef = useRef<Map<string, InboxThreadDetail>>(new Map());
   const abortControllerRef = useRef<AbortController | null>(null);
+  const selectedThreadIdRef = useRef<string | null>(null);
+  selectedThreadIdRef.current = selectedThreadId;
 
   const refreshThreadDetail = useCallback(async (threadId: string): Promise<InboxThreadDetail> => {
     detailCacheRef.current.delete(threadId);
@@ -275,9 +277,10 @@ export default function useInbox() {
         const nextThreads = await fetchInboxThreads();
         setThreads(nextThreads);
 
+        const currentId = selectedThreadIdRef.current;
         const targetThreadId = preferredThreadId
-          ?? (selectedThreadId && nextThreads.some((thread) => thread.id === selectedThreadId)
-            ? selectedThreadId
+          ?? (currentId && nextThreads.some((thread) => thread.id === currentId)
+            ? currentId
             : nextThreads[0]?.id ?? null);
 
         if (targetThreadId) {
@@ -294,12 +297,13 @@ export default function useInbox() {
         setLoadingList(false);
       }
     },
-    [selectThread, selectedThreadId],
+    [selectThread],
   );
 
   useEffect(() => {
     void loadThreads(null).catch(() => undefined);
-  }, [loadThreads]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- IDEA-DISPATCH-20260307130300-9040 mount-only effect uses ref for selectedThreadId
+  }, []);
 
   const saveDraft = useCallback(
     async (payload: InboxDraftUpdateInput) => {
@@ -450,11 +454,11 @@ export default function useInbox() {
 
     try {
       await runInboxSync();
-      await loadThreads(selectedThreadId);
+      await loadThreads(selectedThreadIdRef.current);
     } finally {
       setSyncing(false);
     }
-  }, [loadThreads, selectedThreadId]);
+  }, [loadThreads]);
 
   return {
     threads,

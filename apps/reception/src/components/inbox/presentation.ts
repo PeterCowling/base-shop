@@ -100,22 +100,51 @@ export function inferReplySubject(subject: string | null | undefined): string {
 /**
  * Strip quoted reply content from a plain-text email body so each message
  * in the conversation view shows only its own content.
+ *
+ * Handles Gmail (EN/IT/DE/FR/ES), Apple Mail, Outlook, and generic `>` quoting.
+ * Also handles single-line bodies where Gmail has stripped all newlines — the
+ * quoted block is detected inline via ` > Il giorno` / ` > On` patterns.
  */
 export function stripQuotedContent(body: string): string {
+  // Inline quote detection for single-line bodies (Gmail sometimes strips newlines).
+  // Match " > Il giorno ... ha scritto:" or " > On ... wrote:" etc. embedded in a line.
+  const inlineQuoteIdx = body.search(
+    / > (?:Il giorno .{10,80} ha scritto:|On .{10,80} wrote:|Am .{10,80} schrieb |Le .{10,80} a \u00e9crit|El .{10,80} escribi\u00f3)/,
+  );
+  if (inlineQuoteIdx !== -1) {
+    return body.slice(0, inlineQuoteIdx).trimEnd();
+  }
+
   const lines = body.split("\n");
   const result: string[] = [];
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
 
-    // Gmail / generic "On <date>, <name> wrote:" delimiter
+    // Gmail / generic "On <date>, <name> wrote:" delimiter (EN)
     if (/^On .{10,80} wrote:\s*$/.test(line)) break;
 
-    // Outlook-style separator
-    if (/^-{2,}\s*(?:Original Message|Forwarded message)/i.test(line)) break;
+    // Italian: "Il giorno ... ha scritto:"
+    if (/^>?\s*Il giorno .{10,80} ha scritto:\s*$/.test(line)) break;
 
-    // Line starting with ">" that follows a blank line (quoted block start)
-    if (line.startsWith(">") && (i === 0 || lines[i - 1].trim() === "")) break;
+    // German: "Am ... schrieb ...:"
+    if (/^Am .{10,80} schrieb .{1,80}:\s*$/.test(line)) break;
+
+    // French: "Le ... a écrit :"
+    if (/^Le .{10,80} a \u00e9crit\s*:\s*$/.test(line)) break;
+
+    // Spanish: "El ... escribió:"
+    if (/^El .{10,80} escribi\u00f3\s*:\s*$/.test(line)) break;
+
+    // Apple Mail / iOS: "Inviato da iPhone/iPad" or "Sent from my iPhone"
+    if (/^(?:Inviato da|Sent from my) /i.test(line)) break;
+
+    // Outlook-style separator
+    if (/^-{2,}\s*(?:Original Message|Forwarded message|Messaggio originale)/i.test(line)) break;
+
+    // Block of ">" quoted lines — break at the first `>` line in a
+    // contiguous run (whether preceded by a blank line or not)
+    if (line.startsWith("> ") || line === ">") break;
 
     result.push(line);
   }

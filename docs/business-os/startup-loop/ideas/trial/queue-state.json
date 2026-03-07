@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-07T17:02:37.728Z",
+  "last_updated": "2026-03-07T21:53:49.551Z",
   "counts": {
-    "enqueued": 182,
+    "enqueued": 184,
     "processed": 46,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
     "completed": 126,
-    "fact_find_ready": 242,
+    "fact_find_ready": 244,
     "micro_build_ready": 8,
-    "total": 380
+    "total": 382
   },
   "dispatches": [
     {
@@ -15811,6 +15811,103 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T17:01:39.498Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307215348-0644",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+      "before_sha": "c9497bcbe1953f264749e41d3ed9d3e6e745bd70",
+      "after_sha": "dce2e978d105b26c7a410a931b2deb21d76b76e3",
+      "root_event_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:dce2e978d105b26c7a410a931b2deb21d76b76e3",
+      "anchor_key": "catalog-publish-tests-test",
+      "cluster_key": "bos:unknown:catalog-publish-tests-test:BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:dce2e978d105b26c7a410a931b2deb21d76b76e3",
+      "cluster_fingerprint": "8b41ae48260aba432af0cb9736859f6b01f4399189ecf9f3f49b96885e74ff54",
+      "lineage_depth": 0,
+      "area_anchor": "catalog publish tests test",
+      "location_anchors": [
+        "apps/xa-uploader/src/app/api/catalog/publish/__tests__/route.publish.test.ts",
+        "apps/xa-uploader/src/app/api/catalog/publish/route.ts",
+        "apps/xa-uploader/src/components/catalog/CatalogConsole.client.tsx",
+        "apps/xa-uploader/src/components/catalog/CatalogProductForm.client.tsx",
+        "apps/xa-uploader/src/components/catalog/__tests__/CatalogProductForm.test.tsx",
+        "apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts",
+        "apps/xa-uploader/src/components/catalog/useCatalogConsole.client.ts",
+        "apps/xa-uploader/src/lib/uploaderI18n.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS changed (c9497bc → dce2e97)",
+      "next_scope_now": "Investigate implications of catalog publish tests test delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "git-diff-range:HEAD~1..HEAD",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/publish/__tests__/route.publish.test.ts",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/publish/route.ts",
+        "git-diff:M:apps/xa-uploader/src/components/catalog/CatalogConsole.client.tsx",
+        "git-diff:M:apps/xa-uploader/src/components/catalog/CatalogProductForm.client.tsx",
+        "git-diff:M:apps/xa-uploader/src/components/catalog/__tests__/CatalogProductForm.test.tsx",
+        "git-diff:M:apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts",
+        "git-diff:M:apps/xa-uploader/src/components/catalog/useCatalogConsole.client.ts",
+        "git-diff:M:apps/xa-uploader/src/lib/uploaderI18n.ts"
+      ],
+      "created_at": "2026-03-07T21:53:48.643Z",
+      "queue_state": "enqueued",
+      "why": "Assess catalog publish tests test implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for catalog publish tests test.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307215349-0548",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "f2bfa93ea18786e23fd9b70abb130c68e80618da",
+      "after_sha": "b9b2b20a24bb8929b3f638b550f57c162c8ef877",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:b9b2b20a24bb8929b3f638b550f57c162c8ef877",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:b9b2b20a24bb8929b3f638b550f57c162c8ef877",
+      "cluster_fingerprint": "5be4b934160994c2079bb3f0b12d9059ffb3090aa294d8655632aebe6ba0cf4e",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (f2bfa93 → b9b2b20)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
+        "session:69d199f6-bf3f-4837-a680-8fa673ae6207",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-07T21:53:49.547Z",
       "queue_state": "enqueued",
       "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
       "intended_outcome": {

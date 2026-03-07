@@ -1,6 +1,6 @@
 {
   "schema_version": "agent-session-findings.v1",
-  "generated_at": "2026-03-07T17:04:33.838Z",
+  "generated_at": "2026-03-07T21:53:49.543Z",
   "business": "BOS",
   "transcript_root": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop",
   "sessions_scanned": 20,
@@ -9,7 +9,7 @@
     {
       "session_id": "11259565-4f98-4328-9d78-c886e61f8c7e",
       "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/11259565-4f98-4328-9d78-c886e61f8c7e.jsonl",
-      "updated_at": "2026-03-07T17:01:23.087Z",
+      "updated_at": "2026-03-07T17:04:55.588Z",
       "findings": [
         "Let me read the target document and check for an existing issues ledger.",
         "Gmail auth is filesystem-dependent and cannot run in a hosted Worker.** This is the central justification for a new hosted Gmail adapter layer. If there were a simple workaround, the entire project scope shrinks.",
@@ -130,7 +130,8 @@
         "Context history bound complete** — implementation done, but commit blocked by the same stuck wrangler deploy.",
         "Quality check debug complete** — `failed_check_details` field added to `QualityCheckResult` in both reception and MCP server.",
         "Per-thread error isolation with `thread_sync_error` telemetry.",
-        "Guest match observability complete** — `buildGuestEmailMap()` now returns a structured result with status/error/duration instead of throwing."
+        "Guest match observability complete** — `buildGuestEmailMap()` now returns a structured result with status/error/duration instead of throwing.",
+        "Draft failure reasons complete** — the last agent finished."
       ]
     },
     {

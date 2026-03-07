@@ -1,6 +1,6 @@
 {
   "schema_version": "repo-maturity-signals.v1",
-  "generated_at": "2026-03-07T11:43:18.939Z",
+  "generated_at": "2026-03-07T12:28:55.123Z",
   "root": "/Users/petercowling/base-shop",
   "maturity_level": "Level-3-Reliable",
   "overall_score": 70,
@@ -54,8 +54,8 @@
       "advanced_math_module_roots_used": 5,
       "advanced_math_import_sites": 10,
       "external_dependency_count": 1684,
-      "top_level_dirs_total": 90,
-      "top_level_dirs_without_readme": 62,
+      "top_level_dirs_total": 91,
+      "top_level_dirs_without_readme": 63,
       "docs_index_coverage_pct": 2.1,
       "package_src_index_coverage_pct": 49.9,
       "setup_repo_invocations": 43,

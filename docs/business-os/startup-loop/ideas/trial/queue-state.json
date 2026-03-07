@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-07T10:24:40.371Z",
+  "last_updated": "2026-03-07T12:29:06.596Z",
   "counts": {
-    "enqueued": 146,
+    "enqueued": 163,
     "processed": 37,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
     "completed": 124,
-    "fact_find_ready": 204,
-    "micro_build_ready": 1,
-    "total": 333
+    "fact_find_ready": 215,
+    "micro_build_ready": 7,
+    "total": 350
   },
   "dispatches": [
     {
@@ -13894,6 +13894,633 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T10:24:00.445Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307102502-0112",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "463e49d6790788750da54242b0b0b36a10f2cfa3",
+      "after_sha": "bb29c7dca99dd59ee395405905e024069f68e4f4",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:bb29c7dca99dd59ee395405905e024069f68e4f4",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:bb29c7dca99dd59ee395405905e024069f68e4f4",
+      "cluster_fingerprint": "18c0b9d84e684bd75af3f315234e7e66ce6d48dd872202de5d53c4bef834ad55",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (463e49d → bb29c7d)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
+        "session:69d199f6-bf3f-4837-a680-8fa673ae6207",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-07T10:25:02.111Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "dispatch_id": "IDEA-DISPATCH-20260307112000-9030",
+      "schema_version": "dispatch.v2",
+      "mode": "trial",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "area_anchor": "BRIK reception inbox — N+1 query in thread list endpoint",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "enqueued",
+      "created_at": "2026-03-07T11:20:00.000Z",
+      "why": "Thread list endpoint calls getThread() per visible thread, causing ~200 DB queries for 50 threads. Staff experience multi-second load times.",
+      "intended_outcome": "Thread list loads from a single lean query returning only summary fields; detail data fetched only on thread selection.",
+      "evidence_refs": [
+        "operator-stated: inbox thread list is very slow, clicking a thread should load near-instantly",
+        "code-verified: apps/reception/src/app/api/mcp/inbox/route.ts lines 53-55 — Promise.all(visibleThreads.map(getThread))",
+        "code-verified: apps/reception/src/lib/inbox/repositories.server.ts getThread() runs 4 parallel sub-queries per call"
+      ]
+    },
+    {
+      "dispatch_id": "IDEA-DISPATCH-20260307112000-9031",
+      "schema_version": "dispatch.v2",
+      "mode": "trial",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "area_anchor": "BRIK reception inbox — Gmail API blocks thread detail render",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "enqueued",
+      "created_at": "2026-03-07T11:20:00.000Z",
+      "why": "getGmailThread() with format=full runs synchronously before thread detail renders, adding 100-500ms+ per click. DB-cached messages could display immediately.",
+      "intended_outcome": "Thread detail renders from DB cache instantly; Gmail data fetched in background or skipped when cached messages are fresh.",
+      "evidence_refs": [
+        "operator-stated: clicking a message should load near-instantly",
+        "code-verified: apps/reception/src/app/api/mcp/inbox/[threadId]/route.ts lines 34-40 — await getGmailThread() blocks response"
+      ]
+    },
+    {
+      "dispatch_id": "IDEA-DISPATCH-20260307112000-9032",
+      "schema_version": "dispatch.v2",
+      "mode": "trial",
+      "trigger": "operator_idea",
+      "business": "BRIK",
+      "area_anchor": "BRIK reception inbox — no client cache, full re-fetch after actions",
+      "domain": "PRODUCTS",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "enqueued",
+      "created_at": "2026-03-07T11:20:00.000Z",
+      "why": "useInbox hook re-fetches entire thread list (with N+1) after every action (save, regenerate, send, resolve, dismiss). No client-side cache or optimistic updates. Rapid thread clicks fire overlapping requests.",
+      "intended_outcome": "Client-side thread cache with optimistic updates after actions; stale-while-revalidate pattern; AbortController for superseded requests.",
+      "evidence_refs": [
+        "operator-stated: inbox performance is very poor",
+        "code-verified: apps/reception/src/services/useInbox.ts — loadThreads() called after saveDraft/regenerateDraft/sendDraft/resolveThread/dismissThread",
+        "code-verified: no SWR/React Query/deduplication in useInbox hook"
+      ]
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307114323-0980",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+      "before_sha": "69e81aac1eb719409a9f0d1e50995a5776de8964",
+      "after_sha": "474ecd02d68c7dcd727d6de9dad68ad5e0812aa8",
+      "root_event_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:474ecd02d68c7dcd727d6de9dad68ad5e0812aa8",
+      "anchor_key": "mcp-inbox-threadid",
+      "cluster_key": "bos:unknown:mcp-inbox-threadid:BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:474ecd02d68c7dcd727d6de9dad68ad5e0812aa8",
+      "cluster_fingerprint": "59defd1b28310c5fdbc6315afebdaa0f1dc6d07002a518c3851053110d835e01",
+      "lineage_depth": 0,
+      "area_anchor": "mcp inbox threadid",
+      "location_anchors": [
+        "apps/reception/src/app/api/mcp/inbox/[threadId]/route.ts",
+        "apps/reception/src/app/api/mcp/inbox/route.ts",
+        "apps/reception/src/lib/inbox/api-models.server.ts",
+        "apps/reception/src/lib/inbox/repositories.server.ts",
+        "apps/reception/src/services/useInbox.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS changed (69e81aa → 474ecd0)",
+      "next_scope_now": "Investigate implications of mcp inbox threadid delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "git-diff-range:HEAD~1..HEAD",
+        "git-diff:M:apps/reception/src/app/api/mcp/inbox/[threadId]/route.ts",
+        "git-diff:M:apps/reception/src/app/api/mcp/inbox/route.ts",
+        "git-diff:M:apps/reception/src/lib/inbox/api-models.server.ts",
+        "git-diff:M:apps/reception/src/lib/inbox/repositories.server.ts",
+        "git-diff:M:apps/reception/src/services/useInbox.ts"
+      ],
+      "created_at": "2026-03-07T11:43:23.979Z",
+      "queue_state": "enqueued",
+      "why": "Assess mcp inbox threadid implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for mcp inbox threadid.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307114324-0798",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "bb29c7dca99dd59ee395405905e024069f68e4f4",
+      "after_sha": "d4857a5cab240d789c28a038126e8783c1a83743",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:d4857a5cab240d789c28a038126e8783c1a83743",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:d4857a5cab240d789c28a038126e8783c1a83743",
+      "cluster_fingerprint": "092962236486fcb30bd34f088649f1ce18cac5f1d22ae331ec079f7bc224b907",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (bb29c7d → d4857a5)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
+        "session:69d199f6-bf3f-4837-a680-8fa673ae6207",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-07T11:43:24.797Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307114420-0124",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "d4857a5cab240d789c28a038126e8783c1a83743",
+      "after_sha": "e85153ccdcc937ce45aef6a936f303bb192d9cd2",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:e85153ccdcc937ce45aef6a936f303bb192d9cd2",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:e85153ccdcc937ce45aef6a936f303bb192d9cd2",
+      "cluster_fingerprint": "165880688a14d6e85bf867da36d8434cf2352f8c054d78d08af68f161136a696",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (d4857a5 → e85153c)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
+        "session:69d199f6-bf3f-4837-a680-8fa673ae6207",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-07T11:44:20.123Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307114923-0680",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "e85153ccdcc937ce45aef6a936f303bb192d9cd2",
+      "after_sha": "beb2bf721132beefd8846ef96c20e5efcf13b0ee",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:beb2bf721132beefd8846ef96c20e5efcf13b0ee",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:beb2bf721132beefd8846ef96c20e5efcf13b0ee",
+      "cluster_fingerprint": "a98ab33da0da7a849e4ba374d6c7d57d7658ff62e77642d0090ff6481c86471f",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (e85153c → beb2bf7)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
+        "session:69d199f6-bf3f-4837-a680-8fa673ae6207",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-07T11:49:23.679Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307115407-0983",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "beb2bf721132beefd8846ef96c20e5efcf13b0ee",
+      "after_sha": "61d5ba477f29e43bec2e272ac1874e6b2e621fd9",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:61d5ba477f29e43bec2e272ac1874e6b2e621fd9",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:61d5ba477f29e43bec2e272ac1874e6b2e621fd9",
+      "cluster_fingerprint": "a838ab15ebbaaf9a5971de242515a21913888aa8c82ead732c0e061a40942752",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (beb2bf7 → 61d5ba4)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
+        "session:69d199f6-bf3f-4837-a680-8fa673ae6207",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-07T11:54:07.982Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307130300-9040",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "reception-inbox-ui-polish-2026-03-07",
+      "anchor_key": "reception-inbox-message-overflow",
+      "cluster_key": "BRIK-reception-inbox-ui",
+      "area_anchor": "BRIK reception inbox — message body overflow and jargon",
+      "domain": "PRODUCTS",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "feature_slug": "reception-inbox-ui-polish",
+      "title": "Fix message body horizontal overflow and remove Source:D1 jargon",
+      "description": "ThreadDetailPane.tsx:176 uses whitespace-pre-wrap but no word-break — long URLs in emails overflow horizontally. Add break-words/overflow-wrap. Also remove 'Source: D1' internal jargon from thread header (line 101) — replace with message count only.",
+      "evidence_refs": [
+        "operator-stated: visual audit screenshot shows Google Flights email URLs bleeding off right edge",
+        "apps/reception/src/components/inbox/ThreadDetailPane.tsx:176",
+        "apps/reception/src/components/inbox/ThreadDetailPane.tsx:101"
+      ],
+      "created_at": "2026-03-07T13:03:00.000Z",
+      "queue_state": "processed",
+      "why": "Email body text overflows horizontally on long URLs making content unreadable. Internal jargon 'Source: D1' is meaningless to staff.",
+      "intended_outcome": {
+        "type": "measurable",
+        "statement": "No horizontal overflow on any email body. No internal system terms visible to staff.",
+        "source": "operator"
+      },
+      "processed_at": "2026-03-07T14:00:00Z",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "plan_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
+        "outcome": "Fixed 9 inbox UI issues"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307130300-9041",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "reception-inbox-ui-polish-2026-03-07",
+      "anchor_key": "reception-inbox-message-distinction",
+      "cluster_key": "BRIK-reception-inbox-ui",
+      "area_anchor": "BRIK reception inbox — inbound/outbound message distinction",
+      "domain": "PRODUCTS",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "feature_slug": "reception-inbox-ui-polish",
+      "title": "Strengthen inbound vs outbound message visual distinction in dark mode",
+      "description": "ThreadDetailPane.tsx:162-166 differentiates inbound/outbound with ml-6/mr-6 and bg tints, but both appear as near-identical dark cards in dark mode. Add stronger cues: left-border accent on outbound, or sender label like 'You replied'.",
+      "evidence_refs": [
+        "operator-stated: visual audit shows both message types look the same in dark mode",
+        "apps/reception/src/components/inbox/ThreadDetailPane.tsx:158-179"
+      ],
+      "created_at": "2026-03-07T13:03:00.000Z",
+      "queue_state": "processed",
+      "why": "Staff cannot quickly distinguish sent replies from received messages when triaging inbox threads.",
+      "intended_outcome": {
+        "type": "measurable",
+        "statement": "Outbound messages are visually distinct from inbound at a glance in dark mode.",
+        "source": "operator"
+      },
+      "processed_at": "2026-03-07T14:00:00Z",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "plan_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
+        "outcome": "Fixed 9 inbox UI issues"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307130300-9042",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "reception-inbox-ui-polish-2026-03-07",
+      "anchor_key": "reception-inbox-button-hierarchy",
+      "cluster_key": "BRIK-reception-inbox-ui",
+      "area_anchor": "BRIK reception inbox — action button visual hierarchy",
+      "domain": "PRODUCTS",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "feature_slug": "reception-inbox-ui-polish",
+      "title": "Improve action button visual hierarchy — Send prominent, destructive separated",
+      "description": "DraftReviewPanel.tsx action buttons (Save, Regenerate, Resolve, Not relevant, Send) have similar visual weight. Send (primary CTA) should be more prominent. 'Not relevant' (destructive) sits adjacent to Send — risk of misclick. Increase Send size/emphasis, add spacing between destructive and primary actions.",
+      "evidence_refs": [
+        "operator-stated: visual audit shows all buttons same size/weight, destructive too close to primary",
+        "apps/reception/src/components/inbox/DraftReviewPanel.tsx:264-329"
+      ],
+      "created_at": "2026-03-07T13:03:00.000Z",
+      "queue_state": "processed",
+      "why": "Action buttons lack hierarchy — staff may misclick destructive action when intending to send.",
+      "intended_outcome": {
+        "type": "measurable",
+        "statement": "Send button is visually dominant. Destructive action is visually separated from primary actions.",
+        "source": "operator"
+      },
+      "processed_at": "2026-03-07T14:00:00Z",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "plan_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
+        "outcome": "Fixed 9 inbox UI issues"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307130300-9043",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "reception-inbox-ui-polish-2026-03-07",
+      "anchor_key": "reception-inbox-list-scroll-badges",
+      "cluster_key": "BRIK-reception-inbox-ui",
+      "area_anchor": "BRIK reception inbox — thread list scroll and badge labels",
+      "domain": "PRODUCTS",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "feature_slug": "reception-inbox-ui-polish",
+      "title": "Constrain thread list scroll height and shorten badge labels",
+      "description": "ThreadList.tsx:84 uses max-h-screen which lets the list push all content below fold. Use calc-based max-height so list scrolls independently. Also shorten badge text: 'Needs manual draft' → 'Manual', 'Agent draft ready' → 'Draft ready', 'Review later' → 'Review' to reduce subject truncation.",
+      "evidence_refs": [
+        "operator-stated: visual audit shows list extends full viewport, badges compete with subject for space",
+        "apps/reception/src/components/inbox/ThreadList.tsx:84",
+        "apps/reception/src/components/inbox/presentation.ts"
+      ],
+      "created_at": "2026-03-07T13:03:00.000Z",
+      "queue_state": "processed",
+      "why": "Thread list has no independent scroll — pushes detail pane below fold. Long badge labels truncate subjects.",
+      "intended_outcome": {
+        "type": "measurable",
+        "statement": "Thread list scrolls independently within its panel. Badge labels are ≤12 chars.",
+        "source": "operator"
+      },
+      "processed_at": "2026-03-07T14:00:00Z",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "plan_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
+        "outcome": "Fixed 9 inbox UI issues"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307130300-9044",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "reception-inbox-ui-polish-2026-03-07",
+      "anchor_key": "reception-inbox-stat-dedup",
+      "cluster_key": "BRIK-reception-inbox-ui",
+      "area_anchor": "BRIK reception inbox — stat strip and header info dedup",
+      "domain": "PRODUCTS",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "feature_slug": "reception-inbox-ui-polish",
+      "title": "Remove duplicate stat display — stat strip vs header subtitle",
+      "description": "InboxWorkspace.tsx shows thread counts in both the header subtitle ('14 active 5 need draft 3 ready') and a 3-card stat strip. Same data displayed twice. Remove one — either remove the stat strip or remove from subtitle. Also the 'THREADS 14' header in ThreadList duplicates the count a third time.",
+      "evidence_refs": [
+        "operator-stated: visual audit shows same numbers in 3 places — header, stat strip, thread list header",
+        "apps/reception/src/components/inbox/InboxWorkspace.tsx:153-206"
+      ],
+      "created_at": "2026-03-07T13:03:00.000Z",
+      "queue_state": "processed",
+      "why": "Same thread counts shown in 3 places wastes vertical space and adds visual noise.",
+      "intended_outcome": {
+        "type": "measurable",
+        "statement": "Each stat appears in exactly one location. Vertical space recovered.",
+        "source": "operator"
+      },
+      "processed_at": "2026-03-07T14:00:00Z",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "plan_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
+        "outcome": "Fixed 9 inbox UI issues"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307130300-9045",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "reception-inbox-ui-polish-2026-03-07",
+      "anchor_key": "reception-inbox-conversation-scroll",
+      "cluster_key": "BRIK-reception-inbox-ui",
+      "area_anchor": "BRIK reception inbox — conversation height and timestamps",
+      "domain": "PRODUCTS",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "feature_slug": "reception-inbox-ui-polish",
+      "title": "Add conversation scroll constraint and use relative timestamps",
+      "description": "ThreadDetailPane conversation section renders all messages with no height limit — for long threads the draft panel disappears below fold. Add max-h with overflow-y-auto. Also in presentation.ts, use relative timestamps ('2h ago', 'yesterday') for recent items instead of full DD/MM/YYYY HH:MM format to save horizontal space in thread list.",
+      "evidence_refs": [
+        "operator-stated: visual audit shows draft panel pushed below fold on long threads",
+        "apps/reception/src/components/inbox/ThreadDetailPane.tsx:150-183",
+        "apps/reception/src/components/inbox/presentation.ts"
+      ],
+      "created_at": "2026-03-07T13:03:00.000Z",
+      "queue_state": "processed",
+      "why": "Long conversations push draft reply out of view. Full timestamps waste space in thread list.",
+      "intended_outcome": {
+        "type": "measurable",
+        "statement": "Conversation area scrolls independently. Draft reply always visible. Recent timestamps use relative format.",
+        "source": "operator"
+      },
+      "processed_at": "2026-03-07T14:00:00Z",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "plan_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
+        "outcome": "Fixed 9 inbox UI issues"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307122900-0889",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "61d5ba477f29e43bec2e272ac1874e6b2e621fd9",
+      "after_sha": "f440972129beabbeb3467b1287a49d3ac85e3660",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:f440972129beabbeb3467b1287a49d3ac85e3660",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:f440972129beabbeb3467b1287a49d3ac85e3660",
+      "cluster_fingerprint": "f94b8226fd005bb543ab729e64961f129e7706a1cc63124f9a4efde100ffb009",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (61d5ba4 → f440972)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
+        "session:69d199f6-bf3f-4837-a680-8fa673ae6207",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-07T12:29:00.888Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307122906-0593",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "f440972129beabbeb3467b1287a49d3ac85e3660",
+      "after_sha": "592b07ff0c44960194e179483fbd3633cde351cb",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:592b07ff0c44960194e179483fbd3633cde351cb",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:592b07ff0c44960194e179483fbd3633cde351cb",
+      "cluster_fingerprint": "ace38d51f8183e527d5adcea979768f14159cb6701cba92a7d0ef44d21426346",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (f440972 → 592b07f)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
+        "session:69d199f6-bf3f-4837-a680-8fa673ae6207",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-07T12:29:06.592Z",
       "queue_state": "enqueued",
       "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
       "intended_outcome": {

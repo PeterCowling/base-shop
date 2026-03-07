@@ -1,6 +1,6 @@
 {
   "schema_version": "agent-session-findings.v1",
-  "generated_at": "2026-03-07T11:43:24.794Z",
+  "generated_at": "2026-03-07T12:29:06.590Z",
   "business": "BOS",
   "transcript_root": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop",
   "sessions_scanned": 20,
@@ -9,7 +9,7 @@
     {
       "session_id": "11259565-4f98-4328-9d78-c886e61f8c7e",
       "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/11259565-4f98-4328-9d78-c886e61f8c7e.jsonl",
-      "updated_at": "2026-03-07T11:43:23.201Z",
+      "updated_at": "2026-03-07T12:29:04.166Z",
       "findings": [
         "Let me read the target document and check for an existing issues ledger.",
         "Gmail auth is filesystem-dependent and cannot run in a hosted Worker.** This is the central justification for a new hosted Gmail adapter layer. If there were a simple workaround, the entire project scope shrinks.",
@@ -88,13 +88,30 @@
         "The performance problem is purely the N+1 pattern, not missing indexes.",
         "Now let me check for duplicates and read the CASS retrieval (fail-open).",
         "The errors are pre-existing (`packages/editorial/dist/` not built locally — per MEMORY.md).",
-        "Now run Steps 3-5 in parallel: reflection debt emitter, bug scan, and generate-process-improvements."
+        "Now run Steps 3-5 in parallel: reflection debt emitter, bug scan, and generate-process-improvements.",
+        "Now let me write the bug-scan findings (empty) and check completed-ideas.json (Step 6), then archive the plan (Step 7).",
+        "This is the acceptable continue-on-failure case per the skill.",
+        "[x] Bug scan run — 0 findings",
+        "Wrangler needs a Cloudflare API token — it can't authenticate in this non-interactive environment.",
+        "Let me check if it's a Cloudflare Worker cold start issue, or if the client-side Next.js routing itself is slow.",
+        "It's showing the login page — I can't test the actual inbox without credentials.",
+        "OK, I can't test interactively without login credentials.",
+        "That's a React dependency cycle bug in `useInbox`.",
+        "Same issue here — `selectedThreadId` in the dep array.",
+        "The Google Flights email body contains long URLs and unbroken text that bleeds off the right edge of the viewport. There's no `overflow-x-hidden` or `break-words` on the message body.",
+        "Critique: skipped for micro-build bundle (all issues are bounded CSS fixes with verified evidence — critique would not change routing or confidence).",
+        "CASS retrieval is fail-open; skipping for these trivially bounded S-effort tasks.",
+        "Process/UX:** All changes are visual refinements to existing flows; entry point (inbox page), happy path (viewing/sending emails), and error states are unchanged.",
+        "Two new lint errors from our changes (arbitrary Tailwind values for scroll containment).",
+        "The JSX comment can't be placed between `(` and the element start like that.",
+        "The remaining error and warnings are all pre-existing (useInbox.ts:305, StaffAccountsForm).",
+        "Pre-existing lint error in `useInbox.ts` is blocking the commit."
       ]
     },
     {
       "session_id": "de364e8d-fdd8-4860-8c35-b00389f9b19b",
       "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/de364e8d-fdd8-4860-8c35-b00389f9b19b.jsonl",
-      "updated_at": "2026-03-07T11:43:22.170Z",
+      "updated_at": "2026-03-07T12:29:02.927Z",
       "findings": [
         "TASK-01** Complete — truthful status semantics + per-product publish blockers with `missingRoles[]` exposed; `workflowLive` relabeled to \"Published to catalog\"",
         "TASK-04 depends on TASK-01+02+03, still blocked on TASK-03.",
@@ -132,7 +149,14 @@
         "draftSyncLock.ts` in TASK-01 Affects is a phantom file — builder will look for a non-existent file and fail to find the lock functions.",
         "Issues ledger updated at `docs/plans/xa-uploader-publish-flow/critique-history.md`.",
         "Need to check `getPublishErrorDetails` and `MediaValidationPolicy` definitions:",
-        "The key insight is: in the CatalogProductForm test, `CatalogProductBaseFields` is **mocked** — so I can't test StatusSelect options there."
+        "The key insight is: in the CatalogProductForm test, `CatalogProductBaseFields` is **mocked** — so I can't test StatusSelect options there.",
+        "Now run self-evolving build-output bridge, reflection debt emitter, bug scan, and process improvements in parallel:",
+        "[x] Bug scan run — 0 findings, artifact written",
+        "Self-evolving bridge returned `startup-state.json not found for business XA` — advisory/fail-open, no action required.",
+        "Build fails at `next build --webpack` with a vague `TypeError: Cannot read properties of undefined (reading 'length')`.",
+        "The error is happening deep in webpack with hidden frames.",
+        "The previous failure was due to missing secrets in the non-CI path — the `ensureStrongOrRandom` path for `NEXTAUTH_SECRET` etc.",
+        "Image resolution**: xa-uploader enforces a 1600px minimum edge. The public images are 600×750 — they'd fail validation on upload. You'd need hi-res versions to go through the uploader pipeline."
       ]
     },
     {

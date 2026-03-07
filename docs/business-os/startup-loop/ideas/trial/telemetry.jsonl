@@ -180,3 +180,13 @@
 {"recorded_at":"2026-03-07T11:43:23.983Z","dispatch_id":"IDEA-DISPATCH-20260307114323-0980","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"codebase_signal_bridge"}
 
 {"recorded_at":"2026-03-07T11:43:24.801Z","dispatch_id":"IDEA-DISPATCH-20260307114324-0798","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}
+
+{"recorded_at":"2026-03-07T11:44:20.127Z","dispatch_id":"IDEA-DISPATCH-20260307114420-0124","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}
+
+{"recorded_at":"2026-03-07T11:49:23.684Z","dispatch_id":"IDEA-DISPATCH-20260307114923-0680","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}
+
+{"recorded_at":"2026-03-07T11:54:07.986Z","dispatch_id":"IDEA-DISPATCH-20260307115407-0983","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}
+
+{"recorded_at":"2026-03-07T12:29:00.893Z","dispatch_id":"IDEA-DISPATCH-20260307122900-0889","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}
+
+{"recorded_at":"2026-03-07T12:29:06.596Z","dispatch_id":"IDEA-DISPATCH-20260307122906-0593","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}

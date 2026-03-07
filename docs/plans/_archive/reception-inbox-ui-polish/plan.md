@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Platform
 Workstream: Engineering
 Created: 2026-03-07
@@ -84,11 +84,11 @@ Fix 9 visual/UX issues across 5 files in the reception inbox. All changes are bo
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---:|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | ThreadDetailPane: overflow, jargon removal, outbound accent, conversation scroll | 90% | S | Pending | - | - |
-| TASK-02 | IMPLEMENT | presentation.ts: shorter badge labels, relative timestamps | 90% | S | Pending | - | - |
-| TASK-03 | IMPLEMENT | DraftReviewPanel: button visual hierarchy | 90% | S | Pending | - | - |
-| TASK-04 | IMPLEMENT | ThreadList: scroll constraint | 85% | S | Pending | - | - |
-| TASK-05 | IMPLEMENT | InboxWorkspace: remove duplicate stat strip | 90% | S | Pending | - | - |
+| TASK-01 | IMPLEMENT | ThreadDetailPane: overflow, jargon removal, outbound accent, conversation scroll | 90% | S | Complete (2026-03-07) | - | - |
+| TASK-02 | IMPLEMENT | presentation.ts: shorter badge labels, relative timestamps | 90% | S | Complete (2026-03-07) | - | - |
+| TASK-03 | IMPLEMENT | DraftReviewPanel: button visual hierarchy | 90% | S | Complete (2026-03-07) | - | - |
+| TASK-04 | IMPLEMENT | ThreadList: scroll constraint | 85% | S | Complete (2026-03-07) | - | - |
+| TASK-05 | IMPLEMENT | InboxWorkspace: remove duplicate stat strip | 90% | S | Complete (2026-03-07) | - | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |

@@ -34,7 +34,7 @@
         "1.10 \"OTA\" — đại lý du lịch trực tuyến được ủy quyền (ví dụ Hostelworld.com, Booking.com).",
         "1.11 \"Loại giá\" — quy tắc giá áp dụng cho đặt chỗ (hoàn tiền/không hoàn tiền).",
         "1.12 \"Giá không hoàn tiền\" — yêu cầu thanh toán đầy đủ khi đặt và không hoàn tiền trừ khi luật yêu cầu.",
-        "1.13 \"Giá hoàn tiền\" — có thể cho phép hủy/đổi theo quy tắc khi đặt và trong xác nhận.",
+        "1.13 \"Giá hoàn tiền\" — mức giá mà theo đó một trong hai bên — Người đặt hoặc Hostel Brikette — có thể hủy Đặt chỗ bất kỳ lúc nào và vì bất kỳ lý do gì, cho đến khi thời hạn thông báo hủy bắt đầu tính (xem Phụ lục A2 và Mục 6.4). Khi đã trong thời hạn thông báo, phí Hủy muộn sẽ áp dụng. Mọi thay đổi vẫn phụ thuộc vào tình trạng phòng trống và các quy tắc đã hiển thị khi đặt và trong Đặt chỗ đã xác nhận.",
         "1.14 \"Khung giờ nhận phòng chính thức\" — 15:00–22:00 vào ngày đến, trừ khi xác nhận ghi khác.",
         "1.15 \"No Show\" — không hoàn tất nhận phòng trước khi hết khung giờ chính thức và không được đồng ý đến muộn bằng văn bản.",
         "1.16 \"Hủy muộn\" — hủy sau thời hạn thông báo của Loại giá.",
@@ -92,10 +92,11 @@
         "6.1 Cách yêu cầu đổi hoặc hủy — Mọi yêu cầu hủy hoặc đổi đều phải gửi bằng văn bản đến hostelpositano@gmail.com hoặc qua hệ thống tin nhắn OTA (nếu đặt qua OTA). Chúng tôi khuyến nghị bạn dùng cùng kênh đã dùng để đặt.",
         "6.2 Thời hạn tính theo giờ địa phương, lùi từ 15:00 ngày đến.",
         "6.3 Quy tắc và phí hủy — Phí hủy (nếu có), điều kiện hoàn tiền (nếu có), và thời hạn tùy thuộc vào Loại giá và kênh đặt, được nêu rõ khi bạn đặt, trong Đặt chỗ đã xác nhận của bạn và trong Phụ lục A (Bảng giá và phí).",
-        "6.4 Đổi và gia hạn — Yêu cầu đổi có thể được xử lý như hủy đặt chỗ ban đầu và tạo Đặt chỗ mới, tùy vào khả năng và Loại giá. Gia hạn tùy vào chỗ trống và được coi như giai đoạn đặt mới (có thể có Loại giá khác). Chúng tôi sẽ xác nhận những thay đổi được chấp thuận bằng văn bản. Cho đến khi xác nhận, Đặt chỗ ban đầu vẫn có hiệu lực.",
-        "6.5 No Show tính phí theo Loại giá.",
-        "6.6 Rời sớm và đêm chưa sử dụng — Nếu bạn rời đi sớm sau khi nhận phòng, điều này không tự động tạo ra quyền được hoàn tiền. Bất kỳ khoản hoàn tiền, tín dụng, hoặc miễn trừ (nếu có) đều được điều chỉnh bởi Loại giá, việc chúng tôi có xác nhận thay đổi/hủy bằng văn bản hay không, và các yêu cầu bắt buộc theo luật hiện hành.",
-        "6.7 Vi phạm có thể bị chấm dứt, tính phí, dùng cọc hoặc trừ thẻ; không coi là No Show."
+        "6.4 Quyền hủy Đặt chỗ theo Giá hoàn tiền — Đối với các Đặt chỗ theo Giá hoàn tiền, một trong hai bên — Người đặt hoặc Hostel Brikette — có thể hủy Đặt chỗ bất kỳ lúc nào và vì bất kỳ lý do gì, không cần nêu lý do, miễn là việc hủy được thực hiện trước khi thời hạn thông báo hủy bắt đầu tính (xem Phụ lục A2). Trong trường hợp đó, không có phí Hủy muộn nào ngoài khoản phí quản lý tiêu chuẩn 5 €. Khi đã trong thời hạn thông báo, phí Hủy muộn sẽ áp dụng theo Phụ lục A. Nếu chúng tôi hủy, chúng tôi sẽ hoàn trả toàn bộ các khoản bạn đã thanh toán cho chúng tôi đối với Đặt chỗ đó.",
+        "6.5 Đổi và gia hạn — Yêu cầu đổi có thể được xử lý như hủy đặt chỗ ban đầu và tạo Đặt chỗ mới, tùy vào khả năng và Loại giá. Gia hạn tùy vào chỗ trống và được coi như giai đoạn đặt mới (có thể có Loại giá khác). Chúng tôi sẽ xác nhận những thay đổi được chấp thuận bằng văn bản. Cho đến khi xác nhận, Đặt chỗ ban đầu vẫn có hiệu lực.",
+        "6.6 No Show tính phí theo Loại giá và Phụ lục A. Đối với Giá không hoàn tiền, thông thường sẽ không có hoàn tiền.",
+        "6.7 Rời sớm và đêm chưa sử dụng — Nếu bạn rời đi sớm sau khi nhận phòng, điều này không tự động tạo ra quyền được hoàn tiền. Bất kỳ khoản hoàn tiền, tín dụng, hoặc miễn trừ (nếu có) đều được điều chỉnh bởi Loại giá, việc chúng tôi có xác nhận thay đổi/hủy bằng văn bản hay không, và các yêu cầu bắt buộc theo luật hiện hành.",
+        "6.8 Vi phạm nghiêm trọng Điều khoản này hoặc Nội quy có thể dẫn đến chấm dứt lưu trú (yêu cầu rời khỏi ngay); vẫn có thể phải chịu phí cho các đêm chưa sử dụng theo luật và Loại giá; tiền cọc có thể được dùng hoặc thẻ có thể bị trừ. Chấm dứt do vi phạm không phải là \"No Show\"."
       ]
     },
     "s7": {
@@ -173,7 +174,7 @@
       "body": [
         "Phụ lục này phải phù hợp với những gì được hiển thị khi đặt phòng.",
         "A1. Không hoàn tiền: thanh toán 100%, không hoàn tiền.",
-        "A2. Hoàn tiền: hủy miễn phí đến 72 giờ trước 15:00; phí hủy muộn/No Show theo quy tắc.",
+        "A2. Giá hoàn tiền (chỉ bảo đảm) — Thanh toán: khi nhận phòng (hoặc trong khung giờ trước khi đến đã thông báo), nhưng chúng tôi có thể tạm giữ khi đặt. Hủy miễn phí: một trong hai bên có thể hủy bất kỳ lúc nào và vì bất kỳ lý do gì cho đến 72 giờ trước 15:00 vào ngày đến. Nếu chúng tôi hủy, chúng tôi hoàn trả toàn bộ các khoản đã thanh toán. Phí Hủy muộn (hủy trong vòng 72 giờ): khoản cao hơn giữa đêm đầu tiên hoặc khoản đặt cọc không hoàn tiền (nếu có), cộng phí quản lý 5 €. Phí No Show: khoản cao hơn giữa đêm đầu tiên hoặc khoản đặt cọc không hoàn tiền (nếu có).",
         "A3. Phí quản lý hủy — €5 mỗi đặt phòng, hiển thị khi đặt phòng và được nhắc lại trong email xác nhận của bạn."
       ]
     }

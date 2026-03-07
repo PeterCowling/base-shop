@@ -546,6 +546,8 @@ export function MainImagePanel({
   const displayEntry = entry ?? pendingEntry;
   const displayBadge = entry ? badge : pendingBadge;
 
+  if (!displayEntry) return null;
+
   return (
     <div
       className="space-y-2"

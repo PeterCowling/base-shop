@@ -16,14 +16,24 @@ type Props = {
   onChange: (next: string[]) => void;
 };
 
-/** Renders a label, splitting a trailing " (English)" parenthetical onto its own line. */
+/**
+ * Renders a label, splitting a trailing " (English)" parenthetical onto its own line.
+ * The split is applied after hydration to avoid SSR/client locale mismatch errors —
+ * the locale is localStorage-based so the server always renders the fallback (EN) label
+ * while the client may render a ZH label with a parenthetical suffix.
+ */
 function LabelText({ label }: { label: string }) {
-  const match = label.match(/^(.*?)\s+\(([^)]+)\)$/);
-  if (!match) return <span className="leading-snug">{label}</span>;
+  const [parts, setParts] = React.useState<{ main: string; sub: string } | null>(null);
+  React.useEffect(() => {
+    const match = label.match(/^(.*?)\s+\(([^)]+)\)$/);
+    setParts(match ? { main: match[1], sub: match[2] } : null);
+  }, [label]);
+
+  if (!parts) return <span className="leading-snug">{label}</span>;
   return (
     <span className="leading-snug">
-      {match[1]}
-      <span className="block text-gate-muted">{match[2]}</span>
+      {parts.main}
+      <span className="block text-gate-muted">{parts.sub}</span>
     </span>
   );
 }

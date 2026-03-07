@@ -183,6 +183,7 @@ function UploadStatusMessages({
   );
 }
 
+// eslint-disable-next-line max-lines-per-function -- XAUP-0001 product form orchestrator; splitting would fragment tightly coupled draft + image state
 export function CatalogProductForm({
   selectedSlug,
   draft,
@@ -300,7 +301,12 @@ export function CatalogProductForm({
             t={t}
           />
         </div>
-        <div className="space-y-4">
+        <div
+          className="space-y-4"
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+        >
           <div className="text-xs uppercase tracking-label-lg text-gate-muted">{t("imagesFieldsTitle")}</div>
 
           <ImageDropZone

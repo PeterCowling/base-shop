@@ -266,6 +266,7 @@ function useDropZoneDragHandlers(setDragOver: Dispatch<SetStateAction<boolean>>)
   const handleDragOver = useCallback((event: DragEvent) => {
     event.preventDefault();
     event.stopPropagation();
+    event.dataTransfer.dropEffect = "copy";
     setDragOver(true);
   }, [setDragOver]);
 

@@ -7,12 +7,14 @@ import type { InboxThreadRecord } from "@/lib/inbox/repositories.server";
 import {
   createDraft,
   getThread,
+  recordAdmission,
   updateDraft,
   updateThreadStatus,
 } from "@/lib/inbox/repositories.server";
 import { recordInboxEvent } from "@/lib/inbox/telemetry.server";
 
 import { requireStaffAuth } from "../_shared/staff-auth";
+import { POST as dismissThread } from "../inbox/[threadId]/dismiss/route";
 import { POST as regenerateDraft } from "../inbox/[threadId]/draft/regenerate/route";
 import { POST as resolveThread } from "../inbox/[threadId]/resolve/route";
 import { POST as sendDraft } from "../inbox/[threadId]/send/route";
@@ -29,6 +31,7 @@ jest.mock("@/lib/inbox/draft-pipeline.server", () => ({
 jest.mock("@/lib/inbox/repositories.server", () => ({
   createDraft: jest.fn(),
   getThread: jest.fn(),
+  recordAdmission: jest.fn(),
   updateDraft: jest.fn(),
   updateThreadStatus: jest.fn(),
 }));
@@ -311,5 +314,137 @@ describe("inbox regenerate/send/resolve routes", () => {
       actorUid: "staff-1",
     });
     expect(payload.data.thread.status).toBe("resolved");
+  });
+
+  describe("POST /api/mcp/inbox/[threadId]/dismiss", () => {
+    const recordAdmissionMock = jest.mocked(recordAdmission);
+
+    // TC-09: Successful dismiss
+    it("dismisses a pending thread, records admission outcome and dismissed event", async () => {
+      const threadRecord = buildThreadRecord({
+        thread: {
+          ...buildThreadRecord().thread,
+          status: "pending",
+          metadata_json: JSON.stringify({
+            needsManualDraft: true,
+            lastDraftId: "draft-1",
+            latestAdmissionDecision: "admit",
+          }),
+        },
+      });
+      getThreadMock.mockResolvedValue(threadRecord);
+      updateThreadStatusMock.mockResolvedValue({
+        ...threadRecord.thread,
+        status: "auto_archived",
+        metadata_json: JSON.stringify({
+          needsManualDraft: false,
+          lastDraftId: "draft-1",
+          latestAdmissionDecision: "admit",
+        }),
+      });
+      recordAdmissionMock.mockResolvedValue({
+        id: "ao-1",
+        thread_id: "thread-1",
+        decision: "auto-archive",
+        source: "staff_override",
+        matched_rule: "staff-not-relevant",
+        source_metadata_json: JSON.stringify({
+          senderEmail: "guest@example.com",
+          senderDomain: "example.com",
+          originalAdmissionDecision: "admit",
+          dismissedByUid: "staff-1",
+        }),
+        created_at: "2026-03-06T10:06:00.000Z",
+      });
+
+      const response = await dismissThread(
+        buildPostRequest("http://localhost/api/mcp/inbox/thread-1/dismiss"),
+        { params: { threadId: "thread-1" } },
+      );
+      const payload = await response.json();
+
+      expect(response.status).toBe(200);
+      expect(payload.success).toBe(true);
+      expect(payload.data.thread.status).toBe("auto_archived");
+
+      expect(updateThreadStatusMock).toHaveBeenCalledWith({
+        threadId: "thread-1",
+        status: "auto_archived",
+        metadata: {
+          needsManualDraft: false,
+          lastDraftId: "draft-1",
+          latestAdmissionDecision: "admit",
+        },
+      });
+
+      expect(recordAdmissionMock).toHaveBeenCalledWith({
+        threadId: "thread-1",
+        decision: "auto-archive",
+        source: "staff_override",
+        matchedRule: "staff-not-relevant",
+        sourceMetadata: {
+          senderEmail: "guest@example.com",
+          senderDomain: "example.com",
+          originalAdmissionDecision: "admit",
+          dismissedByUid: "staff-1",
+        },
+      });
+
+      expect(recordInboxEventMock).toHaveBeenCalledWith({
+        threadId: "thread-1",
+        eventType: "dismissed",
+        actorUid: "staff-1",
+      });
+    });
+
+    // TC-10: Unauthenticated dismiss returns 401
+    it("returns 401 when no auth header is provided", async () => {
+      requireStaffAuthMock.mockResolvedValue({
+        ok: false,
+        response: new Response(JSON.stringify({ error: "Missing bearer token" }), {
+          status: 401,
+        }),
+      });
+
+      const response = await dismissThread(
+        buildPostRequest("http://localhost/api/mcp/inbox/thread-1/dismiss"),
+        { params: { threadId: "thread-1" } },
+      );
+
+      expect(response.status).toBe(401);
+      expect(getThreadMock).not.toHaveBeenCalled();
+    });
+
+    // TC-11: Missing thread returns 404
+    it("returns 404 when thread does not exist", async () => {
+      getThreadMock.mockResolvedValue(null);
+
+      const response = await dismissThread(
+        buildPostRequest("http://localhost/api/mcp/inbox/non-existent/dismiss"),
+        { params: { threadId: "non-existent" } },
+      );
+
+      expect(response.status).toBe(404);
+    });
+
+    // TC-12: Dismiss already-resolved thread returns 409
+    it("returns 409 when thread is already resolved", async () => {
+      getThreadMock.mockResolvedValue(
+        buildThreadRecord({
+          thread: {
+            ...buildThreadRecord().thread,
+            status: "resolved",
+          },
+        }),
+      );
+
+      const response = await dismissThread(
+        buildPostRequest("http://localhost/api/mcp/inbox/thread-1/dismiss"),
+        { params: { threadId: "thread-1" } },
+      );
+
+      expect(response.status).toBe(409);
+      expect(updateThreadStatusMock).not.toHaveBeenCalled();
+    });
   });
 });

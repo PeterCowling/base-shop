@@ -1,9 +1,9 @@
 "use client";
 
-import { Inbox, RefreshCw, Send, Sparkles, TriangleAlert } from "lucide-react";
+import { useState } from "react";
+import { ArrowLeft, Inbox, RefreshCw, Send, TriangleAlert } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
-import { Cluster } from "@acme/design-system/primitives";
 
 import { PageShell } from "@/components/common/PageShell";
 import useInbox from "@/services/useInbox";
@@ -39,6 +39,7 @@ export default function InboxWorkspace() {
     regeneratingDraft,
     sendingDraft,
     resolvingThread,
+    dismissingThread,
     syncing,
     listError,
     detailError,
@@ -47,12 +48,17 @@ export default function InboxWorkspace() {
     regenerateDraft,
     sendDraft,
     resolveThread,
+    dismissThread,
     syncInbox,
   } = useInbox();
+
+  // Mobile view control: show detail pane when a thread is actively opened
+  const [mobileShowDetail, setMobileShowDetail] = useState(false);
 
   async function handleSelectThread(threadId: string) {
     try {
       await selectThread(threadId);
+      setMobileShowDetail(true);
     } catch {
       showToast("Failed to load thread details", "error");
     }
@@ -99,9 +105,21 @@ export default function InboxWorkspace() {
     try {
       await resolveThread();
       showToast("Thread resolved", "success");
+      setMobileShowDetail(false);
     } catch {
       showToast("Failed to resolve thread", "error");
       throw new Error("resolve-failed");
+    }
+  }
+
+  async function handleDismissThread() {
+    try {
+      await dismissThread();
+      showToast("Thread dismissed", "success");
+      setMobileShowDetail(false);
+    } catch {
+      showToast("Failed to dismiss thread", "error");
+      throw new Error("dismiss-failed");
     }
   }
 
@@ -114,75 +132,85 @@ export default function InboxWorkspace() {
     }
   }
 
+  const manualDraftCount = countThreadsNeedingManualDraft(threads);
+  const readyToSendCount = countThreadsReadyToSend(threads);
+
   return (
     <PageShell
       title="Inbox"
       headerSlot={(
-        <div className="space-y-6">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div className="max-w-2xl">
-              <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-primary-soft px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-main">
-                <Inbox className="h-4 w-4" />
-                Reception inbox
+        <div className="space-y-4">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary-main">
+                <Inbox className="h-5 w-5" />
               </div>
-              <h1 className="text-3xl font-heading font-semibold text-foreground">
-                Review admitted guest emails without leaving reception
-              </h1>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Actionable Gmail threads sync into D1, generate staff-review drafts, and stay auditable through send and resolve.
-              </p>
+              <div>
+                <h1 className="text-xl font-heading font-semibold text-foreground">
+                  Inbox
+                </h1>
+                <p className="text-xs text-muted-foreground">
+                  {threads.length} active
+                  {manualDraftCount > 0 && (
+                    <span className="ml-2 text-warning-main">
+                      {manualDraftCount} need draft
+                    </span>
+                  )}
+                  {readyToSendCount > 0 && (
+                    <span className="ml-2 text-success-main">
+                      {readyToSendCount} ready
+                    </span>
+                  )}
+                </p>
+              </div>
             </div>
 
-            <Cluster gap={2}>
-              <Button
-                type="button"
-                onClick={() => void handleSyncInbox()}
-                disabled={syncing}
-                color="info"
-                tone="solid"
-                className="min-h-11 min-w-11"
-              >
-                <RefreshCw className="mr-2 h-4 w-4" />
-                {syncing ? "Refreshing..." : "Refresh inbox"}
-              </Button>
-            </Cluster>
+            <Button
+              type="button"
+              onClick={() => void handleSyncInbox()}
+              disabled={syncing}
+              color="info"
+              tone="outline"
+              className="min-h-10 min-w-10 rounded-xl"
+            >
+              <RefreshCw className={`h-4 w-4 ${syncing ? "animate-spin" : ""}`} />
+              <span className="ml-2 hidden sm:inline">
+                {syncing ? "Syncing..." : "Refresh"}
+              </span>
+            </Button>
           </div>
 
-          <div className="grid gap-3 md:grid-cols-3">
-            <div className="rounded-2xl border border-border-1 bg-surface px-4 py-4 shadow-sm">
-              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                Active threads
-              </p>
-              <p className="mt-2 text-3xl font-semibold text-foreground">{threads.length}</p>
-            </div>
-            <div className="rounded-2xl border border-border-1 bg-surface px-4 py-4 shadow-sm">
-              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                Needs manual draft
-              </p>
-              <div className="mt-2 flex items-center gap-2">
-                <TriangleAlert className="h-5 w-5 text-warning-main" />
-                <p className="text-3xl font-semibold text-foreground">
-                  {countThreadsNeedingManualDraft(threads)}
-                </p>
+          {/* Compact stat strip — desktop only */}
+          <div className="hidden gap-3 md:grid md:grid-cols-3">
+            <div className="flex items-center gap-3 rounded-xl border border-border-1 bg-surface px-4 py-3">
+              <Inbox className="h-4 w-4 text-muted-foreground" />
+              <div>
+                <p className="text-2xl font-semibold text-foreground">{threads.length}</p>
+                <p className="text-xs text-muted-foreground">Active threads</p>
               </div>
             </div>
-            <div className="rounded-2xl border border-border-1 bg-surface px-4 py-4 shadow-sm">
-              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                Ready to send
-              </p>
-              <div className="mt-2 flex items-center gap-2">
-                <Send className="h-5 w-5 text-success-main" />
-                <p className="text-3xl font-semibold text-foreground">
-                  {countThreadsReadyToSend(threads)}
-                </p>
+            <div className="flex items-center gap-3 rounded-xl border border-border-1 bg-surface px-4 py-3">
+              <TriangleAlert className="h-4 w-4 text-warning-main" />
+              <div>
+                <p className="text-2xl font-semibold text-foreground">{manualDraftCount}</p>
+                <p className="text-xs text-muted-foreground">Need draft</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 rounded-xl border border-border-1 bg-surface px-4 py-3">
+              <Send className="h-4 w-4 text-success-main" />
+              <div>
+                <p className="text-2xl font-semibold text-foreground">{readyToSendCount}</p>
+                <p className="text-xs text-muted-foreground">Ready to send</p>
               </div>
             </div>
           </div>
         </div>
       )}
     >
+      {/* Desktop: side-by-side. Mobile: list OR detail, never both stacked. */}
       <div className="grid gap-4 xl:grid-cols-12">
-        <div className="space-y-4 xl:col-span-4">
+        {/* Thread list — hidden on mobile when viewing detail */}
+        <div className={`space-y-3 xl:col-span-4 ${mobileShowDetail ? "hidden xl:block" : ""}`}>
           <ThreadList
             threads={threads}
             selectedThreadId={selectedThreadId}
@@ -190,25 +218,24 @@ export default function InboxWorkspace() {
             error={listError}
             onSelect={handleSelectThread}
           />
-
-          <div className="rounded-2xl border border-border-1 bg-surface px-4 py-4 shadow-sm">
-            <div className="flex items-start gap-3">
-              <div className="rounded-full bg-surface-2 p-2 text-primary-main">
-                <Sparkles className="h-4 w-4" />
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-foreground">
-                  Draft-first workflow
-                </p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Save changes before sending. Regenerate creates a fresh agent draft and resolve removes a thread from the active queue.
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
 
-        <div className="xl:col-span-8">
+        {/* Thread detail — hidden on mobile when no thread opened */}
+        <div className={`xl:col-span-8 ${mobileShowDetail ? "" : "hidden xl:block"}`}>
+          {/* Mobile back button */}
+          {mobileShowDetail && (
+            <div className="mb-3 xl:hidden">
+              <button
+                type="button"
+                onClick={() => setMobileShowDetail(false)}
+                className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-muted-foreground transition hover:bg-surface-2 hover:text-foreground"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Back to inbox
+              </button>
+            </div>
+          )}
+
           <ThreadDetailPane
             threadDetail={selectedThread}
             loading={loadingThread}
@@ -217,10 +244,12 @@ export default function InboxWorkspace() {
             regeneratingDraft={regeneratingDraft}
             sendingDraft={sendingDraft}
             resolvingThread={resolvingThread}
+            dismissingThread={dismissingThread}
             onSaveDraft={handleSaveDraft}
             onRegenerateDraft={handleRegenerateDraft}
             onSendDraft={handleSendDraft}
             onResolveThread={handleResolveThread}
+            onDismissThread={handleDismissThread}
           />
         </div>
       </div>

@@ -182,6 +182,13 @@ export async function resolveInboxThread(threadId: string): Promise<void> {
   });
 }
 
+export async function dismissInboxThread(threadId: string): Promise<void> {
+  await inboxRequest<{ thread: InboxThreadSummary }>(`/api/mcp/inbox/${threadId}/dismiss`, {
+    method: "POST",
+    errorCode: "Failed to dismiss inbox thread",
+  });
+}
+
 export async function runInboxSync(rescanWindowDays?: number): Promise<void> {
   await inboxRequest("/api/mcp/inbox-sync", {
     method: "POST",
@@ -202,6 +209,7 @@ export default function useInbox() {
   const [regeneratingDraft, setRegeneratingDraft] = useState(false);
   const [sendingDraft, setSendingDraft] = useState(false);
   const [resolvingThread, setResolvingThread] = useState(false);
+  const [dismissingThread, setDismissingThread] = useState(false);
   const [syncing, setSyncing] = useState(false);
   const [listError, setListError] = useState<string | null>(null);
   const [detailError, setDetailError] = useState<string | null>(null);
@@ -331,6 +339,22 @@ export default function useInbox() {
     }
   }, [loadThreads, selectedThreadId]);
 
+  const dismissThread = useCallback(async () => {
+    if (!selectedThreadId) {
+      throw new Error("No inbox thread selected");
+    }
+
+    setDismissingThread(true);
+    setDetailError(null);
+
+    try {
+      await dismissInboxThread(selectedThreadId);
+      await loadThreads(null);
+    } finally {
+      setDismissingThread(false);
+    }
+  }, [loadThreads, selectedThreadId]);
+
   const syncInbox = useCallback(async () => {
     setSyncing(true);
     setListError(null);
@@ -353,6 +377,7 @@ export default function useInbox() {
     regeneratingDraft,
     sendingDraft,
     resolvingThread,
+    dismissingThread,
     syncing,
     listError,
     detailError,
@@ -362,6 +387,7 @@ export default function useInbox() {
     regenerateDraft,
     sendDraft,
     resolveThread,
+    dismissThread,
     syncInbox,
   };
 }

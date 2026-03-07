@@ -107,9 +107,15 @@ export function inferReplySubject(subject: string | null | undefined): string {
  */
 export function stripQuotedContent(body: string): string {
   // Inline quote detection for single-line bodies (Gmail sometimes strips newlines).
-  // Match " > Il giorno ... ha scritto:" or " > On ... wrote:" etc. embedded in a line.
+  // Try signature separator first ("-- " or "-- Regards"), then quote delimiters.
+  const inlineSigIdx = body.search(/ -- (?:Regards|Cordiali saluti|Mit freundlichen|Cordialement)/);
+  if (inlineSigIdx !== -1) {
+    return body.slice(0, inlineSigIdx).trimEnd();
+  }
+
+  // Match quote delimiters with or without "> " prefix, embedded in a single line.
   const inlineQuoteIdx = body.search(
-    / > (?:Il giorno .{10,80} ha scritto:|On .{10,80} wrote:|Am .{10,80} schrieb |Le .{10,80} a \u00e9crit|El .{10,80} escribi\u00f3)/,
+    / (?:> )?(?:Il giorno .{10,80} ha scritto:|On .{6,80} wrote:|Am .{10,80} schrieb |Le .{10,80} a \u00e9crit|El .{10,80} escribi\u00f3)/,
   );
   if (inlineQuoteIdx !== -1) {
     return body.slice(0, inlineQuoteIdx).trimEnd();

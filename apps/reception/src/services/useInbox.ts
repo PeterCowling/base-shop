@@ -13,6 +13,8 @@ export type InboxDraft = {
   recipientEmails: string[];
   plainText: string;
   html: string | null;
+  originalPlainText: string | null;
+  originalHtml: string | null;
   templateUsed: string | null;
   quality: Record<string, unknown> | null;
   interpret: Record<string, unknown> | null;

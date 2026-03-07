@@ -110,6 +110,8 @@ export async function POST(
           quality: regenerated.qualityResult ?? undefined,
           interpret: regenerated.interpretResult ?? undefined,
           createdByUid: auth.uid,
+          originalPlainText: regenerated.plainText,
+          originalHtml: regenerated.html ?? null,
         })
       : await createDraft({
           threadId: params.threadId,
@@ -118,6 +120,8 @@ export async function POST(
           recipientEmails,
           plainText: regenerated.plainText,
           html: regenerated.html,
+          originalPlainText: regenerated.plainText,
+          originalHtml: regenerated.html ?? null,
           templateUsed: regenerated.templateUsed?.subject ?? null,
           quality: regenerated.qualityResult ?? undefined,
           interpret: regenerated.interpretResult ?? undefined,

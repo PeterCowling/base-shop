@@ -64,6 +64,8 @@ export type InboxDraftRow = {
   recipient_emails_json: string | null;
   plain_text: string;
   html: string | null;
+  original_plain_text: string | null;
+  original_html: string | null;
   template_used: string | null;
   quality_json: string | null;
   interpret_json: string | null;
@@ -156,6 +158,8 @@ export type CreateDraftInput = {
   recipientEmails?: string[] | null;
   plainText: string;
   html?: string | null;
+  originalPlainText?: string | null;
+  originalHtml?: string | null;
   templateUsed?: string | null;
   quality?: Record<string, unknown> | null;
   interpret?: Record<string, unknown> | null;
@@ -170,6 +174,8 @@ export type UpdateDraftInput = {
   recipientEmails?: string[] | null;
   plainText?: string;
   html?: string | null;
+  originalPlainText?: string | null;
+  originalHtml?: string | null;
   templateUsed?: string | null;
   quality?: Record<string, unknown> | null;
   interpret?: Record<string, unknown> | null;
@@ -285,6 +291,8 @@ export type ThreadWithLatestDraftRow = InboxThreadRow & {
   draft_recipient_emails_json: string | null;
   draft_plain_text: string | null;
   draft_html: string | null;
+  draft_original_plain_text: string | null;
+  draft_original_html: string | null;
   draft_template_used: string | null;
   draft_quality_json: string | null;
   draft_interpret_json: string | null;
@@ -332,6 +340,8 @@ export async function listThreadsWithLatestDraft(
         d.recipient_emails_json AS draft_recipient_emails_json,
         d.plain_text AS draft_plain_text,
         d.html AS draft_html,
+        d.original_plain_text AS draft_original_plain_text,
+        d.original_html AS draft_original_html,
         d.template_used AS draft_template_used,
         d.quality_json AS draft_quality_json,
         d.interpret_json AS draft_interpret_json,
@@ -474,6 +484,8 @@ export async function getThread(
           recipient_emails_json,
           plain_text,
           html,
+          original_plain_text,
+          original_html,
           template_used,
           quality_json,
           interpret_json,
@@ -726,13 +738,15 @@ export async function createDraft(
         recipient_emails_json,
         plain_text,
         html,
+        original_plain_text,
+        original_html,
         template_used,
         quality_json,
         interpret_json,
         created_by_uid,
         created_at,
         updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `
     )
     .bind(
@@ -744,6 +758,8 @@ export async function createDraft(
       stringifyArray(input.recipientEmails),
       input.plainText,
       input.html ?? null,
+      input.originalPlainText ?? null,
+      input.originalHtml ?? null,
       input.templateUsed ?? null,
       stringifyJson(input.quality),
       stringifyJson(input.interpret),
@@ -765,6 +781,8 @@ export async function createDraft(
         recipient_emails_json,
         plain_text,
         html,
+        original_plain_text,
+        original_html,
         template_used,
         quality_json,
         interpret_json,
@@ -823,6 +841,16 @@ export async function updateDraft(
     binds.push(input.html ?? null);
   }
 
+  if (Object.prototype.hasOwnProperty.call(input, "originalPlainText")) {
+    updates.push("original_plain_text = ?");
+    binds.push(input.originalPlainText ?? null);
+  }
+
+  if (Object.prototype.hasOwnProperty.call(input, "originalHtml")) {
+    updates.push("original_html = ?");
+    binds.push(input.originalHtml ?? null);
+  }
+
   if (Object.prototype.hasOwnProperty.call(input, "templateUsed")) {
     updates.push("template_used = ?");
     binds.push(input.templateUsed ?? null);
@@ -862,6 +890,8 @@ export async function updateDraft(
         recipient_emails_json,
         plain_text,
         html,
+        original_plain_text,
+        original_html,
         template_used,
         quality_json,
         interpret_json,

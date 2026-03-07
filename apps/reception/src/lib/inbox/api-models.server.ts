@@ -53,6 +53,8 @@ export type InboxDraftApiModel = {
   recipientEmails: string[];
   plainText: string;
   html: string | null;
+  originalPlainText: string | null;
+  originalHtml: string | null;
   templateUsed: string | null;
   quality: Record<string, unknown> | null;
   interpret: Record<string, unknown> | null;
@@ -131,6 +133,8 @@ export function serializeDraft(draft: InboxDraftRow): InboxDraftApiModel {
     recipientEmails: parseJsonArray(draft.recipient_emails_json),
     plainText: draft.plain_text,
     html: draft.html,
+    originalPlainText: draft.original_plain_text,
+    originalHtml: draft.original_html,
     templateUsed: draft.template_used,
     quality: parseJsonObject(draft.quality_json),
     interpret: parseJsonObject(draft.interpret_json),
@@ -270,6 +274,8 @@ export function buildThreadSummaryFromRow(row: import("./repositories.server").T
       recipientEmails: parseJsonArray(row.draft_recipient_emails_json),
       plainText: row.draft_plain_text ?? "",
       html: row.draft_html ?? null,
+      originalPlainText: row.draft_original_plain_text ?? null,
+      originalHtml: row.draft_original_html ?? null,
       templateUsed: row.draft_template_used ?? null,
       quality: parseJsonObject(row.draft_quality_json),
       interpret: parseJsonObject(row.draft_interpret_json),

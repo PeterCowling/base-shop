@@ -33,7 +33,10 @@ export function UploaderI18nProvider({
   initialLocale?: UploaderLocale;
 }) {
   const fallbackLocale = initialLocale ?? UPLOADER_DEFAULT_LOCALE;
-  const [locale, setLocaleState] = React.useState<UploaderLocale>(fallbackLocale);
+  const [locale, setLocaleState] = React.useState<UploaderLocale>(() => {
+    if (typeof window === "undefined") return fallbackLocale;
+    return normalizeStoredLocale(window.localStorage.getItem(STORAGE_KEY)) ?? fallbackLocale;
+  });
 
   const setLocale = React.useCallback((nextLocale: UploaderLocale) => {
     setLocaleState(nextLocale);
@@ -42,12 +45,8 @@ export function UploaderI18nProvider({
   }, []);
 
   React.useEffect(() => {
-    const normalized = normalizeStoredLocale(window.localStorage.getItem(STORAGE_KEY));
-    const nextLocale = normalized ?? fallbackLocale;
-    setLocaleState(nextLocale);
-    window.localStorage.setItem(STORAGE_KEY, nextLocale);
-    document.documentElement.lang = nextLocale === "zh" ? "zh" : "en";
-  }, [fallbackLocale]);
+    document.documentElement.lang = locale === "zh" ? "zh" : "en";
+  }, [locale]);
 
   const value = React.useMemo(() => ({ locale, setLocale }), [locale, setLocale]);
 

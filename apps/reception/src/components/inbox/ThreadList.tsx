@@ -1,9 +1,12 @@
 "use client";
 
-import { Clock, MailSearch, User } from "lucide-react";
+import { useCallback, useMemo, useState } from "react";
+import { Clock, Filter, MailSearch, User } from "lucide-react";
 
 import type { InboxThreadSummary } from "@/services/useInbox";
 
+import FilterBar from "./FilterBar";
+import { applyThreadFilters, type ThreadFilterKey } from "./filters";
 import {
   buildInboxThreadBadge,
   formatInboxTimestamp,
@@ -24,6 +27,33 @@ export default function ThreadList({
   error,
   onSelect,
 }: ThreadListProps) {
+  const [activeFilters, setActiveFilters] = useState<Set<ThreadFilterKey>>(
+    () => new Set(),
+  );
+
+  const handleToggleFilter = useCallback((key: ThreadFilterKey) => {
+    setActiveFilters((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) {
+        next.delete(key);
+      } else {
+        next.add(key);
+      }
+      return next;
+    });
+  }, []);
+
+  const handleClearFilters = useCallback(() => {
+    setActiveFilters(new Set());
+  }, []);
+
+  const filteredThreads = useMemo(
+    () => applyThreadFilters(threads, activeFilters),
+    [threads, activeFilters],
+  );
+
+  const hasActiveFilters = activeFilters.size > 0;
+
   return (
     <section className="rounded-2xl border border-border-1 bg-surface shadow-sm">
       <div className="border-b border-border-1 px-4 py-3">
@@ -32,12 +62,29 @@ export default function ThreadList({
             Threads
           </h2>
           {!loading && threads.length > 0 && (
-            <span className="rounded-full bg-surface-2 px-2 py-0.5 text-xs font-medium text-muted-foreground">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-surface-2 px-2 py-0.5 text-xs font-medium text-muted-foreground">
+              {hasActiveFilters && (
+                <>
+                  <Filter className="h-3 w-3" />
+                  {filteredThreads.length}/
+                </>
+              )}
               {threads.length}
             </span>
           )}
         </div>
       </div>
+
+      {/* Filter bar — visible when threads are loaded and available */}
+      {!loading && !error && threads.length > 0 && (
+        <div className="border-b border-border-1 px-4 py-2">
+          <FilterBar
+            activeFilters={activeFilters}
+            onToggle={handleToggleFilter}
+            onClear={handleClearFilters}
+          />
+        </div>
+      )}
 
       {loading && (
         <div className="space-y-2 p-3">
@@ -80,11 +127,26 @@ export default function ThreadList({
         </div>
       )}
 
-      {!loading && !error && threads.length > 0 && (
+      {/* Filtered empty state — threads exist but none match active filters */}
+      {!loading && !error && threads.length > 0 && hasActiveFilters && filteredThreads.length === 0 && (
+        <div className="flex flex-col items-center justify-center gap-3 px-6 py-12 text-center">
+          <div className="rounded-full bg-surface-2 p-3 text-muted-foreground">
+            <Filter className="h-5 w-5" />
+          </div>
+          <div>
+            <p className="font-semibold text-foreground">No threads match filters</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Try clearing a filter to see more threads.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {!loading && !error && filteredThreads.length > 0 && (
         // eslint-disable-next-line ds/no-arbitrary-tailwind -- IDEA-DISPATCH-20260307130300-9043 viewport-relative scroll containment
         <div className="max-h-[calc(100vh-12rem)] overflow-y-auto p-2">
           <div className="space-y-1">
-            {threads.map((thread) => {
+            {filteredThreads.map((thread) => {
               const badge = buildInboxThreadBadge(thread);
               const isSelected = thread.id === selectedThreadId;
 

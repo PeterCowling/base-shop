@@ -1,0 +1,5 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-07T15:33:04.545Z",
+  "why": "Threads that get stuck in In-Progress state require manual operator intervention to recover. This creates operational drag and risks emails being missed when the operator is unavailable."
+}

@@ -40,6 +40,8 @@ function buildContentSecurityPolicy(): string {
     "'self'",
     "'unsafe-inline'",
     "https://static.cloudflareinsights.com",
+    "https://apis.google.com",
+    "https://www.gstatic.com",
     ...getAlloggiatiScriptSources(),
   ];
 
@@ -57,7 +59,7 @@ function buildContentSecurityPolicy(): string {
     `script-src-elem ${scriptElementSources.join(" ")}`,
     `connect-src 'self' https://cloudflareinsights.com ${FIREBASE_CONNECT_SOURCES.join(" ")}`,
     "worker-src 'self' blob:",
-    "frame-src https://accounts.google.com https://*.firebaseapp.com",
+    "frame-src https://accounts.google.com https://*.firebaseapp.com https://apis.google.com",
   ].join("; ");
 }
 

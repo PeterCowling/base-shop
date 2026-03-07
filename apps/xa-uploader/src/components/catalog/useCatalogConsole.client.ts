@@ -93,6 +93,56 @@ function createInitialSyncReadinessState(): SyncReadinessState {
   };
 }
 
+function reconcileSelectedDraftFromCatalog(params: {
+  selectedSlug: string | null;
+  nextProducts: CatalogProductDraftInput[];
+  nextRevisionsById: Record<string, string>;
+  setDraft: React.Dispatch<React.SetStateAction<CatalogProductDraftInput>>;
+  setDraftRevision: React.Dispatch<React.SetStateAction<string | null>>;
+  draftImageBaselineRef: React.MutableRefObject<CatalogProductDraftInput | null>;
+}): void {
+  if (!params.selectedSlug) return;
+  const nextSelected = params.nextProducts.find((product) => product.slug === params.selectedSlug);
+  if (!nextSelected) return;
+  const normalized = withDraftDefaults(nextSelected);
+  params.setDraft(normalized);
+  const id = (normalized.id ?? "").trim();
+  params.setDraftRevision(id ? params.nextRevisionsById[id] ?? null : null);
+  params.draftImageBaselineRef.current = normalized;
+}
+
+async function loadCatalogFromServer(params: {
+  storefront: XaCatalogStorefront;
+  t: ReturnType<typeof useUploaderI18n>["t"];
+  selectedSlug: string | null;
+  setProducts: React.Dispatch<React.SetStateAction<CatalogProductDraftInput[]>>;
+  setRevisionsById: React.Dispatch<React.SetStateAction<Record<string, string>>>;
+  setDraft: React.Dispatch<React.SetStateAction<CatalogProductDraftInput>>;
+  setDraftRevision: React.Dispatch<React.SetStateAction<string | null>>;
+  draftImageBaselineRef: React.MutableRefObject<CatalogProductDraftInput | null>;
+}): Promise<CatalogListResponse> {
+  const response = await fetch(
+    `/api/catalog/products?storefront=${encodeURIComponent(params.storefront)}`,
+  );
+  const data = (await response.json()) as CatalogListResponse;
+  if (!response.ok || !data.ok) {
+    throw new Error(getCatalogApiErrorMessage(data.error, "unableToLoadCatalog", params.t));
+  }
+  const nextProducts = data.products ?? [];
+  const nextRevisionsById = data.revisionsById ?? {};
+  params.setProducts(nextProducts);
+  params.setRevisionsById(nextRevisionsById);
+  reconcileSelectedDraftFromCatalog({
+    selectedSlug: params.selectedSlug,
+    nextProducts,
+    nextRevisionsById,
+    setDraft: params.setDraft,
+    setDraftRevision: params.setDraftRevision,
+    draftImageBaselineRef: params.draftImageBaselineRef,
+  });
+  return data;
+}
+
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
@@ -162,16 +212,17 @@ function useCatalogConsoleState() {
   }, []);
 
   const loadCatalog = React.useCallback(async () => {
-    const response = await fetch(
-      `/api/catalog/products?storefront=${encodeURIComponent(storefront)}`,
-    );
-    const data = (await response.json()) as CatalogListResponse;
-    if (!response.ok || !data.ok) {
-      throw new Error(getCatalogApiErrorMessage(data.error, "unableToLoadCatalog", t));
-    }
-    setProducts(data.products ?? []);
-    setRevisionsById(data.revisionsById ?? {});
-  }, [storefront, t]);
+    await loadCatalogFromServer({
+      storefront,
+      t,
+      selectedSlug,
+      setProducts,
+      setRevisionsById,
+      setDraft,
+      setDraftRevision,
+      draftImageBaselineRef,
+    });
+  }, [selectedSlug, storefront, t]);
 
   const loadSyncReadiness = React.useCallback(async () => {
     if (uploaderMode !== "internal") return;

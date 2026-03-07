@@ -29,6 +29,7 @@ function applyBaseSecurityHeaders(headers) {
 }
 
 function buildCsp(nonce) {
+  const connectSrc = ["'self'", "__XA_EXTRA_CONNECT_SRC__"].filter(Boolean).join(" ");
   return [
     "default-src 'self'",
     "base-uri 'self'",
@@ -45,7 +46,7 @@ function buildCsp(nonce) {
     "style-src-attr 'unsafe-inline'",
     `script-src 'self' 'nonce-${nonce}'`,
     "script-src-attr 'none'",
-    "connect-src 'self'",
+    `connect-src ${connectSrc}`,
     "block-all-mixed-content",
     "upgrade-insecure-requests",
     "report-uri /csp-report",

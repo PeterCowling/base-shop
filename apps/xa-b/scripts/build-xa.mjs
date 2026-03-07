@@ -13,6 +13,7 @@ const runtimeMediaIndexPath = path.join(appRoot, "src", "data", "catalog.media.r
 const runtimeMetaPath = path.join(appRoot, "src", "data", "catalog.runtime.meta.json");
 const pagesWorkerTemplatePath = path.join(scriptDir, "pages-worker.js");
 const pagesWorkerOutputPath = path.join(appRoot, "out", "_worker.js");
+const PAGES_WORKER_CONNECT_SRC_TOKEN = "__XA_EXTRA_CONNECT_SRC__";
 
 function parseEnvLine(line) {
   const trimmed = line.trim();
@@ -192,6 +193,17 @@ function resolveCatalogReadTimeoutMs() {
   const raw = Number(process.env.XA_CATALOG_CONTRACT_READ_TIMEOUT_MS ?? "15000");
   if (!Number.isFinite(raw) || raw <= 0) return 15_000;
   return Math.round(raw);
+}
+
+function resolvePagesWorkerConnectSrc() {
+  const rawUrl = (process.env.NEXT_PUBLIC_XA_CATALOG_PUBLIC_URL ?? "").trim();
+  if (!rawUrl) return "";
+  try {
+    const origin = new URL(rawUrl).origin;
+    return origin ? ` ${origin}` : "";
+  } catch {
+    return "";
+  }
 }
 
 function parseBooleanEnv(value) {
@@ -447,9 +459,10 @@ function resolveFromGit() {
 
 async function syncPagesWorkerScript() {
   const source = await fs.readFile(pagesWorkerTemplatePath, "utf8");
+  const next = source.replace(PAGES_WORKER_CONNECT_SRC_TOKEN, resolvePagesWorkerConnectSrc());
   await fs.mkdir(path.dirname(pagesWorkerOutputPath), { recursive: true });
   const temp = `${pagesWorkerOutputPath}.tmp`;
-  await fs.writeFile(temp, source, "utf8");
+  await fs.writeFile(temp, next, "utf8");
   await fs.rename(temp, pagesWorkerOutputPath);
   console.log("[xa-build] synced Pages advanced-mode worker to out/_worker.js.");
 }

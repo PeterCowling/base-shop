@@ -21,6 +21,33 @@ interface QuickLinksSectionProps {
   lang: AppLanguage;
 }
 
+const FALLBACK_QUICK_LINKS = {
+  // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] static-export fallback copy for homepage quick links.
+  roomsLabel: "Dorms",
+  // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] static-export fallback copy for homepage quick links.
+  roomsDescription: "Mixed and female dormitories",
+  // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] static-export fallback copy for homepage quick links.
+  commonAreasLabel: "Experiences",
+  // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] static-export fallback copy for homepage quick links.
+  commonAreasDescription: "Activities and local adventures",
+  // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] static-export fallback copy for homepage quick links.
+  locationLabel: "How to get here",
+  // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] static-export fallback copy for homepage quick links.
+  locationDescription: "Bus stop and beach tips",
+  // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] static-export fallback copy for homepage quick links.
+  guidesLabel: "Guides",
+  // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] static-export fallback copy for homepage quick links.
+  guidesDescription: "Local tips for your trip",
+} as const;
+
+function resolveTranslatedCopy(value: unknown, fallback: string): string {
+  if (typeof value !== "string") return fallback;
+  const trimmed = value.trim();
+  if (!trimmed) return fallback;
+  if (trimmed.includes(".")) return fallback;
+  return trimmed;
+}
+
 const QuickLinkCard: FC<QuickLink> = memo(({ label, description, Icon, href }): ReactNode => {
   const container =
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
@@ -66,26 +93,50 @@ const QuickLinksSection: FC<QuickLinksSectionProps> = ({ lang }) => {
     if (!ready) return [];
     return [
       {
-        label: t("quickLinksSection.rooms", { defaultValue: "Dorms" }) as string,
-        description: t("quickLinksSection.roomsHint", { defaultValue: "Mixed and female dormitories" }) as string,
+        label: resolveTranslatedCopy(
+          t("quickLinksSection.rooms", { defaultValue: FALLBACK_QUICK_LINKS.roomsLabel }),
+          FALLBACK_QUICK_LINKS.roomsLabel,
+        ),
+        description: resolveTranslatedCopy(
+          t("quickLinksSection.roomsHint", { defaultValue: FALLBACK_QUICK_LINKS.roomsDescription }),
+          FALLBACK_QUICK_LINKS.roomsDescription,
+        ),
         Icon: BedDouble,
         href: `/${lang}/${translatePath("book", lang)}`,
       },
       {
-        label: t("quickLinksSection.commonAreas", { defaultValue: "Experiences" }) as string,
-        description: t("quickLinksSection.commonAreasHint", { defaultValue: "Activities and local adventures" }) as string,
+        label: resolveTranslatedCopy(
+          t("quickLinksSection.commonAreas", { defaultValue: FALLBACK_QUICK_LINKS.commonAreasLabel }),
+          FALLBACK_QUICK_LINKS.commonAreasLabel,
+        ),
+        description: resolveTranslatedCopy(
+          t("quickLinksSection.commonAreasHint", { defaultValue: FALLBACK_QUICK_LINKS.commonAreasDescription }),
+          FALLBACK_QUICK_LINKS.commonAreasDescription,
+        ),
         Icon: Sparkles,
         href: `/${lang}/${translatePath("experiences", lang)}`,
       },
       {
-        label: t("quickLinksSection.location", { defaultValue: "How to get here" }) as string,
-        description: t("quickLinksSection.locationHint", { defaultValue: "Bus stop and beach tips" }) as string,
+        label: resolveTranslatedCopy(
+          t("quickLinksSection.location", { defaultValue: FALLBACK_QUICK_LINKS.locationLabel }),
+          FALLBACK_QUICK_LINKS.locationLabel,
+        ),
+        description: resolveTranslatedCopy(
+          t("quickLinksSection.locationHint", { defaultValue: FALLBACK_QUICK_LINKS.locationDescription }),
+          FALLBACK_QUICK_LINKS.locationDescription,
+        ),
         Icon: MapPin,
         href: `/${lang}/${translatePath("howToGetHere", lang)}`,
       },
       {
-        label: t("quickLinksSection.guides", { defaultValue: "Guides" }) as string,
-        description: t("quickLinksSection.guidesHint", { defaultValue: "Local tips for your trip" }) as string,
+        label: resolveTranslatedCopy(
+          t("quickLinksSection.guides", { defaultValue: FALLBACK_QUICK_LINKS.guidesLabel }),
+          FALLBACK_QUICK_LINKS.guidesLabel,
+        ),
+        description: resolveTranslatedCopy(
+          t("quickLinksSection.guidesHint", { defaultValue: FALLBACK_QUICK_LINKS.guidesDescription }),
+          FALLBACK_QUICK_LINKS.guidesDescription,
+        ),
         Icon: BookOpen,
         href: `/${lang}/${translatePath("assistance", lang)}`,
       },

@@ -33,12 +33,15 @@ import { hydrateBookingSearch, persistBookingSearch } from "@/utils/bookingSearc
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 import { fireCtaClick, fireViewItemList } from "@/utils/ga4-events";
 import { getBookPath } from "@/utils/localizedRoutes";
+import { type AppNamespaceBundles, primeAppI18nBundles } from "@/utils/primeAppI18nBundles";
 
 type Props = {
   lang: AppLanguage;
+  preloadedNamespaceBundles?: AppNamespaceBundles;
 };
 
-function HomeContent({ lang }: Props) {
+function HomeContent({ lang, preloadedNamespaceBundles }: Props) {
+  primeAppI18nBundles(lang, preloadedNamespaceBundles);
   const router = useRouter();
   const [bookingQuery, setBookingQuery] = useState<{ checkIn: string; checkOut: string; pax: string }>({
     checkIn: "",

@@ -30,5 +30,6 @@
   "cancellationPolicy": "Lemondási feltételek",
   "privacy": "Adatvédelmi irányelvek",
   "cookies": "Cookie-szabályzat",
-  "navAriaLabel": "lábjegyzetes navigáció"
+  "navAriaLabel": "lábjegyzetes navigáció",
+  "bookDirect": "Közvetlen foglalás"
 }

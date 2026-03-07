@@ -39,7 +39,6 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
   })();
   const lang = explicitLang ?? normalizedI18nLang ?? fallbackLang;
   const { t: tFooter } = useTranslation("footer", { lng: lang });
-  const { t: tDeals } = useTranslation("dealsPage", { lng: lang });
   const rawPathname = usePathname();
   const pathname = rawPathname ?? "";
 
@@ -210,10 +209,7 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
   const noPhoneNotice = resolveFooterLabel("noPhoneNotice");
   const emailLabel = resolveFooterLabel("email");
   const emailLinkLabel = `${emailLabel}: ${CONTACT_EMAIL}`;
-  const bookDirectCtaLabel = (tDeals("dealCard.cta.bookDirect", {
-    lng: lang,
-    defaultValue: "Book direct",
-  }) as string) || "Book direct";
+  const bookDirectCtaLabel = resolveFooterLabel("bookDirect", "Book direct");
   const navAriaLabel = resolveFooterLabel("navAriaLabel");
 
   return (

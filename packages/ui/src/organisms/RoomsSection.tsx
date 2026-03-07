@@ -14,7 +14,7 @@ import RoomCard from "../molecules/RoomCard";
 import type { FilterAvailability, RoomFiltersState,RoomFilterView } from "../molecules/RoomFilters";
 import RoomFilters from "../molecules/RoomFilters";
 import { SLUGS } from "../slug-map";
-import type { RoomCardPrice } from "../types/roomCard";
+import type { RoomCardImageLabels, RoomCardPrice } from "../types/roomCard";
 import { getDatePlusTwoDays, getTodayIso } from "../utils/dateUtils";
 import { getPrivateRoomChildPath } from "../utils/privateRoomPaths";
 
@@ -188,6 +188,27 @@ function RoomsSection({
     () => visibleRooms.map((room) => ({ room, profile: buildRoomFilterProfile(room) })),
     [visibleRooms],
   );
+  const roomImageLabels = useMemo<RoomCardImageLabels>(
+    () => ({
+      enlarge: resolveTranslatedCopy(
+        t("roomImage.clickToEnlarge", { defaultValue: "Click to enlarge image" }),
+        "Click to enlarge image",
+      ),
+      prevAria: resolveTranslatedCopy(
+        t("roomImage.prevAria", { defaultValue: "Previous image" }),
+        "Previous image",
+      ),
+      nextAria: resolveTranslatedCopy(
+        t("roomImage.nextAria", { defaultValue: "Next image" }),
+        "Next image",
+      ),
+      empty: resolveTranslatedCopy(
+        t("roomImage.noImage", { defaultValue: "No image available" }),
+        "No image available",
+      ),
+    }),
+    [t],
+  );
 
   function matchesFilters(
     profile: RoomFilterProfile,
@@ -327,6 +348,7 @@ function RoomsSection({
                 title={title}
                 images={toFlatImageArray(room.images)}
                 imageAlt={`${title} room`}
+                imageLabels={roomImageLabels}
                 lang={lang}
                 actions={
                   singleCtaMode

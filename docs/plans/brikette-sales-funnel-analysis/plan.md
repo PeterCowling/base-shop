@@ -29,7 +29,15 @@ Live production routing on Cloudflare currently shows canonical/alias drift (dup
 
 This run has progressed through `/lp-do-build` cycles, but a route-localization audit on 2026-03-06 showed that several public non-English routes still expose English slugs. A new route-localization tranche is therefore inserted ahead of live Cloudflare convergence so production redirects target the final localized public contract once, not an intermediate state. `/lp-do-replan` on 2026-03-06 then added explicit precursor tasks for top-level slug policy and guide-fallback mapping so the remaining route-localization tasks are runnable at higher confidence instead of carrying unresolved scout notes.
 
-Direct staging deployment on 2026-03-07 then proved a second issue: the current “preserve every possible alias” strategy is too large for Cloudflare Pages `_redirects` and is also preserving synthetic wrong-locale URLs the business does not want (for example `/it/book`). The plan therefore draws a line in the sand: preserve only current localized canonicals plus historically public legacy URLs evidenced by repo fixtures / explicit entry contracts, and drop synthetic alias debt. The implementation model shifts accordingly from giant `_redirects` generation to a hybrid static-runtime contract: small structural `_redirects` plus generated edge resolution for high-cardinality exact historical aliases.
+Direct staging deployment on 2026-03-07 then proved a second issue: the current “preserve every possible alias” strategy is too large for Cloudflare Pages `_redirects` and is also preserving synthetic wrong-locale URLs the business does not want (for example `/it/book`). The plan therefore draws a line in the sand: preserve only current localized canonicals plus historically public legacy URLs evidenced by repo fixtures / explicit entry contracts, and drop synthetic alias debt. The implementation model shifts accordingly from giant `_redirects` generation to a hybrid static-runtime contract: small structural `_redirects` plus generated edge resolution for high-cardinality exact historical aliases. That rollout is now complete: staging proof passed, production Pages deployment is live, canonical targets return `200`, supported aliases resolve as intended, and intentionally dropped junk aliases like `/it/book` remain `404`.
+
+With rollout live, the remaining control gap is guard depth rather than route behavior. The previous CI/deploy checks proved deployability and sampled strict routes, but they did not yet enforce the wider post-deploy contract: rendered canonical tags on key localized surfaces, sitemap inclusion for key canonicals, and explicit `404` checks for intentionally dropped aliases. The next tranche therefore hardens CI-only post-deploy controls while intentionally keeping direct `wrangler pages deploy` as a fast operator path for manual hotfixes.
+
+A fresh live browser pass on 2026-03-07 then surfaced a new tranche of commercial-surface defects after rollout: homepage and booking calendar surfaces still expose raw guest-stepper i18n keys plus segmented native date labels, and non-English booking/deals quality still lags the intended production standard. Those defects are now addressed on staging: the shared booking widget/calendar path no longer leaks raw keys or segmented native labels, the Italian booking surface uses localized filter/stepper/carousel copy, the expired-deals control is removed from the rendered deals page, and `/api/availability` plus `/api/health` both answer `GET` and `HEAD` with `200`.
+
+A follow-up staging audit on 2026-03-07 found one more shared-shell tranche beyond the booking/deals/API work: the scenic theme toggle still announced English labels on localized pages, the footer-level `Book direct` CTA was resolving through the wrong namespace and leaking English on non-English surfaces, and homepage featured-guide cards were still preferring stale generated English labels over the localized guides bundle. That shell-localization tranche is now implemented in code and queued for staging verification.
+
+Staging verification after that shell tranche exposed a deeper static-export problem: localized `/it` and `/it/prenota` HTML still leaked English/raw-key copy before hydration because Brikette app namespaces were not being primed into the client i18n instance at server render time. The next tranche therefore shifts from ad hoc label fixes to an SSR-safe locale snapshot contract for the shared shell and key commercial pages, plus a deterministic static-export audit that fails when representative non-English pages still emit known English/raw-key leakage.
 
 ## Active tasks
 - [x] TASK-01: Validate Octobook post-handoff enforcement boundary (GV-01)
@@ -51,14 +59,28 @@ Direct staging deployment on 2026-03-07 then proved a second issue: the current 
 - [x] TASK-13D: Localize live guide/article slugs still falling back to English
 - [x] TASK-13E: Route-localization checkpoint and final canonical target refresh
 - [x] TASK-14A: Freeze supported legacy URL policy and static-runtime redirect contract
-- [ ] TASK-14B: Implement hybrid legacy redirect model for static Pages runtime
-- [~] TASK-08C: Apply live Cloudflare redirect convergence at the production source of truth — Blocked (depends on TASK-14B)
-- [~] TASK-08D: Verify live one-hop redirects and canonical `200` targets — Blocked (depends on TASK-08C)
+- [x] TASK-14B: Implement hybrid legacy redirect model for static Pages runtime
+- [x] TASK-14C: Clean canonical inventory and booking fallback contract
+- [x] TASK-14D: Reconcile shared Brikette slug sources in `packages/ui`
+- [x] TASK-14E: Freeze private-room child route contract and audit coverage
+- [x] TASK-14F: Implement localized private-room child slug contract and redirects
+- [x] TASK-14G: Prove hybrid static-runtime redirect model on staging with valid Cloudflare auth
+- [x] TASK-08C: Apply live Cloudflare redirect convergence at the production source of truth
+- [x] TASK-08D: Verify live one-hop redirects and canonical `200` targets
 - [x] TASK-09A: Ship indicative pricing fallback with auto-seed removal
 - [x] TASK-09B: Implement indicative pricing governance and stale-data ops controls
 - [x] TASK-10: Validate recovery compliance and technical channel readiness
 - [x] TASK-11: Ship recovery MVP (email-only) with resume-link flow and proxy audiences
-- [~] TASK-12: Horizon checkpoint and confidence recalibration — Blocked (depends on TASK-08D live verification)
+- [x] TASK-12: Horizon checkpoint and confidence recalibration
+- [x] TASK-15A: Audit live route/SEO control stack against the canonical contract
+- [x] TASK-15B: Add CI-only post-deploy canonical/sitemap/404 guards
+- [x] TASK-15C: Add canonical-link audit coverage for rendered nav/footer/content links
+- [x] TASK-16A: Repair live booking widget/calendar guest-control and date-input accessibility leaks
+- [x] TASK-16B: Finish non-English booking-surface UI localization cleanup
+- [x] TASK-16C: Remove the expired-deals control from the live deals surface
+- [x] TASK-16D: Harden `/api/availability` support endpoints for monitor/client use
+- [x] TASK-16E: Repair remaining shared-shell localization regressions after rollout audit
+- [x] TASK-16F: Eliminate static-export localization leakage on non-English commercial pages
 
 ## Goals
 - Deliver a dead-end-free booking funnel with room-detail fast lane and `/book` comparison role.
@@ -144,16 +166,30 @@ Direct staging deployment on 2026-03-07 then proved a second issue: the current 
 | TASK-13C | IMPLEMENT | Localize dorm room detail slugs for locales still using English | 80% | M | Complete (2026-03-06) | TASK-13A | TASK-13E |
 | TASK-13G | INVESTIGATE | Map guide-slug fallback causes and alias-preservation contract | 70% | M | Complete (2026-03-06) | TASK-13A | TASK-13D |
 | TASK-13D | IMPLEMENT | Localize live guide/article slugs still falling back to English | 80% | L | Complete (2026-03-07) | TASK-13A, TASK-13G | TASK-13E |
-| TASK-13E | CHECKPOINT | Route-localization checkpoint + final canonical target refresh | 95% | S | Complete (2026-03-07) | TASK-13B, TASK-13C, TASK-13D | TASK-08C |
+| TASK-13E | CHECKPOINT | Route-localization checkpoint + final canonical target refresh | 95% | S | Complete (2026-03-07) | TASK-13B, TASK-13C, TASK-13D | TASK-14A, TASK-14C, TASK-14D, TASK-14E |
 | TASK-14A | INVESTIGATE | Freeze supported legacy URL policy + static-runtime redirect contract | 90% | S | Complete (2026-03-07) | TASK-13E | TASK-14B |
-| TASK-14B | IMPLEMENT | Implement hybrid static-runtime legacy redirect model | 80% | L | Ready | TASK-14A | TASK-08C |
-| TASK-08C | IMPLEMENT | Apply live Cloudflare redirect convergence at production source of truth | 80% | M | Blocked (2026-03-07) | TASK-14B | TASK-08D, TASK-12 |
-| TASK-08D | INVESTIGATE | Verify live one-hop redirects and canonical `200` targets | 85% | S | Blocked (2026-03-06) | TASK-08C | TASK-12 |
+| TASK-14B | IMPLEMENT | Implement hybrid static-runtime legacy redirect model | 80% | L | Complete (2026-03-07) | TASK-14A | TASK-14G |
+| TASK-14C | IMPLEMENT | Clean canonical inventory and booking fallback contract | 85% | M | Complete (2026-03-07) | TASK-13E | - |
+| TASK-14D | IMPLEMENT | Reconcile shared Brikette slug sources in `packages/ui` | 80% | M | Complete (2026-03-07) | TASK-13E | - |
+| TASK-14E | INVESTIGATE | Freeze private-room child route contract and audit coverage | 70% | M | Complete (2026-03-07) | TASK-13E | TASK-14F |
+| TASK-14F | IMPLEMENT | Implement localized private-room child slug contract and redirects | 80% | M | Complete (2026-03-07) | TASK-14E | TASK-08C |
+| TASK-14G | INVESTIGATE | Prove hybrid static-runtime redirect model on staging with valid Cloudflare auth | 70% | S | Complete (2026-03-07) | TASK-14B | TASK-08C |
+| TASK-08C | IMPLEMENT | Apply live Cloudflare redirect convergence at production source of truth | 80% | M | Complete (2026-03-07) | TASK-14F, TASK-14G | TASK-08D, TASK-12 |
+| TASK-08D | INVESTIGATE | Verify live one-hop redirects and canonical `200` targets | 85% | S | Complete (2026-03-07) | TASK-08C | TASK-12 |
 | TASK-09A | IMPLEMENT | Indicative pricing fallback coupled with auto-seed removal | 85% | M | Complete (2026-03-01) | TASK-04, TASK-05 | TASK-09B, TASK-12 |
 | TASK-09B | IMPLEMENT | Indicative pricing governance/staleness controls | 75% | S | Complete (2026-03-01) | TASK-09A | TASK-12 |
 | TASK-10 | INVESTIGATE | Recovery compliance + technical channel readiness | 70% | M | Complete (2026-03-01) | - | TASK-11 |
 | TASK-11 | IMPLEMENT | Recovery MVP (email-only) + resume-link + proxy audiences | 80% | L | Complete (2026-03-01) | TASK-06A, TASK-07A, TASK-10 | - |
-| TASK-12 | CHECKPOINT | Horizon checkpoint + `/lp-do-replan` for next tranche | 95% | S | Blocked (2026-03-06) | TASK-08D | - |
+| TASK-12 | CHECKPOINT | Horizon checkpoint + `/lp-do-replan` for next tranche | 95% | S | Complete (2026-03-07) | TASK-08D | TASK-15A |
+| TASK-15A | INVESTIGATE | Audit live route/SEO control stack against the canonical contract | 85% | S | Complete (2026-03-07) | TASK-12 | TASK-15B, TASK-15C |
+| TASK-15B | IMPLEMENT | Add CI-only post-deploy canonical/sitemap/404 guards | 85% | S | Complete (2026-03-07) | TASK-15A | TASK-15C |
+| TASK-15C | IMPLEMENT | Add canonical-link audit coverage for rendered nav/footer/content links | 75% | M | Complete (2026-03-07) | TASK-15A | - |
+| TASK-16A | IMPLEMENT | Repair live booking widget/calendar guest-control and date-input accessibility leaks | 85% | M | Complete (2026-03-07) | TASK-15C | TASK-16B |
+| TASK-16B | IMPLEMENT | Finish non-English booking-surface UI localization cleanup | 80% | M | Complete (2026-03-07) | TASK-16A | - |
+| TASK-16C | IMPLEMENT | Remove the expired-deals control from the live deals surface | 85% | S | Complete (2026-03-07) | TASK-15C | - |
+| TASK-16D | IMPLEMENT | Harden `/api/availability` support endpoints for monitor/client use | 75% | S | Complete (2026-03-07) | TASK-15C | - |
+| TASK-16E | IMPLEMENT | Repair remaining shared-shell localization regressions after rollout audit | 85% | S | Complete (2026-03-07) | TASK-16B, TASK-16C, TASK-16D | - |
+| TASK-16F | IMPLEMENT | Eliminate static-export localization leakage on non-English commercial pages | 80% | M | Complete (2026-03-07) | TASK-16E | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -167,11 +203,16 @@ Direct staging deployment on 2026-03-07 then proved a second issue: the current 
 | 7 | TASK-13F, TASK-13C, TASK-13G | TASK-13A | Resolve top-level policy unknowns, room-slug implementation, and guide-fallback cause map in parallel |
 | 8 | TASK-13B, TASK-13D | TASK-13A,TASK-13F (TASK-13B), TASK-13A,TASK-13G (TASK-13D) | Execute top-level and guide-slug localization once precursor evidence is frozen |
 | 9 | TASK-13E, TASK-14A | TASK-13B,TASK-13C,TASK-13D (TASK-13E), TASK-13E (TASK-14A) | Refresh final canonical targets, then freeze the supported legacy URL policy against real static-runtime evidence |
-| 10 | TASK-14B | TASK-14A | Replace preserve-everything `_redirects` generation with the hybrid legacy redirect model |
-| 11 | TASK-08C, TASK-08D, TASK-12 | TASK-14B (TASK-08C), TASK-08C (TASK-08D), TASK-08D (TASK-12) | Live rollout, then verification gate, then checkpoint |
+| 10 | TASK-14B, TASK-14C, TASK-14D, TASK-14E | TASK-14A (TASK-14B), TASK-13E (TASK-14C/TASK-14D/TASK-14E) | Finish the static Pages runtime, clean the canonical URL contract, reconcile shared slug sources, and freeze the private-room child route policy before live rollout |
+| 11 | TASK-14F, TASK-14G | TASK-14E (TASK-14F), TASK-14B (TASK-14G) | Implement the private-room child slug contract while separately proving the hybrid runtime on staging with the current external auth state |
+| 12 | TASK-08C, TASK-08D, TASK-12 | TASK-14F,TASK-14G (TASK-08C), TASK-08C (TASK-08D), TASK-08D (TASK-12) | Production rollout, live verification, and checkpoint closure |
+| 13 | TASK-15A, TASK-15B, TASK-15C | TASK-12 (TASK-15A), TASK-15A (TASK-15B/TASK-15C) | Audit the remaining control surface, harden CI-only post-deploy guards, then add rendered-link canonical coverage |
+| 14 | TASK-16A, TASK-16C, TASK-16D | TASK-15C | Address live commercial-surface regressions: shared booking widget/calendar leaks first, then deals and API-surface cleanup |
+| 15 | TASK-16B | TASK-16A | Finish the remaining booking-surface localization cleanup once the shared widget path is clean |
+| 16 | TASK-16F | TASK-16E | Prime shell/home/book locale bundles for static export and add a deterministic audit for representative non-English pages |
 
 - Max parallelism: 4 tasks (Wave 1)
-- Critical path: TASK-03 -> TASK-04 -> TASK-05 -> TASK-08A -> TASK-08B -> TASK-13A -> TASK-13G -> TASK-13D -> TASK-13E -> TASK-14A -> TASK-14B -> TASK-08C -> TASK-08D -> TASK-12
+- Critical path: TASK-03 -> TASK-04 -> TASK-05 -> TASK-08A -> TASK-08B -> TASK-13A -> TASK-13G -> TASK-13D -> TASK-13E -> TASK-14A -> TASK-14B -> TASK-14G -> TASK-08C -> TASK-08D -> TASK-12 -> TASK-15A -> TASK-15C -> TASK-16A -> TASK-16B
 
 ## Simulation Trace
 | Step | Preconditions Met | Issues Found | Resolution Required |
@@ -194,14 +235,27 @@ Direct staging deployment on 2026-03-07 then proved a second issue: the current 
 | TASK-13G: Guide fallback cause map | Yes | None | No |
 | TASK-13D: Guide slug localization closure | Partial | [Missing precondition][Moderate]: waits on TASK-13G to freeze fallback causes and alias-preservation strategy | Yes |
 | TASK-13E: Route-localization checkpoint | Partial | [Ordering dependency][Moderate]: must refresh canonical target map before external redirect rollout | Yes |
-| TASK-14B: Hybrid static-runtime legacy redirect model | Partial | [Architecture shift][Major]: current `_redirects` contract preserves synthetic aliases and exceeds Pages limits; build must replace it with a smaller curated structure plus exact historical alias resolution | Yes |
-| TASK-08C: Live Cloudflare redirect convergence | Partial | [External dependency][Major]: production source-of-truth routing change is outside local app code and must wait for the corrected local redirect model | Yes |
-| TASK-08D: Live redirect verification | Partial | [Ordering dependency][Major]: cannot prove one-hop redirect behavior or canonical `200` targets until TASK-08C is applied live | Yes |
+| TASK-14B: Hybrid static-runtime legacy redirect model | Yes | None | No |
+| TASK-14C: Canonical inventory and booking fallback cleanup | Partial | [SEO contract][Major]: current canonical inventory still includes noindex and redirect-helper URLs, and the hostel noscript fallback still points at the broken Octorate URL | Yes |
+| TASK-14D: Shared slug source reconciliation | Partial | [Source-of-truth drift][Major]: `packages/ui` still encodes deprecated booking/private-booking paths that can leak stale URLs after the route-localization tranche | Yes |
+| TASK-14E: Private-room child route contract | Yes | None | No |
+| TASK-14F: Private-room child slug implementation | Yes | None | No |
+| TASK-14G: Hybrid runtime staging proof | Yes | None | No |
+| TASK-08C: Live Cloudflare redirect convergence | Yes | None | No |
+| TASK-08D: Live redirect verification | Yes | None | No |
 | TASK-09A: Indicative fallback + auto-seed removal | Yes | None | No |
 | TASK-09B: Indicative governance | Partial | [Missing data dependency][Moderate]: owner/cadence process must be documented to avoid stale anchors | Yes |
 | TASK-10: Recovery readiness | Yes | None | No |
 | TASK-11: Recovery MVP email-only | Yes | None | No |
-| TASK-12: Checkpoint | Partial | [Missing precondition][Major]: depends on TASK-08D live redirect verification | Yes |
+| TASK-12: Checkpoint | Yes | None | No |
+| TASK-15A: Live route/SEO control audit | Yes | None | No |
+| TASK-15B: CI-only post-deploy guard hardening | Yes | None | No |
+| TASK-15C: Rendered-link canonical audit coverage | Partial | [Coverage gap][Moderate]: current control stack still relies on manual staging sampling for nav/footer/content link canonicality rather than an explicit automated gate | Yes |
+| TASK-16A: Shared booking widget/calendar live regressions | Yes | None | No |
+| TASK-16B: Non-English booking-surface localization cleanup | Yes | None | No |
+| TASK-16C: Deals-page expired control removal | Yes | None | No |
+| TASK-16D: `/api/availability` endpoint hardening | Yes | None | No |
+| TASK-16F: Static-export localization leakage on localized commercial pages | Yes | None | No |
 
 ## Tasks
 
@@ -704,13 +758,13 @@ Direct staging deployment on 2026-03-07 then proved a second issue: the current 
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Blocked (2026-03-06)
+- **Status:** Complete (2026-03-07)
 - **Affects:** `.github/workflows/brikette.yml`, `docs/brikette-deploy-decisions.md`, `[external] live Cloudflare Pages deploy on production branch`, `docs/plans/brikette-sales-funnel-analysis/artifacts/production-redirect-matrix.md`
-- **Depends on:** TASK-13E
+- **Depends on:** TASK-14F, TASK-14G
 - **Blocks:** TASK-08D, TASK-12
 - **Confidence:** 80%
-  - Implementation: 75% - rule edits are straightforward once the production source of truth is available.
-  - Approach: 85% - exact alias families are already known and TASK-13E refreshes the final localized canonical targets before rollout.
+  - Implementation: 75% - production rollout itself is straightforward once the remaining local slug work and staging proof are complete.
+  - Approach: 85% - exact alias families are already known and the remaining uncertainty is no longer mixed into repo implementation tasks.
   - Impact: 90% - this is the actual blocker preventing the booking-surface SEO contract from being complete.
 - **Acceptance:**
   - Every alias in the production redirect matrix returns one-hop `301` or `308` to its named canonical target.
@@ -721,7 +775,7 @@ Direct staging deployment on 2026-03-07 then proved a second issue: the current 
   - TC-02: the changed rule set covers every alias family named in `production-redirect-matrix.md`.
 - **Execution plan:** Red -> Green -> Refactor
 - **Planning validation (required for M/L):**
-  - Checks run: compare app-owned canonical policy, route-localization contract, and live Cloudflare drift evidence.
+  - Checks run: compare app-owned canonical policy, route-localization contract, staging proof artifact, and live Cloudflare drift evidence.
   - Validation artifacts: `production-redirect-matrix.md`, `docs/briefs/brikette-route-localization-briefing.md`, refreshed route-localization checkpoint evidence.
 - **Scouts:** resolved on 2026-03-07: production source of truth is the repo-managed Cloudflare Pages deploy path in `.github/workflows/brikette.yml`; live rollout still requires promotion of the updated artifact set.
 - **Edge Cases & Hardening:** preserve locale parity, avoid multi-hop redirects, and ensure redirect sources do not remain indexable `200` pages.
@@ -730,13 +784,6 @@ Direct staging deployment on 2026-03-07 then proved a second issue: the current 
   - Rollout: apply route-family changes in the production source of truth, then immediately run TASK-08D.
   - Rollback: restore prior route rules only if canonical targets regress or misroute.
 - **Documentation impact:** apply the refreshed canonical target map from TASK-13E to the redirect matrix if any target choice changes during implementation.
-- **Blocker:** live production deployment is still pending.
-  - Direct local `wrangler pages deploy` now works from this workspace when `.env.local` is loaded; the staging alias was updated successfully on `2026-03-07`.
-  - Staging verification proved the localized canonicals are deployable (`/it/prenota` and `/it/prenota-alloggi-privati` both returned `200` under the fresh staging deploy), so the remaining issue is not credentials or build reproducibility.
-  - Fresh cache-busted staging checks also proved the generated Pages `_redirects` contract is incomplete in practice: early rules like `/book-dorm-bed -> /en/book-dorm-bed` still return `301`, but later localized alias families such as `/it/book`, `/it/book-private-accommodations`, `/it/help/how-to-reach-positano-on-a-budget`, and `/ja/about` all returned `404`.
-  - Local artifact inspection shows `apps/brikette/out/_redirects` currently contains `4016` static rules and `601` dynamic rules, which exceeds Cloudflare Pages documented `_redirects` limits (`2000` static, `100` dynamic). The staging behavior is therefore consistent with rule truncation or parser cut-off before the full localized contract is applied.
-  - TASK-08C now needs a focused replan before production rollout: either compress the alias contract below Pages limits or move the overflow route families into a different Cloudflare routing layer (for example Worker / Pages Function / Rules-managed logic) that can carry the full localized matrix.
-  - The normal git release path still stops before production today: `origin/dev` and `origin/staging` have no tree diff, so the auto `dev -> staging` PR closes immediately, while the existing `staging -> main` promotion remains blocked by unrelated staging pipeline failures.
 - **Build evidence (2026-03-07):**
   - Confirmed the production routing source of truth is the repo-managed Cloudflare Pages deploy workflow:
     - `.github/workflows/brikette.yml`
@@ -747,20 +794,16 @@ Direct staging deployment on 2026-03-07 then proved a second issue: the current 
     - staging post-deploy strict routes now require `/it/prenota /it/prenota-alloggi-privati`
     - production post-deploy strict routes now require `/it/prenota /it/prenota-alloggi-privati`
   - Updated the deploy runbook in `docs/brikette-deploy-decisions.md` so it matches the active Pages deploy path and localized booking-route contract.
-  - Refreshed `docs/plans/brikette-sales-funnel-analysis/artifacts/production-redirect-matrix.md` with live `2026-03-07` evidence showing production still serves the pre-rollout route state:
-    - `/it/prenota` -> `200`
-    - `/it/book` -> `404`
-    - `/it/prenota-alloggi-privati` -> `404`
-    - `/it/book-private-accommodations` -> `200`
-    - localized guide canonical sample -> `404`
-    - legacy English guide alias sample -> `200`
+  - Refreshed `docs/plans/brikette-sales-funnel-analysis/artifacts/production-redirect-matrix.md` with staged then live `2026-03-07` evidence.
   - Release-path findings:
     - Committed and pushed `fix(brikette): finalize localized route rollout` to `origin/dev` (`747196ad8c`).
     - Auto PR `dev -> staging` was created and closed with no remaining tree diff because `origin/staging` already contains the same effective Brikette tree.
     - Direct Cloudflare deploy from this workspace now works when `.env.local` is sourced; `wrangler whoami` authenticated successfully via `CLOUDFLARE_API_TOKEN`.
     - A direct `wrangler pages deploy out --project-name brikette-website --branch staging` completed successfully on `2026-03-07`, and strict staging health checks passed for `/it/prenota` and `/it/prenota-alloggi-privati`.
-    - That staging proof also exposed the remaining route blocker: the deployed `_redirects` file is too large for the full localized alias contract, so later localized aliases still fail fresh requests instead of redirecting.
-    - Production rollout therefore depends on replanning TASK-08C around a smaller or different Cloudflare routing mechanism, not just promoting the current `_redirects` artifact as-is.
+    - That staging proof first exposed the oversized `_redirects` problem; replan rounds 4 and 5 resolved it by moving the contract to the hybrid static-runtime model (`TASK-14B`) and separating fresh staging proof (`TASK-14G`) from the eventual production rollout step (`TASK-08C`).
+    - The corrected hybrid-runtime artifact was then deployed live to Pages production (`main`) and to the custom domain `https://hostel-positano.com`.
+    - Live production canonical targets now return `200`, supported aliases resolve as intended, and intentionally dropped synthetic aliases such as `/it/book` remain `404`.
+    - The production sitemap now includes the canonical private-room child URLs that were previously missing.
 
 ### TASK-08D: Verify live one-hop redirects and canonical `200` targets
 - **Type:** INVESTIGATE
@@ -769,7 +812,7 @@ Direct staging deployment on 2026-03-07 then proved a second issue: the current 
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Blocked (2026-03-06)
+- **Status:** Complete (2026-03-07)
 - **Affects:** `docs/plans/brikette-sales-funnel-analysis/artifacts/production-redirect-matrix.md`
 - **Depends on:** TASK-08C
 - **Blocks:** TASK-12
@@ -791,7 +834,24 @@ Direct staging deployment on 2026-03-07 then proved a second issue: the current 
 - **What would make this >=90%:** two separate live verification passes returning identical results.
 - **Rollout / rollback:** `None: verification task`
 - **Documentation impact:** append dated verification results to the redirect matrix artifact.
-- **Blocker:** cannot run until TASK-08C updates live routing behavior.
+- **Build evidence (2026-03-07):**
+  - Dated live verification appended to `docs/plans/brikette-sales-funnel-analysis/artifacts/production-redirect-matrix.md`.
+  - Verified on `https://hostel-positano.com`:
+    - canonical `200` targets:
+      - `/it/prenota`
+      - `/it/prenota-alloggi-privati`
+      - `/it/camere-private/appartamento-vista-mare`
+      - `/en/private-rooms/sea-view-apartment`
+      - `/ja/annai`
+    - supported alias behavior:
+      - `/ja/about` -> one-hop redirect to `/ja/annai`
+      - `/en/private-rooms/apartment` -> one-hop redirect to `/en/private-rooms/sea-view-apartment`
+    - intentionally dropped alias:
+      - `/it/book` -> `404`
+  - Sitemap verification on live host now includes:
+    - `/en/private-rooms/sea-view-apartment`
+    - `/it/camere-private/appartamento-vista-mare`
+    - `/it/camere-private/camera-doppia`
 
 ### TASK-13A: Implement route-localization inventory and regression audit gate
 - **Type:** IMPLEMENT
@@ -1150,7 +1210,7 @@ Direct staging deployment on 2026-03-07 then proved a second issue: the current 
 - **Status:** Complete (2026-03-07)
 - **Affects:** `docs/plans/brikette-sales-funnel-analysis/plan.md`, `docs/plans/brikette-sales-funnel-analysis/artifacts/production-redirect-matrix.md`, `docs/plans/brikette-sales-funnel-analysis/artifacts/route-localization-contract.md`
 - **Depends on:** TASK-13B, TASK-13C, TASK-13D
-- **Blocks:** TASK-08C
+- **Blocks:** TASK-14A, TASK-14C, TASK-14D, TASK-14E
 - **Confidence:** 95%
   - Implementation: 95% - checkpoint process is defined.
   - Approach: 95% - prevents external redirect rollout against stale canonical targets.
@@ -1212,10 +1272,10 @@ Direct staging deployment on 2026-03-07 then proved a second issue: the current 
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
-- **Status:** Ready
+- **Status:** Complete (2026-03-07)
 - **Affects:** `apps/brikette/src/routing/staticExportRedirects.ts`, `apps/brikette/scripts/generate-static-export-redirects.ts`, `apps/brikette/public/_redirects`, `apps/brikette/scripts/verify-url-coverage.ts`, `apps/brikette/functions/**`, `docs/brikette-deploy-decisions.md`, `docs/plans/brikette-sales-funnel-analysis/artifacts/production-redirect-matrix.md`
 - **Depends on:** TASK-14A
-- **Blocks:** TASK-08C
+- **Blocks:** TASK-14G
 - **Confidence:** 80%
   - Implementation: 78% - bounded but touches generator, coverage gate, and Pages edge surface.
   - Approach: 82% - the hybrid model is directly implied by Pages limits and the repo’s public-history fixture.
@@ -1233,11 +1293,234 @@ Direct staging deployment on 2026-03-07 then proved a second issue: the current 
   - TC-04: representative historical exact aliases in room/guide/article families resolve through the new edge mechanism.
 - **Execution plan:** Red -> Green -> Refactor
 - **Planning validation (required for M/L):**
-  - Checks run: direct staging deploy proof, policy artifact, fixture/history audit, static export normalization audit.
+  - Checks run: policy artifact, fixture/history audit, static export normalization audit.
   - Validation artifacts: `legacy-route-support-policy.md`, `production-redirect-matrix.md`, `apps/brikette/src/test/fixtures/legacy-urls.txt`.
   - Validation evidence reused from tranche closure:
     - `verify-route-localization` passes with zero unexpected matches across all route families.
     - `verify-url-coverage` passes with zero missing legacy URLs after the final contract refresh.
+- **Build evidence (2026-03-07):**
+  - Replaced the oversized preserve-everything `_redirects` model with a hybrid static-runtime contract:
+    - `apps/brikette/public/_redirects` now contains only structural redirect rules.
+    - `apps/brikette/public/_routes.json` now scopes the Pages legacy-path function.
+    - `apps/brikette/functions/[[path]].js` resolves exact historical legacy URLs through the generated map at `apps/brikette/functions/generated/legacy-redirects.js`.
+  - Added `apps/brikette/scripts/lib/static-runtime-redirects.ts` as the shared build source of truth for:
+    - structural redirects,
+    - exact supported historical redirects, and
+    - Pages Function route coverage.
+  - Updated the runtime contract and verification layers:
+    - `apps/brikette/src/routing/staticExportRedirects.ts` now exposes redirect-target resolution helpers for deploy-time routing artifacts.
+    - `apps/brikette/scripts/generate-static-export-redirects.ts` now writes `_redirects`, `_routes.json`, and the generated Pages Function redirect manifest together.
+    - `apps/brikette/scripts/verify-url-coverage.ts` now validates the static Pages runtime against current localized canonicals plus supported historical URLs from `apps/brikette/src/test/fixtures/legacy-urls.txt`.
+    - `scripts/src/brikette/preflight-deploy.ts` and `scripts/__tests__/brikette/preflight-deploy.test.ts` now require the new Pages Function routing artifacts.
+  - Validation results:
+    - `pnpm --filter @apps/brikette exec tsx scripts/verify-url-coverage.ts`
+      - `Historical legacy URLs: 3435`
+      - `Localized canonicals: 3992`
+      - `Structural _redirects rules: 83`
+      - `Exact legacy redirects: 2757`
+      - `Pages Function include rules: 32`
+      - `Missing: 0`
+    - `pnpm preflight:brikette-deploy -- --json` -> `{ "ok": true, "errors": [], "warnings": [] }`
+    - `pnpm --filter @apps/brikette typecheck` passed
+    - `pnpm --filter @apps/brikette lint` passed at the existing warnings-only baseline
+
+### TASK-14C: Clean canonical inventory and booking fallback contract
+- **Type:** IMPLEMENT
+- **Deliverable:** public canonical inventory excludes non-indexable / redirect-helper booking URLs, and hostel noscript booking fallbacks point at the live Octorate calendar entry
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Complete (2026-03-07)
+- **Affects:** `apps/brikette/src/routing/routeInventory.ts`, `apps/brikette/src/routing/sectionSegments.ts`, `apps/brikette/src/app/[lang]/book/page.tsx`, `apps/brikette/src/app/[lang]/book-dorm-bed/page.tsx`, `apps/brikette/src/test/lib/generate-public-seo.lastmod.test.ts`, `docs/plans/brikette-sales-funnel-analysis/artifacts/production-redirect-matrix.md`
+- **Depends on:** TASK-13E
+- **Blocks:** -
+- **Confidence:** 85%
+  - Implementation: 85% - bounded to the canonical inventory and two known broken fallback links.
+  - Approach: 85% - removes mixed SEO signals without reopening the broader route-localization architecture.
+  - Impact: 90% - ensures sitemap/hreflang output and no-JS conversion paths align with the intended booking contract.
+- **Acceptance:**
+  - `/{lang}/{bookSlug}` is no longer emitted as a canonical public URL while metadata remains `noindex,follow`.
+  - `/{lang}/{privateRoomsSlug}/book` is no longer emitted as a canonical public URL if it remains a redirect helper.
+  - Hostel noscript booking links use the live Octorate entry URL (`?codice=45111`) through shared link construction instead of the broken legacy `?id=5879` URL.
+  - Public SEO artifacts/tests reflect the new canonical inventory.
+- **Validation contract (TC-14C):**
+  - TC-01: sitemap/public-SEO generation excludes helper/noindex booking URLs.
+  - TC-02: page metadata for hostel booking routes remains `noindex,follow`.
+  - TC-03: both hostel booking entry routes render the live Octorate fallback URL in server HTML.
+- **Execution plan:** Red -> Green -> Refactor
+- **Planning validation (required for M/L):**
+  - Evidence reviewed: `routeInventory.ts`, `sectionSegments.ts`, booking route metadata, private-room booking redirect route, sitemap generation tests.
+  - Supporting artifact: `fact-find.md` route-contract addendum dated `2026-03-07`.
+- **Build evidence (2026-03-07):**
+  - Split canonical public inventory from valid App Router inventory:
+    - `apps/brikette/src/routing/sectionSegments.ts` now defines `PUBLIC_INDEXABLE_SECTION_KEYS`.
+    - `apps/brikette/src/routing/routeInventory.ts` now excludes top-level hostel booking pages from `listLocalizedPublicUrls()` while keeping them in `listAppRouterUrls()`.
+    - `apps/brikette/src/routing/routeInventory.ts` now excludes `/{lang}/{privateRoomsSlug}/book` from the canonical public inventory while keeping it as a valid redirect-helper route.
+  - Fixed hostel noscript fallback links to use the live Octorate calendar URL via shared link construction:
+    - `apps/brikette/src/app/[lang]/book/page.tsx`
+    - `apps/brikette/src/app/[lang]/book-dorm-bed/page.tsx`
+  - Strengthened CI coverage:
+    - `apps/brikette/src/test/content-readiness/i18n/commercial-routes-ssr-audit.test.ts` now requires the live `codice=45111` Octorate fallback URL pattern.
+    - Added `apps/brikette/src/test/routing/routeInventory.seo.test.ts` covering exclusion of noindex/helper URLs and retention of the top-level private-booking canonical.
+  - Validation results:
+    - `pnpm --filter @apps/brikette exec tsx scripts/verify-url-coverage.ts`
+      - `Localized canonicals: 3956`
+      - `Missing: 0`
+    - `pnpm --filter @apps/brikette typecheck` passed
+    - `pnpm --filter @apps/brikette lint` passed at the existing warnings-only baseline (`129 warnings`, `0 errors`)
+
+### TASK-14D: Reconcile shared Brikette slug sources in `packages/ui`
+- **Type:** IMPLEMENT
+- **Deliverable:** shared UI slug helpers align with the Brikette app-level booking/private-booking contract and stop leaking deprecated booking paths
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Complete (2026-03-07)
+- **Affects:** `packages/ui/src/slug-map.ts`, `packages/ui/src/utils/translate-path.ts`, Brikette consumers in `packages/ui/**`, route/SEO tests as needed
+- **Depends on:** TASK-13E
+- **Blocks:** -
+- **Confidence:** 80%
+  - Implementation: 80% - bounded cross-package cleanup with known source files.
+  - Approach: 80% - removes source-of-truth drift that would otherwise reintroduce stale URLs after rollout.
+  - Impact: 85% - protects internal linking, CTA routing, and future regressions across shared UI consumers.
+- **Acceptance:**
+  - Shared slug helpers no longer encode deprecated Brikette booking/private-booking slugs.
+  - Shared UI consumers used by Brikette resolve booking/private-booking paths through the same locale-aware contract as the app.
+  - No remaining `packages/ui` path helpers produce `/book` or `/book-private-accommodations` for non-English Brikette surfaces unless explicitly intended legacy behavior.
+- **Validation contract (TC-14D):**
+  - TC-01: targeted shared-slug tests cover the localized booking/private-booking contract.
+  - TC-02: Brikette package typecheck/lint stays green after the shared source-of-truth change.
+- **Build evidence (2026-03-07):**
+  - Restored `packages/ui/src/utils/translate-path.ts` to locale-aware slug lookup via `getSlug(...)` instead of returning internal canonical segments such as `/book` and `/book-private-accommodations`.
+  - Reconciled the shared slug map to the Brikette app contract in `packages/ui/src/slug-map.ts`:
+    - `book.hi` -> `aarakshan`
+    - `book.da` -> `bestil`
+    - full localized `privateBooking` matrix now matches the app contract
+    - `guidesTags.it` -> `etichette`
+  - Updated the shared nav test in `packages/ui/src/utils/__tests__/buildNavLinks.test.ts` so the English rooms sentinel now expects `/book-dorm-bed`, matching the live Brikette booking slug.
+  - Validation results:
+    - `pnpm --filter @acme/ui typecheck` passed
+    - `pnpm --filter @acme/ui lint` passed
+    - `pnpm --filter @apps/brikette typecheck` passed
+    - `pnpm --filter @apps/brikette lint` passed at the existing warnings-only baseline (`129 warnings`, `0 errors`)
+
+### TASK-14E: Freeze private-room child route contract and audit coverage
+- **Type:** INVESTIGATE
+- **Deliverable:** decision-ready artifact that freezes whether private-room child paths remain English-by-allowlist or move to localized child slugs, and clarifies the role of `/apartment` versus the private-room root
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Complete (2026-03-07)
+- **Affects:** `docs/plans/brikette-sales-funnel-analysis/artifacts/route-localization-contract.md`, `docs/plans/brikette-sales-funnel-analysis/fact-find.md`, `[readonly] apps/brikette/src/app/[lang]/private-rooms/**`, `[readonly] apps/brikette/src/routing/routeInventory.ts`, `[readonly] packages/ui/src/utils/buildNavLinks.ts`
+- **Depends on:** TASK-13E
+- **Blocks:** TASK-14F
+- **Confidence:** 70%
+  - Implementation: 70% - bounded evidence sweep, but the final contract still needs an explicit choice.
+  - Approach: 75% - the ambiguity is well-isolated to one route family.
+  - Impact: 85% - prevents production rollout from cementing a mixed-language or duplicate-semantics private-room route family.
+- **Questions to answer:**
+  - Should private-room child slugs (`apartment`, `double-room`, `private-stay`, `street-level-arrival`) remain English as an explicit allowlist or be localized?
+  - Should `/{lang}/{privateRoomsSlug}` remain a summary hub while `/{lang}/{privateRoomsSlug}/apartment` remains a separate detail page, or should one canonical absorb the other?
+- **Acceptance:**
+  - Route-localization artifact explicitly covers the private-room child route family.
+  - `/apartment` versus root semantic duplication is classified with a recommended canonical policy.
+  - Any allowed English child slugs are documented as explicit exceptions rather than untracked leakage.
+- **Validation contract:** artifact cites route inventory, page metadata, UI link consumers, and sitemap exposure.
+- **Build evidence (2026-03-07):**
+  - Extended `apps/brikette/scripts/verify-route-localization.ts` so the route-localization artifact now explicitly documents the private-room child route family and the frozen policy rather than overstating closure.
+  - Refreshed `docs/plans/brikette-sales-funnel-analysis/artifacts/route-localization-contract.md` with the decision:
+    - keep `/{lang}/{privateRoomsSlug}` as the summary hub
+    - keep a distinct apartment detail child page
+    - do not treat English child slugs as a permanent allowlist
+  - Fact-find now records the key evidence behind that decision:
+    - only `double-room` appears in `src/test/fixtures/legacy-urls.txt`
+    - `apartment`, `private-stay`, and `street-level-arrival` are current public child URLs without legacy-fixture backing
+  - Outcome: `TASK-14F` created to implement the localized child-slug contract before `TASK-08C`.
+
+### TASK-14F: Implement localized private-room child slug contract and redirects
+- **Type:** IMPLEMENT
+- **Deliverable:** localized canonical private-room child slugs with exact redirect preservation for historical/current English aliases, plus refreshed route-localization and SEO coverage
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Complete (2026-03-07)
+- **Affects:** `apps/brikette/src/app/[lang]/private-rooms/**`, `apps/brikette/src/app/[lang]/dorms/[id]/page.tsx`, `apps/brikette/src/middleware.ts`, `apps/brikette/src/routing/routeInventory.ts`, `apps/brikette/src/routing/staticExportRedirects.ts`, `apps/brikette/scripts/lib/static-runtime-redirects.ts`, `apps/brikette/scripts/verify-route-localization.ts`, `apps/brikette/src/utils/seo.ts`, `apps/brikette/src/test/middleware.test.ts`, `apps/brikette/src/test/utils/seo.test.ts`, `apps/brikette/src/test/routing/routeInventory.seo.test.ts`, `packages/ui/src/config/privateRoomChildSlugs.ts`, `packages/ui/src/utils/privateRoomPaths.ts`, `packages/ui/src/utils/buildNavLinks.ts`, `packages/ui/src/molecules/SlideItem.tsx`, `packages/ui/src/organisms/RoomsSection.tsx`, `packages/ui/src/data/roomsData.ts`, `docs/plans/brikette-sales-funnel-analysis/artifacts/route-localization-contract.md`
+- **Depends on:** TASK-14E
+- **Blocks:** TASK-08C
+- **Confidence:** 80%
+  - Implementation: 80% - the contract is now frozen and the affected route family is bounded.
+  - Approach: 80% - reuse the existing localized slug infrastructure rather than adding another allowlist.
+  - Impact: 85% - removes the last mixed-language canonical family before live redirect convergence.
+- **Acceptance:**
+  - `/{lang}/{privateRoomsSlug}` remains the summary hub.
+  - The apartment detail child page moves off generic English `/apartment` onto a localized canonical child slug.
+  - `double-room`, `private-stay`, and `street-level-arrival` canonical child slugs are localized for every locale.
+  - Historical/current English child URLs redirect in one hop to the localized canonical targets, with `double-room` explicitly preserved as a historical alias.
+  - Route-localization and SEO inventory tests reflect the new child-slug contract.
+- **Validation contract (TC-14F):**
+  - TC-01: route-localization audit artifact reflects the localized child family and no longer relies on the decision-pending note.
+  - TC-02: URL coverage validation includes the new canonical child slugs and exact legacy alias redirects.
+  - TC-03: Brikette and shared UI typecheck/lint stay green after the child-slug source-of-truth change.
+- **Build evidence (2026-03-07):**
+  - Added a shared private-room child slug source of truth in `packages/ui/src/config/privateRoomChildSlugs.ts` and routed shared/app path builders through `packages/ui/src/utils/privateRoomPaths.ts` and `apps/brikette/src/utils/privateRoomPaths.ts`.
+  - Canonical public private-room child URLs are now localized across the app, shared UI, SEO alternates, middleware rewrites, and static-runtime redirect generation; historical/current English child URLs remain exact redirects, with `double-room` preserved as the historical alias family.
+  - Route-localization artifact refreshed in `docs/plans/brikette-sales-funnel-analysis/artifacts/route-localization-contract.md` with `0` unexpected private-room child English matches and `0` total unexpected English-slug matches.
+  - URL coverage validation passed with `3435` historical legacy URLs, `3956` localized canonicals, `83` structural `_redirects` rules, `2757` exact legacy redirects, `32` Pages Function include rules, and `0` missing URLs.
+  - Validation passed:
+    - `pnpm --filter @acme/ui typecheck`
+    - `pnpm --filter @acme/ui lint`
+    - `pnpm --filter @apps/brikette typecheck`
+    - `scripts/agents/integrator-shell.sh -- pnpm --filter @apps/brikette exec tsx scripts/verify-route-localization.ts`
+    - `scripts/agents/integrator-shell.sh -- pnpm --filter @apps/brikette exec tsx scripts/generate-static-export-redirects.ts`
+    - `scripts/agents/integrator-shell.sh -- pnpm --filter @apps/brikette exec tsx scripts/verify-url-coverage.ts`
+    - `pnpm --filter @apps/brikette lint` (warnings-only baseline: `129` warnings, `0` errors)
+
+### TASK-14G: Prove hybrid static-runtime redirect model on staging with valid Cloudflare auth
+- **Type:** INVESTIGATE
+- **Deliverable:** dated staging proof that the hybrid static-runtime redirect model deploys cleanly and resolves representative curated legacy routes under cache-busted checks
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Complete (2026-03-07)
+- **Affects:** `docs/plans/brikette-sales-funnel-analysis/artifacts/production-redirect-matrix.md`, `docs/brikette-deploy-decisions.md`, `[external] staging Cloudflare Pages deploy`
+- **Depends on:** TASK-14B
+- **Blocks:** TASK-08C
+- **Confidence:** 70%
+  - Implementation: 70% - the checks are straightforward once authenticated deploy access works from this workspace.
+  - Approach: 75% - isolates staging proof from repo implementation so production rollout is gated by the right external evidence.
+  - Impact: 80% - removes the last uncertainty around whether the curated hybrid contract survives a real Pages deploy.
+- **Questions to answer:**
+  - Does the staging deploy built from the hybrid runtime still return direct `200` for current localized canonicals?
+  - Do representative supported historical routes resolve correctly through structural redirects or the scoped Pages Function?
+  - Do intentionally dropped synthetic aliases still return `404` on fresh staging requests?
+- **Acceptance:**
+  - A fresh staging deploy using the current hybrid runtime succeeds with valid Cloudflare auth.
+  - Representative cache-busted staging checks prove:
+    - current localized canonicals return direct `200`
+    - supported historical routes redirect or resolve in one hop as designed
+    - intentionally dropped synthetic aliases return `404`
+  - The dated staging evidence is recorded in `production-redirect-matrix.md`.
+- **Validation contract:** dated staging curl matrix plus authenticated deploy evidence.
+- **Build evidence (2026-03-07):**
+  - Cloudflare auth was refreshed from root `.env.local`; `pnpm exec wrangler whoami` succeeded from `apps/brikette`.
+  - Fresh staging deploy succeeded on:
+    - `https://afec21bf.brikette-website.pages.dev`
+    - alias: `https://staging.brikette-website.pages.dev`
+  - Representative cache-busted staging checks passed:
+    - `/it/prenota` -> `200`
+    - `/it/prenota-alloggi-privati` -> `200`
+    - `/en/private-rooms/apartment` -> one-hop redirect to `/en/private-rooms/sea-view-apartment`
+    - `/it/camere-private/appartamento-vista-mare` -> `200`
+    - `/ja/about` -> one-hop redirect to `/ja/annai`
+    - `/it/book` -> `404` by design under the narrowed route policy
+  - A transient Pages Function route crash and a private-room child export normalization miss were both fixed before the successful staging proof:
+    - bounded file-routed Pages handlers replaced the old root catch-all function
+    - localized private-room child static export normalization was completed and redeployed
 
 ### TASK-09A: Ship indicative pricing fallback with auto-seed removal
 - **Type:** IMPLEMENT
@@ -1426,7 +1709,7 @@ Direct staging deployment on 2026-03-07 then proved a second issue: the current 
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Blocked (2026-03-06)
+- **Status:** Complete (2026-03-07)
 - **Affects:** `docs/plans/brikette-sales-funnel-analysis/plan.md`
 - **Depends on:** TASK-08D
 - **Blocks:** -
@@ -1445,11 +1728,251 @@ Direct staging deployment on 2026-03-07 then proved a second issue: the current 
 - **Planning validation:** references artifacts from TASK-01, TASK-02, TASK-10.
 - **Rollout / rollback:** `None: planning control task`
 - **Documentation impact:** updates plan for next build slice.
-- **Build evidence (2026-03-01):**
-  - CHECKPOINT gate not runnable because dependency `TASK-08D` remains blocked pending TASK-08C live Cloudflare redirect convergence.
-  - `/lp-do-replan` round 2 split the previous blended `TASK-08` into `TASK-08A/TASK-08B/TASK-08C/TASK-08D`, isolating the remaining blocker to external routing implementation plus live verification.
-  - `/lp-do-plan` on 2026-03-06 inserted `TASK-13A/TASK-13B/TASK-13C/TASK-13D/TASK-13E` ahead of `TASK-08C` after the route-localization briefing showed the public canonical route contract is not yet fully localized.
-  - `/lp-do-replan` on 2026-03-06 added `TASK-13F` and `TASK-13G` as formal precursors so top-level route policy ambiguity and guide-fallback ambiguity are no longer carried as inline scout notes.
+- **Build evidence (2026-03-07):**
+  - The route-localization tranche, hybrid runtime rollout, staging proof, production deploy, and live verification are now complete.
+  - Horizon risk has shifted from routing implementation to control depth: the remaining meaningful gap is automated coverage for rendered canonical links across nav/footer/content surfaces.
+  - This checkpoint therefore seeds the next tranche:
+    - `TASK-15A` live control audit
+    - `TASK-15B` CI-only post-deploy canonical/sitemap/404 guards
+    - `TASK-15C` rendered-link canonical audit coverage
+
+### TASK-15A: Audit live route/SEO control stack against the canonical contract
+- **Type:** INVESTIGATE
+- **Deliverable:** explicit inventory of route/SEO controls covering route behavior, canonical tags, sitemap inclusion, and rendered internal-link canonicality, with gaps called out by layer
+- **Execution-Skill:** lp-do-ideas
+- **Execution-Track:** mixed
+- **Effort:** S
+- **Status:** Complete (2026-03-07)
+- **Affects:** `docs/plans/brikette-sales-funnel-analysis/fact-find.md`, `docs/plans/brikette-sales-funnel-analysis/plan.md`, `docs/plans/brikette-sales-funnel-analysis/critique-history.md`
+- **Depends on:** TASK-12
+- **Blocks:** TASK-15B, TASK-15C
+- **Confidence:** 85%
+  - Implementation: 85% - the deployed route contract and current guards are already observable.
+  - Approach: 85% - explicit control mapping is the cleanest way to avoid over-hardening the wrong layer.
+  - Impact: 85% - prevents the next guard tranche from conflating CI enforcement with manual operator deploy flow.
+- **Acceptance:**
+  - Route-behavior, canonical-tag, sitemap, and rendered-link controls are each mapped to a specific existing or missing guard.
+  - CI-only vs manual-deploy control boundaries are explicit.
+  - Remaining guard gaps are reduced to an actionable next tranche rather than open-ended “more testing”.
+- **Build evidence (2026-03-07):**
+  - Audited staging and production against three required contracts:
+    - canonical routes must resolve as intended
+    - internal links should point at canonical routes
+    - sitemap must contain canonical routes
+  - Found and fixed one real live gap before rollout completion: sitemap omission of private-room child canonicals.
+  - Mapped the remaining control gap to automation depth, not route behavior: post-deploy CI did not yet enforce canonical-tag routes, sitemap-required routes, or intentionally dropped `404` routes.
+  - Explicitly preserved direct `wrangler pages deploy` as a fast manual path; stronger guard depth is assigned to CI only.
+
+### TASK-15B: Add CI-only post-deploy canonical/sitemap/404 guards
+- **Type:** IMPLEMENT
+- **Deliverable:** reusable CI health checks that enforce canonical-tag correctness, sitemap inclusion for key canonicals, and exact `404` behavior for intentionally dropped aliases
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Effort:** S
+- **Status:** Complete (2026-03-07)
+- **Affects:** `.github/workflows/reusable-app.yml`, `.github/workflows/brikette.yml`, `scripts/post-deploy-health-check.sh`
+- **Depends on:** TASK-15A
+- **Blocks:** TASK-15C
+- **Confidence:** 85%
+  - Implementation: 85% - the existing post-deploy script already supported route probes and only needed contract expansion.
+  - Approach: 90% - CI is the right place for strict deploy verification; manual `wrangler` must remain a fast operator tool.
+  - Impact: 85% - catches canonical/sitemap/404 regressions immediately after deploy without slowing down manual hotfix publishing.
+- **Acceptance:**
+  - Reusable post-deploy health checks accept canonical-tag, sitemap-required, and expected-404 route sets.
+  - Brikette staging and production workflows pass the new route sets into CI.
+  - Direct `wrangler pages deploy` flow is unchanged.
+- **Build evidence (2026-03-07):**
+  - Extended `scripts/post-deploy-health-check.sh` with:
+    - `CANONICAL_ORIGIN`
+    - `CANONICAL_TAG_ROUTES`
+    - `SITEMAP_REQUIRED_ROUTES`
+    - `EXPECT_404_ROUTES`
+  - Added corresponding reusable workflow inputs in `.github/workflows/reusable-app.yml`.
+  - Wired Brikette staging and production CI callers in `.github/workflows/brikette.yml` to enforce:
+    - canonical tags on key localized booking/private-room/guide surfaces
+    - sitemap presence for key canonicals
+    - `404` for intentionally dropped alias `/it/book`
+  - Kept the manual `wrangler pages deploy` path unchanged by design.
+
+### TASK-15C: Add canonical-link audit coverage for rendered nav/footer/content links
+- **Type:** IMPLEMENT
+- **Deliverable:** automated audit coverage proving rendered internal links on representative pages point directly to canonical routes without redirect churn
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Effort:** M
+- **Status:** Complete (2026-03-07)
+- **Affects:** `apps/brikette` rendered-link audit tooling/tests, `docs/plans/brikette-sales-funnel-analysis/artifacts/production-redirect-matrix.md`
+- **Depends on:** TASK-15A
+- **Blocks:** -
+- **Confidence:** 75%
+  - Implementation: 75% - deterministic rendered-link auditing is now in place via built HTML verification over representative pages.
+  - Approach: 80% - representative-page coverage is a pragmatic control layer after route/canonical/sitemap guards.
+  - Impact: 80% - prevents menu/footer/content regressions from quietly reintroducing redirect churn.
+- **Acceptance:**
+  - Representative page set is defined across homepage, booking, private-room, and guide surfaces.
+  - Rendered internal links are checked against the canonical route contract.
+  - The audit fails on redirecting or non-canonical internal links unless explicitly allowlisted.
+- **Build evidence (2026-03-07):**
+  - Added canonical route inventory helper:
+    - `apps/brikette/src/routing/routeInventory.ts` -> `listLocalizedCanonicalAppUrls()`
+  - Added rendered-link audit script:
+    - `apps/brikette/scripts/verify-rendered-link-canonicals.ts`
+  - Added package command:
+    - `apps/brikette/package.json` -> `verify:rendered-link-canonicals`
+  - Wired the audit into Brikette CI-only static export/build paths in `.github/workflows/brikette.yml`.
+  - Added route-contract coverage in `apps/brikette/src/test/routing/routeInventory.seo.test.ts`.
+  - Local audit result against current export:
+    - `pagesAudited: 13`
+    - `linksChecked: 410`
+    - `invalidLinks: 0`
+    - representative routes covered homepage, booking, private-room, and live guide surfaces in `en`, `it`, and `ja`.
+
+### TASK-16A: Repair live booking widget/calendar guest-control and date-input accessibility leaks
+- **Type:** IMPLEMENT
+- **Deliverable:** shared booking widget/calendar surfaces stop exposing raw guest-stepper i18n keys and segmented native date labels on live homepage, booking, and apartment booking routes
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Effort:** M
+- **Status:** Complete (2026-03-07)
+- **Affects:** `apps/brikette/src/components/booking/DateRangePicker.tsx`, `apps/brikette/src/components/booking/BookPageSections.tsx`, `apps/brikette/src/app/[lang]/private-rooms/book/ApartmentBookContent.tsx`, `apps/brikette/src/components/landing/BookingWidget.tsx`, `apps/brikette/src/app/[lang]/dorms/RoomsPageContent.tsx`, `apps/brikette/src/utils/bookingControlLabels.ts`, `apps/brikette/src/test/components/modal-integration-tc09.test.tsx`, `apps/brikette/src/test/components/apartment/apartment-booking-url-matrix.test.tsx`, `apps/brikette/src/test/components/ga4-07-apartment-checkout.test.tsx`, `docs/plans/brikette-sales-funnel-analysis/fact-find.md`, `docs/plans/brikette-sales-funnel-analysis/plan.md`, `docs/plans/brikette-sales-funnel-analysis/critique-history.md`
+- **Depends on:** TASK-15C
+- **Blocks:** TASK-16B
+- **Confidence:** 85%
+  - Implementation: 85% - the raw-key and segmented-date-label regressions are reproduced live and traced to concrete shared components.
+  - Approach: 85% - one shared booking-control helper plus hidden native date-input isolation fixes the issue at the source rather than patching pages one by one.
+  - Impact: 90% - this is a live commercial-surface trust and accessibility defect on the highest-intent booking surfaces.
+- **Acceptance:**
+  - Homepage, `/[lang]/book`, and apartment booking surfaces stop rendering raw `bookingControls.*Guests` labels.
+  - Native date inputs remain available for controlled input/test hooks but are removed from the accessibility tree so segmented `Day Day / Month Month / Year Year` labels no longer leak.
+  - Targeted tests are updated to the new stable contract instead of asserting broken raw keys.
+- **Validation contract:**
+  - `pnpm --filter @apps/brikette typecheck`
+  - `pnpm --filter @apps/brikette lint`
+  - Optional live browser redeploy verification after build completion.
+- **Build evidence (2026-03-07, partial):**
+  - Added a shared fallback path for guest-stepper aria labels via:
+    - `apps/brikette/src/utils/bookingControlLabels.ts`
+  - Applied the shared guest-control fallback to the remaining booking surfaces still using raw `bookingControls.*Guests` keys:
+    - `apps/brikette/src/components/booking/BookPageSections.tsx`
+    - `apps/brikette/src/app/[lang]/private-rooms/book/ApartmentBookContent.tsx`
+    - homepage and dorms surfaces remained on the same shared helper contract
+  - Removed the hidden native date inputs from the accessibility tree while preserving deterministic test hooks:
+    - `apps/brikette/src/components/booking/DateRangePicker.tsx`
+  - Updated affected tests away from broken raw-key/label assertions:
+    - `apps/brikette/src/test/components/modal-integration-tc09.test.tsx`
+    - `apps/brikette/src/test/components/apartment/apartment-booking-url-matrix.test.tsx`
+    - `apps/brikette/src/test/components/ga4-07-apartment-checkout.test.tsx`
+  - Validation passes:
+    - `pnpm --filter @apps/brikette typecheck`
+    - `pnpm --filter @apps/brikette lint` (`129 warnings`, `0 errors`; existing warnings-only baseline)
+  - Staging deploy proof passed on `https://staging.brikette-website.pages.dev`:
+    - `/en` homepage no longer exposes `bookingControls.*Guests`; stepper buttons are `Increase guests` / `Decrease guests`
+    - `/en/book-dorm-bed` no longer exposes `bookingControls.*Guests`
+    - `/it/prenota` no longer exposes `bookingControls.*Guests`
+    - the previous segmented native date-label leak (`Day Day / Month Month / Year Year`) is absent from the staged a11y affordance inventory on homepage and booking pages
+  - Remaining live browser issue after this task is separate and retained for `TASK-16B`: `/it/prenota` still shows visible English filter copy such as `All views`, `Sea view`, and `Female only`
+
+### TASK-16E: Repair remaining shared-shell localization regressions after rollout audit
+- **Type:** IMPLEMENT
+- **Deliverable:** localized shared-shell controls stop leaking English on non-English commercial surfaces, and homepage featured-guide cards resolve labels from the active locale bundle rather than stale generated fallbacks
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Effort:** S
+- **Status:** Complete (2026-03-07)
+- **Affects:** `apps/brikette/src/components/footer/Footer.tsx`, `apps/brikette/src/components/landing/FeaturedGuidesSection.tsx`, `apps/brikette/src/locales/*/footer.json`, `packages/i18n/src/{de,es,fr,it,ja,ko}.json`, `docs/plans/brikette-sales-funnel-analysis/fact-find.md`, `docs/plans/brikette-sales-funnel-analysis/plan.md`, `docs/plans/brikette-sales-funnel-analysis/critique-history.md`
+- **Depends on:** TASK-16B, TASK-16C, TASK-16D
+- **Confidence:** 85%
+  - Implementation: 85% - the remaining leaks were reproduced on staging and traced to concrete shared-shell sources rather than page-specific logic.
+  - Approach: 85% - fixing the locale sources and fallback precedence removes the regressions at the shared component boundary instead of patching individual pages.
+  - Impact: 85% - these are visible trust/polish defects on top-level commercial surfaces and localized homepage discovery blocks.
+- **Acceptance:**
+  - The scenic theme toggle uses locale-correct assistive labels on supported non-English shells instead of English strings.
+  - The footer-level direct-booking CTA resolves from footer locale data and no longer leaks English on non-English pages.
+  - Homepage featured-guide cards prefer active locale guide labels over stale generated fallback titles where localized guide bundles exist.
+- **Validation contract:**
+  - `pnpm --filter @apps/brikette typecheck`
+  - `pnpm --filter @apps/brikette lint`
+  - Staging browser verification on localized homepage and booking routes.
+- **Build evidence (2026-03-07):**
+  - Footer CTA source-of-truth corrected:
+    - `apps/brikette/src/components/footer/Footer.tsx`
+    - localized `bookDirect` key added to every footer locale file under `apps/brikette/src/locales/*/footer.json`
+  - Homepage featured-guide cards now resolve labels from the active locale bundle before falling back to generated labels:
+    - `apps/brikette/src/components/landing/FeaturedGuidesSection.tsx`
+  - Shared theme-toggle assistive labels localized in core package bundles for the locales that were still leaking English:
+    - `packages/i18n/src/de.json`
+    - `packages/i18n/src/es.json`
+    - `packages/i18n/src/fr.json`
+    - `packages/i18n/src/it.json`
+    - `packages/i18n/src/ja.json`
+    - `packages/i18n/src/ko.json`
+  - Validation passes:
+    - `pnpm --filter @apps/brikette typecheck`
+    - `pnpm --filter @apps/brikette lint` (`129 warnings`, `0 errors`; unchanged warnings-only baseline)
+  - Staging redeploy/browser proof is the final external verification step for this tranche.
+
+### TASK-16F: Eliminate static-export localization leakage on non-English commercial pages
+- **Type:** IMPLEMENT
+- **Deliverable:** localized shared-shell and commercial pages render locale-correct static HTML before hydration, backed by a deterministic export audit for representative non-English routes
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Effort:** M
+- **Status:** Complete (2026-03-07)
+- **Affects:** `apps/brikette/src/app/_lib/i18n-server.ts`, `apps/brikette/src/app/[lang]/{layout.tsx,ClientLayout.tsx,page.tsx,HomeContent.tsx}`, `apps/brikette/src/app/[lang]/book/{page.tsx,BookPageContent.tsx}`, `apps/brikette/src/app/[lang]/book-dorm-bed/page.tsx`, `apps/brikette/src/components/landing/{BookingWidget.tsx,FeaturedGuidesSection.tsx,SocialProofSection.tsx}`, `packages/ui/src/organisms/QuickLinksSection.tsx`, `apps/brikette/src/locales/*/bookPage.json`, `apps/brikette/src/utils/primeAppI18nBundles.ts`, `apps/brikette/scripts/verify-localized-commercial-copy.ts`, `apps/brikette/package.json`, `.github/workflows/brikette.yml`, `docs/plans/brikette-sales-funnel-analysis/{fact-find.md,plan.md,critique-history.md}`
+- **Depends on:** TASK-16E
+- **Confidence:** 80%
+  - Implementation: 80% - the leak reproduced on specific staged routes and traced to the static-render path rather than random runtime drift.
+  - Approach: 80% - priming server-loaded Brikette namespace bundles into the client i18n instance removes the SSR gap at the component boundary instead of adding more one-off copy patches.
+  - Impact: 85% - this closes visible English/raw-key leakage on localized money pages and homepage discovery surfaces, which directly affects trust, crawl quality, and no-JS rendering.
+- **Acceptance:**
+  - Representative non-English homepage and booking page static HTML no longer emit the known English/raw-key leakage set before hydration.
+  - Shared shell namespaces (`header`, `footer`, `_tokens`, `notificationBanner`, `modals`) are available at render time for localized static export.
+  - Homepage and booking commercial namespaces are primed before their client components render on the static export path.
+  - Non-English `bookPage.noscript.octorateDirectBooking` labels exist, so booking noscript fallback text does not regress to English.
+  - A deterministic export audit fails the build if `/it` or `/it/prenota` reintroduce the known leakage tokens.
+- **Validation contract:**
+  - `pnpm --filter @acme/ui typecheck`
+  - `pnpm --filter @acme/ui lint`
+  - `pnpm --filter @apps/brikette typecheck`
+  - `pnpm --filter @apps/brikette lint`
+  - Static export build path with:
+    - `pnpm --filter @apps/brikette normalize:localized-routes`
+    - `pnpm --filter @apps/brikette generate:static-redirects`
+    - `pnpm --filter @apps/brikette verify:sitemap-contract -- --file out/sitemap.xml`
+    - `pnpm --filter @apps/brikette verify:rendered-link-canonicals -- --out-dir out`
+    - `pnpm --filter @apps/brikette verify:localized-commercial-copy -- --out-dir out`
+- **Build evidence (2026-03-07):**
+  - Added an app-namespace snapshot bridge from server render into the Brikette client i18n instance:
+    - `apps/brikette/src/app/_lib/i18n-server.ts`
+    - `apps/brikette/src/utils/primeAppI18nBundles.ts`
+    - `apps/brikette/src/app/[lang]/layout.tsx`
+    - `apps/brikette/src/app/[lang]/ClientLayout.tsx`
+  - Primed the homepage and hostel booking pages with server-loaded namespace bundles before their client components render:
+    - `apps/brikette/src/app/[lang]/page.tsx`
+    - `apps/brikette/src/app/[lang]/HomeContent.tsx`
+    - `apps/brikette/src/app/[lang]/book/page.tsx`
+    - `apps/brikette/src/app/[lang]/book-dorm-bed/page.tsx`
+    - `apps/brikette/src/app/[lang]/book/BookPageContent.tsx`
+  - Hardened the remaining homepage fallback surfaces so missing/late bundles no longer leak raw keys:
+    - `packages/ui/src/organisms/QuickLinksSection.tsx`
+    - `apps/brikette/src/components/landing/BookingWidget.tsx`
+    - `apps/brikette/src/components/landing/FeaturedGuidesSection.tsx`
+    - `apps/brikette/src/components/landing/SocialProofSection.tsx`
+  - Closed the missing non-English booking noscript label contract:
+    - `apps/brikette/src/locales/*/bookPage.json`
+  - Added a deterministic localized-commercial-copy audit and wired it into Brikette CI export builds only:
+    - `apps/brikette/scripts/verify-localized-commercial-copy.ts`
+    - `apps/brikette/package.json`
+    - `.github/workflows/brikette.yml`
+  - Validation passes:
+    - `pnpm --filter @acme/ui typecheck`
+    - `pnpm --filter @acme/ui lint`
+    - `pnpm --filter @apps/brikette typecheck`
+    - `pnpm --filter @apps/brikette lint` (`129 warnings`, `0 errors`; unchanged warnings-only baseline)
+  - Static export proof passed locally with:
+    - `verify:sitemap-contract` → `expected 3981 / missing 0`
+    - `verify:rendered-link-canonicals` → `pagesAudited 13 / linksChecked 431 / invalidLinks 0`
+    - `verify:localized-commercial-copy` → `routesAudited ['/it','/it/prenota'] / findings 0`
 
 ## Risks & Mitigations
 - Legacy URL consumers silently bypass canonical booking state.

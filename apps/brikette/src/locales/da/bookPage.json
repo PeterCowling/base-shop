@@ -59,7 +59,8 @@
   },
   "noscript": {
     "jsDisabledAssistance": "Hostelbookinger håndteres med assisteret support, når JavaScript er deaktiveret.",
-    "emailAssistedBooking": "E-mail os for assisteret booking"
+    "emailAssistedBooking": "E-mail os for assisteret booking",
+    "octorateDirectBooking": "Book direkte med Octorate"
   },
   "bookingConstraints": {
     "notice": "Hostelbookinger understøtter kun for voksne ophold mellem 2 og 8 nætter med op til 8 voksne pr. reservation. For større grupper eller længere ophold, opdel din anmodning på flere bookinger eller",

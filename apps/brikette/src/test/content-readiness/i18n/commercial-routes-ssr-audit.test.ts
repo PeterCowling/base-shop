@@ -18,6 +18,11 @@
  *   TC-03  Localized namespace coverage regression — bookPage.json exists for every locale.
  *   TC-04  No-JS dead-end detection — /{lang}/apartment/book static Octorate fallback link.
  *   TC-05  Apartment namespace coverage regression — apartmentPage.json exists for every locale.
+ *
+ * Ownership note:
+ *   This file audits source namespaces and source-level no-JS booking fallbacks.
+ *   Rendered static HTML leakage is intentionally covered by
+ *   scripts/verify-localized-commercial-copy.ts.
  */
 
 import { existsSync, readFileSync } from "node:fs";
@@ -76,8 +81,9 @@ const BOOKING_ROUTE_SOURCE_FILES = [
 const APARTMENT_BOOKING_ROUTE_SOURCE_FILE =
   "app/[lang]/book-private-accommodations/page.tsx" as const;
 
-/** Pattern that indicates a static, non-JS-dependent Octorate booking link. */
-const OCTORATE_STATIC_LINK_PATTERN = /book\.octorate\.com/;
+/** Pattern that indicates the live static, non-JS-dependent Octorate booking link. */
+const OCTORATE_STATIC_LINK_PATTERN =
+  /book\.octorate\.com\/octobook\/site\/reservation\/calendar\.xhtml\?codice=45111/;
 
 // ---------------------------------------------------------------------------
 // Helpers

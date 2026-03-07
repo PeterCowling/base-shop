@@ -41,12 +41,14 @@ import {
 import { formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
 import { fireSearchAvailability, fireViewItemList, type ItemListId } from "@/utils/ga4-events";
 import { getIndicativeDisclosure, getIndicativeRoomPrices } from "@/utils/indicativePricing";
+import { type AppNamespaceBundles, primeAppI18nBundles } from "@/utils/primeAppI18nBundles";
 
 type Props = {
   lang: AppLanguage;
   heading: string;
   includedRoomIds?: RoomId[];
   itemListId?: ItemListId;
+  preloadedNamespaceBundles?: AppNamespaceBundles;
 };
 
 type SearchAvailabilityPayload = {
@@ -163,7 +165,14 @@ function renderRecoverySection(
   );
 }
 
-function BookPageContent({ lang, heading, includedRoomIds, itemListId = "book_rooms" }: Props): JSX.Element {
+function BookPageContent({
+  lang,
+  heading,
+  includedRoomIds,
+  itemListId = "book_rooms",
+  preloadedNamespaceBundles,
+}: Props): JSX.Element {
+  primeAppI18nBundles(lang, preloadedNamespaceBundles);
   const router = useRouter();
   const { t } = useTranslation("bookPage", { lng: lang, useSuspense: true });
   usePagePreload({

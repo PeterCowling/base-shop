@@ -1,5 +1,5 @@
 ---
-Replan-round: 4
+Replan-round: 5
 Date: 2026-03-07
 Plan: docs/plans/brikette-sales-funnel-analysis/plan.md
 ---
@@ -131,3 +131,38 @@ Plan: docs/plans/brikette-sales-funnel-analysis/plan.md
   - Completed by this replan: `TASK-14A`
   - Runnable now: `TASK-14B`
   - Still blocked externally after local implementation: `TASK-08C`, `TASK-08D`
+
+## Round 5 — 2026-03-07
+
+### Target
+
+- `TASK-14B` (`IMPLEMENT`, repo-side runtime build already shipped but task state still bundled external staging proof)
+- `TASK-08C` (`IMPLEMENT`, production rollout dependency chain no longer precise after `TASK-14E`)
+
+### Evidence Added
+
+1. `TASK-14B` already has full repo-side build evidence in-plan: structural `_redirects`, generated `_routes.json`, scoped Pages Function runtime, refreshed coverage verification, and passing preflight/typecheck/lint.
+2. The only unresolved part of `TASK-14B` is external staging proof for the hybrid runtime, not local implementation. Leaving that inside `TASK-14B` obscures the fact that the code tranche is complete.
+3. `TASK-14E` has now frozen the private-room child route policy and created `TASK-14F`, so live rollout cannot proceed until both the child-slug implementation and a fresh staging proof of the hybrid redirect runtime exist.
+4. The latest authoritative external state is the invalid local Cloudflare token recorded in `production-redirect-matrix.md`, so staging proof remains an explicit external precursor rather than an implementation sub-step.
+
+### Delta Applied
+
+1. Marked `TASK-14B` complete as the repo-side implementation tranche for the hybrid static-runtime redirect model.
+2. Added `TASK-14G` as an explicit `INVESTIGATE` precursor for staging proof of the hybrid runtime with valid Cloudflare auth and cache-busted route checks.
+3. Updated `TASK-08C` to depend on `TASK-14F` and `TASK-14G` instead of the previously blended `TASK-14B` blocked state.
+4. Refreshed the active-task list, task summary, parallelism guide, critical path, and simulation trace so the next local build task is clear and the remaining external blocker is named precisely.
+
+### Sequencing Impact
+
+1. `TASK-14F` is now the next runnable local build task.
+2. `TASK-14G` becomes the explicit external verification precursor that must clear before production rollout.
+3. `TASK-08C` is now purely the production rollout step: it no longer carries repo implementation or staging-proof ambiguity.
+
+### Readiness Decision
+
+- Partially ready.
+  - Completed by this replan: `TASK-14B`
+  - Runnable now: `TASK-14F`
+  - Externally blocked precursor: `TASK-14G`
+  - Still blocked after precursors: `TASK-08C`, `TASK-08D`

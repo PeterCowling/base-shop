@@ -12,6 +12,7 @@ function parseResult(result: { content: Array<{ text: string }> }) {
   return JSON.parse(result.content[0].text) as {
     passed: boolean;
     failed_checks: string[];
+    failed_check_details: Record<string, string[]>;
     warnings: string[];
     confidence: number;
     question_coverage?: Array<{
@@ -238,6 +239,164 @@ describe("draft_quality_check", () => {
     });
     const payload = parseResult(result);
     expect(payload.failed_checks).not.toContain("unanswered_questions");
+  });
+});
+
+describe("draft_quality_check failed_check_details", () => {
+  it("includes detail for prohibited claims", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: { questions: [], requests: [] },
+        workflow_triggers: { booking_action_required: false, booking_context: false },
+        scenario: { category: "faq" },
+      },
+      draft: {
+        bodyPlain: "Availability confirmed and we will charge now. Best regards, Hostel Brikette",
+        bodyHtml: "<p>Availability confirmed.</p>",
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).toContain("prohibited_claims");
+    expect(payload.failed_check_details["prohibited_claims"]).toEqual(
+      expect.arrayContaining(["availability confirmed", "we will charge now"]),
+    );
+  });
+
+  it("includes detail for missing policy mandatory content", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "What is the cancellation policy?" }],
+          requests: [],
+        },
+        workflow_triggers: { booking_action_required: true, booking_context: true },
+        scenario: { category: "cancellation" },
+      },
+      draft: {
+        bodyPlain:
+          "We hope you enjoyed your stay. Best regards, Hostel Brikette https://hostel-positano.com/en/terms#s17-a1",
+        bodyHtml: "<p>We hope you enjoyed your stay.</p>",
+      },
+      policyDecision: {
+        mandatoryContent: ["Non-refundable booking terms apply."],
+        prohibitedContent: [],
+        toneConstraints: [],
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).toContain("missing_policy_mandatory_content");
+    expect(payload.failed_check_details["missing_policy_mandatory_content"]).toEqual([
+      "Non-refundable booking terms apply.",
+    ]);
+  });
+
+  it("includes detail for policy prohibited content", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "Can I get a refund?" }],
+          requests: [],
+        },
+        workflow_triggers: { booking_action_required: false, booking_context: false },
+        scenario: { category: "cancellation" },
+      },
+      draft: {
+        bodyPlain:
+          "We can make an exception for you. Best regards, Hostel Brikette",
+        bodyHtml: "<p>We can make an exception for you.</p>",
+      },
+      policyDecision: {
+        mandatoryContent: [],
+        prohibitedContent: ["we can make an exception"],
+        toneConstraints: [],
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).toContain("policy_prohibited_content");
+    expect(payload.failed_check_details["policy_prohibited_content"]).toEqual([
+      "we can make an exception",
+    ]);
+  });
+
+  it("includes detail for unanswered questions", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [
+            { text: "What time is check-in?" },
+            { text: "Is breakfast included?" },
+          ],
+          requests: [],
+        },
+        workflow_triggers: { booking_action_required: false, booking_context: false },
+        scenario: { category: "faq" },
+      },
+      draft: {
+        bodyPlain:
+          "Check-in starts at 15:00 and reception opens from 07:30. Best regards, Hostel Brikette",
+        bodyHtml: "<p>Check-in starts at 15:00.</p>",
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).toContain("unanswered_questions");
+    expect(payload.failed_check_details["unanswered_questions"]).toEqual(
+      expect.arrayContaining(["Is breakfast included?"]),
+    );
+  });
+
+  it("returns empty failed_check_details when all checks pass", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "What time is check-in?" }],
+          requests: [],
+        },
+        workflow_triggers: { booking_action_required: false, booking_context: false },
+        scenario: { category: "faq" },
+      },
+      draft: {
+        bodyPlain:
+          "Check-in starts at 15:00 and breakfast is included for direct bookings. Best regards, Hostel Brikette",
+        bodyHtml: "<p>Check-in starts at 15:00 and breakfast is included for direct bookings.</p>",
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.passed).toBe(true);
+    expect(payload.failed_check_details).toEqual({});
+  });
+
+  it("ensures detail keys are a subset of failed_checks", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "What is the cancellation policy?" }],
+          requests: [],
+        },
+        workflow_triggers: { booking_action_required: true, booking_context: true },
+        scenario: { category: "cancellation" },
+      },
+      draft: {
+        bodyPlain:
+          "We can make an exception. Best regards, Hostel Brikette https://hostel-positano.com/en/terms#s17-a1",
+        bodyHtml: "<p>We can make an exception.</p>",
+      },
+      policyDecision: {
+        mandatoryContent: ["Non-refundable booking terms apply."],
+        prohibitedContent: ["we can make an exception"],
+        toneConstraints: [],
+      },
+    });
+    const payload = parseResult(result);
+    const detailKeys = Object.keys(payload.failed_check_details);
+    for (const key of detailKeys) {
+      expect(payload.failed_checks).toContain(key);
+    }
   });
 });
 

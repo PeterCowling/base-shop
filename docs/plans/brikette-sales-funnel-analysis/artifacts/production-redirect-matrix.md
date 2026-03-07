@@ -99,7 +99,7 @@ These are the repo-approved canonical targets Cloudflare should converge onto on
 | Guide article pages | `/{lang}/{guideNamespaceSlug}/{localizedGuideSlug}` | old English guide slugs and internal guide-base aliases redirect to the localized canonical guide URL |
 | Guide tag pages | `/{lang}/{experiencesSlug}/{guidesTagsSlug}/{tag}` | old internal or wrong-locale tag roots redirect/rewrite to the localized target |
 
-## Route-Localization Closure Snapshot
+## Route-Localization / Static-Runtime Closure Snapshot
 
 - Verification date: `2026-03-07`
 - Method:
@@ -115,10 +115,37 @@ Results:
   - room: `0`
   - guide: `0`
 - `verify-url-coverage`
-  - `Cloudflare _redirects: verified (4533 localized rules)`
+  - `Historical legacy URLs: 3435`
+  - `Localized canonicals: 3956`
+  - `Structural _redirects rules: 83`
+  - `Exact legacy redirects: 2757`
+  - `Pages Function include rules: 32`
   - `Missing: 0`
+
+Interpretation:
+
+- The supported public contract is now explicit:
+  - current localized canonicals
+  - supported historical URLs from `apps/brikette/src/test/fixtures/legacy-urls.txt`
+  - a small structural redirect set
+- The canonical inventory now excludes:
+  - top-level hostel booking pages (`/{lang}/{bookSlug}`) while those routes remain `noindex,follow`
+  - private-room booking helper routes (`/{lang}/{privateRoomsSlug}/book`) that redirect to the top-level private-booking canonical
+- Synthetic alias debt such as `/it/book` is intentionally out of scope and should not be reintroduced as redirect “coverage”.
+- The Pages runtime contract now fits the platform model:
+  - `_redirects` remains small
+  - high-cardinality exact legacy redirects move to the scoped Pages Function layer
 
 ## TASK-08C / TASK-08D Implication
 
-- `TASK-08C` should now implement Cloudflare rules against this finalized localized contract only.
-- `TASK-08D` should verify live one-hop redirects and canonical `200` targets against the same contract, not the pre-localization `2026-03-01` matrix alone.
+- `TASK-08C` should now deploy the hybrid static-runtime contract, not the old preserve-everything `_redirects` artifact.
+- `TASK-08D` should verify live behavior against the curated support boundary:
+  - canonical localized booking/private-booking routes return direct `200`
+  - supported historical URLs redirect in one hop through either `_redirects` or the scoped Pages Function layer
+  - intentionally dropped synthetic aliases such as `/it/book` return `404`
+
+## Staging Deployment Status After TASK-14B
+
+- Repo-side implementation and deploy preflight are complete.
+- `pnpm preflight:brikette-deploy -- --json` passes.
+- A fresh staging proof is still pending because the current local Cloudflare API token in `.env.local` is invalid as of `2026-03-07`, so direct `wrangler pages deploy` cannot authenticate from this workspace yet.

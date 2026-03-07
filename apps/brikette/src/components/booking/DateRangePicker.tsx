@@ -28,6 +28,8 @@ const TEST_IDS = {
   summary: "date-range-summary",
   stayHelper: "date-range-stay-helper",
   clear: "date-range-clear",
+  checkInInput: "date-range-checkin-input",
+  checkOutInput: "date-range-checkout-input",
 } as const;
 
 export interface DateRangePickerProps {
@@ -140,8 +142,8 @@ export function DateRangePicker({
   onRangeChange,
   stayHelperText = "2\u20138 nights", // i18n-exempt -- BRIK-0 [ttl=2026-12-31] fallback; callers pass t("date.stayHelper")
   clearDatesText = "Clear dates", // i18n-exempt -- BRIK-0 [ttl=2026-12-31] fallback; callers pass t("date.clearDates")
-  checkInLabelText = "Check in", // i18n-exempt -- BRIK-0 [ttl=2026-12-31] fallback label
-  checkOutLabelText = "Check out", // i18n-exempt -- BRIK-0 [ttl=2026-12-31] fallback label
+  checkInLabelText: _checkInLabelText = "Check in", // i18n-exempt -- BRIK-0 [ttl=2026-12-31] fallback label
+  checkOutLabelText: _checkOutLabelText = "Check out", // i18n-exempt -- BRIK-0 [ttl=2026-12-31] fallback label
   lang,
   className,
 }: DateRangePickerProps): React.JSX.Element {
@@ -216,25 +218,23 @@ export function DateRangePicker({
 
   return (
     <div className={className}>
-      <label className="sr-only">
-        {checkInLabelText}
+      <div aria-hidden="true" className="hidden">
         <input
           type="date"
-          aria-label={checkInLabelText}
+          data-testid={TEST_IDS.checkInInput}
+          tabIndex={-1}
           value={selectedFromIso}
           onChange={(event) => handleCheckInInputChange(event.target.value)}
         />
-      </label>
-      <label className="sr-only">
-        {checkOutLabelText}
         <input
           type="date"
-          aria-label={checkOutLabelText}
+          data-testid={TEST_IDS.checkOutInput}
+          tabIndex={-1}
           value={selectedToIso}
           min={minCheckout}
           onChange={(event) => handleCheckOutInputChange(event.target.value)}
         />
-      </label>
+      </div>
       <div className="rounded-2xl border border-brand-outline/30 bg-brand-bg px-2 py-3 sm:px-3 sm:py-4">
         <DayPicker
           mode="range"

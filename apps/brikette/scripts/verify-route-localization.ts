@@ -2,6 +2,10 @@ import { existsSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
+import {
+  getPrivateRoomChildSlug,
+  PRIVATE_ROOM_CHILD_ROUTE_IDS,
+} from "@acme/ui/config/privateRoomChildSlugs";
 import { getRoomSlug } from "@acme/ui/config/roomSlugs";
 
 import { GUIDES_INDEX } from "@/data/guides.index";
@@ -12,7 +16,13 @@ import { INTERNAL_SEGMENT_BY_KEY, TOP_LEVEL_SEGMENT_KEYS } from "@/routing/secti
 import { SLUGS } from "@/slug-map";
 import { getSlug } from "@/utils/slug";
 
-type Category = "top-level" | "nested-segment" | "special-route" | "room" | "guide";
+type Category =
+  | "top-level"
+  | "nested-segment"
+  | "special-route"
+  | "private-room-child"
+  | "room"
+  | "guide";
 
 type MatchRecord = {
   category: Category;
@@ -32,6 +42,7 @@ const NON_DORM_ROOM_IDS = new Set(["double_room", "apartment"]);
 const APPROVED_SHARED_SLUGS = {
   guide: new Set<string>(),
   "nested-segment": new Set<string>(),
+  "private-room-child": new Set<string>(),
   room: new Set<string>(),
   "special-route": new Set<string>(),
   "top-level": new Set<string>(["fr:experiences:experiences", "fr:guides:guides"]),
@@ -41,10 +52,38 @@ const ROUTE_FAMILY_PATTERNS = [
   "`/{lang}`",
   "`/{lang}/{topLevelSlug}`",
   "`/{lang}/{privateBookingSlug}`",
+  "`/{lang}/{privateRoomsSlug}/{privateRoomChildSlug}`",
   "`/{lang}/{roomsSlug}/{roomSlug}`",
   "`/{lang}/{guideNamespaceSlug}/{guideSlug}`",
   "`/{lang}/{experiencesSlug}/{guidesTagsSlug}/{tag}`",
 ] as const;
+
+const PRIVATE_ROOM_CHILD_ROUTE_CONTRACT = {
+  childSlugs: [
+    {
+      key: "apartment",
+      legacyPolicy: "preserve prior English child URL as an exact redirect after localization",
+      canonicalRole: "apartment detail page under the private-room summary hub",
+    },
+    {
+      key: "double-room",
+      legacyPolicy: "preserve historic English alias; present in the legacy fixture across locales",
+      canonicalRole: "double-room detail page",
+    },
+    {
+      key: "private-stay",
+      legacyPolicy: "preserve prior English child URL as an exact redirect after localization",
+      canonicalRole: "supporting proof page for whole-property private stays",
+    },
+    {
+      key: "street-level-arrival",
+      legacyPolicy: "preserve prior English child URL as an exact redirect after localization",
+      canonicalRole: "supporting proof page for no-stairs street access",
+    },
+  ],
+  summaryPolicy:
+    "Keep `/{lang}/{privateRoomsSlug}` as the indexable summary hub. Keep a distinct apartment detail child page, but do not keep English child slugs as a permanent allowlist.",
+} as const;
 
 function resolveAppRoot(): string {
   const cwd = process.cwd();
@@ -178,6 +217,33 @@ function auditSpecialRoutes(langs: readonly AppLanguage[]): AuditResult {
   return mergeAuditResults(results);
 }
 
+function auditPrivateRoomChildSlugs(langs: readonly AppLanguage[]): AuditResult {
+  const results: AuditResult[] = [];
+
+  for (const lang of langs) {
+    if (lang === "en") continue;
+
+    for (const routeId of PRIVATE_ROOM_CHILD_ROUTE_IDS) {
+      const englishSlug = getPrivateRoomChildSlug(routeId, "en");
+      const slug = getPrivateRoomChildSlug(routeId, lang);
+      if (slug !== englishSlug && slug !== routeId) continue;
+
+      results.push(
+        auditMatch({
+          category: "private-room-child",
+          englishSlug: slug === routeId ? routeId : englishSlug,
+          key: routeId,
+          lang,
+          path: `/${lang}/${getSlug("apartment", lang)}/${slug}`,
+          slug,
+        }),
+      );
+    }
+  }
+
+  return mergeAuditResults(results);
+}
+
 function auditRoomSlugs(langs: readonly AppLanguage[]): AuditResult {
   const results: AuditResult[] = [];
   const roomIds = websiteVisibleRoomsData
@@ -281,16 +347,26 @@ function buildArtifactMarkdown(input: {
   guideAudit: AuditResult;
   langs: readonly AppLanguage[];
   nestedAudit: AuditResult;
+  privateRoomChildAudit: AuditResult;
   roomAudit: AuditResult;
   specialAudit: AuditResult;
   topLevelAudit: AuditResult;
 }): string {
-  const { guideAudit, langs, nestedAudit, roomAudit, specialAudit, topLevelAudit } = input;
+  const {
+    guideAudit,
+    langs,
+    nestedAudit,
+    privateRoomChildAudit,
+    roomAudit,
+    specialAudit,
+    topLevelAudit,
+  } = input;
   const generatedAt = new Date().toISOString();
   const totalUnexpected =
     topLevelAudit.unexpected.length +
     nestedAudit.unexpected.length +
     specialAudit.unexpected.length +
+    privateRoomChildAudit.unexpected.length +
     roomAudit.unexpected.length +
     guideAudit.unexpected.length;
 
@@ -300,24 +376,43 @@ function buildArtifactMarkdown(input: {
 - Supported locales: \`${langs.length}\`
 - Public route families audited: \`${ROUTE_FAMILY_PATTERNS.length}\`
 - Unexpected English-slug matches outside allowlist: \`${totalUnexpected}\`
+- Private-room child routes audited: \`${PRIVATE_ROOM_CHILD_ROUTE_CONTRACT.childSlugs.length}\`
 
 ## Sources
 - \`apps/brikette/src/slug-map.ts\`
 - \`apps/brikette/src/routing/sectionSegments.ts\`
 - \`apps/brikette/src/routing/routeInventory.ts\`
 - \`apps/brikette/src/middleware.ts\`
+- \`apps/brikette/src/app/[lang]/private-rooms/page.tsx\`
+- \`apps/brikette/src/app/[lang]/private-rooms/apartment/page.tsx\`
+- \`apps/brikette/src/app/[lang]/private-rooms/private-stay/page.tsx\`
+- \`apps/brikette/src/app/[lang]/private-rooms/street-level-arrival/page.tsx\`
+- \`apps/brikette/src/test/fixtures/legacy-urls.txt\`
+- \`packages/ui/src/config/privateRoomChildSlugs.ts\`
 - \`packages/ui/src/config/roomSlugs.ts\`
+- \`packages/ui/src/utils/buildNavLinks.ts\`
 - \`apps/brikette/src/guides/slugs/slugs.ts\`
 - \`apps/brikette/src/data/guides.index.ts\`
 
 ## Public Route Families
 ${ROUTE_FAMILY_PATTERNS.map((pattern) => `- ${pattern}`).join("\n")}
 
+## Private-Room Child Route Contract
+- Decision: localize the child slugs. English child slugs are **not** an approved long-term allowlist.
+- Summary-hub policy: ${PRIVATE_ROOM_CHILD_ROUTE_CONTRACT.summaryPolicy}
+${PRIVATE_ROOM_CHILD_ROUTE_CONTRACT.childSlugs
+  .map(
+    (child) =>
+      `- \`${child.key}\`: canonical role -> ${child.canonicalRole}; legacy policy -> ${child.legacyPolicy}`,
+  )
+  .join("\n")}
+
 ## Approved Shared-Spelling Allowlist
 ${formatMatchList([
   ...topLevelAudit.approved,
   ...nestedAudit.approved,
   ...specialAudit.approved,
+  ...privateRoomChildAudit.approved,
   ...roomAudit.approved,
   ...guideAudit.approved,
 ])}
@@ -334,6 +429,9 @@ ${formatMatchList(nestedAudit.unexpected)}
 ## Unexpected Special-Route English Matches
 ${formatMatchList(specialAudit.unexpected)}
 
+## Unexpected Private-Room Child English Matches
+${formatGroupedMatchList(privateRoomChildAudit.unexpected)}
+
 ## Unexpected Room Slug English Matches
 ${formatGroupedMatchList(roomAudit.unexpected)}
 
@@ -347,6 +445,7 @@ async function main(): Promise<void> {
   const topLevelAudit = auditTopLevelSlugs(langs);
   const nestedAudit = auditNestedRouteSegments(langs);
   const specialAudit = auditSpecialRoutes(langs);
+  const privateRoomChildAudit = auditPrivateRoomChildSlugs(langs);
   const roomAudit = auditRoomSlugs(langs);
   const guideAudit = auditGuideSlugs(langs);
 
@@ -354,6 +453,7 @@ async function main(): Promise<void> {
     topLevelAudit.unexpected.length +
     nestedAudit.unexpected.length +
     specialAudit.unexpected.length +
+    privateRoomChildAudit.unexpected.length +
     roomAudit.unexpected.length +
     guideAudit.unexpected.length;
 
@@ -361,6 +461,7 @@ async function main(): Promise<void> {
     guideAudit,
     langs,
     nestedAudit,
+    privateRoomChildAudit,
     roomAudit,
     specialAudit,
     topLevelAudit,
@@ -371,10 +472,11 @@ async function main(): Promise<void> {
 
   console.info("Route localization audit");
   console.info(`  Artifact: ${ARTIFACT_PATH}`);
-  console.info(`  Approved shared spellings: ${topLevelAudit.approved.length + nestedAudit.approved.length + specialAudit.approved.length + roomAudit.approved.length + guideAudit.approved.length}`);
+  console.info(`  Approved shared spellings: ${topLevelAudit.approved.length + nestedAudit.approved.length + specialAudit.approved.length + privateRoomChildAudit.approved.length + roomAudit.approved.length + guideAudit.approved.length}`);
   console.info(`  Unexpected top-level matches: ${topLevelAudit.unexpected.length}`);
   console.info(`  Unexpected nested-segment matches: ${nestedAudit.unexpected.length}`);
   console.info(`  Unexpected special-route matches: ${specialAudit.unexpected.length}`);
+  console.info(`  Unexpected private-room child matches: ${privateRoomChildAudit.unexpected.length}`);
   console.info(`  Unexpected room matches: ${roomAudit.unexpected.length}`);
   console.info(`  Unexpected guide matches: ${guideAudit.unexpected.length}`);
 

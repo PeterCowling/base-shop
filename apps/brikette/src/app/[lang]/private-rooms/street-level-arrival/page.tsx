@@ -8,7 +8,7 @@ import { getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
 import { OG_IMAGE } from "@/utils/headConstants";
-import { getSlug } from "@/utils/slug";
+import { getPrivateRoomChildPath } from "@/utils/privateRoomPaths";
 
 import StreetLevelArrivalContent from "./StreetLevelArrivalContent";
 
@@ -28,8 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = (t("streetLevelArrival.meta.title") as string) || "";
   const description = (t("streetLevelArrival.meta.description") as string) || "";
 
-  const apartmentSlug = getSlug("apartment", validLang);
-  const path = `/${validLang}/${apartmentSlug}/street-level-arrival`;
+  const path = getPrivateRoomChildPath(validLang, "street-level-arrival");
 
   const image = buildCfImageUrl("/img/facade.avif", {
     width: OG_IMAGE.width,

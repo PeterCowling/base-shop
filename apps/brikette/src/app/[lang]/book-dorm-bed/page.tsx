@@ -5,10 +5,12 @@ import type { Metadata } from "next";
 
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 
-import { getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
+import { getNamespaceBundles, getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
+import { BOOKING_CODE } from "@/context/modal/constants";
 import { OG_IMAGE } from "@/utils/headConstants";
+import { buildOctorateCalendarUrl } from "@/utils/octorateLinks";
 import { resolveLabel } from "@/utils/translation-fallback";
 
 import BookPageContent from "../book/BookPageContent";
@@ -16,6 +18,8 @@ import BookPageContent from "../book/BookPageContent";
 type Props = {
   params: Promise<{ lang: string }>;
 };
+
+const HOSTEL_NOSCRIPT_OCTORATE_URL = buildOctorateCalendarUrl({ codice: BOOKING_CODE });
 
 export async function generateStaticParams() {
   return generateLangParams();
@@ -51,6 +55,18 @@ export default async function BookDormBedPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
   const t = await getTranslations(validLang, ["bookPage"], { optional: true });
+  const preloadedNamespaceBundles = await getNamespaceBundles(validLang, [
+    "bookPage",
+    "roomsPage",
+    "landingPage",
+    "faq",
+    "_tokens",
+    "modals",
+    "footer",
+    "testimonials",
+    "ratingsBar",
+    "dealsPage",
+  ]);
 
   const heading = resolveLabel(t, "heading", "");
   /* eslint-disable ds/no-hardcoded-copy -- TASK-08 [ttl=2026-12-31] i18n-exempt: noscript-only fallback strings, not rendered in normal UI */
@@ -74,13 +90,17 @@ export default async function BookDormBedPage({ params }: Props) {
   return (
     <>
       <Suspense fallback={null}>
-        <BookPageContent lang={validLang} heading={heading} />
+        <BookPageContent
+          lang={validLang}
+          heading={heading}
+          preloadedNamespaceBundles={preloadedNamespaceBundles}
+        />
       </Suspense>
       <noscript>
         <div>
           {noscriptMessage}{" "}
           <a
-            href="https://book.octorate.com/octobook/site/reservation/calendar.xhtml?id=5879"
+            href={HOSTEL_NOSCRIPT_OCTORATE_URL}
             rel="nofollow noopener noreferrer"
             target="_blank"
           >

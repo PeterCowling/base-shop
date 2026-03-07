@@ -1,15 +1,15 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- SEO-1001 [ttl=2026-12-31] Build-time generator writes only within the app workspace. */
 
 import { existsSync } from "node:fs";
-import { copyFile, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { BASE_URL } from "@/config/site";
 import { GUIDES_INDEX } from "@/data/guides.index";
 import howToGetHereRoutes from "@/data/how-to-get-here/routes.json";
 import { type AppLanguage, i18nConfig } from "@/i18n.config";
-import { getGuideManifestEntry } from "@/routes/guides/guide-manifest";
 import { guidePath } from "@/routes.guides-helpers";
+import { getGuideManifestEntry } from "@/routes/guides/guide-manifest";
 import { listLocalizedPublicUrls } from "@/routing/routeInventory";
 import { buildRobotsTxt } from "@/seo/robots";
 import type { SlugKey } from "@/types/slugs";
@@ -33,6 +33,7 @@ const resolveAppRoot = (): string => {
 
 const APP_ROOT = resolveAppRoot();
 const PUBLIC_DIR = path.join(APP_ROOT, "public");
+const OUTPUT_DIR = path.join(APP_ROOT, "out");
 const BULK_TODAY_GUARD_MIN_COUNT = 50;
 const BULK_TODAY_GUARD_THRESHOLD = 0.95;
 
@@ -206,17 +207,25 @@ const ensureDir = async (dir: string): Promise<void> => {
   await mkdir(dir, { recursive: true });
 };
 
-const syncSchemaAssets = async (): Promise<void> => {
+const getSeoOutputDirs = (): string[] => {
+  const targets = [PUBLIC_DIR];
+  if (existsSync(OUTPUT_DIR)) {
+    targets.push(OUTPUT_DIR);
+  }
+  return Array.from(new Set(targets));
+};
+
+const syncSchemaAssets = async (targetDir: string): Promise<void> => {
   const sourceDir = path.join(APP_ROOT, "src", "schema", "hostel-brikette");
-  const targetDir = path.join(PUBLIC_DIR, "schema", "hostel-brikette");
-  await ensureDir(targetDir);
+  const targetSchemaDir = path.join(targetDir, "schema", "hostel-brikette");
+  await ensureDir(targetSchemaDir);
 
   const entries = await readdir(sourceDir, { withFileTypes: true });
   const jsonldFiles = entries.filter((entry) => entry.isFile() && entry.name.endsWith(".jsonld"));
 
   await Promise.all(
     jsonldFiles.map((entry) =>
-      copyFile(path.join(sourceDir, entry.name), path.join(targetDir, entry.name)),
+      copyFile(path.join(sourceDir, entry.name), path.join(targetSchemaDir, entry.name)),
     ),
   );
 };
@@ -225,21 +234,31 @@ const syncSchemaAssets = async (): Promise<void> => {
 export const listDirectionPaths = (): string[] =>
   Object.keys(howToGetHereRoutes.routes).map((slug) => `/directions/${slug}`);
 
+export const listCanonicalSitemapPaths = (): string[] => [
+  "/",
+  ...listDirectionPaths(),
+  ...listLocalizedPublicUrls(),
+];
+
 export const main = async (): Promise<void> => {
-  await ensureDir(PUBLIC_DIR);
-  await syncSchemaAssets();
+  const targetDirs = getSeoOutputDirs();
+  await Promise.all(targetDirs.map((dir) => ensureDir(dir)));
+  await Promise.all(targetDirs.map((dir) => syncSchemaAssets(dir)));
   const { conflictCount, lastmodByPath } = await buildGuideLastmodByPath();
   assertNoBulkTodayLastmod(lastmodByPath.values());
 
   // Use localized public URL inventory as source of truth for sitemap.
-  const sitemapXml = buildSitemapXml(["/", ...listDirectionPaths(), ...listLocalizedPublicUrls()], lastmodByPath);
-  await writeFile(path.join(PUBLIC_DIR, "sitemap.xml"), sitemapXml, "utf8");
+  const sitemapXml = buildSitemapXml(listCanonicalSitemapPaths(), lastmodByPath);
 
   const sitemapIndexXml = buildSitemapIndexXml();
-  await writeFile(path.join(PUBLIC_DIR, "sitemap_index.xml"), sitemapIndexXml, "utf8");
-
   const robotsTxt = buildRobotsTxt();
-  await writeFile(path.join(PUBLIC_DIR, "robots.txt"), robotsTxt, "utf8");
+  await Promise.all(
+    targetDirs.flatMap((dir) => [
+      writeFile(path.join(dir, "sitemap.xml"), sitemapXml, "utf8"),
+      writeFile(path.join(dir, "sitemap_index.xml"), sitemapIndexXml, "utf8"),
+      writeFile(path.join(dir, "robots.txt"), robotsTxt, "utf8"),
+    ]),
+  );
 
   if (conflictCount > 0) {
     console.info(
@@ -247,6 +266,7 @@ export const main = async (): Promise<void> => {
     );
   }
   console.info(`[generate-public-seo] sitemap lastmod entries emitted: ${lastmodByPath.size}`);
+  console.info(`[generate-public-seo] synced SEO artifacts to: ${targetDirs.join(", ")}`);
 };
 
 if (process.env.JEST_WORKER_ID === undefined) {

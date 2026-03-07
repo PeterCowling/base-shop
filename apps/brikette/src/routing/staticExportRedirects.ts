@@ -1,3 +1,8 @@
+import {
+  getPrivateRoomChildSlug,
+  getPrivateRoomChildSlugAliases,
+  PRIVATE_ROOM_CHILD_ROUTE_IDS,
+} from "@acme/ui/config/privateRoomChildSlugs";
 import { getRoomSlug, getRoomSlugAliases } from "@acme/ui/config/roomSlugs";
 
 import { GUIDES_INDEX } from "@/data/guides.index";
@@ -12,7 +17,7 @@ import { INTERNAL_SEGMENT_BY_KEY, STATIC_EXPORT_SECTION_KEYS } from "./sectionSe
 export type StaticRedirectRule = {
   from: string;
   to: string;
-  status: 200 | 301;
+  status: 200 | 301 | 302;
 };
 
 const LOCALIZED_ALIAS_REWRITE = 200 as const;
@@ -101,6 +106,16 @@ function addDirectRedirectRules(
   addRule(rules, seen, withTrailingSlash(from), withTrailingSlash(to), INTERNAL_TO_LOCALIZED_REDIRECT);
 }
 
+function addDirectRewriteRules(
+  rules: StaticRedirectRule[],
+  seen: Set<string>,
+  from: string,
+  to: string,
+): void {
+  addRule(rules, seen, from, to, LOCALIZED_ALIAS_REWRITE);
+  addRule(rules, seen, withTrailingSlash(from), withTrailingSlash(to), LOCALIZED_ALIAS_REWRITE);
+}
+
 function addLocalizedRoomAliasRules(
   lang: AppLanguage,
   rules: StaticRedirectRule[],
@@ -117,6 +132,31 @@ function addLocalizedRoomAliasRules(
       addDirectRedirectRules(rules, seen, `/${lang}/${localizedRooms}/${alias}`, localizedTarget);
       addDirectRedirectRules(rules, seen, `/${lang}/${internalRooms}/${alias}`, localizedTarget);
       addDirectRedirectRules(rules, seen, `/${lang}/${legacyRooms}/${alias}`, localizedTarget);
+    }
+  }
+}
+
+function addLocalizedPrivateRoomChildRules(
+  lang: AppLanguage,
+  rules: StaticRedirectRule[],
+  seen: Set<string>,
+): void {
+  const localizedPrivateRooms = getSlug("apartment", lang);
+  const internalPrivateRooms = INTERNAL_SEGMENT_BY_KEY.apartment;
+
+  for (const routeId of PRIVATE_ROOM_CHILD_ROUTE_IDS) {
+    const canonicalChildSlug = getPrivateRoomChildSlug(routeId, lang);
+    const localizedTarget = `/${lang}/${localizedPrivateRooms}/${canonicalChildSlug}`;
+    const internalTarget = `/${lang}/${internalPrivateRooms}/${routeId}`;
+
+    if (localizedTarget !== internalTarget) {
+      addDirectRedirectRules(rules, seen, internalTarget, localizedTarget);
+      addDirectRewriteRules(rules, seen, localizedTarget, internalTarget);
+    }
+
+    for (const alias of getPrivateRoomChildSlugAliases(routeId, lang)) {
+      addDirectRedirectRules(rules, seen, `/${lang}/${localizedPrivateRooms}/${alias}`, localizedTarget);
+      addDirectRedirectRules(rules, seen, `/${lang}/${internalPrivateRooms}/${alias}`, localizedTarget);
     }
   }
 }
@@ -155,6 +195,9 @@ export function buildLocalizedStaticRedirectRules(
     addLocalizedSectionRules(lang, rules, seen);
   }
   for (const lang of languages) {
+    addLocalizedPrivateRoomChildRules(lang, rules, seen);
+  }
+  for (const lang of languages) {
     addLocalizedRoomAliasRules(lang, rules, seen);
   }
   for (const lang of languages) {
@@ -170,4 +213,73 @@ export function formatRedirectRule(rule: StaticRedirectRule): string {
 
 export function formatRedirectRules(rules: readonly StaticRedirectRule[]): string[] {
   return rules.map(formatRedirectRule);
+}
+
+function escapeRegex(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+type RedirectMatchResult = {
+  matched: boolean;
+  groups: Record<string, string>;
+};
+
+function matchRedirectSourcePattern(sourcePattern: string, pathname: string): RedirectMatchResult {
+  let regexPattern = "";
+  const groupKeys: string[] = [];
+
+  for (let index = 0; index < sourcePattern.length; index += 1) {
+    const char = sourcePattern[index];
+    if (char === ":") {
+      const match = sourcePattern.slice(index + 1).match(/^[A-Za-z_][A-Za-z0-9_]*/);
+      if (!match) {
+        regexPattern += ":";
+        continue;
+      }
+      const groupKey = match[0];
+      groupKeys.push(groupKey);
+      regexPattern += "([^/]+)";
+      index += groupKey.length;
+      continue;
+    }
+
+    if (char === "*") {
+      groupKeys.push("splat");
+      regexPattern += "(.*)";
+      continue;
+    }
+
+    regexPattern += escapeRegex(char);
+  }
+
+  const match = pathname.match(new RegExp(`^${regexPattern}$`));
+  if (!match) {
+    return { matched: false, groups: {} };
+  }
+
+  const groups: Record<string, string> = {};
+  for (let index = 0; index < groupKeys.length; index += 1) {
+    groups[groupKeys[index]] = match[index + 1] ?? "";
+  }
+
+  return { matched: true, groups };
+}
+
+function applyRedirectTargetTemplate(targetPattern: string, groups: Record<string, string>): string {
+  return targetPattern.replace(/:([A-Za-z_][A-Za-z0-9_]*)/g, (_match, groupKey: string) => {
+    return groups[groupKey] ?? "";
+  });
+}
+
+export function resolveRedirectTarget(
+  pathname: string,
+  rules: readonly StaticRedirectRule[],
+): string | null {
+  for (const rule of rules) {
+    const result = matchRedirectSourcePattern(rule.from, pathname);
+    if (!result.matched) continue;
+    return applyRedirectTargetTemplate(rule.to, result.groups);
+  }
+
+  return null;
 }

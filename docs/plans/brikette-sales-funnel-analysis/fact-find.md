@@ -5,8 +5,8 @@ Status: Ready-for-planning
 Domain: Brikette Funnel
 Workstream: Product-Engineering
 Created: 2026-03-01
-Last-updated: 2026-03-01
-Last-reviewed: 2026-03-01
+Last-updated: 2026-03-07
+Last-reviewed: 2026-03-07
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: brikette-sales-funnel-analysis
 Execution-Track: mixed
@@ -123,6 +123,51 @@ Assess the revised ideal funnel against current `apps/brikette` implementation a
 - `Ad/retargeting platform audiences (if recovery workstream enabled)` - read access to validate proxy audience feasibility (`UNVERIFIED`).
 
 ## Evidence Audit (Current State)
+### Control Stack Addendum (2026-03-07)
+- A live browser pass on `https://hostel-positano.com` found booking-surface regressions that current CI/static-export guards did not catch:
+  - homepage and booking surfaces still exposed raw guest-stepper i18n keys such as `bookingControls.increaseGuests`
+  - homepage and booking surfaces still exposed segmented native date labels (`Day Day`, `Month Month`, `Year Year`)
+  - the Italian booking surface still exposed visible English filter copy
+  - the live deals page still exposed the `Expired deals` control
+- These are not route-contract failures; they are rendering/a11y/i18n regressions on commercial surfaces after rollout.
+- The next tranche therefore starts with a bounded live-fix task for the booking widget/calendar surfaces before broader localization/deals cleanup.
+- Follow-up staging proof on `https://191dd15b.brikette-website.pages.dev` confirms those regressions are now addressed:
+  - Italian booking filters render localized labels (`Tutte le viste`, `Vista mare`, `Solo donne`, `2 letti`)
+  - Italian booking guest stepper and room-carousel controls render localized accessibility labels (`Aumenta gli ospiti`, `Riduci gli ospiti`, `Immagine precedente`, `Immagine successiva`)
+  - the deals page no longer exposes an expired-deals disclosure/control
+  - `/api/availability` and `/api/health` both return `200` for `GET` and `HEAD`
+- A later static-export audit on staging preview `https://11056594.brikette-website.pages.dev` exposed a second-order localization gap that the live browser checks had not isolated cleanly:
+  - localized `/it` HTML still contained English notification/banner copy, English hero/support copy, English footer/legal copy, raw booking widget keys such as `date.stayHelper`, and raw homepage section keys such as `quickLinksSection.guides`
+  - localized `/it/prenota` HTML still contained English/raw-key booking surface strings and an English `Book direct with Octorate` noscript link label
+- Root cause is not one missing locale bundle. The shared shell and commercial client components were relying on runtime namespace availability during hydration, but the static export path was not priming Brikette app namespaces into the client i18n instance before those components rendered.
+- The next implementation tranche therefore needs:
+  - an SSR-safe app-namespace snapshot contract for the shared shell (`header`, `footer`, `_tokens`, `notificationBanner`, `modals`)
+  - page-level namespace snapshots for homepage and booking page commercial surfaces
+  - a deterministic static-export audit over representative localized pages so future deploys fail before production when English/raw-key leakage reappears
+- Current route behavior on staging and production now matches the narrowed canonical contract:
+  - canonical localized routes return `200`
+  - supported historical aliases redirect as intended
+  - intentionally dropped synthetic aliases such as `/it/book` return `404`
+- Current automated deploy guards already cover:
+  - static export build success
+  - strict zero-hop checks for key localized booking routes
+  - route inventory / redirect coverage validation in-repo
+- Remaining automation gap before this tranche:
+  - post-deploy CI did not yet verify rendered canonical tags on key pages
+  - post-deploy CI did not yet verify sitemap inclusion for key canonicals
+  - post-deploy CI did not yet verify exact `404` behavior for intentionally dropped aliases
+- Manual direct `wrangler pages deploy` is an operator fast path and should remain lighter-weight than CI; guard hardening belongs in reusable CI/deploy checks, not the manual command path.
+
+### Route Contract Addendum (2026-03-07)
+- The canonical public URL inventory still includes route-helper and mixed-signal pages that should not survive into the final SEO contract.
+- `listLocalizedPublicUrls()` currently emits top-level hostel booking canonicals even though `/[lang]/book` is explicitly `noindex,follow`.
+- `listLocalizedPublicUrls()` also emits `/{lang}/{privateRoomsSlug}/book`, even though that route is only a redirect helper to the top-level private-booking canonical.
+- The private-room child route family still uses English child slugs (`apartment`, `double-room`, `private-stay`, `street-level-arrival`) in every locale, so the route-localization audit is not yet complete for that family.
+- Only `double-room` is present in the historical legacy fixture for that family; `apartment`, `private-stay`, and `street-level-arrival` are current public child URLs but do not carry legacy-fixture evidence.
+- The route contract decision is now clear: keep `/{lang}/{privateRoomsSlug}` as the summary hub, keep a distinct apartment detail child page, and localize all private-room child slugs rather than allowlisting English children permanently.
+- Shared UI slug helpers still carry stale Brikette booking/private-booking slugs in `packages/ui`, which can leak deprecated URLs even when the app-level contract is correct.
+- The hostel booking noscript fallback still points to the wrong Octorate calendar URL in current source.
+
 ### Entry Points
 - `apps/brikette/src/app/[lang]/HomeContent.tsx` - homepage booking state and room-carousel CTA routing.
 - `apps/brikette/src/app/[lang]/dorms/RoomsPageContent.tsx` - dorms listing behavior and availability defaults.
@@ -140,6 +185,15 @@ Assess the revised ideal funnel against current `apps/brikette` implementation a
 - `apps/brikette/src/app/[lang]/book/page.tsx` - `/book` metadata and no-JS Octorate fallback link.
 - `apps/brikette/src/app/_lib/metadata.ts` - noindex behavior controlled by `isPublished` flag.
 - `packages/ui/src/organisms/StickyBookNow.tsx` - sticky deep-link fallback behavior and query parsing.
+- `apps/brikette/src/routing/routeInventory.ts` - canonical sitemap/public URL inventory; currently includes top-level booking pages and private-room helper/detail paths.
+- `apps/brikette/src/routing/sectionSegments.ts` - static export section contract; currently treats `book` as part of the public section inventory.
+- `apps/brikette/src/app/[lang]/private-rooms/book/page.tsx` - redirect-helper route that currently shares canonical metadata with the top-level private-booking page.
+- `apps/brikette/src/app/[lang]/private-rooms/apartment/page.tsx` - second apartment semantic URL under the already-localized private-rooms root.
+- `apps/brikette/src/app/[lang]/private-rooms/page.tsx` - summary hub metadata for the private-room family root.
+- `apps/brikette/src/app/[lang]/private-rooms/private-stay/page.tsx` - supporting private-stay proof page metadata.
+- `apps/brikette/src/app/[lang]/private-rooms/street-level-arrival/page.tsx` - supporting street-access proof page metadata.
+- `apps/brikette/src/test/fixtures/legacy-urls.txt` - only historical child-path evidence source for the private-room family.
+- `packages/ui/src/slug-map.ts` / `packages/ui/src/utils/translate-path.ts` - stale shared slug maps that still encode deprecated Brikette booking/private-booking paths.
 
 ### Patterns & Conventions Observed
 - Booking state is currently fragmented across component-local state and URL query params, not one canonical object.
@@ -190,7 +244,11 @@ Assess the revised ideal funnel against current `apps/brikette` implementation a
   - `/es/reservar` and `/es/book` both return `200` (duplicate live aliases).
   - `/en/help` and `/en/assistance` both return `200` (duplicate live aliases), with mixed slash redirect behavior.
 - Operational implication:
-  - Current live routing behavior does not match intended canonical path policy and will cause crawl duplication, broken canonicals, and avoidable 404 leakage unless production redirect rules are explicitly converged.
+- Current live routing behavior does not match intended canonical path policy and will cause crawl duplication, broken canonicals, and avoidable 404 leakage unless production redirect rules are explicitly converged.
+- Current local route contract still contains mixed SEO signals:
+  - `/{lang}/{bookSlug}` is emitted as a public canonical route while page metadata sets `noindex,follow`.
+  - `/{lang}/{privateRoomsSlug}/book` is emitted as a canonical public route even though the page immediately redirects to `/{lang}/{privateBookingSlug}`.
+  - private-room child paths are only partially localized because the parent slug is localized but child slugs remain English.
 
 ## Simulation Trace
 | Scope Area | Coverage Confirmed | Issues Found | Resolution Required |
@@ -233,6 +291,18 @@ Assess the revised ideal funnel against current `apps/brikette` implementation a
 - Q: Do we need production permanent redirects beyond current live behavior?
   - A: Yes. Live Cloudflare behavior shows canonical/alias drift and broken canonical targets that require explicit Worker/edge redirect convergence.
   - Evidence: live HTTP checks on `hostel-positano.com` (2026-03-01): `/en/rooms` 200 + `/en/dorms` 404, `/de/book` 200 + `/de/buchen` 404, `/es/reservar` and `/es/book` both 200.
+- Q: Is the current localized route contract fully clean from an SEO perspective now that alias debt is being dropped?
+  - A: No. Canonical inventory and route-localization work still leave three classes of debt: sitemap/noindex mismatch on hostel booking pages, redirect-helper URLs incorrectly treated as canonicals, and a mixed-language private-room child route family.
+  - Evidence: `apps/brikette/src/routing/routeInventory.ts`, `apps/brikette/src/app/[lang]/book/page.tsx`, `apps/brikette/src/app/[lang]/private-rooms/book/page.tsx`, `apps/brikette/src/app/[lang]/private-rooms/apartment/page.tsx`.
+- Q: Are shared slug helpers fully aligned with the Brikette route contract?
+  - A: No. `packages/ui` still encodes deprecated Brikette booking/private-booking segments and can generate stale URLs outside the app-local `getSlug()` contract.
+  - Evidence: `packages/ui/src/slug-map.ts`, `packages/ui/src/utils/translate-path.ts`.
+- Q: Is the hostel noscript fallback already fixed to the live Octorate entry URL?
+  - A: No. Current source still uses the broken `...?id=5879` URL on both hostel booking entry routes.
+  - Evidence: `apps/brikette/src/app/[lang]/book/page.tsx`, `apps/brikette/src/app/[lang]/book-dorm-bed/page.tsx`.
+- Q: Should the private-room child route family keep English child slugs as an explicit allowlist?
+  - A: No. The root should remain the summary hub, the apartment detail should stay a distinct child page, and all child slugs should move to localized canonicals with exact redirects for historical/current English aliases.
+  - Evidence: `apps/brikette/src/app/[lang]/private-rooms/page.tsx`, `apps/brikette/src/app/[lang]/private-rooms/apartment/page.tsx`, `apps/brikette/src/app/[lang]/private-rooms/private-stay/page.tsx`, `apps/brikette/src/app/[lang]/private-rooms/street-level-arrival/page.tsx`, `apps/brikette/src/test/fixtures/legacy-urls.txt`.
 
 ### Open (Operator Input Required)
 None.
@@ -344,6 +414,30 @@ None.
 - Octobook can be configured (or is already configured) to align with Brikette’s hard hostel constraints post-handoff.
 - Booking export surfaces may or may not preserve click-id attribution; until verified, reconciliation remains aggregate/proxy.
 - Shared-tab continuity storage usage is acceptable for Brikette traffic profile and privacy posture.
+
+## 2026-03-07 Post-Rollout Shell Audit
+- Scope:
+  - staged commercial surfaces after `TASK-16A` through `TASK-16D`
+  - localized homepage and booking routes where the remaining visible leaks were reported
+- Issues confirmed:
+  - scenic theme toggle still announced English assistive labels on localized pages because the shared `packages/i18n` bundle still contained English placeholder values for `themeToggle.*` in several non-English locales
+  - footer-level `Book direct` CTA leaked English on localized pages because `Footer.tsx` resolved the label via `dealsPage.dealCard.cta.bookDirect` instead of a footer-owned locale key
+  - homepage featured-guide cards on Italian still surfaced stale English labels such as `Amalfi Positano Bus` even though the Italian guide content bundle contains translated `content.<guide>.linkLabel` values
+- Root causes:
+  - shared shell control strings were not fully localized in `packages/i18n/src/{de,es,fr,it,ja,ko}.json`
+  - footer CTA used the wrong namespace, so localization quality depended on deals-copy drift instead of the footer contract
+  - `FeaturedGuidesSection.tsx` resolved labels through `getGuideLinkLabel()` only, which fell back to stale generated datasets before consulting the active locale guide-label map directly
+- Fix direction validated:
+  - localize the shared theme-toggle keys at the core `packages/i18n` layer
+  - move the footer CTA onto a footer-owned `bookDirect` locale key across all Brikette footer locale files
+  - make homepage featured-guide cards prefer `getGuideLinkLabels(lang)` from the active locale bundle before falling back to generated labels
+- Evidence:
+  - `packages/ui/src/molecules/ThemeToggle.tsx`
+  - `packages/i18n/src/it.json`
+  - `apps/brikette/src/components/footer/Footer.tsx`
+  - `apps/brikette/src/components/landing/FeaturedGuidesSection.tsx`
+  - `apps/brikette/src/guides/slugs/labels.ts`
+  - `apps/brikette/src/locales/it/guides.json`
 
 ## Planning Readiness
 - Status: Ready-for-planning

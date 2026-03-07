@@ -55,7 +55,8 @@
   },
   "noscript": {
     "jsDisabledAssistance": "Vandrerhjemsbestillinger håndteres med assistert støtte når JavaScript er deaktivert.",
-    "emailAssistedBooking": "Send oss ​​en e-post for assistert bestilling"
+    "emailAssistedBooking": "Send oss ​​en e-post for assistert bestilling",
+    "octorateDirectBooking": "Bestill direkte med Octorate"
   },
   "bookingConstraints": {
     "notice": "Vandrerhjemsbestillinger støtter opphold kun for voksne mellom 2 og 8 netter med opptil 8 voksne per bestilling. For større grupper eller lengre opphold, del forespørselen din på flere bestillinger eller",

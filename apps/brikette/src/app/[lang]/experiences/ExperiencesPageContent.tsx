@@ -21,6 +21,7 @@ import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { fireCtaClick } from "@/utils/ga4-events";
 import { getBookPath } from "@/utils/localizedRoutes";
+import { type AppNamespaceBundles, primeAppI18nBundles } from "@/utils/primeAppI18nBundles";
 import { getSlug } from "@/utils/slug";
 import { getTagMeta } from "@/utils/tags";
 import { resolveLabel, useEnglishFallback } from "@/utils/translation-fallback";
@@ -34,6 +35,7 @@ type Props = {
   topicParam?: string;
   tagParam?: string;
   queryString?: string;
+  preloadedNamespaceBundles?: AppNamespaceBundles;
 };
 
 // Filter guides to only include published experiences.
@@ -110,7 +112,14 @@ function buildGuideCopy(
   };
 }
 
-function ExperiencesPageContent({ lang, topicParam = "", tagParam = "", queryString = "" }: Props) {
+function ExperiencesPageContent({
+  lang,
+  topicParam = "",
+  tagParam = "",
+  queryString = "",
+  preloadedNamespaceBundles,
+}: Props) {
+  primeAppI18nBundles(lang, preloadedNamespaceBundles);
   const { t } = useTranslation("experiencesPage", { lng: lang });
   useTranslation("guides", { lng: lang });
   const router = useRouter();
@@ -118,7 +127,7 @@ function ExperiencesPageContent({ lang, topicParam = "", tagParam = "", queryStr
   usePagePreload({
     lang,
     namespaces: ["experiencesPage", "guides"],
-    optionalNamespaces: ["guides.tags", "modals"],
+    optionalNamespaces: ["guides.tags", "modals", "translation"],
     optional: true,
   });
 

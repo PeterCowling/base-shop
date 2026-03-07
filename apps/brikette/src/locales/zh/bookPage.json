@@ -55,7 +55,8 @@
   },
   "noscript": {
     "jsDisabledAssistance": "当 JavaScript 被禁用时，旅馆预订将在辅助支持下处理。",
-    "emailAssistedBooking": "给我们发电子邮件以协助预订"
+    "emailAssistedBooking": "给我们发电子邮件以协助预订",
+    "octorateDirectBooking": "通过 Octorate 直接预订"
   },
   "bookingConstraints": {
     "notice": "旅馆预订支持仅限成人入住 2 至 8 晚，每次预订最多可入住 8 名成人。对于较大的团体或较长的住宿，请将您的请求分摊到多个预订中，或",

@@ -51,7 +51,15 @@ const REQUIRED_STATIC_EXPORT_ROUTE_FILES = [
 ];
 const REQUIRED_DEPLOY_SUPPORT_FILES = [
   "public/_redirects",
+  "public/_routes.json",
+  "functions/_shared/legacy-redirect.js",
+  "functions/[lang]/[section].js",
+  "functions/[lang]/[section]/[slug].js",
+  "functions/[lang]/[section]/[slug]/[leaf].js",
   "functions/api/availability.js",
+  "functions/api/health.js",
+  "functions/api/recovery/quote/send.js",
+  "functions/generated/legacy-redirects.js",
   "scripts/normalize-static-export-localized-routes.ts",
   "scripts/generate-static-export-redirects.ts",
 ];

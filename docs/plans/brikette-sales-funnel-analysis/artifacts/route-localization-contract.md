@@ -1,16 +1,24 @@
 # Route Localization Contract
 
-- Generated: `2026-03-07T07:33:44.322Z`
+- Generated: `2026-03-07T10:06:26.849Z`
 - Supported locales: `18`
-- Public route families audited: `6`
+- Public route families audited: `7`
 - Unexpected English-slug matches outside allowlist: `0`
+- Private-room child routes audited: `4`
 
 ## Sources
 - `apps/brikette/src/slug-map.ts`
 - `apps/brikette/src/routing/sectionSegments.ts`
 - `apps/brikette/src/routing/routeInventory.ts`
 - `apps/brikette/src/middleware.ts`
+- `apps/brikette/src/app/[lang]/private-rooms/page.tsx`
+- `apps/brikette/src/app/[lang]/private-rooms/apartment/page.tsx`
+- `apps/brikette/src/app/[lang]/private-rooms/private-stay/page.tsx`
+- `apps/brikette/src/app/[lang]/private-rooms/street-level-arrival/page.tsx`
+- `apps/brikette/src/test/fixtures/legacy-urls.txt`
+- `packages/ui/src/config/privateRoomChildSlugs.ts`
 - `packages/ui/src/config/roomSlugs.ts`
+- `packages/ui/src/utils/buildNavLinks.ts`
 - `apps/brikette/src/guides/slugs/slugs.ts`
 - `apps/brikette/src/data/guides.index.ts`
 
@@ -18,9 +26,18 @@
 - `/{lang}`
 - `/{lang}/{topLevelSlug}`
 - `/{lang}/{privateBookingSlug}`
+- `/{lang}/{privateRoomsSlug}/{privateRoomChildSlug}`
 - `/{lang}/{roomsSlug}/{roomSlug}`
 - `/{lang}/{guideNamespaceSlug}/{guideSlug}`
 - `/{lang}/{experiencesSlug}/{guidesTagsSlug}/{tag}`
+
+## Private-Room Child Route Contract
+- Decision: localize the child slugs. English child slugs are **not** an approved long-term allowlist.
+- Summary-hub policy: Keep `/{lang}/{privateRoomsSlug}` as the indexable summary hub. Keep a distinct apartment detail child page, but do not keep English child slugs as a permanent allowlist.
+- `apartment`: canonical role -> apartment detail page under the private-room summary hub; legacy policy -> preserve prior English child URL as an exact redirect after localization
+- `double-room`: canonical role -> double-room detail page; legacy policy -> preserve historic English alias; present in the legacy fixture across locales
+- `private-stay`: canonical role -> supporting proof page for whole-property private stays; legacy policy -> preserve prior English child URL as an exact redirect after localization
+- `street-level-arrival`: canonical role -> supporting proof page for no-stairs street access; legacy policy -> preserve prior English child URL as an exact redirect after localization
 
 ## Approved Shared-Spelling Allowlist
 - `fr` `experiences` -> `experiences` (/fr/experiences)
@@ -53,6 +70,9 @@
 - None
 
 ## Unexpected Special-Route English Matches
+- None
+
+## Unexpected Private-Room Child English Matches
 - None
 
 ## Unexpected Room Slug English Matches

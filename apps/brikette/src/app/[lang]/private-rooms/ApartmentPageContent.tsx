@@ -20,8 +20,8 @@ import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { fireViewItem } from "@/utils/ga4-events";
 import { getPrivateBookingPath } from "@/utils/localizedRoutes";
+import { getPrivateRoomChildPath } from "@/utils/privateRoomPaths";
 import { trackApartmentEvent } from "@/utils/trackApartmentEvent";
-import { translatePath } from "@/utils/translate-path";
 
 type Props = {
   lang: AppLanguage;
@@ -32,7 +32,6 @@ const WHATSAPP_URL = "https://wa.me/393287073695";
 function ApartmentPageContent({ lang }: Props) {
   const { t } = useTranslation("apartmentPage", { lng: lang });
   usePagePreload({ lang, namespaces: ["apartmentPage"] });
-  const privateRoomsPath = `/${lang}/${translatePath("apartment", lang)}`;
   const privateBookingPath = getPrivateBookingPath(lang);
 
   // Fire view_item once per navigation
@@ -56,7 +55,7 @@ function ApartmentPageContent({ lang }: Props) {
           <Section as="div" padding="none" width="full" className="mx-auto max-w-3xl">
             <div className="grid gap-4 sm:grid-cols-2">
               <Link
-                href={`${privateRoomsPath}/street-level-arrival/`}
+                href={`${getPrivateRoomChildPath(lang, "street-level-arrival")}/`}
                 className="group rounded-2xl border border-brand-outline/30 bg-panel/90 p-5 shadow-sm backdrop-blur transition-shadow hover:shadow-md"
               >
                 <div className="flex items-start gap-4">
@@ -78,7 +77,7 @@ function ApartmentPageContent({ lang }: Props) {
               </Link>
 
               <Link
-                href={`${privateRoomsPath}/private-stay/`}
+                href={`${getPrivateRoomChildPath(lang, "private-stay")}/`}
                 className="group rounded-2xl border border-brand-outline/30 bg-panel/90 p-5 shadow-sm backdrop-blur transition-shadow hover:shadow-md"
               >
                 <div className="flex items-start gap-4">

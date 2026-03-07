@@ -16,6 +16,7 @@ import type { DateRange } from "@/components/booking/DateRangePicker";
 import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
+import { resolveBookingControlLabels } from "@/utils/bookingControlLabels";
 import { formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
 import { createBrikClickId, fireHandoffToEngine, fireWhatsappClick } from "@/utils/ga4-events";
 import { getPrivateBookingPath } from "@/utils/localizedRoutes";
@@ -59,7 +60,9 @@ function buildOctorateLink(
 function ApartmentBookContent({ lang }: Props) {
   const { t } = useTranslation("apartmentPage", { lng: lang });
   const { t: tBook } = useTranslation("bookPage", { lng: lang });
+  const { t: tRooms } = useTranslation("roomsPage", { lng: lang });
   const { t: tModals } = useTranslation("modals", { lng: lang });
+  const bookingControlLabels = resolveBookingControlLabels(tBook, tRooms, tModals);
 
   usePagePreload({ lang, namespaces: ["apartmentPage", "bookPage", "footer", "modals", "translation"] });
 
@@ -175,8 +178,8 @@ function ApartmentBookContent({ lang }: Props) {
             checkInLabelText={tModals("booking.checkInLabel") as string}
             checkOutLabelText={tModals("booking.checkOutLabel") as string}
             guestsLabelText={tBook("apartment.guestLabel") as string}
-            decreaseGuestsAriaLabel={tBook("bookingControls.decreaseGuests") as string}
-            increaseGuestsAriaLabel={tBook("bookingControls.increaseGuests") as string}
+            decreaseGuestsAriaLabel={bookingControlLabels.decreaseGuestsAriaLabel}
+            increaseGuestsAriaLabel={bookingControlLabels.increaseGuestsAriaLabel}
           />
           <p className="mt-3 text-sm text-brand-text/60">
             {tBook("apartment.nightsSummary", { count: nights })}

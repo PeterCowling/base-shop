@@ -17,6 +17,7 @@ import { errorResult, formatError, jsonResult } from "../utils/validation.js";
 type QualityResult = {
   passed: boolean;
   failed_checks: string[];
+  failed_check_details: Record<string, string[]>;
   warnings: string[];
   confidence: number;
   question_coverage: QuestionCoverageEntry[];
@@ -195,14 +196,16 @@ function scenarioTarget(category: string): { min: number; max: number } {
   }
 }
 
-function containsProhibitedClaims(text: string): boolean {
+const PROHIBITED_CLAIM_PHRASES = [
+  "availability confirmed",
+  "we will charge now",
+  "we have charged",
+  "card will be charged now",
+];
+
+function findProhibitedClaims(text: string): string[] {
   const lower = text.toLowerCase();
-  return (
-    lower.includes("availability confirmed") ||
-    lower.includes("we will charge now") ||
-    lower.includes("we have charged") ||
-    lower.includes("card will be charged now")
-  );
+  return PROHIBITED_CLAIM_PHRASES.filter((phrase) => lower.includes(phrase));
 }
 
 function hasSignature(text: string): boolean {
@@ -393,7 +396,7 @@ function hasApplicableReference(
   return false;
 }
 
-function contradictsCommitments(body: string, commitments: string[]): boolean {
+function findContradictedCommitments(body: string, commitments: string[]): string[] {
   const lower = body.toLowerCase();
   const contradictionCues = [
     "cannot provide",
@@ -405,15 +408,20 @@ function contradictsCommitments(body: string, commitments: string[]): boolean {
     "not possible",
   ];
 
+  const contradicted: string[] = [];
+
   for (const commitment of commitments) {
     const keywords = extractQuestionKeywords(commitment);
+    let isContradicted = false;
+
     for (const keyword of keywords) {
       if (
         lower.includes(`${keyword} is not available`) ||
         lower.includes(`${keyword} are not available`) ||
         lower.includes(`${keyword} was not available`)
       ) {
-        return true;
+        isContradicted = true;
+        break;
       }
 
       if (!lower.includes(keyword)) {
@@ -421,11 +429,17 @@ function contradictsCommitments(body: string, commitments: string[]): boolean {
       }
 
       if (contradictionCues.some((cue) => lower.includes(cue))) {
-        return true;
+        isContradicted = true;
+        break;
       }
     }
+
+    if (isContradicted) {
+      contradicted.push(commitment);
+    }
   }
-  return false;
+
+  return contradicted;
 }
 
 function includesNormalizedPhrase(bodyLower: string, phrase: string): boolean {
@@ -433,22 +447,22 @@ function includesNormalizedPhrase(bodyLower: string, phrase: string): boolean {
   return normalizedPhrase.length > 0 && bodyLower.includes(normalizedPhrase);
 }
 
-function hasMissingPolicyMandatoryContent(
+function findMissingPolicyMandatoryContent(
   body: string,
   policyDecision: PolicyDecisionInput
-): boolean {
+): string[] {
   const lower = body.toLowerCase().replace(/\s+/g, " ");
-  return policyDecision.mandatoryContent.some(
+  return policyDecision.mandatoryContent.filter(
     (phrase) => !includesNormalizedPhrase(lower, phrase)
   );
 }
 
-function hasPolicyProhibitedContent(
+function findPolicyProhibitedContent(
   body: string,
   policyDecision: PolicyDecisionInput
-): boolean {
+): string[] {
   const lower = body.toLowerCase().replace(/\s+/g, " ");
-  return policyDecision.prohibitedContent.some((phrase) =>
+  return policyDecision.prohibitedContent.filter((phrase) =>
     includesNormalizedPhrase(lower, phrase)
   );
 }
@@ -459,6 +473,7 @@ function runChecks(
   policyDecision?: PolicyDecisionInput
 ): QualityResult {
   const failed_checks: string[] = [];
+  const failed_check_details: Record<string, string[]> = {};
   const warnings: string[] = [];
 
   const allIntents = [
@@ -467,15 +482,21 @@ function runChecks(
   ];
   const question_coverage = evaluateQuestionCoverage(draft.bodyPlain, allIntents);
 
-  if (question_coverage.some((entry) => entry.status === "missing")) {
+  const missingQuestions = question_coverage
+    .filter((entry) => entry.status === "missing")
+    .map((entry) => entry.question);
+  if (missingQuestions.length > 0) {
     failed_checks.push("unanswered_questions");
+    failed_check_details["unanswered_questions"] = missingQuestions;
   }
   if (question_coverage.some((entry) => entry.status === "partial")) {
     warnings.push("partial_question_coverage");
   }
 
-  if (containsProhibitedClaims(draft.bodyPlain)) {
+  const matchedProhibitedClaims = findProhibitedClaims(draft.bodyPlain);
+  if (matchedProhibitedClaims.length > 0) {
     failed_checks.push("prohibited_claims");
+    failed_check_details["prohibited_claims"] = matchedProhibitedClaims;
   }
 
   if (!draft.bodyPlain || !draft.bodyPlain.trim()) {
@@ -501,6 +522,7 @@ function runChecks(
   if (referencePolicy.requiresReference) {
     if (draftLinks.length === 0) {
       failed_checks.push("missing_required_reference");
+      failed_check_details["missing_required_reference"] = referencePolicy.canonicalUrls;
     } else if (
       !hasApplicableReference(
         draftLinks,
@@ -509,27 +531,32 @@ function runChecks(
       )
     ) {
       failed_checks.push("reference_not_applicable");
+      failed_check_details["reference_not_applicable"] = referencePolicy.canonicalUrls;
     }
   }
 
   if (actionPlan.thread_summary?.prior_commitments?.length) {
-    if (contradictsCommitments(draft.bodyPlain, actionPlan.thread_summary.prior_commitments)) {
+    const contradicted = findContradictedCommitments(draft.bodyPlain, actionPlan.thread_summary.prior_commitments);
+    if (contradicted.length > 0) {
       failed_checks.push("contradicts_thread");
+      failed_check_details["contradicts_thread"] = contradicted;
     }
   }
 
   if (policyDecision) {
-    if (
-      policyDecision.mandatoryContent.length > 0 &&
-      hasMissingPolicyMandatoryContent(draft.bodyPlain, policyDecision)
-    ) {
-      failed_checks.push("missing_policy_mandatory_content");
+    if (policyDecision.mandatoryContent.length > 0) {
+      const missingMandatory = findMissingPolicyMandatoryContent(draft.bodyPlain, policyDecision);
+      if (missingMandatory.length > 0) {
+        failed_checks.push("missing_policy_mandatory_content");
+        failed_check_details["missing_policy_mandatory_content"] = missingMandatory;
+      }
     }
-    if (
-      policyDecision.prohibitedContent.length > 0 &&
-      hasPolicyProhibitedContent(draft.bodyPlain, policyDecision)
-    ) {
-      failed_checks.push("policy_prohibited_content");
+    if (policyDecision.prohibitedContent.length > 0) {
+      const matchedProhibited = findPolicyProhibitedContent(draft.bodyPlain, policyDecision);
+      if (matchedProhibited.length > 0) {
+        failed_checks.push("policy_prohibited_content");
+        failed_check_details["policy_prohibited_content"] = matchedProhibited;
+      }
     }
   }
 
@@ -560,6 +587,7 @@ function runChecks(
   return {
     passed: failed_checks.length === 0,
     failed_checks,
+    failed_check_details,
     warnings,
     confidence,
     question_coverage,

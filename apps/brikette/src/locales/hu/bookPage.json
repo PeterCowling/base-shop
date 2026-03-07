@@ -55,7 +55,8 @@
   },
   "noscript": {
     "jsDisabledAssistance": "A szállófoglalásokat támogatott támogatással kezeljük, ha a JavaScript le van tiltva.",
-    "emailAssistedBooking": "Segített foglalásért írjon nekünk e-mailt"
+    "emailAssistedBooking": "Segített foglalásért írjon nekünk e-mailt",
+    "octorateDirectBooking": "Foglaljon közvetlenül az Octorate-en"
   },
   "bookingConstraints": {
     "notice": "A hostel foglalások csak felnőtteknek szóló 2 és 8 éjszakás tartózkodásokat támogatnak, foglalásonként legfeljebb 8 felnőtt elszállásolására. Nagyobb csoportok vagy hosszabb tartózkodás esetén ossza fel kérését több foglalásra vagy",

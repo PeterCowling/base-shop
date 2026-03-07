@@ -8,7 +8,7 @@ import { getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
 import { OG_IMAGE } from "@/utils/headConstants";
-import { getSlug } from "@/utils/slug";
+import { getPrivateRoomChildPath } from "@/utils/privateRoomPaths";
 
 import ApartmentPageContent from "../ApartmentPageContent";
 
@@ -29,8 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description = (t("meta.description") as string) || "";
   const imageAlt = (t("heroImageAlt") as string) || "";
 
-  const apartmentSlug = getSlug("apartment", validLang);
-  const path = `/${validLang}/${apartmentSlug}/apartment`;
+  const path = getPrivateRoomChildPath(validLang, "apartment");
 
   const image = buildCfImageUrl("/img/facade.avif", {
     width: OG_IMAGE.width,

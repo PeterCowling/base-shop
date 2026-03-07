@@ -126,7 +126,8 @@
   },
   "noscript": {
     "jsDisabledAssistance": "Hostel bookings are handled with assisted support when JavaScript is disabled.",
-    "emailAssistedBooking": "Email us for assisted booking"
+    "emailAssistedBooking": "Email us for assisted booking",
+    "octorateDirectBooking": "Book direct with Octorate"
   },
   "bookingConstraints": {
     "notice": "Hostel bookings are adults-only, 2–8 nights, up to 8 guests. Staying longer than 8 nights? Just make a second booking for the extra nights, or",

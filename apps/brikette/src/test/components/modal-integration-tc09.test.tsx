@@ -102,6 +102,14 @@ function getBookingSubmitButton(): HTMLElement {
   return screen.getByRole("button", { name: "booking.buttonAvailability" });
 }
 
+function getCheckInInput(): HTMLElement {
+  return screen.getByTestId("date-range-checkin-input");
+}
+
+function getCheckOutInput(): HTMLElement {
+  return screen.getByTestId("date-range-checkout-input");
+}
+
 // ---------------------------------------------------------------------------
 // TC-01: BookingWidget → navigates to /book (TASK-27)
 // ---------------------------------------------------------------------------
@@ -117,10 +125,10 @@ describe("TC-01: BookingWidget → navigates to /book (TASK-27)", () => {
   it("navigates to /book with the entered dates and guests", () => {
     render(<BookingWidget />);
 
-    const checkInInput = screen.getByLabelText("booking.checkInLabel");
-    const checkOutInput = screen.getByLabelText("booking.checkOutLabel");
+    const checkInInput = getCheckInInput();
+    const checkOutInput = getCheckOutInput();
     const increaseGuestsButton = screen.getByRole("button", {
-      name: "bookingControls.increaseGuests",
+      name: "Increase guests",
     });
 
     // Use ISO format — BookingWidget's parseDateInput handles YYYY-MM-DD.
@@ -138,8 +146,8 @@ describe("TC-01: BookingWidget → navigates to /book (TASK-27)", () => {
   it("auto-sets checkout to two nights after check-in", () => {
     render(<BookingWidget />);
 
-    const checkInInput = screen.getByLabelText("booking.checkInLabel");
-    const checkOutInput = screen.getByLabelText("booking.checkOutLabel") as HTMLInputElement;
+    const checkInInput = getCheckInInput();
+    const checkOutInput = getCheckOutInput() as HTMLInputElement;
 
     fireEvent.change(checkInInput, { target: { value: "2025-06-05" } });
 
@@ -160,10 +168,10 @@ describe("TC-01: BookingWidget → navigates to /book (TASK-27)", () => {
   it("does not navigate when stay is shorter than two-night minimum", () => {
     render(<BookingWidget />);
 
-    fireEvent.change(screen.getByLabelText("booking.checkInLabel"), {
+    fireEvent.change(getCheckInInput(), {
       target: { value: "2025-06-05" },
     });
-    fireEvent.change(screen.getByLabelText("booking.checkOutLabel"), {
+    fireEvent.change(getCheckOutInput(), {
       target: { value: "2025-06-06" }, // 1-night stay — invalid range
     });
 

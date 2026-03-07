@@ -36,7 +36,7 @@ describe("buildNavLinks", () => {
       const first = rooms.children![0];
       expect(first.key).toBe("rooms_all");
       expect(first.label).toBe("See all rooms");
-      expect(first.to).toBe("/book");
+      expect(first.to).toBe("/book-dorm-bed");
     });
   });
 
@@ -56,5 +56,40 @@ describe("buildNavLinks", () => {
       to: "/book-private-accommodations",
       label: "Book private accommodations",
     });
+    expect(apartment.children?.[1]).toEqual({
+      key: "apartment_apartment",
+      to: "/private-rooms/sea-view-apartment",
+      label: "Apartment",
+    });
+    expect(apartment.children?.[2]).toEqual({
+      key: "apartment_double_room",
+      to: "/private-rooms/double-room",
+      label: "Double Room",
+    });
+  });
+
+  it("uses translated child labels when provided", () => {
+    const translated = (key: string, defaultValue?: string): string => {
+      const translations: Record<string, string> = {
+        "navChildren.rooms.all": "كل الغرف",
+        "navChildren.rooms.room_10": "مهجع مختلط – حمّام داخلي",
+        "navChildren.apartment.bookPrivate": "احجز الغرف الخاصة",
+        "navChildren.apartment.apartment": "شقة",
+        "navChildren.apartment.doubleRoom": "غرفة مزدوجة",
+      };
+      return translations[key] ?? defaultValue ?? key;
+    };
+
+    const { navLinks } = buildNavLinks("ar", translated);
+    const rooms = navLinks.find((link) => link.key === "rooms");
+    const apartment = navLinks.find((link) => link.key === "apartment");
+
+    expect(rooms?.children?.[0]?.label).toBe("كل الغرف");
+    expect(rooms?.children?.find((child) => child.key === "room_10")?.label).toBe(
+      "مهجع مختلط – حمّام داخلي",
+    );
+    expect(apartment?.children?.[0]?.label).toBe("احجز الغرف الخاصة");
+    expect(apartment?.children?.[1]?.label).toBe("شقة");
+    expect(apartment?.children?.[2]?.label).toBe("غرفة مزدوجة");
   });
 });

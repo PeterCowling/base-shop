@@ -9,6 +9,7 @@ import type { DateRange } from "@/components/booking/DateRangePicker";
 import ExpiredQuoteNotice from "@/components/booking/ExpiredQuoteNotice";
 import RecoveryQuoteCapture from "@/components/booking/RecoveryQuoteCapture";
 import type { AppLanguage } from "@/i18n.config";
+import { resolveBookingControlLabels } from "@/utils/bookingControlLabels";
 import { formatDate } from "@/utils/dateUtils";
 import { getBookPath } from "@/utils/localizedRoutes";
 
@@ -54,6 +55,8 @@ export function BookPageSearchPanel({
   selectDatesPromptText = "",
 }: BookPageSearchPanelProps): JSX.Element {
   const { t } = useTranslation("bookPage");
+  const { t: tRooms } = useTranslation("roomsPage", { lng: lang });
+  const bookingControlLabels = resolveBookingControlLabels(t, tRooms);
 
   return (
     <div ref={calendarAnchorRef} className="mt-6 mx-auto scroll-mt-24" tabIndex={-1}>
@@ -80,8 +83,8 @@ export function BookPageSearchPanel({
         checkInLabelText={checkInLabelText}
         checkOutLabelText={checkOutLabelText}
         guestsLabelText={guestsLabelText}
-        decreaseGuestsAriaLabel={t("bookingControls.decreaseGuests") as string}
-        increaseGuestsAriaLabel={t("bookingControls.increaseGuests") as string}
+        decreaseGuestsAriaLabel={bookingControlLabels.decreaseGuestsAriaLabel}
+        increaseGuestsAriaLabel={bookingControlLabels.increaseGuestsAriaLabel}
       />
 
       {/* Notices sit below the calendar row */}

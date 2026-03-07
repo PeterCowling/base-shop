@@ -1,6 +1,11 @@
-import { mkdir, readdir, rename, rm, stat } from "node:fs/promises";
+import { mkdir, readdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+
+import {
+  getPrivateRoomChildSlug,
+  PRIVATE_ROOM_CHILD_ROUTE_IDS,
+} from "@acme/ui/config/privateRoomChildSlugs";
 
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
@@ -59,6 +64,72 @@ async function removeIfEmpty(directoryPath: string): Promise<void> {
   if (entries.length === 0) {
     await rm(directoryPath, { recursive: true, force: true });
   }
+}
+
+function inferLocaleFromRelativeHtmlPath(relativeHtmlPath: string): AppLanguage | null {
+  const normalizedPath = relativeHtmlPath.replace(/\\/g, "/");
+  const [firstSegment] = normalizedPath.split("/");
+  const localeCandidate = firstSegment.endsWith(".html")
+    ? firstSegment.slice(0, -".html".length)
+    : firstSegment;
+
+  return i18nConfig.supportedLngs.includes(localeCandidate as AppLanguage)
+    ? (localeCandidate as AppLanguage)
+    : null;
+}
+
+function patchHtmlDocumentLanguage(html: string, lang: AppLanguage): string {
+  const dir = lang === "ar" ? "rtl" : "ltr";
+
+  return html.replace(/<html\b([^>]*)>/i, (match, rawAttrs: string) => {
+    let attrs = rawAttrs;
+
+    if (/\blang="[^"]*"/i.test(attrs)) {
+      attrs = attrs.replace(/\blang="[^"]*"/i, `lang="${lang}"`);
+    } else {
+      attrs += ` lang="${lang}"`;
+    }
+
+    if (/\bdir="[^"]*"/i.test(attrs)) {
+      attrs = attrs.replace(/\bdir="[^"]*"/i, `dir="${dir}"`);
+    } else {
+      attrs += ` dir="${dir}"`;
+    }
+
+    return `<html${attrs}>`;
+  });
+}
+
+async function patchLocalizedHtmlDocuments(
+  directoryPath: string,
+  relativePath = "",
+): Promise<number> {
+  const entries = await readdir(directoryPath, { withFileTypes: true });
+  let patched = 0;
+
+  for (const entry of entries) {
+    const absolutePath = path.join(directoryPath, entry.name);
+    const nextRelativePath = relativePath ? path.join(relativePath, entry.name) : entry.name;
+
+    if (entry.isDirectory()) {
+      patched += await patchLocalizedHtmlDocuments(absolutePath, nextRelativePath);
+      continue;
+    }
+
+    if (!entry.isFile() || !entry.name.endsWith(".html")) continue;
+
+    const locale = inferLocaleFromRelativeHtmlPath(nextRelativePath);
+    if (!locale) continue;
+
+    const currentHtml = await readFile(absolutePath, "utf8");
+    const patchedHtml = patchHtmlDocumentLanguage(currentHtml, locale);
+    if (patchedHtml === currentHtml) continue;
+
+    await writeFile(absolutePath, patchedHtml, "utf8");
+    patched += 1;
+  }
+
+  return patched;
 }
 
 async function mergeDirectory(sourceDirectoryPath: string, targetDirectoryPath: string): Promise<void> {
@@ -182,6 +253,20 @@ function buildNormalizationPairs(
     addPair(`/${lang}/book-dorm-bed`, `/${lang}/${getSlug("book", lang)}`);
   }
 
+  for (const lang of languages) {
+    const localizedPrivateRoomsBase = `/${lang}/${getSlug("apartment", lang)}`;
+    for (const routeId of PRIVATE_ROOM_CHILD_ROUTE_IDS) {
+      addPair(
+        `/${lang}/${INTERNAL_SEGMENT_BY_KEY.apartment}/${routeId}`,
+        `${localizedPrivateRoomsBase}/${getPrivateRoomChildSlug(routeId, lang)}`,
+      );
+      addPair(
+        `${localizedPrivateRoomsBase}/${routeId}`,
+        `${localizedPrivateRoomsBase}/${getPrivateRoomChildSlug(routeId, lang)}`,
+      );
+    }
+  }
+
   // Process deeper paths first (e.g. /:lang/experiences/tags before /:lang/experiences).
   return pairs.sort((a, b) => b.sourceBasePath.split("/").length - a.sourceBasePath.split("/").length);
 }
@@ -191,7 +276,7 @@ async function main(): Promise<void> {
   const outDirType = await getPathType(outDir);
 
   if (outDirType === "missing") {
-    console.log(`Skipped localized route normalization: "${outDir}" does not exist.`);
+    console.info(`Skipped localized route normalization: "${outDir}" does not exist.`);
     return;
   }
   if (outDirType !== "directory") {
@@ -208,8 +293,10 @@ async function main(): Promise<void> {
     removed += result.removed;
   }
 
-  console.log(
-    `Localized route normalization complete for ${outDir}. Processed ${pairs.length} mappings, moved ${moved} path groups, removed ${removed} duplicate files.`,
+  const patchedHtmlDocuments = await patchLocalizedHtmlDocuments(outDir);
+
+  console.info(
+    `Localized route normalization complete for ${outDir}. Processed ${pairs.length} mappings, moved ${moved} path groups, removed ${removed} duplicate files, patched ${patchedHtmlDocuments} localized HTML documents.`,
   );
 }
 

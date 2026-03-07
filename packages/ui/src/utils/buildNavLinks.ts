@@ -31,6 +31,10 @@ export interface NavLinksResult {
 
 export type TranslateFn = (key: string, defaultValue?: string) => string;
 
+function translateNavChildLabel(t: TranslateFn, key: string, fallback: string): string {
+  return t(`navChildren.${key}`, fallback);
+}
+
 /**
  * Returns navigation slugs and translated labels for all NAV_ITEMS.
  * The "rooms" item includes a `children` array with a "See all rooms" sentinel
@@ -62,11 +66,15 @@ export function buildNavLinks(
 
     if (key === "rooms") {
       const children: NavItemChild[] = [
-        { key: "rooms_all", to: bookSlug, label: "See all rooms" },
+        {
+          key: "rooms_all",
+          to: bookSlug,
+          label: translateNavChildLabel(t, "rooms.all", "See all rooms"),
+        },
         ...Object.entries(ROOM_DROPDOWN_NAMES).map(([id, name]) => ({
           key: id,
           to: `${roomsSlug}/${getRoomSlug(id, lang)}`,
-          label: name,
+          label: translateNavChildLabel(t, `rooms.${id}`, name),
         })),
       ];
       return {
@@ -80,16 +88,24 @@ export function buildNavLinks(
 
     if (key === "apartment") {
       const children: NavItemChild[] = [
-        { key: "apartment_book_private", to: privateBookingSlug, label: "Book private accommodations" },
+        {
+          key: "apartment_book_private",
+          to: privateBookingSlug,
+          label: translateNavChildLabel(
+            t,
+            "apartment.bookPrivate",
+            "Book private accommodations",
+          ),
+        },
         {
           key: "apartment_apartment",
           to: getPrivateRoomChildPath(lang, "apartment"),
-          label: "Apartment",
+          label: translateNavChildLabel(t, "apartment.apartment", "Apartment"),
         },
         {
           key: "apartment_double_room",
           to: getPrivateRoomChildPath(lang, "double-room"),
-          label: "Double Room",
+          label: translateNavChildLabel(t, "apartment.doubleRoom", "Double Room"),
         },
       ];
       return {

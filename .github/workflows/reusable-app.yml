@@ -64,6 +64,26 @@ on:
         required: false
         type: string
         default: ""
+      # Expected canonical origin for canonical-tag and sitemap checks.
+      healthcheck-canonical-origin:
+        required: false
+        type: string
+        default: ""
+      # Routes whose rendered canonical tag must equal canonical-origin + route.
+      healthcheck-canonical-tag-routes:
+        required: false
+        type: string
+        default: ""
+      # Paths that must appear in /sitemap.xml using healthcheck-canonical-origin.
+      healthcheck-sitemap-required-routes:
+        required: false
+        type: string
+        default: ""
+      # Routes that must return 404 exactly (e.g. intentionally dropped aliases).
+      healthcheck-404-routes:
+        required: false
+        type: string
+        default: ""
       # Number of Jest test shards. Set >1 to enable sharded parallel tests
       # with changed-file detection. Default 1 = single test job, full suite.
       test-shard-count:
@@ -784,6 +804,10 @@ jobs:
           BASE_URL: ${{ inputs.healthcheck-base-url }}
           EXTRA_ROUTES: ${{ inputs.healthcheck-extra-routes }}
           STRICT_ROUTES: ${{ inputs.healthcheck-strict-routes }}
+          CANONICAL_ORIGIN: ${{ inputs.healthcheck-canonical-origin }}
+          CANONICAL_TAG_ROUTES: ${{ inputs.healthcheck-canonical-tag-routes }}
+          SITEMAP_REQUIRED_ROUTES: ${{ inputs.healthcheck-sitemap-required-routes }}
+          EXPECT_404_ROUTES: ${{ inputs.healthcheck-404-routes }}
           MAX_RETRIES: "10"
           RETRY_DELAY: "6"
 

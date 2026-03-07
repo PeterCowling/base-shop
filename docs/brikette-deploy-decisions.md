@@ -14,7 +14,11 @@ Brikette has **two deploy targets** on the same Cloudflare Pages delivery model:
 | **URL** | `staging.brikette-website.pages.dev` | `www.hostel-positano.com` |
 | **Env vars** | `OUTPUT_EXPORT=1`, `NEXT_PUBLIC_OUTPUT_EXPORT=1` | `OUTPUT_EXPORT=1`, `NEXT_PUBLIC_OUTPUT_EXPORT=1`, `NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY=1` |
 
-Production also ships the Cloudflare Pages Function at `functions/api/availability.js`, so live availability remains available even though the Next.js `src/app/api` directory is hidden during the static export build.
+Production also ships Cloudflare Pages Functions:
+- `functions/api/availability.js` for live availability
+- `functions/[[path]].js` for exact historical legacy-path redirects scoped by `public/_routes.json`
+
+That means live availability and the curated high-cardinality legacy redirect contract remain available even though the Next.js `src/app/api` directory is hidden during the static export build.
 
 ### What Works On The Current Pages Deploy
 
@@ -22,7 +26,9 @@ Production also ships the Cloudflare Pages Function at `functions/api/availabili
 - Client-side JS hydration and interactivity
 - Static assets (`/_next/static/*`, `/img/*`)
 - Images served directly from `public/img/` (no resizing)
-- Cloudflare Pages edge routing from `apps/brikette/public/_redirects`
+- Cloudflare Pages structural routing from `apps/brikette/public/_redirects`
+- Cloudflare Pages exact legacy redirects via `functions/[[path]].js` + `functions/generated/legacy-redirects.js`
+- Pages Function scoping via `apps/brikette/public/_routes.json`
 - Production-only live availability via `functions/api/availability.js`
 
 ### What Does NOT Work In The Static Export Runtime
@@ -77,10 +83,18 @@ Cloudflare Image Resizing (`/cdn-cgi/image/...`) requires a paid plan or custom 
 
 ### Redirects And Localized Canonical Routes
 
-Since middleware doesn't run on static Pages, `apps/brikette/public/_redirects` is the edge routing contract. It carries:
-- root and health redirects
-- localized `301` alias redirects to the canonical public slug
-- localized `200` rewrites from canonical public slugs back to the internal export path
+Since middleware doesn't run on static Pages, the deployed edge routing contract is split:
+- `apps/brikette/public/_redirects`
+  - small structural redirects only
+  - root and health redirects
+  - stable global entrypoints and typo corrections
+  - low-cardinality route-family redirects such as `/directions/:slug`
+- `apps/brikette/functions/[[path]].js` + `apps/brikette/functions/generated/legacy-redirects.js`
+  - exact historical redirect map for supported legacy URLs from `apps/brikette/src/test/fixtures/legacy-urls.txt`
+- `apps/brikette/public/_routes.json`
+  - constrains the legacy-path function to route families that need it
+
+This is intentional. Pages `_redirects` is no longer allowed to mirror every mechanically derivable alias because that exceeded Cloudflare Pages limits and preserved synthetic wrong-locale URLs the business does not want.
 
 For rollout-critical funnel checks, the canonical booking surfaces are currently:
 - `/it/prenota`
@@ -128,7 +142,7 @@ Some versions of Next.js don't detect synchronous `generateStaticParams` during 
 
 ### 6. Next.js 16 emits `__next.*` metadata files — delete before deploying
 
-Next.js 16 writes `__next._tree.txt`, `__next._head.txt`, `__next.__PAGE__.txt` and similar files alongside every route directory. A full build produces ~33k of these files, pushing the total past Cloudflare Pages' 20k-file free-plan limit.
+Next.js 16 writes `__next._tree.txt`, `__next._head.txt`, `__next.__PAGE__.txt` and similar files alongside every route directory. A full Brikette export produces ~33k of these files. Brikette is on a paid Pages plan, but deploys still behave like the old 20k-file cap until the Pages project has `PAGES_WRANGLER_MAJOR_VERSION=4` enabled. Until that setting is confirmed, strip the metadata files before deploy.
 
 **Always run after `next build` and before `wrangler pages deploy`:**
 
@@ -157,13 +171,15 @@ mkdir -p ".tmp"
 [ -d "src/app/[lang]/guides/[slug]" ] && mv "src/app/[lang]/guides/[slug]" "src/app/[lang]/guides/_single-off" || true
 [ -d "src/app/[lang]/help/[slug]" ] && mv "src/app/[lang]/help/[slug]" "src/app/[lang]/help/_slug-off" || true
 [ -d "src/app/api" ] && mv "src/app/api" ".tmp/app-api-off" || true
-OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_GA_MEASUREMENT_ID="$GA_ID" pnpm exec next build --turbopack
+OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_GA_MEASUREMENT_ID="$GA_ID" pnpm build
 OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm --filter @apps/brikette normalize:localized-routes
 OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm --filter @apps/brikette generate:static-redirects
+OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm --filter @apps/brikette verify:sitemap-contract -- --file out/sitemap.xml
 
 # 4. REQUIRED — strip Next.js 16 metadata bloat
 #    Next.js 16 emits ~33k __next.* txt files per route build.
-#    Without this step the upload exceeds Cloudflare Pages' 20k-file free-plan limit.
+#    Brikette no longer targets Pages free tier, but deploys still need this cleanup
+#    until the Pages project has `PAGES_WRANGLER_MAJOR_VERSION=4` enabled.
 find out -name "__next.*" -type f -delete
 
 # 5. Restore hidden routes
@@ -178,7 +194,20 @@ pnpm exec wrangler pages deploy out --project-name brikette-website --branch mai
 
 For staging, swap `--branch main` → `--branch staging`.
 
-**Auth**: wrangler uses the OAuth token for peter.cowling1976@gmail.com. Run `pnpm exec wrangler whoami` to confirm.
+**Auth**: `wrangler` can use either a valid OAuth login or `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` from `.env.local`. Confirm before deploying with either:
+
+```bash
+pnpm exec wrangler whoami
+```
+
+or
+
+```bash
+curl -sS -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+  https://api.cloudflare.com/client/v4/user/tokens/verify
+```
+
+**Build lifecycle**: use `pnpm build`, not raw `pnpm exec next build`. Brikette’s prebuild lifecycle generates the canonical SEO assets that must be copied into `out/` for Pages deploys.
 
 **Route hiding**: do not skip the route-hide / restore sequence. The current CI path hides `src/app/api`, `src/app/[lang]/guides/[...slug]`, `src/app/[lang]/guides/[slug]`, and `src/app/[lang]/help/[slug]` before the export build, then restores them after normalization and redirect generation.
 

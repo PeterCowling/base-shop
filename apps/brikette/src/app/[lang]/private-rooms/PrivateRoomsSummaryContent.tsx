@@ -8,7 +8,7 @@ import { getTranslations } from "@/app/_lib/i18n-server";
 import roomsData from "@/data/roomsData";
 import type { AppLanguage } from "@/i18n.config";
 import { getPrivateBookingPath } from "@/utils/localizedRoutes";
-import { translatePath } from "@/utils/translate-path";
+import { getPrivateRoomChildPath } from "@/utils/privateRoomPaths";
 
 type Props = {
   lang: AppLanguage;
@@ -18,7 +18,6 @@ export default async function PrivateRoomsSummaryContent({ lang }: Props) {
   const tRoomsPage = await getTranslations(lang, "roomsPage");
   const tApartment = await getTranslations(lang, "apartmentPage");
 
-  const privateRoomsPath = `/${lang}/${translatePath("apartment", lang)}`;
   const privateBookingPath = getPrivateBookingPath(lang);
   const apartmentRoom = roomsData.find((room) => room.id === "apartment");
   const doubleRoom = roomsData.find((room) => room.id === "double_room");
@@ -36,14 +35,14 @@ export default async function PrivateRoomsSummaryContent({ lang }: Props) {
 
   const cards = [
     {
-      href: `${privateRoomsPath}/apartment`,
+      href: getPrivateRoomChildPath(lang, "apartment"),
       image: apartmentRoom?.landingImage ?? "/img/facade.avif",
       title: tApartment("title") as string,
       description: tApartment("body") as string,
       highlights: apartmentDetails,
     },
     {
-      href: `${privateRoomsPath}/double-room`,
+      href: getPrivateRoomChildPath(lang, "double-room"),
       image: doubleRoom?.landingImage ?? "/img/7/landing.webp",
       title: tRoomsPage("rooms.double_room.title") as string,
       description: tRoomsPage("rooms.double_room.bed_description") as string,

@@ -8,6 +8,10 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
+import {
+  findPrivateRoomChildRouteIdBySlug,
+  getPrivateRoomChildSlug,
+} from "@acme/ui/config/privateRoomChildSlugs";
 import { findRoomIdBySlug, getRoomSlug } from "@acme/ui/config/roomSlugs";
 
 import { type AppLanguage,i18nConfig } from "./i18n.config";
@@ -157,6 +161,28 @@ function buildLocalizedRoomsRedirectPath(
   return `/${appLang}/${bookingSlug}${trailingSlash}`;
 }
 
+function resolvePrivateRoomChildRedirectPath(
+  appLang: AppLanguage,
+  childSegment: string | undefined,
+): string | null {
+  if (!childSegment) return null;
+
+  const routeId = findPrivateRoomChildRouteIdBySlug(childSegment.toLowerCase(), appLang);
+  if (!routeId) return null;
+
+  return `/${appLang}/${SLUGS.apartment[appLang]}/${getPrivateRoomChildSlug(routeId, appLang)}/`;
+}
+
+function rewritePrivateRoomChildSegment(
+  appLang: AppLanguage,
+  nextParts: string[],
+): void {
+  const routeId = findPrivateRoomChildRouteIdBySlug((nextParts[2] ?? "").toLowerCase(), appLang);
+  if (!routeId) return;
+
+  nextParts[2] = routeId;
+}
+
 function maybeRedirectRoomAlias(params: {
   request: NextRequest;
   appLang: AppLanguage;
@@ -184,6 +210,17 @@ function maybeRedirectLocalizedTopLevel(params: {
 
   if (key === "apartment" && nextParts[2]?.toLowerCase() === "book") {
     return buildRedirectResponse(request, buildPrivateBookingRedirectPath(appLang, topSegmentSuffix));
+  }
+
+  if (key === "apartment" && nextParts.length >= 3) {
+    const canonicalPrivateRoomPath = resolvePrivateRoomChildRedirectPath(appLang, nextParts[2]);
+    if (canonicalPrivateRoomPath) {
+      const canonicalChildSlug = canonicalPrivateRoomPath.split("/").filter(Boolean)[2];
+      const isCanonicalChild = nextParts[2]?.toLowerCase() === canonicalChildSlug;
+      if (!isCanonicalChild) {
+        return buildRedirectResponse(request, canonicalPrivateRoomPath);
+      }
+    }
   }
 
   if (key === "rooms" && nextParts.length >= 3) {
@@ -228,7 +265,7 @@ function buildGenericTopLevelRedirectPath(params: {
 
   if (wrongKey === "apartment" && nextParts.length === 2) {
     const trailingSlash = topSegmentSuffix ? "" : "/";
-    return `/${appLang}/${correctSlug}/apartment${trailingSlash}`;
+    return `/${appLang}/${correctSlug}${trailingSlash}`;
   }
 
   if (wrongKey === "apartment" && nextParts[2]?.toLowerCase() === "book") {
@@ -275,6 +312,13 @@ function handleWrongTopLevelRedirect(params: {
 
   if (wrongKey === "rooms" && nextParts.length >= 3) {
     return maybeRedirectRoomAlias({ request, appLang, nextParts });
+  }
+
+  if (wrongKey === "apartment" && nextParts.length >= 3) {
+    const canonicalPrivateRoomPath = resolvePrivateRoomChildRedirectPath(appLang, nextParts[2]);
+    if (canonicalPrivateRoomPath) {
+      return buildRedirectResponse(request, canonicalPrivateRoomPath);
+    }
   }
 
   return buildRedirectResponse(
@@ -328,6 +372,9 @@ export function middleware(request: NextRequest) {
     // App Router routes are segment-based, so we must rewrite to the canonical
     // internal segment without the suffix to avoid deterministic 404 noise.
     nextParts[1] = INTERNAL_SEGMENT_BY_KEY[key];
+    if (key === "apartment" && nextParts.length >= 3) {
+      rewritePrivateRoomChildSegment(appLang, nextParts);
+    }
   } else {
     const redirectResponse = handleWrongTopLevelRedirect({
       request,

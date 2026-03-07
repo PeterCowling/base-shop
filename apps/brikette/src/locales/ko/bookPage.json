@@ -55,7 +55,8 @@
   },
   "noscript": {
     "jsDisabledAssistance": "JavaScript가 비활성화된 경우 호스텔 예약은 지원 지원을 통해 처리됩니다.",
-    "emailAssistedBooking": "예약 지원을 위해 이메일을 보내주세요"
+    "emailAssistedBooking": "예약 지원을 위해 이메일을 보내주세요",
+    "octorateDirectBooking": "Octorate에서 직접 예약"
   },
   "bookingConstraints": {
     "notice": "호스텔 예약은 예약당 최대 성인 8명의 2박~8박 사이의 성인 전용 숙박을 지원합니다. 대규모 그룹 또는 장기 숙박의 경우 요청을 여러 예약으로 분할하거나",

@@ -19,7 +19,15 @@ const REQUIRED_STATIC_ROUTE_FILES = [
 
 const REQUIRED_DEPLOY_SUPPORT_FILES = [
   "apps/brikette/public/_redirects",
+  "apps/brikette/public/_routes.json",
+  "apps/brikette/functions/_shared/legacy-redirect.js",
+  "apps/brikette/functions/[lang]/[section].js",
+  "apps/brikette/functions/[lang]/[section]/[slug].js",
+  "apps/brikette/functions/[lang]/[section]/[slug]/[leaf].js",
   "apps/brikette/functions/api/availability.js",
+  "apps/brikette/functions/api/health.js",
+  "apps/brikette/functions/api/recovery/quote/send.js",
+  "apps/brikette/functions/generated/legacy-redirects.js",
   "apps/brikette/scripts/normalize-static-export-localized-routes.ts",
   "apps/brikette/scripts/generate-static-export-redirects.ts",
 ];

@@ -5,10 +5,12 @@ import type { Metadata } from "next";
 
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 
-import { getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
+import { getNamespaceBundles, getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
+import { BOOKING_CODE } from "@/context/modal/constants";
 import { OG_IMAGE } from "@/utils/headConstants";
+import { buildOctorateCalendarUrl } from "@/utils/octorateLinks";
 import { getSlug } from "@/utils/slug";
 import { resolveLabel } from "@/utils/translation-fallback";
 
@@ -17,6 +19,8 @@ import BookPageContent from "./BookPageContent";
 type Props = {
   params: Promise<{ lang: string }>;
 };
+
+const HOSTEL_NOSCRIPT_OCTORATE_URL = buildOctorateCalendarUrl({ codice: BOOKING_CODE });
 
 export async function generateStaticParams() {
   return generateLangParams();
@@ -54,6 +58,18 @@ export default async function BookPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
   const t = await getTranslations(validLang, ["bookPage"], { optional: true });
+  const preloadedNamespaceBundles = await getNamespaceBundles(validLang, [
+    "bookPage",
+    "roomsPage",
+    "landingPage",
+    "faq",
+    "_tokens",
+    "modals",
+    "footer",
+    "testimonials",
+    "ratingsBar",
+    "dealsPage",
+  ]);
   const heading = resolveLabel(t, "heading", "");
   /* eslint-disable ds/no-hardcoded-copy -- TASK-08 [ttl=2026-12-31] i18n-exempt: noscript-only fallback strings, not rendered in normal UI */
   const noscriptMessage = resolveLabel(
@@ -77,7 +93,11 @@ export default async function BookPage({ params }: Props) {
     <>
       {/* Wrap in Suspense because BookPageContent uses useSearchParams */}
       <Suspense fallback={null}>
-        <BookPageContent lang={validLang} heading={heading} />
+        <BookPageContent
+          lang={validLang}
+          heading={heading}
+          preloadedNamespaceBundles={preloadedNamespaceBundles}
+        />
       </Suspense>
       {/* No-JS fallback (TASK-10B): direct Octorate link rendered in RSC layer so it
           is always present in server HTML, visible only when JavaScript is disabled. */}
@@ -85,7 +105,7 @@ export default async function BookPage({ params }: Props) {
         <div>
           {noscriptMessage}{" "}
           <a
-            href="https://book.octorate.com/octobook/site/reservation/calendar.xhtml?id=5879"
+            href={HOSTEL_NOSCRIPT_OCTORATE_URL}
             rel="nofollow noopener noreferrer"
             target="_blank"
           >

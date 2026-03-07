@@ -32,6 +32,14 @@ const VIEW_FALLBACK_LABELS: Record<RoomFilterView, string> = {
   none: "No view",
 };
 
+const VIEW_EXISTING_TRANSLATION_KEYS: Record<RoomFilterView, string> = {
+  all: "filters.all",
+  sea: "detailsLine.views.seaViewTerrace",
+  courtyard: "detailsLine.views.courtyardView",
+  garden: "detailsLine.views.gardenView",
+  none: "detailsLine.views.noView",
+};
+
 const CATEGORY_FALLBACK_LABELS: Record<string, string> = {
   view: "View",
   type: "Type",
@@ -66,6 +74,18 @@ function resolveTranslatedCopy(value: unknown, fallback: string): string {
   return trimmed;
 }
 
+function resolveTranslatedChain(
+  values: unknown[],
+  fallback: string,
+): string {
+  for (const value of values) {
+    const resolved = resolveTranslatedCopy(value, "");
+    if (resolved) return resolved;
+  }
+
+  return fallback;
+}
+
 /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
 const activeClass =
   "bg-brand-primary text-brand-on-primary border-brand-primary dark:bg-brand-secondary dark:text-brand-on-accent dark:border-brand-secondary";
@@ -85,9 +105,45 @@ function RoomFilters({ selected, onChange, availableBedCounts, availability, lan
     return `min-h-11 rounded-full px-4 py-2 text-sm border transition-colors duration-200 ${isActive ? activeClass : inactiveClass}`;
   }
 
-  const viewLabel = resolveTranslatedCopy(t("filters.categories.view", { defaultValue: "View" }), CATEGORY_FALLBACK_LABELS.view);
-  const typeLabel = resolveTranslatedCopy(t("filters.categories.type", { defaultValue: "Type" }), CATEGORY_FALLBACK_LABELS.type);
-  const bedsLabel = resolveTranslatedCopy(t("filters.categories.beds", { defaultValue: "Beds" }), CATEGORY_FALLBACK_LABELS.beds);
+  const viewLabel = resolveTranslatedChain(
+    [
+      t("filters.categories.view"),
+      t("feature.view"),
+    ],
+    CATEGORY_FALLBACK_LABELS.view,
+  );
+  const typeLabel = resolveTranslatedChain(
+    [
+      t("filters.categories.type"),
+      t("details"),
+    ],
+    CATEGORY_FALLBACK_LABELS.type,
+  );
+  const bedsLabel = resolveTranslatedChain(
+    [
+      t("filters.categories.beds"),
+      t("feature.beds"),
+    ],
+    CATEGORY_FALLBACK_LABELS.beds,
+  );
+  const filtersAriaLabel = resolveTranslatedChain(
+    [t("filtersAria")],
+    "Room filters",
+  );
+  const roomAttributesAriaLabel = resolveTranslatedChain(
+    [
+      t("filters.categories.type"),
+      t("details"),
+    ],
+    "Room attributes",
+  );
+  const bedCountAriaLabel = resolveTranslatedChain(
+    [
+      t("filters.categories.beds"),
+      t("feature.beds"),
+    ],
+    "Bed count",
+  );
 
   return (
     <div className="mb-6 space-y-2">
@@ -96,7 +152,7 @@ function RoomFilters({ selected, onChange, availableBedCounts, availability, lan
         <span className="w-12 shrink-0 text-xs font-medium uppercase tracking-wider text-brand-primary/60 dark:text-brand-text/50">
           {viewLabel}
         </span>
-        <div role="radiogroup" aria-label={resolveTranslatedCopy(t("filtersAria", { defaultValue: "Room filters" }), "Room filters")} className="flex flex-wrap gap-2">
+        <div role="radiogroup" aria-label={filtersAriaLabel} className="flex flex-wrap gap-2">
           {viewFilters.map((key) => {
             const isActive = selected.view === key;
             const isDisabled = !availability.views[key];
@@ -110,8 +166,11 @@ function RoomFilters({ selected, onChange, availableBedCounts, availability, lan
                 className={pillClass(isActive, isDisabled)}
                 onClick={isDisabled ? undefined : () => onChange({ ...selected, view: key })}
               >
-                {resolveTranslatedCopy(
-                  t(`filters.views.${key}`, { defaultValue: VIEW_FALLBACK_LABELS[key] }),
+                {resolveTranslatedChain(
+                  [
+                    t(`filters.views.${key}`),
+                    t(VIEW_EXISTING_TRANSLATION_KEYS[key]),
+                  ],
                   VIEW_FALLBACK_LABELS[key],
                 )}
               </button>
@@ -125,7 +184,7 @@ function RoomFilters({ selected, onChange, availableBedCounts, availability, lan
         <span className="w-12 shrink-0 text-xs font-medium uppercase tracking-wider text-brand-primary/60 dark:text-brand-text/50">
           {typeLabel}
         </span>
-        <div role="group" aria-label="Room attributes" className="flex flex-wrap gap-2">
+        <div role="group" aria-label={roomAttributesAriaLabel} className="flex flex-wrap gap-2">
           <button
             type="button"
             aria-pressed={selected.femaleOnly}
@@ -133,8 +192,12 @@ function RoomFilters({ selected, onChange, availableBedCounts, availability, lan
             className={pillClass(selected.femaleOnly, !availability.femaleOnly)}
             onClick={!availability.femaleOnly ? undefined : () => onChange({ ...selected, femaleOnly: !selected.femaleOnly })}
           >
-            {resolveTranslatedCopy(
-              t("filters.femaleOnly", { defaultValue: "Female only" }),
+            {resolveTranslatedChain(
+              [
+                t("filters.femaleOnly"),
+                t("facts.type.femaleDorm"),
+                t("facts.type.femaleRoom"),
+              ],
               "Female only",
             )}
           </button>
@@ -145,8 +208,12 @@ function RoomFilters({ selected, onChange, availableBedCounts, availability, lan
             className={pillClass(selected.ensuiteBathroom, !availability.ensuiteBathroom)}
             onClick={!availability.ensuiteBathroom ? undefined : () => onChange({ ...selected, ensuiteBathroom: !selected.ensuiteBathroom })}
           >
-            {resolveTranslatedCopy(
-              t("filters.ensuiteBathroom", { defaultValue: "Ensuite / private bathroom" }),
+            {resolveTranslatedChain(
+              [
+                t("filters.ensuiteBathroom"),
+                t("facts.bathroom.bathroomEnsuite"),
+                t("facts.bathroom.bathroomPrivate"),
+              ],
               "Ensuite / private bathroom",
             )}
           </button>
@@ -158,7 +225,7 @@ function RoomFilters({ selected, onChange, availableBedCounts, availability, lan
         <span className="w-12 shrink-0 text-xs font-medium uppercase tracking-wider text-brand-primary/60 dark:text-brand-text/50">
           {bedsLabel}
         </span>
-        <div role="group" aria-label="Bed count" className="flex flex-wrap gap-2">
+        <div role="group" aria-label={bedCountAriaLabel} className="flex flex-wrap gap-2">
           {availableBedCounts.map((count) => {
             const isActive = selected.bedCounts.includes(count);
             const isDisabled = availability.bedCounts[count] === false;
@@ -181,8 +248,11 @@ function RoomFilters({ selected, onChange, availableBedCounts, availability, lan
                         })
                 }
               >
-                {resolveTranslatedCopy(
-                  t("filters.bedCount", { defaultValue: "{{count}} beds", count }),
+                {resolveTranslatedChain(
+                  [
+                    t("filters.bedCount", { count }),
+                    t("feature.beds", { defaultValue: "Beds" }).replace(/^/u, `${count} `),
+                  ],
                   `${count} beds`,
                 )}
               </button>

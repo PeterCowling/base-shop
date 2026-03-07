@@ -5,6 +5,10 @@
 // IMPORTANT: Keep imports minimal to avoid env config dependencies in tests.
 // Prefer direct JSON imports and simple data files over complex modules.
 
+import {
+  getPrivateRoomChildSlug,
+  type PrivateRoomChildRouteId,
+} from "@acme/ui/config/privateRoomChildSlugs";
 import { getRoomSlug } from "@acme/ui/config/roomSlugs";
 
 import { ASSISTANCE_GUIDES, GUIDES_INDEX } from "@/data/guides.index";
@@ -13,10 +17,28 @@ import { websiteVisibleRoomsData } from "@/data/roomsData";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
 import { guideNamespace, guidePath, guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
-import { INTERNAL_SEGMENT_BY_KEY, STATIC_EXPORT_SECTION_KEYS } from "@/routing/sectionSegments";
+import {
+  INTERNAL_SEGMENT_BY_KEY,
+  PUBLIC_INDEXABLE_SECTION_KEYS,
+  STATIC_EXPORT_SECTION_KEYS,
+} from "@/routing/sectionSegments";
 import { getSlug } from "@/utils/slug";
 
 const NON_DORM_ROOM_IDS = new Set(["double_room", "apartment"]);
+const APP_PRIVATE_ROOM_DETAIL_SEGMENTS = [
+  "double-room",
+  "apartment",
+  "book",
+  "private-stay",
+  "street-level-arrival",
+] as const;
+
+const PUBLIC_PRIVATE_ROOM_DETAIL_SEGMENTS = [
+  "double-room",
+  "apartment",
+  "private-stay",
+  "street-level-arrival",
+] as const satisfies readonly PrivateRoomChildRouteId[];
 
 /**
  * Lists all valid App Router URLs for the brikette app.
@@ -38,6 +60,11 @@ export function listAppRouterUrls(): string[] {
 
     // Draft dashboard (internal editorial route)
     urls.push(`/${lang}/draft`);
+
+    for (const segment of APP_PRIVATE_ROOM_DETAIL_SEGMENTS) {
+      urls.push(`/${lang}/${INTERNAL_SEGMENT_BY_KEY.apartment}/${segment}`);
+    }
+
     // Dynamic: Rooms
     const roomsSlug = INTERNAL_SEGMENT_BY_KEY.rooms;
     for (const room of websiteVisibleRoomsData.filter((candidate) => !NON_DORM_ROOM_IDS.has(candidate.id))) {
@@ -87,8 +114,61 @@ export function listLocalizedPublicUrls(): string[] {
   for (const lang of langs) {
     urls.push(`/${lang}`);
 
+    for (const key of PUBLIC_INDEXABLE_SECTION_KEYS) {
+      urls.push(`/${lang}/${getSlug(key, lang)}`);
+    }
+
+    const privateRoomsSlug = getSlug("apartment", lang);
+    for (const segment of PUBLIC_PRIVATE_ROOM_DETAIL_SEGMENTS) {
+      urls.push(`/${lang}/${privateRoomsSlug}/${getPrivateRoomChildSlug(segment, lang)}`);
+    }
+
+    const roomsSlug = getSlug("rooms", lang);
+    for (const room of websiteVisibleRoomsData.filter((candidate) => !NON_DORM_ROOM_IDS.has(candidate.id))) {
+      urls.push(`/${lang}/${roomsSlug}/${getRoomSlug(room.id, lang)}`);
+    }
+
+    const publishedGuides = GUIDES_INDEX.filter((g) => g.status === "live");
+    for (const guide of publishedGuides) {
+      const slug = guideSlug(lang, guide.key);
+      if (resolveGuideKeyFromSlug(slug, lang) !== guide.key) continue;
+      urls.push(guidePath(lang, guide.key));
+    }
+
+    const allTags = new Set<string>();
+    for (const guide of publishedGuides) {
+      for (const tag of guide.tags) {
+        allTags.add(tag);
+      }
+    }
+    const experiencesSlug = getSlug("experiences", lang);
+    const tagsSlug = getSlug("guidesTags", lang);
+    for (const tag of allTags) {
+      urls.push(`/${lang}/${experiencesSlug}/${tagsSlug}/${encodeURIComponent(tag)}`);
+    }
+  }
+
+  return Array.from(new Set(urls));
+}
+
+/**
+ * Lists all canonical public-facing localized routes, including transactional
+ * surfaces that stay live but are intentionally excluded from sitemap/indexation.
+ */
+export function listLocalizedCanonicalAppUrls(): string[] {
+  const langs = i18nConfig.supportedLngs as AppLanguage[];
+  const urls: string[] = [];
+
+  for (const lang of langs) {
+    urls.push(`/${lang}`);
+
     for (const key of STATIC_EXPORT_SECTION_KEYS) {
       urls.push(`/${lang}/${getSlug(key, lang)}`);
+    }
+
+    const privateRoomsSlug = getSlug("apartment", lang);
+    for (const segment of PUBLIC_PRIVATE_ROOM_DETAIL_SEGMENTS) {
+      urls.push(`/${lang}/${privateRoomsSlug}/${getPrivateRoomChildSlug(segment, lang)}`);
     }
 
     const roomsSlug = getSlug("rooms", lang);
@@ -131,7 +211,7 @@ export function getUrlCounts(): Record<string, number> {
     home: langCount,
     staticSections: langCount * STATIC_EXPORT_SECTION_KEYS.length,
     draft: langCount,
-    privateBook: langCount,
+    privateRoomDetails: langCount * APP_PRIVATE_ROOM_DETAIL_SEGMENTS.length,
     rooms: langCount * dormRoomCount,
     // NOTE: guides count now includes how-to-get-here routes (via GUIDES_INDEX)
     guides: langCount * GUIDES_INDEX.filter((g) => g.status === "live").length,

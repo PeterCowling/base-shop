@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-07T16:58:58.167Z",
+  "last_updated": "2026-03-07T17:02:37.728Z",
   "counts": {
-    "enqueued": 180,
-    "processed": 45,
+    "enqueued": 182,
+    "processed": 46,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
     "completed": 126,
-    "fact_find_ready": 239,
+    "fact_find_ready": 242,
     "micro_build_ready": 8,
-    "total": 377
+    "total": 380
   },
   "dispatches": [
     {
@@ -15672,6 +15672,150 @@
       "intended_outcome": {
         "type": "operational",
         "statement": "Produce a validated routing outcome and scoped next action for threadid draft regenerate.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307170008-0525",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "92dfce39b970e52b1e0c4f365a9e062da2f49cf0",
+      "after_sha": "e149e0efecad84d906a72fb9ca5ef54a1299b845",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:e149e0efecad84d906a72fb9ca5ef54a1299b845",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:e149e0efecad84d906a72fb9ca5ef54a1299b845",
+      "cluster_fingerprint": "6672eab2d4b6b65ebbf0b24f4748d62cc5b129e9d1f63a4b0f975795f7c5fa6d",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (92dfce3 → e149e0e)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
+        "session:69d199f6-bf3f-4837-a680-8fa673ae6207",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-07T17:00:08.524Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307170050-8071",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "STRATEGY",
+      "root_event_id": "operator:PLAT:STRATEGY:writer-lock-scope-reduction:20260307",
+      "anchor_key": "writer-lock-scope-reduction",
+      "cluster_key": "PLAT:STRATEGY:writer-lock-scope-reduction:operator:20260307",
+      "cluster_fingerprint": "c9d9c9e0a74ff7c43d5466385755f517b5acf7d0d4566e1ea11084874e20dcc7",
+      "lineage_depth": 0,
+      "area_anchor": "PLAT writer lock - deploy scope too broad",
+      "location_anchors": [
+        "AGENTS.md",
+        "docs/git-hooks.md",
+        "docs/git-and-github-workflow.md",
+        "scripts/agents/integrator-shell.sh",
+        "scripts/agents/with-writer-lock.sh",
+        "scripts/git/writer-lock.sh"
+      ],
+      "provisional_deliverable_family": "doc",
+      "current_truth": "Repo guidance requires the writer lock before editing, committing, or pushing, but does not clearly separate short serialized git writes from long build or remote deploy steps. A live wrangler Pages deploy held the lock for more than 30 minutes while blocking unrelated commit work.",
+      "next_scope_now": "Fact-find the minimum operational rule change needed to keep the writer lock around actual git writes and other serialized repo mutations only, move build and deploy steps outside the lock, and document incident handling for long-running external commands.",
+      "adjacent_later": [
+        "Consider future enforcement guards after the operational rule is stable and documented."
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.94,
+      "evidence_refs": [
+        "operator-stated: hold the writer lock only for actual git writes or serialized repo mutations; do not wrap pnpm build, verification, or wrangler deploy inside it",
+        "operator-stated: for deploys, build the artifact first, then run deploy outside the writer lock in a separate shell/session",
+        "agent-verified: with-writer-lock releases only on shell exit, so a wrapped deploy can hold the lock for the full external command duration",
+        "agent-verified: writer-lock clean-stale refuses live PIDs, so long-running deploy holders remain authoritative until they exit"
+      ],
+      "created_at": "2026-03-07T17:00:50.279Z",
+      "queue_state": "processed",
+      "why": "A long remote deploy blocked unrelated commit work because the writer lock scope is broader than the resource it is meant to protect. We need a documented operating rule that keeps serialization around repo writes, not around network-bound deployment time.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Base-Shop runbooks clearly require the writer lock only for serialized repo writes, and they direct build or deploy steps to run outside the lock after artifacts are prepared.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "writer-lock-scope-reduction",
+        "target_path": "docs/plans/writer-lock-scope-reduction/fact-find.md",
+        "processed_at": "2026-03-07T17:02:37.727Z",
+        "fact_find_slug": "writer-lock-scope-reduction",
+        "fact_find_path": "docs/plans/writer-lock-scope-reduction/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307170139-0499",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "e149e0efecad84d906a72fb9ca5ef54a1299b845",
+      "after_sha": "f2bfa93ea18786e23fd9b70abb130c68e80618da",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:f2bfa93ea18786e23fd9b70abb130c68e80618da",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:f2bfa93ea18786e23fd9b70abb130c68e80618da",
+      "cluster_fingerprint": "31abde3404b86c1faf2d169075f850acc805f899783688f10ef3a1b52d16e87f",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (e149e0e → f2bfa93)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
+        "session:69d199f6-bf3f-4837-a680-8fa673ae6207",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-07T17:01:39.498Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
         "source": "auto"
       }
     }

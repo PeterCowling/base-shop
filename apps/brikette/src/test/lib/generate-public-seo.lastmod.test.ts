@@ -5,7 +5,7 @@ import {
   assertNoBulkTodayLastmod,
   buildGuideLastmodByPath,
   buildSitemapXml,
-  listDirectionPaths,
+  listCanonicalSitemapPaths,
   resolveGuideLastmod,
 } from "../../../scripts/generate-public-seo";
 
@@ -30,7 +30,7 @@ const parseSitemapEntries = (xml: string): ParsedSitemapEntry[] => {
 describe("generate-public-seo lastmod contracts", () => {
   test("TC-12: emits lastmod only for eligible guide-detail URLs and values are ISO UTC", async () => {
     const { lastmodByPath } = await buildGuideLastmodByPath();
-    const sitemapXml = buildSitemapXml(["/", ...listDirectionPaths(), ...listLocalizedPublicUrls()], lastmodByPath);
+    const sitemapXml = buildSitemapXml(listCanonicalSitemapPaths(), lastmodByPath);
     const entries = parseSitemapEntries(sitemapXml);
 
     expect(lastmodByPath.size).toBeGreaterThan(0);
@@ -69,5 +69,19 @@ describe("generate-public-seo lastmod contracts", () => {
         ["2026-02-21T01:00:00.000Z", "2026-01-01T00:00:00.000Z"],
         now,
       )).not.toThrow();
+  });
+
+  test("TC-14: emits every canonical public path, including private-room child pages", () => {
+    const sitemapXml = buildSitemapXml(listCanonicalSitemapPaths());
+    const entries = parseSitemapEntries(sitemapXml);
+    const locs = new Set(entries.map((entry) => entry.loc));
+
+    for (const pathname of listLocalizedPublicUrls()) {
+      expect(locs).toContain(`${baseUrl}${pathname}`);
+    }
+
+    expect(locs).toContain(`${baseUrl}/en/private-rooms/sea-view-apartment`);
+    expect(locs).toContain(`${baseUrl}/it/camere-private/appartamento-vista-mare`);
+    expect(locs).toContain(`${baseUrl}/it/camere-private/camera-doppia`);
   });
 });

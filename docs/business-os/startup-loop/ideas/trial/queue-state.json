@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-07T08:26:31.430Z",
+  "last_updated": "2026-03-07T10:24:40.371Z",
   "counts": {
-    "enqueued": 143,
+    "enqueued": 146,
     "processed": 37,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
-    "completed": 122,
-    "fact_find_ready": 201,
+    "completed": 124,
+    "fact_find_ready": 204,
     "micro_build_ready": 1,
-    "total": 328
+    "total": 333
   },
   "dispatches": [
     {
@@ -13451,7 +13451,7 @@
         "Automatic task creation from email content (e.g. maintenance requests)"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.85,
       "evidence_refs": [
@@ -13461,12 +13461,27 @@
         "apps/reception/src/lib/inbox/sync.server.ts"
       ],
       "created_at": "2026-03-07T12:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "The reception inbox build is complete but emails exist in isolation from guest context. Staff must mentally match email senders to bookings — the system has both datasets (D1 inbox threads, Firebase RTDB bookings) but no bridge between them. Connecting them would make agent-generated drafts contextually specific and surface email status alongside guest information.",
       "intended_outcome": {
         "type": "operational",
         "statement": "Email threads in the reception inbox are automatically linked to guest profiles when the sender address matches a booking. Agent-generated draft replies include guest-specific context (booking dates, room, stay history). Unresolved email threads are visible on guest booking views.",
         "source": "operator"
+      },
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-inbox-dismiss-feedback",
+        "target_path": "docs/plans/reception-inbox-dismiss-feedback/fact-find.md",
+        "processed_at": "2026-03-07T10:10:32.716Z",
+        "fact_find_slug": "reception-inbox-dismiss-feedback",
+        "fact_find_path": "docs/plans/reception-inbox-dismiss-feedback/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-inbox-dismiss-feedback/plan.md",
+        "completed_at": "2026-03-07T10:24:40.371Z",
+        "outcome": "Staff can dismiss irrelevant inbox threads via Not relevant button with admission feedback trail"
       }
     },
     {
@@ -13637,6 +13652,248 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T08:26:31.425Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307082707-0317",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "fecf6a055f37256b69454e04d47d7b9cd9183f21",
+      "after_sha": "5ab59f69c527ea3aea3bfa7f7f18b11f5a1d7987",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:5ab59f69c527ea3aea3bfa7f7f18b11f5a1d7987",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:5ab59f69c527ea3aea3bfa7f7f18b11f5a1d7987",
+      "cluster_fingerprint": "8551d5b75dd608f2230afa17bd867116547bea1d86fc90bd5d7db320ec934558",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (fecf6a0 → 5ab59f6)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
+        "session:69d199f6-bf3f-4837-a680-8fa673ae6207",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-07T08:27:07.316Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307094541-0639",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "5ab59f69c527ea3aea3bfa7f7f18b11f5a1d7987",
+      "after_sha": "8f52e016e87cbe5d60a7e190ade3c4ea3388964c",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:8f52e016e87cbe5d60a7e190ade3c4ea3388964c",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:8f52e016e87cbe5d60a7e190ade3c4ea3388964c",
+      "cluster_fingerprint": "05aeb9e9da508bfc6f39cf59635a0c732d48086083fdf318dac44ed079b29ff2",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (5ab59f6 → 8f52e01)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:69d199f6-bf3f-4837-a680-8fa673ae6207",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-07T09:45:41.638Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307120000-0001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:BRIK:PRODUCTS:reception-inbox-dismiss-feedback:20260307",
+      "anchor_key": "reception-inbox-dismiss-feedback",
+      "cluster_key": "BRIK:PRODUCTS:reception-inbox-dismiss-feedback:operator:20260307",
+      "cluster_fingerprint": "b4e8a1c3d7f2e9b5a6c0d4f8e2b7a9c1d5f3e6b0a4c8d2f7e1b5a9c3d6f0e4",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK reception inbox — no staff feedback on admission decisions",
+      "location_anchors": [
+        "apps/reception/src/lib/inbox/admission.ts",
+        "apps/reception/src/lib/inbox/sync.server.ts",
+        "apps/reception/src/components/inbox/DraftReviewPanel.tsx",
+        "apps/reception/src/lib/inbox/repositories.server.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Staff can only resolve or send threads. There is no way to dismiss an irrelevant email or give feedback that improves future classification.",
+      "next_scope_now": "Add a dismiss/not-relevant action that auto-archives threads with source=staff_override in admission_outcomes, enabling classifier learning from staff corrections.",
+      "adjacent_later": [
+        "Auto-suggest new classifier rules from accumulated staff overrides",
+        "Report showing override patterns by sender/domain"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "completed",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: Staff cannot dismiss irrelevant admitted emails or provide feedback to improve classifier accuracy",
+        "apps/reception/src/lib/inbox/admission.ts",
+        "apps/reception/src/lib/inbox/repositories.server.ts"
+      ],
+      "created_at": "2026-03-07T10:04:16.728Z",
+      "queue_state": "completed",
+      "why": "Admitted emails include false positives that waste staff time. Staff need a way to dismiss irrelevant threads and feed corrections back so the classifier improves over time.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Staff can dismiss irrelevant inbox threads via a Not Relevant button. Each dismissal records a staff_override admission outcome in D1, creating a queryable feedback trail for classifier improvement.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-inbox-dismiss-feedback",
+        "target_path": "docs/plans/reception-inbox-dismiss-feedback/fact-find.md",
+        "processed_at": "2026-03-07T10:10:32.717Z",
+        "fact_find_slug": "reception-inbox-dismiss-feedback",
+        "fact_find_path": "docs/plans/reception-inbox-dismiss-feedback/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-inbox-dismiss-feedback/plan.md",
+        "completed_at": "2026-03-07T10:24:40.371Z",
+        "outcome": "Staff can dismiss irrelevant inbox threads via Not relevant button with admission feedback trail"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307102359-0693",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+      "before_sha": "f3afb9c0ca544e408bbbb41cf08756882b9c2c2b",
+      "after_sha": "69e81aac1eb719409a9f0d1e50995a5776de8964",
+      "root_event_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:69e81aac1eb719409a9f0d1e50995a5776de8964",
+      "anchor_key": "api-mcp-tests-inbox-actions-test",
+      "cluster_key": "bos:unknown:api-mcp-tests-inbox-actions-test:BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:69e81aac1eb719409a9f0d1e50995a5776de8964",
+      "cluster_fingerprint": "6c4ae75d0e72a94d6ffa3e9034eb1dd3208b9f50060f2cec7207e5d05171b677",
+      "lineage_depth": 0,
+      "area_anchor": "api mcp tests inbox actions test",
+      "location_anchors": [
+        "apps/reception/src/app/api/mcp/__tests__/inbox-actions.route.test.ts",
+        "apps/reception/src/app/api/mcp/inbox/[threadId]/dismiss/route.ts",
+        "apps/reception/src/components/inbox/DraftReviewPanel.tsx",
+        "apps/reception/src/components/inbox/InboxWorkspace.tsx",
+        "apps/reception/src/components/inbox/ThreadDetailPane.tsx",
+        "apps/reception/src/lib/inbox/telemetry.server.ts",
+        "apps/reception/src/services/useInbox.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS changed (f3afb9c → 69e81aa)",
+      "next_scope_now": "Investigate implications of api mcp tests inbox actions test delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "git-diff-range:HEAD~1..HEAD",
+        "git-diff:M:apps/reception/src/app/api/mcp/__tests__/inbox-actions.route.test.ts",
+        "git-diff:A:apps/reception/src/app/api/mcp/inbox/[threadId]/dismiss/route.ts",
+        "git-diff:M:apps/reception/src/components/inbox/DraftReviewPanel.tsx",
+        "git-diff:M:apps/reception/src/components/inbox/InboxWorkspace.tsx",
+        "git-diff:M:apps/reception/src/components/inbox/ThreadDetailPane.tsx",
+        "git-diff:M:apps/reception/src/lib/inbox/telemetry.server.ts",
+        "git-diff:M:apps/reception/src/services/useInbox.ts"
+      ],
+      "created_at": "2026-03-07T10:23:59.692Z",
+      "queue_state": "enqueued",
+      "why": "Assess api mcp tests inbox actions test implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for api mcp tests inbox actions test.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307102400-0446",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "8f52e016e87cbe5d60a7e190ade3c4ea3388964c",
+      "after_sha": "463e49d6790788750da54242b0b0b36a10f2cfa3",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:463e49d6790788750da54242b0b0b36a10f2cfa3",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:463e49d6790788750da54242b0b0b36a10f2cfa3",
+      "cluster_fingerprint": "fb441efc6ce76a8026fb7ab8948f569bff9ad370b68727bb265989afa44fe990",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (8f52e01 → 463e49d)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
+        "session:69d199f6-bf3f-4837-a680-8fa673ae6207",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-07T10:24:00.445Z",
       "queue_state": "enqueued",
       "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
       "intended_outcome": {

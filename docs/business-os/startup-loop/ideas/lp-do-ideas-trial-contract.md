@@ -9,8 +9,8 @@ Created: 2026-02-24
 Updated: 2026-02-26
 Owner: startup-loop maintainers
 Related-plan: docs/plans/lp-do-ideas-startup-loop-integration/plan.md
-Primary code entrypoints: scripts/src/startup-loop/lp-do-ideas-trial.ts, scripts/src/startup-loop/lp-do-ideas-trial-queue.ts
-Related-schema: lp-do-ideas-dispatch.v2.schema.json, lp-do-ideas-dispatch.schema.json (compat), lp-do-ideas-standing-registry.schema.json
+Primary code entrypoints: scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts, scripts/src/startup-loop/ideas/lp-do-ideas-trial-queue.ts
+Related-schema: schemas/lp-do-ideas-dispatch.v2.schema.json, _deprecated/lp-do-ideas-dispatch.schema.json (compat), schemas/lp-do-ideas-standing-registry.schema.json
 Related-skill: /lp-do-ideas (pending — TASK-03)
 Related-artifacts: docs/plans/lp-do-ideas-startup-loop-integration/artifacts/trial-policy-decision.md
 ---
@@ -51,7 +51,7 @@ defined in `lp-do-ideas-go-live-seam.md` (TASK-07 deliverable).
 Escalation requires ALL of the following conditions met:
 - Trial review period ≥ 14 days
 - Sample size ≥ 40 dispatches
-- Dispatch precision ≥ 80% (correct route: `lp-do-fact-find` vs `lp-do-briefing`)
+- Dispatch precision ≥ 80% (correct route: `lp-do-fact-find` vs `lp-do-build` vs `lp-do-briefing`)
 
 When conditions are met, the operator may update the policy decision artifact
 and bump `Version` to `1.1.0` to activate Option C: auto-invoke P1 dispatches,
@@ -90,17 +90,18 @@ Escalation is permitted once:
 
 All dispatches emitted in trial mode must:
 
-1. Conform to `lp-do-ideas-dispatch.v2.schema.json` (`schema_version: dispatch.v2`) for new emissions. `dispatch.v1` is compatibility-only for legacy packets.
+1. Conform to `schemas/lp-do-ideas-dispatch.v2.schema.json` (`schema_version: dispatch.v2`) for new emissions. `dispatch.v1` is compatibility-only for legacy packets (schema at `_deprecated/lp-do-ideas-dispatch.schema.json`).
 2. Carry `"mode": "trial"` — immutable in this tranche
 3. Include all required intake fields for their route:
 
 | Route | Required fields beyond base schema |
 |---|---|
 | `lp-do-fact-find` | `area_anchor` (non-empty), `location_anchors` (≥1 item), `provisional_deliverable_family` |
+| `lp-do-build` | `area_anchor` (non-empty), `location_anchors` (≥1 item), `provisional_deliverable_family` |
 | `lp-do-briefing` | `area_anchor` (non-empty) |
 
 4. Carry non-empty `evidence_refs` (at least one artifact path or anchor)
-5. Include a valid `recommended_route` value: `lp-do-fact-find` or `lp-do-briefing`
+5. Include a valid `recommended_route` value: `lp-do-fact-find`, `lp-do-build`, or `lp-do-briefing`
 6. Include cluster identity fields on every emitted packet:
    - `root_event_id`
    - `anchor_key`
@@ -136,7 +137,7 @@ All trial-mode writes are restricted to the following paths:
 | Queue state | `docs/business-os/startup-loop/ideas/trial/queue-state.json` | JSON object |
 | Telemetry records | `docs/business-os/startup-loop/ideas/trial/telemetry.jsonl` | newline-delimited JSON |
 | Classification records | `docs/business-os/startup-loop/ideas/trial/classifications.jsonl` | newline-delimited JSON |
-| Standing registry | `docs/business-os/startup-loop/ideas/standing-registry.json` | JSON object conforming to `lp-do-ideas-standing-registry.schema.json` |
+| Standing registry | `docs/business-os/startup-loop/ideas/standing-registry.json` | JSON object conforming to `schemas/lp-do-ideas-standing-registry.schema.json` |
 
 No trial-mode operation may write to any path outside this list.
 
@@ -148,7 +149,7 @@ When `mode: live` is active (post go-live activation), the corresponding write p
 |---|---|---|
 | Queue state | `docs/business-os/startup-loop/ideas/live/queue-state.json` | JSON object |
 | Telemetry records | `docs/business-os/startup-loop/ideas/live/telemetry.jsonl` | newline-delimited JSON |
-| Standing registry (live) | `docs/business-os/startup-loop/ideas/live/standing-registry.json` | JSON object conforming to `lp-do-ideas-standing-registry.schema.json` |
+| Standing registry (live) | `docs/business-os/startup-loop/ideas/live/standing-registry.json` | JSON object conforming to `schemas/lp-do-ideas-standing-registry.schema.json` |
 
 Trial artifact paths are preserved unchanged after live activation. No migration of trial data to live paths is required.
 See `lp-do-ideas-go-live-seam.md` Section 2.3 for the full artifact path switch procedure.
@@ -193,13 +194,13 @@ As of this date, the following live-mode components have been implemented:
 
 | Component | Status | Location |
 |---|---|---|
-| Live orchestrator (`runLiveOrchestrator`) | Complete | `scripts/src/startup-loop/lp-do-ideas-live.ts` |
-| Routing adapter live-mode guard | Complete | `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts` |
-| SIGNALS advisory hook (`runLiveHook`) | Complete | `scripts/src/startup-loop/lp-do-ideas-live-hook.ts` |
-| Persistence adapter | Complete | `scripts/src/startup-loop/lp-do-ideas-persistence.ts` |
+| Live orchestrator (`runLiveOrchestrator`) | Complete | `scripts/src/startup-loop/ideas/lp-do-ideas-live.ts` |
+| Routing adapter live-mode guard | Complete | `scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts` |
+| SIGNALS advisory hook (`runLiveHook`) | Complete | `scripts/src/startup-loop/ideas/lp-do-ideas-live-hook.ts` |
+| Persistence adapter | Complete | `scripts/src/startup-loop/ideas/lp-do-ideas-persistence.ts` |
 | Live artifact paths (`live/`) | Complete | `docs/business-os/startup-loop/ideas/live/` |
-| Autonomous gate + kill-switch | Complete (inactive) | `scripts/src/startup-loop/lp-do-ideas-autonomous-gate.ts` |
-| KPI rollup runner | Complete | `scripts/src/startup-loop/lp-do-ideas-metrics-runner.ts` |
+| Autonomous gate + kill-switch | Complete (inactive) | `scripts/src/startup-loop/ideas/lp-do-ideas-autonomous-gate.ts` |
+| KPI rollup runner | Complete | `scripts/src/startup-loop/ideas/lp-do-ideas-metrics-runner.ts` |
 | Production standing registry | Partial | `docs/business-os/startup-loop/ideas/standing-registry.json` — 15 assessment artifacts registered (bos-loop-assessment-registry, 2026-03-02). Expand incrementally. |
 | Go-live activation | Pending | Blocked: KPI evidence, rollback drill, policy update |
 
@@ -221,8 +222,8 @@ This contract is designed for forward compatibility with live mode:
 
 | Concept | Defined in |
 |---|---|
-| Dispatch packet format | `lp-do-ideas-dispatch.v2.schema.json` (primary), `lp-do-ideas-dispatch.schema.json` (compat) |
-| Standing artifact registry format | `lp-do-ideas-standing-registry.schema.json` |
+| Dispatch packet format | `schemas/lp-do-ideas-dispatch.v2.schema.json` (primary), `_deprecated/lp-do-ideas-dispatch.schema.json` (compat) |
+| Standing artifact registry format | `schemas/lp-do-ideas-standing-registry.schema.json` |
 | Autonomy/threshold policy | `docs/plans/lp-do-ideas-startup-loop-integration/artifacts/trial-policy-decision.md` |
 | Go-live activation criteria | `lp-do-ideas-go-live-seam.md` (TASK-07, pending) |
 | Fact-find intake contract | `.claude/skills/lp-do-fact-find/SKILL.md` |
@@ -354,10 +355,11 @@ The wired static args are:
 
 **Standing registry location:** `docs/business-os/startup-loop/ideas/standing-registry.json`
 - Initial 15 assessment artifacts registered (2026-03-02)
-- Add new artifacts by editing the JSON file (schema at `lp-do-ideas-standing-registry.schema.json`)
+- Add new artifacts by editing the JSON file (schema at `schemas/lp-do-ideas-standing-registry.schema.json`)
 - No code changes required to register additional artifacts
 
-**T1 keyword source of truth:** `T1_SEMANTIC_KEYWORDS` constant in `scripts/src/startup-loop/lp-do-ideas-trial.ts`
+**T1 keyword source of truth:** `T1_SEMANTIC_KEYWORDS` constant in `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts`
 - The `t1_semantic_sections` field in `standing-registry.json` mirrors this list for documentation/schema compliance
 - The runtime does not read `t1_semantic_sections` from the registry at runtime; the TS constant is authoritative
 - To add new keywords, update both the TS constant and the registry file's `t1_semantic_sections` field
+- Direct `micro_build_ready` routing for artifact deltas is additionally gated by the concrete-surface helper logic in `lp-do-ideas-trial.ts`; T1 match alone is not sufficient

@@ -1,0 +1,10 @@
+{
+    "schema_version": "bug-scan-findings.v1",
+    "feature_slug": "bos-ideas-dispatch-20260303-followthrough",
+    "scanned_at": "2026-03-04T00:30:00.000Z",
+    "scanned_files": 0,
+    "finding_count": 0,
+    "critical_count": 0,
+    "warning_count": 0,
+    "findings": []
+}

@@ -32,6 +32,7 @@ export interface LineChartProps {
 export function LineChart({ data, options, className }: LineChartProps) {
   return (
     <Line
+      data-slot="line-chart"
       data={data}
       {...(options !== undefined ? { options } : {})}
       {...(className !== undefined ? { className } : {})}

@@ -13,9 +13,9 @@ import "@testing-library/jest-dom";
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import type { OctorateRoom } from "@/app/api/availability/route";
 import RoomCard from "@/components/rooms/RoomCard";
 import type { Room } from "@/data/roomsData";
+import type { OctorateRoom } from "@/types/octorate-availability";
 
 // ---------------------------------------------------------------------------
 // Module mocks

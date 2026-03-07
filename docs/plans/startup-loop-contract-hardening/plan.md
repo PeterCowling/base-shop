@@ -40,7 +40,7 @@ Eliminate contract drift across startup-loop skills, stage-doc API endpoints, on
   - Multi-agent compatibility: changes must be migration-safe with a compatibility window and deterministic precedence.
   - StageTypeSchema remains canonical: do not widen the enum to include aliases.
 - Assumptions:
-  - `docs/business-os/startup-loop/loop-spec.yaml` is canonical for stage graph semantics.
+  - `docs/business-os/startup-loop/specifications/loop-spec.yaml` is canonical for stage graph semantics.
   - `packages/platform-core/src/repositories/businessOsStageDocs.server.ts` StageTypeSchema is canonical for stage-doc keys + filenames.
   - Mutation boundary policy: `/lp-bos-sync` is the sole mutation boundary for board/state mutations (lane transitions/board status), not for stage-doc writes.
 
@@ -69,7 +69,7 @@ Eliminate contract drift across startup-loop skills, stage-doc API endpoints, on
 ## Proposed Approach
 1. Introduce a **separate normalization layer** (stage key alias mapping) in API/tooling boundaries. StageTypeSchema stays canonical.
 2. Make compatibility-window behavior **config-driven**, but **do not rely on runtime filesystem reads** in Next.js route handlers.
-   - Canonical source: `docs/business-os/startup-loop/contract-migration.yaml`
+   - Canonical source: `docs/business-os/startup-loop/operations/contract-migration.yaml`
    - Runtime source (recommended): build-time embedded generated module `apps/business-os/src/lib/contract-migration.generated.ts`
    - Lint/tooling source: parse the canonical YAML directly
 3. Update all emitting callers (skills/docs) to **stop writing legacy aliases**.
@@ -128,7 +128,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-do-build
 - **Affects:**
-  - `docs/business-os/startup-loop/contract-migration.yaml`
+  - `docs/business-os/startup-loop/operations/contract-migration.yaml`
   - `apps/business-os/scripts/generate-contract-migration.mjs` (build-time generator)
   - `apps/business-os/package.json` (prebuild hook)
   - `apps/business-os/src/lib/contract-migration.generated.ts` (generated; runtime import)
@@ -396,11 +396,11 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `docs/plans/lp-skill-system-sequencing-plan.md` (new shim)
-  - `docs/business-os/startup-loop/loop-spec.yaml`
-  - `docs/business-os/startup-loop/autonomy-policy.md`
-  - `docs/business-os/startup-loop/manifest-schema.md`
-  - `docs/business-os/startup-loop/event-state-schema.md`
-  - `docs/business-os/startup-loop/stage-result-schema.md`
+  - `docs/business-os/startup-loop/specifications/loop-spec.yaml`
+  - `docs/business-os/startup-loop/specifications/autonomy-policy.md`
+  - `docs/business-os/startup-loop/schemas/manifest-schema.md`
+  - `docs/business-os/startup-loop/schemas/event-state-schema.md`
+  - `docs/business-os/startup-loop/schemas/stage-result-schema.md`
 - **Depends on:** -
 - **Blocks:** TASK-06
 - **Confidence:** 85%
@@ -483,7 +483,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
     - `rg -n '"stage"\\s*:\\s*"lp-do-fact-find"' -S .claude/skills` (0 matches).
     - `rg -n '/api/agent/stage-docs/.+/lp-do-fact-find\\b' -S .claude/skills` (0 matches).
     - `rg -n --fixed-strings 'API stage \`lp-do-fact-find\`' -S .claude/skills` (0 matches).
-    - `rg -n --fixed-strings 'fact-finding.user.md' docs/business-os` (only `docs/business-os/startup-loop/contract-migration.yaml`).
+    - `rg -n --fixed-strings 'fact-finding.user.md' docs/business-os` (only `docs/business-os/startup-loop/operations/contract-migration.yaml`).
   - Downstream tests (PASS 2026-02-15):
     - `pnpm --filter @acme/mcp-server test:startup-loop`
     - `pnpm --filter @acme/platform-core test -- packages/platform-core/src/repositories/__tests__/businessOsOther.server.test.ts`
@@ -493,7 +493,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Deliverable:** disable alias acceptance + dual-read via config cutoffs (keep code for rollback)
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-do-build
-- **Affects:** `docs/business-os/startup-loop/contract-migration.yaml`
+- **Affects:** `docs/business-os/startup-loop/operations/contract-migration.yaml`
 - **Depends on:** TASK-11
 - **Blocks:** TASK-13
 - **Confidence:** 85%
@@ -525,7 +525,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Execution-Skill:** /lp-do-build
 - **Affects:**
   - `docs/plans/startup-loop-contract-hardening/replan-notes.md` (new)
-  - `[readonly] docs/business-os/startup-loop/contract-migration.yaml`
+  - `[readonly] docs/business-os/startup-loop/operations/contract-migration.yaml`
   - `[readonly] apps/business-os/src/app/api/agent/stage-docs/route.ts`
   - `[readonly] apps/business-os/src/lib/stage-doc-paths.ts`
   - `[readonly] scripts/check-startup-loop-contracts.sh`
@@ -595,7 +595,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - Approach: 75% — still gated on post-cutoff telemetry to avoid breaking hidden callers.
   - Impact: 75% — removing rollback lever remains the main risk; now explicitly gated.
 - **Investigation performed:**
-  - Verified cutoffs are in the past (aliases/dual-read disabled since 2026-02-15): `docs/business-os/startup-loop/contract-migration.yaml`.
+  - Verified cutoffs are in the past (aliases/dual-read disabled since 2026-02-15): `docs/business-os/startup-loop/operations/contract-migration.yaml`.
   - Lint is green: `bash scripts/check-startup-loop-contracts.sh` (PASS).
 - **Decision / resolution:**
   - Do not remove compatibility code paths until telemetry confirms zero alias/legacy usage after cutoff.

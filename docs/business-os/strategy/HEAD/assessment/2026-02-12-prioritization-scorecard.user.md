@@ -4,7 +4,7 @@ Status: Active
 Business: HEAD
 Date: 2026-02-20
 Owner: Pete
-Seed-Source: docs/business-os/startup-baselines/HEAD-forecast-seed.user.md
+Seed-Source: docs/business-os/startup-baselines/HEAD/forecast-seed.user.md
 business: HEAD
 artifact: prioritization_scorecard
 status: Active
@@ -12,9 +12,9 @@ owner: Pete
 last_updated: 2026-02-20
 source_of_truth: true
 depends_on:
-  - docs/business-os/startup-baselines/HEAD-offer.md
+  - docs/business-os/startup-baselines/HEAD/offer.md
   - docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md
-  - docs/business-os/startup-baselines/HEAD-channels.md
+  - docs/business-os/startup-baselines/HEAD/channels.md
   - docs/business-os/strategy/HEAD/lp-other-products-results.user.md
 decisions:
   - DEC-HEAD-CH-01

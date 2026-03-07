@@ -28,8 +28,8 @@ export default function HowToShopPage() {
     { label: "FAQs", href: "/faqs" },
     { label: xaI18n.t("xaB.src.app.pages.how.to.shop.page.l28c14"), href: "/pages/terms-of-service" },
     { label: xaI18n.t("xaB.src.app.pages.how.to.shop.page.l29c14"), href: "/pages/privacy-policy" },
-    { label: xaI18n.t("xaB.src.app.pages.how.to.shop.page.l30c14"), href: "/pages/terms-of-service" },
-    { label: "Accessibility", href: "/pages/contact-us" },
+    { label: xaI18n.t("xaB.src.app.pages.how.to.shop.page.l30c14"), href: "/pages/terms-of-service#modern-slavery" },
+    { label: "Accessibility", href: "/pages/contact-us#accessibility" },
     { label: xaI18n.t("xaB.src.app.pages.how.to.shop.page.l32c14"), href: "/pages/privacy-policy#cookies" },
     {
       label: xaI18n.t("xaB.src.app.pages.how.to.shop.page.l34c14"),

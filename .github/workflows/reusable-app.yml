@@ -64,6 +64,26 @@ on:
         required: false
         type: string
         default: ""
+      # Expected canonical origin for canonical-tag and sitemap checks.
+      healthcheck-canonical-origin:
+        required: false
+        type: string
+        default: ""
+      # Routes whose rendered canonical tag must equal canonical-origin + route.
+      healthcheck-canonical-tag-routes:
+        required: false
+        type: string
+        default: ""
+      # Paths that must appear in /sitemap.xml using healthcheck-canonical-origin.
+      healthcheck-sitemap-required-routes:
+        required: false
+        type: string
+        default: ""
+      # Routes that must return 404 exactly (e.g. intentionally dropped aliases).
+      healthcheck-404-routes:
+        required: false
+        type: string
+        default: ""
       # Number of Jest test shards. Set >1 to enable sharded parallel tests
       # with changed-file detection. Default 1 = single test job, full suite.
       test-shard-count:
@@ -378,7 +398,6 @@ jobs:
         if: ${{ steps.classify.outputs.run_validation == 'true' && inputs.app-filter == '@apps/prime' && (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main') }}
         run: pnpm --filter @apps/prime test:e2e:critical
         shell: bash
-        continue-on-error: true # TEMP: arrival-day E2E mocks need CI fix — non-blocking until resolved
         env:
           NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
           NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
@@ -472,7 +491,7 @@ jobs:
 
             if [[ "${#existing_paths[@]}" -gt 0 ]]; then
               echo "::notice title=Test selection::Running related tests (count=${#existing_paths[@]})"
-              pnpm --filter "$APP_FILTER" exec jest --ci --runInBand --passWithNoTests --findRelatedTests "${existing_paths[@]}"
+              pnpm --filter "$APP_FILTER" exec jest --ci --runInBand --findRelatedTests "${existing_paths[@]}"
               exit 0
             fi
 
@@ -564,7 +583,7 @@ jobs:
 
             if [[ "${#existing_paths[@]}" -gt 0 ]]; then
               echo "::notice title=Test selection::Running related tests (count=${#existing_paths[@]}) shard=$shard"
-              pnpm --filter "$APP_FILTER" exec jest --ci --runInBand --passWithNoTests --shard="$shard" --findRelatedTests "${existing_paths[@]}"
+              pnpm --filter "$APP_FILTER" exec jest --ci --runInBand --shard="$shard" --findRelatedTests "${existing_paths[@]}"
               exit 0
             fi
 
@@ -572,7 +591,7 @@ jobs:
           fi
 
           # Fallback: run full sharded test suite
-          pnpm --filter "$APP_FILTER" exec jest --ci --runInBand --passWithNoTests --shard="$shard"
+          pnpm --filter "$APP_FILTER" exec jest --ci --runInBand --shard="$shard"
         shell: bash
 
   e2e-smoke:
@@ -740,11 +759,20 @@ jobs:
       - name: Validate deploy environment
         if: ${{ steps.deploy_gate.outputs.should_deploy == 'true' }}
         env:
+          APP_FILTER: ${{ inputs.app-filter }}
+          PROJECT_NAME: ${{ inputs.project-name }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           CART_COOKIE_SECRET: ${{ secrets.CART_COOKIE_SECRET }}
+          CF_FIREBASE_API_KEY: ${{ secrets.CF_FIREBASE_API_KEY }}
+          PRIME_STAFF_PIN_HASH: ${{ secrets.PRIME_STAFF_PIN_HASH }}
+          PRIME_FIREBASE_SERVICE_ACCOUNT_EMAIL: ${{ secrets.PRIME_FIREBASE_SERVICE_ACCOUNT_EMAIL }}
+          PRIME_FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY: ${{ secrets.PRIME_FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY }}
+          PRIME_EMAIL_WEBHOOK_TOKEN: ${{ secrets.PRIME_EMAIL_WEBHOOK_TOKEN }}
+          PRIME_EMAIL_WEBHOOK_SIGNATURE_SECRET: ${{ secrets.PRIME_EMAIL_WEBHOOK_SIGNATURE_SECRET }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           chmod +x scripts/validate-deploy-env.sh
           ./scripts/validate-deploy-env.sh
@@ -776,6 +804,10 @@ jobs:
           BASE_URL: ${{ inputs.healthcheck-base-url }}
           EXTRA_ROUTES: ${{ inputs.healthcheck-extra-routes }}
           STRICT_ROUTES: ${{ inputs.healthcheck-strict-routes }}
+          CANONICAL_ORIGIN: ${{ inputs.healthcheck-canonical-origin }}
+          CANONICAL_TAG_ROUTES: ${{ inputs.healthcheck-canonical-tag-routes }}
+          SITEMAP_REQUIRED_ROUTES: ${{ inputs.healthcheck-sitemap-required-routes }}
+          EXPECT_404_ROUTES: ${{ inputs.healthcheck-404-routes }}
           MAX_RETRIES: "10"
           RETRY_DELAY: "6"
 

@@ -184,6 +184,31 @@ describe("gmail_organize_inbox", () => {
     jest.clearAllMocks();
   });
 
+  it("rejects specificStartDate when format is not YYYY-MM-DD", async () => {
+    const { gmail } = createGmailStub({ labels: [], threads: {} });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_organize_inbox", {
+      specificStartDate: "2026-2-09",
+    });
+
+    expect((result as { isError?: boolean }).isError).toBe(true);
+    expect(result.content[0].text).toContain("Invalid specificStartDate: 2026-2-09");
+    expect(result.content[0].text).toContain("YYYY-MM-DD");
+  });
+
+  it("rejects specificStartDate when calendar date is impossible", async () => {
+    const { gmail } = createGmailStub({ labels: [], threads: {} });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_organize_inbox", {
+      specificStartDate: "2026-02-30",
+    });
+
+    expect((result as { isError?: boolean }).isError).toBe(true);
+    expect(result.content[0].text).toContain("Invalid specificStartDate: 2026-02-30");
+  });
+
   it("trashes explicit garbage sender patterns", async () => {
     const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
     const spam = { id: "label-spam", name: "Brikette/Outcome/Spam" };

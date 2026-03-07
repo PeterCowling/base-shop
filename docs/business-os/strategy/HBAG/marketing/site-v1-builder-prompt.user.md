@@ -99,10 +99,10 @@ These artifacts are source-of-truth inputs for the build. Consult them; do not r
 |------|-------------|
 | Master artifact index + gate status | `docs/business-os/strategy/HBAG/index.user.md` |
 | Business plan + outcome contracts | `docs/business-os/strategy/HBAG/plan.user.md` |
-| Intake + constraints + missing data | `docs/business-os/startup-baselines/HBAG-2026-02-20assessment-intake-packet.user.md` |
-| Offer definition (ICP, positioning, pricing) | `docs/business-os/startup-baselines/HBAG-offer.md` |
-| Channel strategy | `docs/business-os/startup-baselines/HBAG-channels.md` |
-| Website content packet (SEO + launch copy) | `docs/business-os/startup-baselines/HBAG-content-packet.md` |
+| Intake + constraints + missing data | `docs/business-os/startup-baselines/HBAG/2026-02-20-assessment-intake-packet.user.md` |
+| Offer definition (ICP, positioning, pricing) | `docs/business-os/startup-baselines/HBAG/offer.md` |
+| Channel strategy | `docs/business-os/startup-baselines/HBAG/channels.md` |
+| Website content packet (SEO + launch copy) | `docs/business-os/startup-baselines/HBAG/content-packet.md` |
 | Measurement plan | `docs/business-os/strategy/HBAG/2026-02-21-measurement-profile.user.md` |
 
 ### Brand and Design Language
@@ -236,7 +236,7 @@ These artifacts are source-of-truth inputs for the build. Consult them; do not r
 
 - For TODOs tied to missing business inputs:
   - Format: `TODO(<source-path>): <required decision/data>`
-  - Example: `TODO(docs/business-os/startup-baselines/HBAG-2026-02-20assessment-intake-packet.user.md): confirm launch SKU color set`
+  - Example: `TODO(docs/business-os/startup-baselines/HBAG/2026-02-20-assessment-intake-packet.user.md): confirm launch SKU color set`
 - For seeded placeholder copy/data:
   - Add adjacent comment or note with `source:` path to originating artifact.
 - For implementation decisions that diverge from defaults:

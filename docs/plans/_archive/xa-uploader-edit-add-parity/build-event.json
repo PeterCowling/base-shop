@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "xa-uploader-edit-add-parity-2026-03-04",
+  "feature_slug": "xa-uploader-edit-add-parity",
+  "emitted_at": "2026-03-04T15:45:00.000Z",
+  "why": "The catalog editor's Edit mode doesn't faithfully round-trip product data — fields get overwritten, reset, or stuck after save/reload, making the editor unreliable for revising existing products.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Fix the 3 confirmed data-field bugs so Edit mode is a faithful editor of what Add/Save-as-Draft produces: brand/collection selectors sync on product switch, auto-derivation respects existing edits in Edit mode, and bag taxonomy fields are editable rather than read-only.",
+    "source": "operator"
+  }
+}

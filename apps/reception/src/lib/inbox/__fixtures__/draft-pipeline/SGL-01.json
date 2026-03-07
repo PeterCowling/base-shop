@@ -1,0 +1,25 @@
+{
+  "id": "SGL-01",
+  "class": "single-topic",
+  "description": "Check-in time inquiry",
+  "source_refs": [
+    "packages/mcp-server/src/__tests__/draft-pipeline.integration.test.ts"
+  ],
+  "input": {
+    "from": "Alice Brown",
+    "subject": "Check-in question",
+    "body": "Hi there, what time can we check in? We are arriving by train around 1pm and want to make sure we plan accordingly."
+  },
+  "expected": {
+    "dominant_scenario_category": "faq",
+    "comparison_fields": [
+      "interpreted_language",
+      "dominant_scenario_category",
+      "selected_template_subject",
+      "selected_template_category",
+      "answered_question_set",
+      "quality_result",
+      "branded_html_present"
+    ]
+  }
+}

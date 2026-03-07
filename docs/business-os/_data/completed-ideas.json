@@ -88,6 +88,134 @@
       "plan_slug": "n/a — already implemented via lp-do-plan Phase 10 plan+auto mode",
       "completed_at": "2026-02-27",
       "output_link": ".claude/skills/lp-do-plan/SKILL.md"
+    },
+    {
+      "title": "Exchange rate feed from external source",
+      "source_path": "docs/plans/_archive/xa-currency-conversion-rates/results-review.user.md",
+      "plan_slug": "retired — manual rates are sufficient for current volume; complexity not justified",
+      "completed_at": "2026-03-04",
+      "output_link": "n/a",
+      "idea_key": "0c561403a8b0e10d0171f721ad1b46d1e778b993"
+    },
+    {
+      "title": "IDEA-DISPATCH-20260228-0077",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "brik-eod-float-set",
+      "completed_at": "2026-03-04",
+      "output_link": "docs/plans/_archive/brik-eod-float-set/",
+      "idea_key": "2b1d22c1e5aacdacaba7753bed14009cd879c63b"
+    },
+    {
+      "title": "IDEA-DISPATCH-20260303120000-0132",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "startup-loop-scripts-domain-dirs",
+      "completed_at": "2026-03-04",
+      "output_link": "docs/plans/_archive/startup-loop-scripts-domain-dirs/",
+      "idea_key": "c0c512165223678a0435a56fa6c7aaabbb41b987"
+    },
+    {
+      "title": "IDEA-DISPATCH-20260303180000-0136",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "startup-baselines-per-business-consolidation",
+      "completed_at": "2026-03-04",
+      "output_link": "docs/plans/_archive/startup-baselines-per-business-consolidation/",
+      "idea_key": "bade1a5e4b00e8de2cfdbdef654b077f09d0e84e"
+    },
+    {
+      "title": "IDEA-DISPATCH-20260304001500-0228",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "xa-uploader-auto-save-after-image",
+      "completed_at": "2026-03-04",
+      "output_link": "docs/plans/_archive/xa-uploader-auto-save-after-image/",
+      "idea_key": "75406839376662a0993fb42fc2924bfbc3805bd0"
+    },
+    {
+      "title": "IDEA-DISPATCH-20260304001500-0232",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "xa-r2-deployment-config",
+      "completed_at": "2026-03-04",
+      "output_link": "docs/plans/_archive/xa-r2-deployment-config/",
+      "idea_key": "db7effe73d50325bf0b45bec8c20fa66c440141b"
+    },
+    {
+      "title": "IDEA-DISPATCH-20260304120000-0001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "xa-b-design-polish",
+      "completed_at": "2026-03-04",
+      "output_link": "docs/plans/_archive/xa-b-design-polish/",
+      "idea_key": "081ee27f0d44385b97d6761871143060012b9c94"
+    },
+    {
+      "title": "IDEA-DISPATCH-20260304143000-0096",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "brik-private-accom-seo-content-regression",
+      "completed_at": "2026-03-04",
+      "output_link": "docs/plans/_archive/brik-private-accom-seo-content-regression/",
+      "idea_key": "b8cbcb90a5a3eac93011c6166270338e38a2cd64"
+    },
+    {
+      "title": "IDEA-DISPATCH-20260304143000-0097",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "brik-private-accom-seo-content-regression",
+      "completed_at": "2026-03-04",
+      "output_link": "docs/plans/_archive/brik-private-accom-seo-content-regression/",
+      "idea_key": "a6c5d3c4d243595e7ea575a463826d24c1aeded2"
+    },
+    {
+      "title": "IDEA-DISPATCH-20260304143000-0098",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "brik-private-accom-seo-content-regression",
+      "completed_at": "2026-03-04",
+      "output_link": "docs/plans/_archive/brik-private-accom-seo-content-regression/",
+      "idea_key": "e67558081657934d9ac861ddfb87c2dc5a2feb1a"
+    },
+    {
+      "title": "IDEA-DISPATCH-20260304150000-0001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "xa-uploader-edit-add-parity",
+      "completed_at": "2026-03-04",
+      "output_link": "docs/plans/_archive/xa-uploader-edit-add-parity/",
+      "idea_key": "4ca3ea0518b8356650a732ea9bd04bf07f3fbc65"
+    },
+    {
+      "title": "Auto-trigger xa-b Cloudflare Pages rebuild after sync",
+      "source_path": "docs/plans/_archive/xa-currency-conversion-rates/results-review.user.md",
+      "plan_slug": "xa-uploader-media-path-and-publish-flow-hardening",
+      "completed_at": "2026-03-04",
+      "output_link": "docs/plans/xa-uploader-media-path-and-publish-flow-hardening/",
+      "idea_key": "4c9bd88cb18191a3936f5d53336725caed36b807"
+    },
+    {
+      "title": "AI-to-mechanistic — lift 5 deterministic signal extractions from model to TypeScript in lp-do-build-results-review-prefill.ts",
+      "source_path": "docs/plans/startup-loop-results-review-deterministic-extraction/results-review.user.md",
+      "plan_slug": "startup-loop-results-review-deterministic-extraction",
+      "completed_at": "2026-03-06",
+      "output_link": "docs/plans/_archive/startup-loop-results-review-deterministic-extraction/",
+      "idea_key": "572757fdd0bba34405fd93224e9550770c6e264c"
+    },
+    {
+      "title": "BRIK email pipeline — intent extraction collapses clause-level questions, double-counts intents",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "email-pipeline-simulation-hardening",
+      "completed_at": "2026-03-07",
+      "output_link": "docs/plans/_archive/email-pipeline-simulation-hardening/",
+      "idea_key": "d43413db46f90885adb8d4dc6bb5412de1461a69"
+    },
+    {
+      "title": "BRIK email pipeline — quality gate advisory-only; coverage scoring lexical-only",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "email-pipeline-simulation-hardening",
+      "completed_at": "2026-03-07",
+      "output_link": "docs/plans/_archive/email-pipeline-simulation-hardening/",
+      "idea_key": "aec822c528962f09e44d8e7c344cb7dbcb032826"
+    },
+    {
+      "title": "BRIK email pipeline — template ranker accepts weak matches, booking_monitor triggers too broadly",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "email-pipeline-simulation-hardening",
+      "completed_at": "2026-03-07",
+      "output_link": "docs/plans/_archive/email-pipeline-simulation-hardening/",
+      "idea_key": "3ef11aab144ca4886b477bb50a313590a6f4abfe"
     }
   ]
 }

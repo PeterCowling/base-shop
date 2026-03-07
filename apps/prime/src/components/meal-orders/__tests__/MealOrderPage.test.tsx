@@ -210,7 +210,6 @@ describe("MealOrderPage", () => {
       expect(fetchMock.mock.calls[1]?.[1]).toMatchObject({
         method: "POST",
         body: JSON.stringify({
-          token: "token-1",
           service: "breakfast",
           serviceDate: selectedDate,
           value: "Eggs (Scrambled) | Bacon, Ham, Toast | Americano | 09:00",

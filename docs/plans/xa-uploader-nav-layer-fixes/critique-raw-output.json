@@ -1,0 +1,46 @@
+{
+  "round": 1,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "critical",
+      "file": "docs/plans/xa-uploader-nav-layer-fixes/plan.md",
+      "line": "138",
+      "message": "TASK-01's core state contract is contradictory. It requires `criteria` to stay `{}` throughout show-all mode, but the same task later says entering show-all from a partially filtered state preserves the existing criteria and restores it on exit."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/xa-uploader-nav-layer-fixes/plan.md",
+      "line": "170",
+      "message": "The 'exactly 1 product total' edge case is not safe: the auto-select effect calls `onSelect` but does not clear `showAll`, conflicting with the acceptance rule that product selection exits show-all mode."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/xa-uploader-nav-layer-fixes/plan.md",
+      "line": "216",
+      "message": "TASK-02 acceptance says `t(currencyHeaderLabel)` for the currency tab, but `currencyHeaderLabel` is already a translated string — this would double-translate."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/xa-uploader-nav-layer-fixes/plan.md",
+      "line": "57",
+      "message": "Plan references 'worktree isolation' as merge-conflict mitigation, but AGENTS.md line 63 explicitly forbids worktrees."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/xa-uploader-nav-layer-fixes/plan.md",
+      "line": "106",
+      "message": "TASK-01 and TASK-02 both modify `uploaderI18n.ts` — they cannot run in parallel as stated."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/xa-uploader-nav-layer-fixes/plan.md",
+      "line": "319",
+      "message": "`uploaderI18n.ts` falls back to English via `getUploaderMessage()`, so missing ZH key degrades localization rather than causing a runtime error."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 5,
+  "lp_score": 2.5,
+  "sessionId": "Q1qNA84XAQMYM94_"
+}

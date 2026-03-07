@@ -10,8 +10,7 @@ export interface ZoomImageProps extends ImageProps {
   ariaLabel?: string;
 }
 
-export const ZoomImage = React.forwardRef<HTMLDivElement, ZoomImageProps>(
-  ({ alt, className, zoomScale = 1.25, ariaLabel, ...props }, ref) => {
+export function ZoomImage({ alt, className, zoomScale = 1.25, ariaLabel, ref, ...props }: ZoomImageProps & { ref?: React.Ref<HTMLDivElement> }) {
     const [zoom, setZoom] = React.useState(false);
     const toggle = React.useCallback(() => setZoom((z) => !z), []);
     const onKeyDown = React.useCallback<React.KeyboardEventHandler<HTMLDivElement>>(
@@ -27,6 +26,7 @@ export const ZoomImage = React.forwardRef<HTMLDivElement, ZoomImageProps>(
       ariaLabel ?? (zoom ? "Zoomed image, press to zoom out" : "Zoom image, press to zoom in");
     return (
       <figure
+        data-slot="zoom-image"
         ref={ref}
         role="button"
         tabIndex={0}
@@ -51,6 +51,4 @@ export const ZoomImage = React.forwardRef<HTMLDivElement, ZoomImageProps>(
         <span className="sr-only">{accessibleLabel}</span>
       </figure>
     );
-  }
-);
-ZoomImage.displayName = "ZoomImage";
+}

@@ -13,12 +13,12 @@ import {
   validateImprovementCandidate,
   validateMetaObservation,
   validateStartupState,
-} from "../self-evolving-contracts.js";
+} from "../self-evolving/self-evolving-contracts.js";
 import {
   createStartupStateStore,
   readStartupState,
   writeStartupState,
-} from "../self-evolving-startup-state.js";
+} from "../self-evolving/self-evolving-startup-state.js";
 
 function buildValidStartupState(): StartupState {
   return {

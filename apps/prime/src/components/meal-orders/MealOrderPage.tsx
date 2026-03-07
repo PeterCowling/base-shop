@@ -72,7 +72,7 @@ export default function MealOrderPage({
   iconClassName = 'text-warning-foreground',
 }: MealOrderPageProps) {
   const { t } = useTranslation('Homepage');
-  const { snapshot, token, isLoading, refetch } = useGuestBookingSnapshot();
+  const { snapshot, isLoading, refetch } = useGuestBookingSnapshot();
   const [serviceDate, setServiceDate] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -116,7 +116,7 @@ export default function MealOrderPage({
   }, [service, snapshot]);
 
   async function submitOrder(value: string, requestChangeException = false) {
-    if (!token || !serviceDate) {
+    if (!snapshot || !serviceDate) {
       return;
     }
 
@@ -125,11 +125,11 @@ export default function MealOrderPage({
     setError(null);
 
     try {
+      // prime_session HttpOnly cookie is sent automatically on this same-origin request
       const response = await fetch(GUEST_CRITICAL_FLOW_ENDPOINTS.meal_orders, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          token,
           service,
           serviceDate,
           value,

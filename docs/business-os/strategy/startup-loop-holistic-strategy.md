@@ -552,8 +552,8 @@ Share strength across businesses for sparse-signal metrics (for example early-st
 
 This strategy builds on existing authorities:
 
-1. Stage graph and ordering: `docs/business-os/startup-loop/loop-spec.yaml`
-2. Two-layer model: `docs/business-os/startup-loop/two-layer-model.md`
+1. Stage graph and ordering: `docs/business-os/startup-loop/specifications/loop-spec.yaml`
+2. Two-layer model: `docs/business-os/startup-loop/specifications/two-layer-model.md`
 3. Operator workflow baseline: `docs/business-os/startup-loop-workflow.user.md`
 4. System upgrade rationale: `docs/business-os/startup-loop-current-vs-proposed.user.md`
 

@@ -55,7 +55,8 @@
   },
   "noscript": {
     "jsDisabledAssistance": "Việc đặt phòng trọ được xử lý với sự hỗ trợ được hỗ trợ khi JavaScript bị tắt.",
-    "emailAssistedBooking": "Gửi email cho chúng tôi để được hỗ trợ đặt phòng"
+    "emailAssistedBooking": "Gửi email cho chúng tôi để được hỗ trợ đặt phòng",
+    "octorateDirectBooking": "Đặt trực tiếp với Octorate"
   },
   "bookingConstraints": {
     "notice": "Việc đặt phòng tại nhà trọ hỗ trợ thời gian lưu trú chỉ dành cho người lớn từ 2 đến 8 đêm với tối đa 8 người lớn cho mỗi lần đặt phòng. Đối với các nhóm lớn hơn hoặc thời gian lưu trú dài hơn, hãy chia yêu cầu của bạn thành nhiều lần đặt phòng hoặc",

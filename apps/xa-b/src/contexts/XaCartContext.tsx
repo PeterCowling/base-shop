@@ -2,11 +2,10 @@
 
 import * as React from "react";
 
-import type { XaProduct } from "../lib/demoData";
-import { getSoldQty } from "../lib/inventoryStore";
+import { XA_PRODUCTS, type XaProduct } from "../lib/demoData";
 import { readJson, writeJson } from "../lib/storage";
 import type { XaCartState } from "../lib/xaCart";
-import { cartLineId, cartReservedQtyForSkuExcluding } from "../lib/xaCart";
+import { cartLineId } from "../lib/xaCart";
 
 type Action =
   | { type: "add"; sku: XaProduct; size?: string; qty?: number }
@@ -22,6 +21,24 @@ const CartContext = React.createContext<[XaCartState, Dispatch] | undefined>(
   undefined,
 );
 
+const currentProductsByIdentity = new Map<string, XaProduct>();
+for (const product of XA_PRODUCTS) {
+  currentProductsByIdentity.set(`id:${product.id}`, product);
+  currentProductsByIdentity.set(`slug:${product.slug}`, product);
+}
+
+function resolveCurrentProduct(product: XaProduct): XaProduct {
+  return (
+    currentProductsByIdentity.get(`id:${product.id}`) ??
+    currentProductsByIdentity.get(`slug:${product.slug}`) ??
+    product
+  );
+}
+
+function isLineAvailable(product: XaProduct): boolean {
+  return product.status !== "out_of_stock";
+}
+
 function sanitizeCart(value: unknown): XaCartState {
   if (!value || typeof value !== "object") return {};
   const out: XaCartState = {};
@@ -33,19 +50,14 @@ function sanitizeCart(value: unknown): XaCartState {
     if (!sku || typeof sku !== "object") continue;
     const qtyNumber = typeof qty === "number" ? qty : Number(qty);
     if (!Number.isFinite(qtyNumber) || qtyNumber <= 0) continue;
+    const currentSku = resolveCurrentProduct(sku as XaProduct);
     out[id] = {
-      sku: sku as XaProduct,
-      qty: Math.floor(qtyNumber),
+      sku: currentSku,
+      qty: 1,
       size: typeof size === "string" ? size : undefined,
     };
   }
   return out;
-}
-
-function maxQtyForLine(cart: XaCartState, sku: XaProduct, lineId: string) {
-  const sold = getSoldQty(sku.id);
-  const reservedOther = cartReservedQtyForSkuExcluding(cart, sku.id, lineId);
-  return Math.max(0, (sku.stock ?? 0) - sold - reservedOther);
 }
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
@@ -73,25 +85,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const dispatch: Dispatch = async (action) => {
     switch (action.type) {
       case "add": {
-        const qty = Math.floor(action.qty ?? 1);
-        if (!Number.isFinite(qty) || qty <= 0) return;
         if (action.sku.sizes.length && !action.size) {
           throw new Error("Size is required"); // i18n-exempt -- XA-0021: demo validation
         }
 
-        const id = cartLineId(action.sku.id, action.size);
-        const existing = cart[id]?.qty ?? 0;
-        const allowed = maxQtyForLine(cart, action.sku, id);
-        const nextQty = Math.min(existing + qty, allowed);
-
-        if (allowed <= 0 || nextQty <= existing) {
+        const currentSku = resolveCurrentProduct(action.sku);
+        const id = cartLineId(currentSku.id, action.size);
+        if (!isLineAvailable(currentSku) || cart[id]) {
           throw new Error("Out of stock"); // i18n-exempt -- XA-0021
         }
 
-        persist({
-          ...cart,
-          [id]: { sku: action.sku, size: action.size, qty: nextQty },
-        });
+        persist({ ...cart, [id]: { sku: currentSku, size: action.size, qty: 1 } });
         return;
       }
       case "remove": {
@@ -110,9 +114,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           persist(next);
           return;
         }
-        const allowed = maxQtyForLine(cart, line.sku, action.id);
-        const nextQty = Math.min(requested, allowed);
-        persist({ ...cart, [action.id]: { ...line, qty: nextQty } });
+        const currentSku = resolveCurrentProduct(line.sku);
+        persist({
+          ...cart,
+          [action.id]: {
+            ...line,
+            sku: currentSku,
+            qty: isLineAvailable(currentSku) ? 1 : line.qty,
+          },
+        });
         return;
       }
       case "clear": {

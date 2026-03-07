@@ -1,10 +1,10 @@
 import { describe, expect, it } from "@jest/globals";
 
-import { rollupIdeasMetrics } from "../lp-do-ideas-metrics-rollup.js";
+import { rollupIdeasMetrics } from "../ideas/lp-do-ideas-metrics-rollup.js";
 import {
   type IdeasCycleTelemetrySnapshot,
   type QueueEntrySnapshot,
-} from "../lp-do-ideas-metrics-rollup.js";
+} from "../ideas/lp-do-ideas-metrics-rollup.js";
 
 function snapshot(
   overrides: Partial<IdeasCycleTelemetrySnapshot>,

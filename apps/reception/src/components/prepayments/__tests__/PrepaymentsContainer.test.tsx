@@ -123,7 +123,7 @@ beforeEach(() => {
   capturedProps = null;
   consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
   prepaymentDataMock.mockReturnValue({ relevantData: sampleData, loading: false, error: null });
-  addActivityMock.mockResolvedValue(undefined);
+  addActivityMock.mockResolvedValue({ success: true });
   logActivityMock.mockResolvedValue(undefined);
   addToAllTransactionsMock.mockResolvedValue(undefined);
   saveCCDetailsMock.mockResolvedValue(undefined);
@@ -182,6 +182,25 @@ describe("PrepaymentsContainer", () => {
     await waitFor(() =>
       expect(capturedProps?.lastCompletedBooking?.bookingRef).toBe("BBB")
     );
+  });
+
+  it("fails closed when paid flow activity returns success:false", async () => {
+    addActivityMock.mockResolvedValueOnce({
+      success: false,
+      error: "activity failed",
+    });
+    renderComponent();
+    const props = capturedProps as NonNullable<typeof capturedProps>;
+    const validItem = props.code5List[0] as BookingPaymentItem;
+
+    await act(async () => {
+      await props.handleMarkAsPaid(validItem);
+    });
+
+    expect(setMessageMock).toHaveBeenCalledWith(
+      expect.stringMatching(/Error marking BBB as paid/i)
+    );
+    expect(capturedProps?.lastCompletedBooking).toBeNull();
   });
 
   it("ignores delete when booking not found", () => {
@@ -319,4 +338,3 @@ describe("PrepaymentsContainer", () => {
     expect(capturedProps?.selectedBooking).toBeNull();
   });
 });
-

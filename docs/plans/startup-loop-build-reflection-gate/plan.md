@@ -120,7 +120,7 @@ The startup loop currently has no structured post-build step that captures patte
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Complete (2026-02-27)
-- **Affects:** `docs/plans/startup-loop-build-reflection-gate/task-01-schema-spec.md`, `[readonly] scripts/src/startup-loop/lp-do-build-reflection-debt.ts`, `[readonly] scripts/src/startup-loop/generate-process-improvements.ts`, `[readonly] docs/business-os/startup-loop/2026-02-26-reflection-prioritization-expert-brief.user.md`, `[readonly] docs/plans/_templates/results-review.user.md`
+- **Affects:** `docs/plans/startup-loop-build-reflection-gate/task-01-schema-spec.md`, `[readonly] scripts/src/startup-loop/build/lp-do-build-reflection-debt.ts`, `[readonly] scripts/src/startup-loop/build/generate-process-improvements.ts`, `[readonly] docs/business-os/startup-loop/2026-02-26-reflection-prioritization-expert-brief.user.md`, `[readonly] docs/plans/_templates/results-review.user.md`
 - **Depends on:** -
 - **Blocks:** TASK-02, TASK-03
 - **Confidence:** 85%
@@ -145,7 +145,7 @@ The startup loop currently has no structured post-build step that captures patte
 - **Rollout / rollback:** `None: spike produces a document only; no code or SKILL.md changes in this task`
 - **Documentation impact:** `docs/plans/startup-loop-build-reflection-gate/task-01-schema-spec.md` created as a planning artifact.
 - **Notes / references:**
-  - Reference: `scripts/src/startup-loop/lp-do-build-reflection-debt.ts` (lines 39–97) for interface pattern.
+  - Reference: `scripts/src/startup-loop/build/lp-do-build-reflection-debt.ts` (lines 39–97) for interface pattern.
   - Reference: `docs/business-os/startup-loop/2026-02-26-reflection-prioritization-expert-brief.user.md` section 4 for idea schema.
   - Reference: `docs/plans/xa-uploader-usability-hardening/results-review.user.md` as a concrete example to model the fixture from.
 - **Build Evidence (2026-02-27):**
@@ -163,17 +163,17 @@ The startup loop currently has no structured post-build step that captures patte
 ### TASK-02: IMPLEMENT — wire pattern-reflection gate into lp-do-build and register artifact contract
 
 - **Type:** IMPLEMENT
-- **Deliverable:** (1) New step 2.5 added to `lp-do-build` SKILL.md plan completion sequence; (2) new `pattern-reflection` artifact entry added to `docs/business-os/startup-loop/loop-output-contracts.md`; (3) `loop-spec.yaml` DO stage comment updated to reference the new step.
+- **Deliverable:** (1) New step 2.5 added to `lp-do-build` SKILL.md plan completion sequence; (2) new `pattern-reflection` artifact entry added to `docs/business-os/startup-loop/contracts/loop-output-contracts.md`; (3) `loop-spec.yaml` DO stage comment updated to reference the new step.
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Complete (2026-02-27)
-- **Artifact-Destination:** `.claude/skills/lp-do-build/SKILL.md`, `docs/business-os/startup-loop/loop-output-contracts.md`, `docs/business-os/startup-loop/loop-spec.yaml`
+- **Artifact-Destination:** `.claude/skills/lp-do-build/SKILL.md`, `docs/business-os/startup-loop/contracts/loop-output-contracts.md`, `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 - **Reviewer:** operator (Peter Cowling) — review of SKILL.md instruction text before final commit
 - **Approval-Evidence:** operator acknowledges the SKILL.md diff in the build evidence comment
 - **Measurement-Readiness:** Audit of next 5 builds to confirm `pattern-reflection.user.md` is produced at plan completion.
-- **Affects:** `.claude/skills/lp-do-build/SKILL.md`, `docs/business-os/startup-loop/loop-output-contracts.md`, `docs/business-os/startup-loop/loop-spec.yaml`
+- **Affects:** `.claude/skills/lp-do-build/SKILL.md`, `docs/business-os/startup-loop/contracts/loop-output-contracts.md`, `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-04
 - **Confidence:** 80%
@@ -209,8 +209,8 @@ The startup loop currently has no structured post-build step that captures patte
   - Rollback: remove step 2.5 from SKILL.md and revert `loop-output-contracts.md` entry. Zero risk to existing artifacts.
 - **Documentation impact:**
   - `.claude/skills/lp-do-build/SKILL.md`: step 2.5 added.
-  - `docs/business-os/startup-loop/loop-output-contracts.md`: new artifact section added.
-  - `docs/business-os/startup-loop/loop-spec.yaml`: DO stage comment updated.
+  - `docs/business-os/startup-loop/contracts/loop-output-contracts.md`: new artifact section added.
+  - `docs/business-os/startup-loop/specifications/loop-spec.yaml`: DO stage comment updated.
 - **Notes / references:**
   - Schema source: `docs/plans/startup-loop-build-reflection-gate/task-01-schema-spec.md` (produced by TASK-01).
   - Plain language rule: MEMORY.md "Operator-Facing Content: Plain Language Rule".
@@ -350,7 +350,7 @@ The startup loop currently has no structured post-build step that captures patte
 - [x] `docs/plans/startup-loop-build-reflection-gate/task-01-schema-spec.md` exists with full field spec, routing criteria, access declarations sub-schema, and at least 1 annotated fixture.
 - [x] `lp-do-build` SKILL.md contains new step 2.5 referencing the `pattern-reflection.user.md` schema and canonical artifact path.
 - [x] `lp-do-fact-find` SKILL.md contains a new "Access Declarations" step in Phase 2 or Phase 3.
-- [x] `docs/business-os/startup-loop/loop-output-contracts.md` contains a new `pattern-reflection` artifact entry.
+- [x] `docs/business-os/startup-loop/contracts/loop-output-contracts.md` contains a new `pattern-reflection` artifact entry.
 - [ ] Pilot validation (`task-04-pilot-notes.md`) documents at least 2 completed builds reviewed; operator has acknowledged the notes. (Pilot notes written; awaiting operator acknowledgement.)
 - [x] All SKILL.md instruction text passes the Operator-Facing Content: Plain Language Rule (no internal system nouns).
 

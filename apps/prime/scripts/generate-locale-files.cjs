@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* eslint-disable @typescript-eslint/no-require-imports -- CJS Node script */
+/* eslint-disable @typescript-eslint/no-require-imports, security/detect-non-literal-fs-filename -- PRIME-108 [ttl=2026-12-31] CJS locale generator/check script intentionally traverses workspace locale JSON files and uses require(). */
 /**
  * Generate locale JSON files from translation keys extracted from source.
  *
@@ -15,6 +15,7 @@ const fs = require('fs');
 const path = require('path');
 
 const LOCALES = ['en', 'it'];
+const BASELINE_LOCALE = 'en';
 const PUBLIC_LOCALES_DIR = path.resolve(__dirname, '..', 'public', 'locales');
 const PRIME_SRC = path.resolve(__dirname, '..', 'src');
 
@@ -63,6 +64,24 @@ function extractKeysFromSource() {
   }
 
   return result;
+}
+
+function listJsonFiles(rootDir, relativeDir = '') {
+  const fullDir = path.join(rootDir, relativeDir);
+  const out = [];
+
+  for (const entry of fs.readdirSync(fullDir, { withFileTypes: true })) {
+    const nextRelative = relativeDir ? path.join(relativeDir, entry.name) : entry.name;
+    if (entry.isDirectory()) {
+      out.push(...listJsonFiles(rootDir, nextRelative));
+      continue;
+    }
+    if (entry.isFile() && entry.name.endsWith('.json')) {
+      out.push(nextRelative);
+    }
+  }
+
+  return out.sort();
 }
 
 // ---------------------------------------------------------------------------
@@ -181,15 +200,45 @@ function generateItalianValues(ns, keys) {
 // ---------------------------------------------------------------------------
 // Check mode — validate existing locale files
 // ---------------------------------------------------------------------------
-function checkMode(keysByNs) {
+function checkMode() {
   let errors = 0;
+  const baselineDir = path.join(PUBLIC_LOCALES_DIR, BASELINE_LOCALE);
+  const baselineFiles = listJsonFiles(baselineDir);
+  const baselineSet = new Set(baselineFiles);
 
   for (const lng of LOCALES) {
-    for (const [ns, keys] of Object.entries(keysByNs)) {
-      const filePath = path.join(PUBLIC_LOCALES_DIR, lng, `${ns}.json`);
+    const localeDir = path.join(PUBLIC_LOCALES_DIR, lng);
+    const localeFiles = fs.existsSync(localeDir) ? listJsonFiles(localeDir) : [];
+
+    if (!fs.existsSync(localeDir)) {
+      console.error(`MISSING LOCALE DIR: ${localeDir}`);
+      errors++;
+      continue;
+    }
+
+    if (lng !== BASELINE_LOCALE) {
+      for (const relativeFile of localeFiles) {
+        if (baselineSet.has(relativeFile)) continue;
+        console.error(`EXTRA FILE: ${path.join(localeDir, relativeFile)}`);
+        errors++;
+      }
+    }
+
+    for (const relativeFile of baselineFiles) {
+      const baselinePath = path.join(baselineDir, relativeFile);
+      const filePath = path.join(localeDir, relativeFile);
 
       if (!fs.existsSync(filePath)) {
         console.error(`MISSING: ${filePath}`);
+        errors++;
+        continue;
+      }
+
+      let baselineKeys;
+      try {
+        baselineKeys = flattenKeys(JSON.parse(fs.readFileSync(baselinePath, 'utf8')));
+      } catch {
+        console.error(`INVALID JSON: ${baselinePath}`);
         errors++;
         continue;
       }
@@ -205,7 +254,7 @@ function checkMode(keysByNs) {
 
       // Flatten nested object to dot-notation keys
       const flatKeys = flattenKeys(parsed);
-      const missingKeys = keys.filter(k => !flatKeys.includes(k));
+      const missingKeys = baselineKeys.filter(k => !flatKeys.includes(k));
       if (missingKeys.length > 0) {
         console.error(`MISSING KEYS in ${filePath}: ${missingKeys.join(', ')}`);
         errors++;
@@ -301,7 +350,7 @@ const keysByNs = extractKeysFromSource();
 const isCheck = process.argv.includes('--check');
 
 if (isCheck) {
-  checkMode(keysByNs);
+  checkMode();
 } else {
   generateMode(keysByNs);
 }

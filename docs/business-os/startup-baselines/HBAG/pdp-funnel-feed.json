@@ -1,0 +1,25 @@
+{
+  "schema_version": "hbag-pdp-funnel-feed.v1",
+  "alias_contract_version": "hbag-pdp-funnel.v1",
+  "business": "HBAG",
+  "source_shop": "caryina",
+  "generated_at": "2026-03-04T20:19:39.845Z",
+  "window": {
+    "start_inclusive": "2026-02-26",
+    "end_exclusive": "2026-03-05",
+    "days": 7
+  },
+  "aliases": {
+    "product_view": "view_item",
+    "checkout_started": "begin_checkout"
+  },
+  "metrics": {
+    "view_item_count": 0,
+    "begin_checkout_count": 0,
+    "begin_checkout_rate": null
+  },
+  "notes": [
+    "Alias contract is authoritative for reflection KPI interpretation.",
+    "Raw events are sourced from analytics event stream for the configured shop."
+  ]
+}

@@ -1,6 +1,10 @@
 /** @jest-environment node */
 
-import { rankTemplates, rankTemplatesPerQuestion } from "../utils/template-ranker";
+import {
+  PER_QUESTION_FLOOR,
+  rankTemplates,
+  rankTemplatesPerQuestion,
+} from "../utils/template-ranker";
 
 const templates = [
   {
@@ -224,5 +228,16 @@ describe("template ranker TASK-06 — rankTemplatesPerQuestion", () => {
 
     expect(result).toHaveLength(1);
     expect(result[0].candidates[0]?.template.category).toBe("check-in");
+  });
+
+  it("TC-06-03: below-floor per-question matches are excluded", () => {
+    const result = rankTemplatesPerQuestion(
+      [{ text: "Do you have a rooftop pool?" }],
+      templates,
+    );
+
+    expect(result).toHaveLength(1);
+    expect(PER_QUESTION_FLOOR).toBe(25);
+    expect(result[0].candidates).toHaveLength(0);
   });
 });

@@ -31,13 +31,11 @@ export function XaFiltersDrawer({
   facetValues,
   draftValues,
   draftInStock,
-  draftSale,
   draftNewIn,
   draftMin,
   draftMax,
   onToggleValue,
   onChangeInStock,
-  onChangeSale,
   onChangeNewIn,
   onChangeMin,
   onChangeMax,
@@ -51,12 +49,11 @@ export function XaFiltersDrawer({
       computeAppliedCount({
         draftValues,
         draftInStock,
-        draftSale,
         draftNewIn,
         draftMin,
         draftMax,
       }),
-    [draftValues, draftInStock, draftSale, draftNewIn, draftMin, draftMax],
+    [draftValues, draftInStock, draftNewIn, draftMin, draftMax],
   );
 
   const sections = React.useMemo(() => buildSections(filterConfigs), [filterConfigs]);
@@ -67,7 +64,7 @@ export function XaFiltersDrawer({
         <Button>
           All filters
           {appliedCount > 0 && (
-            <span className="ms-1.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-foreground px-1 xa-text-10 font-semibold text-primary-fg">
+            <span className="ms-1.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-foreground px-1 xa-text-10 font-semibold text-primary-foreground">
               {appliedCount}
             </span>
           )}
@@ -101,10 +98,8 @@ export function XaFiltersDrawer({
           <div className="space-y-6 pb-6">
             <RefineSection
               draftInStock={draftInStock}
-              draftSale={draftSale}
               draftNewIn={draftNewIn}
               onChangeInStock={onChangeInStock}
-              onChangeSale={onChangeSale}
               onChangeNewIn={onChangeNewIn}
             />
 

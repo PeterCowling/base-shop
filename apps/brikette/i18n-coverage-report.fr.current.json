@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "baselineLocale": "en",
+  "locales": [
+    "fr"
+  ],
+  "summary": {
+    "totalMissingFiles": 0,
+    "totalMissingKeys": 0,
+    "totalUntranslatedKeys": 38
+  },
+  "reports": [
+    {
+      "locale": "fr",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {
+        "barMenuPage.json": [
+          "items.jackDaniels.name",
+          "items.nastro660.name",
+          "sections.whisky.title"
+        ],
+        "experiencesPage.json": [
+          "guideCollections.directionLinks.positanoRavello.positanoRavelloFerryBus"
+        ],
+        "footer.json": [
+          "guides"
+        ],
+        "guides.tags.json": [
+          "tags.bus.label",
+          "tags.camping.label",
+          "tags.couples.label",
+          "tags.cuisine.label",
+          "tags.culture.label",
+          "tags.ferry.label",
+          "tags.souvenirs.label",
+          "tags.train.label"
+        ],
+        "guides/breadcrumbs.json": [
+          "guides"
+        ],
+        "guides/content/positanoMainBeachBusBack.json": [
+          "extras.photos.title"
+        ],
+        "guides/labels.json": [
+          "guidesBreadcrumb"
+        ],
+        "guides/tags.json": [
+          "labels.bus",
+          "labels.camping",
+          "labels.cuisine",
+          "labels.culture",
+          "labels.ferry",
+          "labels.souvenirs",
+          "labels.train"
+        ],
+        "header.json": [
+          "guides"
+        ],
+        "howToGetHere.json": [
+          "filters.transportModes.bus",
+          "filters.transportModes.ferry",
+          "filters.transportModes.train",
+          "lightbox.titleFallback",
+          "romePlanner.route.naples.busTrain.steps.from.3",
+          "romePlanner.route.naples.ferry.steps.from.2",
+          "romePlanner.route.naples.ferry.steps.from.4",
+          "romePlanner.route.naples.ferry.steps.to.3",
+          "romePlanner.tag.bus",
+          "romePlanner.tag.directish",
+          "romePlanner.tag.ferry",
+          "romePlanner.tag.train"
+        ],
+        "landingPage.json": [
+          "quickLinksSection.guides"
+        ],
+        "roomsPage.json": [
+          "ctaSuffix.flexible"
+        ]
+      }
+    }
+  ]
+}

@@ -61,4 +61,38 @@ describe("buildXaImageUrl", () => {
       "https://imagedelivery.net/hash/image-id/hero",
     );
   });
+
+  describe("R2 image key resolution", () => {
+    it("resolves R2 multi-segment key without appending variant (TC-01)", async () => {
+      const { buildXaImageUrl } = await loadXaImages({
+        base: "https://pub-xa-media.r2.dev",
+        variant: "public",
+      });
+      expect(
+        buildXaImageUrl("xa-b/hermes-constance-18/1709510400-front.jpg"),
+      ).toBe(
+        "https://pub-xa-media.r2.dev/xa-b/hermes-constance-18/1709510400-front.jpg",
+      );
+    });
+
+    it("appends default variant for a bare key with R2 base URL (TC-02)", async () => {
+      const { buildXaImageUrl } = await loadXaImages({
+        base: "https://pub-xa-media.r2.dev",
+        variant: "public",
+      });
+      expect(buildXaImageUrl("simple-path")).toBe(
+        "https://pub-xa-media.r2.dev/simple-path/public",
+      );
+    });
+
+    it("returns external absolute URL as-is regardless of R2 config (TC-03)", async () => {
+      const { buildXaImageUrl } = await loadXaImages({
+        base: "https://pub-xa-media.r2.dev",
+        variant: "public",
+      });
+      expect(buildXaImageUrl("https://external.com/img.jpg")).toBe(
+        "https://external.com/img.jpg",
+      );
+    });
+  });
 });

@@ -10,8 +10,8 @@ Related-contract: docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract
 Related-checklist: docs/business-os/startup-loop/ideas/lp-do-ideas-go-live-checklist.md
 Related-rollback: docs/business-os/startup-loop/ideas/lp-do-ideas-rollback-playbook.md
 Related-policy: docs/plans/lp-do-ideas-startup-loop-integration/artifacts/trial-policy-decision.md
-Related-adapter: scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts
-Related-orchestrator: scripts/src/startup-loop/lp-do-ideas-trial.ts
+Related-adapter: scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts
+Related-orchestrator: scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts
 ---
 
 # lp-do-ideas Go-Live Seam Contract
@@ -81,8 +81,8 @@ it computes SHA deltas and invokes the hook with those events.
 - Integration is advisory — it does not block the build cycle or require the operator
   to act before continuing.
 
-**Location**: `scripts/src/startup-loop/lp-do-ideas-live-hook.ts`
-(IMPLEMENTED — hook module is ready; wiring into `/lp-do-build` is the remaining activation step).
+**Location**: `scripts/src/startup-loop/ideas/lp-do-ideas-live-hook.ts`
+(IMPLEMENTED — hook module and build-commit utility are ready. The remaining activation step is invoking the utility consistently in live `/lp-do-build` runs with a live registry path.)
 
 ### 2.2 Mode Guard Updates (code changes required at activation)
 
@@ -90,8 +90,8 @@ Two functions previously hard-rejected `mode: live`. Both have been updated:
 
 | Function | File | Previous guard | Live-mode update required |
 |---|---|---|---|
-| `runTrialOrchestrator()` | `scripts/src/startup-loop/lp-do-ideas-trial.ts` | Rejects if `mode !== "trial"` | COMPLETE |
-| `routeDispatch()` | `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts` | Rejects if `mode !== "trial"` | COMPLETE |
+| `runTrialOrchestrator()` | `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts` | Rejects if `mode !== "trial"` | COMPLETE |
+| `routeDispatch()` | `scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts` | Rejects if `mode !== "trial"` | COMPLETE |
 
 **Status**: Both mode guards implemented as of 2026-02-25. `lp-do-ideas-live.ts` created
 as a separate module. `routeDispatch()` guard updated to accept `"trial" | "live"`.
@@ -124,7 +124,7 @@ telemetry to live paths is required or expected.
 ### 2.4 Standing Registry Production Snapshot
 
 Before activation, the operator must:
-1. Review `docs/business-os/startup-loop/ideas/lp-do-ideas-standing-registry.schema.json`
+1. Review `docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-standing-registry.schema.json`
    for artifact coverage.
 2. Create an active production registry at the live path with `mode: live` set.
 3. Capture initial SHAs for all registered artifacts using the SHA snapshot tooling
@@ -183,8 +183,8 @@ grep "Sign-Off" docs/business-os/startup-loop/ideas/lp-do-ideas-go-live-checklis
 ### Step 3 — Create live orchestrator and update routing adapter
 
 **Action**:
-1. Create `scripts/src/startup-loop/lp-do-ideas-live.ts` — live-mode orchestrator
-2. Update `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts`:
+1. Create `scripts/src/startup-loop/ideas/lp-do-ideas-live.ts` — live-mode orchestrator
+2. Update `scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts`:
    - Change mode guard from `=== "trial"` to `=== "trial" || === "live"`
 3. Add tests for live-mode path in both files
 
@@ -206,12 +206,15 @@ echo '{"entries":{},"dedupe_index":{}}' > docs/business-os/startup-loop/ideas/li
 
 ### Step 6 — Wire build-time integration hook
 
-**Action**: `scripts/src/startup-loop/lp-do-ideas-live-hook.ts` is already implemented.
+**Action**: `scripts/src/startup-loop/ideas/lp-do-ideas-live-hook.ts` is already implemented.
 Wire it into `/lp-do-build` so that after each task commit, the skill:
 1. Checks the committed file set against `live/standing-registry.json`
 2. Constructs `ArtifactDeltaEvent[]` for any registered files (using `git diff HEAD~1 HEAD -- <file>` to obtain before/after SHAs)
 3. Calls `runLiveHook({ business, registryPath, queueStatePath, telemetryPath, events })`
 4. Surfaces any `result.dispatched` packets to the operator as advisory output
+
+Reference utility command:
+`pnpm --filter scripts startup-loop:lp-do-ideas-build-commit-hook -- --business <BUSINESS> --from-ref HEAD~1 --to-ref HEAD`
 
 **Scope note**: This step does not modify `cmd-advance.md`. The hook is advisory only
 and does not block the build cycle.
@@ -281,3 +284,4 @@ If any of the following are true, do NOT activate live mode:
 | 1.0.0 | 2026-02-24 | Initial go-live seam definition (pre-activation) |
 | 1.1.0 | 2026-02-25 | Updated to reflect implementation completion: live.ts, routing-adapter, live-hook.ts, live/ artifacts all created. Activation remains deferred pending KPI evidence. |
 | 1.2.0 | 2026-02-25 | Changed integration point from `/lp-weekly` (weekly cadence) to `/lp-do-build` (event-driven, fires at task commit time). Updated sections 1, 2.1, 2.5, step 6, and post-activation behavior table. |
+| 1.3.0 | 2026-03-03 | Added concrete build-commit utility command (`startup-loop:lp-do-ideas-build-commit-hook`) and clarified that utility readiness is complete while live invocation policy remains activation-gated. |

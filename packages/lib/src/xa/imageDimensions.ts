@@ -156,6 +156,14 @@ async function readHeader(filePath: string, maxBytes: number): Promise<Buffer> {
   }
 }
 
+/**
+ * Parse image dimensions from an in-memory buffer.
+ * Worker-compatible — no filesystem access required.
+ */
+export function parseImageDimensionsFromBuffer(buf: Buffer): ImageDimensions | null {
+  return parsePngDimensions(buf) ?? parseJpegDimensions(buf) ?? parseWebpDimensions(buf) ?? null;
+}
+
 export async function readImageDimensions(filePath: string): Promise<ImageDimensions> {
   const header = await readHeader(filePath, 512 * 1024);
   const png = parsePngDimensions(header);

@@ -1,6 +1,6 @@
 ---
 name: lp-do-ideas
-description: Trial-mode idea orchestrator. Ingests standing-artifact delta events and emits schema-valid dispatch packets routed to lp-do-fact-find or lp-do-briefing. Trial mode only — does not mutate startup-loop stage state.
+description: Trial-mode idea orchestrator. Ingests standing-artifact delta events and emits schema-valid dispatch packets routed to lp-do-fact-find, lp-do-build, or lp-do-briefing. Trial mode only — does not mutate startup-loop stage state.
 ---
 
 # lp-do-ideas Trial Orchestrator
@@ -71,7 +71,7 @@ If unclear, ask one question: "Has this already been written into a doc, or is t
 When one incoming event contains multiple distinct gaps, emit one dispatch packet per gap.
 Do NOT produce one aggregate packet covering the entire event.
 
-Each packet must be independently actionable — routable to a separate fact-find or briefing
+Each packet must be independently actionable — routable to a separate fact-find, direct build, or briefing
 without depending on the others.
 
 **Example:** A PWRB strategy backfill touching 4 pending items should produce 4 packets:
@@ -90,6 +90,7 @@ For operator idea packets:
 
 **Queue-with-confirmation policy (trial mode):**
 - `fact_find_ready` → enqueue (`queue_state: "enqueued"`) and present summary to operator. Invoke `/lp-do-fact-find` only after explicit confirmation.
+- `micro_build_ready` → enqueue (`queue_state: "enqueued"`) and present summary to operator. Invoke `/lp-do-build` only after explicit confirmation.
 - `briefing_ready` → enqueue (`queue_state: "enqueued"`) and present summary to operator. Invoke `/lp-do-briefing` only after explicit confirmation.
 - `logged_no_action` → record and report. No downstream invocation.
 - `auto_executed` is reserved and must not be set in trial mode.
@@ -136,8 +137,9 @@ warrants planning investigation, understanding only, or no action.
 
 No hard keyword lists for operator-idea routing. The agent must answer these questions
 using judgment. (Note: artifact-delta routing in the TS orchestrator uses the
-`T1_SEMANTIC_KEYWORDS` list in `lp-do-ideas-trial.ts` — that list applies only to
-`artifact_delta` events, not to operator ideas handled here.)
+`T1_SEMANTIC_KEYWORDS` list plus a conservative direct-build heuristic in
+`lp-do-ideas-trial.ts` — those rules apply only to `artifact_delta` events, not to
+operator ideas handled here.)
 
 1. **Is the change material?** Substantive edit, or a typo/formatting fix?
 2. **Does it open a planning gap?** Does what's documented now differ from what's
@@ -154,6 +156,9 @@ using judgment. (Note: artifact-delta routing in the TS orchestrator uses the
   `lp-do-fact-find`. This applies to any domain that affects strategy, offer,
   distribution, product, measurement, brand/visual direction, or supply/logistics —
   not just ICP/pricing/channel.
+- `micro_build_ready` → change is material, directly executable, and trivially bounded:
+  one surface, no architectural choice, no external research, no meaningful planning branch,
+  and a clear validation path already exists. Route to `lp-do-build`.
 - `briefing_ready` → change is material but the gap is informational rather than
   a planning gap (existing behaviour, context, background), OR in-flight work
   already covers the area and a briefing to review it is a better fit.
@@ -221,16 +226,16 @@ fields entirely and route based on the description alone.
 ## Outputs
 
 Each processed delta should produce a `dispatch.v2` packet conforming to
-`docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.v2.schema.json`.
-`dispatch.v1` remains compatibility-only for legacy packets.
+`docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-dispatch.v2.schema.json`.
+`dispatch.v1` remains compatibility-only for legacy packets (schema at `docs/business-os/startup-loop/ideas/_deprecated/lp-do-ideas-dispatch.schema.json`).
 
 Key output fields:
 | Field | Value |
 |---|---|
 | `schema_version` | `dispatch.v2` (preferred), `dispatch.v1` (compat only) |
 | `mode` | `trial` |
-| `status` | `fact_find_ready \| briefing_ready \| logged_no_action` (`auto_executed` reserved in trial mode) |
-| `recommended_route` | `lp-do-fact-find \| lp-do-briefing` |
+| `status` | `fact_find_ready \| micro_build_ready \| briefing_ready \| logged_no_action` (`auto_executed` reserved in trial mode) |
+| `recommended_route` | `lp-do-fact-find \| lp-do-build \| lp-do-briefing` |
 | `queue_state` | `enqueued` (initial) |
 
 Results are enqueued in `docs/business-os/startup-loop/ideas/trial/queue-state.json`
@@ -262,13 +267,13 @@ The `seenDedupeKeys` set is maintained across calls to the queue layer.
 
 ## Contract References
 
-- Dispatch schema (primary): `docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.v2.schema.json`
-- Dispatch schema (compat): `docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.schema.json`
-- Standing registry: `docs/business-os/startup-loop/ideas/lp-do-ideas-standing-registry.schema.json`
+- Dispatch schema (primary): `docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-dispatch.v2.schema.json`
+- Dispatch schema (compat): `docs/business-os/startup-loop/ideas/_deprecated/lp-do-ideas-dispatch.schema.json`
+- Standing registry: `docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-standing-registry.schema.json`
 - Trial contract: `docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md`
 - Policy decision: `docs/plans/lp-do-ideas-startup-loop-integration/artifacts/trial-policy-decision.md`
-- Routing adapter: `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts` (TASK-04)
-- Queue + telemetry: `scripts/src/startup-loop/lp-do-ideas-trial-queue.ts` (TASK-05)
+- Routing adapter: `scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts` (TASK-04)
+- Queue + telemetry: `scripts/src/startup-loop/ideas/lp-do-ideas-trial-queue.ts` (TASK-05)
 
 ## Known Issues
 

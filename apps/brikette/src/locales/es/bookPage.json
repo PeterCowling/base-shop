@@ -59,7 +59,8 @@
   },
   "noscript": {
     "jsDisabledAssistance": "Las reservas de albergue se gestionan con soporte asistido cuando JavaScript está deshabilitado.",
-    "emailAssistedBooking": "Envíenos un correo electrónico para reserva asistida"
+    "emailAssistedBooking": "Envíenos un correo electrónico para reserva asistida",
+    "octorateDirectBooking": "Reserva directamente con Octorate"
   },
   "bookingConstraints": {
     "notice": "Las reservas de albergue admiten estancias solo para adultos de entre 2 y 8 noches con hasta 8 adultos por reserva. Para grupos más grandes o estancias más largas, divida su solicitud en varias reservas o",

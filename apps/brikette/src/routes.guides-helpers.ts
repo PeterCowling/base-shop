@@ -9,6 +9,7 @@ export {
   guideNamespace,
   guidePath,
   guideSlug,
+  guideSlugAliases,
   resolveGuideKeyFromSlug,
   GUIDE_KEYS_WITH_OVERRIDES as TRANSPORT_LINK_KEYS,
 } from "./guides/slugs";

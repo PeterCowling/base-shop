@@ -86,6 +86,31 @@
         "Cancellation admin fee: typically 15% of booking price.",
         "Final availability and payment are completed on our official booking engine."
       ]
+    },
+    "meta": {
+      "title": "Book the Private Apartment in Positano | Hostel Brikette Direct",
+      "description": "Book our private apartment in Positano direct — 100 sqm, full kitchen, sea-view terrace, 2 bathrooms, sleeps up to 4. Save up to 26% vs booking sites. Free breakfast included."
+    },
+    "landing": {
+      "intro": "Our private apartment sits on Positano's cliff edge with sweeping Amalfi Coast views from its own sea-view terrace. At 100 square metres with a full kitchen, two bathrooms, and space for up to four guests, it's ideal for couples or small groups who want the privacy of their own home with hostel hospitality next door.",
+      "features": [
+        "100 sqm private apartment",
+        "Full kitchen with dining area",
+        "2 bathrooms",
+        "Sea-view terrace",
+        "Wi-Fi, A/C, washer & dryer",
+        "Sleeps up to 4 guests"
+      ],
+      "whyDirectTitle": "Why book direct?",
+      "whyDirectItems": [
+        "Save up to 26% vs Booking.com and other travel sites",
+        "Free breakfast voucher included daily",
+        "Complimentary welcome drink at the bar",
+        "No third-party fees or commissions"
+      ],
+      "exploreDorms": "Looking for a dorm bed instead?",
+      "exploreExperiences": "Discover local experiences",
+      "exploreLocation": "How to get to Positano"
     }
   },
   "hostel": {
@@ -101,11 +126,15 @@
   },
   "noscript": {
     "jsDisabledAssistance": "Hostel bookings are handled with assisted support when JavaScript is disabled.",
-    "emailAssistedBooking": "Email us for assisted booking"
+    "emailAssistedBooking": "Email us for assisted booking",
+    "octorateDirectBooking": "Book direct with Octorate"
   },
   "bookingConstraints": {
     "notice": "Hostel bookings are adults-only, 2–8 nights, up to 8 guests. Staying longer than 8 nights? Just make a second booking for the extra nights, or",
     "assistedLink": "get in touch if you need help"
+  },
+  "searchPrompt": {
+    "selectDatesAndGuests": "Select check-in, check-out, and guests above to check rates."
   },
   "expiredQuote": {
     "message": "This quote link has expired. Rebuild your quote with new dates to continue."

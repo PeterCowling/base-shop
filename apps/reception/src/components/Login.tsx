@@ -305,7 +305,7 @@ function Login({ onLoginSuccess }: LoginProps) {
               tone="solid"
               size="lg"
               disabled={resetStatus === "sending"}
-              className="w-full"
+              className="w-full bg-primary-main text-primary-fg hover:opacity-90"
             >
               {resetStatus === "sending" ? "Sending..." : "Send reset link"}
             </Button>
@@ -441,7 +441,7 @@ function Login({ onLoginSuccess }: LoginProps) {
   return (
     <LoginContainer>
       <ProductLogo />
-      <p className="mt-6 text-sm text-muted-foreground">
+      <p className="mt-6 text-sm text-foreground/70">
         Enter your credentials to continue.
       </p>
 
@@ -530,7 +530,7 @@ function Login({ onLoginSuccess }: LoginProps) {
           tone="solid"
           size="lg"
           disabled={isSubmitting || status === "loading"}
-          className="w-full"
+          className="w-full bg-primary-main text-primary-fg hover:opacity-90"
         >
           {isSubmitting ? "Signing in..." : "Sign in"}
         </Button>

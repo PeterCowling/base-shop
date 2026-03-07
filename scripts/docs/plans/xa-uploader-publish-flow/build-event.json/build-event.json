@@ -1,0 +1,5 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-07T11:47:26.245Z",
+  "why": "Operators need a direct publish action; the sync panel added friction and confusion."
+}

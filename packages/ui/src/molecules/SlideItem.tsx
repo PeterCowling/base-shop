@@ -15,6 +15,7 @@ import type { AppLanguage } from "../i18n.config";
 import { resolveSharedToken } from "../shared";
 import type { RoomCardPrice } from "../types/roomCard";
 import { toAppLanguage } from "../utils/lang";
+import { getPrivateRoomChildPath } from "../utils/privateRoomPaths";
 import { getSlug } from "../utils/slug";
 
 const resolveAsset = (p: string): string => p.replace(/^\/images\//, "/img/");
@@ -44,8 +45,6 @@ export interface SlideItemProps {
   lang?: AppLanguage;
 }
 
-const DROP_FIRST_SEGMENT = /^\/[^/]+/;
-
 function SlideItemBase(
   { item, openModalForRate, price, height, lang }: SlideItemProps,
   ref: ForwardedRef<HTMLElement>
@@ -54,21 +53,18 @@ function SlideItemBase(
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
   const currentLang = useCurrentLanguage();
   const effectiveLang = lang ?? currentLang;
-  const firstSegment = item.roomsHref.split("/")[1] ?? "rooms";
-  const roomsSlug = getSlug(
-    firstSegment === "apartment" ? "apartment" : "rooms",
-    toAppLanguage(effectiveLang)
-  );
   const { loading: fallbackPriceLoading, lowestPrice } = useRoomPricing(item);
+  const roomHref = useMemo(() => {
+    const appLang = toAppLanguage(effectiveLang);
+    if (item.id === "double_room") {
+      return `/${effectiveLang}${getPrivateRoomChildPath(appLang, "double-room")}`;
+    }
+    if (item.id === "apartment") {
+      return `/${effectiveLang}${getPrivateRoomChildPath(appLang, "apartment")}`;
+    }
 
-  const restPath = useMemo(() => {
-    const localizedSlug = getRoomSlug(item.id, toAppLanguage(effectiveLang));
-    // getRoomSlug falls back to the room ID if no slug is registered; only use
-    // it as the path segment when it differs from the raw ID (i.e. a slug exists).
-    if (localizedSlug !== item.id) return `/${localizedSlug}`;
-    return item.roomsHref.replace(DROP_FIRST_SEGMENT, "");
-  }, [item.id, item.roomsHref, effectiveLang]);
-  const roomHref = `/${effectiveLang}/${roomsSlug}${restPath}`;
+    return `/${effectiveLang}/${getSlug("rooms", appLang)}/${getRoomSlug(item.id, appLang)}`;
+  }, [effectiveLang, item.id]);
 
   const normaliseLabel = useCallback((value: unknown): string => {
     return typeof value === "string" ? value.trim() : "";

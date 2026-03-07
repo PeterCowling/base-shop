@@ -9,7 +9,7 @@
  * TC-01-01: valid refinement (text changed, quality passes) → refinement_applied: true,
  *           refinement_source: 'claude-cli', quality.passed: true, bodyHtml has DOCTYPE
  * TC-01-02: identity check (refinedBodyPlain === originalBodyPlain) → refinement_applied: false
- * TC-01-03: quality failure (adversarial text) → refinement_applied: true, quality.passed: false
+ * TC-01-03: external candidate quality failure (adversarial text) → parity fallback to baseline
  * TC-01-04: old-schema payload (draft field, no refinedBodyPlain) → errorResult migration message
  * TC-01-05: missing refinedBodyPlain (Zod fail) → errorResult
  * TC-01-06: no @anthropic-ai/sdk import in draft-refine.ts source
@@ -71,7 +71,10 @@ const BASE_ACTION_PLAN = {
     requests: [],
   },
   scenario: { category: "faq" },
-  workflow_triggers: { booking_monitor: false },
+  workflow_triggers: {
+    booking_action_required: false,
+    booking_context: false,
+  },
 };
 
 const ORIGINAL_BODY =
@@ -94,6 +97,7 @@ describe("TASK-11 v2: TC-01-01 Successful refinement", () => {
     const result = await handleDraftRefineTool("draft_refine", {
       actionPlan: BASE_ACTION_PLAN,
       draft_id: "test-draft-id-01",
+      refinement_mode: "external",
       originalBodyPlain: ORIGINAL_BODY,
       refinedBodyPlain: REFINED_BODY_PASS,
     });
@@ -134,11 +138,36 @@ describe("TASK-11 v2: TC-01-02 Identity check (no-op)", () => {
 });
 
 // ---------------------------------------------------------------------------
-// TC-01-03: Quality failure — adversarial refined text
+// TC-01-02b: Deterministic mode (no refinedBodyPlain provided)
 // ---------------------------------------------------------------------------
 
-describe("TASK-11 v2: TC-01-03 Quality failure (adversarial text)", () => {
-  it("returns refinement_applied: true with quality.passed: false and named failed_checks", async () => {
+describe("TASK-11 v2: TC-01-02b Deterministic mode", () => {
+  it("returns refinement_applied: true with codex source when deterministic refinement improves baseline", async () => {
+    const result = await handleDraftRefineTool("draft_refine", {
+      actionPlan: BASE_ACTION_PLAN,
+      draft_id: "test-draft-id-02b",
+      refinement_mode: "deterministic_only",
+      originalBodyPlain: "Check-in is from 2:30pm.",
+    });
+
+    expect(isErrorResult(result)).toBe(false);
+    const payload = parseResult<RefinePayload>(
+      result as { content: Array<{ text: string }> },
+    );
+
+    expect(payload.refinement_applied).toBe(true);
+    expect(payload.refinement_source).toBe("codex");
+    expect(payload.quality.passed).toBe(true);
+    expect(payload.draft.bodyPlain).toContain("Best regards");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TC-01-03: External quality failure — parity fallback to baseline
+// ---------------------------------------------------------------------------
+
+describe("TASK-11 v2: TC-01-03 External quality failure parity fallback", () => {
+  it("returns baseline draft when external candidate quality is worse", async () => {
     const result = await handleDraftRefineTool("draft_refine", {
       actionPlan: BASE_ACTION_PLAN,
       draft_id: "test-draft-id-03",
@@ -150,13 +179,10 @@ describe("TASK-11 v2: TC-01-03 Quality failure (adversarial text)", () => {
       result as { content: Array<{ text: string }> },
     );
 
-    // Refinement was applied (Claude submitted it) even though quality failed
-    expect(payload.refinement_applied).toBe(true);
-    expect(payload.quality.passed).toBe(false);
-    expect(payload.quality.failed_checks.length).toBeGreaterThan(0);
-    for (const check of payload.quality.failed_checks) {
-      expect(check).toMatch(/^[a-z][a-z_]+$/);
-    }
+    expect(payload.refinement_applied).toBe(false);
+    expect(payload.refinement_source).toBe("none");
+    expect(payload.quality.passed).toBe(true);
+    expect(payload.draft.bodyPlain).toBe(ORIGINAL_BODY);
   });
 });
 
@@ -184,14 +210,32 @@ describe("TASK-11 v2: TC-01-04 Old-schema guard", () => {
 // ---------------------------------------------------------------------------
 
 describe("TASK-11 v2: TC-01-05 Missing refinedBodyPlain", () => {
-  it("returns errorResult when refinedBodyPlain is absent", async () => {
+  it("returns errorResult when refinedBodyPlain is absent in external mode", async () => {
     const result = await handleDraftRefineTool("draft_refine", {
       actionPlan: BASE_ACTION_PLAN,
+      refinement_mode: "external",
       originalBodyPlain: ORIGINAL_BODY,
       // refinedBodyPlain omitted
     });
 
     expect(isErrorResult(result)).toBe(true);
+  });
+});
+
+describe("TASK-11 v2: TC-01-05b Missing refinedBodyPlain in auto mode", () => {
+  it("uses deterministic mode without error when refinedBodyPlain is absent", async () => {
+    const result = await handleDraftRefineTool("draft_refine", {
+      actionPlan: BASE_ACTION_PLAN,
+      draft_id: "test-draft-id-05b",
+      originalBodyPlain: "Check-in is from 2:30pm.",
+      // refinedBodyPlain omitted; auto mode default should choose deterministic_only
+    });
+
+    expect(isErrorResult(result)).toBe(false);
+    const payload = parseResult<RefinePayload>(
+      result as { content: Array<{ text: string }> },
+    );
+    expect(payload.refinement_source).toBe("codex");
   });
 });
 
@@ -214,24 +258,31 @@ describe("TASK-11 v2: TC-01-06 No SDK import in source", () => {
 // ---------------------------------------------------------------------------
 
 describe("TASK-04: TC-04-01 Prepayment category blocks text modification", () => {
-  it("returns errorResult containing 'Hard rule violation' when prepayment text is changed", async () => {
+  it("enforces original prepayment text and returns no-op refinement when text is changed", async () => {
+    const originalBody =
+      "Your prepayment of €50 is required within 48 hours to confirm your booking.";
     const result = await handleDraftRefineTool("draft_refine", {
       actionPlan: {
         language: "EN" as const,
         intents: { questions: [], requests: [] },
         scenario: { category: "prepayment" },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
       },
       draft_id: "test-draft-id-04",
-      originalBodyPlain:
-        "Your prepayment of €50 is required within 48 hours to confirm your booking.",
+      originalBodyPlain: originalBody,
       refinedBodyPlain:
         "Your prepayment of €50 is required within 48 hours to confirm your booking. Please note cancellations are not accepted.",
     });
 
-    expect(isErrorResult(result)).toBe(true);
-    const text = errorText(result as { content: Array<{ text: string }> });
-    expect(text).toContain("Hard rule violation");
+    expect(isErrorResult(result)).toBe(false);
+    const payload = parseResult<RefinePayload>(
+      result as { content: Array<{ text: string }> },
+    );
+    expect(payload.refinement_applied).toBe(false);
+    expect(payload.draft.bodyPlain).toBe(originalBody);
   });
 });
 
@@ -240,24 +291,31 @@ describe("TASK-04: TC-04-01 Prepayment category blocks text modification", () =>
 // ---------------------------------------------------------------------------
 
 describe("TASK-04: TC-04-02 Cancellation category blocks text modification", () => {
-  it("returns errorResult containing 'Hard rule violation' when cancellation text is changed", async () => {
+  it("enforces original cancellation text and returns no-op refinement when text is changed", async () => {
+    const originalBody =
+      "We confirm your booking has been cancelled per our policy. No refund is applicable.";
     const result = await handleDraftRefineTool("draft_refine", {
       actionPlan: {
         language: "EN" as const,
         intents: { questions: [], requests: [] },
         scenario: { category: "cancellation" },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
       },
       draft_id: "test-draft-id-05",
-      originalBodyPlain:
-        "We confirm your booking has been cancelled per our policy. No refund is applicable.",
+      originalBodyPlain: originalBody,
       refinedBodyPlain:
         "We confirm your booking has been cancelled per our policy. No refund is applicable. We hope to host you in future.",
     });
 
-    expect(isErrorResult(result)).toBe(true);
-    const text = errorText(result as { content: Array<{ text: string }> });
-    expect(text).toContain("Hard rule violation");
+    expect(isErrorResult(result)).toBe(false);
+    const payload = parseResult<RefinePayload>(
+      result as { content: Array<{ text: string }> },
+    );
+    expect(payload.refinement_applied).toBe(false);
+    expect(payload.draft.bodyPlain).toBe(originalBody);
   });
 });
 
@@ -275,7 +333,10 @@ describe("TASK-04: TC-04-03 Prepayment category with identical text passes", () 
         language: "EN" as const,
         intents: { questions: [], requests: [] },
         scenario: { category: "prepayment" },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
       },
       draft_id: "test-draft-id-06",
       originalBodyPlain: prepaymentBody,
@@ -304,7 +365,10 @@ describe("TASK-04: TC-04-04 Non-protected category allows text modification", ()
           requests: [],
         },
         scenario: { category: "faq" },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
       },
       draft_id: "test-draft-id-07",
       originalBodyPlain: "Check-in is from 2:30pm. Best regards, Hostel Brikette",

@@ -239,11 +239,11 @@ No parallel waves — all panel tasks edit the same single HTML file.
   `[readonly] docs/business-os/strategy/HEAD/launch-readiness-action-backlog.user.md`;
   `[readonly] docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md`;
   `[readonly] docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md`;
-  `[readonly] docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md`;
+  `[readonly] docs/business-os/startup-baselines/HEAD/2026-02-12-assessment-intake-packet.user.md`;
   `[readonly] docs/business-os/strategy/HEAD/2026-02-12-prioritization-scorecard.user.md`;
   `[readonly] docs/business-os/site-upgrades/HEAD/2026-02-12-upgrade-brief.user.md`;
   `[readonly] docs/business-os/strategy/HEAD/2026-02-21-brand-identity-dossier.user.md`;
-  `[readonly] docs/business-os/startup-baselines/HEAD-forecast-seed.user.md`;
+  `[readonly] docs/business-os/startup-baselines/HEAD/forecast-seed.user.md`;
   `[readonly] docs/business-os/strategy/HEAD/2026-02-11-week2-gate-dry-run.user.md`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-03, TASK-05
@@ -337,15 +337,15 @@ No parallel waves — all panel tasks edit the same single HTML file.
   `[readonly] docs/business-os/strategy/PET/plan.user.md`;
   `[readonly] docs/business-os/strategy/PET/2026-02-12-weekly-kpcs-decision.user.md`;
   `[readonly] docs/business-os/strategy/PET/launch-readiness-action-backlog.user.md`;
-  `[readonly] docs/business-os/startup-baselines/PET-offer.md`;
+  `[readonly] docs/business-os/startup-baselines/PET/offer.md`;
   `[readonly] docs/business-os/strategy/PET/2026-02-18-candidate-names.user.md`;
   `[readonly] docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.user.md`;
   `[readonly] docs/business-os/market-research/PET/2026-02-12-market-intelligence.user.md`;
-  `[readonly] docs/business-os/startup-baselines/PET-2026-02-12assessment-intake-packet.user.md`;
+  `[readonly] docs/business-os/startup-baselines/PET/2026-02-12-assessment-intake-packet.user.md`;
   `[readonly] docs/business-os/strategy/PET/2026-02-12-prioritization-scorecard.user.md`;
   `[readonly] docs/business-os/site-upgrades/PET/2026-02-12-upgrade-brief.user.md`;
   `[readonly] docs/business-os/strategy/PET/2026-02-17-brand-identity-dossier.user.md`;
-  `[readonly] docs/business-os/startup-baselines/PET-forecast-seed.user.md`;
+  `[readonly] docs/business-os/startup-baselines/PET/forecast-seed.user.md`;
   `[readonly] docs/business-os/strategy/PET/2026-02-11-week2-gate-dry-run.user.md`
 - **Depends on:** TASK-02
 - **Blocks:** TASK-04, TASK-05
@@ -376,16 +376,16 @@ No parallel waves — all panel tasks edit the same single HTML file.
   - VC-04: At least one `<table>` inside PET panel. Pass: ≥1 match.
 
 - **Execution plan:** Red → Green → Refactor (VC-first)
-  - Red evidence plan: Read each PET source file before authoring HTML; confirm PET-offer.md path is `docs/business-os/startup-baselines/PET-offer.md`
+  - Red evidence plan: Read each PET source file before authoring HTML; confirm PET-offer.md path is `docs/business-os/startup-baselines/PET/offer.md`
   - Green evidence plan: Insert PET panel content in slot order; T1 first (plan → kpcs → backlog → offer → naming), then T2 (forecast → market-intel → intake → scorecard → upgrade-brief → brand-identity), then T3 (forecast-seed, week2-dry-run). Run VCs.
   - Refactor evidence plan: Verify PET candidate-names table (364 lines of shortlist data) renders as `<table>` or structured `<ul>` not `<pre>`. Fix any wrapping issues.
 
 - **Planning validation (required for M/L):**
-  - Checks run: PET-offer.md path confirmed (`startup-baselines/PET-offer.md`); candidate-names confirmed at `strategy/PET/2026-02-18-candidate-names.user.md`
+  - Checks run: PET-offer.md path confirmed (`startup-baselines/PET/offer.md`); candidate-names confirmed at `strategy/PET/2026-02-18-candidate-names.user.md`
   - Validation artifacts: Output-registry fact-find confirmed PET-offer.md inclusion at S2B
   - Unexpected findings: PET does not have a signal-review artifact (BRIK-specific); section 10 "Supporting Docs" for PET contains only brand-identity (no product spec, no sales funnel brief, no signal review)
 
-- **Scouts:** PET-offer.md path non-standard — verified as `docs/business-os/startup-baselines/PET-offer.md`.
+- **Scouts:** PET-offer.md path non-standard — verified as `docs/business-os/startup-baselines/PET/offer.md`.
 - **Edge Cases & Hardening:**
   - PET has no T3 baseline section — omit the "Reference / Baselines" section header entirely for PET panel
   - The naming shortlist (364 lines) may contain tables or lists of name options — convert to structured `<table>` or `<ul>` as appropriate; do not use `<pre>`
@@ -440,7 +440,7 @@ No parallel waves — all panel tasks edit the same single HTML file.
   `[readonly] docs/business-os/strategy/BRIK/signal-review-20260218-1238-W08.md`;
   `[readonly] docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1.user.md`;
   `[readonly] docs/business-os/market-research/BRIK/2026-02-15-market-intelligence.user.md`;
-  `[readonly] docs/business-os/startup-baselines/BRIK-2026-02-12assessment-intake-packet.user.md`;
+  `[readonly] docs/business-os/startup-baselines/BRIK/2026-02-12-assessment-intake-packet.user.md`;
   `[readonly] docs/business-os/strategy/BRIK/2026-02-13-prioritization-scorecard.user.md`;
   `[readonly] docs/business-os/site-upgrades/BRIK/2026-02-12-upgrade-brief.user.md`;
   `[readonly] docs/business-os/strategy/BRIK/2026-02-17-brikette-sales-funnel-external-brief.user.md`;
@@ -454,7 +454,7 @@ No parallel waves — all panel tasks edit the same single HTML file.
   `[readonly] docs/business-os/strategy/BRIK/2026-02-12-apartment-revenue-architecture.user.md`;
   `[readonly] docs/business-os/strategy/BRIK/room-pricing-analysis.md`;
   `[readonly] docs/business-os/strategy/BRIK/prime-app-design-branding.user.md`;
-  `[readonly] docs/business-os/startup-baselines/BRIK-forecast-seed.user.md`
+  `[readonly] docs/business-os/startup-baselines/BRIK/forecast-seed.user.md`
 - **Depends on:** TASK-03
 - **Blocks:** TASK-05
 

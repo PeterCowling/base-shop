@@ -4,7 +4,7 @@ Status: Active
 Business: BRIK
 Date: 2026-02-13
 Owner: Pete
-Seed-Source: docs/business-os/startup-baselines/BRIK-forecast-seed.user.md
+Seed-Source: docs/business-os/startup-baselines/BRIK/forecast-seed.user.md
 Review-trigger: After each completed build cycle touching this document.
 ---
 

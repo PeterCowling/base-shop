@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "fs";
 import path from "path";
 
+import { checkBaselinesFreshness } from "./baselines/baselines-freshness";
 import type { McpPreflightOptions, McpPreflightProfile } from "./mcp-preflight-config";
 import { isTruthyFlag, resolveMcpPreflightConfig } from "./mcp-preflight-config";
 
@@ -14,6 +15,7 @@ type McpPreflightCode =
   | "MCP_PREFLIGHT_TOOL_REGISTRY_DRIFT"
   | "MCP_PREFLIGHT_ARTIFACTS_MISSING"
   | "MCP_PREFLIGHT_ARTIFACT_STALE"
+  | "MCP_PREFLIGHT_BASELINE_CONTENT_STALE"
   | "MCP_PREFLIGHT_INTERNAL";
 
 export interface McpPreflightIssue {
@@ -24,7 +26,7 @@ export interface McpPreflightIssue {
 }
 
 export interface McpPreflightCheck {
-  id: "registration" | "tool-metadata" | "artifact-freshness";
+  id: "registration" | "tool-metadata" | "artifact-freshness" | "baseline-content-freshness";
   status: "pass" | "warn" | "fail";
   message: string;
 }
@@ -360,6 +362,78 @@ function runArtifactFreshnessCheck(params: {
   return { warnings, checks };
 }
 
+const BASELINE_CONTENT_THRESHOLD_SECONDS = 60 * 60 * 24 * 90; // 90 days
+
+function runBaselineContentFreshnessCheck(params: {
+  startupLoopArtifactRoot: string;
+  nowMs: number;
+  repoRoot: string;
+  gitDateFn?: (filePath: string) => string | null;
+}): { warnings: McpPreflightIssue[]; checks: McpPreflightCheck[] } {
+  const warnings: McpPreflightIssue[] = [];
+
+  const baselinesRoot = path.join(
+    params.startupLoopArtifactRoot,
+    "docs/business-os/startup-baselines"
+  );
+
+  const results = checkBaselinesFreshness({
+    baselinesRoot,
+    thresholdSeconds: BASELINE_CONTENT_THRESHOLD_SECONDS,
+    nowMs: params.nowMs,
+    gitDateFn: params.gitDateFn,
+  });
+
+  if (results.length === 0) {
+    return {
+      warnings,
+      checks: [
+        {
+          id: "baseline-content-freshness",
+          status: "pass",
+          message: "No standing content files found in startup-baselines.",
+        },
+      ],
+    };
+  }
+
+  const staleOrWarning = results.filter(
+    (r) => r.status === "stale" || r.status === "warning"
+  );
+
+  for (const result of staleOrWarning) {
+    const ageLabel =
+      result.ageSeconds !== null
+        ? `${result.ageSeconds}s old`
+        : "unknown age";
+    warnings.push({
+      code: "MCP_PREFLIGHT_BASELINE_CONTENT_STALE",
+      message: `Standing content is ${result.status} (${ageLabel}, threshold ${BASELINE_CONTENT_THRESHOLD_SECONDS}s).`,
+      path: result.file,
+      details: {
+        ageSeconds: result.ageSeconds,
+        thresholdSeconds: BASELINE_CONTENT_THRESHOLD_SECONDS,
+        source: result.source,
+        status: result.status,
+      },
+    });
+  }
+
+  return {
+    warnings,
+    checks: [
+      {
+        id: "baseline-content-freshness",
+        status: warnings.length > 0 ? "warn" : "pass",
+        message:
+          warnings.length > 0
+            ? `Standing content freshness: ${staleOrWarning.length} file(s) need attention.`
+            : "Standing content freshness is within threshold.",
+      },
+    ],
+  };
+}
+
 export function runMcpPreflight(
   options: McpPreflightOptions = {},
   env: NodeJS.ProcessEnv = process.env
@@ -379,10 +453,15 @@ export function runMcpPreflight(
       nowMs: Date.now(),
       repoRoot: config.repoRoot,
     });
+    const baselineContent = runBaselineContentFreshnessCheck({
+      startupLoopArtifactRoot: config.startupLoopArtifactRoot,
+      nowMs: Date.now(),
+      repoRoot: config.repoRoot,
+    });
 
     const errors = [...registration.errors, ...metadata.errors];
-    const warnings = [...freshness.warnings];
-    const checks = [...registration.checks, ...metadata.checks, ...freshness.checks];
+    const warnings = [...freshness.warnings, ...baselineContent.warnings];
+    const checks = [...registration.checks, ...metadata.checks, ...freshness.checks, ...baselineContent.checks];
 
     return {
       ok: errors.length === 0,
@@ -470,6 +549,31 @@ function parseCliArgs(argv: string[]): CliOptions {
   return options;
 }
 
+const MCP_PREFLIGHT_RECOVERY: Record<McpPreflightCode, string> = {
+  MCP_PREFLIGHT_LOCAL_SETTINGS_MISSING:
+    "Next: claude mcp add --scope user brikette node /path/to/dist/index.js | retry-allowed after fix | Do not: look in .claude/settings.json (ignored by Claude Code 2.1.49+)",
+  MCP_PREFLIGHT_LOCAL_SETTINGS_INVALID:
+    "Next: inspect with `cat ~/.claude.json | jq .mcpServers` then re-run claude mcp add | retry-allowed after fix | Do not: edit .claude/settings.json directly",
+  MCP_PREFLIGHT_REGISTRATION_MISSING:
+    "Next: claude mcp add --scope user brikette node packages/mcp-server/dist/index.js | retry-allowed after registration | Do not: set MCP_STARTUP_LOOP_SERVER_REGISTERED=true without actual registration",
+  MCP_PREFLIGHT_ENV_REGISTRATION_MISSING:
+    "Next: set MCP_STARTUP_LOOP_SERVER_REGISTERED=true in CI environment after deploying MCP server | retry-allowed after env var set | Do not: set the flag without deploying the server",
+  MCP_PREFLIGHT_TOOL_FILE_MISSING:
+    "Next: pnpm --filter @packages/mcp-server build | retry-allowed after build | Do not: create the file manually (it is generated)",
+  MCP_PREFLIGHT_TOOL_METADATA_MISSING:
+    "Next: add missing policy metadata to the tool file, then pnpm --filter @packages/mcp-server build | retry-allowed after fix+build | Do not: skip the build step after editing",
+  MCP_PREFLIGHT_TOOL_REGISTRY_DRIFT:
+    "Next: ensure tools/index.ts spreads ...bosTools, ...loopTools, ...bosToolPoliciesRaw, ...loopToolPoliciesRaw, then rebuild | retry-allowed after fix | Do not: add tools directly to index.ts without the spread pattern",
+  MCP_PREFLIGHT_ARTIFACTS_MISSING:
+    "Next: run startup-loop baselines refresh to generate artifact files | retry-allowed (warn only) | Do not: create baseline files manually",
+  MCP_PREFLIGHT_ARTIFACT_STALE:
+    "Next: pnpm --filter scripts startup-loop:refresh | retry-allowed (warn only) | Do not: update timestamps without refreshing content",
+  MCP_PREFLIGHT_BASELINE_CONTENT_STALE:
+    "Next: update standing content in startup-baselines and commit | retry-allowed (warn only) | Do not: update only the file timestamp without updating actual content",
+  MCP_PREFLIGHT_INTERNAL:
+    "Next: inspect the error details above and surface to operator if cause is unclear | escalate-now | Do not: retry without understanding the root cause",
+};
+
 function printHumanResult(result: McpPreflightResult): void {
   if (result.ok) {
     console.log(`[mcp-preflight] PASS (${result.profile})`);
@@ -486,11 +590,19 @@ function printHumanResult(result: McpPreflightResult): void {
   for (const issue of result.errors) {
     const location = issue.path ? ` (${issue.path})` : "";
     console.error(`- [${issue.code}] ${issue.message}${location}`);
+    const recovery = MCP_PREFLIGHT_RECOVERY[issue.code];
+    if (recovery) {
+      console.error(`  → ${recovery}`);
+    }
   }
 
   for (const issue of result.warnings) {
     const location = issue.path ? ` (${issue.path})` : "";
     console.log(`- [${issue.code}] ${issue.message}${location}`);
+    const recovery = MCP_PREFLIGHT_RECOVERY[issue.code];
+    if (recovery) {
+      console.log(`  → ${recovery}`);
+    }
   }
 }
 

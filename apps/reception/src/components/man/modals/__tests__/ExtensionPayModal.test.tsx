@@ -67,7 +67,7 @@ describe("ExtensionPayModal", () => {
     jest.clearAllMocks();
     updateMock.mockResolvedValue(undefined);
     saveCityTaxMock.mockResolvedValue(undefined);
-    saveActivityMock.mockResolvedValue(undefined);
+    saveActivityMock.mockResolvedValue({ success: true });
   });
 
   it("renders options and amounts", () => {
@@ -157,5 +157,42 @@ describe("ExtensionPayModal", () => {
       code: 30,
     });
     expect(onClose).toHaveBeenCalled();
+  });
+
+  it("surfaces partial failure for multi-occupant extension and keeps modal open", async () => {
+    const onClose = jest.fn();
+    updateMock
+      .mockResolvedValueOnce(undefined)
+      .mockRejectedValueOnce(new Error("second occupant failed"));
+
+    render(<ExtensionPayModal {...defaultProps} onClose={onClose} />);
+    await userEvent.click(screen.getByLabelText(/extend all guests/i));
+    await userEvent.click(screen.getByRole("button", { name: /extend/i }));
+
+    expect(updateMock).toHaveBeenCalledTimes(2);
+    expect(saveCityTaxMock).not.toHaveBeenCalled();
+    expect(saveActivityMock).not.toHaveBeenCalled();
+    expect(onClose).not.toHaveBeenCalled();
+    expect(toastMock).toHaveBeenCalledWith(
+      "Extension partially applied (1/2). second occupant failed",
+      "error"
+    );
+  });
+
+  it("fails closed when saveActivity returns success:false", async () => {
+    const onClose = jest.fn();
+    saveActivityMock.mockResolvedValueOnce({
+      success: false,
+      error: "activity save failed",
+    });
+
+    render(<ExtensionPayModal {...defaultProps} onClose={onClose} />);
+    await userEvent.click(
+      screen.getByLabelText(/mark city tax as paid/i)
+    );
+    await userEvent.click(screen.getByRole("button", { name: /extend/i }));
+
+    expect(onClose).not.toHaveBeenCalled();
+    expect(toastMock).toHaveBeenCalledWith("activity save failed", "error");
   });
 });

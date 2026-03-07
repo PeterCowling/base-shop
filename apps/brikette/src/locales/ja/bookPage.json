@@ -55,7 +55,8 @@
   },
   "noscript": {
     "jsDisabledAssistance": "JavaScript が無効になっている場合、ホステルの予約はサポート付きで処理されます。",
-    "emailAssistedBooking": "予約サポートについてはメールでお問い合わせください"
+    "emailAssistedBooking": "予約サポートについてはメールでお問い合わせください",
+    "octorateDirectBooking": "Octorateで直接予約"
   },
   "bookingConstraints": {
     "notice": "ホステルの予約では、2 泊から 8 泊までの大人限定の滞在がサポートされており、1 回の予約につき大人 8 名まで宿泊できます。大人数のグループまたは長期滞在の場合は、リクエストを複数の予約に分割するか、",

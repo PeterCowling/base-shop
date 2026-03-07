@@ -13,10 +13,11 @@ import { BookingCalendarPanel } from "@/components/booking/BookingCalendarPanel"
 import BookingNotice from "@/components/booking/BookingNotice";
 import type { DateRange } from "@/components/booking/DateRangePicker";
 import RoomsSection, { type RoomsSectionBookingQuery } from "@/components/rooms/RoomsSection";
-import { roomsData } from "@/data/roomsData";
+import { websiteVisibleRoomsData } from "@/data/roomsData";
 import { useAvailability } from "@/hooks/useAvailability";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
+import { resolveBookingControlLabels } from "@/utils/bookingControlLabels";
 import { isValidPax, isValidStayRange } from "@/utils/bookingDateRules";
 import { buildBookingQueryString } from "@/utils/bookingQuery";
 import { hydrateBookingSearch } from "@/utils/bookingSearch";
@@ -197,6 +198,7 @@ function RoomsSearchPanel({
   model: RoomsBookingModel;
 }) {
   const { range, pax, queryState, setRange, setPax } = model;
+  const bookingControlLabels = resolveBookingControlLabels(t);
 
   return (
     <Section padding="default" className="mx-auto max-w-7xl">
@@ -213,8 +215,8 @@ function RoomsSearchPanel({
           checkInLabelText={t("booking.checkInLabel", { defaultValue: "Check in" }) as string}
           checkOutLabelText={t("booking.checkOutLabel", { defaultValue: "Check out" }) as string}
           guestsLabelText={t("date.guests", { defaultValue: "Guests" }) as string}
-          decreaseGuestsAriaLabel={t("bookingControls.decreaseGuests") as string}
-          increaseGuestsAriaLabel={t("bookingControls.increaseGuests") as string}
+          decreaseGuestsAriaLabel={bookingControlLabels.decreaseGuestsAriaLabel}
+          increaseGuestsAriaLabel={bookingControlLabels.increaseGuestsAriaLabel}
         />
         {queryState === "invalid" ? (
           <BookingNotice className="mt-4">
@@ -252,7 +254,7 @@ function RoomsPageContent({ lang, bookingQuery, serverTitle, serverSubtitle }: P
   useEffect(() => {
     fireViewItemList({
       itemListId: "rooms_index",
-      rooms: roomsData,
+      rooms: websiteVisibleRoomsData,
     });
   }, []);
 

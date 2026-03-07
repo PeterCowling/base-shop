@@ -1,5 +1,5 @@
 import { requireStaffAuth } from "../../../mcp/_shared/staff-auth";
-import { POST } from "../route";
+import { DELETE, GET, PATCH, POST } from "../route";
 
 // Mock requireStaffAuth to isolate route logic from auth internals
 jest.mock("../../../mcp/_shared/staff-auth", () => ({
@@ -9,12 +9,14 @@ jest.mock("../../../mcp/_shared/staff-auth", () => ({
 const requireStaffAuthMock = requireStaffAuth as jest.Mock;
 
 const OWNER_AUTH = {
+  ok: true as const,
   uid: "owner-uid",
   roles: ["owner"],
   email: "owner@test.com",
 };
 
 const STAFF_AUTH = {
+  ok: true as const,
   uid: "staff-uid",
   roles: ["staff"],
   email: "staff@test.com",
@@ -23,15 +25,31 @@ const STAFF_AUTH = {
 const originalFetch = global.fetch;
 const originalApiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
 const originalDbUrl = process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL;
+const originalPeteEmails = process.env.RECEPTION_STAFF_ACCOUNTS_PETE_EMAILS;
 
 function makeRequest(body: unknown, bearer = "valid-owner-token"): Request {
-  return new Request("http://localhost/api/users/provision", {
-    method: "POST",
+  return makeMethodRequest("POST", body, bearer);
+}
+
+function makeMethodRequest(
+  method: "GET" | "POST" | "PATCH" | "DELETE",
+  body?: unknown,
+  bearer = "valid-owner-token",
+): Request {
+  const init: RequestInit = {
+    method,
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${bearer}`,
     },
-    body: JSON.stringify(body),
+  };
+
+  if (body !== undefined) {
+    init.body = JSON.stringify(body);
+  }
+
+  return new Request("http://localhost/api/users/provision", {
+    ...init,
   });
 }
 
@@ -41,7 +59,7 @@ function makeSuccessFetchMock(localId = "new-uid-123") {
     .fn()
     .mockResolvedValueOnce({
       ok: true,
-      json: async () => ({ localId }),
+      json: async () => ({ localId, idToken: `id-token-${localId}` }),
     } as Response)
     .mockResolvedValueOnce({
       ok: true,
@@ -58,6 +76,7 @@ beforeEach(() => {
   process.env.NEXT_PUBLIC_FIREBASE_API_KEY = "test-api-key";
   process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL =
     "https://example.firebaseio.com";
+  process.env.RECEPTION_STAFF_ACCOUNTS_PETE_EMAILS = "owner@test.com";
   requireStaffAuthMock.mockResolvedValue(OWNER_AUTH);
 });
 
@@ -65,6 +84,7 @@ afterEach(() => {
   global.fetch = originalFetch;
   process.env.NEXT_PUBLIC_FIREBASE_API_KEY = originalApiKey;
   process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL = originalDbUrl;
+  process.env.RECEPTION_STAFF_ACCOUNTS_PETE_EMAILS = originalPeteEmails;
 });
 
 describe("POST /api/users/provision", () => {
@@ -209,13 +229,13 @@ describe("POST /api/users/provision", () => {
     const auditBody = JSON.parse(auditCall[1].body as string) as {
       action: string;
       targetEmail: string;
-      targetRole: string;
+      targetRoles: string[];
       createdBy: string;
     };
 
     expect(auditBody.action).toBe("user_provisioned");
     expect(auditBody.targetEmail).toBe("audit@example.com");
-    expect(auditBody.targetRole).toBe("staff");
+    expect(auditBody.targetRoles).toEqual(["staff"]);
     expect(auditBody.createdBy).toBe("owner-uid");
     expect(auditCall[0]).toContain("/audit/settingChanges/");
   });
@@ -241,6 +261,44 @@ describe("POST /api/users/provision", () => {
     expect(data.error).toMatch(/already exists/i);
   });
 
+  it("rolls back auth account when profile write fails", async () => {
+    const fetchMock = jest
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ localId: "uid-rollback", idToken: "id-token-rollback" }),
+      } as Response)
+      .mockResolvedValueOnce({
+        ok: false,
+        json: async () => ({}),
+      } as Response)
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({}),
+      } as Response);
+    global.fetch = fetchMock as unknown as typeof fetch;
+
+    const response = await POST(
+      makeRequest({
+        email: "rollback@example.com",
+        user_name: "Rollback User",
+        role: "staff",
+      }),
+    );
+    const data = (await response.json()) as { success: boolean; error: string; uid: string };
+
+    expect(response.status).toBe(502);
+    expect(data.success).toBe(false);
+    expect(data.uid).toBe("uid-rollback");
+    expect(data.error).toMatch(/rolled back/i);
+
+    const rollbackCall = fetchMock.mock.calls[2] as [string, RequestInit];
+    expect(rollbackCall[0]).toContain("accounts:delete");
+    expect(rollbackCall[1].body).toBe(
+      JSON.stringify({ idToken: "id-token-rollback" }),
+    );
+  });
+
   // Additional: invalid role is rejected before auth
   it("returns 400 when role is not in allowed list", async () => {
     const request = makeRequest({
@@ -255,5 +313,175 @@ describe("POST /api/users/provision", () => {
     expect(response.status).toBe(400);
     expect(data.success).toBe(false);
     expect(data.error).toMatch(/role must be one of/i);
+  });
+});
+
+describe("GET /api/users/provision", () => {
+  it("returns only managed-role accounts sorted by email", async () => {
+    global.fetch = jest.fn().mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        "uid-z": {
+          email: "zeta@example.com",
+          user_name: "zeta",
+          roles: { staff: true },
+          createdAt: 10,
+          updatedAt: 20,
+        },
+        "uid-a": {
+          email: "alpha@example.com",
+          user_name: "alpha",
+          roles: { viewer: true },
+        },
+        "uid-m": {
+          email: "manager@example.com",
+          user_name: "manager",
+          roles: { manager: true },
+          createdAt: 1,
+          updatedAt: 2,
+        },
+      }),
+    } as Response) as unknown as typeof fetch;
+
+    const response = await GET(makeMethodRequest("GET"));
+    const data = (await response.json()) as {
+      success: boolean;
+      accounts: Array<{ uid: string; email: string; roles: string[] }>;
+    };
+
+    expect(response.status).toBe(200);
+    expect(data.success).toBe(true);
+    expect(data.accounts.map((account) => account.uid)).toEqual(["uid-m", "uid-z"]);
+    expect(data.accounts.map((account) => account.email)).toEqual([
+      "manager@example.com",
+      "zeta@example.com",
+    ]);
+    expect(data.accounts.every((account) => account.roles.length > 0)).toBe(true);
+  });
+});
+
+describe("PATCH /api/users/provision", () => {
+  it("updates roles and writes a user_permissions_updated audit entry", async () => {
+    const fetchMock = jest
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          email: "target@example.com",
+          user_name: "Target User",
+          displayName: "Target",
+          roles: { staff: true },
+        }),
+      } as Response)
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({}),
+      } as Response)
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({}),
+      } as Response);
+    global.fetch = fetchMock as unknown as typeof fetch;
+
+    const response = await PATCH(
+      makeMethodRequest("PATCH", {
+        uid: "uid-target",
+        roles: ["manager", "staff", "staff"],
+      }),
+    );
+    const data = (await response.json()) as {
+      success: boolean;
+      uid: string;
+      roles: string[];
+    };
+
+    expect(response.status).toBe(200);
+    expect(data.success).toBe(true);
+    expect(data.uid).toBe("uid-target");
+    expect(data.roles).toEqual(["manager", "staff"]);
+
+    const updateCall = fetchMock.mock.calls[1] as [string, RequestInit];
+    expect(updateCall[0]).toContain("/userProfiles/uid-target.json");
+    expect(updateCall[1].method).toBe("PATCH");
+    const updateBody = JSON.parse(updateCall[1].body as string) as {
+      roles: Record<string, boolean>;
+      updatedAt: number;
+    };
+    expect(updateBody.roles).toEqual({ manager: true, staff: true });
+    expect(typeof updateBody.updatedAt).toBe("number");
+
+    const auditCall = fetchMock.mock.calls[2] as [string, RequestInit];
+    expect(auditCall[0]).toContain("/audit/settingChanges/");
+    const auditBody = JSON.parse(auditCall[1].body as string) as {
+      action: string;
+      targetUid: string;
+      targetEmail: string;
+      targetRoles: string[];
+    };
+    expect(auditBody.action).toBe("user_permissions_updated");
+    expect(auditBody.targetUid).toBe("uid-target");
+    expect(auditBody.targetEmail).toBe("target@example.com");
+    expect(auditBody.targetRoles).toEqual(["manager", "staff"]);
+  });
+});
+
+describe("DELETE /api/users/provision", () => {
+  it("removes managed staff roles, preserves non-managed roles, and audits revocation", async () => {
+    const fetchMock = jest
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          email: "target@example.com",
+          user_name: "Target User",
+          displayName: "Target",
+          roles: { staff: true, admin: true, owner: true },
+        }),
+      } as Response)
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({}),
+      } as Response)
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({}),
+      } as Response);
+    global.fetch = fetchMock as unknown as typeof fetch;
+
+    const response = await DELETE(
+      makeMethodRequest("DELETE", {
+        uid: "uid-target",
+      }),
+    );
+    const data = (await response.json()) as { success: boolean; uid: string };
+
+    expect(response.status).toBe(200);
+    expect(data.success).toBe(true);
+    expect(data.uid).toBe("uid-target");
+
+    const revokeCall = fetchMock.mock.calls[1] as [string, RequestInit];
+    expect(revokeCall[0]).toContain("/userProfiles/uid-target.json");
+    expect(revokeCall[1].method).toBe("PATCH");
+    const revokeBody = JSON.parse(revokeCall[1].body as string) as {
+      roles: Record<string, boolean>;
+      deactivatedBy: string;
+      deactivatedAt: number;
+      updatedAt: number;
+    };
+    expect(revokeBody.roles).toEqual({ owner: true });
+    expect(revokeBody.deactivatedBy).toBe("owner-uid");
+    expect(typeof revokeBody.deactivatedAt).toBe("number");
+    expect(typeof revokeBody.updatedAt).toBe("number");
+
+    const auditCall = fetchMock.mock.calls[2] as [string, RequestInit];
+    expect(auditCall[0]).toContain("/audit/settingChanges/");
+    const auditBody = JSON.parse(auditCall[1].body as string) as {
+      action: string;
+      targetUid: string;
+      targetRoles: string[];
+    };
+    expect(auditBody.action).toBe("user_staff_access_removed");
+    expect(auditBody.targetUid).toBe("uid-target");
+    expect(auditBody.targetRoles).toEqual(["owner"]);
   });
 });

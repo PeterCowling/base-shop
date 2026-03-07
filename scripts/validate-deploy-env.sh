@@ -83,6 +83,9 @@ RESEND_REQUIRED="RESEND_API_KEY"
 # Conditional: Sanity CMS (required when using Sanity)
 SANITY_REQUIRED="SANITY_PROJECT_ID SANITY_DATASET"
 
+# Prime app runtime secrets (required when deploying Prime)
+PRIME_REQUIRED="CF_FIREBASE_API_KEY PRIME_STAFF_PIN_HASH PRIME_FIREBASE_SERVICE_ACCOUNT_EMAIL PRIME_FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY PRIME_EMAIL_WEBHOOK_TOKEN PRIME_EMAIL_WEBHOOK_SIGNATURE_SECRET OPENAI_API_KEY"
+
 # =============================================================================
 # Helper functions
 # =============================================================================
@@ -240,6 +243,17 @@ if [ -n "$SANITY_PROJECT_ID" ]; then
 fi
 echo "${BLUE}> Sanity CMS secrets (when using Sanity)${NC}"
 check_vars "$SANITY_REQUIRED" "Sanity" 1 "$SANITY_ENABLED" || TOTAL_FAILURES=$((TOTAL_FAILURES + $?))
+echo ""
+
+# Check Prime runtime secrets (conditional on Prime deploy target)
+APP_FILTER=$(get_env_value "APP_FILTER")
+PROJECT_NAME=$(get_env_value "PROJECT_NAME")
+PRIME_DEPLOY_ENABLED=0
+if [ "$APP_FILTER" = "@apps/prime" ] || [ "$PROJECT_NAME" = "prime" ]; then
+    PRIME_DEPLOY_ENABLED=1
+fi
+echo "${BLUE}> Prime runtime secrets (when deploying Prime)${NC}"
+check_vars "$PRIME_REQUIRED" "Prime runtime" 1 "$PRIME_DEPLOY_ENABLED" || TOTAL_FAILURES=$((TOTAL_FAILURES + $?))
 echo ""
 
 # =============================================================================

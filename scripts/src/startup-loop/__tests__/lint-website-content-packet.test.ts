@@ -4,7 +4,7 @@ import * as path from "node:path";
 
 import { describe, expect, it } from "@jest/globals";
 
-import { lintWebsiteContentPacket } from "../lint-website-content-packet.js";
+import { lintWebsiteContentPacket } from "../website/lint-website-content-packet.js";
 
 function writeFile(repoRoot: string, relativePath: string, content: string): void {
   const fullPath = path.join(repoRoot, relativePath);
@@ -19,7 +19,7 @@ function validPacket(): string {
 describe("lintWebsiteContentPacket", () => {
   it("TC-05-01: passes a compliant packet", () => {
     const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), "lint-packet-pass-"));
-    const packetPath = "docs/business-os/startup-baselines/TEST-content-packet.md";
+    const packetPath = "docs/business-os/startup-baselines/TEST/content-packet.md";
     writeFile(repoRoot, packetPath, validPacket());
 
     const result = lintWebsiteContentPacket({
@@ -33,7 +33,7 @@ describe("lintWebsiteContentPacket", () => {
 
   it("TC-05-02: fails deterministically when SEO section is missing", () => {
     const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), "lint-packet-missing-seo-"));
-    const packetPath = "docs/business-os/startup-baselines/TEST-content-packet.md";
+    const packetPath = "docs/business-os/startup-baselines/TEST/content-packet.md";
     writeFile(
       repoRoot,
       packetPath,
@@ -52,7 +52,7 @@ describe("lintWebsiteContentPacket", () => {
 
   it("TC-05-03: fails deterministically when a forbidden claim appears", () => {
     const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), "lint-packet-forbidden-"));
-    const packetPath = "docs/business-os/startup-baselines/TEST-content-packet.md";
+    const packetPath = "docs/business-os/startup-baselines/TEST/content-packet.md";
     writeFile(
       repoRoot,
       packetPath,

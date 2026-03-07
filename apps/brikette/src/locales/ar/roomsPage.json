@@ -322,7 +322,9 @@
   },
   "bookingControls": {
     "decreaseAdults": "تقليل البالغين",
-    "increaseAdults": "زيادة الكبار"
+    "increaseAdults": "زيادة الكبار",
+    "decreaseGuests": "تقليل عدد الضيوف",
+    "increaseGuests": "زيادة عدد الضيوف"
   },
   "recovery": {
     "roomTitle": "هل تحتاج إلى اتخاذ القرار لاحقًا؟ أرسل لنفسك اقتباس الغرفة هذا."

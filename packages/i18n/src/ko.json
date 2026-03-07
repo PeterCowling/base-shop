@@ -146,7 +146,6 @@
   "pipeline.candidate.stageM.runnerStatus.mode": "Mode",
   "pipeline.candidate.stageM.runnerStatus.browser": "Browser",
   "pipeline.candidate.stageM.runnerStatus.session": "Session",
-
   "handbagConfigurator.action.done": "I'm done",
   "handbagConfigurator.action.saveShare": "Save/Share",
   "handbagConfigurator.action.blankBag": "Blank Bag",
@@ -180,10 +179,13 @@
   "handbagConfigurator.hotspot.ariaLabel": "Customize {label}",
   "handbagConfigurator.hotspot.configTitle": "Hotspot config",
   "handbagConfigurator.hotspot.done": "Done",
-
   "pipeline.missionControl.map.nodes.P": "프로스펙트",
   "pipeline.missionControl.map.nodes.M": "마켓",
   "pipeline.missionControl.map.nodes.S": "소스",
   "pipeline.missionControl.map.nodes.K": "킷",
-  "pipeline.missionControl.map.nodes.L": "런치"
+  "pipeline.missionControl.map.nodes.L": "런치",
+  "themeToggle.enableDark": "다크 모드 켜기",
+  "themeToggle.enableLight": "라이트 모드 켜기",
+  "themeToggle.switchToDark": "다크 모드로 전환",
+  "themeToggle.switchToLight": "라이트 모드로 전환"
 }

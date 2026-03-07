@@ -257,15 +257,15 @@ Check (business-artifact/mixed — additionally):
 - Are approval paths available (reviewer named, process exists)?
 - Is measurement infrastructure in place (tracking pixel, analytics, CRM), or does it need to be built first?
 
-### Step 5a: Forward Simulation Trace
+### Step 5a: Forward Rehearsal Trace
 
 Load and follow: `../_shared/simulation-protocol.md`
 
-After completing the checks above, run a forward simulation trace of the target document. Follow the Forward Simulation Trace Instructions defined in the shared protocol (Step 5a section).
+After completing the checks above, run a forward rehearsal trace of the target document. Follow the Forward Rehearsal Trace Instructions defined in the shared protocol (Step 5a section).
 
-In summary: identify the proposed execution sequence (task order for plans; investigation order for fact-finds; proposed implementation steps for other artifacts), apply the issue taxonomy to each step, classify findings by severity, and record findings inline within Step 5 output using the `[Simulation]` label.
+In summary: identify the proposed execution sequence (task order for plans; investigation order for fact-finds; proposed implementation steps for other artifacts), apply the issue taxonomy to each step, classify findings by severity, and record findings inline within Step 5 output using the `[Rehearsal]` label.
 
-Critical simulation findings must be surfaced in the Top Issues section (Section 2) and in the Fix List (Section 11). They do not trigger a separate hard gate in critique mode — that gate lives in lp-do-plan (Phase 7.5) and lp-do-fact-find (Phase 5.5). Simulation findings here are advisory to the critique score.
+Critical rehearsal findings must be surfaced in the Top Issues section (Section 2) and in the Fix List (Section 11). They do not trigger a separate hard gate in critique mode — that gate lives in lp-do-plan (Phase 7.5) and lp-do-fact-find (Phase 5.5). Rehearsal findings here are advisory to the critique score.
 
 ### Step 6 - Contrarian Attacks
 
@@ -400,11 +400,11 @@ Recommended action: **proceed** / **revise and re-critique** / **return to /lp-d
 - Applied precedence/tie-breaker
 - Residual ambiguity
 
-### 5) Feasibility, Execution Reality, and Simulation Trace
+### 5) Feasibility, Execution Reality, and Rehearsal Trace
 
 Prose output from Step 5 checks (code/mixed paths, dependency chain realism, failure points, effort honesty) and business-artifact checks (VC executability, falsification cost, approval paths, measurement infrastructure).
 
-Forward simulation trace findings (from Step 5a) are written inline here with the `[Simulation]` label. Critical simulation findings are also surfaced in Section 2 (Top Issues) and Section 11 (Concrete Fixes).
+Forward rehearsal trace findings (from Step 5a) are written inline here with the `[Rehearsal]` label. Critical rehearsal findings are also surfaced in Section 2 (Top Issues) and Section 11 (Concrete Fixes).
 
 ### 6) Hidden Assumptions
 

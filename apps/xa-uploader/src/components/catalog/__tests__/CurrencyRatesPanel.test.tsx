@@ -31,7 +31,7 @@ describe("CurrencyRatesPanel", () => {
       <CurrencyRatesPanel
         busy={false}
         syncReadiness={{ checking: false, ready: true }}
-        onSync={() => undefined}
+        onSync={async () => ({ ok: true })}
       />,
     );
 
@@ -45,7 +45,7 @@ describe("CurrencyRatesPanel", () => {
       <CurrencyRatesPanel
         busy
         syncReadiness={{ checking: false, ready: true }}
-        onSync={() => undefined}
+        onSync={async () => ({ ok: true })}
       />,
     );
 
@@ -64,17 +64,50 @@ describe("CurrencyRatesPanel", () => {
       <CurrencyRatesPanel
         busy={false}
         syncReadiness={{ checking: false, ready: true }}
-        onSync={() => undefined}
+        onSync={async () => ({ ok: true })}
       />,
     );
 
     await waitFor(() => {
       expect(screen.getByTestId("currency-rates-feedback")).toHaveTextContent("currencyRatesLoadFailed");
     });
+    expect(screen.getByTestId("currency-rates-eur")).toBeDisabled();
+    expect((screen.getByTestId("currency-rates-eur") as HTMLInputElement).value).toBe("");
   });
 
-  it("calls onSync and shows synced note when save succeeds and sync is ready", async () => {
-    const onSync = jest.fn();
+  it("shows actionable invalid-file feedback and keeps inputs disabled when stored rates are corrupt", async () => {
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: false,
+        json: () =>
+          Promise.resolve({
+            ok: false,
+            error: "invalid_rates",
+            reason: "currency_rates_invalid",
+          }),
+      } as Response),
+    ) as unknown as typeof fetch;
+
+    render(
+      <CurrencyRatesPanel
+        busy={false}
+        syncReadiness={{ checking: false, ready: true }}
+        onSync={async () => ({ ok: true })}
+      />,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByTestId("currency-rates-feedback")).toHaveTextContent(
+        "syncCurrencyRatesInvalidActionable",
+      );
+    });
+    expect(screen.getByTestId("currency-rates-save")).toBeDisabled();
+    expect(screen.getByTestId("currency-rates-eur")).toBeDisabled();
+    expect((screen.getByTestId("currency-rates-eur") as HTMLInputElement).value).toBe("");
+  });
+
+  it("awaits onSync and shows synced note only after sync succeeds", async () => {
+    const onSync = jest.fn(async () => ({ ok: true }));
     global.fetch = jest.fn((input: RequestInfo | URL, init?: RequestInit) => {
       const requestUrl = typeof input === "string" ? input : input.toString();
       if (requestUrl.includes("/api/catalog/currency-rates") && init?.method === "PUT") {
@@ -105,8 +138,40 @@ describe("CurrencyRatesPanel", () => {
     });
   });
 
+  it("shows sync-failed feedback when save succeeds but sync fails", async () => {
+    const onSync = jest.fn(async () => ({ ok: false }));
+    global.fetch = jest.fn((input: RequestInfo | URL, init?: RequestInit) => {
+      const requestUrl = typeof input === "string" ? input : input.toString();
+      if (requestUrl.includes("/api/catalog/currency-rates") && init?.method === "PUT") {
+        return Promise.resolve({ ok: true, json: async () => ({ ok: true }) } as Response);
+      }
+      return Promise.resolve({
+        ok: true,
+        json: async () => ({ ok: true, rates: { EUR: 0.93, GBP: 0.79, AUD: 1.55 } }),
+      } as Response);
+    }) as unknown as typeof fetch;
+
+    render(
+      <CurrencyRatesPanel
+        busy={false}
+        syncReadiness={{ checking: false, ready: true }}
+        onSync={onSync}
+      />,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByTestId("currency-rates-eur")).toHaveValue(0.93);
+    });
+    fireEvent.click(screen.getByTestId("currency-rates-save"));
+
+    await waitFor(() => {
+      expect(onSync).toHaveBeenCalledTimes(1);
+      expect(screen.getByTestId("currency-rates-feedback")).toHaveTextContent("currencyRatesSavedSyncFailed");
+    });
+  });
+
   it("shows saved-not-synced feedback and does not call onSync when readiness is false", async () => {
-    const onSync = jest.fn();
+    const onSync = jest.fn(async () => ({ ok: true }));
     global.fetch = jest.fn((input: RequestInfo | URL, init?: RequestInit) => {
       const requestUrl = typeof input === "string" ? input : input.toString();
       if (requestUrl.includes("/api/catalog/currency-rates") && init?.method === "PUT") {
@@ -153,7 +218,7 @@ describe("CurrencyRatesPanel", () => {
       <CurrencyRatesPanel
         busy={false}
         syncReadiness={{ checking: false, ready: true }}
-        onSync={() => undefined}
+        onSync={async () => ({ ok: true })}
       />,
     );
 

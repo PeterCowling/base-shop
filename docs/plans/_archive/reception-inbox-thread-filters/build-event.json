@@ -1,0 +1,17 @@
+{
+  "event_type": "build_complete",
+  "feature_slug": "reception-inbox-thread-filters",
+  "completed_at": "2026-03-07",
+  "dispatch_id": "IDEA-DISPATCH-20260307153740-9201",
+  "business": "BRIK",
+  "outcome_contract": {
+    "why": "Staff must scan the entire inbox thread list to find threads needing action. With growing thread volume, this wastes time and leads to missed urgent threads.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Inbox thread list supports filtering by status, needs-manual-draft, and sync freshness so staff can prioritize efficiently.",
+    "source": "operator",
+    "why_source": "operator"
+  },
+  "tasks_completed": 3,
+  "plan_path": "docs/plans/reception-inbox-thread-filters/plan.md",
+  "build_record_path": "docs/plans/reception-inbox-thread-filters/build-record.user.md"
+}

@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 2,
+  "baselineLocale": "en",
+  "locales": [
+    "pt"
+  ],
+  "summary": {
+    "totalMissingFiles": 0,
+    "totalMissingKeys": 0,
+    "totalUntranslatedKeys": 86
+  },
+  "reports": [
+    {
+      "locale": "pt",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {
+        "apartmentPage.json": [
+          "book.checkinLabel"
+        ],
+        "assistanceSection.json": [
+          "addressValue",
+          "bookingOptions.bookingCom",
+          "bookingOptions.googleBusiness",
+          "bookingOptions.hostelWorld"
+        ],
+        "barMenuPage.json": [
+          "header.brand",
+          "items.angosturaReserva.name",
+          "items.aperolSpritz.name",
+          "items.bacardiSuperior.name",
+          "items.hendricks.name",
+          "items.hugoSpritz.name",
+          "items.limoncelloShot.name",
+          "items.limoncelloSpritz.name",
+          "items.pampero.name",
+          "items.rossiniSpritz.name",
+          "items.skyy.name",
+          "items.smirnoff.name",
+          "items.tanqueray.name"
+        ],
+        "bookPage.json": [
+          "recovery.mailto.labels.checkIn"
+        ],
+        "breakfastMenuPage.json": [
+          "header.brand",
+          "items.cappuccino.name",
+          "items.latte.name",
+          "items.macchiato.name"
+        ],
+        "footer.json": [
+          "checkinCheckout"
+        ],
+        "guides.tags.json": [
+          "tags.amalfi.label",
+          "tags.capri.label",
+          "tags.ferragosto.label",
+          "tags.ferry.label",
+          "tags.ischia.label",
+          "tags.positano.label",
+          "tags.praiano.label",
+          "tags.procida.label",
+          "tags.ravello.label",
+          "tags.salerno.label",
+          "tags.salerno.title",
+          "tags.sorrento.label",
+          "tags.tramonti.label"
+        ],
+        "guides/content/fiordoDiFuroreBeachGuide.json": [
+          "lastUpdated"
+        ],
+        "guides/content/howToGetToPositano.json": [
+          "toc.salerno"
+        ],
+        "guides/content/lauritoBeachBusBack.json": [
+          "articleLead.stopCaption"
+        ],
+        "guides/content/luggageStorage.json": [
+          "areaServed"
+        ],
+        "guides/content/luminariaPraiano.json": [
+          "event.location"
+        ],
+        "guides/content/ravelloFestival.json": [
+          "eventSchema.addressLocality"
+        ],
+        "guides/structured.json": [
+          "luminariaPraiano.addressLocality",
+          "luminariaPraiano.locationName"
+        ],
+        "guides/tags.json": [
+          "labels.amalfi",
+          "labels.capri",
+          "labels.ferragosto",
+          "labels.ferry",
+          "labels.ischia",
+          "labels.positano",
+          "labels.praiano",
+          "labels.procida",
+          "labels.ravello",
+          "labels.salerno",
+          "labels.sorrento",
+          "labels.tramonti",
+          "titles.salerno"
+        ],
+        "header.json": [
+          "title"
+        ],
+        "how-to-get-here/routes/capriPositanoFerry.json": [
+          "sections.capriPort.linkLabelCapri"
+        ],
+        "how-to-get-here/routes/howToGetHereAmalfiPositanoBus.json": [
+          "sections.tickets.body.linkLabel"
+        ],
+        "how-to-get-here/routes/howToGetHereAmalfiPositanoFerry.json": [
+          "sections.tickets.intro.travelmarLabel"
+        ],
+        "how-to-get-here/routes/howToGetHerePositanoNaplesAirportBus.json": [
+          "sections.timetables.items.curreri.label",
+          "sections.timetables.items.sita.label"
+        ],
+        "how-to-get-here/routes/howToGetHereRavelloPositanoBus.json": [
+          "ravelloToAmalfi.title"
+        ],
+        "how-to-get-here/routes/naplesCenterTrainBus.json": [
+          "sections.timetable.linkLabel"
+        ],
+        "how-to-get-here/routes/positanoCapriFerry.json": [
+          "journeyOverview.links.capriNet",
+          "journeyOverview.linksSeparator"
+        ],
+        "how-to-get-here/routes/positanoSalernoBus.json": [
+          "sections.timetable.linkLabel"
+        ],
+        "how-to-get-here/routes/positanoSorrentoBus.json": [
+          "sections.timetable.linkLabel"
+        ],
+        "how-to-get-here/routes/salernoPositanoBus.json": [
+          "timetable.scheduleLinkLabel"
+        ],
+        "howToGetHere.json": [
+          "filters.transportModes.ferry",
+          "header.eyebrow",
+          "romePlanner.route.salerno.ferry.steps.from.2",
+          "romePlanner.route.salerno.ferry.steps.to.3",
+          "romePlanner.tag.ferry",
+          "romePlanner.tag.scenic",
+          "sorrento.title"
+        ],
+        "landingPage.json": [
+          "heroSection.address",
+          "heroSection.brandName",
+          "heroSection.cityName"
+        ],
+        "ratingsBar.json": [
+          "sources.booking.label",
+          "sources.hostelworld.ariaName",
+          "sources.hostelworld.label"
+        ],
+        "translation.json": [
+          "header.title",
+          "meta.twitterHandle"
+        ]
+      }
+    }
+  ]
+}

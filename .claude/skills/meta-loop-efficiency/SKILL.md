@@ -63,9 +63,28 @@ find "$skill" -name "*.md" -exec grep -hE "^#{1,6} (Phase|Stage|Domain|Step) [0-
 Applies only to skills that reference `lp-do-build` as their execution skill AND have `phase_matches_any_md ≥ 3` (filters out skills that merely name lp-do-build as a downstream step).
 If `wave-dispatch-protocol.md` is not referenced in any `.md` file in the directory → **wave-candidate** (advisory).
 
+### H4 — Deterministic extraction opportunity
+
+Detect skills where deterministic content likely belongs in executable/data artifacts (`.ts`, `.json`, `.yaml`) rather than prose:
+- `deterministic_signal_count`: count matches across all skill `.md` for algorithmic markers (`regex`, `schema`, `validation contract`, `sort`, `dedupe`, `threshold`, `parse`, `normalize`, `map`, `filter`, `step-by-step decision table`)
+- `artifact_ref_count`: count references to `.ts`, `.json`, `.yaml`, `.yml` in the skill directory docs
+- If `deterministic_signal_count ≥ 6` AND `artifact_ref_count == 0` → **deterministic-extraction-candidate**
+
+Advisory intent: trigger an idea to move repeatable logic into typed code/data artifacts with tests, not just split markdown.
+
+### H5 — Shrink-without-simplification (anti-gaming)
+
+Flag suspicious "line target passes" that likely just reshuffle prose:
+- Compare current vs previous audit per skill using:
+  - `SKILL.md` line delta
+  - total `.md` footprint delta in the skill directory (`SKILL.md + modules/ + other .md`)
+- If `SKILL.md` decreased by at least 20 lines but total `.md` footprint increased, and no new `.ts/.json/.yaml/.yml` references were introduced → **shrink-without-simplification**
+
+This is advisory and should be called out as a quality risk, not counted as success.
+
 ## Ranking
 
-Produce **two separate hierarchical ranked lists**. Do not merge H1 and H2/H3 signals.
+Produce **three separate hierarchical ranked lists**. Do not merge H1, H2/H3, and H4/H5 signals.
 
 ### List 1 — Modularization opportunities (H1)
 
@@ -80,6 +99,14 @@ Rank within each tier by `phase_matches_any_md` descending:
 1. `high` tier — dispatch-candidate or wave-candidate
 2. `medium` tier
 3. `low` tier
+
+### List 3 — Deterministic extraction and anti-gaming (H4 + H5)
+
+Rank by severity:
+1. `critical` — H5 `shrink-without-simplification`
+2. `high` — H4 `deterministic-extraction-candidate` on high-tier skills
+3. `medium` — H4 on medium-tier skills
+4. `low` — H4 on low-tier skills
 
 ### Invocation tier assignments (fixed)
 
@@ -120,8 +147,9 @@ Artifact sections:
 2. **Possible duplicates** (H0)
 3. **List 1 — Modularization opportunities** (H1, hierarchical)
 4. **List 2 — Dispatch opportunities** (H2/H3, hierarchical)
-5. **Planning anchor** — when new-to-HIGH items exist: suggest `/lp-do-fact-find startup-loop-token-efficiency-v2`
-6. **Delta status** — new-vs-known breakdown, regression flags
+5. **List 3 — Deterministic extraction + anti-gaming** (H4/H5, hierarchical)
+6. **Planning anchor** — when new-to-HIGH items exist: suggest `/lp-do-fact-find startup-loop-token-efficiency-v2`
+7. **Delta status** — new-vs-known breakdown, regression flags
 
 ## Commit Guard
 

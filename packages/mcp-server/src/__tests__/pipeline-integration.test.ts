@@ -89,7 +89,8 @@ type InterpretResult = {
   workflow_triggers: {
     prepayment: boolean;
     terms_and_conditions: boolean;
-    booking_monitor: boolean;
+    booking_action_required: boolean;
+    booking_context: boolean;
   };
   scenario: { category: string; confidence: number };
   escalation: {
@@ -1126,7 +1127,10 @@ describe("TASK-04: Multi-Scenario Action Plan", () => {
       language: string;
       intents: { questions: Array<{ text: string }>; requests: Array<{ text: string }>; confirmations: Array<{ text: string }> };
       agreement: object;
-      workflow_triggers: { booking_monitor: boolean };
+      workflow_triggers: {
+        booking_action_required: boolean;
+        booking_context: boolean;
+      };
       escalation: object;
     }>(interpretResult);
 
@@ -1176,7 +1180,10 @@ describe("TASK-18: Quality Gate Standalone", () => {
         actionPlan: {
           language: "EN",
           intents: { questions: [] },
-          workflow_triggers: { booking_monitor: false },
+          workflow_triggers: {
+            booking_action_required: false,
+            booking_context: false,
+          },
           scenario: { category: "faq" },
           thread_summary: { prior_commitments: [] },
         },
@@ -1196,7 +1203,10 @@ describe("TASK-18: Quality Gate Standalone", () => {
         actionPlan: {
           language: "EN",
           intents: { questions: [{ text: "What time is check-in?" }] },
-          workflow_triggers: { booking_monitor: false },
+          workflow_triggers: {
+            booking_action_required: false,
+            booking_context: false,
+          },
           scenario: { category: "faq" },
           thread_summary: { prior_commitments: [] },
         },

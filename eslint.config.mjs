@@ -275,6 +275,17 @@ export default [
     },
   },
 
+  /* ▸ Prime Cloudflare Functions: lint outside app tsconfig project graph */
+  {
+    files: ["apps/prime/functions/**/*.{ts,tsx}"],
+    languageOptions: {
+      parserOptions: {
+        projectService: false,
+        allowDefaultProject: true,
+      },
+    },
+  },
+
   /* ▸ MCP server scripts: allow default project (no type-aware lint) */
   {
     files: ["packages/mcp-server/scripts/**/*.ts"],

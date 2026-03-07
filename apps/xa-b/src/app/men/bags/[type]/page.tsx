@@ -3,7 +3,9 @@ import { notFound } from "next/navigation";
 import { XaDepartmentListing } from "../../../../components/XaDepartmentListing";
 import { isCategoryAllowed, isDepartmentAllowed,XA_SUBCATEGORIES } from "../../../../lib/xaCatalog";
 
-export function generateStaticParams() {
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
   return XA_SUBCATEGORIES.bags.map((t) => ({ type: t }));
 }
 

@@ -89,7 +89,7 @@ Consolidated plan for getting the XA storefront (`apps/xa-b`) to staging and cli
 - **Validation contract (TC):**
   - Cloudflare Pages project `xa-b-site` exists in dashboard
   - CI workflow `deploy-xa-b` job completes with green status
-  - `https://dev--xa-b-site.pages.dev/` (or `https://xa-b-site.pages.dev/` on main) returns 200
+  - `https://dev.xa-b-site.pages.dev/` (or `https://xa-b-site.pages.dev/` on main) returns 200
   - Core routes accessible: `/`, `/women/clothing`, `/products/mini-parka`, `/cart`, `/wishlist`
 - **Context (from replan 2026-02-28):**
   - `apps/xa` deleted 2026-02-23; xa-b is now the primary app
@@ -219,7 +219,7 @@ Consolidated plan for getting the XA storefront (`apps/xa-b`) to staging and cli
 
 - [ ] Should demo require Cloudflare Access? Emails/groups? (XA-V2-02)
 - [ ] Who is the client contact for scheduling the review?
-- [x] `XA_STAGING_PROJECT` / URL pattern → **xa-b-site**, `https://xa-b-site.pages.dev` (replan 2026-02-28)
+- [x] `XA_STAGING_PROJECT` / URL pattern → **xa-b-site**, `https://dev.xa-b-site.pages.dev` (staging) and `https://xa-b-site.pages.dev` (production) (replan 2026-02-28; updated 2026-03-05)
 - [x] Has second CF account been created? → **No longer needed** (stealth middleware removed; xa-b is static export)
 
 ## Risks & Mitigations

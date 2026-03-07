@@ -217,6 +217,9 @@ if ! [[ "$workers" =~ ^[0-9]+$ ]]; then
   workers="0"
 fi
 
+telemetry_session_id="${BASESHOP_SESSION_ID:-${BASESHOP_AGENT_SESSION_ID:-governed-${PPID:-0}-$$}}"
+telemetry_caller_pid="${BASESHOP_CALLER_PID:-${PPID:-0}}"
+
 lock_held="0"
 heartbeat_pid=""
 command_pid=""
@@ -391,6 +394,8 @@ else
         --pressure-level "$pressure_level" \
         --workers "$workers" \
         --exit-code 124 \
+        --session-id "$telemetry_session_id" \
+        --caller-pid "$telemetry_caller_pid" \
         --override-policy-used false \
         --override-overload-used "${BASESHOP_ALLOW_OVERLOAD:-0}"
       exit 124
@@ -481,6 +486,8 @@ baseshop_emit_governed_telemetry \
   --exit-code "$command_exit" \
   --timeout-killed "$timeout_killed" \
   --kill-escalation "$kill_escalation" \
+  --session-id "$telemetry_session_id" \
+  --caller-pid "$telemetry_caller_pid" \
   --override-policy-used false \
   --override-overload-used "${BASESHOP_ALLOW_OVERLOAD:-0}"
 

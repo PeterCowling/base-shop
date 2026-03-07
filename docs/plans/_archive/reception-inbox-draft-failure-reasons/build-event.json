@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-inbox-draft-failure-reasons-2026-03-07",
+  "feature_slug": "reception-inbox-draft-failure-reasons",
+  "emitted_at": "2026-03-07T17:00:00.000Z",
+  "why": "When draft generation fails, reception staff have no way to understand what went wrong. They see 'needs manual draft' but cannot tell if the email body was empty, the quality gate failed, or the template engine had no match.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Draft generation failures store a reason code and human-readable message in thread metadata, displayed in the inbox UI so staff knows what went wrong without investigating.",
+    "source": "operator"
+  }
+}

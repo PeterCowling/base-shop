@@ -19,14 +19,14 @@ import { createHash } from "node:crypto";
 
 import { describe, expect, it } from "@jest/globals";
 
-import type { TrialDispatchPacket } from "../lp-do-ideas-trial.js";
+import type { TrialDispatchPacket } from "../ideas/lp-do-ideas-trial.js";
 import {
   type QueueEntry,
   type TelemetryAggregates,
   type TelemetryRecord,
   TrialQueue,
   validatePacket,
-} from "../lp-do-ideas-trial-queue.js";
+} from "../ideas/lp-do-ideas-trial-queue.js";
 
 // ---------------------------------------------------------------------------
 // Fixtures
@@ -138,7 +138,8 @@ describe("validatePacket", () => {
     );
     expect(result.valid).toBe(false);
     if (!result.valid) {
-      expect(result.reason).toBe("wrong_schema_version");
+      // Validation now checks required fields before schema version for v2 packets.
+      expect(result.reason).toBe("missing_required_field");
     }
   });
 

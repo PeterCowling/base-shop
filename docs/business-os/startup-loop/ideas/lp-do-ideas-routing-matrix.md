@@ -6,9 +6,9 @@ Created: 2026-02-24
 Owner: startup-loop maintainers
 Related-contract: docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md
 Related-policy: docs/plans/lp-do-ideas-startup-loop-integration/artifacts/trial-policy-decision.md
-Related-schema: docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.v2.schema.json, docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.schema.json (compat)
-Related-adapter: scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts
-Related-skills: .claude/skills/lp-do-fact-find/SKILL.md, .claude/skills/lp-do-briefing/SKILL.md
+Related-schema: docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-dispatch.v2.schema.json, docs/business-os/startup-loop/ideas/_deprecated/lp-do-ideas-dispatch.schema.json (compat)
+Related-adapter: scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts
+Related-skills: .claude/skills/lp-do-fact-find/SKILL.md, .claude/skills/lp-do-build/SKILL.md, .claude/skills/lp-do-briefing/SKILL.md
 ---
 
 # lp-do-ideas Routing Matrix
@@ -42,6 +42,7 @@ explicit operator confirmation per Option B (queue-with-confirmation) policy.
 | Status | Recommended Route | Adapter Outcome | Required Intake Fields |
 |---|---|---|---|
 | `fact_find_ready` | `lp-do-fact-find` | `RouteSuccess` with `FactFindInvocationPayload` | `area_anchor` (non-empty), `location_anchors` (≥1 item), `provisional_deliverable_family` (non-empty), `evidence_refs` (≥1 item) |
+| `micro_build_ready` | `lp-do-build` | `RouteSuccess` with `MicroBuildInvocationPayload` | `area_anchor` (non-empty), `location_anchors` (≥1 item), `provisional_deliverable_family` (non-empty), `evidence_refs` (≥1 item) |
 | `briefing_ready` | `lp-do-briefing` | `RouteSuccess` with `BriefingInvocationPayload` | `area_anchor` (non-empty), `evidence_refs` (≥1 item) |
 
 ### 2.2 Non-Routable Status Values
@@ -58,8 +59,8 @@ explicit operator confirmation per Option B (queue-with-confirmation) policy.
 | `schema_version` is neither `"dispatch.v2"` nor `"dispatch.v1"` | `RouteError` | `INVALID_SCHEMA_VERSION` | Packet was not produced by lp-do-ideas orchestrator or was mutated post-emission. Re-emit from the orchestrator. |
 | `mode` is not `"trial"` | `RouteError` | `INVALID_MODE` | Only trial packets are accepted in this tranche. Live mode routing is reserved for the go-live seam (TASK-07). |
 | `status` and `recommended_route` are inconsistent | `RouteError` | `ROUTE_STATUS_MISMATCH` | The upstream orchestrator set status/route to an invalid combination. Correct classification in lp-do-ideas-trial. |
-| Unrecognised `status` value | `RouteError` | `UNKNOWN_STATUS` | Status is not in `{fact_find_ready, briefing_ready, auto_executed, logged_no_action}`. Check schema version and trial policy. |
-| Unrecognised `recommended_route` value | `RouteError` | `UNKNOWN_ROUTE` | Route is not `lp-do-fact-find` or `lp-do-briefing`. Check schema version. |
+| Unrecognised `status` value | `RouteError` | `UNKNOWN_STATUS` | Status is not in `{fact_find_ready, micro_build_ready, briefing_ready, auto_executed, logged_no_action}`. Check schema version and trial policy. |
+| Unrecognised `recommended_route` value | `RouteError` | `UNKNOWN_ROUTE` | Route is not `lp-do-fact-find`, `lp-do-build`, or `lp-do-briefing`. Check schema version. |
 | `area_anchor` is empty or whitespace | `RouteError` | `MISSING_AREA_ANCHOR` | area_anchor is required for all routes. Verify deriveAreaAnchor() in lp-do-ideas-trial returns a non-empty value. |
 | `evidence_refs` is empty | `RouteError` | `MISSING_EVIDENCE_REFS` | evidence_refs must contain ≥1 artifact path or anchor for all routes. |
 | `location_anchors` is empty on `lp-do-fact-find` path | `RouteError` | `MISSING_LOCATION_ANCHORS` | Required by lp-do-fact-find intake contract. Verify lp-do-ideas-trial sets location_anchors from event.path. |
@@ -112,6 +113,23 @@ Operator invocation pattern:
 # with intake fields pre-populated from payload
 ```
 
+### 3.3 MicroBuildInvocationPayload (skill: lp-do-build)
+
+Produced when `status=micro_build_ready` and the dispatch is trivially bounded for direct execution.
+
+| Field | Source | Notes |
+|---|---|---|
+| `skill` | Constant | `"lp-do-build"` |
+| `dispatch_id` | `packet.dispatch_id` | Unique dispatch identifier for correlation |
+| `business` | `packet.business` | Business code |
+| `area_anchor` | `packet.area_anchor` | Concrete build target |
+| `location_anchors` | `packet.location_anchors` | Bounded file/route anchors for safe execution |
+| `provisional_deliverable_family` | `packet.provisional_deliverable_family` | Used to select validations and build mode |
+| `evidence_refs` | `packet.evidence_refs` | Traceability back to source signal |
+| `dispatch_created_at` | `packet.created_at` | ISO-8601 timestamp |
+| `source_packet` | Full `packet` | Preserved for queue/build traceability |
+| `feature_slug_hint` | Adapter-derived | Suggested slug for the direct-build artifact directory |
+
 ---
 
 ## 4. Required Intake Fields by Route
@@ -125,6 +143,15 @@ Per `lp-do-fact-find` SKILL.md Required Inputs:
 | `area_anchor` | Yes | Non-empty string; adapter rejects packet if missing |
 | `location_anchors` | Yes | ≥1 item; adapter rejects packet if empty |
 | `provisional_deliverable_family` | Yes | Non-empty; adapter rejects packet if missing; determines execution track |
+| `evidence_refs` | Yes | ≥1 item; enforced for all routes |
+
+### lp-do-build (status: micro_build_ready)
+
+| Field | Required | Enforcement |
+|---|---|---|
+| `area_anchor` | Yes | Non-empty string; adapter rejects packet if missing |
+| `location_anchors` | Yes | ≥1 item; adapter rejects packet if empty |
+| `provisional_deliverable_family` | Yes | Non-empty; adapter rejects packet if missing |
 | `evidence_refs` | Yes | ≥1 item; enforced for all routes |
 
 ### lp-do-briefing (status: briefing_ready)
@@ -174,6 +201,7 @@ here is rejected by the adapter with `ROUTE_STATUS_MISMATCH` or `UNKNOWN_STATUS`
 | Status | Canonical Route | Notes |
 |---|---|---|
 | `fact_find_ready` | `lp-do-fact-find` | T1 semantic match confirmed; planning intent present |
+| `micro_build_ready` | `lp-do-build` | Trivially bounded executable change; direct build fast lane |
 | `briefing_ready` | `lp-do-briefing` | Non-T1 structural change; understanding intent only |
 | `auto_executed` | (none — reserved) | Must not appear in trial mode; rejected fail-closed |
 | `logged_no_action` | (none — terminal) | Conservative no-op; must not be forwarded |
@@ -222,11 +250,11 @@ Operational notes:
 
 | Concept | Defined in |
 |---|---|
-| Dispatch packet format | `docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.v2.schema.json` (primary), `docs/business-os/startup-loop/ideas/lp-do-ideas-dispatch.schema.json` (compat) |
+| Dispatch packet format | `docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-dispatch.v2.schema.json` (primary), `docs/business-os/startup-loop/ideas/_deprecated/lp-do-ideas-dispatch.schema.json` (compat) |
 | Trial mode contract | `docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md` |
 | Autonomy/threshold policy | `docs/plans/lp-do-ideas-startup-loop-integration/artifacts/trial-policy-decision.md` |
-| Routing adapter implementation | `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts` |
+| Routing adapter implementation | `scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts` |
 | Fact-find intake contract | `.claude/skills/lp-do-fact-find/SKILL.md` |
 | Briefing intake contract | `.claude/skills/lp-do-briefing/SKILL.md` |
-| Orchestrator (upstream) | `scripts/src/startup-loop/lp-do-ideas-trial.ts` |
-| Queue/telemetry (downstream) | `scripts/src/startup-loop/lp-do-ideas-trial-queue.ts` (TASK-05) |
+| Orchestrator (upstream) | `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts` |
+| Queue/telemetry (downstream) | `scripts/src/startup-loop/ideas/lp-do-ideas-trial-queue.ts` (TASK-05) |

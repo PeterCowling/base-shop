@@ -14,8 +14,8 @@ owner: Pete
 last_updated: 2026-02-20
 source_of_truth: true
 depends_on:
-  - docs/business-os/startup-baselines/HEAD-offer.md
-  - docs/business-os/startup-baselines/HEAD-channels.md
+  - docs/business-os/startup-baselines/HEAD/offer.md
+  - docs/business-os/startup-baselines/HEAD/channels.md
   - docs/business-os/contracts/HEAD/outcome-contract.user.md
   - docs/business-os/market-research/HEAD/2026-02-20-market-intelligence.user.md
 decisions:
@@ -114,8 +114,8 @@ This forecast is aligned to the active contract guardrails:
 
 ## Source Set
 
-- `docs/business-os/startup-baselines/HEAD-offer.md`
-- `docs/business-os/startup-baselines/HEAD-channels.md`
+- `docs/business-os/startup-baselines/HEAD/offer.md`
+- `docs/business-os/startup-baselines/HEAD/channels.md`
 - `docs/business-os/contracts/HEAD/outcome-contract.user.md`
 - `docs/business-os/market-research/HEAD/2026-02-20-market-intelligence.user.md`
 - `docs/business-os/strategy/HEAD/lp-other-products-results.user.md`

@@ -60,9 +60,10 @@ export {
 export type {
   BayesianABTestOptions,
   BayesianABTestResult,
+  BetaBinomialPosteriorOptions,
   BetaPosteriorSummary,
 } from "./bayesian.js";
-export { bayesianABTest } from "./bayesian.js";
+export { bayesianABTest, betaBinomialPosterior } from "./bayesian.js";
 export type { ConfidenceIntervalResult } from "./confidence-intervals.js";
 export {
   meanConfidenceInterval,

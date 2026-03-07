@@ -68,6 +68,8 @@ block_with_guidance() {
   echo "  SKIP_WRITER_LOCK=1 or SKIP_SIMPLE_GIT_HOOKS=1" >&2
   echo "  -c core.hooksPath=... or git config core.hooksPath ..." >&2
   echo "  --force / -f, --amend, rebase, stash pop/apply/drop/clear" >&2
+  echo "" >&2
+  echo "Escalation: stop retrying and surface to operator if the allowed path above fails or if you cannot determine why this command was needed." >&2
   exit 2
 }
 

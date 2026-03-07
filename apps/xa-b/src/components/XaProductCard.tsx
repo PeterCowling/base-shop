@@ -1,7 +1,7 @@
 "use client";
 
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
 
@@ -17,11 +17,20 @@ import type { XaProduct } from "../lib/demoData";
 import { getAvailableStock } from "../lib/inventoryStore";
 import { formatLabel, getDesignerName } from "../lib/xaCatalog";
 import { xaI18n } from "../lib/xaI18n";
+import { isNewIn } from "../lib/xaListingUtils";
+import { getProductHref } from "../lib/xaRoutes";
 
 import { XaFadeImage } from "./XaFadeImage";
 
+const CART_ERROR_OUT_OF_STOCK = "Out of stock"; // i18n-exempt -- XA-0143 [ttl=2026-12-31] internal cart error code
+const CART_ERROR_SIZE_REQUIRED = "Size is required"; // i18n-exempt -- XA-0143 [ttl=2026-12-31] internal cart error code
+
 export function XaProductCard({ product }: { product: XaProduct }) {
   const [touched, setTouched] = useState(false);
+  const [quickAddFeedback, setQuickAddFeedback] = useState<{
+    tone: "error" | "success";
+    message: string;
+  } | null>(null);
   const [cart, dispatch] = useCart();
   const [wishlist, wishlistDispatch] = useWishlist();
   const [currency] = useCurrency();
@@ -33,15 +42,6 @@ export function XaProductCard({ product }: { product: XaProduct }) {
   const category = product.taxonomy.category;
   const isWishlisted = wishlist.includes(product.id);
   const effectivePrice = product.prices?.[currency] ?? product.price;
-  const effectiveCompareAtPrice = product.compareAtPrices?.[currency] ?? product.compareAtPrice;
-
-  const hasDiscount =
-    typeof effectiveCompareAtPrice === "number" &&
-    effectiveCompareAtPrice > effectivePrice;
-  const discountPct = hasDiscount
-    ? Math.round(100 - (effectivePrice / effectiveCompareAtPrice!) * 100)
-    : 0;
-  const saving = hasDiscount ? effectiveCompareAtPrice! - effectivePrice : 0;
 
   const jewelryDetail = (() => {
     if (category !== "jewelry") return null;
@@ -53,10 +53,48 @@ export function XaProductCard({ product }: { product: XaProduct }) {
     return [metal, gemstone ?? size].filter(Boolean).join(" / ");
   })();
 
+  useEffect(() => {
+    if (!quickAddFeedback) return;
+    const timer = window.setTimeout(() => setQuickAddFeedback(null), 3500);
+    return () => window.clearTimeout(timer);
+  }, [quickAddFeedback]);
+
+  const toQuickAddErrorMessage = (error: unknown) => {
+    const message = error instanceof Error ? error.message : "";
+    if (message === CART_ERROR_OUT_OF_STOCK) {
+      return xaI18n.t("xaB.src.components.xaproductcard.quickadd.outofstock");
+    }
+    if (message === CART_ERROR_SIZE_REQUIRED) {
+      return xaI18n.t("xaB.src.components.xaproductcard.quickadd.sizerequired");
+    }
+    return xaI18n.t("xaB.src.components.xaproductcard.quickadd.failed");
+  };
+
+  const handleQuickAdd = async (size: string) => {
+    setQuickAddFeedback(null);
+    try {
+      await dispatch({
+        type: "add",
+        sku: product,
+        size,
+        qty: 1,
+      });
+      setQuickAddFeedback({
+        tone: "success",
+        message: xaI18n.t("xaB.src.components.xaproductcard.quickadd.added"),
+      });
+    } catch (error) {
+      setQuickAddFeedback({
+        tone: "error",
+        message: toQuickAddErrorMessage(error),
+      });
+    }
+  };
+
   return (
     <div className="xa-panel rounded-sm border border-border-1 bg-surface-2 p-4 shadow-elevation-1">
       <div className="relative">
-        <Link href={`/products/${product.slug}`} className="group block">
+        <Link href={getProductHref(product.slug)} className="group block">
           <div className="relative aspect-square overflow-hidden rounded-sm bg-surface" onTouchStart={() => setTouched(true)} onTouchEnd={() => setTouched(false)}>
             {primaryImage ? (
               <>
@@ -98,11 +136,12 @@ export function XaProductCard({ product }: { product: XaProduct }) {
                   size="sm"
                 />
               </div>
-            ) : hasDiscount ? (
+            ) : isNewIn(product) ? (
               <div className="absolute start-2 top-2">
                 <ProductBadge
-                  label={`${discountPct}% OFF`} // i18n-exempt -- XA-0005: demo badge label
-                  variant="sale"
+                  label="New In" // i18n-exempt -- XA-0022: demo badge label
+                  color="default"
+                  tone="soft"
                   size="sm"
                 />
               </div>
@@ -131,33 +170,13 @@ export function XaProductCard({ product }: { product: XaProduct }) {
       </div>
 
       <div className="mt-3 space-y-2">
-        <Link href={`/products/${product.slug}`} className="block space-y-1">
+        <Link href={getProductHref(product.slug)} className="block space-y-1">
           <div className="text-xs font-semibold uppercase tracking-wide">
             {designerName}
           </div>
           <div className="text-sm text-muted-foreground">{product.title}</div>
-          <Inline gap={2} alignY="baseline" wrap={false}>
-            <Price amount={effectivePrice} className="font-semibold" />
-            {hasDiscount ? (
-              <Price
-                amount={effectiveCompareAtPrice!}
-                className="text-sm text-muted-foreground line-through"
-              />
-            ) : null}
-          </Inline>
+          <Price amount={effectivePrice} className="font-semibold" />
         </Link>
-
-        {hasDiscount ? (
-          <div className="text-xs text-muted-foreground">
-            Save <Price amount={saving} className="font-medium" />
-          </div>
-        ) : null}
-
-        {category === "bags" && product.taxonomy.sizeClass ? (
-          <div className="text-xs text-muted-foreground">
-            Size class: {formatLabel(product.taxonomy.sizeClass)}
-          </div>
-        ) : null}
 
         {category === "jewelry" && jewelryDetail ? (
           <div className="text-xs text-muted-foreground">{jewelryDetail}</div>
@@ -166,7 +185,7 @@ export function XaProductCard({ product }: { product: XaProduct }) {
         {category === "clothing" && product.sizes.length ? (
           <div className="space-y-2">
             <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              Quick add
+              {xaI18n.t("xaB.src.components.xaproductcard.quickadd.label")}
             </div>
             <Inline gap={2} wrap>
               {product.sizes.map((size) => (
@@ -178,18 +197,27 @@ export function XaProductCard({ product }: { product: XaProduct }) {
                   className="h-auto min-h-0 rounded-full border px-2 py-1 xa-text-11 font-medium hover:bg-muted"
                   onClick={(event) => {
                     event.preventDefault();
-                    void dispatch({
-                      type: "add",
-                      sku: product,
-                      size,
-                      qty: 1,
-                    }).catch(() => {});
+                    void handleQuickAdd(size);
                   }}
                 >
                   {size}
                 </Button>
               ))}
             </Inline>
+            {quickAddFeedback ? (
+              <p
+                role={quickAddFeedback.tone === "error" ? "alert" : "status"}
+                aria-live="polite"
+                className={cn(
+                  "text-xs",
+                  quickAddFeedback.tone === "error"
+                    ? "text-destructive"
+                    : "text-muted-foreground",
+                )}
+              >
+                {quickAddFeedback.message}
+              </p>
+            ) : null}
           </div>
         ) : null}
 

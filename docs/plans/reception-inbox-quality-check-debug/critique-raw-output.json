@@ -1,0 +1,28 @@
+{
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-inbox-quality-check-debug/plan.md",
+      "line": "36",
+      "message": "MCP tool rejects empty bodyPlain at schema validation, so missing_plaintext/missing_html are unreachable via MCP. Parity claim is overbroad."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-inbox-quality-check-debug/plan.md",
+      "line": "25",
+      "message": "Detail contract is internally inconsistent — says 'for each check that fails' but only covers subset. missing_plaintext, missing_html, missing_signature, missing_required_link have no detail behavior specified."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-inbox-quality-check-debug/plan.md",
+      "line": "154",
+      "message": "Regenerate route persistence round-trip is not tested."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "lp_score": 4.0,
+  "round": 1,
+  "plan_round_2_findings_addressed": true
+}

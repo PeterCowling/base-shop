@@ -3,9 +3,9 @@ import { describe, expect, it } from "@jest/globals";
 import {
   buildPropagationPlan,
   buildSourceTaskIdempotencyKey,
-} from "../lp-do-ideas-propagation.js";
-import type { RegistryV2ArtifactEntry } from "../lp-do-ideas-registry-migrate-v1-v2.js";
-import { type ArtifactDeltaEvent,runTrialOrchestrator } from "../lp-do-ideas-trial.js";
+} from "../ideas/lp-do-ideas-propagation.js";
+import type { RegistryV2ArtifactEntry } from "../ideas/lp-do-ideas-registry-migrate-v1-v2.js";
+import { type ArtifactDeltaEvent,runTrialOrchestrator } from "../ideas/lp-do-ideas-trial.js";
 
 const SOURCE_ARTIFACT_BASE: RegistryV2ArtifactEntry = {
   artifact_id: "HBAG-STRATEGY-INSIGHT_LOG",

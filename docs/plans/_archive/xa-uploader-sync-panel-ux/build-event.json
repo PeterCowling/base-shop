@@ -1,0 +1,14 @@
+{
+  "feature_slug": "xa-uploader-sync-panel-ux",
+  "business": "XA",
+  "completed_date": "2026-03-06",
+  "plan_path": "docs/plans/xa-uploader-sync-panel-ux/plan.md",
+  "build_record_path": "docs/plans/xa-uploader-sync-panel-ux/build-record.user.md",
+  "why": "xa-uploader UI review found the sync panel uses a flat list with no grouping and native unstyled checkboxes, making it inconsistent with the rest of the gate-* design-system UI and harder for operators to orient quickly to what they need to confirm before publishing.",
+  "why_source": "operator",
+  "intended_outcome_type": "operational",
+  "intended_outcome_statement": "CatalogSyncPanel.client.tsx renders sync options in two visually grouped sections (Validation / Run modifiers), using design-system-styled checkboxes with gate-* tokens, consistent with RegistryCheckboxGrid.client.tsx and the rest of the xa-uploader operator tool.",
+  "source": "operator",
+  "dispatch_id": "IDEA-DISPATCH-20260306150000-0003",
+  "emitted_at": "2026-03-06T00:00:00Z"
+}

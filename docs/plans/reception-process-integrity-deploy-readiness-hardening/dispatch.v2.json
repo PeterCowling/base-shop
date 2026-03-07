@@ -1,0 +1,49 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260305213200-2501",
+  "mode": "trial",
+  "business": "BRIK",
+  "trigger": "operator_idea",
+  "root_event_id": "operator:BRIK:BOS:reception-deploy-readiness-hardening-20260305",
+  "anchor_key": "reception-deploy-readiness-hardening",
+  "cluster_key": "BRIK:BOS:reception-deploy-readiness-hardening:operator:20260305",
+  "cluster_fingerprint": "ca4cd4ab68afff5b9d36dcc9e8357500562fdd8572d7635f8c9ead1e3e9f3cd6",
+  "lineage_depth": 0,
+  "area_anchor": "Reception deploy hardening — integrity and config fail-closed",
+  "location_anchors": [
+    "apps/reception/src/app/api/users/provision/route.ts",
+    "apps/reception/src/hooks/mutations/useDeleteGuestFromBooking.ts",
+    "apps/reception/src/hooks/mutations/useAllTransactionsMutations.ts",
+    "apps/reception/src/services/useBookingEmail.ts",
+    "apps/reception/src/utils/emailConstants.ts",
+    "apps/reception/src/components/userManagement/StaffAccountsForm.tsx",
+    "apps/reception/src/schemas/firebaseEnvSchema.ts"
+  ],
+  "provisional_deliverable_family": "code-change",
+  "recommended_route": "lp-do-fact-find",
+  "status": "fact_find_ready",
+  "domain": "BOS",
+  "priority": "P1",
+  "confidence": 0.9,
+  "current_truth": "Reception still has deploy-facing integrity gaps: account lifecycle partial-failure risk, date-range cleanup holes, non-throwing mutation guards, weak booking-email key semantics, and environment coupling.",
+  "next_scope_now": "Ship fail-closed behavior for critical mutation/account paths, harden date-range cleanup and booking-email key validation, externalize environment-specific endpoints, and add direct regression tests.",
+  "adjacent_later": [
+    "Introduce server-admin auth management for full auth-user deprovisioning.",
+    "Move remaining endpoint constants behind typed runtime config contracts."
+  ],
+  "evidence_refs": [
+    "operator-stated: take all non-low reception audit issues forward via lp-do-ideas -> lp-do-build",
+    "apps/reception/src/app/api/users/provision/route.ts",
+    "apps/reception/src/hooks/mutations/useDeleteGuestFromBooking.ts",
+    "apps/reception/src/services/useBookingEmail.ts"
+  ],
+  "why": "Front-desk operational trust depends on fail-closed writes, consistent cleanup semantics, and deployment-safe configuration boundaries.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Reception deploy-critical flows fail closed, cleanup invariants hold across multi-day stays, and endpoint/config coupling no longer depends on hardcoded values.",
+    "source": "operator"
+  },
+  "created_at": "2026-03-05T21:32:00.000Z",
+  "queue_state": "enqueued"
+}
+

@@ -15,8 +15,7 @@ export interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
   variant?: "default" | "success" | "warning" | "destructive";
 }
 
-export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
-  ({ className, color, variant, tone, size = "md", children, ...props }, ref) => {
+export function Tag({ className, color, variant, tone, size = "md", children, ref, ...props }: TagProps & { ref?: React.Ref<HTMLSpanElement> }) {
     const resolvedColor: NonNullable<TagProps["color"]> = color ??
       (variant === "destructive" ? "destructive" :
        variant === "warning" ? "warning" :
@@ -86,6 +85,7 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
 
     return (
       <span
+        data-slot="tag"
         ref={ref}
         // i18n-exempt -- DS-1234 [ttl=2025-11-30] — design token attribute, not user copy
         data-token={bgToken[resolvedColor]}
@@ -104,6 +104,4 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
         {children}
       </span>
     );
-  }
-);
-Tag.displayName = "Tag";
+}

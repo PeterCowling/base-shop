@@ -25,10 +25,9 @@ const productOne = {
   brand: "atelier-x",
   collection: "outerwear",
   price: 200,
-  compareAtPrice: 260,
   createdAt: "2026-03-01T00:00:00.000Z",
   popularity: 20,
-  stock: 5,
+  status: "live",
   sizes: ["S", "M"],
   taxonomy: {
     department: "women",
@@ -46,10 +45,9 @@ const productTwo = {
   brand: "atelier-x",
   collection: "outerwear",
   price: 340,
-  compareAtPrice: 420,
   createdAt: "2026-03-01T00:00:00.000Z",
   popularity: 10,
-  stock: 3,
+  status: "live",
   sizes: ["M"],
   taxonomy: {
     department: "women",
@@ -67,10 +65,9 @@ const productThree = {
   brand: "other-label",
   collection: "knitwear",
   price: 180,
-  compareAtPrice: 220,
   createdAt: "2025-12-01T00:00:00.000Z",
   popularity: 5,
-  stock: 1,
+  status: "out_of_stock",
   sizes: ["S"],
   taxonomy: {
     department: "women",
@@ -107,7 +104,7 @@ describe("useXaListingFilters", () => {
 
   it("filters products from applied query params and exposes applied chips", async () => {
     currentQuery =
-      "availability=in-stock&sale=1&price%5Bmin%5D=100&price%5Bmax%5D=300&f%5Bdesigner%5D=atelier-x&window=week";
+      "availability=in-stock&price%5Bmin%5D=100&price%5Bmax%5D=300&f%5Bdesigner%5D=atelier-x&window=week";
 
     let latest: HookValue | null = null;
     render(<Harness onSnapshot={(value) => (latest = value)} />);
@@ -116,13 +113,12 @@ describe("useXaListingFilters", () => {
       expect(latest).not.toBeNull();
       expect(latest?.filteredProducts.map((product) => product.id)).toEqual(["p1"]);
       expect(latest?.hasAppliedFilters).toBe(true);
-      expect(latest?.appliedChips.some((chip) => chip.label === "Sale")).toBe(true);
       expect(latest?.appliedChips.some((chip) => chip.label.startsWith("Price:"))).toBe(true);
     });
   });
 
   it("applies draft filters into query and strips window when new-in is disabled", async () => {
-    currentQuery = "window=week&sale=1";
+    currentQuery = "window=week";
 
     let latest: HookValue | null = null;
     render(<Harness onSnapshot={(value) => (latest = value)} />);
@@ -133,7 +129,6 @@ describe("useXaListingFilters", () => {
 
     act(() => {
       latest?.setDraftNewIn(false);
-      latest?.setDraftSale(false);
       latest?.setDraftInStock(true);
       latest?.setDraftMin("120");
       latest?.setDraftMax("250");
@@ -149,7 +144,6 @@ describe("useXaListingFilters", () => {
     const params = new URLSearchParams(pushedQuery);
 
     expect(params.get("availability")).toBe("in-stock");
-    expect(params.get("sale")).toBeNull();
     expect(params.get("new-in")).toBeNull();
     expect(params.get("window")).toBeNull();
     expect(params.get("price[min]")).toBe("120");
@@ -180,7 +174,7 @@ describe("useXaListingFilters", () => {
   });
 
   it("removes applied chips and clears applied filters from query", async () => {
-    currentQuery = "sale=1&price%5Bmin%5D=100&price%5Bmax%5D=200&f%5Bdesigner%5D=atelier-x";
+    currentQuery = "new-in=1&price%5Bmin%5D=100&price%5Bmax%5D=200&f%5Bdesigner%5D=atelier-x";
 
     let latest: HookValue | null = null;
     render(<Harness onSnapshot={(value) => (latest = value)} />);
@@ -189,13 +183,13 @@ describe("useXaListingFilters", () => {
       expect(latest?.appliedChips.length).toBeGreaterThan(0);
     });
 
-    const saleChip = latest?.appliedChips.find((chip) => chip.label === "Sale");
+    const newInChip = latest?.appliedChips.find((chip) => chip.label === "New in");
     act(() => {
-      saleChip?.onRemove();
+      newInChip?.onRemove();
     });
 
-    const saleRemoved = new URLSearchParams((pushMock.mock.calls.at(-1)?.[0] as string).split("?")[1] ?? "");
-    expect(saleRemoved.get("sale")).toBeNull();
+    const newInRemoved = new URLSearchParams((pushMock.mock.calls.at(-1)?.[0] as string).split("?")[1] ?? "");
+    expect(newInRemoved.get("new-in")).toBeNull();
 
     act(() => {
       latest?.clearAppliedFilters();

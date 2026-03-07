@@ -4,12 +4,19 @@
     "baseUrl": ".",
     "rootDir": "../..",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@acme/platform-core": [
+        "../../packages/platform-core/dist/index.d.ts"
+      ],
+      "@acme/platform-core/*": [
+        "../../packages/platform-core/dist/*"
+      ]
     }
   },
   "include": [
     "src/**/*",
     "src/**/*.json",
+    "data/**/*.json",
     ".next/types/**/*.ts",
     "next-env.d.ts",
     "middleware.ts"

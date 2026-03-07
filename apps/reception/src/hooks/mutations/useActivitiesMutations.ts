@@ -4,7 +4,10 @@ import { useCallback, useMemo, useState } from "react";
 import { get, ref, update } from "firebase/database";
 
 import { useAuth } from "../../context/AuthContext";
-import { queueOfflineWrite } from "../../lib/offline/syncManager";
+import {
+  queueGuestEmailDraftRetry,
+  queueOfflineWrite,
+} from "../../lib/offline/syncManager";
 import { useOnlineStatus } from "../../lib/offline/useOnlineStatus";
 import useEmailGuest from "../../services/useEmailGuest";
 import { useFirebaseDatabase } from "../../services/useFirebase";
@@ -76,7 +79,20 @@ export default function useActivitiesMutations() {
               console.error(
                 `[useActivitiesMutations] Guest email draft failed for reservation ${reservationCode} (code ${code}): ${emailResult.error ?? "unknown"}`
               );
-              setError("Email draft not sent — guest notification failed. Please send manually.");
+              const queuedRetryId = await queueGuestEmailDraftRetry({
+                bookingRef: reservationCode,
+                activityCode: code,
+              });
+
+              if (queuedRetryId !== null) {
+                setError(
+                  "Email draft queued for retry — will send when MCP/auth/Gmail is available."
+                );
+              } else {
+                setError(
+                  "Email draft not sent — guest notification failed. Please send manually."
+                );
+              }
             }
           } else {
             console.warn(
@@ -297,12 +313,18 @@ export default function useActivitiesMutations() {
   const logActivity = useCallback(
     async (occupantId: string, code: number): Promise<void> => {
       if (!user) {
-        console.error(
-          "[useActivitiesMutations] logActivity error: No user is logged in"
-        );
-        return;
+        const noUserError =
+          "[useActivitiesMutations] logActivity error: No user is logged in";
+        console.error(noUserError);
+        throw new Error(noUserError);
       }
-      await addActivity(occupantId, code);
+      const result = await addActivity(occupantId, code);
+      if (!result.success) {
+        throw new Error(
+          result.error ??
+            `[useActivitiesMutations] logActivity failed for occupant=${occupantId}, code=${code}`
+        );
+      }
     },
     [addActivity, user]
   );

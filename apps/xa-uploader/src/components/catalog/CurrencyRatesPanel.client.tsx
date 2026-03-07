@@ -5,6 +5,7 @@ import * as React from "react";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 import type { ActionFeedback } from "./catalogConsoleFeedback";
+import { BTN_PRIMARY_CLASS, INPUT_CLASS, PANEL_CLASS } from "./catalogStyles";
 
 type CurrencyRatesResponse = {
   ok: boolean;
@@ -13,6 +14,8 @@ type CurrencyRatesResponse = {
     GBP: number;
     AUD: number;
   } | null;
+  error?: string;
+  reason?: string;
 };
 
 type EditableCurrencyCode = "EUR" | "GBP" | "AUD";
@@ -23,9 +26,6 @@ const EMPTY_RATES: EditableCurrencyRates = {
   GBP: "",
   AUD: "",
 };
-
-const RATE_FIELD_CLASSNAME =
-  "mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink placeholder:text-gate-muted focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20";
 
 function formatLoadedRates(rates: CurrencyRatesResponse["rates"]): EditableCurrencyRates {
   return {
@@ -51,11 +51,13 @@ function EditableRateField({
   label,
   value,
   onChange,
+  disabled,
   testId,
 }: {
   label: string;
   value: string;
   onChange: (nextValue: string) => void;
+  disabled: boolean;
   testId: string;
 }) {
   return (
@@ -65,10 +67,11 @@ function EditableRateField({
         type="number"
         value={value}
         onChange={(event) => onChange(event.target.value)}
+        disabled={disabled}
         step="0.0001"
         min="0.0001"
         placeholder="e.g. 0.9300"
-        className={RATE_FIELD_CLASSNAME}
+        className={INPUT_CLASS}
         data-testid={testId}
         data-cy={testId}
       />
@@ -86,10 +89,11 @@ export function CurrencyRatesPanel({
     checking: boolean;
     ready: boolean;
   };
-  onSync: () => void;
+  onSync: () => Promise<{ ok: boolean }>;
 }) {
   const { t } = useUploaderI18n();
   const [rates, setRates] = React.useState<EditableCurrencyRates>(EMPTY_RATES);
+  const [loadState, setLoadState] = React.useState<"loading" | "ready" | "error">("loading");
   const [saving, setSaving] = React.useState(false);
   const [feedback, setFeedback] = React.useState<ActionFeedback | null>(null);
 
@@ -104,15 +108,26 @@ export function CurrencyRatesPanel({
         });
         const data = (await response.json()) as CurrencyRatesResponse;
         if (!response.ok || !data.ok) {
-          throw new Error("currency_rates_load_failed");
+          const feedbackMessage =
+            data.error === "invalid_rates" && data.reason === "currency_rates_invalid"
+              ? t("syncCurrencyRatesInvalidActionable")
+              : t("currencyRatesLoadFailed");
+          throw new Error(feedbackMessage);
         }
 
         if (!active) return;
         setRates(formatLoadedRates(data.rates));
+        setLoadState("ready");
+        setFeedback(null);
       } catch (error) {
         if (!active) return;
         if (isAbortError(error)) return;
-        setFeedback({ kind: "error", message: t("currencyRatesLoadFailed") });
+        setRates(EMPTY_RATES);
+        setLoadState("error");
+        setFeedback({
+          kind: "error",
+          message: error instanceof Error ? error.message : t("currencyRatesLoadFailed"),
+        });
       }
     };
 
@@ -125,7 +140,7 @@ export function CurrencyRatesPanel({
   }, [t]);
 
   const handleSaveAndSync = async () => {
-    if (busy || saving) return;
+    if (busy || saving || loadState !== "ready") return;
 
     setSaving(true);
     setFeedback(null);
@@ -147,8 +162,13 @@ export function CurrencyRatesPanel({
       }
 
       if (syncReadiness.ready && !syncReadiness.checking) {
-        onSync();
-        setFeedback({ kind: "success", message: t("currencyRatesSyncedRebuildNote") });
+        const syncResult = await onSync();
+        setFeedback({
+          kind: syncResult.ok ? "success" : "error",
+          message: syncResult.ok
+            ? t("currencyRatesSyncedRebuildNote")
+            : t("currencyRatesSavedSyncFailed"),
+        });
         return;
       }
 
@@ -160,7 +180,8 @@ export function CurrencyRatesPanel({
     }
   };
 
-  const saveDisabled = busy || saving;
+  const inputsDisabled = busy || saving || loadState !== "ready";
+  const saveDisabled = inputsDisabled;
   const setRate = React.useCallback((code: EditableCurrencyCode, nextValue: string) => {
     setRates((prev) => ({
       ...prev,
@@ -169,7 +190,7 @@ export function CurrencyRatesPanel({
   }, []);
 
   return (
-    <section className="rounded-xl border border-border-2 bg-surface p-6 shadow-elevation-1">
+    <section className={PANEL_CLASS}>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="space-y-1">
           <div className="text-xs uppercase tracking-label-lg text-gate-muted">
@@ -181,8 +202,8 @@ export function CurrencyRatesPanel({
           type="button"
           onClick={() => void handleSaveAndSync()}
           disabled={saveDisabled}
-          // eslint-disable-next-line ds/min-tap-size -- XAUP-0001 operator-desktop-tool
-          className="rounded-md border border-bg bg-gate-ink px-4 py-2 text-xs font-semibold uppercase tracking-label text-bg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-60"
+           
+          className={BTN_PRIMARY_CLASS}
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="currency-rates-save"
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
@@ -197,10 +218,10 @@ export function CurrencyRatesPanel({
           {t("currencyRatesUsdLabel")}
           <input
             type="number"
-            value="1.0000"
+            value="1.00"
             disabled
             readOnly
-            className="mt-2 w-full rounded-md border border-border-2 bg-muted px-3 py-2 text-sm text-gate-ink"
+            className="mt-2 w-full rounded-md border border-gate-border bg-muted px-3 py-2 text-sm text-gate-ink"
             // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
             data-testid="currency-rates-usd"
             // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
@@ -212,6 +233,7 @@ export function CurrencyRatesPanel({
           label={t("currencyRatesEurLabel")}
           value={rates.EUR}
           onChange={(nextValue) => setRate("EUR", nextValue)}
+          disabled={inputsDisabled}
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           testId="currency-rates-eur"
         />
@@ -220,6 +242,7 @@ export function CurrencyRatesPanel({
           label={t("currencyRatesGbpLabel")}
           value={rates.GBP}
           onChange={(nextValue) => setRate("GBP", nextValue)}
+          disabled={inputsDisabled}
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           testId="currency-rates-gbp"
         />
@@ -228,6 +251,7 @@ export function CurrencyRatesPanel({
           label={t("currencyRatesAudLabel")}
           value={rates.AUD}
           onChange={(nextValue) => setRate("AUD", nextValue)}
+          disabled={inputsDisabled}
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           testId="currency-rates-aud"
         />

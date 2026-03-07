@@ -1,11 +1,20 @@
 import { catalogProductDraftSchema } from "@acme/lib/xa";
 
+import { acquireDraftSyncLock, releaseDraftSyncLock } from "./draftSyncLock";
+
 export interface Env {
   SUBMISSIONS_BUCKET: R2Bucket;
   CATALOG_BUCKET?: R2Bucket;
   UPLOAD_TOKEN_SECRET?: string;
   CATALOG_WRITE_TOKEN?: string;
   CATALOG_READ_TOKEN?: string;
+  XA_DEPLOY_TRIGGER_TOKEN?: string;
+  XA_B_PAGES_DEPLOY_HOOK_URL?: string;
+  XA_GITHUB_ACTIONS_TOKEN?: string;
+  XA_GITHUB_REPO_OWNER?: string;
+  XA_GITHUB_REPO_NAME?: string;
+  XA_GITHUB_WORKFLOW_FILE?: string;
+  XA_GITHUB_WORKFLOW_REF?: string;
   R2_PREFIX?: string;
   CATALOG_PREFIX?: string;
   MAX_BYTES?: string;
@@ -48,8 +57,10 @@ const DEFAULT_CATALOG_MAX_BYTES = 10 * 1024 * 1024;
 const DEFAULT_DRAFTS_MAX_BYTES = 2 * 1024 * 1024;
 // i18n-exempt -- ABC-123 [ttl=2026-12-31]
 const DEFAULT_CATALOG_CACHE_CONTROL = "public, max-age=60, stale-while-revalidate=300";
+const PUBLIC_CATALOG_STOREFRONTS = new Set(["xa-b"]);
 // i18n-exempt -- ABC-123 [ttl=2026-12-31]
-const CORS_ALLOWED_HEADERS = "Content-Type, X-XA-Submission-Id, X-XA-Upload-Token, X-XA-Catalog-Token, Authorization";
+const CORS_ALLOWED_HEADERS =
+  "Content-Type, X-XA-Submission-Id, X-XA-Upload-Token, X-XA-Catalog-Token, X-XA-Deploy-Token, X-XA-Sync-Lock-Owner, Authorization"; // i18n-exempt -- ABC-123 [ttl=2026-12-31]
 // i18n-exempt -- ABC-123 [ttl=2026-12-31]
 const CORS_ALLOWED_METHODS = "GET, PUT, DELETE, OPTIONS";
 
@@ -415,11 +426,19 @@ async function requireCatalogReadToken(
 ): Promise<Response | string> {
   const expectedReadToken = (env.CATALOG_READ_TOKEN ?? "").trim();
   if (expectedReadToken) {
+    const expectedWriteToken = (env.CATALOG_WRITE_TOKEN ?? "").trim();
     const providedToken = resolveCatalogToken(request, url, env);
-    if (!providedToken || !constantTimeEqual(providedToken, expectedReadToken)) {
+    const matchesReadToken = providedToken
+      ? constantTimeEqual(providedToken, expectedReadToken)
+      : false;
+    const matchesWriteToken =
+      providedToken && expectedWriteToken
+        ? constantTimeEqual(providedToken, expectedWriteToken)
+        : false;
+    if (!matchesReadToken && !matchesWriteToken) {
       return json({ ok: false }, 401);
     }
-    return expectedReadToken;
+    return matchesReadToken ? expectedReadToken : expectedWriteToken;
   }
   return await requireCatalogWriteToken(env, request, url);
 }
@@ -770,20 +789,89 @@ async function handleDraftDelete(request: Request, env: Env, url: URL, storefron
   return json({ ok: true, storefront, deleted: true });
 }
 
+async function handleDraftSyncLockAcquire(
+  request: Request,
+  env: Env,
+  url: URL,
+  storefront: string,
+): Promise<Response> {
+  const auth = await requireCatalogWriteToken(env, request, url);
+  if (auth instanceof Response) return auth;
+
+  const bucket = resolveCatalogBucket(env);
+  const prefix = resolveCatalogPrefix(env);
+  const result = await acquireDraftSyncLock({ bucket, prefix, storefront });
+
+  if (result.status === "busy") {
+    return json(
+      { ok: false, error: "conflict", reason: "sync_lock_held", expiresAt: result.expiresAt },
+      409,
+    );
+  }
+  if (result.status === "error") {
+    return json({ ok: false, reason: result.reason }, 502);
+  }
+
+  return json(
+    {
+      ok: true,
+      storefront,
+      ownerToken: result.ownerToken,
+      expiresAt: result.expiresAt,
+    },
+    201,
+  );
+}
+
+async function handleDraftSyncLockRelease(
+  request: Request,
+  env: Env,
+  url: URL,
+  storefront: string,
+): Promise<Response> {
+  const auth = await requireCatalogWriteToken(env, request, url);
+  if (auth instanceof Response) return auth;
+
+  const ownerToken = request.headers.get("x-xa-sync-lock-owner")?.trim() ?? "";
+  if (!ownerToken) {
+    return json({ ok: false, reason: "sync_lock_owner_missing" }, 400);
+  }
+
+  const bucket = resolveCatalogBucket(env);
+  const prefix = resolveCatalogPrefix(env);
+  const result = await releaseDraftSyncLock({ bucket, prefix, storefront, ownerToken });
+
+  if (result.status === "missing") {
+    return json({ ok: false, reason: "sync_lock_missing" }, 404);
+  }
+  if (result.status === "stale_owner") {
+    return json({ ok: false, error: "conflict", reason: "sync_lock_stale_owner" }, 409);
+  }
+  if (result.status === "error") {
+    return json({ ok: false, reason: result.reason }, 502);
+  }
+
+  return json({ ok: true, storefront, released: true });
+}
+
 async function handleCatalogRead(
   request: Request,
   env: Env,
   url: URL,
   storefront: string,
 ): Promise<Response> {
-  const expectedReadToken = (env.CATALOG_READ_TOKEN ?? "").trim();
-  if (expectedReadToken) {
-    const provided = resolveCatalogToken(request, url, env);
-    if (!provided || !constantTimeEqual(provided, expectedReadToken)) {
-      return json({ ok: false }, 401);
-    }
-  }
+  const auth = await requireCatalogReadToken(env, request, url);
+  if (auth instanceof Response) return auth;
 
+  return await respondWithCatalogObject(request, env, storefront);
+}
+
+async function respondWithCatalogObject(
+  request: Request,
+  env: Env,
+  storefront: string,
+  extraHeaders?: HeadersInit,
+): Promise<Response> {
   const bucket = resolveCatalogBucket(env);
   const prefix = resolveCatalogPrefix(env);
   const key = latestCatalogKey(prefix, storefront);
@@ -793,7 +881,10 @@ async function handleCatalogRead(
   const etag = normalizeEtag((object as unknown as { httpEtag?: string }).httpEtag ?? "");
   const ifNoneMatch = (request.headers.get("if-none-match") ?? "").trim();
   if (etag && ifNoneMatch === etag) {
-    const notModifiedHeaders = new Headers({ "Cache-Control": DEFAULT_CATALOG_CACHE_CONTROL });
+    const notModifiedHeaders = new Headers({
+      "Cache-Control": DEFAULT_CATALOG_CACHE_CONTROL,
+      ...extraHeaders,
+    });
     notModifiedHeaders.set("ETag", etag);
     return new Response(null, { status: 304, headers: notModifiedHeaders });
   }
@@ -802,16 +893,43 @@ async function handleCatalogRead(
   const headers = new Headers({
     "Content-Type": "application/json",
     "Cache-Control": DEFAULT_CATALOG_CACHE_CONTROL,
+    ...extraHeaders,
   });
   if (etag) headers.set("ETag", etag);
   return new Response(body, { status: 200, headers });
 }
 
+async function handlePublicCatalogRead(
+  request: Request,
+  env: Env,
+  storefront: string,
+): Promise<Response> {
+  if (!PUBLIC_CATALOG_STOREFRONTS.has(storefront)) {
+    return json({ ok: false }, 404, { "Access-Control-Allow-Origin": "*" });
+  }
+
+  return await respondWithCatalogObject(request, env, storefront, {
+    "Access-Control-Allow-Origin": "*",
+  });
+}
+
 type RouteMatch =
   | { kind: "upload"; pathToken: string }
   | { kind: "catalog"; storefront: string | null }
+  | { kind: "publicCatalog"; storefront: string | null }
   | { kind: "drafts"; storefront: string | null }
+  | { kind: "draftSyncLock"; storefront: string | null }
+  | { kind: "deploy"; storefront: string | null }
   | { kind: "other" };
+
+function matchPairRoute(first: string, second: string): RouteMatch | null {
+  const storefront = parseStorefront(second);
+  if (first === "catalog") return { kind: "catalog", storefront };
+  if (first === "catalog-public") return { kind: "publicCatalog", storefront };
+  if (first === "drafts") return { kind: "drafts", storefront };
+  if (first === "deploy") return { kind: "deploy", storefront };
+  return null;
+}
 
 function matchRoute(pathname: string): RouteMatch {
   const segments = pathname.split("/").filter(Boolean);
@@ -821,19 +939,344 @@ function matchRoute(pathname: string): RouteMatch {
       pathToken: segments.length === 2 ? (segments[1] ?? "") : "",
     };
   }
-  if (segments.length === 2 && segments[0] === "catalog") {
-    return {
-      kind: "catalog",
-      storefront: parseStorefront(segments[1] ?? ""),
-    };
+  if (segments.length === 2) {
+    const pairRoute = matchPairRoute(segments[0] ?? "", segments[1] ?? "");
+    if (pairRoute) return pairRoute;
   }
-  if (segments.length === 2 && segments[0] === "drafts") {
+  if (segments.length === 3 && segments[0] === "drafts" && segments[2] === "sync-lock") {
     return {
-      kind: "drafts",
+      kind: "draftSyncLock",
       storefront: parseStorefront(segments[1] ?? ""),
     };
   }
   return { kind: "other" };
+}
+
+function requireDeployTriggerToken(
+  env: Env,
+  request: Request,
+  url: URL,
+): Response | string {
+  const expectedToken = (env.XA_DEPLOY_TRIGGER_TOKEN ?? "").trim();
+  if (!expectedToken || expectedToken.length < 16) {
+    return json({ ok: false }, 503);
+  }
+
+  const providedToken =
+    request.headers.get("x-xa-deploy-token")?.trim() ||
+    bearerTokenFrom(request.headers.get("authorization")) ||
+    url.searchParams.get("token")?.trim() ||
+    "";
+  if (!providedToken || !constantTimeEqual(providedToken, expectedToken)) {
+    return json({ ok: false }, 401);
+  }
+
+  return expectedToken;
+}
+
+function resolveXaBPagesDeployHookUrl(env: Env): string | null {
+  const raw = (env.XA_B_PAGES_DEPLOY_HOOK_URL ?? "").trim();
+  if (!raw) return null;
+  try {
+    const url = new URL(raw);
+    if (url.protocol !== "https:") return null;
+    return url.toString();
+  } catch {
+    return null;
+  }
+}
+
+function resolveXaBDeployConfig(env: Env): {
+  token: string;
+  owner: string;
+  repo: string;
+  workflow: string;
+  ref: string;
+} | null {
+  const token = (env.XA_GITHUB_ACTIONS_TOKEN ?? "").trim();
+  const owner = (env.XA_GITHUB_REPO_OWNER ?? "petercowling").trim();
+  const repo = (env.XA_GITHUB_REPO_NAME ?? "base-shop").trim();
+  const workflow = (env.XA_GITHUB_WORKFLOW_FILE ?? "xa-b-redeploy.yml").trim();
+  const ref = (env.XA_GITHUB_WORKFLOW_REF ?? "dev").trim() || "dev";
+  if (!token || !owner || !repo || !workflow || !ref) return null;
+  return { token, owner, repo, workflow, ref };
+}
+
+type XaBDeployConfig = NonNullable<ReturnType<typeof resolveXaBDeployConfig>>;
+
+function resolveAllowedUploaderDeployWorkflowId(workflow: string): string | null {
+  const normalized = workflow.trim().replace(/\\/g, "/").toLowerCase();
+  if (!normalized) return null;
+  if (normalized === "xa-b-redeploy.yml") return "xa-b-redeploy.yml";
+  if (normalized === ".github/workflows/xa-b-redeploy.yml") return "xa-b-redeploy.yml";
+  return null;
+}
+
+function buildDisallowedWorkflowResponse(workflow: string): Response {
+  return json(
+    {
+      ok: false,
+      error: {
+        message: "deploy_workflow_not_allowed",
+        workflow,
+      },
+    },
+    503,
+  );
+}
+
+function isRecordStringUnknown(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function parseApiErrorDetails(payload: unknown): { code?: number; message?: string } {
+  if (!isRecordStringUnknown(payload)) return {};
+  const directMessage = typeof payload.message === "string" ? payload.message : undefined;
+  const errors = payload.errors;
+  if (!Array.isArray(errors) || errors.length < 1) return { message: directMessage };
+  const first = errors[0];
+  if (!isRecordStringUnknown(first)) return { message: directMessage };
+  const code = typeof first.code === "number" ? first.code : undefined;
+  const message = typeof first.message === "string" ? first.message : directMessage;
+  return { code, message };
+}
+
+type JsonRequestResult =
+  | { ok: true; status: number; payload: Record<string, unknown> | null }
+  | { ok: false; status: number; error: { code?: number; message?: string } };
+
+async function requestJson(url: string, init: RequestInit): Promise<JsonRequestResult> {
+  const response = await fetch(url, init).catch((error: unknown) => {
+    const message = error instanceof Error ? error.message : String(error);
+    return { __fetchError: message } as const;
+  });
+  if (!response) {
+    return { ok: false, status: 502, error: { message: "request_failed" } };
+  }
+  if ("__fetchError" in response) {
+    return {
+      ok: false,
+      status: 502,
+      error: {
+        message: response.__fetchError || "request_failed",
+      },
+    };
+  }
+
+  const responseBodyText = await response.text().catch(() => "");
+  let payload: Record<string, unknown> | null = null;
+  if (responseBodyText) {
+    try {
+      const parsed = JSON.parse(responseBodyText) as unknown;
+      payload = isRecordStringUnknown(parsed) ? parsed : null;
+    } catch {
+      payload = null;
+    }
+  }
+  if (!response.ok) {
+    const parsedError = parseApiErrorDetails(payload);
+    const fallbackMessage = responseBodyText.trim().slice(0, 160);
+    return {
+      ok: false,
+      status: response.status || 502,
+      error:
+        parsedError.code || parsedError.message
+          ? parsedError
+          : fallbackMessage
+            ? { message: fallbackMessage }
+            : {},
+    };
+  }
+  return { ok: true, status: response.status, payload: isRecordStringUnknown(payload) ? payload : null };
+}
+
+function successPayloadFromDispatch(params: {
+  storefront: string;
+  workflow: string;
+  owner: string;
+  repo: string;
+  ref: string;
+}) {
+  const workflowUrl = `https://github.com/${encodeURIComponent(params.owner)}/${encodeURIComponent(params.repo)}/actions/workflows/${encodeURIComponent(params.workflow)}`;
+  return {
+    ok: true,
+    storefront: params.storefront,
+    provider: "github_actions",
+    workflow: params.workflow,
+    workflowUrl,
+    ref: params.ref,
+  };
+}
+
+function buildDispatchBody(params: { storefront: string; ref: string }): string {
+  void params.storefront;
+  return JSON.stringify({
+    ref: params.ref,
+  });
+}
+
+function githubDispatchUrl(config: XaBDeployConfig): string {
+  return `https://api.github.com/repos/${encodeURIComponent(config.owner)}/${encodeURIComponent(config.repo)}/actions/workflows/${encodeURIComponent(config.workflow)}/dispatches`;
+}
+
+function dispatchHeaders(config: XaBDeployConfig): HeadersInit {
+  return {
+    Authorization: `Bearer ${config.token}`,
+    Accept: "application/vnd.github+json",
+    "X-GitHub-Api-Version": "2022-11-28",
+    "Content-Type": "application/json",
+    "User-Agent": "xa-drop-worker",
+  };
+}
+
+function parseGitHubError(payload: Record<string, unknown> | null): { code?: number; message?: string } {
+  if (!payload) return {};
+  const message = typeof payload.message === "string" ? payload.message : undefined;
+  return { message };
+}
+
+function normalizeDispatchFailureStatus(status: number): number {
+  if (status === 401 || status === 403) return 502;
+  if (status >= 400 && status < 500) return 503;
+  return 502;
+}
+
+type HookRequestResult =
+  | { ok: true; status: number }
+  | { ok: false; status: number };
+
+async function triggerPagesDeployHook(url: string): Promise<HookRequestResult> {
+  const response = await fetch(url, { method: "POST" }).catch(() => null);
+  if (!response) return { ok: false, status: 502 };
+  if (!response.ok) return { ok: false, status: response.status || 502 };
+  return { ok: true, status: response.status };
+}
+
+function buildPagesHookFailureResponse(result: HookRequestResult & { ok: false }): Response {
+  if (result.status >= 400 && result.status < 500) {
+    return json({ ok: false, error: { message: "pages_hook_rejected" } }, 503);
+  }
+  return json({ ok: false, error: { message: "pages_hook_failed" } }, 502);
+}
+
+function successPayloadFromPagesHook(params: { storefront: string }): {
+  ok: true;
+  storefront: string;
+  provider: "cloudflare_pages_deploy_hook";
+} {
+  return {
+    ok: true,
+    storefront: params.storefront,
+    provider: "cloudflare_pages_deploy_hook",
+  };
+}
+
+function normalizeDispatchFailureError(
+  result: JsonRequestResult & { ok: false },
+): { code?: number; message?: string } {
+  if (result.error.message || result.error.code) return result.error;
+  return { message: "dispatch_failed" };
+}
+
+function buildDispatchFailureResponse(result: JsonRequestResult & { ok: false }): Response {
+  const status = normalizeDispatchFailureStatus(result.status);
+  return json({ ok: false, error: normalizeDispatchFailureError(result) }, status);
+}
+
+function successPayloadFromDispatchResult(params: {
+  payload: Record<string, unknown>;
+  storefront: string;
+  workflow: string;
+  owner: string;
+  repo: string;
+  ref: string;
+}) {
+  const result = isRecordStringUnknown(params.payload.result) ? params.payload.result : {};
+  void result;
+  return successPayloadFromDispatch({
+    storefront: params.storefront,
+    workflow: params.workflow,
+    owner: params.owner,
+    repo: params.repo,
+    ref: params.ref,
+  });
+}
+
+type WorkflowDispatchResult =
+  | { ok: true; payload: ReturnType<typeof successPayloadFromDispatchResult> }
+  | { ok: false; response: Response };
+
+async function dispatchXaBRedeployWorkflow(params: {
+  config: XaBDeployConfig;
+  storefront: string;
+}): Promise<WorkflowDispatchResult> {
+  const allowedWorkflowId = resolveAllowedUploaderDeployWorkflowId(params.config.workflow);
+  if (!allowedWorkflowId) {
+    return { ok: false, response: buildDisallowedWorkflowResponse(params.config.workflow) };
+  }
+
+  const config = { ...params.config, workflow: allowedWorkflowId };
+  const dispatch = await requestJson(githubDispatchUrl(config), {
+    method: "POST",
+    headers: dispatchHeaders(config),
+    body: buildDispatchBody({ storefront: params.storefront, ref: config.ref }),
+  });
+  if (!dispatch.ok) return { ok: false, response: buildDispatchFailureResponse(dispatch) };
+  if (dispatch.status !== 204) {
+    const error = parseGitHubError(dispatch.payload);
+    return {
+      ok: false,
+      response: json(
+        { ok: false, error: error.message ? error : { message: "dispatch_unexpected_status" } },
+        502,
+      ),
+    };
+  }
+  return {
+    ok: true,
+    payload: successPayloadFromDispatchResult({
+      payload: dispatch.payload ?? {},
+      storefront: params.storefront,
+      workflow: config.workflow,
+      owner: config.owner,
+      repo: config.repo,
+      ref: config.ref,
+    }),
+  };
+}
+
+async function handleXaBDeployTrigger(request: Request, env: Env, storefront: string): Promise<Response> {
+  if (storefront !== "xa-b") return json({ ok: false }, 400);
+
+  const requestUrl = new URL(request.url);
+  const auth = requireDeployTriggerToken(env, request, requestUrl);
+  if (auth instanceof Response) return auth;
+
+  const config = resolveXaBDeployConfig(env);
+  const pagesHookUrl = resolveXaBPagesDeployHookUrl(env);
+  if (pagesHookUrl) {
+    const hook = await triggerPagesDeployHook(pagesHookUrl);
+    if (!hook.ok) {
+      if (!config) return buildPagesHookFailureResponse(hook);
+      const fallbackDispatch = await dispatchXaBRedeployWorkflow({ config, storefront });
+      if (!fallbackDispatch.ok) return fallbackDispatch.response;
+      return json(
+        {
+          ...fallbackDispatch.payload,
+          fallbackFrom: "cloudflare_pages_deploy_hook",
+          fallbackReason:
+            hook.status >= 400 && hook.status < 500 ? "pages_hook_rejected" : "pages_hook_failed",
+        },
+        202,
+      );
+    }
+    return json(successPayloadFromPagesHook({ storefront }), 202);
+  }
+
+  if (!config) return json({ ok: false }, 503);
+  const dispatchResult = await dispatchXaBRedeployWorkflow({ config, storefront });
+  if (!dispatchResult.ok) return dispatchResult.response;
+  return json(dispatchResult.payload, 202);
 }
 
 function isCorsDenied(requestHasOrigin: boolean, allowedCorsOrigin: string | null): boolean {
@@ -857,7 +1300,12 @@ async function routeRequest(params: {
   const route = matchRoute(url.pathname);
 
   if (request.method === "OPTIONS") {
-    if (route.kind === "upload" || route.kind === "catalog" || route.kind === "drafts") {
+    if (
+      route.kind === "upload" ||
+      route.kind === "catalog" ||
+      route.kind === "drafts" ||
+      route.kind === "deploy"
+    ) {
       if (isCorsDenied(requestHasOrigin, allowedCorsOrigin)) {
         return json({ ok: false }, 403);
       }
@@ -894,6 +1342,14 @@ async function routeRequest(params: {
     return json({ ok: false }, 404);
   }
 
+  if (route.kind === "publicCatalog") {
+    if (!route.storefront) return json({ ok: false }, 404, { "Access-Control-Allow-Origin": "*" });
+    if (request.method === "GET") {
+      return await handlePublicCatalogRead(request, env, route.storefront);
+    }
+    return json({ ok: false }, 404, { "Access-Control-Allow-Origin": "*" });
+  }
+
   if (route.kind === "drafts") {
     if (!route.storefront) return json({ ok: false }, 400);
     if (request.method === "GET") {
@@ -912,6 +1368,23 @@ async function routeRequest(params: {
       return await handleDraftDelete(request, env, url, route.storefront);
     }
     return json({ ok: false }, 404);
+  }
+
+  if (route.kind === "draftSyncLock") {
+    if (!route.storefront) return json({ ok: false }, 400);
+    if (request.method === "POST") {
+      return await handleDraftSyncLockAcquire(request, env, url, route.storefront);
+    }
+    if (request.method === "DELETE") {
+      return await handleDraftSyncLockRelease(request, env, url, route.storefront);
+    }
+    return json({ ok: false }, 404);
+  }
+
+  if (route.kind === "deploy") {
+    if (!route.storefront) return json({ ok: false }, 400);
+    if (request.method !== "POST") return json({ ok: false }, 404);
+    return await handleXaBDeployTrigger(request, env, route.storefront);
   }
 
   return json({ ok: false }, 404);

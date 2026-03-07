@@ -1,0 +1,25 @@
+{
+  "routes": [
+    "/en/dorms",
+    "/en/dorms/7-bed-female-sea-view-dorm",
+    "/en/dorms/8-bed-female-dorm",
+    "/en/dorms/8-bed-mixed-dorm",
+    "/en/dorms/female-dorm-large-sea-terrace",
+    "/en/dorms/female-garden-room",
+    "/en/dorms/female-sea-view-dorm",
+    "/en/dorms/mixed-dorm-sea-terrace",
+    "/en/dorms/mixed-ensuite-dorm",
+    "/en/dorms/mixed-room-single-beds"
+  ],
+  "testedEntries": 120,
+  "failures": [],
+  "totals": {
+    "issues": 3186,
+    "S1": 3186,
+    "S2": 0,
+    "S3": 0
+  },
+  "notes": [
+    "Availability API mocked for deterministic UI-only contrast sweep."
+  ]
+}

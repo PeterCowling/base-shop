@@ -5,7 +5,17 @@
  * POST - Verifies guest last name for a token and returns minimal session data
  */
 
-import { FirebaseRest, jsonResponse, errorResponse } from '../lib/firebase-rest';
+import { errorResponse, FirebaseRest, jsonResponse } from '../lib/firebase-rest';
+
+function parseCookie(cookieHeader: string, name: string): string | null {
+  for (const part of cookieHeader.split(';')) {
+    const [key, ...rest] = part.trim().split('=');
+    if (key.trim() === name) {
+      return rest.join('=').trim() || null;
+    }
+  }
+  return null;
+}
 
 interface Env {
   CF_FIREBASE_DATABASE_URL: string;
@@ -41,10 +51,13 @@ function isExpired(expiresAt: string): boolean {
 
 export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
   const url = new URL(request.url);
-  const token = url.searchParams.get('token');
+  // Accept prime_session cookie (post-TASK-05) OR ?token= query param (legacy)
+  const token =
+    parseCookie(request.headers.get('Cookie') ?? '', 'prime_session') ??
+    url.searchParams.get('token');
 
   if (!token) {
-    return errorResponse('token parameter is required', 400);
+    return errorResponse('Unauthorized', 401); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   try {
@@ -52,17 +65,17 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
     const session = await firebase.get<GuestSessionToken>(`guestSessionsByToken/${token}`);
 
     if (!session) {
-      return errorResponse('Token not found', 404);
+      return errorResponse('Token not found', 404); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     if (isExpired(session.expiresAt)) {
-      return errorResponse('Token expired', 410);
+      return errorResponse('Token expired', 410); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
-    return jsonResponse({ status: 'ok', expiresAt: session.expiresAt });
+    return jsonResponse({ status: 'ok', expiresAt: session.expiresAt }); // i18n-exempt -- PRIME-101 machine-readable API status [ttl=2026-12-31]
   } catch (error) {
-    console.error('Error validating guest token:', error);
-    return errorResponse('Failed to validate token', 500);
+    console.error('Error validating guest token:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
+    return errorResponse('Failed to validate token', 500); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 };
 
@@ -74,12 +87,12 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     const body = await request.json() as { token?: string; lastName?: string };
     token = body.token || '';
     lastName = body.lastName || '';
-  } catch (error) {
-    return errorResponse('Invalid JSON body', 400);
+  } catch {
+    return errorResponse('Invalid JSON body', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   if (!token || !lastName) {
-    return errorResponse('token and lastName are required', 400);
+    return errorResponse('token and lastName are required', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   const clientIP = request.headers.get('CF-Connecting-IP') || 'unknown';
@@ -88,7 +101,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (env.RATE_LIMIT) {
     const attempts = await env.RATE_LIMIT.get(rateLimitKey);
     if (attempts && parseInt(attempts, 10) >= MAX_ATTEMPTS) {
-      return errorResponse('Too many attempts. Please try again later.', 429);
+      return errorResponse('Too many attempts. Please try again later.', 429); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
   }
 
@@ -97,18 +110,18 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     const session = await firebase.get<GuestSessionToken>(`guestSessionsByToken/${token}`);
 
     if (!session) {
-      return errorResponse('Token not found', 404);
+      return errorResponse('Token not found', 404); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     if (isExpired(session.expiresAt)) {
-      return errorResponse('Token expired', 410);
+      return errorResponse('Token expired', 410); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     const booking = await firebase.get<Record<string, BookingOccupant>>(
       `bookings/${session.bookingId}`,
     );
     if (!booking) {
-      return errorResponse('Booking not found', 404);
+      return errorResponse('Booking not found', 404); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     // Resolve target occupant from session or fallback to lead guest
@@ -121,7 +134,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     }
 
     if (!targetOccupantId) {
-      return errorResponse('Booking not found', 404);
+      return errorResponse('Booking not found', 404); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     // Fetch guest details for the target occupant
@@ -130,7 +143,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     );
 
     if (!guestDetails) {
-      return errorResponse('Booking not found', 404);
+      return errorResponse('Booking not found', 404); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     // Compare last name
@@ -146,20 +159,29 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
         });
       }
 
-      return errorResponse('Verification failed', 403);
+      return errorResponse('Verification failed', 403); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     if (env.RATE_LIMIT) {
       await env.RATE_LIMIT.delete(rateLimitKey);
     }
 
-    return jsonResponse({
+    const maxAge = Math.max(0, Math.floor((new Date(session.expiresAt).getTime() - Date.now()) / 1000));
+    const cookieValue = `prime_session=${token}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${maxAge}`;
+
+    return new Response(JSON.stringify({
       bookingId: session.bookingId,
       guestUuid: targetOccupantId,
       guestFirstName: guestDetails.firstName || '',
+    }), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Set-Cookie': cookieValue,
+      },
     });
   } catch (error) {
-    console.error('Error verifying guest session:', error);
-    return errorResponse('Failed to verify guest session', 500);
+    console.error('Error verifying guest session:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
+    return errorResponse('Failed to verify guest session', 500); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 };

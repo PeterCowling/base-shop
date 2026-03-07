@@ -28,7 +28,7 @@ Integrate a deterministic, auto-updating `Build Summary` section into the canoni
 
 ### Goals
 - Add in-page `#build-summary` section and matching header nav anchor.
-- Generate `build-summary.json` via a reproducible script at `scripts/src/startup-loop/generate-build-summary.ts`.
+- Generate `build-summary.json` via a reproducible script at `scripts/src/startup-loop/build/generate-build-summary.ts`.
 - Enforce deterministic source inclusion/exclusion, row dedupe, timestamp normalization, and stable JSON serialization.
 - Render rows safely on the client with business and 1/3/7-day filters.
 - Keep output static-site compatible and idempotent.
@@ -62,7 +62,7 @@ Integrate a deterministic, auto-updating `Build Summary` section into the canoni
 - `scripts/src/startup-loop/__tests__/generate-stage-operator-views.test.ts` - byte-identical determinism tests precedent.
 - `scripts/src/startup-loop/__tests__/manifest-update.test.ts` - idempotent re-derivation and failure-mode test pattern.
 - `docs/plans/_templates/fact-find-planning.md` - required fact-find structure template.
-- `docs/business-os/startup-loop/loop-output-contracts.md` - formal fact-find artifact contract and frontmatter requirements.
+- `docs/business-os/startup-loop/contracts/loop-output-contracts.md` - formal fact-find artifact contract and frontmatter requirements.
 
 ### Patterns & Conventions Observed
 - Startup-loop generators favor deterministic serialization and explicit test coverage for repeatability.
@@ -71,7 +71,7 @@ Integrate a deterministic, auto-updating `Build Summary` section into the canoni
 - `docs/business-os/_data/` does not currently exist, so this feature introduces a new data directory.
 
 ### Data & Contracts
-- Fact-find contract requires canonical artifact path and frontmatter routing fields (`docs/business-os/startup-loop/loop-output-contracts.md`).
+- Fact-find contract requires canonical artifact path and frontmatter routing fields (`docs/business-os/startup-loop/contracts/loop-output-contracts.md`).
 - Business IDs are structured JSON with stable `id` fields (`docs/business-os/strategy/businesses.json`).
 - Proposed row contract is explicit and implementation-ready:
   - `date`, `business`, `domain`, `what`, `why`, `intended`, `links`, `sourcePath`.
@@ -87,7 +87,7 @@ Integrate a deterministic, auto-updating `Build Summary` section into the canoni
   - Future planning/build tasks relying on visible recent-work summaries.
 - Likely blast radius:
   - `package.json` (script entry)
-  - `scripts/src/startup-loop/generate-build-summary.ts` (new)
+  - `scripts/src/startup-loop/build/generate-build-summary.ts` (new)
   - `docs/business-os/_data/build-summary.json` (new generated artifact)
   - `docs/business-os/startup-loop-output-registry.user.html` (UI integration)
   - `scripts/src/startup-loop/__tests__/...` (new targeted tests)

@@ -9,7 +9,7 @@ import {
   parseArgs,
   shouldOverwrite,
   verifyOutputExists,
-} from "../s2-operator-capture";
+} from "../s2/s2-operator-capture";
 
 describe("s2-operator-capture orchestrator", () => {
   let tmpDir: string;

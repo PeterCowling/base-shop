@@ -5,6 +5,7 @@ import * as path from "node:path";
 
 import { afterEach, beforeEach, describe, expect, it } from "@jest/globals";
 
+// TC-06 imports: warn_sections field for Intended Outcome Check (TASK-06)
 import {
   emitReflectionDebt,
   getBuildRecordPath,
@@ -12,11 +13,9 @@ import {
   getResultsReviewPath,
   readReflectionDebtLedger,
   type ReflectionDebtLedger,
+  type ReflectionMinimumValidation,
   validateResultsReviewContent,
-} from "../lp-do-build-reflection-debt.js";
-
-// TC-06 imports: warn_sections field for Intended Outcome Check (TASK-06)
-import type { ReflectionMinimumValidation } from "../lp-do-build-reflection-debt.js";
+} from "../build/lp-do-build-reflection-debt.js";
 
 function readLedgerFromArtifact(
   artifactPath: string,

@@ -129,7 +129,7 @@ the baseline artifact set.
    - Preferred form for clarity and stability.
 
 2. **Path-qualified:** `artifact_path#prior_id`
-   - Example: `docs/business-os/startup-baselines/HEAD-forecast-seed.user.md#forecast.target.mrr_month3`
+   - Example: `docs/business-os/startup-baselines/HEAD/forecast-seed.user.md#forecast.target.mrr_month3`
    - Full relative path to artifact.
    - Used when scope is ambiguous or in delta output.
 
@@ -193,8 +193,8 @@ Experiment readout:
 Compiler rejects with error:
 ```
 Duplicate prior ID 'target.customer_retention' found in:
-  - docs/business-os/startup-baselines/HEAD-forecast-seed.user.md
-  - docs/business-os/startup-baselines/HEAD-offer.user.md
+  - docs/business-os/startup-baselines/HEAD/forecast-seed.user.md
+  - docs/business-os/startup-baselines/HEAD/offer.user.md
 Use scope-qualified or path-qualified references.
 ```
 
@@ -204,7 +204,7 @@ Experiment readout:
 ```json
 {
   "prior_refs": [
-    "docs/business-os/startup-baselines/HEAD-forecast-seed.user.md#target.customer_retention"
+    "docs/business-os/startup-baselines/HEAD/forecast-seed.user.md#target.customer_retention"
   ]
 }
 ```
@@ -280,7 +280,7 @@ Experiment passes with high confidence.
   "schema_version": 1,
   "deltas": [
     {
-      "artifact_path": "docs/business-os/startup-baselines/HEAD-forecast-seed.user.md",
+      "artifact_path": "docs/business-os/startup-baselines/HEAD/forecast-seed.user.md",
       "prior_id": "forecast.target.mrr_month3",
       "old_confidence": 0.6,
       "new_confidence": 0.8,
@@ -307,7 +307,7 @@ Experiment fails with medium confidence.
   "schema_version": 1,
   "deltas": [
     {
-      "artifact_path": "docs/business-os/startup-baselines/HEAD-offer.user.md",
+      "artifact_path": "docs/business-os/startup-baselines/HEAD/offer.user.md",
       "prior_id": "offer.pricing.tier1_acceptable",
       "old_confidence": 0.7,
       "new_confidence": 0.55,
@@ -334,7 +334,7 @@ Experiment validates updated target value.
   "schema_version": 1,
   "deltas": [
     {
-      "artifact_path": "docs/business-os/startup-baselines/BRIK-forecast-seed.user.md",
+      "artifact_path": "docs/business-os/startup-baselines/BRIK/forecast-seed.user.md",
       "prior_id": "forecast.target.occupancy_rate",
       "old_confidence": 0.5,
       "new_confidence": 0.7,

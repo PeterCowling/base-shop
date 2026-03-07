@@ -3,7 +3,7 @@ import { promises as fs } from "fs";
 import os from "os";
 import path from "path";
 
-import { baselineMerge } from "../baseline-merge";
+import { baselineMerge } from "../baselines/baseline-merge";
 import { FORECAST_STAGE_ID } from "../stage-id-compat";
 
 /**

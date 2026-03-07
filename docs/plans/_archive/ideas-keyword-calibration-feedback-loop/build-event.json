@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "ideas-keyword-calibration-feedback-loop-2026-03-04",
+  "feature_slug": "ideas-keyword-calibration-feedback-loop",
+  "emitted_at": "2026-03-04T11:15:38.520Z",
+  "why": "Static keyword list does not adapt to operator feedback. Dispatch outcomes (confirmed vs skipped) were not fed back to adjust routing weights.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Produce a deterministic calibration script that analyzes confirmed vs skipped dispatches and adjusts T1 semantic keyword weights, creating a feedback loop from dispatch outcomes to routing accuracy.",
+    "source": "operator"
+  }
+}

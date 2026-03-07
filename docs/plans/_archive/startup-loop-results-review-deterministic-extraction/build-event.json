@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "build-startup-loop-results-review-deterministic-extraction-20260306",
+  "feature_slug": "startup-loop-results-review-deterministic-extraction",
+  "emitted_at": "2026-03-06T14:56:35.999Z",
+  "why": "Using the model to extract signals that are fully deterministic from file system state inflates prompt context and incurs token cost with no judgment upside. Lifting these extractions into TypeScript removes the cost entirely while making the extractions more reliable and testable.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "statement": "lp-do-build-results-review-prefill.ts pre-populates changed-package detection, new-SKILL.md detection, startup-loop contract/spec changes, standing-registry intersections, schema/lint/validator additions, and build/task completion bullets — all without model involvement.",
+    "type": "operational",
+    "source": "operator"
+  }
+}

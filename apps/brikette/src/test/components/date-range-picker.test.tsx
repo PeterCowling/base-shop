@@ -19,6 +19,7 @@ jest.mock("react-day-picker", () => ({
   __esModule: true,
   DayPicker: ({
     onSelect,
+    selected,
   }: {
     onSelect: (range: DateRange | undefined) => void;
     selected?: DateRange;
@@ -41,6 +42,18 @@ jest.mock("react-day-picker", () => ({
         }
       >
         Select partial range
+      </button>
+      <button
+        type="button"
+        data-cy="mock-edit-checkout-like-click"
+        onClick={() =>
+          onSelect({
+            from: selected?.from ?? new Date(2026, 2, 10),
+            to: new Date(2026, 2, 20),
+          })
+        }
+      >
+        Edit checkout-like click
       </button>
     </div>
   ),
@@ -114,5 +127,23 @@ describe("DateRangePicker", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Clear dates" }));
     expect(handleChange).toHaveBeenCalledWith(undefined);
+  });
+
+  it("TC-05: with complete range selected, next click starts a new check-in", () => {
+    const handleChange = jest.fn();
+    render(
+      <DateRangePicker
+        selected={{ from: new Date(2026, 2, 15), to: new Date(2026, 2, 17) }}
+        onRangeChange={handleChange}
+        stayHelperText="2–8 nights"
+        clearDatesText="Clear dates"
+      />
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Edit checkout-like click" }));
+    expect(handleChange).toHaveBeenCalledWith({
+      from: new Date(2026, 2, 20),
+      to: undefined,
+    });
   });
 });

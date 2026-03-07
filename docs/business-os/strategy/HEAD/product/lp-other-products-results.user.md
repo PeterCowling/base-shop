@@ -350,9 +350,9 @@ Nidilo, Filido, Tramilo, Filama, Tessilo, Filessa, Telilo, Filotela, Ordifilo, F
 
 ### Direct downstream consumers
 
-- `docs/business-os/startup-baselines/HEAD-offer.md`
+- `docs/business-os/startup-baselines/HEAD/offer.md`
 - `docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md`
-- `docs/business-os/startup-baselines/HEAD-channels.md`
+- `docs/business-os/startup-baselines/HEAD/channels.md`
 - `docs/business-os/strategy/HEAD/2026-02-20-candidate-names.user.md`
 
 ## 20) Final caution

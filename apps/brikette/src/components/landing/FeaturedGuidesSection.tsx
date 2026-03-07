@@ -5,6 +5,7 @@ import { Section } from "@acme/design-system/atoms";
 import { Grid } from "@acme/design-system/primitives";
 
 import { isGuideLive } from "@/data/guides.index";
+import { getGuideLinkLabels } from "@/guides/slugs/labels";
 import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { renderGuideLinkTokens, sanitizeLinkLabel } from "@/routes/guides/utils/linkTokens";
@@ -28,6 +29,19 @@ const FEATURED_GUIDE_CANDIDATES: readonly GuideKey[] = [
 ] as const;
 
 const MAX_FEATURED_GUIDES = 8;
+const FALLBACK_GUIDES_SECTION_TITLE =
+  // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] fallback copy for localized featured-guides section when landingPage bundle is late.
+  "Guides";
+const FALLBACK_GUIDES_SECTION_SUBTITLE =
+  // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] fallback copy for localized featured-guides section when landingPage bundle is late.
+  "Local tips for your trip";
+
+function resolveTranslatedCopy(value: unknown, fallback: string): string {
+  if (typeof value !== "string") return fallback;
+  const trimmed = value.trim();
+  if (!trimmed || trimmed.includes(".")) return fallback;
+  return trimmed;
+}
 
 function FeaturedGuidesSection({ lang }: Props): JSX.Element | null {
   const { t: tLanding } = useTranslation("landingPage", { lng: lang });
@@ -36,6 +50,7 @@ function FeaturedGuidesSection({ lang }: Props): JSX.Element | null {
   const tGuidesEn =
     guidesTranslation.i18n?.getFixedT?.("en", "guides") ??
     ((key: string): string => key);
+  const guideLinkLabels = useMemo(() => getGuideLinkLabels(lang), [lang]);
 
   const featuredGuides = useMemo(
     () => FEATURED_GUIDE_CANDIDATES.filter((guideKey) => isGuideLive(guideKey)).slice(0, MAX_FEATURED_GUIDES),
@@ -46,8 +61,14 @@ function FeaturedGuidesSection({ lang }: Props): JSX.Element | null {
     return null;
   }
 
-  const sectionTitle = tLanding("quickLinksSection.guides") as string;
-  const sectionSubtitle = tLanding("quickLinksSection.guidesHint") as string;
+  const sectionTitle = resolveTranslatedCopy(
+    tLanding("quickLinksSection.guides", { defaultValue: FALLBACK_GUIDES_SECTION_TITLE }),
+    FALLBACK_GUIDES_SECTION_TITLE,
+  );
+  const sectionSubtitle = resolveTranslatedCopy(
+    tLanding("quickLinksSection.guidesHint", { defaultValue: FALLBACK_GUIDES_SECTION_SUBTITLE }),
+    FALLBACK_GUIDES_SECTION_SUBTITLE,
+  );
 
   return (
     // i18n-exempt -- BRIK-401 [ttl=2026-12-31] Non-visible anchor id for in-page navigation.
@@ -63,7 +84,9 @@ function FeaturedGuidesSection({ lang }: Props): JSX.Element | null {
 
           <Grid cols={1} gap={3} className="mt-5 sm:grid-cols-2 lg:grid-cols-4">
             {featuredGuides.map((guideKey) => {
-              const label = getGuideLinkLabel(tGuides, tGuidesEn, guideKey);
+              const label =
+                guideLinkLabels[guideKey]?.trim() ||
+                getGuideLinkLabel(tGuides, tGuidesEn, guideKey);
               const safeLabel = sanitizeLinkLabel(label);
               const token = `%LINK:${guideKey}|${safeLabel}%`;
 

@@ -9,6 +9,7 @@
  *   echo -e "Duranta\nTenanda" | npx tsx scripts/src/startup-loop/naming/rdap-cli.ts
  */
 
+import * as path from 'node:path';
 import * as readline from 'node:readline';
 
 import {
@@ -19,12 +20,15 @@ import {
 } from './event-log-writer.js';
 import { formatRdapLegacyText, rdapBatchCheck } from './rdap-client.js';
 
-const SIDECAR_DIR =
-  '/Users/petercowling/base-shop/docs/business-os/strategy/HEAD/assessment/naming-sidecars';
+const BUSINESS = 'HEAD';
+const SIDECAR_DIR = path.resolve(
+  'docs/business-os/strategy',
+  BUSINESS,
+  'assessment/naming-workbench/naming-sidecars',
+);
 
 const RUN_DATE = '2026-02-26';
 const ROUND = 7;
-const BUSINESS = 'HEAD';
 
 function makeCandidateRecord(name: string): CandidateRecord {
   return {

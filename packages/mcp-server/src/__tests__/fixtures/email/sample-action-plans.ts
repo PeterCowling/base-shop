@@ -63,7 +63,8 @@ function baseActionPlan(): EmailActionPlan {
     workflow_triggers: {
       prepayment: false,
       terms_and_conditions: false,
-      booking_monitor: false,
+      booking_action_required: false,
+      booking_context: false,
     },
     scenario: { category: "general", confidence: 0.6 },
     scenarios: [{ category: "general", confidence: 0.6 }],
@@ -150,7 +151,8 @@ export function makeCancellationActionPlan(
       workflow_triggers: {
         prepayment: false,
         terms_and_conditions: true,
-        booking_monitor: true,
+        booking_action_required: true,
+        booking_context: true,
       },
       scenario: { category: "cancellation" as const, confidence: 0.88 },
       scenarios: [
@@ -193,7 +195,8 @@ export function makePrepaymentChaseActionPlan(
       workflow_triggers: {
         prepayment: true,
         terms_and_conditions: false,
-        booking_monitor: true,
+        booking_action_required: false,
+        booking_context: true,
       },
       scenario: { category: "prepayment" as const, confidence: 0.9 },
       scenarios: [

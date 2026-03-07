@@ -12,7 +12,9 @@ import {
 } from "@acme/lib/xa";
 
 import {
+  isCatalogMediaPathSpec,
   loadCatalogRows,
+  normalizeCatalogMediaPath,
   parseList,
 } from "./catalogSyncCommon";
 
@@ -145,6 +147,19 @@ async function main() {
     }
 
     for (const [specIndex, imageSpec] of imageSpecs.entries()) {
+      const expectedAlt = imageAltTexts[specIndex];
+      if (isCatalogMediaPathSpec(imageSpec)) {
+        const catalogPath = normalizeCatalogMediaPath(imageSpec);
+        if (!catalogPath) {
+          errors.push(`[${rowLabel(index)}] "${productSlug}" has an empty catalog image path.`);
+          continue;
+        }
+        if (!expectedAlt) {
+          errors.push(`[${rowLabel(index)}] "${productSlug}" image "${catalogPath}" is missing alt text.`);
+        }
+        continue;
+      }
+
       let resolvedPaths: string[];
       try {
         resolvedPaths = await expandFileSpec(imageSpec, baseDir, {
@@ -181,8 +196,6 @@ async function main() {
             warnings.push(`[${rowLabel(index)}] "${productSlug}" ${message}`);
           }
         }
-
-        const expectedAlt = imageAltTexts[specIndex];
         if (!expectedAlt) {
           errors.push(
             `[${rowLabel(index)}] "${productSlug}" image "${resolvedPath}" is missing alt text.`,

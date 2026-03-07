@@ -4,7 +4,9 @@
  */
 
 import type { Database } from "firebase/database";
-import { ref, remove,set, update } from "firebase/database";
+import { ref, remove, set, update } from "firebase/database";
+
+import { sendGuestEmailDraftRequest } from "../../services/useEmailGuest";
 
 import {
   addPendingWrite,
@@ -12,6 +14,38 @@ import {
   type PendingWrite,
   removePendingWrite,
 } from "./receptionDb";
+
+export const GUEST_EMAIL_DRAFT_OPERATION = "email_guest_draft";
+
+export interface QueuedGuestEmailDraft {
+  bookingRef: string;
+  activityCode: number;
+}
+
+function isQueuedGuestEmailDraft(data: unknown): data is QueuedGuestEmailDraft {
+  if (!data || typeof data !== "object") return false;
+  const candidate = data as Record<string, unknown>;
+  return (
+    typeof candidate.bookingRef === "string" &&
+    candidate.bookingRef.trim().length > 0 &&
+    typeof candidate.activityCode === "number" &&
+    Number.isInteger(candidate.activityCode)
+  );
+}
+
+function isDuplicateGuestEmailDraft(
+  pendingWrites: PendingWrite[],
+  payload: QueuedGuestEmailDraft
+): boolean {
+  return pendingWrites.some((write) => {
+    if (write.operation !== GUEST_EMAIL_DRAFT_OPERATION) return false;
+    if (!isQueuedGuestEmailDraft(write.data)) return false;
+    return (
+      write.data.bookingRef === payload.bookingRef &&
+      write.data.activityCode === payload.activityCode
+    );
+  });
+}
 
 export interface SyncResult {
   success: boolean;
@@ -40,18 +74,37 @@ export async function syncPendingWrites(database: Database): Promise<SyncResult>
 
     for (const write of pendingWrites) {
       try {
-        const dbRef = ref(database, write.path);
-
         switch (write.operation) {
-          case "set":
+          case "set": {
+            const dbRef = ref(database, write.path);
             await set(dbRef, write.data);
             break;
-          case "update":
+          }
+          case "update": {
+            const dbRef = ref(database, write.path);
             await update(dbRef, write.data as Record<string, unknown>);
             break;
-          case "remove":
+          }
+          case "remove": {
+            const dbRef = ref(database, write.path);
             await remove(dbRef);
             break;
+          }
+          case GUEST_EMAIL_DRAFT_OPERATION: {
+            if (!isQueuedGuestEmailDraft(write.data)) {
+              throw new Error("Invalid queued guest email draft payload");
+            }
+            const emailResult = await sendGuestEmailDraftRequest({
+              bookingRef: write.data.bookingRef,
+              activityCode: write.data.activityCode,
+            });
+            if (!emailResult.success) {
+              throw new Error(
+                emailResult.error || "Failed to process queued guest email draft"
+              );
+            }
+            break;
+          }
         }
 
         if (write.id !== undefined) {
@@ -74,7 +127,7 @@ export async function syncPendingWrites(database: Database): Promise<SyncResult>
 
 export function queueOfflineWrite(
   path: string,
-  operation: "set" | "update" | "remove",
+  operation: "set" | "update" | "remove" | "email_guest_draft",
   data?: unknown,
   opts?: {
     idempotencyKey?: string;
@@ -84,6 +137,28 @@ export function queueOfflineWrite(
   }
 ): Promise<number | null> {
   return addPendingWrite({ path, operation, data, ...opts });
+}
+
+export async function queueGuestEmailDraftRetry(
+  payload: QueuedGuestEmailDraft
+): Promise<number | null> {
+  const normalizedPayload: QueuedGuestEmailDraft = {
+    bookingRef: payload.bookingRef.trim(),
+    activityCode: payload.activityCode,
+  };
+
+  const pendingWrites = await getPendingWrites();
+  if (isDuplicateGuestEmailDraft(pendingWrites, normalizedPayload)) {
+    return 0;
+  }
+
+  return addPendingWrite({
+    path: "",
+    operation: GUEST_EMAIL_DRAFT_OPERATION,
+    data: normalizedPayload,
+    idempotencyKey: `guest-email:${normalizedPayload.bookingRef}:${normalizedPayload.activityCode}`,
+    domain: "guest-email",
+  });
 }
 
 export function isSyncing(): boolean {

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 2,
+  "baselineLocale": "en",
+  "locales": [
+    "ja"
+  ],
+  "summary": {
+    "totalMissingFiles": 0,
+    "totalMissingKeys": 0,
+    "totalUntranslatedKeys": 0
+  },
+  "reports": [
+    {
+      "locale": "ja",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {}
+    }
+  ]
+}

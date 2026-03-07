@@ -1,0 +1,24 @@
+[
+  {
+    "id": "U-01",
+    "severity": "S3",
+    "breakpoint": "all",
+    "mode": "both",
+    "route": "/products/*",
+    "componentFamily": "Button (disabled state)",
+    "drift": "Gallery uses disabled:opacity-30, quantity uses disabled:opacity-40",
+    "likelyCause": "No shared disabled opacity token in xa-b theme",
+    "fixDirection": "Standardize to disabled:opacity-50 across all xa-b interactive controls"
+  },
+  {
+    "id": "U-02",
+    "severity": "S3",
+    "breakpoint": "all",
+    "mode": "both",
+    "route": "/products/*",
+    "componentFamily": "Form controls (borders)",
+    "drift": "border-1/border-2 opacity tokens used for both decorative and functional control boundaries without distinction",
+    "likelyCause": "Single border token scale designed for minimal aesthetic, no functional-control variant",
+    "fixDirection": "Introduce --border-control semantic token at 0 0% 55% for interactive element boundaries"
+  }
+]

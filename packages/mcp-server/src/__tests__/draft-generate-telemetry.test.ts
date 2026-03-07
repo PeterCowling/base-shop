@@ -84,7 +84,8 @@ describe("draft_generate telemetry", () => {
           additional_content: false,
         },
         workflow_triggers: {
-          booking_monitor: false,
+          booking_action_required: false,
+          booking_context: false,
           prepayment: false,
           terms_and_conditions: false,
         },

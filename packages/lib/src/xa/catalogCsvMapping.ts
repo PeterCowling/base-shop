@@ -5,7 +5,8 @@ import {
   slugify,
   splitList,
 } from "./catalogAdminSchema.js";
-import { parseBoolean, type XaProductsCsvRow } from "./catalogCsvFormat.js";
+import { type XaProductsCsvRow } from "./catalogCsvFormat.js";
+import { withAutoCatalogDraftFields } from "./catalogWorkflow.js";
 
 function trimOrEmpty(value: string | null | undefined): string {
   return (value ?? "").trim();
@@ -19,11 +20,6 @@ function trimOrUndefined(value: string | null | undefined): string | undefined {
 function stringifyNumberOrEmpty(value: unknown): string {
   if (value === undefined) return "";
   return String(value);
-}
-
-function stringifyBooleanOrEmpty(value: unknown): string {
-  if (value === undefined) return "";
-  return String(Boolean(value));
 }
 
 function normalizeCsvList(value: string | null | undefined): string {
@@ -55,28 +51,26 @@ function parseDraftCategory(
   return (value || "clothing") as CatalogProductDraftInput["taxonomy"]["category"];
 }
 
-function buildMediaPaths(imageFiles: string, imageRoles: string): string {
-  const files = splitList(imageFiles);
-  const roles = splitList(imageRoles);
-  if (!files.length || files.length !== roles.length) return "";
-  return joinList(files.map((file, index) => `${roles[index]}:${file}`));
+function parseDraftPublishState(
+  value: string | null | undefined,
+): CatalogProductDraftInput["publishState"] {
+  if (value === "draft" || value === "live" || value === "out_of_stock") return value;
+  return undefined;
 }
 
-function parseImageRolesFromMediaPaths(mediaPaths: string | null | undefined): string | undefined {
+function buildMediaPaths(imageFiles: string): string {
+  return joinList(splitList(imageFiles));
+}
+
+function parseImageFilesFromMediaPaths(mediaPaths: string | null | undefined): string | null | undefined {
   const entries = splitList(mediaPaths ?? "");
   if (!entries.length) return undefined;
-  const roles = entries
-    .map((entry) => {
-      const idx = entry.indexOf(":");
-      if (idx <= 0) return "";
-      return entry.slice(0, idx).trim();
-    })
-    .filter(Boolean);
-  return roles.length ? joinList(roles) : undefined;
+  if (entries.some((entry) => entry.includes(":"))) return null;
+  return joinList(entries);
 }
 
 export function buildCsvRowUpdateFromDraft(input: CatalogProductDraftInput): XaProductsCsvRow {
-  const value = catalogProductDraftSchema.parse(input);
+  const value = catalogProductDraftSchema.parse(withAutoCatalogDraftFields(input));
   const normalizedSlug = normalizeSlug(value);
   const normalizedBrand = normalizeHandle(value.brandHandle);
   const normalizedCollection = normalizeOptionalHandle(value.collectionHandle || value.collectionTitle);
@@ -84,11 +78,11 @@ export function buildCsvRowUpdateFromDraft(input: CatalogProductDraftInput): XaP
   const sizes = normalizeCsvList(value.sizes);
   const imageFiles = normalizeCsvList(value.imageFiles);
   const imageAltTexts = normalizeCsvList(value.imageAltTexts);
-  const imageRoles = normalizeCsvList(value.imageRoles);
 
   const color = normalizeCsvList(value.taxonomy.color);
   const material = normalizeCsvList(value.taxonomy.material);
   const occasion = normalizeCsvList(value.taxonomy.occasion);
+  const interiorColor = normalizeCsvList(value.taxonomy.interiorColor);
   const fits = normalizeCsvList(value.taxonomy.fits);
 
   const details = value.details ?? {};
@@ -105,18 +99,14 @@ export function buildCsvRowUpdateFromDraft(input: CatalogProductDraftInput): XaP
     collection_title: trimOrEmpty(value.collectionTitle),
     collection_description: trimOrEmpty(value.collectionDescription),
     price: String(value.price),
-    compare_at_price: stringifyNumberOrEmpty(value.compareAtPrice),
-    deposit: stringifyNumberOrEmpty(value.deposit),
-    stock: stringifyNumberOrEmpty(value.stock),
-    for_sale: stringifyBooleanOrEmpty(value.forSale),
-    for_rental: stringifyBooleanOrEmpty(value.forRental),
+    publish_state: value.publishState ?? "draft",
     sizes,
     description: trimOrEmpty(value.description),
     created_at: trimOrEmpty(value.createdAt),
     popularity: stringifyNumberOrEmpty(value.popularity),
     image_files: imageFiles,
     image_alt_texts: imageAltTexts,
-    media_paths: buildMediaPaths(imageFiles, imageRoles),
+    media_paths: buildMediaPaths(imageFiles),
     media_alt_texts: imageAltTexts,
     taxonomy_department: value.taxonomy.department,
     taxonomy_category: value.taxonomy.category,
@@ -132,6 +122,7 @@ export function buildCsvRowUpdateFromDraft(input: CatalogProductDraftInput): XaP
     taxonomy_size_class: trimOrEmpty(value.taxonomy.sizeClass),
     taxonomy_strap_style: trimOrEmpty(value.taxonomy.strapStyle),
     taxonomy_hardware_color: trimOrEmpty(value.taxonomy.hardwareColor),
+    taxonomy_interior_color: interiorColor,
     taxonomy_closure_type: trimOrEmpty(value.taxonomy.closureType),
     taxonomy_fits: fits,
     taxonomy_metal: trimOrEmpty(value.taxonomy.metal),
@@ -153,10 +144,12 @@ export function buildCsvRowUpdateFromDraft(input: CatalogProductDraftInput): XaP
   };
 }
 
-export function rowToDraftInput(row: XaProductsCsvRow): CatalogProductDraftInput {
+export function rowToDraftInput(row: XaProductsCsvRow): CatalogProductDraftInput | null {
   const department = parseDraftDepartment(row.taxonomy_department);
   const category = parseDraftCategory(row.taxonomy_category);
-  return {
+  const mediaPathsImageFiles = parseImageFilesFromMediaPaths(row.media_paths);
+  if (mediaPathsImageFiles === null) return null;
+  const candidate: CatalogProductDraftInput = {
     id: trimOrUndefined(row.id),
     slug: trimOrUndefined(row.slug),
     title: trimOrEmpty(row.title),
@@ -166,18 +159,13 @@ export function rowToDraftInput(row: XaProductsCsvRow): CatalogProductDraftInput
     collectionTitle: trimOrUndefined(row.collection_title),
     collectionDescription: trimOrUndefined(row.collection_description),
     price: trimOrEmpty(row.price) || "0",
-    compareAtPrice: trimOrUndefined(row.compare_at_price),
-    deposit: trimOrUndefined(row.deposit),
-    stock: trimOrUndefined(row.stock),
-    forSale: parseBoolean(row.for_sale || "", true),
-    forRental: parseBoolean(row.for_rental || "", false),
+    publishState: parseDraftPublishState(row.publish_state),
     sizes: trimOrUndefined(row.sizes),
     description: trimOrEmpty(row.description),
     createdAt: trimOrEmpty(row.created_at),
     popularity: trimOrUndefined(row.popularity),
-    imageFiles: trimOrUndefined(row.image_files),
-    imageAltTexts: trimOrUndefined(row.image_alt_texts),
-    imageRoles: parseImageRolesFromMediaPaths(row.media_paths),
+    imageFiles: trimOrUndefined(row.image_files) ?? mediaPathsImageFiles,
+    imageAltTexts: trimOrUndefined(row.image_alt_texts) ?? trimOrUndefined(row.media_alt_texts),
     taxonomy: {
       department,
       category,
@@ -193,6 +181,7 @@ export function rowToDraftInput(row: XaProductsCsvRow): CatalogProductDraftInput
       sizeClass: trimOrUndefined(row.taxonomy_size_class),
       strapStyle: trimOrUndefined(row.taxonomy_strap_style),
       hardwareColor: trimOrUndefined(row.taxonomy_hardware_color),
+      interiorColor: trimOrUndefined(row.taxonomy_interior_color),
       closureType: trimOrUndefined(row.taxonomy_closure_type),
       fits: trimOrUndefined(row.taxonomy_fits),
       metal: trimOrUndefined(row.taxonomy_metal),
@@ -215,4 +204,6 @@ export function rowToDraftInput(row: XaProductsCsvRow): CatalogProductDraftInput
       warranty: trimOrUndefined(row.details_warranty),
     },
   };
+  const parsed = catalogProductDraftSchema.safeParse(withAutoCatalogDraftFields(candidate));
+  return parsed.success ? parsed.data : null;
 }

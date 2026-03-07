@@ -8,6 +8,7 @@ import ExpiredQuoteNotice from "@/components/booking/ExpiredQuoteNotice";
 import RecoveryQuoteCapture from "@/components/booking/RecoveryQuoteCapture";
 import type { AppLanguage } from "@/i18n.config";
 import { HOSTEL_MIN_PAX } from "@/utils/bookingDateRules";
+import { getBookPath } from "@/utils/localizedRoutes";
 
 import { Section } from "./RoomDetailSections";
 
@@ -126,7 +127,7 @@ export function RoomDetailRecoverySection({
     <Section className="mx-auto mt-4 max-w-3xl px-4">
       <RecoveryQuoteCapture
         isValidSearch={queryState === "valid"}
-        resumePathname={`/${lang}/book`}
+        resumePathname={getBookPath(lang)}
         context={{
           checkin,
           checkout,

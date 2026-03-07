@@ -10,7 +10,7 @@ import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
 import roomsData from "@/data/roomsData";
 import { OG_IMAGE } from "@/utils/headConstants";
-import { getSlug } from "@/utils/slug";
+import { getPrivateRoomChildPath } from "@/utils/privateRoomPaths";
 
 import RoomDetailContent from "../../dorms/[id]/RoomDetailContent";
 
@@ -37,8 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description =
     (t(`rooms.${ROOM_ID}.bed_intro`, { defaultValue: "" }) as string) || "";
 
-  const privateRoomsSlug = getSlug("apartment", validLang);
-  const path = `/${validLang}/${privateRoomsSlug}/double-room`;
+  const path = getPrivateRoomChildPath(validLang, "double-room");
   const image = buildCfImageUrl(room.landingImage || "/img/og-rooms.jpg", {
     width: OG_IMAGE.width,
     height: OG_IMAGE.height,

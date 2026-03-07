@@ -9,10 +9,10 @@ Last-reviewed: 2026-02-20
 Owner: Pete
 Depends-on:
   - docs/business-os/contracts/HEAD/outcome-contract.user.md
-  - docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md
+  - docs/business-os/startup-baselines/HEAD/2026-02-12-assessment-intake-packet.user.md
   - docs/business-os/market-research/HEAD/2026-02-20-market-intelligence.user.md
   - docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md
-  - docs/business-os/startup-baselines/HEAD-channels.md
+  - docs/business-os/startup-baselines/HEAD/channels.md
 Review-trigger: After each completed build cycle touching this document.
 ---
 

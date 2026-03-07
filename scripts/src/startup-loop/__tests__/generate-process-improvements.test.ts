@@ -9,9 +9,10 @@ import {
   collectProcessImprovements,
   deriveIdeaKey,
   loadCompletedIdeasRegistry,
+  QUEUE_STATE_RELATIVE_PATH,
   runCheck,
   updateProcessImprovementsHtml,
-} from "../generate-process-improvements";
+} from "../build/generate-process-improvements";
 
 async function writeFile(root: string, relativePath: string, content: string): Promise<void> {
   const absPath = path.join(root, relativePath);
@@ -404,6 +405,247 @@ Review-date: 2026-02-26
     await fs.rm(tmpRoot, { recursive: true, force: true });
   });
 
+  it("collectProcessImprovements ingests bug-scan artifacts as idea candidates", async () => {
+    await writeFile(
+      tmpDir,
+      "docs/plans/bug-scan-flow/bug-scan-findings.user.json",
+      `${JSON.stringify(
+        {
+          schema_version: "bug-scan-findings.v1",
+          generated_at: "2026-03-02T10:00:00.000Z",
+          business_scope: "BRIK",
+          finding_count: 1,
+          critical_count: 1,
+          warning_count: 0,
+          findings: [
+            {
+              ruleId: "no-eval-call",
+              severity: "critical",
+              message: "`eval()` execution is unsafe and hard to audit.",
+              suggestion: "Replace with explicit parsing/dispatch logic.",
+              file: "apps/brikette/src/lib/risky.ts",
+              line: 14,
+              column: 7,
+            },
+          ],
+        },
+        null,
+        2,
+      )}\n`,
+    );
+
+    const data = collectProcessImprovements(tmpDir);
+    expect(data.ideaItems).toHaveLength(1);
+    expect(data.ideaItems[0]?.business).toBe("BRIK");
+    expect(data.ideaItems[0]?.source).toBe("bug-scan-findings.user.json");
+    expect(data.ideaItems[0]?.title).toContain("no-eval-call");
+    expect(data.ideaItems[0]?.suggested_action).toContain("--only-rules=no-eval-call");
+    expect(data.ideaItems[0]?.path).toBe("docs/plans/bug-scan-flow/bug-scan-findings.user.json");
+  });
+
+  // ---------------------------------------------------------------------------
+  // TASK-04: Sidecar-prefer branch TCs
+  // ---------------------------------------------------------------------------
+
+  it("TC-04-01: markdown-parse path taken when no sidecar exists", async () => {
+    await writeFile(
+      tmpDir,
+      "docs/plans/sidecar-test/results-review.user.md",
+      `---
+Business-Unit: BRIK
+Review-date: 2026-03-06
+---
+## New Idea Candidates
+- Markdown only idea
+`,
+    );
+
+    const data = collectProcessImprovements(tmpDir);
+    expect(data.ideaItems).toHaveLength(1);
+    expect(data.ideaItems[0]?.title).toBe("Markdown only idea");
+  });
+
+  it("TC-04-02: sidecar-prefer path taken when valid sidecar exists alongside .user.md", async () => {
+    // Different idea in each file — confirms which source was read.
+    await writeFile(
+      tmpDir,
+      "docs/plans/sidecar-test/results-review.user.md",
+      `---
+Business-Unit: BRIK
+Review-date: 2026-03-06
+---
+## New Idea Candidates
+- Markdown idea (should be bypassed)
+`,
+    );
+
+    const sidecar = {
+      schema_version: "results-review.signals.v1",
+      generated_at: new Date().toISOString(),
+      plan_slug: "sidecar-test",
+      source_path: "docs/plans/sidecar-test/results-review.user.md",
+      items: [
+        {
+          type: "idea",
+          business: "BRIK",
+          title: "Sidecar idea (should win)",
+          body: "",
+          source: "results-review.user.md",
+          date: "2026-03-06",
+          path: "docs/plans/sidecar-test/results-review.user.md",
+          idea_key: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          priority_tier: "P3",
+          own_priority_rank: 7,
+          urgency: "U2",
+          effort: "M",
+          proximity: null,
+          reason_code: "test_idea",
+        },
+      ],
+    };
+    await writeFile(
+      tmpDir,
+      "docs/plans/sidecar-test/results-review.signals.json",
+      `${JSON.stringify(sidecar, null, 2)}\n`,
+    );
+
+    const data = collectProcessImprovements(tmpDir);
+    expect(data.ideaItems).toHaveLength(1);
+    expect(data.ideaItems[0]?.title).toBe("Sidecar idea (should win)");
+  });
+
+  it("TC-04-03: malformed sidecar falls back to markdown parse with warning", async () => {
+    await writeFile(
+      tmpDir,
+      "docs/plans/sidecar-test/results-review.user.md",
+      `---
+Business-Unit: BRIK
+Review-date: 2026-03-06
+---
+## New Idea Candidates
+- Markdown fallback idea
+`,
+    );
+
+    // Write a malformed sidecar (not JSON)
+    await writeFile(
+      tmpDir,
+      "docs/plans/sidecar-test/results-review.signals.json",
+      "not valid json {{{",
+    );
+
+    const stderrOutput: string[] = [];
+    const stderrSpy = jest
+      .spyOn(process.stderr, "write")
+      .mockImplementation((chunk: string | Uint8Array) => {
+        stderrOutput.push(typeof chunk === "string" ? chunk : "");
+        return true;
+      });
+
+    try {
+      const data = collectProcessImprovements(tmpDir);
+      // Should fall back to markdown parse
+      expect(data.ideaItems).toHaveLength(1);
+      expect(data.ideaItems[0]?.title).toBe("Markdown fallback idea");
+      // Should have logged a warning
+      expect(stderrOutput.some((line) => line.includes("falling back to markdown"))).toBe(true);
+    } finally {
+      stderrSpy.mockRestore();
+    }
+  });
+
+  it("TC-04-04: sidecar with zero items produces zero idea items for that plan", async () => {
+    await writeFile(
+      tmpDir,
+      "docs/plans/sidecar-test/results-review.user.md",
+      `---
+Business-Unit: BRIK
+Review-date: 2026-03-06
+---
+## New Idea Candidates
+- This idea should be bypassed by empty sidecar
+`,
+    );
+
+    const sidecar = {
+      schema_version: "results-review.signals.v1",
+      generated_at: new Date().toISOString(),
+      plan_slug: "sidecar-test",
+      source_path: "docs/plans/sidecar-test/results-review.user.md",
+      items: [],
+    };
+    await writeFile(
+      tmpDir,
+      "docs/plans/sidecar-test/results-review.signals.json",
+      `${JSON.stringify(sidecar, null, 2)}\n`,
+    );
+
+    const data = collectProcessImprovements(tmpDir);
+    expect(data.ideaItems).toHaveLength(0);
+  });
+
+  it("TC-04-05: sidecar item with completed idea_key is suppressed by completed-ideas filter", async () => {
+    const ideaKey = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+
+    await writeFile(
+      tmpDir,
+      "docs/plans/sidecar-test/results-review.user.md",
+      `---
+Business-Unit: BRIK
+Review-date: 2026-03-06
+---
+## New Idea Candidates
+- Fallback idea
+`,
+    );
+
+    const sidecar = {
+      schema_version: "results-review.signals.v1",
+      generated_at: new Date().toISOString(),
+      plan_slug: "sidecar-test",
+      source_path: "docs/plans/sidecar-test/results-review.user.md",
+      items: [
+        {
+          type: "idea",
+          business: "BRIK",
+          title: "Already completed idea",
+          body: "",
+          source: "results-review.user.md",
+          date: "2026-03-06",
+          path: "docs/plans/sidecar-test/results-review.user.md",
+          idea_key: ideaKey,
+          priority_tier: "P3",
+        },
+      ],
+    };
+    await writeFile(
+      tmpDir,
+      "docs/plans/sidecar-test/results-review.signals.json",
+      `${JSON.stringify(sidecar, null, 2)}\n`,
+    );
+
+    const registry = {
+      schema_version: "completed-ideas.v1",
+      entries: [
+        {
+          idea_key: ideaKey,
+          title: "Already completed idea",
+          source_path: "docs/plans/sidecar-test/results-review.user.md",
+          plan_slug: "sidecar-test",
+          completed_at: "2026-03-05",
+        },
+      ],
+    };
+    await writeFile(
+      tmpDir,
+      "docs/business-os/_data/completed-ideas.json",
+      `${JSON.stringify(registry, null, 2)}\n`,
+    );
+
+    const data = collectProcessImprovements(tmpDir);
+    expect(data.ideaItems).toHaveLength(0);
+  });
+
   it("appendCompletedIdea is idempotent — calling twice yields one entry", async () => {
     const entry = {
       title: "My idea",
@@ -419,5 +661,216 @@ Review-date: 2026-02-26
     const raw = await fs.readFile(registryPath, "utf8");
     const registry = JSON.parse(raw) as { entries: unknown[] };
     expect(registry.entries).toHaveLength(1);
+  });
+});
+
+describe("dispatch queue collection", () => {
+  let tmpDir: string;
+
+  beforeEach(async () => {
+    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "dispatch-queue-"));
+  });
+
+  afterEach(async () => {
+    await fs.rm(tmpDir, { recursive: true, force: true });
+  });
+
+  it("TC-01: collects only enqueued dispatches, excludes completed", async () => {
+    const queueState = {
+      dispatches: [
+        {
+          dispatch_id: "DISPATCH-001",
+          business: "BOS",
+          area_anchor: "Enqueued idea one",
+          why: "Reason one",
+          queue_state: "enqueued",
+          created_at: "2026-03-04T10:00:00.000Z",
+        },
+        {
+          dispatch_id: "DISPATCH-002",
+          business: "BOS",
+          area_anchor: "Enqueued idea two",
+          why: "Reason two",
+          queue_state: "enqueued",
+          created_at: "2026-03-04T11:00:00.000Z",
+        },
+        {
+          dispatch_id: "DISPATCH-003",
+          business: "BRIK",
+          area_anchor: "Enqueued idea three",
+          why: "Reason three",
+          queue_state: "enqueued",
+          created_at: "2026-03-04T12:00:00.000Z",
+        },
+        {
+          dispatch_id: "DISPATCH-004",
+          business: "BOS",
+          area_anchor: "Completed idea",
+          why: "Already done",
+          queue_state: "completed",
+          created_at: "2026-03-03T10:00:00.000Z",
+        },
+        {
+          dispatch_id: "DISPATCH-005",
+          business: "BOS",
+          area_anchor: "Processed idea",
+          why: "Already processed",
+          queue_state: "processed",
+          created_at: "2026-03-03T11:00:00.000Z",
+        },
+      ],
+    };
+    await writeFile(tmpDir, QUEUE_STATE_RELATIVE_PATH, JSON.stringify(queueState, null, 2));
+
+    const data = collectProcessImprovements(tmpDir);
+    const dispatchItems = data.ideaItems.filter((item) => item.source === "queue-state.json");
+    expect(dispatchItems).toHaveLength(3);
+    expect(dispatchItems.map((i) => i.title)).toEqual(
+      expect.arrayContaining(["Enqueued idea one", "Enqueued idea two", "Enqueued idea three"]),
+    );
+  });
+
+  it("TC-02: missing queue-state.json produces zero dispatch items with no error", async () => {
+    // No queue-state.json written — should still work
+    const data = collectProcessImprovements(tmpDir);
+    const dispatchItems = data.ideaItems.filter((item) => item.source === "queue-state.json");
+    expect(dispatchItems).toHaveLength(0);
+  });
+
+  it("TC-03: dispatch items carry classifier fields when classifier succeeds (fail-open)", async () => {
+    const queueState = {
+      dispatches: [
+        {
+          dispatch_id: "DISPATCH-CLF-001",
+          business: "BOS",
+          area_anchor: "Add caching layer to API responses",
+          why: "API response times are slow for repeated queries",
+          queue_state: "enqueued",
+          created_at: "2026-03-04T10:00:00.000Z",
+        },
+      ],
+    };
+    await writeFile(tmpDir, QUEUE_STATE_RELATIVE_PATH, JSON.stringify(queueState, null, 2));
+
+    const data = collectProcessImprovements(tmpDir);
+    const dispatchItems = data.ideaItems.filter((item) => item.source === "queue-state.json");
+    expect(dispatchItems).toHaveLength(1);
+    const item = dispatchItems[0]!;
+
+    // Classifier fields should be present (fail-open: if classifier errors, fields are unset)
+    expect(typeof item.priority_tier).toBe("string");
+    expect(typeof item.own_priority_rank).toBe("number");
+    expect(typeof item.urgency).toBe("string");
+    expect(typeof item.effort).toBe("string");
+    expect(typeof item.reason_code).toBe("string");
+  });
+
+  it("TC-04: dispatches with identical area_anchor but different dispatch_id get distinct idea_keys", async () => {
+    const queueState = {
+      dispatches: [
+        {
+          dispatch_id: "DISPATCH-DUP-001",
+          business: "BOS",
+          area_anchor: "bos-agent-session-findings",
+          why: "First finding",
+          queue_state: "enqueued",
+          created_at: "2026-03-04T10:00:00.000Z",
+        },
+        {
+          dispatch_id: "DISPATCH-DUP-002",
+          business: "BOS",
+          area_anchor: "bos-agent-session-findings",
+          why: "Second finding",
+          queue_state: "enqueued",
+          created_at: "2026-03-04T11:00:00.000Z",
+        },
+      ],
+    };
+    await writeFile(tmpDir, QUEUE_STATE_RELATIVE_PATH, JSON.stringify(queueState, null, 2));
+
+    const data = collectProcessImprovements(tmpDir);
+    const dispatchItems = data.ideaItems.filter((item) => item.source === "queue-state.json");
+    expect(dispatchItems).toHaveLength(2);
+    const keys = dispatchItems.map((i) => i.idea_key);
+    expect(keys[0]).not.toBe(keys[1]);
+  });
+
+  it("TC-05: dispatch items sort correctly alongside results-review items", async () => {
+    await writeFile(
+      tmpDir,
+      "docs/plans/mixed-test/results-review.user.md",
+      `---
+Business-Unit: BRIK
+Review-date: 2026-03-04
+---
+# Results Review
+
+## New Idea Candidates
+- Results review idea
+`,
+    );
+
+    const queueState = {
+      dispatches: [
+        {
+          dispatch_id: "DISPATCH-SORT-001",
+          business: "BOS",
+          area_anchor: "Dispatch queue idea",
+          why: "Testing sort order",
+          queue_state: "enqueued",
+          created_at: "2026-03-04T10:00:00.000Z",
+        },
+      ],
+    };
+    await writeFile(tmpDir, QUEUE_STATE_RELATIVE_PATH, JSON.stringify(queueState, null, 2));
+
+    const data = collectProcessImprovements(tmpDir);
+    // Both sources should be present in the same sorted ideaItems array
+    const sources = new Set(data.ideaItems.map((i) => i.source));
+    expect(sources.has("results-review.user.md")).toBe(true);
+    expect(sources.has("queue-state.json")).toBe(true);
+    // All items should be sorted (own_priority_rank ascending)
+    for (let i = 1; i < data.ideaItems.length; i++) {
+      const prevRank = data.ideaItems[i - 1]!.own_priority_rank ?? 999;
+      const currRank = data.ideaItems[i]!.own_priority_rank ?? 999;
+      expect(prevRank).toBeLessThanOrEqual(currRank);
+    }
+  });
+
+  it("TC-06: malformed queue-state.json (missing dispatches array) returns empty", async () => {
+    await writeFile(tmpDir, QUEUE_STATE_RELATIVE_PATH, '{"counts": {}}');
+
+    const data = collectProcessImprovements(tmpDir);
+    const dispatchItems = data.ideaItems.filter((item) => item.source === "queue-state.json");
+    expect(dispatchItems).toHaveLength(0);
+  });
+
+  it("TC-07: dispatch with empty area_anchor is skipped", async () => {
+    const queueState = {
+      dispatches: [
+        {
+          dispatch_id: "DISPATCH-EMPTY-001",
+          business: "BOS",
+          area_anchor: "",
+          why: "No title",
+          queue_state: "enqueued",
+          created_at: "2026-03-04T10:00:00.000Z",
+        },
+        {
+          dispatch_id: "DISPATCH-GOOD-001",
+          business: "BOS",
+          area_anchor: "Valid idea",
+          why: "Has a title",
+          queue_state: "enqueued",
+          created_at: "2026-03-04T11:00:00.000Z",
+        },
+      ],
+    };
+    await writeFile(tmpDir, QUEUE_STATE_RELATIVE_PATH, JSON.stringify(queueState, null, 2));
+
+    const data = collectProcessImprovements(tmpDir);
+    const dispatchItems = data.ideaItems.filter((item) => item.source === "queue-state.json");
+    expect(dispatchItems).toHaveLength(1);
+    expect(dispatchItems[0]?.title).toBe("Valid idea");
   });
 });

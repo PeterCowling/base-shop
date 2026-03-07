@@ -1,0 +1,34 @@
+{
+  "errors": {
+    "invalidJsonBody": "Corpo JSON non valido",
+    "requestedCheckOutDateIso": "requestedCheckOutDate deve essere nel formato ISO YYYY-MM-DD",
+    "noteTooLong": "la nota deve contenere al massimo 500 caratteri",
+    "guestUuidMissing": "guestUuid mancante per la sessione",
+    "rateLimitExceeded": "Troppe richieste di estensione. Attendi prima di riprovare.",
+    "currentCheckoutUnavailable": "La data attuale di check-out non e disponibile per questa prenotazione",
+    "requestedCheckoutAfterCurrent": "requestedCheckOutDate deve essere successiva all'attuale data di check-out",
+    "targetEmailNotConfigured": "L'instradamento delle richieste di estensione non e temporaneamente disponibile",
+    "submitFailed": "Impossibile inviare la richiesta di estensione"
+  },
+  "messages": {
+    "deduplicated": "La richiesta di estensione e gia stata inviata di recente.",
+    "submitted": "Richiesta di estensione inviata. La reception di solito risponde via email entro un giorno lavorativo."
+  },
+  "requestRecord": {
+    "defaultGuestName": "Ospite"
+  },
+  "outboundDraft": {
+    "subject": "[Prime] Richiesta estensione {{bookingId}}",
+    "body": {
+      "intro": "Richiesta di estensione Prime ricevuta.",
+      "booking": "Prenotazione: {{bookingId}}",
+      "guestUuid": "UUID ospite: {{guestUuid}}",
+      "guestName": "Nome ospite: {{guestName}}",
+      "currentCheckout": "Check-out attuale: {{currentCheckOutDate}}",
+      "requestedCheckout": "Check-out richiesto: {{requestedCheckOutDate}}",
+      "note": "Nota: {{note}}",
+      "requestId": "ID richiesta: {{requestId}}",
+      "none": "(nessuna)"
+    }
+  }
+}

@@ -31,11 +31,11 @@ export const DEALS = [
     id: "direct-perks-evergreen",
     discountPct: 25,
     startDate: "2026-02-27",
-    endDate: "2099-12-31",
+    endDate: "2026-10-31",
     validity: {
       appliesTo: "booking_dates",
       windowStart: "2026-02-27",
-      windowEnd: "2099-12-31",
+      windowEnd: "2026-10-31",
     },
     rules: {
       rateType: "any",

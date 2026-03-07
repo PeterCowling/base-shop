@@ -85,6 +85,7 @@ describe("send core – sendWithNodemailer", () => {
     expect(mockSendMail).toHaveBeenCalledWith({
       from: "from@example.com",
       to: "to@example.com",
+      bcc: undefined,
       subject: "Sub",
       html: "<p>H</p>",
       text: "T",
@@ -104,6 +105,7 @@ describe("send core – sendWithNodemailer", () => {
     expect(mockSendMail).toHaveBeenCalledWith({
       from: "from@example.com",
       to: "to@example.com",
+      bcc: undefined,
       subject: "Sub",
       html: "<p>H</p>",
       text: "T",
@@ -127,6 +129,7 @@ describe("send core – sendWithNodemailer", () => {
     expect(mockSendMail).toHaveBeenCalledWith({
       from: "from@example.com",
       to: "to@example.com",
+      bcc: undefined,
       subject: "Sub",
       html: "<p>H</p>",
       text: "T",
@@ -151,4 +154,3 @@ describe("send core – sendWithNodemailer", () => {
     expect(mockSendMail).not.toHaveBeenCalled();
   });
 });
-

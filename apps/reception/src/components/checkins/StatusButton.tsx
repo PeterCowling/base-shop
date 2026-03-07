@@ -8,6 +8,7 @@ import { Button } from "@acme/design-system/atoms";
 
 import useActivitiesMutations from "../../hooks/mutations/useActivitiesMutations";
 import { type CheckInRow } from "../../types/component/CheckinRow";
+import { type ActivityResult } from "../../types/domains/activitiesDomain";
 import { Spinner } from "../common/Spinner";
 
 /**
@@ -79,6 +80,14 @@ function getCodeFromToggles(toggles: number): number {
   if (remainder === 2) return 12;
   // remainder 1 or 3 => code=23
   return 23;
+}
+
+function ensureMutationSuccess(result: ActivityResult, action: string): void {
+  if (result.success) {
+    return;
+  }
+
+  throw new Error(result.error ?? `${action} failed`);
 }
 
 /**
@@ -176,16 +185,20 @@ function StatusButton({ booking }: StatusButtonProps) {
       // oldCode -> newCode
       if (oldCode === 0 && newCode === 23) {
         // add code=23
-        await addActivity(occupantId, 23);
+        const result = await addActivity(occupantId, 23);
+        ensureMutationSuccess(result, "Adding bags-dropped activity");
       } else if (oldCode === 23 && newCode === 12) {
         // add code=12
-        await addActivity(occupantId, 12);
+        const result = await addActivity(occupantId, 12);
+        ensureMutationSuccess(result, "Adding check-in-complete activity");
       } else if (oldCode === 12 && newCode === 23) {
         // remove last code=12
-        await removeLastActivity(occupantId, 12);
+        const result = await removeLastActivity(occupantId, 12);
+        ensureMutationSuccess(result, "Removing check-in-complete activity");
       } else if (oldCode === 23 && newCode === 0) {
         // remove last code=23
-        await removeLastActivity(occupantId, 23);
+        const result = await removeLastActivity(occupantId, 23);
+        ensureMutationSuccess(result, "Removing bags-dropped activity");
       }
       // No other transitions needed (the cycle only uses 0, 23, 12).
     } catch (err) {

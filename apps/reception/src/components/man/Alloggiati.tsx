@@ -219,10 +219,58 @@ const AlloggiatiComponent: FC = () => {
       if (results) {
         setSubmissionResults(results);
 
+        if (results.length !== occupantDataToSend.length) {
+          console.error(
+            `[Alloggiati] Result count mismatch: expected ${occupantDataToSend.length}, received ${results.length}.`,
+          );
+          showToast(
+            "Result count mismatch from Alloggiati response. No records were saved.",
+            "error",
+          );
+          return;
+        }
+
+        const alignedResults: Array<AlloggiatiResultDetail | undefined> = new Array(
+          occupantDataToSend.length,
+        );
+        const seenIndexes = new Set<number>();
+        for (const resultDetail of results) {
+          const resultIndex = Number.parseInt(resultDetail.recordNumber, 10) - 1;
+          const indexValid =
+            Number.isInteger(resultIndex) &&
+            resultIndex >= 0 &&
+            resultIndex < occupantDataToSend.length;
+
+          if (!indexValid || seenIndexes.has(resultIndex)) {
+            console.error(
+              `[Alloggiati] Invalid result mapping for recordNumber "${resultDetail.recordNumber}".`,
+            );
+            showToast(
+              "Invalid Alloggiati response order. No records were saved.",
+              "error",
+            );
+            return;
+          }
+
+          seenIndexes.add(resultIndex);
+          alignedResults[resultIndex] = resultDetail;
+        }
+
+        if (alignedResults.some((detail) => detail === undefined)) {
+          console.error(
+            "[Alloggiati] Incomplete result mapping. Some occupant results are missing.",
+          );
+          showToast(
+            "Incomplete Alloggiati response mapping. No records were saved.",
+            "error",
+          );
+          return;
+        }
+
         // 2) For each occupant, determine success or error
         for (let i = 0; i < occupantDataToSend.length; i++) {
           const occupant = occupantDataToSend[i];
-          const resultDetail = results[i];
+          const resultDetail = alignedResults[i];
           const occupantId = occupant.occupantId;
           const nowItalyIso = getItalyIsoString();
 

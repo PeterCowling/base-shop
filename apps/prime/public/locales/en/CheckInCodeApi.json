@@ -1,0 +1,11 @@
+{
+  "errors": {
+    "uuidQueryRequired": "uuid parameter is required",
+    "fetchFailed": "Failed to fetch check-in code",
+    "uuidRequired": "uuid is required",
+    "checkOutDateRequired": "checkOutDate is required",
+    "checkOutDateInvalid": "checkOutDate must be a valid date",
+    "uniqueCodeGenerationFailed": "Failed to generate unique code",
+    "generateFailed": "Failed to generate check-in code"
+  }
+}

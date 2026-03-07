@@ -189,6 +189,12 @@ export async function loadUserWithProfile(
   } catch (error) {
     console.error("Failed to load user profile:", error);
     const cached = await getMeta<User>("cachedUserProfile");
+    if (cached && cached.uid !== firebaseUser.uid) {
+      console.warn(
+        `Cached profile UID mismatch: expected ${firebaseUser.uid}, got ${cached.uid}. Ignoring cache.`,
+      );
+      return null;
+    }
     return cached;
   }
 }

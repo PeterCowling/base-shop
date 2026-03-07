@@ -350,8 +350,8 @@ Gaps observed:
 
 Evidence:
 - `.claude/skills/lp-experiment/SKILL.md`
-- `scripts/src/startup-loop/s10-growth-accounting.ts`
-- `scripts/src/startup-loop/s10-learning-hook.ts`
+- `scripts/src/startup-loop/s10/s10-growth-accounting.ts`
+- `scripts/src/startup-loop/s10/s10-learning-hook.ts`
 - `docs/business-os/startup-loop/schemas/learning-ledger-schema.md`
 
 ## Root Cause Hypotheses (Systemic)

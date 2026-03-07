@@ -22,7 +22,7 @@ const PICKUP_TIME_SLOTS = [
 
 export default function BagStoragePage() {
   const { t } = useTranslation('Homepage');
-  const { snapshot, token, isLoading, refetch } = useGuestBookingSnapshot();
+  const { snapshot, isLoading, refetch } = useGuestBookingSnapshot();
   const [pickupWindow, setPickupWindow] = useState('');
   const [note, setNote] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -31,7 +31,7 @@ export default function BagStoragePage() {
 
   async function submitBagDrop(event: React.FormEvent) {
     event.preventDefault();
-    if (!token || !pickupWindow) {
+    if (!snapshot || !pickupWindow) {
       return;
     }
 
@@ -40,11 +40,11 @@ export default function BagStoragePage() {
     setError(null);
 
     try {
+      // prime_session HttpOnly cookie is sent automatically on this same-origin request
       const response = await fetch(GUEST_CRITICAL_FLOW_ENDPOINTS.bag_drop, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          token,
           pickupWindow,
           note,
         }),

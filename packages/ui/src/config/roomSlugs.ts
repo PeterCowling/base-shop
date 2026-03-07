@@ -1,7 +1,7 @@
 // packages/ui/src/config/roomSlugs.ts
 // Per-language URL slugs for individual dorm room detail pages.
 // ASCII-safe transliterations of room names in each supported language.
-// Non-Latin-script languages (ja, ko, zh, ar, hi, vi) use English slugs.
+// Non-Latin-script languages use locale-appropriate Romanized slugs.
 
 import type { AppLanguage } from "../i18n.config";
 
@@ -13,13 +13,13 @@ export const ROOM_SLUGS: Readonly<Record<string, Record<AppLanguage, string>>> =
     es: "dormitorio-mixto-bano-privado",
     fr: "dortoir-mixte-salle-de-bain",
     it: "dormitorio-misto-bagno-privato",
-    ja: "mixed-ensuite-dorm",
-    ko: "mixed-ensuite-dorm",
+    ja: "danjo-kongo-basu-tsuki-domitori",
+    ko: "honseong-yoksil-poham-domitori",
     pt: "dormitorio-misto-banheiro-privativo",
     ru: "smeshanniy-dormitoriy-s-sanuzlom",
-    zh: "mixed-ensuite-dorm",
-    ar: "mixed-ensuite-dorm",
-    hi: "mixed-ensuite-dorm",
+    zh: "hunhe-sushe-duli-weiyu",
+    ar: "mahja-mukhtalat-hammam-dakhili",
+    hi: "mishrit-dorm-in-suit-bathroom",
     vi: "phong-dorm-chung-co-phong-ve-sinh",
     pl: "sypialnia-mieszana-z-lazienka",
     sv: "blandat-sovsal-med-eget-badrum",
@@ -35,13 +35,13 @@ export const ROOM_SLUGS: Readonly<Record<string, Record<AppLanguage, string>>> =
     es: "dormitorio-femenino-gran-terraza-mar",
     fr: "dortoir-feminin-grande-terrasse-mer",
     it: "dormitorio-femminile-grande-terrazza-mare",
-    ja: "female-dorm-large-sea-terrace",
-    ko: "female-dorm-large-sea-terrace",
+    ja: "josei-senyo-domitori-oogata-umi-terasu",
+    ko: "yeoseong-jeonyong-domitori-daehyeong-bada-teraseu",
     pt: "dormitorio-feminino-grande-varanda-mar",
     ru: "zhenskiy-dormitoriy-bolshaya-morskaya-terrasa",
-    zh: "female-dorm-large-sea-terrace",
-    ar: "female-dorm-large-sea-terrace",
-    hi: "female-dorm-large-sea-terrace",
+    zh: "nvxing-sushe-chao-da-haijing-lutai",
+    ar: "mahja-inath-shurfa-bahriya-kabira",
+    hi: "mahila-dorm-vishal-samudri-terrace",
     vi: "phong-dorm-nu-ban-cong-bien-lon",
     pl: "sypialnia-damska-duzy-taras-morski",
     sv: "dam-sovsal-stor-havsterrass",
@@ -57,13 +57,13 @@ export const ROOM_SLUGS: Readonly<Record<string, Record<AppLanguage, string>>> =
     es: "dormitorio-mixto-terraza-mar",
     fr: "dortoir-mixte-terrasse-mer",
     it: "dormitorio-misto-terrazza-mare",
-    ja: "mixed-dorm-sea-terrace",
-    ko: "mixed-dorm-sea-terrace",
+    ja: "danjo-kongo-domitori-umi-terasu",
+    ko: "honseong-domitori-bada-teraseu",
     pt: "dormitorio-misto-varanda-mar",
     ru: "smeshanniy-dormitoriy-morskaya-terrasa",
-    zh: "mixed-dorm-sea-terrace",
-    ar: "mixed-dorm-sea-terrace",
-    hi: "mixed-dorm-sea-terrace",
+    zh: "hunhe-sushe-haijing-lutai",
+    ar: "mahja-mukhtalat-shurfa-bahriya",
+    hi: "mishrit-dorm-samudri-terrace",
     vi: "phong-dorm-chung-ban-cong-bien",
     pl: "sypialnia-mieszana-taras-morski",
     sv: "blandat-sovsal-havsterrass",
@@ -79,13 +79,13 @@ export const ROOM_SLUGS: Readonly<Record<string, Record<AppLanguage, string>>> =
     es: "dormitorio-femenino-8-camas",
     fr: "dortoir-feminin-8-lits",
     it: "dormitorio-femminile-8-letti",
-    ja: "8-bed-female-dorm",
-    ko: "8-bed-female-dorm",
+    ja: "josei-senyo-8-beddo-domitori",
+    ko: "yeoseong-jeonyong-8-insil-domitori",
     pt: "dormitorio-feminino-8-camas",
     ru: "zhenskiy-dormitoriy-8-mest",
-    zh: "8-bed-female-dorm",
-    ar: "8-bed-female-dorm",
-    hi: "8-bed-female-dorm",
+    zh: "nvxing-sushe-8-chuangwei",
+    ar: "mahja-inath-8-asira",
+    hi: "mahila-dorm-8-bistar",
     vi: "phong-dorm-nu-8-giuong",
     pl: "sypialnia-damska-8-lozek",
     sv: "dam-sovsal-8-sanger",
@@ -101,13 +101,13 @@ export const ROOM_SLUGS: Readonly<Record<string, Record<AppLanguage, string>>> =
     es: "dormitorio-mixto-8-camas",
     fr: "dortoir-mixte-8-lits",
     it: "dormitorio-misto-8-letti",
-    ja: "8-bed-mixed-dorm",
-    ko: "8-bed-mixed-dorm",
+    ja: "danjo-kongo-8-beddo-domitori",
+    ko: "honseong-8-insil-domitori",
     pt: "dormitorio-misto-8-camas",
     ru: "smeshanniy-dormitoriy-8-mest",
-    zh: "8-bed-mixed-dorm",
-    ar: "8-bed-mixed-dorm",
-    hi: "8-bed-mixed-dorm",
+    zh: "hunhe-sushe-8-chuangwei",
+    ar: "mahja-mukhtalat-8-asira",
+    hi: "mishrit-dorm-8-bistar",
     vi: "phong-dorm-chung-8-giuong",
     pl: "sypialnia-mieszana-8-lozek",
     sv: "blandat-sovsal-8-sanger",
@@ -123,13 +123,13 @@ export const ROOM_SLUGS: Readonly<Record<string, Record<AppLanguage, string>>> =
     es: "dormitorio-femenino-vista-mar",
     fr: "dortoir-feminin-vue-mer",
     it: "dormitorio-femminile-vista-mare",
-    ja: "female-sea-view-dorm",
-    ko: "female-sea-view-dorm",
+    ja: "josei-senyo-oshan-byu-domitori",
+    ko: "yeoseong-jeonyong-bada-jeonmang-domitori",
     pt: "dormitorio-feminino-vista-mar",
     ru: "zhenskiy-dormitoriy-vid-na-more",
-    zh: "female-sea-view-dorm",
-    ar: "female-sea-view-dorm",
-    hi: "female-sea-view-dorm",
+    zh: "nvxing-sushe-haijing",
+    ar: "mahja-inath-itlala-bahriya",
+    hi: "mahila-dorm-samudri-drishya",
     vi: "phong-dorm-nu-view-bien",
     pl: "sypialnia-damska-widok-morze",
     sv: "dam-sovsal-havsutsikt",
@@ -145,13 +145,13 @@ export const ROOM_SLUGS: Readonly<Record<string, Record<AppLanguage, string>>> =
     es: "dormitorio-femenino-7-camas-vista-mar",
     fr: "dortoir-feminin-7-lits-vue-mer",
     it: "dormitorio-femminile-7-letti-vista-mare",
-    ja: "7-bed-female-sea-view-dorm",
-    ko: "7-bed-female-sea-view-dorm",
+    ja: "josei-senyo-oshan-byu-7-beddo-domitori",
+    ko: "yeoseong-jeonyong-bada-jeonmang-7-insil-domitori",
     pt: "dormitorio-feminino-7-camas-vista-mar",
     ru: "zhenskiy-dormitoriy-7-mest-vid-na-more",
-    zh: "7-bed-female-sea-view-dorm",
-    ar: "7-bed-female-sea-view-dorm",
-    hi: "7-bed-female-sea-view-dorm",
+    zh: "nvxing-sushe-haijing-7-chuangwei",
+    ar: "mahja-inath-7-asira-itlala-bahriya",
+    hi: "mahila-dorm-7-bistar-samudri-drishya",
     vi: "phong-dorm-nu-7-giuong-view-bien",
     pl: "sypialnia-damska-7-lozek-widok-morze",
     sv: "dam-sovsal-7-sanger-havsutsikt",
@@ -167,13 +167,13 @@ export const ROOM_SLUGS: Readonly<Record<string, Record<AppLanguage, string>>> =
     es: "habitacion-mixta-camas-individuales",
     fr: "chambre-mixte-lits-simples",
     it: "camera-mista-letti-singoli",
-    ja: "mixed-room-single-beds",
-    ko: "mixed-room-single-beds",
+    ja: "danjo-kongo-shinguru-beddo-rumu",
+    ko: "honseong-singgeul-bedeu-gaeksil",
     pt: "quarto-misto-camas-individuais",
     ru: "smeshanniy-nomer-otdelnyye-krovati",
-    zh: "mixed-room-single-beds",
-    ar: "mixed-room-single-beds",
-    hi: "mixed-room-single-beds",
+    zh: "hunhe-kefang-danrenchuang",
+    ar: "ghurfa-mukhtalata-asira-mufrada",
+    hi: "mishrit-kamra-single-bed",
     vi: "phong-chung-giuong-don",
     pl: "pokoj-mieszany-lozka-jednoosobowe",
     sv: "blandat-rum-enbangar",
@@ -189,13 +189,13 @@ export const ROOM_SLUGS: Readonly<Record<string, Record<AppLanguage, string>>> =
     es: "habitacion-femenina-jardin",
     fr: "chambre-feminine-jardin",
     it: "camera-femminile-giardino",
-    ja: "female-garden-room",
-    ko: "female-garden-room",
+    ja: "josei-senyo-gaden-rumu",
+    ko: "yeoseong-jeonyong-jeongwon-byu-gaeksil",
     pt: "quarto-feminino-jardim",
     ru: "zhenskiy-nomer-s-vidom-na-sad",
-    zh: "female-garden-room",
-    ar: "female-garden-room",
-    hi: "female-garden-room",
+    zh: "nvxing-kefang-huayuan-jingguan",
+    ar: "ghurfa-inath-itlala-ala-alhadiqa",
+    hi: "mahila-kamra-bagicha-drishya",
     vi: "phong-nu-nhin-vuon",
     pl: "pokoj-damski-ogrod",
     sv: "dam-tradgardsrum",
@@ -214,9 +214,27 @@ export function getRoomSlug(roomId: string, lang: AppLanguage): string {
 }
 
 /**
+ * Returns legacy aliases that should continue resolving for this room/language pair.
+ * We preserve historic English slugs for non-English locales whenever the canonical
+ * localized slug has changed.
+ */
+export function getRoomSlugAliases(roomId: string, lang: AppLanguage): readonly string[] {
+  if (lang === "en") return [];
+
+  const canonicalSlug = ROOM_SLUGS[roomId]?.[lang];
+  const englishSlug = ROOM_SLUGS[roomId]?.en;
+  if (!canonicalSlug || !englishSlug || canonicalSlug === englishSlug) return [];
+
+  return [englishSlug];
+}
+
+/**
  * Reverse-looks up a room ID from a URL slug in the given language.
  * Returns undefined if no match is found.
  */
 export function findRoomIdBySlug(slug: string, lang: AppLanguage): string | undefined {
-  return Object.entries(ROOM_SLUGS).find(([, slugs]) => slugs[lang] === slug)?.[0];
+  const directMatch = Object.entries(ROOM_SLUGS).find(([, slugs]) => slugs[lang] === slug)?.[0];
+  if (directMatch) return directMatch;
+
+  return Object.keys(ROOM_SLUGS).find((roomId) => getRoomSlugAliases(roomId, lang).includes(slug));
 }

@@ -1,6 +1,8 @@
+"use client";
+
 import { Suspense } from "react";
 
-import { XA_PRODUCTS } from "../lib/demoData";
+import { useXaCatalogSnapshot } from "../lib/liveCatalog";
 import { filterByCategory, filterByDepartment, formatLabel,XA_CATEGORY_LABELS } from "../lib/xaCatalog";
 import type { XaCategory, XaDepartment } from "../lib/xaTypes";
 
@@ -15,11 +17,12 @@ export function XaDepartmentListing({
   category: XaCategory;
   subcategory?: string;
 }) {
+  const { products: liveProducts } = useXaCatalogSnapshot();
   const departmentLabel = formatLabel(department);
   const categoryLabel = XA_CATEGORY_LABELS[category];
   const subLabel = subcategory ? formatLabel(subcategory) : null;
 
-  const departmentProducts = filterByDepartment(XA_PRODUCTS, department);
+  const departmentProducts = filterByDepartment(liveProducts, department);
   const categoryProducts = filterByCategory(departmentProducts, category);
   const products = subcategory
     ? categoryProducts.filter((product) => product.taxonomy.subcategory === subcategory)

@@ -1,6 +1,6 @@
 export * from "./animation/index.js";
 export * from "./color/index.js";
-export type * from "./experimentation/index.js";
+export * from "./experimentation/index.js";
 export * from "./financial/index.js";
 export * from "./forecasting/index.js";
 export * from "./geometry/index.js";

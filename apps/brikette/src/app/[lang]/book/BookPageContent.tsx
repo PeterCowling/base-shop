@@ -22,7 +22,7 @@ import SocialProofSection from "@/components/landing/SocialProofSection";
 import RoomsSection from "@/components/rooms/RoomsSection";
 import BookPageStructuredData from "@/components/seo/BookPageStructuredData";
 import indicativePricesSeed from "@/data/indicative_prices.json";
-import { roomsData } from "@/data/roomsData";
+import { type RoomId, websiteVisibleRoomsData } from "@/data/roomsData";
 import { useAvailability } from "@/hooks/useAvailability";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import { useRecoveryResumeFallback } from "@/hooks/useRecoveryResumeFallback";
@@ -39,12 +39,16 @@ import {
   readBookingSearchFromStore,
 } from "@/utils/bookingSearch";
 import { formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
-import { fireSearchAvailability, fireViewItemList } from "@/utils/ga4-events";
+import { fireSearchAvailability, fireViewItemList, type ItemListId } from "@/utils/ga4-events";
 import { getIndicativeDisclosure, getIndicativeRoomPrices } from "@/utils/indicativePricing";
+import { type AppNamespaceBundles, primeAppI18nBundles } from "@/utils/primeAppI18nBundles";
 
 type Props = {
   lang: AppLanguage;
   heading: string;
+  includedRoomIds?: RoomId[];
+  itemListId?: ItemListId;
+  preloadedNamespaceBundles?: AppNamespaceBundles;
 };
 
 type SearchAvailabilityPayload = {
@@ -161,7 +165,14 @@ function renderRecoverySection(
   );
 }
 
-function BookPageContent({ lang, heading }: Props): JSX.Element {
+function BookPageContent({
+  lang,
+  heading,
+  includedRoomIds,
+  itemListId = "book_rooms",
+  preloadedNamespaceBundles,
+}: Props): JSX.Element {
+  primeAppI18nBundles(lang, preloadedNamespaceBundles);
   const router = useRouter();
   const { t } = useTranslation("bookPage", { lng: lang, useSuspense: true });
   usePagePreload({
@@ -214,6 +225,8 @@ function BookPageContent({ lang, heading }: Props): JSX.Element {
     to: safeParseIso(initialCheckout),
   });
   const [pax, setPax] = useState(initialPax);
+  const [showSelectDatesPrompt, setShowSelectDatesPrompt] = useState(false);
+  const calendarAnchorRef = useRef<HTMLDivElement | null>(null);
   const checkin = range.from ? formatDate(range.from) : "";
   const checkout = range.to ? formatDate(range.to) : "";
 
@@ -247,6 +260,12 @@ function BookPageContent({ lang, heading }: Props): JSX.Element {
     [checkin, checkout, pax],
   );
 
+  useEffect(() => {
+    if (roomQueryState !== "absent" && showSelectDatesPrompt) {
+      setShowSelectDatesPrompt(false);
+    }
+  }, [roomQueryState, showSelectDatesPrompt]);
+
   // TC-03-01: useAvailability called unconditionally (hooks invariant — no conditional calls).
   const availabilityCheckin = checkin || todayIso;
   const availabilityCheckout = checkout || getDatePlusTwoDays(availabilityCheckin);
@@ -258,17 +277,24 @@ function BookPageContent({ lang, heading }: Props): JSX.Element {
 
   useEffect(() => scheduleBookingSearchPersistence(checkin, checkout, pax), [checkin, checkout, pax]);
 
+  const displayedRooms = useMemo(() => {
+    if (!includedRoomIds || includedRoomIds.length === 0) return websiteVisibleRoomsData;
+    const included = new Set(includedRoomIds);
+    return websiteVisibleRoomsData.filter((room) => included.has(room.id));
+  }, [includedRoomIds]);
+
   const showConstraintGuidance = roomQueryState === "invalid";
   const indicativeRoomPrices = useMemo(() => {
     return getIndicativeRoomPrices(
       indicativePricesSeed,
-      roomsData.map((room) => room.id),
+      displayedRooms.map((room) => room.id),
     );
-  }, []);
+  }, [displayedRooms]);
   const indicativeDisclosure = useMemo<string | null>(() => {
     if (roomQueryState !== "absent" || !indicativeRoomPrices) return null;
     return getIndicativeDisclosure(indicativePricesSeed);
   }, [indicativeRoomPrices, roomQueryState]);
+  const selectDatesPromptText = t("searchPrompt.selectDatesAndGuests") as string;
 
   // TC-01: fire search_availability when dates/pax change; debounced + deduped.
   useEffect(
@@ -277,9 +303,15 @@ function BookPageContent({ lang, heading }: Props): JSX.Element {
   );
 
   useEffect(() => {
-    fireViewItemList({ itemListId: "book_rooms", rooms: roomsData });
+    fireViewItemList({ itemListId, rooms: displayedRooms });
     seedInitialSearchTelemetry(mountedSearchRef.current, initialValuesRef.current, lastSearchKeyRef);
-  }, []); // mount only
+  }, [displayedRooms, itemListId]); // mount only
+
+  const handleRequireSearchInput = (): void => {
+    setShowSelectDatesPrompt(true);
+    calendarAnchorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    calendarAnchorRef.current?.focus({ preventScroll: true });
+  };
 
   return (
     <>
@@ -299,6 +331,7 @@ function BookPageContent({ lang, heading }: Props): JSX.Element {
 
         <BookPageSearchPanel
           lang={lang}
+          calendarAnchorRef={calendarAnchorRef}
           range={range}
           pax={pax}
           onRangeChange={(newRange) => setRange(newRange ?? { from: undefined, to: undefined })}
@@ -312,17 +345,21 @@ function BookPageContent({ lang, heading }: Props): JSX.Element {
           checkOutLabelText={t("date.checkOutLabel", { defaultValue: "Check out" }) as string}
           guestsLabelText={t("date.guests", { defaultValue: "Guests" }) as string}
           showConstraintGuidance={showConstraintGuidance}
+          showSelectDatesPrompt={showSelectDatesPrompt}
+          selectDatesPromptText={selectDatesPromptText}
           showRebuildQuotePrompt={showRebuildQuotePrompt}
         />
       </Section>
 
       <RoomsSection
         lang={lang}
-        itemListId="book_rooms"
+        itemListId={itemListId}
         queryState={roomQueryState}
         deal={deal ?? undefined}
         availabilityRooms={availabilityRooms}
         roomPricesOverride={indicativeRoomPrices}
+        includeRoomIds={includedRoomIds}
+        onRequireSearchInput={handleRequireSearchInput}
         bookingQuery={{
           checkIn: checkin,
           checkOut: checkout,

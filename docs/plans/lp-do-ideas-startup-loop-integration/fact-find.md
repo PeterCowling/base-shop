@@ -56,16 +56,16 @@ This revision explicitly reflects the current `lp-do-fact-find` contract: planni
 
 ## Evidence Audit (Current State)
 ### Entry Points
-- `docs/business-os/startup-loop/loop-spec.yaml`
-- `docs/business-os/startup-loop/stage-operator-dictionary.yaml`
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml`
+- `docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml`
 - `.claude/skills/startup-loop/modules/cmd-advance.md`
 - `.claude/skills/lp-do-fact-find/SKILL.md`
 - `.claude/skills/idea-scan/SKILL.md`
 - `.claude/skills/idea-develop/SKILL.md`
-- `scripts/src/startup-loop/map-artifact-delta-to-website-backlog.ts`
+- `scripts/src/startup-loop/website/map-artifact-delta-to-website-backlog.ts`
 - `packages/mcp-server/src/tools/loop.ts`
 - `docs/business-os/startup-loop/ideas/scan-proposals.schema.md`
-- `docs/business-os/startup-loop/loop-output-contracts.md`
+- `docs/business-os/startup-loop/contracts/loop-output-contracts.md`
 
 ### Key Modules / Files
 - `loop-spec.yaml` defines IDEAS as a standing pipeline with `layer_a_pack_diff` triggers and IDEAS-03 promotion to DO.

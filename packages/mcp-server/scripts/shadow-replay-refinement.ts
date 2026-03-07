@@ -25,7 +25,10 @@ type CorpusEmail = {
 type InterpretPayload = {
   scenario: { category: string };
   intents: { questions: Array<{ text: string }>; requests: Array<{ text: string }> };
-  workflow_triggers: { booking_monitor: boolean };
+  workflow_triggers: {
+    booking_action_required: boolean;
+    booking_context: boolean;
+  };
   language: "EN" | "IT" | "ES" | "UNKNOWN";
 };
 

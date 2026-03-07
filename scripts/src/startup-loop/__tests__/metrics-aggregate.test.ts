@@ -3,8 +3,8 @@ import { promises as fs } from "fs";
 import os from "os";
 import path from "path";
 
-import type { MetricsReport } from "../metrics-aggregate";
-import { aggregateMetrics } from "../metrics-aggregate";
+import type { MetricsReport } from "../diagnostics/metrics-aggregate";
+import { aggregateMetrics } from "../diagnostics/metrics-aggregate";
 
 /**
  * LPSP-08: /lp-build (VC-08-02 stabilization triggers)

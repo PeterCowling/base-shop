@@ -1,0 +1,48 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260305184751-2401",
+  "mode": "trial",
+  "business": "BRIK",
+  "trigger": "operator_idea",
+  "root_event_id": "operator:BRIK:BOS:reception-reaudit-opportunities-20260305",
+  "anchor_key": "reception-reaudit-opportunities",
+  "cluster_key": "BRIK:BOS:reception-reaudit-opportunities:operator:20260305",
+  "cluster_fingerprint": "95dd87dad5632a41136c4ef8cfa131e4d1e4ce8f832aa4971eaa99f85da9c756",
+  "lineage_depth": 0,
+  "area_anchor": "Reception re-audit opportunities — fail-closed activity and async integrity gaps",
+  "location_anchors": [
+    "apps/reception/src/hooks/mutations/useActivitiesMutations.ts",
+    "apps/reception/src/components/checkins/keycardButton/KeycardDepositButton.tsx",
+    "apps/reception/src/components/loans/LoansContainer.tsx",
+    "apps/reception/src/hooks/mutations/useLoansMutations.ts",
+    "apps/reception/src/components/man/modals/ExtensionPayModal.tsx",
+    "apps/reception/src/components/prepayments/PrepaymentsContainer.tsx"
+  ],
+  "provisional_deliverable_family": "code-change",
+  "recommended_route": "lp-do-fact-find",
+  "status": "fact_find_ready",
+  "domain": "BOS",
+  "priority": "P1",
+  "confidence": 0.89,
+  "current_truth": "Reception re-audit still shows fail-open activity wrappers, unchecked mutation success results, and async fire-and-forget writes that can silently lose audit/financial side effects.",
+  "next_scope_now": "Harden activity mutation result handling to fail closed, remove fire-and-forget critical writes, and close coverage gaps for non-throwing failure paths.",
+  "adjacent_later": [
+    "Consolidate multi-write financial mutations under shared fail-closed transactional helpers.",
+    "Add component-level regression tests for keycard and loans mutation orchestration."
+  ],
+  "evidence_refs": [
+    "operator-stated: re-audit reception process and take opportunities forward",
+    "apps/reception/src/hooks/mutations/useActivitiesMutations.ts",
+    "apps/reception/src/components/checkins/keycardButton/KeycardDepositButton.tsx",
+    "apps/reception/src/components/loans/LoansContainer.tsx",
+    "apps/reception/src/hooks/mutations/useLoansMutations.ts"
+  ],
+  "why": "Critical front-desk flows can report success while activity or financial side effects fail silently, which undermines operator trust and data integrity.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Reception mutation flows fail closed on non-throwing mutation failures and async side effects are either confirmed or surfaced as explicit errors with regression coverage.",
+    "source": "operator"
+  },
+  "created_at": "2026-03-05T18:47:51.000Z",
+  "queue_state": "enqueued"
+}

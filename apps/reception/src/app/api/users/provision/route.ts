@@ -1,36 +1,111 @@
 import { NextResponse } from "next/server";
 
 import { Permissions } from "../../../../lib/roles";
+import { isStaffAccountsPeteIdentity } from "../../../../lib/staffAccountsAccess";
+import {
+  normalizeRoles,
+  type RawUserProfile,
+  type UserRole,
+  UserRoleSchema,
+} from "../../../../types/domains/userDomain";
 import { requireStaffAuth } from "../../mcp/_shared/staff-auth";
 
-const ALLOWED_ROLES = ["staff", "manager", "admin"] as const;
-type AllowedRole = (typeof ALLOWED_ROLES)[number];
+const ALLOWED_PROVISION_ROLES = ["staff", "manager", "admin"] as const;
+type AllowedProvisionRole = (typeof ALLOWED_PROVISION_ROLES)[number];
+const MANAGED_ROLE_SET = new Set<string>(ALLOWED_PROVISION_ROLES);
 
 type ProvisionRequestBody = {
   email: string;
   user_name: string;
   displayName?: string;
-  role: AllowedRole;
+  role?: AllowedProvisionRole;
+  roles?: UserRole[];
 };
 
 type SignUpPayload = {
   localId?: string;
+  idToken?: string;
   error?: {
     message?: string;
   };
 };
 
+type UserProfileRecord = {
+  email: string;
+  user_name: string;
+  displayName?: string;
+  roles?: RawUserProfile["roles"];
+  createdAt?: number;
+  updatedAt?: number;
+};
+
+type UserProfileCollection = Record<string, UserProfileRecord | null>;
+
 function readRequiredEnv(): { apiKey: string; dbUrl: string } | null {
-  const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY?.trim();
-  const dbUrl = process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL?.trim();
+  const apiKey =
+    process.env.RECEPTION_FIREBASE_API_KEY?.trim() ??
+    process.env.NEXT_PUBLIC_FIREBASE_API_KEY?.trim();
+  const dbUrl =
+    process.env.RECEPTION_FIREBASE_DATABASE_URL?.trim() ??
+    process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL?.trim();
   if (!apiKey || !dbUrl) return null;
   return { apiKey, dbUrl: dbUrl.replace(/\/+$/, "") };
+}
+
+function extractBearerToken(request: Request): string {
+  return (
+    request.headers.get("authorization")?.replace(/^Bearer\s+/i, "").trim() ?? ""
+  );
+}
+
+function toRoleMap(roles: UserRole[]): Record<string, true> {
+  return Object.fromEntries(roles.map((role) => [role, true]));
+}
+
+function normalizeRequestedRoles(input: ProvisionRequestBody): UserRole[] | null {
+  if (Array.isArray(input.roles)) {
+    const parsed = UserRoleSchema.array().safeParse(input.roles);
+    if (!parsed.success) return null;
+    return Array.from(new Set(parsed.data));
+  }
+
+  if (input.role) {
+    if (!(ALLOWED_PROVISION_ROLES as readonly string[]).includes(input.role)) {
+      return null;
+    }
+    return [input.role];
+  }
+
+  return null;
+}
+
+function validateProvisionInput(body: ProvisionRequestBody): string | null {
+  if (!body.email?.trim()) return "email is required";
+  if (!body.user_name?.trim()) return "user_name is required";
+
+  const roles = normalizeRequestedRoles(body);
+  if (!roles || roles.length === 0) {
+    return `role is required (allowed: ${ALLOWED_PROVISION_ROLES.join(", ")})`;
+  }
+
+  // Provisioning remains limited to operational roles for now.
+  const invalidProvisionRole = roles.find(
+    (role) => !(ALLOWED_PROVISION_ROLES as readonly string[]).includes(role),
+  );
+  if (invalidProvisionRole) {
+    return `role must be one of: ${ALLOWED_PROVISION_ROLES.join(", ")}`;
+  }
+
+  return null;
 }
 
 async function createFirebaseAuthAccount(
   email: string,
   apiKey: string,
-): Promise<{ localId: string } | { error: string; status: number }> {
+): Promise<
+  | { localId: string; idToken: string }
+  | { error: string; status: number }
+> {
   const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${encodeURIComponent(apiKey)}`;
   const response = await fetch(url, {
     method: "POST",
@@ -38,7 +113,7 @@ async function createFirebaseAuthAccount(
     body: JSON.stringify({
       email,
       password: crypto.randomUUID(),
-      returnSecureToken: false,
+      returnSecureToken: true,
     }),
   });
 
@@ -51,15 +126,153 @@ async function createFirebaseAuthAccount(
     return { error: "Failed to create auth account", status: 502 };
   }
 
-  if (!payload.localId) {
+  if (!payload.localId || !payload.idToken) {
     return { error: "Unexpected response from auth provider", status: 502 };
   }
 
-  return { localId: payload.localId };
+  return { localId: payload.localId, idToken: payload.idToken };
+}
+
+async function rollbackFirebaseAuthAccount(
+  idToken: string,
+  apiKey: string,
+): Promise<boolean> {
+  const deleteUrl = `https://identitytoolkit.googleapis.com/v1/accounts:delete?key=${encodeURIComponent(apiKey)}`;
+  try {
+    const response = await fetch(deleteUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ idToken }),
+    });
+    return response.ok;
+  } catch {
+    return false;
+  }
+}
+
+async function writeAudit(
+  dbUrl: string,
+  bearerToken: string,
+  payload: Record<string, unknown>,
+): Promise<void> {
+  const auditId = crypto.randomUUID();
+  const auditUrl = `${dbUrl}/audit/settingChanges/${encodeURIComponent(auditId)}.json?auth=${encodeURIComponent(bearerToken)}`;
+  await fetch(auditUrl, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  }).catch(() => {
+    // Non-fatal: audit writes do not block user operations.
+  });
+}
+
+async function authorize(request: Request): Promise<
+  | {
+      ok: true;
+      uid: string;
+      email?: string;
+      bearerToken: string;
+      dbUrl: string;
+      apiKey: string;
+    }
+  | { ok: false; response: Response }
+> {
+  const authResult = await requireStaffAuth(request);
+  if ("response" in authResult) {
+    return { ok: false, response: authResult.response };
+  }
+
+  const managementRoles = new Set<string>(Permissions.USER_MANAGEMENT);
+  if (!authResult.roles.some((role) => managementRoles.has(role))) {
+    return {
+      ok: false,
+      response: NextResponse.json(
+        { success: false, error: "Insufficient permissions" },
+        { status: 403 },
+      ),
+    };
+  }
+
+  if (!isStaffAccountsPeteIdentity({ uid: authResult.uid, email: authResult.email })) {
+    return {
+      ok: false,
+      response: NextResponse.json(
+        { success: false, error: "Staff Accounts is restricted to Pete" },
+        { status: 403 },
+      ),
+    };
+  }
+
+  const env = readRequiredEnv();
+  if (!env) {
+    return {
+      ok: false,
+      response: NextResponse.json(
+        { success: false, error: "Server configuration missing" },
+        { status: 500 },
+      ),
+    };
+  }
+
+  const bearerToken = extractBearerToken(request);
+  if (!bearerToken) {
+    return {
+      ok: false,
+      response: NextResponse.json(
+        { success: false, error: "Missing bearer token" },
+        { status: 401 },
+      ),
+    };
+  }
+
+  return {
+    ok: true,
+    uid: authResult.uid,
+    email: authResult.email,
+    bearerToken,
+    dbUrl: env.dbUrl,
+    apiKey: env.apiKey,
+  };
+}
+
+export async function GET(request: Request): Promise<Response> {
+  const authz = await authorize(request);
+  if ("response" in authz) {
+    return authz.response;
+  }
+
+  const url = `${authz.dbUrl}/userProfiles.json?auth=${encodeURIComponent(authz.bearerToken)}`;
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    return NextResponse.json(
+      { success: false, error: "Failed to load staff accounts" },
+      { status: 502 },
+    );
+  }
+
+  const payload = (await response.json()) as UserProfileCollection | null;
+  const accounts = Object.entries(payload ?? {})
+    .filter(([, profile]) => Boolean(profile?.email && profile?.user_name))
+    .map(([uid, profile]) => {
+      const safeProfile = profile as UserProfileRecord;
+      return {
+        uid,
+        email: safeProfile.email,
+        user_name: safeProfile.user_name,
+        displayName: safeProfile.displayName ?? safeProfile.user_name,
+        roles: normalizeRoles(safeProfile.roles) ?? [],
+        createdAt: safeProfile.createdAt ?? null,
+        updatedAt: safeProfile.updatedAt ?? null,
+      };
+    })
+    .filter((account) => account.roles.some((role) => MANAGED_ROLE_SET.has(role)))
+    .sort((a, b) => a.email.localeCompare(b.email));
+
+  return NextResponse.json({ success: true, accounts });
 }
 
 export async function POST(request: Request): Promise<Response> {
-  // 1. Parse request body
   let body: ProvisionRequestBody;
   try {
     body = (await request.json()) as ProvisionRequestBody;
@@ -70,69 +283,25 @@ export async function POST(request: Request): Promise<Response> {
     );
   }
 
-  const { email, user_name, role } = body;
-  const displayName = body.displayName ?? user_name;
-
-  // 2. Validate required fields
-  if (!email?.trim()) {
+  const validationError = validateProvisionInput(body);
+  if (validationError) {
     return NextResponse.json(
-      { success: false, error: "email is required" },
-      { status: 400 },
-    );
-  }
-  if (!user_name?.trim()) {
-    return NextResponse.json(
-      { success: false, error: "user_name is required" },
-      { status: 400 },
-    );
-  }
-  if (!role) {
-    return NextResponse.json(
-      { success: false, error: "role is required" },
-      { status: 400 },
-    );
-  }
-  if (!(ALLOWED_ROLES as readonly string[]).includes(role)) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: `role must be one of: ${ALLOWED_ROLES.join(", ")}`,
-      },
+      { success: false, error: validationError },
       { status: 400 },
     );
   }
 
-  // 3. Authenticate caller (any staff role)
-  const authResult = await requireStaffAuth(request);
-  if ("response" in authResult) {
-    return authResult.response;
+  const authz = await authorize(request);
+  if ("response" in authz) {
+    return authz.response;
   }
 
-  // 4. Authorize: USER_MANAGEMENT gate (owner/developer only)
-  const mgmtRoles = new Set<string>(Permissions.USER_MANAGEMENT);
-  if (!authResult.roles.some((r) => mgmtRoles.has(r))) {
-    return NextResponse.json(
-      { success: false, error: "Insufficient permissions" },
-      { status: 403 },
-    );
-  }
+  const roles = normalizeRequestedRoles(body) ?? [];
+  const email = body.email.trim();
+  const userName = body.user_name.trim();
+  const displayName = body.displayName?.trim() || userName;
 
-  // 5. Read environment
-  const env = readRequiredEnv();
-  if (!env) {
-    return NextResponse.json(
-      { success: false, error: "Server configuration missing" },
-      { status: 500 },
-    );
-  }
-
-  // 6. Extract bearer token for DB REST writes (already verified by requireStaffAuth)
-  const bearerToken =
-    request.headers.get("authorization")?.replace(/^Bearer\s+/i, "").trim() ??
-    "";
-
-  // 7. Create Firebase Auth account (server-side — does not displace caller's session)
-  const signUpResult = await createFirebaseAuthAccount(email.trim(), env.apiKey);
+  const signUpResult = await createFirebaseAuthAccount(email, authz.apiKey);
   if ("error" in signUpResult) {
     return NextResponse.json(
       { success: false, error: signUpResult.error },
@@ -140,54 +309,223 @@ export async function POST(request: Request): Promise<Response> {
     );
   }
 
-  const { localId } = signUpResult;
-
-  // 8. Write userProfiles/{uid} — roles in map form required by DB security rules
-  const profileUrl = `${env.dbUrl}/userProfiles/${encodeURIComponent(localId)}.json?auth=${encodeURIComponent(bearerToken)}`;
+  const profileUrl = `${authz.dbUrl}/userProfiles/${encodeURIComponent(signUpResult.localId)}.json?auth=${encodeURIComponent(authz.bearerToken)}`;
   const profileResponse = await fetch(profileUrl, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      email: email.trim(),
-      user_name: user_name.trim(),
+      email,
+      user_name: userName,
       displayName,
-      roles: { [role]: true },
+      roles: toRoleMap(roles),
       createdAt: Date.now(),
       updatedAt: Date.now(),
     }),
   });
 
   if (!profileResponse.ok) {
+    const rollbackOk = await rollbackFirebaseAuthAccount(
+      signUpResult.idToken,
+      authz.apiKey,
+    );
     return NextResponse.json(
       {
         success: false,
-        error: "Auth account created but profile write failed",
-        uid: localId,
+        error: rollbackOk
+          ? "Auth account rolled back after profile write failed"
+          : "Auth account created but profile write failed; automatic rollback failed",
+        uid: signUpResult.localId,
       },
       { status: 502 },
     );
   }
 
-  // 9. Write audit record (non-fatal — failure does not block user creation)
-  const auditId = crypto.randomUUID();
-  const auditUrl = `${env.dbUrl}/audit/settingChanges/${encodeURIComponent(auditId)}.json?auth=${encodeURIComponent(bearerToken)}`;
-  await fetch(auditUrl, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      action: "user_provisioned",
-      targetEmail: email.trim(),
-      targetRole: role,
-      createdBy: authResult.uid,
-      timestamp: Date.now(),
-    }),
-  }).catch(() => {
-    // Non-fatal: audit failure does not block user creation
+  await writeAudit(authz.dbUrl, authz.bearerToken, {
+    action: "user_provisioned",
+    targetEmail: email,
+    targetRoles: roles,
+    createdBy: authz.uid,
+    timestamp: Date.now(),
   });
 
   return NextResponse.json({
     success: true,
-    uid: localId,
-    email: email.trim(),
+    uid: signUpResult.localId,
+    email,
+    roles,
   });
+}
+
+type UpdateRequestBody = {
+  uid: string;
+  roles: UserRole[];
+  user_name?: string;
+  displayName?: string;
+};
+
+export async function PATCH(request: Request): Promise<Response> {
+  let body: UpdateRequestBody;
+  try {
+    body = (await request.json()) as UpdateRequestBody;
+  } catch {
+    return NextResponse.json(
+      { success: false, error: "Invalid request body" },
+      { status: 400 },
+    );
+  }
+
+  if (!body.uid?.trim()) {
+    return NextResponse.json(
+      { success: false, error: "uid is required" },
+      { status: 400 },
+    );
+  }
+
+  const parsedRoles = UserRoleSchema.array().safeParse(body.roles);
+  if (!parsedRoles.success || parsedRoles.data.length === 0) {
+    return NextResponse.json(
+      { success: false, error: "roles must be a non-empty role array" },
+      { status: 400 },
+    );
+  }
+
+  const authz = await authorize(request);
+  if ("response" in authz) {
+    return authz.response;
+  }
+
+  const uid = body.uid.trim();
+  const profileUrl = `${authz.dbUrl}/userProfiles/${encodeURIComponent(uid)}.json?auth=${encodeURIComponent(authz.bearerToken)}`;
+
+  const currentResponse = await fetch(profileUrl);
+  if (!currentResponse.ok) {
+    return NextResponse.json(
+      { success: false, error: "Unable to load account" },
+      { status: 502 },
+    );
+  }
+
+  const currentProfile = (await currentResponse.json()) as UserProfileRecord | null;
+  if (!currentProfile) {
+    return NextResponse.json(
+      { success: false, error: "Account not found" },
+      { status: 404 },
+    );
+  }
+
+  const updateResponse = await fetch(profileUrl, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      user_name: body.user_name?.trim() || currentProfile.user_name,
+      displayName:
+        body.displayName?.trim() || currentProfile.displayName || currentProfile.user_name,
+      roles: toRoleMap(Array.from(new Set(parsedRoles.data))),
+      updatedAt: Date.now(),
+    }),
+  });
+
+  if (!updateResponse.ok) {
+    return NextResponse.json(
+      { success: false, error: "Failed to update account" },
+      { status: 502 },
+    );
+  }
+
+  await writeAudit(authz.dbUrl, authz.bearerToken, {
+    action: "user_permissions_updated",
+    targetUid: uid,
+    targetEmail: currentProfile.email,
+    targetRoles: Array.from(new Set(parsedRoles.data)),
+    createdBy: authz.uid,
+    timestamp: Date.now(),
+  });
+
+  return NextResponse.json({ success: true, uid, roles: Array.from(new Set(parsedRoles.data)) });
+}
+
+type DeleteRequestBody = {
+  uid: string;
+};
+
+export async function DELETE(request: Request): Promise<Response> {
+  let body: DeleteRequestBody;
+  try {
+    body = (await request.json()) as DeleteRequestBody;
+  } catch {
+    return NextResponse.json(
+      { success: false, error: "Invalid request body" },
+      { status: 400 },
+    );
+  }
+
+  const uid = body.uid?.trim();
+  if (!uid) {
+    return NextResponse.json(
+      { success: false, error: "uid is required" },
+      { status: 400 },
+    );
+  }
+
+  const authz = await authorize(request);
+  if ("response" in authz) {
+    return authz.response;
+  }
+
+  if (uid === authz.uid) {
+    return NextResponse.json(
+      { success: false, error: "Cannot remove the active Pete account" },
+      { status: 400 },
+    );
+  }
+
+  const profileUrl = `${authz.dbUrl}/userProfiles/${encodeURIComponent(uid)}.json?auth=${encodeURIComponent(authz.bearerToken)}`;
+
+  const currentResponse = await fetch(profileUrl);
+  if (!currentResponse.ok) {
+    return NextResponse.json(
+      { success: false, error: "Unable to load account" },
+      { status: 502 },
+    );
+  }
+
+  const currentProfile = (await currentResponse.json()) as UserProfileRecord | null;
+  if (!currentProfile) {
+    return NextResponse.json(
+      { success: false, error: "Account not found" },
+      { status: 404 },
+    );
+  }
+
+  const currentRoles = normalizeRoles(currentProfile.roles) ?? [];
+  const preservedRoles = currentRoles.filter((role) => !MANAGED_ROLE_SET.has(role));
+  const nextRoles = preservedRoles.length > 0 ? preservedRoles : (["viewer"] as UserRole[]);
+
+  const revokeResponse = await fetch(profileUrl, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      roles: toRoleMap(Array.from(new Set(nextRoles))),
+      deactivatedAt: Date.now(),
+      deactivatedBy: authz.uid,
+      updatedAt: Date.now(),
+    }),
+  });
+  if (!revokeResponse.ok) {
+    return NextResponse.json(
+      { success: false, error: "Failed to remove staff access" },
+      { status: 502 },
+    );
+  }
+
+  await writeAudit(authz.dbUrl, authz.bearerToken, {
+    action: "user_staff_access_removed",
+    targetUid: uid,
+    targetEmail: currentProfile.email,
+    targetRoles: nextRoles,
+    createdBy: authz.uid,
+    timestamp: Date.now(),
+  });
+
+  return NextResponse.json({ success: true, uid });
 }

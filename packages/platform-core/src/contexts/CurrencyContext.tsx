@@ -37,20 +37,30 @@ const CurrencyContext = createContext<
   [Currency, (c: Currency) => void] | undefined
 >(undefined);
 
-export function readInitial(): Currency {
+export function readInitial(fallback?: Currency): Currency {
+  const base = fallback ?? DEFAULT_CURRENCY;
   const win = resolveWindow();
-  if (!win) return DEFAULT_CURRENCY;
+  if (!win) return base;
   try {
     const stored = win.localStorage.getItem(LS_KEY) as Currency | null;
     if (stored === "AUD" || stored === "EUR" || stored === "USD" || stored === "GBP") {
       return stored;
     }
   } catch {}
-  return DEFAULT_CURRENCY;
+  return base;
 }
 
-export function CurrencyProvider({ children }: { children: ReactNode }) {
-  const [currency, setCurrency] = useState<Currency>(() => readInitial());
+export function CurrencyProvider({ children, defaultCurrency }: { children: ReactNode; defaultCurrency?: Currency }) {
+  const base = defaultCurrency ?? DEFAULT_CURRENCY;
+  const [currency, setCurrency] = useState<Currency>(base);
+
+  // Hydrate from localStorage after mount to avoid SSR mismatch
+  useEffect(() => {
+    const stored = readInitial(defaultCurrency);
+    if (stored !== base) {
+      setCurrency(stored);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const win = resolveWindow();

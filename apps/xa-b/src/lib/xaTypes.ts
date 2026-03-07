@@ -13,9 +13,9 @@ export type XaProductTaxonomy = {
   sleeveLength?: string;
   pattern?: string;
   occasion?: string[];
-  sizeClass?: string;
   strapStyle?: string;
   hardwareColor?: string;
+  interiorColor?: string[];
   closureType?: string;
   fits?: string[];
   metal?: string;

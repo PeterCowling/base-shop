@@ -229,7 +229,6 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
                             createPaymentTransaction={
                               createPaymentTransaction
                             }
-                            logActivity={logActivity}
                             onSuccess={() => {
                               setMessage(`Payment paid for ${bookingRef}`);
                             }}

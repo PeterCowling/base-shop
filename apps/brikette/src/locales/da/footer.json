@@ -30,5 +30,6 @@
   "cancellationPolicy": "Afbestillingspolitik",
   "privacy": "Privatlivspolitik",
   "cookies": "Cookiepolitik",
-  "navAriaLabel": "Fodnavigation"
+  "navAriaLabel": "Fodnavigation",
+  "bookDirect": "Book direkte"
 }

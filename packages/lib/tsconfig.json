@@ -29,6 +29,7 @@
 
   "references": [
     { "path": "../config" },
+    { "path": "../types" },
     { "path": "../zod-utils" },
     { "path": "../i18n" }
   ]

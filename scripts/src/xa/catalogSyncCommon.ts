@@ -37,6 +37,21 @@ export function parseList(value: string | undefined): string[] {
   return splitList(value ?? "");
 }
 
+export function normalizeCatalogMediaPath(rawPath: string): string {
+  const trimmed = rawPath.trim();
+  if (!trimmed) return "";
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  return trimmed.replace(/^\/+/, "");
+}
+
+export function isCatalogMediaPathSpec(rawPath: string): boolean {
+  const normalized = normalizeCatalogMediaPath(rawPath);
+  if (!normalized) return false;
+  if (/^https?:\/\//i.test(normalized)) return true;
+  if (normalized.startsWith("images/")) return true;
+  return /^xa-[a-z0-9-]+\/[^/]+\/.+$/i.test(normalized);
+}
+
 export function toNonNegativeInt(value: number | undefined, fallback = 0): number {
   const rounded = toWholeCount(value);
   if (rounded === null) return fallback;

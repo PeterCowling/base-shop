@@ -2,12 +2,15 @@ import { getRequesterIpFromHeaders, isUploaderIpAllowedByHeaders } from "../acce
 
 describe("accessControl", () => {
   const originalAllowedIps = process.env.XA_UPLOADER_ALLOWED_IPS;
+  const originalTrustProxyHeaders = process.env.XA_TRUST_PROXY_IP_HEADERS;
 
   afterEach(() => {
     process.env.XA_UPLOADER_ALLOWED_IPS = originalAllowedIps;
+    process.env.XA_TRUST_PROXY_IP_HEADERS = originalTrustProxyHeaders;
   });
 
   it("prefers cf-connecting-ip when available", () => {
+    process.env.XA_TRUST_PROXY_IP_HEADERS = "true";
     const headers = new Headers({
       "cf-connecting-ip": "198.51.100.10",
       "x-forwarded-for": "203.0.113.10",
@@ -16,25 +19,38 @@ describe("accessControl", () => {
   });
 
   it("uses x-forwarded-for fallback", () => {
+    process.env.XA_TRUST_PROXY_IP_HEADERS = "true";
     const headers = new Headers({
       "x-forwarded-for": "203.0.113.10, 203.0.113.11",
     });
     expect(getRequesterIpFromHeaders(headers)).toBe("203.0.113.10");
   });
 
+  it("ignores forwarded headers when proxy trust is disabled", () => {
+    delete process.env.XA_TRUST_PROXY_IP_HEADERS;
+    const headers = new Headers({
+      "cf-connecting-ip": "198.51.100.10",
+      "x-forwarded-for": "203.0.113.10",
+    });
+    expect(getRequesterIpFromHeaders(headers)).toBe("");
+  });
+
   it("allows all requests when allowlist is not configured", () => {
+    process.env.XA_TRUST_PROXY_IP_HEADERS = "true";
     delete process.env.XA_UPLOADER_ALLOWED_IPS;
     const headers = new Headers({ "cf-connecting-ip": "203.0.113.10" });
     expect(isUploaderIpAllowedByHeaders(headers)).toBe(true);
   });
 
   it("denies requests from non-allowlisted IPs", () => {
+    process.env.XA_TRUST_PROXY_IP_HEADERS = "true";
     process.env.XA_UPLOADER_ALLOWED_IPS = "198.51.100.10";
     const headers = new Headers({ "cf-connecting-ip": "203.0.113.10" });
     expect(isUploaderIpAllowedByHeaders(headers)).toBe(false);
   });
 
   it("allows requests from allowlisted IPs", () => {
+    process.env.XA_TRUST_PROXY_IP_HEADERS = "true";
     process.env.XA_UPLOADER_ALLOWED_IPS = "198.51.100.10,203.0.113.10";
     const headers = new Headers({ "cf-connecting-ip": "203.0.113.10" });
     expect(isUploaderIpAllowedByHeaders(headers)).toBe(true);

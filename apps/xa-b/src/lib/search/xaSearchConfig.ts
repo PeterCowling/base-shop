@@ -42,7 +42,6 @@ export function toXaSearchDoc(product: XaProduct): XaSearchDoc {
     taxonomy.sleeveLength,
     taxonomy.pattern,
     join(taxonomy.occasion),
-    taxonomy.sizeClass,
     taxonomy.strapStyle,
     taxonomy.hardwareColor,
     taxonomy.closureType,

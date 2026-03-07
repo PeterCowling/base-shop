@@ -3,6 +3,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { middleware } from "../middleware";
+import { SLUGS } from "../slug-map";
 
 // Mock NextResponse.rewrite for Jest environment
 // In production, Next.js provides this method, but it's not available in Jest
@@ -27,22 +28,22 @@ function createRequest(pathname: string): NextRequest {
 
 describe("middleware", () => {
   describe("rewrite localized slugs to internal segments (existing behavior)", () => {
-    it("processes /de/zimmer without redirecting", () => {
+    it("redirects /de/zimmer to localized booking page", () => {
       const request = createRequest("/de/zimmer");
       const response = middleware(request);
 
       expect(response).toBeDefined();
-      // Should rewrite (200), not redirect (301)
-      expect(response?.status).not.toBe(301);
+      expect(response?.status).toBe(301);
+      expect(response?.headers.get("location")).toContain(`/de/${SLUGS.book.de}/`);
     });
 
-    it("processes /fr/chambres without redirecting", () => {
+    it("redirects /fr/chambres to localized booking page", () => {
       const request = createRequest("/fr/chambres");
       const response = middleware(request);
 
       expect(response).toBeDefined();
-      // Should rewrite (200), not redirect (301)
-      expect(response?.status).not.toBe(301);
+      expect(response?.status).toBe(301);
+      expect(response?.headers.get("location")).toContain(`/fr/${SLUGS.book.fr}/`);
     });
   });
 
@@ -146,6 +147,22 @@ describe("middleware", () => {
       expect(response?.status).toBe(301);
       expect(response?.headers.get("location")).toContain("/es/habitaciones-privadas/");
     });
+
+    it("redirects /it/private-rooms/double-room to the localized child slug", () => {
+      const request = createRequest("/it/private-rooms/double-room");
+      const response = middleware(request);
+
+      expect(response?.status).toBe(301);
+      expect(response?.headers.get("location")).toContain("/it/camere-private/camera-doppia/");
+    });
+
+    it("redirects /de/privatzimmer/apartment to the localized apartment child slug", () => {
+      const request = createRequest("/de/privatzimmer/apartment");
+      const response = middleware(request);
+
+      expect(response?.status).toBe(301);
+      expect(response?.headers.get("location")).toContain("/de/privatzimmer/apartment-meerblick/");
+    });
   });
 
   describe("redirect cross-locale and legacy aliases (Search Console 404 sample)", () => {
@@ -220,6 +237,26 @@ describe("middleware", () => {
       expect(response?.status).not.toBe(301);
       expect(response?.status).not.toBe(302);
     });
+
+    it("redirects localized room alias /ja/heya/mixed-ensuite-dorm to the canonical Japanese room slug", () => {
+      const request = createRequest("/ja/heya/mixed-ensuite-dorm");
+      const response = middleware(request);
+
+      expect(response?.status).toBe(301);
+      expect(response?.headers.get("location")).toContain(
+        "/ja/heya/danjo-kongo-basu-tsuki-domitori/",
+      );
+    });
+
+    it("redirects internal room alias /ja/dorms/mixed-ensuite-dorm to the canonical Japanese room slug", () => {
+      const request = createRequest("/ja/dorms/mixed-ensuite-dorm");
+      const response = middleware(request);
+
+      expect(response?.status).toBe(301);
+      expect(response?.headers.get("location")).toContain(
+        "/ja/heya/danjo-kongo-basu-tsuki-domitori/",
+      );
+    });
   });
 
   describe("preserve query params and trailing segments", () => {
@@ -279,31 +316,28 @@ describe("middleware", () => {
   });
 
   describe("no redirect loops (single hop)", () => {
-    it("does not redirect /de/zimmer (already correct)", () => {
+    it("redirects /de/zimmer exactly once to booking page", () => {
       const request = createRequest("/de/zimmer");
       const response = middleware(request);
 
-      // Should rewrite, not redirect
-      expect(response?.status).not.toBe(301);
-      expect(response?.status).not.toBe(302);
+      expect(response?.status).toBe(301);
+      expect(response?.headers.get("location")).toContain(`/de/${SLUGS.book.de}/`);
     });
 
-    it("does not redirect /fr/chambres (already correct)", () => {
+    it("redirects /fr/chambres exactly once to booking page", () => {
       const request = createRequest("/fr/chambres");
       const response = middleware(request);
 
-      // Should rewrite, not redirect
-      expect(response?.status).not.toBe(301);
-      expect(response?.status).not.toBe(302);
+      expect(response?.status).toBe(301);
+      expect(response?.headers.get("location")).toContain(`/fr/${SLUGS.book.fr}/`);
     });
 
-    it("does not redirect /en/dorms (current canonical English rooms slug)", () => {
+    it("redirects /en/dorms to booking page", () => {
       const request = createRequest("/en/dorms");
       const response = middleware(request);
 
-      // Should rewrite, not redirect
-      expect(response?.status).not.toBe(301);
-      expect(response?.status).not.toBe(302);
+      expect(response?.status).toBe(301);
+      expect(response?.headers.get("location")).toContain(`/en/${SLUGS.book.en}/`);
     });
   });
 

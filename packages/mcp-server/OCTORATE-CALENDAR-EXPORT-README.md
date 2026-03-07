@@ -150,7 +150,7 @@ The script automates this exact UI path using JavaScript evaluation:
 
 This export is **Batch 1** in the BRIK startup loop data collection protocol.
 
-See: `docs/business-os/startup-loop/octorate-data-collection-protocol.md`
+See: `docs/business-os/startup-loop/operations/octorate-data-collection-protocol.md`
 
 Used for:
 - S3 forecasting (pricing analysis, occupancy patterns)

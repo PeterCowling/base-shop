@@ -1,0 +1,59 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-07T15:49:14.356Z",
+  "plan_slug": "reception-inbox-inprogress-recovery",
+  "source_path": "../docs/plans/reception-inbox-inprogress-recovery/results-review.user.md",
+  "items": [
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "New standing data source — Add a standing ops feed for inbox recovery outcomes",
+      "body": "The build added inbox_recovery telemetry in the thread_events table with queryable recovery outcomes and stale-thread detection signals.",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-03-07T00:00:00.000Z",
+      "path": "../docs/plans/reception-inbox-inprogress-recovery/results-review.user.md",
+      "idea_key": "659f5d2a5f1e66fa29c052de3b5e6e2ab69c3932",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "New loop process — Add a post-deploy recovery telemetry review checkpoint",
+      "body": "The build adds recovery automation and telemetry but no standing review step to confirm recovery fires and clears stuck threads in production.",
+      "suggested_action": "create card",
+      "source": "results-review.user.md",
+      "date": "2026-03-07T00:00:00.000Z",
+      "path": "../docs/plans/reception-inbox-inprogress-recovery/results-review.user.md",
+      "idea_key": "6ede64da018c12d8d989d967d38b6e11e4c7f593",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "AI-to-mechanistic — Schedule Gmail In-Progress reconciliation outside the agent loop",
+      "body": "The plan keeps Gmail-side In-Progress label recovery in the existing MCP gmail_reconcile_in_progress workflow invoked during periodic agent operation; a cron-triggered mechanistic alternative would remove the dependency on agent availability.",
+      "suggested_action": "spike",
+      "source": "results-review.user.md",
+      "date": "2026-03-07T00:00:00.000Z",
+      "path": "../docs/plans/reception-inbox-inprogress-recovery/results-review.user.md",
+      "idea_key": "0240c0910ef9121bceb700c754ac727e078044b7",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    }
+  ]
+}

@@ -2,8 +2,8 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 
-import type { LearningEntry } from '../learning-ledger';
-import { appendLearningEntry, queryLearningEntries } from '../learning-ledger';
+import type { LearningEntry } from '../baselines/learning-ledger';
+import { appendLearningEntry, queryLearningEntries } from '../baselines/learning-ledger';
 
 describe('learning-ledger', () => {
   let testDir: string;

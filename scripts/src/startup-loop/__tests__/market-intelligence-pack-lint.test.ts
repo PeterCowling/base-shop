@@ -1,4 +1,4 @@
-import { lintMarketIntelligencePack } from "../market-intelligence-pack-lint";
+import { lintMarketIntelligencePack } from "../s2/market-intelligence-pack-lint";
 
 describe("market-intelligence-pack-lint", () => {
   it("flags clipboard artifacts, placeholders, and missing Evidence URLs", () => {

@@ -1,6 +1,7 @@
 // src/app/[lang]/private-rooms/book/page.tsx
 // Apartment booking page - App Router version
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 
@@ -8,9 +9,7 @@ import { getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
 import { OG_IMAGE } from "@/utils/headConstants";
-import { getSlug } from "@/utils/slug";
-
-import ApartmentBookContent from "./ApartmentBookContent";
+import { getPrivateBookingPath } from "@/utils/localizedRoutes";
 
 type Props = {
   params: Promise<{ lang: string }>;
@@ -28,8 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = (t("book.meta.title") as string) || "";
   const description = (t("book.meta.description") as string) || "";
 
-  const apartmentSlug = getSlug("apartment", validLang);
-  const path = `/${validLang}/${apartmentSlug}/book`;
+  const path = getPrivateBookingPath(validLang);
 
   const image = buildCfImageUrl("/img/facade.avif", {
     width: OG_IMAGE.width,
@@ -50,19 +48,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ApartmentBookPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
-
-  return (
-    <>
-      <ApartmentBookContent lang={validLang} />
-      {/* No-JS fallback (TASK-08): direct Octorate link rendered in RSC layer so it
-          is always present in server HTML, visible only when JavaScript is disabled.
-          Satisfies TASK-08 TC-04 gate (no dead-end pre-hydration for /{lang}/apartment/book). */}
-      <noscript>
-        {/* eslint-disable-next-line ds/no-hardcoded-copy -- i18n-exempt: noscript-only technical fallback for no-JS users, not rendered in normal UI. TASK-08 [ttl=2026-12-31] */}
-        <a href="https://book.octorate.com/octobook/site/reservation/calendar.xhtml?codice=45111">
-          Check availability
-        </a>
-      </noscript>
-    </>
-  );
+  redirect(getPrivateBookingPath(validLang));
 }

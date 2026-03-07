@@ -411,14 +411,15 @@ describe("gmail audit log (TASK-01)", () => {
 
     expect((result as { isError?: boolean }).isError).not.toBe(true);
     const payload = JSON.parse(result.content[0].text) as {
-      totals: { drafted: number; deferred: number; requeued: number; fallback: number };
-      daily: Array<{ day: string; drafted: number; deferred: number; requeued: number; fallback: number }>;
+      totals: { drafted: number; deferred: number; requeued: number; fallback: number; recovered: number };
+      daily: Array<{ day: string; drafted: number; deferred: number; requeued: number; fallback: number; recovered: number }>;
     };
     expect(payload.totals).toEqual({
       drafted: 1,
       deferred: 1,
       requeued: 1,
       fallback: 1,
+      recovered: 0,
     });
     expect(payload.daily[0]).toMatchObject({
       day: "2026-02-19",
@@ -427,5 +428,54 @@ describe("gmail audit log (TASK-01)", () => {
       requeued: 1,
       fallback: 1,
     });
+  });
+
+  // TC-RU1: email_reconcile_recovery events counted per day bucket
+  it("TC-RU1: email_reconcile_recovery events are counted in the recovered bucket per day", async () => {
+    const D = "2026-02-20";
+    const D1 = "2026-02-21";
+    const lines = [
+      { ts: `${D}T08:00:00.000Z`, event_key: "email_reconcile_recovery", source_path: "queue", actor: "claude", message_id: "msg-a" },
+      { ts: `${D}T09:00:00.000Z`, event_key: "email_reconcile_recovery", source_path: "queue", actor: "claude", message_id: "msg-b" },
+      { ts: `${D1}T08:00:00.000Z`, event_key: "email_reconcile_recovery", source_path: "queue", actor: "claude", message_id: "msg-c" },
+    ];
+    fs.writeFileSync(auditLogPath, `${lines.map((l) => JSON.stringify(l)).join("\n")}\n`, "utf-8");
+
+    const result = await handleGmailTool("gmail_telemetry_daily_rollup", {
+      startDate: D,
+      days: 2,
+    });
+
+    expect((result as { isError?: boolean }).isError).not.toBe(true);
+    const payload = JSON.parse(result.content[0].text) as {
+      daily: Array<{ day: string; recovered: number }>;
+    };
+    const dayD = payload.daily.find((b) => b.day === D);
+    const dayD1 = payload.daily.find((b) => b.day === D1);
+    expect(dayD?.recovered).toBe(2);
+    expect(dayD1?.recovered).toBe(1);
+  });
+
+  // TC-RU2: recovered totals accumulator (gmail.ts:3073-3082)
+  it("TC-RU2: totals.recovered sums email_reconcile_recovery events across days", async () => {
+    const D = "2026-02-20";
+    const D1 = "2026-02-21";
+    const lines = [
+      { ts: `${D}T08:00:00.000Z`, event_key: "email_reconcile_recovery", source_path: "queue", actor: "claude", message_id: "msg-a" },
+      { ts: `${D}T09:00:00.000Z`, event_key: "email_reconcile_recovery", source_path: "queue", actor: "claude", message_id: "msg-b" },
+      { ts: `${D1}T08:00:00.000Z`, event_key: "email_reconcile_recovery", source_path: "queue", actor: "claude", message_id: "msg-c" },
+    ];
+    fs.writeFileSync(auditLogPath, `${lines.map((l) => JSON.stringify(l)).join("\n")}\n`, "utf-8");
+
+    const result = await handleGmailTool("gmail_telemetry_daily_rollup", {
+      startDate: D,
+      days: 2,
+    });
+
+    expect((result as { isError?: boolean }).isError).not.toBe(true);
+    const payload = JSON.parse(result.content[0].text) as {
+      totals: { recovered: number };
+    };
+    expect(payload.totals.recovered).toBe(3);
   });
 });

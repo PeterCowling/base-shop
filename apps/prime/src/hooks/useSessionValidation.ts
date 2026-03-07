@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 import { validateGuestToken } from '../lib/auth/guestSessionGuard';
 
 interface UseSessionValidationOptions {
-  token: string | null;
   enabled: boolean;
   intervalMs?: number;
   onInvalidOrExpired: () => void;
@@ -14,20 +13,20 @@ interface UseSessionValidationOptions {
 const DEFAULT_INTERVAL_MS = 30 * 60 * 1000;
 
 export function useSessionValidation({
-  token,
   enabled,
   intervalMs = DEFAULT_INTERVAL_MS,
   onInvalidOrExpired,
 }: UseSessionValidationOptions): void {
   useEffect(() => {
-    if (!enabled || !token) {
+    if (!enabled) {
       return;
     }
 
     let isActive = true;
 
     const validate = async () => {
-      const result = await validateGuestToken(token);
+      // prime_session HttpOnly cookie is sent automatically on this same-origin request
+      const result = await validateGuestToken();
 
       if (!isActive) {
         return;
@@ -47,7 +46,7 @@ export function useSessionValidation({
       isActive = false;
       window.clearInterval(intervalId);
     };
-  }, [enabled, intervalMs, onInvalidOrExpired, token]);
+  }, [enabled, intervalMs, onInvalidOrExpired]);
 }
 
 export default useSessionValidation;

@@ -1,0 +1,45 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260302151000-0001",
+  "mode": "trial",
+  "business": "BRIK",
+  "trigger": "operator_idea",
+  "artifact_id": "email-deterministic-workload-migration",
+  "before_sha": null,
+  "after_sha": "operator-2026-03-02-deterministic-migration",
+  "root_event_id": "operator:email-deterministic-workload-migration-2026-03-02",
+  "anchor_key": "deterministic-refine-parity-guard",
+  "cluster_key": "brik:email-deterministic-migration",
+  "cluster_fingerprint": "deterministic-email-20260302",
+  "lineage_depth": 0,
+  "area_anchor": "BRIK email pipeline deterministic migration with parity gates",
+  "location_anchors": [
+    "packages/mcp-server/src/tools/draft-refine.ts",
+    "packages/mcp-server/src/__tests__/draft-refine.test.ts",
+    "packages/mcp-server/src/__tests__/draft-refine.quality-gate-fail-closed.test.ts"
+  ],
+  "provisional_deliverable_family": "code-change",
+  "current_truth": "Email refinement still relies on externally rewritten text, and deterministic replacements need explicit parity protection.",
+  "next_scope_now": "Add deterministic refinement mode with quality parity guard so migrated workloads cannot produce lower-quality output than current behavior.",
+  "adjacent_later": [
+    "deterministic intent extraction confidence routing",
+    "deterministic template-slot conflict resolver"
+  ],
+  "recommended_route": "lp-do-fact-find",
+  "status": "fact_find_ready",
+  "priority": "P1",
+  "confidence": 0.91,
+  "evidence_refs": [
+    "operator-stated: migrate deterministic workloads via lp-do-ideas -> lp-do-build with feature parity",
+    "packages/mcp-server/src/tools/draft-refine.ts:150",
+    "packages/mcp-server/src/tools/draft-quality-check.ts:485"
+  ],
+  "created_at": "2026-03-02T15:10:00.000Z",
+  "queue_state": "enqueued",
+  "why": "Deterministic migration is only safe if each migrated workload proves it does not reduce draft quality or guardrail coverage compared with current behavior.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Deterministic refinement mode ships with built-in parity guard and tests that prevent quality regressions versus the current external-refinement path.",
+    "source": "operator"
+  }
+}

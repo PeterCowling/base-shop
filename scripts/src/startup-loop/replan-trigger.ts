@@ -8,8 +8,8 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 
-import { checkConstraintPersistence, getRecentBottlenecks } from "./bottleneck-history";
-import { type DiagnosisSnapshot } from "./diagnosis-snapshot";
+import { checkConstraintPersistence, getRecentBottlenecks } from "./diagnostics/bottleneck-history";
+import { type DiagnosisSnapshot } from "./diagnostics/diagnosis-snapshot";
 
 // -- Type definitions --
 

@@ -7,8 +7,7 @@ export type SortKey =
   | "newest"
   | "price-asc"
   | "price-desc"
-  | "best-sellers"
-  | "biggest-discount";
+  | "best-sellers";
 
 export type FilterKey =
   | "designer"
@@ -22,7 +21,6 @@ export type FilterKey =
   | "sleeve"
   | "pattern"
   | "occasion"
-  | "size-class"
   | "strap-style"
   | "hardware-color"
   | "closure-type"
@@ -45,7 +43,6 @@ export const ALL_FILTER_KEYS: FilterKey[] = [
   "sleeve",
   "pattern",
   "occasion",
-  "size-class",
   "strap-style",
   "hardware-color",
   "closure-type",
@@ -79,7 +76,6 @@ const filterAccessors: Record<FilterKey, (product: XaProduct) => string[]> = {
   sleeve: (product) => (product.taxonomy.sleeveLength ? [product.taxonomy.sleeveLength] : []),
   pattern: (product) => (product.taxonomy.pattern ? [product.taxonomy.pattern] : []),
   occasion: (product) => product.taxonomy.occasion ?? [],
-  "size-class": (product) => (product.taxonomy.sizeClass ? [product.taxonomy.sizeClass] : []),
   "strap-style": (product) => (product.taxonomy.strapStyle ? [product.taxonomy.strapStyle] : []),
   "hardware-color": (product) => (product.taxonomy.hardwareColor ? [product.taxonomy.hardwareColor] : []),
   "closure-type": (product) => (product.taxonomy.closureType ? [product.taxonomy.closureType] : []),
@@ -103,7 +99,6 @@ const filterFormatters: Record<FilterKey, (value: string) => string> = {
   sleeve: formatLabel,
   pattern: formatLabel,
   occasion: formatLabel,
-  "size-class": formatLabel,
   "strap-style": formatLabel,
   "hardware-color": formatLabel,
   "closure-type": formatLabel,
@@ -127,7 +122,6 @@ const filterLabels: Record<FilterKey, string> = {
   sleeve: xaI18n.t("xaB.src.lib.xafilters.l126c11"),
   pattern: "Pattern",
   occasion: "Occasion",
-  "size-class": "Size class",
   "strap-style": "Strap style",
   "hardware-color": xaI18n.t("xaB.src.lib.xafilters.l131c21"),
   "closure-type": "Closure type",
@@ -158,7 +152,6 @@ const orderByCategory: Record<"clothing" | "bags" | "jewelry" | "all", FilterKey
     "type",
     "color",
     "material",
-    "size-class",
     "strap-style",
     "hardware-color",
     "closure-type",

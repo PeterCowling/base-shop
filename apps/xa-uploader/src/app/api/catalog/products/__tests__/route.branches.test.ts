@@ -19,6 +19,7 @@ jest.mock("../../../../../lib/catalogCsv", () => ({
   listCatalogDrafts: (...args: unknown[]) => listCatalogDraftsMock(...args),
   upsertCatalogDraft: (...args: unknown[]) => upsertCatalogDraftMock(...args),
   CatalogCsvConflictError: class extends Error {},
+  CatalogCsvStorageBusyError: class extends Error {},
 }));
 
 jest.mock("../../../../../lib/catalogDraftContractClient", () => ({
@@ -90,6 +91,10 @@ describe("catalog products route branch coverage", () => {
     const { GET } = await import("../route");
     const response = await GET(new Request("http://localhost/api/catalog/products?storefront=xa-b"));
     expect(response.status).toBe(404);
+    expect(applyRateLimitHeadersMock).not.toHaveBeenCalled();
+    expect(rateLimitMock).toHaveBeenCalledWith(
+      expect.objectContaining({ key: "xa-uploader-products-get-unauth:203.0.113.10" }),
+    );
   });
 
   it("GET returns 429 when rate limited", async () => {
@@ -107,6 +112,10 @@ describe("catalog products route branch coverage", () => {
     const { POST } = await import("../route");
     const response = await POST(new Request("http://localhost/api/catalog/products", { method: "POST" }));
     expect(response.status).toBe(404);
+    expect(applyRateLimitHeadersMock).not.toHaveBeenCalled();
+    expect(rateLimitMock).toHaveBeenCalledWith(
+      expect.objectContaining({ key: "xa-uploader-products-post-unauth:203.0.113.10" }),
+    );
   });
 
   it("POST returns 413 on payload too large parse error", async () => {

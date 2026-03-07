@@ -12,6 +12,8 @@ const LINTABLE_EXTENSIONS = new Set([
   '.cjs',
 ]);
 
+const DEFAULT_ESLINT_BATCH_SIZE = 20;
+
 type CliFormat = 'json' | 'outputs';
 
 type SkipReason = 'none' | 'no_paths' | 'no_prime_paths' | 'no_lintable_paths';
@@ -56,6 +58,21 @@ export function collectPrimeLintTargets(paths: readonly string[]): string[] {
   }
 
   return Array.from(unique).sort();
+}
+
+export function chunkPrimeLintTargets(
+  targets: readonly string[],
+  batchSize = DEFAULT_ESLINT_BATCH_SIZE,
+): string[][] {
+  if (!Number.isInteger(batchSize) || batchSize <= 0) {
+    throw new Error(`Invalid batch size: ${batchSize}`);
+  }
+
+  const batches: string[][] = [];
+  for (let index = 0; index < targets.length; index += batchSize) {
+    batches.push(targets.slice(index, index + batchSize));
+  }
+  return batches;
 }
 
 export function buildPrimeLintDecision(paths: readonly string[]): PrimeLintDecision {
@@ -227,15 +244,42 @@ function runEslintForTargets(targets: string[]): number {
     return 0;
   }
 
-  const result = spawnSync(
-    'pnpm',
-    ['exec', 'eslint', '--max-warnings=0', '--no-warn-ignored', ...targets],
-    {
-      stdio: 'inherit',
-    },
-  );
+  const rawBatchSize = process.env.PRIME_LINT_BATCH_SIZE;
+  const batchSize =
+    rawBatchSize && rawBatchSize.trim().length > 0
+      ? Number.parseInt(rawBatchSize, 10)
+      : DEFAULT_ESLINT_BATCH_SIZE;
+  const batches = chunkPrimeLintTargets(targets, batchSize);
+  const nodeOptions = process.env.NODE_OPTIONS?.trim();
+  const eslintNodeOptions = nodeOptions
+    ? `${nodeOptions} --max-old-space-size=8192`
+    : '--max-old-space-size=8192';
 
-  return result.status ?? 1;
+  for (const [batchIndex, batch] of batches.entries()) {
+    if (batches.length > 1) {
+      console.error(
+        `[prime-lint-changed-files] Running ESLint batch ${batchIndex + 1}/${batches.length} (${batch.length} targets)`,
+      );
+    }
+
+    const result = spawnSync(
+      'pnpm',
+      ['exec', 'eslint', '--max-warnings=0', '--no-warn-ignored', ...batch],
+      {
+        env: {
+          ...process.env,
+          NODE_OPTIONS: eslintNodeOptions,
+        },
+        stdio: 'inherit',
+      },
+    );
+
+    if ((result.status ?? 1) !== 0) {
+      return result.status ?? 1;
+    }
+  }
+
+  return 0;
 }
 
 function main(): void {

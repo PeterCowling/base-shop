@@ -6,7 +6,9 @@ import type { TFunction } from "i18next";
 import i18n from "i18next";
 
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import { loadLocaleResource } from "@/locales/locale-loader";
 import { preloadI18nNamespaces, preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import type { AppNamespaceBundles } from "@/utils/primeAppI18nBundles";
 
 /**
  * Validate and normalize language parameter
@@ -66,6 +68,25 @@ export async function getMultipleTranslations(
     result[ns] = i18n.getFixedT(validLang, ns);
   }
   return result;
+}
+
+export async function getNamespaceBundles(
+  lang: string | AppLanguage,
+  namespaces: readonly string[],
+): Promise<AppNamespaceBundles> {
+  const validLang = toAppLanguage(lang);
+  const bundles: AppNamespaceBundles = {};
+
+  await Promise.all(
+    namespaces.map(async (namespace) => {
+      const bundle = await loadLocaleResource(validLang, namespace);
+      if (bundle && typeof bundle === "object" && !Array.isArray(bundle)) {
+        bundles[namespace] = bundle as Record<string, unknown>;
+      }
+    }),
+  );
+
+  return bundles;
 }
 
 /**

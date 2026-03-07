@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 2,
+  "baselineLocale": "en",
+  "locales": [
+    "vi"
+  ],
+  "summary": {
+    "totalMissingFiles": 0,
+    "totalMissingKeys": 0,
+    "totalUntranslatedKeys": 89
+  },
+  "reports": [
+    {
+      "locale": "vi",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {
+        "assistanceSection.json": [
+          "bookingOptions.bookingCom",
+          "crosslinks.intro"
+        ],
+        "barMenuPage.json": [
+          "items.aperolSpritz.name",
+          "items.bacardiSuperior.name",
+          "items.bombaySapphire.name",
+          "items.hugoSpritz.name",
+          "items.jameson.name",
+          "items.limoncelloShot.name",
+          "items.nastro330.name",
+          "items.nastro660.name",
+          "items.pampero.name",
+          "items.rossiniSpritz.name",
+          "items.skyy.name",
+          "items.smirnoff.name",
+          "sections.gelato.title",
+          "sections.whisky.title"
+        ],
+        "breakfastMenuPage.json": [
+          "items.cappuccino.name",
+          "items.latte.name",
+          "items.macchiato.name"
+        ],
+        "footer.json": [
+          "email",
+          "facebook"
+        ],
+        "guides.tags.json": [
+          "tags.amalfi.label",
+          "tags.capri.label",
+          "tags.ferragosto.label",
+          "tags.herculaneum.label",
+          "tags.ischia.label",
+          "tags.naples.label",
+          "tags.pompei.label",
+          "tags.positano.label",
+          "tags.praiano.label",
+          "tags.procida.label",
+          "tags.tramonti.label"
+        ],
+        "guides/content/fiordoDiFuroreBeachGuide.json": [
+          "sectionFigure.src"
+        ],
+        "guides/content/gavitellaBeachGuide.json": [
+          "images.gavitellaClub.src",
+          "images.oneFire.src",
+          "images.overview.src"
+        ],
+        "guides/content/howToGetToPositano.json": [
+          "toc.faqs"
+        ],
+        "guides/content/instagramSpots.json": [
+          "fallback.faqs.heading"
+        ],
+        "guides/content/laundryPositano.json": [
+          "toc.faqs"
+        ],
+        "guides/content/lauritoBeachGuide.json": [
+          "images.daAdolfo.src",
+          "images.layout.src",
+          "images.positanoView.src",
+          "images.sitaBus.src",
+          "images.treVille.src",
+          "images.whyGo.src"
+        ],
+        "guides/content/luggageStorage.json": [
+          "areaServed",
+          "faqsTitle"
+        ],
+        "guides/content/naplesPositano.json": [
+          "faqsTitle"
+        ],
+        "guides/content/offSeasonLongStay.json": [
+          "fallback.faqsTitle"
+        ],
+        "guides/content/onlyHostel.json": [
+          "toc.faqs"
+        ],
+        "guides/content/positanoAmalfi.json": [
+          "fallback.faqsTitle"
+        ],
+        "guides/content/positanoBudget.json": [
+          "faqsTitle"
+        ],
+        "guides/content/positanoCostBreakdown.json": [
+          "labels.faqsTitle"
+        ],
+        "guides/content/positanoCostComparison.json": [
+          "fallback.faqLabel"
+        ],
+        "guides/content/positanoRavello.json": [
+          "fallback.faqsTitle",
+          "faqsTitle"
+        ],
+        "guides/content/positanoTravelGuide.json": [
+          "fallback.faqHeading"
+        ],
+        "guides/content/topOfTheMountainHike.json": [
+          "faqsTitle"
+        ],
+        "guides/content/transportMoneySaving.json": [
+          "faqsTitle"
+        ],
+        "guides/content/walkingTourAudio.json": [
+          "faqHeading"
+        ],
+        "guides/structured.json": [
+          "luminariaPraiano.addressLocality",
+          "luminariaPraiano.locationName"
+        ],
+        "guides/tags.json": [
+          "labels.amalfi",
+          "labels.capri",
+          "labels.ferragosto",
+          "labels.herculaneum",
+          "labels.ischia",
+          "labels.naples",
+          "labels.pompei",
+          "labels.positano",
+          "labels.praiano",
+          "labels.procida",
+          "labels.tramonti"
+        ],
+        "how-to-get-here/routes/howToGetHereAmalfiPositanoBus.json": [
+          "sections.tickets.body.linkLabel"
+        ],
+        "how-to-get-here/routes/howToGetHerePositanoNaplesAirportBus.json": [
+          "sections.timetables.items.sita.label"
+        ],
+        "how-to-get-here/routes/naplesCenterTrainBus.json": [
+          "sections.timetable.linkLabel"
+        ],
+        "how-to-get-here/routes/positanoAmalfiBus.json": [
+          "sections.positanoStop.image.src",
+          "slug"
+        ],
+        "how-to-get-here/routes/positanoCapriFerry.json": [
+          "journeyOverview.linksSeparator"
+        ],
+        "how-to-get-here/routes/positanoSalernoBus.json": [
+          "sections.positanoStop.media.src",
+          "sections.timetable.linkLabel",
+          "slug"
+        ],
+        "how-to-get-here/routes/positanoSorrentoBus.json": [
+          "sections.positanoStop.image.src",
+          "sections.timetable.linkLabel"
+        ],
+        "how-to-get-here/routes/salernoPositanoBus.json": [
+          "timetable.scheduleLinkLabel"
+        ],
+        "how-to-get-here/routes/sorrentoPositanoBus.json": [
+          "sections.arrival.image.src"
+        ],
+        "howToGetHere.json": [
+          "rome.image.src"
+        ],
+        "landingPage.json": [
+          "heroSection.cityName"
+        ],
+        "ratingsBar.json": [
+          "sources.booking.label"
+        ]
+      }
+    }
+  ]
+}

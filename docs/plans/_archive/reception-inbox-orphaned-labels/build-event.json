@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-inbox-orphaned-labels-20260307",
+  "feature_slug": "reception-inbox-orphaned-labels",
+  "emitted_at": "2026-03-07T14:50:35.490Z",
+  "why": "Accumulating orphaned labels clutter the Gmail label namespace and make it harder for operators to navigate the mailbox.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Orphaned Gmail labels can be cleaned up on demand via an MCP tool, keeping the label namespace manageable.",
+    "source": "operator"
+  }
+}

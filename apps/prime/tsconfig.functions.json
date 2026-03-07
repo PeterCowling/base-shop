@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "types": ["node", "@cloudflare/workers-types"],
+    "noEmit": true
+  },
+  "include": [
+    "functions/**/*.ts"
+  ],
+  "exclude": [
+    "functions/**/__tests__/**",
+    "functions/**/*.test.ts"
+  ]
+}

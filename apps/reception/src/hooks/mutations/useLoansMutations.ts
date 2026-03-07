@@ -117,12 +117,12 @@ export default function useLoansMutations() {
    * then calls removeOccupantIfEmpty to clean up if no remaining txns.
    */
   const removeLoanTransactionsForItem = useCallback(
-    (bookingRef: string, occupantId: string, itemName: string) => {
+    async (bookingRef: string, occupantId: string, itemName: string) => {
       setError(null);
 
       if (!online) {
         setError(new Error("This operation requires a network connection. Please reconnect and try again."));
-        return Promise.resolve(null);
+        return null;
       }
 
       const occupantTxnsRef = ref(
@@ -130,36 +130,32 @@ export default function useLoansMutations() {
         `loans/${bookingRef}/${occupantId}/txns`
       );
 
-      return get(occupantTxnsRef)
-        .then((snapshot) => {
-          if (snapshot.exists()) {
-            snapshot.forEach((txnSnap) => {
-              const txn = txnSnap.val() as LoanTransaction;
-              if (txn.item === itemName && txn.type === "Loan") {
-                const txnPath = `loans/${bookingRef}/${occupantId}/txns/${txnSnap.key}`;
-                remove(ref(database, txnPath))
-                  .catch((err) => {
-                    console.error("Error removing transaction:", txnPath, err);
-                    setError(err);
-                    throw err;
-                  });
-              }
-            });
-          }
-        })
-        .then(() => {
-          // After removing matching "Loan" transactions, check occupant emptiness
-          return removeOccupantIfEmpty(bookingRef, occupantId);
-        })
-        .catch((err) => {
-          console.error(
-            "Error removing loan transactions for item:",
-            itemName,
-            err
-          );
-          setError(err);
-          throw err;
-        });
+      try {
+        const snapshot = await get(occupantTxnsRef);
+        const removals: Promise<void>[] = [];
+        if (snapshot.exists()) {
+          snapshot.forEach((txnSnap) => {
+            const txn = txnSnap.val() as LoanTransaction;
+            if (txn.item === itemName && txn.type === "Loan") {
+              const txnPath = `loans/${bookingRef}/${occupantId}/txns/${txnSnap.key}`;
+              removals.push(remove(ref(database, txnPath)));
+            }
+          });
+        }
+
+        await Promise.all(removals);
+
+        // After removing matching "Loan" transactions, check occupant emptiness
+        return await removeOccupantIfEmpty(bookingRef, occupantId);
+      } catch (err) {
+        console.error(
+          "Error removing loan transactions for item:",
+          itemName,
+          err
+        );
+        setError(err);
+        throw err;
+      }
     },
     [database, online, removeOccupantIfEmpty]
   );

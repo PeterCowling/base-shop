@@ -28,19 +28,8 @@ export function slugify(input: string): string {
 
 const departmentSchema = z.enum(["women", "men", "kids"]) satisfies z.ZodType<XaDepartment>;
 const categorySchema = z.enum(["clothing", "bags", "jewelry"]) satisfies z.ZodType<XaCategory>;
-
-const allowedImageRoles = ["front", "side", "top", "back", "detail", "interior", "scale"] as const;
-type ImageRole = (typeof allowedImageRoles)[number];
-
-function requiredImageRolesByCategory(category: XaCategory): ImageRole[] {
-  if (category === "clothing") return ["front", "side"];
-  if (category === "bags") return ["front", "side", "top"];
-  return ["front", "side", "detail"];
-}
-
-function parseImageRoles(input: string | null | undefined): ImageRole[] {
-  return splitList(input ?? "") as ImageRole[];
-}
+export const catalogPublishStateSchema = z.enum(["draft", "live", "out_of_stock"]);
+export type CatalogPublishState = z.infer<typeof catalogPublishStateSchema>;
 
 const numberField = (label: string, options?: { min?: number; integer?: boolean }) => {
   const min = options?.min ?? 0;
@@ -108,18 +97,13 @@ export const catalogProductDraftSchema = z
     collectionTitle: z.string().trim().optional(),
     collectionDescription: z.string().trim().optional(),
     price: numberField("Price", { min: 0 }),
-    compareAtPrice: optionalNumberField("Compare-at price", { min: 0 }),
-    deposit: optionalNumberField("Deposit", { min: 0 }),
-    stock: optionalNumberField("Stock", { min: 0, integer: true }),
-    forSale: z.boolean().optional(),
-    forRental: z.boolean().optional(),
+    publishState: catalogPublishStateSchema.optional(),
     sizes: z.string().optional(),
     description: z.string().trim().min(1, "Description is required"),
-    createdAt: z.string().trim().min(1, "Created at is required"),
+    createdAt: z.string().trim().optional(),
     popularity: optionalNumberField("Popularity", { min: 0, integer: true }),
     imageFiles: z.string().optional(),
     imageAltTexts: z.string().optional(),
-    imageRoles: z.string().optional(),
     taxonomy: z.object({
       department: departmentSchema,
       category: categorySchema,
@@ -135,6 +119,7 @@ export const catalogProductDraftSchema = z
       sizeClass: z.string().optional(),
       strapStyle: z.string().optional(),
       hardwareColor: z.string().optional(),
+      interiorColor: z.string().optional(),
       closureType: z.string().optional(),
       fits: z.string().optional(),
       metal: z.string().optional(),
@@ -198,37 +183,6 @@ export const catalogProductDraftSchema = z
       });
     }
 
-    const imageRoles = parseImageRoles(value.imageRoles);
-    if (imageFiles.length && imageRoles.length !== imageFiles.length) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["imageRoles"],
-        message: "Image roles must match the number of images",
-      });
-    }
-
-    const invalidImageRole = imageRoles.find((role) => !allowedImageRoles.includes(role));
-    if (invalidImageRole) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["imageRoles"],
-        message: "Image roles contain unsupported values",
-      });
-    }
-
-    if (imageFiles.length) {
-      const requiredRoles = requiredImageRolesByCategory(value.taxonomy.category);
-      for (const role of requiredRoles) {
-        if (!imageRoles.includes(role)) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            path: ["imageRoles"],
-            message: `Missing required image role: ${role}`,
-          });
-        }
-      }
-    }
-
     if (value.taxonomy.category === "clothing") {
       const sizes = splitList(value.sizes ?? "");
       if (!sizes.length) {
@@ -251,13 +205,16 @@ export const catalogProductDraftSchema = z
       }
     }
 
-    const parsed = Date.parse(value.createdAt);
-    if (Number.isNaN(parsed)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["createdAt"],
-        message: "createdAt must be a valid date/time",
-      });
+    const createdAtValue = (value.createdAt ?? "").trim();
+    if (createdAtValue) {
+      const parsed = Date.parse(createdAtValue);
+      if (Number.isNaN(parsed)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["createdAt"],
+          message: "createdAt must be a valid date/time",
+        });
+      }
     }
   });
 

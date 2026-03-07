@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "bos-ideas-dispatch-20260303-code-signals-20260304",
+  "feature_slug": "bos-ideas-dispatch-20260303-code-signals",
+  "emitted_at": "2026-03-04T01:00:00.000Z",
+  "why": "Bug-scan and codebase evolution data are high-value but were not reaching the ideas queue.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Dispatch candidates are emitted automatically from critical code-quality and structural code-change signals.",
+    "source": "operator"
+  }
+}

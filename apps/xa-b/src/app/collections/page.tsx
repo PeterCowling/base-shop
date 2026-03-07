@@ -1,12 +1,16 @@
+"use client";
+
 import Link from "next/link";
 
 import { Grid } from "@acme/design-system/atoms/Grid";
 import { Section } from "@acme/design-system/atoms/Section";
 
-import { XA_COLLECTIONS } from "../../lib/demoData";
+import { useXaCatalogSnapshot } from "../../lib/liveCatalog";
 import { xaI18n } from "../../lib/xaI18n";
+import { getCollectionHref } from "../../lib/xaRoutes";
 
 export default function CollectionsIndexPage() {
+  const { collections } = useXaCatalogSnapshot();
   return (
     <main className="sf-content">
       <Section padding="wide">
@@ -17,16 +21,16 @@ export default function CollectionsIndexPage() {
       <Section padding="default">
         <Grid columns={{ base: 2, md: 3, lg: 4 }} gap={6}>
           <Link
-            href="/collections/all"
+            href={getCollectionHref("all")}
             className="rounded-lg border p-4 hover:shadow-sm"
           >
             <div className="font-medium">All products</div>
             <div className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.collections.page.l25c60")}</div>
           </Link>
-          {XA_COLLECTIONS.map((c) => (
+          {collections.map((c) => (
             <Link
               key={c.handle}
-              href={`/collections/${c.handle}`}
+              href={getCollectionHref(c.handle)}
               className="rounded-lg border p-4 hover:shadow-sm"
             >
               <div className="font-medium">{c.title}</div>

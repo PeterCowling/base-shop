@@ -173,4 +173,16 @@ describe("booking email tool", () => {
     expect(result.content[0].text).toContain("Failed to apply draft outcome labels");
     expect(createDraftMock).toHaveBeenCalledTimes(1);
   });
+
+  it("returns validation error when occupant links are not URL formatted", async () => {
+    const result = await handleBookingEmailTool("mcp_send_booking_email", {
+      bookingRef: "BOOK125",
+      recipients: ["guest@example.com"],
+      occupantLinks: ["not-a-url"],
+    });
+
+    expect(result).toMatchObject({ isError: true });
+    expect(result.content[0].text).toMatch(/occupantLinks\.0/i);
+    expect(result.content[0].text).toMatch(/invalid url/i);
+  });
 });

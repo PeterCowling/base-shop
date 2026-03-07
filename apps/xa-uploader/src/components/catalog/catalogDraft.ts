@@ -15,6 +15,7 @@ export const EMPTY_TAXONOMY: CatalogProductDraftInput["taxonomy"] = {
   sizeClass: "",
   strapStyle: "",
   hardwareColor: "",
+  interiorColor: "",
   closureType: "",
   fits: "",
   metal: "",
@@ -42,34 +43,35 @@ export const EMPTY_DRAFT: CatalogProductDraftInput = {
   title: "",
   slug: "",
   id: "",
-  brandHandle: "",
-  brandName: "",
+  brandHandle: "hermes",
+  brandName: "Hermès",
   collectionHandle: "",
   collectionTitle: "",
   collectionDescription: "",
   price: "0",
-  compareAtPrice: "",
-  deposit: "0",
-  stock: "0",
-  forSale: true,
-  forRental: false,
+  publishState: "draft",
   sizes: "",
   description: "",
-  createdAt: new Date().toISOString(),
+  createdAt: "",
   popularity: "0",
   imageFiles: "",
   imageAltTexts: "",
-  imageRoles: "",
   taxonomy: { ...EMPTY_TAXONOMY },
   details: { ...EMPTY_DETAILS },
 };
 
 export function buildEmptyDraft(
   category: CatalogProductDraftInput["taxonomy"]["category"],
+  preservedBrand?: Pick<CatalogProductDraftInput, "brandHandle" | "brandName">,
 ): CatalogProductDraftInput {
   return {
     ...EMPTY_DRAFT,
-    createdAt: new Date().toISOString(),
+    ...(preservedBrand
+      ? {
+          brandHandle: preservedBrand.brandHandle,
+          brandName: preservedBrand.brandName,
+        }
+      : {}),
     taxonomy: { ...EMPTY_TAXONOMY, category },
     details: { ...EMPTY_DETAILS },
   };
@@ -95,7 +97,6 @@ export function withDraftDefaults(product: CatalogProductDraftInput): CatalogPro
   return {
     ...merged,
     slug,
-    createdAt: merged.createdAt || EMPTY_DRAFT.createdAt,
     taxonomy: { ...EMPTY_TAXONOMY, ...(product.taxonomy ?? {}) },
     details: { ...EMPTY_DETAILS, ...(product.details ?? {}) },
   };

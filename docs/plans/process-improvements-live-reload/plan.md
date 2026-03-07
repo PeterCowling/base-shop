@@ -92,13 +92,13 @@ Auto-Build-Intent: plan+auto
 
 ### TASK-01: Generator — embed millisecond-precision generation timestamp
 - **Type:** IMPLEMENT
-- **Deliverable:** code-change — `scripts/src/startup-loop/generate-process-improvements.ts` + `docs/business-os/process-improvements.user.html` (GEN_TS placeholder)
+- **Deliverable:** code-change — `scripts/src/startup-loop/build/generate-process-improvements.ts` + `docs/business-os/process-improvements.user.html` (GEN_TS placeholder)
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
 - **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/generate-process-improvements.ts`, `docs/business-os/process-improvements.user.html`
+- **Affects:** `scripts/src/startup-loop/build/generate-process-improvements.ts`, `docs/business-os/process-improvements.user.html`
 - **Depends on:** -
 - **Blocks:** TASK-02
 - **Confidence:** 95%

@@ -53,9 +53,17 @@ Feature-Slug: <slug>
 artifact: fact-find
 # Optional — present when opened via a queued dispatch packet:
 Dispatch-ID: <IDEA-DISPATCH-YYYYMMDDHHmmss-NNNN | omit if direct inject>
-# Required when Dispatch-ID is absent:
+# Optional — use when one fact-find promotes multiple queued dispatches as a single work package:
+Dispatch-IDs: <comma-separated dispatch IDs>
+# Required when Dispatch-IDs contains 2+ dispatches:
+Work-Package-Reason: <why these dispatches belong in one fact-find / one plan>
+# Required when neither Dispatch-ID nor Dispatch-IDs is present:
 Trigger-Source: <path to standing artifact that motivated this cycle, or "direct-operator-decision: <rationale>">
 ```
+
+Rules:
+- `Dispatch-ID` and `Dispatch-IDs` are mutually exclusive in canonical output. Use `Dispatch-ID` for one dispatch, `Dispatch-IDs` for a bundled promotion.
+- `Dispatch-IDs` is a traceability field, not a relaxation of scope discipline. Bundling is appropriate only when one fact-find and one downstream plan are genuinely more coherent than separate cycles.
 
 ### Lifecycle
 
@@ -99,6 +107,44 @@ artifact: plan
 - Updated in-place by `/lp-do-build` after each task completion (status, evidence, `Last-updated`).
 - Set to `Status: Archived` when all executable tasks are complete.
 - Archived to `docs/plans/_archive/<feature-slug>/plan.md`; see `_shared/plan-archiving.md`.
+
+---
+
+## Artifact 2A: `micro-build.md`
+
+**Artifact ID:** `micro-build`
+**Produced by:** `/lp-do-build` direct-dispatch intake
+**Stored at:** `docs/plans/<feature-slug>/micro-build.md`
+**Consumers:** `/lp-do-build`
+
+### Purpose
+
+Canonical minimal execution contract for trivially bounded direct-build work routed from `lp-do-ideas` without a full fact-find or plan. This artifact exists to preserve queue accuracy, scope discipline, and build validation while cutting ceremony for genuinely tiny changes.
+
+### Required Sections
+
+| Section | Purpose |
+|---|---|
+| `## Scope` | Exact change being made and what is explicitly out of scope. |
+| `## Execution Contract` | Affects, acceptance checks, validation commands, and rollback note. |
+| `## Outcome Contract` | Why, intended outcome type, statement, and source carried from the dispatch. |
+
+### Required Frontmatter Fields
+
+```yaml
+Status: <Active | Complete | Archived>
+Feature-Slug: <slug>
+artifact: micro-build
+Dispatch-ID: <IDEA-DISPATCH-YYYYMMDDHHmmss-NNNN>
+Execution-Track: <code | business-artifact | mixed>
+Deliverable-Type: <canonical type>
+```
+
+### Lifecycle
+
+- Created by `/lp-do-build` when a confirmed `micro_build_ready` dispatch is taken directly from the ideas queue.
+- Treated as a single implicit IMPLEMENT task contract.
+- Archived alongside build outputs when the direct build completes.
 
 ---
 
@@ -166,6 +212,8 @@ Build-Event-Ref: docs/plans/<feature-slug>/build-event.json
 **Stored at:** `docs/plans/<feature-slug>/results-review.user.md`
 **Consumers:** startup-loop Layer A (standing-information refresh), future plan sessions for the same business unit
 
+results-review.user.md captures observations after build; it must not carry unexecuted work items from the plan.
+
 ### Required Sections
 
 | Section | Purpose |
@@ -196,7 +244,7 @@ artifact: results-review
 ## Soft Gate Artifact: `reflection-debt.user.md`
 
 **Artifact ID:** `reflection-debt`  
-**Produced by:** `/lp-do-build` deterministic emitter (`scripts/src/startup-loop/lp-do-build-reflection-debt.ts`)  
+**Produced by:** `/lp-do-build` deterministic emitter (`scripts/src/startup-loop/build/lp-do-build-reflection-debt.ts`)  
 **Stored at:** `docs/plans/<feature-slug>/reflection-debt.user.md`  
 **Consumers:** lane scheduler (`IMPROVE`), operations governance, admission controls
 
@@ -293,10 +341,14 @@ All artifacts in this contract share the `docs/plans/<feature-slug>/` namespace:
 | `build-record.user.md` | `docs/plans/<feature-slug>/build-record.user.md` | `/lp-do-build` |
 | `build-event.json` | `docs/plans/<feature-slug>/build-event.json` | `/lp-do-build` emitter (`lp-do-build-event-emitter.ts`) |
 | `results-review.user.md` | `docs/plans/<feature-slug>/results-review.user.md` | Operator |
+| `results-review.signals.json` | `docs/plans/<feature-slug>/results-review.signals.json` | `/lp-do-build` (step 2.1) |
 | `reflection-debt.user.md` | `docs/plans/<feature-slug>/reflection-debt.user.md` | `/lp-do-build` emitter |
 | `pattern-reflection.user.md` | `docs/plans/<feature-slug>/pattern-reflection.user.md` | `/lp-do-build` (step 2.5) |
+| `pattern-reflection.entries.json` | `docs/plans/<feature-slug>/pattern-reflection.entries.json` | `/lp-do-build` (step 2.55) |
 
 The `.user.md` suffix marks operator-facing loop artifacts. Only `results-review.user.md` requires human-authored observation content; `build-record.user.md`, `reflection-debt.user.md`, and `pattern-reflection.user.md` are produced by `/lp-do-build`.
+
+The `.json` sidecar artifacts are machine-readable companions that let downstream tooling read structured data without re-parsing markdown prose.
 
 ---
 
@@ -321,11 +373,68 @@ The `.user.md` suffix marks operator-facing loop artifacts. Only `results-review
 
 ---
 
+## Sidecar Artifacts: `results-review.signals.json` and `pattern-reflection.entries.json`
+
+These machine-readable sidecars are emitted by `/lp-do-build` immediately after the LLM finalizes the corresponding `.user.md`. They allow downstream consumers to read structured data without re-parsing markdown prose.
+
+### `results-review.signals.json`
+
+**Schema version:** `results-review.signals.v1`
+
+**Stored at:** `docs/plans/<feature-slug>/results-review.signals.json`
+
+**Produced by:** `/lp-do-build` step 2.1 (`pnpm --filter scripts startup-loop:results-review-extract`), after Step 2 LLM refinement of `results-review.user.md`.
+
+**Schema:**
+```json
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "<ISO timestamp>",
+  "plan_slug": "<feature-slug>",
+  "source_path": "<relative path to results-review.user.md>",
+  "items": [ /* ProcessImprovementItem[] — classified idea candidates */ ]
+}
+```
+
+**Consumers:**
+- `generate-process-improvements.ts` — prefers this sidecar over markdown parse; falls back to markdown if absent or malformed.
+- `self-evolving-from-build-output.ts` — reads candidate titles from sidecar items; falls back to `extractBulletCandidates(markdown)` if absent or malformed.
+
+**Fallback policy:** If `results-review.signals.json` is absent (historical plans without sidecar), all consumers fall back to the existing markdown parse path with no change in behaviour.
+
+---
+
+### `pattern-reflection.entries.json`
+
+**Schema version:** `pattern-reflection.entries.v1`
+
+**Stored at:** `docs/plans/<feature-slug>/pattern-reflection.entries.json`
+
+**Produced by:** `/lp-do-build` step 2.55 (`pnpm --filter scripts startup-loop:pattern-reflection-extract`), after Step 2.5 LLM refinement of `pattern-reflection.user.md`.
+
+**Schema:**
+```json
+{
+  "schema_version": "pattern-reflection.entries.v1",
+  "generated_at": "<ISO timestamp>",
+  "plan_slug": "<feature-slug>",
+  "source_path": "<relative path to pattern-reflection.user.md>",
+  "entries": [ /* PatternEntry[] — parsed pattern entries */ ]
+}
+```
+
+**Consumers:**
+- `self-evolving-from-build-output.ts` — builds observation seeds from sidecar entries; falls back to `extractPatternReflectionSeeds(markdown)` if absent or malformed.
+
+**Fallback policy:** If `pattern-reflection.entries.json` is absent, consumers fall back to the existing markdown parse path.
+
+---
+
 ## References
 
 - Two-layer architecture contract: `docs/business-os/startup-loop/specifications/two-layer-model.md`
 - Artifact registry: `docs/business-os/startup-loop/artifact-registry.md`
 - Plan archiving procedure: `.claude/skills/_shared/plan-archiving.md`
 - Loop spec: `docs/business-os/startup-loop/specifications/loop-spec.yaml`
-- Reflection debt emitter: `scripts/src/startup-loop/lp-do-build-reflection-debt.ts`
+- Reflection debt emitter: `scripts/src/startup-loop/build/lp-do-build-reflection-debt.ts`
 - Producer skills: `.claude/skills/lp-do-fact-find/SKILL.md`, `.claude/skills/lp-do-plan/SKILL.md`, `.claude/skills/lp-do-build/SKILL.md`

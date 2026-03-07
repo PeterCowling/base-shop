@@ -1,6 +1,6 @@
-import { isIP } from "node:net";
-
 import { toPositiveInt } from "@acme/lib";
+
+import { getTrustedRequestIp } from "./requestIp";
 
 type RateLimitEntry = {
   count: number;
@@ -18,11 +18,6 @@ type RateLimitResult = {
 
 declare global {
   var __xaUploaderRateLimitStore: Map<string, RateLimitEntry> | undefined;
-}
-
-function parseBool(value: string | undefined): boolean {
-  if (!value) return false;
-  return ["1", "true", "yes", "on"].includes(value.trim().toLowerCase());
 }
 
 function getMaxEntries(): number {
@@ -56,42 +51,8 @@ function pruneStore(now: number) {
   }
 }
 
-function isValidIpv4(value: string): boolean {
-  return isIP(value) === 4;
-}
-
-function isValidIpv6(value: string): boolean {
-  return isIP(value) === 6;
-}
-
-function normalizeIpCandidate(raw: string | null): string {
-  const trimmed = String(raw ?? "").trim();
-  if (!trimmed) return "";
-
-  const first = trimmed.split(",")[0]?.trim() ?? "";
-  if (!first) return "";
-
-  if (first.startsWith("[") && first.includes("]")) {
-    const bracketed = first.slice(1, first.indexOf("]")).trim();
-    return isValidIpv6(bracketed) ? bracketed : "";
-  }
-
-  if (isValidIpv6(first)) return first;
-
-  const withoutPort = first.includes(":") ? first.split(":")[0]?.trim() ?? "" : first;
-  return isValidIpv4(withoutPort) ? withoutPort : "";
-}
-
 export function getRequestIp(request: Request): string {
-  if (!parseBool(process.env.XA_TRUST_PROXY_IP_HEADERS)) return "";
-
-  const cfConnectingIp = normalizeIpCandidate(request.headers.get("cf-connecting-ip"));
-  if (cfConnectingIp) return cfConnectingIp;
-
-  const forwarded = normalizeIpCandidate(request.headers.get("x-forwarded-for"));
-  if (forwarded) return forwarded;
-
-  return normalizeIpCandidate(request.headers.get("x-real-ip"));
+  return getTrustedRequestIp(request);
 }
 
 export function rateLimit({

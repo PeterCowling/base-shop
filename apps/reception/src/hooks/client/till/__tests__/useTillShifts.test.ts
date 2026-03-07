@@ -30,6 +30,7 @@ jest.mock("../../../../context/TillDataContext", () => ({
 }));
 
 jest.mock("../../../data/useBookingsData", () => ({
+  __esModule: true,
   default: () => ({ bookings: {} }),
 }));
 

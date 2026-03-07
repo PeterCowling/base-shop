@@ -37,6 +37,6 @@ Review-trigger: After each completed build cycle touching this document.
 
 ## Sources
 
-- `docs/business-os/startup-baselines/HEAD-channels.md` (S6B canonical backfill, source of truth)
+- `docs/business-os/startup-baselines/HEAD/channels.md` (S6B canonical backfill, source of truth)
 - `docs/business-os/strategy/HEAD/decisions/DEC-HEAD-CH-01.user.md`
 - `docs/business-os/market-research/HEAD/2026-02-20-market-intelligence.user.md`

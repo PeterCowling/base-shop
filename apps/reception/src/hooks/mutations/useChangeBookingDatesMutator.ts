@@ -1,7 +1,7 @@
 // src/hooks/mutations/useChangeBookingDatesMutator.ts
 
 import { useCallback, useState } from "react";
-import { getDatabase, ref, remove, set, update } from "firebase/database";
+import { getDatabase, ref, update } from "firebase/database";
 
 import { useAuth } from "../../context/AuthContext";
 import { useOnlineStatus } from "../../lib/offline/useOnlineStatus";
@@ -38,7 +38,7 @@ export function useBookingDatesMutator() {
   const { saveFinancialsRoom } = useFinancialsRoomMutations();
 
   const updateBookingDates = useCallback(
-    async (params: UpdateBookingDatesParams) => {
+    async (params: UpdateBookingDatesParams): Promise<void> => {
       const {
         bookingRef,
         occupantId,
@@ -51,12 +51,11 @@ export function useBookingDatesMutator() {
 
       if (!online) {
         setIsError(true);
-        setError(
-          new Error(
-            "Booking date changes require a network connection. Please reconnect and try again."
-          )
+        const offlineError = new Error(
+          "Booking date changes require a network connection. Please reconnect and try again."
         );
-        return;
+        setError(offlineError);
+        throw offlineError;
       }
 
       setIsLoading(true);
@@ -64,100 +63,9 @@ export function useBookingDatesMutator() {
       setError(null);
 
       try {
-        // 1. Update the "bookings" node with new dates
-        const bookingPath = ref(db, `bookings/${bookingRef}/${occupantId}`);
-        await update(bookingPath, {
-          checkInDate: newCheckIn,
-          checkOutDate: newCheckOut,
-        });
-
         // Use Italy-based ISO for logging & transactions
         const nowIso = getItalyIsoString();
         const who = user?.user_name || "System";
-
-        // 2. If check-in date changed => update "checkins" node & activity logs
-        if (oldCheckIn !== newCheckIn) {
-          if (oldCheckIn) {
-            const oldCheckinPath = ref(
-              db,
-              `checkins/${oldCheckIn}/${occupantId}`
-            );
-            await remove(oldCheckinPath);
-          }
-          if (newCheckIn) {
-            const newCheckinPath = ref(
-              db,
-              `checkins/${newCheckIn}/${occupantId}`
-            );
-            await set(newCheckinPath, {
-              reservationCode: bookingRef,
-              timestamp: nowIso,
-            });
-          }
-
-          // Log activity with code=19
-          const activityId = `act_${Date.now()}`;
-          const occupantActivitiesPath = ref(
-            db,
-            `activities/${occupantId}/${activityId}`
-          );
-          await set(occupantActivitiesPath, {
-            code: 19,
-            timestamp: nowIso,
-            who,
-          });
-          const byCodePath = ref(
-            db,
-            `activitiesByCode/19/${occupantId}/${activityId}`
-          );
-          await set(byCodePath, {
-            timestamp: nowIso,
-            who,
-          });
-        }
-
-        // 3. If check-out date changed => update "checkouts" node & activity logs
-        if (oldCheckOut !== newCheckOut) {
-          if (oldCheckOut) {
-            const oldCheckoutPath = ref(
-              db,
-              `checkouts/${oldCheckOut}/${occupantId}`
-            );
-            await remove(oldCheckoutPath);
-          }
-          if (newCheckOut) {
-            const newCheckoutPath = ref(
-              db,
-              `checkouts/${newCheckOut}/${occupantId}`
-            );
-            await set(newCheckoutPath, {
-              reservationCode: bookingRef,
-              timestamp: nowIso,
-            });
-          }
-
-          // Log activity with code=24
-          const activityId = `act_${Date.now()}`;
-          const occupantActivitiesPath = ref(
-            db,
-            `activities/${occupantId}/${activityId}`
-          );
-          await set(occupantActivitiesPath, {
-            code: 24,
-            timestamp: nowIso,
-            who,
-          });
-          const byCodePath = ref(
-            db,
-            `activitiesByCode/24/${occupantId}/${activityId}`
-          );
-          await set(byCodePath, {
-            timestamp: nowIso,
-            who,
-          });
-        }
-
-        // 4. If extended and extendedPrice>0, add a "charge" + "payment" transaction
         const priceVal = parseFloat(extendedPrice);
 
         const hasExtension =
@@ -165,41 +73,136 @@ export function useBookingDatesMutator() {
           (!oldCheckOut || newCheckOut > oldCheckOut) &&
           priceVal > 0;
 
-        if (hasExtension) {
-          const chargeTxnKey = generateTransactionId();
-          const paymentTxnKey = generateTransactionId();
+        const chargeTxnKey = hasExtension ? generateTransactionId() : null;
+        const paymentTxnKey = hasExtension ? generateTransactionId() : null;
+        const extensionTransactions =
+          hasExtension && chargeTxnKey && paymentTxnKey
+            ? {
+                [chargeTxnKey]: {
+                  occupantId,
+                  bookingRef,
+                  amount: priceVal,
+                  nonRefundable: true,
+                  timestamp: nowIso,
+                  type: "charge" as const,
+                },
+                [paymentTxnKey]: {
+                  occupantId,
+                  bookingRef,
+                  amount: priceVal,
+                  nonRefundable: true,
+                  timestamp: nowIso,
+                  type: "payment" as const,
+                },
+              }
+            : null;
 
-          // Both transactions are nonRefundable per requirement
-          const newTxns = {
-            [chargeTxnKey]: {
-              occupantId,
-              bookingRef,
-              amount: priceVal,
-              nonRefundable: true,
+        // Build one atomic multi-path update for booking + checkin/out + activity nodes.
+        const updates: Record<string, unknown> = {
+          [`bookings/${bookingRef}/${occupantId}/checkInDate`]: newCheckIn,
+          [`bookings/${bookingRef}/${occupantId}/checkOutDate`]: newCheckOut,
+        };
+
+        // 1) If check-in date changed => update checkins + activity code 19
+        if (oldCheckIn !== newCheckIn) {
+          if (oldCheckIn) {
+            updates[`checkins/${oldCheckIn}/${occupantId}`] = null;
+          }
+          if (newCheckIn) {
+            updates[`checkins/${newCheckIn}/${occupantId}`] = {
+              reservationCode: bookingRef,
               timestamp: nowIso,
-              type: "charge",
-            },
-            [paymentTxnKey]: {
-              occupantId,
-              bookingRef,
-              amount: priceVal,
-              nonRefundable: true,
-              timestamp: nowIso,
-              type: "payment",
-            },
+            };
+          }
+
+          const activityId = `act_${crypto.randomUUID()}`;
+          updates[`activities/${occupantId}/${activityId}`] = {
+            code: 19,
+            timestamp: nowIso,
+            who,
           };
+          updates[`activitiesByCode/19/${occupantId}/${activityId}`] = {
+            timestamp: nowIso,
+            who,
+          };
+        }
 
+        // 2) If check-out date changed => update checkouts + activity code 24
+        if (oldCheckOut !== newCheckOut) {
+          if (oldCheckOut) {
+            updates[`checkouts/${oldCheckOut}/${occupantId}`] = null;
+          }
+          if (newCheckOut) {
+            updates[`checkouts/${newCheckOut}/${occupantId}`] = {
+              reservationCode: bookingRef,
+              timestamp: nowIso,
+            };
+          }
+
+          const activityId = `act_${crypto.randomUUID()}`;
+          updates[`activities/${occupantId}/${activityId}`] = {
+            code: 24,
+            timestamp: nowIso,
+            who,
+          };
+          updates[`activitiesByCode/24/${occupantId}/${activityId}`] = {
+            timestamp: nowIso,
+            who,
+          };
+        }
+
+        // Write extension financial intent before core booking mutation.
+        // If the booking write fails, compensate by voiding these transactions.
+        if (extensionTransactions) {
           await saveFinancialsRoom(bookingRef, {
-            transactions: newTxns,
+            transactions: extensionTransactions,
           });
+        }
+
+        try {
+          await update(ref(db), updates);
+        } catch (coreMutationError) {
+          if (extensionTransactions) {
+            const compensatedAt = getItalyIsoString();
+            const compensationWho = user?.user_name || "System";
+
+            try {
+              await saveFinancialsRoom(bookingRef, {
+                transactions: Object.fromEntries(
+                  Object.entries(extensionTransactions).map(([txnKey, txn]) => [
+                    txnKey,
+                    {
+                      ...txn,
+                      voidedAt: compensatedAt,
+                      voidedBy: compensationWho,
+                      voidReason: "booking-date-update-failed",
+                    },
+                  ])
+                ),
+              });
+            } catch (compensationError) {
+              const coreMessage =
+                coreMutationError instanceof Error
+                  ? coreMutationError.message
+                  : "Unknown booking mutation error";
+              const compensationMessage =
+                compensationError instanceof Error
+                  ? compensationError.message
+                  : "Unknown compensation error";
+              throw new Error(
+                `Booking mutation failed after financial write. Compensation also failed. Core: ${coreMessage}. Compensation: ${compensationMessage}`
+              );
+            }
+          }
+
+          throw coreMutationError;
         }
       } catch (err: unknown) {
         setIsError(true);
-        if (err instanceof Error) {
-          setError(err);
-        } else {
-          setError(new Error("An unknown error occurred."));
-        }
+        const wrappedError =
+          err instanceof Error ? err : new Error("An unknown error occurred.");
+        setError(wrappedError);
+        throw wrappedError;
       } finally {
         setIsLoading(false);
       }

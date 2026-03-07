@@ -44,6 +44,21 @@ Then enforce these rules:
 5. If preflight returns `status: "unhealthy"`, stop and show the failing checks/remediation.
 6. If preflight returns `status: "degraded"`, continue only with explicit user approval.
 
+After `health_check` passes, run the reconcile step:
+
+```typescript
+gmail_reconcile_in_progress({ dryRun: false, staleHours: 2 })
+```
+
+Handle the result as follows:
+- **If the call throws or returns an error:** log a warning (`⚠️ Reconcile failed: <error message> — continuing`) and proceed. This step is fail-open and must never block the inbox run.
+- **If `counts.routedRequeued > 0`:** surface this line in the preflight output:
+  ```
+  ♻️ N stuck email(s) recovered and re-queued.
+  ```
+  (where N is the value of `counts.routedRequeued`)
+- **If all counts are zero:** say nothing about reconcile — preflight output is silent.
+
 If the user wants dry-run fallback (or MCP remains unavailable), queue drafts locally instead of writing Gmail drafts:
 
 ```bash
@@ -238,15 +253,17 @@ When user selects an email to process:
    - Note: `refinement_source: 'codex'` is reserved for future CLI-based LLMs; it is
      not an active path in this workflow.
 
-7. **Mandatory second quality gate** — always run before creating the Gmail draft:
-   ```typescript
-   draft_quality_check({ actionPlan, draft: { bodyPlain: refinedBodyPlain, bodyHtml: refinedBodyHtml } })
-   ```
-   - If `passed=true` and no `question_coverage` entries remain `missing`: proceed
-     to creating the draft.
-   - If `passed=false` after patching: surface the remaining `failed_checks` and
-     `question_coverage` entries to the user and ask how to proceed (manual edit,
-     defer, or flag for owner review). Do **not** silently skip this gate.
+7. **Mandatory delivery_status gate** — always check before creating the Gmail draft.
+
+   `draft_generate` returns a `delivery_status` field: `"ready" | "needs_patch" | "blocked"`.
+
+   - `"ready"` — quality passed with no warnings: proceed to `gmail_create_draft`.
+   - `"needs_patch"` — quality passed but warnings exist (e.g. partial coverage): review
+     warnings, apply any needed patches via `draft_refine`, then proceed.
+   - `"blocked"` — quality failed (`quality.passed: false`): inspect `quality.failed_checks`,
+     patch and call `draft_refine` (max one retry). If still `"blocked"`, escalate to the
+     user with `failed_checks` listed and ask how to proceed. Do **not** call `gmail_create_draft`
+     while `delivery_status === "blocked"`. This is a hard gate, not advisory.
    - `partial_question_coverage` warnings after patching are acceptable to proceed
      if the escalation sentence has been inserted; note them in the session summary.
 
@@ -462,7 +479,11 @@ When user says "Done" or queue is empty:
 
 1. Call `draft_signal_stats` to retrieve event counts for this session.
 2. Call `draft_template_review` with `action: "list"` to get pending proposal count.
-3. Output the summary block below.
+3. Call `gmail_audit_labels` to check the Brikette label namespace health.
+   - If `orphaned.length > 0`: include an **Orphaned labels** warning in the summary listing each orphaned label name. These are unrecognised `Brikette/*` labels that should be reviewed or migrated.
+   - If `orphaned.length === 0`: omit the label health section entirely (silent pass).
+   - If the call fails: omit the label health section — do not fail the session summary.
+4. Output the summary block below.
 
 ```markdown
 ## Session Complete
@@ -496,9 +517,13 @@ Remember to review and send drafts in Gmail!
 
 > 💡 **Calibration prompt:** ≥20 joined signals since last calibration — consider running `draft_ranker_calibrate`.
 > _(Remove this line if events_since_last_calibration < 20.)_
+
+<!-- Include the following block only when gmail_audit_labels returns orphaned.length > 0: -->
+> ⚠️ **Orphaned Gmail labels:** The following unrecognised `Brikette/*` labels exist in Gmail and should be reviewed or removed:
+> - [list each orphaned label name on its own line]
 ```
 
-**Graceful fallback:** If `draft-signal-events.jsonl` or `template-proposals.jsonl` are missing, show `"0 events"` / `"0 proposals pending"` — do not error.
+**Graceful fallback:** If `draft-signal-events.jsonl` or `template-proposals.jsonl` are missing, show `"0 events"` / `"0 proposals pending"` — do not error. If `gmail_audit_labels` fails, omit the label health section.
 
 > **NOTE:** Dry-run and Python-fallback sessions produce no signal events. Show `"0 events"` for those sessions.
 

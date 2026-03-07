@@ -1,15 +1,28 @@
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 
-const ENV_KEYS = ["XA_CATALOG_CONTRACT_BASE_URL", "XA_CATALOG_CONTRACT_WRITE_TOKEN"] as const;
+const ENV_KEYS = [
+  "XA_CATALOG_CONTRACT_BASE_URL",
+  "XA_CATALOG_CONTRACT_READ_TOKEN",
+  "XA_CATALOG_CONTRACT_WRITE_TOKEN",
+  "XA_TEST_ENABLE_CLOUDFLARE_CONTEXT",
+] as const;
 const ORIGINAL_ENV = Object.fromEntries(ENV_KEYS.map((key) => [key, process.env[key]]));
+const getCloudflareContextMock = jest.fn();
+
+jest.mock("@opennextjs/cloudflare", () => ({
+  getCloudflareContext: (...args: unknown[]) => getCloudflareContextMock(...args),
+}));
 
 describe("catalogDraftContractClient", () => {
   const originalFetch = global.fetch;
 
   beforeEach(() => {
     jest.clearAllMocks();
+    getCloudflareContextMock.mockRejectedValue(new Error("no_cloudflare_context"));
     process.env.XA_CATALOG_CONTRACT_BASE_URL = "https://drop.example/catalog/";
+    delete process.env.XA_CATALOG_CONTRACT_READ_TOKEN;
     process.env.XA_CATALOG_CONTRACT_WRITE_TOKEN = "catalog-write-token-1234567890";
+    process.env.XA_TEST_ENABLE_CLOUDFLARE_CONTEXT = "1";
   });
 
   afterEach(() => {
@@ -34,7 +47,7 @@ describe("catalogDraftContractClient", () => {
     global.fetch = jest.fn(async () =>
       Response.json({
         ok: true,
-        products: [{ title: "Studio jacket", slug: "studio-jacket", brandHandle: "a", collectionHandle: "b", price: "1", description: "x", createdAt: "2026-03-02T00:00:00.000Z", forSale: true, forRental: false, popularity: "0", deposit: "0", stock: "0", taxonomy: { department: "women", category: "bags", subcategory: "tote", color: "black", material: "leather" } }],
+        products: [{ title: "Studio jacket", slug: "studio-jacket", brandHandle: "a", collectionHandle: "b", price: "1", description: "x", createdAt: "2026-03-02T00:00:00.000Z", popularity: "0", publishState: "live", taxonomy: { department: "women", category: "bags", subcategory: "tote", color: "black", material: "leather" } }],
         revisionsById: { p1: "rev-1" },
         docRevision: "doc-rev-1",
       }),
@@ -45,10 +58,197 @@ describe("catalogDraftContractClient", () => {
 
     expect(global.fetch).toHaveBeenCalledWith(
       "https://drop.example/drafts/xa-b",
-      expect.objectContaining({ method: "GET" }),
+      expect.objectContaining({
+        method: "GET",
+        headers: { "X-XA-Catalog-Token": "catalog-write-token-1234567890" },
+      }),
     );
     expect(snapshot.docRevision).toBe("doc-rev-1");
     expect(snapshot.revisionsById).toEqual({ p1: "rev-1" });
+  });
+
+  it("resolves draft endpoint when base url includes catalog storefront path", async () => {
+    process.env.XA_CATALOG_CONTRACT_BASE_URL = "https://drop.example/catalog/xa-b";
+    global.fetch = jest.fn(async () =>
+      Response.json({
+        ok: true,
+        products: [],
+        revisionsById: {},
+        docRevision: "doc-rev-1",
+      }),
+    ) as unknown as typeof fetch;
+
+    const { readCloudDraftSnapshot } = await import("../catalogDraftContractClient");
+    await readCloudDraftSnapshot("xa-b");
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "https://drop.example/drafts/xa-b",
+      expect.objectContaining({ method: "GET" }),
+    );
+  });
+
+  it("preserves upstream path prefix before catalog route segment", async () => {
+    process.env.XA_CATALOG_CONTRACT_BASE_URL = "https://drop.example/api/catalog/xa-b";
+    global.fetch = jest.fn(async () =>
+      Response.json({
+        ok: true,
+        products: [],
+        revisionsById: {},
+        docRevision: "doc-rev-1",
+      }),
+    ) as unknown as typeof fetch;
+
+    const { readCloudDraftSnapshot } = await import("../catalogDraftContractClient");
+    await readCloudDraftSnapshot("xa-b");
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "https://drop.example/api/drafts/xa-b",
+      expect.objectContaining({ method: "GET" }),
+    );
+  });
+
+  it("uses cloudflare service binding when available", async () => {
+    const bindingFetchMock = jest.fn(async () =>
+      Response.json({
+        ok: true,
+        products: [],
+        revisionsById: {},
+        docRevision: "doc-rev-1",
+      }),
+    );
+    getCloudflareContextMock.mockResolvedValueOnce({
+      env: {
+        XA_CATALOG_CONTRACT_SERVICE: {
+          fetch: bindingFetchMock,
+        },
+      },
+    });
+    global.fetch = jest.fn(async () => Response.json({ ok: false })) as unknown as typeof fetch;
+
+    const { readCloudDraftSnapshot } = await import("../catalogDraftContractClient");
+    await readCloudDraftSnapshot("xa-b");
+
+    expect(bindingFetchMock).toHaveBeenCalledWith(
+      "https://catalog-contract.internal/drafts/xa-b",
+      expect.objectContaining({ method: "GET" }),
+    );
+    expect(global.fetch).not.toHaveBeenCalled();
+  });
+
+  it("prefers read token for draft reads when configured", async () => {
+    process.env.XA_CATALOG_CONTRACT_READ_TOKEN = "catalog-read-token-1234567890";
+    global.fetch = jest.fn(async () =>
+      Response.json({
+        ok: true,
+        products: [],
+        revisionsById: {},
+        docRevision: "doc-rev-1",
+      }),
+    ) as unknown as typeof fetch;
+
+    const { readCloudDraftSnapshot } = await import("../catalogDraftContractClient");
+    await readCloudDraftSnapshot("xa-b");
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "https://drop.example/drafts/xa-b",
+      expect.objectContaining({
+        method: "GET",
+        headers: { "X-XA-Catalog-Token": "catalog-read-token-1234567890" },
+      }),
+    );
+  });
+
+  it("ignores malformed product payloads from snapshot reads", async () => {
+    global.fetch = jest.fn(async () =>
+      Response.json({
+        ok: true,
+        products: [{ bad: true }],
+        revisionsById: {},
+        docRevision: "doc-rev-1",
+      }),
+    ) as unknown as typeof fetch;
+
+    const { readCloudDraftSnapshot } = await import("../catalogDraftContractClient");
+    await expect(readCloudDraftSnapshot("xa-b")).resolves.toEqual(
+      expect.objectContaining({
+        products: [],
+        revisionsById: {},
+        docRevision: "doc-rev-1",
+      }),
+    );
+  });
+
+  it("rejects malformed revisionsById payloads from snapshot reads", async () => {
+    global.fetch = jest.fn(async () =>
+      Response.json({
+        ok: true,
+        products: [],
+        revisionsById: { p1: 42 },
+        docRevision: "doc-rev-1",
+      }),
+    ) as unknown as typeof fetch;
+
+    const { readCloudDraftSnapshot } = await import("../catalogDraftContractClient");
+    await expect(readCloudDraftSnapshot("xa-b")).rejects.toMatchObject({
+      code: "invalid_response",
+    });
+  });
+
+  it("acquires sync locks from the contract worker", async () => {
+    global.fetch = jest.fn(async () =>
+      Response.json({ ok: true, ownerToken: "lock-owner-1", expiresAt: "2026-03-05T21:50:00.000Z" }, { status: 201 }),
+    ) as unknown as typeof fetch;
+
+    const { acquireCloudSyncLock } = await import("../catalogDraftContractClient");
+    await expect(acquireCloudSyncLock("xa-b")).resolves.toEqual({
+      status: "acquired",
+      lock: {
+        storefront: "xa-b",
+        ownerToken: "lock-owner-1",
+        expiresAt: "2026-03-05T21:50:00.000Z",
+      },
+    });
+    expect(global.fetch).toHaveBeenCalledWith(
+      "https://drop.example/drafts/xa-b/sync-lock",
+      expect.objectContaining({
+        method: "POST",
+        headers: { "X-XA-Catalog-Token": "catalog-write-token-1234567890" },
+      }),
+    );
+  });
+
+  it("maps sync-lock 409 responses to busy without throwing", async () => {
+    global.fetch = jest.fn(async () =>
+      Response.json({ ok: false, expiresAt: "2026-03-05T21:50:00.000Z" }, { status: 409 }),
+    ) as unknown as typeof fetch;
+
+    const { acquireCloudSyncLock } = await import("../catalogDraftContractClient");
+    await expect(acquireCloudSyncLock("xa-b")).resolves.toEqual({
+      status: "busy",
+      expiresAt: "2026-03-05T21:50:00.000Z",
+    });
+  });
+
+  it("sends the lock owner header when releasing sync locks", async () => {
+    global.fetch = jest.fn(async () => Response.json({ ok: true })) as unknown as typeof fetch;
+
+    const { releaseCloudSyncLock } = await import("../catalogDraftContractClient");
+    await releaseCloudSyncLock({
+      storefront: "xa-b",
+      ownerToken: "lock-owner-1",
+      expiresAt: "2026-03-05T21:50:00.000Z",
+    });
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "https://drop.example/drafts/xa-b/sync-lock",
+      expect.objectContaining({
+        method: "DELETE",
+        headers: {
+          "X-XA-Catalog-Token": "catalog-write-token-1234567890",
+          "X-XA-Sync-Lock-Owner": "lock-owner-1",
+        },
+      }),
+    );
   });
 
   it("throws conflict on 409 write response", async () => {
@@ -84,11 +284,8 @@ describe("catalogDraftContractClient", () => {
           price: "189",
           description: "desc",
           createdAt: "2026-03-02T00:00:00.000Z",
-          forSale: true,
-          forRental: false,
           popularity: "0",
-          deposit: "0",
-          stock: "1",
+          publishState: "live",
           taxonomy: {
             department: "women",
             category: "bags",
@@ -108,11 +305,8 @@ describe("catalogDraftContractClient", () => {
               price: "189",
               description: "desc",
               createdAt: "2026-03-01T00:00:00.000Z",
-              forSale: true,
-              forRental: false,
               popularity: "0",
-              deposit: "0",
-              stock: "1",
+              publishState: "live",
               taxonomy: {
                 department: "women",
                 category: "bags",

@@ -30,9 +30,9 @@ telemetry, and a defined go-live activation/rollback seam.
 
 | Artifact | Path | Description |
 |---|---|---|
-| Trial orchestrator | `scripts/src/startup-loop/lp-do-ideas-trial.ts` | Pure function: ingests delta events, emits dispatch.v1 packets, mode-locked to trial |
-| Routing adapter | `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts` | Pure function: routes packets to fact-find or briefing, 10 error codes, casing normalisation |
-| Trial queue + telemetry | `scripts/src/startup-loop/lp-do-ideas-trial-queue.ts` | TrialQueue class: monotonic state machine, dual-key idempotency, append-only telemetry, injectable clock |
+| Trial orchestrator | `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts` | Pure function: ingests delta events, emits dispatch.v1 packets, mode-locked to trial |
+| Routing adapter | `scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts` | Pure function: routes packets to fact-find or briefing, 10 error codes, casing normalisation |
+| Trial queue + telemetry | `scripts/src/startup-loop/ideas/lp-do-ideas-trial-queue.ts` | TrialQueue class: monotonic state machine, dual-key idempotency, append-only telemetry, injectable clock |
 
 #### Tests
 

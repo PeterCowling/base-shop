@@ -86,7 +86,7 @@ Primary changes:
 - `docs/plans/_templates/plan.md` — remove `Business-OS-Integration`, `Business-Unit`, `Card-ID` frontmatter fields
 - `docs/agents/feature-workflow-guide.md` — remove BOS-default DO guidance (`Business-OS-Integration on/off`) and document filesystem-only DO behavior
 - `docs/business-os/agent-workflows.md` — align DO workflow integration section with BOS-decoupled DO skills
-- `docs/business-os/startup-loop/loop-output-contracts.md` — align DO artifact frontmatter requirements with decoupled templates
+- `docs/business-os/startup-loop/contracts/loop-output-contracts.md` — align DO artifact frontmatter requirements with decoupled templates
 - `docs/business-os/_meta/rebuild-discovery-index.sh` — remove or explicitly handle `Business-Unit` / `Card-ID` reads from `docs/plans/*` artifacts
 
 Secondary (retain, no change needed):
@@ -124,7 +124,7 @@ Secondary (retain, no change needed):
   - `docs/plans/_templates/fact-find-planning.md` and `plan.md` — include BOS fields (must update)
   - `docs/agents/feature-workflow-guide.md` — still documents BOS-default behavior for DO flow
   - `docs/business-os/agent-workflows.md` — still documents DO stage-doc/lane API writes and BOS-default mode
-  - `docs/business-os/startup-loop/loop-output-contracts.md` — still defines `Business-Unit`/`Card-ID` expectations for DO artifacts
+  - `docs/business-os/startup-loop/contracts/loop-output-contracts.md` — still defines `Business-Unit`/`Card-ID` expectations for DO artifacts
   - `docs/business-os/_meta/rebuild-discovery-index.sh` — still parses `Card-ID` and `Business-Unit` from `docs/plans/*` artifacts
 - Likely blast radius:
   - Primary edits are in `.claude/skills/` and `docs/plans/_templates/`, but process-contract docs in `docs/agents/` and `docs/business-os/` plus one shell utility script are also impacted.
@@ -228,7 +228,7 @@ Secondary (retain, no change needed):
 | A skill outside the six DO skills references one of the three deleted shared files | Low | Medium — that skill would reference a missing file | Pre-flight grep before TASK-07; already partially confirmed by existing grep |
 | `lp-bos-sync` silently depends on `build-bos-integration.md` or similar | Low | Medium — S5B would lose a referenced module | Read `lp-bos-sync/SKILL.md` as TASK pre-flight |
 | `docs/business-os/_meta/rebuild-discovery-index.sh` still parses `Card-ID`/`Business-Unit` from `docs/plans/*` after those fields are removed from templates | Medium | Medium — discovery index metadata can degrade (`cardId`/`business` empty or malformed) | Add TASK-11 to remove field dependency or codify fallback behavior with explicit validation |
-| Operator-facing docs still describe BOS-default DO behavior (`docs/agents/feature-workflow-guide.md`, `docs/business-os/agent-workflows.md`, `docs/business-os/startup-loop/loop-output-contracts.md`) | High | Medium — stale instructions can drive contradictory artifacts/process usage | Add TASK-10 doc-contract alignment edits in the same rollout |
+| Operator-facing docs still describe BOS-default DO behavior (`docs/agents/feature-workflow-guide.md`, `docs/business-os/agent-workflows.md`, `docs/business-os/startup-loop/contracts/loop-output-contracts.md`) | High | Medium — stale instructions can drive contradictory artifacts/process usage | Add TASK-10 doc-contract alignment edits in the same rollout |
 | Existing `fact-find.md` or `plan.md` files with `Card-ID: BRIK-ENG-xxxx` cause confusion after decoupling (skill might try to look up card that no longer matches any integration phase) | Low | Low — inert frontmatter fields are ignored since integration phases are gone | No action needed; fields become inert |
 | Discovery UX regression: operators used `discovery-index.json` table in DO skills to browse available work; filesystem scan is less polished | Medium | Low — functional but less ergonomic | Acceptable trade-off; document new scan pattern in each skill's updated discovery path |
 | `startup-loop advance` for DO stage tries to confirm BOS sync and fails during a transition period (before cmd-advance.md is updated) | Medium | High — advance would be permanently blocked | TASK-06 (cmd-advance.md update) must happen in the same commit/session as TASK-01–03 |
@@ -258,7 +258,7 @@ Secondary (retain, no change needed):
 - TASK-07: Delete `.claude/skills/_shared/fact-find-bos-integration.md`, `.claude/skills/_shared/plan-bos-integration.md`, `.claude/skills/_shared/build-bos-integration.md` (pre-flight: grep to confirm zero consumers)
 - TASK-08: Edit `_shared/stage-doc-integration.md` — remove "From /lp-do-fact-find", "From /lp-do-plan", "From /lp-do-build" subsections under "Integration with Skills"; retain "From /meta-reflect"; update "Lane Transitions" table header note to clarify these apply only to meta-reflect/idea-advance context; remove the three rows mapping DO-skill stage docs (`fact-find.user.md → Inbox -> Fact-finding`, `plan.user.md → Fact-finding -> Planned`, `build.user.md → Planned -> In progress`) from the Lane Transitions table, since DO skills will no longer trigger these transitions after decoupling
 - TASK-09: Edit `docs/plans/_templates/fact-find-planning.md` and `docs/plans/_templates/plan.md` — remove `Business-OS-Integration`, `Business-Unit`, `Card-ID` frontmatter fields; also remove `direct-inject` and `direct-inject-rationale` fields from `fact-find-planning.md`, as these fields exist solely to bypass the BOS card creation requirement that is being removed — after decoupling, all fact-finds are implicitly direct-inject and these fields are vestigial
-- TASK-10: Edit `docs/agents/feature-workflow-guide.md`, `docs/business-os/agent-workflows.md`, and `docs/business-os/startup-loop/loop-output-contracts.md` — remove BOS-default DO claims (`Business-OS-Integration on/off` behavior, DO stage-doc/lane API side-effects) and align instructions/contracts with filesystem-only DO workflow
+- TASK-10: Edit `docs/agents/feature-workflow-guide.md`, `docs/business-os/agent-workflows.md`, and `docs/business-os/startup-loop/contracts/loop-output-contracts.md` — remove BOS-default DO claims (`Business-OS-Integration on/off` behavior, DO stage-doc/lane API side-effects) and align instructions/contracts with filesystem-only DO workflow
 - TASK-11: Edit `docs/business-os/_meta/rebuild-discovery-index.sh` — remove or harden `Card-ID` / `Business-Unit` extraction for `docs/plans/*` artifacts (post-template-removal), then validate generated JSON remains correct
 
 ## Execution Routing Packet

@@ -206,7 +206,12 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
         });
 
         // Occupant-level activity (code=9)
-        await addActivity(occupantId, 9);
+        const activityResult = await addActivity(occupantId, 9);
+        if (!activityResult.success) {
+          throw new Error(
+            activityResult.error ?? "Failed to save city tax activity."
+          );
+        }
 
         // Mirror in /allFinancialTransactions
         await addToAllTransactions(txnId, {

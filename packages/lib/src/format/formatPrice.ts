@@ -19,7 +19,7 @@ export function formatPrice(
 
   const normalizedAmount = (amount as unknown) == null ? NaN : amount;
 
-  return new Intl.NumberFormat(locale, {
+  return new Intl.NumberFormat(locale ?? "en-US", {
     style: "currency",
     currency,
   }).format(normalizedAmount);

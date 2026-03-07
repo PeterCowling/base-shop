@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "xa-r2-deployment-config:2026-03-03",
+  "feature_slug": "xa-r2-deployment-config",
+  "emitted_at": "2026-03-03T18:54:12.107Z",
+  "why": "The R2 image upload feature is code-complete but cannot be used until the R2 bucket is created, public access enabled, and the actual public URL configured.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "CI build environment configured with NEXT_PUBLIC_XA_IMAGES_BASE_URL env var (GitHub Actions variable reference) and xa-b wrangler.toml placeholder updated for documentation.",
+    "source": "operator"
+  }
+}

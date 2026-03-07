@@ -1,10 +1,12 @@
+"use client";
+
 import Link from "next/link";
 
 import { Grid } from "@acme/design-system/atoms/Grid";
 import { Section } from "@acme/design-system/atoms/Section";
 import { Inline } from "@acme/design-system/primitives/Inline";
 
-import { XA_PRODUCTS } from "../lib/demoData";
+import { useXaCatalogSnapshot } from "../lib/liveCatalog";
 import { siteConfig } from "../lib/siteConfig";
 import {
   filterByDepartment,
@@ -15,23 +17,35 @@ import {
   XA_SUBCATEGORIES,
 } from "../lib/xaCatalog";
 import { xaI18n } from "../lib/xaI18n";
+import { getDesignerHref } from "../lib/xaRoutes";
 import type { XaDepartment } from "../lib/xaTypes";
 
+import { XaFadeImage } from "./XaFadeImage";
 import { XaProductCard } from "./XaProductCard";
 
 export function XaDepartmentLanding({ department }: { department: XaDepartment }) {
+  const { brands, products: liveProducts } = useXaCatalogSnapshot();
   const departmentLabel = formatLabel(department);
-  const products = filterByDepartment(XA_PRODUCTS, department);
+  const products = filterByDepartment(liveProducts, department);
   const newIn = [...products]
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
     .slice(0, 4);
-  const trendingDesigners = getTrendingDesigners(4, department);
+  const trendingDesigners = getTrendingDesigners(4, department, { brands, products: liveProducts });
 
-  const categoryCards = XA_ALLOWED_CATEGORIES.map((category) => ({
-    label: XA_CATEGORY_LABELS[category],
-    href: `/${department}/${category}`,
-    items: XA_SUBCATEGORIES[category],
-  }));
+  const categoryCards = XA_ALLOWED_CATEGORIES.map((category) => {
+    const catProducts = products.filter((p) => p.taxonomy.category === category);
+    const withImage = catProducts.find((p) =>
+      p.media.some((m) => m.type === "image" && m.url.trim()),
+    );
+    const image = withImage?.media.find((m) => m.type === "image" && m.url.trim());
+    return {
+      label: XA_CATEGORY_LABELS[category],
+      href: `/${department}/${category}`,
+      items: XA_SUBCATEGORIES[category],
+      imageUrl: image?.url,
+      imageAlt: image?.altText ?? withImage?.title ?? XA_CATEGORY_LABELS[category],
+    };
+  });
 
   return (
     <main className="sf-content">
@@ -63,12 +77,12 @@ export function XaDepartmentLanding({ department }: { department: XaDepartment }
         <h2 className="text-xl font-semibold">{xaI18n.t("xaB.src.components.xadepartmentlanding.l63c47")}</h2>
         <Inline gap={3} className="mt-4 flex-wrap">
           {trendingDesigners.map((designer) => (
-            <Link
-              key={designer.handle}
-              href={`/designer/${designer.handle}`}
-              className="rounded-full border px-4 py-2 text-sm font-medium hover:bg-muted"
-            >
-              {designer.name}
+              <Link
+                key={designer.handle}
+                href={getDesignerHref(designer.handle)}
+                className="rounded-full border px-4 py-2 text-sm font-medium hover:bg-muted"
+              >
+                {designer.name}
             </Link>
           ))}
         </Inline>
@@ -81,11 +95,33 @@ export function XaDepartmentLanding({ department }: { department: XaDepartment }
             <Link
               key={card.label}
               href={card.href}
-              className="rounded-lg border p-5 hover:shadow-sm"
+              className="xa-panel group overflow-hidden rounded-sm border border-border-1"
             >
-              <div className="text-lg font-semibold">{card.label}</div>
-              <div className="mt-3 text-sm text-muted-foreground">
-                {card.items.map(formatLabel).join(" / ")}
+              {/* eslint-disable-next-line ds/no-arbitrary-tailwind -- XA-0022: category card aspect ratio */}
+              <div className="relative aspect-[4/3] overflow-hidden bg-surface">
+                {card.imageUrl ? (
+                  <XaFadeImage
+                    src={card.imageUrl}
+                    alt={card.imageAlt}
+                    fill
+                    // eslint-disable-next-line ds/no-hardcoded-copy -- XA-0022: image sizes hint
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                ) : (
+                  <div
+                    // eslint-disable-next-line ds/enforce-layout-primitives -- XA-0022: category card fallback leaf
+                    className="flex h-full w-full items-center justify-center text-sm text-muted-foreground"
+                  >
+                    {card.label}
+                  </div>
+                )}
+              </div>
+              <div className="p-4">
+                <div className="text-sm font-semibold uppercase tracking-wide">{card.label}</div>
+                <div className="mt-1 text-xs text-muted-foreground">
+                  {card.items.map(formatLabel).join(" / ")}
+                </div>
               </div>
             </Link>
           ))}

@@ -4,8 +4,8 @@ import {
   applyKillSwitch,
   checkOptionCGate,
   evaluateOptionCReadiness,
-} from "../lp-do-ideas-autonomous-gate.js";
-import type { IdeasMetricsRollup } from "../lp-do-ideas-metrics-rollup.js";
+} from "../ideas/lp-do-ideas-autonomous-gate.js";
+import type { IdeasMetricsRollup } from "../ideas/lp-do-ideas-metrics-rollup.js";
 
 // ---------------------------------------------------------------------------
 // Helpers

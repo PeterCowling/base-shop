@@ -5,6 +5,7 @@ import { parseFile } from "fast-csv";
 import { XA_PRODUCTS_CSV_COLUMN_ORDER } from "./catalogCsvColumns.js";
 
 export type XaProductsCsvRow = Record<string, string>;
+type ErrnoLike = NodeJS.ErrnoException & { code?: string };
 
 export function normalizeCsvKey(key: string): string {
   return key.trim().toLowerCase();
@@ -22,7 +23,7 @@ export function normalizeCsvRow(row: Record<string, unknown>): XaProductsCsvRow 
 }
 
 export function csvEscape(value: string): string {
-  const needsQuotes = /[",\n]/.test(value);
+  const needsQuotes = /[",\r\n]/.test(value);
   if (!needsQuotes) return value;
   return `"${value.replace(/"/g, `""`)}"`;
 }
@@ -34,6 +35,16 @@ export function parseBoolean(raw: string, fallback: boolean) {
   if (["1", "true", "yes", "y"].includes(normalized)) return true;
   if (["0", "false", "no", "n"].includes(normalized)) return false;
   return fallback;
+}
+
+function isRetryableCsvWriteError(error: unknown): boolean {
+  if (!error || typeof error !== "object") return false;
+  const code = (error as ErrnoLike).code;
+  return code === "EPERM" || code === "EACCES" || code === "EBUSY";
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 export async function readCsvFile(
@@ -71,13 +82,29 @@ export async function writeCsvFileAtomically(
   header: string[],
   rows: XaProductsCsvRow[],
 ): Promise<void> {
+  const csvLineEnding = "\r\n";
   const tempPath = `${filePath}.tmp`;
   const body =
-    `${header.join(",")}\n` +
+    `${header.join(",")}${csvLineEnding}` +
     rows
       .map((row) => header.map((key) => csvEscape(row[key] ?? "")).join(","))
-      .join("\n") +
-    "\n";
+      .join(csvLineEnding) +
+    csvLineEnding;
   await fs.writeFile(tempPath, body, "utf8");
-  await fs.rename(tempPath, filePath);
+
+  const maxRenameAttempts = 4;
+  for (let attempt = 0; attempt < maxRenameAttempts; attempt += 1) {
+    try {
+      await fs.rename(tempPath, filePath);
+      return;
+    } catch (error) {
+      const isRetryable = isRetryableCsvWriteError(error);
+      const isLastAttempt = attempt === maxRenameAttempts - 1;
+      if (!isRetryable || isLastAttempt) {
+        await fs.unlink(tempPath).catch(() => undefined);
+        throw error;
+      }
+      await sleep(75 * (attempt + 1));
+    }
+  }
 }

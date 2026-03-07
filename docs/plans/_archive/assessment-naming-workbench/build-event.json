@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "assessment-naming-workbench-2026-03-03",
+  "feature_slug": "assessment-naming-workbench",
+  "emitted_at": "2026-03-03T12:00:00.000Z",
+  "why": "HEAD assessment/ had 58 files with 33 naming intermediates burying actual assessment outputs.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Intermediate naming artifacts moved to assessment/naming-workbench/ for all businesses. Only final deliverables remain at assessment/ root. Naming CLI sidecar paths updated.",
+    "source": "operator"
+  }
+}

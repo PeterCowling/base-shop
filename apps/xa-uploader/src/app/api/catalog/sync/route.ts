@@ -7,7 +7,19 @@ import path from "node:path";
 import { NextResponse } from "next/server";
 
 import { toPositiveInt } from "@acme/lib";
+import {
+  type CatalogProductDraftInput,
+  type CatalogPublishState,
+  deriveCatalogPublishState,
+  isCatalogPublishableState,
+  slugify,
+} from "@acme/lib/xa";
 
+import {
+  applyCloudMediaExistenceValidation,
+  type CloudBuiltArtifacts,
+  type MediaValidationPolicy,
+} from "../../../../lib/catalogCloudPublish";
 import {
   type CatalogPublishError,
   getCatalogContractReadiness,
@@ -15,16 +27,37 @@ import {
   publishCatalogPayloadToContract,
 } from "../../../../lib/catalogContractClient";
 import { resolveXaUploaderProductsCsvPath } from "../../../../lib/catalogCsv";
-import { readCloudDraftSnapshot } from "../../../../lib/catalogDraftContractClient";
+import {
+  acquireCloudSyncLock,
+  type CloudSyncLockLease,
+  readCloudDraftSnapshot,
+  releaseCloudSyncLock,
+  writeCloudDraftSnapshot,
+} from "../../../../lib/catalogDraftContractClient";
 import { buildCatalogArtifactsFromDrafts } from "../../../../lib/catalogDraftToContract";
 import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
 import type { XaCatalogStorefront } from "../../../../lib/catalogStorefront.types";
 import { getCatalogSyncInputStatus } from "../../../../lib/catalogSyncInput";
+import {
+  buildDisplaySyncGuidance,
+  type DeployPendingState,
+  type DeployTriggerResult,
+  isDeployHookConfigured,
+  isDeployHookRequired,
+  maybeTriggerXaBDeploy,
+  reconcileDeployPendingState,
+  resolveDeployStatePaths,
+} from "../../../../lib/deployHook";
 import { isLocalFsRuntimeEnabled } from "../../../../lib/localFsGuard";
 import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
 import { resolveRepoRoot } from "../../../../lib/repoRoot";
 import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
-import { acquireSyncMutex, getUploaderKv, releaseSyncMutex } from "../../../../lib/syncMutex";
+import {
+  acquireSyncMutex,
+  getUploaderKv,
+  releaseSyncMutex,
+  type UploaderKvNamespace,
+} from "../../../../lib/syncMutex";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
 
 export const runtime = "nodejs";
@@ -35,6 +68,7 @@ type SyncOptions = {
   replace?: boolean;
   recursive?: boolean;
   confirmEmptyInput?: boolean;
+  mediaValidationPolicy?: MediaValidationPolicy;
 };
 
 type SyncPayload = {
@@ -60,14 +94,6 @@ const SYNC_PAYLOAD_MAX_BYTES = 24 * 1024;
 const SYNC_LOG_MAX_BYTES_DEFAULT = 128 * 1024;
 const SYNC_PUBLISH_HISTORY_MAX = 100;
 
-function buildDisplaySyncGuidance() {
-  return {
-    mode: "build_time_runtime_catalog",
-    requiresXaBBuild: true,
-    nextAction: "rebuild_and_deploy_xa_b",
-  };
-}
-
 function getValidateTimeoutMs(): number {
   return toPositiveInt(process.env.XA_UPLOADER_SYNC_VALIDATE_TIMEOUT_MS, 45_000, 1);
 }
@@ -91,13 +117,41 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 function parseSyncOptions(input: unknown): SyncOptions {
   if (!isRecord(input)) return {};
 
+  const mediaValidationPolicyRaw =
+    typeof input.mediaValidationPolicy === "string"
+      ? input.mediaValidationPolicy.trim().toLowerCase()
+      : "";
+  const mediaValidationPolicy: MediaValidationPolicy | undefined =
+    mediaValidationPolicyRaw === "strict" || mediaValidationPolicyRaw === "warn"
+      ? mediaValidationPolicyRaw
+      : undefined;
+
   return {
     strict: input.strict === true,
     dryRun: input.dryRun === true,
     replace: input.replace === true,
     recursive: input.recursive === true,
     confirmEmptyInput: input.confirmEmptyInput === true,
+    mediaValidationPolicy,
   };
+}
+
+function getDefaultCloudMediaValidationPolicy(): MediaValidationPolicy {
+  const raw = (process.env.XA_UPLOADER_CLOUD_MEDIA_VALIDATION_POLICY ?? "warn")
+    .trim()
+    .toLowerCase();
+  return raw === "strict" ? "strict" : "warn";
+}
+
+function resolveCloudMediaValidationPolicy(options: SyncOptions): MediaValidationPolicy {
+  return options.mediaValidationPolicy ?? getDefaultCloudMediaValidationPolicy();
+}
+
+function getCloudAllowedExternalImageHosts(): string[] {
+  return (process.env.XA_UPLOADER_CLOUD_MEDIA_ALLOWED_HOSTS ?? "")
+    .split(",")
+    .map((entry) => entry.trim())
+    .filter(Boolean);
 }
 
 async function parseSyncPayload(request: Request): Promise<SyncPayload> {
@@ -254,6 +308,57 @@ async function runNodeTsx(
   });
 }
 
+async function runOptionalPreValidation(params: {
+  strict: boolean;
+  repoRoot: string;
+  validateScriptPath: string;
+  validateArgs: string[];
+  startedAt: number;
+}): Promise<{ validateResult: ScriptRunResult; errorResponse: NextResponse | null }> {
+  if (!params.strict) {
+    return {
+      validateResult: {
+        code: 0,
+        // i18n-exempt -- XAUP-0001 [ttl=2026-12-31] non-UI diagnostic marker in sync logs
+        stdout: "[xa-validate] skipped (strict=false)",
+        stderr: "",
+        timedOut: false,
+      },
+      errorResponse: null,
+    };
+  }
+
+  const validateResult = await runNodeTsx(
+    params.repoRoot,
+    params.validateScriptPath,
+    params.validateArgs,
+    getValidateTimeoutMs(),
+  );
+  if (validateResult.code !== 0) {
+    return {
+      validateResult,
+      errorResponse: NextResponse.json(
+        maybeAttachLogs(
+          {
+            ok: false,
+            error: "validation_failed",
+            recovery: "review_validation_logs",
+            durationMs: Date.now() - params.startedAt,
+            timedOut: validateResult.timedOut,
+          },
+          { validate: validateResult },
+        ),
+        { status: 400 },
+      ),
+    };
+  }
+
+  return {
+    validateResult,
+    errorResponse: null,
+  };
+}
+
 function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLimit>): NextResponse {
   applyRateLimitHeaders(response.headers, limit);
   return response;
@@ -293,6 +398,17 @@ function validateCurrencyRates(value: unknown): value is CurrencyRates {
   return rates.every((rate) => typeof rate === "number" && Number.isFinite(rate) && rate > 0);
 }
 
+function normalizePublishState(product: CatalogProductDraftInput): CatalogPublishState {
+  return deriveCatalogPublishState(product);
+}
+
+function productIdentity(product: CatalogProductDraftInput): string {
+  const id = (product.id ?? "").trim();
+  if (id) return `id:${id}`;
+  return `slug:${slugify(product.slug || product.title)}`;
+}
+
+
 async function getCurrencyRatesStatus(currencyRatesPath: string): Promise<{
   ok: true;
 } | {
@@ -311,6 +427,51 @@ async function getCurrencyRatesStatus(currencyRatesPath: string): Promise<{
     if (err?.code === "ENOENT") return { ok: false, reason: "currency_rates_missing" };
     return { ok: false, reason: "currency_rates_invalid" };
   }
+}
+
+function buildCatalogInputGuardResponse(params: {
+  inputStatus: Awaited<ReturnType<typeof getCatalogSyncInputStatus>>;
+  confirmEmptyInput: boolean;
+  inputPath: string;
+  startedAt: number;
+}): NextResponse | null {
+  const { inputStatus, confirmEmptyInput, inputPath, startedAt } = params;
+  if (!inputStatus.exists) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "catalog_input_missing",
+        recovery: "create_catalog_input",
+        input: {
+          exists: false,
+          rowCount: 0,
+          path: inputPath,
+        },
+        durationMs: Date.now() - startedAt,
+      },
+      { status: 409 },
+    );
+  }
+
+  if (inputStatus.rowCount === 0 && !confirmEmptyInput) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "catalog_input_empty",
+        recovery: "confirm_empty_catalog_sync",
+        requiresConfirmation: true,
+        input: {
+          exists: inputStatus.exists,
+          rowCount: inputStatus.rowCount,
+          path: inputPath,
+        },
+        durationMs: Date.now() - startedAt,
+      },
+      { status: 409 },
+    );
+  }
+
+  return null;
 }
 
 async function recordPublishHistory(params: {
@@ -371,19 +532,147 @@ function getPublishErrorDetails(error: unknown): {
   };
 }
 
+function buildContractLockFailureResponse(params: {
+  error: unknown;
+  startedAt: number;
+}): NextResponse {
+  const publishError = getPublishErrorDetails(params.error);
+  const isUnconfigured = publishError.code === "unconfigured";
+  return NextResponse.json(
+    {
+      ok: false,
+      error: isUnconfigured ? "catalog_publish_unconfigured" : "catalog_publish_failed",
+      recovery: isUnconfigured ? "configure_catalog_contract" : "review_catalog_contract",
+      durationMs: Date.now() - params.startedAt,
+      publishStatus: publishError.status,
+    },
+    { status: isUnconfigured ? 503 : 502 },
+  );
+}
+
+async function readGeneratedCatalogProductCount(catalogOutPath: string): Promise<number> {
+  try {
+    const catalogRaw = await fs.readFile(catalogOutPath, "utf8");
+    const parsed = JSON.parse(catalogRaw) as { products?: unknown };
+    return Array.isArray(parsed.products) ? parsed.products.length : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function buildNoPublishableProductsResponse(params: {
+  inputPath: string;
+  totalDraftRows: number;
+  startedAt: number;
+  validateResult: ScriptRunResult;
+  syncResult: ScriptRunResult;
+}): NextResponse {
+  return NextResponse.json(
+    maybeAttachLogs(
+      {
+        ok: false,
+        error: "no_publishable_products",
+        recovery: "mark_products_ready",
+        requiresConfirmation: true,
+        input: {
+          exists: true,
+          rowCount: 0,
+          totalDraftRows: params.totalDraftRows,
+          path: params.inputPath,
+        },
+        durationMs: Date.now() - params.startedAt,
+      },
+      { validate: params.validateResult, sync: params.syncResult },
+    ),
+    { status: 409 },
+  );
+}
+
+function buildDeployHookUnconfiguredResponse(startedAt: number): NextResponse {
+  return NextResponse.json(
+    {
+      ok: false,
+      error: "deploy_hook_unconfigured",
+      recovery: "configure_deploy_hook",
+      durationMs: Date.now() - startedAt,
+    },
+    { status: 503 },
+  );
+}
+
+async function tryPublishArtifactsToContract(params: {
+  storefrontId: XaCatalogStorefront;
+  catalogOutPath: string;
+  mediaOutPath: string;
+  publishHistoryPath: string;
+  startedAt: number;
+  validateResult: ScriptRunResult | null;
+  syncResult: ScriptRunResult | null;
+}): Promise<
+  | { published: true; result: Awaited<ReturnType<typeof publishCatalogArtifactsToContract>> }
+  | { published: false; skipped: true }
+  | { published: false; skipped: false; errorResponse: NextResponse }
+> {
+  const contractReadiness = getCatalogContractReadiness();
+  if (!contractReadiness.configured) {
+    return { published: false, skipped: true };
+  }
+  try {
+    const publishResult = await publishCatalogArtifactsToContract({
+      storefrontId: params.storefrontId,
+      catalogOutPath: params.catalogOutPath,
+      mediaOutPath: params.mediaOutPath,
+    });
+    await recordPublishHistory({
+      historyPath: params.publishHistoryPath,
+      storefrontId: params.storefrontId,
+      catalogOutPath: params.catalogOutPath,
+      mediaOutPath: params.mediaOutPath,
+      publishResult: publishResult ?? {},
+    });
+    return { published: true, result: publishResult };
+  } catch (error) {
+    const publishError = getPublishErrorDetails(error);
+    const isUnconfigured = publishError.code === "unconfigured";
+    console.error({
+      route: "POST /api/catalog/sync",
+      error: error instanceof Error ? error.message : String(error),
+      durationMs: Date.now() - params.startedAt,
+    });
+    const failurePayload = maybeAttachLogs(
+      {
+        ok: false,
+        error: isUnconfigured ? "catalog_publish_unconfigured" : "catalog_publish_failed",
+        recovery: isUnconfigured ? "configure_catalog_contract" : "review_catalog_contract",
+        durationMs: Date.now() - params.startedAt,
+        publishStatus: publishError.status,
+        publishDetails: shouldExposeSyncLogs() ? publishError.details : undefined,
+      },
+      { validate: params.validateResult, sync: params.syncResult },
+    );
+    return {
+      published: false,
+      skipped: false,
+      errorResponse: NextResponse.json(failurePayload, { status: isUnconfigured ? 503 : 502 }),
+    };
+  }
+}
+
 async function runSyncPipeline(params: {
   repoRoot: string;
   storefrontId: XaCatalogStorefront;
   payload: SyncPayload;
   startedAt: number;
+  kv: UploaderKvNamespace | null;
 }): Promise<NextResponse> {
-  const { repoRoot, storefrontId, payload, startedAt } = params;
+  const { repoRoot, storefrontId, payload, startedAt, kv } = params;
   const productsCsvPath = resolveXaUploaderProductsCsvPath(storefrontId);
   const uploaderDataDir = path.join(repoRoot, "apps", "xa-uploader", "data");
   const currencyRatesPath = path.join(uploaderDataDir, "currency-rates.json");
   const statePath = path.join(uploaderDataDir, `.xa-upload-state.${storefrontId}.json`);
   const backupDir = path.join(uploaderDataDir, "backups", storefrontId);
   const publishHistoryPath = getPublishHistoryPath(uploaderDataDir, storefrontId);
+  const deployStatePaths = resolveDeployStatePaths(uploaderDataDir, storefrontId);
   await fs.mkdir(uploaderDataDir, { recursive: true });
   await fs.mkdir(backupDir, { recursive: true });
 
@@ -391,38 +680,14 @@ async function runSyncPipeline(params: {
   await fs.mkdir(path.dirname(catalogOutPath), { recursive: true });
 
   const inputStatus = await getCatalogSyncInputStatus(productsCsvPath);
-  if (!inputStatus.exists) {
-    return NextResponse.json(
-      {
-        ok: false,
-        error: "catalog_input_missing",
-        recovery: "create_catalog_input",
-        input: {
-          exists: false,
-          rowCount: 0,
-          path: productsCsvPath,
-        },
-        durationMs: Date.now() - startedAt,
-      },
-      { status: 409 },
-    );
-  }
-  if (inputStatus.rowCount === 0 && !payload.options.confirmEmptyInput) {
-    return NextResponse.json(
-      {
-        ok: false,
-        error: "catalog_input_empty",
-        recovery: "confirm_empty_catalog_sync",
-        requiresConfirmation: true,
-        input: {
-          exists: inputStatus.exists,
-          rowCount: inputStatus.rowCount,
-          path: productsCsvPath,
-        },
-        durationMs: Date.now() - startedAt,
-      },
-      { status: 409 },
-    );
+  const inputGuardResponse = buildCatalogInputGuardResponse({
+    inputStatus,
+    confirmEmptyInput: payload.options.confirmEmptyInput === true,
+    inputPath: productsCsvPath,
+    startedAt,
+  });
+  if (inputGuardResponse) {
+    return inputGuardResponse;
   }
 
   const currencyRatesStatus = await getCurrencyRatesStatus(currencyRatesPath);
@@ -468,27 +733,17 @@ async function runSyncPipeline(params: {
     currencyRatesPath,
   });
 
-  const validateResult = await runNodeTsx(
+  const preValidation = await runOptionalPreValidation({
+    strict: payload.options.strict === true,
     repoRoot,
-    scriptPaths.validate,
+    validateScriptPath: scriptPaths.validate,
     validateArgs,
-    getValidateTimeoutMs(),
-  );
-  if (validateResult.code !== 0) {
-    return NextResponse.json(
-      maybeAttachLogs(
-        {
-          ok: false,
-          error: "validation_failed",
-          recovery: "review_validation_logs",
-          durationMs: Date.now() - startedAt,
-          timedOut: validateResult.timedOut,
-        },
-        { validate: validateResult },
-      ),
-      { status: 400 },
-    );
+    startedAt,
+  });
+  if (preValidation.errorResponse) {
+    return preValidation.errorResponse;
   }
+  const { validateResult } = preValidation;
 
   const syncResult = await runNodeTsx(repoRoot, scriptPaths.sync, syncArgs, getSyncTimeoutMs());
   if (syncResult.code !== 0) {
@@ -507,41 +762,56 @@ async function runSyncPipeline(params: {
     );
   }
 
+  const publishableCount = await readGeneratedCatalogProductCount(catalogOutPath);
+  if (publishableCount === 0 && inputStatus.rowCount > 0 && !payload.options.confirmEmptyInput) {
+    return buildNoPublishableProductsResponse({
+      inputPath: productsCsvPath,
+      totalDraftRows: inputStatus.rowCount,
+      startedAt,
+      validateResult,
+      syncResult,
+    });
+  }
+
   let publishResult: Awaited<ReturnType<typeof publishCatalogArtifactsToContract>> | null = null;
+  let publishSkipped = false;
+  let deployResult: DeployTriggerResult | undefined;
+  let deployPending: DeployPendingState | null = null;
   if (!payload.options.dryRun) {
-    try {
-      publishResult = await publishCatalogArtifactsToContract({
+    const contractReadiness = getCatalogContractReadiness();
+    if (contractReadiness.configured && isDeployHookRequired() && !isDeployHookConfigured()) {
+      return buildDeployHookUnconfiguredResponse(startedAt);
+    }
+
+    const outcome = await tryPublishArtifactsToContract({
+      storefrontId,
+      catalogOutPath,
+      mediaOutPath,
+      publishHistoryPath,
+      startedAt,
+      validateResult,
+      syncResult,
+    });
+    if ("result" in outcome) {
+      publishResult = outcome.result;
+    } else if ("errorResponse" in outcome) {
+      return outcome.errorResponse;
+    } else {
+      publishSkipped = true;
+    }
+
+    if (publishResult) {
+      deployResult = await maybeTriggerXaBDeploy({
         storefrontId,
-        catalogOutPath,
-        mediaOutPath,
+        kv,
+        statePaths: deployStatePaths,
       });
-      await recordPublishHistory({
-        historyPath: publishHistoryPath,
+      deployPending = await reconcileDeployPendingState({
         storefrontId,
-        catalogOutPath,
-        mediaOutPath,
-        publishResult: publishResult ?? {},
-      });
-    } catch (error) {
-      const publishError = getPublishErrorDetails(error);
-      const isUnconfigured = publishError.code === "unconfigured";
-      console.error({
-        route: "POST /api/catalog/sync",
-        error: error instanceof Error ? error.message : String(error),
-        durationMs: Date.now() - startedAt,
-      });
-      const failurePayload = maybeAttachLogs(
-        {
-          ok: false,
-          error: isUnconfigured ? "catalog_publish_unconfigured" : "catalog_publish_failed",
-          recovery: isUnconfigured ? "configure_catalog_contract" : "review_catalog_contract",
-          durationMs: Date.now() - startedAt,
-          publishStatus: publishError.status,
-          publishDetails: shouldExposeSyncLogs() ? publishError.details : undefined,
-        },
-        { validate: validateResult, sync: syncResult },
-      );
-      return NextResponse.json(failurePayload, { status: isUnconfigured ? 503 : 502 });
+        kv,
+        result: deployResult,
+        statePaths: deployStatePaths,
+      }).catch(() => null);
     }
   }
 
@@ -551,33 +821,121 @@ async function runSyncPipeline(params: {
         ok: true,
         durationMs: Date.now() - startedAt,
         dryRun: Boolean(payload.options.dryRun),
+        publishSkipped: publishSkipped || undefined,
         publishedVersion: publishResult?.version,
         publishedAt: publishResult?.publishedAt,
-        display: buildDisplaySyncGuidance(),
+        deploy: deployResult,
+        deployPending: deployPending ?? undefined,
+        display: buildDisplaySyncGuidance(deployResult, deployPending),
       },
       { validate: validateResult, sync: syncResult },
     ),
   );
 }
 
+async function finalizeCloudPublishStateAndDeploy(params: {
+  storefrontId: XaCatalogStorefront;
+  snapshot: Awaited<ReturnType<typeof readCloudDraftSnapshot>>;
+  publishableProducts: CatalogProductDraftInput[];
+  kv: UploaderKvNamespace | null;
+  warnings: string[];
+}): Promise<{ deployResult: DeployTriggerResult; deployPending: DeployPendingState | null }> {
+  const promotedIds = new Set(params.publishableProducts.map(productIdentity));
+  const promotedProducts = params.snapshot.products.map((product) => {
+    if (promotedIds.has(productIdentity(product))) {
+      return { ...product, publishState: normalizePublishState(product) };
+    }
+    return { ...product, publishState: normalizePublishState(product) };
+  });
+
+  try {
+    await writeCloudDraftSnapshot({
+      storefront: params.storefrontId,
+      products: promotedProducts,
+      revisionsById: params.snapshot.revisionsById,
+      ifMatchDocRevision: params.snapshot.docRevision,
+    });
+  } catch {
+    params.warnings.push("publish_state_promotion_failed");
+  }
+
+  const deployResult = await maybeTriggerXaBDeploy({
+    storefrontId: params.storefrontId,
+    kv: params.kv,
+  });
+  const deployPending = await reconcileDeployPendingState({
+    storefrontId: params.storefrontId,
+    kv: params.kv,
+    result: deployResult,
+  }).catch(() => null);
+
+  return { deployResult, deployPending };
+}
+
+async function tryPublishCloudCatalogPayload(params: {
+  storefrontId: XaCatalogStorefront;
+  startedAt: number;
+  payload: Parameters<typeof publishCatalogPayloadToContract>[0]["payload"];
+}): Promise<
+  | { ok: true; result: Awaited<ReturnType<typeof publishCatalogPayloadToContract>> }
+  | { ok: false; errorResponse: NextResponse }
+> {
+  try {
+    const result = await publishCatalogPayloadToContract({
+      storefrontId: params.storefrontId,
+      payload: params.payload,
+    });
+    return { ok: true, result };
+  } catch (error) {
+    const publishError = getPublishErrorDetails(error);
+    const isUnconfigured = publishError.code === "unconfigured";
+    if (process.env.NODE_ENV !== "test") {
+      console.error({
+        route: "POST /api/catalog/sync",
+        error: error instanceof Error ? error.message : String(error),
+        durationMs: Date.now() - params.startedAt,
+      });
+    }
+    return {
+      ok: false,
+      errorResponse: NextResponse.json(
+        {
+          ok: false,
+          error: isUnconfigured ? "catalog_publish_unconfigured" : "catalog_publish_failed",
+          recovery: isUnconfigured ? "configure_catalog_contract" : "review_catalog_contract",
+          durationMs: Date.now() - params.startedAt,
+          publishStatus: publishError.status,
+        },
+        { status: isUnconfigured ? 503 : 502 },
+      ),
+    };
+  }
+}
+
 async function runCloudSyncPipeline(params: {
   storefrontId: XaCatalogStorefront;
   payload: SyncPayload;
   startedAt: number;
+  kv: UploaderKvNamespace | null;
 }): Promise<NextResponse> {
-  const { storefrontId, payload, startedAt } = params;
+  const { storefrontId, payload, startedAt, kv } = params;
   const snapshot = await readCloudDraftSnapshot(storefrontId);
+  const publishableProducts = snapshot.products.filter((product) => {
+    const state = normalizePublishState(product);
+    return isCatalogPublishableState(state);
+  });
 
-  if (snapshot.products.length === 0 && !payload.options.confirmEmptyInput) {
+  if (publishableProducts.length === 0 && !payload.options.confirmEmptyInput) {
     return NextResponse.json(
       {
         ok: false,
-        error: "catalog_input_empty",
-        recovery: "confirm_empty_catalog_sync",
+        error: "no_publishable_products",
+        recovery: "mark_products_ready",
         requiresConfirmation: true,
         input: {
           exists: true,
-          rowCount: 0,
+          rowCount: publishableProducts.length,
+          totalDraftRows: snapshot.products.length,
           path: `cloud-draft://${storefrontId}`,
         },
         durationMs: Date.now() - startedAt,
@@ -586,17 +944,64 @@ async function runCloudSyncPipeline(params: {
     );
   }
 
-  const { catalog, mediaIndex, warnings } = buildCatalogArtifactsFromDrafts({
-    storefront: storefrontId,
-    products: snapshot.products,
-    strict: payload.options.strict === true,
+  let builtArtifacts: CloudBuiltArtifacts;
+  const mediaValidationPolicy = resolveCloudMediaValidationPolicy(payload.options);
+  try {
+    builtArtifacts = await buildCatalogArtifactsFromDrafts({
+      storefront: storefrontId,
+      products: publishableProducts,
+      strict: payload.options.strict === true,
+      mediaValidationPolicy,
+      allowedExternalImageHosts: getCloudAllowedExternalImageHosts(),
+    });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "validation_failed",
+        recovery: "review_validation_logs",
+        durationMs: Date.now() - startedAt,
+        details: error instanceof Error ? error.message : String(error),
+      },
+      { status: 400 },
+    );
+  }
+
+  const cloudMediaValidation = await applyCloudMediaExistenceValidation({
+    artifacts: builtArtifacts,
+    policy: mediaValidationPolicy,
   });
+  if (cloudMediaValidation.ok === false) {
+    return cloudMediaValidation.errorResponse;
+  }
+  builtArtifacts = cloudMediaValidation.artifacts;
+
+  const warnings = [...builtArtifacts.warnings, ...cloudMediaValidation.warnings];
+  const catalog = builtArtifacts.catalog;
+  const mediaIndex = {
+    ...builtArtifacts.mediaIndex,
+    totals: {
+      ...builtArtifacts.mediaIndex.totals,
+      warnings: warnings.length,
+      media: builtArtifacts.mediaIndex.items.length,
+    },
+  };
 
   let publishResult: { version?: string; publishedAt?: string } | null = null;
+  let publishSkipped = false;
+  let deployResult: DeployTriggerResult | undefined;
+  let deployPending: DeployPendingState | null = null;
   if (!payload.options.dryRun) {
-    try {
-      publishResult = await publishCatalogPayloadToContract({
+    const contractReadiness = getCatalogContractReadiness();
+    if (!contractReadiness.configured) {
+      publishSkipped = true;
+    } else {
+      if (isDeployHookRequired() && !isDeployHookConfigured()) {
+        return buildDeployHookUnconfiguredResponse(startedAt);
+      }
+      const publishOutcome = await tryPublishCloudCatalogPayload({
         storefrontId,
+        startedAt,
         payload: {
           storefront: storefrontId,
           publishedAt: new Date().toISOString(),
@@ -604,24 +1009,22 @@ async function runCloudSyncPipeline(params: {
           mediaIndex,
         },
       });
-    } catch (error) {
-      const publishError = getPublishErrorDetails(error);
-      const isUnconfigured = publishError.code === "unconfigured";
-      console.error({
-        route: "POST /api/catalog/sync",
-        error: error instanceof Error ? error.message : String(error),
-        durationMs: Date.now() - startedAt,
+      if ("errorResponse" in publishOutcome) {
+        return publishOutcome.errorResponse;
+      }
+      publishResult = publishOutcome.result;
+    }
+
+    if (!publishSkipped) {
+      const publishFinalize = await finalizeCloudPublishStateAndDeploy({
+        storefrontId,
+        snapshot,
+        publishableProducts,
+        kv,
+        warnings,
       });
-      return NextResponse.json(
-        {
-          ok: false,
-          error: isUnconfigured ? "catalog_publish_unconfigured" : "catalog_publish_failed",
-          recovery: isUnconfigured ? "configure_catalog_contract" : "review_catalog_contract",
-          durationMs: Date.now() - startedAt,
-          publishStatus: publishError.status,
-        },
-        { status: isUnconfigured ? 503 : 502 },
-      );
+      deployResult = publishFinalize.deployResult;
+      deployPending = publishFinalize.deployPending;
     }
   }
 
@@ -630,18 +1033,33 @@ async function runCloudSyncPipeline(params: {
     durationMs: Date.now() - startedAt,
     dryRun: Boolean(payload.options.dryRun),
     mode: "cloud",
+    publishSkipped: publishSkipped || undefined,
     publishedVersion: publishResult?.version,
     publishedAt: publishResult?.publishedAt,
+    deploy: deployResult,
+    deployPending: deployPending ?? undefined,
     warnings,
     counts: {
       products: catalog.products.length,
       media: mediaIndex.totals.media,
     },
-    display: buildDisplaySyncGuidance(),
+    display: buildDisplaySyncGuidance(deployResult, deployPending),
   });
 }
 
 export async function POST(request: Request) {
+  if (process.env.XA_UPLOADER_MODE === "vendor") {
+    return NextResponse.json({ ok: false }, { status: 404 });
+  }
+
+  const payloadRequest = request.clone();
+  const authenticated = await hasUploaderSession(request);
+  if (!authenticated) {
+    // Intentionally do not attach rate-limit headers on unauthenticated 404
+    // responses to reduce endpoint-shape leakage.
+    return NextResponse.json({ ok: false }, { status: 404 });
+  }
+
   const requestIp = getRequestIp(request) || "unknown";
   const limit = rateLimit({
     key: `xa-uploader-sync:${requestIp}`,
@@ -655,16 +1073,6 @@ export async function POST(request: Request) {
     );
   }
 
-  if (process.env.XA_UPLOADER_MODE === "vendor") {
-    return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
-  }
-
-  const payloadRequest = request.clone();
-  const authenticated = await hasUploaderSession(request);
-  if (!authenticated) {
-    return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
-  }
-
   let payload: SyncPayload = { options: {}, storefront: null };
   try {
     payload = await parseSyncPayload(payloadRequest);
@@ -676,61 +1084,93 @@ export async function POST(request: Request) {
   const repoRoot = resolveRepoRoot();
 
   const storefrontId = parseStorefront(payload.storefront);
+  const localFsRuntimeEnabled = isLocalFsRuntimeEnabled();
 
-  // Best-effort concurrency guard: concurrent sync invocations for the same storefront
-  // return 409 when the KV lock key is present. KV unavailability is fail-open — a KV
-  // outage must not block all sync operations. See syncMutex.ts for full rationale.
   const kv = await getUploaderKv();
   let mutexAcquired = false;
-  if (kv) {
+  let cloudSyncLock: CloudSyncLockLease | null = null;
+
+  if (localFsRuntimeEnabled) {
+    if (kv) {
+      try {
+        const acquired = await acquireSyncMutex(kv, storefrontId);
+        if (!acquired) {
+          return withRateHeaders(
+            NextResponse.json(
+              { ok: false, error: "conflict", reason: "sync_already_running" },
+              { status: 409 },
+            ),
+            limit,
+          ); // i18n-exempt -- XAUP-0001 [ttl=2026-12-31] machine response
+        }
+        mutexAcquired = true;
+      } catch {
+        // KV acquire failed — fail open. Log warning; sync proceeds without mutex.
+        console.warn({
+          route: "POST /api/catalog/sync",
+          warning: "mutex_acquire_failed_kv_unavailable",
+        });
+      }
+    }
+  } else {
     try {
-      const acquired = await acquireSyncMutex(kv, storefrontId);
-      if (!acquired) {
+      const acquired = await acquireCloudSyncLock(storefrontId);
+      if (acquired.status === "busy") {
         return withRateHeaders(
           NextResponse.json(
             { ok: false, error: "conflict", reason: "sync_already_running" },
             { status: 409 },
           ),
           limit,
-        ); // i18n-exempt -- XAUP-0001 [ttl=2026-12-31] machine response
+        );
       }
-      mutexAcquired = true;
-    } catch {
-      // KV acquire failed — fail open. Log warning; sync proceeds without mutex.
-      console.warn({
-        route: "POST /api/catalog/sync",
-        warning: "mutex_acquire_failed_kv_unavailable",
-      });
+      cloudSyncLock = acquired.lock;
+    } catch (error) {
+      return withRateHeaders(buildContractLockFailureResponse({ error, startedAt }), limit);
     }
   }
 
   let response: NextResponse;
   try {
-    response = isLocalFsRuntimeEnabled()
+    response = localFsRuntimeEnabled
       ? await runSyncPipeline({
           repoRoot,
           storefrontId,
           payload,
           startedAt,
+          kv,
         })
       : await runCloudSyncPipeline({
           storefrontId,
           payload,
           startedAt,
+          kv,
         });
   } finally {
-    if (kv && mutexAcquired) {
+    if (localFsRuntimeEnabled && kv && mutexAcquired) {
       try {
         await releaseSyncMutex(kv, storefrontId);
       } catch {
         // Release failure is non-fatal — TTL will self-expire in 5 minutes.
       }
     }
+    if (!localFsRuntimeEnabled && cloudSyncLock) {
+      await releaseCloudSyncLock(cloudSyncLock).catch(() => null);
+    }
   }
   return withRateHeaders(response, limit);
 }
 
 export async function GET(request: Request) {
+  if (process.env.XA_UPLOADER_MODE === "vendor") {
+    return NextResponse.json({ ok: false }, { status: 404 });
+  }
+
+  const authenticated = await hasUploaderSession(request);
+  if (!authenticated) {
+    return NextResponse.json({ ok: false }, { status: 404 });
+  }
+
   const requestIp = getRequestIp(request) || "unknown";
   const limit = rateLimit({
     key: `xa-uploader-sync-readiness:${requestIp}`,
@@ -744,14 +1184,6 @@ export async function GET(request: Request) {
     );
   }
 
-  if (process.env.XA_UPLOADER_MODE === "vendor") {
-    return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
-  }
-
-  const authenticated = await hasUploaderSession(request);
-  if (!authenticated) {
-    return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
-  }
   if (!isLocalFsRuntimeEnabled()) {
     const contractReadiness = getCatalogContractReadiness();
     return withRateHeaders(
@@ -779,10 +1211,11 @@ export async function GET(request: Request) {
     NextResponse.json({
       ok: true,
       storefront: storefrontId,
-      ready: syncReadiness.ready && contractReadiness.configured,
+      ready: syncReadiness.ready,
       missingScripts: syncReadiness.missingScripts,
       contractConfigured: contractReadiness.configured,
       contractConfigErrors: contractReadiness.errors,
+      mode: "local",
       recovery: !syncReadiness.ready
         ? "restore_sync_scripts"
         : !contractReadiness.configured

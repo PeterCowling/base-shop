@@ -1,25 +1,77 @@
-/**
- * TASK-02: Verify activity code 25 label update
- *
- * The activityCodes dictionary in StatusButton.tsx must map code 25 to "Deleted"
- * (not "Cancelled") to reflect the semantic change from TASK-01 where code 25
- * was renamed from CANCELLED to OCCUPANT_DELETED.
- *
- * TC-01: Verify activityCodes dictionary has "Deleted" for code 25
- * TC-02: Audit codebase for remaining "Cancelled" + code 25 references
- *
- * Note: StatusButton's activityCodes object is internal and not exported,
- * so this test documents the requirement rather than asserting programmatically.
- * Verification is done via:
- * 1. Code inspection (file content)
- * 2. TypeScript compilation (no breaking changes)
- * 3. Grep audit (no remaining "Cancelled" references to code 25)
- */
+import "@testing-library/jest-dom";
 
-describe("StatusButton activity code 25 label", () => {
-  test("documents requirement for code 25 label update", () => {
-    // This test serves as documentation of TASK-02 requirements
-    // Actual verification is via code inspection and grep audit
-    expect(true).toBe(true);
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
+import { type CheckInRow } from "../../../types/component/CheckinRow";
+import StatusButton from "../StatusButton";
+
+/* eslint-disable no-var */
+var addActivityMock: jest.Mock;
+var removeLastActivityMock: jest.Mock;
+/* eslint-enable no-var */
+
+jest.mock("../../../hooks/mutations/useActivitiesMutations", () => {
+  addActivityMock = jest.fn().mockResolvedValue({ success: true });
+  removeLastActivityMock = jest.fn().mockResolvedValue({ success: true });
+  return {
+    __esModule: true,
+    default: () => ({
+      addActivity: addActivityMock,
+      removeLastActivity: removeLastActivityMock,
+      loading: false,
+    }),
+  };
+});
+
+function makeBooking(overrides: Partial<CheckInRow> = {}): CheckInRow {
+  return {
+    bookingRef: "BR-1",
+    occupantId: "occ-1",
+    checkInDate: "2026-03-05",
+    rooms: ["101"],
+    activities: [],
+    ...overrides,
+  };
+}
+
+describe("StatusButton", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("advances to bags-dropped when mutation succeeds", async () => {
+    render(<StatusButton booking={makeBooking()} />);
+
+    const button = screen.getByRole("button", { name: /status: pending/i });
+    await userEvent.click(button);
+
+    await waitFor(() => {
+      expect(addActivityMock).toHaveBeenCalledWith("occ-1", 23);
+    });
+    expect(
+      screen.getByRole("button", { name: /status: bags dropped/i })
+    ).toBeInTheDocument();
+  });
+
+  it("reverts optimistic status when mutation reports success=false", async () => {
+    addActivityMock.mockResolvedValueOnce({
+      success: false,
+      error: "write-failed",
+    });
+
+    render(<StatusButton booking={makeBooking()} />);
+
+    const button = screen.getByRole("button", { name: /status: pending/i });
+    await userEvent.click(button);
+
+    await waitFor(() => {
+      expect(addActivityMock).toHaveBeenCalledWith("occ-1", 23);
+    });
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: /status: pending/i })
+      ).toBeInTheDocument();
+    });
   });
 });

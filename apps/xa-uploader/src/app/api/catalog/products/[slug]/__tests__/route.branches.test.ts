@@ -14,6 +14,7 @@ const getRequestIpMock = jest.fn();
 jest.mock("../../../../../../lib/catalogCsv", () => ({
   getCatalogDraftBySlug: (...args: unknown[]) => getCatalogDraftBySlugMock(...args),
   deleteCatalogProduct: (...args: unknown[]) => deleteCatalogProductMock(...args),
+  CatalogCsvStorageBusyError: class extends Error {},
 }));
 
 jest.mock("../../../../../../lib/catalogDraftContractClient", () => ({

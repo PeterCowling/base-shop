@@ -1,0 +1,76 @@
+name: xa-b redeploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      storefront:
+        description: "Storefront to redeploy"
+        required: false
+        default: "xa-b"
+      reason:
+        description: "Dispatch reason"
+        required: false
+        default: "manual"
+
+concurrency:
+  group: xa-b-redeploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  redeploy:
+    name: Build and deploy xa-b
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    if: ${{ inputs.storefront == '' || inputs.storefront == 'xa-b' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup repo
+        uses: ./.github/actions/setup-repo
+
+      - name: Build workspace package dependencies
+        run: pnpm exec turbo run build --filter=@apps/xa-b^...
+
+      - name: Build xa-b (static export)
+        run: cd apps/xa-b && pnpm build
+        env:
+          XA_CATALOG_CONTRACT_READ_URL: ${{ vars.XA_CATALOG_CONTRACT_READ_URL }}
+          XA_CATALOG_CONTRACT_READ_TOKEN: ${{ secrets.XA_CATALOG_CONTRACT_READ_TOKEN }}
+          XA_CATALOG_CONTRACT_READ_REQUIRED: "1"
+          NEXT_PUBLIC_XA_IMAGES_BASE_URL: ${{ vars.XA_IMAGES_BASE_URL_PREVIEW || vars.XA_IMAGES_BASE_URL }}
+
+      - name: Remove __next.* metadata files (CF Pages 20k file limit)
+        run: find apps/xa-b/out -name '__next.*' -type f -delete
+
+      - name: Validate out/ directory
+        run: |
+          if [ -d apps/xa-b/out ] && [ "$(find apps/xa-b/out -maxdepth 1 -mindepth 1 | wc -l)" -gt 0 ]; then
+            echo "out/ is non-empty"
+          else
+            echo "FAIL: out/ missing or empty"
+            exit 1
+          fi
+
+      - name: Deploy xa-b to Cloudflare Pages
+        run: cd apps/xa-b && pnpm exec wrangler pages deploy out/ --project-name xa-b-site --branch dev
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Verify xa-b staging URL is reachable
+        run: |
+          URL="https://dev.xa-b-site.pages.dev/"
+          for attempt in $(seq 1 18); do
+            response=$(curl -s -o /dev/null -w "%{http_code}" "${URL}")
+            echo "Attempt ${attempt}: ${URL} -> HTTP ${response}"
+            if [[ "${response}" == "200" ]]; then
+              echo "Staging URL is reachable"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "FAIL: staging URL did not return HTTP 200 within retry window"
+          exit 1

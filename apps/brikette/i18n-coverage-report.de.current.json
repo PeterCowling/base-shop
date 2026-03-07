@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 2,
+  "baselineLocale": "en",
+  "locales": [
+    "de"
+  ],
+  "summary": {
+    "totalMissingFiles": 0,
+    "totalMissingKeys": 0,
+    "totalUntranslatedKeys": 17
+  },
+  "reports": [
+    {
+      "locale": "de",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {
+        "apartmentPage.json": [
+          "book.checkinLabel",
+          "book.checkoutLabel",
+          "directSavings.flex.label"
+        ],
+        "barMenuPage.json": [
+          "items.peroni330.name",
+          "sections.whisky.title"
+        ],
+        "bookPage.json": [
+          "apartment.flex.title"
+        ],
+        "footer.json": [
+          "infoHeading"
+        ],
+        "guides.tags.json": [
+          "tags.bus.label",
+          "tags.winter.label"
+        ],
+        "guides/content/arienzoBeachClub.json": [
+          "faqsTitle"
+        ],
+        "guides/content/fiordoDiFuroreBeachGuide.json": [
+          "faqsTitle"
+        ],
+        "guides/content/hostelFaqs.json": [
+          "seo.title"
+        ],
+        "guides/tags.json": [
+          "labels.bus",
+          "labels.winter"
+        ],
+        "howToGetHere.json": [
+          "filters.transportModes.bus",
+          "rome.table.headers.route",
+          "romePlanner.tag.bus"
+        ]
+      }
+    }
+  ]
+}

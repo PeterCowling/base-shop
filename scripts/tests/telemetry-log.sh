@@ -22,6 +22,22 @@ bool_normalize() {
   esac
 }
 
+pid_normalize() {
+  local value="${1:-0}"
+  case "$value" in
+    ''|*[!0-9]*)
+      printf '0'
+      ;;
+    *)
+      if (( value > 0 )); then
+        printf '%s' "$value"
+      else
+        printf '0'
+      fi
+      ;;
+  esac
+}
+
 calc_hash() {
   local payload="${1:-}"
   if command -v shasum >/dev/null 2>&1; then
@@ -84,6 +100,8 @@ baseshop_test_governor_emit_event() {
   local kill_escalation="none"
   local override_policy_used="false"
   local override_overload_used="false"
+  local session_id=""
+  local caller_pid="0"
 
   while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -102,6 +120,8 @@ baseshop_test_governor_emit_event() {
       --kill-escalation) kill_escalation="${2:-none}"; shift 2 ;;
       --override-policy-used) override_policy_used="$(bool_normalize "${2:-false}")"; shift 2 ;;
       --override-overload-used) override_overload_used="$(bool_normalize "${2:-false}")"; shift 2 ;;
+      --session-id) session_id="${2:-}"; shift 2 ;;
+      --caller-pid) caller_pid="${2:-0}"; shift 2 ;;
       *) shift ;;
     esac
   done
@@ -113,6 +133,21 @@ baseshop_test_governor_emit_event() {
 
   if [[ -z "$argv_hash" ]]; then
     argv_hash="$(calc_hash "${event_class}:${normalized_sig}")"
+  fi
+
+  # Actor attribution contract:
+  # 1) Explicit CLI values take precedence.
+  # 2) Environment fallbacks are used when CLI values are omitted.
+  # 3) Final fallback is deterministic sentinel values.
+  if [[ -z "${session_id}" ]]; then
+    session_id="${BASESHOP_SESSION_ID:-${BASESHOP_AGENT_SESSION_ID:-unknown}}"
+  fi
+  if [[ -z "${session_id}" ]]; then
+    session_id="unknown"
+  fi
+  caller_pid="$(pid_normalize "${caller_pid}")"
+  if [[ "${caller_pid}" == "0" ]]; then
+    caller_pid="$(pid_normalize "${BASESHOP_CALLER_PID:-${PPID:-0}}")"
   fi
 
   local root
@@ -139,7 +174,7 @@ baseshop_test_governor_emit_event() {
     fi
   fi
 
-  printf '{"ts":"%s","governed":%s,"policy_mode":"%s","class":"%s","normalized_sig":"%s","argv_hash":"%s","admitted":%s,"queued_ms":%s,"peak_rss_mb":%s,"pressure_level":"%s","workers":%s,"exit_code":%s,"timeout_killed":%s,"kill_escalation":"%s","override_policy_used":%s,"override_overload_used":%s}\n' \
+  printf '{"ts":"%s","governed":%s,"policy_mode":"%s","class":"%s","normalized_sig":"%s","argv_hash":"%s","admitted":%s,"queued_ms":%s,"peak_rss_mb":%s,"pressure_level":"%s","workers":%s,"exit_code":%s,"timeout_killed":%s,"kill_escalation":"%s","session_id":"%s","caller_pid":%s,"override_policy_used":%s,"override_overload_used":%s}\n' \
     "$(json_escape "$ts")" \
     "$governed" \
     "$(json_escape "$policy_mode")" \
@@ -154,6 +189,8 @@ baseshop_test_governor_emit_event() {
     "$exit_code" \
     "$timeout_killed" \
     "$(json_escape "$kill_escalation")" \
+    "$(json_escape "$session_id")" \
+    "$caller_pid" \
     "$override_policy_used" \
     "$override_overload_used" >> "$events_file"
 }
@@ -165,7 +202,7 @@ if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
       baseshop_test_governor_emit_event "$@"
       ;;
     *)
-      echo "Usage: $0 emit [--governed bool] [--policy-mode warn|enforce] [--class value] [--normalized-sig value]" >&2
+      echo "Usage: $0 emit [--governed bool] [--policy-mode warn|enforce] [--class value] [--normalized-sig value] [--session-id value] [--caller-pid number]" >&2
       exit 2
       ;;
   esac

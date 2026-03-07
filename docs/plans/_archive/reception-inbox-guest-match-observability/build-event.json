@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-inbox-guest-match-observability-2026-03-07",
+  "feature_slug": "reception-inbox-guest-match-observability",
+  "emitted_at": "2026-03-07T16:47:00.000Z",
+  "why": "Silent guest matching failures mean staff operates without guest context for days before anyone notices. Observability would surface the problem immediately.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Guest matching failures are recorded as telemetry events with match success rate visible to operators.",
+    "source": "operator"
+  }
+}

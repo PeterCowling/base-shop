@@ -1,0 +1,27 @@
+{
+  "rounds": [
+    {
+      "round": 1,
+      "score": 7,
+      "lp_score": 3.5,
+      "verdict": "needs_revision",
+      "findings_summary": "1 Critical (unsafe per-thread watermark), 1 Warning (overstated draft failures), 1 Info (circuit breaker scope creep)"
+    },
+    {
+      "round": 2,
+      "score": 7,
+      "lp_score": 3.5,
+      "verdict": "needs_revision",
+      "findings_summary": "1 Critical (outcome contract mismatches design), 2 Warnings (SyncInboxResult contract gap, stale watermark references)"
+    },
+    {
+      "round": 3,
+      "score": 8,
+      "lp_score": 4.0,
+      "verdict": "needs_revision",
+      "findings_summary": "0 Critical, 2 Warnings (summary overstates benign paths, contradictory resolved question). Post-loop fixes applied."
+    }
+  ],
+  "final_lp_score": 4.0,
+  "final_verdict": "credible"
+}

@@ -9,8 +9,7 @@ export interface RatingStarsProps extends React.HTMLAttributes<HTMLDivElement> {
   size?: number;
 }
 
-export const RatingStars = React.forwardRef<HTMLDivElement, RatingStarsProps>(
-  ({ rating, size = 16, className, "aria-label": ariaLabel, ...props }, ref) => {
+export function RatingStars({ rating, size = 16, className, "aria-label": ariaLabel, ref, ...props }: RatingStarsProps & { ref?: React.Ref<HTMLDivElement> }) {
     const t = useTranslations();
     const clamped = Math.max(0, Math.min(5, rating));
     const roundedToHalf = Math.round(clamped * 2) / 2;
@@ -56,6 +55,7 @@ export const RatingStars = React.forwardRef<HTMLDivElement, RatingStarsProps>(
 
     return (
       <div
+        data-slot="rating-stars"
         ref={ref}
         className={cn("flex items-center gap-0.5", className)} // i18n-exempt -- UI-2610: layout utility classes
         role="img"
@@ -66,6 +66,4 @@ export const RatingStars = React.forwardRef<HTMLDivElement, RatingStarsProps>(
         {[0, 1, 2, 3, 4].map(renderStar)}
       </div>
     );
-  }
-);
-RatingStars.displayName = "RatingStars";
+}

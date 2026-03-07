@@ -28,7 +28,7 @@ Define and freeze the PET business outcome contract so ideation and weekly opera
   - `docs/business-os/strategy/PET/plan.user.md`
 - Forecast and intake artifacts align to the same 90-day target window and contribution/CAC guardrails.
   - `docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.user.md`
-  - `docs/business-os/startup-baselines/PET-forecast-seed.user.md`
+  - `docs/business-os/startup-baselines/PET/forecast-seed.user.md`
 - PET website-reference quality has been upgraded from source-family placeholders to URL-level references.
   - `docs/business-os/market-research/PET/2026-02-12-market-intelligence.user.md`
 

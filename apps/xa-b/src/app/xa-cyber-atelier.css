@@ -5,7 +5,7 @@
   color-scheme: light;
   --color-bg: 0 0% 100%;
   --color-fg: 0 0% 8%;
-  --color-fg-muted: 0 0% 45%;
+  --color-fg-muted: 0 0% 42%;
   --color-muted: 0 0% 96%;
   --color-muted-fg: 0 0% 20%;
   --color-muted-border: 0 0% 86%;
@@ -13,6 +13,7 @@
   --color-border: 0 0% 88%;
   --color-border-muted: 0 0% 92%;
   --color-border-strong: 0 0% 75%;
+  --border-control: 0 0% 55%;
 
   --surface-1: 0 0% 100%;
   --surface-2: 0 0% 98%;
@@ -59,6 +60,11 @@
   --elevation-3: 0 6px 16px rgba(0, 0, 0, 0.1);
   --elevation-4: 0 10px 24px rgba(0, 0, 0, 0.12);
   --elevation-5: 0 16px 32px rgba(0, 0, 0, 0.14);
+
+  /* Support dock FAB — chromatic accent to guarantee contrast over achromatic surfaces */
+  --xa-fab-bg: 158 18% 30%;
+  --xa-fab-fg: 0 0% 100%;
+  --xa-fab-hover: 158 18% 24%;
 }
 
 html.theme-dark {
@@ -73,6 +79,7 @@ html.theme-dark {
   --color-border: 0 0% 24%;
   --color-border-muted: 0 0% 18%;
   --color-border-strong: 0 0% 38%;
+  --border-control: 0 0% 50%;
 
   --surface-1: 0 0% 8%;
   --surface-2: 0 0% 10%;
@@ -98,6 +105,10 @@ html.theme-dark {
 
   --color-selection: 0 0% 24%;
   --color-highlight: 0 0% 12%;
+
+  --xa-fab-bg: 158 14% 68%;
+  --xa-fab-fg: 0 0% 8%;
+  --xa-fab-hover: 158 14% 74%;
 }
 
 html,
@@ -113,6 +124,28 @@ body {
 /* Keep borders calm by default; allow explicit utility classes to override. */
 :where(*) {
   border-color: hsl(var(--border-1, 0 0% 0% / 0.08));
+}
+
+/* Semantic border for interactive controls — meets WCAG 3:1 non-text threshold. */
+.xa-border-control {
+  border-color: hsl(var(--border-control));
+}
+
+.xa-support-dock-action,
+.xa-support-dock-toggle {
+  background-color: hsl(var(--xa-fab-bg));
+  color: hsl(var(--xa-fab-fg));
+}
+
+.xa-support-dock-action:hover,
+.xa-support-dock-toggle:hover {
+  background-color: hsl(var(--xa-fab-hover));
+}
+
+.xa-support-dock-action:focus-visible,
+.xa-support-dock-toggle:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
 }
 
 header {

@@ -11,8 +11,8 @@ import {
   type BottleneckEntry,
   checkConstraintPersistence,
   getRecentBottlenecks,
-} from "../bottleneck-history";
-import { type DiagnosisSnapshot } from "../diagnosis-snapshot";
+} from "../diagnostics/bottleneck-history";
+import { type DiagnosisSnapshot } from "../diagnostics/diagnosis-snapshot";
 
 // Test helpers
 function createTempDir(): string {

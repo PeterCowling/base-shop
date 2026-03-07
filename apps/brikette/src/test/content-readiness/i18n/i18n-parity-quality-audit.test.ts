@@ -2,10 +2,8 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 
-import { PLACEHOLDER_PHRASES } from "@tests/utils/detectRenderedI18nPlaceholders";
-
-import { type AppLanguage,i18nConfig } from "@/i18n.config";
-
+import { type AppLanguage, i18nConfig } from "../../../i18n.config";
+import { PLACEHOLDER_PHRASES } from "../../utils/detectRenderedI18nPlaceholders";
 import { resolveGuideContentFileAllowlist } from "../helpers/guideFilters";
 
 const LOCALES_ROOT = path.resolve(__dirname, "../../../locales");
@@ -157,7 +155,7 @@ function isSlugLike(value: string): boolean {
   const trimmed = value.trim();
   if (trimmed.length < 4 || trimmed.length > 160) return false;
   if (trimmed.includes(" ")) return false;
-    // Kebab-case slugs (canonical across locales).
+  // Kebab-case slugs (canonical across locales).
   // eslint-disable-next-line security/detect-unsafe-regex -- TEST-1001 Static pattern for validating kebab-case slugs; no user input. [ttl=2026-12-31]
   return /^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(trimmed);
 }

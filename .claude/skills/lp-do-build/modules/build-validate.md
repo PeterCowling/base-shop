@@ -35,17 +35,41 @@ Key on the task's `Deliverable-Type` field (not `Affects` paths) to select the v
 
 ### Procedure
 
-1. Open target URL/route using `mcp__brikette__browser_session_open`.
-2. Take a screenshot using `mcp__brikette__browser_observe`.
-3. Walk through the primary user action for this task (e.g. click the button, submit the form, open the modal) using `mcp__brikette__browser_act`.
+1. Open target URL/route using the active browser session-open tool.
+2. Take a screenshot using the active browser observe tool.
+3. Walk through the primary user action for this task (e.g. click the button, submit the form, open the modal) using the active browser act tool.
 4. Take a final screenshot of the result state.
 5. Assess: does the UI render correctly? Does the action produce the expected outcome? Are there visible errors or broken states?
-6. **Pass:** screenshots confirm expected state. Record screenshot evidence (session ID, URL, observed state) in build notes. Proceed to task completion.
-7. **Fail:** describe the defect clearly. Enter the Fix+Retry Loop below. Max 3 attempts.
+6. Run scoped UI audit skills on changed routes/components only:
+   - `/lp-design-qa` (design-system/spec alignment)
+   - `/tools-ui-contrast-sweep` (contrast/uniformity)
+   - `/tools-ui-breakpoint-sweep` (responsive behavior)
+7. Merge findings from walkthrough + scoped audits and classify severity.
+8. Auto-create a fix list for every Critical/Major finding and execute fixes in the same task cycle.
+9. Re-run Mode 1 procedure after fixes.
+10. **Pass:** screenshots and scoped audits show no Critical/Major issues. Record evidence (session ID, URL, audit scope, findings summary) in build notes. Proceed to task completion.
+11. **Fail:** any Critical/Major issue remains after a run. Describe defects clearly. Enter the Fix+Retry Loop below. Max 3 attempts.
+
+### Scoped Audit Rule (Mode 1)
+
+- Do not run full-app sweeps by default.
+- Set each audit scope to the exact routes/components changed by the task (`Affects` + acceptance criteria surface).
+- If a shared layout/token change can impact outside the changed route, expand scope minimally and document why.
+- Critical/Major findings are never defer-only in build mode; they must be fixed and re-verified in the same task cycle.
+- Minor-only findings may be deferred, but each deferral must include rationale and a follow-up task/reference.
+
+### Browser Tool Binding (Provider-Agnostic)
+
+Use the browser tooling namespace configured for the current project/session.
+Do not hardcode one tenant namespace.
+
+Examples:
+- Base Shop: `mcp__base-shop__browser_session_open`, `mcp__base-shop__browser_observe`, `mcp__base-shop__browser_act`
+- Brikette legacy: `mcp__brikette__browser_session_open`, `mcp__brikette__browser_observe`, `mcp__brikette__browser_act`
 
 ### Degraded Mode (browser tools unavailable or dev server unreachable)
 
-Use when `mcp__brikette__browser_session_open` is unavailable or the dev/staging server cannot be reached.
+Use when the active browser session-open tool is unavailable or the dev/staging server cannot be reached.
 
 1. Locate the nearest test snapshot or rendered HTML file for the component/page (e.g. `__snapshots__/*.snap`, `out/<route>/index.html`).
 2. Read the snapshot/HTML linearly; check that the key DOM elements from the acceptance criteria are present (correct class names, expected text, required attributes).
@@ -97,14 +121,15 @@ Use when `mcp__brikette__browser_session_open` is unavailable or the dev/staging
 Applies to all three modes when a walkthrough fails.
 
 1. **Describe the failure** clearly in build notes: what was found, what the expected state was, which acceptance criterion is not satisfied.
-2. **Identify root cause** before applying any fix. A fix that re-passes the walkthrough without addressing the root cause must be flagged as "symptom patch" in build notes. Symptom patches count toward the 3-attempt cap and are surfaced to the operator in build notes regardless of whether the walkthrough ultimately passes.
-3. **Apply the minimum fix** that addresses the identified root cause.
-4. **Re-run validation** — not the full task, only the walkthrough from step 1 of the applicable mode.
-5. **If pass:** record pass evidence in build notes. Continue to task completion.
-6. **If fail again and attempt count < 3:** increment attempt counter, return to step 1 of the Fix+Retry Loop (re-describe the new failure state).
-7. **If fail after 3 attempts:** mark task `Blocked` with reason `Validation failed after 3 attempts — operator escalation required`. Surface the full failure history and retry log to the operator. Do not mark task complete. Route to `/lp-do-replan` if the failure indicates an architectural or planning issue. Do not attempt a fourth retry.
+2. **Convert findings to actions**: list each unresolved Critical/Major issue as a concrete autofix action and apply it in this task cycle. Do not leave a Critical/Major issue as report-only output.
+3. **Identify root cause** before applying any fix. A fix that re-passes the walkthrough without addressing the root cause must be flagged as "symptom patch" in build notes. Symptom patches count toward the 3-attempt cap and are surfaced to the operator in build notes regardless of whether the walkthrough ultimately passes.
+4. **Apply the minimum fix set** that addresses the identified root causes.
+5. **Re-run validation** — not the full task, only the walkthrough from step 1 of the applicable mode.
+6. **If pass:** record pass evidence in build notes. Continue to task completion.
+7. **If fail again and attempt count < 3:** increment attempt counter, return to step 1 of the Fix+Retry Loop (re-describe the new failure state).
+8. **If fail after 3 attempts:** mark task `Blocked` with reason `Validation failed after 3 attempts — operator escalation required`. Surface the full failure history and retry log to the operator. Do not mark task complete. Route to `/lp-do-replan` if the failure indicates an architectural or planning issue. Do not attempt a fourth retry.
 
-**Attempt counting:** each execution of the walkthrough (steps 1–7 of any mode procedure) counts as one attempt. The initial walkthrough is attempt 1. Each fix+re-run is attempts 2 and 3.
+**Attempt counting:** each full execution of the applicable mode procedure counts as one attempt (Mode 1 steps 1–11, Mode 2 steps 1–7, Mode 3 steps 1–6). The initial walkthrough is attempt 1. Each fix+re-run is attempts 2 and 3.
 
 ---
 
@@ -118,6 +143,9 @@ Post-build validation:
   Attempt: [1 | 2 | 3]
   Result: [Pass | Fail | Blocked]
   Evidence: [screenshot session ID and URL / execution trace / review summary paragraph]
+  Scoped audits (Mode 1): [scope + lp-design-qa result + contrast-sweep result + breakpoint-sweep result]
+  Autofix actions (Mode 1): [None | list of Critical/Major findings and applied fixes]
   Symptom patches: [None | describe each]
+  Deferred findings: [None | Minor finding + rationale + follow-up reference]
   Degraded mode: [No | Yes — reason: <reason>, flagged items: <list>]
 ```

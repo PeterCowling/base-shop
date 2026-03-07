@@ -12,10 +12,22 @@ export interface UploaderKvNamespace {
   delete(key: string): Promise<void>;
 }
 
-// Extend the CloudflareEnv global interface to include our KV namespace binding.
+/**
+ * Minimal R2 bucket interface — subset of the Cloudflare R2Bucket API
+ * used by the image upload route. Avoids a direct devDependency on @cloudflare/workers-types.
+ */
+export interface UploaderR2Bucket {
+  put(key: string, value: ArrayBuffer | ReadableStream | string, options?: { httpMetadata?: { contentType?: string } }): Promise<{ key: string } | null>;
+  get(key: string): Promise<{ body: ReadableStream; key: string } | null>;
+  head(key: string): Promise<{ key: string } | null>;
+  delete(key: string): Promise<void>;
+}
+
+// Extend the CloudflareEnv global interface to include our KV and R2 bindings.
 declare global {
   interface CloudflareEnv {
     XA_UPLOADER_KV?: UploaderKvNamespace;
+    XA_MEDIA_BUCKET?: UploaderR2Bucket;
   }
 }
 

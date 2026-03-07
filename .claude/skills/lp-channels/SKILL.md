@@ -26,7 +26,7 @@ This skill researches channel landscape, analyzes channel-customer fit using lp-
 ## Inputs
 
 Required:
-- `lp-offer` output: ICP, positioning, objections from `docs/business-os/startup-baselines/<BIZ>-offer.md`
+- `lp-offer` output: ICP, positioning, objections from `docs/business-os/startup-baselines/<BIZ>/offer.md`
 - `lp-readiness` output: distribution feasibility from RG-02 gate
 - Business context from `docs/business-os/strategy/<BIZ>/`
 
@@ -63,12 +63,12 @@ Load `modules/channel-strategy.md`:
 
 Load `modules/channel-gtm-output.md`:
 - Stage 5: 30-Day GTM Timeline
-- Stage 6: Document Artifact to `docs/business-os/startup-baselines/<BIZ>-channels.md`
+- Stage 6: Document Artifact to `docs/business-os/startup-baselines/<BIZ>/channels.md`
 - Self-audit QC-01–QC-10 and Red Flags
 
 ## Output Contract
 
-Produces single file: `docs/business-os/startup-baselines/<BIZ>-channels.md`
+Produces single file: `docs/business-os/startup-baselines/<BIZ>/channels.md`
 
 **Artifact registry**: Canonical path defined in `docs/business-os/startup-loop/artifact-registry.md` (artifact ID: `channels`).
 

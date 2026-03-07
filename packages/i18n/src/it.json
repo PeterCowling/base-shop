@@ -2785,11 +2785,10 @@
   "pipeline.candidate.stageM.runnerStatus.mode": "Mode",
   "pipeline.candidate.stageM.runnerStatus.browser": "Browser",
   "pipeline.candidate.stageM.runnerStatus.session": "Session",
-  "themeToggle.enableDark": "Enable dark mode",
-  "themeToggle.enableLight": "Enable light mode",
-  "themeToggle.switchToDark": "Switch to dark mode",
-  "themeToggle.switchToLight": "Switch to light mode",
-
+  "themeToggle.enableDark": "Attiva la modalita scura",
+  "themeToggle.enableLight": "Attiva la modalita chiara",
+  "themeToggle.switchToDark": "Passa alla modalita scura",
+  "themeToggle.switchToLight": "Passa alla modalita chiara",
   "handbagConfigurator.action.done": "I'm done",
   "handbagConfigurator.action.saveShare": "Save/Share",
   "handbagConfigurator.action.blankBag": "Blank Bag",
@@ -2823,7 +2822,6 @@
   "handbagConfigurator.hotspot.ariaLabel": "Customize {label}",
   "handbagConfigurator.hotspot.configTitle": "Hotspot config",
   "handbagConfigurator.hotspot.done": "Done",
-
   "pipeline.missionControl.map.nodes.P": "Prospetto",
   "pipeline.missionControl.map.nodes.M": "Mercato",
   "pipeline.missionControl.map.nodes.S": "Fonte",

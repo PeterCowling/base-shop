@@ -200,6 +200,7 @@ export function CatalogProductForm({
   onSavedFeedback,
   onSaveWithDraft,
   onDelete,
+  onPublish,
 }: {
   selectedSlug: string | null;
   draft: CatalogProductDraftInput;
@@ -216,6 +217,7 @@ export function CatalogProductForm({
   onSavedFeedback?: () => void;
   onSaveWithDraft: (nextDraft: CatalogProductDraftInput) => void;
   onDelete: () => void;
+  onPublish?: () => Promise<void>;
 }) {
   const { t } = useUploaderI18n();
   const category = draft.taxonomy.category;
@@ -384,18 +386,34 @@ export function CatalogProductForm({
                 </button>
               ) : null}
             </div>
-            <button
-              type="button"
-              onClick={() => void handleSaveClick()}
-              disabled={saveButtonDisabled}
-              className={saveButtonClass}
-              // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-              data-testid="catalog-save-details"
-              // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 e2e selector
-              data-cy="catalog-save-details"
-            >
-              {saveButtonLabel}
-            </button>
+            <div className="flex items-center gap-2">
+              {readiness.isPublishReady ? (
+                <button
+                  type="button"
+                  onClick={() => void onPublish?.()}
+                  disabled={busy}
+                  className={BTN_PRIMARY_CLASS}
+                  // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+                  data-testid="catalog-make-live"
+                  // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 e2e selector
+                  data-cy="catalog-make-live"
+                >
+                  {t("makeLive")}
+                </button>
+              ) : null}
+              <button
+                type="button"
+                onClick={() => void handleSaveClick()}
+                disabled={saveButtonDisabled}
+                className={saveButtonClass}
+                // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+                data-testid="catalog-save-details"
+                // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 e2e selector
+                data-cy="catalog-save-details"
+              >
+                {saveButtonLabel}
+              </button>
+            </div>
           </div>
         </div>
       </div>

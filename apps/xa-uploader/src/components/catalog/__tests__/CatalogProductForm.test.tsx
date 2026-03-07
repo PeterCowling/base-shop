@@ -163,3 +163,103 @@ describe("CatalogProductForm", () => {
     expect(firstCallProps.sections).toEqual(["identity", "taxonomy"]);
   });
 });
+
+describe("CatalogProductForm — Make Live button (TASK-03)", () => {
+  const catalogWorkflowModule = require("../catalogWorkflow");
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("TC-01: Make Live button renders when isPublishReady is true", () => {
+    jest.spyOn(catalogWorkflowModule, "getCatalogDraftWorkflowReadiness").mockReturnValue({
+      isDataReady: true,
+      isPublishReady: true,
+      hasImages: true,
+      missingFieldPaths: [],
+      missingRoles: [],
+    });
+    const onPublish = jest.fn(async () => undefined);
+    render(
+      <CatalogProductForm
+        selectedSlug={null}
+        draft={VALID_DRAFT}
+        storefront="xa-b"
+        fieldErrors={{}}
+        busy={false}
+        autosaveInlineMessage={null}
+        autosaveStatus="unsaved"
+        lastAutosaveSavedAt={null}
+        feedback={null}
+        onChangeDraft={jest.fn()}
+        onSave={jest.fn(async () => ({ status: "saved", product: VALID_DRAFT, revision: null } as const))}
+        onSaveWithDraft={jest.fn()}
+        onDelete={jest.fn()}
+        onPublish={onPublish}
+      />,
+    );
+    expect(screen.getByTestId("catalog-make-live")).toBeInTheDocument();
+    expect(screen.getByTestId("catalog-make-live")).toHaveTextContent("makeLive");
+  });
+
+  it("TC-02: Make Live button is absent when isPublishReady is false", () => {
+    jest.spyOn(catalogWorkflowModule, "getCatalogDraftWorkflowReadiness").mockReturnValue({
+      isDataReady: true,
+      isPublishReady: false,
+      hasImages: false,
+      missingFieldPaths: [],
+      missingRoles: [],
+    });
+    render(
+      <CatalogProductForm
+        selectedSlug={null}
+        draft={VALID_DRAFT}
+        storefront="xa-b"
+        fieldErrors={{}}
+        busy={false}
+        autosaveInlineMessage={null}
+        autosaveStatus="unsaved"
+        lastAutosaveSavedAt={null}
+        feedback={null}
+        onChangeDraft={jest.fn()}
+        onSave={jest.fn(async () => ({ status: "saved", product: VALID_DRAFT, revision: null } as const))}
+        onSaveWithDraft={jest.fn()}
+        onDelete={jest.fn()}
+      />,
+    );
+    expect(screen.queryByTestId("catalog-make-live")).not.toBeInTheDocument();
+  });
+
+  it("TC-03: onPublish called when Make Live button is clicked", async () => {
+    jest.spyOn(catalogWorkflowModule, "getCatalogDraftWorkflowReadiness").mockReturnValue({
+      isDataReady: true,
+      isPublishReady: true,
+      hasImages: true,
+      missingFieldPaths: [],
+      missingRoles: [],
+    });
+    const onPublish = jest.fn(async () => undefined);
+    render(
+      <CatalogProductForm
+        selectedSlug={null}
+        draft={VALID_DRAFT}
+        storefront="xa-b"
+        fieldErrors={{}}
+        busy={false}
+        autosaveInlineMessage={null}
+        autosaveStatus="unsaved"
+        lastAutosaveSavedAt={null}
+        feedback={null}
+        onChangeDraft={jest.fn()}
+        onSave={jest.fn(async () => ({ status: "saved", product: VALID_DRAFT, revision: null } as const))}
+        onSaveWithDraft={jest.fn()}
+        onDelete={jest.fn()}
+        onPublish={onPublish}
+      />,
+    );
+    fireEvent.click(screen.getByTestId("catalog-make-live"));
+    await waitFor(() => {
+      expect(onPublish).toHaveBeenCalledTimes(1);
+    });
+  });
+});

@@ -702,7 +702,6 @@ function StatusSelect({ t, draft, onChange }: { t: Translate; draft: CatalogProd
         className={INPUT_CLASS}
       >
         <option value="draft">{t("statusDraft")}</option>
-        <option value="live">{t("statusLive")}</option>
         <option value="out_of_stock">{t("statusOutOfStock")}</option>
       </select>
       <div className="mt-1 text-2xs text-gate-muted">{t("fieldStatusHint")}</div>

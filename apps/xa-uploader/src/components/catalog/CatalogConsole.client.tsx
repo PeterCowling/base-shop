@@ -68,6 +68,11 @@ function ProductEditor({
       onSaveWithDraft={state.handleSaveWithDraft}
       onDelete={state.handleDelete}
       onPublish={state.handlePublish}
+      onMarkOutOfStock={() => {
+        const nextDraft = { ...state.draft, publishState: "out_of_stock" as const };
+        state.setDraft(nextDraft);
+        void state.handleSaveWithDraft(nextDraft);
+      }}
     />
   );
 }

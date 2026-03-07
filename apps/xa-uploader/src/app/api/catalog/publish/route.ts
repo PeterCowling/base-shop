@@ -1,3 +1,5 @@
+import path from "node:path";
+
 import { NextResponse } from "next/server";
 
 import { type CatalogProductDraftInput, catalogProductDraftSchema } from "@acme/lib/xa";
@@ -16,8 +18,12 @@ import type { XaCatalogStorefront } from "../../../../lib/catalogStorefront.type
 import {
   maybeTriggerXaBDeploy,
   reconcileDeployPendingState,
+  resolveDeployStatePaths,
 } from "../../../../lib/deployHook";
+import { isLocalFsRuntimeEnabled } from "../../../../lib/localFsGuard";
+import { resolveRepoRoot } from "../../../../lib/repoRoot";
 import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
+import { getUploaderKv } from "../../../../lib/syncMutex";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
 
 export const runtime = "nodejs";
@@ -58,6 +64,14 @@ function getInvalidPayloadResponse(error?: unknown): NextResponse {
   return NextResponse.json({ ok: false, error: "invalid", reason: "invalid_payload" }, { status: 400 });
 }
 
+async function resolveDeployStateContext(storefrontId: XaCatalogStorefront) {
+  const kv = await getUploaderKv();
+  const statePaths = isLocalFsRuntimeEnabled()
+    ? resolveDeployStatePaths(path.join(resolveRepoRoot(), "apps", "xa-uploader", "data"), storefrontId)
+    : undefined;
+  return { kv, statePaths };
+}
+
 export async function POST(request: Request) {
   const authenticated = await hasUploaderSession(request);
   if (!authenticated) {
@@ -83,11 +97,17 @@ export async function POST(request: Request) {
   };
 
   let cloudSyncLock: CloudSyncLockLease | null = null;
-  const acquired = await acquireCloudSyncLock(storefront);
-  if (acquired.status === "busy") {
-    return NextResponse.json({ ok: false, error: "sync_locked" }, { status: 409 });
+
+  try {
+    const acquired = await acquireCloudSyncLock(storefront);
+    if (acquired.status === "busy") {
+      return NextResponse.json({ ok: false, error: "sync_locked" }, { status: 409 });
+    }
+    cloudSyncLock = acquired.lock;
+  } catch (lockError) {
+    const message = lockError instanceof Error ? lockError.message : String(lockError);
+    return NextResponse.json({ ok: false, error: "lock_failed", reason: message }, { status: 503 });
   }
-  cloudSyncLock = acquired.lock;
 
   try {
     const snapshot = await readCloudDraftSnapshot(storefront);
@@ -140,18 +160,29 @@ export async function POST(request: Request) {
       warnings.push("publish_state_promotion_failed");
     }
 
-    const deployResult = await maybeTriggerXaBDeploy({ storefrontId: storefront, kv: null });
+    const deployStateContext = await resolveDeployStateContext(storefront);
+    const deployResult = await maybeTriggerXaBDeploy({
+      storefrontId: storefront,
+      kv: deployStateContext.kv,
+      statePaths: deployStateContext.statePaths,
+    });
     await reconcileDeployPendingState({
       storefrontId: storefront,
-      kv: null,
+      kv: deployStateContext.kv,
+      statePaths: deployStateContext.statePaths,
       result: deployResult,
     }).catch(() => null);
 
     return NextResponse.json({
       ok: true,
       deployStatus: deployResult.status,
+      deployReason: deployResult.reason,
+      deployNextEligibleAt: deployResult.nextEligibleAt,
       warnings,
     });
+  } catch (internalError) {
+    const message = internalError instanceof Error ? internalError.message : String(internalError);
+    return NextResponse.json({ ok: false, error: "internal_error", reason: message }, { status: 500 });
   } finally {
     if (cloudSyncLock) {
       await releaseCloudSyncLock(cloudSyncLock);

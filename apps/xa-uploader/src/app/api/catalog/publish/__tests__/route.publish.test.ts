@@ -12,6 +12,15 @@ const buildCatalogArtifactsFromDraftsMock = jest.fn();
 const getMediaBucketMock = jest.fn();
 const maybeTriggerXaBDeployMock = jest.fn();
 const reconcileDeployPendingStateMock = jest.fn();
+const getUploaderKvMock = jest.fn();
+const isLocalFsRuntimeEnabledMock = jest.fn();
+const resolveRepoRootMock = jest.fn();
+
+const kvNamespaceMock = {
+  get: jest.fn(),
+  put: jest.fn(),
+  delete: jest.fn(),
+};
 
 const VALID_CLOUD_PRODUCT = {
   id: "p1",
@@ -62,9 +71,22 @@ jest.mock("../../../../../lib/r2Media", () => ({
   getMediaBucket: (...args: unknown[]) => getMediaBucketMock(...args),
 }));
 
+jest.mock("../../../../../lib/syncMutex", () => ({
+  getUploaderKv: (...args: unknown[]) => getUploaderKvMock(...args),
+}));
+
+jest.mock("../../../../../lib/localFsGuard", () => ({
+  isLocalFsRuntimeEnabled: (...args: unknown[]) => isLocalFsRuntimeEnabledMock(...args),
+}));
+
+jest.mock("../../../../../lib/repoRoot", () => ({
+  resolveRepoRoot: (...args: unknown[]) => resolveRepoRootMock(...args),
+}));
+
 jest.mock("../../../../../lib/deployHook", () => ({
   maybeTriggerXaBDeploy: (...args: unknown[]) => maybeTriggerXaBDeployMock(...args),
   reconcileDeployPendingState: (...args: unknown[]) => reconcileDeployPendingStateMock(...args),
+  resolveDeployStatePaths: jest.requireActual("../../../../../lib/deployHook").resolveDeployStatePaths,
 }));
 
 describe("catalog publish route", () => {
@@ -96,6 +118,9 @@ describe("catalog publish route", () => {
     getMediaBucketMock.mockResolvedValue(null);
     maybeTriggerXaBDeployMock.mockResolvedValue({ status: "triggered" });
     reconcileDeployPendingStateMock.mockResolvedValue(null);
+    getUploaderKvMock.mockResolvedValue(kvNamespaceMock);
+    isLocalFsRuntimeEnabledMock.mockReturnValue(true);
+    resolveRepoRootMock.mockReturnValue("/repo");
   });
 
   afterEach(() => {
@@ -134,6 +159,23 @@ describe("catalog publish route", () => {
         products: [expect.objectContaining({ id: "p1", publishState: "live" })],
       }),
     );
+    expect(maybeTriggerXaBDeployMock).toHaveBeenCalledWith({
+      storefrontId: "xa-b",
+      kv: kvNamespaceMock,
+      statePaths: {
+        cooldownStatePath: "/repo/apps/xa-uploader/data/deploy-cooldown/xa-b.json",
+        pendingStatePath: "/repo/apps/xa-uploader/data/deploy-pending/xa-b.json",
+      },
+    });
+    expect(reconcileDeployPendingStateMock).toHaveBeenCalledWith({
+      storefrontId: "xa-b",
+      kv: kvNamespaceMock,
+      statePaths: {
+        cooldownStatePath: "/repo/apps/xa-uploader/data/deploy-cooldown/xa-b.json",
+        pendingStatePath: "/repo/apps/xa-uploader/data/deploy-pending/xa-b.json",
+      },
+      result: { status: "triggered" },
+    });
     expect(releaseCloudSyncLockMock).toHaveBeenCalledTimes(1);
   });
 
@@ -157,6 +199,31 @@ describe("catalog publish route", () => {
       }),
     );
     expect(publishCatalogPayloadToContractMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("returns deployReason when publish succeeds but deploy trigger fails", async () => {
+    maybeTriggerXaBDeployMock.mockResolvedValueOnce({
+      status: "failed",
+      reason: "http_401:deploy_ack_rejected",
+    });
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ storefront: "xa-b", draft: VALID_CLOUD_PRODUCT }),
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({
+        ok: true,
+        deployStatus: "failed",
+        deployReason: "http_401:deploy_ack_rejected",
+      }),
+    );
   });
 
   it("maps catalog publish failures to 502 catalog_publish_failed", async () => {

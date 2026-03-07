@@ -871,7 +871,40 @@ describe("handlePublishImpl — publish action feedback", () => {
     expect(screen.getByTestId("busy")).toHaveTextContent("idle");
   });
 
-  it("TC-03: publish failure shows error feedback and busy lock is released", async () => {
+  it("TC-03: successful publish with failed deploy trigger shows truthful feedback", async () => {
+    global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
+      if (url.startsWith("/api/catalog/products?storefront=") && !init?.method) {
+        return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
+      }
+      if (url.startsWith("/api/catalog/sync?storefront=")) {
+        return jsonResponse({ ok: true, ready: true, mode: "cloud", missingScripts: [], contractConfigured: true });
+      }
+      if (url === "/api/catalog/publish" && init?.method === "POST") {
+        return jsonResponse({
+          ok: true,
+          deployStatus: "failed",
+          deployReason: "http_401:deploy_ack_rejected",
+          warnings: [],
+        });
+      }
+      throw new Error(`Unhandled fetch: ${url}`);
+    }) as unknown as typeof fetch;
+
+    await renderHarness();
+    await act(async () => { fireEvent.click(screen.getByRole("button", { name: "seed-draft" })); });
+    await clickButton("publish");
+
+    await waitFor(() => {
+      expect(screen.getByTestId("draft-feedback")).toHaveTextContent(
+        "success:Published. Site rebuild trigger failed; manual rebuild may be required.",
+      );
+    });
+    expect(screen.getByTestId("busy")).toHaveTextContent("idle");
+  });
+
+  it("TC-04: publish failure shows error feedback and busy lock is released", async () => {
     global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input);
       if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });

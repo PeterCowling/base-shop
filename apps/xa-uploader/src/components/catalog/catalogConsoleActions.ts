@@ -578,6 +578,8 @@ export async function handlePublishImpl({
     const data = (await response.json()) as {
       ok: boolean;
       deployStatus?: string;
+      deployReason?: string;
+      deployNextEligibleAt?: string;
       warnings?: string[];
       error?: string;
     };
@@ -591,6 +593,8 @@ export async function handlePublishImpl({
       message = t("makeLiveSuccess");
     } else if (deployStatus === "skipped_cooldown") {
       message = t("makeLiveSuccessCooldown");
+    } else if (deployStatus === "failed") {
+      message = t("makeLiveSuccessFailed");
     } else {
       message = t("makeLiveSuccessUnconfigured");
     }

@@ -201,6 +201,7 @@ export function CatalogProductForm({
   onSaveWithDraft,
   onDelete,
   onPublish,
+  onMarkOutOfStock,
 }: {
   selectedSlug: string | null;
   draft: CatalogProductDraftInput;
@@ -218,6 +219,7 @@ export function CatalogProductForm({
   onSaveWithDraft: (nextDraft: CatalogProductDraftInput) => void;
   onDelete: () => void;
   onPublish?: () => Promise<unknown>;
+  onMarkOutOfStock?: () => void;
 }) {
   const { t } = useUploaderI18n();
   const category = draft.taxonomy.category;
@@ -349,7 +351,7 @@ export function CatalogProductForm({
             draft={draft}
             fieldErrors={fieldErrors}
             monoClassName={monoClassName}
-            sections={["identity", "taxonomy"]}
+            sections={["identity"]}
             onChange={onChangeDraft}
           />
           {category === "clothing" ? (
@@ -389,7 +391,17 @@ export function CatalogProductForm({
               ) : null}
             </div>
             <div className="flex items-center gap-2">
-              {readiness.isPublishReady ? (
+              {draft.publishState === "live" ? (
+                <button
+                  type="button"
+                  onClick={onMarkOutOfStock}
+                  disabled={busy}
+                  className={BTN_PRIMARY_CLASS}
+                >
+                  {t("statusOutOfStock")}
+                </button>
+              ) : null}
+              {readiness.isPublishReady && !!String(draft.price ?? "").trim() && draft.publishState !== "live" ? (
                 <button
                   type="button"
                   onClick={() => void onPublish?.()}

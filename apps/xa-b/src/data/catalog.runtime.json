@@ -1,5 +1,81 @@
 {
-  "collections": [],
-  "brands": [],
-  "products": []
+  "collections": [
+    {
+      "handle": "birkin",
+      "title": "Birkin",
+      "description": "Iconic structured top-handle bag in various sizes, leathers, and hardware finishes."
+    }
+  ],
+  "brands": [
+    {
+      "handle": "hermes",
+      "name": "Hermès"
+    }
+  ],
+  "products": [
+    {
+      "id": "draft-hermes-birkin-25-noir-togo",
+      "slug": "hermes-birkin-25-noir-togo",
+      "title": "Hermès Birkin 25 Noir Togo",
+      "brand": "hermes",
+      "collection": "birkin",
+      "price": 400,
+      "prices": {
+        "USD": 400,
+        "EUR": 400,
+        "GBP": 400,
+        "AUD": 400
+      },
+      "status": "live",
+      "media": [
+        {
+          "type": "image",
+          "path": "xa-b/hermes-birkin-25/1772890121875-13530f237918.jpg",
+          "altText": "Hermès Birkin 25 main image"
+        }
+      ],
+      "sizes": [
+        "25"
+      ],
+      "description": "Hermès Birkin 25 in Noir Togo leather. 25 x 20 x 13 cm.\n\nIconic structured top-handle bag featuring a front flap with signature turn-lock closure, double rolled handles, and a clochette with padlock and keys. Interior lined in Chevre leather with one zipper pocket and one open pocket.",
+      "createdAt": "2026-03-07T13:40:22.080Z",
+      "popularity": 100,
+      "taxonomy": {
+        "department": "women",
+        "category": "bags",
+        "subcategory": "top-handle",
+        "color": [
+          "Noir"
+        ],
+        "material": [
+          "Togo"
+        ],
+        "strapStyle": "Double rolled top handles",
+        "hardwareColor": "Palladium",
+        "interiorColor": [
+          "Noir"
+        ],
+        "closureType": "Sangles with turn-lock",
+        "fits": [
+          "Phone",
+          "wallet",
+          "keys",
+          "small cosmetics pouch"
+        ]
+      },
+      "details": {
+        "dimensions": "25 x 20 x 13 cm",
+        "strapDrop": "9 cm",
+        "whatFits": [
+          "Phone",
+          "wallet",
+          "keys",
+          "small cosmetics pouch"
+        ],
+        "interior": [
+          "Chevre leather lining with one zipper pocket and one open pocket"
+        ]
+      }
+    }
+  ]
 }

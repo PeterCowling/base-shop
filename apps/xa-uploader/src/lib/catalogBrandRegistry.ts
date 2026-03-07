@@ -289,6 +289,57 @@ const HERMES_COLOR_POPULARITY: Record<string, number> = {
   "Jaune de Naples": 0.6, "Vert Amande": 0.6, "Terre Battue": 0.6,
 };
 
+/**
+ * Chinese display labels for catalog option values (materials, colors, hardware).
+ * Format: "中文名称 (English)" so operators recognise both.
+ * The stored draft value is always the English key.
+ */
+export const ZH_CATALOG_LABELS: Record<string, string> = {
+  // Leathers / Materials
+  "Togo": "托戈皮 (Togo)",
+  "Epsom": "埃普索姆 (Epsom)",
+  "Clemence": "克莱蒙斯 (Clemence)",
+  "Swift": "斯威夫特 (Swift)",
+  "Box Calf": "盒形小牛皮 (Box Calf)",
+  "Ostrich": "鸵鸟皮 (Ostrich)",
+  "Crocodile Porosus": "孔雀鳄鱼皮 (Crocodile Porosus)",
+  "Crocodile Niloticus": "尼罗鳄鱼皮 (Crocodile Niloticus)",
+  "Chevre Mysore": "迈索尔山羊皮 (Chevre Mysore)",
+  "Toile H Canvas": "H帆布 (Toile H Canvas)",
+  "Negonda": "内贡达 (Negonda)",
+  "Country": "乡村皮 (Country)",
+  // Colors
+  "Noir": "黑色 (Noir)",
+  "Gold": "金色 (Gold)",
+  "Etoupe": "灰褐色 (Etoupe)",
+  "Bleu Nuit": "夜蓝色 (Bleu Nuit)",
+  "Rouge Casaque": "骑手红 (Rouge Casaque)",
+  "Craie": "粉笔白 (Craie)",
+  "Orange H": "爱马仕橙 (Orange H)",
+  "Vert Cypress": "柏树绿 (Vert Cypress)",
+  "Rose Sakura": "樱花粉 (Rose Sakura)",
+  "Bleu Electrique": "电光蓝 (Bleu Electrique)",
+  "Barenia Fauve": "巴雷尼亚黄褐色 (Barenia Fauve)",
+  "Gris Asphalte": "沥青灰 (Gris Asphalte)",
+  "Bleu Jean": "牛仔蓝 (Bleu Jean)",
+  "Rose Pourpre": "紫红玫瑰色 (Rose Pourpre)",
+  "Jaune de Naples": "那不勒斯黄 (Jaune de Naples)",
+  "Vert Amande": "杏仁绿 (Vert Amande)",
+  "Beton": "混凝土灰 (Beton)",
+  "Nata": "奶油白 (Nata)",
+  "Terre Battue": "红土色 (Terre Battue)",
+  "Rouge H": "爱马仕红 (Rouge H)",
+  "Rose Jaipur": "斋浦尔玫瑰粉 (Rose Jaipur)",
+  "Gris Perle": "珍珠灰 (Gris Perle)",
+  "Jaune Ambre": "琥珀黄 (Jaune Ambre)",
+  "Bougainvillier": "三角梅粉 (Bougainvillier)",
+  // Hardware colors
+  "Palladium": "钯金色 (Palladium)",
+  "Rose Gold": "玫瑰金 (Rose Gold)",
+  "Brushed Gold": "拉丝金 (Brushed Gold)",
+  "Permabrass": "永久黄铜 (Permabrass)",
+};
+
 /* eslint-enable ds/no-hardcoded-copy */
 
 /**

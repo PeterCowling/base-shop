@@ -17,6 +17,7 @@ import {
   findCollectionMaterials,
   findCollectionSizes,
   XA_BRAND_REGISTRY,
+  ZH_CATALOG_LABELS,
 } from "../../lib/catalogBrandRegistry";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
@@ -393,6 +394,8 @@ function MaterialColorSelectors({
   fieldErrors,
   onChange,
 }: BaseFieldsProps & { t: Translate }) {
+  const { locale } = useUploaderI18n();
+  const getLabel = locale === "zh" ? (v: string) => ZH_CATALOG_LABELS[v] ?? v : undefined;
   const registryMaterials = findCollectionMaterials(draft.brandHandle ?? "", draft.collectionHandle ?? "");
   const registryColors = findCollectionColors(draft.brandHandle ?? "", draft.collectionHandle ?? "");
   const registryHardwareColors = findCollectionHardwareColors(draft.brandHandle ?? "", draft.collectionHandle ?? "");
@@ -423,6 +426,7 @@ function MaterialColorSelectors({
           fieldError={fieldErrors["taxonomy.material"]}
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           testId="catalog-field-materials"
+          getLabel={getLabel}
           onChange={handleMaterialChange}
         />
       ) : (
@@ -450,6 +454,7 @@ function MaterialColorSelectors({
           fieldError={fieldErrors["taxonomy.color"]}
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           testId="catalog-field-colors"
+          getLabel={getLabel}
           onChange={handleColorChange}
         />
       ) : (
@@ -474,6 +479,7 @@ function MaterialColorSelectors({
           options={registryInteriorColors}
           selected={splitList(draft.taxonomy.interiorColor ?? "")}
           customPlaceholder=""
+          getLabel={getLabel}
           onChange={(next) =>
             onChange({ ...draft, taxonomy: { ...draft.taxonomy, interiorColor: joinList(next) } })
           }
@@ -486,6 +492,7 @@ function MaterialColorSelectors({
           options={registryHardwareColors}
           selected={splitList(draft.taxonomy.hardwareColor ?? "")}
           customPlaceholder=""
+          getLabel={getLabel}
           onChange={(next) =>
             onChange({ ...draft, taxonomy: { ...draft.taxonomy, hardwareColor: joinList(next) } })
           }

@@ -11,6 +11,8 @@ type Props = {
   customPlaceholder?: string;
   fieldError?: string;
   testId?: string;
+  /** Optional display label for an option value. Defaults to the value itself. */
+  getLabel?: (value: string) => string;
   onChange: (next: string[]) => void;
 };
 
@@ -21,6 +23,7 @@ export function RegistryCheckboxGrid({
   customPlaceholder,
   fieldError,
   testId,
+  getLabel,
   onChange,
 }: Props) {
   const registrySet = React.useMemo(() => new Set(options), [options]);
@@ -62,7 +65,7 @@ export function RegistryCheckboxGrid({
               onChange={() => toggle(opt)}
               className={CHECKBOX_CLASS}
             />
-            {opt}
+            {getLabel ? getLabel(opt) : opt}
           </label>
         ))}
       </div>

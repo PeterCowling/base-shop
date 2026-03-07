@@ -21,6 +21,8 @@ function mockHomeData(options: {
         media: [{ type: "image", url: "/image.jpg", altText: "Studio jacket" }],
       },
     ],
+  }));
+  jest.doMock("../../lib/catalogRuntimeMeta", () => ({
     XA_CATALOG_RUNTIME_FRESHNESS: {
       isStale: options.isStale,
       syncedAt: options.syncedAt ?? null,

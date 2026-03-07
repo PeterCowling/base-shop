@@ -11,7 +11,7 @@ import { findXaCollection, useXaCatalogSnapshot } from "../../lib/liveCatalog";
 import { formatLabel } from "../../lib/xaCatalog";
 import { xaI18n } from "../../lib/xaI18n";
 
-export default function CollectionRuntimePage() {
+function CollectionRuntimePageContent() {
   const searchParams = useSearchParams();
   const { collections, products } = useXaCatalogSnapshot();
   const handle = searchParams.get("handle")?.trim() ?? "";
@@ -59,6 +59,14 @@ export default function CollectionRuntimePage() {
         ]}
         products={collectionProducts}
       />
+    </Suspense>
+  );
+}
+
+export default function CollectionRuntimePage() {
+  return (
+    <Suspense fallback={null}>
+      <CollectionRuntimePageContent />
     </Suspense>
   );
 }

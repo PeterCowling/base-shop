@@ -8,7 +8,7 @@ import { Section } from "@acme/design-system/atoms/Section";
 
 import { XaFadeImage } from "../components/XaFadeImage";
 import { XaHomeCatalogSections } from "../components/XaHomeCatalogSections.client";
-import { XA_CATALOG_RUNTIME_FRESHNESS } from "../lib/demoData";
+import { XA_CATALOG_RUNTIME_FRESHNESS } from "../lib/catalogRuntimeMeta";
 import { siteConfig } from "../lib/siteConfig";
 import { xaI18n } from "../lib/xaI18n";
 

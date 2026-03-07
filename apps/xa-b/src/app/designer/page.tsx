@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
 import { EmptyState } from "@acme/design-system/atoms";
@@ -9,7 +10,7 @@ import { xaI18n } from "../../lib/xaI18n";
 
 import { DesignerPageClient } from "./[slug]/DesignerPageClient";
 
-export default function DesignerRuntimePage() {
+function DesignerRuntimePageContent() {
   const searchParams = useSearchParams();
   const handle = searchParams.get("handle")?.trim() ?? "";
 
@@ -28,4 +29,12 @@ export default function DesignerRuntimePage() {
   }
 
   return <DesignerPageClient designerHandle={handle} />;
+}
+
+export default function DesignerRuntimePage() {
+  return (
+    <Suspense fallback={null}>
+      <DesignerRuntimePageContent />
+    </Suspense>
+  );
 }

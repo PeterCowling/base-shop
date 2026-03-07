@@ -2,7 +2,6 @@ import { afterEach, describe, expect, it, jest } from "@jest/globals";
 
 const BASE_KEY = "NEXT_PUBLIC_XA_IMAGES_BASE_URL";
 const VARIANT_KEY = "NEXT_PUBLIC_XA_IMAGES_VARIANT";
-const MAX_AGE_KEY = "NEXT_PUBLIC_XA_CATALOG_MAX_AGE_HOURS";
 const ORIGINAL_ENV = { ...process.env };
 
 function restoreEnv() {
@@ -14,20 +13,18 @@ function restoreEnv() {
   }
 }
 
-async function loadDemoData(env: { base?: string; variant?: string; maxAgeHours?: string }) {
+async function loadDemoData(env: { base?: string; variant?: string }) {
   jest.resetModules();
   jest.unmock("../../data/catalog.runtime.json");
   if (env.base === undefined) delete process.env[BASE_KEY];
   else process.env[BASE_KEY] = env.base;
   if (env.variant === undefined) delete process.env[VARIANT_KEY];
   else process.env[VARIANT_KEY] = env.variant;
-  if (env.maxAgeHours === undefined) delete process.env[MAX_AGE_KEY];
-  else process.env[MAX_AGE_KEY] = env.maxAgeHours;
   return await import("../demoData");
 }
 
 async function loadDemoDataWithCatalogMock(
-  env: { base?: string; variant?: string; maxAgeHours?: string },
+  env: { base?: string; variant?: string },
   catalogMock: unknown,
 ) {
   jest.resetModules();
@@ -36,8 +33,6 @@ async function loadDemoDataWithCatalogMock(
   else process.env[BASE_KEY] = env.base;
   if (env.variant === undefined) delete process.env[VARIANT_KEY];
   else process.env[VARIANT_KEY] = env.variant;
-  if (env.maxAgeHours === undefined) delete process.env[MAX_AGE_KEY];
-  else process.env[MAX_AGE_KEY] = env.maxAgeHours;
   return await import("../demoData");
 }
 
@@ -62,10 +57,11 @@ describe("XA catalog data", () => {
   });
 
   it("exposes runtime freshness metadata without contract URL leakage", async () => {
-    const { XA_CATALOG_RUNTIME_FRESHNESS, XA_CATALOG_RUNTIME_META } = await loadDemoData({
+    process.env.NEXT_PUBLIC_XA_CATALOG_MAX_AGE_HOURS = "48";
+    const { XA_CATALOG_RUNTIME_FRESHNESS, XA_CATALOG_RUNTIME_META } = await import("../catalogRuntimeMeta");
+    await loadDemoData({
       base: "https://imagedelivery.net/hash",
       variant: "public",
-      maxAgeHours: "48",
     });
 
     expect(typeof XA_CATALOG_RUNTIME_FRESHNESS.isStale).toBe("boolean");

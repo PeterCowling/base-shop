@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
 import { EmptyState } from "@acme/design-system/atoms";
@@ -9,7 +10,7 @@ import { XaProductDetail } from "../../components/XaProductDetail";
 import { useXaCatalogSnapshot } from "../../lib/liveCatalog";
 import { xaI18n } from "../../lib/xaI18n";
 
-export default function ProductRuntimePage() {
+function ProductRuntimePageContent() {
   const searchParams = useSearchParams();
   const { products } = useXaCatalogSnapshot();
   const handle = searchParams.get("handle")?.trim() ?? "";
@@ -30,4 +31,12 @@ export default function ProductRuntimePage() {
   }
 
   return <XaProductDetail product={product} products={products} />;
+}
+
+export default function ProductRuntimePage() {
+  return (
+    <Suspense fallback={null}>
+      <ProductRuntimePageContent />
+    </Suspense>
+  );
 }

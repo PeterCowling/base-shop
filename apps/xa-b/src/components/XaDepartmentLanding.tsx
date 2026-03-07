@@ -1,10 +1,12 @@
+"use client";
+
 import Link from "next/link";
 
 import { Grid } from "@acme/design-system/atoms/Grid";
 import { Section } from "@acme/design-system/atoms/Section";
 import { Inline } from "@acme/design-system/primitives/Inline";
 
-import { XA_PRODUCTS } from "../lib/demoData";
+import { useXaCatalogSnapshot } from "../lib/liveCatalog";
 import { siteConfig } from "../lib/siteConfig";
 import {
   filterByDepartment,
@@ -15,18 +17,20 @@ import {
   XA_SUBCATEGORIES,
 } from "../lib/xaCatalog";
 import { xaI18n } from "../lib/xaI18n";
+import { getDesignerHref } from "../lib/xaRoutes";
 import type { XaDepartment } from "../lib/xaTypes";
 
 import { XaFadeImage } from "./XaFadeImage";
 import { XaProductCard } from "./XaProductCard";
 
 export function XaDepartmentLanding({ department }: { department: XaDepartment }) {
+  const { brands, products: liveProducts } = useXaCatalogSnapshot();
   const departmentLabel = formatLabel(department);
-  const products = filterByDepartment(XA_PRODUCTS, department);
+  const products = filterByDepartment(liveProducts, department);
   const newIn = [...products]
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
     .slice(0, 4);
-  const trendingDesigners = getTrendingDesigners(4, department);
+  const trendingDesigners = getTrendingDesigners(4, department, { brands, products: liveProducts });
 
   const categoryCards = XA_ALLOWED_CATEGORIES.map((category) => {
     const catProducts = products.filter((p) => p.taxonomy.category === category);
@@ -73,12 +77,12 @@ export function XaDepartmentLanding({ department }: { department: XaDepartment }
         <h2 className="text-xl font-semibold">{xaI18n.t("xaB.src.components.xadepartmentlanding.l63c47")}</h2>
         <Inline gap={3} className="mt-4 flex-wrap">
           {trendingDesigners.map((designer) => (
-            <Link
-              key={designer.handle}
-              href={`/designer/${designer.handle}`}
-              className="rounded-full border px-4 py-2 text-sm font-medium hover:bg-muted"
-            >
-              {designer.name}
+              <Link
+                key={designer.handle}
+                href={getDesignerHref(designer.handle)}
+                className="rounded-full border px-4 py-2 text-sm font-medium hover:bg-muted"
+              >
+                {designer.name}
             </Link>
           ))}
         </Inline>

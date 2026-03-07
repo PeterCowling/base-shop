@@ -13,10 +13,11 @@ import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 import { useCart } from "../contexts/XaCartContext";
 import { useWishlist } from "../contexts/XaWishlistContext";
 import type { XaProduct } from "../lib/demoData";
-import { XA_PRODUCTS } from "../lib/demoData";
 import { getAvailableStock } from "../lib/inventoryStore";
+import { useXaCatalogSnapshot } from "../lib/liveCatalog";
 import { formatLabel, XA_COLOR_SWATCHES, XA_DEFAULT_SWATCH } from "../lib/xaCatalog";
 import { xaI18n } from "../lib/xaI18n";
+import { getProductHref } from "../lib/xaRoutes";
 
 import { XaFadeImage } from "./XaFadeImage";
 
@@ -32,6 +33,7 @@ function getDeliveryWindow(daysMin = 5, daysMax = 12): string {
 }
 
 export function XaBuyBox({ product }: { product: XaProduct }) {
+  const { products } = useXaCatalogSnapshot();
   const [cart, dispatch] = useCart();
   const [wishlist, wishlistDispatch] = useWishlist();
   const [currency] = useCurrency();
@@ -49,9 +51,9 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
   const colorMedia = product.media.filter((media) => media.type === "image" && media.url.trim());
   const variantProducts = React.useMemo(() => {
     if (!product.variantGroup) return [];
-    const items = XA_PRODUCTS.filter((item) => item.variantGroup === product.variantGroup);
+    const items = products.filter((item) => item.variantGroup === product.variantGroup);
     return items.sort((a, b) => (a.id === product.id ? -1 : b.id === product.id ? 1 : 0));
-  }, [product.id, product.variantGroup]);
+  }, [product.id, product.variantGroup, products]);
   const showVariantStrip = variantProducts.length > 1;
   const showColorStrip = !showVariantStrip && colorOptions.length > 1;
   const sizeNote = sizeCount <= 1
@@ -177,7 +179,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
                 return (
                   <Link
                     key={`${variant.slug}-variant`}
-                    href={`/products/${variant.slug}`}
+                    href={getProductHref(variant.slug)}
                     className={`relative h-12 w-12 overflow-hidden rounded-none border bg-surface ${isCurrent ? "border-foreground" : "xa-border-control"}`}
                     title={label}
                     aria-label={label}

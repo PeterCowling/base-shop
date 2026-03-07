@@ -7,7 +7,7 @@ import { Button, Popover, PopoverContent, PopoverTrigger } from "@acme/design-sy
 import { Section } from "@acme/design-system/atoms/Section";
 import { Stack } from "@acme/design-system/primitives/Stack";
 
-import { XA_PRODUCTS } from "../lib/demoData";
+import { useXaCatalogSnapshot } from "../lib/liveCatalog";
 import { siteConfig } from "../lib/siteConfig";
 import {
   formatLabel,
@@ -18,6 +18,7 @@ import {
   XA_SUBCATEGORIES,
 } from "../lib/xaCatalog";
 import { xaI18n } from "../lib/xaI18n";
+import { getDesignerHref, getProductHref } from "../lib/xaRoutes";
 import type { XaDepartment } from "../lib/xaTypes";
 
 import { XaFadeImage } from "./XaFadeImage";
@@ -29,7 +30,8 @@ export function XaMegaMenu({
   label: string;
   department: XaDepartment;
 }) {
-  const trendingDesigners = getTrendingDesigners(4, department);
+  const { brands, products } = useXaCatalogSnapshot();
+  const trendingDesigners = getTrendingDesigners(4, department, { brands, products });
   const base = `/${department}`;
   const primaryCategory = siteConfig.catalog.category;
   const categorySections = XA_ALLOWED_CATEGORIES.map((category) => ({
@@ -38,7 +40,7 @@ export function XaMegaMenu({
     href: `${base}/${category}`,
     items: XA_SUBCATEGORIES[category],
   }));
-  const featuredProduct = XA_PRODUCTS.find(
+  const featuredProduct = products.find(
     (product) => product.taxonomy.department === department,
   );
   const featuredMedia = featuredProduct?.media?.[0];
@@ -108,7 +110,7 @@ export function XaMegaMenu({
                 {trendingDesigners.map((designer) => (
                   <Link
                     key={`${department}-designer-${designer.handle}`}
-                    href={`/designer/${designer.handle}`}
+                    href={getDesignerHref(designer.handle)}
                     className="text-sm hover:underline"
                   >
                     {designer.name}
@@ -120,7 +122,7 @@ export function XaMegaMenu({
           </div>
           {featuredProduct && featuredMedia ? (
             <Link
-              href={`/products/${featuredProduct.slug}`}
+              href={getProductHref(featuredProduct.slug)}
               className="hidden w-52 shrink-0 lg:block"
             >
               <div className="relative xa-aspect-3-4 overflow-hidden bg-surface">
@@ -133,7 +135,7 @@ export function XaMegaMenu({
                 />
               </div>
               <div className="mt-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                {getDesignerName(featuredProduct.brand)}
+                {getDesignerName(featuredProduct.brand, brands)}
               </div>
               <div className="mt-1 text-sm">{featuredProduct.title}</div>
             </Link>

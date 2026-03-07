@@ -57,6 +57,7 @@ const DEFAULT_CATALOG_MAX_BYTES = 10 * 1024 * 1024;
 const DEFAULT_DRAFTS_MAX_BYTES = 2 * 1024 * 1024;
 // i18n-exempt -- ABC-123 [ttl=2026-12-31]
 const DEFAULT_CATALOG_CACHE_CONTROL = "public, max-age=60, stale-while-revalidate=300";
+const PUBLIC_CATALOG_STOREFRONTS = new Set(["xa-b"]);
 // i18n-exempt -- ABC-123 [ttl=2026-12-31]
 const CORS_ALLOWED_HEADERS =
   "Content-Type, X-XA-Submission-Id, X-XA-Upload-Token, X-XA-Catalog-Token, X-XA-Deploy-Token, X-XA-Sync-Lock-Owner, Authorization"; // i18n-exempt -- ABC-123 [ttl=2026-12-31]
@@ -862,6 +863,15 @@ async function handleCatalogRead(
   const auth = await requireCatalogReadToken(env, request, url);
   if (auth instanceof Response) return auth;
 
+  return await respondWithCatalogObject(request, env, storefront);
+}
+
+async function respondWithCatalogObject(
+  request: Request,
+  env: Env,
+  storefront: string,
+  extraHeaders?: HeadersInit,
+): Promise<Response> {
   const bucket = resolveCatalogBucket(env);
   const prefix = resolveCatalogPrefix(env);
   const key = latestCatalogKey(prefix, storefront);
@@ -871,7 +881,10 @@ async function handleCatalogRead(
   const etag = normalizeEtag((object as unknown as { httpEtag?: string }).httpEtag ?? "");
   const ifNoneMatch = (request.headers.get("if-none-match") ?? "").trim();
   if (etag && ifNoneMatch === etag) {
-    const notModifiedHeaders = new Headers({ "Cache-Control": DEFAULT_CATALOG_CACHE_CONTROL });
+    const notModifiedHeaders = new Headers({
+      "Cache-Control": DEFAULT_CATALOG_CACHE_CONTROL,
+      ...extraHeaders,
+    });
     notModifiedHeaders.set("ETag", etag);
     return new Response(null, { status: 304, headers: notModifiedHeaders });
   }
@@ -880,18 +893,43 @@ async function handleCatalogRead(
   const headers = new Headers({
     "Content-Type": "application/json",
     "Cache-Control": DEFAULT_CATALOG_CACHE_CONTROL,
+    ...extraHeaders,
   });
   if (etag) headers.set("ETag", etag);
   return new Response(body, { status: 200, headers });
 }
 
+async function handlePublicCatalogRead(
+  request: Request,
+  env: Env,
+  storefront: string,
+): Promise<Response> {
+  if (!PUBLIC_CATALOG_STOREFRONTS.has(storefront)) {
+    return json({ ok: false }, 404, { "Access-Control-Allow-Origin": "*" });
+  }
+
+  return await respondWithCatalogObject(request, env, storefront, {
+    "Access-Control-Allow-Origin": "*",
+  });
+}
+
 type RouteMatch =
   | { kind: "upload"; pathToken: string }
   | { kind: "catalog"; storefront: string | null }
+  | { kind: "publicCatalog"; storefront: string | null }
   | { kind: "drafts"; storefront: string | null }
   | { kind: "draftSyncLock"; storefront: string | null }
   | { kind: "deploy"; storefront: string | null }
   | { kind: "other" };
+
+function matchPairRoute(first: string, second: string): RouteMatch | null {
+  const storefront = parseStorefront(second);
+  if (first === "catalog") return { kind: "catalog", storefront };
+  if (first === "catalog-public") return { kind: "publicCatalog", storefront };
+  if (first === "drafts") return { kind: "drafts", storefront };
+  if (first === "deploy") return { kind: "deploy", storefront };
+  return null;
+}
 
 function matchRoute(pathname: string): RouteMatch {
   const segments = pathname.split("/").filter(Boolean);
@@ -901,27 +939,13 @@ function matchRoute(pathname: string): RouteMatch {
       pathToken: segments.length === 2 ? (segments[1] ?? "") : "",
     };
   }
-  if (segments.length === 2 && segments[0] === "catalog") {
-    return {
-      kind: "catalog",
-      storefront: parseStorefront(segments[1] ?? ""),
-    };
+  if (segments.length === 2) {
+    const pairRoute = matchPairRoute(segments[0] ?? "", segments[1] ?? "");
+    if (pairRoute) return pairRoute;
   }
   if (segments.length === 3 && segments[0] === "drafts" && segments[2] === "sync-lock") {
     return {
       kind: "draftSyncLock",
-      storefront: parseStorefront(segments[1] ?? ""),
-    };
-  }
-  if (segments.length === 2 && segments[0] === "drafts") {
-    return {
-      kind: "drafts",
-      storefront: parseStorefront(segments[1] ?? ""),
-    };
-  }
-  if (segments.length === 2 && segments[0] === "deploy") {
-    return {
-      kind: "deploy",
       storefront: parseStorefront(segments[1] ?? ""),
     };
   }
@@ -1316,6 +1340,14 @@ async function routeRequest(params: {
       return await handleCatalogRead(request, env, url, route.storefront);
     }
     return json({ ok: false }, 404);
+  }
+
+  if (route.kind === "publicCatalog") {
+    if (!route.storefront) return json({ ok: false }, 404, { "Access-Control-Allow-Origin": "*" });
+    if (request.method === "GET") {
+      return await handlePublicCatalogRead(request, env, route.storefront);
+    }
+    return json({ ok: false }, 404, { "Access-Control-Allow-Origin": "*" });
   }
 
   if (route.kind === "drafts") {

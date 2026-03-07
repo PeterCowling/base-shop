@@ -23,6 +23,7 @@ import { useCart } from "../../contexts/XaCartContext";
 import { siteConfig } from "../../lib/siteConfig";
 import { toWhatsappTextHref } from "../../lib/support";
 import { xaI18n } from "../../lib/xaI18n";
+import { getCollectionHref } from "../../lib/xaRoutes";
 
 function formatAmount(amount: number, currency: string): string {
   return new Intl.NumberFormat("en-US", {
@@ -81,7 +82,7 @@ export default function CartPage() {
             title={xaI18n.t("xaB.src.app.cart.page.l38c42")}
             action={
               <Link
-                href="/collections/all"
+                href={getCollectionHref("all")}
                 className="text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
               >
                 {xaI18n.t("xaB.src.app.cart.page.l40c67")}

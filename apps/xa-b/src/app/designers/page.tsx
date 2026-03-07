@@ -9,15 +9,17 @@ import { Section } from "@acme/design-system/atoms/Section";
 import { Breadcrumbs } from "@acme/design-system/molecules";
 import { Inline } from "@acme/design-system/primitives/Inline";
 
-import { XA_BRANDS } from "../../lib/demoData";
+import { useXaCatalogSnapshot } from "../../lib/liveCatalog";
 import { xaI18n } from "../../lib/xaI18n";
+import { getDesignerHref } from "../../lib/xaRoutes";
 
 export default function DesignersIndexPage() {
+  const { brands } = useXaCatalogSnapshot();
   const [query, setQuery] = React.useState("");
   const q = query.trim().toLowerCase();
   const designers = q
-    ? XA_BRANDS.filter((designer) => designer.name.toLowerCase().includes(q))
-    : XA_BRANDS;
+    ? brands.filter((designer) => designer.name.toLowerCase().includes(q))
+    : brands;
 
   const grouped = React.useMemo(() => {
     const out = new Map<string, typeof designers>();
@@ -74,7 +76,7 @@ export default function DesignersIndexPage() {
                   {(grouped.get(letter) ?? []).map((designer) => (
                     <Link
                       key={designer.handle}
-                      href={`/designer/${designer.handle}`}
+                      href={getDesignerHref(designer.handle)}
                       className="rounded-lg border p-4 hover:shadow-sm"
                     >
                       <div className="font-medium">{designer.name}</div>

@@ -775,5 +775,11 @@
   "xaB.src.app.pages.contact.us.contactusenquiryform.copy.labelMessage": "Message",
   "xaB.src.app.pages.contact.us.contactusenquiryform.copy.labelAttachments": "Attachments",
   "xaB.src.app.pages.contact.us.contactusenquiryform.copy.attachmentsHelp": "Files are listed in the draft email body. Add files manually before sending.",
-  "xaB.src.app.pages.contact.us.contactusenquiryform.copy.send": "Send"
+  "xaB.src.app.pages.contact.us.contactusenquiryform.copy.send": "Send",
+  "xaB.src.app.product.page.emptyTitle": "Product not found",
+  "xaB.src.app.product.page.emptyDescription": "This product is not available in the live catalog.",
+  "xaB.src.app.designer.page.emptyTitle": "Designer not found",
+  "xaB.src.app.designer.page.emptyDescription": "This designer is not available in the live catalog.",
+  "xaB.src.app.collection.page.emptyTitle": "Collection not found",
+  "xaB.src.app.collection.page.emptyDescription": "This collection is not available in the live catalog."
 }

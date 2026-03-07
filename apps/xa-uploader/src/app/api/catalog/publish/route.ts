@@ -161,11 +161,14 @@ export async function POST(request: Request) {
     }
 
     const deployStateContext = await resolveDeployStateContext(storefront);
-    const deployResult = await maybeTriggerXaBDeploy({
-      storefrontId: storefront,
-      kv: deployStateContext.kv,
-      statePaths: deployStateContext.statePaths,
-    });
+    const deployResult =
+      storefront === "xa-b"
+        ? { status: "skipped_runtime_live_catalog" as const, reason: "live_catalog_runtime_enabled" }
+        : await maybeTriggerXaBDeploy({
+            storefrontId: storefront,
+            kv: deployStateContext.kv,
+            statePaths: deployStateContext.statePaths,
+          });
     await reconcileDeployPendingState({
       storefrontId: storefront,
       kv: deployStateContext.kv,

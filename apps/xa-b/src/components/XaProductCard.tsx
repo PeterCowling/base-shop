@@ -18,6 +18,7 @@ import { getAvailableStock } from "../lib/inventoryStore";
 import { formatLabel, getDesignerName } from "../lib/xaCatalog";
 import { xaI18n } from "../lib/xaI18n";
 import { isNewIn } from "../lib/xaListingUtils";
+import { getProductHref } from "../lib/xaRoutes";
 
 import { XaFadeImage } from "./XaFadeImage";
 
@@ -93,7 +94,7 @@ export function XaProductCard({ product }: { product: XaProduct }) {
   return (
     <div className="xa-panel rounded-sm border border-border-1 bg-surface-2 p-4 shadow-elevation-1">
       <div className="relative">
-        <Link href={`/products/${product.slug}`} className="group block">
+        <Link href={getProductHref(product.slug)} className="group block">
           <div className="relative aspect-square overflow-hidden rounded-sm bg-surface" onTouchStart={() => setTouched(true)} onTouchEnd={() => setTouched(false)}>
             {primaryImage ? (
               <>
@@ -169,7 +170,7 @@ export function XaProductCard({ product }: { product: XaProduct }) {
       </div>
 
       <div className="mt-3 space-y-2">
-        <Link href={`/products/${product.slug}`} className="block space-y-1">
+        <Link href={getProductHref(product.slug)} className="block space-y-1">
           <div className="text-xs font-semibold uppercase tracking-wide">
             {designerName}
           </div>

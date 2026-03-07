@@ -593,6 +593,8 @@ export async function handlePublishImpl({
       message = t("makeLiveSuccess");
     } else if (deployStatus === "skipped_cooldown") {
       message = t("makeLiveSuccessCooldown");
+    } else if (deployStatus === "skipped_runtime_live_catalog") {
+      message = t("makeLiveSuccessLiveCatalog");
     } else if (deployStatus === "failed") {
       message = t("makeLiveSuccessFailed");
     } else {

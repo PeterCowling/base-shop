@@ -12,7 +12,12 @@ import {
   XA_B_DEPLOY_HOOK_URL_ENV,
 } from "./uploaderRuntimeConfig";
 
-export type DeployTriggerStatus = "triggered" | "skipped_unconfigured" | "skipped_cooldown" | "failed";
+export type DeployTriggerStatus =
+  | "triggered"
+  | "skipped_unconfigured"
+  | "skipped_cooldown"
+  | "skipped_runtime_live_catalog"
+  | "failed";
 
 export type DeployTriggerResult = {
   status: DeployTriggerStatus;
@@ -557,7 +562,7 @@ export async function reconcileDeployPendingState(params: {
   result: DeployTriggerResult;
   statePaths?: DeployStatePaths;
 }): Promise<DeployPendingState | null> {
-  if (params.result.status === "triggered") {
+  if (params.result.status === "triggered" || params.result.status === "skipped_runtime_live_catalog") {
     await clearDeployPendingState({
       storefrontId: params.storefrontId,
       kv: params.kv,
@@ -699,6 +704,15 @@ export function buildDisplaySyncGuidance(
       nextAction: "wait_or_manual_deploy_xa_b",
       deployStatus: deploy.status,
       nextEligibleAt: deploy.nextEligibleAt,
+      ...pendingPayload,
+    };
+  }
+  if (deploy?.status === "skipped_runtime_live_catalog") {
+    return {
+      mode: "runtime_live_catalog",
+      requiresXaBBuild: false,
+      nextAction: "verify_live_catalog_runtime",
+      deployStatus: deploy.status,
       ...pendingPayload,
     };
   }

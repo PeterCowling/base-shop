@@ -15,6 +15,7 @@ export type XaProductTaxonomy = {
   occasion?: string[];
   strapStyle?: string;
   hardwareColor?: string;
+  interiorColor?: string[];
   closureType?: string;
   fits?: string[];
   metal?: string;

@@ -401,6 +401,41 @@ describe("xa-drop-worker", () => {
     expect(authorizedWithWriteToken.status).toBe(200);
   });
 
+  it("serves xa-b on the public catalog route without auth", async () => {
+    const bucket = {
+      get: jest.fn().mockResolvedValue({
+        httpEtag: "etag123",
+        text: jest.fn().mockResolvedValue("{\"ok\":true,\"storefront\":\"xa-b\"}\n"),
+      }),
+    } as unknown as R2Bucket;
+
+    const response = await handler.fetch(
+      new Request("https://drop.example/catalog-public/xa-b", { method: "GET" }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+      },
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get("Access-Control-Allow-Origin")).toBe("*");
+  });
+
+  it("does not expose non-public storefronts on the public catalog route", async () => {
+    const bucket = {
+      get: jest.fn(),
+    } as unknown as R2Bucket;
+
+    const response = await handler.fetch(
+      new Request("https://drop.example/catalog-public/xa-c", { method: "GET" }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+      },
+    );
+
+    expect(response.status).toBe(404);
+    expect(bucket.get).not.toHaveBeenCalled();
+  });
+
   it("rejects tokens whose ttl exceeds configured max", async () => {
     const iat = Math.floor(Date.now() / 1000);
     const token = makeToken(secret, { iat, exp: iat + 3600, nonce: "nonce-ttl" });

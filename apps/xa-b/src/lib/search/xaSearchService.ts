@@ -1,6 +1,7 @@
 "use client";
 
 import { XA_PRODUCTS, type XaProduct } from "../demoData";
+import { loadXaCatalogSnapshot } from "../liveCatalog";
 
 import { toXaSearchDoc } from "./xaSearchConfig";
 import { readXaSearchCache, writeXaSearchCache, type XaSearchIndexJson } from "./xaSearchDb";
@@ -25,6 +26,13 @@ async function initXaSearchService(): Promise<XaSearchService> {
   let products = cached.products ?? [];
   let indexJson: XaSearchIndexJson | undefined = cached.index;
   let byId = toProductMap(products);
+
+  const liveSnapshot = await loadXaCatalogSnapshot();
+  if (liveSnapshot.products.length) {
+    products = liveSnapshot.products;
+    byId = toProductMap(products);
+    indexJson = undefined;
+  }
 
   if (!products.length && XA_PRODUCTS.length) {
     products = XA_PRODUCTS;

@@ -21,7 +21,8 @@ export default async function DesignerPage({
 
   return (
     <DesignerPageClient
-      designer={designer}
+      designerHandle={designer.handle}
+      designerName={designer.name}
       designerProducts={designerProducts}
     />
   );

@@ -179,6 +179,8 @@ const messages = {
     makeLive: "Make Live",
     makeLiveSuccess: "Published. Site rebuild triggered.",
     makeLiveSuccessCooldown: "Published. Site rebuild pending (cooldown).",
+    makeLiveSuccessLiveCatalog:
+      "Published. xa-b now reads the live catalog without a site rebuild.",
     makeLiveSuccessFailed: "Published. Site rebuild trigger failed; manual rebuild may be required.",
     makeLiveSuccessUnconfigured: "Published. (No deploy hook configured.)",
     makeLiveFailed: "Publish failed. Please try again.",

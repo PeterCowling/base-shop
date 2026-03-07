@@ -16,7 +16,7 @@ import RoomFilters from "../molecules/RoomFilters";
 import { SLUGS } from "../slug-map";
 import type { RoomCardPrice } from "../types/roomCard";
 import { getDatePlusTwoDays, getTodayIso } from "../utils/dateUtils";
-import { translatePath } from "../utils/translate-path";
+import { getPrivateRoomChildPath } from "../utils/privateRoomPaths";
 
 export type RoomsSectionBookingQuery = {
   checkIn?: string;
@@ -292,9 +292,9 @@ function RoomsSection({
           {filteredRooms.map((room, index) => {
             const href =
               room.id === "double_room"
-                ? `/${lang}/${translatePath("apartment", lang as AppLanguage)}/double-room`
+                ? `/${lang}${getPrivateRoomChildPath(lang as AppLanguage, "double-room")}`
                 : room.id === "apartment"
-                  ? `/${lang}/${translatePath("apartment", lang as AppLanguage)}/apartment`
+                  ? `/${lang}${getPrivateRoomChildPath(lang as AppLanguage, "apartment")}`
                   : `/${lang}/${roomsSlug}/${getRoomSlug(room.id, lang as AppLanguage)}`;
             const title = resolveTranslatedCopy(
               t(`rooms.${room.id}.title`, {

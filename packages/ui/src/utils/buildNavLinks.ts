@@ -7,6 +7,7 @@ import { getRoomSlug } from "../config/roomSlugs";
 import type { AppLanguage } from "../i18n.config";
 import type { SlugMap } from "../slug-map";
 
+import { getPrivateRoomChildPath, getPrivateRoomsPath } from "./privateRoomPaths";
 import { translatePath } from "./translate-path";
 
 export interface NavItemChild {
@@ -78,15 +79,22 @@ export function buildNavLinks(
     }
 
     if (key === "apartment") {
-      const apartmentSlug = slugs["apartment"];
       const children: NavItemChild[] = [
         { key: "apartment_book_private", to: privateBookingSlug, label: "Book private accommodations" },
-        { key: "apartment_double_room", to: `${apartmentSlug}/double-room`, label: "Double Room" },
-        { key: "apartment_private_stay", to: `${apartmentSlug}/private-stay`, label: "Apartment" },
+        {
+          key: "apartment_apartment",
+          to: getPrivateRoomChildPath(lang, "apartment"),
+          label: "Apartment",
+        },
+        {
+          key: "apartment_double_room",
+          to: getPrivateRoomChildPath(lang, "double-room"),
+          label: "Double Room",
+        },
       ];
       return {
         key,
-        to: slugs[key],
+        to: getPrivateRoomsPath(lang),
         label,
         prefetch: undefined,
         children,

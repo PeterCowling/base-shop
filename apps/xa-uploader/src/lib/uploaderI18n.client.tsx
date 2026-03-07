@@ -33,10 +33,13 @@ export function UploaderI18nProvider({
   initialLocale?: UploaderLocale;
 }) {
   const fallbackLocale = initialLocale ?? UPLOADER_DEFAULT_LOCALE;
-  const [locale, setLocaleState] = React.useState<UploaderLocale>(() => {
-    if (typeof window === "undefined") return fallbackLocale;
-    return normalizeStoredLocale(window.localStorage.getItem(STORAGE_KEY)) ?? fallbackLocale;
-  });
+  // Always start with the fallback so server and client initial render match,
+  // then apply the stored locale after hydration to avoid React #418.
+  const [locale, setLocaleState] = React.useState<UploaderLocale>(fallbackLocale);
+  React.useEffect(() => {
+    const stored = normalizeStoredLocale(window.localStorage.getItem(STORAGE_KEY));
+    if (stored) setLocaleState(stored);
+  }, []);
 
   const setLocale = React.useCallback((nextLocale: UploaderLocale) => {
     setLocaleState(nextLocale);

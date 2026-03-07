@@ -4,6 +4,7 @@ import {
   type ChangeEvent,
   type Dispatch,
   type DragEvent,
+  type ReactNode,
   type RefObject,
   type SetStateAction,
   useCallback,
@@ -272,7 +273,7 @@ function useDropZoneDragHandlers(setDragOver: Dispatch<SetStateAction<boolean>>)
   return { handleDragOver, handleDragLeave };
 }
 
-function ImageDropZone({
+export function ImageDropZone({
   canUpload,
   isUploading,
   dragOver,
@@ -344,6 +345,79 @@ function ImageDropZone({
   );
 }
 
+function ImageCard({
+  entry,
+  badge,
+  alt,
+  onRemove,
+  removeTestId,
+  removeLabel,
+  makeMainButton,
+  reorderButtons,
+  itemTestId,
+}: {
+  entry: ImageEntry | undefined;
+  badge: string;
+  alt: string;
+  onRemove?: () => void;
+  removeTestId?: string;
+  removeLabel?: string;
+  makeMainButton?: ReactNode;
+  reorderButtons?: ReactNode;
+  itemTestId?: string;
+}) {
+  const src = entry ? resolveImageSrc(entry.path, new Map<string, string>()) : undefined;
+
+  return (
+    <li
+      className="group relative overflow-hidden rounded-lg border border-gate-border bg-gate-surface"
+      data-testid={itemTestId}
+    >
+      {/* eslint-disable-next-line ds/no-arbitrary-tailwind -- XAUP-0001 operator-tool fixed aspect ratio */}
+      <div className="relative aspect-[4/5] w-full bg-gate-bg">
+        {src ? (
+          <ImageWithFallback
+            src={src}
+            alt={alt}
+          />
+        ) : (
+          <ImagePlaceholder />
+        )}
+      </div>
+
+      <div className="space-y-2 px-2 py-1.5">
+        <div className="flex items-center gap-2">
+          <span className="min-w-0 flex-1 truncate text-2xs text-gate-ink">
+            {entry?.filename ?? alt}
+          </span>
+          {entry ? (
+            <span className="shrink-0 rounded bg-gate-accent-soft px-1 py-0.5 text-2xs text-gate-accent">
+              {badge}
+            </span>
+          ) : null}
+        </div>
+        {entry ? (
+          // eslint-disable-next-line ds/enforce-layout-primitives -- XAUP-0001 operator-tool image card controls row
+          <div className="flex flex-wrap items-center gap-1">
+            {makeMainButton}
+            {reorderButtons}
+            {onRemove ? (
+              <button
+                type="button"
+                onClick={onRemove}
+                className={`${BTN_SECONDARY_CLASS} px-3 text-2xs text-danger-fg hover:text-danger-fg`}
+                data-testid={removeTestId}
+              >
+                {removeLabel}
+              </button>
+            ) : null}
+          </div>
+        ) : null}
+      </div>
+    </li>
+  );
+}
+
 function ImageGallery({
   entries,
   previews,
@@ -367,7 +441,7 @@ function ImageGallery({
         <div className="text-xs text-gate-muted">
           {t("uploadImageCount", { count: entries.length })}
         </div>
-        <div className="text-2xs text-gate-muted">{t("uploadImageOrderHelp")}</div>
+      <div className="text-2xs text-gate-muted">{t("uploadImageOrderHelp")}</div>
       </div>
       {/* eslint-disable-next-line ds/enforce-layout-primitives -- XAUP-0001 operator-tool thumbnail grid */}
       <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
@@ -447,7 +521,126 @@ function ImageGallery({
   );
 }
 
-function useImageUploadController({
+export function MainImagePanel({
+  entry,
+  onRemove,
+}: {
+  entry: ReturnType<typeof parseImageEntries>[number] | undefined;
+  onRemove: (index: number) => void;
+}) {
+  const { t } = useUploaderI18n();
+  const badge = t("uploadImagePrimaryBadge");
+
+  return (
+    <div
+      className="space-y-2"
+      // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test selector, not user-visible copy
+      data-cy="main-image-panel"
+    >
+      <div className="flex items-center justify-between gap-3">
+        <div className="text-xs text-gate-muted">{t("uploadImageCount", { count: entry ? 1 : 0 })}</div>
+      </div>
+      {/* eslint-disable-next-line ds/container-widths-only-at -- XAUP-0001 operator-tool single-image display constrained width */}
+      <ul className="grid grid-cols-1 gap-3 sm:max-w-xs">
+        <ImageCard
+          entry={entry}
+          badge={badge}
+          alt={t("uploadAddMainImage")}
+          onRemove={entry ? () => onRemove(0) : undefined}
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test selector, not user-visible copy
+          removeTestId="image-remove-0"
+          removeLabel={t("uploadImageRemove")}
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test selector, not user-visible copy
+          itemTestId="main-image-card"
+        />
+      </ul>
+    </div>
+  );
+}
+
+export function AdditionalImagesPanel({
+  entries,
+  onRemove,
+  onMakeMain,
+  onReorder,
+}: {
+  entries: ReturnType<typeof parseImageEntries>;
+  onRemove: (index: number) => void;
+  onMakeMain: (index: number) => void;
+  onReorder: (index: number, direction: "up" | "down") => void;
+}) {
+  const { t } = useUploaderI18n();
+
+  if (entries.length === 0) return null;
+
+  return (
+    <div
+      className="space-y-2"
+      // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test selector, not user-visible copy
+      data-cy="additional-images-panel"
+    >
+      <div className="flex items-center justify-between gap-3">
+        <div className="text-xs text-gate-muted">
+          {t("uploadImageCount", { count: entries.length })}
+        </div>
+        <div className="text-2xs text-gate-muted">{t("uploadImageOrderHelp")}</div>
+      </div>
+      {/* eslint-disable-next-line ds/enforce-layout-primitives -- XAUP-0001 operator-tool thumbnail grid */}
+      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        {entries.map((entry, sliceIndex) => {
+          const globalIndex = sliceIndex + 1;
+          const badge = t("uploadImageAdditionalBadge", { count: globalIndex });
+
+          return (
+            <ImageCard
+              key={`${entry.path}-${globalIndex}`}
+              entry={entry}
+              badge={badge}
+              alt={badge}
+              itemTestId={`additional-image-global-${globalIndex}`}
+              removeLabel={t("uploadImageRemove")}
+              makeMainButton={(
+                <button
+                  type="button"
+                  onClick={() => onMakeMain(globalIndex)}
+                  className={`${BTN_SECONDARY_CLASS} px-3 text-2xs`}
+                  data-testid={`image-make-main-${globalIndex}`}
+                >
+                  {t("uploadImageMakeMain")}
+                </button>
+              )}
+              reorderButtons={(
+                <>
+                  <button
+                    type="button"
+                    onClick={() => onReorder(globalIndex, "up")}
+                    className={`${BTN_SECONDARY_CLASS} inline-flex min-h-11 min-w-11 items-center justify-center`}
+                    data-testid={`image-move-up-${globalIndex}`}
+                  >
+                    ↑
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onReorder(globalIndex, "down")}
+                    disabled={sliceIndex === entries.length - 1}
+                    className={`${BTN_SECONDARY_CLASS} inline-flex min-h-11 min-w-11 items-center justify-center`}
+                    data-testid={`image-move-down-${globalIndex}`}
+                  >
+                    ↓
+                  </button>
+                </>
+              )}
+              onRemove={() => onRemove(globalIndex)}
+              removeTestId={`image-remove-${globalIndex}`}
+            />
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
+export function useImageUploadController({
   draft,
   storefront,
   hasSlug,

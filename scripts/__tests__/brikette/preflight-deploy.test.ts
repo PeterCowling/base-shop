@@ -10,12 +10,18 @@ import { describe, expect, it } from "@jest/globals";
 
 import { type PreflightDeps,runBriketteDeployPreflight } from "../../src/brikette/preflight-deploy";
 
-const REQUIRED_STATIC_FILES = [
-  "apps/brikette/src/app/[lang]/guides/[...slug]/page.tsx",
-  "apps/brikette/src/app/[lang]/draft/[...slug]/page.tsx",
-  "apps/brikette/src/app/api/guides/[guideKey]/manifest/route.ts",
-  "apps/brikette/src/app/api/guides/[guideKey]/route.ts",
-  "apps/brikette/src/app/api/guides/[guideKey]/audit/route.ts",
+const REQUIRED_STATIC_ROUTE_FILES = [
+  "apps/brikette/src/app/[lang]/book/page.tsx",
+  "apps/brikette/src/app/[lang]/book-private-accommodations/page.tsx",
+  "apps/brikette/src/app/[lang]/guides/[slug]/page.tsx",
+  "apps/brikette/src/app/[lang]/help/[slug]/page.tsx",
+];
+
+const REQUIRED_DEPLOY_SUPPORT_FILES = [
+  "apps/brikette/public/_redirects",
+  "apps/brikette/functions/api/availability.js",
+  "apps/brikette/scripts/normalize-static-export-localized-routes.ts",
+  "apps/brikette/scripts/generate-static-export-redirects.ts",
 ];
 
 function writeFile(root: string, relPath: string, content: string): void {
@@ -50,7 +56,7 @@ binding = "ASSETS"
 `,
   );
 
-  for (const relPath of REQUIRED_STATIC_FILES) {
+  for (const relPath of REQUIRED_STATIC_ROUTE_FILES) {
     writeFile(
       root,
       relPath,
@@ -59,6 +65,10 @@ binding = "ASSETS"
 }
 `,
     );
+  }
+
+  for (const relPath of REQUIRED_DEPLOY_SUPPORT_FILES) {
+    writeFile(root, relPath, "// fixture\n");
   }
 
   return root;
@@ -81,7 +91,7 @@ describe("runBriketteDeployPreflight", () => {
     try {
       writeFile(
         fixtureRoot,
-        "apps/brikette/src/app/[lang]/guides/[...slug]/page.tsx",
+        "apps/brikette/src/app/[lang]/guides/[slug]/page.tsx",
         `export default function Page() { return null; }\n`,
       );
 
@@ -92,7 +102,7 @@ describe("runBriketteDeployPreflight", () => {
         expect.arrayContaining([
           expect.objectContaining({
             code: "BRK_STATIC_MISSING_GENERATE_STATIC_PARAMS",
-            path: "apps/brikette/src/app/[lang]/guides/[...slug]/page.tsx",
+            path: "apps/brikette/src/app/[lang]/guides/[slug]/page.tsx",
           }),
         ]),
       );

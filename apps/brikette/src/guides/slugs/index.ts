@@ -10,4 +10,4 @@ export { GUIDE_SLUG_OVERRIDES } from "./overrides";
 export { GUIDE_SLUGS } from "./slugs";
 export { GUIDE_SLUG_LOOKUP_BY_LANG } from "./urls";
 export { resolveGuideKeyFromSlug } from "./urls";
-export { guideAbsoluteUrl,guideComponentPath, guideHref, guidePath, guideSlug } from "./urls";
+export { guideAbsoluteUrl, guideComponentPath, guideHref, guidePath, guideSlug, guideSlugAliases } from "./urls";

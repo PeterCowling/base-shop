@@ -2,33 +2,37 @@
 
 > **IMPORTANT**: Read this before ANY brikette deploy change. Referenced by `/ops-deploy` skill.
 
-## Current State (2026-02-06)
+## Current State (2026-03-07)
 
-Brikette has **two deploy targets** with different build strategies:
+Brikette has **two deploy targets** on the same Cloudflare Pages delivery model:
 
 | | Staging | Production |
 |---|---|---|
-| **Tier** | Cloudflare Pages (free) | Cloudflare Workers (paid, $5/mo) |
-| **Build** | `output: 'export'` → static HTML in `out/` | `@opennextjs/cloudflare` → Worker in `.open-next/` |
-| **Deploy** | `wrangler pages deploy out` | `wrangler deploy` |
+| **Tier** | Cloudflare Pages | Cloudflare Pages |
+| **Build** | `output: 'export'` → static HTML in `out/` | `output: 'export'` → static HTML in `out/` |
+| **Deploy** | `wrangler pages deploy out --branch staging` | `wrangler pages deploy out --branch main` |
 | **URL** | `staging.brikette-website.pages.dev` | `www.hostel-positano.com` |
-| **Env var** | `OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1` | _(none)_ |
+| **Env vars** | `OUTPUT_EXPORT=1`, `NEXT_PUBLIC_OUTPUT_EXPORT=1` | `OUTPUT_EXPORT=1`, `NEXT_PUBLIC_OUTPUT_EXPORT=1`, `NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY=1` |
 
-### What Works on Staging (static export)
+Production also ships the Cloudflare Pages Function at `functions/api/availability.js`, so live availability remains available even though the Next.js `src/app/api` directory is hidden during the static export build.
+
+### What Works On The Current Pages Deploy
 
 - All pre-rendered pages (4098 pages across 18 locales)
 - Client-side JS hydration and interactivity
 - Static assets (`/_next/static/*`, `/img/*`)
 - Images served directly from `public/img/` (no resizing)
+- Cloudflare Pages edge routing from `apps/brikette/public/_redirects`
+- Production-only live availability via `functions/api/availability.js`
 
-### What Does NOT Work on Staging
+### What Does NOT Work In The Static Export Runtime
 
 - **Middleware** — i18n slug rewrites (e.g. `/fr/chambres` → `/fr/rooms`) don't run
 - **API routes** — 7 guide authoring/validation endpoints unavailable
 - **Server-side rendering** — draft preview/edit pages don't render
 - **ISR** — no incremental static regeneration
 - **Image Resizing** — `/cdn-cgi/image/` not available on free tier; images served unoptimised
-- **Root URL** — `/` doesn't redirect; use `/en/` directly (handled by `_redirects` file)
+- **Next.js `src/app/api/*` routes** — hidden during build; only explicit Cloudflare Pages Functions survive deploy
 
 ---
 
@@ -43,21 +47,25 @@ Several route types are incompatible with `output: 'export'` and must be **physi
 ```
 apps/brikette/
   src/app/
-    api/              → _api-off       (route handlers in dynamic segments)
+    api/                → .tmp/app-api-off            (route handlers in dynamic segments)
     [lang]/
-      draft/          → _draft-off     (fs reads, SSR-only pages)
-      guides/[...slug] → guides/_slug-off  (catch-all with no params)
+      guides/[...slug]  → guides/_slug-off            (catch-all route)
+      guides/[slug]     → guides/_single-off          (single guide route)
+      help/[slug]       → help/_slug-off              (single help article route)
 ```
 
 The build command in `brikette.yml` does:
 ```bash
-mv src/app/api src/app/_api-off &&
-mv "src/app/[lang]/draft" "src/app/[lang]/_draft-off" &&
-mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" &&
+mkdir -p ".tmp" &&
+[ -d "src/app/[lang]/guides/[...slug]" ] && mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" || true &&
+[ -d "src/app/[lang]/guides/[slug]" ] && mv "src/app/[lang]/guides/[slug]" "src/app/[lang]/guides/_single-off" || true &&
+[ -d "src/app/[lang]/help/[slug]" ] && mv "src/app/[lang]/help/[slug]" "src/app/[lang]/help/_slug-off" || true &&
+[ -d "src/app/api" ] && mv "src/app/api" ".tmp/app-api-off" || true &&
 (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm exec next build; e=$?;
- mv src/app/_api-off src/app/api;
- mv "src/app/[lang]/_draft-off" "src/app/[lang]/draft";
- mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]";
+ [ -d ".tmp/app-api-off" ] && mv ".tmp/app-api-off" "src/app/api" || true;
+ [ -d "src/app/[lang]/guides/_slug-off" ] && mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]" || true;
+ [ -d "src/app/[lang]/guides/_single-off" ] && mv "src/app/[lang]/guides/_single-off" "src/app/[lang]/guides/[slug]" || true;
+ [ -d "src/app/[lang]/help/_slug-off" ] && mv "src/app/[lang]/help/_slug-off" "src/app/[lang]/help/[slug]" || true;
  exit $e)
 ```
 
@@ -67,11 +75,16 @@ The subshell `(cmd; e=$?; restore; exit $e)` pattern ensures directories are res
 
 Cloudflare Image Resizing (`/cdn-cgi/image/...`) requires a paid plan or custom domain. On staging, `buildCfImageUrl()` in `packages/ui/src/lib/buildCfImageUrl.ts` detects `NEXT_PUBLIC_OUTPUT_EXPORT=1` and returns raw `/img/...` paths instead.
 
-### Redirects
+### Redirects And Localized Canonical Routes
 
-Since middleware doesn't run on static Pages, `apps/brikette/public/_redirects` provides edge-level redirects:
-- `/` → `/en/` (302)
-- `/api/health` → `/en/` (302)
+Since middleware doesn't run on static Pages, `apps/brikette/public/_redirects` is the edge routing contract. It carries:
+- root and health redirects
+- localized `301` alias redirects to the canonical public slug
+- localized `200` rewrites from canonical public slugs back to the internal export path
+
+For rollout-critical funnel checks, the canonical booking surfaces are currently:
+- `/it/prenota`
+- `/it/prenota-alloggi-privati`
 
 ---
 
@@ -138,15 +151,28 @@ pnpm exec turbo run build --filter=@apps/brikette^...
 # 2. Fetch the GA measurement ID from repo variables
 GA_ID=$(gh variable list | grep NEXT_PUBLIC_GA_MEASUREMENT_ID | awk '{print $2}')
 
-# 3. Static export build
-OUTPUT_EXPORT=1 NEXT_PUBLIC_GA_MEASUREMENT_ID="$GA_ID" pnpm exec next build --turbopack
+# 3. Static export build with the same normalization steps used in CI
+mkdir -p ".tmp"
+[ -d "src/app/[lang]/guides/[...slug]" ] && mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" || true
+[ -d "src/app/[lang]/guides/[slug]" ] && mv "src/app/[lang]/guides/[slug]" "src/app/[lang]/guides/_single-off" || true
+[ -d "src/app/[lang]/help/[slug]" ] && mv "src/app/[lang]/help/[slug]" "src/app/[lang]/help/_slug-off" || true
+[ -d "src/app/api" ] && mv "src/app/api" ".tmp/app-api-off" || true
+OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_GA_MEASUREMENT_ID="$GA_ID" pnpm exec next build --turbopack
+OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm --filter @apps/brikette normalize:localized-routes
+OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm --filter @apps/brikette generate:static-redirects
 
 # 4. REQUIRED — strip Next.js 16 metadata bloat
 #    Next.js 16 emits ~33k __next.* txt files per route build.
 #    Without this step the upload exceeds Cloudflare Pages' 20k-file free-plan limit.
 find out -name "__next.*" -type f -delete
 
-# 5. Deploy
+# 5. Restore hidden routes
+[ -d ".tmp/app-api-off" ] && mv ".tmp/app-api-off" "src/app/api" || true
+[ -d "src/app/[lang]/guides/_slug-off" ] && mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]" || true
+[ -d "src/app/[lang]/guides/_single-off" ] && mv "src/app/[lang]/guides/_single-off" "src/app/[lang]/guides/[slug]" || true
+[ -d "src/app/[lang]/help/_slug-off" ] && mv "src/app/[lang]/help/_slug-off" "src/app/[lang]/help/[slug]" || true
+
+# 6. Deploy
 pnpm exec wrangler pages deploy out --project-name brikette-website --branch main --commit-dirty=true
 ```
 
@@ -154,7 +180,7 @@ For staging, swap `--branch main` → `--branch staging`.
 
 **Auth**: wrangler uses the OAuth token for peter.cowling1976@gmail.com. Run `pnpm exec wrangler whoami` to confirm.
 
-**Route hiding**: `src/app/[lang]/guides/` is currently an empty directory (no `[...slug]` catch-all exists). If a catch-all is added back, hide it before the build: `mv "src/app/[lang]/guides/[...slug]" _slug-off` and restore after. Same pattern for `src/app/api/` if route handlers are added inside dynamic segments.
+**Route hiding**: do not skip the route-hide / restore sequence. The current CI path hides `src/app/api`, `src/app/[lang]/guides/[...slug]`, `src/app/[lang]/guides/[slug]`, and `src/app/[lang]/help/[slug]` before the export build, then restores them after normalization and redirect generation.
 
 ---
 
@@ -168,13 +194,14 @@ Triggers: push to `main`/`staging` (with path filters), PRs, manual dispatch.
 - `build-cmd`: Turbo builds deps → hide incompatible routes → `OUTPUT_EXPORT=1 next build` → restore
 - `artifact-path`: `apps/brikette/out`
 - `deploy-cmd`: `wrangler pages deploy out --project-name brikette-website --branch staging`
-- Health check runs against staging URL
+- Health check runs against staging URL and requires canonical localized booking routes to return `200` (`/it/prenota`, `/it/prenota-alloggi-privati`)
 - Cache headers check **skipped** (only runs for production — static Pages can't set custom headers)
 
 **Production job**: Manual dispatch only (`publish_to_production: true`, `main` branch). Uses:
-- `build-cmd`: Turbo builds deps → `opennextjs-cloudflare build`
-- `artifact-path`: `apps/brikette/.open-next`
-- `deploy-cmd`: `wrangler deploy`
+- `build-cmd`: same static export + route-hide + localized-route normalization + redirect generation flow as staging
+- `artifact-path`: `apps/brikette/out`
+- `deploy-cmd`: `wrangler pages deploy out --project-name brikette-website --branch main`
+- Health check runs against `https://www.hostel-positano.com`, verifies `/api/health`, `/api/availability`, and requires `/it/prenota` plus `/it/prenota-alloggi-privati` to return direct `200`
 
 ### Post-Deploy Checks
 
@@ -189,9 +216,9 @@ Tests are currently skipped on the `staging` branch via `if: github.ref != 'refs
 
 ---
 
-## Upgrade Path: Workers Paid Plan ($5/month)
+## Upgrade Path: Worker Runtime (future option)
 
-Upgrading to Cloudflare Workers Paid unlocks the full Worker deploy for staging:
+If Brikette moves back to a Worker runtime later, the main gain is middleware/SSR parity instead of static-export workarounds:
 
 | Feature | Static (current) | Worker (paid) |
 |---|---|---|
@@ -208,7 +235,7 @@ Upgrading to Cloudflare Workers Paid unlocks the full Worker deploy for staging:
 
 1. Go to: `https://dash.cloudflare.com/<account-id>/workers/plans`
 2. Select "Workers Paid" ($5/month)
-3. In `brikette.yml`, change the staging job to use the same build/deploy as production:
+3. In `brikette.yml`, replace the current static export build/deploy path:
    - Remove the route-hiding `mv` commands from `build-cmd`
    - Change `build-cmd` to use `opennextjs-cloudflare build`
    - Change `artifact-path` to `apps/brikette/.open-next`
@@ -221,20 +248,12 @@ Upgrading to Cloudflare Workers Paid unlocks the full Worker deploy for staging:
 
 ## Architecture Notes
 
-- **Adapter**: `@opennextjs/cloudflare` (replaces deprecated `@cloudflare/next-on-pages`)
-- **Production build output**: `.open-next/worker.js` (Worker entry) + `.open-next/assets/` (static files)
-- **Staging build output**: `out/` directory (plain HTML/CSS/JS)
-- **Guide content JSON**: Loaded via `fs.readFileSync` at build time (NOT bundled into Worker) to keep handler under 64 MiB
-- **`@cloudflare/next-on-pages` removed**: It pulls esbuild 0.15.18 which conflicts with OpenNext's esbuild >=0.16.10 requirement
-
-## Size Budget (Production Worker)
-
-| Component | Uncompressed | Compressed (est.) |
-|---|---|---|
-| handler.mjs | 24 MiB | ~6 MiB |
-| middleware/handler.mjs | 2.3 MiB | ~0.5 MiB |
-| Free plan limit | 64 MiB | 3 MiB |
-| **Paid plan limit** | **64 MiB** | **10 MiB** |
+- **Current deploy artifact**: `apps/brikette/out` for both staging and production
+- **Current edge routing contract**: `apps/brikette/public/_redirects`
+- **Current production dynamic surface**: `apps/brikette/functions/api/availability.js`
+- **Localized static export normalization**: `apps/brikette/scripts/normalize-static-export-localized-routes.ts`
+- **Redirect generation**: `apps/brikette/scripts/generate-static-export-redirects.ts`
+- **`@opennextjs/cloudflare`** remains in the repo as a future option, but it is not the active production deploy path today.
 
 ## Key Files
 
@@ -242,8 +261,8 @@ Upgrading to Cloudflare Workers Paid unlocks the full Worker deploy for staging:
 - `.github/workflows/reusable-app.yml` — Shared workflow template
 - `packages/next-config/index.mjs` — Shared Next.js config (reads `OUTPUT_EXPORT`)
 - `packages/ui/src/lib/buildCfImageUrl.ts` — Image URL builder (reads `NEXT_PUBLIC_OUTPUT_EXPORT`)
-- `apps/brikette/wrangler.toml` — Cloudflare Worker config (production only)
-- `apps/brikette/open-next.config.ts` — OpenNext adapter config (production only)
-- `apps/brikette/public/_redirects` — Edge redirects for static deploy
+- `apps/brikette/public/_redirects` — Edge redirects / rewrites for static deploy
+- `apps/brikette/functions/api/availability.js` — Production Pages Function for live availability
+- `apps/brikette/wrangler.toml` — legacy Worker config kept for reference
+- `apps/brikette/open-next.config.ts` — inactive OpenNext adapter config kept for future Worker runtime work
 - `scripts/post-deploy-health-check.sh` — Post-deploy verification
-- `scripts/post-ops-deploy-cache-check.sh` — Cache header verification (production only)

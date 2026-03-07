@@ -1,5 +1,12 @@
 import { type AppLanguage } from "@/i18n.config";
-import { guideAbsoluteUrl, guideHref, guidePath, guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
+import {
+  guideAbsoluteUrl,
+  guideHref,
+  guidePath,
+  guideSlug,
+  guideSlugAliases,
+  resolveGuideKeyFromSlug,
+} from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 
 describe("guide URL resolver", () => {
@@ -36,5 +43,14 @@ describe("guide URL resolver", () => {
     const localizedSlug = guideSlug("it", "positanoMainBeach");
     expect(localizedSlug).not.toBe("positanomainbeach");
     expect(resolveGuideKeyFromSlug(localizedSlug, "it")).toBe("positanoMainBeach");
+  });
+
+  it("keeps legacy English guide aliases resolvable after canonical localization", () => {
+    const legacyAlias = guideSlugAliases("ja", "amalfiPositanoBus");
+    const localizedSlug = guideSlug("ja", "amalfiPositanoBus");
+
+    expect(legacyAlias).toContain("amalfi-positano-bus");
+    expect(localizedSlug).not.toBe("amalfi-positano-bus");
+    expect(resolveGuideKeyFromSlug("amalfi-positano-bus", "ja")).toBe("amalfiPositanoBus");
   });
 });

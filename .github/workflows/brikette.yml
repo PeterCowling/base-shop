@@ -127,7 +127,8 @@ jobs:
         run: |
           test -f apps/brikette/out/en.html
           test -d apps/brikette/out/_next/static
-          test -f apps/brikette/out/it/book.html
+          test -f apps/brikette/out/it/prenota.html
+          test -f apps/brikette/out/it/prenota-alloggi-privati.html
           file_count=$(find apps/brikette/out -type f | wc -l | tr -d ' ')
           echo "Static export files: $file_count"
           test "$file_count" -le 20000
@@ -180,9 +181,8 @@ jobs:
       environment-name: "staging-pages"
       environment-url: ${{ format('https://staging.{0}.pages.dev', vars.BRIKETTE_PAGES_PROJECT || 'brikette-website') }}
       healthcheck-args: "--staging"
-      # Use canonical localized booking route for strict health checks.
-      # /it/prenota is an alias route and can be deployment-topology dependent.
-      healthcheck-strict-routes: "/it/book"
+      # Use the finalized localized booking surfaces as strict health checks.
+      healthcheck-strict-routes: "/it/prenota /it/prenota-alloggi-privati"
     secrets: inherit
 
   production:
@@ -226,6 +226,7 @@ jobs:
       environment-name: "production"
       environment-url: "https://www.hostel-positano.com"
       healthcheck-base-url: "https://www.hostel-positano.com"
+      healthcheck-strict-routes: "/it/prenota /it/prenota-alloggi-privati"
       # Also verify the Pages Function is reachable after deploy.
       # Dates are absolute (GitHub Actions does not support dynamic with: values).
       # Refresh annually or when dates pass. Uses redirect-following curl (2xx/3xx = pass).

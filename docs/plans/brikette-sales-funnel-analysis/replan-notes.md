@@ -92,6 +92,6 @@ Plan: docs/plans/brikette-sales-funnel-analysis/plan.md
 ### Readiness Decision
 
 - Partially ready.
-  - Completed on 2026-03-06: `TASK-13A`, `TASK-13F`, `TASK-13B`, `TASK-13C`, `TASK-13G`
-  - Runnable now: `TASK-13D`
+  - Completed on 2026-03-06 / 2026-03-07: `TASK-13A`, `TASK-13F`, `TASK-13B`, `TASK-13C`, `TASK-13G`, `TASK-13D`, `TASK-13E`
+  - Runnable now: `TASK-08C` (external source-of-truth change required)
   - Still blocked externally: `TASK-08C`, `TASK-08D`

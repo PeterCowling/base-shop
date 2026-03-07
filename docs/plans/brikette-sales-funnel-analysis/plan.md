@@ -46,9 +46,9 @@ This run has progressed through `/lp-do-build` cycles, but a route-localization 
 - [x] TASK-13B: Localize top-level public route slugs and apartment booking route
 - [x] TASK-13C: Localize dorm room detail slugs for non-English locales still using English
 - [x] TASK-13G: Map guide-slug fallback causes and alias-preservation contract
-- [ ] TASK-13D: Localize live guide/article slugs still falling back to English
-- [ ] TASK-13E: Route-localization checkpoint and final canonical target refresh
-- [~] TASK-08C: Apply live Cloudflare redirect convergence at the production source of truth — Blocked (external routing change pending)
+- [x] TASK-13D: Localize live guide/article slugs still falling back to English
+- [x] TASK-13E: Route-localization checkpoint and final canonical target refresh
+- [~] TASK-08C: Apply live Cloudflare redirect convergence at the production source of truth — Blocked (live Pages deployment pending)
 - [~] TASK-08D: Verify live one-hop redirects and canonical `200` targets — Blocked (depends on TASK-08C)
 - [x] TASK-09A: Ship indicative pricing fallback with auto-seed removal
 - [x] TASK-09B: Implement indicative pricing governance and stale-data ops controls
@@ -137,8 +137,8 @@ This run has progressed through `/lp-do-build` cycles, but a route-localization 
 | TASK-13B | IMPLEMENT | Localize top-level public route slugs + apartment booking route | 85% | M | Complete (2026-03-06) | TASK-13A, TASK-13F | TASK-13E |
 | TASK-13C | IMPLEMENT | Localize dorm room detail slugs for locales still using English | 80% | M | Complete (2026-03-06) | TASK-13A | TASK-13E |
 | TASK-13G | INVESTIGATE | Map guide-slug fallback causes and alias-preservation contract | 70% | M | Complete (2026-03-06) | TASK-13A | TASK-13D |
-| TASK-13D | IMPLEMENT | Localize live guide/article slugs still falling back to English | 80% | L | Pending | TASK-13A, TASK-13G | TASK-13E |
-| TASK-13E | CHECKPOINT | Route-localization checkpoint + final canonical target refresh | 95% | S | Pending | TASK-13B, TASK-13C, TASK-13D | TASK-08C |
+| TASK-13D | IMPLEMENT | Localize live guide/article slugs still falling back to English | 80% | L | Complete (2026-03-07) | TASK-13A, TASK-13G | TASK-13E |
+| TASK-13E | CHECKPOINT | Route-localization checkpoint + final canonical target refresh | 95% | S | Complete (2026-03-07) | TASK-13B, TASK-13C, TASK-13D | TASK-08C |
 | TASK-08C | IMPLEMENT | Apply live Cloudflare redirect convergence at production source of truth | 80% | M | Blocked (2026-03-06) | TASK-13E | TASK-08D, TASK-12 |
 | TASK-08D | INVESTIGATE | Verify live one-hop redirects and canonical `200` targets | 85% | S | Blocked (2026-03-06) | TASK-08C | TASK-12 |
 | TASK-09A | IMPLEMENT | Indicative pricing fallback coupled with auto-seed removal | 85% | M | Complete (2026-03-01) | TASK-04, TASK-05 | TASK-09B, TASK-12 |
@@ -689,13 +689,13 @@ This run has progressed through `/lp-do-build` cycles, but a route-localization 
 
 ### TASK-08C: Apply live Cloudflare redirect convergence at production source of truth
 - **Type:** IMPLEMENT
-- **Deliverable:** production Cloudflare Worker/middleware/edge routing rules updated so each booking-surface alias family resolves to one canonical live target via one-hop permanent redirects
+- **Deliverable:** production Cloudflare Pages routing artifact deployed so each booking-surface alias family resolves to one canonical live target via one-hop permanent redirects
 - **Execution-Skill:** lp-seo
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Blocked (2026-03-06)
-- **Affects:** `[external] live Cloudflare Worker/middleware redirect rules`, `docs/plans/brikette-sales-funnel-analysis/artifacts/production-redirect-matrix.md`
+- **Affects:** `.github/workflows/brikette.yml`, `docs/brikette-deploy-decisions.md`, `[external] live Cloudflare Pages deploy on production branch`, `docs/plans/brikette-sales-funnel-analysis/artifacts/production-redirect-matrix.md`
 - **Depends on:** TASK-13E
 - **Blocks:** TASK-08D, TASK-12
 - **Confidence:** 80%
@@ -713,15 +713,32 @@ This run has progressed through `/lp-do-build` cycles, but a route-localization 
 - **Planning validation (required for M/L):**
   - Checks run: compare app-owned canonical policy, route-localization contract, and live Cloudflare drift evidence.
   - Validation artifacts: `production-redirect-matrix.md`, `docs/briefs/brikette-route-localization-briefing.md`, refreshed route-localization checkpoint evidence.
-- **Scouts:** confirm whether the production source of truth is Worker code, middleware, or dashboard-managed route rules before editing.
+- **Scouts:** resolved on 2026-03-07: production source of truth is the repo-managed Cloudflare Pages deploy path in `.github/workflows/brikette.yml`; live rollout still requires promotion of the updated artifact set.
 - **Edge Cases & Hardening:** preserve locale parity, avoid multi-hop redirects, and ensure redirect sources do not remain indexable `200` pages.
 - **What would make this >=90%:** direct access to the production routing source plus one successful staged rule update.
 - **Rollout / rollback:**
   - Rollout: apply route-family changes in the production source of truth, then immediately run TASK-08D.
   - Rollback: restore prior route rules only if canonical targets regress or misroute.
 - **Documentation impact:** apply the refreshed canonical target map from TASK-13E to the redirect matrix if any target choice changes during implementation.
-- **Blocker:** external production routing change is still pending, and rollout must wait until the localized route contract is finalized by TASK-13E.
-  - Repo-side route inventory, generated `_redirects`, and coverage verification are aligned locally as of 2026-03-06, but the final localized target contract is not yet frozen for production rollout.
+- **Blocker:** live production deployment is still pending.
+  - Repo-side route inventory, generated `_redirects`, deploy-health gates, and coverage verification are aligned locally as of 2026-03-07, but the updated Pages artifact set has not yet been promoted to production.
+- **Build evidence (2026-03-07):**
+  - Confirmed the production routing source of truth is the repo-managed Cloudflare Pages deploy workflow:
+    - `.github/workflows/brikette.yml`
+    - `apps/brikette/wrangler.toml`
+  - Hardened rollout gates to the finalized localized funnel contract:
+    - static export validation now checks `apps/brikette/out/it/prenota.html`
+    - static export validation now checks `apps/brikette/out/it/prenota-alloggi-privati.html`
+    - staging post-deploy strict routes now require `/it/prenota /it/prenota-alloggi-privati`
+    - production post-deploy strict routes now require `/it/prenota /it/prenota-alloggi-privati`
+  - Updated the deploy runbook in `docs/brikette-deploy-decisions.md` so it matches the active Pages deploy path and localized booking-route contract.
+  - Refreshed `docs/plans/brikette-sales-funnel-analysis/artifacts/production-redirect-matrix.md` with live `2026-03-07` evidence showing production still serves the pre-rollout route state:
+    - `/it/prenota` -> `200`
+    - `/it/book` -> `404`
+    - `/it/prenota-alloggi-privati` -> `404`
+    - `/it/book-private-accommodations` -> `200`
+    - localized guide canonical sample -> `404`
+    - legacy English guide alias sample -> `200`
 
 ### TASK-08D: Verify live one-hop redirects and canonical `200` targets
 - **Type:** INVESTIGATE
@@ -1037,7 +1054,7 @@ This run has progressed through `/lp-do-build` cycles, but a route-localization 
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
-- **Status:** Pending
+- **Status:** Complete (2026-03-07)
 - **Affects:** `apps/brikette/src/guides/slugs/slugs.ts`, `apps/brikette/src/guides/slugs/labels.ts`, `apps/brikette/src/guides/slugs/overrides.ts`, `apps/brikette/src/routes.guides-helpers.ts`, `apps/brikette/src/app/[lang]/assistance/[article]/page.tsx`, `apps/brikette/src/app/[lang]/experiences/[slug]/page.tsx`, `apps/brikette/src/app/[lang]/how-to-get-here/[slug]/page.tsx`, `apps/brikette/scripts/generate-static-export-redirects.ts`, `apps/brikette/public/_redirects`
 - **Depends on:** TASK-13A, TASK-13G
 - **Blocks:** TASK-13E
@@ -1072,6 +1089,35 @@ This run has progressed through `/lp-do-build` cycles, but a route-localization 
   - Refresh route-localization contract artifact with final guide-slug exceptions and removals.
 - **Notes / references:**
   - Requires scoped post-build QA loop on representative `/assistance`, `/experiences`, and `/how-to-get-here` guide pages via targeted `lp-design-qa`, `tools-ui-contrast-sweep`, and `tools-ui-breakpoint-sweep`.
+- **Build evidence (2026-03-07):**
+  - Updated `apps/brikette/src/guides/slugs/slugs.ts` so non-English explicit overrides no longer pin the canonical slug when they merely repeat the English fallback slug.
+  - Added guide alias preservation in `apps/brikette/src/guides/slugs/urls.ts`:
+    - new `guideSlugAliases()` helper derives legacy aliases from superseded override values
+    - `resolveGuideKeyFromSlug()` now resolves those legacy aliases in addition to canonical localized slugs and legacy compact key fallbacks
+  - Re-exported the alias helper through:
+    - `apps/brikette/src/guides/slugs/index.ts`
+    - `apps/brikette/src/routes.guides-helpers.ts`
+  - Added edge redirect coverage for superseded guide slugs in `apps/brikette/src/routing/staticExportRedirects.ts`, including both localized public bases and internal guide-base aliases.
+  - Representative redirect coverage generated into `apps/brikette/public/_redirects`:
+    - `/ja/akusesu/amalfi-positano-bus  /ja/akusesu/amaruhuikarapozita-nohebasu-hosuteruburiketute  301`
+    - `/ja/how-to-get-here/amalfi-positano-bus  /ja/akusesu/amaruhuikarapozita-nohebasu-hosuteruburiketute  301`
+  - Added regression coverage:
+    - `apps/brikette/src/test/utils/guide-url-resolver.test.ts`
+    - `apps/brikette/src/test/routing/staticExportRedirects.test.ts`
+  - Source-side guide debt reduced to zero:
+    - `pnpm --filter @apps/brikette exec tsx -e '...englishMatches=0...'`
+  - Formal route-localization audit now passes with:
+    - top-level: `0`
+    - nested segment: `0`
+    - special route: `0`
+    - room: `0`
+    - guide: `0`
+  - Validation:
+    - `pnpm --filter @apps/brikette typecheck`
+    - `pnpm --filter @apps/brikette lint` (`128 warnings / 0 errors`, existing baseline)
+    - targeted ESLint on changed guide-slug files (pass)
+    - `pnpm --filter @apps/brikette run verify-route-localization` (pass)
+    - `pnpm --filter @apps/brikette exec tsx scripts/verify-url-coverage.ts` (pass; `4533 localized rules`, `Missing: 0`)
 
 ### TASK-13E: Route-localization checkpoint + final canonical target refresh
 - **Type:** CHECKPOINT
@@ -1079,7 +1125,7 @@ This run has progressed through `/lp-do-build` cycles, but a route-localization 
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-07)
 - **Affects:** `docs/plans/brikette-sales-funnel-analysis/plan.md`, `docs/plans/brikette-sales-funnel-analysis/artifacts/production-redirect-matrix.md`, `docs/plans/brikette-sales-funnel-analysis/artifacts/route-localization-contract.md`
 - **Depends on:** TASK-13B, TASK-13C, TASK-13D
 - **Blocks:** TASK-08C
@@ -1099,6 +1145,20 @@ This run has progressed through `/lp-do-build` cycles, but a route-localization 
 - **Planning validation:** references TASK-13A through TASK-13D outputs.
 - **Rollout / rollback:** `None: planning control task`
 - **Documentation impact:** refreshes the redirect matrix and final route-localization contract before live rollout.
+- **Build evidence (2026-03-07):**
+  - Route-localization tranche is now closed in-repo:
+    - `TASK-13B` complete
+    - `TASK-13C` complete
+    - `TASK-13D` complete
+  - Refreshed localized canonical contract artifacts:
+    - `docs/plans/brikette-sales-funnel-analysis/artifacts/route-localization-contract.md`
+    - `docs/plans/brikette-sales-funnel-analysis/artifacts/production-redirect-matrix.md`
+  - Updated downstream readiness:
+    - `TASK-08C` now waits on the final localized contract recorded after `TASK-13A` through `TASK-13D`.
+    - `TASK-08D` remains blocked behind the external Cloudflare rollout.
+  - Validation evidence reused from tranche closure:
+    - `verify-route-localization` passes with zero unexpected matches across all route families.
+    - `verify-url-coverage` passes with zero missing legacy URLs after the final contract refresh.
 
 ### TASK-09A: Ship indicative pricing fallback with auto-seed removal
 - **Type:** IMPLEMENT

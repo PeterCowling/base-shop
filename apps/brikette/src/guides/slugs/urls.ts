@@ -32,6 +32,18 @@ export function guideSlug(lang: AppLanguage, key: GuideKey): string {
   return dict[lang] ?? dict["en"] ?? GUIDE_SLUG_FALLBACKS[key] ?? fallbackSlugFromKey(key);
 }
 
+export function guideSlugAliases(lang: AppLanguage, key: GuideKey): readonly string[] {
+  const canonicalSlug = guideSlug(lang, key);
+  const aliases = new Set<string>();
+  const explicitOverride = GUIDE_SLUG_OVERRIDES[key]?.[lang];
+
+  if (explicitOverride && explicitOverride !== canonicalSlug) {
+    aliases.add(explicitOverride);
+  }
+
+  return Object.freeze([...aliases]);
+}
+
 const SLUGS_BY_KEY = Object.freeze(
   GUIDE_KEYS_WITH_OVERRIDES.reduce<Record<GuideKey, Record<AppLanguage, string>>>(
     (acc, key) => {
@@ -67,6 +79,23 @@ const LEGACY_GUIDE_KEY_LOOKUP = Object.freeze(
   }, {}),
 );
 
+const LEGACY_GUIDE_ALIAS_LOOKUP_BY_LANG = Object.freeze(
+  (SUPPORTED_LANGS as AppLanguage[]).reduce<Record<AppLanguage, Record<string, GuideKey>>>(
+    (acc, lang) => {
+      acc[lang] = Object.freeze(
+        GUIDE_KEYS_WITH_OVERRIDES.reduce<Record<string, GuideKey>>((aliases, key) => {
+          for (const alias of guideSlugAliases(lang, key)) {
+            aliases[alias.toLowerCase()] = key;
+          }
+          return aliases;
+        }, {}),
+      );
+      return acc;
+    },
+    {} as Record<AppLanguage, Record<string, GuideKey>>,
+  ),
+);
+
 export const { guidePath, guideHref, guideAbsoluteUrl, resolveGuideKeyFromSlug: resolveGuideKeyFromSlugBase, slugLookupsByLang } =
   guideUrlHelpers;
 
@@ -76,7 +105,19 @@ export function resolveGuideKeyFromSlug(slug: string, lang?: AppLanguage): Guide
 
   const normalized = slug.trim().toLowerCase();
   if (!normalized) return undefined;
-  return LEGACY_GUIDE_KEY_LOOKUP[normalized];
+  const legacyKey = LEGACY_GUIDE_KEY_LOOKUP[normalized];
+  if (legacyKey) return legacyKey;
+
+  if (lang) {
+    return LEGACY_GUIDE_ALIAS_LOOKUP_BY_LANG[lang]?.[normalized];
+  }
+
+  for (const supportedLang of SUPPORTED_LANGS as AppLanguage[]) {
+    const legacyAliasKey = LEGACY_GUIDE_ALIAS_LOOKUP_BY_LANG[supportedLang]?.[normalized];
+    if (legacyAliasKey) return legacyAliasKey;
+  }
+
+  return undefined;
 }
 
 export function guideComponentPath(key: GuideKey): string {

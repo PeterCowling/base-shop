@@ -1,8 +1,10 @@
 import { getRoomSlug, getRoomSlugAliases } from "@acme/ui/config/roomSlugs";
 
+import { GUIDES_INDEX } from "@/data/guides.index";
 import { websiteVisibleRoomsData } from "@/data/roomsData";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
+import { guideNamespace, guidePath, guideSlugAliases } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 
 import { INTERNAL_SEGMENT_BY_KEY, STATIC_EXPORT_SECTION_KEYS } from "./sectionSegments";
@@ -119,6 +121,26 @@ function addLocalizedRoomAliasRules(
   }
 }
 
+function addLocalizedGuideAliasRules(
+  lang: AppLanguage,
+  rules: StaticRedirectRule[],
+  seen: Set<string>,
+): void {
+  const liveGuides = GUIDES_INDEX.filter((guide) => guide.status === "live");
+
+  for (const guide of liveGuides) {
+    const namespace = guideNamespace(lang, guide.key);
+    const localizedBase = `/${lang}/${namespace.baseSlug}`;
+    const internalBase = `/${lang}/${INTERNAL_SEGMENT_BY_KEY[namespace.baseKey]}`;
+    const canonicalTarget = guidePath(lang, guide.key);
+
+    for (const alias of guideSlugAliases(lang, guide.key)) {
+      addDirectRedirectRules(rules, seen, `${localizedBase}/${alias}`, canonicalTarget);
+      addDirectRedirectRules(rules, seen, `${internalBase}/${alias}`, canonicalTarget);
+    }
+  }
+}
+
 export function buildLocalizedStaticRedirectRules(
   languages: readonly AppLanguage[] = i18nConfig.supportedLngs as AppLanguage[],
 ): StaticRedirectRule[] {
@@ -134,6 +156,9 @@ export function buildLocalizedStaticRedirectRules(
   }
   for (const lang of languages) {
     addLocalizedRoomAliasRules(lang, rules, seen);
+  }
+  for (const lang of languages) {
+    addLocalizedGuideAliasRules(lang, rules, seen);
   }
 
   return rules;

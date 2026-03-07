@@ -43,12 +43,17 @@ const NEXT_CONFIG_CANDIDATES = [
   "next.config.js",
 ];
 const ROBOTS_ROUTE_PATH = "src/app/robots.txt/route.ts";
-const REQUIRED_STATIC_EXPORT_FILES = [
-  "src/app/[lang]/guides/[...slug]/page.tsx",
-  "src/app/[lang]/draft/[...slug]/page.tsx",
-  "src/app/api/guides/[guideKey]/manifest/route.ts",
-  "src/app/api/guides/[guideKey]/route.ts",
-  "src/app/api/guides/[guideKey]/audit/route.ts",
+const REQUIRED_STATIC_EXPORT_ROUTE_FILES = [
+  "src/app/[lang]/book/page.tsx",
+  "src/app/[lang]/book-private-accommodations/page.tsx",
+  "src/app/[lang]/guides/[slug]/page.tsx",
+  "src/app/[lang]/help/[slug]/page.tsx",
+];
+const REQUIRED_DEPLOY_SUPPORT_FILES = [
+  "public/_redirects",
+  "functions/api/availability.js",
+  "scripts/normalize-static-export-localized-routes.ts",
+  "scripts/generate-static-export-redirects.ts",
 ];
 const REQUIRED_WRANGLER_TOP_LEVEL_FIELDS = [
   "name",
@@ -150,7 +155,7 @@ export function runBriketteDeployPreflight(
       }
     }
 
-    for (const requiredPath of REQUIRED_STATIC_EXPORT_FILES) {
+    for (const requiredPath of REQUIRED_STATIC_EXPORT_ROUTE_FILES) {
       const absolutePath = path.join(appPath, requiredPath);
       if (!fs.existsSync(absolutePath)) {
         pushError({
@@ -167,6 +172,17 @@ export function runBriketteDeployPreflight(
           code: "BRK_STATIC_MISSING_GENERATE_STATIC_PARAMS",
           message:
             "Route must define generateStaticParams() for static-export compatibility.",
+          path: relPath(appPath, absolutePath),
+        });
+      }
+    }
+
+    for (const requiredPath of REQUIRED_DEPLOY_SUPPORT_FILES) {
+      const absolutePath = path.join(appPath, requiredPath);
+      if (!fs.existsSync(absolutePath)) {
+        pushError({
+          code: "BRK_STATIC_REQUIRED_FILE_MISSING",
+          message: "Required deploy support file is missing.",
           path: relPath(appPath, absolutePath),
         });
       }

@@ -39,4 +39,23 @@ describe("buildLocalizedStaticRedirectRules", () => {
       ]),
     );
   });
+
+  it("includes permanent redirects for localized guide alias paths", () => {
+    const rules = buildLocalizedStaticRedirectRules();
+
+    expect(rules).toEqual(
+      expect.arrayContaining([
+        {
+          from: "/ja/akusesu/amalfi-positano-bus",
+          to: "/ja/akusesu/amaruhuikarapozita-nohebasu-hosuteruburiketute",
+          status: 301,
+        },
+        {
+          from: "/ja/how-to-get-here/amalfi-positano-bus",
+          to: "/ja/akusesu/amaruhuikarapozita-nohebasu-hosuteruburiketute",
+          status: 301,
+        },
+      ]),
+    );
+  });
 });

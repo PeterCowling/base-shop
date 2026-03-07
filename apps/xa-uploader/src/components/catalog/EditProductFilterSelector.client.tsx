@@ -112,7 +112,7 @@ function FilterSelect({
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="flex min-h-11 w-full items-center justify-between rounded-md border border-gate-border bg-gate-input px-3 py-2 text-sm transition-colors focus:border-gate-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-accent focus-visible:ring-offset-1"
+        className="flex min-h-11 min-w-11 w-full items-center justify-between rounded-md border border-gate-border bg-gate-input px-3 py-2 text-sm transition-colors focus:border-gate-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-accent focus-visible:ring-offset-1"
         data-testid={testId}
       >
         <span className={value ? "text-gate-ink" : "text-gate-muted"}>{selectedLabel}</span>

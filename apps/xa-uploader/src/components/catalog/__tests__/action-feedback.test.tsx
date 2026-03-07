@@ -142,7 +142,7 @@ function renderHarness() {
   }
 
   return render(
-    <UploaderI18nProvider>
+    <UploaderI18nProvider initialLocale="en">
       <Harness />
     </UploaderI18nProvider>,
   );

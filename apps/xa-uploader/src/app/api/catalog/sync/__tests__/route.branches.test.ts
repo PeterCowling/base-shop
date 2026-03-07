@@ -24,6 +24,29 @@ const buildCatalogArtifactsFromDraftsMock = jest.fn();
 const getMediaBucketMock = jest.fn();
 const DEFAULT_CURRENCY_RATES_JSON = '{"EUR":0.92,"GBP":0.78,"AUD":1.5}';
 const DEFAULT_GENERATED_CATALOG_JSON = '{"products":[{"slug":"studio-jacket"}]}';
+const VALID_CLOUD_PRODUCT = {
+  id: "p1",
+  slug: "studio-jacket",
+  title: "Studio Jacket",
+  brandHandle: "atelier-x",
+  collectionHandle: "outerwear",
+  collectionTitle: "Outerwear",
+  price: "189",
+  description: "A structured layer.",
+  createdAt: "2025-12-01T12:00:00.000Z",
+  popularity: "0",
+  sizes: "S|M|L",
+  imageFiles: "images/studio-jacket/front.jpg",
+  imageAltTexts: "front view",
+  publishState: "live" as const,
+  taxonomy: {
+    department: "women" as const,
+    category: "clothing" as const,
+    subcategory: "outerwear",
+    color: "black",
+    material: "wool",
+  },
+};
 
 jest.mock("node:child_process", () => ({
   spawn: (...args: unknown[]) => spawnMock(...args),
@@ -125,7 +148,7 @@ describe("catalog sync route branch coverage", () => {
     });
     getCatalogContractReadinessMock.mockReturnValue({ configured: true, errors: [] });
     readCloudDraftSnapshotMock.mockResolvedValue({
-      products: [{ slug: "studio-jacket", title: "Studio Jacket", publishState: "live" }],
+      products: [VALID_CLOUD_PRODUCT],
       revisionsById: {},
       docRevision: "doc-1",
     });

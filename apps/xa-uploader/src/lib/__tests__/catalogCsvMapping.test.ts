@@ -64,7 +64,7 @@ describe("catalogCsvMapping", () => {
       description: "A structured layer.",
       created_at: "2025-12-01T12:00:00.000Z",
       popularity: "0",
-      media_paths: "front:images/a.jpg|side:images/b.jpg",
+      media_paths: "images/a.jpg|images/b.jpg",
       taxonomy_department: "women",
       taxonomy_category: "clothing",
       taxonomy_subcategory: "outerwear",

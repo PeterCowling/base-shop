@@ -9,8 +9,8 @@ function LocaleProbe() {
   const { locale, t } = useUploaderI18n();
   return (
     <>
-      <div data-testid="locale">{locale}</div>
-      <div data-testid="language-label">{t("languageLabel")}</div>
+      <div data-cy="locale">{locale}</div>
+      <div data-cy="language-label">{t("languageLabel")}</div>
     </>
   );
 }
@@ -19,11 +19,11 @@ function LocaleSwitchProbe() {
   const { locale, setLocale } = useUploaderI18n();
   return (
     <>
-      <div data-testid="locale">{locale}</div>
-      <button type="button" onClick={() => setLocale("en")} data-testid="set-en">
+      <div data-cy="locale">{locale}</div>
+      <button type="button" onClick={() => setLocale("en")} data-cy="set-en">
         EN
       </button>
-      <button type="button" onClick={() => setLocale("zh")} data-testid="set-zh">
+      <button type="button" onClick={() => setLocale("zh")} data-cy="set-zh">
         ZH
       </button>
     </>

@@ -132,7 +132,7 @@ Tailwind v4's `@theme inline` modifier is the recommended pattern for tokens who
   - TC-03 (manual): Open bar/POS grid in browser (light mode) → all category tiles display correct colors (pink, coffee, beer, wine, tea, green, blue, purple, spritz, orange, grayish families).
   - TC-04 (manual): Switch to dark mode (`html.theme-dark` class or `prefers-color-scheme: dark`) → bar/POS grid tiles display correct dark-mode colors.
   - TC-05 (CSS audit): Inspect `@theme inline {}` block in browser DevTools → CSS variable values resolve to valid `hsl(...)` colors, not raw triplets.
-  - **Testing policy note:** Jest tests (TC-01, TC-02) run in CI only. Do not run `pnpm test` or `pnpm run test:governed` locally. Push the commit and monitor CI (`gh run watch`).
+  - **Testing policy note:** Jest tests (TC-01, TC-02) run in CI only. <!-- LINT-EXEMPT: local-jest-pattern --> Do not run `pnpm test` or `pnpm run test:governed` locally. Push the commit and monitor CI (`gh run watch`).
 - **Execution plan:** Red → Green → Refactor
   - Red: no code change yet; verify current state (shade entries in `@theme {}`) matches fact-find description.
   - Green: extract shade entries from `@theme {}` into a new `@theme inline {}` block immediately after the existing `@theme {}` block. Add a brief comment above each block explaining the distinction.

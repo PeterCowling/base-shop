@@ -146,7 +146,7 @@ describe("sync failure feedback", () => {
 
   it("renders scoped sync feedback in the sync panel", () => {
     render(
-      <UploaderI18nProvider>
+      <UploaderI18nProvider initialLocale="en">
         <CatalogSyncPanel
           busy={false}
           syncOptions={{ strict: true, recursive: true, replace: false, dryRun: false }}
@@ -170,7 +170,7 @@ describe("sync failure feedback", () => {
 
   it("shows readiness failure details and disables run-sync until ready", () => {
     render(
-      <UploaderI18nProvider>
+      <UploaderI18nProvider initialLocale="en">
         <CatalogSyncPanel
           busy={false}
           syncOptions={{ strict: true, recursive: true, replace: false, dryRun: false }}
@@ -249,7 +249,7 @@ describe("catalog site status derivation", () => {
 describe("catalog sync panel status strip", () => {
   it("renders catalog and site status indicators from the last successful sync", () => {
     const { container } = render(
-      <UploaderI18nProvider>
+      <UploaderI18nProvider initialLocale="en">
         <CatalogSyncPanel
           busy={false}
           syncOptions={{ strict: true, recursive: true, replace: false, dryRun: false }}
@@ -278,7 +278,7 @@ describe("catalog sync panel status strip", () => {
 
   it("does not render the status strip before any successful sync data exists", () => {
     const { container } = render(
-      <UploaderI18nProvider>
+      <UploaderI18nProvider initialLocale="en">
         <CatalogSyncPanel
           busy={false}
           syncOptions={{ strict: true, recursive: true, replace: false, dryRun: false }}

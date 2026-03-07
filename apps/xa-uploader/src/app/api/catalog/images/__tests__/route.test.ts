@@ -236,7 +236,7 @@ describe("catalog images route", () => {
 
     expect(response.status).toBe(200);
     expect(body.ok).toBe(true);
-    expect(String(body.key)).toMatch(/^images\/test\/\d+-front-[a-f0-9]{12}\.png$/);
+    expect(String(body.key)).toMatch(/^images\/test\/\d+-[a-f0-9]{12}\.png$/);
   });
 
   it("TC-10: same-millisecond uploads for same slug generate different keys", async () => {

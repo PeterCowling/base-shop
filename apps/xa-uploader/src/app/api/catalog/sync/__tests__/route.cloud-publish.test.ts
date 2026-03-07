@@ -22,6 +22,29 @@ const ORIGINAL_ENV = {
   XA_B_DEPLOY_HOOK_COOLDOWN_SECONDS: process.env.XA_B_DEPLOY_HOOK_COOLDOWN_SECONDS,
   XA_B_DEPLOY_HOOK_MAX_RETRIES: process.env.XA_B_DEPLOY_HOOK_MAX_RETRIES,
 };
+const VALID_CLOUD_PRODUCT = {
+  id: "p1",
+  slug: "studio-jacket",
+  title: "Studio Jacket",
+  brandHandle: "atelier-x",
+  collectionHandle: "outerwear",
+  collectionTitle: "Outerwear",
+  price: "189",
+  description: "A structured layer.",
+  createdAt: "2025-12-01T12:00:00.000Z",
+  popularity: "0",
+  sizes: "S|M|L",
+  imageFiles: "images/studio-jacket/front.jpg",
+  imageAltTexts: "front view",
+  publishState: "live" as const,
+  taxonomy: {
+    department: "women" as const,
+    category: "clothing" as const,
+    subcategory: "outerwear",
+    color: "black",
+    material: "wool",
+  },
+};
 
 jest.mock("../../../../../lib/uploaderAuth", () => ({
   hasUploaderSession: (...args: unknown[]) => hasUploaderSessionMock(...args),
@@ -71,7 +94,7 @@ describe("catalog sync cloud publish/finalize behavior", () => {
     });
 
     readCloudDraftSnapshotMock.mockResolvedValue({
-      products: [{ id: "p1", slug: "studio-jacket", title: "Studio Jacket", publishState: "live" }],
+      products: [VALID_CLOUD_PRODUCT],
       revisionsById: { p1: "rev-1" },
       docRevision: "doc-1",
     });
@@ -160,9 +183,9 @@ describe("catalog sync cloud publish/finalize behavior", () => {
   it("builds and finalizes live plus out_of_stock products, excluding drafts", async () => {
     readCloudDraftSnapshotMock.mockResolvedValueOnce({
       products: [
-        { id: "p1", slug: "live-product", title: "Live Product", publishState: "live" },
-        { id: "p2", slug: "oos-product", title: "OOS Product", publishState: "out_of_stock" },
-        { id: "p3", slug: "draft-product", title: "Draft Product", publishState: "draft" },
+        { ...VALID_CLOUD_PRODUCT, id: "p1", slug: "live-product", title: "Live Product", imageFiles: "images/live-product/front.jpg", publishState: "live" },
+        { ...VALID_CLOUD_PRODUCT, id: "p2", slug: "oos-product", title: "OOS Product", imageFiles: "images/oos-product/front.jpg", publishState: "out_of_stock" },
+        { ...VALID_CLOUD_PRODUCT, id: "p3", slug: "draft-product", title: "Draft Product", imageFiles: "images/draft-product/front.jpg", publishState: "draft" },
       ],
       revisionsById: { p1: "rev-1", p2: "rev-2", p3: "rev-3" },
       docRevision: "doc-1",

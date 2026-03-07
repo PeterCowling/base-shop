@@ -37,7 +37,7 @@ function jsonResponse(body: unknown, init: ResponseInit = {}): Response {
   });
 }
 
-function renderHarness() {
+function renderHarness(initialLocale: "en" | "zh" = "en") {
   function Harness() {
     const state = useCatalogConsole();
     return (
@@ -65,7 +65,7 @@ function renderHarness() {
   }
 
   return render(
-    <UploaderI18nProvider>
+    <UploaderI18nProvider initialLocale={initialLocale}>
       <Harness />
     </UploaderI18nProvider>,
   );
@@ -105,7 +105,7 @@ describe("catalog console localized error surfaces", () => {
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
 
-    renderHarness();
+    renderHarness("zh");
 
     await waitFor(() => {
       expect(document.documentElement.lang).toBe("zh");
@@ -151,7 +151,7 @@ describe("catalog console localized error surfaces", () => {
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
 
-    renderHarness();
+    renderHarness("en");
 
     await clickButton("seed-draft");
     await clickButton("save");
@@ -202,7 +202,7 @@ describe("catalog console localized error surfaces", () => {
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
 
-    renderHarness();
+    renderHarness("zh");
 
     await waitFor(() => {
       expect(document.documentElement.lang).toBe("zh");

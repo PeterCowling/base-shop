@@ -1,29 +1,9 @@
 {
-  "generatedAt": "2026-03-06T19:48:14.680Z",
-  "productsCsvPath": "/Users/petercowling/base-shop/apps/xa-uploader/data/products.xa-b.csv",
+  "generatedAt": null,
   "totals": {
-    "products": 1,
-    "media": 3,
+    "products": 0,
+    "media": 0,
     "warnings": 0
   },
-  "items": [
-    {
-      "productSlug": "hermes-constance-18-noir-epsom",
-      "sourcePath": "xa-b/hermes-constance-18-noir-epsom/1772724351887-front-f318208c52e0.jpg",
-      "catalogPath": "xa-b/hermes-constance-18-noir-epsom/1772724351887-front-f318208c52e0.jpg",
-      "altText": "front view"
-    },
-    {
-      "productSlug": "hermes-constance-18-noir-epsom",
-      "sourcePath": "xa-b/hermes-constance-18-noir-epsom/1772724361047-side-d6a79ece3f70.jpg",
-      "catalogPath": "xa-b/hermes-constance-18-noir-epsom/1772724361047-side-d6a79ece3f70.jpg",
-      "altText": "side view"
-    },
-    {
-      "productSlug": "hermes-constance-18-noir-epsom",
-      "sourcePath": "xa-b/hermes-constance-18-noir-epsom/1772724370048-top-c33e66cb1ae9.jpg",
-      "catalogPath": "xa-b/hermes-constance-18-noir-epsom/1772724370048-top-c33e66cb1ae9.jpg",
-      "altText": "top view"
-    }
-  ]
+  "items": []
 }

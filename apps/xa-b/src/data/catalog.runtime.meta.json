@@ -1,7 +1,6 @@
 {
-  "source": "local-artifacts",
-  "syncedAt": "2026-03-07T06:56:23.799Z",
-  "artifactId": "xa-uploader/sync-artifacts/xa-b/catalog.json",
+  "source": "empty",
+  "syncedAt": "2026-03-07T12:00:00.000Z",
   "required": false,
-  "productCount": 1
+  "productCount": 0
 }

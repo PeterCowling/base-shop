@@ -77,19 +77,22 @@ export async function POST(
     };
   });
 
+  const threadMetadata = parseThreadMetadata(record.thread.metadata_json);
+
   try {
     const regenerated = await generateAgentDraft({
       from: latestPayload.from ?? latestInbound?.sender_email ?? undefined,
       subject: latestInbound?.subject ?? record.thread.subject ?? undefined,
       body: latestPayload.body?.plain ?? latestInbound?.snippet ?? "",
       threadContext: { messages: threadMessages },
+      guestName: threadMetadata.guestFirstName || undefined,
+      guestRoomNumbers: threadMetadata.guestRoomNumbers?.length ? threadMetadata.guestRoomNumbers : undefined,
     });
 
     if (regenerated.status === "error" || !regenerated.plainText) {
       throw new Error(regenerated.error?.message ?? "Unable to regenerate draft");
     }
 
-    const metadata = parseThreadMetadata(record.thread.metadata_json);
     const subject = ensureReplySubject(currentDraft?.subject ?? record.thread.subject);
     const recipientEmails =
       currentDraft?.recipient_emails_json
@@ -132,7 +135,7 @@ export async function POST(
       threadId: params.threadId,
       status: "drafted",
       metadata: {
-        ...metadata,
+        ...threadMetadata,
         needsManualDraft: false,
         lastDraftId: draft?.id ?? null,
         lastDraftTemplateSubject: regenerated.templateUsed?.subject ?? null,

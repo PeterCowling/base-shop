@@ -184,6 +184,7 @@ async function recoverSingleThread(
     prepaymentProvider: inferPrepaymentProvider(latestInbound),
     prepaymentStep: inferPrepaymentStep(latestInbound),
     guestName: guestMatch?.firstName || undefined,
+    guestRoomNumbers: guestMatch?.roomNumbers?.length ? guestMatch.roomNumbers : undefined,
   });
 
   if (draftResult.status !== "error" && draftResult.qualityResult?.passed) {

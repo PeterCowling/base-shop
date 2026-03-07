@@ -36,6 +36,7 @@ export type DraftGenerationInput = {
   recipientName?: string;
   prepaymentStep?: PrepaymentStep;
   prepaymentProvider?: PrepaymentProvider;
+  guestRoomNumbers?: string[];
 };
 
 type QuestionAnswerBlock = {
@@ -385,6 +386,9 @@ export function generateDraftCandidate(input: DraftGenerationInput): DraftGenera
   );
 
   const { body, slots } = personalizeGreeting(stripLegacySignatureBlock(bodyPlain).trim(), input.recipientName);
+  if (input.guestRoomNumbers && input.guestRoomNumbers.length > 0) {
+    slots.ROOM_NUMBERS = input.guestRoomNumbers.join(", ");
+  }
   const slotResolution = resolveSlotsWithParity(body, slots);
   const finalBody = slotResolution.body;
   const bodyHtml = generateEmailHtml({

@@ -24,6 +24,7 @@ export type ThreadContext = {
   prepaymentStep?: PrepaymentStep;
   prepaymentProvider?: PrepaymentProvider;
   guestName?: string;
+  guestRoomNumbers?: string[];
 };
 
 export type AgentDraftResult = {
@@ -146,6 +147,7 @@ export async function generateAgentDraft(threadContext: ThreadContext): Promise<
     recipientName: threadContext.guestName ?? (threadContext.from ? extractRecipientName(threadContext.from) : undefined),
     prepaymentStep: threadContext.prepaymentStep,
     prepaymentProvider: threadContext.prepaymentProvider,
+    guestRoomNumbers: threadContext.guestRoomNumbers,
   });
 
   const qualityResult = runQualityChecks({

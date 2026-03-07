@@ -25,6 +25,7 @@ import {
   updateThreadStatus,
 } from "@/lib/inbox/repositories.server";
 import { recordInboxEvent } from "@/lib/inbox/telemetry.server";
+import { boundMessages } from "@/lib/inbox/thread-context";
 
 import { requireStaffAuth } from "../../../../_shared/staff-auth";
 
@@ -84,7 +85,7 @@ export async function POST(
       from: latestPayload.from ?? latestInbound?.sender_email ?? undefined,
       subject: latestInbound?.subject ?? record.thread.subject ?? undefined,
       body: latestPayload.body?.plain ?? latestInbound?.snippet ?? "",
-      threadContext: { messages: threadMessages },
+      threadContext: { messages: boundMessages(threadMessages) },
       guestName: threadMetadata.guestFirstName || undefined,
       guestRoomNumbers: threadMetadata.guestRoomNumbers?.length ? threadMetadata.guestRoomNumbers : undefined,
     });
@@ -137,6 +138,8 @@ export async function POST(
       metadata: {
         ...threadMetadata,
         needsManualDraft: false,
+        draftFailureCode: null,
+        draftFailureMessage: null,
         lastDraftId: draft?.id ?? null,
         lastDraftTemplateSubject: regenerated.templateUsed?.subject ?? null,
         lastDraftQualityPassed: regenerated.qualityResult?.passed ?? false,

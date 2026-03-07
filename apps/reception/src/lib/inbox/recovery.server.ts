@@ -4,9 +4,10 @@ import type { D1Database } from "@acme/platform-core/d1";
 
 import { getGmailProfile, getGmailThread } from "../gmail-client";
 
-import { generateAgentDraft } from "./draft-pipeline.server";
+import { deriveDraftFailureReason, draftFailureReasonFromCode, generateAgentDraft } from "./draft-pipeline.server";
 import {
   buildGuestEmailMap,
+  type GuestEmailMapResult,
   matchSenderToGuest,
 } from "./guest-matcher.server";
 import {
@@ -74,12 +75,9 @@ export async function recoverStaleThreads(
   }
 
   // Build guest email map once for all recovery threads
-  let guestEmailMap: Awaited<ReturnType<typeof buildGuestEmailMap>>;
-  try {
-    guestEmailMap = await buildGuestEmailMap();
-  } catch {
-    guestEmailMap = new Map();
-  }
+  const guestMapResult: GuestEmailMapResult = await buildGuestEmailMap();
+  const guestEmailMap = guestMapResult.map;
+  let isFirstGuestMatchEvent = true;
 
   // Get mailbox email for inbound message detection
   const profile = await getGmailProfile();
@@ -89,7 +87,10 @@ export async function recoverStaleThreads(
     result.processed += 1;
 
     try {
-      await recoverSingleThread(thread, db, mailboxEmail, guestEmailMap, maxRetries, result);
+      const matchEventEmitted = await recoverSingleThread(thread, db, mailboxEmail, guestEmailMap, guestMapResult, isFirstGuestMatchEvent, maxRetries, result);
+      if (matchEventEmitted) {
+        isFirstGuestMatchEvent = false;
+      }
     } catch (error) {
       // Fail-open: log and continue with next thread
       console.error("Recovery error for thread", {
@@ -110,25 +111,42 @@ export async function recoverStaleThreads(
     }
   }
 
+  // Fallback: log batch map build outcome when no per-thread match events were emitted
+  if (isFirstGuestMatchEvent) {
+    console.log("[guest-matcher-telemetry]", JSON.stringify({
+      mapBuildStatus: guestMapResult.status,
+      mapSize: guestMapResult.guestCount,
+      mapBuildDurationMs: guestMapResult.durationMs,
+      mapBuildError: guestMapResult.error ?? null,
+      threadsProcessed: result.processed,
+      pipeline: "recovery",
+      reason: "no_match_events_emitted",
+    }));
+  }
+
   return result;
 }
 
+/** Returns true if a guest match event was emitted during this thread's recovery. */
 async function recoverSingleThread(
   thread: InboxThreadRow,
   db: D1Database,
   mailboxEmail: string,
-  guestEmailMap: Awaited<ReturnType<typeof buildGuestEmailMap>>,
+  guestEmailMap: Awaited<ReturnType<typeof buildGuestEmailMap>>["map"],
+  guestMapResult: GuestEmailMapResult,
+  isFirstGuestMatchEvent: boolean,
   maxRetries: number,
   result: RecoverStaleThreadsResult,
-): Promise<void> {
+): Promise<boolean> {
   const existingMetadata = parseMetadata(thread.metadata_json);
   const attempts = existingMetadata.recoveryAttempts ?? 0;
 
   // Check max retries -- if at max, flag for manual drafting immediately
   if (attempts >= maxRetries) {
-    await flagForManualDraft(thread, db, existingMetadata, "max_retries");
+    const reason = draftFailureReasonFromCode("max_retries_exceeded");
+    await flagForManualDraft(thread, db, existingMetadata, "max_retries", reason.code, reason.message);
     result.manualFlagged += 1;
-    return;
+    return false;
   }
 
   // Fetch Gmail thread data
@@ -143,7 +161,7 @@ async function recoverSingleThread(
       eventType: "inbox_recovery",
       metadata: { outcome: "skipped", reason: "gmail_thread_not_found" },
     });
-    return;
+    return false;
   }
 
   if (!gmailThread) {
@@ -153,7 +171,7 @@ async function recoverSingleThread(
       eventType: "inbox_recovery",
       metadata: { outcome: "skipped", reason: "gmail_thread_null" },
     });
-    return;
+    return false;
   }
 
   // Extract latest inbound message
@@ -165,7 +183,7 @@ async function recoverSingleThread(
       eventType: "inbox_recovery",
       metadata: { outcome: "skipped", reason: "no_inbound_message" },
     });
-    return;
+    return false;
   }
 
   // Increment recovery attempts in metadata before attempting draft
@@ -174,6 +192,31 @@ async function recoverSingleThread(
   // Run guest matching
   const senderEmail = extractEmailAddress(latestInbound.from);
   const guestMatch = senderEmail ? matchSenderToGuest(guestEmailMap, senderEmail) : null;
+
+  // Emit guest match telemetry (best-effort)
+  let matchEventEmitted = false;
+  if (senderEmail) {
+    const matchMetadata: Record<string, unknown> = guestMatch
+      ? { bookingRef: guestMatch.bookingRef, senderEmail, guestName: guestMatch.firstName }
+      : { senderEmail };
+
+    // Attach batch-level map build metadata to the first match event
+    if (isFirstGuestMatchEvent) {
+      matchMetadata.mapBuildStatus = guestMapResult.status;
+      matchMetadata.mapSize = guestMapResult.guestCount;
+      matchMetadata.mapBuildDurationMs = guestMapResult.durationMs;
+      if (guestMapResult.error) {
+        matchMetadata.mapBuildError = guestMapResult.error;
+      }
+    }
+
+    await recordInboxEvent({
+      threadId: thread.id,
+      eventType: guestMatch ? "guest_matched" : "guest_match_not_found",
+      metadata: matchMetadata,
+    });
+    matchEventEmitted = true;
+  }
 
   // Generate draft with full syncInbox context
   const draftResult = await generateAgentDraft({
@@ -211,6 +254,8 @@ async function recoverSingleThread(
           ...existingMetadata,
           recoveryAttempts: updatedAttempts,
           needsManualDraft: false,
+          draftFailureCode: null,
+          draftFailureMessage: null,
           lastDraftTemplateSubject: draftResult.templateUsed?.subject ?? null,
           lastDraftQualityPassed: true,
           ...(guestMatch ? {
@@ -236,12 +281,15 @@ async function recoverSingleThread(
     result.recovered += 1;
   } else {
     // Draft failed or quality failed -- flag for manual drafting
+    const failureReason = deriveDraftFailureReason(draftResult);
     await flagForManualDraft(thread, db, {
       ...existingMetadata,
       recoveryAttempts: updatedAttempts,
-    }, "manual_flagged");
+    }, "manual_flagged", failureReason.code, failureReason.message);
     result.manualFlagged += 1;
   }
+
+  return matchEventEmitted;
 }
 
 async function flagForManualDraft(
@@ -249,6 +297,8 @@ async function flagForManualDraft(
   db: D1Database,
   existingMetadata: ThreadMetadata,
   outcome: string,
+  failureCode?: string,
+  failureMessage?: string,
 ): Promise<void> {
   await updateThreadStatus(
     {
@@ -257,6 +307,8 @@ async function flagForManualDraft(
       metadata: {
         ...existingMetadata,
         needsManualDraft: true,
+        draftFailureCode: failureCode ?? null,
+        draftFailureMessage: failureMessage ?? null,
       },
     },
     db,

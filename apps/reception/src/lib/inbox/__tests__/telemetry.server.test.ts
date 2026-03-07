@@ -105,6 +105,44 @@ describe("telemetry.server", () => {
     );
   });
 
+  it("routes guest_matched as best-effort (non-critical)", async () => {
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    createEventMock.mockRejectedValue(new Error("d1 unavailable"));
+
+    await expect(
+      recordInboxEvent({
+        threadId: "thread-1",
+        eventType: "guest_matched",
+        metadata: { bookingRef: "booking-1", senderEmail: "guest@example.com" },
+      }),
+    ).resolves.toBeUndefined();
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      "Failed to log non-critical inbox event",
+      expect.objectContaining({ eventType: "guest_matched" }),
+    );
+    consoleErrorSpy.mockRestore();
+  });
+
+  it("routes guest_match_not_found as best-effort (non-critical)", async () => {
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    createEventMock.mockRejectedValue(new Error("d1 unavailable"));
+
+    await expect(
+      recordInboxEvent({
+        threadId: "thread-1",
+        eventType: "guest_match_not_found",
+        metadata: { senderEmail: "unknown@example.com" },
+      }),
+    ).resolves.toBeUndefined();
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      "Failed to log non-critical inbox event",
+      expect.objectContaining({ eventType: "guest_match_not_found" }),
+    );
+    consoleErrorSpy.mockRestore();
+  });
+
   it("forwards list filters to the repository query helper", async () => {
     listThreadEventsMock.mockResolvedValue([]);
 

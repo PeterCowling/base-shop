@@ -11,6 +11,8 @@ import type {
 
 export type InboxThreadMetadata = {
   needsManualDraft?: boolean;
+  draftFailureCode?: string | null;
+  draftFailureMessage?: string | null;
   lastDraftId?: string | null;
   lastDraftTemplateSubject?: string | null;
   lastDraftQualityPassed?: boolean;
@@ -148,6 +150,10 @@ export function getCurrentDraft(record: InboxThreadRecord): InboxDraftRow | null
   return record.drafts[0] ?? null;
 }
 
+export function getPendingDraft(record: InboxThreadRecord): InboxDraftRow | null {
+  return record.drafts.find((draft) => draft.status === "generated") ?? null;
+}
+
 export function serializeMessage(message: InboxMessageRow): InboxMessageApiModel {
   const payload = parseMessagePayload(message.payload_json);
   return {
@@ -213,6 +219,8 @@ export function buildThreadSummary(record: InboxThreadRecord): {
   lastSyncedAt: string | null;
   updatedAt: string;
   needsManualDraft: boolean;
+  draftFailureCode: string | null;
+  draftFailureMessage: string | null;
   latestAdmissionDecision: string | null;
   latestAdmissionReason: string | null;
   currentDraft: InboxDraftApiModel | null;
@@ -232,6 +240,8 @@ export function buildThreadSummary(record: InboxThreadRecord): {
     lastSyncedAt: record.thread.last_synced_at,
     updatedAt: record.thread.updated_at,
     needsManualDraft: Boolean(metadata.needsManualDraft),
+    draftFailureCode: metadata.draftFailureCode ?? null,
+    draftFailureMessage: metadata.draftFailureMessage ?? null,
     latestAdmissionDecision: metadata.latestAdmissionDecision ?? null,
     latestAdmissionReason: metadata.latestAdmissionReason ?? null,
     currentDraft: currentDraft ? serializeDraft(currentDraft) : null,
@@ -254,6 +264,8 @@ export function buildThreadSummaryFromRow(row: import("./repositories.server").T
   lastSyncedAt: string | null;
   updatedAt: string;
   needsManualDraft: boolean;
+  draftFailureCode: string | null;
+  draftFailureMessage: string | null;
   latestAdmissionDecision: string | null;
   latestAdmissionReason: string | null;
   currentDraft: InboxDraftApiModel | null;
@@ -294,6 +306,8 @@ export function buildThreadSummaryFromRow(row: import("./repositories.server").T
     lastSyncedAt: row.last_synced_at,
     updatedAt: row.updated_at,
     needsManualDraft: Boolean(metadata.needsManualDraft),
+    draftFailureCode: metadata.draftFailureCode ?? null,
+    draftFailureMessage: metadata.draftFailureMessage ?? null,
     latestAdmissionDecision: metadata.latestAdmissionDecision ?? null,
     latestAdmissionReason: metadata.latestAdmissionReason ?? null,
     currentDraft,

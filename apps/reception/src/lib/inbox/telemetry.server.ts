@@ -19,6 +19,9 @@ export const inboxEventTypes = [
   "resolved",
   "dismissed",
   "inbox_recovery",
+  "guest_matched",
+  "guest_match_not_found",
+  "thread_sync_error",
 ] as const;
 
 export type InboxEventType = (typeof inboxEventTypes)[number];

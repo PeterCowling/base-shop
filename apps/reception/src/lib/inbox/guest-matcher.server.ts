@@ -27,6 +27,21 @@ export type GuestMatch = {
 /** Map of lowercased email → GuestMatch (most recent booking wins). */
 export type GuestEmailMap = Map<string, GuestMatch>;
 
+export type GuestEmailMapStatus =
+  | "ok"
+  | "firebase_http_error"
+  | "firebase_network_error"
+  | "config_error";
+
+/** Non-throwing result from buildGuestEmailMap. `map` is always valid (possibly empty). */
+export type GuestEmailMapResult = {
+  map: GuestEmailMap;
+  status: GuestEmailMapStatus;
+  error?: string;
+  durationMs: number;
+  guestCount: number;
+};
+
 // ---------------------------------------------------------------------------
 // Firebase response shapes (loose — validated at runtime)
 // ---------------------------------------------------------------------------
@@ -93,13 +108,31 @@ export function isActiveBooking(
 /**
  * Fetch active bookings from Firebase RTDB and build an email→GuestMatch map.
  *
- * Call once per sync batch. The returned map is a transient cache — pass it
- * to `matchSenderToGuest()` for each thread in the batch.
+ * Call once per sync batch. The returned result object is non-throwing — errors
+ * are captured in `status` and `error` fields. `map` is always a valid
+ * (possibly empty) Map. Pass `result.map` to `matchSenderToGuest()` for each
+ * thread in the batch.
  */
 export async function buildGuestEmailMap(
   now: Date = new Date(),
-): Promise<GuestEmailMap> {
+): Promise<GuestEmailMapResult> {
+  const startMs = performance.now();
   const map: GuestEmailMap = new Map();
+
+  // Validate config before network calls
+  try {
+    buildFirebaseUrl("/bookings"); // throws if FIREBASE_BASE_URL is not configured
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+    console.error("[guest-matcher] Config error:", errorMessage);
+    return {
+      map,
+      status: "config_error" as const,
+      error: errorMessage,
+      durationMs: performance.now() - startMs,
+      guestCount: 0,
+    };
+  }
 
   let bookingsData: Record<string, Record<string, FirebaseOccupantBooking>> | null;
   let guestDetailsData: Record<string, Record<string, FirebaseOccupantDetails>> | null;
@@ -111,20 +144,39 @@ export async function buildGuestEmailMap(
     ]);
 
     if (!bookingsResp.ok || !guestDetailsResp.ok) {
-      console.error(
-        `[guest-matcher] Firebase fetch failed: bookings=${bookingsResp.status}, guestDetails=${guestDetailsResp.status}`,
-      );
-      return map;
+      const errorDetail = `bookings=${bookingsResp.status}, guestDetails=${guestDetailsResp.status}`;
+      console.error(`[guest-matcher] Firebase fetch failed: ${errorDetail}`);
+      return {
+        map,
+        status: "firebase_http_error",
+        error: errorDetail,
+        durationMs: performance.now() - startMs,
+        guestCount: 0,
+      };
     }
 
     bookingsData = await bookingsResp.json() as typeof bookingsData;
     guestDetailsData = await guestDetailsResp.json() as typeof guestDetailsData;
   } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
     console.error("[guest-matcher] Firebase REST error:", err);
-    return map;
+    return {
+      map,
+      status: "firebase_network_error",
+      error: errorMessage,
+      durationMs: performance.now() - startMs,
+      guestCount: 0,
+    };
   }
 
-  if (!bookingsData || !guestDetailsData) return map;
+  if (!bookingsData || !guestDetailsData) {
+    return {
+      map,
+      status: "ok",
+      durationMs: performance.now() - startMs,
+      guestCount: 0,
+    };
+  }
 
   for (const [bookingRef, occupants] of Object.entries(bookingsData)) {
     if (!occupants || typeof occupants !== "object") continue;
@@ -166,7 +218,12 @@ export async function buildGuestEmailMap(
     }
   }
 
-  return map;
+  return {
+    map,
+    status: "ok",
+    durationMs: performance.now() - startMs,
+    guestCount: map.size,
+  };
 }
 
 /**

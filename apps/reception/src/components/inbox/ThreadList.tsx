@@ -170,6 +170,7 @@ export default function ThreadList({
                     </p>
                     <span
                       className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${badge.className}`}
+                      title={thread.needsManualDraft && thread.draftFailureMessage ? thread.draftFailureMessage : undefined}
                     >
                       {badge.label}
                     </span>

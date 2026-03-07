@@ -242,7 +242,12 @@ describe("recoverStaleThreads", () => {
 
     // Default mocks for all tests
     (getGmailProfile as jest.Mock).mockResolvedValue({ emailAddress: "reception@brikette.com" });
-    (buildGuestEmailMap as jest.Mock).mockResolvedValue(new Map());
+    (buildGuestEmailMap as jest.Mock).mockResolvedValue({
+      map: new Map(),
+      status: "ok",
+      durationMs: 10,
+      guestCount: 0,
+    });
     (getGmailThread as jest.Mock).mockResolvedValue(mockGmailThread);
     (getLatestInboundMessage as jest.Mock).mockReturnValue(mockLatestInbound);
     (extractEmailAddress as jest.Mock).mockReturnValue("guest@example.com");

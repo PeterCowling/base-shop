@@ -17,10 +17,11 @@ import {
 } from "./admission";
 import { getCurrentDraft, getPendingDraft } from "./api-models.server";
 import { getInboxDb } from "./db.server";
-import { generateAgentDraft } from "./draft-pipeline.server";
+import { deriveDraftFailureReason, generateAgentDraft } from "./draft-pipeline.server";
 import {
   buildGuestEmailMap,
   type GuestEmailMap,
+  type GuestEmailMapResult,
   matchSenderToGuest,
 } from "./guest-matcher.server";
 import {
@@ -52,6 +53,8 @@ type SyncThreadMetadata = {
   latestAdmissionDecision?: AdmissionDecision["outcome"] | null;
   latestAdmissionReason?: string | null;
   needsManualDraft?: boolean;
+  draftFailureCode?: string | null;
+  draftFailureMessage?: string | null;
   lastProcessedAt?: string | null;
   lastSyncMode?: SyncMode | null;
   lastDraftId?: string | null;
@@ -75,6 +78,7 @@ export type SyncInboxInput = {
 export type SyncInboxResult = {
   mailboxKey: string;
   mode: SyncMode;
+  checkpointAdvanced: boolean;
   checkpoint: {
     previousHistoryId: string | null;
     nextHistoryId: string;
@@ -90,6 +94,7 @@ export type SyncInboxResult = {
     draftsCreated: number;
     manualDraftFlags: number;
     skippedUnchanged: number;
+    threadErrors: number;
   };
 };
 
@@ -534,6 +539,250 @@ function isStaleHistoryError(error: unknown): boolean {
   return message.includes(STALE_HISTORY_ERROR);
 }
 
+
+type ProcessThreadContext = {
+  db: D1Database;
+  mailboxEmail: string;
+  mode: SyncMode;
+  guestEmailMap: GuestEmailMap;
+  guestMapResult: GuestEmailMapResult;
+  actorUid: string | null | undefined;
+  counts: SyncInboxResult["counts"];
+  isFirstGuestMatchEvent: { value: boolean };
+};
+
+/**
+ * Process a single thread within a sync batch. Extracted from the syncInbox loop
+ * to keep syncInbox under the eslint cyclomatic complexity limit.
+ */
+async function processThread(
+  threadId: string,
+  ctx: ProcessThreadContext,
+): Promise<void> {
+  const { db, mailboxEmail, mode, guestEmailMap, guestMapResult, actorUid, counts } = ctx;
+
+  const gmailThread = await getGmailThread(threadId);
+  counts.threadsFetched += 1;
+
+  const latestInbound = getLatestInboundMessage(gmailThread, mailboxEmail);
+  if (!latestInbound) {
+    return;
+  }
+
+  const existingRecord = await getThread(threadId, db);
+  const existingMetadata = parseMetadata(existingRecord?.thread.metadata_json);
+  const latestInboundUnchanged =
+    existingMetadata.latestInboundMessageId === latestInbound.id;
+
+  const existingStatus = existingRecord?.thread.status;
+  const preservedStatus = latestInboundUnchanged && existingStatus ? existingStatus : "pending";
+
+  if (latestInboundUnchanged) {
+    const persisted = await upsertThreadAndMessages(
+      db,
+      gmailThread,
+      mailboxEmail,
+      preservedStatus,
+      buildThreadMetadata(existingMetadata, gmailThread, latestInbound, mode),
+    );
+    counts.threadsUpserted += persisted.threadUpserted;
+    counts.messagesUpserted += persisted.messagesUpserted;
+    counts.skippedUnchanged += 1;
+    return;
+  }
+
+  const admission = classifyForAdmission({
+    fromRaw: latestInbound.from ?? undefined,
+    subject: latestInbound.subject ?? undefined,
+    snippet: latestInbound.snippet || latestInbound.body.plain,
+  });
+
+  // Match sender email to guest booking
+  const senderEmail = extractEmailAddress(latestInbound.from);
+  const guestMatch = senderEmail ? matchSenderToGuest(guestEmailMap, senderEmail) : null;
+
+  // Emit guest match telemetry (best-effort)
+  if (senderEmail) {
+    const matchMetadata: Record<string, unknown> = guestMatch
+      ? { bookingRef: guestMatch.bookingRef, senderEmail, guestName: guestMatch.firstName }
+      : { senderEmail };
+
+    // Attach batch-level map build metadata to the first match event
+    if (ctx.isFirstGuestMatchEvent.value) {
+      matchMetadata.mapBuildStatus = guestMapResult.status;
+      matchMetadata.mapSize = guestMapResult.guestCount;
+      matchMetadata.mapBuildDurationMs = guestMapResult.durationMs;
+      if (guestMapResult.error) {
+        matchMetadata.mapBuildError = guestMapResult.error;
+      }
+      ctx.isFirstGuestMatchEvent.value = false;
+    }
+
+    await recordInboxEvent({
+      threadId,
+      eventType: guestMatch ? "guest_matched" : "guest_match_not_found",
+      actorUid: actorUid ?? null,
+      metadata: matchMetadata,
+    });
+  }
+
+  let draftCreated = false;
+  let needsManualDraft = false;
+  let draftId: string | null = null;
+  let draftTemplateSubject: string | null = null;
+  let draftQualityPassed = false;
+  let draftFailureCode: string | null = null;
+  let draftFailureMessage: string | null = null;
+  let draftPayload:
+    | {
+        plainText: string;
+        html: string | null;
+        templateUsed: string | null;
+        quality: Record<string, unknown>;
+        interpret: Record<string, unknown> | undefined;
+      }
+    | null = null;
+
+  if (admission.outcome === "admit") {
+    const draftResult = await generateAgentDraft({
+      from: latestInbound.from ?? undefined,
+      subject: latestInbound.subject ?? undefined,
+      body: latestInbound.body.plain,
+      threadContext: buildThreadContext(gmailThread),
+      prepaymentProvider: inferPrepaymentProvider(latestInbound),
+      prepaymentStep: inferPrepaymentStep(latestInbound),
+      guestName: guestMatch?.firstName || undefined,
+      guestRoomNumbers: guestMatch?.roomNumbers?.length ? guestMatch.roomNumbers : undefined,
+    });
+
+    if (draftResult.status !== "error" && draftResult.qualityResult?.passed) {
+      draftCreated = true;
+      draftPayload = {
+        plainText: draftResult.plainText ?? "",
+        html: draftResult.html,
+        templateUsed: draftResult.templateUsed?.subject ?? null,
+        quality: draftResult.qualityResult as Record<string, unknown>,
+        interpret: draftResult.interpretResult as Record<string, unknown> | undefined,
+      };
+      draftTemplateSubject = draftResult.templateUsed?.subject ?? null;
+      draftQualityPassed = true;
+    } else {
+      needsManualDraft = true;
+      const failureReason = deriveDraftFailureReason(draftResult);
+      draftFailureCode = failureReason.code;
+      draftFailureMessage = failureReason.message;
+      counts.manualDraftFlags += 1;
+    }
+  }
+
+  const nextStatus = determineThreadStatus(admission, draftCreated, needsManualDraft);
+  const metadata = buildThreadMetadata(existingMetadata, gmailThread, latestInbound, mode, admission, {
+    needsManualDraft,
+    draftFailureCode,
+    draftFailureMessage,
+    lastDraftTemplateSubject: draftTemplateSubject,
+    lastDraftQualityPassed: draftQualityPassed,
+    ...(guestMatch ? {
+      guestBookingRef: guestMatch.bookingRef,
+      guestOccupantId: guestMatch.occupantId,
+      guestFirstName: guestMatch.firstName,
+      guestLastName: guestMatch.lastName,
+      guestCheckIn: guestMatch.checkInDate,
+      guestCheckOut: guestMatch.checkOutDate,
+      guestRoomNumbers: guestMatch.roomNumbers,
+    } : {}),
+  });
+  const persisted = await upsertThreadAndMessages(db, gmailThread, mailboxEmail, nextStatus, metadata);
+  counts.threadsUpserted += persisted.threadUpserted;
+  counts.messagesUpserted += persisted.messagesUpserted;
+
+  let draftIsNew = false;
+  if (draftPayload) {
+    const upsertResult = await upsertSyncDraft(
+      threadId,
+      draftPayload,
+      latestInbound,
+      existingMetadata,
+      actorUid ?? null,
+      db,
+    );
+    draftId = upsertResult.draftId;
+    draftIsNew = upsertResult.draftIsNew;
+    draftTemplateSubject = upsertResult.draftTemplateSubject;
+    draftQualityPassed = upsertResult.draftQualityPassed;
+
+    await updateThreadStatus(
+      {
+        threadId,
+        status: nextStatus,
+        latestMessageAt:
+          [...gmailThread.messages].sort(compareMessagesByDate).at(-1)?.receivedAt ?? null,
+        lastSyncedAt: nowIso(),
+        metadata: {
+          ...metadata,
+          lastDraftId: draftId,
+        },
+      },
+      db,
+    );
+  }
+
+  await recordAdmission(
+    {
+      threadId,
+      decision: admission.outcome,
+      source: "reception_sync",
+      classifierVersion: "reception-admission-v1",
+      matchedRule: admission.reason,
+      sourceMetadata: {
+        organizeDecision: admission.organizeDecision,
+        senderEmail: admission.senderEmail,
+        latestInboundMessageId: latestInbound.id,
+        syncMode: mode,
+      },
+    },
+    db,
+  );
+
+  await recordInboxEvent({
+    threadId,
+    eventType:
+      admission.outcome === "admit"
+        ? "admitted"
+        : admission.outcome === "auto-archive"
+          ? "auto_archived"
+          : "review_later",
+    actorUid: actorUid ?? null,
+    metadata: {
+      reason: admission.reason,
+      latestInboundMessageId: latestInbound.id,
+      syncMode: mode,
+    },
+  });
+
+  if (draftCreated && draftIsNew) {
+    await recordInboxEvent({
+      threadId,
+      eventType: "drafted",
+      actorUid: actorUid ?? null,
+      metadata: {
+        latestInboundMessageId: latestInbound.id,
+        draftId,
+        templateUsed: draftTemplateSubject,
+      },
+    });
+    counts.draftsCreated += 1;
+  }
+
+  if (admission.outcome === "admit") {
+    counts.admitted += 1;
+  } else if (admission.outcome === "auto-archive") {
+    counts.autoArchived += 1;
+  } else {
+    counts.reviewLater += 1;
+  }
+}
+
 export async function syncInbox(
   input: SyncInboxInput = {},
 ): Promise<SyncInboxResult> {
@@ -588,226 +837,91 @@ export async function syncInbox(
     draftsCreated: 0,
     manualDraftFlags: 0,
     skippedUnchanged: 0,
+    threadErrors: 0,
   };
 
+  let hasErrors = false;
+
   // Build guest email map once per sync batch for guest-booking matching
-  let guestEmailMap: GuestEmailMap;
-  try {
-    guestEmailMap = await buildGuestEmailMap();
-  } catch {
-    guestEmailMap = new Map();
-  }
+  const guestMapResult: GuestEmailMapResult = await buildGuestEmailMap();
+  const guestEmailMap = guestMapResult.map;
+  const isFirstGuestMatchEvent = { value: true };
+
+  const threadCtx: ProcessThreadContext = {
+    db,
+    mailboxEmail,
+    mode,
+    guestEmailMap,
+    guestMapResult,
+    actorUid: input.actorUid,
+    counts,
+    isFirstGuestMatchEvent,
+  };
 
   for (const threadId of threadIds) {
-    const gmailThread = await getGmailThread(threadId);
-    counts.threadsFetched += 1;
-
-    const latestInbound = getLatestInboundMessage(gmailThread, mailboxEmail);
-    if (!latestInbound) {
-      continue;
-    }
-
-    const existingRecord = await getThread(threadId, db);
-    const existingMetadata = parseMetadata(existingRecord?.thread.metadata_json);
-    const latestInboundUnchanged =
-      existingMetadata.latestInboundMessageId === latestInbound.id;
-
-    const existingStatus = existingRecord?.thread.status;
-    const preservedStatus = latestInboundUnchanged && existingStatus ? existingStatus : "pending";
-
-    if (latestInboundUnchanged) {
-      const persisted = await upsertThreadAndMessages(
-        db,
-        gmailThread,
-        mailboxEmail,
-        preservedStatus,
-        buildThreadMetadata(existingMetadata, gmailThread, latestInbound, mode),
-      );
-      counts.threadsUpserted += persisted.threadUpserted;
-      counts.messagesUpserted += persisted.messagesUpserted;
-      counts.skippedUnchanged += 1;
-      continue;
-    }
-
-    const admission = classifyForAdmission({
-      fromRaw: latestInbound.from ?? undefined,
-      subject: latestInbound.subject ?? undefined,
-      snippet: latestInbound.snippet || latestInbound.body.plain,
-    });
-
-    // Match sender email to guest booking
-    const senderEmail = extractEmailAddress(latestInbound.from);
-    const guestMatch = senderEmail ? matchSenderToGuest(guestEmailMap, senderEmail) : null;
-
-    let draftCreated = false;
-    let needsManualDraft = false;
-    let draftId: string | null = null;
-    let draftTemplateSubject: string | null = null;
-    let draftQualityPassed = false;
-    let draftPayload:
-      | {
-          plainText: string;
-          html: string | null;
-          templateUsed: string | null;
-          quality: Record<string, unknown>;
-          interpret: Record<string, unknown> | undefined;
-        }
-      | null = null;
-
-    if (admission.outcome === "admit") {
-      const draftResult = await generateAgentDraft({
-        from: latestInbound.from ?? undefined,
-        subject: latestInbound.subject ?? undefined,
-        body: latestInbound.body.plain,
-        threadContext: buildThreadContext(gmailThread),
-        prepaymentProvider: inferPrepaymentProvider(latestInbound),
-        prepaymentStep: inferPrepaymentStep(latestInbound),
-        guestName: guestMatch?.firstName || undefined,
-        guestRoomNumbers: guestMatch?.roomNumbers?.length ? guestMatch.roomNumbers : undefined,
+    try {
+      await processThread(threadId, threadCtx);
+    } catch (threadError) {
+      hasErrors = true;
+      counts.threadErrors += 1;
+      console.error("Sync error for thread", {
+        threadId,
+        error: threadError instanceof Error ? threadError.message : String(threadError),
       });
 
-      if (draftResult.status !== "error" && draftResult.qualityResult?.passed) {
-        draftCreated = true;
-        draftPayload = {
-          plainText: draftResult.plainText ?? "",
-          html: draftResult.html,
-          templateUsed: draftResult.templateUsed?.subject ?? null,
-          quality: draftResult.qualityResult as Record<string, unknown>,
-          interpret: draftResult.interpretResult as Record<string, unknown> | undefined,
-        };
-        draftTemplateSubject = draftResult.templateUsed?.subject ?? null;
-        draftQualityPassed = true;
-      } else {
-        needsManualDraft = true;
-        counts.manualDraftFlags += 1;
+      // Best-effort telemetry — must not mask the original error
+      try {
+        await recordInboxEvent({
+          threadId,
+          eventType: "thread_sync_error",
+          metadata: {
+            error: threadError instanceof Error ? threadError.message : String(threadError),
+            syncMode: mode,
+          },
+        });
+      } catch {
+        // Swallow telemetry failure to avoid masking the original thread error
       }
     }
+  }
 
-    const nextStatus = determineThreadStatus(admission, draftCreated, needsManualDraft);
-    const metadata = buildThreadMetadata(existingMetadata, gmailThread, latestInbound, mode, admission, {
-      needsManualDraft,
-      lastDraftTemplateSubject: draftTemplateSubject,
-      lastDraftQualityPassed: draftQualityPassed,
-      ...(guestMatch ? {
-        guestBookingRef: guestMatch.bookingRef,
-        guestOccupantId: guestMatch.occupantId,
-        guestFirstName: guestMatch.firstName,
-        guestLastName: guestMatch.lastName,
-        guestCheckIn: guestMatch.checkInDate,
-        guestCheckOut: guestMatch.checkOutDate,
-        guestRoomNumbers: guestMatch.roomNumbers,
-      } : {}),
-    });
-    const persisted = await upsertThreadAndMessages(db, gmailThread, mailboxEmail, nextStatus, metadata);
-    counts.threadsUpserted += persisted.threadUpserted;
-    counts.messagesUpserted += persisted.messagesUpserted;
+  // Fallback: log batch map build outcome when no per-thread match events were emitted
+  if (isFirstGuestMatchEvent.value) {
+    console.log("[guest-matcher-telemetry]", JSON.stringify({
+      mapBuildStatus: guestMapResult.status,
+      mapSize: guestMapResult.guestCount,
+      mapBuildDurationMs: guestMapResult.durationMs,
+      mapBuildError: guestMapResult.error ?? null,
+      threadsProcessed: counts.threadsFetched,
+      pipeline: "sync",
+      reason: "no_match_events_emitted",
+    }));
+  }
 
-    let draftIsNew = false;
-    if (draftPayload) {
-      const upsertResult = await upsertSyncDraft(
-        threadId,
-        draftPayload,
-        latestInbound,
-        existingMetadata,
-        input.actorUid ?? null,
-        db,
-      );
-      draftId = upsertResult.draftId;
-      draftIsNew = upsertResult.draftIsNew;
-      draftTemplateSubject = upsertResult.draftTemplateSubject;
-      draftQualityPassed = upsertResult.draftQualityPassed;
+  const finalProfile = await getGmailProfile();
 
-      await updateThreadStatus(
-        {
-          threadId,
-          status: nextStatus,
-          latestMessageAt:
-            [...gmailThread.messages].sort(compareMessagesByDate).at(-1)?.receivedAt ?? null,
-          lastSyncedAt: nowIso(),
-          metadata: {
-            ...metadata,
-            lastDraftId: draftId,
-          },
-        },
-        db,
-      );
-    }
-
-    await recordAdmission(
+  // All-or-nothing checkpoint: only advance if every thread succeeded
+  if (!hasErrors) {
+    await upsertInboxSyncCheckpoint(
       {
-        threadId,
-        decision: admission.outcome,
-        source: "reception_sync",
-        classifierVersion: "reception-admission-v1",
-        matchedRule: admission.reason,
-        sourceMetadata: {
-          organizeDecision: admission.organizeDecision,
-          senderEmail: admission.senderEmail,
-          latestInboundMessageId: latestInbound.id,
-          syncMode: mode,
+        mailboxKey,
+        lastHistoryId: finalProfile.historyId,
+        lastSyncedAt: nowIso(),
+        metadata: {
+          mode,
+          rescanWindowDays,
+          threadsFetched: counts.threadsFetched,
+          historyRecords: counts.historyRecords,
         },
       },
       db,
     );
-
-    await recordInboxEvent({
-      threadId,
-      eventType:
-        admission.outcome === "admit"
-          ? "admitted"
-          : admission.outcome === "auto-archive"
-            ? "auto_archived"
-            : "review_later",
-      actorUid: input.actorUid ?? null,
-      metadata: {
-        reason: admission.reason,
-        latestInboundMessageId: latestInbound.id,
-        syncMode: mode,
-      },
-    });
-
-    if (draftCreated && draftIsNew) {
-      await recordInboxEvent({
-        threadId,
-        eventType: "drafted",
-        actorUid: input.actorUid ?? null,
-        metadata: {
-          latestInboundMessageId: latestInbound.id,
-          draftId,
-          templateUsed: draftTemplateSubject,
-        },
-      });
-      counts.draftsCreated += 1;
-    }
-
-    if (admission.outcome === "admit") {
-      counts.admitted += 1;
-    } else if (admission.outcome === "auto-archive") {
-      counts.autoArchived += 1;
-    } else {
-      counts.reviewLater += 1;
-    }
   }
-
-  const finalProfile = await getGmailProfile();
-  await upsertInboxSyncCheckpoint(
-    {
-      mailboxKey,
-      lastHistoryId: finalProfile.historyId,
-      lastSyncedAt: nowIso(),
-      metadata: {
-        mode,
-        rescanWindowDays,
-        threadsFetched: counts.threadsFetched,
-        historyRecords: counts.historyRecords,
-      },
-    },
-    db,
-  );
 
   return {
     mailboxKey,
     mode,
+    checkpointAdvanced: !hasErrors,
     checkpoint: {
       previousHistoryId,
       nextHistoryId: finalProfile.historyId,

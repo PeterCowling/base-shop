@@ -6,6 +6,7 @@
 import {
   buildGuestEmailMap,
   type GuestEmailMap,
+  type GuestEmailMapResult,
   isActiveBooking,
   matchSenderToGuest,
 } from "../guest-matcher.server";
@@ -189,8 +190,11 @@ describe("buildGuestEmailMap + matchSenderToGuest", () => {
   // TC-01: Sender email matches active booking guest
   it("TC-01: matches sender email to active booking guest", async () => {
     mockFirebaseSuccess();
-    const map = await buildGuestEmailMap(NOW);
-    const match = matchSenderToGuest(map, "marco@example.com");
+    const result = await buildGuestEmailMap(NOW);
+    expect(result.status).toBe("ok");
+    expect(result.guestCount).toBeGreaterThan(0);
+    expect(result.durationMs).toBeGreaterThanOrEqual(0);
+    const match = matchSenderToGuest(result.map, "marco@example.com");
 
     expect(match).not.toBeNull();
     // Should match the most recent booking (booking-recent, occ5)
@@ -207,8 +211,8 @@ describe("buildGuestEmailMap + matchSenderToGuest", () => {
   // TC-02: Sender email has no match
   it("TC-02: returns null when sender email has no match", async () => {
     mockFirebaseSuccess();
-    const map = await buildGuestEmailMap(NOW);
-    const match = matchSenderToGuest(map, "unknown@example.com");
+    const result = await buildGuestEmailMap(NOW);
+    const match = matchSenderToGuest(result.map, "unknown@example.com");
 
     expect(match).toBeNull();
   });
@@ -216,17 +220,17 @@ describe("buildGuestEmailMap + matchSenderToGuest", () => {
   // TC-03: Historical booking (checked out >7 days ago) is excluded
   it("TC-03: excludes historical bookings from matches", async () => {
     mockFirebaseSuccess();
-    const map = await buildGuestEmailMap(NOW);
-    const match = matchSenderToGuest(map, "old-guest@example.com");
+    const result = await buildGuestEmailMap(NOW);
+    const match = matchSenderToGuest(result.map, "old-guest@example.com");
 
     expect(match).toBeNull();
   });
 
-  // TC-04: Multiple bookings with same email → most recent
+  // TC-04: Multiple bookings with same email -> most recent
   it("TC-04: returns most recent booking when multiple match same email", async () => {
     mockFirebaseSuccess();
-    const map = await buildGuestEmailMap(NOW);
-    const match = matchSenderToGuest(map, "marco@example.com");
+    const result = await buildGuestEmailMap(NOW);
+    const match = matchSenderToGuest(result.map, "marco@example.com");
 
     expect(match).not.toBeNull();
     // booking-recent has checkInDate 2026-03-07 (later than booking-active's 2026-03-05)
@@ -235,30 +239,38 @@ describe("buildGuestEmailMap + matchSenderToGuest", () => {
   });
 
   // TC-05: Firebase REST error
-  it("TC-05: returns empty map on Firebase network error", async () => {
+  it("TC-05: returns result with firebase_network_error status on network error", async () => {
     mockFirebaseError();
-    const map = await buildGuestEmailMap(NOW);
+    const result = await buildGuestEmailMap(NOW);
 
-    expect(map.size).toBe(0);
+    expect(result.map.size).toBe(0);
+    expect(result.status).toBe("firebase_network_error");
+    expect(result.error).toBe("Network error");
+    expect(result.guestCount).toBe(0);
+    expect(result.durationMs).toBeGreaterThanOrEqual(0);
     expect(console.error).toHaveBeenCalled();
   });
 
-  it("TC-05b: returns empty map on Firebase HTTP error", async () => {
+  it("TC-05b: returns result with firebase_http_error status on HTTP error", async () => {
     mockFirebaseHttpError(403);
-    const map = await buildGuestEmailMap(NOW);
+    const result = await buildGuestEmailMap(NOW);
 
-    expect(map.size).toBe(0);
+    expect(result.map.size).toBe(0);
+    expect(result.status).toBe("firebase_http_error");
+    expect(result.error).toContain("403");
+    expect(result.guestCount).toBe(0);
+    expect(result.durationMs).toBeGreaterThanOrEqual(0);
     expect(console.error).toHaveBeenCalled();
   });
 
   // TC-06: Case-insensitive email matching
   it("TC-06: matches email case-insensitively", async () => {
     mockFirebaseSuccess();
-    const map = await buildGuestEmailMap(NOW);
+    const result = await buildGuestEmailMap(NOW);
 
-    const match1 = matchSenderToGuest(map, "MARCO@EXAMPLE.COM");
-    const match2 = matchSenderToGuest(map, "Marco@Example.Com");
-    const match3 = matchSenderToGuest(map, "marco@example.com");
+    const match1 = matchSenderToGuest(result.map, "MARCO@EXAMPLE.COM");
+    const match2 = matchSenderToGuest(result.map, "Marco@Example.Com");
+    const match3 = matchSenderToGuest(result.map, "marco@example.com");
 
     expect(match1).not.toBeNull();
     expect(match2).not.toBeNull();
@@ -275,10 +287,10 @@ describe("buildGuestEmailMap + matchSenderToGuest", () => {
 describe("edge cases", () => {
   it("skips occupants with empty/undefined email", async () => {
     mockFirebaseSuccess();
-    const map = await buildGuestEmailMap(NOW);
+    const result = await buildGuestEmailMap(NOW);
 
     // booking-no-email has no email field
-    expect(map.size).toBe(2); // marco@... and anna@...
+    expect(result.map.size).toBe(2); // marco@... and anna@...
   });
 
   it("returns null for empty sender email", () => {
@@ -288,16 +300,16 @@ describe("edge cases", () => {
 
   it("handles Firebase returning null/empty data", async () => {
     mockFirebaseSuccess(null, null);
-    const map = await buildGuestEmailMap(NOW);
+    const result = await buildGuestEmailMap(NOW);
 
-    expect(map.size).toBe(0);
+    expect(result.map.size).toBe(0);
   });
 
   it("handles Firebase returning empty objects", async () => {
     mockFirebaseSuccess({}, {});
-    const map = await buildGuestEmailMap(NOW);
+    const result = await buildGuestEmailMap(NOW);
 
-    expect(map.size).toBe(0);
+    expect(result.map.size).toBe(0);
   });
 
   it("skips __notes and other dunder keys in bookings", async () => {
@@ -308,11 +320,11 @@ describe("edge cases", () => {
       },
     };
     mockFirebaseSuccess(bookingsWithNotes);
-    const map = await buildGuestEmailMap(NOW);
+    const result = await buildGuestEmailMap(NOW);
 
     // Should still find occ1 and occ2, not crash on __notes
-    expect(map.has("marco@example.com")).toBe(true);
-    expect(map.has("anna@example.com")).toBe(true);
+    expect(result.map.has("marco@example.com")).toBe(true);
+    expect(result.map.has("anna@example.com")).toBe(true);
   });
 
   it("appends ?auth= when FIREBASE_DB_SECRET is set", async () => {

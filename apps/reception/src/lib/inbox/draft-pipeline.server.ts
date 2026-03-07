@@ -60,6 +60,89 @@ export type AgentDraftParitySnapshot = {
   branded_html_present: boolean;
 };
 
+export type DraftFailureReason = {
+  code: string;
+  message: string;
+};
+
+const FAILED_CHECK_LABELS: Record<string, string> = {
+  unanswered_questions: "unanswered questions",
+  prohibited_claims: "prohibited claims",
+  missing_plaintext: "missing plain text",
+  missing_html: "missing HTML",
+  missing_signature: "missing signature",
+  missing_required_link: "missing required link",
+  missing_required_reference: "missing required reference",
+  reference_not_applicable: "inapplicable reference",
+  contradicts_thread: "contradicts prior thread",
+  missing_policy_mandatory_content: "missing policy content",
+  policy_prohibited_content: "prohibited policy content",
+};
+
+function formatFailedChecks(failedChecks: string[]): string {
+  if (failedChecks.length === 0) {
+    return "";
+  }
+
+  const labels = failedChecks
+    .map((check) => FAILED_CHECK_LABELS[check] ?? check.replace(/_/g, " "))
+    .slice(0, 3);
+
+  return labels.join(", ");
+}
+
+/**
+ * Derives a staff-facing failure reason from an `AgentDraftResult`.
+ * Used by sync and recovery pipelines when draft generation fails.
+ */
+export function deriveDraftFailureReason(draftResult: AgentDraftResult): DraftFailureReason {
+  if (draftResult.status === "error") {
+    if (draftResult.error?.code === "invalid_input") {
+      return {
+        code: "invalid_input",
+        message: "The email had no body text to generate a reply from.",
+      };
+    }
+
+    return {
+      code: "generation_failed",
+      message: "Draft generation failed unexpectedly.",
+    };
+  }
+
+  if (draftResult.qualityResult && !draftResult.qualityResult.passed) {
+    const checks = formatFailedChecks(draftResult.qualityResult.failed_checks);
+    return {
+      code: "quality_gate_failed",
+      message: checks
+        ? `Draft did not pass quality checks: ${checks}.`
+        : "Draft did not pass quality checks.",
+    };
+  }
+
+  return {
+    code: "generation_failed",
+    message: "Draft generation failed unexpectedly.",
+  };
+}
+
+/**
+ * Creates a failure reason from a standalone code string.
+ * Used by recovery pipeline for cases like max_retries_exceeded
+ * where no AgentDraftResult is available.
+ */
+export function draftFailureReasonFromCode(code: string, message?: string): DraftFailureReason {
+  const defaultMessages: Record<string, string> = {
+    max_retries_exceeded: "Draft generation failed after multiple retry attempts.",
+    generation_failed: "Draft generation failed unexpectedly.",
+  };
+
+  return {
+    code,
+    message: message ?? defaultMessages[code] ?? "Draft generation failed.",
+  };
+}
+
 function buildInvalidInputResult(): AgentDraftResult {
   return {
     status: "error",

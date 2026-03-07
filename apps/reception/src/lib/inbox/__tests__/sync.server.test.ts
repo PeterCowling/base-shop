@@ -6,6 +6,7 @@ import {
 } from "../../gmail-client";
 import { getInboxDb } from "../db.server";
 import { generateAgentDraft } from "../draft-pipeline.server";
+import { buildGuestEmailMap } from "../guest-matcher.server";
 import {
   createDraft,
   getThread,
@@ -46,6 +47,16 @@ jest.mock("../sync-state.server", () => ({
   upsertInboxSyncCheckpoint: jest.fn(),
 }));
 
+jest.mock("../guest-matcher.server", () => ({
+  buildGuestEmailMap: jest.fn().mockResolvedValue({
+    map: new Map(),
+    status: "ok",
+    durationMs: 10,
+    guestCount: 0,
+  }),
+  matchSenderToGuest: jest.fn().mockReturnValue(null),
+}));
+
 jest.mock("../telemetry.server", () => ({
   recordInboxEvent: jest.fn(),
 }));
@@ -79,6 +90,7 @@ describe("syncInbox", () => {
   const getInboxSyncCheckpointMock = jest.mocked(getInboxSyncCheckpoint);
   const upsertInboxSyncCheckpointMock = jest.mocked(upsertInboxSyncCheckpoint);
   const recordInboxEventMock = jest.mocked(recordInboxEvent);
+  const buildGuestEmailMapMock = jest.mocked(buildGuestEmailMap);
 
   beforeEach(() => {
     jest.resetAllMocks();
@@ -96,6 +108,12 @@ describe("syncInbox", () => {
         threadsTotal: 4,
         historyId: "124",
       });
+    buildGuestEmailMapMock.mockResolvedValue({
+      map: new Map(),
+      status: "ok" as const,
+      durationMs: 0,
+      guestCount: 0,
+    });
     getThreadMock.mockResolvedValue(null);
     createDraftMock.mockResolvedValue({
       id: "draft-1",
@@ -214,5 +232,147 @@ describe("syncInbox", () => {
       }),
       expect.anything(),
     );
+  });
+
+
+  describe("partial sync failure and checkpoint hold-back", () => {
+    function setupIncrementalSync(threadIds: string[]) {
+      getInboxSyncCheckpointMock.mockResolvedValue({
+        mailboxKey: "primary",
+        lastHistoryId: "100",
+        lastSyncedAt: "2026-03-01T10:00:00.000Z",
+        metadata: null,
+        createdAt: "2026-03-01T10:00:00.000Z",
+        updatedAt: "2026-03-01T10:00:00.000Z",
+      });
+      listGmailHistoryMock.mockResolvedValue({
+        history: threadIds.map((id) => ({
+          id: "h-" + id,
+          messagesAdded: [{ message: { id: "m-" + id, threadId: id } }],
+        })),
+      });
+    }
+
+    function makeThread(threadId: string) {
+      return {
+        id: threadId,
+        historyId: "history-" + threadId,
+        snippet: "Test snippet for " + threadId,
+        messages: [
+          {
+            id: "msg-" + threadId,
+            threadId,
+            labelIds: [] as string[],
+            historyId: "history-" + threadId,
+            snippet: "Test snippet",
+            internalDate: "1709719200000",
+            receivedAt: "2026-03-06T10:00:00.000Z",
+            from: "alice@example.com",
+            to: ["hostelpositano@gmail.com"],
+            subject: "Test " + threadId,
+            inReplyTo: null,
+            references: null,
+            body: { plain: "Test body for " + threadId },
+            attachments: [] as Array<{ filename: string; mimeType: string; attachmentId: string; size: number }>,
+          },
+        ],
+      };
+    }
+
+    function setupDraftMock() {
+      generateAgentDraftMock.mockResolvedValue({
+        status: "ready",
+        plainText: "Reply text",
+        html: "<p>Reply text</p>",
+        draftId: "generated-1",
+        templateUsed: { subject: "Template", category: "general", confidence: 0.9, selection: "auto" as const },
+        qualityResult: { passed: true, failed_checks: [], warnings: [], confidence: 1, question_coverage: [] },
+        interpretResult: {
+          language: "EN",
+          intents: { questions: [], requests: [], confirmations: [] },
+          scenario: { category: "general", confidence: 0.9 },
+          scenarios: [{ category: "general", confidence: 0.9 }],
+          escalation: { tier: "NONE" as const, triggers: [], confidence: 0 },
+          thread_summary: undefined,
+        },
+        questionBlocks: [],
+        knowledgeSources: [],
+      });
+    }
+
+    it("holds back checkpoint when one thread fails (partial failure)", async () => {
+      setupIncrementalSync(["thread-ok", "thread-fail"]);
+      setupDraftMock();
+
+      getGmailThreadMock
+        .mockResolvedValueOnce(makeThread("thread-ok"))
+        .mockRejectedValueOnce(new Error("Gmail API error for thread"));
+
+      const result = await syncInbox({ actorUid: "uid-1" });
+
+      // Checkpoint must NOT be advanced
+      expect(upsertInboxSyncCheckpointMock).not.toHaveBeenCalled();
+      expect(result.checkpointAdvanced).toBe(false);
+      expect(result.counts.threadErrors).toBe(1);
+      // The successful thread should still be counted
+      expect(result.counts.threadsFetched).toBe(1);
+      // nextHistoryId should always be set to finalProfile.historyId
+      expect(result.checkpoint.nextHistoryId).toBe("124");
+    });
+
+    it("advances checkpoint when all threads succeed", async () => {
+      setupIncrementalSync(["thread-1", "thread-2"]);
+      setupDraftMock();
+
+      getGmailThreadMock
+        .mockResolvedValueOnce(makeThread("thread-1"))
+        .mockResolvedValueOnce(makeThread("thread-2"));
+
+      const result = await syncInbox({ actorUid: "uid-1" });
+
+      // Checkpoint must be advanced
+      expect(upsertInboxSyncCheckpointMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          mailboxKey: "primary",
+          lastHistoryId: "124",
+        }),
+        expect.anything(),
+      );
+      expect(result.checkpointAdvanced).toBe(true);
+      expect(result.counts.threadErrors).toBe(0);
+      expect(result.counts.threadsFetched).toBe(2);
+      expect(result.checkpoint.nextHistoryId).toBe("124");
+    });
+
+    it("holds back checkpoint when all threads fail", async () => {
+      setupIncrementalSync(["thread-a", "thread-b"]);
+
+      getGmailThreadMock
+        .mockRejectedValueOnce(new Error("Fail A"))
+        .mockRejectedValueOnce(new Error("Fail B"));
+
+      const result = await syncInbox({ actorUid: "uid-1" });
+
+      expect(upsertInboxSyncCheckpointMock).not.toHaveBeenCalled();
+      expect(result.checkpointAdvanced).toBe(false);
+      expect(result.counts.threadErrors).toBe(2);
+      expect(result.counts.threadsFetched).toBe(0);
+      expect(result.checkpoint.nextHistoryId).toBe("124");
+    });
+
+    it("still counts error when telemetry recording fails in catch block", async () => {
+      setupIncrementalSync(["thread-x"]);
+
+      getGmailThreadMock.mockRejectedValueOnce(new Error("Thread processing failed"));
+      // Make recordInboxEvent reject to test the nested try/catch in the error handler
+      recordInboxEventMock.mockRejectedValueOnce(new Error("Telemetry write failed"));
+
+      const result = await syncInbox({ actorUid: "uid-1" });
+
+      // Error should still be counted despite telemetry failure
+      expect(result.counts.threadErrors).toBe(1);
+      expect(result.checkpointAdvanced).toBe(false);
+      // Should not throw or reject
+    });
   });
 });

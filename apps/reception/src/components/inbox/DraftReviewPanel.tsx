@@ -203,7 +203,9 @@ export default function DraftReviewPanel({
         <div className="space-y-3 px-4 py-4">
           {requiresManualDraft && (
             <div className="rounded-xl border border-warning-main/20 bg-warning-light px-3 py-2.5 text-sm text-warning-main">
-              Auto-draft unavailable for this thread. Write a manual reply below.
+              {threadDetail.thread.draftFailureMessage
+                ? `Auto-draft failed: ${threadDetail.thread.draftFailureMessage} Write a manual reply below.`
+                : "Auto-draft unavailable for this thread. Write a manual reply below."}
             </div>
           )}
 

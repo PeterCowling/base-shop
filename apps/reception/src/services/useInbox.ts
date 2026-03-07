@@ -32,6 +32,8 @@ export type InboxThreadSummary = {
   lastSyncedAt: string | null;
   updatedAt: string;
   needsManualDraft: boolean;
+  draftFailureCode: string | null;
+  draftFailureMessage: string | null;
   latestAdmissionDecision: string | null;
   latestAdmissionReason: string | null;
   currentDraft: InboxDraft | null;

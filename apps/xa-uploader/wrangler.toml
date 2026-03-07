@@ -1,4 +1,5 @@
 name = "xa-uploader"
+account_id = "9e2c24d2db8e38f743f0ad6f9dfcfd65"
 main = ".open-next/worker.js"
 compatibility_date = "2025-06-20"
 compatibility_flags = ["nodejs_compat"]

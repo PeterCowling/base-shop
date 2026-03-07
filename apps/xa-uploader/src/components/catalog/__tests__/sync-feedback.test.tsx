@@ -1,15 +1,12 @@
 /** @jest-environment jsdom */
 
 import { afterEach, describe, expect, it, jest } from "@jest/globals";
-import { render, screen } from "@testing-library/react";
 
 import type { CatalogProductDraftInput } from "@acme/lib/xa";
 
 import { getUploaderMessage, type UploaderMessageKey } from "../../../lib/uploaderI18n";
-import { UploaderI18nProvider } from "../../../lib/uploaderI18n.client";
 import { shouldTriggerAutosync } from "../catalogConsoleActions";
 import { deriveCatalogSiteStatus } from "../catalogConsoleFeedback";
-import { CatalogSyncPanel } from "../CatalogSyncPanel.client";
 import * as catalogWorkflowModule from "../catalogWorkflow";
 import { getSyncFailureMessage } from "../useCatalogConsole.client";
 
@@ -143,57 +140,6 @@ describe("sync failure feedback", () => {
     expect(message).toContain("rate limited");
     expect(message).toContain("one minute");
   });
-
-  it("renders scoped sync feedback in the sync panel", () => {
-    render(
-      <UploaderI18nProvider initialLocale="en">
-        <CatalogSyncPanel
-          busy={false}
-          syncOptions={{ strict: true, recursive: true, replace: false, dryRun: false }}
-          syncReadiness={{
-            checking: false,
-            ready: true,
-            missingScripts: [],
-            error: null,
-          }}
-          syncOutput={null}
-          feedback={{ kind: "error", message: "Sync failed. Fix validation errors and retry." }}
-          onSync={() => undefined}
-          onRefreshReadiness={() => undefined}
-          onChangeSyncOptions={() => undefined}
-        />
-      </UploaderI18nProvider>,
-    );
-
-    expect(screen.getByRole("alert")).toHaveTextContent("Fix validation errors and retry.");
-  });
-
-  it("shows readiness failure details and disables run-sync until ready", () => {
-    render(
-      <UploaderI18nProvider initialLocale="en">
-        <CatalogSyncPanel
-          busy={false}
-          syncOptions={{ strict: true, recursive: true, replace: false, dryRun: false }}
-          syncReadiness={{
-            checking: false,
-            ready: false,
-            missingScripts: ["validate", "sync"],
-            error: null,
-          }}
-          syncOutput={null}
-          feedback={null}
-          onSync={() => undefined}
-          onRefreshReadiness={() => undefined}
-          onChangeSyncOptions={() => undefined}
-        />
-      </UploaderI18nProvider>,
-    );
-
-    expect(screen.getByTestId("catalog-sync-readiness")).toHaveTextContent(
-      "required scripts are missing",
-    );
-    expect(screen.getByTestId("catalog-run-sync")).toBeDisabled();
-  });
 });
 
 describe("catalog site status derivation", () => {
@@ -243,63 +189,6 @@ describe("catalog site status derivation", () => {
         ok: true,
       }),
     ).toEqual({ catalog: "published", site: "none" });
-  });
-});
-
-describe("catalog sync panel status strip", () => {
-  it("renders catalog and site status indicators from the last successful sync", () => {
-    const { container } = render(
-      <UploaderI18nProvider initialLocale="en">
-        <CatalogSyncPanel
-          busy={false}
-          syncOptions={{ strict: true, recursive: true, replace: false, dryRun: false }}
-          syncReadiness={{
-            checking: false,
-            ready: true,
-            missingScripts: [],
-            error: null,
-          }}
-          syncOutput={null}
-          lastSyncData={{ ok: true, deploy: { status: "triggered" } }}
-          feedback={null}
-          onSync={() => undefined}
-          onRefreshReadiness={() => undefined}
-          onChangeSyncOptions={() => undefined}
-        />
-      </UploaderI18nProvider>,
-    );
-
-    const catalogStatus = container.querySelector('[data-cy="catalog-status-strip-catalog"]');
-    const siteStatus = container.querySelector('[data-cy="catalog-status-strip-site"]');
-
-    expect(catalogStatus).toHaveTextContent("Catalog: Published");
-    expect(siteStatus).toHaveTextContent("Site: Rebuild triggered");
-  });
-
-  it("does not render the status strip before any successful sync data exists", () => {
-    const { container } = render(
-      <UploaderI18nProvider initialLocale="en">
-        <CatalogSyncPanel
-          busy={false}
-          syncOptions={{ strict: true, recursive: true, replace: false, dryRun: false }}
-          syncReadiness={{
-            checking: false,
-            ready: true,
-            missingScripts: [],
-            error: null,
-          }}
-          syncOutput={null}
-          lastSyncData={null}
-          feedback={null}
-          onSync={() => undefined}
-          onRefreshReadiness={() => undefined}
-          onChangeSyncOptions={() => undefined}
-        />
-      </UploaderI18nProvider>,
-    );
-
-    expect(container.querySelector('[data-cy="catalog-status-strip-catalog"]')).toBeNull();
-    expect(container.querySelector('[data-cy="catalog-status-strip-site"]')).toBeNull();
   });
 });
 

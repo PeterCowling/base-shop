@@ -2,17 +2,11 @@
 
 import * as React from "react";
 
-import {
-  deriveCatalogPublishState,
-  isCatalogPublishableState,
-} from "@acme/lib/xa/catalogWorkflow";
-
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 import { CatalogLoginForm } from "./CatalogLoginForm.client";
 import { CatalogProductForm } from "./CatalogProductForm.client";
 import { SKELETON_BLOCK_CLASS } from "./catalogStyles";
-import { CatalogSyncPanel } from "./CatalogSyncPanel.client";
 import { CurrencyRatesPanel } from "./CurrencyRatesPanel.client";
 import { EditProductFilterSelector } from "./EditProductFilterSelector.client";
 import { useCatalogConsole } from "./useCatalogConsole.client";
@@ -73,61 +67,26 @@ function ProductEditor({
       onSavedFeedback={state.handleSaveAdvanceFeedback}
       onSaveWithDraft={state.handleSaveWithDraft}
       onDelete={state.handleDelete}
+      onPublish={state.handlePublish}
     />
   );
 }
 
 function CurrencyScreen({
   state,
-  monoClassName,
   t,
 }: {
   state: ConsoleState;
-  monoClassName?: string;
   t: Translator;
 }) {
-  const publishReadiness = React.useMemo(() => {
-    const total = state.products.length;
-    let publishable = 0;
-    for (const product of state.products) {
-      if (isCatalogPublishableState(deriveCatalogPublishState(product))) {
-        publishable += 1;
-      }
-    }
-    return {
-      total,
-      publishable,
-      draft: Math.max(0, total - publishable),
-    };
-  }, [state.products]);
-
   if (state.uploaderMode !== "internal") return null;
-  const showCurrencyRates = state.syncReadiness.mode === "local";
   return (
     <div className="space-y-6">
-      {showCurrencyRates ? (
-        <>
-          <div className="text-sm text-gate-muted">{t("screenCurrencyHint")}</div>
-          <CurrencyRatesPanel
-            busy={state.busy}
-            syncReadiness={state.syncReadiness}
-            onSync={state.handleSync}
-          />
-        </>
-      ) : null}
-      <CatalogSyncPanel
+      <div className="text-sm text-gate-muted">{t("screenCurrencyHint")}</div>
+      <CurrencyRatesPanel
         busy={state.busy}
-        syncOptions={state.syncOptions}
         syncReadiness={state.syncReadiness}
-        isAutosaveDirty={state.isAutosaveDirty || state.isAutosaveSaving}
-        monoClassName={monoClassName}
-        feedback={state.actionFeedback.sync}
-        syncOutput={state.syncOutput}
-        lastSyncData={state.lastSyncData}
-        publishReadiness={publishReadiness}
         onSync={state.handleSync}
-        onRefreshReadiness={state.refreshSyncReadiness}
-        onChangeSyncOptions={state.setSyncOptions}
       />
     </div>
   );
@@ -144,7 +103,7 @@ function ConsoleBody({
   monoClassName?: string;
   t: Translator;
 }) {
-  if (screen === "currency") return <CurrencyScreen state={state} monoClassName={monoClassName} t={t} />;
+  if (screen === "currency") return <CurrencyScreen state={state} t={t} />;
   return (
     /* eslint-disable-next-line ds/no-arbitrary-tailwind -- XAUP-0001 operator-tool layout */
     <div className="grid gap-6 sm:grid-cols-[280px_1fr]">
@@ -177,8 +136,7 @@ export default function CatalogConsole({ monoClassName, onHeaderExtra }: Catalog
   }, []);
 
   const showCurrency = state.session?.authenticated && state.uploaderMode === "internal";
-  const currencyHeaderLabel =
-    state.syncReadiness.mode === "local" ? t("screenCurrencyRates") : t("screenSync");
+  const currencyHeaderLabel = t("screenCurrencyRates");
   React.useEffect(() => {
     if (!onHeaderExtra) return;
     if (!showCurrency) {

@@ -217,7 +217,7 @@ export function CatalogProductForm({
   onSavedFeedback?: () => void;
   onSaveWithDraft: (nextDraft: CatalogProductDraftInput) => void;
   onDelete: () => void;
-  onPublish?: () => Promise<void>;
+  onPublish?: () => Promise<unknown>;
 }) {
   const { t } = useUploaderI18n();
   const category = draft.taxonomy.category;

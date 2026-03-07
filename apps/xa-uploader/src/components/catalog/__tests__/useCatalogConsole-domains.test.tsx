@@ -90,9 +90,6 @@ function renderHarness() {
         <button type="button" onClick={() => void state.handleSync()}>
           sync
         </button>
-        <button type="button" onClick={() => void state.refreshSyncReadiness()}>
-          refresh-sync-readiness
-        </button>
 
         <div data-cy="session-auth">{state.session?.authenticated ? "yes" : "no"}</div>
         <div data-cy="products-count">{state.products.length}</div>

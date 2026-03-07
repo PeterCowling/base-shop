@@ -1,11 +1,63 @@
 {
   "schema_version": "agent-session-findings.v1",
-  "generated_at": "2026-03-06T22:56:13.133Z",
+  "generated_at": "2026-03-07T08:10:10.009Z",
   "business": "BOS",
   "transcript_root": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop",
   "sessions_scanned": 20,
-  "sessions_with_findings": 18,
+  "sessions_with_findings": 17,
   "findings": [
+    {
+      "session_id": "de364e8d-fdd8-4860-8c35-b00389f9b19b",
+      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/de364e8d-fdd8-4860-8c35-b00389f9b19b.jsonl",
+      "updated_at": "2026-03-07T08:10:09.008Z",
+      "findings": [
+        "TASK-01** Complete — truthful status semantics + per-product publish blockers with `missingRoles[]` exposed; `workflowLive` relabeled to \"Published to catalog\"",
+        "TASK-04 depends on TASK-01+02+03, still blocked on TASK-03.",
+        "Now run bug scan and process improvements:",
+        "TASK-01** — `getCatalogDraftWorkflowReadiness()` now exposes `missingRoles: string[]`; \"live on site\" copy replaced with \"Published to catalog\" across form, sidebar, and i18n layer.",
+        "The plan that follows will inherit a gap that, unaddressed, produces a storefront breakage at the moment of deployment.",
+        "Issues ledger created at `docs/plans/xa-uploader-status-and-media-model-rewrite/critique-history.md`.",
+        "Now let me look at what the actual current UI looks like to understand the gap to \"everything on one page\":",
+        "Here's what's required: ## Current gap `CatalogProductForm` uses `FormStepId = \"product\" | \"images\"` with mutually exclusive step rendering — you see either product fields **or** images, never both.",
+        "Planning gap: Operator has already resolved the architectural decision (Option B: extract `MainImagePanel` / `AdditionalImagesPanel`, interleave in `CatalogProductForm`). Scope is bounded, files are known, no research needed.",
+        "Now Phase 7: Evidence Gap Review (done inline above) → Phase 7a: Mandatory Critique Loop.",
+        "The files exist but git mv failed — files may be untracked."
+      ]
+    },
+    {
+      "session_id": "11259565-4f98-4328-9d78-c886e61f8c7e",
+      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/11259565-4f98-4328-9d78-c886e61f8c7e.jsonl",
+      "updated_at": "2026-03-07T08:10:08.525Z",
+      "findings": [
+        "Let me read the target document and check for an existing issues ledger.",
+        "Gmail auth is filesystem-dependent and cannot run in a hosted Worker.** This is the central justification for a new hosted Gmail adapter layer. If there were a simple workaround, the entire project scope shrinks.",
+        "Fix** → Evidence Gap Review, Remaining Assumptions → Add assumption about staff adoption willingness.",
+        "The Confidence Inputs section has ≥4 total issues targeting it, so it triggers a full section rewrite per Step AF-1.",
+        "Now the full Confidence Inputs section rewrite (AF-1 triggered: ≥4 issues):",
+        "Now add staff adoption to Remaining Assumptions in Evidence Gap Review:",
+        "Consistency scan: 1 cleanup edit applied (stale Confidence Adjustments text in Evidence Gap Review).",
+        "Missing implicit dependency:** TASK-08 creates `telemetry.server.ts`. TASK-05 (sync service) and TASK-06 (API routes) will import `logInboxEvent()` from it. TASK-05 should depend on TASK-08 (file dependency: `telemetry.server.ts`).",
+        "No missing data dependencies.",
+        "Per post-loop gate: score 3.5 → **partially credible** → Status stays **Draft**, auto-build **blocked**.",
+        "Audit-critical events are write-through; non-critical events are best-effort **Auto-build is blocked** because codemoot scored the plan at 3.5 (partially credible).",
+        "What's missing from the plan:** The v1 inbox should preserve the agent-assisted draft generation that already exists.",
+        "Parallelism Guide Wave 1**: TASK-03 and TASK-09 cannot be in Wave 1 — they depend on TASK-02.",
+        "Summary of corrections needed:** The body-level dependencies are mostly correct but have two issues: 1.",
+        "Parallelism Guide: Corrected from 5 waves to 6 waves (TASK-03 and TASK-09 can't be Wave 1 — they depend on TASK-02)",
+        "The obvious integration gap is **guest context**.",
+        "Planning gap?** Yes — bridging Firebase RTDB (guest/booking data) with D1 (inbox) requires investigation of data access patterns, matching logic, and API surface changes",
+        "Moderate** — Missing `Last-reviewed` frontmatter field. Template requires it alongside `Last-updated`.",
+        "Issues ledger updated at `docs/plans/reception-inbox-guest-context/critique-history.md`.",
+        "TASK-01: 1 Moderate issue → point fix (below threshold)",
+        "Step AF-3: Post-Fix Consistency Scan Let me re-read the affected sections to check for consistency issues.",
+        "Remaining open issues: 1 (Minor, carried from Round 1).",
+        "The issue is likely that Firebase data isn't being matched because of the booking structure.",
+        "The issue is that `global.fetch` in the test environment is `cross-fetch`.",
+        "The issue is `cross-fetch` converting the URL.",
+        "Now run existing tests to ensure no regression.",
+        "Let me check if these are pre-existing failures or caused by my changes."
+      ]
+    },
     {
       "session_id": "35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
       "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/35b5bcde-4097-4c38-adaa-0cbe5e0a1619.jsonl",
@@ -100,41 +152,6 @@
       "updated_at": "2026-03-06T16:00:36.596Z",
       "findings": [
         "Resolved two critical issues from the critique (emitter timing — moved sidecar emission to post-authoring extractor scripts, not prefill; corrected seam location in `self-evolving-from-build-output.ts`)"
-      ]
-    },
-    {
-      "session_id": "11259565-4f98-4328-9d78-c886e61f8c7e",
-      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/11259565-4f98-4328-9d78-c886e61f8c7e.jsonl",
-      "updated_at": "2026-03-06T18:09:40.140Z",
-      "findings": [
-        "Let me read the target document and check for an existing issues ledger.",
-        "Gmail auth is filesystem-dependent and cannot run in a hosted Worker.** This is the central justification for a new hosted Gmail adapter layer. If there were a simple workaround, the entire project scope shrinks.",
-        "Fix** → Evidence Gap Review, Remaining Assumptions → Add assumption about staff adoption willingness.",
-        "The Confidence Inputs section has ≥4 total issues targeting it, so it triggers a full section rewrite per Step AF-1.",
-        "Now the full Confidence Inputs section rewrite (AF-1 triggered: ≥4 issues):",
-        "Now add staff adoption to Remaining Assumptions in Evidence Gap Review:",
-        "Consistency scan: 1 cleanup edit applied (stale Confidence Adjustments text in Evidence Gap Review).",
-        "Missing implicit dependency:** TASK-08 creates `telemetry.server.ts`. TASK-05 (sync service) and TASK-06 (API routes) will import `logInboxEvent()` from it. TASK-05 should depend on TASK-08 (file dependency: `telemetry.server.ts`).",
-        "No missing data dependencies.",
-        "Per post-loop gate: score 3.5 → **partially credible** → Status stays **Draft**, auto-build **blocked**.",
-        "Audit-critical events are write-through; non-critical events are best-effort **Auto-build is blocked** because codemoot scored the plan at 3.5 (partially credible).",
-        "What's missing from the plan:** The v1 inbox should preserve the agent-assisted draft generation that already exists.",
-        "Parallelism Guide Wave 1**: TASK-03 and TASK-09 cannot be in Wave 1 — they depend on TASK-02.",
-        "Summary of corrections needed:** The body-level dependencies are mostly correct but have two issues: 1.",
-        "Parallelism Guide: Corrected from 5 waves to 6 waves (TASK-03 and TASK-09 can't be Wave 1 — they depend on TASK-02)"
-      ]
-    },
-    {
-      "session_id": "de364e8d-fdd8-4860-8c35-b00389f9b19b",
-      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/de364e8d-fdd8-4860-8c35-b00389f9b19b.jsonl",
-      "updated_at": "2026-03-06T17:55:24.987Z",
-      "findings": [
-        "TASK-01** Complete — truthful status semantics + per-product publish blockers with `missingRoles[]` exposed; `workflowLive` relabeled to \"Published to catalog\"",
-        "TASK-04 depends on TASK-01+02+03, still blocked on TASK-03.",
-        "Now run bug scan and process improvements:",
-        "TASK-01** — `getCatalogDraftWorkflowReadiness()` now exposes `missingRoles: string[]`; \"live on site\" copy replaced with \"Published to catalog\" across form, sidebar, and i18n layer.",
-        "The plan that follows will inherit a gap that, unaddressed, produces a storefront breakage at the moment of deployment.",
-        "Issues ledger created at `docs/plans/xa-uploader-status-and-media-model-rewrite/critique-history.md`."
       ]
     },
     {
@@ -464,32 +481,6 @@
         "Now add the missing `## Inherited Outcome Contract` section:",
         "AF-4: Issues ledger update.** Creating `critique-history.md`.",
         "Issues ledger updated at `docs/plans/xa-uploader-image-autosave-reliability/critique-history.md`."
-      ]
-    },
-    {
-      "session_id": "e2754215-15ad-450e-a951-7e49351a9a42",
-      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/e2754215-15ad-450e-a951-7e49351a9a42.jsonl",
-      "updated_at": "2026-03-04T19:35:29.925Z",
-      "findings": [
-        "Here are the issues and opportunities: ### Issues 1.",
-        "Missing: one dimension weak (single cap), two dimensions weak (stacking), all dimensions strong (no cap).",
-        "New cap reasons appearing between runs are invisible as regressions — they don't trigger dispatches or get flagged.",
-        "A regression in the formula wouldn't be caught.",
-        "Regression detection for strictness is one-directional.** `computeRepoMaturityRegression()` tracks `worsening_strictness_dimensions` but doesn't track *improving* dimensions.",
-        "The `changed_sections` mapping determines how findings are categorized for routing: security_depth gaps → \"critical finding\", ci_velocity → \"testing issue\", structure/indexing/caps → \"code quality\".",
-        "bug-scan-findings.user.json`** files — bug scanner findings",
-        "Phase 7: Evidence Gap Review** — completed inline above.",
-        "TASK-01**: Adding dispatch queue collection after the bug-scan loop (line 681).",
-        "Now add the dispatch queue interface and collection loop after the bug-scan loop:",
-        "Now add the collection loop after the bug-scan loop (after line 681, which is now shifted).",
-        "Those are pre-existing lint failures in other packages, not related to my changes.",
-        "The drift check failed — this is expected because the agent-session bridge ran and enqueued 1 new dispatch between the two runs, changing the queue-state.json.",
-        "Let me wait for tests, then check the lint failure:",
-        "CI was cancelled (likely because unit tests are still running and lint failure + timeout).",
-        "The lint failure is from \"exceptions governance\" — not related to my changes.",
-        "No results — the lint failure is unrelated to our changes.",
-        "Now run reflection debt emitter, bug scan, and generate process improvements:",
-        "TASK-02** — Added 7 unit tests (TC-01 through TC-07) covering: enqueued filtering, missing file handling, classifier integration, key uniqueness with identical area_anchors, mixed-source sorting, malformed input, and empty title skipping."
       ]
     }
   ]

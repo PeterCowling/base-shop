@@ -47,6 +47,40 @@ Interpretation:
 - Production is still serving a pre-route-localization edge contract for at least part of the booking and guide surface.
 - `TASK-08C` is therefore a real rollout step, not a paperwork-only closure.
 
+## Staging Proof After Direct Pages Deploy (2026-03-07)
+
+Method:
+
+- Built a fresh static export locally with `.env.local` Cloudflare credentials loaded and staging-safe Axerve mock placeholders.
+- Deployed directly with `wrangler pages deploy out --project-name brikette-website --branch staging`.
+- Verified using cache-busted requests (`?__cb=<timestamp>`) to avoid stale staging cache hits from older deployments.
+
+| Route family | Source URL | Final HTTP status | Final URL / redirect target | Expected result | Actual result | Notes |
+|---|---|---:|---|---|---|---|
+| Booking canonical | `https://staging.brikette-website.pages.dev/it/prenota?__cb=<ts>` | 200 | same URL | `200` canonical | Pass | Localized canonical booking page is live on staging. |
+| Private-booking canonical | `https://staging.brikette-website.pages.dev/it/prenota-alloggi-privati?__cb=<ts>` | 200 | same URL | `200` canonical | Pass | Localized canonical private-booking page is live on staging. |
+| Early legacy booking alias | `https://staging.brikette-website.pages.dev/book-dorm-bed?__cb=<ts>` | 301 | `/en/book-dorm-bed?__cb=<ts>` | one-hop redirect | Pass | Early `_redirects` entry still applies. |
+| Early legacy localized booking alias | `https://staging.brikette-website.pages.dev/en/book?__cb=<ts>` | 301 | `/en/book-dorm-bed?__cb=<ts>` | one-hop redirect | Pass | Early locale-specific alias still applies. |
+| Italian booking alias | `https://staging.brikette-website.pages.dev/it/book?__cb=<ts>` | 404 | same URL | redirect to `/it/prenota` | Fail | Localized alias family is missing in live staging behavior. |
+| Italian private-booking alias | `https://staging.brikette-website.pages.dev/it/book-private-accommodations?__cb=<ts>` | 404 | same URL | redirect to `/it/prenota-alloggi-privati` | Fail | Localized private-booking alias is missing in live staging behavior. |
+| Italian guide alias | `https://staging.brikette-website.pages.dev/it/help/how-to-reach-positano-on-a-budget?__cb=<ts>` | 404 | same URL | redirect to localized guide slug | Fail | Later guide alias family is missing in live staging behavior. |
+| Japanese top-level alias | `https://staging.brikette-website.pages.dev/ja/about?__cb=<ts>` | 404 | same URL | redirect to `/ja/annai` | Fail | Later top-level localized alias is missing in live staging behavior. |
+
+Rule-count evidence from the deployed artifact:
+
+- `apps/brikette/out/_redirects`
+  - static rules: `4016`
+  - dynamic rules: `601`
+  - total rules: `4617`
+
+Interpretation:
+
+- The direct staging deploy proves the build/export/deploy path is healthy and the localized canonical targets themselves are valid.
+- The remaining defect is the alias-routing layer, not the pages.
+- Cloudflare Pages documents `_redirects` limits of `2000` static and `100` dynamic rules. Our generated file exceeds both limits substantially.
+- Inference from staging behavior: Pages is honoring only an early subset of the `_redirects` file, which is why early English alias routes still return `301` while later localized alias families fall through to `404`.
+- `TASK-08C` therefore cannot be closed by promoting the current `_redirects` artifact alone; it requires a smaller redirect contract or a different Cloudflare routing layer for the overflow alias families.
+
 ## Decision / Follow-up
 
 - Host-level one-hop canonicalization (`www` -> apex) is present.

@@ -4,8 +4,8 @@ Status: Active
 Domain: UI | SEO | Analytics | Integration
 Workstream: Mixed
 Created: 2026-03-01
-Last-reviewed: 2026-03-06
-Last-updated: 2026-03-06
+Last-reviewed: 2026-03-07
+Last-updated: 2026-03-07
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: brikette-sales-funnel-analysis
 Deliverable-Type: multi-deliverable
@@ -29,6 +29,8 @@ Live production routing on Cloudflare currently shows canonical/alias drift (dup
 
 This run has progressed through `/lp-do-build` cycles, but a route-localization audit on 2026-03-06 showed that several public non-English routes still expose English slugs. A new route-localization tranche is therefore inserted ahead of live Cloudflare convergence so production redirects target the final localized public contract once, not an intermediate state. `/lp-do-replan` on 2026-03-06 then added explicit precursor tasks for top-level slug policy and guide-fallback mapping so the remaining route-localization tasks are runnable at higher confidence instead of carrying unresolved scout notes.
 
+Direct staging deployment on 2026-03-07 then proved a second issue: the current “preserve every possible alias” strategy is too large for Cloudflare Pages `_redirects` and is also preserving synthetic wrong-locale URLs the business does not want (for example `/it/book`). The plan therefore draws a line in the sand: preserve only current localized canonicals plus historically public legacy URLs evidenced by repo fixtures / explicit entry contracts, and drop synthetic alias debt. The implementation model shifts accordingly from giant `_redirects` generation to a hybrid static-runtime contract: small structural `_redirects` plus generated edge resolution for high-cardinality exact historical aliases.
+
 ## Active tasks
 - [x] TASK-01: Validate Octobook post-handoff enforcement boundary (GV-01)
 - [x] TASK-02: Validate click-id persistence in Octorate exports (GV-02)
@@ -48,7 +50,9 @@ This run has progressed through `/lp-do-build` cycles, but a route-localization 
 - [x] TASK-13G: Map guide-slug fallback causes and alias-preservation contract
 - [x] TASK-13D: Localize live guide/article slugs still falling back to English
 - [x] TASK-13E: Route-localization checkpoint and final canonical target refresh
-- [~] TASK-08C: Apply live Cloudflare redirect convergence at the production source of truth — Blocked (live Pages deployment pending)
+- [x] TASK-14A: Freeze supported legacy URL policy and static-runtime redirect contract
+- [ ] TASK-14B: Implement hybrid legacy redirect model for static Pages runtime
+- [~] TASK-08C: Apply live Cloudflare redirect convergence at the production source of truth — Blocked (depends on TASK-14B)
 - [~] TASK-08D: Verify live one-hop redirects and canonical `200` targets — Blocked (depends on TASK-08C)
 - [x] TASK-09A: Ship indicative pricing fallback with auto-seed removal
 - [x] TASK-09B: Implement indicative pricing governance and stale-data ops controls
@@ -77,7 +81,8 @@ This run has progressed through `/lp-do-build` cycles, but a route-localization 
   - URL continuity must avoid per-change churn; only explicit action writes are allowed.
   - Public route changes require redirect-compatible rollout; no localized slug may change without preserving deep-link and SEO continuity from the prior URL.
   - Internal App Router folder segments may remain English; only public canonical URLs must be localized.
-  - Production redirect source-of-truth must be Worker/middleware/edge rules on live Cloudflare target; `_redirects` alone is insufficient for production parity.
+  - Static Pages runtime support is limited to current localized canonicals plus historically public legacy URLs; synthetic wrong-locale aliases are intentionally out of scope.
+  - Production redirect source-of-truth must use a hybrid static-runtime model: small structural `_redirects` plus generated edge resolution for high-cardinality exact historical aliases.
   - Local Jest/e2e execution is not used in this workflow; CI remains the pass/fail source of truth.
 - Assumptions:
   - Cross-tab continuity is best-effort via shared storage with TTL; cold-state behavior must still convert safely.
@@ -100,6 +105,7 @@ This run has progressed through `/lp-do-build` cycles, but a route-localization 
   - Analytics contract is not fully canonicalized.
   - Live production routing currently has canonical/alias mismatch (`200` duplicates + `404` canonical targets) and needs explicit redirect convergence.
   - Public route-localization audit (2026-03-06) found real non-English English-slug leakage in the apartment booking route, legal-policy slugs, `hi`/`da` booking slug variants, `ja`/`ko` house-rules variants, `it` tag slug, room slugs in several non-Latin locales, and ~29-30 live guide slugs per locale still matching English.
+  - Direct staging deploy (2026-03-07) proved `_redirects` overrun and synthetic alias debt: early legacy rules still redirect, but later localized alias families fall through to `404` because the generated `_redirects` contract is too large for Pages and is preserving URLs we do not actually want.
   - Post-handoff recovery and indicative pricing must be first-class to maximize impact under no-API constraints.
 
 ## Proposed Approach
@@ -139,7 +145,9 @@ This run has progressed through `/lp-do-build` cycles, but a route-localization 
 | TASK-13G | INVESTIGATE | Map guide-slug fallback causes and alias-preservation contract | 70% | M | Complete (2026-03-06) | TASK-13A | TASK-13D |
 | TASK-13D | IMPLEMENT | Localize live guide/article slugs still falling back to English | 80% | L | Complete (2026-03-07) | TASK-13A, TASK-13G | TASK-13E |
 | TASK-13E | CHECKPOINT | Route-localization checkpoint + final canonical target refresh | 95% | S | Complete (2026-03-07) | TASK-13B, TASK-13C, TASK-13D | TASK-08C |
-| TASK-08C | IMPLEMENT | Apply live Cloudflare redirect convergence at production source of truth | 80% | M | Blocked (2026-03-06) | TASK-13E | TASK-08D, TASK-12 |
+| TASK-14A | INVESTIGATE | Freeze supported legacy URL policy + static-runtime redirect contract | 90% | S | Complete (2026-03-07) | TASK-13E | TASK-14B |
+| TASK-14B | IMPLEMENT | Implement hybrid static-runtime legacy redirect model | 80% | L | Ready | TASK-14A | TASK-08C |
+| TASK-08C | IMPLEMENT | Apply live Cloudflare redirect convergence at production source of truth | 80% | M | Blocked (2026-03-07) | TASK-14B | TASK-08D, TASK-12 |
 | TASK-08D | INVESTIGATE | Verify live one-hop redirects and canonical `200` targets | 85% | S | Blocked (2026-03-06) | TASK-08C | TASK-12 |
 | TASK-09A | IMPLEMENT | Indicative pricing fallback coupled with auto-seed removal | 85% | M | Complete (2026-03-01) | TASK-04, TASK-05 | TASK-09B, TASK-12 |
 | TASK-09B | IMPLEMENT | Indicative pricing governance/staleness controls | 75% | S | Complete (2026-03-01) | TASK-09A | TASK-12 |
@@ -158,11 +166,12 @@ This run has progressed through `/lp-do-build` cycles, but a route-localization 
 | 6 | TASK-08B, TASK-13A | TASK-08A (TASK-08B), TASK-08B (TASK-13A) | Freeze current live map, then implement route-localization audit and final-contract inventory |
 | 7 | TASK-13F, TASK-13C, TASK-13G | TASK-13A | Resolve top-level policy unknowns, room-slug implementation, and guide-fallback cause map in parallel |
 | 8 | TASK-13B, TASK-13D | TASK-13A,TASK-13F (TASK-13B), TASK-13A,TASK-13G (TASK-13D) | Execute top-level and guide-slug localization once precursor evidence is frozen |
-| 9 | TASK-13E, TASK-08C | TASK-13B,TASK-13C,TASK-13D (TASK-13E), TASK-13E (TASK-08C) | Refresh final canonical targets, then apply Cloudflare source-of-truth routing changes once |
-| 10 | TASK-08D, TASK-12 | TASK-08C (TASK-08D), TASK-08D (TASK-12) | Live curl verification gate, then checkpoint |
+| 9 | TASK-13E, TASK-14A | TASK-13B,TASK-13C,TASK-13D (TASK-13E), TASK-13E (TASK-14A) | Refresh final canonical targets, then freeze the supported legacy URL policy against real static-runtime evidence |
+| 10 | TASK-14B | TASK-14A | Replace preserve-everything `_redirects` generation with the hybrid legacy redirect model |
+| 11 | TASK-08C, TASK-08D, TASK-12 | TASK-14B (TASK-08C), TASK-08C (TASK-08D), TASK-08D (TASK-12) | Live rollout, then verification gate, then checkpoint |
 
 - Max parallelism: 4 tasks (Wave 1)
-- Critical path: TASK-03 -> TASK-04 -> TASK-05 -> TASK-08A -> TASK-08B -> TASK-13A -> TASK-13G -> TASK-13D -> TASK-13E -> TASK-08C -> TASK-08D -> TASK-12
+- Critical path: TASK-03 -> TASK-04 -> TASK-05 -> TASK-08A -> TASK-08B -> TASK-13A -> TASK-13G -> TASK-13D -> TASK-13E -> TASK-14A -> TASK-14B -> TASK-08C -> TASK-08D -> TASK-12
 
 ## Simulation Trace
 | Step | Preconditions Met | Issues Found | Resolution Required |
@@ -185,7 +194,8 @@ This run has progressed through `/lp-do-build` cycles, but a route-localization 
 | TASK-13G: Guide fallback cause map | Yes | None | No |
 | TASK-13D: Guide slug localization closure | Partial | [Missing precondition][Moderate]: waits on TASK-13G to freeze fallback causes and alias-preservation strategy | Yes |
 | TASK-13E: Route-localization checkpoint | Partial | [Ordering dependency][Moderate]: must refresh canonical target map before external redirect rollout | Yes |
-| TASK-08C: Live Cloudflare redirect convergence | Partial | [External dependency][Major]: production source-of-truth routing change is outside local app code and must wait for the refreshed localized target contract | Yes |
+| TASK-14B: Hybrid static-runtime legacy redirect model | Partial | [Architecture shift][Major]: current `_redirects` contract preserves synthetic aliases and exceeds Pages limits; build must replace it with a smaller curated structure plus exact historical alias resolution | Yes |
+| TASK-08C: Live Cloudflare redirect convergence | Partial | [External dependency][Major]: production source-of-truth routing change is outside local app code and must wait for the corrected local redirect model | Yes |
 | TASK-08D: Live redirect verification | Partial | [Ordering dependency][Major]: cannot prove one-hop redirect behavior or canonical `200` targets until TASK-08C is applied live | Yes |
 | TASK-09A: Indicative fallback + auto-seed removal | Yes | None | No |
 | TASK-09B: Indicative governance | Partial | [Missing data dependency][Moderate]: owner/cadence process must be documented to avoid stale anchors | Yes |
@@ -715,15 +725,18 @@ This run has progressed through `/lp-do-build` cycles, but a route-localization 
   - Validation artifacts: `production-redirect-matrix.md`, `docs/briefs/brikette-route-localization-briefing.md`, refreshed route-localization checkpoint evidence.
 - **Scouts:** resolved on 2026-03-07: production source of truth is the repo-managed Cloudflare Pages deploy path in `.github/workflows/brikette.yml`; live rollout still requires promotion of the updated artifact set.
 - **Edge Cases & Hardening:** preserve locale parity, avoid multi-hop redirects, and ensure redirect sources do not remain indexable `200` pages.
-- **What would make this >=90%:** direct access to the production routing source plus one successful staged rule update.
+- **What would make this >=90%:** one successful staged rollout after replacing the oversized `_redirects` contract with a Cloudflare routing mechanism that can actually carry the full localized alias set.
 - **Rollout / rollback:**
   - Rollout: apply route-family changes in the production source of truth, then immediately run TASK-08D.
   - Rollback: restore prior route rules only if canonical targets regress or misroute.
 - **Documentation impact:** apply the refreshed canonical target map from TASK-13E to the redirect matrix if any target choice changes during implementation.
 - **Blocker:** live production deployment is still pending.
-  - Repo-side route inventory, generated `_redirects`, deploy-health gates, and coverage verification are aligned locally as of 2026-03-07, but the updated Pages artifact set has not yet been promoted to production.
-  - Direct local `wrangler` deploy is unavailable from this workspace because `pnpm exec wrangler whoami` returns `Not logged in`.
-  - The normal git release path also stops before production today: `origin/dev` and `origin/staging` have no tree diff, so the auto `dev -> staging` PR closes immediately, while the existing `staging -> main` promotion remains blocked by unrelated staging pipeline failures.
+  - Direct local `wrangler pages deploy` now works from this workspace when `.env.local` is loaded; the staging alias was updated successfully on `2026-03-07`.
+  - Staging verification proved the localized canonicals are deployable (`/it/prenota` and `/it/prenota-alloggi-privati` both returned `200` under the fresh staging deploy), so the remaining issue is not credentials or build reproducibility.
+  - Fresh cache-busted staging checks also proved the generated Pages `_redirects` contract is incomplete in practice: early rules like `/book-dorm-bed -> /en/book-dorm-bed` still return `301`, but later localized alias families such as `/it/book`, `/it/book-private-accommodations`, `/it/help/how-to-reach-positano-on-a-budget`, and `/ja/about` all returned `404`.
+  - Local artifact inspection shows `apps/brikette/out/_redirects` currently contains `4016` static rules and `601` dynamic rules, which exceeds Cloudflare Pages documented `_redirects` limits (`2000` static, `100` dynamic). The staging behavior is therefore consistent with rule truncation or parser cut-off before the full localized contract is applied.
+  - TASK-08C now needs a focused replan before production rollout: either compress the alias contract below Pages limits or move the overflow route families into a different Cloudflare routing layer (for example Worker / Pages Function / Rules-managed logic) that can carry the full localized matrix.
+  - The normal git release path still stops before production today: `origin/dev` and `origin/staging` have no tree diff, so the auto `dev -> staging` PR closes immediately, while the existing `staging -> main` promotion remains blocked by unrelated staging pipeline failures.
 - **Build evidence (2026-03-07):**
   - Confirmed the production routing source of truth is the repo-managed Cloudflare Pages deploy workflow:
     - `.github/workflows/brikette.yml`
@@ -744,8 +757,10 @@ This run has progressed through `/lp-do-build` cycles, but a route-localization 
   - Release-path findings:
     - Committed and pushed `fix(brikette): finalize localized route rollout` to `origin/dev` (`747196ad8c`).
     - Auto PR `dev -> staging` was created and closed with no remaining tree diff because `origin/staging` already contains the same effective Brikette tree.
-    - Direct Cloudflare deploy remains blocked in this workspace by missing local `wrangler` auth.
-    - Production rollout therefore depends on an eventual clean `staging -> main` promotion or refreshed Cloudflare deploy credentials.
+    - Direct Cloudflare deploy from this workspace now works when `.env.local` is sourced; `wrangler whoami` authenticated successfully via `CLOUDFLARE_API_TOKEN`.
+    - A direct `wrangler pages deploy out --project-name brikette-website --branch staging` completed successfully on `2026-03-07`, and strict staging health checks passed for `/it/prenota` and `/it/prenota-alloggi-privati`.
+    - That staging proof also exposed the remaining route blocker: the deployed `_redirects` file is too large for the full localized alias contract, so later localized aliases still fail fresh requests instead of redirecting.
+    - Production rollout therefore depends on replanning TASK-08C around a smaller or different Cloudflare routing mechanism, not just promoting the current `_redirects` artifact as-is.
 
 ### TASK-08D: Verify live one-hop redirects and canonical `200` targets
 - **Type:** INVESTIGATE
@@ -1161,8 +1176,65 @@ This run has progressed through `/lp-do-build` cycles, but a route-localization 
     - `docs/plans/brikette-sales-funnel-analysis/artifacts/route-localization-contract.md`
     - `docs/plans/brikette-sales-funnel-analysis/artifacts/production-redirect-matrix.md`
   - Updated downstream readiness:
-    - `TASK-08C` now waits on the final localized contract recorded after `TASK-13A` through `TASK-13D`.
-    - `TASK-08D` remains blocked behind the external Cloudflare rollout.
+  - `TASK-08C` now waits on the final localized contract recorded after `TASK-13A` through `TASK-13D`.
+  - `TASK-08D` remains blocked behind the external Cloudflare rollout.
+
+### TASK-14A: Freeze supported legacy URL policy + static-runtime redirect contract
+- **Type:** INVESTIGATE
+- **Deliverable:** `docs/plans/brikette-sales-funnel-analysis/artifacts/legacy-route-support-policy.md`
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Complete (2026-03-07)
+- **Affects:** `docs/plans/brikette-sales-funnel-analysis/artifacts/legacy-route-support-policy.md`, `[readonly] apps/brikette/src/test/fixtures/legacy-urls.txt`, `[readonly] apps/brikette/scripts/normalize-static-export-localized-routes.ts`, `[readonly] apps/brikette/src/routing/routeInventory.ts`, `[readonly] apps/brikette/src/routing/staticExportRedirects.ts`
+- **Depends on:** TASK-13E
+- **Blocks:** TASK-14B
+- **Confidence:** 90%
+  - Implementation: 90% - bounded evidence synthesis from repo/runtime proof.
+  - Approach: 90% - the route-history fixture and staging deploy evidence create a clear support boundary.
+  - Impact: 95% - this removes fake obligations and prevents the rollout from preserving junk URLs.
+- **Acceptance:**
+  - The plan freezes which legacy URLs are intentionally supported.
+  - Synthetic wrong-locale alias debt is explicitly out of scope.
+  - The static-runtime support contract is tied to historical/public evidence instead of generated combinatorics.
+- **Validation contract:** artifact cites staging proof, Pages limits, and the repo public-history fixture.
+- **Build evidence (2026-03-07):**
+  - Added `docs/plans/brikette-sales-funnel-analysis/artifacts/legacy-route-support-policy.md`.
+  - Frozen policy: preserve current localized canonicals plus historically public URLs evidenced by `apps/brikette/src/test/fixtures/legacy-urls.txt` and explicit global entry contracts.
+  - Explicitly dropped synthetic wrong-locale aliases such as `/it/book`.
+  - Recorded the hybrid implementation consequence: small structural `_redirects` plus generated exact historical alias resolution.
+
+### TASK-14B: Implement hybrid static-runtime legacy redirect model
+- **Type:** IMPLEMENT
+- **Deliverable:** curated static-runtime redirect system that preserves only supported historical URLs while dropping synthetic alias debt
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** L
+- **Status:** Ready
+- **Affects:** `apps/brikette/src/routing/staticExportRedirects.ts`, `apps/brikette/scripts/generate-static-export-redirects.ts`, `apps/brikette/public/_redirects`, `apps/brikette/scripts/verify-url-coverage.ts`, `apps/brikette/functions/**`, `docs/brikette-deploy-decisions.md`, `docs/plans/brikette-sales-funnel-analysis/artifacts/production-redirect-matrix.md`
+- **Depends on:** TASK-14A
+- **Blocks:** TASK-08C
+- **Confidence:** 80%
+  - Implementation: 78% - bounded but touches generator, coverage gate, and Pages edge surface.
+  - Approach: 82% - the hybrid model is directly implied by Pages limits and the repo’s public-history fixture.
+  - Impact: 90% - this is the local architecture change required before any safe live rollout.
+- **Acceptance:**
+  - `public/_redirects` stops preserving synthetic wrong-locale aliases and drops redundant localized `200` rewrites.
+  - Structural legacy redirects remain supported in `_redirects`.
+  - High-cardinality exact historical aliases (guide/article/room families) are resolved by a repo-owned edge mechanism that deploys with Pages.
+  - `verify-url-coverage` validates the static Pages runtime against current localized canonicals plus the supported historical contract, not `listAppRouterUrls()`.
+  - The resulting Pages artifact stays within documented `_redirects` limits.
+- **Validation contract (TC-14B):**
+  - TC-01: generated `_redirects` count is at or below Pages documented limits.
+  - TC-02: coverage verification passes against the supported historical fixture without relying on internal App Router path coverage.
+  - TC-03: staging deploy proves current localized canonicals still return direct `200` and supported structural legacy aliases redirect.
+  - TC-04: representative historical exact aliases in room/guide/article families resolve through the new edge mechanism.
+- **Execution plan:** Red -> Green -> Refactor
+- **Planning validation (required for M/L):**
+  - Checks run: direct staging deploy proof, policy artifact, fixture/history audit, static export normalization audit.
+  - Validation artifacts: `legacy-route-support-policy.md`, `production-redirect-matrix.md`, `apps/brikette/src/test/fixtures/legacy-urls.txt`.
   - Validation evidence reused from tranche closure:
     - `verify-route-localization` passes with zero unexpected matches across all route families.
     - `verify-url-coverage` passes with zero missing legacy URLs after the final contract refresh.

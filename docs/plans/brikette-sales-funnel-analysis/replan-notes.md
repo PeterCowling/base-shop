@@ -1,6 +1,6 @@
 ---
-Replan-round: 3
-Date: 2026-03-06
+Replan-round: 4
+Date: 2026-03-07
 Plan: docs/plans/brikette-sales-funnel-analysis/plan.md
 ---
 
@@ -95,3 +95,39 @@ Plan: docs/plans/brikette-sales-funnel-analysis/plan.md
   - Completed on 2026-03-06 / 2026-03-07: `TASK-13A`, `TASK-13F`, `TASK-13B`, `TASK-13C`, `TASK-13G`, `TASK-13D`, `TASK-13E`
   - Runnable now: `TASK-08C` (external source-of-truth change required)
   - Still blocked externally: `TASK-08C`, `TASK-08D`
+
+## Round 4 — 2026-03-07
+
+### Target
+
+- `TASK-08C` (`IMPLEMENT`, external rollout task no longer aligned with the best long-term routing strategy)
+
+### Evidence Added
+
+1. Direct staging deployment on `2026-03-07` proved the localized canonical pages themselves are healthy, but later alias families such as `/it/book`, `/it/book-private-accommodations`, `/it/help/how-to-reach-positano-on-a-budget`, and `/ja/about` still returned `404`.
+2. The deployed `_redirects` artifact contains `4016` static and `601` dynamic rules, which exceeds Cloudflare Pages documented `_redirects` limits (`2000` static, `100` dynamic).
+3. The repo already contains a durable public-history boundary in `apps/brikette/src/test/fixtures/legacy-urls.txt` (`3435` URLs), which is a better support contract than preserving every generated alias.
+4. Static export normalization removes many non-English internal-path duplicates from the deploy artifact, so `listAppRouterUrls()` is not a valid proxy for public-runtime coverage.
+
+### Delta Applied
+
+1. Added `TASK-14A` as a policy/evidence task to freeze the supported legacy URL contract and explicitly drop synthetic wrong-locale alias debt.
+2. Added `TASK-14B` as the new runnable implementation tranche for a hybrid static-runtime redirect model:
+   - small structural `_redirects`
+   - generated exact-alias manifest
+   - Pages Function resolution for high-cardinality historical room/guide/article aliases
+3. Updated `TASK-08C` to depend on `TASK-14B` instead of going straight from `TASK-13E` to live rollout.
+4. Kept `TASK-08D` as the live verification gate after the rollout task.
+
+### Sequencing Impact
+
+1. The critical path is now `TASK-13E -> TASK-14A -> TASK-14B -> TASK-08C -> TASK-08D -> TASK-12`.
+2. The next runnable local build task is `TASK-14B`.
+3. `TASK-08C` remains an external rollout step, but only after the local redirect model has been corrected.
+
+### Readiness Decision
+
+- Ready.
+  - Completed by this replan: `TASK-14A`
+  - Runnable now: `TASK-14B`
+  - Still blocked externally after local implementation: `TASK-08C`, `TASK-08D`

@@ -128,6 +128,7 @@ export function shouldTriggerAutosync(params: {
 
 export function handleNewImpl({
   defaultCategory,
+  preservedBrand,
   setSelectedSlug,
   setDraft,
   setDraftRevision,
@@ -136,6 +137,7 @@ export function handleNewImpl({
   setSyncOutput,
 }: {
   defaultCategory: CatalogProductDraftInput["taxonomy"]["category"];
+  preservedBrand?: Pick<CatalogProductDraftInput, "brandHandle" | "brandName">;
   setSelectedSlug: React.Dispatch<React.SetStateAction<string | null>>;
   setDraft: React.Dispatch<React.SetStateAction<CatalogProductDraftInput>>;
   setDraftRevision: React.Dispatch<React.SetStateAction<string | null>>;
@@ -144,7 +146,7 @@ export function handleNewImpl({
   setSyncOutput: React.Dispatch<React.SetStateAction<string | null>>;
 }): void {
   setSelectedSlug(null);
-  setDraft(buildEmptyDraft(defaultCategory));
+  setDraft(buildEmptyDraft(defaultCategory, preservedBrand));
   setDraftRevision(null);
   setFieldErrors({});
   clearActionFeedbackDomains(setActionFeedback, ["draft", "sync"]);

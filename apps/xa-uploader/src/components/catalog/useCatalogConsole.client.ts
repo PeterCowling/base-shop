@@ -660,6 +660,10 @@ function useCatalogDraftHandlers(
       resetAutosaveAndBaseline(state);
       handleNewImpl({
         defaultCategory: state.storefrontConfig.defaultCategory,
+        preservedBrand: {
+          brandHandle: state.draft.brandHandle,
+          brandName: state.draft.brandName,
+        },
         setSelectedSlug: state.setSelectedSlug,
         setDraft: state.setDraft,
         setDraftRevision: state.setDraftRevision,

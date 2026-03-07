@@ -62,9 +62,16 @@ export const EMPTY_DRAFT: CatalogProductDraftInput = {
 
 export function buildEmptyDraft(
   category: CatalogProductDraftInput["taxonomy"]["category"],
+  preservedBrand?: Pick<CatalogProductDraftInput, "brandHandle" | "brandName">,
 ): CatalogProductDraftInput {
   return {
     ...EMPTY_DRAFT,
+    ...(preservedBrand
+      ? {
+          brandHandle: preservedBrand.brandHandle,
+          brandName: preservedBrand.brandName,
+        }
+      : {}),
     taxonomy: { ...EMPTY_TAXONOMY, category },
     details: { ...EMPTY_DETAILS },
   };

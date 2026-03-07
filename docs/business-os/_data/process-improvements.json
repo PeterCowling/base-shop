@@ -2143,6 +2143,22 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "threadid draft regenerate",
+      "body": "Assess threadid draft regenerate implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
+      "source": "queue-state.json",
+      "date": "2026-03-07T16:58:21.081Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "53aec7d2e8307481e1f8aa9d89f472fb27fbe268",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "xa b next config",
       "body": "Assess xa b next config implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
       "source": "queue-state.json",
@@ -5859,6 +5875,16 @@
   ],
   "riskItems": [],
   "pendingReviewItems": [
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: reception-inbox-draft-failure-reasons",
+      "body": "Build is complete but no results review has been written yet.",
+      "suggested_action": "Write docs/plans/reception-inbox-draft-failure-reasons/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
+      "source": "build-record.user.md",
+      "date": "2026-03-07T16:59:52.566Z",
+      "path": "docs/plans/reception-inbox-draft-failure-reasons/build-record.user.md"
+    },
     {
       "type": "pending-review",
       "business": "BOS",

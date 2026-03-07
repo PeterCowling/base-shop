@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-07T16:57:49.590Z",
+  "last_updated": "2026-03-07T16:58:58.167Z",
   "counts": {
-    "enqueued": 179,
-    "processed": 46,
+    "enqueued": 180,
+    "processed": 45,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
-    "completed": 125,
+    "completed": 126,
     "fact_find_ready": 239,
     "micro_build_ready": 8,
-    "total": 376
+    "total": 377
   },
   "dispatches": [
     {
@@ -15166,7 +15166,7 @@
       "current_truth": "Firebase guest-matching errors are caught and silently swallowed with null fallback. No telemetry on match success rate or failures. Staff doesn't know matching is broken until they notice missing guest context days later.",
       "next_scope_now": "Add telemetry events for guest matching success/failure and expose match rate as an observable metric.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.8,
       "evidence_refs": [
@@ -15179,7 +15179,7 @@
         "source": "operator"
       },
       "created_at": "2026-03-07T15:37:40.310752+00:00",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "target_route": "lp-do-fact-find",
@@ -15189,6 +15189,11 @@
         "processed_at": "2026-03-07T15:51:49.533Z",
         "fact_find_slug": "reception-inbox-guest-match-observability",
         "fact_find_path": "docs/plans/reception-inbox-guest-match-observability/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-inbox-guest-match-observability/plan.md",
+        "completed_at": "2026-03-07T16:58:58.166Z",
+        "outcome": "Guest matching failures are recorded as telemetry events with match success rate visible to operators."
       }
     },
     {
@@ -15614,6 +15619,59 @@
       "intended_outcome": {
         "type": "operational",
         "statement": "Produce a validated routing outcome and scoped next action for xa b next config.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307165821-0082",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+      "before_sha": "fc707da65ce3797e5fc1d8202e215c64fcca0af0",
+      "after_sha": "c9497bcbe1953f264749e41d3ed9d3e6e745bd70",
+      "root_event_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:c9497bcbe1953f264749e41d3ed9d3e6e745bd70",
+      "anchor_key": "threadid-draft-regenerate",
+      "cluster_key": "bos:unknown:threadid-draft-regenerate:BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:c9497bcbe1953f264749e41d3ed9d3e6e745bd70",
+      "cluster_fingerprint": "50d416435372cceb31789cd99400effa57bec77c9f4f26ccc3afbe48a48650ab",
+      "lineage_depth": 0,
+      "area_anchor": "threadid draft regenerate",
+      "location_anchors": [
+        "apps/reception/src/app/api/mcp/inbox/[threadId]/draft/regenerate/route.ts",
+        "apps/reception/src/components/inbox/DraftReviewPanel.tsx",
+        "apps/reception/src/components/inbox/ThreadList.tsx",
+        "apps/reception/src/lib/inbox/__tests__/draft-pipeline.server.test.ts",
+        "apps/reception/src/lib/inbox/__tests__/guest-matcher.server.test.ts",
+        "apps/reception/src/lib/inbox/__tests__/recovery.server.test.ts",
+        "apps/reception/src/lib/inbox/__tests__/sync.server.test.ts",
+        "apps/reception/src/lib/inbox/__tests__/telemetry.server.test.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS changed (fc707da → c9497bc)",
+      "next_scope_now": "Investigate implications of threadid draft regenerate delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "git-diff-range:HEAD~1..HEAD",
+        "git-diff:M:apps/reception/src/app/api/mcp/inbox/[threadId]/draft/regenerate/route.ts",
+        "git-diff:M:apps/reception/src/components/inbox/DraftReviewPanel.tsx",
+        "git-diff:M:apps/reception/src/components/inbox/ThreadList.tsx",
+        "git-diff:M:apps/reception/src/lib/inbox/__tests__/draft-pipeline.server.test.ts",
+        "git-diff:M:apps/reception/src/lib/inbox/__tests__/guest-matcher.server.test.ts",
+        "git-diff:M:apps/reception/src/lib/inbox/__tests__/recovery.server.test.ts",
+        "git-diff:M:apps/reception/src/lib/inbox/__tests__/sync.server.test.ts",
+        "git-diff:M:apps/reception/src/lib/inbox/__tests__/telemetry.server.test.ts"
+      ],
+      "created_at": "2026-03-07T16:58:21.081Z",
+      "queue_state": "enqueued",
+      "why": "Assess threadid draft regenerate implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for threadid draft regenerate.",
         "source": "auto"
       }
     }

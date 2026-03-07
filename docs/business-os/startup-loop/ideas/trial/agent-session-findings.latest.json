@@ -1,33 +1,15 @@
 {
   "schema_version": "agent-session-findings.v1",
-  "generated_at": "2026-03-07T08:10:10.009Z",
+  "generated_at": "2026-03-07T08:26:31.423Z",
   "business": "BOS",
   "transcript_root": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop",
   "sessions_scanned": 20,
   "sessions_with_findings": 17,
   "findings": [
     {
-      "session_id": "de364e8d-fdd8-4860-8c35-b00389f9b19b",
-      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/de364e8d-fdd8-4860-8c35-b00389f9b19b.jsonl",
-      "updated_at": "2026-03-07T08:10:09.008Z",
-      "findings": [
-        "TASK-01** Complete — truthful status semantics + per-product publish blockers with `missingRoles[]` exposed; `workflowLive` relabeled to \"Published to catalog\"",
-        "TASK-04 depends on TASK-01+02+03, still blocked on TASK-03.",
-        "Now run bug scan and process improvements:",
-        "TASK-01** — `getCatalogDraftWorkflowReadiness()` now exposes `missingRoles: string[]`; \"live on site\" copy replaced with \"Published to catalog\" across form, sidebar, and i18n layer.",
-        "The plan that follows will inherit a gap that, unaddressed, produces a storefront breakage at the moment of deployment.",
-        "Issues ledger created at `docs/plans/xa-uploader-status-and-media-model-rewrite/critique-history.md`.",
-        "Now let me look at what the actual current UI looks like to understand the gap to \"everything on one page\":",
-        "Here's what's required: ## Current gap `CatalogProductForm` uses `FormStepId = \"product\" | \"images\"` with mutually exclusive step rendering — you see either product fields **or** images, never both.",
-        "Planning gap: Operator has already resolved the architectural decision (Option B: extract `MainImagePanel` / `AdditionalImagesPanel`, interleave in `CatalogProductForm`). Scope is bounded, files are known, no research needed.",
-        "Now Phase 7: Evidence Gap Review (done inline above) → Phase 7a: Mandatory Critique Loop.",
-        "The files exist but git mv failed — files may be untracked."
-      ]
-    },
-    {
       "session_id": "11259565-4f98-4328-9d78-c886e61f8c7e",
       "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/11259565-4f98-4328-9d78-c886e61f8c7e.jsonl",
-      "updated_at": "2026-03-07T08:10:08.525Z",
+      "updated_at": "2026-03-07T08:26:29.755Z",
       "findings": [
         "Let me read the target document and check for an existing issues ledger.",
         "Gmail auth is filesystem-dependent and cannot run in a hosted Worker.** This is the central justification for a new hosted Gmail adapter layer. If there were a simple workaround, the entire project scope shrinks.",
@@ -55,7 +37,29 @@
         "The issue is that `global.fetch` in the test environment is `cross-fetch`.",
         "The issue is `cross-fetch` converting the URL.",
         "Now run existing tests to ensure no regression.",
-        "Let me check if these are pre-existing failures or caused by my changes."
+        "Let me check if these are pre-existing failures or caused by my changes.",
+        "These are pre-existing failures caused by duplicate worktree packages — not related to my changes.",
+        "All 6 failures are pre-existing worktree duplicate issues — not caused by my changes.",
+        "Path issue — the script seems to resolve relative to the scripts directory.",
+        "Now run the remaining steps — reflection debt emitter, bug scan, process improvements:"
+      ]
+    },
+    {
+      "session_id": "de364e8d-fdd8-4860-8c35-b00389f9b19b",
+      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/de364e8d-fdd8-4860-8c35-b00389f9b19b.jsonl",
+      "updated_at": "2026-03-07T08:26:28.866Z",
+      "findings": [
+        "TASK-01** Complete — truthful status semantics + per-product publish blockers with `missingRoles[]` exposed; `workflowLive` relabeled to \"Published to catalog\"",
+        "TASK-04 depends on TASK-01+02+03, still blocked on TASK-03.",
+        "Now run bug scan and process improvements:",
+        "TASK-01** — `getCatalogDraftWorkflowReadiness()` now exposes `missingRoles: string[]`; \"live on site\" copy replaced with \"Published to catalog\" across form, sidebar, and i18n layer.",
+        "The plan that follows will inherit a gap that, unaddressed, produces a storefront breakage at the moment of deployment.",
+        "Issues ledger created at `docs/plans/xa-uploader-status-and-media-model-rewrite/critique-history.md`.",
+        "Now let me look at what the actual current UI looks like to understand the gap to \"everything on one page\":",
+        "Here's what's required: ## Current gap `CatalogProductForm` uses `FormStepId = \"product\" | \"images\"` with mutually exclusive step rendering — you see either product fields **or** images, never both.",
+        "Planning gap: Operator has already resolved the architectural decision (Option B: extract `MainImagePanel` / `AdditionalImagesPanel`, interleave in `CatalogProductForm`). Scope is bounded, files are known, no research needed.",
+        "Now Phase 7: Evidence Gap Review (done inline above) → Phase 7a: Mandatory Critique Loop.",
+        "The files exist but git mv failed — files may be untracked."
       ]
     },
     {

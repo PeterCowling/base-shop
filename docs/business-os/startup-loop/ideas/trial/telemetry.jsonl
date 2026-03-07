@@ -162,3 +162,7 @@
 {"recorded_at":"2026-03-07T08:06:26.079Z","dispatch_id":"IDEA-DISPATCH-20260307080626-0075","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}
 
 {"recorded_at":"2026-03-07T08:10:10.016Z","dispatch_id":"IDEA-DISPATCH-20260307081010-0012","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}
+
+{"recorded_at":"2026-03-07T08:21:34.126Z","dispatch_id":"IDEA-DISPATCH-20260307082134-0123","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}
+
+{"recorded_at":"2026-03-07T08:26:31.430Z","dispatch_id":"IDEA-DISPATCH-20260307082631-0426","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-inbox-guest-context-2026-03-07",
+  "feature_slug": "reception-inbox-guest-context",
+  "emitted_at": "2026-03-07T08:22:02.330Z",
+  "why": "The reception inbox build is complete but emails exist in isolation from guest context. Staff must mentally match email senders to bookings — the system has both datasets (D1 inbox threads, Firebase RTDB bookings) but no bridge between them.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Email threads in the reception inbox are automatically linked to guest profiles when the sender address matches a booking. Agent-generated draft replies include guest-specific context.",
+    "source": "operator"
+  }
+}

@@ -28,6 +28,8 @@ body {
   --gate-on-accent: hsl(0 0% 100%);
   --gate-border: hsl(0 0% 10% / 0.22);
   --gate-header-border: hsla(0, 0%, 100%, 0.2);
+  /* Teal accent line for use against the dark header background */
+  --gate-header-accent: hsl(190 70% 40% / 0.35);
 }
 
 /* Gate color utilities */
@@ -107,6 +109,10 @@ body {
   border-color: var(--gate-header-border);
 }
 
+@utility border-gate-header-accent {
+  border-color: var(--gate-header-accent);
+}
+
 @utility bg-gate-status-ready {
   background-color: var(--gate-status-ready);
 }
@@ -140,6 +146,7 @@ body {
   --gate-status-incomplete: hsl(var(--color-danger-fg));
 
   --gate-border: hsl(220 15% 46%);
+  --gate-header-accent: hsl(190 70% 60% / 0.25);
   --color-bg-muted: 220 15% 18%;
   --color-danger-fg: 0 75% 65%;
   --color-success-fg: 150 60% 50%;

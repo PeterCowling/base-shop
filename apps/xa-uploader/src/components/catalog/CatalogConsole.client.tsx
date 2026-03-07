@@ -25,7 +25,7 @@ type CatalogConsoleProps = {
 function ConsoleSkeletonPlaceholder({ srText }: { srText: string }) {
   return (
     /* eslint-disable-next-line ds/no-arbitrary-tailwind -- XAUP-0001 operator-tool layout */
-    <div className="grid gap-6 sm:grid-cols-[240px_1fr]" aria-busy="true">
+    <div className="grid gap-6 sm:grid-cols-[280px_1fr]" aria-busy="true">
       <span className="sr-only">{srText}</span>
       {/* Sidebar skeleton */}
       <div className="space-y-3">
@@ -147,13 +147,15 @@ function ConsoleBody({
   if (screen === "currency") return <CurrencyScreen state={state} monoClassName={monoClassName} t={t} />;
   return (
     /* eslint-disable-next-line ds/no-arbitrary-tailwind -- XAUP-0001 operator-tool layout */
-    <div className="grid gap-6 sm:grid-cols-[240px_1fr]">
-      <EditProductFilterSelector
-        products={state.products}
-        isLoading={state.isCatalogLoading}
-        onSelect={state.handleSelect}
-        onNew={state.handleNew}
-      />
+    <div className="grid gap-6 sm:grid-cols-[280px_1fr]">
+      <aside className="rounded-xl border border-gate-border bg-gate-surface p-4 shadow-elevation-2">
+        <EditProductFilterSelector
+          products={state.products}
+          isLoading={state.isCatalogLoading}
+          onSelect={state.handleSelect}
+          onNew={state.handleNew}
+        />
+      </aside>
 
       <div className="space-y-6">
         <ProductEditor state={state} monoClassName={monoClassName} />

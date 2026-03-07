@@ -57,12 +57,11 @@ function UploaderShellInner({
 
   return (
     <main className={`${displayClassName} relative min-h-dvh overflow-hidden bg-gate-bg text-gate-ink`}>
-      <header className={`bg-gate-header ${styles.uploaderFade}`}>
+      <header className={`bg-gate-header border-b border-gate-header-accent ${styles.uploaderFade}`}>
         {/* eslint-disable-next-line ds/container-widths-only-at -- XAUP-0001 operator-tool page layout */}
         <div className="mx-auto flex max-w-6xl items-center gap-3 px-6 py-3">
           <h1 className="text-sm font-semibold text-gate-header-fg">{t("storefrontXAB")}</h1>
-          <span className="text-sm text-gate-header-muted">&mdash;</span>
-          <span className="text-sm font-medium text-gate-accent">{t("categoryBags")}</span>
+          <span className="rounded bg-gate-accent px-2 py-0.5 text-2xs font-semibold uppercase tracking-label text-gate-on-accent">{t("categoryBags")}</span>
           <span className="hidden text-2xs text-gate-header-muted sm:inline">{t("headerExpansionHint")}</span>
           <div className="ms-auto flex items-center gap-3">
             {headerExtra}

@@ -446,5 +446,26 @@ describe("inbox regenerate/send/resolve routes", () => {
       expect(response.status).toBe(409);
       expect(updateThreadStatusMock).not.toHaveBeenCalled();
     });
+
+    // TC-13: Dismiss already-archived thread returns 409
+    it("returns 409 when thread is already archived", async () => {
+      getThreadMock.mockResolvedValue(
+        buildThreadRecord({
+          thread: {
+            ...buildThreadRecord().thread,
+            status: "auto_archived",
+          },
+        }),
+      );
+
+      const response = await dismissThread(
+        buildPostRequest("http://localhost/api/mcp/inbox/thread-1/dismiss"),
+        { params: { threadId: "thread-1" } },
+      );
+
+      expect(response.status).toBe(409);
+      expect(recordAdmissionMock).not.toHaveBeenCalled();
+      expect(updateThreadStatusMock).not.toHaveBeenCalled();
+    });
   });
 });

@@ -40,17 +40,12 @@ export async function POST(
     return conflictResponse("Thread is already resolved");
   }
 
+  if (record.thread.status === "auto_archived") {
+    return conflictResponse("Thread is already archived");
+  }
+
   try {
     const metadata = parseThreadMetadata(record.thread.metadata_json);
-
-    const thread = await updateThreadStatus({
-      threadId: params.threadId,
-      status: "auto_archived",
-      metadata: {
-        ...metadata,
-        needsManualDraft: false,
-      },
-    });
 
     // Extract sender context from the latest inbound message
     const inboundMessages = record.messages.filter(
@@ -60,6 +55,8 @@ export async function POST(
     const senderEmail = latestInbound?.sender_email ?? null;
     const senderDomain = extractSenderDomain(senderEmail);
 
+    // Record feedback data first — this is the primary value of the dismiss action.
+    // If this fails, the thread status is unchanged and the user can retry.
     await recordAdmission({
       threadId: params.threadId,
       decision: "auto-archive",
@@ -70,6 +67,15 @@ export async function POST(
         senderDomain,
         originalAdmissionDecision: metadata.latestAdmissionDecision ?? null,
         dismissedByUid: auth.uid,
+      },
+    });
+
+    const thread = await updateThreadStatus({
+      threadId: params.threadId,
+      status: "auto_archived",
+      metadata: {
+        ...metadata,
+        needsManualDraft: false,
       },
     });
 

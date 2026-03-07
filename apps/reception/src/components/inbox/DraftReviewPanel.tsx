@@ -299,31 +299,33 @@ export default function DraftReviewPanel({
               <CheckCircle className="mr-1.5 h-4 w-4" />
               {resolvingThread ? "Resolving..." : "Resolve"}
             </Button>
+          </Cluster>
 
+          <Cluster gap={2}>
             <Button
               type="button"
               onClick={() => setShowDismissConfirm(true)}
               disabled={actionsDisabled}
-              color="default"
+              color="danger"
               tone="outline"
               className="min-h-10 rounded-lg"
             >
               <XCircle className="mr-1.5 h-4 w-4" />
               {dismissingThread ? "Dismissing..." : "Not relevant"}
             </Button>
-          </Cluster>
 
-          <Button
-            type="button"
-            onClick={() => setShowSendConfirm(true)}
-            disabled={actionsDisabled || parsedRecipients.length === 0 || !plainText.trim()}
-            color="success"
-            tone="solid"
-            className="min-h-10 rounded-lg px-5"
-          >
-            <Send className="mr-1.5 h-4 w-4" />
-            {sendingDraft ? "Sending..." : "Send"}
-          </Button>
+            <Button
+              type="button"
+              onClick={() => setShowSendConfirm(true)}
+              disabled={actionsDisabled || parsedRecipients.length === 0 || !plainText.trim()}
+              color="success"
+              tone="solid"
+              className="min-h-10 rounded-lg px-5"
+            >
+              <Send className="mr-1.5 h-4 w-4" />
+              {sendingDraft ? "Sending..." : "Send"}
+            </Button>
+          </Cluster>
         </div>
       </section>
 
@@ -361,7 +363,7 @@ export default function DraftReviewPanel({
       <ConfirmModal
         isOpen={showDismissConfirm}
         title="Mark as not relevant?"
-        message="This helps the inbox learn to skip similar emails."
+        message="This thread will be archived. The sender details are recorded so similar emails can be reviewed later."
         confirmLabel="Not relevant"
         onCancel={() => setShowDismissConfirm(false)}
         onConfirm={handleConfirmDismiss}

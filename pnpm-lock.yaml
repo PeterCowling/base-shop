@@ -1988,6 +1988,9 @@ importers:
       '@acme/config':
         specifier: workspace:^
         version: link:../config
+      '@acme/types':
+        specifier: workspace:^
+        version: link:../types
       '@acme/zod-utils':
         specifier: workspace:^
         version: link:../zod-utils

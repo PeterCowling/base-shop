@@ -83,7 +83,7 @@ function jsonResponse(body: unknown, init: ResponseInit = {}): Response {
   });
 }
 
-function renderHarness() {
+async function renderHarness() {
   function Harness() {
     const state = useCatalogConsole();
     return (
@@ -123,6 +123,9 @@ function renderHarness() {
         <div data-cy="busy">{state.busy ? "busy" : "idle"}</div>
         <div data-cy="autosave-dirty">{state.isAutosaveDirty ? "yes" : "no"}</div>
         <div data-cy="autosave-status">{state.autosaveStatus}</div>
+        <div data-cy="session-auth">
+          {state.session === null ? "pending" : state.session.authenticated ? "yes" : "no"}
+        </div>
         <div data-cy="sync-ready">{state.syncReadiness.ready ? "yes" : "no"}</div>
         <div data-cy="login-feedback">
           {state.actionFeedback.login
@@ -141,11 +144,15 @@ function renderHarness() {
     );
   }
 
-  return render(
+  render(
     <UploaderI18nProvider initialLocale="en">
       <Harness />
     </UploaderI18nProvider>,
   );
+
+  await waitFor(() => {
+    expect(screen.getByTestId("session-auth")).not.toHaveTextContent("pending");
+  });
 }
 
 async function clickButton(name: string) {
@@ -175,7 +182,7 @@ describe("useCatalogConsole scoped action feedback", () => {
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
 
-    renderHarness();
+    await renderHarness();
 
     expect(screen.getByTestId("autosave-status")).toHaveTextContent("unsaved");
   });
@@ -191,7 +198,7 @@ describe("useCatalogConsole scoped action feedback", () => {
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
 
-    renderHarness();
+    await renderHarness();
 
     fireEvent.change(screen.getByLabelText("token"), { target: { value: "bad-token" } });
     await act(async () => {
@@ -224,7 +231,7 @@ describe("useCatalogConsole scoped action feedback", () => {
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
 
-    renderHarness();
+    await renderHarness();
     await waitFor(() => {
       expect(screen.getByTestId("sync-ready")).toHaveTextContent("yes");
     });
@@ -272,7 +279,7 @@ describe("useCatalogConsole scoped action feedback", () => {
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
 
-    renderHarness();
+    await renderHarness();
 
     await clickButton("seed-draft");
     await clickButton("save");
@@ -320,7 +327,7 @@ describe("useCatalogConsole scoped action feedback", () => {
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
 
-    renderHarness();
+    await renderHarness();
 
     await clickButton("seed-draft");
     await clickButton("save");
@@ -368,7 +375,7 @@ describe("useCatalogConsole scoped action feedback", () => {
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
 
-    renderHarness();
+    await renderHarness();
 
     await clickButton("seed-draft");
     await clickButton("save");
@@ -414,7 +421,7 @@ describe("useCatalogConsole scoped action feedback", () => {
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
 
-    renderHarness();
+    await renderHarness();
 
     await clickButton("seed-draft");
     await clickButton("save");
@@ -465,7 +472,7 @@ describe("useCatalogConsole scoped action feedback", () => {
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
 
-    renderHarness();
+    await renderHarness();
     await waitFor(() => {
       expect(screen.getByTestId("sync-ready")).toHaveTextContent("yes");
       expect(screen.getByTestId("busy")).toHaveTextContent("idle");
@@ -517,7 +524,7 @@ describe("useCatalogConsole scoped action feedback", () => {
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
 
-    renderHarness();
+    await renderHarness();
 
     await clickButton("autosave-a");
     await clickButton("sync");
@@ -574,7 +581,7 @@ describe("useCatalogConsole scoped action feedback", () => {
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
 
-    renderHarness();
+    await renderHarness();
 
     await clickButton("autosave-b");
 
@@ -628,7 +635,7 @@ describe("useCatalogConsole scoped action feedback", () => {
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
 
-    renderHarness();
+    await renderHarness();
 
     await clickButton("select-b");
     await clickButton("autosave-remove-detail");
@@ -679,7 +686,7 @@ describe("useCatalogConsole scoped action feedback", () => {
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
 
-    renderHarness();
+    await renderHarness();
     await waitFor(() => {
       expect(screen.getByTestId("sync-ready")).toHaveTextContent("yes");
     });

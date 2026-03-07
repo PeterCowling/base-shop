@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
-import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import type { CatalogProductDraftInput } from "@acme/lib/xa";
 
@@ -38,9 +38,34 @@ jest.mock("../CatalogProductJewelryFields.client", () => ({
   CatalogProductJewelryFields: () => <div data-cy="jewelry-fields" />,
 }));
 
-jest.mock("../CatalogProductImagesFields.client", () => ({
-  CatalogProductImagesFields: () => <div data-cy="images-fields" />,
-}));
+jest.mock("../CatalogProductImagesFields.client", () => {
+  const React = require("react");
+  return {
+    CatalogProductImagesFields: () =>
+      React.createElement("div", { "data-cy": "images-fields" }),
+    ImageDropZone: () => React.createElement("div", { "data-cy": "image-drop-zone" }),
+    MainImagePanel: () => React.createElement("div", { "data-cy": "main-image-panel" }),
+    AdditionalImagesPanel: () =>
+      React.createElement("div", { "data-cy": "additional-images-panel" }),
+    useImageUploadController: () => ({
+      fileInputRef: { current: null },
+      previews: new Map(),
+      dragOver: false,
+      uploadStatus: "idle",
+      uploadError: "",
+      canUpload: false,
+      isUploading: false,
+      handleDragOver: jest.fn(),
+      handleDragLeave: jest.fn(),
+      handleDrop: jest.fn(),
+      handleFileInput: jest.fn(),
+      handleRemoveImage: jest.fn(),
+      handleMakeMainImage: jest.fn(),
+      handleReorderImage: jest.fn(),
+    }),
+    parseImageEntries: (_files: string) => [],
+  };
+});
 
 const VALID_DRAFT: CatalogProductDraftInput = {
   id: "p1",
@@ -97,44 +122,6 @@ function renderForm(overrides?: RenderOverrides) {
   return { onSave, onDelete, onSavedFeedback };
 }
 
-function renderFormWithFeedback(overrides?: RenderOverrides) {
-  const onSave = jest.fn(async () => overrides?.onSaveResult ?? ({ status: "saved", product: VALID_DRAFT, revision: null } as const));
-  const onDelete = jest.fn();
-  const onSaveWithDraft = jest.fn();
-  const onChangeDraft = jest.fn();
-
-  function Harness() {
-    const [feedback, setFeedback] = React.useState<ActionFeedback | null>(null);
-
-    return (
-      <CatalogProductForm
-        selectedSlug={overrides?.selectedSlug ?? null}
-        draft={VALID_DRAFT}
-        storefront="xa-b"
-        fieldErrors={{}}
-        busy={Boolean(overrides?.busy)}
-        autosaveInlineMessage={null}
-        autosaveStatus={overrides?.autosaveStatus ?? "unsaved"}
-        lastAutosaveSavedAt={null}
-        feedback={feedback}
-        onChangeDraft={onChangeDraft}
-        onSave={onSave}
-        onSavedFeedback={() =>
-          setFeedback({
-            kind: "success",
-            message: "saveAndAdvanceFeedback",
-          })
-        }
-        onSaveWithDraft={onSaveWithDraft}
-        onDelete={onDelete}
-      />
-    );
-  }
-
-  render(<Harness />);
-  return { onSave, onDelete };
-}
-
 describe("CatalogProductForm", () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -159,14 +146,12 @@ describe("CatalogProductForm", () => {
     });
   });
 
-  it("keeps save action scoped to product step only", () => {
+  it("renders main image panel, base fields, and additional images panel simultaneously without tab interaction", () => {
     renderForm();
-    expect(screen.getByTestId("catalog-save-details")).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: /workflowStepImages/ }));
-
-    expect(screen.queryByTestId("catalog-save-details")).not.toBeInTheDocument();
-    expect(screen.getByTestId("images-fields")).toBeInTheDocument();
+    expect(document.querySelector('[data-cy="main-image-panel"]')).toBeInTheDocument();
+    expect(document.querySelector('[data-cy="base-fields"]')).toBeInTheDocument();
+    expect(document.querySelector('[data-cy="additional-images-panel"]')).toBeInTheDocument();
   });
 
   it("does not render the commercial/derived description section", () => {
@@ -176,65 +161,5 @@ describe("CatalogProductForm", () => {
       sections?: string[];
     };
     expect(firstCallProps.sections).toEqual(["identity", "taxonomy"]);
-  });
-
-  it("shows saved state for 2 seconds then auto-advances to images", async () => {
-    jest.useFakeTimers();
-    renderForm();
-    fireEvent.click(screen.getByTestId("catalog-save-details"));
-
-    await waitFor(() => {
-      expect(screen.getByTestId("catalog-save-details")).toHaveTextContent("saveButtonSaved");
-    });
-    expect(screen.queryByTestId("images-fields")).not.toBeInTheDocument();
-
-    act(() => {
-      jest.advanceTimersByTime(2000);
-    });
-
-    await waitFor(() => {
-      expect(screen.getByTestId("images-fields")).toBeInTheDocument();
-    });
-  });
-
-  it("shows save-and-advance feedback when the transition timer fires", async () => {
-    jest.useFakeTimers();
-    renderFormWithFeedback();
-    fireEvent.click(screen.getByTestId("catalog-save-details"));
-
-    await waitFor(() => {
-      expect(screen.getByTestId("catalog-save-details")).toHaveTextContent("saveButtonSaved");
-    });
-
-    act(() => {
-      jest.advanceTimersByTime(2000);
-    });
-
-    await waitFor(() => {
-      expect(screen.getByTestId("catalog-draft-feedback")).toHaveTextContent(
-        "saveAndAdvanceFeedback",
-      );
-    });
-  });
-
-  it("cancels save auto-advance when delete is clicked during saved state", async () => {
-    jest.useFakeTimers();
-    const edit = renderForm({ selectedSlug: "studio-jacket" });
-    fireEvent.click(screen.getByTestId("catalog-save-details"));
-
-    await waitFor(() => {
-      expect(screen.getByTestId("catalog-save-details")).toHaveTextContent("saveButtonSaved");
-    });
-
-    fireEvent.click(screen.getByRole("button", { name: "delete" }));
-    expect(edit.onDelete).toHaveBeenCalledTimes(1);
-
-    act(() => {
-      jest.advanceTimersByTime(2000);
-    });
-
-    await waitFor(() => {
-      expect(screen.queryByTestId("images-fields")).not.toBeInTheDocument();
-    });
   });
 });

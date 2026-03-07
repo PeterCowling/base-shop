@@ -16,15 +16,35 @@ jest.mock("../../../lib/catalogBrandRegistry", () => ({
   computePopularity: () => 0,
   CUSTOM_BRAND_HANDLE: "__custom__",
   CUSTOM_COLLECTION_HANDLE: "__custom__",
-  findBrand: () => null,
-  findCollection: () => null,
+  findBrand: (handle: string) =>
+    handle === "hermes"
+      ? {
+          handle: "hermes",
+          name: "Hermes",
+          collections: [
+            {
+              handle: "kelly",
+              title: "Kelly",
+              description: "Kelly description",
+            },
+          ],
+        }
+      : null,
+  findCollection: (brandHandle: string, collectionHandle: string) =>
+    brandHandle === "hermes" && collectionHandle === "kelly"
+      ? {
+          handle: "kelly",
+          title: "Kelly",
+          description: "Kelly description",
+        }
+      : null,
   findCollectionColors: () => [],
   findCollectionDefaults: () => ({}),
   findCollectionHardwareColors: () => [],
   findCollectionInteriorColors: () => [],
   findCollectionMaterials: () => [],
   findCollectionSizes: () => [],
-  XA_BRAND_REGISTRY: [],
+  XA_BRAND_REGISTRY: [{ handle: "hermes", name: "Hermes", collections: [] }],
   ZH_CATALOG_LABELS: {},
 }));
 
@@ -69,5 +89,45 @@ describe("CatalogProductBaseFields — StatusSelect (TASK-03 TC-04)", () => {
     expect(options).toContain("draft");
     expect(options).toContain("out_of_stock");
     expect(options).not.toContain("live");
+  });
+
+  it("resets the collection selector when the draft clears collection state", () => {
+    const { rerender } = render(
+      <CatalogProductBaseFields
+        selectedSlug="studio-jacket"
+        draft={{
+          ...BASE_DRAFT,
+          brandHandle: "hermes",
+          brandName: "Hermes",
+          collectionHandle: "kelly",
+          collectionTitle: "Kelly",
+        }}
+        fieldErrors={{}}
+        sections={["identity", "taxonomy"]}
+        onChange={jest.fn()}
+      />,
+    );
+
+    expect(screen.getByTestId("catalog-field-collection-select")).toHaveValue("kelly");
+
+    rerender(
+      <CatalogProductBaseFields
+        selectedSlug={null}
+        draft={{
+          ...BASE_DRAFT,
+          brandHandle: "hermes",
+          brandName: "Hermes",
+          collectionHandle: "",
+          collectionTitle: "",
+          sizes: "",
+        }}
+        fieldErrors={{}}
+        sections={["identity", "taxonomy"]}
+        onChange={jest.fn()}
+      />,
+    );
+
+    expect(screen.getByTestId("catalog-field-brand-select")).toHaveValue("hermes");
+    expect(screen.getByTestId("catalog-field-collection-select")).toHaveValue("");
   });
 });

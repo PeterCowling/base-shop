@@ -213,6 +213,16 @@ function BrandCollectionSelectors({
   const activeBrand = isCustomBrand ? undefined : findBrand(selectedBrand);
   const collections = activeBrand?.collections ?? [];
 
+  React.useEffect(() => {
+    setSelectedBrand(deriveInitialBrandSelection(draft.brandHandle));
+  }, [draft.brandHandle]);
+
+  React.useEffect(() => {
+    setSelectedCollection(
+      deriveInitialCollectionSelection(draft.brandHandle, draft.collectionHandle),
+    );
+  }, [draft.brandHandle, draft.collectionHandle]);
+
   const handleBrandChange = React.useCallback(
     (value: string) => {
       if (value === CUSTOM_BRAND_HANDLE) {

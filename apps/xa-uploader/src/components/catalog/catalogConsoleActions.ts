@@ -43,7 +43,12 @@ export type SaveResult =
   | { status: "error" };
 
 export type PublishResult =
-  | { status: "published"; deployStatus: string; warnings: string[] }
+  | {
+      status: "published";
+      deployStatus: string;
+      publishState: "live" | "out_of_stock";
+      warnings: string[];
+    }
   | { status: "busy" }
   | { status: "error"; error?: string };
 
@@ -554,6 +559,7 @@ function getSyncSuccessMessage(
 
 export async function handlePublishImpl({
   draft,
+  publishState,
   storefront,
   t,
   busyLockRef,
@@ -562,6 +568,7 @@ export async function handlePublishImpl({
   loadCatalog,
 }: {
   draft: CatalogProductDraftInput;
+  publishState: "live" | "out_of_stock";
   storefront: XaCatalogStorefront;
   t: Translator;
   busyLockRef: BusyLockRef;
@@ -575,7 +582,7 @@ export async function handlePublishImpl({
     const response = await fetch("/api/catalog/publish", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ storefront, draft }),
+      body: JSON.stringify({ storefront, draft, publishState }),
     });
     const data = (await response.json()) as {
       ok: boolean;
@@ -591,28 +598,43 @@ export async function handlePublishImpl({
     await loadCatalog().catch(() => null);
     const deployStatus = data.deployStatus ?? "skipped_unconfigured";
     let message: string;
-    if (deployStatus === "triggered") {
-      message = t("makeLiveSuccess");
-    } else if (deployStatus === "skipped_cooldown") {
-      message = t("makeLiveSuccessCooldown");
-    } else if (deployStatus === "skipped_runtime_live_catalog") {
-      message = t("makeLiveSuccessLiveCatalog");
-    } else if (deployStatus === "failed") {
-      message = t("makeLiveSuccessFailed");
+    if (publishState === "out_of_stock") {
+      if (deployStatus === "triggered") {
+        message = t("markOutOfStockSuccess");
+      } else if (deployStatus === "skipped_cooldown") {
+        message = t("markOutOfStockSuccessCooldown");
+      } else if (deployStatus === "skipped_runtime_live_catalog") {
+        message = t("markOutOfStockSuccessLiveCatalog");
+      } else if (deployStatus === "failed") {
+        message = t("markOutOfStockSuccessFailed");
+      } else {
+        message = t("markOutOfStockSuccessUnconfigured");
+      }
     } else {
-      message = t("makeLiveSuccessUnconfigured");
+      if (deployStatus === "triggered") {
+        message = t("makeLiveSuccess");
+      } else if (deployStatus === "skipped_cooldown") {
+        message = t("makeLiveSuccessCooldown");
+      } else if (deployStatus === "skipped_runtime_live_catalog") {
+        message = t("makeLiveSuccessLiveCatalog");
+      } else if (deployStatus === "failed") {
+        message = t("makeLiveSuccessFailed");
+      } else {
+        message = t("makeLiveSuccessUnconfigured");
+      }
     }
     updateActionFeedback(setActionFeedback, "draft", {
       kind: "success",
       message,
     });
-    return { status: "published", deployStatus, warnings: data.warnings ?? [] };
+    return { status: "published", deployStatus, publishState, warnings: data.warnings ?? [] };
   } catch (err) {
+    const failureKey = publishState === "out_of_stock" ? "markOutOfStockFailed" : "makeLiveFailed";
     updateActionFeedback(setActionFeedback, "draft", {
       kind: "error",
-      message: errorToMessage(err, t("makeLiveFailed")),
+      message: errorToMessage(err, t(failureKey)),
     });
-    return { status: "error", error: errorToMessage(err, t("makeLiveFailed")) };
+    return { status: "error", error: errorToMessage(err, t(failureKey)) };
   } finally {
     endBusyAction(busyLockRef, setBusy);
   }

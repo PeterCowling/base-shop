@@ -127,7 +127,7 @@ describe("catalog publish route", () => {
     jest.resetModules();
   });
 
-  it("returns ok true with deployStatus triggered for a valid draft", async () => {
+  it("returns ok true with runtime live catalog deploy status for a valid live publish", async () => {
     const { POST } = await import("../route");
     const response = await POST(
       new Request("http://localhost/api/catalog/publish", {
@@ -141,7 +141,8 @@ describe("catalog publish route", () => {
     expect(await response.json()).toEqual(
       expect.objectContaining({
         ok: true,
-        deployStatus: "triggered",
+        deployStatus: "skipped_runtime_live_catalog",
+        deployReason: "live_catalog_runtime_enabled",
         warnings: [],
       }),
     );
@@ -159,14 +160,7 @@ describe("catalog publish route", () => {
         products: [expect.objectContaining({ id: "p1", publishState: "live" })],
       }),
     );
-    expect(maybeTriggerXaBDeployMock).toHaveBeenCalledWith({
-      storefrontId: "xa-b",
-      kv: kvNamespaceMock,
-      statePaths: {
-        cooldownStatePath: "/repo/apps/xa-uploader/data/deploy-cooldown/xa-b.json",
-        pendingStatePath: "/repo/apps/xa-uploader/data/deploy-pending/xa-b.json",
-      },
-    });
+    expect(maybeTriggerXaBDeployMock).not.toHaveBeenCalled();
     expect(reconcileDeployPendingStateMock).toHaveBeenCalledWith({
       storefrontId: "xa-b",
       kv: kvNamespaceMock,
@@ -174,56 +168,41 @@ describe("catalog publish route", () => {
         cooldownStatePath: "/repo/apps/xa-uploader/data/deploy-cooldown/xa-b.json",
         pendingStatePath: "/repo/apps/xa-uploader/data/deploy-pending/xa-b.json",
       },
-      result: { status: "triggered" },
+      result: {
+        status: "skipped_runtime_live_catalog",
+        reason: "live_catalog_runtime_enabled",
+      },
     });
     expect(releaseCloudSyncLockMock).toHaveBeenCalledTimes(1);
   });
 
-  it("returns ok true with deployStatus skipped_cooldown when deploy is cooling down", async () => {
-    maybeTriggerXaBDeployMock.mockResolvedValueOnce({ status: "skipped_cooldown" });
-
+  it("publishes out_of_stock into the catalog contract and draft snapshot", async () => {
     const { POST } = await import("../route");
     const response = await POST(
       new Request("http://localhost/api/catalog/publish", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ storefront: "xa-b", draft: VALID_CLOUD_PRODUCT }),
+        body: JSON.stringify({
+          storefront: "xa-b",
+          draft: VALID_CLOUD_PRODUCT,
+          publishState: "out_of_stock",
+        }),
       }),
     );
 
     expect(response.status).toBe(200);
-    expect(await response.json()).toEqual(
+    expect(await response.json()).toEqual(expect.objectContaining({ ok: true }));
+    expect(buildCatalogArtifactsFromDraftsMock).toHaveBeenCalledWith(
       expect.objectContaining({
-        ok: true,
-        deployStatus: "skipped_cooldown",
+        products: [expect.objectContaining({ id: "p1", publishState: "out_of_stock" })],
+      }),
+    );
+    expect(writeCloudDraftSnapshotMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        products: [expect.objectContaining({ id: "p1", publishState: "out_of_stock" })],
       }),
     );
     expect(publishCatalogPayloadToContractMock).toHaveBeenCalledTimes(1);
-  });
-
-  it("returns deployReason when publish succeeds but deploy trigger fails", async () => {
-    maybeTriggerXaBDeployMock.mockResolvedValueOnce({
-      status: "failed",
-      reason: "http_401:deploy_ack_rejected",
-    });
-
-    const { POST } = await import("../route");
-    const response = await POST(
-      new Request("http://localhost/api/catalog/publish", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ storefront: "xa-b", draft: VALID_CLOUD_PRODUCT }),
-      }),
-    );
-
-    expect(response.status).toBe(200);
-    expect(await response.json()).toEqual(
-      expect.objectContaining({
-        ok: true,
-        deployStatus: "failed",
-        deployReason: "http_401:deploy_ack_rejected",
-      }),
-    );
   });
 
   it("maps catalog publish failures to 502 catalog_publish_failed", async () => {

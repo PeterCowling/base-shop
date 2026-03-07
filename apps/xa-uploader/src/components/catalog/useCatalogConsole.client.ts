@@ -846,9 +846,12 @@ function useCatalogDraftHandlers(
 }
 
 function useCatalogPublishHandlers(state: CatalogConsoleState) {
-  const handlePublish = async (): Promise<PublishResult> =>
+  const handlePublish = async (
+    publishState: "live" | "out_of_stock" = "live",
+  ): Promise<PublishResult> =>
     handlePublishImpl({
       draft: state.draft,
+      publishState,
       storefront: state.storefront,
       t: state.t,
       busyLockRef: state.busyLockRef,

@@ -33,6 +33,7 @@ const PUBLISH_PAYLOAD_MAX_BYTES = 64 * 1024;
 type PublishRequestPayload = {
   storefront: string;
   draft: CatalogProductDraftInput;
+  publishState?: "live" | "out_of_stock";
 };
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -51,6 +52,7 @@ function parsePublishRequestPayload(input: unknown): PublishRequestPayload | nul
   return {
     storefront,
     draft: parsedDraft.data,
+    publishState: input.publishState === "out_of_stock" ? "out_of_stock" : "live",
   };
 }
 
@@ -91,9 +93,10 @@ export async function POST(request: Request) {
   }
 
   const storefront = payload.storefront as XaCatalogStorefront;
-  const liveDraft: CatalogProductDraftInput = {
+  const publishState = payload.publishState ?? "live";
+  const publishedDraft: CatalogProductDraftInput = {
     ...payload.draft,
-    publishState: "live" as const,
+    publishState,
   };
 
   let cloudSyncLock: CloudSyncLockLease | null = null;
@@ -111,15 +114,15 @@ export async function POST(request: Request) {
 
   try {
     const snapshot = await readCloudDraftSnapshot(storefront);
-    const liveDraftId = (liveDraft.id ?? "").trim();
+    const liveDraftId = (publishedDraft.id ?? "").trim();
     const existingIndex =
       liveDraftId.length > 0
         ? snapshot.products.findIndex((product) => (product.id ?? "").trim() === liveDraftId)
         : -1;
     const mergedProducts =
       existingIndex >= 0
-        ? snapshot.products.map((product, index) => (index === existingIndex ? liveDraft : product))
-        : [...snapshot.products, liveDraft];
+        ? snapshot.products.map((product, index) => (index === existingIndex ? publishedDraft : product))
+        : [...snapshot.products, publishedDraft];
 
     const artifacts = await buildCatalogArtifactsFromDrafts({
       storefront,

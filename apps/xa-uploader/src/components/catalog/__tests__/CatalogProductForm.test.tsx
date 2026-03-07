@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import type { CatalogProductDraftInput } from "@acme/lib/xa";
 
@@ -93,6 +93,8 @@ type RenderOverrides = {
   busy?: boolean;
   autosaveStatus?: "saving" | "saved" | "unsaved";
   onSaveResult?: { status: "saved"; product: CatalogProductDraftInput; revision: string | null } | { status: "error" };
+  draft?: CatalogProductDraftInput;
+  onPublish?: ReturnType<typeof jest.fn>;
 };
 
 function renderForm(overrides?: RenderOverrides) {
@@ -101,10 +103,11 @@ function renderForm(overrides?: RenderOverrides) {
   const onSaveWithDraft = jest.fn();
   const onChangeDraft = jest.fn();
   const onSavedFeedback = jest.fn();
+  const onPublish = overrides?.onPublish ?? jest.fn(async () => ({ status: "published" } as const));
   render(
     <CatalogProductForm
       selectedSlug={overrides?.selectedSlug ?? null}
-      draft={VALID_DRAFT}
+      draft={overrides?.draft ?? VALID_DRAFT}
       storefront="xa-b"
       fieldErrors={{}}
       busy={Boolean(overrides?.busy)}
@@ -117,9 +120,10 @@ function renderForm(overrides?: RenderOverrides) {
       onSavedFeedback={onSavedFeedback}
       onSaveWithDraft={onSaveWithDraft}
       onDelete={onDelete}
+      onPublish={onPublish}
     />,
   );
-  return { onSave, onDelete, onSavedFeedback };
+  return { onSave, onDelete, onSavedFeedback, onPublish };
 }
 
 describe("CatalogProductForm", () => {
@@ -179,25 +183,7 @@ describe("CatalogProductForm — Make Live button (TASK-03)", () => {
       missingFieldPaths: [],
       missingRoles: [],
     });
-    const onPublish = jest.fn(async () => undefined);
-    render(
-      <CatalogProductForm
-        selectedSlug={null}
-        draft={VALID_DRAFT}
-        storefront="xa-b"
-        fieldErrors={{}}
-        busy={false}
-        autosaveInlineMessage={null}
-        autosaveStatus="unsaved"
-        lastAutosaveSavedAt={null}
-        feedback={null}
-        onChangeDraft={jest.fn()}
-        onSave={jest.fn(async () => ({ status: "saved", product: VALID_DRAFT, revision: null } as const))}
-        onSaveWithDraft={jest.fn()}
-        onDelete={jest.fn()}
-        onPublish={onPublish}
-      />,
-    );
+    renderForm();
     expect(screen.getByTestId("catalog-make-live")).toBeInTheDocument();
     expect(screen.getByTestId("catalog-make-live")).toHaveTextContent("makeLive");
   });
@@ -238,28 +224,51 @@ describe("CatalogProductForm — Make Live button (TASK-03)", () => {
       missingFieldPaths: [],
       missingRoles: [],
     });
-    const onPublish = jest.fn(async () => undefined);
-    render(
-      <CatalogProductForm
-        selectedSlug={null}
-        draft={VALID_DRAFT}
-        storefront="xa-b"
-        fieldErrors={{}}
-        busy={false}
-        autosaveInlineMessage={null}
-        autosaveStatus="unsaved"
-        lastAutosaveSavedAt={null}
-        feedback={null}
-        onChangeDraft={jest.fn()}
-        onSave={jest.fn(async () => ({ status: "saved", product: VALID_DRAFT, revision: null } as const))}
-        onSaveWithDraft={jest.fn()}
-        onDelete={jest.fn()}
-        onPublish={onPublish}
-      />,
-    );
+    const onPublish = jest.fn(async () => ({ status: "published" } as const));
+    renderForm({ onPublish });
     fireEvent.click(screen.getByTestId("catalog-make-live"));
     await waitFor(() => {
       expect(onPublish).toHaveBeenCalledTimes(1);
+      expect(onPublish).toHaveBeenCalledWith("live");
+    });
+  });
+
+  it("shows progress and completion states for Make Live", async () => {
+    jest.useFakeTimers();
+    const onPublish = jest.fn(
+      async () => new Promise((resolve) => window.setTimeout(() => resolve({ status: "published" }), 10)),
+    );
+    renderForm({ onPublish });
+
+    fireEvent.click(screen.getByTestId("catalog-make-live"));
+    expect(screen.getByTestId("catalog-make-live")).toHaveTextContent("makeLiveRunning");
+
+    await act(async () => {
+      jest.advanceTimersByTime(10);
+    });
+    await waitFor(() => {
+      expect(screen.getByTestId("catalog-make-live")).toHaveTextContent("makeLiveComplete");
+    });
+
+    await act(async () => {
+      jest.advanceTimersByTime(1600);
+    });
+    await waitFor(() => {
+      expect(screen.getByTestId("catalog-make-live")).toHaveTextContent("makeLive");
+    });
+  });
+
+  it("shows Out of stock for live products and publishes out_of_stock when clicked", async () => {
+    const onPublish = jest.fn(async () => ({ status: "published" } as const));
+    renderForm({
+      selectedSlug: "studio-jacket",
+      draft: { ...VALID_DRAFT, publishState: "live" },
+      onPublish,
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "statusOutOfStock" }));
+    await waitFor(() => {
+      expect(onPublish).toHaveBeenCalledWith("out_of_stock");
     });
   });
 });

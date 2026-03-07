@@ -25,6 +25,10 @@ import { getCatalogDraftWorkflowReadiness } from "./catalogWorkflow";
 import type { ActionFeedback } from "./useCatalogConsole.client";
 
 type SaveButtonState = "idle" | "saving" | "saved";
+type PublishActionState = "idle" | "running" | "completed";
+type PublishActionKind = "live" | "out_of_stock";
+const MAKE_LIVE_TEST_ID = "catalog-make-live";
+const MAKE_LIVE_DATA_CY = "catalog-make-live";
 
 type ImageEntry = { path: string; filename: string; isMain: boolean };
 
@@ -138,6 +142,186 @@ function useSaveButtonTransition(params: {
   return { handleSaveClick, saveButtonClass, saveButtonLabel, saveButtonDisabled, cancelPendingSaveAdvance };
 }
 
+function LoadingSpinner() {
+  return (
+    <span
+      aria-hidden="true"
+      className="inline-block h-3.5 w-3.5 rounded-full border-2 border-current border-t-transparent animate-spin"
+    />
+  );
+}
+
+function PublishActionButton({
+  visible,
+  actionKind,
+  actionState,
+  busy,
+  onClick,
+  testId,
+  dataCy,
+  t,
+}: {
+  visible: boolean;
+  actionKind: PublishActionKind;
+  actionState: PublishActionState;
+  busy: boolean;
+  onClick: () => void;
+  testId?: string;
+  dataCy?: string;
+  t: ReturnType<typeof useUploaderI18n>["t"];
+}) {
+  if (!visible) return null;
+
+  const isRunning = actionState === "running";
+  const isCompleted = actionState === "completed";
+  const isLiveAction = actionKind === "live";
+  const idleLabel = isLiveAction ? t("makeLive") : t("statusOutOfStock");
+  const runningLabel = isLiveAction ? t("makeLiveRunning") : t("markOutOfStockRunning");
+  const completedLabel = isLiveAction ? t("makeLiveComplete") : t("markOutOfStockComplete");
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={busy || actionState !== "idle"}
+      className={BTN_PRIMARY_CLASS}
+      data-testid={testId}
+      data-cy={dataCy}
+    >
+      <>
+        {isRunning ? <span className="me-2 inline-block align-middle"><LoadingSpinner /></span> : null}
+        <span>{isRunning ? runningLabel : isCompleted ? completedLabel : idleLabel}</span>
+      </>
+    </button>
+  );
+}
+
+function DraftActionRow({
+  selectedSlug,
+  busy,
+  handleDeleteClick,
+  showOutOfStockAction,
+  showMakeLiveAction,
+  publishActionKind,
+  publishActionState,
+  triggerAction,
+  handleSaveClick,
+  saveButtonDisabled,
+  saveButtonClass,
+  saveButtonLabel,
+  t,
+}: {
+  selectedSlug: string | null;
+  busy: boolean;
+  handleDeleteClick: () => void;
+  showOutOfStockAction: boolean;
+  showMakeLiveAction: boolean;
+  publishActionKind: PublishActionKind | null;
+  publishActionState: PublishActionState;
+  triggerAction: (action: PublishActionKind) => Promise<void>;
+  handleSaveClick: () => Promise<void>;
+  saveButtonDisabled: boolean;
+  saveButtonClass: string;
+  saveButtonLabel: string;
+  t: ReturnType<typeof useUploaderI18n>["t"];
+}) {
+  return (
+    <div className="flex items-center justify-between">
+      <div>
+        {selectedSlug ? (
+          <button
+            type="button"
+            onClick={handleDeleteClick}
+            disabled={busy}
+            className={BTN_DANGER_CLASS}
+          >
+            {t("delete")}
+          </button>
+        ) : null}
+      </div>
+      <div className="flex items-center gap-2">
+        <PublishActionButton
+          visible={showOutOfStockAction}
+          actionKind="out_of_stock"
+          actionState={publishActionKind === "out_of_stock" ? publishActionState : "idle"}
+          busy={busy}
+          onClick={() => void triggerAction("out_of_stock")}
+          t={t}
+        />
+        <PublishActionButton
+          visible={showMakeLiveAction}
+          actionKind="live"
+          actionState={publishActionKind === "live" ? publishActionState : "idle"}
+          busy={busy}
+          onClick={() => void triggerAction("live")}
+          testId={MAKE_LIVE_TEST_ID}
+          dataCy={MAKE_LIVE_DATA_CY}
+          t={t}
+        />
+        <button
+          type="button"
+          onClick={() => void handleSaveClick()}
+          disabled={saveButtonDisabled}
+          className={saveButtonClass}
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+          data-testid="catalog-save-details"
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 e2e selector
+          data-cy="catalog-save-details"
+        >
+          {saveButtonLabel}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function usePublishActionTransition(params: {
+  busy: boolean;
+  onPublish?: (publishState: PublishActionKind) => Promise<{ status?: string } | unknown>;
+}) {
+  const { busy, onPublish } = params;
+  const [actionState, setActionState] = React.useState<PublishActionState>("idle");
+  const [actionKind, setActionKind] = React.useState<PublishActionKind | null>(null);
+  const resetTimerRef = React.useRef<number | null>(null);
+
+  const clearResetTimer = React.useCallback(() => {
+    if (resetTimerRef.current !== null) {
+      window.clearTimeout(resetTimerRef.current);
+      resetTimerRef.current = null;
+    }
+  }, []);
+
+  React.useEffect(() => {
+    return () => {
+      clearResetTimer();
+    };
+  }, [clearResetTimer]);
+
+  const triggerAction = React.useCallback(
+    async (nextActionKind: PublishActionKind) => {
+      if (!onPublish || busy || actionState !== "idle") return;
+      clearResetTimer();
+      setActionKind(nextActionKind);
+      setActionState("running");
+      const result = await onPublish(nextActionKind);
+      if (!result || typeof result !== "object" || !("status" in result) || result.status !== "published") {
+        setActionState("idle");
+        setActionKind(null);
+        return;
+      }
+      setActionState("completed");
+      resetTimerRef.current = window.setTimeout(() => {
+        resetTimerRef.current = null;
+        setActionState("idle");
+        setActionKind(null);
+      }, 1600);
+    },
+    [actionState, busy, clearResetTimer, onPublish],
+  );
+
+  return { actionState, actionKind, triggerAction };
+}
+
 function UploadStatusMessages({
   hasSlug,
   pendingPreviewUrl,
@@ -183,6 +367,17 @@ function UploadStatusMessages({
   );
 }
 
+function getAutosaveCopy(params: {
+  autosaveStatus: "saving" | "saved" | "unsaved";
+  t: ReturnType<typeof useUploaderI18n>["t"];
+}): string {
+  if (params.autosaveStatus === "saving") return params.t("autosaveStatusSaving");
+  if (params.autosaveStatus === "unsaved") {
+    return `${params.t("autosaveStatusUnsaved")} ${params.t("autosaveStatusManualSaveHint")}`;
+  }
+  return params.t("autosaveStatusSaved");
+}
+
 // eslint-disable-next-line max-lines-per-function -- XAUP-0001 product form orchestrator; splitting would fragment tightly coupled draft + image state
 export function CatalogProductForm({
   selectedSlug,
@@ -201,7 +396,6 @@ export function CatalogProductForm({
   onSaveWithDraft,
   onDelete,
   onPublish,
-  onMarkOutOfStock,
 }: {
   selectedSlug: string | null;
   draft: CatalogProductDraftInput;
@@ -218,20 +412,14 @@ export function CatalogProductForm({
   onSavedFeedback?: () => void;
   onSaveWithDraft: (nextDraft: CatalogProductDraftInput) => void;
   onDelete: () => void;
-  onPublish?: () => Promise<unknown>;
-  onMarkOutOfStock?: () => void;
+  onPublish?: (publishState: PublishActionKind) => Promise<unknown>;
 }) {
   const { t } = useUploaderI18n();
   const category = draft.taxonomy.category;
   const readiness = React.useMemo(() => getCatalogDraftWorkflowReadiness(draft), [draft]);
   const hasSlug = (draft.slug ?? "").trim().length > 0;
   const imageEntries = React.useMemo(() => parseImageEntries(draft.imageFiles ?? ""), [draft.imageFiles]);
-  const autosaveCopy =
-    autosaveStatus === "saving"
-      ? t("autosaveStatusSaving")
-      : autosaveStatus === "unsaved"
-        ? `${t("autosaveStatusUnsaved")} ${t("autosaveStatusManualSaveHint")}`
-        : t("autosaveStatusSaved");
+  const autosaveCopy = getAutosaveCopy({ autosaveStatus, t });
   const { handleSaveClick, saveButtonClass, saveButtonLabel, saveButtonDisabled, cancelPendingSaveAdvance } =
     useSaveButtonTransition({
       busy,
@@ -239,6 +427,21 @@ export function CatalogProductForm({
       onSavedFeedback,
       t,
     });
+  const { actionState: publishActionState, actionKind: publishActionKind, triggerAction } =
+    usePublishActionTransition({
+      busy,
+      onPublish,
+    });
+  const publishActionActive = publishActionState !== "idle";
+  const showOutOfStockAction =
+    draft.publishState === "live" ||
+    (publishActionKind === "out_of_stock" && publishActionActive);
+  const showMakeLiveAction =
+    (publishActionKind === "live" && publishActionActive) ||
+    (!publishActionActive &&
+      readiness.isPublishReady &&
+      !!String(draft.price ?? "").trim() &&
+      draft.publishState !== "live");
   const {
     fileInputRef,
     previews,
@@ -377,58 +580,21 @@ export function CatalogProductForm({
             onReorder={handleReorderImage}
           />
 
-          <div className="flex items-center justify-between">
-            <div>
-              {selectedSlug ? (
-                <button
-                  type="button"
-                  onClick={handleDeleteClick}
-                  disabled={busy}
-                  className={BTN_DANGER_CLASS}
-                >
-                  {t("delete")}
-                </button>
-              ) : null}
-            </div>
-            <div className="flex items-center gap-2">
-              {draft.publishState === "live" ? (
-                <button
-                  type="button"
-                  onClick={onMarkOutOfStock}
-                  disabled={busy}
-                  className={BTN_PRIMARY_CLASS}
-                >
-                  {t("statusOutOfStock")}
-                </button>
-              ) : null}
-              {readiness.isPublishReady && !!String(draft.price ?? "").trim() && draft.publishState !== "live" ? (
-                <button
-                  type="button"
-                  onClick={() => void onPublish?.()}
-                  disabled={busy}
-                  className={BTN_PRIMARY_CLASS}
-                  // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-                  data-testid="catalog-make-live"
-                  // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 e2e selector
-                  data-cy="catalog-make-live"
-                >
-                  {t("makeLive")}
-                </button>
-              ) : null}
-              <button
-                type="button"
-                onClick={() => void handleSaveClick()}
-                disabled={saveButtonDisabled}
-                className={saveButtonClass}
-                // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-                data-testid="catalog-save-details"
-                // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 e2e selector
-                data-cy="catalog-save-details"
-              >
-                {saveButtonLabel}
-              </button>
-            </div>
-          </div>
+          <DraftActionRow
+            selectedSlug={selectedSlug}
+            busy={busy}
+            handleDeleteClick={handleDeleteClick}
+            showOutOfStockAction={showOutOfStockAction}
+            showMakeLiveAction={showMakeLiveAction}
+            publishActionKind={publishActionKind}
+            publishActionState={publishActionState}
+            triggerAction={triggerAction}
+            handleSaveClick={handleSaveClick}
+            saveButtonDisabled={saveButtonDisabled}
+            saveButtonClass={saveButtonClass}
+            saveButtonLabel={saveButtonLabel}
+            t={t}
+          />
         </div>
       </div>
     </section>

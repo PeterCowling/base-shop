@@ -722,6 +722,8 @@ This run has progressed through `/lp-do-build` cycles, but a route-localization 
 - **Documentation impact:** apply the refreshed canonical target map from TASK-13E to the redirect matrix if any target choice changes during implementation.
 - **Blocker:** live production deployment is still pending.
   - Repo-side route inventory, generated `_redirects`, deploy-health gates, and coverage verification are aligned locally as of 2026-03-07, but the updated Pages artifact set has not yet been promoted to production.
+  - Direct local `wrangler` deploy is unavailable from this workspace because `pnpm exec wrangler whoami` returns `Not logged in`.
+  - The normal git release path also stops before production today: `origin/dev` and `origin/staging` have no tree diff, so the auto `dev -> staging` PR closes immediately, while the existing `staging -> main` promotion remains blocked by unrelated staging pipeline failures.
 - **Build evidence (2026-03-07):**
   - Confirmed the production routing source of truth is the repo-managed Cloudflare Pages deploy workflow:
     - `.github/workflows/brikette.yml`
@@ -739,6 +741,11 @@ This run has progressed through `/lp-do-build` cycles, but a route-localization 
     - `/it/book-private-accommodations` -> `200`
     - localized guide canonical sample -> `404`
     - legacy English guide alias sample -> `200`
+  - Release-path findings:
+    - Committed and pushed `fix(brikette): finalize localized route rollout` to `origin/dev` (`747196ad8c`).
+    - Auto PR `dev -> staging` was created and closed with no remaining tree diff because `origin/staging` already contains the same effective Brikette tree.
+    - Direct Cloudflare deploy remains blocked in this workspace by missing local `wrangler` auth.
+    - Production rollout therefore depends on an eventual clean `staging -> main` promotion or refreshed Cloudflare deploy credentials.
 
 ### TASK-08D: Verify live one-hop redirects and canonical `200` targets
 - **Type:** INVESTIGATE

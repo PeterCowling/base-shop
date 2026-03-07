@@ -240,3 +240,59 @@ export function buildThreadSummary(record: InboxThreadRecord): {
 export function isThreadVisibleInInbox(thread: InboxThreadRow): boolean {
   return thread.status !== "auto_archived" && thread.status !== "resolved";
 }
+
+export function buildThreadSummaryFromRow(row: import("./repositories.server").ThreadWithLatestDraftRow): {
+  id: string;
+  status: string;
+  subject: string | null;
+  snippet: string | null;
+  latestMessageAt: string | null;
+  lastSyncedAt: string | null;
+  updatedAt: string;
+  needsManualDraft: boolean;
+  latestAdmissionDecision: string | null;
+  latestAdmissionReason: string | null;
+  currentDraft: InboxDraftApiModel | null;
+  guestBookingRef: string | null;
+  guestFirstName: string | null;
+  guestLastName: string | null;
+} {
+  const metadata = parseThreadMetadata(row.metadata_json);
+
+  let currentDraft: InboxDraftApiModel | null = null;
+  if (row.draft_id) {
+    currentDraft = {
+      id: row.draft_id,
+      threadId: row.draft_thread_id ?? row.id,
+      gmailDraftId: row.draft_gmail_draft_id ?? null,
+      status: row.draft_status ?? "generated",
+      subject: row.draft_subject ?? null,
+      recipientEmails: parseJsonArray(row.draft_recipient_emails_json),
+      plainText: row.draft_plain_text ?? "",
+      html: row.draft_html ?? null,
+      templateUsed: row.draft_template_used ?? null,
+      quality: parseJsonObject(row.draft_quality_json),
+      interpret: parseJsonObject(row.draft_interpret_json),
+      createdByUid: row.draft_created_by_uid ?? null,
+      createdAt: row.draft_created_at ?? row.created_at,
+      updatedAt: row.draft_updated_at ?? row.updated_at,
+    };
+  }
+
+  return {
+    id: row.id,
+    status: row.status,
+    subject: row.subject,
+    snippet: row.snippet,
+    latestMessageAt: row.latest_message_at,
+    lastSyncedAt: row.last_synced_at,
+    updatedAt: row.updated_at,
+    needsManualDraft: Boolean(metadata.needsManualDraft),
+    latestAdmissionDecision: metadata.latestAdmissionDecision ?? null,
+    latestAdmissionReason: metadata.latestAdmissionReason ?? null,
+    currentDraft,
+    guestBookingRef: metadata.guestBookingRef ?? null,
+    guestFirstName: metadata.guestFirstName ?? null,
+    guestLastName: metadata.guestLastName ?? null,
+  };
+}

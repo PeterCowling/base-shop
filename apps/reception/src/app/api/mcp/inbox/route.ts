@@ -1,15 +1,14 @@
 import { NextResponse } from "next/server";
 
 import {
-  buildThreadSummary,
+  buildThreadSummaryFromRow,
   isThreadVisibleInInbox,
 } from "@/lib/inbox/api-models.server";
 import { inboxApiErrorResponse } from "@/lib/inbox/api-route-helpers";
 import {
-  getThread,
   type InboxThreadStatus,
   inboxThreadStatuses,
-  listThreads,
+  listThreadsWithLatestDraft,
 } from "@/lib/inbox/repositories.server";
 
 import { requireStaffAuth } from "../_shared/staff-auth";
@@ -43,22 +42,17 @@ export async function GET(request: Request) {
     const offset = parseNumberParam(url.searchParams.get("offset"), 0);
     const status = parseStatusParam(url.searchParams.get("status"));
 
-    const threads = await listThreads({
+    const rows = await listThreadsWithLatestDraft({
       status,
       limit,
       offset,
     });
 
-    const visibleThreads = status ? threads : threads.filter((thread) => isThreadVisibleInInbox(thread));
-    const records = await Promise.all(
-      visibleThreads.map(async (thread) => getThread(thread.id)),
-    );
+    const visibleRows = status ? rows : rows.filter((row) => isThreadVisibleInInbox(row));
 
     return NextResponse.json({
       success: true,
-      data: records
-        .filter((record): record is NonNullable<typeof record> => Boolean(record))
-        .map((record) => buildThreadSummary(record)),
+      data: visibleRows.map((row) => buildThreadSummaryFromRow(row)),
     });
   } catch (error) {
     return inboxApiErrorResponse(error);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { buildMcpAuthHeaders } from "./mcpAuthHeaders";
 
@@ -214,22 +214,55 @@ export default function useInbox() {
   const [listError, setListError] = useState<string | null>(null);
   const [detailError, setDetailError] = useState<string | null>(null);
 
-  const loadThread = useCallback(async (threadId: string) => {
+  const detailCacheRef = useRef<Map<string, InboxThreadDetail>>(new Map());
+  const abortControllerRef = useRef<AbortController | null>(null);
+
+  const refreshThreadDetail = useCallback(async (threadId: string): Promise<InboxThreadDetail> => {
+    detailCacheRef.current.delete(threadId);
+    const detail = await fetchInboxThread(threadId);
+    detailCacheRef.current.set(threadId, detail);
+    setSelectedThreadId(threadId);
+    setSelectedThread(detail);
+    setThreads((prev) =>
+      prev.map((t) => (t.id === threadId ? detail.thread : t)),
+    );
+    return detail;
+  }, []);
+
+  const selectThread = useCallback(async (threadId: string) => {
+    abortControllerRef.current?.abort();
+
+    const cached = detailCacheRef.current.get(threadId);
+    if (cached) {
+      setSelectedThreadId(threadId);
+      setSelectedThread(cached);
+      setDetailError(null);
+      return cached;
+    }
+
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
     setLoadingThread(true);
     setDetailError(null);
 
     try {
       const detail = await fetchInboxThread(threadId);
+      if (controller.signal.aborted) return detail;
+      detailCacheRef.current.set(threadId, detail);
       setSelectedThreadId(threadId);
       setSelectedThread(detail);
       return detail;
     } catch (error) {
+      if (controller.signal.aborted) throw error;
       setSelectedThreadId(threadId);
       setSelectedThread(null);
       setDetailError(error instanceof Error ? error.message : "Failed to load inbox thread");
       throw error;
     } finally {
-      setLoadingThread(false);
+      if (!controller.signal.aborted) {
+        setLoadingThread(false);
+      }
     }
   }, []);
 
@@ -248,7 +281,7 @@ export default function useInbox() {
             : nextThreads[0]?.id ?? null);
 
         if (targetThreadId) {
-          await loadThread(targetThreadId);
+          await selectThread(targetThreadId);
         } else {
           setSelectedThreadId(null);
           setSelectedThread(null);
@@ -261,7 +294,7 @@ export default function useInbox() {
         setLoadingList(false);
       }
     },
-    [loadThread, selectedThreadId],
+    [selectThread, selectedThreadId],
   );
 
   useEffect(() => {
@@ -279,12 +312,12 @@ export default function useInbox() {
 
       try {
         await updateInboxDraft(selectedThreadId, payload);
-        await loadThreads(selectedThreadId);
+        await refreshThreadDetail(selectedThreadId);
       } finally {
         setSavingDraft(false);
       }
     },
-    [loadThreads, selectedThreadId],
+    [refreshThreadDetail, selectedThreadId],
   );
 
   const regenerateDraft = useCallback(
@@ -298,12 +331,12 @@ export default function useInbox() {
 
       try {
         await regenerateInboxDraft(selectedThreadId, { force });
-        await loadThreads(selectedThreadId);
+        await refreshThreadDetail(selectedThreadId);
       } finally {
         setRegeneratingDraft(false);
       }
     },
-    [loadThreads, selectedThreadId],
+    [refreshThreadDetail, selectedThreadId],
   );
 
   const sendDraft = useCallback(async () => {
@@ -316,12 +349,41 @@ export default function useInbox() {
 
     try {
       const result = await sendInboxDraft(selectedThreadId);
-      await loadThreads(selectedThreadId);
+      detailCacheRef.current.delete(selectedThreadId);
+      const threadId = selectedThreadId;
+      setThreads((prev) =>
+        prev.map((t) =>
+          t.id === threadId
+            ? {
+                ...t,
+                status: "sent",
+                currentDraft: t.currentDraft
+                  ? { ...t.currentDraft, status: "sent" }
+                  : null,
+              }
+            : t,
+        ),
+      );
+      if (selectedThread) {
+        setSelectedThread({
+          ...selectedThread,
+          thread: {
+            ...selectedThread.thread,
+            status: "sent",
+            currentDraft: selectedThread.thread.currentDraft
+              ? { ...selectedThread.thread.currentDraft, status: "sent" }
+              : null,
+          },
+          currentDraft: selectedThread.currentDraft
+            ? { ...selectedThread.currentDraft, status: "sent" }
+            : null,
+        });
+      }
       return result;
     } finally {
       setSendingDraft(false);
     }
-  }, [loadThreads, selectedThreadId]);
+  }, [selectedThreadId, selectedThread]);
 
   const resolveThread = useCallback(async () => {
     if (!selectedThreadId) {
@@ -333,11 +395,24 @@ export default function useInbox() {
 
     try {
       await resolveInboxThread(selectedThreadId);
-      await loadThreads(null);
+      detailCacheRef.current.delete(selectedThreadId);
+      const removedId = selectedThreadId;
+      setThreads((prev) => {
+        const next = prev.filter((t) => t.id !== removedId);
+        const nextSelected = next[0] ?? null;
+        if (nextSelected) {
+          void selectThread(nextSelected.id).catch(() => undefined);
+        } else {
+          setSelectedThreadId(null);
+          setSelectedThread(null);
+          setDetailError(null);
+        }
+        return next;
+      });
     } finally {
       setResolvingThread(false);
     }
-  }, [loadThreads, selectedThreadId]);
+  }, [selectThread, selectedThreadId]);
 
   const dismissThread = useCallback(async () => {
     if (!selectedThreadId) {
@@ -349,15 +424,29 @@ export default function useInbox() {
 
     try {
       await dismissInboxThread(selectedThreadId);
-      await loadThreads(null);
+      detailCacheRef.current.delete(selectedThreadId);
+      const removedId = selectedThreadId;
+      setThreads((prev) => {
+        const next = prev.filter((t) => t.id !== removedId);
+        const nextSelected = next[0] ?? null;
+        if (nextSelected) {
+          void selectThread(nextSelected.id).catch(() => undefined);
+        } else {
+          setSelectedThreadId(null);
+          setSelectedThread(null);
+          setDetailError(null);
+        }
+        return next;
+      });
     } finally {
       setDismissingThread(false);
     }
-  }, [loadThreads, selectedThreadId]);
+  }, [selectThread, selectedThreadId]);
 
   const syncInbox = useCallback(async () => {
     setSyncing(true);
     setListError(null);
+    detailCacheRef.current.clear();
 
     try {
       await runInboxSync();
@@ -382,7 +471,7 @@ export default function useInbox() {
     listError,
     detailError,
     loadThreads,
-    selectThread: loadThread,
+    selectThread,
     saveDraft,
     regenerateDraft,
     sendDraft,

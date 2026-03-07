@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
 
-import { getGmailThread } from "@/lib/gmail-client";
 import {
   buildThreadSummary,
   getCurrentDraft,
-  mergeMessagesWithGmailThread,
   parseThreadMetadata,
   serializeDraft,
+  serializeMessage,
 } from "@/lib/inbox/api-models.server";
 import {
   inboxApiErrorResponse,
@@ -31,14 +30,6 @@ export async function GET(
     return notFoundResponse(`Thread ${params.threadId} not found`);
   }
 
-  let gmailThread = null;
-  let warning: string | null = null;
-  try {
-    gmailThread = await getGmailThread(params.threadId);
-  } catch (error) {
-    warning = error instanceof Error ? error.message : String(error);
-  }
-
   try {
     const currentDraft = getCurrentDraft(record);
     return NextResponse.json({
@@ -46,12 +37,12 @@ export async function GET(
       data: {
         thread: buildThreadSummary(record),
         metadata: parseThreadMetadata(record.thread.metadata_json),
-        messages: mergeMessagesWithGmailThread(record.messages, gmailThread),
+        messages: record.messages.map((message) => serializeMessage(message)),
         events: record.events,
         admissionOutcomes: record.admissionOutcomes,
         currentDraft: currentDraft ? serializeDraft(currentDraft) : null,
-        messageBodiesSource: gmailThread ? "gmail" : "d1",
-        warning,
+        messageBodiesSource: "d1" as const,
+        warning: null,
       },
     });
   } catch (error) {

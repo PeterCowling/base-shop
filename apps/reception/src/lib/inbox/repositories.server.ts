@@ -276,6 +276,86 @@ export async function listThreads(
   return result.results ?? [];
 }
 
+export type ThreadWithLatestDraftRow = InboxThreadRow & {
+  draft_id: string | null;
+  draft_thread_id: string | null;
+  draft_gmail_draft_id: string | null;
+  draft_status: string | null;
+  draft_subject: string | null;
+  draft_recipient_emails_json: string | null;
+  draft_plain_text: string | null;
+  draft_html: string | null;
+  draft_template_used: string | null;
+  draft_quality_json: string | null;
+  draft_interpret_json: string | null;
+  draft_created_by_uid: string | null;
+  draft_created_at: string | null;
+  draft_updated_at: string | null;
+};
+
+export async function listThreadsWithLatestDraft(
+  options: ListThreadsOptions = {},
+  db?: D1Database,
+): Promise<ThreadWithLatestDraftRow[]> {
+  const activeDb = inboxDb(db);
+  const binds: unknown[] = [];
+  const conditions: string[] = [];
+
+  if (options.status) {
+    conditions.push("t.status = ?");
+    binds.push(options.status);
+  }
+
+  const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+  const limit = clampLimit(options.limit, 50);
+  const offset = clampOffset(options.offset);
+
+  const result = await activeDb
+    .prepare(
+      `
+      SELECT
+        t.id,
+        t.status,
+        t.subject,
+        t.snippet,
+        t.assigned_uid,
+        t.latest_message_at,
+        t.last_synced_at,
+        t.metadata_json,
+        t.created_at,
+        t.updated_at,
+        d.id AS draft_id,
+        d.thread_id AS draft_thread_id,
+        d.gmail_draft_id AS draft_gmail_draft_id,
+        d.status AS draft_status,
+        d.subject AS draft_subject,
+        d.recipient_emails_json AS draft_recipient_emails_json,
+        d.plain_text AS draft_plain_text,
+        d.html AS draft_html,
+        d.template_used AS draft_template_used,
+        d.quality_json AS draft_quality_json,
+        d.interpret_json AS draft_interpret_json,
+        d.created_by_uid AS draft_created_by_uid,
+        d.created_at AS draft_created_at,
+        d.updated_at AS draft_updated_at
+      FROM threads t
+      LEFT JOIN drafts d ON d.id = (
+        SELECT d2.id FROM drafts d2
+        WHERE d2.thread_id = t.id
+        ORDER BY d2.updated_at DESC, d2.created_at DESC
+        LIMIT 1
+      )
+      ${whereClause}
+      ORDER BY COALESCE(t.latest_message_at, t.updated_at) DESC, t.updated_at DESC
+      LIMIT ? OFFSET ?
+      `
+    )
+    .bind(...binds, limit, offset)
+    .all<ThreadWithLatestDraftRow>();
+
+  return result.results ?? [];
+}
+
 export async function listThreadEvents(
   options: ListThreadEventsOptions = {},
   db?: D1Database,

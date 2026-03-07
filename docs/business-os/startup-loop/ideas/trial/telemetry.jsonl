@@ -190,3 +190,9 @@
 {"recorded_at":"2026-03-07T12:29:00.893Z","dispatch_id":"IDEA-DISPATCH-20260307122900-0889","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}
 
 {"recorded_at":"2026-03-07T12:29:06.596Z","dispatch_id":"IDEA-DISPATCH-20260307122906-0593","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}
+
+{"recorded_at":"2026-03-07T12:30:17.544Z","dispatch_id":"IDEA-DISPATCH-20260307123017-0540","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}
+
+{"recorded_at":"2026-03-07T13:53:58.756Z","dispatch_id":"IDEA-DISPATCH-20260307135358-0749","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"codebase_signal_bridge"}
+
+{"recorded_at":"2026-03-07T13:54:01.706Z","dispatch_id":"IDEA-DISPATCH-20260307135401-0699","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}

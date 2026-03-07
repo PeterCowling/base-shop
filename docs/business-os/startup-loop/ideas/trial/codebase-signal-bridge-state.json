@@ -1,10 +1,10 @@
 {
   "schema_version": "codebase-signal-bridge.v3",
-  "updated_at": "2026-03-07T12:29:05.860Z",
+  "updated_at": "2026-03-07T13:53:58.762Z",
   "bug_scan_hash": null,
-  "codebase_hash": "474ecd02d68c7dcd727d6de9dad68ad5e0812aa8",
+  "codebase_hash": "983f94ce3193c1b413871a0c187585f55dc0355b",
   "repo_maturity_hash": "f79221155b07283376aff9c0ca2c558eaf1acc0f",
-  "repo_maturity_inputs_fingerprint": "1207be3a3c94a61309fefd157f8b5b6154c25180",
+  "repo_maturity_inputs_fingerprint": "5c7814c76ac09f786deaf8c9adebcbb105bae5f4",
   "repo_maturity_score": 70,
   "repo_maturity_category_scores": {
     "testing": 20,

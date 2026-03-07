@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-07T13:54:01.706Z",
+  "last_updated": "2026-03-07T16:57:49.590Z",
   "counts": {
-    "enqueued": 162,
-    "processed": 43,
+    "enqueued": 179,
+    "processed": 46,
     "skipped": 1,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
-    "completed": 124,
-    "fact_find_ready": 220,
-    "micro_build_ready": 7,
-    "total": 355
+    "completed": 125,
+    "fact_find_ready": 239,
+    "micro_build_ready": 8,
+    "total": 376
   },
   "dispatches": [
     {
@@ -14721,6 +14721,899 @@
       "intended_outcome": {
         "type": "operational",
         "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307140347-0578",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "202a86fd06448ce877526b7b345e7da8cdd19b46",
+      "after_sha": "f7ae03df4a98c73ba3bba09ec50e54de3d216fb2",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:f7ae03df4a98c73ba3bba09ec50e54de3d216fb2",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:f7ae03df4a98c73ba3bba09ec50e54de3d216fb2",
+      "cluster_fingerprint": "1a61372027954cc0f2793ed2df9ac53ee041c63e64a6100b64c11987a13a7fb0",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (202a86f → f7ae03d)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
+        "session:69d199f6-bf3f-4837-a680-8fa673ae6207",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-07T14:03:47.577Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307141425-0194",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "f7ae03df4a98c73ba3bba09ec50e54de3d216fb2",
+      "after_sha": "58389f94d54dbeb9f17c6a546f8eca5a66b88bf0",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:58389f94d54dbeb9f17c6a546f8eca5a66b88bf0",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:58389f94d54dbeb9f17c6a546f8eca5a66b88bf0",
+      "cluster_fingerprint": "0be2d4f57f1113a9dcb9290d6ec7a342f258cb01282124fe2c587771eecd67ff",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (f7ae03d → 58389f9)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
+        "session:69d199f6-bf3f-4837-a680-8fa673ae6207",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-07T14:14:25.193Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307141518-0746",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "58389f94d54dbeb9f17c6a546f8eca5a66b88bf0",
+      "after_sha": "257dc75728f40d0ac7a5692391e383b905f2f381",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:257dc75728f40d0ac7a5692391e383b905f2f381",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:257dc75728f40d0ac7a5692391e383b905f2f381",
+      "cluster_fingerprint": "d60fb34d217f6f379239991838dec9174148ab293ebf437c31886bccab03dea1",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (58389f9 → 257dc75)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
+        "session:69d199f6-bf3f-4837-a680-8fa673ae6207",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-07T14:15:18.745Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307142057-0700",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "257dc75728f40d0ac7a5692391e383b905f2f381",
+      "after_sha": "1968cbd2178b8b6a04711c95d9960bcd2457789f",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:1968cbd2178b8b6a04711c95d9960bcd2457789f",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:1968cbd2178b8b6a04711c95d9960bcd2457789f",
+      "cluster_fingerprint": "424dc3652b0c2336c5ae343f682b7d5ffe8c1cd53e20be593d6d7a72cc08beed",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (257dc75 → 1968cbd)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
+        "session:69d199f6-bf3f-4837-a680-8fa673ae6207",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-07T14:20:57.699Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307142547-9101",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator-idea-20260307142547-email-inprogress-recovery",
+      "anchor_key": "brik-gmail-inprogress-recovery",
+      "cluster_key": "brik-gmail-inprogress-recovery",
+      "cluster_fingerprint": "brik-gmail-inprogress-recovery-20260307142547",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK gmail pipeline — In-Progress recovery scheduling",
+      "location_anchors": [
+        "apps/reception/src/app/api/mcp/inbox/reconcile/route.ts",
+        "apps/reception/src/lib/inbox/telemetry.server.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Threads stuck in In-Progress state have observability telemetry (added by email-logging-observability) but no automatic retry scheduling to unstick them. Manual reconciliation is the only recovery path.",
+      "next_scope_now": "Investigate the reconciliation flow, determine how to auto-schedule retries for stuck In-Progress threads, and implement the scheduling mechanism.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.8,
+      "evidence_refs": [
+        "operator-stated: threads stuck in In-Progress have telemetry but no auto-retry scheduling",
+        "docs/plans/_archive/email-logging-observability/plan.md"
+      ],
+      "why": "Threads that get stuck in In-Progress state require manual operator intervention to recover. This creates operational drag and risks emails being missed when the operator is unavailable.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Stuck In-Progress threads are automatically detected and retried without manual operator intervention.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-07T14:25:47.166217+00:00",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307142547-9102",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator-idea-20260307142547-email-draft-dedup",
+      "anchor_key": "brik-inbox-draft-dedup",
+      "cluster_key": "brik-inbox-draft-dedup",
+      "cluster_fingerprint": "brik-inbox-draft-dedup-20260307142547",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK inbox — draft dedup at MCP tool level",
+      "location_anchors": [
+        "packages/mcp-server/src/tools/draft-generate.ts",
+        "apps/reception/src/app/api/mcp/inbox/[threadId]/draft/route.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "If draft_generate is called twice for the same thread before the first draft is acted on, both drafts persist. There is no dedup guard at the MCP tool boundary or the API route.",
+      "next_scope_now": "Investigate current draft lifecycle in the DB layer, add a dedup check before draft creation to prevent duplicate pending drafts for the same thread.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.8,
+      "evidence_refs": [
+        "operator-stated: duplicate drafts persist when draft_generate called twice before first is acted on",
+        "packages/mcp-server/src/tools/draft-generate.ts",
+        "apps/reception/src/app/api/mcp/inbox/[threadId]/draft/route.ts"
+      ],
+      "why": "Duplicate pending drafts for the same thread create confusion in the inbox UI and waste operator attention sorting through redundant drafts.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Only one pending draft exists per thread at any time; subsequent draft_generate calls either replace or skip if a pending draft already exists.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-07T14:25:47.166217+00:00",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307142547-9103",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator-idea-20260307142547-email-orphaned-labels",
+      "anchor_key": "brik-gmail-orphaned-label-cleanup",
+      "cluster_key": "brik-gmail-orphaned-label-cleanup",
+      "cluster_fingerprint": "brik-gmail-orphaned-label-cleanup-20260307142547",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK gmail pipeline — orphaned label cleanup",
+      "location_anchors": [
+        "apps/reception/src/lib/gmail-client.ts",
+        "packages/mcp-server/src/tools/gmail.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Gmail labels created by the inbox pipeline (e.g. inbox/review-later, inbox/processed) accumulate without any periodic cleanup or garbage collection. Old labels for resolved threads persist indefinitely.",
+      "next_scope_now": "Investigate label lifecycle, determine which labels become orphaned and when, and implement a periodic cleanup mechanism.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "completed",
+      "priority": "P3",
+      "confidence": 0.7,
+      "evidence_refs": [
+        "operator-stated: Gmail labels created by pipeline accumulate without cleanup or garbage collection",
+        "apps/reception/src/lib/gmail-client.ts"
+      ],
+      "why": "Accumulating orphaned labels clutter the Gmail label namespace and make it harder for operators to navigate the mailbox. Over time this degrades the usability of Gmail as the underlying mail client.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Orphaned Gmail labels from resolved/archived threads are periodically cleaned up, keeping the label namespace manageable.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-07T14:25:47.166217+00:00",
+      "queue_state": "completed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-inbox-orphaned-labels",
+        "target_path": "docs/plans/reception-inbox-orphaned-labels/fact-find.md",
+        "processed_at": "2026-03-07T14:38:48.595Z",
+        "fact_find_slug": "reception-inbox-orphaned-labels",
+        "fact_find_path": "docs/plans/reception-inbox-orphaned-labels/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-inbox-orphaned-labels/plan.md",
+        "completed_at": "2026-03-07T14:52:45.927Z",
+        "outcome": "New gmail_cleanup_labels MCP tool for on-demand orphaned label deletion with safety checks"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307145209-0892",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "1968cbd2178b8b6a04711c95d9960bcd2457789f",
+      "after_sha": "c1aea00aed585c6a06a106a277692852804f332d",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:c1aea00aed585c6a06a106a277692852804f332d",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:c1aea00aed585c6a06a106a277692852804f332d",
+      "cluster_fingerprint": "92fd74611e82587a928fa999f7b1e6e71353967b419db04beea2c6d0d3451346",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (1968cbd → c1aea00)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
+        "session:69d199f6-bf3f-4837-a680-8fa673ae6207",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-07T14:52:09.891Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307145754-0100",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "c1aea00aed585c6a06a106a277692852804f332d",
+      "after_sha": "47c5a041dcfd73d2b64557f632a99e40086962a1",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:47c5a041dcfd73d2b64557f632a99e40086962a1",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:47c5a041dcfd73d2b64557f632a99e40086962a1",
+      "cluster_fingerprint": "373d76472bd5dc1bddaca01079a607ace817412c1472ec9ff17b4c61c39b6638",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (c1aea00 → 47c5a04)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
+        "session:69d199f6-bf3f-4837-a680-8fa673ae6207",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-07T14:57:54.099Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307153740-9201",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator-idea-20260307153740-reception-inbox-thread-filters",
+      "anchor_key": "reception-inbox-thread-filters",
+      "cluster_key": "reception-inbox-thread-filters",
+      "cluster_fingerprint": "reception-inbox-thread-filters-20260307153740",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK inbox UI — thread status and manual-draft filters",
+      "location_anchors": [
+        "apps/reception/src/components/inbox/"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "No way to filter inbox threads by status, needsManualDraft flag, or sync freshness. Staff must scan the entire list to find threads needing attention.",
+      "next_scope_now": "Add filter controls to the inbox thread list for status, needs-manual-draft, and sync age.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.8,
+      "evidence_refs": [
+        "operator-stated: No way to filter inbox threads by status, needsManualDraft flag, or sync freshne"
+      ],
+      "why": "Staff waste time scanning the full inbox list to find threads that need manual intervention or are stale. Filters would let them prioritize work instantly.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Inbox thread list supports filtering by status, needs-manual-draft, and sync freshness so staff can prioritize efficiently.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-07T15:37:40.310752+00:00",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307153740-9202",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator-idea-20260307153740-reception-inbox-guest-match-observability",
+      "anchor_key": "reception-inbox-guest-match-observability",
+      "cluster_key": "reception-inbox-guest-match-observability",
+      "cluster_fingerprint": "reception-inbox-guest-match-observability-20260307153740",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK inbox — guest matching observability",
+      "location_anchors": [
+        "apps/reception/src/lib/inbox/sync.server.ts",
+        "apps/reception/src/lib/inbox/telemetry.server.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Firebase guest-matching errors are caught and silently swallowed with null fallback. No telemetry on match success rate or failures. Staff doesn't know matching is broken until they notice missing guest context days later.",
+      "next_scope_now": "Add telemetry events for guest matching success/failure and expose match rate as an observable metric.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.8,
+      "evidence_refs": [
+        "operator-stated: Firebase guest-matching errors are caught and silently swallowed with null fallb"
+      ],
+      "why": "Silent guest matching failures mean staff operates without guest context for days before anyone notices. Observability would surface the problem immediately.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Guest matching failures are recorded as telemetry events with match success rate visible to operators.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-07T15:37:40.310752+00:00",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-inbox-guest-match-observability",
+        "target_path": "docs/plans/reception-inbox-guest-match-observability/fact-find.md",
+        "processed_at": "2026-03-07T15:51:49.533Z",
+        "fact_find_slug": "reception-inbox-guest-match-observability",
+        "fact_find_path": "docs/plans/reception-inbox-guest-match-observability/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307153740-9203",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator-idea-20260307153740-reception-inbox-quality-check-debug",
+      "anchor_key": "reception-inbox-quality-check-debug",
+      "cluster_key": "reception-inbox-quality-check-debug",
+      "cluster_fingerprint": "reception-inbox-quality-check-debug-20260307153740",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK inbox — quality check debug output",
+      "location_anchors": [
+        "apps/reception/src/lib/inbox/draft-pipeline.server.ts",
+        "packages/mcp-server/src/tools/draft-quality-check.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "When a draft fails quality checks, the tool reports check names (e.g. unanswered_questions) but not which specific questions failed or what remediation is needed. Staff can't debug without regenerating.",
+      "next_scope_now": "Extend quality check output to include per-check detail: which questions are unanswered, which references are missing, which policy phrases failed to match.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.8,
+      "evidence_refs": [
+        "operator-stated: When a draft fails quality checks, the tool reports check names (e.g. unanswered"
+      ],
+      "why": "Staff sees 'quality check failed: unanswered_questions' but has no idea which questions or how to fix the draft. This creates unnecessary regeneration cycles.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Quality check failures include actionable detail: specific unanswered questions, missing references, and failed policy phrases.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-07T15:37:40.310752+00:00",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-inbox-quality-check-debug",
+        "target_path": "docs/plans/reception-inbox-quality-check-debug/fact-find.md",
+        "processed_at": "2026-03-07T15:47:33.826Z",
+        "fact_find_slug": "reception-inbox-quality-check-debug",
+        "fact_find_path": "docs/plans/reception-inbox-quality-check-debug/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307153740-9204",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator-idea-20260307153740-reception-inbox-context-history-bound",
+      "anchor_key": "reception-inbox-context-history-bound",
+      "cluster_key": "reception-inbox-context-history-bound",
+      "cluster_fingerprint": "reception-inbox-context-history-bound-20260307153740",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK inbox — bound conversation history for drafts",
+      "location_anchors": [
+        "apps/reception/src/lib/inbox/sync.server.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "buildThreadContext() includes all messages in a thread for draft generation. Threads with 50+ messages risk LLM context overflow, causing drafts to miss early concerns or fail entirely.",
+      "next_scope_now": "Add truncation or summarization to limit conversation history passed to draft generation (e.g. last 10 messages or 5000 chars).",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: buildThreadContext() includes all messages in a thread for draft generation. Thr"
+      ],
+      "why": "Long thread histories can overflow the LLM context window, producing incomplete or failed drafts for the most complex conversations that need the best responses.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Conversation history passed to draft generation is bounded to prevent context overflow while preserving the most relevant recent messages.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-07T15:37:40.310752+00:00",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-inbox-context-history-bound",
+        "target_path": "docs/plans/reception-inbox-context-history-bound/fact-find.md",
+        "processed_at": "2026-03-07T15:44:21.107Z",
+        "fact_find_slug": "reception-inbox-context-history-bound",
+        "fact_find_path": "docs/plans/reception-inbox-context-history-bound/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307153740-9205",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator-idea-20260307153740-reception-inbox-room-numbers-in-draft",
+      "anchor_key": "reception-inbox-room-numbers-in-draft",
+      "cluster_key": "reception-inbox-room-numbers-in-draft",
+      "cluster_fingerprint": "reception-inbox-room-numbers-in-draft-20260307153740",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK inbox — pass room numbers to draft generation",
+      "location_anchors": [
+        "apps/reception/src/lib/inbox/sync.server.ts",
+        "apps/reception/src/lib/inbox/draft-pipeline.server.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Guest room numbers are captured in thread metadata (guestRoomNumbers) but not passed to generateAgentDraft(). Drafts cannot reference specific rooms for personalized responses.",
+      "next_scope_now": "Pass guestRoomNumbers from metadata to draft generation context so responses can reference the guest's room.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P3",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: Guest room numbers are captured in thread metadata (guestRoomNumbers) but not pa"
+      ],
+      "why": "Room numbers are already captured but unused in drafts. Passing them through enables more personalized responses ('Regarding your stay in room 307...').",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Draft generation receives guest room numbers from metadata and can reference them in personalized responses.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-07T15:37:40.310752+00:00",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307153740-9206",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator-idea-20260307153740-reception-inbox-draft-failure-reasons",
+      "anchor_key": "reception-inbox-draft-failure-reasons",
+      "cluster_key": "reception-inbox-draft-failure-reasons",
+      "cluster_fingerprint": "reception-inbox-draft-failure-reasons-20260307153740",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK inbox — expose draft generation failure reasons",
+      "location_anchors": [
+        "apps/reception/src/lib/inbox/sync.server.ts",
+        "apps/reception/src/lib/inbox/draft-pipeline.server.ts",
+        "apps/reception/src/components/inbox/"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "When draft generation fails, sync sets needsManualDraft=true but stores no error code or message. The UI shows 'needs manual draft' with no explanation. Staff must regenerate to discover what went wrong.",
+      "next_scope_now": "Store draft failure reason in thread metadata and display it in the inbox UI so staff can act without guessing.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.8,
+      "evidence_refs": [
+        "operator-stated: When draft generation fails, sync sets needsManualDraft=true but stores no error"
+      ],
+      "why": "Staff sees 'needs manual draft' but has no insight into whether it was a quality gate failure, template mismatch, or generation error. This wastes time on blind regeneration attempts.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Draft generation failures store a reason code and message in thread metadata, displayed in the inbox UI so staff knows what went wrong.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-07T15:37:40.310752+00:00",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307153740-9207",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator-idea-20260307153740-reception-inbox-partial-sync-recovery",
+      "anchor_key": "reception-inbox-partial-sync-recovery",
+      "cluster_key": "reception-inbox-partial-sync-recovery",
+      "cluster_fingerprint": "reception-inbox-partial-sync-recovery-20260307153740",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK inbox — partial sync checkpoint recovery",
+      "location_anchors": [
+        "apps/reception/src/lib/inbox/sync.server.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "If sync fails mid-batch (e.g. thread #30 of 50), the checkpoint still advances past all 50 threads. Threads #31-50 are permanently skipped on next sync. No retry mechanism for partially processed batches.",
+      "next_scope_now": "Change checkpoint advancement to only update after all threads are successfully processed, or track per-thread progress to retry failed threads.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "operator-stated: If sync fails mid-batch (e.g. thread #30 of 50), the checkpoint still advances p"
+      ],
+      "why": "A single sync failure can permanently skip threads, causing emails to be missed. This is the most dangerous reliability gap in the pipeline.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Sync checkpoint only advances to the last successfully processed thread, ensuring no threads are permanently skipped on partial failure.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-07T15:37:40.310752+00:00",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307154941-0184",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+      "before_sha": "983f94ce3193c1b413871a0c187585f55dc0355b",
+      "after_sha": "1c6513df184dd9884ca36f7d7f81c9d07ad93fea",
+      "root_event_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:1c6513df184dd9884ca36f7d7f81c9d07ad93fea",
+      "anchor_key": "threadid-draft-regenerate",
+      "cluster_key": "bos:unknown:threadid-draft-regenerate:BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:1c6513df184dd9884ca36f7d7f81c9d07ad93fea",
+      "cluster_fingerprint": "6bdfbfab572ef409ae4092d72034ce6982733b568a81efa18339064c2041a956",
+      "lineage_depth": 0,
+      "area_anchor": "threadid draft regenerate",
+      "location_anchors": [
+        "apps/reception/src/app/api/mcp/inbox/[threadId]/draft/regenerate/route.ts",
+        "apps/reception/src/lib/inbox/draft-core/generate.ts",
+        "apps/reception/src/lib/inbox/draft-pipeline.server.ts",
+        "apps/reception/src/lib/inbox/recovery.server.ts",
+        "apps/reception/src/lib/inbox/sync.server.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS changed (983f94c → 1c6513d)",
+      "next_scope_now": "Investigate implications of threadid draft regenerate delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "git-diff-range:HEAD~1..HEAD",
+        "git-diff:M:apps/reception/src/app/api/mcp/inbox/[threadId]/draft/regenerate/route.ts",
+        "git-diff:M:apps/reception/src/lib/inbox/draft-core/generate.ts",
+        "git-diff:M:apps/reception/src/lib/inbox/draft-pipeline.server.ts",
+        "git-diff:M:apps/reception/src/lib/inbox/recovery.server.ts",
+        "git-diff:M:apps/reception/src/lib/inbox/sync.server.ts"
+      ],
+      "created_at": "2026-03-07T15:49:41.183Z",
+      "queue_state": "enqueued",
+      "why": "Assess threadid draft regenerate implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for threadid draft regenerate.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307154942-0196",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "47c5a041dcfd73d2b64557f632a99e40086962a1",
+      "after_sha": "27f1c3dc20ffc878c4b1284c583e48dad41a7cde",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:27f1c3dc20ffc878c4b1284c583e48dad41a7cde",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:27f1c3dc20ffc878c4b1284c583e48dad41a7cde",
+      "cluster_fingerprint": "0ef50812c08b5caf502e3f378599191d10cdb60fbd897b9290016a96ead4b296",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (47c5a04 → 27f1c3d)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
+        "session:69d199f6-bf3f-4837-a680-8fa673ae6207",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-07T15:49:42.195Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307155653-0820",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "27f1c3dc20ffc878c4b1284c583e48dad41a7cde",
+      "after_sha": "05d568793f2c14f0612dd6f62d312a60064f28de",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:05d568793f2c14f0612dd6f62d312a60064f28de",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:05d568793f2c14f0612dd6f62d312a60064f28de",
+      "cluster_fingerprint": "38fe647522a335af7d67b2cb5c871bd7bb4da78799f6b555437af3b2530cecad",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (27f1c3d → 05d5687)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
+        "session:69d199f6-bf3f-4837-a680-8fa673ae6207",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-07T15:56:53.819Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307164358-0173",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "05d568793f2c14f0612dd6f62d312a60064f28de",
+      "after_sha": "92dfce39b970e52b1e0c4f365a9e062da2f49cf0",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:92dfce39b970e52b1e0c4f365a9e062da2f49cf0",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:92dfce39b970e52b1e0c4f365a9e062da2f49cf0",
+      "cluster_fingerprint": "1da1b5e8629cbc11381259fb2bbadce53d9474c04bc968b294d13688b01c8f26",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (05d5687 → 92dfce3)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:35b5bcde-4097-4c38-adaa-0cbe5e0a1619",
+        "session:914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
+        "session:69d199f6-bf3f-4837-a680-8fa673ae6207",
+        "session:d2ca9aca-b116-4de3-85c4-660decda6739"
+      ],
+      "created_at": "2026-03-07T16:43:58.172Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307165749-0586",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+      "before_sha": "1c6513df184dd9884ca36f7d7f81c9d07ad93fea",
+      "after_sha": "fc707da65ce3797e5fc1d8202e215c64fcca0af0",
+      "root_event_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:fc707da65ce3797e5fc1d8202e215c64fcca0af0",
+      "anchor_key": "xa-b-next-config",
+      "cluster_key": "bos:unknown:xa-b-next-config:BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:fc707da65ce3797e5fc1d8202e215c64fcca0af0",
+      "cluster_fingerprint": "35a4d04423879a2a12dd50e39fa720f5de55589fb8250e2ee39bd9fd29fa56b5",
+      "lineage_depth": 0,
+      "area_anchor": "xa b next config",
+      "location_anchors": [
+        "apps/xa-b/next.config.mjs",
+        "apps/xa-b/src/app/brands/[handle]/page.tsx",
+        "apps/xa-b/src/app/cart/page.tsx",
+        "apps/xa-b/src/app/collection/page.tsx",
+        "apps/xa-b/src/app/collections/page.tsx",
+        "apps/xa-b/src/app/designer/[slug]/DesignerPageClient.tsx",
+        "apps/xa-b/src/app/designer/[slug]/page.tsx",
+        "apps/xa-b/src/app/designer/page.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS changed (1c6513d → fc707da)",
+      "next_scope_now": "Investigate implications of xa b next config delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "git-diff-range:HEAD~1..HEAD",
+        "git-diff:M:apps/xa-b/next.config.mjs",
+        "git-diff:M:apps/xa-b/src/app/brands/[handle]/page.tsx",
+        "git-diff:M:apps/xa-b/src/app/cart/page.tsx",
+        "git-diff:A:apps/xa-b/src/app/collection/page.tsx",
+        "git-diff:M:apps/xa-b/src/app/collections/page.tsx",
+        "git-diff:M:apps/xa-b/src/app/designer/[slug]/DesignerPageClient.tsx",
+        "git-diff:M:apps/xa-b/src/app/designer/[slug]/page.tsx",
+        "git-diff:A:apps/xa-b/src/app/designer/page.tsx"
+      ],
+      "created_at": "2026-03-07T16:57:49.585Z",
+      "queue_state": "enqueued",
+      "why": "Assess xa b next config implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for xa b next config.",
         "source": "auto"
       }
     }

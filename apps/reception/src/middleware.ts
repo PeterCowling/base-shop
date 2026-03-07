@@ -36,7 +36,12 @@ function getAlloggiatiScriptSources(): string[] {
 }
 
 function buildContentSecurityPolicy(): string {
-  const scriptElementSources = ["'self'", "'unsafe-inline'", ...getAlloggiatiScriptSources()];
+  const scriptElementSources = [
+    "'self'",
+    "'unsafe-inline'",
+    "https://static.cloudflareinsights.com",
+    ...getAlloggiatiScriptSources(),
+  ];
 
   return [
     "default-src 'self'",
@@ -50,7 +55,7 @@ function buildContentSecurityPolicy(): string {
     "style-src 'self' 'unsafe-inline'",
     "script-src 'self' 'unsafe-inline'",
     `script-src-elem ${scriptElementSources.join(" ")}`,
-    `connect-src 'self' ${FIREBASE_CONNECT_SOURCES.join(" ")}`,
+    `connect-src 'self' https://cloudflareinsights.com ${FIREBASE_CONNECT_SOURCES.join(" ")}`,
     "worker-src 'self' blob:",
     "frame-src https://accounts.google.com https://*.firebaseapp.com",
   ].join("; ");

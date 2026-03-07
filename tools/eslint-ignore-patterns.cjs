@@ -52,6 +52,8 @@ module.exports = [
   "**/public/ktx2/basis_transcoder.js",
   // OpenNext build config (outside tsconfig project scope)
   "**/open-next.config.ts",
+  // Worker entry wrappers (compiled by wrangler, not tsc — outside tsconfig project scope)
+  "**/worker-entry.ts",
   // Documentation reference source snapshots are not part of the executable monorepo projects
   "docs/reference/**",
 ];

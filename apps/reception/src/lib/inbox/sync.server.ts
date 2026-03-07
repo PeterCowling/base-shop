@@ -15,6 +15,7 @@ import {
   type AdmissionDecision,
   classifyForAdmission,
 } from "./admission";
+import { getCurrentDraft, getPendingDraft } from "./api-models.server";
 import { getInboxDb } from "./db.server";
 import { generateAgentDraft } from "./draft-pipeline.server";
 import {
@@ -27,6 +28,7 @@ import {
   getThread,
   type InboxThreadStatus,
   recordAdmission,
+  updateDraft,
   updateThreadStatus,
 } from "./repositories.server";
 import {
@@ -108,7 +110,7 @@ function parseMetadata(raw: string | null | undefined): SyncThreadMetadata {
   }
 }
 
-function extractEmailAddress(value: string | null | undefined): string | null {
+export function extractEmailAddress(value: string | null | undefined): string | null {
   if (!value) {
     return null;
   }
@@ -139,7 +141,7 @@ function compareMessagesByDate(
   return leftDate.localeCompare(rightDate);
 }
 
-function getLatestInboundMessage(
+export function getLatestInboundMessage(
   thread: ParsedGmailThread,
   mailboxEmail: string,
 ): ParsedGmailThreadMessage | null {
@@ -151,7 +153,7 @@ function getLatestInboundMessage(
   return [...inbound].sort(compareMessagesByDate).at(-1) ?? null;
 }
 
-function buildThreadContext(thread: ParsedGmailThread): { messages: Array<{ from: string; date: string; snippet: string }> } {
+export function buildThreadContext(thread: ParsedGmailThread): { messages: Array<{ from: string; date: string; snippet: string }> } {
   return {
     messages: thread.messages.map((message) => ({
       from: message.from ?? "Unknown sender",
@@ -174,7 +176,7 @@ function buildDraftRecipients(message: ParsedGmailThreadMessage): string[] {
   return senderEmail ? [senderEmail] : [];
 }
 
-function inferPrepaymentProvider(
+export function inferPrepaymentProvider(
   message: ParsedGmailThreadMessage,
 ): "octorate" | "hostelworld" | undefined {
   const haystack = `${message.from ?? ""} ${message.subject ?? ""} ${message.body.plain}`.toLowerCase();
@@ -187,7 +189,7 @@ function inferPrepaymentProvider(
   return undefined;
 }
 
-function inferPrepaymentStep(
+export function inferPrepaymentStep(
   message: ParsedGmailThreadMessage,
 ): "first" | "second" | "third" | "success" | undefined {
   const haystack = `${message.subject ?? ""} ${message.body.plain}`.toLowerCase();
@@ -256,6 +258,97 @@ function buildThreadMetadata(
     lastProcessedAt: nowIso(),
     lastSyncMode: mode,
     ...extras,
+  };
+}
+
+type UpsertSyncDraftResult = {
+  draftId: string;
+  draftIsNew: boolean;
+  draftTemplateSubject: string | null;
+  draftQualityPassed: boolean;
+};
+
+/**
+ * Draft dedup guard for the sync pipeline.
+ * - If a `generated` draft already exists, update it with new content.
+ * - If an `edited`/`approved` draft exists, skip (operator already acted).
+ * - Otherwise (no draft or only `sent` drafts), create a new one.
+ */
+async function upsertSyncDraft(
+  threadId: string,
+  draftPayload: {
+    plainText: string;
+    html: string | null;
+    templateUsed: string | null;
+    quality: Record<string, unknown>;
+    interpret: Record<string, unknown> | undefined;
+  },
+  latestInbound: ParsedGmailThreadMessage,
+  existingMetadata: SyncThreadMetadata,
+  actorUid: string | null,
+  db: D1Database,
+): Promise<UpsertSyncDraftResult> {
+  const threadRecord = await getThread(threadId, db);
+  const existingPendingDraft = threadRecord ? getPendingDraft(threadRecord) : null;
+  const existingCurrentDraft = threadRecord ? getCurrentDraft(threadRecord) : null;
+  const existingDraftStatus = existingCurrentDraft?.status;
+
+  if (existingPendingDraft) {
+    // Update the existing generated draft with new content
+    const updatedDraft = await updateDraft(
+      {
+        draftId: existingPendingDraft.id,
+        status: "generated",
+        subject: ensureReplySubject(latestInbound.subject),
+        recipientEmails: buildDraftRecipients(latestInbound),
+        plainText: draftPayload.plainText,
+        html: draftPayload.html,
+        templateUsed: draftPayload.templateUsed,
+        quality: draftPayload.quality,
+        interpret: draftPayload.interpret,
+        createdByUid: actorUid,
+      },
+      db,
+    );
+    return {
+      draftId: updatedDraft?.id ?? existingPendingDraft.id,
+      draftIsNew: true,
+      draftTemplateSubject: draftPayload.templateUsed,
+      draftQualityPassed: true,
+    };
+  }
+
+  if (existingDraftStatus === "edited" || existingDraftStatus === "approved") {
+    // Operator has already acted — preserve their draft, skip new generation.
+    return {
+      draftId: existingCurrentDraft!.id,
+      draftIsNew: false,
+      draftTemplateSubject: existingMetadata.lastDraftTemplateSubject ?? null,
+      draftQualityPassed: existingMetadata.lastDraftQualityPassed ?? false,
+    };
+  }
+
+  // No relevant draft exists (or only sent drafts) — create a new one
+  const createdDraft = await createDraft(
+    {
+      threadId,
+      status: "generated",
+      subject: ensureReplySubject(latestInbound.subject),
+      recipientEmails: buildDraftRecipients(latestInbound),
+      plainText: draftPayload.plainText,
+      html: draftPayload.html,
+      templateUsed: draftPayload.templateUsed,
+      quality: draftPayload.quality,
+      interpret: draftPayload.interpret,
+      createdByUid: actorUid,
+    },
+    db,
+  );
+  return {
+    draftId: createdDraft.id,
+    draftIsNew: true,
+    draftTemplateSubject: draftPayload.templateUsed,
+    draftQualityPassed: true,
   };
 }
 
@@ -608,23 +701,21 @@ export async function syncInbox(
     counts.threadsUpserted += persisted.threadUpserted;
     counts.messagesUpserted += persisted.messagesUpserted;
 
+    let draftIsNew = false;
     if (draftPayload) {
-      const createdDraft = await createDraft(
-        {
-          threadId,
-          status: "generated",
-          subject: ensureReplySubject(latestInbound.subject),
-          recipientEmails: buildDraftRecipients(latestInbound),
-          plainText: draftPayload.plainText,
-          html: draftPayload.html,
-          templateUsed: draftPayload.templateUsed,
-          quality: draftPayload.quality,
-          interpret: draftPayload.interpret,
-          createdByUid: input.actorUid ?? null,
-        },
+      const upsertResult = await upsertSyncDraft(
+        threadId,
+        draftPayload,
+        latestInbound,
+        existingMetadata,
+        input.actorUid ?? null,
         db,
       );
-      draftId = createdDraft.id;
+      draftId = upsertResult.draftId;
+      draftIsNew = upsertResult.draftIsNew;
+      draftTemplateSubject = upsertResult.draftTemplateSubject;
+      draftQualityPassed = upsertResult.draftQualityPassed;
+
       await updateThreadStatus(
         {
           threadId,
@@ -674,7 +765,7 @@ export async function syncInbox(
       },
     });
 
-    if (draftCreated) {
+    if (draftCreated && draftIsNew) {
       await recordInboxEvent({
         threadId,
         eventType: "drafted",

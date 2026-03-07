@@ -965,6 +965,61 @@ export async function createEvent(
   return event;
 }
 
+export async function findStaleAdmittedThreads(
+  db: D1Database,
+  staleThresholdMs: number,
+  limit?: number,
+): Promise<InboxThreadRow[]> {
+  const activeDb = inboxDb(db);
+  const staleThreshold = new Date(Date.now() - staleThresholdMs).toISOString();
+  const effectiveLimit = clampLimit(limit, 20);
+
+  const result = await activeDb
+    .prepare(
+      `
+      SELECT
+        t.id,
+        t.status,
+        t.subject,
+        t.snippet,
+        t.assigned_uid,
+        t.latest_message_at,
+        t.last_synced_at,
+        t.metadata_json,
+        t.created_at,
+        t.updated_at
+      FROM threads t
+      WHERE t.status = 'pending'
+        AND t.updated_at < ?
+        AND EXISTS (
+          SELECT 1 FROM admission_outcomes ao
+          WHERE ao.thread_id = t.id
+            AND ao.decision = 'admit'
+            AND ao.id = (
+              SELECT ao2.id FROM admission_outcomes ao2
+              WHERE ao2.thread_id = t.id
+              ORDER BY ao2.created_at DESC, ao2.id DESC
+              LIMIT 1
+            )
+        )
+        AND NOT EXISTS (
+          SELECT 1 FROM drafts d WHERE d.thread_id = t.id
+        )
+        AND (
+          t.metadata_json IS NULL
+          OR json_extract(t.metadata_json, '$.needsManualDraft') IS NULL
+          OR json_extract(t.metadata_json, '$.needsManualDraft') != 1
+        )
+      ORDER BY t.updated_at ASC
+      LIMIT ?
+      `
+    )
+    .bind(staleThreshold, effectiveLimit)
+    .all<InboxThreadRow>();
+
+  return result.results ?? [];
+}
+
 export async function recordAdmission(
   input: RecordAdmissionInput,
   db?: D1Database,

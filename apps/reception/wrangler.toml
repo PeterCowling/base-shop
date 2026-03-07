@@ -1,5 +1,5 @@
 name = "reception"
-main = ".open-next/worker.js"
+main = "worker-entry.ts"
 compatibility_date = "2025-06-20"
 compatibility_flags = ["nodejs_compat"]
 
@@ -27,12 +27,22 @@ hostname = "reception.hostel-positano.com"
 #
 # Guest matching (optional — only if Firebase RTDB blocks unauthenticated reads):
 #   wrangler secret put FIREBASE_DB_SECRET
+#
+# Inbox recovery cron (required for automatic stuck-thread recovery):
+#   wrangler secret put INBOX_RECOVERY_SECRET
+#
+# Optional recovery configuration (set via [vars] or wrangler secret):
+#   INBOX_RECOVERY_STALE_HOURS  — hours before a thread is considered stuck (default: 2)
+#   INBOX_RECOVERY_ENABLED      — set to "false" to disable recovery (default: enabled)
 # ============================================================================
 
 [[d1_databases]]
 binding = "RECEPTION_INBOX_DB"
 database_name = "reception-inbox"
 database_id = "f3ed1b8f-cb6a-4950-9bfa-8f85a0913db9"
+
+[triggers]
+crons = ["*/30 * * * *"]
 
 [vars]
 # Server-side runtime vars. NEXT_PUBLIC_ vars must be set at build time.

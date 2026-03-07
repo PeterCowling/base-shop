@@ -1,6 +1,6 @@
 "use client";
 
-import { MailSearch } from "lucide-react";
+import { MailSearch, User } from "lucide-react";
 
 import { Cluster } from "@acme/design-system/primitives";
 
@@ -109,6 +109,16 @@ export default function ThreadList({
                       </p>
                     </div>
                   </div>
+
+                  {thread.guestFirstName && (
+                    <Cluster gap={2} className="mt-2 text-xs text-primary-main">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-primary-soft px-2 py-0.5">
+                        <User className="h-3 w-3" />
+                        {thread.guestFirstName}
+                        {thread.guestLastName ? ` ${thread.guestLastName}` : ""}
+                      </span>
+                    </Cluster>
+                  )}
 
                   {(thread.latestAdmissionDecision || thread.latestAdmissionReason) && (
                     <Cluster gap={2} className="mt-3 text-xs text-muted-foreground">

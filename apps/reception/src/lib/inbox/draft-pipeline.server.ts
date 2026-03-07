@@ -23,6 +23,7 @@ export type ThreadContext = {
   threadContext?: MessageThreadContext;
   prepaymentStep?: PrepaymentStep;
   prepaymentProvider?: PrepaymentProvider;
+  guestName?: string;
 };
 
 export type AgentDraftResult = {
@@ -142,7 +143,7 @@ export async function generateAgentDraft(threadContext: ThreadContext): Promise<
   const generationResult = generateDraftCandidate({
     actionPlan: interpretResult,
     subject: threadContext.subject,
-    recipientName: threadContext.from ? extractRecipientName(threadContext.from) : undefined,
+    recipientName: threadContext.guestName ?? (threadContext.from ? extractRecipientName(threadContext.from) : undefined),
     prepaymentStep: threadContext.prepaymentStep,
     prepaymentProvider: threadContext.prepaymentProvider,
   });

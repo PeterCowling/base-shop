@@ -17,6 +17,13 @@ export type InboxThreadMetadata = {
   latestInboundMessageId?: string | null;
   latestAdmissionDecision?: string | null;
   latestAdmissionReason?: string | null;
+  guestBookingRef?: string | null;
+  guestOccupantId?: string | null;
+  guestFirstName?: string | null;
+  guestLastName?: string | null;
+  guestCheckIn?: string | null;
+  guestCheckOut?: string | null;
+  guestRoomNumbers?: string[] | null;
 };
 
 export type InboxMessagePayload = {
@@ -205,6 +212,9 @@ export function buildThreadSummary(record: InboxThreadRecord): {
   latestAdmissionDecision: string | null;
   latestAdmissionReason: string | null;
   currentDraft: InboxDraftApiModel | null;
+  guestBookingRef: string | null;
+  guestFirstName: string | null;
+  guestLastName: string | null;
 } {
   const metadata = parseThreadMetadata(record.thread.metadata_json);
   const currentDraft = getCurrentDraft(record);
@@ -221,6 +231,9 @@ export function buildThreadSummary(record: InboxThreadRecord): {
     latestAdmissionDecision: metadata.latestAdmissionDecision ?? null,
     latestAdmissionReason: metadata.latestAdmissionReason ?? null,
     currentDraft: currentDraft ? serializeDraft(currentDraft) : null,
+    guestBookingRef: metadata.guestBookingRef ?? null,
+    guestFirstName: metadata.guestFirstName ?? null,
+    guestLastName: metadata.guestLastName ?? null,
   };
 }
 

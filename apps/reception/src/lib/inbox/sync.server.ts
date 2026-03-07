@@ -18,6 +18,11 @@ import {
 import { getInboxDb } from "./db.server";
 import { generateAgentDraft } from "./draft-pipeline.server";
 import {
+  buildGuestEmailMap,
+  type GuestEmailMap,
+  matchSenderToGuest,
+} from "./guest-matcher.server";
+import {
   createDraft,
   getThread,
   type InboxThreadStatus,
@@ -50,6 +55,13 @@ type SyncThreadMetadata = {
   lastDraftId?: string | null;
   lastDraftTemplateSubject?: string | null;
   lastDraftQualityPassed?: boolean;
+  guestBookingRef?: string | null;
+  guestOccupantId?: string | null;
+  guestFirstName?: string | null;
+  guestLastName?: string | null;
+  guestCheckIn?: string | null;
+  guestCheckOut?: string | null;
+  guestRoomNumbers?: string[] | null;
 };
 
 export type SyncInboxInput = {
@@ -485,6 +497,14 @@ export async function syncInbox(
     skippedUnchanged: 0,
   };
 
+  // Build guest email map once per sync batch for guest-booking matching
+  let guestEmailMap: GuestEmailMap;
+  try {
+    guestEmailMap = await buildGuestEmailMap();
+  } catch {
+    guestEmailMap = new Map();
+  }
+
   for (const threadId of threadIds) {
     const gmailThread = await getGmailThread(threadId);
     counts.threadsFetched += 1;
@@ -522,6 +542,10 @@ export async function syncInbox(
       snippet: latestInbound.snippet || latestInbound.body.plain,
     });
 
+    // Match sender email to guest booking
+    const senderEmail = extractEmailAddress(latestInbound.from);
+    const guestMatch = senderEmail ? matchSenderToGuest(guestEmailMap, senderEmail) : null;
+
     let draftCreated = false;
     let needsManualDraft = false;
     let draftId: string | null = null;
@@ -545,6 +569,7 @@ export async function syncInbox(
         threadContext: buildThreadContext(gmailThread),
         prepaymentProvider: inferPrepaymentProvider(latestInbound),
         prepaymentStep: inferPrepaymentStep(latestInbound),
+        guestName: guestMatch?.firstName || undefined,
       });
 
       if (draftResult.status !== "error" && draftResult.qualityResult?.passed) {
@@ -569,6 +594,15 @@ export async function syncInbox(
       needsManualDraft,
       lastDraftTemplateSubject: draftTemplateSubject,
       lastDraftQualityPassed: draftQualityPassed,
+      ...(guestMatch ? {
+        guestBookingRef: guestMatch.bookingRef,
+        guestOccupantId: guestMatch.occupantId,
+        guestFirstName: guestMatch.firstName,
+        guestLastName: guestMatch.lastName,
+        guestCheckIn: guestMatch.checkInDate,
+        guestCheckOut: guestMatch.checkOutDate,
+        guestRoomNumbers: guestMatch.roomNumbers,
+      } : {}),
     });
     const persisted = await upsertThreadAndMessages(db, gmailThread, mailboxEmail, nextStatus, metadata);
     counts.threadsUpserted += persisted.threadUpserted;

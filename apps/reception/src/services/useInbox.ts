@@ -33,6 +33,9 @@ export type InboxThreadSummary = {
   latestAdmissionDecision: string | null;
   latestAdmissionReason: string | null;
   currentDraft: InboxDraft | null;
+  guestBookingRef?: string | null;
+  guestFirstName?: string | null;
+  guestLastName?: string | null;
 };
 
 export type InboxMessage = {

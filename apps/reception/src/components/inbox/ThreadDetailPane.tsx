@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle, MessageSquareText } from "lucide-react";
+import { AlertTriangle, MessageSquareText, User } from "lucide-react";
 
 import type { InboxThreadDetail } from "@/services/useInbox";
 
@@ -100,6 +100,36 @@ export default function ThreadDetailPane({
             </div>
           </div>
         </div>
+
+        {threadDetail.thread.guestBookingRef && (
+          <div className="border-b border-border-1 px-5 py-4">
+            <div className="flex items-start gap-3 rounded-2xl border border-primary-main/20 bg-primary-soft/40 px-4 py-3 text-sm">
+              <User className="mt-0.5 h-4 w-4 shrink-0 text-primary-main" />
+              <div className="space-y-1">
+                <p className="font-semibold text-foreground">
+                  {[threadDetail.thread.guestFirstName, threadDetail.thread.guestLastName]
+                    .filter(Boolean)
+                    .join(" ") || "Guest"}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Booking {threadDetail.thread.guestBookingRef}
+                </p>
+                {typeof threadDetail.metadata?.guestCheckIn === "string" &&
+                  typeof threadDetail.metadata?.guestCheckOut === "string" && (
+                  <p className="text-xs text-muted-foreground">
+                    {threadDetail.metadata.guestCheckIn} &rarr; {threadDetail.metadata.guestCheckOut}
+                  </p>
+                )}
+                {Array.isArray(threadDetail.metadata?.guestRoomNumbers) &&
+                  threadDetail.metadata.guestRoomNumbers.length > 0 && (
+                  <p className="text-xs text-muted-foreground">
+                    Room{threadDetail.metadata.guestRoomNumbers.length > 1 ? "s" : ""}: {(threadDetail.metadata.guestRoomNumbers as string[]).join(", ")}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
         {threadDetail.warning && (
           <div className="border-b border-border-1 px-5 py-4">

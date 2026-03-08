@@ -1,7 +1,7 @@
 {
   "schema_version": "candidate-ledger.v1",
   "business": "BRIK",
-  "updated_at": "2026-03-07T17:01:17.828Z",
+  "updated_at": "2026-03-08T12:32:58.821Z",
   "candidates": [
     {
       "candidate": {
@@ -39,7 +39,7 @@
         "blocked_reason_code": null,
         "unblock_requirements": [],
         "blocked_since": null,
-        "expiry_at": "2026-04-06T17:01:17.821Z"
+        "expiry_at": "2026-04-07T12:32:58.809Z"
       },
       "score": {
         "priority_score_v1": 3.55,
@@ -89,7 +89,7 @@
         "reason": "evidence_structural_only_requires_fact_find"
       },
       "source_hard_signature": "ddcad390a1288a50c69f303434c9abf5d2517fa1c9d00af069194ab974acd823",
-      "generated_at": "2026-03-07T17:01:17.821Z"
+      "generated_at": "2026-03-08T12:32:58.809Z"
     },
     {
       "candidate": {
@@ -127,7 +127,7 @@
         "blocked_reason_code": null,
         "unblock_requirements": [],
         "blocked_since": null,
-        "expiry_at": "2026-04-06T17:01:17.821Z"
+        "expiry_at": "2026-04-07T12:32:58.809Z"
       },
       "score": {
         "priority_score_v1": 3.55,
@@ -177,7 +177,7 @@
         "reason": "evidence_structural_only_requires_fact_find"
       },
       "source_hard_signature": "65c52360d5deb9addf345eb6668fe309ff5d38bd581a7731a885f316da8dbb0f",
-      "generated_at": "2026-03-07T17:01:17.821Z"
+      "generated_at": "2026-03-08T12:32:58.809Z"
     },
     {
       "candidate": {
@@ -215,7 +215,7 @@
         "blocked_reason_code": null,
         "unblock_requirements": [],
         "blocked_since": null,
-        "expiry_at": "2026-04-06T17:01:17.821Z"
+        "expiry_at": "2026-04-07T12:32:58.809Z"
       },
       "score": {
         "priority_score_v1": 3.55,
@@ -265,7 +265,95 @@
         "reason": "evidence_structural_only_requires_fact_find"
       },
       "source_hard_signature": "5f9cd3076451decc027b433313209d1fb0463a77c135371e13970ebcf23c1f6d",
-      "generated_at": "2026-03-07T17:01:17.821Z"
+      "generated_at": "2026-03-08T12:32:58.809Z"
+    },
+    {
+      "candidate": {
+        "schema_version": "candidate.v1",
+        "candidate_id": "300444927b4c7dec",
+        "candidate_type": "deterministic_extraction",
+        "candidate_state": "validated",
+        "problem_statement": "AI-to-mechanistic — Extract shared PIN digit colour array into a single constant Observed 1 times in pattern reflection output. Recurred 2 times in the active detector window.",
+        "trigger_observations": [
+          "04e94cdb1faa394d",
+          "8b6e169dcb280324"
+        ],
+        "executor_path": "lp-do-build:container:analytics-v1",
+        "change_scope": "business_only",
+        "applicability_predicates": [
+          "business=BRIK"
+        ],
+        "expected_benefit": "Reduce repetitive operator/manual workflow load.",
+        "risk_level": "low",
+        "blast_radius_tag": "small",
+        "autonomy_level_required": 2,
+        "estimated_effort": "M",
+        "recommended_action": "route_into_lp-do-build_backbone",
+        "owners": [
+          "startup-loop"
+        ],
+        "approvers": [
+          "operator"
+        ],
+        "test_plan": "offline_replay_plus_canary",
+        "validation_contract": "self-evolving.validation.v1",
+        "rollout_plan": "feature_flag_canary_then_promote",
+        "rollback_contract": "auto_revert_on_guardrail_breach",
+        "kill_switch": "self_evolving_global_kill_switch",
+        "blocked_reason_code": null,
+        "unblock_requirements": [],
+        "blocked_since": null,
+        "expiry_at": "2026-04-07T12:32:58.809Z"
+      },
+      "score": {
+        "priority_score_v1": 3.55,
+        "priority_score_v2": null,
+        "autonomy_cap": 2,
+        "reasons": [
+          "v2_evidence_missing_or_low_quality",
+          "evidence_class:structural_only"
+        ],
+        "evidence": {
+          "classification": "structural_only",
+          "requirements_met": 2,
+          "requirements_total": 6,
+          "readiness_ratio": 0.3333333333333333,
+          "missing_requirements": [
+            "kpi_baseline",
+            "measurement_plan",
+            "data_quality_ok",
+            "minimum_sample_size"
+          ],
+          "data_quality_ok_rate": {
+            "sample_size": 0,
+            "successes": 0,
+            "observed_rate": null,
+            "posterior_mean": null,
+            "lower_credible_bound": null,
+            "upper_credible_bound": null,
+            "confidence_level": 0.95,
+            "method": "beta_binomial_jeffreys",
+            "status": "insufficient_data"
+          },
+          "measurement_ready_observation_rate": {
+            "sample_size": 2,
+            "successes": 0,
+            "observed_rate": 0,
+            "posterior_mean": 0.16666666666666666,
+            "lower_credible_bound": 0.00021690846915589646,
+            "upper_credible_bound": 0.6668217545375228,
+            "confidence_level": 0.95,
+            "method": "beta_binomial_jeffreys",
+            "status": "measured"
+          }
+        }
+      },
+      "route": {
+        "route": "lp-do-fact-find",
+        "reason": "evidence_structural_only_requires_fact_find"
+      },
+      "source_hard_signature": "d82b1a6d02f032aa253035f13ce2ca644b879668902f3a7a90c2ea0495d6249e",
+      "generated_at": "2026-03-08T12:32:58.809Z"
     }
   ]
 }

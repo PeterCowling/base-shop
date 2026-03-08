@@ -1,0 +1,15 @@
+{
+  "schema_version": "build-event.v1",
+  "slug": "reception-component-token-compliance",
+  "completed_at": "2026-03-08",
+  "outcome_contract": {
+    "why": "Each reception screen reinvents its visual language with hardcoded classes rather than consuming the semantic token system",
+    "outcome_type": "operational",
+    "outcome_statement": "All reception screens consume semantic tokens for surfaces, borders, and text hierarchy — no hardcoded color values or ad-hoc style patterns",
+    "source": "operator",
+    "why_source": "operator"
+  },
+  "plan_path": "docs/plans/reception-component-token-compliance/plan.md",
+  "build_record_path": "docs/plans/reception-component-token-compliance/build-record.user.md",
+  "commit": "ca7ecaa4dc"
+}

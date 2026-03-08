@@ -31,8 +31,8 @@ export type UpsertInboxSyncCheckpointInput = {
 
 const DEFAULT_MAILBOX_KEY = "primary";
 
-function inboxDb(db?: D1Database): D1Database {
-  return db ?? getInboxDb();
+async function inboxDb(db?: D1Database): Promise<D1Database> {
+  return db ?? await getInboxDb();
 }
 
 function stringifyJson(value: Record<string, unknown> | null | undefined): string | null {
@@ -70,7 +70,7 @@ export async function getInboxSyncCheckpoint(
   mailboxKey = DEFAULT_MAILBOX_KEY,
   db?: D1Database,
 ): Promise<InboxSyncCheckpoint | null> {
-  const row = await inboxDb(db)
+  const row = await (await inboxDb(db))
     .prepare(
       `
       SELECT
@@ -94,7 +94,7 @@ export async function upsertInboxSyncCheckpoint(
   input: UpsertInboxSyncCheckpointInput,
   db?: D1Database,
 ): Promise<InboxSyncCheckpoint> {
-  const activeDb = inboxDb(db);
+  const activeDb = await inboxDb(db);
   const mailboxKey = input.mailboxKey ?? DEFAULT_MAILBOX_KEY;
   const timestamp = new Date().toISOString();
 

@@ -48,7 +48,7 @@ export async function GET(request: Request) {
       days = parsed;
     }
 
-    const db = getInboxDb();
+    const db = await getInboxDb();
     const timeFilter = days
       ? `AND te.timestamp >= datetime('now', '-${days} days')`
       : "";

@@ -235,15 +235,15 @@ function generateDraftId(): string {
   return `draft_${crypto.randomUUID()}`;
 }
 
-function inboxDb(db?: D1Database): D1Database {
-  return db ?? getInboxDb();
+async function inboxDb(db?: D1Database): Promise<D1Database> {
+  return db ?? await getInboxDb();
 }
 
 export async function listThreads(
   options: ListThreadsOptions = {},
   db?: D1Database,
 ): Promise<InboxThreadRow[]> {
-  const activeDb = inboxDb(db);
+  const activeDb = await inboxDb(db);
   const binds: unknown[] = [];
   const conditions: string[] = [];
 
@@ -305,7 +305,7 @@ export async function listThreadsWithLatestDraft(
   options: ListThreadsOptions = {},
   db?: D1Database,
 ): Promise<ThreadWithLatestDraftRow[]> {
-  const activeDb = inboxDb(db);
+  const activeDb = await inboxDb(db);
   const binds: unknown[] = [];
   const conditions: string[] = [];
 
@@ -370,7 +370,7 @@ export async function listThreadEvents(
   options: ListThreadEventsOptions = {},
   db?: D1Database,
 ): Promise<ThreadEventRow[]> {
-  const activeDb = inboxDb(db);
+  const activeDb = await inboxDb(db);
   const binds: unknown[] = [];
   const conditions: string[] = [];
 
@@ -424,7 +424,7 @@ export async function getThread(
   threadId: string,
   db?: D1Database,
 ): Promise<InboxThreadRecord | null> {
-  const activeDb = inboxDb(db);
+  const activeDb = await inboxDb(db);
   const thread = await activeDb
     .prepare(
       `
@@ -550,7 +550,7 @@ export async function createThread(
   input: CreateThreadInput,
   db?: D1Database,
 ): Promise<InboxThreadRow> {
-  const activeDb = inboxDb(db);
+  const activeDb = await inboxDb(db);
   const timestamp = nowIso();
 
   await activeDb
@@ -616,7 +616,7 @@ export async function updateThreadStatus(
   input: UpdateThreadStatusInput,
   db?: D1Database,
 ): Promise<InboxThreadRow | null> {
-  const activeDb = inboxDb(db);
+  const activeDb = await inboxDb(db);
   const timestamp = nowIso();
   const updates: string[] = ["status = ?", "updated_at = ?"];
   const binds: unknown[] = [input.status, timestamp];
@@ -656,7 +656,7 @@ export async function createMessage(
   input: CreateMessageInput,
   db?: D1Database,
 ): Promise<InboxMessageRow> {
-  const activeDb = inboxDb(db);
+  const activeDb = await inboxDb(db);
   const timestamp = nowIso();
 
   await activeDb
@@ -722,7 +722,7 @@ export async function createDraft(
   input: CreateDraftInput,
   db?: D1Database,
 ): Promise<InboxDraftRow> {
-  const activeDb = inboxDb(db);
+  const activeDb = await inboxDb(db);
   const draftId = input.id ?? generateDraftId();
   const timestamp = nowIso();
 
@@ -807,7 +807,7 @@ export async function updateDraft(
   input: UpdateDraftInput,
   db?: D1Database,
 ): Promise<InboxDraftRow | null> {
-  const activeDb = inboxDb(db);
+  const activeDb = await inboxDb(db);
   const updates: string[] = ["updated_at = ?"];
   const binds: unknown[] = [nowIso()];
 
@@ -912,7 +912,7 @@ export async function createEvent(
   input: CreateEventInput,
   db?: D1Database,
 ): Promise<ThreadEventRow> {
-  const activeDb = inboxDb(db);
+  const activeDb = await inboxDb(db);
   const timestamp = input.timestamp ?? nowIso();
 
   const eventResult = await activeDb
@@ -970,7 +970,7 @@ export async function findStaleAdmittedThreads(
   staleThresholdMs: number,
   limit?: number,
 ): Promise<InboxThreadRow[]> {
-  const activeDb = inboxDb(db);
+  const activeDb = await inboxDb(db);
   const staleThreshold = new Date(Date.now() - staleThresholdMs).toISOString();
   const effectiveLimit = clampLimit(limit, 20);
 
@@ -1024,7 +1024,7 @@ export async function recordAdmission(
   input: RecordAdmissionInput,
   db?: D1Database,
 ): Promise<AdmissionOutcomeRow> {
-  const activeDb = inboxDb(db);
+  const activeDb = await inboxDb(db);
   const insertResult = await activeDb
     .prepare(
       `

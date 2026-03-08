@@ -10,8 +10,8 @@ declare global {
   }
 }
 
-export function getInboxDb(): D1Database {
-  const { env } = getCloudflareContext();
+export async function getInboxDb(): Promise<D1Database> {
+  const { env } = await getCloudflareContext({ async: true });
 
   if (!env.RECEPTION_INBOX_DB) {
     throw new Error(
@@ -22,9 +22,9 @@ export function getInboxDb(): D1Database {
   return env.RECEPTION_INBOX_DB;
 }
 
-export function hasInboxDb(): boolean {
+export async function hasInboxDb(): Promise<boolean> {
   try {
-    const { env } = getCloudflareContext();
+    const { env } = await getCloudflareContext({ async: true });
     return !!env.RECEPTION_INBOX_DB;
   } catch {
     return false;

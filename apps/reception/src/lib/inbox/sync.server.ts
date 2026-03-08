@@ -788,7 +788,7 @@ export async function syncInbox(
 ): Promise<SyncInboxResult> {
   const mailboxKey = input.mailboxKey ?? DEFAULT_MAILBOX_KEY;
   const rescanWindowDays = input.rescanWindowDays ?? DEFAULT_RESCAN_WINDOW_DAYS;
-  const db = getInboxDb();
+  const db = await getInboxDb();
   const checkpoint = await getInboxSyncCheckpoint(mailboxKey, db);
   const profile = await getGmailProfile();
   const mailboxEmail = profile.emailAddress.toLowerCase();

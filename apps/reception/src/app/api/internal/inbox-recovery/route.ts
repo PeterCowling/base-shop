@@ -48,7 +48,7 @@ export async function POST(request: Request) {
     // Run recovery
     const staleHours = parseEnvNumber(cfEnv.INBOX_RECOVERY_STALE_HOURS, DEFAULT_STALE_HOURS);
     const staleThresholdMs = staleHours * 60 * 60 * 1000;
-    const db = getInboxDb();
+    const db = await getInboxDb();
 
     const result = await recoverStaleThreads({
       db,

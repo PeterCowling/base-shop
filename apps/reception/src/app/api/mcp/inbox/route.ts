@@ -13,6 +13,8 @@ import {
 
 import { requireStaffAuth } from "../_shared/staff-auth";
 
+export const dynamic = "force-dynamic";
+
 function parseNumberParam(value: string | null, fallback: number): number {
   if (!value) {
     return fallback;

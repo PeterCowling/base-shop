@@ -329,7 +329,6 @@ export function ImageDropZone({
           ? "cursor-pointer hover:border-gate-accent hover:bg-gate-accent-soft"
           : "cursor-not-allowed opacity-50"
       }`}
-      // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
       data-testid={testId ?? "image-drop-zone"}
     >
       <UploadIllustration />

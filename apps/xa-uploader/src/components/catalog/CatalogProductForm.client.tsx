@@ -444,8 +444,10 @@ export function CatalogProductForm({
       draft.publishState !== "live");
   const {
     fileInputRef,
+    fileInputRef2,
     previews,
     dragOver,
+    dragOver2,
     uploadStatus,
     uploadError,
     pendingPreviewUrl,
@@ -455,6 +457,10 @@ export function CatalogProductForm({
     handleDragLeave,
     handleDrop,
     handleFileInput,
+    handleDragOver2,
+    handleDragLeave2,
+    handleDrop2,
+    handleFileInput2,
     handleRemoveImage,
     handleMakeMainImage,
     handleReorderImage,
@@ -571,6 +577,35 @@ export function CatalogProductForm({
               fieldErrors={fieldErrors}
               onChange={onChangeDraft}
             />
+          ) : null}
+
+          {imageEntries.length > 0 ? (
+            <>
+              <ImageDropZone
+                canUpload={canUpload}
+                isUploading={isUploading}
+                dragOver={dragOver2}
+                hasImages={true}
+                fileInputRef={fileInputRef2}
+                onDragOver={handleDragOver2}
+                onDragLeave={handleDragLeave2}
+                onDrop={handleDrop2}
+                onFileInput={handleFileInput2}
+                // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+                testId="image-drop-zone-additional"
+                t={t}
+              />
+              <UploadStatusMessages
+                hasSlug={true}
+                pendingPreviewUrl={null}
+                uploadStatus={uploadStatus}
+                uploadError={uploadError}
+                autosaveInlineMessage={null}
+                autosaveStatus={autosaveStatus}
+                fieldErrors={{}}
+                t={t}
+              />
+            </>
           ) : null}
 
           <AdditionalImagesPanel

@@ -1,0 +1,11 @@
+{
+  "schema_version": "build-event.v1",
+  "plan_slug": "reception-contrast-and-visual-polish",
+  "business": "BRIK",
+  "emitted_at": "2026-03-08T00:00:00.000Z",
+  "why": "Reception staff use the app all day in dark mode. Secondary data in table rows was nearly invisible, causing friction during check-in and potential errors during shift handovers.",
+  "intended_outcome_type": "operational",
+  "intended_outcome_statement": "All secondary text, status icons, and action button labels in the reception dark mode are legible at a glance without straining. Staff can scan check-in rows and read bar product prices from normal desk distance.",
+  "source": "operator",
+  "completed_at": "2026-03-08"
+}

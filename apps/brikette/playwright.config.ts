@@ -6,6 +6,46 @@
 import { defineConfig, devices } from "@playwright/test";
 
 const BASE_URL = process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3000";
+const PROJECT_SET = process.env.BRIKETTE_PLAYWRIGHT_PROJECT_SET ?? "chromium";
+
+const buildProjects = () => {
+  switch (PROJECT_SET) {
+    case "chromium":
+      return [
+        {
+          name: "chromium",
+          use: { ...devices["Desktop Chrome"] },
+        },
+      ];
+    case "cross-browser":
+      return [
+        {
+          name: "chromium",
+          use: { ...devices["Desktop Chrome"] },
+        },
+        {
+          name: "firefox",
+          use: { ...devices["Desktop Firefox"] },
+        },
+        {
+          name: "webkit",
+          use: { ...devices["Desktop Safari"] },
+        },
+        {
+          name: "mobile-chrome",
+          use: { ...devices["Pixel 7"] },
+        },
+        {
+          name: "mobile-safari",
+          use: { ...devices["iPhone 13"] },
+        },
+      ];
+    default:
+      throw new Error(
+        `Unsupported BRIKETTE_PLAYWRIGHT_PROJECT_SET="${PROJECT_SET}". Expected "chromium" or "cross-browser".`,
+      );
+  }
+};
 
 export default defineConfig({
   testDir: "./e2e",
@@ -18,10 +58,5 @@ export default defineConfig({
     trace: "on-first-retry",
     screenshot: "only-on-failure",
   },
-  projects: [
-    {
-      name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
-    },
-  ],
+  projects: buildProjects(),
 });

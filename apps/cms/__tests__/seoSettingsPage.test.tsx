@@ -51,6 +51,24 @@ const seoAuditMock = jest.fn((_props: any) => <div data-cy="seo-audit" />);
 const seoProgressMock = jest.fn((_props?: any) => <div />);
 const sitemapStatusMock = jest.fn(() => <div data-cy="sitemap-status" />);
 
+jest.mock("next/dynamic", () => {
+  const dynamic = (importer: unknown) => {
+    const key =
+      typeof importer === "function"
+        ? (importer as () => unknown).toString()
+        : String(importer);
+
+    if (key.includes("SeoEditor")) return (props: any) => seoEditorMock(props);
+    if (key.includes("SeoAuditPanel")) return (props: any) => seoAuditMock(props);
+
+    return () => null;
+  };
+
+  (dynamic as any).__esModule = true;
+  (dynamic as any).default = dynamic;
+  return dynamic;
+});
+
 jest.mock("../src/app/cms/shop/[shop]/settings/seo/AiCatalogSettings", () => ({
   __esModule: true,
   default: (props: any) => aiCatalogMock(props),
@@ -71,37 +89,9 @@ jest.mock("../src/app/cms/shop/[shop]/settings/seo/SitemapStatusPanel", () => ({
   default: () => sitemapStatusMock(),
 }));
 
-function mockNextDynamic() {
-  // Other CMS tests may import `next/dynamic` before this test runs (Jest shares a
-  // module registry across test files in a single invocation). To keep this test
-  // deterministic, we apply the mock inside an isolated module load below.
-  jest.doMock("next/dynamic", () => {
-    const dynamic = (importer: unknown) => {
-      const key =
-        typeof importer === "function"
-          ? (importer as () => unknown).toString()
-          : String(importer);
-
-      if (key.includes("SeoEditor")) return (props: any) => seoEditorMock(props);
-      if (key.includes("SeoAuditPanel")) return (props: any) => seoAuditMock(props);
-
-      return () => null;
-    };
-
-    (dynamic as any).__esModule = true;
-    (dynamic as any).default = dynamic;
-    return dynamic;
-  });
-}
-
 async function loadSeoSettingsPage() {
-  let Page: unknown;
-  await jest.isolateModulesAsync(async () => {
-    mockNextDynamic();
-    const mod = await import("../src/app/cms/shop/[shop]/settings/seo/page");
-    Page = mod.default;
-  });
-  return Page as any;
+  const mod = await import("../src/app/cms/shop/[shop]/settings/seo/page");
+  return mod.default as any;
 }
 
 describe("SeoSettingsPage", () => {

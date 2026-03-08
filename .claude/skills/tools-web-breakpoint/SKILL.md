@@ -81,6 +81,22 @@ Every issue must include: breakpoint, route, repro steps, expected vs actual, se
 
 ## Workflow
 
+### 0) Write QA Inventory (Required Gate)
+
+Before any browser is opened, write a QA inventory. **Do not start the sweep until this inventory is complete.**
+
+Build the inventory from three sources:
+
+1. **User requirements** — what was explicitly requested or described as the test scope.
+2. **Features being tested** — every meaningful user-facing control, mode switch, or interactive behaviour visible on the routes under test.
+3. **Claims to sign off** — every user-visible claim you intend to make in the final report.
+
+For each item, note the intended functional check and the visual state where the claim must be verified.
+
+Add **at least 2 exploratory / off-happy-path scenarios** — interactions not on the scripted path that could expose fragile behaviour (e.g. resizing the viewport mid-interaction, rapidly toggling a drawer, submitting an empty form, tabbing through all focusable controls).
+
+The inventory is the shared coverage list for both the Functional QA Pass and the Visual QA Pass. Copy it into the report's `## QA Inventory` section.
+
 ### 1) Intake and Sweep Plan
 
 1. Confirm breakpoint list and URL.
@@ -93,17 +109,35 @@ Every issue must include: breakpoint, route, repro steps, expected vs actual, se
 ### 2) Execute Breakpoint Matrix
 
 For each width `W`:
+
 1. Set viewport to `W x 900`.
-2. For each target route:
-   - Navigate and wait for ready state (`network idle` or app-ready selector).
-   - Capture baseline full-page screenshot.
-   - Run overflow/reflow checks.
-   - Trigger interactive states where available:
-     - mobile nav/hamburger
-     - one modal/drawer/popover
-     - one accordion/dropdown
-     - key forms/tables/cards
-   - Capture focused screenshot(s) for any detected issue.
+   - **For mobile breakpoints (W ≤ 480px):** also configure the browser context with `isMobile: true` and `hasTouch: true` to enable realistic touch-event simulation and mobile user-agent behaviour. These flags must be set in the browser context options, not only via viewport size.
+2. For each target route, run the **Functional QA Pass** first, then the **Visual QA Pass**.
+
+#### Functional QA Pass
+
+Use real user controls for all checks — keyboard, mouse click, touch events (at W ≤ 480px). Browser `evaluate()` calls may inspect or stage state but **do not count as functional signoff input**.
+
+- Navigate and wait for ready state (`network idle` or app-ready selector).
+- Run overflow/reflow checks (see §4 Detection Heuristics).
+- Trigger interactive states using real input:
+  - mobile nav/hamburger — open and close via tap/click
+  - one modal/drawer/popover — open, interact, verify close control is reachable, close
+  - one accordion/dropdown — cycle through states: open → closed → open
+  - key forms/tables/cards — attempt the primary action or submission
+- For reversible controls or stateful toggles in the QA inventory: test the full cycle (initial state → changed state → returned to initial).
+- Work through every item in the QA inventory. If a new control or state is discovered, add it to the inventory before continuing.
+
+#### Visual QA Pass
+
+Run this as a separate, explicit pass after the Functional QA Pass is complete.
+
+- Capture baseline full-page screenshot.
+- Inspect the initial viewport before scrolling — confirm the core content and primary CTA are clearly visible without clipping.
+- Inspect all required visible regions (nav, hero/content area, primary CTA, modals/drawers in settled state, footer).
+- Inspect at least one in-transition state (drawer opening, modal appearing) when motion is part of the experience.
+- Judge aesthetic quality as well as correctness — the UI should feel intentional and coherent at this breakpoint.
+- Capture focused screenshot(s) for any detected issue, in addition to the full-page baseline.
 
 ### 3) Failure Taxonomy
 
@@ -139,6 +173,14 @@ Flag an issue if any condition is true:
 - Sticky/fixed layers overlap first actionable content and prevent normal interaction
 - Modal/drawer cannot be fully navigated or closed on the current viewport
 
+**Per-region viewport fit check (required before signoff):**
+
+For each critical region — navigation bar, primary CTA, modal or drawer close button, and form submit button — run `getBoundingClientRect()` and verify:
+- `rect.right ≤ viewportWidth` and `rect.left ≥ 0` (no horizontal bleed)
+- `rect.bottom ≤ viewportHeight` (visible without scroll, for above-the-fold regions)
+
+Document-level scroll metrics alone (`scrollWidth > clientWidth`) are not sufficient. Internal panes, fixed-height shells, and hidden-overflow containers can clip required UI while page-level scroll checks still pass.
+
 Noise-control rules (do not over-report):
 
 - Ignore <=2px overflow caused by rounding/subpixel rendering.
@@ -150,6 +192,14 @@ Noise-control rules (do not over-report):
 - **S1 Blocker**: core action impossible (submit, checkout, navigation, close modal)
 - **S2 Major**: primary content/control impaired or misleading; workaround exists but UX is materially degraded
 - **S3 Minor**: cosmetic/alignment issue with preserved usability
+
+### 5.5) Exploratory Pass
+
+After the scripted breakpoint matrix is complete, perform an unscripted exploratory pass on each route before writing the report.
+
+- Allow ~30–90 seconds of free-form interaction: resize the viewport mid-session, navigate via keyboard only, tap in unexpected areas, attempt edge-case inputs (empty forms, long strings, rapid toggling).
+- If a new control, state, or failure mode is discovered: add it to the QA inventory and include it in the report.
+- The exploratory pass is not scored separately — findings feed into the main Issues list with the same severity model (§5).
 
 ### 6) Report and Evidence
 
@@ -182,10 +232,16 @@ Return:
 - issue totals by severity
 - path to `breakpoint-sweep-report.md`
 - explicit assumptions and uncovered scope gaps
+- **Negative confirmation** — for each defect class, state whether it was checked and not found:
+  - A. Viewport overflow (unexpected horizontal scroll at page level)
+  - B. Container overflow (component-level clipping or bleed beyond parent bounds)
+  - C. Reflow correctness (columns not stacking, fixed widths, wrapping failures, alignment jitter)
+  - D. Fixed layers / overlays (sticky headers obscuring content, unreachable modal/drawer close)
+  - E. Density / long-content stress (long text, dense tables, or tag lists pushing controls off-screen)
 
 If no issues are found, explicitly state:
 
-`No responsive layout failures detected across tested breakpoint/route matrix.`
+`No responsive layout failures detected across tested breakpoint/route matrix. Defect classes A–E all checked; no failures found.`
 - If issues were found and fixed via `/lp-do-build`: **re-run this sweep** to confirm findings are resolved before routing to `tools-refactor`.
 
 ## Integration

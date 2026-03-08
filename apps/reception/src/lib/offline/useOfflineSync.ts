@@ -62,6 +62,21 @@ export function useOfflineSync({
     }
   }, [online, autoSync, database, triggerSync]);
 
+  // While online, keep retrying queued work on an interval.
+  useEffect(() => {
+    if (!autoSync || !online || !database || pendingCount === 0) {
+      return;
+    }
+
+    void triggerSync();
+
+    const interval = setInterval(() => {
+      void triggerSync();
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [autoSync, online, database, pendingCount, triggerSync]);
+
   // Poll pending count
   useEffect(() => {
     refreshPendingCount();

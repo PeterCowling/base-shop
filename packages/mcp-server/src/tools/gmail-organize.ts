@@ -46,6 +46,31 @@ export const organizeInboxSchema = z.object({
   dryRun: z.boolean().optional().default(false),
 });
 
+const DATE_ONLY_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+
+function parseSpecificStartDate(value: string): Date | null {
+  const match = DATE_ONLY_PATTERN.exec(value);
+  if (!match) {
+    return null;
+  }
+
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const parsed = new Date(year, month - 1, day);
+
+  if (
+    Number.isNaN(parsed.getTime()) ||
+    parsed.getFullYear() !== year ||
+    parsed.getMonth() !== month - 1 ||
+    parsed.getDate() !== day
+  ) {
+    return null;
+  }
+
+  return parsed;
+}
+
 // =============================================================================
 // Startup Recovery
 // =============================================================================
@@ -112,14 +137,13 @@ export async function handleOrganizeInbox(
   args: unknown
 ): Promise<ReturnType<typeof jsonResult> | ReturnType<typeof errorResult>> {
   const { testMode, specificStartDate, limit, dryRun } = organizeInboxSchema.parse(args);
-
   let startDateString: string | null = null;
   let tomorrowDateString: string | null = null;
 
   if (specificStartDate) {
-    const parsed = new Date(specificStartDate);
-    if (Number.isNaN(parsed.getTime())) {
-      return errorResult(`Invalid specificStartDate: ${specificStartDate}`);
+    const parsed = parseSpecificStartDate(specificStartDate);
+    if (!parsed) {
+      return errorResult(`Invalid specificStartDate: ${specificStartDate}. Expected YYYY-MM-DD calendar date.`);
     }
     startDateString = formatGmailQueryDate(parsed);
     tomorrowDateString = formatGmailQueryDate(new Date(Date.now() + 24 * 60 * 60 * 1000));

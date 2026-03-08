@@ -8,8 +8,8 @@
  * - Deterministic tiebreakers (miss desc → upstream_priority_order asc → metric id lexical)
  */
 
-import type { BottleneckDiagnosis,FunnelMetricsInput } from '../bottleneck-detector';
-import { identifyBottleneck } from '../bottleneck-detector';
+import type { BottleneckDiagnosis,FunnelMetricsInput } from '../diagnostics/bottleneck-detector';
+import { identifyBottleneck } from '../diagnostics/bottleneck-detector';
 
 describe('identifyBottleneck', () => {
   // TC-01: Single clear bottleneck — CAC 80% worse → SELL-01/cac critical

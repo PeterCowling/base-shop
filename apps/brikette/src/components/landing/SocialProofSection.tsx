@@ -26,11 +26,13 @@ const FALLBACK_SOCIAL_PROOF_TITLE =
 const FALLBACK_SOCIAL_PROOF_SUBTITLE =
   // i18n-exempt -- BRIK-1267 [ttl=2026-12-31] fallback copy for missing locale bundles.
   "Top ratings and recent reviews from travelers.";
+const EXACT_UNRESOLVED_RATINGS_KEYS = new Set(["countReviews", "snapshotAsOf"]);
 
 function resolveTranslatedCopy(value: unknown, fallback: string): string {
   if (typeof value !== "string") return fallback;
   const trimmed = value.trim();
   if (!trimmed) return fallback;
+  if (EXACT_UNRESOLVED_RATINGS_KEYS.has(trimmed)) return fallback;
   if (I18N_KEY_TOKEN_PATTERN.test(trimmed)) return fallback;
   return trimmed;
 }

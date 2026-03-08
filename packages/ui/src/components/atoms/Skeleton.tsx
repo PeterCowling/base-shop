@@ -4,9 +4,10 @@ import { cn } from "../../utils/style";
 
 export type SkeletonProps = React.HTMLAttributes<HTMLDivElement>;
 
-export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
-  ({ className, ...props }, ref) => (
+export function Skeleton({ className, ref, ...props }: SkeletonProps & { ref?: React.Ref<HTMLDivElement> }) {
+  return (
     <div
+      data-slot="skeleton"
       ref={ref}
       className={cn(
         "bg-muted animate-pulse motion-reduce:animate-none rounded-md",
@@ -14,6 +15,5 @@ export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
       )}
       {...props}
     />
-  )
-);
-Skeleton.displayName = "Skeleton";
+  );
+}

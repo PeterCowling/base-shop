@@ -70,7 +70,7 @@ describe("ApartmentBookContent Octorate URL matrix", () => {
   });
 
   function setPaxToThree(): void {
-    fireEvent.click(screen.getByRole("button", { name: "bookingControls.increaseGuests" }));
+    fireEvent.click(screen.getByRole("button", { name: "Increase guests" }));
   }
 
   it.each([

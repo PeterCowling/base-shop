@@ -8,6 +8,11 @@
 import React from "react";
 
 import { ensureTrailingSlash } from "@acme/seo/metadata";
+import {
+  findPrivateRoomChildRouteIdBySlug,
+  getPrivateRoomChildSlug,
+  type PrivateRoomChildRouteId,
+} from "@acme/ui/config/privateRoomChildSlugs";
 
 import { GUIDE_SLUG_LOOKUP_BY_LANG,type GuideKey, guideNamespace,guideSlug } from "@/guides/slugs";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
@@ -101,6 +106,7 @@ type RouteContext = {
   firstSeg: string;
   slugKey: SlugKey | null;
   guideKey: GuideKey | null;
+  privateRoomChildRouteId: PrivateRoomChildRouteId | null;
   remainder: string;
 };
 
@@ -129,6 +135,8 @@ function buildLocalizedSuffix(targetLang: AppLanguage, context: RouteContext): s
     : context.firstSeg;
   const translatedRest = context.guideKey
     ? `/${guideSlug(targetLang, context.guideKey)}`
+    : context.privateRoomChildRouteId
+    ? `/${getPrivateRoomChildSlug(context.privateRoomChildRouteId, targetLang)}`
     : context.remainder;
 
   if (!translatedFirst && !translatedRest) return "";
@@ -179,7 +187,17 @@ export function buildLinks({
   const remainder = afterFirst ? `/${afterFirst}` : "";
   // Assistance guides are now in guideLookup via slug parity (GUIDE_SLUG_OVERRIDES)
   const guideKey = resolveGuideKey(lang, slugKey, afterFirst);
-  const routeContext: RouteContext = { firstSeg, slugKey, guideKey, remainder };
+  const privateRoomChildRouteId =
+    slugKey === "apartment" && segments.length === 2
+      ? (findPrivateRoomChildRouteIdBySlug(segments[1] ?? "", lang) ?? null)
+      : null;
+  const routeContext: RouteContext = {
+    firstSeg,
+    slugKey,
+    guideKey,
+    privateRoomChildRouteId,
+    remainder,
+  };
 
   /* ── hreflang alternates ── */
   const supportedLanguages = (Array.isArray(supportedLngs) ? supportedLngs : ["en"]) as string[];

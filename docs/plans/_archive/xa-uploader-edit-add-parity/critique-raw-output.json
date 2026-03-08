@@ -1,0 +1,26 @@
+{
+  "round": 2,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/xa-uploader-edit-add-parity/plan.md",
+      "line": "174",
+      "message": "TASK-02 directs using `disabled={!!collDefaults?.field}` for the new taxonomy inputs; this keeps defaulted fields read-only and can fail the core goal that these fields be editable."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/xa-uploader-edit-add-parity/plan.md",
+      "line": "26",
+      "message": "The plan has no explicit test task, and acceptance only requires typecheck/lint (lines 230-231). These fixes are behavior/state-driven UI changes; without targeted tests, regression risk stays high."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/xa-uploader-edit-add-parity/plan.md",
+      "line": "16",
+      "message": "`Overall-confidence` is `87%`, but the document's own calculation is `85%` (lines 241-245)."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 7
+}

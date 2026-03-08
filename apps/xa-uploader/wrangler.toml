@@ -1,4 +1,5 @@
 name = "xa-uploader"
+account_id = "9e2c24d2db8e38f743f0ad6f9dfcfd65"
 main = ".open-next/worker.js"
 compatibility_date = "2025-06-20"
 compatibility_flags = ["nodejs_compat"]
@@ -22,6 +23,26 @@ binding = "XA_UPLOADER_KV"
 id = "REPLACE_WITH_PROD_NS_ID"
 
 # ============================================================================
+# R2 BUCKET SETUP (required for image upload)
+#
+# Create bucket before deploying:
+#   wrangler r2 bucket create xa-media
+#
+# Enable public access via Cloudflare dashboard:
+#   Storage & Databases → R2 → xa-media → Settings → Public access → Enable
+#
+# Replace the placeholder bucket name below if using a different name.
+# ============================================================================
+
+[[r2_buckets]]
+binding = "XA_MEDIA_BUCKET"
+bucket_name = "xa-media"
+
+[[services]]
+binding = "XA_CATALOG_CONTRACT_SERVICE"
+service = "xa-drop-worker"
+
+# ============================================================================
 # REQUIRED SECRETS — never put values in this file.
 # Set via `wrangler secret put` for production; add --env preview for preview.
 #
@@ -35,7 +56,10 @@ id = "REPLACE_WITH_PROD_NS_ID"
 #
 # Runtime required (catalog sync returns 503 "unconfigured" if missing):
 #   wrangler secret put XA_CATALOG_CONTRACT_BASE_URL
+#   wrangler secret put XA_CATALOG_CONTRACT_READ_TOKEN
 #   wrangler secret put XA_CATALOG_CONTRACT_WRITE_TOKEN
+#   wrangler secret put XA_B_DEPLOY_HOOK_URL
+#   wrangler secret put XA_UPLOADER_DEPLOY_DRAIN_TOKEN
 #
 # Optional (vendor mode only):
 #   wrangler secret put XA_UPLOADER_VENDOR_TOKEN
@@ -58,6 +82,7 @@ NEXT_PUBLIC_XA_UPLOADER_SUBMISSION_MAX_MB = "25"
 
 # Deployment mode — set to "vendor" to enable vendor mode.
 XA_UPLOADER_MODE = ""
+XA_UPLOADER_LOCAL_FS_DISABLED = "1"
 # Trusted on Cloudflare Workers to use CF-Connecting-IP for rate limiting.
 XA_TRUST_PROXY_IP_HEADERS = "1"
 # Optional uploader ingress allowlist (comma-separated IPs).
@@ -67,6 +92,9 @@ XA_TRUST_PROXY_IP_HEADERS = "1"
 # XA_UPLOADER_SYNC_VALIDATE_TIMEOUT_MS = "45000"
 # XA_UPLOADER_SYNC_TIMEOUT_MS = "300000"
 # XA_UPLOADER_SYNC_LOG_MAX_BYTES = "131072"
+# XA_B_DEPLOY_HOOK_TIMEOUT_MS = "15000"
+# XA_B_DEPLOY_HOOK_COOLDOWN_SECONDS = "900"
+# XA_B_DEPLOY_HOOK_REQUIRED = "1"
 # XA_UPLOADER_EXPOSE_SYNC_LOGS = ""
 # XA_UPLOADER_MAX_FILES_SCANNED = "10000"
 # XA_UPLOADER_MAX_FILES_PER_SPEC = "500"
@@ -84,7 +112,15 @@ name = "xa-uploader-preview"
 
 [[env.preview.kv_namespaces]]
 binding = "XA_UPLOADER_KV"
-id = "REPLACE_WITH_PREVIEW_NS_ID"
+id = "3b9e3f04a9de4762902e6091274bd494"
+
+[[env.preview.r2_buckets]]
+binding = "XA_MEDIA_BUCKET"
+bucket_name = "xa-media-preview"
+
+[[env.preview.services]]
+binding = "XA_CATALOG_CONTRACT_SERVICE"
+service = "xa-drop-worker-preview"
 
 [env.preview.vars]
 # NEXT_PUBLIC vars — see top-level [vars] for build-time inlining note.
@@ -95,12 +131,19 @@ NEXT_PUBLIC_XA_UPLOADER_R2_UPLOAD_URL = ""
 NEXT_PUBLIC_XA_UPLOADER_SUBMISSION_MAX_MB = "25"
 
 XA_UPLOADER_MODE = ""
+XA_UPLOADER_LOCAL_FS_DISABLED = "1"
 XA_TRUST_PROXY_IP_HEADERS = "1"
+# Preview deploy trigger endpoint for xa-b rebuilds after catalog publish.
+# Token remains secret via XA_B_DEPLOY_HOOK_TOKEN.
+# Configure XA_B_DEPLOY_HOOK_URL as a per-environment secret in Cloudflare.
 # XA_UPLOADER_ALLOWED_IPS = "203.0.113.10,198.51.100.15"
 # XA_CATALOG_CONTRACT_TIMEOUT_MS = "20000"
 # XA_UPLOADER_SYNC_VALIDATE_TIMEOUT_MS = "45000"
 # XA_UPLOADER_SYNC_TIMEOUT_MS = "300000"
 # XA_UPLOADER_SYNC_LOG_MAX_BYTES = "131072"
+# XA_B_DEPLOY_HOOK_TIMEOUT_MS = "15000"
+# XA_B_DEPLOY_HOOK_COOLDOWN_SECONDS = "900"
+# XA_B_DEPLOY_HOOK_REQUIRED = "0"
 # XA_UPLOADER_EXPOSE_SYNC_LOGS = ""
 # XA_UPLOADER_MAX_FILES_SCANNED = "10000"
 # XA_UPLOADER_MAX_FILES_PER_SPEC = "500"

@@ -3,7 +3,9 @@ import { act, renderHook } from "@testing-library/react";
 import { useFirebaseDatabase } from "../../../services/useFirebase";
 import useActivitiesMutations from "../useActivitiesMutations";
 import useArchiveBooking from "../useArchiveBooking";
-import useCancelBooking from "../useCancelBooking";
+import useCancelBooking, {
+  CancellationPartialFailureError,
+} from "../useCancelBooking";
 
 // Mock dependencies
 jest.mock("../useArchiveBooking");
@@ -46,15 +48,13 @@ describe("useCancelBooking", () => {
 
     useActivitiesMutationsMock.mockReturnValue({
       addActivity: mockAddActivity,
-       
       addActivities: jest.fn() as any,
-       
       deleteActivity: jest.fn() as any,
       loading: false,
       error: null,
     });
 
-    useFirebaseDatabaseMock.mockReturnValue({} as any);  
+    useFirebaseDatabaseMock.mockReturnValue({} as any);
 
     mockArchiveBooking.mockResolvedValue(undefined);
     mockAddActivity.mockResolvedValue({ success: true });
@@ -73,8 +73,9 @@ describe("useCancelBooking", () => {
 
     const { result } = renderHook(() => useCancelBooking());
 
+    let cancelResult;
     await act(async () => {
-      await result.current.cancelBooking("BOOK123", "customer request");
+      cancelResult = await result.current.cancelBooking("BOOK123", "customer request");
     });
 
     // Verify archiveBooking was called once
@@ -89,6 +90,12 @@ describe("useCancelBooking", () => {
     expect(mockAddActivity).toHaveBeenCalledTimes(2);
     expect(mockAddActivity).toHaveBeenCalledWith("occupant1", 27);
     expect(mockAddActivity).toHaveBeenCalledWith("occupant2", 27);
+
+    expect(cancelResult).toMatchObject({
+      success: true,
+      archived: true,
+      activityFailures: [],
+    });
   });
 
   // TC-02: guestsByBooking data intact for both occupants after cancellation
@@ -154,8 +161,8 @@ describe("useCancelBooking", () => {
     expect(mockAddActivity).not.toHaveBeenCalled();
   });
 
-  // TC-05: Error during activity log → operation continues (partial success)
-  it("continues with remaining activities if one activity log fails", async () => {
+  // TC-05: Error during activity log → operation throws explicit partial-failure error
+  it("throws explicit partial failure if one or more activity logs fail", async () => {
     mockGet.mockResolvedValue({
       exists: () => true,
       val: () => ({
@@ -171,13 +178,15 @@ describe("useCancelBooking", () => {
 
     const { result } = renderHook(() => useCancelBooking());
 
-    // Should not throw - partial success is acceptable
-    await act(async () => {
-      await result.current.cancelBooking("BOOK123");
-    });
+    await expect(
+      act(async () => {
+        await result.current.cancelBooking("BOOK123");
+      })
+    ).rejects.toBeInstanceOf(CancellationPartialFailureError);
 
     expect(mockArchiveBooking).toHaveBeenCalledTimes(1);
     expect(mockAddActivity).toHaveBeenCalledTimes(2);
+    expect(result.current.error).toBeInstanceOf(CancellationPartialFailureError);
   });
 
   // TC-06: Multi-occupant booking cancellation → activities written with unique activityIds (no collision)

@@ -9,6 +9,17 @@ export interface FirebaseEnv {
   CF_FIREBASE_API_KEY?: string;
 }
 
+export interface FirebaseWithEtag<T> {
+  data: T | null;
+  etag: string | null;
+}
+
+export interface FirebaseConditionalSetResult<T> {
+  applied: boolean;
+  data: T | null;
+  etag: string | null;
+}
+
 export class FirebaseRest {
   private databaseUrl: string;
   private apiKey?: string;
@@ -49,6 +60,27 @@ export class FirebaseRest {
     return data;
   }
 
+  async getWithEtag<T = unknown>(
+    path: string,
+    params?: Record<string, string>,
+  ): Promise<FirebaseWithEtag<T>> {
+    const url = this.buildUrl(path, params);
+    const response = await fetch(url, {
+      headers: {
+        'X-Firebase-ETag': 'true',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Firebase GET (etag) failed: ${response.status} ${response.statusText}`);
+    }
+
+    return {
+      data: await response.json() as T | null,
+      etag: response.headers.get('etag'),
+    };
+  }
+
   async set<T = unknown>(path: string, data: T): Promise<void> {
     const url = this.buildUrl(path);
     const response = await fetch(url, {
@@ -60,6 +92,46 @@ export class FirebaseRest {
     if (!response.ok) {
       throw new Error(`Firebase SET failed: ${response.status} ${response.statusText}`);
     }
+  }
+
+  async setIfMatch<T = unknown>(
+    path: string,
+    data: T,
+    etag: string,
+  ): Promise<FirebaseConditionalSetResult<T>> {
+    const url = this.buildUrl(path);
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'If-Match': etag,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.ok) {
+      return {
+        applied: true,
+        data,
+        etag: response.headers.get('etag'),
+      };
+    }
+
+    if (response.status === 412) {
+      let currentData: T | null = null;
+      try {
+        currentData = await response.json() as T | null;
+      } catch {
+        currentData = null;
+      }
+      return {
+        applied: false,
+        data: currentData,
+        etag: response.headers.get('etag'),
+      };
+    }
+
+    throw new Error(`Firebase conditional SET failed: ${response.status} ${response.statusText}`);
   }
 
   async update<T = unknown>(path: string, data: Partial<T>): Promise<void> {

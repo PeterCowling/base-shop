@@ -1,7 +1,12 @@
 import {
+  buildBroadcastChannelId,
   buildDirectMessageChannelId,
+  buildStaffThreadChannelId,
   directMessageChannelIncludesGuest,
+  getPrimeMessageChannelKind,
+  isBroadcastChannelId,
   isDirectMessageChannelId,
+  isStaffThreadChannelId,
 } from '../directMessageChannel';
 
 describe('directMessageChannel', () => {
@@ -17,6 +22,22 @@ describe('directMessageChannel', () => {
     expect(isDirectMessageChannelId('dm_guest_abc_guest_xyz')).toBe(true);
     expect(isDirectMessageChannelId('activity_123')).toBe(false);
     expect(isDirectMessageChannelId(null)).toBe(false);
+  });
+
+  it('builds and detects staff-thread channel IDs', () => {
+    const channelId = buildStaffThreadChannelId('thread_123');
+
+    expect(channelId).toBe('staff_thread_thread_123');
+    expect(isStaffThreadChannelId(channelId)).toBe(true);
+    expect(getPrimeMessageChannelKind(channelId)).toBe('staff_thread');
+  });
+
+  it('builds and detects broadcast channel IDs', () => {
+    const channelId = buildBroadcastChannelId('whole_hostel');
+
+    expect(channelId).toBe('broadcast_whole_hostel');
+    expect(isBroadcastChannelId(channelId)).toBe(true);
+    expect(getPrimeMessageChannelKind(channelId)).toBe('broadcast');
   });
 
   it('checks whether a direct channel includes a specific guest UUID', () => {

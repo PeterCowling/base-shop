@@ -130,23 +130,23 @@ Load only the relevant module file(s):
 - `website-upgrade-backlog` alias: `modules/outcome-a-website-upgrade.md`
 - `startup-loop-gap-fill` alias: `modules/outcome-a-loop-gap.md` (output path determined by trigger type inside the module)
 
-## Phase 5.5: Scope Simulation
+## Phase 5.5: Scope Rehearsal
 
 Load and follow: `../_shared/simulation-protocol.md`
 
-Run a scope simulation of the investigation completed in Phase 5. This is not a code execution trace — it is a scope-gap check. Walk through each evidence area identified in the investigation and apply the scope simulation checklist defined in the shared protocol (5 categories: concrete investigation path, investigation ordering, system boundary coverage, circular investigation dependency, missing domain coverage).
+Run a scope rehearsal of the investigation completed in Phase 5. This is not a code execution trace — it is a scope-gap check. Walk through each evidence area identified in the investigation and apply the scope rehearsal checklist defined in the shared protocol (5 categories: concrete investigation path, investigation ordering, system boundary coverage, circular investigation dependency, missing domain coverage).
 
-Write a `## Simulation Trace` section into the fact-find draft (before persisting in Phase 6) with one row per scope area:
+Write a `## Rehearsal Trace` section into the fact-find draft (before persisting in Phase 6) with one row per scope area:
 
 | Scope Area | Coverage Confirmed | Issues Found | Resolution Required |
 |---|---|---|---|
 | <evidence domain or entry point> | Yes / Partial / No | None — or: [Category] [Severity]: description | Yes / No |
 
-Critical findings block Phase 6 until resolved or waived (`Simulation-Critical-Waiver`). Major/Moderate/Minor findings are advisory and proceed to critique.
+Critical findings block Phase 6 until resolved or waived (`Rehearsal-Critical-Waiver`). Major/Moderate/Minor findings are advisory and proceed to critique.
 
 ## Phase 5.6: Scope Signal (Two-Way)
 
-After simulation, classify scope posture using evidence from the investigation:
+After rehearsal, classify scope posture using evidence from the investigation:
 
 - `constrained`: scope is too broad/risky for current evidence or capacity; narrow it.
 - `right-sized`: scope is realistic and appropriately bounded.
@@ -164,6 +164,9 @@ Do not emit `limited-thinking` without explicit evidence that dependencies, risk
 - Output path: `docs/plans/<feature-slug>/fact-find.md`
 - Template: `docs/plans/_templates/fact-find-planning.md`
 - Always include the routing header fields in frontmatter.
+- Dispatch-routed path:
+  - single packet -> write `Dispatch-ID`
+  - bundled work package -> write `Dispatch-IDs` and `Work-Package-Reason`
 - **Canonical artifact name:** `fact-find.md` is the formal loop output artifact for this skill. Required sections and frontmatter fields are defined in `docs/business-os/startup-loop/contracts/loop-output-contracts.md` (Artifact 1). The path above is authoritative; do not store this artifact at any other location.
 - Include `## Scope Signal` in the artifact body:
   - `Signal: <constrained | right-sized | limited-thinking>`
@@ -234,6 +237,7 @@ Status-dependent next action (execute immediately, do not wait for user):
 - [ ] Phase 0 queue check run — matching queued packet confirmed or direct-inject path taken
 - [ ] Access declarations listed and verified (or `None` recorded) before investigation begins
 - [ ] Routing header computed and written to frontmatter
+- [ ] Dispatch-routed metadata written correctly (`Dispatch-ID` for single packet, `Dispatch-IDs` + `Work-Package-Reason` for bundled packet sets)
 - [ ] Only relevant module(s) loaded
 - [ ] Scope signal classified (`constrained`, `right-sized`, or `limited-thinking`) with evidence-backed rationale
 - [ ] `## Outcome Contract` present and populated (dispatch payload or trigger frontmatter; fallback `Why: TBD`, `Source: auto` when unavailable)

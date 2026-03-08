@@ -6,7 +6,7 @@ import {
   buildDispatchId,
   runTrialOrchestrator,
   T1_SEMANTIC_KEYWORDS,
-} from "../lp-do-ideas-trial.js";
+} from "../ideas/lp-do-ideas-trial.js";
 
 // Fixed clock for deterministic dispatch_id generation
 const FIXED_DATE = new Date("2026-02-24T15:30:00.000Z");
@@ -53,6 +53,18 @@ const SOURCE_ELIGIBLE_EVENT: ArtifactDeltaEvent = {
   path: "docs/business-os/strategy/HBAG/insight-log.user.md",
   domain: "STRATEGY",
   changed_sections: ["ICP Definition"],
+};
+
+const MICRO_BUILD_EVENT: ArtifactDeltaEvent = {
+  artifact_id: "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+  business: "BOS",
+  before_sha: "111aaaa",
+  after_sha: "222bbbb",
+  path: "git-diff:HEAD~1..HEAD",
+  location_anchors: ["apps/reception/src/components/catalog/CatalogSyncPanel.client.tsx"],
+  domain: "BOS",
+  changed_sections: ["ux gap", "route change"],
+  evidence_refs: ["git-diff:M:apps/reception/src/components/catalog/CatalogSyncPanel.client.tsx"],
 };
 
 const PACK_EVENT: ArtifactDeltaEvent = {
@@ -320,6 +332,40 @@ describe("runTrialOrchestrator — TC-01: opportunity delta class (T1 match)", (
     expect(packet.cluster_key).toContain(packet.root_event_id);
     expect(packet.cluster_fingerprint).toMatch(/^[a-f0-9]{64}$/);
     expect(packet.lineage_depth).toBe(0);
+  });
+});
+
+describe("runTrialOrchestrator — direct micro-build classification", () => {
+  it("routes bounded UI code signals to lp-do-build with micro_build_ready status", () => {
+    const result = runTrialOrchestrator({
+      mode: "trial",
+      events: [MICRO_BUILD_EVENT],
+      clock: FIXED_CLOCK,
+    });
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+
+    const packet = result.dispatched[0];
+    expect(packet.status).toBe("micro_build_ready");
+    expect(packet.recommended_route).toBe("lp-do-build");
+    expect(packet.provisional_deliverable_family).toBe("code-change");
+  });
+
+  it("derives concrete code location anchors and a non-generic area anchor", () => {
+    const result = runTrialOrchestrator({
+      mode: "trial",
+      events: [MICRO_BUILD_EVENT],
+      clock: FIXED_CLOCK,
+    });
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+
+    const packet = result.dispatched[0];
+    expect(packet.location_anchors).toEqual([
+      "apps/reception/src/components/catalog/CatalogSyncPanel.client.tsx",
+    ]);
+    expect(packet.area_anchor).toContain("reception");
+    expect(packet.area_anchor).toContain("catalog");
   });
 });
 

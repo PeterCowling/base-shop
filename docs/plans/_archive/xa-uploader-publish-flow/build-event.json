@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "077c08d02f",
+  "feature_slug": "xa-uploader-publish-flow",
+  "emitted_at": "2026-03-07T11:48:03.401Z",
+  "why": "Operators need a direct publish action on the product form; the sync panel added friction and confusion for a simple use case.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Per-product Make Live button replaces sync panel; catalog is published to xa-b within 15 minutes of the first Make Live click after a cooldown window.",
+    "source": "operator"
+  }
+}

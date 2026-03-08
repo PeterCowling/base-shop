@@ -60,16 +60,20 @@ function GuideContent({ lang, guideKey, serverGuides, serverGuidesEn }: Props) {
       }
     };
     void loadNamespaces();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [lang, guideKey]);
 
   const fallbackGuides = useEnglishFallback("guides");
-  const backLabel = resolveLabel(t, "labels.backLink",
-    resolveLabel(fallbackGuides, "labels.backLink", "Back")
+  const backLabel = resolveLabel(
+    t,
+    "labels.backLink",
+    resolveLabel(fallbackGuides, "labels.backLink", "Back"),
   );
 
   const base = guideNamespace(lang, guideKey);
-  const listingPath = `/${lang}/${base.baseSlug}`;
+  const listingPath = "/" + lang + "/" + base.baseSlug;
 
   // Use guideKey as metaKey (GuideMeta doesn't have metaKey override)
   const metaKey = guideKey;
@@ -92,10 +96,7 @@ function GuideContent({ lang, guideKey, serverGuides, serverGuidesEn }: Props) {
         ) : (
           <GuideBoundary guideKey={guideKey}>
             <Suspense fallback={null}>
-              <GuideSeoTemplate
-                guideKey={guideKey}
-                metaKey={metaKey}
-              />
+              <GuideSeoTemplate guideKey={guideKey} metaKey={metaKey} />
             </Suspense>
           </GuideBoundary>
         )}

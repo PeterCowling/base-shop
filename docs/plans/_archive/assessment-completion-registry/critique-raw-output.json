@@ -1,0 +1,32 @@
+{
+  "round": 3,
+  "score": 8,
+  "lp_score": 4.0,
+  "verdict": "needs_revision",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/assessment-completion-registry/plan.md",
+      "line": "168",
+      "message": "Execution/refactor guidance only mentions naming-workbench handling for ASSESSMENT-04 and ASSESSMENT-05, but the plan's own subdirectory rule also requires ASSESSMENT-13 scanning."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/assessment-completion-registry/plan.md",
+      "line": "224",
+      "message": "Validation contract still says 'ASSESSMENT-04 directory' in the scenario list."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/assessment-completion-registry/plan.md",
+      "line": "159",
+      "message": "non-existent strategyRoot -> empty array is underspecified against the businesses override option."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/assessment-completion-registry/plan.md",
+      "line": "173",
+      "message": "Scout note says PWRB 'may need naming-shortlist pattern' but that pattern is already formalized in the mapping table."
+    }
+  ]
+}

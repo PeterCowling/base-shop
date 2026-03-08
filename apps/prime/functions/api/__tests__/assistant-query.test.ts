@@ -2,9 +2,9 @@
  * @jest-environment node
  */
 
-import { onRequestPost } from '../assistant-query';
-import { FirebaseRest } from '../../lib/firebase-rest';
 import { createMockKv, createPagesContext } from '../../__tests__/helpers';
+import { FirebaseRest } from '../../lib/firebase-rest';
+import { onRequestPost } from '../assistant-query';
 
 const VALID_SESSION = {
   bookingId: 'BOOK123',
@@ -122,7 +122,7 @@ describe('/api/assistant-query', () => {
     expect(fetchSpy).not.toHaveBeenCalled();
   });
 
-  it('TC-04: OpenAI fetch throws → 200 with answerType: llm-safety-fallback', async () => {
+  it('TC-04: OpenAI fetch throws → 503 with answerType: llm-safety-fallback', async () => {
     fetchSpy.mockRejectedValueOnce(new Error('Network error'));
     const kv = createMockKv();
     const env = createAssistantEnv({ RATE_LIMIT: kv });
@@ -136,9 +136,10 @@ describe('/api/assistant-query', () => {
       }),
     );
 
-    const payload = await response.json() as { answerType: string; answer: string };
-    expect(response.status).toBe(200);
+    const payload = await response.json() as { answerType: string; answer: string; errorCode: string };
+    expect(response.status).toBe(503);
     expect(payload.answerType).toBe('llm-safety-fallback');
+    expect(payload.errorCode).toBe('llm_unavailable');
     expect(typeof payload.answer).toBe('string');
   });
 

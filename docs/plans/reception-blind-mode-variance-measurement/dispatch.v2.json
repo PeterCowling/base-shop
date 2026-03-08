@@ -1,0 +1,42 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260304201100-0990",
+  "mode": "trial",
+  "business": "BOS",
+  "trigger": "operator_idea",
+  "root_event_id": "operator:BOS:BOS:reception-till-blind-mode-variance-measurement-gap:20260304",
+  "anchor_key": "reception-till-blind-mode-variance-measurement-gap",
+  "cluster_key": "BOS:BOS:reception-till-blind-mode-variance-measurement-gap:operator:20260304",
+  "cluster_fingerprint": "b364442c885e5aacd7a1d733b72a74dfecba284a3afaca33c2b0be52d4784076",
+  "lineage_depth": 0,
+  "area_anchor": "Reception blind-mode variance — no post-deployment measurement path",
+  "location_anchors": [
+    "docs/plans/_archive/reception-till-blind-mode/results-review.user.md",
+    "apps/reception/src/components/till/CloseShiftForm.tsx",
+    "apps/reception/src/hooks/client/till/useTillShifts.ts"
+  ],
+  "provisional_deliverable_family": "multi",
+  "recommended_route": "lp-do-fact-find",
+  "status": "fact_find_ready",
+  "domain": "BOS",
+  "priority": "P3",
+  "confidence": 0.86,
+  "current_truth": "Blind close was introduced to reduce anchoring bias during till/keycard counting, but the loop has no wired post-deployment KPI path to verify discrepancy variance improvement from existing Firebase discrepancy records.",
+  "next_scope_now": "Run fact-find to define variance KPI contract, baseline vs post-launch windows, extraction/reporting mechanism from Firebase discrepancy records, and weekly review thresholds.",
+  "adjacent_later": [
+    "Segment variance trends by role and shift to isolate where blind mode has strongest effect.",
+    "Add automated regression alert when post-launch variance deteriorates versus baseline."
+  ],
+  "evidence_refs": [
+    "operator-stated: self-improvement path needs measurable blind-mode variance tracking",
+    "docs/plans/_archive/reception-till-blind-mode/results-review.user.md — New Idea Candidates"
+  ],
+  "why": "The feature intent is bias reduction, but without a standing measurement loop the team cannot confirm impact or decide whether to iterate the workflow.",
+  "intended_outcome": {
+    "type": "measurable",
+    "statement": "A reproducible weekly blind-mode variance report exists from Firebase discrepancy records, with baseline-vs-post-launch percent change and explicit threshold-based follow-up rules.",
+    "source": "operator"
+  },
+  "created_at": "2026-03-04T20:11:00.522Z",
+  "queue_state": "enqueued"
+}

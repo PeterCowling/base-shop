@@ -1,0 +1,33 @@
+name: PWRB Brochure
+
+on:
+  push:
+    branches:
+      - staging
+      - main
+    paths:
+      - 'apps/pwrb-brochure/**'
+  workflow_dispatch:
+
+concurrency:
+  group: pwrb-brochure-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy (${{ github.ref_name }})
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
+      url: ${{ github.ref_name == 'main' && 'https://pwrb-brochure.pages.dev' || 'https://staging.pwrb-brochure.pages.dev' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to Cloudflare Pages
+        run: |
+          npx wrangler pages deploy apps/pwrb-brochure \
+            --project-name pwrb-brochure \
+            --branch ${{ github.ref_name == 'main' && 'main' || 'staging' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

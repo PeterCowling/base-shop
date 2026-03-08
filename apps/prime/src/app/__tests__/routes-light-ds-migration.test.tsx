@@ -254,7 +254,7 @@ jest.mock('../../hooks/data/useGuestProfiles', () => ({
 }));
 
 // Mock useUuid
-jest.mock('@/hooks/useUuid', () => ({
+jest.mock('../../hooks/useUuid', () => ({
   __esModule: true,
   default: jest.fn(() => 'test-uuid'),
 }));
@@ -287,7 +287,7 @@ jest.mock('../../components/homepage/GuardedHomeExperience', () => ({
 }));
 
 // Mock for @/lib/security/dataAccessModel
-jest.mock('@/lib/security/dataAccessModel', () => ({
+jest.mock('../../lib/security/dataAccessModel', () => ({
   evaluateSdkAccess: jest.fn(() => ({ allowed: true })),
   isSdkFlowFeatureEnabled: jest.fn(() => true),
 }));

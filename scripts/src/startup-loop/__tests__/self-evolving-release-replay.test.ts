@@ -1,11 +1,11 @@
 import { describe, expect, it } from "@jest/globals";
 
-import { createDryRunOnlyAdapter } from "../self-evolving-actuator.js";
-import { applyWebsiteV1BrandRulesAutoFix } from "../self-evolving-autofix.js";
-import { getContainerContract } from "../self-evolving-containers.js";
-import type { ImprovementCandidate, StartupState } from "../self-evolving-contracts.js";
-import { evaluateCanaryOutcome } from "../self-evolving-release-controls.js";
-import { runReplayFixture, summarizeReplay } from "../self-evolving-replay.js";
+import { createDryRunOnlyAdapter } from "../self-evolving/self-evolving-actuator.js";
+import { applyWebsiteV1BrandRulesAutoFix } from "../self-evolving/self-evolving-autofix.js";
+import { getContainerContract } from "../self-evolving/self-evolving-containers.js";
+import type { ImprovementCandidate, StartupState } from "../self-evolving/self-evolving-contracts.js";
+import { evaluateCanaryOutcome } from "../self-evolving/self-evolving-release-controls.js";
+import { runReplayFixture, summarizeReplay } from "../self-evolving/self-evolving-replay.js";
 
 function buildStartupState(): StartupState {
   return {

@@ -9,8 +9,8 @@
 
 import { renderHook, waitFor } from "@testing-library/react";
 
-import type { OctorateRoom } from "@/app/api/availability/route";
 import type { Room } from "@/data/roomsData";
+import type { OctorateRoom } from "@/types/octorate-availability";
 
 jest.mock("@/config/env", () => ({
   ...jest.requireActual<typeof import("@/test/__mocks__/config-env")>("@/test/__mocks__/config-env"),

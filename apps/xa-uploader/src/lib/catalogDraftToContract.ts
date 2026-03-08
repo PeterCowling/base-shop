@@ -1,8 +1,11 @@
 import {
   type CatalogProductDraftInput,
   catalogProductDraftSchema,
+  type CatalogPublishState,
+  deriveCatalogPublishState,
   slugify,
   splitList,
+  withAutoCatalogDraftFields,
 } from "@acme/lib/xa";
 
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
@@ -11,7 +14,11 @@ type CurrencyRates = { EUR: number; GBP: number; AUD: number };
 
 type CatalogBrand = { handle: string; name: string };
 type CatalogCollection = { handle: string; title: string; description?: string };
-type CatalogMediaEntry = { type: "image"; path: string; altText: string };
+type CatalogMediaEntry = {
+  type: "image";
+  path: string;
+  altText: string;
+};
 
 type CatalogProduct = {
   id: string;
@@ -20,13 +27,8 @@ type CatalogProduct = {
   brand: string;
   collection: string;
   price: number;
-  compareAtPrice?: number;
   prices: { AUD: number; EUR: number; GBP: number; USD: number };
-  compareAtPrices?: { AUD: number; EUR: number; GBP: number; USD: number };
-  deposit: number;
-  stock: number;
-  forSale: boolean;
-  forRental: boolean;
+  status: CatalogPublishState;
   media: CatalogMediaEntry[];
   sizes: string[];
   description: string;
@@ -44,9 +46,9 @@ type CatalogProduct = {
     sleeveLength?: string;
     pattern?: string;
     occasion?: string[];
-    sizeClass?: string;
     strapStyle?: string;
     hardwareColor?: string;
+    interiorColor?: string[];
     closureType?: string;
     fits?: string[];
     metal?: string;
@@ -91,6 +93,8 @@ type MediaIndexPayload = {
     altText: string;
   }>;
 };
+
+type MediaValidationPolicy = "warn" | "strict";
 
 function normalizeNumber(input: unknown): number {
   const parsed = Number(input);
@@ -183,6 +187,60 @@ function normalizeCatalogPath(rawPath: string): string {
   return rawPath.trim().replace(/^\/+/, "");
 }
 
+function isHttpsUrl(value: string): boolean {
+  return /^https:\/\//i.test(value);
+}
+
+function parseAllowedExternalHosts(hosts: string[] | undefined): Set<string> {
+  const out = new Set<string>();
+  for (const host of hosts ?? []) {
+    const normalized = host.trim().toLowerCase();
+    if (!normalized) continue;
+    out.add(normalized);
+  }
+  return out;
+}
+
+function isAllowedExternalImageUrl(url: string, allowedHosts: Set<string>): boolean {
+  if (allowedHosts.size === 0) return false;
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return false;
+  }
+  if (parsed.protocol !== "https:") return false;
+  return allowedHosts.has(parsed.hostname.trim().toLowerCase());
+}
+
+function isValidCloudR2KeyPath(pathValue: string, storefront: XaCatalogStorefront): boolean {
+  if (!pathValue || pathValue.includes("\\")) return false;
+  const segments = pathValue.split("/").filter(Boolean);
+  if (segments.length < 3) return false;
+  if (segments[0] !== storefront) return false;
+  return segments.every((segment) => segment.trim().length > 0);
+}
+
+function validateCloudCatalogPath(params: {
+  catalogPath: string;
+  storefront: XaCatalogStorefront;
+  allowedExternalHosts: Set<string>;
+}): { valid: true } | { valid: false; reason: string } {
+  if (!params.catalogPath) {
+    return { valid: false, reason: "empty_path" };
+  }
+  if (isHttpsUrl(params.catalogPath)) {
+    if (isAllowedExternalImageUrl(params.catalogPath, params.allowedExternalHosts)) {
+      return { valid: true };
+    }
+    return { valid: false, reason: "external_host_not_allowed" };
+  }
+  if (isValidCloudR2KeyPath(params.catalogPath, params.storefront)) {
+    return { valid: true };
+  }
+  return { valid: false, reason: "invalid_cloud_key" };
+}
+
 function buildTaxonomy(draft: ReturnType<typeof catalogProductDraftSchema.parse>) {
   const taxonomy: Record<string, unknown> = {
     department: draft.taxonomy.department,
@@ -197,11 +255,17 @@ function buildTaxonomy(draft: ReturnType<typeof catalogProductDraftSchema.parse>
   appendIfPresent(taxonomy, "sleeveLength", draft.taxonomy.sleeveLength);
   appendIfPresent(taxonomy, "pattern", draft.taxonomy.pattern);
   appendIfListHasValues(taxonomy, "occasion", draft.taxonomy.occasion);
-  appendIfPresent(taxonomy, "sizeClass", draft.taxonomy.sizeClass);
   appendIfPresent(taxonomy, "strapStyle", draft.taxonomy.strapStyle);
   appendIfPresent(taxonomy, "hardwareColor", draft.taxonomy.hardwareColor);
+  appendIfListHasValues(taxonomy, "interiorColor", draft.taxonomy.interiorColor);
   appendIfPresent(taxonomy, "closureType", draft.taxonomy.closureType);
-  appendIfListHasValues(taxonomy, "fits", draft.taxonomy.fits);
+  const mergedFits = new Set([
+    ...splitList(draft.taxonomy.fits ?? ""),
+    ...splitList(draft.details?.whatFits ?? ""),
+  ]);
+  if (mergedFits.size > 0) {
+    taxonomy.fits = Array.from(mergedFits);
+  }
   appendIfPresent(taxonomy, "metal", draft.taxonomy.metal);
   appendIfPresent(taxonomy, "gemstone", draft.taxonomy.gemstone);
   appendIfPresent(taxonomy, "jewelrySize", draft.taxonomy.jewelrySize);
@@ -217,6 +281,9 @@ function buildMediaEntries(params: {
   imageFiles: string[];
   imageAltTexts: string[];
   strict: boolean;
+  mediaValidationPolicy: MediaValidationPolicy;
+  storefront: XaCatalogStorefront;
+  allowedExternalHosts: Set<string>;
   warnings: string[];
   mediaItems: MediaIndexPayload["items"];
 }): CatalogMediaEntry[] {
@@ -230,6 +297,22 @@ function buildMediaEntries(params: {
       params.warnings.push(`[row ${params.rowNumber}] "${params.productSlug}" has an empty image path entry.`);
       continue;
     }
+
+    const cloudPathValidation = validateCloudCatalogPath({
+      catalogPath,
+      storefront: params.storefront,
+      allowedExternalHosts: params.allowedExternalHosts,
+    });
+    if ("reason" in cloudPathValidation) {
+      const reason = cloudPathValidation.reason;
+      const message = `[row ${params.rowNumber}] "${params.productSlug}" has unsupported cloud image path "${catalogPath}" (${reason}).`;
+      if (params.mediaValidationPolicy === "strict") {
+        throw new Error(message);
+      }
+      params.warnings.push(message);
+      continue;
+    }
+
     const altText = params.imageAltTexts[index] || params.title || params.productSlug;
     media.push({ type: "image", path: catalogPath, altText });
     params.mediaItems.push({
@@ -273,7 +356,11 @@ export function buildCatalogArtifactsFromDrafts(params: {
   storefront: XaCatalogStorefront;
   products: CatalogProductDraftInput[];
   strict: boolean;
+  mediaValidationPolicy?: MediaValidationPolicy;
+  allowedExternalImageHosts?: string[];
 }): { catalog: CatalogPayload; mediaIndex: MediaIndexPayload; warnings: string[] } {
+  const mediaValidationPolicy = params.mediaValidationPolicy === "strict" ? "strict" : "warn";
+  const allowedExternalHosts = parseAllowedExternalHosts(params.allowedExternalImageHosts);
   const warnings: string[] = [];
   const rates = parseCloudCurrencyRates();
   const seenSlugs = new Set<string>();
@@ -284,7 +371,7 @@ export function buildCatalogArtifactsFromDrafts(params: {
   const mediaItems: MediaIndexPayload["items"] = [];
 
   for (const [index, input] of params.products.entries()) {
-    const parsed = catalogProductDraftSchema.parse(input);
+    const parsed = catalogProductDraftSchema.parse(withAutoCatalogDraftFields(input));
     const rowNumber = index + 1;
     const productSlug = deriveProductSlug({
       rowNumber,
@@ -333,6 +420,9 @@ export function buildCatalogArtifactsFromDrafts(params: {
       imageFiles,
       imageAltTexts,
       strict: params.strict === true,
+      mediaValidationPolicy,
+      storefront: params.storefront,
+      allowedExternalHosts,
       warnings,
       mediaItems,
     });
@@ -341,9 +431,6 @@ export function buildCatalogArtifactsFromDrafts(params: {
     const taxonomy = buildTaxonomy(parsed);
 
     const normalizedPrice = normalizeNumber(parsed.price);
-    const normalizedCompareAtPrice =
-      typeof parsed.compareAtPrice === "number" ? normalizeNumber(parsed.compareAtPrice) : undefined;
-
     catalogProducts.push({
       id: productId,
       slug: productSlug,
@@ -352,16 +439,7 @@ export function buildCatalogArtifactsFromDrafts(params: {
       collection: collectionHandle,
       price: normalizedPrice,
       prices: applyCurrencyRates(normalizedPrice, rates),
-      ...(typeof normalizedCompareAtPrice === "number"
-        ? {
-            compareAtPrice: normalizedCompareAtPrice,
-            compareAtPrices: applyCurrencyRates(normalizedCompareAtPrice, rates),
-          }
-        : {}),
-      deposit: normalizeNumber(parsed.deposit),
-      stock: normalizeNumber(parsed.stock),
-      forSale: parsed.forSale ?? true,
-      forRental: parsed.forRental ?? false,
+      status: deriveCatalogPublishState(parsed),
       media,
       sizes: splitList(parsed.sizes ?? ""),
       description: parsed.description,

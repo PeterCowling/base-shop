@@ -3,20 +3,20 @@ import { describe, expect, it } from "@jest/globals";
 import {
   createDryRunOnlyAdapter,
   requiresExplicitHumanApproval,
-} from "../self-evolving-actuator.js";
-import { mapCandidateToBackboneRoute } from "../self-evolving-backbone.js";
-import { evaluateMatureBoundary } from "../self-evolving-boundary.js";
+} from "../self-evolving/self-evolving-actuator.js";
+import { mapCandidateToBackboneRoute } from "../self-evolving/self-evolving-backbone.js";
+import { evaluateMatureBoundary } from "../self-evolving/self-evolving-boundary.js";
 import {
   executeContainer,
   getContainerContract,
-} from "../self-evolving-containers.js";
-import type { ImprovementCandidate, StartupState } from "../self-evolving-contracts.js";
+} from "../self-evolving/self-evolving-containers.js";
+import type { ImprovementCandidate, StartupState } from "../self-evolving/self-evolving-contracts.js";
 import {
   canCreateCandidate,
   enforceBlockedSla,
   validateTransition,
-} from "../self-evolving-lifecycle.js";
-import { evaluatePilot0, evaluatePilot1 } from "../self-evolving-pilot.js";
+} from "../self-evolving/self-evolving-lifecycle.js";
+import { evaluatePilot0, evaluatePilot1 } from "../self-evolving/self-evolving-pilot.js";
 
 function buildCandidate(id: string, state: ImprovementCandidate["candidate_state"]): ImprovementCandidate {
   return {

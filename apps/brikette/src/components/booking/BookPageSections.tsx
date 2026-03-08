@@ -1,3 +1,4 @@
+import type { RefObject } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Section } from "@acme/design-system/atoms";
@@ -8,7 +9,9 @@ import type { DateRange } from "@/components/booking/DateRangePicker";
 import ExpiredQuoteNotice from "@/components/booking/ExpiredQuoteNotice";
 import RecoveryQuoteCapture from "@/components/booking/RecoveryQuoteCapture";
 import type { AppLanguage } from "@/i18n.config";
+import { resolveBookingControlLabels } from "@/utils/bookingControlLabels";
 import { formatDate } from "@/utils/dateUtils";
+import { getBookPath } from "@/utils/localizedRoutes";
 
 type BookPageSearchPanelProps = {
   lang?: AppLanguage;
@@ -26,6 +29,9 @@ type BookPageSearchPanelProps = {
   guestsLabelText: string;
   showConstraintGuidance: boolean;
   showRebuildQuotePrompt: boolean;
+  calendarAnchorRef?: RefObject<HTMLDivElement | null>;
+  showSelectDatesPrompt?: boolean;
+  selectDatesPromptText?: string;
 };
 
 export function BookPageSearchPanel({
@@ -44,11 +50,16 @@ export function BookPageSearchPanel({
   guestsLabelText,
   showConstraintGuidance,
   showRebuildQuotePrompt,
+  calendarAnchorRef,
+  showSelectDatesPrompt = false,
+  selectDatesPromptText = "",
 }: BookPageSearchPanelProps): JSX.Element {
   const { t } = useTranslation("bookPage");
+  const { t: tRooms } = useTranslation("roomsPage", { lng: lang });
+  const bookingControlLabels = resolveBookingControlLabels(t, tRooms);
 
   return (
-    <div className="mt-6 mx-auto rounded-2xl border border-brand-outline/40 bg-brand-surface p-4 shadow-sm">
+    <div ref={calendarAnchorRef} className="mt-6 mx-auto scroll-mt-24" tabIndex={-1}>
       <BookingCalendarPanel
         lang={lang}
         range={range}
@@ -72,8 +83,8 @@ export function BookPageSearchPanel({
         checkInLabelText={checkInLabelText}
         checkOutLabelText={checkOutLabelText}
         guestsLabelText={guestsLabelText}
-        decreaseGuestsAriaLabel={t("bookingControls.decreaseGuests") as string}
-        increaseGuestsAriaLabel={t("bookingControls.increaseGuests") as string}
+        decreaseGuestsAriaLabel={bookingControlLabels.decreaseGuestsAriaLabel}
+        increaseGuestsAriaLabel={bookingControlLabels.increaseGuestsAriaLabel}
       />
 
       {/* Notices sit below the calendar row */}
@@ -86,6 +97,11 @@ export function BookPageSearchPanel({
             </a>
             .
           </BookingNotice>
+        </div>
+      ) : null}
+      {showSelectDatesPrompt && selectDatesPromptText ? (
+        <div className="mt-4">
+          <BookingNotice>{selectDatesPromptText}</BookingNotice>
         </div>
       ) : null}
       {showRebuildQuotePrompt ? <div className="mt-4"><ExpiredQuoteNotice /></div> : null}
@@ -125,12 +141,12 @@ export function BookPageRecoverySection({
     <Section padding="default" className="mx-auto max-w-7xl">
       <RecoveryQuoteCapture
         isValidSearch={roomQueryState === "valid"}
-        resumePathname={`/${lang}/book`}
+        resumePathname={getBookPath(lang)}
         context={{
           checkin,
           checkout,
           pax,
-          source_route: `/${lang}/book`,
+          source_route: getBookPath(lang),
         }}
       />
     </Section>

@@ -4,7 +4,7 @@ import * as path from "node:path";
 
 import { describe, expect, it } from "@jest/globals";
 
-import { compileWebsiteContentPacket } from "../compile-website-content-packet.js";
+import { compileWebsiteContentPacket } from "../website/compile-website-content-packet.js";
 
 function writeFile(repoRoot: string, relativePath: string, content: string): void {
   const fullPath = path.join(repoRoot, relativePath);
@@ -100,11 +100,11 @@ describe("compileWebsiteContentPacket", () => {
 
     writeFile(
       repoRoot,
-      `docs/business-os/startup-baselines/${business}-intake-packet.user.md`,
+      `docs/business-os/startup-baselines/${business}/intake-packet.user.md`,
       intakeDoc(business, "Digital service only."),
     );
-    writeFile(repoRoot, `docs/business-os/startup-baselines/${business}-offer.md`, offerDoc(business));
-    writeFile(repoRoot, `docs/business-os/startup-baselines/${business}-channels.md`, channelsDoc(business));
+    writeFile(repoRoot, `docs/business-os/startup-baselines/${business}/offer.md`, offerDoc(business));
+    writeFile(repoRoot, `docs/business-os/startup-baselines/${business}/channels.md`, channelsDoc(business));
 
     const result = compileWebsiteContentPacket({
       business,
@@ -131,10 +131,10 @@ describe("compileWebsiteContentPacket", () => {
 
     writeFile(
       repoRoot,
-      `docs/business-os/startup-baselines/${business}-intake-packet.user.md`,
+      `docs/business-os/startup-baselines/${business}/intake-packet.user.md`,
       intakeDoc(business, "Digital service only."),
     );
-    writeFile(repoRoot, `docs/business-os/startup-baselines/${business}-offer.md`, offerDoc(business));
+    writeFile(repoRoot, `docs/business-os/startup-baselines/${business}/offer.md`, offerDoc(business));
 
     const result = compileWebsiteContentPacket({
       business,
@@ -146,7 +146,7 @@ describe("compileWebsiteContentPacket", () => {
     expect(result.ok).toBe(false);
     expect(result.diagnostics.map((d) => d.code)).toContain("missing_mandatory_source");
     expect(result.diagnostics.map((d) => d.sourcePath)).toContain(
-      `docs/business-os/startup-baselines/${business}-channels.md`,
+      `docs/business-os/startup-baselines/${business}/channels.md`,
     );
   });
 
@@ -156,11 +156,11 @@ describe("compileWebsiteContentPacket", () => {
 
     writeFile(
       repoRoot,
-      `docs/business-os/startup-baselines/${business}-intake-packet.user.md`,
+      `docs/business-os/startup-baselines/${business}/intake-packet.user.md`,
       intakeDoc(business, "Physical product exists."),
     );
-    writeFile(repoRoot, `docs/business-os/startup-baselines/${business}-offer.md`, offerDoc(business));
-    writeFile(repoRoot, `docs/business-os/startup-baselines/${business}-channels.md`, channelsDoc(business));
+    writeFile(repoRoot, `docs/business-os/startup-baselines/${business}/offer.md`, offerDoc(business));
+    writeFile(repoRoot, `docs/business-os/startup-baselines/${business}/channels.md`, channelsDoc(business));
 
     const missingLogistics = compileWebsiteContentPacket({
       business,
@@ -195,11 +195,11 @@ describe("compileWebsiteContentPacket", () => {
 
     writeFile(
       repoRoot,
-      `docs/business-os/startup-baselines/${business}-intake-packet.user.md`,
+      `docs/business-os/startup-baselines/${business}/intake-packet.user.md`,
       intakeDoc(business, "Physical product exists."),
     );
-    writeFile(repoRoot, `docs/business-os/startup-baselines/${business}-offer.md`, offerDoc(business));
-    writeFile(repoRoot, `docs/business-os/startup-baselines/${business}-channels.md`, channelsDoc(business));
+    writeFile(repoRoot, `docs/business-os/startup-baselines/${business}/offer.md`, offerDoc(business));
+    writeFile(repoRoot, `docs/business-os/startup-baselines/${business}/channels.md`, channelsDoc(business));
     writeFile(repoRoot, `docs/business-os/strategy/${business}/logistics-pack.user.md`, validLogisticsDoc(business));
 
     const result = compileWebsiteContentPacket({

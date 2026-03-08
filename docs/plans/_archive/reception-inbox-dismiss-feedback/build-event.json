@@ -1,0 +1,12 @@
+{
+  "schema_version": "build-event.v1",
+  "slug": "reception-inbox-dismiss-feedback",
+  "business": "BRIK",
+  "completed_at": "2026-03-07",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Staff can dismiss irrelevant inbox threads via a Not relevant button. Each dismissal records a staff_override admission outcome in D1, creating a queryable feedback trail for classifier improvement.",
+    "why": "Admitted emails include false positives that waste staff time. Staff need a way to dismiss irrelevant threads and feed corrections back so the classifier improves over time.",
+    "why_source": "operator"
+  }
+}

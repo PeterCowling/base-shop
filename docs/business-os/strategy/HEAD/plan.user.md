@@ -14,9 +14,9 @@ last_updated: 2026-02-20
 source_of_truth: true
 depends_on:
   - docs/business-os/contracts/HEAD/outcome-contract.user.md
-  - docs/business-os/startup-baselines/HEAD-offer.md
+  - docs/business-os/startup-baselines/HEAD/offer.md
   - docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md
-  - docs/business-os/startup-baselines/HEAD-channels.md
+  - docs/business-os/startup-baselines/HEAD/channels.md
   - docs/business-os/market-research/HEAD/2026-02-20-market-intelligence.user.md
 decisions:
   - DEC-HEAD-CH-01
@@ -38,13 +38,13 @@ Review-trigger: After each completed build cycle touching this document.
 2. **MVP Offer Execution (Top-3 Adjacent Products)** (Priority: High)
    - Status: Offer architecture is now backfilled into canonical S2B artifact.
    - Scope: school-ready multi-pack headbands, activity organiser pouch, identity patch packs.
-   - Canonical offer: `docs/business-os/startup-baselines/HEAD-offer.md`
+   - Canonical offer: `docs/business-os/startup-baselines/HEAD/offer.md`
    - Research basis: `docs/business-os/strategy/HEAD/lp-other-products-results.user.md`
 
 3. **Channel + Forecast Canonicalization** (Priority: High)
    - Status: S3 and S6B backfill artifacts are now published.
    - Canonical forecast: `docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md`
-   - Canonical channels: `docs/business-os/startup-baselines/HEAD-channels.md`
+   - Canonical channels: `docs/business-os/startup-baselines/HEAD/channels.md`
    - Channel authority remains: `docs/business-os/strategy/HEAD/decisions/DEC-HEAD-CH-01.user.md`
 
 4. **Naming Lock and Brand Finalization** (Priority: Medium)

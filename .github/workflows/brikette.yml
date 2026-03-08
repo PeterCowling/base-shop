@@ -101,31 +101,40 @@ jobs:
           cd apps/brikette
           mkdir -p ".tmp"
           [ -d "src/app/[lang]/guides/[...slug]" ] && mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" || true
+          [ -d "src/app/[lang]/guides/[slug]" ] && mv "src/app/[lang]/guides/[slug]" "src/app/[lang]/guides/_single-off" || true
+          [ -d "src/app/[lang]/help/[slug]" ] && mv "src/app/[lang]/help/[slug]" "src/app/[lang]/help/_slug-off" || true
           [ -d "src/app/api" ] && mv "src/app/api" ".tmp/app-api-off" || true
           build_exit=0
           export OUTPUT_EXPORT=1
           export NEXT_PUBLIC_OUTPUT_EXPORT=1
-          pnpm exec next build --turbopack || build_exit=$?
+          pnpm build || build_exit=$?
           if [ "$build_exit" -eq 0 ]; then
+            pnpm --filter @apps/brikette normalize:localized-routes || build_exit=$?
             pnpm --filter @apps/brikette generate:static-redirects || build_exit=$?
-            # Cloudflare Pages free tier caps deployments at 20k files.
-            # Keep top locales, prune the rest, and strip __next.* metadata files
-            # (Next.js exports one per route; 33k+ files exceeds the 20k limit).
-            rm -rf out/{ar,da,fr,hi,hu,ja,ko,no,pl,pt,ru,sv,vi,zh}
+            pnpm --filter @apps/brikette verify:sitemap-contract -- --file out/sitemap.xml || build_exit=$?
+            pnpm --filter @apps/brikette verify:rendered-link-canonicals -- --out-dir out || build_exit=$?
+            pnpm --filter @apps/brikette verify:localized-commercial-copy -- --out-dir out || build_exit=$?
+            # Brikette is on a paid Pages plan, but deployments still need the
+            # project-level `PAGES_WRANGLER_MAJOR_VERSION=4` flag before Cloudflare
+            # accepts >20k files. Strip Next.js metadata files so deploys stay safe
+            # until that Pages setting is confirmed on the project.
             find out -name "__next.*" -type f -delete
           fi
           [ -d ".tmp/app-api-off" ] && mv ".tmp/app-api-off" "src/app/api" || true
           [ -d "src/app/[lang]/guides/_slug-off" ] && mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]" || true
+          [ -d "src/app/[lang]/guides/_single-off" ] && mv "src/app/[lang]/guides/_single-off" "src/app/[lang]/guides/[slug]" || true
+          [ -d "src/app/[lang]/help/_slug-off" ] && mv "src/app/[lang]/help/_slug-off" "src/app/[lang]/help/[slug]" || true
           exit "$build_exit"
 
       - name: Validate static export output
         run: |
           test -f apps/brikette/out/en.html
           test -d apps/brikette/out/_next/static
-          test -f apps/brikette/out/it/book.html
+          test -f apps/brikette/out/it/prenota.html
+          test -f apps/brikette/out/it/prenota-alloggi-privati.html
           file_count=$(find apps/brikette/out -type f | wc -l | tr -d ' ')
           echo "Static export files: $file_count"
-          test "$file_count" -le 20000
+          test "$file_count" -le 100000
 
   staging:
     name: Deploy (staging)
@@ -148,16 +157,23 @@ jobs:
         cd apps/brikette &&
         mkdir -p ".tmp" &&
         ([ -d "src/app/[lang]/guides/[...slug]" ] && mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" || true) &&
+        ([ -d "src/app/[lang]/guides/[slug]" ] && mv "src/app/[lang]/guides/[slug]" "src/app/[lang]/guides/_single-off" || true) &&
+        ([ -d "src/app/[lang]/help/[slug]" ] && mv "src/app/[lang]/help/[slug]" "src/app/[lang]/help/_slug-off" || true) &&
         ([ -d "src/app/api" ] && mv "src/app/api" ".tmp/app-api-off" || true) &&
-        (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_STAGING || vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }} pnpm exec next build --turbopack &&
+        (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_STAGING || vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }} pnpm build &&
+        OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm --filter @apps/brikette normalize:localized-routes &&
         OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm --filter @apps/brikette generate:static-redirects &&
-        rm -rf out/{ar,da,fr,hi,hu,ja,ko,no,pl,pt,ru,sv,vi,zh} &&
+        OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm --filter @apps/brikette verify:sitemap-contract -- --file out/sitemap.xml &&
+        OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm --filter @apps/brikette verify:rendered-link-canonicals -- --out-dir out &&
+        OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm --filter @apps/brikette verify:localized-commercial-copy -- --out-dir out &&
         find out -name "__next.*" -type f -delete; e=$?;
         ([ -d ".tmp/app-api-off" ] && mv ".tmp/app-api-off" "src/app/api" || true);
         ([ -d "src/app/[lang]/guides/_slug-off" ] && mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]" || true);
+        ([ -d "src/app/[lang]/guides/_single-off" ] && mv "src/app/[lang]/guides/_single-off" "src/app/[lang]/guides/[slug]" || true);
+        ([ -d "src/app/[lang]/help/_slug-off" ] && mv "src/app/[lang]/help/_slug-off" "src/app/[lang]/help/[slug]" || true);
         exit $e)
       artifact-path: "apps/brikette/out"
-      # Deploy static HTML to Cloudflare Pages (free tier — no Worker needed)
+      # Deploy static HTML to Cloudflare Pages (Pages static export path; no Worker runtime).
       deploy_cmd: >
         cd apps/brikette &&
         pnpm exec wrangler pages deploy out
@@ -170,9 +186,15 @@ jobs:
       environment-name: "staging-pages"
       environment-url: ${{ format('https://staging.{0}.pages.dev', vars.BRIKETTE_PAGES_PROJECT || 'brikette-website') }}
       healthcheck-args: "--staging"
-      # Use canonical localized booking route for strict health checks.
-      # /it/prenota is an alias route and can be deployment-topology dependent.
-      healthcheck-strict-routes: "/it/book"
+      # CI gets the full post-deploy route contract checks.
+      # Keep direct `wrangler pages deploy` fast for operator hotfixes; do not
+      # copy these stricter checks into the manual deploy path.
+      healthcheck-canonical-origin: "https://hostel-positano.com"
+      healthcheck-canonical-tag-routes: "/it/prenota /it/prenota-alloggi-privati /it/camere-private/appartamento-vista-mare /en/private-rooms/sea-view-apartment /ja/annai"
+      healthcheck-sitemap-required-routes: "/it/prenota /it/prenota-alloggi-privati /it/camere-private/appartamento-vista-mare /it/camere-private/camera-doppia /en/private-rooms/sea-view-apartment /ja/annai"
+      healthcheck-404-routes: "/it/book"
+      # Use the finalized localized booking surfaces as strict zero-hop health checks.
+      healthcheck-strict-routes: "/it/prenota /it/prenota-alloggi-privati"
     secrets: inherit
 
   production:
@@ -191,13 +213,20 @@ jobs:
         cd apps/brikette &&
         mkdir -p ".tmp" &&
         ([ -d "src/app/[lang]/guides/[...slug]" ] && mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" || true) &&
+        ([ -d "src/app/[lang]/guides/[slug]" ] && mv "src/app/[lang]/guides/[slug]" "src/app/[lang]/guides/_single-off" || true) &&
+        ([ -d "src/app/[lang]/help/[slug]" ] && mv "src/app/[lang]/help/[slug]" "src/app/[lang]/help/_slug-off" || true) &&
         ([ -d "src/app/api" ] && mv "src/app/api" ".tmp/app-api-off" || true) &&
-        (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY=1 NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_PRODUCTION || vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }} pnpm exec next build --turbopack &&
+        (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY=1 NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_PRODUCTION || vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }} pnpm build &&
+        OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm --filter @apps/brikette normalize:localized-routes &&
         OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm --filter @apps/brikette generate:static-redirects &&
-        rm -rf out/{ar,da,fr,hi,hu,ja,ko,no,pl,pt,ru,sv,vi,zh} &&
+        OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm --filter @apps/brikette verify:sitemap-contract -- --file out/sitemap.xml &&
+        OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm --filter @apps/brikette verify:rendered-link-canonicals -- --out-dir out &&
+        OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm --filter @apps/brikette verify:localized-commercial-copy -- --out-dir out &&
         find out -name "__next.*" -type f -delete; e=$?;
         ([ -d ".tmp/app-api-off" ] && mv ".tmp/app-api-off" "src/app/api" || true);
         ([ -d "src/app/[lang]/guides/_slug-off" ] && mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]" || true);
+        ([ -d "src/app/[lang]/guides/_single-off" ] && mv "src/app/[lang]/guides/_single-off" "src/app/[lang]/guides/[slug]" || true);
+        ([ -d "src/app/[lang]/help/_slug-off" ] && mv "src/app/[lang]/help/_slug-off" "src/app/[lang]/help/[slug]" || true);
         exit $e)
       artifact-path: "apps/brikette/out"
       deploy_cmd: >
@@ -211,6 +240,14 @@ jobs:
       environment-name: "production"
       environment-url: "https://www.hostel-positano.com"
       healthcheck-base-url: "https://www.hostel-positano.com"
+      # CI gets the full post-deploy route contract checks.
+      # Keep direct `wrangler pages deploy` fast for operator hotfixes; do not
+      # copy these stricter checks into the manual deploy path.
+      healthcheck-canonical-origin: "https://hostel-positano.com"
+      healthcheck-canonical-tag-routes: "/it/prenota /it/prenota-alloggi-privati /it/camere-private/appartamento-vista-mare /en/private-rooms/sea-view-apartment /ja/annai"
+      healthcheck-sitemap-required-routes: "/it/prenota /it/prenota-alloggi-privati /it/camere-private/appartamento-vista-mare /it/camere-private/camera-doppia /en/private-rooms/sea-view-apartment /ja/annai"
+      healthcheck-404-routes: "/it/book"
+      healthcheck-strict-routes: "/it/prenota /it/prenota-alloggi-privati"
       # Also verify the Pages Function is reachable after deploy.
       # Dates are absolute (GitHub Actions does not support dynamic with: values).
       # Refresh annually or when dates pass. Uses redirect-following curl (2xx/3xx = pass).

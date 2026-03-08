@@ -29,20 +29,55 @@ for dir in "${path_entries[@]}"; do
   fi
 done
 
+fail_closed_infrastructure() {
+  local reason="$1"
+  local retry_posture="$2"
+  local next_step="$3"
+  local anti_retry="$4"
+  local escalation="$5"
+  local exit_code="${6:-1}"
+
+  echo "BLOCKED [fail-closed-infrastructure]: ${reason}" >&2
+  echo "" >&2
+  echo "Retry posture : ${retry_posture}" >&2
+  echo "Next step     : ${next_step}" >&2
+  echo "" >&2
+  echo "Do not retry with:" >&2
+  echo "  ${anti_retry}" >&2
+  echo "" >&2
+  echo "Escalation    : ${escalation}" >&2
+  exit "${exit_code}"
+}
+
 if [[ -z "$real_git" ]]; then
-  echo "ERROR: unable to locate real git binary on PATH" >&2
-  exit 127
+  fail_closed_infrastructure \
+    "real git binary not found on PATH (scripts/agent-bin/ skipped)" \
+    "escalate-now" \
+    "verify git is installed: run \`which git\` in a clean shell outside this repo" \
+    "retrying this command will fail for the same reason until PATH is fixed" \
+    "surface to operator; do not retry locally" \
+    127
 fi
 
 evaluator="${repo_root}/scripts/agents/evaluate-git-safety.mjs"
 policy_json="${repo_root}/.agents/safety/generated/git-safety-policy.json"
 if [[ ! -f "$evaluator" ]]; then
-  echo "ERROR: missing evaluator: ${evaluator}" >&2
-  exit 1
+  fail_closed_infrastructure \
+    "git safety evaluator missing: ${evaluator}" \
+    "escalate-now" \
+    "scripts/agents/generate-git-safety-policy --write" \
+    "retrying the git command without regenerating the evaluator will fail" \
+    "surface to operator; do not retry locally" \
+    1
 fi
 if [[ ! -f "$policy_json" ]]; then
-  echo "ERROR: missing policy: ${policy_json}" >&2
-  exit 1
+  fail_closed_infrastructure \
+    "git safety policy missing: ${policy_json}" \
+    "escalate-now" \
+    "scripts/agents/generate-git-safety-policy --write" \
+    "retrying the git command without regenerating the policy will fail" \
+    "surface to operator; do not retry locally" \
+    1
 fi
 
 set +e

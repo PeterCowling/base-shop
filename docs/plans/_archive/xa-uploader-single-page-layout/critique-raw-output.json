@@ -1,0 +1,22 @@
+{
+  "round": 1,
+  "mode": "file",
+  "score": 8,
+  "lp_score": 4.0,
+  "verdict": "needs_revision",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/xa-uploader-single-page-layout/fact-find.md",
+      "line": "28",
+      "message": "The current-state summary says the operator 'must save the product step first to unlock the images step,' but the actual gate is `readiness.isDataReady`, not a save action. `CatalogProductForm` enables the Images tab from `canOpenImageStep = readiness.isDataReady` and only disables it while that readiness check is false (CatalogProductForm.client.tsx:211, :271). Saving triggers feedback/auto-advance, but it is not the actual unlock condition."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/xa-uploader-single-page-layout/fact-find.md",
+      "line": "81",
+      "message": "The test inventory is miscounted. The brief says '5 of 7 tests are step-navigation-specific,' but CatalogProductForm.test.tsx has 7 tests total with only 4 extinct step/auto-advance tests. Two save-button tests remain, and one additional non-step test still remains valid: the commercial-section omission assertion at :172. That makes the keep/remove guidance internally inconsistent."
+    }
+  ],
+  "sessionId": "Q1qNA84XAQMYM94_"
+}

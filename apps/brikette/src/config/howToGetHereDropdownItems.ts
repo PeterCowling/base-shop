@@ -30,10 +30,13 @@ export function buildHowToGetHereNavItems(lang: AppLanguage): NavItemChild[] {
   const howToGetHereBase = `/${translatePath("howToGetHere", lang)}`;
   return [
     { key: "htgh_all", to: howToGetHereBase, label: "See all routes" },
-    ...HOW_TO_GET_HERE_DROPDOWN_ENTRIES.map(({ key, guideKey, label }) => ({
-      key,
-      to: `/${guideNamespace(lang, guideKey).baseSlug}/${guideSlug(lang, guideKey)}`,
-      label,
-    })),
+    ...HOW_TO_GET_HERE_DROPDOWN_ENTRIES.map(({ key, guideKey, label }) => {
+      const base = guideNamespace(lang, guideKey);
+      return {
+        key,
+        to: `/${base.baseSlug}/${guideSlug(lang, guideKey)}`,
+        label,
+      };
+    }),
   ];
 }

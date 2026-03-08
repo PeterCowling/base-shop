@@ -46,5 +46,5 @@ Review-trigger: After each completed build cycle touching this document.
 ## Sources
 
 - `docs/business-os/contracts/HEAD/outcome-contract.user.md` (canonical guardrails — CAC and revenue targets revised at ASSESSMENT-07)
-- `docs/business-os/startup-baselines/HEAD-channels.md`
+- `docs/business-os/startup-baselines/HEAD/channels.md`
 - `docs/business-os/strategy/HEAD/2026-02-21-launch-distribution-plan.user.md`

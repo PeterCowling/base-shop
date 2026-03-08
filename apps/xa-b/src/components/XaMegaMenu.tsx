@@ -7,17 +7,16 @@ import { Button, Popover, PopoverContent, PopoverTrigger } from "@acme/design-sy
 import { Section } from "@acme/design-system/atoms/Section";
 import { Stack } from "@acme/design-system/primitives/Stack";
 
-import { XA_PRODUCTS } from "../lib/demoData";
+import { useXaCatalogSnapshot } from "../lib/liveCatalog";
 import { siteConfig } from "../lib/siteConfig";
 import {
   formatLabel,
   getDesignerName,
-  getTrendingDesigners,
   XA_ALLOWED_CATEGORIES,
   XA_CATEGORY_LABELS,
   XA_SUBCATEGORIES,
 } from "../lib/xaCatalog";
-import { xaI18n } from "../lib/xaI18n";
+import { getProductHref } from "../lib/xaRoutes";
 import type { XaDepartment } from "../lib/xaTypes";
 
 import { XaFadeImage } from "./XaFadeImage";
@@ -29,7 +28,7 @@ export function XaMegaMenu({
   label: string;
   department: XaDepartment;
 }) {
-  const trendingDesigners = getTrendingDesigners(4, department);
+  const { brands, products } = useXaCatalogSnapshot();
   const base = `/${department}`;
   const primaryCategory = siteConfig.catalog.category;
   const categorySections = XA_ALLOWED_CATEGORIES.map((category) => ({
@@ -38,7 +37,7 @@ export function XaMegaMenu({
     href: `${base}/${category}`,
     items: XA_SUBCATEGORIES[category],
   }));
-  const featuredProduct = XA_PRODUCTS.find(
+  const featuredProduct = products.find(
     (product) => product.taxonomy.department === department,
   );
   const featuredMedia = featuredProduct?.media?.[0];
@@ -58,11 +57,11 @@ export function XaMegaMenu({
       <PopoverContent
         align="center"
         sideOffset={0}
-        className="w-screen rounded-none border-0 bg-surface px-0 pb-10 pt-8 shadow-none"
+        className="w-screen rounded-none border-0 bg-surface-1 px-0 pb-10 pt-8 shadow-none"
         style={{ maxWidth: "none" }}
       >
         <Section as="div" padding="none" className="flex w-full gap-10 px-6">
-          <div className="grid flex-1 gap-6 md:grid-cols-5">
+          <div className="grid flex-1 gap-6 md:grid-cols-4">
             <div className="space-y-3">
               <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 New In
@@ -100,27 +99,10 @@ export function XaMegaMenu({
                 </Stack>
               </div>
             ))}
-            <div className="space-y-3">
-              <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                Brands
-              </div>
-              <Stack gap={2}>
-                {trendingDesigners.map((designer) => (
-                  <Link
-                    key={`${department}-designer-${designer.handle}`}
-                    href={`/designer/${designer.handle}`}
-                    className="text-sm hover:underline"
-                  >
-                    {designer.name}
-                  </Link>
-                ))}
-                <Link href="/designers" className="text-sm font-semibold hover:underline">{xaI18n.t("xaB.src.components.xamegamenu.l116c91")}</Link>
-              </Stack>
-            </div>
           </div>
           {featuredProduct && featuredMedia ? (
             <Link
-              href={`/products/${featuredProduct.slug}`}
+              href={getProductHref(featuredProduct.slug)}
               className="hidden w-52 shrink-0 lg:block"
             >
               <div className="relative xa-aspect-3-4 overflow-hidden bg-surface">
@@ -133,7 +115,7 @@ export function XaMegaMenu({
                 />
               </div>
               <div className="mt-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                {getDesignerName(featuredProduct.brand)}
+                {getDesignerName(featuredProduct.brand, brands)}
               </div>
               <div className="mt-1 text-sm">{featuredProduct.title}</div>
             </Link>

@@ -83,7 +83,7 @@ Before each round after the first: revise the artifact to address prior-round fi
 
 **Plan mode:**
 - `not credible` (score ≤ 2.5) → set `Status: Draft`, block auto-build, recommend `/lp-do-replan`.
-- `partially credible` (2.6–2.9 or 3.0–3.5): `plan+auto` → proceed with `Critique-Warning: partially-credible`; `plan-only` → stop, recommend `/lp-do-replan`.
+- `partially credible` (2.6–2.9 or 3.0–3.5) → set `Status: Draft`, block auto-build, recommend `/lp-do-replan`.
 - `credible` (3.6–3.9 or score ≥ 4.0) → proceed normally.
 - Ordering: runs after Phase 8 (persist), before Phase 10 (build handoff). Re-evaluate build eligibility after autofixes.
 

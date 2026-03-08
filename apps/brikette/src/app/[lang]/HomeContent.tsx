@@ -24,7 +24,7 @@ import WhyStaySection from "@/components/landing/WhyStaySection";
 import AboutStructuredData from "@/components/seo/AboutStructuredData";
 import HomeStructuredData from "@/components/seo/HomeStructuredData";
 import SiteSearchStructuredData from "@/components/seo/SiteSearchStructuredData";
-import { type Room, roomsData } from "@/data/roomsData";
+import { type Room, websiteVisibleRoomsData } from "@/data/roomsData";
 import { useAvailability } from "@/hooks/useAvailability";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
@@ -32,12 +32,16 @@ import { aggregateAvailabilityByCategory } from "@/utils/aggregateAvailabilityBy
 import { hydrateBookingSearch, persistBookingSearch } from "@/utils/bookingSearch";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 import { fireCtaClick, fireViewItemList } from "@/utils/ga4-events";
+import { getBookPath } from "@/utils/localizedRoutes";
+import { type AppNamespaceBundles, primeAppI18nBundles } from "@/utils/primeAppI18nBundles";
 
 type Props = {
   lang: AppLanguage;
+  preloadedNamespaceBundles?: AppNamespaceBundles;
 };
 
-function HomeContent({ lang }: Props) {
+function HomeContent({ lang, preloadedNamespaceBundles }: Props) {
+  primeAppI18nBundles(lang, preloadedNamespaceBundles);
   const router = useRouter();
   const [bookingQuery, setBookingQuery] = useState<{ checkIn: string; checkOut: string; pax: string }>({
     checkIn: "",
@@ -56,7 +60,7 @@ function HomeContent({ lang }: Props) {
     if (bookingQuery.checkOut) params.set("checkout", bookingQuery.checkOut);
     if (bookingQuery.pax) params.set("pax", bookingQuery.pax);
     const queryString = params.toString();
-    return `/${lang}/book${queryString ? `?${queryString}` : ""}`;
+    return `${getBookPath(lang)}${queryString ? `?${queryString}` : ""}`;
   }, [bookingQuery.checkIn, bookingQuery.checkOut, bookingQuery.pax, lang]);
 
   const availabilityCheckin = bookingQuery.checkIn || getTodayIso();
@@ -71,7 +75,7 @@ function HomeContent({ lang }: Props) {
   const roomPrices = useMemo<Record<string, RoomCardPrice> | undefined>(() => {
     if (!availabilityRooms.length) return undefined;
     const prices: Record<string, RoomCardPrice> = {};
-    for (const room of roomsData) {
+    for (const room of websiteVisibleRoomsData) {
       if (!room.octorateRoomCategory) continue;
       const availabilityRoom = aggregateAvailabilityByCategory(availabilityRooms, room.octorateRoomCategory);
       if (!availabilityRoom) continue;
@@ -114,7 +118,7 @@ function HomeContent({ lang }: Props) {
   );
 
   // Rooms data for carousel
-  const roomsForCarousel = roomsData.slice(0, 6);
+  const roomsForCarousel = websiteVisibleRoomsData.slice(0, 6);
 
   useEffect(() => {
     if (typeof window === "undefined") return;

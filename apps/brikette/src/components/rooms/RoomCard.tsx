@@ -24,10 +24,11 @@ import { BOOKING_CODE } from "@/context/modal/constants";
 import { type Room,toFlatImageArray } from "@/data/roomsData";
 import type { OctorateRoom } from "@/hooks/useAvailability";
 import { useRoomPricing } from "@/hooks/useRoomPricing";
-import { i18nConfig } from "@/i18n.config";
+import { type AppLanguage, i18nConfig } from "@/i18n.config";
 import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 import { buildRoomItem, fireEventAndNavigate, resolveItemListName } from "@/utils/ga4-events";
+import { getBookPath } from "@/utils/localizedRoutes";
 
 const PRICE_LOADING_TEST_ID = "price-loading" as const; // legacy test id consumed by app unit tests
 
@@ -145,7 +146,7 @@ export default memo(function RoomCard({
   datePickerRef,
   availabilityRoom,
 }: RoomCardProps): JSX.Element {
-  const resolvedLang = (lang ?? i18nConfig.fallbackLng) as string;
+  const resolvedLang = (lang ?? i18nConfig.fallbackLng) as AppLanguage;
   const { t, ready: readyRaw } = useTranslation("roomsPage", { lng: resolvedLang });
   const ready = readyRaw === true;
   const { t: tTokens, ready: tokensReadyRaw } = useTranslation("_tokens", { lng: resolvedLang });
@@ -279,7 +280,7 @@ export default memo(function RoomCard({
           return;
         }
         // absent or valid-but-url-failed → navigate to /book
-        router.push(`/${resolvedLang}/book`);
+        router.push(getBookPath(resolvedLang));
       },
     });
   }, [datePickerRef, queryState, resolvedLang, room.sku, router, title]);

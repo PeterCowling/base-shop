@@ -1,7 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
 
 import type { RunEvent } from "../derive-state";
-import { validateEventStream } from "../event-validation";
+import { validateEventStream } from "../diagnostics/event-validation";
 
 /**
  * LPSP-04B: Event stream validation (VC-04B-02)

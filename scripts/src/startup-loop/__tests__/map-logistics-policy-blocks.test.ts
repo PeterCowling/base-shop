@@ -4,7 +4,7 @@ import * as path from "node:path";
 
 import { describe, expect, it } from "@jest/globals";
 
-import { mapLogisticsPolicyBlocks } from "../map-logistics-policy-blocks.js";
+import { mapLogisticsPolicyBlocks } from "../website/map-logistics-policy-blocks.js";
 
 function writeFile(repoRoot: string, relativePath: string, content: string): void {
   const fullPath = path.join(repoRoot, relativePath);

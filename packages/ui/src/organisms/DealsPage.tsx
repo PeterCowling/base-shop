@@ -9,7 +9,7 @@ import { Stack } from "../components/atoms/primitives/Stack";
 import { Card, CardContent } from "../components/atoms/shadcn";
 import DealsStructuredData from "../components/seo/DealsStructuredData";
 import { type AppLanguage,i18nConfig } from "../i18n.config";
-import { resolveBookingCtaLabel } from "../shared";
+import { resolvePrimaryCtaLabel } from "../shared";
 import formatDisplayDate from "../utils/formatDisplayDate";
 import { getSlug } from "../utils/slug";
 
@@ -31,30 +31,22 @@ interface DealsPageProps {
 function DealsPage({ lang, title, desc, structuredData, onBookingCtaClick }: DealsPageProps): JSX.Element {
   const { supportedLngs } = i18nConfig;
   const { t, ready } = useTranslation("dealsPage", { lng: lang });
-  const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
+  const { t: tTokens } = useTranslation("_tokens", { lng: lang });
 
   const reserve = useCallback(() => onBookingCtaClick?.(), [onBookingCtaClick]);
 
   const bookingCtaLabel = useMemo(() => {
-    if (!ready && !tokensReady) {
-      return "Reserve Now";
-    }
-    return (
-      resolveBookingCtaLabel(tTokens, {
-        fallback: () => {
-          const direct = t("buttonReserve") as string;
-          if (direct && direct.trim() && direct !== "buttonReserve") {
-            return direct;
-          }
-          const fallback = t("buttonReserve", { lng: i18nConfig.fallbackLng }) as string;
-          if (fallback && fallback.trim() && fallback !== "buttonReserve") {
-            return fallback;
-          }
-          return "Reserve Now";
-        },
-      }) ?? "Reserve Now"
-    );
-  }, [t, tTokens, ready, tokensReady]);
+    const tokenFallback = (tTokens("checkAvailability", { lng: i18nConfig.fallbackLng }) as string) ?? "";
+    const normalisedTokenFallback =
+      tokenFallback.trim() && tokenFallback !== "checkAvailability" ? tokenFallback : "";
+    const direct = (t("buttonReserve") as string) ?? "";
+    const normalisedDirect = direct.trim() && direct !== "buttonReserve" ? direct : "";
+    const fallback = (t("buttonReserve", { lng: i18nConfig.fallbackLng }) as string) ?? "";
+    const normalisedFallback = fallback.trim() && fallback !== "buttonReserve" ? fallback : "";
+    const ctaFallback = normalisedDirect || normalisedFallback || normalisedTokenFallback;
+
+    return resolvePrimaryCtaLabel(tTokens, { fallback: () => ctaFallback }) ?? ctaFallback;
+  }, [t, tTokens]);
 
   // Email coupon flow removed. Discount is auto-applied on direct bookings.
 

@@ -1,11 +1,10 @@
 "use client";
 
-import type { CatalogProductDraftInput } from "@acme/lib/xa";
+import type { CatalogProductDraftInput } from "@acme/lib/xa/catalogAdminSchema";
 
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
-const FIELD_CLASSNAME = "mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink";
-const DETAIL_FIELD_CLASSNAME = "w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink";
+import { INPUT_CLASS, INPUT_INLINE_CLASS } from "./catalogStyles";
 
 type ClothingTaxonomyKey = "occasion" | "fit" | "length" | "neckline" | "sleeveLength" | "pattern";
 type ClothingDetailsKey = "modelHeight" | "modelSize" | "fabricFeel" | "care" | "fitNote" | "sizeGuide";
@@ -23,7 +22,7 @@ function ClothingInputField({
   return (
     <label className="block text-xs uppercase tracking-label text-gate-muted">
       {label}
-      <input value={value} onChange={(event) => onChange(event.target.value)} className={FIELD_CLASSNAME} />
+      <input value={value} onChange={(event) => onChange(event.target.value)} className={INPUT_CLASS} />
     </label>
   );
 }
@@ -88,45 +87,45 @@ function ClothingDetailsSection({
   onDetailChange: (field: ClothingDetailsKey, value: string) => void;
 }) {
   return (
-    <label className="block text-xs uppercase tracking-label text-gate-muted md:col-span-2">
+    <label className="block text-xs uppercase tracking-label text-gate-muted">
       {t("clothingDetailsTitle")}
-      <div className="mt-2 grid gap-3 md:grid-cols-2">
+      <div className="mt-2 grid gap-3">
         <input
           value={draft.details?.modelHeight ?? ""}
           onChange={(event) => onDetailChange("modelHeight", event.target.value)}
-          className={DETAIL_FIELD_CLASSNAME}
+          className={INPUT_INLINE_CLASS}
           placeholder={t("placeholderModelHeight")}
         />
         <input
           value={draft.details?.modelSize ?? ""}
           onChange={(event) => onDetailChange("modelSize", event.target.value)}
-          className={DETAIL_FIELD_CLASSNAME}
+          className={INPUT_INLINE_CLASS}
           placeholder={t("placeholderModelSize")}
         />
         <input
           value={draft.details?.fabricFeel ?? ""}
           onChange={(event) => onDetailChange("fabricFeel", event.target.value)}
-          className={DETAIL_FIELD_CLASSNAME}
+          className={INPUT_INLINE_CLASS}
           placeholder={t("placeholderFabricFeel")}
         />
         <input
           value={draft.details?.care ?? ""}
           onChange={(event) => onDetailChange("care", event.target.value)}
-          className={DETAIL_FIELD_CLASSNAME}
+          className={INPUT_INLINE_CLASS}
           placeholder={t("placeholderCare")}
         />
         <textarea
           value={draft.details?.fitNote ?? ""}
           onChange={(event) => onDetailChange("fitNote", event.target.value)}
           rows={2}
-          className={`md:col-span-2 ${DETAIL_FIELD_CLASSNAME}`}
+          className={INPUT_INLINE_CLASS}
           placeholder={t("placeholderFitNote")}
         />
         <textarea
           value={draft.details?.sizeGuide ?? ""}
           onChange={(event) => onDetailChange("sizeGuide", event.target.value)}
           rows={2}
-          className={`md:col-span-2 ${DETAIL_FIELD_CLASSNAME}`}
+          className={INPUT_INLINE_CLASS}
           placeholder={t("placeholderSizeGuide")}
         />
       </div>
@@ -158,17 +157,18 @@ export function CatalogProductClothingFields({
   };
 
   return (
-    <div className="mt-8 space-y-4">
+    // eslint-disable-next-line ds/container-widths-only-at -- XAUP-0001 operator-tool constrained form
+    <div className="mx-auto mt-8 max-w-prose space-y-4">
       <div className="text-xs uppercase tracking-label-lg text-gate-muted">
         {t("clothingFieldsTitle")}
       </div>
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4">
         <label className="block text-xs uppercase tracking-label text-gate-muted">
           {t("clothingSizes")}
           <input
             value={draft.sizes ?? ""}
             onChange={(event) => onChange({ ...draft, sizes: event.target.value })}
-            className={FIELD_CLASSNAME}
+            className={INPUT_CLASS}
             placeholder="S|M|L|XL"
           />
           {fieldErrors.sizes ? (

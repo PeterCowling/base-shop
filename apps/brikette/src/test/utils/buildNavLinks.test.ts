@@ -15,7 +15,10 @@ describe("buildNavLinks", () => {
     const { slugs } = buildNavLinks(lang, t);
 
     const expected = NAV_ITEMS.reduce((acc, key) => {
-      const slug = key === "home" ? "" : `/${SLUGS[key as keyof typeof SLUGS][lang]}`;
+      const slug =
+        key === "home"
+          ? ""
+          : `/${SLUGS[key as keyof typeof SLUGS][lang]}`;
       acc[key as NavKey] = slug;
       return acc;
     }, {} as Record<NavKey, string>);
@@ -28,7 +31,10 @@ describe("buildNavLinks", () => {
 
     const expected = NAV_ITEMS.map((key) => ({
       key,
-      to: key === "home" ? "" : `/${SLUGS[key as keyof typeof SLUGS][lang]}`,
+      to:
+        key === "home"
+          ? ""
+          : `/${SLUGS[key as keyof typeof SLUGS][lang]}`,
       label: t(
         key,
         key === "assistance"

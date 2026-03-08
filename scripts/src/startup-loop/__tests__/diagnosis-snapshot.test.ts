@@ -14,7 +14,7 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 
-import { generateDiagnosisSnapshot } from "../diagnosis-snapshot";
+import { generateDiagnosisSnapshot } from "../diagnostics/diagnosis-snapshot";
 import { FORECAST_STAGE_ID } from "../stage-id-compat";
 
 const FORECAST_CVR_CONSTRAINT_KEY = `${FORECAST_STAGE_ID}/cvr`;

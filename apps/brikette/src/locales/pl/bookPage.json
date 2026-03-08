@@ -55,7 +55,8 @@
   },
   "noscript": {
     "jsDisabledAssistance": "Rezerwacje hosteli są obsługiwane ze wsparciem, gdy JavaScript jest wyłączony.",
-    "emailAssistedBooking": "Napisz do nas, aby uzyskać pomoc w rezerwacji"
+    "emailAssistedBooking": "Napisz do nas, aby uzyskać pomoc w rezerwacji",
+    "octorateDirectBooking": "Zarezerwuj bezpośrednio przez Octorate"
   },
   "bookingConstraints": {
     "notice": "Rezerwacje w hostelach obejmują pobyty wyłącznie dla dorosłych na okres od 2 do 8 nocy z maksymalnie 8 osobami dorosłymi na rezerwację. W przypadku większych grup lub dłuższych pobytów podziel swoją prośbę na wiele rezerwacji lub",

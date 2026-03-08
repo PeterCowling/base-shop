@@ -1,0 +1,13 @@
+{
+  "round": 3,
+  "mode": "codemoot",
+  "score": 8,
+  "lp_score": 4.0,
+  "verdict": "needs_revision",
+  "findings": [
+    {"severity": "warning", "line": "117", "message": "area_anchor vs changed_sections feature mismatch (acknowledged as proxy)"},
+    {"severity": "warning", "line": "54", "message": "V1 demotes unused wording inaccurate — unused keywords keep base score"},
+    {"severity": "warning", "line": "209", "message": "T1_SEMANTIC_KEYWORDS consumer tracing inaccurate"},
+    {"severity": "info", "line": "296", "message": "SELF_TRIGGER_PROCESSES defense-in-depth only"}
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260305120000-0001",
+  "mode": "trial",
+  "business": "BRIK",
+  "trigger": "operator_idea",
+  "root_event_id": "operator-idea-prime-process-reliability-2026-03-05",
+  "anchor_key": "prime-outbound-reliability",
+  "cluster_key": "prime-outbound-reliability",
+  "cluster_fingerprint": "prime-outbound-reliability-hardening-v1",
+  "lineage_depth": 0,
+  "area_anchor": "Prime outbound workflow reliability hardening",
+  "location_anchors": [
+    "apps/prime/functions/api/process-messaging-queue.ts",
+    "apps/prime/functions/lib/messaging-dispatcher.ts",
+    "apps/prime/functions/api/extension-request.ts",
+    "packages/mcp-server/src/tools/outbound-drafts.ts"
+  ],
+  "provisional_deliverable_family": "code-change",
+  "current_truth": "Prime outbound queue and MCP draft processing have silent-failure and idempotency gaps that can hide or duplicate operator drafts.",
+  "next_scope_now": "Implement strict validation, fail-closed controls, deterministic idempotency, and coverage for error paths.",
+  "adjacent_later": [
+    "Add dashboard alerts for stuck processing states",
+    "Add end-to-end synthetic probe for outbound draft lifecycle"
+  ],
+  "recommended_route": "lp-do-fact-find",
+  "status": "fact_find_ready",
+  "priority": "P1",
+  "confidence": 0.95,
+  "evidence_refs": [
+    "operator-stated: walk through prime processes and identify silent failures/validation gaps",
+    "packages/mcp-server/src/tools/outbound-drafts.ts",
+    "apps/prime/functions/api/process-messaging-queue.ts",
+    "apps/prime/functions/lib/messaging-dispatcher.ts",
+    "apps/prime/functions/api/extension-request.ts"
+  ],
+  "created_at": "2026-03-05T12:00:00.000Z",
+  "queue_state": "enqueued",
+  "why": "The outbound path can silently drop workflow labels, duplicate drafts, and leave processing states stuck, which directly affects guest communication reliability and operator visibility.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Prime outbound messaging and draft orchestration fail closed, are idempotent on retries, and expose deterministic failure states with regression coverage.",
+    "source": "operator"
+  }
+}

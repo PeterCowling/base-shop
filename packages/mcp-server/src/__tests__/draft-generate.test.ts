@@ -124,7 +124,8 @@ const baseActionPlan = {
     additional_content: false,
   },
   workflow_triggers: {
-    booking_monitor: true,
+    booking_action_required: false,
+    booking_context: false,
     prepayment: false,
     terms_and_conditions: false,
   },
@@ -1000,7 +1001,7 @@ describe("draft_generate tool TASK-02", () => {
 describe("draft_generate tool TASK-06 — per-question composite ranking", () => {
   beforeEach(setupDraftGenerateMocks);
 
-  it("TC-06-01: two questions mapping to same template deduplicate to composite: false", async () => {
+  it("TC-06-01: two questions mapping to the same template still produce atomic multipart blocks", async () => {
     readFileMock.mockResolvedValue(
       JSON.stringify([
         {
@@ -1031,7 +1032,16 @@ describe("draft_generate tool TASK-06 — per-question composite ranking", () =>
     }
 
     const payload = JSON.parse(result.content[0].text);
-    expect(payload.composite).toBe(false);
+    expect(payload.composite).toBe(true);
+    expect(payload.question_blocks).toHaveLength(2);
+    expect(payload.question_blocks[0].template_subject).toBe(
+      "Luggage Storage — Before Check-in"
+    );
+    expect(payload.question_blocks[1].template_subject).toBe(
+      "Luggage Storage — Before Check-in"
+    );
+    expect(payload.draft.bodyPlain).toContain("1.");
+    expect(payload.draft.bodyPlain).toContain("2.");
   });
 
   it("TC-06-02: two questions mapping to distinct templates produce composite: true", async () => {
@@ -1071,9 +1081,12 @@ describe("draft_generate tool TASK-06 — per-question composite ranking", () =>
 
     const payload = JSON.parse(result.content[0].text);
     expect(payload.composite).toBe(true);
+    expect(payload.question_blocks).toHaveLength(2);
     const body = payload.draft.bodyPlain.toLowerCase();
     expect(body).toContain("breakfast");
     expect(body).toContain("wifi");
+    expect(body).toContain("1.");
+    expect(body).toContain("2.");
   });
 
   it("TC-06-03: composite body has exactly one greeting and no trailing signature", async () => {
@@ -1117,6 +1130,145 @@ describe("draft_generate tool TASK-06 — per-question composite ranking", () =>
     const signatureCount = (body.match(/\bBest regards\b/gi) ?? []).length;
     expect(dearCount).toBe(1);
     expect(signatureCount).toBe(0);
+  });
+
+  it("TC-06-04: multipart draft records per-question follow-up when a block remains unresolved", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Breakfast — Eligibility and Hours",
+          body: "Dear Guest,\r\n\r\nBreakfast is served daily from 8:00 AM to 10:30 AM.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "breakfast",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Is breakfast included? Do you have a rooftop pool?",
+        intents: {
+          questions: [
+            { text: "Is breakfast included?" },
+            { text: "Do you have a rooftop pool?" },
+          ],
+          requests: [],
+          confirmations: [],
+        },
+      },
+      subject: "Questions",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.composite).toBe(true);
+    expect(payload.question_blocks).toHaveLength(2);
+    expect(payload.question_blocks[1].follow_up_required).toBe(true);
+    expect(payload.draft.bodyPlain).toContain(
+      "Pete or Cristiana will follow up with you directly"
+    );
+  });
+
+  it("TC-06-05: low-confidence unhinted candidates are rejected in composite selection", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Breakfast — Eligibility and Hours",
+          body: "Dear Guest,\r\n\r\nBreakfast is served daily from 8:00 AM to 10:30 AM.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "breakfast",
+        },
+        {
+          subject: "Fiordo di Furore — Swimming and Cliff Jumping Safety",
+          body: "Dear Guest,\r\n\r\nThe fiord can be reached by bus and stairs.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "activities",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Is breakfast included? Do you have a rooftop pool?",
+        intents: {
+          questions: [
+            { text: "Is breakfast included?" },
+            { text: "Do you have a rooftop pool?" },
+          ],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: {
+          category: "breakfast",
+          confidence: 0.9,
+        },
+        scenarios: [
+          {
+            category: "breakfast",
+            confidence: 0.9,
+          },
+        ],
+        actionPlanVersion: "1.1.0",
+      },
+      subject: "Questions",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.composite).toBe(true);
+    expect(payload.question_blocks).toHaveLength(2);
+    expect(payload.question_blocks[1].template_subject).toBeNull();
+    expect(payload.question_blocks[1].follow_up_required).toBe(true);
+    expect(payload.draft.bodyPlain).toContain(
+      "Pete or Cristiana will follow up with you directly"
+    );
+  });
+
+  it("TC-06-06: composite rendering preserves trailing blocks without truncating the tail answer", async () => {
+    const longBreakfast = "Breakfast details ".repeat(140);
+    const longWifi = "WiFi details ".repeat(140);
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Breakfast — Eligibility and Hours",
+          body: `Dear Guest,\r\n\r\n${longBreakfast} FIRST_BLOCK_SENTINEL\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner`,
+          category: "breakfast",
+        },
+        {
+          subject: "WiFi Information",
+          body: `Dear Guest,\r\n\r\n${longWifi} SECOND_BLOCK_SENTINEL\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner`,
+          category: "wifi",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Is breakfast included? Do you have WiFi?",
+        intents: {
+          questions: [
+            { text: "Is breakfast included?" },
+            { text: "Do you have WiFi?" },
+          ],
+          requests: [],
+          confirmations: [],
+        },
+      },
+      subject: "Questions",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.composite).toBe(true);
+    expect(payload.draft.bodyPlain).toContain("1.");
+    expect(payload.draft.bodyPlain).toContain("2.");
+    expect(payload.draft.bodyPlain).toContain("SECOND_BLOCK_SENTINEL");
   });
 });
 
@@ -1469,6 +1621,60 @@ describe("draft_generate tool TASK-07 — knowledge gap-fill injection", () => {
   });
 });
 
+describe("draft_generate tool TASK-07B — knowledge relevance hardening", () => {
+  beforeEach(setupDraftGenerateMocks);
+
+  it("TC-07-02B: irrelevant knowledge snippets with zero keyword overlap are not injected", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "General inquiry",
+          body: "Thank you for contacting us. Best regards, Hostel Brikette",
+          category: "general",
+        },
+      ])
+    );
+
+    handleBriketteResourceReadMock.mockResolvedValue({
+      contents: [
+        {
+          uri: "brikette://faq",
+          mimeType: "application/json",
+          text: JSON.stringify({
+            items: [
+              {
+                id: "breakfast-note",
+                question: "Is breakfast included?",
+                answer: "Breakfast is included only for direct bookings.",
+              },
+            ],
+          }),
+        },
+      ],
+    });
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Do you have a rooftop pool?",
+        intents: {
+          questions: [{ text: "Do you have a rooftop pool?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: { category: "faq", confidence: 0.7 },
+      },
+      subject: "Facility question",
+    });
+    if ("isError" in result && result.isError) throw new Error(result.content[0].text);
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.draft.bodyPlain).toContain("Pete or Cristiana will follow up with you directly");
+    const anyInjected = (payload.sources_used as Array<{ injected: boolean }>).some((e) => e.injected);
+    expect(anyInjected).toBe(false);
+  });
+});
+
 describe("draft_generate tool TASK-04 template normalization", () => {
   beforeEach(setupDraftGenerateMocks);
 
@@ -1517,5 +1723,58 @@ describe("draft_generate tool TASK-04 template normalization", () => {
     expect(bodyLower).toContain("per the cancellation policy");
     expect(bodyLower).not.toContain("availability is confirmed");
     expect(bodyLower).not.toContain("we will charge now");
+  });
+});
+
+describe("draft_generate tool TASK-03 slot resolution parity", () => {
+  beforeEach(setupDraftGenerateMocks);
+
+  it("TASK-03 TC-01: deterministic slot resolver selected when all markers are resolvable", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Arrival greeting",
+          body: "Dear Guest,\r\n\r\nCheck-in starts at 2:30 pm.\r\n\r\nBest regards,\r\n\r\nPeter",
+          category: "faq",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: baseActionPlan,
+      subject: "Check-in",
+      recipientName: "Dedra",
+    });
+    if ("isError" in result && result.isError) throw new Error(result.content[0].text);
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.slot_resolution.selected).toBe("deterministic");
+    expect(payload.slot_resolution.unresolved_slots).toEqual([]);
+    expect(payload.draft.bodyPlain).toContain("Dear Dedra,");
+  });
+
+  it("TASK-03 TC-02: unresolved slot marker triggers legacy fallback and removes marker", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Booking reference request",
+          body: "Dear Guest,\r\n\r\nPlease confirm {{SLOT:BOOKING_REF}} before arrival.\r\n\r\nBest regards,\r\n\r\nPeter",
+          category: "faq",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: baseActionPlan,
+      subject: "Booking ref",
+      recipientName: "Dedra",
+    });
+    if ("isError" in result && result.isError) throw new Error(result.content[0].text);
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.slot_resolution.selected).toBe("legacy");
+    expect(payload.slot_resolution.fallback_reason).toBe("unresolved_slot_markers");
+    expect(payload.slot_resolution.unresolved_slots).toContain("BOOKING_REF");
+    expect(payload.draft.bodyPlain).not.toContain("{{SLOT:BOOKING_REF}}");
   });
 });

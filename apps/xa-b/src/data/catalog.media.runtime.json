@@ -1,9 +1,17 @@
 {
-  "generatedAt": null,
+  "generatedAt": "2026-03-07T13:40:22.080Z",
+  "productsCsvPath": "cloud-draft://xa-b",
   "totals": {
-    "products": 0,
-    "media": 0,
+    "products": 1,
+    "media": 1,
     "warnings": 0
   },
-  "items": []
+  "items": [
+    {
+      "productSlug": "hermes-birkin-25-noir-togo",
+      "sourcePath": "xa-b/hermes-birkin-25/1772890121875-13530f237918.jpg",
+      "catalogPath": "xa-b/hermes-birkin-25/1772890121875-13530f237918.jpg",
+      "altText": "Hermès Birkin 25 main image"
+    }
+  ]
 }

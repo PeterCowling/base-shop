@@ -73,5 +73,5 @@ for H1/H2 market signals; now supplemented by MARKET-01 and MARKET-02 above.
 
 MARKET-01 through MARKET-05 complete. Pre-offer intelligence track is done.
 MARKET-06 (Offer design) is unblocked — use `/lp-offer --business HBAG`.
-Note: HBAG offer already backfilled at `docs/business-os/startup-baselines/HBAG-offer.md`;
+Note: HBAG offer already backfilled at `docs/business-os/startup-baselines/HBAG/offer.md`;
 review and refresh against MARKET-01–05 findings before advancing to S4.

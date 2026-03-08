@@ -176,7 +176,6 @@ const LOCAL_JEST_PATTERN_EXEMPTIONS = [
   "docs/plans/test-execution-resource-governor",
   "docs/historical/",
   "docs/plans/_archive/",
-  "docs/plans/archive/",
 ];
 
 function checkLocalJestPatterns(content: string, rel: string): string[] {

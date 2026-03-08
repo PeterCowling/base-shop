@@ -106,6 +106,7 @@
     "next": "16.1.6"
   },
   "dependencies": {
+    "@acme/types": "workspace:^",
     "@noble/hashes": "^1.8.0",
     "@acme/config": "workspace:^",
     "@acme/zod-utils": "workspace:^",

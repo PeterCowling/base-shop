@@ -17,11 +17,13 @@ export interface OutboundDraftRecord {
   guestName?: string;
   bookingCode?: string;
   eventId?: string;
-  status: 'pending' | 'drafted' | 'sent' | 'failed';
+  status: 'pending' | 'processing' | 'drafted' | 'sent' | 'failed';
   createdAt: string;
+  processingStartedAt?: string;
   draftId?: string;
   gmailMessageId?: string;
   draftedAt?: string;
+  failedAt?: string;
   error?: string;
 }
 

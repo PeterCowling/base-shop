@@ -217,4 +217,32 @@ describe("useEmailGuest", () => {
 
     errorSpy.mockRestore();
   });
+
+  it("returns error (not deferred) when recipient fetch fails", async () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => undefined);
+    fetchMock.mockResolvedValueOnce({
+      ok: false,
+      status: 503,
+      json: () => Promise.resolve({}),
+    } as Response);
+
+    const { result } = renderHook(() => useEmailGuest());
+
+    let sendResult;
+    await act(async () => {
+      sendResult = await result.current.sendEmailGuest({
+        bookingRef: "REF123",
+        activityCode: 21,
+      });
+    });
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(sendResult).toMatchObject({
+      success: false,
+      status: "error",
+      error: "Failed to fetch guest emails (503)",
+    });
+
+    errorSpy.mockRestore();
+  });
 });

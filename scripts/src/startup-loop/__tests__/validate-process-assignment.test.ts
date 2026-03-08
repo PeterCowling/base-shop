@@ -22,7 +22,7 @@ import {
   type ProcessEntry,
   type Taxonomy,
   validateAssignment,
-} from "../validate-process-assignment";
+} from "../diagnostics/validate-process-assignment";
 
 // ---------------------------------------------------------------------------
 // Fixtures

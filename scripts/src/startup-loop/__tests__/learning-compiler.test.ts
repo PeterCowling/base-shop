@@ -1,18 +1,18 @@
 /**
  * Tests for learning-compiler.ts
- * Task: LC-04 from docs/plans/archive/learning-compiler-plan.md
+ * Task: LC-04 from the learning-compiler plan (archived — see git history)
  */
 
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
-import { buildPriorIndex,type ManifestPointer, type PriorIndex } from '../baseline-priors';
+import { buildPriorIndex,type ManifestPointer, type PriorIndex } from '../baselines/baseline-priors';
 import {
   compileExperimentLearning,
   CompilerResult,
   type ExperimentReadout,
   PriorDelta,
-} from '../learning-compiler';
+} from '../baselines/learning-compiler';
 
 describe('learning-compiler', () => {
   let tempDir: string;

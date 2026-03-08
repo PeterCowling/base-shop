@@ -1,9 +1,9 @@
 import { describe, expect, it } from "@jest/globals";
 
-import { detectMissingArtifacts } from "../lp-do-ideas-queue-audit.js";
+import { detectMissingArtifacts } from "../ideas/lp-do-ideas-queue-audit.js";
 
 describe("detectMissingArtifacts", () => {
-  it("TC-01 returns empty when all fact_find_path artifacts exist", () => {
+  it("TC-01 returns empty when all processed target artifacts exist", () => {
     const readFileSyncFn = jest.fn().mockReturnValue(
       JSON.stringify({
         queue_version: "queue.v1",
@@ -47,7 +47,7 @@ describe("detectMissingArtifacts", () => {
     expect(mockExistsSync).toHaveBeenCalledTimes(2);
   });
 
-  it("TC-02 returns only missing entries when some fact_find_path artifacts are missing", () => {
+  it("TC-02 returns only missing entries when some processed target artifacts are missing", () => {
     const readFileSyncFn = jest.fn().mockReturnValue(
       JSON.stringify({
         queue_version: "queue.v1",
@@ -118,12 +118,12 @@ describe("detectMissingArtifacts", () => {
     expect(result).toEqual([
       {
         dispatch_id: "IDEA-DISPATCH-20260101-0002",
-        fact_find_path: "docs/plans/slug-2/fact-find.md",
+        target_path: "docs/plans/slug-2/fact-find.md",
         queue_state: "processed",
       },
       {
         dispatch_id: "IDEA-DISPATCH-20260101-0004",
-        fact_find_path: "docs/plans/slug-4/fact-find.md",
+        target_path: "docs/plans/slug-4/fact-find.md",
         queue_state: "processed",
       },
     ]);
@@ -159,7 +159,7 @@ describe("detectMissingArtifacts", () => {
     expect(mockExistsSync).not.toHaveBeenCalled();
   });
 
-  it("TC-04 ignores processed_by entries that do not include fact_find_path", () => {
+  it("TC-04 ignores processed_by entries that do not include target_path or fact_find_path", () => {
     const readFileSyncFn = jest.fn().mockReturnValue(
       JSON.stringify({
         queue_version: "queue.v1",
@@ -188,7 +188,45 @@ describe("detectMissingArtifacts", () => {
     expect(mockExistsSync).not.toHaveBeenCalled();
   });
 
-  it("TC-05 throws when queue-state file cannot be read", () => {
+  it("TC-05 supports direct-build target_path entries", () => {
+    const readFileSyncFn = jest.fn().mockReturnValue(
+      JSON.stringify({
+        queue_version: "queue.v1",
+        dispatches: [
+          {
+            dispatch_id: "IDEA-DISPATCH-20260101-0003",
+            queue_state: "processed",
+            processed_by: {
+              route: "dispatch-routed",
+              processed_at: "2026-01-01T00:00:00.000Z",
+              target_route: "lp-do-build",
+              target_kind: "build",
+              target_slug: "tiny-copy-fix",
+              target_path: "docs/plans/tiny-copy-fix/micro-build.md",
+            },
+          },
+        ],
+      }),
+    );
+    const mockExistsSync = jest.fn().mockReturnValue(false);
+
+    const result = detectMissingArtifacts({
+      queueStatePath: "/fake/queue-state.json",
+      basedir: "/repo",
+      existsSync: mockExistsSync,
+      readFileSyncFn,
+    });
+
+    expect(result).toEqual([
+      {
+        dispatch_id: "IDEA-DISPATCH-20260101-0003",
+        target_path: "docs/plans/tiny-copy-fix/micro-build.md",
+        queue_state: "processed",
+      },
+    ]);
+  });
+
+  it("TC-06 throws when queue-state file cannot be read", () => {
     const readFileSyncFn = jest.fn(() => {
       throw new Error("ENOENT: no such file");
     });

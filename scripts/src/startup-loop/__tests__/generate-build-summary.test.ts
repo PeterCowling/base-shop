@@ -14,8 +14,8 @@ import {
   serializeRows,
   shouldExcludeSourcePath,
   sortRows,
-} from "../generate-build-summary";
-import { emitBuildEvent, writeBuildEvent } from "../lp-do-build-event-emitter";
+} from "../build/generate-build-summary";
+import { emitBuildEvent, writeBuildEvent } from "../build/lp-do-build-event-emitter";
 
 const FIXED_TIMESTAMP = "2026-02-25T00:00:00.000Z";
 
@@ -94,18 +94,18 @@ describe("generate-build-summary", () => {
     await fs.rm(repoRoot, { recursive: true, force: true });
   });
 
-  it("includes only top-level startup-baselines files", async () => {
+  it("includes only per-business subdirectory startup-baselines files", async () => {
     const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "build-summary-baselines-"));
 
     await writeFile(
       repoRoot,
-      "docs/business-os/startup-baselines/HEAD-offer.md",
+      "docs/business-os/startup-baselines/HEAD/offer.md",
       "# Offer\n\n## Why\nhead",
     );
     await writeFile(
       repoRoot,
-      "docs/business-os/startup-baselines/HBAG/demand-evidence-pack.md",
-      "# Demand Evidence\n\n## Why\nhbag",
+      "docs/business-os/startup-baselines/HBAG/runs/run-001/events.jsonl",
+      '{"event":"started"}',
     );
 
     const rows = generateBuildSummaryRows(repoRoot, {
@@ -114,7 +114,7 @@ describe("generate-build-summary", () => {
 
     expect(rows).toHaveLength(1);
     expect(rows[0]?.business).toBe("HEAD");
-    expect(rows[0]?.sourcePath).toBe("docs/business-os/startup-baselines/HEAD-offer.md");
+    expect(rows[0]?.sourcePath).toBe("docs/business-os/startup-baselines/HEAD/offer.md");
 
     await fs.rm(repoRoot, { recursive: true, force: true });
   });
@@ -174,7 +174,7 @@ describe("generate-build-summary", () => {
     expect(classifyDomain("docs/business-os/market-research/BRIK/latest.user.md")).toBe(
       "Research",
     );
-    expect(classifyDomain("docs/business-os/startup-baselines/BRIK-offer.md")).toBe(
+    expect(classifyDomain("docs/business-os/startup-baselines/BRIK/offer.md")).toBe(
       "Baseline",
     );
   });

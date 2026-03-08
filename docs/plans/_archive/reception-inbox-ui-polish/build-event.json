@@ -1,0 +1,11 @@
+{
+  "schema_version": "build-event.v1",
+  "slug": "reception-inbox-ui-polish",
+  "business": "BRIK",
+  "completed_at": "2026-03-07",
+  "outcome_type": "measurable",
+  "outcome_statement": "No horizontal overflow on any email body. No internal system terms visible to staff. Outbound messages visually distinct. Send button visually dominant. Thread list and conversation scroll independently. Badge labels ≤12 chars. Redundant stat strip removed. No double-fetch on mount.",
+  "outcome_source": "operator",
+  "tasks_completed": 5,
+  "tasks_total": 5
+}

@@ -4,12 +4,12 @@ import path from "node:path";
 
 import { describe, expect, it } from "@jest/globals";
 
-import type { TrialDispatchPacket } from "../lp-do-ideas-trial.js";
-import type { StartupState } from "../self-evolving-contracts.js";
+import type { TrialDispatchPacket } from "../ideas/lp-do-ideas-trial.js";
+import type { StartupState } from "../self-evolving/self-evolving-contracts.js";
 import {
   dispatchToMetaObservation,
   runSelfEvolvingFromIdeas,
-} from "../self-evolving-from-ideas.js";
+} from "../self-evolving/self-evolving-from-ideas.js";
 
 function buildStartupState(): StartupState {
   return {
@@ -101,7 +101,7 @@ describe("self-evolving orchestrator integration", () => {
     expect(observation.skill_id).toBe("lp-do-ideas");
   });
 
-  it("generates ranked candidates and queues backbone actions for lp-do-build", () => {
+  it("routes weak-evidence candidates back into fact-find instead of direct build", () => {
     const tempRoot = mkdtempSync(path.join(os.tmpdir(), "self-evolving-integration-"));
     const result = runSelfEvolvingFromIdeas({
       rootDir: tempRoot,
@@ -120,13 +120,28 @@ describe("self-evolving orchestrator integration", () => {
     expect(result.observations_generated).toBe(3);
     expect(result.orchestrator.candidates_generated).toBeGreaterThan(0);
     expect(result.backbone_queued).toBeGreaterThan(0);
-    expect(result.orchestrator.ranked_candidates[0]?.route.route).toBe("lp-do-build");
+    expect(result.followup_dispatches_emitted).toBeGreaterThan(0);
+    expect(result.orchestrator.ranked_candidates[0]?.score.evidence.classification).toBe(
+      "structural_only",
+    );
+    expect(result.orchestrator.ranked_candidates[0]?.route.route).toBe("lp-do-fact-find");
     expect(result.orchestrator.ranked_candidates[0]?.candidate.executor_path).toBe(
       "lp-do-build:container:website-v3",
     );
 
     const queueRaw = readFileSync(result.backbone_queue_path, "utf-8").trim();
     expect(queueRaw.length).toBeGreaterThan(0);
+    const ideasQueuePath = path.join(
+      tempRoot,
+      "docs",
+      "business-os",
+      "startup-loop",
+      "ideas",
+      "trial",
+      "queue-state.json",
+    );
+    const ideasQueueRaw = readFileSync(ideasQueuePath, "utf-8");
+    expect(ideasQueueRaw).toContain("self-evolving-candidate:");
     rmSync(tempRoot, { recursive: true, force: true });
   });
 });

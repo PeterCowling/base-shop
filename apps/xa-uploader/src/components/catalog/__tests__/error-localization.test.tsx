@@ -19,11 +19,7 @@ const VALID_DRAFT: CatalogProductDraftInput = {
   price: "189",
   description: "A structured layer.",
   createdAt: "2025-12-01T12:00:00.000Z",
-  forSale: true,
-  forRental: false,
   popularity: "0",
-  deposit: "0",
-  stock: "1",
   sizes: "S|M|L",
   taxonomy: {
     department: "women",
@@ -41,13 +37,16 @@ function jsonResponse(body: unknown, init: ResponseInit = {}): Response {
   });
 }
 
-function renderHarness() {
+function renderHarness(initialLocale: "en" | "zh" = "en") {
   function Harness() {
     const state = useCatalogConsole();
     return (
       <div>
         <button type="button" onClick={() => state.setDraft(VALID_DRAFT)}>
           seed-draft
+        </button>
+        <button type="button" onClick={() => state.handleSelect(VALID_DRAFT)}>
+          select-draft
         </button>
         <button type="button" onClick={() => void state.handleSave()}>
           save
@@ -66,7 +65,7 @@ function renderHarness() {
   }
 
   return render(
-    <UploaderI18nProvider>
+    <UploaderI18nProvider initialLocale={initialLocale}>
       <Harness />
     </UploaderI18nProvider>,
   );
@@ -106,7 +105,7 @@ describe("catalog console localized error surfaces", () => {
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
 
-    renderHarness();
+    renderHarness("zh");
 
     await waitFor(() => {
       expect(document.documentElement.lang).toBe("zh");
@@ -152,7 +151,7 @@ describe("catalog console localized error surfaces", () => {
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
 
-    renderHarness();
+    renderHarness("en");
 
     await clickButton("seed-draft");
     await clickButton("save");
@@ -169,6 +168,7 @@ describe("catalog console localized error surfaces", () => {
       );
     });
 
+    await clickButton("select-draft");
     await clickButton("delete");
     await waitFor(() => {
       expect(screen.getByTestId("draft-feedback")).toHaveTextContent(
@@ -202,7 +202,7 @@ describe("catalog console localized error surfaces", () => {
       throw new Error(`Unhandled fetch: ${url}`);
     }) as unknown as typeof fetch;
 
-    renderHarness();
+    renderHarness("zh");
 
     await waitFor(() => {
       expect(document.documentElement.lang).toBe("zh");

@@ -7,6 +7,7 @@ import { getRoomSlug } from "../config/roomSlugs";
 import type { AppLanguage } from "../i18n.config";
 import type { SlugMap } from "../slug-map";
 
+import { getPrivateRoomChildPath, getPrivateRoomsPath } from "./privateRoomPaths";
 import { translatePath } from "./translate-path";
 
 export interface NavItemChild {
@@ -30,6 +31,10 @@ export interface NavLinksResult {
 
 export type TranslateFn = (key: string, defaultValue?: string) => string;
 
+function translateNavChildLabel(t: TranslateFn, key: string, fallback: string): string {
+  return t(`navChildren.${key}`, fallback);
+}
+
 /**
  * Returns navigation slugs and translated labels for all NAV_ITEMS.
  * The "rooms" item includes a `children` array with a "See all rooms" sentinel
@@ -48,6 +53,8 @@ export function buildNavLinks(
   }, {} as Record<NavKey, string>);
 
   const roomsSlug = slugs["rooms"];
+  const bookSlug = `/${translatePath("book", lang)}`;
+  const privateBookingSlug = `/${translatePath("privateBooking", lang)}`;
 
   const navLinks = NAV_ITEMS.map((key) => {
     const label =
@@ -59,16 +66,20 @@ export function buildNavLinks(
 
     if (key === "rooms") {
       const children: NavItemChild[] = [
-        { key: "rooms_all", to: roomsSlug, label: "See all rooms" },
+        {
+          key: "rooms_all",
+          to: bookSlug,
+          label: translateNavChildLabel(t, "rooms.all", "See all rooms"),
+        },
         ...Object.entries(ROOM_DROPDOWN_NAMES).map(([id, name]) => ({
           key: id,
           to: `${roomsSlug}/${getRoomSlug(id, lang)}`,
-          label: name,
+          label: translateNavChildLabel(t, `rooms.${id}`, name),
         })),
       ];
       return {
         key,
-        to: slugs[key],
+        to: bookSlug,
         label,
         prefetch: undefined,
         children,
@@ -76,14 +87,30 @@ export function buildNavLinks(
     }
 
     if (key === "apartment") {
-      const apartmentSlug = slugs["apartment"];
       const children: NavItemChild[] = [
-        { key: "apartment_double_room", to: `${apartmentSlug}/double-room`, label: "Double Room" },
-        { key: "apartment_private_stay", to: `${apartmentSlug}/private-stay`, label: "Apartment" },
+        {
+          key: "apartment_book_private",
+          to: privateBookingSlug,
+          label: translateNavChildLabel(
+            t,
+            "apartment.bookPrivate",
+            "Book private accommodations",
+          ),
+        },
+        {
+          key: "apartment_apartment",
+          to: getPrivateRoomChildPath(lang, "apartment"),
+          label: translateNavChildLabel(t, "apartment.apartment", "Apartment"),
+        },
+        {
+          key: "apartment_double_room",
+          to: getPrivateRoomChildPath(lang, "double-room"),
+          label: translateNavChildLabel(t, "apartment.doubleRoom", "Double Room"),
+        },
       ];
       return {
         key,
-        to: slugs[key],
+        to: getPrivateRoomsPath(lang),
         label,
         prefetch: undefined,
         children,

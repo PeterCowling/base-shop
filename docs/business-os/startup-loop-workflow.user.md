@@ -3,8 +3,8 @@ Type: Operator-Guide
 Status: Active
 Domain: Venture-Studio
 Created: 2026-02-12
-Updated: 2026-02-25
-Last-reviewed: 2026-02-25
+Updated: 2026-03-05
+Last-reviewed: 2026-03-05
 Owner: Pete
 ---
 
@@ -14,9 +14,11 @@ Owner: Pete
 
 This page tells you what to do next for HEAD, PET, and BRIK — and how to do it.
 
-## Canonical stage IDs (loop-spec v3.13.0)
+## Canonical stage IDs (loop-spec v3.14.0)
 
-`ASSESSMENT-01`, `ASSESSMENT-02`, `ASSESSMENT-03`, `ASSESSMENT-04`, `ASSESSMENT-05`, `ASSESSMENT-06`, `ASSESSMENT-07`, `ASSESSMENT-08`, `ASSESSMENT-09`, `ASSESSMENT`, `ASSESSMENT-10`, `ASSESSMENT-11`, `IDEAS`, `IDEAS-01`, `IDEAS-02`, `IDEAS-03`, `MEASURE-00`, `MEASURE-01`, `MEASURE-02`, `PRODUCT`, `PRODUCT-01`, `PRODUCTS`, `PRODUCTS-01`, `PRODUCTS-02`, `PRODUCTS-03`, `PRODUCTS-04`, `PRODUCTS-05`, `PRODUCTS-06`, `PRODUCTS-07`, `LOGISTICS`, `LOGISTICS-01`, `LOGISTICS-02`, `LOGISTICS-03`, `LOGISTICS-04`, `LOGISTICS-05`, `LOGISTICS-06`, `LOGISTICS-07`, `MARKET`, `MARKET-01`, `MARKET-02`, `MARKET-03`, `MARKET-04`, `MARKET-05`, `MARKET-06`, `MARKET-07`, `MARKET-08`, `MARKET-09`, `MARKET-10`, `MARKET-11`, `SIGNALS-01`, `PRODUCT-02`, `SELL`, `SELL-01`, `SELL-02`, `SELL-03`, `SELL-04`, `SELL-05`, `SELL-06`, `SELL-07`, `SELL-08`, `S4`, `WEBSITE`, `WEBSITE-01`, `WEBSITE-02`, `DO`, `S9B`, `SIGNALS` (legacy aliases: `S3`, `S10`).
+`ASSESSMENT-01`, `ASSESSMENT-02`, `ASSESSMENT-03`, `ASSESSMENT-04`, `ASSESSMENT-05`, `ASSESSMENT-06`, `ASSESSMENT-07`, `ASSESSMENT-08`, `ASSESSMENT-09`, `ASSESSMENT`, `ASSESSMENT-10`, `ASSESSMENT-11`, `ASSESSMENT-13`, `ASSESSMENT-14`, `ASSESSMENT-15`, `IDEAS`, `IDEAS-01`, `IDEAS-02`, `IDEAS-03`, `MEASURE-00`, `MEASURE-01`, `MEASURE-02`, `PRODUCT`, `PRODUCT-01`, `PRODUCTS`, `PRODUCTS-01`, `PRODUCTS-02`, `PRODUCTS-03`, `PRODUCTS-04`, `PRODUCTS-05`, `PRODUCTS-06`, `PRODUCTS-07`, `LOGISTICS`, `LOGISTICS-01`, `LOGISTICS-02`, `LOGISTICS-03`, `LOGISTICS-04`, `LOGISTICS-05`, `LOGISTICS-06`, `LOGISTICS-07`, `MARKET`, `MARKET-01`, `MARKET-02`, `MARKET-03`, `MARKET-04`, `MARKET-05`, `MARKET-06`, `MARKET-07`, `MARKET-08`, `MARKET-09`, `MARKET-10`, `MARKET-11`, `SIGNALS-01`, `PRODUCT-02`, `SELL`, `SELL-01`, `SELL-02`, `SELL-03`, `SELL-04`, `SELL-05`, `SELL-06`, `SELL-07`, `SELL-08`, `S4`, `WEBSITE`, `WEBSITE-01`, `WEBSITE-02`, `DO`, `S9B`, `SIGNALS` (legacy aliases: `S3`, `S10`).
+
+`ASSESSMENT-12` remains a skill-only promotion gate and is intentionally not part of the canonical loop-spec stage graph.
 
 ## Open tasks (updated 2026-02-21)
 
@@ -151,15 +153,15 @@ Before investing time in the next stage, answer these six questions. Each one is
 
 > **Note for engineers:** The full gate specification (RG-01 through RG-07) with acceptance criteria and evidence paths is preserved verbatim in the Engineering appendix below.
 
-> **Capability contract:** The canonical marketing/sales capability registry — defining the seven capabilities required for decision-grade marketing and sales infrastructure — is at `docs/business-os/startup-loop/marketing-sales-capability-contract.md`.
+> **Capability contract:** The canonical marketing/sales capability registry — defining the seven capabilities required for decision-grade marketing and sales infrastructure — is at `docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md`.
 
 > **Forecast guardrail contract:** S3 forecast outputs must apply a confidence tier (low/medium/high) that controls spend cap, operator time cap, re-check cadence, and allowed decision class. Unknown confidence defaults to `low` tier (10% spend cap, ≤5 hrs/week/channel, Continue/Investigate only). Full tier table and assumption register requirements (9 mandatory fields including `kill_trigger`, `owner`, `next_review_date`) are defined in `.claude/skills/lp-forecast/SKILL.md` (§ Forecast Guardrails).
 
 > **S10 denominator validity contract:** Weekly K/P/C/S decisions require denominator validity checks before issuing Scale or Kill. Five KPI families have explicit minimum denominators (Traffic trend ≥200 sessions/week; Lead CVR ≥100 visits + 10 leads; Booking/Purchase CVR ≥150 visits + 8 orders; CAC ≥10 conversions; Revenue/AOV ≥10 orders). If any selected KPI fails its threshold, the decision class is restricted to `Continue` or `Investigate` — `Scale` and `Kill` require all relevant denominators to pass. Full table in `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md` (§ KPI Denominator Minimums) and `.claude/skills/lp-launch-qa/SKILL.md` (§ KPI Denominator Validity).
 
-> **Audit cadence contract:** Every S10 session includes a weekly light-audit (8 items, ≤20 min) appended as Section H to the KPCs decision document. A monthly deep-audit (21 items, ≤120 min) runs in the first week of each month, producing a `<YYYY-MM>-monthly-audit.user.md` per business. Any failed item creates a `REM-<BIZ>-<YYYYMMDD>-<n>` task with named owner and due date. If item A1 (Measurement active) fails, KPI signal is unreliable and decision class is restricted to `Continue` / `Investigate`. Full checklist: `docs/business-os/startup-loop/audit-cadence-contract-v1.md`.
+> **Audit cadence contract:** Every S10 session includes a weekly light-audit (8 items, ≤20 min) appended as Section H to the KPCs decision document. A monthly deep-audit (21 items, ≤120 min) runs in the first week of each month, producing a `<YYYY-MM>-monthly-audit.user.md` per business. Any failed item creates a `REM-<BIZ>-<YYYYMMDD>-<n>` task with named owner and due date. If item A1 (Measurement active) fails, KPI signal is unreliable and decision class is restricted to `Continue` / `Investigate`. Full checklist: `docs/business-os/startup-loop/contracts/audit-cadence-contract-v1.md`.
 
-> **Bottleneck profile adapter contract:** S10 bottleneck diagnosis is business-model-aware when `business_model_profile` is set on the run context. Two profiles are supported: `hospitality-direct-booking` (adds `inquiry_to_quote_rate`, `quote_to_booking_rate`, `median_response_time`, `direct_ota_mix`, `cancellation_rate`, `review_velocity`) and `dtc-ecommerce` (adds `page_to_atc_rate`, `checkout_completion_rate`, `cac_by_cohort`, `refund_rate`, `support_load_per_100_orders`, `repeat_purchase_rate`). Profile primary primitives compete with base catalog metrics by miss magnitude; profile secondary derived metrics are deprioritised when a profile primary has severity ≥ moderate. Existing v1 snapshots without a profile remain valid. Full schema and examples in `docs/business-os/startup-loop/bottleneck-diagnosis-schema.md` (§§ 2A, 5, 11).
+> **Bottleneck profile adapter contract:** S10 bottleneck diagnosis is business-model-aware when `business_model_profile` is set on the run context. Two profiles are supported: `hospitality-direct-booking` (adds `inquiry_to_quote_rate`, `quote_to_booking_rate`, `median_response_time`, `direct_ota_mix`, `cancellation_rate`, `review_velocity`) and `dtc-ecommerce` (adds `page_to_atc_rate`, `checkout_completion_rate`, `cac_by_cohort`, `refund_rate`, `support_load_per_100_orders`, `repeat_purchase_rate`). Profile primary primitives compete with base catalog metrics by miss magnitude; profile secondary derived metrics are deprioritised when a profile primary has severity ≥ moderate. Existing v1 snapshots without a profile remain valid. Full schema and examples in `docs/business-os/startup-loop/schemas/bottleneck-diagnosis-schema.md` (§§ 2A, 5, 11).
 
 ## Business Operator Actions
 
@@ -272,7 +274,7 @@ Use this table to find the right action for each stage. For prompt file paths an
 | Week-1/2 actuals are available or a major assumption has broken (S3) | Run the Forecast Recalibration prompt | Forecast recalibration document exists and is dated |
 | 3 or more candidate actions are competing for priority (S4) | Run the Prioritisation Scorer prompt | Prioritisation scorecard exists with top 2–3 items ranked |
 | Website artifact is missing, stale, or points to a Draft (WEBSITE) | Run the launch-surface-matched website prompt (WEBSITE-01 or WEBSITE-02) | Website artifact is at Active status with a valid latest pointer; for WEBSITE-01 also complete auto-handover to `/lp-do-fact-find` |
-| It is the weekly cadence checkpoint (S10) | Run the Weekly K/P/C/S Decision prompt (includes Section H weekly audit) via `/lp-weekly` (see [S10 weekly orchestration contract](docs/business-os/startup-loop/s10-weekly-orchestration-contract-v1.md); packet schema: [s10-weekly-packet-schema-v1](docs/business-os/startup-loop/s10-weekly-packet-schema-v1.md)) | This week's K/P/C/S decision document is dated and saved; Section H audit completed; S10 weekly packet published at `docs/business-os/strategy/<BIZ>/s10-weekly-packet-<YYYY-Www>.md`; latest pointer updated |
+| It is the weekly cadence checkpoint (S10) | Run the Weekly K/P/C/S Decision prompt (includes Section H weekly audit) via `/lp-weekly` (see [S10 weekly orchestration contract](docs/business-os/startup-loop/contracts/s10-weekly-orchestration-contract-v1.md); packet schema: [s10-weekly-packet-schema-v1](docs/business-os/startup-loop/schemas/s10-weekly-packet-schema-v1.md)) | This week's K/P/C/S decision document is dated and saved; Section H audit completed; S10 weekly packet published at `docs/business-os/strategy/<BIZ>/s10-weekly-packet-<YYYY-Www>.md`; latest pointer updated |
 | It is the first week of the month | Run the monthly deep-audit checklist | `<YYYY-MM>-monthly-audit.user.md` exists for each active business; all REM tasks have owners |
 
 > **For prompt paths and output paths:** See the Engineering appendix → Prompt Hand-Off Map section.
@@ -310,7 +312,7 @@ This sub-loop feeds the main startup loop at the lp-do-fact-find stage.
 
 ## Stage-by-Stage Workflow [Engineering Reference]
 
-Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 3.13.0).
+Canonical source: `docs/business-os/startup-loop/specifications/loop-spec.yaml` (spec_version 3.13.0).
 
 | Stage | Inputs | Processing | Outputs |
 |---|---|---|---|
@@ -380,10 +382,10 @@ Resolved recently (no longer missing):
 - BRIK site-upgrade brief is active (decision-grade):
   - `docs/business-os/site-upgrades/BRIK/latest.user.md`
 - Intake packets are active for HEAD and PET:
-  - `docs/business-os/startup-baselines/HEAD-<YYYY-MM-DD>assessment-intake-packet.user.md`
-  - `docs/business-os/startup-baselines/PET-<YYYY-MM-DD>assessment-intake-packet.user.md`
+  - `docs/business-os/startup-baselines/HEAD/<YYYY-MM-DD>assessment-intake-packet.user.md`
+  - `docs/business-os/startup-baselines/PET/<YYYY-MM-DD>assessment-intake-packet.user.md`
 - Intake packet is active for BRIK:
-  - `docs/business-os/startup-baselines/BRIK-<YYYY-MM-DD>assessment-intake-packet.user.md`
+  - `docs/business-os/startup-baselines/BRIK/<YYYY-MM-DD>assessment-intake-packet.user.md`
 - Readiness mapping gate now passes for active scope:
   - `docs/business-os/readiness/2026-02-12-idea-readiness.user.md` (`Run-Status: warning`)
 - Blocker interview packs are active for HEAD and PET:
@@ -408,9 +410,9 @@ Resolved recently (no longer missing):
 |---|---|---|---|
 | ASSESSMENT readiness | Demand/conversion baselines still not measured | Input missing | `docs/business-os/strategy/HEAD/plan.user.md` metrics section |
 | S3 Forecast | Region/tax still unresolved in some active decision docs (`Region: TBD`) | Input/consistency gap | `docs/business-os/strategy/HEAD/2026-02-11-week2-gate-dry-run.user.md`, `docs/business-os/strategy/HEAD/launch-readiness-action-backlog.user.md` |
-| S3 Forecast | Key operational confirmations missing: in-stock date, sellable units, price architecture, compatibility matrix, payment readiness, returns SLA | Input missing | `docs/business-os/startup-baselines/HEAD-forecast-seed.user.md` section "Still missing / needs confirmation" |
+| S3 Forecast | Key operational confirmations missing: in-stock date, sellable units, price architecture, compatibility matrix, payment readiness, returns SLA | Input missing | `docs/business-os/startup-baselines/HEAD/forecast-seed.user.md` section "Still missing / needs confirmation" |
 | S3 Forecast | No post-launch recalibration artifact exists yet | Output missing | No `docs/business-os/strategy/HEAD/*-forecast-recalibration.user.md` |
-| S4 Baseline merge | Baseline exists but remains draft and not yet promoted into canonical strategy outcome contract | Output not integrated | `docs/business-os/startup-baselines/HEAD-forecast-seed.user.md` + `docs/business-os/strategy/HEAD/plan.user.md` |
+| S4 Baseline merge | Baseline exists but remains draft and not yet promoted into canonical strategy outcome contract | Output not integrated | `docs/business-os/startup-baselines/HEAD/forecast-seed.user.md` + `docs/business-os/strategy/HEAD/plan.user.md` |
 
 ### 5.3 PET-specific gaps
 
@@ -419,19 +421,19 @@ Resolved recently (no longer missing):
 | ASSESSMENT readiness | Demand/margin baselines not measured in canonical plan | Input missing | `docs/business-os/strategy/PET/plan.user.md` metrics section |
 | S3 Forecast | Forecast is not decision-grade until inventory units/arrival, real costs, and observed CPC/CVR are captured | Input missing | `docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.user.md` section "Required Data to Upgrade v2 -> Decision-Grade" |
 | S3 Forecast | No post-launch recalibration artifact exists yet | Output missing | No `docs/business-os/strategy/PET/*-forecast-recalibration.user.md` |
-| S4 Baseline merge | PET baseline now exists but remains draft and not yet promoted into canonical strategy outcome contract | Output not integrated | `docs/business-os/startup-baselines/PET-forecast-seed.user.md` + `docs/business-os/strategy/PET/plan.user.md` |
+| S4 Baseline merge | PET baseline now exists but remains draft and not yet promoted into canonical strategy outcome contract | Output not integrated | `docs/business-os/startup-baselines/PET/forecast-seed.user.md` + `docs/business-os/strategy/PET/plan.user.md` |
 
 ### 5.4 BRIK-specific gaps
 
 | Stage | Missing information | Gap type | Evidence |
 |---|---|---|---|
-| ASSESSMENT readiness | Outcome contract is now in canonical startup-loop format; maintain weekly refresh against measured data | Freshness/cadence risk | `docs/business-os/strategy/BRIK/plan.user.md`; `docs/business-os/startup-baselines/BRIK-forecast-seed.user.md` |
+| ASSESSMENT readiness | Outcome contract is now in canonical startup-loop format; maintain weekly refresh against measured data | Freshness/cadence risk | `docs/business-os/strategy/BRIK/plan.user.md`; `docs/business-os/startup-baselines/BRIK/forecast-seed.user.md` |
 | ASSESSMENT readiness | First 7-day measured baseline is now locked (sessions/users/page_view); conversion and vitals signals remain zero in current window | Signal-quality gap | `docs/business-os/strategy/BRIK/plan.user.md` metrics section; `docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md` |
-| MEASURE-02 Historical baseline | Baseline is active; Octorate data collection protocol established with Batch 2 (calendar/inventory) fully automated; Batch 1 (booking value) requires automation; Cloudflare proxies are partial (11/24 months request totals only; no page/geo/device splits) and older months are unavailable under current access | Data quality + automation gap | `docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md` (`Status: Active`); `docs/business-os/strategy/BRIK/2026-02-14-octorate-operational-data-baseline.user.md` (`Status: Active`); `docs/business-os/startup-loop/octorate-data-collection-protocol.md` (`Status: Active`); `docs/business-os/strategy/BRIK/data/cloudflare_monthly_proxies.csv`; `docs/business-os/strategy/BRIK/data/data_quality_notes.md` |
+| MEASURE-02 Historical baseline | Baseline is active; Octorate data collection protocol established with Batch 2 (calendar/inventory) fully automated; Batch 1 (booking value) requires automation; Cloudflare proxies are partial (11/24 months request totals only; no page/geo/device splits) and older months are unavailable under current access | Data quality + automation gap | `docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md` (`Status: Active`); `docs/business-os/strategy/BRIK/2026-02-14-octorate-operational-data-baseline.user.md` (`Status: Active`); `docs/business-os/startup-loop/operations/octorate-data-collection-protocol.md` (`Status: Active`); `docs/business-os/strategy/BRIK/data/cloudflare_monthly_proxies.csv`; `docs/business-os/strategy/BRIK/data/data_quality_notes.md` |
 | MEASURE-01 Agent-Setup verification | Data API access is enabled, first extract is captured, and production click-path now verifies live `begin_checkout` collection after deployment alignment; `web_vitals` verification and refreshed report-window confirmation remain pending | Signal-quality/verification gap | `docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md`; `docs/business-os/strategy/BRIK/plan.user.md`; setup note: `docs/business-os/strategy/BRIK/2026-02-12-ga4-search-console-setup-note.user.md` |
 | MARKET-01 Market intelligence | Decision-grade pack is now active; enforce monthly freshness + change-trigger refresh | Refresh cadence risk | `docs/business-os/market-research/BRIK/2026-02-12-market-intelligence.user.md` (`Status: Active`); handoff prompt retained at `docs/business-os/market-research/BRIK/2026-02-12-deep-research-market-intelligence-prompt.user.md` |
 | S3 Forecasting | Startup-loop forecast artifact is now active (`v1`); first measured-data recalibration remains pending | Refresh/recalibration risk | `docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1.user.md` (`Status: Active`); exec summary: `docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1-exec-summary.user.md` |
-| S4 Baseline merge | Forecast seed is active and integrated into canonical plan; next action is controlled refresh/recalibration after measured week-1/2 data | Refresh/recalibration risk | `docs/business-os/startup-baselines/BRIK-forecast-seed.user.md` (`Status: Active`) + `docs/business-os/strategy/BRIK/plan.user.md` |
+| S4 Baseline merge | Forecast seed is active and integrated into canonical plan; next action is controlled refresh/recalibration after measured week-1/2 data | Refresh/recalibration risk | `docs/business-os/startup-baselines/BRIK/forecast-seed.user.md` (`Status: Active`) + `docs/business-os/strategy/BRIK/plan.user.md` |
 | S4 Prioritization | Scored prioritization artifact is active; P1-01 routing, baseline lock, and production checkout telemetry deployment alignment are complete, while report refresh verification and P1-02/P1-03 execution remain open | Execution sequencing risk | `docs/plans/brik-ga4-baseline-lock/fact-find.md`; `docs/plans/brik-ga4-baseline-lock/plan.md`; `docs/business-os/strategy/BRIK/2026-02-13-prioritization-scorecard.user.md` (`Status: Active`) |
 | WEBSITE-02 Website synthesis | Decision-grade brief is now active; enforce monthly freshness + change-trigger refresh | Refresh cadence risk | `docs/business-os/site-upgrades/BRIK/2026-02-12-upgrade-brief.user.md` (`Status: Active`); handoff prompt retained at `docs/business-os/site-upgrades/BRIK/2026-02-12-deep-research-site-upgrade-prompt.user.md` |
 | S10 Weekly decision loop | First weekly decision artifact is now active; maintain strict weekly cadence and link to gate evidence | Cadence risk | `docs/business-os/strategy/BRIK/2026-02-13-weekly-kpcs-decision.user.md` (`Status: Active`) |

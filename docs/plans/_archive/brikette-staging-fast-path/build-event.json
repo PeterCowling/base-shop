@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "brikette-staging-fast-path-20260308",
+  "feature_slug": "brikette-staging-fast-path",
+  "emitted_at": "2026-03-08T15:10:00.000Z",
+  "why": "Brikette staging deploys took ~57+ min total (20-25 min CI gates + ~37 min Cloudflare upload). The fast path removes the CI overhead for staging-only changes.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Brikette staging deploys via the fast-path workflow complete in roughly the Cloudflare upload time alone (~37 min), with no lint/typecheck/test/verify overhead on top.",
+    "source": "operator"
+  }
+}

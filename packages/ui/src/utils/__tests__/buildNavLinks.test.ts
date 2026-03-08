@@ -30,20 +30,66 @@ describe("buildNavLinks", () => {
       });
     });
 
-    it("first child is the See-all sentinel pointing to the rooms listing", () => {
+    it("first child is the See-all sentinel pointing to the booking page", () => {
       const { navLinks, slugs } = buildNavLinks("en", stub);
       const rooms = navLinks.find((l) => l.key === "rooms")!;
       const first = rooms.children![0];
       expect(first.key).toBe("rooms_all");
       expect(first.label).toBe("See all rooms");
-      expect(first.to).toBe(slugs["rooms"]); // "/dorms" in English per slug-map.ts
+      expect(first.to).toBe("/book-dorm-bed");
     });
   });
 
-  it("TC-04: non-rooms nav items have children undefined", () => {
+  it("TC-04: non-dropdown nav items have children undefined", () => {
     const { navLinks } = buildNavLinks("en", stub);
-    navLinks.filter((l) => l.key !== "rooms").forEach((item) => {
+    navLinks.filter((l) => l.key !== "rooms" && l.key !== "apartment").forEach((item) => {
       expect(item.children).toBeUndefined();
     });
+  });
+
+  it("apartment nav links to private booking and keeps detail children", () => {
+    const { navLinks, slugs } = buildNavLinks("en", stub);
+    const apartment = navLinks.find((l) => l.key === "apartment")!;
+    expect(apartment.to).toBe(slugs["apartment"]);
+    expect(apartment.children?.[0]).toEqual({
+      key: "apartment_book_private",
+      to: "/book-private-accommodations",
+      label: "Book private accommodations",
+    });
+    expect(apartment.children?.[1]).toEqual({
+      key: "apartment_apartment",
+      to: "/private-rooms/sea-view-apartment",
+      label: "Apartment",
+    });
+    expect(apartment.children?.[2]).toEqual({
+      key: "apartment_double_room",
+      to: "/private-rooms/double-room",
+      label: "Double Room",
+    });
+  });
+
+  it("uses translated child labels when provided", () => {
+    const translated = (key: string, defaultValue?: string): string => {
+      const translations: Record<string, string> = {
+        "navChildren.rooms.all": "كل الغرف",
+        "navChildren.rooms.room_10": "مهجع مختلط – حمّام داخلي",
+        "navChildren.apartment.bookPrivate": "احجز الغرف الخاصة",
+        "navChildren.apartment.apartment": "شقة",
+        "navChildren.apartment.doubleRoom": "غرفة مزدوجة",
+      };
+      return translations[key] ?? defaultValue ?? key;
+    };
+
+    const { navLinks } = buildNavLinks("ar", translated);
+    const rooms = navLinks.find((link) => link.key === "rooms");
+    const apartment = navLinks.find((link) => link.key === "apartment");
+
+    expect(rooms?.children?.[0]?.label).toBe("كل الغرف");
+    expect(rooms?.children?.find((child) => child.key === "room_10")?.label).toBe(
+      "مهجع مختلط – حمّام داخلي",
+    );
+    expect(apartment?.children?.[0]?.label).toBe("احجز الغرف الخاصة");
+    expect(apartment?.children?.[1]?.label).toBe("شقة");
+    expect(apartment?.children?.[2]?.label).toBe("غرفة مزدوجة");
   });
 });

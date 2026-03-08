@@ -90,6 +90,23 @@ describe("GA4 select_item on room CTA clicks (GA4-11)", () => {
       }),
     );
   });
+
+  it("calls onRequireSearchInput when query state is absent", () => {
+    const onRequireSearchInput = jest.fn();
+    render(
+      <RoomsSection
+        lang="en"
+        itemListId="rooms_index"
+        queryState="absent"
+        onRequireSearchInput={onRequireSearchInput}
+      />,
+    );
+
+    const buttons = screen.getAllByRole("button", { name: /checkRatesSingle/i });
+    fireEvent.click(buttons[0]);
+
+    expect(onRequireSearchInput).toHaveBeenCalledTimes(1);
+  });
 });
 
 // TASK-32: RoomsSection.onRoomSelect — full GA4 item fields + trackThenNavigate for begin_checkout

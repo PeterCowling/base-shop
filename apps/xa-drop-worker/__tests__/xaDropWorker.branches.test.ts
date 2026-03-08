@@ -192,10 +192,14 @@ describe("xa-drop-worker edge branches", () => {
   });
 
   it("returns 304 when If-None-Match matches normalized unquoted etag", async () => {
+    const token = "catalog-write-token-1234567890";
     const res = await handler.fetch(
       new Request("https://drop.example/catalog/xa-b", {
         method: "GET",
-        headers: { "If-None-Match": "\"etag123\"" },
+        headers: {
+          "If-None-Match": "\"etag123\"",
+          "X-XA-Catalog-Token": token,
+        },
       }),
       {
         SUBMISSIONS_BUCKET: {
@@ -205,6 +209,7 @@ describe("xa-drop-worker edge branches", () => {
               text: async () => "{\"ok\":true}\n",
             }) as unknown,
         } as unknown as R2Bucket,
+        CATALOG_WRITE_TOKEN: token,
       },
     );
 
@@ -251,5 +256,255 @@ describe("xa-drop-worker edge branches", () => {
     );
 
     expect(res.status).toBe(400);
+  });
+
+  it("returns 401 for deploy trigger without valid token", async () => {
+    const res = await handler.fetch(
+      new Request("https://drop.example/deploy/xa-b", { method: "POST" }),
+      {
+        SUBMISSIONS_BUCKET: { get: async () => null } as unknown as R2Bucket,
+        XA_DEPLOY_TRIGGER_TOKEN: "deploy-trigger-token-1234567890",
+        XA_GITHUB_ACTIONS_TOKEN: "gh-actions-token",
+      },
+    );
+
+    expect(res.status).toBe(401);
+  });
+
+  it("triggers pages deploy hook on deploy trigger when configured", async () => {
+    const fetchMock = jest
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(new Response(null, { status: 201 }));
+
+    const res = await handler.fetch(
+      new Request("https://drop.example/deploy/xa-b", {
+        method: "POST",
+        headers: { "X-XA-Deploy-Token": "deploy-trigger-token-1234567890" },
+      }),
+      {
+        SUBMISSIONS_BUCKET: { get: async () => null } as unknown as R2Bucket,
+        XA_DEPLOY_TRIGGER_TOKEN: "deploy-trigger-token-1234567890",
+        XA_B_PAGES_DEPLOY_HOOK_URL: "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hook_token",
+      },
+    );
+
+    expect(res.status).toBe(202);
+    await expect(res.json()).resolves.toEqual(
+      expect.objectContaining({
+        ok: true,
+        provider: "cloudflare_pages_deploy_hook",
+        storefront: "xa-b",
+      }),
+    );
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const hookCall = fetchMock.mock.calls[0];
+    expect(hookCall?.[0]).toBe("https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hook_token");
+    const hookInit = hookCall?.[1] as RequestInit;
+    expect(hookInit.method).toBe("POST");
+
+    fetchMock.mockRestore();
+  });
+
+  it("falls back to GitHub dispatch when pages deploy hook fails", async () => {
+    const fetchMock = jest
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(new Response("unavailable", { status: 503 }))
+      .mockResolvedValueOnce(new Response(null, { status: 204 }));
+
+    const res = await handler.fetch(
+      new Request("https://drop.example/deploy/xa-b", {
+        method: "POST",
+        headers: { "X-XA-Deploy-Token": "deploy-trigger-token-1234567890" },
+      }),
+      {
+        SUBMISSIONS_BUCKET: { get: async () => null } as unknown as R2Bucket,
+        XA_DEPLOY_TRIGGER_TOKEN: "deploy-trigger-token-1234567890",
+        XA_B_PAGES_DEPLOY_HOOK_URL: "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hook_token",
+        XA_GITHUB_ACTIONS_TOKEN: "gh-actions-token",
+        XA_GITHUB_REPO_OWNER: "petercowling",
+        XA_GITHUB_REPO_NAME: "base-shop",
+        XA_GITHUB_WORKFLOW_FILE: "xa-b-redeploy.yml",
+        XA_GITHUB_WORKFLOW_REF: "dev",
+      },
+    );
+
+    expect(res.status).toBe(202);
+    await expect(res.json()).resolves.toEqual(
+      expect.objectContaining({
+        ok: true,
+        provider: "github_actions",
+        workflow: "xa-b-redeploy.yml",
+        fallbackFrom: "cloudflare_pages_deploy_hook",
+        fallbackReason: "pages_hook_failed",
+      }),
+    );
+
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    const dispatchCall = fetchMock.mock.calls[1];
+    expect(dispatchCall?.[0]).toBe(
+      "https://api.github.com/repos/petercowling/base-shop/actions/workflows/xa-b-redeploy.yml/dispatches",
+    );
+
+    fetchMock.mockRestore();
+  });
+
+  it("rejects disallowed workflow targets for deploy trigger dispatch", async () => {
+    const fetchMock = jest.spyOn(globalThis, "fetch");
+
+    const res = await handler.fetch(
+      new Request("https://drop.example/deploy/xa-b", {
+        method: "POST",
+        headers: { "X-XA-Deploy-Token": "deploy-trigger-token-1234567890" },
+      }),
+      {
+        SUBMISSIONS_BUCKET: { get: async () => null } as unknown as R2Bucket,
+        XA_DEPLOY_TRIGGER_TOKEN: "deploy-trigger-token-1234567890",
+        XA_GITHUB_ACTIONS_TOKEN: "gh-actions-token",
+        XA_GITHUB_REPO_OWNER: "petercowling",
+        XA_GITHUB_REPO_NAME: "base-shop",
+        XA_GITHUB_WORKFLOW_FILE: "xa.yml",
+        XA_GITHUB_WORKFLOW_REF: "dev",
+      },
+    );
+
+    expect(res.status).toBe(503);
+    await expect(res.json()).resolves.toEqual(
+      expect.objectContaining({
+        ok: false,
+        error: expect.objectContaining({
+          message: "deploy_workflow_not_allowed",
+          workflow: "xa.yml",
+        }),
+      }),
+    );
+    expect(fetchMock).not.toHaveBeenCalled();
+
+    fetchMock.mockRestore();
+  });
+
+  it("dispatches xa-b redeploy workflow on deploy trigger", async () => {
+    const fetchMock = jest
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(
+        new Response(null, { status: 204 }),
+      );
+
+    const res = await handler.fetch(
+      new Request("https://drop.example/deploy/xa-b", {
+        method: "POST",
+        headers: { "X-XA-Deploy-Token": "deploy-trigger-token-1234567890" },
+      }),
+      {
+        SUBMISSIONS_BUCKET: { get: async () => null } as unknown as R2Bucket,
+        XA_DEPLOY_TRIGGER_TOKEN: "deploy-trigger-token-1234567890",
+        XA_GITHUB_ACTIONS_TOKEN: "gh-actions-token",
+        XA_GITHUB_REPO_OWNER: "petercowling",
+        XA_GITHUB_REPO_NAME: "base-shop",
+        XA_GITHUB_WORKFLOW_FILE: "xa-b-redeploy.yml",
+        XA_GITHUB_WORKFLOW_REF: "dev",
+      },
+    );
+
+    expect(res.status).toBe(202);
+    await expect(res.json()).resolves.toEqual(
+      expect.objectContaining({
+        ok: true,
+        provider: "github_actions",
+        workflow: "xa-b-redeploy.yml",
+        ref: "dev",
+      }),
+    );
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const dispatchCall = fetchMock.mock.calls[0];
+    expect(dispatchCall?.[0]).toBe(
+      "https://api.github.com/repos/petercowling/base-shop/actions/workflows/xa-b-redeploy.yml/dispatches",
+    );
+    const dispatchInit = dispatchCall?.[1] as RequestInit;
+    expect(dispatchInit.method).toBe("POST");
+    expect(dispatchInit.body).toBe(
+      JSON.stringify({
+        ref: "dev",
+      }),
+    );
+
+    fetchMock.mockRestore();
+  });
+
+  it("accepts allowed path-form workflow id and dispatches canonical xa-b workflow", async () => {
+    const fetchMock = jest
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(
+        new Response(null, { status: 204 }),
+      );
+
+    const res = await handler.fetch(
+      new Request("https://drop.example/deploy/xa-b", {
+        method: "POST",
+        headers: { "X-XA-Deploy-Token": "deploy-trigger-token-1234567890" },
+      }),
+      {
+        SUBMISSIONS_BUCKET: { get: async () => null } as unknown as R2Bucket,
+        XA_DEPLOY_TRIGGER_TOKEN: "deploy-trigger-token-1234567890",
+        XA_GITHUB_ACTIONS_TOKEN: "gh-actions-token",
+        XA_GITHUB_REPO_OWNER: "petercowling",
+        XA_GITHUB_REPO_NAME: "base-shop",
+        XA_GITHUB_WORKFLOW_FILE: ".github/workflows/xa-b-redeploy.yml",
+        XA_GITHUB_WORKFLOW_REF: "dev",
+      },
+    );
+
+    expect(res.status).toBe(202);
+    await expect(res.json()).resolves.toEqual(
+      expect.objectContaining({
+        ok: true,
+        provider: "github_actions",
+        workflow: "xa-b-redeploy.yml",
+        ref: "dev",
+      }),
+    );
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const dispatchCall = fetchMock.mock.calls[0];
+    expect(dispatchCall?.[0]).toBe(
+      "https://api.github.com/repos/petercowling/base-shop/actions/workflows/xa-b-redeploy.yml/dispatches",
+    );
+
+    fetchMock.mockRestore();
+  });
+
+  it("rejects disallowed path-form xa.yml workflow targets for deploy trigger dispatch", async () => {
+    const fetchMock = jest.spyOn(globalThis, "fetch");
+
+    const res = await handler.fetch(
+      new Request("https://drop.example/deploy/xa-b", {
+        method: "POST",
+        headers: { "X-XA-Deploy-Token": "deploy-trigger-token-1234567890" },
+      }),
+      {
+        SUBMISSIONS_BUCKET: { get: async () => null } as unknown as R2Bucket,
+        XA_DEPLOY_TRIGGER_TOKEN: "deploy-trigger-token-1234567890",
+        XA_GITHUB_ACTIONS_TOKEN: "gh-actions-token",
+        XA_GITHUB_REPO_OWNER: "petercowling",
+        XA_GITHUB_REPO_NAME: "base-shop",
+        XA_GITHUB_WORKFLOW_FILE: ".github/workflows/xa.yml",
+        XA_GITHUB_WORKFLOW_REF: "dev",
+      },
+    );
+
+    expect(res.status).toBe(503);
+    await expect(res.json()).resolves.toEqual(
+      expect.objectContaining({
+        ok: false,
+        error: expect.objectContaining({
+          message: "deploy_workflow_not_allowed",
+          workflow: ".github/workflows/xa.yml",
+        }),
+      }),
+    );
+    expect(fetchMock).not.toHaveBeenCalled();
+
+    fetchMock.mockRestore();
   });
 });

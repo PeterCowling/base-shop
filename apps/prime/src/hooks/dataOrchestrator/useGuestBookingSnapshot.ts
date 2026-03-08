@@ -42,10 +42,9 @@ export interface GuestBookingSnapshot {
   };
 }
 
-async function fetchGuestBookingSnapshot(token: string): Promise<GuestBookingSnapshot> {
-  const response = await fetch(
-    `${GUEST_CRITICAL_FLOW_ENDPOINTS.booking_details}?token=${encodeURIComponent(token)}`,
-  );
+async function fetchGuestBookingSnapshot(): Promise<GuestBookingSnapshot> {
+  // prime_session HttpOnly cookie is sent automatically on this same-origin request
+  const response = await fetch(GUEST_CRITICAL_FLOW_ENDPOINTS.booking_details);
   if (!response.ok) {
     if (response.status === 410) {
       throw new Error('session_expired');
@@ -57,12 +56,11 @@ async function fetchGuestBookingSnapshot(token: string): Promise<GuestBookingSna
 
 export function useGuestBookingSnapshot() {
   const session = readGuestSession();
-  const token = session.token;
 
   const query = useQuery({
-    queryKey: ['guest-booking-snapshot', token],
-    enabled: Boolean(token),
-    queryFn: () => fetchGuestBookingSnapshot(token!),
+    queryKey: ['guest-booking-snapshot', session.bookingId],
+    enabled: Boolean(session.bookingId),
+    queryFn: fetchGuestBookingSnapshot,
     staleTime: 30 * 1000,
   });
 
@@ -71,6 +69,5 @@ export function useGuestBookingSnapshot() {
     isLoading: query.isLoading,
     error: query.error,
     refetch: query.refetch,
-    token,
   };
 }

@@ -74,3 +74,31 @@ No part of your review or decision process depends on the new components. They a
 ## Non-legal notice
 
 The pipeline does not provide legal clearance or trademark advice. A domain confirmed as available by the availability check is not a trademark clearance. Always conduct trademark pre-screening before committing to any name.
+
+---
+
+## Naming analytics cadence (new)
+
+After each naming round that writes sidecar events, regenerate the analytics pack:
+
+```bash
+pnpm --filter scripts run startup-loop:naming-round-analytics
+```
+
+This command updates:
+
+- `docs/business-os/startup-loop/operations/naming-round-analytics.latest.json`
+- `docs/business-os/startup-loop/operations/naming-round-analytics.latest.md`
+
+Use the Markdown file for operator review and decision notes. The JSON file is the machine-readable source for future automation.
+
+The formal review contract is:
+
+- `docs/business-os/startup-loop/contracts/naming-round-analytics-cadence-v1.md`
+
+Minimum review checks each round:
+
+1. Round/source-file counts are correct.
+2. RDAP yield movement is reviewed for company naming rounds.
+3. TM operator label coverage is reviewed for product naming rounds.
+4. Any follow-up is captured in the active `results-review.user.md`.

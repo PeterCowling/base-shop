@@ -16,7 +16,7 @@ Canonical template directory:
 
 Canonical source:
 
-- `docs/business-os/startup-loop/loop-spec.yaml` (spec_version `3.13.0`)
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml` (spec_version `3.13.0`)
 - `docs/business-os/startup-loop/_generated/stage-operator-map.json`
 
 ## Stage prompts

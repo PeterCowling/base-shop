@@ -1,5 +1,5 @@
 // src/app/[lang]/private-rooms/page.tsx
-// Apartment page - App Router version
+// Private rooms summary page - App Router version
 import type { Metadata } from "next";
 
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
@@ -10,7 +10,7 @@ import { generateLangParams } from "@/app/_lib/static-params";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { getSlug } from "@/utils/slug";
 
-import ApartmentPageContent from "./ApartmentPageContent";
+import PrivateRoomsSummaryContent from "./PrivateRoomsSummaryContent";
 
 type Props = {
   params: Promise<{ lang: string }>;
@@ -49,9 +49,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
-export default async function ApartmentPage({ params }: Props) {
+export default async function PrivateRoomsPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
 
-  return <ApartmentPageContent lang={validLang} />;
+  return <PrivateRoomsSummaryContent lang={validLang} />;
 }

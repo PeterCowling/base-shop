@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 2,
+  "baselineLocale": "en",
+  "locales": [
+    "hu"
+  ],
+  "summary": {
+    "totalMissingFiles": 0,
+    "totalMissingKeys": 0,
+    "totalUntranslatedKeys": 4
+  },
+  "reports": [
+    {
+      "locale": "hu",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {
+        "barMenuPage.json": [
+          "items.joseCuervoSilver.name",
+          "sections.whisky.title"
+        ],
+        "howToGetHere.json": [
+          "intro.shuttleEyebrow",
+          "intro.taxiEyebrow"
+        ]
+      }
+    }
+  ]
+}

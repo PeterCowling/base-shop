@@ -192,7 +192,7 @@ docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/
   "timestamp": "2026-02-13T14:10:00Z",
   "produced_keys": [],
   "artifacts": {},
-  "error": "lp-forecast failed: missing required input docs/business-os/startup-baselines/BRIK-offer.md",
+  "error": "lp-forecast failed: missing required input docs/business-os/startup-baselines/BRIK/offer.md",
   "blocking_reason": null
 }
 ```

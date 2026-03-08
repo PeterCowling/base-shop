@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 
-import { POST } from "@/app/api/checkout-session/route";
+import { POST } from "./route";
 
 jest.mock("@acme/axerve", () => {
   class MockAxerveError extends Error {
@@ -42,7 +42,7 @@ jest.mock("@acme/platform-core/utils", () => ({
   recordMetric: jest.fn(),
 }));
 
-jest.mock("@/lib/checkoutIdempotency.server", () => ({
+jest.mock("../../../lib/checkoutIdempotency.server", () => ({
   beginCheckoutAttempt: jest.fn(),
   buildCheckoutRequestHash: jest.fn(() => "hash-123"),
   markCheckoutAttemptPaymentAttempted: jest.fn(),
@@ -50,7 +50,7 @@ jest.mock("@/lib/checkoutIdempotency.server", () => ({
   markCheckoutAttemptResult: jest.fn(),
 }));
 
-jest.mock("@/lib/checkoutReconciliation.server", () => ({
+jest.mock("../../../lib/checkoutReconciliation.server", () => ({
   reconcileStaleCheckoutAttempts: jest.fn(),
 }));
 
@@ -90,7 +90,7 @@ const {
   markCheckoutAttemptPaymentAttempted,
   markCheckoutAttemptReservation,
   markCheckoutAttemptResult,
-} = jest.requireMock("@/lib/checkoutIdempotency.server") as {
+} = jest.requireMock("../../../lib/checkoutIdempotency.server") as {
   beginCheckoutAttempt: jest.Mock;
   markCheckoutAttemptPaymentAttempted: jest.Mock;
   markCheckoutAttemptReservation: jest.Mock;
@@ -98,7 +98,7 @@ const {
 };
 
 const { reconcileStaleCheckoutAttempts } = jest.requireMock(
-  "@/lib/checkoutReconciliation.server",
+  "../../../lib/checkoutReconciliation.server",
 ) as {
   reconcileStaleCheckoutAttempts: jest.Mock;
 };

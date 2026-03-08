@@ -9,6 +9,7 @@ const rateLimitMock = jest.fn();
 const applyRateLimitHeadersMock = jest.fn();
 const getRequestIpMock = jest.fn();
 const resolveRepoRootMock = jest.fn();
+const isLocalFsRuntimeEnabledMock = jest.fn();
 
 jest.mock("node:fs/promises", () => ({
   __esModule: true,
@@ -34,6 +35,10 @@ jest.mock("../../../../../lib/repoRoot", () => ({
   resolveRepoRoot: () => resolveRepoRootMock(),
 }));
 
+jest.mock("../../../../../lib/localFsGuard", () => ({
+  isLocalFsRuntimeEnabled: () => isLocalFsRuntimeEnabledMock(),
+}));
+
 describe("currency rates route", () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -47,6 +52,7 @@ describe("currency rates route", () => {
     applyRateLimitHeadersMock.mockImplementation(() => {});
     getRequestIpMock.mockReturnValue("127.0.0.1");
     resolveRepoRootMock.mockReturnValue("/mock/root");
+    isLocalFsRuntimeEnabledMock.mockReturnValue(true);
     mkdirMock.mockResolvedValue(undefined);
     writeFileMock.mockResolvedValue(undefined);
     renameMock.mockResolvedValue(undefined);
@@ -66,24 +72,32 @@ describe("currency rates route", () => {
     expect(await response.json()).toEqual({ ok: true, rates: null });
   });
 
-  it("GET returns { ok: true, rates: null } when file contains invalid JSON", async () => {
+  it("GET returns invalid_rates when file contains invalid JSON", async () => {
     readFileMock.mockResolvedValueOnce("not-json");
 
     const { GET } = await import("../route");
     const response = await GET(new Request("http://localhost/api/catalog/currency-rates"));
 
-    expect(response.status).toBe(200);
-    expect(await response.json()).toEqual({ ok: true, rates: null });
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual({
+      ok: false,
+      error: "invalid_rates",
+      reason: "currency_rates_invalid",
+    });
   });
 
-  it("GET returns { ok: true, rates: null } when rates shape is invalid", async () => {
+  it("GET returns invalid_rates when rates shape is invalid", async () => {
     readFileMock.mockResolvedValueOnce(JSON.stringify({ EUR: "0.93", GBP: 0.79, AUD: 1.55 }));
 
     const { GET } = await import("../route");
     const response = await GET(new Request("http://localhost/api/catalog/currency-rates"));
 
-    expect(response.status).toBe(200);
-    expect(await response.json()).toEqual({ ok: true, rates: null });
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual({
+      ok: false,
+      error: "invalid_rates",
+      reason: "currency_rates_invalid",
+    });
   });
 
   it("GET returns { ok: true, rates } when file contains valid rates", async () => {
@@ -158,5 +172,41 @@ describe("currency rates route", () => {
     expect(response.status).toBe(404);
     expect(await response.json()).toEqual({ ok: false });
     expect(readFileMock).not.toHaveBeenCalled();
+  });
+
+  it("GET returns 503 when local FS runtime is disabled", async () => {
+    isLocalFsRuntimeEnabledMock.mockReturnValueOnce(false);
+
+    const { GET } = await import("../route");
+    const response = await GET(new Request("http://localhost/api/catalog/currency-rates"));
+
+    expect(response.status).toBe(503);
+    expect(await response.json()).toEqual({
+      ok: false,
+      error: "service_unavailable",
+      reason: "currency_rates_local_fs_required",
+    });
+    expect(readFileMock).not.toHaveBeenCalled();
+  });
+
+  it("PUT returns 503 when local FS runtime is disabled", async () => {
+    isLocalFsRuntimeEnabledMock.mockReturnValueOnce(false);
+
+    const { PUT } = await import("../route");
+    const response = await PUT(
+      new Request("http://localhost/api/catalog/currency-rates", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rates: { EUR: 0.93, GBP: 0.79, AUD: 1.55 } }),
+      }),
+    );
+
+    expect(response.status).toBe(503);
+    expect(await response.json()).toEqual({
+      ok: false,
+      error: "service_unavailable",
+      reason: "currency_rates_local_fs_required",
+    });
+    expect(writeFileMock).not.toHaveBeenCalled();
   });
 });

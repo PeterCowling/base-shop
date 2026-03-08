@@ -57,7 +57,7 @@ For `start`, `status`, and `advance`, return this exact packet:
 ```text
 run_id: SFS-<BIZ>-<YYYYMMDD>-<hhmm>
 business: <BIZ>
-loop_spec_version: 3.12.0
+loop_spec_version: 3.14.0
 current_stage: <STAGE_ID>
 current_stage_label: <label_operator_short for current_stage>
 current_stage_display: <label_operator_long for current_stage>
@@ -89,7 +89,7 @@ When a stage reference cannot be resolved, return fail-closed with deterministic
 
 ## Stage Model
 
-Canonical source: `docs/business-os/startup-loop/specifications/loop-spec.yaml` (spec_version 3.12.0).
+Canonical source: `docs/business-os/startup-loop/specifications/loop-spec.yaml` (spec_version 3.14.0).
 Stage labels: `docs/business-os/startup-loop/_generated/stage-operator-map.json`.
 
 Stages (canonical IDs from loop-spec):
@@ -107,6 +107,9 @@ Stages (canonical IDs from loop-spec):
 | ASSESSMENT-09 | Intake | `/startup-loop start` | — |
 | ASSESSMENT-10 | Brand profiling | `/lp-do-assessment-10-brand-profiling` | — |
 | ASSESSMENT-11 | Brand identity | `/lp-do-assessment-11-brand-identity` | — |
+| ASSESSMENT-13 | Product naming | `/lp-do-assessment-13-product-naming` | — |
+| ASSESSMENT-14 | Logo design brief | `/lp-do-assessment-14-logo-brief` | — |
+| ASSESSMENT-15 | Packaging brief | `/lp-do-assessment-15-packaging-brief` | physical-product |
 | ASSESSMENT | Brand (container) | — | — |
 | IDEAS | Ideas pipeline (standing) | — | event-driven trigger paths |
 | IDEAS-01 | Pack diff scan | `/idea-scan` | layer_a_pack_diff OR operator_inject |

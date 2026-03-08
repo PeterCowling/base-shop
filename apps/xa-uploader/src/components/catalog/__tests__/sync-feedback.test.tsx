@@ -1,11 +1,13 @@
 /** @jest-environment jsdom */
 
-import { describe, expect, it } from "@jest/globals";
-import { render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, jest } from "@jest/globals";
+
+import type { CatalogProductDraftInput } from "@acme/lib/xa";
 
 import { getUploaderMessage, type UploaderMessageKey } from "../../../lib/uploaderI18n";
-import { UploaderI18nProvider } from "../../../lib/uploaderI18n.client";
-import { CatalogSyncPanel } from "../CatalogSyncPanel.client";
+import { shouldTriggerAutosync } from "../catalogConsoleActions";
+import { deriveCatalogSiteStatus } from "../catalogConsoleFeedback";
+import * as catalogWorkflowModule from "../catalogWorkflow";
 import { getSyncFailureMessage } from "../useCatalogConsole.client";
 
 function translate(
@@ -19,6 +21,15 @@ function translate(
   }
   return message;
 }
+
+const PUBLISH_READY_WORKFLOW = {
+  isDataReady: true,
+  isPublishReady: true,
+  missingFieldPaths: [],
+  missingRoles: [],
+};
+
+const MINIMAL_DRAFT = { slug: "studio-jacket" } as CatalogProductDraftInput;
 
 describe("sync failure feedback", () => {
   it("builds actionable localized message for missing sync dependencies", () => {
@@ -117,54 +128,104 @@ describe("sync failure feedback", () => {
     expect(message).toContain("Fix validation errors");
   });
 
-  it("renders scoped sync feedback in the sync panel", () => {
-    render(
-      <UploaderI18nProvider>
-        <CatalogSyncPanel
-          busy={false}
-          syncOptions={{ strict: true, recursive: true, replace: false, dryRun: false }}
-          syncReadiness={{
-            checking: false,
-            ready: true,
-            missingScripts: [],
-            error: null,
-          }}
-          syncOutput={null}
-          feedback={{ kind: "error", message: "Sync failed. Fix validation errors and retry." }}
-          onSync={() => undefined}
-          onRefreshReadiness={() => undefined}
-          onChangeSyncOptions={() => undefined}
-        />
-      </UploaderI18nProvider>,
+  it("builds actionable localized message for sync rate limiting", () => {
+    const message = getSyncFailureMessage(
+      {
+        ok: false,
+        error: "rate_limited",
+      },
+      translate,
     );
 
-    expect(screen.getByRole("alert")).toHaveTextContent("Fix validation errors and retry.");
+    expect(message).toContain("rate limited");
+    expect(message).toContain("one minute");
+  });
+});
+
+describe("catalog site status derivation", () => {
+  it("returns none states when no sync data exists", () => {
+    expect(deriveCatalogSiteStatus(null)).toEqual({ catalog: "none", site: "none" });
   });
 
-  it("shows readiness failure details and disables run-sync until ready", () => {
-    render(
-      <UploaderI18nProvider>
-        <CatalogSyncPanel
-          busy={false}
-          syncOptions={{ strict: true, recursive: true, replace: false, dryRun: false }}
-          syncReadiness={{
-            checking: false,
-            ready: false,
-            missingScripts: ["validate", "sync"],
-            error: null,
-          }}
-          syncOutput={null}
-          feedback={null}
-          onSync={() => undefined}
-          onRefreshReadiness={() => undefined}
-          onChangeSyncOptions={() => undefined}
-        />
-      </UploaderI18nProvider>,
-    );
+  it("marks triggered deploys as awaiting verification", () => {
+    expect(
+      deriveCatalogSiteStatus({
+        ok: true,
+        deploy: { status: "triggered" },
+      }),
+    ).toEqual({ catalog: "published", site: "triggered" });
+  });
 
-    expect(screen.getByTestId("catalog-sync-readiness")).toHaveTextContent(
-      "required scripts are missing",
-    );
-    expect(screen.getByTestId("catalog-run-sync")).toBeDisabled();
+  it("marks cooldown deploys as pending", () => {
+    expect(
+      deriveCatalogSiteStatus({
+        ok: true,
+        deploy: { status: "skipped_cooldown" },
+      }),
+    ).toEqual({ catalog: "published", site: "cooldown" });
+  });
+
+  it("marks failed deploy triggers as failed", () => {
+    expect(
+      deriveCatalogSiteStatus({
+        ok: true,
+        deploy: { status: "failed" },
+      }),
+    ).toEqual({ catalog: "published", site: "failed" });
+  });
+
+  it("marks xa-b rebuild requirements when no deploy was triggered", () => {
+    expect(
+      deriveCatalogSiteStatus({
+        ok: true,
+        display: { requiresXaBBuild: true },
+      }),
+    ).toEqual({ catalog: "published", site: "rebuild_required" });
+  });
+
+  it("marks successful syncs without deploy metadata as site none", () => {
+    expect(
+      deriveCatalogSiteStatus({
+        ok: true,
+      }),
+    ).toEqual({ catalog: "published", site: "none" });
+  });
+});
+
+describe("autosync coalescing", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it("does not fire while the autosave queue still has a pending draft", () => {
+    jest
+      .spyOn(catalogWorkflowModule, "getCatalogDraftWorkflowReadiness")
+      .mockReturnValue(PUBLISH_READY_WORKFLOW);
+
+    expect(
+      shouldTriggerAutosync({
+        pendingAutosaveDraftRef: { current: { slug: "queued-draft" } },
+        busyLockRef: { current: false },
+        syncReadinessReady: true,
+        syncReadinessChecking: false,
+        draft: MINIMAL_DRAFT,
+      }),
+    ).toBe(false);
+  });
+
+  it("fires once the queue drains and the product is publish-ready", () => {
+    jest
+      .spyOn(catalogWorkflowModule, "getCatalogDraftWorkflowReadiness")
+      .mockReturnValue(PUBLISH_READY_WORKFLOW);
+
+    expect(
+      shouldTriggerAutosync({
+        pendingAutosaveDraftRef: { current: null },
+        busyLockRef: { current: false },
+        syncReadinessReady: true,
+        syncReadinessChecking: false,
+        draft: MINIMAL_DRAFT,
+      }),
+    ).toBe(true);
   });
 });

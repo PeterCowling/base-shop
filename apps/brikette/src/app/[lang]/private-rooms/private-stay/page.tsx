@@ -8,6 +8,7 @@ import { getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
 import { OG_IMAGE } from "@/utils/headConstants";
+import { getPrivateRoomChildPath } from "@/utils/privateRoomPaths";
 
 import PrivateStayContent from "./PrivateStayContent";
 
@@ -27,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = (t("privateStay.meta.title") as string) || "";
   const description = (t("privateStay.meta.description") as string) || "";
 
-  const path = `/${validLang}/apartment/private-stay`;
+  const path = getPrivateRoomChildPath(validLang, "private-stay");
 
   const image = buildCfImageUrl("/img/facade.avif", {
     width: OG_IMAGE.width,

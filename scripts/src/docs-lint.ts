@@ -118,7 +118,6 @@ function isArchivedPlanDoc(rel: string): boolean {
   const normalized = rel.split(path.sep).join("/");
   return (
     normalized.startsWith("docs/plans/_archive/") ||
-    normalized.startsWith("docs/plans/archive/") ||
     normalized.startsWith("docs/historical/plans/")
   );
 }

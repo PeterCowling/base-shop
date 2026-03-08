@@ -146,7 +146,6 @@
   "pipeline.candidate.stageM.runnerStatus.mode": "Mode",
   "pipeline.candidate.stageM.runnerStatus.browser": "Browser",
   "pipeline.candidate.stageM.runnerStatus.session": "Session",
-
   "handbagConfigurator.action.done": "I'm done",
   "handbagConfigurator.action.saveShare": "Save/Share",
   "handbagConfigurator.action.blankBag": "Blank Bag",
@@ -180,10 +179,13 @@
   "handbagConfigurator.hotspot.ariaLabel": "Customize {label}",
   "handbagConfigurator.hotspot.configTitle": "Hotspot config",
   "handbagConfigurator.hotspot.done": "Done",
-
   "pipeline.missionControl.map.nodes.P": "Prospect",
   "pipeline.missionControl.map.nodes.M": "Marché",
   "pipeline.missionControl.map.nodes.S": "Source",
   "pipeline.missionControl.map.nodes.K": "Kit",
-  "pipeline.missionControl.map.nodes.L": "Lancement"
+  "pipeline.missionControl.map.nodes.L": "Lancement",
+  "themeToggle.enableDark": "Activer le mode sombre",
+  "themeToggle.enableLight": "Activer le mode clair",
+  "themeToggle.switchToDark": "Passer au mode sombre",
+  "themeToggle.switchToLight": "Passer au mode clair"
 }

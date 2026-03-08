@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "build-completion-deterministic-lifts-2026-03-04",
+  "feature_slug": "build-completion-deterministic-lifts",
+  "emitted_at": "2026-03-03T20:41:17.843Z",
+  "why": "Each build cycle burns 7-15k tokens on results-review, pattern-reflection, and standing-updates sections that are 60-65% boilerplate. The LLM generates None entries, counts recurrences, and fills verdicts that a TS script could compute deterministically from build diffs and task status.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "statement": "A deterministic pre-fill script generates 60%+ of results-review, pattern-reflection, and standing-updates content from build artifacts, reducing per-build token consumption by ~55%.",
+    "type": "operational",
+    "source": "operator"
+  }
+}

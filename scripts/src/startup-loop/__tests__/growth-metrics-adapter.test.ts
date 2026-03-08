@@ -7,7 +7,7 @@ import { afterEach, beforeEach, describe, expect, it } from "@jest/globals";
 import {
   getWeeklyGrowthMetrics,
   type GrowthPeriod,
-} from "../growth-metrics-adapter";
+} from "../diagnostics/growth-metrics-adapter";
 
 /**
  * Growth metrics adapter tests

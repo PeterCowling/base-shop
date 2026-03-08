@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "build-startup-loop-pattern-reflection-category-handoff-fix-20260306",
+  "feature_slug": "startup-loop-pattern-reflection-category-handoff-fix",
+  "emitted_at": "2026-03-06T15:30:00.000Z",
+  "why": "Every build cycle was wasting model tokens reclassifying ideas that already have categories and refining artifacts that are already complete. Both are fixable with deterministic code changes — no model judgment required.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "category, reason, and evidence_refs pass through extractCurrentIdeas() unmodified; a needs_refinement gate in lp-do-build-pattern-reflection-prefill.ts skips model execution when the artifact is already complete; reclassification and noop-refinement model calls are eliminated from every build cycle.",
+    "source": "operator"
+  }
+}

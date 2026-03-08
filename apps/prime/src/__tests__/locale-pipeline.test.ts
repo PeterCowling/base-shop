@@ -1,8 +1,8 @@
 /**
- * Locale asset pipeline validation tests (DS-10).
+ * Runtime locale asset pipeline validation tests (DS-10).
  *
- * Verifies locale JSON files exist at apps/prime/public/locales/{lng}/{ns}.json
- * for all locale × namespace combinations, contain valid JSON, and have key parity.
+ * Keeps runtime namespace coverage aligned with app configuration and verifies
+ * the locale generation check script succeeds against the full locale tree.
  */
 import * as fs from 'fs';
 import * as path from 'path';
@@ -63,51 +63,8 @@ describe('locale pipeline', () => {
     expect(missing).toEqual([]);
   });
 
-  // TC-23b: All locale files contain valid JSON
-  test('TC-23b: all locale files contain valid JSON', () => {
-    const invalid: string[] = [];
-
-    for (const lng of LOCALES) {
-      for (const ns of ALL_NAMESPACES) {
-        const filePath = path.join(LOCALES_DIR, lng, `${ns}.json`);
-        if (!fs.existsSync(filePath)) continue;
-
-        try {
-          JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        } catch {
-          invalid.push(`${lng}/${ns}.json`);
-        }
-      }
-    }
-
-    expect(invalid).toEqual([]);
-  });
-
-  // TC-24: Key parity — every key in en must exist in it
-  test('TC-24: key parity between en and it locale files', () => {
-    const missingKeys: string[] = [];
-
-    for (const ns of ALL_NAMESPACES) {
-      const enPath = path.join(LOCALES_DIR, 'en', `${ns}.json`);
-      const itPath = path.join(LOCALES_DIR, 'it', `${ns}.json`);
-
-      if (!fs.existsSync(enPath) || !fs.existsSync(itPath)) continue;
-
-      const enKeys = flattenKeys(JSON.parse(fs.readFileSync(enPath, 'utf8')));
-      const itKeys = new Set(flattenKeys(JSON.parse(fs.readFileSync(itPath, 'utf8'))));
-
-      for (const key of enKeys) {
-        if (!itKeys.has(key)) {
-          missingKeys.push(`it/${ns}.json missing key: ${key}`);
-        }
-      }
-    }
-
-    expect(missingKeys).toEqual([]);
-  });
-
-  // TC-25: generate-locale-files --check fails when a locale file is missing
-  test('TC-25: validation script detects missing locale files', () => {
+  // TC-25: generate-locale-files --check validates the full locale tree
+  test('TC-25: validation script succeeds for the full locale tree', () => {
     // This test verifies the --check mode of the generate script
     // by calling it as a child process. The script should exit 0 when
     // all files are present.

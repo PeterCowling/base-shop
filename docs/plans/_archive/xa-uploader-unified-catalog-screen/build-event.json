@@ -1,0 +1,9 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "xa-uploader-unified-catalog-screen-task01",
+  "feature_slug": "xa-uploader-unified-catalog-screen",
+  "emitted_at": "2026-03-06T08:57:30.313Z",
+  "why": "Operator wants a single catalog management screen instead of separate add/edit tabs",
+  "why_source": "operator",
+  "intended_outcome": "CatalogConsole renders one unified product-sidebar + editor layout instead of switching between New Product and Revise Existing tabs"
+}

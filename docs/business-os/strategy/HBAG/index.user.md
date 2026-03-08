@@ -40,17 +40,17 @@ Gates read `Status` from this table — not from individual file frontmatters.
 | Stage | Artifact | Path | Status | Last-reviewed |
 |-------|----------|------|--------|---------------|
 | ASSESSMENT-06 | Operator evidence | `docs/business-os/strategy/HBAG/2026-02-20-operator-context.user.md` | Active | 2026-02-20 |
-| ASSESSMENT-09 | Intake packet | `docs/business-os/startup-baselines/HBAG-2026-02-20assessment-intake-packet.user.md` | Active | 2026-02-20 |
+| ASSESSMENT-09 | Intake packet | `docs/business-os/startup-baselines/HBAG/2026-02-20-assessment-intake-packet.user.md` | Active | 2026-02-20 |
 | ASSESSMENT-10 | Brand profiling | `docs/business-os/strategy/HBAG/2026-02-21-brand-profile.user.md` | Draft | 2026-02-21 |
 | ASSESSMENT-11 | Brand identity | `docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md` | Active | 2026-02-23 |
 | S1 | Readiness verdict | `docs/business-os/strategy/HBAG/s1-readiness.user.md` | Active | 2026-02-20 |
 | S2 | Market intelligence (latest) | `docs/business-os/market-research/HBAG/latest.user.md` | Active | 2026-02-20 |
-| S2B | Offer | `docs/business-os/startup-baselines/HBAG-offer.md` | Active | 2026-02-20 |
+| S2B | Offer | `docs/business-os/startup-baselines/HBAG/offer.md` | Active | 2026-02-20 |
 | S3 | Forecast | `docs/business-os/startup-baselines/HBAG/S3-forecast/2026-02-20-lp-forecast.user.md` | Draft | 2026-02-20 |
-| S3 | Forecast seed | `docs/business-os/startup-baselines/HBAG-forecast-seed.user.md` | Active | 2026-02-20 |
-| S6B | Channels | `docs/business-os/startup-baselines/HBAG-channels.md` | Active | 2026-02-20 |
+| S3 | Forecast seed | `docs/business-os/startup-baselines/HBAG/forecast-seed.user.md` | Active | 2026-02-20 |
+| S6B | Channels | `docs/business-os/startup-baselines/HBAG/channels.md` | Active | 2026-02-20 |
 | S6B gate | Demand evidence pack | `docs/business-os/startup-baselines/HBAG/demand-evidence-pack.md` | Active | 2026-02-20 |
-| WEBSITE-CONTENT-01 | Website content packet | `docs/business-os/startup-baselines/HBAG-content-packet.md` | Active | 2026-02-23 |
+| WEBSITE-CONTENT-01 | Website content packet | `docs/business-os/startup-baselines/HBAG/content-packet.md` | Active | 2026-02-23 |
 | S4 | Prioritization scorecard | — | — | — |
 | PRODUCT-01 | Product from photo | `docs/business-os/strategy/HBAG/2026-02-22-product-from-photo.user.md` | Draft | 2026-02-22 |
 

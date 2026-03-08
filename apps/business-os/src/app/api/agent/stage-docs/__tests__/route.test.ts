@@ -12,15 +12,14 @@ import {
   upsertStageDoc,
 } from "@acme/platform-core/repositories/businessOs.server";
 
-import { __resetAgentRateLimitForTests } from "@/lib/auth/agent-auth";
-import { getContractMigrationConfig } from "@/lib/contract-migration";
-import { getDb } from "@/lib/d1.server";
-import { computeEntitySha } from "@/lib/entity-sha";
-
+import { __resetAgentRateLimitForTests } from "../../../../../lib/auth/agent-auth";
+import { getContractMigrationConfig } from "../../../../../lib/contract-migration";
+import { getDb } from "../../../../../lib/d1.server";
+import { computeEntitySha } from "../../../../../lib/entity-sha";
 import { GET as getStageDoc, PATCH as patchStageDoc } from "../[cardId]/[stage]/route";
 import { GET as listStageDocs, POST as createStageDoc } from "../route";
 
-jest.mock("@/lib/d1.server", () => ({
+jest.mock("../../../../../lib/d1.server", () => ({
   getDb: jest.fn(),
 }));
 

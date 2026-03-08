@@ -19,6 +19,28 @@ import { MSG_ROOT } from '@/utils/messaging/dbRoot';
 type ActivityLifecycle = 'upcoming' | 'live' | 'ended';
 type ChannelMode = 'activity' | 'direct';
 
+function formatAudienceLabel(audience: string): string {
+  switch (audience) {
+    case 'booking':
+      return 'Booking';
+    case 'room':
+      return 'Room';
+    case 'whole_hostel':
+      return 'Whole hostel';
+    default:
+      return 'Thread';
+  }
+}
+
+function formatDraftStatusLabel(status: string): string {
+  switch (status) {
+    case 'under_review':
+      return 'Under review';
+    default:
+      return status.replace(/_/g, ' ');
+  }
+}
+
 function resolveLifecycle(activity: ActivityInstance, now: number): ActivityLifecycle {
   const start = activity.startTime;
   const end = start + 2 * 60 * 60 * 1000;
@@ -297,6 +319,30 @@ export default function ChannelPage() {
 
           {channelMessages.map((msg) => {
             const isOwn = msg.senderId === currentGuestUuid;
+            const textContent = msg.content.trim();
+            const imageAttachments = (msg.attachments ?? []).filter((attachment) => attachment.kind === 'image');
+            const fileAttachments = (msg.attachments ?? []).filter((attachment) => attachment.kind === 'file');
+            const imagePreviews = [
+              ...(msg.imageUrl
+                ? [{
+                    id: 'legacy-image',
+                    url: msg.imageUrl,
+                    title: msg.senderName || t('messageImage', 'Message image'),
+                  }]
+                : []),
+              ...imageAttachments
+                .filter((attachment) => attachment.url !== msg.imageUrl)
+                .map((attachment, index) => ({
+                  id: attachment.id ?? `attachment-image-${index}`,
+                  url: attachment.url,
+                  title: attachment.title || attachment.altText || t('messageImage', 'Message image'),
+                })),
+            ];
+            const hasBadges =
+              msg.kind === 'promotion'
+              || msg.kind === 'draft'
+              || Boolean(msg.draft)
+              || (msg.audience !== undefined && msg.audience !== 'thread');
             return (
               <div
                 key={msg.id}
@@ -316,7 +362,132 @@ export default function ChannelPage() {
                       {msg.senderName || t('anonymousGuest', 'Guest')}
                     </div>
                   )}
-                  <div className="text-sm">{msg.content}</div>
+                  {hasBadges && (
+                    <div className="mb-2 flex flex-wrap gap-1.5">
+                      {msg.kind === 'promotion' && (
+                        <span className="rounded-full bg-warning-soft px-2 py-0.5 text-xs font-medium text-warning-foreground">
+                          {t('promotionMessage', 'Promotion')}
+                        </span>
+                      )}
+                      {msg.kind === 'draft' && (
+                        <span className="rounded-full bg-info-soft px-2 py-0.5 text-xs font-medium text-primary">
+                          {t('draftMessage', 'Draft suggestion')}
+                        </span>
+                      )}
+                      {msg.audience && msg.audience !== 'thread' && (
+                        <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+                          {formatAudienceLabel(msg.audience)}
+                        </span>
+                      )}
+                      {msg.draft && (
+                        <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+                          {`${msg.draft.source === 'agent' ? t('agentDraft', 'Agent draft') : t('staffDraft', 'Staff draft')} · ${formatDraftStatusLabel(msg.draft.status)}`}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                  {textContent && <div className="text-sm whitespace-pre-wrap">{textContent}</div>}
+                  {msg.links && msg.links.length > 0 && (
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {msg.links.map((linkItem, index) => (
+                        <a
+                          key={linkItem.id ?? `link-${index}`}
+                          href={linkItem.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className={`rounded-full px-3 py-1.5 text-xs font-medium transition ${
+                            isOwn
+                              ? 'bg-primary-foreground/15 text-primary-foreground hover:bg-primary-foreground/25'
+                              : linkItem.variant === 'primary'
+                                ? 'bg-primary text-primary-foreground hover:bg-primary/90'
+                                : 'border border-border bg-background text-foreground hover:bg-muted'
+                          }`}
+                        >
+                          {linkItem.label}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                  {imagePreviews.length > 0 && (
+                    <div className="mt-3 grid gap-2">
+                      {imagePreviews.map((image) => (
+                        <a
+                          key={image.id}
+                          href={image.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="block overflow-hidden rounded-xl border border-border/60"
+                        >
+                          <div
+                            className="h-40 w-full bg-cover bg-center"
+                            style={{ backgroundImage: `url(${image.url})` }}
+                            aria-label={image.title}
+                            role="img"
+                          />
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                  {msg.cards && msg.cards.length > 0 && (
+                    <div className="mt-3 grid gap-2">
+                      {msg.cards.map((card, index) => (
+                        <div
+                          key={card.id ?? `card-${index}`}
+                          className={`overflow-hidden rounded-xl border ${
+                            isOwn
+                              ? 'border-primary-foreground/20 bg-primary-foreground/10'
+                              : 'border-border bg-background'
+                          }`}
+                        >
+                          {card.imageUrl && (
+                            <div
+                              className="h-32 w-full bg-cover bg-center"
+                              style={{ backgroundImage: `url(${card.imageUrl})` }}
+                              aria-label={card.title}
+                              role="img"
+                            />
+                          )}
+                          <div className="space-y-2 p-3">
+                            <div className="text-sm font-semibold">{card.title}</div>
+                            {card.body && <div className="text-xs opacity-85">{card.body}</div>}
+                            {card.ctaLabel && card.ctaUrl && (
+                              <a
+                                href={card.ctaUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className={`inline-flex rounded-full px-3 py-1.5 text-xs font-medium ${
+                                  isOwn
+                                    ? 'bg-primary-foreground text-primary'
+                                    : 'bg-primary text-primary-foreground'
+                                }`}
+                              >
+                                {card.ctaLabel}
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {fileAttachments.length > 0 && (
+                    <div className="mt-3 grid gap-2">
+                      {fileAttachments.map((attachment, index) => (
+                        <a
+                          key={attachment.id ?? `file-${index}`}
+                          href={attachment.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className={`rounded-xl border px-3 py-2 text-xs ${
+                            isOwn
+                              ? 'border-primary-foreground/20 bg-primary-foreground/10 text-primary-foreground'
+                              : 'border-border bg-muted/30 text-foreground'
+                          }`}
+                        >
+                          {attachment.title || attachment.url}
+                        </a>
+                      ))}
+                    </div>
+                  )}
                   <div
                     className={`mt-1 text-xs ${
                       isOwn ? 'text-primary-foreground/80' : 'text-muted-foreground'

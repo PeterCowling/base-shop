@@ -10,7 +10,8 @@
  * - returns a safe fallback on any OpenAI error
  */
 
-import { FirebaseRest, errorResponse, jsonResponse } from '../lib/firebase-rest';
+import { errorResponse, FirebaseRest, jsonResponse } from '../lib/firebase-rest';
+import { createFunctionTranslator } from '../lib/function-i18n';
 import { validateGuestSessionToken } from '../lib/guest-session';
 import { enforceKvRateLimit } from '../lib/kv-rate-limit';
 
@@ -38,11 +39,6 @@ interface LlmResponseShape {
   answer?: string;
   links?: Array<{ label?: string; href?: string }>;
 }
-
-const SAFETY_FALLBACK_ANSWER =
-  'I am unable to answer right now. Please ask reception for help.';
-
-const SAFETY_FALLBACK_LINK = { label: 'Reception support', href: '/booking-details' };
 
 const ALLOWLISTED_HOSTS = new Set([
   'hostel-positano.com',
@@ -84,39 +80,45 @@ function stripLinks(
   return result;
 }
 
-function buildSystemPrompt(occupant: OccupantRecord | null): string {
-  const guestName = occupant?.firstName ?? 'Guest';
-  const checkInLine = occupant?.checkInDate ? ` Check-in date: ${occupant.checkInDate}.` : '';
-  const checkOutLine = occupant?.checkOutDate ? ` Check-out date: ${occupant.checkOutDate}.` : '';
+function buildSystemPrompt(
+  occupant: OccupantRecord | null,
+  t: (path: string, vars?: Record<string, string | number | boolean>) => string,
+): string {
+  const guestName = occupant?.firstName ?? t('assistantQuery.defaultGuestName');
+  const checkInLine = occupant?.checkInDate
+    ? t('assistantQuery.prompt.checkInLine', { checkInDate: occupant.checkInDate })
+    : '';
+  const checkOutLine = occupant?.checkOutDate
+    ? t('assistantQuery.prompt.checkOutLine', { checkOutDate: occupant.checkOutDate })
+    : '';
   const entitlementLine =
     occupant?.drinksAllowed !== undefined
-      ? ` The guest's meal/drink entitlement status: ${occupant.drinksAllowed ? 'included in booking' : 'not included'}.`
+      ? occupant.drinksAllowed
+        ? t('assistantQuery.prompt.entitlementIncluded')
+        : t('assistantQuery.prompt.entitlementNotIncluded')
       : '';
 
-  return (
-    `You are a helpful digital assistant for Brikette hostel guests in Positano, Italy. ` +
-    `Answer questions about the guest's booking, hostel services, local area, transport, food, activities, and the Positano area. ` +
-    `Politely redirect questions that are clearly outside this scope. Do not invent information you are unsure of. ` +
-    `The guest's name is ${guestName}.${checkInLine}${checkOutLine}${entitlementLine} ` +
-    `When providing links, only use paths from this allowed list: /booking-details, /activities, /positano-guide, ` +
-    `/complimentary-breakfast, /complimentary-evening-drink, /bag-storage, /find-my-stay. ` +
-    `For external links, only use https://www.hostelbrikette.com or https://hostel-positano.com. ` +
-    `Respond with valid JSON in this exact format: {"answer": "your answer here", "links": [{"label": "link text", "href": "/path-or-url"}]}. ` +
-    `The links array may be empty. Keep the answer concise and helpful.`
-  );
+  return t('assistantQuery.prompt.template', {
+    guestName,
+    checkInLine,
+    checkOutLine,
+    entitlementLine,
+  });
 }
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
+  const { t } = createFunctionTranslator(request, 'AssistantApi');
+
   let body: AssistantQueryBody;
   try {
     body = (await request.json()) as AssistantQueryBody;
   } catch {
-    return errorResponse('Invalid JSON body', 400);
+    return errorResponse(t('assistantQuery.errors.invalidJsonBody'), 400);
   }
 
   const query = (body.query ?? '').trim();
   if (!query) {
-    return errorResponse('query is required', 400);
+    return errorResponse(t('assistantQuery.errors.queryRequired'), 400);
   }
 
   const history = Array.isArray(body.history) ? body.history : [];
@@ -129,14 +131,14 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
     const guestUuid = authResult.session.guestUuid;
     if (!guestUuid) {
-      return errorResponse('guestUuid missing for session', 422);
+      return errorResponse(t('assistantQuery.errors.guestUuidMissing'), 422);
     }
 
     const rateLimitResponse = await enforceKvRateLimit({
       key: `llm-assistant:${guestUuid}`,
       maxRequests: 5,
       windowSeconds: 60,
-      errorMessage: 'Too many questions. Please wait a moment before asking again.',
+      errorMessage: t('assistantQuery.rateLimitError'),
       kv: env.RATE_LIMIT,
     });
     if (rateLimitResponse) {
@@ -150,7 +152,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
     const startMs = Date.now();
 
-    const systemMessage = { role: 'system' as const, content: buildSystemPrompt(occupant) };
+    const systemMessage = { role: 'system' as const, content: buildSystemPrompt(occupant, t) };
     const historyMessages = history
       .slice(-10) // cap at last 10 messages (5 exchanges)
       .map((h) => ({ role: h.role, content: h.content }));
@@ -202,15 +204,19 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       });
     } catch {
       return jsonResponse({
-        answer: SAFETY_FALLBACK_ANSWER,
+        answer: t('assistantQuery.fallbackAnswer'),
         answerType: 'llm-safety-fallback',
-        links: [SAFETY_FALLBACK_LINK],
+        links: [{
+          label: t('assistantQuery.fallbackLinkLabel'),
+          href: '/booking-details',
+        }],
         category: 'general',
         durationMs: Date.now() - startMs,
-      });
+        errorCode: 'llm_unavailable',
+      }, 503);
     }
   } catch (error) {
     console.error('assistant-query: unexpected error', error);
-    return errorResponse('Internal server error', 500);
+    return errorResponse(t('assistantQuery.errors.internalServerError'), 500);
   }
 };

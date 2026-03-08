@@ -68,8 +68,8 @@ describe("TASK-34: DealsPageContent view_promotion + select_promotion GA4 contra
     jest.useRealTimers();
   });
 
-  // TC-01: Render fires view_promotion with all deals in promotions array
-  it("TC-01: render fires view_promotion with promotions array for all deals", () => {
+  // TC-01: Render fires view_promotion with promotions array for visible deals only
+  it("TC-01: render fires view_promotion with promotions array for visible deals", () => {
     render(<DealsPageContent lang="en" />);
 
     const viewPromoCall = gtagMock.mock.calls.find(
@@ -78,7 +78,7 @@ describe("TASK-34: DealsPageContent view_promotion + select_promotion GA4 contra
     expect(viewPromoCall).toBeTruthy();
     const payload = viewPromoCall?.[2] as Record<string, unknown>;
     const promotions = payload.promotions as Array<Record<string, unknown>>;
-    expect(promotions).toHaveLength(2); // DEALS now has two entries: evergreen + sep20_oct31_15off
+    expect(promotions).toHaveLength(2); // At 2025-10-01: one active + one upcoming visible deal
     expect(promotions[0]).toMatchObject({
       promotion_id: "direct-perks-evergreen",
       promotion_name: "25% off",
@@ -86,6 +86,25 @@ describe("TASK-34: DealsPageContent view_promotion + select_promotion GA4 contra
     expect(promotions[1]).toMatchObject({
       promotion_id: "sep20_oct31_15off",
       promotion_name: "15% off",
+    });
+  });
+
+  it("TC-01B: expired deals are excluded from view_promotion on the live reference date", () => {
+    jest.setSystemTime(new Date("2026-03-07T12:00:00Z"));
+
+    render(<DealsPageContent lang="en" />);
+
+    const viewPromoCall = gtagMock.mock.calls.find(
+      (args: unknown[]) => args[0] === "event" && args[1] === "view_promotion",
+    );
+    expect(viewPromoCall).toBeTruthy();
+    const payload = viewPromoCall?.[2] as Record<string, unknown>;
+    const promotions = payload.promotions as Array<Record<string, unknown>>;
+
+    expect(promotions).toHaveLength(1);
+    expect(promotions[0]).toMatchObject({
+      promotion_id: "direct-perks-evergreen",
+      promotion_name: "25% off",
     });
   });
 

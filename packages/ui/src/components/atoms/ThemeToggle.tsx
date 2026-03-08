@@ -90,8 +90,7 @@ const themes: { value: ThemeOption; label: string; icon: typeof SunIcon }[] = [
  * }
  * ```
  */
-export const ThemeToggle = React.forwardRef<HTMLDivElement, ThemeToggleProps>(
-  ({ theme, onThemeChange, className, size = "sm", showLabels = false }, ref) => {
+export function ThemeToggle({ theme, onThemeChange, className, size = "sm", showLabels = false, ref }: ThemeToggleProps & { ref?: React.Ref<HTMLDivElement> }) {
     const sizeClasses = {
       // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
       sm: "h-8 text-sm",
@@ -112,6 +111,7 @@ export const ThemeToggle = React.forwardRef<HTMLDivElement, ThemeToggleProps>(
 
     return (
       <div
+        data-slot="theme-toggle"
         ref={ref}
         role="radiogroup"
         aria-label="Theme selection"
@@ -150,9 +150,6 @@ export const ThemeToggle = React.forwardRef<HTMLDivElement, ThemeToggleProps>(
         })}
       </div>
     );
-  }
-);
-
-ThemeToggle.displayName = "ThemeToggle";
+}
 
 export default ThemeToggle;

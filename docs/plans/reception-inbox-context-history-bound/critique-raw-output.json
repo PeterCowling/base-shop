@@ -1,0 +1,34 @@
+{
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-inbox-context-history-bound/fact-find.md",
+      "line": "50",
+      "message": "The call-site inventory is internally inconsistent. It says three call sites use buildThreadContext(), but the regenerate route does not call it and instead manually builds { messages: ... }. The evidence supports two direct buildThreadContext() callers (sync.server.ts:662, recovery.server.ts:183) plus one separate regenerate-route context builder."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-inbox-context-history-bound/fact-find.md",
+      "line": "124",
+      "message": "The test landscape incorrectly says regenerate-route unit coverage was Not found. The repo already has regenerate-route tests in apps/reception/src/app/api/mcp/__tests__/inbox-actions.route.test.ts. The real gap is missing bounding-specific assertions."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-inbox-context-history-bound/fact-find.md",
+      "line": "224",
+      "message": "The post-delivery measurement plan overstates observability. Current inbox telemetry is event-based, while draft quality results are stored in quality_json/interpret_json on draft rows. That is queryable data, but not existing telemetry."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/reception-inbox-context-history-bound/fact-find.md",
+      "line": "32",
+      "message": "The D1-persistence framing is broader than the code evidence supports. Only derived thread_summary is persisted, not raw threadContext.messages."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "round": 1,
+  "lp_score": 4.0,
+  "sessionId": "Q1qNA84XAQMYM94_"
+}

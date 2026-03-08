@@ -178,11 +178,17 @@ function splitActionLabel(label: string): string[] {
   return [first, rest.join(" ")];
 }
 
-function ActionButtons({ actions }: { actions?: RoomCardAction[] }): JSX.Element | null {
+function ActionButtons({
+  actions,
+  className,
+}: {
+  actions?: RoomCardAction[];
+  className?: string;
+}): JSX.Element | null {
   if (!actions?.length) return null;
 
   return (
-    <Stack gap={2} className="mt-auto sm:flex-row">
+    <Stack gap={2} className={clsx("sm:flex-row", className)}>
       {actions.map((action, actionIndex) => {
         const trimmedLabel = action.label.trim();
         const normalisedLabel = trimmedLabel.replace(/\s+/g, " ");
@@ -343,9 +349,11 @@ function RoomCardComponent({
 
         <PriceBlock price={price} />
 
+        <ActionButtons actions={actions} className="mt-3 hidden lg:flex" />
+
         <FacilitiesList facilities={facilities} />
 
-        <ActionButtons actions={actions} />
+        <ActionButtons actions={actions} className="mt-4 lg:hidden" />
       </div>
     </article>
   );

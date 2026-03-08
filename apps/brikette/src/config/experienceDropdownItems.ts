@@ -30,10 +30,13 @@ export function buildExperienceNavItems(lang: AppLanguage): NavItemChild[] {
   const experiencesBase = `/${translatePath("experiences", lang)}`;
   return [
     { key: "experiences_all", to: experiencesBase, label: "See all experiences" },
-    ...EXPERIENCE_DROPDOWN_ENTRIES.map(({ key, guideKey, label }) => ({
-      key,
-      to: `/${guideNamespace(lang, guideKey).baseSlug}/${guideSlug(lang, guideKey)}`,
-      label,
-    })),
+    ...EXPERIENCE_DROPDOWN_ENTRIES.map(({ key, guideKey, label }) => {
+      const base = guideNamespace(lang, guideKey);
+      return {
+        key,
+        to: `/${base.baseSlug}/${guideSlug(lang, guideKey)}`,
+        label,
+      };
+    }),
   ];
 }

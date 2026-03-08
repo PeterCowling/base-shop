@@ -5,7 +5,7 @@ description: Thin build orchestrator. Executes one runnable unit per cycle from 
 
 # Build Orchestrator
 
-`/lp-do-build` executes plan tasks safely, one runnable unit per cycle (single task or eligible wave), with gate enforcement and explicit handoffs.
+`/lp-do-build` executes plan tasks safely, one runnable unit per cycle (single task or eligible wave), with gate enforcement and explicit handoffs. It also supports a direct-dispatch micro-build fast lane for trivially bounded `lp-do-ideas` packets.
 
 ## Global Invariants
 
@@ -40,7 +40,7 @@ Even in fully autonomous / `-a never` mode, **stop and ask the user explicitly**
 
 ## Inputs
 
-- Plan doc: `docs/plans/<feature-slug>/plan.md` (legacy fallback allowed)
+- Plan doc: `docs/plans/<feature-slug>/plan.md` (legacy fallback allowed), or `docs/plans/<feature-slug>/micro-build.md` for direct-dispatch micro-builds
 - Optional task IDs
 - Optional fact-find brief for context
 
@@ -48,6 +48,22 @@ Even in fully autonomous / `-a never` mode, **stop and ask the user explicitly**
 
 - Fast path: slug/card ID provided → resolve plan directly.
 - Discovery path: scan `docs/plans/*/plan.md` for `Status: Active` entries and show as build-ready candidates.
+
+## Direct-Dispatch Micro-Build Lane
+
+Use this lane only for `lp-do-ideas` packets classified `micro_build_ready`. Criteria:
+- one bounded surface,
+- no architecture or product decision,
+- no external research,
+- no meaningful planning branch,
+- clear validation path already known.
+
+Before any edits:
+1. Confirm the queued micro-build dispatch.
+2. Create `docs/plans/<feature-slug>/micro-build.md` from `docs/plans/_templates/micro-build.md`.
+3. Stamp queue-state `processed_by` with `target_route: "lp-do-build"` and the new micro-build path.
+
+This lane skips `fact-find.md` and `plan.md`, but it does not skip build controls, validation, build outputs, or queue completion.
 
 ## Confidence Threshold Policy
 
@@ -160,18 +176,40 @@ After each completed task:
 - Update task summary status/dependencies if changed.
 
 If confidence regresses below task threshold during execution:
+- Run the build-failure bridge (advisory/fail-open) before routing to replan:
+  `pnpm --filter scripts startup-loop:self-evolving-from-build-failure -- --business <BUSINESS> --plan-slug <slug> --failure-type confidence_regression --task-id <TASK-ID>`
+  This is a single invocation per failure event. If the build is retried and confidence regresses again, that retry is a new failure event warranting a new observation.
 - stop and route to `/lp-do-replan`.
-- If the same task is routed to `/lp-do-replan` three or more times without crossing its threshold: declare the task `Infeasible` in the plan, record a one-line kill rationale, surface to user, and stop the build cycle. Do not route to replan a fourth time.
+- If the same task is routed to `/lp-do-replan` three or more times without crossing its threshold: declare the task `Infeasible` in the plan, record a one-line kill rationale, surface to user, and stop the build cycle. Do not route to replan a fourth time. Run the failure bridge for the infeasible declaration:
+  `pnpm --filter scripts startup-loop:self-evolving-from-build-failure -- --business <BUSINESS> --plan-slug <slug> --failure-type infeasible_declaration --task-id <TASK-ID>`
+
+### Build-Time Ideas Hook (Advisory)
+
+After each task commit, run the build-time ideas hook utility:
+
+`pnpm --filter scripts startup-loop:lp-do-ideas-build-commit-hook -- --business <BUSINESS> --from-ref HEAD~1 --to-ref HEAD`
+
+- This step is advisory/fail-open: hook errors are surfaced as warnings and must not block task progression.
+- The hook only considers changed files that are active entries in `docs/business-os/startup-loop/ideas/standing-registry.json`.
+- The hook persists emitted live dispatches into the configured live queue/telemetry targets. If dispatch candidates are emitted, log the persisted queue result in build evidence for operator review.
 
 ## Plan Completion and Archiving
 
 When all executable tasks are complete, execute **every step below in order**. Do not emit the completion message until all steps are done and the Plan Completion Checklist is clear.
 
+Post-build artifacts are reflective only — they must not contain unexecuted work items that the plan or build already knew were required.
+
 1. Produce `build-record.user.md` per `docs/business-os/startup-loop/contracts/loop-output-contracts.md`.
    - Enforce `## Outcome Contract` presence and populated fields (`Why`, `Intended Outcome Type`, `Intended Outcome Statement`, `Source`) before proceeding. Use explicit `TBD/auto` fallback only when canonical values are unavailable.
-1.5 Emit canonical `build-event.json` in `docs/plans/<slug>/` using `scripts/src/startup-loop/lp-do-build-event-emitter.ts` (`emitBuildEvent()` + `writeBuildEvent()`) with values sourced from `build-record.user.md` `## Outcome Contract`.
+1.5 Emit canonical `build-event.json` in `docs/plans/<slug>/` using `scripts/src/startup-loop/build/lp-do-build-event-emitter.ts` (`emitBuildEvent()` + `writeBuildEvent()`) with values sourced from `build-record.user.md` `## Outcome Contract`.
    - Verify file exists and is non-empty before continuing.
-2. Produce `results-review.user.md` using the template at `docs/plans/_templates/results-review.user.md`.
+1.7 **Pre-fill results-review scaffold (deterministic).** Run:
+   ```
+   pnpm --filter scripts startup-loop:results-review-prefill -- --slug <slug> --plan-dir docs/plans/<slug>
+   ```
+   - On non-zero exit or missing/empty output file: log warning in build evidence and fall through to Step 2 (codemoot/inline) which generates from scratch. Pre-fill is additive — failure here does not break the existing flow.
+   - On success: `docs/plans/<slug>/results-review.user.md` now contains a deterministic scaffold with standing-updates intersection, 5-category None scan, and auto-verdict. Step 2 refines it.
+2. Refine `results-review.user.md` — the pre-filled scaffold from Step 1.7 (or generate from scratch if Step 1.7 was skipped/failed).
 
    **Codemoot route check:**
    ```
@@ -181,29 +219,60 @@ When all executable tasks are complete, execute **every step below in order**. D
    **If `CODEMOOT_OK=1` (codemoot route — preferred):**
    - Run:
      ```
-     nvm exec 22 codemoot run "Complete docs/plans/<slug>/results-review.user.md. Read the build context from docs/plans/<slug>/plan.md and docs/plans/<slug>/build-record.user.md. Use the template at docs/plans/_templates/results-review.user.md. Fill all agent-fillable sections: Observed Outcomes stub, Standing Updates, New Idea Candidates (scan for: new standing data sources, new open-source packages, new skills, new loop processes, AI-to-mechanistic steps; write None for any category with no evidence), Standing Expansion, Intended Outcome Check." --mode autonomous
+     nvm exec 22 codemoot run "Refine docs/plans/<slug>/results-review.user.md. The file already contains a pre-filled scaffold with deterministic sections (Standing Updates, New Idea Candidates with None categories, Intended Outcome Check with auto-verdict). Read the build context from docs/plans/<slug>/plan.md and docs/plans/<slug>/build-record.user.md. Only populate sections that contain placeholders or are missing substantive content: fill Observed Outcomes with concrete build observations, replace any placeholder comments with real content, and add genuine idea candidates for any of the 5 categories where the build produced relevant signals. Do not overwrite correctly pre-filled None entries unless there is actual evidence. Use the template at docs/plans/_templates/results-review.user.md for structure reference." --mode autonomous
      ```
    - Wait for exit. On non-zero exit or missing/empty file: fall back to inline route with a warning note recorded in the build evidence.
    - Verify `docs/plans/<slug>/results-review.user.md` exists and is non-empty before continuing.
 
    **If `CODEMOOT_OK=0` (inline fallback):**
-   - Auto-draft `results-review.user.md` inline; pre-fill all agent-fillable sections (Observed Outcomes stub, Standing Updates, New Idea Candidates, Standing Expansion, Intended Outcome Check). When pre-filling `## New Idea Candidates`, scan build context for signals in each category below — write `None` if no evidence found for that category:
+   - If pre-filled scaffold exists from Step 1.7: read it and refine only sections with placeholders (Observed Outcomes, any placeholder comments). Preserve correctly pre-filled content (Standing Updates, None categories, auto-verdict).
+   - If no scaffold exists: auto-draft `results-review.user.md` inline; pre-fill all agent-fillable sections (Observed Outcomes stub, Standing Updates, New Idea Candidates, Standing Expansion, Intended Outcome Check). When pre-filling `## New Idea Candidates`, scan build context for signals in each category below — write `None` if no evidence found for that category:
      - New standing data source — external feed, API, or dataset suitable for Layer A standing intelligence
      - New open-source package — library to replace custom code or add capability
      - New skill — recurring agent workflow ready to be codified as a named skill
      - New loop process — missing stage, gate, or feedback path in the startup loop
      - AI-to-mechanistic — LLM reasoning step replaceable with a deterministic script
-2.5. Read the `results-review.user.md` just produced. For each entry in `## New Idea Candidates`, identify whether it describes a pattern that has recurred across recent builds or could recur in future builds. Classify each pattern as one of: repeatable rule (something the loop could do automatically next time), recurring opportunity with context variation (something worth capturing as a reusable agent workflow), or access gap (something that was discovered mid-build rather than verified upfront). Then write `docs/plans/<slug>/pattern-reflection.user.md` using the schema at `docs/plans/startup-loop-build-reflection-gate/task-01-schema-spec.md`. Each entry must include: a plain summary (≤100 characters), the category, the routing result (see schema routing criteria), and how many times the pattern has been observed. If no patterns are present, write the empty-state artifact with `None identified` in both `## Patterns` and `## Access Declarations` sections. The artifact must always be produced — an empty-state is valid and closes any potential gap in the record.
+2.1. **Emit results-review sidecar (post-authoring).** After the LLM has finalized `results-review.user.md` in Step 2, run:
+   ```
+   pnpm --filter scripts startup-loop:results-review-extract -- --plan-dir docs/plans/<slug>
+   ```
+   - This step is advisory/fail-open: on non-zero exit or if the sidecar is not written, log a warning in build evidence and continue.
+   - On success: `docs/plans/<slug>/results-review.signals.json` is written atomically alongside the `.user.md`. Stage it for the post-build commit:
+     ```
+     git add docs/plans/<slug>/results-review.signals.json
+     ```
+   - The sidecar enables `generate-process-improvements` and `self-evolving-from-build-output` to read structured idea candidates without re-parsing markdown prose.
+2.4. **Pre-fill pattern-reflection scaffold (deterministic).** Run:
+   ```
+   pnpm --filter scripts startup-loop:pattern-reflection-prefill -- --slug <slug> --plan-dir docs/plans/<slug> --archive-dir docs/plans/_archive
+   ```
+   - On non-zero exit: log warning in build evidence and fall through to Step 2.5 (LLM generates from scratch). Pre-fill is additive.
+   - On success: `docs/plans/<slug>/pattern-reflection.user.md` now contains a deterministic scaffold with archive recurrence counts, routing targets, and the empty-state when no patterns exist. The pre-fill also emits `[pre-fill] needs_refinement: true/false` to stderr — capture this value.
+2.5. Refine the pattern-reflection artifact from Step 2.4 (or generate from scratch if Step 2.4 was skipped/failed). **Skip this step entirely and emit the pre-fill as-is if Step 2.4 succeeded and `needs_refinement: false` was emitted** (gate is false when no placeholder markers are present, no unclassified entries exist, and all required fields are populated — this covers the complete valid empty-state and any build where all idea categories were preserved at handoff). Otherwise: read the `results-review.user.md` just produced. For each entry in `## New Idea Candidates`, identify whether it describes a pattern that has recurred across recent builds or could recur in future builds. If a pre-filled scaffold exists from Step 2.4, fill in any remaining gaps using build context — category is already preserved from the results-review bullet prefixes, so correction is only needed for entries the pre-fill could not classify. Then write or update `docs/plans/<slug>/pattern-reflection.user.md` using the schema at `docs/plans/startup-loop-build-reflection-gate/task-01-schema-spec.md`. Each entry must include: a plain summary (≤100 characters), the category, the routing result (see schema routing criteria), and how many times the pattern has been observed. If no patterns are present, write the empty-state artifact with `None identified` in both `## Patterns` and `## Access Declarations` sections. The artifact must always be produced — an empty-state is valid and closes any potential gap in the record.
+
+2.55. **Emit pattern-reflection sidecar (post-authoring).** After the LLM has finalized `pattern-reflection.user.md` in Step 2.5, run:
+   ```
+   pnpm --filter scripts startup-loop:pattern-reflection-extract -- --plan-dir docs/plans/<slug>
+   ```
+   - This step is advisory/fail-open: on non-zero exit or if the sidecar is not written, log a warning in build evidence and continue.
+   - On success: `docs/plans/<slug>/pattern-reflection.entries.json` is written atomically alongside the `.user.md`. The sidecar is committed in the post-build artifacts commit (Step 8) — no separate `git add` is needed here unless a partial commit precedes Step 8.
+   - The sidecar enables `self-evolving-from-build-output` to read structured pattern entries without re-parsing markdown prose.
+2.6. Run self-evolving build-output bridge (advisory) to feed build artifacts into observation ingestion:
+
+   `pnpm --filter scripts startup-loop:self-evolving-from-build-output -- --business <BUSINESS> --plan-slug <slug>`
+
+   - This step is advisory/fail-open. It must not block completion if startup-state or artifacts are missing; record warnings in build evidence.
+   - When validated repeat-work candidates are detected, the bridge now enqueues them in the self-evolving backbone queue and emits canonical follow-up `dispatch.v2` packets back into the startup-loop ideas trial queue for normal `lp-do-ideas -> lp-do-fact-find -> lp-do-plan -> lp-do-build` handling.
 
 3. Run reflection debt emitter; if debt emitted, produce `reflection-debt.user.html` from `docs/templates/visual/loop-output-report-template.html` (operator-readable plain language — see `MEMORY.md` Operator-Facing Content).
 4. Run bug scan and persist findings as a plan artifact: `pnpm bug-scan -- --changed --format=json --fail-on=none --business-scope=<BUSINESS> --idea-artifact=docs/plans/<slug>/bug-scan-findings.user.json`.
 5. Run `pnpm --filter scripts startup-loop:generate-process-improvements`. Confirm the output line `updated docs/business-os/process-improvements.user.html` appears before continuing.
-6. For each idea in `## New Idea Candidates` that was directly actioned by this build, add an entry to `docs/business-os/_data/completed-ideas.json` by calling `appendCompletedIdea()` from `scripts/src/startup-loop/generate-process-improvements.ts` (or by writing the JSON entry directly). Record `plan_slug` (the slug of the plan just completed), `output_link` (path to the archived plan directory), `completed_at` (today's date in ISO format), `source_path` (relative path to the results-review file where the idea was found), and `title` (the sanitized idea title as it appears in the report). Re-run `pnpm --filter scripts startup-loop:generate-process-improvements` after appending so the report reflects the exclusion immediately. Only mark ideas as complete if they were directly delivered by this build; deferred or future ideas remain in the report.
+6. For each idea in `## New Idea Candidates` that was directly actioned by this build, add an entry to `docs/business-os/_data/completed-ideas.json` by calling `appendCompletedIdea()` from `scripts/src/startup-loop/build/generate-process-improvements.ts` (or by writing the JSON entry directly). Record `plan_slug` (the slug of the plan just completed), `output_link` (path to the archived plan directory), `completed_at` (today's date in ISO format), `source_path` (relative path to the results-review file where the idea was found), and `title` (the sanitized idea title as it appears in the report). Re-run `pnpm --filter scripts startup-loop:generate-process-improvements` after appending so the report reflects the exclusion immediately. Only mark ideas as complete if they were directly delivered by this build; deferred or future ideas remain in the report.
 7. Set plan `Status: Archived`. Archive per `../_shared/plan-archiving.md`.
-7.5. **Queue-state completion hook** — inside the writer lock scope (which must already be held from step 7 onward and continues through step 8), invoke `markDispatchesCompleted()` from `scripts/src/startup-loop/lp-do-ideas-queue-state-completion.ts` to mark the originating dispatch as completed in `docs/business-os/startup-loop/ideas/trial/queue-state.json`:
+7.5. **Queue-state completion hook** — inside the writer lock scope (which must already be held from step 7 onward and continues through step 8), invoke `markDispatchesCompleted()` from `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-completion.ts` to mark the originating dispatch as completed in `docs/business-os/startup-loop/ideas/trial/queue-state.json`:
 
    ```typescript
-   import { markDispatchesCompleted } from "scripts/src/startup-loop/lp-do-ideas-queue-state-completion.js";
+   import { markDispatchesCompleted } from "scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-completion.js";
 
    const result = await markDispatchesCompleted({
      queueStatePath: "docs/business-os/startup-loop/ideas/trial/queue-state.json",
@@ -244,6 +313,10 @@ Partial completion:
 
 Stopped by gate:
 > Build stopped by gate (`Eligibility` | `Scope` | `Validation` | `Commit` | `Post-task`). See plan updates for required next action.
+
+When a build stops due to a gate failure, run the build-failure bridge (advisory/fail-open):
+`pnpm --filter scripts startup-loop:self-evolving-from-build-failure -- --business <BUSINESS> --plan-slug <slug> --failure-type gate_block --task-id <TASK-ID>`
+This is a single invocation per gate-block event. If the build is retried after fixing the gate issue and fails at a different gate, that is a separate failure event.
 
 ## Quick Checklist
 

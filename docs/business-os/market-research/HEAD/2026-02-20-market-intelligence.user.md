@@ -111,9 +111,9 @@ Current shortlist artifact:
 ## H) Startup-Loop Hand-off
 
 This market-intelligence refresh is consumed by:
-- `docs/business-os/startup-baselines/HEAD-offer.md` (S2B)
+- `docs/business-os/startup-baselines/HEAD/offer.md` (S2B)
 - `docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md` (S3)
-- `docs/business-os/startup-baselines/HEAD-channels.md` (S6B)
+- `docs/business-os/startup-baselines/HEAD/channels.md` (S6B)
 - `docs/business-os/strategy/HEAD/2026-02-20-prioritization-scorecard.user.md` (S4)
 
 Canonical outcome contract remains:

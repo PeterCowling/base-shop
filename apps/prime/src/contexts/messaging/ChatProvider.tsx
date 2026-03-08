@@ -42,7 +42,14 @@ import {
 } from '../../services/firebase';
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { ActivityInstance } from '../../types/messenger/activity';
-import type { Message } from '../../types/messenger/chat';
+import type {
+  Message,
+  MessageAttachment,
+  MessageCard,
+  MessageDraftMeta,
+  MessageKind,
+  MessageLink,
+} from '../../types/messenger/chat';
 
 const PAGE_SIZE = 50;
 const ACTIVITIES_PAGE_SIZE = 20;
@@ -208,8 +215,96 @@ function isMessage(value: unknown): value is Message {
   if (candidate.imageUrl !== undefined && typeof candidate.imageUrl !== 'string') {
     return false;
   }
+  if (candidate.kind !== undefined && !isMessageKind(candidate.kind)) {
+    return false;
+  }
+  if (candidate.audience !== undefined && !isMessageAudience(candidate.audience)) {
+    return false;
+  }
+  if (candidate.links !== undefined && !isMessageLinks(candidate.links)) {
+    return false;
+  }
+  if (candidate.attachments !== undefined && !isMessageAttachments(candidate.attachments)) {
+    return false;
+  }
+  if (candidate.cards !== undefined && !isMessageCards(candidate.cards)) {
+    return false;
+  }
+  if (candidate.campaignId !== undefined && typeof candidate.campaignId !== 'string') {
+    return false;
+  }
+  if (candidate.draft !== undefined && !isMessageDraft(candidate.draft)) {
+    return false;
+  }
 
   return true;
+}
+
+function isMessageKind(value: unknown): value is MessageKind {
+  return value === 'support' || value === 'promotion' || value === 'draft' || value === 'system';
+}
+
+function isMessageAudience(value: unknown): value is Message['audience'] {
+  return value === 'thread' || value === 'booking' || value === 'room' || value === 'whole_hostel';
+}
+
+function isMessageLinks(value: unknown): value is MessageLink[] {
+  return Array.isArray(value) && value.every((entry) =>
+    entry
+    && typeof entry === 'object'
+    && typeof entry.label === 'string'
+    && typeof entry.url === 'string'
+    && (entry.id === undefined || typeof entry.id === 'string')
+    && (entry.variant === undefined || entry.variant === 'primary' || entry.variant === 'secondary'));
+}
+
+function isMessageAttachments(value: unknown): value is MessageAttachment[] {
+  return Array.isArray(value) && value.every((entry) =>
+    entry
+    && typeof entry === 'object'
+    && (entry.kind === 'image' || entry.kind === 'file')
+    && typeof entry.url === 'string'
+    && (entry.id === undefined || typeof entry.id === 'string')
+    && (entry.title === undefined || typeof entry.title === 'string')
+    && (entry.altText === undefined || typeof entry.altText === 'string')
+    && (entry.mimeType === undefined || typeof entry.mimeType === 'string'));
+}
+
+function isMessageCards(value: unknown): value is MessageCard[] {
+  return Array.isArray(value) && value.every((entry) =>
+    entry
+    && typeof entry === 'object'
+    && typeof entry.title === 'string'
+    && (entry.id === undefined || typeof entry.id === 'string')
+    && (entry.body === undefined || typeof entry.body === 'string')
+    && (entry.imageUrl === undefined || typeof entry.imageUrl === 'string')
+    && (entry.ctaLabel === undefined || typeof entry.ctaLabel === 'string')
+    && (entry.ctaUrl === undefined || typeof entry.ctaUrl === 'string'));
+}
+
+function isMessageDraft(value: unknown): value is MessageDraftMeta {
+  return Boolean(
+    value
+    && typeof value === 'object'
+    && typeof (value as MessageDraftMeta).draftId === 'string'
+    && typeof (value as MessageDraftMeta).createdAt === 'number'
+    && ((value as MessageDraftMeta).status === 'suggested'
+      || (value as MessageDraftMeta).status === 'under_review'
+      || (value as MessageDraftMeta).status === 'approved'
+      || (value as MessageDraftMeta).status === 'sent'
+      || (value as MessageDraftMeta).status === 'dismissed')
+    && ((value as MessageDraftMeta).source === 'agent'
+      || (value as MessageDraftMeta).source === 'staff'),
+  );
+}
+
+function toMessage(id: string, raw: unknown): Message | null {
+  if (!raw || typeof raw !== 'object') {
+    return null;
+  }
+
+  const candidate = { id, ...(raw as Omit<Message, 'id'>) };
+  return isMessage(candidate) ? candidate : null;
 }
 
 function normalizeDirectMessages(payload: unknown): Message[] {
@@ -363,7 +458,6 @@ export function ChatProvider({ children }: ChatProviderProps) {
       const session = readGuestSession();
       if (
         !session.uuid
-        || !session.token
         || !session.bookingId
         || !directMessageChannelIncludesGuest(activeChannelId, session.uuid)
       ) {
@@ -380,12 +474,12 @@ export function ChatProvider({ children }: ChatProviderProps) {
         }
 
         try {
+          // prime_session HttpOnly cookie is sent automatically on this same-origin request
           const response = await fetch(
             buildDirectMessagesRequestUrl(activeChannelId, { limit: PAGE_SIZE }),
             {
               method: 'GET',
               headers: {
-                'X-Prime-Guest-Token': session.token,
                 'X-Prime-Guest-Booking-Id': session.bookingId,
               },
               cache: 'no-store',
@@ -451,9 +545,9 @@ export function ChatProvider({ children }: ChatProviderProps) {
     );
     get(q).then((snap) => {
       const raw = snap.val() ?? {};
-      const messages: Message[] = Object.entries(raw).map(
-        ([mid, msg]: [string, unknown]) => ({ id: mid, ...(msg as Omit<Message, 'id'>) }),
-      );
+      const messages = Object.entries(raw)
+        .map(([mid, msg]: [string, unknown]) => toMessage(mid, msg))
+        .filter((message): message is Message => message !== null);
       dispatch({
         type: 'setMessages',
         channelId: activeChannelId,
@@ -462,9 +556,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
     });
 
     const handleAdd = (snap: DataSnapshot) => {
-      const msg = snap.val();
-      if (!msg) return;
-      const message: Message = { id: snap.key as string, ...msg };
+      const message = toMessage(snap.key as string, snap.val());
+      if (!message) return;
       dispatch({
         type: 'upsertMessage',
         channelId: activeChannelId,
@@ -472,9 +565,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
       });
     };
     const handleChange = (snap: DataSnapshot) => {
-      const msg = snap.val();
-      if (!msg) return;
-      const message: Message = { id: snap.key as string, ...msg };
+      const message = toMessage(snap.key as string, snap.val());
+      if (!message) return;
       dispatch({
         type: 'upsertMessage',
         channelId: activeChannelId,
@@ -515,7 +607,6 @@ export function ChatProvider({ children }: ChatProviderProps) {
         const session = readGuestSession();
         if (
           !session.uuid
-          || !session.token
           || !session.bookingId
           || !directMessageChannelIncludesGuest(channelId, session.uuid)
         ) {
@@ -533,6 +624,7 @@ export function ChatProvider({ children }: ChatProviderProps) {
         }
 
         try {
+          // prime_session HttpOnly cookie is sent automatically on this same-origin request
           const response = await fetch(
             buildDirectMessagesRequestUrl(channelId, {
               before: oldest.createdAt,
@@ -541,7 +633,6 @@ export function ChatProvider({ children }: ChatProviderProps) {
             {
               method: 'GET',
               headers: {
-                'X-Prime-Guest-Token': session.token,
                 'X-Prime-Guest-Booking-Id': session.bookingId,
               },
               cache: 'no-store',
@@ -586,9 +677,9 @@ export function ChatProvider({ children }: ChatProviderProps) {
       );
       const snap = await get(q);
       const raw = snap.val() ?? {};
-      const messages: Message[] = Object.entries(raw).map(
-        ([mid, msg]: [string, unknown]) => ({ id: mid, ...(msg as Omit<Message, 'id'>) }),
-      );
+      const messages = Object.entries(raw)
+        .map(([mid, msg]: [string, unknown]) => toMessage(mid, msg))
+        .filter((message): message is Message => message !== null);
       if (messages.length) {
         dispatch({ type: 'prependMessages', channelId, messages });
       }
@@ -610,7 +701,7 @@ export function ChatProvider({ children }: ChatProviderProps) {
       if (options?.directMessage) {
         const { bookingId, peerUuid } = options.directMessage;
 
-        if (!bookingId || !peerUuid || !session.bookingId || !session.token) {
+        if (!bookingId || !peerUuid || !session.bookingId) {
           throw new Error('Direct message context is incomplete.');
         }
 
@@ -632,11 +723,11 @@ export function ChatProvider({ children }: ChatProviderProps) {
           throw new Error(buildDirectRateLimitMessage(activeWriteBackoff));
         }
 
+        // prime_session HttpOnly cookie is sent automatically on this same-origin request
         const directResponse = await fetch('/api/direct-message', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Prime-Guest-Token': session.token,
             'X-Prime-Guest-Booking-Id': bookingId,
           },
           body: JSON.stringify({

@@ -13,5 +13,24 @@
   "toggleMenu": "Toggle menu"
   ,
   "experiences": "Experiences",
-  "howToGetHere": "How to Get Here"
+  "howToGetHere": "How to Get Here",
+  "navChildren": {
+    "rooms": {
+      "all": "See all rooms",
+      "room_10": "Mixed Ensuite Dorm",
+      "room_11": "Female Dorm – Large Sea Terrace",
+      "room_12": "Mixed Dorm – Sea Terrace",
+      "room_3": "8-Bed Female Dorm",
+      "room_4": "8-Bed Mixed Dorm",
+      "room_5": "Female Sea View Dorm",
+      "room_6": "7-Bed Female Sea View Dorm",
+      "room_9": "Mixed Room – Single Beds",
+      "room_8": "Female Garden Room"
+    },
+    "apartment": {
+      "bookPrivate": "Book private accommodations",
+      "apartment": "Apartment",
+      "doubleRoom": "Double Room"
+    }
+  }
 }

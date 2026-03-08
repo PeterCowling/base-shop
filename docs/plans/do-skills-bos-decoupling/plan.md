@@ -418,7 +418,7 @@ This plan removes Business OS integration from the DO workflow by updating DO sk
 
 ### TASK-07: Align operator-facing workflow docs with BOS-decoupled DO behavior
 - **Type:** IMPLEMENT
-- **Deliverable:** Updated `docs/agents/feature-workflow-guide.md`, `docs/business-os/agent-workflows.md`, and `docs/business-os/startup-loop/loop-output-contracts.md`.
+- **Deliverable:** Updated `docs/agents/feature-workflow-guide.md`, `docs/business-os/agent-workflows.md`, and `docs/business-os/startup-loop/contracts/loop-output-contracts.md`.
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
@@ -428,7 +428,7 @@ This plan removes Business OS integration from the DO workflow by updating DO sk
 - **Reviewer:** Operator
 - **Approval-Evidence:** Decision-log closure entry for TASK-07.
 - **Measurement-Readiness:** Owner=Operator; cadence=once; tracking=`TASK-07 Notes / references`.
-- **Affects:** `docs/agents/feature-workflow-guide.md`, `docs/business-os/agent-workflows.md`, `docs/business-os/startup-loop/loop-output-contracts.md`
+- **Affects:** `docs/agents/feature-workflow-guide.md`, `docs/business-os/agent-workflows.md`, `docs/business-os/startup-loop/contracts/loop-output-contracts.md`
 - **Depends on:** TASK-04, TASK-06
 - **Blocks:** TASK-10
 - **Confidence:** 85%
@@ -447,7 +447,7 @@ This plan removes Business OS integration from the DO workflow by updating DO sk
   - Green evidence plan: post-edit grep verifies stale text removed; manual read confirms coherent replacement.
   - Refactor evidence plan: normalize terminology (`filesystem-only`, `DO`, `artifact`) across docs.
 - **Planning validation (required for M/L):**
-  - Checks run: `rg -n "Business-OS-Integration|default to integration on|stage-doc|lane move|DO" docs/agents/feature-workflow-guide.md docs/business-os/agent-workflows.md docs/business-os/startup-loop/loop-output-contracts.md`
+  - Checks run: `rg -n "Business-OS-Integration|default to integration on|stage-doc|lane move|DO" docs/agents/feature-workflow-guide.md docs/business-os/agent-workflows.md docs/business-os/startup-loop/contracts/loop-output-contracts.md`
   - Validation artifacts: command logs and closure summary.
   - Unexpected findings: unresolved conflicts recorded in TASK-10 closure report.
 - **Scouts:** None: deterministic contract-alignment edits.
@@ -464,7 +464,7 @@ This plan removes Business OS integration from the DO workflow by updating DO sk
 - **Build completion evidence (2026-02-24):**
   - `docs/agents/feature-workflow-guide.md`: "Business OS Card Tracking" section updated; DO skills described as filesystem-only; BOS-default on/off removed.
   - `docs/business-os/agent-workflows.md`: Section heading updated; automation table rows for DO skills show filesystem-only; idea-advance section corrected to say all lane transitions need explicit operator action; Typical Card Lifecycle diagram rewritten (5 steps, no BOS lane moves); Next Steps item 2 updated; lifecycle footnote added.
-  - `docs/business-os/startup-loop/loop-output-contracts.md`: `Business-Unit` and `Card-ID` removed from all 4 artifact frontmatter specs (fact-find, plan, build-record, results-review).
+  - `docs/business-os/startup-loop/contracts/loop-output-contracts.md`: `Business-Unit` and `Card-ID` removed from all 4 artifact frontmatter specs (fact-find, plan, build-record, results-review).
   - VC-01 pass: `rg "Business-OS-Integration|baseline core-loop transitions are deterministic"` in targeted docs → zero hits.
   - VC-02 pass: DO skill references in workflow docs are filesystem-only; no BOS write claims remain.
 

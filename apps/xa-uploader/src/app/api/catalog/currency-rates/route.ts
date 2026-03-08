@@ -3,6 +3,7 @@ import path from "node:path";
 
 import { NextResponse } from "next/server";
 
+import { isLocalFsRuntimeEnabled } from "../../../../lib/localFsGuard";
 import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
 import { resolveRepoRoot } from "../../../../lib/repoRoot";
 import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
@@ -32,7 +33,13 @@ function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLi
 }
 
 function buildErrorResponse(
-  error: "invalid_rates" | "rate_limited" | "invalid" | "payload_too_large" | "internal_error",
+  error:
+    | "invalid_rates"
+    | "rate_limited"
+    | "invalid"
+    | "payload_too_large"
+    | "internal_error"
+    | "service_unavailable",
   status: number,
   reason: string,
 ): NextResponse {
@@ -95,6 +102,13 @@ export async function GET(request: Request) {
     return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
   }
 
+  if (!isLocalFsRuntimeEnabled()) {
+    return withRateHeaders(
+      buildErrorResponse("service_unavailable", 503, "currency_rates_local_fs_required"),
+      limit,
+    );
+  }
+
   try {
     // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-118 controlled path rooted to repo-local uploader data dir
     const raw = await fs.readFile(ratesFilePath, "utf8");
@@ -103,12 +117,18 @@ export async function GET(request: Request) {
       const validated = validateRatesInput(parsed);
       if (validated.ok === false) {
         console.warn(`[xa-uploader] currency-rates.json invalid shape: ${validated.reason}`);
-        return withRateHeaders(NextResponse.json({ ok: true, rates: null }), limit);
+        return withRateHeaders(
+          buildErrorResponse("invalid_rates", 409, "currency_rates_invalid"),
+          limit,
+        );
       }
       return withRateHeaders(NextResponse.json({ ok: true, rates: validated.rates }), limit);
     } catch (error) {
       console.warn("[xa-uploader] failed to parse currency-rates.json", error);
-      return withRateHeaders(NextResponse.json({ ok: true, rates: null }), limit);
+      return withRateHeaders(
+        buildErrorResponse("invalid_rates", 409, "currency_rates_invalid"),
+        limit,
+      );
     }
   } catch (error) {
     if ((error as NodeJS.ErrnoException | undefined)?.code === "ENOENT") {
@@ -135,6 +155,13 @@ export async function PUT(request: Request) {
   const authenticated = await hasUploaderSession(request);
   if (!authenticated) {
     return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
+  }
+
+  if (!isLocalFsRuntimeEnabled()) {
+    return withRateHeaders(
+      buildErrorResponse("service_unavailable", 503, "currency_rates_local_fs_required"),
+      limit,
+    );
   }
 
   let payload: CurrencyRatesBody;

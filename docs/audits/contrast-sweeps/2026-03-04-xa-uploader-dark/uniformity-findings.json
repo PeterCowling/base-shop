@@ -1,0 +1,24 @@
+[
+  {
+    "id": "U-001",
+    "severity": "S3",
+    "breakpoint": 1280,
+    "mode": "dark",
+    "route": "/login vs /",
+    "componentFamily": "Page layout / theme init",
+    "drift": "Login page lacks ThemeToggle; gate tokens stay at light-mode defaults on fresh navigation. Console page correctly initializes dark mode.",
+    "likelyCause": "ThemeToggle only rendered in UploaderHome, not in login layout",
+    "fixDirection": "Shared theme-init script in root layout.tsx"
+  },
+  {
+    "id": "U-002",
+    "severity": "S3",
+    "breakpoint": 1280,
+    "mode": "dark",
+    "route": "/",
+    "componentFamily": "Header / Page section",
+    "drift": "Header bg hsl(220 20% 10%) and main bg hsl(220 20% 8%) differ by only 2% lightness — header not visually distinct",
+    "likelyCause": "--gate-header-bg not overridden in dark mode; light-mode value coincidentally near dark bg",
+    "fixDirection": "Optional: lighten header to hsl(220 20% 14%) or add bottom border. Acceptable if merged header/body is intentional."
+  }
+]

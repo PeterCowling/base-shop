@@ -214,4 +214,35 @@ describe("usePrimeRequestResolution", () => {
       }),
     );
   });
+
+  it("TC-05: extension status does not advance when booking-date mutation fails", async () => {
+    const request = buildRequest({
+      requestId: "extension_fail_1",
+      type: "extension",
+      payload: {
+        requestedCheckOutDate: "2026-03-10",
+      },
+    });
+
+    getDataByPath["primeRequests/byId/extension_fail_1"] = request;
+    getDataByPath["bookings/BOOK1/occ_1"] = {
+      checkInDate: "2026-03-01",
+      checkOutDate: "2026-03-05",
+    };
+    updateBookingDatesMock.mockRejectedValueOnce(new Error("date update failed"));
+
+    const { result } = renderHook(() => usePrimeRequestResolution());
+
+    await act(async () => {
+      await expect(
+        result.current.resolveRequest({
+          request,
+          nextStatus: "approved",
+        }),
+      ).rejects.toThrow("date update failed");
+    });
+
+    expect(updateBookingDatesMock).toHaveBeenCalledTimes(1);
+    expect(updateMock).not.toHaveBeenCalled();
+  });
 });

@@ -188,7 +188,7 @@ describe("lintBriefingContract — briefing schema checks (TC-01..TC-04)", () =>
     const issues = lintBriefingContract({
       artifacts: [
         {
-          artifactPath: "docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md",
+          artifactPath: "docs/business-os/startup-baselines/HEAD/2026-02-12-assessment-intake-packet.user.md",
           expectedBusiness: "HEAD",
           fields: missingDependsOn,
         },

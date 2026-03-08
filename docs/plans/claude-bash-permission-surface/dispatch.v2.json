@@ -1,0 +1,42 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260306133314-0989",
+  "mode": "trial",
+  "business": "PLAT",
+  "trigger": "operator_idea",
+  "domain": "STRATEGY",
+  "root_event_id": "operator:PLAT:STRATEGY:claude-bash-permission-surface:20260306",
+  "anchor_key": "claude-bash-permission-surface",
+  "cluster_key": "PLAT:STRATEGY:claude-bash-permission-surface:operator:20260306",
+  "cluster_fingerprint": "7b8499d61c134e36ebb1050c5cf1ca6d846202b302cab321659ac7f6a798e874",
+  "lineage_depth": 0,
+  "area_anchor": "PLAT Claude Bash permissions - surface too broad for lock use",
+  "location_anchors": [
+    ".claude/settings.json",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "scripts/agents/integrator-shell.sh",
+    "scripts/agents/with-writer-lock.sh"
+  ],
+  "provisional_deliverable_family": "multi",
+  "current_truth": "Claude currently has a broad Bash permission surface and safety is applied afterward through hooks, deny lists, and wrappers. That makes shell a default transport for discovery and file operations even though the actual need is narrow writer-lock and command execution support.",
+  "next_scope_now": "Fact-find the minimum Bash permission surface: identify which guarded write and validation commands truly require shell execution, which discovery paths should move to Read, Glob, Grep, or MCP, and what permission or hook changes would safely reverse the recent broad allowance.",
+  "adjacent_later": [],
+  "recommended_route": "lp-do-fact-find",
+  "status": "fact_find_ready",
+  "priority": "P2",
+  "confidence": 0.92,
+  "evidence_refs": [
+    "operator-stated: recent Bash allowance for file locking and guarding appears to have increased Claude errors and should likely be reversed",
+    "agent-verified: .claude/settings.json broadly hooks and permits Bash while safety is layered afterward",
+    "agent-verified: lock wrappers exist in scripts/agents/integrator-shell.sh and scripts/agents/with-writer-lock.sh, so the write use case is narrower than general shell access"
+  ],
+  "created_at": "2026-03-06T12:33:14.000Z",
+  "queue_state": "enqueued",
+  "why": "Broad shell access increases failure modes and policy drift. Claude should only use shell when a real process must run or a guarded writer path is required.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Claude Bash access is narrowed to an executor-only surface that preserves guarded write and validation flows without making shell the default tool.",
+    "source": "operator"
+  }
+}

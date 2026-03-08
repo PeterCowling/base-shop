@@ -64,15 +64,22 @@ function EmailBookingButton({
       if (d.email) emailMap[occId] = d.email;
     });
 
+    const result = await sendBookingEmail(bookingRef, emailMap);
+    if (!result.success) {
+      showToast(result.error ?? "Failed to create email draft", "error");
+      return;
+    }
     try {
-      await sendBookingEmail(bookingRef, emailMap);
-      // Log activity 26 for each occupant included in the draft
+      // Log activity 26 for each occupant confirmed in the generated draft payload.
       await Promise.all(
-        Object.keys(emailMap).map((occId) => logActivity(occId, 26))
+        result.occupantIds.map((occId) => logActivity(occId, 26))
       );
       showToast("Email draft created", "success");
     } catch {
-      showToast("Failed to create email draft", "error");
+      showToast(
+        "Email draft created, but activity logging failed. Please check history.",
+        "error"
+      );
     }
   }, [bookingRef, guestsDetails, sendBookingEmail, logActivity]);
 

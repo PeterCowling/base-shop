@@ -16,18 +16,6 @@ export function sortProducts(products: XaProduct[], sort: SortKey): XaProduct[] 
       return copy.sort((a, b) => b.price - a.price);
     case "newest":
       return copy.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-    case "biggest-discount":
-      return copy.sort((a, b) => {
-        const discountA =
-          typeof a.compareAtPrice === "number" && a.compareAtPrice > a.price
-            ? (a.compareAtPrice - a.price) / a.compareAtPrice
-            : 0;
-        const discountB =
-          typeof b.compareAtPrice === "number" && b.compareAtPrice > b.price
-            ? (b.compareAtPrice - b.price) / b.compareAtPrice
-            : 0;
-        return discountB - discountA;
-      });
     case "best-sellers":
     default:
       return copy.sort((a, b) => b.popularity - a.popularity);
@@ -52,4 +40,19 @@ export function cloneFilterValues(values: Record<FilterKey, Set<string>>) {
 
 export function getFilterParam(key: FilterKey) {
   return `f[${key}]`;
+}
+
+const NEW_IN_WINDOW_MS = 30 * 24 * 60 * 60 * 1000;
+
+/**
+ * Returns true when a product was added within the last 30 days.
+ * Uses wall-clock time by default; accepts optional referenceDate for testing.
+ */
+export function isNewIn(product: XaProduct, referenceDate?: Date): boolean {
+  if (!product.createdAt) return false;
+  const ref = referenceDate ?? new Date();
+  const created = new Date(product.createdAt);
+  if (Number.isNaN(created.getTime())) return false;
+  const diffMs = ref.getTime() - created.getTime();
+  return diffMs >= 0 && diffMs <= NEW_IN_WINDOW_MS;
 }

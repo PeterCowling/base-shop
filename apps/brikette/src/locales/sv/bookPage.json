@@ -55,7 +55,8 @@
   },
   "noscript": {
     "jsDisabledAssistance": "Vandrarhemsbokningar hanteras med assisterad support när JavaScript är inaktiverat.",
-    "emailAssistedBooking": "Maila oss för assisterad bokning"
+    "emailAssistedBooking": "Maila oss för assisterad bokning",
+    "octorateDirectBooking": "Boka direkt med Octorate"
   },
   "bookingConstraints": {
     "notice": "Vandrarhemsbokningar stöder vistelser endast för vuxna mellan 2 och 8 nätter med upp till 8 vuxna per bokning. För större grupper eller längre vistelser, dela din förfrågan på flera bokningar eller",

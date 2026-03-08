@@ -105,8 +105,8 @@ JetBrains Mono data cells, Sora body text, gold accent borders.
 
 | Stage | Artifact | Path | Status | Notes |
 |-------|----------|------|--------|-------|
-| S0 | Intake Packet | `docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md` | Active | Business context, assumptions, and constraints |
-| S0 | Forecast Seed | `docs/business-os/startup-baselines/HEAD-forecast-seed.user.md` | Draft | Pre-loop revenue hypothesis |
+| S0 | Intake Packet | `docs/business-os/startup-baselines/HEAD/2026-02-12-assessment-intake-packet.user.md` | Active | Business context, assumptions, and constraints |
+| S0 | Forecast Seed | `docs/business-os/startup-baselines/HEAD/forecast-seed.user.md` | Draft | Pre-loop revenue hypothesis |
 | S1 | Market Intelligence | `docs/business-os/market-research/HEAD/latest.user.md` | Active | Pointer → 2026-02-12 research report |
 | S1 | Brand Dossier | `docs/business-os/strategy/HEAD/2026-02-21-brand-identity-dossier.user.md` | Draft | Visual + voice identity |
 | S3 | 90-Day Forecast v2 | `docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md` | Draft | P10/P50/P90 scenario model (v1 superseded) |
@@ -129,11 +129,11 @@ JetBrains Mono data cells, Sora body text, gold accent borders.
 
 | Stage | Artifact | Path | Status | Notes |
 |-------|----------|------|--------|-------|
-| S0 | Intake Packet | `docs/business-os/startup-baselines/PET-2026-02-12assessment-intake-packet.user.md` | Active | Business context and constraints |
-| S0 | Forecast Seed | `docs/business-os/startup-baselines/PET-forecast-seed.user.md` | Draft | Pre-loop revenue hypothesis |
+| S0 | Intake Packet | `docs/business-os/startup-baselines/PET/2026-02-12-assessment-intake-packet.user.md` | Active | Business context and constraints |
+| S0 | Forecast Seed | `docs/business-os/startup-baselines/PET/forecast-seed.user.md` | Draft | Pre-loop revenue hypothesis |
 | S1 | Market Intelligence | `docs/business-os/market-research/PET/latest.user.md` | Active | Pointer → current research report |
 | S1 | Brand Dossier | `docs/business-os/strategy/PET/2026-02-17-brand-identity-dossier.user.md` | Draft | Visual + voice identity |
-| S2B | Offer Design | `docs/business-os/startup-baselines/PET-offer.md` | Hypothesis | ICP, positioning, pricing (€80), objection map; 6 sections complete |
+| S2B | Offer Design | `docs/business-os/startup-baselines/PET/offer.md` | Hypothesis | ICP, positioning, pricing (€80), objection map; 6 sections complete |
 | S3 | 90-Day Forecast v2 | `docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.user.md` | Draft | P10/P50/P90 scenario model |
 | S5 | Prioritization Scorecard | `docs/business-os/strategy/PET/2026-02-12-prioritization-scorecard.user.md` | Active | Go-item ranking |
 | S5B | Strategy Plan | `docs/business-os/strategy/PET/plan.user.md` | Active | Canonical strategy wrapper |
@@ -154,8 +154,8 @@ JetBrains Mono data cells, Sora body text, gold accent borders.
 
 | Stage | Artifact | Path | Status | Notes |
 |-------|----------|------|--------|-------|
-| S0 | Intake Packet | `docs/business-os/startup-baselines/BRIK-2026-02-12assessment-intake-packet.user.md` | Active | Business context and constraints |
-| S0 | Forecast Seed | `docs/business-os/startup-baselines/BRIK-forecast-seed.user.md` | Active | Pre-loop revenue hypothesis (Active + Integrated) |
+| S0 | Intake Packet | `docs/business-os/startup-baselines/BRIK/2026-02-12-assessment-intake-packet.user.md` | Active | Business context and constraints |
+| S0 | Forecast Seed | `docs/business-os/startup-baselines/BRIK/forecast-seed.user.md` | Active | Pre-loop revenue hypothesis (Active + Integrated) |
 | S1 | Market Intelligence | `docs/business-os/market-research/BRIK/latest.user.md` | Active | Pointer → 2026-02-15 research report |
 | S1 | Brand Dossier | `docs/business-os/strategy/BRIK/2026-02-12-brand-identity-dossier.user.md` | Active | Visual + voice identity (Active, not Draft) |
 | S1B | Historical Performance Baseline | `docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md` | Active | Historical occupancy + revenue data |
@@ -205,7 +205,7 @@ JetBrains Mono data cells, Sora body text, gold accent borders.
   `strategy/BRIK/plan.user.html`
 - **`startup-baselines/` as S0 home** — intake packets and forecast seeds live in
   a shared directory (not per-business strategy directories).
-  Evidence: `startup-baselines/HEAD-intake-packet.user.md` etc.
+  Evidence: `startup-baselines/HEAD/intake-packet.user.md` etc.
 - **BRIK is most advanced** — only business with S1B measurement stage artifacts,
   S7 product spec, and an Active (not Draft) brand dossier.
 
@@ -250,7 +250,7 @@ JetBrains Mono data cells, Sora body text, gold accent borders.
     `status: hypothesis`), 6 complete sections (ICP, pain/promise map, offer
     structure, positioning, pricing, objection map), QC self-audit, and evidence
     register. Included at S2B.
-  - Evidence: `docs/business-os/startup-baselines/PET-offer.md` lines 1–328.
+  - Evidence: `docs/business-os/startup-baselines/PET/offer.md` lines 1–328.
 
 - Q: Is `BRIK/room-pricing-analysis.md` a standalone pricing analysis or working notes?
   - A: Genuine output. Frontmatter declares `Type: Analysis-Output`, `Status: Active`;

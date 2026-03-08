@@ -199,7 +199,7 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
 
   // Mark or un-mark a checkout as completed
   const onComplete = useCallback(
-    (
+    async (
       bookingRef: string,
       guestId: string,
       isCompleted: boolean,
@@ -218,44 +218,65 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
       }
 
       if (isCompleted) {
-        removeLastActivity(guestId, 14)
-          .then((result) =>
-            result.success
-              ? console.log(`Occupant ${guestId} checkout reversed.`)
-              : console.error("Error undoing checkout:", result.error)
-          )
-          .catch((err) => console.error("Error:", err));
+        try {
+          const undoResult = await removeLastActivity(guestId, 14);
+          if (!undoResult.success) {
+            console.error("Error undoing checkout:", undoResult.error);
+            showToast("Failed to reverse checkout", "error");
+            return;
+          }
 
-        saveCheckout(checkoutDate, { [guestId]: null }).catch((err) => {
+          await saveCheckout(checkoutDate, { [guestId]: null });
+          console.log(`Occupant ${guestId} checkout reversed.`);
+        } catch (err) {
           console.error(
             `[Checkout] Error clearing checkout record for ${guestId}:`,
             err
           );
+          const restoreResult = await saveActivity(guestId, {
+            code: 14,
+            description: "Compensating restore after checkout-reversal failure",
+          });
+          if (!restoreResult.success) {
+            console.error(
+              `[Checkout] Compensation failed while restoring checkout activity for ${guestId}:`,
+              restoreResult.error
+            );
+          }
           showToast("Failed to update checkout record", "error");
-        });
+        }
       } else {
-        saveActivity(guestId, {
-          code: 14,
-          description: "Manually completed checkout",
-        })
-          .then((result) =>
-            result.success
-              ? console.log(`Occupant ${guestId} completed checkout.`)
-              : console.error("Error marking checkout:", result.error)
-          )
-          .catch((err) => console.error("Error:", err));
+        try {
+          const completeResult = await saveActivity(guestId, {
+            code: 14,
+            description: "Manually completed checkout",
+          });
+          if (!completeResult.success) {
+            console.error("Error marking checkout:", completeResult.error);
+            showToast("Failed to mark checkout", "error");
+            return;
+          }
 
-        saveCheckout(checkoutDate, {
-          [guestId]: {
-            timestamp: getItalyIsoString(),
-          },
-        }).catch((err) => {
+          await saveCheckout(checkoutDate, {
+            [guestId]: {
+              timestamp: getItalyIsoString(),
+            },
+          });
+          console.log(`Occupant ${guestId} completed checkout.`);
+        } catch (err) {
           console.error(
             `[Checkout] Error recording checkout for ${guestId}:`,
             err
           );
+          const rollbackResult = await removeLastActivity(guestId, 14);
+          if (!rollbackResult.success) {
+            console.error(
+              `[Checkout] Compensation failed while rolling back checkout activity for ${guestId}:`,
+              rollbackResult.error
+            );
+          }
           showToast("Failed to record checkout", "error");
-        });
+        }
       }
     },
     [

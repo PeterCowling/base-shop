@@ -18,24 +18,40 @@ const STORAGE_KEY = "xa_uploader_locale";
 
 const UploaderI18nContext = React.createContext<UploaderI18nContextValue | null>(null);
 
-export function UploaderI18nProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocale] = React.useState<UploaderLocale>(UPLOADER_DEFAULT_LOCALE);
+function normalizeStoredLocale(value: string | null): UploaderLocale | null {
+  if (value === "en" || value === "zh") return value;
+  if (value === "EN") return "en";
+  if (value === "ZH" || value === "xe") return "zh";
+  return null;
+}
 
+export function UploaderI18nProvider({
+  children,
+  initialLocale,
+}: {
+  children: React.ReactNode;
+  initialLocale?: UploaderLocale;
+}) {
+  const fallbackLocale = initialLocale ?? UPLOADER_DEFAULT_LOCALE;
+  // Always start with the fallback so server and client initial render match,
+  // then apply the stored locale after hydration to avoid React #418.
+  const [locale, setLocaleState] = React.useState<UploaderLocale>(fallbackLocale);
   React.useEffect(() => {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored === "en" || stored === "zh") {
-      setLocale(stored);
-    } else if (stored === "xe") {
-      setLocale("zh");
-    }
+    const stored = normalizeStoredLocale(window.localStorage.getItem(STORAGE_KEY));
+    if (stored) setLocaleState(stored);
+  }, []);
+
+  const setLocale = React.useCallback((nextLocale: UploaderLocale) => {
+    setLocaleState(nextLocale);
+    window.localStorage.setItem(STORAGE_KEY, nextLocale);
+    document.documentElement.lang = nextLocale === "zh" ? "zh" : "en";
   }, []);
 
   React.useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEY, locale);
     document.documentElement.lang = locale === "zh" ? "zh" : "en";
   }, [locale]);
 
-  const value = React.useMemo(() => ({ locale, setLocale }), [locale]);
+  const value = React.useMemo(() => ({ locale, setLocale }), [locale, setLocale]);
 
   return <UploaderI18nContext.Provider value={value}>{children}</UploaderI18nContext.Provider>;
 }

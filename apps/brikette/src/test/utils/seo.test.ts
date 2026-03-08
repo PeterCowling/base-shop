@@ -1,5 +1,6 @@
-
 import "@testing-library/jest-dom";
+
+import { getPrivateRoomChildSlug } from "@acme/ui/config/privateRoomChildSlugs";
 
 import { ASSISTANCE_GUIDE_KEYS } from "@/data/assistanceGuideKeys";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
@@ -106,12 +107,20 @@ describe("buildLinks", () => {
     );
   });
 
-  it("produces localized alternates for private-rooms detail pages (slug preserved)", () => {
-    const links = buildLinks({ lang: "en", origin, path: "/en/private-rooms/double-room" });
+  it("produces localized alternates for private-rooms detail pages", () => {
+    const links = buildLinks({
+      lang: "en",
+      origin,
+      path: `/en/private-rooms/${getPrivateRoomChildSlug("double-room", "en")}`,
+    });
     const fr = links.find((link) => link.hrefLang === "fr");
     const it = links.find((link) => link.hrefLang === "it");
-    expect(fr?.href).toBe(`${origin}/fr/chambres-privees/double-room`);
-    expect(it?.href).toBe(`${origin}/it/camere-private/double-room`);
+    expect(fr?.href).toBe(
+      `${origin}/fr/chambres-privees/${getPrivateRoomChildSlug("double-room", "fr")}`,
+    );
+    expect(it?.href).toBe(
+      `${origin}/it/camere-private/${getPrivateRoomChildSlug("double-room", "it")}`,
+    );
   });
 
   it("produces localized alternates for careers page", () => {

@@ -9,6 +9,19 @@ function jsonResponse(data, status = 200) {
     status,
     headers: {
       "Content-Type": "application/json",
+      "Cache-Control": "no-store",
+      Allow: "GET, HEAD",
+    },
+  });
+}
+
+function headResponse(status = 200) {
+  return new Response(null, {
+    status,
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "no-store",
+      Allow: "GET, HEAD",
     },
   });
 }
@@ -171,4 +184,8 @@ export async function onRequestGet(context) {
       error: "upstream_error",
     });
   }
+}
+
+export function onRequestHead() {
+  return headResponse(200);
 }

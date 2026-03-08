@@ -143,11 +143,13 @@ if ! printf '%s\n' "$ALL_CHANGED" | node "$REPO_ROOT/scripts/src/ci/check-jest-c
 fi
 echo "OK: Jest config path policy check passed"
 
-I18N_RESOLVER_CHANGED=$(echo "$ALL_CHANGED" | grep -E '^(packages/i18n/|packages/next-config/)|(^|/)tsconfig[^/]*\.json$' || true)
+I18N_RESOLVER_CHANGED=$(echo "$ALL_CHANGED" | grep -E '^(packages/i18n/|packages/next-config/)|^packages/[^/]+/tsconfig[^/]*\.json$' || true)
 if [ -n "$I18N_RESOLVER_CHANGED" ]; then
     echo ""
     echo "Checking i18n resolver contract..."
-    if ! node "$REPO_ROOT/scripts/check-i18n-resolver-contract.mjs" --repo-root "$REPO_ROOT"; then
+    # Skip webpack builds (template-app, business-os) and brikette lifecycle build locally —
+    # those surfaces are validated in CI. Only run the lightweight Node ESM import probes here.
+    if ! node "$REPO_ROOT/scripts/check-i18n-resolver-contract.mjs" --repo-root "$REPO_ROOT" --skip-webpack --skip-brikette; then
         echo "FAIL: i18n resolver contract check failed (${CHANGE_MODE})"
         exit 1
     fi

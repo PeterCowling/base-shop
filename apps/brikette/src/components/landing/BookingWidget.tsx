@@ -12,6 +12,7 @@ import { resolvePrimaryCtaLabel } from "@acme/ui/shared";
 import { BookingCalendarPanel } from "@/components/booking/BookingCalendarPanel";
 import type { DateRange } from "@/components/booking/DateRangePicker";
 import type { AppLanguage } from "@/i18n.config";
+import { resolveBookingControlLabels } from "@/utils/bookingControlLabels";
 import {
   isValidPax,
   isValidStayRange,
@@ -19,6 +20,7 @@ import {
 import { hydrateBookingSearch, persistBookingSearch } from "@/utils/bookingSearch";
 import { formatDate, safeParseIso } from "@/utils/dateUtils";
 import { fireCtaClick } from "@/utils/ga4-events";
+import { getBookPath } from "@/utils/localizedRoutes";
 
 
 type BookingWidgetProps = {
@@ -31,6 +33,22 @@ type BookingWidgetProps = {
   }) => void;
 };
 
+const FALLBACK_INVALID_DATE_RANGE_MESSAGE =
+  // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] fallback copy for missing booking widget namespace during static export.
+  "Choose valid dates and up to 8 guests to check availability.";
+const FALLBACK_CHECK_AVAILABILITY_LABEL =
+  // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] fallback CTA copy for missing booking widget namespace during static export.
+  "Check availability";
+
+function resolveTranslatedCopy(value: unknown, fallback: string, unresolvedKey?: string): string {
+  if (typeof value !== "string") return fallback;
+  const trimmed = value.trim();
+  if (!trimmed) return fallback;
+  if (unresolvedKey && trimmed === unresolvedKey) return fallback;
+  if (trimmed.includes(".")) return fallback;
+  return trimmed;
+}
+
 const BookingWidget = memo(function BookingWidget({
   lang,
   sectionRef,
@@ -39,8 +57,10 @@ const BookingWidget = memo(function BookingWidget({
   const router = useRouter();
   const translationOptions = lang ? { lng: lang } : undefined;
   const { t: tModals } = useTranslation("modals", translationOptions);
+  const { t: tRooms } = useTranslation("roomsPage", translationOptions);
   const { t: tTokens } = useTranslation("_tokens", translationOptions);
   const { t: tLanding } = useTranslation("landingPage", translationOptions);
+  const bookingControlLabels = resolveBookingControlLabels(tModals, tRooms);
   const hasHydrated = useRef(false);
 
   const [range, setRange] = useState<DateRange>({ from: undefined, to: undefined });
@@ -82,7 +102,11 @@ const BookingWidget = memo(function BookingWidget({
     return !isValidStayRange(checkIn, checkOut) || !isValidPax(guests);
   })();
 
-  const fallbackAvailabilityLabel = tModals("booking.buttonAvailability") as string;
+  const fallbackAvailabilityLabel = resolveTranslatedCopy(
+    tModals("booking.buttonAvailability"),
+    FALLBACK_CHECK_AVAILABILITY_LABEL,
+    "booking.buttonAvailability",
+  );
   const checkAvailabilityLabel =
     resolvePrimaryCtaLabel(tTokens, {
       fallback: () => fallbackAvailabilityLabel,
@@ -103,7 +127,7 @@ const BookingWidget = memo(function BookingWidget({
       persistBookingSearch({ checkin: checkIn, checkout: checkOut, pax: guests });
     }
     const qs = params.toString();
-    router.push(`/${effectiveLang}/book${qs ? `?${qs}` : ""}`);
+    router.push(`${getBookPath(effectiveLang)}${qs ? `?${qs}` : ""}`);
   }, [checkIn, checkOut, guests, invalidRange, lang, router]);
 
   const errorMessage = tLanding("bookingWidget.invalidDateRange") as string;
@@ -124,13 +148,33 @@ const BookingWidget = memo(function BookingWidget({
             onPaxChange={(next) => setGuests(next)}
             minPax={1}
             maxPax={8}
-            stayHelperText={tModals("date.stayHelper") as string}
-            clearDatesText={tModals("date.clearDates") as string}
-            checkInLabelText={tModals("booking.checkInLabel") as string}
-            checkOutLabelText={tModals("booking.checkOutLabel") as string}
-            guestsLabelText={tModals("booking.guestsLabel") as string}
-            decreaseGuestsAriaLabel={tModals("bookingControls.decreaseGuests") as string}
-            increaseGuestsAriaLabel={tModals("bookingControls.increaseGuests") as string}
+            stayHelperText={resolveTranslatedCopy(
+              tModals("date.stayHelper"),
+              "2–8 nights",
+              "date.stayHelper",
+            )}
+            clearDatesText={resolveTranslatedCopy(
+              tModals("date.clearDates"),
+              "Clear dates",
+              "date.clearDates",
+            )}
+            checkInLabelText={resolveTranslatedCopy(
+              tModals("booking.checkInLabel"),
+              "Check in",
+              "booking.checkInLabel",
+            )}
+            checkOutLabelText={resolveTranslatedCopy(
+              tModals("booking.checkOutLabel"),
+              "Check out",
+              "booking.checkOutLabel",
+            )}
+            guestsLabelText={resolveTranslatedCopy(
+              tModals("booking.guestsLabel"),
+              "Guests",
+              "booking.guestsLabel",
+            )}
+            decreaseGuestsAriaLabel={bookingControlLabels.decreaseGuestsAriaLabel}
+            increaseGuestsAriaLabel={bookingControlLabels.increaseGuestsAriaLabel}
             actionSlot={(
               <Button
                 type="button"
@@ -146,7 +190,11 @@ const BookingWidget = memo(function BookingWidget({
           />
           {showError ? (
             <p className="mt-3 text-sm text-brand-bougainvillea" role="alert">
-              {errorMessage}
+              {resolveTranslatedCopy(
+                errorMessage,
+                FALLBACK_INVALID_DATE_RANGE_MESSAGE,
+                "bookingWidget.invalidDateRange",
+              )}
             </p>
           ) : null}
         </div>

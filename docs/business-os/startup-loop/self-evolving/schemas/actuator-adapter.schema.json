@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "docs/business-os/startup-loop/self-evolving/schemas/actuator-adapter.schema.json",
+  "title": "Actuator Adapter Contract",
+  "type": "object",
+  "required": [
+    "actuator_name",
+    "actuator_version",
+    "effect_class",
+    "effect_reversibility",
+    "requires_credentials",
+    "supports_dry_run",
+    "supports_rollback",
+    "max_effect_scope",
+    "concurrency_lock_strategy",
+    "emitted_events"
+  ],
+  "properties": {
+    "actuator_name": { "type": "string", "minLength": 1 },
+    "actuator_version": { "type": "string", "minLength": 1 },
+    "effect_class": {
+      "type": "string",
+      "enum": ["read_only", "write_staging", "write_prod", "external_side_effect"]
+    },
+    "effect_reversibility": {
+      "type": "string",
+      "enum": ["reversible", "compensatable", "irreversible"]
+    },
+    "requires_credentials": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "supports_dry_run": { "type": "boolean" },
+    "supports_rollback": { "type": "boolean" },
+    "rollback_method": { "type": ["string", "null"] },
+    "max_effect_scope": { "type": "string", "enum": ["none", "staging", "canary", "production"] },
+    "concurrency_lock_strategy": { "type": "string", "minLength": 1 },
+    "emitted_events": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "actuator_call_start",
+          "actuator_call_end",
+          "actuator_effect_applied",
+          "actuator_rollback_applied"
+        ]
+      }
+    }
+  }
+}

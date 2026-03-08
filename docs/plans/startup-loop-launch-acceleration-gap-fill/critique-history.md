@@ -12,7 +12,7 @@
 | Prior ID | Severity | Summary | How resolved |
 |---|---|---|---|
 | 1-01 | Major | Stale evidence labels missing | Added explicit stale markers to capability-status citations in Key Modules / Files. |
-| 1-02 | Moderate | Metadata alignment gap | Added `Last-reviewed: 2026-02-24` and `Relates-to: docs/business-os/startup-loop/loop-spec.yaml` to frontmatter. |
+| 1-02 | Moderate | Metadata alignment gap | Added `Last-reviewed: 2026-02-24` and `Relates-to: docs/business-os/startup-loop/specifications/loop-spec.yaml` to frontmatter. |
 
 ### Issues Carried Open (not yet resolved)
 | Prior ID | Severity | Rounds Open | Summary |

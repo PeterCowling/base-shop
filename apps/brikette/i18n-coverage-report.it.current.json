@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 2,
+  "baselineLocale": "en",
+  "locales": [
+    "it"
+  ],
+  "summary": {
+    "totalMissingFiles": 0,
+    "totalMissingKeys": 0,
+    "totalUntranslatedKeys": 4
+  },
+  "reports": [
+    {
+      "locale": "it",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {
+        "barMenuPage.json": [
+          "sections.whisky.title"
+        ],
+        "guides.tags.json": [
+          "tags.bus.label",
+          "tags.shopping.label"
+        ],
+        "guides/tags.json": [
+          "labels.shopping"
+        ]
+      }
+    }
+  ]
+}

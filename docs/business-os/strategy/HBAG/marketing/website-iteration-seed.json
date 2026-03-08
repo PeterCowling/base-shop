@@ -1,12 +1,12 @@
 {
   "ok": true,
   "changedPaths": [
-    "docs/business-os/startup-baselines/HBAG-channels.md",
-    "docs/business-os/startup-baselines/HBAG-offer.md"
+    "docs/business-os/startup-baselines/HBAG/channels.md",
+    "docs/business-os/startup-baselines/HBAG/offer.md"
   ],
   "matchedPaths": [
-    "docs/business-os/startup-baselines/HBAG-channels.md",
-    "docs/business-os/startup-baselines/HBAG-offer.md"
+    "docs/business-os/startup-baselines/HBAG/channels.md",
+    "docs/business-os/startup-baselines/HBAG/offer.md"
   ],
   "seeds": [
     {

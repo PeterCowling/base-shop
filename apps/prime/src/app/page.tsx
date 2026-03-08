@@ -8,7 +8,7 @@ import Link from 'next/link';
 import GuardedHomeExperience from '../components/homepage/GuardedHomeExperience';
 import { ChatProvider } from '../contexts/messaging/ChatProvider';
 import { PinAuthProvider } from '../contexts/messaging/PinAuthProvider';
-import { clearGuestSession, readGuestSession, validateGuestToken } from '../lib/auth/guestSessionGuard';
+import { clearGuestSession, validateGuestToken } from '../lib/auth/guestSessionGuard';
 import { canAccessStaffOwnerRoutes } from '../lib/security/staffOwnerGate';
 
 type RootMode = 'checking' | 'guest' | 'public';
@@ -21,16 +21,8 @@ export default function HomePage() {
     let isMounted = true;
 
     async function resolveMode() {
-      const session = readGuestSession();
-
-      if (!session.token) {
-        if (isMounted) {
-          setMode('public');
-        }
-        return;
-      }
-
-      const result = await validateGuestToken(session.token);
+      // prime_session HttpOnly cookie is sent automatically on this same-origin request
+      const result = await validateGuestToken();
       if (!isMounted) {
         return;
       }

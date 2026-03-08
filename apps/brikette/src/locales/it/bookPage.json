@@ -55,7 +55,8 @@
   },
   "noscript": {
     "jsDisabledAssistance": "Le prenotazioni degli ostelli vengono gestite con supporto assistito quando JavaScript è disabilitato.",
-    "emailAssistedBooking": "Inviaci un'e-mail per la prenotazione assistita"
+    "emailAssistedBooking": "Inviaci un'e-mail per la prenotazione assistita",
+    "octorateDirectBooking": "Prenota direttamente con Octorate"
   },
   "bookingConstraints": {
     "notice": "Le prenotazioni di ostelli supportano soggiorni per soli adulti da 2 a 8 notti con un massimo di 8 adulti per prenotazione. Per gruppi più numerosi o soggiorni più lunghi, dividi la tua richiesta tra più prenotazioni oppure",

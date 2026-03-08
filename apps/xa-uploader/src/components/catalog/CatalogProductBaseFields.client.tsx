@@ -2,206 +2,610 @@
 
 import * as React from "react";
 
-import { type CatalogProductDraftInput,slugify } from "@acme/lib/xa/catalogAdminSchema";
+import { type CatalogProductDraftInput, joinList, slugify, splitList } from "@acme/lib/xa/catalogAdminSchema";
 
+import {
+  computePopularity,
+  CUSTOM_BRAND_HANDLE,
+  CUSTOM_COLLECTION_HANDLE,
+  findBrand,
+  findCollection,
+  findCollectionColors,
+  findCollectionDefaults,
+  findCollectionHardwareColors,
+  findCollectionInteriorColors,
+  findCollectionMaterials,
+  findCollectionSizes,
+  XA_BRAND_REGISTRY,
+  ZH_CATALOG_LABELS,
+} from "../../lib/catalogBrandRegistry";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
+import { INPUT_CLASS, SECTION_HEADER_CLASS, SELECT_CLASS } from "./catalogStyles";
+import { RegistryCheckboxGrid } from "./RegistryCheckboxGrid.client";
+
 type BaseFieldsProps = {
+  selectedSlug?: string | null;
   draft: CatalogProductDraftInput;
   fieldErrors: Record<string, string>;
   monoClassName?: string;
+  sections?: CatalogBaseFieldSection[];
   onChange: (next: CatalogProductDraftInput) => void;
 };
 
 type Translate = ReturnType<typeof useUploaderI18n>["t"];
-
-const INPUT_CLASSNAME =
-  "mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20";
-const INPUT_SIMPLE_CLASSNAME =
-  "mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-gate-ink";
 
 function FieldError({ message }: { message?: string }) {
   if (!message) return null;
   return <div className="mt-1 text-xs text-danger-fg">{message}</div>;
 }
 
-function toDateTimeLocalValue(value: string | undefined): string {
-  if (!value) return "";
-  const parsed = new Date(value);
-  if (Number.isNaN(parsed.getTime())) return "";
-  const local = new Date(parsed.getTime() - parsed.getTimezoneOffset() * 60_000);
-  return local.toISOString().slice(0, 16);
+type DescriptionInput = {
+  brandName: string;
+  collectionTitle: string;
+  sizeLabel: string;
+  dimensions: string;
+  colors: string;
+  material: string;
+  promo?: string;
+};
+
+function firstFromList(value: string): string {
+  return value.split(/[|,]+/).map((s) => s.trim()).filter(Boolean)[0] ?? "";
 }
 
-function IdentityFields({
+function generateTitle(input: DescriptionInput): string {
+  const color = firstFromList(input.colors);
+  const material = firstFromList(input.material);
+  const parts = [input.brandName, input.collectionTitle, input.sizeLabel];
+  if (color) parts.push(color);
+  if (material) parts.push(material);
+  return parts.filter(Boolean).join(" ");
+}
+
+function generateDescription(input: DescriptionInput): string {
+  const firstColor = firstFromList(input.colors);
+  const firstMaterial = firstFromList(input.material);
+
+  let suffix = "";
+  if (firstColor && firstMaterial) suffix = `in ${firstColor} ${firstMaterial} leather`;
+  else if (firstColor) suffix = `in ${firstColor}`;
+  else if (firstMaterial) suffix = `in ${firstMaterial} leather`;
+
+  const headline = [input.brandName, input.collectionTitle, input.sizeLabel, suffix].filter(Boolean).join(" ");
+  const parts = [`${headline}. ${input.dimensions}.`];
+  if (input.promo) parts.push("", input.promo);
+  return parts.join("\n");
+}
+
+function deriveInitialBrandSelection(brandHandle: string | undefined): string {
+  if (!brandHandle) return "";
+  return findBrand(brandHandle) ? brandHandle : CUSTOM_BRAND_HANDLE;
+}
+
+function deriveInitialCollectionSelection(
+  brandHandle: string | undefined,
+  collectionHandle: string | undefined,
+): string {
+  if (!brandHandle || !collectionHandle) return "";
+  if (deriveInitialBrandSelection(brandHandle) === CUSTOM_BRAND_HANDLE) return CUSTOM_COLLECTION_HANDLE;
+  return findCollection(brandHandle, collectionHandle) ? collectionHandle : CUSTOM_COLLECTION_HANDLE;
+}
+
+function SizeSelector({
+  t,
+  draft,
+  brandHandle,
+  collectionHandle,
+  selectedSlug,
+  onChange,
+}: {
+  t: Translate;
+  draft: CatalogProductDraftInput;
+  brandHandle: string;
+  collectionHandle: string;
+  selectedSlug?: string | null;
+  onChange: (next: CatalogProductDraftInput) => void;
+}) {
+  const [selectedSize, setSelectedSize] = React.useState(() => draft.sizes ?? "");
+  const sizes = findCollectionSizes(brandHandle, collectionHandle);
+
+  // Reset local state when collection changes
+  React.useEffect(() => {
+    setSelectedSize(draft.sizes ?? "");
+  }, [draft.sizes]);
+
+  const handleChange = React.useCallback(
+    (value: string) => {
+      setSelectedSize(value);
+      if (!sizes) return;
+      const match = sizes.find((s) => s.label === value);
+      if (!match) {
+        onChange({ ...draft, sizes: "", details: { ...draft.details, dimensions: "", whatFits: "", strapDrop: "" } });
+        return;
+      }
+      const brand = findBrand(brandHandle);
+      const coll = findCollection(brandHandle, collectionHandle);
+      if (brand && coll) {
+        const pop = computePopularity(brandHandle, collectionHandle, match.label, draft.taxonomy.color ?? "");
+        if (selectedSlug == null) {
+          // New product: auto-derive title, slug, description, popularity
+          const input: DescriptionInput = {
+            brandName: brand.name,
+            collectionTitle: coll.title,
+            sizeLabel: match.label,
+            dimensions: match.dimensions,
+            colors: draft.taxonomy.color ?? "",
+            material: draft.taxonomy.material ?? "",
+            promo: coll.promo,
+          };
+          const title = generateTitle(input);
+          onChange({
+            ...draft,
+            sizes: match.label,
+            title,
+            slug: slugify(title),
+            details: { ...draft.details, dimensions: match.dimensions, ...(match.whatFits ? { whatFits: match.whatFits } : {}), ...(match.strapDrop ? { strapDrop: match.strapDrop } : {}) },
+            description: generateDescription(input),
+            ...(pop != null ? { popularity: String(pop) } : {}),
+          });
+        } else {
+          // Edit mode: update size-specific fields only, preserve title/slug/description
+          onChange({
+            ...draft,
+            sizes: match.label,
+            details: { ...draft.details, dimensions: match.dimensions, ...(match.whatFits ? { whatFits: match.whatFits } : {}), ...(match.strapDrop ? { strapDrop: match.strapDrop } : {}) },
+            ...(pop != null ? { popularity: String(pop) } : {}),
+          });
+        }
+      } else {
+        const pop = computePopularity(brandHandle, collectionHandle, match.label, draft.taxonomy.color ?? "");
+        onChange({
+          ...draft,
+          sizes: match.label,
+          details: { ...draft.details, dimensions: match.dimensions, ...(match.whatFits ? { whatFits: match.whatFits } : {}), ...(match.strapDrop ? { strapDrop: match.strapDrop } : {}) },
+          ...(pop != null ? { popularity: String(pop) } : {}),
+        });
+      }
+    },
+    [draft, onChange, brandHandle, collectionHandle, sizes, selectedSlug],
+  );
+
+  if (!sizes || sizes.length === 0) return null;
+
+  return (
+    <label className="block text-xs uppercase tracking-label text-gate-muted">
+      {t("fieldSizeSelect")}
+      <select
+        value={selectedSize}
+        onChange={(event) => handleChange(event.target.value)}
+        className={SELECT_CLASS}
+        // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+        data-testid="catalog-field-size-select"
+      >
+        <option value="">{t("fieldSizeSelectPlaceholder")}</option>
+        {sizes.map((s) => (
+          <option key={s.label} value={s.label}>
+            {s.label} — {s.dimensions}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function BrandCollectionSelectors({
   t,
   draft,
   fieldErrors,
-  monoClassName,
+  selectedSlug,
   onChange,
 }: BaseFieldsProps & { t: Translate }) {
+  const [selectedBrand, setSelectedBrand] = React.useState(() =>
+    deriveInitialBrandSelection(draft.brandHandle),
+  );
+  const [selectedCollection, setSelectedCollection] = React.useState(() =>
+    deriveInitialCollectionSelection(draft.brandHandle, draft.collectionHandle),
+  );
+
+  const isCustomBrand = selectedBrand === CUSTOM_BRAND_HANDLE;
+  const isCustomCollection = selectedCollection === CUSTOM_COLLECTION_HANDLE;
+  const activeBrand = isCustomBrand ? undefined : findBrand(selectedBrand);
+  const collections = activeBrand?.collections ?? [];
+
+  React.useEffect(() => {
+    setSelectedBrand(deriveInitialBrandSelection(draft.brandHandle));
+  }, [draft.brandHandle]);
+
+  React.useEffect(() => {
+    setSelectedCollection(
+      deriveInitialCollectionSelection(draft.brandHandle, draft.collectionHandle),
+    );
+  }, [draft.brandHandle, draft.collectionHandle]);
+
+  const handleBrandChange = React.useCallback(
+    (value: string) => {
+      if (value === CUSTOM_BRAND_HANDLE) {
+        setSelectedBrand(CUSTOM_BRAND_HANDLE);
+        setSelectedCollection(CUSTOM_COLLECTION_HANDLE);
+        onChange({ ...draft, brandHandle: "", brandName: "", collectionHandle: "", collectionTitle: "", collectionDescription: "" });
+      } else if (value === "") {
+        setSelectedBrand("");
+        setSelectedCollection("");
+        onChange({ ...draft, brandHandle: "", brandName: "", collectionHandle: "", collectionTitle: "", collectionDescription: "" });
+      } else {
+        const brand = findBrand(value);
+        if (brand) {
+          setSelectedBrand(brand.handle);
+          setSelectedCollection("");
+          onChange({ ...draft, brandHandle: brand.handle, brandName: brand.name, collectionHandle: "", collectionTitle: "", collectionDescription: "" });
+        }
+      }
+    },
+    [draft, onChange],
+  );
+
+  const handleCollectionChange = React.useCallback(
+    (value: string) => {
+      if (value === CUSTOM_COLLECTION_HANDLE) {
+        setSelectedCollection(CUSTOM_COLLECTION_HANDLE);
+        onChange({ ...draft, collectionHandle: "", collectionTitle: "", collectionDescription: "", sizes: "", details: { ...draft.details, dimensions: "", strapDrop: "", whatFits: "" } });
+      } else if (value === "") {
+        setSelectedCollection("");
+        onChange({ ...draft, collectionHandle: "", collectionTitle: "", collectionDescription: "", sizes: "", details: { ...draft.details, dimensions: "", strapDrop: "", whatFits: "" } });
+      } else {
+        const coll = findCollection(selectedBrand, value);
+        if (coll) {
+          setSelectedCollection(coll.handle);
+          const defaults = findCollectionDefaults(selectedBrand, value);
+          onChange({
+            ...draft,
+            collectionHandle: coll.handle,
+            collectionTitle: coll.title,
+            collectionDescription: coll.description,
+            sizes: "",
+            details: {
+              ...draft.details,
+              dimensions: "",
+              strapDrop: "",
+              whatFits: "",
+              ...(defaults?.interior ? { interior: defaults.interior } : {}),
+            },
+            taxonomy: {
+              ...draft.taxonomy,
+              ...(defaults?.subcategory ? { subcategory: defaults.subcategory } : {}),
+              ...(defaults?.department ? { department: defaults.department as never } : {}),
+              ...(defaults?.closureType ? { closureType: defaults.closureType } : {}),
+              ...(defaults?.strapStyle ? { strapStyle: defaults.strapStyle } : {}),
+            },
+          });
+        }
+      }
+    },
+    [draft, onChange, selectedBrand],
+  );
+
   return (
     <>
-      <label className="block text-xs uppercase tracking-label text-gate-muted md:col-span-2">
-        {t("fieldTitle")}
-        <input
+      <label className="block text-xs uppercase tracking-label text-gate-muted">
+        {t("fieldBrandSelect")}
+        <select
+          value={selectedBrand}
+          onChange={(event) => handleBrandChange(event.target.value)}
+          className={SELECT_CLASS}
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-          data-testid="catalog-field-title"
-          value={draft.title}
-          onChange={(event) => {
-            const title = event.target.value;
-            onChange({
-              ...draft,
-              title,
-              slug: draft.slug ? draft.slug : slugify(title),
-            });
-          }}
-          className={INPUT_CLASSNAME}
-        />
-        <FieldError message={fieldErrors.title} />
-      </label>
-
-      <label className={`block text-xs uppercase tracking-label text-gate-muted ${monoClassName}`}>
-        {t("fieldSlug")}
-        <input
-          value={draft.slug ?? ""}
-          onChange={(event) => onChange({ ...draft, slug: slugify(event.target.value) })}
-          className={INPUT_CLASSNAME}
-        />
-      </label>
-
-      <label className="block text-xs uppercase tracking-label text-gate-muted">
-        {t("fieldPrice")}
-        <input
-          value={String(draft.price ?? "")}
-          onChange={(event) => onChange({ ...draft, price: event.target.value })}
-          type="number"
-          min="0"
-          step="0.01"
-          className={INPUT_CLASSNAME}
-        />
-        <FieldError message={fieldErrors.price} />
-      </label>
-
-      <label className="block text-xs uppercase tracking-label text-gate-muted">
-        {t("fieldCompareAtPrice")}
-        <input
-          value={draft.compareAtPrice ? String(draft.compareAtPrice) : ""}
-          onChange={(event) => onChange({ ...draft, compareAtPrice: event.target.value })}
-          type="number"
-          min="0"
-          step="0.01"
-          className={INPUT_CLASSNAME}
-        />
-      </label>
-
-      <label className="block text-xs uppercase tracking-label text-gate-muted">
-        {t("fieldBrandHandle")}
-        <input
-          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-          data-testid="catalog-field-brand-handle"
-          value={draft.brandHandle ?? ""}
-          onChange={(event) => onChange({ ...draft, brandHandle: slugify(event.target.value) })}
-          className={INPUT_CLASSNAME}
-        />
+          data-testid="catalog-field-brand-select"
+        >
+          <option value="">{t("fieldBrandSelectPlaceholder")}</option>
+          {XA_BRAND_REGISTRY.map((brand) => (
+            <option key={brand.handle} value={brand.handle}>{brand.name}</option>
+          ))}
+          <option value={CUSTOM_BRAND_HANDLE}>{t("fieldBrandSelectCustom")}</option>
+        </select>
         <FieldError message={fieldErrors.brandHandle} />
       </label>
 
-      <label className="block text-xs uppercase tracking-label text-gate-muted">
-        {t("fieldBrandName")}
-        <input
-          value={draft.brandName ?? ""}
-          onChange={(event) => onChange({ ...draft, brandName: event.target.value })}
-          className={INPUT_CLASSNAME}
-        />
-      </label>
+      {selectedBrand && !isCustomBrand ? (
+        <label className="block text-xs uppercase tracking-label text-gate-muted">
+          {t("fieldCollectionSelect")}
+          <select
+            value={selectedCollection}
+            onChange={(event) => handleCollectionChange(event.target.value)}
+            className={SELECT_CLASS}
+            // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+            data-testid="catalog-field-collection-select"
+          >
+            <option value="">{t("fieldCollectionSelectPlaceholder")}</option>
+            {collections.map((coll) => (
+              <option key={coll.handle} value={coll.handle}>{coll.title}</option>
+            ))}
+            <option value={CUSTOM_COLLECTION_HANDLE}>{t("fieldCollectionSelectCustom")}</option>
+          </select>
+          <FieldError message={fieldErrors.collectionHandle} />
+        </label>
+      ) : null}
 
-      <label className="block text-xs uppercase tracking-label text-gate-muted">
-        {t("fieldCollectionHandle")}
-        <input
-          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-          data-testid="catalog-field-collection-handle"
-          value={draft.collectionHandle ?? ""}
-          onChange={(event) => onChange({ ...draft, collectionHandle: slugify(event.target.value) })}
-          className={INPUT_CLASSNAME}
-        />
-        <FieldError message={fieldErrors.collectionHandle} />
-      </label>
+      {isCustomBrand ? (
+        <>
+          <label className="block text-xs uppercase tracking-label text-gate-muted">
+            {t("fieldBrandHandle")}
+            <input
+              // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+              data-testid="catalog-field-brand-handle"
+              value={draft.brandHandle ?? ""}
+              onChange={(event) => onChange({ ...draft, brandHandle: slugify(event.target.value) })}
+              className={INPUT_CLASS}
+            />
+          </label>
+          <label className="block text-xs uppercase tracking-label text-gate-muted">
+            {t("fieldBrandName")}
+            <input
+              value={draft.brandName ?? ""}
+              onChange={(event) => onChange({ ...draft, brandName: event.target.value })}
+              className={INPUT_CLASS}
+            />
+          </label>
+        </>
+      ) : null}
 
-      <label className="block text-xs uppercase tracking-label text-gate-muted">
-        {t("fieldCollectionTitle")}
-        <input
-          value={draft.collectionTitle ?? ""}
-          onChange={(event) => onChange({ ...draft, collectionTitle: event.target.value })}
-          className={INPUT_CLASSNAME}
-        />
-      </label>
+      {isCustomCollection ? (
+        <>
+          <label className="block text-xs uppercase tracking-label text-gate-muted">
+            {t("fieldCollectionHandle")}
+            <input
+              // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+              data-testid="catalog-field-collection-handle"
+              value={draft.collectionHandle ?? ""}
+              onChange={(event) => onChange({ ...draft, collectionHandle: slugify(event.target.value) })}
+              className={INPUT_CLASS}
+            />
+          </label>
+          <label className="block text-xs uppercase tracking-label text-gate-muted">
+            {t("fieldCollectionTitle")}
+            <input
+              value={draft.collectionTitle ?? ""}
+              onChange={(event) => onChange({ ...draft, collectionTitle: event.target.value })}
+              className={INPUT_CLASS}
+            />
+          </label>
+          <label className="block text-xs uppercase tracking-label text-gate-muted">
+            {t("fieldCollectionDescription")}
+            <textarea
+              value={draft.collectionDescription ?? ""}
+              onChange={(event) => onChange({ ...draft, collectionDescription: event.target.value })}
+              rows={2}
+              className={INPUT_CLASS}
+            />
+          </label>
+        </>
+      ) : null}
 
-      <label className="block text-xs uppercase tracking-label text-gate-muted md:col-span-2">
-        {t("fieldCollectionDescription")}
-        <textarea
-          value={draft.collectionDescription ?? ""}
-          onChange={(event) => onChange({ ...draft, collectionDescription: event.target.value })}
-          rows={2}
-          className={INPUT_CLASSNAME}
+      {!isCustomBrand && !isCustomCollection ? (
+        <SizeSelector
+          t={t}
+          draft={draft}
+          brandHandle={selectedBrand}
+          collectionHandle={selectedCollection}
+          selectedSlug={selectedSlug}
+          onChange={onChange}
         />
-      </label>
+      ) : null}
 
-      <label className="block text-xs uppercase tracking-label text-gate-muted md:col-span-2">
-        {t("fieldDescription")}
-        <textarea
-          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-          data-testid="catalog-field-description"
-          value={draft.description ?? ""}
-          onChange={(event) => onChange({ ...draft, description: event.target.value })}
-          rows={3}
-          className={INPUT_CLASSNAME}
-        />
-        <FieldError message={fieldErrors.description} />
-      </label>
+      {selectedCollection ? (
+        <MaterialColorSelectors t={t} draft={draft} fieldErrors={fieldErrors} onChange={onChange} />
+      ) : null}
     </>
   );
 }
 
-function TaxonomyFields({ t, draft, fieldErrors, onChange }: BaseFieldsProps & { t: Translate }) {
+function MaterialColorSelectors({
+  t,
+  draft,
+  fieldErrors,
+  onChange,
+}: BaseFieldsProps & { t: Translate }) {
+  const { locale } = useUploaderI18n();
+  const getLabel = locale === "zh" ? (v: string) => ZH_CATALOG_LABELS[v] ?? v : undefined;
+  const registryMaterials = findCollectionMaterials(draft.brandHandle ?? "", draft.collectionHandle ?? "");
+  const registryColors = findCollectionColors(draft.brandHandle ?? "", draft.collectionHandle ?? "");
+  const registryHardwareColors = findCollectionHardwareColors(draft.brandHandle ?? "", draft.collectionHandle ?? "");
+  const registryInteriorColors = findCollectionInteriorColors(draft.brandHandle ?? "", draft.collectionHandle ?? "");
+
+  const handleMaterialChange = React.useCallback(
+    (next: string[]) => {
+      onChange(maybeRegenerateDerived({ ...draft, taxonomy: { ...draft.taxonomy, material: joinList(next) } }));
+    },
+    [draft, onChange],
+  );
+
+  const handleColorChange = React.useCallback(
+    (next: string[]) => {
+      onChange(maybeRegenerateDerived({ ...draft, taxonomy: { ...draft.taxonomy, color: joinList(next) } }));
+    },
+    [draft, onChange],
+  );
+
   return (
     <>
-      <div className="md:col-span-2 grid gap-4 md:grid-cols-2">
+      {registryMaterials ? (
+        <RegistryCheckboxGrid
+          label={t("fieldMaterialsRegistry")}
+          options={registryMaterials}
+          selected={splitList(draft.taxonomy.material ?? "")}
+          customPlaceholder=""
+          fieldError={fieldErrors["taxonomy.material"]}
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+          testId="catalog-field-materials"
+          getLabel={getLabel}
+          onChange={handleMaterialChange}
+        />
+      ) : (
         <label className="block text-xs uppercase tracking-label text-gate-muted">
-          {t("fieldDepartment")}
-          <select
-            value={draft.taxonomy.department}
+          {t("fieldMaterials")}
+          <input
+            // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+            data-testid="catalog-field-materials"
+            value={draft.taxonomy.material ?? ""}
             onChange={(event) =>
-              onChange({
-                ...draft,
-                taxonomy: { ...draft.taxonomy, department: event.target.value as never },
-              })
+              onChange({ ...draft, taxonomy: { ...draft.taxonomy, material: event.target.value } })
             }
-            className={INPUT_CLASSNAME}
-          >
-            <option value="women">{t("departmentWomen")}</option>
-            <option value="men">{t("departmentMen")}</option>
-            <option value="kids">{t("departmentKids")}</option>
-          </select>
+            className={INPUT_CLASS}
+          />
+          <FieldError message={fieldErrors["taxonomy.material"]} />
         </label>
+      )}
 
+      {registryColors ? (
+        <RegistryCheckboxGrid
+          label={t("fieldColorsRegistry")}
+          options={registryColors}
+          selected={splitList(draft.taxonomy.color ?? "")}
+          customPlaceholder=""
+          fieldError={fieldErrors["taxonomy.color"]}
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+          testId="catalog-field-colors"
+          getLabel={getLabel}
+          onChange={handleColorChange}
+        />
+      ) : (
         <label className="block text-xs uppercase tracking-label text-gate-muted">
-          {t("fieldCategoryProductType")}
-          <select
-            value={draft.taxonomy.category}
+          {t("fieldColors")}
+          <input
+            // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+            data-testid="catalog-field-colors"
+            value={draft.taxonomy.color ?? ""}
             onChange={(event) =>
-              onChange({
-                ...draft,
-                taxonomy: { ...draft.taxonomy, category: event.target.value as never },
-              })
+              onChange({ ...draft, taxonomy: { ...draft.taxonomy, color: event.target.value } })
             }
-            className={INPUT_CLASSNAME}
-          >
-            <option value="clothing">{t("categoryClothing")}</option>
-            <option value="bags">{t("categoryBags")}</option>
-            <option value="jewelry">{t("categoryJewelry")}</option>
-          </select>
+            className={INPUT_CLASS}
+          />
+          <FieldError message={fieldErrors["taxonomy.color"]} />
         </label>
+      )}
+
+      {registryInteriorColors ? (
+        <RegistryCheckboxGrid
+          label={t("fieldInteriorColorRegistry")}
+          options={registryInteriorColors}
+          selected={splitList(draft.taxonomy.interiorColor ?? "")}
+          customPlaceholder=""
+          getLabel={getLabel}
+          onChange={(next) =>
+            onChange({ ...draft, taxonomy: { ...draft.taxonomy, interiorColor: joinList(next) } })
+          }
+        />
+      ) : null}
+
+      {registryHardwareColors ? (
+        <RegistryCheckboxGrid
+          label={t("bagHardwareColor")}
+          options={registryHardwareColors}
+          selected={splitList(draft.taxonomy.hardwareColor ?? "")}
+          customPlaceholder=""
+          getLabel={getLabel}
+          onChange={(next) =>
+            onChange({ ...draft, taxonomy: { ...draft.taxonomy, hardwareColor: joinList(next) } })
+          }
+        />
+      ) : null}
+    </>
+  );
+}
+
+// eslint-disable-next-line security/detect-unsafe-regex -- XAUP-0001 anchored pattern, no catastrophic backtracking
+const PRICE_PATTERN = /^\d{1,6}(\.\d{1,2})?$/;
+
+function PriceInput({ t, draft, fieldErrors, onChange }: BaseFieldsProps & { t: Translate }) {
+  const raw = String(draft.price ?? "");
+  const showFormatError = raw.length > 0 && !PRICE_PATTERN.test(raw);
+
+  return (
+    <label className="block text-xs uppercase tracking-label text-gate-muted">
+      {t("fieldPrice")}
+      <input
+        value={raw}
+        onChange={(event) => onChange({ ...draft, price: event.target.value })}
+        type="text"
+        inputMode="decimal"
+        placeholder="0000"
+        className={INPUT_CLASS}
+      />
+      {showFormatError ? (
+        <div className="mt-1 text-xs text-danger-fg">{t("fieldPriceFormatError")}</div>
+      ) : null}
+      <FieldError message={fieldErrors.price} />
+    </label>
+  );
+}
+
+function IdentityFields({
+  t,
+  selectedSlug,
+  draft,
+  fieldErrors,
+  onChange,
+}: BaseFieldsProps & { t: Translate }) {
+  const hasCollection = !!draft.collectionHandle;
+
+  return (
+    <>
+      <BrandCollectionSelectors t={t} selectedSlug={selectedSlug} draft={draft} fieldErrors={fieldErrors} onChange={onChange} />
+
+      {hasCollection ? (
+        <PriceInput t={t} draft={draft} fieldErrors={fieldErrors} onChange={onChange} />
+      ) : null}
+    </>
+  );
+}
+
+function maybeRegenerateDerived(
+  updated: CatalogProductDraftInput,
+): CatalogProductDraftInput {
+  const brand = findBrand(updated.brandHandle ?? "");
+  const coll = findCollection(updated.brandHandle ?? "", updated.collectionHandle ?? "");
+  const sizes = findCollectionSizes(updated.brandHandle ?? "", updated.collectionHandle ?? "");
+  const sizeMatch = sizes?.find((s) => s.label === updated.sizes);
+  if (!brand || !coll || !sizeMatch) return updated;
+  const input: DescriptionInput = {
+    brandName: brand.name,
+    collectionTitle: coll.title,
+    sizeLabel: sizeMatch.label,
+    dimensions: sizeMatch.dimensions,
+    colors: updated.taxonomy.color ?? "",
+    material: updated.taxonomy.material ?? "",
+    promo: coll.promo,
+  };
+  const title = generateTitle(input);
+  const pop = computePopularity(updated.brandHandle ?? "", updated.collectionHandle ?? "", sizeMatch.label, updated.taxonomy.color ?? "");
+  return {
+    ...updated,
+    title,
+    slug: slugify(title),
+    description: generateDescription(input),
+    ...(pop != null ? { popularity: String(pop) } : {}),
+  };
+}
+
+// eslint-disable-next-line complexity -- XAUP-0001 pre-existing, single render function for taxonomy form
+function TaxonomyFields({ t, draft, fieldErrors, onChange }: BaseFieldsProps & { t: Translate }) {
+  const collDefaults = findCollectionDefaults(draft.brandHandle ?? "", draft.collectionHandle ?? "");
+
+  return (
+    <>
+      {collDefaults?.department ? (
+        <div className="block text-xs uppercase tracking-label text-gate-muted">
+          {t("fieldDepartment")}
+          <div className={`${INPUT_CLASS} opacity-60`}>
+            {draft.taxonomy.department === "women" ? t("departmentWomen") : null}
+            {draft.taxonomy.department === "men" ? t("departmentMen") : null}
+            {draft.taxonomy.department === "kids" ? t("departmentKids") : null}
+          </div>
+        </div>
+      ) : null}
+
+      <div className="block text-xs uppercase tracking-label text-gate-muted">
+        {t("fieldCategory")}
+        <div className={`${INPUT_CLASS} opacity-60`}>{t("categoryBags")}</div>
       </div>
 
       <label className="block text-xs uppercase tracking-label text-gate-muted">
@@ -216,128 +620,132 @@ function TaxonomyFields({ t, draft, fieldErrors, onChange }: BaseFieldsProps & {
               taxonomy: { ...draft.taxonomy, subcategory: slugify(event.target.value) },
             })
           }
-          className={INPUT_CLASSNAME}
+          disabled={!!collDefaults?.subcategory}
+          className={`${INPUT_CLASS}${collDefaults?.subcategory ? " opacity-60" : ""}`}
         />
         <FieldError message={fieldErrors["taxonomy.subcategory"]} />
       </label>
 
       <label className="block text-xs uppercase tracking-label text-gate-muted">
-        {t("fieldColors")}
+        {t("placeholderDimensions")}
         <input
-          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-          data-testid="catalog-field-colors"
-          value={draft.taxonomy.color ?? ""}
+          value={draft.details?.dimensions ?? ""}
           onChange={(event) =>
-            onChange({ ...draft, taxonomy: { ...draft.taxonomy, color: event.target.value } })
+            onChange({ ...draft, details: { ...draft.details, dimensions: event.target.value } })
           }
-          className={INPUT_CLASSNAME}
+          className={INPUT_CLASS}
         />
-        <FieldError message={fieldErrors["taxonomy.color"]} />
       </label>
 
       <label className="block text-xs uppercase tracking-label text-gate-muted">
-        {t("fieldMaterials")}
+        {t("bagStrapStyle")}
         <input
-          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-          data-testid="catalog-field-materials"
-          value={draft.taxonomy.material ?? ""}
+          value={draft.taxonomy.strapStyle ?? ""}
           onChange={(event) =>
-            onChange({ ...draft, taxonomy: { ...draft.taxonomy, material: event.target.value } })
+            onChange({ ...draft, taxonomy: { ...draft.taxonomy, strapStyle: event.target.value } })
           }
-          className={INPUT_CLASSNAME}
+          className={INPUT_CLASS}
         />
-        <FieldError message={fieldErrors["taxonomy.material"]} />
       </label>
 
-      <div className="md:col-span-2 grid gap-4 md:grid-cols-3">
-        <label className="flex items-center gap-2 text-xs uppercase tracking-label text-gate-muted">
-          <input
-            type="checkbox"
-            checked={Boolean(draft.forSale)}
-            onChange={(event) => onChange({ ...draft, forSale: event.target.checked })}
-          />
-          {t("fieldForSale")}
-        </label>
-        <label className="flex items-center gap-2 text-xs uppercase tracking-label text-gate-muted">
-          <input
-            type="checkbox"
-            checked={Boolean(draft.forRental)}
-            onChange={(event) => onChange({ ...draft, forRental: event.target.checked })}
-          />
-          {t("fieldForRental")}
-        </label>
-      </div>
+      <label className="block text-xs uppercase tracking-label text-gate-muted">
+        {t("placeholderStrapDrop")}
+        <input
+          value={draft.details?.strapDrop ?? ""}
+          onChange={(event) =>
+            onChange({ ...draft, details: { ...draft.details, strapDrop: event.target.value } })
+          }
+          className={INPUT_CLASS}
+        />
+      </label>
+
+      <label className="block text-xs uppercase tracking-label text-gate-muted">
+        {t("bagClosureType")}
+        <input
+          value={draft.taxonomy.closureType ?? ""}
+          onChange={(event) =>
+            onChange({ ...draft, taxonomy: { ...draft.taxonomy, closureType: event.target.value } })
+          }
+          className={INPUT_CLASS}
+        />
+      </label>
+
+      <label className="block text-xs uppercase tracking-label text-gate-muted">
+        {t("bagInterior")}
+        <input
+          value={draft.details?.interior ?? ""}
+          onChange={(event) =>
+            onChange({ ...draft, details: { ...draft.details, interior: event.target.value } })
+          }
+          className={INPUT_CLASS}
+        />
+      </label>
+
+      <label className="block text-xs uppercase tracking-label text-gate-muted">
+        {t("bagDetailsTitle")}
+        <input
+          value={draft.details?.whatFits ?? ""}
+          onChange={(event) =>
+            onChange({ ...draft, details: { ...draft.details, whatFits: event.target.value } })
+          }
+          className={INPUT_CLASS}
+        />
+      </label>
     </>
   );
 }
 
-function CommercialFields({ t, draft, fieldErrors, onChange }: BaseFieldsProps & { t: Translate }) {
-  const createdAtValue = toDateTimeLocalValue(draft.createdAt);
-
+function CommercialFields({ t, draft, fieldErrors: _fieldErrors, onChange: _onChange }: BaseFieldsProps & { t: Translate }) {
   return (
     <>
-      <label className="block text-xs uppercase tracking-label text-gate-muted">
-        {t("fieldDeposit")}
-        <input
-          value={draft.deposit ? String(draft.deposit) : ""}
-          onChange={(event) => onChange({ ...draft, deposit: event.target.value })}
-          type="number"
-          min="0"
-          step="0.01"
-          className={INPUT_SIMPLE_CLASSNAME}
-        />
-      </label>
+      {/* description is auto-derived from brand/collection/size/color data and stored in the draft;
+          it is not shown here because the operator cannot meaningfully edit it */}
 
-      <label className="block text-xs uppercase tracking-label text-gate-muted">
-        {t("fieldStock")}
-        <input
-          value={draft.stock ? String(draft.stock) : ""}
-          onChange={(event) => onChange({ ...draft, stock: event.target.value })}
-          type="number"
-          min="0"
-          step="1"
-          className={INPUT_SIMPLE_CLASSNAME}
-        />
-      </label>
-
-      <label className="block text-xs uppercase tracking-label text-gate-muted">
-        {t("fieldPopularity")}
-        <input
-          value={draft.popularity ? String(draft.popularity) : ""}
-          onChange={(event) => onChange({ ...draft, popularity: event.target.value })}
-          type="number"
-          min="0"
-          step="1"
-          className={INPUT_SIMPLE_CLASSNAME}
-        />
-      </label>
-
-      <label className="block text-xs uppercase tracking-label text-gate-muted md:col-span-2">
-        {t("fieldCreatedAt")}
-        <input
-          value={createdAtValue}
-          onChange={(event) => {
-            const next = event.target.value ? new Date(event.target.value).toISOString() : "";
-            onChange({ ...draft, createdAt: next });
-          }}
-          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 operator-tool input-type
-          type="datetime-local"
-          className={INPUT_SIMPLE_CLASSNAME}
-        />
-        <FieldError message={fieldErrors.createdAt} />
-      </label>
+      {draft.popularity ? (
+        <div className="block text-xs uppercase tracking-label text-gate-muted">
+          {t("fieldPopularity")}
+          <div className={`${INPUT_CLASS} opacity-60`}>{draft.popularity}</div>
+        </div>
+      ) : null}
     </>
   );
 }
+
+export type CatalogBaseFieldSection = "identity" | "taxonomy" | "commercial";
 
 export function CatalogProductBaseFields(props: BaseFieldsProps) {
   const { t } = useUploaderI18n();
+  const sections = new Set<CatalogBaseFieldSection>(
+    (props.sections ?? ["identity", "taxonomy", "commercial"]) as CatalogBaseFieldSection[],
+  );
 
   return (
-    <div className="grid gap-4 md:grid-cols-2">
-      <IdentityFields {...props} t={t} />
-      <TaxonomyFields {...props} t={t} />
-      <CommercialFields {...props} t={t} />
+    // eslint-disable-next-line ds/container-widths-only-at, ds/enforce-layout-primitives -- XAUP-0001 operator-tool constrained form
+    <div className="mx-auto grid max-w-prose gap-4">
+      {sections.has("identity") ? (
+        <>
+          <div className={SECTION_HEADER_CLASS}>
+            {t("fieldSectionIdentity")}
+          </div>
+          <IdentityFields {...props} t={t} />
+        </>
+      ) : null}
+      {sections.has("taxonomy") && props.draft.collectionHandle ? (
+        <>
+          <div className={SECTION_HEADER_CLASS}>
+            {t("fieldSectionTaxonomy")}
+          </div>
+          <TaxonomyFields {...props} t={t} />
+        </>
+      ) : null}
+      {sections.has("commercial") && props.draft.collectionHandle ? (
+        <>
+          <div className={SECTION_HEADER_CLASS}>
+            {t("fieldSectionCommercial")}
+          </div>
+          <CommercialFields {...props} t={t} />
+        </>
+      ) : null}
     </div>
   );
 }

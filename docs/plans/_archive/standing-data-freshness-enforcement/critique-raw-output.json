@@ -1,0 +1,27 @@
+{
+  "round": 2,
+  "artifact": "plan.md",
+  "score": 8,
+  "lp_score": 4.0,
+  "verdict": "needs_revision",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/standing-data-freshness-enforcement/plan.md",
+      "line": "117",
+      "message": "Threshold config underspecified: 90-day default vs shared 30-day default in mcp-preflight-config.ts"
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/standing-data-freshness-enforcement/plan.md",
+      "line": "114",
+      "message": "Result source contract missing 'unknown' variant present in type definition"
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/standing-data-freshness-enforcement/plan.md",
+      "line": "106",
+      "message": "Affects omits CLI file baselines-freshness-cli.ts"
+    }
+  ]
+}

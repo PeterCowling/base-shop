@@ -1,5 +1,7 @@
 import fs from "node:fs/promises";
 
+import { getCloudflareContext } from "@opennextjs/cloudflare";
+
 import { toPositiveInt } from "@acme/lib";
 
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
@@ -14,6 +16,16 @@ export type CatalogPublishResult = {
   version?: string;
   publishedAt?: string;
 };
+
+export interface CatalogContractServiceBinding {
+  fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response>;
+}
+
+declare global {
+  interface CloudflareEnv {
+    XA_CATALOG_CONTRACT_SERVICE?: CatalogContractServiceBinding;
+  }
+}
 
 export class CatalogPublishError extends Error {
   readonly code: "unconfigured" | "invalid_payload" | "request_failed" | "invalid_response";
@@ -58,6 +70,19 @@ function ensureTrailingSlash(value: string): string {
   return value.endsWith("/") ? value : `${value}/`;
 }
 
+const CONTRACT_ROUTE_ROOT_SEGMENTS = new Set(["catalog", "drafts", "deploy", "upload"]);
+
+function resolveContractRoot(baseUrl: string): URL {
+  const base = new URL(ensureTrailingSlash(baseUrl));
+  const segments = base.pathname.split("/").filter(Boolean);
+  const routeRootIndex = segments.findIndex((segment) => CONTRACT_ROUTE_ROOT_SEGMENTS.has(segment));
+  const rootSegments = routeRootIndex < 0 ? segments : segments.slice(0, routeRootIndex);
+  base.pathname = rootSegments.length > 0 ? `/${rootSegments.join("/")}/` : "/";
+  base.search = "";
+  base.hash = "";
+  return base;
+}
+
 function buildCatalogContractPublishUrl(storefrontId: XaCatalogStorefront): string {
   const baseUrl = getCatalogContractBaseUrl();
   if (!baseUrl) {
@@ -68,13 +93,36 @@ function buildCatalogContractPublishUrl(storefrontId: XaCatalogStorefront): stri
   }
 
   try {
-    return new URL(encodeURIComponent(storefrontId), ensureTrailingSlash(baseUrl)).toString();
+    const root = resolveContractRoot(baseUrl);
+    return new URL(`catalog/${encodeURIComponent(storefrontId)}`, root).toString();
   } catch {
     throw new CatalogPublishError(
       "unconfigured",
       "XA_CATALOG_CONTRACT_BASE_URL is not a valid URL.",
     );
   }
+}
+
+function asServiceBindingRequestUrl(value: string): string {
+  const parsed = new URL(value);
+  return `https://catalog-contract.internal${parsed.pathname}${parsed.search}`;
+}
+
+async function getCatalogContractServiceBinding(): Promise<CatalogContractServiceBinding | null> {
+  try {
+    const { env } = await getCloudflareContext({ async: true });
+    return env.XA_CATALOG_CONTRACT_SERVICE ?? null;
+  } catch {
+    return null;
+  }
+}
+
+async function requestCatalogContract(url: string, init: RequestInit): Promise<Response> {
+  const serviceBinding = await getCatalogContractServiceBinding();
+  if (serviceBinding) {
+    return serviceBinding.fetch(asServiceBindingRequestUrl(url), init);
+  }
+  return fetch(url, init);
 }
 
 function parseCatalogJson(raw: string, sourcePath: string): unknown {
@@ -135,7 +183,7 @@ export async function publishCatalogPayloadToContract(params: {
 
   let response: Response;
   try {
-    response = await fetch(publishUrl, {
+    response = await requestCatalogContract(publishUrl, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

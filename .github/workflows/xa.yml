@@ -126,11 +126,17 @@ jobs:
         run: cd apps/xa-b && pnpm build
         env:
           XA_CATALOG_CONTRACT_READ_URL: ${{ vars.XA_CATALOG_CONTRACT_READ_URL }}
+          XA_CATALOG_CONTRACT_READ_TOKEN: ${{ secrets.XA_CATALOG_CONTRACT_READ_TOKEN }}
+          XA_CATALOG_CONTRACT_READ_REQUIRED: "1"
+          NEXT_PUBLIC_XA_IMAGES_BASE_URL: ${{ vars.XA_IMAGES_BASE_URL_PREVIEW || vars.XA_IMAGES_BASE_URL }}
 
       - name: Remove __next.* metadata files (CF Pages 20k file limit)
         run: find apps/xa-b/out -name '__next.*' -type f -delete
 
       - name: Deploy xa-b to Cloudflare Pages
+        # Canonical XA-B Pages target is `xa-b-site` via direct wrangler deploy.
+        # Legacy git-connected project `xa-b-site-git` is intentionally disabled
+        # because it attaches unrelated PR checks and is not part of the release path.
         run: cd apps/xa-b && pnpm exec wrangler pages deploy out/ --project-name xa-b-site
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -144,6 +150,25 @@ jobs:
             echo "FAIL: out/ missing or empty"
             exit 1
           fi
+
+      - name: Verify xa-b URL is reachable
+        run: |
+          if [[ "${GITHUB_REF_NAME}" == "dev" ]]; then
+            URL="https://dev.xa-b-site.pages.dev/"
+          else
+            URL="https://xa-b-site.pages.dev/"
+          fi
+          for attempt in $(seq 1 18); do
+            response=$(curl -s -o /dev/null -w "%{http_code}" "${URL}")
+            echo "Attempt ${attempt}: ${URL} -> HTTP ${response}"
+            if [[ "${response}" == "200" ]]; then
+              echo "xa-b URL is reachable"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "FAIL: xa-b URL did not return HTTP 200 within retry window"
+          exit 1
 
   deploy-xa-uploader:
     name: Deploy xa-uploader (staging)
@@ -164,6 +189,14 @@ jobs:
 
       - name: Build workspace package dependencies
         run: pnpm exec turbo run build --filter=@apps/xa-uploader^...
+
+      - name: Preflight xa-uploader deploy config/secrets
+        run: cd apps/xa-uploader && pnpm run preflight:deploy -- --env preview --sync-kv-id-from-env --sync-deploy-hook-from-env
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          XA_B_DEPLOY_HOOK_URL: ${{ secrets.XA_B_DEPLOY_HOOK_URL_PREVIEW }}
+          XA_UPLOADER_KV_NAMESPACE_ID_PREVIEW: ${{ vars.XA_UPLOADER_KV_NAMESPACE_ID_PREVIEW }}
 
       - name: Build xa-uploader (OpenNext)
         run: cd apps/xa-uploader && pnpm exec opennextjs-cloudflare build

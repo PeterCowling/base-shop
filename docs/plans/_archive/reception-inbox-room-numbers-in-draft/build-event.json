@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-inbox-room-numbers-in-draft-20260307",
+  "feature_slug": "reception-inbox-room-numbers-in-draft",
+  "emitted_at": "2026-03-07T15:50:00.000Z",
+  "why": "Draft responses cannot reference guest room numbers even though the data is already captured in thread metadata, limiting personalization quality.",
+  "why_source": "auto",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Draft generation pipeline receives guest room numbers as context, enabling future templates to reference rooms in personalized responses.",
+    "source": "auto"
+  }
+}

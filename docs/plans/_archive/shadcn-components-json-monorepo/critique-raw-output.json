@@ -1,0 +1,29 @@
+{
+  "round": 3,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/shadcn-components-json-monorepo/fact-find.md",
+      "line": "113",
+      "message": "The package-export issue is still understated as something that 'may need' fixing in the build plan. It is already a concrete package-surface defect: packages/ui/package.json only exports ./components/atoms/*, which maps @acme/ui/components/atoms/shadcn to dist/components/atoms/shadcn.js, but the built artifact is dist/components/atoms/shadcn/index.js. There is also a live repo consumer of the bare barrel path in MediaManager.test.tsx. The fact-find should treat the named export addition as required, not optional."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/shadcn-components-json-monorepo/fact-find.md",
+      "line": "207",
+      "message": "The recommendation to use tailwind.baseColor: 'neutral' is not evidenced by the document's schema audit. The brief lists valid style enum values but does not establish the accepted tailwind.baseColor values from the schema."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/shadcn-components-json-monorepo/fact-find.md",
+      "line": "141",
+      "message": "The dependency map says downstream apps import from @acme/ui/components/atoms/shadcn/*, but the repo also contains a bare barrel import of @acme/ui/components/atoms/shadcn in MediaManager.test.tsx. The inventory should mention both import shapes."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "lp_score": 4.0,
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "note": "Round 3 (final). Score 8/10 = lp_score 4.0 (credible threshold met). All findings addressed in artifact."
+}

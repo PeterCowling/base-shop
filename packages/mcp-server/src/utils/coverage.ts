@@ -17,6 +17,23 @@ const STOP_WORDS = new Set([
   "your", "some", "each", "were", "more", "very",
 ]);
 
+const TOPIC_SYNONYMS: Record<string, string[]> = {
+  availability: ["available", "vacancy", "open", "free", "beds", "rooms", "space"],
+  available: ["availability", "open", "vacancy", "space", "free", "check"],
+  pool: ["swimming", "pool", "rooftop", "facility", "amenity", "outdoor", "water"],
+  facility: ["facilities", "amenity", "amenities", "service", "services", "feature"],
+  amenity: ["amenities", "facility", "facilities", "included", "feature"],
+  kitchen: ["kitchen", "cooking", "cook", "fridge", "microwave", "self-catering"],
+  parking: ["parking", "car park", "garage", "vehicle"],
+  towel: ["towel", "linen", "sheets", "bedding", "provided"],
+  deposit: ["deposit", "security", "hold", "keycard"],
+  early: ["early", "arrival", "before", "prior"],
+  late: ["late", "after", "extended", "overtime"],
+  noise: ["quiet", "silence", "sound", "curfew", "policy"],
+  tour: ["tour", "excursion", "activity", "trip", "experience"],
+  locker: ["locker", "safe", "storage", "secure"],
+};
+
 function tokenize(text: string): string[] {
   return stemmedTokenizer.tokenize(text);
 }
@@ -55,7 +72,7 @@ export function evaluateQuestionCoverage(
 
     const matchedKeywords: string[] = [];
     for (const keyword of keywords) {
-      const variants = [keyword, ...(SYNONYMS[keyword] ?? [])];
+      const variants = [keyword, ...(SYNONYMS[keyword] ?? TOPIC_SYNONYMS[keyword] ?? [])];
       const matched = variants.some((variant) => {
         const stems = tokenize(variant.toLowerCase());
         return stems.some((stem) => bodySet.has(stem));

@@ -68,6 +68,7 @@ function buildGmailStub({
         get: jest.fn(async () => ({ data: { messages: [] } })),
       },
       drafts: {
+        list: jest.fn(async () => ({ data: { drafts: [] } })),
         create: jest.fn(async ({ requestBody }: { requestBody: { message?: { raw?: string; threadId?: string } } }) => {
           const draftId = `draft-${draftCounter++}`;
           const messageId = `draft-msg-${draftId}`;
@@ -330,5 +331,90 @@ describe("gmail_create_draft", () => {
     // Draft creation should still succeed despite label failure
     expect(payload.success).toBe(true);
     expect(payload.draftId).toBeDefined();
+  });
+
+  // TC-10: create_draft on thread with existing draft → skipped, already_exists: true, audit logged
+  it("skips draft creation and returns already_exists when a draft already exists for the thread", async () => {
+    const auditLogPath = path.join(_globalTmpDir, "email-audit-log.jsonl");
+    fs.writeFileSync(auditLogPath, "");
+
+    const { gmail } = buildGmailStub({
+      labels: [],
+      originalMessage: {
+        id: "msg-dedup-1",
+        threadId: "thread-dedup-1",
+        payload: {
+          headers: [
+            createHeader("From", "Guest <guest@example.com>"),
+            createHeader("Message-ID", "<msg-dedup-1@gmail.com>"),
+            createHeader("References", ""),
+          ],
+        },
+      },
+    });
+    // Override drafts.list to simulate an existing draft on the thread
+    (gmail.users.drafts as unknown as Record<string, jest.Mock>).list = jest.fn(async () => ({
+      data: { drafts: [{ id: "draft-existing-1" }] },
+    }));
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_create_draft", {
+      emailId: "msg-dedup-1",
+      subject: "RE: Dedup test",
+      bodyPlain: "Should be skipped.",
+    });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.success).toBe(false);
+    expect(payload.already_exists).toBe(true);
+    expect(payload.message).toContain("Draft already exists for this thread");
+    expect(gmail.users.drafts.create).not.toHaveBeenCalled();
+
+    // Audit log must contain inquiry-draft-dedup-skipped entry
+    const logContent = fs.readFileSync(auditLogPath, "utf8");
+    const entries = logContent
+      .trim()
+      .split("\n")
+      .filter(Boolean)
+      .map((line) => JSON.parse(line) as { action: string; messageId: string; result: string });
+    const dedupEntry = entries.find((e) => e.action === "inquiry-draft-dedup-skipped");
+    expect(dedupEntry).toBeDefined();
+    expect(dedupEntry?.messageId).toBe("msg-dedup-1");
+    expect(dedupEntry?.result).toContain("thread-dedup-1");
+  });
+
+  // TC-11: create_draft on thread where drafts.list throws → fail-open, draft created normally
+  it("creates draft normally when drafts.list throws (fail-open)", async () => {
+    const { gmail, draftStore } = buildGmailStub({
+      labels: [],
+      originalMessage: {
+        id: "msg-dedup-2",
+        threadId: "thread-dedup-2",
+        payload: {
+          headers: [
+            createHeader("From", "Guest <guest@example.com>"),
+            createHeader("Message-ID", "<msg-dedup-2@gmail.com>"),
+            createHeader("References", ""),
+          ],
+        },
+      },
+    });
+    // Override drafts.list to throw
+    (gmail.users.drafts as unknown as Record<string, jest.Mock>).list = jest.fn(async () => {
+      throw new Error("Gmail API unavailable");
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_create_draft", {
+      emailId: "msg-dedup-2",
+      subject: "RE: Fail-open test",
+      bodyPlain: "Should proceed despite drafts.list error.",
+    });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.success).toBe(true);
+    expect(payload.draftId).toBeDefined();
+    expect(gmail.users.drafts.create).toHaveBeenCalledTimes(1);
+    expect(draftStore).toHaveLength(1);
   });
 });

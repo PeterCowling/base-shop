@@ -151,6 +151,50 @@ const experiencesPageCopy = {
   },
 } as const;
 
+const arabicExperiencesPageCopy = {
+  ...experiencesPageCopy,
+  guideCollections: {
+    ...experiencesPageCopy.guideCollections,
+    heading: "تعمّق أكثر مع أدلة التجارب لدينا",
+    description: "مسارات ومغامرات واختيارات محلية من فريقنا.",
+    clearFilter: "عرض جميع أدلة التجارب",
+    filterHeading: "صفِّ أدلة التجارب حسب الموضوع",
+    filterDescription: "اختر موضوعًا لتضييق ما نعرضه من تجارب.",
+    grouped: {
+      beaches: {
+        title: "الشواطئ",
+      },
+      hiking: {
+        title: "المشي",
+      },
+      "day-trip": {
+        title: "الرحلات اليومية",
+      },
+      boat: {
+        title: "جولات القوارب",
+      },
+      cuisine: {
+        title: "الطعام والشراب",
+      },
+    },
+  },
+} as const;
+
+const translationCopyByLang = {
+  en: {
+    stickyCta: {
+      directHeadline: "Lock in our best available rate in under two minutes.",
+      directSubcopy: "Skip third-party fees and get priority help from our Positano team.",
+    },
+  },
+  ar: {
+    stickyCta: {
+      directHeadline: "ثبّت أفضل سعر متاح لدينا في أقل من دقيقتين.",
+      directSubcopy: "تجنّب رسوم الجهات الخارجية واحصل على أولوية المساعدة من فريقنا في بوسيتانو.",
+    },
+  },
+} as const;
+
 function getPathValue(root: unknown, path: string): unknown {
   const segments = path.split(".").filter(Boolean);
   let cursor: unknown = root;
@@ -169,9 +213,16 @@ function interpolate(template: string, options: Record<string, unknown> | undefi
   });
 }
 
-function createT(namespace: string) {
+function createT(namespace: string, lang: string) {
   return (key: string, options?: Record<string, unknown>) => {
-    const source = namespace === "experiencesPage" ? experiencesPageCopy : undefined;
+    const source =
+      namespace === "experiencesPage"
+        ? lang === "ar"
+          ? arabicExperiencesPageCopy
+          : experiencesPageCopy
+        : namespace === "translation"
+          ? translationCopyByLang[lang as keyof typeof translationCopyByLang]
+          : undefined;
     if (!source) {
       if (options && typeof options.defaultValue === "string") return options.defaultValue;
       return key;
@@ -194,8 +245,11 @@ function createT(namespace: string) {
 
 jest.mock("react-i18next", () => ({
   useTranslation: (namespace?: string, opts?: { lng?: string }) => ({
-    t: createT(namespace ?? "unknown"),
-    i18n: undefined,
+    t: createT(namespace ?? "translation", opts?.lng ?? "en"),
+    i18n: {
+      language: opts?.lng ?? "en",
+      resolvedLanguage: opts?.lng ?? "en",
+    },
     ready: Boolean(opts?.lng),
   }),
 }));
@@ -235,5 +289,22 @@ describe("<ExperiencesPageContent />", () => {
     if (!beachesSection) return;
 
     expect(within(beachesSection).getByText("3")).toBeInTheDocument();
+  });
+
+  it("renders Arabic grouped topics and sticky CTA copy without English fallbacks", () => {
+    renderWithProviders(<ExperiencesPageContent lang="ar" />);
+
+    expect(
+      screen.getByRole("heading", { name: "تعمّق أكثر مع أدلة التجارب لدينا" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("عرض جميع أدلة التجارب")).toBeInTheDocument();
+    expect(screen.getByText("الشواطئ")).toBeInTheDocument();
+    expect(screen.getByText("المشي")).toBeInTheDocument();
+    expect(screen.getByText("ثبّت أفضل سعر متاح لدينا في أقل من دقيقتين.")).toBeInTheDocument();
+    expect(
+      screen.queryByText("Skip third-party fees and get priority help from our Positano team."),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText("View all experience guides")).not.toBeInTheDocument();
+    expect(screen.queryByText("Beaches")).not.toBeInTheDocument();
   });
 });

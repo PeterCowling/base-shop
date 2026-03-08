@@ -11,6 +11,15 @@ Read `docs/business-os/startup-loop/ideas/trial/queue-state.json` (if it exists)
 - **Briefing mode only:** `status: briefing_ready`, AND
 - `area_anchor` or `artifact_id` overlaps materially with the invoked topic.
 
+**Fact-find mode only — bundled work-package check:**
+If a matching fact-find packet exists, also run:
+
+```bash
+pnpm --filter scripts startup-loop:ideas-work-package-candidates -- --queue-state-path docs/business-os/startup-loop/ideas/trial/queue-state.json --business <BUSINESS> --route lp-do-fact-find
+```
+
+If the result contains a candidate whose `dispatch_ids` include the matching packet, prefer that bundled candidate over the single packet. This is how related small ideas are promoted into one fact-find / one plan without losing atomic dispatch logging.
+
 Queue-state compatibility note:
 - Canonical lifecycle states are `enqueued`, `processed`, `skipped`, `error`.
 - Historical entries may contain legacy states (`auto_executed`, `completed`, `logged_no_action`).
@@ -33,10 +42,44 @@ Stop immediately. Output only the following — do not run any phases, read any 
 >
 > Do you want to proceed with this [fact-find | briefing]? Reply **yes** to confirm, or anything else to leave it queued.
 
-If the operator replies **yes**: proceed to Phase 1 with `Dispatch-ID` set to the matching packet's `dispatch_id`. After artifact persistence is confirmed, and before writing `processed_by`, verify the artifact file at `fact_find_path` exists on disk (use the Read or Bash tool). If the file does not exist: do **not** write `processed_by`; instead, surface an error naming the dispatch (`dispatch_id`) and the missing `fact_find_path`. If the file exists, populate `processed_by` in the packet:
-- `route: dispatch-routed`, `processed_at: <now>`, `queue_state: processed`
-- **Fact-find mode (Phase 6):** `fact_find_slug` and `fact_find_path` from the output.
-- **Briefing mode (Phase 4):** `fact_find_slug` (briefing topic slug), `fact_find_path` (briefing output path).
+**If a bundled work-package candidate is found instead of a single packet:**
+
+Stop immediately. Output only the following:
+
+> A related work-package candidate exists for this topic and requires confirmation before proceeding.
+>
+> **Feature slug hint:** `<feature_slug_hint>`
+> **Dispatches:** `<dispatch_ids comma-separated>`
+> **Location root:** `<location_root>`
+> **Why bundled:** `<candidate_reason>`
+>
+> Do you want to proceed with this bundled fact-find? Reply **yes** to confirm, or anything else to leave all dispatches queued.
+
+If the operator replies **yes**:
+- single-packet path: proceed to Phase 1 with `Dispatch-ID` set to the matching packet's `dispatch_id`.
+- bundled fact-find path: proceed to Phase 1 with `Dispatch-IDs` set to the candidate `dispatch_ids` and `Work-Package-Reason` set to `candidate_reason`.
+
+After artifact persistence is confirmed, and before any queue-state write, verify the artifact file at `fact_find_path` exists on disk (use the Read or Bash tool). If the file does not exist: do **not** write `processed_by`; instead, surface an error naming the dispatch set and the missing `fact_find_path`.
+
+If the file exists, update queue-state using the deterministic helper instead of manual per-packet edits:
+
+```ts
+import { markDispatchesProcessed } from "scripts/src/startup-loop/ideas/lp-do-ideas-work-packages.js";
+
+const result = markDispatchesProcessed({
+  queueStatePath: "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+  dispatchIds: ["<dispatch-id>" /* or the full bundled list */],
+  featureSlug: "<feature-slug>",
+  factFindPath: "<fact_find_path>",
+  route: "dispatch-routed",
+  business: "<BUSINESS>",
+});
+```
+
+Failure policy:
+- `{ ok: true }` → continue.
+- `{ ok: false, reason: "no_match" }` → stop and surface the missing dispatch linkage.
+- `{ ok: false, reason: "conflict" | "parse_error" | "write_error" | "file_not_found" }` → stop and surface the error. Do not continue with a partially-routed bundle.
 
 If the operator replies anything other than **yes**, or does not reply: stop. Do nothing. The packet remains `enqueued`.
 

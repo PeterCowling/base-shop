@@ -1,0 +1,50 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260305213000-0003",
+  "mode": "trial",
+  "business": "BRIK",
+  "trigger": "operator_idea",
+  "root_event_id": "operator-idea-prime-process-reliability-2026-03-05-deploy-gates",
+  "anchor_key": "prime-deploy-validation-gate-hardening",
+  "cluster_key": "prime-outbound-reliability",
+  "cluster_fingerprint": "prime-outbound-reliability-hardening-v3",
+  "lineage_depth": 2,
+  "area_anchor": "Prime deploy gates and verification hardening",
+  "location_anchors": [
+    "apps/prime/functions/api/check-in-code.ts",
+    "apps/prime/package.json",
+    ".github/workflows/reusable-app.yml",
+    "scripts/validate-deploy-env.sh",
+    "apps/prime/functions/api/assistant-query.ts",
+    "apps/prime/src/hooks/dataOrchestrator"
+  ],
+  "provisional_deliverable_family": "code-change",
+  "current_truth": "Prime still has deploy-risk gaps: check-in expiry validation bug, missing functions typecheck coverage, CI zero-test pass paths, non-blocking critical E2E, missing Prime runtime secret validation, silent assistant degradation signaling, skipped orchestrator tests, and full-lint fail-open behavior.",
+  "next_scope_now": "Implement fail-closed validation and CI/deploy gate hardening with runnable orchestrator coverage to remove silent deployment regressions.",
+  "adjacent_later": [
+    "Add healthcheck strict routes for Prime critical guest/API flows",
+    "Add alerting for assistant fallback rate spikes"
+  ],
+  "recommended_route": "lp-do-fact-find",
+  "status": "fact_find_ready",
+  "priority": "P1",
+  "confidence": 0.93,
+  "evidence_refs": [
+    "operator-stated: take 2,4,5,6,8,9,11,12 forward via lp-do-ideas -> lp-do-build workflow",
+    "apps/prime/functions/api/check-in-code.ts",
+    "apps/prime/package.json",
+    ".github/workflows/reusable-app.yml",
+    "scripts/validate-deploy-env.sh",
+    "apps/prime/functions/api/__tests__/assistant-query.test.ts",
+    "apps/prime/src/hooks/dataOrchestrator/useUnifiedBookingData.test.tsx",
+    "apps/prime/scripts/lint-wrapper.sh"
+  ],
+  "created_at": "2026-03-05T21:30:00.000Z",
+  "queue_state": "enqueued",
+  "why": "Silent or weak validation gates can allow Prime deployment with broken auth/runtime behavior and insufficient regression coverage.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Prime deploy and validation gates fail closed for critical runtime paths, and orchestrator coverage no longer depends on skipped test placeholders.",
+    "source": "operator"
+  }
+}

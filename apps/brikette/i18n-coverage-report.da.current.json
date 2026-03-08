@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 2,
+  "baselineLocale": "en",
+  "locales": [
+    "da"
+  ],
+  "summary": {
+    "totalMissingFiles": 0,
+    "totalMissingKeys": 0,
+    "totalUntranslatedKeys": 51
+  },
+  "reports": [
+    {
+      "locale": "da",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {
+        "barMenuPage.json": [
+          "items.joseCuervoSilver.name",
+          "sections.whisky.title"
+        ],
+        "experiencesPage.json": [
+          "guideCollections.directionLinks.positanoRavello.positanoRavelloBus",
+          "guideCollections.directionLinks.positanoRavello.ravelloPositanoBus",
+          "guideCollections.directionLinks.salernoPositano.positanoSalernoBus",
+          "guideCollections.directionLinks.salernoPositano.salernoPositanoBus"
+        ],
+        "footer.json": [
+          "infoHeading"
+        ],
+        "guides.tags.json": [
+          "tags.bus.label",
+          "tags.camping.label",
+          "tags.shopping.label",
+          "tags.souvenirs.label",
+          "tags.tips.label",
+          "tags.transport.label"
+        ],
+        "guides/content/arienzoBeachClub.json": [
+          "faqsTitle"
+        ],
+        "guides/content/lauritoBeachGuide.json": [
+          "seo.title"
+        ],
+        "guides/content/positanoRavello.json": [
+          "fallback.tipsTitle",
+          "tipsTitle"
+        ],
+        "guides/content/sunriseHike.json": [
+          "tipsTitle"
+        ],
+        "guides/labels.json": [
+          "tipsHeading"
+        ],
+        "guides/tags.json": [
+          "labels.bus",
+          "labels.camping",
+          "labels.shopping",
+          "labels.souvenirs",
+          "labels.tips",
+          "labels.transport"
+        ],
+        "guidesFallback.json": [
+          "amalfiTownGuide.headings.tips"
+        ],
+        "how-to-get-here/routes/capriPositanoFerry.json": [
+          "tip.eyebrow"
+        ],
+        "how-to-get-here/routes/howToGetHereAmalfiPositanoFerry.json": [
+          "tip.label"
+        ],
+        "how-to-get-here/routes/howToGetHereNaplesAirportPositanoBus.json": [
+          "aside.eyebrow"
+        ],
+        "how-to-get-here/routes/howToGetHereNaplesCenterPositanoFerry.json": [
+          "tip.label"
+        ],
+        "how-to-get-here/routes/howToGetHerePositanoNaplesFerry.json": [
+          "hero.tipLabel"
+        ],
+        "how-to-get-here/routes/howToGetHerePositanoRavelloFerryBus.json": [
+          "tip.label"
+        ],
+        "how-to-get-here/routes/howToGetHerePositanoSalernoFerry.json": [
+          "tip.label"
+        ],
+        "how-to-get-here/routes/howToGetHereRavelloPositanoBus.json": [
+          "tip.eyebrow"
+        ],
+        "how-to-get-here/routes/howToGetHereSalernoPositanoFerry.json": [
+          "tip.label"
+        ],
+        "how-to-get-here/routes/naplesCenterTrainBus.json": [
+          "tip.eyebrow"
+        ],
+        "how-to-get-here/routes/positanoAmalfiBus.json": [
+          "tip.eyebrow"
+        ],
+        "how-to-get-here/routes/positanoAmalfiFerry.json": [
+          "tip.label"
+        ],
+        "how-to-get-here/routes/positanoCapriFerry.json": [
+          "tip.label"
+        ],
+        "how-to-get-here/routes/positanoNaplesCenterBusTrain.json": [
+          "cta.eyebrow"
+        ],
+        "how-to-get-here/routes/positanoNaplesCenterFerry.json": [
+          "header.tipLabel"
+        ],
+        "how-to-get-here/routes/positanoRavelloBus.json": [
+          "cta.eyebrow"
+        ],
+        "how-to-get-here/routes/positanoSalernoBus.json": [
+          "tip.label"
+        ],
+        "how-to-get-here/routes/positanoSorrentoBus.json": [
+          "tip.eyebrow"
+        ],
+        "how-to-get-here/routes/positanoSorrentoFerry.json": [
+          "cta.label"
+        ],
+        "how-to-get-here/routes/salernoPositanoBus.json": [
+          "tip.title"
+        ],
+        "how-to-get-here/routes/sorrentoPositanoBus.json": [
+          "tip.label"
+        ],
+        "how-to-get-here/routes/sorrentoPositanoFerry.json": [
+          "tip.label"
+        ],
+        "howToGetHere.json": [
+          "filters.transportModes.bus",
+          "romePlanner.tag.bus",
+          "romePlanner.tag.cheap"
+        ]
+      }
+    }
+  ]
+}

@@ -104,3 +104,25 @@ For naming, metadata, and classification rules, see `.claude/skills/tools-standa
 - **operating_mode:** `ANALYSIS + RECOMMENDATIONS`
 - **trigger_conditions:** plan status, incomplete plans, tasks remaining, progress report, how many tasks left
 - **related_skills:** `lp-do-factcheck`, `lp-do-build`
+
+---
+
+## tools-bug-scan
+
+- **Invocation name:** `tools-bug-scan`
+- **Directory:** `.claude/skills/tools-bug-scan/`
+- **Description:** Run the repository-native bug scanner (`pnpm bug-scan` / `pnpm bug-scan:changed`), summarize findings by severity and rule, and optionally emit post-build idea artifacts consumed by process-improvements.
+- **operating_mode:** `AUDIT + RECOMMENDATIONS`
+- **trigger_conditions:** bug scan, static scan, risky patterns, code safety sweep, run bug-scan, scan changed files
+- **related_skills:** `lp-do-build`, `ops-ci-fix`, `lp-do-fact-find`
+
+---
+
+## tools-bug-triad-review
+
+- **Invocation name:** `tools-bug-triad-review`
+- **Directory:** `.claude/skills/tools-bug-triad-review/`
+- **Description:** Run a weekly adversarial bug triad (finder, skeptic, arbiter) to maximize bug discovery coverage and emit a scored verified bug list.
+- **operating_mode:** `AUDIT`
+- **trigger_conditions:** weekly bug review, adversarial bug audit, finder skeptic arbiter, verify bug list, red-team bug hunt
+- **related_skills:** `tools-bug-scan`, `lp-do-build`, `ops-ci-fix`

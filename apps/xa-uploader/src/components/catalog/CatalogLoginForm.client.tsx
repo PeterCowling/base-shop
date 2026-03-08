@@ -4,6 +4,7 @@ import * as React from "react";
 
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
+import { BTN_SECONDARY_CLASS } from "./catalogStyles";
 import type { ActionFeedback } from "./useCatalogConsole.client";
 
 export function CatalogLoginForm({
@@ -47,7 +48,7 @@ export function CatalogLoginForm({
               ref={tokenInputRef}
               value={token}
               onChange={(event) => onTokenChange(event.target.value)}
-              className="w-full rounded-md border border-border-2 bg-surface px-3 py-3 text-sm text-gate-ink placeholder:text-gate-muted focus:border-gate-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-ink/20"
+              className="w-full rounded-md border border-gate-border bg-gate-input px-3 py-3 text-sm text-gate-ink placeholder:text-gate-muted transition-colors focus:border-gate-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-accent focus-visible:ring-offset-1"
               type={tokenVisible ? "text" : "password"}
               autoComplete="off"
               autoFocus
@@ -58,8 +59,8 @@ export function CatalogLoginForm({
             <button
               type="button"
               onClick={() => setTokenVisible((prev) => !prev)}
-              // eslint-disable-next-line ds/min-tap-size -- XAUP-0001 operator-desktop-tool
-              className="rounded-md border border-border-2 px-3 py-2 text-2xs uppercase tracking-label-xs text-gate-ink"
+               
+              className={BTN_SECONDARY_CLASS}
               aria-label={tokenVisible ? t("loginHideToken") : t("loginShowToken")}
               // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
               data-testid="catalog-login-toggle-visibility"
@@ -72,7 +73,7 @@ export function CatalogLoginForm({
           type="submit"
           disabled={busy}
           // eslint-disable-next-line ds/min-tap-size, ds/enforce-layout-primitives -- XAUP-0001 operator-desktop-tool
-          className="inline-flex items-center gap-2 rounded-md border border-gate-ink bg-gate-ink px-4 py-2 text-sm font-semibold text-bg transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex items-center gap-2 rounded-md bg-gate-accent px-4 py-2.5 text-sm font-semibold text-gate-on-accent transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gate-accent focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="catalog-login-submit"
         >

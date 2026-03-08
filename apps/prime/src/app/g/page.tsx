@@ -94,7 +94,7 @@ function GuestEntryContent() {
         guestFirstName: string;
       };
 
-      localStorage.setItem('prime_guest_token', token);
+      // prime_session HttpOnly cookie is set by the POST response Set-Cookie header
       localStorage.setItem('prime_guest_booking_id', data.bookingId);
       if (data.guestUuid) {
         localStorage.setItem('prime_guest_uuid', data.guestUuid);

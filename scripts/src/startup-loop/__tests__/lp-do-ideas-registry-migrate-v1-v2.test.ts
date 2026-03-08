@@ -6,7 +6,7 @@ import {
   type RegistryV1ArtifactEntry,
   renderRegistryMigrationReportMarkdown,
   type StandingRegistryV1,
-} from "../lp-do-ideas-registry-migrate-v1-v2.js";
+} from "../ideas/lp-do-ideas-registry-migrate-v1-v2.js";
 
 function buildRegistryV1(artifacts: RegistryV1ArtifactEntry[]): StandingRegistryV1 {
   return {

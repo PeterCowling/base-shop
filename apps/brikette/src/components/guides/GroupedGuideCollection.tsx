@@ -98,15 +98,16 @@ function combineGroupedGuides(content: GroupedGuides, directions: GroupedGuides)
   return combined;
 }
 
-function buildFilterOptions(groupedGuides: GroupedGuides): GuideFilterOption[] {
+function buildFilterOptions(groupedGuides: GroupedGuides, t: Translator): GuideFilterOption[] {
   const options: GuideFilterOption[] = [];
 
   for (const topicId of MAIN_TOPICS) {
     const count = groupedGuides[topicId]?.length ?? 0;
     if (count >= MIN_GUIDES_FOR_MAIN) {
+      const label = readGroupedCopy(t, topicId, "title") || TOPIC_LABELS[topicId] || topicId;
       options.push({
         value: topicId,
-        label: TOPIC_LABELS[topicId] || topicId,
+        label,
         count,
       });
     }
@@ -251,7 +252,7 @@ function GroupedGuideCollection({
     [groupedContentGuides, groupedDirectionsGuides],
   );
 
-  const filterOptions = useMemo(() => buildFilterOptions(groupedGuides), [groupedGuides]);
+  const filterOptions = useMemo(() => buildFilterOptions(groupedGuides, t), [groupedGuides, t]);
   const topicConfigs = useMemo(() => buildTopicConfigs(groupedGuides, t), [groupedGuides, t]);
   const contentTopicConfigs = useMemo(
     () => filterTopicConfigsForSection(topicConfigs, groupedContentGuides, normalizedTopicParam),

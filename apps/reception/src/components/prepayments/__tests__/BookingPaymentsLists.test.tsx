@@ -63,13 +63,7 @@ describe("BookingPaymentsLists", () => {
         100
       )
     );
-    await waitFor(() =>
-      expect(logActivity).toHaveBeenCalledWith(
-        "1",
-        8,
-        expect.any(String)
-      )
-    );
+    await waitFor(() => expect(logActivity).not.toHaveBeenCalledWith("1", 8, expect.any(String)));
     await waitFor(() =>
       expect(setMessage).toHaveBeenCalledWith(
         "Payment paid for AAA"

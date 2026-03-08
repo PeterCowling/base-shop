@@ -29,18 +29,9 @@ describe("inventoryStore", () => {
     expect(writeJsonMock).toHaveBeenCalledWith("XA_INVENTORY_SOLD_V1", { p1: 5 });
   });
 
-  it("computes available stock from stock-sold-reserved", async () => {
-    readJsonMock.mockReturnValue({ "sku-1": 2 });
-
+  it("derives binary availability from product status", async () => {
     const { getAvailableStock } = await import("../inventoryStore");
-    const available = getAvailableStock(
-      { id: "sku-1", stock: 10 } as any,
-      {
-        line1: { sku: { id: "sku-1" }, qty: 3 },
-        line2: { sku: { id: "sku-2" }, qty: 2 },
-      } as any,
-    );
-
-    expect(available).toBe(5);
+    expect(getAvailableStock({ id: "sku-1", status: "live" } as any, {} as any)).toBe(1);
+    expect(getAvailableStock({ id: "sku-1", status: "out_of_stock" } as any, {} as any)).toBe(0);
   });
 });

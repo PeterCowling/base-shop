@@ -281,7 +281,22 @@
   "filters": {
     "all": "All rooms",
     "private": "Private rooms",
-    "dorms": "Dorms"
+    "dorms": "Dorms",
+    "categories": {
+      "view": "View",
+      "type": "Type",
+      "beds": "Beds"
+    },
+    "views": {
+      "all": "All views",
+      "sea": "Sea view",
+      "courtyard": "Courtyard",
+      "garden": "Garden",
+      "none": "No view"
+    },
+    "femaleOnly": "Female only",
+    "ensuiteBathroom": "Ensuite / private bathroom",
+    "bedCount": "{{count}} beds"
   },
   "filtersAria": "Filter by room type",
   "checkRatesNonRefundable": "Non-Refundable Rates",
@@ -322,7 +337,9 @@
   },
   "bookingControls": {
     "decreaseAdults": "Decrease adults",
-    "increaseAdults": "Increase adults"
+    "increaseAdults": "Increase adults",
+    "decreaseGuests": "Decrease guests",
+    "increaseGuests": "Increase guests"
   },
   "recovery": {
     "roomTitle": "Need to decide later? Send yourself this room quote."

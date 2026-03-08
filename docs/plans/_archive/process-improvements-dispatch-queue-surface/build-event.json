@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "process-improvements-dispatch-queue-surface-20260304",
+  "feature_slug": "process-improvements-dispatch-queue-surface",
+  "emitted_at": "2026-03-04T12:00:00.000Z",
+  "why": "The self-improving loop produces ideas via signal bridges into queue-state.json, but the operator dashboard ignores them entirely — loop-generated improvement signals are invisible without reading raw JSON.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "All enqueued dispatch ideas from the self-improving loop appear on process-improvements.user.html alongside existing results-review and bug-scan ideas, with automatic regeneration when items are added or removed.",
+    "source": "operator"
+  }
+}

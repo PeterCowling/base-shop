@@ -115,11 +115,15 @@ export default function useEmailProgressActions() {
           nextCode
         )) as ActivityResult;
 
-        if (addResult?.success) {
-          console.log(
-            `[useEmailProgressActions] occupantId=${occupantId}, code=${nextCode}, "${description}"`
+        if (!addResult?.success) {
+          throw new Error(
+            addResult?.error ??
+              `[useEmailProgressActions] Failed to write next activity for occupantId=${occupantId}, code=${nextCode}`
           );
         }
+        console.log(
+          `[useEmailProgressActions] occupantId=${occupantId}, code=${nextCode}, "${description}"`
+        );
       }
     },
     [activities, addActivity, bookings]
@@ -156,11 +160,15 @@ export default function useEmailProgressActions() {
           confirmCode
         )) as ActivityResult;
 
-        if (addResult?.success) {
-          console.log(
-            `[useEmailProgressActions] occupantId=${occupantId}, code=${confirmCode}, "${description}"`
+        if (!addResult?.success) {
+          throw new Error(
+            addResult?.error ??
+              `[useEmailProgressActions] Failed to write confirm activity for occupantId=${occupantId}, code=${confirmCode}`
           );
         }
+        console.log(
+          `[useEmailProgressActions] occupantId=${occupantId}, code=${confirmCode}, "${description}"`
+        );
       }
     },
     [activities, addActivity, bookings]

@@ -190,7 +190,7 @@ _First pattern to define:_ **Processor compatibility display component** — sho
 - Business strategy: `docs/business-os/strategy/HEAD/plan.user.md`
 - Messaging hierarchy: `docs/business-os/strategy/HEAD/messaging-hierarchy.user.md`
 - 90-day forecast (canonical): `docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md`
-- Offer design (canonical): `docs/business-os/startup-baselines/HEAD-offer.md`
+- Offer design (canonical): `docs/business-os/startup-baselines/HEAD/offer.md`
 - Reference theme (structure template): `packages/themes/prime/src/tokens.ts`
 - Base theme tokens: `packages/themes/base/src/tokens.ts`
 - Design system handbook: `docs/design-system-handbook.md`

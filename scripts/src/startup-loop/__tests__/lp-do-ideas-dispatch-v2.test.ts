@@ -16,7 +16,7 @@ import {
   type IntendedOutcomeV2,
   type TrialDispatchPacketV2,
   validateDispatchV2,
-} from "../lp-do-ideas-trial.js";
+} from "../ideas/lp-do-ideas-trial.js";
 
 // ---------------------------------------------------------------------------
 // Fixtures

@@ -1,0 +1,13 @@
+{
+  "round": 2,
+  "score": 9,
+  "verdict": "needs_revision",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/startup-loop-scripts-domain-dirs/plan.md",
+      "line": "123",
+      "message": "TC-05 uses grep -oP, but this repo runs on macOS/BSD grep where -P is unsupported"
+    }
+  ]
+}

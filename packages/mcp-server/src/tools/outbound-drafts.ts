@@ -15,11 +15,9 @@ import { generateEmailHtml } from "../utils/email-template.js";
 import { errorResult, formatError, jsonResult } from "../utils/validation.js";
 
 import {
-  collectLabelIds,
-  ensureLabelMap,
-  LABELS,
-  REQUIRED_LABELS,
-} from "./gmail.js";
+  appendTelemetryEvent,
+  applyDraftOutcomeLabelsStrict,
+} from "./gmail-shared.js";
 
 // ---------------------------------------------------------------------------
 // Schema
@@ -39,21 +37,25 @@ const processOutboundDraftsSchema = z.object({
 // Firebase outbound draft record (mirrors Prime's OutboundDraftRecord)
 // ---------------------------------------------------------------------------
 
-interface OutboundDraftRecord {
-  to: string;
-  subject: string;
-  bodyText: string;
-  category: "pre-arrival" | "extension-ops";
-  guestName?: string;
-  bookingCode?: string;
-  eventId?: string;
-  status: "pending" | "drafted" | "sent" | "failed";
-  createdAt: string;
-  draftId?: string;
-  gmailMessageId?: string;
-  draftedAt?: string;
-  error?: string;
-}
+const outboundDraftRecordSchema = z.object({
+  to: z.string().email(),
+  subject: z.string().min(1),
+  bodyText: z.string().min(1),
+  category: z.enum(["pre-arrival", "extension-ops"]),
+  guestName: z.string().optional(),
+  bookingCode: z.string().optional(),
+  eventId: z.string().optional(),
+  status: z.enum(["pending", "processing", "drafted", "sent", "failed"]),
+  createdAt: z.string().datetime(),
+  processingStartedAt: z.string().optional(),
+  draftId: z.string().optional(),
+  gmailMessageId: z.string().optional(),
+  draftedAt: z.string().optional(),
+  failedAt: z.string().optional(),
+  error: z.string().optional(),
+});
+
+type OutboundDraftRecord = z.infer<typeof outboundDraftRecordSchema>;
 
 interface FirebaseOptions {
   url: string;
@@ -69,6 +71,16 @@ interface ProcessedDraftResult {
   gmailMessageId?: string;
   status: "drafted" | "failed";
   error?: string;
+}
+
+interface InvalidOutboundRecord {
+  id: string;
+  error: string;
+}
+
+interface ProcessingReconcileEntry {
+  id: string;
+  record: OutboundDraftRecord;
 }
 
 // ---------------------------------------------------------------------------
@@ -122,37 +134,25 @@ async function firebasePatch(
 // Label resolution per category
 // ---------------------------------------------------------------------------
 
-function actorToOutboundLabelName(actor: OutboundActor): string | undefined {
-  switch (actor) {
-    case "human":
-      return LABELS.AGENT_HUMAN;
-    case "claude":
-      return LABELS.AGENT_CLAUDE;
-    case "codex":
-      return LABELS.AGENT_CODEX;
+function categoryToOutcomeCategory(
+  category: OutboundDraftRecord["category"],
+): "pre-arrival" | "operations" {
+  switch (category) {
+    case "pre-arrival":
+      return "pre-arrival";
+    case "extension-ops":
+      return "operations";
     default:
-      // Guard: unknown actor — skip label rather than crash
-      return undefined;
+      return "operations";
   }
 }
 
-function categoryToLabelNames(category: string, actor: OutboundActor): string[] {
-  const labels: string[] = [LABELS.READY_FOR_REVIEW, LABELS.PROCESSED_DRAFTED];
-
-  const agentLabel = actorToOutboundLabelName(actor);
-  if (agentLabel !== undefined) {
-    labels.push(agentLabel);
+function parseTimestamp(value: string | undefined): number | null {
+  if (!value) {
+    return null;
   }
-
-  switch (category) {
-    case "pre-arrival":
-      labels.push(LABELS.OUTBOUND_PRE_ARRIVAL);
-      break;
-    case "extension-ops":
-      labels.push(LABELS.OUTBOUND_OPERATIONS);
-      break;
-  }
-  return labels;
+  const parsed = Date.parse(value);
+  return Number.isNaN(parsed) ? null : parsed;
 }
 
 // ---------------------------------------------------------------------------
@@ -163,11 +163,22 @@ async function processOneDraft(
   id: string,
   record: OutboundDraftRecord,
   gmail: gmail_v1.Gmail,
-  labelMap: Map<string, string>,
   firebase: FirebaseOptions,
   actor: OutboundActor = "human",
 ): Promise<ProcessedDraftResult> {
+  const nowIso = new Date().toISOString();
   try {
+    await firebasePatch(
+      firebase.url,
+      `outboundDrafts/${id}`,
+      {
+        status: "processing",
+        processingStartedAt: nowIso,
+        error: null,
+      },
+      firebase.apiKey,
+    );
+
     const bodyHtml = generateEmailHtml({
       bodyText: record.bodyText,
       includeBookingLink: false,
@@ -184,22 +195,35 @@ async function processOneDraft(
     const draftId = draft.data?.id || undefined;
     const gmailMessageId = draft.data?.message?.id || undefined;
 
-    // Apply labels to the draft message
-    if (gmailMessageId) {
-      const labelNames = categoryToLabelNames(record.category, actor);
-      const labelIds = collectLabelIds(labelMap, labelNames);
-      if (labelIds.length > 0) {
-        try {
-          await gmail.users.messages.modify({
-            userId: "me",
-            id: gmailMessageId,
-            requestBody: { addLabelIds: labelIds },
-          });
-        } catch {
-          // Label application is best-effort
-        }
-      }
-    }
+    await firebasePatch(
+      firebase.url,
+      `outboundDrafts/${id}`,
+      {
+        status: "processing",
+        processingStartedAt: nowIso,
+        draftId,
+        gmailMessageId,
+      },
+      firebase.apiKey,
+    );
+
+    await applyDraftOutcomeLabelsStrict(gmail, {
+      draftMessageId: gmailMessageId ?? "",
+      sourcePath: "outbound",
+      actor,
+      outboundCategory: categoryToOutcomeCategory(record.category),
+      toolName: "prime_process_outbound_drafts",
+    });
+
+    appendTelemetryEvent({
+      ts: nowIso,
+      event_key: "email_draft_created",
+      source_path: "outbound",
+      actor,
+      tool_name: "prime_process_outbound_drafts",
+      message_id: gmailMessageId ?? null,
+      draft_id: draftId ?? null,
+    });
 
     // Update Firebase record
     await firebasePatch(
@@ -209,7 +233,9 @@ async function processOneDraft(
         status: "drafted",
         draftId,
         gmailMessageId,
-        draftedAt: new Date().toISOString(),
+        draftedAt: nowIso,
+        failedAt: null,
+        error: null,
       },
       firebase.apiKey,
     );
@@ -230,7 +256,11 @@ async function processOneDraft(
       await firebasePatch(
         firebase.url,
         `outboundDrafts/${id}`,
-        { status: "failed", error: errorMessage },
+        {
+          status: "failed",
+          failedAt: nowIso,
+          error: errorMessage,
+        },
         firebase.apiKey,
       );
     } catch {
@@ -244,6 +274,109 @@ async function processOneDraft(
       category: record.category,
       status: "failed",
       error: errorMessage,
+    };
+  }
+}
+
+async function reconcileExistingDraft(
+  id: string,
+  record: OutboundDraftRecord,
+  gmail: gmail_v1.Gmail,
+  firebase: FirebaseOptions,
+  actor: OutboundActor = "human",
+): Promise<ProcessedDraftResult> {
+  const nowIso = new Date().toISOString();
+  const draftId = record.draftId?.trim() || undefined;
+
+  if (!draftId) {
+    const error = "Missing draftId for processing reconciliation.";
+    try {
+      await firebasePatch(
+        firebase.url,
+        `outboundDrafts/${id}`,
+        {
+          status: "failed",
+          failedAt: nowIso,
+          error,
+        },
+        firebase.apiKey,
+      );
+    } catch {
+      // Best-effort status update
+    }
+
+    return {
+      id,
+      to: record.to,
+      subject: record.subject,
+      category: record.category,
+      status: "failed",
+      error,
+    };
+  }
+
+  try {
+    const draft = await gmail.users.drafts.get({
+      userId: "me",
+      id: draftId,
+    });
+    const gmailMessageId = draft.data?.message?.id || record.gmailMessageId || undefined;
+
+    await applyDraftOutcomeLabelsStrict(gmail, {
+      draftMessageId: gmailMessageId ?? "",
+      sourcePath: "outbound",
+      actor,
+      outboundCategory: categoryToOutcomeCategory(record.category),
+      toolName: "prime_process_outbound_drafts",
+    });
+
+    await firebasePatch(
+      firebase.url,
+      `outboundDrafts/${id}`,
+      {
+        status: "drafted",
+        draftId,
+        gmailMessageId,
+        draftedAt: nowIso,
+        failedAt: null,
+        error: null,
+      },
+      firebase.apiKey,
+    );
+
+    return {
+      id,
+      to: record.to,
+      subject: record.subject,
+      category: record.category,
+      draftId,
+      gmailMessageId,
+      status: "drafted",
+    };
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    try {
+      await firebasePatch(
+        firebase.url,
+        `outboundDrafts/${id}`,
+        {
+          status: "failed",
+          failedAt: nowIso,
+          error: `Failed draft reconciliation: ${errorMessage}`,
+        },
+        firebase.apiKey,
+      );
+    } catch {
+      // Best-effort status update
+    }
+
+    return {
+      id,
+      to: record.to,
+      subject: record.subject,
+      category: record.category,
+      status: "failed",
+      error: `Failed draft reconciliation: ${errorMessage}`,
     };
   }
 }
@@ -294,9 +427,11 @@ export const outboundDraftTools = [
 async function handleProcessOutboundDrafts(args: unknown) {
   const { firebaseUrl, firebaseApiKey, dryRun, actor } =
     processOutboundDraftsSchema.parse(args);
+  const nowMs = Date.now();
+  const staleProcessingMs = 20 * 60 * 1000;
 
   // Fetch all outbound drafts from Firebase
-  const allDrafts = await firebaseGet<Record<string, OutboundDraftRecord>>(
+  const allDrafts = await firebaseGet<Record<string, unknown>>(
     firebaseUrl,
     "outboundDrafts",
     firebaseApiKey,
@@ -306,16 +441,98 @@ async function handleProcessOutboundDrafts(args: unknown) {
     return jsonResult({ processed: 0, message: "No outbound drafts found." });
   }
 
-  // Filter to pending only
-  const pendingEntries = Object.entries(allDrafts).filter(
-    ([, record]) => record.status === "pending",
-  );
+  // Validate each record and filter to pending only.
+  const invalidRecords: InvalidOutboundRecord[] = [];
+  const pendingEntries: Array<[string, OutboundDraftRecord]> = [];
+  const processingReconcileEntries: ProcessingReconcileEntry[] = [];
+  for (const [id, rawRecord] of Object.entries(allDrafts)) {
+    const parsed = outboundDraftRecordSchema.safeParse(rawRecord);
+    if (!parsed.success) {
+      const validationError = parsed.error.issues
+        .map((issue) => `${issue.path.join(".") || "record"}: ${issue.message}`)
+        .join("; ");
+      invalidRecords.push({
+        id,
+        error: validationError,
+      });
 
-  if (pendingEntries.length === 0) {
+      const invalidRecordStatus =
+        rawRecord && typeof rawRecord === "object" && "status" in rawRecord
+          ? (rawRecord as { status?: unknown }).status
+          : null;
+
+      // Non-dry runs should transition invalid records out of pending to avoid
+      // repeated retries on every execution.
+      if (!dryRun && invalidRecordStatus === "pending") {
+        try {
+          await firebasePatch(
+            firebaseUrl,
+            `outboundDrafts/${id}`,
+            {
+              status: "failed",
+              error: `Invalid outbound draft record: ${validationError}`,
+            },
+            firebaseApiKey,
+          );
+        } catch {
+          // Best-effort status update
+        }
+      }
+
+      continue;
+    }
+
+    if (parsed.data.status === "pending") {
+      pendingEntries.push([id, parsed.data]);
+      continue;
+    }
+
+    if (parsed.data.status === "processing") {
+      const processingStartedAt =
+        parseTimestamp(parsed.data.processingStartedAt) ??
+        parseTimestamp(parsed.data.createdAt);
+      const isStale =
+        processingStartedAt === null ||
+        nowMs - processingStartedAt >= staleProcessingMs;
+
+      if (!isStale) {
+        continue;
+      }
+
+      if (parsed.data.draftId || parsed.data.gmailMessageId) {
+        processingReconcileEntries.push({ id, record: parsed.data });
+        continue;
+      }
+
+      if (!dryRun) {
+        try {
+          await firebasePatch(
+            firebaseUrl,
+            `outboundDrafts/${id}`,
+            {
+              status: "pending",
+              error: "Recovered stale processing state for retry.",
+            },
+            firebaseApiKey,
+          );
+        } catch {
+          continue;
+        }
+      }
+
+      pendingEntries.push([id, { ...parsed.data, status: "pending" }]);
+    }
+  }
+
+  if (pendingEntries.length === 0 && processingReconcileEntries.length === 0) {
     return jsonResult({
       processed: 0,
       total: Object.keys(allDrafts).length,
-      message: "No pending outbound drafts.",
+      invalidRecords,
+      message:
+        invalidRecords.length > 0
+          ? "No processable outbound drafts after filtering invalid records."
+          : "No processable outbound drafts.",
     });
   }
 
@@ -329,7 +546,15 @@ async function handleProcessOutboundDrafts(args: unknown) {
         category: record.category,
         createdAt: record.createdAt,
       })),
+      processingReconcile: processingReconcileEntries.map(({ id, record }) => ({
+        id,
+        category: record.category,
+        draftId: record.draftId ?? null,
+        gmailMessageId: record.gmailMessageId ?? null,
+        processingStartedAt: record.processingStartedAt ?? null,
+      })),
       total: Object.keys(allDrafts).length,
+      invalidRecords,
     });
   }
 
@@ -349,16 +574,24 @@ async function handleProcessOutboundDrafts(args: unknown) {
   }
 
   const gmail = clientResult.client;
-  const labelMap = await ensureLabelMap(gmail, REQUIRED_LABELS);
 
   // Process each pending draft sequentially
   const results: ProcessedDraftResult[] = [];
+  for (const { id, record } of processingReconcileEntries) {
+    const result = await reconcileExistingDraft(
+      id,
+      record,
+      gmail,
+      { url: firebaseUrl, apiKey: firebaseApiKey },
+      actor,
+    );
+    results.push(result);
+  }
   for (const [id, record] of pendingEntries) {
     const result = await processOneDraft(
       id,
       record,
       gmail,
-      labelMap,
       { url: firebaseUrl, apiKey: firebaseApiKey },
       actor,
     );
@@ -372,6 +605,7 @@ async function handleProcessOutboundDrafts(args: unknown) {
     processed: results.length,
     drafted,
     failed,
+    invalidRecords,
     results,
   });
 }

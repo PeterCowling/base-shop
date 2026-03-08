@@ -23,6 +23,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
+      "@acme/platform-core": ["../../packages/platform-core/dist/index.d.ts"],
+      "@acme/platform-core/*": ["../../packages/platform-core/dist/*"],
       "@acme/ui": ["../../packages/ui/dist/index.d.ts"],
       "@acme/ui/*": ["../../packages/ui/dist/*"]
     }

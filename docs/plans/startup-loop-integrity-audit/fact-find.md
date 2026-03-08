@@ -52,19 +52,19 @@ Six medium-severity issues found (action required) and nine low-severity warning
 ## Evidence Audit (Current State)
 ### Entry Points
 - `scripts/src/startup-loop/` — TypeScript implementation layer (derive-state, event-validation, stage-addressing, bottleneck-detector, growth-metrics-adapter, funnel-metrics-extractor)
-- `docs/business-os/startup-loop/loop-spec.yaml` — authoritative spec (v1.7.0, 22 stages)
-- `docs/business-os/startup-loop/bottleneck-diagnosis-schema.md` — bottleneck system documentation
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml` — authoritative spec (v1.7.0, 22 stages)
+- `docs/business-os/startup-loop/schemas/bottleneck-diagnosis-schema.md` — bottleneck system documentation
 - `.claude/skills/startup-loop/` — operator skill modules (SKILL.md, cmd-start.md, cmd-advance.md)
 - `docs/business-os/startup-loop/artifact-registry.md` — artifact dependency diagram
 - `scripts/src/startup-loop/__tests__/` — test suite
 
 ### Key Modules / Files
 - `scripts/src/startup-loop/derive-state.ts` — `RunEvent` type union, state derivation logic; dynamic (no hardcoded stage assumptions)
-- `scripts/src/startup-loop/event-validation.ts` — event type validator; accepts `run_aborted` not declared in `RunEvent`
-- `scripts/src/startup-loop/bottleneck-detector.ts` — `UPSTREAM_PRIORITY_ORDER` array (22 IDs, correct); imports `StageId` from `stage-addressing`
-- `scripts/src/startup-loop/growth-metrics-adapter.ts` — material derivation logic; **no test file**
-- `scripts/src/startup-loop/funnel-metrics-extractor.ts` — profile adapter metrics (S2A schema doc, Section 2A) documented but **not implemented**
-- `docs/business-os/startup-loop/bottleneck-diagnosis-schema.md` — Section 5 `upstream_priority_order` **missing S0A, S0B, S0C, S0D, S3B**
+- `scripts/src/startup-loop/diagnostics/event-validation.ts` — event type validator; accepts `run_aborted` not declared in `RunEvent`
+- `scripts/src/startup-loop/diagnostics/bottleneck-detector.ts` — `UPSTREAM_PRIORITY_ORDER` array (22 IDs, correct); imports `StageId` from `stage-addressing`
+- `scripts/src/startup-loop/diagnostics/growth-metrics-adapter.ts` — material derivation logic; **no test file**
+- `scripts/src/startup-loop/diagnostics/funnel-metrics-extractor.ts` — profile adapter metrics (S2A schema doc, Section 2A) documented but **not implemented**
+- `docs/business-os/startup-loop/schemas/bottleneck-diagnosis-schema.md` — Section 5 `upstream_priority_order` **missing S0A, S0B, S0C, S0D, S3B**
 - `.claude/skills/startup-loop/modules/cmd-start.md` — Gate D: S0A documented; **S0B, S0C, and S0D sub-stages missing separate prompt_file/required_output_path guidance** — Gate D provides one block for the whole S0A–S0D sequence but does not enumerate handoff paths for each sub-stage individually
 - `.claude/skills/startup-loop/modules/cmd-advance.md` — GATE-S3B-01 referenced in changelog but **not implemented** in any advance routing block
 - `docs/business-os/startup-loop/artifact-registry.md` — dependency diagram **factually wrong**: shows `lp-forecast` nested under `lp-channels` (implies S3 depends on S6B); actual model is parallel fan-out from S2B
@@ -142,16 +142,16 @@ Six medium-severity issues found (action required) and nine low-severity warning
 - Repository snapshot reviewed: `a15eb1306a` (2026-02-20)
 - Command used: `git log --oneline -n 8 -- scripts/src/startup-loop docs/business-os/startup-loop .claude/skills/startup-loop`
 - `scripts/src/startup-loop/` — recent commits include TASK-04 (stage ID expansions 17→22), TASK-09 (loop-spec.yaml GATE-BD-00 comment fix), TASK-10 (skill registry regeneration)
-- `docs/business-os/startup-loop/bottleneck-diagnosis-schema.md` — last updated before v1.7.0 stage additions; `upstream_priority_order` not updated with new IDs
+- `docs/business-os/startup-loop/schemas/bottleneck-diagnosis-schema.md` — last updated before v1.7.0 stage additions; `upstream_priority_order` not updated with new IDs
 
 ## Questions
 ### Resolved
 - Q: Should `run_aborted` be additive (first-class event) or reductive (remove from validator)?
   - A: Additive is the long-term choice. Keep `run_aborted` as a run-level event and align schema + derivation + recovery around it.
-  - Evidence: `scripts/src/startup-loop/event-validation.ts` already accepts it; `scripts/src/startup-loop/recovery.ts` emits it; `scripts/src/startup-loop/__tests__/recovery.test.ts` asserts it; removing it would discard explicit abort audit events.
+  - Evidence: `scripts/src/startup-loop/diagnostics/event-validation.ts` already accepts it; `scripts/src/startup-loop/recovery.ts` emits it; `scripts/src/startup-loop/__tests__/recovery.test.ts` asserts it; removing it would discard explicit abort audit events.
 - Q: Is there a current `run_aborted` type/runtime mismatch?
   - A: Yes — validator accepts `run_aborted`, while `derive-state.ts` omits it from the `RunEvent` union and event switch.
-  - Evidence: `scripts/src/startup-loop/event-validation.ts`, `scripts/src/startup-loop/derive-state.ts`
+  - Evidence: `scripts/src/startup-loop/diagnostics/event-validation.ts`, `scripts/src/startup-loop/derive-state.ts`
 - Q: Is GATE-S3B-01 draft/in-progress or genuinely missing?
   - A: Genuinely missing — v1.6.0 changelog entry exists, no advance routing block references it anywhere
   - Evidence: `cmd-advance.md` gate block search returned no GATE-S3B-01 routing

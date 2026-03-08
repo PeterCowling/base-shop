@@ -4,7 +4,7 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "@jest/globals";
 
-import { runMetricsRollup } from "../lp-do-ideas-metrics-runner.js";
+import { runMetricsRollup } from "../ideas/lp-do-ideas-metrics-runner.js";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -261,7 +261,37 @@ describe("runMetricsRollup", () => {
     expect(result!.rollup.cycle_count).toBe(0);
   });
 
-  it("TC-07-D: generated_at field is an ISO-8601 string in the output", () => {
+  it("TC-07-D: micro_build_ready packets count as DO lane work", () => {
+    const dir = makeTmpDir();
+
+    const telemetryPath = writeTelemetry(dir, [makeCycleSnapshot()]);
+    const queueStatePath = writeQueueState(dir, [
+      makeQueueEntry({
+        dispatch_id: "IDEA-DISPATCH-20260220000000-0003",
+        queue_state: "processed",
+        packet: {
+          ...((makeQueueEntry() as { packet: object }).packet),
+          dispatch_id: "IDEA-DISPATCH-20260220000000-0003",
+          recommended_route: "lp-do-build",
+          status: "micro_build_ready",
+          provisional_deliverable_family: "code-change",
+          location_anchors: ["apps/reception/src/components/catalog/CatalogConsole.client.tsx"],
+        },
+      }),
+    ]);
+
+    const result = runMetricsRollup({
+      telemetryPath,
+      queueStatePath,
+      now: new Date("2026-02-25T00:00:00.000Z"),
+    });
+
+    expect(result.ready).toBe(true);
+    expect(result.rollup.lane_mix.DO_completed).toBe(1);
+    expect(result.rollup.lane_mix.IMPROVE_completed).toBe(0);
+  });
+
+  it("TC-07-E: generated_at field is an ISO-8601 string in the output", () => {
     const dir = makeTmpDir();
 
     const telemetryPath = writeTelemetry(dir, [

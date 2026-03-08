@@ -13,7 +13,8 @@ import { isGuideLive } from "@/data/guides.index";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { type AppLanguage, i18nConfig } from "@/i18n.config";
 import { Facebook, Instagram } from "@/icons";
-import { guideHref } from "@/routes.guides-helpers";
+import footerEn from "@/locales/en/footer.json";
+import { type GuideKey,guideNamespace, guideSlug } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 
 import FooterLegalRow from "./FooterLegalRow";
@@ -38,7 +39,6 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
   })();
   const lang = explicitLang ?? normalizedI18nLang ?? fallbackLang;
   const { t: tFooter } = useTranslation("footer", { lng: lang });
-  const { t: tDeals } = useTranslation("dealsPage", { lng: lang });
   const rawPathname = usePathname();
   const pathname = rawPathname ?? "";
 
@@ -65,31 +65,53 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
     [pathname, lang],
   );
 
+  function resolveFooterLabel(key: string, fallback?: string): string {
+    const englishFallback =
+      fallback ??
+      (Object.prototype.hasOwnProperty.call(footerEn, key)
+        ? (footerEn as Record<string, string>)[key]
+        : undefined) ??
+      key;
+    const value = tFooter(key, { lng: lang, defaultValue: englishFallback }) as string;
+    if (typeof value !== "string") return englishFallback;
+    const trimmed = value.trim();
+    if (!trimmed || trimmed === key) return englishFallback;
+    return trimmed;
+  }
+
+  const resolveCanonicalGuideHref = useCallback(
+    (guideKey: GuideKey): string => {
+      const baseKey = guideNamespace(lang, guideKey).baseKey;
+      return `/${lang}/${getSlug(baseKey, lang)}/${guideSlug(lang, guideKey)}`;
+    },
+    [lang],
+  );
+
   const addressLines = [
     hotel.address.streetAddress,
     `${hotel.address.postalCode} ${hotel.address.addressLocality}`,
-    tFooter("addressCountry", { lng: lang }) as string,
+    resolveFooterLabel("addressCountry"),
   ];
 
   const legalLinks: FooterLink[] = [
     {
       key: "terms",
-      label: tFooter("terms", { lng: lang }) as string,
+      label: resolveFooterLabel("terms"),
       href: `/${lang}/${getSlug("terms", lang)}`,
     },
     {
       key: "houseRules",
-      label: tFooter("houseRules", { lng: lang }) as string,
+      label: resolveFooterLabel("houseRules"),
       href: `/${lang}/${getSlug("houseRules", lang)}`,
     },
     {
       key: "privacy",
-      label: tFooter("privacy", { lng: lang }) as string,
+      label: resolveFooterLabel("privacy"),
       href: `/${lang}/${getSlug("privacyPolicy", lang)}`,
     },
     {
       key: "cookies",
-      label: tFooter("cookies", { lng: lang }) as string,
+      label: resolveFooterLabel("cookies"),
       href: `/${lang}/${getSlug("cookiePolicy", lang)}`,
     },
   ];
@@ -97,17 +119,17 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
   const exploreLinks: FooterLink[] = [
     {
       key: "rooms",
-      label: tFooter("rooms", { lng: lang }) as string,
-      href: `/${lang}/${getSlug("rooms", lang)}`,
+      label: resolveFooterLabel("rooms"),
+      href: `/${lang}/${getSlug("book", lang)}`,
     },
     {
       key: "experiences",
-      label: tFooter("experiences", { lng: lang }) as string,
+      label: resolveFooterLabel("experiences"),
       href: `/${lang}/${getSlug("experiences", lang)}`,
     },
     {
       key: "deals",
-      label: tFooter("deals", { lng: lang }) as string,
+      label: resolveFooterLabel("deals"),
       href: `/${lang}/${getSlug("deals", lang)}`,
     },
   ];
@@ -115,20 +137,20 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
   const infoLinks: FooterLink[] = [
     {
       key: "howToGetHere",
-      label: tFooter("howToGetHere", { lng: lang }) as string,
+      label: resolveFooterLabel("howToGetHere"),
       href: `/${lang}/${getSlug("howToGetHere", lang)}`,
     },
     {
       key: "assistance",
-      label: tFooter("assistance", { lng: lang }) as string,
+      label: resolveFooterLabel("assistance"),
       href: `/${lang}/${getSlug("assistance", lang)}`,
     },
     ...(isGuideLive("travelFaqsAmalfi")
       ? [
           {
             key: "faq",
-            label: tFooter("faq", { lng: lang }) as string,
-            href: guideHref(lang, "travelFaqsAmalfi"),
+            label: resolveFooterLabel("faq"),
+            href: resolveCanonicalGuideHref("travelFaqsAmalfi"),
           },
         ]
       : []),
@@ -136,8 +158,8 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
       ? [
           {
             key: "checkinCheckout",
-            label: tFooter("checkinCheckout", { lng: lang }) as string,
-            href: guideHref(lang, "checkinCheckout"),
+            label: resolveFooterLabel("checkinCheckout"),
+            href: resolveCanonicalGuideHref("checkinCheckout"),
           },
         ]
       : []),
@@ -145,8 +167,8 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
       ? [
           {
             key: "houseRules",
-            label: tFooter("houseRules", { lng: lang }) as string,
-            href: guideHref(lang, "rules"),
+            label: resolveFooterLabel("houseRules"),
+            href: resolveCanonicalGuideHref("rules"),
           },
         ]
       : []),
@@ -154,8 +176,8 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
       ? [
           {
             key: "cancellationPolicy",
-            label: tFooter("cancellationPolicy", { lng: lang }) as string,
-            href: guideHref(lang, "changingCancelling"),
+            label: resolveFooterLabel("cancellationPolicy"),
+            href: resolveCanonicalGuideHref("changingCancelling"),
           },
         ]
       : []),
@@ -164,26 +186,31 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
   const socialLinks: FooterLink[] = [
     {
       key: "instagram",
-      label: tFooter("instagram", { lng: lang }) as string,
+      label: resolveFooterLabel("instagram"),
       href: "https://www.instagram.com/brikettepositano",
       external: true,
       newTab: true,
     },
     {
       key: "facebook",
-      label: tFooter("facebook", { lng: lang }) as string,
+      label: resolveFooterLabel("facebook"),
       href: "https://www.facebook.com/hostelbrikette",
       external: true,
       newTab: true,
     },
   ];
 
-  const backToTopLabel = tFooter("backToTop", { lng: lang }) as string;
-  const copyright = tFooter("copyright", { lng: lang, year: CURRENT_YEAR }) as string;
-  const noPhoneNotice = tFooter("noPhoneNotice", { lng: lang }) as string;
-  const emailLinkLabel = `${tFooter("email", { lng: lang })}: ${CONTACT_EMAIL}`;
-  const bookDirectCtaLabel = tDeals("dealCard.cta.bookDirect", { lng: lang, defaultValue: "Book direct" }) as string;
-  const navAriaLabel = tFooter("navAriaLabel", { lng: lang }) as string;
+  const backToTopLabel = resolveFooterLabel("backToTop");
+  const copyright = (tFooter("copyright", {
+    lng: lang,
+    year: CURRENT_YEAR,
+    defaultValue: resolveFooterLabel("copyright"),
+  }) as string) || resolveFooterLabel("copyright");
+  const noPhoneNotice = resolveFooterLabel("noPhoneNotice");
+  const emailLabel = resolveFooterLabel("email");
+  const emailLinkLabel = `${emailLabel}: ${CONTACT_EMAIL}`;
+  const bookDirectCtaLabel = resolveFooterLabel("bookDirect", "Book direct");
+  const navAriaLabel = resolveFooterLabel("navAriaLabel");
 
   return (
     <footer className="bg-brand-primary text-brand-bg dark:bg-brand-surface dark:text-brand-text">
@@ -195,14 +222,14 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
             <p className="text-xl font-semibold tracking-tight">{brandName}</p>
             <p className="text-sm text-brand-bg/80 dark:text-brand-text/80">{brandDescription}</p>
             <Link
-              href={`/${lang}/book`}
+              href={`/${lang}/${getSlug("book", lang)}`}
               className="self-start text-sm font-medium text-brand-secondary hover:underline"
             >
               {bookDirectCtaLabel} →
             </Link>
             <div className="flex flex-col gap-2 pt-1">
               <p className="text-xs font-semibold uppercase tracking-widest text-brand-bg/75 dark:text-brand-text/75">
-                {tFooter("locationHeading", { lng: lang })}
+                {resolveFooterLabel("locationHeading")}
               </p>
               <address className="flex items-start gap-2 text-sm not-italic">
                 <MapPin className="mt-0.5 size-4 shrink-0 opacity-60" aria-hidden />
@@ -215,7 +242,7 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
                 </span>
               </address>
               <FooterTextLink href={mapUrl} external newTab size="sm">
-                {tFooter("mapLink", { lng: lang })}
+                {resolveFooterLabel("mapLink")}
               </FooterTextLink>
             </div>
           </div>
@@ -229,7 +256,7 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
               {/* Explore */}
               <div className="space-y-3">
                 <p className="text-sm font-semibold text-brand-bg/90 dark:text-brand-text/90">
-                  {tFooter("exploreHeading", { lng: lang })}
+                  {resolveFooterLabel("exploreHeading")}
                 </p>
                 <ul className="space-y-1">
                   {exploreLinks.map((link) => (
@@ -250,7 +277,7 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
               {/* Info */}
               <div className="space-y-3">
                 <p className="text-sm font-semibold text-brand-bg/90 dark:text-brand-text/90">
-                  {tFooter("infoHeading", { lng: lang })}
+                  {resolveFooterLabel("infoHeading")}
                 </p>
                 <ul className="space-y-1">
                   {infoLinks.map((link) => (
@@ -276,7 +303,7 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
           <div className="flex flex-col gap-6 sm:col-span-1 xl:col-span-1">
             <div className="flex flex-col gap-2">
               <p className="text-xs font-semibold uppercase tracking-widest text-brand-bg/75 dark:text-brand-text/75">
-                {tFooter("contactHeading", { lng: lang })}
+                {resolveFooterLabel("contactHeading")}
               </p>
               <FooterTextLink
                 href={`mailto:${CONTACT_EMAIL}`}
@@ -290,7 +317,7 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
 
             <div className="flex flex-col gap-2">
               <p className="text-xs font-semibold uppercase tracking-widest text-brand-bg/75 dark:text-brand-text/75">
-                {tFooter("follow", { lng: lang })}
+                {resolveFooterLabel("follow")}
               </p>
               <Cluster as="ul" className="items-center">
                 {socialLinks.map((link) => (

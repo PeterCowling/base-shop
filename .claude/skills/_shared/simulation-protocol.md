@@ -1,10 +1,10 @@
-# Simulation Protocol (Shared)
+# Rehearsal Protocol (Shared)
 
-Used by `lp-do-plan` (Phase 7.5, plan simulation mode), `lp-do-fact-find` (Phase 5.5, scope simulation mode), and `lp-do-critique` (Step 5a, forward simulation trace mode).
+Used by `lp-do-plan` (Phase 7.5, plan rehearsal mode), `lp-do-fact-find` (Phase 5.5, scope rehearsal mode), and `lp-do-critique` (Step 5a, forward rehearsal trace mode).
 
-## What Simulation Is
+## What Rehearsal Is
 
-Simulation is a **structured forward trace** performed by the agent reading the proposed artifact (plan task sequence, fact-find scope, or critique target) and asking, at each step:
+Rehearsal is a **structured forward trace** performed by the agent reading the proposed artifact (plan task sequence, fact-find scope, or critique target) and asking, at each step:
 
 > If I were an agent executing this step, given only what is stated or discoverable in the repository at planning time, would this step succeed or fail? Why?
 
@@ -16,13 +16,13 @@ The trace is:
 - **Boundary-aware:** integration points (API calls, config lookups, type intersections, environment variables) are inspected for contract mismatches.
 - **Structured:** output is a table per step, not prose narration.
 
-Simulation is **not a replacement for tests.** It catches structural and contract issues visible at planning time. Tests enforce correctness after implementation. The correct framing: simulation raises the baseline quality floor before build begins.
+Rehearsal is **not a replacement for tests.** It catches structural and contract issues visible at planning time. Tests enforce correctness after implementation. The correct framing: rehearsal raises the baseline quality floor before build begins.
 
 ## Issue Taxonomy
 
 Issues are classified using the same severity labels as `lp-do-critique`: **Critical / Major / Moderate / Minor**.
 
-### What Simulation Can Catch
+### What Rehearsal Can Catch
 
 | Category | Description | Example |
 |---|---|---|
@@ -37,7 +37,7 @@ Issues are classified using the same severity labels as `lp-do-critique`: **Crit
 | Execution path not traced | (lp-do-critique only) The critique asserts feasibility for a step without having checked whether the relevant code path actually exists | Critique approves a plan step referencing a module that does not exist |
 | Ordering inversion | Steps are sequenced in an order that will produce a failure at runtime even if individually correct | Database seeded before schema migrated; component registered before its dependency is installed |
 
-### What Simulation Cannot Catch (Limits)
+### What Rehearsal Cannot Catch (Limits)
 
 | Limit | Why |
 |---|---|
@@ -50,38 +50,38 @@ Issues are classified using the same severity labels as `lp-do-critique`: **Crit
 
 ## Tiered Gate Rules
 
-Simulation findings are tiered: Critical findings are a hard gate; Major, Moderate, and Minor findings are advisory.
+Rehearsal findings are tiered: Critical findings are a hard gate; Major, Moderate, and Minor findings are advisory.
 
 **Critical findings (hard gate):**
 - Block the artifact from being emitted with a passing status (`Status: Active` for plans; `Status: Ready-for-planning` for fact-finds).
-- The agent must either resolve the Critical issue before emitting the artifact, or write a `Simulation-Critical-Waiver` block (see Waiver Format below).
+- The agent must either resolve the Critical issue before emitting the artifact, or write a `Rehearsal-Critical-Waiver` block (see Waiver Format below).
 - Unresolved Critical findings with no waiver = artifact must not proceed.
 
 **Major / Moderate / Minor findings (advisory):**
-- Written into the `## Simulation Trace` section of the artifact.
+- Written into the `## Rehearsal Trace` section of the artifact.
 - Do not block emission.
 - Are visible to `lp-do-critique` in subsequent rounds; unresolved Major findings will degrade Evidence, Feasibility, and Risk-handling dimension scores.
 - Operator and critique can accept, address, or override these findings without a formal waiver.
 
 ## Waiver Format
 
-When a Critical simulation finding is a false positive — the agent has incorrectly identified something as missing that actually exists elsewhere or is provided implicitly — write a `Simulation-Critical-Waiver` block immediately below the `## Simulation Trace` section:
+When a Critical rehearsal finding is a false positive — the agent has incorrectly identified something as missing that actually exists elsewhere or is provided implicitly — write a `Rehearsal-Critical-Waiver` block immediately below the `## Rehearsal Trace` section:
 
 ```
-## Simulation-Critical-Waiver
+## Rehearsal-Critical-Waiver
 
 - **Critical flag:** <describe the Critical finding being waived>
-- **False-positive reason:** <explain why this finding is incorrect — what the simulation could not see>
-- **Evidence of missing piece:** <cite the file, section, task, or implicit contract that provides the prerequisite the simulation thought was absent>
+- **False-positive reason:** <explain why this finding is incorrect — what the rehearsal could not see>
+- **Evidence of missing piece:** <cite the file, section, task, or implicit contract that provides the prerequisite the rehearsal thought was absent>
 ```
 
 All three fields are required. A waiver with any field missing or vague is not a valid waiver — resolve the Critical issue instead.
 
 The waiver is visible to `lp-do-critique`. Critique will evaluate whether the waiver reasoning is sound. An unconvincing waiver will be flagged as a Major finding.
 
-## Simulation Trace Output Format
+## Rehearsal Trace Output Format
 
-The trace is written as a `## Simulation Trace` section added to the artifact **before the persist step** (before `Status: Active` or `Status: Ready-for-planning` is set).
+The trace is written as a `## Rehearsal Trace` section added to the artifact **before the persist step** (before `Status: Active` or `Status: Ready-for-planning` is set).
 
 For **lp-do-plan** (plan trace — one row per task in the sequenced task list):
 
@@ -95,11 +95,11 @@ For **lp-do-fact-find** (scope trace — one row per scope area from the investi
 |---|---|---|---|
 | <evidence domain or entry point> | Yes / Partial / No | None — or: [Category] [Severity]: <description> | Yes / No |
 
-For **lp-do-critique**, findings are folded into Step 5 output inline — no separate `## Simulation Trace` section is produced. The forward trace reasoning is written as a sub-section within the Step 5 output block.
+For **lp-do-critique**, findings are folded into Step 5 output inline — no separate `## Rehearsal Trace` section is produced. The forward trace reasoning is written as a sub-section within the Step 5 output block.
 
-## Scope Simulation Checklist (lp-do-fact-find Phase 5.5)
+## Scope Rehearsal Checklist (lp-do-fact-find Phase 5.5)
 
-For fact-find scope simulation, the agent walks through the investigation scope and checks these five categories. A finding in any category is classified using the issue taxonomy above.
+For fact-find scope rehearsal, the agent walks through the investigation scope and checks these five categories. A finding in any category is classified using the issue taxonomy above.
 
 1. **Concrete investigation path:** For each evidence area named in the scope, is there a concrete path to investigate it? (A file to read, a pattern to search, a boundary to inspect.) A named area with no investigation path is a scope gap.
 2. **Investigation ordering:** Does any evidence area depend on findings from another area that has not been investigated first? (Example: auth middleware behaviour depends on reading the route definition — if the route is investigated after auth, the investigation order is inverted.)
@@ -107,14 +107,14 @@ For fact-find scope simulation, the agent walks through the investigation scope 
 4. **Circular investigation dependency:** Does any scope area's conclusion depend on a finding from an area that itself depends on the first area's conclusion?
 5. **Missing domain coverage:** Is there a domain that the proposed change is known to touch (from the area anchor or location anchors) that is absent from the investigation scope entirely?
 
-## Forward Simulation Trace Instructions (lp-do-critique Step 5a)
+## Forward Rehearsal Trace Instructions (lp-do-critique Step 5a)
 
-Within Step 5 (Feasibility and Execution Reality), after completing the existing code-track and business-artifact checks, run a forward simulation trace of the target document:
+Within Step 5 (Feasibility and Execution Reality), after completing the existing code-track and business-artifact checks, run a forward rehearsal trace of the target document:
 
 1. Identify the proposed execution sequence (task order for plans; investigation order for fact-finds; proposed implementation steps for other artifacts).
 2. For each step in the sequence, apply the issue taxonomy above: check for Missing preconditions, Circular dependencies, Undefined config keys, API signature mismatches, Type contract gaps, Missing data dependencies, Integration boundaries not handled, and Ordering inversions.
 3. Classify each finding by severity (Critical / Major / Moderate / Minor) and state the specific issue category.
-4. Record findings inline within Step 5 output. Use the label `[Simulation]` to distinguish these from standard feasibility findings.
-5. If a Critical simulation finding is identified: flag it explicitly in the Top Issues section (Section 2) and in the Fix List (Section 10). Do not fold Critical simulation findings silently into Step 5 prose.
+4. Record findings inline within Step 5 output. Use the label `[Rehearsal]` to distinguish these from standard feasibility findings.
+5. If a Critical rehearsal finding is identified: flag it explicitly in the Top Issues section (Section 2) and in the Fix List (Section 10). Do not fold Critical rehearsal findings silently into Step 5 prose.
 
-Simulation findings in critique are advisory to the critique score — they do not trigger a separate hard gate in critique mode. The hard gate lives in lp-do-plan (Phase 7.5) and lp-do-fact-find (Phase 5.5), before the artifact reaches critique.
+Rehearsal findings in critique are advisory to the critique score — they do not trigger a separate hard gate in critique mode. The hard gate lives in lp-do-plan (Phase 7.5) and lp-do-fact-find (Phase 5.5), before the artifact reaches critique.

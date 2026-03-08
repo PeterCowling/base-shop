@@ -11,7 +11,7 @@ Measured on:
 
 ## Cutoff Recap (Operational State)
 
-- Contract migration cutoffs were set to `2026-02-14` in `docs/business-os/startup-loop/contract-migration.yaml`, meaning:
+- Contract migration cutoffs were set to `2026-02-14` in `docs/business-os/startup-loop/operations/contract-migration.yaml`, meaning:
   - Alias stage keys are disabled starting `2026-02-15T00:00:00Z`.
   - Legacy filename dual-read is disabled starting `2026-02-15T00:00:00Z`.
 

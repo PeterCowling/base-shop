@@ -90,11 +90,47 @@ function parseHslTriplet(value: string): { h: string; s: string; l: string; a?: 
   return { h, s, l, a };
 }
 
+/** Convert oklch(L C H) to a hex color string using CSS Color 4 math. */
+function oklchToHex(L: number, C: number, H: number): string {
+  const hRad = (H * Math.PI) / 180;
+  const a = C * Math.cos(hRad);
+  const b = C * Math.sin(hRad);
+
+  // OKLab → LMS (inverse M2)
+  const l_ = L + 0.3963377774 * a + 0.2158037573 * b;
+  const m_ = L - 0.1055613458 * a - 0.0638541728 * b;
+  const s_ = L - 0.0894841775 * a - 1.291485548 * b;
+
+  // Cube root → linear
+  const lc = l_ ** 3;
+  const mc = m_ ** 3;
+  const sc = s_ ** 3;
+
+  // LMS → linear sRGB (inverse M1)
+  const rl = Math.max(0, Math.min(1,  4.0767416621 * lc - 3.3077115913 * mc + 0.2309699292 * sc));
+  const gl = Math.max(0, Math.min(1, -1.2684380046 * lc + 2.6097574011 * mc - 0.3413193965 * sc));
+  const bl = Math.max(0, Math.min(1, -0.0041960863 * lc - 0.7034186147 * mc + 1.707614701  * sc));
+
+  // Linear → gamma-compressed sRGB
+  const compress = (c: number) => (c <= 0.0031308 ? 12.92 * c : 1.055 * c ** (1 / 2.4) - 0.055);
+  const r = Math.round(compress(rl) * 255);
+  const g = Math.round(compress(gl) * 255);
+  const b2 = Math.round(compress(bl) * 255);
+
+  return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b2.toString(16).padStart(2, "0")}`;
+}
+
 function normalizeColor(value: string): string | null {
   const trimmed = value.trim();
   if (!trimmed || trimmed.startsWith("var(")) return null;
   if (/^#([0-9a-f]{3,8})$/i.test(trimmed)) return trimmed;
   if (/^(rgb|rgba|hsl|hsla)\(/i.test(trimmed)) return trimmed;
+
+  // OKLCH: convert to hex for polished compat
+  const oklch = trimmed.match(/^oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*\)$/i);
+  if (oklch) {
+    return oklchToHex(parseFloat(oklch[1]), parseFloat(oklch[2]), parseFloat(oklch[3]));
+  }
 
   const hsl = parseHslTriplet(trimmed);
   if (!hsl) return null;

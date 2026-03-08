@@ -58,13 +58,13 @@ const ROOMS_BOOKING_SLUGS = new Set<string>([
   "yoyaku",
   "yeyak",
   "hajz",
+  "aarakshan",
   "dat-phong",
   "rezerwuj",
   "boka",
   "bestill",
+  "bestil",
   "foglalas",
-  // Some locales reuse English for "book" (keep explicit for clarity)
-  "book",
 ]);
 
 const getSecondPathSegment = (pathname: string): string | undefined => {

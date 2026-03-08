@@ -122,6 +122,10 @@ describe("PreToolUse hook — Deny patterns", () => {
       expect(result.stderr.toLowerCase()).toContain(
         expectedReason.toLowerCase(),
       );
+      // Contract: every deny path must include anti-retry guidance
+      expect(result.stderr).toContain("Do not retry with");
+      // Contract: every deny path must include escalation guidance
+      expect(result.stderr).toContain("Escalation:");
     },
   );
 });

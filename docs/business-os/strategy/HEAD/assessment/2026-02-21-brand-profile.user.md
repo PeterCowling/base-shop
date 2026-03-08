@@ -7,7 +7,7 @@ Created: 2026-02-21
 Updated: 2026-02-21
 Owner: Pete
 Source-Name: docs/business-os/strategy/HEAD/2026-02-21-candidate-names-r2.user.md
-Source-Audience: docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md
+Source-Audience: docs/business-os/startup-baselines/HEAD/2026-02-12-assessment-intake-packet.user.md
 Source-Personality: docs/business-os/strategy/HEAD/2026-02-21-brand-identity-dossier.user.md
 Source-Voice: docs/business-os/strategy/HEAD/messaging-hierarchy.user.md
 Review-trigger: After each completed build cycle touching this document.

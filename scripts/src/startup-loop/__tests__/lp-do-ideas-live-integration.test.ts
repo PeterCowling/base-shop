@@ -14,11 +14,11 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "@jest/globals";
 
-import { runLiveOrchestrator } from "../lp-do-ideas-live.js";
-import { runLiveHook } from "../lp-do-ideas-live-hook.js";
-import { type PersistedQueueState, persistOrchestratorResult } from "../lp-do-ideas-persistence.js";
-import { routeDispatch, type RouteSuccess } from "../lp-do-ideas-routing-adapter.js";
-import type { ArtifactDeltaEvent } from "../lp-do-ideas-trial.js";
+import { runLiveOrchestrator } from "../ideas/lp-do-ideas-live.js";
+import { runLiveHook } from "../ideas/lp-do-ideas-live-hook.js";
+import { type PersistedQueueState, persistOrchestratorResult } from "../ideas/lp-do-ideas-persistence.js";
+import { routeDispatch, type RouteSuccess } from "../ideas/lp-do-ideas-routing-adapter.js";
+import type { ArtifactDeltaEvent } from "../ideas/lp-do-ideas-trial.js";
 
 // ---------------------------------------------------------------------------
 // Fixtures

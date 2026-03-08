@@ -12,11 +12,22 @@
 import { buildDirectMessageChannelId } from '../../src/lib/chat/directMessageChannel';
 import { canSendDirectMessage } from '../../src/lib/chat/messagingPolicy';
 import type { GuestProfile } from '../../src/types/guestProfile';
-
-import { FirebaseRest, errorResponse, jsonResponse } from '../lib/firebase-rest';
 import { recordDirectTelemetry } from '../lib/direct-telemetry';
+import { errorResponse, FirebaseRest, jsonResponse } from '../lib/firebase-rest';
 import { validateGuestSessionToken } from '../lib/guest-session';
 import { enforceKvRateLimit } from '../lib/kv-rate-limit';
+import type { PrimeMessagingEnv } from '../lib/prime-messaging-db';
+import { shadowWritePrimeInboundDirectMessage } from '../lib/prime-messaging-shadow-write';
+
+function parseCookie(cookieHeader: string, name: string): string | null {
+  for (const part of cookieHeader.split(';')) {
+    const [key, ...rest] = part.trim().split('=');
+    if (key.trim() === name) {
+      return rest.join('=').trim() || null;
+    }
+  }
+  return null;
+}
 
 interface Env {
   CF_FIREBASE_DATABASE_URL: string;
@@ -55,10 +66,12 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   try {
     body = await request.json() as DirectMessageRequestBody;
   } catch {
-    return errorResponse('Invalid JSON body', 400);
+    return errorResponse('Invalid JSON body', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
-  const token = request.headers.get('X-Prime-Guest-Token')?.trim() ?? '';
+  const token = parseCookie(request.headers.get('Cookie') ?? '', 'prime_session')
+    ?? request.headers.get('X-Prime-Guest-Token')?.trim()
+    ?? '';
   const requestedBookingId = request.headers.get('X-Prime-Guest-Booking-Id')?.trim() ?? '';
   const bookingId = (body.bookingId ?? '').trim();
   const peerUuid = (body.peerUuid ?? '').trim();
@@ -66,13 +79,13 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const content = (body.content ?? '').trim();
 
   if (!token) {
-    return errorResponse('X-Prime-Guest-Token header is required', 400);
+    return errorResponse('Unauthorized', 401); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
   if (!bookingId || !peerUuid || !channelId || !content) {
-    return errorResponse('bookingId, peerUuid, channelId, and content are required', 400);
+    return errorResponse('bookingId, peerUuid, channelId, and content are required', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
   if (content.length > MAX_MESSAGE_CONTENT_LENGTH) {
-    return errorResponse(`content must be ${MAX_MESSAGE_CONTENT_LENGTH} characters or fewer`, 400);
+    return errorResponse(`content must be ${MAX_MESSAGE_CONTENT_LENGTH} characters or fewer`, 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   const authResult = await validateGuestSessionToken(token, env);
@@ -82,7 +95,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
   const senderUuid = authResult.session.guestUuid;
   if (!senderUuid) {
-    return errorResponse('guestUuid missing for session', 422);
+    return errorResponse('guestUuid missing for session', 422); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   const rateLimitResponse = await enforceKvRateLimit({
@@ -99,21 +112,21 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
   if (requestedBookingId && requestedBookingId !== authResult.session.bookingId) {
     await recordDirectTelemetry(env, 'write.denied_booking_mismatch');
-    return errorResponse('Booking mismatch for guest session', 403);
+    return errorResponse('Booking mismatch for guest session', 403); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   if (authResult.session.bookingId !== bookingId) {
     await recordDirectTelemetry(env, 'write.denied_booking_mismatch');
-    return errorResponse('Booking mismatch for guest session', 403);
+    return errorResponse('Booking mismatch for guest session', 403); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
   if (senderUuid === peerUuid) {
-    return errorResponse('Cannot send direct message to the same guest UUID', 400);
+    return errorResponse('Cannot send direct message to the same guest UUID', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   const expectedChannelId = buildDirectMessageChannelId(senderUuid, peerUuid);
   if (channelId !== expectedChannelId) {
     await recordDirectTelemetry(env, 'write.denied_channel_mismatch');
-    return errorResponse('Channel does not match sender/peer UUID pair', 403);
+    return errorResponse('Channel does not match sender/peer UUID pair', 403); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   try {
@@ -134,22 +147,22 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
     if (!senderBooking || !peerBooking) {
       await recordDirectTelemetry(env, 'write.denied_not_confirmed_guests');
-      return errorResponse('Direct messaging is limited to confirmed guests on the same booking', 403);
+      return errorResponse('Direct messaging is limited to confirmed guests on the same booking', 403); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     if (!senderProfile || !peerProfile) {
       await recordDirectTelemetry(env, 'write.denied_not_confirmed_guests');
-      return errorResponse('Direct messaging profiles are unavailable for this guest pair', 403);
+      return errorResponse('Direct messaging profiles are unavailable for this guest pair', 403); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     if (senderProfile.bookingId !== bookingId || peerProfile.bookingId !== bookingId) {
       await recordDirectTelemetry(env, 'write.denied_not_confirmed_guests');
-      return errorResponse('Direct messaging is limited to confirmed guests on the same booking', 403);
+      return errorResponse('Direct messaging is limited to confirmed guests on the same booking', 403); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     if (!canSendDirectMessage(senderProfile, senderUuid, peerProfile, peerUuid)) {
       await recordDirectTelemetry(env, 'write.denied_policy');
-      return errorResponse('Direct messaging policy does not allow this conversation', 403);
+      return errorResponse('Direct messaging policy does not allow this conversation', 403); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
     const now = Date.now();
@@ -173,7 +186,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
         || existingMembers[peerUuid] !== true
       ) {
         await recordDirectTelemetry(env, 'write.denied_channel_meta_conflict');
-        return errorResponse('Direct channel metadata failed validation', 409);
+        return errorResponse('Direct channel metadata failed validation', 409); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
       }
 
       await firebase.update(`messaging/channels/${channelId}/meta`, { updatedAt: now });
@@ -186,7 +199,24 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       senderRole: 'guest',
       senderName: senderBooking.firstName?.trim() || undefined,
       createdAt: now,
+      kind: 'support',
+      audience: 'thread',
     });
+
+    try {
+      await shadowWritePrimeInboundDirectMessage(env as PrimeMessagingEnv, {
+        threadId: channelId,
+        bookingId,
+        senderId: senderUuid,
+        senderName: senderBooking.firstName?.trim() || null,
+        peerId: peerUuid,
+        content,
+        messageId,
+        createdAt: now,
+      });
+    } catch (shadowWriteError) {
+      console.error('Failed to shadow-write Prime direct message to D1:', shadowWriteError); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
+    }
 
     await recordDirectTelemetry(env, 'write.success');
     return jsonResponse({
@@ -196,7 +226,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     });
   } catch (error) {
     await recordDirectTelemetry(env, 'write.error');
-    console.error('Failed to send direct message:', error);
-    return errorResponse('Failed to send direct message', 500);
+    console.error('Failed to send direct message:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
+    return errorResponse('Failed to send direct message', 500); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 };

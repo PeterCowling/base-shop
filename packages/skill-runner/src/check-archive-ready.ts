@@ -35,6 +35,7 @@ export function checkArchiveReady(workspacePath: string): ArchiveReadyResult {
 
   for (const fileName of REQUIRED_FILES) {
     const filePath = path.join(workspacePath, fileName);
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- SKILL-2401 Path is constrained to docs/plans workspace and fixed filenames [ttl=2026-12-31]
     if (existsSync(filePath) && statSync(filePath).isFile()) {
       found.push(fileName);
     } else {

@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-inbox-perf-n-plus-one-2026-03-07",
+  "feature_slug": "reception-inbox-perf-n-plus-one",
+  "emitted_at": "2026-03-07T12:00:00.000Z",
+  "why": "Staff experience multi-second delays clicking inbox threads. The N+1 query pattern causes ~200 DB queries for 50 threads on every page load and after every action.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "measurable",
+    "statement": "Thread list endpoint responds in <200ms (down from multi-second). Thread detail renders from cache in <100ms on second click. No full list re-fetch after draft save/send/resolve/dismiss.",
+    "source": "operator"
+  }
+}

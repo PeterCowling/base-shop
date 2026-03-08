@@ -262,13 +262,15 @@ jobs:
             echo "## i18n Coverage Summary"
             TOTAL_MISSING_FILES=$(jq '.summary.totalMissingFiles' apps/brikette/i18n-coverage-report.json)
             TOTAL_MISSING_KEYS=$(jq '.summary.totalMissingKeys' apps/brikette/i18n-coverage-report.json)
+            TOTAL_UNTRANSLATED_KEYS=$(jq '.summary.totalUntranslatedKeys // 0' apps/brikette/i18n-coverage-report.json)
             echo "- Missing files: $TOTAL_MISSING_FILES"
             echo "- Missing keys: $TOTAL_MISSING_KEYS"
+            echo "- Untranslated keys: $TOTAL_UNTRANSLATED_KEYS"
 
             # Show per-locale summary
             echo ""
             echo "### Per-locale Breakdown"
-            jq -r '.reports[] | "- \(.locale): \(.missingFiles | length) files, \((.missingKeys | to_entries | map(.value | length) | add // 0)) keys"' apps/brikette/i18n-coverage-report.json
+            jq -r '.reports[] | "- \(.locale): \(.missingFiles | length) files, \((.missingKeys | to_entries | map(.value | length) | add // 0)) missing keys, \((.untranslatedKeys | to_entries | map(.value | length) | add // 0)) untranslated keys"' apps/brikette/i18n-coverage-report.json
           else
             echo "Coverage report not found"
           fi

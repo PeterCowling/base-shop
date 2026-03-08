@@ -59,7 +59,8 @@
   },
   "noscript": {
     "jsDisabledAssistance": "Les réservations d'auberges sont traitées avec une assistance assistée lorsque JavaScript est désactivé.",
-    "emailAssistedBooking": "Envoyez-nous un email pour une réservation assistée"
+    "emailAssistedBooking": "Envoyez-nous un email pour une réservation assistée",
+    "octorateDirectBooking": "Réservez directement avec Octorate"
   },
   "bookingConstraints": {
     "notice": "Les réservations en auberge de jeunesse prennent en charge les séjours réservés aux adultes entre 2 et 8 nuits avec un maximum de 8 adultes par réservation. Pour les groupes plus importants ou les séjours plus longs, répartissez votre demande sur plusieurs réservations ou",

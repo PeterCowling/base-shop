@@ -103,15 +103,13 @@ const TableSection: React.FC<TableSectionProps> = ({
   onRowDoubleClick,
   showPlan = false,
 }) => {
-  const accentBase = accent === "success" ? "success-main" : "error-main";
-
   return (
     <section className="space-y-4">
       <h2 className="text-xl font-semibold text-primary-main">{title}</h2>
       <div className="max-h-60vh overflow-auto rounded-lg shadow focus-visible:ring-1 focus-visible:ring-primary-main">
         <Table className="min-w-40rem w-full table-auto text-start text-sm">
           <TableHeader
-            className={`sticky top-0 bg-${accentBase} text-primary-fg uppercase`}
+            className={`sticky top-0 ${accent === "success" ? "bg-success-main" : "bg-error-main"} text-primary-fg uppercase`}
           >
             <DSTableRow>
               <TableHead className="px-4 py-3">Booking&nbsp;Ref</TableHead>

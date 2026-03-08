@@ -1,3 +1,19 @@
 name = "xa-b-site"
 pages_build_output_dir = "out"
 compatibility_date = "2025-06-20"
+
+[vars]
+# R2 bucket public URL for product images (documentation only).
+# NOTE: xa-b is a static export (Cloudflare Pages, not a Worker).
+# This [vars] block is NOT consumed at build time. The actual value is
+# injected via the NEXT_PUBLIC_XA_IMAGES_BASE_URL env var in the CI build
+# step (.github/workflows/xa.yml), sourced from the GitHub Actions
+# repository variable XA_IMAGES_BASE_URL.
+#
+# To configure: set XA_IMAGES_BASE_URL as a GitHub Actions repository
+# variable with the R2 public URL (e.g. https://pub-{hash}.r2.dev)
+# after enabling public access in Cloudflare dashboard.
+NEXT_PUBLIC_XA_IMAGES_BASE_URL = ""
+# Staging Pages (git-connected) can run strict preflight before staged
+# business profile variables are configured. Keep staging deployable.
+XA_SITE_CONFIG_PREFLIGHT_MODE = "off"

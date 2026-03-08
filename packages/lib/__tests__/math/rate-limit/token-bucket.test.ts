@@ -550,8 +550,10 @@ describe("LeakyBucket", () => {
 
       const result = bucket.add(999_999);
       expect(result.allowed).toBe(true);
-      // Use toBeCloseTo: level leaks continuously based on time elapsed
-      expect(bucket.level).toBeCloseTo(999_999, 0);
+      // Level leaks continuously; allow up to 500ms of CI execution time
+      // (leakRate=1000/s → up to 500 units may have drained)
+      expect(bucket.level).toBeGreaterThanOrEqual(999_499);
+      expect(bucket.level).toBeLessThanOrEqual(999_999);
     });
 
     it.skip("handles sequential additions to capacity", () => {

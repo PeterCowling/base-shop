@@ -2,7 +2,8 @@
  * Tests for the lp-do-ideas dispatch routing adapter.
  *
  * TC-01: fact_find_ready packet with all required fields → RouteSuccess with FactFindInvocationPayload
- * TC-02: briefing_ready packet with required fields → RouteSuccess with BriefingInvocationPayload
+ * TC-02: micro_build_ready packet with all required fields → RouteSuccess with MicroBuildInvocationPayload
+ * TC-03: briefing_ready packet with required fields → RouteSuccess with BriefingInvocationPayload
  * TC-03: auto_executed status → RouteError RESERVED_STATUS
  * TC-04: logged_no_action status → RouteError UNKNOWN_STATUS
  * TC-05: Invalid schema_version → RouteError INVALID_SCHEMA_VERSION
@@ -25,12 +26,13 @@ import { describe, expect, it } from "@jest/globals";
 import {
   type BriefingInvocationPayload,
   type FactFindInvocationPayload,
+  type MicroBuildInvocationPayload,
   routeDispatch,
   routeDispatchV2,
   type RouteError,
   type RouteSuccess,
-} from "../lp-do-ideas-routing-adapter.js";
-import type { TrialDispatchPacket, TrialDispatchPacketV2 } from "../lp-do-ideas-trial.js";
+} from "../ideas/lp-do-ideas-routing-adapter.js";
+import type { TrialDispatchPacket, TrialDispatchPacketV2 } from "../ideas/lp-do-ideas-trial.js";
 
 // ---------------------------------------------------------------------------
 // Fixtures
@@ -112,6 +114,22 @@ function makeBriefingPacket(
   };
 }
 
+function makeMicroBuildPacket(
+  overrides: Partial<TrialDispatchPacket> = {},
+): TrialDispatchPacket {
+  return {
+    ...makeFactFindPacket(),
+    dispatch_id: "IDEA-DISPATCH-20260224153000-0003",
+    area_anchor: "booking-widget copy polish",
+    location_anchors: ["apps/brikette/src/components/BookingWidget.tsx"],
+    current_truth: "Booking widget copy needs a tiny consistency fix",
+    next_scope_now: "Apply the bounded copy fix directly and validate the component surface",
+    recommended_route: "lp-do-build",
+    status: "micro_build_ready",
+    ...overrides,
+  };
+}
+
 // ---------------------------------------------------------------------------
 // TC-01: fact_find_ready → RouteSuccess with FactFindInvocationPayload
 // ---------------------------------------------------------------------------
@@ -148,10 +166,42 @@ describe("TC-01: fact_find_ready → FactFindInvocationPayload", () => {
 });
 
 // ---------------------------------------------------------------------------
-// TC-02: briefing_ready → RouteSuccess with BriefingInvocationPayload
+// TC-02: micro_build_ready → RouteSuccess with MicroBuildInvocationPayload
 // ---------------------------------------------------------------------------
 
-describe("TC-02: briefing_ready → BriefingInvocationPayload", () => {
+describe("TC-02: micro_build_ready → MicroBuildInvocationPayload", () => {
+  it("returns RouteSuccess for a valid micro_build_ready packet", () => {
+    const packet = makeMicroBuildPacket();
+    const result = routeDispatch(packet);
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.route).toBe("lp-do-build");
+      expect(result.payload.skill).toBe("lp-do-build");
+    }
+  });
+
+  it("payload contains all required MicroBuildInvocationPayload fields", () => {
+    const packet = makeMicroBuildPacket();
+    const result = routeDispatch(packet) as RouteSuccess;
+
+    expect(result.ok).toBe(true);
+    const payload = result.payload as MicroBuildInvocationPayload;
+    expect(payload.skill).toBe("lp-do-build");
+    expect(payload.dispatch_id).toBe(packet.dispatch_id);
+    expect(payload.business).toBe(packet.business);
+    expect(payload.area_anchor).toBe(packet.area_anchor);
+    expect(payload.location_anchors).toEqual(packet.location_anchors);
+    expect(payload.provisional_deliverable_family).toBe(packet.provisional_deliverable_family);
+    expect(payload.feature_slug_hint).toContain("booking-widget-copy-polish");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TC-03: briefing_ready → RouteSuccess with BriefingInvocationPayload
+// ---------------------------------------------------------------------------
+
+describe("TC-03: briefing_ready → BriefingInvocationPayload", () => {
   it("returns RouteSuccess for a valid briefing_ready packet", () => {
     const packet = makeBriefingPacket();
     const result = routeDispatch(packet);
@@ -199,10 +249,10 @@ describe("TC-02: briefing_ready → BriefingInvocationPayload", () => {
 });
 
 // ---------------------------------------------------------------------------
-// TC-03: auto_executed → RESERVED_STATUS
+// TC-04: auto_executed → RESERVED_STATUS
 // ---------------------------------------------------------------------------
 
-describe("TC-03: auto_executed → RESERVED_STATUS", () => {
+describe("TC-04: auto_executed → RESERVED_STATUS", () => {
   it("rejects auto_executed status with RESERVED_STATUS error code", () => {
     const packet = makeFactFindPacket({
       status: "auto_executed",
@@ -218,14 +268,14 @@ describe("TC-03: auto_executed → RESERVED_STATUS", () => {
 });
 
 // ---------------------------------------------------------------------------
-// TC-04: logged_no_action → UNKNOWN_STATUS (non-routable)
+// TC-05: logged_no_action → UNKNOWN_STATUS (non-routable)
 // ---------------------------------------------------------------------------
 
-describe("TC-04: logged_no_action → UNKNOWN_STATUS", () => {
+describe("TC-05: logged_no_action → UNKNOWN_STATUS", () => {
   it("rejects logged_no_action status with UNKNOWN_STATUS error code", () => {
     const packet = makeFactFindPacket({
       status: "logged_no_action",
-      recommended_route: "lp-do-fact-find",
+      recommended_route: "lp-do-build",
     });
     const result = routeDispatch(packet) as RouteError;
 
@@ -304,6 +354,16 @@ describe("TC-07: Status/route mismatch", () => {
     expect(result.ok).toBe(false);
     expect(result.code).toBe("ROUTE_STATUS_MISMATCH");
   });
+
+  it("rejects micro_build_ready with lp-do-fact-find route", () => {
+    const packet = makeMicroBuildPacket({
+      recommended_route: "lp-do-fact-find",
+    });
+    const result = routeDispatch(packet) as RouteError;
+
+    expect(result.ok).toBe(false);
+    expect(result.code).toBe("ROUTE_STATUS_MISMATCH");
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -352,6 +412,16 @@ describe("TC-09: Empty evidence_refs", () => {
     expect(result.ok).toBe(false);
     expect(result.code).toBe("MISSING_EVIDENCE_REFS");
   });
+
+  it("rejects micro_build_ready packet with empty evidence_refs", () => {
+    const packet = makeMicroBuildPacket({
+      evidence_refs: [] as unknown as [string, ...string[]],
+    });
+    const result = routeDispatch(packet) as RouteError;
+
+    expect(result.ok).toBe(false);
+    expect(result.code).toBe("MISSING_EVIDENCE_REFS");
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -368,6 +438,16 @@ describe("TC-10: Missing location_anchors on fact-find path", () => {
     expect(result.ok).toBe(false);
     expect(result.code).toBe("MISSING_LOCATION_ANCHORS");
     expect(result.error).toContain("location_anchors");
+  });
+
+  it("rejects micro_build_ready packet with empty location_anchors", () => {
+    const packet = makeMicroBuildPacket({
+      location_anchors: [] as unknown as [string, ...string[]],
+    });
+    const result = routeDispatch(packet) as RouteError;
+
+    expect(result.ok).toBe(false);
+    expect(result.code).toBe("MISSING_LOCATION_ANCHORS");
   });
 });
 
@@ -394,6 +474,16 @@ describe("TC-11: Missing provisional_deliverable_family on fact-find path", () =
     // briefing_ready should succeed even with empty family
     expect(result.ok).toBe(true);
   });
+
+  it("rejects micro_build_ready packet with empty provisional_deliverable_family", () => {
+    const packet = makeMicroBuildPacket({
+      provisional_deliverable_family: "" as "business-artifact",
+    });
+    const result = routeDispatch(packet) as RouteError;
+
+    expect(result.ok).toBe(false);
+    expect(result.code).toBe("MISSING_DELIVERABLE_FAMILY");
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -419,6 +509,18 @@ describe("TC-12: Case normalisation", () => {
     expect(result.ok).toBe(true);
     if (result.ok) {
       expect(result.route).toBe("lp-do-briefing");
+    }
+  });
+
+  it("accepts micro_build_ready with mixed-case route", () => {
+    const packet = makeMicroBuildPacket({
+      status: "MICRO_BUILD_READY" as "micro_build_ready",
+      recommended_route: "LP-DO-BUILD" as "lp-do-build",
+    });
+    const result = routeDispatch(packet);
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.route).toBe("lp-do-build");
     }
   });
 });

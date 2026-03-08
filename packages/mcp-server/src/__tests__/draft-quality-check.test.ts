@@ -12,6 +12,7 @@ function parseResult(result: { content: Array<{ text: string }> }) {
   return JSON.parse(result.content[0].text) as {
     passed: boolean;
     failed_checks: string[];
+    failed_check_details: Record<string, string[]>;
     warnings: string[];
     confidence: number;
     question_coverage?: Array<{
@@ -52,10 +53,29 @@ describe("draft_quality_check", () => {
       questions: [{ text: "What time is check-in?" }],
     },
     workflow_triggers: {
-      booking_monitor: true,
+      booking_action_required: false,
+      booking_context: false,
     },
     scenario: {
       category: "faq",
+    },
+    thread_summary: {
+      prior_commitments: ["Breakfast is included"],
+    },
+  };
+
+  const bookingActionPlan = {
+    language: "EN" as const,
+    intents: {
+      questions: [{ text: "Can you confirm my booking?" }],
+      requests: [{ text: "Please confirm my booking" }],
+    },
+    workflow_triggers: {
+      booking_action_required: true,
+      booking_context: true,
+    },
+    scenario: {
+      category: "booking-issues",
     },
     thread_summary: {
       prior_commitments: ["Breakfast is included"],
@@ -88,7 +108,7 @@ describe("draft_quality_check", () => {
 
   it("TC-03: missing required link triggers failed check", async () => {
     const result = await handleDraftQualityTool("draft_quality_check", {
-      actionPlan: baseActionPlan,
+      actionPlan: bookingActionPlan,
       draft: {
         bodyPlain: "Check-in is at 3pm. Best regards, Hostel Brikette",
         bodyHtml: "<p>Check-in is at 3pm</p>",
@@ -100,7 +120,7 @@ describe("draft_quality_check", () => {
 
   it("TC-04: missing signature triggers failed check", async () => {
     const result = await handleDraftQualityTool("draft_quality_check", {
-      actionPlan: baseActionPlan,
+      actionPlan: bookingActionPlan,
       draft: {
         bodyPlain: `Check-in is at 3pm. ${CANONICAL_REFERENCE_URL}`,
         bodyHtml: "<p>Check-in is at 3pm</p>",
@@ -112,7 +132,7 @@ describe("draft_quality_check", () => {
 
   it("TC-04b: HTML signature block satisfies signature check", async () => {
     const result = await handleDraftQualityTool("draft_quality_check", {
-      actionPlan: baseActionPlan,
+      actionPlan: bookingActionPlan,
       draft: {
         bodyPlain: `Check-in is at 3pm. ${CANONICAL_REFERENCE_URL}`,
         bodyHtml:
@@ -125,7 +145,7 @@ describe("draft_quality_check", () => {
 
   it("TC-05: missing html/plaintext triggers failed check", async () => {
     const result = await handleDraftQualityTool("draft_quality_check", {
-      actionPlan: baseActionPlan,
+      actionPlan: bookingActionPlan,
       draft: {
         bodyPlain: `Check-in is at 3pm. ${CANONICAL_REFERENCE_URL} Best regards, Hostel Brikette`,
       },
@@ -136,7 +156,7 @@ describe("draft_quality_check", () => {
 
   it("TC-06: length rule yields warning", async () => {
     const result = await handleDraftQualityTool("draft_quality_check", {
-      actionPlan: baseActionPlan,
+      actionPlan: bookingActionPlan,
       draft: {
         bodyPlain: `Short. Best regards, Hostel Brikette ${CANONICAL_REFERENCE_URL}`,
         bodyHtml: "<p>Short</p>",
@@ -154,7 +174,10 @@ describe("draft_quality_check", () => {
           questions: [],
           requests: [{ text: "Please let us know if 3 guests are allowed in the room" }],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "faq" },
       },
       draft: {
@@ -176,7 +199,10 @@ describe("draft_quality_check", () => {
           questions: [],
           requests: [{ text: "Please confirm the room capacity for 3 guests" }],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "faq" },
       },
       draft: {
@@ -198,7 +224,10 @@ describe("draft_quality_check", () => {
           questions: [],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "faq" },
       },
       draft: {
@@ -210,6 +239,164 @@ describe("draft_quality_check", () => {
     });
     const payload = parseResult(result);
     expect(payload.failed_checks).not.toContain("unanswered_questions");
+  });
+});
+
+describe("draft_quality_check failed_check_details", () => {
+  it("includes detail for prohibited claims", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: { questions: [], requests: [] },
+        workflow_triggers: { booking_action_required: false, booking_context: false },
+        scenario: { category: "faq" },
+      },
+      draft: {
+        bodyPlain: "Availability confirmed and we will charge now. Best regards, Hostel Brikette",
+        bodyHtml: "<p>Availability confirmed.</p>",
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).toContain("prohibited_claims");
+    expect(payload.failed_check_details["prohibited_claims"]).toEqual(
+      expect.arrayContaining(["availability confirmed", "we will charge now"]),
+    );
+  });
+
+  it("includes detail for missing policy mandatory content", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "What is the cancellation policy?" }],
+          requests: [],
+        },
+        workflow_triggers: { booking_action_required: true, booking_context: true },
+        scenario: { category: "cancellation" },
+      },
+      draft: {
+        bodyPlain:
+          "We hope you enjoyed your stay. Best regards, Hostel Brikette https://hostel-positano.com/en/terms#s17-a1",
+        bodyHtml: "<p>We hope you enjoyed your stay.</p>",
+      },
+      policyDecision: {
+        mandatoryContent: ["Non-refundable booking terms apply."],
+        prohibitedContent: [],
+        toneConstraints: [],
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).toContain("missing_policy_mandatory_content");
+    expect(payload.failed_check_details["missing_policy_mandatory_content"]).toEqual([
+      "Non-refundable booking terms apply.",
+    ]);
+  });
+
+  it("includes detail for policy prohibited content", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "Can I get a refund?" }],
+          requests: [],
+        },
+        workflow_triggers: { booking_action_required: false, booking_context: false },
+        scenario: { category: "cancellation" },
+      },
+      draft: {
+        bodyPlain:
+          "We can make an exception for you. Best regards, Hostel Brikette",
+        bodyHtml: "<p>We can make an exception for you.</p>",
+      },
+      policyDecision: {
+        mandatoryContent: [],
+        prohibitedContent: ["we can make an exception"],
+        toneConstraints: [],
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).toContain("policy_prohibited_content");
+    expect(payload.failed_check_details["policy_prohibited_content"]).toEqual([
+      "we can make an exception",
+    ]);
+  });
+
+  it("includes detail for unanswered questions", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [
+            { text: "What time is check-in?" },
+            { text: "Is breakfast included?" },
+          ],
+          requests: [],
+        },
+        workflow_triggers: { booking_action_required: false, booking_context: false },
+        scenario: { category: "faq" },
+      },
+      draft: {
+        bodyPlain:
+          "Check-in starts at 15:00 and reception opens from 07:30. Best regards, Hostel Brikette",
+        bodyHtml: "<p>Check-in starts at 15:00.</p>",
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).toContain("unanswered_questions");
+    expect(payload.failed_check_details["unanswered_questions"]).toEqual(
+      expect.arrayContaining(["Is breakfast included?"]),
+    );
+  });
+
+  it("returns empty failed_check_details when all checks pass", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "What time is check-in?" }],
+          requests: [],
+        },
+        workflow_triggers: { booking_action_required: false, booking_context: false },
+        scenario: { category: "faq" },
+      },
+      draft: {
+        bodyPlain:
+          "Check-in starts at 15:00 and breakfast is included for direct bookings. Best regards, Hostel Brikette",
+        bodyHtml: "<p>Check-in starts at 15:00 and breakfast is included for direct bookings.</p>",
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.passed).toBe(true);
+    expect(payload.failed_check_details).toEqual({});
+  });
+
+  it("ensures detail keys are a subset of failed_checks", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "What is the cancellation policy?" }],
+          requests: [],
+        },
+        workflow_triggers: { booking_action_required: true, booking_context: true },
+        scenario: { category: "cancellation" },
+      },
+      draft: {
+        bodyPlain:
+          "We can make an exception. Best regards, Hostel Brikette https://hostel-positano.com/en/terms#s17-a1",
+        bodyHtml: "<p>We can make an exception.</p>",
+      },
+      policyDecision: {
+        mandatoryContent: ["Non-refundable booking terms apply."],
+        prohibitedContent: ["we can make an exception"],
+        toneConstraints: [],
+      },
+    });
+    const payload = parseResult(result);
+    const detailKeys = Object.keys(payload.failed_check_details);
+    for (const key of detailKeys) {
+      expect(payload.failed_checks).toContain(key);
+    }
   });
 });
 
@@ -260,40 +447,46 @@ describe("draft_quality_check TASK-04 template normalization", () => {
 });
 
 describe("draft_quality_check TASK-05 reference applicability", () => {
-  it("TC-05-01: in-scope factual response without reference fails", async () => {
+  it("TC-05-01: booking-action-required response without reference fails", async () => {
     const result = await handleDraftQualityTool("draft_quality_check", {
       actionPlan: {
         language: "EN" as const,
         intents: {
-          questions: [{ text: "What time is check-in?" }],
+          questions: [{ text: "Can you modify my booking?" }],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
-        scenario: { category: "check-in" },
+        workflow_triggers: {
+          booking_action_required: true,
+          booking_context: true,
+        },
+        scenario: { category: "booking-issues" },
       },
       draft: {
-        bodyPlain: "Check-in starts at 15:00. Best regards, Hostel Brikette",
-        bodyHtml: "<!DOCTYPE html><html><body><p>Check-in starts at 15:00.</p></body></html>",
+        bodyPlain: "Please confirm your request details. Best regards, Hostel Brikette",
+        bodyHtml: "<!DOCTYPE html><html><body><p>Please confirm your request details.</p></body></html>",
       },
     });
     const payload = parseResult(result);
     expect(payload.failed_checks).toContain("missing_required_reference");
   });
 
-  it("TC-05-02: in-scope factual response with canonical reference passes", async () => {
+  it("TC-05-02: booking-action-required response with approved booking host passes", async () => {
     const result = await handleDraftQualityTool("draft_quality_check", {
       actionPlan: {
         language: "EN" as const,
         intents: {
-          questions: [{ text: "What time is check-in?" }],
+          questions: [{ text: "Can you modify my booking?" }],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
-        scenario: { category: "check-in" },
+        workflow_triggers: {
+          booking_action_required: true,
+          booking_context: true,
+        },
+        scenario: { category: "booking-issues" },
       },
       draft: {
-        bodyPlain: `Check-in starts at 15:00. See ${CANONICAL_REFERENCE_URL}. Best regards, Hostel Brikette`,
-        bodyHtml: "<!DOCTYPE html><html><body><p>Check-in starts at 15:00.</p></body></html>",
+        bodyPlain: "Please complete your booking update here: https://www.hostelworld.com . Best regards, Hostel Brikette",
+        bodyHtml: "<!DOCTYPE html><html><body><p>Please complete your booking update here.</p></body></html>",
       },
     });
     const payload = parseResult(result);
@@ -309,7 +502,10 @@ describe("draft_quality_check TASK-05 reference applicability", () => {
           questions: [{ text: "Can you confirm prepayment attempt status?" }],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "prepayment" },
       },
       draft: {
@@ -324,25 +520,55 @@ describe("draft_quality_check TASK-05 reference applicability", () => {
     expect(payload.failed_checks).not.toContain("reference_not_applicable");
   });
 
-  it("TC-05-04: in-scope response with unrelated link fails applicability check", async () => {
+  it("TC-05-04: booking-action-required response with unrelated link fails applicability check", async () => {
     const result = await handleDraftQualityTool("draft_quality_check", {
       actionPlan: {
         language: "EN" as const,
         intents: {
-          questions: [{ text: "What time is check-in?" }],
+          questions: [{ text: "Can you modify my booking?" }],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
-        scenario: { category: "check-in" },
+        workflow_triggers: {
+          booking_action_required: true,
+          booking_context: true,
+        },
+        scenario: { category: "booking-issues" },
       },
       draft: {
         bodyPlain:
-          "Check-in starts at 15:00. See https://unrelated.example.org/guide. Best regards, Hostel Brikette",
-        bodyHtml: "<!DOCTYPE html><html><body><p>Check-in starts at 15:00.</p></body></html>",
+          "Use this link for updates: https://unrelated.example.org/guide. Best regards, Hostel Brikette",
+        bodyHtml: "<!DOCTYPE html><html><body><p>Use this link for updates.</p></body></html>",
       },
     });
     const payload = parseResult(result);
-    expect(payload.warnings).toContain("reference_not_applicable");
+    expect(payload.failed_checks).toContain("reference_not_applicable");
+  });
+
+  it("TC-05-05: non-booking informational categories do not require references", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "Is breakfast included?" }],
+          requests: [],
+        },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: true,
+        },
+        scenario: { category: "breakfast" },
+      },
+      draft: {
+        bodyPlain:
+          "Breakfast is included only for direct bookings. Best regards, Hostel Brikette",
+        bodyHtml:
+          "<!DOCTYPE html><html><body><p>Breakfast is included only for direct bookings.</p></body></html>",
+      },
+    });
+
+    const payload = parseResult(result);
+    expect(payload.failed_checks).not.toContain("missing_required_reference");
+    expect(payload.failed_checks).not.toContain("reference_not_applicable");
   });
 });
 
@@ -358,7 +584,10 @@ describe("draft_quality_check TASK-05", () => {
           ],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "check-in" },
       },
       draft: {
@@ -385,7 +614,10 @@ describe("draft_quality_check TASK-05", () => {
           ],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "faq" },
       },
       draft: {
@@ -412,7 +644,10 @@ describe("draft_quality_check TASK-05", () => {
           questions: [{ text: "Can you confirm airport transfer service availability?" }],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "transportation" },
       },
       draft: {
@@ -435,7 +670,10 @@ describe("draft_quality_check TASK-05", () => {
           questions: [{ text: "Can we check in early?" }],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "check-in" },
         thread_summary: {
           prior_commitments: ["We will arrange early check-in for your stay."],
@@ -460,7 +698,10 @@ describe("draft_quality_check TASK-05", () => {
           questions: [{ text: "Is breakfast available?" }],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "breakfast" },
         thread_summary: {
           prior_commitments: ["Breakfast is available every morning."],
@@ -485,7 +726,10 @@ describe("draft_quality_check TASK-05", () => {
           questions: [{ text: "Can we get luggage storage?" }],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "luggage" },
         thread_summary: {
           prior_commitments: ["We can provide luggage storage before check-in."],
@@ -517,7 +761,10 @@ describe("draft_quality_check TASK-05", () => {
       actionPlan: {
         language: "EN" as const,
         intents: { questions, requests: [] },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "faq" },
       },
       draft: {
@@ -552,7 +799,10 @@ describe("draft_quality_check TASK-05", () => {
           questions: [{ text: "What time is check-in?" }],
           requests: [],
         },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "check-in" },
       },
       draft: {

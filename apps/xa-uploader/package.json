@@ -5,6 +5,8 @@
     "dev": "next dev --webpack -p 3020",
     "build": "pnpm exec next build --webpack",
     "build:worker": "opennextjs-cloudflare build",
+    "preflight:deploy": "pnpm exec tsx scripts/preflight-deploy.ts",
+    "capture:instruction-screenshots": "pnpm exec tsx scripts/capture-instruction-screenshots.mts",
     "start": "next start -p 3020",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",

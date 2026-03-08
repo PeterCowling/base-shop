@@ -133,7 +133,7 @@
     },
     {
       "name": "lp-do-assessment-08-current-situation",
-      "description": "Elicits and records what the operator directly knows about the business before ASSESSMENT intake runs. Captures launch surface, inventory/product readiness, commercial architecture, and pre-locked cha",
+      "description": "Current situation elicitation for new startups (ASSESSMENT-08). Captures launch surface, inventory/product readiness, commercial architecture, and pre-locked channel decisions. Produces operator-context artifact for intake sync.",
       "path": ".claude/skills/lp-do-assessment-08-current-situation/SKILL.md"
     },
     {
@@ -203,7 +203,7 @@
     },
     {
       "name": "lp-do-ideas",
-      "description": "Trial-mode idea orchestrator. Ingests standing-artifact delta events and emits schema-valid dispatch packets routed to lp-do-fact-find or lp-do-briefing. Trial mode only — does not mutate startup-loop stage state.",
+      "description": "Trial-mode idea orchestrator. Ingests standing-artifact delta events and emits schema-valid dispatch packets routed to lp-do-fact-find, lp-do-build, or lp-do-briefing. Trial mode only — does not mutate startup-loop stage state.",
       "path": ".claude/skills/lp-do-ideas/SKILL.md"
     },
     {
@@ -350,6 +350,11 @@
       "name": "tools-bug-scan",
       "description": "Run the repository-native bug scanner (`pnpm bug-scan` / `pnpm bug-scan:changed`), summarize findings by severity and rule, and propose concrete next fixes or targeted rescans.",
       "path": ".claude/skills/tools-bug-scan/SKILL.md"
+    },
+    {
+      "name": "tools-bug-triad-review",
+      "description": "Run a weekly adversarial bug triad (finder, skeptic, arbiter) to maximize bug discovery coverage and emit a scored verified bug list.",
+      "path": ".claude/skills/tools-bug-triad-review/SKILL.md"
     },
     {
       "name": "tools-design-system",

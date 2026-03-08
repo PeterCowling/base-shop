@@ -1,0 +1,16 @@
+{
+  "phase": "plan",
+  "round": 2,
+  "route": "codemoot",
+  "score": 9,
+  "lp_score": 4.5,
+  "verdict": "approved",
+  "findings": [
+    {
+      "severity": "info",
+      "file": "docs/plans/build-failure-standing-data-bridge/plan.md",
+      "line": "183",
+      "message": "Single-invocation semantics are documented in SKILL prose (good), but enforcement is procedural rather than code-level; consider adding an explicit invocation guard/idempotency key in implementation if duplicate same-event calls become noisy."
+    }
+  ]
+}

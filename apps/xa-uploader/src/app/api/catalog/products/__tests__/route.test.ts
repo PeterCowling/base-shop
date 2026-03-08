@@ -13,21 +13,30 @@ class MockCatalogCsvConflictError extends Error {
   override name = "CatalogCsvConflictError";
 }
 
+class MockCatalogCsvStorageBusyError extends Error {
+  override name = "CatalogCsvStorageBusyError";
+}
+
+class MockCatalogDraftContractError extends Error {
+  code: string;
+  status?: number;
+  constructor(code: string, options?: { status?: number }) {
+    super(code);
+    this.code = code;
+    this.status = options?.status;
+  }
+}
+
 jest.mock("../../../../../lib/catalogCsv", () => ({
   CatalogCsvConflictError: MockCatalogCsvConflictError,
+  CatalogCsvStorageBusyError: MockCatalogCsvStorageBusyError,
   listCatalogDrafts: (...args: unknown[]) => listCatalogDraftsMock(...args),
   upsertCatalogDraft: (...args: unknown[]) => upsertCatalogDraftMock(...args),
 }));
 
 jest.mock("../../../../../lib/catalogDraftContractClient", () => ({
   CatalogDraftConflictError: class extends Error {},
-  CatalogDraftContractError: class extends Error {
-    code: string;
-    constructor(code: string) {
-      super(code);
-      this.code = code;
-    }
-  },
+  CatalogDraftContractError: MockCatalogDraftContractError,
   readCloudDraftSnapshot: (...args: unknown[]) => readCloudDraftSnapshotMock(...args),
   upsertProductInCloudSnapshot: (...args: unknown[]) => upsertProductInCloudSnapshotMock(...args),
   writeCloudDraftSnapshot: (...args: unknown[]) => writeCloudDraftSnapshotMock(...args),
@@ -172,6 +181,69 @@ describe("catalog products route", () => {
     expect(JSON.stringify(payload)).not.toContain("/Users/petercowling");
   });
 
+  it("returns storage_busy when CSV file is locked by another process", async () => {
+    upsertCatalogDraftMock.mockRejectedValueOnce(
+      new MockCatalogCsvStorageBusyError("locked"),
+    );
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ product: { title: "x", slug: "x" } }),
+      }),
+    );
+
+    expect(response.status).toBe(503);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({
+        ok: false,
+        error: "storage_busy",
+        reason: "products_csv_locked",
+      }),
+    );
+  });
+
+  it("persists out_of_stock when the product is publish-ready", async () => {
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          product: {
+            id: "p1",
+            slug: "studio-jacket",
+            title: "Studio jacket",
+            brandHandle: "atelier-x",
+            collectionHandle: "outerwear",
+            price: "189",
+            description: "Structured layer",
+            createdAt: "2026-03-02T00:00:00.000Z",
+            popularity: "0",
+            publishState: "out_of_stock",
+            imageFiles: "xa-b/studio-jacket/main.jpg",
+            imageAltTexts: "main",
+            taxonomy: {
+              department: "women",
+              category: "bags",
+              subcategory: "tote",
+              color: "black",
+              material: "leather",
+            },
+          },
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(upsertCatalogDraftMock).toHaveBeenCalledWith(
+      expect.objectContaining({ publishState: "out_of_stock" }),
+      expect.anything(),
+    );
+  });
+
   it("uses cloud draft snapshot when local fs runtime is disabled", async () => {
     isLocalFsRuntimeEnabledMock.mockReturnValueOnce(false);
 
@@ -183,5 +255,93 @@ describe("catalog products route", () => {
       expect.objectContaining({ ok: true }),
     );
     expect(readCloudDraftSnapshotMock).toHaveBeenCalled();
+  });
+
+  it("returns sanitized reason with upstream status when cloud draft read fails", async () => {
+    isLocalFsRuntimeEnabledMock.mockReturnValueOnce(false);
+    readCloudDraftSnapshotMock.mockRejectedValueOnce(
+      new MockCatalogDraftContractError("request_failed", { status: 403 }),
+    );
+
+    const { GET } = await import("../route");
+    const response = await GET(new Request("http://localhost/api/catalog/products"));
+
+    expect(response.status).toBe(500);
+    const payload = (await response.json()) as { error?: string; reason?: string };
+    expect(payload.error).toBe("internal_error");
+    expect(payload.reason).toBe("products_list_failed_contract_request_failed_status_403");
+    expect(JSON.stringify(payload)).not.toContain("http");
+    expect(JSON.stringify(payload)).not.toContain("base-shop");
+  });
+
+  it("returns sanitized reason when cloud draft payload is invalid", async () => {
+    isLocalFsRuntimeEnabledMock.mockReturnValueOnce(false);
+    readCloudDraftSnapshotMock.mockRejectedValueOnce(new MockCatalogDraftContractError("invalid_response"));
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ product: { title: "x", slug: "x" } }),
+      }),
+    );
+
+    expect(response.status).toBe(500);
+    const payload = (await response.json()) as { error?: string; reason?: string };
+    expect(payload.error).toBe("internal_error");
+    expect(payload.reason).toBe("products_upsert_failed_contract_invalid_response");
+  });
+
+  it("returns conflict when cloud draft write detects doc revision mismatch", async () => {
+    isLocalFsRuntimeEnabledMock.mockReturnValueOnce(false);
+    writeCloudDraftSnapshotMock.mockRejectedValueOnce(
+      new MockCatalogDraftContractError("conflict"),
+    );
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          product: { title: "x", slug: "x", id: "p1" },
+          ifMatch: "rev-old",
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({ ok: false, error: "conflict", reason: "revision_conflict" }),
+    );
+  });
+
+  it("passes ifMatch to cloud upsert when local fs runtime is disabled (edit path)", async () => {
+    isLocalFsRuntimeEnabledMock.mockReturnValueOnce(false);
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          product: { title: "Edited title", slug: "edited-slug", id: "p1" },
+          ifMatch: "rev-current",
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(upsertProductInCloudSnapshotMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        ifMatch: "rev-current",
+      }),
+    );
+    expect(writeCloudDraftSnapshotMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        ifMatchDocRevision: "doc-rev-1",
+      }),
+    );
   });
 });

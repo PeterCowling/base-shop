@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "15eb23d618fcbf20",
+  "feature_slug": "xa-uploader-image-autosave-reliability",
+  "emitted_at": "2026-03-06T11:05:33.623Z",
+  "why": "Prevent uploaded image keys from being lost during rapid consecutive uploads.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "For Add and Edit flows, each successful image upload is eventually persisted to the draft without requiring manual Save retries, and Sync stays blocked until autosave settles.",
+    "source": "operator"
+  }
+}

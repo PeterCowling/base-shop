@@ -114,6 +114,22 @@ describe("loadUserWithProfile", () => {
     expect(user).toEqual(cachedUser);
   });
 
+  it("returns null when Firebase get throws and cached profile UID mismatches firebase UID", async () => {
+    const mismatchedCachedUser = {
+      uid: "different-user",
+      email: "other@example.com",
+      user_name: "OtherUser",
+      displayName: "Other User",
+      roles: ["staff"] as const,
+    };
+    getMock.mockRejectedValue(new Error("network error"));
+    getMetaMock.mockResolvedValue(mismatchedCachedUser);
+
+    const user = await loadUserWithProfile(database, createFirebaseUser({ uid: "user-1" }));
+
+    expect(user).toBeNull();
+  });
+
   it("returns null when Firebase get throws and no cached profile exists (TC-05)", async () => {
     getMock.mockRejectedValue(new Error("network error"));
     getMetaMock.mockResolvedValue(null);

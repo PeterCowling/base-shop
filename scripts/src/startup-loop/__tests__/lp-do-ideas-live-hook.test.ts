@@ -14,8 +14,8 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "@jest/globals";
 
-import { runLiveHook } from "../lp-do-ideas-live-hook.js";
-import type { ArtifactDeltaEvent } from "../lp-do-ideas-trial.js";
+import { runLiveHook } from "../ideas/lp-do-ideas-live-hook.js";
+import type { ArtifactDeltaEvent } from "../ideas/lp-do-ideas-trial.js";
 
 // ---------------------------------------------------------------------------
 // Fixtures

@@ -27,7 +27,7 @@ Produce a sequenced timeline with dependencies and milestones.
 
 ## Stage 6: Document Artifact (DOCUMENT)
 
-1. Write complete channel strategy to `docs/business-os/startup-baselines/<BIZ>-channels.md`
+1. Write complete channel strategy to `docs/business-os/startup-baselines/<BIZ>/channels.md`
 2. Include metadata header:
    ```yaml
    ---

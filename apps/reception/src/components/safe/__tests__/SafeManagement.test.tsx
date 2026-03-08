@@ -410,7 +410,7 @@ describe("SafeManagement", () => {
   it("displays the current safe balance", () => {
     safeCounts = [...defaultSafeCounts];
     render(<SafeManagement />, { wrapper });
-    const balance = screen.getByText(/Safe Balance:/);
+    const balance = screen.getByText(/Safe Balance/i);
     expect(balance).toHaveTextContent("€50.00");
   });
 
@@ -919,7 +919,7 @@ describe("SafeManagement", () => {
     await waitFor(() =>
       expect(showToastMock).toHaveBeenCalledWith("boom", "error")
     );
-    expect(screen.getByText(/Safe Balance:/)).toHaveTextContent("€50.00");
+    expect(screen.getByText(/Safe Balance/i)).toHaveTextContent("€50.00");
     expect(screen.getByText("safeReset")).toBeInTheDocument();
   });
 

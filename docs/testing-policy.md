@@ -55,6 +55,15 @@ gh run watch $(gh run list --limit 1 --json databaseId -q '.[0].databaseId')
 **CI test environments:**
 - `CI=true` is set by GitHub Actions on all runners. The governed runner's compatibility mode respects this and will not block CI execution.
 
+**Governed telemetry attribution (incident forensics):**
+- Governed telemetry events in `.cache/test-governor/events.jsonl` now include:
+  - `session_id` (string; primary actor/session join key)
+  - `caller_pid` (number; supplemental process-level forensic key)
+- Emission contract:
+  - `run-governed-test.sh` passes both fields on admission-timeout and completion events.
+  - `telemetry-log.sh` supports `--session-id` and `--caller-pid` and applies deterministic fallback when omitted.
+  - `scripts/tests/validate-governed-telemetry-attribution.mjs` validates attribution coverage and is wired into `run-governed-calibration.sh`.
+
 ---
 
 ## Rule 2: Linting and Typechecking Remain Local

@@ -13,7 +13,7 @@ owner: Pete
 last_updated: 2026-02-20
 source_of_truth: true
 depends_on:
-  - docs/business-os/startup-baselines/HEAD-offer.md
+  - docs/business-os/startup-baselines/HEAD/offer.md
   - docs/business-os/strategy/HEAD/lp-other-products-results.user.md
 decisions: []
 Review-trigger: After each completed build cycle touching this document.

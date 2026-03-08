@@ -94,7 +94,7 @@ confirmation before committing changes to the idea backlog.
 
 ### Key Modules / Files
 
-- `docs/business-os/startup-loop/loop-spec.yaml` — authoritative spec
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml` — authoritative spec
   - IDEAS declared as `type: container` at lines 291–306
   - Stages IDEAS-01..03 defined at lines 308–345 (all `skill: prompt-handoff`)
   - `ordering.sequential` at lines 996–1058: chain goes `[ASSESSMENT, MEASURE-01]` — IDEAS
@@ -103,7 +103,7 @@ confirmation before committing changes to the idea backlog.
   - No `trigger:`, `automation:`, or `impact_categories:` fields exist yet
   - `spec_version: "3.9.3"` (after S3→SELL change earlier this session)
 
-- `docs/business-os/startup-loop/stage-operator-dictionary.yaml`
+- `docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml`
   - `loop_spec_version: "3.9.0"` — stale; needs bumping to 3.9.3+
   - IDEAS container entry at line 178: `operator_next_prompt: "IDEAS container complete. Proceed to MEASURE-01 Agent-Setup."` — contradicts the handoff-to-fact-find.md contract (which correctly says IDEAS-03 → DO, not MEASURE-01)
   - IDEAS-01 operator prompt (line 204): fully manual ("Review standing intelligence outputs... capture candidate ideas")
@@ -124,7 +124,7 @@ confirmation before committing changes to the idea backlog.
   - Needs to be moved to a "Standing Pipelines" visual section, showing both trigger paths and
     the output arrow to DO
 
-- `scripts/src/startup-loop/bottleneck-detector.ts`
+- `scripts/src/startup-loop/diagnostics/bottleneck-detector.ts`
   - Line 13: `StageId` type is a hardcoded union string literal including `'IDEAS' | 'IDEAS-01' | 'IDEAS-02' | 'IDEAS-03'`
   - Line 89: `UPSTREAM_PRIORITY_ORDER` array includes IDEAS in sequential position (between ASSESSMENT-11 and MEASURE-01)
   - **Risk**: IDEAS in `UPSTREAM_PRIORITY_ORDER` implies bottleneck scoring treats IDEAS as

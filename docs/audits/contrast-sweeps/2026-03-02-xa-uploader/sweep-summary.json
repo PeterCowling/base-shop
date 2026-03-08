@@ -1,0 +1,82 @@
+{
+  "matrix": [
+    {
+      "breakpoint": 320,
+      "mode": "light",
+      "route": "/login",
+      "screenshot": "./screenshots/320-light-login.png"
+    },
+    {
+      "breakpoint": 320,
+      "mode": "light",
+      "route": "/",
+      "screenshot": "./screenshots/320-light-root.png"
+    },
+    {
+      "breakpoint": 375,
+      "mode": "light",
+      "route": "/login",
+      "screenshot": "./screenshots/375-light-login.png"
+    },
+    {
+      "breakpoint": 375,
+      "mode": "light",
+      "route": "/",
+      "screenshot": "./screenshots/375-light-root.png"
+    },
+    {
+      "breakpoint": 430,
+      "mode": "light",
+      "route": "/login",
+      "screenshot": "./screenshots/430-light-login.png"
+    },
+    {
+      "breakpoint": 430,
+      "mode": "light",
+      "route": "/",
+      "screenshot": "./screenshots/430-light-root.png"
+    },
+    {
+      "breakpoint": 768,
+      "mode": "light",
+      "route": "/login",
+      "screenshot": "./screenshots/768-light-login.png"
+    },
+    {
+      "breakpoint": 768,
+      "mode": "light",
+      "route": "/",
+      "screenshot": "./screenshots/768-light-root.png"
+    },
+    {
+      "breakpoint": 1024,
+      "mode": "light",
+      "route": "/login",
+      "screenshot": "./screenshots/1024-light-login.png"
+    },
+    {
+      "breakpoint": 1024,
+      "mode": "light",
+      "route": "/",
+      "screenshot": "./screenshots/1024-light-root.png"
+    },
+    {
+      "breakpoint": 1280,
+      "mode": "light",
+      "route": "/login",
+      "screenshot": "./screenshots/1280-light-login.png"
+    },
+    {
+      "breakpoint": 1280,
+      "mode": "light",
+      "route": "/",
+      "screenshot": "./screenshots/1280-light-root.png"
+    }
+  ],
+  "totals": {
+    "issues": 24,
+    "S1": 12,
+    "S2": 12,
+    "S3": 0
+  }
+}

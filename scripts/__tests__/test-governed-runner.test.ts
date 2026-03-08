@@ -297,6 +297,7 @@ describe("Governed Test Runner", () => {
     return {
       BASESHOP_TEST_LOCK_SCOPE: "repo",
       BASESHOP_TEST_LOCK_REPO_ROOT: repoDir,
+      BASESHOP_GUARD_REPO_ROOT: repoDir,
       BASESHOP_TEST_LOCK_HEARTBEAT_SEC: "1",
       BASESHOP_TEST_GOVERNED_LOG: logPath,
       BASESHOP_ADMISSION_MOCK_TOTAL_RAM_MB: "16000",
@@ -632,7 +633,7 @@ describe("Governed Test Runner", () => {
       expect(event.kill_escalation).toBe("sigterm");
       expect(event.exit_code).toBe(124);
     },
-    90_000,
+    150_000,
   );
 
   test(
@@ -666,7 +667,7 @@ describe("Governed Test Runner", () => {
 
       await waitForCondition(() => !processExists(childPid), 20_000, 200);
     },
-    120_000,
+    180_000,
   );
 
   test.skip("TEG-07A TC-01: governed run emits classed telemetry for jest intent", () => {

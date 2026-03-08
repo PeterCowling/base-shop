@@ -246,7 +246,22 @@
   "filters": {
     "all": "Tutte le camere",
     "private": "Camere private",
-    "dorms": "Dormitori"
+    "dorms": "Dormitori",
+    "categories": {
+      "view": "Vista",
+      "type": "Tipo",
+      "beds": "Letti"
+    },
+    "views": {
+      "all": "Tutte le viste",
+      "sea": "Vista mare",
+      "courtyard": "Cortile",
+      "garden": "Giardino",
+      "none": "Senza vista"
+    },
+    "femaleOnly": "Solo donne",
+    "ensuiteBathroom": "Bagno privato / interno",
+    "bedCount": "{{count}} letti"
   },
   "filtersAria": "Filtra per tipologia di camera",
   "checkRatesNonRefundable": "Tariffe non rimborsabili",
@@ -321,8 +336,10 @@
     "absentNoRates": "Tariffe momentaneamente non disponibili. Seleziona le date per verificare la disponibilità in tempo reale."
   },
   "bookingControls": {
-    "decreaseAdults": "Diminuire gli adulti",
-    "increaseAdults": "Aumentano gli adulti"
+    "decreaseAdults": "Riduci gli adulti",
+    "increaseAdults": "Aumenta gli adulti",
+    "decreaseGuests": "Riduci gli ospiti",
+    "increaseGuests": "Aumenta gli ospiti"
   },
   "recovery": {
     "roomTitle": "Hai bisogno di decidere più tardi? Inviati questo preventivo per la stanza."

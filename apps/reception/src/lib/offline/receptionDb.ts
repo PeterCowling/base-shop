@@ -153,7 +153,7 @@ export async function clearOldCache(maxAgeMs: number = 24 * 60 * 60 * 1000): Pro
 export interface PendingWrite {
   id?: number;
   path: string;
-  operation: "set" | "update" | "remove";
+  operation: "set" | "update" | "remove" | "email_guest_draft";
   data?: unknown;
   timestamp: number;
   idempotencyKey?: string;

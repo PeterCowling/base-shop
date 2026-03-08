@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/navigation';
 
 import GuidedOnboardingFlow from '../../components/portal/GuidedOnboardingFlow';
@@ -36,7 +36,8 @@ function markGuidedOnboardingComplete(session: GuestSessionSnapshot): void {
 
 export default function GuestPortalPage() {
   const router = useRouter();
-  const [status, setStatus] = useState<'loading' | 'unavailable' | 'guided'>('loading');
+  const { t } = useTranslation('Homepage');
+  const [status, setStatus] = useState<'loading' | 'network_error' | 'guided'>('loading');
   const [session, setSession] = useState<GuestSessionSnapshot | null>(null);
 
   useEffect(() => {
@@ -46,19 +47,13 @@ export default function GuestPortalPage() {
       const currentSession = readGuestSession();
       const forcePersonalizationEdit = new URLSearchParams(window.location.search).get('edit') === 'personalization';
 
-      if (!currentSession.token) {
-        if (isMounted) {
-          setStatus('unavailable');
-        }
-        return;
-      }
-
-      const result = await validateGuestToken(currentSession.token);
+      // prime_session HttpOnly cookie is sent automatically on this same-origin request
+      const result = await validateGuestToken();
       if (!isMounted) {
         return;
       }
 
-      if (result === 'valid' || result === 'network_error') {
+      if (result === 'valid') {
         if (!forcePersonalizationEdit && hasCompletedGuidedOnboarding(currentSession)) {
           router.replace(buildGuestHomeUrl(currentSession));
           return;
@@ -66,6 +61,11 @@ export default function GuestPortalPage() {
 
         setSession(currentSession);
         setStatus('guided');
+        return;
+      }
+
+      if (result === 'network_error') {
+        setStatus('network_error');
         return;
       }
 
@@ -88,20 +88,21 @@ export default function GuestPortalPage() {
     );
   }
 
-  if (status === 'unavailable') {
+  if (status === 'network_error') {
     return (
       <main className="min-h-svh bg-muted p-4">
         <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
-          <h1 className="mb-2 text-2xl font-bold text-foreground">Portal unavailable</h1>
+          <h1 className="mb-2 text-2xl font-bold text-foreground">{t('errorPage.title')}</h1>
           <p className="mb-6 text-muted-foreground">
-            We couldn&apos;t find an active guest session. Please use your personal link.
+            {t('errorPage.message')}
           </p>
-          <Link
-            href="/find-my-stay"
-            className="inline-flex items-center justify-center rounded-lg bg-primary px-5 py-3 text-primary-foreground hover:bg-primary/90"
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg bg-primary px-5 py-3 text-primary-foreground hover:bg-primary/90"
           >
-            Find my stay
-          </Link>
+            {t('offline.tryAgain')}
+          </button>
         </div>
       </main>
     );

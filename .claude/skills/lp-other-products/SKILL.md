@@ -23,10 +23,10 @@ Use after lp-offer (MARKET-06) completes, when the operator intends product rang
 
 Before writing the prompt, read and synthesize from the business's loop docs:
 
-- `docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md` — ICP, product, region, price range, growth intent
+- `docs/business-os/startup-baselines/<BIZ>/<YYYY-MM-DD>-assessment-intake-packet.user.md` — ICP, product, region, price range, growth intent
 - `docs/business-os/market-research/<BIZ>/latest.user.md` — competitor landscape, pricing benchmarks, manufacturer accessory catalogues
 - `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md` — emotional territory, anti-criteria, community sensitivity framing
-- `docs/business-os/startup-baselines/<BIZ>-offer.md` OR `docs/business-os/strategy/<BIZ>/offer.user.md` — ICP segmentation, pain/promise map, objection map, positioning (required; this skill cannot run without it)
+- `docs/business-os/startup-baselines/<BIZ>/offer.md` OR `docs/business-os/strategy/<BIZ>/offer.user.md` — ICP segmentation, pain/promise map, objection map, positioning (required; this skill cannot run without it)
 - `docs/business-os/contracts/<BIZ>/outcome-contract.user.md` — 90-day targets and contract window (to anchor MVP roadmap dates)
 
 If the offer artifact is missing, halt and instruct the operator to complete lp-offer (MARKET-06) first.

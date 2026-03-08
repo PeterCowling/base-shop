@@ -1,0 +1,32 @@
+{
+  "routes": [
+    "/en/dorms",
+    "/en/dorms/7-bed-female-sea-view-dorm",
+    "/en/dorms/8-bed-female-dorm",
+    "/en/dorms/8-bed-mixed-dorm",
+    "/en/dorms/female-dorm-large-sea-terrace",
+    "/en/dorms/female-garden-room",
+    "/en/dorms/female-sea-view-dorm",
+    "/en/dorms/mixed-dorm-sea-terrace",
+    "/en/dorms/mixed-ensuite-dorm",
+    "/en/dorms/mixed-room-single-beds"
+  ],
+  "breakpoints": [
+    320,
+    375,
+    430,
+    768,
+    1024,
+    1280
+  ],
+  "modes": [
+    "light",
+    "dark"
+  ],
+  "testedEntries": 120,
+  "failuresCount": 0,
+  "failures": [],
+  "notes": [
+    "Deterministic axe-core runOnly=color-contrast; dark mode forced with .theme-dark class."
+  ]
+}

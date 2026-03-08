@@ -21,11 +21,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
-      <body className="min-h-dvh bg-background text-foreground antialiased">
+    <html lang="zh" suppressHydrationWarning>
+      <head>
+        {/* Inline theme init — runs before paint to prevent FOUC on dark-mode pages */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("xa-uploader-theme");if(t!=="light"){document.documentElement.setAttribute("data-theme","dark");document.documentElement.classList.add("theme-dark")}}catch(e){document.documentElement.setAttribute("data-theme","dark");document.documentElement.classList.add("theme-dark")}})()`,
+          }}
+        />
+      </head>
+      <body className="min-h-dvh bg-gate-bg text-gate-ink antialiased">
         {children}
       </body>
     </html>
   );
 }
-

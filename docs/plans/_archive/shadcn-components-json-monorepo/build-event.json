@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "shadcn-components-json-monorepo-20260306",
+  "feature_slug": "shadcn-components-json-monorepo",
+  "emitted_at": "2026-03-06T00:00:00.000Z",
+  "why": "The shadcn CLI is the fastest path to new components but the monorepo layout (components live in packages/ui, not in an app) makes standard setup inapplicable — every new component had to be manually copied and alias paths manually fixed.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "A working components.json in packages/ui so npx shadcn@latest add <component> --cwd packages/ui installs new components directly into packages/ui/src/components/atoms/shadcn/ with correct alias resolution and no manual post-edit needed. Workflow documented in packages/ui/AGENTS.md.",
+    "source": "operator"
+  }
+}

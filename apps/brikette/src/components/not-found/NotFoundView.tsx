@@ -15,6 +15,7 @@ import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { resolveI18nMeta } from "@/utils/i18nMeta";
+import { getBookPath } from "@/utils/localizedRoutes";
 import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
 import { getSlug } from "@/utils/slug";
 import { useApplyFallbackHead } from "@/utils/testHeadFallback";
@@ -106,7 +107,7 @@ function NotFoundView() {
   })();
 
   const handleReserve = useCallback(() => {
-    router.push(`/${lang}/book`);
+    router.push(getBookPath(lang));
   }, [router, lang]);
 
   // During tests, apply head tags to document.head to keep assertions simple
@@ -198,7 +199,7 @@ function NotFoundView() {
         </nav>
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
           <Button asChild className="cta-light dark:cta-dark">
-            <Link to={`/${lang}/${getSlug("rooms", lang)}`}>{t("buttonRooms")}</Link>
+            <Link to={`/${lang}/${getSlug("book", lang)}`}>{t("buttonRooms")}</Link>
           </Button>
           <Button onClick={handleReserve} variant="outline" aria-label={reserveAriaLabel}>
             {reserveLabel}

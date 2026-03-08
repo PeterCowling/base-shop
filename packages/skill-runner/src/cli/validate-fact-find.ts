@@ -10,10 +10,12 @@ function main(): void {
     console.error("Usage: validate-fact-find <fact-find.md> [critique-history.md]");
     process.exit(2);
   }
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- SKILL-2401 CLI path is operator-provided local file input [ttl=2026-12-31]
   const factFind = readFileSync(factFindPath, "utf8");
   let critique: string | null = null;
   if (critiquePath) {
     try {
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- SKILL-2401 Optional CLI path is operator-provided local file input [ttl=2026-12-31]
       critique = readFileSync(critiquePath, "utf8");
     } catch {
       critique = null;

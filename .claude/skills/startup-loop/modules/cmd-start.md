@@ -42,10 +42,10 @@
 - **Re-entry**: If `<YYYY-MM-DD>-solution-decision.user.md` exists → ASSESSMENT-03 complete; skip to ASSESSMENT-04.
 
 **ASSESSMENT-04 — Candidate names (two-tier):**
-- Tier 1 — prompt written (started): `docs/business-os/strategy/<BIZ>/candidate-names-prompt.md`
-- Tier 2 — shortlist returned (complete): `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-candidate-names.user.md`
+- Tier 1 — prompt written (started): `docs/business-os/strategy/<BIZ>/assessment/naming-workbench/candidate-names-prompt.md`
+- Tier 2 — shortlist returned (complete): `docs/business-os/strategy/<BIZ>/assessment/naming-workbench/<YYYY-MM-DD>-candidate-names.user.md`
 - `prompt_file`: `.claude/skills/lp-do-assessment-04-candidate-names/SKILL.md`
-- `required_output_path`: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-candidate-names.user.md`
+- `required_output_path`: `docs/business-os/strategy/<BIZ>/assessment/naming-workbench/<YYYY-MM-DD>-candidate-names.user.md`
 - **Re-entry**: If any `*-candidate-names.user.md` exists → ASSESSMENT-04 complete. If only `candidate-names-prompt.md` exists → ASSESSMENT-04 started; hand off prompt to operator.
 
 **ASSESSMENT-06 — Distribution profiling:**
@@ -76,7 +76,7 @@ When all seven completion artifacts exist:
 → Gate D is satisfied. Run ASSESSMENT intake sync (the intake packet production step) — apply `modules/assessment-intake-sync.md` (first-run or drift check) before continuing to Gate E (ASSESSMENT brand routing).
 
 **ASSESSMENT-09 output (canonical):**
-- `required_output_path`: `docs/business-os/startup-baselines/<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md`
+- `required_output_path`: `docs/business-os/startup-baselines/<BIZ>/<YYYY-MM-DD>-assessment-intake-packet.user.md`
 - Advance rule: ASSESSMENT-09 completes only when precursor validation passes and the intake sync runs successfully (or is no-op up-to-date), then routing may continue to ASSESSMENT-10.
 
 ---

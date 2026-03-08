@@ -138,4 +138,11 @@ config.transform = {
   ],
 };
 
+// Playwright specs must run via Playwright runner, never via Jest.
+config.testPathIgnorePatterns = [
+  ...(config.testPathIgnorePatterns ?? []),
+  "/e2e/",
+  "\\.spec\\.ts$",
+];
+
 module.exports = config;

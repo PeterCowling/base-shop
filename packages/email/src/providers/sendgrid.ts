@@ -73,6 +73,7 @@ export class SendgridProvider implements CampaignProvider {
     try {
       await sgMail.send({
         to: options.to,
+        ...(options.bcc ? { bcc: options.bcc } : {}),
         from: getDefaultSender(),
         subject: options.subject,
         html: options.html,

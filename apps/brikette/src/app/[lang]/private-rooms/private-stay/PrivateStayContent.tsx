@@ -11,6 +11,7 @@ import { Section } from "@acme/design-system/atoms";
 import FitCheck from "@/components/apartment/FitCheck";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
+import { getPrivateBookingPath } from "@/utils/localizedRoutes";
 import { trackApartmentEvent } from "@/utils/trackApartmentEvent";
 
 type Props = {
@@ -76,7 +77,7 @@ function PrivateStayContent({ lang }: Props) {
         {/* CTAs */}
         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
           <Link
-            href={`/${lang}/apartment/book/`}
+            href={`${getPrivateBookingPath(lang)}/`}
             onClick={() => trackApartmentEvent("click_check_availability", { source: "private-stay" })}
             className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg bg-brand-primary px-6 py-3 font-semibold text-fg-inverse transition-colors hover:bg-brand-primary/90"
           >

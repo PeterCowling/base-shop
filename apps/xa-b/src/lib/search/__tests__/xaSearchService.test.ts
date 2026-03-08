@@ -1,14 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 describe("xaSearchService", () => {
-  const originalFetch = global.fetch;
-
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   afterEach(() => {
-    global.fetch = originalFetch;
     jest.resetModules();
   });
 
@@ -28,8 +25,6 @@ describe("xaSearchService", () => {
       searchXaIndex: jest.fn().mockResolvedValue(["studio-jacket"]),
     }));
     jest.doMock("../xaSearchConfig", () => ({ toXaSearchDoc: (doc: unknown) => doc }));
-
-    global.fetch = jest.fn(async () => new Response(null, { status: 304 })) as unknown as typeof fetch;
 
     const { getXaSearchService } = await import("../xaSearchService");
     const service = await getXaSearchService();
@@ -55,8 +50,6 @@ describe("xaSearchService", () => {
       searchXaIndex: jest.fn().mockRejectedValue(new Error("worker-down")),
     }));
     jest.doMock("../xaSearchConfig", () => ({ toXaSearchDoc: (doc: unknown) => doc }));
-
-    global.fetch = jest.fn(async () => new Response(null, { status: 304 })) as unknown as typeof fetch;
 
     const { getXaSearchService } = await import("../xaSearchService");
     const service = await getXaSearchService();

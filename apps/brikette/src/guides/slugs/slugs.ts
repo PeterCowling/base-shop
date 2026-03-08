@@ -17,7 +17,7 @@ function buildSlugMap(key: GuideKey, fallbackSlug: string): PerLang {
 
   for (const lang of SUPPORTED_LANGS) {
     const override = overrides?.[lang as AppLanguage];
-    if (override && (lang === "en" || override !== fallbackSlug)) {
+    if (override) {
       perLang[lang] = override;
       continue;
     }

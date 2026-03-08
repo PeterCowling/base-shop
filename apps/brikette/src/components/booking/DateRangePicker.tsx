@@ -221,14 +221,14 @@ export function DateRangePicker({
       <div aria-hidden="true" className="hidden">
         <input
           type="date"
-          data-testid={TEST_IDS.checkInInput}
+          data-cy={TEST_IDS.checkInInput}
           tabIndex={-1}
           value={selectedFromIso}
           onChange={(event) => handleCheckInInputChange(event.target.value)}
         />
         <input
           type="date"
-          data-testid={TEST_IDS.checkOutInput}
+          data-cy={TEST_IDS.checkOutInput}
           tabIndex={-1}
           value={selectedToIso}
           min={minCheckout}

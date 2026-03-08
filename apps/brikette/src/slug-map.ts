@@ -185,7 +185,7 @@ export const SLUGS = {
   /** Booking landing page */
   book: {
     de: "buchen",
-    en: "book-dorm-bed",
+    en: "book",
     es: "reservar",
     fr: "reserver",
     it: "prenota",

@@ -5,8 +5,8 @@
     "dev": "next dev -p 3013",
     "build": "node ./scripts/build-xa.mjs",
     "start": "next start -p 3013",
-    "lint": "eslint .",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint --cache --cache-location .eslintcache --no-error-on-unmatched-pattern src scripts functions",
+    "typecheck": "tsc -p tsconfig.json --noEmit --incremental --tsBuildInfoFile .typecheck.tsbuildinfo",
     "test": "bash ../../scripts/tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs",
     "build:worker": "opennextjs-cloudflare build"
   },

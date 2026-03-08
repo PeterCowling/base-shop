@@ -4,7 +4,6 @@ import { Button } from "@acme/design-system/atoms";
 import { Grid } from "@acme/design-system/atoms/Grid";
 import { Section } from "@acme/design-system/atoms/Section";
 import { Stack } from "@acme/design-system/primitives/Stack";
-import { FeedbackPreferenceCard } from "@acme/ui/components/organisms/FeedbackPreferenceCard";
 import { SupportTwoColumnLayout } from "@acme/ui/components/organisms/SupportTwoColumnLayout";
 
 import { siteConfig } from "../../../lib/siteConfig";
@@ -157,14 +156,6 @@ export default function ContactUsPage() {
               />
             </Grid>
 
-            <FeedbackPreferenceCard
-              title="Tell us what you think"
-              question={xaI18n.t("xaB.src.app.pages.contact.us.page.l181c26")}
-              options={[
-                { id: "yes", label: "Yes" },
-                { id: "not-really", label: "Not really" },
-              ]}
-            />
         </SupportTwoColumnLayout>
       </Section>
     </main>

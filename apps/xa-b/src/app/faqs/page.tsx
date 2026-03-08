@@ -5,7 +5,6 @@ import { Grid } from "@acme/design-system/atoms/Grid";
 import { Section } from "@acme/design-system/atoms/Section";
 import Accordion from "@acme/design-system/molecules/Accordion";
 import { Stack } from "@acme/design-system/primitives/Stack";
-import { FeedbackPreferenceCard } from "@acme/ui/components/organisms/FeedbackPreferenceCard";
 import { NewsletterSignupCard } from "@acme/ui/components/organisms/NewsletterSignupCard";
 
 import { XaInlineLink } from "../../components/XaInlineLink";
@@ -744,27 +743,15 @@ export default function FaqPage() {
       </Section>
 
       <Section padding="default">
-        <Grid columns={{ base: 1, md: 2 }} gap={6}>
-          <FeedbackPreferenceCard
-            id="newsletter"
-            className="p-5"
-            title="Tell us what you think"
-            question={xaI18n.t("xaB.src.app.faqs.page.l1035c22")}
-            options={[
-              { id: "yes", label: "Yes" },
-              { id: "not-really", label: "Not really" },
-            ]}
-          />
-          <NewsletterSignupCard
-            className="p-5"
-            title="Never miss a thing"
-            description={xaI18n.t("xaB.src.app.faqs.page.l1044c25")}
-            legalNote={
-              <>{xaI18n.t("xaB.src.app.faqs.page.l1046c17")}{" "}
-                <XaInlineLink href="/pages/privacy-policy" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l1048c82")}</XaInlineLink>{xaI18n.t("xaB.src.app.faqs.page.l1050c32")}</>
-            }
-          />
-        </Grid>
+        <NewsletterSignupCard
+          className="p-5"
+          title="Never miss a thing"
+          description={xaI18n.t("xaB.src.app.faqs.page.l1044c25")}
+          legalNote={
+            <>{xaI18n.t("xaB.src.app.faqs.page.l1046c17")}{" "}
+              <XaInlineLink href="/pages/privacy-policy" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l1048c82")}</XaInlineLink>{xaI18n.t("xaB.src.app.faqs.page.l1050c32")}</>
+          }
+        />
       </Section>
     </main>
   );

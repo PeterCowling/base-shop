@@ -6,9 +6,9 @@ import { hasPermission } from "@acme/auth";
 import type { Role } from "@acme/auth/types";
 import { Tag } from "@acme/design-system/atoms";
 import { Grid as DSGrid } from "@acme/design-system/primitives";
+import type { InflowAuditEventEntry } from "@acme/platform-core/repositories/stockInflows.server";
 import { listStockInflows } from "@acme/platform-core/repositories/stockInflows.server";
 import { checkShopExists } from "@acme/platform-core/shops";
-import type { StockInflowEvent } from "@acme/platform-core/types/stockInflows";
 
 import { Card, CardContent } from "@/components/atoms/shadcn";
 
@@ -40,16 +40,32 @@ export default async function StockInflowsPage({
     );
   }
 
-  let recent: StockInflowEvent[] = [];
+  let rawEntries: InflowAuditEventEntry[] = [];
   try {
-    recent = await listStockInflows(shop, { limit: 10 });
+    rawEntries = await listStockInflows(shop, { limit: 50 });
   } catch {
     // If inflows cannot be loaded, we still want the receive form to render.
-    recent = [];
+    rawEntries = [];
   }
 
-  const lastReceivedAt = recent[0]?.receivedAt
-    ? new Date(recent[0].receivedAt).toLocaleString("en-GB", {
+  // Group per-item audit rows by referenceId to reconstruct per-event summaries.
+  const groupMap = new Map<string, { id: string; receivedAt: string; note: string | null; itemCount: number }>();
+  for (const entry of rawEntries) {
+    const key = entry.referenceId ?? entry.id;
+    if (!groupMap.has(key)) {
+      groupMap.set(key, {
+        id: entry.id,
+        receivedAt: entry.createdAt.toISOString(),
+        note: entry.note,
+        itemCount: 0,
+      });
+    }
+    groupMap.get(key)!.itemCount += 1;
+  }
+  const recent = [...groupMap.values()].slice(0, 10);
+
+  const lastReceivedAt = rawEntries[0]?.createdAt
+    ? rawEntries[0].createdAt.toLocaleString("en-GB", {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",

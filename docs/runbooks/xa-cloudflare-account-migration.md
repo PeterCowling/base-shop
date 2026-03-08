@@ -38,6 +38,8 @@ Superseded statements from earlier revisions:
 Staging URL convention for `xa-b-site`:
 - branch `dev` preview URL is `https://dev.xa-b-site.pages.dev/`.
 - do not use `https://dev--xa-b-site.pages.dev/` (wrong hostname pattern for this Pages setup).
+- canonical deploy target is the direct-upload Pages project `xa-b-site`.
+- legacy Git-connected project `xa-b-site-git` was disabled on 2026-03-08; do not re-enable it unless the deploy model is intentionally changed back to Git builds.
 
 ## Catalog Sync Behavior (Staging)
 

@@ -55,6 +55,9 @@ jobs:
           fi
 
       - name: Deploy xa-b to Cloudflare Pages
+        # Canonical XA-B Pages target is `xa-b-site` via direct wrangler deploy.
+        # Keep the legacy `xa-b-site-git` Git integration disabled; it is not the
+        # source of truth and its external status checks should not gate releases.
         run: cd apps/xa-b && pnpm exec wrangler pages deploy out/ --project-name xa-b-site --branch dev
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

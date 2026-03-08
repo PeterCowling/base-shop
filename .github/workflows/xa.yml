@@ -134,6 +134,9 @@ jobs:
         run: find apps/xa-b/out -name '__next.*' -type f -delete
 
       - name: Deploy xa-b to Cloudflare Pages
+        # Canonical XA-B Pages target is `xa-b-site` via direct wrangler deploy.
+        # Legacy git-connected project `xa-b-site-git` is intentionally disabled
+        # because it attaches unrelated PR checks and is not part of the release path.
         run: cd apps/xa-b && pnpm exec wrangler pages deploy out/ --project-name xa-b-site
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

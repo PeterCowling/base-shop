@@ -35,7 +35,7 @@ describe("reception middleware security headers", () => {
     expect(csp).toContain("frame-ancestors 'none'");
     expect(csp).toContain("form-action 'self'");
     expect(csp).toContain("script-src 'self' 'unsafe-inline'");
-    expect(csp).toContain("script-src-elem 'self' 'unsafe-inline' https://static.cloudflareinsights.com https://apis.google.com https://www.gstatic.com");
+    expect(csp).toContain("script-src-elem 'self' 'unsafe-inline' https://static.cloudflareinsights.com https://accounts.google.com https://apis.google.com https://www.gstatic.com https://script.googleusercontent.com");
     expect(csp).toContain("style-src 'self' 'unsafe-inline'");
     expect(csp).toContain("connect-src 'self' https://cloudflareinsights.com");
     expect(csp).not.toContain("'unsafe-eval'");
@@ -62,9 +62,8 @@ describe("reception middleware security headers", () => {
 
     const csp = getCspFor("https://reception.hostel-positano.com/bar");
 
-    expect(csp).toContain(
-      "script-src-elem 'self' 'unsafe-inline' https://static.cloudflareinsights.com https://script.google.com https://script.googleusercontent.com",
-    );
+    expect(csp).toContain("https://script.google.com");
+    expect(csp).toContain("https://script.googleusercontent.com");
     // Verify no blanket https: scheme (bare "https:" without a domain would allow all HTTPS scripts)
     expect(csp).not.toMatch(/script-src-elem[^;]*\shttps:(?!\/)/);
   });

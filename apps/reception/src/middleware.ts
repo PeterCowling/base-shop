@@ -40,8 +40,10 @@ function buildContentSecurityPolicy(): string {
     "'self'",
     "'unsafe-inline'",
     "https://static.cloudflareinsights.com",
+    "https://accounts.google.com",
     "https://apis.google.com",
     "https://www.gstatic.com",
+    "https://script.googleusercontent.com",
     ...getAlloggiatiScriptSources(),
   ];
 

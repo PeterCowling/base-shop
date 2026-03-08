@@ -1,7 +1,6 @@
 // src/components/checkins/KeycardButton/KeycardDepositButton.tsx
 import {
   memo,
-  type MouseEvent,
   useCallback,
   useEffect,
   useMemo,
@@ -15,6 +14,7 @@ import { Ban, Banknote, FileText, Key } from "lucide-react";
 import { Button } from "@acme/design-system/atoms";
 
 import { useLoanData } from "../../../context/LoanDataContext";
+import { useDropdownMenu } from "../../../hooks/client/keycardButton/useDropdownMenu";
 import useActivitiesMutations from "../../../hooks/mutations/useActivitiesMutations";
 import useAllTransactions from "../../../hooks/mutations/useAllTransactionsMutations";
 import { useKeycardAssignmentsMutations } from "../../../hooks/mutations/useKeycardAssignmentsMutations";
@@ -57,7 +57,7 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
   const { addToAllTransactions } = useAllTransactions();
   const { assignGuestKeycard } = useKeycardAssignmentsMutations();
 
-  /* ──────────────── keycard / “No_card” status ─────────────────────────── */
+  /* ──────────────── keycard / "No_card" status ─────────────────────────── */
   const { occupantLoans } = useOccupantLoans(bookingRef, occupantId);
 
   let hasKeycard = false;
@@ -77,37 +77,23 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
     });
   }
 
-  /* ──────────────── menu / dropdown state ──────────────────────────────── */
-  const [menuOpen, setMenuOpen] = useState<boolean>(false);
-  const [menuVisible, setMenuVisible] = useState<boolean>(false);
-  const [menuPosition, setMenuPosition] = useState<{
-    top: number;
-    left: number;
-  } | null>(null);
+  /* ──────────────── disabled logic ─────────────────────────────────────── */
+  const disabledDueToKeycard = hasKeycard || hasNoCard;
+  const disabledDueToOther = !bookingRef || !occupantId || buttonDisabled;
+  const isDisabled = disabledDueToKeycard || disabledDueToOther;
 
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  /* ──────────────── menu / dropdown state ──────────────────────────────── */
+  const {
+    menuOpen,
+    menuVisible,
+    menuPosition,
+    buttonRef,
+    handleMenuToggle,
+    closeMenu,
+    setTrackedTimeout,
+  } = useDropdownMenu({ isDisabled });
 
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
-
-  /* Track active timers so they can be cleared on unmount */
-  const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const setTrackedTimeout = useCallback(
-    (fn: () => void, delay: number): ReturnType<typeof setTimeout> => {
-      const id = setTimeout(() => {
-        fn();
-        timeoutsRef.current = timeoutsRef.current.filter((t) => t !== id);
-      }, delay);
-      timeoutsRef.current.push(id);
-      return id;
-    },
-    [timeoutsRef]
-  );
-
-  useEffect(() => {
-    return () => {
-      timeoutsRef.current.forEach((t) => clearTimeout(t));
-    };
-  }, []);
 
   /* ──────────────── payment- & doc-type state ───────────────────────────── */
   const [payType, setPayType] = useState<KeycardPayType>(KeycardPayType.CASH);
@@ -159,26 +145,8 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
     }
   }, [payType]);
 
-  /* Issue only one keycard unless “No_card” was chosen. */
+  /* Issue only one keycard unless "No_card" was chosen. */
   const cardCount = 1;
-
-  /* ──────────────── dropdown fade-in / out ─────────────────────────────── */
-  useEffect(() => {
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    if (menuOpen) setMenuVisible(true);
-    else timer = setTrackedTimeout(() => setMenuVisible(false), 200);
-    return () => {
-      if (timer) {
-        clearTimeout(timer);
-        timeoutsRef.current = timeoutsRef.current.filter((t) => t !== timer);
-      }
-    };
-  }, [menuOpen, setTrackedTimeout]);
-
-  /* ──────────────── disabled logic ─────────────────────────────────────── */
-  const disabledDueToKeycard = hasKeycard || hasNoCard;
-  const disabledDueToOther = !bookingRef || !occupantId || buttonDisabled;
-  const isDisabled = disabledDueToKeycard || disabledDueToOther;
 
   /* ──────────────── styling helpers ────────────────────────────────────── */
   const baseButtonClass =
@@ -204,29 +172,9 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
     : activeClass;
 
   /* ──────────────── handlers ───────────────────────────────────────────── */
-  const handleMenuToggle = useCallback(
-    (event: MouseEvent<HTMLButtonElement>): void => {
-      event.stopPropagation();
-      if (isDisabled) {
-        showToast("Keycard deposit action not available.", "warning");
-        return;
-      }
-      if (!menuOpen && buttonRef.current) {
-        const rect = buttonRef.current.getBoundingClientRect();
-        setMenuPosition({
-          top: rect.bottom + window.scrollY,
-          left: rect.left + window.scrollX,
-        });
-      } else {
-        setTrackedTimeout(() => setMenuPosition(null), 200);
-      }
-      setMenuOpen((prev) => !prev);
-    },
-    [isDisabled, menuOpen, setTrackedTimeout]
-  );
 
   /**
-   * Confirm keycard issuance / “No_card”.
+   * Confirm keycard issuance / "No_card".
    * Creates a **Loan** transaction, records financials,
    * and logs activity code 10.
    */
@@ -308,8 +256,7 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
       showToast("Error issuing keycard.", "error");
     } finally {
       setButtonDisabled(false);
-      setMenuOpen(false);
-      setTrackedTimeout(() => setMenuPosition(null), 200);
+      closeMenu();
     }
   }, [
     isDisabled,
@@ -325,6 +272,7 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
     assignGuestKeycard,
     addActivity,
     setTrackedTimeout,
+    closeMenu,
   ]);
 
   /* ──────────────── render ─────────────────────────────────────────────── */
@@ -385,10 +333,7 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
             setDocType={setDocType}
             setKeycardNumber={setKeycardNumber}
             handleConfirm={handleConfirm}
-            closeMenu={() => {
-              setMenuOpen(false);
-              setTrackedTimeout(() => setMenuPosition(null), 200);
-            }}
+            closeMenu={closeMenu}
           />,
           document.body
         )}

@@ -250,7 +250,8 @@ function buildNormalizationPairs(
   for (const lang of languages) {
     // Legacy aliases emitted by explicit route folders; normalize to localized contract.
     addPair(`/${lang}/help`, `/${lang}/${getSlug("assistance", lang)}`);
-    addPair(`/${lang}/book-dorm-bed`, `/${lang}/${getSlug("book", lang)}`);
+    // book-dorm-bed is the canonical published Octorate widget page (not a legacy alias).
+    // _redirects handles /en/book -> /en/book-dorm-bed. Do NOT normalize this away.
   }
 
   for (const lang of languages) {

@@ -4,7 +4,6 @@
 import { type ReactNode } from "react";
 import Link from "next/link";
 import {
-  BackpackIcon,
   HeartIcon,
   MagnifyingGlassIcon,
   MoonIcon,
@@ -21,7 +20,6 @@ import { Stack } from "@acme/design-system/primitives/Stack";
 import { useThemeMode } from "@acme/platform-core/contexts/ThemeModeContext";
 import AnnouncementBar from "@acme/ui/components/organisms/AnnouncementBar";
 
-import { useCart } from "../contexts/XaCartContext";
 import { useWishlist } from "../contexts/XaWishlistContext";
 import { siteConfig } from "../lib/siteConfig";
 import { toWhatsappHref } from "../lib/support";
@@ -47,8 +45,6 @@ export function XaShell({ children }: { children: ReactNode }) {
     : undefined;
   const showSupportDock = siteConfig.showContactInfo || siteConfig.showSocialLinks;
   const showSupportLinks = showSupportDock;
-  const [cart] = useCart();
-  const cartCount = Object.values(cart).reduce((sum, line) => sum + line.qty, 0);
   const [wishlist] = useWishlist();
   const wishlistCount = wishlist.length;
   const { isDark, setMode } = useThemeMode();
@@ -92,6 +88,7 @@ export function XaShell({ children }: { children: ReactNode }) {
 
               <nav aria-label="Utilities" className="justify-self-end">
                 <Inline gap={4}>
+                  <CurrencySwitcher />
                   <Link
                     href="/wishlist"
                     className="relative inline-flex min-h-11 min-w-11 items-center justify-center"
@@ -118,22 +115,6 @@ export function XaShell({ children }: { children: ReactNode }) {
                   >
                     {isDark ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
                   </IconButton>
-
-                  <Link
-                    href="/cart"
-                    className="relative inline-flex min-h-11 min-w-11 items-center justify-center"
-                    aria-label={`Cart${cartCount ? ` (${cartCount})` : ""}`}
-                    title="Cart"
-                  >
-                    <BackpackIcon className="h-4 w-4" />
-                    {cartCount ? (
-                      <Cluster asChild alignY="center" justify="center" wrap={false}>
-                        <span className="absolute -end-1 -top-1 h-4 min-w-4 rounded-full bg-foreground px-1 xa-text-10 font-semibold text-background">
-                          {cartCount}
-                        </span>
-                      </Cluster>
-                    ) : null}
-                  </Link>
                 </Inline>
               </nav>
             </div>
@@ -181,7 +162,7 @@ export function XaShell({ children }: { children: ReactNode }) {
 
       <footer className="xa-footer border-t border-border-1 text-foreground">
         <Section as="div" padding="none" className="px-6 py-12 md:px-12">
-          <Grid columns={{ base: 2, md: 4 }} gap={8}>
+          <Grid columns={{ base: 2, md: 3 }} gap={8}>
             <div className="col-span-2 md:col-span-1">
               <div className="text-xl font-semibold uppercase xa-tracking-018 text-foreground">
                 {siteConfig.brandName}
@@ -263,14 +244,6 @@ export function XaShell({ children }: { children: ReactNode }) {
               </Stack>
             </div>
 
-            <div>
-              <Stack gap={2}>
-                <div className="text-xs font-semibold uppercase xa-tracking-012 text-foreground">
-                  Currency
-                </div>
-                <CurrencySwitcher />
-              </Stack>
-            </div>
           </Grid>
         </Section>
       </footer>

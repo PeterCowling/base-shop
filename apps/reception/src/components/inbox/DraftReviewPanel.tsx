@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import { CheckCircle, RefreshCw, Save, Send, ShieldAlert, XCircle } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
-import { Cluster } from "@acme/design-system/primitives";
 
 import ConfirmModal from "@/components/common/ConfirmModal";
 import type { InboxThreadDetail } from "@/services/useInbox";
@@ -180,27 +179,26 @@ export default function DraftReviewPanel({
   return (
     <>
       <section className="rounded-2xl border border-border-1 bg-surface shadow-sm">
-        <div className="border-b border-border-1 px-4 py-3">
-          <div className="flex items-center justify-between gap-3">
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-              Draft reply
-            </h3>
-            <Cluster gap={2}>
-              {currentDraft?.templateUsed && (
-                <span className="rounded-full bg-surface-3 px-2 py-0.5 text-xs text-muted-foreground">
-                  {currentDraft.templateUsed}
-                </span>
-              )}
-              {qualityBadge && (
-                <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${qualityBadge.className}`}>
-                  {qualityBadge.label}
-                </span>
-              )}
-            </Cluster>
+        {/* Header with badges */}
+        <div className="flex items-center justify-between gap-3 px-5 py-3">
+          <h3 className="text-sm font-semibold text-foreground">
+            Reply
+          </h3>
+          <div className="flex items-center gap-2">
+            {currentDraft?.templateUsed && (
+              <span className="rounded-full bg-surface-2 px-2 py-0.5 text-xs text-muted-foreground">
+                {currentDraft.templateUsed}
+              </span>
+            )}
+            {qualityBadge && (
+              <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${qualityBadge.className}`}>
+                {qualityBadge.label}
+              </span>
+            )}
           </div>
         </div>
 
-        <div className="space-y-3 px-4 py-4">
+        <div className="space-y-3 px-5 pb-4">
           {requiresManualDraft && (
             <div className="rounded-xl border border-warning-main/20 bg-warning-light px-3 py-2.5 text-sm text-warning-main">
               {threadDetail.thread.draftFailureMessage
@@ -215,121 +213,114 @@ export default function DraftReviewPanel({
             </div>
           )}
 
-          {/* Subject */}
-          <div>
-            <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
-              Subject
-            </label>
-            <input
-              value={subject}
-              onChange={(event) => setSubject(event.target.value)}
-              className="w-full rounded-lg border border-border-1 bg-surface-2 px-3 py-2 text-sm text-foreground outline-none transition focus:border-primary-main focus:ring-1 focus:ring-primary-main/30"
-              placeholder="Re: Guest inquiry"
-            />
+          {/* Compact subject + recipient row */}
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div>
+              <label className="mb-1 block text-xs font-medium text-muted-foreground">
+                Subject
+              </label>
+              <input
+                value={subject}
+                onChange={(event) => setSubject(event.target.value)}
+                className="w-full rounded-lg border border-border-1 bg-surface-2 px-3 py-2 text-sm text-foreground outline-none transition focus:border-primary-main focus:ring-1 focus:ring-primary-main/30"
+                placeholder="Re: Guest inquiry"
+              />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-medium text-muted-foreground">
+                To
+              </label>
+              <input
+                value={recipientInput}
+                onChange={(event) => setRecipientInput(event.target.value)}
+                className="w-full rounded-lg border border-border-1 bg-surface-2 px-3 py-2 text-sm text-foreground outline-none transition focus:border-primary-main focus:ring-1 focus:ring-primary-main/30"
+                placeholder="guest@example.com"
+              />
+            </div>
           </div>
 
-          {/* Recipients */}
+          {/* Message body */}
           <div>
-            <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
-              To
-            </label>
-            <input
-              value={recipientInput}
-              onChange={(event) => setRecipientInput(event.target.value)}
-              className="w-full rounded-lg border border-border-1 bg-surface-2 px-3 py-2 text-sm text-foreground outline-none transition focus:border-primary-main focus:ring-1 focus:ring-primary-main/30"
-              placeholder="guest@example.com"
-            />
-          </div>
-
-          {/* Body */}
-          <div>
-            <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
-              Message
-            </label>
             <textarea
               value={plainText}
               onChange={(event) => setPlainText(event.target.value)}
-              rows={8}
+              rows={6}
               className="w-full rounded-xl border border-border-1 bg-surface-2 px-3 py-3 text-sm leading-relaxed text-foreground outline-none transition focus:border-primary-main focus:ring-1 focus:ring-primary-main/30"
               placeholder="Write the reply to send to the guest."
             />
           </div>
 
           {hasUnsavedChanges && (
-            <div className="flex items-center gap-2 rounded-lg bg-surface-2 px-3 py-2 text-xs text-muted-foreground">
-              <ShieldAlert className="h-3.5 w-3.5 text-warning-main" />
-              Unsaved changes. Save before sending.
+            <div className="flex items-center gap-2 rounded-lg bg-warning-light/50 px-3 py-1.5 text-xs text-warning-main">
+              <ShieldAlert className="h-3.5 w-3.5" />
+              Unsaved changes
             </div>
           )}
         </div>
 
-        {/* Actions — primary send on the right, secondary on the left */}
-        <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border-1 px-4 py-3">
-          <Cluster gap={2}>
-            <Button
-              type="button"
-              onClick={() => void handleSave()}
-              disabled={actionsDisabled || !hasUnsavedChanges}
-              color="default"
-              tone="outline"
-              className="min-h-10 rounded-lg"
-            >
-              <Save className="mr-1.5 h-4 w-4" />
-              {savingDraft ? "Saving..." : "Save"}
-            </Button>
+        {/* Action bar — clear visual hierarchy */}
+        <div className="flex items-center gap-2 border-t border-border-1 px-5 py-3">
+          {/* Secondary actions — left */}
+          <Button
+            type="button"
+            onClick={() => void handleSave()}
+            disabled={actionsDisabled || !hasUnsavedChanges}
+            color="default"
+            tone="outline"
+            className="min-h-9 rounded-lg text-xs"
+          >
+            <Save className="mr-1 h-3.5 w-3.5" />
+            {savingDraft ? "Saving..." : "Save"}
+          </Button>
 
-            <Button
-              type="button"
-              onClick={() => setShowRegenerateConfirm(true)}
-              disabled={actionsDisabled}
-              color="default"
-              tone="outline"
-              className="min-h-10 rounded-lg"
-            >
-              <RefreshCw className={`mr-1.5 h-4 w-4 ${regeneratingDraft ? "animate-spin" : ""}`} />
-              {regeneratingDraft ? "Regenerating..." : "Regenerate"}
-            </Button>
+          <Button
+            type="button"
+            onClick={() => setShowRegenerateConfirm(true)}
+            disabled={actionsDisabled}
+            color="default"
+            tone="outline"
+            className="min-h-9 rounded-lg text-xs"
+          >
+            <RefreshCw className={`mr-1 h-3.5 w-3.5 ${regeneratingDraft ? "animate-spin" : ""}`} />
+            {regeneratingDraft ? "..." : "Regenerate"}
+          </Button>
 
-            <Button
-              type="button"
-              onClick={() => setShowResolveConfirm(true)}
-              disabled={actionsDisabled}
-              color="default"
-              tone="outline"
-              className="min-h-10 rounded-lg"
-            >
-              <CheckCircle className="mr-1.5 h-4 w-4" />
-              {resolvingThread ? "Resolving..." : "Resolve"}
-            </Button>
-          </Cluster>
+          <Button
+            type="button"
+            onClick={() => setShowResolveConfirm(true)}
+            disabled={actionsDisabled}
+            color="default"
+            tone="outline"
+            className="min-h-9 rounded-lg text-xs"
+          >
+            <CheckCircle className="mr-1 h-3.5 w-3.5" />
+            {resolvingThread ? "..." : "Resolve"}
+          </Button>
 
-          <Cluster gap={3} className="ml-auto">
-            <Button
-              type="button"
-              onClick={() => setShowDismissConfirm(true)}
-              disabled={actionsDisabled}
-              color="danger"
-              tone="outline"
-              className="min-h-10 rounded-lg"
-            >
-              <XCircle className="mr-1.5 h-4 w-4" />
-              {dismissingThread ? "Dismissing..." : "Not relevant"}
-            </Button>
+          <Button
+            type="button"
+            onClick={() => setShowDismissConfirm(true)}
+            disabled={actionsDisabled}
+            color="danger"
+            tone="outline"
+            className="min-h-9 rounded-lg text-xs"
+          >
+            <XCircle className="mr-1 h-3.5 w-3.5" />
+            {dismissingThread ? "..." : "Dismiss"}
+          </Button>
 
-            <div className="h-8 border-l border-border-1" />
-
-            <Button
-              type="button"
-              onClick={() => setShowSendConfirm(true)}
-              disabled={actionsDisabled || parsedRecipients.length === 0 || !plainText.trim()}
-              color="success"
-              tone="solid"
-              className="min-h-10 rounded-lg px-8"
-            >
-              <Send className="mr-1.5 h-4 w-4" />
-              {sendingDraft ? "Sending..." : "Send"}
-            </Button>
-          </Cluster>
+          {/* Primary action — right, visually dominant */}
+          <Button
+            type="button"
+            onClick={() => setShowSendConfirm(true)}
+            disabled={actionsDisabled || parsedRecipients.length === 0 || !plainText.trim()}
+            color="success"
+            tone="solid"
+            className="ml-auto min-h-9 rounded-lg px-6 text-sm font-semibold"
+          >
+            <Send className="mr-1.5 h-4 w-4" />
+            {sendingDraft ? "Sending..." : "Send"}
+          </Button>
         </div>
       </section>
 

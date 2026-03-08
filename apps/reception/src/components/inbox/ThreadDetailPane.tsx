@@ -1,8 +1,8 @@
 "use client";
 
-import { AlertTriangle, Calendar, MapPin, MessageSquareText, User } from "lucide-react";
+import { AlertTriangle, Calendar, MapPin, User } from "lucide-react";
 
-import type { InboxThreadDetail } from "@/services/useInbox";
+import type { InboxMessage, InboxThreadDetail } from "@/services/useInbox";
 
 import DraftReviewPanel from "./DraftReviewPanel";
 import { formatInboxTimestamp, stripQuotedContent } from "./presentation";
@@ -28,6 +28,67 @@ interface ThreadDetailPaneProps {
   onDismissThread: () => Promise<void>;
 }
 
+function senderDisplayName(message: InboxMessage, threadDetail: InboxThreadDetail): string {
+  if (message.direction === "outbound") {
+    return "Brikette";
+  }
+  const guest = [threadDetail.thread.guestFirstName, threadDetail.thread.guestLastName]
+    .filter(Boolean)
+    .join(" ");
+  return guest || message.senderEmail?.split("@")[0] || "Guest";
+}
+
+function MessageBubble({
+  message,
+  threadDetail,
+}: {
+  message: InboxMessage;
+  threadDetail: InboxThreadDetail;
+}) {
+  const isOutbound = message.direction === "outbound";
+  const displayName = senderDisplayName(message, threadDetail);
+  const initial = displayName.charAt(0).toUpperCase();
+  const body = message.bodyPlain
+    ? stripQuotedContent(message.bodyPlain)
+    : (message.snippet ?? "No body available.");
+
+  return (
+    <article className={`flex gap-3 ${isOutbound ? "flex-row-reverse" : ""}`}>
+      {/* Avatar */}
+      <div
+        className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${
+          isOutbound
+            ? "bg-primary-soft text-primary-main"
+            : "bg-surface-3 text-muted-foreground"
+        }`}
+      >
+        {initial}
+      </div>
+
+      {/* Bubble */}
+      <div
+        className={`min-w-0 max-w-prose rounded-2xl px-4 py-3 ${
+          isOutbound
+            ? "rounded-tr-md bg-primary-soft/60"
+            : "rounded-tl-md bg-surface-2"
+        }`}
+      >
+        <div className="flex items-baseline justify-between gap-3">
+          <span className={`text-xs font-medium ${isOutbound ? "text-primary-main" : "text-foreground"}`}>
+            {displayName}
+          </span>
+          <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
+            {formatInboxTimestamp(message.sentAt)}
+          </span>
+        </div>
+        <div className="mt-1.5 whitespace-pre-wrap break-words text-sm leading-relaxed text-foreground/90">
+          {body}
+        </div>
+      </div>
+    </article>
+  );
+}
+
 export default function ThreadDetailPane({
   threadDetail,
   loading,
@@ -45,12 +106,15 @@ export default function ThreadDetailPane({
 }: ThreadDetailPaneProps) {
   if (loading) {
     return (
-      <section className="space-y-3 rounded-2xl border border-border-1 bg-surface p-4 shadow-sm">
-        <div className="animate-pulse space-y-3">
-          <div className="h-5 w-2/5 rounded-lg bg-surface-3" />
-          <div className="h-4 w-full rounded-lg bg-surface-3" />
-          <div className="h-4 w-3/4 rounded-lg bg-surface-3" />
-          <div className="mt-4 h-32 rounded-xl bg-surface-2" />
+      <section className="rounded-2xl border border-border-1 bg-surface p-5 shadow-sm">
+        <div className="animate-pulse space-y-4">
+          <div className="h-5 w-2/5 rounded-md bg-surface-3" />
+          <div className="h-3 w-24 rounded-md bg-surface-3" />
+          <div className="mt-6 space-y-3">
+            <div className="mr-16 h-20 rounded-2xl rounded-tl-md bg-surface-2" />
+            <div className="ml-16 h-16 rounded-2xl rounded-tr-md bg-surface-2" />
+            <div className="mr-16 h-14 rounded-2xl rounded-tl-md bg-surface-2" />
+          </div>
         </div>
       </section>
     );
@@ -68,14 +132,14 @@ export default function ThreadDetailPane({
 
   if (!threadDetail) {
     return (
-      <section className="flex min-h-80 items-center justify-center rounded-2xl border border-dashed border-border-2 bg-surface px-6 py-12 text-center shadow-sm">
+      <section className="flex min-h-80 items-center justify-center rounded-2xl border border-dashed border-border-2 bg-surface px-6 py-16 text-center shadow-sm">
         <div>
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-surface-2 text-muted-foreground">
-            <MessageSquareText className="h-6 w-6" />
+          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-surface-2 text-muted-foreground">
+            <User className="h-5 w-5" />
           </div>
           <p className="text-base font-semibold text-foreground">Select a thread</p>
-          <p className="mt-1 max-w-sm text-sm text-muted-foreground">
-            Tap a thread from the list to view the conversation and review the draft reply.
+          <p className="mx-auto mt-1 max-w-xs text-sm text-muted-foreground">
+            Choose a conversation from the list to view messages and draft a reply.
           </p>
         </div>
       </section>
@@ -87,32 +151,29 @@ export default function ThreadDetailPane({
 
   return (
     <div className="space-y-3">
-      {/* Thread header */}
+      {/* Unified thread header + conversation card */}
       <section className="rounded-2xl border border-border-1 bg-surface shadow-sm">
-        <div className="px-4 py-4">
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0 flex-1">
-              <p className="text-base font-semibold text-foreground">
-                {threadDetail.thread.subject ?? "Untitled inquiry"}
-              </p>
-              <p className="mt-1 text-xs text-muted-foreground">
-                {threadDetail.messages.length} message{threadDetail.messages.length !== 1 ? "s" : ""}
-              </p>
-            </div>
-          </div>
+        {/* Header */}
+        <div className="px-5 pt-5 pb-4">
+          <h2 className="text-lg font-semibold text-foreground">
+            {threadDetail.thread.subject ?? "Untitled inquiry"}
+          </h2>
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            {threadDetail.messages.length} message{threadDetail.messages.length !== 1 ? "s" : ""}
+          </p>
 
-          {/* Guest context card */}
+          {/* Guest context — compact inline */}
           {hasGuestContext && (
-            <div className="mt-3 flex flex-wrap items-center gap-3 rounded-xl bg-primary-soft/40 px-3 py-2.5">
+            <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 rounded-xl bg-surface-2 px-3 py-2">
               <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground">
-                <User className="h-4 w-4 text-primary-main" />
+                <User className="h-3.5 w-3.5 text-primary-main" />
                 {[threadDetail.thread.guestFirstName, threadDetail.thread.guestLastName]
                   .filter(Boolean)
                   .join(" ") || "Guest"}
               </span>
               {threadDetail.thread.guestBookingRef && (
                 <span className="text-xs text-muted-foreground">
-                  Booking {threadDetail.thread.guestBookingRef}
+                  #{threadDetail.thread.guestBookingRef}
                 </span>
               )}
               {typeof threadDetail.metadata?.guestCheckIn === "string"
@@ -134,50 +195,26 @@ export default function ThreadDetailPane({
           )}
         </div>
 
+        {/* Warning banner */}
         {threadDetail.warning && (
-          <div className="border-t border-border-1 px-4 py-3">
-            <div className="flex items-start gap-2 text-sm text-warning-main">
-              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
-              <p>{threadDetail.warning}</p>
-            </div>
+          <div className="mx-5 mb-3 flex items-start gap-2 rounded-xl border border-warning-main/20 bg-warning-light px-3 py-2 text-sm text-warning-main">
+            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+            <p>{threadDetail.warning}</p>
           </div>
         )}
-      </section>
 
-      {/* Messages */}
-      <section className="rounded-2xl border border-border-1 bg-surface shadow-sm">
-        <div className="border-b border-border-1 px-4 py-3">
-          <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            Conversation
-          </h3>
-        </div>
-        {/* eslint-disable-next-line ds/no-arbitrary-tailwind -- IDEA-DISPATCH-20260307130300-9040 viewport-relative scroll containment */}
-        <div className="max-h-[50vh] space-y-3 overflow-y-auto p-3">
-          {threadDetail.messages.map((message) => {
-            const isOutbound = message.direction === "outbound";
-            return (
-              <article
+        {/* Conversation — chat-style bubbles */}
+        <div className="border-t border-border-1">
+          {/* eslint-disable-next-line ds/no-arbitrary-tailwind -- IDEA-DISPATCH-20260307130300-9040 viewport-relative scroll containment */}
+          <div className="max-h-[50vh] space-y-4 overflow-y-auto px-5 py-4">
+            {threadDetail.messages.map((message) => (
+              <MessageBubble
                 key={message.id}
-                className={`rounded-xl px-4 py-3 ${
-                  isOutbound
-                    ? "ml-6 border border-primary-main/20 bg-primary-soft/50 border-l-2 border-l-primary-main"
-                    : "mr-6 border border-border-1 bg-surface-2"
-                }`}
-              >
-                <div className="flex items-baseline justify-between gap-2">
-                  <p className="truncate text-xs font-medium text-foreground">
-                    {message.senderEmail ?? "Unknown"}
-                  </p>
-                  <p className="shrink-0 text-xs text-muted-foreground">
-                    {formatInboxTimestamp(message.sentAt)}
-                  </p>
-                </div>
-                <div className="mt-2 break-words whitespace-pre-wrap text-sm leading-relaxed text-foreground/90">
-                  {message.bodyPlain ? stripQuotedContent(message.bodyPlain) : (message.snippet ?? "No body available.")}
-                </div>
-              </article>
-            );
-          })}
+                message={message}
+                threadDetail={threadDetail}
+              />
+            ))}
+          </div>
         </div>
       </section>
 

@@ -1,3 +1,9 @@
+---
+Type: Critique-History
+Status: Archived
+Feature-Slug: reception-theme-dark-mode-base-tokens
+---
+
 # Critique History: reception-theme-dark-mode-base-tokens
 
 ## Round 1 — 2026-03-08

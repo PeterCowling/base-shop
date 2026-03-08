@@ -1,3 +1,9 @@
+---
+Type: Critique-History
+Status: Archived
+Feature-Slug: reception-theme-styling-cohesion
+---
+
 # Critique History: reception-theme-styling-cohesion
 
 ## Round 1 — 2026-03-08

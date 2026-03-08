@@ -1,3 +1,9 @@
+---
+Type: Micro-Build
+Status: Complete
+Feature-Slug: reception-theme-dark-mode-base-tokens
+---
+
 # Micro-Build: Reception Base Token Dark Mode Override
 
 - **Dispatch-ID:** IDEA-DISPATCH-20260308104500-9401

@@ -1,3 +1,9 @@
+---
+Type: Critique-History
+Status: Archived
+Feature-Slug: reception-contrast-and-visual-polish
+---
+
 # Critique History: reception-contrast-and-visual-polish
 
 ## Round 1 — 2026-03-08 (self-critique, fact-find phase)

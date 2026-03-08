@@ -1,6 +1,6 @@
 ---
 Type: Fact-Find
-Status: Ready-for-planning
+Status: Archived
 Feature-Slug: reception-contrast-and-visual-polish
 Business: BRIK
 Created: 2026-03-08

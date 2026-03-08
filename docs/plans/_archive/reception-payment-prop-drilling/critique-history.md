@@ -1,3 +1,9 @@
+---
+Type: Critique-History
+Status: Archived
+Feature-Slug: reception-payment-prop-drilling
+---
+
 # Critique History: reception-payment-prop-drilling
 
 ## Round 1 — 2026-03-08

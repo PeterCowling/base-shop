@@ -1,6 +1,6 @@
 ---
 Type: Fact-Find
-Status: Ready-for-planning
+Status: Archived
 Feature-Slug: reception-theme-dark-mode-base-tokens
 Domain: UI
 Workstream: Engineering

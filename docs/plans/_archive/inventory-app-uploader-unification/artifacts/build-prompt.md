@@ -1,3 +1,8 @@
+---
+Type: Artifact
+Status: Complete
+---
+
 # Execution Prompt: Inventory App Unification + All-Product Uploader
 
 You are working in `/Users/petercowling/base-shop`.

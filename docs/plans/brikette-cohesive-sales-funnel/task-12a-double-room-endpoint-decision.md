@@ -1,3 +1,8 @@
+---
+Type: Task-Artifact
+Status: Complete
+---
+
 # TASK-12a Decision: Double-Private-Room Booking Endpoint
 
 **Date:** 2026-03-08

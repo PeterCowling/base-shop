@@ -1,4 +1,9 @@
 ---
+Type: Pattern-Reflection
+Status: Complete
+Feature-Slug: brikette-staging-upload-speed
+Reflection-date: 2026-03-08
+artifact: pattern-reflection
 schema_version: pattern-reflection.v1
 feature_slug: brikette-staging-upload-speed
 generated_at: 2026-03-08T18:14:40.149Z

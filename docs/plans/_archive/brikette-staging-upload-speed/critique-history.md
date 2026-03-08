@@ -1,3 +1,9 @@
+---
+Type: Critique-History
+Status: Archived
+Feature-Slug: brikette-staging-upload-speed
+---
+
 # Critique History — brikette-staging-upload-speed
 
 ## Round 1 — 2026-03-08

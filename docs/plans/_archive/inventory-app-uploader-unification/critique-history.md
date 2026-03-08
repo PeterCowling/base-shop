@@ -1,3 +1,9 @@
+---
+Type: Critique-History
+Status: Archived
+Feature-Slug: inventory-app-uploader-unification
+---
+
 # Critique History: inventory-app-uploader-unification
 
 ## Round 1 — 2026-03-08

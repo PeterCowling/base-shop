@@ -1,3 +1,9 @@
+---
+Type: Critique-History
+Status: Archived
+Feature-Slug: reception-inbox-prime-correctness
+---
+
 # Critique History: reception-inbox-prime-correctness
 
 ## Fact-Find Critique

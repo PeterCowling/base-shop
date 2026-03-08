@@ -1,3 +1,9 @@
+---
+Type: Build-Record
+Status: Complete
+Feature-Slug: reception-inbox-prime-correctness
+---
+
 # Build Record: reception-inbox-prime-correctness
 
 ## Outcome Contract

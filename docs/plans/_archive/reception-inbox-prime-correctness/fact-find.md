@@ -1,7 +1,7 @@
 ---
 Type: Fact-Find
 Outcome: planning
-Status: Ready-for-planning
+Status: Archived
 Domain: Product-Engineering
 Workstream: Product-Engineering
 Created: 2026-03-08

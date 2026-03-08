@@ -1,3 +1,8 @@
+---
+Type: Task-Artifact
+Status: Complete
+---
+
 # TASK-01: Timing Data — Staging CI Runs
 
 **Measured:** 2026-03-08

@@ -1,3 +1,9 @@
+---
+Type: Build-Record
+Status: Complete
+Feature-Slug: reception-payment-prop-drilling
+---
+
 # Build Record: reception-payment-prop-drilling
 
 ## Summary

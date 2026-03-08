@@ -1,3 +1,8 @@
+---
+Type: Artifact
+Status: Complete
+---
+
 # Approach Research
 
 ## 1. XA-Uploader Frontend Approach for Inventory Upload

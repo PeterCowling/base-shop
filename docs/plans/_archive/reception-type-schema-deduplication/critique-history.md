@@ -1,3 +1,9 @@
+---
+Type: Critique-History
+Status: Archived
+Feature-Slug: reception-type-schema-deduplication
+---
+
 # Critique History — reception-type-schema-deduplication
 
 ## Round 1 (fact-find mode)

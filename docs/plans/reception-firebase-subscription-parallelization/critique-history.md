@@ -1,3 +1,9 @@
+---
+Type: Critique-History
+Status: Draft
+Feature-Slug: reception-firebase-subscription-parallelization
+---
+
 # Critique History: reception-firebase-subscription-parallelization
 
 ## Round 1 — 2026-03-08

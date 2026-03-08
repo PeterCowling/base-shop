@@ -1,3 +1,8 @@
+---
+Type: Task-Artifact
+Status: Complete
+---
+
 # TASK-05: Checkout Alignment Verification
 
 **Date:** 2026-03-08

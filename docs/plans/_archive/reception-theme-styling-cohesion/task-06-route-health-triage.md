@@ -1,3 +1,8 @@
+---
+Type: Task-Artifact
+Status: Complete
+---
+
 # TASK-06: Route-Health Triage Report
 
 **Date:** 2026-03-08

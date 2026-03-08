@@ -1,3 +1,10 @@
+---
+Type: Replan-Notes
+Status: Active
+Date: 2026-03-08
+Plan: docs/plans/inventory-app-uploader-unification/plan.md
+---
+
 # Replan Notes — inventory-app-uploader-unification
 
 ## Round 1 — 2026-03-08

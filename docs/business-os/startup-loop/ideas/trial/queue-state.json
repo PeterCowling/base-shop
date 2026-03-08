@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-08T12:33:41.702Z",
+  "last_updated": "2026-03-08T16:16:35.370Z",
   "counts": {
-    "enqueued": 193,
+    "enqueued": 196,
     "processed": 46,
     "skipped": 2,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
-    "completed": 128,
-    "fact_find_ready": 252,
-    "micro_build_ready": 11,
-    "total": 394
+    "completed": 129,
+    "fact_find_ready": 255,
+    "micro_build_ready": 12,
+    "total": 398
   },
   "dispatches": [
     {
@@ -16431,6 +16431,182 @@
         "session:809f6046-3800-460c-bec0-16fe2595f597"
       ],
       "created_at": "2026-03-08T12:33:41.696Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260308123510-0768",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "0e49d4aabe3a4495a347773269cab980d8c506f3",
+      "after_sha": "00bdc71653df0234f13fe4055ada753c9c97a5da",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:00bdc71653df0234f13fe4055ada753c9c97a5da",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:00bdc71653df0234f13fe4055ada753c9c97a5da",
+      "cluster_fingerprint": "86878f56cd4af974b9f3a53d93e49214d66a85c9344cf88793dcf7a339975ba4",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (0e49d4a → 00bdc71)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:14f7aef2-5d57-4d82-a048-137a0515b9f0",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:8cdabe66-d407-4f59-ab5b-bf1f9dfb7918",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:809f6046-3800-460c-bec0-16fe2595f597"
+      ],
+      "created_at": "2026-03-08T12:35:10.767Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260308150000-4471",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "root_event_id": "operator:BRIK:BOS:brikette-staging-fast-path:20260308",
+      "anchor_key": "brikette-staging-fast-path",
+      "cluster_key": "BRIK:BOS:brikette-staging-fast-path:operator:20260308",
+      "cluster_fingerprint": "brikette-staging-fast-path-20260308",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK staging CI — fast path workflow, skip validation, 60-min timeout",
+      "location_anchors": [
+        ".github/workflows/brikette.yml",
+        ".github/workflows/brikette-staging-fast.yml"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Brikette staging deploys take ~37.5 min (Cloudflare Pages Direct Upload dominates) plus 20-25 min of CI checks (lint/typecheck/tests/verify:*). There is no dedicated fast-staging workflow. The existing deploy_only fast path in reusable-app.yml only skips lint/typecheck/tests but still runs all verify:* steps and artifact upload/download overhead. Current staging job timeout is 15 min (too low for wrangler pages deploy). Build and deploy run in separate jobs with artifact upload/download adding unnecessary transfer overhead.",
+      "next_scope_now": "Create .github/workflows/brikette-staging-fast.yml: triggered on push to staging branch and workflow_dispatch. Single job combining build + deploy (no artifact upload/download). Skip lint, typecheck, tests, post-deploy health checks. Stripped build command (no verify:* steps). Job timeout 60 minutes. Reuse existing wrangler pages deploy targeting brikette-website Cloudflare Pages project with CF_API_TOKEN + CF_ACCOUNT_ID secrets.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P2",
+      "confidence": 0.93,
+      "evidence_refs": [
+        "operator-stated: take forward staging fast-path findings via lp-do-ideas -> lp-do-build",
+        "ci-analysis: full brikette staging run ~37.5 min Cloudflare upload + 20-25 min CI checks",
+        "code-ref: .github/workflows/brikette.yml",
+        "code-ref: .github/workflows/reusable-app.yml"
+      ],
+      "created_at": "2026-03-08T15:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "The fact-find is complete — all analysis was provided by the operator. This is a single new workflow file with clearly scoped parameters. No architectural choices remain open. The implementation is bounded to one file, reuses existing secrets, and has a clear validation path (trigger it manually and confirm the run completes).",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Brikette staging deploys run via a dedicated fast-path workflow that skips all validation gates and completes in roughly the Cloudflare upload time alone (~37 min), with no CI overhead on top.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "micro_build_path": "docs/plans/brikette-staging-fast-path/micro-build.md",
+        "processed_at": "2026-03-08T15:05:00.000Z"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260308161629-0746",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "00bdc71653df0234f13fe4055ada753c9c97a5da",
+      "after_sha": "8744c1551ea2bc7126e2b371323cd707eaafca85",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:8744c1551ea2bc7126e2b371323cd707eaafca85",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:8744c1551ea2bc7126e2b371323cd707eaafca85",
+      "cluster_fingerprint": "f3e7780d38b4a8f91ee6e73f892ea5612a884cedbce8baf684e2b59a64ea0082",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (00bdc71 → 8744c15)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:14f7aef2-5d57-4d82-a048-137a0515b9f0",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:809f6046-3800-460c-bec0-16fe2595f597",
+        "session:8cdabe66-d407-4f59-ab5b-bf1f9dfb7918"
+      ],
+      "created_at": "2026-03-08T16:16:29.745Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260308161635-0367",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "8744c1551ea2bc7126e2b371323cd707eaafca85",
+      "after_sha": "887eb89937371e6236756e5666371221b264e5f1",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:887eb89937371e6236756e5666371221b264e5f1",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:887eb89937371e6236756e5666371221b264e5f1",
+      "cluster_fingerprint": "a971fce5f4e7212641a52d2cb7a13897d62f1bddf7552a04c2d745ce09b927b1",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (8744c15 → 887eb89)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:14f7aef2-5d57-4d82-a048-137a0515b9f0",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:809f6046-3800-460c-bec0-16fe2595f597",
+        "session:8cdabe66-d407-4f59-ab5b-bf1f9dfb7918"
+      ],
+      "created_at": "2026-03-08T16:16:35.366Z",
       "queue_state": "enqueued",
       "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
       "intended_outcome": {

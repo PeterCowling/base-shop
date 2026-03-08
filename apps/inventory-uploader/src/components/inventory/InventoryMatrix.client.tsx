@@ -1,0 +1,166 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+type InventoryItem = {
+  sku: string;
+  productId: string;
+  quantity: number;
+  variantAttributes: Record<string, string>;
+  lowStockThreshold?: number;
+};
+
+type SortKey = "sku" | "quantity" | "updatedAt";
+
+type InventoryMatrixProps = {
+  shop: string | null;
+  selectedSku: string | null;
+  onSelectSku: (sku: string | null) => void;
+  refreshKey?: number;
+};
+
+function variantLabel(attrs: Record<string, string>): string {
+  return Object.entries(attrs)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([k, v]) => `${k}: ${v}`)
+    .join(", ");
+}
+
+export function InventoryMatrix({ shop, selectedSku, onSelectSku, refreshKey = 0 }: InventoryMatrixProps) {
+  const [items, setItems] = useState<InventoryItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [sortKey, setSortKey] = useState<SortKey>("sku");
+  const [sortAsc, setSortAsc] = useState(true);
+
+  useEffect(() => {
+    if (!shop) {
+      setItems([]);
+      return;
+    }
+    // refreshKey dependency forces re-fetch after import
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+    fetch(`/api/inventory/${encodeURIComponent(shop)}`)
+      .then((r) => r.json())
+      .then((data: unknown) => {
+        if (cancelled) return;
+        const list =
+          data && typeof data === "object" && "items" in data && Array.isArray((data as { items: unknown }).items)
+            ? ((data as { items: InventoryItem[] }).items)
+            : [];
+        setItems(list);
+      })
+      .catch(() => {
+        if (!cancelled) setError("Failed to load inventory.");
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+     
+  }, [shop, refreshKey]);
+
+  function handleSort(key: SortKey) {
+    if (sortKey === key) {
+      setSortAsc((prev) => !prev);
+    } else {
+      setSortKey(key);
+      setSortAsc(true);
+    }
+  }
+
+  const sorted = [...items].sort((a, b) => {
+    let cmp = 0;
+    if (sortKey === "sku") cmp = a.sku.localeCompare(b.sku);
+    else if (sortKey === "quantity") cmp = a.quantity - b.quantity;
+    return sortAsc ? cmp : -cmp;
+  });
+
+  if (!shop) {
+    return (
+      <p className="text-sm text-gate-muted">Select a shop to view inventory.</p>
+    );
+  }
+
+  if (loading) {
+    return (
+      <p className="text-sm text-gate-muted">Loading inventory…</p>
+    );
+  }
+
+  if (error) {
+    return (
+      <p className="text-sm text-danger-fg" role="alert">{error}</p>
+    );
+  }
+
+  if (items.length === 0) {
+    return (
+      <div className="space-y-3">
+        <p className="text-sm text-gate-muted">No inventory found. Import a CSV to get started.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-2">
+      {/* Sort controls */}
+      {/* eslint-disable-next-line ds/enforce-layout-primitives -- INV-0001 operator-tool sort row has text+buttons; not a pure layout context */}
+      <div className="flex items-center gap-2 text-2xs text-gate-muted">
+        Sort:
+        {(["sku", "quantity"] as SortKey[]).map((k) => (
+          <button
+            key={k}
+            type="button"
+            onClick={() => handleSort(k)}
+             
+            className={`rounded px-1.5 py-0.5 transition ${sortKey === k ? "bg-gate-accent/10 text-gate-accent" : "hover:text-gate-ink"}`}
+          >
+            {k}{sortKey === k ? (sortAsc ? " ↑" : " ↓") : ""}
+          </button>
+        ))}
+      </div>
+
+      {/* Item list */}
+      <ul className="divide-y divide-gate-border">
+        {sorted.map((item) => {
+          const vk = `${item.sku}#${variantLabel(item.variantAttributes)}`;
+          const isLowStock =
+            typeof item.lowStockThreshold === "number" &&
+            item.quantity <= item.lowStockThreshold;
+          const isSelected = selectedSku === item.sku;
+
+          return (
+            <li key={vk}>
+              <button
+                type="button"
+                onClick={() => onSelectSku(isSelected ? null : item.sku)}
+                 
+                className={`w-full px-2 py-1.5 text-left transition ${isSelected ? "bg-gate-accent/10" : "hover:bg-gate-surface"}`}
+              >
+                { }
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs font-medium text-gate-ink truncate">{item.sku}</span>
+                  <span
+                    className={`shrink-0 text-xs font-mono ${isLowStock ? "text-danger-fg font-semibold" : "text-gate-muted"}`}
+                    title={isLowStock ? `Low stock (threshold: ${item.lowStockThreshold})` : undefined}
+                  >
+                    {item.quantity}
+                    {isLowStock ? " ⚠" : ""}
+                  </span>
+                </div>
+                {Object.keys(item.variantAttributes).length > 0 && (
+                  <p className="text-2xs text-gate-muted truncate">{variantLabel(item.variantAttributes)}</p>
+                )}
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}

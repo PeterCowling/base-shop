@@ -1,7 +1,10 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
+
+import { InventoryImport } from "../inventory/InventoryImport.client";
+import { InventoryMatrix } from "../inventory/InventoryMatrix.client";
 
 import { ShopSelector } from "./ShopSelector.client";
 import { useInventoryConsole } from "./useInventoryConsole.client";
@@ -12,39 +15,47 @@ type InventoryConsoleProps = {
 
 /**
  * Root console component. Split-pane layout with:
- * - Left panel: inventory matrix (TASK-06 mounts InventoryMatrix here)
+ * - Left panel: inventory matrix (TASK-06) + import panel (TASK-14)
  * - Right panel: variant editor (TASK-13 mounts InventoryEditor here)
- * - Import panel slot (TASK-14 mounts import UI here)
  * - Ledger tab slot (TASK-10 mounts stock-movement ledger here)
  */
 export default function InventoryConsole({ onHeaderExtra }: InventoryConsoleProps) {
   const state = useInventoryConsole();
+  const [matrixRefreshKey, setMatrixRefreshKey] = useState(0);
 
-  useEffect(() => {
-    if (!onHeaderExtra) return;
-    onHeaderExtra(
+  // Stable callback reference to avoid remounting header extra on every render
+  const renderHeaderExtra = useCallback(() => {
+    onHeaderExtra?.(
       <ShopSelector
         selectedShop={state.selectedShop}
         onSelect={state.setSelectedShop}
       />,
     );
-    // Re-render header extra when selectedShop changes so the select reflects current value
   }, [onHeaderExtra, state.selectedShop, state.setSelectedShop]);
+
+  useEffect(() => {
+    renderHeaderExtra();
+  }, [renderHeaderExtra]);
 
   return (
     // eslint-disable-next-line ds/no-arbitrary-tailwind -- INV-0001 operator-tool layout
     <div className="grid gap-6 sm:grid-cols-[320px_1fr]">
-      {/* Left panel — inventory list (TASK-06: mount InventoryMatrix here) */}
+      {/* Left panel — inventory list + import */}
       <aside className="rounded-xl border border-gate-border bg-gate-surface p-4 shadow-elevation-2">
-        {/* TASK-06: <InventoryMatrix state={state} /> */}
-        <p className="text-sm text-gate-muted">
-          {state.selectedShop
-            ? `Shop: ${state.selectedShop}`
-            : "Select a shop to view inventory."}
-        </p>
+        <InventoryMatrix
+          shop={state.selectedShop}
+          selectedSku={state.selectedSku}
+          onSelectSku={state.setSelectedSku}
+          refreshKey={matrixRefreshKey}
+        />
 
-        {/* Import panel slot — TASK-14 mounts import UI here */}
-        <div data-slot="import-panel" />
+        <InventoryImport
+          shop={state.selectedShop}
+          onImportComplete={() => {
+            state.setSelectedSku(null);
+            setMatrixRefreshKey((k) => k + 1);
+          }}
+        />
 
         {/* Ledger tab slot — TASK-10 mounts stock-movement ledger tab here */}
         <div data-slot="ledger-tab" />

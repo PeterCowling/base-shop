@@ -39,7 +39,7 @@ export function buildInboxThreadBadge(thread: InboxThreadSummary): InboxBadge {
     };
   }
 
-  if (thread.currentDraft?.status === "edited") {
+  if (thread.currentDraft?.status === "edited" || thread.currentDraft?.status === "under_review") {
     return {
       label: "Edited",
       className: "bg-info-light text-info-main",
@@ -47,7 +47,7 @@ export function buildInboxThreadBadge(thread: InboxThreadSummary): InboxBadge {
     };
   }
 
-  if (thread.currentDraft?.status === "generated") {
+  if (thread.currentDraft?.status === "generated" || thread.currentDraft?.status === "suggested") {
     return {
       label: "Draft ready",
       className: "bg-success-light text-success-main",

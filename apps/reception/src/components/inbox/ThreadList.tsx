@@ -55,7 +55,7 @@ export default function ThreadList({
   const hasActiveFilters = activeFilters.size > 0;
 
   return (
-    <section className="rounded-2xl border border-border-1 bg-surface shadow-sm">
+    <section className="rounded-2xl border border-border-1 bg-surface-2 shadow-sm">
       <div className="border-b border-border-1 px-4 py-3">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
@@ -168,6 +168,9 @@ export default function ThreadList({
                       title={thread.needsManualDraft && thread.draftFailureMessage ? thread.draftFailureMessage : undefined}
                     >
                       {badge.label}
+                    </span>
+                    <span className="rounded-lg bg-surface-2 px-1.5 py-px text-xs font-medium leading-tight text-muted-foreground">
+                      {thread.channelLabel}
                     </span>
                     {thread.guestFirstName && (
                       <span className="truncate text-xs font-medium text-primary-main">

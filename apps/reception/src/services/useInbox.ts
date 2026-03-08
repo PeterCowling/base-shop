@@ -2,13 +2,26 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import type {
+  InboxChannel,
+  InboxChannelCapabilities,
+  InboxReviewMode,
+} from "@/lib/inbox/channels";
+
 import { buildMcpAuthHeaders } from "./mcpAuthHeaders";
 
 export type InboxDraft = {
   id: string;
   threadId: string;
   gmailDraftId: string | null;
-  status: "generated" | "edited" | "approved" | "sent";
+  status:
+    | "generated"
+    | "edited"
+    | "approved"
+    | "sent"
+    | "suggested"
+    | "under_review"
+    | "dismissed";
   subject: string | null;
   recipientEmails: string[];
   plainText: string;
@@ -26,6 +39,11 @@ export type InboxDraft = {
 export type InboxThreadSummary = {
   id: string;
   status: string;
+  channel: InboxChannel;
+  channelLabel: string;
+  lane: "support" | "promotion";
+  reviewMode: InboxReviewMode;
+  capabilities: InboxChannelCapabilities;
   subject: string | null;
   snippet: string | null;
   latestMessageAt: string | null;
@@ -64,6 +82,7 @@ export type InboxMessage = {
 
 export type InboxThreadDetail = {
   thread: InboxThreadSummary;
+  campaign: InboxCampaign | null;
   metadata: Record<string, unknown>;
   messages: InboxMessage[];
   events: Array<{
@@ -85,6 +104,45 @@ export type InboxThreadDetail = {
   currentDraft: InboxDraft | null;
   messageBodiesSource: "gmail" | "d1";
   warning: string | null;
+};
+
+export type InboxCampaign = {
+  id: string;
+  threadId: string;
+  type: "broadcast" | "referral" | "event_invite" | "return_offer";
+  status: "drafting" | "under_review" | "sent" | "resolved" | "archived";
+  audience: string;
+  title: string | null;
+  metadata: Record<string, unknown> | null;
+  latestDraftId: string | null;
+  sentMessageId: string | null;
+  targetCount: number;
+  sentCount: number;
+  projectedCount: number;
+  failedCount: number;
+  lastError: string | null;
+  createdByUid: string | null;
+  reviewerUid: string | null;
+  createdAt: string;
+  updatedAt: string;
+  targetSummary: {
+    total: number;
+    byKind: Array<{
+      kind: string;
+      count: number;
+    }>;
+  };
+  deliverySummary: {
+    total: number;
+    pending: number;
+    ready: number;
+    sent: number;
+    projected: number;
+    failed: number;
+    cancelled: number;
+    replayableCount: number;
+    lastError: string | null;
+  };
 };
 
 type DraftEnvelope = {

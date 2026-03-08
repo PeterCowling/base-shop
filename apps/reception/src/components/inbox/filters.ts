@@ -37,9 +37,12 @@ function matchesFilter(
 
     case "ready-to-send":
       return (
-        !thread.needsManualDraft
+        thread.capabilities.supportsDraftSend
+        && !thread.needsManualDraft
         && (thread.currentDraft?.status === "generated"
-          || thread.currentDraft?.status === "edited")
+          || thread.currentDraft?.status === "edited"
+          || thread.currentDraft?.status === "suggested"
+          || thread.currentDraft?.status === "under_review")
       );
 
     case "sent":

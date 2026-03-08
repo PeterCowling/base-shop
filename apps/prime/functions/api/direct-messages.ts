@@ -7,7 +7,14 @@
  * - returns message list for authorized direct channels
  */
 
-import type { Message } from '../../src/types/messenger/chat';
+import type {
+  Message,
+  MessageAttachment,
+  MessageCard,
+  MessageDraftMeta,
+  MessageKind,
+  MessageLink,
+} from '../../src/types/messenger/chat';
 import { recordDirectTelemetry } from '../lib/direct-telemetry';
 import { errorResponse, FirebaseRest, jsonResponse } from '../lib/firebase-rest';
 import { validateGuestSessionToken } from '../lib/guest-session';
@@ -78,6 +85,11 @@ function normalizeMessageRecord(
     return null;
   }
 
+  const links = normalizeLinks(value.links);
+  const attachments = normalizeAttachments(value.attachments);
+  const cards = normalizeCards(value.cards);
+  const draft = normalizeDraft(value.draft);
+
   return {
     id,
     content: value.content,
@@ -87,6 +99,145 @@ function normalizeMessageRecord(
     createdAt: value.createdAt,
     deleted: typeof value.deleted === 'boolean' ? value.deleted : undefined,
     imageUrl: typeof value.imageUrl === 'string' ? value.imageUrl : undefined,
+    kind: normalizeMessageKind(value.kind),
+    audience: normalizeAudience(value.audience),
+    links: links.length > 0 ? links : undefined,
+    attachments: attachments.length > 0 ? attachments : undefined,
+    cards: cards.length > 0 ? cards : undefined,
+    campaignId: typeof value.campaignId === 'string' ? value.campaignId : undefined,
+    draft,
+  };
+}
+
+function normalizeMessageKind(value: unknown): MessageKind | undefined {
+  switch (value) {
+    case 'support':
+    case 'promotion':
+    case 'draft':
+    case 'system':
+      return value;
+    default:
+      return undefined;
+  }
+}
+
+function normalizeAudience(value: unknown): Message['audience'] | undefined {
+  switch (value) {
+    case 'thread':
+    case 'booking':
+    case 'room':
+    case 'whole_hostel':
+      return value;
+    default:
+      return undefined;
+  }
+}
+
+function normalizeLinks(value: unknown): MessageLink[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.flatMap((entry, index) => {
+    if (!entry || typeof entry !== 'object') {
+      return [];
+    }
+
+    const candidate = entry as Partial<MessageLink>;
+    if (typeof candidate.label !== 'string' || typeof candidate.url !== 'string') {
+      return [];
+    }
+
+    return [{
+      id: typeof candidate.id === 'string' ? candidate.id : `link_${index}`,
+      label: candidate.label,
+      url: candidate.url,
+      variant: candidate.variant === 'primary' || candidate.variant === 'secondary'
+        ? candidate.variant
+        : undefined,
+    }];
+  });
+}
+
+function normalizeAttachments(value: unknown): MessageAttachment[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.flatMap((entry, index) => {
+    if (!entry || typeof entry !== 'object') {
+      return [];
+    }
+
+    const candidate = entry as Partial<MessageAttachment>;
+    if (
+      (candidate.kind !== 'image' && candidate.kind !== 'file')
+      || typeof candidate.url !== 'string'
+    ) {
+      return [];
+    }
+
+    return [{
+      id: typeof candidate.id === 'string' ? candidate.id : `attachment_${index}`,
+      kind: candidate.kind,
+      url: candidate.url,
+      title: typeof candidate.title === 'string' ? candidate.title : undefined,
+      altText: typeof candidate.altText === 'string' ? candidate.altText : undefined,
+      mimeType: typeof candidate.mimeType === 'string' ? candidate.mimeType : undefined,
+    }];
+  });
+}
+
+function normalizeCards(value: unknown): MessageCard[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.flatMap((entry, index) => {
+    if (!entry || typeof entry !== 'object') {
+      return [];
+    }
+
+    const candidate = entry as Partial<MessageCard>;
+    if (typeof candidate.title !== 'string') {
+      return [];
+    }
+
+    return [{
+      id: typeof candidate.id === 'string' ? candidate.id : `card_${index}`,
+      title: candidate.title,
+      body: typeof candidate.body === 'string' ? candidate.body : undefined,
+      imageUrl: typeof candidate.imageUrl === 'string' ? candidate.imageUrl : undefined,
+      ctaLabel: typeof candidate.ctaLabel === 'string' ? candidate.ctaLabel : undefined,
+      ctaUrl: typeof candidate.ctaUrl === 'string' ? candidate.ctaUrl : undefined,
+    }];
+  });
+}
+
+function normalizeDraft(value: unknown): MessageDraftMeta | undefined {
+  if (!value || typeof value !== 'object') {
+    return undefined;
+  }
+
+  const candidate = value as Partial<MessageDraftMeta>;
+  if (
+    typeof candidate.draftId !== 'string'
+    || typeof candidate.createdAt !== 'number'
+    || (candidate.status !== 'suggested'
+      && candidate.status !== 'under_review'
+      && candidate.status !== 'approved'
+      && candidate.status !== 'sent'
+      && candidate.status !== 'dismissed')
+    || (candidate.source !== 'agent' && candidate.source !== 'staff')
+  ) {
+    return undefined;
+  }
+
+  return {
+    draftId: candidate.draftId,
+    status: candidate.status,
+    source: candidate.source,
+    createdAt: candidate.createdAt,
   };
 }
 

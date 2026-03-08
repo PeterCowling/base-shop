@@ -11,6 +11,10 @@ import {
   inboxApiErrorResponse,
   notFoundResponse,
 } from "@/lib/inbox/api-route-helpers";
+import {
+  getPrimeInboxThreadDetail,
+  isPrimeInboxThreadId,
+} from "@/lib/inbox/prime-review.server";
 import { getThread } from "@/lib/inbox/repositories.server";
 
 import { requireStaffAuth } from "../../_shared/staff-auth";
@@ -25,6 +29,22 @@ export async function GET(
   }
 
   const params = await context.params;
+  if (isPrimeInboxThreadId(params.threadId)) {
+    try {
+      const detail = await getPrimeInboxThreadDetail(params.threadId);
+      if (!detail) {
+        return notFoundResponse(`Thread ${params.threadId} not found`);
+      }
+
+      return NextResponse.json({
+        success: true,
+        data: detail,
+      });
+    } catch (error) {
+      return inboxApiErrorResponse(error);
+    }
+  }
+
   const record = await getThread(params.threadId);
   if (!record) {
     return notFoundResponse(`Thread ${params.threadId} not found`);
@@ -36,6 +56,7 @@ export async function GET(
       success: true,
       data: {
         thread: buildThreadSummary(record),
+        campaign: null,
         metadata: parseThreadMetadata(record.thread.metadata_json),
         messages: record.messages.map((message) => serializeMessage(message)),
         events: record.events,

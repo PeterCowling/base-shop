@@ -1,3 +1,8 @@
+import {
+  getPrimeInboxThreadDetail,
+  isPrimeInboxThreadId,
+  savePrimeInboxDraft,
+} from "@/lib/inbox/prime-review.server";
 import type { InboxDraftRow, InboxThreadRecord } from "@/lib/inbox/repositories.server";
 import {
   createDraft,
@@ -19,6 +24,12 @@ jest.mock("@/lib/inbox/repositories.server", () => ({
 
 jest.mock("@/lib/inbox/telemetry.server", () => ({
   recordInboxEvent: jest.fn(),
+}));
+
+jest.mock("@/lib/inbox/prime-review.server", () => ({
+  getPrimeInboxThreadDetail: jest.fn(),
+  isPrimeInboxThreadId: jest.fn(),
+  savePrimeInboxDraft: jest.fn(),
 }));
 
 jest.mock("../_shared/staff-auth", () => ({
@@ -102,9 +113,13 @@ describe("inbox draft route", () => {
   const createDraftMock = jest.mocked(createDraft);
   const updateThreadStatusMock = jest.mocked(updateThreadStatus);
   const recordInboxEventMock = jest.mocked(recordInboxEvent);
+  const isPrimeInboxThreadIdMock = jest.mocked(isPrimeInboxThreadId);
+  const getPrimeInboxThreadDetailMock = jest.mocked(getPrimeInboxThreadDetail);
+  const savePrimeInboxDraftMock = jest.mocked(savePrimeInboxDraft);
 
   beforeEach(() => {
     jest.resetAllMocks();
+    isPrimeInboxThreadIdMock.mockReturnValue(false);
   });
 
   it("returns the current draft and manual-draft flag", async () => {
@@ -123,6 +138,94 @@ describe("inbox draft route", () => {
     expect(response.status).toBe(200);
     expect(payload.data.needsManualDraft).toBe(true);
     expect(payload.data.draft.recipientEmails).toEqual(["guest@example.com"]);
+  });
+
+  it("returns the current Prime review draft for prefixed Prime threads", async () => {
+    requireStaffAuthMock.mockResolvedValue({
+      ok: true,
+      uid: "uid-1",
+      roles: ["staff"],
+    });
+    isPrimeInboxThreadIdMock.mockReturnValue(true);
+    getPrimeInboxThreadDetailMock.mockResolvedValue({
+      thread: {
+        id: "prime:dm_occ_aaa_occ_bbb",
+        status: "pending",
+        channel: "prime_direct",
+        channelLabel: "Prime Direct",
+        lane: "support",
+        reviewMode: "message_draft",
+        capabilities: {
+          supportsSubject: false,
+          supportsRecipients: false,
+          supportsHtml: false,
+          supportsDraftMutations: true,
+          supportsDraftSave: true,
+          supportsDraftRegenerate: false,
+          supportsDraftSend: true,
+          supportsThreadMutations: true,
+          subjectLabel: "Thread",
+          recipientLabel: "Audience",
+          bodyLabel: "Reply draft",
+          bodyPlaceholder: "Draft a reply for the guest.",
+          sendLabel: "Send",
+          readOnlyNotice: "Prime review currently supports draft save, send, resolve, and dismiss. Regenerate remains disabled.",
+        },
+        subject: "Prime guest chat BOOK123",
+        snippet: "Hello from Prime",
+        latestMessageAt: "2026-03-08T10:00:00.000Z",
+        lastSyncedAt: null,
+        updatedAt: "2026-03-08T10:00:00.000Z",
+        needsManualDraft: false,
+        draftFailureCode: null,
+        draftFailureMessage: null,
+        latestAdmissionDecision: "draft_created",
+        latestAdmissionReason: null,
+        currentDraft: null,
+        guestBookingRef: "BOOK123",
+        guestFirstName: null,
+        guestLastName: null,
+      },
+      campaign: null,
+      metadata: {},
+      messages: [],
+      events: [],
+      admissionOutcomes: [],
+      currentDraft: {
+        id: "draft-1",
+        threadId: "prime:dm_occ_aaa_occ_bbb",
+        gmailDraftId: null,
+        status: "under_review",
+        subject: null,
+        recipientEmails: [],
+        plainText: "Manual reply draft",
+        html: null,
+        originalPlainText: null,
+        originalHtml: null,
+        templateUsed: null,
+        quality: { passed: true },
+        interpret: null,
+        createdByUid: "staff-1",
+        createdAt: "2026-03-08T10:01:00.000Z",
+        updatedAt: "2026-03-08T10:02:00.000Z",
+      },
+      messageBodiesSource: "d1",
+      warning: null,
+    });
+
+    const response = await GET(new Request("http://localhost/api/mcp/inbox/prime:dm_occ_aaa_occ_bbb/draft"), {
+      params: { threadId: "prime:dm_occ_aaa_occ_bbb" },
+    });
+    const payload = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(payload.data.needsManualDraft).toBe(false);
+    expect(payload.data.draft).toEqual(expect.objectContaining({
+      id: "draft-1",
+      status: "under_review",
+      plainText: "Manual reply draft",
+    }));
+    expect(getThreadMock).not.toHaveBeenCalled();
   });
 
   it("returns 422 for invalid draft updates", async () => {
@@ -228,5 +331,56 @@ describe("inbox draft route", () => {
       html: null,
       createdByUid: "staff-1",
     });
+  });
+
+  it("saves Prime review drafts through the Prime draft API seam", async () => {
+    requireStaffAuthMock.mockResolvedValue({
+      ok: true,
+      uid: "staff-1",
+      roles: ["staff"],
+    });
+    isPrimeInboxThreadIdMock.mockReturnValue(true);
+    savePrimeInboxDraftMock.mockResolvedValue({
+      id: "draft-1",
+      threadId: "prime:dm_occ_aaa_occ_bbb",
+      gmailDraftId: null,
+      status: "under_review",
+      subject: null,
+      recipientEmails: [],
+      plainText: "Manual reply draft",
+      html: null,
+      originalPlainText: null,
+      originalHtml: null,
+      templateUsed: null,
+      quality: null,
+      interpret: null,
+      createdByUid: "staff-1",
+      createdAt: "2026-03-08T10:01:00.000Z",
+      updatedAt: "2026-03-08T10:02:00.000Z",
+    });
+
+    const response = await PUT(
+      new Request("http://localhost/api/mcp/inbox/prime:dm_occ_aaa_occ_bbb/draft", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plainText: "Manual reply draft" }),
+      }),
+      { params: { threadId: "prime:dm_occ_aaa_occ_bbb" } },
+    );
+    const payload = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(savePrimeInboxDraftMock).toHaveBeenCalledWith(
+      "prime:dm_occ_aaa_occ_bbb",
+      { plainText: "Manual reply draft" },
+      "staff-1",
+    );
+    expect(payload.data.draft).toEqual(expect.objectContaining({
+      id: "draft-1",
+      status: "under_review",
+      plainText: "Manual reply draft",
+    }));
+    expect(updateDraftMock).not.toHaveBeenCalled();
+    expect(createDraftMock).not.toHaveBeenCalled();
   });
 });

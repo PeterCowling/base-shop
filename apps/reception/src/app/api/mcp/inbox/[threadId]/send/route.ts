@@ -12,6 +12,10 @@ import {
   notFoundResponse,
 } from "@/lib/inbox/api-route-helpers";
 import {
+  isPrimeInboxThreadId,
+  sendPrimeInboxThread,
+} from "@/lib/inbox/prime-review.server";
+import {
   getThread,
   updateDraft,
   updateThreadStatus,
@@ -30,6 +34,18 @@ export async function POST(
   }
 
   const params = await context.params;
+  if (isPrimeInboxThreadId(params.threadId)) {
+    try {
+      const result = await sendPrimeInboxThread(params.threadId, auth.uid);
+      return NextResponse.json({
+        success: true,
+        data: result,
+      });
+    } catch (error) {
+      return inboxApiErrorResponse(error);
+    }
+  }
+
   const record = await getThread(params.threadId);
   if (!record) {
     return notFoundResponse(`Thread ${params.threadId} not found`);

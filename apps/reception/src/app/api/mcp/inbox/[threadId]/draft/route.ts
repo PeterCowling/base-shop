@@ -16,6 +16,11 @@ import {
   readJsonPayload,
 } from "@/lib/inbox/api-route-helpers";
 import {
+  getPrimeInboxThreadDetail,
+  isPrimeInboxThreadId,
+  savePrimeInboxDraft,
+} from "@/lib/inbox/prime-review.server";
+import {
   createDraft,
   getThread,
   updateDraft,
@@ -44,6 +49,26 @@ export async function GET(
   }
 
   const params = await context.params;
+  if (isPrimeInboxThreadId(params.threadId)) {
+    try {
+      const detail = await getPrimeInboxThreadDetail(params.threadId);
+      if (!detail) {
+        return notFoundResponse(`Thread ${params.threadId} not found`);
+      }
+
+      return NextResponse.json({
+        success: true,
+        data: {
+          threadId: params.threadId,
+          draft: detail.currentDraft,
+          needsManualDraft: false,
+        },
+      });
+    } catch (error) {
+      return inboxApiErrorResponse(error);
+    }
+  }
+
   const record = await getThread(params.threadId);
   if (!record) {
     return notFoundResponse(`Thread ${params.threadId} not found`);
@@ -70,6 +95,37 @@ export async function PUT(
   }
 
   const params = await context.params;
+  if (isPrimeInboxThreadId(params.threadId)) {
+    let primeRawPayload: unknown;
+    try {
+      primeRawPayload = await readJsonPayload(request);
+    } catch {
+      return invalidJsonResponse();
+    }
+
+    const parsedPrimePayload = updateDraftPayloadSchema.safeParse(primeRawPayload);
+    if (!parsedPrimePayload.success) {
+      return invalidPayloadResponse(parsedPrimePayload.error, "Invalid draft update payload");
+    }
+
+    try {
+      const draft = await savePrimeInboxDraft(
+        params.threadId,
+        { plainText: parsedPrimePayload.data.plainText },
+        auth.uid,
+      );
+
+      return NextResponse.json({
+        success: true,
+        data: {
+          draft,
+        },
+      });
+    } catch (error) {
+      return inboxApiErrorResponse(error);
+    }
+  }
+
   const record = await getThread(params.threadId);
   if (!record) {
     return notFoundResponse(`Thread ${params.threadId} not found`);

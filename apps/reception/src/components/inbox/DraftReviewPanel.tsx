@@ -58,8 +58,15 @@ export default function DraftReviewPanel({
   onDismiss,
 }: DraftReviewPanelProps) {
   const currentDraft = threadDetail.currentDraft;
+  const channelCapabilities = threadDetail.thread.capabilities;
   const qualityBadge = buildDraftQualityBadge(currentDraft?.quality);
   const suggestedRecipient = findLatestInboundSender(threadDetail.messages);
+  const canSaveDraft = channelCapabilities.supportsDraftSave;
+  const canRegenerateDraft = channelCapabilities.supportsDraftRegenerate;
+  const canSendDraft = channelCapabilities.supportsDraftSend;
+  const canMutateDraft = channelCapabilities.supportsDraftMutations;
+  const canMutateThread = channelCapabilities.supportsThreadMutations;
+  const showActionBar = canMutateDraft || canMutateThread;
 
   const [subject, setSubject] = useState("");
   const [recipientInput, setRecipientInput] = useState("");
@@ -71,15 +78,28 @@ export default function DraftReviewPanel({
   const [showDismissConfirm, setShowDismissConfirm] = useState(false);
 
   useEffect(() => {
-    setSubject(inferReplySubject(currentDraft?.subject ?? threadDetail.thread.subject));
+    setSubject(
+      channelCapabilities.supportsSubject
+        ? inferReplySubject(currentDraft?.subject ?? threadDetail.thread.subject)
+        : (currentDraft?.subject ?? ""),
+    );
     setRecipientInput(
-      currentDraft?.recipientEmails.join(", ")
-        ?? suggestedRecipient
-        ?? "",
+      channelCapabilities.supportsRecipients
+        ? (currentDraft?.recipientEmails.join(", ")
+          ?? suggestedRecipient
+          ?? "")
+        : "",
     );
     setPlainText(currentDraft?.plainText ?? "");
     setValidationError(null);
-  }, [currentDraft, suggestedRecipient, threadDetail.thread.id, threadDetail.thread.subject]);
+  }, [
+    channelCapabilities.supportsRecipients,
+    channelCapabilities.supportsSubject,
+    currentDraft,
+    suggestedRecipient,
+    threadDetail.thread.id,
+    threadDetail.thread.subject,
+  ]);
 
   const parsedRecipients = useMemo(
     () => parseRecipientEmails(recipientInput),
@@ -87,16 +107,22 @@ export default function DraftReviewPanel({
   );
 
   const hasUnsavedChanges = useMemo(() => {
-    const baselineSubject = inferReplySubject(currentDraft?.subject ?? threadDetail.thread.subject);
-    const baselineRecipients = currentDraft?.recipientEmails.join(", ") ?? suggestedRecipient ?? "";
+    const baselineSubject = channelCapabilities.supportsSubject
+      ? inferReplySubject(currentDraft?.subject ?? threadDetail.thread.subject)
+      : (currentDraft?.subject ?? "");
+    const baselineRecipients = channelCapabilities.supportsRecipients
+      ? (currentDraft?.recipientEmails.join(", ") ?? suggestedRecipient ?? "")
+      : "";
     const baselinePlainText = currentDraft?.plainText ?? "";
 
     return (
-      subject !== baselineSubject
-      || recipientInput !== baselineRecipients
+      (channelCapabilities.supportsSubject && subject !== baselineSubject)
+      || (channelCapabilities.supportsRecipients && recipientInput !== baselineRecipients)
       || plainText !== baselinePlainText
     );
   }, [
+    channelCapabilities.supportsRecipients,
+    channelCapabilities.supportsSubject,
     currentDraft?.plainText,
     currentDraft?.recipientEmails,
     currentDraft?.subject,
@@ -111,15 +137,18 @@ export default function DraftReviewPanel({
   const actionsDisabled = savingDraft || regeneratingDraft || sendingDraft || resolvingThread || dismissingThread;
 
   async function handleSave() {
-    if (!subject.trim()) {
+    if (!canSaveDraft) {
+      throw new Error("Draft actions are not available for this channel yet.");
+    }
+    if (channelCapabilities.supportsSubject && !subject.trim()) {
       setValidationError("Subject is required.");
       throw new Error("Subject is required.");
     }
-    if (parsedRecipients.length === 0) {
+    if (channelCapabilities.supportsRecipients && parsedRecipients.length === 0) {
       setValidationError("At least one recipient email is required.");
       throw new Error("At least one recipient email is required.");
     }
-    if (parsedRecipients.some((value) => !isValidEmail(value))) {
+    if (channelCapabilities.supportsRecipients && parsedRecipients.some((value) => !isValidEmail(value))) {
       setValidationError("Recipients must be valid email addresses.");
       throw new Error("Recipients must be valid email addresses.");
     }
@@ -130,8 +159,8 @@ export default function DraftReviewPanel({
 
     setValidationError(null);
     await onSave({
-      subject,
-      recipientEmails: parsedRecipients,
+      subject: channelCapabilities.supportsSubject ? subject : undefined,
+      recipientEmails: channelCapabilities.supportsRecipients ? parsedRecipients : undefined,
       plainText,
       html: null,
     });
@@ -178,11 +207,11 @@ export default function DraftReviewPanel({
 
   return (
     <>
-      <section className="rounded-2xl border border-border-1 bg-surface shadow-sm">
+      <section className="rounded-2xl border border-border-1 bg-surface-2 shadow-sm">
         {/* Header with badges */}
         <div className="flex items-center justify-between gap-3 px-5 py-3">
           <h3 className="text-sm font-semibold text-foreground">
-            Reply
+            {channelCapabilities.bodyLabel}
           </h3>
           <div className="flex items-center gap-2">
             {currentDraft?.templateUsed && (
@@ -207,46 +236,63 @@ export default function DraftReviewPanel({
             </div>
           )}
 
+          {channelCapabilities.readOnlyNotice && (
+            <div className="rounded-xl border border-info-main/20 bg-info-light px-3 py-2.5 text-sm text-info-main">
+              {channelCapabilities.readOnlyNotice}
+            </div>
+          )}
+
           {validationError && (
             <div className="rounded-xl border border-error-main/20 bg-error-light px-3 py-2.5 text-sm text-error-main">
               {validationError}
             </div>
           )}
 
-          {/* Compact subject + recipient row */}
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div>
-              <label className="mb-1 block text-xs font-medium text-muted-foreground">
-                Subject
-              </label>
-              <input
-                value={subject}
-                onChange={(event) => setSubject(event.target.value)}
-                className="w-full rounded-lg border border-border-1 bg-surface-2 px-3 py-2 text-sm text-foreground outline-none transition focus:border-primary-main focus:ring-1 focus:ring-primary-main/30"
-                placeholder="Re: Guest inquiry"
-              />
+          {(channelCapabilities.supportsSubject || channelCapabilities.supportsRecipients) && (
+            <div className="grid gap-3 sm:grid-cols-2">
+              {channelCapabilities.supportsSubject && (
+                <div>
+                  <label className="mb-1 block text-xs font-medium text-muted-foreground">
+                    {channelCapabilities.subjectLabel}
+                  </label>
+                  <input
+                    value={subject}
+                    onChange={(event) => setSubject(event.target.value)}
+                    disabled={!canSaveDraft}
+                    className="w-full rounded-lg border border-border-1 bg-surface-2 px-3 py-2 text-sm text-foreground outline-none transition focus:border-primary-main focus:ring-1 focus:ring-primary-main/30"
+                    placeholder="Re: Guest inquiry"
+                  />
+                </div>
+              )}
+              {channelCapabilities.supportsRecipients && (
+                <div>
+                  <label className="mb-1 block text-xs font-medium text-muted-foreground">
+                    {channelCapabilities.recipientLabel}
+                  </label>
+                  <input
+                    value={recipientInput}
+                    onChange={(event) => setRecipientInput(event.target.value)}
+                    disabled={!canSaveDraft}
+                    className="w-full rounded-lg border border-border-1 bg-surface-2 px-3 py-2 text-sm text-foreground outline-none transition focus:border-primary-main focus:ring-1 focus:ring-primary-main/30"
+                    placeholder="guest@example.com"
+                  />
+                </div>
+              )}
             </div>
-            <div>
-              <label className="mb-1 block text-xs font-medium text-muted-foreground">
-                To
-              </label>
-              <input
-                value={recipientInput}
-                onChange={(event) => setRecipientInput(event.target.value)}
-                className="w-full rounded-lg border border-border-1 bg-surface-2 px-3 py-2 text-sm text-foreground outline-none transition focus:border-primary-main focus:ring-1 focus:ring-primary-main/30"
-                placeholder="guest@example.com"
-              />
-            </div>
-          </div>
+          )}
 
           {/* Message body */}
           <div>
+            <label className="mb-1 block text-xs font-medium text-muted-foreground">
+              {channelCapabilities.bodyLabel}
+            </label>
             <textarea
               value={plainText}
               onChange={(event) => setPlainText(event.target.value)}
               rows={6}
+              disabled={!canSaveDraft}
               className="w-full rounded-xl border border-border-1 bg-surface-2 px-3 py-3 text-sm leading-relaxed text-foreground outline-none transition focus:border-primary-main focus:ring-1 focus:ring-primary-main/30"
-              placeholder="Write the reply to send to the guest."
+              placeholder={channelCapabilities.bodyPlaceholder}
             />
           </div>
 
@@ -259,110 +305,142 @@ export default function DraftReviewPanel({
         </div>
 
         {/* Action bar — clear visual hierarchy */}
-        <div className="flex items-center gap-2 border-t border-border-1 px-5 py-3">
-          {/* Secondary actions — left */}
-          <Button
-            type="button"
-            onClick={() => void handleSave()}
-            disabled={actionsDisabled || !hasUnsavedChanges}
-            color="default"
-            tone="outline"
-            className="min-h-9 rounded-lg text-xs"
-          >
-            <Save className="mr-1 h-3.5 w-3.5" />
-            {savingDraft ? "Saving..." : "Save"}
-          </Button>
+        {showActionBar && (
+          <div className="flex items-center gap-2 border-t border-border-1 px-5 py-3">
+            {canSaveDraft && (
+              <>
+                <Button
+                  type="button"
+                  onClick={() => void handleSave()}
+                  disabled={actionsDisabled || !hasUnsavedChanges}
+                  color="default"
+                  tone="outline"
+                  className="min-h-9 rounded-lg text-xs"
+                >
+                  <Save className="mr-1 h-3.5 w-3.5" />
+                  {savingDraft ? "Saving..." : "Save"}
+                </Button>
 
-          <Button
-            type="button"
-            onClick={() => setShowRegenerateConfirm(true)}
-            disabled={actionsDisabled}
-            color="default"
-            tone="outline"
-            className="min-h-9 rounded-lg text-xs"
-          >
-            <RefreshCw className={`mr-1 h-3.5 w-3.5 ${regeneratingDraft ? "animate-spin" : ""}`} />
-            {regeneratingDraft ? "..." : "Regenerate"}
-          </Button>
+                {canRegenerateDraft && (
+                  <Button
+                    type="button"
+                    onClick={() => setShowRegenerateConfirm(true)}
+                    disabled={actionsDisabled}
+                    color="default"
+                    tone="outline"
+                    className="min-h-9 rounded-lg text-xs"
+                  >
+                    <RefreshCw className={`mr-1 h-3.5 w-3.5 ${regeneratingDraft ? "animate-spin" : ""}`} />
+                    {regeneratingDraft ? "..." : "Regenerate"}
+                  </Button>
+                )}
+              </>
+            )}
 
-          <Button
-            type="button"
-            onClick={() => setShowResolveConfirm(true)}
-            disabled={actionsDisabled}
-            color="default"
-            tone="outline"
-            className="min-h-9 rounded-lg text-xs"
-          >
-            <CheckCircle className="mr-1 h-3.5 w-3.5" />
-            {resolvingThread ? "..." : "Resolve"}
-          </Button>
+            {canMutateThread && (
+              <>
+                <Button
+                  type="button"
+                  onClick={() => setShowResolveConfirm(true)}
+                  disabled={actionsDisabled}
+                  color="default"
+                  tone="outline"
+                  className="min-h-9 rounded-lg text-xs"
+                >
+                  <CheckCircle className="mr-1 h-3.5 w-3.5" />
+                  {resolvingThread ? "..." : "Resolve"}
+                </Button>
 
-          <Button
-            type="button"
-            onClick={() => setShowDismissConfirm(true)}
-            disabled={actionsDisabled}
-            color="danger"
-            tone="outline"
-            className="min-h-9 rounded-lg text-xs"
-          >
-            <XCircle className="mr-1 h-3.5 w-3.5" />
-            {dismissingThread ? "..." : "Dismiss"}
-          </Button>
+                <Button
+                  type="button"
+                  onClick={() => setShowDismissConfirm(true)}
+                  disabled={actionsDisabled}
+                  color="danger"
+                  tone="outline"
+                  className="min-h-9 rounded-lg text-xs"
+                >
+                  <XCircle className="mr-1 h-3.5 w-3.5" />
+                  {dismissingThread ? "..." : "Dismiss"}
+                </Button>
+              </>
+            )}
 
-          {/* Primary action — right, visually dominant */}
-          <Button
-            type="button"
-            onClick={() => setShowSendConfirm(true)}
-            disabled={actionsDisabled || parsedRecipients.length === 0 || !plainText.trim()}
-            color="success"
-            tone="solid"
-            className="ml-auto min-h-9 rounded-lg px-6 text-sm font-semibold"
-          >
-            <Send className="mr-1.5 h-4 w-4" />
-            {sendingDraft ? "Sending..." : "Send"}
-          </Button>
-        </div>
+            {canSendDraft && (
+              <Button
+                type="button"
+                onClick={() => setShowSendConfirm(true)}
+                disabled={
+                  actionsDisabled
+                  || (channelCapabilities.supportsRecipients && parsedRecipients.length === 0)
+                  || !plainText.trim()
+                }
+                color="success"
+                tone="solid"
+                className="ml-auto min-h-9 rounded-lg px-6 text-sm font-semibold"
+              >
+                <Send className="mr-1.5 h-4 w-4" />
+                {sendingDraft ? "Sending..." : channelCapabilities.sendLabel}
+              </Button>
+            )}
+          </div>
+        )}
       </section>
 
-      <ConfirmModal
-        isOpen={showRegenerateConfirm}
-        title="Regenerate draft?"
-        message={
-          hasUnsavedChanges || currentDraft?.status === "edited"
-            ? "This will overwrite the current draft with a fresh agent-generated reply."
-            : "Generate a fresh agent draft for this thread?"
-        }
-        confirmLabel="Regenerate"
-        onCancel={() => setShowRegenerateConfirm(false)}
-        onConfirm={handleConfirmRegenerate}
-      />
+      {(canRegenerateDraft || canSendDraft) && (
+        <>
+          {canRegenerateDraft && (
+            <ConfirmModal
+              isOpen={showRegenerateConfirm}
+              title="Regenerate draft?"
+              message={
+                hasUnsavedChanges || currentDraft?.status === "edited" || currentDraft?.status === "under_review"
+                  ? "This will overwrite the current draft with a fresh agent-generated reply."
+                  : "Generate a fresh agent draft for this thread?"
+              }
+              confirmLabel="Regenerate"
+              onCancel={() => setShowRegenerateConfirm(false)}
+              onConfirm={handleConfirmRegenerate}
+            />
+          )}
 
-      <ConfirmModal
-        isOpen={showSendConfirm}
-        title="Send this reply?"
-        message={`Send to ${parsedRecipients.join(", ") || "the guest"} with subject "${subject}"?`}
-        confirmLabel="Send now"
-        onCancel={() => setShowSendConfirm(false)}
-        onConfirm={handleConfirmSend}
-      />
+          {canSendDraft && (
+            <ConfirmModal
+              isOpen={showSendConfirm}
+              title={channelCapabilities.supportsSubject ? "Send this reply?" : "Send this message?"}
+              message={
+                channelCapabilities.supportsRecipients
+                  ? `Send to ${parsedRecipients.join(", ") || "the guest"}${subject.trim() ? ` with subject "${subject}"` : ""}?`
+                  : `Send via ${threadDetail.thread.channelLabel.toLowerCase()} for this ${threadDetail.thread.lane} thread?`
+              }
+              confirmLabel="Send now"
+              onCancel={() => setShowSendConfirm(false)}
+              onConfirm={handleConfirmSend}
+            />
+          )}
+        </>
+      )}
 
-      <ConfirmModal
-        isOpen={showResolveConfirm}
-        title="Resolve thread?"
-        message="This thread will be removed from your active inbox."
-        confirmLabel="Resolve"
-        onCancel={() => setShowResolveConfirm(false)}
-        onConfirm={handleConfirmResolve}
-      />
+      {canMutateThread && (
+        <>
+          <ConfirmModal
+            isOpen={showResolveConfirm}
+            title="Resolve thread?"
+            message="This thread will be removed from your active inbox."
+            confirmLabel="Resolve"
+            onCancel={() => setShowResolveConfirm(false)}
+            onConfirm={handleConfirmResolve}
+          />
 
-      <ConfirmModal
-        isOpen={showDismissConfirm}
-        title="Mark as not relevant?"
-        message="This thread will be archived. The sender details are recorded so similar emails can be reviewed later."
-        confirmLabel="Not relevant"
-        onCancel={() => setShowDismissConfirm(false)}
-        onConfirm={handleConfirmDismiss}
-      />
+          <ConfirmModal
+            isOpen={showDismissConfirm}
+            title="Mark as not relevant?"
+            message="This thread will be archived. The sender details are recorded so similar emails can be reviewed later."
+            confirmLabel="Not relevant"
+            onCancel={() => setShowDismissConfirm(false)}
+            onConfirm={handleConfirmDismiss}
+          />
+        </>
+      )}
     </>
   );
 }

@@ -16,6 +16,8 @@ import { recordDirectTelemetry } from '../lib/direct-telemetry';
 import { errorResponse, FirebaseRest, jsonResponse } from '../lib/firebase-rest';
 import { validateGuestSessionToken } from '../lib/guest-session';
 import { enforceKvRateLimit } from '../lib/kv-rate-limit';
+import type { PrimeMessagingEnv } from '../lib/prime-messaging-db';
+import { shadowWritePrimeInboundDirectMessage } from '../lib/prime-messaging-shadow-write';
 
 function parseCookie(cookieHeader: string, name: string): string | null {
   for (const part of cookieHeader.split(';')) {
@@ -197,7 +199,24 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       senderRole: 'guest',
       senderName: senderBooking.firstName?.trim() || undefined,
       createdAt: now,
+      kind: 'support',
+      audience: 'thread',
     });
+
+    try {
+      await shadowWritePrimeInboundDirectMessage(env as PrimeMessagingEnv, {
+        threadId: channelId,
+        bookingId,
+        senderId: senderUuid,
+        senderName: senderBooking.firstName?.trim() || null,
+        peerId: peerUuid,
+        content,
+        messageId,
+        createdAt: now,
+      });
+    } catch (shadowWriteError) {
+      console.error('Failed to shadow-write Prime direct message to D1:', shadowWriteError); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
+    }
 
     await recordDirectTelemetry(env, 'write.success');
     return jsonResponse({

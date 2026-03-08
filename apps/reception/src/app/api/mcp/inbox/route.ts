@@ -5,6 +5,7 @@ import {
   isThreadVisibleInInbox,
 } from "@/lib/inbox/api-models.server";
 import { inboxApiErrorResponse } from "@/lib/inbox/api-route-helpers";
+import { listPrimeInboxThreadSummaries } from "@/lib/inbox/prime-review.server";
 import {
   type InboxThreadStatus,
   inboxThreadStatuses,
@@ -51,10 +52,23 @@ export async function GET(request: Request) {
     });
 
     const visibleRows = status ? rows : rows.filter((row) => isThreadVisibleInInbox(row));
+    let primeRows: Awaited<ReturnType<typeof listPrimeInboxThreadSummaries>> = [];
+    try {
+      primeRows = await listPrimeInboxThreadSummaries();
+    } catch (error) {
+      console.error("Failed to load Prime review thread summaries:", error);
+    }
+
+    const filteredPrimeRows = status
+      ? primeRows.filter((row) => row.status === status)
+      : primeRows;
 
     return NextResponse.json({
       success: true,
-      data: visibleRows.map((row) => buildThreadSummaryFromRow(row)),
+      data: [
+        ...visibleRows.map((row) => buildThreadSummaryFromRow(row)),
+        ...filteredPrimeRows,
+      ],
     });
   } catch (error) {
     return inboxApiErrorResponse(error);

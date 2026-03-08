@@ -2,6 +2,12 @@ import "server-only";
 
 import type { ParsedGmailThread } from "../gmail-client";
 
+import { resolveInboxChannelAdapter } from "./channel-adapters.server";
+import type {
+  InboxChannel,
+  InboxChannelCapabilities,
+  InboxReviewMode,
+} from "./channels";
 import type {
   InboxDraftRow,
   InboxMessageRow,
@@ -10,6 +16,7 @@ import type {
 } from "./repositories.server";
 
 export type InboxThreadMetadata = {
+  channel?: InboxChannel | null;
   needsManualDraft?: boolean;
   draftFailureCode?: string | null;
   draftFailureMessage?: string | null;
@@ -83,6 +90,30 @@ export type InboxMessageApiModel = {
     mimeType: string;
     size: number;
   }>;
+};
+
+export type InboxThreadSummaryApiModel = {
+  id: string;
+  status: string;
+  channel: InboxChannel;
+  channelLabel: string;
+  lane: "support" | "promotion";
+  reviewMode: InboxReviewMode;
+  capabilities: InboxChannelCapabilities;
+  subject: string | null;
+  snippet: string | null;
+  latestMessageAt: string | null;
+  lastSyncedAt: string | null;
+  updatedAt: string;
+  needsManualDraft: boolean;
+  draftFailureCode: string | null;
+  draftFailureMessage: string | null;
+  latestAdmissionDecision: string | null;
+  latestAdmissionReason: string | null;
+  currentDraft: InboxDraftApiModel | null;
+  guestBookingRef: string | null;
+  guestFirstName: string | null;
+  guestLastName: string | null;
 };
 
 function parseJsonObject(raw: string | null | undefined): Record<string, unknown> | null {
@@ -210,30 +241,19 @@ export function getLatestInboundStoredMessage(record: InboxThreadRecord): InboxM
   return inbound.at(-1) ?? null;
 }
 
-export function buildThreadSummary(record: InboxThreadRecord): {
-  id: string;
-  status: string;
-  subject: string | null;
-  snippet: string | null;
-  latestMessageAt: string | null;
-  lastSyncedAt: string | null;
-  updatedAt: string;
-  needsManualDraft: boolean;
-  draftFailureCode: string | null;
-  draftFailureMessage: string | null;
-  latestAdmissionDecision: string | null;
-  latestAdmissionReason: string | null;
-  currentDraft: InboxDraftApiModel | null;
-  guestBookingRef: string | null;
-  guestFirstName: string | null;
-  guestLastName: string | null;
-} {
+export function buildThreadSummary(record: InboxThreadRecord): InboxThreadSummaryApiModel {
   const metadata = parseThreadMetadata(record.thread.metadata_json);
   const currentDraft = getCurrentDraft(record);
+  const channelAdapter = resolveInboxChannelAdapter(metadata.channel);
 
   return {
     id: record.thread.id,
     status: record.thread.status,
+    channel: channelAdapter.channel,
+    channelLabel: channelAdapter.channelLabel,
+    lane: channelAdapter.lane,
+    reviewMode: channelAdapter.reviewMode,
+    capabilities: { ...channelAdapter.capabilities },
     subject: record.thread.subject,
     snippet: record.thread.snippet,
     latestMessageAt: record.thread.latest_message_at,
@@ -255,25 +275,11 @@ export function isThreadVisibleInInbox(thread: InboxThreadRow): boolean {
   return thread.status !== "auto_archived" && thread.status !== "resolved";
 }
 
-export function buildThreadSummaryFromRow(row: import("./repositories.server").ThreadWithLatestDraftRow): {
-  id: string;
-  status: string;
-  subject: string | null;
-  snippet: string | null;
-  latestMessageAt: string | null;
-  lastSyncedAt: string | null;
-  updatedAt: string;
-  needsManualDraft: boolean;
-  draftFailureCode: string | null;
-  draftFailureMessage: string | null;
-  latestAdmissionDecision: string | null;
-  latestAdmissionReason: string | null;
-  currentDraft: InboxDraftApiModel | null;
-  guestBookingRef: string | null;
-  guestFirstName: string | null;
-  guestLastName: string | null;
-} {
+export function buildThreadSummaryFromRow(
+  row: import("./repositories.server").ThreadWithLatestDraftRow,
+): InboxThreadSummaryApiModel {
   const metadata = parseThreadMetadata(row.metadata_json);
+  const channelAdapter = resolveInboxChannelAdapter(metadata.channel);
 
   let currentDraft: InboxDraftApiModel | null = null;
   if (row.draft_id) {
@@ -300,6 +306,11 @@ export function buildThreadSummaryFromRow(row: import("./repositories.server").T
   return {
     id: row.id,
     status: row.status,
+    channel: channelAdapter.channel,
+    channelLabel: channelAdapter.channelLabel,
+    lane: channelAdapter.lane,
+    reviewMode: channelAdapter.reviewMode,
+    capabilities: { ...channelAdapter.capabilities },
     subject: row.subject,
     snippet: row.snippet,
     latestMessageAt: row.latest_message_at,

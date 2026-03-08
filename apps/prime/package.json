@@ -8,8 +8,8 @@
     "start": "next start -p 3015",
     "lint": "./scripts/lint-wrapper.sh",
     "typecheck": "pnpm run typecheck:app && pnpm run typecheck:functions",
-    "typecheck:app": "tsc -p tsconfig.json --noEmit",
-    "typecheck:functions": "tsc -p tsconfig.functions.json --noEmit",
+    "typecheck:app": "tsc -p tsconfig.json --noEmit --incremental --tsBuildInfoFile .typecheck.tsbuildinfo",
+    "typecheck:functions": "tsc -p tsconfig.functions.json --noEmit --incremental --tsBuildInfoFile .typecheck.functions.tsbuildinfo",
     "test": "pnpm -w run test:governed -- jest -- --config apps/prime/jest.config.cjs --rootDir apps/prime",
     "test:firebase-cost-gate": "pnpm -w run test:governed -- jest -- --config apps/prime/jest.config.cjs --rootDir apps/prime --runInBand --testPathPattern=\"firebase-query-budget|firebaseMetrics.budget|listener-leak|Subscription.leak|budget-regression-gate\"",
     "test:e2e:critical": "CYPRESS_BASE_URL=http://127.0.0.1:3015 start-server-and-test \"OUTPUT_EXPORT=1 pnpm build && pnpm exec wrangler pages dev out --port 3015 --ip 127.0.0.1 --compatibility-date 2025-06-20\" http://127.0.0.1:3015 \"pnpm exec cypress run --config-file cypress.config.ts --spec cypress/e2e/guest-primary-journey.cy.ts,cypress/e2e/arrival-day-journey.cy.ts,cypress/e2e/expired-token-recovery.cy.ts,cypress/e2e/pages-routing-deeplink.cy.ts\""
@@ -18,6 +18,7 @@
     "@acme/date-utils": "workspace:*",
     "@acme/design-system": "workspace:*",
     "@acme/next-config": "workspace:*",
+    "@acme/platform-core": "workspace:*",
     "@acme/tailwind-config": "workspace:*",
     "@acme/ui": "workspace:*",
     "@themes/base": "workspace:*",

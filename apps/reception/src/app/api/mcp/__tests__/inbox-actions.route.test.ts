@@ -3,6 +3,12 @@ import {
   sendGmailDraft,
 } from "@/lib/gmail-client";
 import { generateAgentDraft } from "@/lib/inbox/draft-pipeline.server";
+import {
+  dismissPrimeInboxThread,
+  isPrimeInboxThreadId,
+  resolvePrimeInboxThread,
+  sendPrimeInboxThread,
+} from "@/lib/inbox/prime-review.server";
 import type { InboxThreadRecord } from "@/lib/inbox/repositories.server";
 import {
   createDraft,
@@ -34,6 +40,13 @@ jest.mock("@/lib/inbox/repositories.server", () => ({
   recordAdmission: jest.fn(),
   updateDraft: jest.fn(),
   updateThreadStatus: jest.fn(),
+}));
+
+jest.mock("@/lib/inbox/prime-review.server", () => ({
+  dismissPrimeInboxThread: jest.fn(),
+  isPrimeInboxThreadId: jest.fn(),
+  resolvePrimeInboxThread: jest.fn(),
+  sendPrimeInboxThread: jest.fn(),
 }));
 
 jest.mock("@/lib/inbox/telemetry.server", () => ({
@@ -116,6 +129,10 @@ describe("inbox regenerate/send/resolve routes", () => {
   const createDraftMock = jest.mocked(createDraft);
   const updateDraftMock = jest.mocked(updateDraft);
   const updateThreadStatusMock = jest.mocked(updateThreadStatus);
+  const isPrimeInboxThreadIdMock = jest.mocked(isPrimeInboxThreadId);
+  const resolvePrimeInboxThreadMock = jest.mocked(resolvePrimeInboxThread);
+  const dismissPrimeInboxThreadMock = jest.mocked(dismissPrimeInboxThread);
+  const sendPrimeInboxThreadMock = jest.mocked(sendPrimeInboxThread);
   const recordInboxEventMock = jest.mocked(recordInboxEvent);
   const generateAgentDraftMock = jest.mocked(generateAgentDraft);
   const createGmailDraftMock = jest.mocked(createGmailDraft);
@@ -123,6 +140,7 @@ describe("inbox regenerate/send/resolve routes", () => {
 
   beforeEach(() => {
     jest.resetAllMocks();
+    isPrimeInboxThreadIdMock.mockReturnValue(false);
     requireStaffAuthMock.mockResolvedValue({
       ok: true,
       uid: "staff-1",
@@ -225,6 +243,84 @@ describe("inbox regenerate/send/resolve routes", () => {
     expect(createGmailDraftMock).not.toHaveBeenCalled();
   });
 
+  it("routes Prime send through the Prime review proxy for prefixed direct threads", async () => {
+    isPrimeInboxThreadIdMock.mockReturnValue(true);
+    sendPrimeInboxThreadMock.mockResolvedValue({
+      draft: {
+        id: "draft-1",
+        threadId: "prime:dm_occ_aaa_occ_bbb",
+        gmailDraftId: null,
+        status: "sent",
+        subject: null,
+        recipientEmails: [],
+        plainText: "Prime support reply",
+        html: null,
+        originalPlainText: null,
+        originalHtml: null,
+        templateUsed: null,
+        quality: null,
+        interpret: null,
+        createdByUid: "staff-1",
+        createdAt: "2026-03-08T10:01:00.000Z",
+        updatedAt: "2026-03-08T10:02:00.000Z",
+      },
+      sentMessageId: "msg_1710000000000_abcdef123456",
+    });
+
+    const response = await sendDraft(
+      buildPostRequest("http://localhost/api/mcp/inbox/prime%3Adm_occ_aaa_occ_bbb/send"),
+      { params: { threadId: "prime:dm_occ_aaa_occ_bbb" } },
+    );
+    const payload = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(sendPrimeInboxThreadMock).toHaveBeenCalledWith("prime:dm_occ_aaa_occ_bbb", "staff-1");
+    expect(getThreadMock).not.toHaveBeenCalled();
+    expect(createGmailDraftMock).not.toHaveBeenCalled();
+    expect(sendGmailDraftMock).not.toHaveBeenCalled();
+    expect(recordInboxEventMock).not.toHaveBeenCalled();
+    expect(payload.data.sentMessageId).toBe("msg_1710000000000_abcdef123456");
+  });
+
+  it("routes Prime send through the Prime review proxy for prefixed broadcast threads", async () => {
+    isPrimeInboxThreadIdMock.mockReturnValue(true);
+    sendPrimeInboxThreadMock.mockResolvedValue({
+      draft: {
+        id: "draft-2",
+        threadId: "prime:broadcast_whole_hostel",
+        gmailDraftId: null,
+        status: "sent",
+        subject: null,
+        recipientEmails: [],
+        plainText: "Tonight: sunset drinks on the terrace.",
+        html: null,
+        originalPlainText: null,
+        originalHtml: null,
+        templateUsed: null,
+        quality: null,
+        interpret: null,
+        createdByUid: "staff-1",
+        createdAt: "2026-03-08T11:01:00.000Z",
+        updatedAt: "2026-03-08T11:02:00.000Z",
+      },
+      sentMessageId: "msg_1710000000000_broadcast1234",
+    });
+
+    const response = await sendDraft(
+      buildPostRequest("http://localhost/api/mcp/inbox/prime%3Abroadcast_whole_hostel/send"),
+      { params: { threadId: "prime:broadcast_whole_hostel" } },
+    );
+    const payload = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(sendPrimeInboxThreadMock).toHaveBeenCalledWith("prime:broadcast_whole_hostel", "staff-1");
+    expect(getThreadMock).not.toHaveBeenCalled();
+    expect(createGmailDraftMock).not.toHaveBeenCalled();
+    expect(sendGmailDraftMock).not.toHaveBeenCalled();
+    expect(recordInboxEventMock).not.toHaveBeenCalled();
+    expect(payload.data.sentMessageId).toBe("msg_1710000000000_broadcast1234");
+  });
+
   it("creates, sends, and records audit events for a draft", async () => {
     getThreadMock.mockResolvedValue(buildThreadRecord());
     createGmailDraftMock.mockResolvedValue({ id: "gmail-draft-1" });
@@ -283,6 +379,61 @@ describe("inbox regenerate/send/resolve routes", () => {
       },
     });
     expect(payload.data.sentMessageId).toBe("gmail-msg-1");
+  });
+
+  it("routes Prime resolve through the Prime review proxy for prefixed threads", async () => {
+    isPrimeInboxThreadIdMock.mockReturnValue(true);
+    resolvePrimeInboxThreadMock.mockResolvedValue({
+      id: "prime:dm_occ_aaa_occ_bbb",
+      status: "resolved",
+      channel: "prime_direct",
+      channelLabel: "Prime chat",
+      lane: "support",
+      reviewMode: "message_draft",
+      capabilities: {
+        supportsSubject: false,
+        supportsRecipients: false,
+        supportsHtml: false,
+        supportsDraftMutations: true,
+        supportsDraftSave: true,
+        supportsDraftRegenerate: false,
+        supportsDraftSend: true,
+        supportsThreadMutations: true,
+        subjectLabel: "Subject",
+        recipientLabel: "Recipients",
+        bodyLabel: "Message",
+        bodyPlaceholder: "Write the Prime message to send in this thread.",
+        sendLabel: "Send message",
+        readOnlyNotice: "Prime review currently supports draft save, send, resolve, and dismiss. Regenerate remains disabled.",
+      },
+      subject: "Prime guest chat BOOK123",
+      snippet: "Hello from Prime",
+      latestMessageAt: "2026-03-08T10:00:00.000Z",
+      lastSyncedAt: null,
+      updatedAt: "2026-03-08T10:05:00.000Z",
+      needsManualDraft: false,
+      draftFailureCode: null,
+      draftFailureMessage: null,
+      latestAdmissionDecision: "resolved",
+      latestAdmissionReason: "staff_resolved",
+      currentDraft: null,
+      guestBookingRef: "BOOK123",
+      guestFirstName: null,
+      guestLastName: null,
+    });
+
+    const response = await resolveThread(
+      buildPostRequest("http://localhost/api/mcp/inbox/prime%3Adm_occ_aaa_occ_bbb/resolve"),
+      { params: { threadId: "prime:dm_occ_aaa_occ_bbb" } },
+    );
+    const payload = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(resolvePrimeInboxThreadMock).toHaveBeenCalledWith("prime:dm_occ_aaa_occ_bbb", "staff-1");
+    expect(getThreadMock).not.toHaveBeenCalled();
+    expect(updateThreadStatusMock).not.toHaveBeenCalled();
+    expect(recordInboxEventMock).not.toHaveBeenCalled();
+    expect(payload.data.thread.status).toBe("resolved");
   });
 
   it("marks a thread resolved and records the resolve event", async () => {
@@ -395,6 +546,62 @@ describe("inbox regenerate/send/resolve routes", () => {
         eventType: "dismissed",
         actorUid: "staff-1",
       });
+    });
+
+    it("routes Prime dismiss through the Prime review proxy for prefixed threads", async () => {
+      isPrimeInboxThreadIdMock.mockReturnValue(true);
+      dismissPrimeInboxThreadMock.mockResolvedValue({
+        id: "prime:dm_occ_aaa_occ_bbb",
+        status: "auto_archived",
+        channel: "prime_direct",
+        channelLabel: "Prime chat",
+        lane: "support",
+        reviewMode: "message_draft",
+        capabilities: {
+          supportsSubject: false,
+          supportsRecipients: false,
+          supportsHtml: false,
+          supportsDraftMutations: true,
+          supportsDraftSave: true,
+          supportsDraftRegenerate: false,
+          supportsDraftSend: true,
+          supportsThreadMutations: true,
+          subjectLabel: "Subject",
+          recipientLabel: "Recipients",
+          bodyLabel: "Message",
+          bodyPlaceholder: "Write the Prime message to send in this thread.",
+          sendLabel: "Send message",
+          readOnlyNotice: "Prime review currently supports draft save, send, resolve, and dismiss. Regenerate remains disabled.",
+        },
+        subject: "Prime guest chat BOOK123",
+        snippet: "Hello from Prime",
+        latestMessageAt: "2026-03-08T10:00:00.000Z",
+        lastSyncedAt: null,
+        updatedAt: "2026-03-08T10:05:00.000Z",
+        needsManualDraft: false,
+        draftFailureCode: null,
+        draftFailureMessage: null,
+        latestAdmissionDecision: "dismissed",
+        latestAdmissionReason: "staff_not_relevant",
+        currentDraft: null,
+        guestBookingRef: "BOOK123",
+        guestFirstName: null,
+        guestLastName: null,
+      });
+
+      const response = await dismissThread(
+        buildPostRequest("http://localhost/api/mcp/inbox/prime%3Adm_occ_aaa_occ_bbb/dismiss"),
+        { params: { threadId: "prime:dm_occ_aaa_occ_bbb" } },
+      );
+      const payload = await response.json();
+
+      expect(response.status).toBe(200);
+      expect(dismissPrimeInboxThreadMock).toHaveBeenCalledWith("prime:dm_occ_aaa_occ_bbb", "staff-1");
+      expect(getThreadMock).not.toHaveBeenCalled();
+      expect(recordAdmissionMock).not.toHaveBeenCalled();
+      expect(updateThreadStatusMock).not.toHaveBeenCalled();
+      expect(recordInboxEventMock).not.toHaveBeenCalled();
+      expect(payload.data.thread.status).toBe("auto_archived");
     });
 
     // TC-10: Unauthenticated dismiss returns 401

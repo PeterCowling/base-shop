@@ -4,6 +4,10 @@
     "baseUrl": ".",
     "module": "esnext",
     "moduleResolution": "bundler",
+    "paths": {
+      "@acme/platform-core": ["../../packages/platform-core/dist/index.d.ts"],
+      "@acme/platform-core/*": ["../../packages/platform-core/dist/*"]
+    },
     "types": ["node", "@cloudflare/workers-types"],
     "noEmit": true
   },

@@ -89,6 +89,10 @@ function MessageBubble({
   );
 }
 
+function formatCampaignStatus(status: string): string {
+  return status.replace(/_/g, " ");
+}
+
 export default function ThreadDetailPane({
   threadDetail,
   loading,
@@ -106,7 +110,7 @@ export default function ThreadDetailPane({
 }: ThreadDetailPaneProps) {
   if (loading) {
     return (
-      <section className="rounded-2xl border border-border-1 bg-surface p-5 shadow-sm">
+      <section className="rounded-2xl border border-border-1 bg-surface-2 p-5 shadow-sm">
         <div className="animate-pulse space-y-4">
           <div className="h-5 w-2/5 rounded-md bg-surface-3" />
           <div className="h-3 w-24 rounded-md bg-surface-3" />
@@ -122,7 +126,7 @@ export default function ThreadDetailPane({
 
   if (error) {
     return (
-      <section className="rounded-2xl border border-border-1 bg-surface p-5 shadow-sm">
+      <section className="rounded-2xl border border-border-1 bg-surface-2 p-5 shadow-sm">
         <p className="rounded-xl border border-error-main/20 bg-error-light px-4 py-3 text-sm text-error-main">
           {error}
         </p>
@@ -132,7 +136,7 @@ export default function ThreadDetailPane({
 
   if (!threadDetail) {
     return (
-      <section className="flex min-h-80 items-center justify-center rounded-2xl border border-dashed border-border-2 bg-surface px-6 py-16 text-center shadow-sm">
+      <section className="flex min-h-80 items-center justify-center rounded-2xl border border-dashed border-border-2 bg-surface-2 px-6 py-16 text-center shadow-sm">
         <div>
           <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-surface-2 text-muted-foreground">
             <User className="h-5 w-5" />
@@ -152,15 +156,49 @@ export default function ThreadDetailPane({
   return (
     <div className="space-y-3">
       {/* Unified thread header + conversation card */}
-      <section className="rounded-2xl border border-border-1 bg-surface shadow-sm">
+      <section className="rounded-2xl border border-border-1 bg-surface-2 shadow-sm">
         {/* Header */}
         <div className="px-5 pt-5 pb-4">
           <h2 className="text-lg font-semibold text-foreground">
             {threadDetail.thread.subject ?? "Untitled inquiry"}
           </h2>
-          <p className="mt-0.5 text-xs text-muted-foreground">
-            {threadDetail.messages.length} message{threadDetail.messages.length !== 1 ? "s" : ""}
-          </p>
+          <div className="mt-1 flex flex-wrap items-center gap-2">
+            <span className="rounded-full bg-surface-2 px-2 py-0.5 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              {threadDetail.thread.channelLabel}
+            </span>
+            {threadDetail.campaign && (
+              <span className="rounded-full bg-primary-soft px-2 py-0.5 text-xs font-medium uppercase tracking-wide text-primary-main">
+                {formatCampaignStatus(threadDetail.campaign.status)}
+              </span>
+            )}
+            <p className="text-xs text-muted-foreground">
+              {threadDetail.messages.length} message{threadDetail.messages.length !== 1 ? "s" : ""}
+            </p>
+          </div>
+
+          {threadDetail.campaign && (
+            <div className="mt-3 rounded-xl border border-border-1 bg-surface-2 px-3 py-2">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                <span className="font-medium text-foreground">
+                  {threadDetail.campaign.title ?? "Prime campaign"}
+                </span>
+                <span>
+                  Audience: {threadDetail.campaign.audience}
+                </span>
+                <span>
+                  Targets: {threadDetail.campaign.targetSummary.total}
+                </span>
+                <span>
+                  Projected: {threadDetail.campaign.deliverySummary.projected}
+                </span>
+                {threadDetail.campaign.deliverySummary.failed > 0 && (
+                  <span className="text-error-main">
+                    Failed: {threadDetail.campaign.deliverySummary.failed}
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Guest context — compact inline */}
           {hasGuestContext && (

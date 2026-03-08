@@ -301,11 +301,9 @@ function Login({ onLoginSuccess }: LoginProps) {
 
             <Button
               type="submit"
-              color="primary"
-              tone="solid"
-              size="lg"
+              compatibilityMode="passthrough"
               disabled={resetStatus === "sending"}
-              className="w-full bg-primary-main text-primary-fg hover:opacity-90"
+              className="w-full h-11 px-5 rounded-lg text-base font-medium bg-primary-main text-primary-fg hover:bg-primary-dark transition-colors disabled:opacity-50"
             >
               {resetStatus === "sending" ? "Sending..." : "Send reset link"}
             </Button>
@@ -526,11 +524,9 @@ function Login({ onLoginSuccess }: LoginProps) {
 
         <Button
           type="submit"
-          color="primary"
-          tone="solid"
-          size="lg"
+          compatibilityMode="passthrough"
           disabled={isSubmitting || status === "loading"}
-          className="w-full bg-primary-main text-primary-fg hover:opacity-90"
+          className="w-full h-11 px-5 rounded-lg text-base font-medium bg-primary-main text-primary-fg hover:bg-primary-dark transition-colors disabled:opacity-50"
         >
           {isSubmitting ? "Signing in..." : "Sign in"}
         </Button>
@@ -546,7 +542,7 @@ function ProductLogo() {
       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-main">
         <span className="text-lg font-bold text-primary-fg">B</span>
       </div>
-      <span className="ms-3 text-xl font-semibold text-foreground">
+      <span className="ms-3 text-xl font-semibold text-primary-main">
         Brikette Operating System
       </span>
     </div>
@@ -560,8 +556,8 @@ interface LoginContainerProps {
 
 function LoginContainer({ children }: LoginContainerProps) {
   return (
-    <div className="flex min-h-dvh w-full items-center justify-center bg-gradient-to-br from-surface-2 via-surface-2 to-surface-3 px-4">
-      <div className="relative w-full max-w-md rounded-lg bg-surface px-8 py-10 shadow-xl">
+    <div className="flex min-h-dvh w-full items-center justify-center bg-gradient-to-br from-surface via-surface-1 to-surface-1 px-4">
+      <div className="relative w-full max-w-md rounded-lg bg-surface-2 border border-border-strong px-8 py-10 shadow-xl ring-1 ring-border-1/30">
         {children}
       </div>
     </div>

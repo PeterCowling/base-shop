@@ -76,76 +76,81 @@ const CheckinsTableView: React.FC<Props> = ({
   onToggleCancelled,
   bookingStatuses,
 }) => (
-  <div className="bg-gradient-to-b from-surface-2 to-surface-3 min-h-screen flex flex-col p-5">
-    <div className="bg-surface/80 rounded-lg px-4 py-3 mb-4">
-      <CheckinsHeader
-        onNewBookingClick={onNewBookingClick}
-        onEditClick={onEditClick}
-        onDeleteClick={onDeleteClick}
-        onArchiveClick={onArchiveClick}
-        eligibleCount={eligibleCount}
-      />
-    </div>
-    <div className="flex-grow bg-surface rounded-lg shadow-lg p-6 space-y-4">
+  <div className="bg-gradient-to-b from-surface to-surface-1 min-h-screen p-4 font-sans text-foreground">
+    {/* Header */}
+    <CheckinsHeader
+      onNewBookingClick={onNewBookingClick}
+      onEditClick={onEditClick}
+      onDeleteClick={onDeleteClick}
+      onArchiveClick={onArchiveClick}
+      eligibleCount={eligibleCount}
+    />
+
+    {/* Main content card */}
+    <div className="rounded-xl bg-surface-2 border border-border-strong shadow-xl ring-1 ring-border-1/30 p-5 space-y-4">
+      {/* Mode banners */}
       {isEditMode && (
-        <div className="bg-info-light/100 rounded-lg p-3 flex items-center gap-2">
+        <div className="bg-info-light/80 rounded-lg px-4 py-2.5 flex items-center gap-2.5 border border-info-main/20">
           <Info className="text-info-main shrink-0" size={16} />
-          <span className="text-info-main text-sm font-semibold">
+          <span className="text-info-main text-sm font-medium">
             Click a row to edit the booking
           </span>
         </div>
       )}
       {isDeleteMode && (
-        <div className="bg-warning-light/100 rounded-lg p-3 flex items-center gap-2">
+        <div className="bg-error-main/10 rounded-lg px-4 py-2.5 flex items-center gap-2.5 border border-error-main/20">
           <AlertTriangle className="text-error-main shrink-0" size={16} />
-          <span className="text-error-main text-sm font-semibold">
+          <span className="text-error-main text-sm font-medium">
             Click a row to delete the booking
           </span>
         </div>
       )}
       {isAddGuestMode && (
-        <div className="bg-success-light/100 rounded-lg p-3 flex items-center gap-2">
+        <div className="bg-success-light/80 rounded-lg px-4 py-2.5 flex items-center gap-2.5 border border-success-main/20">
           <UserPlus className="text-success-main shrink-0" size={16} />
-          <span className="text-success-main text-sm font-semibold">
+          <span className="text-success-main text-sm font-medium">
             Click a row to add a guest to that booking
           </span>
         </div>
       )}
+
+      {/* Date selector + controls */}
       <div className="space-y-3">
-        {/* Day selector — wraps naturally at any width */}
         <DateSelector
           selectedDate={selectedDate}
           onDateChange={onDateChange}
         />
-        {/* Controls row */}
         <div className="flex items-center justify-between">
-          <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer select-none">
+          <label className="flex items-center gap-2.5 text-sm text-muted-foreground cursor-pointer select-none group">
             <Input
               compatibilityMode="no-wrapper"
               type="checkbox"
               checked={showCancelled}
               onChange={onToggleCancelled}
-              className="w-4 h-4 cursor-pointer"
+              className="w-4 h-4 cursor-pointer accent-primary-main"
             />
-            <span>Show cancelled</span>
+            <span className="group-hover:text-foreground transition-colors">Show cancelled</span>
           </label>
           {roomsReady ? (
-            <span className="text-sm font-semibold text-success-main">
-              Rooms are Set
+            <span className="inline-flex items-center gap-1.5 rounded-lg bg-success-main/10 border border-success-main/20 px-3 py-1.5 text-sm font-semibold text-success-main">
+              <span className="h-1.5 w-1.5 rounded-full bg-success-main" />
+              Rooms Ready
             </span>
           ) : (
             <button
               type="button"
               onClick={() => setRoomsReady(true)}
-              className="rounded-lg bg-primary-main/100 px-4 py-2 text-sm font-semibold text-primary-fg/100 transition-all duration-150 hover:opacity-90 active:scale-95"
+              className="rounded-lg bg-primary-main px-4 py-2 text-sm font-semibold text-primary-fg transition-all duration-150 hover:brightness-110 active:scale-95"
             >
               Rooms Ready
             </button>
           )}
         </div>
       </div>
-      <div className="overflow-x-auto">
-        <Table className="w-full table-auto border border-border-2 text-sm">
+
+      {/* Table */}
+      <div className="overflow-x-auto rounded-lg border border-border-strong">
+        <Table className="w-full table-auto text-sm">
           <TableHeader />
           <TableBody>
             {loading && (
@@ -166,9 +171,9 @@ const CheckinsTableView: React.FC<Props> = ({
               <TableRow>
                 <TableCell
                   colSpan={12}
-                  className="p-4 text-center italic text-muted-foreground"
+                  className="p-8 text-center italic text-muted-foreground"
                 >
-                  No checkins found for this date.
+                  No check-ins found for this date.
                 </TableCell>
               </TableRow>
             )}
@@ -193,6 +198,8 @@ const CheckinsTableView: React.FC<Props> = ({
         </Table>
       </div>
     </div>
+
+    {/* Modals */}
     {selectedBooking && (
       <BookingModal booking={selectedBooking} onClose={closeSelectedBooking} />
     )}

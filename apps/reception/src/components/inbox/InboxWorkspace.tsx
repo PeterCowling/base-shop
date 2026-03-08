@@ -23,8 +23,14 @@ function countThreadsReadyToSend(
 ): number {
   return threads.filter(
     (thread) =>
-      !thread.needsManualDraft
-      && (thread.currentDraft?.status === "generated" || thread.currentDraft?.status === "edited"),
+      thread.capabilities.supportsDraftSend
+      && !thread.needsManualDraft
+      && (
+        thread.currentDraft?.status === "generated"
+        || thread.currentDraft?.status === "edited"
+        || thread.currentDraft?.status === "suggested"
+        || thread.currentDraft?.status === "under_review"
+      ),
   ).length;
 }
 

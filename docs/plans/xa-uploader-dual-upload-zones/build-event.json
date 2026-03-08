@@ -1,0 +1,11 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-08T10:17:34.767Z",
+  "plan_slug": "xa-uploader-dual-upload-zones",
+  "business": "XA",
+  "completed_at": "2026-03-08",
+  "why": "The single upload zone is at the top of the image section. Once a main image exists and the operator scrolls to the additional-images grid, there is no upload affordance nearby — requiring a scroll back up.",
+  "intended_outcome_type": "operational",
+  "intended_outcome_statement": "CatalogProductForm renders two ImageDropZone instances: the original above MainImagePanel, and a second above AdditionalImagesPanel (visible only when imageEntries.length > 0). Both share the same upload logic but have independent file inputs and drag state.",
+  "source": "operator"
+}

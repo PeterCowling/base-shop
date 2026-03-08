@@ -1,6 +1,15 @@
 name: Brikette Live Usability Smoke
 
 on:
+  push:
+    branches:
+      - dev
+    paths:
+      - ".github/workflows/brikette-live-usability-smoke.yml"
+      - "apps/brikette/e2e/site-usability.helpers.ts"
+      - "apps/brikette/e2e/site-usability.smoke.spec.ts"
+      - "apps/brikette/package.json"
+      - "apps/brikette/playwright.config.ts"
   workflow_dispatch:
     inputs:
       base_url:

@@ -2,7 +2,6 @@ import { execFileSync } from "node:child_process";
 import { createHash, randomBytes } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { basename, dirname, join } from "node:path";
-import { pathToFileURL } from "node:url";
 
 import type { RegistryV2ArtifactEntry } from "./lp-do-ideas-registry-migrate-v1-v2.js";
 import { type ArtifactDeltaEvent, runTrialOrchestrator, type TrialDispatchPacket } from "./lp-do-ideas-trial.js";
@@ -906,6 +905,11 @@ function main(): void {
   process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) {
+function isCliInvocation(argvEntry: string | undefined): boolean {
+  const entry = basename(argvEntry ?? "");
+  return entry === "lp-do-ideas-codebase-signals-bridge.ts" || entry === "lp-do-ideas-codebase-signals-bridge.js";
+}
+
+if (isCliInvocation(process.argv[1])) {
   main();
 }

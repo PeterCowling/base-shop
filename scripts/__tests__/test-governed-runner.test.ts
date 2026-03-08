@@ -297,6 +297,7 @@ describe("Governed Test Runner", () => {
     return {
       BASESHOP_TEST_LOCK_SCOPE: "repo",
       BASESHOP_TEST_LOCK_REPO_ROOT: repoDir,
+      BASESHOP_GUARD_REPO_ROOT: repoDir,
       BASESHOP_TEST_LOCK_HEARTBEAT_SEC: "1",
       BASESHOP_TEST_GOVERNED_LOG: logPath,
       BASESHOP_ADMISSION_MOCK_TOTAL_RAM_MB: "16000",

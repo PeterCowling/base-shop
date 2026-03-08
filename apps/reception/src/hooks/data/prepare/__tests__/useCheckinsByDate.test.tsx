@@ -24,9 +24,13 @@ let snapshots: Array<(snap: unknown) => void> = [];
 let errorCallbacks: Array<(err: unknown) => void> = [];
 const unsubscribeFns: Array<() => void> = [];
 
+// Use a stable database reference so that `database` does not change between
+// renders and trigger spurious re-subscriptions in the effect dep array.
+const mockDatabase = {};
+
 // Mock the Firebase service hook to return a no‑op database object.
 jest.mock("../../../../services/useFirebase", () => ({
-  useFirebaseDatabase: () => ({}),
+  useFirebaseDatabase: () => mockDatabase,
 }));
 
 // Mock the useFirebaseSubscription hook. Because `vi.mock` calls are hoisted
@@ -151,5 +155,31 @@ describe("useCheckinsByDate", () => {
     });
 
     expect(result.current.error).toBe("fail");
+  });
+
+  // TC-16: date filtering is preserved — snapshot keys not in sortedDates are excluded
+  it("TC-16: filters snapshot to only dates in the provided array", () => {
+    const { result } = renderHook(() =>
+      useCheckinsByDate(["2024-01-01", "2024-01-02"])
+    );
+
+    act(() => {
+      snapshots[0]({
+        exists: () => true,
+        val: () => ({
+          "2024-01-01": {
+            occ1: { reservationCode: "res1", timestamp: "t1" },
+          },
+          // This date was not requested — should be excluded
+          "2024-01-03": {
+            occ2: { reservationCode: "res2", timestamp: "t2" },
+          },
+        }),
+      });
+    });
+
+    expect(result.current.checkins).not.toBeNull();
+    expect(Object.keys(result.current.checkins!)).toEqual(["2024-01-01"]);
+    expect(result.current.checkins!["2024-01-03"]).toBeUndefined();
   });
 });

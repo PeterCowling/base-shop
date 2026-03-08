@@ -1,6 +1,6 @@
 // File: /src/hooks/data/useActivitiesData.ts
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   type DataSnapshot,
   endAt,
@@ -103,7 +103,5 @@ export default function useActivitiesData(
     };
   }, [database, startKey, endKey, limit]);
 
-  const memoActivities = useMemo(() => activities, [activities]);
-
-  return { activities: memoActivities, loading, error };
+  return { activities, loading, error };
 }

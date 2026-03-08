@@ -1,19 +1,10 @@
 /* File: src/hooks/data/prepare/useCheckinsByDate.ts */
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import {
-  type DataSnapshot,
-  endAt,
-  onValue,
-  orderByKey,
-  query,
-  ref,
-  startAt,
-  type Unsubscribe,
-} from "firebase/database";
+import { useCallback, useMemo, useState } from "react";
+import type { DataSnapshot } from "firebase/database";
 
-import { useFirebaseDatabase } from "../../../services/useFirebase";
 import useFirebaseSubscription from "../useFirebaseSubscription";
+import { useRangeSubscription } from "../useRangeSubscription";
 
 /**
  * Represents a single occupant's check‑in record, plus any allocated/booked
@@ -75,8 +66,6 @@ export interface UseCheckinsByDateResult {
 export default function useCheckinsByDate(
   dates?: string[]
 ): UseCheckinsByDateResult {
-  const database = useFirebaseDatabase();
-
   // -----------------------------
   // Check‑ins local state
   // -----------------------------
@@ -101,61 +90,11 @@ export default function useCheckinsByDate(
     return [...dates].sort();
   }, [dates]);
 
-  // We'll track the unsubscribe for check‑ins and the current date range in refs
-  const unsubCheckinsRef = useRef<Unsubscribe | null>(null);
-  const currentRangeRef = useRef<string>(""); // e.g. "2025-03-20--2025-03-22"
-
-  // ---------------------------------------------------------------------
-  // 1) Subscribe to `/checkins` for [start..end] if dates are provided
-  // ---------------------------------------------------------------------
-  useEffect(() => {
-    // If no valid dates => unsubscribe if necessary and reset state
-    if (sortedDates.length === 0) {
-      if (unsubCheckinsRef.current) {
-        unsubCheckinsRef.current();
-        unsubCheckinsRef.current = null;
-      }
-      setRawCheckins(null);
-      setCheckinsLoading(false);
-      setCheckinsError(null);
-      currentRangeRef.current = "";
-      return;
-    }
-
-    // Construct a stable range key based on sortedDates
-    const startKey = sortedDates[0];
-    const endKey = sortedDates[sortedDates.length - 1];
-    const newRangeKey = `${startKey}--${endKey}`;
-
-    // If the range has not changed, mark loading false and avoid resubscribing
-    if (newRangeKey === currentRangeRef.current) {
-      setCheckinsLoading(false);
-      return;
-    }
-
-    // A new range is requested => unsubscribe from the old range
-    if (unsubCheckinsRef.current) {
-      unsubCheckinsRef.current();
-      unsubCheckinsRef.current = null;
-    }
-
-    // Save the new range key and reset state
-    currentRangeRef.current = newRangeKey;
-    setRawCheckins(null);
-    setCheckinsLoading(true);
-    setCheckinsError(null);
-
-    // Build Firebase query for the date range
-    const checkinsRef = ref(database, "checkins");
-    const rangeQuery = query(
-      checkinsRef,
-      orderByKey(),
-      startAt(startKey),
-      endAt(endKey)
-    );
-
-    // Callback when data arrives
-    const handleSnapshot = (snap: DataSnapshot): void => {
+  // -----------------------------
+  // Range subscription callbacks
+  // -----------------------------
+  const handleSnapshot = useCallback(
+    (snap: DataSnapshot): void => {
       if (!snap.exists()) {
         setRawCheckins(null);
         setCheckinsLoading(false);
@@ -173,37 +112,22 @@ export default function useCheckinsByDate(
 
       setRawCheckins(filtered);
       setCheckinsLoading(false);
-    };
+    },
+    [sortedDates]
+  );
 
-    // Callback when an error occurs
-    const handleError = (err: unknown): void => {
-       
-      console.error("useCheckinsByDate => /checkins error:", err);
-      setCheckinsError(err);
-      setCheckinsLoading(false);
-    };
-
-    // Attach the onValue listener and store the unsubscribe
-    const unsubscribe = onValue(rangeQuery, handleSnapshot, handleError);
-    unsubCheckinsRef.current = unsubscribe;
-
-    // Cleanup: if this effect runs again with a different range, or on unmount below
-    return () => {
-      // Intentionally blank – the actual unsubscribe is handled either when
-      // the range changes above or on component unmount via the second effect.
-    };
-  }, [database, sortedDates]);
-
-  // ---------------------------------------------------------------------
-  // 2) Unsubscribe on unmount from the final range
-  // ---------------------------------------------------------------------
-  useEffect(() => {
-    return () => {
-      if (unsubCheckinsRef.current) {
-        unsubCheckinsRef.current();
-      }
-    };
+  const handleError = useCallback((err: unknown): void => {
+    setCheckinsError(err);
+    setCheckinsLoading(false);
   }, []);
+
+  // ---------------------------------------------------------------------
+  // Range subscription — delegates subscription lifecycle to the primitive
+  // ---------------------------------------------------------------------
+  useRangeSubscription("checkins", sortedDates, {
+    onSnapshot: handleSnapshot,
+    onError: handleError,
+  });
 
   // ---------------------------------------------------------------------
   // Merge occupant allocations into raw check‑ins

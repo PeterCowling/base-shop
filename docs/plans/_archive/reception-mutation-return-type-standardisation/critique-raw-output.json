@@ -1,0 +1,15 @@
+{
+  "round": 1,
+  "mode": "file",
+  "score": 7,
+  "lp_score": 3.5,
+  "verdict": "needs_revision",
+  "findings": [
+    {"severity": "warning", "file": "fact-find.md", "line": "39", "message": "Calling this work 'types only' is materially inaccurate. The proposed useMutationState() hook and planned migrations change runtime hook behavior."},
+    {"severity": "warning", "file": "fact-find.md", "line": "70", "message": "useAllTransactionsMutations misclassified as having manual set/clear loading state. It tracks error and success only; no loading state."},
+    {"severity": "warning", "file": "fact-find.md", "line": "82", "message": "useCityTaxMutation left as TBD; it already has straightforward Pattern A surface { saveCityTax, loading, error }. Consumer count listed as 4 but is 2."},
+    {"severity": "warning", "file": "fact-find.md", "line": "149", "message": "Test harness note is stale. Tests use renderHook from @testing-library/react, not @testing-library/react-hooks."},
+    {"severity": "warning", "file": "fact-find.md", "line": "259", "message": "First-wave scope includes useGuestDetailsMutation (0 production consumers) while omitting useCityTaxMutation (production-used)."},
+    {"severity": "info", "file": "fact-find.md", "line": "63", "message": "File count inaccurate. 51 top-level files, one hook is .tsx not .ts (useGuestsByBookingMutation.tsx)."}
+  ]
+}

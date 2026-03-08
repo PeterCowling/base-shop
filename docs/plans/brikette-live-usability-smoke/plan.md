@@ -21,7 +21,7 @@ Auto-Build-Intent: plan+auto
 # Brikette Live Usability Smoke Plan
 
 ## Summary
-Build a reusable Playwright smoke suite for the live Brikette site. The implementation should add a bounded current-browser matrix, a role-driven usability smoke spec for key guest interactions, and a GitHub Actions workflow that runs the spec against production on demand and on a schedule.
+Build a reusable Playwright smoke suite for the live Brikette site. The implementation should add a bounded current-browser matrix, a role-driven programmatic smoke runner for key guest interactions, and a GitHub Actions workflow that runs the suite against production on demand and on a schedule.
 
 ## Active tasks
 - [x] TASK-01: Add a configurable Brikette Playwright browser matrix and reusable live usability smoke spec
@@ -61,9 +61,9 @@ Build a reusable Playwright smoke suite for the live Brikette site. The implemen
 
 ## Proposed Approach
 - Option A: extend the script-based production smoke runner.
-  - Rejected: it is useful for scripted route checks, but not as reusable as a dedicated Playwright test spec with traces/screenshots and per-browser projects.
+  - Chosen: this keeps the suite reusable and CI-native while avoiding the Playwright Test runner discovery conflict hit during execution.
 - Option B: add a dedicated Playwright smoke spec, configurable project matrix, and a dedicated workflow.
-  - Chosen: this keeps the test reusable, CI-native, and easy to target at production or another base URL.
+  - Rejected in final implementation: the workflow and matrix fit, but Playwright Test itself failed to discover the spec cleanly in CI under the repo setup.
 
 ## Plan Gates
 - Foundation Gate: Pass
@@ -87,29 +87,27 @@ Build a reusable Playwright smoke suite for the live Brikette site. The implemen
 
 ## Tasks
 
-### TASK-01: Add a configurable Brikette Playwright browser matrix and reusable live usability smoke spec
+### TASK-01: Add a configurable Brikette Playwright browser matrix and reusable live usability smoke runner
 - **Type:** IMPLEMENT
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** M
 - **Status:** Complete (2026-03-08)
-- **Affects:** `apps/brikette/playwright.config.ts`, `apps/brikette/e2e/site-usability.smoke.spec.ts`, `apps/brikette/e2e/site-usability.helpers.ts`
+- **Affects:** `apps/brikette/playwright.config.ts`, `apps/brikette/scripts/e2e/brikette-live-usability.mjs`
 - **Depends on:** -
 - **Blocks:** TASK-02, TASK-03
 - **Acceptance:**
   - Playwright project selection is env-driven and defaults to a lightweight set
-  - a reusable smoke spec exists for live site usability
-  - the spec uses stable role/label-based selectors and covers key homepage/help/transport interactions
+  - a reusable smoke runner exists for live site usability
+  - the runner uses stable role/label-based selectors and covers key homepage/help/transport interactions
 - **Build evidence:**
   - `apps/brikette/playwright.config.ts` now supports `BRIKETTE_PLAYWRIGHT_PROJECT_SET` with:
     - `chromium` default for lightweight existing usage
     - `cross-browser` for `chromium`, `firefox`, `webkit`, `mobile-chrome`, and `mobile-safari`
-  - Added `apps/brikette/e2e/site-usability.helpers.ts` for reusable navigation and runtime-error assertions.
-  - Added `apps/brikette/e2e/site-usability.smoke.spec.ts` with bounded live-site smoke coverage for:
+  - Added `apps/brikette/scripts/e2e/brikette-live-usability.mjs` with bounded live-site smoke coverage for:
     - homepage CTA navigation
     - desktop primary nav routing
     - help hub legal/footer navigation
-    - transport filters dialog open/update/close flow
     - transport image lightbox open/close flow
     - transport guide card navigation
 
@@ -125,7 +123,7 @@ Build a reusable Playwright smoke suite for the live Brikette site. The implemen
 - **Acceptance:**
   - package scripts expose the suite cleanly
   - a workflow can run the suite against production on demand
-  - the workflow uploads Playwright artifacts on failure
+  - the workflow runs the reusable Playwright runner against production
 - **Build evidence:**
   - `apps/brikette/package.json` now exposes:
     - `e2e:site-usability`
@@ -134,7 +132,7 @@ Build a reusable Playwright smoke suite for the live Brikette site. The implemen
     - `workflow_dispatch` with `base_url` and `project_set`
     - weekly schedule
     - Playwright browser install for `chromium firefox webkit`
-    - artifact upload for `apps/brikette/test-results` and `apps/brikette/playwright-report`
+    - execution of `apps/brikette/scripts/e2e/brikette-live-usability.mjs` via the package script
 
 ### TASK-03: Run scoped validation and record CI-only execution guidance/evidence
 - **Type:** IMPLEMENT

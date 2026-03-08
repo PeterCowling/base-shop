@@ -157,8 +157,8 @@ export default function ThreadList({
                   onClick={() => void onSelect(thread.id)}
                   className={`group w-full border-l-2 px-4 py-2.5 text-left transition-colors ${badge.edgeColor} ${
                     isSelected
-                      ? "bg-surface-2"
-                      : "hover:bg-surface-2/50"
+                      ? "bg-surface-elevated"
+                      : "hover:bg-table-row-hover"
                   }`}
                 >
                   {/* Row 1: badge + time */}

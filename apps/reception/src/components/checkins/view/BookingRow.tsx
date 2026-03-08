@@ -69,7 +69,7 @@ const BookingRowView: FC<BookingRowViewProps> = ({
 }) => (
   <>
     <TableRow
-      className={`border-b border-border-2 hover:bg-surface-2 transition-colors text-sm text-foreground ${
+      className={`border-b border-border-2 hover:bg-table-row-hover odd:bg-table-row-alt transition-colors text-sm text-foreground ${
         onRowClick ? "cursor-pointer" : ""
       }`}
       onClick={onRowClick}

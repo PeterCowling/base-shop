@@ -180,17 +180,12 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
             </TableRow>
           </TableHeader>
           <TableBody>
-            {sortedGuests.map((guest, index) => {
+            {sortedGuests.map((guest) => {
               const loanEntries = guest.loans
                 ? Object.entries(guest.loans)
                 : [];
-              const rowBg =
-                index % 2 === 0
-                  ? "bg-surface"
-                  : "bg-surface-2";
-
               return (
-                <TableRow key={guest._key || guest.guestId} className={rowBg}>
+                <TableRow key={guest._key || guest.guestId} className="hover:bg-table-row-hover odd:bg-table-row-alt transition-colors">
                   <TableCell className="p-3 border-b border-border-2">
                     {formatDdMm(guest.checkoutDate)}
                   </TableCell>

@@ -43,22 +43,30 @@ jest.mock("../CatalogProductImagesFields.client", () => {
   return {
     CatalogProductImagesFields: () =>
       React.createElement("div", { "data-cy": "images-fields" }),
-    ImageDropZone: () => React.createElement("div", { "data-cy": "image-drop-zone" }),
+    ImageDropZone: ({ testId }: { testId?: string }) =>
+      React.createElement("div", { "data-testid": testId ?? "image-drop-zone" }),
     MainImagePanel: () => React.createElement("div", { "data-cy": "main-image-panel" }),
     AdditionalImagesPanel: () =>
       React.createElement("div", { "data-cy": "additional-images-panel" }),
     useImageUploadController: () => ({
       fileInputRef: { current: null },
+      fileInputRef2: { current: null },
       previews: new Map(),
       dragOver: false,
+      dragOver2: false,
       uploadStatus: "idle",
       uploadError: "",
+      pendingPreviewUrl: null,
       canUpload: false,
       isUploading: false,
       handleDragOver: jest.fn(),
       handleDragLeave: jest.fn(),
       handleDrop: jest.fn(),
       handleFileInput: jest.fn(),
+      handleDragOver2: jest.fn(),
+      handleDragLeave2: jest.fn(),
+      handleDrop2: jest.fn(),
+      handleFileInput2: jest.fn(),
       handleRemoveImage: jest.fn(),
       handleMakeMainImage: jest.fn(),
       handleReorderImage: jest.fn(),
@@ -270,5 +278,55 @@ describe("CatalogProductForm — Make Live button (TASK-03)", () => {
     await waitFor(() => {
       expect(onPublish).toHaveBeenCalledWith("out_of_stock");
     });
+  });
+});
+
+describe("CatalogProductForm — zone 2 visibility", () => {
+  const imagesFieldsModule = jest.requireMock<{
+    useImageUploadController: () => Record<string, unknown>;
+  }>("../CatalogProductImagesFields.client");
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("TC-A: zone 2 absent when no images (imageFiles empty)", () => {
+    renderForm({ draft: { ...VALID_DRAFT, imageFiles: "" } });
+    expect(document.querySelector('[data-testid="image-drop-zone-additional"]')).not.toBeInTheDocument();
+  });
+
+  it("TC-B: zone 2 present when at least one image exists", () => {
+    renderForm({ draft: { ...VALID_DRAFT, imageFiles: "images/studio-jacket/a.jpg" } });
+    expect(document.querySelector('[data-testid="image-drop-zone-additional"]')).toBeInTheDocument();
+  });
+
+  it("TC-C: error message appears near zone 2 when upload fails", () => {
+    const original = imagesFieldsModule.useImageUploadController;
+    imagesFieldsModule.useImageUploadController = () => ({
+      fileInputRef: { current: null },
+      fileInputRef2: { current: null },
+      previews: new Map(),
+      dragOver: false,
+      dragOver2: false,
+      uploadStatus: "error",
+      uploadError: "Image upload failed.",
+      pendingPreviewUrl: null,
+      canUpload: true,
+      isUploading: false,
+      handleDragOver: jest.fn(),
+      handleDragLeave: jest.fn(),
+      handleDrop: jest.fn(),
+      handleFileInput: jest.fn(),
+      handleDragOver2: jest.fn(),
+      handleDragLeave2: jest.fn(),
+      handleDrop2: jest.fn(),
+      handleFileInput2: jest.fn(),
+      handleRemoveImage: jest.fn(),
+      handleMakeMainImage: jest.fn(),
+      handleReorderImage: jest.fn(),
+    });
+    renderForm({ draft: { ...VALID_DRAFT, imageFiles: "images/studio-jacket/a.jpg" } });
+    expect(screen.getAllByText("Image upload failed.").length).toBeGreaterThanOrEqual(2);
+    imagesFieldsModule.useImageUploadController = original;
   });
 });

@@ -15,4 +15,4 @@ export type { CityTaxData, CityTaxRecord };
  *     // No surcharge for other methods
  *   }
  */
-export type PayType = "CC" | "CASH";
+export type PayType = "CASH" | "CC";

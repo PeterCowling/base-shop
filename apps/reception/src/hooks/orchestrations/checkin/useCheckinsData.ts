@@ -6,13 +6,11 @@ import {
   type CheckInRow,
   checkInRowSchema,
 } from "../../../types/component/CheckinRow";
-import type { OccupantDateOfBirth } from "../../../types/component/dob";
 import type { Financials } from "../../../types/domains/booking_old";
 import { type Activity } from "../../../types/hooks/data/activitiesData";
 import { type FirebaseBookingOccupant } from "../../../types/hooks/data/bookingsData";
-import {
-  type OccupantLoanData,
-} from "../../../types/hooks/data/loansData";
+import type { DateOfBirth } from "../../../types/hooks/data/guestDetailsData";
+import { type OccupantLoanData } from "../../../types/hooks/data/loansData";
 import { getCurrentIsoTimestamp, parseYMD } from "../../../utils/dateUtils";
 import {
   parseLoanItem,
@@ -316,7 +314,7 @@ function useCheckinsData({
           }
 
           // occupant's DOB
-          let dobObject: OccupantDateOfBirth = { dd: "", mm: "", yyyy: "" };
+          let dobObject: DateOfBirth = { dd: "", mm: "", yyyy: "" };
           if (occupantDetailsObj?.dateOfBirth) {
             const { dd, mm, yyyy } = occupantDetailsObj.dateOfBirth;
             dobObject = {

@@ -1,6 +1,12 @@
 import type { D1Database } from '@acme/platform-core/d1';
 
-import type { MessageKind } from '../../src/types/messenger/chat';
+import type {
+  MessageAttachment,
+  MessageAudience,
+  MessageCard,
+  MessageKind,
+  MessageLink,
+} from '../../src/types/messenger/chat';
 
 import {
   getPrimeMessageThreadRecord,
@@ -47,6 +53,11 @@ export type PrimeReviewMessage = {
   content: string;
   kind: MessageKind;
   createdAt: string;
+  links?: MessageLink[] | null;
+  attachments?: MessageAttachment[] | null;
+  cards?: MessageCard[] | null;
+  audience?: MessageAudience;
+  campaignId?: string | null;
 };
 
 export type PrimeReviewAdmission = {
@@ -121,6 +132,18 @@ function parseMetadata(raw: string | null): Record<string, unknown> {
   }
 }
 
+function parseJsonArray<T>(raw: string | null): T[] | null {
+  if (!raw) {
+    return null;
+  }
+  try {
+    const parsed = JSON.parse(raw) as unknown;
+    return Array.isArray(parsed) ? (parsed as T[]) : null;
+  } catch {
+    return null;
+  }
+}
+
 function resolveChannel(thread: Pick<PrimeMessageThreadRow, 'channel_type'>): PrimeReviewChannel {
   return thread.channel_type === 'broadcast' ? 'prime_broadcast' : 'prime_direct';
 }
@@ -167,6 +190,11 @@ function serializeMessage(message: PrimeMessageRecordRow): PrimeReviewMessage {
     content: message.content,
     kind: message.kind,
     createdAt: new Date(message.created_at).toISOString(),
+    links: parseJsonArray<MessageLink>(message.links_json),
+    attachments: parseJsonArray<MessageAttachment>(message.attachments_json),
+    cards: parseJsonArray<MessageCard>(message.cards_json),
+    audience: message.audience,
+    campaignId: message.campaign_id,
   };
 }
 
@@ -258,8 +286,9 @@ async function buildDetail(record: PrimeMessageThreadRecordWithDb): Promise<Prim
 export async function listPrimeReviewThreadSummaries(
   db: D1Database,
   limit: number = 50,
+  statusFilter?: PrimeReviewStatus,
 ): Promise<PrimeReviewThreadSummary[]> {
-  const rows = await listPrimeReviewThreads(db, limit);
+  const rows = await listPrimeReviewThreads(db, limit, statusFilter);
   return rows.map(serializeSummary);
 }
 

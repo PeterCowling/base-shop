@@ -36,6 +36,11 @@ export type PrimeReviewThreadDetail = {
     content: string;
     kind: string;
     createdAt: string;
+    links?: unknown[] | null;
+    attachments?: unknown[] | null;
+    cards?: unknown[] | null;
+    audience?: string;
+    campaignId?: string | null;
   }>;
   admissions: Array<{
     id: number;
@@ -313,12 +318,19 @@ export function isPrimeInboxThreadId(threadId: string): boolean {
   return parsePrimeInboxThreadId(threadId) !== null;
 }
 
-export async function listPrimeInboxThreadSummaries(): Promise<InboxThreadSummaryApiModel[]> {
+export function isPrimeThreadVisibleInInbox(row: { reviewStatus: string }): boolean {
+  return row.reviewStatus !== 'resolved' && row.reviewStatus !== 'sent' && row.reviewStatus !== 'auto_archived';
+}
+
+export async function listPrimeInboxThreadSummaries(status?: string): Promise<InboxThreadSummaryApiModel[]> {
   if (!readPrimeReviewConfig()) {
     return [];
   }
 
-  const summaries = await primeRequest<PrimeReviewThreadSummary[]>("/api/review-threads?limit=50");
+  const url = status
+    ? `/api/review-threads?limit=50&status=${encodeURIComponent(status)}`
+    : "/api/review-threads?limit=50";
+  const summaries = await primeRequest<PrimeReviewThreadSummary[]>(url);
   return summaries.map(mapPrimeSummaryToInboxThread);
 }
 
@@ -361,6 +373,11 @@ export async function getPrimeInboxThreadDetail(
       inReplyTo: null,
       references: null,
       attachments: [],
+      links: message.links ?? null,
+      primeAttachments: message.attachments ?? null,
+      cards: message.cards ?? null,
+      audience: message.audience ?? null,
+      campaignId: message.campaignId ?? null,
     })),
     events: [],
     admissionOutcomes: detail.admissions.map((admission) => ({

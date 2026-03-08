@@ -27,6 +27,8 @@ jest.mock("@/lib/inbox/repositories.server", () => ({
 jest.mock("@/lib/inbox/prime-review.server", () => ({
   getPrimeInboxThreadDetail: jest.fn(),
   isPrimeInboxThreadId: jest.fn(),
+  isPrimeThreadVisibleInInbox: ({ reviewStatus }: { reviewStatus: string }) =>
+    reviewStatus !== 'resolved' && reviewStatus !== 'sent' && reviewStatus !== 'auto_archived',
   listPrimeInboxThreadSummaries: jest.fn(),
 }));
 
@@ -307,6 +309,100 @@ describe("inbox list/detail routes", () => {
     expect(payload.data.messages[0].bodyPlain).toBe("What time is check-in?");
   });
 
+  it("filters resolved Prime rows from the default inbox list (defense-in-depth)", async () => {
+    requireStaffAuthMock.mockResolvedValue({
+      ok: true,
+      uid: "uid-1",
+      roles: ["staff"],
+    });
+    listThreadsMock.mockResolvedValue([]);
+    listPrimeInboxThreadSummariesMock.mockResolvedValue([
+      {
+        id: "prime:dm_pending",
+        status: "pending",
+        channel: "prime_direct",
+        channelLabel: "Prime chat",
+        lane: "support",
+        reviewMode: "message_draft",
+        capabilities: {
+          supportsSubject: false,
+          supportsRecipients: false,
+          supportsHtml: false,
+          supportsDraftMutations: true,
+          supportsDraftSave: true,
+          supportsDraftRegenerate: false,
+          supportsDraftSend: true,
+          supportsThreadMutations: true,
+          subjectLabel: "Subject",
+          recipientLabel: "Recipients",
+          bodyLabel: "Message",
+          bodyPlaceholder: "Write the Prime message to send in this thread.",
+          sendLabel: "Send message",
+          readOnlyNotice: "",
+        },
+        subject: "Prime guest chat BOOK-PENDING",
+        snippet: "Pending message",
+        latestMessageAt: null,
+        lastSyncedAt: null,
+        updatedAt: "2026-03-08T10:00:00.000Z",
+        needsManualDraft: false,
+        draftFailureCode: null,
+        draftFailureMessage: null,
+        latestAdmissionDecision: null,
+        latestAdmissionReason: null,
+        currentDraft: null,
+        guestBookingRef: "BOOK-PENDING",
+        guestFirstName: null,
+        guestLastName: null,
+      },
+      {
+        id: "prime:dm_resolved",
+        status: "resolved",
+        channel: "prime_direct",
+        channelLabel: "Prime chat",
+        lane: "support",
+        reviewMode: "message_draft",
+        capabilities: {
+          supportsSubject: false,
+          supportsRecipients: false,
+          supportsHtml: false,
+          supportsDraftMutations: true,
+          supportsDraftSave: true,
+          supportsDraftRegenerate: false,
+          supportsDraftSend: true,
+          supportsThreadMutations: true,
+          subjectLabel: "Subject",
+          recipientLabel: "Recipients",
+          bodyLabel: "Message",
+          bodyPlaceholder: "Write the Prime message to send in this thread.",
+          sendLabel: "Send message",
+          readOnlyNotice: "",
+        },
+        subject: "Prime guest chat BOOK-RESOLVED",
+        snippet: "Resolved message",
+        latestMessageAt: null,
+        lastSyncedAt: null,
+        updatedAt: "2026-03-08T10:00:00.000Z",
+        needsManualDraft: false,
+        draftFailureCode: null,
+        draftFailureMessage: null,
+        latestAdmissionDecision: null,
+        latestAdmissionReason: null,
+        currentDraft: null,
+        guestBookingRef: "BOOK-RESOLVED",
+        guestFirstName: null,
+        guestLastName: null,
+      },
+    ]);
+
+    const response = await getInboxList(new Request("http://localhost/api/mcp/inbox"));
+    const payload = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(payload.data).toHaveLength(1);
+    expect(payload.data[0]).toMatchObject({ id: "prime:dm_pending", status: "pending" });
+  });
+
   it("returns Prime detail via the prefixed thread adapter path", async () => {
     requireStaffAuthMock.mockResolvedValue({
       ok: true,
@@ -392,5 +488,97 @@ describe("inbox list/detail routes", () => {
     expect(payload.data.thread.channel).toBe("prime_direct");
     expect(payload.data.campaign).toBeNull();
     expect(payload.data.messages[0].bodyPlain).toBe("Hello from Prime");
+  });
+
+  it("includes rich Prime message fields (links, primeAttachments, cards, audience, campaignId) in thread detail response", async () => {
+    requireStaffAuthMock.mockResolvedValue({
+      ok: true,
+      uid: "uid-1",
+      roles: ["staff"],
+    });
+    isPrimeInboxThreadIdMock.mockReturnValue(true);
+    getPrimeInboxThreadDetailMock.mockResolvedValue({
+      thread: {
+        id: "prime:dm_rich",
+        status: "pending",
+        channel: "prime_direct",
+        channelLabel: "Prime chat",
+        lane: "support",
+        reviewMode: "message_draft",
+        capabilities: {
+          supportsSubject: false,
+          supportsRecipients: false,
+          supportsHtml: false,
+          supportsDraftMutations: true,
+          supportsDraftSave: true,
+          supportsDraftRegenerate: false,
+          supportsDraftSend: true,
+          supportsThreadMutations: true,
+          subjectLabel: "Subject",
+          recipientLabel: "Recipients",
+          bodyLabel: "Message",
+          bodyPlaceholder: "",
+          sendLabel: "Send message",
+          readOnlyNotice: "",
+        },
+        subject: "Prime guest chat BOOK-RICH",
+        snippet: "Rich message",
+        latestMessageAt: null,
+        lastSyncedAt: null,
+        updatedAt: "2026-03-08T10:00:00.000Z",
+        needsManualDraft: false,
+        draftFailureCode: null,
+        draftFailureMessage: null,
+        latestAdmissionDecision: null,
+        latestAdmissionReason: null,
+        currentDraft: null,
+        guestBookingRef: "BOOK-RICH",
+        guestFirstName: null,
+        guestLastName: null,
+      },
+      metadata: { bookingId: "BOOK-RICH" },
+      campaign: null,
+      messages: [
+        {
+          id: "msg-rich",
+          threadId: "prime:dm_rich",
+          direction: "inbound",
+          senderEmail: null,
+          recipientEmails: [],
+          subject: null,
+          snippet: "Rich message",
+          sentAt: "2026-03-08T10:00:00.000Z",
+          bodyPlain: "Rich message",
+          bodyHtml: null,
+          inReplyTo: null,
+          references: null,
+          attachments: [],
+          links: [{ label: "Book now", url: "https://example.com/book" }],
+          primeAttachments: null,
+          cards: [{ title: "Special offer" }],
+          audience: "booking",
+          campaignId: "camp-rich-1",
+        },
+      ],
+      events: [],
+      admissionOutcomes: [],
+      currentDraft: null,
+      messageBodiesSource: "d1",
+      warning: null,
+    });
+
+    const response = await getInboxThread(
+      new Request("http://localhost/api/mcp/inbox/prime:dm_rich"),
+      { params: { threadId: "prime:dm_rich" } },
+    );
+    const payload = await response.json();
+
+    expect(response.status).toBe(200);
+    const msg = payload.data.messages[0];
+    expect(msg.links).toEqual([{ label: "Book now", url: "https://example.com/book" }]);
+    expect(msg.primeAttachments).toBeNull();
+    expect(msg.cards).toEqual([{ title: "Special offer" }]);
+    expect(msg.audience).toBe("booking");
+    expect(msg.campaignId).toBe("camp-rich-1");
   });
 });

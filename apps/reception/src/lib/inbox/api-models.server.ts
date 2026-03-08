@@ -90,6 +90,12 @@ export type InboxMessageApiModel = {
     mimeType: string;
     size: number;
   }>;
+  // Prime-specific rich fields (absent/undefined for email messages)
+  links?: unknown[] | null;
+  primeAttachments?: unknown[] | null;
+  cards?: unknown[] | null;
+  audience?: string | null;
+  campaignId?: string | null;
 };
 
 export type InboxThreadSummaryApiModel = {

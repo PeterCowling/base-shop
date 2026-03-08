@@ -1440,11 +1440,15 @@ export async function listPrimePendingProjectionJobs(
 export async function listPrimeReviewThreads(
   db: D1Database,
   limit: number = 50,
+  statusFilter?: PrimeReviewStatus,
 ): Promise<PrimeReviewThreadListRow[]> {
   const safeLimit = Math.max(1, Math.min(Math.trunc(limit), 200));
-  const result = await db
-    .prepare(
-      `SELECT
+
+  const whereClause = statusFilter != null
+    ? `WHERE t.review_status = ?`
+    : `WHERE t.review_status NOT IN ('resolved', 'sent', 'auto_archived')`;
+
+  const query = `SELECT
          t.*,
          latest_message.content AS latest_message_content,
          latest_message.kind AS latest_message_kind,
@@ -1469,11 +1473,15 @@ export async function listPrimeReviewThreads(
            ORDER BY ma.created_at DESC, ma.id DESC
            LIMIT 1
          )
+       ${whereClause}
        ORDER BY t.updated_at DESC, t.created_at DESC
-       LIMIT ?`
-    )
-    .bind(safeLimit)
-    .all<PrimeReviewThreadListRow>();
+       LIMIT ?`;
+
+  const stmt = statusFilter != null
+    ? db.prepare(query).bind(statusFilter, safeLimit)
+    : db.prepare(query).bind(safeLimit);
+
+  const result = await stmt.all<PrimeReviewThreadListRow>();
 
   return decodeRows(result);
 }

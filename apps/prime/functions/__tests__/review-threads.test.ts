@@ -46,7 +46,7 @@ describe('/api/review-threads and /api/review-thread', () => {
     expect(response.status).toBe(403);
   });
 
-  it('TC-02: review list returns canonical Prime thread summaries', async () => {
+  it('TC-02: review list returns canonical Prime thread summaries (excludes terminal threads by default)', async () => {
     const listQuery = normalizeD1Query(
       `SELECT
          t.*,
@@ -73,6 +73,7 @@ describe('/api/review-threads and /api/review-thread', () => {
            ORDER BY ma.created_at DESC, ma.id DESC
            LIMIT 1
          )
+       WHERE t.review_status NOT IN ('resolved', 'sent', 'auto_archived')
        ORDER BY t.updated_at DESC, t.created_at DESC
        LIMIT ?`
     );
@@ -141,6 +142,107 @@ describe('/api/review-threads and /api/review-thread', () => {
         latestAdmissionDecision: 'queued',
         bookingId: 'BOOK123',
       }),
+    ]);
+  });
+
+  it('TC-02b: invalid status param returns 400', async () => {
+    const { db } = createMockD1Database({ allByQuery: {} });
+
+    const response = await getReviewThreads(
+      createPagesContext({
+        url: 'https://prime.example.com/api/review-threads?status=invalid_status',
+        headers: { 'x-prime-access-token': 'prime-access' },
+        env: createMockEnv({
+          NODE_ENV: 'production',
+          PRIME_ENABLE_STAFF_OWNER_ROUTES: 'false',
+          PRIME_STAFF_OWNER_GATE_TOKEN: 'prime-access',
+          PRIME_MESSAGING_DB: db,
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(400);
+  });
+
+  it('TC-02c: explicit status=resolved param returns only resolved threads', async () => {
+    const resolvedQuery = normalizeD1Query(
+      `SELECT
+         t.*,
+         latest_message.content AS latest_message_content,
+         latest_message.kind AS latest_message_kind,
+         latest_admission.decision AS latest_admission_decision,
+         latest_admission.reason AS latest_admission_reason,
+         latest_admission.source AS latest_admission_source,
+         latest_admission.created_at AS latest_admission_created_at
+       FROM message_threads t
+       LEFT JOIN message_records latest_message
+         ON latest_message.id = (
+           SELECT mr.id
+           FROM message_records mr
+           WHERE mr.thread_id = t.id
+           ORDER BY mr.created_at DESC, mr.id DESC
+           LIMIT 1
+         )
+       LEFT JOIN message_admissions latest_admission
+         ON latest_admission.id = (
+           SELECT ma.id
+           FROM message_admissions ma
+           WHERE ma.thread_id = t.id
+           ORDER BY ma.created_at DESC, ma.id DESC
+           LIMIT 1
+         )
+       WHERE t.review_status = ?
+       ORDER BY t.updated_at DESC, t.created_at DESC
+       LIMIT ?`
+    );
+    const { db } = createMockD1Database({
+      allByQuery: {
+        [resolvedQuery]: [
+          {
+            id: 'dm_resolved_thread',
+            booking_id: 'BOOK456',
+            channel_type: 'direct',
+            audience: 'thread',
+            member_uids_json: '["occ_ccc"]',
+            title: null,
+            latest_message_at: 2000,
+            latest_inbound_message_at: 2000,
+            last_staff_reply_at: 2000,
+            takeover_state: 'automated',
+            review_status: 'resolved',
+            suppression_reason: null,
+            metadata_json: null,
+            created_at: 1500,
+            updated_at: 2000,
+            latest_message_content: 'Resolved thread',
+            latest_message_kind: 'support',
+            latest_admission_decision: 'resolved',
+            latest_admission_reason: null,
+            latest_admission_source: 'staff',
+            latest_admission_created_at: 2000,
+          },
+        ],
+      },
+    });
+
+    const response = await getReviewThreads(
+      createPagesContext({
+        url: 'https://prime.example.com/api/review-threads?status=resolved',
+        headers: { 'x-prime-access-token': 'prime-access' },
+        env: createMockEnv({
+          NODE_ENV: 'production',
+          PRIME_ENABLE_STAFF_OWNER_ROUTES: 'false',
+          PRIME_STAFF_OWNER_GATE_TOKEN: 'prime-access',
+          PRIME_MESSAGING_DB: db,
+        }),
+      }),
+    );
+    const payload = await response.json() as { success: boolean; data: Array<{ id: string; reviewStatus: string }> };
+
+    expect(response.status).toBe(200);
+    expect(payload.success).toBe(true);
+    expect(payload.data).toEqual([
+      expect.objectContaining({ id: 'dm_resolved_thread', reviewStatus: 'resolved' }),
     ]);
   });
 
@@ -248,6 +350,92 @@ describe('/api/review-threads and /api/review-thread', () => {
     ]);
     expect(payload.data.admissions[0].decision).toBe('queued');
     expect(payload.data.currentDraft).toBeNull();
+  });
+
+  it('TC-03-rich: review detail serializes rich message fields from DB columns', async () => {
+    const threadQuery = normalizeD1Query('SELECT * FROM message_threads WHERE id = ?');
+    const messageQuery = normalizeD1Query('SELECT * FROM message_records WHERE thread_id = ? ORDER BY created_at ASC, id ASC');
+    const draftQuery = normalizeD1Query('SELECT * FROM message_drafts WHERE thread_id = ? ORDER BY updated_at DESC, created_at DESC');
+    const admissionQuery = normalizeD1Query('SELECT * FROM message_admissions WHERE thread_id = ? ORDER BY created_at DESC, id DESC');
+    const projectionQuery = normalizeD1Query('SELECT * FROM message_projection_jobs WHERE thread_id = ? ORDER BY created_at ASC, id ASC');
+    const { db } = createMockD1Database({
+      firstByQuery: {
+        [threadQuery]: {
+          id: 'dm_rich_thread',
+          booking_id: 'BOOK-RICH',
+          channel_type: 'direct',
+          audience: 'thread',
+          member_uids_json: '["occ_aaa"]',
+          title: null,
+          latest_message_at: 1000,
+          latest_inbound_message_at: 1000,
+          last_staff_reply_at: null,
+          takeover_state: 'automated',
+          review_status: 'pending',
+          suppression_reason: null,
+          metadata_json: null,
+          created_at: 900,
+          updated_at: 1000,
+        },
+      },
+      allByQuery: {
+        [messageQuery]: [
+          {
+            id: 'msg-rich',
+            thread_id: 'dm_rich_thread',
+            sender_id: 'occ_aaa',
+            sender_role: 'guest',
+            sender_name: 'Rich User',
+            content: 'Message with rich fields',
+            kind: 'promotion',
+            audience: 'booking',
+            links_json: '[{"label":"View offer","url":"https://example.com"}]',
+            attachments_json: null,
+            cards_json: null,
+            campaign_id: 'camp-001',
+            draft_id: null,
+            deleted: 0,
+            created_at: 1000,
+          },
+        ],
+        [draftQuery]: [],
+        [admissionQuery]: [],
+        [projectionQuery]: [],
+      },
+    });
+
+    const response = await getReviewThread(
+      createPagesContext({
+        url: 'https://prime.example.com/api/review-thread?threadId=dm_rich_thread',
+        headers: { 'x-prime-access-token': 'prime-access' },
+        env: createMockEnv({
+          NODE_ENV: 'production',
+          PRIME_ENABLE_STAFF_OWNER_ROUTES: 'false',
+          PRIME_STAFF_OWNER_GATE_TOKEN: 'prime-access',
+          PRIME_MESSAGING_DB: db,
+        }),
+      }),
+    );
+    const payload = await response.json() as {
+      success: boolean;
+      data: {
+        messages: Array<{
+          id: string;
+          links: Array<{ label: string; url: string }> | null;
+          attachments: null;
+          audience: string;
+          campaignId: string | null;
+        }>;
+      };
+    };
+
+    expect(response.status).toBe(200);
+    expect(payload.success).toBe(true);
+    const msg = payload.data.messages[0];
+    expect(msg.links).toEqual([{ label: 'View offer', url: 'https://example.com' }]);
+    expect(msg.attachments).toBeNull();
+    expect(msg.audience).toBe('booking');
+    expect(msg.campaignId).toBe('camp-001');
   });
 
   it('TC-03B: review detail includes the current non-dismissed Prime draft', async () => {

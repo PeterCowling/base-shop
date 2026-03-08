@@ -57,7 +57,7 @@ export function XaMegaMenu({
       <PopoverContent
         align="center"
         sideOffset={0}
-        className="w-screen rounded-none border-0 bg-surface px-0 pb-10 pt-8 shadow-none"
+        className="w-screen rounded-none border-0 bg-surface-1 px-0 pb-10 pt-8 shadow-none"
         style={{ maxWidth: "none" }}
       >
         <Section as="div" padding="none" className="flex w-full gap-10 px-6">

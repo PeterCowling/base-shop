@@ -63,7 +63,7 @@ export function XaShell({ children }: { children: ReactNode }) {
         />
       ) : null}
 
-      <header className="border-b bg-surface-1">
+      <header className="sticky top-0 z-50 border-b bg-surface-1">
         <Section as="div" padding="none" className="px-4">
           <Stack gap={2} className="py-3">
             <div className="grid min-h-14 xa-grid-shell-primary items-center gap-4">

@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- PRIME-101 [ttl=2026-12-31] Repository SQL statements and persistence literals are non-UI strings. */
 import type { D1Database } from '@acme/platform-core/d1';
 
 import type {

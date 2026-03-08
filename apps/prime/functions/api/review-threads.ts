@@ -35,20 +35,20 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
   const url = new URL(request.url);
   const limit = parseLimit(url.searchParams.get('limit'));
   if (limit === null) {
-    return errorResponse('limit must be an integer between 1 and 200', 400);
+    return errorResponse('limit must be an integer between 1 and 200', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   const rawStatus = url.searchParams.get('status');
   let statusFilter: PrimeReviewStatus | undefined;
   if (rawStatus !== null) {
     if (!(primeReviewStatuses as readonly string[]).includes(rawStatus)) {
-      return errorResponse(`status must be one of: ${primeReviewStatuses.join(', ')}`, 400);
+      return errorResponse(`status must be one of: ${primeReviewStatuses.join(', ')}`, 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
     statusFilter = rawStatus as PrimeReviewStatus;
   }
 
   if (!hasPrimeMessagingDb(env)) {
-    return errorResponse('PRIME_MESSAGING_DB binding is required for Prime review reads', 503);
+    return errorResponse('PRIME_MESSAGING_DB binding is required for Prime review reads', 503); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   try {

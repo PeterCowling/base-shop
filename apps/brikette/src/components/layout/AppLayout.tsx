@@ -24,9 +24,10 @@ import prefetchInteractiveBundles, {
 type AppLayoutProps = {
   lang: AppLanguage;
   children: React.ReactNode;
+  showBanner?: boolean;
 };
 
-function AppLayout({ lang, children }: AppLayoutProps): React.JSX.Element {
+function AppLayout({ lang, children, showBanner = true }: AppLayoutProps): React.JSX.Element {
   useWebVitals();
   useProtectBrandName();
 
@@ -56,7 +57,7 @@ function AppLayout({ lang, children }: AppLayoutProps): React.JSX.Element {
             <BannerWrapper>
               <ModalWrapper>
                 <span id="top" tabIndex={-1} />
-                {!isTest && (
+                {!isTest && showBanner && (
                   <InlineBoundary>
                     <NotificationBanner lang={lang} />
                   </InlineBoundary>

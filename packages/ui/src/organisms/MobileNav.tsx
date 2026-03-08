@@ -128,7 +128,7 @@ function MobileNav({
         <Link
           href={bookHref}
           onClick={onBookingClick}
-          className={`cta min-h-11 min-w-11 max-w-[6rem] px-3 py-2 text-xs font-semibold ${ctaClass} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary sm:max-w-none sm:whitespace-nowrap sm:px-4 sm:text-sm`}
+          className={`cta min-h-11 min-w-11 max-w-[calc(100vw-7rem)] truncate px-3 py-2 text-xs font-semibold ${ctaClass} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary sm:max-w-none sm:whitespace-nowrap sm:px-4 sm:text-sm`}
         >
           {primaryCtaLabel}
         </Link>

@@ -284,7 +284,7 @@ function RoomsSection({
         "bg-no-repeat bg-[length:60vw]",
         "px-4 py-12",
         /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-        "pt-30 sm:pt-12 scroll-mt-30",
+        "pt-12 sm:pt-12 scroll-mt-30",
       ].join(" "),
     []
   );

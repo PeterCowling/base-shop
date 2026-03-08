@@ -149,7 +149,7 @@ function ContentStickyCta({ lang, ctaLocation }: ContentStickyCtaProps): JSX.Ele
         <button
           type="button"
           onClick={onDismiss}
-          className="absolute end-4 top-4 inline-flex size-10 items-center justify-center rounded-full bg-brand-surface/70 text-brand-heading transition hover:bg-brand-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
+          className="absolute end-4 top-4 inline-flex size-11 items-center justify-center rounded-full bg-brand-surface/70 text-brand-heading transition hover:bg-brand-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
           aria-label={tTokens("close", { defaultValue: "Close" }) as string}
         >
           <X aria-hidden className="h-4 w-4" />

@@ -26,6 +26,9 @@
   --color-surface: var(--surface-1, var(--color-bg));
   --color-surface-2: var(--surface-2, var(--color-bg));
   --color-surface-3: var(--surface-3, var(--color-bg));
+  --color-table-row-hover: var(--color-table-row-hover);
+  --color-table-row-alt: var(--color-table-row-alt);
+  --color-surface-elevated: var(--color-surface-elevated);
 
   /* Shared preset semantic colors */
   --color-primary: var(--color-primary);

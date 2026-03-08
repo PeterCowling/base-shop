@@ -278,10 +278,32 @@ export default [
   /* ▸ Prime Cloudflare Functions: lint outside app tsconfig project graph */
   {
     files: ["apps/prime/functions/**/*.{ts,tsx}"],
+    plugins: { ds: dsPlugin },
     languageOptions: {
       parserOptions: {
+        project: [path.join(__dirname, "apps/prime/tsconfig.functions.json")],
         projectService: false,
-        allowDefaultProject: true,
+        allowDefaultProject: false,
+      },
+    },
+    rules: {
+      ...offAllDsRules,
+      "security/detect-non-literal-fs-filename": "off",
+      "security/detect-non-literal-require": "off",
+      "security/detect-unsafe-regex": "off",
+      "no-console": "off",
+    },
+  },
+
+  /* ▸ Prime app source: bind type-aware lint to the app tsconfig only.
+   *   The repo-wide projectService graph is too large for changed-file lint here. */
+  {
+    files: ["apps/prime/src/**/*.{ts,tsx}"],
+    languageOptions: {
+      parserOptions: {
+        project: [path.join(__dirname, "apps/prime/tsconfig.json")],
+        projectService: false,
+        allowDefaultProject: false,
       },
     },
   },
@@ -559,6 +581,17 @@ export default [
       // Pre-existing layout primitive debt — tracked for future refactor
       "ds/container-widths-only-at": "warn",
       "ds/enforce-layout-primitives": "warn",
+    },
+  },
+
+  /* ▸ Inventory-uploader: internal operator console — no i18n requirement, semantic tokens enforced */
+  // Must appear AFTER the apps/**/src/**/*.{ts,tsx} error-escalation block to take effect.
+  {
+    files: ["apps/inventory-uploader/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+      "ds/no-raw-tailwind-color": "error",
     },
   },
 

@@ -1,0 +1,10 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-08T20:15:42.667Z",
+  "plan_slug": "reception-simplify-backlog",
+  "business": "BRIK",
+  "why": "Accumulated copy-paste and missing patterns from rapid delivery waves creating friction for future feature work",
+  "intended_outcome_type": "operational",
+  "intended_outcome_statement": "All 7 clusters resolved with no regressions. Shared type file created, 3 thin hooks removed, RadioOption shared component created, SafeManagement modal state converted to discriminated union, useDropdownMenu hook extracted, error boundaries added.",
+  "source": "operator"
+}

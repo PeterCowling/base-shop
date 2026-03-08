@@ -12,6 +12,16 @@ export interface AuthenticatedAppProps {
   children: ReactNode;
 }
 
+/**
+ * AuthenticatedApp — application chrome only.
+ *
+ * Provides: max-width container, lateral borders, outer shadow.
+ * Does NOT provide: gradient (owned by OperationalTableScreen), padding (owned by each screen).
+ *
+ * Gradient and padding were removed in TASK-02 (reception-theme-styling-cohesion).
+ * OperationalTableScreen is the single source of gradient for table-workflow routes.
+ * POSFullBleedScreen (Bar) has its own full-bleed layout and does not rely on this wrapper for styling.
+ */
 const AuthenticatedApp = memo(function AuthenticatedApp({
   user,
   activeModal,
@@ -20,11 +30,9 @@ const AuthenticatedApp = memo(function AuthenticatedApp({
   children,
 }: AuthenticatedAppProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-surface to-surface-1">
+    <div className="min-h-screen">
       <div className="w-full max-w-6xl mx-auto border-l border-r border-border-1/50 shadow-xl">
-        <div className="p-6">
-          {children}
-        </div>
+        {children}
       </div>
       <AppModals
         user={user}

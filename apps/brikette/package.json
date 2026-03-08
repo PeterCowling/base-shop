@@ -43,7 +43,7 @@
     "test:content-readiness": "pnpm exec jest --testPathPattern 'test/content-readiness/' --maxWorkers=2",
     "generate:manifest-snapshot": "pnpm exec tsx --tsconfig tsconfig.scripts.json scripts/generate-manifest-snapshot.ts",
     "e2e:smoke": "node ./scripts/e2e/brikette-smoke.mjs",
-    "e2e:site-usability": "pnpm exec playwright test --config playwright.config.ts e2e/site-usability.smoke.spec.ts --reporter=list",
+    "e2e:site-usability": "pnpm exec playwright test --config ./playwright.site-usability.config.ts --reporter=list",
     "e2e:site-usability:live": "cross-env BRIKETTE_PLAYWRIGHT_PROJECT_SET=cross-browser PLAYWRIGHT_BASE_URL=https://hostel-positano.com pnpm run e2e:site-usability",
     "e2e": "E2E_BASE_URL=http://127.0.0.1:3012 pnpm exec start-server-and-test \"pnpm --filter @apps/brikette start\" http://127.0.0.1:3012 \"pnpm --filter @apps/brikette run e2e:smoke\""
   },

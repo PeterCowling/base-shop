@@ -80,6 +80,7 @@
     "next-env.d.ts",
     "instrumentation.ts",
     "playwright.config.ts",
+    "playwright.site-usability.config.ts",
     "e2e/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.json",

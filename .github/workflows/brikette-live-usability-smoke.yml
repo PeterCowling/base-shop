@@ -10,6 +10,7 @@ on:
       - "apps/brikette/e2e/site-usability.smoke.spec.ts"
       - "apps/brikette/package.json"
       - "apps/brikette/playwright.config.ts"
+      - "apps/brikette/playwright.site-usability.config.ts"
   workflow_dispatch:
     inputs:
       base_url:

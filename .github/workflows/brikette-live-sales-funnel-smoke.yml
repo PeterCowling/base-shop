@@ -1,0 +1,65 @@
+name: Brikette Live Sales Funnel Smoke
+
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - ".github/workflows/brikette-live-sales-funnel-smoke.yml"
+      - ".github/workflows/brikette-booking-funnel-contracts.yml"
+      - "apps/brikette/package.json"
+      - "apps/brikette/scripts/e2e/brikette-live-sales-funnel.mjs"
+      - "apps/brikette/scripts/e2e/live-smoke-harness.mjs"
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "Base URL to test"
+        required: false
+        default: "https://hostel-positano.com"
+        type: string
+      project_set:
+        description: "Playwright browser matrix"
+        required: false
+        default: "cross-browser"
+        type: choice
+        options:
+          - chromium
+          - cross-browser
+  schedule:
+    - cron: "15 7 * * 2"
+
+concurrency:
+  group: brikette-live-sales-funnel-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  production-sales-funnel-smoke:
+    name: Production sales funnel smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      BRIKETTE_PLAYWRIGHT_PROJECT_SET: ${{ github.event_name == 'workflow_dispatch' && inputs.project_set || 'cross-browser' }}
+      PLAYWRIGHT_BASE_URL: ${{ github.event_name == 'workflow_dispatch' && inputs.base_url || 'https://hostel-positano.com' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+
+      - name: Install Playwright browsers
+        run: pnpm --filter @apps/brikette exec playwright install chromium firefox webkit --with-deps
+
+      - name: Run live sales funnel smoke suite
+        run: pnpm --filter @apps/brikette e2e:sales-funnel
+
+      - name: Upload Playwright artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: brikette-live-sales-funnel-smoke-artifacts
+          path: |
+            apps/brikette/test-results
+            apps/brikette/playwright-report
+          if-no-files-found: warn

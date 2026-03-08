@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 
 import process from "node:process";
-
-import { chromium, devices, firefox, webkit } from "playwright";
-
-const DEFAULT_BASE_URL = "https://hostel-positano.com";
-const DEFAULT_PROJECT_SET = "chromium";
+import {
+  assertNoPageErrors,
+  clickAndExpectUrl,
+  createPageErrorTracker,
+  gotoAndExpectReady,
+  runSmokeSuite,
+} from "./live-smoke-harness.mjs";
 
 const ROUTES = {
   home: "/en",
@@ -15,93 +17,6 @@ const ROUTES = {
   bookDormBed: "/en/book-dorm-bed",
   naplesAirportGuide: "/en/how-to-get-here/naples-airport-positano-bus",
 };
-
-function normalizeBaseUrl(value) {
-  return value.endsWith("/") ? value.slice(0, -1) : value;
-}
-
-function assert(condition, message) {
-  if (!condition) {
-    throw new Error(message);
-  }
-}
-
-function buildProjectMatrix(projectSet) {
-  switch (projectSet) {
-    case "chromium":
-      return [
-        {
-          name: "chromium",
-          browserType: chromium,
-          contextOptions: { ...devices["Desktop Chrome"] },
-          isMobile: false,
-        },
-      ];
-    case "cross-browser":
-      return [
-        {
-          name: "chromium",
-          browserType: chromium,
-          contextOptions: { ...devices["Desktop Chrome"] },
-          isMobile: false,
-        },
-        {
-          name: "firefox",
-          browserType: firefox,
-          contextOptions: { ...devices["Desktop Firefox"] },
-          isMobile: false,
-        },
-        {
-          name: "webkit",
-          browserType: webkit,
-          contextOptions: { ...devices["Desktop Safari"] },
-          isMobile: false,
-        },
-        {
-          name: "mobile-chrome",
-          browserType: chromium,
-          contextOptions: { ...devices["Pixel 7"] },
-          isMobile: true,
-        },
-        {
-          name: "mobile-safari",
-          browserType: webkit,
-          contextOptions: { ...devices["iPhone 13"] },
-          isMobile: true,
-        },
-      ];
-    default:
-      throw new Error(
-        `Unsupported BRIKETTE_PLAYWRIGHT_PROJECT_SET="${projectSet}". Expected "chromium" or "cross-browser".`,
-      );
-  }
-}
-
-function createPageErrorTracker(page) {
-  const pageErrors = [];
-  page.on("pageerror", (error) => {
-    pageErrors.push(error.message);
-  });
-  return pageErrors;
-}
-
-function assertNoPageErrors(pageErrors, contextLabel) {
-  assert(pageErrors.length === 0, `${contextLabel} emitted page errors:\n- ${pageErrors.join("\n- ")}`);
-}
-
-async function gotoAndExpectReady(page, pathname) {
-  const response = await page.goto(pathname, { waitUntil: "domcontentloaded" });
-  assert(response?.status() === 200, `Expected ${pathname} to return HTTP 200, received ${response?.status()}`);
-  await page.locator("main").first().waitFor({ state: "visible" });
-}
-
-async function clickAndExpectUrl(page, locator, urlPattern) {
-  await locator.scrollIntoViewIfNeeded();
-  await Promise.all([
-    page.waitForURL((url) => urlPattern.test(url.toString())),
-    locator.click(),
-  ]);
-}
 
 const TEST_CASES = [
   {
@@ -202,79 +117,11 @@ const TEST_CASES = [
   },
 ];
 
-async function runProject(project, baseUrl) {
-  const browser = await project.browserType.launch({ headless: true });
-  const results = [];
-
-  try {
-    for (const testCase of TEST_CASES) {
-      const context = await browser.newContext({
-        ...project.contextOptions,
-        baseURL: baseUrl,
-      });
-      const page = await context.newPage();
-      const startedAt = Date.now();
-
-      try {
-        const outcome = await testCase.run({ page, project });
-        const durationMs = Date.now() - startedAt;
-
-        if (outcome?.skipped) {
-          console.info(`SKIP [${project.name}] ${testCase.id} ${testCase.name} (${outcome.skipped})`);
-          results.push({ project: project.name, id: testCase.id, status: "skipped", durationMs });
-        } else {
-          console.info(`PASS [${project.name}] ${testCase.id} ${testCase.name} (${durationMs}ms)`);
-          results.push({ project: project.name, id: testCase.id, status: "passed", durationMs });
-        }
-      } catch (error) {
-        const durationMs = Date.now() - startedAt;
-        const message = error instanceof Error ? error.message : String(error);
-        console.error(`FAIL [${project.name}] ${testCase.id} ${testCase.name} (${durationMs}ms)`);
-        console.error(message);
-        results.push({ project: project.name, id: testCase.id, status: "failed", durationMs, message });
-      } finally {
-        await context.close();
-      }
-    }
-  } finally {
-    await browser.close();
-  }
-
-  return results;
-}
-
-async function main() {
-  const baseUrl = normalizeBaseUrl(process.env.PLAYWRIGHT_BASE_URL ?? DEFAULT_BASE_URL);
-  const projectSet = process.env.BRIKETTE_PLAYWRIGHT_PROJECT_SET ?? DEFAULT_PROJECT_SET;
-  const projects = buildProjectMatrix(projectSet);
-
-  console.info(`Running Brikette live usability smoke against ${baseUrl}`);
-  console.info(`Project set: ${projectSet}`);
-
-  const results = [];
-  for (const project of projects) {
-    console.info(`\n== ${project.name} ==`);
-    results.push(...(await runProject(project, baseUrl)));
-  }
-
-  const passed = results.filter((result) => result.status === "passed").length;
-  const skipped = results.filter((result) => result.status === "skipped").length;
-  const failed = results.filter((result) => result.status === "failed");
-
-  console.info("\nSummary");
-  console.info(`Passed: ${passed}`);
-  console.info(`Skipped: ${skipped}`);
-  console.info(`Failed: ${failed.length}`);
-
-  if (failed.length > 0) {
-    for (const failure of failed) {
-      console.error(`- [${failure.project}] ${failure.id}: ${failure.message}`);
-    }
-    process.exitCode = 1;
-  }
-}
-
-main().catch((error) => {
+runSmokeSuite({
+  suiteId: "brikette-live-usability",
+  suiteName: "Brikette live usability smoke",
+  tests: TEST_CASES,
+}).catch((error) => {
   console.error(error instanceof Error ? error.stack ?? error.message : String(error));
   process.exitCode = 1;
 });

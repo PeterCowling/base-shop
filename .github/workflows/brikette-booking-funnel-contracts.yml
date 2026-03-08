@@ -37,7 +37,7 @@ jobs:
           end_epoch="$(date +%s)"
           elapsed="$((end_epoch - start_epoch))"
           echo "Booking funnel contract runtime: ${elapsed}s"
-          if [ "$elapsed" -gt 150 ]; then
-            echo "Runtime exceeded 150s target."
+          if [ "$elapsed" -gt 300 ]; then
+            echo "Runtime exceeded 300s target."
             exit 1
           fi

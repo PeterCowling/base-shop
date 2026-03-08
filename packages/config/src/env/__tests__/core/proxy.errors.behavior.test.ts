@@ -6,6 +6,8 @@ const baseEnv = {
   CMS_ACCESS_TOKEN: "token",
   SANITY_API_VERSION: "v1",
   EMAIL_FROM: "from@example.com",
+  NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long!!",
+  SESSION_SECRET: "test-session-secret-32-chars-long!!",
 };
 
 const ORIGINAL_ENV = { ...process.env };

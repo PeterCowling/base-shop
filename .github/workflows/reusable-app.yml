@@ -119,6 +119,20 @@ on:
         required: false
       CART_COOKIE_SECRET:
         required: false
+      CF_FIREBASE_API_KEY:
+        required: false
+      OPENAI_API_KEY:
+        required: false
+      PRIME_STAFF_PIN_HASH:
+        required: false
+      PRIME_FIREBASE_SERVICE_ACCOUNT_EMAIL:
+        required: false
+      PRIME_FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY:
+        required: false
+      PRIME_EMAIL_WEBHOOK_TOKEN:
+        required: false
+      PRIME_EMAIL_WEBHOOK_SIGNATURE_SECRET:
+        required: false
 
       NEXT_PUBLIC_FIREBASE_API_KEY:
         required: false

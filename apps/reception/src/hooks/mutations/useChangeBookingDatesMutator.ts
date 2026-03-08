@@ -1,14 +1,17 @@
 // src/hooks/mutations/useChangeBookingDatesMutator.ts
 
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { getDatabase, ref, update } from "firebase/database";
 
 import { useAuth } from "../../context/AuthContext";
 import { useOnlineStatus } from "../../lib/offline/useOnlineStatus";
+import type { MutationState } from "../../types/hooks/mutations/mutationState";
 // Import our utilities:
 import { getItalyIsoString } from "../../utils/dateUtils";
 import { generateTransactionId } from "../../utils/generateTransactionId";
 import useFinancialsRoomMutations from "../mutations/useFinancialsRoomMutations";
+
+import useMutationState from "./useMutationState";
 
 interface UpdateBookingDatesParams {
   bookingRef: string; // e.g. "4092716050"
@@ -20,6 +23,10 @@ interface UpdateBookingDatesParams {
   extendedPrice?: string; // extension charge if the booking is extended
 }
 
+interface UseBookingDatesMutatorReturn extends MutationState<void> {
+  updateBookingDates: (params: UpdateBookingDatesParams) => Promise<void>;
+}
+
 /**
  * useBookingDatesMutator:
  * - Updates booking dates in the DB.
@@ -27,11 +34,9 @@ interface UpdateBookingDatesParams {
  * - Logs activities.
  * - If extended, records both a "charge" and a "payment" transaction in financialsRoom.
  */
-export function useBookingDatesMutator() {
+export function useBookingDatesMutator(): UseBookingDatesMutatorReturn {
   const { user } = useAuth();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isError, setIsError] = useState<boolean>(false);
-  const [error, setError] = useState<Error | null>(null);
+  const { loading, error, run } = useMutationState();
 
   const online = useOnlineStatus();
   const db = getDatabase();
@@ -50,19 +55,12 @@ export function useBookingDatesMutator() {
       } = params;
 
       if (!online) {
-        setIsError(true);
-        const offlineError = new Error(
+        throw new Error(
           "Booking date changes require a network connection. Please reconnect and try again."
         );
-        setError(offlineError);
-        throw offlineError;
       }
 
-      setIsLoading(true);
-      setIsError(false);
-      setError(null);
-
-      try {
+      await run(async () => {
         // Use Italy-based ISO for logging & transactions
         const nowIso = getItalyIsoString();
         const who = user?.user_name || "System";
@@ -197,18 +195,12 @@ export function useBookingDatesMutator() {
 
           throw coreMutationError;
         }
-      } catch (err: unknown) {
-        setIsError(true);
-        const wrappedError =
-          err instanceof Error ? err : new Error("An unknown error occurred.");
-        setError(wrappedError);
-        throw wrappedError;
-      } finally {
-        setIsLoading(false);
-      }
+      });
     },
-    [online, db, user?.user_name, saveFinancialsRoom]
+    [online, db, user?.user_name, saveFinancialsRoom, run]
   );
 
-  return { updateBookingDates, isLoading, isError, error };
+  return { updateBookingDates, loading, error };
 }
+
+export { useBookingDatesMutator as useChangeBookingDatesMutator };

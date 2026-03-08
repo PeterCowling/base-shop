@@ -1,5 +1,5 @@
 // File: /src/hooks/mutations/useFinancialsRoomMutations.ts
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { ref, runTransaction } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../services/useFirebase";
@@ -7,6 +7,9 @@ import {
   type FinancialsRoomData,
   type RoomTransaction,
 } from "../../types/hooks/data/financialsRoomData";
+import type { MutationState } from "../../types/hooks/mutations/mutationState";
+
+import useMutationState from "./useMutationState";
 
 /**
  * Merges existing data with a partial update, preserving old transactions
@@ -95,14 +98,21 @@ function calculateFinancials(
   return { totalDue, totalPaid, totalAdjust, balance };
 }
 
+interface UseFinancialsRoomMutationsReturn extends MutationState<void> {
+  saveFinancialsRoom: (
+    bookingRef: string,
+    partial: Partial<FinancialsRoomData>
+  ) => Promise<void>;
+}
+
 /**
  * Mutator Hook
  * Provides a function that merges partial data into existing `financialsRoom/{bookingRef}`,
  * then recalculates the top-level fields from the transactions.
  */
-export default function useFinancialsRoomMutations() {
+export default function useFinancialsRoomMutations(): UseFinancialsRoomMutationsReturn {
   const database = useFirebaseDatabase();
-  const [error, setError] = useState<unknown>(null);
+  const { loading, error, run } = useMutationState();
 
   /**
    * saveFinancialsRoom
@@ -111,14 +121,12 @@ export default function useFinancialsRoomMutations() {
   const saveFinancialsRoom = useCallback(
     async (bookingRef: string, partial: Partial<FinancialsRoomData>) => {
       if (!database) {
-        const dbErr = new Error("Firebase database is not initialized.");
-        setError(dbErr);
-        return Promise.reject(dbErr);
+        throw new Error("Firebase database is not initialized.");
       }
 
-      const nodeRef = ref(database, `financialsRoom/${bookingRef}`);
+      await run(async () => {
+        const nodeRef = ref(database, `financialsRoom/${bookingRef}`);
 
-      try {
         const result = await runTransaction(nodeRef, (currentValue) => {
           const existingData = normalizeFinancialsRoomData(currentValue);
 
@@ -138,13 +146,10 @@ export default function useFinancialsRoomMutations() {
         if (!result.committed) {
           throw new Error("Financials transaction was not committed");
         }
-      } catch (err) {
-        setError(err);
-        return Promise.reject(err);
-      }
+      });
     },
-    [database]
+    [database, run]
   );
 
-  return { saveFinancialsRoom, error };
+  return { saveFinancialsRoom, error, loading };
 }

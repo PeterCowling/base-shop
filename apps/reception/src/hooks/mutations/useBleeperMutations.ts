@@ -1,14 +1,26 @@
 /* File: /src/hooks/mutations/useBleeperMutations.ts */
 
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { ref, set } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import { type BleeperResult } from "../../types/bar/BleeperTypes";
+import type { MutationState } from "../../types/hooks/mutations/mutationState";
 
-export function useBleeperMutations() {
+import useMutationState from "./useMutationState";
+
+interface UseBleeperMutationsReturn extends MutationState<void> {
+  setBleeperAvailability: (
+    bleeperNumber: number,
+    isAvailable: boolean
+  ) => Promise<BleeperResult>;
+}
+
+export function useBleeperMutations(): UseBleeperMutationsReturn {
   const database = useFirebaseDatabase();
-  const [error, setError] = useState<unknown>(null);
+  // Manual variant: setBleeperAvailability returns BleeperResult (structured result),
+  // not void/throw — cannot use run() wrapper directly.
+  const { loading, error, setLoading, setError } = useMutationState();
 
   const setBleeperAvailability = useCallback(
     async (
@@ -18,6 +30,9 @@ export function useBleeperMutations() {
       if (!database) {
         return { success: false, error: "Database not initialized" };
       }
+
+      setLoading(true);
+      setError(null);
 
       try {
         if (bleeperNumber < 1 || bleeperNumber > 18) {
@@ -46,13 +61,16 @@ export function useBleeperMutations() {
           success: false,
           error: (err as Error).message,
         };
+      } finally {
+        setLoading(false);
       }
     },
-    [database]
+    [database, setLoading, setError]
   );
 
   return {
     setBleeperAvailability,
     error,
+    loading,
   };
 }

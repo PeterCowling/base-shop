@@ -54,7 +54,7 @@ const BookingModal: FC<BookingModalProps> = React.memo(
     const [extensionPrice, setExtensionPrice] = useState<string>("");
     const [priceError, setPriceError] = useState<string>("");
 
-    const { updateBookingDates, isLoading } = useBookingDatesMutator();
+    const { updateBookingDates, loading } = useBookingDatesMutator();
 
     // Check if the new checkOut date is strictly later than the old one => extended
     const isExtended = useMemo(() => {
@@ -159,16 +159,16 @@ const BookingModal: FC<BookingModalProps> = React.memo(
             <Button
               className="px-4 py-2 bg-surface-3 text-foreground rounded-lg"
               onClick={onClose}
-              disabled={isLoading}
+              disabled={loading}
             >
               Cancel
             </Button>
             <Button
               className="px-4 py-2 bg-primary-main text-primary-fg rounded-lg"
               onClick={handleSave}
-              disabled={isLoading}
+              disabled={loading}
             >
-              {isLoading ? "Saving..." : "Save"}
+              {loading ? "Saving..." : "Save"}
             </Button>
           </div>
         }

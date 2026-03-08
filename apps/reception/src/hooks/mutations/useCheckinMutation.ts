@@ -1,18 +1,25 @@
 /* src/hooks/mutations/useCheckinMutation.ts */
 
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { ref, update } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import { type CheckinData } from "../../types/hooks/data/checkinData";
+import type { MutationState } from "../../types/hooks/mutations/mutationState";
+
+import useMutationState from "./useMutationState";
+
+interface UseCheckinMutationReturn extends MutationState<void> {
+  saveCheckin: (dateKey: string, checkinData: Partial<CheckinData>) => Promise<void>;
+}
 
 /**
  * Mutation Hook that handles creating or updating occupant check-in data
  * under /checkins/<dateKey> in Firebase.
  */
-export function useCheckinMutation() {
+export function useCheckinMutation(): UseCheckinMutationReturn {
   const database = useFirebaseDatabase();
-  const [error, setError] = useState<unknown>(null);
+  const { loading, error, run } = useMutationState();
 
   /**
    * Updates or creates occupant check-in data at /checkins/<dateKey>/<occupantId>.
@@ -25,20 +32,18 @@ export function useCheckinMutation() {
       dateKey: string,
       checkinData: Partial<CheckinData>
     ): Promise<void> => {
-      try {
+      await run(async () => {
         const checkinRef = ref(database, `checkins/${dateKey}`);
         // `update()` merges data at /checkins/<dateKey> without overwriting the entire node
         await update(checkinRef, checkinData);
-      } catch (err) {
-        setError(err);
-        throw err;
-      }
+      });
     },
-    [database]
+    [database, run]
   );
 
   return {
     saveCheckin,
     error,
+    loading,
   };
 }

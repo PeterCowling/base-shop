@@ -1,28 +1,32 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { get, ref, update } from "firebase/database";
 
 import { useAuth } from "../../context/AuthContext";
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import { type FinancialTransaction } from "../../types/hooks/data/allFinancialTransaction";
 import { type RoomTransaction } from "../../types/hooks/mutations/fiancialsRoomMutation";
+import type { MutationState } from "../../types/hooks/mutations/mutationState";
 import { getItalyIsoString } from "../../utils/dateUtils";
 import { getStoredShiftId } from "../../utils/shiftId";
 import { showToast } from "../../utils/toastUtils";
 
 import useFinancialsRoomMutations from "./useFinancialsRoomMutations";
+import useMutationState from "./useMutationState";
 
-export default function useVoidTransaction() {
+interface UseVoidTransactionReturn extends MutationState<void> {
+  voidTransaction: (txnId: string, reason: string) => Promise<void>;
+}
+
+export default function useVoidTransaction(): UseVoidTransactionReturn {
   const database = useFirebaseDatabase();
   const { user } = useAuth();
   const { saveFinancialsRoom } = useFinancialsRoomMutations();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<unknown>(null);
+  const { loading, error, run } = useMutationState();
 
   const voidTransaction = useCallback(
     async (txnId: string, reason: string): Promise<void> => {
       if (!database) {
-        setError("Database not initialized.");
-        return;
+        throw new Error("Database not initialized.");
       }
       if (!user) {
         showToast("Not authorized. Please log in.", "error");
@@ -33,13 +37,10 @@ export default function useVoidTransaction() {
         return;
       }
 
-      setLoading(true);
-      setError(null);
-      try {
+      await run(async () => {
         const txnRef = ref(database, `allFinancialTransactions/${txnId}`);
         const txnSnap = await get(txnRef);
         if (!txnSnap.exists()) {
-          setLoading(false);
           return;
         }
         const txn = txnSnap.val() as FinancialTransaction;
@@ -82,14 +83,9 @@ export default function useVoidTransaction() {
             });
           }
         }
-      } catch (err) {
-        setError(err);
-        throw err;
-      } finally {
-        setLoading(false);
-      }
+      });
     },
-    [database, user, saveFinancialsRoom]
+    [database, user, saveFinancialsRoom, run]
   );
 
   return { voidTransaction, loading, error };

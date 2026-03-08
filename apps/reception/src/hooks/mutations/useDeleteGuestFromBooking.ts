@@ -1,12 +1,14 @@
 // File: /src/hooks/mutations/useDeleteGuestFromBooking.ts
 
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { get, ref, update } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../services/useFirebase";
+import type { MutationState } from "../../types/hooks/mutations/mutationState";
 import { generateDateRange } from "../../utils/dateUtils";
 
 import useActivitiesMutations from "./useActivitiesMutations";
+import useMutationState from "./useMutationState";
 
 /**
  * Minimal type for the bookings node at:
@@ -39,10 +41,8 @@ interface DeleteArgs {
 /**
  * Return type for the useDeleteGuestFromBooking hook.
  */
-interface UseDeleteGuestFromBookingReturn {
+interface UseDeleteGuestFromBookingReturn extends MutationState<void> {
   deleteGuest: (args: DeleteArgs) => Promise<void>;
-  loading: boolean;
-  error: unknown;
 }
 
 /**
@@ -74,8 +74,7 @@ interface UseDeleteGuestFromBookingReturn {
  */
 export default function useDeleteGuestFromBooking(): UseDeleteGuestFromBookingReturn {
   const database = useFirebaseDatabase();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<unknown>(null);
+  const { loading, error, run } = useMutationState();
 
   const { addActivity } = useActivitiesMutations();
 
@@ -85,14 +84,10 @@ export default function useDeleteGuestFromBooking(): UseDeleteGuestFromBookingRe
   const deleteGuest = useCallback(
     async ({ bookingRef, occupantId }: DeleteArgs): Promise<void> => {
       if (!database) {
-        setError("Database not initialized.");
-        return;
+        throw new Error("Database not initialized.");
       }
 
-      setLoading(true);
-      setError(null);
-
-      try {
+      await run(async () => {
         // Snapshot the booking to see if occupant is last occupant.
         const bookingSnapshot = await get(
           ref(database, `bookings/${bookingRef}`)
@@ -258,14 +253,9 @@ export default function useDeleteGuestFromBooking(): UseDeleteGuestFromBookingRe
               "Failed to log occupant deletion activity."
           );
         }
-      } catch (err) {
-        setError(err);
-        throw err;
-      } finally {
-        setLoading(false);
-      }
+      });
     },
-    [database, addActivity]
+    [database, addActivity, run]
   );
 
   return {

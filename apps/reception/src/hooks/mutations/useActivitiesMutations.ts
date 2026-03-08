@@ -16,6 +16,7 @@ import {
   type ActivityResult,
 } from "../../types/domains/activitiesDomain";
 import { type Activity } from "../../types/hooks/data/activitiesData";
+import type { MutationState } from "../../types/hooks/mutations/mutationState";
 import { getItalyIsoString } from "../../utils/dateUtils";
 
 /**
@@ -25,7 +26,14 @@ function generateActivityId(): string {
   return `act_${Date.now()}`;
 }
 
-export default function useActivitiesMutations() {
+type UseActivitiesMutationsReturn = MutationState<void> & {
+  addActivity: (occupantId: string, code: number) => Promise<ActivityResult>;
+  removeLastActivity: (occupantId: string, code: number) => Promise<ActivityResult>;
+  saveActivity: (occupantId: string, activityData: ActivityDataInput) => Promise<ActivityResult>;
+  logActivity: (occupantId: string, code: number) => Promise<void>;
+};
+
+export default function useActivitiesMutations(): UseActivitiesMutationsReturn {
   const database = useFirebaseDatabase();
   const { sendEmailGuest } = useEmailGuest();
   const { user } = useAuth(); // Access the authenticated user

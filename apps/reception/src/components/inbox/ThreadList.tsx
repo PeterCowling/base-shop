@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import { Clock, Filter, MailSearch } from "lucide-react";
+import { Filter, MailSearch } from "lucide-react";
 
 import type { InboxThreadSummary } from "@/services/useInbox";
 
@@ -18,25 +18,6 @@ interface ThreadListProps {
   loading: boolean;
   error: string | null;
   onSelect: (threadId: string) => void | Promise<void>;
-}
-
-function GuestInitial({ thread }: { thread: InboxThreadSummary }) {
-  const name = thread.guestFirstName ?? thread.subject;
-  const initial = name?.charAt(0).toUpperCase() ?? "?";
-
-  if (thread.guestFirstName) {
-    return (
-      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-soft text-xs font-semibold text-primary-main">
-        {initial}
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-surface-3 text-xs font-medium text-muted-foreground">
-      {initial}
-    </div>
-  );
 }
 
 export default function ThreadList({
@@ -107,21 +88,14 @@ export default function ThreadList({
 
       {/* Loading skeleton */}
       {loading && (
-        <div className="space-y-1 p-2">
-          {Array.from({ length: 6 }).map((_, index) => (
-            <div
-              key={index}
-              className="flex animate-pulse items-start gap-3 rounded-xl border-l-2 border-l-transparent p-3"
-            >
-              <div className="h-8 w-8 shrink-0 rounded-lg bg-surface-3" />
-              <div className="flex-1 space-y-2">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="h-4 w-3/5 rounded-md bg-surface-3" />
-                  <div className="h-5 w-14 rounded-full bg-surface-3" />
-                </div>
-                <div className="h-3 w-4/5 rounded-md bg-surface-3" />
-                <div className="h-3 w-16 rounded-md bg-surface-3" />
+        <div className="divide-y divide-border-1">
+          {Array.from({ length: 8 }).map((_, index) => (
+            <div key={index} className="animate-pulse px-4 py-2.5">
+              <div className="flex items-center justify-between gap-3">
+                <div className="h-3.5 w-3/5 rounded-lg bg-surface-3" />
+                <div className="h-3 w-10 rounded-lg bg-surface-3" />
               </div>
+              <div className="mt-1.5 h-3 w-4/5 rounded-lg bg-surface-3" />
             </div>
           ))}
         </div>
@@ -169,62 +143,51 @@ export default function ThreadList({
       {/* Thread list */}
       {!loading && !error && filteredThreads.length > 0 && (
         // eslint-disable-next-line ds/no-arbitrary-tailwind -- IDEA-DISPATCH-20260307130300-9043 viewport-relative scroll containment
-        <div className="max-h-[calc(100vh-12rem)] overflow-y-auto p-2">
-          <div className="space-y-0.5">
+        <div className="max-h-[calc(100vh-12rem)] overflow-y-auto">
+          <div className="divide-y divide-border-1">
             {filteredThreads.map((thread) => {
               const badge = buildInboxThreadBadge(thread);
               const isSelected = thread.id === selectedThreadId;
-              const guestName = thread.guestFirstName
-                ? `${thread.guestFirstName}${thread.guestLastName ? ` ${thread.guestLastName}` : ""}`
-                : null;
+              const time = formatInboxTimestamp(thread.latestMessageAt ?? thread.updatedAt);
 
               return (
                 <button
                   key={thread.id}
                   type="button"
                   onClick={() => void onSelect(thread.id)}
-                  className={`group flex w-full items-start gap-3 rounded-xl border-l-2 px-3 py-2.5 text-left transition-colors ${badge.edgeColor} ${
+                  className={`group w-full border-l-2 px-4 py-2.5 text-left transition-colors ${badge.edgeColor} ${
                     isSelected
-                      ? "bg-surface-2 ring-1 ring-primary-main/30"
-                      : "hover:bg-surface-2/60"
+                      ? "bg-surface-2"
+                      : "hover:bg-surface-2/50"
                   }`}
                 >
-                  {/* Guest avatar */}
-                  <GuestInitial thread={thread} />
-
-                  {/* Content */}
-                  <div className="min-w-0 flex-1">
-                    {/* Row 1: subject + badge */}
-                    <div className="flex items-center justify-between gap-2">
-                      <p className="truncate text-sm font-medium text-foreground">
-                        {thread.subject ?? "Untitled inquiry"}
-                      </p>
-                      <span
-                        className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${badge.className}`}
-                        title={thread.needsManualDraft && thread.draftFailureMessage ? thread.draftFailureMessage : undefined}
-                      >
-                        {badge.label}
+                  {/* Row 1: badge + time */}
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={`rounded-lg px-1.5 py-px text-xs font-medium leading-tight ${badge.className}`}
+                      title={thread.needsManualDraft && thread.draftFailureMessage ? thread.draftFailureMessage : undefined}
+                    >
+                      {badge.label}
+                    </span>
+                    {thread.guestFirstName && (
+                      <span className="truncate text-xs font-medium text-primary-main">
+                        {thread.guestFirstName}{thread.guestLastName ? ` ${thread.guestLastName}` : ""}
                       </span>
-                    </div>
-
-                    {/* Row 2: snippet */}
-                    <p className="mt-0.5 line-clamp-1 text-xs leading-relaxed text-muted-foreground">
-                      {thread.snippet ?? "No preview available."}
-                    </p>
-
-                    {/* Row 3: guest name + time */}
-                    <div className="mt-1.5 flex items-center gap-3 text-xs text-muted-foreground">
-                      {guestName && (
-                        <span className="truncate font-medium text-primary-main">
-                          {guestName}
-                        </span>
-                      )}
-                      <span className="ml-auto inline-flex shrink-0 items-center gap-1 tabular-nums">
-                        <Clock className="h-3 w-3" />
-                        {formatInboxTimestamp(thread.latestMessageAt ?? thread.updatedAt)}
-                      </span>
-                    </div>
+                    )}
+                    <span className="ml-auto shrink-0 text-xs tabular-nums text-muted-foreground">
+                      {time}
+                    </span>
                   </div>
+
+                  {/* Row 2: subject */}
+                  <p className="mt-1 truncate text-sm font-medium text-foreground">
+                    {thread.subject ?? "Untitled inquiry"}
+                  </p>
+
+                  {/* Row 3: snippet */}
+                  <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                    {thread.snippet ?? "No preview available."}
+                  </p>
                 </button>
               );
             })}

@@ -289,6 +289,7 @@ export function ImageDropZone({
   onDragLeave,
   onDrop,
   onFileInput,
+  testId,
   t,
 }: {
   canUpload: boolean;
@@ -300,6 +301,7 @@ export function ImageDropZone({
   onDragLeave: (event: DragEvent) => void;
   onDrop: (event: DragEvent) => void;
   onFileInput: (event: ChangeEvent<HTMLInputElement>) => void;
+  testId?: string;
   t: ReturnType<typeof useUploaderI18n>["t"];
 }) {
   const primaryCopy = isUploading
@@ -328,7 +330,7 @@ export function ImageDropZone({
           : "cursor-not-allowed opacity-50"
       }`}
       // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-      data-testid="image-drop-zone"
+      data-testid={testId ?? "image-drop-zone"}
     >
       <UploadIllustration />
 
@@ -704,11 +706,14 @@ export function useImageUploadController({
   const [pendingPreview, setPendingPreview] = useState<{ file: File; previewUrl: string } | null>(null);
   const pendingPreviewRef = useRef<{ file: File; previewUrl: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef2 = useRef<HTMLInputElement>(null);
+  const [dragOver2, setDragOver2] = useState(false);
   const cleanupRemovedImage = usePersistedImageCleanup({
     lastAutosaveSavedAt,
     storefront,
   });
   const { handleDragOver, handleDragLeave } = useDropZoneDragHandlers(setDragOver);
+  const { handleDragOver: handleDragOver2, handleDragLeave: handleDragLeave2 } = useDropZoneDragHandlers(setDragOver2);
 
   useEffect(() => {
     return () => {
@@ -862,6 +867,28 @@ export function useImageUploadController({
     },
     [handleUpload],
   );
+  const handleFileInput2 = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (file) {
+        void handleUpload(file);
+      }
+      event.target.value = "";
+    },
+    [handleUpload],
+  );
+  const handleDrop2 = useCallback(
+    (event: DragEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+      setDragOver2(false);
+      const file = event.dataTransfer.files[0];
+      if (file) {
+        void handleUpload(file);
+      }
+    },
+    [handleUpload],
+  );
   const handleRemoveImage = useCallback(
     (index: number) => {
       const entry = imageEntries[index];
@@ -908,8 +935,10 @@ export function useImageUploadController({
   );
   return {
     fileInputRef,
+    fileInputRef2,
     previews,
     dragOver,
+    dragOver2,
     uploadStatus,
     uploadError,
     pendingPreviewUrl: pendingPreview?.previewUrl ?? null,
@@ -919,6 +948,10 @@ export function useImageUploadController({
     handleDragLeave,
     handleDrop,
     handleFileInput,
+    handleDragOver2,
+    handleDragLeave2,
+    handleDrop2,
+    handleFileInput2,
     handleRemoveImage,
     handleMakeMainImage,
     handleReorderImage,

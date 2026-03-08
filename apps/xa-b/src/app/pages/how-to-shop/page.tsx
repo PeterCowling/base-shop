@@ -7,7 +7,6 @@ import {
   AccordionTrigger,
 } from "@acme/design-system/atoms";
 import { Section } from "@acme/design-system/atoms/Section";
-import { NewsletterInterestCard } from "@acme/ui/components/organisms/NewsletterInterestCard";
 import { SupportSidebarNav } from "@acme/ui/components/organisms/SupportSidebarNav";
 import { SupportTwoColumnLayout } from "@acme/ui/components/organisms/SupportTwoColumnLayout";
 
@@ -86,17 +85,6 @@ export default function HowToShopPage() {
               </AccordionItem>
             </Accordion>
 
-            <NewsletterInterestCard
-              title="Never miss a thing"
-              description={xaI18n.t("xaB.src.app.pages.how.to.shop.page.l137c27")}
-              channelLabel={xaI18n.t("xaB.src.app.pages.how.to.shop.page.l138c28")}
-              channelValue="Email"
-              ctaLabel="Sign Up"
-              legalNote={
-                <>{xaI18n.t("xaB.src.app.pages.how.to.shop.page.l142c19")}{" "}
-                  <Link href="/pages/privacy-policy" className="text-foreground underline">{xaI18n.t("xaB.src.app.pages.how.to.shop.page.l145c92")}</Link>{xaI18n.t("xaB.src.app.pages.how.to.shop.page.l147c26")}</>
-              }
-            />
         </SupportTwoColumnLayout>
       </Section>
     </main>

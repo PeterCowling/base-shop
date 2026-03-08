@@ -5,7 +5,6 @@ import { Grid } from "@acme/design-system/atoms/Grid";
 import { Section } from "@acme/design-system/atoms/Section";
 import Accordion from "@acme/design-system/molecules/Accordion";
 import { Stack } from "@acme/design-system/primitives/Stack";
-import { NewsletterSignupCard } from "@acme/ui/components/organisms/NewsletterSignupCard";
 
 import { XaInlineLink } from "../../components/XaInlineLink";
 import { siteConfig } from "../../lib/siteConfig";
@@ -742,17 +741,6 @@ export default function FaqPage() {
         </Grid>
       </Section>
 
-      <Section padding="default">
-        <NewsletterSignupCard
-          className="p-5"
-          title="Never miss a thing"
-          description={xaI18n.t("xaB.src.app.faqs.page.l1044c25")}
-          legalNote={
-            <>{xaI18n.t("xaB.src.app.faqs.page.l1046c17")}{" "}
-              <XaInlineLink href="/pages/privacy-policy" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l1048c82")}</XaInlineLink>{xaI18n.t("xaB.src.app.faqs.page.l1050c32")}</>
-          }
-        />
-      </Section>
     </main>
   );
 }

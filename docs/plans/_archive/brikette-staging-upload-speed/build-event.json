@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "43c5a80e-16c3-4aaa-b720-9669028469a0",
+  "feature_slug": "brikette-staging-upload-speed",
+  "emitted_at": "2026-03-08T18:10:00.000Z",
+  "why": "Staging deploys still took ~37 min after CI overhead was removed; the Cloudflare upload was the sole remaining bottleneck. Operator wanted a materially faster staging cycle.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "measurable",
+    "statement": "Brikette staging deploys complete materially faster than 37 min, with a concrete reduction achieved via language-subset builds and/or wrangler dedup.",
+    "source": "operator"
+  }
+}

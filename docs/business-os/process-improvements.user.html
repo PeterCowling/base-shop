@@ -314,7 +314,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-03-08T16:17:12.441Z";
+  var GEN_TS = "2026-03-08T18:17:40.382Z";
 
   var IDEA_ITEMS = [
     {
@@ -781,6 +781,22 @@
       "date": "2026-02-26T07:27:53.087Z",
       "path": "docs/plans/_archive/post-build-reflection-prompting/results-review.user.md",
       "idea_key": "a8bd43e491362bb28adf381f0d335f9b08dccbfe",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "New loop process — Build artifact caching for staging: The 1m 51s Next.js build now dominates the job. Caching the .next/cache directory between runs (e.g. via GitHub Actions cache) could reduce repeat build times. Trigger observation: Next.js build time unchanged between Run 2 and Run 3 despite identical code, suggesting no incremental cache was available.",
+      "body": "New loop process — Build artifact caching for staging: The 1m 51s Next.js build now dominates the job. Caching the .next/cache directory between runs (e.g. via GitHub Actions cache) could reduce repeat build times. Trigger observation: Next.js build time unchanged between Run 2 and Run 3 despite identical code, suggesting no incremental cache was available.",
+      "source": "results-review.user.md",
+      "date": "2026-03-08T00:00:00.000Z",
+      "path": "../docs/plans/brikette-staging-upload-speed/results-review.user.md",
+      "idea_key": "eb5ffbe2e1b9025d8b6b3059f1cc6d369860e713",
       "priority_tier": "P4",
       "own_priority_rank": 9,
       "urgency": "U2",
@@ -2479,6 +2495,22 @@
       "title": "bos-agent-session-findings",
       "body": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
       "source": "queue-state.json",
+      "date": "2026-03-08T18:16:20.186Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "6e3b5ba35d7f8f059b44d05ba3054081e300660e",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "bos-agent-session-findings",
+      "body": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "source": "queue-state.json",
       "date": "2026-03-08T16:16:35.366Z",
       "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
       "idea_key": "67d4b4d03abf8c379d38b4537eaebcea53e46e73",
@@ -2626,6 +2658,22 @@
       "date": "2026-03-08T10:10:00.939Z",
       "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
       "idea_key": "017fd9d93919615b0eb68074c733b15450d463ff",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "AI-to-mechanistic — Chunk count monitoring: The ~13k _next/static files dominate the upload regardless of language filter. A deterministic script checking chunk count against a threshold could flag regressions. Trigger observation: CF upload time is bounded from below by the cost of hashing ~13k files locally (~30-40s), not by network transfer.",
+      "body": "AI-to-mechanistic — Chunk count monitoring: The ~13k _next/static files dominate the upload regardless of language filter. A deterministic script checking chunk count against a threshold could flag regressions. Trigger observation: CF upload time is bounded from below by the cost of hashing ~13k files locally (~30-40s), not by network transfer.",
+      "source": "results-review.user.md",
+      "date": "2026-03-08T00:00:00.000Z",
+      "path": "../docs/plans/brikette-staging-upload-speed/results-review.user.md",
+      "idea_key": "9ff9b168ee9cb015cb888234869231967bc122ee",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",

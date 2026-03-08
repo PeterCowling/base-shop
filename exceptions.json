@@ -368,6 +368,16 @@
     },
     "HAND-001": {},
     "INT-1010": {},
+    "INV-001": {
+      "allow": ["apps/inventory-uploader/**"],
+      "expires": "2026-12-31",
+      "notes": "Inventory uploader operator-tool: max-lines-per-function and react-hooks/exhaustive-deps exceptions for monolithic form+history components; split deferred."
+    },
+    "INV-0001": {
+      "allow": ["apps/inventory-uploader/**"],
+      "expires": "2026-12-31",
+      "notes": "Inventory uploader operator-tool: DS lint exceptions (min-tap-size, enforce-layout-primitives, container-widths-only-at, no-arbitrary-tailwind) for compact desktop console UI and TypeScript any exceptions for Prisma generated schema."
+    },
     "INTL-000": {},
     "INTL-202": {},
     "INTL-203": {},

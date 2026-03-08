@@ -8,18 +8,7 @@ import { useCallback, useMemo, useState } from "react";
 import { get, ref, set } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../../../../services/useFirebase";
-
-interface BarOrderItem {
-  product: string;
-  price: number;
-  count: number;
-  lineType?: "bds" | "kds";
-}
-
-interface BarOrder {
-  confirmed: boolean;
-  items: BarOrderItem[];
-}
+import type { BarOrder, BarOrderItem } from "../../../../../types/bar/BarOrderDomain";
 
 /** Optional config for customizing lineType assignment. */
 interface UseAddItemToOrderProps {

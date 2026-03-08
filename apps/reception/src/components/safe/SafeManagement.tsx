@@ -8,7 +8,7 @@ import { Cluster } from "@acme/design-system/primitives";
 
 import { useAuth } from "../../context/AuthContext";
 import { useSafeData } from "../../context/SafeDataContext";
-import { useTillShiftActions } from "../../hooks/client/till/useTillShiftActions";
+import { useTillShiftContext } from "../../hooks/client/till/TillShiftProvider";
 import { useSafeKeycardCount } from "../../hooks/data/useSafeKeycardCount";
 import { useCashCounts } from "../../hooks/useCashCounts";
 import { useKeycardTransfer } from "../../hooks/useKeycardTransfer";
@@ -51,7 +51,7 @@ function SafeManagement(): JSX.Element {
   const { count: safeKeycards, updateCount: updateSafeKeycards } =
     useSafeKeycardCount();
   const { addCashCount, recordFloatEntry } = useCashCounts();
-  const { returnKeycardsToSafe } = useTillShiftActions();
+  const { returnKeycardsToSafe } = useTillShiftContext();
   const recordKeycardTransfer = useKeycardTransfer();
   const [showDeposit, setShowDeposit] = useState(false);
   const [showWithdrawal, setShowWithdrawal] = useState(false);

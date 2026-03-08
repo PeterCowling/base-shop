@@ -25,8 +25,8 @@ jest.mock("../../../hooks/data/useSafeKeycardCount", () => ({
   useSafeKeycardCount: () => ({ count: 0, updateCount }),
 }));
 
-jest.mock("../../../hooks/client/till/useTillShiftActions", () => ({
-  useTillShiftActions: () => ({ returnKeycardsToSafe }),
+jest.mock("../../../hooks/client/till/TillShiftProvider", () => ({
+  useTillShiftContext: () => ({ returnKeycardsToSafe }),
 }));
 
 jest.mock("../../../hooks/useKeycardTransfer", () => ({

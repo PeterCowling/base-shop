@@ -34,7 +34,7 @@ export const tokens: TokenMap = {
   // Background with slight green tint in dark mode
   '--color-bg': { light: 'oklch(1 0 89.88)', dark: 'oklch(0.110 0.012 165)' },
   '--color-fg': { light: 'oklch(0.216 0 89.88)', dark: 'oklch(0.950 0.010 165)' },
-  '--color-fg-muted': { light: 'oklch(0.51 0 89.88)', dark: 'oklch(0.560 0.015 165)' },
+  '--color-fg-muted': { light: 'oklch(0.51 0 89.88)', dark: 'oklch(0.720 0.018 165)' },
 
   // Panel and inset surfaces
   '--color-panel': { light: 'oklch(0.978 0.0008 165.12)', dark: 'oklch(0.220 0.018 165)' },
@@ -54,7 +54,7 @@ export const tokens: TokenMap = {
 
   // Muted: green-tinted neutral
   '--color-muted': { light: 'oklch(0.909 0.0031 165.05)', dark: 'oklch(0.366 0.0097 164.43)' },
-  '--color-muted-fg': { light: 'oklch(0.321 0 89.88)', dark: 'oklch(0.600 0.015 165)' },
+  '--color-muted-fg': { light: 'oklch(0.321 0 89.88)', dark: 'oklch(0.720 0.018 165)' },
 
   // Typography: Inter for UI, JetBrains Mono for data/code
   '--font-sans': { light: 'var(--font-inter)' },

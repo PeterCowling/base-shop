@@ -1,0 +1,11 @@
+{
+  "schema_version": "build-event.v1",
+  "plan_slug": "reception-theme-dark-mode-base-tokens",
+  "business": "BRIK",
+  "emitted_at": "2026-03-08T20:09:20.438Z",
+  "why": "Reception staff use this app all day. The dark palette was too flat after Wave 1 shell work — surfaces didn't distinguish, borders read as suggestions, and the green atmosphere that makes it feel like hospitality tooling was absent.",
+  "intended_outcome_type": "operational",
+  "intended_outcome_statement": "Routes already on the shared reception shell (check-in, checkout) and the inbox workspace thread list now have visibly better depth, hierarchy, and interaction feedback.",
+  "source": "operator",
+  "completed_at": "2026-03-08"
+}

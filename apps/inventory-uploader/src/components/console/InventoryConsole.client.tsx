@@ -3,8 +3,10 @@
 import type { ReactNode } from "react";
 import { useCallback, useEffect, useState } from "react";
 
+import { InventoryEditor } from "../inventory/InventoryEditor.client";
 import { InventoryImport } from "../inventory/InventoryImport.client";
 import { InventoryMatrix } from "../inventory/InventoryMatrix.client";
+import { StockLedger } from "../inventory/StockLedger.client";
 
 import { ShopSelector } from "./ShopSelector.client";
 import { useInventoryConsole } from "./useInventoryConsole.client";
@@ -13,15 +15,17 @@ type InventoryConsoleProps = {
   onHeaderExtra?: (node: ReactNode) => void;
 };
 
+type RightPanelTab = "editor" | "ledger";
+
 /**
  * Root console component. Split-pane layout with:
- * - Left panel: inventory matrix (TASK-06) + import panel (TASK-14)
- * - Right panel: variant editor (TASK-13 mounts InventoryEditor here)
- * - Ledger tab slot (TASK-10 mounts stock-movement ledger here)
+ * - Left panel: InventoryMatrix (TASK-06) + InventoryImport (TASK-14)
+ * - Right panel: InventoryEditor (TASK-13) + StockLedger tab (TASK-10)
  */
 export default function InventoryConsole({ onHeaderExtra }: InventoryConsoleProps) {
   const state = useInventoryConsole();
   const [matrixRefreshKey, setMatrixRefreshKey] = useState(0);
+  const [activeTab, setActiveTab] = useState<RightPanelTab>("editor");
 
   // Stable callback reference to avoid remounting header extra on every render
   const renderHeaderExtra = useCallback(() => {
@@ -45,7 +49,10 @@ export default function InventoryConsole({ onHeaderExtra }: InventoryConsoleProp
         <InventoryMatrix
           shop={state.selectedShop}
           selectedSku={state.selectedSku}
-          onSelectSku={state.setSelectedSku}
+          onSelectSku={(sku) => {
+            state.setSelectedSku(sku);
+            if (sku) setActiveTab("editor");
+          }}
           refreshKey={matrixRefreshKey}
         />
 
@@ -56,19 +63,43 @@ export default function InventoryConsole({ onHeaderExtra }: InventoryConsoleProp
             setMatrixRefreshKey((k) => k + 1);
           }}
         />
-
-        {/* Ledger tab slot — TASK-10 mounts stock-movement ledger tab here */}
-        <div data-slot="ledger-tab" />
       </aside>
 
-      {/* Right panel — variant editor (TASK-13: mount InventoryEditor here) */}
-      <div className="space-y-6">
-        {/* TASK-13: <InventoryEditor state={state} /> */}
-        <p className="text-sm text-gate-muted">
-          {state.selectedSku
-            ? `SKU: ${state.selectedSku}`
-            : "Select a SKU to view variants."}
-        </p>
+      {/* Right panel — tabs: editor and ledger */}
+      <div className="space-y-4">
+        {/* Tab bar */}
+        {/* eslint-disable-next-line ds/enforce-layout-primitives -- INV-0001 operator-tool tab bar */}
+        <div className="flex gap-1 border-b border-gate-border pb-1">
+          {(["editor", "ledger"] as RightPanelTab[]).map((tab) => (
+            <button
+              key={tab}
+              type="button"
+              onClick={() => setActiveTab(tab)}
+               
+              className={`rounded-t px-3 py-1 text-xs font-medium transition ${
+                activeTab === tab
+                  ? "bg-gate-accent/10 text-gate-accent"
+                  : "text-gate-muted hover:text-gate-ink"
+              }`}
+            >
+              {tab === "editor" ? "Variant Editor" : "Stock Ledger"}
+            </button>
+          ))}
+        </div>
+
+        {/* Tab panels */}
+        <div className="rounded-xl border border-gate-border bg-gate-surface p-4 shadow-elevation-2">
+          {activeTab === "editor" && (
+            <InventoryEditor
+              shop={state.selectedShop}
+              sku={state.selectedSku}
+              onSaved={() => setMatrixRefreshKey((k) => k + 1)}
+            />
+          )}
+          {activeTab === "ledger" && (
+            <StockLedger shop={state.selectedShop} />
+          )}
+        </div>
       </div>
     </div>
   );

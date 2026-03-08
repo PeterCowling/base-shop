@@ -3,6 +3,8 @@ import type { InboxMessage, InboxThreadSummary } from "@/services/useInbox";
 export type InboxBadge = {
   label: string;
   className: string;
+  /** Tailwind border-color class for left-edge status indicator on thread rows. */
+  edgeColor: string;
 };
 
 export function formatInboxTimestamp(value: string | null | undefined): string {
@@ -33,6 +35,7 @@ export function buildInboxThreadBadge(thread: InboxThreadSummary): InboxBadge {
     return {
       label: "Manual",
       className: "bg-warning-light text-warning-main",
+      edgeColor: "border-l-warning-main",
     };
   }
 
@@ -40,6 +43,7 @@ export function buildInboxThreadBadge(thread: InboxThreadSummary): InboxBadge {
     return {
       label: "Edited",
       className: "bg-info-light text-info-main",
+      edgeColor: "border-l-info-main",
     };
   }
 
@@ -47,6 +51,7 @@ export function buildInboxThreadBadge(thread: InboxThreadSummary): InboxBadge {
     return {
       label: "Draft ready",
       className: "bg-success-light text-success-main",
+      edgeColor: "border-l-success-main",
     };
   }
 
@@ -54,6 +59,7 @@ export function buildInboxThreadBadge(thread: InboxThreadSummary): InboxBadge {
     return {
       label: "Sent",
       className: "bg-primary-soft text-primary-main",
+      edgeColor: "border-l-primary-main",
     };
   }
 
@@ -61,12 +67,14 @@ export function buildInboxThreadBadge(thread: InboxThreadSummary): InboxBadge {
     return {
       label: "Review",
       className: "bg-surface-3 text-muted-foreground",
+      edgeColor: "border-l-surface-3",
     };
   }
 
   return {
     label: "Pending",
     className: "bg-surface-3 text-foreground",
+    edgeColor: "border-l-surface-3",
   };
 }
 
@@ -81,10 +89,12 @@ export function buildDraftQualityBadge(
     ? {
         label: "Quality passed",
         className: "bg-success-light text-success-main",
+        edgeColor: "border-l-success-main",
       }
     : {
         label: "Check before send",
         className: "bg-warning-light text-warning-main",
+        edgeColor: "border-l-warning-main",
       };
 }
 

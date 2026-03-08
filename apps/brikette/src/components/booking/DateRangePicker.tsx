@@ -238,6 +238,7 @@ export function DateRangePicker({
       <div className="rounded-2xl border border-brand-outline/30 bg-brand-bg px-2 py-3 sm:px-3 sm:py-4">
         <DayPicker
           mode="range"
+          min={1}
           selected={stableSelected}
           onSelect={handleSelect}
           disabled={disabledMatcher}

@@ -99,7 +99,9 @@ function getUseTranslationMock(): jest.Mock {
 }
 
 function getBookingSubmitButton(): HTMLElement {
-  return screen.getByRole("button", { name: "booking.buttonAvailability" });
+  // resolveTranslatedCopy in BookingWidget falls back to "Check availability" when the
+  // i18n mock returns the raw key (keys containing "." are treated as unresolved).
+  return screen.getByRole("button", { name: "Check availability" });
 }
 
 function getCheckInInput(): HTMLElement {

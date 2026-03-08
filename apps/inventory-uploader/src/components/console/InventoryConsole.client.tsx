@@ -6,6 +6,8 @@ import { useCallback, useEffect, useState } from "react";
 import { InventoryEditor } from "../inventory/InventoryEditor.client";
 import { InventoryImport } from "../inventory/InventoryImport.client";
 import { InventoryMatrix } from "../inventory/InventoryMatrix.client";
+import { StockAdjustments } from "../inventory/StockAdjustments.client";
+import { StockInflows } from "../inventory/StockInflows.client";
 import { StockLedger } from "../inventory/StockLedger.client";
 
 import { ShopSelector } from "./ShopSelector.client";
@@ -15,12 +17,20 @@ type InventoryConsoleProps = {
   onHeaderExtra?: (node: ReactNode) => void;
 };
 
-type RightPanelTab = "editor" | "ledger";
+type RightPanelTab = "editor" | "ledger" | "adjustments" | "inflows";
+
+const TAB_LABELS: Record<RightPanelTab, string> = {
+  editor: "Variant Editor",
+  ledger: "Stock Ledger",
+  adjustments: "Adjustments",
+  inflows: "Receive Stock",
+};
 
 /**
  * Root console component. Split-pane layout with:
  * - Left panel: InventoryMatrix (TASK-06) + InventoryImport (TASK-14)
- * - Right panel: InventoryEditor (TASK-13) + StockLedger tab (TASK-10)
+ * - Right panel: tabs — InventoryEditor (TASK-13), StockLedger (TASK-10),
+ *                StockAdjustments (TASK-16), StockInflows (TASK-17)
  */
 export default function InventoryConsole({ onHeaderExtra }: InventoryConsoleProps) {
   const state = useInventoryConsole();
@@ -41,6 +51,10 @@ export default function InventoryConsole({ onHeaderExtra }: InventoryConsoleProp
     renderHeaderExtra();
   }, [renderHeaderExtra]);
 
+  function handleSaved() {
+    setMatrixRefreshKey((k) => k + 1);
+  }
+
   return (
     // eslint-disable-next-line ds/no-arbitrary-tailwind -- INV-0001 operator-tool layout
     <div className="grid gap-6 sm:grid-cols-[320px_1fr]">
@@ -53,6 +67,8 @@ export default function InventoryConsole({ onHeaderExtra }: InventoryConsoleProp
             state.setSelectedSku(sku);
             if (sku) setActiveTab("editor");
           }}
+          onAdjust={() => setActiveTab("adjustments")}
+          onInflow={() => setActiveTab("inflows")}
           refreshKey={matrixRefreshKey}
         />
 
@@ -65,12 +81,12 @@ export default function InventoryConsole({ onHeaderExtra }: InventoryConsoleProp
         />
       </aside>
 
-      {/* Right panel — tabs: editor and ledger */}
+      {/* Right panel — tabs */}
       <div className="space-y-4">
         {/* Tab bar */}
         {/* eslint-disable-next-line ds/enforce-layout-primitives -- INV-0001 operator-tool tab bar */}
         <div className="flex gap-1 border-b border-gate-border pb-1">
-          {(["editor", "ledger"] as RightPanelTab[]).map((tab) => (
+          {(["editor", "ledger", "adjustments", "inflows"] as RightPanelTab[]).map((tab) => (
             <button
               key={tab}
               type="button"
@@ -82,7 +98,7 @@ export default function InventoryConsole({ onHeaderExtra }: InventoryConsoleProp
                   : "text-gate-muted hover:text-gate-ink"
               }`}
             >
-              {tab === "editor" ? "Variant Editor" : "Stock Ledger"}
+              {TAB_LABELS[tab]}
             </button>
           ))}
         </div>
@@ -93,11 +109,21 @@ export default function InventoryConsole({ onHeaderExtra }: InventoryConsoleProp
             <InventoryEditor
               shop={state.selectedShop}
               sku={state.selectedSku}
-              onSaved={() => setMatrixRefreshKey((k) => k + 1)}
+              onSaved={handleSaved}
             />
           )}
-          {activeTab === "ledger" && (
-            <StockLedger shop={state.selectedShop} />
+          {activeTab === "ledger" && <StockLedger shop={state.selectedShop} />}
+          {activeTab === "adjustments" && state.selectedShop && (
+            <StockAdjustments shop={state.selectedShop} onSaved={handleSaved} />
+          )}
+          {activeTab === "adjustments" && !state.selectedShop && (
+            <p className="text-sm text-gate-muted">Select a shop to record adjustments.</p>
+          )}
+          {activeTab === "inflows" && state.selectedShop && (
+            <StockInflows shop={state.selectedShop} onSaved={handleSaved} />
+          )}
+          {activeTab === "inflows" && !state.selectedShop && (
+            <p className="text-sm text-gate-muted">Select a shop to receive stock.</p>
           )}
         </div>
       </div>

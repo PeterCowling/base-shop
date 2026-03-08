@@ -16,6 +16,8 @@ type InventoryMatrixProps = {
   shop: string | null;
   selectedSku: string | null;
   onSelectSku: (sku: string | null) => void;
+  onAdjust?: () => void;
+  onInflow?: () => void;
   refreshKey?: number;
 };
 
@@ -26,7 +28,7 @@ function variantLabel(attrs: Record<string, string>): string {
     .join(", ");
 }
 
-export function InventoryMatrix({ shop, selectedSku, onSelectSku, refreshKey = 0 }: InventoryMatrixProps) {
+export function InventoryMatrix({ shop, selectedSku, onSelectSku, onAdjust, onInflow, refreshKey = 0 }: InventoryMatrixProps) {
   const [items, setItems] = useState<InventoryItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -139,7 +141,7 @@ export function InventoryMatrix({ shop, selectedSku, onSelectSku, refreshKey = 0
               <button
                 type="button"
                 onClick={() => onSelectSku(isSelected ? null : item.sku)}
-                 
+
                 className={`w-full px-2 py-1.5 text-left transition ${isSelected ? "bg-gate-accent/10" : "hover:bg-gate-surface"}`}
               >
                 { }
@@ -161,6 +163,33 @@ export function InventoryMatrix({ shop, selectedSku, onSelectSku, refreshKey = 0
           );
         })}
       </ul>
+
+      {/* Stock action buttons */}
+      {(onAdjust ?? onInflow) && (
+        // eslint-disable-next-line ds/enforce-layout-primitives -- INV-0001 operator-tool stock action row
+        <div className="flex gap-1.5 pt-2 border-t border-gate-border">
+          {onAdjust && (
+            <button
+              type="button"
+              onClick={onAdjust}
+               
+              className="flex-1 rounded py-1 text-xs text-gate-muted focus-visible:ring-1 focus-visible:ring-gate-border hover:text-gate-ink focus-visible:hover:ring-gate-accent"
+            >
+              Adjust stock
+            </button>
+          )}
+          {onInflow && (
+            <button
+              type="button"
+              onClick={onInflow}
+               
+              className="flex-1 rounded py-1 text-xs text-gate-muted focus-visible:ring-1 focus-visible:ring-gate-border hover:text-gate-ink focus-visible:hover:ring-gate-accent"
+            >
+              Receive stock
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }

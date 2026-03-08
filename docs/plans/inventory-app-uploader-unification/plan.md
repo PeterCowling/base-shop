@@ -40,8 +40,8 @@ Phase 1 creates `apps/inventory-uploader`: a new standalone Cloudflare Workers a
 - [x] TASK-13: Inventory variant editor + PATCH route
 - [x] TASK-14: Inventory import UI + API
 - [x] TASK-15: InventoryAuditEvent Prisma migration
-- [ ] TASK-16: Stock adjustments UI
-- [ ] TASK-17: Stock inflows UI
+- [x] TASK-16: Stock adjustments UI
+- [x] TASK-17: Stock inflows UI
 
 ## Goals
 - Create a coherent, operator-grade inventory console that replaces fragmented CMS + Caryina admin surfaces.
@@ -118,8 +118,8 @@ Phase 1 creates `apps/inventory-uploader`: a new standalone Cloudflare Workers a
 | TASK-13 | IMPLEMENT | Inventory variant editor + PATCH route | 80% | S | Complete (2026-03-08) | TASK-06 | CHECKPOINT-11 |
 | TASK-14 | IMPLEMENT | Inventory import UI + API | 82% | M | Complete (2026-03-08) | CHECKPOINT-05 | CHECKPOINT-11 |
 | TASK-15 | IMPLEMENT | InventoryAuditEvent Prisma migration | 78% | M | Complete (2026-03-08) | CHECKPOINT-05 | TASK-08, TASK-09, TASK-10 |
-| TASK-16 | IMPLEMENT | Stock adjustments UI | 80% | S | Pending | TASK-08 | CHECKPOINT-11 |
-| TASK-17 | IMPLEMENT | Stock inflows UI | 80% | S | Pending | TASK-09, TASK-16 | CHECKPOINT-11 |
+| TASK-16 | IMPLEMENT | Stock adjustments UI | 80% | S | Complete (2026-03-08) | TASK-08 | CHECKPOINT-11 |
+| TASK-17 | IMPLEMENT | Stock inflows UI | 80% | S | Complete (2026-03-08) | TASK-09, TASK-16 | CHECKPOINT-11 |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -821,7 +821,8 @@ Phase 1 creates `apps/inventory-uploader`: a new standalone Cloudflare Workers a
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-08)
+- **Build evidence:** `StockAdjustments.client.tsx` created (352 lines; max-lines-per-function suppressed with INV-001). Tab slot wired in `InventoryConsole.client.tsx` as "Adjustments" tab (4th tab); `InventoryMatrix.client.tsx` gains `onAdjust` prop + "Adjust stock" button. Dry-run preview + commit + history panel all functional. 0 lint errors, 3 warnings (tap-target, acceptable for operator tool).
 - **Affects:** `apps/inventory-uploader/src/components/inventory/StockAdjustments.client.tsx` (new), `apps/inventory-uploader/src/components/inventory/InventoryMatrix.client.tsx` (add adjustments drawer entry point)
 - **Depends on:** TASK-08
 - **Blocks:** CHECKPOINT-11
@@ -862,7 +863,8 @@ Phase 1 creates `apps/inventory-uploader`: a new standalone Cloudflare Workers a
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-08)
+- **Build evidence:** `StockInflows.client.tsx` created (299 lines; max-lines-per-function suppressed with INV-001). Tab slot wired in `InventoryConsole.client.tsx` as "Receive Stock" tab; `InventoryMatrix.client.tsx` gains `onInflow` prop + "Receive stock" button. Snapshot-assist (current qty display), idempotency key, history panel all functional. 0 lint errors.
 - **Affects:** `apps/inventory-uploader/src/components/inventory/StockInflows.client.tsx` (new), `apps/inventory-uploader/src/components/inventory/InventoryMatrix.client.tsx` (add inflows drawer entry point)
 - **Depends on:** TASK-09, TASK-16
 - **Sequencing note:** TASK-17 depends on TASK-16 because both modify `InventoryMatrix.client.tsx`. TASK-16 must complete its InventoryMatrix modification before TASK-17 begins its own InventoryMatrix modification, to prevent a parallel write conflict. `StockInflows.client.tsx` (the component file) may be authored in parallel with TASK-16's work, but the InventoryMatrix integration step must run after TASK-16 finishes.

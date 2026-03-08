@@ -14,3 +14,9 @@ export function getBookPath(lang: AppLanguage): string {
 export function getPrivateBookingPath(lang: AppLanguage): string {
   return getLocalizedSectionPath(lang, "privateBooking");
 }
+
+export function getDoubleRoomBookingPath(lang: AppLanguage): string {
+  // Double private room has its own separate Octorate endpoint (TASK-12a decision).
+  // Path lives under the existing double-room route segment (not localized separately).
+  return `/${lang}/private-rooms/double-room/book`;
+}

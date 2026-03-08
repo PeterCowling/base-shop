@@ -10,7 +10,6 @@ import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
 import { BOOKING_CODE } from "@/context/modal/constants";
 import { OG_IMAGE } from "@/utils/headConstants";
-import { buildOctorateCalendarUrl } from "@/utils/octorateLinks";
 import { getSlug } from "@/utils/slug";
 import { resolveLabel } from "@/utils/translation-fallback";
 
@@ -20,7 +19,7 @@ type Props = {
   params: Promise<{ lang: string }>;
 };
 
-const HOSTEL_NOSCRIPT_OCTORATE_URL = buildOctorateCalendarUrl({ codice: BOOKING_CODE });
+const HOSTEL_NOSCRIPT_OCTORATE_URL = `https://book.octorate.com/octobook/site/reservation/calendar.xhtml?codice=${BOOKING_CODE}` as const;
 
 export async function generateStaticParams() {
   return generateLangParams();
@@ -85,7 +84,7 @@ export default async function BookPage({ params }: Props) {
   const octorateLinkLabel = resolveLabel(
     t,
     "noscript.octorateDirectBooking",
-    "Book direct with Octorate",
+    "Continue to secure booking",
   );
   /* eslint-enable ds/no-hardcoded-copy */
 

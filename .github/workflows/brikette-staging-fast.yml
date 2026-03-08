@@ -64,6 +64,7 @@ jobs:
           build_exit=0
           OUTPUT_EXPORT=1 \
             NEXT_PUBLIC_OUTPUT_EXPORT=1 \
+            BRIKETTE_STAGING_LANGS="en,it" \
             NEXT_PUBLIC_GA_MEASUREMENT_ID="${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_STAGING || vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }}" \
             pnpm build || build_exit=$?
           if [ "$build_exit" -eq 0 ]; then

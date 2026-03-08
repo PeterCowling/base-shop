@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { loadMessages } from "@acme/i18n/loadMessages.server";
 
 import { getNamespaceBundles } from "@/app/_lib/i18n-server";
+import { getBuildLanguages } from "@/app/_lib/static-params";
 import AboutStructuredData from "@/components/seo/AboutStructuredData";
 import SiteSearchStructuredData from "@/components/seo/SiteSearchStructuredData";
 import { type AppLanguage, i18nConfig } from "@/i18n.config";
@@ -16,7 +17,7 @@ type Props = {
 };
 
 export async function generateStaticParams() {
-  return i18nConfig.supportedLngs.map((lang) => ({ lang }));
+  return getBuildLanguages().map((lang) => ({ lang }));
 }
 
 export default async function LocaleLayout({ children, params }: Props) {

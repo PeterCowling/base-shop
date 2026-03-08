@@ -6,6 +6,9 @@ import { Section } from "@acme/design-system/atoms";
 
 import { ensureExternalWidgetScript, readWindowBootstrap } from "@/components/booking/octorateCustomPageRuntime";
 
+// Browser API constant — not translatable user copy
+const IFRAME_REFERRER_POLICY = "strict-origin-when-cross-origin" as const;
+
 export type OctorateCustomPageBookingSummary = {
   checkin: string;
   checkout: string;
@@ -30,6 +33,8 @@ export type OctorateCustomPageBootstrap = (
 type Props = {
   continueLabel: string;
   directUrl: string;
+  embedTitle?: string;
+  embedUrl?: string;
   fallbackBody: string;
   fallbackTitle: string;
   heading: string;
@@ -81,6 +86,8 @@ function renderSummaryLine(
 export default function OctorateCustomPageShell({
   continueLabel,
   directUrl,
+  embedTitle,
+  embedUrl,
   fallbackBody,
   fallbackTitle,
   heading,
@@ -98,9 +105,15 @@ export default function OctorateCustomPageShell({
 }: Props): JSX.Element {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [status, setStatus] = useState<EmbedStatus>("loading");
+  const hasIframeEmbed = Boolean(embedUrl);
   const hasScriptRuntime = Boolean(widgetScriptSrc && widgetGlobalKey);
 
   useEffect(() => {
+    if (hasIframeEmbed) {
+      setStatus("loading");
+      return undefined;
+    }
+
     const container = containerRef.current;
     if (!container || (!widgetBootstrap && !hasScriptRuntime)) {
       setStatus("failed");
@@ -161,6 +174,7 @@ export default function OctorateCustomPageShell({
     summary.pax,
     summary.ratePlanLabel,
     summary.roomName,
+    hasIframeEmbed,
     hasScriptRuntime,
     widgetGlobalKey,
     widgetBootstrap,
@@ -195,11 +209,26 @@ export default function OctorateCustomPageShell({
       </div>
 
       <div className="w-full rounded-3xl border border-brand-outline/15 bg-brand-surface p-4 shadow-sm">
-        <div
-          aria-label={widgetHostLabel}
-          ref={containerRef}
-          className="min-h-96 rounded-2xl border border-dashed border-brand-outline/20 bg-brand-surface"
-        />
+        {hasIframeEmbed ? (
+          <iframe
+            aria-label={widgetHostLabel}
+            className="aspect-video w-full rounded-2xl border border-brand-outline/20 bg-brand-surface"
+            loading="eager"
+            referrerPolicy={IFRAME_REFERRER_POLICY}
+            src={embedUrl}
+            style={{ minHeight: "780px" }}
+            title={embedTitle ?? heading}
+            onLoad={() => {
+              setStatus("ready");
+            }}
+          />
+        ) : (
+          <div
+            aria-label={widgetHostLabel}
+            ref={containerRef}
+            className="min-h-96 rounded-2xl border border-dashed border-brand-outline/20 bg-brand-surface"
+          />
+        )}
 
         <div className="mt-4" aria-live="polite">
           {status === "loading" ? (

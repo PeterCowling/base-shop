@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
+
+const SHOP_STORAGE_KEY = "inventory-uploader:shop";
 
 /**
  * Pinned interface for the inventory console state.
- * TASK-04 adds selectedShop/setSelectedShop via this type.
+ * TASK-04 adds selectedShop/setSelectedShop + localStorage persistence.
  * TASK-06 reads selectedShop for inventory list fetching.
  * TASK-13 reads selectedSku for variant editor mounting.
  * Do not add catalog-specific fields here.
@@ -16,9 +18,23 @@ export type InventoryConsoleState = {
   setSelectedSku: (sku: string | null) => void;
 };
 
+function readPersistedShop(): string | null {
+  if (typeof window === "undefined") return null;
+  return localStorage.getItem(SHOP_STORAGE_KEY);
+}
+
 export function useInventoryConsole(): InventoryConsoleState {
-  const [selectedShop, setSelectedShop] = useState<string | null>(null);
+  const [selectedShop, setSelectedShopRaw] = useState<string | null>(readPersistedShop);
   const [selectedSku, setSelectedSku] = useState<string | null>(null);
+
+  const setSelectedShop = useCallback(
+    (shop: string | null) => {
+      // Scoped state reset: clear selected SKU when shop changes
+      setSelectedSku(null);
+      setSelectedShopRaw(shop);
+    },
+    [],
+  );
 
   return {
     selectedShop,

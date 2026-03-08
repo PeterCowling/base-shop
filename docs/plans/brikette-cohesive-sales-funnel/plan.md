@@ -1,12 +1,12 @@
 ---
 Type: Plan
-Status: Active
-Status-confidence-note: 75% overall is below the 80% auto-build threshold but Active is justified because the drag comes from two INVESTIGATE tasks (TASK-07, TASK-08) whose outcomes are gated before any shell-dependent acceptance criteria are evaluated, and one DECISION task (TASK-12a) requiring operator input before TASK-12 starts. Wave 1–3 tasks are individually 80–90% and can proceed without resolving those unknowns.
+Status: Complete
+Status-confidence-note: All 15 tasks complete or resolved. TASK-14 de-scoped (env gate OFF on all known deployments — TASK-07 finding; room-assist recovery path is moot until NEXT_PUBLIC_OCTORATE_CUSTOM_PAGE_ENABLED is enabled on production). All other tasks shipped.
 Domain: Brikette Funnel
 Workstream: Product-Engineering
 Created: 2026-03-08
 Last-reviewed: 2026-03-08
-Last-updated: 2026-03-08 (Wave 1–4 complete; paused at TASK-12a awaiting operator input)
+Last-updated: 2026-03-08 (all waves complete; TASK-14 de-scoped pending env flag; plan closed)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: brikette-cohesive-sales-funnel
 Deliverable-Type: multi-deliverable
@@ -38,11 +38,11 @@ Brikette's booking surfaces currently compete rather than collaborate: the Mobil
 - [x] TASK-09: Implement intent resolver function
 - [x] TASK-10: Wire ContentStickyCta to intent resolver
 - [x] TASK-11: Wire sitewide shell CTAs to intent policy and analytics taxonomy
-- [ ] TASK-12a: DECISION — double-private-room booking endpoint (PAUSED — awaiting operator input)
-- [ ] TASK-12: Lock private product checkout segmentation
-- [ ] TASK-13: CHECKPOINT — reassess downstream tasks after private segmentation
-- [ ] TASK-14: Fix room-assist recovery attribution
-- [ ] TASK-15: Reframe /dorms copy and nav as browse/SEO route
+- [x] TASK-12a: DECISION — double-private-room booking endpoint (Option B: separate endpoint, operator confirmed 2026-03-08)
+- [x] TASK-12: Lock private product checkout segmentation
+- [x] TASK-13: CHECKPOINT — TASK-14 de-scoped (env gate OFF); TASK-15 unblocked
+- [~] TASK-14: Fix room-assist recovery attribution (DE-SCOPED — env gate OFF on all known deployments; revisit when NEXT_PUBLIC_OCTORATE_CUSTOM_PAGE_ENABLED is enabled)
+- [x] TASK-15: Reframe /dorms copy and nav as browse/SEO route
 
 ## Goals
 

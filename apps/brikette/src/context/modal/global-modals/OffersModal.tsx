@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
 
 import type { OffersModalCopy } from "@acme/ui/organisms/modals";
-import { resolveBookingCtaLabel } from "@acme/ui/shared";
+import { resolvePrimaryCtaLabel } from "@acme/ui/shared";
 
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { fireCtaClick } from "@/utils/ga4-events";
@@ -26,20 +26,20 @@ export function OffersGlobalModal(): JSX.Element | null {
   const { t: tModals } = useTranslation("modals", { lng: lang });
   const { t: tTokens } = useTranslation("_tokens", { lng: lang });
 
+  const tokenFallback = (tTokens("checkAvailability", { lng: i18nConfig.fallbackLng }) as string) ?? "";
+  const normalisedTokenFallback =
+    tokenFallback.trim() && tokenFallback !== "checkAvailability" ? tokenFallback : "";
+  const direct = (tModals("offers.button") as string) ?? "";
+  const normalisedDirect = direct.trim() && direct !== "offers.button" ? direct : "";
+  const fallback = (tModals("offers.button", { lng: i18nConfig.fallbackLng }) as string) ?? "";
+  const normalisedFallback = fallback.trim() && fallback !== "offers.button" ? fallback : "";
   const ctaLabel =
-    resolveBookingCtaLabel(tTokens, {
-      fallback: () => {
-        const direct = tModals("offers.button") as string;
-        if (direct && direct.trim() && direct !== "offers.button") {
-          return direct;
-        }
-        const fallback = tModals("offers.button", { lng: i18nConfig.fallbackLng }) as string;
-        if (fallback && fallback.trim() && fallback !== "offers.button") {
-          return fallback;
-        }
-        return "Reserve Now";
-      },
-    }) ?? "Reserve Now";
+    (resolvePrimaryCtaLabel(tTokens, {
+      fallback: () => normalisedDirect || normalisedFallback || normalisedTokenFallback,
+    }) ??
+    normalisedDirect) ||
+    normalisedFallback ||
+    normalisedTokenFallback;
 
   const offersCopy: OffersModalCopy = {
     title: tModals("offers.title"),

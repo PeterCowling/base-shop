@@ -12,6 +12,12 @@ const FIREBASE_CONNECT_SOURCES = [
   "wss://*.firebasedatabase.app",
 ] as const;
 
+// Firebase Realtime Database falls back to long-polling (JSONP via <script> tags)
+// when WebSockets are blocked. script-src-elem must allow the database host.
+const FIREBASE_SCRIPT_SOURCES = [
+  "https://*.firebasedatabase.app",
+] as const;
+
 function getAlloggiatiScriptSources(): string[] {
   const configuredUrl = process.env.NEXT_PUBLIC_ALLOGGIATI_SCRIPT_URL?.trim();
   if (!configuredUrl) {
@@ -44,6 +50,7 @@ function buildContentSecurityPolicy(): string {
     "https://apis.google.com",
     "https://www.gstatic.com",
     "https://script.googleusercontent.com",
+    ...FIREBASE_SCRIPT_SOURCES,
     ...getAlloggiatiScriptSources(),
   ];
 

@@ -1,3 +1,4 @@
+/* eslint-disable ds/min-tap-size -- INV-0001 operator-tool: compact buttons intentional in dense console UI */
 "use client";
 
 import { useCallback, useEffect, useState } from "react";

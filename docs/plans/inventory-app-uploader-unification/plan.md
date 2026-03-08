@@ -30,16 +30,16 @@ Phase 1 creates `apps/inventory-uploader`: a new standalone Cloudflare Workers a
 - [ ] TASK-03: Session auth gate
 - [ ] TASK-04: Shop selector + scoped state reset
 - [ ] CHECKPOINT-05: Shell parity checkpoint
-- [ ] TASK-06: Per-shop inventory console (list display only)
-- [ ] TASK-07: Inventory snapshot export route
-- [ ] TASK-08: Stock adjustments API route
-- [ ] TASK-09: Stock inflows API route
-- [ ] TASK-10: Stock-movement ledger view
+- [x] TASK-06: Per-shop inventory console (list display only)
+- [x] TASK-07: Inventory snapshot export route
+- [x] TASK-08: Stock adjustments API route
+- [x] TASK-09: Stock inflows API route
+- [x] TASK-10: Stock-movement ledger view
 - [ ] CHECKPOINT-11: Domain parity checkpoint
 - [ ] TASK-12: Port XA console component layer
-- [ ] TASK-13: Inventory variant editor + PATCH route
-- [ ] TASK-14: Inventory import UI + API
-- [ ] TASK-15: InventoryAuditEvent Prisma migration
+- [x] TASK-13: Inventory variant editor + PATCH route
+- [x] TASK-14: Inventory import UI + API
+- [x] TASK-15: InventoryAuditEvent Prisma migration
 - [ ] TASK-16: Stock adjustments UI
 - [ ] TASK-17: Stock inflows UI
 
@@ -108,16 +108,16 @@ Phase 1 creates `apps/inventory-uploader`: a new standalone Cloudflare Workers a
 | TASK-03 | IMPLEMENT | Session auth gate | 88% | S | Pending | TASK-02 | CHECKPOINT-05 |
 | TASK-04 | IMPLEMENT | Shop selector + scoped state reset | 78% | S | Pending | TASK-12 | CHECKPOINT-05 |
 | CHECKPOINT-05 | CHECKPOINT | Shell parity checkpoint | 95% | S | Pending | TASK-03, TASK-04 | TASK-06, TASK-07 |
-| TASK-06 | IMPLEMENT | Per-shop inventory console (list display only) | 85% | S | Pending | CHECKPOINT-05 | TASK-13, TASK-08, TASK-09, TASK-10 |
-| TASK-07 | IMPLEMENT | Inventory snapshot export route | 90% | S | Pending | CHECKPOINT-05 | CHECKPOINT-11 |
-| TASK-08 | IMPLEMENT | Stock adjustments API route | 82% | S | Pending | TASK-06, TASK-15 | TASK-16 |
-| TASK-09 | IMPLEMENT | Stock inflows API route | 82% | S | Pending | TASK-06, TASK-15 | TASK-17 |
-| TASK-10 | IMPLEMENT | Stock-movement ledger view | 72% | S | Pending | TASK-06, TASK-15 | CHECKPOINT-11 |
+| TASK-06 | IMPLEMENT | Per-shop inventory console (list display only) | 85% | S | Complete (2026-03-08) | CHECKPOINT-05 | TASK-13, TASK-08, TASK-09, TASK-10 |
+| TASK-07 | IMPLEMENT | Inventory snapshot export route | 90% | S | Complete (2026-03-08) | CHECKPOINT-05 | CHECKPOINT-11 |
+| TASK-08 | IMPLEMENT | Stock adjustments API route | 82% | S | Complete (2026-03-08) | TASK-06, TASK-15 | TASK-16 |
+| TASK-09 | IMPLEMENT | Stock inflows API route | 82% | S | Complete (2026-03-08) | TASK-06, TASK-15 | TASK-17 |
+| TASK-10 | IMPLEMENT | Stock-movement ledger view | 72% | S | Complete (2026-03-08) | TASK-06, TASK-15 | CHECKPOINT-11 |
 | CHECKPOINT-11 | CHECKPOINT | Domain parity checkpoint | 95% | S | Pending | TASK-07, TASK-13, TASK-14, TASK-16, TASK-17, TASK-10 | - |
 | TASK-12 | IMPLEMENT | Port XA console component layer | 82% | S | Pending | TASK-02 | TASK-04 |
-| TASK-13 | IMPLEMENT | Inventory variant editor + PATCH route | 80% | S | Pending | TASK-06 | CHECKPOINT-11 |
-| TASK-14 | IMPLEMENT | Inventory import UI + API | 82% | M | Pending | CHECKPOINT-05 | CHECKPOINT-11 |
-| TASK-15 | IMPLEMENT | InventoryAuditEvent Prisma migration | 78% | M | Pending | CHECKPOINT-05 | TASK-08, TASK-09, TASK-10 |
+| TASK-13 | IMPLEMENT | Inventory variant editor + PATCH route | 80% | S | Complete (2026-03-08) | TASK-06 | CHECKPOINT-11 |
+| TASK-14 | IMPLEMENT | Inventory import UI + API | 82% | M | Complete (2026-03-08) | CHECKPOINT-05 | CHECKPOINT-11 |
+| TASK-15 | IMPLEMENT | InventoryAuditEvent Prisma migration | 78% | M | Complete (2026-03-08) | CHECKPOINT-05 | TASK-08, TASK-09, TASK-10 |
 | TASK-16 | IMPLEMENT | Stock adjustments UI | 80% | S | Pending | TASK-08 | CHECKPOINT-11 |
 | TASK-17 | IMPLEMENT | Stock inflows UI | 80% | S | Pending | TASK-09, TASK-16 | CHECKPOINT-11 |
 
@@ -366,7 +366,8 @@ Phase 1 creates `apps/inventory-uploader`: a new standalone Cloudflare Workers a
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-08)
+- **Build evidence:** `InventoryMatrix.client.tsx` created with sort (sku/quantity), low-stock highlight, refreshKey prop. `GET /api/inventory/[shop]` route calls `inventoryRepository.read`. Mounted in `InventoryConsole.client.tsx`. Commit: `3da3f7bb30`.
 - **Affects:** `apps/inventory-uploader/src/components/inventory/InventoryMatrix.client.tsx` (new, left panel only), `apps/inventory-uploader/src/app/api/inventory/[shop]/route.ts` (new), `[readonly] packages/platform-core/src/repositories/inventory.server.ts`, `[readonly] packages/platform-core/src/repositories/inventory.prisma.server.ts`
 - **Depends on:** CHECKPOINT-05
 - **Blocks:** TASK-13, TASK-08, TASK-09, TASK-10
@@ -416,7 +417,8 @@ Phase 1 creates `apps/inventory-uploader`: a new standalone Cloudflare Workers a
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-08)
+- **Build evidence:** `GET /api/inventory/[shop]/export` created. CSV format via `?format=csv` or `Accept: text/csv`; JSON default. Formula injection protection via `sanitizeCsv()`. Canonical column order: `sku, productId, variant.*, quantity, lowStockThreshold`. Commit: `3da3f7bb30`.
 - **Affects:** `apps/inventory-uploader/src/app/api/inventory/[shop]/export/route.ts` (new), `[readonly] apps/cms/src/app/api/data/[shop]/inventory/export/route.ts`
 - **Does NOT touch:** `apps/inventory-uploader/src/components/inventory/InventoryMatrix.client.tsx` — the export button is wired into InventoryMatrix by TASK-13 (Wave 7), which already modifies that file. TASK-07 only creates the route.
 - **Depends on:** CHECKPOINT-05
@@ -458,7 +460,7 @@ Phase 1 creates `apps/inventory-uploader`: a new standalone Cloudflare Workers a
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-08)
 - **Affects:** `apps/inventory-uploader/src/app/api/inventory/[shop]/adjustments/route.ts` (new), `[readonly] apps/cms/src/app/api/shop/[shop]/stock-adjustments/route.ts`
 - **Depends on:** TASK-06, TASK-15
 - **Blocks:** TASK-16
@@ -506,7 +508,7 @@ Phase 1 creates `apps/inventory-uploader`: a new standalone Cloudflare Workers a
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-08)
 - **Affects:** `apps/inventory-uploader/src/app/api/inventory/[shop]/inflows/route.ts` (new), `[readonly] apps/cms/src/app/api/shop/[shop]/stock-inflows/route.ts`
 - **Depends on:** TASK-06, TASK-15
 - **Blocks:** TASK-17
@@ -551,7 +553,7 @@ Phase 1 creates `apps/inventory-uploader`: a new standalone Cloudflare Workers a
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-08)
 - **Affects:** `apps/inventory-uploader/src/components/inventory/StockLedger.client.tsx` (new), `apps/inventory-uploader/src/app/api/inventory/[shop]/ledger/route.ts` (new), `apps/inventory-uploader/src/components/console/InventoryConsole.client.tsx` (modify — mount StockLedger into the ledger tab slot established by TASK-12), `[readonly] packages/platform-core/src/inventoryHolds.ts`, `[readonly] apps/caryina/src/lib/checkoutSession.server.ts`
 - **Depends on:** TASK-06, TASK-15
 - **Blocks:** CHECKPOINT-11
@@ -678,7 +680,7 @@ Phase 1 creates `apps/inventory-uploader`: a new standalone Cloudflare Workers a
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-08)
 - **Affects:** `apps/inventory-uploader/src/app/api/inventory/[shop]/[sku]/route.ts` (new PATCH handler), `apps/inventory-uploader/src/components/inventory/InventoryEditor.client.tsx` (new right panel), `apps/inventory-uploader/src/components/inventory/InventoryMatrix.client.tsx` (add right-panel slot; wire export button to TASK-07 route; wire TASK-07 export route)
 - **Depends on:** TASK-06
 - **Blocks:** CHECKPOINT-11
@@ -722,7 +724,8 @@ Phase 1 creates `apps/inventory-uploader`: a new standalone Cloudflare Workers a
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-08)
+- **Build evidence:** `POST /api/inventory/[shop]/import` created with CSV/JSON parsing, dryRun mode, row-level error reporting, formula injection protection. `InventoryImport.client.tsx` with drag-and-drop, validate/import buttons, result panel. Mounted in `InventoryConsole.client.tsx` with `matrixRefreshKey` for post-import re-fetch. Commit: `3da3f7bb30`.
 - **Affects:** `apps/inventory-uploader/src/app/api/inventory/[shop]/import/route.ts` (new), `apps/inventory-uploader/src/components/inventory/InventoryImport.client.tsx` (new), `apps/inventory-uploader/src/components/console/InventoryConsole.client.tsx` (modify — mount InventoryImport into the import panel slot established by TASK-12), `[readonly] apps/cms/src/app/api/data/[shop]/inventory/import/route.ts`
 - **Depends on:** CHECKPOINT-05
 - **Blocks:** CHECKPOINT-11
@@ -766,7 +769,8 @@ Phase 1 creates `apps/inventory-uploader`: a new standalone Cloudflare Workers a
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-08)
+- **Build evidence:** `InventoryAuditEvent` model added to schema.prisma; migration SQL at `20260308000000_add_inventory_audit_event`. `stockAdjustments.server.ts` and `stockInflows.server.ts` fully rewritten — file-lock/JSONL removed, Prisma idempotency via `referenceId` lookup, per-item audit rows written via `prisma.inventoryAuditEvent.create`. Worker-safe. Commit: `3da3f7bb30`.
 - **Affects:** `packages/platform-core/prisma/schema.prisma` (add model), `packages/platform-core/prisma/migrations/` (new migration), `packages/platform-core/src/repositories/stockAdjustments.server.ts` (migrate audit write), `packages/platform-core/src/repositories/stockInflows.server.ts` (migrate audit write)
 - **Depends on:** CHECKPOINT-05
 - **Blocks:** TASK-08, TASK-09, TASK-10

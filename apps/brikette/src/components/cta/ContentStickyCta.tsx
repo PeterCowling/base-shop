@@ -14,8 +14,11 @@ import { Section } from "@acme/design-system/atoms";
 import { resolveBookingCtaLabel } from "@acme/ui/shared";
 
 import type { AppLanguage } from "@/i18n.config";
+import { writeAttribution } from "@/utils/entryAttribution";
 import { type CtaLocation, fireCtaClick } from "@/utils/ga4-events";
+import { resolveIntent } from "@/utils/intentResolver";
 import { getBookPath } from "@/utils/localizedRoutes";
+import { getPrivateRoomsPath } from "@/utils/privateRoomPaths";
 
 type ContentStickyCtaProps = {
   lang: AppLanguage;
@@ -23,9 +26,10 @@ type ContentStickyCtaProps = {
     CtaLocation,
     "guide_detail" | "about_page" | "bar_menu" | "breakfast_menu" | "how_to_get_here" | "assistance" | "experiences_page"
   >;
+  isPrivateRoute?: boolean;
 };
 
-function ContentStickyCta({ lang, ctaLocation }: ContentStickyCtaProps): JSX.Element | null {
+function ContentStickyCta({ lang, ctaLocation, isPrivateRoute = false }: ContentStickyCtaProps): JSX.Element | null {
   const { t, ready } = useTranslation(undefined, { lng: lang });
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
   const router = useRouter();
@@ -120,16 +124,50 @@ function ContentStickyCta({ lang, ctaLocation }: ContentStickyCtaProps): JSX.Ele
     setIsDismissed(true);
   }, [ctaLocation]);
 
+  // Resolve intent and target URL at render time (SSR-safe, pure).
+  const { resolved_intent, product_type, decision_mode, destination_funnel } = resolveIntent(
+    "sticky_cta",
+    { isPrivateRoute }
+  );
+  const targetUrl = resolved_intent === "private"
+    ? getPrivateRoomsPath(lang)
+    : getBookPath(lang);
+
   const onCtaClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    // Fire cta_click event with canonical enums
-    fireCtaClick({
-      ctaId: "content_sticky_check_availability",
-      ctaLocation,
+
+    // Write attribution carrier for multi-step journey tracking.
+    writeAttribution({
+      source_surface: "content_page",
+      source_cta: ctaLocation,
+      resolved_intent,
+      product_type,
+      decision_mode,
+      destination_funnel,
+      locale: lang,
+      fallback_triggered: false,
+      next_page: targetUrl,
     });
 
-    router.push(getBookPath(lang));
-  }, [ctaLocation, router, lang]);
+    // Fire enriched cta_click event with entry-attribution fields.
+    fireCtaClick(
+      { ctaId: "content_sticky_check_availability", ctaLocation },
+      undefined,
+      {
+        source_surface: "content_page",
+        source_cta: ctaLocation,
+        resolved_intent,
+        product_type,
+        decision_mode,
+        destination_funnel,
+        locale: lang,
+        fallback_triggered: false,
+        next_page: targetUrl,
+      }
+    );
+
+    router.push(targetUrl);
+  }, [ctaLocation, router, lang, resolved_intent, product_type, decision_mode, destination_funnel, targetUrl]);
 
   if (isDismissed) {
     return null;
@@ -171,7 +209,7 @@ function ContentStickyCta({ lang, ctaLocation }: ContentStickyCtaProps): JSX.Ele
             <p className="mt-1 text-sm text-brand-text/80 sm:text-base">{highlightSubcopy}</p>
           </div>
           <a
-            href={getBookPath(lang)}
+            href={targetUrl}
             onClick={onCtaClick}
             className="group relative inline-flex min-h-11 min-w-11 w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-brand-secondary px-6 py-3 text-base font-semibold text-brand-on-accent shadow-lg transition-transform focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-primary hover:scale-105 hover:bg-brand-secondary/90 sm:px-5 sm:py-3 sm:text-sm"
             aria-label={ctaLabel}

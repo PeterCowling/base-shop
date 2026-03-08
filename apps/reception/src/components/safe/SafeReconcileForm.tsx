@@ -28,18 +28,14 @@ export const SafeReconcileForm = memo(function SafeReconcileForm({
   onConfirm,
   onCancel,
 }: SafeReconcileFormProps) {
-  const [, setCountedCash] = useState(0);
-
   const [showExpected, setShowExpected] = useState(!settings.blindClose);
   const firstUpdate = useRef(true);
 
   const onCountsChange = (
-    cash: number,
+    _cash: number,
     _cards: number,
     _map: Record<string, number>
   ) => {
-    setCountedCash(cash);
-
     if (firstUpdate.current) {
       firstUpdate.current = false;
       return;

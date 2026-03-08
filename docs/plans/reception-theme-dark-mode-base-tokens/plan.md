@@ -128,6 +128,8 @@ The merged outcome is narrower and more honest than the prior token-only framing
   - `packages/themes/reception/tokens.css`
   - `apps/reception/src/app/globals.css`
   - `apps/reception/src/app/api/mcp/inbox/route.ts` (controlled expansion: pre-existing TS2322 at line 61 — `row.status as PrimeReviewThreadSummary["reviewStatus"]` — blocked pre-commit typecheck hook; minimal type-assertion fix; no behaviour change)
+  - `apps/reception/src/services/firebaseAuth.ts` (controlled expansion: pre-existing import sort lint error; auto-fixed with eslint --fix; no logic change)
+  - `apps/reception/src/components/safe/SafeReconcileForm.tsx` (controlled expansion: pre-existing unused-arg `cash` → `_cash` in onCountsChange callback; blocked lint gate; no behaviour change)
   - `[readonly] scripts/src/build-tokens.ts`
   - `[readonly] scripts/src/tokens/validate-contrast.ts`
 - **Depends on:** -

@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-08T23:08:28.955Z",
+  "last_updated": "2026-03-08T23:17:50.873Z",
   "counts": {
-    "enqueued": 213,
-    "processed": 48,
+    "enqueued": 215,
+    "processed": 47,
     "skipped": 2,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
-    "completed": 130,
-    "fact_find_ready": 273,
+    "completed": 131,
+    "fact_find_ready": 274,
     "micro_build_ready": 13,
-    "total": 418
+    "total": 420
   },
   "dispatches": [
     {
@@ -17355,7 +17355,7 @@
       "current_truth": "PaymentForm has 33-41 props passed through PaymentDropdown → SplitList → PaymentSplitRow in a pure pass-through chain. PaymentDropdown is a middleware container that passes 7 of its 8 props unchanged downstream. PaymentSplitRow receives props it ignores (showAddButton). Three layers of prop plumbing with no intermediate logic.",
       "next_scope_now": "Design a payment context (or local state hook) to replace the prop-drilling chain. Identify which callbacks belong at which level. Assess whether PaymentDropdown can be eliminated. Determine test coverage for the payment flow before refactoring.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.75,
       "evidence_refs": [
@@ -17370,7 +17370,7 @@
         "source": "auto"
       },
       "created_at": "2026-03-08T21:40:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "target_route": "lp-do-fact-find",
@@ -17380,6 +17380,11 @@
         "processed_at": "2026-03-08T22:34:36.205Z",
         "fact_find_slug": "reception-payment-prop-drilling",
         "fact_find_path": "docs/plans/reception-payment-prop-drilling/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-payment-prop-drilling/plan.md",
+        "completed_at": "2026-03-08T23:17:50.872Z",
+        "outcome": "Payment state managed via context. PaymentDropdown eliminated. PaymentForm reduced from 8 to 0 props."
       }
     },
     {
@@ -17510,6 +17515,94 @@
         "session:950278a6-791c-4c65-941b-e1902ae59893"
       ],
       "created_at": "2026-03-08T23:07:47.635Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260308230858-0997",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "714a8ecfe5eb8df451467c7a7e7c999ca78469c0",
+      "after_sha": "6c392477afb32eaf09b96ae1faef118c34dd3078",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:6c392477afb32eaf09b96ae1faef118c34dd3078",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:6c392477afb32eaf09b96ae1faef118c34dd3078",
+      "cluster_fingerprint": "27eb035727c002dca2ffe405c497b60d2cfb54bcda46d7e32099c23c3fa6ef01",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (714a8ec → 6c39247)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:84fc058e-c06a-4ea2-900f-167ecf8b9caa",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:45fa3df6-4baf-4a46-8295-da1c400b5f19",
+        "session:e96080c8-452d-4ca3-add4-39aa8e41d543",
+        "session:14f7aef2-5d57-4d82-a048-137a0515b9f0",
+        "session:950278a6-791c-4c65-941b-e1902ae59893"
+      ],
+      "created_at": "2026-03-08T23:08:58.996Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260308231701-0437",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "6c392477afb32eaf09b96ae1faef118c34dd3078",
+      "after_sha": "63a43addbd2f3dfb0f17dfc67fe427344e82cb81",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:63a43addbd2f3dfb0f17dfc67fe427344e82cb81",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:63a43addbd2f3dfb0f17dfc67fe427344e82cb81",
+      "cluster_fingerprint": "203249ef2743dbb1ee03d38e2a42679061de177bf38cb14a1bf3e1ae8e12db75",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (6c39247 → 63a43ad)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:84fc058e-c06a-4ea2-900f-167ecf8b9caa",
+        "session:45fa3df6-4baf-4a46-8295-da1c400b5f19",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:e96080c8-452d-4ca3-add4-39aa8e41d543",
+        "session:14f7aef2-5d57-4d82-a048-137a0515b9f0",
+        "session:950278a6-791c-4c65-941b-e1902ae59893"
+      ],
+      "created_at": "2026-03-08T23:17:01.436Z",
       "queue_state": "enqueued",
       "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
       "intended_outcome": {

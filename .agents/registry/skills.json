@@ -358,7 +358,7 @@
     },
     {
       "name": "tools-design-system",
-      "description": "Apply design tokens and system patterns correctly. Reference for semantic colors, spacing, typography, borders, and shadows. Never use arbitrary values.",
+      "description": "Apply the repo's current design-system contracts correctly. Use semantic tokens, DS component props, and app-level Tailwind v4 `@theme` aliases where appropriate. Avoid hardcoded colors and stale HSL-only guidance.",
       "path": ".claude/skills/tools-design-system/SKILL.md"
     },
     {

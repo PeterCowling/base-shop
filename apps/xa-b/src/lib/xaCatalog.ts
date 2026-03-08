@@ -16,9 +16,28 @@ export const XA_CATEGORY_LABELS: Record<XaCategory, string> = {
   jewelry: "Jewelry",
 };
 
+export const XA_DEPARTMENT_LABELS: Record<XaDepartment, string> = {
+  women: "Iconic",
+  men: "Everyday",
+  kids: "Mini",
+};
+
 export const XA_SUBCATEGORIES: Record<XaCategory, string[]> = {
   clothing: ["outerwear", "knitwear", "tops", "shirts"],
-  bags: ["tote", "shoulder", "crossbody", "clutch", "backpack", "belt-bag", "bucket"],
+  bags: [
+    "birkin",
+    "kelly",
+    "constance",
+    "lindy",
+    "evelyne",
+    "picotin",
+    "garden-party",
+    "herbag",
+    "mini-kelly",
+    "roulis",
+    "verrou",
+    "egee",
+  ],
   jewelry: ["necklaces", "bracelets", "earrings", "rings"],
 };
 

@@ -12,13 +12,11 @@ import { siteConfig } from "../lib/siteConfig";
 import {
   formatLabel,
   getDesignerName,
-  getTrendingDesigners,
   XA_ALLOWED_CATEGORIES,
   XA_CATEGORY_LABELS,
   XA_SUBCATEGORIES,
 } from "../lib/xaCatalog";
-import { xaI18n } from "../lib/xaI18n";
-import { getDesignerHref, getProductHref } from "../lib/xaRoutes";
+import { getProductHref } from "../lib/xaRoutes";
 import type { XaDepartment } from "../lib/xaTypes";
 
 import { XaFadeImage } from "./XaFadeImage";
@@ -31,7 +29,6 @@ export function XaMegaMenu({
   department: XaDepartment;
 }) {
   const { brands, products } = useXaCatalogSnapshot();
-  const trendingDesigners = getTrendingDesigners(4, department, { brands, products });
   const base = `/${department}`;
   const primaryCategory = siteConfig.catalog.category;
   const categorySections = XA_ALLOWED_CATEGORIES.map((category) => ({
@@ -64,7 +61,7 @@ export function XaMegaMenu({
         style={{ maxWidth: "none" }}
       >
         <Section as="div" padding="none" className="flex w-full gap-10 px-6">
-          <div className="grid flex-1 gap-6 md:grid-cols-5">
+          <div className="grid flex-1 gap-6 md:grid-cols-4">
             <div className="space-y-3">
               <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 New In
@@ -102,23 +99,6 @@ export function XaMegaMenu({
                 </Stack>
               </div>
             ))}
-            <div className="space-y-3">
-              <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                Brands
-              </div>
-              <Stack gap={2}>
-                {trendingDesigners.map((designer) => (
-                  <Link
-                    key={`${department}-designer-${designer.handle}`}
-                    href={getDesignerHref(designer.handle)}
-                    className="text-sm hover:underline"
-                  >
-                    {designer.name}
-                  </Link>
-                ))}
-                <Link href="/designers" className="text-sm font-semibold hover:underline">{xaI18n.t("xaB.src.components.xamegamenu.l116c91")}</Link>
-              </Stack>
-            </div>
           </div>
           {featuredProduct && featuredMedia ? (
             <Link

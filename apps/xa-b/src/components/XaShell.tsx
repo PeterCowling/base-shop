@@ -26,11 +26,11 @@ import { useWishlist } from "../contexts/XaWishlistContext";
 import { siteConfig } from "../lib/siteConfig";
 import { toWhatsappHref } from "../lib/support";
 import {
-  formatLabel,
   getCategoryHref,
   XA_ALLOWED_CATEGORIES,
   XA_ALLOWED_DEPARTMENTS,
   XA_CATEGORY_LABELS,
+  XA_DEPARTMENT_LABELS,
 } from "../lib/xaCatalog";
 import { xaI18n } from "../lib/xaI18n";
 
@@ -39,7 +39,6 @@ import { XaSupportDock } from "./XaSupportDock.client";
 
 const NAV_LABELS = {
   newIn: "New In",
-  brands: "Brands",
 } as const;
 
 export function XaShell({ children }: { children: ReactNode }) {
@@ -77,7 +76,7 @@ export function XaShell({ children }: { children: ReactNode }) {
                   {XA_ALLOWED_DEPARTMENTS.map((department) => (
                     <XaMegaMenu
                       key={department}
-                      label={formatLabel(department)}
+                      label={XA_DEPARTMENT_LABELS[department]}
                       department={department}
                     />
                   ))}
@@ -147,12 +146,6 @@ export function XaShell({ children }: { children: ReactNode }) {
                     className="inline-flex min-h-11 min-w-11 items-center text-sm font-medium hover:underline"
                   >
                     {NAV_LABELS.newIn}
-                  </Link>
-                  <Link
-                    href="/designers"
-                    className="inline-flex min-h-11 min-w-11 items-center text-sm font-medium hover:underline"
-                  >
-                    {NAV_LABELS.brands}
                   </Link>
                   {categoryLinks.map((link) => (
                     <Link

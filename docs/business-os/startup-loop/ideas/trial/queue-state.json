@@ -1,18 +1,115 @@
 {
-  "last_updated": "2026-03-07T21:54:21.336Z",
+  "last_updated": "2026-03-08T10:10:00.946Z",
   "counts": {
-    "enqueued": 185,
-    "processed": 46,
-    "skipped": 1,
+    "enqueued": 189,
+    "processed": 47,
+    "skipped": 2,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
-    "completed": 126,
-    "fact_find_ready": 245,
-    "micro_build_ready": 8,
-    "total": 383
+    "completed": 127,
+    "fact_find_ready": 249,
+    "micro_build_ready": 11,
+    "total": 390
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260308133000-9301",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:BRIK:PRODUCTS:brikette-live-usability-first-wave:20260308",
+      "anchor_key": "brikette-live-usability-first-wave",
+      "cluster_key": "BRIK:PRODUCTS:brikette-live-usability-first-wave:operator:20260308",
+      "cluster_fingerprint": "brikette-live-usability-first-wave-20260308",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK live usability — sticky CTA obstruction and guide pathname hydration",
+      "location_anchors": [
+        "apps/brikette/src/components/cta/ContentStickyCta.tsx",
+        "apps/brikette/src/routes/guides/_GuideSeoTemplate.tsx",
+        "apps/brikette/scripts/e2e/brikette-live-usability.mjs",
+        "docs/plans/brikette-live-usability-first-wave/micro-build.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The first production live-usability smoke run (GitHub Actions run 22818258959) exposed shared content-surface failures on Brikette: the sticky booking CTA can obstruct transport/help interactions on current browsers, and the shared guide template still derives render-time path state from window.location, matching the class of hydration mismatch behind the production React guide crash.",
+      "next_scope_now": "Move the how-to-get-here and assistance sticky CTA surfaces onto a bottom-docked layout with a distinct dismiss label, and source guide-template pathname state from the App Router instead of window.location during render.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P1",
+      "confidence": 0.89,
+      "evidence_refs": [
+        "operator-stated: take forward the live cross-browser usability findings via lp-do-ideas -> lp-do-build",
+        "ci-run: GitHub Actions brikette-live-usability-smoke run 22818258959",
+        "code-ref: apps/brikette/src/components/cta/ContentStickyCta.tsx",
+        "code-ref: apps/brikette/src/routes/guides/_GuideSeoTemplate.tsx"
+      ],
+      "created_at": "2026-03-08T13:30:00.000Z",
+      "queue_state": "completed",
+      "why": "The first live smoke run found two shared blockers with high-confidence, code-level fixes: CTA placement is interfering with critical content interactions on transport/help surfaces, and shared guide rendering still depends on render-time browser path state. Both issues cut across multiple failing browser cases and are better fixed centrally than route-by-route.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Brikette content surfaces stop using the obstructive floating CTA layout on transport/help pages, and shared guide pages resolve pathname-derived state without render-time window.location access.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "micro_build_path": "docs/plans/brikette-live-usability-first-wave/micro-build.md",
+        "processed_at": "2026-03-08T13:30:00.000Z"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/brikette-live-usability-first-wave/micro-build.md",
+        "completed_at": "2026-03-08T13:55:00.000Z",
+        "outcome": "Shared CTA obstruction reduced on transport/help surfaces and guide template pathname hydration stabilized for the first live-usability remediation wave."
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260308120000-0001",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:XA:PRODUCTS:xa-uploader-dual-upload-zones:20260308",
+      "anchor_key": "xa-uploader-dual-upload-zones",
+      "cluster_key": "XA:PRODUCTS:xa-uploader-dual-upload-zones:operator:20260308",
+      "cluster_fingerprint": "b4e2f7a9c1d6e3b8f5a2c9d4e7b1f3a6c8d2e9f5b7a4c1d8e3f6b2a9c7d5e1f4",
+      "lineage_depth": 0,
+      "area_anchor": "xa-uploader CatalogProductImagesFields — single upload zone, needs split into main + additional",
+      "location_anchors": [
+        "apps/xa-uploader/src/components/catalog/CatalogProductImagesFields.client.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "CatalogProductImagesFields has a single ImageDropZone; the same zone handles both main and additional image uploads, switching copy based on whether images already exist",
+      "next_scope_now": "Split into two ImageDropZone instances: (1) existing zone above MainImagePanel for main image; (2) new zone immediately above AdditionalImagesPanel, only shown when imageEntries.length > 0, with 'Add additional photos' copy and its own fileInputRef and inline status feedback",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: split single upload zone into main-image zone (existing, unchanged) and additional-images zone placed immediately above AdditionalImagesPanel",
+        "apps/xa-uploader/src/components/catalog/CatalogProductImagesFields.client.tsx"
+      ],
+      "created_at": "2026-03-08T12:00:00.000Z",
+      "queue_state": "processed",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-uploader-dual-upload-zones",
+        "target_path": "docs/plans/xa-uploader-dual-upload-zones/fact-find.md",
+        "processed_at": "2026-03-08T12:30:00.000Z",
+        "fact_find_slug": "xa-uploader-dual-upload-zones",
+        "fact_find_path": "docs/plans/xa-uploader-dual-upload-zones/fact-find.md"
+      },
+      "why": "The single upload zone conflates two distinct user intents: setting the hero/main product image vs. adding supplementary photos. Separating them into contextually-placed zones reduces cognitive load and surfaces the 'add more photos' action at the point of use — adjacent to the existing additional-images grid.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "CatalogProductImagesFields renders two ImageDropZone instances: the original above MainImagePanel, and a second above AdditionalImagesPanel (conditional on imageEntries.length > 0). Both share the same handleUpload logic but have independent fileInputRef instances and inline status feedback near the second zone.",
+        "source": "operator"
+      }
+    },
     {
       "schema_version": "dispatch.v2",
       "dispatch_id": "IDEA-DISPATCH-20260307080000-0001",
@@ -15966,6 +16063,195 @@
       "intended_outcome": {
         "type": "operational",
         "statement": "Produce a validated routing outcome and scoped next action for brikette functions lang section.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260308-XAB-NAV-001",
+      "mode": "trial",
+      "business": "XAB",
+      "trigger": "operator_idea",
+      "area_anchor": "xa-b nav taxonomy — Hermès bags-only menu revision",
+      "location_anchors": [
+        "apps/xa-b/src/lib/xaTypes.ts",
+        "apps/xa-b/src/lib/xaCatalog.ts",
+        "apps/xa-b/src/lib/siteConfig.ts",
+        "apps/xa-b/src/components/XaShell.tsx",
+        "apps/xa-b/src/components/XaMegaMenu.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "xa-b nav uses generic fashion-retail taxonomy (women/men/kids departments, clothing/bags/jewelry categories, New In/Brands/Bags secondary nav)",
+      "next_scope_now": "Replace nav taxonomy with Hermès bags-only structure: departments→iconic/everyday/mini, subcategories→Hermès bag families, secondary nav→New In/By Family/By Size, remove Brands",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P2",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "operator-stated: Hermès bags-only boutique — replace generic women/men/kids and clothing/jewelry taxonomy with Hermès bag tiers (iconic/everyday/mini) and authentic bag families"
+      ],
+      "created_at": "2026-03-08T12:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Nav taxonomy is generic fashion-retail; operator wants Hermès bags-only boutique framing with authentic Hermès bag family names across departments and subcategories.",
+      "intended_outcome": {
+        "type": "code-change",
+        "statement": "xa-b nav displays Hermès bag taxonomy: iconic/everyday/mini departments, Hermès bag families as subcategories (Birkin/Kelly/Constance/Lindy, Evelyne/Picotin/Garden Party/Herbag, Mini Kelly/Roulis/Verrou/Egée), secondary nav without Brands link.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260308104500-9401",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:BRIK:PRODUCTS:reception-theme-dark-mode-base-tokens:20260308",
+      "anchor_key": "reception-theme-dark-mode-base-tokens",
+      "cluster_key": "BRIK:PRODUCTS:reception-theme-dark-mode-base-tokens:operator:20260308",
+      "cluster_fingerprint": "reception-theme-dark-mode-base-tokens-20260308",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK reception — base semantic tokens missing dark override",
+      "location_anchors": [
+        "packages/themes/reception/tokens.css",
+        "packages/themes/base/tokens.css"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Reception forces dark mode via html.theme-dark class, but base tokens (danger, success, warning, info) only switch via @media (prefers-color-scheme: dark). On light-mode OS devices, status colors render as bright light values on dark background.",
+      "next_scope_now": "Add base token dark overrides (--color-danger, --color-success, --color-warning, --color-info and variants) to the html.theme-dark block in packages/themes/reception/tokens.css.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P2",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: theme audit found base semantic tokens missing dark mode override when OS preference is light"
+      ],
+      "created_at": "2026-03-08T10:45:00.000Z",
+      "queue_state": "skipped",
+      "skip_reason": "Bug does not exist. base/tokens.css already has html.theme-dark block (lines 299-367) covering all semantic tokens. CSS merges same-specificity selectors.",
+      "why": "Staff using light-mode OS devices see broken status colors (bright red/green/blue on dark background) because base theme tokens rely on prefers-color-scheme media query which does not match when reception forces dark via class.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "All base semantic tokens (danger, success, warning, info and their light/dark/main variants) correctly resolve to dark values on reception regardless of OS color scheme preference.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260308104500-9402",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:BRIK:PRODUCTS:reception-component-token-compliance:20260308",
+      "anchor_key": "reception-component-token-compliance",
+      "cluster_key": "BRIK:PRODUCTS:reception-component-token-compliance:operator:20260308",
+      "cluster_fingerprint": "reception-component-token-compliance-20260308",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK reception — components hardcode styles instead of tokens",
+      "location_anchors": [
+        "apps/reception/src/components/bar/",
+        "apps/reception/src/components/inbox/",
+        "packages/themes/reception/src/tokens.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Bar and inbox screens independently invent visual styles. ProductGrid ignored shade tokens, HeaderControls used bg-primary-main/95 instead of surface tokens. No consistent token consumption pattern across screens.",
+      "next_scope_now": "Investigate which components across bar, inbox, and other screens are not consuming semantic tokens, and define the correct token mapping for each visual pattern (surfaces, borders, text hierarchy).",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: theme audit found screens hardcode styles instead of consuming design tokens"
+      ],
+      "created_at": "2026-03-08T10:45:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Each reception screen reinvents its visual language with hardcoded classes rather than consuming the semantic token system. This causes visual inconsistency and makes theme changes ineffective across the app.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "All reception screens consume semantic tokens for surfaces, borders, and text hierarchy — no hardcoded color values or ad-hoc style patterns.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260308104500-9403",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:BRIK:PRODUCTS:reception-app-wide-layout-standard:20260308",
+      "anchor_key": "reception-app-wide-layout-standard",
+      "cluster_key": "BRIK:PRODUCTS:reception-app-wide-layout-standard:operator:20260308",
+      "cluster_fingerprint": "reception-app-wide-layout-standard-20260308",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK reception — no shared app-wide layout standard",
+      "location_anchors": [
+        "apps/reception/src/app/layout.tsx",
+        "apps/reception/src/components/bar/Bar.tsx",
+        "apps/reception/src/components/inbox/"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Bar uses min-h-screen gradient + nested card wrapper, inbox uses rounded-2xl bordered sections in a grid, login uses different patterns. No shared shell, navigation chrome, or standard page structure.",
+      "next_scope_now": "Investigate what shared layout structure makes sense for a staff-facing hostel operations app (navigation, page chrome, consistent screen structure) and plan the implementation.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.8,
+      "evidence_refs": [
+        "operator-stated: theme audit found each screen defines its own full-page layout independently with no shared structure"
+      ],
+      "created_at": "2026-03-08T10:45:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Staff navigate between bar, inbox, and other screens with no visual continuity — each screen looks like a different app. A shared layout standard would reduce cognitive load and reinforce the reception brand.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Reception app has a consistent page shell (navigation, header, screen structure) that all screens inherit, with screen-specific styling layered on top.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260308101000-0940",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "b9b2b20a24bb8929b3f638b550f57c162c8ef877",
+      "after_sha": "df010054f59480965204efac08a5cd2fb09e57e9",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:df010054f59480965204efac08a5cd2fb09e57e9",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:df010054f59480965204efac08a5cd2fb09e57e9",
+      "cluster_fingerprint": "435159e460bc36396fa7ba6a982276ac5024dd34f130839956d0a867a37198dc",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (b9b2b20 → df01005)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:11259565-4f98-4328-9d78-c886e61f8c7e",
+        "session:14f7aef2-5d57-4d82-a048-137a0515b9f0",
+        "session:8cdabe66-d407-4f59-ab5b-bf1f9dfb7918",
+        "session:de364e8d-fdd8-4860-8c35-b00389f9b19b",
+        "session:809f6046-3800-460c-bec0-16fe2595f597"
+      ],
+      "created_at": "2026-03-08T10:10:00.939Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
         "source": "auto"
       }
     }

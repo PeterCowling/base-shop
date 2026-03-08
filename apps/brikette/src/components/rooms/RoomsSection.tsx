@@ -10,6 +10,7 @@ import type { OctorateRoom } from "@/hooks/useAvailability";
 import type { AppLanguage } from "@/i18n.config";
 import { aggregateAvailabilityByCategory } from "@/utils/aggregateAvailabilityByCategory";
 import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
+import { readAttribution } from "@/utils/entryAttribution";
 import { createBrikClickId, fireSelectItem, type ItemListId, type RatePlan } from "@/utils/ga4-events";
 import { trackThenNavigate } from "@/utils/trackThenNavigate";
 import { translatePath } from "@/utils/translate-path";
@@ -162,6 +163,20 @@ export function RoomsSection({
       isNavigatingRef.current = false;
       unlockTimerRef.current = null;
     }, 2000);
+    // Read attribution carrier written at entry CTA click.
+    const attribution = readAttribution();
+    const attributionFields: Record<string, unknown> = attribution
+      ? {
+          entry_source_surface: attribution.source_surface,
+          entry_source_cta: attribution.source_cta,
+          entry_resolved_intent: attribution.resolved_intent,
+          ...(attribution.product_type !== null ? { entry_product_type: attribution.product_type } : {}),
+          entry_decision_mode: attribution.decision_mode,
+          entry_destination_funnel: attribution.destination_funnel,
+          entry_locale: attribution.locale,
+          entry_fallback_triggered: attribution.fallback_triggered,
+        }
+      : {};
     trackThenNavigate(
       "begin_checkout",
       {
@@ -175,6 +190,7 @@ export function RoomsSection({
         source_route: `/${props.lang ?? "en"}/dorms`,
         cta_location: "rooms_section_rate_cta",
         brik_click_id: createBrikClickId(),
+        ...attributionFields,
       },
       () => window.location.assign(ctx.targetUrl),
     );

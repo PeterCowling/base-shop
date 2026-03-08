@@ -127,6 +127,99 @@ describe("FirebaseSubscriptionCache", () => {
     expect(entry.loading).toBe(true);
   });
 
+  // TC-02: prefill populates entry before Firebase fires
+  it("subscribe with prefill: prefill data populates entry with loading:false before Firebase fires", async () => {
+    const prefill = jest.fn().mockResolvedValue({ id: 1, name: "prefill" });
+
+    const { result, rerender } = renderHook(
+      () => useFirebaseSubscriptionCache(),
+      { wrapper }
+    );
+
+    await act(async () => {
+      result.current.subscribe("prefill/path", prefill);
+      // Allow the prefill promise to resolve
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    rerender();
+
+    const entry = result.current.getEntry("prefill/path");
+    expect(entry.data).toEqual({ id: 1, name: "prefill" });
+    expect(entry.loading).toBe(false);
+    // Firebase listener should still be set up
+    expect(onValue).toHaveBeenCalledTimes(1);
+  });
+
+  // TC-03: Firebase snapshot overwrites prefill data
+  it("subscribe with prefill: Firebase snapshot overwrites prefill", async () => {
+    const prefill = jest.fn().mockResolvedValue({ fromPrefill: true });
+
+    const { result, rerender } = renderHook(
+      () => useFirebaseSubscriptionCache(),
+      { wrapper }
+    );
+
+    await act(async () => {
+      result.current.subscribe("prefill/path2", prefill);
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    // Fire Firebase listener
+    act(() => {
+      const listener = firebaseDb.__listeners.get("prefill/path2");
+      expect(listener).toBeDefined();
+      if (!listener) throw new Error("listener not found");
+      listener.cb({ exists: () => true, val: () => ({ fromFirebase: true }) });
+    });
+
+    rerender();
+
+    const entry = result.current.getEntry("prefill/path2");
+    expect(entry.data).toEqual({ fromFirebase: true });
+    expect(entry.loading).toBe(false);
+  });
+
+  // TC-04: cancelled token prevents state update after unsubscribe
+  it("subscribe with prefill: cancelled token prevents update if unsubscribed before prefill resolves", async () => {
+    let resolvePrefilll!: (value: unknown) => void;
+    const prefill = jest.fn().mockReturnValue(
+      new Promise((resolve) => {
+        resolvePrefilll = resolve;
+      })
+    );
+
+    const { result, unmount } = renderHook(
+      () => useFirebaseSubscriptionCache(),
+      { wrapper }
+    );
+
+    act(() => {
+      result.current.subscribe("prefill/path3", prefill);
+    });
+
+    // Unsubscribe immediately (before prefill resolves)
+    act(() => {
+      result.current.unsubscribe("prefill/path3");
+    });
+
+    // Now resolve the prefill
+    await act(async () => {
+      resolvePrefilll({ lateData: true });
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    // The entry should be gone (unsubscribe deletes it from cache)
+    // getEntry for an absent path returns { data: null, loading: true, error: null }
+    const entry = result.current.getEntry("prefill/path3");
+    expect(entry.data).toBeNull();
+
+    unmount();
+  });
+
   it("useFirebaseSubscription exposes cache state", () => {
     const { result, rerender, unmount } = renderHook(
       () => useFirebaseSubscription<string>("hook/path"),

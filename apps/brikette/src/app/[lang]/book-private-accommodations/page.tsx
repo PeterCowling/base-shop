@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import type { Metadata } from "next";
 
 import { Section } from "@acme/design-system/atoms";
@@ -10,9 +9,8 @@ import { generateLangParams } from "@/app/_lib/static-params";
 import PrivateAccomStructuredDataRsc from "@/components/seo/PrivateAccomStructuredDataRsc";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { getDoubleRoomBookingPath, getLocalizedSectionPath } from "@/utils/localizedRoutes";
+import { getPrivateRoomChildPath } from "@/utils/privateRoomPaths";
 import { getSlug } from "@/utils/slug";
-
-import BookPageContent from "../book/BookPageContent";
 
 type Props = {
   params: Promise<{ lang: string }>;
@@ -60,6 +58,7 @@ export default async function BookPrivateAccomodationsPage({ params }: Props) {
   const exploreLocation = t("apartment.landing.exploreLocation", { defaultValue: "" }) as string;
 
   const doubleRoomPath = getDoubleRoomBookingPath(validLang);
+  const apartmentPath = getPrivateRoomChildPath(validLang, "apartment");
 
   return (
     <>
@@ -136,10 +135,10 @@ export default async function BookPrivateAccomodationsPage({ params }: Props) {
             </ul>
             <div className="mt-6">
               <a
-                href="#book-widget"
+                href={apartmentPath}
                 className="inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-brand-primary px-5 py-2.5 text-sm font-semibold text-brand-on-primary hover:bg-brand-primary/90"
               >
-                Book the Apartment →
+                View the Apartment →
               </a>
             </div>
             {/* eslint-enable ds/no-hardcoded-copy */}
@@ -192,17 +191,6 @@ export default async function BookPrivateAccomodationsPage({ params }: Props) {
           )}
         </nav>
       </Section>
-
-      {/* Booking widget — shows both private room types */}
-      <div id="book-widget">
-        <Suspense fallback={null}>
-          <BookPageContent
-            lang={validLang}
-            heading=""
-            includedRoomIds={["double_room", "apartment"]}
-          />
-        </Suspense>
-      </div>
 
       <noscript>
         {/* eslint-disable-next-line ds/no-hardcoded-copy -- i18n-exempt: noscript-only technical fallback for no-JS users, not rendered in normal UI. TASK-08 [ttl=2026-12-31] */}

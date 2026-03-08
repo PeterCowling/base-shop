@@ -1,0 +1,44 @@
+{
+  "extends": "@acme/config/tsconfig.app.json",
+  "compilerOptions": {
+    "allowJs": false,
+    "allowImportingTsExtensions": true,
+    "baseUrl": ".",
+    "rootDir": "../..",
+    "paths": {
+      "@platform-core": [
+        "../../packages/platform-core/src/index.ts",
+        "../../packages/platform-core/dist/index"
+      ],
+      "@platform-core/*": [
+        "../../packages/platform-core/src/*",
+        "../../packages/platform-core/dist/*"
+      ],
+      "@acme/platform-core": [
+        "../../packages/platform-core/src/index.ts",
+        "../../packages/platform-core/dist/index"
+      ],
+      "@acme/platform-core/*": [
+        "../../packages/platform-core/src/*",
+        "../../packages/platform-core/dist/*"
+      ]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/**/*",
+    "src/**/*.json",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "**/__mocks__/**",
+    "**/__tests__/**",
+    "**/*.spec.*",
+    "**/*.test.*"
+  ],
+  "references": [
+    {
+      "path": "../../packages/platform-core"
+    }
+  ]
+}

@@ -1225,6 +1225,37 @@ importers:
         specifier: ^3.25.73
         version: 3.25.73
 
+  apps/inventory-uploader:
+    dependencies:
+      '@acme/next-config':
+        specifier: workspace:*
+        version: link:../../packages/next-config
+      '@acme/platform-core':
+        specifier: workspace:*
+        version: link:../../packages/platform-core
+      '@acme/tailwind-config':
+        specifier: workspace:*
+        version: link:../../packages/tailwind-config
+      '@themes/base':
+        specifier: workspace:*
+        version: link:../../packages/themes/base
+      react:
+        specifier: 19.2.1
+        version: 19.2.1
+      react-dom:
+        specifier: 19.2.1
+        version: 19.2.1(react@19.2.1)
+    devDependencies:
+      '@cloudflare/workers-types':
+        specifier: ^4.20250620.0
+        version: 4.20260123.0
+      '@opennextjs/cloudflare':
+        specifier: ^1
+        version: 1.16.5(encoding@0.1.13)(next@16.1.6(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(wrangler@4.60.0(@cloudflare/workers-types@4.20260123.0))
+      typescript:
+        specifier: ^5
+        version: 5.8.3
+
   apps/prime:
     dependencies:
       '@acme/date-utils':
@@ -1236,6 +1267,9 @@ importers:
       '@acme/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
+      '@acme/platform-core':
+        specifier: workspace:*
+        version: link:../../packages/platform-core
       '@acme/tailwind-config':
         specifier: workspace:*
         version: link:../../packages/tailwind-config

@@ -66,7 +66,7 @@ function buildContentSecurityPolicy(): string {
     "style-src 'self' 'unsafe-inline'",
     "script-src 'self' 'unsafe-inline'",
     `script-src-elem ${scriptElementSources.join(" ")}`,
-    `connect-src 'self' https://cloudflareinsights.com https://apis.google.com ${FIREBASE_CONNECT_SOURCES.join(" ")}`,
+    `connect-src 'self' https://cloudflareinsights.com https://apis.google.com https://www.google.com ${FIREBASE_CONNECT_SOURCES.join(" ")}`,
     "worker-src 'self' blob:",
     "frame-src https://accounts.google.com https://apis.google.com https://*.firebaseapp.com https://*.firebasedatabase.app",
   ].join("; ");

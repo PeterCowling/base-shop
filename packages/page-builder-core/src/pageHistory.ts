@@ -46,9 +46,9 @@ export interface PageDiffEntry {
   diff: Partial<Page>;
 }
 
-const pageSchemaObject = pageSchema as unknown as z.AnyZodObject;
+const pageSchemaObject = ((pageSchema ?? {}) as unknown) as z.AnyZodObject;
 const partialPageSchema =
-  typeof pageSchemaObject.partial === "function"
+  pageSchemaObject && typeof pageSchemaObject.partial === "function"
     ? pageSchemaObject.partial()
     : z.object({}).passthrough();
 

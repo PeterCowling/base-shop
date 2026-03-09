@@ -1,5 +1,6 @@
 ---
 Type: Critique-History
+Status: Active
 Feature-Slug: startup-loop-centralized-math-foundations
 Last-updated: 2026-03-09
 ---

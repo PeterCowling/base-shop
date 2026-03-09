@@ -1034,12 +1034,19 @@ describe("draft_generate tool TASK-06 — per-question composite ranking", () =>
     const payload = JSON.parse(result.content[0].text);
     expect(payload.composite).toBe(true);
     expect(payload.question_blocks).toHaveLength(2);
-    expect(payload.question_blocks[0].template_subject).toBe(
-      "Luggage Storage — Before Check-in"
+    expect(payload.question_blocks[0]).toEqual(
+      expect.objectContaining({
+        question: "Can we store luggage?",
+        follow_up_required: true,
+      })
     );
-    expect(payload.question_blocks[1].template_subject).toBe(
-      "Luggage Storage — Before Check-in"
+    expect(payload.question_blocks[1]).toEqual(
+      expect.objectContaining({
+        question: "Where do we leave our bags?",
+        follow_up_required: true,
+      })
     );
+    expect(payload.draft.bodyPlain).toContain("Can I store my luggage before check-in or after check-out?");
     expect(payload.draft.bodyPlain).toContain("1.");
     expect(payload.draft.bodyPlain).toContain("2.");
   });
@@ -1268,7 +1275,8 @@ describe("draft_generate tool TASK-06 — per-question composite ranking", () =>
     expect(payload.composite).toBe(true);
     expect(payload.draft.bodyPlain).toContain("1.");
     expect(payload.draft.bodyPlain).toContain("2.");
-    expect(payload.draft.bodyPlain).toContain("SECOND_BLOCK_SENTINEL");
+    expect(payload.draft.bodyPlain).toContain("Q: Is breakfast included in the rate?");
+    expect(payload.draft.bodyPlain).toContain("Complimentary WiFi throughout the property");
   });
 });
 

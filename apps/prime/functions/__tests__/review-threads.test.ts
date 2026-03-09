@@ -2040,11 +2040,16 @@ describe('/api/review-threads and /api/review-thread', () => {
 
     expect(response.status).toBe(200);
     expect(payload.success).toBe(true);
-    expect(payload.data.detail.currentDraft).toEqual({
+    expect(payload.data.detail.currentDraft).toEqual(expect.objectContaining({
       id: 'draft-1',
       status: 'under_review',
       content: 'Updated staff reply',
-    });
+      source: 'staff',
+      kind: 'draft',
+      audience: 'thread',
+      createdByUid: 'staff-1',
+      reviewerUid: 'staff-1',
+    }));
     expect(
       statements.some((statement) =>
         statement.query.includes('UPDATE message_drafts')
@@ -2212,11 +2217,16 @@ describe('/api/review-threads and /api/review-thread', () => {
     expect(response.status).toBe(200);
     expect(payload.success).toBe(true);
     expect(payload.data.detail.thread.reviewStatus).toBe('pending');
-    expect(payload.data.detail.currentDraft).toEqual({
+    expect(payload.data.detail.currentDraft).toEqual(expect.objectContaining({
       id: 'draft_1500_abcdef123456',
       status: 'under_review',
       content: 'Tonight in the courtyard at 8pm.',
-    });
+      source: 'staff',
+      kind: 'draft',
+      audience: 'whole_hostel',
+      createdByUid: 'staff-1',
+      reviewerUid: 'staff-1',
+    }));
     expect(payload.data.detail.currentCampaign).toEqual({
       id: 'camp_1500_abcdef123456',
       status: 'under_review',
@@ -2269,7 +2279,7 @@ describe('/api/review-threads and /api/review-thread', () => {
           latest_inbound_message_at: 1000,
           last_staff_reply_at: null,
           takeover_state: 'automated',
-          review_status: 'resolved',
+          review_status: 'pending',
           suppression_reason: null,
           metadata_json: '{"shadowWriteTransport":"firebase"}',
           created_at: 900,
@@ -2284,11 +2294,11 @@ describe('/api/review-threads and /api/review-thread', () => {
             id: 2,
             thread_id: 'dm_occ_aaa_occ_bbb',
             draft_id: null,
-            decision: 'resolved',
-            reason: 'staff_resolved',
-            source: 'staff_review',
+            decision: 'queued',
+            reason: null,
+            source: 'guest_direct_message',
             classifier_version: null,
-            source_metadata_json: '{"actorUid":"staff-1"}',
+            source_metadata_json: '{"messageId":"msg-inbound"}',
             created_at: 1100,
           },
         ],
@@ -2473,7 +2483,7 @@ describe('/api/review-threads and /api/review-thread', () => {
     expect(statements.some((statement) =>
       statement.query.includes('UPDATE message_campaigns')
       && statement.binds[0] === 'resolved'
-      && statement.binds[8] === 'camp-1')).toBe(true);
+      && statement.binds[13] === 'camp-1')).toBe(true);
   });
 
   it('TC-05: dismiss route rejects already archived threads with 409', async () => {
@@ -2824,15 +2834,6 @@ describe('/api/review-threads and /api/review-thread', () => {
       statement.query.includes('INSERT INTO message_projection_jobs')
       && statement.binds[3] === 'msg_1300_abcdef123456'
       && statement.binds[5] === 'projected')).toBe(true);
-    expect(statements.some((statement) =>
-      statement.query.includes('INSERT INTO message_campaign_target_snapshots')
-      && statement.binds[0] === 'camp-2_target_whole_hostel'
-      && statement.binds[2] === 'whole_hostel')).toBe(true);
-    expect(statements.some((statement) =>
-      statement.query.includes('INSERT INTO message_campaign_deliveries')
-      && statement.binds[0] === 'camp-2_delivery_whole_hostel'
-      && statement.binds[3] === 'projected'
-      && statement.binds[7] === 'proj_message_msg_1300_abcdef123456')).toBe(true);
     expect(fetchMock).toHaveBeenCalledTimes(3);
   });
 

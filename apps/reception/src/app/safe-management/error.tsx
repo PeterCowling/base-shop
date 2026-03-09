@@ -1,7 +1,7 @@
 "use client";
 
-import { RouteErrorFallback } from "../../components/error/RouteErrorFallback";
+import { RouteErrorFallback, type RouteErrorFallbackProps } from "../../components/error/RouteErrorFallback";
 
-export default function Error(props: { error: Error & { digest?: string }; reset: () => void }) {
+export default function Error(props: RouteErrorFallbackProps) {
   return <RouteErrorFallback {...props} routeName="safe management" />;
 }

@@ -14,6 +14,7 @@ import {
   getTrendingDesigners,
   XA_ALLOWED_CATEGORIES,
   XA_CATEGORY_LABELS,
+  XA_DEPARTMENT_LABELS,
   XA_SUBCATEGORIES,
 } from "../lib/xaCatalog";
 import { xaI18n } from "../lib/xaI18n";
@@ -25,7 +26,7 @@ import { XaProductCard } from "./XaProductCard";
 
 export function XaDepartmentLanding({ department }: { department: XaDepartment }) {
   const { brands, products: liveProducts } = useXaCatalogSnapshot();
-  const departmentLabel = formatLabel(department);
+  const departmentLabel = XA_DEPARTMENT_LABELS[department];
   const products = filterByDepartment(liveProducts, department);
   const newIn = [...products]
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
@@ -34,10 +35,12 @@ export function XaDepartmentLanding({ department }: { department: XaDepartment }
 
   const categoryCards = XA_ALLOWED_CATEGORIES.map((category) => {
     const catProducts = products.filter((p) => p.taxonomy.category === category);
-    const withImage = catProducts.find((p) =>
-      p.media.some((m) => m.type === "image" && m.url.trim()),
-    );
-    const image = withImage?.media.find((m) => m.type === "image" && m.url.trim());
+    let withImage: (typeof catProducts)[0] | undefined;
+    let image: (typeof catProducts)[0]["media"][0] | undefined;
+    for (const p of catProducts) {
+      const found = p.media.find((m) => m.type === "image" && m.url.trim());
+      if (found) { withImage = p; image = found; break; }
+    }
     return {
       label: XA_CATEGORY_LABELS[category],
       href: `/${department}/${category}`,

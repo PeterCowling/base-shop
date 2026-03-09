@@ -194,10 +194,7 @@ export function XaSupportDock() {
             variant="secondary"
             className={DOCK_ACTION_BUTTON_CLASS}
             aria-label="WhatsApp" // i18n-exempt -- XA-0014 [ttl=2026-12-31] channel label
-            onClick={() => {
-              if (!whatsappWithText) return;
-              openExternal(whatsappWithText);
-            }}
+            onClick={() => openExternal(whatsappWithText)}
           >
             <WhatsappIcon className="h-5 w-5" aria-hidden />
           </IconButton>
@@ -223,10 +220,7 @@ export function XaSupportDock() {
             variant="secondary"
             className={DOCK_ACTION_BUTTON_CLASS}
             aria-label="Email" // i18n-exempt -- XA-0014 [ttl=2026-12-31] channel label
-            onClick={() => {
-              if (!mailtoHref) return;
-              window.location.href = mailtoHref;
-            }}
+            onClick={() => { window.location.href = mailtoHref; }}
           >
             <EmailIcon className="h-5 w-5" aria-hidden />
           </IconButton>

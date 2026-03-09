@@ -35,23 +35,21 @@ import { xaI18n } from "../lib/xaI18n";
 import { XaMegaMenu } from "./XaMegaMenu";
 import { XaSupportDock } from "./XaSupportDock.client";
 
-const NAV_LABELS = {
-  newIn: "New In",
-} as const;
+const NEW_IN_LABEL = "New In";
+
+const categoryLinks = XA_ALLOWED_CATEGORIES.map((category) => ({
+  label: XA_CATEGORY_LABELS[category],
+  href: getCategoryHref(category),
+}));
 
 export function XaShell({ children }: { children: ReactNode }) {
   const whatsappHref = siteConfig.showSocialLinks
     ? toWhatsappHref(siteConfig.whatsappNumber) ?? undefined
     : undefined;
   const showSupportDock = siteConfig.showContactInfo || siteConfig.showSocialLinks;
-  const showSupportLinks = showSupportDock;
   const [wishlist] = useWishlist();
   const wishlistCount = wishlist.length;
   const { isDark, setMode } = useThemeMode();
-  const categoryLinks = XA_ALLOWED_CATEGORIES.map((category) => ({
-    label: XA_CATEGORY_LABELS[category],
-    href: getCategoryHref(category),
-  }));
 
   return (
     <div className="flex min-h-dvh flex-col">
@@ -126,7 +124,7 @@ export function XaShell({ children }: { children: ReactNode }) {
                     href="/new-in"
                     className="inline-flex min-h-11 min-w-11 items-center text-sm font-medium hover:underline"
                   >
-                    {NAV_LABELS.newIn}
+                    {NEW_IN_LABEL}
                   </Link>
                   {categoryLinks.map((link) => (
                     <Link
@@ -171,7 +169,7 @@ export function XaShell({ children }: { children: ReactNode }) {
 
             <div>
               <Stack gap={2}>
-                {showSupportLinks ? (
+                {showSupportDock ? (
                   <Link
                     href="/service-center"
                     className="text-xs font-semibold uppercase xa-tracking-012 text-foreground hover:text-foreground"
@@ -228,7 +226,7 @@ export function XaShell({ children }: { children: ReactNode }) {
                   >
                     About
                   </Link>
-                  {showSupportLinks ? (
+                  {showSupportDock ? (
                     <Link
                       href="/pages/contact-us"
                       className="inline-flex min-h-11 min-w-11 items-center text-sm uppercase tracking-wide text-foreground/80 hover:text-foreground"

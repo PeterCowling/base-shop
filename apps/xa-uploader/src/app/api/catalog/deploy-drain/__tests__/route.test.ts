@@ -18,7 +18,6 @@ describe("catalog deploy-drain route", () => {
     jest.clearAllMocks();
     __clearRateLimitStoreForTests();
     hasUploaderSessionMock.mockResolvedValue(false);
-    process.env.XA_UPLOADER_LOCAL_FS_DISABLED = "1";
     process.env.XA_UPLOADER_DEPLOY_DRAIN_TOKEN = "drain-secret";
     delete process.env.XA_B_DEPLOY_HOOK_URL;
     delete process.env.XA_B_DEPLOY_HOOK_REQUIRED;

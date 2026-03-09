@@ -3,18 +3,13 @@ import { NextResponse } from "next/server";
 import { slugify } from "@acme/lib/xa";
 
 import {
-  CatalogCsvStorageBusyError,
-  deleteCatalogProduct,
-  getCatalogDraftBySlug,
-} from "../../../../../lib/catalogCsv";
-import {
   CatalogDraftContractError,
   deleteProductFromCloudSnapshot,
   readCloudDraftSnapshot,
   writeCloudDraftSnapshot,
 } from "../../../../../lib/catalogDraftContractClient";
 import { parseStorefront } from "../../../../../lib/catalogStorefront.ts";
-import { isLocalFsRuntimeEnabled, localFsUnavailableResponse } from "../../../../../lib/localFsGuard";
+import { catalogContractUnavailableResponse } from "../../../../../lib/localFsGuard";
 import { getRequestIp, rateLimit, withRateHeaders } from "../../../../../lib/rateLimit";
 import { hasUploaderSession } from "../../../../../lib/uploaderAuth";
 
@@ -51,11 +46,10 @@ export async function GET(request: Request, context: { params: Promise<{ slug: s
   try {
     const { slug } = await context.params;
     const storefront = parseStorefront(new URL(request.url).searchParams.get("storefront"));
-    const product = isLocalFsRuntimeEnabled()
-      ? await getCatalogDraftBySlug(slug, storefront)
-      : (await readCloudDraftSnapshot(storefront)).products.find(
-          (entry) => slugify(entry.slug || entry.title) === slugify(slug),
-        ) ?? null;
+    const product =
+      (await readCloudDraftSnapshot(storefront)).products.find(
+        (entry) => slugify(entry.slug || entry.title) === slugify(slug),
+      ) ?? null;
     if (!product) {
       return withRateHeaders(
         NextResponse.json(
@@ -67,17 +61,8 @@ export async function GET(request: Request, context: { params: Promise<{ slug: s
     }
     return withRateHeaders(NextResponse.json({ ok: true, product }), limit);
   } catch (error) {
-    if (error instanceof CatalogCsvStorageBusyError) {
-      return withRateHeaders(
-        NextResponse.json(
-          { ok: false, error: "storage_busy", reason: "products_csv_locked" },
-          { status: 503 },
-        ),
-        limit,
-      );
-    }
     if (error instanceof CatalogDraftContractError && error.code === "unconfigured") {
-      return withRateHeaders(localFsUnavailableResponse(), limit);
+      return withRateHeaders(catalogContractUnavailableResponse(), limit);
     }
     return withRateHeaders(
       NextResponse.json(
@@ -117,50 +102,27 @@ export async function DELETE(
   const { slug } = await context.params;
   try {
     const storefront = parseStorefront(new URL(request.url).searchParams.get("storefront"));
-    if (!isLocalFsRuntimeEnabled()) {
-      const snapshot = await readCloudDraftSnapshot(storefront);
-      const removed = deleteProductFromCloudSnapshot({ slug, snapshot });
-      if (!removed.deleted) {
-        return withRateHeaders(
-          NextResponse.json(
-            { ok: false, error: "not_found", reason: "product_not_found" },
-            { status: 404 },
-          ),
-          limit,
-        );
-      }
-      await writeCloudDraftSnapshot({
-        storefront,
-        products: removed.products,
-        revisionsById: removed.revisionsById,
-        ifMatchDocRevision: snapshot.docRevision,
-      });
-      return withRateHeaders(NextResponse.json({ ok: true, deleted: true }), limit);
-    }
-
-    const result = await deleteCatalogProduct(slug, storefront);
-    if (!result.deleted) {
+    const snapshot = await readCloudDraftSnapshot(storefront);
+    const removed = deleteProductFromCloudSnapshot({ slug, snapshot });
+    if (!removed.deleted) {
       return withRateHeaders(
         NextResponse.json(
           { ok: false, error: "not_found", reason: "product_not_found" },
           { status: 404 },
         ),
         limit,
-      ); // i18n-exempt -- XAUP-0001 [ttl=2026-12-31] machine response
-    }
-    return withRateHeaders(NextResponse.json({ ok: true, deleted: true }), limit);
-  } catch (error) {
-    if (error instanceof CatalogCsvStorageBusyError) {
-      return withRateHeaders(
-        NextResponse.json(
-          { ok: false, error: "storage_busy", reason: "products_csv_locked" },
-          { status: 503 },
-        ),
-        limit,
       );
     }
+    await writeCloudDraftSnapshot({
+      storefront,
+      products: removed.products,
+      revisionsById: removed.revisionsById,
+      ifMatchDocRevision: snapshot.docRevision,
+    });
+    return withRateHeaders(NextResponse.json({ ok: true, deleted: true }), limit);
+  } catch (error) {
     if (error instanceof CatalogDraftContractError && error.code === "unconfigured") {
-      return withRateHeaders(localFsUnavailableResponse(), limit);
+      return withRateHeaders(catalogContractUnavailableResponse(), limit);
     }
     if (error instanceof CatalogDraftContractError && error.code === "conflict") {
       return withRateHeaders(

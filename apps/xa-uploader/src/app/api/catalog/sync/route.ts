@@ -1,12 +1,5 @@
-/* eslint-disable security/detect-non-literal-fs-filename -- XAUP-0001 [ttl=2026-12-31] temp paths derived from validated inputs */
-import { spawn } from "node:child_process";
-import { constants as fsConstants } from "node:fs";
-import fs from "node:fs/promises";
-import path from "node:path";
-
 import { NextResponse } from "next/server";
 
-import { toPositiveInt } from "@acme/lib";
 import {
   type CatalogProductDraftInput,
   deriveCatalogPublishState,
@@ -21,10 +14,8 @@ import {
 import {
   type CatalogPublishError,
   getCatalogContractReadiness,
-  publishCatalogArtifactsToContract,
   publishCatalogPayloadToContract,
 } from "../../../../lib/catalogContractClient";
-import { resolveXaUploaderProductsCsvPath } from "../../../../lib/catalogCsv";
 import {
   acquireCloudSyncLock,
   CatalogDraftContractError,
@@ -37,8 +28,7 @@ import {
 import { buildCatalogArtifactsFromDrafts } from "../../../../lib/catalogDraftToContract";
 import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
 import type { XaCatalogStorefront } from "../../../../lib/catalogStorefront.types";
-import { getCatalogSyncInputStatus } from "../../../../lib/catalogSyncInput";
-import { type CurrencyRates, parseCurrencyRatesOrNull } from "../../../../lib/currencyRates";
+import type { CurrencyRates } from "../../../../lib/currencyRates";
 import {
   buildDisplaySyncGuidance,
   type DeployPendingState,
@@ -47,16 +37,11 @@ import {
   isDeployHookRequired,
   maybeTriggerXaBDeploy,
   reconcileDeployPendingState,
-  resolveDeployStatePaths,
 } from "../../../../lib/deployHook";
-import { isLocalFsRuntimeEnabled } from "../../../../lib/localFsGuard";
 import { getRequestIp, rateLimit, withRateHeaders } from "../../../../lib/rateLimit";
-import { resolveRepoRoot } from "../../../../lib/repoRoot";
 import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
 import {
-  acquireSyncMutex,
   getUploaderKv,
-  releaseSyncMutex,
   type UploaderKvNamespace,
 } from "../../../../lib/syncMutex";
 import { isRecord } from "../../../../lib/typeGuards";
@@ -78,38 +63,11 @@ type SyncPayload = {
   storefront: string | null;
 };
 
-type SyncScriptId = "validate" | "sync";
-type ScriptRunResult = {
-  code: number;
-  stdout: string;
-  stderr: string;
-  timedOut: boolean;
-};
-
 const SYNC_WINDOW_MS = 60 * 1000;
 const SYNC_MAX_REQUESTS = 3;
 const SYNC_READINESS_WINDOW_MS = 60 * 1000;
 const SYNC_READINESS_MAX_REQUESTS = 30;
 const SYNC_PAYLOAD_MAX_BYTES = 24 * 1024;
-const SYNC_LOG_MAX_BYTES_DEFAULT = 128 * 1024;
-const SYNC_PUBLISH_HISTORY_MAX = 100;
-
-function getValidateTimeoutMs(): number {
-  return toPositiveInt(process.env.XA_UPLOADER_SYNC_VALIDATE_TIMEOUT_MS, 45_000, 1);
-}
-
-function getSyncTimeoutMs(): number {
-  return toPositiveInt(process.env.XA_UPLOADER_SYNC_TIMEOUT_MS, 300_000, 1);
-}
-
-function getSyncLogMaxBytes(): number {
-  return toPositiveInt(process.env.XA_UPLOADER_SYNC_LOG_MAX_BYTES, SYNC_LOG_MAX_BYTES_DEFAULT, 1);
-}
-
-function shouldExposeSyncLogs(): boolean {
-  return process.env.NODE_ENV !== "production" && process.env.XA_UPLOADER_EXPOSE_SYNC_LOGS === "1";
-}
-
 
 function parseSyncOptions(input: unknown): SyncOptions {
   if (!isRecord(input)) return {};
@@ -175,327 +133,6 @@ function getPayloadParseErrorResponse(error: unknown): NextResponse {
   return NextResponse.json({ ok: false, error: "invalid", reason: "invalid_json" }, { status: 400 });
 }
 
-async function findMissingSyncScripts(
-  scripts: Array<{ id: SyncScriptId; scriptPath: string }>,
-): Promise<SyncScriptId[]> {
-  const results = await Promise.all(
-    scripts.map(async (script) => {
-      try {
-        await fs.access(script.scriptPath, fsConstants.F_OK);
-        return null;
-      } catch {
-        return script.id;
-      }
-    }),
-  );
-  return results.filter((id): id is SyncScriptId => id !== null);
-}
-
-function getSyncScripts(repoRoot: string): Array<{ id: SyncScriptId; scriptPath: string }> {
-  return [
-    { id: "validate", scriptPath: path.join(repoRoot, "scripts", "src", "xa", "validate-xa-inputs.ts") },
-    { id: "sync", scriptPath: path.join(repoRoot, "scripts", "src", "xa", "run-xa-pipeline.ts") },
-  ];
-}
-
-async function getSyncReadiness(repoRoot: string): Promise<{
-  ready: boolean;
-  missingScripts: SyncScriptId[];
-  scripts: Array<{ id: SyncScriptId; scriptPath: string }>;
-}> {
-  const scripts = getSyncScripts(repoRoot);
-  const missingScripts = await findMissingSyncScripts(scripts);
-  return {
-    ready: missingScripts.length === 0,
-    missingScripts,
-    scripts,
-  };
-}
-
-function buildValidateArgs(productsCsvPath: string, options: SyncOptions): string[] {
-  const args = ["--products", productsCsvPath];
-  if (options.recursive) args.push("--recursive");
-  if (options.strict) args.push("--strict");
-  return args;
-}
-
-function buildSyncArgs(paths: {
-  productsCsvPath: string;
-  catalogOutPath: string;
-  mediaOutPath: string;
-  statePath: string;
-  backupDir: string;
-  options: SyncOptions;
-  currencyRatesPath?: string;
-}): string[] {
-  const args = [
-    "--products",
-    paths.productsCsvPath,
-    "--simple",
-    "--out",
-    paths.catalogOutPath,
-    "--media-out",
-    paths.mediaOutPath,
-    "--state",
-    paths.statePath,
-    "--backup",
-    "--backup-dir",
-    paths.backupDir,
-  ];
-  if (paths.options.replace) args.push("--replace");
-  if (paths.options.recursive) args.push("--recursive");
-  if (paths.options.dryRun) args.push("--dry-run");
-  if (paths.options.strict) args.push("--strict");
-  if (paths.currencyRatesPath) {
-    args.push("--currency-rates", paths.currencyRatesPath);
-  }
-  return args;
-}
-
-async function runNodeTsx(
-  repoRoot: string,
-  scriptPath: string,
-  args: string[],
-  timeoutMs: number,
-): Promise<ScriptRunResult> {
-  return await new Promise<ScriptRunResult>((resolve) => {
-    const logMaxBytes = getSyncLogMaxBytes();
-
-    const appendChunk = (
-      chunks: Buffer[],
-      chunk: Buffer,
-      state: { bytes: number },
-    ): void => {
-      if (state.bytes >= logMaxBytes) return;
-      const remaining = logMaxBytes - state.bytes;
-      const next = chunk.byteLength <= remaining ? chunk : chunk.subarray(0, remaining);
-      chunks.push(next);
-      state.bytes += next.byteLength;
-    };
-
-    const child = spawn(process.execPath, ["--import", "tsx", scriptPath, ...args], {
-      cwd: repoRoot,
-      env: process.env,
-      stdio: ["ignore", "pipe", "pipe"],
-    });
-
-    const stdoutChunks: Buffer[] = [];
-    const stderrChunks: Buffer[] = [];
-    const stdoutState = { bytes: 0 };
-    const stderrState = { bytes: 0 };
-    let timedOut = false;
-
-    const timeoutHandle = setTimeout(() => {
-      timedOut = true;
-      child.kill("SIGTERM");
-      setTimeout(() => child.kill("SIGKILL"), 5_000).unref();
-    }, timeoutMs);
-
-    child.stdout.on("data", (chunk: Buffer) => appendChunk(stdoutChunks, chunk, stdoutState));
-    child.stderr.on("data", (chunk: Buffer) => appendChunk(stderrChunks, chunk, stderrState));
-    child.on("close", (code) => {
-      clearTimeout(timeoutHandle);
-      const stdout = Buffer.concat(stdoutChunks).toString("utf8");
-      const stderr = Buffer.concat(stderrChunks).toString("utf8");
-      resolve({
-        code: timedOut ? 124 : (code ?? 1),
-        stdout,
-        stderr,
-        timedOut,
-      });
-    });
-  });
-}
-
-async function runOptionalPreValidation(params: {
-  strict: boolean;
-  repoRoot: string;
-  validateScriptPath: string;
-  validateArgs: string[];
-  startedAt: number;
-}): Promise<{ validateResult: ScriptRunResult; errorResponse: NextResponse | null }> {
-  if (!params.strict) {
-    return {
-      validateResult: {
-        code: 0,
-        // i18n-exempt -- XAUP-0001 [ttl=2026-12-31] non-UI diagnostic marker in sync logs
-        stdout: "[xa-validate] skipped (strict=false)",
-        stderr: "",
-        timedOut: false,
-      },
-      errorResponse: null,
-    };
-  }
-
-  const validateResult = await runNodeTsx(
-    params.repoRoot,
-    params.validateScriptPath,
-    params.validateArgs,
-    getValidateTimeoutMs(),
-  );
-  if (validateResult.code !== 0) {
-    return {
-      validateResult,
-      errorResponse: NextResponse.json(
-        maybeAttachLogs(
-          {
-            ok: false,
-            error: "validation_failed",
-            recovery: "review_validation_logs",
-            durationMs: Date.now() - params.startedAt,
-            timedOut: validateResult.timedOut,
-          },
-          { validate: validateResult },
-        ),
-        { status: 400 },
-      ),
-    };
-  }
-
-  return {
-    validateResult,
-    errorResponse: null,
-  };
-}
-
-
-function maybeAttachLogs<T extends Record<string, unknown>>(
-  payload: T,
-  logs: { validate: ScriptRunResult; sync?: ScriptRunResult },
-): T & { logs?: { validate: ScriptRunResult; sync?: ScriptRunResult } } {
-  if (!shouldExposeSyncLogs()) return payload;
-  return { ...payload, logs };
-}
-
-function resolveGeneratedArtifactPaths(
-  uploaderDataDir: string,
-  storefrontId: XaCatalogStorefront,
-): { catalogOutPath: string; mediaOutPath: string } {
-  const generatedDir = path.join(uploaderDataDir, "sync-artifacts", storefrontId);
-  return {
-    catalogOutPath: path.join(generatedDir, "catalog.json"),
-    mediaOutPath: path.join(generatedDir, "catalog.media.json"),
-  };
-}
-
-function getPublishHistoryPath(uploaderDataDir: string, storefrontId: XaCatalogStorefront): string {
-  return path.join(uploaderDataDir, "publish-history", `${storefrontId}.json`);
-}
-
-function getPublishHistoryMaxEntries(): number {
-  return toPositiveInt(process.env.XA_UPLOADER_PUBLISH_HISTORY_MAX, SYNC_PUBLISH_HISTORY_MAX, 1);
-}
-
-async function getCurrencyRatesStatus(currencyRatesPath: string): Promise<{
-  ok: true;
-} | {
-  ok: false;
-  reason: "currency_rates_missing" | "currency_rates_invalid";
-}> {
-  try {
-    const raw = await fs.readFile(currencyRatesPath, "utf8");
-    const parsed = JSON.parse(raw) as unknown;
-    if (parseCurrencyRatesOrNull(parsed) === null) {
-      return { ok: false, reason: "currency_rates_invalid" };
-    }
-    return { ok: true };
-  } catch (error) {
-    const err = error as NodeJS.ErrnoException;
-    if (err?.code === "ENOENT") return { ok: false, reason: "currency_rates_missing" };
-    return { ok: false, reason: "currency_rates_invalid" };
-  }
-}
-
-function buildCatalogInputGuardResponse(params: {
-  inputStatus: Awaited<ReturnType<typeof getCatalogSyncInputStatus>>;
-  confirmEmptyInput: boolean;
-  inputPath: string;
-  startedAt: number;
-}): NextResponse | null {
-  const { inputStatus, confirmEmptyInput, inputPath, startedAt } = params;
-  if (!inputStatus.exists) {
-    return NextResponse.json(
-      {
-        ok: false,
-        error: "catalog_input_missing",
-        recovery: "create_catalog_input",
-        input: {
-          exists: false,
-          rowCount: 0,
-          path: inputPath,
-        },
-        durationMs: Date.now() - startedAt,
-      },
-      { status: 409 },
-    );
-  }
-
-  if (inputStatus.rowCount === 0 && !confirmEmptyInput) {
-    return NextResponse.json(
-      {
-        ok: false,
-        error: "catalog_input_empty",
-        recovery: "confirm_empty_catalog_sync",
-        requiresConfirmation: true,
-        input: {
-          exists: inputStatus.exists,
-          rowCount: inputStatus.rowCount,
-          path: inputPath,
-        },
-        durationMs: Date.now() - startedAt,
-      },
-      { status: 409 },
-    );
-  }
-
-  return null;
-}
-
-async function recordPublishHistory(params: {
-  historyPath: string;
-  storefrontId: XaCatalogStorefront;
-  catalogOutPath: string;
-  mediaOutPath: string;
-  publishResult: { version?: string; publishedAt?: string };
-}): Promise<void> {
-  const entry = {
-    storefront: params.storefrontId,
-    version: params.publishResult.version,
-    publishedAt: params.publishResult.publishedAt,
-    recordedAt: new Date().toISOString(),
-    catalogOutPath: params.catalogOutPath,
-    mediaOutPath: params.mediaOutPath,
-  };
-  const maxEntries = getPublishHistoryMaxEntries();
-
-  let existing: { entries?: unknown } = {};
-  try {
-    existing = JSON.parse(await fs.readFile(params.historyPath, "utf8")) as { entries?: unknown };
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException)?.code !== "ENOENT") {
-      throw error;
-    }
-  }
-
-  const previousEntries = Array.isArray(existing.entries) ? existing.entries : [];
-  const entries = [...previousEntries, entry].slice(-maxEntries);
-  await fs.mkdir(path.dirname(params.historyPath), { recursive: true });
-  await fs.writeFile(
-    `${params.historyPath}.tmp`,
-    `${JSON.stringify(
-      {
-        storefront: params.storefrontId,
-        updatedAt: new Date().toISOString(),
-        entries,
-      },
-      null,
-      2,
-    )}\n`,
-    "utf8",
-  );
-  await fs.rename(`${params.historyPath}.tmp`, params.historyPath);
-}
-
 function getPublishErrorDetails(error: unknown): {
   code: string;
   status?: number;
@@ -527,44 +164,6 @@ function buildContractLockFailureResponse(params: {
   );
 }
 
-async function readGeneratedCatalogProductCount(catalogOutPath: string): Promise<number> {
-  try {
-    const catalogRaw = await fs.readFile(catalogOutPath, "utf8");
-    const parsed = JSON.parse(catalogRaw) as { products?: unknown };
-    return Array.isArray(parsed.products) ? parsed.products.length : 0;
-  } catch {
-    return 0;
-  }
-}
-
-function buildNoPublishableProductsResponse(params: {
-  inputPath: string;
-  totalDraftRows: number;
-  startedAt: number;
-  validateResult: ScriptRunResult;
-  syncResult: ScriptRunResult;
-}): NextResponse {
-  return NextResponse.json(
-    maybeAttachLogs(
-      {
-        ok: false,
-        error: "no_publishable_products",
-        recovery: "mark_products_ready",
-        requiresConfirmation: true,
-        input: {
-          exists: true,
-          rowCount: 0,
-          totalDraftRows: params.totalDraftRows,
-          path: params.inputPath,
-        },
-        durationMs: Date.now() - params.startedAt,
-      },
-      { validate: params.validateResult, sync: params.syncResult },
-    ),
-    { status: 409 },
-  );
-}
-
 function buildDeployHookUnconfiguredResponse(startedAt: number): NextResponse {
   return NextResponse.json(
     {
@@ -577,246 +176,10 @@ function buildDeployHookUnconfiguredResponse(startedAt: number): NextResponse {
   );
 }
 
-async function tryPublishArtifactsToContract(params: {
-  storefrontId: XaCatalogStorefront;
-  catalogOutPath: string;
-  mediaOutPath: string;
-  publishHistoryPath: string;
-  startedAt: number;
-  validateResult: ScriptRunResult | null;
-  syncResult: ScriptRunResult | null;
-}): Promise<
-  | { published: true; result: Awaited<ReturnType<typeof publishCatalogArtifactsToContract>> }
-  | { published: false; skipped: true }
-  | { published: false; skipped: false; errorResponse: NextResponse }
-> {
-  const contractReadiness = getCatalogContractReadiness();
-  if (!contractReadiness.configured) {
-    return { published: false, skipped: true };
-  }
-  try {
-    const publishResult = await publishCatalogArtifactsToContract({
-      storefrontId: params.storefrontId,
-      catalogOutPath: params.catalogOutPath,
-      mediaOutPath: params.mediaOutPath,
-    });
-    await recordPublishHistory({
-      historyPath: params.publishHistoryPath,
-      storefrontId: params.storefrontId,
-      catalogOutPath: params.catalogOutPath,
-      mediaOutPath: params.mediaOutPath,
-      publishResult: publishResult ?? {},
-    });
-    return { published: true, result: publishResult };
-  } catch (error) {
-    const publishError = getPublishErrorDetails(error);
-    const isUnconfigured = publishError.code === "unconfigured";
-    console.error({
-      route: "POST /api/catalog/sync",
-      error: error instanceof Error ? error.message : String(error),
-      durationMs: Date.now() - params.startedAt,
-    });
-    const failurePayload = maybeAttachLogs(
-      {
-        ok: false,
-        error: isUnconfigured ? "catalog_publish_unconfigured" : "catalog_publish_failed",
-        recovery: isUnconfigured ? "configure_catalog_contract" : "review_catalog_contract",
-        durationMs: Date.now() - params.startedAt,
-        publishStatus: publishError.status,
-        publishDetails: shouldExposeSyncLogs() ? publishError.details : undefined,
-      },
-      { validate: params.validateResult, sync: params.syncResult },
-    );
-    return {
-      published: false,
-      skipped: false,
-      errorResponse: NextResponse.json(failurePayload, { status: isUnconfigured ? 503 : 502 }),
-    };
-  }
-}
-
-async function runSyncPipeline(params: {
-  repoRoot: string;
-  storefrontId: XaCatalogStorefront;
-  payload: SyncPayload;
-  startedAt: number;
-  kv: UploaderKvNamespace | null;
-}): Promise<NextResponse> {
-  const { repoRoot, storefrontId, payload, startedAt, kv } = params;
-  const productsCsvPath = resolveXaUploaderProductsCsvPath(storefrontId);
-  const uploaderDataDir = path.join(repoRoot, "apps", "xa-uploader", "data");
-  const currencyRatesPath = path.join(uploaderDataDir, "currency-rates.json");
-  const statePath = path.join(uploaderDataDir, `.xa-upload-state.${storefrontId}.json`);
-  const backupDir = path.join(uploaderDataDir, "backups", storefrontId);
-  const publishHistoryPath = getPublishHistoryPath(uploaderDataDir, storefrontId);
-  const deployStatePaths = resolveDeployStatePaths(uploaderDataDir, storefrontId);
-  await fs.mkdir(uploaderDataDir, { recursive: true });
-  await fs.mkdir(backupDir, { recursive: true });
-
-  const { catalogOutPath, mediaOutPath } = resolveGeneratedArtifactPaths(uploaderDataDir, storefrontId);
-  await fs.mkdir(path.dirname(catalogOutPath), { recursive: true });
-
-  const [inputStatus, currencyRatesStatus, syncReadiness] = await Promise.all([
-    getCatalogSyncInputStatus(productsCsvPath),
-    getCurrencyRatesStatus(currencyRatesPath),
-    getSyncReadiness(repoRoot),
-  ]);
-
-  const inputGuardResponse = buildCatalogInputGuardResponse({
-    inputStatus,
-    confirmEmptyInput: payload.options.confirmEmptyInput === true,
-    inputPath: productsCsvPath,
-    startedAt,
-  });
-  if (inputGuardResponse) {
-    return inputGuardResponse;
-  }
-
-  if ("reason" in currencyRatesStatus) {
-    return NextResponse.json(
-      {
-        ok: false,
-        error: currencyRatesStatus.reason,
-        recovery: "save_currency_rates",
-        currencyRatesPath,
-        durationMs: Date.now() - startedAt,
-      },
-      { status: 409 },
-    );
-  }
-
-  if (!syncReadiness.ready) {
-    return NextResponse.json(
-      {
-        ok: false,
-        error: "sync_dependencies_missing",
-        recovery: "restore_sync_scripts",
-        missingScripts: syncReadiness.missingScripts,
-        durationMs: Date.now() - startedAt,
-      },
-      { status: 500 },
-    );
-  }
-
-  const scriptPaths = Object.fromEntries(syncReadiness.scripts.map((script) => [script.id, script.scriptPath])) as {
-    validate: string;
-    sync: string;
-  };
-  const validateArgs = buildValidateArgs(productsCsvPath, payload.options);
-  const syncArgs = buildSyncArgs({
-    productsCsvPath,
-    catalogOutPath,
-    mediaOutPath,
-    statePath,
-    backupDir,
-    options: payload.options,
-    currencyRatesPath,
-  });
-
-  const preValidation = await runOptionalPreValidation({
-    strict: payload.options.strict === true,
-    repoRoot,
-    validateScriptPath: scriptPaths.validate,
-    validateArgs,
-    startedAt,
-  });
-  if (preValidation.errorResponse) {
-    return preValidation.errorResponse;
-  }
-  const { validateResult } = preValidation;
-
-  const syncResult = await runNodeTsx(repoRoot, scriptPaths.sync, syncArgs, getSyncTimeoutMs());
-  if (syncResult.code !== 0) {
-    return NextResponse.json(
-      maybeAttachLogs(
-        {
-          ok: false,
-          error: "sync_failed",
-          recovery: "review_sync_logs",
-          durationMs: Date.now() - startedAt,
-          timedOut: syncResult.timedOut,
-        },
-        { validate: validateResult, sync: syncResult },
-      ),
-      { status: 400 },
-    );
-  }
-
-  const publishableCount = await readGeneratedCatalogProductCount(catalogOutPath);
-  if (publishableCount === 0 && inputStatus.rowCount > 0 && !payload.options.confirmEmptyInput) {
-    return buildNoPublishableProductsResponse({
-      inputPath: productsCsvPath,
-      totalDraftRows: inputStatus.rowCount,
-      startedAt,
-      validateResult,
-      syncResult,
-    });
-  }
-
-  let publishResult: Awaited<ReturnType<typeof publishCatalogArtifactsToContract>> | null = null;
-  let publishSkipped = false;
-  let deployResult: DeployTriggerResult | undefined;
-  let deployPending: DeployPendingState | null = null;
-  if (!payload.options.dryRun) {
-    const contractReadiness = getCatalogContractReadiness();
-    if (contractReadiness.configured && isDeployHookRequired() && !isDeployHookConfigured()) {
-      return buildDeployHookUnconfiguredResponse(startedAt);
-    }
-
-    const outcome = await tryPublishArtifactsToContract({
-      storefrontId,
-      catalogOutPath,
-      mediaOutPath,
-      publishHistoryPath,
-      startedAt,
-      validateResult,
-      syncResult,
-    });
-    if ("result" in outcome) {
-      publishResult = outcome.result;
-    } else if ("errorResponse" in outcome) {
-      return outcome.errorResponse;
-    } else {
-      publishSkipped = true;
-    }
-
-    if (publishResult) {
-      deployResult = await maybeTriggerXaBDeploy({
-        storefrontId,
-        kv,
-        statePaths: deployStatePaths,
-      });
-      deployPending = await reconcileDeployPendingState({
-        storefrontId,
-        kv,
-        result: deployResult,
-        statePaths: deployStatePaths,
-      }).catch(() => null);
-    }
-  }
-
-  return NextResponse.json(
-    maybeAttachLogs(
-      {
-        ok: true,
-        durationMs: Date.now() - startedAt,
-        dryRun: Boolean(payload.options.dryRun),
-        publishSkipped: publishSkipped || undefined,
-        publishedVersion: publishResult?.version,
-        publishedAt: publishResult?.publishedAt,
-        deploy: deployResult,
-        deployPending: deployPending ?? undefined,
-        display: buildDisplaySyncGuidance(deployResult, deployPending),
-      },
-      { validate: validateResult, sync: syncResult },
-    ),
-  );
-}
 
 async function finalizeCloudPublishStateAndDeploy(params: {
   storefrontId: XaCatalogStorefront;
   snapshot: Awaited<ReturnType<typeof readCloudDraftSnapshot>>;
-  publishableProducts: CatalogProductDraftInput[];
   kv: UploaderKvNamespace | null;
   warnings: string[];
 }): Promise<{ deployResult: DeployTriggerResult; deployPending: DeployPendingState | null }> {
@@ -996,7 +359,6 @@ async function completeCloudPublishAndDeploy(params: {
       const publishFinalize = await finalizeCloudPublishStateAndDeploy({
         storefrontId: params.storefrontId,
         snapshot: params.snapshot,
-        publishableProducts: params.publishableProducts,
         kv: params.kv,
         warnings: params.warnings,
       });
@@ -1166,80 +528,36 @@ export async function POST(request: Request) {
   }
 
   const startedAt = Date.now();
-  const repoRoot = resolveRepoRoot();
-
   const storefrontId = parseStorefront(payload.storefront);
-  const localFsRuntimeEnabled = isLocalFsRuntimeEnabled();
 
   const kv = await getUploaderKv();
-  let mutexAcquired = false;
   let cloudSyncLock: CloudSyncLockLease | null = null;
-
-  if (localFsRuntimeEnabled) {
-    if (kv) {
-      try {
-        const acquired = await acquireSyncMutex(kv, storefrontId);
-        if (!acquired) {
-          return withRateHeaders(
-            NextResponse.json(
-              { ok: false, error: "conflict", reason: "sync_already_running" },
-              { status: 409 },
-            ),
-            limit,
-          ); // i18n-exempt -- XAUP-0001 [ttl=2026-12-31] machine response
-        }
-        mutexAcquired = true;
-      } catch {
-        // KV acquire failed — fail open. Log warning; sync proceeds without mutex.
-        console.warn({
-          route: "POST /api/catalog/sync",
-          warning: "mutex_acquire_failed_kv_unavailable",
-        });
-      }
+  try {
+    const acquired = await acquireCloudSyncLock(storefrontId);
+    if (acquired.status === "busy") {
+      return withRateHeaders(
+        NextResponse.json(
+          { ok: false, error: "conflict", reason: "sync_already_running" },
+          { status: 409 },
+        ),
+        limit,
+      );
     }
-  } else {
-    try {
-      const acquired = await acquireCloudSyncLock(storefrontId);
-      if (acquired.status === "busy") {
-        return withRateHeaders(
-          NextResponse.json(
-            { ok: false, error: "conflict", reason: "sync_already_running" },
-            { status: 409 },
-          ),
-          limit,
-        );
-      }
-      cloudSyncLock = acquired.lock;
-    } catch (error) {
-      return withRateHeaders(buildContractLockFailureResponse({ error, startedAt }), limit);
-    }
+    cloudSyncLock = acquired.lock;
+  } catch (error) {
+    return withRateHeaders(buildContractLockFailureResponse({ error, startedAt }), limit);
   }
 
   let response: NextResponse;
   try {
-    response = localFsRuntimeEnabled
-      ? await runSyncPipeline({
-          repoRoot,
-          storefrontId,
-          payload,
-          startedAt,
-          kv,
-        })
-      : await runCloudSyncPipeline({
-          storefrontId,
-          payload,
-          startedAt,
-          kv,
-        });
+    response = await runCloudSyncPipeline({
+      storefrontId,
+      payload,
+      startedAt,
+      kv,
+    });
   } finally {
-    if (localFsRuntimeEnabled && kv && mutexAcquired) {
-      try {
-        await releaseSyncMutex(kv, storefrontId);
-      } catch {
-        // Release failure is non-fatal — TTL will self-expire in 5 minutes.
-      }
-    }
-    if (!localFsRuntimeEnabled && cloudSyncLock) {
+    if (cloudSyncLock) {
       await releaseCloudSyncLock(cloudSyncLock).catch(() => null);
     }
   }
@@ -1269,45 +587,69 @@ export async function GET(request: Request) {
     );
   }
 
-  if (!isLocalFsRuntimeEnabled()) {
-    const contractReadiness = getCatalogContractReadiness();
+  const contractReadiness = getCatalogContractReadiness();
+  if (!contractReadiness.configured) {
     return withRateHeaders(
       NextResponse.json({
         ok: true,
-        ready: contractReadiness.configured,
+        ready: false,
         missingScripts: [],
-        contractConfigured: contractReadiness.configured,
+        contractConfigured: false,
         contractConfigErrors: contractReadiness.errors,
         mode: "cloud",
-        recovery: contractReadiness.configured ? undefined : "configure_catalog_contract",
+        recovery: "configure_catalog_contract",
         checkedAt: new Date().toISOString(),
       }),
       limit,
     );
   }
 
-  const repoRoot = resolveRepoRoot();
   const storefront = new URL(request.url).searchParams.get("storefront");
   const storefrontId = parseStorefront(storefront);
-  const syncReadiness = await getSyncReadiness(repoRoot);
-  const contractReadiness = getCatalogContractReadiness();
-
-  return withRateHeaders(
-    NextResponse.json({
-      ok: true,
-      storefront: storefrontId,
-      ready: syncReadiness.ready,
-      missingScripts: syncReadiness.missingScripts,
-      contractConfigured: contractReadiness.configured,
-      contractConfigErrors: contractReadiness.errors,
-      mode: "local",
-      recovery: !syncReadiness.ready
-        ? "restore_sync_scripts"
-        : !contractReadiness.configured
-          ? "configure_catalog_contract"
-          : undefined,
-      checkedAt: new Date().toISOString(),
-    }),
-    limit,
-  );
+  try {
+    const currencyRates = await readCloudCurrencyRates(storefrontId);
+    const ready = currencyRates !== null;
+    return withRateHeaders(
+      NextResponse.json({
+        ok: true,
+        ready,
+        missingScripts: [],
+        contractConfigured: true,
+        contractConfigErrors: [],
+        mode: "cloud",
+        recovery: ready ? undefined : "save_currency_rates",
+        checkedAt: new Date().toISOString(),
+      }),
+      limit,
+    );
+  } catch (error) {
+    if (error instanceof CatalogDraftContractError && error.code === "invalid_response") {
+      return withRateHeaders(
+        NextResponse.json({
+          ok: true,
+          ready: false,
+          missingScripts: [],
+          contractConfigured: true,
+          contractConfigErrors: [],
+          mode: "cloud",
+          recovery: "save_currency_rates",
+          checkedAt: new Date().toISOString(),
+        }),
+        limit,
+      );
+    }
+    return withRateHeaders(
+      NextResponse.json({
+        ok: true,
+        ready: false,
+        missingScripts: [],
+        contractConfigured: true,
+        contractConfigErrors: [],
+        mode: "cloud",
+        recovery: "review_catalog_contract",
+        checkedAt: new Date().toISOString(),
+      }),
+      limit,
+    );
+  }
 }

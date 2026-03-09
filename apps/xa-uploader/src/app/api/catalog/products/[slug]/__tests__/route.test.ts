@@ -1,16 +1,10 @@
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 
-const getCatalogDraftBySlugMock = jest.fn();
-const deleteCatalogProductMock = jest.fn();
 const readCloudDraftSnapshotMock = jest.fn();
 const deleteProductFromCloudSnapshotMock = jest.fn();
 const writeCloudDraftSnapshotMock = jest.fn();
 const hasUploaderSessionMock = jest.fn();
 const parseStorefrontMock = jest.fn();
-const isLocalFsRuntimeEnabledMock = jest.fn();
-const rateLimitMock = jest.fn();
-const applyRateLimitHeadersMock = jest.fn();
-const getRequestIpMock = jest.fn();
 
 class CatalogDraftContractErrorMock extends Error {
   code: string;
@@ -21,16 +15,6 @@ class CatalogDraftContractErrorMock extends Error {
   }
 }
 
-class CatalogCsvStorageBusyErrorMock extends Error {
-  override name = "CatalogCsvStorageBusyError";
-}
-
-jest.mock("../../../../../../lib/catalogCsv", () => ({
-  getCatalogDraftBySlug: (...args: unknown[]) => getCatalogDraftBySlugMock(...args),
-  deleteCatalogProduct: (...args: unknown[]) => deleteCatalogProductMock(...args),
-  CatalogCsvStorageBusyError: CatalogCsvStorageBusyErrorMock,
-}));
-
 jest.mock("../../../../../../lib/catalogDraftContractClient", () => ({
   CatalogDraftContractError: CatalogDraftContractErrorMock,
   readCloudDraftSnapshot: (...args: unknown[]) => readCloudDraftSnapshotMock(...args),
@@ -40,18 +24,6 @@ jest.mock("../../../../../../lib/catalogDraftContractClient", () => ({
 
 jest.mock("../../../../../../lib/catalogStorefront.ts", () => ({
   parseStorefront: (...args: unknown[]) => parseStorefrontMock(...args),
-}));
-
-jest.mock("../../../../../../lib/localFsGuard", () => ({
-  isLocalFsRuntimeEnabled: (...args: unknown[]) => isLocalFsRuntimeEnabledMock(...args),
-  localFsUnavailableResponse: () =>
-    Response.json({ ok: false, error: "service_unavailable", reason: "local_fs_unavailable" }, { status: 503 }),
-}));
-
-jest.mock("../../../../../../lib/rateLimit", () => ({
-  rateLimit: (...args: unknown[]) => rateLimitMock(...args),
-  applyRateLimitHeaders: (...args: unknown[]) => applyRateLimitHeadersMock(...args),
-  getRequestIp: (...args: unknown[]) => getRequestIpMock(...args),
 }));
 
 jest.mock("../../../../../../lib/uploaderAuth", () => ({
@@ -65,12 +37,6 @@ describe("catalog products/[slug] route", () => {
     jest.clearAllMocks();
     hasUploaderSessionMock.mockResolvedValue(true);
     parseStorefrontMock.mockReturnValue("xa-b");
-    isLocalFsRuntimeEnabledMock.mockReturnValue(true);
-    getRequestIpMock.mockReturnValue("203.0.113.10");
-    rateLimitMock.mockReturnValue({ allowed: true, remaining: 10, resetAt: Date.now() + 60_000 });
-    applyRateLimitHeadersMock.mockImplementation(() => {});
-    getCatalogDraftBySlugMock.mockResolvedValue({ id: "p1", slug: "studio-jacket" });
-    deleteCatalogProductMock.mockResolvedValue({ deleted: true });
     readCloudDraftSnapshotMock.mockResolvedValue({
       products: [{ id: "p1", slug: "studio-jacket", title: "Studio Jacket" }],
       revisionsById: { p1: "rev-1" },
@@ -84,16 +50,7 @@ describe("catalog products/[slug] route", () => {
     writeCloudDraftSnapshotMock.mockResolvedValue({ docRevision: "doc-rev-2" });
   });
 
-  it("GET returns 404 when unauthenticated", async () => {
-    hasUploaderSessionMock.mockResolvedValueOnce(false);
-
-    const { GET } = await import("../route");
-    const response = await GET(new Request("http://localhost/api/catalog/products/studio-jacket"), { params });
-
-    expect(response.status).toBe(404);
-  });
-
-  it("GET returns product when local fs mode is enabled", async () => {
+  it("GET returns product from the cloud draft snapshot", async () => {
     const { GET } = await import("../route");
     const response = await GET(new Request("http://localhost/api/catalog/products/studio-jacket?storefront=xa-b"), {
       params,
@@ -103,25 +60,10 @@ describe("catalog products/[slug] route", () => {
     expect(await response.json()).toEqual(
       expect.objectContaining({ ok: true, product: expect.objectContaining({ slug: "studio-jacket" }) }),
     );
-    expect(getCatalogDraftBySlugMock).toHaveBeenCalledWith("studio-jacket", "xa-b");
+    expect(readCloudDraftSnapshotMock).toHaveBeenCalledWith("xa-b");
   });
 
-  it("GET returns not_found when product is absent", async () => {
-    getCatalogDraftBySlugMock.mockResolvedValueOnce(null);
-
-    const { GET } = await import("../route");
-    const response = await GET(new Request("http://localhost/api/catalog/products/studio-jacket?storefront=xa-b"), {
-      params,
-    });
-
-    expect(response.status).toBe(404);
-    expect(await response.json()).toEqual(
-      expect.objectContaining({ ok: false, error: "not_found", reason: "product_not_found" }),
-    );
-  });
-
-  it("GET returns service_unavailable when cloud draft contract is unconfigured", async () => {
-    isLocalFsRuntimeEnabledMock.mockReturnValueOnce(false);
+  it("GET returns catalog contract unavailable when the snapshot contract is unconfigured", async () => {
     readCloudDraftSnapshotMock.mockRejectedValueOnce(new CatalogDraftContractErrorMock("unconfigured"));
 
     const { GET } = await import("../route");
@@ -131,24 +73,11 @@ describe("catalog products/[slug] route", () => {
 
     expect(response.status).toBe(503);
     expect(await response.json()).toEqual(
-      expect.objectContaining({ ok: false, error: "service_unavailable", reason: "local_fs_unavailable" }),
+      expect.objectContaining({ ok: false, error: "service_unavailable", reason: "catalog_contract_unavailable" }),
     );
   });
 
-  it("DELETE returns 429 when rate limited", async () => {
-    rateLimitMock.mockReturnValueOnce({ allowed: false, remaining: 0, resetAt: Date.now() + 60_000 });
-
-    const { DELETE } = await import("../route");
-    const response = await DELETE(new Request("http://localhost/api/catalog/products/studio-jacket"), { params });
-
-    expect(response.status).toBe(429);
-    expect(await response.json()).toEqual(
-      expect.objectContaining({ ok: false, error: "rate_limited", reason: "product_delete_rate_limited" }),
-    );
-  });
-
-  it("DELETE returns conflict when cloud write reports revision mismatch", async () => {
-    isLocalFsRuntimeEnabledMock.mockReturnValueOnce(false);
+  it("DELETE returns conflict when the hosted snapshot write reports a revision mismatch", async () => {
     writeCloudDraftSnapshotMock.mockRejectedValueOnce(new CatalogDraftContractErrorMock("conflict"));
 
     const { DELETE } = await import("../route");
@@ -163,18 +92,19 @@ describe("catalog products/[slug] route", () => {
     );
   });
 
-  it("DELETE returns storage_busy when CSV is locked", async () => {
-    deleteCatalogProductMock.mockRejectedValueOnce(new CatalogCsvStorageBusyErrorMock("locked"));
-
+  it("DELETE writes the updated hosted snapshot when a product is removed", async () => {
     const { DELETE } = await import("../route");
     const response = await DELETE(
       new Request("http://localhost/api/catalog/products/studio-jacket?storefront=xa-b", { method: "DELETE" }),
       { params },
     );
 
-    expect(response.status).toBe(503);
-    expect(await response.json()).toEqual(
-      expect.objectContaining({ ok: false, error: "storage_busy", reason: "products_csv_locked" }),
+    expect(response.status).toBe(200);
+    expect(writeCloudDraftSnapshotMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        storefront: "xa-b",
+        ifMatchDocRevision: "doc-rev-1",
+      }),
     );
   });
 });

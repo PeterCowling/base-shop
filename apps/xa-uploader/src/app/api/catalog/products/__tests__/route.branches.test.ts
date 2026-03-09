@@ -1,7 +1,5 @@
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 
-const listCatalogDraftsMock = jest.fn();
-const upsertCatalogDraftMock = jest.fn();
 const readCloudDraftSnapshotMock = jest.fn();
 const upsertProductInCloudSnapshotMock = jest.fn();
 const writeCloudDraftSnapshotMock = jest.fn();
@@ -14,13 +12,6 @@ const readJsonBodyWithLimitMock = jest.fn();
 
 class InvalidJsonErrorMock extends Error {}
 class PayloadTooLargeErrorMock extends Error {}
-
-jest.mock("../../../../../lib/catalogCsv", () => ({
-  listCatalogDrafts: (...args: unknown[]) => listCatalogDraftsMock(...args),
-  upsertCatalogDraft: (...args: unknown[]) => upsertCatalogDraftMock(...args),
-  CatalogCsvConflictError: class extends Error {},
-  CatalogCsvStorageBusyError: class extends Error {},
-}));
 
 jest.mock("../../../../../lib/catalogDraftContractClient", () => ({
   CatalogDraftConflictError: class extends Error {},
@@ -64,10 +55,12 @@ describe("catalog products route branch coverage", () => {
     getRequestIpMock.mockReturnValue("203.0.113.10");
     rateLimitMock.mockReturnValue({ allowed: true, remaining: 5, resetAt: Date.now() + 60_000 });
     applyRateLimitHeadersMock.mockImplementation(() => {});
-    listCatalogDraftsMock.mockResolvedValue({ products: [{ slug: "p1" }], revisionsById: { p1: "rev-1" } });
     readJsonBodyWithLimitMock.mockResolvedValue({ product: { title: "x", slug: "x" } });
-    upsertCatalogDraftMock.mockResolvedValue({ product: { slug: "x" }, revision: "rev-2" });
-    readCloudDraftSnapshotMock.mockResolvedValue({ products: [], revisionsById: {}, docRevision: "doc-rev-1" });
+    readCloudDraftSnapshotMock.mockResolvedValue({
+      products: [{ slug: "p1" }],
+      revisionsById: { p1: "rev-1" },
+      docRevision: "doc-rev-1",
+    });
     upsertProductInCloudSnapshotMock.mockReturnValue({
       product: { slug: "x", id: "p1" },
       revision: "rev-2",

@@ -1,6 +1,3 @@
-import fs from "node:fs/promises";
-import path from "node:path";
-
 import { NextResponse } from "next/server";
 
 import {
@@ -9,13 +6,8 @@ import {
   writeCloudCurrencyRates,
 } from "../../../../lib/catalogDraftContractClient";
 import { DEFAULT_STOREFRONT } from "../../../../lib/catalogStorefront";
-import {
-  serializeCurrencyRates,
-  validateCurrencyRatesInput,
-} from "../../../../lib/currencyRates";
-import { isLocalFsRuntimeEnabled } from "../../../../lib/localFsGuard";
+import { validateCurrencyRatesInput } from "../../../../lib/currencyRates";
 import { getRequestIp, rateLimit, withRateHeaders } from "../../../../lib/rateLimit";
-import { resolveRepoRoot } from "../../../../lib/repoRoot";
 import { PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
 import { isRecord } from "../../../../lib/typeGuards";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
@@ -31,10 +23,6 @@ const GET_MAX_REQUESTS = 60;
 const PUT_WINDOW_MS = 60 * 1000;
 const PUT_MAX_REQUESTS = 20;
 const PUT_MAX_BYTES = 4 * 1024;
-
-const uploaderDataDir = path.join(resolveRepoRoot(), "apps", "xa-uploader", "data");
-const ratesFilePath = path.join(uploaderDataDir, "currency-rates.json");
-
 
 function buildErrorResponse(
   error:
@@ -70,35 +58,9 @@ export async function GET(request: Request) {
   }
 
   try {
-    if (!isLocalFsRuntimeEnabled()) {
-      const rates = await readCloudCurrencyRates(DEFAULT_STOREFRONT);
-      return withRateHeaders(NextResponse.json({ ok: true, rates }), limit);
-    }
-
-    // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-118 controlled path rooted to repo-local uploader data dir
-    const raw = await fs.readFile(ratesFilePath, "utf8");
-    try {
-      const parsed = JSON.parse(raw) as unknown;
-      const validated = validateCurrencyRatesInput(parsed);
-      if (validated.ok === false) {
-        console.warn(`[xa-uploader] currency-rates.json invalid shape: ${validated.reason}`);
-        return withRateHeaders(
-          buildErrorResponse("invalid_rates", 409, "currency_rates_invalid"),
-          limit,
-        );
-      }
-      return withRateHeaders(NextResponse.json({ ok: true, rates: validated.rates }), limit);
-    } catch (error) {
-      console.warn("[xa-uploader] failed to parse currency-rates.json", error);
-      return withRateHeaders(
-        buildErrorResponse("invalid_rates", 409, "currency_rates_invalid"),
-        limit,
-      );
-    }
+    const rates = await readCloudCurrencyRates(DEFAULT_STOREFRONT);
+    return withRateHeaders(NextResponse.json({ ok: true, rates }), limit);
   } catch (error) {
-    if ((error as NodeJS.ErrnoException | undefined)?.code === "ENOENT") {
-      return withRateHeaders(NextResponse.json({ ok: true, rates: null }), limit);
-    }
     if (error instanceof CatalogDraftContractError) {
       const isInvalidRates = error.code === "invalid_response";
       return withRateHeaders(
@@ -162,21 +124,10 @@ export async function PUT(request: Request) {
   }
 
   try {
-    if (!isLocalFsRuntimeEnabled()) {
-      await writeCloudCurrencyRates({
-        storefront: DEFAULT_STOREFRONT,
-        rates: validated.rates,
-      });
-      return withRateHeaders(NextResponse.json({ ok: true }), limit);
-    }
-
-    const tmpPath = `${ratesFilePath}.tmp`;
-    // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-118 controlled path rooted to repo-local uploader data dir
-    await fs.mkdir(uploaderDataDir, { recursive: true });
-    // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-118 controlled path rooted to repo-local uploader data dir
-    await fs.writeFile(tmpPath, serializeCurrencyRates(validated.rates), "utf8");
-    // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-118 controlled path rooted to repo-local uploader data dir
-    await fs.rename(tmpPath, ratesFilePath);
+    await writeCloudCurrencyRates({
+      storefront: DEFAULT_STOREFRONT,
+      rates: validated.rates,
+    });
     return withRateHeaders(NextResponse.json({ ok: true }), limit);
   } catch (error) {
     if (error instanceof CatalogDraftContractError) {

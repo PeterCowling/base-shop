@@ -1,5 +1,4 @@
 import crypto from "node:crypto";
-import path from "node:path";
 
 import { NextResponse } from "next/server";
 
@@ -11,11 +10,8 @@ import {
   maybeTriggerXaBDeploy,
   readDeployPendingState,
   reconcileDeployPendingState,
-  resolveDeployStatePaths,
 } from "../../../../lib/deployHook";
-import { isLocalFsRuntimeEnabled } from "../../../../lib/localFsGuard";
 import { getRequestIp, rateLimit, withRateHeaders } from "../../../../lib/rateLimit";
-import { resolveRepoRoot } from "../../../../lib/repoRoot";
 import { getUploaderKv } from "../../../../lib/syncMutex";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
 import { XA_UPLOADER_DEPLOY_DRAIN_TOKEN_ENV } from "../../../../lib/uploaderRuntimeConfig";
@@ -97,13 +93,7 @@ export async function POST(request: Request) {
   const storefront = new URL(request.url).searchParams.get("storefront");
   const storefrontId = parseStorefront(storefront);
   const kv = await getUploaderKv();
-
-  const statePaths = isLocalFsRuntimeEnabled()
-    ? resolveDeployStatePaths(
-        path.join(resolveRepoRoot(), "apps", "xa-uploader", "data"),
-        storefrontId,
-      )
-    : undefined;
+  const statePaths = undefined;
 
   const pendingBefore = await readDeployPendingState({
     storefrontId,

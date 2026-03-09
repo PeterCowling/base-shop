@@ -223,7 +223,7 @@ describe("catalog images route", () => {
     expect(body.error).toBe("upload_failed");
   });
 
-  it("TC-09: R2 bucket unavailable falls back to local file write", async () => {
+  it("TC-09: R2 bucket unavailable returns 503 r2_unavailable", async () => {
     getMediaBucketMock.mockResolvedValue(null);
     const { POST } = await import("../route");
     const request = makeFormDataRequest(makeValidFile(), {
@@ -234,9 +234,9 @@ describe("catalog images route", () => {
     const response = await POST(request);
     const body = await response.json();
 
-    expect(response.status).toBe(200);
-    expect(body.ok).toBe(true);
-    expect(String(body.key)).toMatch(/^images\/test\/\d+-[a-f0-9]{12}\.png$/);
+    expect(response.status).toBe(503);
+    expect(body.ok).toBe(false);
+    expect(body.error).toBe("r2_unavailable");
   });
 
   it("TC-10: same-millisecond uploads for same slug generate different keys", async () => {

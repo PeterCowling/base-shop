@@ -14,8 +14,6 @@ const getMediaBucketMock = jest.fn();
 const maybeTriggerXaBDeployMock = jest.fn();
 const reconcileDeployPendingStateMock = jest.fn();
 const getUploaderKvMock = jest.fn();
-const isLocalFsRuntimeEnabledMock = jest.fn();
-const resolveRepoRootMock = jest.fn();
 
 const kvNamespaceMock = {
   get: jest.fn(),
@@ -77,18 +75,9 @@ jest.mock("../../../../../lib/syncMutex", () => ({
   getUploaderKv: (...args: unknown[]) => getUploaderKvMock(...args),
 }));
 
-jest.mock("../../../../../lib/localFsGuard", () => ({
-  isLocalFsRuntimeEnabled: (...args: unknown[]) => isLocalFsRuntimeEnabledMock(...args),
-}));
-
-jest.mock("../../../../../lib/repoRoot", () => ({
-  resolveRepoRoot: (...args: unknown[]) => resolveRepoRootMock(...args),
-}));
-
 jest.mock("../../../../../lib/deployHook", () => ({
   maybeTriggerXaBDeploy: (...args: unknown[]) => maybeTriggerXaBDeployMock(...args),
   reconcileDeployPendingState: (...args: unknown[]) => reconcileDeployPendingStateMock(...args),
-  resolveDeployStatePaths: jest.requireActual("../../../../../lib/deployHook").resolveDeployStatePaths,
 }));
 
 describe("catalog publish route", () => {
@@ -122,8 +111,6 @@ describe("catalog publish route", () => {
     maybeTriggerXaBDeployMock.mockResolvedValue({ status: "triggered" });
     reconcileDeployPendingStateMock.mockResolvedValue(null);
     getUploaderKvMock.mockResolvedValue(kvNamespaceMock);
-    isLocalFsRuntimeEnabledMock.mockReturnValue(true);
-    resolveRepoRootMock.mockReturnValue("/repo");
   });
 
   afterEach(() => {
@@ -168,10 +155,7 @@ describe("catalog publish route", () => {
     expect(reconcileDeployPendingStateMock).toHaveBeenCalledWith({
       storefrontId: "xa-b",
       kv: kvNamespaceMock,
-      statePaths: {
-        cooldownStatePath: "/repo/apps/xa-uploader/data/deploy-cooldown/xa-b.json",
-        pendingStatePath: "/repo/apps/xa-uploader/data/deploy-pending/xa-b.json",
-      },
+      statePaths: undefined,
       result: {
         status: "skipped_runtime_live_catalog",
         reason: "live_catalog_runtime_enabled",

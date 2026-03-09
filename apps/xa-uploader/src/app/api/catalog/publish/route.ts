@@ -1,5 +1,3 @@
-import path from "node:path";
-
 import { NextResponse } from "next/server";
 
 import { type CatalogProductDraftInput, catalogProductDraftSchema } from "@acme/lib/xa";
@@ -20,10 +18,7 @@ import type { XaCatalogStorefront } from "../../../../lib/catalogStorefront.type
 import {
   maybeTriggerXaBDeploy,
   reconcileDeployPendingState,
-  resolveDeployStatePaths,
 } from "../../../../lib/deployHook";
-import { isLocalFsRuntimeEnabled } from "../../../../lib/localFsGuard";
-import { resolveRepoRoot } from "../../../../lib/repoRoot";
 import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
 import { getUploaderKv } from "../../../../lib/syncMutex";
 import { isRecord } from "../../../../lib/typeGuards";
@@ -66,12 +61,9 @@ function getInvalidPayloadResponse(error?: unknown): NextResponse {
   return NextResponse.json({ ok: false, error: "invalid", reason: "invalid_payload" }, { status: 400 });
 }
 
-async function resolveDeployStateContext(storefrontId: XaCatalogStorefront) {
+async function resolveDeployStateContext(_storefrontId: XaCatalogStorefront) {
   const kv = await getUploaderKv();
-  const statePaths = isLocalFsRuntimeEnabled()
-    ? resolveDeployStatePaths(path.join(resolveRepoRoot(), "apps", "xa-uploader", "data"), storefrontId)
-    : undefined;
-  return { kv, statePaths };
+  return { kv, statePaths: undefined };
 }
 
 function buildPublishContractErrorResponse(error: CatalogDraftContractError): NextResponse {

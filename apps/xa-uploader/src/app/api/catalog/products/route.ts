@@ -9,12 +9,6 @@ import {
 } from "@acme/lib/xa";
 
 import {
-  CatalogCsvConflictError,
-  CatalogCsvStorageBusyError,
-  listCatalogDrafts,
-  upsertCatalogDraft,
-} from "../../../../lib/catalogCsv";
-import {
   CatalogDraftConflictError,
   CatalogDraftContractError,
   readCloudDraftSnapshot,
@@ -23,7 +17,7 @@ import {
 } from "../../../../lib/catalogDraftContractClient";
 import { normalizeCatalogPath } from "../../../../lib/catalogPath";
 import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
-import { isLocalFsRuntimeEnabled, localFsUnavailableResponse } from "../../../../lib/localFsGuard";
+import { catalogContractUnavailableResponse } from "../../../../lib/localFsGuard";
 import { getRequestIp, rateLimit, withRateHeaders } from "../../../../lib/rateLimit";
 import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
@@ -56,7 +50,6 @@ function hasValidationIssues(error: unknown): boolean {
 function isInvalidCatalogUpdateError(error: unknown): boolean {
   if (hasValidationIssues(error)) return true;
   if (!(error instanceof Error)) return false;
-  if (error instanceof CatalogCsvConflictError) return false;
   return (
     error.message.startsWith('Product id "') ||
     error.message.startsWith('Duplicate product slug "')
@@ -152,13 +145,7 @@ function buildProductsUpsertErrorResponse(
   error: unknown,
   limit: ReturnType<typeof rateLimit>,
 ): NextResponse {
-  if (error instanceof CatalogCsvStorageBusyError) {
-    return withRateHeaders(
-      buildProductsErrorResponse("storage_busy", 503, "products_csv_locked"),
-      limit,
-    );
-  }
-  if (error instanceof CatalogCsvConflictError || error instanceof CatalogDraftConflictError) {
+  if (error instanceof CatalogDraftConflictError) {
     return withRateHeaders(
       buildProductsErrorResponse("conflict", 409, "revision_conflict"),
       limit,
@@ -166,7 +153,7 @@ function buildProductsUpsertErrorResponse(
   }
   if (error instanceof CatalogDraftContractError) {
     if (error.code === "unconfigured") {
-      return withRateHeaders(localFsUnavailableResponse(), limit);
+      return withRateHeaders(catalogContractUnavailableResponse(), limit);
     }
     if (error.code === "conflict") {
       return withRateHeaders(
@@ -223,14 +210,12 @@ export async function GET(request: Request) {
 
   try {
     const storefront = parseStorefront(new URL(request.url).searchParams.get("storefront"));
-    const { products, revisionsById } = isLocalFsRuntimeEnabled()
-      ? await listCatalogDrafts(storefront)
-      : await readCloudDraftSnapshot(storefront);
+    const { products, revisionsById } = await readCloudDraftSnapshot(storefront);
     return withRateHeaders(NextResponse.json({ ok: true, products, revisionsById }), limit);
   } catch (error) {
     if (error instanceof CatalogDraftContractError) {
       if (error.code === "unconfigured") {
-        return withRateHeaders(localFsUnavailableResponse(), limit);
+        return withRateHeaders(catalogContractUnavailableResponse(), limit);
       }
       logContractFailure("list", error);
       return withRateHeaders(
@@ -306,14 +291,6 @@ export async function POST(request: Request) {
       imageFiles: normalizePipePaths(productInput.imageFiles),
       publishState: deriveCatalogPublishState(productInput),
     };
-    if (isLocalFsRuntimeEnabled()) {
-      const result = await upsertCatalogDraft(productForSave as never, { ifMatch, storefront });
-      return withRateHeaders(
-        NextResponse.json({ ok: true, product: result.product, revision: result.revision }),
-        limit,
-      );
-    }
-
     const snapshot = await readCloudDraftSnapshot(storefront);
     const result = upsertProductInCloudSnapshot({
       product: productForSave,

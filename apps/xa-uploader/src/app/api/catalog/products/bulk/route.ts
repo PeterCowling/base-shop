@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 
 import { type CatalogProductDraftInput,catalogProductDraftSchema, slugify } from "@acme/lib/xa";
 
-import { upsertCatalogDraft } from "../../../../../lib/catalogCsv";
 import {
   CatalogDraftContractError,
   readCloudDraftSnapshot,
@@ -12,7 +11,7 @@ import {
   writeCloudDraftSnapshot,
 } from "../../../../../lib/catalogDraftContractClient";
 import { parseStorefront } from "../../../../../lib/catalogStorefront.ts";
-import { isLocalFsRuntimeEnabled, localFsUnavailableResponse } from "../../../../../lib/localFsGuard";
+import { catalogContractUnavailableResponse } from "../../../../../lib/localFsGuard";
 import { getRequestIp, rateLimit, withRateHeaders } from "../../../../../lib/rateLimit";
 import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../../lib/requestJson";
 import { hasUploaderSession } from "../../../../../lib/uploaderAuth";
@@ -153,18 +152,6 @@ export async function POST(request: Request) {
     }
     const products = validation.products;
 
-    if (isLocalFsRuntimeEnabled()) {
-      await Promise.all(products.map((product) => upsertCatalogDraft(product, { storefront })));
-      return withRateHeaders(
-        NextResponse.json({
-          ok: true,
-          mode: "local",
-          upserted: products.length,
-        }),
-        limit,
-      );
-    }
-
     const snapshot = await readCloudDraftSnapshot(storefront);
     const { products: nextProducts, revisionsById: nextRevisions } = upsertProductsInCloudSnapshot({
       products,
@@ -188,7 +175,7 @@ export async function POST(request: Request) {
     );
   } catch (error) {
     if (error instanceof CatalogDraftContractError && error.code === "unconfigured") {
-      return withRateHeaders(localFsUnavailableResponse(), limit);
+      return withRateHeaders(catalogContractUnavailableResponse(), limit);
     }
     if (error instanceof Error) {
       return withRateHeaders(

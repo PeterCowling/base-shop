@@ -78,6 +78,47 @@ describe("Agent write-session guards", () => {
     expect(result.stderr).toContain("retry-forbidden");
   });
 
+  test("integrator blocks pnpm exec codex wrapper without explicit opt-in", () => {
+    const result = runScript(INTEGRATOR_SCRIPT, [
+      "--",
+      "pnpm",
+      "exec",
+      "codex",
+      "--version",
+    ]);
+
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain("codex session");
+    expect(result.stderr).toContain("--agent-write-session");
+  });
+
+  test("integrator blocks npx codex wrapper without explicit opt-in", () => {
+    const result = runScript(INTEGRATOR_SCRIPT, [
+      "--",
+      "npx",
+      "--yes",
+      "codex",
+      "--version",
+    ]);
+
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain("codex session");
+    expect(result.stderr).toContain("--agent-write-session");
+  });
+
+  test("integrator blocks direct node codex launcher without explicit opt-in", () => {
+    const result = runScript(INTEGRATOR_SCRIPT, [
+      "--",
+      "node",
+      "/tmp/codex",
+      "--version",
+    ]);
+
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain("codex session");
+    expect(result.stderr).toContain("--agent-write-session");
+  });
+
   test("with-writer-lock blocks direct codex without explicit opt-in", () => {
     const result = runScript(WRITER_LOCK_SCRIPT, ["--", "codex", "--version"]);
 
@@ -94,6 +135,46 @@ describe("Agent write-session guards", () => {
       "bash",
       "-lc",
       "nvm exec 22 codex --version",
+    ]);
+
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain("codex session");
+    expect(result.stderr).toContain("retry-forbidden");
+  });
+
+  test("with-writer-lock blocks shell-command pnpm exec codex wrapper without explicit opt-in", () => {
+    const result = runScript(WRITER_LOCK_SCRIPT, [
+      "--",
+      "bash",
+      "-lc",
+      "pnpm exec codex --version",
+    ]);
+
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain("codex session");
+    expect(result.stderr).toContain("retry-forbidden");
+  });
+
+  test("with-writer-lock blocks npx codex wrapper without explicit opt-in", () => {
+    const result = runScript(WRITER_LOCK_SCRIPT, [
+      "--",
+      "npx",
+      "--yes",
+      "codex",
+      "--version",
+    ]);
+
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain("codex session");
+    expect(result.stderr).toContain("retry-forbidden");
+  });
+
+  test("with-writer-lock blocks node codex launcher without explicit opt-in", () => {
+    const result = runScript(WRITER_LOCK_SCRIPT, [
+      "--",
+      "node",
+      "/tmp/codex",
+      "--version",
     ]);
 
     expect(result.status).toBe(1);

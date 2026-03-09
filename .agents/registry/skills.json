@@ -313,7 +313,7 @@
     },
     {
       "name": "ops-ci-fix",
-      "description": "Run typecheck and lint scoped to changed packages, fix all errors iteratively, and commit a clean state. Offload-ready for Codex. Terminal condition is all affected packages pass typecheck and lint with zero errors.",
+      "description": "Run typecheck and lint scoped to changed packages, fix all errors iteratively, and commit a clean state. Execute inline until the writer-lock patch-return pilot lands. Terminal condition is all affected packages pass typecheck and lint with zero errors.",
       "path": ".claude/skills/ops-ci-fix/SKILL.md"
     },
     {

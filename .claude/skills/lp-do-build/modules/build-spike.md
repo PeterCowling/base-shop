@@ -2,7 +2,7 @@
 
 ## Offload Route
 
-When `CODEX_OK=1` (checked in `SKILL.md § Executor Dispatch`), offload this task to Codex. Load and follow: `../../_shared/build-offload-protocol.md`.
+Current active policy: execute this task inline. A validated patch-return Codex lane does not exist yet, so shared-checkout mutable offload is disabled as a normal default. If a future task explicitly enables a validated pilot, load and follow `../../_shared/build-offload-protocol.md`.
 
 **Track-specific prompt additions for SPIKE tasks:**
 
@@ -11,7 +11,7 @@ When `CODEX_OK=1` (checked in `SKILL.md § Executor Dispatch`), offload this tas
 - State that the spike must remain minimal and reversible — no production changes, no large refactors.
 - State that if the spike reveals an invalidating finding (approach does not work), Codex should document the finding clearly in the output artifact and stop — it must not attempt to redesign the approach inline.
 
-**Claude's post-execution verification steps (after `codex exec` returns):**
+**If a validated offload pilot is explicitly enabled later, Claude's post-execution verification steps remain:**
 
 1. Re-read all `Affects` files — confirm the spike result artifact was written. If missing or empty: treat as task failure.
 2. Validate spike result against exit criteria — SPIKE tasks are exempt from `modules/build-validate.md`, but exit criteria must be addressed.

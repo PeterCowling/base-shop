@@ -2,7 +2,7 @@
 
 ## Offload Route
 
-When `CODEX_OK=1` (checked in `SKILL.md § Executor Dispatch`), offload this task to Codex. Load and follow: `../../_shared/build-offload-protocol.md`.
+Current active policy: execute this task inline. A validated patch-return Codex lane does not exist yet, so shared-checkout mutable offload is disabled as a normal default. If a future task explicitly enables a validated pilot, load and follow `../../_shared/build-offload-protocol.md`.
 
 **Track-specific prompt additions for business-artifact tasks:**
 
@@ -11,7 +11,7 @@ When `CODEX_OK=1` (checked in `SKILL.md § Executor Dispatch`), offload this tas
 - State clearly that the approval gate remains Claude's responsibility — Codex produces the artifact; Claude reads it, verifies VCs, and records approval evidence. Codex cannot substitute for reviewer acknowledgement.
 - Reference: `../../_shared/subagent-dispatch-contract.md` for any parallelism the prompt may describe.
 
-**Claude's post-execution verification steps (after `codex exec` returns):**
+**If a validated offload pilot is explicitly enabled later, Claude's post-execution verification steps remain:**
 
 1. Re-read all `Affects` files — confirm each file was written or modified as specified. If any required file is missing or empty: treat as task failure; do not proceed to commit.
 2. Run `modules/build-validate.md` (Mode 3 — Document Review) — this is Claude's gate, not Codex's.

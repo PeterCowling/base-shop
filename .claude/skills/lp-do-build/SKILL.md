@@ -123,8 +123,9 @@ Before routing to an executor module, check whether `codex` is available under N
 nvm exec 22 codex --version >/dev/null 2>&1 && CODEX_OK=1 || CODEX_OK=0
 ```
 
-- **If `CODEX_OK=1`:** use the offload route per `../_shared/build-offload-protocol.md`. Claude retains all gate ownership (writer lock, VC/TC verification, post-build validation, commit, plan updates). Codex executes the task work.
-- **If `CODEX_OK=0`:** execute inline using the relevant executor module below (existing path unchanged).
+- `CODEX_OK` only confirms CLI availability. It does **not** authorize shared-checkout mutable offload by itself.
+- Current active policy: execute inline using the relevant executor module below, even when `CODEX_OK=1`.
+- Only use `../_shared/build-offload-protocol.md` when a validated patch-return pilot has been explicitly enabled for the active task or workflow. Until then, shared-checkout `workspace-write` offload remains disabled as a normal default.
 
 > **CODEMOOT_OK vs CODEX_OK:** The critique loop uses `CODEMOOT_OK` (checks `codemoot` availability). Build offload uses `CODEX_OK` (checks `codex` directly). These are independent checks for separate features. When both are needed in the same build cycle, run each check independently — they are not interchangeable.
 

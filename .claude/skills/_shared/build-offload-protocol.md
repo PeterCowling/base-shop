@@ -2,6 +2,14 @@
 
 Used by `lp-do-build/SKILL.md` (Executor Dispatch), `modules/build-code.md`, `modules/build-biz.md`, `modules/build-spike.md`, `modules/build-investigate.md`.
 
+## Current Status
+
+This protocol is not an active default today.
+
+- Shared-checkout mutable Codex offload is disabled as a normal workflow.
+- Active build execution defaults to the inline executor modules.
+- Reactivate this protocol only after the patch-return pilot tracked in `docs/plans/writer-lock-patch-return-offload/plan.md` produces a validated artifact-return path.
+
 > **Reference pattern:** `_shared/critique-loop-protocol.md` (established). Key divergence: critique uses `codemoot review` which returns structured text parsed to JSON; build offload uses `codex exec` which writes files to disk via tool-calling. Do NOT substitute `codemoot run` for file-writing tasks — `codemoot run` is a text-generation pipeline only and does not write files.
 
 ## When to Use This Protocol
@@ -12,14 +20,34 @@ Before routing to any executor module, check whether codex is available under No
 nvm exec 22 codex --version >/dev/null 2>&1 && CODEX_OK=1 || CODEX_OK=0
 ```
 
-If `CODEX_OK=1`: use **offload route** (see Offload Invocation below).
 If `CODEX_OK=0` (nvm unavailable, Node 22 not installed, or codex not installed): use **inline route** — fall through to the existing executor module workflow unchanged.
+
+If `CODEX_OK=1`: keep using the inline route unless the active task explicitly enables a validated patch-return pilot. CLI availability alone is not enough to authorize shared-checkout mutable offload.
 
 > **Note on CODEMOOT_OK vs CODEX_OK:** The critique loop uses `CODEMOOT_OK` (checks for `codemoot` availability). The build offload uses `CODEX_OK` (checks for `codex` directly). These are separate checks for separate features. When both are needed in the same skill, run each check independently — they are not interchangeable.
 
 > **Why `nvm exec 22` for invocation:** codex uses `#!/usr/bin/env node`. Running the binary path directly may pick up the shell's default Node (which may be older than v22). Always invoke via `nvm exec 22 codex` to guarantee the correct runtime.
 
 ## Offload Invocation
+
+### Fail-closed rule
+
+Do not run the legacy shared-checkout command below as a normal default:
+
+```bash
+nvm exec 22 codex exec -a never --sandbox workspace-write ...
+```
+
+Why this path is disabled:
+- current local `codex exec` help no longer exposes `-a never`
+- the shared-checkout mutable route holds the writer lock for the full Codex session
+- the patch-return replacement is still under active investigation and has not been validated yet
+
+Exact next step:
+- execute the task inline via the relevant `lp-do-build` executor module
+- or continue the patch-return implementation plan in `docs/plans/writer-lock-patch-return-offload/plan.md`
+
+The remaining sections in this document describe the legacy shared-checkout protocol for migration context only. Do not treat them as the active default workflow.
 
 ### Prepare the task prompt
 
@@ -41,8 +69,7 @@ nvm exec 22 codex exec \
   "$(cat /tmp/task-prompt.txt)"
 ```
 
-**Flag reference (from `codex exec --help`):**
-- `-a never` — never ask for approval; required for non-interactive automated execution
+**Legacy flag reference (preserved for migration context):**
 - `--sandbox workspace-write` — allows file writes within the repo working directory; required for IMPLEMENT, SPIKE, and INVESTIGATE tasks that produce file artifacts
 - `-o /tmp/codex-build-output.txt` — writes the final agent message to a file for build evidence block
 
@@ -115,13 +142,13 @@ There is no structured JSON output (unlike `codemoot review`). The contract is: 
 
 ## Fallback Policy
 
-When `CODEX_OK=0`, execute the task inline using the relevant executor module — the existing workflow unchanged:
+Current active behavior is inline execution. When offload is disabled, execute the task inline using the relevant executor module:
 
 ```
-CODEX_OK=0 → execute inline per modules/build-code.md (or build-biz.md, build-spike.md, build-investigate.md)
+execute inline per modules/build-code.md (or build-biz.md, build-spike.md, build-investigate.md)
 ```
 
-No new logic is required in the fallback path. The inline executor is the baseline; offload is additive.
+No new logic is required in the fallback path. The inline executor is the baseline. Offload remains reactivation-only until the patch-return pilot is validated.
 
 ## Writer Lock Contract
 

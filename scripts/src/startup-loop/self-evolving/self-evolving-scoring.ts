@@ -1,4 +1,4 @@
-import { betaBinomialPosterior } from "../../../../packages/lib/src/math/experimentation/bayesian.js";
+import { betaBinomialPosterior } from "@acme/lib/math/experimentation";
 
 import type { DataQualityStatus, ImprovementCandidate } from "./self-evolving-contracts.js";
 

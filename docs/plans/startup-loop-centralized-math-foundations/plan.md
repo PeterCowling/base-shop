@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Draft
+Status: Active
 Domain: Platform
 Workstream: Engineering
 Created: 2026-03-09
@@ -24,7 +24,7 @@ Auto-Build-Intent: plan-only
 The fact-find now defines the correct target: a genuine mathematical self-improving loop, not a library-expansion exercise. This plan takes the architecture forward in the only defensible order: first harden the package boundary and repo-owned math contracts, then establish posterior belief state, decision journaling, maturity windows, and verified outcome closure, then integrate optimization, graph, and survival into live policy seams, and only after that add exploration, causal promotion gates, stability controls, anti-gaming governance, replay-backed calibration/regret telemetry, and the final authority checkpoints. The plan stays in trial mode. It does not authorize live autonomous actuation or authoritative policy promotion until the checkpoint sequence can prove that the full self-improving status gate is satisfied in code. The intended result is a startup-loop policy layer that can update beliefs from verified outcomes, choose constrained actions under uncertainty, learn while acting, and prove that its mathematics is helping rather than merely adding complexity.
 
 ## Active tasks
-- [ ] TASK-01: Replace direct startup-loop math source imports with the centralized package boundary
+- [x] TASK-01: Replace direct startup-loop math source imports with the centralized package boundary — Complete (2026-03-09)
 - [ ] TASK-02: Harden graph, optimization, and survival modules into repo-owned helper contracts with tests
 - [ ] TASK-03: Define the posterior belief, utility, and policy-state contract
 - [ ] TASK-04: Define the outcome-closure and verified-measurement contract
@@ -111,7 +111,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Replace direct startup-loop math source imports with the centralized package boundary | 85% | S | Pending | - | TASK-05, TASK-07, TASK-08, TASK-09, TASK-13 |
+| TASK-01 | IMPLEMENT | Replace direct startup-loop math source imports with the centralized package boundary | 85% | S | Complete (2026-03-09) | - | TASK-05, TASK-07, TASK-08, TASK-09, TASK-13 |
 | TASK-02 | IMPLEMENT | Harden graph, optimization, and survival modules into repo-owned helper contracts with tests | 75% | M | Pending | - | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 |
 | TASK-03 | INVESTIGATE | Define the posterior belief, utility, and policy-state contract | 75% | M | Pending | - | TASK-05, TASK-07, TASK-08, TASK-09, TASK-10, TASK-12, TASK-13 |
 | TASK-04 | INVESTIGATE | Define the outcome-closure and verified-measurement contract | 75% | M | Pending | - | TASK-06, TASK-07, TASK-09, TASK-10, TASK-11, TASK-13 |
@@ -148,7 +148,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-09)
 - **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`, `[readonly] packages/lib/package.json`, `[readonly] packages/lib/src/math/index.ts`
 - **Depends on:** -
 - **Blocks:** TASK-05, TASK-07, TASK-08, TASK-09, TASK-13
@@ -178,6 +178,14 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Notes / references:**
   - `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`
   - `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`
+- **Build Evidence (2026-03-09):**
+  - Red evidence: live self-evolving runtime still imported `betaBinomialPosterior` from `packages/lib/src/math/experimentation/bayesian.js` in both target files.
+  - Green: updated `self-evolving-scoring.ts` and `self-evolving-dashboard.ts` to import from `@acme/lib/math/experimentation` instead of a package source path.
+  - Scope control: preserved an unrelated in-progress dashboard posture change already present in the working tree and changed only the import seam.
+  - TC-01: pass. Both target files now import via `@acme/lib/math/experimentation`.
+  - TC-02: pass. `pnpm exec tsc -p scripts/tsconfig.json --noEmit` completed successfully.
+  - TC-03: pass. `pnpm exec eslint scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts` completed successfully, and `rg -n "packages/lib/src/math/experimentation/bayesian\\.js" scripts/src/startup-loop/self-evolving -S` returned no matches.
+  - Precursor completion propagation: TASK-01 is no longer a blocker. No downstream IMPLEMENT task crossed its execution threshold from this change alone because TASK-05, TASK-07, TASK-08, TASK-09, and TASK-13 still depend on other incomplete tasks. The next runnable units are the Wave 1 INVESTIGATE tasks, TASK-03 and TASK-04.
 
 ### TASK-02: Harden graph, optimization, and survival modules into repo-owned helper contracts with tests
 - **Type:** IMPLEMENT

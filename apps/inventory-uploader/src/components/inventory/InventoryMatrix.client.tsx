@@ -1,7 +1,7 @@
 /* eslint-disable ds/min-tap-size -- INV-0001 operator-tool: compact buttons intentional in dense console UI */
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type InventoryItem = {
   sku: string;
@@ -11,7 +11,7 @@ type InventoryItem = {
   lowStockThreshold?: number;
 };
 
-type SortKey = "sku" | "quantity" | "updatedAt";
+type SortKey = "sku" | "quantity";
 
 type InventoryMatrixProps = {
   shop: string | null;
@@ -76,12 +76,12 @@ export function InventoryMatrix({ shop, selectedSku, onSelectSku, onAdjust, onIn
     }
   }
 
-  const sorted = [...items].sort((a, b) => {
+  const sorted = useMemo(() => [...items].sort((a, b) => {
     let cmp = 0;
     if (sortKey === "sku") cmp = a.sku.localeCompare(b.sku);
     else if (sortKey === "quantity") cmp = a.quantity - b.quantity;
     return sortAsc ? cmp : -cmp;
-  });
+  }), [items, sortKey, sortAsc]);
 
   if (!shop) {
     return (
@@ -145,7 +145,6 @@ export function InventoryMatrix({ shop, selectedSku, onSelectSku, onAdjust, onIn
 
                 className={`w-full px-2 py-1.5 text-left transition ${isSelected ? "bg-gate-accent/10" : "hover:bg-gate-surface"}`}
               >
-                { }
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-xs font-medium text-gate-ink truncate">{item.sku}</span>
                   <span

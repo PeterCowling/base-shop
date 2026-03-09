@@ -3,6 +3,8 @@
 
 import { useEffect, useState } from "react";
 
+import { formatAuditDate } from "../../lib/inventory-utils";
+
 type LedgerEvent = {
   id: string;
   timestamp: string;
@@ -30,27 +32,21 @@ const TYPE_COLORS: Record<LedgerEvent["type"], string> = {
   sale: "text-gate-muted",
 };
 
-function formatDate(iso: string): string {
-  try {
-    return new Date(iso).toLocaleString(undefined, {
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  } catch {
-    return iso;
-  }
-}
-
 export function StockLedger({ shop }: StockLedgerProps) {
   const [events, setEvents] = useState<LedgerEvent[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [skuFilter, setSkuFilter] = useState("");
+  const [debouncedSkuFilter, setDebouncedSkuFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState<LedgerEvent["type"] | "">("");
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [loadingMore, setLoadingMore] = useState(false);
+
+  // Debounce SKU filter to avoid a fetch on every keystroke
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSkuFilter(skuFilter), 300);
+    return () => clearTimeout(timer);
+  }, [skuFilter]);
 
   useEffect(() => {
     if (!shop) {
@@ -64,7 +60,7 @@ export function StockLedger({ shop }: StockLedgerProps) {
     setNextCursor(null);
 
     const params = new URLSearchParams({ limit: "50" });
-    if (skuFilter) params.set("sku", skuFilter);
+    if (debouncedSkuFilter) params.set("sku", debouncedSkuFilter);
     if (typeFilter) params.set("type", typeFilter);
 
     fetch(`/api/inventory/${encodeURIComponent(shop)}/ledger?${params.toString()}`)
@@ -82,14 +78,14 @@ export function StockLedger({ shop }: StockLedgerProps) {
         if (!cancelled) setLoading(false);
       });
     return () => { cancelled = true; };
-  }, [shop, skuFilter, typeFilter]);
+  }, [shop, debouncedSkuFilter, typeFilter]);
 
   async function loadMore() {
     if (!shop || !nextCursor) return;
     setLoadingMore(true);
     try {
       const params = new URLSearchParams({ limit: "50", cursor: nextCursor });
-      if (skuFilter) params.set("sku", skuFilter);
+      if (debouncedSkuFilter) params.set("sku", debouncedSkuFilter);
       if (typeFilter) params.set("type", typeFilter);
       const resp = await fetch(`/api/inventory/${encodeURIComponent(shop)}/ledger?${params.toString()}`);
       const data = (await resp.json()) as { events?: LedgerEvent[]; nextCursor?: string | null };
@@ -109,20 +105,19 @@ export function StockLedger({ shop }: StockLedgerProps) {
   return (
     <div className="space-y-3">
       {/* Filters */}
-      { }
       <div className="flex gap-2">
         <input
           type="text"
           placeholder="Filter by SKU…"
           value={skuFilter}
           onChange={(e) => setSkuFilter(e.target.value)}
-           
+
           className="min-w-0 flex-1 rounded border border-gate-border bg-gate-input-bg px-2 py-1 text-xs text-gate-ink placeholder:text-gate-muted focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
         />
         <select
           value={typeFilter}
           onChange={(e) => setTypeFilter(e.target.value as LedgerEvent["type"] | "")}
-           
+
           className="rounded border border-gate-border bg-gate-input-bg px-2 py-1 text-xs text-gate-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
         >
           <option value="">All types</option>
@@ -146,9 +141,7 @@ export function StockLedger({ shop }: StockLedgerProps) {
             const isPositive = ev.quantityDelta > 0;
             return (
               <li key={ev.id} className="py-2">
-                { }
                 <div className="flex items-start justify-between gap-2">
-                  { }
                   <div className="min-w-0 space-y-0.5">
                     <p className="text-xs font-medium text-gate-ink truncate">
                       {ev.sku}
@@ -156,12 +149,11 @@ export function StockLedger({ shop }: StockLedgerProps) {
                         <span className="ms-1 text-gate-muted font-normal">{ev.variantKey}</span>
                       ) : null}
                     </p>
-                    { }
                     <div className="flex items-center gap-1.5 text-2xs">
                       <span className={TYPE_COLORS[ev.type] ?? "text-gate-muted"}>
                         {TYPE_LABELS[ev.type] ?? ev.type}
                       </span>
-                      <span className="text-gate-muted">{formatDate(ev.timestamp)}</span>
+                      <span className="text-gate-muted">{formatAuditDate(ev.timestamp)}</span>
                     </div>
                     {(ev.note ?? ev.referenceId) && (
                       <p className="text-2xs text-gate-muted truncate">
@@ -186,7 +178,7 @@ export function StockLedger({ shop }: StockLedgerProps) {
           type="button"
           disabled={loadingMore}
           onClick={() => void loadMore()}
-           
+
           className="w-full rounded py-1.5 text-xs text-gate-muted focus-visible:ring-1 focus-visible:ring-gate-border hover:text-gate-ink disabled:opacity-50"
         >
           {loadingMore ? "Loading…" : "Load more"}

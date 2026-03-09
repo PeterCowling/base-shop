@@ -3,6 +3,15 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+import {
+  type AuditEntry,
+  createKey,
+  formatAuditDate,
+  type InventoryItem,
+  itemKey,
+  itemLabel,
+} from "../../lib/inventory-utils";
+
 const REASONS = [
   { value: "correction", label: "Correction" },
   { value: "damage", label: "Damage" },
@@ -12,23 +21,6 @@ const REASONS = [
 ] as const;
 
 type Reason = (typeof REASONS)[number]["value"];
-
-type InventoryItem = {
-  sku: string;
-  productId: string;
-  quantity: number;
-  variantAttributes: Record<string, string>;
-};
-
-type AuditEntry = {
-  id: string;
-  sku: string;
-  variantKey: string;
-  quantityDelta: number;
-  note: string | null;
-  referenceId: string | null;
-  createdAt: string;
-};
 
 type AdjResult =
   | {
@@ -42,25 +34,6 @@ type AdjResult =
       };
     }
   | { ok: false; code: string; message: string };
-
-function createKey(): string {
-  if (typeof crypto !== "undefined" && "randomUUID" in crypto) return crypto.randomUUID();
-  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-}
-
-function itemKey(item: InventoryItem): string {
-  return `${item.sku}##${Object.entries(item.variantAttributes)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([k, v]) => `${k}=${v}`)
-    .join(",")}`;
-}
-
-function itemLabel(item: InventoryItem): string {
-  const attrs = Object.entries(item.variantAttributes);
-  return attrs.length > 0
-    ? `${item.sku} (${attrs.map(([k, v]) => `${k}:${v}`).join(", ")})`
-    : item.sku;
-}
 
 export type StockAdjustmentsProps = {
   shop: string;
@@ -194,7 +167,7 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
           <select
             value={selectedKey}
             onChange={(e) => setSelectedKey(e.target.value)}
-             
+
             className="w-full rounded border border-gate-border bg-gate-input-bg px-2 py-1 text-xs text-gate-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
           >
             <option value="">— select SKU —</option>
@@ -215,7 +188,6 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
           </p>
         )}
 
-        { }
         <div className="grid grid-cols-2 gap-2">
           <label className="block space-y-0.5">
             <span className="text-2xs text-gate-muted">Qty delta (+/−)</span>
@@ -224,7 +196,7 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
               value={delta}
               onChange={(e) => setDelta(e.target.value)}
               placeholder="+5 or −3"
-               
+
               className="w-full rounded border border-gate-border bg-gate-input-bg px-2 py-1 text-xs text-gate-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
             />
           </label>
@@ -233,7 +205,7 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
             <select
               value={reason}
               onChange={(e) => setReason(e.target.value as Reason)}
-               
+
               className="w-full rounded border border-gate-border bg-gate-input-bg px-2 py-1 text-xs text-gate-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
             >
               {REASONS.map((r) => (
@@ -252,20 +224,19 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
             value={note}
             onChange={(e) => setNote(e.target.value)}
             placeholder="Context or ticket…"
-             
+
             className="w-full rounded border border-gate-border bg-gate-input-bg px-2 py-1 text-xs text-gate-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
           />
         </label>
 
         {error && <p className="text-xs text-gate-status-incomplete">{error}</p>}
 
-        { }
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => void submit(true)}
             disabled={busy}
-             
+
             className="rounded px-3 py-1 text-xs text-gate-muted focus-visible:ring-1 focus-visible:ring-gate-border hover:text-gate-ink disabled:opacity-40"
           >
             Preview
@@ -274,7 +245,7 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
             type="button"
             onClick={() => void submit(false)}
             disabled={busy}
-             
+
             className="rounded bg-gate-accent px-3 py-1 text-xs font-medium text-gate-on-accent hover:opacity-90 disabled:opacity-40"
           >
             {busy ? "Saving…" : "Apply"}
@@ -282,7 +253,7 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
           <button
             type="button"
             onClick={startNew}
-             
+
             className="ms-auto rounded px-2 py-1 text-xs text-gate-muted focus-visible:ring-1 focus-visible:ring-gate-border hover:text-gate-ink"
           >
             Reset
@@ -292,7 +263,6 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
 
       {/* Result */}
       {result?.ok && (
-         
         <div className="rounded border border-gate-border bg-gate-surface p-3 space-y-1">
           <p className="text-xs font-medium text-gate-ink">
             {result.report.dryRun
@@ -323,17 +293,11 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
           <ul className="divide-y divide-gate-border">
             {history.slice(0, 10).map((ev) => (
               <li key={ev.id} className="py-1.5">
-                { }
                 <div className="flex items-center justify-between gap-2">
                   <div className="min-w-0">
                     <p className="truncate text-xs text-gate-ink">{ev.sku}</p>
                     <p className="text-2xs text-gate-muted">
-                      {new Date(ev.createdAt).toLocaleString(undefined, {
-                        month: "short",
-                        day: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
+                      {formatAuditDate(ev.createdAt)}
                       {ev.note ? ` · ${ev.note}` : ""}
                     </p>
                   </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { InventoryEditor } from "../inventory/InventoryEditor.client";
 import { InventoryImport } from "../inventory/InventoryImport.client";
@@ -37,8 +37,7 @@ export default function InventoryConsole({ onHeaderExtra }: InventoryConsoleProp
   const [matrixRefreshKey, setMatrixRefreshKey] = useState(0);
   const [activeTab, setActiveTab] = useState<RightPanelTab>("editor");
 
-  // Stable callback reference to avoid remounting header extra on every render
-  const renderHeaderExtra = useCallback(() => {
+  useEffect(() => {
     onHeaderExtra?.(
       <ShopSelector
         selectedShop={state.selectedShop}
@@ -46,10 +45,6 @@ export default function InventoryConsole({ onHeaderExtra }: InventoryConsoleProp
       />,
     );
   }, [onHeaderExtra, state.selectedShop, state.setSelectedShop]);
-
-  useEffect(() => {
-    renderHeaderExtra();
-  }, [renderHeaderExtra]);
 
   function handleSaved() {
     setMatrixRefreshKey((k) => k + 1);
@@ -86,7 +81,7 @@ export default function InventoryConsole({ onHeaderExtra }: InventoryConsoleProp
         {/* Tab bar */}
         {/* eslint-disable-next-line ds/enforce-layout-primitives -- INV-0001 operator-tool tab bar */}
         <div className="flex gap-1 border-b border-gate-border pb-1">
-          {(["editor", "ledger", "adjustments", "inflows"] as RightPanelTab[]).map((tab) => (
+          {(Object.keys(TAB_LABELS) as RightPanelTab[]).map((tab) => (
             <button
               key={tab}
               type="button"
@@ -113,17 +108,11 @@ export default function InventoryConsole({ onHeaderExtra }: InventoryConsoleProp
             />
           )}
           {activeTab === "ledger" && <StockLedger shop={state.selectedShop} />}
-          {activeTab === "adjustments" && state.selectedShop && (
-            <StockAdjustments shop={state.selectedShop} onSaved={handleSaved} />
+          {activeTab === "adjustments" && (
+            <StockAdjustments shop={state.selectedShop ?? ""} onSaved={handleSaved} />
           )}
-          {activeTab === "adjustments" && !state.selectedShop && (
-            <p className="text-sm text-gate-muted">Select a shop to record adjustments.</p>
-          )}
-          {activeTab === "inflows" && state.selectedShop && (
-            <StockInflows shop={state.selectedShop} onSaved={handleSaved} />
-          )}
-          {activeTab === "inflows" && !state.selectedShop && (
-            <p className="text-sm text-gate-muted">Select a shop to receive stock.</p>
+          {activeTab === "inflows" && (
+            <StockInflows shop={state.selectedShop ?? ""} onSaved={handleSaved} />
           )}
         </div>
       </div>

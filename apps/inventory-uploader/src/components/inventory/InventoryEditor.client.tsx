@@ -78,11 +78,9 @@ function VariantRow({
   const dirty = edit.quantity !== item.quantity || edit.lowStockThreshold !== (item.lowStockThreshold ?? "");
 
   return (
-     
     <div className="rounded-lg border border-gate-border bg-gate-surface p-3 space-y-2">
       <p className="text-xs font-medium text-gate-ink">{variantLabel(item.variantAttributes)}</p>
 
-      { }
       <div className="grid grid-cols-2 gap-2">
         <label className="block space-y-0.5">
           <span className="text-2xs text-gate-muted">Quantity</span>

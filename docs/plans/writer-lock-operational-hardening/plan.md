@@ -5,7 +5,7 @@ Domain: Platform
 Workstream: Engineering
 Created: 2026-03-09
 Last-reviewed: 2026-03-09
-Last-updated: 2026-03-09
+Last-updated: 2026-03-09T13:00Z
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: writer-lock-operational-hardening
 Deliverable-Type: code-change
@@ -25,8 +25,8 @@ This plan is the implementation follow-on to `writer-lock-scope-reduction`. The 
 
 ## Active tasks
 - [x] TASK-01: Harden wrapper entrypoints, active runbooks, and active skills around explicit write-session opt-ins
-- [ ] TASK-02: Design a minimum-lock-time build-offload path that removes shared-checkout `workspace-write` as the default mutable session model
-- [ ] TASK-03: Design a real narrow-window write workflow for queue wake-up and serialized write windows
+- [x] TASK-02: Design a minimum-lock-time build-offload path that removes shared-checkout `workspace-write` as the default mutable session model
+- [x] TASK-03: Design a real narrow-window write workflow for queue wake-up and serialized write windows
 
 ## Goals
 - Make implicit locked interactive shells a forbidden default path.
@@ -77,8 +77,8 @@ This plan is the implementation follow-on to `writer-lock-scope-reduction`. The 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Harden wrapper entrypoints, active runbooks, and active skills around explicit write-session opt-ins | 86% | M | Complete (2026-03-09) | - | TASK-02, TASK-03 |
-| TASK-02 | INVESTIGATE | Design a minimum-lock-time build-offload path that removes shared-checkout `workspace-write` as the default mutable session model | 72% | L | Pending | TASK-01 | - |
-| TASK-03 | INVESTIGATE | Design a real narrow-window write workflow for queue wake-up and serialized write windows | 68% | M | Pending | TASK-01 | - |
+| TASK-02 | INVESTIGATE | Design a minimum-lock-time build-offload path that removes shared-checkout `workspace-write` as the default mutable session model | 72% | L | Complete (2026-03-09) | TASK-01 | - |
+| TASK-03 | INVESTIGATE | Design a real narrow-window write workflow for queue wake-up and serialized write windows | 68% | M | Complete (2026-03-09) | TASK-01 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -144,7 +144,7 @@ This plan is the implementation follow-on to `writer-lock-scope-reduction`. The 
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
-- **Status:** Pending
+- **Status:** Complete (2026-03-09)
 - **Artifact-Destination:** `docs/plans/writer-lock-operational-hardening/build-offload-redesign.md`
 - **Affects:** `docs/plans/writer-lock-operational-hardening/build-offload-redesign.md`, `[readonly] .claude/skills/_shared/build-offload-protocol.md`, `[readonly] .claude/skills/lp-do-build/SKILL.md`, `[readonly] docs/plans/_archive/lp-do-build-codex-offload/plan.md`
 - **Depends on:** TASK-01
@@ -157,6 +157,16 @@ This plan is the implementation follow-on to `writer-lock-scope-reduction`. The 
   - Recommends one primary design for mutable offload that shortens lock scope materially.
   - Defines lock boundaries, artifact boundaries, and failure recovery behavior.
   - Explains why the recommended design is safer than the current shared-checkout `workspace-write` model.
+- **Validation contract:** Investigation note exists at `docs/plans/writer-lock-operational-hardening/build-offload-redesign.md` and directly answers the acceptance bullets with one recommended design.
+- **Planning validation:** Read current active protocol, archived `lp-do-build-codex-offload` artifacts, and current plan/fact-find before writing the redesign note.
+- **Rollout / rollback:** `None: non-implementation task`
+- **Documentation impact:** Adds `build-offload-redesign.md` as the canonical follow-on design artifact for this plan.
+- **Notes / references:**
+  - Build evidence (2026-03-09):
+    - Created `docs/plans/writer-lock-operational-hardening/build-offload-redesign.md`.
+    - Compared three paths: patch-return, scratch clone/disposable mirror, and status quo shared-checkout `workspace-write`.
+    - Recommended patch-return offload as the only option that materially shortens writer-lock duration while preserving the single-checkout operating model.
+    - Defined target contract phases: task packet, offloaded patch generation, serialized apply window, and failure handling.
 
 ### TASK-03: Design a real narrow-window write workflow for queue wake-up and serialized write windows
 - **Type:** INVESTIGATE
@@ -165,7 +175,7 @@ This plan is the implementation follow-on to `writer-lock-scope-reduction`. The 
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-09)
 - **Artifact-Destination:** `docs/plans/writer-lock-operational-hardening/queue-and-window-investigation.md`
 - **Affects:** `docs/plans/writer-lock-operational-hardening/queue-and-window-investigation.md`, `[readonly] scripts/git/writer-lock.sh`, `[readonly] scripts/git-hooks/writer-lock-window.sh`
 - **Depends on:** TASK-01
@@ -178,6 +188,16 @@ This plan is the implementation follow-on to `writer-lock-scope-reduction`. The 
   - Explains why the current 30-second poll loop creates avoidable idle time.
   - Determines whether `writer-lock-window.sh` should be adopted, replaced, or removed.
   - Recommends a concrete next implementation slice.
+- **Validation contract:** Investigation note exists at `docs/plans/writer-lock-operational-hardening/queue-and-window-investigation.md` and directly answers the acceptance bullets with a concrete recommendation.
+- **Planning validation:** Read current queue implementation and `writer-lock-window.sh`; repo search confirmed no active caller before writing the investigation note.
+- **Rollout / rollback:** `None: non-implementation task`
+- **Documentation impact:** Adds `queue-and-window-investigation.md` as the canonical queue/window design artifact for this plan.
+- **Notes / references:**
+  - Build evidence (2026-03-09):
+    - Created `docs/plans/writer-lock-operational-hardening/queue-and-window-investigation.md`.
+    - Documented that 30-second polling creates avoidable idle handoff time.
+    - Determined that `writer-lock-window.sh` should be retained but not adopted for current shared-checkout `workspace-write` flows.
+    - Recommended sequencing: offload redesign first, then active-window adoption and queue wake-up tightening.
 
 ## Risks & Mitigations
 - TASK-01 reduces accidental long-held locks but does not solve sanctioned shared-checkout offload.
@@ -195,8 +215,8 @@ This plan is the implementation follow-on to `writer-lock-scope-reduction`. The 
 ## Acceptance Criteria (overall)
 - [x] Active wrapper entrypoints require explicit opt-in for locked interactive shells and locked long-lived agent sessions.
 - [x] Active runbooks and active skills use the new explicit opt-in contract.
-- [ ] A replacement design for shared-checkout `workspace-write` offload is documented and ready for implementation.
-- [ ] A recommended queue wake-up and narrow-window write design is documented and ready for implementation.
+- [x] A replacement design for shared-checkout `workspace-write` offload is documented and ready for implementation.
+- [x] A recommended queue wake-up and narrow-window write design is documented and ready for implementation.
 
 ## Decision Log
 - 2026-03-09: Chose a sequenced follow-on plan instead of collapsing wrapper hardening and architectural redesign into one implementation task.
@@ -209,7 +229,7 @@ This plan is the implementation follow-on to `writer-lock-scope-reduction`. The 
 - Overall-confidence = (86*2 + 72*3 + 68*2) / 7 = 74.9% -> 75%
 
 ## What Would Make This >=90%
-- Complete TASK-02 with a credible offload redesign and TASK-03 with a concrete queue/window recommendation.
+- Convert the two completed investigation artifacts into the next implementation plan.
 
 ## Section Omission Rule
 - None: all sections are relevant for this follow-on plan.

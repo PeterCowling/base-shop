@@ -263,6 +263,8 @@ Canonical queue lifecycle values are:
 Legacy states in historical queue snapshots (`auto_executed`, `completed`, `logged_no_action`)
 are compatibility data and must not be emitted as new queue lifecycle values.
 
+> **Guard:** `auto_executed` is a reserved state and must never be hand-set in trial mode (Option B). Use `completed`, `processed`, `skipped`, or `error` only.
+
 ## Idempotency
 
 Duplicate events (same `artifact_id` + `before_sha` + `after_sha`) are suppressed.

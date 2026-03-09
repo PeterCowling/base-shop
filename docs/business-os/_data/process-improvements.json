@@ -507,22 +507,6 @@
     },
     {
       "type": "idea",
-      "business": "PLAT",
-      "title": "21 dispatches in trial/queue-state.json carry queue_state: auto_executed. The trial contract (Section 2) explicitly states auto_executed is reserved and must not be set in trial mode under Option B. The active policy is Option B (queue with confirmation). The queue is entirely hand-authored — the TS persistence layer has never written to it. These entries were hand-set incorrectly. They are stuck in a state not recognised by the contract state machine (enqueued → processed → skipped/error) and the SKILL.md reinforces that auto_executed must not be emitted as a new queue lifecycle value.",
-      "body": "The trial contract's state machine defines only enqueued, processed, skipped, and error as valid queue lifecycle values. auto_executed was designed for Option C (auto-invoke P1 dispatches) which has not been activated. Because the queue is entirely hand-authored, these 21 entries were set incorrectly by hand. They create false signal in queue depth counts and make it impossible to tell which entries represent work that was genuinely reviewed and confirmed vs. work that bypassed the confirmation step.",
-      "source": "queue-state.json",
-      "date": "2026-03-09T12:00:00.000Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "2948e9fd4db595adf21f96ae042942e7333ab114",
-      "priority_tier": "P4",
-      "own_priority_rank": 9,
-      "urgency": "U2",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P4_PROCESS_QUALITY"
-    },
-    {
-      "type": "idea",
       "business": "BOS",
       "title": "Recent codebase structural changes touched Docs business os (4 files), Prime chat, and Prime types.",
       "body": "The codebase signals bridge detected a concentrated set of file changes that should remain attached to the affected surfaces instead of sitting in the queue as a generic structural delta.",

@@ -159,7 +159,7 @@ See `lp-do-ideas-go-live-seam.md` Section 2.3 for the full artifact path switch 
 Queue entries follow a monotonic state machine:
 
 ```
-enqueued → processed
+enqueued → processed → completed
          → skipped   (duplicate suppression)
          → error     (schema validation failure or processing error)
 ```
@@ -167,6 +167,7 @@ enqueued → processed
 Transitions:
 - `enqueued` → `processed`: operator confirms invocation
 - `enqueued` → `error`: downstream invocation fails or validation rejects packet
+- `processed` → `completed`: downstream skill finishes execution
 - Any state → `skipped`: duplicate detection fires (idempotency guard)
 
 State transitions are append-only in the telemetry record. The queue state file

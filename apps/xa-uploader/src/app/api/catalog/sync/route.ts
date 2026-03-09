@@ -27,6 +27,7 @@ import {
 import { resolveXaUploaderProductsCsvPath } from "../../../../lib/catalogCsv";
 import {
   acquireCloudSyncLock,
+  CatalogDraftContractError,
   type CloudSyncLockLease,
   readCloudCurrencyRates,
   readCloudDraftSnapshot,
@@ -37,7 +38,7 @@ import { buildCatalogArtifactsFromDrafts } from "../../../../lib/catalogDraftToC
 import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
 import type { XaCatalogStorefront } from "../../../../lib/catalogStorefront.types";
 import { getCatalogSyncInputStatus } from "../../../../lib/catalogSyncInput";
-import { type CurrencyRates,parseCurrencyRatesOrNull } from "../../../../lib/currencyRates";
+import { type CurrencyRates, parseCurrencyRatesOrNull } from "../../../../lib/currencyRates";
 import {
   buildDisplaySyncGuidance,
   type DeployPendingState,
@@ -385,10 +386,6 @@ function getPublishHistoryMaxEntries(): number {
   return toPositiveInt(process.env.XA_UPLOADER_PUBLISH_HISTORY_MAX, SYNC_PUBLISH_HISTORY_MAX, 1);
 }
 
-function validateCurrencyRates(value: unknown): value is CurrencyRates {
-  return parseCurrencyRatesOrNull(value) !== null;
-}
-
 async function getCurrencyRatesStatus(currencyRatesPath: string): Promise<{
   ok: true;
 } | {
@@ -398,7 +395,7 @@ async function getCurrencyRatesStatus(currencyRatesPath: string): Promise<{
   try {
     const raw = await fs.readFile(currencyRatesPath, "utf8");
     const parsed = JSON.parse(raw) as unknown;
-    if (!validateCurrencyRates(parsed)) {
+    if (parseCurrencyRatesOrNull(parsed) === null) {
       return { ok: false, reason: "currency_rates_invalid" };
     }
     return { ok: true };
@@ -910,9 +907,8 @@ async function loadCloudSyncInputs(params: {
     ]);
     return { ok: true, snapshot, currencyRates };
   } catch (error) {
-    if (error instanceof Error && error.name === "CatalogDraftContractError") {
-      const contractError = error as Error & { code?: string };
-      const isInvalidRates = contractError.code === "invalid_response";
+    if (error instanceof CatalogDraftContractError) {
+      const isInvalidRates = error.code === "invalid_response";
       return {
         ok: false,
         errorResponse: NextResponse.json(

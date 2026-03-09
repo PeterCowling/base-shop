@@ -8,6 +8,7 @@ import { applyCloudMediaExistenceValidation } from "../../../../lib/catalogCloud
 import { publishCatalogPayloadToContract } from "../../../../lib/catalogContractClient";
 import {
   acquireCloudSyncLock,
+  CatalogDraftContractError,
   type CloudSyncLockLease,
   readCloudCurrencyRates,
   readCloudDraftSnapshot,
@@ -73,7 +74,7 @@ async function resolveDeployStateContext(storefrontId: XaCatalogStorefront) {
   return { kv, statePaths };
 }
 
-function buildPublishContractErrorResponse(error: Error & { code?: string }): NextResponse {
+function buildPublishContractErrorResponse(error: CatalogDraftContractError): NextResponse {
   const isInvalidRates = error.code === "invalid_response";
   return NextResponse.json(
     {
@@ -221,8 +222,8 @@ export async function POST(request: Request) {
       publishedDraft,
     });
   } catch (internalError) {
-    if (internalError instanceof Error && internalError.name === "CatalogDraftContractError") {
-      return buildPublishContractErrorResponse(internalError as Error & { code?: string });
+    if (internalError instanceof CatalogDraftContractError) {
+      return buildPublishContractErrorResponse(internalError);
     }
     const message = internalError instanceof Error ? internalError.message : String(internalError);
     return NextResponse.json({ ok: false, error: "internal_error", reason: message }, { status: 500 });

@@ -4,6 +4,7 @@ import path from "node:path";
 import { NextResponse } from "next/server";
 
 import {
+  CatalogDraftContractError,
   readCloudCurrencyRates,
   writeCloudCurrencyRates,
 } from "../../../../lib/catalogDraftContractClient";
@@ -98,9 +99,8 @@ export async function GET(request: Request) {
     if ((error as NodeJS.ErrnoException | undefined)?.code === "ENOENT") {
       return withRateHeaders(NextResponse.json({ ok: true, rates: null }), limit);
     }
-    if (error instanceof Error && error.name === "CatalogDraftContractError") {
-      const contractError = error as Error & { code?: string };
-      const isInvalidRates = contractError.code === "invalid_response";
+    if (error instanceof CatalogDraftContractError) {
+      const isInvalidRates = error.code === "invalid_response";
       return withRateHeaders(
         buildErrorResponse(
           isInvalidRates ? "invalid_rates" : "service_unavailable",
@@ -179,7 +179,7 @@ export async function PUT(request: Request) {
     await fs.rename(tmpPath, ratesFilePath);
     return withRateHeaders(NextResponse.json({ ok: true }), limit);
   } catch (error) {
-    if (error instanceof Error && error.name === "CatalogDraftContractError") {
+    if (error instanceof CatalogDraftContractError) {
       return withRateHeaders(
         buildErrorResponse("service_unavailable", 503, "currency_rates_contract_unavailable"),
         limit,

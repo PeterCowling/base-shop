@@ -11,7 +11,9 @@ import { siteConfig } from "../lib/siteConfig";
 import {
   filterByDepartment,
   formatLabel,
+  getNewInProducts,
   getTrendingDesigners,
+  isProductImage,
   XA_ALLOWED_CATEGORIES,
   XA_CATEGORY_LABELS,
   XA_DEPARTMENT_LABELS,
@@ -28,9 +30,7 @@ export function XaDepartmentLanding({ department }: { department: XaDepartment }
   const { brands, products: liveProducts } = useXaCatalogSnapshot();
   const departmentLabel = XA_DEPARTMENT_LABELS[department];
   const products = filterByDepartment(liveProducts, department);
-  const newIn = [...products]
-    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
-    .slice(0, 4);
+  const newIn = getNewInProducts(products, 4);
   const trendingDesigners = getTrendingDesigners(4, department, { brands, products: liveProducts });
 
   const categoryCards = XA_ALLOWED_CATEGORIES.map((category) => {
@@ -38,7 +38,7 @@ export function XaDepartmentLanding({ department }: { department: XaDepartment }
     let withImage: (typeof catProducts)[0] | undefined;
     let image: (typeof catProducts)[0]["media"][0] | undefined;
     for (const p of catProducts) {
-      const found = p.media.find((m) => m.type === "image" && m.url.trim());
+      const found = p.media.find(isProductImage);
       if (found) { withImage = p; image = found; break; }
     }
     return {

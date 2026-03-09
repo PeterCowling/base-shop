@@ -15,7 +15,7 @@ import { useCart } from "../contexts/XaCartContext";
 import { useWishlist } from "../contexts/XaWishlistContext";
 import type { XaProduct } from "../lib/demoData";
 import { getAvailableStock } from "../lib/inventoryStore";
-import { formatLabel, getDesignerName } from "../lib/xaCatalog";
+import { formatLabel, getDesignerName, getEffectivePrice, isProductImage } from "../lib/xaCatalog";
 import { xaI18n } from "../lib/xaI18n";
 import { isNewIn } from "../lib/xaListingUtils";
 import { getProductHref } from "../lib/xaRoutes";
@@ -34,14 +34,14 @@ export function XaProductCard({ product }: { product: XaProduct }) {
   const [cart, dispatch] = useCart();
   const [wishlist, wishlistDispatch] = useWishlist();
   const [currency] = useCurrency();
-  const images = product.media.filter((m) => m.type === "image" && m.url.trim());
+  const images = product.media.filter(isProductImage);
   const primaryImage = images[0];
   const secondaryImage = images[1];
   const soldOut = getAvailableStock(product, cart) <= 0;
   const designerName = getDesignerName(product.brand);
   const category = product.taxonomy.category;
   const isWishlisted = wishlist.includes(product.id);
-  const effectivePrice = product.prices?.[currency] ?? product.price;
+  const effectivePrice = getEffectivePrice(product, currency);
 
   const jewelryDetail = (() => {
     if (category !== "jewelry") return null;

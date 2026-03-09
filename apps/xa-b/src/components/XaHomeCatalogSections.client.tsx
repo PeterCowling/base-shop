@@ -9,6 +9,7 @@ import { Section } from "@acme/design-system/atoms/Section";
 
 import { useXaCatalogSnapshot } from "../lib/liveCatalog";
 import { siteConfig } from "../lib/siteConfig";
+import { getNewInProducts } from "../lib/xaCatalog";
 import { xaI18n } from "../lib/xaI18n";
 
 import { XaProductCard } from "./XaProductCard";
@@ -17,10 +18,7 @@ export function XaHomeCatalogSections() {
   const { products } = useXaCatalogSnapshot();
   const catalog = siteConfig.catalog;
   const newInProducts = React.useMemo(
-    () =>
-      [...products]
-        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-        .slice(0, 12),
+    () => getNewInProducts(products, 12),
     [products],
   );
 

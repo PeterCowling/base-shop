@@ -46,7 +46,7 @@ function WhatsappIcon(props: React.SVGProps<SVGSVGElement>) {
     <svg
       viewBox="0 0 24 24"
       fill="none"
-      xmlns={xaI18n.t("xaB.src.components.xasupportdock.client.l43c13")}
+      xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <path
@@ -62,7 +62,7 @@ function InstagramIcon(props: React.SVGProps<SVGSVGElement>) {
     <svg
       viewBox="0 0 24 24"
       fill="none"
-      xmlns={xaI18n.t("xaB.src.components.xasupportdock.client.l59c13")}
+      xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <path
@@ -78,7 +78,7 @@ function EmailIcon(props: React.SVGProps<SVGSVGElement>) {
     <svg
       viewBox="0 0 24 24"
       fill="none"
-      xmlns={xaI18n.t("xaB.src.components.xasupportdock.client.l75c13")}
+      xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <path
@@ -102,7 +102,7 @@ function ChatIcon(props: React.SVGProps<SVGSVGElement>) {
     <svg
       viewBox="0 0 24 24"
       fill="none"
-      xmlns={xaI18n.t("xaB.src.components.xasupportdock.client.l99c13")}
+      xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <path

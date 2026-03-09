@@ -15,7 +15,7 @@ import { useWishlist } from "../contexts/XaWishlistContext";
 import type { XaProduct } from "../lib/demoData";
 import { getAvailableStock } from "../lib/inventoryStore";
 import { useXaCatalogSnapshot } from "../lib/liveCatalog";
-import { formatLabel, XA_COLOR_SWATCHES, XA_DEFAULT_SWATCH } from "../lib/xaCatalog";
+import { formatLabel, getEffectivePrice, isProductImage, XA_COLOR_SWATCHES, XA_DEFAULT_SWATCH } from "../lib/xaCatalog";
 import { xaI18n } from "../lib/xaI18n";
 import { getProductHref } from "../lib/xaRoutes";
 
@@ -37,7 +37,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
   const [cart, dispatch] = useCart();
   const [wishlist, wishlistDispatch] = useWishlist();
   const [currency] = useCurrency();
-  const effectivePrice = product.prices?.[currency] ?? product.price;
+  const effectivePrice = getEffectivePrice(product, currency);
 
   const [size, setSize] = React.useState<string>(product.sizes[0] ?? "");
   const [error, setError] = React.useState<string | null>(null);
@@ -48,7 +48,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
   const colorOptions = product.taxonomy.color
     ? Array.from(new Set(product.taxonomy.color))
     : [];
-  const colorMedia = product.media.filter((media) => media.type === "image" && media.url.trim());
+  const colorMedia = product.media.filter(isProductImage);
   const variantProducts = React.useMemo(() => {
     if (!product.variantGroup) return [];
     const items = products.filter((item) => item.variantGroup === product.variantGroup);
@@ -111,13 +111,9 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
               ))}
             </SelectContent>
           </Select>
-          {sizeNote ? (
-            <div className="xa-pdp-meta text-muted-foreground">{sizeNote}</div>
-          ) : null}
         </div>
-      ) : (
-        sizeNote ? <div className="xa-pdp-meta text-muted-foreground">{sizeNote}</div> : null
-      )}
+      ) : null}
+      {sizeNote ? <div className="xa-pdp-meta text-muted-foreground">{sizeNote}</div> : null}
 
       <div className="xa-pdp-meta text-muted-foreground">
         {xaI18n.t("xaB.src.components.xabuybox.client.quantityFixed")}

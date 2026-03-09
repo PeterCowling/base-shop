@@ -143,3 +143,18 @@ export function filterBySubcategory(products: XaProduct[], subcategory?: string)
   if (!subcategory) return products;
   return products.filter((product) => product.taxonomy.subcategory === subcategory);
 }
+
+export function getEffectivePrice(product: XaProduct, currency: string): number {
+  return (product.prices as Record<string, number> | undefined)?.[currency] ?? product.price;
+}
+
+export function getNewInProducts(products: XaProduct[], limit: number): XaProduct[] {
+  return [...products]
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+    .slice(0, limit);
+}
+
+type MediaItem = XaProduct["media"][number];
+export function isProductImage(item: MediaItem): item is MediaItem & { type: "image" } {
+  return item.type === "image" && item.url.trim().length > 0;
+}

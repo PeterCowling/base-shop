@@ -30,7 +30,7 @@ import { XaFilterChip } from "./XaFilterChip";
 import { XaFiltersDrawer } from "./XaFiltersDrawer.client";
 import { XaProductCard } from "./XaProductCard";
 
-const SORT_LABELS: Record<string, string> = {
+const SORT_LABELS: Record<SortKey, string> = {
   newest: "Newest",
   "price-asc": "Price (low to high)",
   "price-desc": "Price (high to low)",

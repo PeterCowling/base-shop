@@ -2,114 +2,19 @@
 
 import { memo, useCallback,useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import type { LucideIcon } from "lucide-react";
 import {
-  AreaChart,
-  BarChart3,
-  Bed,
-  Calculator,
-  CalendarPlus,
-  Carrot,
-  ClipboardCheck,
-  ClipboardList,
-  CreditCard,
-  Database,
-  DoorOpen,
-  FileText,
-  HandCoins,
-  Home,
-  Inbox,
-  LineChart,
-  List,
-  ListChecks,
   LogOut,
   Menu,
-  Package,
-  PieChart,
-  Search,
-  Shield,
-  ToggleRight,
-  UserCheck,
-  Users,
-  Wrench,
   X,
 } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
 
-import { canAccess, isPrivileged, Permissions } from "../../lib/roles";
+import { canAccess, isPrivileged } from "../../lib/roles";
 import { isStaffAccountsPeteIdentity } from "../../lib/staffAccountsAccess";
 import type { User } from "../../types/domains/userDomain";
 
-interface NavItem {
-  label: string;
-  route: string;
-  icon: LucideIcon;
-  permission?: (typeof Permissions)[keyof typeof Permissions];
-}
-
-interface NavSection {
-  label: string;
-  items: NavItem[];
-  permission?: (typeof Permissions)[keyof typeof Permissions];
-}
-
-const navSections: NavSection[] = [
-  {
-    label: "Operations",
-    items: [
-      { label: "Dashboard", route: "/", icon: Home },
-      { label: "Bar", route: "/bar", icon: Calculator },
-      { label: "Check-in", route: "/checkin", icon: UserCheck },
-      { label: "Rooms", route: "/rooms-grid", icon: Bed },
-      { label: "Check-out", route: "/checkout", icon: DoorOpen },
-      { label: "Loans", route: "/loan-items", icon: HandCoins },
-      { label: "Extension", route: "/extension", icon: CalendarPlus },
-      { label: "Prime Requests", route: "/prime-requests", icon: Inbox },
-    ],
-  },
-  {
-    label: "Till & Safe",
-    permission: Permissions.TILL_ACCESS,
-    items: [
-      { label: "Till", route: "/till-reconciliation", icon: Calculator },
-      { label: "Safe", route: "/safe-reconciliation", icon: Shield },
-      { label: "Workbench", route: "/reconciliation-workbench", icon: Wrench },
-      { label: "Live", route: "/live", icon: List },
-      { label: "Variance", route: "/variance-heatmap", icon: AreaChart },
-      { label: "End of Day", route: "/end-of-day", icon: FileText },
-    ],
-  },
-  {
-    label: "Management",
-    items: [
-      { label: "Prepare", route: "/prepare-dashboard", icon: ClipboardList },
-      { label: "Prepayments", route: "/prepayments", icon: CreditCard },
-      { label: "Opt-In", route: "/email-automation", icon: ToggleRight },
-      { label: "Search", route: "/audit", icon: Search },
-    ],
-  },
-  {
-    label: "Admin",
-    permission: Permissions.MANAGEMENT_ACCESS,
-    items: [
-      { label: "Alloggiati", route: "/alloggiati", icon: Database },
-      { label: "Stock", route: "/stock", icon: Package },
-      { label: "Ingredients", route: "/ingredient-stock", icon: Carrot },
-      { label: "Real Time", route: "/real-time-dashboard", icon: LineChart },
-      { label: "Manager Audit", route: "/manager-audit", icon: ClipboardCheck },
-      { label: "End of Day", route: "/eod-checklist", icon: ListChecks },
-      { label: "Statistics", route: "/statistics", icon: BarChart3 },
-      { label: "Menu Perf", route: "/menu-performance", icon: PieChart },
-      {
-        label: "Staff Accounts",
-        route: "/staff-accounts",
-        icon: Users,
-        permission: Permissions.USER_MANAGEMENT,
-      },
-    ],
-  },
-];
+import { type NavConfigItem, type NavSection,navSections } from "./navConfig";
 
 interface AppNavProps {
   user: { user_name: string; email?: string; roles?: User["roles"]; uid?: string };
@@ -134,7 +39,7 @@ function AppNav({ user, onLogout }: AppNavProps) {
 
   // Check if user can access a section or item
   const canAccessSection = useCallback(
-    (permission?: (typeof Permissions)[keyof typeof Permissions]): boolean => {
+    (permission?: NavSection["permission"]): boolean => {
       if (!permission) return true;
       // If user has roles array (new system), check roles
       if ("roles" in user && Array.isArray(user.roles)) {
@@ -209,7 +114,7 @@ function AppNav({ user, onLogout }: AppNavProps) {
                   {section.label}
                 </h3>
                 <ul className="space-y-1">
-                  {section.items.map((item) => {
+                  {section.items.map((item: NavConfigItem) => {
                     if (!canAccessSection(item.permission)) return null;
                     if (
                       item.route === "/staff-accounts" &&

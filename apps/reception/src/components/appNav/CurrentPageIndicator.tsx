@@ -2,31 +2,9 @@
 
 import { memo, useMemo } from "react";
 import type { LucideIcon } from "lucide-react";
-import {
-  AreaChart,
-  BarChart3,
-  Bed,
-  Calculator,
-  CalendarPlus,
-  Carrot,
-  ClipboardList,
-  CreditCard,
-  Database,
-  DoorOpen,
-  FileText,
-  HandCoins,
-  Home,
-  Inbox,
-  LineChart,
-  List,
-  Package,
-  PieChart,
-  Search,
-  Shield,
-  ToggleRight,
-  UserCheck,
-  Wrench,
-} from "lucide-react";
+import { Home } from "lucide-react";
+
+import { navSections } from "./navConfig";
 
 interface RouteInfo {
   label: string;
@@ -35,32 +13,48 @@ interface RouteInfo {
   shortcut?: string;
 }
 
-const routeMap: Record<string, RouteInfo> = {
-  "/": { label: "Dashboard", section: "Reception", icon: Home },
-  "/bar": { label: "Bar", section: "Operations", icon: Calculator, shortcut: "1" },
-  "/checkin": { label: "Check-in", section: "Operations", icon: UserCheck, shortcut: "2" },
-  "/rooms-grid": { label: "Rooms", section: "Operations", icon: Bed, shortcut: "3" },
-  "/checkout": { label: "Check-out", section: "Operations", icon: DoorOpen, shortcut: "4" },
-  "/loan-items": { label: "Loans", section: "Operations", icon: HandCoins, shortcut: "5" },
-  "/extension": { label: "Extension", section: "Operations", icon: CalendarPlus, shortcut: "6" },
-  "/prime-requests": { label: "Prime Requests", section: "Operations", icon: Inbox },
-  "/till-reconciliation": { label: "Till", section: "Till & Safe", icon: Calculator },
-  "/safe-reconciliation": { label: "Safe", section: "Till & Safe", icon: Shield },
-  "/reconciliation-workbench": { label: "Workbench", section: "Till & Safe", icon: Wrench },
-  "/live": { label: "Live", section: "Till & Safe", icon: List },
-  "/variance-heatmap": { label: "Variance", section: "Till & Safe", icon: AreaChart },
-  "/end-of-day": { label: "End of Day", section: "Till & Safe", icon: FileText },
-  "/prepare-dashboard": { label: "Prepare", section: "Management", icon: ClipboardList },
-  "/prepayments": { label: "Prepayments", section: "Management", icon: CreditCard },
-  "/email-automation": { label: "Opt-In", section: "Management", icon: ToggleRight },
-  "/audit": { label: "Search", section: "Management", icon: Search },
-  "/alloggiati": { label: "Alloggiati", section: "Admin", icon: Database },
-  "/stock": { label: "Stock", section: "Admin", icon: Package },
-  "/ingredient-stock": { label: "Ingredients", section: "Admin", icon: Carrot },
-  "/real-time-dashboard": { label: "Real Time", section: "Admin", icon: LineChart },
-  "/statistics": { label: "Statistics", section: "Admin", icon: BarChart3 },
-  "/menu-performance": { label: "Menu Perf", section: "Admin", icon: PieChart },
+/**
+ * Keyboard shortcut annotations for Operations items.
+ * This thin overlay supplements navConfig with CPI-specific metadata
+ * that has no place in the shared nav config.
+ */
+const shortcutsOverlay: Record<string, string> = {
+  "/bar":        "1",
+  "/checkin":    "2",
+  "/rooms-grid": "3",
+  "/checkout":   "4",
+  "/loan-items": "5",
+  "/extension":  "6",
 };
+
+/**
+ * Section label overrides for special breadcrumb display cases.
+ * Currently only Dashboard (/) needs this — it belongs to the "Operations" section
+ * in navConfig but should display "Reception" in the breadcrumb to preserve
+ * existing CPI behaviour for the root route.
+ */
+const sectionOverlay: Record<string, string> = {
+  "/": "Reception",
+};
+
+/**
+ * Derived routeMap built from navConfig so that new routes automatically appear
+ * in the CPI without any manual edit here. sidebarOnly items ARE included —
+ * the flag means "exclude from modals", not "exclude from header indicator".
+ */
+const routeMap: Record<string, RouteInfo> = Object.fromEntries(
+  navSections.flatMap((section) =>
+    section.items.map((item) => [
+      item.route,
+      {
+        label:    item.label,
+        section:  sectionOverlay[item.route] ?? section.label,
+        icon:     item.icon,
+        shortcut: shortcutsOverlay[item.route],
+      } satisfies RouteInfo,
+    ])
+  )
+);
 
 interface CurrentPageIndicatorProps {
   pathname: string;

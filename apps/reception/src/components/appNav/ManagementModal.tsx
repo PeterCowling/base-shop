@@ -1,28 +1,11 @@
-import {
-  ClipboardList,
-  CreditCard,
-  Search,
-  ToggleRight,
-  Users,
-} from "lucide-react";
-
 import { withIconModal } from "../../hoc/withIconModal";
-import { Permissions } from "../../lib/roles";
-import { type ModalAction } from "../../types/component/ModalAction";
 
-const actions: ModalAction[] = [
-  { label: "Prepare",     icon: ClipboardList, route: "/prepare-dashboard" },
-  { label: "Prepayments", icon: CreditCard,    route: "/prepayments" },
-  { label: "Opt-In",      icon: ToggleRight,   route: "/email-automation" },
-  { label: "Search",      icon: Search,        route: "/audit" },
-  {
-    label: "Staff Accounts",
-    icon: Users,
-    route: "/staff-accounts",
-    permission: Permissions.USER_MANAGEMENT,
-    peteOnly: true,
-  },
-];
+import { navSections, SECTION_LABELS } from "./navConfig";
+
+// Management section intentionally does NOT include Staff Accounts — that item
+// lives in the Admin section (Divergence #4 decision).
+const section = navSections.find((s) => s.label === SECTION_LABELS.MANAGEMENT);
+const actions = (section?.items ?? []).filter((item) => !item.sidebarOnly);
 
 export default withIconModal({
   label: "MANAGEMENT",

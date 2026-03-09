@@ -128,7 +128,12 @@ describe("<Footer />", () => {
 
     // eslint-disable-next-line security/detect-non-literal-regexp -- Building test regex from current year; test code only
     const regex = new RegExp(`© 2023 to ${year}.*hostel brikette`, "i");
-    expect(screen.getByText(regex)).toBeInTheDocument();
+    expect(
+      screen.getByText((_, node) => {
+        const text = node?.textContent?.replace(/\s+/g, " ").trim() ?? "";
+        return regex.test(text);
+      }),
+    ).toBeInTheDocument();
     jest.useRealTimers();
   });
 

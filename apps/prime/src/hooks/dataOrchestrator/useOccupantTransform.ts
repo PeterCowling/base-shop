@@ -148,7 +148,7 @@ function processPreorders(
           if (match) {
             nightKey = `Night${match[1]}`;
           } else {
-            logger.warn('Non-standard night key:', nightKey, item);
+            logger.warn('Non-standard night key:', nightKey, item); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
           }
         }
 

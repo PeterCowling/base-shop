@@ -112,8 +112,8 @@ export function usePreArrivalMutator(): UsePreArrivalMutatorReturn {
 
         setIsSuccess(true);
       } catch (error) {
-        const message = error instanceof Error ? error.message : 'Unknown error';
-        logger.error('[usePreArrivalMutator] Error updating pre-arrival data:', error);
+        const message = error instanceof Error ? error.message : 'Unknown error'; // i18n-exempt -- PRIME-101 programmatic hook error [ttl=2026-12-31]
+        logger.error('[usePreArrivalMutator] Error updating pre-arrival data:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
         setIsError(true);
         setErrorMessage(message);
       } finally {
@@ -157,8 +157,8 @@ export function usePreArrivalMutator(): UsePreArrivalMutatorReturn {
 
         setIsSuccess(true);
       } catch (error) {
-        const message = error instanceof Error ? error.message : 'Unknown error';
-        logger.error('[usePreArrivalMutator] Error updating checklist:', error);
+        const message = error instanceof Error ? error.message : 'Unknown error'; // i18n-exempt -- PRIME-101 programmatic hook error [ttl=2026-12-31]
+        logger.error('[usePreArrivalMutator] Error updating checklist:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
         setIsError(true);
         setErrorMessage(message);
       } finally {

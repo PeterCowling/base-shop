@@ -47,7 +47,7 @@ export function useCompletedTaskMutator(
   const completeTask = useCallback(
     async (taskId: string, status: boolean) => {
       if (!uuid || !taskId) {
-        logger.warn('[useCompletedTaskMutator] Missing uuid or taskId:', {
+        logger.warn('[useCompletedTaskMutator] Missing uuid or taskId:', { // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
           uuid,
           taskId,
         });
@@ -66,7 +66,7 @@ export function useCompletedTaskMutator(
 
         setIsSuccess(true);
       } catch (error) {
-        logger.error('[useCompletedTaskMutator] Error in completeTask:', error);
+        logger.error('[useCompletedTaskMutator] Error in completeTask:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
         setIsError(true);
       } finally {
         setIsLoading(false);

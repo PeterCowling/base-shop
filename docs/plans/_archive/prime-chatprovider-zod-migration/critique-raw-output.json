@@ -1,0 +1,35 @@
+{
+  "round": 2,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/prime-chatprovider-zod-migration/fact-find.md",
+      "line": "126",
+      "message": "The `functions/` blast-radius count is still off by one. Current repo imports from `apps/prime/src/types/messenger/chat.ts` appear in 8 Functions files, not 7; `apps/prime/functions/lib/prime-messaging-shadow-write.ts` is omitted from the list."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/prime-chatprovider-zod-migration/fact-find.md",
+      "line": "210",
+      "message": "The brief is internally inconsistent about the type-strategy decision. Line 198 resolves the migration to `z.infer` aliases with no operator input required, but the confidence section still refers to an \"open question above,\" and the later task seed / acceptance language still allows the old parallel-declarations fallback. The plan handoff needs one settled contract."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/prime-chatprovider-zod-migration/fact-find.md",
+      "line": "235",
+      "message": "The validation gate is still incomplete against repo policy. It includes scoped `typecheck` and `lint`, but AGENTS also requires `bash scripts/validate-changes.sh` before commit."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/prime-chatprovider-zod-migration/fact-find.md",
+      "line": "285",
+      "message": "The scope-signal rationale is stale against the document's own evidence. This is no longer \"fully bounded within `ChatProvider.tsx` and a new `messageSchema.ts` file\" because the brief explicitly includes `chat.ts` changes and Functions-side typecheck impact."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "lp_score": 4.0,
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "durationMs": 68489
+}

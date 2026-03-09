@@ -80,12 +80,12 @@ describe("TASK-34: DealsPageContent view_promotion + select_promotion GA4 contra
     const promotions = payload.promotions as Array<Record<string, unknown>>;
     expect(promotions).toHaveLength(2); // At 2025-10-01: one active + one upcoming visible deal
     expect(promotions[0]).toMatchObject({
-      promotion_id: "direct-perks-evergreen",
-      promotion_name: "25% off",
-    });
-    expect(promotions[1]).toMatchObject({
       promotion_id: "sep20_oct31_15off",
       promotion_name: "15% off",
+    });
+    expect(promotions[1]).toMatchObject({
+      promotion_id: "direct-perks-evergreen",
+      promotion_name: "25% off",
     });
   });
 
@@ -134,7 +134,7 @@ describe("TASK-34: DealsPageContent view_promotion + select_promotion GA4 contra
   // TC-03 (TASK-05): regression guard — at least one deal is active at test time
   it("TC-03 (TASK-05): DEALS has at least one active entry at test reference date", () => {
     // Fake timer is set to 2025-10-01T12:00:00Z in beforeEach.
-    // At that date: sep20_oct31_15off is active; evergreen hasn't started yet.
+    // At that date: sep20_oct31_15off is active; evergreen is upcoming.
     const count = getActiveDealCount(DEALS, new Date());
     expect(count).toBeGreaterThanOrEqual(1);
   });

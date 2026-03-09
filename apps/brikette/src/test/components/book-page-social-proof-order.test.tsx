@@ -37,11 +37,12 @@ describe("Book page layout order", () => {
     render(<BookPageContent lang="en" heading="Book your stay" />);
 
     const socialProof = screen.getByText("Guests love Brikette");
-    // The booking widget uses date inputs (no submit button); use the check-in input
-    // as the reference element to verify social proof appears above the booking section.
-    const checkInInput = screen.getByLabelText(/check.?in/i);
+    const checkInInput = document.querySelector(
+      '[data-cy="date-range-checkin-input"]',
+    ) as HTMLElement | null;
 
-    const order = socialProof.compareDocumentPosition(checkInInput);
+    expect(checkInInput).not.toBeNull();
+    const order = socialProof.compareDocumentPosition(checkInInput as Node);
     expect(order & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 });

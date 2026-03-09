@@ -3,11 +3,16 @@ import React from "react";
 const getTranslationsMock = jest.fn<Promise<(key: string) => string>, unknown[]>(async () => {
   return (key: string) => key;
 });
+const getNamespaceBundlesMock = jest.fn<Promise<Record<string, Record<string, never>>>, unknown[]>(
+  async () => ({}),
+);
 
 jest.mock("@/app/_lib/i18n-server", () => ({
   toAppLanguage: (lang: string) => (lang === "en" ? "en" : "en"),
   getTranslations: (...args: unknown[]) =>
     getTranslationsMock(...(args as [string, readonly string[]])),
+  getNamespaceBundles: (...args: unknown[]) =>
+    getNamespaceBundlesMock(...(args as [string, readonly string[]])),
 }));
 
 jest.mock("@/app/[lang]/HomeContent", () => ({
@@ -18,13 +23,14 @@ jest.mock("@/app/[lang]/HomeContent", () => ({
 describe("home page SSR i18n preload contract", () => {
   beforeEach(() => {
     getTranslationsMock.mockClear();
+    getNamespaceBundlesMock.mockClear();
   });
 
   it("preloads landing namespaces during server render to prevent key leakage", async () => {
     const { default: HomePage } = await import("@/app/[lang]/page");
     await HomePage({ params: Promise.resolve({ lang: "en" }) });
 
-    expect(getTranslationsMock).toHaveBeenCalledWith(
+    expect(getNamespaceBundlesMock).toHaveBeenCalledWith(
       "en",
       expect.arrayContaining([
         "landingPage",
@@ -32,6 +38,9 @@ describe("home page SSR i18n preload contract", () => {
         "testimonials",
         "ratingsBar",
         "modals",
+        "_tokens",
+        "roomsPage",
+        "guides",
       ]),
     );
   });

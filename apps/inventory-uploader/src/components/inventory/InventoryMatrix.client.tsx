@@ -1,15 +1,9 @@
 /* eslint-disable ds/min-tap-size -- INV-0001 operator-tool: compact buttons intentional in dense console UI */
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-type InventoryItem = {
-  sku: string;
-  productId: string;
-  quantity: number;
-  variantAttributes: Record<string, string>;
-  lowStockThreshold?: number;
-};
+import { type InventoryItem, variantLabel } from "../../lib/inventory-utils";
 
 type SortKey = "sku" | "quantity";
 
@@ -21,13 +15,6 @@ type InventoryMatrixProps = {
   onInflow?: () => void;
   refreshKey?: number;
 };
-
-function variantLabel(attrs: Record<string, string>): string {
-  return Object.entries(attrs)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([k, v]) => `${k}: ${v}`)
-    .join(", ");
-}
 
 export function InventoryMatrix({ shop, selectedSku, onSelectSku, onAdjust, onInflow, refreshKey = 0 }: InventoryMatrixProps) {
   const [items, setItems] = useState<InventoryItem[]>([]);
@@ -42,39 +29,36 @@ export function InventoryMatrix({ shop, selectedSku, onSelectSku, onAdjust, onIn
       return;
     }
     // refreshKey dependency forces re-fetch after import
-    let cancelled = false;
+    const controller = new AbortController();
     setLoading(true);
     setError(null);
-    fetch(`/api/inventory/${encodeURIComponent(shop)}`)
+    fetch(`/api/inventory/${encodeURIComponent(shop)}`, { signal: controller.signal })
       .then((r) => r.json())
       .then((data: unknown) => {
-        if (cancelled) return;
         const list =
           data && typeof data === "object" && "items" in data && Array.isArray((data as { items: unknown }).items)
             ? ((data as { items: InventoryItem[] }).items)
             : [];
         setItems(list);
       })
-      .catch(() => {
-        if (!cancelled) setError("Failed to load inventory.");
+      .catch((err: unknown) => {
+        if (err instanceof Error && err.name === "AbortError") return;
+        setError("Failed to load inventory.");
       })
       .finally(() => {
-        if (!cancelled) setLoading(false);
+        setLoading(false);
       });
-    return () => {
-      cancelled = true;
-    };
-     
+    return () => controller.abort();
   }, [shop, refreshKey]);
 
-  function handleSort(key: SortKey) {
+  const handleSort = useCallback((key: SortKey) => {
     if (sortKey === key) {
       setSortAsc((prev) => !prev);
     } else {
       setSortKey(key);
       setSortAsc(true);
     }
-  }
+  }, [sortKey]);
 
   const sorted = useMemo(() => [...items].sort((a, b) => {
     let cmp = 0;
@@ -120,7 +104,7 @@ export function InventoryMatrix({ shop, selectedSku, onSelectSku, onAdjust, onIn
             key={k}
             type="button"
             onClick={() => handleSort(k)}
-             
+
             className={`rounded px-1.5 py-0.5 transition ${sortKey === k ? "bg-gate-accent/10 text-gate-accent" : "hover:text-gate-ink"}`}
           >
             {k}{sortKey === k ? (sortAsc ? " ↑" : " ↓") : ""}
@@ -131,7 +115,8 @@ export function InventoryMatrix({ shop, selectedSku, onSelectSku, onAdjust, onIn
       {/* Item list */}
       <ul className="divide-y divide-gate-border">
         {sorted.map((item) => {
-          const vk = `${item.sku}#${variantLabel(item.variantAttributes)}`;
+          const vLabel = variantLabel(item.variantAttributes);
+          const vk = `${item.sku}#${vLabel}`;
           const isLowStock =
             typeof item.lowStockThreshold === "number" &&
             item.quantity <= item.lowStockThreshold;
@@ -155,8 +140,8 @@ export function InventoryMatrix({ shop, selectedSku, onSelectSku, onAdjust, onIn
                     {isLowStock ? " ⚠" : ""}
                   </span>
                 </div>
-                {Object.keys(item.variantAttributes).length > 0 && (
-                  <p className="text-2xs text-gate-muted truncate">{variantLabel(item.variantAttributes)}</p>
+                {vLabel && (
+                  <p className="text-2xs text-gate-muted truncate">{vLabel}</p>
                 )}
               </button>
             </li>
@@ -172,7 +157,7 @@ export function InventoryMatrix({ shop, selectedSku, onSelectSku, onAdjust, onIn
             <button
               type="button"
               onClick={onAdjust}
-               
+
               className="flex-1 rounded py-1 text-xs text-gate-muted focus-visible:ring-1 focus-visible:ring-gate-border hover:text-gate-ink focus-visible:hover:ring-gate-accent"
             >
               Adjust stock
@@ -182,7 +167,7 @@ export function InventoryMatrix({ shop, selectedSku, onSelectSku, onAdjust, onIn
             <button
               type="button"
               onClick={onInflow}
-               
+
               className="flex-1 rounded py-1 text-xs text-gate-muted focus-visible:ring-1 focus-visible:ring-gate-border hover:text-gate-ink focus-visible:hover:ring-gate-accent"
             >
               Receive stock

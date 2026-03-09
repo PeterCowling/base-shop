@@ -1,7 +1,7 @@
 /* eslint-disable ds/min-tap-size -- INV-0001 operator-tool: compact buttons intentional in dense console UI */
 "use client";
 
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 import { HISTORY_DISPLAY_LIMIT } from "../../lib/inventory-utils";
 
@@ -128,8 +128,15 @@ function ImportActions({ loading, shop, onValidate, onImport, onClear }: ImportA
 type ImportResultPanelProps = { result: ImportResult };
 
 function ImportResultPanel({ result }: ImportResultPanelProps) {
-  const errorRows = result.results?.filter((r) => r.status === "error") ?? [];
-  const okRows = result.results?.filter((r) => r.status === "ok") ?? [];
+  const [errorRows, okRows] = useMemo(() => {
+    const errs: RowResult[] = [];
+    const oks: RowResult[] = [];
+    for (const r of result.results ?? []) {
+      if (r.status === "error") errs.push(r);
+      else oks.push(r);
+    }
+    return [errs, oks];
+  }, [result.results]);
 
   return (
      

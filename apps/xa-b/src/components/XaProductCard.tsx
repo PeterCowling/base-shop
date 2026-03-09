@@ -1,7 +1,7 @@
 "use client";
 
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
 
@@ -34,7 +34,7 @@ export function XaProductCard({ product }: { product: XaProduct }) {
   const [cart, dispatch] = useCart();
   const [wishlist, wishlistDispatch] = useWishlist();
   const [currency] = useCurrency();
-  const images = product.media.filter(isProductImage);
+  const images = useMemo(() => product.media.filter(isProductImage), [product.media]);
   const primaryImage = images[0];
   const secondaryImage = images[1];
   const soldOut = getAvailableStock(product, cart) <= 0;
@@ -43,7 +43,7 @@ export function XaProductCard({ product }: { product: XaProduct }) {
   const isWishlisted = wishlist.includes(product.id);
   const effectivePrice = getEffectivePrice(product, currency);
 
-  const jewelryDetail = (() => {
+  const jewelryDetail = useMemo(() => {
     if (category !== "jewelry") return null;
     const metal = product.taxonomy.metal ? formatLabel(product.taxonomy.metal) : null;
     const gemstone = product.taxonomy.gemstone && product.taxonomy.gemstone !== "none"
@@ -51,7 +51,7 @@ export function XaProductCard({ product }: { product: XaProduct }) {
       : null;
     const size = product.taxonomy.jewelrySize ? formatLabel(product.taxonomy.jewelrySize) : null;
     return [metal, gemstone ?? size].filter(Boolean).join(" / ");
-  })();
+  }, [category, product.taxonomy]);
 
   useEffect(() => {
     if (!quickAddFeedback) return;
@@ -59,7 +59,7 @@ export function XaProductCard({ product }: { product: XaProduct }) {
     return () => window.clearTimeout(timer);
   }, [quickAddFeedback]);
 
-  const toQuickAddErrorMessage = (error: unknown) => {
+  const toQuickAddErrorMessage = useCallback((error: unknown) => {
     const message = error instanceof Error ? error.message : "";
     if (message === CART_ERROR_OUT_OF_STOCK) {
       return xaI18n.t("xaB.src.components.xaproductcard.quickadd.outofstock");
@@ -68,9 +68,9 @@ export function XaProductCard({ product }: { product: XaProduct }) {
       return xaI18n.t("xaB.src.components.xaproductcard.quickadd.sizerequired");
     }
     return xaI18n.t("xaB.src.components.xaproductcard.quickadd.failed");
-  };
+  }, []);
 
-  const handleQuickAdd = async (size: string) => {
+  const handleQuickAdd = useCallback(async (size: string) => {
     setQuickAddFeedback(null);
     try {
       await dispatch({
@@ -89,7 +89,7 @@ export function XaProductCard({ product }: { product: XaProduct }) {
         message: toQuickAddErrorMessage(error),
       });
     }
-  };
+  }, [product, dispatch, toQuickAddErrorMessage]);
 
   return (
     <div className="xa-panel rounded-sm border border-border-1 bg-surface-2 p-4 shadow-elevation-1">

@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
 
 import { Grid } from "@acme/design-system/atoms/Grid";
@@ -9,6 +10,7 @@ import { Inline } from "@acme/design-system/primitives/Inline";
 import { useXaCatalogSnapshot } from "../lib/liveCatalog";
 import { siteConfig } from "../lib/siteConfig";
 import {
+  filterByCategory,
   filterByDepartment,
   formatLabelList,
   getNewInProducts,
@@ -29,26 +31,32 @@ import { XaProductCard } from "./XaProductCard";
 export function XaDepartmentLanding({ department }: { department: XaDepartment }) {
   const { brands, products: liveProducts } = useXaCatalogSnapshot();
   const departmentLabel = XA_DEPARTMENT_LABELS[department];
-  const products = filterByDepartment(liveProducts, department);
-  const newIn = getNewInProducts(products, 4);
-  const trendingDesigners = getTrendingDesigners(4, department, { brands, products: liveProducts });
 
-  const categoryCards = XA_ALLOWED_CATEGORIES.map((category) => {
-    const catProducts = products.filter((p) => p.taxonomy.category === category);
-    let withImage: (typeof catProducts)[0] | undefined;
-    let image: (typeof catProducts)[0]["media"][0] | undefined;
-    for (const p of catProducts) {
-      const found = p.media.find(isProductImage);
-      if (found) { withImage = p; image = found; break; }
-    }
-    return {
-      label: XA_CATEGORY_LABELS[category],
-      href: `/${department}/${category}`,
-      items: XA_SUBCATEGORIES[category],
-      imageUrl: image?.url,
-      imageAlt: image?.altText ?? withImage?.title ?? XA_CATEGORY_LABELS[category],
-    };
-  });
+  const products = React.useMemo(
+    () => filterByDepartment(liveProducts, department),
+    [liveProducts, department],
+  );
+  const newIn = React.useMemo(() => getNewInProducts(products, 4), [products]);
+  const trendingDesigners = React.useMemo(
+    () => getTrendingDesigners(4, department, { brands, products: liveProducts }),
+    [brands, liveProducts, department],
+  );
+
+  const categoryCards = React.useMemo(
+    () => XA_ALLOWED_CATEGORIES.map((category) => {
+      const catProducts = filterByCategory(products, category);
+      const withImage = catProducts.find((p) => p.media.some(isProductImage));
+      const image = withImage?.media.find(isProductImage);
+      return {
+        label: XA_CATEGORY_LABELS[category],
+        href: `/${department}/${category}`,
+        items: XA_SUBCATEGORIES[category],
+        imageUrl: image?.url,
+        imageAlt: image?.altText ?? withImage?.title ?? XA_CATEGORY_LABELS[category],
+      };
+    }),
+    [products, department],
+  );
 
   return (
     <main className="sf-content">
